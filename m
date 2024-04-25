@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D8A8B22C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 385438B225B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzzB4-00083q-FN; Thu, 25 Apr 2024 09:30:18 -0400
+	id 1rzyxZ-0001he-0l; Thu, 25 Apr 2024 09:16:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rzzB0-00083X-T5
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:30:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rzyxR-0001bD-OJ
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:16:14 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rzzAy-0003zl-Vj
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:30:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714051810;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Uuk1EReh5/8hlkQJPTWeOUFjHqwWgySga9BQagehD/g=;
- b=PVsxRs7ko6E0NqhcEsMq5h1emzwtM+Kl/HfTfhj0M08WMkTbLdUSovoZo1UvLcErr3cc8H
- a9rFtyto/efW40r5usqI3gIXgRxuOQzg+wvhh85keTxlK3gJQ+uoP7w2w05TdWFIRsopgb
- Rphjmt7BKb/qlQlIKcEa72ZzO0DBUhY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-91Ph_XycO7Wvgc6l2NHARg-1; Thu, 25 Apr 2024 09:30:07 -0400
-X-MC-Unique: 91Ph_XycO7Wvgc6l2NHARg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E19AC812C5B;
- Thu, 25 Apr 2024 13:30:06 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.102])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A361AC68;
- Thu, 25 Apr 2024 13:30:05 +0000 (UTC)
-Date: Thu, 25 Apr 2024 14:30:00 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Weil <sw@weilnetz.de>, QEMU Developers <qemu-devel@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rzyxQ-0005u0-2g
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:16:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714050972; x=1745586972;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=A7f0OsES/K/K9v4IClIZ7cqsYibhqcI2JSwwGXJ6xNw=;
+ b=lgH/0nNWAIvnjnmnr/8MP+JrkVKXwQNVyCkaG3LpAxIeGQHnH9W4ZJqY
+ bA4cpAAIxtJFE6yJcftF8eDipt8OwZAgFAOyRYCTe/yY9mPFVlBhKfNqH
+ mFrri7lDc24Q8Bf34+MX8euMSG0P+BJI3KL0yW5YC4mp8xkd6BTLsezGT
+ T6zgao1NWt5kRVNq7ZIvLPh9PASBykGuHLwuhzWe16hrSZSXEkqWhHiv3
+ LBxCyU0q00PF5MtGfxMJscpb7H0jojH8yOiAjOxItdOrNXflXyYKlgYuu
+ lIWQDzXNgJCdup1W4tIQnJMEv+HHexUkvFzsOxlAZO/ad+X1tiwwA1Mtc Q==;
+X-CSE-ConnectionGUID: c7jclAOLQeC1qx6rZq/jOQ==
+X-CSE-MsgGUID: hh/6w/eASRyfF0yHf0AccQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="20348995"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="20348995"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 06:16:09 -0700
+X-CSE-ConnectionGUID: fguQEXsaRAWXjkNkDjn9yA==
+X-CSE-MsgGUID: OLHVs+TySlWYQflJ8I97Iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25017696"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa009.jf.intel.com with ESMTP; 25 Apr 2024 06:16:05 -0700
+Date: Thu, 25 Apr 2024 21:30:11 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: Timeouts in CI jobs
-Message-ID: <Zipa2DPKX0Z0jXtK@redhat.com>
-References: <CAFEAcA92aivDF-LjSrtZH6o4UtgrtcWnM2wuPZA5VOiN6j7KMA@mail.gmail.com>
- <f5926850-670b-43fa-8011-c33ba45d8fc3@weilnetz.de>
- <9692cfcb-ef59-4cec-8452-8bfb859e8a6c@weilnetz.de>
- <50ee3a92-1bb5-4113-8558-281e78b0c2e3@weilnetz.de>
- <Zik8s6_iNM8u0SZ6@redhat.com>
- <ec748687-93eb-48cf-af47-419a4389ed6e@weilnetz.de>
- <ZipaNZ5JD_7pM6Xp@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Dapeng Mi <dapeng1.mi@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v11 00/21] i386: Introduce smp.modules and clean up cache
+ topology
+Message-ID: <Zipa4+Hc3WS51sGB@intel.com>
+References: <20240424154929.1487382-1-zhao1.liu@intel.com>
+ <a76a987f-3ea2-4c48-bc02-74ab42fd3c01@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZipaNZ5JD_7pM6Xp@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+In-Reply-To: <a76a987f-3ea2-4c48-bc02-74ab42fd3c01@linaro.org>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,31 +92,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 25, 2024 at 02:27:17PM +0100, Daniel P. BerrangÃ© wrote:
-> On Wed, Apr 24, 2024 at 08:10:19PM +0200, Stefan Weil wrote:
-> > 
-> > I did not run tests in my GitLab fork because I still have to figure out how
-> > to do that.
+On Thu, Apr 25, 2024 at 10:06:11AM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu, 25 Apr 2024 10:06:11 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH v11 00/21] i386: Introduce smp.modules and clean up
+>  cache topology
 > 
-> It is quite simple:
+> Hi Zhao,
 > 
->   git remote add gitlab ssh://git@gitlab.com/<yourusername>/qemu
->   git push gitlab -o QEMU_CI=2
+> On 24/4/24 17:49, Zhao Liu wrote:
+> 
+> > ---
+> > Zhao Liu (20):
+> >    hw/core/machine: Introduce the module as a CPU topology level
+> >    hw/core/machine: Support modules in -smp
+> >    hw/core: Introduce module-id as the topology subindex
+> >    hw/core: Support module-id in numa configuration
+> 
+> To reduce this series size, I'm taking these 4 patches to via
+> my hw-misc tree.
+>
 
-Sorry, mistake, the second line should be
+Thanks Philippe! Will add module level test in tests/unit/test-smp-parse.c.
 
-  git push gitlab -o ci.variable=QEMU_CI=2
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Regards,
+Zhao
 
 
