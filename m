@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082768B1FE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 879A18B1FF5
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwu6-0002K9-5R; Thu, 25 Apr 2024 07:04:38 -0400
+	id 1rzwuL-0002u4-DP; Thu, 25 Apr 2024 07:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtJ-0000B0-T9
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:03 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtJ-0000Az-So
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:01 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtA-0000I3-Sq
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtA-0000Ia-SM
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:44 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2de233961caso7891981fa.3
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:33 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-41a72f3a1edso6922155e9.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714043011; x=1714647811; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714043016; x=1714647816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2PQHJ5tsa1+Iw7rGUJbqHRL8DwWj2o26FTHLneT25lU=;
- b=qF5vPcOkQSHZM1NLwAfCBQMhgKN/jwiR9NQS6Ch89FK9VZIjHtD/ZTHN1U1oybFX9/
- j8km1Ge599RgH2hYhdMMQ/9FzK9rsJHIXk5WHMmT8xx79+NQvbvqp5RLY1B27ZBbLhsR
- E45oDsbfz2XHLQloCcYrmAb5HSOCzmCIUypH5bGamARXwIYgz02OqGSD6sFYcSxnIu0O
- nFAApaf1RT58vkwUKnTcdFQ4dEHldFNiO4Kffc2BISTerJOpHnHPdnFE0AyaIa4UhO5/
- x7u5Jrz2uRTFxoE08ZqEIvE44frv9LSbx6Wd1fQU6PgRYJbq817/YvCTEYUE8sXv3918
- GWFg==
+ bh=q5xgdXCGND9O0mxiiZCYBTt0WDd2teRijPgGqLuPJXs=;
+ b=KLiWuHsUAeuPx4sl4ND4n1oy5qSZ+UIdFxCcJey6GEAV02TWen3HmX6Tb5RcYbDIRU
+ 5Zes31VVjrwyd487fvDRHZ38g7tFP+xqrf16DtPLJJfzITgoAQoPcfKUPLmwHn3Ae4FM
+ 2FgqqNOv5ernMV70wfkFg+oVOXTF/y3gmPJ3ZaC3+vgY/5zN+oJJDLYdosCbHxAk7wNe
+ HJhG9pSmv2EPUN0Z1wInparDlwG+HMrCgmSj3wrj1D6Zvgd6CCsDpn2xrWZzzZ5cPA+z
+ 2JJgXhrdQM7NbxE2Xv+79vOmTwWqu77cHQVpiAlMtRjadSMx6mC4NgKmBwuZgaZ36msP
+ i31g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714043011; x=1714647811;
+ d=1e100.net; s=20230601; t=1714043016; x=1714647816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2PQHJ5tsa1+Iw7rGUJbqHRL8DwWj2o26FTHLneT25lU=;
- b=CW+2pwd07fyF+AOcDJ1u0LQb0PXIMzJjiJseJWGJfm18gjcwtUAsnRptDkD75BaPo4
- gwY4KZ6bjpdQ5FUmI7RH7Hgmdt9fy8yqp8yr5/r2BzaDQD9HIahniWnAFsMwN67lZRx+
- LNbVI9XVj2KJImO3ZM5LSUFYegczNvN/6DlGoIu9hCLFqaM7i47a+OphuoKONZJZdswG
- L2Q4hSJX6ZoyMbpx3ekxp8X5bN0kZkqkLT7WnT6Hb75tGJNutAhvjNTajqHVQB2Nx5Rk
- zKVESalVnj3tyI8Tw/vPHQOr8CzlmQJO82dOx4iVj0eKnruCHvysJgPotoGpTZjmFMS9
- tCSA==
-X-Gm-Message-State: AOJu0Yxt7KNJPw4jQR8dem6nJymdQO++FKYLc50joCw3ytmi0F/PfLF1
- +M9r8WbtvV5V4QOhqGy+L8U7ObXq3USDHikQs9o/XFeDRQZyWRGq8zC716+9bAvr+KXvN724+cm
- Z
-X-Google-Smtp-Source: AGHT+IHjXpphfPvfQQeNi/tfubBrsdyX+KmCThTxoYcIYz0zKxSB3Us2byui4wQDChBJF2z3pJlAyg==
-X-Received: by 2002:a2e:b353:0:b0:2d8:3e07:5651 with SMTP id
- q19-20020a2eb353000000b002d83e075651mr4356960lja.34.1714043011391; 
- Thu, 25 Apr 2024 04:03:31 -0700 (PDT)
+ bh=q5xgdXCGND9O0mxiiZCYBTt0WDd2teRijPgGqLuPJXs=;
+ b=Uk0T8iZCSMJYoF3oVAkId5WkQUJKnXMUgnCgyv1SEyaur7XYufm29/0acWNKR0c/x+
+ HVoT2jhwNekIsa674jYCZRiIdPQTTU5CZ6YpChpFalIsT2A4uCyfTDNEsyjf9sOFvKOh
+ VTAY51LwfhglnR/IIF2KsD8bTQca3p2Y5jOmDthZszynY2btzdUaanEA9WfMyzcG6VVw
+ SWHFvi/QNsGb6hpvQ1G2bzR5aH9X1ysY14XuJNIrQVCl6EJHbJDHzPzsxCMiCsSa0yzU
+ KIOZs8ACPrdmjkKIs1oS1FLr3Dl2+lNHPmQWe/BwlOHbk6qrNGd3daIdZEApjC3KfM9x
+ LEcQ==
+X-Gm-Message-State: AOJu0YwCk/YTshnfUICUioSjN62ffRRrKEMn9fFjQNNqFgCZ9SIGjmRn
+ TrvmILOaxEipb4NezEyHJ0a02RsezCnJ+3E5purXQp3VNcHQ5A53kUONxGxenJnIbPp+kPe4Wh2
+ T
+X-Google-Smtp-Source: AGHT+IGo4/4ds+aqwK0mOG61Mddx3imkACop4W8f2nNt+x5+kxgtBIL46K0+6irigKjFcRzE/192Mw==
+X-Received: by 2002:adf:f146:0:b0:343:b686:89a0 with SMTP id
+ y6-20020adff146000000b00343b68689a0mr3968839wro.13.1714043016769; 
+ Thu, 25 Apr 2024 04:03:36 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- bd25-20020a05600c1f1900b00419f7d6879dsm18832137wmb.8.2024.04.25.04.03.30
+ x13-20020a5d54cd000000b0034335e47102sm19464539wrv.113.2024.04.25.04.03.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:03:31 -0700 (PDT)
+ Thu, 25 Apr 2024 04:03:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PULL 16/22] hw/xtensa: Include missing 'exec/cpu-common.h' in
- 'bootparam.h'
-Date: Thu, 25 Apr 2024 13:01:49 +0200
-Message-ID: <20240425110157.20328-17-philmd@linaro.org>
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Subject: [PULL 17/22] hw/misc : Correct 5 spaces indents in stm32l4x5_exti
+Date: Thu, 25 Apr 2024 13:01:50 +0200
+Message-ID: <20240425110157.20328-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,28 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_physical_memory_write() is declared in "exec/cpu-common.h".
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240421141455.116548-1-ines.varhol@telecom-paris.fr>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20240418192525.97451-21-philmd@linaro.org>
 ---
- hw/xtensa/bootparam.h | 2 ++
- 1 file changed, 2 insertions(+)
+ hw/misc/stm32l4x5_exti.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/xtensa/bootparam.h b/hw/xtensa/bootparam.h
-index ade7891ec5..f57ff850bc 100644
---- a/hw/xtensa/bootparam.h
-+++ b/hw/xtensa/bootparam.h
-@@ -1,6 +1,8 @@
- #ifndef HW_XTENSA_BOOTPARAM_H
- #define HW_XTENSA_BOOTPARAM_H
+diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
+index 9fd859160d..5c55ee4268 100644
+--- a/hw/misc/stm32l4x5_exti.c
++++ b/hw/misc/stm32l4x5_exti.c
+@@ -59,22 +59,22 @@ static const uint32_t exti_romask[EXTI_NUM_REGISTER] = {
  
-+#include "exec/cpu-common.h"
-+
- #define BP_TAG_COMMAND_LINE     0x1001  /* command line (0-terminated string)*/
- #define BP_TAG_INITRD           0x1002  /* ramdisk addr and size (bp_meminfo) */
- #define BP_TAG_MEMORY           0x1003  /* memory addr and size (bp_meminfo) */
+ static unsigned regbank_index_by_irq(unsigned irq)
+ {
+-     return irq >= EXTI_MAX_IRQ_PER_BANK ? 1 : 0;
++    return irq >= EXTI_MAX_IRQ_PER_BANK ? 1 : 0;
+ }
+ 
+ static unsigned regbank_index_by_addr(hwaddr addr)
+ {
+-     return addr >= EXTI_IMR2 ? 1 : 0;
++    return addr >= EXTI_IMR2 ? 1 : 0;
+ }
+ 
+ static unsigned valid_mask(unsigned bank)
+ {
+-     return MAKE_64BIT_MASK(0, irqs_per_bank[bank]);
++    return MAKE_64BIT_MASK(0, irqs_per_bank[bank]);
+ }
+ 
+ static unsigned configurable_mask(unsigned bank)
+ {
+-     return valid_mask(bank) & ~exti_romask[bank];
++    return valid_mask(bank) & ~exti_romask[bank];
+ }
+ 
+ static void stm32l4x5_exti_reset_hold(Object *obj)
 -- 
 2.41.0
 
