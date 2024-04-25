@@ -2,68 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B308B284F
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA8B8B2877
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:53:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s044x-0000bL-CB; Thu, 25 Apr 2024 14:44:19 -0400
+	id 1s04CJ-0005Zf-Pj; Thu, 25 Apr 2024 14:51:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044t-0000an-Vk
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s0449-0004rQ-0X
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714070607;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=N9vbo3uUKhHLnzOebXa1LE4hx2mSttzc84PuJ7uRBhA=;
- b=FnIKJtV9etFsfE8c25gqT7ZSer/IbFMMpJS9VoAEAEazANFp8+nWMxFxml3JTxkeLx6GwR
- 20bmkrGutyGumxFY+GSptoTkO1t5g2BTYTG6kuC2K7h8qwlyi7qFWb66I6t72ChmxZdJtp
- zQdRYiJtDZhBU5thB/01YLSrojv39z4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-452-mChfVDq6O26UZud04czTgA-1; Thu, 25 Apr 2024 14:43:25 -0400
-X-MC-Unique: mChfVDq6O26UZud04czTgA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s04CH-0005Z2-Cr
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:51:53 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s04BO-0000ZW-9T
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:51:53 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 64FA518065AF;
- Thu, 25 Apr 2024 18:43:25 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 661925AD060;
- Thu, 25 Apr 2024 18:43:23 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C573F21F7D;
+ Thu, 25 Apr 2024 18:50:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714071054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pxlOqw04fFyuhI5FziqB8n3lQ5kQGq5MopTCkZEfdiI=;
+ b=Off+hcrzxAIzDKDrYjSwogQa6fZEg6A41n7lY93HE8N4KqqYxWGQ1O+A7sMfbCMhcyNr1C
+ VwN6awiHoD57qkeQeu3Je2FXa8PVo8Zp6p8rGT6pwCSfexEkD+5J8j9lt3cpfId2HV9BDS
+ MBB1wi+nIQBqz66xkd0SD65LKdCSgJA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714071054;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pxlOqw04fFyuhI5FziqB8n3lQ5kQGq5MopTCkZEfdiI=;
+ b=AceWdqdpwal0ko980cSOYLu4ZxWm+6wGuBy6F6WFcseqV5zczf7eU8VybECC3hSwnwtl3+
+ /caXFOFhHGf24GBQ==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AzVFsBb3;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FE6nJ0+B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714071053; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pxlOqw04fFyuhI5FziqB8n3lQ5kQGq5MopTCkZEfdiI=;
+ b=AzVFsBb3luhyXLMMQBfVuTUIV9aSqbibMG5/IycqYsZAvyqt5ksXj83fqyAppQvDB8Wt4r
+ R1lm2PtNdBYH/EZAh677nNfhnCjwwbjCnd8iWAuW23xiihvkZEU4teqnUCqIYRqsg+fVUe
+ B8ut0JdDJzz2YQGNWgM4astiTC+bgS4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714071053;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pxlOqw04fFyuhI5FziqB8n3lQ5kQGq5MopTCkZEfdiI=;
+ b=FE6nJ0+BbxT/Ey1/wQemME22IC3IAQMEVjJI32wiSl2kfi0oCv+i2HBryJpjzvpFkFQ2Y+
+ Y5T84TVD3RS3HNAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52B7113991;
+ Thu, 25 Apr 2024 18:50:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id LSv2Bg2mKmY3SAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 25 Apr 2024 18:50:53 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Hao Xiang <hao.xiang@linux.dev>, marcandre.lureau@redhat.com,
+ peterx@redhat.com, armbru@redhat.com, lvivier@redhat.com,
  qemu-devel@nongnu.org
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Miroslav Rezanina <mrezanin@redhat.com>
-Subject: [RFC PATCH 3/3] hw/i386: Add the possibility to use i440fx and isapc
- without FDC
-Date: Thu, 25 Apr 2024 20:43:15 +0200
-Message-ID: <20240425184315.553329-4-thuth@redhat.com>
-In-Reply-To: <20240425184315.553329-1-thuth@redhat.com>
-References: <20240425184315.553329-1-thuth@redhat.com>
+Cc: Hao Xiang <hao.xiang@linux.dev>
+Subject: Re: [PATCH v4 01/14] meson: Introduce new instruction set enqcmd to
+ the build system.
+In-Reply-To: <20240425022117.4035031-2-hao.xiang@linux.dev>
+References: <20240425022117.4035031-1-hao.xiang@linux.dev>
+ <20240425022117.4035031-2-hao.xiang@linux.dev>
+Date: Thu, 25 Apr 2024 15:50:50 -0300
+Message-ID: <875xw5i8dx.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Spam-Score: -5.51
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: C573F21F7D
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-5.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; RCVD_TLS_ALL(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MISSING_XM_UA(0.00)[];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[7]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,linux.dev:email];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,68 +124,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The i440fx and the isapc machines can be used in binaries without
-FDC, too. We just have to make sure that they don't try to instantiate
-the FDC when it is not available.
+Hao Xiang <hao.xiang@linux.dev> writes:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/i386/pc_piix.c | 6 ++++--
- hw/i386/Kconfig   | 2 --
- 2 files changed, 4 insertions(+), 4 deletions(-)
+> Enable instruction set enqcmd in build.
+>
+> Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+> ---
+>  meson.build                   | 14 ++++++++++++++
+>  meson_options.txt             |  2 ++
+>  scripts/meson-buildoptions.sh |  3 +++
+>  3 files changed, 19 insertions(+)
+>
+> diff --git a/meson.build b/meson.build
+> index 95cee7046e..9e008ddc34 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -2824,6 +2824,20 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+>      int main(int argc, char *argv[]) { return bar(argv[0]); }
+>    '''), error_message: 'AVX512BW not available').allowed())
+>  
+> +config_host_data.set('CONFIG_DSA_OPT', get_option('enqcmd') \
+> +  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable ENQCMD') \
+> +  .require(cc.links('''
+> +    #include <stdint.h>
+> +    #include <cpuid.h>
+> +    #include <immintrin.h>
+> +    static int __attribute__((target("enqcmd"))) bar(void *a) {
+> +      uint64_t dst[8] = { 0 };
+> +      uint64_t src[8] = { 0 };
+> +      return _enqcmd(dst, src);
+> +    }
+> +    int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
+> +  '''), error_message: 'ENQCMD not available').allowed())
+> +
+>  # For both AArch64 and AArch32, detect if builtins are available.
+>  config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
+>      #include <arm_neon.h>
+> diff --git a/meson_options.txt b/meson_options.txt
+> index b5c0bad9e7..63c1bf815b 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -121,6 +121,8 @@ option('avx512f', type: 'feature', value: 'disabled',
+>         description: 'AVX512F optimizations')
+>  option('avx512bw', type: 'feature', value: 'auto',
+>         description: 'AVX512BW optimizations')
+> +option('enqcmd', type: 'feature', value: 'disabled',
+> +       description: 'MENQCMD optimizations')
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8850c49c66..99efb3c45c 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -317,8 +317,8 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-     }
- 
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, true,
--                         0x4);
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
-+                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
- 
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
- 
-@@ -501,6 +501,7 @@ static void pc_i440fx_machine_options(MachineClass *m)
-     m->default_machine_opts = "firmware=bios-256k.bin";
-     m->default_display = "std";
-     m->default_nic = "e1000";
-+    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-@@ -931,6 +932,7 @@ static void isapc_machine_options(MachineClass *m)
-     pcmc->has_reserved_memory = false;
-     m->default_nic = "ne2k_isa";
-     m->default_cpu_type = X86_CPU_TYPE_NAME("486");
-+    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
- }
- 
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 0b08580862..f2ef6d1ef2 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -70,7 +70,6 @@ config I440FX
-     imply VMPORT
-     imply VMMOUSE
-     select ACPI_PIIX4
--    select FDC_ISA
-     select PC_PCI
-     select PC_ACPI
-     select PCI_I440FX
-@@ -84,7 +83,6 @@ config ISAPC
-     bool
-     imply VGA_ISA
-     select ISA_BUS
--    select FDC_ISA
-     select PC
-     select IDE_ISA
-     # FIXME: it is in the same file as i440fx, and does not compile
--- 
-2.44.0
+s/MENQCMD/ENQCMD/
 
+>  option('keyring', type: 'feature', value: 'auto',
+>         description: 'Linux keyring support')
+>  option('libkeyutils', type: 'feature', value: 'auto',
+> diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+> index 5ace33f167..2cdfc84455 100644
+> --- a/scripts/meson-buildoptions.sh
+> +++ b/scripts/meson-buildoptions.sh
+> @@ -93,6 +93,7 @@ meson_options_help() {
+>    printf "%s\n" '  avx2            AVX2 optimizations'
+>    printf "%s\n" '  avx512bw        AVX512BW optimizations'
+>    printf "%s\n" '  avx512f         AVX512F optimizations'
+> +  printf "%s\n" '  enqcmd          ENQCMD optimizations'
+>    printf "%s\n" '  blkio           libblkio block device driver'
+>    printf "%s\n" '  bochs           bochs image format support'
+>    printf "%s\n" '  bpf             eBPF support'
+> @@ -239,6 +240,8 @@ _meson_option_parse() {
+>      --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
+>      --enable-avx512f) printf "%s" -Davx512f=enabled ;;
+>      --disable-avx512f) printf "%s" -Davx512f=disabled ;;
+> +    --enable-enqcmd) printf "%s" -Denqcmd=enabled ;;
+> +    --disable-enqcmd) printf "%s" -Denqcmd=disabled ;;
+>      --enable-gcov) printf "%s" -Db_coverage=true ;;
+>      --disable-gcov) printf "%s" -Db_coverage=false ;;
+>      --enable-lto) printf "%s" -Db_lto=true ;;
 
