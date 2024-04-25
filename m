@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B9A8B1FBC
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E072D8B1FC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:02:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwme-0006Gl-7E; Thu, 25 Apr 2024 06:56:56 -0400
+	id 1rzwrj-0007iT-EX; Thu, 25 Apr 2024 07:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzwmb-0006GG-Pr
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:56:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzwmZ-0005g8-L3
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:56:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714042610;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MP+Hlzr6QfRaZ+IO6VQcYPI9gXCiaBSyIq6qNp1JEYE=;
- b=HyeVdqzUnDsdeV9SL4njdfesqx6dcOEv5P1xlaze7mWjEY/6rR4+dIElec75zbPZqd9lzF
- RjGFnCL9HTxxwRzoiM+twWMhTofKEQjJkXzI8mSG1mVQzYEPlca3kqKyR1hbC9ocbBUuWm
- 6nZkGNuC+v5UepHLQfnsaJgwa6icE6g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-RgysRa4uPN2g4X4v-ssWXg-1; Thu,
- 25 Apr 2024 06:56:46 -0400
-X-MC-Unique: RgysRa4uPN2g4X4v-ssWXg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 18F173C000AA;
- Thu, 25 Apr 2024 10:56:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2CB040C6DAE;
- Thu, 25 Apr 2024 10:56:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0285521E66C8; Thu, 25 Apr 2024 12:56:45 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>,  Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,  Alex Williamson
- <alex.williamson@redhat.com>,  qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 4/4] vfio/ccw: Make vfio_ccw_register_irq_notifier()
- return a bool
-In-Reply-To: <20240425090214.400194-5-clg@redhat.com> (=?utf-8?Q?=22C?=
- =?utf-8?Q?=C3=A9dric?= Le Goater"'s
- message of "Thu, 25 Apr 2024 11:02:14 +0200")
-References: <20240425090214.400194-1-clg@redhat.com>
- <20240425090214.400194-5-clg@redhat.com>
-Date: Thu, 25 Apr 2024 12:56:44 +0200
-Message-ID: <87il056783.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwrf-0007fy-4h
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:07 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwrZ-00086x-MO
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:06 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-34be34b3296so802726f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714042919; x=1714647719; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GXxNzvp3pctM95h9IO3sLT8TUCeqLQhxyJlDys2/tCQ=;
+ b=fWaBcAP14DTNW7lWH+aYbK2rGwP10WIx/tHl20XK2ebWRIP9xE0KFxxsLcP8IPdl7K
+ pbU5aRFNGctUdm709fl8dvBbyh435mcSnl6T3PG3ohSycWLGBaMv8lpx3u1yjEPKk9Gg
+ lHP4AACa2R62iJR+4xrN7hkoG7Xc7C9G9dFw/3gGE3fFqX7gzR4qj4Ra51y6A8jZ/h0g
+ WnF+gK4KXfnM0715G/PGYwD+mJGqdVzR+d2tWvCYicYLGpqN65VX5Im0gvZFKfCT2Ket
+ Of1MjzzOY1/1UVH5qgKc9QR1+ZHLi2aiv8WDlbT/13o1Rlrh5E3xlXiR7LOyIVWbqY35
+ FurA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714042919; x=1714647719;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GXxNzvp3pctM95h9IO3sLT8TUCeqLQhxyJlDys2/tCQ=;
+ b=VDZGZstpTR6jP6L98h52/ovtutjtjsdbF2hLUJYHJOMar0yUgXVVe8TjYc/14SKXHO
+ R630Sz2bmNwnExjg7n8+SzdBS1OXe4ixlULE5p8dppl4hIY4d81tk88KeZTLWABH0FNW
+ YmoA69oueUs7ZUh/i/dqL5Oj/DoLg4z9Zfnme75i/7IuAW3Bu7/qzl2DXDYnvWIi49nV
+ faYJ5tYtfSKnkNvbnWeHZvcPZz/H6mWG63QrLR5CQbxJDAHHbpA7nfegbFocZYU6OHnp
+ pqD+sACmjL9TxE7YyuAWWQ/nRSEGINNJuynlR4X9DhawvZYCYkg+/FXypGzzcwnTcKnB
+ YvzQ==
+X-Gm-Message-State: AOJu0YxvDLlerW+hQABhxj8NJioYKPXEetjsGslX3Vsa4SfQnpm3Xq2t
+ gdAhrG14xJeOLxwtMpQrSy8hkjgqnUjmB1LkHVouRPHmYFOe00anWUmoaOpOdULmlJ1uUk2aad8
+ Y
+X-Google-Smtp-Source: AGHT+IE5ZRboWrHzh596fssXbruqsgRoljdtQZ6NEpbvmkxjyPYO9yPeGlp7iGrKtAeGU8ZDhNp64Q==
+X-Received: by 2002:adf:fdc2:0:b0:34a:572b:40f9 with SMTP id
+ i2-20020adffdc2000000b0034a572b40f9mr4927027wrs.8.1714042919464; 
+ Thu, 25 Apr 2024 04:01:59 -0700 (PDT)
+Received: from localhost.localdomain ([92.88.170.77])
+ by smtp.gmail.com with ESMTPSA id
+ z17-20020a5d4d11000000b0034bb61cc5efsm4234704wrt.24.2024.04.25.04.01.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 25 Apr 2024 04:01:59 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/22] Misc HW patches for 2024-04-25
+Date: Thu, 25 Apr 2024 13:01:33 +0200
+Message-ID: <20240425110157.20328-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,123 +89,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@redhat.com> writes:
+The following changes since commit 85b597413d4370cb168f711192eaef2eb70535ac:
 
-> Since vfio_ccw_register_irq_notifier() takes an 'Error **' argument,
-> best practices suggest to return a bool. See the qapi/error.h Rules
-> section.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
-> ---
->  hw/vfio/ccw.c | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
->
-> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-> index 6764388bc47a970329fce2233626ccb8178e0165..1c630f6e9abe93ae0c2b5615d=
-4409669f096c8c9 100644
-> --- a/hw/vfio/ccw.c
-> +++ b/hw/vfio/ccw.c
-> @@ -379,7 +379,7 @@ read_err:
->      css_inject_io_interrupt(sch);
->  }
->=20=20
-> -static void vfio_ccw_register_irq_notifier(VFIOCCWDevice *vcdev,
-> +static bool vfio_ccw_register_irq_notifier(VFIOCCWDevice *vcdev,
->                                             unsigned int irq,
->                                             Error **errp)
->  {
-> @@ -405,13 +405,13 @@ static void vfio_ccw_register_irq_notifier(VFIOCCWD=
-evice *vcdev,
->          break;
->      default:
->          error_setg(errp, "vfio: Unsupported device irq(%d)", irq);
-> -        return;
-> +        return false;
->      }
->=20=20
->      if (vdev->num_irqs < irq + 1) {
->          error_setg(errp, "vfio: IRQ %u not available (number of irqs %u)=
-",
->                     irq, vdev->num_irqs);
-> -        return;
-> +        return false;
->      }
->=20=20
->      argsz =3D sizeof(*irq_info);
-> @@ -421,14 +421,14 @@ static void vfio_ccw_register_irq_notifier(VFIOCCWD=
-evice *vcdev,
->      if (ioctl(vdev->fd, VFIO_DEVICE_GET_IRQ_INFO,
->                irq_info) < 0 || irq_info->count < 1) {
->          error_setg_errno(errp, errno, "vfio: Error getting irq info");
-> -        return;
-> +        return false;
->      }
->=20=20
->      if (event_notifier_init(notifier, 0)) {
->          error_setg_errno(errp, errno,
->                           "vfio: Unable to init event notifier for irq (%=
-d)",
->                           irq);
-> -        return;
-> +        return false;
->      }
->=20=20
->      fd =3D event_notifier_get_fd(notifier);
-> @@ -439,6 +439,8 @@ static void vfio_ccw_register_irq_notifier(VFIOCCWDev=
-ice *vcdev,
->          qemu_set_fd_handler(fd, NULL, NULL, vcdev);
->          event_notifier_cleanup(notifier);
->      }
-> +
-> +    return true;
->  }
->=20=20
->  static void vfio_ccw_unregister_irq_notifier(VFIOCCWDevice *vcdev,
-> @@ -602,20 +604,18 @@ static void vfio_ccw_realize(DeviceState *dev, Erro=
-r **errp)
->          goto out_region_err;
->      }
->=20=20
-> -    vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX, &err);
-> -    if (err) {
-> +    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX, &e=
-rr)) {
+  Merge tag 'housekeeping-20240424' of https://github.com/philmd/qemu into staging (2024-04-24 11:49:57 -0700)
 
-Please pass errp instead of &err.
+are available in the Git repository at:
 
->          goto out_io_notifier_err;
->      }
->=20=20
->      if (vcdev->crw_region) {
-> -        vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX, &e=
-rr);
-> -        if (err) {
-> +        if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDE=
-X,
-> +                                            &err)) {
+  https://github.com/philmd/qemu.git tags/hw-misc-20240425
 
-Likewise.
+for you to fetch changes up to 098de99aad1aa911b4950b47b55d2e2bcc4f9c0c:
 
->              goto out_irq_notifier_err;
->          }
->      }
->=20=20
-> -    vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX, &err);
-> -    if (err) {
-> +    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX, &=
-err)) {
->          /*
->           * Report this error, but do not make it a failing condition.
->           * Lack of this IRQ in the host does not prevent normal operatio=
-n.
-            */
-           error_report_err(err);
+  hw/core: Support module-id in numa configuration (2024-04-25 12:48:12 +0200)
 
-Not this patch's problem, but here goes anyway: since this isn't an
-error, we shouldn't use error_report_err().  Would warn_report_err() be
-appropriate?  info_report_err() doesn't exist, but it could.
+2 checkpatch issues:
 
-Preferably with errp instead of &err (two times):
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+- one spurious:
+WARNING: added, moved or deleted file(s), does MAINTAINERS need updating?
+
+- one deliberately ignored in a python script:
+ERROR: line over 90 characters
+
+----------------------------------------------------------------
+Misc HW patch queue
+
+- Script to compare machines compat_props[] (Maksim)
+- Introduce 'module' CPU topology level (Zhao)
+- Various cleanups (Thomas, Zhao, Inès, Bernhard)
+
+----------------------------------------------------------------
+
+Bernhard Beschow (1):
+  hw/i386/pc_sysfw: Remove unused parameter from pc_isa_bios_init()
+
+Inès Varhol (1):
+  hw/misc : Correct 5 spaces indents in stm32l4x5_exti
+
+Maksim Davydov (4):
+  qom: add default value
+  qmp: add dump machine type compatibility properties
+  python/qemu/machine: add method to retrieve QEMUMachine::binary field
+  scripts: add script to compare compatibility properties
+
+Philippe Mathieu-Daudé (7):
+  hw/core: Remove check on NEED_CPU_H in tcg-cpu-ops.h
+  target/i386: Move APIC related code to cpu-apic.c
+  hw/misc/applesmc: Simplify DeviceReset handler
+  hw/misc/imx: Replace sprintf() by snprintf()
+  hw/riscv/virt: Replace sprintf by g_strdup_printf
+  hw/elf_ops: Rename elf_ops.h -> elf_ops.h.inc
+  hw/xtensa: Include missing 'exec/cpu-common.h' in 'bootparam.h'
+
+Thomas Huth (2):
+  hw: Fix problem with the A*MPCORE switches in the Kconfig files
+  hw: Add a Kconfig switch for the TYPE_CPU_CLUSTER device
+
+Zhao Liu (7):
+  hw/cxl/cxl-cdat: Make ct3_load_cdat() return boolean
+  hw/cxl/cxl-cdat: Make ct3_build_cdat() return boolean
+  hw/cxl/cxl-cdat: Make cxl_doe_cdat_init() return boolean
+  hw/core/machine: Introduce the module as a CPU topology level
+  hw/core/machine: Support modules in -smp
+  hw/core: Introduce module-id as the topology subindex
+  hw/core: Support module-id in numa configuration
+
+ MAINTAINERS                             |   5 +
+ qapi/machine.json                       |  74 +++-
+ hw/xtensa/bootparam.h                   |   2 +
+ include/hw/boards.h                     |   4 +
+ include/hw/core/tcg-cpu-ops.h           |   3 -
+ include/hw/cxl/cxl_component.h          |   2 +-
+ include/hw/{elf_ops.h => elf_ops.h.inc} |   0
+ bsd-user/elfload.c                      |   2 +-
+ hw/core/loader.c                        |   4 +-
+ hw/core/machine-hmp-cmds.c              |   4 +
+ hw/core/machine-qmp-cmds.c              |  23 +-
+ hw/core/machine-smp.c                   |  41 +-
+ hw/core/machine.c                       |  18 +
+ hw/cxl/cxl-cdat.c                       |  28 +-
+ hw/i386/pc_sysfw.c                      |   5 +-
+ hw/mem/cxl_type3.c                      |   3 +-
+ hw/misc/applesmc.c                      |  36 +-
+ hw/misc/imx25_ccm.c                     |   2 +-
+ hw/misc/imx31_ccm.c                     |   2 +-
+ hw/misc/imx6_ccm.c                      |   4 +-
+ hw/misc/imx6_src.c                      |   2 +-
+ hw/misc/imx6ul_ccm.c                    |   4 +-
+ hw/misc/imx7_src.c                      |   2 +-
+ hw/misc/stm32l4x5_exti.c                |   8 +-
+ hw/net/imx_fec.c                        |   2 +-
+ hw/pci-bridge/cxl_upstream.c            |   3 +-
+ hw/riscv/virt.c                         |  17 +-
+ hw/ssi/imx_spi.c                        |   2 +-
+ linux-user/elfload.c                    |   2 +-
+ qom/qom-qmp-cmds.c                      |   1 +
+ system/vl.c                             |   3 +
+ target/i386/cpu-apic.c                  | 112 ++++++
+ target/i386/cpu-sysemu.c                |  77 ----
+ target/i386/monitor.c                   |  25 --
+ tests/qtest/fuzz/qos_fuzz.c             |   2 +-
+ hw/Kconfig                              |   1 +
+ hw/arm/Kconfig                          |  18 +-
+ hw/cpu/Kconfig                          |  15 +-
+ hw/cpu/meson.build                      |   3 +-
+ hw/riscv/Kconfig                        |   2 +
+ python/qemu/machine/machine.py          |   5 +
+ scripts/compare-machine-types.py        | 486 ++++++++++++++++++++++++
+ target/i386/meson.build                 |   1 +
+ 43 files changed, 858 insertions(+), 197 deletions(-)
+ rename include/hw/{elf_ops.h => elf_ops.h.inc} (100%)
+ create mode 100644 target/i386/cpu-apic.c
+ create mode 100755 scripts/compare-machine-types.py
+
+-- 
+2.41.0
 
 
