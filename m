@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151278B24D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9768F8B2504
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:24:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s00o2-0006Vj-EI; Thu, 25 Apr 2024 11:14:38 -0400
+	id 1s00w8-0002nR-9A; Thu, 25 Apr 2024 11:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s00nq-0006VG-GS
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:14:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s00w6-0002mm-DW
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:22:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s00no-00026V-M1
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:14:26 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s00w3-0006JW-Uo
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:22:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714058063;
+ s=mimecast20190719; t=1714058574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=tsPYWKCxgj/T5fDF1SDgtECccyci+CGueWDj8ewZvys=;
- b=F1foZAbgsNsGjmGZEe02AR1NPQ8QDruFZYLuLABxIgT+iHOUt6F2FnpVmcRME75GBCFBDW
- dRH44pD3uRrtYd67god3aj3/40w7Cf3+R7n7OQW1xFw230qQlhQ/L8fS0AsrXMYEycnf/2
- 7QPJV/aTEzDhS15pV6QERsOhwwtQtZM=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1Se4uXSdIjjbfbf+RvDtqj82sCrTpcsBwz5oTl1OgLI=;
+ b=Sa2Zc8FNuZx8FLUCSDTZwRt4oYN1Q1OmGSCGO8UTKyZgw7kif3qXMaGfwZuEB50DxDPmY+
+ tIbw/vsJSL4gVVhSPJg9h6v2/e1d7ruvnPyNbQA4Ar6JU9PcJ05hq3LfZP+etyImtLKOCY
+ 1UBfYMDT8yApEb/B0m3XWwVpmcrttNM=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-177-LPzX9hScPEOy9_yXjYUjUQ-1; Thu, 25 Apr 2024 11:14:21 -0400
-X-MC-Unique: LPzX9hScPEOy9_yXjYUjUQ-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-6efef492e79so1475332b3a.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 08:14:20 -0700 (PDT)
+ us-mta-539-SOXrCdPeMFGjUbaUm6BAow-1; Thu, 25 Apr 2024 11:22:52 -0400
+X-MC-Unique: SOXrCdPeMFGjUbaUm6BAow-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3c5f32f91d4so1527611b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 08:22:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714058059; x=1714662859;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tsPYWKCxgj/T5fDF1SDgtECccyci+CGueWDj8ewZvys=;
- b=LFtQcXJ9ir0wmLvds4S69OxUNu2Lhzr9QHhD4VOkaV5p861KQ/OpnfWvOHQn/Vcmuw
- G0h7uQMlorj95IRzPoBKpsvVeBV1PkOw6ORJWv8Tuz9FyZxZbF8xzmgTu1BlqUVuWi71
- HHvJqo0KZRYAALpK5+h9bmlsz0+Rtu4qrwpYqxmYZjaP+apARS3PPTjSQonydnJXIKoe
- 2LblqfidCA7R8Rdqg8kf8cAa+imgx/DrrXoV8juZXb79F8aoAYeXZdJ0KPXAvS8HAwyx
- Rz821jjQV/sUJaXcimodgEEFC7HVeHJ4IJYA18judOaaEer0BITOiL4S0Y+UNyh3Ffxk
- nRpA==
+ d=1e100.net; s=20230601; t=1714058572; x=1714663372;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1Se4uXSdIjjbfbf+RvDtqj82sCrTpcsBwz5oTl1OgLI=;
+ b=qzHeFQlHU8Hne+42P30ymQaXRCRqCGFN3/JhDFdAOJAUIcVuQDSt0GCu1GFT4tFoQM
+ OouIiYIJ8T0RiXSprR0a5YU2DNhu/iWgSeSZbeN3t4EOxm3p3wVSh0VVkudqHmL/igcL
+ GTh6udtZxMZDDZHYUVMupBJxVeLwE404SyuipxsaqrTgFe9ovUVyCRllhS1IVN1M6LTC
+ 88r+hlWCu6QajH0SlrgF21AtiaguY4jQx37df3i4sYzjh7BfQJhujY0zqqacBhslS/9X
+ 9vTEwFKLbPVO4oCyg/OniQk+HrL7gvUs6ITi8gwXiCQL6us1740Bmj3MNEM+rUvL7ZdI
+ ULFA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW5Z8q0qM2oO+mNmmhQ26DuKIfQa3af4epUxVTwIKWl53iL0WtUwlM9e5IEXgMX9tu2QtxVXXTNI9fboBOBUWHcRdw6pfg=
-X-Gm-Message-State: AOJu0Yx3ne1fe9lYJ3qKm9MdDHLO1edJHKeJqDxWrXDUfT4AH6bPo0mx
- OG3c6kEgfL7sSZKhqjcT71ZcKk/wh7ACkRkJBXlkOvLXmurzrWPdIR1y4k52XRbsFsZ29sOSvWP
- KmCcteS7AAk4z2cScK6ttqGFNsSKjOccyuw5RmIIxmyMgGnvZ+eXv
-X-Received: by 2002:a05:6a00:399d:b0:6ec:db05:36cd with SMTP id
- fi29-20020a056a00399d00b006ecdb0536cdmr55431pfb.9.1714058059595; 
- Thu, 25 Apr 2024 08:14:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzNmTJMw0nj1TmMutuII4mD6sEYQm3V19ZBr5l76aA9ql3V5IfL81DF3rS1wF/lKPjKfYhGg==
-X-Received: by 2002:a05:6a00:399d:b0:6ec:db05:36cd with SMTP id
- fi29-20020a056a00399d00b006ecdb0536cdmr55402pfb.9.1714058059214; 
- Thu, 25 Apr 2024 08:14:19 -0700 (PDT)
+ AJvYcCVr7oQt/UMZH3Llc9PGlDRAsTwItaJsOqVVWfiJ4DAQdmgezicnyy3Aho13XDCzAdQ9QK67pJf/PaTVffuuc1c3enJR3W0=
+X-Gm-Message-State: AOJu0YypQ5dNceuos5mM46ClhrM9HkFR5zwVkomFLCABBl+6+elE5o94
+ x/kUdBVunkML8BpbFoOUlK92zPrMPtx5sRplaCfvDf0aZrC7Yypw7hdhp54lgqPceiMgZW1WhPZ
+ KTMEZJU9QnIclAE3GxkH5sxJ2Mt2NcVI1TIxu2dtK7v1FTI51yZPb
+X-Received: by 2002:a05:6808:1506:b0:3c7:2a70:cd6a with SMTP id
+ u6-20020a056808150600b003c72a70cd6amr7232529oiw.44.1714058571902; 
+ Thu, 25 Apr 2024 08:22:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERzEMzTlHhOUyUM6sBFWR2I7aU3vF8ex8lQau7f5v0lGC4LsiFeuhPvMQWz5Pm81Kum4sAmA==
+X-Received: by 2002:a05:6808:1506:b0:3c7:2a70:cd6a with SMTP id
+ u6-20020a056808150600b003c72a70cd6amr7232510oiw.44.1714058571636; 
+ Thu, 25 Apr 2024 08:22:51 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-177-130.web.vodafone.de.
  [109.43.177.130]) by smtp.gmail.com with ESMTPSA id
- fb22-20020a056a002d9600b006eceaccaec9sm13208873pfb.131.2024.04.25.08.14.17
+ d19-20020a0ce453000000b0068f35e9e9a2sm1725188qvm.8.2024.04.25.08.22.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Apr 2024 08:14:18 -0700 (PDT)
-Message-ID: <aff6768f-a659-4c25-8417-2f24007c5fc3@redhat.com>
-Date: Thu, 25 Apr 2024 17:14:14 +0200
+ Thu, 25 Apr 2024 08:22:51 -0700 (PDT)
+Message-ID: <46455b78-cf64-4f02-aa7d-f952529d583d@redhat.com>
+Date: Thu, 25 Apr 2024 17:22:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/17] CI job updates, header cleanups and other misc
- patches
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
-References: <20240424075735.248041-1-thuth@redhat.com>
- <d4b2c78e-c8d4-465c-a47e-53aa49efeb06@linaro.org>
- <91090e7f-4972-4473-8378-402c43116dba@redhat.com>
- <f8aee65f-7cda-46a7-8c13-3d3645f130bf@linaro.org>
-Content-Language: en-US
+Subject: Re: [PATCH v2 4/7] target/s390x/cpu_models: Make
+ kvm_s390_get_host_cpu_model() return boolean
+To: Zhao Liu <zhao1.liu@intel.com>, David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+References: <20240425031232.1586401-1-zhao1.liu@intel.com>
+ <20240425031232.1586401-5-zhao1.liu@intel.com>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -120,9 +122,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <f8aee65f-7cda-46a7-8c13-3d3645f130bf@linaro.org>
+In-Reply-To: <20240425031232.1586401-5-zhao1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 6
@@ -148,60 +150,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/04/2024 17.04, Richard Henderson wrote:
-> On 4/24/24 22:11, Thomas Huth wrote:
->> On 24/04/2024 18.21, Richard Henderson wrote:
->>> On 4/24/24 00:57, Thomas Huth wrote:
->>>> The following changes since commit 
->>>> 13b1e9667737132440f4d500c31cb69320c6b15a:
->>>>
->>>>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into 
->>>> staging (2024-04-23 17:35:57 -0700)
->>>>
->>>> are available in the Git repository at:
->>>>
->>>>    https://gitlab.com/thuth/qemu.git tags/pull-request-2024-04-24
->>>>
->>>> for you to fetch changes up to 8f29bab03ea22694a127ee33edeb4ce99eeb124e:
->>>>
->>>>    target/s390x: Remove KVM stubs in cpu_models.h (2024-04-24 09:45:02 
->>>> +0200)
->>>>
->>>> ----------------------------------------------------------------
->>>> * Update OpenBSD CI image to 7.5
->>>> * Update/remove Ubuntu 20.04 CI jobs
->>>> * Update CentOS 8 CI jobs to CentOS 9
->>>> * Some clean-ups and improvements to travis.yml
->>>> * Minor test fixes
->>>> * s390x header clean-ups
->>>> * Doc updates
->>>
->>> This introduces a failure in the migration-compat-x86_64 job:
->>>
->>> https://gitlab.com/qemu-project/qemu/-/jobs/6707154868
->>
->> It wasn't failing for me:
->>
->>   https://gitlab.com/thuth/qemu/-/jobs/6702058896
->>
->> And according to the diffstat of my pull request, it's only touching test 
->> files, docs, and s390x stuff, so I somehow fail to see how it could 
->> influence x86 migration at a first glance. It also looks like the job is 
->> running on opensuse, and not on CentOS or Ubuntu, so it should likely not 
->> be influenced by the changes in this PR.
->>
->> Could you please hit the re-run button of that job? If it then passes, 
->> we're likely rather facing an intermitted failure that might have been 
->> introduced earlier already...
+On 25/04/2024 05.12, Zhao Liu wrote:
+> As error.h suggested, the best practice for callee is to return
+> something to indicate success / failure.
 > 
-> It did pass when re-run.
+> So make kvm_s390_get_host_cpu_model() return boolean and check the
+> returned boolean in get_max_cpu_model() instead of accessing @err.
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   target/s390x/cpu_models.c |  9 ++++-----
+>   target/s390x/cpu_models.h |  2 +-
+>   target/s390x/kvm/kvm.c    | 13 +++++++------
+>   3 files changed, 12 insertions(+), 12 deletions(-)
 
-Ok, thanks! So it's likely and intermitted problem indeed...
-
-I've now submitted a v2 of the pull request where I just dropped the other 
-problematic patch that tried to update the custom CentOS runner ... I hope 
-that PR should be fine now.
-
-  Thomas
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
