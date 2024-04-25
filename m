@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9487D8B1FE6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081338B1FF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwvc-0004Ty-4z; Thu, 25 Apr 2024 07:06:12 -0400
+	id 1rzwvy-0005cY-Sz; Thu, 25 Apr 2024 07:06:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtd-0000LG-P3
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwte-0000LM-NY
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:11 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtZ-0000Mw-9g
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:08 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2dd6c14d000so9581821fa.0
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:04:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtb-0000OF-5o
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:09 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-347e635b1fcso639962f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714043039; x=1714647839; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714043045; x=1714647845; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vykN0pIt49J3GEMpH2YakbfFLS9d+NOdnblTzedh0DY=;
- b=ge/5W1Z5UVX3PPgyKn4UHFd9nbESU5wtOTP5095Bm6afywSeBiHPR5htX1M130Qno2
- XaV2Y+Sal3luYptmwrG+oNOxp/JMTvsZL9PjQhgsiqozUKtxQ3qymfYVfIsL1hnp+w7U
- 3WP+c3tsTB9UmQ7oAh1nI1HXpLX52wAkmUmoB4mMKULchs7HLoE/PJRl9ZhUBrgEJVcb
- kRxsZ/RV/ShdXmv4b+vXS42eZFWq8RBOhH54OrSuD+FCQsDlv8IoJ9ryvWzD1rvYp4Tt
- dRt6r0yr5VmCD+4kCgfU08vUV06QEsJcJ7vFG+xj0q+Yk/9nNNtLsa/pMHUbNssLhWd/
- 7hyg==
+ bh=DtMNR1ZQjJCcNYkkejZVBvEmwe3F+2PjUE+kGb5DBZI=;
+ b=qQ8XGqfKyttfqQ17Re/ThAnwmjlzoPq9rO1qUq/w6yY5A71wbKOdIN8SCHl2A22jjN
+ O3Ae6fIwtJcAmvtIPr+PWUTPutzI9jMKQUlnFwIn07K3Opu7hDSqeutdoL3IuvTezjfe
+ w7Zaj9ygGl+95fhQp5yK5FccE0OIqDUzyDquhlVEjXl4LUWEisOqxkUHAYZ2UzZQFKOI
+ wGUhgGJ4iXsdmXhGQI7OBpqaja9wS8FtgYvrQEX2ozOdl0CEIuy6GWLT4SMAciIytFX8
+ 4zDk06SRM5R7w9+5w7PtcIkke8e5Opl7BonYK3n+J2J0WfUuIQp5tmX5sPaNoS5kF4CX
+ WzLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714043039; x=1714647839;
+ d=1e100.net; s=20230601; t=1714043045; x=1714647845;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vykN0pIt49J3GEMpH2YakbfFLS9d+NOdnblTzedh0DY=;
- b=wFh0wdH2E4MzO+j7VZA9fpWLC1G0QKfIUvbEmqolVrhHbMlVIXce1dE9JJc6MpLCfq
- MGjLILMiwyq+2BfnDm4ljUdyYfVHZ/g5pee8tkgGAvlHmwSqGtjj2QPwcTBPiCQM+hfB
- bBvGlhW+ngWiIA7RNwt818arg6uWukEyEhZBLLrGENIxD9OM/wXaozIkHCMSWR7dEOl8
- +nUouZXVZaSjQEqKUoJO70NJeL0ImiMgIe59s7v94HjcvntRN6TTskAlIocpka8PN1an
- TnSCKIdYiKDj6os9jBV/K5Tv+6IbyDaJLn+WQLdXMJ2GZW69GILdNtfnyBCg7awep6dZ
- Vkxg==
-X-Gm-Message-State: AOJu0YwAZbTP9Hng+h6JhUnmIFfkLaLF09MNCI6ASxElsf7P6gw8HST2
- Mn7v2BzxqZHDN38YYVcZbNnTh/biVdqesRusAfQqksAwj3DL+dS0CNgxb2cL/BL4J0xdb2XLx3z
- M
-X-Google-Smtp-Source: AGHT+IH8mFAQdgVe8Ug584icuarIPeRoP8mdneCGHYZqIATf4nok2omqYQTD+Ae/+hRL3KyPU8mLmQ==
-X-Received: by 2002:a2e:bb83:0:b0:2d8:901f:7f45 with SMTP id
- y3-20020a2ebb83000000b002d8901f7f45mr3356811lje.13.1714043039569; 
- Thu, 25 Apr 2024 04:03:59 -0700 (PDT)
+ bh=DtMNR1ZQjJCcNYkkejZVBvEmwe3F+2PjUE+kGb5DBZI=;
+ b=lmzBaij28V5PGGBJ/U2NwieYF1ew1nIl1rZUK3l2A7E7b5LiShRmROqIsxJQoc5F3b
+ IfwbzVarGD5KdQjxYz8uFzcXNliz3HTG8mBPXc0ZjOQx3NX5VziI2Us9YuwQg1xsQx8o
+ AuqoyGGj9b2IHbeWNSdGIyBfRJ3noFgYVrRQXaQPP7wmaAjLPODqhLk3ehmq/04/XWb3
+ uDBKSIFKqGLIN0oKwIY0aHRzbX072Hklv5a1NLJsCirTcA5k87nRFKLS0p13DfgWClmE
+ IoFQHhcKClMQMA3Z7x5f/NWSzVATtAXL0V3lOx2K5O7rxTTmvJP8ibDaUiJkKoY5zNtm
+ mq1Q==
+X-Gm-Message-State: AOJu0Yyygah4TkJYtf8RhyrVOaVVF7e89IRiZKaLZnDBx3htGOpxdz1x
+ Yv9sCgoiS4tzBhlPaL1mgZlr6W9KaSplC+hcosb2fxKpkWwqyALBtETf2cSU3b5RtrCbaPICzk7
+ D
+X-Google-Smtp-Source: AGHT+IEWNircr86tkVldy1EsXrXAxD/kzzSUIMWxBrCkq+T/LXkDmvFt7vckXR5njOJa/f9q3055aQ==
+X-Received: by 2002:a5d:6e5d:0:b0:34b:1f34:9c06 with SMTP id
+ j29-20020a5d6e5d000000b0034b1f349c06mr3712985wrz.24.1714043045068; 
+ Thu, 25 Apr 2024 04:04:05 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- e4-20020a05600c4e4400b0041b0f10fc7asm5000576wmq.31.2024.04.25.04.03.58
+ u17-20020adfeb51000000b00347321735a6sm19543079wrn.66.2024.04.25.04.04.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:03:59 -0700 (PDT)
+ Thu, 25 Apr 2024 04:04:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Babu Moger <babu.moger@amd.com>, Markus Armbruster <armbru@redhat.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Babu Moger <babu.moger@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 21/22] hw/core: Introduce module-id as the topology subindex
-Date: Thu, 25 Apr 2024 13:01:54 +0200
-Message-ID: <20240425110157.20328-22-philmd@linaro.org>
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 22/22] hw/core: Support module-id in numa configuration
+Date: Thu, 25 Apr 2024 13:01:55 +0200
+Message-ID: <20240425110157.20328-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,58 +98,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Add module-id in CpuInstanceProperties, to locate the CPU with module
-level.
+Module is a level above the core, thereby supporting numa
+configuration on the module level can bring user more numa flexibility.
 
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+This is the natural further support for module level.
+
+Add module level support in numa configuration.
+
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240424154929.1487382-4-zhao1.liu@intel.com>
+Message-ID: <20240424154929.1487382-5-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qapi/machine.json          | 4 ++++
- hw/core/machine-hmp-cmds.c | 4 ++++
- 2 files changed, 8 insertions(+)
+ hw/core/machine.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 48f98e7d9f..bce6e1bbc4 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -988,6 +988,9 @@
- # @cluster-id: cluster number within the parent container the CPU
- #     belongs to (since 7.1)
- #
-+# @module-id: module number within the parent container the CPU belongs
-+#     to (since 9.1)
-+#
- # @core-id: core number within the parent container the CPU belongs to
- #
- # @thread-id: thread number within the core the CPU  belongs to
-@@ -1005,6 +1008,7 @@
-             '*socket-id': 'int',
-             '*die-id': 'int',
-             '*cluster-id': 'int',
-+            '*module-id': 'int',
-             '*core-id': 'int',
-             '*thread-id': 'int'
-   }
-diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-index a6ff6a4875..8701f00cc7 100644
---- a/hw/core/machine-hmp-cmds.c
-+++ b/hw/core/machine-hmp-cmds.c
-@@ -87,6 +87,10 @@ void hmp_hotpluggable_cpus(Monitor *mon, const QDict *qdict)
-             monitor_printf(mon, "    cluster-id: \"%" PRIu64 "\"\n",
-                            c->cluster_id);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 494b712a76..0dec48e802 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -800,6 +800,11 @@ void machine_set_cpu_numa_node(MachineState *machine,
+             return;
          }
-+        if (c->has_module_id) {
-+            monitor_printf(mon, "    module-id: \"%" PRIu64 "\"\n",
-+                           c->module_id);
+ 
++        if (props->has_module_id && !slot->props.has_module_id) {
++            error_setg(errp, "module-id is not supported");
++            return;
 +        }
-         if (c->has_core_id) {
-             monitor_printf(mon, "    core-id: \"%" PRIu64 "\"\n", c->core_id);
++
+         if (props->has_cluster_id && !slot->props.has_cluster_id) {
+             error_setg(errp, "cluster-id is not supported");
+             return;
+@@ -824,6 +829,11 @@ void machine_set_cpu_numa_node(MachineState *machine,
+                 continue;
          }
+ 
++        if (props->has_module_id &&
++            props->module_id != slot->props.module_id) {
++                continue;
++        }
++
+         if (props->has_cluster_id &&
+             props->cluster_id != slot->props.cluster_id) {
+                 continue;
+@@ -1226,6 +1236,12 @@ static char *cpu_slot_to_string(const CPUArchId *cpu)
+         }
+         g_string_append_printf(s, "cluster-id: %"PRId64, cpu->props.cluster_id);
+     }
++    if (cpu->props.has_module_id) {
++        if (s->len) {
++            g_string_append_printf(s, ", ");
++        }
++        g_string_append_printf(s, "module-id: %"PRId64, cpu->props.module_id);
++    }
+     if (cpu->props.has_core_id) {
+         if (s->len) {
+             g_string_append_printf(s, ", ");
 -- 
 2.41.0
 
