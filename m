@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154C78B1FE5
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAB98B1FF2
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwtq-0000mc-16; Thu, 25 Apr 2024 07:04:22 -0400
+	id 1rzwtm-0000Le-9h; Thu, 25 Apr 2024 07:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsH-00085j-VR
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:47 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsP-00089g-1V
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:53 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsF-0008IR-Lx
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:44 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-347c197a464so622174f8f.2
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsK-0008ME-L7
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:52 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-34782453ffdso774951f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714042960; x=1714647760; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714042966; x=1714647766; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lYhjl1/jGiesNQD68pOCk3VBrraJnT7fa7wrXc4FOT0=;
- b=sS9SNaY2m91SB2OuGxhRGe3Zi640dzqYr+7FM0qXPCca7ZjDwL/7jLEsJbRCeN/MHm
- zN1X0yKopOlZPSXZfLa3wjPoTrNBk8SINFYZR/C+049d1tuYW2c5L/Z0ui3IzYdHEbCm
- /hGKBzdn4K+uv4/MTZmHgpTgouyIjQAPlGqBs9O3RxD+gWzDjxjtPcu5D6Z2TY448kok
- 03cz9qZGWePMuofu9qcMXjLqfWrk9NMXwUz9movYjDmH9UMh8GuXIE2hefebeWK66uU5
- hz7r/e/mwMwK/3nsJn/wKPm7RR9wIF+FSudPsR3mApq9xr3ehinTIGtLyNoPY+loV+th
- 7tww==
+ bh=1My8ZSy1rXly0MJHGOKnYCpxMH11O/qNA4PcnoQO/Bk=;
+ b=KVskqAR3LQ9dvMHcvBTznebqLCn/DRkEwFiSaYB/Mgfjq36jG4YPFzAFs6j15i7QWo
+ CYTMZTakuAMZ1eqoxdg9kAOu1UEh6nbMMT94cyz0ycXKLoSS7sVcfVNdKVuS52/Jmj9U
+ dbVAIorWMZONE0F2lZeSVQrqwvD0TbCW1pd7TpwkVUVsHXjZ85ZiOyY5tGBF3+wzdEdk
+ zYwZRdnbk9frdRd8e9xqAADnjwMKICbEWLqRxEEXsK21kFd5a+RZKisM26ZQx/bAaus3
+ lFCclX8cTBJRSzQ4Zg4kdRT4tR+SbqIb5rlhUy5hRd/OkuuJ/BjuLrRPCsTdv1SQA1jc
+ 6+pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714042960; x=1714647760;
+ d=1e100.net; s=20230601; t=1714042966; x=1714647766;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lYhjl1/jGiesNQD68pOCk3VBrraJnT7fa7wrXc4FOT0=;
- b=HCwH0z+oJkeau3d32PtsS498LrzpTPZaUSJM17Q+Hul9/Wbd8LKd6B48glQs+Uu6h0
- mGvHMbJm/exttrKeQUJJAXv4Kd45HQSr05mQmQscw6U50M9WYYMqfmF82NsK6IHhK5C+
- 4/BFbim4oS+OT9VII5nBc/4OjcbX9p9fH0pQsL1q4Baw7xPfZH8A0Pb+1MznyXYPlBjN
- B3C1721xS9telADV/bE6OkkHPseVevYBat1Yak1ECfNBmC0XSTBHQz2RllzPn5ljwmAm
- sfudfklqfGxbjy3fMIweN7LRfPw0sklo8mdoauy8My8WkCNqVfCjaei/Wnbp2bDXKdr3
- 1nXw==
-X-Gm-Message-State: AOJu0YwfWueNHvrTL7ezpyG+HxKeKLyvolUjR9bMiZAo8/im+ThOXES1
- QkAwcsjSHO5CKoUer3jkhzm8ciIB6NLfqfL0nD/dp8OWBSbWHXN53NTpGSNWgUurP+0OpI3qgUm
- P
-X-Google-Smtp-Source: AGHT+IE+z8VLtpiVcsEDriTtA4dS6T5UEXA3GkhSwRz42pIaS0iByWzozD1pu3D1/ycppsU1VPSF5A==
-X-Received: by 2002:a05:6000:47:b0:33d:b376:8a07 with SMTP id
- k7-20020a056000004700b0033db3768a07mr3496522wrx.8.1714042960487; 
- Thu, 25 Apr 2024 04:02:40 -0700 (PDT)
+ bh=1My8ZSy1rXly0MJHGOKnYCpxMH11O/qNA4PcnoQO/Bk=;
+ b=O7wUdr12Ntb/RD6rNbmd6LMRL0YqF2Ub6gisDNPAJS7+429t322KOBjAwoxogDJjJO
+ D4llyVCVWeZzmrr3DQ99lvMQLKwh0oWymqCPKGeabITWyLyCNPCw4wE1/2kVPBpHPR/Q
+ 4cqStm0sGlmSwjym5D4T/hgqulUkSIuH6JfN+A1BJxaMlb7Pk5dagvRwYKY7bSVI7cdM
+ pTFvjRzd7yLXuVm6st18s4wmNaXxUtSh5TFdpr0p/tT5zuOOM+uD8t0JhDd707HTyUSn
+ AMqefwUQZ/eFxYDy3AojSx2G7pICyWG2Mekc/IdqbF37DfD95+qWsIEet5Huy71GpVoi
+ awHw==
+X-Gm-Message-State: AOJu0Ywon049P6UT2lE+zIyq0vq3l6Fthj9YN+MjO9bU0cM+Js3TbGlJ
+ jbYU/FzknMvQ2RdCgISqM0wJrTzUfESrtXNfvNpQ6kxhZOVUFSn0g2FTEiSFps49MVYOYyjJk/d
+ s
+X-Google-Smtp-Source: AGHT+IE4IoeXcSulUmKusv8xe735pBmPVtI1vUDyo/L1oiGIjq+L/sDOEgWcwuFIItf50QS5uMpM1w==
+X-Received: by 2002:a5d:420a:0:b0:34a:33e6:440d with SMTP id
+ n10-20020a5d420a000000b0034a33e6440dmr4481547wrq.24.1714042966196; 
+ Thu, 25 Apr 2024 04:02:46 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- y18-20020a5d4ad2000000b0034a0d3c0715sm19281014wrs.50.2024.04.25.04.02.39
+ fj3-20020a05600c0c8300b00416b2cbad06sm31028131wmb.41.2024.04.25.04.02.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:02:40 -0700 (PDT)
+ Thu, 25 Apr 2024 04:02:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 07/22] hw/misc/applesmc: Simplify DeviceReset handler
-Date: Thu, 25 Apr 2024 13:01:40 +0200
-Message-ID: <20240425110157.20328-8-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Alistair Francis <alistair@alistair23.me>
+Subject: [PULL 08/22] hw/misc/imx: Replace sprintf() by snprintf()
+Date: Thu, 25 Apr 2024 13:01:41 +0200
+Message-ID: <20240425110157.20328-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,99 +97,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Have applesmc_find_key() return a const pointer.
-Since the returned buffers are not modified in
-applesmc_io_data_write(), it is pointless to
-delete and re-add the keys in the DeviceReset
-handler. Add them once in DeviceRealize, and
-discard them in the DeviceUnrealize handler.
+sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+resulting in painful developer experience. Use snprintf() instead.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240410180819.92332-1-philmd@linaro.org>
+Message-Id: <20240411104340.6617-6-philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/misc/applesmc.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ hw/misc/imx25_ccm.c  | 2 +-
+ hw/misc/imx31_ccm.c  | 2 +-
+ hw/misc/imx6_ccm.c   | 4 ++--
+ hw/misc/imx6_src.c   | 2 +-
+ hw/misc/imx6ul_ccm.c | 4 ++--
+ hw/misc/imx7_src.c   | 2 +-
+ hw/net/imx_fec.c     | 2 +-
+ hw/ssi/imx_spi.c     | 2 +-
+ 8 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/hw/misc/applesmc.c b/hw/misc/applesmc.c
-index 14e3ef667d..59a4899312 100644
---- a/hw/misc/applesmc.c
-+++ b/hw/misc/applesmc.c
-@@ -145,7 +145,7 @@ static void applesmc_io_cmd_write(void *opaque, hwaddr addr, uint64_t val,
-     s->data_pos = 0;
- }
- 
--static struct AppleSMCData *applesmc_find_key(AppleSMCState *s)
-+static const struct AppleSMCData *applesmc_find_key(AppleSMCState *s)
- {
-     struct AppleSMCData *d;
- 
-@@ -161,7 +161,7 @@ static void applesmc_io_data_write(void *opaque, hwaddr addr, uint64_t val,
-                                    unsigned size)
- {
-     AppleSMCState *s = opaque;
--    struct AppleSMCData *d;
-+    const struct AppleSMCData *d;
- 
-     smc_debug("DATA received: 0x%02x\n", (uint8_t)val);
-     switch (s->cmd) {
-@@ -269,23 +269,10 @@ static void applesmc_add_key(AppleSMCState *s, const char *key,
- static void qdev_applesmc_isa_reset(DeviceState *dev)
- {
-     AppleSMCState *s = APPLE_SMC(dev);
--    struct AppleSMCData *d, *next;
- 
--    /* Remove existing entries */
--    QLIST_FOREACH_SAFE(d, &s->data_def, node, next) {
--        QLIST_REMOVE(d, node);
--        g_free(d);
--    }
-     s->status = 0x00;
-     s->status_1e = 0x00;
-     s->last_ret = 0x00;
--
--    applesmc_add_key(s, "REV ", 6, "\x01\x13\x0f\x00\x00\x03");
--    applesmc_add_key(s, "OSK0", 32, s->osk);
--    applesmc_add_key(s, "OSK1", 32, s->osk + 32);
--    applesmc_add_key(s, "NATJ", 1, "\0");
--    applesmc_add_key(s, "MSSP", 1, "\0");
--    applesmc_add_key(s, "MSSD", 1, "\0x3");
- }
- 
- static const MemoryRegionOps applesmc_data_io_ops = {
-@@ -343,6 +330,24 @@ static void applesmc_isa_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/misc/imx25_ccm.c b/hw/misc/imx25_ccm.c
+index d888966014..faa726a86a 100644
+--- a/hw/misc/imx25_ccm.c
++++ b/hw/misc/imx25_ccm.c
+@@ -91,7 +91,7 @@ static const char *imx25_ccm_reg_name(uint32_t reg)
+     case IMX25_CCM_LPIMR1_REG:
+         return "lpimr1";
+     default:
+-        sprintf(unknown, "[%u ?]", reg);
++        snprintf(unknown, sizeof(unknown), "[%u ?]", reg);
+         return unknown;
      }
- 
-     QLIST_INIT(&s->data_def);
-+    applesmc_add_key(s, "REV ", 6, "\x01\x13\x0f\x00\x00\x03");
-+    applesmc_add_key(s, "OSK0", 32, s->osk);
-+    applesmc_add_key(s, "OSK1", 32, s->osk + 32);
-+    applesmc_add_key(s, "NATJ", 1, "\0");
-+    applesmc_add_key(s, "MSSP", 1, "\0");
-+    applesmc_add_key(s, "MSSD", 1, "\0x3");
-+}
-+
-+static void applesmc_unrealize(DeviceState *dev)
-+{
-+    AppleSMCState *s = APPLE_SMC(dev);
-+    struct AppleSMCData *d, *next;
-+
-+    /* Remove existing entries */
-+    QLIST_FOREACH_SAFE(d, &s->data_def, node, next) {
-+        QLIST_REMOVE(d, node);
-+        g_free(d);
-+    }
+ }
+diff --git a/hw/misc/imx31_ccm.c b/hw/misc/imx31_ccm.c
+index a9059bb1f7..125d4fceeb 100644
+--- a/hw/misc/imx31_ccm.c
++++ b/hw/misc/imx31_ccm.c
+@@ -89,7 +89,7 @@ static const char *imx31_ccm_reg_name(uint32_t reg)
+     case IMX31_CCM_PDR2_REG:
+         return "PDR2";
+     default:
+-        sprintf(unknown, "[%u ?]", reg);
++        snprintf(unknown, sizeof(unknown), "[%u ?]", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6_ccm.c b/hw/misc/imx6_ccm.c
+index 56489d8b57..b1def7f05b 100644
+--- a/hw/misc/imx6_ccm.c
++++ b/hw/misc/imx6_ccm.c
+@@ -85,7 +85,7 @@ static const char *imx6_ccm_reg_name(uint32_t reg)
+     case CCM_CMEOR:
+         return "CMEOR";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+@@ -224,7 +224,7 @@ static const char *imx6_analog_reg_name(uint32_t reg)
+     case USB_ANALOG_DIGPROG:
+         return "USB_ANALOG_DIGPROG";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6_src.c b/hw/misc/imx6_src.c
+index 0c6003559f..3766bdf561 100644
+--- a/hw/misc/imx6_src.c
++++ b/hw/misc/imx6_src.c
+@@ -68,7 +68,7 @@ static const char *imx6_src_reg_name(uint32_t reg)
+     case SRC_GPR10:
+         return "SRC_GPR10";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6ul_ccm.c b/hw/misc/imx6ul_ccm.c
+index bbc0be9921..0ac49ea34b 100644
+--- a/hw/misc/imx6ul_ccm.c
++++ b/hw/misc/imx6ul_ccm.c
+@@ -143,7 +143,7 @@ static const char *imx6ul_ccm_reg_name(uint32_t reg)
+     case CCM_CMEOR:
+         return "CMEOR";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+@@ -274,7 +274,7 @@ static const char *imx6ul_analog_reg_name(uint32_t reg)
+     case USB_ANALOG_DIGPROG:
+         return "USB_ANALOG_DIGPROG";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
+index b3725ff6e7..d19f0450d4 100644
+--- a/hw/misc/imx7_src.c
++++ b/hw/misc/imx7_src.c
+@@ -75,7 +75,7 @@ static const char *imx7_src_reg_name(uint32_t reg)
+     case SRC_GPR10:
+         return "SRC_GPR10";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
+index cee84af7ba..8c91d20d44 100644
+--- a/hw/net/imx_fec.c
++++ b/hw/net/imx_fec.c
+@@ -41,7 +41,7 @@
+ static const char *imx_default_reg_name(IMXFECState *s, uint32_t index)
+ {
+     static char tmp[20];
+-    sprintf(tmp, "index %d", index);
++    snprintf(tmp, sizeof(tmp), "index %d", index);
+     return tmp;
  }
  
- static Property applesmc_isa_properties[] = {
-@@ -377,6 +382,7 @@ static void qdev_applesmc_class_init(ObjectClass *klass, void *data)
-     AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
- 
-     dc->realize = applesmc_isa_realize;
-+    dc->unrealize = applesmc_unrealize;
-     dc->reset = qdev_applesmc_isa_reset;
-     device_class_set_props(dc, applesmc_isa_properties);
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+diff --git a/hw/ssi/imx_spi.c b/hw/ssi/imx_spi.c
+index d8a7583ff3..12d897d306 100644
+--- a/hw/ssi/imx_spi.c
++++ b/hw/ssi/imx_spi.c
+@@ -53,7 +53,7 @@ static const char *imx_spi_reg_name(uint32_t reg)
+     case ECSPI_MSGDATA:
+         return  "ECSPI_MSGDATA";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
 -- 
 2.41.0
 
