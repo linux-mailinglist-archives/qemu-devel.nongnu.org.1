@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB8B8B1F97
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799A78B1F80
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:45:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWa-00025S-Fh; Thu, 25 Apr 2024 06:40:20 -0400
+	id 1rzwWb-00028D-PG; Thu, 25 Apr 2024 06:40:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWV-00022O-TE
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:15 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1rzwWW-00022P-2K
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:16 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWS-0007D6-Fx
+ id 1rzwWT-0007DF-4i
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:15 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-34b64b7728cso704482f8f.0
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-41a72f3a20dso5214235e9.0
  for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1714041611; x=1714646411; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HzNnGVxNUANHnRTDrHNeQGZ2Bf5NCH/o+ElhlaY0jvE=;
- b=X7YD3+CqbVef9fC3374VB/Rx3QdmIrJbW1nNw38cHI154CKJCSAMI/44d77MoUZSsI
- fDdlpuaq7iTkVQTRS0RMWc7rzC4VrK9Hq6vt5TiEO8b2uP1cWArEoAVTMW6WJb++Oh0u
- arNIfNQsC8psoUndiqS5Yb4hHQsKUkgmHdKwAKT7ffL7mpOcGOhdcsYeQXnLv7RK51Qg
- 4bnjo1sr7h1Gc8vpmPuuFYfGKGq726QfWrrGmzBih1v8hgzsI4gyZ1aR4EYuGf68XcIv
- U3jGhj101KbVuI/0511iGAs8ASU24IZ5z8XE26bE9tJkYGKQnHSctfHx58ZDou8inaoa
- WzBA==
+ :reply-to; bh=0tEoEynUn/Blzafott1YrsfCl8+TNo9nbqDoRZ2ImKI=;
+ b=GnwWQCiSt30pKDvUa+OPs5eQeBsLtIJm00FASUyiKqw19/HnB8jseaFOm+yvSrzxzU
+ C1DgKwR5MpsDuNGC9r2YeQUloCOfIKW9P+ERRzIfg1c+R+Ypiiy3FbkXfsOPThpAa6nu
+ 3nrKaJnV2VLmzq3MfmdU7tEdf2/QQPFnWaTizP7GOs2J3hkUGY6EHlhfOcx2Uaoll8TH
+ dafgPkBQug2MFIjpG8i5l9cbtaBPkGJsOcVhQUTZX1X+5bk+ygE2cPQhOBC5cNZFylm3
+ TZFqzkhwzbJnIe7CaA8n2I/IQOyomGF9topcIPXSXVzFNVLKeA1lJs8NhbTMDTzDJx13
+ NERA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1714041611; x=1714646411;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HzNnGVxNUANHnRTDrHNeQGZ2Bf5NCH/o+ElhlaY0jvE=;
- b=D2D/WGua2xLaiZuxOR34CPZjRvPYExKcl1kpnQ1J1lLWsFOOAA9GJ/CAz/ny5SlI1k
- NsGadIf9EBqIPkTGuPaxZUGgvK3gNc4h5rdnwLDRLOALgGRUD+jlkpveP6WNoQA/l0gq
- /hbd+GKQ1Pqz+N0MTvdwYSlKXr9xNYWoiftLbRI0ppYJkt1j5TIt7qEQ9m2ApHcweaHI
- EdbWOGMyUf4VdV7nlaO1s+7ORRF1Ou3ktVwBIxrc7mtJcq/bkIwDKQwB85vfQkhnSV8Y
- AXT4gKMQPyke59pG3Da9KnxGgqq6ACXdpvW8un9xseSCccfzn+wm9Z1T0jiyG9ekGJGG
- 9qtA==
-X-Gm-Message-State: AOJu0YwCq22PXlYsEWxD7XJcUfArbA5tt4TNRC+PWTbmbCE5sXasGkZm
- 9tYlZVeGtnrm9QTLhlE44yfi527n7XKuHawNzPB7nJRJyR9A17/w54bz0FX60QSnbpnWDM1SI+J
- 2
-X-Google-Smtp-Source: AGHT+IEGJV7UKxEtu29OHIA5wLqftBJSybiXFExMUydWnPyMqds8cdVkMeavcAzP9D5E7grrBQLW5A==
-X-Received: by 2002:adf:f384:0:b0:34a:e6aa:bc01 with SMTP id
- m4-20020adff384000000b0034ae6aabc01mr3990814wro.5.1714041611185; 
+ bh=0tEoEynUn/Blzafott1YrsfCl8+TNo9nbqDoRZ2ImKI=;
+ b=f8Boo4yy1UfUP612q7m4/4BBwAMstLbdtjplpwOhVmB85phuqCymIQ++rAijKoCgC7
+ gGvwiUjidwMg+rsMeA/pRY2/a/eG7CFxv3OML3Ad/6B0aM+edoGK99uZeI5DxyE6HfBm
+ 4muZhEld2FqwMQXOBF6WZ5XlOUPSifHBFTK0BVgyPOGsNfxVFk40afoCLIkso8GX9kA3
+ i5vPXRQiXcCoxPR7C44xS1eRU9V/4GIhNd0sT9UDisc1CCy6EOhnHctQF8TNs9Epzjt3
+ Uey2IXXQgMtfgsvZeARlIu0Xjkz11Agh91TagKZmwyfjxpluluu+2pmFqOFWZaDSmXu5
+ zCHw==
+X-Gm-Message-State: AOJu0Yw9jKjoO5rBkYAt/UBErpVRmorbJ61QRjYr5PDPYpPxv11xojVo
+ cEGtLcD+XQRziucawLJ8qDKNNtBREtAqe/SHLkcEAxpzPtVpWxk7QzWB/knGsg/EJlC0bJoPKy+
+ L
+X-Google-Smtp-Source: AGHT+IHX9ybYHLCatXSYHResAm69x5YnuuHYhGqCcJt54CeTU4kQ9sCDJzfWfWFERZ5f9GuFiYLT3g==
+X-Received: by 2002:a7b:c406:0:b0:418:2a57:380c with SMTP id
+ k6-20020a7bc406000000b004182a57380cmr4339476wmi.26.1714041611583; 
  Thu, 25 Apr 2024 03:40:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.10
+ h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Apr 2024 03:40:10 -0700 (PDT)
+ Thu, 25 Apr 2024 03:40:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/37] hw/intc/arm_gicv3: Report the NMI interrupt in
- gicv3_cpuif_update()
-Date: Thu, 25 Apr 2024 11:39:42 +0100
-Message-Id: <20240425103958.3237225-22-peter.maydell@linaro.org>
+Subject: [PULL 22/37] hw/intc/arm_gicv3: Report the VINMI interrupt
+Date: Thu, 25 Apr 2024 11:39:43 +0100
+Message-Id: <20240425103958.3237225-23-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,47 +93,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-In CPU Interface, if the IRQ has the non-maskable property, report NMI to
-the corresponding PE.
+In vCPU Interface, if the vIRQ has the non-maskable property, report
+vINMI to the corresponding vPE.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-22-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-23-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/arm_gicv3_cpuif.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/intc/arm_gicv3_cpuif.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index b1f6c16ffef..2cf232d099c 100644
+index 2cf232d099c..bdb13b00e98 100644
 --- a/hw/intc/arm_gicv3_cpuif.c
 +++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -1038,6 +1038,7 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
-     /* Tell the CPU about its highest priority pending interrupt */
+@@ -481,6 +481,7 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
+     int idx;
      int irqlevel = 0;
      int fiqlevel = 0;
 +    int nmilevel = 0;
-     ARMCPU *cpu = ARM_CPU(cs->cpu);
-     CPUARMState *env = &cpu->env;
  
-@@ -1076,6 +1077,8 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
+     idx = hppvi_index(cs);
+     trace_gicv3_cpuif_virt_update(gicv3_redist_affid(cs), idx,
+@@ -498,9 +499,17 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
+         uint64_t lr = cs->ich_lr_el2[idx];
  
-         if (isfiq) {
-             fiqlevel = 1;
-+        } else if (cs->hppi.nmi) {
-+            nmilevel = 1;
-         } else {
-             irqlevel = 1;
-         }
-@@ -1085,6 +1088,7 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
- 
-     qemu_set_irq(cs->parent_fiq, fiqlevel);
-     qemu_set_irq(cs->parent_irq, irqlevel);
-+    qemu_set_irq(cs->parent_nmi, nmilevel);
+         if (icv_hppi_can_preempt(cs, lr)) {
+-            /* Virtual interrupts are simple: G0 are always FIQ, and G1 IRQ */
++            /*
++             * Virtual interrupts are simple: G0 are always FIQ, and G1 are
++             * IRQ or NMI which depends on the ICH_LR<n>_EL2.NMI to have
++             * non-maskable property.
++             */
+             if (lr & ICH_LR_EL2_GROUP) {
+-                irqlevel = 1;
++                if (lr & ICH_LR_EL2_NMI) {
++                    nmilevel = 1;
++                } else {
++                    irqlevel = 1;
++                }
+             } else {
+                 fiqlevel = 1;
+             }
+@@ -510,6 +519,7 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
+     trace_gicv3_cpuif_virt_set_irqs(gicv3_redist_affid(cs), fiqlevel, irqlevel);
+     qemu_set_irq(cs->parent_vfiq, fiqlevel);
+     qemu_set_irq(cs->parent_virq, irqlevel);
++    qemu_set_irq(cs->parent_vnmi, nmilevel);
  }
  
- static uint64_t icc_pmr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+ static void gicv3_cpuif_virt_update(GICv3CPUState *cs)
 -- 
 2.34.1
 
