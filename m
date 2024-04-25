@@ -2,80 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C748B227B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 293888B22F3
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:38:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzz3Z-0004Mj-66; Thu, 25 Apr 2024 09:22:33 -0400
+	id 1rzzIu-0003Fr-CO; Thu, 25 Apr 2024 09:38:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rzz3V-0004MV-Vf
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:22:30 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1rzzIp-0003Fg-Fh
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:38:19 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rzz3S-0001gT-FQ
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:22:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714051346; x=1745587346;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1yI1AmeOggJ3cHhFUvziR4XRUExHRkUgkfAFK+a/8B8=;
- b=IObXmK1ptl6OsVSZ2fL85hCbQFr37fPkvAbtaQ4XLi5cVwSf2D2JMZW0
- Pkv+DpE2RJ0Oq6aCjMW7wlp45o0bsy7nM/2U3zHItLbtya3necnDt+oOL
- ztaoBwZA6jbR9Yi8YXwOR2o3oB0NZa1BSwh4kJKfXXpZukerrRTy9PlaN
- 86pbsyAsjPBG/cl/XoSiULIh4zD8QoZs4uN0ch+9JdXWnfFHQHnXL2Bt8
- 2uswNrzZ5k3atBkCINoU3oMb9IXS/6OkT0VeYsOa6qWBzvZlvKgfNO/bW
- Ip/uOPsv5ZLyT+LLbYjU+VdcvgWv0bxWhOgH8Z5VPA+CfV4RclVUzDVEk A==;
-X-CSE-ConnectionGUID: T4h+2SguTw+jKhXiEgqXzg==
-X-CSE-MsgGUID: 7nQJGPqZSLeMkZW8AfL0ng==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="10272208"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="10272208"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 06:22:20 -0700
-X-CSE-ConnectionGUID: Jrjz/c8KR+O0UnUDjsYFag==
-X-CSE-MsgGUID: pUqp5B0GQniwGLarYNEKaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="24942598"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 25 Apr 2024 06:22:17 -0700
-Date: Thu, 25 Apr 2024 21:36:24 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tim Wiederhake <twiederh@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
- feature name
-Message-ID: <ZipcWGbYR2KCfmxp@intel.com>
-References: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
- <fb252e78-2e71-4422-9499-9eac69102eec@intel.com>
- <ZioDhpYUOEdGbWgE@intel.com>
- <eb5cfa25-6490-4b8d-8552-4be2662d15d2@intel.com>
- <ZiowbFCZ75LOgBMC@intel.com>
- <6ee5cb90-d299-4977-8a2f-529f78dc3913@intel.com>
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1rzzIm-00007j-K5
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:38:19 -0400
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:c10a:0:640:882f:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id DCBC660AB8;
+ Thu, 25 Apr 2024 16:38:07 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown
+ [2a02:6b8:b081:8928::1:1e])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 1cMZOS3IdeA0-CEog7zTA; Thu, 25 Apr 2024 16:38:07 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1714052287;
+ bh=QcXoRXBIeDEitezOvzR9Z/eG00TJczRwkbAOh24raWY=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=vdbm9nvq1oy+Hj+tkOKm+LpA5l8F2P1PiX48RilvY3IAAwe+xolc0sRx/UTLOEhcA
+ gLmOcridXuTrEbe0wjenus9EMaMoqaCiOgACPI0Be5aDZOCFFhbTkasfcUJy9KqX2J
+ 16QdhAHdy1m5QDkMKFZxwT4viBN9McVLTNqFiLJw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH] mc146818rtc: add a way to generate RTC interrupts via QMP
+Date: Thu, 25 Apr 2024 16:37:45 +0300
+Message-Id: <20240425133745.464091-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ee5cb90-d299-4977-8a2f-529f78dc3913@intel.com>
-Received-SPF: none client-ip=192.198.163.16;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,120 +71,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 25, 2024 at 08:04:46PM +0800, Xiaoyao Li wrote:
-> Date: Thu, 25 Apr 2024 20:04:46 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
->  feature name
-> 
-> On 4/25/2024 6:29 PM, Zhao Liu wrote:
-> > On Thu, Apr 25, 2024 at 04:40:10PM +0800, Xiaoyao Li wrote:
-> > > Date: Thu, 25 Apr 2024 16:40:10 +0800
-> > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
-> > >   feature name
-> > > 
-> > > On 4/25/2024 3:17 PM, Zhao Liu wrote:
-> > > > Hi Xiaoyao,
-> > > > 
-> > > > On Wed, Apr 24, 2024 at 11:57:11PM +0800, Xiaoyao Li wrote:
-> > > > > Date: Wed, 24 Apr 2024 23:57:11 +0800
-> > > > > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > > > > Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
-> > > > >    feature name
-> > > > > 
-> > > > > On 3/29/2024 6:19 PM, Zhao Liu wrote:
-> > > > > > From: Zhao Liu <zhao1.liu@intel.com>
-> > > > > > 
-> > > > > > Hi list,
-> > > > > > 
-> > > > > > This series is based on Paolo's guest_phys_bits patchset [1].
-> > > > > > 
-> > > > > > Currently, the old and new kvmclocks have the same feature name
-> > > > > > "kvmclock" in FeatureWordInfo[FEAT_KVM].
-> > > > > > 
-> > > > > > When I tried to dig into the history of this unusual naming and fix it,
-> > > > > > I realized that Tim was already trying to rename it, so I picked up his
-> > > > > > renaming patch [2] (with a new commit message and other minor changes).
-> > > > > > 
-> > > > > > 13 years age, the same name was introduced in [3], and its main purpose
-> > > > > > is to make it easy for users to enable/disable 2 kvmclocks. Then, in
-> > > > > > 2012, Don tried to rename the new kvmclock, but the follow-up did not
-> > > > > > address Igor and Eduardo's comments about compatibility.
-> > > > > > 
-> > > > > > Tim [2], not long ago, and I just now, were both puzzled by the naming
-> > > > > > one after the other.
-> > > > > 
-> > > > > The commit message of [3] said the reason clearly:
-> > > > > 
-> > > > >     When we tweak flags involving this value - specially when we use "-",
-> > > > >     we have to act on both.
-> > > > > 
-> > > > > So you are trying to change it to "when people want to disable kvmclock,
-> > > > > they need to use '-kvmclock,-kvmclock2' instead of '-kvmclock'"
-> > > > > 
-> > > > > IMHO, I prefer existing code and I don't see much value of differentiating
-> > > > > them. If the current code puzzles you, then we can add comment to explain.
-> > > > 
-> > > > It's enough to just enable kvmclock2 for Guest; kvmclock (old) is
-> > > > redundant in the presence of kvmclock2.
-> > > > 
-> > > > So operating both feature bits at the same time is not a reasonable
-> > > > choice, we should only keep kvmclock2 for Guest. It's possible because
-> > > > the oldest linux (v4.5) which QEMU i386 supports has kvmclock2.
-> > > 
-> > > who said the oldest Linux QEMU supports is from 4.5? what about 2.x kernel?
-> > 
-> > For Host (docs/system/target-i386.rst).
-> > 
-> > > Besides, not only the Linux guest, whatever guest OS is, it will be broken
-> > > if the guest is using kvmclock and QEMU starts to drop support of kvmclock.
-> > 
-> > I'm not aware of any minimum version requirements for Guest supported
-> > by KVM, but there are no commitment.
-> 
-> the common commitment is at least keeping backwards compatibility.
-> 
-> > > So, again, hard NAK to drop the support of kvmclock. It breaks existing
-> > > guests that use kvmclock. You cannot force people to upgrade their existing
-> > > VMs to use kvmclock2 instead of kvmclock.
-> > 
-> > I agree, legacy kvmclock can be left out, if the old kernel does not
-> > support kvmclock2 and strongly requires kvmclock, it can be enabled
-> > using 9.1 and earlier machines or legacy-kvmclock, as long as Host still
-> > supports it.
-> > 
-> > What's the gap in handling it this way? especially considering that
-> > kvmclock2 was introduced in v2.6.35, and earlier kernels are no longer
-> > maintained. The availability of the PV feature requires compatibility
-> > for both Host and Guest.
-> > 
-> > Anyway, the above discussion here is about future plans, and this series
-> > does not prevent any Guest from ignoring kvmclock2 in favor of kvmclock.
-> > 
-> > What this series is doing, i.e. separating the current two kvmclock and
-> > ensuring CPUID compatibility via legacy-kvmclock, could balance the
-> > compatibility requirements of the ancient (unmaintained kernel) with
-> > the need for future feature changes.
-> 
-> You introduce a user-visible change that people need to use
-> "-kvmclock,-kvmclock2" to totally disable kvmclock.
-> 
-> The only difference between kvmclock and kvmclock2 is the MSR index. And
-> from users' perspective, they don't care this difference. The existing usage
-> is simple. When I want kvmclock, use "+kvmclock". When I don't want it, use
-> "-kvmclock".
-> 
-> You are complicating things and I don't see a strong reason that we have to
-> do it.
->
+This can be used to force-synchronize the time in guest after a long
+stop-cont pause, which can be useful for serverless-type workload.
 
-Okay, only when old kvmclock deprecation occurs can the values (of
-renaming) be recognized, then I'll hold the renamed patches for now and
-only keep some of the other cleanups.
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+---
+ hw/rtc/mc146818rtc.c         | 15 +++++++++++++++
+ include/hw/rtc/mc146818rtc.h |  1 +
+ qapi/misc-target.json        | 16 ++++++++++++++++
+ 3 files changed, 32 insertions(+)
 
-Thanks for your review,
-
--Zhao
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index f4c1869232..6980a78d5f 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -116,6 +116,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
+     }
+ }
+ 
++void qmp_rtc_notify(Error **errp)
++{
++    MC146818RtcState *s;
++
++    /*
++     * See:
++     * https://www.kernel.org/doc/Documentation/virtual/kvm/timekeeping.txt
++     */
++    QLIST_FOREACH(s, &rtc_devices, link) {
++        s->cmos_data[RTC_REG_B] |= REG_B_UIE;
++        s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
++        qemu_irq_raise(s->irq);
++    }
++}
++
+ static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
+ {
+     kvm_reset_irq_delivered();
+diff --git a/include/hw/rtc/mc146818rtc.h b/include/hw/rtc/mc146818rtc.h
+index 97cec0b3e8..5229dffbbd 100644
+--- a/include/hw/rtc/mc146818rtc.h
++++ b/include/hw/rtc/mc146818rtc.h
+@@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int base_year,
+ void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int val);
+ int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
+ void qmp_rtc_reset_reinjection(Error **errp);
++void qmp_rtc_notify(Error **errp);
+ 
+ #endif /* HW_RTC_MC146818RTC_H */
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 4e0a6492a9..20457b0acc 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -19,6 +19,22 @@
+ { 'command': 'rtc-reset-reinjection',
+   'if': 'TARGET_I386' }
+ 
++##
++# @rtc-notify:
++#
++# Generate an RTC interrupt.
++#
++# Since: 9.1
++#
++# Example:
++#
++#     -> { "execute": "rtc-notify" }
++#     <- { "return": {} }
++#
++##
++{ 'command': 'rtc-notify',
++  'if': 'TARGET_I386' }
++
+ ##
+ # @SevState:
+ #
+-- 
+2.34.1
 
 
