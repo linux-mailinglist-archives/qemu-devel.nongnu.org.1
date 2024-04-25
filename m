@@ -2,100 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4AC8B24BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90A18B24C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:11:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s00jM-0000lK-Sm; Thu, 25 Apr 2024 11:09:48 -0400
+	id 1s00jP-0000lo-LF; Thu, 25 Apr 2024 11:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jK-0000kp-Pv
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:46 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jN-0000lN-4Z
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:49 -0400
 Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jI-0000P4-TJ
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:46 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jL-0000PV-7o
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:48 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 1E71A5BD99;
- Thu, 25 Apr 2024 15:09:43 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 72A7F5BD9E;
+ Thu, 25 Apr 2024 15:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714057783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
- b=vCojdrHz/aOx7ANOIHai4ny2Ykjhr6SCuUVj7UGvYfSB0qsiEjVutCXtxbX8pkJr8hxLpX
- yAhIZAPNNiP6L5UWdevKf+yWV24k6h0GphxG1M2gAIuqKrYxxjpj4gAUhH+iSMpAUhcT1y
- Fh8YLH1Cb3rVB+p59tkCxiuIaqH0Ft4=
+ t=1714057785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wFOL4gBngi1s0EO7M2mB2AWjUPHI3SGEjRYda54N2oc=;
+ b=E80wFGMW/p1QYfcyiO4DW9X3h1x7D+Xfo+41fLoi4cnvrJQKsRw8SLC89sOIDNeDJq6nU3
+ Ssf60PFuBQ82/0cfKe1GSOPw+QB+coVZzpJSKNhPqpk+EcMlob2dAuGhRUEUyroTYL4oJv
+ nMyGPY8DopODlaJYcDQxg9lCr58eSbE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714057783;
+ s=susede2_ed25519; t=1714057785;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
- b=yKkWwX6t7aRdLqmE1h1QlNHD57G9arGY1/wJEImm59CboTQxe2UBxxNJXu62QvfAo3BOEt
- +Tq1DQ2n7YKWM2Cw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wFOL4gBngi1s0EO7M2mB2AWjUPHI3SGEjRYda54N2oc=;
+ b=4pcUTO2whHdXVr5kwLA4sxyGDXVf1hGIEJ+hCzOvuoxTLAcrhHBx9dHO0TFyl72n/Da7Xg
+ AwVPEgVfw14F0uCQ==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vCojdrHz;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKkWwX6t
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=E80wFGMW;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4pcUTO2w
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714057783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
- b=vCojdrHz/aOx7ANOIHai4ny2Ykjhr6SCuUVj7UGvYfSB0qsiEjVutCXtxbX8pkJr8hxLpX
- yAhIZAPNNiP6L5UWdevKf+yWV24k6h0GphxG1M2gAIuqKrYxxjpj4gAUhH+iSMpAUhcT1y
- Fh8YLH1Cb3rVB+p59tkCxiuIaqH0Ft4=
+ t=1714057785; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wFOL4gBngi1s0EO7M2mB2AWjUPHI3SGEjRYda54N2oc=;
+ b=E80wFGMW/p1QYfcyiO4DW9X3h1x7D+Xfo+41fLoi4cnvrJQKsRw8SLC89sOIDNeDJq6nU3
+ Ssf60PFuBQ82/0cfKe1GSOPw+QB+coVZzpJSKNhPqpk+EcMlob2dAuGhRUEUyroTYL4oJv
+ nMyGPY8DopODlaJYcDQxg9lCr58eSbE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714057783;
+ s=susede2_ed25519; t=1714057785;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
- b=yKkWwX6t7aRdLqmE1h1QlNHD57G9arGY1/wJEImm59CboTQxe2UBxxNJXu62QvfAo3BOEt
- +Tq1DQ2n7YKWM2Cw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wFOL4gBngi1s0EO7M2mB2AWjUPHI3SGEjRYda54N2oc=;
+ b=4pcUTO2whHdXVr5kwLA4sxyGDXVf1hGIEJ+hCzOvuoxTLAcrhHBx9dHO0TFyl72n/Da7Xg
+ AwVPEgVfw14F0uCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A94E51393C;
- Thu, 25 Apr 2024 15:09:41 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BE101393C;
+ Thu, 25 Apr 2024 15:09:43 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id AFPVGzVyKma9DQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 25 Apr 2024 15:09:41 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id iCfSFDdyKma9DQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 25 Apr 2024 15:09:43 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, devel@lists.libvirt.org
-Subject: [PATCH 0/6] migration removals & deprecations
-Date: Thu, 25 Apr 2024 12:09:33 -0300
-Message-Id: <20240425150939.19268-1-farosas@suse.de>
+ Peter Xu <peterx@redhat.com>, devel@lists.libvirt.org,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH 1/6] migration: Remove 'skipped' field from MigrationStats
+Date: Thu, 25 Apr 2024 12:09:34 -0300
+Message-Id: <20240425150939.19268-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240425150939.19268-1-farosas@suse.de>
+References: <20240425150939.19268-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.21
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 1E71A5BD99
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.21 / 50.00];
- SEM_URIBL(3.50)[gitlab.com:url]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; BAD_REP_POLICIES(0.10)[];
- MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+X-Spamd-Result: default: False [-5.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[];
- R_DKIM_ALLOW(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[meson.build:url, imap1.dmz-prg2.suse.org:helo,
- imap1.dmz-prg2.suse.org:rdns, suse.de:dkim]
+ RCVD_VIA_SMTP_AUTH(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ FROM_EQ_ENVFROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, suse.de:dkim, suse.de:email]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 72A7F5BD9E
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -5.01
 Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -120,62 +130,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone,
+The 'skipped' field of the MigrationStats struct has been deprecated
+in 8.1. Time to remove it.
 
-Here's some cleaning up of deprecated code. It removes the old block
-migration and compression code. Both have suitable replacements in the
-form of the blockdev-mirror driver and multifd compression,
-respectively.
+Deprecation commit 7b24d32634 ("migration: skipped field is really
+obsolete.").
 
-There's also a deprecation for fd: + file to cope with the fact that
-the new MigrationAddress API defines transports instead of protocols
-(loose terms) like the old string API did. So we cannot map 1:1 from
-fd: to any transport because fd: allows *both* file migration and
-socket migration.
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ docs/about/deprecated.rst       | 6 ------
+ docs/about/removed-features.rst | 6 ++++++
+ migration/migration-hmp-cmds.c  | 2 --
+ migration/migration.c           | 2 --
+ qapi/migration.json             | 8 --------
+ 5 files changed, 6 insertions(+), 18 deletions(-)
 
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1267859704
-
-Fabiano Rosas (6):
-  migration: Remove 'skipped' field from MigrationStats
-  migration: Remove 'inc' option from migrate command
-  migration: Remove 'blk/-b' option from migrate commands
-  migration: Remove block migration
-  migration: Remove non-multifd compression
-  migration: Deprecate fd: for file migration
-
- .gitlab-ci.d/buildtest.yml       |    2 +-
- MAINTAINERS                      |    1 -
- docs/about/deprecated.rst        |   51 +-
- docs/about/removed-features.rst  |  104 ++-
- docs/devel/migration/main.rst    |    2 +-
- hw/core/machine.c                |    1 -
- include/migration/misc.h         |    6 -
- meson.build                      |    2 -
- meson_options.txt                |    2 -
- migration/block.c                | 1019 ------------------------------
- migration/block.h                |   52 --
- migration/colo.c                 |    1 -
- migration/meson.build            |    4 -
- migration/migration-hmp-cmds.c   |   97 +--
- migration/migration.c            |   70 +-
- migration/migration.h            |    7 -
- migration/options.c              |  229 -------
- migration/ram-compress.c         |  564 -----------------
- migration/ram.c                  |  166 +----
- migration/savevm.c               |    5 -
- qapi/migration.json              |  205 +-----
- scripts/meson-buildoptions.sh    |    4 -
- tests/qemu-iotests/183           |  147 -----
- tests/qemu-iotests/183.out       |   66 --
- tests/qemu-iotests/common.filter |    7 -
- tests/qtest/migration-test.c     |  139 ----
- 26 files changed, 130 insertions(+), 2823 deletions(-)
- delete mode 100644 migration/block.c
- delete mode 100644 migration/block.h
- delete mode 100644 migration/ram-compress.c
- delete mode 100755 tests/qemu-iotests/183
- delete mode 100644 tests/qemu-iotests/183.out
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 7b548519b5..4d9d6bf2da 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -488,12 +488,6 @@ option).
+ Migration
+ ---------
+ 
+-``skipped`` MigrationStats field (since 8.1)
+-''''''''''''''''''''''''''''''''''''''''''''
+-
+-``skipped`` field in Migration stats has been deprecated.  It hasn't
+-been used for more than 10 years.
+-
+ ``inc`` migrate command option (since 8.2)
+ ''''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index f9cf874f7b..9873f59bee 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -614,6 +614,12 @@ was superseded by ``sections``.
+ Member ``section-size`` in the return value of ``query-sgx-capabilities``
+ was superseded by ``sections``.
+ 
++``query-migrate`` return value member ``skipped`` (removed in 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++Member ``skipped`` of the ``MigrationStats`` struct hasn't been used
++for more than 10 years. Removed with no replacement.
++
+ Human Monitor Protocol (HMP) commands
+ -------------------------------------
+ 
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 7e96ae6ffd..28f776d06d 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -105,8 +105,6 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+                        info->ram->total >> 10);
+         monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
+                        info->ram->duplicate);
+-        monitor_printf(mon, "skipped: %" PRIu64 " pages\n",
+-                       info->ram->skipped);
+         monitor_printf(mon, "normal: %" PRIu64 " pages\n",
+                        info->ram->normal);
+         monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
+diff --git a/migration/migration.c b/migration/migration.c
+index 696762bc64..3b433fdb31 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1149,8 +1149,6 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
+     info->ram->transferred = migration_transferred_bytes();
+     info->ram->total = ram_bytes_total();
+     info->ram->duplicate = stat64_get(&mig_stats.zero_pages);
+-    /* legacy value.  It is not used anymore */
+-    info->ram->skipped = 0;
+     info->ram->normal = stat64_get(&mig_stats.normal_pages);
+     info->ram->normal_bytes = info->ram->normal * page_size;
+     info->ram->mbps = s->mbps;
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 8c65b90328..401b8e24ac 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -23,9 +23,6 @@
+ #
+ # @duplicate: number of duplicate (zero) pages (since 1.2)
+ #
+-# @skipped: number of skipped zero pages.  Always zero, only provided
+-#     for compatibility (since 1.5)
+-#
+ # @normal: number of normal pages (since 1.2)
+ #
+ # @normal-bytes: number of normal bytes sent (since 1.2)
+@@ -63,16 +60,11 @@
+ #     between 0 and @dirty-sync-count * @multifd-channels.  (since
+ #     7.1)
+ #
+-# Features:
+-#
+-# @deprecated: Member @skipped is always zero since 1.5.3
+-#
+ # Since: 0.14
+ ##
+ { 'struct': 'MigrationStats',
+   'data': {'transferred': 'int', 'remaining': 'int', 'total': 'int' ,
+            'duplicate': 'int',
+-           'skipped': { 'type': 'int', 'features': [ 'deprecated' ] },
+            'normal': 'int',
+            'normal-bytes': 'int', 'dirty-pages-rate': 'int',
+            'mbps': 'number', 'dirty-sync-count': 'int',
 -- 
 2.35.3
 
