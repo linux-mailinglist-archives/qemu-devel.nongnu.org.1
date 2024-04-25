@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8587A8B1FF1
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DD48B1FF3
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwtp-0000ij-2f; Thu, 25 Apr 2024 07:04:21 -0400
+	id 1rzwuL-0002vj-IY; Thu, 25 Apr 2024 07:04:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsa-0008Ot-B6
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:14 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsj-0008UP-3M
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:38 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsW-0008TK-CN
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:03 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-41b5dc5e0d6so1749735e9.0
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsb-00005s-E2
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:07 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-41adf155cffso6384055e9.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714042977; x=1714647777; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714042983; x=1714647783; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BdAyeGYkrzEliXsZ63G9PrJ5ByexuubM31tow2m95nM=;
- b=fHYlOULTE2a3fsprAAta1qZ2ezY1pfD4k4EXW6g1tW/+LwQ65TJGGdnhuLJYqvfAgX
- aICle9981skz+Jnn8Cw0Lxp52xaZICqC9g1Ad27mEuONz0ICz8IHmzsGH2on+6oPUfRE
- PQebi7rXgU5reXb4kferau3jlWdS4d96dyZk99psuTVjObzaR+/J2xZhBBmymJOqF1DY
- tHOfzp56SEYb58KS/qB0IdJ8fFVmgrIiDZF1wfAFo9KlAW1xi07fKeLUcuCu6LGzuK5w
- f1SAgVSJ6i3sbeQyv9nhuI1EZrpDY4/uKi3VROvH286YMNrOqz48LSRJR0TBl4NcUG36
- 1b7Q==
+ bh=LbAs9YmrS9dSJaP9YCdhZk5wTEYcOSkfG+YJap7/m1c=;
+ b=upb2cCJutQ4RH6YHzzcoh/SDNJoih4pUuQVugFQuUw/SYzlRKtBXLJVkLUhTaWhD12
+ 86gxQHirJvp/zOls6O3rP7PURSM3hSXhbz4aoIAS98Fgb5+sO17E2uiD9bisXYPPXwzv
+ jUX1Q+etUnPzPnCmjMj0smUZngnFNRI3rXlLDlsgEk10YDwtaKkNQ6Oz+vUvQoYTd7YZ
+ IvnAmQuDN//McM+FdPzTKIeOkHSOOarysxBBhea3gdeJtDtcuTZfqildmjRlt4e0rTD8
+ FPt0LvRxeSUWNCr6ixC5z6UqlBa/Ro1mRi3szVPepMUPmhHg6syJNqr5MTJIV9AhxKAz
+ W8+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714042977; x=1714647777;
+ d=1e100.net; s=20230601; t=1714042983; x=1714647783;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BdAyeGYkrzEliXsZ63G9PrJ5ByexuubM31tow2m95nM=;
- b=fw1p4ZwF/HdbIZJqG68UeNqj7C9+18owzdizJ4v6Q4xMoqfpaJInAKbg3U/ODiZz1W
- FIdbTBn2H0J4O+GjJ91NCZ6UNZ3LeQCBdlcrCUwzb+POiapf06h8dSf/pO+MC0NyjWNF
- H0vAExSPhaD7dk2JN/ExjfVpTdaxEY8mh8/u31J4i3pFn1QXz8QmwQrFuY/Jt8DGZzgf
- sJXPo6b3EFCWEHgk1KahZcuH1fpgAUhqAPpzuQnDTudkctNJnkx/I2vx3WZ67K72hkTV
- pWYQtJYEsBon0MrvMF87OVwmrFp9KvpIujJvRJh3hRlM5Vh/FyfIR7HCLYZt95kZ02uP
- veKA==
-X-Gm-Message-State: AOJu0YyW81UVVMYo5A2dIulbAmj1C7/NYyw+qzo0T8W/zVc0ZTPGVrUH
- iP5HIuTOVVixec1WZAf4l/bpYtDN2ilBUqqHucwDvSjHAj3BCfmfHMBS+u9IaA1+qIpD5ghkDJc
- p
-X-Google-Smtp-Source: AGHT+IFeW3acT9aERuuRclTexJYBdyBpYe3GuhkGTdOm4UP1aF2NxUWvVkQ1Y32yGXUUjpZL9cegSg==
-X-Received: by 2002:a05:600c:3143:b0:41a:afe1:6d77 with SMTP id
- h3-20020a05600c314300b0041aafe16d77mr3643130wmo.11.1714042977351; 
- Thu, 25 Apr 2024 04:02:57 -0700 (PDT)
+ bh=LbAs9YmrS9dSJaP9YCdhZk5wTEYcOSkfG+YJap7/m1c=;
+ b=ibNPqwXVnGq157gapBD6lellJsdmIFRqWf5oGuc8huBsdRNWQ0zZPt/K8KPHT1t9rf
+ Q+MsujH0VKssLuo35XahUC/KDGxhsrkR5lW0KqsahD+3ATPQHXy3GW0G3bxY0In8aQom
+ 7DJ9pR934bOZcu+iRJNmdTrIJb9NqVlAkSoH6mXCXJ967xA3z9PA44sKyuwVAfdVSpGu
+ Fr3om1209b412g6koWDG7WSCPqxZbXi30O9Ifdp3pcPCcu32vXyEN0+vZfSFNaAQzDeq
+ /g26uOdlfEUdmlUh1uTUxbTL/9RJJemII74L6t7mYstNk1JuVMYKqswzYgyXqL5G80GV
+ TTgQ==
+X-Gm-Message-State: AOJu0YxIjlpOJCJHb8s1gjGltFvKCDLvaVsNx8JxjOzs+dmbbQO8o4hC
+ BAz/RBZx6Ep0WX3W4G6SwxZqIcF5MVC51lQ0t4VERx4P/UkAIFMaolQycMhVx1Z4hxPP1z6SfOr
+ S
+X-Google-Smtp-Source: AGHT+IFGt7D2a5BG0f6Ej/yKtX3pUKUzeeUlIFdZucYldsHGorV+6z4Q5Ind8NR6PRSHS1Ee03ftFg==
+X-Received: by 2002:a05:600c:154f:b0:418:e08c:817 with SMTP id
+ f15-20020a05600c154f00b00418e08c0817mr3681618wmg.32.1714042983172; 
+ Thu, 25 Apr 2024 04:03:03 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- u17-20020a05600c19d100b00416b163e52bsm30648723wmq.14.2024.04.25.04.02.56
+ p9-20020a05600c1d8900b0041b13c5c9f9sm4678586wms.17.2024.04.25.04.03.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:02:57 -0700 (PDT)
+ Thu, 25 Apr 2024 04:03:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 10/22] hw: Fix problem with the A*MPCORE switches in the
- Kconfig files
-Date: Thu, 25 Apr 2024 13:01:43 +0200
-Message-ID: <20240425110157.20328-11-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 11/22] hw: Add a Kconfig switch for the TYPE_CPU_CLUSTER device
+Date: Thu, 25 Apr 2024 13:01:44 +0200
+Message-ID: <20240425110157.20328-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,84 +102,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-A9MPCORE, ARM11MPCORE and A15MPCORE are defined twice, once in
-hw/cpu/Kconfig and once in hw/arm/Kconfig. This is only possible
-by accident, since hw/cpu/Kconfig is never included from hw/Kconfig.
-Fix it by declaring the switches only in hw/cpu/Kconfig (since the
-related files reside in the hw/cpu/ folder) and by making sure that
-the file hw/cpu/Kconfig is now properly included from hw/Kconfig.
+The cpu-cluster device is only needed for some few arm and riscv
+machines. Let's avoid compiling and linking it if it is not really
+necessary.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240415065655.130099-2-thuth@redhat.com>
+Message-ID: <20240415065655.130099-3-thuth@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/Kconfig     |  1 +
- hw/arm/Kconfig | 15 ---------------
- hw/cpu/Kconfig | 12 +++++++++---
- 3 files changed, 10 insertions(+), 18 deletions(-)
+ hw/arm/Kconfig     | 3 +++
+ hw/cpu/Kconfig     | 3 +++
+ hw/cpu/meson.build | 3 ++-
+ hw/riscv/Kconfig   | 2 ++
+ 4 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/hw/Kconfig b/hw/Kconfig
-index b1cc40d6be..f7866e76f7 100644
---- a/hw/Kconfig
-+++ b/hw/Kconfig
-@@ -47,6 +47,7 @@ source watchdog/Kconfig
- 
- # arch Kconfig
- source arm/Kconfig
-+source cpu/Kconfig
- source alpha/Kconfig
- source avr/Kconfig
- source cris/Kconfig
 diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 893a7bff66..d97015c45c 100644
+index d97015c45c..5d4015b75a 100644
 --- a/hw/arm/Kconfig
 +++ b/hw/arm/Kconfig
-@@ -678,21 +678,6 @@ config ZAURUS
-     select NAND
-     select ECC
- 
--config A9MPCORE
--    bool
--    select A9_GTIMER
--    select A9SCU       # snoop control unit
--    select ARM_GIC
--    select ARM_MPTIMER
--
--config A15MPCORE
--    bool
--    select ARM_GIC
--
--config ARM11MPCORE
--    bool
--    select ARM11SCU
--
- config ARMSSE
-     bool
-     select ARM_V7M
+@@ -485,6 +485,7 @@ config XLNX_ZYNQMP_ARM
+     select AHCI
+     select ARM_GIC
+     select CADENCE
++    select CPU_CLUSTER
+     select DDC
+     select DPCD
+     select SDHCI
+@@ -503,6 +504,7 @@ config XLNX_VERSAL
+     default y
+     depends on TCG && AARCH64
+     select ARM_GIC
++    select CPU_CLUSTER
+     select PL011
+     select CADENCE
+     select VIRTIO_MMIO
+@@ -688,6 +690,7 @@ config ARMSSE
+     select CMSDK_APB_DUALTIMER
+     select CMSDK_APB_UART
+     select CMSDK_APB_WATCHDOG
++    select CPU_CLUSTER
+     select IOTKIT_SECCTL
+     select IOTKIT_SYSCTL
+     select IOTKIT_SYSINFO
 diff --git a/hw/cpu/Kconfig b/hw/cpu/Kconfig
-index 1767d028ac..f776e884cd 100644
+index f776e884cd..baff478e1b 100644
 --- a/hw/cpu/Kconfig
 +++ b/hw/cpu/Kconfig
-@@ -1,8 +1,14 @@
--config ARM11MPCORE
--    bool
--
- config A9MPCORE
+@@ -12,3 +12,6 @@ config A15MPCORE
+ config ARM11MPCORE
      bool
-+    select A9_GTIMER
-+    select A9SCU       # snoop control unit
-+    select ARM_GIC
-+    select ARM_MPTIMER
- 
- config A15MPCORE
-     bool
-+    select ARM_GIC
+     select ARM11SCU
 +
-+config ARM11MPCORE
++config CPU_CLUSTER
 +    bool
-+    select ARM11SCU
+diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
+index 38cdcfbe57..9d36bf8ae2 100644
+--- a/hw/cpu/meson.build
++++ b/hw/cpu/meson.build
+@@ -1,4 +1,5 @@
+-system_ss.add(files('core.c', 'cluster.c'))
++system_ss.add(files('core.c'))
++system_ss.add(when: 'CONFIG_CPU_CLUSTER', if_true: files('cluster.c'))
+ 
+ system_ss.add(when: 'CONFIG_ARM11MPCORE', if_true: files('arm11mpcore.c'))
+ system_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview_mpcore.c'))
+diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+index 5d644eb7b1..fc72ef0379 100644
+--- a/hw/riscv/Kconfig
++++ b/hw/riscv/Kconfig
+@@ -9,6 +9,7 @@ config IBEX
+ config MICROCHIP_PFSOC
+     bool
+     select CADENCE_SDHCI
++    select CPU_CLUSTER
+     select MCHP_PFSOC_DMC
+     select MCHP_PFSOC_IOSCB
+     select MCHP_PFSOC_MMUART
+@@ -68,6 +69,7 @@ config SIFIVE_E
+ config SIFIVE_U
+     bool
+     select CADENCE
++    select CPU_CLUSTER
+     select RISCV_ACLINT
+     select SIFIVE_GPIO
+     select SIFIVE_PDMA
 -- 
 2.41.0
 
