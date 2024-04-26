@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B758B39B9
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A72168B39B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:21:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0MRo-00076d-UI; Fri, 26 Apr 2024 10:21:08 -0400
+	id 1s0MRt-0007A7-9A; Fri, 26 Apr 2024 10:21:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRb-00074q-2X
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRf-00075A-9K
  for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:21:00 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRZ-0001n5-Bb
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:54 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRb-0001qn-VK
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:57 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id C55F9227DD;
- Fri, 26 Apr 2024 14:20:51 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C7CB95D1B3;
+ Fri, 26 Apr 2024 14:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141251; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1714141254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c7pq969m/eSku4SA1kn+8rZjTBbc88kbtQ4svsW/Eqg=;
- b=UnOGFWXwhn58pwJAs2sANqUv1JGicl+2e/oYpJNUZwameGB64S2rN2OC4YNGxmm1O3wwjx
- 4v/MQBAEMA+gsM8JilBlfu8hXtDwLbpKso7vg7Lh7mZ2GiVRIOZFrJBHIUSMrDEAXi91wF
- 9t5Bny/eqPGwCCbe0Jo7iQUSP6VmnlE=
+ bh=IPWq7CqMuVlecbO8p1Wu+OhDjoi7ZLLNh5mPmBy6qzQ=;
+ b=PRhlSdxjlGZHepYnXTO3LQ1d3H2TpWgNIIfpR/ebCSjSiu9AgPGO4hxQ23luyY9SGSlrep
+ 612BRl3Ks5Sg4NLqBDGZVY5zHy/TTFPZ3EkZHJX8geDivyNkqry24/g1a29tCxdTKbR18V
+ bN0xtjTCLZrOU+FzMuguZvOS8Fv70H0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141251;
+ s=susede2_ed25519; t=1714141254;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c7pq969m/eSku4SA1kn+8rZjTBbc88kbtQ4svsW/Eqg=;
- b=jIJGFD5OHOz9kMy4sLgIQlJmxkVJdmndbFrhgxLuZPQNis8np+N9kGdqWZTWb5GDSbPukP
- 7W7N8pQP+HapNcDw==
-Authentication-Results: smtp-out1.suse.de;
+ bh=IPWq7CqMuVlecbO8p1Wu+OhDjoi7ZLLNh5mPmBy6qzQ=;
+ b=1E9HJKkziKB9913fmFmvGqmH3GWFbM2Ri0zGZsUdMoH4tEslCXzRrXZ8vmQbCU4yINPD60
+ DTl+VVPAb/r7drAA==
+Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141251; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1714141254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c7pq969m/eSku4SA1kn+8rZjTBbc88kbtQ4svsW/Eqg=;
- b=UnOGFWXwhn58pwJAs2sANqUv1JGicl+2e/oYpJNUZwameGB64S2rN2OC4YNGxmm1O3wwjx
- 4v/MQBAEMA+gsM8JilBlfu8hXtDwLbpKso7vg7Lh7mZ2GiVRIOZFrJBHIUSMrDEAXi91wF
- 9t5Bny/eqPGwCCbe0Jo7iQUSP6VmnlE=
+ bh=IPWq7CqMuVlecbO8p1Wu+OhDjoi7ZLLNh5mPmBy6qzQ=;
+ b=PRhlSdxjlGZHepYnXTO3LQ1d3H2TpWgNIIfpR/ebCSjSiu9AgPGO4hxQ23luyY9SGSlrep
+ 612BRl3Ks5Sg4NLqBDGZVY5zHy/TTFPZ3EkZHJX8geDivyNkqry24/g1a29tCxdTKbR18V
+ bN0xtjTCLZrOU+FzMuguZvOS8Fv70H0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141251;
+ s=susede2_ed25519; t=1714141254;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c7pq969m/eSku4SA1kn+8rZjTBbc88kbtQ4svsW/Eqg=;
- b=jIJGFD5OHOz9kMy4sLgIQlJmxkVJdmndbFrhgxLuZPQNis8np+N9kGdqWZTWb5GDSbPukP
- 7W7N8pQP+HapNcDw==
+ bh=IPWq7CqMuVlecbO8p1Wu+OhDjoi7ZLLNh5mPmBy6qzQ=;
+ b=1E9HJKkziKB9913fmFmvGqmH3GWFbM2Ri0zGZsUdMoH4tEslCXzRrXZ8vmQbCU4yINPD60
+ DTl+VVPAb/r7drAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECFB1136DB;
- Fri, 26 Apr 2024 14:20:49 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4270A136DB;
+ Fri, 26 Apr 2024 14:20:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 6M13LEG4K2YWcAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Apr 2024 14:20:49 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id aPbQAkS4K2YWcAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 26 Apr 2024 14:20:52 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
-Subject: [PATCH 2/9] migration: Fix file migration with fdset
-Date: Fri, 26 Apr 2024 11:20:35 -0300
-Message-Id: <20240426142042.14573-3-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 3/9] tests/qtest/migration: Fix file migration offset check
+Date: Fri, 26 Apr 2024 11:20:36 -0300
+Message-Id: <20240426142042.14573-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240426142042.14573-1-farosas@suse.de>
 References: <20240426142042.14573-1-farosas@suse.de>
@@ -84,17 +86,19 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.991];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; ARC_NA(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
- RCVD_TLS_ALL(0.00)[]
+ RCVD_TLS_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCPT_COUNT_SEVEN(0.00)[9];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, suse.de:email]
 X-Spam-Score: -2.80
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -117,120 +121,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the migration using the "file:" URI was implemented, I don't
-think any of us noticed that if you pass in a file name with the
-format "/dev/fdset/N", this allows a file descriptor to be passed in
-to QEMU and that behaves just like the "fd:" URI. So the "file:"
-support has been added without regard for the fdset part and we got
-some things wrong.
+When doing file migration, QEMU accepts an offset that should be
+skipped when writing the migration stream to the file. The purpose of
+the offset is to allow the management layer to put its own metadata at
+the start of the file.
 
-The first issue is that we should not truncate the migration file if
-we're allowing an fd + offset. We need to leave the file contents
-untouched.
+We have tests for this in migration-test, but only testing that the
+migration stream starts at the correct offset and not that it actually
+leaves the data intact. Unsurprisingly, there's been a bug in that
+area that the tests didn't catch.
 
-The second issue is that there's an expectation that QEMU removes the
-fd after the migration has finished. That's what the "fd:" code
-does. Otherwise a second migration on the same VM could attempt to
-provide an fdset with the same name and QEMU would reject it.
+Fix the tests to write some data to the offset region and check that
+it's actually there after the migration.
 
-We can fix the first issue by detecting when we're using the fdset
-vs. the plain file name. This requires storing the fdset_id
-somewhere. We can then use this stored fdset_id to do cleanup at the
-end and also fix the second issue.
-
-Fixes: 385f510df5 ("migration: file URI offset")
+Fixes: 3dc35470c8 ("tests/qtest: migration-test: Add tests for file-based migration")
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/file.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+ tests/qtest/migration-test.c | 70 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 65 insertions(+), 5 deletions(-)
 
-diff --git a/migration/file.c b/migration/file.c
-index ab18ba505a..8f30999400 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -10,6 +10,7 @@
- #include "qemu/cutils.h"
- #include "qemu/error-report.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-commands-misc.h"
- #include "channel.h"
- #include "file.h"
- #include "migration.h"
-@@ -23,6 +24,7 @@
- 
- static struct FileOutgoingArgs {
-     char *fname;
-+    int64_t fdset_id;
- } outgoing_args;
- 
- /* Remove the offset option from @filespec and return it in @offsetp. */
-@@ -44,10 +46,39 @@ int file_parse_offset(char *filespec, uint64_t *offsetp, Error **errp)
-     return 0;
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 5d6d8cd634..7b177686b4 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2081,6 +2081,63 @@ static void test_precopy_file(void)
+     test_file_common(&args, true);
  }
  
-+static void file_remove_fdset(void)
++#ifndef _WIN32
++static void file_dirty_offset_region(void)
 +{
-+    if (outgoing_args.fdset_id != -1) {
-+        qmp_remove_fd(outgoing_args.fdset_id, false, -1, NULL);
-+        outgoing_args.fdset_id = -1;
++#if defined(__linux__)
++    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++    size_t size = FILE_TEST_OFFSET;
++    uintptr_t *addr, *p;
++    int fd;
++
++    fd = open(path, O_CREAT | O_RDWR, 0660);
++    g_assert(fd != -1);
++
++    g_assert(!ftruncate(fd, size));
++
++    addr = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fd, 0);
++    g_assert(addr != MAP_FAILED);
++
++    /* ensure the skipped offset contains some data */
++    p = addr;
++    while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
++        *p = (unsigned long) FILE_TEST_FILENAME;
++        p++;
 +    }
++
++    munmap(addr, size);
++    fsync(fd);
++    close(fd);
++#endif
 +}
 +
-+static bool file_parse_fdset(const char *filename, int64_t *fdset_id,
-+                             Error **errp)
++static void *file_offset_start_hook(QTestState *from, QTestState *to)
 +{
-+    const char *fdset_id_str;
++    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++    int src_flags = O_WRONLY;
++    int dst_flags = O_RDONLY;
++    int fds[2];
 +
-+    *fdset_id = -1;
++    file_dirty_offset_region();
 +
-+    if (!strstart(filename, "/dev/fdset/", &fdset_id_str)) {
-+        return true;
-+    }
++    fds[0] = open(file, src_flags, 0660);
++    assert(fds[0] != -1);
 +
-+    *fdset_id = qemu_parse_fd(fdset_id_str);
-+    if (*fdset_id == -1) {
-+        error_setg_errno(errp, EINVAL, "Could not parse fdset %s", fdset_id_str);
-+        return false;
-+    }
++    fds[1] = open(file, dst_flags, 0660);
++    assert(fds[1] != -1);
 +
-+    return true;
++    qtest_qmp_fds_assert_success(from, &fds[0], 1, "{'execute': 'add-fd', "
++                                 "'arguments': {'fdset-id': 1}}");
++
++    qtest_qmp_fds_assert_success(to, &fds[1], 1, "{'execute': 'add-fd', "
++                                 "'arguments': {'fdset-id': 1}}");
++
++    close(fds[0]);
++    close(fds[1]);
++
++    return NULL;
 +}
 +
- void file_cleanup_outgoing_migration(void)
+ static void file_offset_finish_hook(QTestState *from, QTestState *to,
+                                     void *opaque)
  {
-     g_free(outgoing_args.fname);
-     outgoing_args.fname = NULL;
-+    file_remove_fdset();
- }
+@@ -2096,12 +2153,12 @@ static void file_offset_finish_hook(QTestState *from, QTestState *to,
+     g_assert(addr != MAP_FAILED);
  
- bool file_send_channel_create(gpointer opaque, Error **errp)
-@@ -81,11 +112,24 @@ void file_start_outgoing_migration(MigrationState *s,
-     g_autofree char *filename = g_strdup(file_args->filename);
-     uint64_t offset = file_args->offset;
-     QIOChannel *ioc;
-+    int flags = O_CREAT | O_WRONLY;
- 
-     trace_migration_file_outgoing(filename);
- 
--    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
--                                     0600, errp);
-+    if (!file_parse_fdset(filename, &outgoing_args.fdset_id, errp)) {
-+        return;
-+    }
-+
-+    /*
-+     * Only truncate if it's QEMU opening the file. If an fd has been
-+     * passed in the file will already contain data written by the
-+     * management layer.
-+     */
-+    if (outgoing_args.fdset_id == -1) {
-+        flags |= O_TRUNC;
-+    }
-+
-+    fioc = qio_channel_file_new_path(filename, flags, 0600, errp);
-     if (!fioc) {
-         return;
+     /*
+-     * Ensure the skipped offset contains zeros and the migration
+-     * stream starts at the right place.
++     * Ensure the skipped offset region's data has not been touched
++     * and the migration stream starts at the right place.
+      */
+     p = addr;
+     while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
+-        g_assert(*p == 0);
++        g_assert_cmpstr((char *) *p, ==, FILE_TEST_FILENAME);
+         p++;
      }
+     g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
+@@ -2113,17 +2170,18 @@ static void file_offset_finish_hook(QTestState *from, QTestState *to,
+ 
+ static void test_precopy_file_offset(void)
+ {
+-    g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=%d", tmpfs,
+-                                           FILE_TEST_FILENAME,
++    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
+                                            FILE_TEST_OFFSET);
+     MigrateCommon args = {
+         .connect_uri = uri,
+         .listen_uri = "defer",
++        .start_hook = file_offset_start_hook,
+         .finish_hook = file_offset_finish_hook,
+     };
+ 
+     test_file_common(&args, false);
+ }
++#endif
+ 
+ static void test_precopy_file_offset_bad(void)
+ {
+@@ -3636,8 +3694,10 @@ int main(int argc, char **argv)
+ 
+     migration_test_add("/migration/precopy/file",
+                        test_precopy_file);
++#ifndef _WIN32
+     migration_test_add("/migration/precopy/file/offset",
+                        test_precopy_file_offset);
++#endif
+     migration_test_add("/migration/precopy/file/offset/bad",
+                        test_precopy_file_offset_bad);
+ 
 -- 
 2.35.3
 
