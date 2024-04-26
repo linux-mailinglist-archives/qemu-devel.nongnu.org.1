@@ -2,109 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1E08B3635
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 13:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D98D8B364B
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 13:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0JLH-00010p-3G; Fri, 26 Apr 2024 07:02:11 -0400
+	id 1s0JRO-0000Nd-Uu; Fri, 26 Apr 2024 07:08:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhartmay@linux.ibm.com>)
- id 1s0JL0-0000my-Tt
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 07:02:08 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mhartmay@linux.ibm.com>)
- id 1s0JKy-0000Gh-Sm
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 07:01:54 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43QASUQx014977; Fri, 26 Apr 2024 11:01:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=GG6Um5/vczsa7gsxrIsDjUsbYKM/BPPlRNbs0CMfiTE=;
- b=nO+CTHtk1MzcrXY4B2uMV1FyjMNHCJ/SOFCT+2ZVZXrXZM7wbCFILbu/1AnA5WdpmzZz
- lZpM8lr5jW0Jm8eQPYQyCJo/htbNjD9IAHez55CaJchprZPg6/GZpNlv2FLZeSSX2KeS
- gDRTnm9IT0wgOG0zmR0qDbn+u5+GBjPO3W+PjOFaHYp3ztPF3Q4fQB73tv48rLltAGh2
- z2ZpnQoKUwvZfEonArU/koI5hscWTuVDmeiP46r8gnxCQID8yjkwquqHF1Vbu3H1eBuY
- /r/8BCjUBzt3ja9P8mWUytLsSp5S7hJiOdk3K9TATSPSIHJUgiosozBwD8nA5NfJqokO Ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xrahtg2gp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Apr 2024 11:01:51 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43QAxh1Q027818;
- Fri, 26 Apr 2024 11:01:50 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xrahtg2gj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Apr 2024 11:01:50 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43Q8YFiH023050; Fri, 26 Apr 2024 11:01:49 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xms1pfanp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Apr 2024 11:01:49 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43QB1ib952625708
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Apr 2024 11:01:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3BA6C20043;
- Fri, 26 Apr 2024 11:01:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D74920040;
- Fri, 26 Apr 2024 11:01:43 +0000 (GMT)
-Received: from li-1de7cd4c-3205-11b2-a85c-d27f97db1fe1.ibm.com (unknown
- [9.171.47.169])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Fri, 26 Apr 2024 11:01:43 +0000 (GMT)
-From: "Marc Hartmayer" <mhartmay@linux.ibm.com>
-To: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "berrange@redhat.com"
- <berrange@redhat.com>, "eduardo@habkost.net" <eduardo@habkost.net>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>, "vsementsov@yandex-team.ru"
- <vsementsov@yandex-team.ru>, "yc-core@yandex-team.ru"
- <yc-core@yandex-team.ru>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Benjamin Block <bblock@linux.ibm.com>
-Subject: Re: [PATCH] system/qdev-monitor: move drain_call_rcu call under if
- (!dev) in qmp_device_add()
-In-Reply-To: <121531714120162@mail.yandex-team.ru>
-References: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
- <8734r8k07s.fsf@linux.ibm.com> <121531714120162@mail.yandex-team.ru>
-Date: Fri, 26 Apr 2024 13:01:42 +0200
-Message-ID: <87v844ie09.fsf@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0JRJ-0000NR-GD
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 07:08:25 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0JRG-000256-6Q
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 07:08:25 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-41b782405d5so8067755e9.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 04:08:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714129700; x=1714734500; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=s9QLLQUUQ/djfo7WcGic6emUCaiSTlhLyfZJ82BKEpE=;
+ b=iK8IsiZlpBLV9qa6oml8IzxGwPhohWuK409rl++4f9AIcC+9IGRsihAIXFQ1QW1hPX
+ BMTlJG1Gy4clEkDJyfkzP7goKHltPjeI5CG50Xa3h0pgzMET3wZgunzvEYB/eVEYjwKi
+ NqVyxVjQalGRHT9ofjTLU2gKZmQZ4Uk4Cezjft1ZJ9iEyi5qBkr67bV+9Iyrwhu9p/E0
+ 8XZbdTFyeiFQT035sC7izJ1ocvctIz+V2L7lIHdlsC4Wzhmkj4mRMqu3yyIAqvZqsnob
+ /tBD+XcTSJPADC8y4F3Iw6rZ0zkpKkmqtG8yCJ29ePWQrCD0Ev1zUX/FYdmMHblilfMj
+ VR3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714129700; x=1714734500;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s9QLLQUUQ/djfo7WcGic6emUCaiSTlhLyfZJ82BKEpE=;
+ b=V2BSXu/cx3K4N/VelmP6NZ05dFyoeZ+A7HtD4HH6fs/8CIn0urzjsHP6Rsm8MP0cUG
+ TqEHrQI7qswxME0VJ0X7uipMusDrVYwPEHc4/+0PPRiREqBgV7G8YLyejLhUQprI0Otj
+ xu2aaILE9U/Y3YiuujuMZXaz3J7IWxvGLE4ttPZ9JwB8MfGbTpHpiiPPkplJvLpoVXiK
+ N45Q119pbe+LvYi/Mx8cg/yj4pukJBHfinjInFeqicpF0TYMxJsR9SyoM9UtDLb1EaPf
+ Cm+buWtjsLC6TmYqBe+vRtgpjOzDaF51zRUaZnwiFmGHdaM0xBwhR6ZvoO3kl8BoNh4c
+ /nWQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3ISesxUZjazl3qIwfoe18lsIn3T8T6DPXaxRArCtF88mFdxo7RYDSxZAu3zBozgjfW6QXa01YV6u1he+OBNMpr8UvNBE=
+X-Gm-Message-State: AOJu0YzDs7m3tsv6opArCgIEzCGeqeVIJ06B/gEtZz/Uy6OWTQzCb98v
+ +QRLx/0zZn3stv+2py4l9Jp7SD6WVGz+429UPa4IZGiHZwuchPJZ02fwM6k3TPQ=
+X-Google-Smtp-Source: AGHT+IHyli7ozBqLKs8Z3MYNUfN+VRv6U9zaL8NcS0+wf50FnY5+o2f5JFZNyXKGNS2hwT77Wec3lA==
+X-Received: by 2002:a05:6000:18c5:b0:347:2b42:a397 with SMTP id
+ w5-20020a05600018c500b003472b42a397mr2208439wrq.4.1714129700224; 
+ Fri, 26 Apr 2024 04:08:20 -0700 (PDT)
+Received: from [10.79.37.249] ([83.247.137.20])
+ by smtp.gmail.com with ESMTPSA id
+ f9-20020a0560001b0900b003456c693fa4sm21943125wrz.93.2024.04.26.04.08.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Apr 2024 04:08:19 -0700 (PDT)
+Message-ID: <3fb94fa3-a20c-4eda-b7a5-44e99baa48d4@linaro.org>
+Date: Fri, 26 Apr 2024 13:08:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JIz_s8Kj0buXpXP69T6mjAdxqekkfiaQ
-X-Proofpoint-GUID: CVRY4CxZQJby_omlzg1W2W-u1xKIWwZf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-26_12,2024-04-26_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 adultscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
- malwarescore=0 suspectscore=0 impostorscore=0 mlxscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404260072
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=mhartmay@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] stubs: Add missing qga stubs
+To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>
+References: <20240425110414.36977-1-kkostiuk@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240425110414.36977-1-kkostiuk@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,84 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 26, 2024 at 11:57 AM +0300, Dmitrii Gavrilov <ds-gavr@yandex-te=
-am.ru> wrote:
-> 26.04.2024, 11:17, "Marc Hartmayer" <mhartmay@linux.ibm.com>:
->
->  On Fri, Nov 03, 2023 at 01:56 PM +0300, Dmitrii Gavrilov <ds-gavr@yandex=
--team.ru> wrote:
->
->   Original goal of addition of drain_call_rcu to qmp_device_add was to co=
-ver
->   the failure case of qdev_device_add. It seems call of drain_call_rcu was
->   misplaced in 7bed89958bfbf40df what led to waiting for pending RCU call=
-backs
->   under happy path too. What led to overall performance degradation of
->   qmp_device_add.
->
->   In this patch call of drain_call_rcu moved under handling of failure of
->   qdev_device_add.
->
->   Signed-off-by: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
->
->  I don't know the exact reason, but this commit caused udev events to
->  show up much slower than before (~3s vs. ~23s) when a virtio-scsi device
->  is hotplugged (I=E2=80=99ve tested this only on s390x). Importantly, thi=
-s only
->  happens when asynchronous SCSI scanning is disabled in the *guest*
->  kernel (scsi_mod.scan=3Dsync or CONFIG_SCSI_SCAN_ASYNC=3Dn).
->
->  The `udevadm monitor` output captured while hotplugging the device
->  (using QEMU 012b170173bc ("system/qdev-monitor: move drain_call_rcu call
->  under if (!dev) in qmp_device_add()")):
->
+On 25/4/24 13:04, Konstantin Kostiuk wrote:
+> Compilation QGA without system and user fails
+> ./configure --disable-system --disable-user --enable-guest-agent
 
-[=E2=80=A6snip=E2=80=A6]
+So this config isn't tested on CI.
 
->  Any ideas?
->
->  Thanks in advance.
->
->  Kind regards,
->   Marc
->
-> Hello!
->=20=20
-> Thank you for mentioning this.
->=20=20
-> At first glance it seems that using scsi in synchonous mode caues the glo=
-bal
-> QEMU mutex lock until the scanning phase is complete. Prior to 012b170173=
-bc
-> ("system/qdev-monitor: move drain_call_rcu call under if (!dev) in
-> qmp_device_add()") on each device adition the lock would be forcibly remo=
-ved
-> allowing callbacks (including UDEV ones) to be processed after a new devi=
-ce
-> is added.
->=20=20
-> I`ll try to investigate this furter. But currently it appears to me like
-> performance or observability dilemma.
+Maybe worth enabling QGA in the build-tools-and-docs-debian job?
 
-I tried the test on my local laptop (x86_64) and there seems to be no
-issue (I used the kernel cmdline option scsi_mod.scan=3Dsync for the
-guest) - guest and host kernel =3D=3D 6.8.7. But please double check.
 
->=20=20
-> Is behaviour you mentioning consistant?
+Please include the link failure:
 
-Yep, at least for more than 50 iterations (I stopped the test then).
+   /usr/bin/ld: libqemuutil.a.p/util_main-loop.c.o: in function 
+`os_host_main_loop_wait':
+   ../util/main-loop.c:303: undefined reference to `replay_mutex_unlock'
+   /usr/bin/ld: ../util/main-loop.c:307: undefined reference to 
+`replay_mutex_lock'
+   /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function 
+`error_printf':
+   ../util/error-report.c:38: undefined reference to `error_vprintf'
+   /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function 
+`vreport':
+   ../util/error-report.c:225: undefined reference to `error_vprintf'
+   /usr/bin/ld: libqemuutil.a.p/util_qemu-timer.c.o: in function 
+`timerlist_run_timers':
+   ../util/qemu-timer.c:562: undefined reference to `replay_checkpoint'
+   /usr/bin/ld: ../util/qemu-timer.c:530: undefined reference to 
+`replay_checkpoint'
+   /usr/bin/ld: ../util/qemu-timer.c:525: undefined reference to 
+`replay_checkpoint'
+   ninja: build stopped: subcommand failed.
 
->=20=20
-> Best regards,
-> Dmitrii
---=20
-Kind regards / Beste Gr=C3=BC=C3=9Fe
-   Marc Hartmayer
+> Fixes: 3a15604900c4f433c970cc6294520a98f201287e
 
-IBM Deutschland Research & Development GmbH
-Vorsitzender des Aufsichtsrats: Wolfgang Wendt
-Gesch=C3=A4ftsf=C3=BChrung: David Faller
-Sitz der Gesellschaft: B=C3=B6blingen
-Registergericht: Amtsgericht Stuttgart, HRB 243294
+Fixes: 3a15604900 ("stubs: include stubs only if needed")
+
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> ---
+>   stubs/meson.build | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/stubs/meson.build b/stubs/meson.build
+> index 8ee1fd5753..3b9d42023c 100644
+> --- a/stubs/meson.build
+> +++ b/stubs/meson.build
+> @@ -21,12 +21,12 @@ if have_block
+>     stub_ss.add(files('migr-blocker.c'))
+>     stub_ss.add(files('physmem.c'))
+>     stub_ss.add(files('ram-block.c'))
+> -  stub_ss.add(files('replay-tools.c'))
+>     stub_ss.add(files('runstate-check.c'))
+>     stub_ss.add(files('uuid.c'))
+>   endif
+>   
+>   if have_block or have_ga
+> +  stub_ss.add(files('replay-tools.c'))
+>     # stubs for hooks in util/main-loop.c, util/async.c etc.
+>     stub_ss.add(files('cpus-get-virtual-clock.c'))
+>     stub_ss.add(files('icount.c'))
+> @@ -45,6 +45,10 @@ if have_block or have_ga
+>     stub_ss.add(files('qmp-quit.c'))
+>   endif
+>   
+> +if have_ga
+> +  stub_ss.add(files('error-printf.c'))
+
+So now included twice, not a big deal.
+
+> +endif
+> +
+>   if have_block or have_user
+>     stub_ss.add(files('qtest.c'))
+>     stub_ss.add(files('vm-stop.c'))
+
+       # more symbols provided by the monitor
+       stub_ss.add(files('error-printf.c'))
+   endif
+
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+With updated description:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
