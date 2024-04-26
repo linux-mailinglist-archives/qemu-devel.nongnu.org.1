@@ -2,71 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353028B3A17
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07BB48B3A1A
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:33:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0MdY-0008Gs-KZ; Fri, 26 Apr 2024 10:33:16 -0400
+	id 1s0Mdi-0008Ia-JN; Fri, 26 Apr 2024 10:33:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s0MdW-0008Eh-26
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:33:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=oYEp=L7=kaod.org=clg@ozlabs.org>)
+ id 1s0Mdf-0008I1-Dr; Fri, 26 Apr 2024 10:33:23 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s0MdU-000401-J9
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:33:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714141991;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3w5xIQawdXNkAYHJwWwOmTO2KDZnlg+FuuQTraSXhBU=;
- b=METnr9KC7AdGxhEkX/9YV3Gqg/AHI+t6ADGhFrvfTwnmSk+z7zpYNNVZz5DnwvIqir+Px4
- N4P5ccXBHdDPdQ6MfEEZ2ZvRDwr7RHtpjCDUyCOreNbgZFgHKPQFJTccka2pCogdNg5erF
- 8Ov7q0B0aotDwU7405IUYo4GsGtmoEI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-31-ncYoZnY2Mi-B5bI6J-46AA-1; Fri, 26 Apr 2024 10:33:08 -0400
-X-MC-Unique: ncYoZnY2Mi-B5bI6J-46AA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ (Exim 4.90_1) (envelope-from <SRS0=oYEp=L7=kaod.org=clg@ozlabs.org>)
+ id 1s0Mdd-00040K-M0; Fri, 26 Apr 2024 10:33:23 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VQwFC2Gm7z4wnv;
+ Sat, 27 Apr 2024 00:33:19 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8240E800CA2;
- Fri, 26 Apr 2024 14:33:07 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5F00B400EAC;
- Fri, 26 Apr 2024 14:33:07 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 51D7721E6811; Fri, 26 Apr 2024 16:33:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  armbru@redhat.com,  Peter
- Xu <peterx@redhat.com>,  Claudio Fontana <cfontana@suse.de>,  Jim Fehlig
- <jfehlig@suse.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH 4/9] migration: Add direct-io parameter
-In-Reply-To: <20240426142042.14573-5-farosas@suse.de> (Fabiano Rosas's message
- of "Fri, 26 Apr 2024 11:20:37 -0300")
-References: <20240426142042.14573-1-farosas@suse.de>
- <20240426142042.14573-5-farosas@suse.de>
-Date: Fri, 26 Apr 2024 16:33:06 +0200
-Message-ID: <87jzkkqjml.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VQwF81RHzz4x1x;
+ Sat, 27 Apr 2024 00:33:15 +1000 (AEST)
+Message-ID: <71cc400b-0c24-4f55-874e-9e0dd39ee55c@kaod.org>
+Date: Fri, 26 Apr 2024 16:33:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/10] ppc/pnv: Add OCC for Power11
+To: Aditya Gupta <adityag@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+References: <20240426110023.733309-1-adityag@linux.ibm.com>
+ <20240426110023.733309-7-adityag@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240426110023.733309-7-adityag@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=oYEp=L7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,47 +67,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+On 4/26/24 13:00, Aditya Gupta wrote:
+> Power11 core is same as Power10, reuse PNV10_OCC initialisation,
+> by declaring `PNV11_OCC` as child class of `PNV10_OCC`
 
-> Add the direct-io migration parameter that tells the migration code to
-> use O_DIRECT when opening the migration stream file whenever possible.
->
-> This is currently only used with the mapped-ram migration that has a
-> clear window guaranteed to perform aligned writes.
->
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-[...]
+Thanks,
 
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 8c65b90328..1a8a4b114c 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -914,6 +914,9 @@
->  #     See description in @ZeroPageDetection.  Default is 'multifd'.
->  #     (since 9.0)
->  #
-> +# @direct-io: Open migration files with O_DIRECT when possible. This
-> +#     requires that the @mapped-ram capability is enabled. (since 9.1)
-> +#
+C.
 
-Two spaces between sentences for consistency, please.
 
->  # Features:
->  #
->  # @deprecated: Member @block-incremental is deprecated.  Use
-> @@ -948,7 +951,8 @@
->             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
->             'vcpu-dirty-limit',
->             'mode',
-> -           'zero-page-detection'] }
-> +           'zero-page-detection',
-> +           'direct-io'] }
->  
->  ##
->  # @MigrateSetParameters:
 
-[...]
+> 
+> Cc: Cédric Le Goater <clg@kaod.org>
+> Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   hw/ppc/pnv_occ.c         | 14 ++++++++++++++
+>   include/hw/ppc/pnv_occ.h |  2 ++
+>   2 files changed, 16 insertions(+)
+> 
+> diff --git a/hw/ppc/pnv_occ.c b/hw/ppc/pnv_occ.c
+> index 48123ceae176..4f510419045e 100644
+> --- a/hw/ppc/pnv_occ.c
+> +++ b/hw/ppc/pnv_occ.c
+> @@ -262,6 +262,19 @@ static const TypeInfo pnv_occ_power10_type_info = {
+>       .class_init    = pnv_occ_power10_class_init,
+>   };
+>   
+> +static void pnv_occ_power11_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +
+> +    dc->desc = "PowerNV OCC Controller (POWER11)";
+> +}
+> +
+> +static const TypeInfo pnv_occ_power11_type_info = {
+> +    .name          = TYPE_PNV11_OCC,
+> +    .parent        = TYPE_PNV10_OCC,
+> +    .class_init    = pnv_occ_power11_class_init,
+> +};
+> +
+>   static void pnv_occ_realize(DeviceState *dev, Error **errp)
+>   {
+>       PnvOCC *occ = PNV_OCC(dev);
+> @@ -305,6 +318,7 @@ static void pnv_occ_register_types(void)
+>       type_register_static(&pnv_occ_power8_type_info);
+>       type_register_static(&pnv_occ_power9_type_info);
+>       type_register_static(&pnv_occ_power10_type_info);
+> +    type_register_static(&pnv_occ_power11_type_info);
+>   }
+>   
+>   type_init(pnv_occ_register_types);
+> diff --git a/include/hw/ppc/pnv_occ.h b/include/hw/ppc/pnv_occ.h
+> index df321244e3b1..7b5e28f13b4f 100644
+> --- a/include/hw/ppc/pnv_occ.h
+> +++ b/include/hw/ppc/pnv_occ.h
+> @@ -34,6 +34,8 @@ DECLARE_INSTANCE_CHECKER(PnvOCC, PNV9_OCC,
+>                            TYPE_PNV9_OCC)
+>   #define TYPE_PNV10_OCC TYPE_PNV_OCC "-POWER10"
+>   DECLARE_INSTANCE_CHECKER(PnvOCC, PNV10_OCC, TYPE_PNV10_OCC)
+> +#define TYPE_PNV11_OCC TYPE_PNV_OCC "-POWER11"
+> +DECLARE_INSTANCE_CHECKER(PnvOCC, PNV11_OCC, TYPE_PNV11_OCC)
+>   
+>   #define PNV_OCC_SENSOR_DATA_BLOCK_OFFSET 0x00580000
+>   #define PNV_OCC_SENSOR_DATA_BLOCK_SIZE   0x00025800
 
 
