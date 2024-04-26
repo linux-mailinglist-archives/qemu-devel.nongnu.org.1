@@ -2,88 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8291A8B33AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 11:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0398B3420
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 11:34:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0Hel-00071X-92; Fri, 26 Apr 2024 05:14:11 -0400
+	id 1s0Hww-00057m-3B; Fri, 26 Apr 2024 05:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1s0Hei-0006v3-Cl
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:14:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
- id 1s0Heg-0004IC-SR
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:14:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714122845;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HzqgLx78EvlSfnqx+14UcMQjMPJVBXLZODD/QaXQlmY=;
- b=OMrHTEcvIalog/iFk6j99KqUnCPfG9dnIyDrvBQWCl1KE5g/ZsdewpmcVPK5h7sMAPuJ+h
- MMibD/d7E87mBOM7fiphVfPEaLja5SecCLs647O/dLE5DNa5vgZPrbDnH3zTOpiBNeK1MI
- C/4T5oCdRJhJMK5jg6rs59YYV1od1sQ=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-Pn8we3oMN8eqA93S9DveDw-1; Fri, 26 Apr 2024 05:14:02 -0400
-X-MC-Unique: Pn8we3oMN8eqA93S9DveDw-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2dad70b6e03so13805281fa.1
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 02:14:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714122841; x=1714727641;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HzqgLx78EvlSfnqx+14UcMQjMPJVBXLZODD/QaXQlmY=;
- b=GRfgDKEoWDMEG6zm3K7kznPHfeOqPT/3O2RIxMk2JkQmKbuEHg/3sIlADbiskDzcNx
- JH4pA5c5X/V7QMY8gfiVwtuCM1hHf8QlzIMqk/K9ku+a9NMUm9+eczJ/IiaLguERvDLF
- m/VRVGli6dPqbvgXE9I18KWwT7DBwc+EkfbXZcpwAGFc0vFDWDZC1WaEiXO6Gjq9OEjO
- 3JuAzdg40qrZ5PZv3fMBxDDJZ/ADlCaduDLrdHMpoUspFVIFNEhG9eZHbWmwEgUahTVh
- VkBcv3TbmLxgnCmF/ikEt9cB1XtjcbdHJDi6AM7odlMKCluCo5o/YQfCkleRp1v8Dkte
- Eq2w==
-X-Gm-Message-State: AOJu0YzFQsU9LAA53MhZDuwXMuQwR7jAusUFw7BzYLkh96dTS1cAor2M
- hM2kESiukPPVzfTQuM545yQKe7iFQI17ADRjU3bdzbbwssa9kxEgnpSO4Eg+ipQzG+qJ7BmJ3gn
- cXuNic+9EhqCOLv2BitponKGMyx9ayC7u9CC0CWeqZTaV3h3FOtgybiZCVqQnbfrWesZevEPRhi
- W8P+bVstZiAKdhU++4S5kOdyUvoP4=
-X-Received: by 2002:a2e:bc04:0:b0:2da:6f70:38b6 with SMTP id
- b4-20020a2ebc04000000b002da6f7038b6mr1648970ljf.35.1714122841400; 
- Fri, 26 Apr 2024 02:14:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF9y/HWJwf1jpWocOFqS3oFX2RfA8othwHG4DUsGIedHQiE2uXXpDnExoVy2hS3AZfPwtIikJW4213sCNgc3kg=
-X-Received: by 2002:a2e:bc04:0:b0:2da:6f70:38b6 with SMTP id
- b4-20020a2ebc04000000b002da6f7038b6mr1648951ljf.35.1714122841072; Fri, 26 Apr
- 2024 02:14:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1s0Hwr-0004tx-2c
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:32:53 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1s0Hwm-0001BH-O5
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:32:51 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8Bx+um4dCtm5WUDAA--.1848S3;
+ Fri, 26 Apr 2024 17:32:40 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxU1a2dCtm+yUGAA--.2929S2; 
+ Fri, 26 Apr 2024 17:32:39 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org,
+	maobibo@loongson.cn
+Cc: richard.henderson@linaro.org, peter.maydell@linaro.org, philmd@linaro.org,
+ zltjiangshi@gmail.com
+Subject: [PATCH v7 00/17] Add boot LoongArch elf kernel with FDT
+Date: Fri, 26 Apr 2024 17:15:34 +0800
+Message-Id: <20240426091551.2397867-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20240420054606.13353-1-thuth@redhat.com>
-In-Reply-To: <20240420054606.13353-1-thuth@redhat.com>
-From: Mario Casquero <mcasquer@redhat.com>
-Date: Fri, 26 Apr 2024 11:13:49 +0200
-Message-ID: <CAMXpfWswsBtuaSXs_pK+-La2qeMrKSSU1JzmP_uCYp3rbxn0vw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Remove useless architecture prefix from the CPU list
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-ppc@nongnu.org, 
- qemu-s390x@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Hildenbrand <david@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcasquer@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxU1a2dCtm+yUGAA--.2929S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,33 +63,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series has been successfully tested in x86. Execute the cpu help
-command and check in the list the x86 prefix is no longer present.
+Hi, All
 
-Tested-by: Mario Casquero <mcasquer@redhat.com>
+We already support boot efi kernel with bios, but not support boot elf kernel.
+This series adds boot elf kernel with FDT.
 
-On Sat, Apr 20, 2024 at 7:47=E2=80=AFAM Thomas Huth <thuth@redhat.com> wrot=
-e:
->
-> Printing an architecture prefix in front of each CPU name is not helpful
-> at all: It is confusing for the users since they don't know whether they
-> have to specify these letters for the "-cpu" parameter, too, and it also
-> takes some precious space in the dense output of the CPU entries. Let's
-> simply remove those now.
->
-> Thomas Huth (3):
->   target/i386/cpu: Remove "x86" prefix from the CPU list
->   target/s390x/cpu_models: Rework the output of "-cpu help"
->   target/ppc/cpu_init: Remove "PowerPC" prefix from the CPU list
->
->  target/i386/cpu.c         | 2 +-
->  target/ppc/cpu_init.c     | 9 +++++----
->  target/s390x/cpu_models.c | 9 +++++----
->  3 files changed, 11 insertions(+), 9 deletions(-)
->
-> --
-> 2.44.0
->
->
+'LoongArch supports ACPI and FDT. The information that needs to be passed
+ to the kernel includes the memmap, the initrd, the command line, optionally
+ the ACPI/FDT tables, and so on'  see [1].
+
+Patch 2-8 : Create efi system table, and three efi configuration table
+            boot_memmap, initd, FDT.
+Patch 9-17 : Fixes FDT problems.
+
+Test:
+  - Start kernel
+    See [2] start_kernel.sh
+  - Start qcow2
+    See [2] start_qcow2.sh
+
+Patch 3 and Patch 6 need to be reviewed.
+
+Thanks.
+Song Gao
+
+V7:
+  - Rebase and R-b;
+  - Patch3, replace reg_num with reg_name.
+    move slave boot code buf to pflash0;
+  - Patch5: replace __aligned(8) with QEMU_ALIGNED(8);
+  - Patch8: Use the macro FDT_BASE to indicate the fdt base size.
+
+V6:
+  - Fixes test/compilation failures; 
+
+V5:
+  - Rebase;
+
+V4:
+  - patch 3 change slave_boot_code[] to const, and 'static void *p ' to
+    'void *p';
+  - patch 4 fixes build error;
+  - patch 10-13, add project and commit link.
+
+V3:
+  - Load initrd at  kernel_high + 4 * kernel_size;
+  - Load 'boot_rom' at [0 - 1M], the 'boot_rom' includes
+    slave_boot_code, cmdline_buf and systab_tables;
+  - R-b and rebase.
+
+V2:
+  - FDT pcie node adds cells 'msi-map';
+
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/loongarch/booting.rst?h=v6.7-rc4
+
+[2]: https://github.com/gaosong-loongson/loongarch-binary/releases
+
+Song Gao (17):
+  hw/loongarch: Move boot functions to boot.c
+  hw/loongarch: Add load initrd
+  hw/loongarch: Add slave cpu boot_code
+  hw/loongarch: Add init_cmdline
+  hw/loongarch: Init efi_system_table
+  hw/loongarch: Init efi_boot_memmap table
+  hw/loongarch: Init efi_initrd table
+  hw/loongarch: Init efi_fdt table
+  hw/loongarch: Fix fdt memory node wrong 'reg'
+  hw/loongarch: fdt adds cpu interrupt controller node
+  hw/loongarch: fdt adds Extend I/O Interrupt Controller
+  hw/loongarch: fdt adds pch_pic Controller
+  hw/loongarch: fdt adds pch_msi Controller
+  hw/loongarch: fdt adds pcie irq_map node
+  hw/loongarch: fdt remove unused irqchip node
+  hw/loongarch: Add cells missing from uart node
+  hw/loongarch: Add cells missing from rtc node
+
+ include/hw/intc/loongarch_extioi.h |   1 +
+ include/hw/loongarch/boot.h        | 109 +++++++++
+ include/hw/loongarch/virt.h        |  14 ++
+ include/hw/pci-host/ls7a.h         |   2 +
+ target/loongarch/cpu.h             |   2 +
+ hw/loongarch/boot.c                | 337 ++++++++++++++++++++++++++
+ hw/loongarch/virt.c                | 363 ++++++++++++++++-------------
+ hw/loongarch/meson.build           |   1 +
+ 8 files changed, 669 insertions(+), 160 deletions(-)
+ create mode 100644 include/hw/loongarch/boot.h
+ create mode 100644 hw/loongarch/boot.c
+
+-- 
+2.25.1
 
 
