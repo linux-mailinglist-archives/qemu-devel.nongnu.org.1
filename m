@@ -2,78 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25E28B403B
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767E78B4040
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:44:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RSu-0000OQ-9X; Fri, 26 Apr 2024 15:42:36 -0400
+	id 1s0RSt-0000Ji-Df; Fri, 26 Apr 2024 15:42:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RSl-0000IO-5V
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RSl-0000IQ-6L
  for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:27 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RSP-0002kk-LV
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:20 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-5709cb80b03so2840396a12.2
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:42:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RSX-0002mW-Ct
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:22 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-51b09c3a111so3572931e87.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160523; x=1714765323; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=U3DFgau0bBFHqq3QQqiBFqK7p+j271JWuNvgAdtuSqI=;
- b=QCK7hY1m199XWVob6dpli3X8cHcgPrq/o5mKjnvJeG056m2T383g6DA2Ie+Salrivm
- HynFuCKRxzyek/6BQCoVapisRpN5rgAjicCCFC5Wyc4fFOs0O8XxFsZiwuIbJ91XaQEK
- vhmVQgB6UazZHOz0xYW2F2uQIsBbFiYreyqH6p2j3O3CtcCnw3Wix1BYOzgMHO6BrjgS
- 6TjrSKSOMn3cHfDEE0lnFV2p9I8kuX2S2SgW/zGDraR96eP12Lr+Cc1Ln8uYBT+alpMX
- lwtqS/+XEsJ9Xeqg4vTYBF8XOPMkOpFP38fa5IRSHDKs97Fvhq4/up2aCZWVBP4L0H9o
- IxvQ==
+ d=linaro.org; s=google; t=1714160531; x=1714765331; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ye55WMDRK5S6l5M0zWgNVrTpOE29KI1trvIKq0uwte4=;
+ b=BZW5WTNoboOQ9jQmDJGYkd9jbFz/Mr48ApJO3/pKkxKnNwd8LUNjVwsdYOCUT8Tn3e
+ BoJ3/o4/IcDNOvgOmMf6ZJ1dKBqpoeokQjMCUqqHvV/W8z/LgdmRid47QtPGFgZmisG8
+ us8Z0qxDnif5rGybbPjfFGAlQv3UDOpkFqZwPhtbmwmG9OJFnSp697w5zRaYC+/B65nw
+ zSmSg3uVAZ82VH7iLr7ClF1iRUCSOuj2z7jPx+fL1ljfp/Qiu0nrnm889kndbBNQ84Ny
+ Yu8jS/5SuCkiR7oHhnymtc3tp0N443NiYdqgFbi0duNfI8/bwwHN4DXYIr66MxL4Cd5i
+ OIrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160523; x=1714765323;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U3DFgau0bBFHqq3QQqiBFqK7p+j271JWuNvgAdtuSqI=;
- b=SqjyV3SzB71m4iSFjgkuWKvWiZLO5e8er39960bRR6WSHkrAUifjoTWGB6GiI/8vxM
- 4lJajVu5cZGOW/ZSZYSOZzdf3KmLuwmtJteVnlen1aC+RMh9Tbk0nh57TFZrBYNHNgRz
- K0fGxQy1mIIwXBOpdYQzPhKOZ+L4j6vi+/z7mgnRxDruDiXCX41k5OnEj1HCQKe0omsS
- I6clpSqfxroo5fvUEQ33T3y9ziteTAj9epdjR7X095s8wkvyASv8xwoD4KBa01v9+q2B
- Xyxl/5732H9jBrfknwhwW/DclSWJMsnp+XN0+9I/xR/PY4hkHsHB0jg4THhMdJCRj9wz
- IRZA==
-X-Gm-Message-State: AOJu0Yx1BumezUbsshTdDQSr96z4sbM8xNewCyBQVq8zc1e02iE2RxMf
- TLet5gMSA+h9VkGV2ci/EJEtSB7hoS4Bbi+fWub8ydXx6zOT0ZmZmlF2NWHyVt8QM1z5COOm/e/
- v6c0=
-X-Google-Smtp-Source: AGHT+IHI4frtraiWjI8RqdI2HczpjK2D6Rie1RmZ8YVy4jS8KUFLo0S/eqG1QBM34lAZvTML6D/Viw==
-X-Received: by 2002:a50:871b:0:b0:571:fe99:df9e with SMTP id
- i27-20020a50871b000000b00571fe99df9emr1923252edb.40.1714160523351; 
- Fri, 26 Apr 2024 12:42:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714160531; x=1714765331;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ye55WMDRK5S6l5M0zWgNVrTpOE29KI1trvIKq0uwte4=;
+ b=OwBU46JUM5uSmqTkQg+wC+14ATYCbp7ptXfO7bYl0sfOiw5YdmUXxSno7mlkDkJxiq
+ xdGHoi52x8zgilR8Fqa776rh3zFDojmsD7uSRG00uxGMsGT+aynhsQNPO5BVAtk6zoqQ
+ L9PABVxYRhAl3fOn6rOfRoN4QgEE2taf/aBV6mdCrAmUcnGphT2fI/PC8jULG8p0ywae
+ VqwoZh+svf3q4peMZX6GBLm6L+NyQ8BOtCYHKgpXQbArm2NweClLfTaLVt4vsMPWCScX
+ yAQyjdMRB1wObmCzGtpXyN58+0x5io3sbVKH5J6ELtIq0ur8WsGzISlibMtnunKmfPXA
+ AB6w==
+X-Gm-Message-State: AOJu0YyroZZGvBuwVJnbd7NEMcq+DCO7xsXBc1Gchc4IAPMsoeJiBLpw
+ kXsHvfAW7eCPXipH+QA3+YUaNkRQrhMESltVEMc6qzuCUzPD1c1nAsEE0UdfBrjpKJsVVH6EU7V
+ hZEE=
+X-Google-Smtp-Source: AGHT+IFL14ms+GZPBLVOB0MB3rNqmeNW55qsxaKuP7JYpVZQYPUqzQLjW5flfi2FoO61Lw3+u8GCQQ==
+X-Received: by 2002:a19:f80b:0:b0:518:bc7c:413a with SMTP id
+ a11-20020a19f80b000000b00518bc7c413amr2135720lff.69.1714160530417; 
+ Fri, 26 Apr 2024 12:42:10 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- c8-20020a50d648000000b0057232df2e5dsm3090799edj.32.2024.04.26.12.42.02
+ e24-20020a170906081800b00a5891d81009sm3390140ejd.36.2024.04.26.12.42.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:42:02 -0700 (PDT)
+ Fri, 26 Apr 2024 12:42:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 00/38] Exec / accelerators patches
-Date: Fri, 26 Apr 2024 21:41:20 +0200
-Message-ID: <20240426194200.43723-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Cameron Esfahani <dirty@apple.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Reinoud Zandijk <reinoud@netbsd.org>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+Subject: [PULL 01/38] exec: Rename NEED_CPU_H -> COMPILING_PER_TARGET
+Date: Fri, 26 Apr 2024 21:41:21 +0200
+Message-ID: <20240426194200.43723-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
+References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: 4
-X-Spam_score: 0.4
-X-Spam_bar: /
-X-Spam_report: (0.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- SUSPICIOUS_RECIPS=2.51 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,220 +109,374 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit a118c4aff4087eafb68f7132b233ad548cf16376:
+'NEED_CPU_H' guard target-specific code; it is defined by meson
+altogether with the 'CONFIG_TARGET' definition. Rename NEED_CPU_H
+as COMPILING_PER_TARGET to clarify its meaning.
 
-  Merge tag 'hw-misc-20240425' of https://github.com/philmd/qemu into staging (2024-04-25 09:43:29 -0700)
+Mechanical change running:
 
-are available in the Git repository at:
+ $ sed -i s/NEED_CPU_H/COMPILING_PER_TARGET/g $(git grep -l NEED_CPU_H)
 
-  https://github.com/philmd/qemu.git tags/accel-20240426
+then manually add a /* COMPILING_PER_TARGET */ comment
+after the '#endif' when the block is large.
 
-for you to fetch changes up to 671558d290ffb93752d3245e7c5604b04b6dcdf2:
+Inspired-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240322161439.6448-4-philmd@linaro.org>
+---
+ meson.build                | 4 ++--
+ include/exec/cpu-defs.h    | 2 +-
+ include/exec/helper-head.h | 4 ++--
+ include/exec/memop.h       | 4 ++--
+ include/exec/memory.h      | 4 ++--
+ include/exec/tswap.h       | 4 ++--
+ include/gdbstub/helpers.h  | 2 +-
+ include/hw/core/cpu.h      | 4 ++--
+ include/qemu/osdep.h       | 2 +-
+ include/sysemu/hvf.h       | 8 ++++----
+ include/sysemu/kvm.h       | 6 +++---
+ include/sysemu/nvmm.h      | 4 ++--
+ include/sysemu/whpx.h      | 4 ++--
+ include/sysemu/xen.h       | 4 ++--
+ target/arm/kvm-consts.h    | 4 ++--
+ scripts/analyze-inclusions | 6 +++---
+ 16 files changed, 33 insertions(+), 33 deletions(-)
 
-  plugins: Include missing 'qemu/bitmap.h' header (2024-04-26 21:36:19 +0200)
-
-Selfish PR, painfully tested commit by commit.
-----------------------------------------------------------------
-Accelerators patches
-
-A lot of trivial cleanups and simplifications (moving methods around,
-adding/removing #include statements). Most notable changes:
-
-- Rename NEED_CPU_H -> COMPILING_PER_TARGET
-- Rename few template headers using the '.h.inc' suffix
-- Extract some definitions / declarations into their own header:
-  - accel/tcg/user-retaddr.h (helper_retaddr)
-  - include/exec/abi_ptr.h (abi_ptr)
-  - include/exec/breakpoint.h (CPUBreakpoint, CPUWatchpoint)
-  - include/exec/mmu-access-type.h (MMUAccessType)
-  - include/user/tswap-target.h (tswapl, bswaptls)
-
-----------------------------------------------------------------
-
-Philippe Mathieu-Daudé (38):
-  exec: Rename NEED_CPU_H -> COMPILING_PER_TARGET
-  exec: Reduce tlb_set_dirty() declaration scope
-  exec: Include 'cpu.h' before validating CPUArchState placement
-  exec: Expose 'target_page.h' API to user emulation
-  accel: Include missing 'exec/cpu_ldst.h' header
-  gdbstub: Include missing 'hw/core/cpu.h' header
-  gdbstub: Simplify #ifdef'ry in helpers.h
-  gdbstub: Avoid including 'cpu.h' in 'gdbstub/helpers.h'
-  semihosting/uaccess: Avoid including 'cpu.h'
-  semihosting/guestfd: Remove unused 'semihosting/uaccess.h' header
-  target: Define TCG_GUEST_DEFAULT_MO in 'cpu-param.h'
-  target/ppc/excp_helper: Avoid 'abi_ptr' in system emulation
-  target/sparc: Replace abi_ulong by uint32_t for TARGET_ABI32
-  target/i386: Include missing 'exec/exec-all.h' header
-  accel/tcg: Un-inline retaddr helpers to 'user-retaddr.h'
-  accel/tcg: Include missing 'hw/core/cpu.h' header
-  accel/tcg: Include missing headers in 'tb-jmp-cache.h'
-  accel/tcg: Rename load-extract/store-insert headers using .h.inc
-    suffix
-  accel/tcg: Rename helper-head.h -> helper-head.h.inc
-  accel/whpx: Use accel-specific per-vcpu @dirty field
-  accel/nvmm: Use accel-specific per-vcpu @dirty field
-  accel/hvf: Use accel-specific per-vcpu @dirty field
-  exec/cpu-all: Reduce 'qemu/rcu.h' header inclusion
-  exec/cpu-all: Remove unused 'qemu/thread.h' header
-  exec/cpu-all: Remove unused tswapls() definitions
-  exec: Declare target_words_bigendian() in 'exec/tswap.h'
-  exec: Move [b]tswapl() declarations to 'exec/user/tswap-target.h'
-  exec/user: Do not include 'cpu.h' in 'abitypes.h'
-  exec: Declare abi_ptr type in its own 'abi_ptr.h' header
-  exec: Declare MMUAccessType type in 'mmu-access-type.h' header
-  exec: Declare CPUBreakpoint/CPUWatchpoint type in 'breakpoint.h'
-    header
-  exec: Restrict TCG specific declarations of 'cputlb.h'
-  exec: Restrict 'cpu_ldst.h' to TCG accelerator
-  exec: Rename 'exec/user/guest-base.h' as 'user/guest-base.h'
-  exec: Restrict inclusion of 'user/guest-base.h'
-  exec: Move CPUTLBEntry helpers to cputlb.c
-  hw/core: Avoid including the full 'hw/core/cpu.h' in 'tcg-cpu-ops.h'
-  plugins: Include missing 'qemu/bitmap.h' header
-
- MAINTAINERS                                   |   1 +
- meson.build                                   |   6 +-
- accel/tcg/tb-jmp-cache.h                      |   3 +
- accel/tcg/user-retaddr.h                      |  28 +++++
- bsd-user/freebsd/target_os_elf.h              |   1 +
- bsd-user/freebsd/target_os_stack.h            |   1 +
- bsd-user/netbsd/target_os_elf.h               |   1 +
- bsd-user/openbsd/target_os_elf.h              |   1 +
- include/exec/abi_ptr.h                        |  33 ++++++
- include/exec/breakpoint.h                     |  30 +++++
- include/exec/cpu-all.h                        |  16 +--
- include/exec/cpu-defs.h                       |   2 +-
- include/exec/cpu_ldst.h                       | 105 ++----------------
- include/exec/cputlb.h                         |   5 +
- include/exec/exec-all.h                       |   3 +-
- include/exec/memop.h                          |   4 +-
- include/exec/memory.h                         |   4 +-
- include/exec/mmu-access-type.h                |  18 +++
- include/exec/ram_addr.h                       |   1 +
- include/exec/translator.h                     |   5 +-
- include/exec/tswap.h                          |  16 ++-
- include/exec/user/abitypes.h                  |   8 +-
- include/exec/user/guest-base.h                |  12 --
- include/gdbstub/helpers.h                     |  12 +-
- include/hw/core/cpu.h                         |  42 +------
- include/hw/core/tcg-cpu-ops.h                 |   6 +-
- include/qemu/osdep.h                          |   2 +-
- include/qemu/plugin.h                         |   1 +
- include/semihosting/uaccess.h                 |   4 +-
- include/sysemu/hvf.h                          |   8 +-
- include/sysemu/hvf_int.h                      |   1 +
- include/sysemu/kvm.h                          |   6 +-
- include/sysemu/nvmm.h                         |   4 +-
- include/sysemu/whpx.h                         |   4 +-
- include/sysemu/xen.h                          |   4 +-
- include/user/guest-base.h                     |  18 +++
- include/user/tswap-target.h                   |  22 ++++
- target/alpha/cpu-param.h                      |   3 +
- target/alpha/cpu.h                            |   3 -
- target/arm/cpu-param.h                        |   8 +-
- target/arm/cpu.h                              |   3 -
- target/arm/internals.h                        |   1 +
- target/arm/kvm-consts.h                       |   4 +-
- target/avr/cpu-param.h                        |   2 +
- target/avr/cpu.h                              |   2 -
- target/hppa/cpu-param.h                       |   8 ++
- target/hppa/cpu.h                             |   6 -
- target/i386/cpu-param.h                       |   3 +
- target/i386/cpu.h                             |   3 -
- target/loongarch/cpu-param.h                  |   2 +
- target/loongarch/cpu.h                        |   2 -
- target/microblaze/cpu-param.h                 |   3 +
- target/microblaze/cpu.h                       |   3 -
- target/mips/cpu-param.h                       |   2 +
- target/mips/cpu.h                             |   2 -
- target/openrisc/cpu-param.h                   |   2 +
- target/openrisc/cpu.h                         |   2 -
- target/ppc/cpu-param.h                        |   2 +
- target/ppc/cpu.h                              |   2 -
- target/ppc/internal.h                         |   1 +
- target/riscv/cpu-param.h                      |   2 +
- target/riscv/cpu.h                            |   2 -
- target/riscv/debug.h                          |   2 +
- target/s390x/cpu-param.h                      |   6 +
- target/s390x/cpu.h                            |   3 -
- target/sparc/cpu-param.h                      |  23 ++++
- target/sparc/cpu.h                            |  23 ----
- target/xtensa/cpu-param.h                     |   3 +
- target/xtensa/cpu.h                           |   3 -
- ...al16-al8.h => load-extract-al16-al8.h.inc} |   0
- ...-insert-al16.h => store-insert-al16.h.inc} |   0
- ...al16-al8.h => load-extract-al16-al8.h.inc} |   0
- ...-insert-al16.h => store-insert-al16.h.inc} |   0
- ...al16-al8.h => load-extract-al16-al8.h.inc} |   0
- ...-insert-al16.h => store-insert-al16.h.inc} |   0
- ...al16-al8.h => load-extract-al16-al8.h.inc} |   0
- include/exec/helper-gen.h.inc                 |   2 +-
- .../exec/{helper-head.h => helper-head.h.inc} |   4 +-
- include/exec/helper-proto.h.inc               |   2 +-
- accel/hvf/hvf-accel-ops.c                     |  10 +-
- accel/stubs/tcg-stub.c                        |   4 -
- accel/tcg/cpu-exec.c                          |   3 +
- accel/tcg/cputlb.c                            |  53 ++++++++-
- accel/tcg/tcg-accel-ops.c                     |   2 +
- accel/tcg/translator.c                        |   1 +
- accel/tcg/user-exec.c                         |   1 +
- bsd-user/main.c                               |   1 +
- bsd-user/signal.c                             |   1 +
- bsd-user/strace.c                             |   1 +
- cpu-target.c                                  |   1 +
- disas/disas.c                                 |   1 +
- gdbstub/gdbstub.c                             |   1 +
- hw/audio/virtio-snd.c                         |   2 +-
- hw/core/cpu-sysemu.c                          |   2 +-
- hw/core/generic-loader.c                      |   2 +-
- hw/display/vga.c                              |   2 +-
- hw/virtio/virtio.c                            |   1 +
- linux-user/elfload.c                          |   2 +
- linux-user/i386/signal.c                      |   1 +
- linux-user/main.c                             |   1 +
- linux-user/ppc/signal.c                       |   1 +
- page-target.c                                 |  44 ++++++++
- semihosting/guestfd.c                         |   5 +-
- system/physmem.c                              |  30 -----
- target/arm/hvf/hvf.c                          |   4 +-
- target/avr/gdbstub.c                          |   1 +
- target/hexagon/translate.c                    |   1 +
- target/i386/hvf/hvf.c                         |   4 +-
- target/i386/hvf/x86hvf.c                      |   2 +-
- target/i386/nvmm/nvmm-all.c                   |  21 ++--
- target/i386/tcg/fpu_helper.c                  |   1 +
- target/i386/whpx/whpx-all.c                   |  23 ++--
- target/microblaze/cpu.c                       |   1 +
- target/microblaze/translate.c                 |   1 +
- target/ppc/excp_helper.c                      |   2 +-
- target/sparc/gdbstub.c                        |   2 +-
- target/target-common.c                        |  10 --
- target/tricore/gdbstub.c                      |   1 +
- tcg/tcg.c                                     |   2 +-
- accel/tcg/ldst_atomicity.c.inc                |   4 +-
- include/exec/helper-info.c.inc                |   2 +-
- scripts/analyze-inclusions                    |   6 +-
- target/meson.build                            |   2 -
- 123 files changed, 488 insertions(+), 357 deletions(-)
- create mode 100644 accel/tcg/user-retaddr.h
- create mode 100644 include/exec/abi_ptr.h
- create mode 100644 include/exec/breakpoint.h
- create mode 100644 include/exec/mmu-access-type.h
- delete mode 100644 include/exec/user/guest-base.h
- create mode 100644 include/user/guest-base.h
- create mode 100644 include/user/tswap-target.h
- rename host/include/aarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/aarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/generic/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/generic/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/loongarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/loongarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/x86_64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename include/exec/{helper-head.h => helper-head.h.inc} (98%)
- create mode 100644 page-target.c
- delete mode 100644 target/target-common.c
-
+diff --git a/meson.build b/meson.build
+index 553b940999..96fdc6dfd2 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3610,7 +3610,7 @@ foreach d, list : target_modules
+         if target.endswith('-softmmu')
+           config_target = config_target_mak[target]
+           target_inc = [include_directories('target' / config_target['TARGET_BASE_ARCH'])]
+-          c_args = ['-DNEED_CPU_H',
++          c_args = ['-DCOMPILING_PER_TARGET',
+                     '-DCONFIG_TARGET="@0@-config-target.h"'.format(target),
+                     '-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
+           target_module_ss = module_ss.apply(config_target, strict: false)
+@@ -3793,7 +3793,7 @@ foreach target : target_dirs
+   target_base_arch = config_target['TARGET_BASE_ARCH']
+   arch_srcs = [config_target_h[target]]
+   arch_deps = []
+-  c_args = ['-DNEED_CPU_H',
++  c_args = ['-DCOMPILING_PER_TARGET',
+             '-DCONFIG_TARGET="@0@-config-target.h"'.format(target),
+             '-DCONFIG_DEVICES="@0@-config-devices.h"'.format(target)]
+   link_args = emulator_link_args
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index 3915438b83..0dbef3010c 100644
+--- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -19,7 +19,7 @@
+ #ifndef CPU_DEFS_H
+ #define CPU_DEFS_H
+ 
+-#ifndef NEED_CPU_H
++#ifndef COMPILING_PER_TARGET
+ #error cpu.h included from common code
+ #endif
+ 
+diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h
+index 28ceab0a46..5ef467a79d 100644
+--- a/include/exec/helper-head.h
++++ b/include/exec/helper-head.h
+@@ -43,7 +43,7 @@
+ #define dh_ctype_noreturn G_NORETURN void
+ #define dh_ctype(t) dh_ctype_##t
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ # ifdef TARGET_LONG_BITS
+ #  if TARGET_LONG_BITS == 32
+ #   define dh_alias_tl i32
+@@ -54,7 +54,7 @@
+ #  endif
+ # endif
+ # define dh_ctype_tl target_ulong
+-#endif
++#endif /* COMPILING_PER_TARGET */
+ 
+ /* We can't use glue() here because it falls foul of C preprocessor
+    recursive expansion rules.  */
+diff --git a/include/exec/memop.h b/include/exec/memop.h
+index a86dc6743a..06417ff361 100644
+--- a/include/exec/memop.h
++++ b/include/exec/memop.h
+@@ -35,7 +35,7 @@ typedef enum MemOp {
+     MO_LE    = 0,
+     MO_BE    = MO_BSWAP,
+ #endif
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #if TARGET_BIG_ENDIAN
+     MO_TE    = MO_BE,
+ #else
+@@ -135,7 +135,7 @@ typedef enum MemOp {
+     MO_BESL  = MO_BE | MO_SL,
+     MO_BESQ  = MO_BE | MO_SQ,
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+     MO_TEUW  = MO_TE | MO_UW,
+     MO_TEUL  = MO_TE | MO_UL,
+     MO_TEUQ  = MO_TE | MO_UQ,
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index dbb1bad72f..dadb5cd65a 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -3107,7 +3107,7 @@ address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
+ MemTxResult address_space_set(AddressSpace *as, hwaddr addr,
+                               uint8_t c, hwaddr len, MemTxAttrs attrs);
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ /* enum device_endian to MemOp.  */
+ static inline MemOp devend_memop(enum device_endian end)
+ {
+@@ -3125,7 +3125,7 @@ static inline MemOp devend_memop(enum device_endian end)
+     return (end == non_host_endianness) ? MO_BSWAP : 0;
+ #endif
+ }
+-#endif
++#endif /* COMPILING_PER_TARGET */
+ 
+ /*
+  * Inhibit technologies that require discarding of pages in RAM blocks, e.g.,
+diff --git a/include/exec/tswap.h b/include/exec/tswap.h
+index 68944a880b..5089cd6a4c 100644
+--- a/include/exec/tswap.h
++++ b/include/exec/tswap.h
+@@ -15,11 +15,11 @@
+  * If we're in target-specific code, we can hard-code the swapping
+  * condition, otherwise we have to do (slower) run-time checks.
+  */
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #define target_needs_bswap()  (HOST_BIG_ENDIAN != TARGET_BIG_ENDIAN)
+ #else
+ #define target_needs_bswap()  (target_words_bigendian() != HOST_BIG_ENDIAN)
+-#endif
++#endif /* COMPILING_PER_TARGET */
+ 
+ static inline uint16_t tswap16(uint16_t s)
+ {
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index c573aef2dc..6b97610f48 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -12,7 +12,7 @@
+ #ifndef _GDBSTUB_HELPERS_H_
+ #define _GDBSTUB_HELPERS_H_
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
+ 
+ /*
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index ec14f74ce5..7f037b158e 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1182,7 +1182,7 @@ bool target_words_bigendian(void);
+ 
+ const char *target_name(void);
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ 
+ #ifndef CONFIG_USER_ONLY
+ 
+@@ -1197,7 +1197,7 @@ extern const VMStateDescription vmstate_cpu_common;
+ }
+ #endif /* !CONFIG_USER_ONLY */
+ 
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ #define UNASSIGNED_CPU_INDEX -1
+ #define UNASSIGNED_CLUSTER_INDEX -1
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index c7053cdc2b..f61edcfdc2 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -32,7 +32,7 @@
+ #endif
+ 
+ #include "config-host.h"
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #include CONFIG_TARGET
+ #else
+ #include "exec/poison.h"
+diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
+index 4a7c6af3a5..730f927f03 100644
+--- a/include/sysemu/hvf.h
++++ b/include/sysemu/hvf.h
+@@ -16,7 +16,7 @@
+ #include "qemu/accel.h"
+ #include "qom/object.h"
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
+ 
+ #ifdef CONFIG_HVF
+@@ -26,7 +26,7 @@ extern bool hvf_allowed;
+ #define hvf_enabled() 0
+ #endif /* !CONFIG_HVF */
+ 
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ #define TYPE_HVF_ACCEL ACCEL_CLASS_NAME("hvf")
+ 
+@@ -34,7 +34,7 @@ typedef struct HVFState HVFState;
+ DECLARE_INSTANCE_CHECKER(HVFState, HVF_STATE,
+                          TYPE_HVF_ACCEL)
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ struct hvf_sw_breakpoint {
+     vaddr pc;
+     vaddr saved_insn;
+@@ -66,6 +66,6 @@ void hvf_arch_update_guest_debug(CPUState *cpu);
+  * Return whether the guest supports debugging.
+  */
+ bool hvf_arch_supports_guest_debug(void);
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ #endif
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 47f9e8be1b..eaf801bc93 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -20,7 +20,7 @@
+ #include "qemu/accel.h"
+ #include "qom/object.h"
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_KVM
+ #  include <linux/kvm.h>
+ #  define CONFIG_KVM_IS_POSSIBLE
+@@ -210,7 +210,7 @@ bool kvm_arm_supports_user_irq(void);
+ int kvm_on_sigbus_vcpu(CPUState *cpu, int code, void *addr);
+ int kvm_on_sigbus(int code, void *addr);
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
+ 
+ void kvm_flush_coalesced_mmio_buffer(void);
+@@ -435,7 +435,7 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int sigmask_len);
+ int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+                                        hwaddr *phys_addr);
+ 
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ void kvm_cpu_synchronize_state(CPUState *cpu);
+ 
+diff --git a/include/sysemu/nvmm.h b/include/sysemu/nvmm.h
+index be7bc9a62d..6971ddb3a5 100644
+--- a/include/sysemu/nvmm.h
++++ b/include/sysemu/nvmm.h
+@@ -12,7 +12,7 @@
+ #ifndef QEMU_NVMM_H
+ #define QEMU_NVMM_H
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ 
+ #ifdef CONFIG_NVMM
+ 
+@@ -24,6 +24,6 @@ int nvmm_enabled(void);
+ 
+ #endif /* CONFIG_NVMM */
+ 
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ #endif /* QEMU_NVMM_H */
+diff --git a/include/sysemu/whpx.h b/include/sysemu/whpx.h
+index 781ca5b2b6..00ff409b68 100644
+--- a/include/sysemu/whpx.h
++++ b/include/sysemu/whpx.h
+@@ -15,7 +15,7 @@
+ #ifndef QEMU_WHPX_H
+ #define QEMU_WHPX_H
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ 
+ #ifdef CONFIG_WHPX
+ 
+@@ -29,6 +29,6 @@ bool whpx_apic_in_platform(void);
+ 
+ #endif /* CONFIG_WHPX */
+ 
+-#endif /* NEED_CPU_H */
++#endif /* COMPILING_PER_TARGET */
+ 
+ #endif /* QEMU_WHPX_H */
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index a9f591f26d..754ec2e6cb 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -16,13 +16,13 @@
+ 
+ #include "exec/cpu-common.h"
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ # ifdef CONFIG_XEN
+ #  define CONFIG_XEN_IS_POSSIBLE
+ # endif
+ #else
+ # define CONFIG_XEN_IS_POSSIBLE
+-#endif
++#endif /* COMPILING_PER_TARGET */
+ 
+ #ifdef CONFIG_XEN_IS_POSSIBLE
+ 
+diff --git a/target/arm/kvm-consts.h b/target/arm/kvm-consts.h
+index 7c6adc14f6..c44d23dbe7 100644
+--- a/target/arm/kvm-consts.h
++++ b/target/arm/kvm-consts.h
+@@ -14,13 +14,13 @@
+ #ifndef ARM_KVM_CONSTS_H
+ #define ARM_KVM_CONSTS_H
+ 
+-#ifdef NEED_CPU_H
++#ifdef COMPILING_PER_TARGET
+ #ifdef CONFIG_KVM
+ #include <linux/kvm.h>
+ #include <linux/psci.h>
+ #define MISMATCH_CHECK(X, Y) QEMU_BUILD_BUG_ON(X != Y)
+ #endif
+-#endif
++#endif /* COMPILING_PER_TARGET */
+ 
+ #ifndef MISMATCH_CHECK
+ #define MISMATCH_CHECK(X, Y) QEMU_BUILD_BUG_ON(0)
+diff --git a/scripts/analyze-inclusions b/scripts/analyze-inclusions
+index 45c821de32..b6280f25c8 100644
+--- a/scripts/analyze-inclusions
++++ b/scripts/analyze-inclusions
+@@ -92,7 +92,7 @@ echo trace/generated-tracers.h:
+ analyze -include ../include/qemu/osdep.h trace/generated-tracers.h
+ 
+ echo target/i386/cpu.h:
+-analyze -DNEED_CPU_H -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../target/i386/cpu.h
++analyze -DCOMPILING_PER_TARGET -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../target/i386/cpu.h
+ 
+-echo hw/hw.h + NEED_CPU_H:
+-analyze -DNEED_CPU_H -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../include/hw/hw.h
++echo hw/hw.h + COMPILING_PER_TARGET:
++analyze -DCOMPILING_PER_TARGET -I../target/i386 -Ii386-softmmu -include ../include/qemu/osdep.h ../include/hw/hw.h
 -- 
 2.41.0
 
