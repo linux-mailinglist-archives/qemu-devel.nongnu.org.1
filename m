@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53C58B4062
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E688B4050
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:47:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUv-0006cL-Gs; Fri, 26 Apr 2024 15:44:41 -0400
+	id 1s0RV3-0007UR-EK; Fri, 26 Apr 2024 15:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUk-0005Pv-U6
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:30 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUo-0005qs-F9
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:34 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUf-0003if-Fy
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:30 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a524ecaf215so321902566b.2
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:44:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUl-0003mO-5f
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:34 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-516d6c1e238so3260673e87.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:44:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160663; x=1714765463; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160669; x=1714765469; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hRodVMKRPlEehBD+pKF9cYT1VEV2JM/RMXBv7TIb/2Y=;
- b=azNxgAXhaZPJT/ppygXNuC6tLVzot9RcyF0tAE3XyXD6llgTeuCivvV3YHaJt6dW2I
- /wbYDUatX5q36Oav6PbY3hx1euH9POTiRufvAUf/edxF0YzCZQkp06mBtOm44FEo4Ag1
- 9RwEZjlPXy3bDu3z1jVmx1jD+WiunbFgdg+PuYlRpU9LSK7r1C9YtfPKxMX9J3+Dhyj3
- JrheVzYLGB1wFeESFVyftXfhnxjsV7/nNH6uVrWJp+42KKfk3PnzgWcslrEDqVKtr4Cg
- peu1iFXovff9Pq28gXKlnNp4rH9zneaZLS+/P/3wktu79Q7jLb9Ay9HaXnPITL+ukjgU
- 7eVQ==
+ bh=P0UDCxOSM6losMm33QUR2Xxw05S6cfuoGa+9agKli+0=;
+ b=hssJiEDIznYtgjxnv2AnEtq42xHsqFoFgxpuwgpNzpR3pnfuMwY75//9Cdpkzqxjl1
+ Pb7VRJJ2mLkAmavmRO/XesOFuqqPTlpycf6bmo3t4PEbpnaBRsFZACNjxZ5Za3iIaKFz
+ Q5aBJGBu6lPd/mIp4zMsS3avvXyQaP4ltArfrGKTcVVVKnCnqOCtE1QLKPvUmlKR4v7F
+ KXo68VU295XeBC27YPuG+a2Cs8tcU+ot+5+zFXqXbYyu6vtoVj9KEskeLs567sDESqzl
+ Xp7BU+iax2D+7kOVUK6ZzfLilETNsUlvBPN0t3ntKRglauPEBxtNurP3YoH/HiGH5W6E
+ BSIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160663; x=1714765463;
+ d=1e100.net; s=20230601; t=1714160669; x=1714765469;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hRodVMKRPlEehBD+pKF9cYT1VEV2JM/RMXBv7TIb/2Y=;
- b=IXoFA4I2qnRgR7F4y5tqn5shccgz8qDljXAqf1VQPItv+rfYplSeqsD3IouWsvcqdj
- vr7b8r242jwFifqDfeuPs6Vu4XwyXhLMtJcYjRepjOSRaBcKGWNm6YedFF1OmRBby3+9
- HdSzIpjSLCcyXo3gqafs8RSYm38MFZ/Be9l3JnJxP3lk0nk0gSLSG6mbdysamSnnIIUH
- 1WSr8yCu0gAWiFBhADMn/tpNtHjb1lDkWWG1QZpVPc4pWbE76LF85dXy8dwyn2EiRc3k
- 0L30bgKNzcK+b1c5Pdy3Jlfo8XIEpq6RNF3DnyCV3DrNeB7hwDV52y1RRmkPzATBwfsz
- fWog==
-X-Gm-Message-State: AOJu0Yy9e/LHRrGJ9pfnaMb6+UnjN75WifzVzpNIBRTVaJl7gzll3mqR
- H11LBOghD18HqU7aREsAHXFK/e44uUQ3ERxUDEkPXxo3nQ79dZDg0LNUVSr5ERhP4SsOETViLwr
- ENPU=
-X-Google-Smtp-Source: AGHT+IGiNxW9sMrFYVuJdk33VfMfF7sITSlT7j8Mdnt7tmFJUkVZwYI/KuDi5jLkTTURkRp/MthSkw==
-X-Received: by 2002:a17:906:e2c5:b0:a55:2e77:c718 with SMTP id
- gr5-20020a170906e2c500b00a552e77c718mr2464204ejb.54.1714160663366; 
- Fri, 26 Apr 2024 12:44:23 -0700 (PDT)
+ bh=P0UDCxOSM6losMm33QUR2Xxw05S6cfuoGa+9agKli+0=;
+ b=T+Gbdypl5aCDRz/ts4cfhymdlbDkEaqlQZJOu5YGzrJtSFpx4pwgOEJzU5BryE6Ntn
+ HC9ZlGfleLV1173wzAcbWFOSu2B35oAAiM3oxPjN7l8IYjXyW72usvXp7bPRVaYbjUD6
+ xa77QEJM3o2OD3qR8M4ohN0qhae+KphmrfNOEQJSGcL08IompCNH4kf8fPrxElsuAMot
+ nkk30YmePd39OHLxpZdRu0uVyRZE6A+ximIkHTHLr0rdoQ1q5+Szcp8b7CMy87VKrI9j
+ fMgF7q7/A9rPpixqUGhJ1HFbbSHk/s96iL7T8FTSDMm+LKekNZN7S4fmwCDz34NtGumG
+ 8sVg==
+X-Gm-Message-State: AOJu0YyA+2/7fR7nJb+N46flENfX7aqpgyb1lHC0KJdNlgwkAIB0hp5r
+ c1VQnL9ARwwKjsVoVSVAzyLs3oFjVV9nQ0NTHEa+KrPxJJX3ubAcDhew7n3b3jorTxYTMeKxT9c
+ iZ2M=
+X-Google-Smtp-Source: AGHT+IFpraAeEBrfBwzgkYIqxwrSxx6UxxiFJc4VVXV9x/2kjpwaRriQS99+C/00qFZ/Kw18c+RlHQ==
+X-Received: by 2002:a2e:950e:0:b0:2db:2397:1055 with SMTP id
+ f14-20020a2e950e000000b002db23971055mr2054988ljh.9.1714160668962; 
+ Fri, 26 Apr 2024 12:44:28 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- f20-20020a17090624d400b00a5575cde7cdsm10578996ejb.220.2024.04.26.12.44.22
+ da25-20020a056402177900b005700024ca57sm10440528edb.4.2024.04.26.12.44.27
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:44:23 -0700 (PDT)
+ Fri, 26 Apr 2024 12:44:28 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -63,17 +63,17 @@ Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 24/38] exec/cpu-all: Remove unused 'qemu/thread.h' header
-Date: Fri, 26 Apr 2024 21:41:44 +0200
-Message-ID: <20240426194200.43723-25-philmd@linaro.org>
+Subject: [PULL 25/38] exec/cpu-all: Remove unused tswapls() definitions
+Date: Fri, 26 Apr 2024 21:41:45 +0200
+Message-ID: <20240426194200.43723-26-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,28 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nothing is required from "qemu/thread.h" in "exec/cpu-all.h".
+Last use of tswapls() was removed 2 years ago in commit
+aee14c77f4 ("linux-user: Rewrite do_getdents, do_getdents64").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20231212123401.37493-13-philmd@linaro.org>
+Message-Id: <20231212123401.37493-15-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h | 1 -
- 1 file changed, 1 deletion(-)
+ include/exec/cpu-all.h | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 586dc56d9e..4de0d5a0d7 100644
+index 4de0d5a0d7..7c44ffb3af 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -22,7 +22,6 @@
- #include "exec/cpu-common.h"
- #include "exec/memory.h"
- #include "exec/tswap.h"
--#include "qemu/thread.h"
- #include "hw/core/cpu.h"
+@@ -38,11 +38,9 @@
  
- /* some important defines:
+ #if TARGET_LONG_SIZE == 4
+ #define tswapl(s) tswap32(s)
+-#define tswapls(s) tswap32s((uint32_t *)(s))
+ #define bswaptls(s) bswap32s(s)
+ #else
+ #define tswapl(s) tswap64(s)
+-#define tswapls(s) tswap64s((uint64_t *)(s))
+ #define bswaptls(s) bswap64s(s)
+ #endif
+ 
 -- 
 2.41.0
 
