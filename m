@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE25E8B3642
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 13:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8195B8B3638
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 13:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0JKg-0000CN-1c; Fri, 26 Apr 2024 07:01:34 -0400
+	id 1s0JKj-0000J7-Ce; Fri, 26 Apr 2024 07:01:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s0JK5-0008O6-Ty; Fri, 26 Apr 2024 07:01:01 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1s0JK9-0008Qw-K5; Fri, 26 Apr 2024 07:01:05 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s0JK3-0008IQ-Pf; Fri, 26 Apr 2024 07:00:57 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1s0JK4-0008Kz-7k; Fri, 26 Apr 2024 07:00:58 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43QArCx2011404; Fri, 26 Apr 2024 11:00:46 GMT
+ 43QASQuX014933; Fri, 26 Apr 2024 11:00:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-type : content-transfer-encoding; s=pp1;
- bh=bbwxFsQLtpCoB5ZXMUAOjk1bJqWblx9l5YNaH9lxPU4=;
- b=ScDOad18WOcHxNjdhu7FDYqIB4R6CloW36FyXci7dzFLcU+KyEvLeTvdrRGgBixEOXph
- bq4LSLqWkJpiLL9qSLEgzuheVrUa/sIg+b9IwU8T/Yk7n4Mg9kL6s9Nasf3HFhMin0Pw
- UqEzzoyteFtnxu5Zj0Hqx5Ybv3PwOnVa0XWCEpXAN2ePx2NIYCSLUmon6PXf60g3520Q
- BiGAcpaYAGNGzr/piII9nqnB6XkWddy1VZJ0jZlW0nblvcQR8xsWxGU1s1a6lk4s5TDq
- OaGgXxvldZm69/yJuPrILThHox9tmIp3XkG51TlbqZ1ZP1yBqI3eVeaaYEXUjXBeZNPu Ig== 
+ bh=O0edT3tvoZ8c5v66iMX6h8TNqgyLBzw1yhHB7wmXpuA=;
+ b=HGC3qsYYk+hAAwAyVZkrb3CceOpSGGSGfWkFM1pDwy5dPYSxABZV0dOYf++wPlECfBTS
+ Wa8BLRp0/Vejh5Yoe+YJ6GaiNDy66w9oSwR8QUaMF9kjs4TzunU3k2ryDxHX2nk/ZAHQ
+ fDmCC78yPs3+GJDBy/dR0abV7jeP6x+ihoDgycimBUslnOHIQVAZXEXJzf7yQ3rvwTGS
+ tO9NtLhxnQs6ahQmAWD0uS/AXcVOL8G3sbvdn8zGb9VWynhdq1O65eli6RKvS0yfQKfd
+ dJoZwHEeYzP4szzF+p2okBlUfwDesNkRYRGCKvPUE7e0sWrihFzPYCG4oVqNN47kvDpy Lg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xraw380nd-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xrahtg2d0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Apr 2024 11:00:47 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43QB0l44031260;
+ Fri, 26 Apr 2024 11:00:47 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xrahtg2cx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 26 Apr 2024 11:00:47 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43Q7jvRG028356; Fri, 26 Apr 2024 11:00:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmtr2xuhj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 26 Apr 2024 11:00:46 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43QB0j0D022448;
- Fri, 26 Apr 2024 11:00:45 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xraw380na-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Apr 2024 11:00:45 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43Q9IaTF023042; Fri, 26 Apr 2024 11:00:44 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xms1pfae2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 26 Apr 2024 11:00:44 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43QB0ctd42336754
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 43QB0f5g49217818
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 26 Apr 2024 11:00:40 GMT
+ Fri, 26 Apr 2024 11:00:43 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D0462004E;
+ by IMSVA (Postfix) with ESMTP id 1F65920040;
+ Fri, 26 Apr 2024 11:00:41 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F05122004F;
  Fri, 26 Apr 2024 11:00:38 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 674AD20043;
- Fri, 26 Apr 2024 11:00:36 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.171.14.245]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 26 Apr 2024 11:00:36 +0000 (GMT)
+ Fri, 26 Apr 2024 11:00:38 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -70,9 +70,9 @@ To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
-Subject: [PATCH v2 04/10] ppc/pnv: Add HOMER for POWER11
-Date: Fri, 26 Apr 2024 16:30:17 +0530
-Message-ID: <20240426110023.733309-5-adityag@linux.ibm.com>
+Subject: [PATCH v2 05/10] ppc/pnv: Add a LPC controller for POWER11
+Date: Fri, 26 Apr 2024 16:30:18 +0530
+Message-ID: <20240426110023.733309-6-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240426110023.733309-1-adityag@linux.ibm.com>
 References: <20240426110023.733309-1-adityag@linux.ibm.com>
@@ -80,19 +80,19 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fwFKLFZ9GWcBO53MoX6tn6UNVtt2W7CJ
-X-Proofpoint-ORIG-GUID: oy3JJHk4FQFm0DvJYXyCCg8A5gGxOnkJ
+X-Proofpoint-ORIG-GUID: RjzTaB7arxwKh4df6nnHRprByseHMNxC
+X-Proofpoint-GUID: 0fa8midMaZW9NHBGT5VZri13oonQ5P0p
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-04-26_12,2024-04-26_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- spamscore=0 adultscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=896 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2404260072
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ bulkscore=0 adultscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
+ malwarescore=0 suspectscore=0 impostorscore=0 mlxscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404260072
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -115,8 +115,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Power11 core is same as Power10, declare PNV11_HOMER as a child
-class of PNV10_HOMER, so it goes through same class init
+Power11 core is same as Power10 core, declare PNV11_LPC as a child
+class of PNV10_LPC, so it goes through same class init
 
 Cc: Cédric Le Goater <clg@kaod.org>
 Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
@@ -125,50 +125,57 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 ---
- hw/ppc/pnv_homer.c         | 8 ++++++++
- include/hw/ppc/pnv_homer.h | 3 +++
- 2 files changed, 11 insertions(+)
+ hw/ppc/pnv_lpc.c         | 14 ++++++++++++++
+ include/hw/ppc/pnv_lpc.h |  4 ++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/hw/ppc/pnv_homer.c b/hw/ppc/pnv_homer.c
-index f9a203d11d0d..1b0123a6f2ea 100644
---- a/hw/ppc/pnv_homer.c
-+++ b/hw/ppc/pnv_homer.c
-@@ -394,6 +394,13 @@ static const TypeInfo pnv_homer_power10_type_info = {
-     .parent        = TYPE_PNV_HOMER,
-     .instance_size = sizeof(PnvHomer),
-     .class_init    = pnv_homer_power10_class_init,
-+    .class_base_init = pnv_homer_power10_class_init,
-+};
-+
-+static const TypeInfo pnv_homer_power11_type_info = {
-+    .name          = TYPE_PNV11_HOMER,
-+    .parent        = TYPE_PNV10_HOMER,
-+    .instance_size = sizeof(PnvHomer),
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index d692858bee78..54b366221bc7 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -698,6 +698,19 @@ static const TypeInfo pnv_lpc_power10_info = {
+     .class_init    = pnv_lpc_power10_class_init,
  };
  
- static void pnv_homer_realize(DeviceState *dev, Error **errp)
-@@ -442,6 +449,7 @@ static void pnv_homer_register_types(void)
-     type_register_static(&pnv_homer_power8_type_info);
-     type_register_static(&pnv_homer_power9_type_info);
-     type_register_static(&pnv_homer_power10_type_info);
-+    type_register_static(&pnv_homer_power11_type_info);
++static void pnv_lpc_power11_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++
++    dc->desc = "PowerNV LPC Controller POWER11";
++}
++
++static const TypeInfo pnv_lpc_power11_info = {
++    .name          = TYPE_PNV11_LPC,
++    .parent        = TYPE_PNV10_LPC,
++    .class_init    = pnv_lpc_power11_class_init,
++};
++
+ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+ {
+     PnvLpcController *lpc = PNV_LPC(dev);
+@@ -771,6 +784,7 @@ static void pnv_lpc_register_types(void)
+     type_register_static(&pnv_lpc_power8_info);
+     type_register_static(&pnv_lpc_power9_info);
+     type_register_static(&pnv_lpc_power10_info);
++    type_register_static(&pnv_lpc_power11_info);
  }
  
- type_init(pnv_homer_register_types);
-diff --git a/include/hw/ppc/pnv_homer.h b/include/hw/ppc/pnv_homer.h
-index b1c5d498dc55..8f1cc8135937 100644
---- a/include/hw/ppc/pnv_homer.h
-+++ b/include/hw/ppc/pnv_homer.h
-@@ -35,6 +35,9 @@ DECLARE_INSTANCE_CHECKER(PnvHomer, PNV9_HOMER,
- #define TYPE_PNV10_HOMER TYPE_PNV_HOMER "-POWER10"
- DECLARE_INSTANCE_CHECKER(PnvHomer, PNV10_HOMER,
-                          TYPE_PNV10_HOMER)
-+#define TYPE_PNV11_HOMER TYPE_PNV_HOMER "-POWER11"
-+DECLARE_INSTANCE_CHECKER(PnvHomer, PNV11_HOMER,
-+                         TYPE_PNV11_HOMER)
+ type_init(pnv_lpc_register_types)
+diff --git a/include/hw/ppc/pnv_lpc.h b/include/hw/ppc/pnv_lpc.h
+index 5d22c4557041..1069bca38dfd 100644
+--- a/include/hw/ppc/pnv_lpc.h
++++ b/include/hw/ppc/pnv_lpc.h
+@@ -41,6 +41,10 @@ DECLARE_INSTANCE_CHECKER(PnvLpcController, PNV9_LPC,
+ DECLARE_INSTANCE_CHECKER(PnvLpcController, PNV10_LPC,
+                          TYPE_PNV10_LPC)
  
- struct PnvHomer {
++#define TYPE_PNV11_LPC TYPE_PNV_LPC "-POWER11"
++DECLARE_INSTANCE_CHECKER(PnvLpcController, PNV11_LPC,
++                         TYPE_PNV11_LPC)
++
+ struct PnvLpcController {
      DeviceState parent;
+ 
 -- 
 2.44.0
 
