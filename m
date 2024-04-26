@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492488B38B0
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 15:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D868B38BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 15:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0LoT-0006zy-V3; Fri, 26 Apr 2024 09:40:30 -0400
+	id 1s0LpQ-0008Do-TX; Fri, 26 Apr 2024 09:41:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s0LoN-0006wL-Ei
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 09:40:23 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0LpJ-00088y-3g
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 09:41:21 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s0LoL-0008DA-Oe
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 09:40:23 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-572229f196bso2712409a12.0
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 06:40:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0Lp3-0008OK-Sb
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 09:41:19 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a559b919303so281626666b.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 06:41:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714138820; x=1714743620; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=DOykx7IdjFdFhCA3vyTGz07t+aLJmozQMUwmFjGwqOU=;
- b=QIU2hCxwqDaHvQ50WNWtpBDKG9gEdUqxCMr6Phh0NdtjKKRK3dn1WJwc3ipH0pCDPG
- UqEIx9ObZe2U8kT/saoFAgdp7+wB6JHKXwBv9zd3j2Ek1IZn0eilLtanxXlZhe0CAQ7b
- oz60kAFPtL3NDYsSiRil735vWPPuF2svh4kcBL2CppRBA1KYZdfJE6adM48goDoEiTi7
- gOxDJrzn1leY3PKlOia5PDngTigPg3/k+5NVBCzYsfoAV7/PG/GqTmY0SKMvpsLnYBj0
- jytxVKBEUNS6wqH3KQWpcapluw2De7iJr5u159ey7rXtbayU7pT/EpuOMzK3TAsuA9UZ
- myfQ==
+ d=linaro.org; s=google; t=1714138862; x=1714743662; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9d1v76W9YlKbYNjbplkeshWLMVq0Czwi1rWFOBXIq3U=;
+ b=rTX+tsUTPmB40pqbkt3tWUsgtZBPz7hJ9g/IblkwS5Jyl3UHEVDLej7n+RF7H4Sa/3
+ 7w/yBBpRbEvzYZBcmW0qqRnMJX59x1fRrC8m1wxDsPpYvSFwQH54l59J6fIrNMsIpM6n
+ b+PQOAebZb7kyxRA+QH3Dm0G/ldDrNf9AnTm733mkLSuG+kMZXrbeLB3zaFcvRWOUQgx
+ IP3UsKvaOHXLR6KG/VzIgGCAvk9kgwTd6c2jA/IfzrMfr6cFLakZt9Af0Nh/y2/fFp00
+ ulEKI9grHlCJdoaWn6A9QjgQh09IvOfvYfPaMr/gr0ZaK0vGi+mDfBxK4ii+AOMdww86
+ Kssw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714138820; x=1714743620;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DOykx7IdjFdFhCA3vyTGz07t+aLJmozQMUwmFjGwqOU=;
- b=alAyFExPtLTwQ2fTcZq/3kkViQjzcTl4Tm40rPf8LMVn0I9y1Z53G/U5oDXpaH8bXD
- S2Q1dXD8HOge/aaAPCDScnXuGBYPwllFK6R0BXLEVTrd0l7fTA0BMsUoD7BiOStDBpdx
- Z1W3aUkRf3ivEgPInmkkPNZ1RlO79UaqhoplxRghsu2BnfHxlLtwKnPI5Rk0nw6JO/MJ
- m6GV2o7Qu5LSkSUlksu9Hu75R3IUux7sJH1sH1j+RN4aFX8lKfQttyz26JJbEfJXrO3e
- hOCihLXdSO4nDC8HNHEqJxmyjgFLxmuDIdn5x2jyn3P7STpx0gOZL2aR7nv5bNcpR6f6
- A7nA==
-X-Gm-Message-State: AOJu0Yw+qOHT87hhfWUPx3Axajwg2/6svuLQvGWVOwAsjFmkUjz8Pu8S
- MALzk5ynFJzOeRCql80/ziiOjCD408kU7GscvAD+6gg2l9aEGvVeQuZpqod/4fp4+VfV1r4tACq
- gXpKjN2zn4cef8ji9Mxce/gS/AHer6oVV5JbzSQ==
-X-Google-Smtp-Source: AGHT+IG5qpeUCBJgC3kjpyigzIPCU/Ergjo9zNUC2y57Ty3APbvTDPGUSz+dMyzXCK6PHKp+gQnJhPH1Lcwkqf6eDTY=
-X-Received: by 2002:a05:6402:1bdd:b0:572:5fff:accd with SMTP id
- ch29-20020a0564021bdd00b005725fffaccdmr311727edb.6.1714138819802; Fri, 26 Apr
- 2024 06:40:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714138862; x=1714743662;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9d1v76W9YlKbYNjbplkeshWLMVq0Czwi1rWFOBXIq3U=;
+ b=j5Wr5V3mzv2Qy71NKliLc7pNtHpZ57l5GxI4U/DRTQrA2yUKDz3o59GTioBogjxvXj
+ F4j5h+4dvg9SNNPicAcn3xSKO/n34+ryA3pCelvDh1XrV+MDwkQpjxaKnC4WLcj8Zcqo
+ lQ8/Z0Cwmq71Mv8hejXvSZvlVf06jR9St6Cvjqt8DUuaJBq2WoHWZMwWbTiijMsn8NqG
+ i7mVDB286gjwidIR/xeHGqBJ3YzOvu5Rx0DscgJOk3AT0FytGVFG/5VTsD9KvOGeqqLe
+ F0Or6mfE15EmVewfx5uvnGAuOhAL7gqslYk3iylV58MkAqxvGOwBhS7+GGeA4k0cVfv0
+ 4wVQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXMigmsT5bgVWR8titv+JmOMn/6kHfz6J8bUUpcmiEKn6SDE8IZwBNfMf1a62pFM/fvJsvcJvbN8DYif0vYXIHr3kgyfIM=
+X-Gm-Message-State: AOJu0YwoRjDuycaJkTeU/mPP3DLsfedDd437SeNiOqwQyhqrJeERffsX
+ t5TiE7FA0yYdWoZmDqTCzdMyafW3k9x9+qiftFQF5hfkZrK/sIja4XyVL7YyNM8=
+X-Google-Smtp-Source: AGHT+IHCd4fMBLOnD9NdP71knPxoAFHd/OSl+1gP1QNc5AUEfkQ+Lxoa2Uo4NsJY8iReEXNz02vv1w==
+X-Received: by 2002:a17:906:34c3:b0:a58:d7d8:2f4d with SMTP id
+ h3-20020a17090634c300b00a58d7d82f4dmr986007ejb.61.1714138862016; 
+ Fri, 26 Apr 2024 06:41:02 -0700 (PDT)
+Received: from [192.168.69.100] (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
+ [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
+ m12-20020a1709062b8c00b00a58d438ed2esm519056ejg.139.2024.04.26.06.41.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 26 Apr 2024 06:41:01 -0700 (PDT)
+Message-ID: <fa4a0f09-a5f1-481a-8f2b-20a4df1eff59@linaro.org>
+Date: Fri, 26 Apr 2024 15:41:00 +0200
 MIME-Version: 1.0
-References: <20240423150951.41600-1-pbonzini@redhat.com>
- <20240423150951.41600-56-pbonzini@redhat.com>
-In-Reply-To: <20240423150951.41600-56-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 26 Apr 2024 14:40:09 +0100
-Message-ID: <CAFEAcA9SFtGDu2Xhna3tEqnWcGbfNW-uxhQqdxoTq=SN56eh=A@mail.gmail.com>
-Subject: Re: [PULL 55/63] kvm: handle KVM_EXIT_MEMORY_FAULT
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Chao Peng <chao.p.peng@linux.intel.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] hw/watchdog/sbsa_gwdt: Make watchdog timer
+ frequency a QOM property
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+References: <20240426122913.3427983-1-peter.maydell@linaro.org>
+ <20240426122913.3427983-4-peter.maydell@linaro.org>
+ <36b9a714-44ff-4b60-a23d-89672a98f46e@linaro.org>
+ <CAFEAcA-ajhEXq4wJW-qp_scL0JqfJXCzZNvtmHtQEJLcRhj7-A@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA-ajhEXq4wJW-qp_scL0JqfJXCzZNvtmHtQEJLcRhj7-A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,120 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 23 Apr 2024 at 16:16, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: Chao Peng <chao.p.peng@linux.intel.com>
->
-> Upon an KVM_EXIT_MEMORY_FAULT exit, userspace needs to do the memory
-> conversion on the RAMBlock to turn the memory into desired attribute,
-> switching between private and shared.
->
-> Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
-> KVM_EXIT_MEMORY_FAULT happens.
->
-> Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
-> guest_memfd memory backend.
->
-> Note, KVM_EXIT_MEMORY_FAULT returns with -EFAULT, so special handling is
-> added.
->
-> When page is converted from shared to private, the original shared
-> memory can be discarded via ram_block_discard_range(). Note, shared
-> memory can be discarded only when it's not back'ed by hugetlb because
-> hugetlb is supposed to be pre-allocated and no need for discarding.
->
-> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
-> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
->
-> Message-ID: <20240320083945.991426-13-michael.roth@amd.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On 26/4/24 15:28, Peter Maydell wrote:
+> On Fri, 26 Apr 2024 at 13:46, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Hi Peter,
+>>
+>> On 26/4/24 14:29, Peter Maydell wrote:
+>>> Currently the sbsa_gdwt watchdog device hardcodes its frequency at
+>>> 62.5MHz. In real hardware, this watchdog is supposed to be driven
+>>> from the system counter, which also drives the CPU generic timers.
+>>> Newer CPU types (in particular from Armv8.6) should have a CPU
+>>> generic timer frequency of 1GHz, so we can't leave the watchdog
+>>> on the old QEMU default of 62.5GHz.
+>>>
+>>> Make the frequency a QOM property so it can be set by the board,
+>>> and have our only board that uses this device set that frequency
+>>> to the same value it sets the CPU frequency.
+>>>
+>>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+>>> ---
+>>>    include/hw/watchdog/sbsa_gwdt.h |  3 +--
+>>>    hw/arm/sbsa-ref.c               |  1 +
+>>>    hw/watchdog/sbsa_gwdt.c         | 15 ++++++++++++++-
+>>>    3 files changed, 16 insertions(+), 3 deletions(-)
+>>
+>>
+>>> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+>>> index 36f6f717b4b..57c337fd92a 100644
+>>> --- a/hw/arm/sbsa-ref.c
+>>> +++ b/hw/arm/sbsa-ref.c
+>>> @@ -543,6 +543,7 @@ static void create_wdt(const SBSAMachineState *sms)
+>>>        SysBusDevice *s = SYS_BUS_DEVICE(dev);
+>>>        int irq = sbsa_ref_irqmap[SBSA_GWDT_WS0];
+>>>
+>>> +    qdev_prop_set_uint64(dev, "clock-frequency", SBSA_GTIMER_HZ);
+>>
+>> Since we have access to the CPU and its generic timer, what about
+>> just keep the wdg in sync, as smth like:
+>>
+>>     qdev_prop_set_uint64(dev, "clock-frequency",
+>>                          object_property_get_uint(OBJECT(some_cpu),
+>>                                                   "cntfrq", errp));
+> 
+> That introduces an implicit ordering requirement that
+> the CPU has been created before the watchdog, which I'm
+> not super enthusiastic about. "The platform knows the
+> frequency and sets it on the devices that care" seems
+> more straightforward to me.
+> 
+> (The really-follow-the-hardware approach here would be to
+> model the memory mapped system counter and then wire that
+> up to both the CPUs and the watchdog, but that's a lot
+> of extra work. I have some half-baked patches in that
+> direction but for the moment I figure doing the simple
+> thing is all we need.)
 
-Hi; Coverity points out an issue with this code (CID 1544114):
+Yeah, since the clock is fixed, the current patch is
+good enough.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-
-> +int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-> +{
-> +    MemoryRegionSection section;
-> +    ram_addr_t offset;
-
-offset here is not initialized...
-
-> +    MemoryRegion *mr;
-> +    RAMBlock *rb;
-> +    void *addr;
-> +    int ret = -1;
-> +
-> +    trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
-> +
-> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_real_host_page_size()) ||
-> +        !QEMU_PTR_IS_ALIGNED(size, qemu_real_host_page_size())) {
-> +        return -1;
-> +    }
-> +
-> +    if (!size) {
-> +        return -1;
-> +    }
-> +
-> +    section = memory_region_find(get_system_memory(), start, size);
-> +    mr = section.mr;
-> +    if (!mr) {
-> +        return -1;
-> +    }
-> +
-> +    if (!memory_region_has_guest_memfd(mr)) {
-> +        error_report("Converting non guest_memfd backed memory region "
-> +                     "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
-> +                     start, size, to_private ? "private" : "shared");
-> +        goto out_unref;
-> +    }
-> +
-> +    if (to_private) {
-> +        ret = kvm_set_memory_attributes_private(start, size);
-> +    } else {
-> +        ret = kvm_set_memory_attributes_shared(start, size);
-> +    }
-> +    if (ret) {
-> +        goto out_unref;
-> +    }
-> +
-> +    addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
-> +    rb = qemu_ram_block_from_host(addr, false, &offset);
-
-...and this call to qemu_ram_block_from_host() will only initialize
-offset if it does not fail (i.e. doesn't return NULL)...
-
-> +
-> +    if (to_private) {
-> +        if (rb->page_size != qemu_real_host_page_size()) {
-
-...but here we assume rb is not NULL...
-
-> +            /*
-> +             * shared memory is backed by hugetlb, which is supposed to be
-> +             * pre-allocated and doesn't need to be discarded
-> +             */
-> +            goto out_unref;
-> +        }
-> +        ret = ram_block_discard_range(rb, offset, size);
-> +    } else {
-> +        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
-
-...and here we use offset assuming it has been initialized.
-
-I think this code should either handle the case where
-qemu_ram_block_from_host() fails, or, if it is impossible
-for it to fail in this situation, add an assert() and a
-comment about why we know it can't fail.
-
-> +    }
-> +
-> +out_unref:
-> +    memory_region_unref(mr);
-> +    return ret;
-> +}
-
-thanks
--- PMM
 
