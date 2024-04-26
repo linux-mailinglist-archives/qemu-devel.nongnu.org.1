@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2B38B4051
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08028B4071
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:51:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUr-000632-7U; Fri, 26 Apr 2024 15:44:37 -0400
+	id 1s0RUv-0006c8-JF; Fri, 26 Apr 2024 15:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUS-0003HK-9Y
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:12 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUX-0003sT-Fb
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:17 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUO-0003SY-Nu
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:11 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57225322312so3651116a12.1
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:44:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUU-0003Yc-CD
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:17 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-56e69a51a33so2601944a12.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:44:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160646; x=1714765446; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160652; x=1714765452; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Yi4qzwVEIokTDVOXJGX3UXAbAGnKr2+Pju6ZmUzQWug=;
- b=JlxMWkm6oUDxpEPsHc/9FkGba94rEFG08N4HJV7mUv1m0yeOHoU2DJoDRS0OEo4Wca
- vzahnq5869oMVyWsFAMN88xBj0rMt8hnyO6UanWMpWZLtDHue7x5ubhg3EHfrYjW4DxP
- Uwa94TyVsLWQkCLPJpxYPsilBxmBNF7Q0FHir+wudK56esIlPMwjhCenbwE4PRUYoeWm
- jIiYXrSdLzFMbx/OYF4oQQ+3+s3QBfesDzSjCHT3B3JRf2TS5JUVgVS2642G89mloArV
- 99D9M5jxbDbBSSnFKMp0kjjJ0t78/xhjIMiO2D2SJJIrI3QMQDeIwcr5wwbp2IVNEU0l
- cP1g==
+ bh=Qa1f/IUXOXDzam0s/oPvMcTs9laXpRm0rBkY9PGU7o4=;
+ b=Qz99Ul1auSLLbpesj85n+v7q8ur+r9QQJWbQbRTA8K9gGd2/eNGPc+6Jvg027fA/vR
+ LlK6W+w+Jiq8gKWvKJqDED+IvjbR/f0gsxSlbZjJ+kOvSXWM7PhbCXxbg6VS5k0UK7TP
+ V3WVA63eW9fnGhRfl5yrnslTzYZq0aAVAi0/VYf8IvJLOrj9zNrAuIYYndK/XuYPaAt1
+ Uj9CvcNuG6c1OV0JJZ5aQINacJUSww1NDU+ck1iJM4NNnh/vM7DAp/fy+UykG7Ebv8z6
+ Y2uDt3UaGyltaPlbgWvGkSpnXgk9iyDAY1cmm2EgLWrUfk868+ujxJVo0HfVANPEQMVP
+ 5e1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160646; x=1714765446;
+ d=1e100.net; s=20230601; t=1714160652; x=1714765452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Yi4qzwVEIokTDVOXJGX3UXAbAGnKr2+Pju6ZmUzQWug=;
- b=NEbvCJ8PRSzwsWNASVcxubew6WXjlAfX9N7K4ol7/ySDCYpC9CTP7iQGCLkhm2pZ8R
- GH65nWf9F/mxsW1uPzap81faa1hqSHhPP2rIgLLwABQbI3bAvGyo1d8/qoXDF233fS2r
- ve4ZbMdKv97yj5VpiHVCQRUN0XS4hvd82LKrdQg8CVhA4gGsbg/zXCo8Ntthrz9TTVtV
- N7BA7/wf6PS8QceURzKzwgnMs0xQDZcfQKhh7tsYdUqldawSjFYD4mhoPW9g6atFxHAM
- pQMpYP6OvQishojaC58SbpBNW8wIGPcJeXbcZVqiD7zdwUHGN1yIoLBkJoZXSHTWA3xB
- 83gw==
-X-Gm-Message-State: AOJu0YwXGUFZxQM4d9b/gNrl99RyqVO9JIwb0OCvdpWn2UuwyPLCZ22w
- 1hZUpPXb2VjoDydYBxkzOVq8wjT0Tu1bqejYhqcWrJhnDllvw9tDQPxqV+8oW9NM8MZOiAVrwyF
- ZRnM=
-X-Google-Smtp-Source: AGHT+IFXMGCYbRnNfazAzNLEZBwThw+jXzRFYB0Gm2woHPKm9YaOPwh/RhTlp5jRRRkn11wGYFVPfA==
-X-Received: by 2002:a50:8d42:0:b0:56e:2e10:7dad with SMTP id
- t2-20020a508d42000000b0056e2e107dadmr2804865edt.35.1714160645819; 
- Fri, 26 Apr 2024 12:44:05 -0700 (PDT)
+ bh=Qa1f/IUXOXDzam0s/oPvMcTs9laXpRm0rBkY9PGU7o4=;
+ b=USt0J+NS7oJn3wlCOqJBHoUjElCaLhJILxrWDP8pKQbkwRGF0WFk4s4YMNJJLcslzm
+ DTrzytnumDGosmohzqp3C3xnh2JGOtH1GuO+he2Hz9jqywnVjD+mLdxxAuv26DemGfZW
+ 5pe1JS0/j7uoIUsINv7yIlieqlCLS9N5HyHokgXBYc29GYeY5yiMo9l1FdAaD49ZOLRR
+ oMrZzgT3WaVFzymr2n1Wjs+tx+lCO+wgOJF5SvEu2ek6gp1NgwhZU/AZLfoEy9tohxhS
+ 3RTRLKMKcqs6PVtp/dVwfatLXG7NtLxM0ODYxpjtnnSupQrO7E6RXcO0LlntG6QJeZ1D
+ BPCQ==
+X-Gm-Message-State: AOJu0YwHpPMED4dmWMv4CeggXBTmAxjRAWcgxgFs5qRe3aVMscGQ84/X
+ sbue9ZwFwWQMAwLnAajtbuQLA1QFpkiCjU6/ecLI3BaV3dHW68lcKqkOkEewTJUobaFmnQQz3Mw
+ TUY4=
+X-Google-Smtp-Source: AGHT+IEWjpdROkVC/dGaUyVHdKRub6lZn7ILmq4HxD3+qnMmZ8YoDYAhb2tuxEYCkhy7CRw/gP9Sjg==
+X-Received: by 2002:a17:907:9694:b0:a58:bb3e:937b with SMTP id
+ hd20-20020a170907969400b00a58bb3e937bmr3498283ejc.63.1714160652042; 
+ Fri, 26 Apr 2024 12:44:12 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- bf17-20020a0564021a5100b0056bf6287f32sm10263342edb.26.2024.04.26.12.44.04
+ dk21-20020a170907941500b00a55aee4bf74sm6993909ejc.79.2024.04.26.12.44.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:44:05 -0700 (PDT)
+ Fri, 26 Apr 2024 12:44:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Reinoud Zandijk <reinoud@netbsd.org>
-Subject: [PULL 21/38] accel/nvmm: Use accel-specific per-vcpu @dirty field
-Date: Fri, 26 Apr 2024 21:41:41 +0200
-Message-ID: <20240426194200.43723-22-philmd@linaro.org>
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Alexander Graf <agraf@csgraf.de>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 22/38] accel/hvf: Use accel-specific per-vcpu @dirty field
+Date: Fri, 26 Apr 2024 21:41:42 +0200
+Message-ID: <20240426194200.43723-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,107 +99,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NVMM has a specific use of the CPUState::vcpu_dirty field
+HVF has a specific use of the CPUState::vcpu_dirty field
 (CPUState::vcpu_dirty is not used by common code).
 To make this field accel-specific, add and use a new
 @dirty variable in the AccelCPUState structure.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240424174506.326-3-philmd@linaro.org>
+Message-Id: <20240424174506.326-4-philmd@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ include/hw/core/cpu.h     |  3 +--
+ include/sysemu/hvf_int.h  |  1 +
+ accel/hvf/hvf-accel-ops.c | 10 +++++-----
+ target/arm/hvf/hvf.c      |  4 ++--
+ target/i386/hvf/hvf.c     |  4 ++--
+ target/i386/hvf/x86hvf.c  |  2 +-
+ 6 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index 49a3a3b916..f9cced53b3 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -30,6 +30,7 @@ struct AccelCPUState {
-     struct nvmm_vcpu vcpu;
-     uint8_t tpr;
-     bool stop;
-+    bool dirty;
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 7f037b158e..cead8f01a6 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -525,6 +525,7 @@ struct CPUState {
+     uint32_t kvm_fetch_index;
+     uint64_t dirty_pages;
+     int kvm_vcpu_stats_fd;
++    bool vcpu_dirty;
  
-     /* Window-exiting for INTs/NMIs. */
-     bool int_window_exit;
-@@ -507,7 +508,7 @@ nvmm_io_callback(struct nvmm_io *io)
+     /* Use by accel-block: CPU is executing an ioctl() */
+     QemuLockCnt in_ioctl_lock;
+@@ -546,8 +547,6 @@ struct CPUState {
+     int32_t exception_index;
+ 
+     AccelCPUState *accel;
+-    /* shared by kvm and hvf */
+-    bool vcpu_dirty;
+ 
+     /* Used to keep track of an outstanding cpu throttle thread for migration
+      * autoconverge
+diff --git a/include/sysemu/hvf_int.h b/include/sysemu/hvf_int.h
+index 718beddcdd..4a327fd526 100644
+--- a/include/sysemu/hvf_int.h
++++ b/include/sysemu/hvf_int.h
+@@ -55,6 +55,7 @@ struct AccelCPUState {
+     bool vtimer_masked;
+     sigset_t unblock_ipi_mask;
+     bool guest_debug_enabled;
++    bool dirty;
+ };
+ 
+ void assert_hvf_ok(hv_return_t ret);
+diff --git a/accel/hvf/hvf-accel-ops.c b/accel/hvf/hvf-accel-ops.c
+index d94d41ab6d..40d4187d9d 100644
+--- a/accel/hvf/hvf-accel-ops.c
++++ b/accel/hvf/hvf-accel-ops.c
+@@ -204,15 +204,15 @@ static void hvf_set_phys_mem(MemoryRegionSection *section, bool add)
+ 
+ static void do_hvf_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->accel->dirty) {
+         hvf_get_registers(cpu);
+-        cpu->vcpu_dirty = true;
++        cpu->accel->dirty = true;
+     }
+ }
+ 
+ static void hvf_cpu_synchronize_state(CPUState *cpu)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->accel->dirty) {
+         run_on_cpu(cpu, do_hvf_cpu_synchronize_state, RUN_ON_CPU_NULL);
+     }
+ }
+@@ -221,7 +221,7 @@ static void do_hvf_cpu_synchronize_set_dirty(CPUState *cpu,
+                                              run_on_cpu_data arg)
+ {
+     /* QEMU state is the reference, push it to HVF now and on next entry */
+-    cpu->vcpu_dirty = true;
++    cpu->accel->dirty = true;
+ }
+ 
+ static void hvf_cpu_synchronize_post_reset(CPUState *cpu)
+@@ -402,7 +402,7 @@ static int hvf_init_vcpu(CPUState *cpu)
+ #else
+     r = hv_vcpu_create((hv_vcpuid_t *)&cpu->accel->fd, HV_VCPU_DEFAULT);
+ #endif
+-    cpu->vcpu_dirty = 1;
++    cpu->accel->dirty = true;
+     assert_hvf_ok(r);
+ 
+     cpu->accel->guest_debug_enabled = false;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 65a5601804..db628c1cba 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -806,9 +806,9 @@ int hvf_put_registers(CPUState *cpu)
+ 
+ static void flush_cpu_state(CPUState *cpu)
+ {
+-    if (cpu->vcpu_dirty) {
++    if (cpu->accel->dirty) {
+         hvf_put_registers(cpu);
+-        cpu->vcpu_dirty = false;
++        cpu->accel->dirty = false;
+     }
+ }
+ 
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 1ed8ed5154..e493452acb 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -419,9 +419,9 @@ int hvf_vcpu_exec(CPUState *cpu)
      }
  
-     /* Needed, otherwise infinite loop. */
--    current_cpu->vcpu_dirty = false;
-+    current_cpu->accel->dirty = false;
- }
- 
- static void
-@@ -516,7 +517,7 @@ nvmm_mem_callback(struct nvmm_mem *mem)
-     cpu_physical_memory_rw(mem->gpa, mem->data, mem->size, mem->write);
- 
-     /* Needed, otherwise infinite loop. */
--    current_cpu->vcpu_dirty = false;
-+    current_cpu->accel->dirty = false;
- }
- 
- static struct nvmm_assist_callbacks nvmm_callbacks = {
-@@ -726,9 +727,9 @@ nvmm_vcpu_loop(CPUState *cpu)
-      * Inner VCPU loop.
-      */
      do {
 -        if (cpu->vcpu_dirty) {
 +        if (cpu->accel->dirty) {
-             nvmm_set_registers(cpu);
+             hvf_put_registers(cpu);
 -            cpu->vcpu_dirty = false;
 +            cpu->accel->dirty = false;
          }
  
-         if (qcpu->stop) {
-@@ -826,32 +827,32 @@ static void
- do_nvmm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_get_registers(cpu);
--    cpu->vcpu_dirty = true;
-+    cpu->accel->dirty = true;
- }
+         if (hvf_inject_interrupts(cpu)) {
+diff --git a/target/i386/hvf/x86hvf.c b/target/i386/hvf/x86hvf.c
+index be2c46246e..1569f860eb 100644
+--- a/target/i386/hvf/x86hvf.c
++++ b/target/i386/hvf/x86hvf.c
+@@ -427,7 +427,7 @@ int hvf_process_events(CPUState *cs)
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
  
- static void
- do_nvmm_cpu_synchronize_post_reset(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_set_registers(cpu);
--    cpu->vcpu_dirty = false;
-+    cpu->accel->dirty = false;
- }
- 
- static void
- do_nvmm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
- {
-     nvmm_set_registers(cpu);
--    cpu->vcpu_dirty = false;
-+    cpu->accel->dirty = false;
- }
- 
- static void
- do_nvmm_cpu_synchronize_pre_loadvm(CPUState *cpu, run_on_cpu_data arg)
- {
--    cpu->vcpu_dirty = true;
-+    cpu->accel->dirty = true;
- }
- 
- void nvmm_cpu_synchronize_state(CPUState *cpu)
- {
--    if (!cpu->vcpu_dirty) {
-+    if (!cpu->accel->dirty) {
-         run_on_cpu(cpu, do_nvmm_cpu_synchronize_state, RUN_ON_CPU_NULL);
+-    if (!cs->vcpu_dirty) {
++    if (!cs->accel->dirty) {
+         /* light weight sync for CPU_INTERRUPT_HARD and IF_MASK */
+         env->eflags = rreg(cs->accel->fd, HV_X86_RFLAGS);
      }
- }
-@@ -981,7 +982,7 @@ nvmm_init_vcpu(CPUState *cpu)
-         }
-     }
- 
--    cpu->vcpu_dirty = true;
-+    cpu->accel->dirty = true;
-     cpu->accel = qcpu;
- 
-     return 0;
 -- 
 2.41.0
 
