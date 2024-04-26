@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E518B405E
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8188B4046
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:45:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RT4-0000cr-8p; Fri, 26 Apr 2024 15:42:46 -0400
+	id 1s0RTA-0000oX-L9; Fri, 26 Apr 2024 15:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RT1-0000bT-U5
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:43 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RT9-0000m2-3F
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:51 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RSz-0002vc-9F
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:43 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-56e6acb39d4so3272355a12.1
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:42:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RT6-0002xH-Er
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:42:50 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-571c22d9de4so3503243a12.3
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:42:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160559; x=1714765359; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160565; x=1714765365; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4X/VhmwXvkdhIQuo7rHVj9w7BkqzRhVw95Tx0jafh5o=;
- b=l9DqV5US4XkYQL/ZnZc0L9FJ61xIS7vuMqTfa7mzfRLeohtqgjPS9ATJzwIkSvJfKC
- bQcqvM8U4/mVaNOeei/kl+dRPTE8aeV6JM4KkeOfTKyDfJnacmFXj+4PGsnn+9jn9fEG
- VatWhEfItd20RGFa6E9sy6/2YY+R9bCssHVMGWAtJprHvlq2vrw7PlKp9DZZtbK5aQuN
- PO4VJG4KzUGrbHrZH3Q29CaJBoQIo850T8wEdjbP3COASE2+23OUT6ImGfYNnzu9/ZsY
- JuLEw32lXebkM2Iuah7oPowiYuzN6V5SSIh9TPl9TvSzlK8ttRnVdLkAn2xu8CVjy0J+
- lVUw==
+ bh=t0nMCqhYKzp5r2ZnGbDu0d0x6qlsj2uY/rxTdGpirtw=;
+ b=qN6nv4rJWdPVWrNZoycw2XsB/z87C8srPfzNU8bIrHq+iSq30rZILMLDCinYkjOam4
+ PDWeF44Na8uzf0xzL9Hd4TZTn5/wZxAhtjtfzQfD5FEcbtzy3NK0L+gGe7qpN/v8n4s/
+ piZlqI9++tetkfnWLMxscTcTPo+AZIsoFNebY+gfdJMeaD9PhklZi4ULrmIuCeLMx1MM
+ /SseirdfFr6FRAku2YRFDo4NrJejKUZVu8opo8rNWxeOVj/8tbRbn4FAvf7/qv4rPRl3
+ BnyipHYfzkrkeQAFEJ/VSG5/6DjZGXR5JfuxzxIjjUl7A43wfJnrmTxM/iRI+z3FygyP
+ 5sgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160559; x=1714765359;
+ d=1e100.net; s=20230601; t=1714160565; x=1714765365;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4X/VhmwXvkdhIQuo7rHVj9w7BkqzRhVw95Tx0jafh5o=;
- b=dMs27XVVJ6/qJU5ZdKOOfhbZBlO5nj1TC/fLwyBlSl95OLxLvjMO05hELzY43fA0LQ
- PgqSwGAHCW6okFb+3OsAHup+yqkTGkQHTurCIygJCJQ7VeCRkiXzLvzPMyzSuVhho3sf
- eeoLlCF4wzUrPAU+sVDo4fVZuHR/PgwMotPDvF+pvcCXZdYHINHKVGEhukHFiBT6yFrR
- CJutrS4nWzZ32Go8q7XKN5Pu+fqosB26IvFmnLa59zLqcXGjL5IQBGLDRLFXNjsqATDv
- GA7kTSXdagacrsGvkkDcq+xaoJxvHSXJZfMMpSpY+1k0pfvEf1hBUt2MXOrYnBjhsVsc
- TC6Q==
-X-Gm-Message-State: AOJu0YxlHMWldyp3s5Bsxc/j4HIuh9dnS/M2DlUULxfmzs1Fzntfenvq
- UIknir35Hc5z903FHE9Ga/51iJ6gGFIjYCPh2ikfDaG266CNoQw506Gbyt9r01TqeaCiPTq2Bin
- hZyg=
-X-Google-Smtp-Source: AGHT+IGxJBhgvUwhhWCAgenYBiSIUi2w5crKR0/10WrNMXoZqN9Fol3uSvd/ZTOG18vXH6erYN0+GQ==
-X-Received: by 2002:a17:906:28d9:b0:a55:63de:9aa9 with SMTP id
- p25-20020a17090628d900b00a5563de9aa9mr2581937ejd.49.1714160559645; 
- Fri, 26 Apr 2024 12:42:39 -0700 (PDT)
+ bh=t0nMCqhYKzp5r2ZnGbDu0d0x6qlsj2uY/rxTdGpirtw=;
+ b=XB1CXvcpj2h2zDftneBgyvvYZ5yWqqowT5aEDIH5Da87adTB9q3/Wh46dV/h/TB0hW
+ UmFDlzV7kX1Ak3/Fv9yONTISG9Lyqk1b7yDPlmKWDgpB3NGanGEpXMdCkvYGG9EZwd5W
+ /DLfQHszLkyKHL7m9f5H2y/Mvp5gZAc0bFoo7nR9K++3vJOfxZgnlMm7rg5CnhozXkir
+ 1DgVeWNpN4EebFdyhH0a4mE670OcuEq1BfKr+dUh3lpgZWWo7aLBqdleBOQ5oDLGjWvI
+ w2npsrpL6ElkZYQzjoqaQsG5PDFR/HeSyUmxWk0d90W0KTaUuGZjQnSXDvHUGVERHYoF
+ lJOA==
+X-Gm-Message-State: AOJu0YxM4H3l8Znzqj/rRNtfvEyuMrRIQehhTr+nhUKkOirPmiiCi9p3
+ kRB6R21Qeo3JjpX/Qa/Fi2l2wsPODj6ytpCQXds5WLKusNNwegtWA6GD5ZdqlGH7+Tjd+BHKH2A
+ LDBc=
+X-Google-Smtp-Source: AGHT+IHy1tLGCW7Nem/jvC7aOudNiOgNhqRxkuX/J7UTcovAnA7B/AIFC8TXFy/FYnitwiaNryc9TQ==
+X-Received: by 2002:a50:a6dc:0:b0:572:6b03:607 with SMTP id
+ f28-20020a50a6dc000000b005726b030607mr44695edc.42.1714160565256; 
+ Fri, 26 Apr 2024 12:42:45 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- n11-20020a170906b30b00b00a5242e285aesm10798927ejz.184.2024.04.26.12.42.38
+ cf8-20020a0564020b8800b0056c24df7a78sm10395889edb.5.2024.04.26.12.42.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:42:39 -0700 (PDT)
+ Fri, 26 Apr 2024 12:42:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 06/38] gdbstub: Include missing 'hw/core/cpu.h' header
-Date: Fri, 26 Apr 2024 21:41:26 +0200
-Message-ID: <20240426194200.43723-7-philmd@linaro.org>
+Subject: [PULL 07/38] gdbstub: Simplify #ifdef'ry in helpers.h
+Date: Fri, 26 Apr 2024 21:41:27 +0200
+Message-ID: <20240426194200.43723-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,35 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Functions such gdb_get_cpu_pid() dereference CPUState so
-require the structure declaration from "hw/core/cpu.h":
-
-  static uint32_t gdb_get_cpu_pid(CPUState *cpu)
-  {
-    ...
-    return cpu->cluster_index + 1;
-  }
+Slightly simplify by checking NEED_CPU_H definition in header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-Message-Id: <20231211212003.21686-15-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240322161439.6448-2-philmd@linaro.org>
 ---
- gdbstub/gdbstub.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/gdbstub/helpers.h | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 9c23d44baf..9c2b8b5d0a 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -37,6 +37,7 @@
- #include "hw/cpu/cluster.h"
- #include "hw/boards.h"
- #endif
-+#include "hw/core/cpu.h"
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index 6b97610f48..6277a858a1 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -12,7 +12,10 @@
+ #ifndef _GDBSTUB_HELPERS_H_
+ #define _GDBSTUB_HELPERS_H_
  
- #include "sysemu/hw_accel.h"
- #include "sysemu/runstate.h"
+-#ifdef COMPILING_PER_TARGET
++#ifndef COMPILING_PER_TARGET
++#error "gdbstub helpers should only be included by target specific code"
++#endif
++
+ #include "cpu.h"
+ 
+ /*
+@@ -96,8 +99,4 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
+ #define ldtul_p(addr) ldl_p(addr)
+ #endif
+ 
+-#else
+-#error "gdbstub helpers should only be included by target specific code"
+-#endif
+-
+ #endif /* _GDBSTUB_HELPERS_H_ */
 -- 
 2.41.0
 
