@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C60C8B405F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEEB8B405C
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:48:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUX-0003dI-DR; Fri, 26 Apr 2024 15:44:17 -0400
+	id 1s0RUX-0003dT-Lx; Fri, 26 Apr 2024 15:44:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTx-0002A0-FQ
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:42 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RU9-0002Rs-16
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:54 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTv-0003DI-S7
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:41 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-56e69888a36so2712406a12.3
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RU1-0003Eo-Os
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:47 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-5724e69780bso2137809a12.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160618; x=1714765418; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160623; x=1714765423; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9nS9nr2d38U1wk5zUyYU/3btoMDNoRWUI74KASdsEvA=;
- b=g+Tkf84zsikpdMkMbE1hkX2lh2LBPmBiUoxePt0vAu4H3hyEJSkFWmMuxgt/baL1qI
- C1jWSFh0DEAU0/DHBV5XRYVo7eoL/emcw7cvaJhusHjEoM7NgzunVTn9w5mQHbOCRZPb
- 9Fx6YQ1gjviUPG0yY84MdMxWwLXZsN3lJTm56eykf89e/Fx4aIPAhze+h7dfDrUQzwYe
- JYJDPh8ERMp1SykfA7eXkoZi8ERWdrTDdGwYScDRKEwQ5jcGa80Kq+VzO85tztFKkTSM
- OwucoPCEpVV78CZFbiSmiii9IkJT4rttSOWzKzF/QGLed+us+ohgd7j0W+rVfayB4rht
- 20Qg==
+ bh=7ENBQU0RX+7z0jYkAe6EtdYUSGSuY24I2mpEgO+y4o0=;
+ b=qFvyHQittAKmODWxgVXsBe4Ov8PYrWSNK6/GUkdqbRgFvRN0Oy8XDFoPDIalHvP+dw
+ mJqP2fpz43U8fyf1+VGmvk02UG7w/zlNFWJVN+yYUs9OGQOjg7wm5KGV5nJs2pE9g8PJ
+ 1MKydN8toAgbovLi1Z3fT28QS1UCYLW4CkshqNsc6vDe8KiqD2/pAFKFPbbn3uTZGOGG
+ NrI9yZ0ctKmJ7CUQm28dsw0H4jcWw+cYiWAuDjRLQiZ1elXkSTW+K8Mw6yCWqTsjlszI
+ 1gq7TAued3ftv5HU97WLfQ1txFOP8uaf1aJUqhT7xGPGwgmYymI6AxqQgCOMhDQbiDHG
+ DaGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160618; x=1714765418;
+ d=1e100.net; s=20230601; t=1714160623; x=1714765423;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9nS9nr2d38U1wk5zUyYU/3btoMDNoRWUI74KASdsEvA=;
- b=OcWJwPUsY4M40mwp73ZcWDTaD9Pm9BkyZdF9e/L0KsNU8J+7TQ6bkcdVQDLKnwCPCP
- h15UigDroUPOnbH7MTZf9nONAP8IzTtTBIIOh8E5U+WAKGSLmgiD4Sdz1TUJSGK3uQS4
- W/nUznRd6yNtycNC7nzRuts7g/cwHfa1gI1hBntdEUDpdk3yD7lIR/mgWjT3kjIBKGyp
- TZFKLWA9kRf9M+T4Qak+Hm2C86i5YP5sFWNdS7NDWw1WS0UF5nVuGcCLIeDjKD0G7mHA
- Nc5PkJoggV6yYAxaXrV5E7lPZ0GUNqqDLVjnnQKEo9X0u9fal8SN2lRVDkKe4wjmXiMq
- w1EQ==
-X-Gm-Message-State: AOJu0YysliIvG27SjjEhJWW1HN2n3mK+r09DxImk6SZy7prQDA5BRihB
- DZyNWCHACP2kevSpR8FyfAiqVtRLvWjftvqP4XYGyTn721mdLdOpLL5j69xIWLTj5Lak+kY42Mz
- kaFg=
-X-Google-Smtp-Source: AGHT+IFkkgLcEqcDSW0Ui8ShcNFYSkrX4TLF0fM4+LetiD/lRYegGF5SHEkan4MHfprzwRiXv0dvyg==
-X-Received: by 2002:a17:906:f292:b0:a55:90c8:774f with SMTP id
- gu18-20020a170906f29200b00a5590c8774fmr2654479ejb.16.1714160617899; 
- Fri, 26 Apr 2024 12:43:37 -0700 (PDT)
+ bh=7ENBQU0RX+7z0jYkAe6EtdYUSGSuY24I2mpEgO+y4o0=;
+ b=SvVutiojXwh/vORos2p1+kP+EApnHhir6e1mnnx/jvrbNgKHp8GsA1doB+HLhSyy0W
+ WaYI25xwzKnXnW6iEKn+YAWbb209JpsR/vOnxV+uxHsY57flzc4deVRtFI/d49996lHL
+ iDFuCqx+43COuTR38lrYPfIr2eUQmugB9lmth/AZRj8uv4aZaePDHnchIrO/IWH7qo/5
+ L4yP9levDMZ9SL+bA9ebubx7YsicEMET3sOSCF55F4s81JOOVEs34cbr2hJNbecTWh+a
+ 0le8ACirb2q9QVqtTUjQeSXbZiBh498g9LIvt1Iwdl7sNlKb18qn1yATZxqQaLKX2jBg
+ qd3g==
+X-Gm-Message-State: AOJu0Yxj4EG4VmmV++KGzVNQScbovqJE6mOu7b9Vbz/TDZ5ZSnciNrZG
+ bGKJhO2lS+Eva2S8OSzJZqCZY4v10RvS/7Bu6xtEfx8DoQxAh9GoRfBTadpc3eOmx8gOWjXIQS9
+ /0t8=
+X-Google-Smtp-Source: AGHT+IFOXyRU0XboRrP8yvE6c/KL1v/K13UfHP9b7aI2p9uUVx6EI3q/HsZ+tUw+MtdSBACFe0SISg==
+X-Received: by 2002:a50:99d6:0:b0:56e:355d:2ece with SMTP id
+ n22-20020a5099d6000000b0056e355d2ecemr2481443edb.30.1714160623526; 
+ Fri, 26 Apr 2024 12:43:43 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- l2-20020a1709060e0200b00a4da28f42f1sm11065387eji.177.2024.04.26.12.43.36
+ ek17-20020a056402371100b0057266474cd2sm289245edb.15.2024.04.26.12.43.42
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:43:37 -0700 (PDT)
+ Fri, 26 Apr 2024 12:43:43 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 16/38] accel/tcg: Include missing 'hw/core/cpu.h' header
-Date: Fri, 26 Apr 2024 21:41:36 +0200
-Message-ID: <20240426194200.43723-17-philmd@linaro.org>
+Subject: [PULL 17/38] accel/tcg: Include missing headers in 'tb-jmp-cache.h'
+Date: Fri, 26 Apr 2024 21:41:37 +0200
+Message-ID: <20240426194200.43723-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,30 +95,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tcg_cpu_init_cflags() accesses CPUState fields, so requires
-"hw/core/cpu.h" to get its structure definition.
+Due to missing headers, when including "tb-jmp-cache.h" we might get:
+
+  accel/tcg/tb-jmp-cache.h:21:21: error: field ‘rcu’ has incomplete type
+     21 |     struct rcu_head rcu;
+        |                     ^~~
+  accel/tcg/tb-jmp-cache.h:24:9: error: unknown type name ‘vaddr’
+     24 |         vaddr pc;
+        |         ^~~~~
+
+Add the missing "qemu/rcu.h" and "exec/cpu-common.h" headers.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20231212123401.37493-12-philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240111162442.43755-1-philmd@linaro.org>
 ---
- accel/tcg/tcg-accel-ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ accel/tcg/tb-jmp-cache.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 9c957f421c..2c7b0cc09e 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -37,6 +37,8 @@
- #include "exec/tb-flush.h"
- #include "exec/gdbstub.h"
+diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
+index 4ab8553afc..184bb3e3e2 100644
+--- a/accel/tcg/tb-jmp-cache.h
++++ b/accel/tcg/tb-jmp-cache.h
+@@ -9,6 +9,9 @@
+ #ifndef ACCEL_TCG_TB_JMP_CACHE_H
+ #define ACCEL_TCG_TB_JMP_CACHE_H
  
-+#include "hw/core/cpu.h"
++#include "qemu/rcu.h"
++#include "exec/cpu-common.h"
 +
- #include "tcg-accel-ops.h"
- #include "tcg-accel-ops-mttcg.h"
- #include "tcg-accel-ops-rr.h"
+ #define TB_JMP_CACHE_BITS 12
+ #define TB_JMP_CACHE_SIZE (1 << TB_JMP_CACHE_BITS)
+ 
 -- 
 2.41.0
 
