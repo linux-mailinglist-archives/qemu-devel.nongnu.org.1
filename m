@@ -2,71 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDDF8B36FD
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F998B3744
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:31:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0KSr-0006C9-Sm; Fri, 26 Apr 2024 08:14:05 -0400
+	id 1s0Khg-0003BA-Cc; Fri, 26 Apr 2024 08:29:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s0KSo-0006Ao-T2
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:14:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s0KSh-0002Th-7v
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:14:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714133633;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=w6JR5VlUXsk9+UzoYxNC5y9SS1rfpBWHtMB86agaGjw=;
- b=iXGgSP6Oo7Rgd1mkjazB58OtlSpKSbLS2w0TIHM9woIYwIvEj5Dp/MaLT27+viYtW+jBY9
- YsUcuwHIUXjrVOtLf9xT/89ra28q8bGV1GBQJQPR9Mx+nC3zv0bPL7te98ZWS4rNoLR6AI
- tbon1Vydp6uQkNKUoVvROzFIf4Uzgh8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-322-WlNuJjNPNLagAjK-DbWDNw-1; Fri,
- 26 Apr 2024 08:13:51 -0400
-X-MC-Unique: WlNuJjNPNLagAjK-DbWDNw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6131D385A192;
- Fri, 26 Apr 2024 12:13:51 +0000 (UTC)
-Received: from srv1.redhat.com (unknown [10.45.225.126])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 529A7EC680;
- Fri, 26 Apr 2024 12:13:50 +0000 (UTC)
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 1/1] stubs: Add missing qga stubs
-Date: Fri, 26 Apr 2024 15:13:42 +0300
-Message-ID: <20240426121347.18843-2-kkostiuk@redhat.com>
-In-Reply-To: <20240426121347.18843-1-kkostiuk@redhat.com>
-References: <20240426121347.18843-1-kkostiuk@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s0Khd-00039y-QV
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:21 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s0Khb-00064e-3e
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:21 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2dac77cdf43so25377201fa.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 05:29:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714134555; x=1714739355; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aWOQg8i3ZSVw9+Yd0IWfmrzoraoNiCmCJ5QlhrxDKfA=;
+ b=G4eWA8hodvlsHnthIwlBLH6LuYDDjJb1yxcQY7zLTIS/Wl15h26DNLzX2rmCknLPX5
+ F3G6HBVRhs4TirkcBC0PQtPAB0zF6Z8B4N1RKBBrLTiXJEMemr/uN9iO581fQMHJuwUY
+ 7TtwOKlt/YVvioSL5EcA22r7d1CGBah2QKmYg9hQd3feAqgq/5v8YZzPXTlZbQhL/7/I
+ 1GbflY6PMYA3VTFjnQ/nXoEgbc76IW8+ooZ+1zKAiKWbAFYMjaoZqcsHazpBqxnoM/dN
+ 2K+8v6AQhUCjTxjFeytzVvsj2l0hyE2TkCNOEymwagBLZdl4lD+mOEtRbN8VAfjAuySU
+ qMkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714134555; x=1714739355;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aWOQg8i3ZSVw9+Yd0IWfmrzoraoNiCmCJ5QlhrxDKfA=;
+ b=ZOf9ohYt1V+aCzTptglA5jYvSpstIXsr9FJ3TU+JQsfGsdhOzcCgcxC/KaHslHE/d1
+ j4n+2G1AQEG+80+Zy7/v+xMTPraz2Oc35Kz8h/gBfP/RVTk+nCRANGsd44if0w8you+1
+ qOcibaHQD7/3z6vKzMzH/j61bmZ0z3fV4kKcp5RSx5hGFkOb6va8n8XW5z9c8A4cs4px
+ PHc9M3uF1bnMwv2jbzEToRZLi6an55Q5cOfpm6LVlSa23U5nhR0syqWzqwkX2OSbiK6r
+ ZjNrMYDXyb8I35Ztxknh0wZ6mGsNmagm/YxTSMlpKPm8H+DHeyQiO1lQfg7jsIsdvMgx
+ dOLQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXagevpMFSYQmk/m2/SIXgQqsKeyBTIOlYIVTYJqtbov6KVNeEyxgQp49ilXykoewWzJRcg+zadUQF/sen1BJysLdqVnaI=
+X-Gm-Message-State: AOJu0YwGbYQ70eiPyDKoztlREiDa3MTxmhIFKRc9ehrpTEV7uLlU/kwn
+ YT63IG+6qv78cNDxqln4R/Xhctx5rrYTL9GYGMZjkN9VDQ42B/KCtYl6TOnLVS8=
+X-Google-Smtp-Source: AGHT+IGDRYqsU7V8Bc47EPwXfDT5H8Btm/X4pSTmB9x5ZtXLlYOh8r3rko1sl3vfmtq1FKI+6mOQ5A==
+X-Received: by 2002:a2e:7808:0:b0:2de:9fee:40ea with SMTP id
+ t8-20020a2e7808000000b002de9fee40eamr1474785ljc.51.1714134555298; 
+ Fri, 26 Apr 2024 05:29:15 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ m15-20020a05600c460f00b0041a964b55ddsm1397134wmo.1.2024.04.26.05.29.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 26 Apr 2024 05:29:14 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH v2 0/4] target/arm: Make the counter frequency default 1GHz
+ for new CPUs, machines
+Date: Fri, 26 Apr 2024 13:29:09 +0100
+Message-Id: <20240426122913.3427983-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,69 +95,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Compilation QGA without system and user fails
-./configure --disable-system --disable-user --enable-guest-agent
+In previous versions of the Arm architecture, the frequency of the
+generic timers as reported in CNTFRQ_EL0 could be any IMPDEF value,
+and for QEMU we picked 62.5MHz, giving a timer tick period of 16ns.
+In Armv8.6, the architecture standardized this frequency to 1GHz.
 
-Link failure:
-  /usr/bin/ld: libqemuutil.a.p/util_main-loop.c.o: in function
-`os_host_main_loop_wait':
-   ../util/main-loop.c:303: undefined reference to `replay_mutex_unlock'
-   /usr/bin/ld: ../util/main-loop.c:307: undefined reference to
-`replay_mutex_lock'
-   /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function
-`error_printf':
-   ../util/error-report.c:38: undefined reference to `error_vprintf'
-   /usr/bin/ld: libqemuutil.a.p/util_error-report.c.o: in function
-`vreport':
-   ../util/error-report.c:225: undefined reference to `error_vprintf'
-   /usr/bin/ld: libqemuutil.a.p/util_qemu-timer.c.o: in function
-`timerlist_run_timers':
-   ../util/qemu-timer.c:562: undefined reference to `replay_checkpoint'
-   /usr/bin/ld: ../util/qemu-timer.c:530: undefined reference to
-`replay_checkpoint'
-   /usr/bin/ld: ../util/qemu-timer.c:525: undefined reference to
-`replay_checkpoint'
-   ninja: build stopped: subcommand failed.
+Because there is no ID register feature field that indicates whether a
+CPU is v8.6 or that it ought to have this counter frequency, we
+implement this by changing our default CNTFRQ value for all CPUs, with
+exceptions for backwards compatibility:
 
-Fixes: 3a15604900 ("stubs: include stubs only if needed")
+ * CPU types which we already implement will retain the old
+   default value. None of these are v8.6 CPUs, so this is
+   architecturally OK.
+ * CPUs used in versioned machine types with a version of 9.0
+   or earlier will retain the old default value.
 
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
----
- stubs/meson.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+The upshot is that the only CPU type that changes is 'max'; but any
+new type we add in future (whether v8.6 or not) will also get the new
+1GHz default (assuming we spot in code review any attempts to set
+the ARM_FEATURE_BACKCOMPAT_CNTFRQ flag on new CPU types as a result
+of cut-n-paste from an older CPU initfn ;-)).
 
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 8ee1fd5753..3b9d42023c 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -21,12 +21,12 @@ if have_block
-   stub_ss.add(files('migr-blocker.c'))
-   stub_ss.add(files('physmem.c'))
-   stub_ss.add(files('ram-block.c'))
--  stub_ss.add(files('replay-tools.c'))
-   stub_ss.add(files('runstate-check.c'))
-   stub_ss.add(files('uuid.c'))
- endif
+It remains the case that the machine model can override the default
+value via the 'cntfrq' QOM property (regardless of the CPU type).
 
- if have_block or have_ga
-+  stub_ss.add(files('replay-tools.c'))
-   # stubs for hooks in util/main-loop.c, util/async.c etc.
-   stub_ss.add(files('cpus-get-virtual-clock.c'))
-   stub_ss.add(files('icount.c'))
-@@ -45,6 +45,10 @@ if have_block or have_ga
-   stub_ss.add(files('qmp-quit.c'))
- endif
+Unfortunately the TF-A firmware used to hard-code the CPU frequency,
+resulting in guest timers not running for the right duration. This
+is fixed in TF-A git but not yet in a release, and affects users
+running TF-A on either virt or sbsa-ref. For virt I think running
+TF-A is not a common setup, and besides we have versioned board
+models so users can use virt-9.0 if they want to run older TF-A
+binaries. For sbsa-ref the machine isn't versioned and TF-A is
+part of the standard guest software stack, so I've opted in this
+patchset to have our board model retain the old 62.5MHz clock for
+now. We can update that once e.g. TF-A has made a release with
+the fix (and we've updated our Avocado test's binaries!). I
+plan to leave it up to the sbsa-ref maintainers to decide when
+they're happy to make that change.
 
-+if have_ga
-+  stub_ss.add(files('error-printf.c'))
-+endif
-+
- if have_block or have_user
-   stub_ss.add(files('qtest.c'))
-   stub_ss.add(files('vm-stop.c'))
---
-2.44.0
+Patches 1 and 4 are from v1 and have been reviewed.
+Patches 2 and 3 are new and together keep sbsa-ref on the old
+62.5MHz value, at least for now.
+
+thanks
+-- PMM
+
+
+Peter Maydell (4):
+  target/arm: Refactor default generic timer frequency handling
+  hw/arm/sbsa-ref: Force CPU generic timer to 62.5MHz
+  hw/watchdog/sbsa_gwdt: Make watchdog timer frequency a QOM property
+  target/arm: Default to 1GHz cntfrq for 'max' and new CPUs
+
+ include/hw/watchdog/sbsa_gwdt.h |  3 +--
+ target/arm/cpu.h                | 11 +++++++++
+ target/arm/internals.h          | 15 +++++++++---
+ hw/arm/sbsa-ref.c               | 16 +++++++++++++
+ hw/core/machine.c               |  4 +++-
+ hw/watchdog/sbsa_gwdt.c         | 15 +++++++++++-
+ target/arm/cpu.c                | 42 ++++++++++++++++++++++-----------
+ target/arm/cpu64.c              |  2 ++
+ target/arm/helper.c             | 16 ++++++-------
+ target/arm/tcg/cpu32.c          |  4 ++++
+ target/arm/tcg/cpu64.c          | 18 ++++++++++++++
+ 11 files changed, 117 insertions(+), 29 deletions(-)
+
+-- 
+2.34.1
 
 
