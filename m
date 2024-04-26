@@ -2,102 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B8F8B39B4
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6D58B39B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:21:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0MRZ-00074H-4s; Fri, 26 Apr 2024 10:20:53 -0400
+	id 1s0MRa-00074O-2o; Fri, 26 Apr 2024 10:20:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRX-00073z-Kr
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:51 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRY-000749-8W
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:52 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRV-0001ik-Vk
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:51 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRW-0001j0-Lt
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:20:52 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 30965227DD;
- Fri, 26 Apr 2024 14:20:47 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 7B1B75D1B4;
+ Fri, 26 Apr 2024 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PeUb6rqCcIMGpo2cSQMhh/lSuPgR1i+KzSqUBIQZ3EY=;
- b=VorzYvuNflR1IyMG+HcjiYqKGkjMxoTwlpRchUA1uC2CWhr+8P9HfBrpnYltuj6FLTAWQv
- M46z/fxJXYE+y18pEf8sU4dQ3dNTjPCnrUrtWGJry79MjinfoDr3XJlcmvY8VDpOzXE9gE
- Z/n/kmi32JUGO6XI7RfhR/BnXBTGIJ4=
+ t=1714141249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQBVEPhYKVMyFrGSn4n311EcmSB4NFH4AoNPtuIqqss=;
+ b=cjb26cV+RmFt6WNZCga0PwzbpUkjDBEsTKZbmkYQMfD8GgwJb/9Hq6QanVxRzKFG0VP7r1
+ O3HOJWD7EcPwbXN298UlvdEwaCBe6gBPO8ynXNzIdB1VAnnCPxC5WW2xh6giOulqWYbUlS
+ ikT0Mr0DZhWIa2/LwlBCcAvcFQDsoY0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141248;
+ s=susede2_ed25519; t=1714141249;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PeUb6rqCcIMGpo2cSQMhh/lSuPgR1i+KzSqUBIQZ3EY=;
- b=vWLYZIKweHezZaTho282k02DA7le3dWykdnrQEv4pwjoTFtv7Fkm+DwOnlRHCFSxY9/iDk
- UnEwslHepjySMkBQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Xa71TPl2;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lJ4LD7Ub
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQBVEPhYKVMyFrGSn4n311EcmSB4NFH4AoNPtuIqqss=;
+ b=duMuWZPWOU+o9kQcv1dyNRWqsAcknkQXej9hzTp8SX619ahExHzNdRYiqgYCIkhCY0FIvQ
+ kZ2/9kkgAr2adTBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141247; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PeUb6rqCcIMGpo2cSQMhh/lSuPgR1i+KzSqUBIQZ3EY=;
- b=Xa71TPl2p778qlrLznOs4WJvg4jOE7PQiTUlDIUH4j9CgiacV0JInVeXFXpRAkIWXGVhnA
- Ft9/lqsP+Zm8wjYxjPAHcBqHBxGdilrjYzuPKcKNMoMOBD4gNbu2y9v1STW/O/GphT/UNq
- h1S0NH3mbP8MHt3RQk7mB+xQMm8ps9A=
+ t=1714141249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQBVEPhYKVMyFrGSn4n311EcmSB4NFH4AoNPtuIqqss=;
+ b=cjb26cV+RmFt6WNZCga0PwzbpUkjDBEsTKZbmkYQMfD8GgwJb/9Hq6QanVxRzKFG0VP7r1
+ O3HOJWD7EcPwbXN298UlvdEwaCBe6gBPO8ynXNzIdB1VAnnCPxC5WW2xh6giOulqWYbUlS
+ ikT0Mr0DZhWIa2/LwlBCcAvcFQDsoY0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141247;
+ s=susede2_ed25519; t=1714141249;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=PeUb6rqCcIMGpo2cSQMhh/lSuPgR1i+KzSqUBIQZ3EY=;
- b=lJ4LD7UbY+WU8ax96Syb+dkpMpOi0qubKQmY4Cxu0cZk3V5gW7vp6ADQCKLfvpdB6/WLYv
- TfWe5SP4900JeUBw==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQBVEPhYKVMyFrGSn4n311EcmSB4NFH4AoNPtuIqqss=;
+ b=duMuWZPWOU+o9kQcv1dyNRWqsAcknkQXej9hzTp8SX619ahExHzNdRYiqgYCIkhCY0FIvQ
+ kZ2/9kkgAr2adTBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53476136DB;
- Fri, 26 Apr 2024 14:20:45 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3888139B1;
+ Fri, 26 Apr 2024 14:20:47 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SNjoBj24K2YWcAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Apr 2024 14:20:45 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KLsbGj+4K2YWcAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 26 Apr 2024 14:20:47 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
-Subject: [PATCH 0/9] migration/mapped-ram: Add direct-io support
-Date: Fri, 26 Apr 2024 11:20:33 -0300
-Message-Id: <20240426142042.14573-1-farosas@suse.de>
+Subject: [PATCH 1/9] monitor: Honor QMP request for fd removal immediately
+Date: Fri, 26 Apr 2024 11:20:34 -0300
+Message-Id: <20240426142042.14573-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240426142042.14573-1-farosas@suse.de>
+References: <20240426142042.14573-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.79 / 50.00]; SEM_URIBL(3.50)[gitlab.com:url];
- BAYES_HAM(-3.00)[100.00%]; MID_CONTAINS_FROM(1.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; R_MISSING_CHARSET(0.50)[];
- NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
- BAD_REP_POLICIES(0.10)[]; MX_GOOD(-0.01)[];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FUZZY_BLOCKED(0.00)[rspamd.com];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.991];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[]; ARC_NA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- R_DKIM_ALLOW(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; DKIM_TRACE(0.00)[suse.de:+];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
- imap1.dmz-prg2.suse.org:rdns, suse.de:dkim]
-X-Spam-Score: 0.79
-X-Spamd-Bar: /
-X-Rspamd-Queue-Id: 30965227DD
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -120,64 +117,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone, here's the rest of the migration "mapped-ram" feature
-that didn't get merged for 9.0. This series adds support for direct
-I/O, the missing piece to get the desired performance improvements.
+We're enabling using the fdset interface to pass file descriptors for
+use in the migration code. Since migrations can happen more than once
+during the VMs lifetime, we need a way to remove an fd from the fdset
+at the end of migration.
 
-There's 3 parts to this:
+The current code only removes an fd from the fdset if the VM is
+running. This causes a QMP call to "remove-fd" to not actually remove
+the fd if the VM happens to be stopped.
 
-1- The plumbing for the new "direct-io" migration parameter. With this
-   we can already use direct-io with the file transport + multifd +
-   mapped-ram. Patches 1-3.
+While the fd would eventually be removed when monitor_fdset_cleanup()
+is called again, the user request should be honored and the fd
+actually removed. Calling remove-fd + query-fdset shows a recently
+removed fd still present.
 
-Due to the alignment requirements of O_DIRECT and the fact that
-multifd runs the channels in parallel with the migration thread, we
-must open the migration file two times, one with O_DIRECT set and
-another with it clear.
+The runstate_is_running() check was introduced by commit ebe52b592d
+("monitor: Prevent removing fd from set during init"), which by the
+shortlog indicates that they were trying to avoid removing an
+yet-unduplicated fd too early.
 
-If the user is not passing in a file name which QEMU can open at will,
-we must then require that the user pass the two file descriptors with
-the flags already properly set. We'll use the already existing fdset +
-QMP add-fd infrastructure for this.
+I don't see why an fd explicitly removed with qmp_remove_fd() should
+be under runstate_is_running(). I'm assuming this was a mistake when
+adding the parenthesis around the expression.
 
-2- Changes to the fdset infrastructure to support O_DIRECT. We need
-   those to be able to select from the user-provided fdset the file
-   descriptor that contains the O_DIRECT flag. Patches 4-5.
+Move the runstate_is_running() check to apply only to the
+QLIST_EMPTY(dup_fds) side of the expression and ignore it when
+mon_fdset_fd->removed has been explicitly set.
 
-3- Some fdset validation to make sure the two-fds requirement is being
-   met. Patches 6-7.
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ monitor/fds.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1269352083
-
-Fabiano Rosas (9):
-  monitor: Honor QMP request for fd removal immediately
-  migration: Fix file migration with fdset
-  tests/qtest/migration: Fix file migration offset check
-  migration: Add direct-io parameter
-  migration/multifd: Add direct-io support
-  tests/qtest/migration: Add tests for file migration with direct-io
-  monitor: fdset: Match against O_DIRECT
-  migration: Add support for fdset with multifd + file
-  tests/qtest/migration: Add a test for mapped-ram with passing of fds
-
- docs/devel/migration/main.rst       |  18 +++
- docs/devel/migration/mapped-ram.rst |   6 +-
- include/qemu/osdep.h                |   2 +
- migration/file.c                    | 108 ++++++++++++++-
- migration/migration-hmp-cmds.c      |  11 ++
- migration/migration.c               |  23 ++++
- migration/options.c                 |  30 +++++
- migration/options.h                 |   1 +
- monitor/fds.c                       |  13 +-
- qapi/migration.json                 |  18 ++-
- tests/qtest/migration-helpers.c     |  42 ++++++
- tests/qtest/migration-helpers.h     |   1 +
- tests/qtest/migration-test.c        | 202 +++++++++++++++++++++++++++-
- util/osdep.c                        |   9 ++
- 14 files changed, 465 insertions(+), 19 deletions(-)
-
-
-base-commit: a118c4aff4087eafb68f7132b233ad548cf16376
+diff --git a/monitor/fds.c b/monitor/fds.c
+index d86c2c674c..4ec3b7eea9 100644
+--- a/monitor/fds.c
++++ b/monitor/fds.c
+@@ -173,9 +173,9 @@ static void monitor_fdset_cleanup(MonFdset *mon_fdset)
+     MonFdsetFd *mon_fdset_fd_next;
+ 
+     QLIST_FOREACH_SAFE(mon_fdset_fd, &mon_fdset->fds, next, mon_fdset_fd_next) {
+-        if ((mon_fdset_fd->removed ||
+-                (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount == 0)) &&
+-                runstate_is_running()) {
++        if (mon_fdset_fd->removed ||
++            (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount == 0 &&
++             runstate_is_running())) {
+             close(mon_fdset_fd->fd);
+             g_free(mon_fdset_fd->opaque);
+             QLIST_REMOVE(mon_fdset_fd, next);
 -- 
 2.35.3
 
