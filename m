@@ -2,117 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6B08B3756
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 385318B3770
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0Kpt-00087R-RT; Fri, 26 Apr 2024 08:37:53 -0400
+	id 1s0Kyp-0002yI-HH; Fri, 26 Apr 2024 08:47:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0Kpr-00086B-12
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:37:51 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0Kyg-0002vy-3X
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:47:05 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0Kpp-00089K-5R
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:37:50 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1e4f341330fso19385665ad.0
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 05:37:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0Kyc-0002qN-7x
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:46:57 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a557044f2ddso263145166b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 05:46:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714135067; x=1714739867;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1714135612; x=1714740412; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=84KvDHn/TfmhiUjTSsZnlfjC1UfE24BmSKedho87RP0=;
- b=zrBJ29a+C6CtU2Iu5/wnvq4rzzOlJtVQ9MqVJ48JfyeOP15EvNDy4vo5egcAdOS7o6
- KLR7zr46RFYHqUInfjLUdyXoTfyYOfbJu+L2P5BNc+iTlHkUrNKKkCazrfXN+y+qL7Gm
- T2wO5CIOkIa0dg9hNQ5w/BQ9rz6wIKUe3zIMtY4c1L792rT94ldAP8sXVszM2v3e0jNN
- E5iap3RJCFKqCDobIC1J0tbjslM7V/PmaPeqGDhUV5nZJogUmu7fC7dwNOjC3++7C78e
- TulfKETWNK2752kDnOsOWUjxuy3YOh7Q8zDfnFRhhx97fqJ/1DieBScBDOmABM/b0fK+
- a0Ag==
+ bh=9lrTY4Nr9jGNC6AFsCt/hzu1RHEYbNWHMSByUm/lhys=;
+ b=yrYbW9hlp602M9KBRmmN9QOgzNPMuW35DvZRq7qVHtsGI4P2Zpt358mdCPIiz5cLt8
+ tULC3D1sMtlS+EB559F4/vnWOc1xRV6cugr2VHviBaBpzDCC+BXFixVT+wl547Bgpbbn
+ zNsB8R4jgBSY30pLub4Nv5eRBSFmZ8eIW1cK9SKrFmWweF4er9wq2sng7bYS2eIzFOo/
+ 3r/DemCku+eKMjhY16LQl7/IfX3F6kLSswyKgVpSNUV/opCV87a2tcs9mTGSvdaawbi5
+ wgca5aX8iqDcO4fkGCNszGgdvrgmgCqKRtRjpyzqpGo8VsDAA0C0lOsMr6GX06EfSdbF
+ IlDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714135067; x=1714739867;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1714135612; x=1714740412;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=84KvDHn/TfmhiUjTSsZnlfjC1UfE24BmSKedho87RP0=;
- b=I960+JCDW+KA/HaIwZl6Mk5YeWSk1olIAEeoaCnhIebOY8EXQCbsDocOSW2IVfqExS
- faGBp4AKzo5bg+myji/uTTn1sHAnyAOIMcyCP2zIsqjLju0EccZNAlseu+jQ7PflNQBR
- bsr+LReXS/pNc/JW4nl/Tf8D12VU88dyJAOg8+9ShGdhyji3TG283K+0Dw8Vay5AZ2y0
- iyHxCDUKaYsCWzZ0aqDXd3zUj/MF33KYJKvZ2FGRLZ65dEas/TcIvASWrRJr620beXfK
- 2E7qll04ZakRhdLi6W0xID6eFgsrSyuTDi49NVA7cvfsGhBzfpcaU22i9DvhvktHYRto
- Zw/Q==
+ bh=9lrTY4Nr9jGNC6AFsCt/hzu1RHEYbNWHMSByUm/lhys=;
+ b=nfdyezkUsdkYPb60E1+Owpl9xPhNqmIMJUBM9iwvUewIB23M/rtOL9pt2V3RWMYJkr
+ ypxbyRzzrkcLTvEgUQ8a4OATj3uBG785wyhGuzAQ76+Jx2NzP8NRixqf6BJbyXOIv6kX
+ d2Bs1jpTD6UWaHwmKibd5XQ3K5Q+eB1oDyjzHhM+XpMGxBdcF2m0FkbrshIsdkyInKQk
+ hlzIY837qINKuTJjLZ1HSen/0MWLWLBhaqO/2kYSDI62NIWe2SYzH08TBTgMMMyajYHg
+ AepQ6HuGeRkw8hw0KweGJKgnLFVyMQf4J7EE2pf18HB+C0ZCwCdBwMcMRxFR+HfSq7kp
+ Y4gQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZA56NiX/NYHCPPA8nF0yFRH1wHDSfLLm3We0mYemZ0gBRQCUOhtMrSjNRqAQyFDOJ/6Z6iyIH/lcwMXo48t9xw3ozbio=
-X-Gm-Message-State: AOJu0YwMjIkP9UoKRxq30uM4T28a0JP0Pnb2fQ77H9k8Omz+vozkIv+i
- elqe3hVjU7MBfE8ssbPaoAS5h3GcosdeHbOGm1tFea6/18kCmTxF7+5ajQT8o98=
-X-Google-Smtp-Source: AGHT+IEyT5+5NC0mcxV26KEz5S9fudbXBjcluopxMfaMvGQxS0Dqj/XJD2ZWeXZVN6sWHZa68+NcyA==
-X-Received: by 2002:a17:903:11c3:b0:1e5:5bd7:87a4 with SMTP id
- q3-20020a17090311c300b001e55bd787a4mr2751334plh.16.1714135067327; 
- Fri, 26 Apr 2024 05:37:47 -0700 (PDT)
-Received: from [157.82.202.162] ([157.82.202.162])
- by smtp.gmail.com with ESMTPSA id
- i12-20020a17090320cc00b001eab1258197sm3094392plb.144.2024.04.26.05.37.39
+ AJvYcCXfPA1To+0HzLbuStOmxhUG2x9sUmCJ+o+jG/ZrEljYaMgIntoft1Zk4E04QzqcmcNYzNMKWs9nDhEjZBla13XKJ30LOfU=
+X-Gm-Message-State: AOJu0YxdGOf45KaoTXGOC85Pv6NaRVND9ewD/5z3TgggceYpy1mEneb/
+ McDPcAJqsdByLGh5plSpERWiownqPYU38gcKt5gd0q9JQDbrpiifbL+USpbYUL4=
+X-Google-Smtp-Source: AGHT+IGhFcnqY5ZvaiURfBdOevEEwXfh4qKLFkFna4WYApjLnbuWTOA3Fe9IDDu+xE1PqkmZxhEerA==
+X-Received: by 2002:a17:906:4144:b0:a58:c0e2:9792 with SMTP id
+ l4-20020a170906414400b00a58c0e29792mr2186578ejk.61.1714135612416; 
+ Fri, 26 Apr 2024 05:46:52 -0700 (PDT)
+Received: from [192.168.69.100] (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
+ [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
+ dk18-20020a170907941200b00a58ca98bbfbsm762915ejc.30.2024.04.26.05.46.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 26 Apr 2024 05:37:47 -0700 (PDT)
-Message-ID: <81397221-8144-47cd-bce9-b3ab7d94c626@daynix.com>
-Date: Fri, 26 Apr 2024 21:37:38 +0900
+ Fri, 26 Apr 2024 05:46:52 -0700 (PDT)
+Message-ID: <36b9a714-44ff-4b60-a23d-89672a98f46e@linaro.org>
+Date: Fri, 26 Apr 2024 14:46:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] net: Provide MemReentrancyGuard * to qemu_new_nic()
+Subject: Re: [PATCH v2 3/4] hw/watchdog/sbsa_gwdt: Make watchdog timer
+ frequency a QOM property
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Radoslaw Biernacki <rad@semihalf.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+References: <20240426122913.3427983-1-peter.maydell@linaro.org>
+ <20240426122913.3427983-4-peter.maydell@linaro.org>
 Content-Language: en-US
-To: Thomas Huth <th.huth@posteo.de>, Prasad Pandit <pj.pandit@yahoo.in>,
- Mauro Matteo Cascella <mcascell@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Alexander Bulekov <alxndr@bu.edu>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Beniamino Galvani <b.galvani@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>, Sriram Yagnaraman
- <sriram.yagnaraman@est.tech>, Thomas Huth <huth@tuxfamily.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
- Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Sven Schnelle <svens@stackframe.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
-References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
- <20230601031859.7115-2-akihiko.odaki@daynix.com>
- <ac66952e-4281-4250-96f4-dc3d5b518d24@linaro.org>
- <1497808863.2030924.1713955286878@mail.yahoo.com>
- <088ec61c-39ab-4b58-a02f-8897a3e7ae68@posteo.de>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <088ec61c-39ab-4b58-a02f-8897a3e7ae68@posteo.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240426122913.3427983-4-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::629;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,43 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/04/24 21:32, Thomas Huth wrote:
-> On 24/04/2024 12.41, Prasad Pandit wrote:
->> On Wednesday, 24 April, 2024 at 03:36:01 pm IST, Philippe 
->> Mathieu-Daudé wrote:
->>> On 1/6/23 05:18, Akihiko Odaki wrote:
->>>> Recently MemReentrancyGuard was added to DeviceState to record that the
->>>> device is engaging in I/O. The network device backend needs to 
->>>> update it
->>>> when delivering a packet to a device.
->>>> In preparation for such a change, add MemReentrancyGuard * as a
->>>> parameter of qemu_new_nic().
->>>
->>> An user on IRC asked if this patch is related/fixing CVE-2021-20255,
->>> any clue?
->>
->> * CVE-2021-20255 bug: infinite recursion is pointing at a different 
->> fix patch.
->>    -> https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2021-20255
->>
->> * And the this patch below has different issue tagged
->>    
->> -> https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg08312.html
->>    Fixes: CVE-2023-3019
->>
->>
->> * They look different, former is an infinite recursion issue and the 
->> latter is a use-after-free one.
-> 
-> I assume the eepro reentrancy issue has been fixed with:
-> 
->   https://gitlab.com/qemu-project/qemu/-/issues/556
->   i.e.:
->   https://gitlab.com/qemu-project/qemu/-/commit/c40ca2301c7603524eaddb5308a3
+Hi Peter,
 
-I agree. Commit c40ca2301c7603524eaddb5308a3 should be what fixed 
-CVE-2021-20255, not this patch.
+On 26/4/24 14:29, Peter Maydell wrote:
+> Currently the sbsa_gdwt watchdog device hardcodes its frequency at
+> 62.5MHz. In real hardware, this watchdog is supposed to be driven
+> from the system counter, which also drives the CPU generic timers.
+> Newer CPU types (in particular from Armv8.6) should have a CPU
+> generic timer frequency of 1GHz, so we can't leave the watchdog
+> on the old QEMU default of 62.5GHz.
+> 
+> Make the frequency a QOM property so it can be set by the board,
+> and have our only board that uses this device set that frequency
+> to the same value it sets the CPU frequency.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   include/hw/watchdog/sbsa_gwdt.h |  3 +--
+>   hw/arm/sbsa-ref.c               |  1 +
+>   hw/watchdog/sbsa_gwdt.c         | 15 ++++++++++++++-
+>   3 files changed, 16 insertions(+), 3 deletions(-)
 
-Regards,
-Akihiko Odaki
+
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index 36f6f717b4b..57c337fd92a 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -543,6 +543,7 @@ static void create_wdt(const SBSAMachineState *sms)
+>       SysBusDevice *s = SYS_BUS_DEVICE(dev);
+>       int irq = sbsa_ref_irqmap[SBSA_GWDT_WS0];
+>   
+> +    qdev_prop_set_uint64(dev, "clock-frequency", SBSA_GTIMER_HZ);
+
+Since we have access to the CPU and its generic timer, what about
+just keep the wdg in sync, as smth like:
+
+   qdev_prop_set_uint64(dev, "clock-frequency",
+                        object_property_get_uint(OBJECT(some_cpu),
+                                                 "cntfrq", errp));
+
+>       sysbus_realize_and_unref(s, &error_fatal);
+>       sysbus_mmio_map(s, 0, rbase);
+>       sysbus_mmio_map(s, 1, cbase);
+
+
 
