@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6117C8B3498
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 11:54:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D86F8B34A2
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 11:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0IGo-0003c4-2Y; Fri, 26 Apr 2024 05:53:30 -0400
+	id 1s0IGr-0003d2-Pe; Fri, 26 Apr 2024 05:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s0IGl-0003be-6q
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:53:27 -0400
+ id 1s0IGp-0003cV-01
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:53:31 -0400
 Received: from mgamail.intel.com ([192.198.163.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s0IGj-0006B7-7F
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:53:26 -0400
+ id 1s0IGl-0006BT-8U
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 05:53:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714125205; x=1745661205;
+ t=1714125207; x=1745661207;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CJCjIn995ERePGEjyznO054D4bBaArW8Nv06Nwjgbv8=;
- b=UoVmN+hz3lUw7KVceN3nuHFgMWU4uCRtW5HzfNGK6a+4EecIqRgZebZY
- XyBlXiUxdSWTZiyMqph6WWA4zosb/m9CmdF1crgz5NnCf8/rWs7pfMuDY
- YfkNzOKPUQ0khWwei/unGj0wNqxVpqQGDnjYHE95LF5SMZA4NV0A8iz+d
- zi7sMepGz9lQ4ggyx8TOgQ/RnjeVbpSUgq2C7cPM84cQkV8aUllg8P9sT
- Kar/6Ymw4hIlL4PtejndXxOtOrCDi7C5imo8+34b5tJtsaLlB2L5+7cEy
- F85lW7KBQkmo6gU/2pDzStSeU6PDgptf/mbtIzSHHgliatq33XZTPNQWl w==;
-X-CSE-ConnectionGUID: 8fFP50MMSfKK+Q4pfqMmNg==
-X-CSE-MsgGUID: LPyht/ddTlOmiwm2XwpCtg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9707421"
+ bh=b/2fbk4NjCLRbPp4FCHnEpCvn097YoF5sMd0TPtoTpc=;
+ b=X1nFc0RTDxshiC7Qd2lVL6qgRf/vwrpb1a6jQMErM+e9Ly183XFTDonJ
+ EOBqZM7gfUSUIQ0Dkp+85l1g3IE/VPQAm7rM90Pf5yF8k2OBaoPPyfjC+
+ WIgdA/CgiITCubVC+FX8Xg7qkgMzzOA+Zv5sO5/LgMyfJVrQxD11Ute+e
+ z0zgUAu9IEoKPq2AAfGNikxxLWrgXjBWSJV1aXvj1n96sfphjrDvxcYyM
+ yhSFehSukvLG44u7jT9I4YtXo6OROoHxmK5CbPjwCWqPJzAA6UZ11vGww
+ 2yZAybiCJfWvdL4V6W8n9i52rIljmcoRZxBCS/bqLJZ0faz4W8zZl4Cci A==;
+X-CSE-ConnectionGUID: jnG+tE2ARUqV++zGOIrXAg==
+X-CSE-MsgGUID: s/or1gAyRG+QIx2csvx6fw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9707428"
 X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="9707421"
+   d="scan'208";a="9707428"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 02:53:24 -0700
-X-CSE-ConnectionGUID: yIaVMozBTI+1NCMzCDPbgA==
-X-CSE-MsgGUID: rebo7PEXQMidROztM079Zg==
+ 26 Apr 2024 02:53:26 -0700
+X-CSE-ConnectionGUID: bMUxhFVuRu2k6Qf4yuqELw==
+X-CSE-MsgGUID: rkzpwcHwTVeT3V9LySYMlQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="25412329"
+X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; d="scan'208";a="25412335"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 26 Apr 2024 02:53:21 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 26 Apr 2024 02:53:24 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 4/6] target/i386/kvm: Save/load MSRs of kvmclock2
+Subject: [PATCH 4/6] target/i386/kvm: Save/load MSRs of new kvmclock
  (KVM_FEATURE_CLOCKSOURCE2)
-Date: Fri, 26 Apr 2024 18:07:13 +0800
-Message-Id: <20240426100716.2111688-5-zhao1.liu@intel.com>
+Date: Fri, 26 Apr 2024 18:07:14 +0800
+Message-Id: <20240426100716.2111688-6-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240426100716.2111688-1-zhao1.liu@intel.com>
 References: <20240426100716.2111688-1-zhao1.liu@intel.com>
@@ -86,10 +86,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MSR_KVM_SYSTEM_TIME_NEW and MSR_KVM_WALL_CLOCK_NEW are bound to
-kvmclock2 (KVM_FEATURE_CLOCKSOURCE2).
+MSR_KVM_SYSTEM_TIME_NEW and MSR_KVM_WALL_CLOCK_NEW are bound to new
+kvmclock (KVM_FEATURE_CLOCKSOURCE2).
 
-Add the save/load support for these 2 MSR just like kvmclock MSRs.
+Add the save/load support for these 2 MSRs.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
