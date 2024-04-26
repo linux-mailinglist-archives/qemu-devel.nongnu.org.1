@@ -2,70 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E86088B3006
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 08:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3739C8B3154
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 09:29:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0Eft-0006On-Kp; Fri, 26 Apr 2024 02:03:09 -0400
+	id 1s0G0T-00070i-II; Fri, 26 Apr 2024 03:28:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s0Efq-0006OI-2V
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 02:03:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s0Efk-0008SZ-BI
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 02:03:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714111379;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TJA38oFyBYNeHZgEfpr0loy/EniPUphrOjaBppOin0g=;
- b=efWRPH4m6lEAeR38ekqv6Ek75/5V6wxrSDPEKYjDlkuij//H8wFjUtP5aXsBbMh++xf4Ea
- mxtNUjKmTUxzfeYVa1Yomkjcg2WCFW79ZnkmEWdeoMFBbsolmY/M/TTfCqa1rxgXy0O0MS
- SQfYK1hb+F7STX6nwGteKl+f3PUjHMI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-PvlPJKNkOum5tqEI96IYEQ-1; Fri, 26 Apr 2024 02:02:54 -0400
-X-MC-Unique: PvlPJKNkOum5tqEI96IYEQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 92CF918065AA;
- Fri, 26 Apr 2024 06:02:54 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 749F41C060D0;
- Fri, 26 Apr 2024 06:02:54 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 68DE221E66E5; Fri, 26 Apr 2024 08:02:53 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>,  devel@lists.libvirt.org
-Subject: Re: [PATCH 0/6] migration removals & deprecations
-In-Reply-To: <20240425150939.19268-1-farosas@suse.de> (Fabiano Rosas's message
- of "Thu, 25 Apr 2024 12:09:33 -0300")
-References: <20240425150939.19268-1-farosas@suse.de>
-Date: Fri, 26 Apr 2024 08:02:53 +0200
-Message-ID: <87zftgzmnm.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <xiongyining1480@phytium.com.cn>)
+ id 1s0G0R-00070A-6l; Fri, 26 Apr 2024 03:28:27 -0400
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <xiongyining1480@phytium.com.cn>)
+ id 1s0G0L-0008FB-FJ; Fri, 26 Apr 2024 03:28:26 -0400
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwCnWAmJVytmQ7X1CQ--.42S2;
+ Fri, 26 Apr 2024 15:28:09 +0800 (CST)
+Received: from phytium.com.cn (unknown [218.76.62.144])
+ by mail (Coremail) with SMTP id AQAAfwCXaEyDVytmqGUAAA--.521S3;
+ Fri, 26 Apr 2024 15:28:03 +0800 (CST)
+From: Xiong Yining <xiongyining1480@phytium.com.cn>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: rad@semihalf.com, peter.maydell@linaro.org, quic_llindhol@quicinc.com,
+ marcin.juszkiewicz@linaro.org,
+ Xiong Yining <xiongyining1480@phytium.com.cn>
+Subject: [PATCH v3 0/1] ARM Sbsa-ref: Enable CPU cluster topology
+Date: Fri, 26 Apr 2024 07:27:03 +0000
+Message-Id: <20240426072704.325883-1-xiongyining1480@phytium.com.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwCXaEyDVytmqGUAAA--.521S3
+X-CM-SenderInfo: x0lr0wp1lqx0bjrumio6sk53xlxphulrpou0/1tbiAQAGBmYpXuMFaAAEsa
+Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=xiongyinin
+ g1480@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjvdXoW7Wr4kAr45ZF1rZFWUWryxuFg_yoW3Zrc_Ar
+ n7Za95Krs7AF4vkay0y3WfCry8ArWYgr15tFn7KF4jqw1fCF4UJrsFk3s3Ar1rWr18W348
+ AF48A3yfA34agjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8wcxFpf9Il3svdxBIdaVrnU
+ Uv73VFW2AGmfu7jjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUU
+ UUUU=
+Received-SPF: pass client-ip=162.243.164.118;
+ envelope-from=xiongyining1480@phytium.com.cn;
+ helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,6 +66,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Doesn't apply for me.  What's your base?
+Enable CPU cluster support on SbsaQemu platform, so that users can
+specify a 4-level CPU hierarchy sockets/clusters/cores/threads. And this
+topology can be passed to the firmware through DT cpu-map.
+
+Changes in v3:
+- squash the two patches together into one
+- add the DTB information in docs/system/arm/sbsa.rst
+- Link to v2: https://lists.gnu.org/archive/html/qemu-devel/2024-03/msg02951.html
+
+Changes in v2:
+- put this code before sbsa_fdt_add_gic_node().
+- Link to v1: https://lists.gnu.org/archive/html/qemu-devel/2023-12/msg03390.html
+
+
+xiongyining1480 (1):
+  hw/arm/sbsa-ref: Enable CPU cluster on ARM sbsa machine
+
+ docs/system/arm/sbsa.rst |  4 ++++
+ hw/arm/sbsa-ref.c        | 35 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+
+-- 
+2.34.1
 
 
