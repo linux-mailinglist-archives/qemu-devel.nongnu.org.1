@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB878B4055
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E578B4072
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:51:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUn-0005TO-CF; Fri, 26 Apr 2024 15:44:33 -0400
+	id 1s0RUq-0005nb-BK; Fri, 26 Apr 2024 15:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUH-0002lA-8N
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:02 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUN-0002tD-3c
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:08 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUC-0003KZ-Sg
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:00 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2dd6a7ae2dcso39845811fa.1
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUI-0003P6-8n
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:06 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a55b3d57277so316891666b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:44:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160635; x=1714765435; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160640; x=1714765440; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7TM8vdBJsyiS8N9/BcT+cG9GVrIFZEEoAIJDE88Bqbg=;
- b=arlsN9etaO/ndGX0QWFywtqhnSpWdEOR5KyFtBojbdVzKtuLkEOeCxi2Xr5wz2SNnj
- VBogtvFjVDS83E34Wm40T8hcoJGdIIXosVR2p6pX+Rv8A3TRJnj3EQ2NzJkYXCxASlRb
- RUteAPJzykKnkD0AkCQj9Y5rqXNlTknmhKrL5MQ6Ct3yxsnGbOcablX8AutaxFtniZ/8
- A0LyGA0EA5GZ8V3wkWO0iDMuBlhhh4Ar4XnT2vEGmiZjK+/PoqNYfQbIaKUW81PZkPKs
- SPMitYdt+CM+G0fCiJ/mBo35kilvzxR+e0nQRHdcAtYdjGSlanFPrFHx8iJHbB7znNzC
- WbKA==
+ bh=wBK1Qu77lYfBqxGndHp709YTz7kNkXLsmRyQsGRMcEU=;
+ b=r2rxBUEsmBXhdcL/Cv8yQH7KGkdVJLiXZydeHpRiE14FVDY8tNzlf9ZlAwt4lpMida
+ Ob7VFUj9omXu6R+RQKMw5LOpNZjgqI1TYAlQj83b/GKuFfwi9lHm+X9qHtH+mjZPjsqn
+ 61B+1tAhQCw08FBKSFHUQxSyaB86qJ8EYLIqw/jQJlocW/La4zJh5QGTeiKr6t9xopJm
+ yG8Z9LBtIpwnfjABBoSZtJnEeK60Ia4RgxBUmSVZI01b2hp4YUZhHTpJPP12DtYcRSaf
+ pEnGS0xp1H2MHtxGWN8e4MeYP/CteIZOMR8/6tNZUIChL0EMMVshS2/xXlxQRk/Gt0V+
+ eisQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160635; x=1714765435;
+ d=1e100.net; s=20230601; t=1714160640; x=1714765440;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7TM8vdBJsyiS8N9/BcT+cG9GVrIFZEEoAIJDE88Bqbg=;
- b=ohWUHXHIqMtPqNsIB1wqa9qkHV0+7xUoGh91mzJKNVG+56uzb7gjFtVjHgX8N8Rsru
- G6dAUtRp1hnaIuewuncz8YMIxySUwpVzbLgGKpVZQ74rFxbAnYLgTxZltuJU0Bvl5wd3
- G+9scbSIHy683cVEqTT652ZD2Seq1Eui6uXhe1E20jrFS0VaewcYF6BieZE2vK9TwWwe
- Vxzc7+BFgnfPHjrQ8K7lmm2sWolh8H+jbTfatEs+8d+Jj8ggovXhaJn6cSpWhtWq4fhP
- Byga+iBcUxBHestyO8CTaRuqAHrir7GZvVK7xLiKKbmH8oEZoryoacKnlLNdjU0nXSWW
- bmsA==
-X-Gm-Message-State: AOJu0YwqDDDZaAYj8u/oecKj39Xe/JIEjBjvt51r+LW6xA5Dzr1IucWY
- rvanU3wGJ8eSjWBmFC8Dpf83Vm88s4H7HzFlxcVowGfwILrqu8NRRCr/PwKVO2XoMhihf4Vj6co
- pXNU=
-X-Google-Smtp-Source: AGHT+IGgxB7ptdEp6F95JXRMZ1R4geUC72uj9X7EkgteVWQ5sYyMah5qtCC6g9RUYL+EyajPioOPOg==
-X-Received: by 2002:a2e:7d09:0:b0:2de:75de:5b0b with SMTP id
- y9-20020a2e7d09000000b002de75de5b0bmr2771242ljc.18.1714160634772; 
- Fri, 26 Apr 2024 12:43:54 -0700 (PDT)
+ bh=wBK1Qu77lYfBqxGndHp709YTz7kNkXLsmRyQsGRMcEU=;
+ b=SRoGkjtTxlHEoAuE1bNoMe6BQuf0XWdKl/STGbt2OCVhQP7GLeZbYmttPoBcdmAi0T
+ AFd4YXpZuEf0pk6ROtBDQ8ABL1fIfFoJ6iY6XTTW/WEpantqCxQqodcBwv5Nc+1JTHV9
+ SgGSs+hz1fepxGQuyDYaC2q2KC+8o4ddP4IwP8WMI1hqPl09yD7zpN3So0QV3gLxtDPJ
+ edBIQJiWUqM+ZUOhZIQRnDG3poTEaaBCarRAhWL8y1Ii2g4ZJk6biSi9Y31nl0y8Uima
+ p5F0zAm9VwWBta6eMMPT3i3ixK4lox17rZfqkIi7ofya0Sci0D0ZngTu4GtrXsbh/QX6
+ onag==
+X-Gm-Message-State: AOJu0YwiH7+SC6euLMtWEwkcts6pNKHIkdVlU4OYS6EOh3QqTaxgnIK0
+ OVu40OubqQwISEKMb2YC6DhAy7swxYOiezdlTyv7vmAb2p1XPxPVu2HFbZCgQayXqDwWwruYCkj
+ bQRA=
+X-Google-Smtp-Source: AGHT+IG2KejcaQxxNvwM4AvtvsuYlWilmTZn7IIFLKpackbvy2DNtb/SdsEvNp02xfuGaCIe/aYX6g==
+X-Received: by 2002:a17:906:3506:b0:a55:90f0:bdf2 with SMTP id
+ r6-20020a170906350600b00a5590f0bdf2mr2441257eja.32.1714160640241; 
+ Fri, 26 Apr 2024 12:44:00 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- i22-20020a1709061cd600b00a55a10eb070sm7881150ejh.214.2024.04.26.12.43.53
+ k25-20020a1709062a5900b00a55a06d7744sm7902411eje.73.2024.04.26.12.43.59
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:43:54 -0700 (PDT)
+ Fri, 26 Apr 2024 12:43:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 19/38] accel/tcg: Rename helper-head.h -> helper-head.h.inc
-Date: Fri, 26 Apr 2024 21:41:39 +0200
-Message-ID: <20240426194200.43723-20-philmd@linaro.org>
+ Sunil Muthuswamy <sunilmut@microsoft.com>
+Subject: [PULL 20/38] accel/whpx: Use accel-specific per-vcpu @dirty field
+Date: Fri, 26 Apr 2024 21:41:40 +0200
+Message-ID: <20240426194200.43723-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,73 +95,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 139c1837db ("meson: rename included C source files
-to .c.inc"), QEMU standard procedure for included C files is to
-use *.c.inc.
-
-Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-about includes") this is documented in the Coding Style:
-
-  If you do use template header files they should be named with
-  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-  being included for expansion.
-
-Therefore rename "exec/helper-head.h" as "exec/helper-head.h.inc".
+WHPX has a specific use of the CPUState::vcpu_dirty field
+(CPUState::vcpu_dirty is not used by common code).
+To make this field accel-specific, add and use a new
+@dirty variable in the AccelCPUState structure.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240424173333.96148-4-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240424174506.326-2-philmd@linaro.org>
 ---
- include/exec/helper-gen.h.inc                     | 2 +-
- include/exec/{helper-head.h => helper-head.h.inc} | 0
- include/exec/helper-proto.h.inc                   | 2 +-
- include/exec/helper-info.c.inc                    | 2 +-
- 4 files changed, 3 insertions(+), 3 deletions(-)
- rename include/exec/{helper-head.h => helper-head.h.inc} (100%)
+ target/i386/whpx/whpx-all.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/include/exec/helper-gen.h.inc b/include/exec/helper-gen.h.inc
-index c009641517..d9fd3ed72a 100644
---- a/include/exec/helper-gen.h.inc
-+++ b/include/exec/helper-gen.h.inc
-@@ -8,7 +8,7 @@
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index 31eec7048c..b08e644517 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -237,6 +237,7 @@ struct AccelCPUState {
+     uint64_t tpr;
+     uint64_t apic_base;
+     bool interruption_pending;
++    bool dirty;
  
- #include "tcg/tcg.h"
- #include "tcg/helper-info.h"
--#include "exec/helper-head.h"
-+#include "exec/helper-head.h.inc"
+     /* Must be the last field as it may have a tail */
+     WHV_RUN_VP_EXIT_CONTEXT exit_ctx;
+@@ -839,7 +840,7 @@ static HRESULT CALLBACK whpx_emu_setreg_callback(
+      * The emulator just successfully wrote the register state. We clear the
+      * dirty state so we avoid the double write on resume of the VP.
+      */
+-    cpu->vcpu_dirty = false;
++    cpu->accel->dirty = false;
  
- #define DEF_HELPER_FLAGS_0(name, flags, ret)                            \
- extern TCGHelperInfo glue(helper_info_, name);                          \
-diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h.inc
-similarity index 100%
-rename from include/exec/helper-head.h
-rename to include/exec/helper-head.h.inc
-diff --git a/include/exec/helper-proto.h.inc b/include/exec/helper-proto.h.inc
-index c3aa666929..f8e57e43ce 100644
---- a/include/exec/helper-proto.h.inc
-+++ b/include/exec/helper-proto.h.inc
-@@ -5,7 +5,7 @@
-  * Define HELPER_H for the header file to be expanded.
-  */
+     return hr;
+ }
+@@ -1394,7 +1395,7 @@ static int whpx_last_vcpu_stopping(CPUState *cpu)
+ /* Returns the address of the next instruction that is about to be executed. */
+ static vaddr whpx_vcpu_get_pc(CPUState *cpu, bool exit_context_valid)
+ {
+-    if (cpu->vcpu_dirty) {
++    if (cpu->accel->dirty) {
+         /* The CPU registers have been modified by other parts of QEMU. */
+         return cpu_env(cpu)->eip;
+     } else if (exit_context_valid) {
+@@ -1713,9 +1714,9 @@ static int whpx_vcpu_run(CPUState *cpu)
+     }
  
--#include "exec/helper-head.h"
-+#include "exec/helper-head.h.inc"
+     do {
+-        if (cpu->vcpu_dirty) {
++        if (cpu->accel->dirty) {
+             whpx_set_registers(cpu, WHPX_SET_RUNTIME_STATE);
+-            cpu->vcpu_dirty = false;
++            cpu->accel->dirty = false;
+         }
+ 
+         if (exclusive_step_mode == WHPX_STEP_NONE) {
+@@ -2063,9 +2064,9 @@ static int whpx_vcpu_run(CPUState *cpu)
+ 
+ static void do_whpx_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->accel->dirty) {
+         whpx_get_registers(cpu);
+-        cpu->vcpu_dirty = true;
++        cpu->accel->dirty = true;
+     }
+ }
+ 
+@@ -2073,20 +2074,20 @@ static void do_whpx_cpu_synchronize_post_reset(CPUState *cpu,
+                                                run_on_cpu_data arg)
+ {
+     whpx_set_registers(cpu, WHPX_SET_RESET_STATE);
+-    cpu->vcpu_dirty = false;
++    cpu->accel->dirty = false;
+ }
+ 
+ static void do_whpx_cpu_synchronize_post_init(CPUState *cpu,
+                                               run_on_cpu_data arg)
+ {
+     whpx_set_registers(cpu, WHPX_SET_FULL_STATE);
+-    cpu->vcpu_dirty = false;
++    cpu->accel->dirty = false;
+ }
+ 
+ static void do_whpx_cpu_synchronize_pre_loadvm(CPUState *cpu,
+                                                run_on_cpu_data arg)
+ {
+-    cpu->vcpu_dirty = true;
++    cpu->accel->dirty = true;
+ }
  
  /*
-  * Work around an issue with --enable-lto, in which GCC's ipa-split pass
-diff --git a/include/exec/helper-info.c.inc b/include/exec/helper-info.c.inc
-index 530d2e6d35..c551736d49 100644
---- a/include/exec/helper-info.c.inc
-+++ b/include/exec/helper-info.c.inc
-@@ -7,7 +7,7 @@
+@@ -2095,7 +2096,7 @@ static void do_whpx_cpu_synchronize_pre_loadvm(CPUState *cpu,
  
- #include "tcg/tcg.h"
- #include "tcg/helper-info.h"
--#include "exec/helper-head.h"
-+#include "exec/helper-head.h.inc"
+ void whpx_cpu_synchronize_state(CPUState *cpu)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->accel->dirty) {
+         run_on_cpu(cpu, do_whpx_cpu_synchronize_state, RUN_ON_CPU_NULL);
+     }
+ }
+@@ -2235,7 +2236,7 @@ int whpx_init_vcpu(CPUState *cpu)
+     }
  
- /*
-  * Need one more level of indirection before stringification
+     vcpu->interruptable = true;
+-    cpu->vcpu_dirty = true;
++    cpu->accel->dirty = true;
+     cpu->accel = vcpu;
+     max_vcpu_index = max(max_vcpu_index, cpu->cpu_index);
+     qemu_add_vm_change_state_handler(whpx_cpu_update_state, env);
 -- 
 2.41.0
 
