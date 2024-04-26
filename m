@@ -2,121 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B978B39B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317178B39F2
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 16:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0MRw-0007F2-VD; Fri, 26 Apr 2024 10:21:16 -0400
+	id 1s0MXq-0005rM-FG; Fri, 26 Apr 2024 10:27:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRv-0007EI-1D
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:21:15 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s0MRt-00024W-4o
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 10:21:14 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <SRS0=oYEp=L7=kaod.org=clg@ozlabs.org>)
+ id 1s0MXn-0005r2-Pw; Fri, 26 Apr 2024 10:27:19 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=oYEp=L7=kaod.org=clg@ozlabs.org>)
+ id 1s0MXl-000307-99; Fri, 26 Apr 2024 10:27:19 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VQw6672rzz4xGl;
+ Sat, 27 Apr 2024 00:27:10 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 547F434E8C;
- Fri, 26 Apr 2024 14:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g8aiSWTRniGHc9b86c5xny7TEU/klyh6y5vk0UkaIyc=;
- b=qq0eE0n26PiAfZsOHJ0s3GYQCH/QjV1c/haZm07OXXL7KeO3B7XX3Svf+LpOLLpppTc3Sz
- I8cxGtwroQJENuEFTYtxI0whslVKSVfmtJCt87weqAz7Lw/AfrG9GHjZvyAHfdoIxIGw8f
- Rh9F+fLA/SIJeQkrOOHq/Mj4VHR9FkU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141270;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g8aiSWTRniGHc9b86c5xny7TEU/klyh6y5vk0UkaIyc=;
- b=bpqV2eMBP2ZxJRfWZ4mhAcXVZoYdFgmIinOG4VDNd9KbF7F8iyLzxGrq5E/e9+/ON24Jf1
- rKtDFvQuZ4ThG7Dg==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qq0eE0n2;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bpqV2eMB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714141270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g8aiSWTRniGHc9b86c5xny7TEU/klyh6y5vk0UkaIyc=;
- b=qq0eE0n26PiAfZsOHJ0s3GYQCH/QjV1c/haZm07OXXL7KeO3B7XX3Svf+LpOLLpppTc3Sz
- I8cxGtwroQJENuEFTYtxI0whslVKSVfmtJCt87weqAz7Lw/AfrG9GHjZvyAHfdoIxIGw8f
- Rh9F+fLA/SIJeQkrOOHq/Mj4VHR9FkU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714141270;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g8aiSWTRniGHc9b86c5xny7TEU/klyh6y5vk0UkaIyc=;
- b=bpqV2eMBP2ZxJRfWZ4mhAcXVZoYdFgmIinOG4VDNd9KbF7F8iyLzxGrq5E/e9+/ON24Jf1
- rKtDFvQuZ4ThG7Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BC19E136DB;
- Fri, 26 Apr 2024 14:21:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id UEN5IFO4K2YWcAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 26 Apr 2024 14:21:07 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 9/9] tests/qtest/migration: Add a test for mapped-ram with
- passing of fds
-Date: Fri, 26 Apr 2024 11:20:42 -0300
-Message-Id: <20240426142042.14573-10-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240426142042.14573-1-farosas@suse.de>
-References: <20240426142042.14573-1-farosas@suse.de>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VQw631mw6z4xLw;
+ Sat, 27 Apr 2024 00:27:06 +1000 (AEST)
+Message-ID: <d35b2a2d-1307-46bf-81ae-747a0e62d6be@kaod.org>
+Date: Fri, 26 Apr 2024 16:27:04 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] ppc/pseries: Add Power11 cpu type
+To: Aditya Gupta <adityag@linux.ibm.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20240426110023.733309-1-adityag@linux.ibm.com>
+ <20240426110023.733309-2-adityag@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240426110023.733309-2-adityag@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 547F434E8C
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- MIME_TRACE(0.00)[0:+]; FUZZY_BLOCKED(0.00)[rspamd.com];
- TO_DN_SOME(0.00)[];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_SEVEN(0.00)[9];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_EQ_ENVFROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, suse.de:email,
- imap1.dmz-prg2.suse.org:helo, imap1.dmz-prg2.suse.org:rdns]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=oYEp=L7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,143 +68,245 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a multifd test for mapped-ram with passing of fds into QEMU. This
-is how libvirt will consume the feature.
+Hello Aditya
 
-There are a couple of details to the fdset mechanism:
+On 4/26/24 13:00, Aditya Gupta wrote:
+> Add base support for "--cpu power11" in QEMU.
+> 
+> Power11 core is same as Power10, hence reuse functions defined for
+> Power10.
 
-- multifd needs two distinct file descriptors (not duplicated with
-  dup()) on the outgoing side so it can enable O_DIRECT only on the
-  channels that write with alignment. The dup() system call creates
-  file descriptors that share status flags, of which O_DIRECT is one.
+Power11 uses the same ISA it seems. What's the value then ?
 
-  the incoming side doesn't set O_DIRECT, so it can dup() fds and
-  therefore can receive only one in the fdset.
+> 
+> Cc: Cédric Le Goater <clg@kaod.org>
+> Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+> Cc: David Gibson <david@gibson.dropbear.id.au>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+> ---
+>   docs/system/ppc/pseries.rst |  6 +--
+>   hw/ppc/spapr_cpu_core.c     |  1 +
 
-- the open() access mode flags used for the fds passed into QEMU need
-  to match the flags QEMU uses to open the file. Currently O_WRONLY
-  for src and O_RDONLY for dst.
 
-O_DIRECT is not supported on all systems/filesystems, so run the fdset
-test without O_DIRECT if that's the case. The migration code should
-still work in that scenario.
+I would separate the CPU target code adding support for a new POWER
+Processor from the machine code (pseries).
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- tests/qtest/migration-test.c | 90 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 90 insertions(+)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 512b7ede8b..d83f1bdd4f 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2331,8 +2331,93 @@ static void test_multifd_file_mapped_ram_dio(void)
-     test_file_common(&args, true);
- }
- 
-+static void migrate_multifd_mapped_ram_fdset_dio_end(QTestState *from,
-+                                                    QTestState *to,
-+                                                    void *opaque)
-+{
-+    QDict *resp;
-+    QList *fdsets;
-+
-+    file_offset_finish_hook(from, to, opaque);
-+
-+    /*
-+     * Check that we removed the fdsets after migration, otherwise a
-+     * second migration would fail due to too many fdsets.
-+     */
-+
-+    resp = qtest_qmp(from, "{'execute': 'query-fdsets', "
-+                     "'arguments': {}}");
-+    g_assert(qdict_haskey(resp, "return"));
-+    fdsets = qdict_get_qlist(resp, "return");
-+    g_assert(fdsets && qlist_empty(fdsets));
-+}
- #endif /* O_DIRECT */
- 
-+#ifndef _WIN32
-+static void *migrate_multifd_mapped_ram_fdset(QTestState *from, QTestState *to)
-+{
-+    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+    int fds[3];
-+    int src_flags = O_WRONLY;
-+
-+    file_dirty_offset_region();
-+
-+    /* main outgoing channel: no O_DIRECT */
-+    fds[0] = open(file, src_flags, 0660);
-+    assert(fds[0] != -1);
-+
-+    qtest_qmp_fds_assert_success(from, &fds[0], 1, "{'execute': 'add-fd', "
-+                                 "'arguments': {'fdset-id': 1}}");
-+
-+#ifdef O_DIRECT
-+    src_flags |= O_DIRECT;
-+
-+    /* secondary outgoing channels */
-+    fds[1] = open(file, src_flags, 0660);
-+    assert(fds[1] != -1);
-+
-+    qtest_qmp_fds_assert_success(from, &fds[1], 1, "{'execute': 'add-fd', "
-+                                 "'arguments': {'fdset-id': 1}}");
-+
-+    /* incoming channel */
-+    fds[2] = open(file, O_CREAT | O_RDONLY, 0660);
-+    assert(fds[2] != -1);
-+
-+    qtest_qmp_fds_assert_success(to, &fds[2], 1, "{'execute': 'add-fd', "
-+                                 "'arguments': {'fdset-id': 1}}");
-+
-+    migrate_multifd_mapped_ram_dio_start(from, to);
-+#else
-+    migrate_multifd_mapped_ram_start(from, to);
-+#endif
-+
-+    return NULL;
-+}
-+
-+static void test_multifd_file_mapped_ram_fdset(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
-+                                           FILE_TEST_OFFSET);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = migrate_multifd_mapped_ram_fdset,
-+#ifdef O_DIRECT
-+        .finish_hook = migrate_multifd_mapped_ram_fdset_dio_end,
-+#endif
-+    };
-+
-+#ifdef O_DIRECT
-+    if (!probe_o_direct_support(tmpfs)) {
-+        g_test_skip("Filesystem does not support O_DIRECT");
-+        return;
-+    }
-+#endif
-+
-+    test_file_common(&args, true);
-+}
-+#endif /* _WIN32 */
-+
- static void test_precopy_tcp_plain(void)
- {
-     MigrateCommon args = {
-@@ -3761,6 +3846,11 @@ int main(int argc, char **argv)
-                        test_multifd_file_mapped_ram_dio);
- #endif
- 
-+#ifndef _WIN32
-+    qtest_add_func("/migration/multifd/file/mapped-ram/fdset",
-+                   test_multifd_file_mapped_ram_fdset);
-+#endif
-+
- #ifdef CONFIG_GNUTLS
-     migration_test_add("/migration/precopy/unix/tls/psk",
-                        test_precopy_unix_tls_psk);
--- 
-2.35.3
+>   target/ppc/compat.c         |  7 +++
+>   target/ppc/cpu-models.c     |  2 +
+>   target/ppc/cpu-models.h     |  2 +
+>   target/ppc/cpu_init.c       | 99 +++++++++++++++++++++++++++++++++++++
+>   6 files changed, 114 insertions(+), 3 deletions(-)
+> 
+> diff --git a/docs/system/ppc/pseries.rst b/docs/system/ppc/pseries.rst
+> index a876d897b6e4..3277564b34c2 100644
+> --- a/docs/system/ppc/pseries.rst
+> +++ b/docs/system/ppc/pseries.rst
+> @@ -15,9 +15,9 @@ Supported devices
+>   =================
+>   
+>    * Multi processor support for many Power processors generations: POWER7,
+> -   POWER7+, POWER8, POWER8NVL, POWER9, and Power10. Support for POWER5+ exists,
+> -   but its state is unknown.
+> - * Interrupt Controller, XICS (POWER8) and XIVE (POWER9 and Power10)
+> +   POWER7+, POWER8, POWER8NVL, POWER9, Power10 and Power11. Support for POWER5+
+> +   exists, but its state is unknown.
+
+The POWER5+ pseries machine seems functionnal with SLOF
+(Sep 18 2023 18:57:48) and Linux 6.6.3 under TCG. May be worth
+to mention (for AIX users) in another patch.
+
+> + * Interrupt Controller, XICS (POWER8) and XIVE (POWER9, Power10, Power11)
+>    * vPHB PCIe Host bridge.
+>    * vscsi and vnet devices, compatible with the same devices available on a
+>      PowerVM hypervisor with VIOS managing LPARs.
+> diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
+> index e7c9edd033c8..c6e85c031178 100644
+> --- a/hw/ppc/spapr_cpu_core.c
+> +++ b/hw/ppc/spapr_cpu_core.c
+> @@ -401,6 +401,7 @@ static const TypeInfo spapr_cpu_core_type_infos[] = {
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.0"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power9_v2.2"),
+>       DEFINE_SPAPR_CPU_CORE_TYPE("power10_v2.0"),
+> +    DEFINE_SPAPR_CPU_CORE_TYPE("power11"),
+>   #ifdef CONFIG_KVM
+>       DEFINE_SPAPR_CPU_CORE_TYPE("host"),
+>   #endif
+> diff --git a/target/ppc/compat.c b/target/ppc/compat.c
+> index ebef2cccecf3..12dd8ae290ca 100644
+> --- a/target/ppc/compat.c
+> +++ b/target/ppc/compat.c
+> @@ -100,6 +100,13 @@ static const CompatInfo compat_table[] = {
+>           .pcr_level = PCR_COMPAT_3_10,
+>           .max_vthreads = 8,
+>       },
+> +    { /* POWER11, ISA3.10 */
+> +        .name = "power11",
+> +        .pvr = CPU_POWERPC_LOGICAL_3_10_PLUS,
+> +        .pcr = PCR_COMPAT_3_10,
+> +        .pcr_level = PCR_COMPAT_3_10,
+> +        .max_vthreads = 8,
+> +    },
+>   };
+>   
+>   static const CompatInfo *compat_by_pvr(uint32_t pvr)
+> diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+> index f2301b43f78b..1870e69b63df 100644
+> --- a/target/ppc/cpu-models.c
+> +++ b/target/ppc/cpu-models.c
+> @@ -734,6 +734,8 @@
+>                   "POWER9 v2.2")
+>       POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POWER10,
+>                   "POWER10 v2.0")
+> +    POWERPC_DEF("power11",  CPU_POWERPC_POWER11,           POWER11,
+> +                "POWER11")
+>   #endif /* defined (TARGET_PPC64) */
+>   
+>   /***************************************************************************/
+> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+> index 0229ef3a9a5c..a1b540c3aa9e 100644
+> --- a/target/ppc/cpu-models.h
+> +++ b/target/ppc/cpu-models.h
+> @@ -354,6 +354,7 @@ enum {
+>       CPU_POWERPC_POWER10_BASE       = 0x00800000,
+>       CPU_POWERPC_POWER10_DD1        = 0x00801100,
+>       CPU_POWERPC_POWER10_DD20       = 0x00801200,
+> +    CPU_POWERPC_POWER11            = 0x00821200,
+
+is that a DD2.2 PVR ? If so, It should be mentionned in the definition.
+
+
+
+Thanks,
+
+C.
+
+
+
+>       CPU_POWERPC_970_v22            = 0x00390202,
+>       CPU_POWERPC_970FX_v10          = 0x00391100,
+>       CPU_POWERPC_970FX_v20          = 0x003C0200,
+> @@ -391,6 +392,7 @@ enum {
+>       CPU_POWERPC_LOGICAL_2_07       = 0x0F000004,
+>       CPU_POWERPC_LOGICAL_3_00       = 0x0F000005,
+>       CPU_POWERPC_LOGICAL_3_10       = 0x0F000006,
+> +    CPU_POWERPC_LOGICAL_3_10_PLUS  = 0x0F000007,
+>   };
+>   
+>   /* System version register (used on MPC 8xxx)                                */
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index 6d82f24c8756..17c159c8187b 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -6655,6 +6655,105 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+>       pcc->l1_icache_size = 0x8000;
+>   }
+>   
+> +static bool ppc_pvr_match_power11(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
+> +{
+> +    uint32_t base = pvr & CPU_POWERPC_POWER_SERVER_MASK;
+> +    uint32_t pcc_base = pcc->pvr & CPU_POWERPC_POWER_SERVER_MASK;
+> +
+> +    if (!best && (base == CPU_POWERPC_POWER11))
+> +        return true;
+> +
+> +    if (base != pcc_base)
+> +        return false;
+> +
+> +    if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00))
+> +        return true;
+> +
+> +    return false;
+> +}
+> +
+> +POWERPC_FAMILY(POWER11)(ObjectClass * oc, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +    PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
+> +
+> +    dc->fw_name = "PowerPC,POWER11";
+> +    dc->desc = "POWER11";
+> +    pcc->pvr_match = ppc_pvr_match_power11;
+> +    pcc->pcr_mask = PCR_COMPAT_2_05 | PCR_COMPAT_2_06 | PCR_COMPAT_2_07 |
+> +                    PCR_COMPAT_3_00 | PCR_COMPAT_3_10;
+> +    pcc->pcr_supported = PCR_COMPAT_3_10 | PCR_COMPAT_3_00 | PCR_COMPAT_2_07 |
+> +                         PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
+> +    pcc->init_proc = init_proc_POWER10;
+> +    pcc->check_pow = check_pow_nocheck;
+> +    pcc->insns_flags = PPC_INSNS_BASE | PPC_ISEL | PPC_STRING | PPC_MFTB |
+> +                       PPC_FLOAT | PPC_FLOAT_FSEL | PPC_FLOAT_FRES |
+> +                       PPC_FLOAT_FSQRT | PPC_FLOAT_FRSQRTE |
+> +                       PPC_FLOAT_FRSQRTES |
+> +                       PPC_FLOAT_STFIWX |
+> +                       PPC_FLOAT_EXT |
+> +                       PPC_CACHE | PPC_CACHE_ICBI | PPC_CACHE_DCBZ |
+> +                       PPC_MEM_SYNC | PPC_MEM_EIEIO |
+> +                       PPC_MEM_TLBIE | PPC_MEM_TLBSYNC |
+> +                       PPC_64B | PPC_64H | PPC_64BX | PPC_ALTIVEC |
+> +                       PPC_SEGMENT_64B | PPC_SLBI |
+> +                       PPC_POPCNTB | PPC_POPCNTWD |
+> +                       PPC_CILDST;
+> +    pcc->insns_flags2 = PPC2_VSX | PPC2_VSX207 | PPC2_DFP | PPC2_DBRX |
+> +                        PPC2_PERM_ISA206 | PPC2_DIVE_ISA206 |
+> +                        PPC2_ATOMIC_ISA206 | PPC2_FP_CVT_ISA206 |
+> +                        PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
+> +                        PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
+> +                        PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
+> +                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
+> +                        PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
+> +    pcc->msr_mask = (1ull << MSR_SF) |
+> +                    (1ull << MSR_HV) |
+> +                    (1ull << MSR_TM) |
+> +                    (1ull << MSR_VR) |
+> +                    (1ull << MSR_VSX) |
+> +                    (1ull << MSR_EE) |
+> +                    (1ull << MSR_PR) |
+> +                    (1ull << MSR_FP) |
+> +                    (1ull << MSR_ME) |
+> +                    (1ull << MSR_FE0) |
+> +                    (1ull << MSR_SE) |
+> +                    (1ull << MSR_DE) |
+> +                    (1ull << MSR_FE1) |
+> +                    (1ull << MSR_IR) |
+> +                    (1ull << MSR_DR) |
+> +                    (1ull << MSR_PMM) |
+> +                    (1ull << MSR_RI) |
+> +                    (1ull << MSR_LE);
+> +    pcc->lpcr_mask = LPCR_VPM1 | LPCR_ISL | LPCR_KBV | LPCR_DPFD |
+> +        (LPCR_PECE_U_MASK & LPCR_HVEE) | LPCR_ILE | LPCR_AIL |
+> +        LPCR_UPRT | LPCR_EVIRT | LPCR_ONL | LPCR_HR | LPCR_LD |
+> +        (LPCR_PECE_L_MASK & (LPCR_PDEE | LPCR_HDEE | LPCR_EEE |
+> +                             LPCR_DEE | LPCR_OEE))
+> +        | LPCR_MER | LPCR_GTSE | LPCR_TC |
+> +        LPCR_HEIC | LPCR_LPES0 | LPCR_HVICE | LPCR_HDICE;
+> +    /* DD2 adds an extra HAIL bit */
+> +    pcc->lpcr_mask |= LPCR_HAIL;
+> +
+> +    pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
+> +    pcc->mmu_model = POWERPC_MMU_3_00;
+> +#if !defined(CONFIG_USER_ONLY)
+> +    /* segment page size remain the same */
+> +    pcc->hash64_opts = &ppc_hash64_opts_POWER7;
+> +    pcc->radix_page_info = &POWER10_radix_page_info;
+> +    pcc->lrg_decr_bits = 56;
+> +#endif
+> +    pcc->excp_model = POWERPC_EXCP_POWER10;
+> +    pcc->bus_model = PPC_FLAGS_INPUT_POWER9;
+> +    pcc->bfd_mach = bfd_mach_ppc64;
+> +    pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
+> +                 POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
+> +                 POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
+> +                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
+> +    pcc->l1_dcache_size = 0x8000;
+> +    pcc->l1_icache_size = 0x8000;
+> +}
+> +
+>   #if !defined(CONFIG_USER_ONLY)
+>   void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp)
+>   {
 
 
