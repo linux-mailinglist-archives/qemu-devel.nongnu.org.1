@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6228B3748
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97A88B3743
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 14:30:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0Khh-0003Bz-Hy; Fri, 26 Apr 2024 08:29:25 -0400
+	id 1s0Khj-0003CK-N1; Fri, 26 Apr 2024 08:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s0Khd-0003A2-Uq
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:21 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1s0Khg-0003Bn-4E
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:24 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s0Khb-00064m-33
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:21 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-41b79451145so6704185e9.3
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 05:29:17 -0700 (PDT)
+ id 1s0Khb-00064u-BV
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 08:29:23 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-41bab13ca4eso1241605e9.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 05:29:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714134556; x=1714739356; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714134557; x=1714739357; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=N0nd37JbIqFWOk7TVvpZsBjDnU/+rTPYGOgPUq3SDrY=;
- b=AXqnKx4FbHeeJXfIuj3UCBTL1pLdXSthtg832dHJ9ggZerQCNOUDreXyKJEUulqhRg
- oecRk88yZNhLXtPdJ7vdjTgNsA4w1Rsxt5rtaT/OTgWJCTsIqP+TlsPQO/j3/KoOqrz5
- BHsct3d8bFj1vxYOxVjj02EZS94M3Jjkw6iKAcIEIZA9PJq1lZ4RZRendNhSX7XZ30qy
- REj9BZkzeQhkjgM4KJlCAuOf8mAcwYJDRteFgQBYoEaVjXSNuul2zc6P8SDUMCgIvDI6
- gg3efamYVpL5agODwePI6+r1rvOzucEg58cVlDpWUnk/T/AGX1xHikUl5iUmrQVgzQz/
- sgSQ==
+ bh=WS9SzNWMMODXM/MCi5WitYJBrcmDnkYWEhDYB5gmtic=;
+ b=H2z+ryAfa1GmC2U5USp1dWHx+58KAfKPfOnLU6LVLP+uodx9C+6ACc6sC3YPcKAnF+
+ Ukl5Ciata/UbApgbJ8rRwFQN799taAFDes2GNp3Got0LSoomNFtbcFoPSBGFIkDFklrb
+ FMfbvarAxG+l+FiMsvSJm9mpm6kSNKhbcxTAuKMCKwmt4+MX3X+Ox5GImXsI7g2A/mql
+ JNQFjng03J4lFaZHhZ0qWaq4jqLgLB6zDC8HHCpbxBYKFPKtJ2DxRPfzjZ2VhScTPXtT
+ Sun77dJ+w2RI7kokldURUW4sHXGc9FuDjhpg1hbE1gNvWdtINEfOd/0ejIUoIv4W6sXJ
+ xOYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714134556; x=1714739356;
+ d=1e100.net; s=20230601; t=1714134557; x=1714739357;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N0nd37JbIqFWOk7TVvpZsBjDnU/+rTPYGOgPUq3SDrY=;
- b=jBBRgQfYB98mFrFYmSpnoqdeRKTprhVd9bDdQUJw+KybMh2OPK50hPfEgms7MK+IDi
- kSPdolwkcagZ2LeoefPIhOZD02eOVNFgFb7QxxfnKsyitq5YgiW9SSiqPg5QQaZnUj7B
- 9KqxAPLbOu5gbtAcmWIazlM70BCz1OyRkS8nxFT3Vb7CY1gk3Ke3alYxSOyztbJWxCda
- zJzoolocqZJWLp20DKd5n7eJxn1XTZEFVzO+YMPHAS4MnldTx16QaBg1/DWqy8+qXqw1
- nzcSDa6dHW26fN7cOb5CKL4dC7pct8jVWmVB7hqRDqaQtmp39G0V7pUYZs5Q57EUmBZy
- O17Q==
+ bh=WS9SzNWMMODXM/MCi5WitYJBrcmDnkYWEhDYB5gmtic=;
+ b=Q2Sw702V3GN4nDPRZAwfYgjjcTRnfRs1S8tnSXNbl1iqqDCr39jOm8nvO300wirF8F
+ cs4r+C055BDE54lDXH8efBMEVpEPa9uIrDUnZyhZPC+wXD9e1kCatFUR094W20l0pMX/
+ axbkeSLuTmAtI+Itzy2iRt6D29NzhnWzs0ZiWuqzgv5EfXp7A56sZRym0XcWm9tgddSc
+ 0LDBSkzmN3rKrI6YrQ8zCTJfss+1IzDjpv09zgMpgcUcwBimJEHuVVh0+mKRilI3PZTY
+ prUdIIOFI4Z/mhe+8xp6UyT/LOwiuu2YGVTF1PrCeK46f7LeoSjrBzYK3XnBiYee5tMz
+ OUhQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXT0vGLBjFQhGm3wkyLuTvo1tzVKJPr7pRHyKiwMm1PU+J4lTADNumPX2obZtR3dg72GOpqGvSolEy1rNLzpnz5XGjWa7Y=
-X-Gm-Message-State: AOJu0YytrmFTeU6Z4F+/rmpHKCReRAJkOAY8qBGae72iY0xint+XNIsW
- /8azTRRQZeVq2/thTwXw4Am5AwhTVdJPFPWmb5Kx1kmPlBUMkFEx8vy7wwXGnu8=
-X-Google-Smtp-Source: AGHT+IG8SvxrQNIjmW4bPYl1czbbKbVwvl1QZZJle5Gy+D+sJo8gvacM9RYndo/t2J7f0GdTWFnMtA==
-X-Received: by 2002:a05:600c:4e47:b0:41a:e995:b924 with SMTP id
- e7-20020a05600c4e4700b0041ae995b924mr1758805wmq.33.1714134556360; 
+ AJvYcCWh5kuQJp/8wHYPMY449+2RAjqVnuScZ9j4ESUxrbLxn6mmG/t0Zs7verXbToVQT+Xa0xMeeKZmO2UK96FBE9iY8fv5W7U=
+X-Gm-Message-State: AOJu0YwflXl2sNtaMJLmfencZRR8hSif3ywe08mvMnk+Rfr2odUIWdpZ
+ LpWhu1CRlfODmV2a2Nes6SqngdxJoR5zsjyw9AQlnPsgvoTgHn1lmXkPKUa7/SU=
+X-Google-Smtp-Source: AGHT+IFraGiaPWygrlDarrqP90vgN/sfZK93sIMurUjsbEhQeZpwH4rNYWW0kKHbh2dy5bV0f0U4lw==
+X-Received: by 2002:a05:600c:45cd:b0:41a:a521:9699 with SMTP id
+ s13-20020a05600c45cd00b0041aa5219699mr1970436wmo.4.1714134556905; 
  Fri, 26 Apr 2024 05:29:16 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m15-20020a05600c460f00b0041a964b55ddsm1397134wmo.1.2024.04.26.05.29.15
+ m15-20020a05600c460f00b0041a964b55ddsm1397134wmo.1.2024.04.26.05.29.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 26 Apr 2024 05:29:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
@@ -64,23 +64,24 @@ To: qemu-arm@nongnu.org,
 Cc: Radoslaw Biernacki <rad@semihalf.com>,
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v2 2/4] hw/arm/sbsa-ref: Force CPU generic timer to 62.5MHz
-Date: Fri, 26 Apr 2024 13:29:11 +0100
-Message-Id: <20240426122913.3427983-3-peter.maydell@linaro.org>
+Subject: [PATCH v2 3/4] hw/watchdog/sbsa_gwdt: Make watchdog timer frequency a
+ QOM property
+Date: Fri, 26 Apr 2024 13:29:12 +0100
+Message-Id: <20240426122913.3427983-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240426122913.3427983-1-peter.maydell@linaro.org>
 References: <20240426122913.3427983-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,67 +97,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently QEMU CPUs always run with a generic timer counter frequency
-of 62.5MHz, but ARMv8.6 CPUs will run at 1GHz.  For older versions of
-the TF-A firmware that sbsa-ref runs, the frequency of the generic
-timer is hardcoded into the firmware, and so if the CPU actually has
-a different frequency then timers in the guest will be set
-incorrectly.
+Currently the sbsa_gdwt watchdog device hardcodes its frequency at
+62.5MHz. In real hardware, this watchdog is supposed to be driven
+from the system counter, which also drives the CPU generic timers.
+Newer CPU types (in particular from Armv8.6) should have a CPU
+generic timer frequency of 1GHz, so we can't leave the watchdog
+on the old QEMU default of 62.5GHz.
 
-The default frequency used by the 'max' CPU is about to change, so
-make the sbsa-ref board force the CPU frequency to the value which
-the firmware expects.
-
-Newer versions of TF-A will read the frequency from the CPU's
-CNTFRQ_EL0 register:
- https://github.com/ARM-software/arm-trusted-firmware/commit/4c77fac98dac0bebc63798aae9101ac865b87148
-so in the longer term we could make this board use the 1GHz
-frequency. We will need to make sure we update the binaries used
-by our avocado test
- Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef
-before we can do that.
+Make the frequency a QOM property so it can be set by the board,
+and have our only board that uses this device set that frequency
+to the same value it sets the CPU frequency.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-I leave it up to the sbsa-ref maintainers exactly when they
-want to shift to 1GHz (probably after a TF-A release with the fix?)
----
- hw/arm/sbsa-ref.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/hw/watchdog/sbsa_gwdt.h |  3 +--
+ hw/arm/sbsa-ref.c               |  1 +
+ hw/watchdog/sbsa_gwdt.c         | 15 ++++++++++++++-
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
+diff --git a/include/hw/watchdog/sbsa_gwdt.h b/include/hw/watchdog/sbsa_gwdt.h
+index 70b137de301..4bdc6c6fdb6 100644
+--- a/include/hw/watchdog/sbsa_gwdt.h
++++ b/include/hw/watchdog/sbsa_gwdt.h
+@@ -55,8 +55,6 @@
+ #define SBSA_GWDT_RMMIO_SIZE 0x1000
+ #define SBSA_GWDT_CMMIO_SIZE 0x1000
+ 
+-#define SBSA_TIMER_FREQ      62500000 /* Hz */
+-
+ typedef struct SBSA_GWDTState {
+     /* <private> */
+     SysBusDevice parent_obj;
+@@ -67,6 +65,7 @@ typedef struct SBSA_GWDTState {
+     qemu_irq irq;
+ 
+     QEMUTimer *timer;
++    uint64_t freq;
+ 
+     uint32_t id;
+     uint32_t wcs;
 diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index f5709d6c141..36f6f717b4b 100644
+index 36f6f717b4b..57c337fd92a 100644
 --- a/hw/arm/sbsa-ref.c
 +++ b/hw/arm/sbsa-ref.c
-@@ -60,6 +60,19 @@
- #define NUM_SMMU_IRQS   4
- #define NUM_SATA_PORTS  6
+@@ -543,6 +543,7 @@ static void create_wdt(const SBSAMachineState *sms)
+     SysBusDevice *s = SYS_BUS_DEVICE(dev);
+     int irq = sbsa_ref_irqmap[SBSA_GWDT_WS0];
  
-+/*
-+ * Generic timer frequency in Hz (which drives both the CPU generic timers
-+ * and the SBSA watchdog-timer). Older versions of the TF-A firmware
-+ * typically used with sbsa-ref (including the binaries in our Avocado test
-+ * Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef
-+ * assume it is this value.
-+ *
-+ * TODO: this value is not architecturally correct for an Armv8.6 or
-+ * better CPU, so we should move to 1GHz once the TF-A fix above has
-+ * made it into a release and into our Avocado test.
-+ */
-+#define SBSA_GTIMER_HZ 62500000
++    qdev_prop_set_uint64(dev, "clock-frequency", SBSA_GTIMER_HZ);
+     sysbus_realize_and_unref(s, &error_fatal);
+     sysbus_mmio_map(s, 0, rbase);
+     sysbus_mmio_map(s, 1, cbase);
+diff --git a/hw/watchdog/sbsa_gwdt.c b/hw/watchdog/sbsa_gwdt.c
+index 96895d76369..d437535cc66 100644
+--- a/hw/watchdog/sbsa_gwdt.c
++++ b/hw/watchdog/sbsa_gwdt.c
+@@ -18,6 +18,7 @@
+ #include "qemu/osdep.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/watchdog.h"
++#include "hw/qdev-properties.h"
+ #include "hw/watchdog/sbsa_gwdt.h"
+ #include "qemu/timer.h"
+ #include "migration/vmstate.h"
+@@ -109,7 +110,7 @@ static void sbsa_gwdt_update_timer(SBSA_GWDTState *s, WdtRefreshType rtype)
+         timeout = s->woru;
+         timeout <<= 32;
+         timeout |= s->worl;
+-        timeout = muldiv64(timeout, NANOSECONDS_PER_SECOND, SBSA_TIMER_FREQ);
++        timeout = muldiv64(timeout, NANOSECONDS_PER_SECOND, s->freq);
+         timeout += qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+ 
+         if ((rtype == EXPLICIT_REFRESH) || ((rtype == TIMEOUT_REFRESH) &&
+@@ -261,6 +262,17 @@ static void wdt_sbsa_gwdt_realize(DeviceState *dev, Error **errp)
+                 dev);
+ }
+ 
++static Property wdt_sbsa_gwdt_props[] = {
++    /*
++     * Timer frequency in Hz. This must match the frequency used by
++     * the CPU's generic timer. Default 62.5Hz matches QEMU's legacy
++     * CPU timer frequency default.
++     */
++    DEFINE_PROP_UINT64("clock-frequency", struct SBSA_GWDTState, freq,
++                       62500000),
++    DEFINE_PROP_END_OF_LIST(),
++};
 +
- enum {
-     SBSA_FLASH,
-     SBSA_MEM,
-@@ -767,6 +780,8 @@ static void sbsa_ref_init(MachineState *machine)
-                                     &error_abort);
-         }
+ static void wdt_sbsa_gwdt_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -271,6 +283,7 @@ static void wdt_sbsa_gwdt_class_init(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_WATCHDOG, dc->categories);
+     dc->vmsd = &vmstate_sbsa_gwdt;
+     dc->desc = "SBSA-compliant generic watchdog device";
++    device_class_set_props(dc, wdt_sbsa_gwdt_props);
+ }
  
-+        object_property_set_int(cpuobj, "cntfrq", SBSA_GTIMER_HZ, &error_abort);
-+
-         object_property_set_link(cpuobj, "memory", OBJECT(sysmem),
-                                  &error_abort);
- 
+ static const TypeInfo wdt_sbsa_gwdt_info = {
 -- 
 2.34.1
 
