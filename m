@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1838B403F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB808B405D
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:49:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUG-00023c-P2; Fri, 26 Apr 2024 15:44:02 -0400
+	id 1s0RUR-0002uF-G2; Fri, 26 Apr 2024 15:44:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTk-0001bq-Rl
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:29 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTo-0001lb-Bm
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:33 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTg-00035r-Jx
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:28 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a58872c07d8so650977066b.0
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTk-00037p-Tx
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:31 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a58c0a05a39so257227366b.2
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160601; x=1714765401; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160606; x=1714765406; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3j5wqqpS7/lf73uUyWBqUlTl3qEW0g75YQa/BO6RAIE=;
- b=fmEWD8mrPo0nCAdTx+DfDnclKQMlrTALRAnzDDyyiHk64BfQO1BkhBUFlgnMvtx85K
- TUsTNsRav89Qrvl4yKgi/HjgD0tw4WSl9I8Xkzjc6mqQwnUvvYFSiQc3RuepKSoFRKc5
- sl4+mYKRzMmJsg5RbvOJqrPSMjo3Q0CnyN0pEj6wB5xodXnY26KagkAzBAu389yHi6H2
- mj7HVU4j+DaANMEwBE8yBzToxPiVlCcDf8AQXR0+l7ODTVgFM8QVmAlpf/5HMkfiEoBY
- 6d+CoajPuURxZL2CX8tv6JrR3Rm4UUthvjUZ1aVzIa8SnqIItm+tpeSr7e3Gq18yzj3i
- x8og==
+ bh=ImXEe3AsI+IkHscdZF2OSgUHx6phFwxkW/+zKfz8Om4=;
+ b=BSLu+ROaLKnJztDBtlI+JzJ7mc05sfBehSZB4Rnj19t/cPvC/New8fvqtT0NfEKOx1
+ QJEmbqVi0EdWKTIVdXlXMHwJpoQM7M3OAE6k5inlK7anaubCg29UqHOl+YrmLeGfZiJ+
+ TINyT4bq1yqxWgfgNE8bOzWH7IXcEIE577txzp/Hac6Cdk5Zq/9TGluo7gEOuh3mnPYb
+ JpHh6amhV4Qno4Ul4gOX/WOSP8hBAvRRj78+BanHaUd3NGnW9rzEOgtTuvju6BYgqqPH
+ VXYpYcYckoqSa/A+/+7bsaWzD94JgaqpajdDqtGp/kbXmtbyQ/ZFSuBxuSNWTiB5N41I
+ O1SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160601; x=1714765401;
+ d=1e100.net; s=20230601; t=1714160606; x=1714765406;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3j5wqqpS7/lf73uUyWBqUlTl3qEW0g75YQa/BO6RAIE=;
- b=cS3ObpCrTG04S4dJKBHpn5WQM19KPhAO5plKVyrtw3E6jeu6HExt/DGGSLj7wW6kEL
- 89w0OuBBm2q5tPkqyZlcwmtmpf9vMCgxLYolnjkukSIkWvfWxErYjbDgRZ0ucB+dbBLd
- fUNSPK/90wN7tKJno8gNBNOk1dAqBA3hLHBqSAmeJMUNT2CWNLiccwAlujnQHMYzJPnK
- c+X/W3ZXpTNDZ0+j7MyUcEQhGvXL3d9GNfa3oA/hjihykEwZruqkchmQg2oLI4+GLYjV
- /xzs6L7seJzr2YD3RNKAcmr7Yh7Ea8MGO0sDFv6zGD667bJxlygnoQdoEGs48QmSuUh+
- +y9A==
-X-Gm-Message-State: AOJu0YyengI+msqv9XgBvFN110sKU9eA9ngWx28W7yWTxsFV5gY17qRl
- DnhVs6X3D4/CiGRTZQOlZvKqLcUNEixiB8W0uShkSF2h98h6lESnzxDBis7/tmkTTDCivxwMLN0
- oOGw=
-X-Google-Smtp-Source: AGHT+IETBPuyIVPCZBmtMgTb33DBkiexcpTAB7tWpueprnBvdcNXAlEwf1W/5t8Jv1KaOUZfGRpp7g==
-X-Received: by 2002:a17:906:f9db:b0:a58:83a6:c68f with SMTP id
- lj27-20020a170906f9db00b00a5883a6c68fmr551531ejb.17.1714160600871; 
- Fri, 26 Apr 2024 12:43:20 -0700 (PDT)
+ bh=ImXEe3AsI+IkHscdZF2OSgUHx6phFwxkW/+zKfz8Om4=;
+ b=ZYW/nIT+VKQhT8DoM5OSgxtFMctKYZHueDoQTySLuot9hhRjH+asI4Ach4d500PPtA
+ lULCbLQO451nh38c49tQSn9qzZRXFgu8NCJBl8/vTfZBQNFjB/aKFDak0rNTsdbxGiv7
+ +jCDBnRUpi6oUtp4BqchJAwvTn8xLP43HhZ0fCDsikU7lnckq09Dl08FvzoHOqRnkEx2
+ IUWJ92vyQe8FrSpKfmOB175DBVLCUY8xNcPhiTD1CYPzL7Dwrb+fCV7MzJL9ouIcT6Co
+ 7obBxm9sB6jFnrLfCINP1fI2/djB+gv4sT9KHseqJ0SxzNRVtrjd6IIwFbRDQj3I3Ar/
+ sfVw==
+X-Gm-Message-State: AOJu0YzZWKq8HUHSNR0QI9OdUqf9BQh5TCCgZITN/8EdGmYX4NRJppUP
+ otFbgISIZxdmuOr7cqzUoPnKz3brO2nKr6V5ipr5cUrrYdCihmvTUkA3VdQuLjhx+QrslKXZ2Z5
+ GBas=
+X-Google-Smtp-Source: AGHT+IETZwTb4a/21u+upB/lEy3ej/85A0BRlZkCkWx2rxIQGoA88FAGDYQsdKXyNU7INJJuCiipQw==
+X-Received: by 2002:a17:906:af19:b0:a58:d757:66bb with SMTP id
+ lx25-20020a170906af1900b00a58d75766bbmr1292294ejb.14.1714160606653; 
+ Fri, 26 Apr 2024 12:43:26 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- dk21-20020a170907941500b00a55aee4bf74sm6993231ejc.79.2024.04.26.12.43.19
+ bi14-20020a170907368e00b00a5588ed8fa2sm9358983ejc.113.2024.04.26.12.43.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:43:20 -0700 (PDT)
+ Fri, 26 Apr 2024 12:43:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PULL 13/38] target/sparc: Replace abi_ulong by uint32_t for
- TARGET_ABI32
-Date: Fri, 26 Apr 2024 21:41:33 +0200
-Message-ID: <20240426194200.43723-14-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 14/38] target/i386: Include missing 'exec/exec-all.h' header
+Date: Fri, 26 Apr 2024 21:41:34 +0200
+Message-ID: <20240426194200.43723-15-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,30 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have abi_ulong == uint32_t for the 32-bit ABI.
-Use the generic type to avoid to depend on the
-"exec/user/abitypes.h" header.
+The XRSTOR instruction ends calling tlb_flush(), declared
+in "exec/exec-all.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240418192525.97451-14-philmd@linaro.org>
+Message-Id: <20231211212003.21686-13-philmd@linaro.org>
 ---
- target/sparc/gdbstub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/tcg/fpu_helper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
-index 07ea81ab5f..ec0036e9ef 100644
---- a/target/sparc/gdbstub.c
-+++ b/target/sparc/gdbstub.c
-@@ -108,7 +108,7 @@ int sparc_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-     SPARCCPU *cpu = SPARC_CPU(cs);
-     CPUSPARCState *env = &cpu->env;
- #if defined(TARGET_ABI32)
--    abi_ulong tmp;
-+    uint32_t tmp;
- 
-     tmp = ldl_p(mem_buf);
- #else
+diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
+index 4b965a5d6c..ece22a3553 100644
+--- a/target/i386/tcg/fpu_helper.c
++++ b/target/i386/tcg/fpu_helper.c
+@@ -21,6 +21,7 @@
+ #include <math.h>
+ #include "cpu.h"
+ #include "tcg-cpu.h"
++#include "exec/exec-all.h"
+ #include "exec/cpu_ldst.h"
+ #include "exec/helper-proto.h"
+ #include "fpu/softfloat.h"
 -- 
 2.41.0
 
