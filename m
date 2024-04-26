@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7238B3153
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 09:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB758B31B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 09:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0G1G-0007W5-Q4; Fri, 26 Apr 2024 03:29:18 -0400
+	id 1s0GNN-0006bN-05; Fri, 26 Apr 2024 03:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s0G1C-0007S9-Tn
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 03:29:14 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1s0GNJ-0006af-MY
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 03:52:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s0G1A-0008K7-LM
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 03:29:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714116553; x=1745652553;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=8CDqikRy8rQu2vPZyFLPE+tRdsZUnZr7MlJ8t6mWajg=;
- b=QyVe7LdaQoMFbFKRxo3lx8O279cIzcA7oRZIM/OVVIU5i4Cy/SYxd5VH
- PS7qnzy7vNbsBG6WhRJnMIIWeCDOUZwwpOeWYP06NRAcB3KNeB7zMyDrd
- Zc/GrlKPoNc3F37jvxBbRnQXl2vEg6y7Ku5Ev1X85KFrGliXyHhEXW7rX
- kgMI72ZV9eNgbydurpqc7RDAR/Evq2a64ZOhQ4G8+NXd0pcbuIR3sBn/u
- ZDxeSqkPlhHQyTRHbqnpPQolD77lR415xZ6nGgTiO5+O1XBvWzcp5AI2Q
- O902MrWKQoYRayXlZttGYWclVa4EMmQGLZKmjCs3y8BjVw79K2WfvIUGe A==;
-X-CSE-ConnectionGUID: oUnkS4ucSIeSrsW1yl7flQ==
-X-CSE-MsgGUID: Sf985lw1T2eVEffPvz34pQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="20396544"
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; d="scan'208";a="20396544"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2024 00:29:09 -0700
-X-CSE-ConnectionGUID: aHOpPkvoTISpXj8MG+kPpQ==
-X-CSE-MsgGUID: aH0gI8DjTGSKZSM5LG/vaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,231,1708416000"; d="scan'208";a="25382483"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 26 Apr 2024 00:29:07 -0700
-Date: Fri, 26 Apr 2024 15:43:15 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PULL v2 00/63] First batch of i386 and build system patch for
- QEMU 9.1
-Message-ID: <ZitbE46sNJAQN0xk@intel.com>
-References: <20240424081443.75869-1-pbonzini@redhat.com>
- <7217032f-2d44-4c9b-aa73-1b97787de03e@linaro.org>
- <CABgObfYAJQS-x6NRnjF5T-i0FmKwJR5eK0XQ8t1HBBTbP2QDkw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1s0GNH-0006IL-DQ
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 03:52:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714117921;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=y7YfO62PO3plVyaHClYh3rvnH/44rk6LEMpI3tdtSkw=;
+ b=izy80mrHxOl2uOeAfnzwfIQiZhEFgaUGaL9rPtFlLrjjAlCUiiwtc5TppdVWcnsJLYfSyi
+ 2VaXS6kQT4/mvih+aaPr+pXMn+0P6JUW2dfYgj6WP/UWbtwSbOGGBvZia6VNNXdkQjDm0r
+ WjUhzIonkvUfW2wG61g+86nWKfVldkA=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-155-tOkQLRB0MkWXLdWAjBgKLA-1; Fri, 26 Apr 2024 03:50:34 -0400
+X-MC-Unique: tOkQLRB0MkWXLdWAjBgKLA-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2d865b3b04cso11017061fa.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 00:50:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714117833; x=1714722633;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=y7YfO62PO3plVyaHClYh3rvnH/44rk6LEMpI3tdtSkw=;
+ b=fRMEN2uuWJDoJCurJ6sNpuTh878Jh8MJJ/6J+w/430hYAWJdEfSXPImkV2EGd9cLLL
+ viqGLBThA1azyn3Rgz/g2GqmefOAAAyGn8XirJGYGhk5jp/TUp0yt0PSJP0Uhq4bnjCc
+ WlK6dPfJ7VZKE+tEjxW9J9augDQHAatIJKrpeuKKE7Q94c17ourAQ9gMgyEcz2dCDeUE
+ xsd10nda+5uolppkCvuxwsvs+XWM3P/ln7gxgc2fbEhL3BFY3rCojE8dnP6XcJnPERCh
+ 7WuOHClW4joiM416yAaXScWcttRkoJJLlP5mP/NfXpwrmw6Ok3WN77YHyNz6Gw9uqRs3
+ d6ZA==
+X-Gm-Message-State: AOJu0YyfCXeK8ipceQ6dfw4F15h8CHtDSFDazIQIwGVBk+ZDntb17xSk
+ xZ4Tc9sPJdcDcNH5vCNrQy0mRSWyPWiYHYs2Vzw41EUcrbIjC9PpSz7UchL0Gekju6bFpkkyURP
+ Vqf1LQfEY/0bD7ZyLfRu04i7TnNdR3hZimc5g0MnBeDjFmTaO1TxYSBdUFCcb4hIeBoWV5VpIZO
+ ZbZdvF9T2t4E0olAgYapbmq0ZvsJo=
+X-Received: by 2002:a2e:a995:0:b0:2df:3f04:396a with SMTP id
+ x21-20020a2ea995000000b002df3f04396amr731983ljq.6.1714117832882; 
+ Fri, 26 Apr 2024 00:50:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHshZb8wKQSlSCsGC7A8HSrCct5GxrOXNrdG/5uvph6R9HtJ9SUQYimTMX2BgkIqhfe8oJBW7piE6SXoiuAWk=
+X-Received: by 2002:a2e:a995:0:b0:2df:3f04:396a with SMTP id
+ x21-20020a2ea995000000b002df3f04396amr731972ljq.6.1714117832512; Fri, 26 Apr
+ 2024 00:50:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYAJQS-x6NRnjF5T-i0FmKwJR5eK0XQ8t1HBBTbP2QDkw@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+References: <20240416141426.588544-1-david@redhat.com>
+In-Reply-To: <20240416141426.588544-1-david@redhat.com>
+From: Mario Casquero <mcasquer@redhat.com>
+Date: Fri, 26 Apr 2024 09:50:21 +0200
+Message-ID: <CAMXpfWuPJb_LGwFt5uU5QOZ3nyP2CY_694eK1vyBo21RWLZQYA@mail.gmail.com>
+Subject: Re: [PATCH v1] virtio-mem: improve error message when unplug of
+ device fails due to plugged memory
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Liang Cong <lcong@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcasquer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,48 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+This patch has been successfully tested. Boot up a VM with a
+virtio-mem device, hotplug some memory increasing the requested-size,
+finally try to unplug the device and see the new message:
+(qemu) device_del vmem0
+Error: virtio-mem device cannot get unplugged while some of its memory
+is still plugged
 
-On Fri, Apr 26, 2024 at 07:21:12AM +0200, Paolo Bonzini wrote:
-> Date: Fri, 26 Apr 2024 07:21:12 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PULL v2 00/63] First batch of i386 and build system patch for
->  QEMU 9.1
-> 
-> On Wed, Apr 24, 2024 at 8:49 PM Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > On 4/24/24 01:14, Paolo Bonzini wrote:
-> > > The following changes since commit 62dbe54c24dbf77051bafe1039c31ddc8f37602d:
-> > >
-> > >    Update version for v9.0.0-rc4 release (2024-04-16 18:06:15 +0100)
-> > >
-> > > are available in the Git repository at:
-> > >
-> > >    https://gitlab.com/bonzini/qemu.git tags/for-upstream
-> > >
-> > > for you to fetch changes up to 7653b44534d3267fa63ebc9d7221eaa7b48bf5ae:
-> > >
-> > >    target/i386/translate.c: always write 32-bits for SGDT and SIDT (2024-04-23 17:35:26 +0200)
-> >
-> > Sorry, I've already merged v1.  You'll need to adjust the fix on top.
-> 
-> It's the same tag, so you actually merged v2.
+Tested-by: Mario Casquero <mcasquer@redhat.com>
 
-The difference between v2 and v1 is about fixing two of Xiaoyao's
-comments, right?
 
-Currently in master, luckly the CPUID fix [1] has landed, but another
-comment fix [2] hasn't land. So Richard merged v1 and helped fix [1],
-[2] did not catch up with v1 merge window. ;-(
-
-I have a misc kvm cleanup series coming up soon that I can also include
-[2]'s fix there.
-
-[1]: https://lore.kernel.org/qemu-devel/b9043b52-5fdf-4349-8a56-c1418feb1bbd@intel.com/
-[2]: https://lore.kernel.org/qemu-devel/2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com/
-
-Regards,
-Zhao
+On Tue, Apr 16, 2024 at 4:14=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
+>
+> The error message is actually expressive, considering QEMU only. But
+> when called from Libvirt, talking about "size" can be confusing, because
+> in Libvirt "size" translates to the memory backend size in QEMU (maximum
+> size) and "current" translates to the QEMU "size" property.
+>
+> Let's simply avoid talking about the "size" property and spell out that
+> some device memory is still plugged.
+>
+> Cc: Liang Cong <lcong@redhat.com>
+> Cc: Mario Casquero <mcasquer@redhat.com>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  hw/virtio/virtio-mem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+> index ffd119ebac..ef64bf1b4a 100644
+> --- a/hw/virtio/virtio-mem.c
+> +++ b/hw/virtio/virtio-mem.c
+> @@ -1832,8 +1832,8 @@ static void virtio_mem_unplug_request_check(VirtIOM=
+EM *vmem, Error **errp)
+>      }
+>
+>      if (vmem->size) {
+> -        error_setg(errp, "virtio-mem device cannot get unplugged while"
+> -                   " '" VIRTIO_MEM_SIZE_PROP "' !=3D '0'");
+> +        error_setg(errp, "virtio-mem device cannot get unplugged while s=
+ome"
+> +                   " of its memory is still plugged");
+>          return;
+>      }
+>      if (vmem->requested_size) {
+> --
+> 2.44.0
+>
 
 
