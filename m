@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A578B404F
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72628B4114
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 23:26:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RWj-0004CT-7A; Fri, 26 Apr 2024 15:46:33 -0400
+	id 1s0T3u-00033P-Rb; Fri, 26 Apr 2024 17:24:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RWI-0003wH-Tj
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:46:12 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RW0-0004rv-GW
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:46:05 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-516d2b9cd69so3107340e87.2
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:45:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160746; x=1714765546; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=q7YRlrLoDVqcKqwJc5XUnzy4U8ujSMb/8xBf3PSdyhk=;
- b=MnmuAFn3RzMmtPudj0mPg2amQIkZWLEM2+EKcx5M6L0cngtng5QrnyBkDK5/h1XCMY
- JVAKSQ6hueIEemEYOnjNopUWkObg97IvpgguhkM7izJjvtNgHa5c1EPZsYCQHSd4Rd47
- a1nPvrNqLwEJT5OqWF5StRw3qMx0qLnp78xFPrvRYqJID6My0WkAH98/tywjWeaL85jP
- Luibf3m1KAs2uqwNXRMGv81BlbRZYTGXa1erjOQaxqkZ/aFA/XgcDNflmRaoc9A9naQg
- eRnnBBPT7+WW8DGvqJCG3oJFP6qMZz+Y9ZD2TxLlsBCF5aqiYKQkEmGSkBb8pBCnwNt3
- 7nwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160746; x=1714765546;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=q7YRlrLoDVqcKqwJc5XUnzy4U8ujSMb/8xBf3PSdyhk=;
- b=WNwTGXPKRolfozlU7x3idzRaAGFgg/eDSBwgoKWEPI24+XbQRUxHkaw7odCKlOmvu9
- A6tPXLbsSFw3V4W7XUu1s+yPileqYrR6iZRWhTyCWOumsJJXLsAIiPpKx7QqtD79v376
- p2AbEkVBu7HP00HECC2mGo8sYg2urKlc6eKb9kzR0tCidhvIAzTkucq4DxYk9Kgf+GqF
- qaaSG6+cjwHtA0ovBdi7YKlQct4hivu4NiuusgG3CmJcZal1puCnV2lvL538Nq3d2XqU
- e5zLR4xZtiR2WfS2cgQrmLTmkovz4BeqEX8eR+bCSP3pcaQ3zrBzHyp4KnBAEZLtruIB
- R44Q==
-X-Gm-Message-State: AOJu0Yw6ytRj/mcBkgAFeuEjXV6lx7XmuPW6RwPnAXBKWCbDd1zWRugt
- BEME2BGZ8bwccncmyUCOrygNYvbdv9+uz9L4EUO82MSeVmpppPS1zQuTu3XtgZRRsVcvWcQEkw/
- 9ul0=
-X-Google-Smtp-Source: AGHT+IEizWECJiHFY2lqs+yjor1DElScPSkGynXQo4U3KncjdruIEQM1SaflMnx6CBfEWAUsmEZv3A==
-X-Received: by 2002:a05:6512:2c99:b0:51c:ee04:3732 with SMTP id
- dw25-20020a0565122c9900b0051cee043732mr969913lfb.7.1714160746403; 
- Fri, 26 Apr 2024 12:45:46 -0700 (PDT)
-Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
- [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- g4-20020a056402320400b00572593ddf22sm854298eda.58.2024.04.26.12.45.44
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:45:45 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 38/38] plugins: Include missing 'qemu/bitmap.h' header
-Date: Fri, 26 Apr 2024 21:41:58 +0200
-Message-ID: <20240426194200.43723-39-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
-References: <20240426194200.43723-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1s0PIM-0003Ue-Kc
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 13:23:35 -0400
+Received: from mgamail.intel.com ([198.175.65.19])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1s0PIJ-0003lv-W5
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 13:23:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714152212; x=1745688212;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=KnYbAszjZrxr8PTiejoIwc2DTVTVf+JChhwgv7diWtU=;
+ b=NyXjsynTFloJeGMeq5Tfcl16Qsli+1Lznigtzahsx/bL7tf+8m5MI6DD
+ m10NpfEX4JODiR+InLP/dCT0J/wW8W2A5nGlFpd9nAohEmQpTr+Qrm8JR
+ 85Mn/QtFzyHHXG02jrryO5t59kYnoSqa7JIiOIVmRRqpn4y41Dr47lXHP
+ MCrpeCpw3+tm2eZEMSKzWrnXvZ/+9EP5kDag0xj+ZdmJiyDniKQnTYbCI
+ A1lrsmHHPCd+jc5OUD+0MUsxggpfPefAsIeAtNpSZL/gWlfW7laavQshy
+ hHxd2nBJbdZvuK5K8Fgkpoosqi53hyGFHGZfjAQ3B4sw7vyNXHUrC1dJp Q==;
+X-CSE-ConnectionGUID: wWDyaqS6QAi75SUWIfobKg==
+X-CSE-MsgGUID: UrDsF4CvRwOmDe+APsbnbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="9759079"
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; 
+   d="scan'208";a="9759079"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 10:23:27 -0700
+X-CSE-ConnectionGUID: z7sUbiCGSFmKd5rsK5d8Zg==
+X-CSE-MsgGUID: /IxMH9VbTjmblPTzfqH4oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,233,1708416000"; d="scan'208";a="26116258"
+Received: from soc-cp83kr3.jf.intel.com (HELO [10.24.10.50]) ([10.24.10.50])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2024 10:23:27 -0700
+Message-ID: <04d827f7-fb18-4c93-b223-91dd5e190421@intel.com>
+Date: Fri, 26 Apr 2024 10:23:27 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] target/i386/kvm: Add feature bit definitions for KVM
+ CPUID
+To: Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org
+References: <20240426100716.2111688-1-zhao1.liu@intel.com>
+ <20240426100716.2111688-2-zhao1.liu@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20240426100716.2111688-2-zhao1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.19; envelope-from=zide.chen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 26 Apr 2024 17:24:51 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,31 +90,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit c006147122 ("plugins: create CPUPluginState and
-migrate plugin_mask") "qemu/plugin.h" uses DECLARE_BITMAP(),
-which is declared in "qemu/bitmap.h".
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Message-Id: <20240418192525.97451-19-philmd@linaro.org>
----
- include/qemu/plugin.h | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 12a96cea2a..41db748eda 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -13,6 +13,7 @@
- #include "qemu/queue.h"
- #include "qemu/option.h"
- #include "qemu/plugin-event.h"
-+#include "qemu/bitmap.h"
- #include "exec/memopidx.h"
- #include "hw/core/cpu.h"
- 
--- 
-2.41.0
+On 4/26/2024 3:07 AM, Zhao Liu wrote:
+> Add feature definiations for KVM_CPUID_FEATURES in CPUID (
+> CPUID[4000_0001].EAX and CPUID[4000_0001].EDX), to get rid of lots of
+> offset calculations.
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+> v2: Changed the prefix from CPUID_FEAT_KVM_* to CPUID_KVM_*. (Xiaoyao)
+> ---
+>  hw/i386/kvm/clock.c   |  5 ++---
+>  target/i386/cpu.h     | 23 +++++++++++++++++++++++
+>  target/i386/kvm/kvm.c | 28 ++++++++++++++--------------
+>  3 files changed, 39 insertions(+), 17 deletions(-)
+> 
+> diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
+> index 40aa9a32c32c..ce416c05a3d0 100644
+> --- a/hw/i386/kvm/clock.c
+> +++ b/hw/i386/kvm/clock.c
+> @@ -27,7 +27,6 @@
+>  #include "qapi/error.h"
+>  
+>  #include <linux/kvm.h>
+> -#include "standard-headers/asm-x86/kvm_para.h"
+>  #include "qom/object.h"
+>  
+>  #define TYPE_KVM_CLOCK "kvmclock"
+> @@ -334,8 +333,8 @@ void kvmclock_create(bool create_always)
+>  
+>      assert(kvm_enabled());
+>      if (create_always ||
+> -        cpu->env.features[FEAT_KVM] & ((1ULL << KVM_FEATURE_CLOCKSOURCE) |
+> -                                       (1ULL << KVM_FEATURE_CLOCKSOURCE2))) {
+> +        cpu->env.features[FEAT_KVM] & (CPUID_KVM_CLOCK |
+> +                                       CPUID_KVM_CLOCK2)) {
 
+To achieve this purpose, how about doing the alternative to define an
+API similar to KVM's guest_pv_has()?
+
+xxxx_has() is simpler and clearer than "features[] & CPUID_xxxxx",
+additionally, this helps to keep the definitions identical to KVM, more
+readable and easier for future maintenance.
 
