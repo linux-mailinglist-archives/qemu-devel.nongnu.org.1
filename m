@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67108B4043
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8158B403E
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:44:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RTh-0001FV-TN; Fri, 26 Apr 2024 15:43:26 -0400
+	id 1s0RTk-0001Wy-Qu; Fri, 26 Apr 2024 15:43:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTI-0000wW-Ls
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:02 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTP-0000zM-1N
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:08 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTG-00030Y-79
- for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:00 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a58bd410f92so281666066b.0
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:42:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RTM-00032A-Bo
+ for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:43:06 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a55911bff66so327391066b.0
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160576; x=1714765376; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160582; x=1714765382; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DE5bQD16xfwEMndgjcE7z1cuHvznf4KEW6ZfSJ0m28c=;
- b=mtLD3cryCFwGKpctZkcO6fJCInvNr+xo6odVYnQX+roWWGoDY3XJ9or/wh5SvLjJ9J
- NPY6N5eX2SB9uKZ6dDCptDxUqjgNn6p395lSeH6YFP2+2NeDIvA7B+mvbGTGV7AXa5ea
- MpV+BBH3w1FJPILlCfD4kW9uThOO+VPbqa0uMvPF0NdC+B8IlipBxCZ4bpnyvNkL3JIf
- v9DbIX/uPwABEXxXinVF+Kji9vKOz4SXLDvR+/NzUiEVDwLGoF40qBVU7VTfsP5pQEbz
- 4pTk8hc1zAIXBX7yCm/39lX81kFqxcMctRu7+gbiFxVkkb77hoPYbXampp85NSbJWFmZ
- 086g==
+ bh=/GRlD0UJ4FFPuLeyFAJhX+j56Axb9nXKO9LompOTbz0=;
+ b=aCjKQo9M3jm32LjSQvYg+f346xUKK6bceDRnpmUqdQFHUqedoCivV6KQaYtJ4fy0q5
+ ETWAd0WK9383sVCaRxHMiLtlI15Eza9dO/jsDUV/Rz4BiI5nm1YU74UbeM2yhG6qSDj4
+ KtaLgMgpw1dE28I0vJ8OxZnwfoU5eqZazZWpM+Hwo61yr94ijJfNjg/PHJ1/zqGCoGgF
+ zDvOUJkJY/f40lsxpd4xCyEeGUbkws4Z8+M+kPKOucwsBAwrotcLJDif/Wtv9ONYzM2s
+ qCBYwxpgqj3ommy+jXbdtWDN3bYo3qDjO8sCrcK2QJOb61JuUTcVAchZ+BTK+CKWD3+E
+ BCtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160576; x=1714765376;
+ d=1e100.net; s=20230601; t=1714160582; x=1714765382;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DE5bQD16xfwEMndgjcE7z1cuHvznf4KEW6ZfSJ0m28c=;
- b=i2bzVNmz2uN5av9RpyUmaj3u7VveYzpvIf/y8mzw9w5FyYw0ZG7rVm44a7BwO1N9Cw
- vou23Z6WhIocCq1rNDjsZGx/URQuO95C0ccEiDiMB6cRgXJRwhJLjVuqOHA1AnQ56Ew/
- S3+8SS77yN7u9cNsfk8WD9euoS6ep5OISuKPJJAEXIo2nQHtRUWoNwpJlB5RllC2Wb/h
- NskoRrY9ddsWM6mMp4lR0EXOjntH3309fKdMEYKZRjyuW1KM1yNZES00TN+eVV/7X++3
- lHLufL30Xv7CICkF6TxaUsC0wqauhVgyKAd/j8l2zfxO6uIWmZXJsTb7tAlDu7yYZqy4
- aixw==
-X-Gm-Message-State: AOJu0YyiaLl6ynh5kWSFjZQVKgZVaPb5FIMevSCVV5wNiwIgGKN/qkan
- +iBUzTrdgQs9NXQMbqHp8gyCPj671d9HBRTq/J5a29c6yIw59uKO2IFe9VqnwGeOwsOn3qt5ifT
- 0YqE=
-X-Google-Smtp-Source: AGHT+IHuivKhc9k4NJGWGfSfiujJsFGjDjDNF8PSddUqhuzyJQcSFexKwQKV1AGdJzYCFcbsEbYqZA==
-X-Received: by 2002:a17:906:b0d8:b0:a55:adec:7139 with SMTP id
- bk24-20020a170906b0d800b00a55adec7139mr2412387ejb.60.1714160576443; 
- Fri, 26 Apr 2024 12:42:56 -0700 (PDT)
+ bh=/GRlD0UJ4FFPuLeyFAJhX+j56Axb9nXKO9LompOTbz0=;
+ b=IoAhvjVLXFGrV+zbzZ0hHGuAS3uqGPKA0JLaardonX5y7yjVJj+PYnfsKzwMhjHVCi
+ WZJ7kNSSCVb3RKf+YC6EF2W4odZzIV5OAW0Uw29duWxnLreAugoR1Tw329jFIjrQUCp9
+ caVvgiadEjYWDrjzNSHuJjI1PN6kn4Vblw9kV6fk/dBe+uKzI5jQ0vLlyucqn3t+xRxd
+ RkI4TM/GFez8Ls2qH5bZlgmzAXhv1NoUqN24GXeDkbCgl082e3/1pjZBAl4Zsna5/O3T
+ Xgy112O5E9N+ERfD0yWVHFPTsHtWVXWPr4AR/IpXFce6FENeQPmoB3110y3eH1L7X8P2
+ bv7g==
+X-Gm-Message-State: AOJu0YwjNvFSPplrnOkHOGPUk00jzBzyt1DRZ+kVF58uHXGU/kaZenTS
+ jPN73LbQ9hlYIqU941Pjhn0aSzjCZi6me+jwRxiwt8pcNuVbEl3w6INHlXvcL4EVIvWc9brUX6g
+ Q3g4=
+X-Google-Smtp-Source: AGHT+IG6A8FnBbnMBUpZM52sQlqiWMtOTwbyU0wTqUCvEyv+4YX+LfAkHA/i8kisOgzCXauqVx2SXg==
+X-Received: by 2002:a17:906:17d7:b0:a55:664b:fa35 with SMTP id
+ u23-20020a17090617d700b00a55664bfa35mr274955eje.6.1714160582240; 
+ Fri, 26 Apr 2024 12:43:02 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- n1-20020a170906724100b00a55bef9ab56sm5775865ejk.120.2024.04.26.12.42.55
+ jw24-20020a170906e95800b00a58a3b8589csm2615549ejb.21.2024.04.26.12.43.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:42:56 -0700 (PDT)
+ Fri, 26 Apr 2024 12:43:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 09/38] semihosting/uaccess: Avoid including 'cpu.h'
-Date: Fri, 26 Apr 2024 21:41:29 +0200
-Message-ID: <20240426194200.43723-10-philmd@linaro.org>
+Subject: [PULL 10/38] semihosting/guestfd: Remove unused
+ 'semihosting/uaccess.h' header
+Date: Fri, 26 Apr 2024 21:41:30 +0200
+Message-ID: <20240426194200.43723-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +97,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"semihosting/uaccess.h" only requires the following headers:
-
-  - "exec/cpu-defs.h" for target_ulong,
-  - "exec/cpu-common.h" for cpu_memory_rw_debug()
-  - "exec/tswap.h" for tswap32() and tswap64().
-
-Include them instead of the huge "cpu.h".
+Nothing in guestfd.c requires "semihosting/uaccess.h" nor "qemu.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-Id: <20231212123401.37493-8-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <42c6471e-8383-45e0-85ee-e20ca32ecbad@linaro.org>
 ---
- include/semihosting/uaccess.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ semihosting/guestfd.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/semihosting/uaccess.h b/include/semihosting/uaccess.h
-index 3963eafc3e..dd289af8dd 100644
---- a/include/semihosting/uaccess.h
-+++ b/include/semihosting/uaccess.h
-@@ -14,7 +14,9 @@
- #error Cannot include semihosting/uaccess.h from user emulation
+diff --git a/semihosting/guestfd.c b/semihosting/guestfd.c
+index 955c2efbd0..d3241434c5 100644
+--- a/semihosting/guestfd.c
++++ b/semihosting/guestfd.c
+@@ -12,10 +12,7 @@
+ #include "gdbstub/syscalls.h"
+ #include "semihosting/semihost.h"
+ #include "semihosting/guestfd.h"
+-#ifdef CONFIG_USER_ONLY
+-#include "qemu.h"
+-#else
+-#include "semihosting/uaccess.h"
++#ifndef CONFIG_USER_ONLY
+ #include CONFIG_DEVICES
  #endif
  
--#include "cpu.h"
-+#include "exec/cpu-common.h"
-+#include "exec/cpu-defs.h"
-+#include "exec/tswap.h"
- 
- #define get_user_u64(val, addr)                                         \
-     ({ uint64_t val_ = 0;                                               \
 -- 
 2.41.0
 
