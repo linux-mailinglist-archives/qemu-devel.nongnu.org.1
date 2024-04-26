@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664018B4070
-	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB878B4055
+	for <lists+qemu-devel@lfdr.de>; Fri, 26 Apr 2024 21:47:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0RUf-0004RC-Fa; Fri, 26 Apr 2024 15:44:25 -0400
+	id 1s0RUn-0005TO-CF; Fri, 26 Apr 2024 15:44:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUH-0002l7-7N
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUH-0002lA-8N
  for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:02 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RU8-0003Fh-MR
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0RUC-0003KZ-Sg
  for qemu-devel@nongnu.org; Fri, 26 Apr 2024 15:44:00 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a559b919303so328885666b.1
- for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:50 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2dd6a7ae2dcso39845811fa.1
+ for <qemu-devel@nongnu.org>; Fri, 26 Apr 2024 12:43:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714160629; x=1714765429; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714160635; x=1714765435; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v7EfD6ZqpZav9ENI55PjcdOF+ptN44Hp+/BctxTPyg4=;
- b=cJVZOFYXU+L6mWEHIDpfDAq3AKeZQj6D1w6JUy+oatdX/eww/rJactZnOXbwQ2N6xQ
- 7b6CxLcxrZ2BQa4sJwBtDhsQnNmxPrH77jyE6nkrw2mdibG2VDcMcXeHqdoPy7tGenHP
- PyNZXT5Cz9WzX18ECn0xlzipATxfGcnRfWkVfO6OsS7pR7iqS/lNhuoda7q2ROjcuUMl
- +wJFpjpvMGkjwXnZYzkXvENrvbqCRvd6Gcckf7C1Q/RWnQZiXeeeX18DRQGd43Rxoz6R
- X7+Qe27rRSoDJIFInjKR1w4LtisyYq9F7+EnahRDQxxNMyUbC7eDhP1gb5UTeR+QUKTz
- v/VA==
+ bh=7TM8vdBJsyiS8N9/BcT+cG9GVrIFZEEoAIJDE88Bqbg=;
+ b=arlsN9etaO/ndGX0QWFywtqhnSpWdEOR5KyFtBojbdVzKtuLkEOeCxi2Xr5wz2SNnj
+ VBogtvFjVDS83E34Wm40T8hcoJGdIIXosVR2p6pX+Rv8A3TRJnj3EQ2NzJkYXCxASlRb
+ RUteAPJzykKnkD0AkCQj9Y5rqXNlTknmhKrL5MQ6Ct3yxsnGbOcablX8AutaxFtniZ/8
+ A0LyGA0EA5GZ8V3wkWO0iDMuBlhhh4Ar4XnT2vEGmiZjK+/PoqNYfQbIaKUW81PZkPKs
+ SPMitYdt+CM+G0fCiJ/mBo35kilvzxR+e0nQRHdcAtYdjGSlanFPrFHx8iJHbB7znNzC
+ WbKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714160629; x=1714765429;
+ d=1e100.net; s=20230601; t=1714160635; x=1714765435;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=v7EfD6ZqpZav9ENI55PjcdOF+ptN44Hp+/BctxTPyg4=;
- b=ikRBPYWFO8iOpj+iuWkXst5CRT2hwZnjDU22z/CTshmQEkPZ11G4Fy3jFT039RBEyP
- 71uTJpBaIbuQhxctgzME2iK7ZXrpbXtbDpsd8rkCYGQSoNX64cmOhXbUdpdsMVm/6PAp
- gAUQd+zF2xFGsauYIDzHBoTZ5iYiOhEbR7Li1kGgaA+Y/ccVBQ9xGPBeRN5UELrMemiO
- 7qqdzahOTi2+q0R+xCU+cOZVL8jzfA1zSNrfLg/dVQzYkyaZ8nH8HSxnP6+F7qDokHNs
- oiCgbTolCw+w6wFdTcuv0kt1eHmmy4viHq3u32Lo/Hr4lxUPxupSZwwhklGIGs5ZyJEq
- SIiQ==
-X-Gm-Message-State: AOJu0YxVdZggNmtROU1vbuvlhOXKW5EOTE+LwpsU9/Rs1Zshbx/0e2W9
- dOeEKnXWrCvZZmZz6hHY01iEr3Cz/2L/0tBXRQIUgzNwczAfEgX2i2EThsvSnJA9zHpzrpVS99O
- defQ=
-X-Google-Smtp-Source: AGHT+IEOXlToa21r4yUxiAleA+/mG4rc15QE0VT8GBUb+CHeadQ4/roYWuQ/oB749Wv4bjPrXIvxFA==
-X-Received: by 2002:a17:906:c1d6:b0:a55:bf86:3ccd with SMTP id
- bw22-20020a170906c1d600b00a55bf863ccdmr2750281ejb.40.1714160629052; 
- Fri, 26 Apr 2024 12:43:49 -0700 (PDT)
+ bh=7TM8vdBJsyiS8N9/BcT+cG9GVrIFZEEoAIJDE88Bqbg=;
+ b=ohWUHXHIqMtPqNsIB1wqa9qkHV0+7xUoGh91mzJKNVG+56uzb7gjFtVjHgX8N8Rsru
+ G6dAUtRp1hnaIuewuncz8YMIxySUwpVzbLgGKpVZQ74rFxbAnYLgTxZltuJU0Bvl5wd3
+ G+9scbSIHy683cVEqTT652ZD2Seq1Eui6uXhe1E20jrFS0VaewcYF6BieZE2vK9TwWwe
+ Vxzc7+BFgnfPHjrQ8K7lmm2sWolh8H+jbTfatEs+8d+Jj8ggovXhaJn6cSpWhtWq4fhP
+ Byga+iBcUxBHestyO8CTaRuqAHrir7GZvVK7xLiKKbmH8oEZoryoacKnlLNdjU0nXSWW
+ bmsA==
+X-Gm-Message-State: AOJu0YwqDDDZaAYj8u/oecKj39Xe/JIEjBjvt51r+LW6xA5Dzr1IucWY
+ rvanU3wGJ8eSjWBmFC8Dpf83Vm88s4H7HzFlxcVowGfwILrqu8NRRCr/PwKVO2XoMhihf4Vj6co
+ pXNU=
+X-Google-Smtp-Source: AGHT+IGgxB7ptdEp6F95JXRMZ1R4geUC72uj9X7EkgteVWQ5sYyMah5qtCC6g9RUYL+EyajPioOPOg==
+X-Received: by 2002:a2e:7d09:0:b0:2de:75de:5b0b with SMTP id
+ y9-20020a2e7d09000000b002de75de5b0bmr2771242ljc.18.1714160634772; 
+ Fri, 26 Apr 2024 12:43:54 -0700 (PDT)
 Received: from m1x-phil.lan (aul93-h02-176-184-11-147.dsl.sta.abo.bbox.fr.
  [176.184.11.147]) by smtp.gmail.com with ESMTPSA id
- lb9-20020a170906adc900b00a5889e8353esm3839625ejb.44.2024.04.26.12.43.47
+ i22-20020a1709061cd600b00a55a10eb070sm7881150ejh.214.2024.04.26.12.43.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 26 Apr 2024 12:43:48 -0700 (PDT)
+ Fri, 26 Apr 2024 12:43:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
@@ -62,18 +62,17 @@ Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 18/38] accel/tcg: Rename load-extract/store-insert headers
- using .h.inc suffix
-Date: Fri, 26 Apr 2024 21:41:38 +0200
-Message-ID: <20240426194200.43723-19-philmd@linaro.org>
+Subject: [PULL 19/38] accel/tcg: Rename helper-head.h -> helper-head.h.inc
+Date: Fri, 26 Apr 2024 21:41:39 +0200
+Message-ID: <20240426194200.43723-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240426194200.43723-1-philmd@linaro.org>
 References: <20240426194200.43723-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,73 +106,62 @@ about includes") this is documented in the Coding Style:
   the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
   being included for expansion.
 
-Therefore rename 'store-insert-al16.h' as 'store-insert-al16.h.inc'
-and 'load-extract-al16-al8.h' as 'load-extract-al16-al8.h.inc'.
+Therefore rename "exec/helper-head.h" as "exec/helper-head.h.inc".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240424173333.96148-3-philmd@linaro.org>
+Message-Id: <20240424173333.96148-4-philmd@linaro.org>
 ---
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- accel/tcg/ldst_atomicity.c.inc                                | 4 ++--
- 8 files changed, 2 insertions(+), 2 deletions(-)
- rename host/include/aarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/aarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/generic/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/generic/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/loongarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/loongarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/x86_64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
+ include/exec/helper-gen.h.inc                     | 2 +-
+ include/exec/{helper-head.h => helper-head.h.inc} | 0
+ include/exec/helper-proto.h.inc                   | 2 +-
+ include/exec/helper-info.c.inc                    | 2 +-
+ 4 files changed, 3 insertions(+), 3 deletions(-)
+ rename include/exec/{helper-head.h => helper-head.h.inc} (100%)
 
-diff --git a/host/include/aarch64/host/load-extract-al16-al8.h b/host/include/aarch64/host/load-extract-al16-al8.h.inc
+diff --git a/include/exec/helper-gen.h.inc b/include/exec/helper-gen.h.inc
+index c009641517..d9fd3ed72a 100644
+--- a/include/exec/helper-gen.h.inc
++++ b/include/exec/helper-gen.h.inc
+@@ -8,7 +8,7 @@
+ 
+ #include "tcg/tcg.h"
+ #include "tcg/helper-info.h"
+-#include "exec/helper-head.h"
++#include "exec/helper-head.h.inc"
+ 
+ #define DEF_HELPER_FLAGS_0(name, flags, ret)                            \
+ extern TCGHelperInfo glue(helper_info_, name);                          \
+diff --git a/include/exec/helper-head.h b/include/exec/helper-head.h.inc
 similarity index 100%
-rename from host/include/aarch64/host/load-extract-al16-al8.h
-rename to host/include/aarch64/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/aarch64/host/store-insert-al16.h b/host/include/aarch64/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/aarch64/host/store-insert-al16.h
-rename to host/include/aarch64/host/store-insert-al16.h.inc
-diff --git a/host/include/generic/host/load-extract-al16-al8.h b/host/include/generic/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/generic/host/load-extract-al16-al8.h
-rename to host/include/generic/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/generic/host/store-insert-al16.h b/host/include/generic/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/generic/host/store-insert-al16.h
-rename to host/include/generic/host/store-insert-al16.h.inc
-diff --git a/host/include/loongarch64/host/load-extract-al16-al8.h b/host/include/loongarch64/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/loongarch64/host/load-extract-al16-al8.h
-rename to host/include/loongarch64/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/loongarch64/host/store-insert-al16.h b/host/include/loongarch64/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/loongarch64/host/store-insert-al16.h
-rename to host/include/loongarch64/host/store-insert-al16.h.inc
-diff --git a/host/include/x86_64/host/load-extract-al16-al8.h b/host/include/x86_64/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/x86_64/host/load-extract-al16-al8.h
-rename to host/include/x86_64/host/load-extract-al16-al8.h.inc
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 97dae70d53..134da3c1da 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -9,8 +9,8 @@
-  * See the COPYING file in the top-level directory.
+rename from include/exec/helper-head.h
+rename to include/exec/helper-head.h.inc
+diff --git a/include/exec/helper-proto.h.inc b/include/exec/helper-proto.h.inc
+index c3aa666929..f8e57e43ce 100644
+--- a/include/exec/helper-proto.h.inc
++++ b/include/exec/helper-proto.h.inc
+@@ -5,7 +5,7 @@
+  * Define HELPER_H for the header file to be expanded.
   */
  
--#include "host/load-extract-al16-al8.h"
--#include "host/store-insert-al16.h"
-+#include "host/load-extract-al16-al8.h.inc"
-+#include "host/store-insert-al16.h.inc"
+-#include "exec/helper-head.h"
++#include "exec/helper-head.h.inc"
  
- #ifdef CONFIG_ATOMIC64
- # define HAVE_al8          true
+ /*
+  * Work around an issue with --enable-lto, in which GCC's ipa-split pass
+diff --git a/include/exec/helper-info.c.inc b/include/exec/helper-info.c.inc
+index 530d2e6d35..c551736d49 100644
+--- a/include/exec/helper-info.c.inc
++++ b/include/exec/helper-info.c.inc
+@@ -7,7 +7,7 @@
+ 
+ #include "tcg/tcg.h"
+ #include "tcg/helper-info.h"
+-#include "exec/helper-head.h"
++#include "exec/helper-head.h.inc"
+ 
+ /*
+  * Need one more level of indirection before stringification
 -- 
 2.41.0
 
