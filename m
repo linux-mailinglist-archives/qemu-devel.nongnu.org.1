@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CE18B46D4
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DB98B46FF
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0jo1-0000Ha-M7; Sat, 27 Apr 2024 11:17:38 -0400
+	id 1s0kQW-0002fT-IM; Sat, 27 Apr 2024 11:57:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1s0jnl-0000FF-6a
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:17:22 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQU-0002eY-4Q
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:22 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1s0jni-0005sk-IR
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:17:20 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-571ba432477so3360345a12.1
- for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:17:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQS-0005H5-7c
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:21 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-34b64b7728cso2528460f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1714231037; x=1714835837; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7pZdRtxVJQLoQwmA7i6C/gYkN8D0jZJUZbjmfuMYhHk=;
- b=TDbX8J7v4E5c+lAYLSAbHpQonDH+gQkUgh6T7LA4z8g2aWa4+R5tXIf4ri8QR5mytN
- mEBy0CbBXOGXJlOZ4Yk8dixO+eN3Ier5PSPuBNCmbnsiO5Fw3YM0dpYdui2xmf7UJiIf
- D4RwQ0BZK2NVv0NYvi41JDwRZzLWtxaC+Ru/X4Z0g2Hx97VJpZT+Zytse8RSTPQ4ok5z
- m+hhvUoB9xX2Z7jfQ09IB2g5yUUGRvQQ8ALDaibP0yZRkKKlfYUy8yRgXcjEoYNWkh78
- 51dbJisVMsbJvLmuecSjkQE7zMpTJ1qsgZnmB7hllNTEY+Vvn25RDsorWw7pS5rgUD7R
- QU6A==
+ d=linaro.org; s=google; t=1714233438; x=1714838238; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kPz5ZmzDAeE0PN5oHM69CBd011IphRdDefz84fnf7yU=;
+ b=Nzlw0CnXuf57HhLMKXh3q9nrXcf3iGlV6ku/W4QYs/475D0/MxVm1ELuyqvJFtogti
+ 7IuhJbwOZY/Lz0bweXrUpxbz98wXUP8MMc19y4R32HPYe+9qPKccIyx30M0Y7PHiiARn
+ HEpCDy5ddZIpmFMIu621zShmeL54nBF3R3JS+geznIxE45kyTtBnCpEYRtP/sno+1IzE
+ UjFOkjh2wl/DQocWHtALmdcQMbncHlqxRDZJBpljV/Miu3re4y/B1VMb3nLPh1SZI3hJ
+ u3dtCf2QIiHD4uh2uHJO9FqMKahdhraw/1qz8mLiT6i2lfnAko+1e5+jJW33feGXmVmG
+ ohvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714231037; x=1714835837;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7pZdRtxVJQLoQwmA7i6C/gYkN8D0jZJUZbjmfuMYhHk=;
- b=FBWUPDVAccoIS9Q2fnWNl4ZgrOkVd6PY6Kqlm83zUQv36yuRoEetoFwfV/PHRGK05q
- 6lF2zhIZTB5Rr5S8i0tLDE5Mn+TmBIbQnugFwvmDvl70g5nl6WvS6OouYvy7ezv8bBET
- 8YMG0lUmTlb9b4wasme660ivC1S8t7Gdy/mPsYIct1p3q9cyWBzBzRN+5fQHgVJULSzx
- Jq3OAYst4XZ9yMvquX1vXCtii2N2v4FQnNP1GScwuTkOjpEnTsM2dEvQBkETmgARcuh+
- +tJ9/DJEUJdqmHBaDmCHTSd2AdjZnKSSJQE0wkA7mciWIV3cTLxLxaMIcyOYcJWzjAYP
- 8dEg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVTE+YE7Nt/+65syxqZmcu+xTPzCmc/U748tGDMU1+pXKnjsa2pM3qQE1T2lbMyxTHw6ykQo8M+AxVpyjWp7Nsma8QpoEU=
-X-Gm-Message-State: AOJu0YwwvBh10GyEGgc1tQHMtm1ae3TKd4HVKQfAek+kfsMpkiY794el
- mEvK31lpwbxoQ4rhVi0eSLAenkKn4WU3j79UYqyasPSy8I/VbJGrZuZdVEsp3/w=
-X-Google-Smtp-Source: AGHT+IGK/xxdHKf2tegdNXk7Hthxw0QyKc80IiXI+4/LiDfOChBiqvl3aVMODq5oq4XrFbL88CTVDA==
-X-Received: by 2002:a50:871b:0:b0:572:1b5a:2a07 with SMTP id
- i27-20020a50871b000000b005721b5a2a07mr3244319edb.32.1714231036544; 
- Sat, 27 Apr 2024 08:17:16 -0700 (PDT)
-Received: from ?IPv6:::1? ([2a00:11b1:10e0:ce92:d96d:c66e:ee2c:b710])
- by smtp.gmail.com with ESMTPSA id
- ig1-20020a056402458100b0057272ff56f3sm271049edb.93.2024.04.27.08.17.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 27 Apr 2024 08:17:16 -0700 (PDT)
-Date: Sat, 27 Apr 2024 17:17:09 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- qemu-stable <qemu-stable@nongnu.org>
-CC: greentime.hu@sifive.com, vincent.chen@sifive.com, frank.chang@sifive.com, 
- jim.shu@sifive.com, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/1=5D_target/riscv/kvm=3A_fix_ti?=
- =?US-ASCII?Q?mebase-frequency_when_using_KVM_acceleration?=
-In-Reply-To: <97934a65-f62f-49e9-820b-07463c3029ed@tls.msk.ru>
-References: <20240314061510.9800-1-yongxuan.wang@sifive.com>
- <e841b1ba-1348-48ae-89b7-bfa14ff8e70c@tls.msk.ru>
- <2C907355-C0F4-4C7F-B37C-8B4371A57B00@ventanamicro.com>
- <c174a8cd-4a53-4a28-8688-aa62c7eab45e@tls.msk.ru>
- <97934a65-f62f-49e9-820b-07463c3029ed@tls.msk.ru>
-Message-ID: <896AA0CA-E83A-402F-8A07-5BBA7BEF98F5@ventanamicro.com>
+ d=1e100.net; s=20230601; t=1714233438; x=1714838238;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kPz5ZmzDAeE0PN5oHM69CBd011IphRdDefz84fnf7yU=;
+ b=Z1knSQwDyUURFXPXjTuAbhhaQRcI+spcHmYSsGlLMSim/nWg/jbKxJFEefGQ6gGLpO
+ f+QdErcVqeBr5Aw3Wffov4WZWira7debxk1MMCYbbewQRFhKV+4q6xLrDW7HZXLUPxoM
+ rSikQ5PbX9RN+n7rf7knk79VlIqTCa/xr87pWEfSswD3qlDaM+M86LJq52wZtklmPltR
+ onLsBwwEYlSr0xioxVxmQEC6bItFTV1ykTdCyqw8qdJsk+B/EjFhiXuI0tJuSbtBsM8X
+ VtMdxfsJdi8TlZcoAdHdpgW5jBcekUCiVAhdJn5XNL89CUXB/ux+MxA6wLRR/VEMG2Jl
+ pRqw==
+X-Gm-Message-State: AOJu0Ywe+oZ7fr0kfMym6Jqk1lr1qKpfQbeZzB8unPJbFvIaK2hBKjqU
+ Bw+vZhJy0opi1UzPBPrEKen8jBSO/U6ATTOkf7gBsDTBJDFzYV63Qv+qGNpEEnRHdHV78STBr7K
+ fDFI=
+X-Google-Smtp-Source: AGHT+IECCFpG1N52Vv+difLT4eR/Eq9cHLXq1YjhaotyKYHohxDBcoL9odzwLnOgLlZlgpVZqeoKdg==
+X-Received: by 2002:adf:e305:0:b0:34b:19fd:4650 with SMTP id
+ b5-20020adfe305000000b0034b19fd4650mr3969322wrj.60.1714233437481; 
+ Sat, 27 Apr 2024 08:57:17 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.209.2]) by smtp.gmail.com with ESMTPSA id
+ r30-20020adfb1de000000b00343e392829dsm25423797wra.97.2024.04.27.08.57.16
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Sat, 27 Apr 2024 08:57:16 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/14] exec: Rework around CPUState user fields
+Date: Sat, 27 Apr 2024 17:57:00 +0200
+Message-ID: <20240427155714.53669-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x535.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,59 +88,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On April 27, 2024 9:24:04 AM GMT+02:00, Michael Tokarev <mjt@tls=2Emsk=2Eru=
-> wrote:
->27=2E04=2E2024 09:59, Michael Tokarev wrote:
->> 27=2E04=2E2024 09:23, Andrew Jones wrote:
->=2E=2E=2E
->>> It's possible to cross-compile qemu, so it'd be good to add that to th=
-e CI for riscv until we can add native compiling=2E
->>=20
->> Yes, definitely=2E=C2=A0 Qemu is already being cross-compiled on all "o=
-ther"
->> architectures during CI=2E=C2=A0 But it is also being *run*, not just c=
-ompiled=2E
->> And this is what's broken on riscv64 for almost a year now, and this
->> job has been disabled=2E=C2=A0 Instead, the *run* part of this job need=
-s to
->> be disabled, but *build* part should be kept=2E
->
->Aha=2E I was wrong=2E And I was there before too, for sure, - just forgot
->about it=2E In order to be cross-compiled, the cross-build environment
->needs to have target -dev libraries, not only the cross-compiler=2E
->And this is where debian riscv64 port is failing=2E
->
->So no, it is not currently possible to cross-compile qemu at least
->on debian without building whole cross-environment with all libraries
->and other necessary stuff=2E
->
->I'll try to use debian riscv64 porterbox to at least verify the new
->set of patches we'll pick here to fix this breakage, at least compiles
->on riscv64 :)
+Hi,
 
-I wrote instructions [2] for how to cross-compile without a full environme=
-nt/container once=2E It might be better for quick, local testing=2E
+First batch of patches (I expect them to be non
+controversial) related to extracting user specific
+fields from CPUState.
 
-[2] https://lore=2Ekernel=2Eorg/qemu-riscv/20230726120706=2E335340-2-ajone=
-s@ventanamicro=2Ecom/
+Regards,
 
->
->> 10f86d1b845087d1 isn't sufficient, since it relies on 450bd6618fda3d
->> "target/riscv/kvm: change KVM_REG_RISCV_FP_D to u64"=2E=C2=A0 In the sa=
-me series
->> there also was 49c211ffca00fdf7c "target/riscv/kvm: change KVM_REG_RISC=
-V_FP_F
->> to u32" - is it also needed?
->
->49c211ffca00fdf7c is also needed=2E  So it's 3 so far, still not compile-
->tested=2E  Anything else?
+Phil.
 
-Those 3, the first of the series [1], are good=2E Not sure why it's still =
-not compiling=2E
+Philippe Mathieu-Daudé (14):
+  target/i386: Simplify get_memio_eip()
+  plugins: Update stale comment
+  plugins/api: Only include 'exec/ram_addr.h' with system emulation
+  exec: Include missing license in 'exec/cpu-common.h'
+  exec/cpu: Indent TARGET_PAGE_foo definitions
+  exec/cpu: Remove obsolete PAGE_RESERVED definition
+  exec/cpu: Remove duplicated PAGE_PASSTHROUGH definition
+  exec/cpu: Extract page-protection definitions to page-prot-common.h
+  RFC exec/cpu: Restrict user-specific page definitions
+  exec/user: Restrict 'syscall-trace.h' to user emulation
+  accel/tcg: Use cpu_loop_exit_requested() in cpu_loop_exec_tb()
+  accel/tcg: Remove pointless initialization of cflags_next_tb
+  accel/tcg: Reset TCG specific fields in tcg_cpu_reset_hold()
+  accel/tcg: Access tcg_cflags with getter / setter
 
-[1] https://lists=2Egnu=2Eorg/archive/html/qemu-devel/2023-12/msg01132=2Eh=
-tml
+ accel/tcg/internal-common.h             |  3 +-
+ bsd-user/bsd-mem.h                      |  1 +
+ bsd-user/qemu.h                         |  1 +
+ include/exec/cpu-all.h                  | 36 +++++++-----------
+ include/exec/cpu-common.h               | 47 ++++++++----------------
+ include/exec/exec-all.h                 |  3 --
+ include/exec/page-prot-common.h         | 49 +++++++++++++++++++++++++
+ include/semihosting/uaccess.h           |  1 +
+ include/user/syscall-trace.h            |  4 ++
+ target/arm/cpu.h                        |  1 +
+ target/ppc/internal.h                   |  1 +
+ target/ppc/mmu-radix64.h                |  2 +
+ accel/tcg/cpu-exec.c                    | 17 +++++++--
+ accel/tcg/cputlb.c                      |  1 +
+ accel/tcg/tb-maint.c                    |  1 +
+ accel/tcg/tcg-accel-ops.c               |  5 ++-
+ accel/tcg/user-exec.c                   |  1 +
+ bsd-user/mmap.c                         |  1 +
+ bsd-user/signal.c                       |  1 +
+ cpu-target.c                            |  1 +
+ hw/core/cpu-common.c                    |  3 --
+ hw/ppc/ppc440_bamboo.c                  |  1 +
+ hw/ppc/sam460ex.c                       |  1 +
+ hw/ppc/virtex_ml507.c                   |  1 +
+ linux-user/arm/cpu_loop.c               |  1 +
+ linux-user/elfload.c                    |  1 +
+ linux-user/mmap.c                       |  9 +++--
+ linux-user/signal.c                     |  1 +
+ linux-user/syscall.c                    |  5 ++-
+ plugins/api.c                           |  2 +-
+ plugins/core.c                          |  2 +-
+ system/physmem.c                        |  1 +
+ target/alpha/helper.c                   |  1 +
+ target/arm/cpu.c                        |  2 +-
+ target/arm/ptw.c                        |  1 +
+ target/arm/tcg/m_helper.c               |  1 +
+ target/arm/tcg/mte_helper.c             |  1 +
+ target/arm/tcg/sve_helper.c             |  1 +
+ target/avr/cpu.c                        |  2 +-
+ target/avr/helper.c                     |  1 +
+ target/cris/mmu.c                       |  1 +
+ target/hexagon/cpu.c                    |  2 +-
+ target/hppa/cpu.c                       |  2 +-
+ target/hppa/mem_helper.c                |  1 +
+ target/hppa/translate.c                 |  1 +
+ target/i386/cpu.c                       |  2 +-
+ target/i386/helper.c                    |  8 ++--
+ target/i386/tcg/sysemu/excp_helper.c    |  1 +
+ target/loongarch/cpu.c                  |  2 +-
+ target/loongarch/tcg/tlb_helper.c       |  1 +
+ target/m68k/helper.c                    |  1 +
+ target/microblaze/cpu.c                 |  2 +-
+ target/microblaze/helper.c              |  1 +
+ target/microblaze/mmu.c                 |  1 +
+ target/mips/sysemu/physaddr.c           |  1 +
+ target/mips/tcg/exception.c             |  2 +-
+ target/mips/tcg/sysemu/special_helper.c |  2 +-
+ target/mips/tcg/sysemu/tlb_helper.c     |  1 +
+ target/openrisc/cpu.c                   |  2 +-
+ target/openrisc/mmu.c                   |  1 +
+ target/ppc/mmu-hash32.c                 |  1 +
+ target/ppc/mmu-hash64.c                 |  1 +
+ target/ppc/mmu-radix64.c                |  1 +
+ target/ppc/mmu_common.c                 |  1 +
+ target/ppc/mmu_helper.c                 |  1 +
+ target/riscv/cpu_helper.c               |  1 +
+ target/riscv/pmp.c                      |  1 +
+ target/riscv/tcg/tcg-cpu.c              |  4 +-
+ target/riscv/vector_helper.c            |  1 +
+ target/rx/cpu.c                         |  3 +-
+ target/s390x/mmu_helper.c               |  1 +
+ target/s390x/tcg/mem_helper.c           |  1 +
+ target/sh4/cpu.c                        |  4 +-
+ target/sh4/helper.c                     |  1 +
+ target/sparc/cpu.c                      |  2 +-
+ target/sparc/ldst_helper.c              |  1 +
+ target/sparc/mmu_helper.c               |  1 +
+ target/tricore/cpu.c                    |  2 +-
+ target/tricore/helper.c                 |  1 +
+ target/xtensa/mmu_helper.c              |  1 +
+ target/xtensa/op_helper.c               |  1 +
+ 81 files changed, 185 insertions(+), 96 deletions(-)
+ create mode 100644 include/exec/page-prot-common.h
 
-drew
+-- 
+2.41.0
 
 
