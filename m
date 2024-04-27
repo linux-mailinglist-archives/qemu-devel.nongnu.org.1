@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF518B4701
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F4D8B4707
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:59:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0kRJ-00036R-4g; Sat, 27 Apr 2024 11:58:13 -0400
+	id 1s0kRZ-0003OT-3A; Sat, 27 Apr 2024 11:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRG-00035n-Vj
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:11 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRV-0003EW-VQ
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:26 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRF-0005W3-9e
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:10 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-34c8f392172so583805f8f.3
- for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:58:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRL-0005YH-Hh
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:25 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-41ba1ba55ebso9133365e9.1
+ for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:58:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714233487; x=1714838287; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714233492; x=1714838292; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=g/oe4rUpvk7kXuFveLVq55aFq0Uh1L1ccHbCyLJn5f0=;
- b=eT1Y0RpLLjIavrW0+p8xcwZzFA+9MlACNB3jyO5jqKZdhBCvDC91Xd1XcT+Rj4lA13
- I10oupqo3oXOqPfKoylPWj2s10NfUbLFtULIkkSqeHJc0HMW8QEFXLDxplA3XWQc0NdT
- irfBrVC0DFFfZRN9dbCMNykgvzSR4GafzHuiHSH/oRS09EdlX9bSFP1jIBIrMa5sQwdR
- 3Yk2rSbb8jQm3F7JnqpWS1vYunyFCV/sjGwKKYq4YvPt27BgyChSzUDZzDuem+JH5r30
- qzdDAp2YEkyURJRmjbQiW0f+S6rRd29VmbK2l7hUkPSq9YHrwWvN8tqhpgqvO2GowHzp
- TDQA==
+ bh=TTp39rZqop/if5H1KxCSQywM5GdZtqtO3vJKkvfEhps=;
+ b=WfeUbBF9MuRCJIHlxa5yZdDPiwlW03RlsRYaaA63MHRdxHdZEciCWFLFTuVB+ugFpQ
+ p5A2hjcgH6RPSVZTTxO9nVTqpII6LjQnYmton4drMxQvHpL2HrNK+wAvLXYFN/PZTJt9
+ Y0PbK59wyAN3tK0lwTGgqZXZh7r+sN+ilF2iXkpW0Byo3B4KV1HRvzpb9b1mcIHO5RkA
+ F471+2aIMWi8NhEPzNKi3+KKlhx6FUyL9JAPTAg4iJsJI/CyvICLdB8qAlt3nU7Yape2
+ ZLXdkJ3BgYadoXqCFkRl+Rh+Mhe9gCPN5kITa9jngNbIsylwuc53o9iaM51heX/gSiJN
+ knvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714233487; x=1714838287;
+ d=1e100.net; s=20230601; t=1714233492; x=1714838292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g/oe4rUpvk7kXuFveLVq55aFq0Uh1L1ccHbCyLJn5f0=;
- b=KhTmzoALzCeGDKe0Imeo8Ff1UeDsIDp4MexV6Xx33ajemSQ5gCkoIlXQ2orCsyFXy4
- wkGWO47zZzEa434WTIz5i1grq4g8fWHWJ+zbVZ2HB+H57MBnXl/oHErmyI+r3BrJIoYg
- 1c1TevUz8bSopgyCOGMYfisWlwTQ2Pi6a2NrdWy4OPsPY9g4iAnkPX1XM3YyUkmdlcno
- KZoZM1f9/xggQCqSNwGFgzLj3wSFPR7puhsRAuJOnfA/LC/5wmjLzLqdRkr+DwoHZN8k
- cR9L/W5SG5s0UCJ1pOVGOCILwZzU61eqwyZzQwkRhS5HEzDOZMrHT0LFsX2uiiMvEqQg
- vc0g==
-X-Gm-Message-State: AOJu0YwQ2bFgBuUJ6a0V7HKiybr+N6ADCDdtGRDNdIiBbkgqqIhXL3jP
- iwBl8B4TtS6cLIj/f46L2LM3f3LeW3fM4L1OHemQjDxiPOufe81nJseMau8SgSk+JJQfXOHqZfn
- yIzk=
-X-Google-Smtp-Source: AGHT+IHET1Jm/2YL0NdvP24uJDZxacot4NdFqwb6nksZJKW5GoTcp1r9CTW5OSgzihz+gP1hW3AXBQ==
-X-Received: by 2002:adf:e44d:0:b0:349:7f87:fa20 with SMTP id
- t13-20020adfe44d000000b003497f87fa20mr4993613wrm.59.1714233487509; 
- Sat, 27 Apr 2024 08:58:07 -0700 (PDT)
+ bh=TTp39rZqop/if5H1KxCSQywM5GdZtqtO3vJKkvfEhps=;
+ b=YaDP6+KXRUra9i8sW14+oAmGh0u0G1vLvUJrLQ4CNssEyiQjz4U2JwgJ6c2c66juMk
+ QqGlJ7LZE74HWcZzd7rfEoHh1mM6fq+i6uNZiYAFa8v56k7OOoVMCdaLfAsDfpPwntQI
+ aHLMwjjUxDxik6qSfzeCkDAcEraSm2o8539Ssi47FtoY+TGekVP4PYLZLd9MAie7t8h4
+ awm21ega1Kak9yYMGcycNfXJqcVSOZhllvdn1vfa8YaOT1PBXgDbw0RwV7co0/u96ger
+ RjhaFj0D1ocr2OuXW9aRG5NzLyVJgIzYS9RgM+cS12d34HTcu0rVN8NKD51y4GPMfB/m
+ MsNA==
+X-Gm-Message-State: AOJu0YwfKj8mDJBRMGN+f+tVom0sKUdK36Ihs+P01s7SG8wriVhpL7NM
+ 6yj1mxZnCJcu6vHTJC/EZlGZhLsbPsUjjU22toP2CkaZvddGUTlCRPW/wmu7C84DINPkpIv0vkk
+ L9qg=
+X-Google-Smtp-Source: AGHT+IGyKjYyCoNxoWd5FlFSj5er02bvReh9mfdcKuIXNwKBYkaRyUbDcHCo73gKwOk8sHoXqwv97w==
+X-Received: by 2002:a05:600c:450f:b0:41b:f2ca:19cc with SMTP id
+ t15-20020a05600c450f00b0041bf2ca19ccmr653942wmo.34.1714233492632; 
+ Sat, 27 Apr 2024 08:58:12 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.2]) by smtp.gmail.com with ESMTPSA id
- t18-20020a5d6912000000b0034997769ae4sm25188729wru.15.2024.04.27.08.58.06
+ m16-20020a05600c3b1000b0041496734318sm38996123wms.24.2024.04.27.08.58.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 27 Apr 2024 08:58:07 -0700 (PDT)
+ Sat, 27 Apr 2024 08:58:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 09/14] exec/cpu: Restrict user-specific page definitions
-Date: Sat, 27 Apr 2024 17:57:09 +0200
-Message-ID: <20240427155714.53669-10-philmd@linaro.org>
+Subject: [PATCH 10/14] exec/user: Restrict 'syscall-trace.h' to user emulation
+Date: Sat, 27 Apr 2024 17:57:10 +0200
+Message-ID: <20240427155714.53669-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240427155714.53669-1-philmd@linaro.org>
 References: <20240427155714.53669-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,49 +91,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-User-specific PAGE definitions shouldn't be used on system emulation.
+System emulation shouldn't use "user/syscall-trace.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/page-prot-common.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/user/syscall-trace.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/exec/page-prot-common.h b/include/exec/page-prot-common.h
-index 2722ded724..b1fce45c15 100644
---- a/include/exec/page-prot-common.h
-+++ b/include/exec/page-prot-common.h
-@@ -17,16 +17,22 @@
- /*
-  * Original state of the write flag (used when tracking self-modifying code)
-  */
-+#if defined(CONFIG_USER_ONLY)
- #define PAGE_WRITE_ORG 0x0010
-+#endif
- /*
-  * Invalidate the TLB entry immediately, helpful for s390x
-  * Low-Address-Protection. Used with PAGE_WRITE in tlb_set_page_with_attrs()
-  */
- #define PAGE_WRITE_INV 0x0020
- /* For use with page_set_flags: page is being replaced; target_data cleared. */
-+#if defined(CONFIG_USER_ONLY)
- #define PAGE_RESET     0x0040
-+#endif
- /* For linux-user, indicates that the page is MAP_ANON. */
-+#if defined(CONFIG_USER_ONLY)
- #define PAGE_ANON      0x0080
-+#endif
+diff --git a/include/user/syscall-trace.h b/include/user/syscall-trace.h
+index b48b2b2d0a..6926434d9a 100644
+--- a/include/user/syscall-trace.h
++++ b/include/user/syscall-trace.h
+@@ -10,6 +10,10 @@
+ #ifndef SYSCALL_TRACE_H
+ #define SYSCALL_TRACE_H
  
- /* Target-specific bits that will be used via page_get_flags().  */
- #define PAGE_TARGET_1  0x0200
-@@ -36,6 +42,8 @@
-  * For linux-user, indicates that the page is mapped with the same semantics
-  * in both guest and host.
-  */
-+#if defined(CONFIG_USER_ONLY)
- #define PAGE_PASSTHROUGH 0x0800
++#ifndef CONFIG_USER_ONLY
++#error Cannot include this header from system emulation
 +#endif
- 
- #endif
++
+ #include "exec/user/abitypes.h"
+ #include "gdbstub/user.h"
+ #include "qemu/plugin.h"
 -- 
 2.41.0
 
