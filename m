@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F2E8B46FD
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497418B4702
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:58:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0kQb-0002gq-F9; Sat, 27 Apr 2024 11:57:29 -0400
+	id 1s0kQh-0002kK-Gs; Sat, 27 Apr 2024 11:57:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQY-0002g0-Ir
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:26 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQe-0002hs-D6
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:32 -0400
 Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQW-0005Ib-S8
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:26 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQc-0005Km-Rg
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:32 -0400
 Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2df9af57b5eso13349151fa.2
- for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:57:24 -0700 (PDT)
+ 38308e7fff4ca-2de233961caso31732181fa.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:57:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714233443; x=1714838243; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714233448; x=1714838248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9YCHViXrIvsiDzRF1J1rW6k7RCjgqLKR+ps9Q4CzIQQ=;
- b=CkY/JMTh2NJIoU7Gr6hidQKc1gbD14HXWIg22szKaX43oKbjIVg7nnnE8D5STxQOSc
- PbR+6dN1nXuis5KFkwCKzEya06aauO18Pw/b50pfM6kDjO5zpmdo1xQyK4+p1PfjqSBT
- R5vo9sxZeUi58hNqfCGcBQqHNCZs27EVmjfHdJy6zIuJc5KmWLoGQY68Rwn74/KLm1R+
- TXk+FYzM8zPQR4Z1iqEKhNwt6+TwreTQd9cUEUulKni8NmDSWLkZscxfgc71XGcWROyA
- wAOrSU/cNIs2Pd74P5uEOo/mvEcA1OIvlgjVhoOYdiPVx1MjW3+VZX8a+tm0f+7rD23X
- NSwQ==
+ bh=bQ+WqvRqZbe6NXFesfOZIQa4hGw4rQ6ubEcYnFEz+AI=;
+ b=lNvu9q5bauNTe5wlRSEsdnbjC4sCAf8INOFZ0I7+bCrt/7RbkkMIR0uLMg/0GjTQdT
+ y1LQLyq7qhsDmTMXH3sR0WKJVJGb9A4SrjC+omySk7R9fGYy4JWzk4MTX7NSRD4bXMgM
+ 0yJbRARZ8gKFbPAgVkb1q9Ym6GtCNnCK+0VE5nu087aYgfohRYeNZR1eH2xuuncJydbq
+ 0twT+6d9ZmYjEb9TTXGRkNWe4iwVHzqLhGOr/OCwEX87jmbrAxEYbSndBevUfVP83qdi
+ hrLRwcvW35SmlzuVrqH/OSDn3PO9nptMigNzkJVpBJOpdpVkqhyOO2cPA8NuCfGVF+sF
+ Mgqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714233443; x=1714838243;
+ d=1e100.net; s=20230601; t=1714233448; x=1714838248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9YCHViXrIvsiDzRF1J1rW6k7RCjgqLKR+ps9Q4CzIQQ=;
- b=w5T7eYvaBip2f4LfqWtEnuySnGOpPf2mcRw7jFmMvjJmhf54CzOWyg5C0RQpl2ljx/
- Vr2taiun+TWjTUdakIYvDnvUJ7VO4erYJqly6u1dn+1PCVlYD7A1Y5zODRukI338tD2s
- 6QzE5cmuxEPME+Q0JfPvurnbHG3IjI8wzz742B+CzmOL3fW6fmyobivZdrjr9tIc6AwM
- ou4dLVggecHsQ8x2H2vIPoZRdw6X9VB2bu27LjTa9xT8cealTst+Fex1vd1NnJ+1rvEM
- uEMhtV0G7vk+VeMCDM2jh06pRl1QVtVj/rUYTZCW7XIMwb7u57Uj5FsdJSNbGbuVMNTm
- 2bzg==
-X-Gm-Message-State: AOJu0Yxc93MOFtvo3IhRG6pD0HMo/TMiit4gmUGCGV1TbGyWBUVNWDY8
- RIyCmA7+bgN+f8QeMIHQuCCv9WsnitafXqk2O8sCOE//dykJmGe2Ydv1TA0TdgGMt8Q5Aru55Tc
- o+Zo=
-X-Google-Smtp-Source: AGHT+IGsHSfc24SrPh6cg/B7UKn924iJRfnY2xBonr4uUv9gDlDg3VMxxxarCZtY8YivSXNQw+XjjQ==
-X-Received: by 2002:a05:651c:199e:b0:2df:81a1:70fa with SMTP id
- bx30-20020a05651c199e00b002df81a170famr3663020ljb.20.1714233442651; 
- Sat, 27 Apr 2024 08:57:22 -0700 (PDT)
+ bh=bQ+WqvRqZbe6NXFesfOZIQa4hGw4rQ6ubEcYnFEz+AI=;
+ b=vaBem8k5RpLkrPDRax5tONXEZALAbZ6ICfayIwK0VB/LMfDtLQiVulgFqF4G4zht/3
+ W4MPErxL+SggH+wL8ThHc0Ao6KUfp9CSe8I53K/TarySX7raoTdZfwOeaVn4kztgEq4/
+ nI4gHrJyt0HbGYSXQc4Q5+1X+qxQVwNid5MMPOR0lUDnFGZAtmb2Wv95knBTZQUrf18H
+ aPe27xYQt/AuDrZAMcFVLWwJs8gkIfHkgIoYLtHBBkzfBGsBNdw93Z7exf7SMsuBnh/T
+ /KFAS6LnspMi2ZhAybo0qpxjrG7vXN8xkUmDq7+a8C3cYAcXtQL/MPQolJPASrRXYeoK
+ lBmg==
+X-Gm-Message-State: AOJu0YzXLjeJVOGf/M9i8W1LcnKMhx4hDw/GAsFrSrIuR6KNZ5PvmTcz
+ pER8279JFnAibwp+H7/50lC8m18lIpsmipALqQWvR4mBpRbulifcti24JhSjyO18VeGKf38BL0R
+ x4pM=
+X-Google-Smtp-Source: AGHT+IG2AT/myYaLCtNSriMrm+d5WUvxSl7nv9dT/U3dgvZGpkPyELY9db1FpMQ2wKlNBdvTh6gCMw==
+X-Received: by 2002:a05:651c:150b:b0:2d8:5e21:8eaf with SMTP id
+ e11-20020a05651c150b00b002d85e218eafmr5658132ljf.41.1714233447776; 
+ Sat, 27 Apr 2024 08:57:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.2]) by smtp.gmail.com with ESMTPSA id
- p14-20020a05600c1d8e00b0041bab13cd74sm4957207wms.17.2024.04.27.08.57.21
+ u6-20020a05600c19c600b0041bf5b9fb93sm1092322wmq.5.2024.04.27.08.57.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 27 Apr 2024 08:57:22 -0700 (PDT)
+ Sat, 27 Apr 2024 08:57:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/14] target/i386: Simplify get_memio_eip()
-Date: Sat, 27 Apr 2024 17:57:01 +0200
-Message-ID: <20240427155714.53669-2-philmd@linaro.org>
+Subject: [PATCH 02/14] plugins: Update stale comment
+Date: Sat, 27 Apr 2024 17:57:02 +0200
+Message-ID: <20240427155714.53669-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240427155714.53669-1-philmd@linaro.org>
 References: <20240427155714.53669-1-philmd@linaro.org>
@@ -91,42 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The single call to get_memio_eip(), in cpu_report_tpr_access(),
-is protected by a check on tcg_enabled(). Since the call only
-exists when CONFIG_TCG is defined, we can slightly simplify.
+"plugin_mask" was renamed as "event_mask" in commit c006147122
+("plugins: create CPUPluginState and migrate plugin_mask").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/helper.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ plugins/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 23ccb23a5b..a3e70a630a 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -512,9 +512,9 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
-     }
- }
+diff --git a/plugins/core.c b/plugins/core.c
+index 11ca20e626..09c98382f5 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -373,7 +373,7 @@ void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb)
+     struct qemu_plugin_cb *cb, *next;
+     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_TB_TRANS;
  
-+#ifdef CONFIG_TCG
- static inline target_ulong get_memio_eip(CPUX86State *env)
- {
--#ifdef CONFIG_TCG
-     uint64_t data[TARGET_INSN_START_WORDS];
-     CPUState *cs = env_cpu(env);
+-    /* no plugin_mask check here; caller should have checked */
++    /* no plugin_state->event_mask check here; caller should have checked */
  
-@@ -528,10 +528,8 @@ static inline target_ulong get_memio_eip(CPUX86State *env)
-     } else {
-         return data[0] - env->segs[R_CS].base;
-     }
--#else
--    qemu_build_not_reached();
--#endif
- }
-+#endif
- 
- void cpu_report_tpr_access(CPUX86State *env, TPRAccess access)
- {
+     QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+         qemu_plugin_vcpu_tb_trans_cb_t func = cb->f.vcpu_tb_trans;
 -- 
 2.41.0
 
