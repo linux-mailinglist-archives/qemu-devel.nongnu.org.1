@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F4D8B4707
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CBB98B470A
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:59:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0kRZ-0003OT-3A; Sat, 27 Apr 2024 11:58:29 -0400
+	id 1s0kRU-0003Dw-Hn; Sat, 27 Apr 2024 11:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRV-0003EW-VQ
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:26 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRS-0003D2-6J
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:22 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRL-0005YH-Hh
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:25 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-41ba1ba55ebso9133365e9.1
- for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:58:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kRQ-0005a0-KY
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:21 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2d8b2389e73so37450041fa.3
+ for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:58:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714233492; x=1714838292; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714233498; x=1714838298; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TTp39rZqop/if5H1KxCSQywM5GdZtqtO3vJKkvfEhps=;
- b=WfeUbBF9MuRCJIHlxa5yZdDPiwlW03RlsRYaaA63MHRdxHdZEciCWFLFTuVB+ugFpQ
- p5A2hjcgH6RPSVZTTxO9nVTqpII6LjQnYmton4drMxQvHpL2HrNK+wAvLXYFN/PZTJt9
- Y0PbK59wyAN3tK0lwTGgqZXZh7r+sN+ilF2iXkpW0Byo3B4KV1HRvzpb9b1mcIHO5RkA
- F471+2aIMWi8NhEPzNKi3+KKlhx6FUyL9JAPTAg4iJsJI/CyvICLdB8qAlt3nU7Yape2
- ZLXdkJ3BgYadoXqCFkRl+Rh+Mhe9gCPN5kITa9jngNbIsylwuc53o9iaM51heX/gSiJN
- knvA==
+ bh=z1+Wv8QB/miGw++EL4p3GyCE2nTTIsU/1KJBEYJal40=;
+ b=j+pfFeJlXFntuCsnHRy1Luvtyy5r5iSR0KlmkiFxTajTV/NtiZkzPr3/gY5FW2QbWQ
+ IGzzZbuYipyV/jIkvaoNdIiIdWa7VeCURZTVTZcw9SJL7FoVI8ajAcKZ6IeeMU4G8dej
+ r7TaJDSvPNkx5rV3R4yLMRJH1a/YJEBspFqAs/ZcPPrnAWmXHBsvZUg85tnNrJmpWnLA
+ rJQBLzwfL/kgDX7oTKfAWpMxVii5YilchhEM/AsKWfkoDiEpyJ9dIm3v4Sx1WV9oyTxh
+ SYXeeXAOh6AyvaBNHXupmHxzSK05AGvU4vanci5mwvMuaKzTCUM2wJpuPxLYOxqPndDW
+ WS4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714233492; x=1714838292;
+ d=1e100.net; s=20230601; t=1714233498; x=1714838298;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TTp39rZqop/if5H1KxCSQywM5GdZtqtO3vJKkvfEhps=;
- b=YaDP6+KXRUra9i8sW14+oAmGh0u0G1vLvUJrLQ4CNssEyiQjz4U2JwgJ6c2c66juMk
- QqGlJ7LZE74HWcZzd7rfEoHh1mM6fq+i6uNZiYAFa8v56k7OOoVMCdaLfAsDfpPwntQI
- aHLMwjjUxDxik6qSfzeCkDAcEraSm2o8539Ssi47FtoY+TGekVP4PYLZLd9MAie7t8h4
- awm21ega1Kak9yYMGcycNfXJqcVSOZhllvdn1vfa8YaOT1PBXgDbw0RwV7co0/u96ger
- RjhaFj0D1ocr2OuXW9aRG5NzLyVJgIzYS9RgM+cS12d34HTcu0rVN8NKD51y4GPMfB/m
- MsNA==
-X-Gm-Message-State: AOJu0YwfKj8mDJBRMGN+f+tVom0sKUdK36Ihs+P01s7SG8wriVhpL7NM
- 6yj1mxZnCJcu6vHTJC/EZlGZhLsbPsUjjU22toP2CkaZvddGUTlCRPW/wmu7C84DINPkpIv0vkk
- L9qg=
-X-Google-Smtp-Source: AGHT+IGyKjYyCoNxoWd5FlFSj5er02bvReh9mfdcKuIXNwKBYkaRyUbDcHCo73gKwOk8sHoXqwv97w==
-X-Received: by 2002:a05:600c:450f:b0:41b:f2ca:19cc with SMTP id
- t15-20020a05600c450f00b0041bf2ca19ccmr653942wmo.34.1714233492632; 
- Sat, 27 Apr 2024 08:58:12 -0700 (PDT)
+ bh=z1+Wv8QB/miGw++EL4p3GyCE2nTTIsU/1KJBEYJal40=;
+ b=LUIdjP2nfgQmRoUWw/xE7qyRhOqRWwGsMDFYmdPBkzoiBNIpHTreNL5AqbHli7yABp
+ z1KJnnidRweRdklAK6TLudmz71ecEV7ehI8KcxdgMkJWgjFaTIleH6dqJ4amFCdVsdo5
+ U9qThfsLnTzFWHbRIRbPLDEMfRxlUHsNYtEDpGC/k4kZVqOsEGc2mVghpOGNo56DRtUE
+ recG7yhYf95PxKBudXnxwhFef5LqpKokMS5INZSGUJOctrr8FyIwqtCWIZUDtJylTojO
+ AQPRQnWBFpom1xVLqAPXiXHqun26p4vzBYQyKgLUETDpGZbMEe76xptzvDp9KdgelPTN
+ hhnQ==
+X-Gm-Message-State: AOJu0Yz+l3abG7H9UwFceNKo+YTW64ul51wp+hgzEnBDqPtsCbGaQD9B
+ qwT2WumD8Oi6KtiyYjXpSPZBZsyK9xvc6gZDxWSM5JMoG4mDPYCX9Cv9rcV6VvBqYDV3iMPyBIx
+ A20A=
+X-Google-Smtp-Source: AGHT+IHx/07HVOwkILCHRASibA/W9yK6l/mJ/pDLQLSIttEgSmHWJu70KQdcdPGlJAGFAp0IUPB1lg==
+X-Received: by 2002:a2e:9110:0:b0:2de:d4df:4e75 with SMTP id
+ m16-20020a2e9110000000b002ded4df4e75mr3275932ljg.17.1714233497868; 
+ Sat, 27 Apr 2024 08:58:17 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.2]) by smtp.gmail.com with ESMTPSA id
- m16-20020a05600c3b1000b0041496734318sm38996123wms.24.2024.04.27.08.58.11
+ t11-20020a05600c450b00b0041befc2652csm1499073wmo.31.2024.04.27.08.58.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 27 Apr 2024 08:58:12 -0700 (PDT)
+ Sat, 27 Apr 2024 08:58:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 10/14] exec/user: Restrict 'syscall-trace.h' to user emulation
-Date: Sat, 27 Apr 2024 17:57:10 +0200
-Message-ID: <20240427155714.53669-11-philmd@linaro.org>
+Subject: [PATCH 11/14] accel/tcg: Use cpu_loop_exit_requested() in
+ cpu_loop_exec_tb()
+Date: Sat, 27 Apr 2024 17:57:11 +0200
+Message-ID: <20240427155714.53669-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240427155714.53669-1-philmd@linaro.org>
 References: <20240427155714.53669-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,28 +92,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-System emulation shouldn't use "user/syscall-trace.h".
+Do not open-code cpu_loop_exit_requested().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/user/syscall-trace.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ accel/tcg/cpu-exec.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/include/user/syscall-trace.h b/include/user/syscall-trace.h
-index b48b2b2d0a..6926434d9a 100644
---- a/include/user/syscall-trace.h
-+++ b/include/user/syscall-trace.h
-@@ -10,6 +10,10 @@
- #ifndef SYSCALL_TRACE_H
- #define SYSCALL_TRACE_H
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 225e5fbd3e..0329c6423e 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -900,8 +900,6 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+                                     vaddr pc, TranslationBlock **last_tb,
+                                     int *tb_exit)
+ {
+-    int32_t insns_left;
+-
+     trace_exec_tb(tb, pc);
+     tb = cpu_tb_exec(cpu, tb, tb_exit);
+     if (*tb_exit != TB_EXIT_REQUESTED) {
+@@ -910,8 +908,7 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+     }
  
-+#ifndef CONFIG_USER_ONLY
-+#error Cannot include this header from system emulation
-+#endif
+     *last_tb = NULL;
+-    insns_left = qatomic_read(&cpu->neg.icount_decr.u32);
+-    if (insns_left < 0) {
++    if (cpu_loop_exit_requested(cpu)) {
+         /* Something asked us to stop executing chained TBs; just
+          * continue round the main loop. Whatever requested the exit
+          * will also have set something else (eg exit_request or
+@@ -925,6 +922,8 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+     /* Instruction counter expired.  */
+     assert(icount_enabled());
+ #ifndef CONFIG_USER_ONLY
++    int32_t insns_left;
 +
- #include "exec/user/abitypes.h"
- #include "gdbstub/user.h"
- #include "qemu/plugin.h"
+     /* Ensure global icount has gone forward */
+     icount_update(cpu);
+     /* Refill decrementer and continue execution.  */
 -- 
 2.41.0
 
