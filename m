@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978DC8B470B
-	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 879388B4709
+	for <lists+qemu-devel@lfdr.de>; Sat, 27 Apr 2024 17:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0kRA-0002x5-6i; Sat, 27 Apr 2024 11:58:04 -0400
+	id 1s0kRC-00033s-KN; Sat, 27 Apr 2024 11:58:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kR1-0002pd-9t
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:55 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kR8-0002zB-HW
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:03 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kQz-0005Q7-N9
- for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:57:55 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-34b029296f5so3156054f8f.2
- for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:57:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s0kR6-0005SL-TX
+ for qemu-devel@nongnu.org; Sat, 27 Apr 2024 11:58:02 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2d8a2cbe1baso42994871fa.0
+ for <qemu-devel@nongnu.org>; Sat, 27 Apr 2024 08:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714233471; x=1714838271; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714233477; x=1714838277; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hn/H/yoFNZW2Rn975+BG8+EVesDlf/lUvVb7HKZ3vng=;
- b=BPyDyXrQzJiG9xg4272CI/bqjnWhSeRpfv05+s9BhuvR1N0uGun6f6382S7nLx1y9C
- PUSZLL0KQuc4fRNTOc7fFCc4TsNShwLddGwaGsRF6QjLnnu7hmrXu1BxauumyVv4VbiA
- zmrnsoHvJF2nwMPNDxZNtqmF+TLl58cybNcj5jJrFbmyWtGSU9zVelpraDgQ5MOnileJ
- iFEy6NWEfo44ggJCKpsARMf+KD8iFFJ1ZsgOBLLd+FiRkIs8fEgPxflgAitWvPDIyKW7
- btqaMEu9NLrjK2XPAmetxf3T2f6mTvwPKdWGYxHZ7qMAOAXxcttBzXNEsAGyYEe4CMQf
- YMHA==
+ bh=msn7De0lOW3avspGXlkpWl0wQtZAqMJHMMhEd4fx2HQ=;
+ b=PXiNsoUgSfCCr4aKbxMJ5qVjP+W7Sg1CaUh6FLRuZFQ6sZ0qjpeqkmySfEiLlCC6c2
+ tFcSOUwjHLeWsc18aH1xd9KojgmO0IYpyqGr65JqWb3c9vgFhX5K0yBPpUn2+4mA4+B0
+ viNAIQJh1TGbbaqFnWIeoqZSTCmV7/g3j2exk4BDFlFCF2kcQu/Wnqxl4OwcvuuD1Zdt
+ NYRB4A8q3qgqtSEupvfFe/a1Aa0Vdr3PNTWNefg7aA3q79rysF/kYyXdvChRsVHWL3jZ
+ CKS6yKmiFMYZRG2i3w2g33RzndCWoC3PDftQrsZ+UC6iMqtUnAe9zYoEog7/pO5AJQbk
+ ih0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714233471; x=1714838271;
+ d=1e100.net; s=20230601; t=1714233477; x=1714838277;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hn/H/yoFNZW2Rn975+BG8+EVesDlf/lUvVb7HKZ3vng=;
- b=Lv4CWadH6wjqtzX+jvc1F1XUzKIbZJ7yOMbDFMzIDZhLjGI+Wvkqe9xrPGilnVaFjz
- xuL2H1gs+qfuzxSex5ndHBY0Ynx3+JynY4JYUmacApZA15HxHPr2nEr8AJ+sInugKQZ8
- 1s64MF84IJmSXILYPHDHcOcBgG/eCaw9j2QWiSgs29N/1BS/DJwdN8Y5UC6jZ0qhLuZB
- /Zovgsx5pAlGh3lKGIzbYIiEaBpbwRbKCwsEAo0t+dfDdyvoNDgiulH5bWBUcJyrjxQT
- RqbYcyIs9Dq6kuYgCMEPVhPV0+Pp2N7d6WEPHCJBuzNm1sVeo9GfMKP119EFBufg1yhY
- 3n9g==
-X-Gm-Message-State: AOJu0Yx9b18KFGvmqO/aVBrG5enkxTqUTYQY7OYvblHsu/rqzYCagBdq
- ph20lha6CVwsWtKVFoNFgPdW+q48Kdrw7cCJvfw6GT8C1bC+5q/Os2lDYPkhKIsrTgnVfcWFI37
- 1HD8=
-X-Google-Smtp-Source: AGHT+IELPZVJrgh3ZeU1aoGLcuTL6hxqZlKyqfBRGG9xhyQKo5U/CciEK/0ALRlbf7bhk2xM3SXxIw==
-X-Received: by 2002:adf:f7d0:0:b0:34c:8cbb:d6e9 with SMTP id
- a16-20020adff7d0000000b0034c8cbbd6e9mr2403556wrq.71.1714233471706; 
- Sat, 27 Apr 2024 08:57:51 -0700 (PDT)
+ bh=msn7De0lOW3avspGXlkpWl0wQtZAqMJHMMhEd4fx2HQ=;
+ b=YMtZAqXEQDO5zgwvK3Sin6ySFj8iL9nPGi2xJzOwNQC59z2rAitqJiMvJmP3s2AUH3
+ 8Wq0eOAbR07bJ8XPSZC57SYNouDj4eLpNimvrevAfWVrhyBYo9hS6TsGdnmRhKgec92S
+ ZiMBenbEMeEujWBGJzlsZ49tKkPNV8elpqh0TcDepjXLRdgADmkAkOuAE8VpycbTGpej
+ 0F0A7atSaasYxibXuRMN2Og1fAcvQazH44zdIdc5Y+WopOlj5ZL1sJyt1wNWWJsTrptn
+ Q8+OqymdVTeTmBORaN4xpyJmwiu5iE23o/rWY6mcKULhiqmmr0r6cy84hEpTuev4hZcm
+ xZ3A==
+X-Gm-Message-State: AOJu0YzlfBPBQ1dL5bv6lhOEZI9WiH3Lykp+ZN8bdqGQpH80hYnYPUtS
+ zPJ1FAnv55S44syTXRuSNG/oQdgIsWGAU2KR/bzO53cLIPtskkvb+GtIyz30KoC68BY9YLQnHyt
+ jTHg=
+X-Google-Smtp-Source: AGHT+IGi/XUlIE/4uTf+/MRtnb7qvLwCeZGp3FkCpFV32jhADQ/YK9fOKHtNy77Of9qa5gN9LGR/aw==
+X-Received: by 2002:a05:651c:10ab:b0:2d9:fde0:86e2 with SMTP id
+ k11-20020a05651c10ab00b002d9fde086e2mr4569731ljn.15.1714233476849; 
+ Sat, 27 Apr 2024 08:57:56 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.209.2]) by smtp.gmail.com with ESMTPSA id
- i17-20020adfe491000000b0034cc9dcccbdsm494845wrm.113.2024.04.27.08.57.50
+ q13-20020a05600c46cd00b0041c02589a7csm377463wmo.40.2024.04.27.08.57.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 27 Apr 2024 08:57:51 -0700 (PDT)
+ Sat, 27 Apr 2024 08:57:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 06/14] exec/cpu: Remove obsolete PAGE_RESERVED definition
-Date: Sat, 27 Apr 2024 17:57:06 +0200
-Message-ID: <20240427155714.53669-7-philmd@linaro.org>
+Subject: [PATCH 07/14] exec/cpu: Remove duplicated PAGE_PASSTHROUGH definition
+Date: Sat, 27 Apr 2024 17:57:07 +0200
+Message-ID: <20240427155714.53669-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240427155714.53669-1-philmd@linaro.org>
 References: <20240427155714.53669-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,30 +91,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We stopped using the PAGE_RESERVED definition in commit
-50d25c8aec ("accel/tcg: Drop PAGE_RESERVED for CONFIG_BSD").
-This completes commit 2e9a5713f0 ("Remove PAGE_RESERVED").
+Missed in commit 58771921af ("include/exec: Move PAGE_* macros
+to common header"), PAGE_PASSTHROUGH ended being defined twice.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu-all.h | 4 ----
- 1 file changed, 4 deletions(-)
+ include/exec/cpu-all.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index eaa59a5cc1..5ea8c4d3ef 100644
+index 5ea8c4d3ef..8c3ad7153d 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -157,10 +157,6 @@ extern const TargetPageBits target_page;
+@@ -157,12 +157,6 @@ extern const TargetPageBits target_page;
  
  #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
  
--#if defined(CONFIG_BSD) && defined(CONFIG_USER_ONLY)
--/* FIXME: Code that sets/uses this is broken and needs to go away.  */
--#define PAGE_RESERVED  0x0100
--#endif
- /*
-  * For linux-user, indicates that the page is mapped with the same semantics
-  * in both guest and host.
+-/*
+- * For linux-user, indicates that the page is mapped with the same semantics
+- * in both guest and host.
+- */
+-#define PAGE_PASSTHROUGH 0x0800
+-
+ #if defined(CONFIG_USER_ONLY)
+ void page_dump(FILE *f);
+ 
 -- 
 2.41.0
 
