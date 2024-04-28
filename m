@@ -2,52 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A318B4AE8
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 11:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F14868B4AD3
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 11:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s10WS-0004xh-1L; Sun, 28 Apr 2024 05:08:36 -0400
+	id 1s10U3-0007V4-Oj; Sun, 28 Apr 2024 05:06:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s10WO-0004fZ-8k
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:32 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s10WK-0004J3-TM
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:31 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxTesAEi5m9lkEAA--.9188S3;
- Sun, 28 Apr 2024 17:08:16 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxpFb1ES5mmCgIAA--.5818S19; 
- Sun, 28 Apr 2024 17:08:16 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 17/17] hw/loongarch: Add cells missing from rtc node
-Date: Sun, 28 Apr 2024 16:51:17 +0800
-Message-Id: <20240428085117.2422473-18-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240428085117.2422473-1-gaosong@loongson.cn>
-References: <20240428085117.2422473-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1s10U0-0007UG-Q8
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:06:04 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1s10Tx-0003ik-O9
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:06:04 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2a484f772e2so2353675a91.3
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 02:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714295159; x=1714899959;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IszGnMpP0dRtsGp91SXeif5PGpGhSioX7K+JbC0wiQs=;
+ b=YO+Z+Xpd6mJBuAy6y9627cDSN0fTkFJNdO5/jtXxB07BG2+xuCMgSLgVStewLFlM/n
+ 2ewuoZdmhwUPe7q9kTZbvDQ7ee6GEJwEuojtd6vj9fkG/k50yAcRl0iUrF0kH31SNUSz
+ Gx9rZhtUHpwMkmKHtIPyfJEwPaaya4a/eYKSR13t3pSPZitCgnZgTDYifo5FwaYi4JlD
+ G+ksAOFvnYImoQUZpeVnWwqG4wBYMQe9EX2Mvwd/PWiRnlIkXTOq88UQGcQXyKsu8fji
+ vypGu/9Q/UPwZ1c0c4VlOAF8C+QZ0DytJYBGcnvl8+anhdS3rKpe36Vz9+YJQ2Rd2Gbu
+ WOTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714295159; x=1714899959;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IszGnMpP0dRtsGp91SXeif5PGpGhSioX7K+JbC0wiQs=;
+ b=KauzzNpaCVbLEFu7aPvENAPia/VGtl5j2LiuWklR+GNCUOpp/1ezNsep1wOiMoMYv9
+ PYZiR/T1QRY05VGAdRki2ZcD9MzELS04crt73+F7Xlg1hc6Sj9K3H8u0W+BqBSrHGcVr
+ eqjXD5st5ScLvUjq0GgXwjI+1jWrPwxC2tumWX19xAQHGLogsuWeKuMr14zEbfp+0SBV
+ dMFCcqrSbgqa2spxFbWQI/f+ERlWetxMAKVOZkuy1lW4d1MqLozczq7Zkz7nT5BlHAlm
+ sE8wSFSeS8qRYNDCRFufcAGVwXv3iG/ONVX/or0a8l5sn75+BllatKKJ/pecg2QH0EXI
+ kDFA==
+X-Gm-Message-State: AOJu0YxEDINfz3nelkkJnpSLFuww1wQvYa8R65tRURIs7/8VNLrns4FG
+ ui1Hmqi9SKEpboWiJwTtKSVUDwGiY7HAQFTE8i1r+Bn1cgFtIh7ylqXSxDvOo4E=
+X-Google-Smtp-Source: AGHT+IHCi2l6x+XfXRYGX8JfmDX3E70KlaCUkuK0UD3WtSko1av5wRDAP9QGQgptSoM/hnSSAE9zXQ==
+X-Received: by 2002:a17:90a:fd85:b0:2a7:cd5:faa6 with SMTP id
+ cx5-20020a17090afd8500b002a70cd5faa6mr6947045pjb.44.1714295159217; 
+ Sun, 28 Apr 2024 02:05:59 -0700 (PDT)
+Received: from localhost ([157.82.202.162])
+ by smtp.gmail.com with UTF8SMTPSA id
+ qj3-20020a17090b28c300b002b0dea23239sm2150994pjb.49.2024.04.28.02.05.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 28 Apr 2024 02:05:58 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH RFC v4 0/7] virtio-net: add support for SR-IOV emulation
+Date: Sun, 28 Apr 2024 18:05:40 +0900
+Message-Id: <20240428-sriov-v4-0-ac8ac6212982@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxpFb1ES5mmCgIAA--.5818S19
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGQRLmYC/2XMTQrDIBAF4KsE17XoGGPSVaHQA3RbutCojYvGo
+ kUSQu5eEQL92Qy8mfnegqIJzkR0qBYUTHLR+TGHelehfpDj3WCnc0ZAgNE8cAzOJ9zVBKyCBpR
+ pUf59BmPdVHqu6HI+oVteDi6+fJhLd6Ll9FOTKCaYgWJcECuUbo5azqOb9r1/lIoEH4ySjUFmq
+ uOdaWWjrbR/jG2sJozwjbHMpNJKcCEIE/DF1nV9A8UhDjYOAQAA
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Alex Williamson <alex.williamson@redhat.com>, 
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
+ Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Yui Washizu <yui.washidu@gmail.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-a718f
+Received-SPF: none client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,54 +103,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rtc node need interrupts and interrupt-parent cells.
+Based-on: <20240315-reuse-v9-0-67aa69af4d53@daynix.com>
+("[PATCH for 9.1 v9 00/11] hw/pci: SR-IOV related fixes and improvements")
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-Id: <20240426091551.2397867-18-gaosong@loongson.cn>
+Introduction
+------------
+
+This series is based on the RFC series submitted by Yui Washizu[1].
+See also [2] for the context.
+
+This series enables SR-IOV emulation for virtio-net. It is useful
+to test SR-IOV support on the guest, or to expose several vDPA devices
+in a VM. vDPA devices can also provide L2 switching feature for
+offloading though it is out of scope to allow the guest to configure
+such a feature.
+
+The PF side code resides in virtio-pci. The VF side code resides in
+the PCI common infrastructure, but it is restricted to work only for
+virtio-net-pci because of lack of validation.
+
+User Interface
+--------------
+
+A user can configure a SR-IOV capable virtio-net device by adding
+virtio-net-pci functions to a bus. Below is a command line example:
+  -netdev user,id=n -netdev user,id=o
+  -netdev user,id=p -netdev user,id=q
+  -device pcie-root-port,id=b
+  -device virtio-net-pci,bus=b,addr=0x0.0x3,netdev=q,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x2,netdev=p,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x1,netdev=o,sriov-pf=f
+  -device virtio-net-pci,bus=b,addr=0x0.0x0,netdev=n,id=f
+
+The VFs specify the paired PF with "sriov-pf" property. The PF must be
+added after all VFs. It is user's responsibility to ensure that VFs have
+function numbers larger than one of the PF, and the function numbers
+have a consistent stride.
+
+Keeping VF instances
+--------------------
+
+A problem with SR-IOV emulation is that it needs to hotplug the VFs as
+the guest requests. Previously, this behavior was implemented by
+realizing and unrealizing VFs at runtime. However, this strategy does
+not work well for the proposed virtio-net emulation; in this proposal,
+device options passed in the command line must be maintained as VFs
+are hotplugged, but they are consumed when the machine starts and not
+available after that, which makes realizing VFs at runtime impossible.
+
+As an strategy alternative to runtime realization/unrealization, this
+series proposes to reuse the code to power down PCI Express devices.
+When a PCI Express device is powered down, it will be hidden from the
+guest but will be kept realized. This effectively implements the
+behavior we need for the SR-IOV emulation.
+
+Summary
+-------
+
+Patch 1 disables ROM BAR, which virtio-net-pci enables by default, for
+VFs.
+Patch 2 makes zero stride valid for 1 VF configuration.
+Patch 3 and 4 adds validations.
+Patch 5 adds user-created SR-IOV VF infrastructure.
+Patch 6 makes virtio-pci work as SR-IOV PF for user-created VFs.
+Patch 7 allows user to create SR-IOV VFs with virtio-net-pci.
+
+[1] https://patchew.org/QEMU/1689731808-3009-1-git-send-email-yui.washidu@gmail.com/
+[2] https://lore.kernel.org/all/5d46f455-f530-4e5e-9ae7-13a2297d4bc5@daynix.com/
+
+Co-developed-by: Yui Washizu <yui.washidu@gmail.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/loongarch/virt.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+Changes in v4:
+- Added patch "hw/pci: Fix SR-IOV VF number calculation" to fix division
+  by zero reported by Yui Washizu.
+- Rebased.
+- Link to v3: https://lore.kernel.org/r/20240305-sriov-v3-0-abdb75770372@daynix.com
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index dbd7928759..c0999878df 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -231,7 +231,8 @@ static void fdt_add_flash_node(LoongArchMachineState *lams)
-     g_free(nodename);
- }
- 
--static void fdt_add_rtc_node(LoongArchMachineState *lams)
-+static void fdt_add_rtc_node(LoongArchMachineState *lams,
-+                             uint32_t *pch_pic_phandle)
- {
-     char *nodename;
-     hwaddr base = VIRT_RTC_REG_BASE;
-@@ -240,8 +241,13 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
- 
-     nodename = g_strdup_printf("/rtc@%" PRIx64, base);
-     qemu_fdt_add_subnode(ms->fdt, nodename);
--    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible", "loongson,ls7a-rtc");
-+    qemu_fdt_setprop_string(ms->fdt, nodename, "compatible",
-+                            "loongson,ls7a-rtc");
-     qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "interrupts",
-+                           VIRT_RTC_IRQ - VIRT_GSI_BASE , 0x4);
-+    qemu_fdt_setprop_cell(ms->fdt, nodename, "interrupt-parent",
-+                          *pch_pic_phandle);
-     g_free(nodename);
- }
- 
-@@ -648,7 +654,7 @@ static void loongarch_devices_init(DeviceState *pch_pic,
-     sysbus_create_simple("ls7a_rtc", VIRT_RTC_REG_BASE,
-                          qdev_get_gpio_in(pch_pic,
-                          VIRT_RTC_IRQ - VIRT_GSI_BASE));
--    fdt_add_rtc_node(lams);
-+    fdt_add_rtc_node(lams, pch_pic_phandle);
- 
-     /* acpi ged */
-     lams->acpi_ged = create_acpi_ged(pch_pic, lams);
+Changes in v3:
+- Rebased.
+- Link to v2: https://lore.kernel.org/r/20231210-sriov-v2-0-b959e8a6dfaf@daynix.com
+
+Changes in v2:
+- Changed to keep VF instances.
+- Link to v1: https://lore.kernel.org/r/20231202-sriov-v1-0-32b3570f7bd6@daynix.com
+
+---
+Akihiko Odaki (7):
+      hw/pci: Do not add ROM BAR for SR-IOV VF
+      hw/pci: Fix SR-IOV VF number calculation
+      pcie_sriov: Ensure PF and VF are mutually exclusive
+      pcie_sriov: Check PCI Express for SR-IOV PF
+      pcie_sriov: Allow user to create SR-IOV device
+      virtio-pci: Implement SR-IOV PF
+      virtio-net: Implement SR-IOV VF
+
+ include/hw/pci/pci_device.h |   6 +-
+ include/hw/pci/pcie_sriov.h |  19 +++
+ hw/pci/pci.c                |  76 +++++++----
+ hw/pci/pcie_sriov.c         | 298 +++++++++++++++++++++++++++++++++++---------
+ hw/virtio/virtio-net-pci.c  |   1 +
+ hw/virtio/virtio-pci.c      |   7 ++
+ 6 files changed, 323 insertions(+), 84 deletions(-)
+---
+base-commit: 2ac5458086ab61282f30c2f8bdf2ae9a0a06a75d
+change-id: 20231202-sriov-9402fb262be8
+
+Best regards,
 -- 
-2.25.1
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
