@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB758B4E81
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131658B4E83
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Cnt-0005zT-LX; Sun, 28 Apr 2024 18:15:25 -0400
+	id 1s1Cnz-00066F-HO; Sun, 28 Apr 2024 18:15:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnr-0005wN-Gm
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:23 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnx-00061i-O6
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:29 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnp-0005WY-SB
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:23 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-572229f196cso3881194a12.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnw-0005ZZ-1w
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:29 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-56e56ee8d5cso4652304a12.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342520; x=1714947320; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342525; x=1714947325; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8v4uzifmPKK2kwYtF4RlyiCCqgElOLg1I89Ov9YYN+0=;
- b=C2cmvPTuRfq81zmyBIQduUjo+HBntyMzxFZsmZGgd1qrfKayaLxLsJiG1H1WzO3twq
- QDpPewKItEjMzok8lKjhnuIt3o7yyCv5aYtSgDF2EC6WZ4+nS1ULIpLcSt32+uzwWZq3
- jyR5vvfv+jie8Wwzghenws4FrZvQtmkPafxQFVPKOccwqUkEaH1FS6kdE5Nkg8tjYLi1
- yPO2s9WW8dDDBN4VnLxITxL4zhOKhU+/39x4bzkpCZ7PyozgY50mcuhI6I/iCHGhb41g
- qneyNpVXRAH7bSHblwdBfStI16f3OGGUOEP7mdK1dYYf7FPzmOR98Y17tBCh0bs452eR
- lN2g==
+ bh=4RJjHdtnEQClT/5V8x7FhF0J3whe1EfuKPVVZmDDkK4=;
+ b=nqaQx9c8dKopl/2s57gcVSfaY0ANk2drDnDypALID2sgAxalETfImiGpRnvq27Ma8Q
+ Yap+nbKr/5lFa/jFf2CEEFDMVU0HZL2C68QByCJpps08tVhmtgebDQJY+clBdFDP/KEg
+ rQLt100pGDt1ImHf3+zlGUFDQ+EIVThDKUNZ33HQwBVlV2/5iX+87RWUrTizXEr1Z51P
+ BG/rVcMP78iU3Bg5V0h154VSSuL5vfHKq1pkXGQGosOtKGcPX5203yEmP1o5/KytQ++6
+ l3yKKlYzSGt+8NxfVfsEQ4bofTIdHkif2D6CE9N7Aj8JGTIHQL1+sAQTaGwxGrsFcRs8
+ FDpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342520; x=1714947320;
+ d=1e100.net; s=20230601; t=1714342525; x=1714947325;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8v4uzifmPKK2kwYtF4RlyiCCqgElOLg1I89Ov9YYN+0=;
- b=UdXJQ/g8Xxjo7NOVNKF6lnMpUPQ0BPW9jo6LB9Br8AMrOtLnpSy4p6eW6MphEonc56
- 0K6gwX6VhhRFLCpQ7bQQqPLeb2WbSP6nONaJl0G1a6DYHSj/7SqDWlZuyGgtB0lWi6TL
- SOaBFspPFaFrQGzZurUOZiWCWLGeOtEkNnp0f4doyMbvzXI/fOUhe0fjOpGesmmsQQP1
- PvYbhsT2nBhqckmXyeHIfB/iISSc7OYqJqxyP396JeCNU38cOWMmGfjNrRF3+N5d/s6B
- 0UwBBTFQz3NiHienAeRJ086d9qbHOpX4wNxSLERSxh1Gas6RNU/OWHNxBMtcIFVpp0G6
- UyuQ==
-X-Gm-Message-State: AOJu0Yws1rDAaVZLcx8P1vCbc+v69GgznIQWYSS9bxRHWsBG/PXMboGR
- dIlwKgxa8e0bcCXjG1xzF8sdHOTOIfU2f4J6pPMQmEj9N5dAebBScrZjc0jj8m0SNN/+RwoTepy
- A
-X-Google-Smtp-Source: AGHT+IH7wyuEY8vgm9so5UxiG2GqL6VIKzDQlxV0Jk6TST/x0CA6wJhC+A1XiNsoP0BJM3IPJ/Rwtw==
-X-Received: by 2002:a50:f68f:0:b0:571:be31:500b with SMTP id
- d15-20020a50f68f000000b00571be31500bmr5553084edn.25.1714342520316; 
- Sun, 28 Apr 2024 15:15:20 -0700 (PDT)
+ bh=4RJjHdtnEQClT/5V8x7FhF0J3whe1EfuKPVVZmDDkK4=;
+ b=M/18YXuUU8LCg+yArJUBNY7J/ZeVUEyAxol7pJwki+n1gX6QgJsSEB6vgLkvoKaABo
+ KLCIgNczmqc0uMYWxAfZcHLTgdaLti/Q4+fDVuPDxZOqaH6/sRdhCCIjmhaBC74QdZUN
+ iihjjSY0hNEe1vKUz82xDoMq4DZ8OUHF5GZuF+2EkkE4fMCSybO/HG97TLRzNWp0/ssm
+ VtSR04505+ANfCU99YrJSk4Qs2igG1F86J7srXt/+qsz5hAsMEMagfxY6+aqsoslZ+2t
+ qe+/xUDVZc1FpXFWFpP8jCXl7n9XN2HLbwuuG0Y3LJrdVZJEqM1hrEHDt8bieApguzfm
+ tRiw==
+X-Gm-Message-State: AOJu0YyOGFGvtbulPI6RgsRVmjFC2ztPqYKtpyJKRZHytQgEqnoj13ta
+ mlmnU5VLTQW0KvA4ZjahXKeYd+wKHUwZXTct9AwbADFicWQ9J68j/12llY7/mVjJYG1gKDGyWTx
+ H
+X-Google-Smtp-Source: AGHT+IH78rGkc/c0pgTkWMzYhfX3Pv4uqiYrou0YkKSfhtawmFsQ8IIiNWFh2MDpt1yHMHRyB2Yf8A==
+X-Received: by 2002:a50:bb6f:0:b0:56d:b687:5a45 with SMTP id
+ y102-20020a50bb6f000000b0056db6875a45mr6453066ede.1.1714342525576; 
+ Sun, 28 Apr 2024 15:15:25 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- fg4-20020a056402548400b005727e798b5bsm759122edb.63.2024.04.28.15.15.19
+ b17-20020a056402139100b00572047bf766sm8479321edv.51.2024.04.28.15.15.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:15:19 -0700 (PDT)
+ Sun, 28 Apr 2024 15:15:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 05/24] accel/tcg: Extract tcg_cpu_exit() from cpu_exit()
-Date: Mon, 29 Apr 2024 00:14:31 +0200
-Message-ID: <20240428221450.26460-6-philmd@linaro.org>
+Subject: [PATCH 06/24] accel: Introduce AccelOpsClass::exit_vcpu_thread()
+ handler
+Date: Mon, 29 Apr 2024 00:14:32 +0200
+Message-ID: <20240428221450.26460-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,58 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract tcg_cpu_exit() from the user cpu_exit() implementation.
-In few commits we will re-use it in the system one (via a
-per-accel handler).
+Introduce a per-accelerator handler that can be call
+when a vCPU exits.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/internal-common.h | 2 ++
- accel/tcg/translate-all.c   | 7 +++++++
- accel/tcg/user-exec.c       | 4 +---
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ include/sysemu/accel-ops.h | 1 +
+ system/cpus.c              | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-index ead53cb8a5..df317e7496 100644
---- a/accel/tcg/internal-common.h
-+++ b/accel/tcg/internal-common.h
-@@ -24,4 +24,6 @@ static inline bool cpu_in_serial_context(CPUState *cs)
-     return !tcg_cflags_has(cs, CF_PARALLEL) || cpu_in_exclusive_context(cs);
+diff --git a/include/sysemu/accel-ops.h b/include/sysemu/accel-ops.h
+index ef91fc28bb..35dfb7e266 100644
+--- a/include/sysemu/accel-ops.h
++++ b/include/sysemu/accel-ops.h
+@@ -35,6 +35,7 @@ struct AccelOpsClass {
+     void (*create_vcpu_thread)(CPUState *cpu); /* MANDATORY NON-NULL */
+     void (*kick_vcpu_thread)(CPUState *cpu);
+     bool (*cpu_thread_is_idle)(CPUState *cpu);
++    void (*exit_vcpu_thread)(CPUState *cpu);
+ 
+     void (*synchronize_post_reset)(CPUState *cpu);
+     void (*synchronize_post_init)(CPUState *cpu);
+diff --git a/system/cpus.c b/system/cpus.c
+index e0530ad603..d0d585e8b9 100644
+--- a/system/cpus.c
++++ b/system/cpus.c
+@@ -425,6 +425,9 @@ void cpu_exit(CPUState *cpu)
+     /* Ensure cpu_exec will see the exit request after TCG has exited.  */
+     smp_wmb();
+     qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
++    if (cpus_accel->exit_vcpu_thread) {
++        cpus_accel->exit_vcpu_thread(cpu);
++    }
  }
  
-+void tcg_cpu_exit(CPUState *cpu);
-+
- #endif
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index fdf6d8ac19..b67adce20e 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -663,3 +663,10 @@ void tcg_flush_jmp_cache(CPUState *cpu)
-         qatomic_set(&jc->array[i].tb, NULL);
-     }
- }
-+
-+void tcg_cpu_exit(CPUState *cpu)
-+{
-+    /* Ensure cpu_exec will see the exit request after TCG has exited.  */
-+    smp_wmb();
-+    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
-+}
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 404d8a145c..d7e5f00c97 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -49,9 +49,7 @@ void cpu_interrupt(CPUState *cpu, int mask)
- void cpu_exit(CPUState *cpu)
- {
-     qatomic_set(&cpu->exit_request, 1);
--    /* Ensure cpu_exec will see the exit request after TCG has exited.  */
--    smp_wmb();
--    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
-+    tcg_cpu_exit(cpu);
- }
- 
- /*
+ static void qemu_cpu_stop(CPUState *cpu, bool exit)
 -- 
 2.41.0
 
