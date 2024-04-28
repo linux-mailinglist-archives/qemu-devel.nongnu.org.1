@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9768B4A48
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:03:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F228B4A4F
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:04:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0yYC-0003bj-TI; Sun, 28 Apr 2024 03:02:16 -0400
+	id 1s0yYH-0004Cy-08; Sun, 28 Apr 2024 03:02:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yY3-0003Lq-Rr
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:02:08 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1s0yY7-0003VM-Fg
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:02:12 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yXz-0005Ul-Bh
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:02:07 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2adce8f7814so3032866a91.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:02:02 -0700 (PDT)
+ id 1s0yY3-0005V8-N5
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:02:09 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6effe9c852eso3137175b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:02:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287722; x=1714892522;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287726; x=1714892526;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nOqObjFvo/9oAC/9p+G1KW7r4O+qd7IGNrZnts75bB0=;
- b=TVXcv58I1s8KvaOkwwe4uG11EhtjVkfvlIfiDXuZsiz7xz04ZGBki347EM/MFJUtGi
- 5hsAZ5vRTso6c8NyRI7Hpj+kmvT60AFHEMILo9iXNRGK56goTLR+rHTYlQbMVphSh+Cc
- U5r8yCRNFSxom4ceA6s04otyNLwYqQr9yEmIsU9MvSKmmO/LOzKd7j9MHNVdfDL/Tyzs
- 5wKXg4itrbj0YhCR09VZT1fD8hp7JniSqQfYqavCNFh+hBdptwlfBImPFJVuonUq8CeS
- 4VU7OYNRFMz9685ftpaXUnBJrpkRk/JUe3LBYjAzCcp6/oEZUy8vMazM7vJ0SzAV7u0O
- 91/g==
+ :reply-to; bh=aSwN7T4THBSw8DVoEdw6sbR9jhN10SDsiob3Jp9LpFY=;
+ b=ZcC3DykVdDM1IWia13du2Kx/bDvcgA1GbPRSL6r5kocM4wKVhbl4OjZcccitucSvuo
+ j5L2+vjjmlCqRyNnOc44Nz5pvc0Mw8ySjRZCzwVowNi3sTE9Q7+9dNBSGxmpPj28XSfu
+ h/W513v9B/ifs2Yx2d8mMLUd/FQ7lYr5SL/LjsiJSzCVF2rpmBbinU7NXmDHKNFn14ey
+ lyfb/8+JINN0tccso3ABN38DbvzLIzgS+RRmTAa1JW/9ooMNDUn2qJ35+UXoog8YB4zH
+ z6Gz9ZPjoO/NZL1DAmCX759mGwtXIzJCcLH3h/fAhcx0irTSlpWhmmh6GOTSvgEBvMZC
+ qC2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714287722; x=1714892522;
+ d=1e100.net; s=20230601; t=1714287726; x=1714892526;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nOqObjFvo/9oAC/9p+G1KW7r4O+qd7IGNrZnts75bB0=;
- b=FGAltQq9fZhMCJrhFdwf6EcGX9XhBw1TDm3SfRlt47ZHwXSapqZ89UleM0P7aVzkwt
- FHGrs4apcC10HNaGsWbxoq1P65A/0ghPUto4qY26mdL1pTcUaY7EG4TEHQk5AIJTFFsY
- jBqScAfT286A3zWKi0a9HXhmK7ZTGqr3N23qB5SNwGvz0AIexO3e6k5q0dPVz2F8jUEl
- SL3UNADT0ampTy7HtL20dH+5N+KHShu+/vksl0E0bVncyIFzgDGozJ3v9lWE5tGtUv/y
- kTuwb6kHN8NZwLUiVeRiG3zSxejZs0/09t5p8vy6mxlSjpftekbyEmbUjkYKfogqb1Wc
- n/3g==
-X-Gm-Message-State: AOJu0YyPFOVe3PZ2BZoTNHocqISotoLov4g01lyVypceaWkkLSYcgJbN
- GXyrVk6P7gpudZ2NDXBDB1O45sm7dgvkMN9lqtck68KnQI/xWijGgBbx5pzvEus=
-X-Google-Smtp-Source: AGHT+IHhL2aPfV/gvzVBAFdVMxzLtaU5xUK7lXahVenjJuKgga29KjMq7j5NBgXL5UNdvTx+AnfBNQ==
-X-Received: by 2002:a17:90a:8904:b0:2ad:e41d:caed with SMTP id
- u4-20020a17090a890400b002ade41dcaedmr6678029pjn.37.1714287721845; 
- Sun, 28 Apr 2024 00:02:01 -0700 (PDT)
+ bh=aSwN7T4THBSw8DVoEdw6sbR9jhN10SDsiob3Jp9LpFY=;
+ b=j802R77wKd7VTqRMKd/IgHFnfkOYJrV26ecOQeIht/rVOojgcRfM9Rp03BRf+3j2Km
+ GRp5HPX5bMmDSTignicYkUy0V+q+OkfZBUySMwB41DMo8WpIgfi/QL57a5qn1fbfQ1YL
+ b4ptB8oGQqZm2+tqekRdqTNgdfh5vBQBP9Nmwpo78Bs3KAergwwYQCZI1PTDFQUhiRS1
+ ygvv94omqObWoBwFAoHkknablJxJ9LawxnAM5Zvl6G20ABXkpZqiT22AyxtRl+7BbMui
+ ShGFcuXXP2sDv3NYaTyqjqjOR1evxeN6N4tSl0Lt05Vb7zgik1J4fR1IeMGWKLh3T4v+
+ B06g==
+X-Gm-Message-State: AOJu0Yzc/qaa47dyP5aITOZ7GwgZZTGLx1GU0jnHoKqae44JudUFMTgk
+ 3EIf/2P9SM/vyCwFhBY3U3rihJJdQm2ito5XOyfRYkfsWNZPgAn7h6a1nj3c13w=
+X-Google-Smtp-Source: AGHT+IHYKy8dYYp459cczsrpJg9WUwOUgeZUKMmSV7L+U7cF2aaC9p1YxKdMnCqsOeuj1m1Gc+Hkyw==
+X-Received: by 2002:a05:6a20:4f16:b0:1ad:82c4:917f with SMTP id
+ gi22-20020a056a204f1600b001ad82c4917fmr6539524pzb.33.1714287726259; 
+ Sun, 28 Apr 2024 00:02:06 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- ca15-20020a056a02068f00b005ff58ee59b8sm10156471pgb.44.2024.04.28.00.01.59
+ fc20-20020a056a002e1400b006f3e9bdf393sm2572760pfb.8.2024.04.28.00.02.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 00:02:01 -0700 (PDT)
+ Sun, 28 Apr 2024 00:02:06 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 28 Apr 2024 16:01:00 +0900
-Subject: [PATCH v10 17/18] ebpf: Refactor tun_rss_steering_prog()
+Date: Sun, 28 Apr 2024 16:01:01 +0900
+Subject: [PATCH v10 18/18] ebpf: Add a separate target for skeleton
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240428-rss-v10-17-73cbaa91aeb6@daynix.com>
+Message-Id: <20240428-rss-v10-18-73cbaa91aeb6@daynix.com>
 References: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 In-Reply-To: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
@@ -75,8 +75,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Yuri Benditovich <yuri.benditovich@daynix.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::1030;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1030.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::432;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,56 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This saves branches and makes later BPF program changes easier.
+This generalizes the rule to generate the skeleton and allows to add
+another.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- tools/ebpf/rss.bpf.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+ tools/ebpf/Makefile.ebpf | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/tools/ebpf/rss.bpf.c b/tools/ebpf/rss.bpf.c
-index 77434435ac15..c989cb3cd82c 100644
---- a/tools/ebpf/rss.bpf.c
-+++ b/tools/ebpf/rss.bpf.c
-@@ -547,27 +547,23 @@ int tun_rss_steering_prog(struct __sk_buff *skb)
-     config = bpf_map_lookup_elem(&tap_rss_map_configurations, &key);
-     toe = bpf_map_lookup_elem(&tap_rss_map_toeplitz_key, &key);
+diff --git a/tools/ebpf/Makefile.ebpf b/tools/ebpf/Makefile.ebpf
+index 3391e7ce0898..572ca5987ae6 100755
+--- a/tools/ebpf/Makefile.ebpf
++++ b/tools/ebpf/Makefile.ebpf
+@@ -1,23 +1,24 @@
+-OBJS = rss.bpf.o
++SKELETONS = rss.bpf.skeleton.h
  
--    if (config && toe) {
--        if (!config->redirect) {
--            return config->default_queue;
--        }
-+    if (!config || !toe) {
-+        return 0;
-+    }
+ LLVM_STRIP ?= llvm-strip
+ CLANG ?= clang
+ INC_FLAGS = `$(CLANG) -print-file-name=include`
+ EXTRA_CFLAGS ?= -O2 -g -target bpf
  
--        if (calculate_rss_hash(skb, config, toe, &hash)) {
--            __u32 table_idx = hash % config->indirections_len;
--            __u16 *queue = 0;
-+    if (config->redirect && calculate_rss_hash(skb, config, toe, &hash)) {
-+        __u32 table_idx = hash % config->indirections_len;
-+        __u16 *queue = 0;
+-all: $(OBJS)
++all: $(SKELETONS)
  
--            queue = bpf_map_lookup_elem(&tap_rss_map_indirection_table,
--                                        &table_idx);
-+        queue = bpf_map_lookup_elem(&tap_rss_map_indirection_table,
-+                                    &table_idx);
+ .PHONY: clean
  
--            if (queue) {
--                return *queue;
--            }
-+        if (queue) {
-+            return *queue;
-         }
--
--        return config->default_queue;
-     }
+ clean:
+-	rm -f $(OBJS)
+-	rm -f rss.bpf.skeleton.h
++	rm -f $(SKELETONS) $(SKELETONS:%.skeleton.h=%.o)
  
--    return 0;
-+    return config->default_queue;
- }
- 
- char _license[] SEC("license") = "GPL v2";
+-$(OBJS):  %.o:%.c
++%.o: %.c
+ 	$(CLANG) $(INC_FLAGS) \
+                 -D__KERNEL__ -D__ASM_SYSREG_H \
+                 -I../include $(LINUXINCLUDE) \
+                 $(EXTRA_CFLAGS) -c $< -o $@
+ 	$(LLVM_STRIP) -g $@
+-	bpftool gen skeleton rss.bpf.o > rss.bpf.skeleton.h
+-	cp rss.bpf.skeleton.h ../../ebpf/
++
++%.skeleton.h: %.o
++	bpftool gen skeleton $< > $@
++	cp $@ ../../ebpf/
 
 -- 
 2.44.0
