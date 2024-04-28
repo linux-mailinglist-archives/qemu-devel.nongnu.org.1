@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36FB8B4DFE
+	by mail.lfdr.de (Postfix) with ESMTPS id C78D78B4E00
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1COt-0002vp-92; Sun, 28 Apr 2024 17:49:36 -0400
+	id 1s1CP7-0002yb-2g; Sun, 28 Apr 2024 17:49:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1COo-0002vT-Rw
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:30 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1COp-0002vb-C2
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:31 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1COm-00012c-B3
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:30 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-56e78970853so8244396a12.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:49:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1COn-00012j-73
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:31 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a55b93f5540so505639766b.1
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:49:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714340959; x=1714945759; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DOmz00QdEF4UthPf0Q5PrUg597J7odFQxzjvleV3NEc=;
- b=zQh4jnsnTHSiEaLrD1BWusoDho7fju5YG6bawq2/E3vp1sbwO08ymNtV2TASqznLcj
- nCd2ROB2IsRq/Baj3a0QjE7mNhvLkexsG/psmersD88NES6SgKdma8XP9VWJitIkjppr
- wjH+W7D9+7WEw+21ojE0qJZ/h675/rdZywt9bE3+l4XWUAZCAx4/8mk1C9y7zD8fApNp
- Ip9XxtSNi+OBnbCu7gmCoMvdnSP6TSXALvHFWtaU1CROpvRFmGIdVhgcnVS17sL2UdUe
- 0FwJji+hZCVUToMhwxAH3O5/9BL71dbVpUicVD6aupor6XihPIdl84B2Q4vP8qfQxyyS
- apEA==
+ d=linaro.org; s=google; t=1714340965; x=1714945765; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WlnSWxk2ckicORZmY3MYyhbs7CkzbKWbFMF7/22EQlk=;
+ b=Qh1OCHHE7tbSobxDJkXN+6ak85WEP03064n0Qr9NphLEE6UXJPzOMJErGOUmuO2x7y
+ UdTl7Etl9dmziHK2n7sIdgaMDq/6PKx5IHNfZhsheuTly7885rkt0ZzThhrYizeUBOuO
+ md/G2M+8D98tJ3VLErFZwysSQI+nDgPOAStEPF3s4rg1HYMVzdRQUChs59jtHrl2SoYO
+ 0zk83wzh7RZuT1NAwpxnA2h8xpxrEnIVFFjN5YG2cUpdEgUy/UtkhnslpGHAaIKkOPXs
+ RAfD3J4zw8R+rhflF5Z8yj1mnB3jE8TEpFCwVKx3kBqRJ7D6q/BMI47q3V3ixqZbJb2e
+ 4mrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714340959; x=1714945759;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DOmz00QdEF4UthPf0Q5PrUg597J7odFQxzjvleV3NEc=;
- b=BH2x6niJ6Uu6eazYWgy7TVdkisyob4Ny32SmzurjuDziPfE+YBWt2B7j/uF7B7DNBu
- y9Md5lkT5KRFI58RZNZKFTEJEi6nl+5qIXo+Re8TugmrPexKmB/OYSCvuXsIP2YzJF+0
- V2MBqo2+wxnYbM6wbcpd4H4rRbkqQMQ0uo4XlRUsDiWyM1lrkhpbZluAVcjSdKZijh2/
- 1gQV2tcKR4LghatCh5wTZ45um4Bcjv1JvBTq2lsfqPA7NEoyQHeYkEiBHO9tIIzJWwsd
- UOFifpnS3gUHK7lRyXdUkpGaRnGMWSdPPwqsjrWBaxgFrFM9ogS2nErJu/P0A9tXpJL/
- qQAA==
-X-Gm-Message-State: AOJu0Yypfcdo/t92e8yNo6T9kE1bXYbjnaF2Wjj2XgD+g8KyDDkNVKDb
- zhLpDzvZhFKsA6igexxAm28nwE+vNIs4F67s7VOSPtjsc+AAPsYA0Z2I3/ACrKrlO5U9vM9j6x8
- 0
-X-Google-Smtp-Source: AGHT+IFyBKwxRjZ+CgwxpVNUfP9JtVZt8afHtDbqFmUFT254aHFWkKNHSW+ekbjUkYFA+azCVQ/EDQ==
-X-Received: by 2002:a17:907:7f27:b0:a52:71d6:d605 with SMTP id
- qf39-20020a1709077f2700b00a5271d6d605mr9763363ejc.23.1714340959026; 
- Sun, 28 Apr 2024 14:49:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714340965; x=1714945765;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WlnSWxk2ckicORZmY3MYyhbs7CkzbKWbFMF7/22EQlk=;
+ b=Ak9E+0bOeHsVdTvbxwnZzjyX8h1VSlIdJ3H+/tXpHjBi8vGtOiRi23FZUzQSZy5Y+R
+ OSME/GF18MK1Rf4XQtxpaMVASzG6pt9jDkNYhS+cIerNqMKPFlghQgJkDUJehXWPOKwC
+ fQU+eAAxZ02YZoNVULiKt3dVtjSNH7NTSj/3JkgjTrw84qGjeVesRXA1VhNgAtWEcXoM
+ LT9F2pdvZgZHhu7VnSuqkhE+7p5TB837nvBYbtmEYLTWzX2X4q9U6IySS3UWTC6H8Vt8
+ p7WTbsS3UfQwmndDyO1cTdlw142RtNdZJW9+OETvZr5gZ5rLauOscF2TZvjKQSmOGlzc
+ FTqg==
+X-Gm-Message-State: AOJu0Yy47CGb5piENAUiQ58VdUiqu++vEN4HXKSVYZ4LXSu7LbCjYDRB
+ 6ZISPurqpZTquTs9KCXT3U2GeQdBFQ2yW996j6pEMyVzPRyzzI8EqsR14UgHgjPrdCyDe39VQc/
+ e
+X-Google-Smtp-Source: AGHT+IGhqp3Z44Zq3Zyf8WJt7WMs3PAAlvxnSP8g/OBw3x8NJsr+MhgiRYjUvZGdIHJjj1wYjXQP/w==
+X-Received: by 2002:a17:906:c288:b0:a58:7283:f587 with SMTP id
+ r8-20020a170906c28800b00a587283f587mr5365104ejz.33.1714340964816; 
+ Sun, 28 Apr 2024 14:49:24 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- jw9-20020a170906e94900b00a58f4eff37asm1393520ejb.200.2024.04.28.14.49.17
+ i6-20020a17090639c600b00a58d2a48a6dsm3131201eje.192.2024.04.28.14.49.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 14:49:18 -0700 (PDT)
+ Sun, 28 Apr 2024 14:49:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 00/12] exec: Rework around CPUState user fields
-Date: Sun, 28 Apr 2024 23:49:03 +0200
-Message-ID: <20240428214915.10339-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 01/12] plugins: Update stale comment
+Date: Sun, 28 Apr 2024 23:49:04 +0200
+Message-ID: <20240428214915.10339-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240428214915.10339-1-philmd@linaro.org>
+References: <20240428214915.10339-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,124 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 8 & 9 (new)
+"plugin_mask" was renamed as "event_mask" in commit c006147122
+("plugins: create CPUPluginState and migrate plugin_mask").
 
-v2:
-- Addressed Richard review comments
-- Renamed page-prot-common.h -> page-protection.h
-- Removed wrong/unuseful patches
-- New patch moving cpu_loop_exit_requested()
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240427155714.53669-3-philmd@linaro.org>
+---
+ plugins/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi,
-
-First batch of patches (I expect them to be non
-controversial) related to extracting user specific
-fields from CPUState.
-
-Regards,
-
-Phil.
-
-Philippe Mathieu-Daudé (12):
-  plugins: Update stale comment
-  plugins/api: Only include 'exec/ram_addr.h' with system emulation
-  exec: Include missing license in 'exec/cpu-common.h'
-  exec/cpu: Indent TARGET_PAGE_foo definitions
-  exec/cpu: Remove obsolete PAGE_RESERVED definition
-  exec/cpu: Remove duplicated PAGE_PASSTHROUGH definition
-  exec/cpu: Extract page-protection definitions to page-protection.h
-  accel/tcg: Use cpu_loop_exit_requested() in cpu_loop_exec_tb()
-  accel/tcg: Restrict cpu_loop_exit_requested() to TCG
-  accel/tcg: Remove pointless initialization of cflags_next_tb
-  accel/tcg: Reset TCG specific fields in tcg_cpu_reset_hold()
-  accel/tcg: Access tcg_cflags with getter / setter
-
- MAINTAINERS                             |  1 +
- accel/tcg/internal-common.h             |  3 +-
- bsd-user/bsd-mem.h                      |  1 +
- bsd-user/qemu.h                         |  1 +
- include/exec/cpu-all.h                  | 36 ++++++++-----------
- include/exec/cpu-common.h               | 47 ++++++++-----------------
- include/exec/exec-all.h                 | 20 -----------
- include/exec/page-protection.h          | 41 +++++++++++++++++++++
- include/exec/translate-all.h            | 20 +++++++++++
- include/semihosting/uaccess.h           |  1 +
- target/arm/cpu.h                        |  1 +
- target/ppc/internal.h                   |  1 +
- target/ppc/mmu-radix64.h                |  2 ++
- accel/tcg/cpu-exec.c                    | 17 ++++++---
- accel/tcg/cputlb.c                      |  1 +
- accel/tcg/tb-maint.c                    |  1 +
- accel/tcg/tcg-accel-ops.c               |  5 ++-
- accel/tcg/user-exec.c                   |  1 +
- bsd-user/mmap.c                         |  1 +
- bsd-user/signal.c                       |  1 +
- cpu-target.c                            |  1 +
- hw/core/cpu-common.c                    |  3 --
- hw/ppc/ppc440_bamboo.c                  |  1 +
- hw/ppc/sam460ex.c                       |  1 +
- hw/ppc/virtex_ml507.c                   |  1 +
- linux-user/arm/cpu_loop.c               |  1 +
- linux-user/elfload.c                    |  1 +
- linux-user/mmap.c                       |  9 ++---
- linux-user/signal.c                     |  1 +
- linux-user/syscall.c                    |  5 +--
- plugins/api.c                           |  2 +-
- plugins/core.c                          |  2 +-
- system/physmem.c                        |  1 +
- target/alpha/helper.c                   |  1 +
- target/arm/cpu.c                        |  2 +-
- target/arm/ptw.c                        |  1 +
- target/arm/tcg/helper-a64.c             |  1 +
- target/arm/tcg/m_helper.c               |  1 +
- target/arm/tcg/mte_helper.c             |  1 +
- target/arm/tcg/sve_helper.c             |  1 +
- target/avr/cpu.c                        |  2 +-
- target/avr/helper.c                     |  1 +
- target/cris/mmu.c                       |  1 +
- target/hexagon/cpu.c                    |  2 +-
- target/hppa/cpu.c                       |  2 +-
- target/hppa/mem_helper.c                |  1 +
- target/hppa/translate.c                 |  1 +
- target/i386/cpu.c                       |  2 +-
- target/i386/helper.c                    |  2 +-
- target/i386/tcg/sysemu/excp_helper.c    |  1 +
- target/loongarch/cpu.c                  |  2 +-
- target/loongarch/tcg/tlb_helper.c       |  1 +
- target/m68k/helper.c                    |  1 +
- target/microblaze/cpu.c                 |  2 +-
- target/microblaze/helper.c              |  1 +
- target/microblaze/mmu.c                 |  1 +
- target/mips/sysemu/physaddr.c           |  1 +
- target/mips/tcg/exception.c             |  2 +-
- target/mips/tcg/sysemu/special_helper.c |  2 +-
- target/mips/tcg/sysemu/tlb_helper.c     |  1 +
- target/openrisc/cpu.c                   |  2 +-
- target/openrisc/mmu.c                   |  1 +
- target/ppc/mmu-hash32.c                 |  1 +
- target/ppc/mmu-hash64.c                 |  1 +
- target/ppc/mmu-radix64.c                |  1 +
- target/ppc/mmu_common.c                 |  1 +
- target/ppc/mmu_helper.c                 |  1 +
- target/riscv/cpu_helper.c               |  1 +
- target/riscv/pmp.c                      |  1 +
- target/riscv/tcg/tcg-cpu.c              |  4 +--
- target/riscv/vector_helper.c            |  1 +
- target/rx/cpu.c                         |  3 +-
- target/s390x/mmu_helper.c               |  1 +
- target/s390x/tcg/mem_helper.c           |  2 ++
- target/sh4/cpu.c                        |  4 +--
- target/sh4/helper.c                     |  1 +
- target/sparc/cpu.c                      |  2 +-
- target/sparc/ldst_helper.c              |  1 +
- target/sparc/mmu_helper.c               |  1 +
- target/tricore/cpu.c                    |  2 +-
- target/tricore/helper.c                 |  1 +
- target/xtensa/mmu_helper.c              |  1 +
- target/xtensa/op_helper.c               |  1 +
- 83 files changed, 193 insertions(+), 110 deletions(-)
- create mode 100644 include/exec/page-protection.h
-
+diff --git a/plugins/core.c b/plugins/core.c
+index 11ca20e626..09c98382f5 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -373,7 +373,7 @@ void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb)
+     struct qemu_plugin_cb *cb, *next;
+     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_TB_TRANS;
+ 
+-    /* no plugin_mask check here; caller should have checked */
++    /* no plugin_state->event_mask check here; caller should have checked */
+ 
+     QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
+         qemu_plugin_vcpu_tb_trans_cb_t func = cb->f.vcpu_tb_trans;
 -- 
 2.41.0
 
