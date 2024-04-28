@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091EA8B4E93
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5658B4E91
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Cnm-0005uP-Ka; Sun, 28 Apr 2024 18:15:18 -0400
+	id 1s1Cnm-0005ub-Pi; Sun, 28 Apr 2024 18:15:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CnY-0005sr-6K
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:07 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnc-0005tL-50
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:13 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CnV-0005JA-Ib
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:03 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-56e1baf0380so4781887a12.3
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cna-0005UD-7R
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:07 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-51967f75729so4451556e87.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342499; x=1714947299; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342504; x=1714947304; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rnpe0rzeTKHAYN20E0T7xpdwaTDLO7bZVPKy5KYEFKE=;
- b=pFpi7ltFCaGsfWZJQzF2PuegYqBVbdG3Ho//XCbh1BZKdqDd1bT+3oFHHMMiGGJVcE
- 8oMz5UQypZhLOki/FGamnKvNH67M56sz+YvKSgLycBtCMYa/cOiuGIrzCfVJ4fgT47hn
- JLoseqMGwoJZepsGE8pVAp9iGRXUMVvsPPu1RbB9BB8uhk2lPx5jUK+kAcYEe0hcWvuQ
- sqL4Gpu81LNaeHpUOqEnr87kFvfYDnS7wyKZVgvqe9AcWbVKNXPzznA2quVznwN9G9Xl
- JJn2WMtEtTIWtqt+Wa8UnjVZgQeX16l6UZMnbHlvPnrBxlt98VtGf56160Ik6BLwmcUN
- gZ/g==
+ bh=LCSb64QUO6bStXSl37yEjpM4xadVVio6bpX5EBZUn28=;
+ b=byFahhmLXmvc8mW1hPRycUEzGe/axojwrkT8Mj7SGhZTGFNBAYhp3QmS65bjtqDMAb
+ MHi8d6MEDmchk3SkmHEtlglngmD0Wj97BZSzTWL8BkfVzgJjKAt7oofx4GdR0bXQYUQU
+ 2ujzKk9APcjgTn9u3HJhL+3H/i/5V13yqvDbUTpp3P//UO/YiLbztdyJJZi/LB1pInXy
+ kmAAfqqQfcvytqi4LI5Z7PLfFEq4oi8Xl9G/2/tN+JHe8jxVyLjVlLlyg4RA8VDCwy9Q
+ +emYvXEtE7arAjCZlBXv3+VHOluNpoWiT4C/4kt0O4G6tLf/Q4Kq1ooU7/PYibK/BK12
+ uKQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342499; x=1714947299;
+ d=1e100.net; s=20230601; t=1714342504; x=1714947304;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rnpe0rzeTKHAYN20E0T7xpdwaTDLO7bZVPKy5KYEFKE=;
- b=nGd+WxacJNaMKSv5A7/Sz8p/RuIB6wwHtAFT6PnUSt1ziw+seetXO97Ni91EAtGWvR
- d4wRVb+Tbut5fIczyYwRmO5VHjFVJj2iurUJIh/p5JEWd+gEMYw9CisFA27i6G+DUzuD
- oc+ImKC10rKjq9Onee/ySGn37jXJW1MaLtK1fnB7NIQK2WZh/BxqaLCTpjbGAtmBrS2B
- GeNt6VB1mVrZLwfW5ztZTcXknX5+591PUPyazfSscqMsOM0Sk+4Cnp77ZpCnFvFLWdiA
- I9X/e81kLNr4GxmC+p+0QsShrfKuRZJhxuDyC2r2pjiUqMqK4n1HBET4Hey2+LtjlYTF
- tXLQ==
-X-Gm-Message-State: AOJu0Yw+Gx/GXNP3fPKu6JqJ/MBsUPeFBvUzo+Kb9xBA8N7GoUItMadw
- JMnGZLrtYWrzMp9r3OwZxNYKf7ldlrLBMulxOBIbpnfhKThBx+J6gJG4NpvLbiCZFa8mQpXY04v
- X
-X-Google-Smtp-Source: AGHT+IEYzTto5Un6kFkn8KmG6JhzWo2l3h9rppKq2a/5h7DIEKAvdfa2CoMfP3SheC5K1WkyNFRGkQ==
-X-Received: by 2002:a50:c056:0:b0:572:7ea0:66ca with SMTP id
- u22-20020a50c056000000b005727ea066camr1119043edd.36.1714342498614; 
- Sun, 28 Apr 2024 15:14:58 -0700 (PDT)
+ bh=LCSb64QUO6bStXSl37yEjpM4xadVVio6bpX5EBZUn28=;
+ b=CWPCB3J6X7l2UAP6OAyPdh5pzy0pzCJQMbh1uw/KhyHYzO2fybe6m1HyELZKVKnBym
+ PwgDkVDdbRm+t7J7YiAgll+e6WK2WvV2mhw0Otj3IMDF0wpikDokRDBWJS7uPwHlsGre
+ IBagFp6ZPuFEeeTya2vkc7sH/l2rE9+/l0w432lctJZtbp0aOAkKmC3Uu38/b2Q6mscX
+ Q3MvoXmoSE5TsJ3fYtDDX3igyBoLjGuGfQWV/wWPglqZ8tBuY0F8qoyQAMjLH9pwm7re
+ kIRWd0qK4sHtoA1uiR2QzlfhOkvHvLI3C18eTX1WHDuL8p6ssmSFwTegRZXtLJBZYrPo
+ tdqA==
+X-Gm-Message-State: AOJu0YzFQ/Oy6f5GlfFse+vI/oTuveCQ1T5tosYxsph+gtHILravfIm3
+ 2rRgFXxjIHl9abvCPRIP70n8Uglbjbz8wmMuTz6WVRC3mGQ5ExrAqY3BFMX3jOsngo0JYEZSkYB
+ p
+X-Google-Smtp-Source: AGHT+IH3GiS2sMm7GNUp5H/lEciphSyP19Q2r+sYcddT6HRtKIoB13yLydaTIDLDUfPK5UQtN2LV7A==
+X-Received: by 2002:a19:7508:0:b0:51b:ac8d:3ba3 with SMTP id
+ y8-20020a197508000000b0051bac8d3ba3mr4962843lfe.19.1714342504019; 
+ Sun, 28 Apr 2024 15:15:04 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- c7-20020a0564021f8700b0057000ecadb0sm12458847edc.8.2024.04.28.15.14.57
+ z12-20020a170906270c00b00a55895c7f50sm11648411ejc.151.2024.04.28.15.15.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:14:58 -0700 (PDT)
+ Sun, 28 Apr 2024 15:15:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/24] exec/user: Move 'thunk.h' from 'exec/user' to 'user'
-Date: Mon, 29 Apr 2024 00:14:27 +0200
-Message-ID: <20240428221450.26460-2-philmd@linaro.org>
+Subject: [PATCH 02/24] coverity: Update user emulation regexp
+Date: Mon, 29 Apr 2024 00:14:28 +0200
+Message-ID: <20240428221450.26460-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,78 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep all user emulation headers under the same user/ directory.
+All user emulation headers are now under include/user/.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- bsd-user/qemu.h                 | 2 +-
- include/{exec => }/user/thunk.h | 8 ++++++--
- linux-user/user-internals.h     | 2 +-
- linux-user/thunk.c              | 2 +-
- 4 files changed, 9 insertions(+), 5 deletions(-)
- rename include/{exec => }/user/thunk.h (97%)
+ scripts/coverity-scan/COMPONENTS.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 63ee07d534..e562adde65 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -26,7 +26,7 @@
+diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
+index 91be8d1c36..1537e49cd5 100644
+--- a/scripts/coverity-scan/COMPONENTS.md
++++ b/scripts/coverity-scan/COMPONENTS.md
+@@ -121,7 +121,7 @@ usb
+   ~ (/qemu)?(/hw/usb/.*|/include/hw/usb/.*)
  
- extern char **environ;
+ user
+-  ~ (/qemu)?(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/exec/user/.*)
++  ~ (/qemu)?(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/user/.*)
  
--#include "exec/user/thunk.h"
-+#include "user/thunk.h"
- #include "target_arch.h"
- #include "syscall_defs.h"
- #include "target_syscall.h"
-diff --git a/include/exec/user/thunk.h b/include/user/thunk.h
-similarity index 97%
-rename from include/exec/user/thunk.h
-rename to include/user/thunk.h
-index 2ebfecf58e..b97def8d53 100644
---- a/include/exec/user/thunk.h
-+++ b/include/user/thunk.h
-@@ -17,8 +17,12 @@
-  * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-  */
- 
--#ifndef THUNK_H
--#define THUNK_H
-+#ifndef USER_THUNK_H
-+#define USER_THUNK_H
-+
-+#ifndef CONFIG_USER_ONLY
-+#error Cannot include this header from system emulation
-+#endif
- 
- #include "cpu.h"
- #include "exec/user/abitypes.h"
-diff --git a/linux-user/user-internals.h b/linux-user/user-internals.h
-index ce11d9e21c..5c7f173ceb 100644
---- a/linux-user/user-internals.h
-+++ b/linux-user/user-internals.h
-@@ -18,7 +18,7 @@
- #ifndef LINUX_USER_USER_INTERNALS_H
- #define LINUX_USER_USER_INTERNALS_H
- 
--#include "exec/user/thunk.h"
-+#include "user/thunk.h"
- #include "exec/exec-all.h"
- #include "exec/tb-flush.h"
- #include "qemu/log.h"
-diff --git a/linux-user/thunk.c b/linux-user/thunk.c
-index 071aad4b5f..3cd19e79c6 100644
---- a/linux-user/thunk.c
-+++ b/linux-user/thunk.c
-@@ -20,7 +20,7 @@
- #include "qemu/log.h"
- 
- #include "qemu.h"
--#include "exec/user/thunk.h"
-+#include "user/thunk.h"
- 
- //#define DEBUG
- 
+ util
+   ~ (/qemu)?(/util/.*|/include/qemu/.*)
 -- 
 2.41.0
 
