@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EB18B4A39
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 904868B4A4B
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0yXS-0002PT-CN; Sun, 28 Apr 2024 03:01:30 -0400
+	id 1s0yXU-0002Py-Ri; Sun, 28 Apr 2024 03:01:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yXO-0002PF-DV
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:27 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1s0yXR-0002Pn-O3
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:30 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yXJ-0005Py-Fk
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:23 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6eddff25e4eso3014749b3a.3
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:01:21 -0700 (PDT)
+ id 1s0yXO-0005QD-QL
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:28 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6ecec796323so3459663b3a.3
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:01:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287680; x=1714892480;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287684; x=1714892484;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GBdjBXNThvQx0/pnNoSh1VAmZe6PeAFaRuMnO+Fqs0c=;
- b=wf4dn/lWkmDh2w7bKS+2Bt9Ei5MUz981f0Frz/e/oVjASclnT/zd00oyhJcBlDaYQf
- xq3zQ9lffoK94dkLggJ/aGnrNkZGlMtObVjC3aRrHjdsY89WlV6trk7b19Avh/LPk3cg
- 3EleJr4xT8f+Isjz8z/Yhta8sZxPIZE8xDN7uKNWgXKWNNvLUBP+36gBu/aRfZzhnDsU
- 6rqFUZT6TKP0nY7Ceng2Yq55muQeh6z2j95OoW3LEVjwVbP9NVVkcwZSfJ4c6XaTmJyN
- I4G1hYdEnt7MTneqV1TDHUBqKbH6Mh5TpPGEoJFmktgnGxm4Uk85pPuTBsmY/Qlb+Nr+
- QzYQ==
+ :reply-to; bh=v3er1ckfxS8VJoewK2JALUlU7LYlW6SDdjuripGnWgk=;
+ b=QECzFaI9pvLNDq2kMMMVc2Qfze5mr7QJQIRrjelmKlaM5y7ZfhfNuhAmsjbl447ujv
+ thVJUz18C+J2Ooue3gmC/5nGTLzHHdOj4et9CpOxdsDuD+lZAnzn5M68lW24DdtkH5tV
+ 0i5q9l2F/oS0kjLjjJspUjpq28nYvCyeLo4Q+Q4HnHHefOxo2ev19l7JguUcM6W864ta
+ +yaY+CisPkQ1Tgn640XbVehkguEjeHe/uK4YH5odziYRPwlyVlYYx8dbkCU1bqNuxKLq
+ 0QnuGLq4BYv/DzLreI1fegBtPL43ffIrH4zsbu/GS5YzVhsfl4OHtdupILEsHe6Md6aS
+ xrVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714287680; x=1714892480;
+ d=1e100.net; s=20230601; t=1714287684; x=1714892484;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GBdjBXNThvQx0/pnNoSh1VAmZe6PeAFaRuMnO+Fqs0c=;
- b=lCGLM+L+eI2XGZotw1+ZztPHwaSpq0qoOgrOwb7f5yJ8M8+ho7JVvso8gpj4wV9ELa
- tvCGufHhblQmomIAxg4T3xGUB+8cs/gZgBzUjhuscThjamVLHYK0f40k3j3KP8xL8wkF
- gUU25wLsxjPAHq7nIlGN54554N76Vdt3nfSQqnH0Z+hjL+VVhrfpZxwK2/ZW30INMPb/
- 66c/MpPc+VCmQWuXasmuQZlNrRxXAAC/3EAc2VeBBY+zcpOhMfg9vsZl8B+p4wkioeDG
- be4ZPGoBWbsS+chknVR79fo6Asun6uVDd+U0rTN3nJ86dBP5EwY1NRvUmYVY4EF5dQpn
- gX9Q==
-X-Gm-Message-State: AOJu0YxV6sqBguQYhi9dqgLUdObjhhEaJqxW7PjCExm1S7lElamGIxX/
- nbI/dMXOt+Jnow3bPbW51ZowPPs9iITKxWu8TwZbSWAv/tuPdCofCA+jpzESvsM=
-X-Google-Smtp-Source: AGHT+IFiid1eJQqTTTXThMRVSQOxrsZQLwe3jZe7cBY7AsI3sklOiBas3T1sm5zGjMm/OBe3r4jOPQ==
-X-Received: by 2002:a05:6a00:2e02:b0:6f0:f54a:4e7a with SMTP id
- fc2-20020a056a002e0200b006f0f54a4e7amr8111542pfb.2.1714287679957; 
- Sun, 28 Apr 2024 00:01:19 -0700 (PDT)
+ bh=v3er1ckfxS8VJoewK2JALUlU7LYlW6SDdjuripGnWgk=;
+ b=cKZ0G0YbgoebNEvjAkffVmkTlkIB3kTON/2XIHqVh/BG/2PyR/Bzd433p43NFZobIi
+ M0zroXp6hx+J8N3nMQhdFtSOaF1m95x0vlBz7M0pEVenCrswtTIxja3irf8kxNCnC2ew
+ q1Y68kVAdlb9V07glOABXmUweC6imyH09eBhciiry7yd84WTnakuIwyJb2yGHqzfge7d
+ 6SS3cmUfP5Wb29IIr2e2VPoOj59PEcfZQComZ+5xCxUJBWJKwA+hZFxxWaBijbnJQvwH
+ 8tSVuQ3AL8W9bc4ShNWv4pZCV2BWXC+t0rYE6I/+7YUHlGyCB8Vq8bI/Bux9h/XXSPUq
+ UKdw==
+X-Gm-Message-State: AOJu0YwDiOIcrZ9Sedks4oO079j4C+3grPZQcum7VWobR3VNSbXO42gq
+ bHrcvKPtdFJ5KwiejT7JrUr+/cYVz/OmrNfN2si6cxVPWGbN3mi/+vqGP8A3vMs=
+X-Google-Smtp-Source: AGHT+IH23zJvVziOL2/KsibP+yls3DC3PsDPV1iogytnu1XdVUSiiLRQIP7FXxfBL6lYKqwxqeVNVw==
+X-Received: by 2002:a05:6a20:ce43:b0:1ad:a8d:dc59 with SMTP id
+ id3-20020a056a20ce4300b001ad0a8ddc59mr7615920pzb.26.1714287684431; 
+ Sun, 28 Apr 2024 00:01:24 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- fh31-20020a056a00391f00b006f3ef025ed2sm1977513pfb.94.2024.04.28.00.01.17
+ r8-20020a63fc48000000b005dbd0facb4dsm16781015pgk.61.2024.04.28.00.01.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 00:01:19 -0700 (PDT)
+ Sun, 28 Apr 2024 00:01:24 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 28 Apr 2024 16:00:50 +0900
-Subject: [PATCH v10 07/18] virtio-net: Do not propagate ebpf-rss-fds errors
+Date: Sun, 28 Apr 2024 16:00:51 +0900
+Subject: [PATCH v10 08/18] virtio-net: Add only one queue pair when realizing
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240428-rss-v10-7-73cbaa91aeb6@daynix.com>
+Message-Id: <20240428-rss-v10-8-73cbaa91aeb6@daynix.com>
 References: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 In-Reply-To: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
@@ -75,8 +75,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Yuri Benditovich <yuri.benditovich@daynix.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::430;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,95 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propagating ebpf-rss-fds errors has several problems.
+Multiqueue usage is not negotiated yet when realizing. If more than
+one queue is added and the guest never requests to enable multiqueue,
+the extra queues will not be deleted when unrealizing and leak.
 
-First, it makes device realization fail and disables the fallback to the
-conventional eBPF loading.
-
-Second, it leaks memory by making device realization fail without
-freeing memory already allocated.
-
-Third, the convention is to set an error when a function returns false,
-but virtio_net_load_ebpf_fds() and virtio_net_load_ebpf() returns false
-without setting an error, which is confusing.
-
-Remove the propagation to fix these problems.
-
-Fixes: 0524ea0510a3 ("ebpf: Added eBPF initialization by fds.")
+Fixes: f9d6dbf0bf6e ("virtio-net: remove virtio queues if the guest doesn't support multiqueue")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/net/virtio-net.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ hw/net/virtio-net.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index f6112c0ac97d..8ede38aadbbe 100644
+index 8ede38aadbbe..e33bdbfd84a5 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -1329,24 +1329,22 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n)
-     virtio_net_attach_ebpf_to_backend(n->nic, -1);
- }
+@@ -3759,9 +3759,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+     n->net_conf.tx_queue_size = MIN(virtio_net_max_tx_queue_size(n),
+                                     n->net_conf.tx_queue_size);
  
--static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
-+static bool virtio_net_load_ebpf_fds(VirtIONet *n)
- {
-     int fds[EBPF_RSS_MAX_FDS] = { [0 ... EBPF_RSS_MAX_FDS - 1] = -1};
-     int ret = true;
-     int i = 0;
+-    for (i = 0; i < n->max_queue_pairs; i++) {
+-        virtio_net_add_queue(n, i);
+-    }
++    virtio_net_add_queue(n, 0);
  
--    ERRP_GUARD();
--
-     if (n->nr_ebpf_rss_fds != EBPF_RSS_MAX_FDS) {
--        error_setg(errp,
--                  "Expected %d file descriptors but got %d",
--                  EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
-+        warn_report("Expected %d file descriptors but got %d",
-+                    EBPF_RSS_MAX_FDS, n->nr_ebpf_rss_fds);
-        return false;
-    }
- 
-     for (i = 0; i < n->nr_ebpf_rss_fds; i++) {
--        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i], errp);
--        if (*errp) {
-+        fds[i] = monitor_fd_param(monitor_cur(), n->ebpf_rss_fds[i],
-+                                  &error_warn);
-+        if (fds[i] < 0) {
-             ret = false;
-             goto exit;
-         }
-@@ -1355,7 +1353,7 @@ static bool virtio_net_load_ebpf_fds(VirtIONet *n, Error **errp)
-     ret = ebpf_rss_load_fds(&n->ebpf_rss, fds[0], fds[1], fds[2], fds[3]);
- 
- exit:
--    if (!ret || *errp) {
-+    if (!ret) {
-         for (i = 0; i < n->nr_ebpf_rss_fds && fds[i] != -1; i++) {
-             close(fds[i]);
-         }
-@@ -1364,13 +1362,12 @@ exit:
-     return ret;
- }
- 
--static bool virtio_net_load_ebpf(VirtIONet *n, Error **errp)
-+static bool virtio_net_load_ebpf(VirtIONet *n)
- {
-     bool ret = false;
- 
-     if (virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
--        if (!(n->ebpf_rss_fds
--                && virtio_net_load_ebpf_fds(n, errp))) {
-+        if (!(n->ebpf_rss_fds && virtio_net_load_ebpf_fds(n))) {
-             ret = ebpf_rss_load(&n->ebpf_rss);
-         }
-     }
-@@ -3825,7 +3822,7 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-     net_rx_pkt_init(&n->rx_pkt);
- 
-     if (virtio_has_feature(n->host_features, VIRTIO_NET_F_RSS)) {
--        virtio_net_load_ebpf(n, errp);
-+        virtio_net_load_ebpf(n);
-     }
- }
- 
+     n->ctrl_vq = virtio_add_queue(vdev, 64, virtio_net_handle_ctrl);
+     qemu_macaddr_default_if_unset(&n->nic_conf.macaddr);
 
 -- 
 2.44.0
