@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF4E8B4AD7
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 11:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39C08B4B77
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 13:13:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s10Uc-0007jP-Df; Sun, 28 Apr 2024 05:06:42 -0400
+	id 1s12Rb-0004VC-Uk; Sun, 28 Apr 2024 07:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s10UW-0007i2-Sy
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:06:36 -0400
+ id 1s12RY-0004Un-Ci
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:40 -0400
 Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s10UU-0003xt-7V
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:06:36 -0400
+ id 1s12RW-0000Ym-Ca
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:40 -0400
 Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6ed01c63657so3438395b3a.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 02:06:33 -0700 (PDT)
+ d2e1a72fcca58-6f2f6142d64so3386877b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 04:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714295192; x=1714899992;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714302696; x=1714907496;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=agEvzBa4RHbrJsI2JBzinS8CmNut8NaPKnAYNO+Q2DM=;
- b=jpgz4nN65R37bbTD8IrdFiuetISPfEEWCdveRoUV+FkDqDgcykw6ZRql68NdGTrOWn
- DpCPGpEGSSVMry+51g86Jaa9dPyj585l0bNl+2U6x5S5bVn3Q1AlXBc2Anapco2VT+ZD
- YaJCFtEmQduQf3lYT1ESAYMJwhTkvQJn9soGCc6Oe9VulZAKJRK44eRPF11CV+6FeAMd
- OVmtQqUew16kaRN8ExYMhfCi2GyqroocRJg7rbxqV8jLULP5NrzXqfysSlGvR6B/ZZ4k
- FS5ze7MLKLmlo3TL6LaFvcArrvnOYyYhcYF6FlWzsL2eG0XDJwrytdRv3PGAsvaYK7hD
- Wg5g==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/4YH1P7orc/Te98j0BdkDaV2/xgzpkcLw1sCbumgnEw=;
+ b=1uI4YQmIv/sdW6ZtMuCb/Qjv105gZod2yS281ZdcDlHX2nn4tHHcCnjhN4WcUS51ZR
+ R3YGEY/uori0IRbaX5+TwQRAjxcY/xYy9Ea/QynYHLbW8Hkl6mdXqZRzSYQm3BFHFIB1
+ Wll7DT5PJR6CVLuWzBJLSdLiWIBA7YwVgQjaB++TIf6zG203ly42IpsO0gfC6Rrd9vhu
+ kI7Jwk9MGPnVlR6KBGCOJqJq/+TvFIOStq9JmMDAfnBnpyEPw6lpTva0B2MdyfYX/6yd
+ nbFoA6McVzhBM4AS4qzB4isSqUpqeBKRDwwGmU6LtZ1qWk64Nqx0neStZH0QTt7UzXKt
+ 6wMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714295192; x=1714899992;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=agEvzBa4RHbrJsI2JBzinS8CmNut8NaPKnAYNO+Q2DM=;
- b=LB0UaVVnz/uTi/VPB8vC6kClHrlEMnKz4gzEPOsVx7djudn3TfWbwPurh19HGHWd6j
- lSRx+/eEcADJj0IJEcKJb173bDVmCkA13f1wlmxiC8zouXeCRpQBLA3UrawdKbitK31K
- 2n05tANE1mxqqoQ2pjPPz2VpPEjZv+qIeyaFT6MpKYhyoHd6rNEnUY7fOL6XYRMLEDHe
- v+rA2TSy60wUhjz7iXPyVr8Nu2/X7hxMjPmmMy7tHzLyoUkF1CFTX4/CGIl4QmV+rdJq
- BVl+V/3vEIdXgIGNwiV9dCFsqrhkITY8I3BjcCtlJiAVSaiUOZJRgTxTUgwGVm2mMB83
- tX8A==
-X-Gm-Message-State: AOJu0Yz5+SS9g5TAAomOxDxVO3OnqwiefOnHnVU2oyz6rkVnCKqpiD17
- mrSWp7ArPaj1kTr0TIaQlwEI+8gMyGK9BDXgyBX4sDS/9zKHBO+qchfXQb6au9c=
-X-Google-Smtp-Source: AGHT+IGbTbWS711n0c6sAoeBV+trTnvp8SbIWmZ63HmTOa4PtBTSzTi8mYezMIVy2+mVJArKa8YrqA==
-X-Received: by 2002:a05:6a00:39a1:b0:6ec:db05:36cd with SMTP id
- fi33-20020a056a0039a100b006ecdb0536cdmr5316627pfb.9.1714295192494; 
- Sun, 28 Apr 2024 02:06:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714302696; x=1714907496;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/4YH1P7orc/Te98j0BdkDaV2/xgzpkcLw1sCbumgnEw=;
+ b=YJAgdNgxakyEXnK3bzpaQPZpMfqAEava8DEjy6P7q3AUJmNmFZ1BlLt0ywkMB0KhlP
+ xsnrGt88TLfj0XhBEt5n/a0AkefCJcB/XWHQUoKdoUsVi1ZhDPsact7XwJUU7Vqy+sU2
+ 4pwb+2bAY/dYbtS/cya6gOMdYWKkyfL+SPEHl2h2oRqT/0wF3W8BgSGXlNSeEXLXkkEe
+ Oep20TH2zhSxNizstyg7cS3Hk8NhtT7BUnWOPWYcTjStYI0QYnbPrjt3ImkWQN5Yyy+a
+ kdcIGqn7o/U4RpOP/b8sTysIhgGuIPUyCYl08QaUduaegW+0sCKIaw0+JeXpOptrIUAE
+ aRDg==
+X-Gm-Message-State: AOJu0YzodArkTv1fU8s/kfeh4Itrr98dtyoDBpigbHWHoNQsMsw9l59d
+ cxWhlA8O1M/0hnZjQ7514T96v87CRsfWaiX57rc1M4crw3odM7isF4WnGTlMJ0A=
+X-Google-Smtp-Source: AGHT+IHk9vxvmhEmjLG9oQZMMmG4zoEd0/k7bnvlpQpbrYEUvWvMKXezdHWS1KL8wMweCfCPD3OXkA==
+X-Received: by 2002:a05:6a20:d428:b0:1a9:ff21:8862 with SMTP id
+ il40-20020a056a20d42800b001a9ff218862mr6523177pzb.60.1714302695975; 
+ Sun, 28 Apr 2024 04:11:35 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- v28-20020a63481c000000b005f7536fbebfsm16765604pga.11.2024.04.28.02.06.29
+ f33-20020a056a000b2100b006ecee611c05sm17542280pfu.182.2024.04.28.04.11.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 02:06:32 -0700 (PDT)
+ Sun, 28 Apr 2024 04:11:35 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 28 Apr 2024 18:05:47 +0900
-Subject: [PATCH RFC v4 7/7] virtio-net: Implement SR-IOV VF
+Subject: [PATCH 0/2] util/iov: Do not assert offset is in iov
+Date: Sun, 28 Apr 2024 20:11:21 +0900
+Message-Id: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240428-sriov-v4-7-ac8ac6212982@daynix.com>
-References: <20240428-sriov-v4-0-ac8ac6212982@daynix.com>
-In-Reply-To: <20240428-sriov-v4-0-ac8ac6212982@daynix.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Alex Williamson <alex.williamson@redhat.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Jason Wang <jasowang@redhat.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Yui Washizu <yui.washidu@gmail.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-a718f
+X-B4-Tracking: v=1; b=H4sIANkuLmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEyML3cz8Mt1EY0PzJAMjMwPDlGQloMqCotS0zAqwKdGxtbUAg265YVU
+ AAAA=
+To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
+ Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-01a33
 Received-SPF: none client-ip=2607:f8b0:4864:20::429;
  envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
@@ -101,28 +94,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A virtio-net device can be added as a SR-IOV VF to another virtio-pci
-device that will be the PF.
+iov_from_buf(), iov_to_buf(), iov_memset(), and iov_copy() asserts
+that the given offset fits in the iov while tolerating the specified
+number of bytes to operate with to be greater than the size of iov.
+This is inconsistent so remove the assertions.
+
+Asserting the offset fits in the iov makes sense if it is expected that
+there are other operations that process the content before the offset
+and the content is processed in order. Under this expectation, the
+offset should point to the end of bytes that are previously processed
+and fit in the iov. However, this expectation depends on the details of
+the caller, and did not hold true at least one case and required code to
+check iov_size(), which is added with commit 83ddb3dbba2e
+("hw/net/net_tx_pkt: Fix overrun in update_sctp_checksum()").
+
+Adding such a check is inefficient and error-prone. These functions
+already tolerate the specified number of bytes to operate with to be
+greater than the size of iov to avoid such checks so remove the
+assertions to tolerate invalid offset as well. They return the number of
+bytes they operated with so their callers can still check the returned
+value to ensure there are sufficient space at the given offset.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/virtio/virtio-net-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+Akihiko Odaki (2):
+      util/iov: Do not assert offset is in iov
+      Revert "hw/net/net_tx_pkt: Fix overrun in update_sctp_checksum()"
 
-diff --git a/hw/virtio/virtio-net-pci.c b/hw/virtio/virtio-net-pci.c
-index e03543a70a75..dba4987d6e04 100644
---- a/hw/virtio/virtio-net-pci.c
-+++ b/hw/virtio/virtio-net-pci.c
-@@ -75,6 +75,7 @@ static void virtio_net_pci_class_init(ObjectClass *klass, void *data)
-     k->device_id = PCI_DEVICE_ID_VIRTIO_NET;
-     k->revision = VIRTIO_PCI_ABI_VERSION;
-     k->class_id = PCI_CLASS_NETWORK_ETHERNET;
-+    k->sriov_vf_user_creatable = true;
-     set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-     device_class_set_props(dc, virtio_net_properties);
-     vpciklass->realize = virtio_net_pci_realize;
+ include/qemu/iov.h  | 5 +++--
+ hw/net/net_tx_pkt.c | 4 ----
+ util/iov.c          | 5 -----
+ 3 files changed, 3 insertions(+), 11 deletions(-)
+---
+base-commit: fd87be1dada5672f877e03c2ca8504458292c479
+change-id: 20240428-iov-a317b02601dc
 
+Best regards,
 -- 
-2.44.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
