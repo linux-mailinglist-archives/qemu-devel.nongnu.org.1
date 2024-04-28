@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31518B4B75
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 13:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA468B4BB2
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 14:15:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s12Rl-0004Vs-4E; Sun, 28 Apr 2024 07:11:53 -0400
+	id 1s13Q7-00023G-2g; Sun, 28 Apr 2024 08:14:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s12Re-0004VW-Bt
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:46 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1s13Q2-0001ze-To
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 08:14:10 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s12Rb-0000ZI-Nb
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:44 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-60585faa69fso2326967a12.1
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 04:11:43 -0700 (PDT)
+ id 1s13Pz-0004Qh-CI
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 08:14:10 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6ed3cafd766so3294586b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 05:14:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714302702; x=1714907502;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714306444; x=1714911244;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oqrT6aUq3cF0ZFgXAGrwdFxl94n9uIRGqQ5UKYpt5V0=;
- b=q3/fFX6FJNYbNs+DX54WLmCkDNMtVJiyzYBd5o2pJrd33Pl8vXBJ5xOW51RUILHWBG
- jQ9GAOnNwWjDOG7PXJu7FH16U7ie4ir2ScDhmh+w57KKLF6rHdyQgci0q/oGNr+8gU7e
- Oi8WSOPs7ZovV7htTqCfrNeFSKNj3yAAbOVON5UKYrCWdwAdmZ5iQIMG3/UfZ5wKsf4P
- MvfO7FtCO7N0gI13UvIjOhpolbXjT+kLeegpMbI4R3W4rRq5GU2pCJU7vwjdKbpYqq+s
- NfZgj03NV20Oyt0K1XRbKR7y0vex/685jzqTe78o5HJQGciAN72vDYDFd+8svu7znEAH
- dDdw==
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Pxi1nhySvDdWFFLHrh42RTy7sNIg3/IiFA7vC1VBw+M=;
+ b=BTs40Wrf5Zq5VOORntHcw1Yc320FH+E/Sd0cdalWjF1Vgp3E2qv0WX6n8CqQz3tf0i
+ f5IXHT6UWJWuG4NlvCJ30pWYLEoTyrTxZHOu72lmeThFJPyXt3TsAgHzr/t0Ra3ejQax
+ eWV6Y9n9LUSDSh24DbPO3Pe5mhiNG10WmImEAUo5yhg22mdl7VRkFFTy2Nyen0EBBGpc
+ ET8WflMnWgmTxasY1s/QlwlOODrhB8cSY0n0ZyER9JAqJoEXG0l3R/7e0I3cW3y1G/oe
+ cBvZxjhMr+fKqnS/QE217+WNXhQldZoMN3S0kdxgVcnrbb8SQlUn52aYOI2+HDj92JHw
+ 3uVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714302702; x=1714907502;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=oqrT6aUq3cF0ZFgXAGrwdFxl94n9uIRGqQ5UKYpt5V0=;
- b=sP3VeyGr2obVhbNmhu6OxGsDVVorJfMzbK3evby2qfgH/V64rQotWrZUrSAILxBiTm
- FVjo3AUwfUyUR1NuZGkcI7BeNdUxwTneIuTbuOAI1rqPDiv9IHkWhqFYRMSu+5PWGZ8y
- Z8OSRcuhJDA1sL3QLA0Ve2weJPa3NQvgvLgW1y4zgGq6F/EbyKOW/g5XaX57ZIqMct6D
- qySkZgTpPen33zJ/+I3Hovoh/Jr2TkUR1CFeqJY4x/n0uPZalyPdXBMQSjdHSMcKRKbn
- P8hqviBwM/7RV7UUZRkgjSX7xRElZ1HsXCAdt1P328doBR+3l0yR7ghFgAptEAbBHIUH
- xm4Q==
-X-Gm-Message-State: AOJu0YxK0AbT2k6RDYFnKnnpcWJFPJU86JZKQ5wpRp3DbMyMkOLkyJaT
- 2VTZelKcMIVxNObEHcvB1ZF14df/5kBpQ+M6CxDRODVzLJmMOsBamS3zuf4eBjY=
-X-Google-Smtp-Source: AGHT+IFoqK4NEwJCXyVclBtGbs6d9Z35y71C/0kA6E4Jfjr5kvPsjcfrImecmSBYME49bEwhskVI9A==
-X-Received: by 2002:a17:90b:246:b0:2aa:cadb:d290 with SMTP id
- fz6-20020a17090b024600b002aacadbd290mr10457226pjb.13.1714302702375; 
- Sun, 28 Apr 2024 04:11:42 -0700 (PDT)
-Received: from localhost ([157.82.202.162])
- by smtp.gmail.com with UTF8SMTPSA id
- so13-20020a17090b1f8d00b002aff85b97dfsm5274672pjb.27.2024.04.28.04.11.40
+ d=1e100.net; s=20230601; t=1714306444; x=1714911244;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Pxi1nhySvDdWFFLHrh42RTy7sNIg3/IiFA7vC1VBw+M=;
+ b=XvyMJlwN96lPuSepW4stC/A79qm/HP6k0YDauXiY94GdzZXOTV4+ZH4QXSXwJxJSiY
+ GLocb8rhuLTvBn0Q/ergv//wO/kbLAmzaNfjyfgNLlPOW2R+dd2Q8RyJtjt503hRnQtn
+ n8B/N7+Htbolm+yDuqzmHitZTw8TaeFg5R8XLyaRsaOO+CKOdAjXkjV4DxCGL2+yF3i8
+ /uP4ffkSbNNUBwHFHCRjsdO9mCGnHdo2z5fDV9+ex+Js3Dl4JO2rNs1kmiie4Yx+g3rZ
+ cA+xKU4ECb4hxAxrKmRvGKNiY/dSiX4zm2S/u7OQe1YkvrJzQdsiaOib5lNz28kXEYBE
+ fCsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXxdEatYf8SucaA1I00AWMKVT+Dq+niLyWhpq764sh/UU6J2YJ3kQTeNbubYBPc+X0e7/4U3d8VBYnc+3cR2FfuWU9D2CE=
+X-Gm-Message-State: AOJu0YzaOfu+YG18a+5oZ+fr70WhCINnmIOhCevRibcw9Cx6q7oK4S0M
+ BxPWmLc/tQGQZErDos5H5AHFlKaaxq4+hQRav0CmBoaaWpuaM8Nnbg8beLmpb94=
+X-Google-Smtp-Source: AGHT+IEJy26udM8VoGc/ZSphZVOWGxbX5RN7gcUvJxIpxJnxh1AepDIYAOfJHnDiSjBc7t37hXmPcQ==
+X-Received: by 2002:a05:6a20:5655:b0:1a9:8152:511c with SMTP id
+ is21-20020a056a20565500b001a98152511cmr6925523pzc.62.1714306444366; 
+ Sun, 28 Apr 2024 05:14:04 -0700 (PDT)
+Received: from [157.82.202.162] ([157.82.202.162])
+ by smtp.gmail.com with ESMTPSA id
+ n8-20020a170902e54800b001e2bb03893dsm18377253plf.198.2024.04.28.05.14.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 04:11:42 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 28 Apr 2024 20:11:23 +0900
-Subject: [PATCH 2/2] Revert "hw/net/net_tx_pkt: Fix overrun in
- update_sctp_checksum()"
+ Sun, 28 Apr 2024 05:14:04 -0700 (PDT)
+Message-ID: <9f9feaca-3028-403f-b9e2-36f64e8638f2@daynix.com>
+Date: Sun, 28 Apr 2024 21:14:01 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240428-iov-v1-2-7b2dd601d80b@daynix.com>
-References: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
-In-Reply-To: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
-To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
- Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-01a33
-Received-SPF: none client-ip=2607:f8b0:4864:20::535;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] Fix safeAreaInsets not being available on OS X 10.13
+To: Tobias Markus <tobbi.bugs@gmail.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, philmd@linaro.org, kraxel@redhat.com,
+ marcandre.lureau@redhat.com
+References: <fa98f79e-f682-4efc-9cfd-37a108b853b5@googlemail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <fa98f79e-f682-4efc-9cfd-37a108b853b5@googlemail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.0
+X-Spam_bar: /
+X-Spam_report: (-0.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, PDS_OTHER_BAD_TLD=1.874, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,33 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 83ddb3dbba2ee0f1767442ae6ee665058aeb1093.
+On 2024/04/28 20:57, Tobias Markus wrote:
+> Hello,
+> 
+> to prefix this: I previously filed 
+> https://gitlab.com/qemu-project/qemu/-/issues/2314 for this compilation 
+> error and I'm quite aware that QEMU only supports the most recent two 
+> versions of Mac OS X by default. However, given the small change 
+> required for this to work, I hope you can make an exception and include 
+> the attached patch into QEMU.
+> 
+> It would really help me continue to run QEMU on my legacy MacOS X 10.13 
+> version.
 
-The added check is no longer necessary due to a change of
-iov_from_buf().
+Hi,
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- hw/net/net_tx_pkt.c | 4 ----
- 1 file changed, 4 deletions(-)
+I'm sorry to tell this but I'm not for making an exception.
 
-diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
-index b7b1de816dc5..2134a18c4c90 100644
---- a/hw/net/net_tx_pkt.c
-+++ b/hw/net/net_tx_pkt.c
-@@ -141,10 +141,6 @@ bool net_tx_pkt_update_sctp_checksum(struct NetTxPkt *pkt)
-     uint32_t csum = 0;
-     struct iovec *pl_start_frag = pkt->vec + NET_TX_PKT_PL_START_FRAG;
- 
--    if (iov_size(pl_start_frag, pkt->payload_frags) < 8 + sizeof(csum)) {
--        return false;
--    }
--
-     if (iov_from_buf(pl_start_frag, pkt->payload_frags, 8, &csum, sizeof(csum)) < sizeof(csum)) {
-         return false;
-     }
+While this change is indeed small, we already have many codes that are 
+only needed by unsupported macOS versions. They were not added to keep 
+QEMU work with unsupported macOS versions, but they were added when 
+those versions were still supported. Maintaining all of them is not a 
+trivial task so they are now eligible for removal.
 
--- 
-2.44.0
+Regards,
+Akihiko Odaki
 
+> 
+> Thanks in advance!
+> 
+> Kind regards,
+> Tobias Markus
+> 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2314
+> Signed-off-by: Tobias Markus <tobbi.bugs@googlemail.com>
+> ---
+>   ui/cocoa.m | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/ui/cocoa.m b/ui/cocoa.m
+> index 25e0db9dd0..96992736ef 100644
+> --- a/ui/cocoa.m
+> +++ b/ui/cocoa.m
+> @@ -539,9 +539,11 @@ - (NSSize)fixAspectRatio:(NSSize)max
+>   - (NSSize) screenSafeAreaSize
+>   {
+>       NSSize size = [[[self window] screen] frame].size;
+> +#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
+>       NSEdgeInsets insets = [[[self window] screen] safeAreaInsets];
+>       size.width -= insets.left + insets.right;
+>       size.height -= insets.top + insets.bottom;
+> +#endif
+>       return size;
+>   }
+> 
 
