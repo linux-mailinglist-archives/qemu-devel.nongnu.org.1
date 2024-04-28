@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C53C8B4E8F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B80158B4E86
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Co5-0006K3-CJ; Sun, 28 Apr 2024 18:15:37 -0400
+	id 1s1CoD-0006XM-J5; Sun, 28 Apr 2024 18:15:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Co3-0006HS-B8
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:35 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CoB-0006ND-6d
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:43 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Co1-0005bO-0r
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:35 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a58872c07d8so868551466b.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Co6-0005dI-Bp
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:42 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-571bddddbc2so4569653a12.1
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342531; x=1714947331; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342536; x=1714947336; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k0P/VtJjh42zf7hktk88GWMfGQHzmvaE6RmKFsHTdzk=;
- b=azwa6ccv7KJnDz85n7WCXjG1j1YOcrW3SUdFBuFU5cRzDxM28Gwd598JE03ii381G4
- dVpaH7aMDMBboR+ZwotgNCTyWd8RpyMXkgCcnQ34uNTEzLLlkLKvE32Ds/zU2Xjte/WP
- r3dl22KBHLFuLUbxxoVFMsVlaUxoSlRAPGx2DVzAwgj7qgG1K1Tj6NDiIXPUqVsN/7JX
- jD0OeZqPK/NxZSg7rq/NlscJuWA/E/wYQMPqRaV6zVzg+mE4VG/MNyI67LfConaj1SUX
- lxv+tbkJajlEM98mTbS5z5qEttyggYuTKx2xlahxpPqASGlJeYZq3MEI8JeulhX5ILfI
- s/dg==
+ bh=aM0sC9LJo3MsBrKnxAqhq0R7PzMkuVnjASQsrgigLYU=;
+ b=oGvccj9mJPJpAulNIuJ7a/8dKMkX+oiCbVypgMMTzEyI0kjK1mYSCfPHvbWXfG2D22
+ yvYtiOipzfUD3HKRL9mCXqVY9qGoaIHsP+HEtCYq39oEvQ9h8x7L2Nq3SsL9286LdrnA
+ 062Z23vqm9K572nj5NBTxX5Om+yHXsYDaODUOnm/u475XbtnSh3oTbiF1Bj731jZ22Ra
+ LaKXnFhpDjx0QMlkHwgcrf7TR6wmpA4w/KaLTjMMpBRdXnYrqELTqo07NuK7bCwwGWRI
+ 3/24LOdt0H1bUH8qVl560UxFYQCir+B4P6qC+gu2ubrRQXG/3Bv0lXRC4Zr+pCL0z2K1
+ fgBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342531; x=1714947331;
+ d=1e100.net; s=20230601; t=1714342536; x=1714947336;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k0P/VtJjh42zf7hktk88GWMfGQHzmvaE6RmKFsHTdzk=;
- b=FTg37rtvsSdxGJEuWffyuADwntHlxlA2rM1s/VnyesIwgsIoT8rhr85tsxXDdRH7SR
- 4UinuBVdPm4I6tnTE9mBYjiCCje0mzTFCpHCkyYxcHaa4zZibuSOSgJ+IkQFuryij0PH
- OJhRp+bz9s7SFAZyU6CcBmszEYyJb8scWBgsvQmT6he1VsRUCxM5ME3zMdJ9Dtmt+9jy
- 5bZnTBzF9chgRyK6urSFhpbdTshKka+4/+l1qAPXqqy8UwIOt1qa2MyTS6EA90GtKSRn
- JWM7xfoVRfP6d9xz8ViRnZ+hqCBF1K15nAUz7bPZKFvUWEAs4np3wNCZBMi5ALI4vN0r
- fnQA==
-X-Gm-Message-State: AOJu0Yxjwuvli3Ked//lfaXR87tIknaJKKlOJXW23j1QdoHvx2sb38AF
- 2RLfbroyWrz8dVqWO0595zLkky8PDZ+gErPW+duN/gQjCrfOOqyM+DUfG06n5hAO0e9HGFhqg5z
- M
-X-Google-Smtp-Source: AGHT+IH3D7ibXS4f72tP8OL5W0DjLjospzfedj6pdJgb9TFLCu+3SWTyFjRnL2zBL6W7dge8NGLz6w==
-X-Received: by 2002:a17:906:e17:b0:a58:921a:970d with SMTP id
- l23-20020a1709060e1700b00a58921a970dmr7426286eji.6.1714342530907; 
- Sun, 28 Apr 2024 15:15:30 -0700 (PDT)
+ bh=aM0sC9LJo3MsBrKnxAqhq0R7PzMkuVnjASQsrgigLYU=;
+ b=E5t31NO1puLC3L6Dti1exvdo9vBwESOrFarjgbhijQj1KCCsiSUfkfp43sQBbjCo2I
+ cEyYCgLt/h5AoMA3wgFlTLIVbYDLCdlt7oCcCDUAYempLaURJ5/ii99FSwE/gol+wxFe
+ fHNpuCTYzXPzXFofxLsH2EQGulPPndVkh2oGnhj2nFgqtuJlH9XoflRYMn+B58V5y8Um
+ n3HtfSZ+qhSgHlqeNVTumDvW0BCJCnKvdZCHs+VMwe65VqjL6nuxokGi8eHWXKVKTX5L
+ 9Z6p+4vOy0k6/kaCvnf+F+1s4MuCwf0InTr7+QjVP6/6AZujJAY9tIM7B03GESO6+x6F
+ WjuQ==
+X-Gm-Message-State: AOJu0Yy1n+RGAbfumtukBRrdu2MEyqaNzAheRwa2sSZ1zsir9wUXQslF
+ hpZu3b9EuRpVr3zQsR4y/7ylHdTzjJxRXlVBKvkYMtY9fgIQWuYIrSI68eRKOUlo6srDk5GPxMR
+ P
+X-Google-Smtp-Source: AGHT+IEnjdZA8A7fFFpZXneTpR7wX71kxX8KbPiYhWSBtdRDwAuvTMxFnV9CzCb3pj0COT0A6uTqCg==
+X-Received: by 2002:a17:906:3811:b0:a55:99f4:549f with SMTP id
+ v17-20020a170906381100b00a5599f4549fmr6071347ejc.48.1714342536203; 
+ Sun, 28 Apr 2024 15:15:36 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- g10-20020a1709067c4a00b00a4e5866448bsm13044579ejp.155.2024.04.28.15.15.29
+ kx18-20020a170907775200b00a57e2d39d56sm7731187ejc.223.2024.04.28.15.15.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:15:30 -0700 (PDT)
+ Sun, 28 Apr 2024 15:15:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 07/24] accel/tcg: Implement AccelOpsClass::exit_vcpu_thread()
- handler
-Date: Mon, 29 Apr 2024 00:14:33 +0200
-Message-ID: <20240428221450.26460-8-philmd@linaro.org>
+Subject: [PATCH 08/24] user: Forward declare TaskState type definition
+Date: Mon, 29 Apr 2024 00:14:34 +0200
+Message-ID: <20240428221450.26460-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,50 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The TCG-specific code from the system generic cpu_exit()
-is equivalent of tcg_cpu_exit(). Define the AccelOpsClass
-exit_vcpu_thread() handler to it, making cpu_exit() generic.
+Forward declare TaskState in "qemu/typedefs.h" so we can
+use it in generic headers like "hw/cpu/core.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/tcg-accel-ops.c | 2 ++
- system/cpus.c             | 3 ---
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ bsd-user/qemu.h         | 4 ++--
+ include/qemu/typedefs.h | 1 +
+ linux-user/qemu.h       | 4 ++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
-index 7ac5f0c974..56bbad9fcd 100644
---- a/accel/tcg/tcg-accel-ops.c
-+++ b/accel/tcg/tcg-accel-ops.c
-@@ -43,6 +43,7 @@
- #include "tcg-accel-ops-mttcg.h"
- #include "tcg-accel-ops-rr.h"
- #include "tcg-accel-ops-icount.h"
-+#include "internal-common.h"
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index e562adde65..be57374b41 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -76,7 +76,7 @@ struct emulated_sigtable {
+ /*
+  * NOTE: we force a big alignment so that the stack stored after is aligned too
+  */
+-typedef struct TaskState {
++struct TaskState {
+     pid_t ts_tid;     /* tid (or pid) of this task */
  
- /* common functionality among all TCG variants */
+     struct TaskState *next;
+@@ -114,7 +114,7 @@ typedef struct TaskState {
  
-@@ -218,6 +219,7 @@ static void tcg_accel_ops_init(AccelOpsClass *ops)
-         }
-     }
+     /* This thread's sigaltstack, if it has one */
+     struct target_sigaltstack sigaltstack_used;
+-} __attribute__((aligned(16))) TaskState;
++} __attribute__((aligned(16)));
  
-+    ops->exit_vcpu_thread = tcg_cpu_exit;
-     ops->cpu_reset_hold = tcg_cpu_reset_hold;
-     ops->supports_guest_debug = tcg_supports_guest_debug;
-     ops->insert_breakpoint = tcg_insert_breakpoint;
-diff --git a/system/cpus.c b/system/cpus.c
-index d0d585e8b9..3e86b488d3 100644
---- a/system/cpus.c
-+++ b/system/cpus.c
-@@ -422,9 +422,6 @@ void run_on_cpu(CPUState *cpu, run_on_cpu_func func, run_on_cpu_data data)
- void cpu_exit(CPUState *cpu)
+ static inline TaskState *get_task_state(CPUState *cs)
  {
-     qatomic_set(&cpu->exit_request, 1);
--    /* Ensure cpu_exec will see the exit request after TCG has exited.  */
--    smp_wmb();
--    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
-     if (cpus_accel->exit_vcpu_thread) {
-         cpus_accel->exit_vcpu_thread(cpu);
-     }
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 50c277cf0b..36f2825725 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -134,6 +134,7 @@ typedef struct SHPCDevice SHPCDevice;
+ typedef struct SSIBus SSIBus;
+ typedef struct TCGCPUOps TCGCPUOps;
+ typedef struct TCGHelperInfo TCGHelperInfo;
++typedef struct TaskState TaskState;
+ typedef struct TranslationBlock TranslationBlock;
+ typedef struct VirtIODevice VirtIODevice;
+ typedef struct Visitor Visitor;
+diff --git a/linux-user/qemu.h b/linux-user/qemu.h
+index 4777856b52..16d9f6ae8c 100644
+--- a/linux-user/qemu.h
++++ b/linux-user/qemu.h
+@@ -95,7 +95,7 @@ struct emulated_sigtable {
+     target_siginfo_t info;
+ };
+ 
+-typedef struct TaskState {
++struct TaskState {
+     pid_t ts_tid;     /* tid (or pid) of this task */
+ #ifdef TARGET_ARM
+ # ifdef TARGET_ABI32
+@@ -158,7 +158,7 @@ typedef struct TaskState {
+ 
+     /* Start time of task after system boot in clock ticks */
+     uint64_t start_boottime;
+-} TaskState;
++};
+ 
+ static inline TaskState *get_task_state(CPUState *cs)
+ {
 -- 
 2.41.0
 
