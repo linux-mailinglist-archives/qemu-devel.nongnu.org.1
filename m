@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80348B4E90
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A018B4E95
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Cph-0002PO-CZ; Sun, 28 Apr 2024 18:17:17 -0400
+	id 1s1Cpi-0002ze-Nk; Sun, 28 Apr 2024 18:17:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CpY-00021p-62
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:17:08 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CpS-0001iB-Jk
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:17:03 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CpJ-0005l0-Gf
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:17:07 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a58e787130fso205008966b.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:16:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CpP-0005lb-P8
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:17:02 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a4702457ccbso513924066b.3
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:16:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342612; x=1714947412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342617; x=1714947417; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2r4cMzC8fAIXHZrDpn9ChefhEHuCDQQD/B5vfBV0XzY=;
- b=cTtwYmhe6kS3kdz/zzUQk8QxI00CKNbgYLhHf8Yk1kA+4lSdGUPGjv7NL5QiUxBBbx
- 1WzPhJuOzayVoRfmJx1/Eslzq+S/KilZIsxEoWA1bsUgiT3C1sFtDvUAQRwjzRQrUX1A
- Skm5dMfbBuYHnCD6CbS8wKKD/Heg5U37hGqeT0A39oHq558iXsiekxX92+9dQzZiod0O
- DKczK4DRKwyoFzNFLBNvNa8fwpXGAQyyCWrxJxlxxZ3130C9WE2nHnqmZGAnD8yY5HXg
- G7/hfDWpKD7XzBhQDyUU20Yxi4QqEKmHzzaRBV4PR8K5mev+V7Zy0iaC/5eO3dgwzDO9
- /trQ==
+ bh=5RHFpScpX3RBz3SndWvBFhPouPtIMynd6+ol800GYZ0=;
+ b=PQosyhLwrUJQFw01doa4zBCubWS7sveYWpp4LU4PUcHrajtJrajymsHrWcGcafuTyL
+ Q29c1MylxnA+H+4rY3THl7j3cKPLYKQH4qssxo7q35otlPZghoNNMyY3RV2knd7H1NJd
+ 1f2senut0CBmij0aWfYobLayFKLUJ52USWq0PtZsmC6cARxKWckzm2RhdsW0Ow9q3bWw
+ o9mg98anh0DsXy/xd+jTB3XqA8u5GOfSuvNmCaSkGpF74wg7LDjcNf2qzuFyP9i50Jqd
+ n3peO6jYEWTa9Guvo5Sxk4GM5Y/Wpg5lhoKabJ5G527sz5j1HRkwccUCX1qzdwCIv/5L
+ FbPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342612; x=1714947412;
+ d=1e100.net; s=20230601; t=1714342617; x=1714947417;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2r4cMzC8fAIXHZrDpn9ChefhEHuCDQQD/B5vfBV0XzY=;
- b=SP2ItJGANIC43TbcF/LxI1/7qUz6iu+SMXzzDM8XUtTRIbMD64phftjNwEYrOOYfOi
- NIIXEnaf25yQFV8nEaxbnXyeU3LeowJHnjv2O5auKufga1vTVzOaH47xreOENfVV5K7L
- ztT7hz+ttvjZIrwcMX/hCX/hREmtmtH34f6r66U+nnx4K2nzASBnV7y8ZxLhfbiqdI6x
- j7dsRwgLHKvpOPLVLCR2d9vcEZGwkAA/pd8ELcKtex3key/AYZGMPFMfUz9Zapsu/XBW
- CBfrqnSl1rl6jY7GHosnKs6raeJYSRxXWjlG6NqJ7opjknBH7BExqI4gig2xKAyFeM5F
- uq8Q==
-X-Gm-Message-State: AOJu0Yz6eyjRT/v6s0gAjC3bEWGqlnJ0MtH4LVsHKRkg1fL7rwCdp1UR
- j9HhJImujKap71i6Ab02z0i00K2aeAjOUBdMvfVS6VJn8KziweELGwTDFFw7/K+Vtc/Obk++WwG
- K
-X-Google-Smtp-Source: AGHT+IEr9szIMogTyXzEktEyerfgIs0gWWFrRGI6sLwAdZV5HwqCOEgHOzl3euPwk+3nGlIdFramBA==
-X-Received: by 2002:a17:907:a49:b0:a58:c550:a102 with SMTP id
- be9-20020a1709070a4900b00a58c550a102mr9594611ejc.29.1714342611791; 
- Sun, 28 Apr 2024 15:16:51 -0700 (PDT)
+ bh=5RHFpScpX3RBz3SndWvBFhPouPtIMynd6+ol800GYZ0=;
+ b=kYRLSVUKHsS35e9odez6MsHHMrJj7ZDjmK9y23Jl3xnD/LmdxWqgNMC76riYkmT0xJ
+ /IjDPEYMVfIR9U2LZftcuy7B4TuJbv2aOQNYfw1WFyHf9OjOSAehmsyv5Vs/ps6Mv0oc
+ NsnV71cvOC096G8yr13k5MvxdrsFL6sJS1JAbn0T22vKyBdIWaKmTXPqb57JU2TzYUpx
+ xsAHqCBCwFkxx5lfftNfKhFVmJdcCQtH67UW2qdg2uvoZCPuK1ridOvG6avaIuwWsY6L
+ CFkHHq48GOy51MqnZRYyPA3j38cfZVSvuzRI6Loeo4k++cZHc+8TRNp83QreyUWnvx44
+ wy2w==
+X-Gm-Message-State: AOJu0Yz0V/szhKMiot3XzXoAOcCeYXxmZthDeupWpnfNmbOkLeYw8frk
+ NuUjizWBG6rL6vPcR9tCgCN+N9geNQ6Mlvm7ujKj251CUTSk1D+wq63vYkb1T7lTs5kriC9z11X
+ s
+X-Google-Smtp-Source: AGHT+IHYO16h3itZP6zi2uze0HAJDei4v+HVQ9W1kzrCz0v4oqTJACpQpcJuGf6KbTSMMxLTXvbthw==
+X-Received: by 2002:a17:906:2bcd:b0:a58:cd39:d154 with SMTP id
+ n13-20020a1709062bcd00b00a58cd39d154mr4272888ejg.11.1714342617110; 
+ Sun, 28 Apr 2024 15:16:57 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- gr13-20020a170906e2cd00b00a4e696e613esm7984526ejb.153.2024.04.28.15.16.50
+ p2-20020a170906614200b00a588e0e0d9bsm5903912ejl.93.2024.04.28.15.16.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:16:51 -0700 (PDT)
+ Sun, 28 Apr 2024 15:16:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 22/24] accel/tcg: Move @tcg_cflags from CPUState to TCG
- AccelCPUState
-Date: Mon, 29 Apr 2024 00:14:48 +0200
-Message-ID: <20240428221450.26460-23-philmd@linaro.org>
+Subject: [PATCH 23/24] accel/tcg: Restrict icount to system emulation
+Date: Mon, 29 Apr 2024 00:14:49 +0200
+Message-ID: <20240428221450.26460-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,94 +93,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@tcg_cflags is specific to TCG accelerator, move it to
-its AccelCPUState.
+So far we don't support icount on user emulation.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/vcpu-state.h | 2 ++
- include/hw/core/cpu.h  | 4 +---
- accel/tcg/cpu-exec.c   | 6 +++---
- linux-user/main.c      | 2 +-
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ accel/tcg/cpu-exec.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index 5b31c801d8..1cdca0e0d4 100644
---- a/accel/tcg/vcpu-state.h
-+++ b/accel/tcg/vcpu-state.h
-@@ -11,9 +11,11 @@
- 
- /**
-  * AccelCPUState:
-+ * @cflags: Pre-computed cflags for this cpu.
-  * @mem_io_pc: Host Program Counter at which the memory was accessed.
-  */
- struct AccelCPUState {
-+    uint32_t cflags;
-     uint32_t cflags_next_tb;
- 
-     sigjmp_buf jmp_env;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 99709270fa..f6bafa090a 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -396,9 +396,8 @@ struct qemu_work_item;
-  *   to a cluster this will be UNASSIGNED_CLUSTER_INDEX; otherwise it will
-  *   be the same as the cluster-id property of the CPU object's TYPE_CPU_CLUSTER
-  *   QOM parent.
-- *   Under TCG this value is propagated to @tcg_cflags.
-+ *   Under TCG this value is propagated to @accel->cflags.
-  *   See TranslationBlock::TCG CF_CLUSTER_MASK.
-- * @tcg_cflags: Pre-computed cflags for this cpu.
-  * @nr_cores: Number of cores within this CPU package.
-  * @nr_threads: Number of threads within this CPU core.
-  * @running: #true if CPU is currently running (lockless).
-@@ -515,7 +514,6 @@ struct CPUState {
-     /* TODO Move common fields from CPUArchState here. */
-     int cpu_index;
-     int cluster_index;
--    uint32_t tcg_cflags;
-     uint32_t halted;
-     int32_t exception_index;
- 
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 8f8e1fa948..84fd041aec 100644
+index 84fd041aec..1f618f6c2e 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -149,17 +149,17 @@ static void init_delay_params(SyncClocks *sc, const CPUState *cpu)
+@@ -780,6 +780,9 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
  
- bool tcg_cflags_has(CPUState *cpu, uint32_t flags)
+ static inline bool icount_exit_request(CPUState *cpu)
  {
--    return cpu->tcg_cflags & flags;
-+    return cpu->accel->cflags & flags;
++#if defined(CONFIG_USER_ONLY)
++    return false;
++#else
+     if (!icount_enabled()) {
+         return false;
+     }
+@@ -787,6 +790,7 @@ static inline bool icount_exit_request(CPUState *cpu)
+         return false;
+     }
+     return cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0;
++#endif
  }
  
- void tcg_cflags_set(CPUState *cpu, uint32_t flags)
- {
--    cpu->tcg_cflags |= flags;
-+    cpu->accel->cflags |= flags;
- }
+ static inline bool cpu_handle_interrupt(CPUState *cpu,
+@@ -801,12 +805,14 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+         return false;
+     }
  
- uint32_t curr_cflags(CPUState *cpu)
- {
--    uint32_t cflags = cpu->tcg_cflags;
-+    uint32_t cflags = cpu->accel->cflags;
++#if !defined(CONFIG_USER_ONLY)
+     /* Clear the interrupt flag now since we're processing
+      * cpu->interrupt_request and cpu->exit_request.
+      * Ensure zeroing happens before reading cpu->exit_request or
+      * cpu->interrupt_request (see also smp_wmb in cpu_exit())
+      */
+     qatomic_set_mb(&cpu->neg.icount_decr.u16.high, 0);
++#endif /* !CONFIG_USER_ONLY */
  
-     /*
-      * Record gdb single-step.  We should be exiting the TB by raising
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 5f7f03f4b0..8be06627da 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -241,7 +241,7 @@ CPUArchState *cpu_copy(CPUArchState *env)
-     /* Reset non arch specific state */
-     cpu_reset(new_cpu);
- 
--    new_cpu->tcg_cflags = cpu->tcg_cflags;
-+    new_cpu->accel->cflags = cpu->accel->cflags;
-     memcpy(new_env, env, sizeof(CPUArchState));
- #if defined(TARGET_I386) || defined(TARGET_X86_64)
-     new_env->gdt.base = target_mmap(0, sizeof(uint64_t) * TARGET_GDT_ENTRIES,
+     if (unlikely(qatomic_read(&cpu->interrupt_request))) {
+         int interrupt_request;
 -- 
 2.41.0
 
