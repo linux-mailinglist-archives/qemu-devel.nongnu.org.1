@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5718B4A3B
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292998B4A41
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0yX9-0002N9-VN; Sun, 28 Apr 2024 03:01:11 -0400
+	id 1s0yXC-0002Nc-46; Sun, 28 Apr 2024 03:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yX5-0002LD-4T
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:07 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1s0yX9-0002NR-TC
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:11 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yX3-0005NG-40
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:06 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5ce6b5e3c4eso2045878a12.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:01:04 -0700 (PDT)
+ id 1s0yX7-0005PC-C0
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:01:11 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1e3e84a302eso26769295ad.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:01:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287664; x=1714892464;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287668; x=1714892468;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NVxS/Oa2xUVoG+uaYS6v5q8VYD7ItUUL4UEknvVPtgA=;
- b=07TB6WL9lwwuzbFnUcmn0x872bseqVgdsZDiG+mK+HCTUVPlXWAEPAnE8YMfAHbAeB
- zsh3sPw0DOOjLsKVx2yYrvcaX5qTkd9rRclhw13RI5WEIhkVld+MWtL0Epdl1mOCoNcA
- bS41C8do5xDRCkAVv6ZGEX8/+i36CKVz81okggLFuw1crFvxmsWwLe9j97wQF7venU6g
- 60p91iW40hMKoQbHp7qoRmMeGnBzmO+hl46VeXo6RmElEbGpfXx8D2RHskLCzzaj3JvY
- FgBm7BjA1WKhVLmWpwbYSQj11eU0x6jrNoL72QKH0zvhHfAe6mAZEpx5837i1Y+9Ft2L
- Fk4Q==
+ :reply-to; bh=L2AYryVCXzlfd31eRzritJUeblvvcZ9uKewPEGgWmv8=;
+ b=D9E6EJtvQrM9X4f6wtFgntlckrXVwoP5tU4FgFLGvOgpmRvV7T3FLIy81leviFGveq
+ jzigKyADCSyXw85cHiim8Syx5xyUKtPX2dXCn05wEED5SQ1jRGKMeTcpUzmDltx2Penl
+ IbDzU/bf7zhLUlapuZCCb6V5X4NpA950TbRfIOks4FVPBdI+pIw4iUyFoksbekF8KBUF
+ eARU2JpXa/XyPW9Sj+M1GmuxCMKbzt9cI7s7BLwa4zSfV/8k47T3w5gSEXPq3hKzPCe3
+ V4LxLudzJffe6hKD0hY4Ahl8hEqcVE7UHiftjG7gbGeWLQEeXnTUVXmSrRlqKr0q0xWq
+ lWlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714287664; x=1714892464;
+ d=1e100.net; s=20230601; t=1714287668; x=1714892468;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NVxS/Oa2xUVoG+uaYS6v5q8VYD7ItUUL4UEknvVPtgA=;
- b=kqSD6SGiKnFcBS79gAcsTiBYkMUlDXqQGrsYUvZEtbAq2FkKDspCInDslMjiLvHcFr
- DG9vokU8KNQLrGtpTqSR+cWz08681YXhZ5GEg3pjCnCYhPSvV7/FxoWxfMogs3ehdwHq
- N04awn5RZ84egG2BFgYU2A+wrjmH/zT7HvF3CEVre0ftdujuOkAFFx7KHpKLz9i0SgyU
- n8+Y1KWHUOXb83PS0W4pLWAyh2gQlHWwUy/Hd+DCQoQDVu+f+13itmYwAdOPARDb82ol
- tME4gAcUEsu/QRz/xfWnVmhg/ix1loFp1kxqXxx+KPHEb/5PJiIs6xHIGPnLougZgEWh
- IWtw==
-X-Gm-Message-State: AOJu0YzjBis1ewNxpbJtUk+87/eKbr2cS8F1UWWrZOfRJylNYeOg/xqD
- FucdWhkVvVjgxlTEzH+xRqyyVay/UAamKwHEycdpCLRZnnScdi0cWu/QJOsggEA=
-X-Google-Smtp-Source: AGHT+IEBFxqMQeneBSo1O7t8i5mgpDvgtoGipVwaF622u8BrBfRj923G1L+oYGvbvACmWinUt588ZA==
-X-Received: by 2002:a17:902:ce8e:b0:1eb:5323:c320 with SMTP id
- f14-20020a170902ce8e00b001eb5323c320mr5426479plg.56.1714287663884; 
- Sun, 28 Apr 2024 00:01:03 -0700 (PDT)
+ bh=L2AYryVCXzlfd31eRzritJUeblvvcZ9uKewPEGgWmv8=;
+ b=Jz4tCcMsra3F8JrJRCmy5BQHXxdmQeOyD9Y5RfoVCDyVQ7eQtMq3AXRHQQlcfts2nb
+ 3IWiB3QQRCeMVmv+1Pe3W/OHf81lc40f2qTdBNl4BNVdWS7R7j3NlhQViInXnvSlUmGY
+ 2Vq4FwEm0KXO/muSUSWcma3hicFsekrHKunFJha75EdSFe4GICRp9trdEPxPM2zAimwt
+ fN4hEtQZ9xu/GM/WSbVIJ/qMYDK2eXNfx3ZpuSYZUzeU3MVQ7hQIoEL4yu2TVDK9SQP3
+ hZSl/uPYf4V+BaVhB/uMoJmyXO3GMJtG4SgAJuF8KncQIejSCoUNGwcmzLrAWtuvdrdl
+ Fxxg==
+X-Gm-Message-State: AOJu0YxSCF5JzAGzejs5E18sz/YpskxMqQtbal7h8wlMp3Gx+pnjqhyp
+ 54YFZj//GgHY6C9ARlbSDwx6KnMbJ7VoYyGgImz2EUIcr+cObI+oQFiWKMcn5pWevFVB0nVD2h9
+ wvxY=
+X-Google-Smtp-Source: AGHT+IHZehQ067qxkverGT1RyHWHL2IYAioRfjdAWnH6rl9qT84D2cLDbo9HQ8jeFaNgMMiDEXWmhQ==
+X-Received: by 2002:a17:903:2405:b0:1e0:1a1f:5e4 with SMTP id
+ e5-20020a170903240500b001e01a1f05e4mr8608961plo.55.1714287667807; 
+ Sun, 28 Apr 2024 00:01:07 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- c7-20020a170903234700b001eb0dd08e40sm3701361plh.133.2024.04.28.00.01.01
+ p3-20020a170902780300b001e3e09690c6sm18396631pll.199.2024.04.28.00.01.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 00:01:03 -0700 (PDT)
+ Sun, 28 Apr 2024 00:01:07 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sun, 28 Apr 2024 16:00:46 +0900
-Subject: [PATCH v10 03/18] net: Move virtio-net header length assertion
+Date: Sun, 28 Apr 2024 16:00:47 +0900
+Subject: [PATCH v10 04/18] net: Remove receive_raw()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240428-rss-v10-3-73cbaa91aeb6@daynix.com>
+Message-Id: <20240428-rss-v10-4-73cbaa91aeb6@daynix.com>
 References: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 In-Reply-To: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
@@ -75,8 +76,8 @@ To: Jason Wang <jasowang@redhat.com>,
  Yuri Benditovich <yuri.benditovich@daynix.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::533;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x533.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::634;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,51 +99,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The virtio-net header length assertion should happen for any clients.
+While netmap implements virtio-net header, it does not implement
+receive_raw(). Instead of implementing receive_raw for netmap, add
+virtio-net headers in the common code and use receive_iov()/receive()
+instead. This also fixes the buffer size for the virtio-net header.
 
+Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- net/net.c | 5 +++++
- net/tap.c | 3 ---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ include/net/net.h |  1 -
+ net/net.c         | 18 ++++++++++++------
+ net/tap.c         |  1 -
+ 3 files changed, 12 insertions(+), 8 deletions(-)
 
+diff --git a/include/net/net.h b/include/net/net.h
+index 6fe5a0aee833..c8f679761bf9 100644
+--- a/include/net/net.h
++++ b/include/net/net.h
+@@ -72,7 +72,6 @@ typedef struct NetClientInfo {
+     NetClientDriver type;
+     size_t size;
+     NetReceive *receive;
+-    NetReceive *receive_raw;
+     NetReceiveIOV *receive_iov;
+     NetCanReceive *can_receive;
+     NetStart *start;
 diff --git a/net/net.c b/net/net.c
-index bd51037ebfb0..db096765f4b2 100644
+index db096765f4b2..6938da05e077 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -56,6 +56,7 @@
- #include "net/filter.h"
- #include "qapi/string-output-visitor.h"
- #include "qapi/qobject-input-visitor.h"
-+#include "standard-headers/linux/virtio_net.h"
- 
- /* Net bridge is currently not supported for W32. */
- #if !defined(_WIN32)
-@@ -550,6 +551,10 @@ void qemu_set_vnet_hdr_len(NetClientState *nc, int len)
-         return;
+@@ -787,11 +787,7 @@ static ssize_t nc_sendv_compat(NetClientState *nc, const struct iovec *iov,
+         offset = iov_to_buf(iov, iovcnt, 0, buf, offset);
      }
  
-+    assert(len == sizeof(struct virtio_net_hdr_mrg_rxbuf) ||
-+           len == sizeof(struct virtio_net_hdr) ||
-+           len == sizeof(struct virtio_net_hdr_v1_hash));
+-    if (flags & QEMU_NET_PACKET_FLAG_RAW && nc->info->receive_raw) {
+-        ret = nc->info->receive_raw(nc, buffer, offset);
+-    } else {
+-        ret = nc->info->receive(nc, buffer, offset);
+-    }
++    ret = nc->info->receive(nc, buffer, offset);
+ 
+     g_free(buf);
+     return ret;
+@@ -806,6 +802,8 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
+     MemReentrancyGuard *owned_reentrancy_guard;
+     NetClientState *nc = opaque;
+     int ret;
++    struct virtio_net_hdr_v1_hash vnet_hdr = { };
++    g_autofree struct iovec *iov_copy = NULL;
+ 
+ 
+     if (nc->link_down) {
+@@ -824,7 +822,15 @@ static ssize_t qemu_deliver_packet_iov(NetClientState *sender,
+         owned_reentrancy_guard->engaged_in_io = true;
+     }
+ 
+-    if (nc->info->receive_iov && !(flags & QEMU_NET_PACKET_FLAG_RAW)) {
++    if ((flags & QEMU_NET_PACKET_FLAG_RAW) && nc->vnet_hdr_len) {
++        iov_copy = g_new(struct iovec, iovcnt + 1);
++        iov_copy[0].iov_base = &vnet_hdr;
++        iov_copy[0].iov_len =  nc->vnet_hdr_len;
++        memcpy(&iov_copy[1], iov, iovcnt * sizeof(*iov));
++        iov = iov_copy;
++    }
 +
-     nc->vnet_hdr_len = len;
-     nc->info->set_vnet_hdr_len(nc, len);
- }
++    if (nc->info->receive_iov) {
+         ret = nc->info->receive_iov(nc, iov, iovcnt);
+     } else {
+         ret = nc_sendv_compat(nc, iov, iovcnt, flags);
 diff --git a/net/tap.c b/net/tap.c
-index c848844955df..49edf6c2b6e1 100644
+index 49edf6c2b6e1..99c59ee46881 100644
 --- a/net/tap.c
 +++ b/net/tap.c
-@@ -267,9 +267,6 @@ static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
--    assert(len == sizeof(struct virtio_net_hdr_mrg_rxbuf) ||
--           len == sizeof(struct virtio_net_hdr) ||
--           len == sizeof(struct virtio_net_hdr_v1_hash));
- 
-     tap_fd_set_vnet_hdr_len(s->fd, len);
-     s->host_vnet_hdr_len = len;
+@@ -360,7 +360,6 @@ static NetClientInfo net_tap_info = {
+     .type = NET_CLIENT_DRIVER_TAP,
+     .size = sizeof(TAPState),
+     .receive = tap_receive,
+-    .receive_raw = tap_receive_raw,
+     .receive_iov = tap_receive_iov,
+     .poll = tap_poll,
+     .cleanup = tap_cleanup,
 
 -- 
 2.44.0
