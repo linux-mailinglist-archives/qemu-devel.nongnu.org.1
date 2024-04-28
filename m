@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39C08B4B77
+	by mail.lfdr.de (Postfix) with ESMTPS id D42CD8B4B76
 	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 13:13:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s12Rb-0004VC-Uk; Sun, 28 Apr 2024 07:11:43 -0400
+	id 1s12Rm-0004W2-Uq; Sun, 28 Apr 2024 07:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s12RY-0004Un-Ci
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:40 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1s12Re-0004VX-Bo
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:46 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s12RW-0000Ym-Ca
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:40 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6f2f6142d64so3386877b3a.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 04:11:37 -0700 (PDT)
+ id 1s12RY-0000Yx-JN
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 07:11:45 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1e3f17c6491so29479235ad.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 04:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714302696; x=1714907496;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714302699; x=1714907499;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=/4YH1P7orc/Te98j0BdkDaV2/xgzpkcLw1sCbumgnEw=;
- b=1uI4YQmIv/sdW6ZtMuCb/Qjv105gZod2yS281ZdcDlHX2nn4tHHcCnjhN4WcUS51ZR
- R3YGEY/uori0IRbaX5+TwQRAjxcY/xYy9Ea/QynYHLbW8Hkl6mdXqZRzSYQm3BFHFIB1
- Wll7DT5PJR6CVLuWzBJLSdLiWIBA7YwVgQjaB++TIf6zG203ly42IpsO0gfC6Rrd9vhu
- kI7Jwk9MGPnVlR6KBGCOJqJq/+TvFIOStq9JmMDAfnBnpyEPw6lpTva0B2MdyfYX/6yd
- nbFoA6McVzhBM4AS4qzB4isSqUpqeBKRDwwGmU6LtZ1qWk64Nqx0neStZH0QTt7UzXKt
- 6wMw==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Y4j4qahPhXI8W1nFLvgESJ5yiEJJetyEtcZElI8DFI0=;
+ b=jjw2wNZy5R1sf8ZQ9qiM1FT+FmT9HVO6jrX0c/H1pkJb2nRowNhbgBPE5IFLTmn9Kl
+ KP73RAMlReT0U0aQIz2f3serCSn9YN+j7mDrcQvkvKxLoT8iEre0L6iHRtNrHZI4ZJrT
+ 0KdfXt5jmbDT5ojY7d57qEti1F5Smcppt5/Pbk/oNCMr2CMxV9R6wm/Br1tubIhCdk9W
+ i0gRoJolu76veF0yKDphVYCvTBYrNtlKDd3xY7I+i/296HQ4DFAX/Jx43A7ELdxyy28k
+ S6+xiBblJNYLLAm1eStTJVdRLrY5h3G9bRMoAC+62/++aftHzF+u7Px7k1/yMhDTPnzP
+ PWOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714302696; x=1714907496;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=/4YH1P7orc/Te98j0BdkDaV2/xgzpkcLw1sCbumgnEw=;
- b=YJAgdNgxakyEXnK3bzpaQPZpMfqAEava8DEjy6P7q3AUJmNmFZ1BlLt0ywkMB0KhlP
- xsnrGt88TLfj0XhBEt5n/a0AkefCJcB/XWHQUoKdoUsVi1ZhDPsact7XwJUU7Vqy+sU2
- 4pwb+2bAY/dYbtS/cya6gOMdYWKkyfL+SPEHl2h2oRqT/0wF3W8BgSGXlNSeEXLXkkEe
- Oep20TH2zhSxNizstyg7cS3Hk8NhtT7BUnWOPWYcTjStYI0QYnbPrjt3ImkWQN5Yyy+a
- kdcIGqn7o/U4RpOP/b8sTysIhgGuIPUyCYl08QaUduaegW+0sCKIaw0+JeXpOptrIUAE
- aRDg==
-X-Gm-Message-State: AOJu0YzodArkTv1fU8s/kfeh4Itrr98dtyoDBpigbHWHoNQsMsw9l59d
- cxWhlA8O1M/0hnZjQ7514T96v87CRsfWaiX57rc1M4crw3odM7isF4WnGTlMJ0A=
-X-Google-Smtp-Source: AGHT+IHk9vxvmhEmjLG9oQZMMmG4zoEd0/k7bnvlpQpbrYEUvWvMKXezdHWS1KL8wMweCfCPD3OXkA==
-X-Received: by 2002:a05:6a20:d428:b0:1a9:ff21:8862 with SMTP id
- il40-20020a056a20d42800b001a9ff218862mr6523177pzb.60.1714302695975; 
- Sun, 28 Apr 2024 04:11:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714302699; x=1714907499;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Y4j4qahPhXI8W1nFLvgESJ5yiEJJetyEtcZElI8DFI0=;
+ b=n/+BAq0EB+p6aXHcfXtRZEqGAdlYimOv1AMdzS7JV86A1alg8O0OxIjDLf77bVTcx7
+ tbbnscfCOEV7GwpahdW6fBUzM6Do67bpEMMPY+GJJDy1ASULFVMASbL6tsqz/4nyjkgP
+ HWGKEe5fU/8taLqC4bypUWNb+P2HTtwn6mi4khAcB2Dj+S+jahIt+bY2NsZ+TvFGLrHK
+ J9T2nOw9WLBY5DKrhClfGnYyP9w5NcH+pZxSqVRrJ1RjJR76cdoTJa8XX5Z61YAuGqk1
+ FrbjGyYUAKQn+Y5RWZj2I2wXHQ1AeSAutYiWRpOQ1YC8qUpiOjtZpsYKHiiKkU0JFLhL
+ 7/Rg==
+X-Gm-Message-State: AOJu0YyuiJRAi/1fwPf6pk/y+/KEGSn1bMHGhJM5kmm0f+suA2fNzf1n
+ SQcyNsN4FhjkKNG9//8nV9UudfcynHQJ/l1o0b10EuJyhh3DD0Qj12/lg49h5no=
+X-Google-Smtp-Source: AGHT+IEY5WuXMmWs7PZ20KBXgM6dKXvXvK2Egj4lPLmCIGezrThWUSj1AXJMv+N/X9bZFy3q1Iz/Wg==
+X-Received: by 2002:a17:902:b283:b0:1e0:2995:c330 with SMTP id
+ u3-20020a170902b28300b001e02995c330mr7548354plr.63.1714302699289; 
+ Sun, 28 Apr 2024 04:11:39 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- f33-20020a056a000b2100b006ecee611c05sm17542280pfu.182.2024.04.28.04.11.34
+ s8-20020a170902ea0800b001e853d9bb42sm2258111plg.196.2024.04.28.04.11.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 04:11:35 -0700 (PDT)
+ Sun, 28 Apr 2024 04:11:39 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 0/2] util/iov: Do not assert offset is in iov
-Date: Sun, 28 Apr 2024 20:11:21 +0900
-Message-Id: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
+Date: Sun, 28 Apr 2024 20:11:22 +0900
+Subject: [PATCH 1/2] util/iov: Do not assert offset is in iov
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANkuLmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDEyML3cz8Mt1EY0PzJAMjMwPDlGQloMqCotS0zAqwKdGxtbUAg265YVU
- AAAA=
+Message-Id: <20240428-iov-v1-1-7b2dd601d80b@daynix.com>
+References: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
+In-Reply-To: <20240428-iov-v1-0-7b2dd601d80b@daynix.com>
 To: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
  Jason Wang <jasowang@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-01a33
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -117,20 +116,83 @@ value to ensure there are sufficient space at the given offset.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (2):
-      util/iov: Do not assert offset is in iov
-      Revert "hw/net/net_tx_pkt: Fix overrun in update_sctp_checksum()"
+ include/qemu/iov.h | 5 +++--
+ util/iov.c         | 5 -----
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
- include/qemu/iov.h  | 5 +++--
- hw/net/net_tx_pkt.c | 4 ----
- util/iov.c          | 5 -----
- 3 files changed, 3 insertions(+), 11 deletions(-)
----
-base-commit: fd87be1dada5672f877e03c2ca8504458292c479
-change-id: 20240428-iov-a317b02601dc
+diff --git a/include/qemu/iov.h b/include/qemu/iov.h
+index 63a1c01965d1..33548058d2ee 100644
+--- a/include/qemu/iov.h
++++ b/include/qemu/iov.h
+@@ -30,7 +30,7 @@ size_t iov_size(const struct iovec *iov, const unsigned int iov_cnt);
+  * only part of data will be copied, up to the end of the iovec.
+  * Number of bytes actually copied will be returned, which is
+  *  min(bytes, iov_size(iov)-offset)
+- * `Offset' must point to the inside of iovec.
++ * Returns 0 when `offset' points to the outside of iovec.
+  */
+ size_t iov_from_buf_full(const struct iovec *iov, unsigned int iov_cnt,
+                          size_t offset, const void *buf, size_t bytes);
+@@ -66,11 +66,12 @@ iov_to_buf(const struct iovec *iov, const unsigned int iov_cnt,
+ /**
+  * Set data bytes pointed out by iovec `iov' of size `iov_cnt' elements,
+  * starting at byte offset `start', to value `fillc', repeating it
+- * `bytes' number of times.  `Offset' must point to the inside of iovec.
++ * `bytes' number of times.
+  * If `bytes' is large enough, only last bytes portion of iovec,
+  * up to the end of it, will be filled with the specified value.
+  * Function return actual number of bytes processed, which is
+  * min(size, iov_size(iov) - offset).
++ * Returns 0 when `offset' points to the outside of iovec.
+  */
+ size_t iov_memset(const struct iovec *iov, const unsigned int iov_cnt,
+                   size_t offset, int fillc, size_t bytes);
+diff --git a/util/iov.c b/util/iov.c
+index 7e73948f5e3d..a523b406b7f8 100644
+--- a/util/iov.c
++++ b/util/iov.c
+@@ -36,7 +36,6 @@ size_t iov_from_buf_full(const struct iovec *iov, unsigned int iov_cnt,
+             offset -= iov[i].iov_len;
+         }
+     }
+-    assert(offset == 0);
+     return done;
+ }
+ 
+@@ -55,7 +54,6 @@ size_t iov_to_buf_full(const struct iovec *iov, const unsigned int iov_cnt,
+             offset -= iov[i].iov_len;
+         }
+     }
+-    assert(offset == 0);
+     return done;
+ }
+ 
+@@ -74,7 +72,6 @@ size_t iov_memset(const struct iovec *iov, const unsigned int iov_cnt,
+             offset -= iov[i].iov_len;
+         }
+     }
+-    assert(offset == 0);
+     return done;
+ }
+ 
+@@ -266,7 +263,6 @@ unsigned iov_copy(struct iovec *dst_iov, unsigned int dst_iov_cnt,
+         bytes -= len;
+         offset = 0;
+     }
+-    assert(offset == 0);
+     return j;
+ }
+ 
+@@ -337,7 +333,6 @@ size_t qemu_iovec_concat_iov(QEMUIOVector *dst,
+             soffset -= src_iov[i].iov_len;
+         }
+     }
+-    assert(soffset == 0); /* offset beyond end of src */
+ 
+     return done;
+ }
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.44.0
 
 
