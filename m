@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00978B4E07
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93F38B4DFC
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1CPm-0003Ax-E3; Sun, 28 Apr 2024 17:50:30 -0400
+	id 1s1CPk-000362-Pc; Sun, 28 Apr 2024 17:50:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPi-00035V-J7
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:27 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPh-00035I-DT
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:25 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPW-0001JO-0n
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:26 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56e1f3462caso4807725a12.3
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:50:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPb-0001Je-Kp
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:24 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-41c1b75ca31so4419245e9.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714341010; x=1714945810; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714341016; x=1714945816; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0n+ImpRw4HIvF2HMD0Mqry3BChMB8K31XsSyFCMilH8=;
- b=l/j7oLb6VBJricJ7aSp9NlbvLArVslOrxKocx4ulcOEWruW71vDibugY66SmscOnRZ
- MbUsUdLFlUYtrqwNawduWqrlMtUGoNCOYH2bKG2joHbFusL7+uc7csAMNRggKyPC8MFT
- nHEG1FkCh5o32eY5y8AIjQXRsnuODeJlapA5vjUTBGUDuDymsTsjuaNqs6JC27fgrfQU
- GGyIj4xiuVYr2x3G+J4fapqeeGld6hz184GggNDlxF+QWijDCTpiLrImTMsbsJhncfVg
- WmPid0b7YrhF/MwuqlY3bFsGhB10jqTLQEbUbhPgArFUNEc6SasbVKrXtVlgumAynrqq
- M4hA==
+ bh=PiKDLwE364Pw013trdbS6B+l3BI8G2aZyNTUUJSMStE=;
+ b=UcCEgzjqTqWs+LW/8Pp7vqHI9MTjATyg+9KEeyI5SxIwzPXt7jEVHm5sZwrIBEApzF
+ OJJNvhxyu3ysg0P8TlLxY3LX4Po/Vl2yQdAM9GAv1S2FZd1Zm5TvJ/QJoRl7+vtqxmR7
+ WeKDBclMzLnXvFTcNAqKub+zCERiaWKsWbtT40zkX1aT0YzzNNXqRG+obM+cOoS/f0XH
+ BfoIswGjYi/pHOJTxp237aLqAAYDnub5Zz1IMFg2YZSSGYhVGthfeC+a+IRBhHK2l/Dq
+ R7QXQ7LBow/mCVNz5Dl47cP+klZMLkkFAtF2umGMac+bY5rHBE17ITxvu9dgosSN9mOU
+ 9kpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714341010; x=1714945810;
+ d=1e100.net; s=20230601; t=1714341016; x=1714945816;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0n+ImpRw4HIvF2HMD0Mqry3BChMB8K31XsSyFCMilH8=;
- b=XskhTnGKPRmFXC5ZB84erNMvclDbITItgMuRGZyGLjBUuLc2yI7K5RAOMCvOwspnNB
- uDBvMk6GC8g5TGwJDry0///r+ron/PvO1qSP+oo/kQz8U+gk8b/cmCV8xE5k8NNKCGDL
- e3BCcNyQ1o04UIrBtmtSou2UO9tuSm3lWshTKGYvjMQ0xrvjOuRUZDdJrPqRdXuXFl6T
- K2I67SoyvHootJmG3X7bfba3uBjer9ViSVGBNXnqN4CkKcNVEi00H4hSxbMREaN+RK2Z
- 09lUjs2aD0bGwI/a8yKsNNFlQN83SOe+/zfAi8SrZ+R58ucPR3upn0nIMODuvZqywHFS
- r/WA==
-X-Gm-Message-State: AOJu0YyD5Uv6Sr13rtc6QjbydNIdzN2LQ+pNZcSy0wlJPrmLK0MmozPh
- beKS3/mlgtdJSWcIg12NVQMjVGcBJafelqnjKwqXsshuzixV7m7TMrJjEyZGvJoNRd0PiLIcGdD
- T
-X-Google-Smtp-Source: AGHT+IGSWeifh3Lv5EF0o0K0SXk2o+AFID6PNmICHRfvw0hLoJDLJJ/23GfPhcTdLCJn6oE+IIJ12A==
-X-Received: by 2002:a50:d752:0:b0:572:727f:d0db with SMTP id
- i18-20020a50d752000000b00572727fd0dbmr2475784edj.15.1714341010733; 
- Sun, 28 Apr 2024 14:50:10 -0700 (PDT)
+ bh=PiKDLwE364Pw013trdbS6B+l3BI8G2aZyNTUUJSMStE=;
+ b=g8xs8s5pc2KOImPDnTXWKVS27l9PNS+pTzq2npsTxcP7nj92ol3IqrvXMOoFKwBaCf
+ kpv+moBtY8Anxha8OQ991d4i2rIyLeuyI2QU2z4jygoGxYwsms2QONOOtzBDwPY1aRTS
+ 803Dm+U+yFGzVAEaIEdTxkqWRgJ/XvLMuYRWqn57plQ2FolI50IaFNyDJQGM674kDK2H
+ 1zmyHQMfLzCxJYxzs6jPZy+OoE/9pf+lBZYXayUNcepn7IF8uYWwuxm+Ry4Se5sYIoXR
+ m7+H2xh/eAyQhKNI9/hLDEP0O5Hl21DVH3l2VI+MgU8GUWCLDyyZptYe3MtrPWSWNSDB
+ Ec2Q==
+X-Gm-Message-State: AOJu0YyzR6CDTJU3hdQlO+ELyj/Wq5vHTkbgumkLC2c1T3g3yqabVOLp
+ FrqaO2K3680MqsPicCk6//Svl1tOgyA8rS/nhN+GDCp8BcNhJU6sSfZ+4ltO57Zo/8etNf6baC7
+ z
+X-Google-Smtp-Source: AGHT+IGUT5jQwd/Cn4XZf4R8UekYyzYZt42HD65j994dZ/HGdoeuNy1QlyLDwBkw4ORkmAYYakZBxg==
+X-Received: by 2002:a05:600c:501f:b0:41b:b07a:c54c with SMTP id
+ n31-20020a05600c501f00b0041bb07ac54cmr5546361wmr.9.1714341016281; 
+ Sun, 28 Apr 2024 14:50:16 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- i32-20020a0564020f2000b005723bcad44bsm4472844eda.41.2024.04.28.14.50.09
+ k29-20020a05600c1c9d00b00418948a5eb0sm43150505wms.32.2024.04.28.14.50.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 14:50:10 -0700 (PDT)
+ Sun, 28 Apr 2024 14:50:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 09/12] accel/tcg: Restrict cpu_loop_exit_requested() to TCG
-Date: Sun, 28 Apr 2024 23:49:12 +0200
-Message-ID: <20240428214915.10339-10-philmd@linaro.org>
+Subject: [PATCH v2 10/12] accel/tcg: Remove pointless initialization of
+ cflags_next_tb
+Date: Sun, 28 Apr 2024 23:49:13 +0200
+Message-ID: <20240428214915.10339-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428214915.10339-1-philmd@linaro.org>
 References: <20240428214915.10339-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,102 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_loop_exit_requested() is specific to TCG, move it
-to "exec/translate-all.h".
+cflags_next_tb is always re-initialized in the CPU Reset()
+handler in cpu_common_reset_hold(), no need to initialize
+it in cpu_common_initfn().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240427155714.53669-13-philmd@linaro.org>
 ---
- include/exec/exec-all.h       | 17 -----------------
- include/exec/translate-all.h  | 20 ++++++++++++++++++++
- target/arm/tcg/helper-a64.c   |  1 +
- target/s390x/tcg/mem_helper.c |  1 +
- 4 files changed, 22 insertions(+), 17 deletions(-)
+ hw/core/cpu-common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 4c5e470581..2be7ef1809 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -29,23 +29,6 @@
- #include "exec/translation-block.h"
- #include "qemu/clang-tsa.h"
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index a72d48d9e1..c4175cc4b9 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -255,7 +255,6 @@ static void cpu_common_initfn(Object *obj)
+     /* the default value is changed by qemu_init_vcpu() for system-mode */
+     cpu->nr_cores = 1;
+     cpu->nr_threads = 1;
+-    cpu->cflags_next_tb = -1;
  
--/**
-- * cpu_loop_exit_requested:
-- * @cpu: The CPU state to be tested
-- *
-- * Indicate if somebody asked for a return of the CPU to the main loop
-- * (e.g., via cpu_exit() or cpu_interrupt()).
-- *
-- * This is helpful for architectures that support interruptible
-- * instructions. After writing back all state to registers/memory, this
-- * call can be used to check if it makes sense to return to the main loop
-- * or to continue executing the interruptible instruction.
-- */
--static inline bool cpu_loop_exit_requested(CPUState *cpu)
--{
--    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
--}
--
- #if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
- /* cputlb.c */
- /**
-diff --git a/include/exec/translate-all.h b/include/exec/translate-all.h
-index 85c9460c7c..dd26f70378 100644
---- a/include/exec/translate-all.h
-+++ b/include/exec/translate-all.h
-@@ -19,8 +19,28 @@
- #ifndef TRANSLATE_ALL_H
- #define TRANSLATE_ALL_H
- 
-+#include "qemu/atomic.h"
- #include "exec/exec-all.h"
-+#include "hw/core/cpu.h"
- 
-+#ifdef CONFIG_TCG
-+/**
-+ * cpu_loop_exit_requested:
-+ * @cpu: The CPU state to be tested
-+ *
-+ * Indicate if somebody asked for a return of the CPU to the main loop
-+ * (e.g., via cpu_exit() or cpu_interrupt()).
-+ *
-+ * This is helpful for architectures that support interruptible
-+ * instructions. After writing back all state to registers/memory, this
-+ * call can be used to check if it makes sense to return to the main loop
-+ * or to continue executing the interruptible instruction.
-+ */
-+static inline bool cpu_loop_exit_requested(CPUState *cpu)
-+{
-+    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
-+}
-+#endif
- 
- /* translate-all.c */
- void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr);
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 0ea8668ab4..f78430da0d 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -29,6 +29,7 @@
- #include "internals.h"
- #include "qemu/crc32c.h"
- #include "exec/exec-all.h"
-+#include "exec/translate-all.h"
- #include "exec/cpu_ldst.h"
- #include "qemu/int128.h"
- #include "qemu/atomic128.h"
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 6a308c5553..17fab5e8be 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -25,6 +25,7 @@
- #include "tcg_s390x.h"
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
-+#include "exec/translate-all.h"
- #include "exec/page-protection.h"
- #include "exec/cpu_ldst.h"
- #include "hw/core/tcg-cpu-ops.h"
+     qemu_mutex_init(&cpu->work_mutex);
+     qemu_lockcnt_init(&cpu->in_ioctl_lock);
 -- 
 2.41.0
 
