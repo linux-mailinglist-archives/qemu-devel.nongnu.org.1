@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7388B4E01
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7720E8B4E04
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1CP9-0002zr-Qp; Sun, 28 Apr 2024 17:49:51 -0400
+	id 1s1CPN-00032F-0w; Sun, 28 Apr 2024 17:50:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CP7-0002zQ-7u
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:49 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPL-00031y-F4
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:03 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1COx-00015O-Nk
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:49:41 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2dd7e56009cso49990471fa.3
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:49:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CP7-00015Z-1O
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:03 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-56c5d05128dso3493084a12.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714340976; x=1714945776; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714340982; x=1714945782; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k1ZHl3KtBDD8F5IDAshvr2j1UwCpx77YSs6aZ7LDCz8=;
- b=eSsCoJgtJrrbbaCiobU/F+gaM1SxeSHnOubz9LwuzdxLe58P8NSbIJocJFGjdT/F2P
- JblTEaVJ7WK+r9qudqstgUZ5etE29zMH5X0bpQFGSjE/ewCVBTn2/4Q5s9peTFA8mZxk
- eq5otZ0vvsHi07KEIkRMHix9vxePga8eJcIZ9K2ZZhf/pPKIOH4Li1KKtcdQ11gAalaz
- ybGi9sd1UWfP5DKe30uYPUQ4BMdk7yuwixaSpdR8HYplzOa01x6BfjxWZBFKr8T/rtD7
- 3X6mrn+wiVdujBH73K68FgKBQo411Xv0XJ9k9gOATyk+tQ9118uHYiph7ad+DlpTMBML
- l/WQ==
+ bh=u2gMJsks/FVGo186jApsF1W5B3KJkzW5GgYA94nXNvw=;
+ b=EaiZpbdVz+MlM8jUP5QUju2iA/21DQUmvj0vKfOYoa6QOyqx5PxxczAx6kuSn1nEmr
+ NiDogCJcJG5ctcllwoAjc8YIj85+CVQ8IULSiJG79jx6AP7tkG7PnyBtrBQQVF7ygr8c
+ Tu2lxFazHIxzTlibd19T1fRv8tLmI/22MzTeB4sd3SEDyEGtHYLDOQ9/4+qTkWf4OX+w
+ TuFhNr02FQrYpLg1U0oXVJT3Jm90uNzQBAEK/RjI5vVe9GLBYIn9elgO72qnUSQJmAbj
+ Sfh9JbBcLyKKasxNp83ds9NDUqhIDHv3c1qPVKfgSL4UAhdwNylJrUrnCPNlcZ52LAW9
+ 3UoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714340976; x=1714945776;
+ d=1e100.net; s=20230601; t=1714340982; x=1714945782;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k1ZHl3KtBDD8F5IDAshvr2j1UwCpx77YSs6aZ7LDCz8=;
- b=gvBw+dxaek1HVGqAAsJBNAOe5vQyilGzKHtG4qA6knYXEHe9+2L6JBGOQEWd17NsOW
- xkLfMzJgf/EFGV+vgNsiph1Oa1gtnwWRTmQVrFoGuUCx9/Qo3ykwStyL4jmiH3nMduv/
- h0wqdLh1Bl/EQ23+37b5RAEF5J4FCqqn6Bg3AA8iboRIpN7TbvuzsrSrno2Hm70j13xx
- 3CDwVv51hxhvMeQihjSgK8ZnUDnaQUJIdFbmA+qEpJNRUeBezfg9xGGl5/2adGDmrXKe
- 9BcaU1ZAyiKfpvPj6X/gEJM06QlF9F8THtCUdyCZhs+XpMWClS0LdhVIS4PbRkXvuL6s
- DGwQ==
-X-Gm-Message-State: AOJu0Yybi2rVUz4jtYfqRTvfjOsC8009pHdCAInyDE8Ly53rTJdvt8Iv
- i/Ayn26olrvs9ZPQxKeHO44Tm/BKGamK/4GLyoEbaR9w41s1/Ti+TkgZfocOM73Q9MNjrRsVh//
- q
-X-Google-Smtp-Source: AGHT+IEEiPdLLqp4VDqxPvm2+eEmueoWGf0uXMTr9KYFMjNMi0dw3NJHQjI6MMwYmshDVNeRjPGPrA==
-X-Received: by 2002:a2e:b8cb:0:b0:2df:f11f:cf79 with SMTP id
- s11-20020a2eb8cb000000b002dff11fcf79mr2482741ljp.51.1714340976175; 
- Sun, 28 Apr 2024 14:49:36 -0700 (PDT)
+ bh=u2gMJsks/FVGo186jApsF1W5B3KJkzW5GgYA94nXNvw=;
+ b=ueIwS5NfqTRQns5FTZzg4xGhOeg/J2hZKqS9EbIiC87fidGfoDaPiEd6kgkvZRe3bU
+ 7LY/wvlOF7qjOhqGAzKehakr1HWyz9fbpkixyZDixvEH3YIwzXea/KXjCm+oAy7eiCf2
+ JoPFkibbp0wZPC/M2XoXvdjt8U6XQ2UvIUHCOGMhBDHCzlk2BnaX+FCg1LEhxJur3K0K
+ Sui2IkDaU2DZzDrePOaieitW0t+8Wqi/vJZ1DKc1AiAnqZqCpaEfC7FSHKIto8oyt5VS
+ Ukokhv1YcuZ3efnTWOTg7ifhXJ9TycIYWq0UQ322y/nJUR9SymW6ZXsOT5/rwEAbKFHl
+ SDlA==
+X-Gm-Message-State: AOJu0Yx0pL/PAavIcWtVm4JsabL69Gj1GGdbVnbg1a295KgAw+p3CkRF
+ wIlZZH/1jTnIoiF9hBvX9M4Lxd41uypw5UKSH9jasvtc5hM4aFwxio0D4HtBwVtKcav7ycozGaZ
+ /
+X-Google-Smtp-Source: AGHT+IEpx49G/ihPXjmqGEmvisfic+JEboNBZEcEwoBFy8HhTFhXWSexJ/TqeBbCd/jCgyZBX73jUA==
+X-Received: by 2002:a50:ccdb:0:b0:56d:c926:b92c with SMTP id
+ b27-20020a50ccdb000000b0056dc926b92cmr5519675edj.38.1714340981894; 
+ Sun, 28 Apr 2024 14:49:41 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- ek17-20020a056402371100b0057266474cd2sm2330638edb.15.2024.04.28.14.49.34
+ u7-20020a50eac7000000b005727eadcb79sm681556edp.46.2024.04.28.14.49.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 14:49:35 -0700 (PDT)
+ Sun, 28 Apr 2024 14:49:41 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 03/12] exec: Include missing license in 'exec/cpu-common.h'
-Date: Sun, 28 Apr 2024 23:49:06 +0200
-Message-ID: <20240428214915.10339-4-philmd@linaro.org>
+Subject: [PATCH v2 04/12] exec/cpu: Indent TARGET_PAGE_foo definitions
+Date: Sun, 28 Apr 2024 23:49:07 +0200
+Message-ID: <20240428214915.10339-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428214915.10339-1-philmd@linaro.org>
 References: <20240428214915.10339-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,36 +91,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 1ad2134f91 ("Hardware convenience library") extracted
-"cpu-common.h" from "cpu-all.h", which uses the LGPL-2.1+ license.
+The TARGET_PAGE_foo definitions are defined with multiple
+level of #ifdef'ry. Indent it a bit for clarity.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240427155714.53669-5-philmd@linaro.org>
+Message-Id: <20240427155714.53669-6-philmd@linaro.org>
 ---
- include/exec/cpu-common.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/exec/cpu-all.h | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 6d5318895a..8812ba744d 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -1,8 +1,13 @@
-+/*
-+ * CPU interfaces that are target independent.
-+ *
-+ *  Copyright (c) 2003 Fabrice Bellard
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1+
-+ */
- #ifndef CPU_COMMON_H
- #define CPU_COMMON_H
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index e75ec13cd0..eaa59a5cc1 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -139,19 +139,20 @@ static inline void stl_phys_notdirty(AddressSpace *as, hwaddr addr, uint32_t val
+ #ifdef TARGET_PAGE_BITS_VARY
+ # include "exec/page-vary.h"
+ extern const TargetPageBits target_page;
+-#ifdef CONFIG_DEBUG_TCG
+-#define TARGET_PAGE_BITS   ({ assert(target_page.decided); target_page.bits; })
+-#define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
+-                              (target_long)target_page.mask; })
++# ifdef CONFIG_DEBUG_TCG
++#  define TARGET_PAGE_BITS   ({ assert(target_page.decided); \
++                                target_page.bits; })
++#  define TARGET_PAGE_MASK   ({ assert(target_page.decided); \
++                                (target_long)target_page.mask; })
++# else
++#  define TARGET_PAGE_BITS   target_page.bits
++#  define TARGET_PAGE_MASK   ((target_long)target_page.mask)
++# endif
++# define TARGET_PAGE_SIZE    (-(int)TARGET_PAGE_MASK)
+ #else
+-#define TARGET_PAGE_BITS   target_page.bits
+-#define TARGET_PAGE_MASK   ((target_long)target_page.mask)
+-#endif
+-#define TARGET_PAGE_SIZE   (-(int)TARGET_PAGE_MASK)
+-#else
+-#define TARGET_PAGE_BITS_MIN TARGET_PAGE_BITS
+-#define TARGET_PAGE_SIZE   (1 << TARGET_PAGE_BITS)
+-#define TARGET_PAGE_MASK   ((target_long)-1 << TARGET_PAGE_BITS)
++# define TARGET_PAGE_BITS_MIN TARGET_PAGE_BITS
++# define TARGET_PAGE_SIZE    (1 << TARGET_PAGE_BITS)
++# define TARGET_PAGE_MASK    ((target_long)-1 << TARGET_PAGE_BITS)
+ #endif
  
--/* CPU interfaces that are target independent.  */
--
- #include "exec/vaddr.h"
- #ifndef CONFIG_USER_ONLY
- #include "exec/hwaddr.h"
+ #define TARGET_PAGE_ALIGN(addr) ROUND_UP((addr), TARGET_PAGE_SIZE)
 -- 
 2.41.0
 
