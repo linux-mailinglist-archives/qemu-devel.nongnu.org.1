@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063798B4E8D
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E712E8B4E98
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:18:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1CpY-0001iF-B7; Sun, 28 Apr 2024 18:17:08 -0400
+	id 1s1Cpg-00024y-IY; Sun, 28 Apr 2024 18:17:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cp5-0000x9-Bw
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:42 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CpC-00018E-8k
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:49 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cp3-0005ik-F7
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:39 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5708d8beec6so4685502a12.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:16:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cp9-0005k0-Rl
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:45 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-572229f196cso3881524a12.2
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:16:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342596; x=1714947396; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342601; x=1714947401; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ToTLt6YxD1s2pYbiLl6kqeNVfIHsdKCMcl6fReELYBM=;
- b=j0IgXlv+9XI93ElGBoTxjjsUw7buP4n6n/PmiESG9GtIq1+W6Ng6EgmPh+8MPDz7Cb
- QHdvwvITKOX2QByBY7dM1JW+i/+iHArR8n7M6RHegpQMTlh+D/gS8WDXFjbroMyN2ZF/
- dviqUdcpThITpIPkzo+H3pZVqD/Vhme/fWl0I5JR8iuFZMPsTuuJuFods4Pu9bHVCXcj
- dJ/c5XKHw5DIgO4DSOZPOJqK5sfZyjHqa+fT/vHbm7VQ6mf7cpDyNRaxqnm8z5MTfedX
- zxOknwUJ+Q7n9k/DnFLGxqCbpQEmkJCAwl56Gpb72dutrwhwUJ5ATe3bI/VfbHVVMHVT
- txdQ==
+ bh=Evb3eGbBZdxVTABj6hS8iE4A57Mw0jsMC3hyjWh5Exw=;
+ b=vubWJ/k7ZEL9sjKMVKwAaB7XZjHjj8KGdwNigR3+3KTTZTA3bjaWElBlfPAwMm54Cl
+ wXTKHg+RcogNC3YOHwlI3UIo8Kt/kmKAwOw/5EJI/tkeETkW9YxY6xO996/JcherWH+X
+ GGMxwdx0Y1ScoMAZPK+xBtlCYLmKW11Wx+6WF/81V/dIlK94NHiydiNw2ybGlrE/PiWv
+ 2lNuWsIQayrZyQbdQmxVhH/RistpYa/YIhmR3iRhv2tzULSNdOs482uGcM215g6s7XSS
+ GRBxXVY+FbAv2D2yeDLOXAXJ4LUAC7dycp74Ola04G8JcIPbCy+bPWSkZCJP8Cet42L7
+ btyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342596; x=1714947396;
+ d=1e100.net; s=20230601; t=1714342601; x=1714947401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ToTLt6YxD1s2pYbiLl6kqeNVfIHsdKCMcl6fReELYBM=;
- b=Bl2BRYWzTm/xT0PY7tiS6gVxUGfelCXDNHQMtzLbr2VOYa3gcV+TKmAL7RhCHA2Y7m
- aYhp1fccPmmEsN1W7c25v8ztFcUMycD5oYc0ij4a1gALy98FNzjDEzoXAxt543SBes5u
- /nCFDWKUnp4H+WG9BhUJY2QmYwx0KeI4GkXYyHvS2YvMh8xfOAYEW3g+ODNfRzcvDlII
- 08q16zhgRbT9r9Qe6ofNqR8Bhp9g6MqK/SHBmyuV7QeRVLFYG0mBZpqYvGU3CPpdI+DI
- DVOlQ11NVwazxc580yc2X5hD75FYTUv1344Io8kVFhktxoCW1/f1OYAT/bh5lCutc/Am
- JH2A==
-X-Gm-Message-State: AOJu0YxLwy7jG/8MvOBK/7Bse8pMVGHz+vmuSNQa9OegeXqdD7Sesh2X
- DerpzYQLj3v+qKlpnh4oqALADEvTbLE7IIfhUGRHXl1yegx5tL+4XPQpIbUwWJbSjv3r8QfXPyR
- 0
-X-Google-Smtp-Source: AGHT+IEBC6n6IhAJ1mUvhsmOenWOffuwvIauLTbhaoEB+ycrZAfDShkR3Fh662BHiNy8a2skcMTa2w==
-X-Received: by 2002:a17:906:3905:b0:a55:a1d4:84f5 with SMTP id
- f5-20020a170906390500b00a55a1d484f5mr6751423eje.43.1714342595724; 
- Sun, 28 Apr 2024 15:16:35 -0700 (PDT)
+ bh=Evb3eGbBZdxVTABj6hS8iE4A57Mw0jsMC3hyjWh5Exw=;
+ b=NVbG/xfsDhekUuC9jGVWV/Z9wgRMhtWJ5IHIEz+EYHJ1U0bOv63RReS4u40ycqrNPA
+ TXB2xVCEtjl9SkwGy3PDqipz5OhEt+xDzqbqEbg9PopeQShWDPTH2e3X8Weor3E2y2sQ
+ v/ZatdGGJMi1U2xy1SjXNKZYDwWE90fww28Msxoz/o3bF/VcwRKLAmgbYkLqL0w4gQvx
+ TT9+2ru6rEDsCtZBKvV118yBUL9u/A0wzEOH+6rCJV+RAcZfF9JTB1a9Rfto5fWVpbDn
+ ztVfOnudxyzEcd3t10y2j3EwYFC+m8jBtmquUcqe5dLbL2d/IseUaRdZqkcbWHy7kjmb
+ jcuA==
+X-Gm-Message-State: AOJu0YywVloTqp8GRnwCqNQmhm10+LaraZs+VrV9Ts5kxG9Adtj8SYrC
+ Qdap+4Ys+QfWgad5ryv+vBo8ZRsV6M9DQIsRdHCYJVbtZHXh5nBhJoUXs6kJwuoeS2MyPf0JkJx
+ U
+X-Google-Smtp-Source: AGHT+IH98fELUCy8Ey1S7rRdg9c2syyMhocgeRUlOcXumMbAc0jpo3TVgaSq3vIc61vBxWRSarRTjQ==
+X-Received: by 2002:a50:9f43:0:b0:572:3fe4:18b5 with SMTP id
+ b61-20020a509f43000000b005723fe418b5mr4572654edf.32.1714342601075; 
+ Sun, 28 Apr 2024 15:16:41 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- fy7-20020a170906b7c700b00a55b1253fe5sm9144596ejb.194.2024.04.28.15.16.34
+ p19-20020a05640210d300b00572033ec969sm8495254edu.60.2024.04.28.15.16.40
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:16:35 -0700 (PDT)
+ Sun, 28 Apr 2024 15:16:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 19/24] accel/tcg: Move @iommu_notifiers from CPUState to TCG
+Subject: [PATCH 20/24] accel/tcg: Move @tb_jmp_cache from CPUState to TCG
  AccelCPUState
-Date: Mon, 29 Apr 2024 00:14:45 +0200
-Message-ID: <20240428221450.26460-20-philmd@linaro.org>
+Date: Mon, 29 Apr 2024 00:14:46 +0200
+Message-ID: <20240428221450.26460-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,131 +94,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@iommu_notifiers is specific to TCG system emulation, move it to
-AccelCPUState.
-
-Restrict TCG specific code in system/physmem.c, adding an empty
-stub for tcg_register_iommu_notifier().
+@tb_jmp_cache is specific to TCG accelerator, move it to
+its AccelCPUState.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/vcpu-state.h |  3 +++
- include/hw/core/cpu.h  |  3 ---
- system/physmem.c       | 37 ++++++++++++++++++++++++++++---------
- 3 files changed, 31 insertions(+), 12 deletions(-)
+ accel/tcg/tb-jmp-cache.h  | 4 ++--
+ accel/tcg/vcpu-state.h    | 2 ++
+ include/hw/core/cpu.h     | 2 --
+ include/qemu/typedefs.h   | 1 -
+ accel/tcg/cpu-exec.c      | 7 +++----
+ accel/tcg/cputlb.c        | 2 +-
+ accel/tcg/tb-maint.c      | 2 +-
+ accel/tcg/translate-all.c | 5 +++--
+ 8 files changed, 12 insertions(+), 13 deletions(-)
 
+diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
+index 184bb3e3e2..c3a505e394 100644
+--- a/accel/tcg/tb-jmp-cache.h
++++ b/accel/tcg/tb-jmp-cache.h
+@@ -22,12 +22,12 @@
+  * non-NULL value of 'tb'.  Strictly speaking pc is only needed for
+  * CF_PCREL, but it's used always for simplicity.
+  */
+-struct CPUJumpCache {
++typedef struct CPUJumpCache {
+     struct rcu_head rcu;
+     struct {
+         TranslationBlock *tb;
+         vaddr pc;
+     } array[TB_JMP_CACHE_SIZE];
+-};
++} CPUJumpCache;
+ 
+ #endif /* ACCEL_TCG_TB_JMP_CACHE_H */
 diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index 79e1490631..2d09dc3857 100644
+index 2d09dc3857..5b31c801d8 100644
 --- a/accel/tcg/vcpu-state.h
 +++ b/accel/tcg/vcpu-state.h
-@@ -21,6 +21,9 @@ struct AccelCPUState {
-     TaskState *ts;
- #else
-     uintptr_t mem_io_pc;
-+
-+    /* track IOMMUs whose translations we've cached in the TCG TLB */
-+    GArray *iommu_notifiers;
- #endif
- };
+@@ -7,6 +7,7 @@
+ #define ACCEL_TCG_VCPU_STATE_H
  
+ #include "hw/core/cpu.h"
++#include "tb-jmp-cache.h"
+ 
+ /**
+  * AccelCPUState:
+@@ -16,6 +17,7 @@ struct AccelCPUState {
+     uint32_t cflags_next_tb;
+ 
+     sigjmp_buf jmp_env;
++    CPUJumpCache tb_jmp_cache;
+ 
+ #ifdef CONFIG_USER_ONLY
+     TaskState *ts;
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index a8b4ae25f1..9e192f739a 100644
+index 9e192f739a..99709270fa 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -539,9 +539,6 @@ struct CPUState {
-     /* Used for user-only emulation of prctl(PR_SET_UNALIGN). */
-     bool prctl_unalign_sigbus;
+@@ -484,8 +484,6 @@ struct CPUState {
+     AddressSpace *as;
+     MemoryRegion *memory;
  
--    /* track IOMMUs whose translations we've cached in the TCG TLB */
--    GArray *iommu_notifiers;
+-    CPUJumpCache *tb_jmp_cache;
 -
-     /*
-      * MUST BE LAST in order to minimize the displacement to CPUArchState.
-      */
-diff --git a/system/physmem.c b/system/physmem.c
-index 44e477a1a5..1e003e42bb 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -27,6 +27,8 @@
- #include "qemu/madvise.h"
+     GArray *gdb_regs;
+     int gdb_num_regs;
+     int gdb_num_g_regs;
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 36f2825725..daf9009332 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -44,7 +44,6 @@ typedef struct CPUAddressSpace CPUAddressSpace;
+ typedef struct CPUArchState CPUArchState;
+ typedef struct CPUPluginState CPUPluginState;
+ typedef struct CpuInfoFast CpuInfoFast;
+-typedef struct CPUJumpCache CPUJumpCache;
+ typedef struct CPUState CPUState;
+ typedef struct CPUTLBEntryFull CPUTLBEntryFull;
+ typedef struct DeviceListener DeviceListener;
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 55235d3e5e..8f8e1fa948 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -261,7 +261,7 @@ static inline TranslationBlock *tb_lookup(CPUState *cpu, vaddr pc,
+     tcg_debug_assert(!(cflags & CF_INVALID));
  
- #ifdef CONFIG_TCG
-+#include "exec/translate-all.h"
-+#include "accel/tcg/vcpu-state.h"
- #include "hw/core/tcg-cpu-ops.h"
- #endif /* CONFIG_TCG */
+     hash = tb_jmp_cache_hash_func(pc);
+-    jc = cpu->tb_jmp_cache;
++    jc = &cpu->accel->tb_jmp_cache;
  
-@@ -578,6 +580,8 @@ MemoryRegion *flatview_translate(FlatView *fv, hwaddr addr, hwaddr *xlat,
-     return mr;
- }
- 
-+#ifdef CONFIG_TCG
-+
- typedef struct TCGIOMMUNotifier {
-     IOMMUNotifier n;
-     MemoryRegion *mr;
-@@ -614,17 +618,20 @@ static void tcg_register_iommu_notifier(CPUState *cpu,
-     TCGIOMMUNotifier *notifier = NULL;
-     int i;
- 
--    for (i = 0; i < cpu->iommu_notifiers->len; i++) {
--        notifier = g_array_index(cpu->iommu_notifiers, TCGIOMMUNotifier *, i);
-+    for (i = 0; i < cpu->accel->iommu_notifiers->len; i++) {
-+        notifier = g_array_index(cpu->accel->iommu_notifiers,
-+                                 TCGIOMMUNotifier *, i);
-         if (notifier->mr == mr && notifier->iommu_idx == iommu_idx) {
-             break;
-         }
+     tb = qatomic_read(&jc->array[hash].tb);
+     if (likely(tb &&
+@@ -1004,7 +1004,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+                  * for the fast lookup
+                  */
+                 h = tb_jmp_cache_hash_func(pc);
+-                jc = cpu->tb_jmp_cache;
++                jc = &cpu->accel->tb_jmp_cache;
+                 jc->array[h].pc = pc;
+                 qatomic_set(&jc->array[h].tb, tb);
+             }
+@@ -1083,7 +1083,6 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
+         tcg_target_initialized = true;
      }
--    if (i == cpu->iommu_notifiers->len) {
-+    if (i == cpu->accel->iommu_notifiers->len) {
-         /* Not found, add a new entry at the end of the array */
--        cpu->iommu_notifiers = g_array_set_size(cpu->iommu_notifiers, i + 1);
-+        cpu->accel->iommu_notifiers = g_array_set_size(cpu->accel->iommu_notifiers,
-+                                                       i + 1);
-         notifier = g_new0(TCGIOMMUNotifier, 1);
--        g_array_index(cpu->iommu_notifiers, TCGIOMMUNotifier *, i) = notifier;
-+        g_array_index(cpu->accel->iommu_notifiers,
-+                      TCGIOMMUNotifier *, i) = notifier;
  
-         notifier->mr = mr;
-         notifier->iommu_idx = iommu_idx;
-@@ -656,19 +663,31 @@ void tcg_iommu_free_notifier_list(CPUState *cpu)
-     int i;
-     TCGIOMMUNotifier *notifier;
+-    cpu->tb_jmp_cache = g_new0(CPUJumpCache, 1);
+     tlb_init(cpu);
+ #ifndef CONFIG_USER_ONLY
+     tcg_iommu_init_notifier_list(cpu);
+@@ -1101,5 +1100,5 @@ void tcg_exec_unrealizefn(CPUState *cpu)
+ #endif /* !CONFIG_USER_ONLY */
  
--    for (i = 0; i < cpu->iommu_notifiers->len; i++) {
--        notifier = g_array_index(cpu->iommu_notifiers, TCGIOMMUNotifier *, i);
-+    for (i = 0; i < cpu->accel->iommu_notifiers->len; i++) {
-+        notifier = g_array_index(cpu->accel->iommu_notifiers,
-+                                 TCGIOMMUNotifier *, i);
-         memory_region_unregister_iommu_notifier(notifier->mr, &notifier->n);
-         g_free(notifier);
-     }
--    g_array_free(cpu->iommu_notifiers, true);
-+    g_array_free(cpu->accel->iommu_notifiers, true);
+     tlb_destroy(cpu);
+-    g_free_rcu(cpu->tb_jmp_cache, rcu);
++    g_free_rcu(&cpu->accel->tb_jmp_cache, rcu);
  }
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index e9d6faf78f..964dacaf44 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -156,7 +156,7 @@ static void tlb_window_reset(CPUTLBDesc *desc, int64_t ns,
  
- void tcg_iommu_init_notifier_list(CPUState *cpu)
+ static void tb_jmp_cache_clear_page(CPUState *cpu, vaddr page_addr)
  {
--    cpu->iommu_notifiers = g_array_new(false, true, sizeof(TCGIOMMUNotifier *));
-+    cpu->accel->iommu_notifiers = g_array_new(false, true,
-+                                              sizeof(TCGIOMMUNotifier *));
- }
+-    CPUJumpCache *jc = cpu->tb_jmp_cache;
++    CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
+     int i, i0;
  
-+#else
-+
-+static void tcg_register_iommu_notifier(CPUState *cpu,
-+                                        IOMMUMemoryRegion *iommu_mr,
-+                                        int iommu_idx)
-+{
-+}
-+
-+#endif
-+
- /* Called from RCU critical section */
- MemoryRegionSection *
- address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr orig_addr,
+     if (unlikely(!jc)) {
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 2d5faca9fd..83758648f2 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -888,7 +888,7 @@ static void tb_jmp_cache_inval_tb(TranslationBlock *tb)
+         uint32_t h = tb_jmp_cache_hash_func(tb->pc);
+ 
+         CPU_FOREACH(cpu) {
+-            CPUJumpCache *jc = cpu->tb_jmp_cache;
++            CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
+ 
+             if (qatomic_read(&jc->array[h].tb) == tb) {
+                 qatomic_set(&jc->array[h].tb, NULL);
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 3a8199a761..ca1e193633 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -652,13 +652,14 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+  */
+ void tcg_flush_jmp_cache(CPUState *cpu)
+ {
+-    CPUJumpCache *jc = cpu->tb_jmp_cache;
++    CPUJumpCache *jc;
+ 
+     /* During early initialization, the cache may not yet be allocated. */
+-    if (unlikely(jc == NULL)) {
++    if (unlikely(cpu->accel == NULL)) {
+         return;
+     }
+ 
++    jc = &cpu->accel->tb_jmp_cache;
+     for (int i = 0; i < TB_JMP_CACHE_SIZE; i++) {
+         qatomic_set(&jc->array[i].tb, NULL);
+     }
 -- 
 2.41.0
 
