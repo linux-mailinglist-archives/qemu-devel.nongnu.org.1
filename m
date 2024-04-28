@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A93F38B4DFC
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CC18B4E05
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 23:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1CPk-000362-Pc; Sun, 28 Apr 2024 17:50:28 -0400
+	id 1s1CPn-0003JF-EU; Sun, 28 Apr 2024 17:50:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPh-00035I-DT
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:25 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPi-00035W-PB
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:27 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPb-0001Je-Kp
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:24 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41c1b75ca31so4419245e9.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:50:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CPh-0001LN-65
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 17:50:26 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-41b79451145so20747665e9.3
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 14:50:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714341016; x=1714945816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714341022; x=1714945822; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PiKDLwE364Pw013trdbS6B+l3BI8G2aZyNTUUJSMStE=;
- b=UcCEgzjqTqWs+LW/8Pp7vqHI9MTjATyg+9KEeyI5SxIwzPXt7jEVHm5sZwrIBEApzF
- OJJNvhxyu3ysg0P8TlLxY3LX4Po/Vl2yQdAM9GAv1S2FZd1Zm5TvJ/QJoRl7+vtqxmR7
- WeKDBclMzLnXvFTcNAqKub+zCERiaWKsWbtT40zkX1aT0YzzNNXqRG+obM+cOoS/f0XH
- BfoIswGjYi/pHOJTxp237aLqAAYDnub5Zz1IMFg2YZSSGYhVGthfeC+a+IRBhHK2l/Dq
- R7QXQ7LBow/mCVNz5Dl47cP+klZMLkkFAtF2umGMac+bY5rHBE17ITxvu9dgosSN9mOU
- 9kpA==
+ bh=aIL7R4VGtGNdBMyw/v1blPKio2LEB3YtucwdrTq80BM=;
+ b=HQcjzlnYXIoeQuq/qWlDatlGX5cdNEA7nTjv9+xJx8Q+5d1BE0Q2ezZhNemUhvEBZB
+ g90hJg7bzgWX63ifZ2QJ048FipQOPZ4gD0ntktjhgMMPEoB7hTSgMia/WbiXrCqEw+o6
+ 5jB8+FgFY0midSVQjVeZwSES/fMIwFCk4lwCvCI8gNxG1YhGM2LbbBpaKXSAWA+7SXHz
+ OJVq13iHAx85tWr5m+xY36lHWB00VyjIpDeM0fwlW5KX505NKxLzopQEgis5bpAJHM47
+ hm3iGtSI7p279nmdtuMW+VNwt17Km0h9bp95nqG58LsAotbNLmUAmVPC8spxMGejCqnT
+ PdGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714341016; x=1714945816;
+ d=1e100.net; s=20230601; t=1714341022; x=1714945822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PiKDLwE364Pw013trdbS6B+l3BI8G2aZyNTUUJSMStE=;
- b=g8xs8s5pc2KOImPDnTXWKVS27l9PNS+pTzq2npsTxcP7nj92ol3IqrvXMOoFKwBaCf
- kpv+moBtY8Anxha8OQ991d4i2rIyLeuyI2QU2z4jygoGxYwsms2QONOOtzBDwPY1aRTS
- 803Dm+U+yFGzVAEaIEdTxkqWRgJ/XvLMuYRWqn57plQ2FolI50IaFNyDJQGM674kDK2H
- 1zmyHQMfLzCxJYxzs6jPZy+OoE/9pf+lBZYXayUNcepn7IF8uYWwuxm+Ry4Se5sYIoXR
- m7+H2xh/eAyQhKNI9/hLDEP0O5Hl21DVH3l2VI+MgU8GUWCLDyyZptYe3MtrPWSWNSDB
- Ec2Q==
-X-Gm-Message-State: AOJu0YyzR6CDTJU3hdQlO+ELyj/Wq5vHTkbgumkLC2c1T3g3yqabVOLp
- FrqaO2K3680MqsPicCk6//Svl1tOgyA8rS/nhN+GDCp8BcNhJU6sSfZ+4ltO57Zo/8etNf6baC7
- z
-X-Google-Smtp-Source: AGHT+IGUT5jQwd/Cn4XZf4R8UekYyzYZt42HD65j994dZ/HGdoeuNy1QlyLDwBkw4ORkmAYYakZBxg==
-X-Received: by 2002:a05:600c:501f:b0:41b:b07a:c54c with SMTP id
- n31-20020a05600c501f00b0041bb07ac54cmr5546361wmr.9.1714341016281; 
- Sun, 28 Apr 2024 14:50:16 -0700 (PDT)
+ bh=aIL7R4VGtGNdBMyw/v1blPKio2LEB3YtucwdrTq80BM=;
+ b=qo+756e65GNIftMJFwb/ekUMc6Eojp7IW/QOflMwmg2LZ4RSa8uQ7jE3WsfwUwC2Yw
+ 4/PXogT5AVwdLmjDQ/N3LpyhKeB8JNvCEQo9YU7tmQuvlk6FLRAvp9JvLQyn3EMGtnet
+ UJMGhl3HAnOa3r8u3Xqhf1lCUHX2ACq6mL1pc5nBY1WYtNJ6j1aPMIVhM6RVU46OWteu
+ Bv42JsK5dAk+y0eq++6eND5Tkax5T+vYZe1VgKHKe1Yny9MZD+f8NMZHoK5TtG4R9P+N
+ gIBr1ZLi175dcCKYBtHRKaJU2hS1DAaKNCiOE37vUr/O9nQy6uq3YrdiUIYgTDyTBABM
+ BAeg==
+X-Gm-Message-State: AOJu0YyeL66YBCZ78HU9azKwxE/MGJ6NCw1+vAtAuaLODAF3n4qZ5n7g
+ a4tlSimtwV0w5CCpL19tHA/Jp3sQcI0AIXIvDz4J11mHaBv9VjTDRtsge0TcfGR/oDBvD9frw2r
+ v
+X-Google-Smtp-Source: AGHT+IGNCOKUPTl4spT9MqfQOA0uWFRPoXWXNHVRZvvlXOd2jhglB2/GC7Wm2eboqrdPeGxtu/oLWw==
+X-Received: by 2002:a05:600c:1d90:b0:41b:e55c:8e14 with SMTP id
+ p16-20020a05600c1d9000b0041be55c8e14mr3589908wms.14.1714341021962; 
+ Sun, 28 Apr 2024 14:50:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- k29-20020a05600c1c9d00b00418948a5eb0sm43150505wms.32.2024.04.28.14.50.15
+ n18-20020a05600c4f9200b004169836bf9asm42844248wmq.23.2024.04.28.14.50.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 14:50:15 -0700 (PDT)
+ Sun, 28 Apr 2024 14:50:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 10/12] accel/tcg: Remove pointless initialization of
- cflags_next_tb
-Date: Sun, 28 Apr 2024 23:49:13 +0200
-Message-ID: <20240428214915.10339-11-philmd@linaro.org>
+Subject: [PATCH v2 11/12] accel/tcg: Reset TCG specific fields in
+ tcg_cpu_reset_hold()
+Date: Sun, 28 Apr 2024 23:49:14 +0200
+Message-ID: <20240428214915.10339-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428214915.10339-1-philmd@linaro.org>
 References: <20240428214915.10339-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,29 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cflags_next_tb is always re-initialized in the CPU Reset()
-handler in cpu_common_reset_hold(), no need to initialize
-it in cpu_common_initfn().
+Rather than resetting TCG specific fields in the common
+cpu_common_reset_hold(), do it in tcg_cpu_reset_hold().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240427155714.53669-13-philmd@linaro.org>
+Message-Id: <20240427155714.53669-14-philmd@linaro.org>
 ---
- hw/core/cpu-common.c | 1 -
- 1 file changed, 1 deletion(-)
+ accel/tcg/tcg-accel-ops.c | 3 +++
+ hw/core/cpu-common.c      | 2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 2c7b0cc09e..be99105ac5 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -85,6 +85,9 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+     tcg_flush_jmp_cache(cpu);
+ 
+     tlb_flush(cpu);
++
++    qatomic_set(&cpu->neg.icount_decr.u32, 0);
++    cpu->neg.can_do_io = true;
+ }
+ 
+ /* mask must never be zero, except for A20 change call */
 diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index a72d48d9e1..c4175cc4b9 100644
+index c4175cc4b9..9b3efba82f 100644
 --- a/hw/core/cpu-common.c
 +++ b/hw/core/cpu-common.c
-@@ -255,7 +255,6 @@ static void cpu_common_initfn(Object *obj)
-     /* the default value is changed by qemu_init_vcpu() for system-mode */
-     cpu->nr_cores = 1;
-     cpu->nr_threads = 1;
--    cpu->cflags_next_tb = -1;
- 
-     qemu_mutex_init(&cpu->work_mutex);
-     qemu_lockcnt_init(&cpu->in_ioctl_lock);
+@@ -127,8 +127,6 @@ static void cpu_common_reset_hold(Object *obj, ResetType type)
+     cpu->halted = cpu->start_powered_off;
+     cpu->mem_io_pc = 0;
+     cpu->icount_extra = 0;
+-    qatomic_set(&cpu->neg.icount_decr.u32, 0);
+-    cpu->neg.can_do_io = true;
+     cpu->exception_index = -1;
+     cpu->crash_occurred = false;
+     cpu->cflags_next_tb = -1;
 -- 
 2.41.0
 
