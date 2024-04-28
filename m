@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5658B4E91
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F178B4E99
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:18:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Cnm-0005ub-Pi; Sun, 28 Apr 2024 18:15:18 -0400
+	id 1s1Cnn-0005ug-8M; Sun, 28 Apr 2024 18:15:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cnc-0005tL-50
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:13 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cni-0005tf-GY
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:15 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cna-0005UD-7R
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:07 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-51967f75729so4451556e87.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Cng-0005Ul-Mj
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:15:14 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-516d4d80d00so4881409e87.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342504; x=1714947304; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342509; x=1714947309; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LCSb64QUO6bStXSl37yEjpM4xadVVio6bpX5EBZUn28=;
- b=byFahhmLXmvc8mW1hPRycUEzGe/axojwrkT8Mj7SGhZTGFNBAYhp3QmS65bjtqDMAb
- MHi8d6MEDmchk3SkmHEtlglngmD0Wj97BZSzTWL8BkfVzgJjKAt7oofx4GdR0bXQYUQU
- 2ujzKk9APcjgTn9u3HJhL+3H/i/5V13yqvDbUTpp3P//UO/YiLbztdyJJZi/LB1pInXy
- kmAAfqqQfcvytqi4LI5Z7PLfFEq4oi8Xl9G/2/tN+JHe8jxVyLjVlLlyg4RA8VDCwy9Q
- +emYvXEtE7arAjCZlBXv3+VHOluNpoWiT4C/4kt0O4G6tLf/Q4Kq1ooU7/PYibK/BK12
- uKQg==
+ bh=EC394qSuW4mbz7HKeTozfqIySzPWTIg+XxWvBDEtDQ0=;
+ b=TGhJZcceXRQ6GrFka5EFRsFF3/gwKlkQPugCLG/NT/cXvmFwBI6J3VVjwFti5PU/t2
+ lSfSDSC1+WOUcIfZId5NtwSrMin1a20CmX6sahHVR//wNWmpNJpChDjUebFLrVrJmHmv
+ e4QNw99KXpZb8IqID65aRgmFu4r+zZfOzYJuOIGyqGdVcnJXo9mfB8NOc2DaR6Ioyc32
+ AkwQr1hxLTod22KShMY3N1Iaux6YtH22vDUwFknUo1uC/MwwRGQJJ+8OeXkItNcTN6Wm
+ 1XdVkGafy1n/BrPHlsdsy72LOkgw9AVt7Am/a3p/5agP1NUAZSDKv/lwRYLGjcymPgJi
+ WMaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342504; x=1714947304;
+ d=1e100.net; s=20230601; t=1714342509; x=1714947309;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LCSb64QUO6bStXSl37yEjpM4xadVVio6bpX5EBZUn28=;
- b=CWPCB3J6X7l2UAP6OAyPdh5pzy0pzCJQMbh1uw/KhyHYzO2fybe6m1HyELZKVKnBym
- PwgDkVDdbRm+t7J7YiAgll+e6WK2WvV2mhw0Otj3IMDF0wpikDokRDBWJS7uPwHlsGre
- IBagFp6ZPuFEeeTya2vkc7sH/l2rE9+/l0w432lctJZtbp0aOAkKmC3Uu38/b2Q6mscX
- Q3MvoXmoSE5TsJ3fYtDDX3igyBoLjGuGfQWV/wWPglqZ8tBuY0F8qoyQAMjLH9pwm7re
- kIRWd0qK4sHtoA1uiR2QzlfhOkvHvLI3C18eTX1WHDuL8p6ssmSFwTegRZXtLJBZYrPo
- tdqA==
-X-Gm-Message-State: AOJu0YzFQ/Oy6f5GlfFse+vI/oTuveCQ1T5tosYxsph+gtHILravfIm3
- 2rRgFXxjIHl9abvCPRIP70n8Uglbjbz8wmMuTz6WVRC3mGQ5ExrAqY3BFMX3jOsngo0JYEZSkYB
- p
-X-Google-Smtp-Source: AGHT+IH3GiS2sMm7GNUp5H/lEciphSyP19Q2r+sYcddT6HRtKIoB13yLydaTIDLDUfPK5UQtN2LV7A==
-X-Received: by 2002:a19:7508:0:b0:51b:ac8d:3ba3 with SMTP id
- y8-20020a197508000000b0051bac8d3ba3mr4962843lfe.19.1714342504019; 
- Sun, 28 Apr 2024 15:15:04 -0700 (PDT)
+ bh=EC394qSuW4mbz7HKeTozfqIySzPWTIg+XxWvBDEtDQ0=;
+ b=flVICcaZh36qiICKarBAI2shQwpkSiA2H//QkZISW0TnYsiTUaTCpCW2Fx/QaQ5C3G
+ Bwf0F4nk2JohMrpdQlYD1mJJ5ZcSRVKBqRCl1y78zSn5hYRpFzXB6FnGlTanPh8jKI35
+ XCEGnh6pPmPksCejEUoyV5Qpfv4UjxzfTJtdEKjOwpQxBBgaUaF9yg3jWZX09elUoDkh
+ OWZPkpXLiw4BisRo3h0XgPN02FQU2VxHQwvA9SsadhzdXFNjtsfiH+SXxrlHX/Ki2yCX
+ 9BS3/JayEh+xGimcJLtzKcjwYO0Z7vw3BoCpYIGqpSiGSwL3eauP22iK+c6p3o3Zetra
+ d8TQ==
+X-Gm-Message-State: AOJu0YyzFDZ84iszfSHfaQLTNAWNyHfEI/zZWyrtFTndBAgfe5Yc6fUy
+ +CUCNtylsjzlRXuLbRFF6/kpAYxbOYKbBnYA0kxV4b9NHkymBt9rRRJ1YUDJ0IQUKd47pv3msAY
+ 6
+X-Google-Smtp-Source: AGHT+IG06gdHkbUcQaaw/Jh1yxLnNDG1oltU4qR6/u1hWiYZiddIR1+gy02T0aS8pZz0ClVMzeERRA==
+X-Received: by 2002:a05:6512:3983:b0:518:d5c5:7276 with SMTP id
+ j3-20020a056512398300b00518d5c57276mr6961240lfu.58.1714342509485; 
+ Sun, 28 Apr 2024 15:15:09 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- z12-20020a170906270c00b00a55895c7f50sm11648411ejc.151.2024.04.28.15.15.02
+ i21-20020a170906091500b00a5216df5d25sm13117569ejd.3.2024.04.28.15.15.08
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:15:03 -0700 (PDT)
+ Sun, 28 Apr 2024 15:15:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 02/24] coverity: Update user emulation regexp
-Date: Mon, 29 Apr 2024 00:14:28 +0200
-Message-ID: <20240428221450.26460-3-philmd@linaro.org>
+Subject: [PATCH 03/24] accel/tcg: Move user definition of cpu_interrupt() to
+ user-exec.c
+Date: Mon, 29 Apr 2024 00:14:29 +0200
+Message-ID: <20240428221450.26460-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,26 +94,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All user emulation headers are now under include/user/.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- scripts/coverity-scan/COMPONENTS.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/translate-all.c | 9 ---------
+ accel/tcg/user-exec.c     | 8 ++++++++
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 91be8d1c36..1537e49cd5 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -121,7 +121,7 @@ usb
-   ~ (/qemu)?(/hw/usb/.*|/include/hw/usb/.*)
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 83cc14fbde..fdf6d8ac19 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -644,15 +644,6 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+     cpu_loop_exit_noexc(cpu);
+ }
  
- user
--  ~ (/qemu)?(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/exec/user/.*)
-+  ~ (/qemu)?(/linux-user/.*|/bsd-user/.*|/user-exec\.c|/thunk\.c|/include/user/.*)
+-#else /* CONFIG_USER_ONLY */
+-
+-void cpu_interrupt(CPUState *cpu, int mask)
+-{
+-    g_assert(bql_locked());
+-    cpu->interrupt_request |= mask;
+-    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
+-}
+-
+ #endif /* CONFIG_USER_ONLY */
  
- util
-   ~ (/qemu)?(/util/.*|/include/qemu/.*)
+ /*
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index ca27746fe4..f49435df9d 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -24,6 +24,7 @@
+ #include "qemu/bitops.h"
+ #include "qemu/rcu.h"
+ #include "exec/cpu_ldst.h"
++#include "qemu/main-loop.h"
+ #include "exec/translate-all.h"
+ #include "exec/page-protection.h"
+ #include "exec/helper-proto.h"
+@@ -38,6 +39,13 @@ __thread uintptr_t helper_retaddr;
+ 
+ //#define DEBUG_SIGNAL
+ 
++void cpu_interrupt(CPUState *cpu, int mask)
++{
++    g_assert(bql_locked());
++    cpu->interrupt_request |= mask;
++    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
++}
++
+ /*
+  * Adjust the pc to pass to cpu_restore_state; return the memop type.
+  */
 -- 
 2.41.0
 
