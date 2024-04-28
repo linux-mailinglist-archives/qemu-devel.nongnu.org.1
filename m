@@ -2,72 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650648B4A3A
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B0A8B4A3E
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 09:02:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0yWw-0002JL-Ic; Sun, 28 Apr 2024 03:00:58 -0400
+	id 1s0yWz-0002K5-Ve; Sun, 28 Apr 2024 03:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yWt-0002J8-TG
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:00:56 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1s0yWw-0002Jp-Ry
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:00:59 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s0yWr-0005MB-Ne
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:00:55 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6f3fde125ccso120471b3a.2
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:00:53 -0700 (PDT)
+ id 1s0yWv-0005MY-7S
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 03:00:58 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6ee12766586so2628349b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 00:00:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287652; x=1714892452;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1714287656; x=1714892456;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=blwYL7oSLYksahYUvT4MIm0+Dd7aR+c9ZIVfyNqVTOQ=;
- b=WOuC3t8Htp8vgd/6N58nvun24VL+HrmoLfC1L3+CYlsxFD4zbmJ4/2fu33gq1ZksiO
- xa38KC0rytCISXhaFTxNNvMoyzW7cN/uBe6H6wH/yNSOfkmze/hp5u6saW2uKQiSGpLe
- vORm9g+qeSkJYo1wKaxFSA+I7inZu/AR21MXHsvDXaMyrAwtWUX2fTmmgwTauUaaiHSh
- kd37icdl+eRCeRFS/LQoNWzqa5q0mQBPRPiXF3KmLzZUeK4KFvXmANS/Ia8UwJgqptIL
- Dub35+4ZMcFqgtiXPw2KLb8x3rUOAsCnkb05YSbsby2AJcU9SqoCPZuKoiqLUCpY8Q7R
- ee9g==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=YXGkezc0Gx9lLWlJor+Pz7GYk0o8N+u+ry/JI3vI6BA=;
+ b=Ui5dr750bnlfkAuhM6rugFGiR4kjY+RK9QDZpOEiSYzo1EouJdjxHH/rA6iFtRAFca
+ NPWWZHHf9ThShFzoua1yaxunvGh2su0+9tHhZQJTHbSYKZROTtUA9jiF81n0DoZ0LKhc
+ XdPBbl0x5sWWigG3V8Gp+KIy9CdJn7/1b4CCCqElLBWnkQMFLt7ZSPr+sde7wyEt6H1g
+ eIP4zFRuHe/0RnIvH36IBMSjeUvFA4tV8diSj5cFtyXM6bsKn1KSHpdmx2BF1Cmz0ZOQ
+ MEvi8b72wUAh4I4fhgty2JHqxWhaPp4/wxv/fiGmigxw02L9rDHLTMCUbFF5RBgiYvlM
+ Pomg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714287652; x=1714892452;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=blwYL7oSLYksahYUvT4MIm0+Dd7aR+c9ZIVfyNqVTOQ=;
- b=MzwzwM6oxIadwgh9I2mSmw6vyy4sXblK2V2L9aRiGNlSpylEdG8fBypmfiAQ8C3ene
- pJq6GKbtUKSnIMdNOQ2uUo63UHTz9l12WI6V2v6j7DqmNEw9PuWeuKFFBVfdrUWEsMWM
- tghwgQVTh24sEQHBlPvZDY1jGB8rlKjZq8BdX1jLYypPYwiK/9bhiCO/cvEDg3vXswo0
- qjFjRZX39HJMAaprCVcTJz+w24cmzJOBq7SVFKegu52tkRfBqjCj646c7fYQDJjLEBli
- 4OozL7GynoTv5poIyrc3xfzrkiDcCvK50fM6L8dKC8NyJFof6B8xk2mBbf2/8YcjHVXx
- A6YQ==
-X-Gm-Message-State: AOJu0YxkZDo5U8kCdyoK/vqukrUJGN7nz82LY3iMPEaDgnY3ssYSV4/5
- eHRCV4XnrhLI1AOcgnBMEA06Qc1+rmTvQt62VSwK0XM9NvnlPu2G2UGPx732HTs=
-X-Google-Smtp-Source: AGHT+IFl8USBjdwTWT624+nQJTvj8SEFnCg5PT6q4q3D3XP0rX7sPVZY1VYnk0oFSccXYpjmTBDCfA==
-X-Received: by 2002:a05:6a00:170a:b0:6ed:d47e:625d with SMTP id
- h10-20020a056a00170a00b006edd47e625dmr8374619pfc.30.1714287651874; 
- Sun, 28 Apr 2024 00:00:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714287656; x=1714892456;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YXGkezc0Gx9lLWlJor+Pz7GYk0o8N+u+ry/JI3vI6BA=;
+ b=rkiGy1nULcdi6vIuXR/8HiZu8t48MUYdOatHcjYp69O4L9RTsAInIrfveuN2qUpqQi
+ LyOHO/rZOMRnfF2M/QpDO9fxXcPh6NMgKZ08XMM24MCedYb+qZXfUwhfcLtrjDzB0oEA
+ Rhkg7bZmgUg59Y08zQwl75vOhDsLbvwGDiTu5LC0Fe5mCAGqwAO/j6BVwWyq8AJwhVrA
+ YiR4zrtsP51KZT8uiQxGcRYoobzMdhnKQ8k3ivfC7GA7jpfMqotO+JdD2fvQsG3Q9iQn
+ xAzrbtNFdW3azfWxhpX218evR1BNlRf/k5/73eq2UofCxd8fnYPpdpwgltF0CnsZiqix
+ 0u7g==
+X-Gm-Message-State: AOJu0YwP6c5S0LvOa/N/5IKUM23KAy2tVOQ7wJq2bcUkxQLx4dRAmtJM
+ 4QERADYBojKwY8VPjgE233/wpUvS56MKtbucOFJ2ATEXshGxKVH+EwlnOcBj2NwZG6MrbwsIKHQ
+ ytBM=
+X-Google-Smtp-Source: AGHT+IGvMeFfL86xJBIDKVCs58ULin/TWdvT8kDBxFutr9PvfKevr+1xT1LuTmoVaVqSwhqBqEkejQ==
+X-Received: by 2002:a05:6a00:2e1b:b0:6ec:ef1c:4dcd with SMTP id
+ fc27-20020a056a002e1b00b006ecef1c4dcdmr11213454pfb.6.1714287655754; 
+ Sun, 28 Apr 2024 00:00:55 -0700 (PDT)
 Received: from localhost ([157.82.202.162])
  by smtp.gmail.com with UTF8SMTPSA id
- 13-20020a056a00070d00b006e69a142458sm17181252pfl.213.2024.04.28.00.00.48
+ jw37-20020a056a0092a500b006ecf0ad97bbsm17779942pfb.17.2024.04.28.00.00.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 28 Apr 2024 00:00:51 -0700 (PDT)
+ Sun, 28 Apr 2024 00:00:55 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v10 00/18] virtio-net RSS/hash report fixes and
- improvements
-Date: Sun, 28 Apr 2024 16:00:43 +0900
-Message-Id: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
+Date: Sun, 28 Apr 2024 16:00:44 +0900
+Subject: [PATCH v10 01/18] tap: Remove tap_probe_vnet_hdr_len()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABv0LWYC/1XMzQ6CMBAE4Fche7amf9DWk+9hPGC7yh4E0poGQ
- nh3C8YDx5nMNwskjIQJLtUCETMlGvoSBD9V4Lu2fyGjUAqQXCohBWcxJYbGO4tGSlkrKMsx4pO
- m/eZ2L7mj9BnivL9mu7VHny3jzNW1QjRCB2WvoZ17ms5+eMN2kN0faa65+iFXkG+CNdi4Yh4Ht
- K7rF4ENIOXNAAAA
+Message-Id: <20240428-rss-v10-1-73cbaa91aeb6@daynix.com>
+References: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
+In-Reply-To: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
 To: Jason Wang <jasowang@redhat.com>, 
  Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
  Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, 
@@ -76,11 +74,10 @@ To: Jason Wang <jasowang@redhat.com>,
  Vincenzo Maffione <v.maffione@gmail.com>, 
  Andrew Melnychenko <andrew@daynix.com>, 
  Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
- "Zhang, Chen" <chen.zhang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::433;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,120 +99,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains fixes and improvements for virtio-net RSS and hash
-reporting feature.
-
-V7 -> V8:
-  Reset author email addresses.
-  Rebased.
-
-V6 -> V7:
-  Dropped patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
-  Dropped the changes to remove packet flags.
-  Re-introduced tap_receive() and changed it to call tap_receive_iov().
-  Removed tap_get_vnet_hdr_len().
-  Fixed tap initialization not to call tap_fd_set_vnet_hdr_len() for tap
-  without virtio-net header.
-  Changed to call error_report() instead of warn_report() for
-  programming errors.
-
-V5 -> V6:
-  Corrected the message for patch "virtio-net: Return an error when vhost
-  cannot enable RSS".
-  Removed changes to introduce asserts from "virtio-net: Return an error
-  when vhost cannot enable RSS".
-  Reorganized patches "virtio-net: Return an error when vhost cannot
-  enable RSS" and "virtio-net: Do not clear VIRTIO_NET_F_RSS". This
-  version now contains patches "virtio-net: Return an error when vhost
-  cannot enable RSS" and "virtio-net: Enable software RSS".
-  Rebased.
-
-V4 -> V5:
-  Added patch "virtio-net: Do not write hashes to peer buffer".
-
-V3 -> V4:
-  Extract patches "tap: Remove tap_receive()" and  "net: Remove flag
-  propagation" from "net: Remove receive_raw()".
-  Added patch "virtio-net: Always set populate_hash".
-  Added patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
-  Added patch "ebpf: Use standard section name".
-  Added patch "ebpf: Simplify error handling".
-  Added patch "ebpf: Return 0 when configuration fails".
-  Added patch "ebpf: Refactor tun_rss_steering_prog()".
-  Added patch "ebpf: Add a separate target for skeleton".
-
-V2 -> V3:
-  Added patch "tap: Remove tap_probe_vnet_hdr_len()".
-  Added patch "tap: Remove qemu_using_vnet_hdr()".
-  Added patch "net: Move virtio-net header length assertion".
-  Added patch "net: Remove receive_raw()".
-  Added patch "tap: Shrink zeroed virtio-net header".
-  Dropped patch "tap: Fix virtio-net header buffer size".
-
-V1 -> V2:
-  Added patch "ebpf: Fix RSS error handling".
+It was necessary since an Linux older than 2.6.35 may implement the
+virtio-net header but may not allow to change its length. Remove it
+since such an old Linux is no longer supported.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-Changes in v10:
-- Dropped an obsolete statement of patch "virtio-net: Do not write
-  hashes to peer buffer". (Yuri Benditovich)
-- Dropped patch "virtio-net: Return an error when vhost cannot enable
-  RSS" and "virtio-net: Report RSS warning at device realization".
-- Link to v9: https://lore.kernel.org/r/20240403-rss-v9-0-c6d87e69d38b@daynix.com
+ net/tap_int.h     |  1 -
+ net/tap-bsd.c     |  5 -----
+ net/tap-linux.c   | 20 --------------------
+ net/tap-solaris.c |  5 -----
+ net/tap-stub.c    |  5 -----
+ net/tap.c         |  8 ++------
+ 6 files changed, 2 insertions(+), 42 deletions(-)
 
-Changes in v9:
-- Added patch "virtio-net: Do not propagate ebpf-rss-fds errors".
-- Added patch "virtio-net: Shrink header byte swapping buffer".
-- Rebased.
-- Link to v8: https://lore.kernel.org/r/20231210-rss-v8-0-9553ee714d38@daynix.com
+diff --git a/net/tap_int.h b/net/tap_int.h
+index 9a2175655bb0..8857ff299d22 100644
+--- a/net/tap_int.h
++++ b/net/tap_int.h
+@@ -35,7 +35,6 @@ ssize_t tap_read_packet(int tapfd, uint8_t *buf, int maxlen);
+ 
+ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
+ int tap_probe_vnet_hdr(int fd, Error **errp);
+-int tap_probe_vnet_hdr_len(int fd, int len);
+ int tap_probe_has_ufo(int fd);
+ int tap_probe_has_uso(int fd);
+ void tap_fd_set_offload(int fd, int csum, int tso4, int tso6, int ecn, int ufo,
+diff --git a/net/tap-bsd.c b/net/tap-bsd.c
+index 274ea7bd2c3c..b4c84441ba8b 100644
+--- a/net/tap-bsd.c
++++ b/net/tap-bsd.c
+@@ -217,11 +217,6 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
+ 
+-int tap_probe_vnet_hdr_len(int fd, int len)
+-{
+-    return 0;
+-}
+-
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+ }
+diff --git a/net/tap-linux.c b/net/tap-linux.c
+index c7e514ecb04b..1226d5fda2d9 100644
+--- a/net/tap-linux.c
++++ b/net/tap-linux.c
+@@ -185,26 +185,6 @@ int tap_probe_has_uso(int fd)
+     return 1;
+ }
+ 
+-/* Verify that we can assign given length */
+-int tap_probe_vnet_hdr_len(int fd, int len)
+-{
+-    int orig;
+-    if (ioctl(fd, TUNGETVNETHDRSZ, &orig) == -1) {
+-        return 0;
+-    }
+-    if (ioctl(fd, TUNSETVNETHDRSZ, &len) == -1) {
+-        return 0;
+-    }
+-    /* Restore original length: we can't handle failure. */
+-    if (ioctl(fd, TUNSETVNETHDRSZ, &orig) == -1) {
+-        fprintf(stderr, "TUNGETVNETHDRSZ ioctl() failed: %s. Exiting.\n",
+-                strerror(errno));
+-        abort();
+-        return -errno;
+-    }
+-    return 1;
+-}
+-
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+     if (ioctl(fd, TUNSETVNETHDRSZ, &len) == -1) {
+diff --git a/net/tap-solaris.c b/net/tap-solaris.c
+index 08b13af51257..51b7830bef1d 100644
+--- a/net/tap-solaris.c
++++ b/net/tap-solaris.c
+@@ -221,11 +221,6 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
+ 
+-int tap_probe_vnet_hdr_len(int fd, int len)
+-{
+-    return 0;
+-}
+-
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+ }
+diff --git a/net/tap-stub.c b/net/tap-stub.c
+index 4b24f61e3a6c..38673434cbd6 100644
+--- a/net/tap-stub.c
++++ b/net/tap-stub.c
+@@ -52,11 +52,6 @@ int tap_probe_has_uso(int fd)
+     return 0;
+ }
+ 
+-int tap_probe_vnet_hdr_len(int fd, int len)
+-{
+-    return 0;
+-}
+-
+ void tap_fd_set_vnet_hdr_len(int fd, int len)
+ {
+ }
+diff --git a/net/tap.c b/net/tap.c
+index baaa2f7a9ac7..72ae95894ff1 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -259,11 +259,7 @@ static bool tap_has_vnet_hdr(NetClientState *nc)
+ 
+ static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
+ {
+-    TAPState *s = DO_UPCAST(TAPState, nc, nc);
+-
+-    assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
+-
+-    return !!tap_probe_vnet_hdr_len(s->fd, len);
++    return tap_has_vnet_hdr(nc);
+ }
+ 
+ static int tap_get_vnet_hdr_len(NetClientState *nc)
+@@ -432,7 +428,7 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
+      * Make sure host header length is set correctly in tap:
+      * it might have been modified by another instance of qemu.
+      */
+-    if (tap_probe_vnet_hdr_len(s->fd, s->host_vnet_hdr_len)) {
++    if (vnet_hdr) {
+         tap_fd_set_vnet_hdr_len(s->fd, s->host_vnet_hdr_len);
+     }
+     tap_read_poll(s, true);
 
----
-Akihiko Odaki (18):
-      tap: Remove tap_probe_vnet_hdr_len()
-      tap: Remove qemu_using_vnet_hdr()
-      net: Move virtio-net header length assertion
-      net: Remove receive_raw()
-      tap: Call tap_receive_iov() from tap_receive()
-      tap: Shrink zeroed virtio-net header
-      virtio-net: Do not propagate ebpf-rss-fds errors
-      virtio-net: Add only one queue pair when realizing
-      virtio-net: Copy header only when necessary
-      virtio-net: Shrink header byte swapping buffer
-      virtio-net: Disable RSS on reset
-      virtio-net: Unify the logic to update NIC state for RSS
-      virtio-net: Always set populate_hash
-      virtio-net: Do not write hashes to peer buffer
-      ebpf: Fix RSS error handling
-      ebpf: Return 0 when configuration fails
-      ebpf: Refactor tun_rss_steering_prog()
-      ebpf: Add a separate target for skeleton
-
- ebpf/rss.bpf.skeleton.h  | 1558 +++++++++++++++++++++++-----------------------
- include/net/net.h        |    8 -
- net/tap_int.h            |    1 -
- hw/net/e1000e.c          |    1 -
- hw/net/igb.c             |    1 -
- hw/net/net_tx_pkt.c      |    4 +-
- hw/net/virtio-net.c      |  264 ++++----
- hw/net/vmxnet3.c         |    2 -
- net/dump.c               |    4 +-
- net/net.c                |   47 +-
- net/netmap.c             |    5 -
- net/tap-bsd.c            |    5 -
- net/tap-linux.c          |   20 -
- net/tap-solaris.c        |    5 -
- net/tap-stub.c           |    5 -
- net/tap.c                |   77 +--
- tools/ebpf/rss.bpf.c     |   44 +-
- tools/ebpf/Makefile.ebpf |   15 +-
- 18 files changed, 948 insertions(+), 1118 deletions(-)
----
-base-commit: e5c6528dce86d7a9ada7ecf02fcb7b8560955131
-change-id: 20231210-rss-e7c98e722253
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.44.0
 
 
