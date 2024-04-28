@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EC88B4E8A
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A778B4E89
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 00:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1CoX-0007T1-6S; Sun, 28 Apr 2024 18:16:05 -0400
+	id 1s1Cot-00085r-OQ; Sun, 28 Apr 2024 18:16:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CoU-0007GR-3i
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:02 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CoY-0007r2-TS
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:07 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CoS-0005eX-8i
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:01 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-51d62b0ecb7so1141231e87.3
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:15:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1CoX-0005er-7V
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 18:16:06 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-56e37503115so3952395a12.1
+ for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 15:16:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714342558; x=1714947358; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714342563; x=1714947363; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D1rpAj6pG3Iu5Z1qjdM7/D8i4CzaRkhAeVl3d7RMB7A=;
- b=U/5fcXoUOKOPnspc0RX0xjPZE/g7ygw6nVeyohJcJ4m7gRBLSQzb/1x/qFJ/nanZC6
- tTRx9+r+r17mlxbtLgPxMn5hEUoIKLd2VnB9SUf8jUxPYW9ROSCmge1F5gd5nba+AMdi
- zur/t74X/3oCeJ079QIgMtNFsJSsa1sVmR3BnbsezCnA9oqHE22Ff4lomST7T6YBQv5L
- Ok/WqooFRhRaarYM8ZGVXpc0BossbirYVJPCBfREPIT+X4t1LaScFfxYgrtCDDhuAFtY
- KtGKKXIc577SElHUGnzU1kiyuJHit+wIL7lRyRoRZdUxXF4FWThtdBMsevFuEq/lB0CE
- GlCg==
+ bh=wMrSi6a9YnmKRxRGwae1/x8KkxNfv7crj6dkQDrCI20=;
+ b=pTRk8nm6qeMSzBaTgfaEUxgPkHoySIiAGJ9INtt4Uw7g+QL/PlE5s1AwG3RbRiK30K
+ J5uUM8lu2gI8HORSy7+xBRVcVPyhlS62x1xsaUobfjlBq+F54PxrukuDIxj+tPEttql8
+ 4ZkB5jxPW0AMA3gJeh9TRf0t62FEzFacYbXDXjZU6akrHRqOKSYb7G6G6loOGR6HNBUi
+ 1VN270hTkyV3nn61c+xAwEwNIQKOTHSYr0pIuiJdbLneyZ2fjaWG4lr9O7JtQx7VorAP
+ AH3A+2P9dmGEV1kYjb0ex71JdmVMfJjuyDZoez53hp7RRaFgNmGRypi6cY1UDfMPRcnj
+ T6ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714342558; x=1714947358;
+ d=1e100.net; s=20230601; t=1714342563; x=1714947363;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D1rpAj6pG3Iu5Z1qjdM7/D8i4CzaRkhAeVl3d7RMB7A=;
- b=jx1BYyyjWvxnTP/O4YPlwjhVzbZpAinOFTFVx9knURCnU5sfwWT8bsKBtDhApGJJoJ
- hS3G/nMo6rqXNi+tOc7eXqVY16VE7YIjW2w4pBChUzIrxGw5Gv890t7XarCFPAtF+rUM
- I0cEM0ey6LcQ4AwtD49eFQ5UGf4feye9DeqSuphBB2UpHFVEBDR+eJb/9ALP64XshnYy
- ARwNS41ONykmpSvOIlhA51vNd/82OMpe2rskkSrNBf3SROW5D64d5UAkwderzOa7rirZ
- H0AKNRCkXZ0pngzcs40OE3+f3uOWGa4/nwWaSm6BrOPj2gwUTGXkhDvQfypK0MoF+Imo
- Y/eQ==
-X-Gm-Message-State: AOJu0YxACsDDsr/RnbrXQfeyNA87oH9jBaUqQyXE7iohMju68Xq0McLr
- Vbuh2Bzv+x6DU4L+lkBDmbsKqqwJej06eCqsfb+I/oGa50m7ysEceVzV3EW7Dn5lFEAhX5ViSn6
- e
-X-Google-Smtp-Source: AGHT+IFvitlgsEl1W3PuxdkQPpMkRU4DD2UUQ9YZwKnpl6isWAXoWbkdiSJNaFwuSLjtidZAmLmvcg==
-X-Received: by 2002:a05:6512:3196:b0:51d:3675:6a06 with SMTP id
- i22-20020a056512319600b0051d36756a06mr3815783lfe.66.1714342557839; 
- Sun, 28 Apr 2024 15:15:57 -0700 (PDT)
+ bh=wMrSi6a9YnmKRxRGwae1/x8KkxNfv7crj6dkQDrCI20=;
+ b=NyXrd1I6IHcZvfZAW8/XnTDXSNyVz8otySLn9r5zalt9bclr0HELCZrePZoOIh/Ngw
+ prqPEHnLQBxxuqk+q4M9g02zlXg+uRbDbS0Yu5jiMbm1vf0pfURX3nTe14M3Szo65al/
+ xmAZoZ46y1mjYVzZVcQ1q001nuAxCEOan61XjaJi8G/TmIwiZyMRt5b15TojMTOnI/Hs
+ 3Ht80nk9UpNdFkfCnkIksmxeDr8pWs4GHNL0kSlDdvzoL9I/L0UwFcqnKYfLR+5XX56P
+ miLjLZ58lsIaJIAtbK1NZQzn6oWNJ/Dwbi5YDkhcYuMS9wluF1XLqDwVYG/cgQU+g0W4
+ 782A==
+X-Gm-Message-State: AOJu0Yw3fNj/NpACU7dpTeWuLntRfaPQiSsYoxWTRuswbNLVfT0tlSJh
+ HKYopoGS7YDLfdJ3AJdNhjycbatYA/HdEdEuOJYDHNr1aPsuL4FrMQ755nnieZ1gtKrxCCngZDw
+ 7
+X-Google-Smtp-Source: AGHT+IEwWGc4kKTcFpy0caUeRzDluw440AX7zuTRSBzyuzAGj62TeC5DmbbM3LKV+4mKic0rO1fFgg==
+X-Received: by 2002:a17:906:11d2:b0:a58:e789:8eb7 with SMTP id
+ o18-20020a17090611d200b00a58e7898eb7mr2697411eja.74.1714342563336; 
+ Sun, 28 Apr 2024 15:16:03 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.130])
  by smtp.gmail.com with ESMTPSA id
- l18-20020a170906645200b00a55bb18e3d7sm8230871ejn.168.2024.04.28.15.15.56
+ bb6-20020a1709070a0600b00a55b020a821sm9253199ejc.13.2024.04.28.15.16.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sun, 28 Apr 2024 15:15:57 -0700 (PDT)
+ Sun, 28 Apr 2024 15:16:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 12/24] accel/tcg: Move TaskState from CPUState to TCG
- AccelCPUState
-Date: Mon, 29 Apr 2024 00:14:38 +0200
-Message-ID: <20240428221450.26460-13-philmd@linaro.org>
+Subject: [PATCH 13/24] accel/tcg: Update CPUNegativeOffsetState::can_do_io
+ field documentation
+Date: Mon, 29 Apr 2024 00:14:39 +0200
+Message-ID: <20240428221450.26460-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240428221450.26460-1-philmd@linaro.org>
 References: <20240428221450.26460-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,92 +94,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TaskState is specific to TCG user emulation, move it
-to AccelCPUState.
+The @can_do_io field got moved from CPUState to
+CPUNegativeOffsetState in commit 464dacf609 ("accel/tcg:
+Move can_do_io to CPUNegativeOffsetState").
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/vcpu-state.h | 6 ++++--
- include/hw/core/cpu.h  | 2 --
- bsd-user/main.c        | 2 +-
- linux-user/main.c      | 2 +-
- linux-user/syscall.c   | 2 +-
- 5 files changed, 7 insertions(+), 7 deletions(-)
+ include/hw/core/cpu.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index d0dd1bbff8..cf8e3acef9 100644
---- a/accel/tcg/vcpu-state.h
-+++ b/accel/tcg/vcpu-state.h
-@@ -12,13 +12,15 @@
-  * AccelCPUState:
-  */
- struct AccelCPUState {
--    /* Empty */
-+#ifdef CONFIG_USER_ONLY
-+    TaskState *ts;
-+#endif
- };
- 
- #ifdef CONFIG_USER_ONLY
- static inline TaskState *get_task_state(const CPUState *cs)
- {
--    return cs->opaque;
-+    return cs->accel->ts;
- }
- #endif
- 
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 46b99a7ea5..9b99d8e8fe 100644
+index 9b99d8e8fe..beb37342e9 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -490,8 +490,6 @@ struct CPUState {
-     QTAILQ_HEAD(, CPUWatchpoint) watchpoints;
-     CPUWatchpoint *watchpoint_hit;
+@@ -338,9 +338,10 @@ typedef union IcountDecr {
+     } u16;
+ } IcountDecr;
  
--    void *opaque;
--
-     /* In order to avoid passing too many arguments to the MMIO helpers,
-      * we store some rarely used information in the CPU context.
-      */
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 29a629d877..1ce4b0b6e4 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -590,7 +590,7 @@ int main(int argc, char **argv)
-     init_task_state(ts);
-     ts->info = info;
-     ts->bprm = &bprm;
--    cpu->opaque = ts;
-+    cpu->accel->ts = ts;
- 
-     target_set_brk(info->brk);
-     syscall_init();
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 94e4c47f05..5f7f03f4b0 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -949,7 +949,7 @@ int main(int argc, char **argv, char **envp)
-     /* build Task State */
-     ts->info = info;
-     ts->bprm = &bprm;
--    cpu->opaque = ts;
-+    cpu->accel->ts = ts;
-     task_settid(ts);
- 
-     fd_trans_init();
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index b9b5a387b3..49db3052aa 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6594,7 +6594,7 @@ static int do_fork(CPUArchState *env, unsigned int flags, abi_ulong newsp,
-         cpu_clone_regs_child(new_env, newsp, flags);
-         cpu_clone_regs_parent(env, flags);
-         new_cpu = env_cpu(new_env);
--        new_cpu->opaque = ts;
-+        new_cpu->accel->ts = ts;
-         ts->bprm = parent_ts->bprm;
-         ts->info = parent_ts->info;
-         ts->signal_mask = parent_ts->signal_mask;
+-/*
+- * Elements of CPUState most efficiently accessed from CPUArchState,
+- * via small negative offsets.
++/**
++ * CPUNegativeOffsetState: Elements of CPUState most efficiently accessed
++ *                         from CPUArchState, via small negative offsets.
++ * @can_do_io: True if memory-mapped IO is allowed.
+  */
+ typedef struct CPUNegativeOffsetState {
+     CPUTLB tlb;
+@@ -400,7 +401,6 @@ struct qemu_work_item;
+  * @crash_occurred: Indicates the OS reported a crash (panic) for this CPU
+  * @singlestep_enabled: Flags for single-stepping.
+  * @icount_extra: Instructions until next timer event.
+- * @neg.can_do_io: True if memory-mapped IO is allowed.
+  * @cpu_ases: Pointer to array of CPUAddressSpaces (which define the
+  *            AddressSpaces this CPU has)
+  * @num_ases: number of CPUAddressSpaces in @cpu_ases
 -- 
 2.41.0
 
