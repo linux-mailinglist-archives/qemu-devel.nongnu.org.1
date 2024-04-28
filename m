@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924A08B4AE6
-	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 11:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6678B4ADD
+	for <lists+qemu-devel@lfdr.de>; Sun, 28 Apr 2024 11:08:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s10WC-0003gI-4x; Sun, 28 Apr 2024 05:08:20 -0400
+	id 1s10WF-0003oz-HV; Sun, 28 Apr 2024 05:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s10W7-0003T8-Se
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:15 -0400
+ id 1s10W8-0003YK-VW
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:17 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s10W4-0004E8-IP
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:15 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1s10W6-0004EG-Ah
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 05:08:16 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxiOn6ES5m01kEAA--.3418S3;
- Sun, 28 Apr 2024 17:08:10 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxeOn7ES5m2FkEAA--.3560S3;
+ Sun, 28 Apr 2024 17:08:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxpFb1ES5mmCgIAA--.5818S4; 
+ AQAAf8CxpFb1ES5mmCgIAA--.5818S5; 
  Sun, 28 Apr 2024 17:08:10 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 02/17] hw/loongarch: Add load initrd
-Date: Sun, 28 Apr 2024 16:51:02 +0800
-Message-Id: <20240428085117.2422473-3-gaosong@loongson.cn>
+Subject: [PULL 03/17] hw/loongarch: Add slave cpu boot_code
+Date: Sun, 28 Apr 2024 16:51:03 +0800
+Message-Id: <20240428085117.2422473-4-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240428085117.2422473-1-gaosong@loongson.cn>
 References: <20240428085117.2422473-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxpFb1ES5mmCgIAA--.5818S4
+X-CM-TRANSID: AQAAf8CxpFb1ES5mmCgIAA--.5818S5
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,62 +63,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we load initrd ramdisk after kernel_high address
+Load the slave CPU boot code at pflash0 and set
+the slave CPU elf_address to VIRT_FLASH0_BASE.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Message-Id: <20240426091551.2397867-3-gaosong@loongson.cn>
+Message-Id: <20240426091551.2397867-4-gaosong@loongson.cn>
 ---
- hw/loongarch/boot.c | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ hw/loongarch/boot.c | 62 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 61 insertions(+), 1 deletion(-)
 
 diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
-index 9feed17db3..a9522d6912 100644
+index a9522d6912..d1a8434127 100644
 --- a/hw/loongarch/boot.c
 +++ b/hw/loongarch/boot.c
-@@ -22,7 +22,8 @@ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
+@@ -15,6 +15,54 @@
+ #include "sysemu/reset.h"
+ #include "sysemu/qtest.h"
  
- static int64_t load_kernel_info(struct loongarch_boot_info *info)
++static const unsigned int slave_boot_code[] = {
++                  /* Configure reset ebase.                    */
++    0x0400302c,   /* csrwr      $t0, LOONGARCH_CSR_EENTRY      */
++
++                  /* Disable interrupt.                        */
++    0x0380100c,   /* ori        $t0, $zero,0x4                 */
++    0x04000180,   /* csrxchg    $zero, $t0, LOONGARCH_CSR_CRMD */
++
++                  /* Clear mailbox.                            */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20  */
++    0x06481da0,   /* iocsrwr.d  $zero, $t1                     */
++
++                  /* Enable IPI interrupt.                     */
++    0x1400002c,   /* lu12i.w    $t0, 1(0x1)                    */
++    0x0400118c,   /* csrxchg    $t0, $t0, LOONGARCH_CSR_ECFG   */
++    0x02fffc0c,   /* addi.d     $t0, $r0,-1(0xfff)             */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x038011ad,   /* ori        $t1, $t1, CORE_EN_OFF          */
++    0x064819ac,   /* iocsrwr.w  $t0, $t1                       */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20          */
++
++                  /* Wait for wakeup  <.L11>:                  */
++    0x06488000,   /* idle       0x0                            */
++    0x03400000,   /* andi       $zero, $zero, 0x0              */
++    0x064809ac,   /* iocsrrd.w  $t0, $t1                       */
++    0x43fff59f,   /* beqz       $t0, -12(0x7ffff4) # 48 <.L11> */
++
++                  /* Read and clear IPI interrupt.             */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x064809ac,   /* iocsrrd.w  $t0, $t1                       */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x038031ad,   /* ori        $t1, $t1, CORE_CLEAR_OFF       */
++    0x064819ac,   /* iocsrwr.w  $t0, $t1                       */
++
++                  /* Disable  IPI interrupt.                   */
++    0x1400002c,   /* lu12i.w    $t0, 1(0x1)                    */
++    0x04001180,   /* csrxchg    $zero, $t0, LOONGARCH_CSR_ECFG */
++
++                  /* Read mail buf and jump to specified entry */
++    0x1400002d,   /* lu12i.w    $t1, 1(0x1)                    */
++    0x038081ad,   /* ori        $t1, $t1, CORE_BUF_20          */
++    0x06480dac,   /* iocsrrd.d  $t0, $t1                       */
++    0x00150181,   /* move       $ra, $t0                       */
++    0x4c000020,   /* jirl       $zero, $ra,0                   */
++};
++
+ static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
  {
--    uint64_t kernel_entry, kernel_low, kernel_high;
-+    uint64_t kernel_entry, kernel_low, kernel_high, initrd_size;
-+    ram_addr_t initrd_offset;
-     ssize_t kernel_size;
+     return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
+@@ -126,11 +174,23 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
+         }
+     }
  
-     kernel_size = load_elf(info->kernel_filename, NULL,
-@@ -37,6 +38,32 @@ static int64_t load_kernel_info(struct loongarch_boot_info *info)
-                      load_elf_strerror(kernel_size));
-         exit(1);
++    /* Load slave boot code at pflash0 . */
++    void *boot_code = g_malloc0(VIRT_FLASH0_SIZE);
++    memcpy(boot_code, &slave_boot_code, sizeof(slave_boot_code));
++    rom_add_blob_fixed("boot_code", boot_code, VIRT_FLASH0_SIZE, VIRT_FLASH0_BASE);
++
+     CPU_FOREACH(cs) {
+         lacpu = LOONGARCH_CPU(cs);
+         lacpu->env.load_elf = true;
+-        lacpu->env.elf_address = kernel_addr;
++        if (cs == first_cpu) {
++            lacpu->env.elf_address = kernel_addr;
++        } else {
++            lacpu->env.elf_address = VIRT_FLASH0_BASE;
++        }
++        lacpu->env.boot_info = info;
      }
 +
-+    if (info->initrd_filename) {
-+        initrd_size = get_image_size(info->initrd_filename);
-+        if (initrd_size > 0) {
-+            initrd_offset = ROUND_UP(kernel_high + 4 * kernel_size, 64 * KiB);
-+
-+            if (initrd_offset + initrd_size > info->ram_size) {
-+                error_report("memory too small for initial ram disk '%s'",
-+                             info->initrd_filename);
-+                exit(1);
-+            }
-+
-+            initrd_size = load_image_targphys(info->initrd_filename, initrd_offset,
-+                                              info->ram_size - initrd_offset);
-+        }
-+
-+        if (initrd_size == (target_ulong)-1) {
-+            error_report("could not load initial ram disk '%s'",
-+                         info->initrd_filename);
-+            exit(1);
-+        }
-+    } else {
-+        error_report("Need initrd!");
-+        exit(1);
-+    }
-+
-     return kernel_entry;
++    g_free(boot_code);
  }
  
+ void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
 -- 
 2.25.1
 
