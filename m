@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 398158B5E3B
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2540B8B5E85
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 18:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1TMk-00052h-6L; Mon, 29 Apr 2024 11:56:31 -0400
+	id 1s1TMV-0004oZ-Qh; Mon, 29 Apr 2024 11:56:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TMN-0004c0-60
+ id 1s1TMN-0004c5-Dg
  for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:07 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TML-0005Ig-1C
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:06 -0400
+ id 1s1TML-0005Io-Bk
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:07 -0400
 Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43TFmu7n024919; Mon, 29 Apr 2024 15:55:51 GMT
+ 43TFmuqt024941; Mon, 29 Apr 2024 15:55:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=dFAAqcGLASWY0fwkl8wcUig8RTCMMJh3CTyJCKkbWEA=;
- b=YIelEe8WLbHOe2XpwaK3/if7mmGszxLh8Xjk7WViTNxijjHYDSVrTdGzpcPG/ink+3WA
- JPxDweByoRf/2oUh54cGOJHy7+Qn0KMgng7oPKlBJyRgkEbB8twi71dmzcn6UluwXhBz
- aEthyRV46gQrLV3UUY+2/V29jUXaw8AZE1fC/fWypo2m6WYJx9yFp51fBiKahaOehm0y
- WAHuFliypWhamSadAbTLrm7mwEWSqClHiSRECaonx6E8M0t00Dy5Lo4hHjtFKZA5xnqd
- o51I+PwvVZfdEdMNEdw1QE2yHyCKuWF3TFDVxS4qyYTR3BakHreFaqcnQ6e9dgWQU13q Fw== 
+ bh=fLoc8RsqqC4/VvEU3N//EHt3MAKOJS/axPmHtsZ0S2I=;
+ b=LKS6ViAh+M0O36nGKTlxhC4JVUgjUzJEamKT++giIj4LCE+kykzjXSZpxKZIHq0A/c4l
+ cxuS0YHwaRaURMsuTT9x/VzpQl/RS6g4ymyiMLYbm1s2t1mdyRmFJgLFa0ETLlBOn/WV
+ MuQOFIem3p3sRzdTreGuKJDntHuzTPFe7WiuccruIwtg0fw9crBZYKPGy/J4syuhk7yV
+ n8C0+gRx8fiusjYhom7SRZm3NfvFP+vGMo84tZZT+R6tfFcJdoxBFiTWludtJu1W7Uq+
+ UJuwhHy9sE7/kAUYNFKOR8FKdtGzgPBKIohlwh3DQDwzCyZf2YKbhwlni08WregQCYoD jQ== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrqsetx49-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrqsetx4d-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:51 +0000
+ Mon, 29 Apr 2024 15:55:52 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 43TFgaep011393; Mon, 29 Apr 2024 15:55:50 GMT
+ with ESMTP id 43TF0rU7011374; Mon, 29 Apr 2024 15:55:51 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3xrqt6j6gq-1
+ 3xrqt6j6hj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:50 +0000
+ Mon, 29 Apr 2024 15:55:51 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaH4034442;
- Mon, 29 Apr 2024 15:55:49 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaH6034442;
+ Mon, 29 Apr 2024 15:55:50 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3xrqt6j5ys-19; Mon, 29 Apr 2024 15:55:49 +0000
+ ESMTP id 3xrqt6j5ys-20; Mon, 29 Apr 2024 15:55:50 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 18/26] migration: cpr-exec-args parameter
-Date: Mon, 29 Apr 2024 08:55:27 -0700
-Message-Id: <1714406135-451286-19-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 19/26] physmem: preserve ram blocks for cpr
+Date: Mon, 29 Apr 2024 08:55:28 -0700
+Message-Id: <1714406135-451286-20-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
 References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0 suspectscore=0 phishscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404290101
-X-Proofpoint-ORIG-GUID: _rEh2WqBWliGLL0O96WpdRoKN7qOMHQz
-X-Proofpoint-GUID: _rEh2WqBWliGLL0O96WpdRoKN7qOMHQz
+X-Proofpoint-ORIG-GUID: w77k14UptVokYNFo1CGRDQLveHdVRrra
+X-Proofpoint-GUID: w77k14UptVokYNFo1CGRDQLveHdVRrra
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,192 +102,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create the cpr-exec-args migration parameter, defined as a list of
-strings.  It will be used for cpr-exec migration mode in a subsequent
-patch.
-
-No functional change, except that cpr-exec-args is shown by the
-'info migrate' command.
+Preserve fields of RAMBlocks that allocate their host memory during CPR so
+the RAM allocation can be recovered.  Mirror the mr->align field in the
+RAMBlock to simplify the vmstate.  Preserve the old host address, even
+though it is immediately discarded, as it will be needed in the future for
+CPR with iommufd.  Preserve guest_memfd, even though CPR does not yet
+support it, to maintain vmstate compatibility when it becomes supported.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- hmp-commands.hx                |  2 +-
- migration/migration-hmp-cmds.c | 24 ++++++++++++++++++++++++
- migration/options.c            | 13 +++++++++++++
- qapi/migration.json            | 18 +++++++++++++++---
- 4 files changed, 53 insertions(+), 4 deletions(-)
+ include/exec/ramblock.h |  6 ++++++
+ system/physmem.c        | 40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index 2e2a3bc..39954ae 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1012,7 +1012,7 @@ ERST
+diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+index 61deefe..b492d89 100644
+--- a/include/exec/ramblock.h
++++ b/include/exec/ramblock.h
+@@ -44,6 +44,7 @@ struct RAMBlock {
+     uint64_t fd_offset;
+     int guest_memfd;
+     size_t page_size;
++    uint64_t align;
+     /* dirty bitmap used during migration */
+     unsigned long *bmap;
  
-     {
-         .name       = "migrate_set_parameter",
--        .args_type  = "parameter:s,value:s",
-+        .args_type  = "parameter:s,value:S",
-         .params     = "parameter value",
-         .help       = "Set the parameter for migration",
-         .cmd        = hmp_migrate_set_parameter,
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 7e96ae6..414c7e8 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -255,6 +255,18 @@ void hmp_info_migrate_capabilities(Monitor *mon, const QDict *qdict)
-     qapi_free_MigrationCapabilityStatusList(caps);
+@@ -91,5 +92,10 @@ struct RAMBlock {
+      */
+     ram_addr_t postcopy_length;
+ };
++
++#define RAM_BLOCK "RAMBlock"
++
++extern const VMStateDescription vmstate_ram_block;
++
+ #endif
+ #endif
+diff --git a/system/physmem.c b/system/physmem.c
+index 36d97ec..3019284 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -1398,6 +1398,7 @@ static void *file_ram_alloc(RAMBlock *block,
+         block->mr->align = MAX(block->mr->align, QEMU_VMALLOC_ALIGN);
+     }
+ #endif
++    block->align = block->mr->align;
+ 
+     if (memory < block->page_size) {
+         error_setg(errp, "memory size 0x" RAM_ADDR_FMT " must be equal to "
+@@ -1848,6 +1849,7 @@ static void *ram_block_alloc_host(RAMBlock *rb, Error **errp)
+                              rb->idstr);
+         }
+     }
++    rb->align = mr->align;
+ 
+     if (host) {
+         memory_try_enable_merging(host, rb->max_length);
+@@ -1934,6 +1936,7 @@ static RAMBlock *ram_block_create(MemoryRegion *mr, ram_addr_t size,
+     rb->flags = ram_flags;
+     rb->page_size = qemu_real_host_page_size();
+     rb->mr = mr;
++    rb->align = mr->align;
+ 
+     if (ram_flags & RAM_GUEST_MEMFD) {
+         rb->guest_memfd = ram_block_create_guest_memfd(rb, errp);
+@@ -2060,6 +2063,26 @@ RAMBlock *qemu_ram_alloc_from_file(ram_addr_t size, MemoryRegion *mr,
  }
+ #endif
  
-+static void monitor_print_cpr_exec_args(Monitor *mon, strList *args)
-+{
-+    monitor_printf(mon, "%s:",
-+        MigrationParameter_str(MIGRATION_PARAMETER_CPR_EXEC_ARGS));
-+
-+    while (args) {
-+        monitor_printf(mon, " %s", args->value);
-+        args = args->next;
++const VMStateDescription vmstate_ram_block = {
++    .name = RAM_BLOCK,
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .precreate = true,
++    .factory = true,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(align, RAMBlock),
++        VMSTATE_VOID_PTR(host, RAMBlock),
++        VMSTATE_INT32(fd, RAMBlock),
++        VMSTATE_INT32(guest_memfd, RAMBlock),
++        VMSTATE_UINT32(flags, RAMBlock),
++        VMSTATE_UINT64(used_length, RAMBlock),
++        VMSTATE_UINT64(max_length, RAMBlock),
++        VMSTATE_END_OF_LIST()
 +    }
-+    monitor_printf(mon, "\n");
-+}
++};
 +
- void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
++vmstate_register_init_factory(vmstate_ram_block, RAMBlock);
++
+ static
+ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+                                   void (*resized)(const char*,
+@@ -2070,6 +2093,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
  {
-     MigrationParameters *params;
-@@ -397,6 +409,8 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: %s\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_MODE),
-             qapi_enum_lookup(&MigMode_lookup, params->mode));
-+        assert(params->has_cpr_exec_args);
-+        monitor_print_cpr_exec_args(mon, params->cpr_exec_args);
-     }
+     RAMBlock *new_block;
+     int align;
++    g_autofree RAMBlock *preserved = NULL;
  
-     qapi_free_MigrationParameters(params);
-@@ -690,6 +704,16 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_mode = true;
-         visit_type_MigMode(v, param, &p->mode, &err);
-         break;
-+    case MIGRATION_PARAMETER_CPR_EXEC_ARGS: {
-+        g_autofree char **strv = g_strsplit(valuestr ?: "", " ", -1);
-+        strList **tail = &p->cpr_exec_args;
+     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
+                           RAM_NORESERVE | RAM_GUEST_MEMFD)) == 0);
+@@ -2086,6 +2110,17 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     }
+     new_block->resized = resized;
+ 
++    preserved = vmstate_claim_factory_object(RAM_BLOCK, new_block->idstr, 0);
++    if (preserved) {
++        assert(mr->align <= preserved->align);
++        mr->align = mr->align ?: preserved->align;
++        new_block->align = preserved->align;
++        new_block->fd = preserved->fd;
++        new_block->flags = preserved->flags;
++        new_block->used_length = preserved->used_length;
++        new_block->max_length = preserved->max_length;
++    }
 +
-+        for (int i = 0; strv[i]; i++) {
-+            QAPI_LIST_APPEND(tail, strv[i]);
+     if (!host) {
+         host = ram_block_alloc_host(new_block, errp);
+         if (!host) {
+@@ -2093,6 +2128,10 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+             g_free(new_block);
+             return NULL;
+         }
++        if (!(ram_flags & RAM_GUEST_MEMFD)) {
++            vmstate_register_named(new_block->idstr, 0, &vmstate_ram_block,
++                                   new_block);
 +        }
-+        p->has_cpr_exec_args = true;
-+        break;
-+    }
-     default:
-         assert(0);
      }
-diff --git a/migration/options.c b/migration/options.c
-index 239f5ec..89082cc 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -1060,6 +1060,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->mode = s->parameters.mode;
-     params->has_zero_page_detection = true;
-     params->zero_page_detection = s->parameters.zero_page_detection;
-+    params->has_cpr_exec_args = true;
-+    params->cpr_exec_args = QAPI_CLONE(strList, s->parameters.cpr_exec_args);
  
-     return params;
- }
-@@ -1097,6 +1099,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_vcpu_dirty_limit = true;
-     params->has_mode = true;
-     params->has_zero_page_detection = true;
-+    params->has_cpr_exec_args = true;
- }
- 
- /*
-@@ -1416,6 +1419,10 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_zero_page_detection) {
-         dest->zero_page_detection = params->zero_page_detection;
+     new_block->host = host;
+@@ -2157,6 +2196,7 @@ void qemu_ram_free(RAMBlock *block)
      }
-+
-+    if (params->has_cpr_exec_args) {
-+        dest->cpr_exec_args = params->cpr_exec_args;
-+    }
- }
  
- static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-@@ -1570,6 +1577,12 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_zero_page_detection) {
-         s->parameters.zero_page_detection = params->zero_page_detection;
-     }
-+
-+    if (params->has_cpr_exec_args) {
-+        qapi_free_strList(s->parameters.cpr_exec_args);
-+        s->parameters.cpr_exec_args =
-+            QAPI_CLONE(strList, params->cpr_exec_args);
-+    }
- }
- 
- void qmp_migrate_set_parameters(MigrateSetParameters *params, Error **errp)
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8c65b90..49710e7 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -914,6 +914,9 @@
- #     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
-+# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
-+#    See @cpr-exec for details.  (Since 9.1)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -948,7 +951,8 @@
-            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
-            'vcpu-dirty-limit',
-            'mode',
--           'zero-page-detection'] }
-+           'zero-page-detection',
-+           'cpr-exec-args'] }
- 
- ##
- # @MigrateSetParameters:
-@@ -1122,6 +1126,9 @@
- #     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
-+# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
-+#    See @cpr-exec for details.  (Since 9.1)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -1176,7 +1183,8 @@
-                                             'features': [ 'unstable' ] },
-             '*vcpu-dirty-limit': 'uint64',
-             '*mode': 'MigMode',
--            '*zero-page-detection': 'ZeroPageDetection'} }
-+            '*zero-page-detection': 'ZeroPageDetection',
-+            '*cpr-exec-args': [ 'str' ]} }
- 
- ##
- # @migrate-set-parameters:
-@@ -1354,6 +1362,9 @@
- #     See description in @ZeroPageDetection.  Default is 'multifd'.
- #     (since 9.0)
- #
-+# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
-+#    See @cpr-exec for details.  (Since 9.1)
-+#
- # Features:
- #
- # @deprecated: Member @block-incremental is deprecated.  Use
-@@ -1405,7 +1416,8 @@
-                                             'features': [ 'unstable' ] },
-             '*vcpu-dirty-limit': 'uint64',
-             '*mode': 'MigMode',
--            '*zero-page-detection': 'ZeroPageDetection'} }
-+            '*zero-page-detection': 'ZeroPageDetection',
-+            '*cpr-exec-args': [ 'str' ]} }
- 
- ##
- # @query-migrate-parameters:
+     qemu_mutex_lock_ramlist();
++    vmstate_unregister_named(RAM_BLOCK, block->idstr, 0);
+     qemu_ram_unset_idstr(block);
+     QLIST_REMOVE_RCU(block, next);
+     ram_list.mru_block = NULL;
 -- 
 1.8.3.1
 
