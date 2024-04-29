@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFA78B5E64
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 18:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 744318B5E3A
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:56:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1TMG-0004X3-4o; Mon, 29 Apr 2024 11:56:00 -0400
+	id 1s1TME-0004Wn-2k; Mon, 29 Apr 2024 11:55:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TM6-0004TS-5l
+ id 1s1TM6-0004TQ-5A
  for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:50 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TM0-0005De-9K
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:46 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1s1TM0-0005Dr-E2
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:47 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43TFmlHi021730; Mon, 29 Apr 2024 15:55:38 GMT
+ 43TFmk5h006740; Mon, 29 Apr 2024 15:55:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=APXR9kXyXmqqAjJjI1A0Ctj4zR+Lv7xd+zkmXLq6AjI=;
- b=XA4RY79X18QR8yX0r0vv1vY4JGRhMXR0CqzLsbktzzcYSIMGtJeBOGsMmNDtiEkhj/kH
- 1zt3sleRsHAB8aJNzVbwsG6lbKXOpGnycFEe5oRw+VvLrvA0rqHPOYXKHIpno8B6n2hT
- +t/RaRaelO1tFo5z9ZlZW34WsRZrXqnU0xScYTM8MH7+zFQikssKkY6evv0u+nfI+JQa
- pt6eA17GaTZ69RzuGsiRF0Nm1S9bAOmWfqOOs+Fp+qP9w/14oiBGBnKtTWPK+aDPKVA6
- Z59cowPP1eQeblIn+mJRD247R234GXlZ0LQ9xavHxDx5lzSma/djyu0axr/4oJ9huLOs cQ== 
+ subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
+ bh=juAJZ9JJdV6p90qNLNXdU3rK88VMPL7lXoIHnJjCa8U=;
+ b=EamvT5bY6OBU9AkYgTdKoO37IT9QjAeMuLycTjTG9/+GvxE85ZqTSVirWP7Nnh85lTxB
+ 8sUmKawgWqDoAZB5n6C5KHx04r+4Hg8iGWo4fCq6tY5VJauRTyoDaKAwD6KoFCACN+U2
+ XaROH4KsSfh/840sFwZh4YXZQxRDCgmqD/KZa7ad+NPWouECQZS+ESygUvSB9s1rgONk
+ vPpgjdG6BdUAS/yrEVwM/QnyCUqm5rot9WyQQxo5Y7azKALJW7qsspC7RV4uuG90xXGP
+ EwZx07iBgxj/x/eBHkb18XdXDbMiCZoSfs4PtJqtGGcWfrPpamNhCnsw+6VxQdy0yslN Eg== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrr54axse-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrsdejwmf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:38 +0000
+ Mon, 29 Apr 2024 15:55:39 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 43TEgWMX011336; Mon, 29 Apr 2024 15:55:37 GMT
+ with ESMTP id 43TEt9HQ011467; Mon, 29 Apr 2024 15:55:38 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3xrqt6j619-1
+ 3xrqt6j628-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:37 +0000
+ Mon, 29 Apr 2024 15:55:38 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGU034442;
- Mon, 29 Apr 2024 15:55:36 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGW034442;
+ Mon, 29 Apr 2024 15:55:37 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3xrqt6j5ys-2; Mon, 29 Apr 2024 15:55:36 +0000
+ ESMTP id 3xrqt6j5ys-3; Mon, 29 Apr 2024 15:55:37 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -63,15 +62,12 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 01/26] oslib: qemu_clear_cloexec
-Date: Mon, 29 Apr 2024 08:55:10 -0700
-Message-Id: <1714406135-451286-2-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 02/26] vl: helper to request re-exec
+Date: Mon, 29 Apr 2024 08:55:11 -0700
+Message-Id: <1714406135-451286-3-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
 References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-04-29_14,2024-04-29_01,2023-05-22_02
@@ -80,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0 suspectscore=0 phishscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404290101
-X-Proofpoint-ORIG-GUID: eg93MLnPdshm7l52FbHOTNVga8e6GdBq
-X-Proofpoint-GUID: eg93MLnPdshm7l52FbHOTNVga8e6GdBq
+X-Proofpoint-GUID: k_u3yKebWxJVSnA80RC6bZybAo6nXIAD
+X-Proofpoint-ORIG-GUID: k_u3yKebWxJVSnA80RC6bZybAo6nXIAD
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -106,72 +102,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define qemu_clear_cloexec, analogous to qemu_set_cloexec.
+Add a qemu_system_exec_request() hook that causes the main loop to exit and
+re-exec qemu using the specified arguments.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-Reviewed-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- include/qemu/osdep.h | 9 +++++++++
- util/oslib-posix.c   | 9 +++++++++
- util/oslib-win32.c   | 4 ++++
- 3 files changed, 22 insertions(+)
+ include/sysemu/runstate.h |  3 +++
+ system/runstate.c         | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index c7053cd..b58f312 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -660,6 +660,15 @@ ssize_t qemu_write_full(int fd, const void *buf, size_t count)
+diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+index 0117d24..cb669cf 100644
+--- a/include/sysemu/runstate.h
++++ b/include/sysemu/runstate.h
+@@ -80,6 +80,8 @@ typedef enum WakeupReason {
+     QEMU_WAKEUP_REASON_OTHER,
+ } WakeupReason;
  
- void qemu_set_cloexec(int fd);
- 
-+/*
-+ * Clear FD_CLOEXEC for a descriptor.
-+ *
-+ * The caller must guarantee that no other fork+exec's occur before the
-+ * exec that is intended to inherit this descriptor, eg by suspending CPUs
-+ * and blocking monitor commands.
-+ */
-+void qemu_clear_cloexec(int fd);
++typedef void (*qemu_exec_func)(char **exec_argv);
 +
- /* Return a dynamically allocated directory path that is appropriate for storing
-  * local state.
-  *
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index e764416..614c3e5 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -272,6 +272,15 @@ int qemu_socketpair(int domain, int type, int protocol, int sv[2])
-     return ret;
+ void qemu_system_reset_request(ShutdownCause reason);
+ void qemu_system_suspend_request(void);
+ void qemu_register_suspend_notifier(Notifier *notifier);
+@@ -91,6 +93,7 @@ void qemu_register_wakeup_support(void);
+ void qemu_system_shutdown_request_with_code(ShutdownCause reason,
+                                             int exit_code);
+ void qemu_system_shutdown_request(ShutdownCause reason);
++void qemu_system_exec_request(qemu_exec_func func, const strList *args);
+ void qemu_system_powerdown_request(void);
+ void qemu_register_powerdown_notifier(Notifier *notifier);
+ void qemu_register_shutdown_notifier(Notifier *notifier);
+diff --git a/system/runstate.c b/system/runstate.c
+index cb4905a..0de0c6e 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -40,6 +40,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-run-state.h"
+ #include "qapi/qapi-events-run-state.h"
++#include "qapi/type-helpers.h"
+ #include "qemu/accel.h"
+ #include "qemu/error-report.h"
+ #include "qemu/job.h"
+@@ -401,6 +402,8 @@ static NotifierList wakeup_notifiers =
+ static NotifierList shutdown_notifiers =
+     NOTIFIER_LIST_INITIALIZER(shutdown_notifiers);
+ static uint32_t wakeup_reason_mask = ~(1 << QEMU_WAKEUP_REASON_NONE);
++qemu_exec_func exec_func;
++static char **exec_argv;
+ 
+ ShutdownCause qemu_shutdown_requested_get(void)
+ {
+@@ -417,6 +420,11 @@ static int qemu_shutdown_requested(void)
+     return qatomic_xchg(&shutdown_requested, SHUTDOWN_CAUSE_NONE);
  }
  
-+void qemu_clear_cloexec(int fd)
++static int qemu_exec_requested(void)
 +{
-+    int f;
-+    f = fcntl(fd, F_GETFD);
-+    assert(f != -1);
-+    f = fcntl(fd, F_SETFD, f & ~FD_CLOEXEC);
-+    assert(f != -1);
++    return exec_argv != NULL;
 +}
 +
- char *
- qemu_get_local_state_dir(void)
+ static void qemu_kill_report(void)
  {
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index b623830..c3e969a 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -222,6 +222,10 @@ void qemu_set_cloexec(int fd)
- {
+     if (!qtest_driver() && shutdown_signal) {
+@@ -694,6 +702,23 @@ void qemu_system_shutdown_request(ShutdownCause reason)
+     qemu_notify_event();
  }
  
-+void qemu_clear_cloexec(int fd)
++static void qemu_system_exec(void)
 +{
++    exec_func(exec_argv);
++
++    /* exec failed */
++    g_strfreev(exec_argv);
++    exec_argv = NULL;
++    exec_func = NULL;
 +}
 +
- int qemu_get_thread_id(void)
++void qemu_system_exec_request(qemu_exec_func func, const strList *args)
++{
++    exec_func = func;
++    exec_argv = strv_from_str_list(args);
++    qemu_notify_event();
++}
++
+ static void qemu_system_powerdown(void)
  {
-     return GetCurrentThreadId();
+     qapi_event_send_powerdown();
+@@ -740,6 +765,10 @@ static bool main_loop_should_exit(int *status)
+     if (qemu_suspend_requested()) {
+         qemu_system_suspend();
+     }
++    if (qemu_exec_requested()) {
++        qemu_system_exec();
++        return false;
++    }
+     request = qemu_shutdown_requested();
+     if (request) {
+         qemu_kill_report();
 -- 
 1.8.3.1
 
