@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093278B51D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:55:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 260478B51D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1KtW-0001XF-EG; Mon, 29 Apr 2024 02:53:46 -0400
+	id 1s1KtZ-0001ZL-UP; Mon, 29 Apr 2024 02:53:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1KtT-0001Wq-V2
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:43 -0400
+ id 1s1KtX-0001YI-JV
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:47 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1KtS-0007m1-6g
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:43 -0400
+ id 1s1KtV-0007m1-UU
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714373622; x=1745909622;
+ t=1714373626; x=1745909626;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FX29BWfSJ5th0EheL5Ks2a0B1BRSPTJ17MVEKJPsvS8=;
- b=DJfoskpajZ2ut/hQIMiJJE4gxpQKSqdLmZOj+b5hodqzvwUdD9puda/R
- 5mvIWWc7g837bJCbrsw1xFNbtm+Z5ni03CYrEGAZHOWBQC2UNq9d8ZjY1
- 8RE9kM5QjTOxyN94YHz4ctvh9A8u4pzYx3ValasRVFDWT8DyX1JCWvkQF
- PkwBfPE6TcUFHDLoG+csNUDexqPwnDqjeOypts7lIZZd1L7V0VJkYn5aJ
- a0vl07+vIBYqU0HsnT0LrmyjXy3qcScIaAjEppv5xRsNoTGe9G+dw5muZ
- tXgXLrwNuDyPHXu6t3VdCfQk7KhwolV93FMCSQXiGw8FFtZP6xjJjn8xM A==;
-X-CSE-ConnectionGUID: JaAvL3WRQ1mKFSgo8BpFTg==
-X-CSE-MsgGUID: wiyE7otvSNyUBQ3EKLpirQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560683"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560683"
+ bh=8LxZj6vgZj1xI6LvQ7FwzjFqeUjrZcTWo7n6C5+4LxE=;
+ b=l/3ujvMpEQq3O16lj6OttkD2V4V8WhJWz95KR1ZcivGGeaIJk2XsuEQH
+ Cco10m/AgwvMFALss3tKhxTUjp4u046qDCYVxnb4IIsVuqm1OzHkUp91O
+ J2gg/lvK9CnMqe1tppshhhgob1svgKDQXAr0ZkEJieHEKEecviCsB32/t
+ wheALXIGpH9dgIkkaxWl0yrWtAvPiXjex4wiQDVNOzqAVZhXJChjPbBnh
+ 4U2FOZyPdyiIZrO7oK1kr7srbrre8OhdvJ3YujcDFX3yuDBSwMyfUR6Dq
+ yNIg7nYicXN/q8i3zSTe/Ej/dQXwE5jVtmz+A5OEblerHE0QM7yIpAFGl A==;
+X-CSE-ConnectionGUID: 26bKZOIIS96EeBWHwNK6Eg==
+X-CSE-MsgGUID: tWcKCCKKQpWM5chtUrCm+g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560694"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560694"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:42 -0700
-X-CSE-ConnectionGUID: faXnbBcOQECHSTPap0XbHg==
-X-CSE-MsgGUID: FNqbtvvgRp23VEEIkaVcZQ==
+ 28 Apr 2024 23:53:45 -0700
+X-CSE-ConnectionGUID: Ff0OeZ6DQqyQVhS/CpGwAQ==
+X-CSE-MsgGUID: Ii2V5EL+Qg2XLd1RayaxLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63487994"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488012"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:38 -0700
+ 28 Apr 2024 23:53:42 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v3 05/19] backends/host_iommu_device: Introduce
- HostIOMMUDeviceCaps
-Date: Mon, 29 Apr 2024 14:50:32 +0800
-Message-Id: <20240429065046.3688701-6-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 06/19] range: Introduce range_get_last_bit()
+Date: Mon, 29 Apr 2024 14:50:33 +0800
+Message-Id: <20240429065046.3688701-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
 References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
@@ -85,133 +84,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HostIOMMUDeviceCaps's elements map to the host IOMMU's capabilities.
-Different platform IOMMU can support different elements.
+This helper get the highest 1 bit position of the upper bound.
 
-Currently only two elements, type and aw_bits, type hints the host
-platform IOMMU type, i.e., INTEL vtd, ARM smmu, etc; aw_bits hints
-host IOMMU address width.
-
-Introduce .check_cap() handler to check if HOST_IOMMU_DEVICE_CAP_XXX
-is supported.
-
-Introduce a HostIOMMUDevice API host_iommu_device_check_cap() which
-is a wrapper of .check_cap().
-
-Introduce a HostIOMMUDevice API host_iommu_device_check_cap_common()
-to check common capabalities of different host platform IOMMUs.
+If the range is empty or upper bound is zero, -1 is returned.
 
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/sysemu/host_iommu_device.h | 44 ++++++++++++++++++++++++++++++
- backends/host_iommu_device.c       | 29 ++++++++++++++++++++
- 2 files changed, 73 insertions(+)
+ include/qemu/range.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
-index 2b58a94d62..12b6afb463 100644
---- a/include/sysemu/host_iommu_device.h
-+++ b/include/sysemu/host_iommu_device.h
-@@ -14,12 +14,27 @@
+diff --git a/include/qemu/range.h b/include/qemu/range.h
+index 205e1da76d..8e05bc1d9f 100644
+--- a/include/qemu/range.h
++++ b/include/qemu/range.h
+@@ -20,6 +20,8 @@
+ #ifndef QEMU_RANGE_H
+ #define QEMU_RANGE_H
  
- #include "qom/object.h"
- #include "qapi/error.h"
-+#include "linux/iommufd.h"
++#include "qemu/bitops.h"
 +
-+/**
-+ * struct HostIOMMUDeviceCaps - Define host IOMMU device capabilities.
-+ *
-+ * @type: host platform IOMMU type.
-+ *
-+ * @aw_bits: host IOMMU address width. 0xff if no limitation.
-+ */
-+typedef struct HostIOMMUDeviceCaps {
-+    enum iommu_hw_info_type type;
-+    uint8_t aw_bits;
-+} HostIOMMUDeviceCaps;
- 
- #define TYPE_HOST_IOMMU_DEVICE "host-iommu-device"
- OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUDeviceClass, HOST_IOMMU_DEVICE)
- 
- struct HostIOMMUDevice {
-     Object parent_obj;
-+
-+    HostIOMMUDeviceCaps caps;
- };
- 
- /**
-@@ -47,5 +62,34 @@ struct HostIOMMUDeviceClass {
-      * Returns: true on success, false on failure.
-      */
-     bool (*realize)(HostIOMMUDevice *hiod, void *opaque, Error **errp);
-+    /**
-+     * @check_cap: check if a host IOMMU device capability is supported.
-+     *
-+     * Optional callback, if not implemented, hint not supporting query
-+     * of @cap.
-+     *
-+     * @hiod: pointer to a host IOMMU device instance.
-+     *
-+     * @cap: capability to check.
-+     *
-+     * @errp: pass an Error out when fails to query capability.
-+     *
-+     * Returns: <0 on failure, 0 if a @cap is unsupported, or else
-+     * 1 or some positive value for some special @cap,
-+     * i.e., HOST_IOMMU_DEVICE_CAP_AW_BITS.
-+     */
-+    int (*check_cap)(HostIOMMUDevice *hiod, int cap, Error **errp);
- };
-+
-+/*
-+ * Host IOMMU device capability list.
-+ */
-+#define HOST_IOMMU_DEVICE_CAP_IOMMUFD       0
-+#define HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE    1
-+#define HOST_IOMMU_DEVICE_CAP_AW_BITS       2
-+
-+
-+int host_iommu_device_check_cap(HostIOMMUDevice *hiod, int cap, Error **errp);
-+int host_iommu_device_check_cap_common(HostIOMMUDevice *hiod, int cap,
-+                                       Error **errp);
- #endif
-diff --git a/backends/host_iommu_device.c b/backends/host_iommu_device.c
-index 41f2fdce20..b97d008cc7 100644
---- a/backends/host_iommu_device.c
-+++ b/backends/host_iommu_device.c
-@@ -28,3 +28,32 @@ static void host_iommu_device_init(Object *obj)
- static void host_iommu_device_finalize(Object *obj)
- {
+ /*
+  * Operations on 64 bit address ranges.
+  * Notes:
+@@ -217,6 +219,15 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
+     return !(last2 < first1 || last1 < first2);
  }
-+
-+/* Wrapper of HostIOMMUDeviceClass:check_cap */
-+int host_iommu_device_check_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
+ 
++/* Get highest non-zero bit position of a range */
++static inline int range_get_last_bit(Range *range)
 +{
-+    HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_GET_CLASS(hiod);
-+    if (!hiodc->check_cap) {
-+        error_setg(errp, ".check_cap() not implemented");
-+        return -EINVAL;
++    if (range_is_empty(range) || !range->upb) {
++        return -1;
 +    }
-+
-+    return hiodc->check_cap(hiod, cap, errp);
++    return find_last_bit(&range->upb, sizeof(range->upb));
 +}
 +
-+/* Implement check on common IOMMU capabilities */
-+int host_iommu_device_check_cap_common(HostIOMMUDevice *hiod, int cap,
-+                                       Error **errp)
-+{
-+    HostIOMMUDeviceCaps *caps = &hiod->caps;
-+
-+    switch (cap) {
-+    case HOST_IOMMU_DEVICE_CAP_IOMMU_TYPE:
-+        return caps->type;
-+    case HOST_IOMMU_DEVICE_CAP_AW_BITS:
-+        return caps->aw_bits;
-+    default:
-+        error_setg(errp, "Not support query cap %x", cap);
-+        return -EINVAL;
-+    }
-+}
+ /*
+  * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
+  * Both @a and @b must not be empty.
 -- 
 2.34.1
 
