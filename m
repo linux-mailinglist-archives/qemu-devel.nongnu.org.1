@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4198B5E7F
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 18:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB358B5E6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 18:01:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1TMa-0004zT-At; Mon, 29 Apr 2024 11:56:20 -0400
+	id 1s1TMn-0005OV-Ff; Mon, 29 Apr 2024 11:56:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TMJ-0004aH-Ru
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:04 -0400
+ id 1s1TML-0004bI-Uk
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:06 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TMI-0005Gh-2g
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:03 -0400
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+ id 1s1TMJ-0005IG-Ra
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:05 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43TFmoK9021820; Mon, 29 Apr 2024 15:55:49 GMT
+ 43TFmsuF024847; Mon, 29 Apr 2024 15:55:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=5W3Uqi4pt3zRyBqCA3ANso+QnzCYfMdNqiQwmSxIPBU=;
- b=aPwa47nHVSwmydqNUpY5aAlBcaUI93HussR2INpO4QLt1OMnNVXlylVzYL3p4VwzMAr3
- 2JGdfEIlN0sddOlTqidc2ger5xjbpXam+L+n1h+IKb1+bxl+PGbBAXTOW1zMpsFzecrm
- /RZkqjs+k2i+S+XX3r2xc34FSFx8P+/A0AMFqwUwp3LqL8JCBNU4f4JhoCPhg19c7r5C
- 0x0GWbPkmNNcpecSr57PX4hWWfnCcajqsN32Oe59HbdR0Y0Fi8QtPMX40v+/IEBFpFVO
- ZjjdeGGZmh3ga59SK7norNg2R8DpSJq1orZ3brI7A84zcDwbceoRM5fd7hbpAgkqioVX cA== 
+ bh=OyrHtB4q6XpnHj4/tkIq+24vCmQ0KEnKiUVp8HEQSEg=;
+ b=RZFbV41TtymB0DJSa0KNlb8BXdfbfII7YxBXcGZrzPHbek5f1QIz0gA1IoZ08bE9hjre
+ kARwfpzvsZSchwkaUgxxB6dFmfnUaPTMLsvgmefo+L3IVFIh4KC6Z8cXe0NorO60oTzu
+ LrbeNVU+t+wrU9M0ylR+8uxQweKRXtD6nD91FBSER2VG+gc04ZV1+QSVIMEjgcB1N4Uj
+ bOorxr3jbu1f+eObQM5D2fN/5Xw0dlhwyHr5Cknv8SRrReC2MtCfejdFA9l0K7gcqmJ6
+ +3HSvAyuDdb2jA4TzJVYKbe/Sm8U3xlLJDb9Ku47XzPwmvzRGB3MTgFTViPFpFR56ftq ww== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrr54axt8-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrqsetx43-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Mon, 29 Apr 2024 15:55:49 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 43TEuHx5011355; Mon, 29 Apr 2024 15:55:48 GMT
+ with ESMTP id 43TEcwOZ011335; Mon, 29 Apr 2024 15:55:48 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3xrqt6j6d8-1
+ 3xrqt6j6em-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:47 +0000
+ Mon, 29 Apr 2024 15:55:48 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGw034442;
- Mon, 29 Apr 2024 15:55:47 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaH0034442;
+ Mon, 29 Apr 2024 15:55:48 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3xrqt6j5ys-16; Mon, 29 Apr 2024 15:55:47 +0000
+ ESMTP id 3xrqt6j5ys-17; Mon, 29 Apr 2024 15:55:48 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 15/26] physmem: hoist host memory allocation
-Date: Mon, 29 Apr 2024 08:55:24 -0700
-Message-Id: <1714406135-451286-16-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 16/26] physmem: set ram block idstr earlier
+Date: Mon, 29 Apr 2024 08:55:25 -0700
+Message-Id: <1714406135-451286-17-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
 References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0 suspectscore=0 phishscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404290101
-X-Proofpoint-ORIG-GUID: pMtKRFgkojj0wtNbTsvLIjG0hCQLLpL5
-X-Proofpoint-GUID: pMtKRFgkojj0wtNbTsvLIjG0hCQLLpL5
+X-Proofpoint-ORIG-GUID: ezm-HSnNG4XBA-we7_0HH0YveZ9ZQI8i
+X-Proofpoint-GUID: ezm-HSnNG4XBA-we7_0HH0YveZ9ZQI8i
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,143 +102,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hoist host memory allocation from ram_block_add.
-No functional change.
+Set the idstr for a ram block earlier, prior to calling ram_block_add,
+so it can be used in a subsequent patch to find CPR attributes for the
+block before it is created.
+
+The id depends on the block's device path and its mr.  As as sanity check,
+verify that the id has not changed (due to these dependencies changing)
+by the time vmstate_register_ram is called (where the id was previously
+assigned).
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- system/physmem.c | 80 +++++++++++++++++++++++++-------------------------------
- 1 file changed, 36 insertions(+), 44 deletions(-)
+ include/exec/cpu-common.h |  3 +--
+ migration/savevm.c        |  4 +---
+ system/physmem.c          | 46 +++++++++++++++++++++++-----------------------
+ 3 files changed, 25 insertions(+), 28 deletions(-)
 
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 6d53188..ffab5d9 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -82,8 +82,7 @@ RAMBlock *qemu_ram_block_by_name(const char *name);
+ RAMBlock *qemu_ram_block_from_host(void *ptr, bool round_offset,
+                                    ram_addr_t *offset);
+ ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host);
+-void qemu_ram_set_idstr(RAMBlock *block, const char *name, DeviceState *dev);
+-void qemu_ram_unset_idstr(RAMBlock *block);
++void qemu_ram_verify_idstr(RAMBlock *block, DeviceState *dev);
+ const char *qemu_ram_get_idstr(RAMBlock *rb);
+ void *qemu_ram_get_host_addr(RAMBlock *rb);
+ ram_addr_t qemu_ram_get_offset(RAMBlock *rb);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 01ed78c..8463ddf 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -3566,14 +3566,12 @@ bool delete_snapshot(const char *name, bool has_devices,
+ 
+ void vmstate_register_ram(MemoryRegion *mr, DeviceState *dev)
+ {
+-    qemu_ram_set_idstr(mr->ram_block,
+-                       memory_region_name(mr), dev);
++    qemu_ram_verify_idstr(mr->ram_block, dev);
+     qemu_ram_set_migratable(mr->ram_block);
+ }
+ 
+ void vmstate_unregister_ram(MemoryRegion *mr, DeviceState *dev)
+ {
+-    qemu_ram_unset_idstr(mr->ram_block);
+     qemu_ram_unset_migratable(mr->ram_block);
+ }
+ 
 diff --git a/system/physmem.c b/system/physmem.c
-index ffcf012..b57462d 100644
+index b57462d..c736af5 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1825,44 +1825,40 @@ static void ram_block_destroy_guest_memfd(RAMBlock *rb)
-     }
+@@ -1597,35 +1597,20 @@ int qemu_ram_get_fd(RAMBlock *rb)
  }
  
--static void ram_block_add(RAMBlock *new_block, Error **errp)
-+static void *ram_block_alloc_host(RAMBlock *rb, Error **errp)
-+{
-+    struct MemoryRegion *mr = rb->mr;
-+    uint8_t *host = NULL;
-+
-+    if (xen_enabled()) {
-+        xen_ram_alloc(rb->offset, rb->max_length, mr, errp);
-+
-+    } else {
-+        host = qemu_anon_ram_alloc(rb->max_length, &mr->align,
-+                                   qemu_ram_is_shared(rb),
-+                                   qemu_ram_is_noreserve(rb));
-+        if (!host) {
-+            error_setg_errno(errp, errno, "cannot set up guest memory '%s'",
-+                             rb->idstr);
-+        }
-+    }
-+
-+    if (host) {
-+        memory_try_enable_merging(host, rb->max_length);
-+    }
-+    return host;
-+}
-+
-+static void ram_block_add(RAMBlock *new_block)
+ /* Called with the BQL held.  */
+-void qemu_ram_set_idstr(RAMBlock *new_block, const char *name, DeviceState *dev)
++static void qemu_ram_set_idstr(char *idstr, MemoryRegion *mr, DeviceState *dev)
  {
--    const bool noreserve = qemu_ram_is_noreserve(new_block);
--    const bool shared = qemu_ram_is_shared(new_block);
-     RAMBlock *block;
-     RAMBlock *last_block = NULL;
-     ram_addr_t old_ram_size, new_ram_size;
--    Error *err = NULL;
+-    RAMBlock *block;
++    const char *name = memory_region_name(mr);
++    g_autofree char *id = dev ? qdev_get_dev_path(dev) : NULL;
+ 
+-    assert(new_block);
+-    assert(!new_block->idstr[0]);
 -
-     old_ram_size = last_ram_page();
- 
-     qemu_mutex_lock_ramlist();
-     new_block->offset = find_ram_offset(new_block->max_length);
- 
--    if (!new_block->host) {
--        if (xen_enabled()) {
--            xen_ram_alloc(new_block->offset, new_block->max_length,
--                          new_block->mr, &err);
--            if (err) {
--                error_propagate(errp, err);
--                qemu_mutex_unlock_ramlist();
--                return;
--            }
--        } else {
--            new_block->host = qemu_anon_ram_alloc(new_block->max_length,
--                                                  &new_block->mr->align,
--                                                  shared, noreserve);
--            if (!new_block->host) {
--                error_setg_errno(errp, errno,
--                                 "cannot set up guest memory '%s'",
--                                 memory_region_name(new_block->mr));
--                qemu_mutex_unlock_ramlist();
--                return;
--            }
--            memory_try_enable_merging(new_block->host, new_block->max_length);
+-    if (dev) {
+-        char *id = qdev_get_dev_path(dev);
+-        if (id) {
+-            snprintf(new_block->idstr, sizeof(new_block->idstr), "%s/", id);
+-            g_free(id);
 -        }
 -    }
+-    pstrcat(new_block->idstr, sizeof(new_block->idstr), name);
 -
-     new_ram_size = MAX(old_ram_size,
-               (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS);
-     if (new_ram_size > old_ram_size) {
-@@ -1948,7 +1944,6 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
- {
-     void *host;
-     RAMBlock *new_block;
--    Error *local_err = NULL;
-     int64_t file_size, file_align;
- 
-     /* Just support these ram flags by now. */
-@@ -1999,12 +1994,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+-    RCU_READ_LOCK_GUARD();
+-    RAMBLOCK_FOREACH(block) {
+-        if (block != new_block &&
+-            !strcmp(block->idstr, new_block->idstr)) {
+-            fprintf(stderr, "RAMBlock \"%s\" already registered, abort!\n",
+-                    new_block->idstr);
+-            abort();
+-        }
++    if (id) {
++        snprintf(idstr, sizeof(VMStateId), "%s/%s", id, name);
++    } else {
++        pstrcpy(idstr, sizeof(VMStateId), name);
      }
- 
-     new_block->host = host;
--    ram_block_add(new_block, &local_err);
--    if (local_err) {
--        g_free(new_block);
--        error_propagate(errp, local_err);
--        return NULL;
--    }
-+    ram_block_add(new_block);
-     return new_block;
  }
  
-@@ -2066,7 +2056,6 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
-                                   MemoryRegion *mr, Error **errp)
+ /* Called with the BQL held.  */
+-void qemu_ram_unset_idstr(RAMBlock *block)
++static void qemu_ram_unset_idstr(RAMBlock *block)
  {
-     RAMBlock *new_block;
--    Error *local_err = NULL;
-     int align;
- 
-     assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
-@@ -2084,14 +2073,17 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+     /* FIXME: arch_init.c assumes that this is not called throughout
+      * migration.  Ignore the problem since hot-unplug during migration
+@@ -1636,6 +1621,13 @@ void qemu_ram_unset_idstr(RAMBlock *block)
      }
-     new_block->resized = resized;
+ }
  
--    new_block->host = host;
--    ram_block_add(new_block, &local_err);
--    if (local_err) {
--        ram_block_destroy_guest_memfd(new_block);
--        g_free(new_block);
--        error_propagate(errp, local_err);
--        return NULL;
-+    if (!host) {
-+        host = ram_block_alloc_host(new_block, errp);
-+        if (!host) {
-+            ram_block_destroy_guest_memfd(new_block);
-+            g_free(new_block);
-+            return NULL;
-+        }
-     }
++void qemu_ram_verify_idstr(RAMBlock *new_block, DeviceState *dev)
++{
++    VMStateId idstr;
++    qemu_ram_set_idstr(idstr, new_block->mr, dev);
++    assert(!strcmp(new_block->idstr, idstr));
++}
 +
-+    new_block->host = host;
-+    ram_block_add(new_block);
-     return new_block;
- }
+ size_t qemu_ram_pagesize(RAMBlock *rb)
+ {
+     return rb->page_size;
+@@ -1869,6 +1861,12 @@ static void ram_block_add(RAMBlock *new_block)
+      * tail, so save the last element in last_block.
+      */
+     RAMBLOCK_FOREACH(block) {
++        if (!strcmp(block->idstr, new_block->idstr)) {
++            fprintf(stderr, "RAMBlock \"%s\" already added, abort!\n",
++                    new_block->idstr);
++            abort();
++        }
++
+         last_block = block;
+         if (block->max_length < new_block->max_length) {
+             break;
+@@ -1915,6 +1913,7 @@ static RAMBlock *ram_block_create(MemoryRegion *mr, ram_addr_t size,
+ {
+     RAMBlock *rb = g_malloc0(sizeof(*rb));
  
++    qemu_ram_set_idstr(rb->idstr, mr, mr->dev);
+     rb->used_length = size;
+     rb->max_length = max_size;
+     rb->fd = -1;
+@@ -2142,6 +2141,7 @@ void qemu_ram_free(RAMBlock *block)
+     }
+ 
+     qemu_mutex_lock_ramlist();
++    qemu_ram_unset_idstr(block);
+     QLIST_REMOVE_RCU(block, next);
+     ram_list.mru_block = NULL;
+     /* Write list before version */
 -- 
 1.8.3.1
 
