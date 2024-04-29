@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921378B4FC4
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 05:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AD38B4FD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 05:27:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1HeJ-0001jc-Gh; Sun, 28 Apr 2024 23:25:51 -0400
+	id 1s1HeW-0002mF-Nb; Sun, 28 Apr 2024 23:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s1HeC-0001eH-L3; Sun, 28 Apr 2024 23:25:44 -0400
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1s1HeP-0002ae-V9; Sun, 28 Apr 2024 23:25:57 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s1He9-0004I4-KE; Sun, 28 Apr 2024 23:25:44 -0400
-Received: by mail-vs1-xe36.google.com with SMTP id
- ada2fe7eead31-479c39b78dbso1311639137.2; 
- Sun, 28 Apr 2024 20:25:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1s1HeO-0004Kw-1A; Sun, 28 Apr 2024 23:25:57 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6eff9dc1821so3694928b3a.3; 
+ Sun, 28 Apr 2024 20:25:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714361139; x=1714965939; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FYhQAU/Afxth6vnbLdTZgBMdxkrplsa+qMwLgMZc9wY=;
- b=SGxlYe4esFDDMG/pD8ro7WoU2CTLePivjF4GfOICtwnqz21Ycc4Off70qkN6novu30
- 01KcnvRkdI3S/O+mWySksOfSRcriZGM6uWtc1jGgfQoWELLLrMAGjruGc7Vv00WOJHaT
- I6nbMVogce75PAKMiGBpsDMKg63tZhN4mHSgcmdFZ33GQjOPyqOHiR0uQVr1lCs/RVW4
- A+8+CCIKQHOwmNSS1x1JTZu8dgvrMhHt6gI+AckPapRQ95NAAZlKudGVCecJGx5ZNgkW
- 1cgezuCpLpj8jvU3/Sm46HhDu0/E6W5yz+KDjL+q+yPvPQ91UbBqG1f/UQfeYyxzG3b1
- +E9g==
+ d=gmail.com; s=20230601; t=1714361153; x=1714965953; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=E5DEqy7JSpjY/FY+rrXGljVb60fEF7u+dwD2Q2W9tEY=;
+ b=eZ+AzL6QJENVuLMHD50qVyPjBvAUhO/Z8TZZsg7t+xQmO6Ud+eVYyyT8bLyxrfcmzh
+ gh1m7M4LRahPsSCW4QVzt13W2grhEUBPMMyAjCHEaeWy7ldqBTtwFay7c1JvtWYY0D/T
+ eZwbE3wyqpnIctcwzxfxc2Xi+FE4svl+ct6k5dDXQc5dnerF5YwEB5JcbTGB7sD87v/a
+ yPmtIM1hxITsgB0ON5X4HAcfYMb0b9G0kHbghnV8A4aBL6mcmvF9ZE3TbMjyXpHW94IV
+ AzlRfN2Us5hQKDvn7XXusiFFc1C8ylSA9KUejOA7LEyDZMq3IjM4GpsIBPjgGDTCimq3
+ sB7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714361139; x=1714965939;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FYhQAU/Afxth6vnbLdTZgBMdxkrplsa+qMwLgMZc9wY=;
- b=HWVNdZIpw8rbriAwWAKXpkEUr1EFxcLmpNOiGBgynR57n91F8TkC2tPEoarnyedy9u
- VTdsJkxf3eTHP7+EJUKYgh7IsGwg4aZUQC6ZFXbB/bqwXEnV1MFn7nVJqNYcLekBD3z8
- 8AhgFGsJKSYs0FO+JDgWD4ls5djnHP/CSRv8lWEkvHl3Qf8Lc2M605NS/BoxhliWDcfE
- CPpSs/jy9w/558c7DgpM1KOARlPxguYQjtUW++NgDqw4Gz3FPimtQaN+s+MuVHaOcmRE
- pdX9oAmEBqYzreLAfjWItZU6U87RExR+pP/JMt5nSUdr7lWeN7vBkQDRcuQI2LU/4wYD
- 08rw==
+ d=1e100.net; s=20230601; t=1714361153; x=1714965953;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=E5DEqy7JSpjY/FY+rrXGljVb60fEF7u+dwD2Q2W9tEY=;
+ b=V+zYjD3BufP4U/NjLzMkpTGeBYP1xtv38h0v3ntaRRuBtpTuWFl34EyZ6mgkpULNMr
+ Rsx9MoP72q5o/ImqKTAACsrQWJBpQNXgonL+Q0FfPsJ/sY3ek03nMLxc3FZxYk3TaEq6
+ SIYKfKliq8QF+gPUYqJ9CEt5aGs/gYLNodPdO/OPU775rGXiSVlihU4dAjGCxb88VyUM
+ Ea/3Zk8itAlgP1bEV+lt4iWLP8Nv11r+qvsIf3sxhVTGAv+pm49meE3LXpeyAIC0Tnci
+ /k2+dIX8iVA+CAe2LvgBjgruABF5MlzLXp11gn9VL2lidOepNBE1nTzpvBwQYRwWVIOg
+ s5xA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVm8edzw8BMR1+RigH5+LoZQ4eC9AEN6t2vmJY1FU6VoNIzeBQxhKYyeBT0Aa8Ubz3fXG8WZi7xSP56KEQrpKRPO+cxVbU=
-X-Gm-Message-State: AOJu0YyV96PgfzywBIEm89n9FFSW4oi/aZnk/UXZeDLBvcLIzf61Sj/o
- BUghNCSBxwbQqRyzb95Fnlsfhcq3FlxU4DOZJWOpYambD/z+NHjh69mQomKzcfKipYevAm07des
- seibmp/whP3yZd8hZmHcMxcWizUg=
-X-Google-Smtp-Source: AGHT+IEEmfZlv15C+AOu2umMqydhnt3cOdgCumrR46nNtUoVqYzp+qhF4ufizwTdhRFGMAw66fEX7NczpCXHoLwTn/M=
-X-Received: by 2002:a67:ee90:0:b0:47b:ba81:5f93 with SMTP id
- n16-20020a67ee90000000b0047bba815f93mr9520531vsp.11.1714361138817; Sun, 28
- Apr 2024 20:25:38 -0700 (PDT)
+ AJvYcCWdTuUOc+2SbR0b6YEPm+N/uIeo4+zqeQuBI5bgfEaSPEl3800cU1Y8BtI9j+fRercLVwzblgd6NFKxYFpjFBJahpnu4Vg=
+X-Gm-Message-State: AOJu0YwwOu+iSRiArbGfk6oQvMYtMKp4MouGm+Wcv8yxMfHB33bAfP6w
+ msYjWpLh9AbuCRngMy4Mr94gr20wvIGfNQ9NEcVogZ+QFsPcDVWndgh7Fg==
+X-Google-Smtp-Source: AGHT+IFvRK6AGRfpEg5bw2X6iacF1s3DzQ0iWLGKMWW+op7CkL/qjj/gvGOqvgIDRziJkNNjLToVwQ==
+X-Received: by 2002:a05:6a00:a11:b0:6eb:3d37:ce7a with SMTP id
+ p17-20020a056a000a1100b006eb3d37ce7amr7142716pfh.21.1714361152996; 
+ Sun, 28 Apr 2024 20:25:52 -0700 (PDT)
+Received: from jeuk-MS-7D42.. ([210.223.46.112])
+ by smtp.gmail.com with ESMTPSA id
+ j9-20020a056a00130900b006eae2d9298esm18213121pfu.194.2024.04.28.20.25.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 28 Apr 2024 20:25:52 -0700 (PDT)
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+To: qemu-devel@nongnu.org,
+	stefanha@redhat.com
+Cc: fam@euphon.net, pbonzini@redhat.com, qemu-block@nongnu.org,
+ jeuk20.kim@samsung.com, j-young.choi@samsung.com, zheyuma97@gmail.com
+Subject: [PULL 0/1] ufs queue
+Date: Mon, 29 Apr 2024 12:25:37 +0900
+Message-Id: <cover.1714360640.git.jeuk20.kim@samsung.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240415065245.25455-1-yongxuan.wang@sifive.com>
-In-Reply-To: <20240415065245.25455-1-yongxuan.wang@sifive.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 29 Apr 2024 13:25:11 +1000
-Message-ID: <CAKmqyKO3qj9k74RBp+KCGxgPR_=ZGCSzdUDdGrQj9TPJCUD1Nw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] target/riscv/kvm.c: Fix the hart bit setting of AIA
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
- vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,66 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 15, 2024 at 4:53=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifiv=
-e.com> wrote:
->
-> The hart bit setting is different with Linux AIA driver[1] when the numbe=
-r
-> of hart is power of 2. For example, when the guest has 4 harts, the
-> estimated result of AIA driver is 2, whereas we pass 3 to RISC-V/KVM. Sin=
-ce
-> only 2 bits are needed to represent 4 harts, update the formula to get th=
-e
-> accurate result.
+From: Jeuk Kim <jeuk20.kim@samsung.com>
 
-I don't really follow this.
+The following changes since commit fd87be1dada5672f877e03c2ca8504458292c479:
 
-Do you mind re-wording it to talk about what the specification says?
-Not what Linux does.
+  Merge tag 'accel-20240426' of https://github.com/philmd/qemu into staging (2024-04-26 15:28:13 -0700)
 
->
-> [1] https://lore.kernel.org/all/20240307140307.646078-1-apatel@ventanamic=
-ro.com/
->
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> ---
->  target/riscv/kvm/kvm-cpu.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 6a6c6cae80f1..388c4ddaa145 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -1642,7 +1642,14 @@ void kvm_riscv_aia_create(MachineState *machine, u=
-int64_t group_shift,
->          }
->      }
->
-> -    hart_bits =3D find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1=
-;
-> +
-> +    if (max_hart_per_socket > 1) {
-> +        max_hart_per_socket--;
+are available in the Git repository at:
 
-Assuming there are an even number of cores (which there usually are)
-won't this always result in a
+  https://gitlab.com/jeuk20.kim/qemu.git tags/pull-ufs-20240429
 
-> +        hart_bits =3D find_last_bit(&max_hart_per_socket, BITS_PER_LONG)=
- + 1;
+for you to fetch changes up to f2c8aeb1afefcda92054c448b21fc59cdd99db30:
 
-1 being returned by find_last_bit()?
+  hw/ufs: Fix buffer overflow bug (2024-04-29 12:13:35 +0900)
 
-Alistair
+----------------------------------------------------------------
+ufs queue
 
-> +    } else {
-> +        hart_bits =3D 0;
-> +    }
-> +
->      ret =3D kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
->                              KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
->                              &hart_bits, true, NULL);
-> --
-> 2.17.1
->
->
+- Fix ufs sanitizer vulnerability
+
+----------------------------------------------------------------
+Jeuk Kim (1):
+      hw/ufs: Fix buffer overflow bug
+
+ hw/ufs/ufs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
