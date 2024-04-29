@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AC48B5B29
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67E98B5B40
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Rv1-000349-4R; Mon, 29 Apr 2024 10:23:47 -0400
+	id 1s1S0x-0004g1-65; Mon, 29 Apr 2024 10:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1Rux-00033j-TO
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:23:43 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1S0u-0004fR-Sc
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:29:52 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1Ruw-0001nj-72
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:23:43 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6ee4dcc4567so292942a34.3
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:23:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1S0t-0002tK-8G
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:29:52 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a5883518135so514837166b.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:29:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714400620; x=1715005420; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714400989; x=1715005789; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LYyXOFg0p8apARfX+pC2B3snbTJhjKCNRZ3qj9ipkRg=;
- b=eDBVqV2g8F4YTW2qabUD2QJSueFvucP0fFsBG8JttBHlYoBMQtuetBPx14u3R7v20o
- uvj4ttJSP1lzT134V5SMkDHf5qoICSf+su3NOnoBnD4k+MKMn48if5o3MecIRCk/4c2k
- GPmzDL6YDcLgcjDNboalZkfXqI96ViiRi7ds/LYGPxRR1NzpFHGpPFayeF9Syf7nu/7J
- gRjcdFcuiQ8ZoK2ySJpcO8D57qbsWnXSMJ52/bYikxksAyCgP9Zd1gemyTtP38a9qkwt
- uvs27TDvd3OE76a11nkv1fAayh+l+Prhb9Xjsn4WsXGGT2+PKj8acJ2Isr0Oab1wfh5a
- oGAQ==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=RVpiZv/vXCeeCon7h+vC8IOmNUbbzhqpvCFWGm+H+Rs=;
+ b=SJp5KD12PbiLKsl3nVIweYOsF0JQsUMeqcf/vWXO5XuWe11FZuyHunD0TdB8RZgtzg
+ 5aB/w33Yq2jtDYFXXXs4lzmZdyxEueiiZ2eQzHU6SKRKFXR4FpxOLjFt7x18ut8lTydq
+ 5szHqyvSogI2PuGCMzYwao6CwdmbPyujc98Imag9RCRYdYSeswSDftCYh/0zgixT3cRD
+ TSwrdRjIBpUOMlvdQiA4RfZeZmM0QRppzn9npqFDcYlJSCGCldRBL7x7JL1SOM/MGdOL
+ 7js5Hjwziex5ND+1crLumbMGUcXbobpjjEAUp8WFwWxF/xlfj5bHnaTnETnFe7ipe5YS
+ NCYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714400620; x=1715005420;
+ d=1e100.net; s=20230601; t=1714400989; x=1715005789;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LYyXOFg0p8apARfX+pC2B3snbTJhjKCNRZ3qj9ipkRg=;
- b=GVggMam30etWFsCvP4Gof+TE0UD0iso+WrAVn6GtCaeBGBd9k0UYA497lUQl0csV9E
- PPRfEnyW+7KEat4i3vfyA5milT6PX/GHPKwi1tPwD6vhr+A9vIGmeLT0UNk+J9U2xhFM
- nN0DYYICMosrWOgPxJIpoYlpRmvEWdHkJO5jWIZPVCDWhDA1V0ebOjVFUEdgFI06OYtv
- 5Gnzz0qyraK97Ipw2TVkNcu2SPWviTfK8O9FBEpyUPJUANRXtonNVcnTiYvKgu9YslSk
- vTmZWK2oK5T/wol5uEjwW/3TA+g+nfjnsT1Kt7r3Gk1ly9Tf00+M1S5zmG3IWs7BP8Od
- G8fg==
+ bh=RVpiZv/vXCeeCon7h+vC8IOmNUbbzhqpvCFWGm+H+Rs=;
+ b=rbkdyHDR8TyVJqe8n3ks2pKUy79w+VtALxW4bg7ge2SC9vFf3TJXQfh7b1yRxabofE
+ M4uWIzV5wrVTCgRhREA+fQElqX8aQUnc0gFOjIrteVvwzIEGfpYrCS0CpYnGGbXLUZmO
+ I91kP1uyg3y7js7ezfqPvxQgLbAbyrPavyJZe5aaDY8jamkOSTUBH4mdc+W+kVIy/cTb
+ /5u9wxcJEMHsu1ou2coHjYto2FyeX16Du43OYOFirbfiwfMZyrVTrac1pnb5azwXCAVL
+ ruCsMf8yzNjscKjRybkfFgQEqd6ca09B3XBzfcr0Ee7/kzUpuAJD5EE2PG8duV6EEVsQ
+ ONAg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWfR5xMMIe24qgsSbUUzmCXYMzB2t4ksx8VHw3MWCz/73a4kY6AMN3CWiuKvB7Hx8i0TtP2OB6rdlI3qZJ+C/Ak7wphzWQ=
-X-Gm-Message-State: AOJu0YyrDMOuZWj/j+T9O5lC9zHAwwlN1DwzDklfOVfAA6RESA0ERrJY
- kUMPRVdaiWOjesbc2nxFAuCbSxrNakZ7m6FwjsK9bOssFpmjz/8tmE1QkdN9j7Q=
-X-Google-Smtp-Source: AGHT+IF1cOMcl85gnnAmGpnAzpWDF3KZUwkoN9mRMLkaFQVZxuq4P2Zj6u5hXUzSaWOs/7cuF0FbsA==
-X-Received: by 2002:a05:6358:5694:b0:18a:b820:40e2 with SMTP id
- o20-20020a056358569400b0018ab82040e2mr8217789rwf.13.1714400620490; 
- Mon, 29 Apr 2024 07:23:40 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- h3-20020a63c003000000b005fe2f66f89fsm1321114pgg.75.2024.04.29.07.23.39
+ AJvYcCXd28gG2hs7Sg5VvX7y3DlNHkZayi180QVLjVzHuKnnNX3OmUzmhQBP6AWDlHdWLwWqhtgnVTF8u4Xn7L2Nmq50+bffaYM=
+X-Gm-Message-State: AOJu0YwV1QJq1E81HHFtEgxt7+kFJOWPL67akAb0qAWofkJfL2yvMfXS
+ mIqzHV1q5WwBfQmhjM2wNB5edxDhdIWF4klqU4ZNhBdW+rmo9C12oRqwp+jw7pU=
+X-Google-Smtp-Source: AGHT+IG8rK7njbUt+MECnAH5izY0gYADh/8847cRn6gpQn/f1Z56bJ2V7fPDpeIKUgPZUA90VxUZmg==
+X-Received: by 2002:a17:906:2753:b0:a58:84e9:c669 with SMTP id
+ a19-20020a170906275300b00a5884e9c669mr4082612ejd.52.1714400989449; 
+ Mon, 29 Apr 2024 07:29:49 -0700 (PDT)
+Received: from [192.168.69.100] (bny92-h02-176-184-44-142.dsl.sta.abo.bbox.fr.
+ [176.184.44.142]) by smtp.gmail.com with ESMTPSA id
+ lj25-20020a170906f9d900b00a58d0a68608sm3990256ejb.136.2024.04.29.07.29.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Apr 2024 07:23:40 -0700 (PDT)
-Message-ID: <6562083f-9358-4ced-b33b-072d34cfbe25@linaro.org>
-Date: Mon, 29 Apr 2024 07:23:37 -0700
+ Mon, 29 Apr 2024 07:29:47 -0700 (PDT)
+Message-ID: <0d3e039b-5900-4ad1-a103-849b17a380c8@linaro.org>
+Date: Mon, 29 Apr 2024 16:29:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/24] accel/tcg: Allocate per-vCPU accel state in
- create_vcpu_thread()
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-References: <20240428221450.26460-1-philmd@linaro.org>
- <20240428221450.26460-12-philmd@linaro.org>
+Subject: Re: [PATCH 4/5] target/alpha: Split out gen_pc_disp
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240424234436.995410-1-richard.henderson@linaro.org>
+ <20240424234436.995410-5-richard.henderson@linaro.org>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240428221450.26460-12-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240424234436.995410-5-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,76 +93,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/28/24 15:14, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   accel/tcg/vcpu-state.h          | 7 +++++++
->   accel/tcg/tcg-accel-ops-mttcg.c | 2 ++
->   accel/tcg/tcg-accel-ops-rr.c    | 2 ++
->   3 files changed, 11 insertions(+)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
-
+On 25/4/24 01:44, Richard Henderson wrote:
+> Prepare for pcrel by not modifying cpu_pc before use,
+> in the case of JSR.
 > 
-> diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-> index e407d914df..d0dd1bbff8 100644
-> --- a/accel/tcg/vcpu-state.h
-> +++ b/accel/tcg/vcpu-state.h
-> @@ -8,6 +8,13 @@
->   
->   #include "hw/core/cpu.h"
->   
-> +/**
-> + * AccelCPUState:
-> + */
-> +struct AccelCPUState {
-> +    /* Empty */
-> +};
-> +
->   #ifdef CONFIG_USER_ONLY
->   static inline TaskState *get_task_state(const CPUState *cs)
->   {
-> diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-> index c552b45b8e..767b321a0d 100644
-> --- a/accel/tcg/tcg-accel-ops-mttcg.c
-> +++ b/accel/tcg/tcg-accel-ops-mttcg.c
-> @@ -35,6 +35,7 @@
->   #include "tcg/startup.h"
->   #include "tcg-accel-ops.h"
->   #include "tcg-accel-ops-mttcg.h"
-> +#include "accel/tcg/vcpu-state.h"
->   
->   typedef struct MttcgForceRcuNotifier {
->       Notifier notifier;
-> @@ -135,6 +136,7 @@ void mttcg_start_vcpu_thread(CPUState *cpu)
->       char thread_name[VCPU_THREAD_NAME_SIZE];
->   
->       g_assert(tcg_enabled());
-> +    cpu->accel = g_new0(AccelCPUState, 1);
->       tcg_cpu_init_cflags(cpu, current_machine->smp.max_cpus > 1);
->   
->       cpu->thread = g_new0(QemuThread, 1);
-> diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-> index 894e73e52c..419b94f786 100644
-> --- a/accel/tcg/tcg-accel-ops-rr.c
-> +++ b/accel/tcg/tcg-accel-ops-rr.c
-> @@ -36,6 +36,7 @@
->   #include "tcg-accel-ops.h"
->   #include "tcg-accel-ops-rr.h"
->   #include "tcg-accel-ops-icount.h"
-> +#include "accel/tcg/vcpu-state.h"
->   
->   /* Kick all RR vCPUs */
->   void rr_kick_vcpu_thread(CPUState *unused)
-> @@ -314,6 +315,7 @@ void rr_start_vcpu_thread(CPUState *cpu)
->       static QemuThread *single_tcg_cpu_thread;
->   
->       g_assert(tcg_enabled());
-> +    cpu->accel = g_new0(AccelCPUState, 1);
->       tcg_cpu_init_cflags(cpu, false);
->   
->       if (!single_tcg_cpu_thread) {
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   target/alpha/translate.c | 41 ++++++++++++++++++++++------------------
+>   1 file changed, 23 insertions(+), 18 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
