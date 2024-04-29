@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B538B649D
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 23:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B58498B64A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 23:32:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Yb9-0007Nw-OU; Mon, 29 Apr 2024 17:31:43 -0400
+	id 1s1YbA-0007Pf-86; Mon, 29 Apr 2024 17:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Yav-0007FJ-Gh
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:31:31 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Yaz-0007GS-95
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:31:33 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Yan-0003KY-Ck
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:31:26 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41b794510cdso31088925e9.2
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 14:31:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1Yav-0003Ky-9g
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:31:32 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2dac77cdf43so63637931fa.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 14:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714426279; x=1715031079; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714426285; x=1715031085; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ooSUJZwGp/lYPuvOeREBaY5/HVZbZHNsZQAPgbRFeRs=;
- b=sue0DB3EgTzl20AX6XeR/+Phuwu0oeEcA3WSiG4XAyedjldl+4//gVrXYFzzpN6GZ+
- zPKNDjb0RhBxMFJ+o5UEg1W/RUJhM7t8z/K8lvQHcC2wlkUTYFsxCSjWfEBUEX8oEw1Y
- dD7Gzf2cGO3fd+Rpo5m2cZfXHmco1WevvBKvC97fQy+CoLbUAIT4xJkK/YxGq2JT++RI
- h86Ha52FMRLKaCJFl9sAdXlHEvSV+MKVD9EvZBUnCARg/eMuTG+QL1KMWhXXJKhp9sGf
- WP5mjkO95PegmNquM2xyM9VnVX7TNUQXMppT0F+/3QlSZcvfq9xVzvrkqgFL0ZL9YMJj
- wgiw==
+ bh=PYPfGXZr1iKLCXnvsM1Vv5K3/IiXPZq2vFweDAU8m9c=;
+ b=D07eTFat21zZAYlewc9516MY2EhHb0bl7s/iZyy8PPwhqWtvEzMmac5pjD2IlF0368
+ /3T+PHlfwsvBaPnWvragha5+arv91PgdmOG3Z3duilcaY10m/R8S8JwSuzxwsWId76Rq
+ oSic/yc5cqMyRt9ICci6+l6pEjFbJsJyqcSiriHRUdL1ONh3L2JHAl6xvx/6gYUp5Gt1
+ 977QHJDvLKASTalcUe9ZUcesVwm+wuvAPyNaLQAu8B8Yho41bMUqwvyccOY98LNlyIMm
+ OzPP2oKq2vujTcVFphdL0zFq/w3jET2XvyY24lvLbcMnSqKemIVH3CQQYzuHFSRxbQm6
+ lwgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714426279; x=1715031079;
+ d=1e100.net; s=20230601; t=1714426285; x=1715031085;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ooSUJZwGp/lYPuvOeREBaY5/HVZbZHNsZQAPgbRFeRs=;
- b=G1nGsfHlkB1S5HYVIS17R6rzA42/oCB8TqsSAgNq3tpvWI+DL2NVTWOrXcXSByUudH
- UIMnD6zyXof6HRldrWGyic4Yhfq6u5Xig21k1+CUNsvN2D1Fjlhk5VsCd7D0xfl9Xc3B
- Bc1/awxPIkKb/fkxY7i/Wbq06PmFu3lSNvHdKL0pUUOhvM9JIk/suPtmwKJnVwMPsDAk
- pB4+1UVvt8IrPsMaa0ZTwnomYeF/Bfd/V3iy9/1yfTP6SV+3wVOC9r7V4XSQdfp+75jy
- pZ65Dcihi4fosmg1bQjvZsn/DLkyC2uMVFUmTK/eB36xbiYY8okzSbiFpGiOgxV02QrI
- 0yeA==
-X-Gm-Message-State: AOJu0YyIhhHeytOORS7akbya+/WT8MsdxOiuC7nC9Wv7VeNVCcj/ZSWU
- T6aAJzqdpxaqpbOmr7UhGY6KaRQvqCxUwO/EVrt3h4MdWXAUh7m/rDkf3hY8v+yvkmw0qZ0Pdyj
- uLtA=
-X-Google-Smtp-Source: AGHT+IHTLhnzJgdX1MLF377SlYnpHOf53mblCsNumTl6t3g4OYyZUac6+HbghKjLZ+dOElKl32HaIA==
-X-Received: by 2002:a05:600c:5025:b0:41a:a4d1:a896 with SMTP id
- n37-20020a05600c502500b0041aa4d1a896mr752165wmr.16.1714426279546; 
- Mon, 29 Apr 2024 14:31:19 -0700 (PDT)
+ bh=PYPfGXZr1iKLCXnvsM1Vv5K3/IiXPZq2vFweDAU8m9c=;
+ b=sfv0rxR/HK/xe9y9zLeEF/2GiBpWV2uVD+hzTNRq33hPfcweH9OnZCaT56HP3QjcDr
+ D4Fkt3znGsLmPVNDOqeIFMyYX2cwsBh9ZZ02eEqQYaj7ja4noT5LecF1rzjvg8FMe/c0
+ ztBY1ql3EgOBQPq0RgZBxyOrlMg91Y/oMj7vGIDvxYIQcKkBU8fz+a2il8SevGXnIv9W
+ bnlkKCwzTXcCIFIcEspLZRXy5gKB+UkyZVPn1qTXQYEjHzCKpdzMKGJ2juWZJWofedxu
+ CHjhs4geOHJMxXHItgU7aC3liKIVcoOtTR3W7qtXha5rfP52J2gVlxGjB5yaYJc9W7Y8
+ NkDA==
+X-Gm-Message-State: AOJu0Yw4MSX0+VfaWOVp1IftruY9mx8urZEUphk2zVHp/INus5naTeH2
+ bJ1Q4Ol/3l2Kk23nyL+7e4Yg+QTyVJK5eDmo8o0Js0YOhg4kV88cGiSZ2K9hKTssZ+OyAFVs5a4
+ 0piY=
+X-Google-Smtp-Source: AGHT+IGmN6GQjpyPj47kRc+StCLffY4XShyytKAZ187wz4d7h/kpP+lx0wDnBCbJrFZGMYJv3NPZ1g==
+X-Received: by 2002:a2e:9e07:0:b0:2de:4cb4:2601 with SMTP id
+ e7-20020a2e9e07000000b002de4cb42601mr8383973ljk.43.1714426284729; 
+ Mon, 29 Apr 2024 14:31:24 -0700 (PDT)
 Received: from m1x-phil.lan (bny92-h02-176-184-44-142.dsl.sta.abo.bbox.fr.
  [176.184.44.142]) by smtp.gmail.com with ESMTPSA id
- p8-20020a5d48c8000000b0034af40b2efdsm22308632wrs.108.2024.04.29.14.31.18
+ a9-20020a05600c348900b0041bb11ff5a7sm12390100wmq.8.2024.04.29.14.31.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 29 Apr 2024 14:31:19 -0700 (PDT)
+ Mon, 29 Apr 2024 14:31:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 05/13] accel/tcg: Restrict IcountDecr / can_do_io / CPUTLB
- to TCG
-Date: Mon, 29 Apr 2024 23:30:42 +0200
-Message-ID: <20240429213050.55177-6-philmd@linaro.org>
+Subject: [PATCH v2 06/13] accel/tcg: Move @jmp_env from CPUState to TCG
+ AccelCPUState
+Date: Mon, 29 Apr 2024 23:30:43 +0200
+Message-ID: <20240429213050.55177-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240429213050.55177-1-philmd@linaro.org>
 References: <20240429213050.55177-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,90 +94,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-IcountDecr union, the can_do_io field, the CPUTLB* structures
-and the "exec/tlb-common.h" header are only required for TCG.
+@jmp_env is specific to TCG accelerator, move it to its AccelCPUState.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240428221450.26460-16-philmd@linaro.org>
+Message-Id: <20240428221450.26460-17-philmd@linaro.org>
 ---
- include/exec/tlb-common.h | 4 ++++
- include/hw/core/cpu.h     | 9 ++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ accel/tcg/internal-common.h | 1 +
+ accel/tcg/tcg-accel-ops.h   | 1 +
+ accel/tcg/vcpu-state.h      | 2 ++
+ include/hw/core/cpu.h       | 1 -
+ accel/tcg/cpu-exec-common.c | 2 +-
+ accel/tcg/cpu-exec.c        | 6 +++---
+ 6 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
-index dc5a5faa0b..a529c9f056 100644
---- a/include/exec/tlb-common.h
-+++ b/include/exec/tlb-common.h
-@@ -19,6 +19,10 @@
- #ifndef EXEC_TLB_COMMON_H
- #define EXEC_TLB_COMMON_H 1
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index 867426500f..cb507053f5 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -11,6 +11,7 @@
  
-+#ifndef CONFIG_TCG
-+#error Can only include this header with TCG
-+#endif
+ #include "exec/cpu-common.h"
+ #include "exec/translation-block.h"
++#include "accel/tcg/vcpu-state.h"
+ 
+ extern int64_t max_delay;
+ extern int64_t max_advance;
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
+index 44c4079972..ed41a087a3 100644
+--- a/accel/tcg/tcg-accel-ops.h
++++ b/accel/tcg/tcg-accel-ops.h
+@@ -13,6 +13,7 @@
+ #define TCG_ACCEL_OPS_H
+ 
+ #include "sysemu/cpus.h"
++#include "accel/tcg/vcpu-state.h"
+ 
+ void tcg_cpu_destroy(CPUState *cpu);
+ int tcg_cpu_exec(CPUState *cpu);
+diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
+index 35c2695a77..3a0ea2d47a 100644
+--- a/accel/tcg/vcpu-state.h
++++ b/accel/tcg/vcpu-state.h
+@@ -13,6 +13,8 @@
+  * @plugin_state: per-CPU plugin state
+  */
+ struct AccelCPUState {
++    sigjmp_buf jmp_env;
 +
- #define CPU_TLB_ENTRY_BITS 5
- 
- /* Minimalized TLB entry for use by TCG fast path. */
+ #ifdef CONFIG_USER_ONLY
+     TaskState *ts;
+ #endif /* !CONFIG_USER_ONLY */
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 91e793e590..47b499f9f1 100644
+index 47b499f9f1..f1fe43dbea 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -27,7 +27,6 @@
- #include "exec/vaddr.h"
- #include "exec/memattrs.h"
- #include "exec/mmu-access-type.h"
--#include "exec/tlb-common.h"
- #include "qapi/qapi-types-run-state.h"
- #include "qemu/bitmap.h"
- #include "qemu/rcu_queue.h"
-@@ -256,6 +255,9 @@ typedef struct CPUTLBEntryFull {
-     } extra;
- } CPUTLBEntryFull;
+@@ -475,7 +475,6 @@ struct CPUState {
+     int64_t icount_budget;
+     int64_t icount_extra;
+     uint64_t random_seed;
+-    sigjmp_buf jmp_env;
  
-+#ifdef CONFIG_TCG
-+#include "exec/tlb-common.h"
-+
- /*
-  * Data elements that are per MMU mode, minus the bits accessed by
-  * the TCG fast path.
-@@ -311,11 +313,9 @@ typedef struct CPUTLBCommon {
-  * negative offsets are at the end of the struct.
-  */
- typedef struct CPUTLB {
--#ifdef CONFIG_TCG
-     CPUTLBCommon c;
-     CPUTLBDesc d[NB_MMU_MODES];
-     CPUTLBDescFast f[NB_MMU_MODES];
--#endif
- } CPUTLB;
+     QemuMutex work_mutex;
+     QSIMPLEQ_HEAD(, qemu_work_item) work_list;
+diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
+index bc9b1a260e..ec45482305 100644
+--- a/accel/tcg/cpu-exec-common.c
++++ b/accel/tcg/cpu-exec-common.c
+@@ -38,7 +38,7 @@ void cpu_loop_exit(CPUState *cpu)
+     cpu->neg.can_do_io = true;
+     /* Undo any setting in generated code.  */
+     qemu_plugin_disable_mem_helpers(cpu);
+-    siglongjmp(cpu->jmp_env, 1);
++    siglongjmp(cpu->accel->jmp_env, 1);
+ }
  
- /*
-@@ -337,6 +337,7 @@ typedef union IcountDecr {
- #endif
-     } u16;
- } IcountDecr;
-+#endif
+ void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc)
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 9af66bc191..46ad16f911 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -553,7 +553,7 @@ static void cpu_exec_longjmp_cleanup(CPUState *cpu)
+      * support such a thing.  We'd have to properly register unwind info
+      * for the JIT for EH, rather that just for GDB.
+      *
+-     * Alternative 2: Set and restore cpu->jmp_env in tb_gen_code to
++     * Alternative 2: Set and restore cpu->accel->jmp_env in tb_gen_code to
+      * capture the cpu_loop_exit longjmp, perform the cleanup, and
+      * jump again to arrive here.
+      */
+@@ -577,7 +577,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+     uint32_t flags, cflags;
+     int tb_exit;
  
- /**
-  * CPUNegativeOffsetState: Elements of CPUState most efficiently accessed
-@@ -345,6 +346,7 @@ typedef union IcountDecr {
-  * @plugin_mem_cbs: active plugin memory callbacks
-  */
- typedef struct CPUNegativeOffsetState {
-+#ifdef CONFIG_TCG
-     CPUTLB tlb;
- #ifdef CONFIG_PLUGIN
-     /*
-@@ -354,6 +356,7 @@ typedef struct CPUNegativeOffsetState {
- #endif
-     IcountDecr icount_decr;
-     bool can_do_io;
-+#endif
- } CPUNegativeOffsetState;
+-    if (sigsetjmp(cpu->jmp_env, 0) == 0) {
++    if (sigsetjmp(cpu->accel->jmp_env, 0) == 0) {
+         start_exclusive();
+         g_assert(cpu == current_cpu);
+         g_assert(!cpu->running);
+@@ -1038,7 +1038,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
+ {
+     /* Prepare setjmp context for exception handling. */
+-    if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
++    if (unlikely(sigsetjmp(cpu->accel->jmp_env, 0) != 0)) {
+         cpu_exec_longjmp_cleanup(cpu);
+     }
  
- struct KVMState;
 -- 
 2.41.0
 
