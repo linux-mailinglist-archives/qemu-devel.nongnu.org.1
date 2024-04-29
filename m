@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7318B61F6
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 21:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3748B6201
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 21:29:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1WaW-0007Ni-Jz; Mon, 29 Apr 2024 15:22:56 -0400
+	id 1s1Wfn-0001Nf-CZ; Mon, 29 Apr 2024 15:28:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1WaT-0007Lx-UD
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:22:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1WaS-0006ZW-9f
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:22:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714418570;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=K94E5wUHFrn/Bu2yYV69Db0P3XBZmasAR7FRTgK6jO0=;
- b=OucwBuLu8ggnnEURMzQcWUKYyxSWJSuD9JTS+N5wPmh+Tiz1TYoj5H2fGO1m16t8Y7Bdlv
- ZkfrtVIdWv+0rvnuPnfl7r3fNrt2Gt8m8rmdrJdJdX4N8sp+RYA6LtvbNMcGaD9TavtyqA
- UNDKnu/EPy4VXE+xCnAzbGteNLm9JYY=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-WuugO4B9MqmDR06UJ0NOGA-1; Mon, 29 Apr 2024 15:22:48 -0400
-X-MC-Unique: WuugO4B9MqmDR06UJ0NOGA-1
-Received: by mail-oi1-f198.google.com with SMTP id
- 5614622812f47-3c7533a4a7cso1387598b6e.0
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 12:22:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1s1Wfh-0001ML-Vz
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:28:18 -0400
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1s1Wfe-0007Xw-MC
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:28:17 -0400
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-5aa28cde736so3203676eaf.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 12:28:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1714418889; x=1715023689;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WyEiUPA8bIj4Xi/U98owUDeYtfdrkRsuHYwmaXoEJcM=;
+ b=bah/PPb4weLJ+0p+iN2Q2bim8fM5r15Q16Z8cqr5i2cChTGz/XnYKNFnLewE3ZRmBg
+ NxHkGDcPgD6K3lpxZbOVqxk3z+i5TI3XC55phpgN1nKFNf4+Oy9BPsVqJOP815N9c85g
+ 7XWywEJBciUCaggDlbD4Wdyx6ZO7EgVRqEkJ2pYByt+0282+rx5Orlx4Y+Jj3IEcUHJi
+ gDXepbpJeyWbPJth2xGzTXk+weFlE4Dwu27hKcDEMw7x1XTxv9u9JJsSmIomjDvAuw9c
+ WxTEdUfDSsHCBQ9SmiVLekgQ5G2fpNjg3nrCHMqo84C1cOWdTTbnm3ajGSaWEkWNnXXW
+ HOYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714418568; x=1715023368;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=K94E5wUHFrn/Bu2yYV69Db0P3XBZmasAR7FRTgK6jO0=;
- b=EmW0+eJh9xEPq+WzNuoT/py48kIvtRpgGib52fZ2il6ffsfq5vJeJKdTMuDoX9r1wN
- FgSYeoHOg65N6I5Ny1A5FB1VorR3oFOmZQ98C+PZwuX0F9USQIveg4sA1FOktl/PkfIK
- WZ8Wap+6tM8Q1N3U71qfW3ja4KTxtuRRy6XvWI+ggCzdCixLCcadZGA0kNc/wmDj4lxL
- Usc7Xt08mK60jXHVbxfAwl+V8kWksl1YMDT5yNmGucEbShyTHOBIOuRSgLBhkCpQSGEK
- RRtkDCQt60sBV87rvoyK1jdtZVMQcvV2Lyz9CPB/zkFkDLCpwFIjVZeGlH5rhzpCrgWI
- nXyg==
+ d=1e100.net; s=20230601; t=1714418889; x=1715023689;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WyEiUPA8bIj4Xi/U98owUDeYtfdrkRsuHYwmaXoEJcM=;
+ b=ZDwOfCGdBaSDAjqY4qa005VHtc751h0Qx8O9vPp9EUJm0VhC2LCBnD0Bd9O4sj1wPU
+ hPZykPK8qtO8fs+KExPzg+yKIu4WQklhBxdLDxzgMtN9rq34rxhIz11G0U2w4+BdhD7R
+ PETzmaaMB84yXDuo7w2aHwcJbyutYn1UdXxmL+VOAUsjt3STnI+qd6JibjIG4eVkD3UY
+ dgV7so3TlHqJvc+jB5Dh7XriPRgay80xW2TXh7i7niNO0zNuyvLbD5KRS4bK0SgY8hYg
+ AYvo0Jl3Ir1pfBCHSRbrAzwCuZfZR1X93qJQ2OfaITlpaabu9ONX2kNaKwRM7IkteISi
+ Zxag==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWLRslfCpAxFFywlPmAYcEj5bRe72IqZXDvBIvlhwJHXTu+Oij6B7khNe4pMtP872xI4IZUtMR3liU/IqJmWXvYfPT7tsk=
-X-Gm-Message-State: AOJu0YwFEyFEUbWLpmcZh2YY8yz8q4pL1lOks78xhYxlhjNHrRBqrKtP
- 7eshe3tFizkEkSU42gF8seOS4MBD3v3JGQXL9YOoXJSRnUU/KOx9hC+tiUWxBG9O4mh5NOolZbm
- kWaz/vgIdwJZ01D/iTglQAqTiDT+ag1ezIs4p0NDbD+6q7WrjF4Qb
-X-Received: by 2002:a05:6808:2109:b0:3c8:42f4:91cf with SMTP id
- r9-20020a056808210900b003c842f491cfmr13180448oiw.3.1714418567725; 
- Mon, 29 Apr 2024 12:22:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8VWFGw72K7tfRC/29X67onWOad67BSEOlqonFf+Fcl357RCkASMflRUDfCH43ST3cbshrzw==
-X-Received: by 2002:a05:6808:2109:b0:3c8:42f4:91cf with SMTP id
- r9-20020a056808210900b003c842f491cfmr13180415oiw.3.1714418567188; 
- Mon, 29 Apr 2024 12:22:47 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- bm43-20020a0568081aab00b003c4f39fb9e7sm3452192oib.36.2024.04.29.12.22.46
+ AJvYcCUpXz83rYv2PzFAuczBVMAS5rru268yPbPaKBQ1dqyda1C6oQLSP2Zy2g4PVo2f7CcpAiSuobpVl6qNoghpZRokJhpYLBA=
+X-Gm-Message-State: AOJu0Yw/byuokJ0qELj9604AVHUSgDmegq+mvWqcNjGnquLlh0ikxhlD
+ 0PuUKFluztMQvQcBb90IQnTSw53/F/0Uf0YYrNFAzLswuIalEbKRFFgeqVKzC34=
+X-Google-Smtp-Source: AGHT+IEwL329nmuvT5Z5h3eFPR8fIp+Mth6t9qV2NlPHiUN83PxIW0kE0o+NyrDiU3gYTXSMAclYUg==
+X-Received: by 2002:a05:6358:1911:b0:186:c06f:435c with SMTP id
+ w17-20020a056358191100b00186c06f435cmr17847762rwm.24.1714418888977; 
+ Mon, 29 Apr 2024 12:28:08 -0700 (PDT)
+Received: from atishp.ba.rivosinc.com ([64.71.180.162])
+ by smtp.gmail.com with ESMTPSA id
+ i13-20020a63e44d000000b005d8b89bbf20sm19293887pgk.63.2024.04.29.12.28.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Apr 2024 12:22:46 -0700 (PDT)
-Date: Mon, 29 Apr 2024 15:22:45 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: farosas@suse.de, eblake@redhat.com, armbru@redhat.com,
- pbonzini@redhat.com, qemu-devel@nongnu.org, yc-core@yandex-team.ru
-Subject: Re: [PATCH v5 2/5] migration: process_incoming_migration_co():
- complete cleanup on failure
-Message-ID: <Zi_zhQfJsi86_4VU@x1n>
-References: <20240429191426.2327225-1-vsementsov@yandex-team.ru>
- <20240429191426.2327225-3-vsementsov@yandex-team.ru>
+ Mon, 29 Apr 2024 12:28:08 -0700 (PDT)
+From: Atish Patra <atishp@rivosinc.com>
+Subject: [PATCH 0/3] Assorted fixes for PMU
+Date: Mon, 29 Apr 2024 12:28:03 -0700
+Message-Id: <20240429-countinhibit_fix-v1-0-802ec1e99133@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240429191426.2327225-3-vsementsov@yandex-team.ru>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMP0L2YC/x2MWwqAIBAArxL7naBmD7pKRJStuT8aWhGId0/6n
+ IGZBBEDYYSxShDwoUjeFRB1Bdqu7kBGe2GQXCqu5MC0v91FztJG12LoZbpbhRbCqKZvoWRnwKL
+ /5TTn/AFmQrAiYgAAAA==
+To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Cc: Atish Patra <atishp@rivosinc.com>, palmer@dabbelt.com, 
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
+ dbarboza@ventanamicro.com, alistair.francis@wdc.com
+X-Mailer: b4 0.13-dev-f0463
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=atishp@rivosinc.com; helo=mail-oo1-xc2d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,16 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 29, 2024 at 10:14:23PM +0300, Vladimir Sementsov-Ogievskiy wrote:
-> Make call to migration_incoming_state_destroy(), instead of doing only
-> partial of it.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+This series contains few miscallenous fixes related to hpmcounters
+and related code. The first patch fixes an issue with cycle/instret
+counters overcouting while the remaining two are more for specification
+compliance.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
+---
+Atish Patra (3):
+      target/riscv: Save counter values during countinhibit update
+      target/riscv: Enforce WARL behavior for scounteren/hcounteren
+      target/riscv: Fix the predicate functions for mhpmeventhX CSRs
 
--- 
-Peter Xu
+ target/riscv/cpu.h     |   1 -
+ target/riscv/csr.c     | 111 ++++++++++++++++++++++++++++++-------------------
+ target/riscv/machine.c |   1 -
+ 3 files changed, 68 insertions(+), 45 deletions(-)
+---
+base-commit: 1642f979a71a5667a05070be2df82f48bd43ad7a
+change-id: 20240428-countinhibit_fix-c6a1c11f4375
+--
+Regards,
+Atish patra
 
 
