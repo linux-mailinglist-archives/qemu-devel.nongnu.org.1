@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342448B51BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2928B51B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Km2-0001t6-Jm; Mon, 29 Apr 2024 02:46:02 -0400
+	id 1s1KmC-0001v0-Is; Mon, 29 Apr 2024 02:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s1Klk-0001qA-C8; Mon, 29 Apr 2024 02:45:46 -0400
+ id 1s1Klk-0001q4-Bm; Mon, 29 Apr 2024 02:45:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s1Kli-0006WC-5X; Mon, 29 Apr 2024 02:45:43 -0400
+ id 1s1Kli-0006WD-5j; Mon, 29 Apr 2024 02:45:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D66D262CAF;
+ by isrv.corpit.ru (Postfix) with ESMTP id DD27262CB0;
  Mon, 29 Apr 2024 09:45:39 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DC217C33F2;
+ by tsrv.corpit.ru (Postfix) with SMTP id E86FEC33F3;
  Mon, 29 Apr 2024 09:45:36 +0300 (MSK)
-Received: (nullmailer pid 238425 invoked by uid 1000);
+Received: (nullmailer pid 238429 invoked by uid 1000);
  Mon, 29 Apr 2024 06:45:36 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 0/9] Trivial patches for 2024-04-29
-Date: Mon, 29 Apr 2024 09:45:27 +0300
-Message-Id: <20240429064536.238392-1-mjt@tls.msk.ru>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/9] target/i386/cpu: Remove "x86" prefix from the CPU list
+Date: Mon, 29 Apr 2024 09:45:28 +0300
+Message-Id: <20240429064536.238392-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240429064536.238392-1-mjt@tls.msk.ru>
+References: <20240429064536.238392-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -56,47 +58,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit fd87be1dada5672f877e03c2ca8504458292c479:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'accel-20240426' of https://github.com/philmd/qemu into staging (2024-04-26 15:28:13 -0700)
+Printing an "x86" in front of each CPU name is not helpful at all:
+It is confusing for the users since they don't know whether they
+have to specify these letters for the "-cpu" parameter, too, and
+it also takes some precious space in the dense output of the CPU
+entries. Let's simply remove this now and use two spaces at the
+beginning of the lines for the indentation of the entries instead,
+like most other target architectures are doing it for their CPU help
+output already.
 
-are available in the Git repository at:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index fa1ea3735d..aa3b2d8391 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5708,7 +5708,7 @@ static void x86_cpu_list_entry(gpointer data, gpointer user_data)
+         desc = g_strdup_printf("%s (deprecated)", olddesc);
+     }
+ 
+-    qemu_printf("x86 %-20s  %s\n", name, desc);
++    qemu_printf("  %-20s  %s\n", name, desc);
+ }
+ 
+ /* list available CPU models and flags */
+-- 
+2.39.2
 
-for you to fetch changes up to d2f20c25281908a07bcb8c3dea8292abf68e5c8b:
-
-  checkpatch.pl: forbid strerrorname_np() (2024-04-29 09:37:26 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2024-04-29
-
-----------------------------------------------------------------
-Daniel Henrique Barboza (2):
-      target/riscv/kvm: remove sneaky strerrorname_np() instance
-      checkpatch.pl: forbid strerrorname_np()
-
-Li Zhijian via (1):
-      backends/cryptodev-builtin: Fix local_error leaks
-
-Michael Tokarev (1):
-      target/loongarch/cpu.c: typo fix: expection
-
-Philippe Mathieu-Daudé (2):
-      scripts/checkpatch: Avoid author email mangled by qemu-*@nongnu.org
-      scripts/checkpatch: Do not use mailmap
-
-Thomas Huth (3):
-      target/i386/cpu: Remove "x86" prefix from the CPU list
-      target/s390x/cpu_models: Rework the output of "-cpu help"
-      target/ppc/cpu_init: Remove "PowerPC" prefix from the CPU list
-
- backends/cryptodev-builtin.c |  9 +++++----
- scripts/checkpatch.pl        | 11 +++++++----
- target/i386/cpu.c            |  2 +-
- target/loongarch/cpu.c       |  2 +-
- target/ppc/cpu_init.c        |  9 +++++----
- target/riscv/kvm/kvm-cpu.c   |  4 ++--
- target/s390x/cpu_models.c    |  9 +++++----
- 7 files changed, 26 insertions(+), 20 deletions(-)
 
