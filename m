@@ -2,67 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1685A8B5285
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 09:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB4B8B52B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 09:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Li0-0001TF-PF; Mon, 29 Apr 2024 03:45:56 -0400
+	id 1s1LsK-0005Wf-3y; Mon, 29 Apr 2024 03:56:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1Lht-0001RO-Mw
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:45:49 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1s1Ls7-0005V0-4R
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:56:24 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1Lhq-0001N3-Hz
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:45:49 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:290f:0:640:2b99:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 4A68D60C97;
- Mon, 29 Apr 2024 10:45:36 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b739::1:30] (unknown
- [2a02:6b8:b081:b739::1:30])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id ZjK30T1IeW20-QsF2iRhh; Mon, 29 Apr 2024 10:45:35 +0300
+ id 1s1Lrz-0003ZB-9M
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:56:22 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id D343860B30;
+ Mon, 29 Apr 2024 10:56:08 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b739::1:30])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id xtKJiB1IWmI0-5E3TUprU; Mon, 29 Apr 2024 10:56:08 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714376735;
- bh=ept533pZefmtPyNBxRHVJ1cw6ONie/Vts1QIK4R9WiQ=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=Kv5H6PaZmX30HbKNelCwRcbp7VyVJgsBEQg1MH+gXMs5WzWfRW8NoUC9Qm6RarbJP
- gIOPJzt1fztKXcPQbZgIhOuZos0aOTZNIB2fMDwqYaONdma5dVrvqV9bW3VcvL3j3A
- XOEna7ZO/TmNXZNYjlqmMWhVbhYALNH3htQOr7Ek=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ s=default; t=1714377368;
+ bh=LTPZpa6b2SIAJLiaZOK+A2tg2vHsnx4VgJLqurSbzjc=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=l5UWIk6lqO3hkAytxKG9cywi5J/51ak1aCGBWRdVEITkQQcpJuZkPbKrWTQi6JvJK
+ ZogfIuIXFCEpUQ4WMI2RiZSvFALHReNxny/NMoIHfgbt6lF2E09kiS+qHDR2Iawmwd
+ 5EmXo5cJgKfMcqX7yCdLo7Bf3tCa5DoSv5r2WGUU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <3b6fe3da-04df-4cd1-a428-4b5cae11510a@yandex-team.ru>
-Date: Mon, 29 Apr 2024 10:45:35 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] qapi: introduce exit-on-error parameter for
- migrate-incoming
-To: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com
-Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, yc-core@yandex-team.ru
-References: <20240425181551.1465739-1-vsementsov@yandex-team.ru>
- <20240425181551.1465739-5-vsementsov@yandex-team.ru> <87r0etgp7e.fsf@suse.de>
-Content-Language: en-US
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <87r0etgp7e.fsf@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+To: peterx@redhat.com,
+	farosas@suse.de
+Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
+Subject: [PATCH v4 0/4] migration: do not exit on incoming failure
+Date: Mon, 29 Apr 2024 10:55:37 +0300
+Message-Id: <20240429075541.1959050-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,27 +70,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.04.24 23:30, Fabiano Rosas wrote:
->> @@ -797,13 +801,18 @@ fail:
->>                         MIGRATION_STATUS_FAILED);
->>       migration_incoming_state_destroy();
->>   
->> -    if (migrate_has_error(s)) {
->> -        WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
->> -            error_report_err(s->error);
->> +    if (mis->exit_on_error) {
->> +        if (migrate_has_error(s)) {
->> +            WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
->> +                error_report_err(s->error);
-> error_report_err(error_copy(s->error))
-> 
-> ...because later on you're reading from s->error at
-> fill_destination_migration_info.
+Hi all!
 
-No, we immediately do exit() instead. That's just a preexisting behavior, moved into "if (mis->exit_on_error)"
+The series brings an option to not immediately exit on incoming
+migration failure, giving a possibility to orchestrator to get the error
+through QAPI and shutdown QEMU by "quit".
+
+v4:
+- add r-b and a-b by Fabiano and Markus
+- improve wording in 04 as Markus suggested
+
+v3:
+- don't refactor the whole code around setting migration error, it seems
+  too much and necessary for the new feature itself
+- add constant
+- change behavior for HMP command
+- split some things to separate patches
+- and more, by Peter's suggestions
+
+
+New behavior can be demonstrated like this:
+
+bash:
+
+(
+cat <<EOF
+{'execute': 'qmp_capabilities'}
+{'execute': 'migrate-set-capabilities', 'arguments': {'capabilities': [{'capability': 'events', 'state': true}]}}
+{'execute': 'migrate-incoming', 'arguments': {'uri': 'exec:echo x', 'exit-on-error': false}}
+EOF
+sleep 1
+cat <<EOF
+{'execute': 'query-migrate'}
+{'execute': 'quit'}
+EOF
+) | ./build/qemu-system-x86_64 -incoming 'defer' -qmp stdio -nographic -nodefaults
+
+output:
+
+{"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 9}, "package": "v9.0.0-149-gb6295ad58c"}, "capabilities": ["oob"]}}
+{"return": {}}
+{"return": {}}
+{"timestamp": {"seconds": 1714068847, "microseconds": 263907}, "event": "MIGRATION", "data": {"status": "setup"}}
+{"return": {}}
+{"timestamp": {"seconds": 1714068847, "microseconds": 266696}, "event": "MIGRATION", "data": {"status": "active"}}
+qemu-system-x86_64: Not a migration stream
+{"timestamp": {"seconds": 1714068847, "microseconds": 266766}, "event": "MIGRATION", "data": {"status": "failed"}}
+{"return": {"status": "failed", "error-desc": "load of migration failed: Invalid argument"}}
+{"timestamp": {"seconds": 1714068848, "microseconds": 237187}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
+{"return": {}}
+
+
+Vladimir Sementsov-Ogievskiy (4):
+  migration: move trace-point from migrate_fd_error to migrate_set_error
+  migration: process_incoming_migration_co(): complete cleanup on
+    failure
+  migration: process_incoming_migration_co(): rework error reporting
+  qapi: introduce exit-on-error parameter for migrate-incoming
+
+ migration/migration-hmp-cmds.c |  2 +-
+ migration/migration.c          | 57 ++++++++++++++++++++++++----------
+ migration/migration.h          |  3 ++
+ migration/trace-events         |  2 +-
+ qapi/migration.json            |  7 ++++-
+ system/vl.c                    |  3 +-
+ 6 files changed, 54 insertions(+), 20 deletions(-)
 
 -- 
-Best regards,
-Vladimir
+2.34.1
 
 
