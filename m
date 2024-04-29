@@ -2,118 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CAE8B5C19
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:57:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DCF28B5C4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:04:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1SRS-0002Ml-2i; Mon, 29 Apr 2024 10:57:18 -0400
+	id 1s1SWs-0004LU-J3; Mon, 29 Apr 2024 11:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1SRO-0002Kz-Ib
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:57:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1SRM-0000LC-IV
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:57:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714402629;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qK4b3nMBMYdROFOc8wmDagpgfl63KreIleIjeaePmoU=;
- b=RWvzdHdc3plhz6jSjzF+WIUiKmfXtnlVjiu1bAYGXStGg97XWrDE75AajUqbLsnPbaEalL
- ANhPVKpLJ+w1Ao/+KCH9FNWzUCUIEf50X3Xs85fvCNOPcHlOZZXvDScLMtzIkkR7bUSkTt
- 5DxB1n+xmA5HgboRVjPPj+w5+/JsvJo=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-x1c0EDrKMFul7fmbcx2VPw-1; Mon, 29 Apr 2024 10:57:07 -0400
-X-MC-Unique: x1c0EDrKMFul7fmbcx2VPw-1
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-1e44a3f6011so5915815ad.1
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:57:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1SWq-0004Hw-71
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:02:52 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1SWn-0001sI-6t
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:02:51 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1eb66b6953cso16696075ad.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 08:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714402967; x=1715007767; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fhDQOoaCRXHIqRUSRABFLCYOp6C0uUNzqTLTSoqMEpo=;
+ b=XpXUMz+MpPDw+eRxpJtCZMZHLlGW3gmjMNUy1qUaAwSljbPbu2Pm/TH4lSgYwDfy1B
+ hM+o1kEGHXGlrFdeUqE6jJTeQ2r7qXVMwE07Jfil33Rse8f8bGdRbV4Wd0dj9qn0QkoR
+ LHzX23OdwtLPsU1E8HXHgtx6rre7sJhw36iL1eSqPot6/Q0CAvGNmN+szWq3tL92/b4G
+ UOimhnQl+vfCb5/9IDNzWSfXGIroCRp6Bu6DUo4bTbukj0VUqJQ+nLlh7/iSjBsnc9+F
+ WLQjoXg6ghFPEyRT01i1p60dr3bPY3WrgDysU/Mpd53jV/IJZ3Rv+/0zmPZTFpAkOLny
+ 5JAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714402626; x=1715007426;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1714402967; x=1715007767;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qK4b3nMBMYdROFOc8wmDagpgfl63KreIleIjeaePmoU=;
- b=HG/gPGHB4S3BZr098NScdjj5fyYswK/p8r+aUDb/rUUZ6dp4GK/25/llfVH/QH7gt1
- ZQL9rZAWPwjLz8alt0FR5dDevBdmE4b72Q8DpGPkJjz8S5VPL3CCF1LvFn2Zp8pdFqfo
- UpCvARYMovcSEBqBGqakU/oBtGL6hCEQItS9IrnBEd5sk+zrlLVGeoU73CWfspPeYAAK
- 8LfG0Rcr7BYn7Cj6MalvK+rMHxKE72XnlbPtpzrrvnE36kcPRPp6YZP/hOd6IoPNEbB9
- ntwfyRdhWq4nGE7Gb/vzbZxANYCz545KKHbn6Hclvri7I1viraMpMXWEvFUgTEQ1YXlc
- iYPg==
+ bh=fhDQOoaCRXHIqRUSRABFLCYOp6C0uUNzqTLTSoqMEpo=;
+ b=Hi2JyJy3GmIsfEK782K4HH2OQLApQzmWQ3Fke+kd4n3ArRI76f5yqp1r1t6wMBBaJ7
+ 9hKLcPfJ+9L3POenyUFHmcQVBama4oscDEepZLu8evluYLbjt+HSEpZrH+SrA0JHWiYl
+ EgvrdXT6CdFA2y0XHNXEKoHA7BGNTQ3igTkQ80UsaJdSwKlz/Leg+4CgWMcOKPAPT+Ap
+ Fc5JVhIdD5UhFSxQHb8tNeep0bP/dY3ywSJbyRe+oj2iUS3TfPXA71NMi1N0lum2IrpM
+ S6f4AA6mG485tRGW5fVUiAhxGwHXqvuDfyfFkKZF6kT81M/DgsLhR18KIuwA9JYjBPUu
+ APxw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUQgBNXZDChxdW71AVwp7Z3PE3599pJh4vupueQP62Hl6XVOUNV7kTBUmRStr53tIo99PVu3BJ5V0q0/3aBHef0UIede60=
-X-Gm-Message-State: AOJu0YwWH35ctBcaUKEjHGl/ttGk6W3J62yT3CDYNPCkv9zkjfX0f3YS
- BZdrjiNkrXnwv63IRkyqVxGqYa/sISaxFR/N552JoKOpJEjDgMShHSgSQ35WWxgszOF+l940JbS
- GshEKeRFU8KZyciF/rBunWg6j0j7YgOJhi0D3AcRrlrCza3BLjp6g
-X-Received: by 2002:a17:902:ec89:b0:1dc:c28e:2236 with SMTP id
- x9-20020a170902ec8900b001dcc28e2236mr12845607plg.2.1714402626024; 
- Mon, 29 Apr 2024 07:57:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEA+qrNoGaRDcvd5Z4Yi1nE301bw8/WfoQ5tq6xiUgp33FZCmixU62p8LA9sr8j7Kwv6S7N4A==
-X-Received: by 2002:a17:902:ec89:b0:1dc:c28e:2236 with SMTP id
- x9-20020a170902ec8900b001dcc28e2236mr12845580plg.2.1714402625281; 
- Mon, 29 Apr 2024 07:57:05 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- f12-20020a170902ce8c00b001e1071cf0bbsm20452221plg.302.2024.04.29.07.57.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Apr 2024 07:57:04 -0700 (PDT)
-Date: Mon, 29 Apr 2024 10:56:58 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Michael Galaxy <mgalaxy@akamai.com>
-Cc: Yu Zhang <yu.zhang@ionos.com>,
- "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
- Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Prasanna Kumar Kalever <prasanna4324@gmail.com>,
- "integration@gluster.org" <integration@gluster.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
- Song Gao <gaosong@loongson.cn>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, arei.gonglei@huawei.com,
- pannengyuan@huawei.com
-Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-Message-ID: <Zi-1OvxA5MIHjklU@x1n>
-References: <Zgx3brrz8m0V7HS4@x1n>
- <CAMGffE=i+hVCNaX_31h1D1VW7JGJBqoa9T0qEJe2CDcb9BPiAA@mail.gmail.com>
- <ZhQYu3ZnsIGv2qUZ@x1n>
- <CAMGffEm2TWJxOPcNQTQ1Sjytf5395dBzTCMYiKRqfxDzJwSN6A@mail.gmail.com>
- <ZhWa0YeAb9ySVKD1@x1n>
- <082a21b0-d4d1-9f6c-24b5-bee56263008e@fujitsu.com>
- <ZhaY2_cO6CrQFCt3@x1n> <Zhfxoaz9yNTx8Btd@x1n>
- <CAHEcVy7POArt+CmY8dyNTzLJp3XxXgjh3k8=C=9K+_cw1CSJFA@mail.gmail.com>
- <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ AJvYcCW5ItxbA7WRlmb9jK4YBpDgWtraH5iquQcRVwWLqhXfPQNABFEARNQO8tVA9mW+G4ELKdCQ+usZXcytM22hiyl5NzXTmPc=
+X-Gm-Message-State: AOJu0YzcWxrfOjGaoxmuo+ctyN8jgDTQIDc55oyjPAKfWgNKGyYm+Zpr
+ 9Vfl23rfP5JKDYRZPh6QPrH98AVSihgUYpGnTYOgdXb7Aecb79c60xBjq/Sz7LOmQh7fQiUUcbE
+ d
+X-Google-Smtp-Source: AGHT+IGEnGdAZGCd+sZ/nlXOQ+0DAPAcnIkRIQS6tJKAiRlgMbl/nqqhxuiTZeOyFqNeVumPy4BSIQ==
+X-Received: by 2002:a17:902:e88e:b0:1e2:3720:e9b4 with SMTP id
+ w14-20020a170902e88e00b001e23720e9b4mr13443946plg.54.1714402965341; 
+ Mon, 29 Apr 2024 08:02:45 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ n5-20020a170902d2c500b001ea02645bc9sm12325387plc.148.2024.04.29.08.02.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Apr 2024 08:02:44 -0700 (PDT)
+Message-ID: <3aa8075b-3222-48fb-b411-99e03bc06da8@linaro.org>
+Date: Mon, 29 Apr 2024 08:02:43 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/24] accel/tcg: Move @mem_io_pc from CPUState to TCG
+ AccelCPUState
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>
+References: <20240428221450.26460-1-philmd@linaro.org>
+ <20240428221450.26460-18-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240428221450.26460-18-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,133 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 29, 2024 at 08:08:10AM -0500, Michael Galaxy wrote:
-> Hi All (and Peter),
+On 4/28/24 15:14, Philippe Mathieu-Daudé wrote:
+> diff --git a/target/i386/helper.c b/target/i386/helper.c
+> index 48d1513a35..6c188ea94c 100644
+> --- a/target/i386/helper.c
+> +++ b/target/i386/helper.c
+> @@ -30,6 +30,7 @@
+>   #include "qemu/log.h"
+>   #ifdef CONFIG_TCG
+>   #include "tcg/insn-start-words.h"
+> +#include "accel/tcg/vcpu-state.h" // ???
+>   #endif
+>   
+>   void cpu_sync_avx_hflag(CPUX86State *env)
+> @@ -518,7 +519,7 @@ static inline target_ulong get_memio_eip(CPUX86State *env)
+>       uint64_t data[TARGET_INSN_START_WORDS];
+>       CPUState *cs = env_cpu(env);
+>   
+> -    if (!cpu_unwind_state_data(cs, cs->mem_io_pc, data)) {
+> +    if (!cpu_unwind_state_data(cs, cs->accel->mem_io_pc, data)) {
+>           return env->eip;
+>       }
+>   
 
-Hi, Michael,
+Not good.
 
-> 
-> My name is Michael Galaxy (formerly Hines). Yes, I changed my last name
-> (highly irregular for a male) and yes, that's my real last name:
-> https://www.linkedin.com/in/mrgalaxy/)
-> 
-> I'm the original author of the RDMA implementation. I've been discussing
-> with Yu Zhang for a little bit about potentially handing over maintainership
-> of the codebase to his team.
-> 
-> I simply have zero access to RoCE or Infiniband hardware at all,
-> unfortunately. so I've never been able to run tests or use what I wrote at
-> work, and as all of you know, if you don't have a way to test something,
-> then you can't maintain it.
-> 
-> Yu Zhang put a (very kind) proposal forward to me to ask the community if
-> they feel comfortable training his team to maintain the codebase (and run
-> tests) while they learn about it.
+Although considering
 
-The "while learning" part is fine at least to me.  IMHO the "ownership" to
-the code, or say, taking over the responsibility, may or may not need 100%
-mastering the code base first.  There should still be some fundamental
-confidence to work on the code though as a starting point, then it's about
-serious use case to back this up, and careful testings while getting more
-familiar with it.
+https://lore.kernel.org/qemu-devel/20240416040609.1313605-3-richard.henderson@linaro.org/
 
-> 
-> If you don't mind, I'd like to let him send over his (very detailed)
-> proposal,
+we should probably merge mem_io_pc and plugin_ra.  So the value to be accessed by i386 
+would not need to be in a tcg private data structure, but in CPUNegativeOffsetState.
 
-Yes please, it's exactly the time to share the plan.  The hope is we try to
-reach a consensus before or around the middle of this release (9.1).
-Normally QEMU has a 3~4 months window for each release and 9.1 schedule is
-not yet out, but I think it means we make a decision before or around
-middle of June.
 
-Thanks,
-
-> 
-> - Michael
-> 
-> On 4/11/24 11:36, Yu Zhang wrote:
-> > > 1) Either a CI test covering at least the major RDMA paths, or at least
-> > >      periodically tests for each QEMU release will be needed.
-> > We use a batch of regression test cases for the stack, which covers the
-> > test for QEMU. I did such test for most of the QEMU releases planned as
-> > candidates for rollout.
-> > 
-> > The migration test needs a pair of (either physical or virtual) servers with
-> > InfiniBand network, which makes it difficult to do on a single server. The
-> > nested VM could be a possible approach, for which we may need virtual
-> > InfiniBand network. Is SoftRoCE [1] a choice? I will try it and let you know.
-> > 
-> > [1]  https://urldefense.com/v3/__https://enterprise-support.nvidia.com/s/article/howto-configure-soft-roce__;!!GjvTz_vk!VEqNfg3Kdf58Oh1FkGL6ErDLfvUXZXPwMTaXizuIQeIgJiywPzuwbqx8wM0KUsyopw_EYQxWvGHE3ig$
-> > 
-> > Thanks and best regards!
-> > 
-> > On Thu, Apr 11, 2024 at 4:20 PM Peter Xu <peterx@redhat.com> wrote:
-> > > On Wed, Apr 10, 2024 at 09:49:15AM -0400, Peter Xu wrote:
-> > > > On Wed, Apr 10, 2024 at 02:28:59AM +0000, Zhijian Li (Fujitsu) via wrote:
-> > > > > 
-> > > > > on 4/10/2024 3:46 AM, Peter Xu wrote:
-> > > > > 
-> > > > > > > Is there document/link about the unittest/CI for migration tests, Why
-> > > > > > > are those tests missing?
-> > > > > > > Is it hard or very special to set up an environment for that? maybe we
-> > > > > > > can help in this regards.
-> > > > > > See tests/qtest/migration-test.c.  We put most of our migration tests
-> > > > > > there and that's covered in CI.
-> > > > > > 
-> > > > > > I think one major issue is CI systems don't normally have rdma devices.
-> > > > > > Can rdma migration test be carried out without a real hardware?
-> > > > > Yeah,  RXE aka. SOFT-RoCE is able to emulate the RDMA, for example
-> > > > > $ sudo rdma link add rxe_eth0 type rxe netdev eth0  # on host
-> > > > > then we can get a new RDMA interface "rxe_eth0".
-> > > > > This new RDMA interface is able to do the QEMU RDMA migration.
-> > > > > 
-> > > > > Also, the loopback(lo) device is able to emulate the RDMA interface
-> > > > > "rxe_lo", however when
-> > > > > I tried(years ago) to do RDMA migration over this
-> > > > > interface(rdma:127.0.0.1:3333) , it got something wrong.
-> > > > > So i gave up enabling the RDMA migration qtest at that time.
-> > > > Thanks, Zhijian.
-> > > > 
-> > > > I'm not sure adding an emu-link for rdma is doable for CI systems, though.
-> > > > Maybe someone more familiar with how CI works can chim in.
-> > > Some people got dropped on the cc list for unknown reason, I'm adding them
-> > > back (Fabiano, Peter Maydell, Phil).  Let's make sure nobody is dropped by
-> > > accident.
-> > > 
-> > > I'll try to summarize what is still missing, and I think these will be
-> > > greatly helpful if we don't want to deprecate rdma migration:
-> > > 
-> > >    1) Either a CI test covering at least the major RDMA paths, or at least
-> > >       periodically tests for each QEMU release will be needed.
-> > > 
-> > >    2) Some performance tests between modern RDMA and NIC devices are
-> > >       welcomed.  The current knowledge is modern NIC can work similarly to
-> > >       RDMA in performance, then it's debatable why we still maintain so much
-> > >       rdma specific code.
-> > > 
-> > >    3) No need to be soild patchsets for this one, but some plan to improve
-> > >       RDMA migration code so that it is not almost isolated from the rest
-> > >       protocols.
-> > > 
-> > >    4) Someone to look after this code for real.
-> > > 
-> > > For 2) and 3) more info is here:
-> > > 
-> > > https://urldefense.com/v3/__https://lore.kernel.org/r/ZhWa0YeAb9ySVKD1@x1n__;!!GjvTz_vk!VEqNfg3Kdf58Oh1FkGL6ErDLfvUXZXPwMTaXizuIQeIgJiywPzuwbqx8wM0KUsyopw_EYQxWpIWYBhQ$
-> > > 
-> > > Here 4) can be the most important as Markus pointed out.  We just didn't
-> > > get there yet on the discussions, but maybe Markus is right that we should
-> > > talk that first.
-> > > 
-> > > Thanks,
-> > > 
-> > > --
-> > > Peter Xu
-> > > 
-> 
-
--- 
-Peter Xu
-
+r~
 
