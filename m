@@ -2,94 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C12C8B5E29
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38938B5E5C
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1TIx-0002vL-Sz; Mon, 29 Apr 2024 11:52:35 -0400
+	id 1s1TMH-0004XD-8E; Mon, 29 Apr 2024 11:56:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1TIw-0002vA-CY
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:52:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1s1TM6-0004TT-62
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:50 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1TIu-0004QZ-W7
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:52:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714405951;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=e0nqwEvXX66l0o6AmMWjYw1IPtFCD+7eR/mpJfV5IqY=;
- b=V/1cYm05U9uHGSXvEAbfq7kI1zevK2IDNU1FUfXwelOfkQJKH0QQIgIwHoCLa1b1Xqp4b+
- dzbzporxWPP6ZpbH+fSYGnyatOL1ygW8tVh0YlvLAcoYy26gtehliceHSF7KA+dN7m5SRe
- RpJTuaIiTYriJC8aV6dK/rK278fFFIw=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-w0rjIiCYOLmTCZMaT8QANg-1; Mon, 29 Apr 2024 11:52:30 -0400
-X-MC-Unique: w0rjIiCYOLmTCZMaT8QANg-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-2a303938023so1398722a91.0
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 08:52:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714405946; x=1715010746;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=e0nqwEvXX66l0o6AmMWjYw1IPtFCD+7eR/mpJfV5IqY=;
- b=GljTUqhc/tiAlWtNYr3caZFk7ovt1Zv7bof8wtduo94edVCui+e94qzBuBqsMcG71B
- 6CfvG4ai5xRqjDHYw19Iu6JR7zVucdJaFYaYJjNbZI5O1YDe5EAORjcLxc+5uaTFBAVc
- +qru8VnfQBoDevwJNxP6QB9ekGN4l+j9nftflYiTIflCUbAwxMvK5Aekl8XPeucen+2c
- yJp9G4qAwx1QkvjkdEzscETGvti0stgFm5EYOt6n5Laj+iNXINQQF/vMDeAf9qISgSg7
- VUO8vDxyVG91Whp0Ph5z36/cQrkF2rYV3G4l9kYeNLNtx39mdYast4wjgE/Ntsww1Eu9
- lS7w==
-X-Gm-Message-State: AOJu0Yxm4zY31o8qVU0rXYyBi0okAuqjilRVpGhQuU7P2pJXPF9rj/Uu
- V8hE8I6r1IZ+jH03aGlxo/xfM7ZVm0kUmHGcprOtYKfuQNcR/2+wj49rz7CX7upaXUkpvBfG0JY
- CwBUBIR3R8J+RiGl6OsnBfssNXojgivUbNk/1AL2yYxwRa8Que9gr
-X-Received: by 2002:a05:6a00:730c:b0:6ea:6f18:887a with SMTP id
- lq12-20020a056a00730c00b006ea6f18887amr12162108pfb.1.1714405945633; 
- Mon, 29 Apr 2024 08:52:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTpInTXUQGXHs37IVc3bF4pgm5v43K5cjuE6AQjuDJxOmjeI+z4FG474vMqQmHwLOVz3TnAg==
-X-Received: by 2002:a05:6a00:730c:b0:6ea:6f18:887a with SMTP id
- lq12-20020a056a00730c00b006ea6f18887amr12162084pfb.1.1714405945197; 
- Mon, 29 Apr 2024 08:52:25 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ld2-20020a056a004f8200b006eaf43bbcb5sm19459846pfb.114.2024.04.29.08.52.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Apr 2024 08:52:24 -0700 (PDT)
-Date: Mon, 29 Apr 2024 11:52:20 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- devel@lists.libvirt.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Eric Blake <eblake@redhat.com>,
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1s1TM0-0005D4-EY
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:49 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43TFmn2A023135; Mon, 29 Apr 2024 15:55:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=2Rd8r3yWz42QxscMfkPfYPowQLLKy2ise7H7MzCvjUk=;
+ b=R8giyRi3pMZcffahRwvU8O9M8tVvokE+2+WvKufNEOLYO+mBa1jlAJrSmFVTB2dcQG+X
+ tE3zirFskMJKIUMqqtt5nZVhLe+hdlT0/e1kNPvhZ9tLHiuUFNC+73cd8heRa04tGsrr
+ z+Rsv0MqJLp0qXAxnIlFYwaOZz5836d90Tx/X+np9Ua/LmWJUR0ZB/as1xYAvp5BD9Tg
+ 3hrFnn54OMATRpGWDSMqC91tr89o3siAT2i3lCNLKSTNFLiO6HxUMe++R1BvswXrAova
+ Gkh09jc3XsLlmkdvm4Lgb51yr8FaljpBfaGHkPRygDvrDdYZbADZN73J5+IOVTqQBbt0 OQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrryv2wb1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Apr 2024 15:55:37 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 43TEgDmG011440; Mon, 29 Apr 2024 15:55:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3xrqt6j60f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 29 Apr 2024 15:55:36 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGS034442;
+ Mon, 29 Apr 2024 15:55:36 GMT
+Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
+ ESMTP id 3xrqt6j5ys-1; Mon, 29 Apr 2024 15:55:36 +0000
+From: Steve Sistare <steven.sistare@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 3/6] migration: Remove 'blk/-b' option from migrate
- commands
-Message-ID: <Zi_CNIYAi6UbxJ0j@x1n>
-References: <20240426131408.25410-1-farosas@suse.de>
- <20240426131408.25410-4-farosas@suse.de>
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: [PATCH V1 00/26] Live update: cpr-exec
+Date: Mon, 29 Apr 2024 08:55:09 -0700
+Message-Id: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240426131408.25410-4-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_14,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ adultscore=0 mlxscore=0 suspectscore=0 phishscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404290101
+X-Proofpoint-GUID: 45ZVd1Ql1KcSN6rllZNC6Mcpv1j-dkxL
+X-Proofpoint-ORIG-GUID: 45ZVd1Ql1KcSN6rllZNC6Mcpv1j-dkxL
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,31 +104,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 26, 2024 at 10:14:05AM -0300, Fabiano Rosas wrote:
-> @@ -2003,21 +1997,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool resume,
->          }
->      }
->  
-> -    if (blk) {
-> -        if (migrate_colo()) {
-> -            error_setg(errp, "No disk migration is required in COLO mode");
-> -            return false;
-> -        }
-> -        if (migrate_block()) {
-> -            error_setg(errp, "Command options are incompatible with "
-> -                       "current migration capabilities");
-> -            return false;
-> -        }
-> -        if (!migrate_cap_set(MIGRATION_CAPABILITY_BLOCK, true, errp)) {
-> -            return false;
-> -        }
-> -        s->must_remove_block_options = true;
-> -    }
-> +    s->must_remove_block_options = true;
+This patch series adds the live migration cpr-exec mode.  In this mode, QEMU
+stops the VM, writes VM state to the migration URI, and directly exec's a
+new version of QEMU on the same host, replacing the original process while
+retaining its PID.  Guest RAM is preserved in place, albeit with new virtual
+addresses.  The user completes the migration by specifying the -incoming
+option, and by issuing the migrate-incoming command if necessary.  This
+saves and restores VM state, with minimal guest pause time, so that QEMU may
+be updated to a new version in between.
 
-Can we drop this var too?  Perhaps with block_cleanup_parameters()?
+The new interfaces are:
+  * cpr-exec (MigMode migration parameter)
+  * cpr-exec-args (migration parameter)
+  * memfd-alloc=on (command-line option for -machine)
+  * only-migratable-modes (command-line argument)
+
+The caller sets the mode parameter before invoking the migrate command.
+
+Arguments for the new QEMU process are taken from the cpr-exec-args parameter.
+The first argument should be the path of a new QEMU binary, or a prefix
+command that exec's the new QEMU binary, and the arguments should include
+the -incoming option.
+
+Memory backend objects must have the share=on attribute, and must be mmap'able
+in the new QEMU process.  For example, memory-backend-file is acceptable,
+but memory-backend-ram is not.
+
+QEMU must be started with the '-machine memfd-alloc=on' option.  This causes
+implicit RAM blocks (those not explicitly described by a memory-backend
+object) to be allocated by mmap'ing a memfd.  Examples include VGA, ROM,
+and even guest RAM when it is specified without without reference to a
+memory-backend object.   The memfds are kept open across exec, their values
+are saved in vmstate which is retrieved after exec, and they are re-mmap'd.
+
+The '-only-migratable-modes cpr-exec' option guarantees that the
+configuration supports cpr-exec.  QEMU will exit at start time if not.
+
+Example:
+
+In this example, we simply restart the same version of QEMU, but in
+a real scenario one would set a new QEMU binary path in cpr-exec-args.
+
+  # qemu-kvm -monitor stdio -object
+  memory-backend-file,id=ram0,size=4G,mem-path=/dev/shm/ram0,share=on
+  -m 4G -machine memfd-alloc=on ...
+
+  QEMU 9.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+  (qemu) migrate_set_parameter mode cpr-exec
+  (qemu) migrate_set_parameter cpr-exec-args qemu-kvm ... -incoming file:vm.state
+  (qemu) migrate -d file:vm.state
+  (qemu) QEMU 9.1.50 monitor - type 'help' for more information
+  (qemu) info status
+  VM status: running
+
+cpr-exec mode preserves attributes of outgoing devices that must be known
+before the device is created on the incoming side, such as the memfd descriptor
+number, but currently the migration stream is read after all devices are
+created.  To solve this problem, I add two VMStateDescription options:
+precreate and factory.  precreate objects are saved to their own migration
+stream, distinct from the main stream, and are read early by incoming QEMU,
+before devices are created.  Factory objects are allocated on demand, without
+relying on a pre-registered object's opaque address, which is necessary
+because the devices to which the state will apply have not been created yet
+and hence have not registered an opaque address to receive the state.
+
+This patch series implements a minimal version of cpr-exec.  Future series
+will add support for:
+  * vfio
+  * chardev's without loss of connectivity
+  * vhost
+  * fine-grained seccomp controls
+  * hostmem-memfd
+  * cpr-exec migration test
+
+
+Steve Sistare (26):
+  oslib: qemu_clear_cloexec
+  vl: helper to request re-exec
+  migration: SAVEVM_FOREACH
+  migration: delete unused parameter mis
+  migration: precreate vmstate
+  migration: precreate vmstate for exec
+  migration: VMStateId
+  migration: vmstate_info_void_ptr
+  migration: vmstate_register_named
+  migration: vmstate_unregister_named
+  migration: vmstate_register at init time
+  migration: vmstate factory object
+  physmem: ram_block_create
+  physmem: hoist guest_memfd creation
+  physmem: hoist host memory allocation
+  physmem: set ram block idstr earlier
+  machine: memfd-alloc option
+  migration: cpr-exec-args parameter
+  physmem: preserve ram blocks for cpr
+  migration: cpr-exec mode
+  migration: migrate_add_blocker_mode
+  migration: ram block cpr-exec blockers
+  migration: misc cpr-exec blockers
+  seccomp: cpr-exec blocker
+  migration: fix mismatched GPAs during cpr-exec
+  migration: only-migratable-modes
+
+ accel/xen/xen-all.c            |   5 +
+ backends/hostmem-epc.c         |  12 +-
+ hmp-commands.hx                |   2 +-
+ hw/core/machine.c              |  22 +++
+ hw/core/qdev.c                 |   1 +
+ hw/intc/apic_common.c          |   2 +-
+ hw/vfio/migration.c            |   3 +-
+ include/exec/cpu-common.h      |   3 +-
+ include/exec/memory.h          |  15 ++
+ include/exec/ramblock.h        |  10 +-
+ include/hw/boards.h            |   1 +
+ include/migration/blocker.h    |   7 +
+ include/migration/cpr.h        |  14 ++
+ include/migration/misc.h       |  11 ++
+ include/migration/vmstate.h    | 133 +++++++++++++++-
+ include/qemu/osdep.h           |   9 ++
+ include/sysemu/runstate.h      |   3 +
+ include/sysemu/seccomp.h       |   1 +
+ include/sysemu/sysemu.h        |   1 -
+ migration/cpr.c                | 131 ++++++++++++++++
+ migration/meson.build          |   3 +
+ migration/migration-hmp-cmds.c |  50 +++++-
+ migration/migration.c          |  48 +++++-
+ migration/migration.h          |   5 +-
+ migration/options.c            |  13 ++
+ migration/precreate.c          | 139 +++++++++++++++++
+ migration/ram.c                |  16 +-
+ migration/savevm.c             | 306 +++++++++++++++++++++++++++++-------
+ migration/savevm.h             |   3 +
+ migration/trace-events         |   7 +
+ migration/vmstate-factory.c    |  78 ++++++++++
+ migration/vmstate-types.c      |  24 +++
+ migration/vmstate.c            |   3 +-
+ qapi/migration.json            |  48 +++++-
+ qemu-options.hx                |  22 ++-
+ replay/replay.c                |   6 +
+ stubs/migr-blocker.c           |   5 +
+ stubs/vmstate.c                |  13 ++
+ system/globals.c               |   1 -
+ system/memory.c                |  19 ++-
+ system/physmem.c               | 346 +++++++++++++++++++++++++++--------------
+ system/qemu-seccomp.c          |  10 +-
+ system/runstate.c              |  29 ++++
+ system/trace-events            |   4 +
+ system/vl.c                    |  26 +++-
+ target/s390x/cpu_models.c      |   4 +-
+ util/oslib-posix.c             |   9 ++
+ util/oslib-win32.c             |   4 +
+ 48 files changed, 1417 insertions(+), 210 deletions(-)
+ create mode 100644 include/migration/cpr.h
+ create mode 100644 migration/cpr.c
+ create mode 100644 migration/precreate.c
+ create mode 100644 migration/vmstate-factory.c
 
 -- 
-Peter Xu
+1.8.3.1
 
 
