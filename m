@@ -2,77 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1B18B51CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0698B51F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 09:06:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Kug-00048G-Lt; Mon, 29 Apr 2024 02:54:58 -0400
+	id 1s1L4h-0006tN-9s; Mon, 29 Apr 2024 03:05:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1Kub-00041H-R8
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:54:54 -0400
-Received: from mgamail.intel.com ([192.198.163.16])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1s1L4f-0006sh-7Z
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:05:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1KuZ-0007m1-UI
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:54:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714373692; x=1745909692;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Gm72Rm7U+L4TuGdas02Vu02WgQJhPS7LPsoHu+oxD8c=;
- b=JqUuYu/ihuE9xNU7eytCa9guQ7h2X/lvQrTPt6KbcgBbdIIcSCptQ/3P
- P4ZTvVU2lJR9zVLNAGoqTiByhO/9AiCA8ePUJ7oXfRwyVILHHcHnotFkR
- PdmOj5AIDZ4GgFgaGLieTTeO3yItEMI6XbA0sAhyOO6MQ8ZCP3Rpmg1LH
- igf6Ruf80tRA//cMYTp3eHPFlb+6GXvRqijgYGHW7CHK5V60+rOxNQi6f
- amWJcoAb0I9VVip3DSWDbVPGbZNBer+yts+SpT8FEmoL9yZIO7qSWtLql
- 5NMfMIDnlMhGqcM5d5FR/pxn3+cp06TNpwt3CJ1Ln0DjSRce2Kqq0JiwI Q==;
-X-CSE-ConnectionGUID: adCeXD2dSpeIc6HsWzE0mQ==
-X-CSE-MsgGUID: X2aovDqdQymN+C8ibRGUjw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560783"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560783"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:54:39 -0700
-X-CSE-ConnectionGUID: PAnLSJJpTJ6l9PC17znIDQ==
-X-CSE-MsgGUID: l1mwrFcHTt6AdgWSuJFz/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488472"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:54:34 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1s1L4Z-0001Y9-Tl
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:05:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714374309;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=AU3OvV0FGZBdlDBgUS/9ZSJ5+OV25xDSllpu0lckNQ0=;
+ b=FlCU08K36T8MMays4geG+nK//VUbDRq7XL2KOY0Qnlgom01igJTCG68gJY3LaIHJdzkdDU
+ 19uxT7al1FUwtAzkgTutMZeroSlQanAgtEnY1zF9TpscJ4LYb2W4xi9wCBqCgSuPWsDGt0
+ QMRCfNnB0R+b0Od1nSkFBfyIlP64710=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-202-sUn-P-6rMYans1NReSz-DQ-1; Mon, 29 Apr 2024 03:05:06 -0400
+X-MC-Unique: sUn-P-6rMYans1NReSz-DQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-41bf05377abso5210235e9.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 00:05:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714374305; x=1714979105;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AU3OvV0FGZBdlDBgUS/9ZSJ5+OV25xDSllpu0lckNQ0=;
+ b=g4/d4uo1q7W8LwZcZ1uU1tQmZFSZo8lFjNA0fGIjHKPr75FWBXSkErj9uP1BXuK0kd
+ rC8Sk2GwiD72wI7vHuP9c1SIg4zPwnQDpaUzCOCjTfQ8wBdZuw7iaFE6RhP88p+qX8mF
+ uXYCvhMbM7Kynj8N/7o2krH3JsVlScxtA4Y2LvE5Nh8I2zXG0+23/4sgENINdHJQXkO7
+ nNoHT019tnhLVoqeFtQ2T5xmPLoSFr38L0EwF/Vo6YxGCEiVXnARa7bsos0nLBk8C2Ji
+ uzAZ40zxSvKF1LM6sHqGXm25kN0dI4akN0cy+j/QZ6Qbs5penOJBmt/tCe2MkbgGk0Ke
+ 6cKg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWpqrN6Vv/1ThIQHQnnvZF3ktI1epxhwrzXDY2yhPBQiad8CJuJCeAzpY6wX245UDp5boxOCKCvHIEz9Xgpw9APFboNMAY=
+X-Gm-Message-State: AOJu0Yx2/G0RxOITs24g33QsD58gsvz8F3/F2Z+hNu2NF05zvWyXMNeq
+ w2GnpkCV98lV3doSEl+mkQupRYelOj46AftOHVhQJAPwJJYbdnZc9CicxHLpe4APhT5fHj+7Fzt
+ 0FTyjWaxneiUf3FRZRMbO2JoUewv76ArjcK2ZAsobvA06IDExPLb2
+X-Received: by 2002:a05:600c:1394:b0:41a:8b39:8040 with SMTP id
+ u20-20020a05600c139400b0041a8b398040mr8600762wmf.20.1714374305480; 
+ Mon, 29 Apr 2024 00:05:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKVm9bW2/soqmIbhxiWWyPWj9u2ybbEd9+0mxqnrmyp/kWIzp3phiIV5TT/tb94AyK8xVe1g==
+X-Received: by 2002:a05:600c:1394:b0:41a:8b39:8040 with SMTP id
+ u20-20020a05600c139400b0041a8b398040mr8600736wmf.20.1714374304949; 
+ Mon, 29 Apr 2024 00:05:04 -0700 (PDT)
+Received: from redhat.com ([212.116.168.114]) by smtp.gmail.com with ESMTPSA id
+ f11-20020a05600c4e8b00b00417ee886977sm44442695wmq.4.2024.04.29.00.05.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Apr 2024 00:05:04 -0700 (PDT)
+Date: Mon, 29 Apr 2024 03:05:01 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Luigi Rizzo <rizzo@iet.unipi.it>,
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>,
+ Andrew Melnychenko <andrew@daynix.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v3 19/19] intel_iommu: Check compatibility with host IOMMU
- capabilities
-Date: Mon, 29 Apr 2024 14:50:46 +0800
-Message-Id: <20240429065046.3688701-20-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
-References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ 20240428-rss-v10-0-73cbaa91aeb6@daynix.com
+Subject: Re: [PATCH 0/3] virtio-net: Convert feature properties to OnOffAuto
+Message-ID: <20240429030329-mutt-send-email-mst@kernel.org>
+References: <20240428-auto-v1-0-7b012216a120@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.16;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.114,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240428-auto-v1-0-7b012216a120@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.114,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,73 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If check fails, host device (either VFIO or VDPA device) is not
-compatible with current vIOMMU config and should not be passed to
-guest.
+On Sun, Apr 28, 2024 at 04:21:06PM +0900, Akihiko Odaki wrote:
+> Based-on: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
+> ("[PATCH v10 00/18] virtio-net RSS/hash report fixes and improvements")
+> 
+> Some features are not always available, and virtio-net used to disable
+> them when not available even if the corresponding properties were
+> explicitly set to "on".
+> 
+> Convert feature properties to OnOffAuto so that the user can explicitly
+> tell QEMU to automatically select the value by setting them "auto".
+> QEMU will give an error if they are set "on".
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Only aw_bits is checked for now, we don't care other capabilities
-before scalable modern mode is introduced.
+Should we maybe bite the bullet allow "auto" for all binary/boolean
+properties? Just ignore "auto" if no one cares ATM.
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 4f84e2e801..4a295c41cc 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -3819,6 +3819,26 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
-     return vtd_dev_as;
- }
- 
-+static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
-+                          Error **errp)
-+{
-+    HostIOMMUDevice *hiod = vtd_hdev->dev;
-+    int ret;
-+
-+    /* Common checks */
-+    ret = host_iommu_device_check_cap(hiod, HOST_IOMMU_DEVICE_CAP_AW_BITS,
-+                                      errp);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+    if (s->aw_bits > ret) {
-+        error_setg(errp, "aw-bits %d > host aw-bits %d", s->aw_bits, ret);
-+        return -EINVAL;
-+    }
-+
-+    return 0;
-+}
-+
- static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-                                     HostIOMMUDevice *hiod, Error **errp)
- {
-@@ -3829,6 +3849,7 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-         .devfn = devfn,
-     };
-     struct vtd_as_key *new_key;
-+    int ret;
- 
-     assert(hiod);
- 
-@@ -3848,6 +3869,13 @@ static int vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-     vtd_hdev->iommu_state = s;
-     vtd_hdev->dev = hiod;
- 
-+    ret = vtd_check_hdev(s, vtd_hdev, errp);
-+    if (ret) {
-+        g_free(vtd_hdev);
-+        vtd_iommu_unlock(s);
-+        return ret;
-+    }
-+
-     new_key = g_malloc(sizeof(*new_key));
-     new_key->bus = bus;
-     new_key->devfn = devfn;
--- 
-2.34.1
+
+> ---
+> Akihiko Odaki (3):
+>       qdev-properties: Add DEFINE_PROP_ON_OFF_AUTO_BIT64()
+>       virtio-net: Convert feature properties to OnOffAuto
+>       virtio-net: Report RSS warning at device realization
+> 
+>  include/hw/qdev-properties.h   |  18 +++
+>  include/hw/virtio/virtio-net.h |   2 +-
+>  hw/core/qdev-properties.c      |  65 ++++++++++-
+>  hw/net/virtio-net.c            | 259 +++++++++++++++++++++++++----------------
+>  4 files changed, 239 insertions(+), 105 deletions(-)
+> ---
+> base-commit: ec6325eec995018983a3f88f0e78ebf733a47b7e
+> change-id: 20240428-auto-be0dc010dda5
+> 
+> Best regards,
+> -- 
+> Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
