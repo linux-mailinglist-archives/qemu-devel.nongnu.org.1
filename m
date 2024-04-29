@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAF68B64AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 23:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBB68B6326
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 22:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1YfA-0006Do-Ib; Mon, 29 Apr 2024 17:35:55 -0400
+	id 1s1XEu-0004oM-FQ; Mon, 29 Apr 2024 16:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1YeU-0005XQ-8j
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:35:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1XEs-0004o3-ES
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 16:04:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1YeP-0003uF-Qe
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:35:08 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1XEq-0005MN-He
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 16:04:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714426504;
+ s=mimecast20190719; t=1714421075;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Hi6DPPPW2Y8F6DlaWvmjHS3TBRFsSBDOI/eK3ak1q3w=;
- b=F3tPkMLMP7UhKRYsDbauxNdDM1rCrTdevem/8u/mea6DZNs1vMnbzaGBdQZOmLi5QUjADa
- KRkOPXmjdyZh5mI8AKYtJLPWMOl7tzueKFYa8yjprDn4bOXiCiJkZumsEO8w7PmcorvRiz
- BayXhyf01a3ZYMkectPQfJP+51k4HMQ=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JrMd6fhUhpKRMyd2t2p1MjDqK932PlHgba2SJYJLHoo=;
+ b=HHDsm2ej0WxeEByfnJQHwd3bS2zrnKYL0ty7mdDUudOTIZETkGixzSz6ij/wv2b4zU4bAk
+ 7bKqj4jvSJ4a0r0OKdxF9dYxMb7AAU+IGCZkUT87Z9hrxaPesGiX3Y5fadkihQCWZ1JmIx
+ 0gLo7OcwZflJKZasxCwSARQHI0HhYwQ=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-186-AXAFeY5OPduq68I7cyCQFw-1; Mon, 29 Apr 2024 15:51:07 -0400
-X-MC-Unique: AXAFeY5OPduq68I7cyCQFw-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1e950a46ee4so1783605ad.2
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 12:51:07 -0700 (PDT)
+ us-mta-677-beRIJKeyOziZBVpq3G6WoA-1; Mon, 29 Apr 2024 16:04:33 -0400
+X-MC-Unique: beRIJKeyOziZBVpq3G6WoA-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2a536169eb0so1582156a91.1
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 13:04:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714420267; x=1715025067;
+ d=1e100.net; s=20230601; t=1714421073; x=1715025873;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Hi6DPPPW2Y8F6DlaWvmjHS3TBRFsSBDOI/eK3ak1q3w=;
- b=lE3yZ94pKCrdcosXads30ZSEwmOF3MtNXP6Cm6Xe8BhcnIbWO40eQSLJds0WNlrwcP
- v+5D8DZCOxDkmfgE2dr47XnA5dhXNwBm4ifVgj+rxKlkkkrpLffZxvNiguHIt4Zy6m64
- AQL5fNE3Kmjo7DFq9SypotbXTcAbl+cizBF8z80Xnb+2z2sHXDd7XGGCny5YT3A+3299
- DRCABFIQhAn7iHuq8+Ot/111zyl4zIWFAWpZRUVx7kbo1OA3Pq26rxOrbmavPYrf3pGk
- PooW8ZZzBvgZmvWYiS73aTNHTsCmC6SC8knLDTr4QcJhZUZ6ex/uoG5csuzbd3PFe7no
- bufQ==
-X-Gm-Message-State: AOJu0YzK403x4i3dJSMaOuiuGmuX44gEdt3ZQwRfmiOGEd+jJFLxHW7N
- /xhKFPd82aRvwAYrGZDSQJd+a3EHOBxwP2y3dVfpbpk3GB03mUq2QQJy9yPusBmD8l0icBUAIkq
- 85pATZcNLAvjEZkwpSTXYGApWlOL/uFNMQaOEQdjOaRS2JHF8OhLH
-X-Received: by 2002:a17:902:d4c6:b0:1e5:1138:e28e with SMTP id
- o6-20020a170902d4c600b001e51138e28emr14096931plg.3.1714420266409; 
- Mon, 29 Apr 2024 12:51:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHPKYuSzoNFzu2HReZC34Qfwi/CUMJEdHDruEI5z2b+CpVVyBY0S2e7pkv886Csl4S3A5T7Mg==
-X-Received: by 2002:a17:902:d4c6:b0:1e5:1138:e28e with SMTP id
- o6-20020a170902d4c600b001e51138e28emr14096901plg.3.1714420265777; 
- Mon, 29 Apr 2024 12:51:05 -0700 (PDT)
+ bh=JrMd6fhUhpKRMyd2t2p1MjDqK932PlHgba2SJYJLHoo=;
+ b=f4ArHCd36EbBnRNaJFCkcfMpQkSpp5Ot8CevEX1osisjsl0cJcAvqEKGH4f8xKnzu3
+ ZaH6niF+8a7NWmK9KF8++OGZlFK/YFPdKHFMFp4gdquBCNyYT5EXDT9LyflmPv2aDSnx
+ E4BAi3KADMyCf2uw8wVuHVUVKJ6QP+8lxY+HtuD4+R4dSK8g39xraGorSZd1zI8lF7fJ
+ IXlBeakgrf/GUshSWM+aCsRWMgXj/MN2C9TmnuQf10kSsJO6xe0Nl98kLB1mKtVVfPJU
+ O6uInoffQKVDlOg1+zy4L2wfwX+cdNfn4eNwAyqq4DTPDfNbyDsli0YX8osGt/thu6Ut
+ ox2g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW/QD8LoBSHAEh0EZPuV7lJCTxiiGcLi37yXhc8fL1PYxi/8KuVk4wTHHPVtRVnElVzFSwCfH7654msWEa4eA5rlDSvf2Y=
+X-Gm-Message-State: AOJu0YznwV1I/va7dCjI/RDYRAkH+sTRy4SUQRTLh2NAUNTX1BJnDcpZ
+ 7aj2QdKVhQpIGG4pCsa9oIRKv5+/Gz0H/S7qWJo8q9NuVCcapf0mmGFUD73iTicdQfp5uRGnQx1
+ FSNS+NdU4KtmwFy3Fl40r/X7cLnnbBnR9sYzIbREe07K7NApWJ4s2
+X-Received: by 2002:a17:902:ea04:b0:1e2:b3d:8c67 with SMTP id
+ s4-20020a170902ea0400b001e20b3d8c67mr13212448plg.6.1714421072474; 
+ Mon, 29 Apr 2024 13:04:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHD1umAJpqDh1P0pEBYz59vZs0LLLkCZU37HNqRpHYz0y+UC0YVZaFTzo6OFL5BjpoqT8wOOg==
+X-Received: by 2002:a17:902:ea04:b0:1e2:b3d:8c67 with SMTP id
+ s4-20020a170902ea0400b001e20b3d8c67mr13212384plg.6.1714421071657; 
+ Mon, 29 Apr 2024 13:04:31 -0700 (PDT)
 Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- f21-20020a170902ab9500b001e5119c1923sm20714950plr.71.2024.04.29.12.51.03
+ p2-20020a170902e74200b001e223b9eb25sm20776177plf.153.2024.04.29.13.04.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 29 Apr 2024 12:51:04 -0700 (PDT)
-Date: Mon, 29 Apr 2024 15:51:02 -0400
+ Mon, 29 Apr 2024 13:04:31 -0700 (PDT)
+Date: Mon, 29 Apr 2024 16:04:27 -0400
 From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- devel@lists.libvirt.org, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2 2/6] migration: Remove 'inc' option from migrate command
-Message-ID: <Zi_6JhnqkdIJU5Ae@x1n>
-References: <20240426131408.25410-1-farosas@suse.de>
- <20240426131408.25410-3-farosas@suse.de>
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH RFC 23/26] migration/multifd: Device state transfer
+ support - send side
+Message-ID: <Zi_9SyJy__8wJTou@x1n>
+References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
+ <ec2f88766178ab461f19ff4fa1414ce828e9862f.1713269378.git.maciej.szmigiero@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240426131408.25410-3-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <ec2f88766178ab461f19ff4fa1414ce828e9862f.1713269378.git.maciej.szmigiero@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -99,16 +104,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 26, 2024 at 10:14:04AM -0300, Fabiano Rosas wrote:
-> The block incremental option for block migration has been deprecated
-> in 8.2 in favor of using the block-mirror feature. Remove it now.
-> 
-> Deprecation commit 40101f320d ("migration: migrate 'inc' command
-> option is deprecated.").
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+On Tue, Apr 16, 2024 at 04:43:02PM +0200, Maciej S. Szmigiero wrote:
+> +bool multifd_queue_page(RAMBlock *block, ram_addr_t offset)
+> +{
+> +    g_autoptr(GMutexLocker) locker = NULL;
+> +
+> +    /*
+> +     * Device state submissions for shared channels can come
+> +     * from multiple threads and conflict with page submissions
+> +     * with respect to multifd_send_state access.
+> +     */
+> +    if (!multifd_send_state->device_state_dedicated_channels) {
+> +        locker = g_mutex_locker_new(&multifd_send_state->queue_job_mutex);
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Haven't read the rest, but suggest to stick with QemuMutex for the whole
+patchset, as that's what we use in the rest migration code, along with
+QEMU_LOCK_GUARD().
+
+> +    }
+> +
+> +    return multifd_queue_page_locked(block, offset);
+> +}
 
 -- 
 Peter Xu
