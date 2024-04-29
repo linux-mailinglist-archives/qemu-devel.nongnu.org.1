@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39568B51C7
+	by mail.lfdr.de (Postfix) with ESMTPS id D23F18B51C6
 	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:54:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Ktk-0001jI-0e; Mon, 29 Apr 2024 02:54:00 -0400
+	id 1s1Ku7-0001tN-Ob; Mon, 29 Apr 2024 02:54:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1Ktf-0001i1-Hb
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:55 -0400
+ id 1s1Ktk-0001pe-EB
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:54:00 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1Ktd-0007m1-Px
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:55 -0400
+ id 1s1Kti-0007m1-LL
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:54:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714373634; x=1745909634;
+ t=1714373639; x=1745909639;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YlBWPY+nZvenxvE2K0yAhC5S7Ucg9G5VHHQ4uysEptc=;
- b=lhrCszpfJBH/GYlONyoWeFkoSxDtzaltIhQDyEyChtXD/by1GVkHyR/O
- Y3Fkl9WhaaOLtDBWFXzVKtFWI/UgHR84gk/6zcmHDLMJP064+6c8NCXnu
- ObDocw/eTrWCjPaBQQpsBguygQn4m/4JgeQ97h5CoxcHdlnTjIuJU696+
- 0ZoiOd5KgmbSSA+Dd6tm2K/lyM5HIvRqFMEn88UsYySoLB/7eyOIhmBER
- 9viFBIIMYGaCdJiSuJuAotPd0lGNtQKEK+Is3IfEi1PaX7IucPGk1HOd7
- kX8wht35sbXs16ZcIhqruzupBRBtC/+NIT91wp7vgo4nP3/k+xGUokIaZ w==;
-X-CSE-ConnectionGUID: ubYAO+Q+Ta6+LoptP+EF3A==
-X-CSE-MsgGUID: pPCiCI1ZTv+4huGMIie6Vw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560705"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560705"
+ bh=6ltkk9ZSzHtUFy8gqqP1beuuPHxf/CT+sJYprNmHrog=;
+ b=R/ZiP9yCPLTraTHcM/GdP/l3naQHemUvneIGYUFA+Nb4eO7YXsJM1ZR/
+ nEo1i4XoQmDqxxFu1fD9bpAyyw2Y4SSs7rrJ2kvx0SzyzzlEPBEFpafVu
+ I60K7Zb7lFE3lt/+GSOl2J9IfVjtqPo44dscOsyVzhaXVjgfoC2SuB7uG
+ uAXf3X0wugaZDEthwXvWoFNTfd+zLM6Niz31AH4kfrCgt9VnDwRFs8w5U
+ GjyVEEVev57+Q0wObbhmVLZbZ2SSW7pLI7AciClhfaag28GNiblxpJ2np
+ 5c9ePLPzclq7GvR15IwliPSpLDOzhcICAuDmtQr+q1kIHtcR9HRBfhaxm Q==;
+X-CSE-ConnectionGUID: li8DX8KhRxeliTIdfWTQoQ==
+X-CSE-MsgGUID: 31ocWLbfQtmDTMQjeaD4hQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560709"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560709"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:53 -0700
-X-CSE-ConnectionGUID: Od34pW10QSe0Ic4IZLXMCw==
-X-CSE-MsgGUID: GiRo1UPxTuGj0HZS+otJgg==
+ 28 Apr 2024 23:53:57 -0700
+X-CSE-ConnectionGUID: FikWmnyQT9eKeEmX22dPsQ==
+X-CSE-MsgGUID: WmKU2X18R0uqTLY1kvmU0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488058"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488089"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:50 -0700
+ 28 Apr 2024 23:53:54 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,11 +51,11 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>
-Subject: [PATCH v3 08/19] backends/iommufd: Introduce helper function
- iommufd_backend_get_device_info()
-Date: Mon, 29 Apr 2024 14:50:35 +0800
-Message-Id: <20240429065046.3688701-9-zhenzhong.duan@intel.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v3 09/19] vfio/iommufd: Implement
+ HostIOMMUDeviceClass::realize() handler
+Date: Mon, 29 Apr 2024 14:50:36 +0800
+Message-Id: <20240429065046.3688701-10-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
 References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
@@ -85,81 +85,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a helper function iommufd_backend_get_device_info() to get
-host IOMMU related information through iommufd uAPI.
+It calls iommufd_backend_get_device_info() to get host IOMMU
+related information and translate it into HostIOMMUDeviceCaps
+for query with .check_cap().
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Introduce macro VTD_MGAW_FROM_CAP to get MGAW which equals to
+(aw_bits - 1).
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/sysemu/iommufd.h |  4 ++++
- backends/iommufd.c       | 24 +++++++++++++++++++++++-
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ include/hw/i386/intel_iommu.h |  1 +
+ hw/vfio/iommufd.c             | 44 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-index 6a9fb0007a..e9593637a3 100644
---- a/include/sysemu/iommufd.h
-+++ b/include/sysemu/iommufd.h
-@@ -17,6 +17,7 @@
- #include "qom/object.h"
- #include "exec/hwaddr.h"
- #include "exec/cpu-common.h"
-+#include <linux/iommufd.h>
- #include "sysemu/host_iommu_device.h"
+diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
+index 7fa0a695c8..7d694b0813 100644
+--- a/include/hw/i386/intel_iommu.h
++++ b/include/hw/i386/intel_iommu.h
+@@ -47,6 +47,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(IntelIOMMUState, INTEL_IOMMU_DEVICE)
+ #define VTD_HOST_AW_48BIT           48
+ #define VTD_HOST_ADDRESS_WIDTH      VTD_HOST_AW_39BIT
+ #define VTD_HAW_MASK(aw)            ((1ULL << (aw)) - 1)
++#define VTD_MGAW_FROM_CAP(cap)      ((cap >> 16) & 0x3fULL)
  
- #define TYPE_IOMMUFD_BACKEND "iommufd"
-@@ -47,6 +48,9 @@ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
-                             ram_addr_t size, void *vaddr, bool readonly);
- int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
-                               hwaddr iova, ram_addr_t size);
-+int iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
-+                                    enum iommu_hw_info_type *type,
-+                                    void *data, uint32_t len, Error **errp);
+ #define DMAR_REPORT_F_INTR          (1)
  
- #define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
- OBJECT_DECLARE_TYPE(HostIOMMUDeviceIOMMUFD, HostIOMMUDeviceIOMMUFDClass,
-diff --git a/backends/iommufd.c b/backends/iommufd.c
-index 19e46194a2..d61209788a 100644
---- a/backends/iommufd.c
-+++ b/backends/iommufd.c
-@@ -19,7 +19,6 @@
- #include "monitor/monitor.h"
- #include "trace.h"
- #include <sys/ioctl.h>
--#include <linux/iommufd.h>
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 997f4ac43e..6bc2dc68f6 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -25,6 +25,7 @@
+ #include "qemu/cutils.h"
+ #include "qemu/chardev_open.h"
+ #include "pci.h"
++#include "hw/i386/intel_iommu_internal.h"
  
- static void iommufd_backend_init(Object *obj)
- {
-@@ -211,6 +210,29 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
-     return ret;
- }
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly)
+@@ -634,6 +635,48 @@ static void vfio_iommu_iommufd_class_init(ObjectClass *klass, void *data)
+     vioc->pci_hot_reset = iommufd_cdev_pci_hot_reset;
+ };
  
-+int iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
-+                                    enum iommu_hw_info_type *type,
-+                                    void *data, uint32_t len, Error **errp)
++static bool hiod_iommufd_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
++                                      Error **errp)
 +{
-+    struct iommu_hw_info info = {
-+        .size = sizeof(info),
-+        .dev_id = devid,
-+        .data_len = len,
-+        .data_uptr = (uintptr_t)data,
-+    };
++    VFIODevice *vdev = opaque;
++    HostIOMMUDeviceIOMMUFD *idev = HOST_IOMMU_DEVICE_IOMMUFD(hiod);
++    HostIOMMUDeviceCaps *caps = &hiod->caps;
++    enum iommu_hw_info_type type;
++    union {
++        struct iommu_hw_info_vtd vtd;
++    } data;
 +    int ret;
 +
-+    ret = ioctl(be->fd, IOMMU_GET_HW_INFO, &info);
++    HOST_IOMMU_DEVICE_IOMMUFD_VFIO(hiod)->vdev = vdev;
++    idev->iommufd = vdev->iommufd;
++    idev->devid = vdev->devid;
++
++    ret = iommufd_backend_get_device_info(idev->iommufd, idev->devid,
++                                          &type, &data, sizeof(data), errp);
 +    if (ret) {
-+        error_setg_errno(errp, errno, "Failed to get hardware info");
-+    } else {
-+        g_assert(type);
-+        *type = info.out_data_type;
++        return false;
 +    }
 +
-+    return ret;
++    caps->type = type;
++
++    switch (type) {
++    case IOMMU_HW_INFO_TYPE_INTEL_VTD:
++        caps->aw_bits = VTD_MGAW_FROM_CAP(data.vtd.cap_reg) + 1;
++        break;
++    case IOMMU_HW_INFO_TYPE_NONE:
++        break;
++    }
++
++    return true;
 +}
++
++static void hiod_iommufd_vfio_class_init(ObjectClass *oc, void *data)
++{
++    HostIOMMUDeviceClass *hiodc = HOST_IOMMU_DEVICE_CLASS(oc);
++
++    hiodc->realize = hiod_iommufd_vfio_realize;
++};
 +
  static const TypeInfo types[] = {
      {
-         .name = TYPE_IOMMUFD_BACKEND,
+         .name = TYPE_VFIO_IOMMU_IOMMUFD,
+@@ -643,6 +686,7 @@ static const TypeInfo types[] = {
+         .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO,
+         .parent = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
+         .instance_size = sizeof(HostIOMMUDeviceIOMMUFDVFIO),
++        .class_init = hiod_iommufd_vfio_class_init,
+     }
+ };
+ 
 -- 
 2.34.1
 
