@@ -2,61 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07F48B5A54
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 15:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67548B5A5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 15:44:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1RGX-0004hK-6P; Mon, 29 Apr 2024 09:41:57 -0400
+	id 1s1RIG-0005ff-15; Mon, 29 Apr 2024 09:43:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1s1RGT-0004gn-2O
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:41:53 -0400
+ id 1s1RI9-0005e1-CF
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:43:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1s1RGM-0001Lp-RK
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:41:49 -0400
+ id 1s1RI6-0001eQ-Jc
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:43:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714398104;
+ s=mimecast20190719; t=1714398208;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MNWxOlxBbmr/gWxj8okDSWghmT7xubKC0vYU5u91Ea8=;
- b=i3i1cOWFossf5ntaY2oZFORe9NxK1y4L2pYq+agGxVbCi2LhdO1VM9RFfuB9n8F+gNIesr
- Lncr4Lpbnc+2bYH6KMCDVpipzL2FItxjj5GMvB5UYxgwVFW+aP5fVpyd3yByiVmLwTlCaH
- 0B3bdAJy1UBkur8sHfregsRuAm21oaA=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=giHljWH8xf8DZGqSHRIhoJa3V3e1hkOXsVXRBn0eExI=;
+ b=eG/dnaLH7fkTM2O33CJ2lOn+m8enoDmARXI0F1WAfPnPIIHSioHjvM2IdER/4Nlcz2EhVE
+ cxKMXiJR2ao4+ghPZyVMk4liYiTI9I/CIDihknlnOTwrscYrMDKo4smtI10wuHO02qkmBn
+ yprypFggNrI9FzAltBskIBQSph+2PxE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-403-3Ngy_Qj0NKicQv_LPC69kg-1; Mon, 29 Apr 2024 09:41:39 -0400
-X-MC-Unique: 3Ngy_Qj0NKicQv_LPC69kg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-653-sLxk98i7Nny5-X_BNMOMzQ-1; Mon, 29 Apr 2024 09:43:24 -0400
+X-MC-Unique: sLxk98i7Nny5-X_BNMOMzQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3EF55812C59;
- Mon, 29 Apr 2024 13:41:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45C7B8FDD22;
+ Mon, 29 Apr 2024 13:43:24 +0000 (UTC)
 Received: from localhost (unknown [10.39.195.47])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B25B72166B31;
- Mon, 29 Apr 2024 13:41:38 +0000 (UTC)
-Date: Mon, 29 Apr 2024 09:41:36 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 77FEC581C8;
+ Mon, 29 Apr 2024 13:43:23 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@gmail.com>
-Cc: qemu-devel@nongnu.org, fam@euphon.net, pbonzini@redhat.com,
- qemu-block@nongnu.org, jeuk20.kim@samsung.com,
- j-young.choi@samsung.com, zheyuma97@gmail.com
-Subject: Re: [PULL 0/1] ufs queue
-Message-ID: <20240429134136.GA306956@fedora.redhat.com>
-References: <cover.1714360640.git.jeuk20.kim@samsung.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <rth@twiddle.net>, Jeuk Kim <jeuk20.kim@samsung.com>,
+ qemu-block@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 0/1] Block patches
+Date: Mon, 29 Apr 2024 09:43:20 -0400
+Message-ID: <20240429134321.321982-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="G1XgqGIMTWMpUBBy"
-Content-Disposition: inline
-In-Reply-To: <cover.1714360640.git.jeuk20.kim@samsung.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
@@ -65,7 +61,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,68 +77,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit fd87be1dada5672f877e03c2ca8504458292c479:
 
---G1XgqGIMTWMpUBBy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Merge tag 'accel-20240426' of https://github.com/philmd/qemu into staging (2024-04-26 15:28:13 -0700)
 
-On Mon, Apr 29, 2024 at 12:25:37PM +0900, Jeuk Kim wrote:
-> From: Jeuk Kim <jeuk20.kim@samsung.com>
->=20
-> The following changes since commit fd87be1dada5672f877e03c2ca8504458292c4=
-79:
->=20
->   Merge tag 'accel-20240426' of https://github.com/philmd/qemu into stagi=
-ng (2024-04-26 15:28:13 -0700)
->=20
-> are available in the Git repository at:
->=20
->   https://gitlab.com/jeuk20.kim/qemu.git tags/pull-ufs-20240429
->=20
-> for you to fetch changes up to f2c8aeb1afefcda92054c448b21fc59cdd99db30:
->=20
->   hw/ufs: Fix buffer overflow bug (2024-04-29 12:13:35 +0900)
->=20
-> ----------------------------------------------------------------
-> ufs queue
->=20
-> - Fix ufs sanitizer vulnerability
->=20
-> ----------------------------------------------------------------
-> Jeuk Kim (1):
->       hw/ufs: Fix buffer overflow bug
->=20
->  hw/ufs/ufs.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
+are available in the Git repository at:
 
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
+  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
 
-It will be included in my next block pull request.
+for you to fetch changes up to d1c4580662bf75bf6875bb5e1ad446b300816ac7:
 
-You are welcome to send pull requests directly to the qemu.git/master
-maintainer (Richard Henderson is on duty for this release cycle). If you
-do that, make sure to GPG sign your pull request.
+  hw/ufs: Fix buffer overflow bug (2024-04-29 09:33:06 -0400)
 
-Stefan
+----------------------------------------------------------------
+Pull request
 
---G1XgqGIMTWMpUBBy
-Content-Type: application/pgp-signature; name="signature.asc"
+Buffer overflow fix for Universal Flash Storage (UFS) emulation.
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmYvo5AACgkQnKSrs4Gr
-c8jAXQf+In4yzeHFuON6nFs1Vd0MsQx9OunlTBJzfCcYzhoaNAKXrUj0FokxadRb
-A4ayv7HBcNhnHwm33d7jiyh9BN8fq0tyHwjKmNmRhV1S7MnS8M2W8TZRAvg6l1z7
-X07CJBVKKjLTBb8hBZQvOkNfyaCcVkr/Jy9OSbKvxX9uv81MrnvF2654UtdhxR3L
-fu1H6q6TllESgjQMjy70pRDK6DSNOnTfe57bBr42nmDRhtCIhqWFMDKOuSTz6pX3
-WsfPppKuOsdw4+vr9yZxPpzI+f3jLqoK8JfCSHHgx6FS3jDmo3UW7ZowzTbpZFc0
-pP/zoqTzRf8LNTveyQ1ANN/FpE0rZQ==
-=Lb1O
------END PGP SIGNATURE-----
+Jeuk Kim (1):
+  hw/ufs: Fix buffer overflow bug
 
---G1XgqGIMTWMpUBBy--
+ hw/ufs/ufs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+-- 
+2.44.0
 
 
