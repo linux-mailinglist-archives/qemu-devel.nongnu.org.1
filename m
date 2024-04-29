@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2179F8B5E66
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 18:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261B48B5E40
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 17:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1TMG-0004X4-2t; Mon, 29 Apr 2024 11:56:00 -0400
+	id 1s1TMO-0004cI-Dx; Mon, 29 Apr 2024 11:56:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TMB-0004Vq-4q
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:55 -0400
+ id 1s1TMI-0004Ya-9Z
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:02 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1s1TM4-0005Et-79
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:55:52 -0400
+ id 1s1TMF-0005FH-V6
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 11:56:02 -0400
 Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43TFmjvP006702; Mon, 29 Apr 2024 15:55:42 GMT
+ 43TFmjb6006712; Mon, 29 Apr 2024 15:55:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=AsixATSRLpV+Yop01dX+ts3i0CYeTOgvTvdYJbJ4OQY=;
- b=lFrt4iZog+GLRgFaBt6eZ6O0H41PuUQZnVNR7uONQCyoY4aETxwNFrT81CuljVEBbMTe
- eu219Xy3pPOrGZeqlZa46aV8VUHfcXHkJ0RCMYlbB/XO4+JdiwfLq3rNF+wOIGNxrdkj
- IV8i4/5P4KsLPE5y80umIgsSNm/CSTILyRKuJn3QPxMmVhAcTkcYyX564BqNnr7F/FwY
- LN3vwGDvVbtpkBVJkh6zMzH6LX890vO644EAdsgCoJMBNEQKUOYXMnRpRarlEgPZJUpP
- OLKLht07B4DCMxH+tgRFNlVSDcYwgckS/QxnM+lOlr2MvcSFcXrO89/BWY2HSaXAV2AR 2Q== 
+ bh=tY/XgqmbfugZCppNeWrHSHTrYbFcI73pMuTKk9NtCoo=;
+ b=og8uEnDik4o9IunnbXEIkAo0ddegTvIJDL1SPrX/fudCdjknuQgfNpTf0UY4xZTkU/o0
+ fU4X0ips4EGve5OnlC+GKZVSqss5K8eULOj5wd75fVMkQmeTnmXikcVbQg09at9QEiYz
+ p7p0NWiumeaUo0Fyb4jhwEuZih3+0c/262uf2BcK1ax4zqAkCzEaIlaC1k6x4zGtH0qf
+ Tp+3wSJ4PptbvvJPKx6Q5oSHy7q1yvITpIWD+HSsdVGise7UF9MrCUFtNIZffxLj79XW
+ ojVIYrXG3RQbyaChmhBQWObiNAPrRVbKcGnA7bmkSh6O9d1yPCvbFB+bEDWF3fv5KuKs iA== 
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrsdejwmr-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xrsdejwmv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:42 +0000
+ Mon, 29 Apr 2024 15:55:44 +0000
 Received: from pps.filterd
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 43TEheo5011366; Mon, 29 Apr 2024 15:55:41 GMT
+ with ESMTP id 43TEdOSa011469; Mon, 29 Apr 2024 15:55:43 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3xrqt6j64y-1
+ 3xrqt6j67k-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 29 Apr 2024 15:55:41 +0000
+ Mon, 29 Apr 2024 15:55:43 +0000
 Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGe034442;
- Mon, 29 Apr 2024 15:55:40 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43TFtaGk034442;
+ Mon, 29 Apr 2024 15:55:42 GMT
 Received: from ca-dev63.us.oracle.com (ca-dev63.us.oracle.com [10.211.8.221])
  by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with
- ESMTP id 3xrqt6j5ys-7; Mon, 29 Apr 2024 15:55:40 +0000
+ ESMTP id 3xrqt6j5ys-10; Mon, 29 Apr 2024 15:55:42 +0000
 From: Steve Sistare <steven.sistare@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -62,9 +62,9 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  "Daniel P. Berrange" <berrange@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>
-Subject: [PATCH V1 06/26] migration: precreate vmstate for exec
-Date: Mon, 29 Apr 2024 08:55:15 -0700
-Message-Id: <1714406135-451286-7-git-send-email-steven.sistare@oracle.com>
+Subject: [PATCH V1 09/26] migration: vmstate_register_named
+Date: Mon, 29 Apr 2024 08:55:18 -0700
+Message-Id: <1714406135-451286-10-git-send-email-steven.sistare@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
 References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
@@ -76,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  adultscore=0 mlxscore=0 suspectscore=0 phishscore=0 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404290101
-X-Proofpoint-GUID: ZbprD0pcIER2DImXWwmIew0YnfdbXrb_
-X-Proofpoint-ORIG-GUID: ZbprD0pcIER2DImXWwmIew0YnfdbXrb_
+X-Proofpoint-GUID: WEZZNIVNuHiWFwWOzeazeRuLu8RgV6TC
+X-Proofpoint-ORIG-GUID: WEZZNIVNuHiWFwWOzeazeRuLu8RgV6TC
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,191 +102,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide migration_precreate_save for saving precreate vmstate across exec.
-Create a memfd, save its value in the environment, and serialize state
-to it.  Reverse the process in migration_precreate_load.
+Define vmstate_register_named which takes the instance name as its first
+parameter, instead of generating the name from VMStateIf of the Object.
+This will be needed to register objects that are not Objects.  Pass the
+new name parameter to vmstate_register_with_alias_id.
 
 Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 ---
- include/migration/misc.h |   5 ++
- migration/meson.build    |   1 +
- migration/precreate.c    | 139 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 145 insertions(+)
- create mode 100644 migration/precreate.c
+ hw/core/qdev.c              |  1 +
+ hw/intc/apic_common.c       |  2 +-
+ include/migration/vmstate.h | 19 +++++++++++++++++--
+ migration/savevm.c          | 35 ++++++++++++++++++++++++-----------
+ migration/trace-events      |  1 +
+ stubs/vmstate.c             |  1 +
+ 6 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index c9e200f..cf30351 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -56,6 +56,11 @@ AnnounceParameters *migrate_announce_params(void);
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index 00efaf1..b352e8a 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -535,6 +535,7 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
+                                                qdev_get_vmsd(dev), dev,
+                                                dev->instance_id_alias,
+                                                dev->alias_required_for_version,
++                                               NULL,
+                                                &local_err) < 0) {
+                 goto post_realize_fail;
+             }
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index d8fc1e2..d6cd293 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -298,7 +298,7 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+         instance_id = VMSTATE_INSTANCE_ID_ANY;
+     }
+     vmstate_register_with_alias_id(NULL, instance_id, &vmstate_apic_common,
+-                                   s, -1, 0, NULL);
++                                   s, -1, 0, NULL, NULL);
  
- void dump_vmstate_json_to_file(FILE *out_fp);
+     /* APIC LDR in x2APIC mode */
+     s->extended_log_dest = ((s->initial_apic_id >> 4) << 16) |
+diff --git a/include/migration/vmstate.h b/include/migration/vmstate.h
+index bb885d9..22aa3c6 100644
+--- a/include/migration/vmstate.h
++++ b/include/migration/vmstate.h
+@@ -1234,6 +1234,7 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+                                    const VMStateDescription *vmsd,
+                                    void *base, int alias_id,
+                                    int required_for_version,
++                                   const char *instance_name,
+                                    Error **errp);
  
-+/* migration/precreate.c */
-+int migration_precreate_save(Error **errp);
-+void migration_precreate_unsave(void);
-+int migration_precreate_load(Error **errp);
+ /**
+@@ -1250,7 +1251,7 @@ static inline int vmstate_register(VMStateIf *obj, int instance_id,
+                                    void *opaque)
+ {
+     return vmstate_register_with_alias_id(obj, instance_id, vmsd,
+-                                          opaque, -1, 0, NULL);
++                                          opaque, -1, 0, NULL, NULL);
+ }
+ 
+ /**
+@@ -1278,7 +1279,21 @@ static inline int vmstate_register_any(VMStateIf *obj,
+                                        void *opaque)
+ {
+     return vmstate_register_with_alias_id(obj, VMSTATE_INSTANCE_ID_ANY, vmsd,
+-                                          opaque, -1, 0, NULL);
++                                          opaque, -1, 0, NULL, NULL);
++}
 +
- /* migration/migration.c */
- void migration_object_init(void);
- void migration_shutdown(void);
-diff --git a/migration/meson.build b/migration/meson.build
-index f76b1ba..50e7cb2 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -26,6 +26,7 @@ system_ss.add(files(
-   'ram-compress.c',
-   'options.c',
-   'postcopy-ram.c',
-+  'precreate.c',
-   'savevm.c',
-   'socket.c',
-   'tls.c',
-diff --git a/migration/precreate.c b/migration/precreate.c
-new file mode 100644
-index 0000000..0bf5e1f
---- /dev/null
-+++ b/migration/precreate.c
-@@ -0,0 +1,139 @@
-+/*
-+ * Copyright (c) 2022, 2024 Oracle and/or its affiliates.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
++/**
++ * vmstate_register_named() - pass an instance_name explicitly instead of
++ * implicitly via VMStateIf get_id().  Needed to register a instance-specific
++ * VMSD for objects that are not Objects.
 + */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "qemu/memfd.h"
-+#include "qapi/error.h"
-+#include "io/channel-file.h"
-+#include "migration/misc.h"
-+#include "migration/qemu-file.h"
-+#include "migration/savevm.h"
-+
-+#define PRECREATE_STATE_NAME "QEMU_PRECREATE_STATE"
-+
-+static QEMUFile *qemu_file_new_fd_input(int fd, const char *name)
++static inline int vmstate_register_named(const char *instance_name,
++                                         int instance_id,
++                                         const VMStateDescription *vmsd,
++                                         void *opaque)
 +{
-+    g_autoptr(QIOChannelFile) fioc = qio_channel_file_new_fd(fd);
-+    QIOChannel *ioc = QIO_CHANNEL(fioc);
-+    qio_channel_set_name(ioc, name);
-+    return qemu_file_new_input(ioc);
-+}
-+
-+static QEMUFile *qemu_file_new_fd_output(int fd, const char *name)
++    return vmstate_register_with_alias_id(NULL, instance_id, vmsd, opaque,
++                                          -1, 0, instance_name, NULL);
+ }
+ 
+ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 9b1a335..86b4c87 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -889,10 +889,20 @@ int vmstate_replace_hack_for_ppc(VMStateIf *obj, int instance_id,
+     return vmstate_register(obj, instance_id, vmsd, opaque);
+ }
+ 
++static bool make_new_idstr(VMStateId idstr, const char *id, Error **errp)
 +{
-+    g_autoptr(QIOChannelFile) fioc = qio_channel_file_new_fd(fd);
-+    QIOChannel *ioc = QIO_CHANNEL(fioc);
-+    qio_channel_set_name(ioc, name);
-+    return qemu_file_new_output(ioc);
-+}
-+
-+static int memfd_create_named(const char *name, Error **errp)
-+{
-+    int mfd;
-+    char val[16];
-+
-+    mfd = memfd_create(name, 0);
-+    if (mfd < 0) {
-+        error_setg_errno(errp, errno, "memfd_create failed");
-+        return -1;
++    if (snprintf(idstr, sizeof(VMStateId), "%s/", id) >= sizeof(VMStateId)) {
++        error_setg(errp, "Path too long for VMState (%s)", id);
++        return false;
 +    }
-+
-+    /* Remember mfd in environment for post-exec load */
-+    qemu_clear_cloexec(mfd);
-+    snprintf(val, sizeof(val), "%d", mfd);
-+    g_setenv(name, val, 1);
-+
-+    return mfd;
++    return true;
 +}
 +
-+static int memfd_find_named(const char *name, int *mfd_p, Error **errp)
-+{
-+    const char *val = g_getenv(name);
-+
-+    if (!val) {
-+        *mfd_p = -1;
-+        return 0;       /* No memfd was created, not an error */
-+    }
-+    g_unsetenv(name);
-+    if (qemu_strtoi(val, NULL, 10, mfd_p)) {
-+        error_setg(errp, "Bad %s env value %s", PRECREATE_STATE_NAME, val);
-+        return -1;
-+    }
-+    lseek(*mfd_p, 0, SEEK_SET);
-+    return 0;
-+}
-+
-+static void memfd_delete_named(const char *name)
-+{
-+    int mfd;
-+    const char *val = g_getenv(name);
-+
-+    if (val) {
-+        g_unsetenv(name);
-+        if (!qemu_strtoi(val, NULL, 10, &mfd)) {
-+            close(mfd);
+ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+                                    const VMStateDescription *vmsd,
+                                    void *opaque, int alias_id,
+                                    int required_for_version,
++                                   const char *instance_name,
+                                    Error **errp)
+ {
+     SaveStateEntry *se;
+@@ -907,19 +917,17 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+     se->vmsd = vmsd;
+     se->alias_id = alias_id;
+ 
+-    if (obj) {
+-        char *id = vmstate_if_get_id(obj);
++    if (instance_name) {
++        if (!make_new_idstr(se->idstr, instance_name, errp)) {
++            goto err;
 +        }
-+    }
-+}
 +
-+static QEMUFile *qemu_file_new_memfd_output(const char *name, Error **errp)
-+{
-+    int mfd = memfd_create_named(name, errp);
++    } else if (obj) {
++        g_autofree char *id = vmstate_if_get_id(obj);
+         if (id) {
+-            if (snprintf(se->idstr, sizeof(se->idstr), "%s/", id) >=
+-                sizeof(se->idstr)) {
+-                error_setg(errp, "Path too long for VMState (%s)", id);
+-                g_free(id);
+-                g_free(se);
+-
+-                return -1;
++            if (!make_new_idstr(se->idstr, id, errp)) {
++                goto err;
+             }
+-            g_free(id);
+-
+             se->compat = g_new0(CompatEntry, 1);
+             pstrcpy(se->compat->idstr, sizeof(se->compat->idstr), vmsd->name);
+             se->compat->instance_id = instance_id == VMSTATE_INSTANCE_ID_ANY ?
+@@ -941,7 +949,12 @@ int vmstate_register_with_alias_id(VMStateIf *obj, uint32_t instance_id,
+     }
+     assert(!se->compat || se->instance_id == 0);
+     savevm_state_handler_insert(se);
++    trace_vmstate_register(se->idstr, se->instance_id, (void *)vmsd, opaque);
+     return 0;
 +
-+    if (mfd < 0) {
-+        return NULL;
-+    }
-+
-+    return qemu_file_new_fd_output(mfd, name);
-+}
-+
-+static QEMUFile *qemu_file_new_memfd_input(const char *name, Error **errp)
-+{
-+    int ret, mfd;
-+
-+    ret = memfd_find_named(name, &mfd, errp);
-+    if (ret || mfd < 0) {
-+        return NULL;
-+    }
-+
-+    return qemu_file_new_fd_input(mfd, name);
-+}
-+
-+int migration_precreate_save(Error **errp)
-+{
-+    QEMUFile *f = qemu_file_new_memfd_output(PRECREATE_STATE_NAME, errp);
-+
-+    if (!f) {
-+        return -1;
-+    } else if (qemu_savevm_precreate_save(f, errp)) {
-+        memfd_delete_named(PRECREATE_STATE_NAME);
-+        return -1;
-+    } else {
-+        /* Do not close f, as mfd must remain open. */
-+        return 0;
-+    }
-+}
-+
-+void migration_precreate_unsave(void)
-+{
-+    memfd_delete_named(PRECREATE_STATE_NAME);
-+}
-+
-+int migration_precreate_load(Error **errp)
-+{
-+    int ret;
-+    QEMUFile *f = qemu_file_new_memfd_input(PRECREATE_STATE_NAME, errp);
-+
-+    if (!f) {
-+        return -1;
-+    }
-+    ret = qemu_savevm_precreate_load(f, errp);
-+    qemu_fclose(f);
-+    g_unsetenv(PRECREATE_STATE_NAME);
-+    return ret;
-+}
++err:
++    g_free(se);
++    return -1;
+ }
+ 
+ void vmstate_unregister(VMStateIf *obj, const VMStateDescription *vmsd,
+diff --git a/migration/trace-events b/migration/trace-events
+index f0e1cb8..8647147 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -53,6 +53,7 @@ vmstate_downtime_checkpoint(const char *checkpoint) "%s"
+ postcopy_pause_incoming(void) ""
+ postcopy_pause_incoming_continued(void) ""
+ postcopy_page_req_sync(void *host_addr) "sync page req %p"
++vmstate_register(const char *idstr, int id, void *vmsd, void *opaque) "%s, %d, vmsd %p, opaque %p"
+ 
+ # vmstate.c
+ vmstate_load_field_error(const char *field, int ret) "field \"%s\" load failed, ret = %d"
+diff --git a/stubs/vmstate.c b/stubs/vmstate.c
+index 8513d92..d67506e 100644
+--- a/stubs/vmstate.c
++++ b/stubs/vmstate.c
+@@ -6,6 +6,7 @@ int vmstate_register_with_alias_id(VMStateIf *obj,
+                                    const VMStateDescription *vmsd,
+                                    void *base, int alias_id,
+                                    int required_for_version,
++                                   const char *instance_name,
+                                    Error **errp)
+ {
+     return 0;
 -- 
 1.8.3.1
 
