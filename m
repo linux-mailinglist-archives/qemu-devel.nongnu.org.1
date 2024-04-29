@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178768B62F5
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 21:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAF68B64AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 23:36:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1X7c-0008Ej-Rl; Mon, 29 Apr 2024 15:57:08 -0400
+	id 1s1YfA-0006Do-Ib; Mon, 29 Apr 2024 17:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s1X7a-0008E4-Q9
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:57:06 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s1X7Y-0004DG-Ud
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:57:06 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6ed627829e6so6014346b3a.1
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 12:57:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714420623; x=1715025423; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PFpSANK/hk/kel6sKsmhcxBLFydeRqaCqMkykkqtP/4=;
- b=dLUJMlI65KStTST0GMt4ezg4TeLLkRu0OrSIdk39eKyfKM5tT55kxfAfjJtTQn7DnP
- dGeDKU6vaPcxWnq1ETVxKgmbfuNoiNu0x0Teu8fwrEFpB72iLQpj5OGZKAFcXsAUsEde
- 0jHsOZD89YZKJ7DtVGRvmDiwhQmjIRAUv3MQDULj41BlWDHcgOCaKaDim/i/UoC4iMNL
- LzSujeLAnECjPd7G8IAiFnXns/q19jxBO2zHXlPbWrKhy5PLA44cUNiJgR52C2aX7hRR
- q10ssMvvgeHq+F65MJTLonmwrb3X+Y63JO+uCCEEZmU+zBHcr9CI8GcODPjO4Vpa8gI1
- tFNw==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1YeU-0005XQ-8j
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:35:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s1YeP-0003uF-Qe
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 17:35:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714426504;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Hi6DPPPW2Y8F6DlaWvmjHS3TBRFsSBDOI/eK3ak1q3w=;
+ b=F3tPkMLMP7UhKRYsDbauxNdDM1rCrTdevem/8u/mea6DZNs1vMnbzaGBdQZOmLi5QUjADa
+ KRkOPXmjdyZh5mI8AKYtJLPWMOl7tzueKFYa8yjprDn4bOXiCiJkZumsEO8w7PmcorvRiz
+ BayXhyf01a3ZYMkectPQfJP+51k4HMQ=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-186-AXAFeY5OPduq68I7cyCQFw-1; Mon, 29 Apr 2024 15:51:07 -0400
+X-MC-Unique: AXAFeY5OPduq68I7cyCQFw-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1e950a46ee4so1783605ad.2
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 12:51:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714420623; x=1715025423;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PFpSANK/hk/kel6sKsmhcxBLFydeRqaCqMkykkqtP/4=;
- b=f3BNGN9Ingr6WbHbvzn2gkFLHoY2OQq7OUeUQiFERPk4u3KPr4Qf+8m9M5KqPsOAQL
- b9SwLkwvAqTQ5jX/wneibjwQrn5G6KpQtvRJpZc1SowffWdQn+FO5lubiLXwfgoXIgx9
- 1FjEdmHzHGdmpV+oGqjyrXfWXF4GLHTaVhbqOnQFQpg4Fksaisr8ZUSaHErLgTwXi/oR
- lGHvJLP7j/uqKFhkNvhNXc8bttNPHFMjed9JsFcrtayziVdhvtoVyAZGo5Faaanyaaq8
- Rg5jeziZm6LHsZU2RFi7ilggKbixVXCcjx8BdwDYvcI5bXDd6GJ0rjoi8Lo7lVKOu0Ob
- r2NQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1l0fOvohsDrjWfBTANqUxDtVVrIkCoe55+aA037YxnL1cRjo3fps5ArnB+39a5NnQB7ImeyZdNZbZd40ezbp51OXhHZ8=
-X-Gm-Message-State: AOJu0YzGOvwz5s0xaKe6CvXQs5GIVQVqCa9BbFVOR0WyG17Y4GQXQBiK
- r1BVnhJB6tTTOVpqXseV3Y0hxfVdr+G7wBmpNCxEJPeWdhHRqlvwtf+wXigVUVs=
-X-Google-Smtp-Source: AGHT+IE01C7lsFuB+BCH4U3B92lOapB5EsfCzxtCk1/zYKdT2jd+gL8JtOstp3jKWzkmlZD0gMwaTg==
-X-Received: by 2002:a05:6a00:1384:b0:6ea:dfbf:13d4 with SMTP id
- t4-20020a056a00138400b006eadfbf13d4mr16061629pfg.18.1714420623056; 
- Mon, 29 Apr 2024 12:57:03 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:937d:c610::abdb? ([2604:3d08:937d:c610::abdb])
- by smtp.gmail.com with ESMTPSA id
- fj24-20020a056a003a1800b006ea916eac02sm19676896pfb.42.2024.04.29.12.57.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Apr 2024 12:57:02 -0700 (PDT)
-Message-ID: <50d57b33-882b-4027-8014-eeba1d88db00@linaro.org>
-Date: Mon, 29 Apr 2024 12:57:01 -0700
+ d=1e100.net; s=20230601; t=1714420267; x=1715025067;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Hi6DPPPW2Y8F6DlaWvmjHS3TBRFsSBDOI/eK3ak1q3w=;
+ b=lE3yZ94pKCrdcosXads30ZSEwmOF3MtNXP6Cm6Xe8BhcnIbWO40eQSLJds0WNlrwcP
+ v+5D8DZCOxDkmfgE2dr47XnA5dhXNwBm4ifVgj+rxKlkkkrpLffZxvNiguHIt4Zy6m64
+ AQL5fNE3Kmjo7DFq9SypotbXTcAbl+cizBF8z80Xnb+2z2sHXDd7XGGCny5YT3A+3299
+ DRCABFIQhAn7iHuq8+Ot/111zyl4zIWFAWpZRUVx7kbo1OA3Pq26rxOrbmavPYrf3pGk
+ PooW8ZZzBvgZmvWYiS73aTNHTsCmC6SC8knLDTr4QcJhZUZ6ex/uoG5csuzbd3PFe7no
+ bufQ==
+X-Gm-Message-State: AOJu0YzK403x4i3dJSMaOuiuGmuX44gEdt3ZQwRfmiOGEd+jJFLxHW7N
+ /xhKFPd82aRvwAYrGZDSQJd+a3EHOBxwP2y3dVfpbpk3GB03mUq2QQJy9yPusBmD8l0icBUAIkq
+ 85pATZcNLAvjEZkwpSTXYGApWlOL/uFNMQaOEQdjOaRS2JHF8OhLH
+X-Received: by 2002:a17:902:d4c6:b0:1e5:1138:e28e with SMTP id
+ o6-20020a170902d4c600b001e51138e28emr14096931plg.3.1714420266409; 
+ Mon, 29 Apr 2024 12:51:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPKYuSzoNFzu2HReZC34Qfwi/CUMJEdHDruEI5z2b+CpVVyBY0S2e7pkv886Csl4S3A5T7Mg==
+X-Received: by 2002:a17:902:d4c6:b0:1e5:1138:e28e with SMTP id
+ o6-20020a170902d4c600b001e51138e28emr14096901plg.3.1714420265777; 
+ Mon, 29 Apr 2024 12:51:05 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ f21-20020a170902ab9500b001e5119c1923sm20714950plr.71.2024.04.29.12.51.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 29 Apr 2024 12:51:04 -0700 (PDT)
+Date: Mon, 29 Apr 2024 15:51:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ devel@lists.libvirt.org, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2 2/6] migration: Remove 'inc' option from migrate command
+Message-ID: <Zi_6JhnqkdIJU5Ae@x1n>
+References: <20240426131408.25410-1-farosas@suse.de>
+ <20240426131408.25410-3-farosas@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/20] plugins: Use emit_before_op for
- PLUGIN_GEN_FROM_TB
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240424230224.941028-1-richard.henderson@linaro.org>
- <20240424230224.941028-8-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240424230224.941028-8-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240426131408.25410-3-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,183 +99,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/24 16:02, Richard Henderson wrote:
-> By having the qemu_plugin_cb_flags be recorded in the TCGHelperInfo,
-> we no longer need to distinguish PLUGIN_CB_REGULAR from
-> PLUGIN_CB_REGULAR_R, so place all TB callbacks in the same queue.
+On Fri, Apr 26, 2024 at 10:14:04AM -0300, Fabiano Rosas wrote:
+> The block incremental option for block migration has been deprecated
+> in 8.2 in favor of using the block-mirror feature. Remove it now.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/plugin-gen.c | 96 +++++++++++++++++++++++++-----------------
->   plugins/api.c          |  6 +--
->   2 files changed, 58 insertions(+), 44 deletions(-)
+> Deprecation commit 40101f320d ("migration: migrate 'inc' command
+> option is deprecated.").
 > 
-> diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-> index 4b02c0bfbf..c803fe8e96 100644
-> --- a/accel/tcg/plugin-gen.c
-> +++ b/accel/tcg/plugin-gen.c
-> @@ -201,6 +201,7 @@ static void plugin_gen_empty_callback(enum plugin_gen_from from)
->   {
->       switch (from) {
->       case PLUGIN_GEN_AFTER_INSN:
-> +    case PLUGIN_GEN_FROM_TB:
->           tcg_gen_plugin_cb(from);
->           break;
->       case PLUGIN_GEN_FROM_INSN:
-> @@ -210,8 +211,6 @@ static void plugin_gen_empty_callback(enum plugin_gen_from from)
->            */
->           gen_wrapped(from, PLUGIN_GEN_ENABLE_MEM_HELPER,
->                       gen_empty_mem_helper);
-> -        /* fall through */
-> -    case PLUGIN_GEN_FROM_TB:
->           gen_wrapped(from, PLUGIN_GEN_CB_UDATA, gen_empty_udata_cb_no_rwg);
->           gen_wrapped(from, PLUGIN_GEN_CB_UDATA_R, gen_empty_udata_cb_no_wg);
->           gen_wrapped(from, PLUGIN_GEN_CB_INLINE, gen_empty_inline_cb);
-> @@ -626,24 +625,6 @@ void plugin_gen_disable_mem_helpers(void)
->                      offsetof(CPUState, plugin_mem_cbs) - offsetof(ArchCPU, env));
->   }
->   
-> -static void plugin_gen_tb_udata(const struct qemu_plugin_tb *ptb,
-> -                                TCGOp *begin_op)
-> -{
-> -    inject_udata_cb(ptb->cbs[PLUGIN_CB_REGULAR], begin_op);
-> -}
-> -
-> -static void plugin_gen_tb_udata_r(const struct qemu_plugin_tb *ptb,
-> -                                  TCGOp *begin_op)
-> -{
-> -    inject_udata_cb(ptb->cbs[PLUGIN_CB_REGULAR_R], begin_op);
-> -}
-> -
-> -static void plugin_gen_tb_inline(const struct qemu_plugin_tb *ptb,
-> -                                 TCGOp *begin_op)
-> -{
-> -    inject_inline_cb(ptb->cbs[PLUGIN_CB_INLINE], begin_op, op_ok);
-> -}
-> -
->   static void plugin_gen_insn_udata(const struct qemu_plugin_tb *ptb,
->                                     TCGOp *begin_op, int insn_idx)
->   {
-> @@ -702,6 +683,41 @@ static void gen_disable_mem_helper(struct qemu_plugin_tb *ptb,
->       }
->   }
->   
-> +static void gen_udata_cb(struct qemu_plugin_dyn_cb *cb)
-> +{
-> +    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-> +
-> +    tcg_gen_ld_i32(cpu_index, tcg_env,
-> +                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-> +    tcg_gen_call2(cb->regular.f.vcpu_udata, cb->regular.info, NULL,
-> +                  tcgv_i32_temp(cpu_index),
-> +                  tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
-> +    tcg_temp_free_i32(cpu_index);
-> +}
-> +
-> +static void gen_inline_cb(struct qemu_plugin_dyn_cb *cb)
-> +{
-> +    GArray *arr = cb->inline_insn.entry.score->data;
-> +    size_t offset = cb->inline_insn.entry.offset;
-> +    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-> +    TCGv_i64 val = tcg_temp_ebb_new_i64();
-> +    TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
-> +
-> +    tcg_gen_ld_i32(cpu_index, tcg_env,
-> +                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-> +    tcg_gen_muli_i32(cpu_index, cpu_index, g_array_get_element_size(arr));
-> +    tcg_gen_ext_i32_ptr(ptr, cpu_index);
-> +    tcg_temp_free_i32(cpu_index);
-> +
-> +    tcg_gen_addi_ptr(ptr, ptr, (intptr_t)arr->data);
-> +    tcg_gen_ld_i64(val, ptr, offset);
-> +    tcg_gen_addi_i64(val, val, cb->inline_insn.imm);
-> +    tcg_gen_st_i64(val, ptr, offset);
-> +
-> +    tcg_temp_free_i64(val);
-> +    tcg_temp_free_ptr(ptr);
-> +}
-> +
->   /* #define DEBUG_PLUGIN_GEN_OPS */
->   static void pr_ops(void)
->   {
-> @@ -780,6 +796,8 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
->           {
->               enum plugin_gen_from from = op->args[0];
->               struct qemu_plugin_insn *insn = NULL;
-> +            const GArray *cbs;
-> +            int i, n;
->   
->               if (insn_idx >= 0) {
->                   insn = g_ptr_array_index(plugin_tb->insns, insn_idx);
-> @@ -792,6 +810,25 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
->                   assert(insn != NULL);
->                   gen_disable_mem_helper(plugin_tb, insn);
->                   break;
-> +
-> +            case PLUGIN_GEN_FROM_TB:
-> +                assert(insn == NULL);
-> +
-> +                cbs = plugin_tb->cbs[PLUGIN_CB_REGULAR];
-> +                for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
-> +                    struct qemu_plugin_dyn_cb *cb =
-> +                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i);
-> +                    gen_udata_cb(cb);
-> +                }
-> +
-> +                cbs = plugin_tb->cbs[PLUGIN_CB_INLINE];
-> +                for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
-> +                    struct qemu_plugin_dyn_cb *cb =
-> +                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i);
-> +                    gen_inline_cb(cb);
-> +                }
-> +                break;
-> +
->               default:
->                   g_assert_not_reached();
->               }
-> @@ -807,25 +844,6 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
->               enum plugin_gen_cb type = op->args[1];
->   
->               switch (from) {
-> -            case PLUGIN_GEN_FROM_TB:
-> -            {
-> -                g_assert(insn_idx == -1);
-> -
-> -                switch (type) {
-> -                case PLUGIN_GEN_CB_UDATA:
-> -                    plugin_gen_tb_udata(plugin_tb, op);
-> -                    break;
-> -                case PLUGIN_GEN_CB_UDATA_R:
-> -                    plugin_gen_tb_udata_r(plugin_tb, op);
-> -                    break;
-> -                case PLUGIN_GEN_CB_INLINE:
-> -                    plugin_gen_tb_inline(plugin_tb, op);
-> -                    break;
-> -                default:
-> -                    g_assert_not_reached();
-> -                }
-> -                break;
-> -            }
->               case PLUGIN_GEN_FROM_INSN:
->               {
->                   g_assert(insn_idx >= 0);
-> diff --git a/plugins/api.c b/plugins/api.c
-> index 8fa5a600ac..5d119e8049 100644
-> --- a/plugins/api.c
-> +++ b/plugins/api.c
-> @@ -92,11 +92,7 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
->                                             void *udata)
->   {
->       if (!tb->mem_only) {
-> -        int index = flags == QEMU_PLUGIN_CB_R_REGS ||
-> -                    flags == QEMU_PLUGIN_CB_RW_REGS ?
-> -                    PLUGIN_CB_REGULAR_R : PLUGIN_CB_REGULAR;
-> -
-> -        plugin_register_dyn_cb__udata(&tb->cbs[index],
-> +        plugin_register_dyn_cb__udata(&tb->cbs[PLUGIN_CB_REGULAR],
->                                         cb, flags, udata);
->       }
->   }
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+
+-- 
+Peter Xu
+
 
