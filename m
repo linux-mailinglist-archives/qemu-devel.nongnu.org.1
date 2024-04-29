@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1E68B4FC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 05:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 921378B4FC4
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 05:26:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Hdx-00011H-Ai; Sun, 28 Apr 2024 23:25:29 -0400
+	id 1s1HeJ-0001jc-Gh; Sun, 28 Apr 2024 23:25:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3GhMvZggKCjUjdfjkRWRXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--smostafa.bounces.google.com>)
- id 1s1Hdt-0000tN-4p
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 23:25:25 -0400
-Received: from mail-wr1-x449.google.com ([2a00:1450:4864:20::449])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1s1HeC-0001eH-L3; Sun, 28 Apr 2024 23:25:44 -0400
+Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3GhMvZggKCjUjdfjkRWRXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--smostafa.bounces.google.com>)
- id 1s1Hdp-0004Fd-8x
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 23:25:23 -0400
-Received: by mail-wr1-x449.google.com with SMTP id
- ffacd0b85a97d-3455cbdea2cso2056557f8f.0
- for <qemu-devel@nongnu.org>; Sun, 28 Apr 2024 20:25:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1s1He9-0004I4-KE; Sun, 28 Apr 2024 23:25:44 -0400
+Received: by mail-vs1-xe36.google.com with SMTP id
+ ada2fe7eead31-479c39b78dbso1311639137.2; 
+ Sun, 28 Apr 2024 20:25:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1714361115; x=1714965915; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=mSI5Y10hDHs+a73zrNudbgCqM/hO+BV89BxjmLOp0r4=;
- b=wjNFlQ0XJnjjwkEhFmkNQgOYQ+mg1o/wLEK81kXaycD/eerG1CO7TLlW798GGGdHzC
- bmAo6bB5g0wPcdvlya08IesdtAYkdvVqyfqb5mvpukhnt5vCC3ZBPlj193AYFbIen5pS
- fof5oaZj8Ek+Wsn7MDEigBqGGjF1op4o+Sj0OTQXW93bNu0//UiN8Pazx3aNSG9Kv9DV
- 54gcVosEZW5+nyFhSdzImWEMH6JVjJwEN5lkpUqD+TJ7a3sBWgLglTuRsyMPnBIm9N3w
- 7b2RwKGvxoOHEAZFWV5FX92qbu6B2QDaqm6jpnLwNPZVKGoeNepv/U5aO1S2NauQ4mGY
- tfzQ==
+ d=gmail.com; s=20230601; t=1714361139; x=1714965939; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FYhQAU/Afxth6vnbLdTZgBMdxkrplsa+qMwLgMZc9wY=;
+ b=SGxlYe4esFDDMG/pD8ro7WoU2CTLePivjF4GfOICtwnqz21Ycc4Off70qkN6novu30
+ 01KcnvRkdI3S/O+mWySksOfSRcriZGM6uWtc1jGgfQoWELLLrMAGjruGc7Vv00WOJHaT
+ I6nbMVogce75PAKMiGBpsDMKg63tZhN4mHSgcmdFZ33GQjOPyqOHiR0uQVr1lCs/RVW4
+ A+8+CCIKQHOwmNSS1x1JTZu8dgvrMhHt6gI+AckPapRQ95NAAZlKudGVCecJGx5ZNgkW
+ 1cgezuCpLpj8jvU3/Sm46HhDu0/E6W5yz+KDjL+q+yPvPQ91UbBqG1f/UQfeYyxzG3b1
+ +E9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714361115; x=1714965915;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mSI5Y10hDHs+a73zrNudbgCqM/hO+BV89BxjmLOp0r4=;
- b=wlvDw4ff8K/Pq6GhI+kwdp26htkpCm91mgSYnoV5WsR8645OhrqL97ajojAzcg33AF
- 7xzv9Iobr5KPnwL61xpAyjbIStO/Ueo3OerzTBhpji684tllWU6y9VvEop4OqFzkQ/Tz
- v+1BC6aJvtsTaR0UM3mOy6wYwWdGKdTNi4H07pRGzbaiqmlmXtx1s3GO9ijCgCeQYGGX
- FBSYxr8cignlFDVyo1wBlfVhTv9eltysHrgCjKvICM7NNGnFa7OEU8w3pjRD2c0ZRhIP
- NDJ8JJT3l79X99hbY7yEWwPiRUh1UrSndn770R94gPt+QFXy1N+6C5oBRP3+ANhniYe4
- 5HVg==
+ d=1e100.net; s=20230601; t=1714361139; x=1714965939;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FYhQAU/Afxth6vnbLdTZgBMdxkrplsa+qMwLgMZc9wY=;
+ b=HWVNdZIpw8rbriAwWAKXpkEUr1EFxcLmpNOiGBgynR57n91F8TkC2tPEoarnyedy9u
+ VTdsJkxf3eTHP7+EJUKYgh7IsGwg4aZUQC6ZFXbB/bqwXEnV1MFn7nVJqNYcLekBD3z8
+ 8AhgFGsJKSYs0FO+JDgWD4ls5djnHP/CSRv8lWEkvHl3Qf8Lc2M605NS/BoxhliWDcfE
+ CPpSs/jy9w/558c7DgpM1KOARlPxguYQjtUW++NgDqw4Gz3FPimtQaN+s+MuVHaOcmRE
+ pdX9oAmEBqYzreLAfjWItZU6U87RExR+pP/JMt5nSUdr7lWeN7vBkQDRcuQI2LU/4wYD
+ 08rw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWyCH9j0Bd798VtOSdx+4jKFXV5MoekTHxFaDhAa0tvZXy3F+xSx8jMcu/89ksf6AL7GWEhkKKXEh56UmmRL0jBjvjM0LU=
-X-Gm-Message-State: AOJu0Yyxl4eSFeu03DOIfmDD4rkSt7O5F7+F9IclFFsMMOb+I/1H3dTV
- Ya8J4TF97Ya1M/0d1M7o1rVVts5bh24dndMarKfMAiMkOXeb/ZnYuVs1WMBMGgnQtzTgeiVlF0s
- +5LL5kN9bDA==
-X-Google-Smtp-Source: AGHT+IExBhRwz10DGXfUQGJFfnfxKNB9h91NRBBof8jWz4h5F6LHkq8/pmh/Hlht3yc3mRETmvyDUPo7tbxz9Q==
-X-Received: from mostafa.c.googlers.com
- ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:adf:f64f:0:b0:34b:c3e:5e03 with SMTP id
- x15-20020adff64f000000b0034b0c3e5e03mr16372wrp.0.1714361114848; Sun, 28 Apr
- 2024 20:25:14 -0700 (PDT)
-Date: Mon, 29 Apr 2024 03:24:02 +0000
-In-Reply-To: <20240429032403.74910-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20240429032403.74910-1-smostafa@google.com>
-X-Mailer: git-send-email 2.44.0.769.g3c40516874-goog
-Message-ID: <20240429032403.74910-19-smostafa@google.com>
-Subject: [RFC PATCH v3 18/18] hw/arm/virt: Set SMMU OAS based on CPU PARANGE
-From: Mostafa Saleh <smostafa@google.com>
-To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
- qemu-devel@nongnu.org
-Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org, 
- nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org, 
- marcin.juszkiewicz@linaro.org, Mostafa Saleh <smostafa@google.com>
+ AJvYcCVm8edzw8BMR1+RigH5+LoZQ4eC9AEN6t2vmJY1FU6VoNIzeBQxhKYyeBT0Aa8Ubz3fXG8WZi7xSP56KEQrpKRPO+cxVbU=
+X-Gm-Message-State: AOJu0YyV96PgfzywBIEm89n9FFSW4oi/aZnk/UXZeDLBvcLIzf61Sj/o
+ BUghNCSBxwbQqRyzb95Fnlsfhcq3FlxU4DOZJWOpYambD/z+NHjh69mQomKzcfKipYevAm07des
+ seibmp/whP3yZd8hZmHcMxcWizUg=
+X-Google-Smtp-Source: AGHT+IEEmfZlv15C+AOu2umMqydhnt3cOdgCumrR46nNtUoVqYzp+qhF4ufizwTdhRFGMAw66fEX7NczpCXHoLwTn/M=
+X-Received: by 2002:a67:ee90:0:b0:47b:ba81:5f93 with SMTP id
+ n16-20020a67ee90000000b0047bba815f93mr9520531vsp.11.1714361138817; Sun, 28
+ Apr 2024 20:25:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20240415065245.25455-1-yongxuan.wang@sifive.com>
+In-Reply-To: <20240415065245.25455-1-yongxuan.wang@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 29 Apr 2024 13:25:11 +1000
+Message-ID: <CAKmqyKO3qj9k74RBp+KCGxgPR_=ZGCSzdUDdGrQj9TPJCUD1Nw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] target/riscv/kvm.c: Fix the hart bit setting of AIA
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
+ vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::449;
- envelope-from=3GhMvZggKCjUjdfjkRWRXffXcV.TfdhVdl-UVmVcefeXel.fiX@flex--smostafa.bounces.google.com;
- helo=mail-wr1-x449.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,91 +96,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new SMMU property to make the SMMU OAS match the CPU PARANGE.
-That's according to SMMU manual ARM IHI 0070F.b:
-    6.3.6 SMMU_IDR5, OAS must match the system physical address size.
+On Mon, Apr 15, 2024 at 4:53=E2=80=AFPM Yong-Xuan Wang <yongxuan.wang@sifiv=
+e.com> wrote:
+>
+> The hart bit setting is different with Linux AIA driver[1] when the numbe=
+r
+> of hart is power of 2. For example, when the guest has 4 harts, the
+> estimated result of AIA driver is 2, whereas we pass 3 to RISC-V/KVM. Sin=
+ce
+> only 2 bits are needed to represent 4 harts, update the formula to get th=
+e
+> accurate result.
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- hw/arm/virt.c      | 14 ++++++++++++--
- target/arm/cpu.h   |  2 ++
- target/arm/cpu64.c |  5 +++++
- 3 files changed, 19 insertions(+), 2 deletions(-)
+I don't really follow this.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 3c93c0c0a6..f203b1f8e1 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -252,6 +252,13 @@ static bool ns_el2_virt_timer_present(void)
-         arm_feature(env, ARM_FEATURE_EL2) && cpu_isar_feature(aa64_vh, cpu);
- }
- 
-+/* We rely on CPU to define system OAS. */
-+static int32_t get_system_oas(void)
-+{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+    return cpu_arm_get_oas(cpu);
-+}
-+
- static void create_fdt(VirtMachineState *vms)
- {
-     MachineState *ms = MACHINE(vms);
-@@ -1384,7 +1391,7 @@ static void create_pcie_irq_map(const MachineState *ms,
- }
- 
- static void create_smmu(const VirtMachineState *vms,
--                        PCIBus *bus)
-+                        PCIBus *bus, int32_t oas)
- {
-     char *node;
-     const char compat[] = "arm,smmu-v3";
-@@ -1404,6 +1411,9 @@ static void create_smmu(const VirtMachineState *vms,
- 
-     object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
-                              &error_abort);
-+
-+    qdev_prop_set_uint64(dev, "oas", oas);
-+
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-     for (i = 0; i < NUM_SMMU_IRQS; i++) {
-@@ -1578,7 +1588,7 @@ static void create_pcie(VirtMachineState *vms)
- 
-         switch (vms->iommu) {
-         case VIRT_IOMMU_SMMUV3:
--            create_smmu(vms, vms->bus);
-+            create_smmu(vms, vms->bus, get_system_oas());
-             qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-                                    0x0, vms->iommu_phandle, 0x0, 0x10000);
-             break;
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 17efc5d565..68261ffbf9 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3287,4 +3287,6 @@ static inline target_ulong cpu_untagged_addr(CPUState *cs, target_ulong x)
- }
- #endif
- 
-+int32_t cpu_arm_get_oas(ARMCPU *cpu);
-+
- #endif
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 985b1efe16..08da83c082 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -787,6 +787,11 @@ static const gchar *aarch64_gdb_arch_name(CPUState *cs)
-     return "aarch64";
- }
- 
-+int32_t cpu_arm_get_oas(ARMCPU *cpu)
-+{
-+    return FIELD_EX64(cpu->isar.id_aa64mmfr0, ID_AA64MMFR0, PARANGE);
-+}
-+
- static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
- {
-     CPUClass *cc = CPU_CLASS(oc);
--- 
-2.44.0.769.g3c40516874-goog
+Do you mind re-wording it to talk about what the specification says?
+Not what Linux does.
 
+>
+> [1] https://lore.kernel.org/all/20240307140307.646078-1-apatel@ventanamic=
+ro.com/
+>
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> ---
+>  target/riscv/kvm/kvm-cpu.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 6a6c6cae80f1..388c4ddaa145 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -1642,7 +1642,14 @@ void kvm_riscv_aia_create(MachineState *machine, u=
+int64_t group_shift,
+>          }
+>      }
+>
+> -    hart_bits =3D find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1=
+;
+> +
+> +    if (max_hart_per_socket > 1) {
+> +        max_hart_per_socket--;
+
+Assuming there are an even number of cores (which there usually are)
+won't this always result in a
+
+> +        hart_bits =3D find_last_bit(&max_hart_per_socket, BITS_PER_LONG)=
+ + 1;
+
+1 being returned by find_last_bit()?
+
+Alistair
+
+> +    } else {
+> +        hart_bits =3D 0;
+> +    }
+> +
+>      ret =3D kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+>                              KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+>                              &hart_bits, true, NULL);
+> --
+> 2.17.1
+>
+>
 
