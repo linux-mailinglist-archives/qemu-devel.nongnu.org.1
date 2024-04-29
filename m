@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260478B51D8
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9900C8B51CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 08:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1KtZ-0001ZL-UP; Mon, 29 Apr 2024 02:53:49 -0400
+	id 1s1Ktf-0001gY-Ay; Mon, 29 Apr 2024 02:53:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1KtX-0001YI-JV
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:47 -0400
+ id 1s1Ktb-0001dI-Eu
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:51 -0400
 Received: from mgamail.intel.com ([192.198.163.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s1KtV-0007m1-UU
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:47 -0400
+ id 1s1KtZ-0007m1-O1
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 02:53:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714373626; x=1745909626;
+ t=1714373630; x=1745909630;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8LxZj6vgZj1xI6LvQ7FwzjFqeUjrZcTWo7n6C5+4LxE=;
- b=l/3ujvMpEQq3O16lj6OttkD2V4V8WhJWz95KR1ZcivGGeaIJk2XsuEQH
- Cco10m/AgwvMFALss3tKhxTUjp4u046qDCYVxnb4IIsVuqm1OzHkUp91O
- J2gg/lvK9CnMqe1tppshhhgob1svgKDQXAr0ZkEJieHEKEecviCsB32/t
- wheALXIGpH9dgIkkaxWl0yrWtAvPiXjex4wiQDVNOzqAVZhXJChjPbBnh
- 4U2FOZyPdyiIZrO7oK1kr7srbrre8OhdvJ3YujcDFX3yuDBSwMyfUR6Dq
- yNIg7nYicXN/q8i3zSTe/Ej/dQXwE5jVtmz+A5OEblerHE0QM7yIpAFGl A==;
-X-CSE-ConnectionGUID: 26bKZOIIS96EeBWHwNK6Eg==
-X-CSE-MsgGUID: tWcKCCKKQpWM5chtUrCm+g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560694"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560694"
+ bh=NFWgWR9YnAEFIvmqqZLW+W43YEg9BvLa/GWEg1Hyw6s=;
+ b=ORbQ5TIdq/8u3P3enpSf8OWuPezNJvQ6SqIsTue2o59w1l/AT2LEyeXm
+ ICdfE/S/Qh63vsnuW6dLJrN04QJiHBxlwssQf9YoBCRIRlzATJLCl/dyX
+ Uf1eaft2v1fcB+/IGjSnZojF2UHdEUfmTxP6sW5vXQ7KaDDQYVKi69agK
+ 2UILPiED04nEgq3iRxSuT4ypyjp+b6tadZimqahVHx1KJClNvri6rVXDp
+ McHNxbUK7LlzRlGdD8UKFAP2qj2eVY7XRCNArci8h+Vri6rfD08A1EnG9
+ o7xViejybYA1RH98i2PXkjVPUrs+JYL/4yL1BgYDvLSzG7rMjvCogOHxt w==;
+X-CSE-ConnectionGUID: gEZrxkBbSS+Rz0LtVk4cEQ==
+X-CSE-MsgGUID: HlU9Xy3JQDu3y/nfszYW8Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="10560700"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="10560700"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:45 -0700
-X-CSE-ConnectionGUID: Ff0OeZ6DQqyQVhS/CpGwAQ==
-X-CSE-MsgGUID: Ii2V5EL+Qg2XLd1RayaxLQ==
+ 28 Apr 2024 23:53:49 -0700
+X-CSE-ConnectionGUID: fgFjUV+qRLCaazhJcqB/eQ==
+X-CSE-MsgGUID: Yvcyv6HLSUamb+rjbDI8hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488012"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; d="scan'208";a="63488034"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Apr 2024 23:53:42 -0700
+ 28 Apr 2024 23:53:46 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,14 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, chao.p.peng@intel.com,
  Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v3 06/19] range: Introduce range_get_last_bit()
-Date: Mon, 29 Apr 2024 14:50:33 +0800
-Message-Id: <20240429065046.3688701-7-zhenzhong.duan@intel.com>
+Subject: [PATCH v3 07/19] vfio/container: Implement
+ HostIOMMUDeviceClass::realize() handler
+Date: Mon, 29 Apr 2024 14:50:34 +0800
+Message-Id: <20240429065046.3688701-8-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
 References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.16;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -84,45 +84,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This helper get the highest 1 bit position of the upper bound.
+Utilize range_get_last_bit() to get host IOMMU address width and
+package it in HostIOMMUDeviceCaps for query with .check_cap().
 
-If the range is empty or upper bound is zero, -1 is returned.
-
-Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/qemu/range.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ hw/vfio/container.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/qemu/range.h b/include/qemu/range.h
-index 205e1da76d..8e05bc1d9f 100644
---- a/include/qemu/range.h
-+++ b/include/qemu/range.h
-@@ -20,6 +20,8 @@
- #ifndef QEMU_RANGE_H
- #define QEMU_RANGE_H
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 3b6826996a..863eec3943 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -1143,6 +1143,34 @@ static void vfio_iommu_legacy_class_init(ObjectClass *klass, void *data)
+     vioc->pci_hot_reset = vfio_legacy_pci_hot_reset;
+ };
  
-+#include "qemu/bitops.h"
-+
- /*
-  * Operations on 64 bit address ranges.
-  * Notes:
-@@ -217,6 +219,15 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
-     return !(last2 < first1 || last1 < first2);
- }
- 
-+/* Get highest non-zero bit position of a range */
-+static inline int range_get_last_bit(Range *range)
++static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
++                                     Error **errp)
 +{
-+    if (range_is_empty(range) || !range->upb) {
-+        return -1;
++    VFIODevice *vdev = opaque;
++    /* iova_ranges is a sorted list */
++    GList *l = g_list_last(vdev->bcontainer->iova_ranges);
++
++    /* There is no VFIO uAPI to query host platform IOMMU type */
++    hiod->caps.type = IOMMU_HW_INFO_TYPE_NONE;
++    HOST_IOMMU_DEVICE_IOMMUFD_VFIO(hiod)->vdev = vdev;
++
++    if (l) {
++        Range *range = l->data;
++        hiod->caps.aw_bits = range_get_last_bit(range) + 1;
++    } else {
++        hiod->caps.aw_bits = 0xff;
 +    }
-+    return find_last_bit(&range->upb, sizeof(range->upb));
++
++    return true;
 +}
 +
- /*
-  * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
-  * Both @a and @b must not be empty.
++static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
++{
++    HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
++
++    hioc->realize = hiod_legacy_vfio_realize;
++};
++
+ static const TypeInfo types[] = {
+     {
+         .name = TYPE_VFIO_IOMMU_LEGACY,
+@@ -1152,6 +1180,7 @@ static const TypeInfo types[] = {
+         .name = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO,
+         .parent = TYPE_HOST_IOMMU_DEVICE,
+         .instance_size = sizeof(HostIOMMUDeviceLegacyVFIO),
++        .class_init = hiod_legacy_vfio_class_init,
+     }
+ };
+ 
 -- 
 2.34.1
 
