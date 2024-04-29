@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552B38B5BCD
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF83B8B5BD1
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:48:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1SHE-0001xz-Ce; Mon, 29 Apr 2024 10:46:44 -0400
+	id 1s1SIf-0003XV-0B; Mon, 29 Apr 2024 10:48:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1SH8-0001vt-Ov
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:46:38 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1s1SIZ-0003Wg-7y
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:48:07 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1SH2-0006Zs-8E
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:46:35 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6effe9c852eso4059774b3a.3
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:46:30 -0700 (PDT)
+ id 1s1SIW-00070S-OK
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:48:06 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6ed0e9ccca1so4387557b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714401990; x=1715006790; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714402083; x=1715006883; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vjGH4AjGJJ6OdciphAOAPhmKdLR6SKhI0S7lTbYNYZM=;
- b=LgGuJfKG+Vn7slLjgL3bZXR0a88LS+mXRiFhtuuQRpdKBk4saJKzPIinS5hsrrQtXj
- AGnN2DYPu3GRZbh0EXNLcJRgQ4OgMyr3yCws4gs1MiGhcJtCjjen/Vx8YuRWLRd3ZPoB
- xucM5QCJybvF8/52q3Scbfp44s9irAEqWleuCseNXm8lWTk4dwSsm+gGRhcPzgqYz0mJ
- OcM1vBsG5eA0Bt/ou7YQqEG/YFk4f4M1X78eDQXzLlrKsA5sFDKwrSMhZ0urd79uaegq
- OdoQOOKlZOtKX5WjqtMFxbc2lxCiX77XEP+iXQAIjDfMQczvCEdcUm+iyTLHLEUHm7I5
- AGLg==
+ bh=Hgo9mtmVYGIPJzeu1XSxfSZQOh0K4+RP9mnvcnoF7Yg=;
+ b=JDIEd7vFFG69RLQvbD7NigJcdaZ2ICMXWKsOrY29uDiaf/crxw91lQ82gcidplimdG
+ omEz0iE8RBMhqBB8nCq5OMXEcmM4gZpd4PaT5mn4wpjNb3ocksRyEAzIRgrdIDOTCFrS
+ 0Ndeq9blOkPZu0hVxEW5YEOV4lgu3rPP8pOw65X3yxunC4Ie/c0yA8wb5qmn4cVV5uHM
+ jNXfoAH5TRaY9eNvHZyyj3pqkDtoeQDwqGwEnBmvPxW2c7LVoTSKY1Q/X0w1bGhDmGJK
+ GVpDrq07T5OYCMlotcNsJYvmJ8bQ0sZWi+aA2VHTKPDYc5aiVG7yV8YU9jNT5ITDvVjm
+ z/PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714401990; x=1715006790;
+ d=1e100.net; s=20230601; t=1714402083; x=1715006883;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vjGH4AjGJJ6OdciphAOAPhmKdLR6SKhI0S7lTbYNYZM=;
- b=M9BtXwileoclTEdrXXSWWR8OiPO2kAMwlzhmbshB6F1U5qlAQv4pE/ky16FPboewU7
- 7cU5A1kfpG0LaT+xJH6k58L8DW9yCuAMwF76uamTT/mPynTmQx3BlumSWsNu316HHpwI
- 6djUSj6hIBypkYdLdwKo0zLtA+wy9AiFVEOZ42MLbm2Xj/iqGNZgq1lYyuk2PL+r1MZO
- SRZTDQNhgKOKtGvsbl5N2wUbHLQqBbIw8U+AzCv2nirRwGU9/ltbVXKAPLs/g2dvD3zZ
- G2P+sA38umCJlLFEWcmvwqFedLpHSwDTctqbng4JwT8zVdOQQjFNMEU7eae4iMQ4yjKC
- endw==
+ bh=Hgo9mtmVYGIPJzeu1XSxfSZQOh0K4+RP9mnvcnoF7Yg=;
+ b=pnxGCMUaKRgPmdAcFei96uckWlyVS8romMAfNMOlvwkICwtnySaHKh+qmNhETQmXB2
+ D+DEWMeD8tYZ0dsA93VSMbHyXj0yTqtE6fI+rLr6Fy+yUoH5UNZwyYJx9k76PBOObedQ
+ JdNQ/ZkTfMMdA5VgA2XukmoVSxyMcxqHisF1GZzrUqxYSfOJJ7qH2zuIJL5y8VPIVIWc
+ SPizq0CFQSlm5nnwa9HXltCvZNJMbPCJ20u27rxziP3LvnLcmEh5dSXX9pqsZoHEN622
+ UnulNJcYJLZlYatnP8L7wYFyE8Fmyb9juHu/+b9Ra2rtgSkZGlxhFNJxyKdNCeDPqz/k
+ hopQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUdCrD3reQ+wfYYgL5CpbdElVJWgXUoHA7dT6OJ2DrEWXbn+AGAKyCoLKS0F19ozO9KLYg3tsAAiM5I8yyBTR7w8JVU1dw=
-X-Gm-Message-State: AOJu0YxePTB35xj6XF3L3N1wpWCtC2t6J9VAbL4XCUwEAeZlopbJ2GaE
- 8tKJyia4Wa0IcnBwadFQ8j0iVrwebQnzSrUaNry46LbaMDEVV7go9QpijZYqhoLvu/HtOFHaOo3
- 0
-X-Google-Smtp-Source: AGHT+IF+5Kxbh2F1bE7iBOwz5yag46Zs/kg5AbZHNkIIYXyBGBwHTLGNABHAK4sWG8kER8CgA0tzCg==
-X-Received: by 2002:a62:61c3:0:b0:6ee:1c9d:b471 with SMTP id
- v186-20020a6261c3000000b006ee1c9db471mr10201930pfb.25.1714401989733; 
- Mon, 29 Apr 2024 07:46:29 -0700 (PDT)
+ AJvYcCWO6YfzpCgcU9tygT+omQPqS3TVS2p8atTUFs/zoVxnn/KkkNxnAfZohhFmHBc7ZcuAXZ4A4Ya9WWRhybwDRCQaRU6w2HI=
+X-Gm-Message-State: AOJu0YwmN0qoAhvq+h/tPAhEi9LDXGbN9A8akZPtAsXORqU7ZGTPRpo/
+ kuShWWt1Hf83iO3EvNKj8sQJ12ASKuD8IFHGDBRzCZoP/aqS+dEDr+0YVthwa04kQ/jDRbXwGJ2
+ 5
+X-Google-Smtp-Source: AGHT+IGHKOCk8GJicTIZzQCpvyTQO3NskOpaR/gtgITOVeuccQZQP+CaHSis9GmHRYgCtoaKSbfSIQ==
+X-Received: by 2002:a05:6a21:3e04:b0:1ac:3b6e:3e4a with SMTP id
+ bk4-20020a056a213e0400b001ac3b6e3e4amr11909474pzc.9.1714402083086; 
+ Mon, 29 Apr 2024 07:48:03 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- fe12-20020a056a002f0c00b006ea918dab9csm19312963pfb.157.2024.04.29.07.46.29
+ bn9-20020a056a00324900b006eceb4cb828sm19357126pfb.180.2024.04.29.07.48.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Apr 2024 07:46:29 -0700 (PDT)
-Message-ID: <a1219547-2d36-4f3b-b558-6da5189366d4@linaro.org>
-Date: Mon, 29 Apr 2024 07:46:27 -0700
+ Mon, 29 Apr 2024 07:48:02 -0700 (PDT)
+Message-ID: <98e9c106-ad7d-46a2-b4ba-17910e8d8cc0@linaro.org>
+Date: Mon, 29 Apr 2024 07:48:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 15/24] accel/tcg: Restrict IcountDecr and CPUTLB to TCG
@@ -69,14 +69,13 @@ To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
 Cc: Anton Johansson <anjo@rev.ng>
 References: <20240428221450.26460-1-philmd@linaro.org>
  <20240428221450.26460-16-philmd@linaro.org>
- <5f59c754-44e5-4743-a2dd-87ef8e13eadf@linaro.org>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <5f59c754-44e5-4743-a2dd-87ef8e13eadf@linaro.org>
+In-Reply-To: <20240428221450.26460-16-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,18 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/29/24 07:03, Philippe Mathieu-Daudé wrote:
-> Author: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Date:   Mon Apr 29 16:01:18 2024 +0200
+On 4/28/24 15:14, Philippe Mathieu-Daudé wrote:
+> IcountDecr union, the CPUTLB* structures and the
+> "exec/tlb-common.h" header are only required for
+> TCG.
 > 
->      accel/tcg: Restrict cpu_plugin_mem_cbs_enabled() to TCG
-> 
->      So far cpu_plugin_mem_cbs_enabled() is only called from
->      TCG, so reduce it to accel/tcg/.
-> 
->      Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   include/exec/tlb-common.h | 4 ++++
+>   include/hw/core/cpu.h     | 9 ++++++---
+>   2 files changed, 10 insertions(+), 3 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+Though you might mention can_do_io also being restricted:
+
+> @@ -346,6 +347,7 @@ typedef union IcountDecr {
+>    * @plugin_state: per-CPU plugin state
+>    */
+>   typedef struct CPUNegativeOffsetState {
+> +#ifdef CONFIG_TCG
+>       CPUTLB tlb;
+>   #ifdef CONFIG_PLUGIN
+>       /*
+> @@ -356,6 +358,7 @@ typedef struct CPUNegativeOffsetState {
+>   #endif
+>       IcountDecr icount_decr;
+>       bool can_do_io;
+> +#endif
+>   } CPUNegativeOffsetState;
+>   
+>   struct KVMState;
+
 
 r~
 
