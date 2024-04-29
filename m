@@ -2,48 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820588B5894
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 14:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8778B5892
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 14:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1QAI-0001qy-Ji; Mon, 29 Apr 2024 08:31:26 -0400
+	id 1s1QAm-0001tB-OY; Mon, 29 Apr 2024 08:31:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s1QAB-0001qP-Or; Mon, 29 Apr 2024 08:31:22 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s1QA8-0002rs-0X; Mon, 29 Apr 2024 08:31:18 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1D82262E1F;
- Mon, 29 Apr 2024 15:31:14 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9DE17C3572;
- Mon, 29 Apr 2024 15:31:10 +0300 (MSK)
-Received: (nullmailer pid 250727 invoked by uid 1000);
- Mon, 29 Apr 2024 12:31:10 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: Li Zhijian <lizhijian@fujitsu.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL v2 6/9] backends/cryptodev-builtin: Fix local_error leaks
-Date: Mon, 29 Apr 2024 15:31:10 +0300
-Message-Id: <20240429123110.250689-2-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240429123110.250689-1-mjt@tls.msk.ru>
-References: <20240429123110.250689-1-mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1QAN-0001sf-LL
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 08:31:31 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1QAJ-0002t4-Ni
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 08:31:29 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6f3f6aa1437so1133232b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 05:31:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714393886; x=1714998686; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=+Q3Tc43IPIJv5dgze7w7SFGQ7PbkQK3NILa0QzinepU=;
+ b=SRKeHpCNakcavg8VuZZqHcVNdjcNuL+Q584LI4pHMgh23hm37Gn3z2dC/jzXfVx77a
+ 6bkgovfwLiIq+qUVaKEj6vIyRarikdXMb9s+x0lIjDEchYmdQ38BH1TKp6iobUBN0OTC
+ dViIoamPDNGG3T+bVbcdgtIQog9d00d6j91UKxp0enF6ymCVtqJ1uVFj8Pec2aBYaMQn
+ j73DKLZYSqipS6I5/EbHFTjeLn24UsTOqK71/iFAInpCafS4DSC7KFwarr3RassZSuPo
+ hahP1RDHL2zCAV6Qtko5PCKFyoFXs2Y+A6mqa38d6ZEL1mRrXnd6kV7dwMLnlcobKCu0
+ t+3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714393886; x=1714998686;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+Q3Tc43IPIJv5dgze7w7SFGQ7PbkQK3NILa0QzinepU=;
+ b=tFvikcUtFxgMJVzAUmkCcjy2L68/OjCv9Mt6p2j9YrQHK5Izq+4rqlUug8YmddzWKR
+ nA00aZsrTWr+KdIgwMYqdaW0Sr+n06trMJK8cWqW68hMEZFWh9bCwQoZF5/dvCr6k+y7
+ oanldq3G0RsdewutT/avw3wKUpIW3u4axzLNlJJnun9ITHlUIZrYjShR73id/nQ9md7i
+ Ml1yDQZlSmXrwXOlaLErBTdk6I/fzUfuE3c2vk38KAFKNvbpzzBDGb29crRj+Jk2JJnD
+ kxhkEPWa9q7VH89eCxvzxOVdoL4jFNyw1N+gCaVup+zYd0Md4UzvB40Iqlq42Ord+p+W
+ LOyw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWuzhAIjg22vmRAjtYbwhyT1Vte7z/vzSufCZ7kP27Qp83U46CRydloh2YOFQUsog/VbC5NnYAlhjpKJ/dCu6WT6P9Vzs4=
+X-Gm-Message-State: AOJu0YwS4TVvKBtF6pJGd6GHDHd2aZqfSvi8xwT+tE9Pd+1LB1YqwOdi
+ JU+wTxr7yzPvrjikDfIFH53v3bI8Uou/+oAkdorbzDMSCsG254TkA3lwBAtAUE4=
+X-Google-Smtp-Source: AGHT+IGJ1FYSWhVWJ2SBcd4kC9CPFTH0Q2vXnajzNw3JyY1J9N8XC/VnnjfYagm4V9A/sA9IB6ctjw==
+X-Received: by 2002:a17:902:9693:b0:1e8:ef23:80f6 with SMTP id
+ n19-20020a170902969300b001e8ef2380f6mr9198813plp.37.1714393885830; 
+ Mon, 29 Apr 2024 05:31:25 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ h8-20020a170902704800b001e868e29fabsm20147597plt.251.2024.04.29.05.31.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Apr 2024 05:31:25 -0700 (PDT)
+Message-ID: <80f07930-e5e5-496b-ba08-6091ebe55c1e@linaro.org>
+Date: Mon, 29 Apr 2024 05:31:22 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 06/10] util/bufferiszero: Improve scalar variant
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20240424225705.929812-1-richard.henderson@linaro.org>
+ <20240424225705.929812-7-richard.henderson@linaro.org>
+ <400f20e7-3c33-4916-897a-0d6b21d572c4@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <400f20e7-3c33-4916-897a-0d6b21d572c4@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,57 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+On 4/29/24 05:18, Philippe Mathieu-Daudé wrote:
+>> +
+>> +    t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
+> 
+> Here we read #0 and #31, ...
+> 
+>> +    p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
+>> +    e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
+>> +
+>> +    /* Read 0 to 31 aligned words from the middle. */
+> 
+> ... so here is #1 to #30?
 
-It seems that this error does not need to be propagated to the upper,
-directly output the error to avoid the leaks
+Not indexes, but count.  There may be zero words remaining in the middle, etc.
 
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2283
-Fixes: 2fda101de07 ("virtio-crypto: Support asynchronous mode")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- backends/cryptodev-builtin.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index a514bbb310..940104ee55 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -23,6 +23,7 @@
- 
- #include "qemu/osdep.h"
- #include "sysemu/cryptodev.h"
-+#include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "standard-headers/linux/virtio_crypto.h"
- #include "crypto/cipher.h"
-@@ -396,8 +397,8 @@ static int cryptodev_builtin_create_session(
-     case VIRTIO_CRYPTO_HASH_CREATE_SESSION:
-     case VIRTIO_CRYPTO_MAC_CREATE_SESSION:
-     default:
--        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
--                   sess_info->op_code);
-+        error_report("Unsupported opcode :%" PRIu32 "",
-+                     sess_info->op_code);
-         return -VIRTIO_CRYPTO_NOTSUPP;
-     }
- 
-@@ -554,8 +555,8 @@ static int cryptodev_builtin_operation(
- 
-     if (op_info->session_id >= MAX_NUM_SESSIONS ||
-               builtin->sessions[op_info->session_id] == NULL) {
--        error_setg(&local_error, "Cannot find a valid session id: %" PRIu64 "",
--                   op_info->session_id);
-+        error_report("Cannot find a valid session id: %" PRIu64 "",
-+                     op_info->session_id);
-         return -VIRTIO_CRYPTO_INVSESS;
-     }
- 
--- 
-2.39.2
-
+r~
 
