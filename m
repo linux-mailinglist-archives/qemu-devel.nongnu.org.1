@@ -2,61 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F8E8B5A5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 15:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C488B5AD8
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1RIF-0005ee-L9; Mon, 29 Apr 2024 09:43:43 -0400
+	id 1s1Rab-0002Bf-1O; Mon, 29 Apr 2024 10:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1s1RI8-0005dg-Jl
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:43:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1RaZ-0002BX-6a
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:02:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1s1RI6-0001fI-Ho
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 09:43:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1RaW-0005ZH-Vv
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:02:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714398212;
+ s=mimecast20190719; t=1714399355;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VHWhO8Uw96rfOIbKluUZY5+pGgRzV7sZviOKB2lhoeA=;
- b=SVUy1Y6WIrEigcJcFpXQm2D6NtvUfV+nKlF1oXaIhNtaSOHLZzXwWQKD7wQLe1UfL2IFRA
- cGzbw1dpfA1tYDemLPKB1rLeKyYPH9LwUVbdhLneOqYI/eShmCrTdQcTSS5FpFIO41jQ3O
- wair6aDb9dn90yHFOxY+A5as2ihjUN8=
+ bh=WhHwTMeuLgn8YWXUwPdpVnY0QjCwRoSzG6U+J1nWd9Y=;
+ b=ElWXRyilGxMyWO8uIiOT4ciJfybk0xJcDvhbANwDAp/23RDqFi1/A62U2cpmYtGSgYHAYH
+ H8LGmCOZdQeg5vNSgsId5QBWi/YAJXVWUPJKG/yh+v9ugOh2ApgEwwFfFLms/A1IlgfRls
+ 56Nd2BiRtW4y/vlmQit/lJqdPVlvi5Y=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-LjbXWdZ-NwuDpLOPaomNfA-1; Mon, 29 Apr 2024 09:43:27 -0400
-X-MC-Unique: LjbXWdZ-NwuDpLOPaomNfA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-161-llG11ZM7NLCgveYwLFgBQA-1; Mon, 29 Apr 2024 10:02:32 -0400
+X-MC-Unique: llG11ZM7NLCgveYwLFgBQA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B88A8FDD22;
- Mon, 29 Apr 2024 13:43:26 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.47])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B58F140C6CB1;
- Mon, 29 Apr 2024 13:43:25 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <rth@twiddle.net>, Jeuk Kim <jeuk20.kim@samsung.com>,
- qemu-block@nongnu.org, Zheyu Ma <zheyuma97@gmail.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 1/1] hw/ufs: Fix buffer overflow bug
-Date: Mon, 29 Apr 2024 09:43:21 -0400
-Message-ID: <20240429134321.321982-2-stefanha@redhat.com>
-In-Reply-To: <20240429134321.321982-1-stefanha@redhat.com>
-References: <20240429134321.321982-1-stefanha@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADA7C8FDD28;
+ Mon, 29 Apr 2024 14:02:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5B2A31C060D1;
+ Mon, 29 Apr 2024 14:02:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7AEDA21E66E5; Mon, 29 Apr 2024 16:02:16 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  qemu-devel@nongnu.org,  Peter Maydell
+ <peter.maydell@linaro.org>
+Subject: Re: [PATCH] mc146818rtc: add a way to generate RTC interrupts via QMP
+In-Reply-To: <40bee8cc-6cad-4c5b-a319-49dcbb2b82f1@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 29 Apr 2024 15:39:57
+ +0200")
+References: <20240425133745.464091-1-d-tatianin@yandex-team.ru>
+ <87v844y0ul.fsf@pond.sub.org>
+ <11c78645-e87b-4a43-8191-a73540c364a9@linaro.org>
+ <87plu8ieut.fsf@pond.sub.org>
+ <40bee8cc-6cad-4c5b-a319-49dcbb2b82f1@linaro.org>
+Date: Mon, 29 Apr 2024 16:02:16 +0200
+Message-ID: <87zftcfes7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -80,63 +89,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jeuk Kim <jeuk20.kim@samsung.com>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-It fixes the buffer overflow vulnerability in the ufs device.
-The bug was detected by sanitizers.
+> (+Peter who has more experience on such design).
+>
+> On 29/4/24 13:32, Markus Armbruster wrote:
+>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-You can reproduce it by:
+[...]
 
-cat << EOF |\
-qemu-system-x86_64 \
--display none -machine accel=qtest -m 512M -M q35 -nodefaults -drive \
-file=null-co://,if=none,id=disk0 -device ufs,id=ufs_bus -device \
-ufs-lu,drive=disk0,bus=ufs_bus -qtest stdio
-outl 0xcf8 0x80000810
-outl 0xcfc 0xe0000000
-outl 0xcf8 0x80000804
-outw 0xcfc 0x06
-write 0xe0000058 0x1 0xa7
-write 0xa 0x1 0x50
-EOF
+>>> IMO to avoid any future ambiguity (in heterogeneous machines), this
+>>> command must take a QOM device path (or a list of) and only notify
+>>> those.
+>>=20
+>> Let's compare:
+>>=20
+>> =E2=80=A2 With QOM path:
+>>=20
+>>    =C2=B7 You need to know the machine's RTC device(s).
+>>=20
+>>      Unfortunately, this is bothersome, as the QOM path is not stable.
+>
+> But we'll need more of that with dynamic machines...
 
-Resolves: #2299
-Fixes: 329f16624499 ("hw/ufs: Support for Query Transfer Requests")
-Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <f2c8aeb1afefcda92054c448b21fc59cdd99db30.1714360640.git.jeuk20.kim@samsung.com>
----
- hw/ufs/ufs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I view /machine/unattached a technical debt (see "hate" right below).
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index eccdb852a0..bac78a32bb 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -126,6 +126,10 @@ static MemTxResult ufs_dma_read_req_upiu(UfsRequest *req)
-     copy_size = sizeof(UtpUpiuHeader) + UFS_TRANSACTION_SPECIFIC_FIELD_SIZE +
-                 data_segment_length;
- 
-+    if (copy_size > sizeof(req->req_upiu)) {
-+        copy_size = sizeof(req->req_upiu);
-+    }
-+
-     ret = ufs_addr_read(u, req_upiu_base_addr, &req->req_upiu, copy_size);
-     if (ret) {
-         trace_ufs_err_dma_read_req_upiu(req->slot, req_upiu_base_addr);
-@@ -225,6 +229,10 @@ static MemTxResult ufs_dma_write_rsp_upiu(UfsRequest *req)
-         copy_size = rsp_upiu_byte_len;
-     }
- 
-+    if (copy_size > sizeof(req->rsp_upiu)) {
-+        copy_size = sizeof(req->rsp_upiu);
-+    }
-+
-     ret = ufs_addr_write(u, rsp_upiu_base_addr, &req->rsp_upiu, copy_size);
-     if (ret) {
-         trace_ufs_err_dma_write_rsp_upiu(req->slot, rsp_upiu_base_addr);
--- 
-2.44.0
+It saved us the trouble of coming up with sensible names for onboard
+devices.
+
+And now the interest is about to be due.
+
+>>      For Q35, it's generally "/machine/unattached/device[N]/rtc", but N
+>>      varies with configuration (TCG N=3D2, KVM N=3D3 for me), and it mig=
+ht
+>>      vary with machine type version.  That's because the machine code
+>>      creates ICH9-LPC without a proper name.  We do that a lot.  I hate
+>>      it.
+>>=20
+>>      Likewise for i440FX with PIIX3 instead of ICH9-LPC.
+>>=20
+>>      For isapc, it's /machine/unattached/device[3].  I suspect the 3
+>>      isn't reliable there, either.
+>>=20
+>>      microvm doesn't seem to have an RTC by default.
+
+[...]
 
 
