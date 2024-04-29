@@ -2,66 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610658B52B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 09:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC018B52C0
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 09:59:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1LsK-0005XC-Pj; Mon, 29 Apr 2024 03:56:36 -0400
+	id 1s1LuK-0000B9-Ox; Mon, 29 Apr 2024 03:58:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1LsG-0005WW-Nc
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:56:32 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1s1Lu7-000088-Qj; Mon, 29 Apr 2024 03:58:29 -0400
+Received: from out30-124.freemail.mail.aliyun.com ([115.124.30.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1Lrz-0003a0-8Y
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 03:56:32 -0400
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id CF8CD60B62;
- Mon, 29 Apr 2024 10:56:10 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b739::1:30])
- by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id xtKJiB1IWmI0-732509Dj; Mon, 29 Apr 2024 10:56:10 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714377370;
- bh=SNZzUF0bu4hzDa+ni7CLqKzmnd9UtuMi7T3ehpIN1E4=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=IhQS2yw/62ENmP5FBnofu+CNbxzKTTWwvrpIFrb+oeI9lqP93mTrwoJ/XTfpyfQ82
- 1TrwhWtwgktKZhK7qjPkXf33NH2wUQzkdLkUFzymCOYVgMiw0VlBRqsOa1yVvguDYQ
- iID/tSIpH4mpRTAtzfzUcIDNvuNrqk8PxzILTDcw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: peterx@redhat.com,
-	farosas@suse.de
-Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v4 4/4] qapi: introduce exit-on-error parameter for
- migrate-incoming
-Date: Mon, 29 Apr 2024 10:55:41 +0300
-Message-Id: <20240429075541.1959050-5-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240429075541.1959050-1-vsementsov@yandex-team.ru>
-References: <20240429075541.1959050-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1s1Lu1-0003x6-43; Mon, 29 Apr 2024 03:58:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1714377487; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=Xr4CT/JJOrRMQTQ4CUpXKgOjqdpcKi4ABUX4eRScyXE=;
+ b=JH1DbndWjrK5z4gnn8zFD9jwrRCvbdUZpvnT6BAZUCibVwpTZTjdCCV1fLEse+nDQuoKl/umCtuykVxWwgSVq1Buqkqlaifmo2XKVLKWkkD1NXpE3RFJL3RXidC18RsLR0PaQd+ImA2+858gwEdY7onI4nNymPUPjv46M+kWOb4=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033037067112;
+ MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=11; SR=0;
+ TI=SMTPD_---0W5TTMML_1714377485; 
+Received: from 30.21.185.170(mailfrom:eric.huang@linux.alibaba.com
+ fp:SMTPD_---0W5TTMML_1714377485) by smtp.aliyun-inc.com;
+ Mon, 29 Apr 2024 15:58:06 +0800
+Message-ID: <c9fb4c6e-9eae-4302-82cf-b02eacce6d9d@linux.alibaba.com>
+Date: Mon, 29 Apr 2024 15:58:04 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] target/riscv: Implement dynamic establishment of
+ custom decoder
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ zhiwei_liu@linux.alibaba.com, dbarboza@ventanamicro.com,
+ liwei1518@gmail.com, bin.meng@windriver.com, alistair.francis@wdc.com,
+ palmer@dabbelt.com, Christoph Muellner <christoph.muellner@vrull.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240314092158.65866-1-eric.huang@linux.alibaba.com>
+ <CAKmqyKP+=Q4oup1mpWskykfgE3HZRJpaVX_JTk=0=jU_TkgsUQ@mail.gmail.com>
+From: Huang Tao <eric.huang@linux.alibaba.com>
+In-Reply-To: <CAKmqyKP+=Q4oup1mpWskykfgE3HZRJpaVX_JTk=0=jU_TkgsUQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.124;
+ envelope-from=eric.huang@linux.alibaba.com;
+ helo=out30-124.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -73,187 +72,205 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we do set MIGRATION_FAILED state, but don't give a chance to
-orchestrator to query migration state and get the error.
 
-Let's provide a possibility for QMP-based orchestrators to get an error
-like with outgoing migration.
+On 2024/4/29 11:51, Alistair Francis wrote:
+> On Thu, Mar 14, 2024 at 7:23 PM Huang Tao <eric.huang@linux.alibaba.com> wrote:
+>> In this patch, we modify the decoder to be a freely composable data
+>> structure instead of a hardcoded one. It can be dynamically builded up
+>> according to the extensions.
+>> This approach has several benefits:
+>> 1. Provides support for heterogeneous cpu architectures. As we add decoder in
+>>     RISCVCPU, each cpu can have their own decoder, and the decoders can be
+>>     different due to cpu's features.
+>> 2. Improve the decoding efficiency. We run the guard_func to see if the decoder
+>>     can be added to the dynamic_decoder when building up the decoder. Therefore,
+>>     there is no need to run the guard_func when decoding each instruction. It can
+>>     improve the decoding efficiency
+>> 3. For vendor or dynamic cpus, it allows them to customize their own decoder
+>>     functions to improve decoding efficiency, especially when vendor-defined
+>>     instruction sets increase. Because of dynamic building up, it can skip the other
+>>     decoder guard functions when decoding.
+>> 4. Pre patch for allowing adding a vendor decoder before decode_insn32() with minimal
+>>     overhead for users that don't need this particular vendor decoder.
+>>
+>> Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
+>> Suggested-by: Christoph Muellner <christoph.muellner@vrull.eu>
+>> Co-authored-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Do you mind rebasing this on
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next?
+>
+> Alistair
 
-For hmp_migrate_incoming(), let's enable the new behavior: HMP is not
-and ABI, it's mostly intended to use by developer and it makes sense
-not to stop the process.
+I will rebase this patch on the latest riscv-to-apply.next.
 
-For x-exit-preconfig, let's keep the old behavior:
- - it's called from init(), so here we want to keep current behavior by
-   default
- - it does exit on error by itself as well
-So, if we want to change the behavior of x-exit-preconfig, it should be
-another patch.
+Thanks
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Markus Armbruster <armbru@redhat.com>
----
- migration/migration-hmp-cmds.c |  2 +-
- migration/migration.c          | 36 ++++++++++++++++++++++++++++------
- migration/migration.h          |  3 +++
- qapi/migration.json            |  7 ++++++-
- system/vl.c                    |  3 ++-
- 5 files changed, 42 insertions(+), 9 deletions(-)
-
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 7e96ae6ffd..23181bbee1 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -466,7 +466,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate_incoming(NULL, true, caps, &err);
-+    qmp_migrate_incoming(NULL, true, caps, true, false, &err);
-     qapi_free_MigrationChannelList(caps);
- 
- end:
-diff --git a/migration/migration.c b/migration/migration.c
-index 0b15f7ccf4..5cfe420a76 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -72,6 +72,8 @@
- #define NOTIFIER_ELEM_INIT(array, elem)    \
-     [elem] = NOTIFIER_WITH_RETURN_LIST_INITIALIZER((array)[elem])
- 
-+#define INMIGRATE_DEFAULT_EXIT_ON_ERROR true
-+
- static NotifierWithReturnList migration_state_notifiers[] = {
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_NORMAL),
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_REBOOT),
-@@ -234,6 +236,8 @@ void migration_object_init(void)
-     qemu_cond_init(&current_incoming->page_request_cond);
-     current_incoming->page_requested = g_tree_new(page_request_addr_cmp);
- 
-+    current_incoming->exit_on_error = INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     migration_object_check(current_migration, &error_fatal);
- 
-     blk_mig_init();
-@@ -797,13 +801,18 @@ fail:
-                       MIGRATION_STATUS_FAILED);
-     migration_incoming_state_destroy();
- 
--    if (migrate_has_error(s)) {
--        WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
--            error_report_err(s->error);
-+    if (mis->exit_on_error) {
-+        if (migrate_has_error(s)) {
-+            WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
-+                error_report_err(s->error);
-+            }
-         }
-+        error_report_err(local_err);
-+        exit(EXIT_FAILURE);
-+    } else {
-+        migrate_set_error(s, local_err);
-+        error_free(local_err);
-     }
--    error_report_err(local_err);
--    exit(EXIT_FAILURE);
- }
- 
- /**
-@@ -1312,6 +1321,15 @@ static void fill_destination_migration_info(MigrationInfo *info)
-         break;
-     }
-     info->status = mis->state;
-+
-+    if (!info->error_desc) {
-+        MigrationState *s = migrate_get_current();
-+        QEMU_LOCK_GUARD(&s->error_mutex);
-+
-+        if (s->error) {
-+            info->error_desc = g_strdup(error_get_pretty(s->error));
-+        }
-+    }
- }
- 
- MigrationInfo *qmp_query_migrate(Error **errp)
-@@ -1795,10 +1813,13 @@ void migrate_del_blocker(Error **reasonp)
- }
- 
- void qmp_migrate_incoming(const char *uri, bool has_channels,
--                          MigrationChannelList *channels, Error **errp)
-+                          MigrationChannelList *channels,
-+                          bool has_exit_on_error, bool exit_on_error,
-+                          Error **errp)
- {
-     Error *local_err = NULL;
-     static bool once = true;
-+    MigrationIncomingState *mis = migration_incoming_get_current();
- 
-     if (!once) {
-         error_setg(errp, "The incoming migration has already been started");
-@@ -1813,6 +1834,9 @@ void qmp_migrate_incoming(const char *uri, bool has_channels,
-         return;
-     }
- 
-+    mis->exit_on_error =
-+        has_exit_on_error ? exit_on_error : INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     qemu_start_incoming_migration(uri, has_channels, channels, &local_err);
- 
-     if (local_err) {
-diff --git a/migration/migration.h b/migration/migration.h
-index 8045e39c26..95995a818e 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -227,6 +227,9 @@ struct MigrationIncomingState {
-      * is needed as this field is updated serially.
-      */
-     unsigned int switchover_ack_pending_num;
-+
-+    /* Do exit on incoming migration failure */
-+    bool exit_on_error;
- };
- 
- MigrationIncomingState *migration_incoming_get_current(void);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8c65b90328..9feed413b5 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1837,6 +1837,10 @@
- # @channels: list of migration stream channels with each stream in the
- #     list connected to a destination interface endpoint.
- #
-+# @exit-on-error: Exit on incoming migration failure.  Default true.
-+#     When set to false, the failure triggers a MIGRATION event, and
-+#     error details could be retrieved with query-migrate.  (since 9.1)
-+#
- # Since: 2.3
- #
- # Notes:
-@@ -1889,7 +1893,8 @@
- ##
- { 'command': 'migrate-incoming',
-              'data': {'*uri': 'str',
--                      '*channels': [ 'MigrationChannel' ] } }
-+                      '*channels': [ 'MigrationChannel' ],
-+                      '*exit-on-error': 'bool' } }
- 
- ##
- # @xen-save-devices-state:
-diff --git a/system/vl.c b/system/vl.c
-index 7756eac81e..79cd498395 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2723,7 +2723,8 @@ void qmp_x_exit_preconfig(Error **errp)
-     if (incoming) {
-         Error *local_err = NULL;
-         if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, false, NULL, &local_err);
-+            qmp_migrate_incoming(incoming, false, NULL, true, true,
-+                                 &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
--- 
-2.34.1
-
+>> ---
+>> Changes in v4:
+>> - fix typo
+>> - rename function
+>> - add 'if tcg_enable()'
+>> - move function to tcg-cpu.c and declarations to tcg-cpu.h
+>>
+>> Changes in v3:
+>> - use GPtrArray to save decode function poionter list.
+>> ---
+>>   target/riscv/cpu.c         |  1 +
+>>   target/riscv/cpu.h         |  1 +
+>>   target/riscv/tcg/tcg-cpu.c | 15 +++++++++++++++
+>>   target/riscv/tcg/tcg-cpu.h | 15 +++++++++++++++
+>>   target/riscv/translate.c   | 31 +++++++++++++++----------------
+>>   5 files changed, 47 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index c160b9216b..17070b82a7 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1132,6 +1132,7 @@ void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>>               error_propagate(errp, local_err);
+>>               return;
+>>           }
+>> +        riscv_tcg_cpu_finalize_dynamic_decoder(cpu);
+>>       } else if (kvm_enabled()) {
+>>           riscv_kvm_cpu_finalize_features(cpu, &local_err);
+>>           if (local_err != NULL) {
+>> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+>> index 3b1a02b944..48e67410e1 100644
+>> --- a/target/riscv/cpu.h
+>> +++ b/target/riscv/cpu.h
+>> @@ -457,6 +457,7 @@ struct ArchCPU {
+>>       uint32_t pmu_avail_ctrs;
+>>       /* Mapping of events to counters */
+>>       GHashTable *pmu_event_ctr_map;
+>> +    const GPtrArray *decoders;
+>>   };
+>>
+>>   /**
+>> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+>> index ab6db817db..c9ab92ea2f 100644
+>> --- a/target/riscv/tcg/tcg-cpu.c
+>> +++ b/target/riscv/tcg/tcg-cpu.c
+>> @@ -853,6 +853,21 @@ void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
+>>       }
+>>   }
+>>
+>> +void riscv_tcg_cpu_finalize_dynamic_decoder(RISCVCPU *cpu)
+>> +{
+>> +    GPtrArray *dynamic_decoders;
+>> +    dynamic_decoders = g_ptr_array_sized_new(decoder_table_size);
+>> +    for (size_t i = 0; i < decoder_table_size; ++i) {
+>> +        if (decoder_table[i].guard_func &&
+>> +            decoder_table[i].guard_func(&cpu->cfg)) {
+>> +            g_ptr_array_add(dynamic_decoders,
+>> +                            (gpointer)decoder_table[i].riscv_cpu_decode_fn);
+>> +        }
+>> +    }
+>> +
+>> +    cpu->decoders = dynamic_decoders;
+>> +}
+>> +
+>>   bool riscv_cpu_tcg_compatible(RISCVCPU *cpu)
+>>   {
+>>       return object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST) == NULL;
+>> diff --git a/target/riscv/tcg/tcg-cpu.h b/target/riscv/tcg/tcg-cpu.h
+>> index f7b32417f8..ce94253fe4 100644
+>> --- a/target/riscv/tcg/tcg-cpu.h
+>> +++ b/target/riscv/tcg/tcg-cpu.h
+>> @@ -26,4 +26,19 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
+>>   void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+>>   bool riscv_cpu_tcg_compatible(RISCVCPU *cpu);
+>>
+>> +struct DisasContext;
+>> +struct RISCVCPUConfig;
+>> +typedef struct RISCVDecoder {
+>> +    bool (*guard_func)(const struct RISCVCPUConfig *);
+>> +    bool (*riscv_cpu_decode_fn)(struct DisasContext *, uint32_t);
+>> +} RISCVDecoder;
+>> +
+>> +typedef bool (*riscv_cpu_decode_fn)(struct DisasContext *, uint32_t);
+>> +
+>> +extern const size_t decoder_table_size;
+>> +
+>> +extern const RISCVDecoder decoder_table[];
+>> +
+>> +void riscv_tcg_cpu_finalize_dynamic_decoder(RISCVCPU *cpu);
+>> +
+>>   #endif
+>> diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+>> index ea5d52b2ef..bce16d5054 100644
+>> --- a/target/riscv/translate.c
+>> +++ b/target/riscv/translate.c
+>> @@ -37,6 +37,8 @@
+>>   #include "exec/helper-info.c.inc"
+>>   #undef  HELPER_H
+>>
+>> +#include "tcg/tcg-cpu.h"
+>> +
+>>   /* global register indices */
+>>   static TCGv cpu_gpr[32], cpu_gprh[32], cpu_pc, cpu_vl, cpu_vstart;
+>>   static TCGv_i64 cpu_fpr[32]; /* assume F and D extensions */
+>> @@ -117,6 +119,7 @@ typedef struct DisasContext {
+>>       bool frm_valid;
+>>       /* TCG of the current insn_start */
+>>       TCGOp *insn_start;
+>> +    const GPtrArray *decoders;
+>>   } DisasContext;
+>>
+>>   static inline bool has_ext(DisasContext *ctx, uint32_t ext)
+>> @@ -1120,21 +1123,16 @@ static inline int insn_len(uint16_t first_word)
+>>       return (first_word & 3) == 3 ? 4 : 2;
+>>   }
+>>
+>> +const RISCVDecoder decoder_table[] = {
+>> +    { always_true_p, decode_insn32 },
+>> +    { has_xthead_p, decode_xthead},
+>> +    { has_XVentanaCondOps_p, decode_XVentanaCodeOps},
+>> +};
+>> +
+>> +const size_t decoder_table_size = ARRAY_SIZE(decoder_table);
+>> +
+>>   static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+>>   {
+>> -    /*
+>> -     * A table with predicate (i.e., guard) functions and decoder functions
+>> -     * that are tested in-order until a decoder matches onto the opcode.
+>> -     */
+>> -    static const struct {
+>> -        bool (*guard_func)(const RISCVCPUConfig *);
+>> -        bool (*decode_func)(DisasContext *, uint32_t);
+>> -    } decoders[] = {
+>> -        { always_true_p,  decode_insn32 },
+>> -        { has_xthead_p, decode_xthead },
+>> -        { has_XVentanaCondOps_p,  decode_XVentanaCodeOps },
+>> -    };
+>> -
+>>       ctx->virt_inst_excp = false;
+>>       ctx->cur_insn_len = insn_len(opcode);
+>>       /* Check for compressed insn */
+>> @@ -1155,9 +1153,9 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
+>>                                                ctx->base.pc_next + 2));
+>>           ctx->opcode = opcode32;
+>>
+>> -        for (size_t i = 0; i < ARRAY_SIZE(decoders); ++i) {
+>> -            if (decoders[i].guard_func(ctx->cfg_ptr) &&
+>> -                decoders[i].decode_func(ctx, opcode32)) {
+>> +        for (guint i = 0; i < ctx->decoders->len; ++i) {
+>> +            riscv_cpu_decode_fn func = g_ptr_array_index(ctx->decoders, i);
+>> +            if (func(ctx, opcode32)) {
+>>                   return;
+>>               }
+>>           }
+>> @@ -1202,6 +1200,7 @@ static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+>>       ctx->itrigger = FIELD_EX32(tb_flags, TB_FLAGS, ITRIGGER);
+>>       ctx->zero = tcg_constant_tl(0);
+>>       ctx->virt_inst_excp = false;
+>> +    ctx->decoders = cpu->decoders;
+>>   }
+>>
+>>   static void riscv_tr_tb_start(DisasContextBase *db, CPUState *cpu)
+>> --
+>> 2.41.0
+>>
+>>
 
