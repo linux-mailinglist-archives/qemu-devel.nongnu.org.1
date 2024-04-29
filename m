@@ -2,65 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7137C8B4EDB
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 02:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF3F8B4EDC
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 02:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1Ebo-0003aK-OS; Sun, 28 Apr 2024 20:11:04 -0400
+	id 1s1Eey-00052Q-7N; Sun, 28 Apr 2024 20:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <SRS0=/G2x=MC=ens-lyon.org=samuel.thibault@bounce.ens-lyon.org>)
- id 1s1Ebm-0003a5-TP
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 20:11:02 -0400
-Received: from domu-toccata.ens-lyon.fr ([140.77.166.138]
- helo=sonata.ens-lyon.org)
+ (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
+ id 1s1Eem-000527-CT
+ for qemu-devel@nongnu.org; Sun, 28 Apr 2024 20:14:08 -0400
+Received: from fencepost.gnu.org ([2001:470:142:3::e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <SRS0=/G2x=MC=ens-lyon.org=samuel.thibault@bounce.ens-lyon.org>)
- id 1s1Ebb-0007SD-Cn
- for qemu-devel@nongnu.org; Sun, 28 Apr 2024 20:11:02 -0400
-Received: from localhost (localhost [127.0.0.1])
- by sonata.ens-lyon.org (Postfix) with ESMTP id 29421A0332;
- Mon, 29 Apr 2024 02:10:47 +0200 (CEST)
-Received: from sonata.ens-lyon.org ([127.0.0.1])
- by localhost (sonata.ens-lyon.org [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id EkMLusw6JTdX; Mon, 29 Apr 2024 02:10:47 +0200 (CEST)
-Received: from begin (aamiens-653-1-111-57.w83-192.abo.wanadoo.fr
- [83.192.234.57])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by sonata.ens-lyon.org (Postfix) with ESMTPSA id 9E78AA0337;
- Mon, 29 Apr 2024 02:10:46 +0200 (CEST)
-Received: from samy by begin with local (Exim 4.97)
- (envelope-from <samuel.thibault@ens-lyon.org>)
- id 1s1EbV-000000096po-2cy3; Mon, 29 Apr 2024 02:10:45 +0200
-From: Samuel Thibault <samuel.thibault@ens-lyon.org>
-To: qemu-devel@nongnu.org,
-	peter.maydell@linaro.org
-Cc: Nicholas Ngai <nicholas@ngai.me>, stefanha@redhat.com,
- jan.kiszka@siemens.com, thomas.weissschuh@linutronix.de,
- Samuel Thibault <samuel.thibault@ens-lyon.org>,
- Breno Leitao <leitao@debian.org>
-Subject: [PULL 1/1] net/slirp: Use newer slirp_*_hostxfwd API
-Date: Mon, 29 Apr 2024 02:10:42 +0200
-Message-ID: <20240429001042.2171151-2-samuel.thibault@ens-lyon.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240429001042.2171151-1-samuel.thibault@ens-lyon.org>
-References: <20240429001042.2171151-1-samuel.thibault@ens-lyon.org>
+ (Exim 4.90_1) (envelope-from <samuel.thibault@gnu.org>)
+ id 1s1Eel-0007gv-4E; Sun, 28 Apr 2024 20:14:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
+ s=fencepost-gnu-org; h=In-Reply-To:MIME-Version:References:Subject:To:From:
+ Date; bh=AS4t2jnU8wCn26mvQi3JriGTqPEM+C1Gay0FpUMC0f8=; b=eeSl4SlEqc+HgMxhXGzl
+ LpKg0eNfdv3Zc1u6tFF5/lvnbdh+xhSVM5VeXV8bSYOXl5NbCB+yePRupw83QN+Ek4EF1z580nZnj
+ 4KPJFak38uxD/yfov7slfYpAJJ9z5jQ7mC7JI0FpvF03MUCn7UtbUZC/FiSp1zSWKYGjpBdKqqKn/
+ HVP3ln/de/nlzUzFa35BTWLrsq/YrdbS3hAYmPIIsNkxNtRhYZ/p5l3AwAvo/ZPS9Nwvcp/hDudL/
+ +pxX8n2nsdUyjgYzfhNLJIZCXkpwEzT5KKRPvFVRVX8h3Z9YIhQfnMkIIcDtFsAHlaFt2pygZBo/t
+ sj1iyilhAkcDBg==;
+Date: Mon, 29 Apr 2024 02:14:04 +0200
+From: Samuel Thibault <samuel.thibault@gnu.org>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Nicholas Ngai <nicholas@ngai.me>, qemu-devel@nongnu.org,
+ Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH] net/slirp: Use newer slirp_*_hostxfwd API
+Message-ID: <20240429001404.faq5jr4rbshilemi@begin>
+References: <20210925214820.18078-1-nicholas@ngai.me>
+ <8143f015-056c-6362-2d3e-7fed66aaffe7@ngai.me>
+ <20211005235613.kuwbfixvp74sv5en@begin>
+ <807f262d-bc28-865f-dda5-2e503f5ebf31@ngai.me>
+ <20240222111726-198aca86-5ac7-4177-a7d7-3aeb1808add1@linutronix.de>
+ <20240428172303.wfmxpslfkjuqucro@begin>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=140.77.166.138;
- envelope-from=SRS0=/G2x=MC=ens-lyon.org=samuel.thibault@bounce.ens-lyon.org;
- helo=sonata.ens-lyon.org
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
-X-Spam_action: no action
+In-Reply-To: <20240428172303.wfmxpslfkjuqucro@begin>
+Organization: I am not organized
+User-Agent: NeoMutt/20170609 (1.8.3)
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,151 +59,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Ngai <nicholas@ngai.me>
+Samuel Thibault, le dim. 28 avril 2024 19:23:03 +0200, a ecrit:
+> Thomas Weißschuh, le jeu. 22 févr. 2024 11:44:13 +0100, a ecrit:
+> > On Tue, Mar 22, 2022 at 06:58:36PM -0700, Nicholas Ngai wrote:
+> > > Pinging this. It’s a bit old, though the patch still applies cleanly to
+> > > master as far as I can tell.
+> > > 
+> > > Link to patchew is
+> > > https://patchew.org/QEMU/20210925214820.18078-1-nicholas@ngai.me/.
+> > > 
+> > > I’d love to get https://gitlab.com/qemu-project/qemu/-/issues/347 addressed
+> > > once libslirp makes a release with added Unix-to-TCP support in the hostxfwd
+> > > API, but this patch is a requirement for that first.
+> > 
+> > I'm also interested in this PATCH and a resolution to issue 347.
+> > 
+> > FYI your patch triggers checkpatch warnings, see [0].
+> 
+> Indeed, the code should be fixed to use qemu_strtoi, like already done
+> elsewhere in net/slirp.c
+> 
+> > Maybe you can resend the patch with the review tags and the checkpatch
+> > warnings cleaned up.
+> > 
+> > Also it would be useful to know how the patch changes the version
+> > requirements of the libslirp dependency.
+> > (The version requirement should also be enforced in meson.build)
+> > Also the commit in subprojects/slirp.wrap should be high enough,
+> > which seems to already be the case however.
+> > 
+> > It seems it requires libslirp 4.6.0 from 2021-06-14, which is only
+> > available from Debian 12 or Ubuntu 22.04 and no release of RHEL.
+> 
+> The code can easily be made optional with SLIRP_CHECK_VERSION(4,5,0)
+> 
+> (the hostxfwd interface was added in 4.5.0, not 4.6.0 ; the unix socket
+> part was added in 4.7.0)
 
-libslirp provides a newer slirp_*_hostxfwd API meant for
-address-agnostic forwarding instead of the is_udp parameter which is
-limited to just TCP/UDP.
+I went ahead and just fixed the code, by sticking more to the original
+code, and use a #if between the hostxfwd and hostfwd APIs. I sent the
+corresponding pull request for inclusion.
 
-This paves the way for IPv6 and Unix socket support.
+Nicholas, you'll be able to rebase your unix work on top of it. Be sure
+however to update the documentation of the options, we won't commit it
+unless it is documented (hint: anything that is not documented does
+*not* exist for users)
 
-Signed-off-by: Nicholas Ngai <nicholas@ngai.me>
-Signed-off-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Tested-by: Breno Leitao <leitao@debian.org>
-Message-Id: <20210925214820.18078-1-nicholas@ngai.me>
----
- net/slirp.c | 62 +++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 48 insertions(+), 14 deletions(-)
+There's also the IPv6 support which some people were having a look at,
+and which'd need to be revived...
 
-diff --git a/net/slirp.c b/net/slirp.c
-index 25b49c4526..eb9a456ed4 100644
---- a/net/slirp.c
-+++ b/net/slirp.c
-@@ -718,7 +718,12 @@ static SlirpState *slirp_lookup(Monitor *mon, const char *id)
- 
- void hmp_hostfwd_remove(Monitor *mon, const QDict *qdict)
- {
--    struct in_addr host_addr = { .s_addr = INADDR_ANY };
-+    struct sockaddr_in host_addr = {
-+        .sin_family = AF_INET,
-+        .sin_addr = {
-+            .s_addr = INADDR_ANY,
-+        },
-+    };
-     int host_port;
-     char buf[256];
-     const char *src_str, *p;
-@@ -755,15 +760,21 @@ void hmp_hostfwd_remove(Monitor *mon, const QDict *qdict)
-     if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
-         goto fail_syntax;
-     }
--    if (buf[0] != '\0' && !inet_aton(buf, &host_addr)) {
-+    if (buf[0] != '\0' && !inet_aton(buf, &host_addr.sin_addr)) {
-         goto fail_syntax;
-     }
- 
-     if (qemu_strtoi(p, NULL, 10, &host_port)) {
-         goto fail_syntax;
-     }
-+    host_addr.sin_port = htons(host_port);
- 
--    err = slirp_remove_hostfwd(s->slirp, is_udp, host_addr, host_port);
-+#if SLIRP_CHECK_VERSION(4, 5, 0)
-+    err = slirp_remove_hostxfwd(s->slirp, (struct sockaddr *) &host_addr,
-+            sizeof(host_addr), is_udp ? SLIRP_HOSTFWD_UDP : 0);
-+#else
-+    err = slirp_remove_hostfwd(s->slirp, is_udp, host_addr.sin_addr, host_port);
-+#endif
- 
-     monitor_printf(mon, "host forwarding rule for %s %s\n", src_str,
-                    err ? "not found" : "removed");
-@@ -775,13 +786,24 @@ void hmp_hostfwd_remove(Monitor *mon, const QDict *qdict)
- 
- static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
- {
--    struct in_addr host_addr = { .s_addr = INADDR_ANY };
--    struct in_addr guest_addr = { .s_addr = 0 };
-+    struct sockaddr_in host_addr = {
-+        .sin_family = AF_INET,
-+        .sin_addr = {
-+            .s_addr = INADDR_ANY,
-+        },
-+    };
-+    struct sockaddr_in guest_addr = {
-+        .sin_family = AF_INET,
-+        .sin_addr = {
-+            .s_addr = 0,
-+        },
-+    };
-+    int err;
-     int host_port, guest_port;
-     const char *p;
-     char buf[256];
-     int is_udp;
--    char *end;
-+    const char *end;
-     const char *fail_reason = "Unknown reason";
- 
-     p = redir_str;
-@@ -802,7 +824,7 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
-         fail_reason = "Missing : separator";
-         goto fail_syntax;
-     }
--    if (buf[0] != '\0' && !inet_aton(buf, &host_addr)) {
-+    if (buf[0] != '\0' && !inet_aton(buf, &host_addr.sin_addr)) {
-         fail_reason = "Bad host address";
-         goto fail_syntax;
-     }
-@@ -811,29 +833,41 @@ static int slirp_hostfwd(SlirpState *s, const char *redir_str, Error **errp)
-         fail_reason = "Bad host port separator";
-         goto fail_syntax;
-     }
--    host_port = strtol(buf, &end, 0);
--    if (*end != '\0' || host_port < 0 || host_port > 65535) {
-+    err = qemu_strtoi(buf, &end, 0, &host_port);
-+    if (err || host_port < 0 || host_port > 65535) {
-         fail_reason = "Bad host port";
-         goto fail_syntax;
-     }
-+    host_addr.sin_port = htons(host_port);
- 
-     if (get_str_sep(buf, sizeof(buf), &p, ':') < 0) {
-         fail_reason = "Missing guest address";
-         goto fail_syntax;
-     }
--    if (buf[0] != '\0' && !inet_aton(buf, &guest_addr)) {
-+    if (buf[0] != '\0' && !inet_aton(buf, &guest_addr.sin_addr)) {
-         fail_reason = "Bad guest address";
-         goto fail_syntax;
-     }
- 
--    guest_port = strtol(p, &end, 0);
--    if (*end != '\0' || guest_port < 1 || guest_port > 65535) {
-+    err = qemu_strtoi(p, &end, 0, &guest_port);
-+    if (err || guest_port < 1 || guest_port > 65535) {
-         fail_reason = "Bad guest port";
-         goto fail_syntax;
-     }
-+    guest_addr.sin_port = htons(guest_port);
-+
-+#if SLIRP_CHECK_VERSION(4, 5, 0)
-+    err = slirp_add_hostxfwd(s->slirp,
-+            (struct sockaddr *) &host_addr, sizeof(host_addr),
-+            (struct sockaddr *) &guest_addr, sizeof(guest_addr),
-+            is_udp ? SLIRP_HOSTFWD_UDP : 0);
-+#else
-+    err = slirp_add_hostfwd(s->slirp, is_udp,
-+            host_addr.sin_addr, host_port,
-+            guest_addr.sin_addr, guest_port);
-+#endif
- 
--    if (slirp_add_hostfwd(s->slirp, is_udp, host_addr, host_port, guest_addr,
--                          guest_port) < 0) {
-+    if (err < 0) {
-         error_setg(errp, "Could not set up host forwarding rule '%s'",
-                    redir_str);
-         return -1;
--- 
-2.43.0
-
+Samuel
 
