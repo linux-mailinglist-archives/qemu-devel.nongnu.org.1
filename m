@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B581D8B61D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 21:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790F68B61D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 21:16:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1WSv-00070c-7x; Mon, 29 Apr 2024 15:15:05 -0400
+	id 1s1WSv-00070r-FC; Mon, 29 Apr 2024 15:15:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1WSs-00070A-5F
+ id 1s1WSs-00070C-5L
  for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:15:02 -0400
 Received: from forwardcorp1c.mail.yandex.net
  ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1WSo-0004wG-4d
+ id 1s1WSn-0004wH-1Q
  for qemu-devel@nongnu.org; Mon, 29 Apr 2024 15:15:01 -0400
 Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c10:3196:0:640:fabe:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id AE2B9608DB;
- Mon, 29 Apr 2024 22:14:52 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id D0F1360BF7;
+ Mon, 29 Apr 2024 22:14:53 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b739::1:30])
  by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id hEWuLX0IkKo0-BHcg07jD; Mon, 29 Apr 2024 22:14:51 +0300
+ ESMTPSA id hEWuLX0IkKo0-sCx6eplu; Mon, 29 Apr 2024 22:14:52 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714418091;
- bh=2z/8d84xQggArtwU3uUZ3iiYRgc/4FlRU9BhwIp3dwE=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=n/4v74k+qCXxOqT7mEsIt2+aDihlUSznyakLlDc+DLSLvkyO+kcZ7VZHMB1DQFxhU
- U9y1IfIh+EQITDCCYCxei45FjQjCDoiwFIbbswDo5Xr11O47Bs1sEXDMMi11RGn2Rk
- 3RZPRjrQ2/maRestTGMmLUmkdlEuNWT/yuE5kwkk=
+ s=default; t=1714418093;
+ bh=PpRmhla0gjqmw2jJMXO6xK9xGKdDqisCCVnTI2yNty4=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=B56f1eMrdhYkE2Dtso1qX4wb4FTE845Agrd+UTPPGFHeakoPY8B9SImJMd6FdSFy9
+ P+KShY2SL9KuN/lTvlz/S7kinxL6DDwwz1TPcmos/yyJfRnfwrOTE/wAkIQe5mT7f/
+ H6lHWAp0iiYig2f1J/4IRtLFkuqAoWD9A6W5JnZs=
 Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,10 +43,13 @@ To: peterx@redhat.com,
 	farosas@suse.de
 Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
  qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v5 0/5] migration: do not exit on incoming failure
-Date: Mon, 29 Apr 2024 22:14:21 +0300
-Message-Id: <20240429191426.2327225-1-vsementsov@yandex-team.ru>
+Subject: [PATCH v5 1/5] migration: move trace-point from migrate_fd_error to
+ migrate_set_error
+Date: Mon, 29 Apr 2024 22:14:22 +0300
+Message-Id: <20240429191426.2327225-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240429191426.2327225-1-vsementsov@yandex-team.ru>
+References: <20240429191426.2327225-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
@@ -71,75 +74,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all!
+Cover more cases by trace-point.
 
-The series brings an option to not immediately exit on incoming
-migration failure, giving a possibility to orchestrator to get the error
-through QAPI and shutdown QEMU by "quit".
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/migration.c  | 4 +++-
+ migration/trace-events | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-v5:
-- add "migration: process_incoming_migration_co(): fix reporting s->error"
-
-v4:
-- add r-b and a-b by Fabiano and Markus
-- improve wording in 04 as Markus suggested
-
-v3:
-- don't refactor the whole code around setting migration error, it seems
-  too much and necessary for the new feature itself
-- add constant
-- change behavior for HMP command
-- split some things to separate patches
-- and more, by Peter's suggestions
-
-
-New behavior can be demonstrated like this:
-
-bash:
-
-(
-cat <<EOF
-{'execute': 'qmp_capabilities'}
-{'execute': 'migrate-set-capabilities', 'arguments': {'capabilities': [{'capability': 'events', 'state': true}]}}
-{'execute': 'migrate-incoming', 'arguments': {'uri': 'exec:echo x', 'exit-on-error': false}}
-EOF
-sleep 1
-cat <<EOF
-{'execute': 'query-migrate'}
-{'execute': 'quit'}
-EOF
-) | ./build/qemu-system-x86_64 -incoming 'defer' -qmp stdio -nographic -nodefaults
-
-output:
-
-{"QMP": {"version": {"qemu": {"micro": 50, "minor": 0, "major": 9}, "package": "v9.0.0-149-gb6295ad58c"}, "capabilities": ["oob"]}}
-{"return": {}}
-{"return": {}}
-{"timestamp": {"seconds": 1714068847, "microseconds": 263907}, "event": "MIGRATION", "data": {"status": "setup"}}
-{"return": {}}
-{"timestamp": {"seconds": 1714068847, "microseconds": 266696}, "event": "MIGRATION", "data": {"status": "active"}}
-qemu-system-x86_64: Not a migration stream
-{"timestamp": {"seconds": 1714068847, "microseconds": 266766}, "event": "MIGRATION", "data": {"status": "failed"}}
-{"return": {"status": "failed", "error-desc": "load of migration failed: Invalid argument"}}
-{"timestamp": {"seconds": 1714068848, "microseconds": 237187}, "event": "SHUTDOWN", "data": {"guest": false, "reason": "host-qmp-quit"}}
-{"return": {}}
-
-Vladimir Sementsov-Ogievskiy (5):
-  migration: move trace-point from migrate_fd_error to migrate_set_error
-  migration: process_incoming_migration_co(): complete cleanup on
-    failure
-  migration: process_incoming_migration_co(): fix reporting s->error
-  migration: process_incoming_migration_co(): rework error reporting
-  qapi: introduce exit-on-error parameter for migrate-incoming
-
- migration/migration-hmp-cmds.c |  2 +-
- migration/migration.c          | 76 +++++++++++++++++++++++-----------
- migration/migration.h          |  3 ++
- migration/trace-events         |  2 +-
- qapi/migration.json            |  7 +++-
- system/vl.c                    |  3 +-
- 6 files changed, 64 insertions(+), 29 deletions(-)
-
+diff --git a/migration/migration.c b/migration/migration.c
+index b5af6b5105..2dc6a063e9 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1421,6 +1421,9 @@ static void migrate_fd_cleanup_bh(void *opaque)
+ void migrate_set_error(MigrationState *s, const Error *error)
+ {
+     QEMU_LOCK_GUARD(&s->error_mutex);
++
++    trace_migrate_error(error_get_pretty(error));
++
+     if (!s->error) {
+         s->error = error_copy(error);
+     }
+@@ -1444,7 +1447,6 @@ static void migrate_error_free(MigrationState *s)
+ 
+ static void migrate_fd_error(MigrationState *s, const Error *error)
+ {
+-    trace_migrate_fd_error(error_get_pretty(error));
+     assert(s->to_dst_file == NULL);
+     migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+                       MIGRATION_STATUS_FAILED);
+diff --git a/migration/trace-events b/migration/trace-events
+index f0e1cb80c7..d0c44c3853 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -152,7 +152,7 @@ multifd_set_outgoing_channel(void *ioc, const char *ioctype, const char *hostnam
+ # migration.c
+ migrate_set_state(const char *new_state) "new state %s"
+ migrate_fd_cleanup(void) ""
+-migrate_fd_error(const char *error_desc) "error=%s"
++migrate_error(const char *error_desc) "error=%s"
+ migrate_fd_cancel(void) ""
+ migrate_handle_rp_req_pages(const char *rbname, size_t start, size_t len) "in %s at 0x%zx len 0x%zx"
+ migrate_pending_exact(uint64_t size, uint64_t pre, uint64_t post) "exact pending size %" PRIu64 " (pre = %" PRIu64 " post=%" PRIu64 ")"
 -- 
 2.34.1
 
