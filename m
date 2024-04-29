@@ -2,86 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C368B8B5BF8
-	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:52:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3310A8B5BFC
+	for <lists+qemu-devel@lfdr.de>; Mon, 29 Apr 2024 16:53:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1SLx-0006Z6-6m; Mon, 29 Apr 2024 10:51:37 -0400
+	id 1s1SND-0000EJ-1n; Mon, 29 Apr 2024 10:52:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1SLu-0006T9-EZ
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:51:34 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1SLs-0007jI-R0
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 10:51:34 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f28bb6d747so3848861b3a.3
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 07:51:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714402291; x=1715007091; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QwfdFslcn0+t9dFmSrf8MhLx39J14rwdj1BP6IK2Wv0=;
- b=Bq1L+GROZnKJaev9exbpKzHnstyCTO1sg8npvwn5a1qNssQVEaICcsJ3sfF0f1Ejdj
- F4JYkJfAx6qo+WfJ4Tz7UNiZ/e8iNdOIadKIg7WAHfdAsQF1lZK1tcLhI20sUjBodXJn
- OSjdIcEQLnzrjxqHmHGmfRiuTb6mcxwHxh6ebTc7vY1t8EfJMPeUxe/cpyfLGuAjVx2s
- QYDYrnwgFxUmNPL5Ng9CT1edXZ/O9sZm/EwLlrJMU0l+Da+qUxbrYEUEuPMzZzREWcQ/
- 8LJ5yo9rNHZCqNPGBq9AOrMSr2cJxFQA4y6y4oM1diPEttgWk4JuTBRTkLJG5vY32WL+
- DSGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714402291; x=1715007091;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QwfdFslcn0+t9dFmSrf8MhLx39J14rwdj1BP6IK2Wv0=;
- b=rAh3Rxf5/F/wi9OEVqZx69BkDmsVhPj4csY4NpFXg8w4xo3jV4FjIZ3pV/W7ina3Xx
- S6lsd59EXbZu8yMBdNYD5IOyXM2nzkYMI9QBVWQaAtBapYvtr7+jc+cAnfihEuOuCWtN
- /ozp21uuPsUowu34aCT9HaEW2cIOi7Vs/NnqlUMcnENaTJeWhdc9GWCXL9ZDTJTc2h/7
- awg/N3EfROT0sSboAxqF5I+iMoxvi+/7tXBwikYae83zH6z0n9CTDPUJbx0YP4JMTQFQ
- BhsSYE55NbNCbOyaszGnIvQwNcRD5NgovZADtfiaS7wwfl0jFtlxWd6y0xtQT+xSUrkX
- yIiA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDh7dcD5tRM34CbnzI9wngqMxqf6M8kN7dkyqqdVxCiVHr0H+V3EzqqXR+6e9jU2rV02EWOgpAuiS01aPgUIw3Dqoq0mI=
-X-Gm-Message-State: AOJu0YxwE7NeDw9dlnEjS1nSlV5UDc2FGfzt7Q0kiaDNYg0GX+s19Zli
- 3UWhIfqJG7W/9pUG68wtKePPxI7l1B1MrKLGuCPa5ZigAd6Sdx+gPrmgWQhaiWA=
-X-Google-Smtp-Source: AGHT+IGN4bkkypHX4327A+UF+1jbP8ihG66sWet5L9SiVyNvitw9XbrLxPuBsS532EavLIrFBBafMA==
-X-Received: by 2002:a05:6a20:104a:b0:1a9:b7d0:b6ff with SMTP id
- gt10-20020a056a20104a00b001a9b7d0b6ffmr9437083pzc.32.1714402290901; 
- Mon, 29 Apr 2024 07:51:30 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- p9-20020aa79e89000000b006f3efb03841sm3984230pfq.40.2024.04.29.07.51.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Apr 2024 07:51:30 -0700 (PDT)
-Message-ID: <5395a311-d407-4131-9bbf-63a843c416fa@linaro.org>
-Date: Mon, 29 Apr 2024 07:51:28 -0700
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1s1SN3-00008x-Sm; Mon, 29 Apr 2024 10:52:45 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1s1SN1-0007s6-1I; Mon, 29 Apr 2024 10:52:45 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:290f:0:640:2b99:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 9E15C60B7D;
+ Mon, 29 Apr 2024 17:52:36 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b739::1:30] (unknown
+ [2a02:6b8:b081:b739::1:30])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ZqRkda1IYa60-lWvxGRgd; Mon, 29 Apr 2024 17:52:36 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1714402356;
+ bh=jP1AwgraG/qNw7CSc11Q5FYlvHI/uXmTN52mORVCPRw=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=boRX9mGcPWSLvrvynNnlzDH4MPbu019mXQ6I7kgeyhXkM5yugM74iYd8XgQ6gut63
+ KnYrY84mPuGhiQb3Ed6CpnWkGnq4YpLGSYCQGx8oqHrpB34oyru6hNLO0GBG95+4mv
+ bq3nWX2TxXvXB7Zl8s+9BQBo6EpwFPF+CJT0yhA8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <ad3b28cb-e7d2-4428-8540-414eb7ec623c@yandex-team.ru>
+Date: Mon, 29 Apr 2024 17:52:35 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/24] accel/tcg: Move @jmp_env from CPUState to TCG
- AccelCPUState
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Subject: Re: [PATCH] block/copy-before-write: use uint64_t for timeout in
+ nanoseconds
+To: Fiona Ebner <f.ebner@proxmox.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>
-References: <20240428221450.26460-1-philmd@linaro.org>
- <20240428221450.26460-17-philmd@linaro.org>
+Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, hreitz@redhat.com,
+ kwolf@redhat.com, jsnow@redhat.com, f.weber@proxmox.com
+References: <20240429141934.442154-1-f.ebner@proxmox.com>
+ <befd2718-526e-4407-8620-476dfa290c48@linaro.org>
+ <95aa152a-9858-4d71-aea9-8973e8d03f44@proxmox.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240428221450.26460-17-philmd@linaro.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <95aa152a-9858-4d71-aea9-8973e8d03f44@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,20 +78,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/28/24 15:14, Philippe Mathieu-Daudé wrote:
-> @jmp_env is specific to TCG accelerator, move it to its AccelCPUState.
+On 29.04.24 17:46, Fiona Ebner wrote:
+> Am 29.04.24 um 16:36 schrieb Philippe Mathieu-Daudé:
+>> Hi Fiona,
+>>
+>> On 29/4/24 16:19, Fiona Ebner wrote:
+>>
+>> Not everybody uses an email client that shows the patch content just
+>> after the subject (your first lines wasn't making sense at first).
+>>
+>> Simply duplicating the subject helps to understand:
+>>
+>>    Use uint64_t for timeout in nanoseconds ...
+>>
 > 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   accel/tcg/internal-common.h | 1 +
->   accel/tcg/tcg-accel-ops.h   | 1 +
->   accel/tcg/vcpu-state.h      | 2 ++
->   include/hw/core/cpu.h       | 1 -
->   accel/tcg/cpu-exec-common.c | 2 +-
->   accel/tcg/cpu-exec.c        | 6 +++---
->   6 files changed, 8 insertions(+), 5 deletions(-)
+> Oh, sorry. I'll try to remember that for the future. Should I re-send as
+> a v2?
+> 
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Not necessary, I can touch up the message when applying to my block branch.
 
-r~
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+-- 
+Best regards,
+Vladimir
+
 
