@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E858B7DAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBEE8B7D8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:50:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1qfM-0002Tf-Oc; Tue, 30 Apr 2024 12:49:18 -0400
+	id 1s1qfR-0002oN-Dd; Tue, 30 Apr 2024 12:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1qf2-0002O9-KQ
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:56 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1s1qf3-0002Oe-Gg
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:58 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1qew-0005cV-CE
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:56 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2de2f5ca076so67908451fa.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 09:48:49 -0700 (PDT)
+ id 1s1qew-0005cb-NE
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:57 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2dfb4ea2bbfso41739371fa.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 09:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1714495729; x=1715100529; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=etAp6WZx3h8E7CdT4MY1xTM+Yr9ybGh3o76qjoMWZ7I=;
- b=EAn1tIRbHHPifbTloLjokwlt8L0/YnteFZOglwE7gk6DVDXQYXsYvx9Bo5JTyPUAq0
- 1PFhQm1TpXtV0sozpt4YvcLmeSWyitNtR+LyyrDGh3Ff74p+D6FI12ENYGAnJx7imYgU
- G9NYaQ7dFL2m8dlwiKoV/IoiQMCpXdapOcqeoM4nlIKT5Hieoj2wc/lLM5SqTty80D/i
- vetjS/m2uITjW2ELo0X6htxcgkp7BNq9ArRjyRKX4m1/pY4z2rTc93PAgCksYZGY5J0K
- 3Vg2mnSGgOlYr0vSr34TUgonbQq/joDNkidTCZTqIHGQbBdzHhkHtrubfY+eFTko/7SK
- 1RLg==
+ :reply-to; bh=8ybX+f9OWY45lhLb2oST3kDQoeWzOe+ZNsl1K+EOruA=;
+ b=JFzQgNhA5Kho8Ps/Yl3nBspWrK1kFH/ER2zweeALj/RkAUy/aZS1L4aMn/qOVbwbx/
+ ZDdjMRL+q2NLRSPFJUyiaWUuPbvzUnRV05kmAY1+awkv24yNLVi8gBGoZa9435poFfyt
+ DyRL4Si/YwjMxLqSG19KjbMMZm/hP063TobEcxiqCejsHSYR+nlE+JHySPM4PlyYwy8o
+ u9qjgOjsN7pzy3JyZzf8tdCQ+tokjtHvvQqfT0i7087X4gFp0rkno0N5fBl23QGX7bCf
+ XjndvCBgOelnMZw6PTL0CnO8DHLFTetrSu3JA/FUynLGos+g9Ery+yJBdWEfjAc4YamQ
+ NufQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1714495729; x=1715100529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=etAp6WZx3h8E7CdT4MY1xTM+Yr9ybGh3o76qjoMWZ7I=;
- b=NWLVu8dnbN1s65iFwG/4v5JclEcmInhyOXF9ddF7eybgpCXPIptqapPGrB1xJx2oTD
- xmkJRzentI+JQJoCC+Z4s1Nmta1QxYN87MmDoAcyJvP98zKnCDIBlg5p0bcGPUfP6PBd
- 8iIUpMQQGMmDjKqZ2rUQummUHHcs1Kyl207af3wmWwg97KwRPIJ87fFegB5ljifpwx+X
- bBrpCGi7RPvKSVN+4QAnb8CUZHGGHH994iiD1jD7Tk9d31R1Zz80Scz9yjLOCoAwyr1l
- 5lkAYMREkcImsSK24IwW4LuicUOKj4XpeMx2Dyzjyqu3q3jmwHI2nCtPzIELTIIyr6wR
- Xt5g==
-X-Gm-Message-State: AOJu0YzJf5/QPE1ZsJzmHqEcffRDgmUHFCdMZ0utgd6pXY75RuWqdiNR
- SYMAnuPZP72rj8yy2S2rD6svD+VIeKyV0cy6BBmwIm9Ytkks0Qo8zfla58tp8aKfdFuZQ3FwLhI
+ bh=8ybX+f9OWY45lhLb2oST3kDQoeWzOe+ZNsl1K+EOruA=;
+ b=MNLRU7cqzmGThvZYMPE0+r1MnzyTpKcdtscEXAPqb3U9InH4O0e/SDU+GUNJ/Df9Uc
+ VH7+mESGPQ+ZXK6jU5V3yISv6Sc+QwUO9nZLWGqFD42ARn3z62FtTNH4zXmD7aMND/zf
+ ag2jFW5vXbBvh5+UIcwGxeMduqFRSis+xXsg1S2Bg2BueFISti91SYw0x/amNj4ugQS6
+ g/loNZvaetvqShEYzUU8TBpBBfta6C2S18sZSQxV8mdUwcdC+m31kt+g3lEP6bjCNwhY
+ bLjA8h7Im7Tb6lQ02xo4HW24rSWtNiR1A5xpuGLlhoU/Ga/GXov3oXwC/SDOqtlMfnPm
+ +n5w==
+X-Gm-Message-State: AOJu0YzgiwogIJUWByr2585TmOEws9AXzhnGQQz4mztNexsz3sYunWM8
+ HyfV8cA9Pf2ww7uWhrqK1eDR9iyPtKbRR3vcPGegNj3orn9DMnh1ZIQbG3qke2qPjzWpkr41TXv
  P
-X-Google-Smtp-Source: AGHT+IESMWhT1ql19q9o0XQ+ynjxz1EL7+sQAo+D39ZQs0PYRpLLw2g80SbwuPrzZZwXP2WfmK1oEg==
-X-Received: by 2002:a2e:b611:0:b0:2dc:bd10:2944 with SMTP id
- r17-20020a2eb611000000b002dcbd102944mr111053ljn.53.1714495728637; 
- Tue, 30 Apr 2024 09:48:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG05y1Q+h5mQ522BnICErxBCN/vmR8JLiHT4Z1+5dd5NCeTbcj1lxD1gNvziZI6KoSfdZ+oGQ==
+X-Received: by 2002:a2e:8515:0:b0:2d5:9703:263c with SMTP id
+ j21-20020a2e8515000000b002d59703263cmr202574lji.4.1714495729135; 
+ Tue, 30 Apr 2024 09:48:49 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  b6-20020a05600c4e0600b0041be3383a2fsm12920384wmq.19.2024.04.30.09.48.48
@@ -59,16 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 30 Apr 2024 09:48:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/21] tests/avocado: update sunxi kernel from armbian to 6.6.16
-Date: Tue, 30 Apr 2024 17:48:30 +0100
-Message-Id: <20240430164842.4074734-10-peter.maydell@linaro.org>
+Subject: [PULL 10/21] target/arm: Refactor default generic timer frequency
+ handling
+Date: Tue, 30 Apr 2024 17:48:31 +0100
+Message-Id: <20240430164842.4074734-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240430164842.4074734-1-peter.maydell@linaro.org>
 References: <20240430164842.4074734-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,193 +93,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Linux kernel 5.10.16 binary for sunxi has been removed from
-apt.armbian.com. This means that the avocado tests for these machines
-will be skipped (status CANCEL) if the old binary isn't present in
-the avocado cache.
+The generic timer frequency is settable by board code via a QOM
+property "cntfrq", but otherwise defaults to 62.5MHz.  The way this
+is done includes some complication resulting from how this was
+originally a fixed value with no QOM property.  Clean it up:
 
-Update to 6.6.16, in the same way we did in commit e384db41d8661
-when we moved to 5.10.16 in 2021.
+ * always set cpu->gt_cntfrq_hz to some sensible value, whether
+   the CPU has the generic timer or not, and whether it's system
+   or user-only emulation
+ * this means we can always use gt_cntfrq_hz, and never need
+   the old GTIMER_SCALE define
+ * set the default value in exactly one place, in the realize fn
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2284
+The aim here is to pave the way for handling the ARMv8.6 requirement
+that the generic timer frequency is always 1GHz.  We're going to do
+that by having old CPU types keep their legacy-in-QEMU behaviour and
+having the default for any new CPU types be a 1GHz rather han 62.5MHz
+cntfrq, so we want the point where the default is decided to be in
+one place, and in code, not in a DEFINE_PROP_UINT64() initializer.
+
+This commit should have no behavioural changes.
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Strahinja Jankovic <strahinja.p.jankovic@gmail.com>
-Reviewed-by: Niek Linnenbank <nieklinnenbank@gmail.com>
-Tested-by: Niek Linnenbank <nieklinnenbank@gmail.com>
-Message-id: 20240415151845.1564201-1-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240426122913.3427983-2-peter.maydell@linaro.org
 ---
- tests/avocado/boot_linux_console.py | 70 ++++++++++++++---------------
- tests/avocado/replay_kernel.py      |  8 ++--
- 2 files changed, 39 insertions(+), 39 deletions(-)
+ target/arm/internals.h |  7 ++++---
+ target/arm/cpu.c       | 31 +++++++++++++++++--------------
+ target/arm/helper.c    | 16 ++++++++--------
+ 3 files changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 180ac17326e..c35fc5e9ba2 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -646,12 +646,12 @@ def test_arm_cubieboard_initrd(self):
-         :avocado: tags=accel:tcg
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun4i-a10-cubieboard.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-                       '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-@@ -690,12 +690,12 @@ def test_arm_cubieboard_sata(self):
-         :avocado: tags=accel:tcg
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun4i-a10-cubieboard.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         rootfs_url = ('https://github.com/groeck/linux-build-test/raw/'
-                       '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-@@ -872,13 +872,13 @@ def test_arm_bpim2u(self):
-         :avocado: tags=machine:bpim2u
-         :avocado: tags=accel:tcg
-         """
--        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
--                   'linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_url = ('https://apt.armbian.com/pool/main/l/'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-6.6.16-current-sunxi/'
-                     'sun8i-r40-bananapi-m2-ultra.dtb')
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index e40ec453d56..b6c78db0243 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -60,10 +60,11 @@ static inline bool excp_is_internal(int excp)
+         || excp == EXCP_SEMIHOST;
+ }
  
-@@ -899,13 +899,13 @@ def test_arm_bpim2u_initrd(self):
-         :avocado: tags=accel:tcg
-         :avocado: tags=machine:bpim2u
-         """
--        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
--                   'linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_url = ('https://apt.armbian.com/pool/main/l/'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-6.6.16-current-sunxi/'
-                     'sun8i-r40-bananapi-m2-ultra.dtb')
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-@@ -946,13 +946,13 @@ def test_arm_bpim2u_gmac(self):
-         """
-         self.require_netdev('user')
+-/* Scale factor for generic timers, ie number of ns per tick.
+- * This gives a 62.5MHz timer.
++/*
++ * Default frequency for the generic timer, in Hz.
++ * This is 62.5MHz, which gives a 16 ns tick period.
+  */
+-#define GTIMER_SCALE 16
++#define GTIMER_DEFAULT_HZ 62500000
  
--        deb_url = ('https://apt.armbian.com/pool/main/l/linux-5.10.16-sunxi/'
--                   'linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+        deb_url = ('https://apt.armbian.com/pool/main/l/'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = ('/usr/lib/linux-image-current-sunxi/'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = ('/usr/lib/linux-image-6.6.16-current-sunxi/'
-                     'sun8i-r40-bananapi-m2-ultra.dtb')
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         rootfs_url = ('http://storage.kernelci.org/images/rootfs/buildroot/'
-@@ -1049,12 +1049,12 @@ def test_arm_orangepi(self):
-         :avocado: tags=accel:tcg
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
+ /* Bit definitions for the v7M CONTROL register */
+ FIELD(V7M_CONTROL, NPRIV, 0, 1)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index a152def2413..9f2ca6633a1 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -1506,9 +1506,12 @@ static void arm_cpu_initfn(Object *obj)
+     }
+ }
  
-         self.vm.set_console()
-@@ -1075,12 +1075,12 @@ def test_arm_orangepi_initrd(self):
-         :avocado: tags=machine:orangepi-pc
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-                       '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
-@@ -1121,12 +1121,12 @@ def test_arm_orangepi_sd(self):
-         self.require_netdev('user')
++/*
++ * 0 means "unset, use the default value". That default might vary depending
++ * on the CPU type, and is set in the realize fn.
++ */
+ static Property arm_cpu_gt_cntfrq_property =
+-            DEFINE_PROP_UINT64("cntfrq", ARMCPU, gt_cntfrq_hz,
+-                               NANOSECONDS_PER_SECOND / GTIMER_SCALE);
++            DEFINE_PROP_UINT64("cntfrq", ARMCPU, gt_cntfrq_hz, 0);
  
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun8i-h3-orangepi-pc.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         rootfs_url = ('http://storage.kernelci.org/images/rootfs/buildroot/'
-                       'buildroot-baseline/20221116.0/armel/rootfs.ext2.xz')
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index 2c81412dbad..232d287c272 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -203,12 +203,12 @@ def test_arm_cubieboard_initrd(self):
-         :avocado: tags=machine:cubieboard
-         """
-         deb_url = ('https://apt.armbian.com/pool/main/l/'
--                   'linux-5.10.16-sunxi/linux-image-current-sunxi_21.02.2_armhf.deb')
--        deb_hash = '9fa84beda245cabf0b4fa84cf6eaa7738ead1da0'
-+                   'linux-6.6.16/linux-image-current-sunxi_24.2.1_armhf__6.6.16-Seb3e-D6b4a-P2359-Ce96bHfe66-HK01ba-V014b-B067e-R448a.deb')
-+        deb_hash = 'f7c3c8c5432f765445dc6e7eab02f3bbe668256b'
-         deb_path = self.fetch_asset(deb_url, asset_hash=deb_hash)
-         kernel_path = self.extract_from_deb(deb_path,
--                                            '/boot/vmlinuz-5.10.16-sunxi')
--        dtb_path = '/usr/lib/linux-image-current-sunxi/sun4i-a10-cubieboard.dtb'
-+                                            '/boot/vmlinuz-6.6.16-current-sunxi')
-+        dtb_path = '/usr/lib/linux-image-6.6.16-current-sunxi/sun4i-a10-cubieboard.dtb'
-         dtb_path = self.extract_from_deb(deb_path, dtb_path)
-         initrd_url = ('https://github.com/groeck/linux-build-test/raw/'
-                       '2eb0a73b5d5a28df3170c546ddaaa9757e1e0848/rootfs/'
+ static Property arm_cpu_reset_cbar_property =
+             DEFINE_PROP_UINT64("reset-cbar", ARMCPU, reset_cbar, 0);
+@@ -1954,6 +1957,17 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
++    if (!cpu->gt_cntfrq_hz) {
++        /*
++         * 0 means "the board didn't set a value, use the default".
++         * The default value of the generic timer frequency (as seen in
++         * CNTFRQ_EL0) is 62.5MHz, which corresponds to a period of 16ns.
++         * This is what you get (a) for a CONFIG_USER_ONLY CPU (b) if the
++         * board doesn't set it.
++         */
++        cpu->gt_cntfrq_hz = GTIMER_DEFAULT_HZ;
++    }
++
+ #ifndef CONFIG_USER_ONLY
+     /* The NVIC and M-profile CPU are two halves of a single piece of
+      * hardware; trying to use one without the other is a command line
+@@ -2002,18 +2016,7 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+     {
+-        uint64_t scale;
+-
+-        if (arm_feature(env, ARM_FEATURE_GENERIC_TIMER)) {
+-            if (!cpu->gt_cntfrq_hz) {
+-                error_setg(errp, "Invalid CNTFRQ: %"PRId64"Hz",
+-                           cpu->gt_cntfrq_hz);
+-                return;
+-            }
+-            scale = gt_cntfrq_period_ns(cpu);
+-        } else {
+-            scale = GTIMER_SCALE;
+-        }
++        uint64_t scale = gt_cntfrq_period_ns(cpu);
+ 
+         cpu->gt_timer[GTIMER_PHYS] = timer_new(QEMU_CLOCK_VIRTUAL, scale,
+                                                arm_gt_ptimer_cb, cpu);
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index bb0e1baf628..75876359608 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -2474,6 +2474,13 @@ static const ARMCPRegInfo v6k_cp_reginfo[] = {
+       .resetvalue = 0 },
+ };
+ 
++static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *opaque)
++{
++    ARMCPU *cpu = env_archcpu(env);
++
++    cpu->env.cp15.c14_cntfrq = cpu->gt_cntfrq_hz;
++}
++
+ #ifndef CONFIG_USER_ONLY
+ 
+ static CPAccessResult gt_cntfrq_access(CPUARMState *env, const ARMCPRegInfo *ri,
+@@ -3228,13 +3235,6 @@ void arm_gt_hvtimer_cb(void *opaque)
+     gt_recalc_timer(cpu, GTIMER_HYPVIRT);
+ }
+ 
+-static void arm_gt_cntfrq_reset(CPUARMState *env, const ARMCPRegInfo *opaque)
+-{
+-    ARMCPU *cpu = env_archcpu(env);
+-
+-    cpu->env.cp15.c14_cntfrq = cpu->gt_cntfrq_hz;
+-}
+-
+ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+     /*
+      * Note that CNTFRQ is purely reads-as-written for the benefit
+@@ -3514,7 +3514,7 @@ static const ARMCPRegInfo generic_timer_cp_reginfo[] = {
+       .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 0,
+       .type = ARM_CP_CONST, .access = PL0_R /* no PL1_RW in linux-user */,
+       .fieldoffset = offsetof(CPUARMState, cp15.c14_cntfrq),
+-      .resetvalue = NANOSECONDS_PER_SECOND / GTIMER_SCALE,
++      .resetfn = arm_gt_cntfrq_reset,
+     },
+     { .name = "CNTVCT_EL0", .state = ARM_CP_STATE_AA64,
+       .opc0 = 3, .opc1 = 3, .crn = 14, .crm = 0, .opc2 = 2,
 -- 
 2.34.1
 
