@@ -2,90 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806318B7967
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A028B7978
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1oSo-00075c-Er; Tue, 30 Apr 2024 10:28:10 -0400
+	id 1s1oUQ-0001xy-1C; Tue, 30 Apr 2024 10:29:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1s1oSj-00074h-ET
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1s1oSU-0008US-2a
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714487264;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oU7-0001nY-Ev
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:29:32 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oU5-0000Lc-Vs
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:29:31 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C3E24340D4;
+ Tue, 30 Apr 2024 14:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714487368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=j7zsDVy3L3Qacv5EF9ymdXqfbRbkLZETYwZ1Xh3+vkM=;
- b=aRau/Ualp72bz+izkRgQ743lSbbLCv5+L943cWSx79vY1SdHAOEd8WZ6wVyWAeN+tme7uV
- 5AwS26St1DZni4iQ8aOYih4hXC7xGk93xdkAGBpzhJWHR6M95maooSrT560YRaTRlTKq2O
- KuQin5VjfrFSu7ym9m5uXKytK70N8GI=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-wqH0DcrpNt6W5v1MYmf5cg-1; Tue, 30 Apr 2024 10:27:42 -0400
-X-MC-Unique: wqH0DcrpNt6W5v1MYmf5cg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2df7b174b87so32388881fa.3
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 07:27:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714487261; x=1715092061;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=j7zsDVy3L3Qacv5EF9ymdXqfbRbkLZETYwZ1Xh3+vkM=;
- b=nX6O5+ejcvb8MIAPLBoQ1LmS7an2ISVlYwq1JNo5KBmzZIvaTQwEGgl3m9hGZlATAS
- 7Wemmc+8xMPWH4J2rFxR10Dlzhf5YDa5uPyQP5RW3KzeU/jC6RpjYgS9NPk0MxuFdaTv
- kZi/EYYbLnFKPngcR6YSjy9l0V+0IMa5sOl/PY1dEFF5jGjixwYBhzUHtJ+5nA9T9/04
- 7wA0Uf3JwahOh4LTQ2C/l8HwXOP/KrHA6IunfoJQAe0lSfnugAL2Bf4qSEYX8a8Yxhyo
- X4g02Sdf2+HBM7QY9NwThVpXRs/bj1LBiVTPHaOI3vg6d+pjYnR9OkjTgEP6719gyLBj
- E5Hw==
-X-Gm-Message-State: AOJu0YxD4hexdjE0svMxQaDrNe6Phc2U/AKP+dd/RldGopUEyW9u5CoO
- YHrQxksi1LYNdRdIQZkKDDXWh0NIFskoSvc00DuMn/wI9TAq1jUFRA1pFkIbEjUwoR6198Lo0XA
- rISbA7ATE3Nm6y/wM2HQ1OeFojoMntfZL2qSfjTXKRmLld3f2Jkt+
-X-Received: by 2002:a2e:a987:0:b0:2de:8685:d07b with SMTP id
- x7-20020a2ea987000000b002de8685d07bmr2369109ljq.46.1714487261488; 
- Tue, 30 Apr 2024 07:27:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1EwDPo8NjuKjQuq9omzMazcvSnw6h1CtvuDTKyDOqDVOen+dB+Jr9oUSevRnUrKiv+s5rUQ==
-X-Received: by 2002:a2e:a987:0:b0:2de:8685:d07b with SMTP id
- x7-20020a2ea987000000b002de8685d07bmr2369090ljq.46.1714487261042; 
- Tue, 30 Apr 2024 07:27:41 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- d7-20020a05600c34c700b0041b086d664fsm23584652wmq.6.2024.04.30.07.27.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 07:27:40 -0700 (PDT)
-Date: Tue, 30 Apr 2024 16:27:39 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, mlevitsk@redhat.com, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru, boris.ostrovsky@oracle.com
-Subject: Re: [PATCH] system/qdev-monitor: move drain_call_rcu call under if
- (!dev) in qmp_device_add()
-Message-ID: <20240430162739.7a6e65de@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
-References: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+ bh=muva6RkjVJzZ1Mue+oe4ihT+dTYMq4LmsJXUf9Z8eWI=;
+ b=gD4q/66/zMmewdZpX5RlNnzEluizi25N4wZGvuQlwBvO0J5EJC9axd9bnfdDszIPShhRVp
+ ZIppc7QENLrudsRcMkUgtBCEhYZJKaLcpKHX88vh5s66KvKDNxWeBZ3HR2wF1u8D4Ja/h8
+ x5uDGC7WVc+v0vhO5y1XFJNYhGEX3QQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714487368;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=muva6RkjVJzZ1Mue+oe4ihT+dTYMq4LmsJXUf9Z8eWI=;
+ b=ztZ4ItjKXpNaW5TbOsfqLfuXUzUnxhS39jPDCXdd5+lfZPDF4pPYO0qp1dltbOLrxzFnvF
+ kDnIncUlUFf1IpDg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714487368; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=muva6RkjVJzZ1Mue+oe4ihT+dTYMq4LmsJXUf9Z8eWI=;
+ b=gD4q/66/zMmewdZpX5RlNnzEluizi25N4wZGvuQlwBvO0J5EJC9axd9bnfdDszIPShhRVp
+ ZIppc7QENLrudsRcMkUgtBCEhYZJKaLcpKHX88vh5s66KvKDNxWeBZ3HR2wF1u8D4Ja/h8
+ x5uDGC7WVc+v0vhO5y1XFJNYhGEX3QQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714487368;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=muva6RkjVJzZ1Mue+oe4ihT+dTYMq4LmsJXUf9Z8eWI=;
+ b=ztZ4ItjKXpNaW5TbOsfqLfuXUzUnxhS39jPDCXdd5+lfZPDF4pPYO0qp1dltbOLrxzFnvF
+ kDnIncUlUFf1IpDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 51649133A7;
+ Tue, 30 Apr 2024 14:29:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KzeRBkgAMWbGSQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 30 Apr 2024 14:29:28 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, peterx@redhat.com
+Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
+Subject: Re: [PATCH v6 3/5] migration: process_incoming_migration_co(): fix
+ reporting s->error
+In-Reply-To: <20240430085646.2359711-4-vsementsov@yandex-team.ru>
+References: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
+ <20240430085646.2359711-4-vsementsov@yandex-team.ru>
+Date: Tue, 30 Apr 2024 11:29:25 -0300
+Message-ID: <87bk5qncu2.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.29 / 50.00]; BAYES_HAM(-2.99)[99.97%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[8]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
+X-Spam-Score: -4.29
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,60 +115,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  3 Nov 2023 13:56:02 +0300
-Dmitrii Gavrilov <ds-gavr@yandex-team.ru> wrote:
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-Seems related to cpu hotpug issues,
-CCing Boris for awareness.
+> It's bad idea to leave critical section with error object freed, but
+> s->error still set, this theoretically may lead to use-after-free
+> crash. Let's avoid it.
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-> Original goal of addition of drain_call_rcu to qmp_device_add was to cover
-> the failure case of qdev_device_add. It seems call of drain_call_rcu was
-> misplaced in 7bed89958bfbf40df what led to waiting for pending RCU callbacks
-> under happy path too. What led to overall performance degradation of
-> qmp_device_add.
-> 
-> In this patch call of drain_call_rcu moved under handling of failure of
-> qdev_device_add.
-> 
-> Signed-off-by: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
-> ---
->  system/qdev-monitor.c | 23 +++++++++++------------
->  1 file changed, 11 insertions(+), 12 deletions(-)
-> 
-> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> index 1b8005a..dc7b02d 100644
-> --- a/system/qdev-monitor.c
-> +++ b/system/qdev-monitor.c
-> @@ -856,19 +856,18 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
->          return;
->      }
->      dev = qdev_device_add(opts, errp);
-> -
-> -    /*
-> -     * Drain all pending RCU callbacks. This is done because
-> -     * some bus related operations can delay a device removal
-> -     * (in this case this can happen if device is added and then
-> -     * removed due to a configuration error)
-> -     * to a RCU callback, but user might expect that this interface
-> -     * will finish its job completely once qmp command returns result
-> -     * to the user
-> -     */
-> -    drain_call_rcu();
-> -
->      if (!dev) {
-> +        /*
-> +         * Drain all pending RCU callbacks. This is done because
-> +         * some bus related operations can delay a device removal
-> +         * (in this case this can happen if device is added and then
-> +         * removed due to a configuration error)
-> +         * to a RCU callback, but user might expect that this interface
-> +         * will finish its job completely once qmp command returns result
-> +         * to the user
-> +         */
-> +        drain_call_rcu();
-> +
->          qemu_opts_del(opts);
->          return;
->      }
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
