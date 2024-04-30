@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABA58B6EAE
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 11:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DCF8B6EB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 11:42:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1jzI-0004Vk-7d; Tue, 30 Apr 2024 05:41:24 -0400
+	id 1s1jzh-0004as-A0; Tue, 30 Apr 2024 05:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzE-0004PC-7o
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzO-0004Zv-5I
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jz9-0005ri-7t
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:18 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzM-0005t9-Fl
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714470074;
+ s=mimecast20190719; t=1714470086;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ED85lim9n322dDSDZk115uNsoc0H9fI+9cHrfzqApe8=;
- b=Pm4JaA19vymW18hqPABWjwr/5DGuRltkgF157ltztT+PV1jNb457JXBkP3n7AE2xqOP+BA
- +Ih8XhnVt8YsF/lIatj5EiN03hkc0Ha/5dTMdYTwb7oLHaOkzAWhit1dRfgDq5YqJMbui3
- +Y00nOOjwSFQty1b0zp1dxBXoyxKqis=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FVxdtptPhaXvdA5cUFAh+H+Sz0QkNwx/0vKjtoz67sM=;
+ b=cYCiv5YdFp7qit+m+Gi/2kN6iIzF0E5NaYKpvEkiGloztkNmuUDAZgaRn/C1rBtzn+J9Bj
+ E4HZBwTIlAmWcVspfsAvIvbPkBuxmA8LVHTUEht2/0NxkNfemKv1shutUaihtDuHqJGRjj
+ 4QHBZZ0BeqvyyK6g2XDBXSVckUcew/U=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-xeRxhxGdMJaaB0GUpCi9Dw-1; Tue, 30 Apr 2024 05:41:12 -0400
-X-MC-Unique: xeRxhxGdMJaaB0GUpCi9Dw-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5721458fa6aso2716404a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 02:41:12 -0700 (PDT)
+ us-mta-489-_fSrMQohMxGsyZO_038uQQ-1; Tue, 30 Apr 2024 05:41:23 -0400
+X-MC-Unique: _fSrMQohMxGsyZO_038uQQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5704900f94fso3478081a12.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 02:41:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714470071; x=1715074871;
+ d=1e100.net; s=20230601; t=1714470082; x=1715074882;
  h=content-transfer-encoding:in-reply-to:content-language:references
  :cc:to:subject:from:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ED85lim9n322dDSDZk115uNsoc0H9fI+9cHrfzqApe8=;
- b=oD2TQ+4NTh/ed+YsPuZO6q+aLo1Hsz+aa6HfndsE+F1xp/DCsxJ4R7rUrbwHByQLFK
- AVlAUa4e9pzUaAO/veGYCJNAiNqlpfP49i34xLRhdtP1crAHEEp6tdJKZA0kTeD7i6As
- 89zlGQEx2ewummdL/rdhgdWkr614yxDvlfH7fkZkqoEnY9lRBfCwEJ1yGJXskSojTtOd
- 4xGE5SbQH/mpC1YoW+J9qw9DPvH1+bWpx830l35DGV652iVzjg9BibLbbCZZpvgdtoGw
- CF2Ofl7JkvXBjKOcia7Fu5csvXvgg7oWTzTKUM3+efzRrF2y4EiYgb21CyNV8Mdv8nwl
- DHnQ==
+ bh=FVxdtptPhaXvdA5cUFAh+H+Sz0QkNwx/0vKjtoz67sM=;
+ b=KZAHt7nhxqrsUzZ1iZDj1emujz56PN+7XBfrPsyW4ON4FNZtdQFK0mI+55bNPYbsVN
+ S5hPbp0uHma1MuHm5lmszmtGmQXzGemb0dMJ9/lD5e/AxMd3S3Ph7m8QlYmluXTvwBOV
+ zOAaPsGFIt1lft2g/xizLTSZq6LZR0TjfwV3TVPcxR7w82DySBjh++2XKutCF5RmHCc4
+ xd0uvCGLtfUUnNhB0e/5L4yBR9eX//AHV0WQpGmPZ2dvvbVKo4hlflLDsszslpUPOdNF
+ GIYjkqA/HcfBxOwLVREROwst1pFx/he+rQ3P0j2fayFXDdR1fooVNSkkghQtsbhlpOh6
+ foOA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX4lgY08JT/UftpY6twgpAx4mhColcZyImMlcjM0aMKTR8TplZ0BHDjzBlBr6u8XLCXGKA2t/pMrba9ZHfO5yyVGcNaWzo=
-X-Gm-Message-State: AOJu0YxhcavglWM4qJtSDEoStSBKfjKmLsW1zwemly1511tqHkYcaiSM
- GHAGMzkFiKbPFds23VitADxGzVINzLbHAj/tXMD4vxvCT6972pwBAiSwkXr8z4cwwukVMX0sxqq
- /ZeWArtFGHU8lGn5ToQ10tZ0FW67RIKHvbfnWFDF08qtt4BP1vMhf
-X-Received: by 2002:a50:aad2:0:b0:572:a126:6760 with SMTP id
- r18-20020a50aad2000000b00572a1266760mr257304edc.11.1714470071770; 
- Tue, 30 Apr 2024 02:41:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGs1lEi561nZMqwT6GhOZ+2/0bIKW+CWsLKl6o++Rdx8n0ettpUoANlZi/lYfeBk/l7ynUTBQ==
-X-Received: by 2002:a50:aad2:0:b0:572:a126:6760 with SMTP id
- r18-20020a50aad2000000b00572a1266760mr257292edc.11.1714470071562; 
- Tue, 30 Apr 2024 02:41:11 -0700 (PDT)
+ AJvYcCX0Se5RPA9+vioqHVrXgN1V4pRXyZCzBydy3+jaws4BVAR8aQviUL0hmT9wicwMVXg8/eHpAe1ntt+pM6IvogFxYTtaabU=
+X-Gm-Message-State: AOJu0YyUunP/egxLpGeC7AZkfHjWHjR05c+valRdCMHGTWptrn7K4QcA
+ rPs67a3jNnWxxMWXrnZEDm6HuIbbBq9DoOjPM2FMx1Tea1qdHxms/e0IUw0aSkEFWDACVdEZzZU
+ wQaSLng+x+PEudhzVBKgI0F4UyGYfGEUfiLWW0TrCTr5TxMhNtWx4AReyJw4q
+X-Received: by 2002:a17:906:4115:b0:a52:58a7:11cf with SMTP id
+ j21-20020a170906411500b00a5258a711cfmr10344097ejk.2.1714470081914; 
+ Tue, 30 Apr 2024 02:41:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQSz/VR3C/4kvvED5Radc7CcO+S3d+Zre6dWW9JYBr/65UNfjfTOhPes/c02CcqSOqL+/Ztg==
+X-Received: by 2002:a17:906:4115:b0:a52:58a7:11cf with SMTP id
+ j21-20020a170906411500b00a5258a711cfmr10344080ejk.2.1714470081535; 
+ Tue, 30 Apr 2024 02:41:21 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- h9-20020a0564020e0900b005729337f955sm838975edh.97.2024.04.30.02.41.10
+ q23-20020a170906771700b00a590f9c1db3sm1169503ejm.150.2024.04.30.02.41.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 02:41:11 -0700 (PDT)
-Message-ID: <bc6b71f7-242f-4de4-b440-67689039886a@redhat.com>
-Date: Tue, 30 Apr 2024 11:41:09 +0200
+ Tue, 30 Apr 2024 02:41:20 -0700 (PDT)
+Message-ID: <6a24df9b-9851-4304-b962-a98a65758a00@redhat.com>
+Date: Tue, 30 Apr 2024 11:41:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Subject: Re: [PATCH v3 06/19] range: Introduce range_get_last_bit()
+Subject: Re: [PATCH v3 07/19] vfio/container: Implement
+ HostIOMMUDeviceClass::realize() handler
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com
 References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
- <20240429065046.3688701-7-zhenzhong.duan@intel.com>
+ <20240429065046.3688701-8-zhenzhong.duan@intel.com>
 Content-Language: en-US, fr
-In-Reply-To: <20240429065046.3688701-7-zhenzhong.duan@intel.com>
+In-Reply-To: <20240429065046.3688701-8-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -106,53 +107,69 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/29/24 08:50, Zhenzhong Duan wrote:
-> This helper get the highest 1 bit position of the upper bound.
+> Utilize range_get_last_bit() to get host IOMMU address width and
+> package it in HostIOMMUDeviceCaps for query with .check_cap().
 > 
-> If the range is empty or upper bound is zero, -1 is returned.
-> 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->   include/qemu/range.h | 11 +++++++++++
->   1 file changed, 11 insertions(+)
+>   hw/vfio/container.c | 29 +++++++++++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
 > 
-> diff --git a/include/qemu/range.h b/include/qemu/range.h
-> index 205e1da76d..8e05bc1d9f 100644
-> --- a/include/qemu/range.h
-> +++ b/include/qemu/range.h
-> @@ -20,6 +20,8 @@
->   #ifndef QEMU_RANGE_H
->   #define QEMU_RANGE_H
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 3b6826996a..863eec3943 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -1143,6 +1143,34 @@ static void vfio_iommu_legacy_class_init(ObjectClass *klass, void *data)
+>       vioc->pci_hot_reset = vfio_legacy_pci_hot_reset;
+>   };
 >   
-> +#include "qemu/bitops.h"
-> +
->   /*
->    * Operations on 64 bit address ranges.
->    * Notes:
-> @@ -217,6 +219,15 @@ static inline int ranges_overlap(uint64_t first1, uint64_t len1,
->       return !(last2 < first1 || last1 < first2);
->   }
->   
-> +/* Get highest non-zero bit position of a range */
-> +static inline int range_get_last_bit(Range *range)
+> +static bool hiod_legacy_vfio_realize(HostIOMMUDevice *hiod, void *opaque,
+> +                                     Error **errp)
 > +{
-> +    if (range_is_empty(range) || !range->upb) {
-> +        return -1;
-> +    }
-> +    return find_last_bit(&range->upb, sizeof(range->upb));
+> +    VFIODevice *vdev = opaque;
+> +    /* iova_ranges is a sorted list */
+> +    GList *l = g_list_last(vdev->bcontainer->iova_ranges);
+> +
+> +    /* There is no VFIO uAPI to query host platform IOMMU type */
+> +    hiod->caps.type = IOMMU_HW_INFO_TYPE_NONE;
+> +    HOST_IOMMU_DEVICE_IOMMUFD_VFIO(hiod)->vdev = vdev;
 
-This breaks builds on 32-bit host systems.
+cast uses the wrong type and I am not sure the ->vdev is useful.
 
 
 Thanks,
 
 C.
 
-
+  
+> +
+> +    if (l) {
+> +        Range *range = l->data;
+> +        hiod->caps.aw_bits = range_get_last_bit(range) + 1;
+> +    } else {
+> +        hiod->caps.aw_bits = 0xff;
+> +    }
+> +
+> +    return true;
 > +}
 > +
->   /*
->    * Return -1 if @a < @b, 1 @a > @b, and 0 if they touch or overlap.
->    * Both @a and @b must not be empty.
+> +static void hiod_legacy_vfio_class_init(ObjectClass *oc, void *data)
+> +{
+> +    HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
+> +
+> +    hioc->realize = hiod_legacy_vfio_realize;
+> +};
+> +
+>   static const TypeInfo types[] = {
+>       {
+>           .name = TYPE_VFIO_IOMMU_LEGACY,
+> @@ -1152,6 +1180,7 @@ static const TypeInfo types[] = {
+>           .name = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO,
+>           .parent = TYPE_HOST_IOMMU_DEVICE,
+>           .instance_size = sizeof(HostIOMMUDeviceLegacyVFIO),
+> +        .class_init = hiod_legacy_vfio_class_init,
+>       }
+>   };
+>   
 
 
