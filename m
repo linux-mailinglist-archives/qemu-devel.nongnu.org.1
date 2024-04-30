@@ -2,114 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EC68B7969
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 806318B7967
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:28:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1oTH-0007ck-41; Tue, 30 Apr 2024 10:28:39 -0400
+	id 1s1oSo-00075c-Er; Tue, 30 Apr 2024 10:28:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oTD-0007Zk-Cx
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:35 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oTB-0000DK-JR
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:35 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B30231F7E1;
- Tue, 30 Apr 2024 14:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714487311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1s1oSj-00074h-ET
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1s1oSU-0008US-2a
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:28:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714487264;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XR4PsYLBqiMcIWpbzGk7GF4VXSqRCHlV+CLogrxVL+s=;
- b=pb8i5EqkNXktwrnSlSA7mXYglLCpHnXNpq+lRiEflaBKE0qNvsBPN9ZXV46egakPJ5z3kk
- XD2acEKdg0nk/z4mE+U8RPAp7g8ixS9+Rtkv3otRjukGKnmUT6uwEnC0DqR4krob9iu2n8
- 0d5R3xNxcUuSye/RkNb2Gqdr6uvxuHw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714487311;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XR4PsYLBqiMcIWpbzGk7GF4VXSqRCHlV+CLogrxVL+s=;
- b=1Ia+djh2qrn/Pxw/afiPLM0DI2wat0uY/i9w1aSDFot4azHTh5Y8s+ihAV3NK9s/DkPrKa
- //q8H4022lVrRABw==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=pb8i5Eqk;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1Ia+djh2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714487311; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XR4PsYLBqiMcIWpbzGk7GF4VXSqRCHlV+CLogrxVL+s=;
- b=pb8i5EqkNXktwrnSlSA7mXYglLCpHnXNpq+lRiEflaBKE0qNvsBPN9ZXV46egakPJ5z3kk
- XD2acEKdg0nk/z4mE+U8RPAp7g8ixS9+Rtkv3otRjukGKnmUT6uwEnC0DqR4krob9iu2n8
- 0d5R3xNxcUuSye/RkNb2Gqdr6uvxuHw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714487311;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XR4PsYLBqiMcIWpbzGk7GF4VXSqRCHlV+CLogrxVL+s=;
- b=1Ia+djh2qrn/Pxw/afiPLM0DI2wat0uY/i9w1aSDFot4azHTh5Y8s+ihAV3NK9s/DkPrKa
- //q8H4022lVrRABw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 54DAF133A7;
- Tue, 30 Apr 2024 14:28:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id aBhaBw4AMWZjSQAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 30 Apr 2024 14:28:30 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, devel@lists.libvirt.org
-Subject: [PATCH v3 6/6] migration: Deprecate fd: for file migration
-Date: Tue, 30 Apr 2024 11:27:37 -0300
-Message-Id: <20240430142737.29066-7-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240430142737.29066-1-farosas@suse.de>
-References: <20240430142737.29066-1-farosas@suse.de>
+ bh=j7zsDVy3L3Qacv5EF9ymdXqfbRbkLZETYwZ1Xh3+vkM=;
+ b=aRau/Ualp72bz+izkRgQ743lSbbLCv5+L943cWSx79vY1SdHAOEd8WZ6wVyWAeN+tme7uV
+ 5AwS26St1DZni4iQ8aOYih4hXC7xGk93xdkAGBpzhJWHR6M95maooSrT560YRaTRlTKq2O
+ KuQin5VjfrFSu7ym9m5uXKytK70N8GI=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-619-wqH0DcrpNt6W5v1MYmf5cg-1; Tue, 30 Apr 2024 10:27:42 -0400
+X-MC-Unique: wqH0DcrpNt6W5v1MYmf5cg-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2df7b174b87so32388881fa.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 07:27:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714487261; x=1715092061;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=j7zsDVy3L3Qacv5EF9ymdXqfbRbkLZETYwZ1Xh3+vkM=;
+ b=nX6O5+ejcvb8MIAPLBoQ1LmS7an2ISVlYwq1JNo5KBmzZIvaTQwEGgl3m9hGZlATAS
+ 7Wemmc+8xMPWH4J2rFxR10Dlzhf5YDa5uPyQP5RW3KzeU/jC6RpjYgS9NPk0MxuFdaTv
+ kZi/EYYbLnFKPngcR6YSjy9l0V+0IMa5sOl/PY1dEFF5jGjixwYBhzUHtJ+5nA9T9/04
+ 7wA0Uf3JwahOh4LTQ2C/l8HwXOP/KrHA6IunfoJQAe0lSfnugAL2Bf4qSEYX8a8Yxhyo
+ X4g02Sdf2+HBM7QY9NwThVpXRs/bj1LBiVTPHaOI3vg6d+pjYnR9OkjTgEP6719gyLBj
+ E5Hw==
+X-Gm-Message-State: AOJu0YxD4hexdjE0svMxQaDrNe6Phc2U/AKP+dd/RldGopUEyW9u5CoO
+ YHrQxksi1LYNdRdIQZkKDDXWh0NIFskoSvc00DuMn/wI9TAq1jUFRA1pFkIbEjUwoR6198Lo0XA
+ rISbA7ATE3Nm6y/wM2HQ1OeFojoMntfZL2qSfjTXKRmLld3f2Jkt+
+X-Received: by 2002:a2e:a987:0:b0:2de:8685:d07b with SMTP id
+ x7-20020a2ea987000000b002de8685d07bmr2369109ljq.46.1714487261488; 
+ Tue, 30 Apr 2024 07:27:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1EwDPo8NjuKjQuq9omzMazcvSnw6h1CtvuDTKyDOqDVOen+dB+Jr9oUSevRnUrKiv+s5rUQ==
+X-Received: by 2002:a2e:a987:0:b0:2de:8685:d07b with SMTP id
+ x7-20020a2ea987000000b002de8685d07bmr2369090ljq.46.1714487261042; 
+ Tue, 30 Apr 2024 07:27:41 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ d7-20020a05600c34c700b0041b086d664fsm23584652wmq.6.2024.04.30.07.27.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Apr 2024 07:27:40 -0700 (PDT)
+Date: Tue, 30 Apr 2024 16:27:39 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com,
+ eduardo@habkost.net, mlevitsk@redhat.com, vsementsov@yandex-team.ru,
+ yc-core@yandex-team.ru, boris.ostrovsky@oracle.com
+Subject: Re: [PATCH] system/qdev-monitor: move drain_call_rcu call under if
+ (!dev) in qmp_device_add()
+Message-ID: <20240430162739.7a6e65de@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
+References: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -5.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B30231F7E1
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-5.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_EQ_ENVFROM(0.00)[]; ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[4];
- RCVD_COUNT_TWO(0.00)[2]; DKIM_TRACE(0.00)[suse.de:+]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -126,91 +102,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fd: URI can currently trigger two different types of migration, a
-TCP migration using sockets and a file migration using a plain
-file. This is in conflict with the recently introduced (8.2) QMP
-migrate API that takes structured data as JSON-like format. We cannot
-keep the same backend for both types of migration because with the new
-API the code is more tightly coupled to the type of transport. This
-means a TCP migration must use the 'socket' transport and a file
-migration must use the 'file' transport.
+On Fri,  3 Nov 2023 13:56:02 +0300
+Dmitrii Gavrilov <ds-gavr@yandex-team.ru> wrote:
 
-If we keep allowing fd: when using a file, this creates an issue when
-the user converts the old-style (fd:) to the new style ("transport":
-"socket") invocation because the file descriptor in question has
-previously been allowed to be either a plain file or a socket.
+Seems related to cpu hotpug issues,
+CCing Boris for awareness.
 
-To avoid creating too much confusion, we can simply deprecate the fd:
-+ file usage, which is thought to be rarely used currently and instead
-establish a 1:1 correspondence between fd: URI and socket transport,
-and file: URI and file transport.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- docs/about/deprecated.rst | 14 ++++++++++++++
- migration/fd.c            | 12 ++++++++++++
- 2 files changed, 26 insertions(+)
-
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 0fb5c82640..813f7996fe 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -464,3 +464,17 @@ both, older and future versions of QEMU.
- The ``blacklist`` config file option has been renamed to ``block-rpcs``
- (to be in sync with the renaming of the corresponding command line
- option).
-+
-+Migration
-+---------
-+
-+``fd:`` URI when used for file migration (since 9.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``fd:`` URI can currently provide a file descriptor that
-+references either a socket or a plain file. These are two different
-+types of migration. In order to reduce ambiguity, the ``fd:`` URI
-+usage of providing a file descriptor to a plain file has been
-+deprecated in favor of explicitly using the ``file:`` URI with the
-+file descriptor being passed as an ``fdset``. Refer to the ``add-fd``
-+command documentation for details on the ``fdset`` usage.
-diff --git a/migration/fd.c b/migration/fd.c
-index 449adaa2de..aab5189eac 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -20,6 +20,8 @@
- #include "file.h"
- #include "migration.h"
- #include "monitor/monitor.h"
-+#include "qemu/error-report.h"
-+#include "qemu/sockets.h"
- #include "io/channel-util.h"
- #include "trace.h"
- 
-@@ -32,6 +34,11 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
-         return;
-     }
- 
-+    if (!fd_is_socket(fd)) {
-+        warn_report("fd: migration to a file is deprecated."
-+                    " Use file: instead.");
-+    }
-+
-     trace_migration_fd_outgoing(fd);
-     ioc = qio_channel_new_fd(fd, errp);
-     if (!ioc) {
-@@ -61,6 +68,11 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-         return;
-     }
- 
-+    if (!fd_is_socket(fd)) {
-+        warn_report("fd: migration to a file is deprecated."
-+                    " Use file: instead.");
-+    }
-+
-     trace_migration_fd_incoming(fd);
- 
-     ioc = qio_channel_new_fd(fd, errp);
--- 
-2.35.3
+> Original goal of addition of drain_call_rcu to qmp_device_add was to cover
+> the failure case of qdev_device_add. It seems call of drain_call_rcu was
+> misplaced in 7bed89958bfbf40df what led to waiting for pending RCU callbacks
+> under happy path too. What led to overall performance degradation of
+> qmp_device_add.
+> 
+> In this patch call of drain_call_rcu moved under handling of failure of
+> qdev_device_add.
+> 
+> Signed-off-by: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
+> ---
+>  system/qdev-monitor.c | 23 +++++++++++------------
+>  1 file changed, 11 insertions(+), 12 deletions(-)
+> 
+> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+> index 1b8005a..dc7b02d 100644
+> --- a/system/qdev-monitor.c
+> +++ b/system/qdev-monitor.c
+> @@ -856,19 +856,18 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+>          return;
+>      }
+>      dev = qdev_device_add(opts, errp);
+> -
+> -    /*
+> -     * Drain all pending RCU callbacks. This is done because
+> -     * some bus related operations can delay a device removal
+> -     * (in this case this can happen if device is added and then
+> -     * removed due to a configuration error)
+> -     * to a RCU callback, but user might expect that this interface
+> -     * will finish its job completely once qmp command returns result
+> -     * to the user
+> -     */
+> -    drain_call_rcu();
+> -
+>      if (!dev) {
+> +        /*
+> +         * Drain all pending RCU callbacks. This is done because
+> +         * some bus related operations can delay a device removal
+> +         * (in this case this can happen if device is added and then
+> +         * removed due to a configuration error)
+> +         * to a RCU callback, but user might expect that this interface
+> +         * will finish its job completely once qmp command returns result
+> +         * to the user
+> +         */
+> +        drain_call_rcu();
+> +
+>          qemu_opts_del(opts);
+>          return;
+>      }
 
 
