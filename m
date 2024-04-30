@@ -2,57 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C134C8B6B49
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE2D8B6B3D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1hh3-0001Vn-Mv; Tue, 30 Apr 2024 03:14:25 -0400
+	id 1s1hi7-0003Wm-TV; Tue, 30 Apr 2024 03:15:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgz-0001Ov-S1
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1hhw-0003OX-FF
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:15:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgy-0008Tx-2c
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:21 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1hho-00006a-0m
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:15:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714461259;
+ s=mimecast20190719; t=1714461310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=6okfwh37Ygz08OhCRrVgdxLTl0QALtsA+vWXX2pfzjI=;
- b=ayyCGlwmx96Gvrb6SlrjPGTwYvmIiEAA20GlABQazJW0q5jMtnL8q0n7aIrllZUldBxGrb
- vnzB06eKjgbiBIT07pcNbsuVOAKnxDHKPkKT+63Z0D5H6RDRPwkNg1g2rRys3B1mxQp8Kh
- dTHLuuYdb1ukDWqpKUcx+QyydWF21gE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-63-vq90ZyC3N1ezmMbcQVxbCw-1; Tue,
- 30 Apr 2024 03:14:15 -0400
-X-MC-Unique: vq90ZyC3N1ezmMbcQVxbCw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=Qm05XfiJ11YJUtgyns7rc73BV158o98FK8vvoeqqE8I=;
+ b=SGu1ihVJOOswFyk8DJ5ahSVg8yMkAYuTxYpEES/YHQ7FYSAKRow9yUwBhfP5saMJMzpRvx
+ 2KvBJI/oh5fbw79cZ9zvgeOT9CHA8jtDepNkZEhpw9xG5lxtpK1fvjF0dDlIkAo2g62GKy
+ nm2CXMCnZiT+CRp9AV++knu1W2r+sKk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-343-3laLqJ45OFGSNKwdfkmP4w-1; Tue, 30 Apr 2024 03:15:06 -0400
+X-MC-Unique: 3laLqJ45OFGSNKwdfkmP4w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1419F29ABA0E;
- Tue, 30 Apr 2024 07:14:14 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF78B40C141D;
- Tue, 30 Apr 2024 07:14:12 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/19] .gitlab-ci.d/cirrus: Remove the netbsd and openbsd jobs
-Date: Tue, 30 Apr 2024 09:13:40 +0200
-Message-ID: <20240430071340.413305-20-thuth@redhat.com>
-In-Reply-To: <20240430071340.413305-1-thuth@redhat.com>
-References: <20240430071340.413305-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34F3080017B;
+ Tue, 30 Apr 2024 07:15:05 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C26FC15771;
+ Tue, 30 Apr 2024 07:15:04 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 45F5A21E66C8; Tue, 30 Apr 2024 09:15:03 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Michael Galaxy <mgalaxy@akamai.com>,  Yu Zhang <yu.zhang@ionos.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,  Jinpu Wang
+ <jinpu.wang@ionos.com>,  Elmar Gerdes <elmar.gerdes@ionos.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,  Yuval Shaia
+ <yuval.shaia.ml@gmail.com>,  Kevin Wolf <kwolf@redhat.com>,  Prasanna
+ Kumar Kalever <prasanna.kalever@redhat.com>,  Cornelia Huck
+ <cohuck@redhat.com>,  Michael Roth <michael.roth@amd.com>,  Prasanna Kumar
+ Kalever <prasanna4324@gmail.com>,  "integration@gluster.org"
+ <integration@gluster.org>,  Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,  Daniel P. =?utf-8?Q?Be?=
+ =?utf-8?Q?rrang=C3=A9?= <berrange@redhat.com>,  "devel@lists.libvirt.org"
+ <devel@lists.libvirt.org>,  Hanna Reitz <hreitz@redhat.com>,  "Michael S.
+ Tsirkin" <mst@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Eric Blake
+ <eblake@redhat.com>,  Song Gao <gaosong@loongson.cn>,  =?utf-8?Q?Marc-And?=
+ =?utf-8?Q?r=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
+ <bleal@redhat.com>,  arei.gonglei@huawei.com,  pannengyuan@huawei.com
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+In-Reply-To: <Zi-1OvxA5MIHjklU@x1n> (Peter Xu's message of "Mon, 29 Apr 2024
+ 10:56:58 -0400")
+References: <Zgx3brrz8m0V7HS4@x1n>
+ <CAMGffE=i+hVCNaX_31h1D1VW7JGJBqoa9T0qEJe2CDcb9BPiAA@mail.gmail.com>
+ <ZhQYu3ZnsIGv2qUZ@x1n>
+ <CAMGffEm2TWJxOPcNQTQ1Sjytf5395dBzTCMYiKRqfxDzJwSN6A@mail.gmail.com>
+ <ZhWa0YeAb9ySVKD1@x1n>
+ <082a21b0-d4d1-9f6c-24b5-bee56263008e@fujitsu.com>
+ <ZhaY2_cO6CrQFCt3@x1n> <Zhfxoaz9yNTx8Btd@x1n>
+ <CAHEcVy7POArt+CmY8dyNTzLJp3XxXgjh3k8=C=9K+_cw1CSJFA@mail.gmail.com>
+ <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ <Zi-1OvxA5MIHjklU@x1n>
+Date: Tue, 30 Apr 2024 09:15:03 +0200
+Message-ID: <877cgfe2yw.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -76,108 +106,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During the past months, the netbsd and openbsd jobs in the Cirrus-CI
-were broken most of the time - the setup to run a BSD in KVM on Cirrus-CI
-from gitlab via the cirrus-run script was very fragile, and since the
-jobs were not run by default, it used to bitrot very fast.
+Peter Xu <peterx@redhat.com> writes:
 
-Now Cirrus-CI also introduce a limit on the amount of free CI minutes
-that you get there, so it is not appealing at all anymore to run
-these BSDs in this setup - it's better to run the checks locally via
-"make vm-build-openbsd" and "make vm-build-netbsd" instead. Thus let's
-remove these CI jobs now.
+> On Mon, Apr 29, 2024 at 08:08:10AM -0500, Michael Galaxy wrote:
+>> Hi All (and Peter),
+>
+> Hi, Michael,
+>
+>> 
+>> My name is Michael Galaxy (formerly Hines). Yes, I changed my last name
+>> (highly irregular for a male) and yes, that's my real last name:
+>> https://www.linkedin.com/in/mrgalaxy/)
+>> 
+>> I'm the original author of the RDMA implementation. I've been discussing
+>> with Yu Zhang for a little bit about potentially handing over maintainership
+>> of the codebase to his team.
+>> 
+>> I simply have zero access to RoCE or Infiniband hardware at all,
+>> unfortunately. so I've never been able to run tests or use what I wrote at
+>> work, and as all of you know, if you don't have a way to test something,
+>> then you can't maintain it.
+>> 
+>> Yu Zhang put a (very kind) proposal forward to me to ask the community if
+>> they feel comfortable training his team to maintain the codebase (and run
+>> tests) while they learn about it.
+>
+> The "while learning" part is fine at least to me.  IMHO the "ownership" to
+> the code, or say, taking over the responsibility, may or may not need 100%
+> mastering the code base first.  There should still be some fundamental
+> confidence to work on the code though as a starting point, then it's about
+> serious use case to back this up, and careful testings while getting more
+> familiar with it.
 
-Message-ID: <20240426113742.654748-1-thuth@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- .gitlab-ci.d/cirrus.yml           | 37 -------------------------------
- .gitlab-ci.d/cirrus/kvm-build.yml | 31 --------------------------
- 2 files changed, 68 deletions(-)
- delete mode 100644 .gitlab-ci.d/cirrus/kvm-build.yml
+How much experience we expect of maintainers depends on the subsystem
+and other circumstances.  The hard requirement isn't experience, it's
+trust.  See the recent attack on xz.
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 49f86fadaf..75df1273bc 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -91,40 +91,3 @@ aarch64-macos-14-base-build:
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
-     QEMU_JOB_OPTIONAL: 1
--
--
--# The following jobs run VM-based tests via KVM on a Linux-based Cirrus-CI job
--.cirrus_kvm_job:
--  extends: .base_job_template
--  stage: build
--  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
--  needs: []
--  timeout: 80m
--  script:
--    - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
--          -e "s|[@]CI_COMMIT_REF_NAME@|$CI_COMMIT_REF_NAME|g"
--          -e "s|[@]CI_COMMIT_SHA@|$CI_COMMIT_SHA|g"
--          -e "s|[@]NAME@|$NAME|g"
--          -e "s|[@]CONFIGURE_ARGS@|$CONFIGURE_ARGS|g"
--          -e "s|[@]TEST_TARGETS@|$TEST_TARGETS|g"
--      <.gitlab-ci.d/cirrus/kvm-build.yml >.gitlab-ci.d/cirrus/$NAME.yml
--    - cat .gitlab-ci.d/cirrus/$NAME.yml
--    - cirrus-run -v --show-build-log always .gitlab-ci.d/cirrus/$NAME.yml
--  variables:
--    QEMU_JOB_CIRRUS: 1
--    QEMU_JOB_OPTIONAL: 1
--
--
--x86-netbsd:
--  extends: .cirrus_kvm_job
--  variables:
--    NAME: netbsd
--    CONFIGURE_ARGS: --target-list=x86_64-softmmu,ppc64-softmmu,aarch64-softmmu
--    TEST_TARGETS: check
--
--x86-openbsd:
--  extends: .cirrus_kvm_job
--  variables:
--    NAME: openbsd
--    CONFIGURE_ARGS: --target-list=i386-softmmu,riscv64-softmmu,mips64-softmmu
--    TEST_TARGETS: check
-diff --git a/.gitlab-ci.d/cirrus/kvm-build.yml b/.gitlab-ci.d/cirrus/kvm-build.yml
-deleted file mode 100644
-index a93881aa8b..0000000000
---- a/.gitlab-ci.d/cirrus/kvm-build.yml
-+++ /dev/null
-@@ -1,31 +0,0 @@
--container:
--  image: fedora:35
--  cpu: 4
--  memory: 8Gb
--  kvm: true
--
--env:
--  CIRRUS_CLONE_DEPTH: 1
--  CI_REPOSITORY_URL: "@CI_REPOSITORY_URL@"
--  CI_COMMIT_REF_NAME: "@CI_COMMIT_REF_NAME@"
--  CI_COMMIT_SHA: "@CI_COMMIT_SHA@"
--
--@NAME@_task:
--  @NAME@_vm_cache:
--    folder: $HOME/.cache/qemu-vm
--  install_script:
--    - dnf update -y
--    - dnf install -y git make openssh-clients qemu-img qemu-system-x86 wget meson
--  clone_script:
--    - git clone --depth 100 "$CI_REPOSITORY_URL" .
--    - git fetch origin "$CI_COMMIT_REF_NAME"
--    - git reset --hard "$CI_COMMIT_SHA"
--  build_script:
--    - if [ -f $HOME/.cache/qemu-vm/images/@NAME@.img ]; then
--        make vm-build-@NAME@ J=$(getconf _NPROCESSORS_ONLN)
--          EXTRA_CONFIGURE_OPTS="@CONFIGURE_ARGS@"
--          BUILD_TARGET="@TEST_TARGETS@" ;
--      else
--        make vm-build-@NAME@ J=$(getconf _NPROCESSORS_ONLN) BUILD_TARGET=help
--          EXTRA_CONFIGURE_OPTS="--disable-system --disable-user --disable-tools" ;
--      fi
--- 
-2.44.0
+I do not mean to express any doubts whatsoever on Yu Zhang's integrity!
+I'm merely reminding y'all what's at stake.
+
+[...]
 
 
