@@ -2,105 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A5A8B81EA
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 23:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 019718B81C8
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 23:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1v20-00061T-0l; Tue, 30 Apr 2024 17:28:56 -0400
+	id 1s1ujb-0000A8-RE; Tue, 30 Apr 2024 17:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1s1v1x-00061J-H9
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:28:53 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1s1v1v-0008EC-1Q
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:28:53 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43UKviHo010125; Tue, 30 Apr 2024 21:28:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=WQ0fGuz1V77JvFff2Di9C9Rc/joON5eNRhThx/SAMMI=;
- b=PWDd8wfLD4POAHt/sqeocOGzpXNPfXhgZ2a6TXa8JA+QS1e7+SWIIRIhQP7G54W9O3P0
- zVW35HIv3NX6U10Zyjl4Z7XdLVlWkwijyx69EoMXJCrocGb+RboBeWxBb3Ugbr3Tbthg
- ta8FoaMyonSwJe44k5A6YSkHOaBxiMDuRKPte/yuqUV5lgrPJDKOrcHmpE2/TcTh7I0r
- xITHiTM1B1kmPjMW//Hu0g4/xNw35StEv2dnguB2z3rKE5wfxfJDyT80cKWPpgQ3A2ZO
- 1MgQFzbKWcTxX9yxxgGTxZjNxo3VKW4abmSxJOcqvzm7qv1eAc1YEt8/k67UkJZlPU3m ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu84kr2fn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Apr 2024 21:28:47 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43ULSla4028568;
- Tue, 30 Apr 2024 21:28:47 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu84kr2f9-2
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Apr 2024 21:28:47 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43UKfTMh022258; Tue, 30 Apr 2024 21:02:16 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xsd6mq2b5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Apr 2024 21:02:16 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43UL2DNN26346174
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Apr 2024 21:02:15 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A65DD58066;
- Tue, 30 Apr 2024 21:02:11 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C31558064;
- Tue, 30 Apr 2024 21:02:11 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 30 Apr 2024 21:02:11 +0000 (GMT)
-Message-ID: <72bc9ea8-5492-425e-a797-f0139f369a4a@linux.ibm.com>
-Date: Tue, 30 Apr 2024 17:02:10 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/2] tpm: add mssim backend
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20240430190855.2811-1-James.Bottomley@HansenPartnership.com>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20240430190855.2811-1-James.Bottomley@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bhD7AVzEdOHivaVuRoHMYZqWMjJYGHKH
-X-Proofpoint-GUID: u_iLqNXLNfjffm8F9D7maPSTy4kpAYQR
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1ujZ-00009t-Kd
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:09:53 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1ujY-0004sW-38
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:09:53 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-34d9c9f2cf0so761445f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 14:09:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714511390; x=1715116190; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Jguxh0Ekn0HtIV7fJ+h+3AzTKJigWr76TPmo2hxPDzk=;
+ b=Lxnq5RzmaZzDZniSWv9fnaI36O8D4gcW7Lo1agEgNqdND6O8L5AYJwDLhqZcIvH/V8
+ TtjxTrts6hFtYn/eX009HV6pLFvVRaLB1u6E4YKIR8BxYpewEA+lV4EvQ7ydLBCYhdT1
+ hqFzuK2zEvEIPD8uPXcjq8HlS8/ntzcnd/1y47fFDLSqGyo8/ujI7IVZnXmG5NfgbqbZ
+ 6Jdi6jFey1YuCTWSEwkODZ/Jvm9KR1JrWlf0h2WQQOU3xBH6wkokhzZ8hYDdVpmmyuaw
+ UryKLqoKD6JMbuWQ1NO6ayqZ0OC3VpeyIji4hyO+SDhb1TWHHIt8jqZavbo+LWS9g2Q9
+ hM2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714511390; x=1715116190;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Jguxh0Ekn0HtIV7fJ+h+3AzTKJigWr76TPmo2hxPDzk=;
+ b=p7AeFkrqQbsUorjIX2S2S7rmIxNxkH5YP87G0Pp+cdn7pGzGOxfh5behLg+ztt7eeP
+ urXj5cIAiiXTrV8H8lYde953ryLt4QVnkO7xoejM3xu3ZjbxSPuBxYn43q4skpevr2zw
+ Q6hq2uP1mG2M79bpUWRFfAvCsHjuHIG3ZAsNYbTawk+aWKgeL8hvDEIybL7fodX0IFby
+ e5GemkjMjp9nuqvlnc+ye5po+pUyeCb9iyYyi7+bH7QOxoZDpdCcniI6t/PNrt+nA+Vm
+ KCV34vXfzNuOtf9Os1ZG+a40QcXld28gIrX7wV32ss09u+7W2O2PtFP02/NhZtkFLLCf
+ bRHg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUzguUpuIVMKFda1zzDCMrUJtjYhBW+H6KUKnYbSIEHH2Q2+qfa5cRzSKIdNaPdq67H+ly7vRj/2UcFMcC0Egr4inm8SLU=
+X-Gm-Message-State: AOJu0Yx4SokLchSfaPdGXwO4NOm6qyCTVFj+DpYk8KpOVZA3gj+MJxMv
+ KvZ6fiw9zZq+usUEhIDlHSl1CE+KEMQweH/AkfTcLx3ND0Qkw4rsC8m/C1au//A=
+X-Google-Smtp-Source: AGHT+IGNgrTkG4VRB4r7Hdp8F/eYqNWzbYoWvrknbSkkPKTG+bbpLMJ0VwsLCDU+c2X+rBoeYSEvjQ==
+X-Received: by 2002:a5d:595e:0:b0:347:2b42:a397 with SMTP id
+ e30-20020a5d595e000000b003472b42a397mr676912wri.4.1714511390026; 
+ Tue, 30 Apr 2024 14:09:50 -0700 (PDT)
+Received: from [192.168.69.100] (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
+ [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
+ wr5-20020a170907700500b00a58f4be4279sm3766070ejb.74.2024.04.30.14.09.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Apr 2024 14:09:49 -0700 (PDT)
+Message-ID: <e48cafa3-8d54-42fd-b7f7-6ec861d1f2e1@linaro.org>
+Date: Tue, 30 Apr 2024 23:09:47 +0200
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-30_13,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 priorityscore=1501
- mlxlogscore=816 mlxscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404300154
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 08/10] util/bufferiszero: Simplify
+ test_buffer_is_zero_next_accel
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240430194253.904768-1-richard.henderson@linaro.org>
+ <20240430194253.904768-9-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240430194253.904768-9-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,69 +94,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 4/30/24 15:08, James Bottomley wrote:
-> The requested feedback was to convert the tpmdev handler to being json
-> based, which requires rethreading all the backends.  The good news is
-> this reduced quite a bit of code (especially as I converted it to
-> error_fatal handling as well, which removes the return status
-> threading).  The bad news is I can't test any of the conversions.
-> swtpm still isn't building on opensuse and, apparently, passthrough
-
-It does build and packages are available:
-- 
-https://app.travis-ci.com/github/stefanberger/swtpm-distro-compile/jobs/621150390
-- https://software.opensuse.org/package/swtpm
-
-> doesn't like my native TPM because it doesn't allow cancellation.
+On 30/4/24 21:42, Richard Henderson wrote:
+> Because the three alternatives are monotonic, we don't need
+> to keep a couple of bitmasks, just identify the strongest
+> alternative at startup.
 > 
-> v3 pulls out more unneeded code in the visitor conversion, makes
-> migration work on external state preservation of the simulator and
-> adds documentation
+> Generalize test_buffer_is_zero_next_accel and init_accel
+> by always defining an accel_table array.
 > 
-> v4 puts back the wrapper options (but doesn't add any for mssim since
-> it post dates the necessity)
-> 
-> v5 rebases to the latest master branch and adjusts for removed use_FOO ptrs
-> 
-> v5 updates help to exit zero; does some checkpatch tidying
-> 
-> v7 merge review feedback and add acks.
-> 
-> v8 adds better error handling, more code tidies and adds command
->     socket disconnection/reconnection (instead of trying to keep the
->     socket open the whole time).  This adds overhead, but makes
->     debugging guest kernel TPM issues much easier.
-> 
-> v9 Fix merge conflict with optarg->optstr conversion
-> 
-> v10 Fix more merge conflicts and update API versions
-> 
-> James
-> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> 
-> James Bottomley (2):
->    tpm: convert tpmdev options processing to new visitor format
->    tpm: add backend for mssim
-> 
->   MAINTAINERS                    |   6 +
->   backends/tpm/Kconfig           |   5 +
->   backends/tpm/meson.build       |   1 +
->   backends/tpm/tpm_emulator.c    |  25 ++-
->   backends/tpm/tpm_mssim.c       | 319 +++++++++++++++++++++++++++++++++
->   backends/tpm/tpm_mssim.h       |  44 +++++
->   backends/tpm/tpm_passthrough.c |  23 +--
->   docs/specs/tpm.rst             |  39 ++++
->   include/sysemu/tpm.h           |   5 +-
->   include/sysemu/tpm_backend.h   |   2 +-
->   qapi/tpm.json                  |  50 +++++-
->   system/tpm-hmp-cmds.c          |   9 +
->   system/tpm.c                   |  91 ++++------
->   system/vl.c                    |  19 +-
->   14 files changed, 530 insertions(+), 108 deletions(-)
->   create mode 100644 backends/tpm/tpm_mssim.c
->   create mode 100644 backends/tpm/tpm_mssim.h
-> 
+>   util/bufferiszero.c | 81 ++++++++++++++++++++-------------------------
+>   1 file changed, 35 insertions(+), 46 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
