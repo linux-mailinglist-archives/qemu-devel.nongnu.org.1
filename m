@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1618B6EB2
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDD28B6EB4
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 11:42:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1jzk-00054T-Se; Tue, 30 Apr 2024 05:41:52 -0400
+	id 1s1k0N-0005VL-MZ; Tue, 30 Apr 2024 05:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jze-0004hd-Fy
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzs-0005LI-R6
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:42:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzc-0005uk-Hp
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:41:45 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1jzq-00061D-1K
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:42:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714470101;
+ s=mimecast20190719; t=1714470117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xlL7Qzo9mZNyJ6Z1TuQkziJBsHMvA966HXlmzEgDbyw=;
- b=Fa+DTEP6wxGuw+0lb2OZYuMMtFfkVa1wkeWHn0X3ol27vVTGn4yZ6U5DDKgQbv3YeopSXn
- kn38LikIjoxirurFcnQ5kdNLUmuIWuC0cY7Ncr3Xergo/wUFluDPTR1k1TQ1D5q7LxFYaK
- t1jokgYsEdwC9d2jlr5e4gtajNPWQSw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S/Cpp2bDKCkxl6q8f+ydpWefrCWFgLs9SANUXiL2h9w=;
+ b=UhiL/AjeK5UsY2jK17v3IbG1T71qjbK11lwQmeSrHSE60+nLwCb8tDTxNwmtQkP1u/q6qs
+ iqpuB2pZZsRhzf9EyDyNcFLM9oO+dAS8IoZbQhalCcA3M9eMSE5t2STGtASyUubd6sc5+A
+ Nso+C9usDa83c4DiL43hfnv9+06wqkU=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-LUNP8gZiNI6aoHAL2Dp7vg-1; Tue, 30 Apr 2024 05:41:39 -0400
-X-MC-Unique: LUNP8gZiNI6aoHAL2Dp7vg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a5872678bd2so299050466b.3
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 02:41:39 -0700 (PDT)
+ us-mta-149-RBcscjUCNZ-8yOcipFKHIA-1; Tue, 30 Apr 2024 05:41:55 -0400
+X-MC-Unique: RBcscjUCNZ-8yOcipFKHIA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a58bbfd44f7so264209066b.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 02:41:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714470098; x=1715074898;
+ d=1e100.net; s=20230601; t=1714470114; x=1715074914;
  h=content-transfer-encoding:in-reply-to:content-language:references
  :cc:to:subject:from:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xlL7Qzo9mZNyJ6Z1TuQkziJBsHMvA966HXlmzEgDbyw=;
- b=sYF/zaCGV39qjCLFwTbcdryscWJIbB03B8tNJOrGJB0/OftiGnjlvXpTC0tMCqo1QG
- TWgf/OhPAKCK6RXGS7KSjxnaqOgC9OlYoQLr821JqAQnrwLGHI9W4YGp5DgVO7aRt5yV
- Ian2QocCTC5CCFctuGQdYsXyHRQ+6sISp9c21SBoO77jZfLEDCcSdOoPEJp2gkBJZ2Ho
- XZppL8ejufdcU/xFvZw/W7zVs5HSc2j7jWJ9/VFUwjbTLZpznWlhjUZOo+dc/nXcXn0s
- 9hoMblPYP0Z/5vf+WK6JsXMtu+k06J09eY88B0AWJLYi8LOfjhkCfCbgSJgsHlOEU1pp
- GO6Q==
+ bh=S/Cpp2bDKCkxl6q8f+ydpWefrCWFgLs9SANUXiL2h9w=;
+ b=Y2wDeh6z71c8FBre+5gtDMDY67jzEKgbUuqjb5cxuZH9ZxexhYdQmy05t76RwONXf0
+ PeZJtPlKMcn6pDQRJAKH6DkS8X2CPuXBNA1SppG4KYybiRQgv6Ea3N821zuRPUC+rdXG
+ hr+mi85XgOmkuRWEKwrJ8wZptex4XBD8jfSJTMtQ3HPQZ+QbS2hTK7oxIbj8h1I+vL3H
+ v0a8iUzyiDNevpOr/RaWhIbBie9u2oGzcREZeXt0YjklRpPRio/tP9RndgiUMQWfb80r
+ MqJ2pWy46222u76nej+1auGfbb8Z6NXPacEd+ilrujB0fql7RqrCyek/BX7BG5NfjHoR
+ KW9g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX+56598KzFmOjh15ZyWXa8RXu1Ryc1GkuhauqxCTFp+fyrP8MtPcREpG9m9wI9l0QcjoZ56LNmm3MBYYHqLgbgnP30aOg=
-X-Gm-Message-State: AOJu0YxixINmmmBylysBacdEQQSgm7o3nHf6QiJ7VxGBhn/MOEhrYPfb
- hrewh/7lE1BUWRmy2olX87+3gk2C49vqGYuIehAQdq/sYJhz8eZrMlKiOho48d/+UikZ+jbilTd
- SFEEjoQ87iHjhVxW2WzEFQhvoHjKghTUdTAHmR3z+vsYmt2m7k0z/
-X-Received: by 2002:a17:906:7f03:b0:a52:6435:ef09 with SMTP id
- d3-20020a1709067f0300b00a526435ef09mr8602340ejr.76.1714470098462; 
- Tue, 30 Apr 2024 02:41:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXsIM/BUKSIXZyJROdcuOL0Mj/aTocRr2DirGyexTPp0ti8oYacIOXCEOG9NOt+LSV2ponTg==
-X-Received: by 2002:a17:906:7f03:b0:a52:6435:ef09 with SMTP id
- d3-20020a1709067f0300b00a526435ef09mr8602331ejr.76.1714470098219; 
- Tue, 30 Apr 2024 02:41:38 -0700 (PDT)
+ AJvYcCWv6jRaATOu+5bQ/9dhEuZK3rL+3oWPZTH0ZgB/mJYLcBthfrOOih8osOF9Sm3/ArRqs5qAf7K/iOA8LmB0Gl2GhV/X870=
+X-Gm-Message-State: AOJu0YybdXfI3RQ/O8LFgsiYfXKGr88/3cBp9Zo/VsAICqXNX1Vwt9hh
+ Y9FzFHXQhmQrVCHktYNum7Z2I9Dy4w1EM+E/tYNYxCLHSJUeGL9R/rTni7tplCqgZzsKOMX1EKg
+ /k188pqUqJXoqtl0gvoaM7OyfZeDPQK6uLdlTZWrJgzBV6tk29zZf
+X-Received: by 2002:a17:906:488e:b0:a52:71bf:925c with SMTP id
+ v14-20020a170906488e00b00a5271bf925cmr7118929ejq.62.1714470114342; 
+ Tue, 30 Apr 2024 02:41:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtzoF4mhX5nMjwBrdQGo1+E7Es7b/KCFz910EUESfqF/hRnAbcdPkBZHp9eoShXShgL7W5Uw==
+X-Received: by 2002:a17:906:488e:b0:a52:71bf:925c with SMTP id
+ v14-20020a170906488e00b00a5271bf925cmr7118919ejq.62.1714470114115; 
+ Tue, 30 Apr 2024 02:41:54 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- gl20-20020a170906e0d400b00a5889ee66d6sm7803905ejb.45.2024.04.30.02.41.36
+ l2-20020a1709060e0200b00a4da28f42f1sm15111670eji.177.2024.04.30.02.41.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 02:41:37 -0700 (PDT)
-Message-ID: <dccbba66-57c9-45de-9fa9-beb7b528e0b1@redhat.com>
-Date: Tue, 30 Apr 2024 11:41:36 +0200
+ Tue, 30 Apr 2024 02:41:53 -0700 (PDT)
+Message-ID: <0ca17106-a529-4d54-989f-9b9b47c6b8a7@redhat.com>
+Date: Tue, 30 Apr 2024 11:41:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Subject: Re: [PATCH v3 11/19] backends/iommufd: Implement
- HostIOMMUDeviceClass::check_cap() handler
+Subject: Re: [PATCH v3 13/19] vfio: Create host IOMMU device instance
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com
 References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
- <20240429065046.3688701-12-zhenzhong.duan@intel.com>
+ <20240429065046.3688701-14-zhenzhong.duan@intel.com>
 Content-Language: en-US, fr
-In-Reply-To: <20240429065046.3688701-12-zhenzhong.duan@intel.com>
+In-Reply-To: <20240429065046.3688701-14-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
@@ -107,56 +106,81 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/29/24 08:50, Zhenzhong Duan wrote:
+> Create host IOMMU device instance in vfio_attach_device() and call
+> .realize() to initialize it further.
+> 
 > Suggested-by: Cédric Le Goater <clg@redhat.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->   backends/iommufd.c | 18 ++++++++++++++++++
->   1 file changed, 18 insertions(+)
+>   include/hw/vfio/vfio-common.h |  1 +
+>   hw/vfio/common.c              | 18 +++++++++++++++++-
+>   2 files changed, 18 insertions(+), 1 deletion(-)
 > 
-> diff --git a/backends/iommufd.c b/backends/iommufd.c
-> index d61209788a..28faec528e 100644
-> --- a/backends/iommufd.c
-> +++ b/backends/iommufd.c
-> @@ -233,6 +233,23 @@ int iommufd_backend_get_device_info(IOMMUFDBackend *be, uint32_t devid,
->       return ret;
->   }
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 0943add3bc..b204b93a55 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -126,6 +126,7 @@ typedef struct VFIODevice {
+>       OnOffAuto pre_copy_dirty_page_tracking;
+>       bool dirty_pages_supported;
+>       bool dirty_tracking;
+> +    HostIOMMUDevice *hiod;
+>       int devid;
+>       IOMMUFDBackend *iommufd;
+>   } VFIODevice;
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 8f9cbdc026..0be8b70ebd 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1497,6 +1497,8 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>   {
+>       const VFIOIOMMUClass *ops =
+>           VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
+> +    HostIOMMUDevice *hiod;
+> +    int ret;
 >   
-> +static int hiod_iommufd_check_cap(HostIOMMUDevice *hiod, int cap, Error **errp)
-> +{
-> +    switch (cap) {
-> +    case HOST_IOMMU_DEVICE_CAP_IOMMUFD:
-> +        return 1;
+>       if (vbasedev->iommufd) {
+>           ops = VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUFD));
+> @@ -1504,7 +1506,20 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>   
+>       assert(ops);
+>   
+> -    return ops->attach_device(name, vbasedev, as, errp);
+> +    ret = ops->attach_device(name, vbasedev, as, errp);
+> +    if (ret < 0) {
+> +        return ret;
 
-I don't understand this value.
+
+hmm, I wonder if we should change the return value of vfio_attach_device()
+to be a bool.
 
 
 Thanks,
 
 C.
 
+	
 
-> +    default:
-> +        return host_iommu_device_check_cap_common(hiod, cap, errp);
 > +    }
-> +}
 > +
-> +static void hiod_iommufd_class_init(ObjectClass *oc, void *data)
-> +{
-> +    HostIOMMUDeviceClass *hioc = HOST_IOMMU_DEVICE_CLASS(oc);
+> +    hiod = HOST_IOMMU_DEVICE(object_new(ops->hiod_typename));
+> +    if (!HOST_IOMMU_DEVICE_GET_CLASS(hiod)->realize(hiod, vbasedev, errp)) {
+> +        object_unref(hiod);
+> +        ops->detach_device(vbasedev);
+> +        return -EINVAL;
+> +    }
+> +    vbasedev->hiod = hiod;
 > +
-> +    hioc->check_cap = hiod_iommufd_check_cap;
-> +};
-> +
->   static const TypeInfo types[] = {
->       {
->           .name = TYPE_IOMMUFD_BACKEND,
-> @@ -251,6 +268,7 @@ static const TypeInfo types[] = {
->           .parent = TYPE_HOST_IOMMU_DEVICE,
->           .instance_size = sizeof(HostIOMMUDeviceIOMMUFD),
->           .class_size = sizeof(HostIOMMUDeviceIOMMUFDClass),
-> +        .class_init = hiod_iommufd_class_init,
->           .abstract = true,
+> +    return 0;
+>   }
+>   
+>   void vfio_detach_device(VFIODevice *vbasedev)
+> @@ -1512,5 +1527,6 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>       if (!vbasedev->bcontainer) {
+>           return;
 >       }
->   };
+> +    object_unref(vbasedev->hiod);
+>       vbasedev->bcontainer->ops->detach_device(vbasedev);
+>   }
 
 
