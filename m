@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302F88B7D0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B198B7D7C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1qOx-0004K1-PM; Tue, 30 Apr 2024 12:32:19 -0400
+	id 1s1qeC-0001xR-Gc; Tue, 30 Apr 2024 12:48:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1qOf-0004EP-Nl
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:32:03 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <dario.binacchi@amarulasolutions.com>)
+ id 1s1qe9-0001ww-Lr
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:01 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1qOc-0001Ph-62
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:32:01 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41b21ed19f5so41727105e9.2
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 09:31:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dario.binacchi@amarulasolutions.com>)
+ id 1s1qe7-0005Mp-OY
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:01 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-34d0aa589a4so1645535f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 09:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714494715; x=1715099515; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TprQUrjgnD8N9rBUQzPSRwctmXsY08QQexwUVLZZZX4=;
- b=ZVK1Co475QKlNIztDm7mUM+oi9fXwnQf2xD+OWa0xb8pEBG7x5CAWSUn1L3qXy0ruk
- 83y9OLx0YJe8LzHjaMzM4SGQsHz98S0BrzgW4RznGiLFkVfLPFGHE4jFijNQMaa8C/cl
- l0vLcHufAogTf0Rg031+zpYgiVClGiP1hIXYcVu5EBqSJgSQUAPD2Mb8y1F+kxcme5rN
- acggEPPVg39mOxenXD6Sb49lOwE7vBYgQ24Amg7a8fzAHNwijXzsCalpjnLvwQpwTHru
- BV9x3p/thT6cZM8O8V0cmYdpWBKm+pYPCj+LEuYBN2OvMg6O+VAD3saS8vySTuRag8AR
- Bf9w==
+ d=amarulasolutions.com; s=google; t=1714495677; x=1715100477; darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=gkIQ267nvYf/ERCHKUNUMSvISDvAspB8i+k6G7ljsdc=;
+ b=iOW+o5jXr+1pW8+CLu5FgRcwxJLmfS2EBDG4TtEd4UGuyAgBvPHtLQswq6Jo2riyD+
+ c5WnLPgqq2jshrHToXfC8ZHwh2eEWxIqtIk3Ijly/gSScYeXTPLG5DJB0JlyFDjX82Z+
+ d2ikJRuXtgXVmCw9jNWflKu7HKR/p8MRJfkeg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714494715; x=1715099515;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TprQUrjgnD8N9rBUQzPSRwctmXsY08QQexwUVLZZZX4=;
- b=bis1+dMIxuhYPDJv6duooF4Ryqxbrx5gCc6DGgInN+4ut/mNgjAQsT45+cKexHQ5lJ
- 8ONUOgGXN/qyhJoz1652vEnJrlgHo+YIkXPMetyS8GfjEbteLD01fYaUDIe/7F4038Js
- UpaDIwQtv2GUESCHaz7A7rh/diy0ORVJdqjUsxgT3fVOKiN83zJD4uB9zQ3KtCe6tQZf
- eWvPZwq8BHfH08k9KiKpHpSldEJjsVtOuQv8nFl/oIpuFw5fiB97Mn2h9FwGKata+qgA
- SI3x0vp/n78nyl6Gf5JAsMUaclOoMrqNpdbgM/bmW2sBIBCO5r7jj4ZwSi9EUFvnT7X5
- x5Ww==
-X-Gm-Message-State: AOJu0YwRWsoOb61KoiBrPm5CuGUhtHUvq1g+EqwWvRcm1PD/0Vza5cr4
- m4LAvGCizjGRO5ZbHewLVCvq5tBAAn3OjipN65745fln1f4xB0/R6fmcr8/3HuWtSbleaqu400Q
- Z
-X-Google-Smtp-Source: AGHT+IEMNS4YajCJsNALoNCqdY8zaWToNhwu1CQNxluvzB4TQX1VBjvxvLWsSKVOgQMQ/DkUyrRrjw==
-X-Received: by 2002:a05:600c:46ca:b0:41b:f30a:41f1 with SMTP id
- q10-20020a05600c46ca00b0041bf30a41f1mr48497wmo.7.1714494715673; 
- Tue, 30 Apr 2024 09:31:55 -0700 (PDT)
-Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
- [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- l2-20020a05600c4f0200b0041be78ae1f0sm12665835wmq.2.2024.04.30.09.31.54
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 09:31:55 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1714495677; x=1715100477;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gkIQ267nvYf/ERCHKUNUMSvISDvAspB8i+k6G7ljsdc=;
+ b=lVUpdbE3nr48wx1mTgXiDxSLiLTv5B0L/3WjfJxmgyLc50OQFoDsXFGfCmAi755Hhx
+ 8Lx7P/Lj1zJJ57iCNxZuLSa8Bw6Ywi+50OUR5GY6YsoSfYDhHgevMwQ04h8gucIiS6BX
+ mIKAv4s9ozXt/quSIy55G4hv73HjYdRUwG8SF4MVeEOX3k+dB9g0SiS1Mu7bTwdv0rUl
+ OyfeTIJSWndDg+6oKTKX87Q8w5UWd75HIzHMtjpFVPk89Ogc0ZUA+qhXpmiGW4Everei
+ 5HQg5/oxKCv2KSoXCWNa5Gb88mxIxWNGHttdwngxWpCyMQmROe0J9y5vSxfAlF0UKQPJ
+ rRLQ==
+X-Gm-Message-State: AOJu0YyqE2vSVYAhp+t/TQY+K+o+qawdu5nywEz3qzmegVNY11jVzAyu
+ 5vyjZN9m5Qa0TJr+TD5i1y+LCen6ataiogPOoVBOwZwjNogn7cO3yqHE/UQ2IsThjst4QQMMah+
+ EyiM=
+X-Google-Smtp-Source: AGHT+IFLG0YqlwzcSClbhqPLlhjBZMF7GsQGOQ2fItavzkqGjvdyFB4N89eUNoSUBYWDCeJSNQxS7w==
+X-Received: by 2002:a5d:614f:0:b0:345:be70:191c with SMTP id
+ y15-20020a5d614f000000b00345be70191cmr161859wrt.37.1714495676884; 
+ Tue, 30 Apr 2024 09:47:56 -0700 (PDT)
+Received: from dario-ThinkPad-T14s-Gen-2i.amarulasolutions.com
+ ([176.201.29.105]) by smtp.gmail.com with ESMTPSA id
+ d24-20020adfa418000000b0034ca8cdc594sm9057503wra.76.2024.04.30.09.47.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 30 Apr 2024 09:47:56 -0700 (PDT)
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Paul Cercueil <paul@crapouillou.net>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v4 4/4] target/sh4: Rename TCGv variables as manual for SUBV
- opcode
-Date: Tue, 30 Apr 2024 18:31:25 +0200
-Message-ID: <20240430163125.77430-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240430163125.77430-1-philmd@linaro.org>
-References: <20240430163125.77430-1-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, michael@amarulasolutions.com,
+ linux-amarula@amarulasolutions.com,
+ Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Subject: [PATCH 1/1] tests/fp/meson: don't build fp-bench test if fenv.h is
+ missing
+Date: Tue, 30 Apr 2024 18:47:52 +0200
+Message-ID: <20240430164752.645521-1-dario.binacchi@amarulasolutions.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=dario.binacchi@amarulasolutions.com;
+ helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,52 +93,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To easily compare with the SH4 manual, rename:
+The fp-bench test (i. e. tests/fp/fp-bench.c) use fenv.h that is not
+always provided by the libc (uClibc). The patch disables its compilation
+in case the header is not available.
 
-  REG(B11_8) -> Rn
-  REG(B7_4) -> Rm
-  t0 -> result
+The patch is based on a suggestion from Paolo Bonzini, which you can
+find at the following link.
 
-Mention how underflow is calculated.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Link: https://lists.nongnu.org/archive/html/qemu-devel/2021-03/msg00492.html
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 ---
- target/sh4/translate.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ tests/fp/meson.build | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 47c0f3404e..e599ab9d1a 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -933,16 +933,20 @@ static void _decode_opc(DisasContext * ctx)
-         return;
-     case 0x300b: /* subv Rm,Rn */
-         {
--            TCGv t0, t1, t2;
--            t0 = tcg_temp_new();
--            tcg_gen_sub_i32(t0, REG(B11_8), REG(B7_4));
-+            TCGv Rn = REG(B11_8);
-+            TCGv Rm = REG(B7_4);
-+            TCGv result, t1, t2;
-+
-+            result = tcg_temp_new();
-             t1 = tcg_temp_new();
--            tcg_gen_xor_i32(t1, t0, REG(B11_8));
-             t2 = tcg_temp_new();
--            tcg_gen_xor_i32(t2, REG(B11_8), REG(B7_4));
-+            tcg_gen_sub_i32(result, Rn, Rm);
-+            /* T = ((Rn ^ Rm) & (Result ^ Rn)) >> 31 */
-+            tcg_gen_xor_i32(t1, result, Rn);
-+            tcg_gen_xor_i32(t2, Rn, Rm);
-             tcg_gen_and_i32(t1, t1, t2);
-             tcg_gen_shri_i32(cpu_sr_t, t1, 31);
--            tcg_gen_mov_i32(REG(B11_8), t0);
-+            tcg_gen_mov_i32(Rn, result);
-         }
-         return;
-     case 0x2008: /* tst Rm,Rn */
+diff --git a/tests/fp/meson.build b/tests/fp/meson.build
+index 114b4b483ea7..0e1237be54ed 100644
+--- a/tests/fp/meson.build
++++ b/tests/fp/meson.build
+@@ -126,12 +126,14 @@ test('fp-test-mulAdd', fptest,
+            ['f16_mulAdd', 'f32_mulAdd', 'f64_mulAdd', 'f128_mulAdd'],
+      suite: ['softfloat-slow', 'softfloat-ops-slow', 'slow'], timeout: 180)
+ 
+-executable(
+-  'fp-bench',
+-  ['fp-bench.c', '../../fpu/softfloat.c'],
+-  dependencies: [qemuutil, libtestfloat, libsoftfloat],
+-  c_args: fpcflags,
+-)
++if cc.has_header('fenv.h')
++  executable(
++    'fp-bench',
++    ['fp-bench.c', '../../fpu/softfloat.c'],
++    dependencies: [qemuutil, libtestfloat, libsoftfloat],
++    c_args: fpcflags,
++  )
++endif
+ 
+ fptestlog2 = executable(
+   'fp-test-log2',
 -- 
-2.41.0
+2.43.0
 
 
