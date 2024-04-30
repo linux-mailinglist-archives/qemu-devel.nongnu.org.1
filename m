@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160718B6B48
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE68D8B6B43
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1hgg-0000nP-Nw; Tue, 30 Apr 2024 03:14:02 -0400
+	id 1s1hgq-00012q-B7; Tue, 30 Apr 2024 03:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgd-0000lG-M6
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgj-0000tm-J5
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgc-0008LY-3i
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:13:59 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgh-0008Pi-S7
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714461237;
+ s=mimecast20190719; t=1714461243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0wpR3AXJttXwbHCvcOqHlANvlGK7uXtvOfZt+lhMwT8=;
- b=LETQHyyuHKJrk2yI1EFsj4MyXEAkYe353tEKuIDowVyHtQ7PXGkpRRUBW9Tp5YeBK0NhVA
- PTzKm9Wxffm85ciiePp5QTdOQw4xm1/WqfDLlYDXYtu0hKcQQJBKNCIsuY8SVZp3WD89LR
- QPQrKQ1yl9racdswwjo+Z3uLsEEEM00=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-zEi2Zs13MuOYGNVpuLK_RA-1; Tue,
- 30 Apr 2024 03:13:55 -0400
-X-MC-Unique: zEi2Zs13MuOYGNVpuLK_RA-1
+ bh=/JmZN2kTcTDZJ50d2NsMjDgbsSWIiw0AqDPZau+AXCw=;
+ b=GHU0B8V+5ReUxbRQ33SDMSQna/Z/MgFBFTj86zNjGDqlX2KAWII7wRrBhfpnypqB9iQuVo
+ wigS7vD+8Xu7YzM7oJmlfhRHLJ/VTfMt+aMlbeY7T3Ezajs13lvEUbaBu8cxYKI2W9jfaj
+ KLKgk3+6NVTgUjjdUVjXyBTFWRi6yjY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-VEPFPp79OJ-XFW0uVv64ug-1; Tue, 30 Apr 2024 03:13:57 -0400
+X-MC-Unique: VEPFPp79OJ-XFW0uVv64ug-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26EF329AB425;
- Tue, 30 Apr 2024 07:13:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 284B489A7E4;
+ Tue, 30 Apr 2024 07:13:57 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B003F40C140B;
- Tue, 30 Apr 2024 07:13:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A20D040B4979;
+ Tue, 30 Apr 2024 07:13:55 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Chris Friedt <chrisfriedt@gmail.com>,
 	Chris Friedt <cfriedt@meta.com>
-Subject: [PULL 07/19] hw: misc: edu: fix 2 off-by-one errors
-Date: Tue, 30 Apr 2024 09:13:28 +0200
-Message-ID: <20240430071340.413305-8-thuth@redhat.com>
+Subject: [PULL 08/19] hw: misc: edu: rename local vars in edu_check_range
+Date: Tue, 30 Apr 2024 09:13:29 +0200
+Message-ID: <20240430071340.413305-9-thuth@redhat.com>
 In-Reply-To: <20240430071340.413305-1-thuth@redhat.com>
 References: <20240430071340.413305-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -80,54 +80,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chris Friedt <chrisfriedt@gmail.com>
 
-In the case that size1 was zero, because of the explicit
-'end1 > addr' check, the range check would fail and the error
-message would read as shown below. The correct comparison
-is 'end1 >= addr'.
+This serves to make the local variables a bit less ambiguous.
 
-EDU: DMA range 0x40000-0x3ffff out of bounds (0x40000-0x40fff)!
+The latter two arguments are named to match DMA_START, and
+DMA_SIZE.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1254
 Signed-off-by: Chris Friedt <cfriedt@meta.com>
-[thuth: Adjust patch with regards to the "end1 <= end2" check]
-Message-ID: <20221018122551.94567-1-cfriedt@meta.com>
+Message-ID: <20221018122551.94567-2-cfriedt@meta.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/misc/edu.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ hw/misc/edu.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/hw/misc/edu.c b/hw/misc/edu.c
-index 2a976ca2b1..14250e0ac3 100644
+index 14250e0ac3..e1cb443438 100644
 --- a/hw/misc/edu.c
 +++ b/hw/misc/edu.c
-@@ -103,19 +103,18 @@ static void edu_lower_irq(EduState *edu, uint32_t val)
+@@ -103,24 +103,24 @@ static void edu_lower_irq(EduState *edu, uint32_t val)
      }
  }
  
--static bool within(uint64_t addr, uint64_t start, uint64_t end)
--{
--    return start <= addr && addr < end;
--}
--
--static void edu_check_range(uint64_t addr, uint64_t size1, uint64_t start,
--                uint64_t size2)
-+static void edu_check_range(uint64_t addr, uint64_t size1,
-+                uint64_t start, uint64_t size2)
+-static void edu_check_range(uint64_t addr, uint64_t size1,
+-                uint64_t start, uint64_t size2)
++static void edu_check_range(uint64_t xfer_start, uint64_t xfer_size,
++                uint64_t dma_start, uint64_t dma_size)
  {
-     uint64_t end1 = addr + size1;
-     uint64_t end2 = start + size2;
+-    uint64_t end1 = addr + size1;
+-    uint64_t end2 = start + size2;
++    uint64_t xfer_end = xfer_start + xfer_size;
++    uint64_t dma_end = dma_start + dma_size;
  
--    if (within(addr, start, end2) &&
--            end1 > addr && end1 <= end2) {
-+    /*
-+     * 1. ensure we aren't overflowing
-+     * 2. ensure that [addr, end1) is within [start, size2)
-+     */
-+    if (end2 >= start && end1 >= addr &&
-+        addr >= start && end1 <= end2) {
+     /*
+      * 1. ensure we aren't overflowing
+-     * 2. ensure that [addr, end1) is within [start, size2)
++     * 2. ensure that xfer is within dma address range
+      */
+-    if (end2 >= start && end1 >= addr &&
+-        addr >= start && end1 <= end2) {
++    if (dma_end >= dma_start && xfer_end >= xfer_start &&
++        xfer_start >= dma_start && xfer_end <= dma_end) {
          return;
      }
  
+     hw_error("EDU: DMA range 0x%016"PRIx64"-0x%016"PRIx64
+              " out of bounds (0x%016"PRIx64"-0x%016"PRIx64")!",
+-            addr, end1 - 1, start, end2 - 1);
++            xfer_start, xfer_end - 1, dma_start, dma_end - 1);
+ }
+ 
+ static dma_addr_t edu_clamp_addr(const EduState *edu, dma_addr_t addr)
 -- 
 2.44.0
 
