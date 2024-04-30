@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE68D8B6B43
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB228B6B47
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1hgq-00012q-B7; Tue, 30 Apr 2024 03:14:12 -0400
+	id 1s1hgq-00012K-5S; Tue, 30 Apr 2024 03:14:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgj-0000tm-J5
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgj-0000tl-ER
  for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgh-0008Pi-S7
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgh-0008Pm-Sy
  for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1714461243;
@@ -22,39 +22,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/JmZN2kTcTDZJ50d2NsMjDgbsSWIiw0AqDPZau+AXCw=;
- b=GHU0B8V+5ReUxbRQ33SDMSQna/Z/MgFBFTj86zNjGDqlX2KAWII7wRrBhfpnypqB9iQuVo
- wigS7vD+8Xu7YzM7oJmlfhRHLJ/VTfMt+aMlbeY7T3Ezajs13lvEUbaBu8cxYKI2W9jfaj
- KLKgk3+6NVTgUjjdUVjXyBTFWRi6yjY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-VEPFPp79OJ-XFW0uVv64ug-1; Tue, 30 Apr 2024 03:13:57 -0400
-X-MC-Unique: VEPFPp79OJ-XFW0uVv64ug-1
+ bh=XvQAqWLE4bZMMlG6excdTC5v9yBUmN935gA/qF9agFo=;
+ b=gMyiPhjy0Bt1UsI/YfVxF7A3skaiDYsef3fPd8A+LDR7sstCdtrmEYv+ZKaHei2/Jq+pZj
+ rttENuP8fYR+60IMdxKUWXELzh5APmsbgmboBuXmUN30OUMAd3yLfpEk8lbf115Q0iyU2a
+ P8KWlQL44nWccgsHyGcGBsbHPaVQjL8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-V9koSCvAOEqxlbQsbfdyfQ-1; Tue,
+ 30 Apr 2024 03:13:59 -0400
+X-MC-Unique: V9koSCvAOEqxlbQsbfdyfQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 284B489A7E4;
- Tue, 30 Apr 2024 07:13:57 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AF65B3C0F18B;
+ Tue, 30 Apr 2024 07:13:58 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A20D040B4979;
- Tue, 30 Apr 2024 07:13:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 67EC940C141D;
+ Tue, 30 Apr 2024 07:13:57 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Chris Friedt <chrisfriedt@gmail.com>,
 	Chris Friedt <cfriedt@meta.com>
-Subject: [PULL 08/19] hw: misc: edu: rename local vars in edu_check_range
-Date: Tue, 30 Apr 2024 09:13:29 +0200
-Message-ID: <20240430071340.413305-9-thuth@redhat.com>
+Subject: [PULL 09/19] hw: misc: edu: use qemu_log_mask instead of hw_error
+Date: Tue, 30 Apr 2024 09:13:30 +0200
+Message-ID: <20240430071340.413305-10-thuth@redhat.com>
 In-Reply-To: <20240430071340.413305-1-thuth@redhat.com>
 References: <20240430071340.413305-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -80,55 +80,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chris Friedt <chrisfriedt@gmail.com>
 
-This serves to make the local variables a bit less ambiguous.
-
-The latter two arguments are named to match DMA_START, and
-DMA_SIZE.
+Log a guest error instead of a hardware error when
+the guest tries to DMA to / from an invalid address.
 
 Signed-off-by: Chris Friedt <cfriedt@meta.com>
-Message-ID: <20221018122551.94567-2-cfriedt@meta.com>
+Message-ID: <20221018122551.94567-3-cfriedt@meta.com>
+[thuth: Add missing #include statement, fix error reported by checkpatch.pl]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/misc/edu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ hw/misc/edu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/hw/misc/edu.c b/hw/misc/edu.c
-index 14250e0ac3..e1cb443438 100644
+index e1cb443438..fa052c44db 100644
 --- a/hw/misc/edu.c
 +++ b/hw/misc/edu.c
-@@ -103,24 +103,24 @@ static void edu_lower_irq(EduState *edu, uint32_t val)
-     }
- }
+@@ -23,6 +23,7 @@
+  */
  
--static void edu_check_range(uint64_t addr, uint64_t size1,
--                uint64_t start, uint64_t size2)
-+static void edu_check_range(uint64_t xfer_start, uint64_t xfer_size,
-+                uint64_t dma_start, uint64_t dma_size)
- {
--    uint64_t end1 = addr + size1;
--    uint64_t end2 = start + size2;
-+    uint64_t xfer_end = xfer_start + xfer_size;
-+    uint64_t dma_end = dma_start + dma_size;
- 
-     /*
-      * 1. ensure we aren't overflowing
--     * 2. ensure that [addr, end1) is within [start, size2)
-+     * 2. ensure that xfer is within dma address range
-      */
--    if (end2 >= start && end1 >= addr &&
--        addr >= start && end1 <= end2) {
-+    if (dma_end >= dma_start && xfer_end >= xfer_start &&
-+        xfer_start >= dma_start && xfer_end <= dma_end) {
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
+ #include "qemu/units.h"
+ #include "hw/pci/pci.h"
+ #include "hw/hw.h"
+@@ -118,9 +119,10 @@ static void edu_check_range(uint64_t xfer_start, uint64_t xfer_size,
          return;
      }
  
-     hw_error("EDU: DMA range 0x%016"PRIx64"-0x%016"PRIx64
-              " out of bounds (0x%016"PRIx64"-0x%016"PRIx64")!",
--            addr, end1 - 1, start, end2 - 1);
-+            xfer_start, xfer_end - 1, dma_start, dma_end - 1);
+-    hw_error("EDU: DMA range 0x%016"PRIx64"-0x%016"PRIx64
+-             " out of bounds (0x%016"PRIx64"-0x%016"PRIx64")!",
+-            xfer_start, xfer_end - 1, dma_start, dma_end - 1);
++    qemu_log_mask(LOG_GUEST_ERROR,
++                  "EDU: DMA range 0x%016"PRIx64"-0x%016"PRIx64
++                  " out of bounds (0x%016"PRIx64"-0x%016"PRIx64")!",
++                  xfer_start, xfer_end - 1, dma_start, dma_end - 1);
  }
  
  static dma_addr_t edu_clamp_addr(const EduState *edu, dma_addr_t addr)
+@@ -128,7 +130,9 @@ static dma_addr_t edu_clamp_addr(const EduState *edu, dma_addr_t addr)
+     dma_addr_t res = addr & edu->dma_mask;
+ 
+     if (addr != res) {
+-        printf("EDU: clamping DMA %#.16"PRIx64" to %#.16"PRIx64"!\n", addr, res);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "EDU: clamping DMA 0x%016"PRIx64" to 0x%016"PRIx64"!",
++                      addr, res);
+     }
+ 
+     return res;
 -- 
 2.44.0
 
