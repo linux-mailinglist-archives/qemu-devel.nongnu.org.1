@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DC68B6D91
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 10:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8351C8B6D9A
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 10:57:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1jIS-0003PO-IF; Tue, 30 Apr 2024 04:57:08 -0400
+	id 1s1jIW-0003VK-Iv; Tue, 30 Apr 2024 04:57:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1jIP-0003Nk-Rv
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:05 -0400
+ id 1s1jIS-0003S2-K7
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:08 -0400
 Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1jIM-0000w8-Fr
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:05 -0400
+ id 1s1jIN-0000wX-1J
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:08 -0400
 Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:2a2a:0:640:d546:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 546F960D45;
- Tue, 30 Apr 2024 11:57:00 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 3443260D43;
+ Tue, 30 Apr 2024 11:57:01 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8829::1:3c])
  by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id muME9V11IOs0-Xc3Qn7Ke; Tue, 30 Apr 2024 11:56:59 +0300
+ ESMTPSA id muME9V11IOs0-HgIYQIOv; Tue, 30 Apr 2024 11:57:00 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714467419;
- bh=6AsIVucJyBfI2E4ZlvaVc5PBlYuYDNT4fa08g+9Ct58=;
+ s=default; t=1714467420;
+ bh=eF5pqu4NbY0kHC0LeCZzbmITys8AuXp9CImw7ZvBvYw=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=iAq3jcZXu5EpAi8Cv6grcvpWPn1qH8V3idz5O1kNjEQ4cSgTJZGr/TMh/QE7yZ3F+
- PU6GjVX1UmnZohLzjL9sePKHsmk/qOslw3dLsty0NEcOi7JCIIzC0wIzf+b+qcVmMv
- erl59b5RJVmmb+AyzhvCmH80uAR4xVF1MQlOpxiM=
+ b=OZxeXe22wfTvUF2ABg/BUQb4D3+I1g06zRe2b9iVxCSw5HUrtLarkDdmJ75UCpwZg
+ h218FIQhRvqzec/APgbLYHgdcFsuTW42vpA65gfenRbotle4jDacQDaFaQtAXbkjyX
+ W0rJ7txiw7yvQ+Z8KthfBf7mGtKnJk1TatBhenJE=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -42,10 +42,10 @@ To: peterx@redhat.com,
 	farosas@suse.de
 Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
  qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v6 3/5] migration: process_incoming_migration_co(): fix
- reporting s->error
-Date: Tue, 30 Apr 2024 11:56:44 +0300
-Message-Id: <20240430085646.2359711-4-vsementsov@yandex-team.ru>
+Subject: [PATCH v6 4/5] migration: process_incoming_migration_co(): rework
+ error reporting
+Date: Tue, 30 Apr 2024 11:56:45 +0300
+Message-Id: <20240430085646.2359711-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
 References: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
@@ -74,27 +74,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's bad idea to leave critical section with error object freed, but
-s->error still set, this theoretically may lead to use-after-free
-crash. Let's avoid it.
+Unify error reporting in the function. This simplifies the following
+commit, which will not-exit-on-error behavior variant to the function.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- migration/migration.c | 1 +
- 1 file changed, 1 insertion(+)
+ migration/migration.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 0d26db47f7..b307a4bc59 100644
+index b307a4bc59..a9599838e6 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -784,6 +784,7 @@ process_incoming_migration_co(void *opaque)
-         if (migrate_has_error(s)) {
-             WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
-                 error_report_err(s->error);
-+                s->error = NULL;
-             }
-         }
-         error_report("load of migration failed: %s", strerror(-ret));
+@@ -735,14 +735,16 @@ static void process_incoming_migration_bh(void *opaque)
+ static void coroutine_fn
+ process_incoming_migration_co(void *opaque)
+ {
++    MigrationState *s = migrate_get_current();
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     PostcopyState ps;
+     int ret;
++    Error *local_err = NULL;
+ 
+     assert(mis->from_src_file);
+ 
+     if (compress_threads_load_setup(mis->from_src_file)) {
+-        error_report("Failed to setup decompress threads");
++        error_setg(&local_err, "Failed to setup decompress threads");
+         goto fail;
+     }
+ 
+@@ -779,19 +781,12 @@ process_incoming_migration_co(void *opaque)
+     }
+ 
+     if (ret < 0) {
+-        MigrationState *s = migrate_get_current();
+-
+-        if (migrate_has_error(s)) {
+-            WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
+-                error_report_err(s->error);
+-                s->error = NULL;
+-            }
+-        }
+-        error_report("load of migration failed: %s", strerror(-ret));
++        error_setg(&local_err, "load of migration failed: %s", strerror(-ret));
+         goto fail;
+     }
+ 
+     if (colo_incoming_co() < 0) {
++        error_setg(&local_err, "colo incoming failed");
+         goto fail;
+     }
+ 
+@@ -800,8 +795,16 @@ process_incoming_migration_co(void *opaque)
+ fail:
+     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+                       MIGRATION_STATUS_FAILED);
++    migrate_set_error(s, local_err);
++    error_free(local_err);
++
+     migration_incoming_state_destroy();
+ 
++    WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
++        error_report_err(s->error);
++        s->error = NULL;
++    }
++
+     exit(EXIT_FAILURE);
+ }
+ 
 -- 
 2.34.1
 
