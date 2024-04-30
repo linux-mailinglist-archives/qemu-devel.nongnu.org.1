@@ -2,101 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2558B7591
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C1A8B75C3
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1mP5-0002gD-Bd; Tue, 30 Apr 2024 08:16:11 -0400
+	id 1s1mat-0006BM-0o; Tue, 30 Apr 2024 08:28:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1mOj-0002bB-Sr
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:15:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s1mOg-0007r4-TB
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:15:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714479345;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4v595rZg2XxHllqWyjNJv89TVARlrrOv96avZypDAoI=;
- b=QQZ08xG8/l77QSUJxhVETaauHpxFna2r2wX5lKSjkihcDzoKgOI3cb2tjroC12tmB7JUNE
- Pp4XX8vpRV4O82zDhyF3AZRvVcwwLM7dnAafpEj9xLtxo3+3PFHpEn/yGW8H1K4oBOME4v
- JUdKjP3dw/CIYetNPeT683bWAAfUBjA=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-8me35XRFO2KXWH77PAN_kA-1; Tue, 30 Apr 2024 08:15:44 -0400
-X-MC-Unique: 8me35XRFO2KXWH77PAN_kA-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-51d6630a5ebso2123496e87.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:15:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mam-00068B-6W
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:16 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1maj-0001ki-C3
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:14 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-5708d8beec6so7040658a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714480091; x=1715084891; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2tBp0mlEikyBoUziZaOlwZMYYgeW174NsUEHbMeFk28=;
+ b=D1djEO06bELmaz26JAtU0ogkMJqqlRPLXSEkK2RHk/AmQIwJMIELk3v3y/uxUSqpIy
+ DdR9uVYm4QsjmW71MI1VS+j/uIHBTZR714usAHqrRX1Y/P9gOCUJK99w1Pb9gyPUHyWk
+ fMFhUNuT/GDpoVUwvcTzd05OULBjK3hhP37czRmRIg/yv/nYhaGtEqm8V9JrP1Y7/2hQ
+ JuokZn7xRBMOo2Ht8reYMJsHgJUxDhFB888TUE2MkPxSjggYCcayMa3DPSp1m1F9Ozwl
+ 2w3ws8LfZteWDmmfUvkx4xb54hRV4tznLl32/2W3uv1CA+HOGu6/YgBm5H+wtrHiLcVG
+ yqTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714479343; x=1715084143;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4v595rZg2XxHllqWyjNJv89TVARlrrOv96avZypDAoI=;
- b=nQL7TTBTK7zsfqUSWvu9BQRGmIEuizyeBnbL8VFOGiUA/+Gd5Mj6MhQBeFmaPndjrI
- o9lwqPr/cG+MhbZmZUl40BHWqxPeIDbo4uMBckJrvY8kMy4U0JHIeRWvR1g/p6ao+rGc
- v5u3oOu2KGbQIcfrEl+IUUFtSLQ4L5lDMdmRGhU7LL41/cjNv5gcpiZ+Rl4TadGap6Y7
- t8aOZp9QAK93vzKrbPTryd4QkPO+C211oFS9fhDPxTmViCYMrFDoqUMhiVi2CmMMtaoh
- 2EV8yIkHvd1VdSm3xaSioH7vvOnVTtds5UjWd2794v3ign5et6pGniEavTUPBnXX3vy9
- 1wdQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVHh0LbZ+L+0ZIsACvHHAIwsHXy+shiqs2QysounkX68TUIirm0fJPeqbTOPt38sG55G6PGB6m84wDjHLOC8Y+5Z5B+qbY=
-X-Gm-Message-State: AOJu0Yy7yhUyUef5mTrDFXJSviTZoAlO98rn0ws09V19R0aMKQNmzhnA
- eBBLrpOzXG6gtqz9C6pLxauTBqlnmSbUJHiQSyix4Uo/SofqPHKfzIxh21X+To7BFsXmQi66AYK
- FSMPZdw0+LQy3dfwuXoQ13aFbGzomonbPGCC2VHUJwsdY7Hgmo+XG
-X-Received: by 2002:a05:6512:448:b0:519:6e94:9b4d with SMTP id
- y8-20020a056512044800b005196e949b4dmr9213475lfk.48.1714479342827; 
- Tue, 30 Apr 2024 05:15:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhR3wPdEKNC/weyH/1Oad3jgUfDynTqQP/sAlZRsSF+8QdgnKVfRGF/U/MNBXs+FgXGTGdHQ==
-X-Received: by 2002:a05:6512:448:b0:519:6e94:9b4d with SMTP id
- y8-20020a056512044800b005196e949b4dmr9213456lfk.48.1714479342467; 
- Tue, 30 Apr 2024 05:15:42 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- c4-20020a056402100400b005720caa01easm9598710edu.69.2024.04.30.05.15.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 05:15:41 -0700 (PDT)
-Message-ID: <cd129c89-c21d-450b-ab5e-61745cdd165b@redhat.com>
-Date: Tue, 30 Apr 2024 14:15:40 +0200
+ d=1e100.net; s=20230601; t=1714480091; x=1715084891;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2tBp0mlEikyBoUziZaOlwZMYYgeW174NsUEHbMeFk28=;
+ b=cdzZYR88o5pwGSl/9TlFRh7TcQTb3q2ZYav6ykeW2uJy8qQwoFig36Qk/1zUTzDvE8
+ 2IPUTSd+QN7pkr1sp/zmwSX4KnkSTAQLwm+IYUg0TYg+954/k/bA910h0hV0eUIIWLUZ
+ BKfplbyKYAX2KS93Q8TXh+ffmtgSy4swZ6lKdN9sD+TqIjczFHQGH+84m61y7WqMfJ6J
+ dhpL/VwwDGHA5saUpo019ohLd+zfUUBQ+64RJrepbVT9PBA3H8Y6BpYFcwTHt2IUC0Zj
+ eXf/FbXXUDj2TjERWq2UMp1uTb6CxFWvwIfFERfsdQUGDUyw65YZuiKZaSDLQWVT+I2K
+ VU2g==
+X-Gm-Message-State: AOJu0YwbJA+T4DUADu/36qduVdbz0+V2qeNEynqrchTKrERSgoyoXHaD
+ 2mVzi/2u3fL8Lk7RUFcruKIrucwFr5okCoUffcXyjS69aSjXWK2sUsuIDIGZqEkCPaARGY8l3qa
+ w
+X-Google-Smtp-Source: AGHT+IGPLx+TVUvWu5qeFhKmKzau1URV5u70IUZED+IMtKUei3OSVUtPB3NoKNCHRe37hoIKmMNk6g==
+X-Received: by 2002:a50:baed:0:b0:56e:7722:553 with SMTP id
+ x100-20020a50baed000000b0056e77220553mr11669296ede.24.1714480091173; 
+ Tue, 30 Apr 2024 05:28:11 -0700 (PDT)
+Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
+ [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
+ b10-20020aa7dc0a000000b0056fe755f1e6sm14005139edu.91.2024.04.30.05.28.09
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 30 Apr 2024 05:28:10 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Anton Johansson <anjo@rev.ng>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 00/13] exec: Rework around CPUState user fields (part 2)
+Date: Tue, 30 Apr 2024 14:27:54 +0200
+Message-ID: <20240430122808.72025-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/19] vfio: Create host IOMMU device instance
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "jgg@nvidia.com"
- <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
- <20240429065046.3688701-14-zhenzhong.duan@intel.com>
- <0ca17106-a529-4d54-989f-9b9b47c6b8a7@redhat.com>
- <SJ0PR11MB6744AA5CBB630EB00AFCC04A921A2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB6744AA5CBB630EB00AFCC04A921A2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,80 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/30/24 12:16, Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Subject: Re: [PATCH v3 13/19] vfio: Create host IOMMU device instance
->>
->> On 4/29/24 08:50, Zhenzhong Duan wrote:
->>> Create host IOMMU device instance in vfio_attach_device() and call
->>> .realize() to initialize it further.
->>>
->>> Suggested-by: Cédric Le Goater <clg@redhat.com>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>    include/hw/vfio/vfio-common.h |  1 +
->>>    hw/vfio/common.c              | 18 +++++++++++++++++-
->>>    2 files changed, 18 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
->> common.h
->>> index 0943add3bc..b204b93a55 100644
->>> --- a/include/hw/vfio/vfio-common.h
->>> +++ b/include/hw/vfio/vfio-common.h
->>> @@ -126,6 +126,7 @@ typedef struct VFIODevice {
->>>        OnOffAuto pre_copy_dirty_page_tracking;
->>>        bool dirty_pages_supported;
->>>        bool dirty_tracking;
->>> +    HostIOMMUDevice *hiod;
->>>        int devid;
->>>        IOMMUFDBackend *iommufd;
->>>    } VFIODevice;
->>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->>> index 8f9cbdc026..0be8b70ebd 100644
->>> --- a/hw/vfio/common.c
->>> +++ b/hw/vfio/common.c
->>> @@ -1497,6 +1497,8 @@ int vfio_attach_device(char *name, VFIODevice
->> *vbasedev,
->>>    {
->>>        const VFIOIOMMUClass *ops =
->>>
->> VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_LEGACY));
->>> +    HostIOMMUDevice *hiod;
->>> +    int ret;
->>>
->>>        if (vbasedev->iommufd) {
->>>            ops =
->> VFIO_IOMMU_CLASS(object_class_by_name(TYPE_VFIO_IOMMU_IOMMUF
->> D));
->>> @@ -1504,7 +1506,20 @@ int vfio_attach_device(char *name,
->> VFIODevice *vbasedev,
->>>
->>>        assert(ops);
->>>
->>> -    return ops->attach_device(name, vbasedev, as, errp);
->>> +    ret = ops->attach_device(name, vbasedev, as, errp);
->>> +    if (ret < 0) {
->>> +        return ret;
->>
->>
->> hmm, I wonder if we should change the return value of vfio_attach_device()
->> to be a bool.
-> 
-> I see, also VFIOIOMMUClass:: setup and VFIOIOMMUClass::add_window.
-> I can add cleanup patches to fix them if you have no other plan.
+Missing WASM testing by Ilya (branch available at
+https://gitlab.com/philmd/qemu/-/commits/tcg_flush_jmp_cache)
 
-Yes please. I don't have plans for changes in that area. The only pending
-patches are from the series "[v4] migration: Improve error reporting" [*].
+Since v2:
+- Move cpu_loop_exit_requested() to "exec/cpu-loop.h"
+- Added R-b tags
 
-Thanks,
+Since v1:
+- First 13 patches queued
+- Restrict qemu_plugin_vcpu_exit_hook() to (TCG) plugins
+- Restrict cpu_plugin_mem_cbs_enabled() to TCG (plugins)
+- Addressed Richard review comments on the others:
+  - Move cpu_plugin_mem_cbs_enabled()
+  - Do not move mem_io_pc, waiting for [*]
+  - Mention can_do_io restricted
 
-C.
+Finish extracting TCG fields from CPUState:
+- Extract tcg_cpu_exit() from cpu_exit()
+- Introduce AccelOpsClass::exit_vcpu_thread()
+- cpu_exit() calls exit_vcpu_thread=tcg_cpu_exit for TCG
+- Forward declare TaskState and more uses of get_task_state()
+- Introduce TCG AccelCPUState
+- Move TCG specific fields from CPUState to AccelCPUState
+- Restrict "exec/tlb-common.h" to TCG
+- Restrict iommu_notifiers, icount to system emulation
 
+[*] https://lore.kernel.org/qemu-devel/20240416040609.1313605-3-richard.henderson@linaro.org/
 
-[*] https://lore.kernel.org/qemu-devel/20240306133441.2351700-1-clg@redhat.com/
+Based-on: https://gitlab.com/philmd/qemu/-/commits/accel-next
 
+Philippe Mathieu-Daudé (13):
+  accel/tcg: Restrict qemu_plugin_vcpu_exit_hook() to TCG plugins
+  accel/tcg: Restrict cpu_plugin_mem_cbs_enabled() to TCG
+  accel/tcg: Move @plugin_mem_cbs from CPUState to
+    CPUNegativeOffsetState
+  accel/tcg: Move @plugin_state from CPUState to TCG AccelCPUState
+  accel/tcg: Restrict cpu_loop_exit_requested() to TCG
+  accel/tcg: Restrict IcountDecr / can_do_io / CPUTLB to TCG
+  accel/tcg: Move @jmp_env from CPUState to TCG AccelCPUState
+  accel/tcg: Move @cflags_next_tb from CPUState to TCG AccelCPUState
+  accel/tcg: Move @iommu_notifiers from CPUState to TCG AccelCPUState
+  accel/tcg: Move @tcg_cflags from CPUState to TCG AccelCPUState
+  accel/tcg: Restrict icount to system emulation
+  accel/tcg: Move icount fields from CPUState to TCG AccelCPUState
+  accel/tcg: Move @tb_jmp_cache from CPUState to TCG AccelCPUState
+
+ accel/tcg/internal-common.h      | 18 ++++++++++
+ accel/tcg/tb-jmp-cache.h         |  4 +--
+ accel/tcg/tcg-accel-ops.h        |  1 +
+ accel/tcg/vcpu-state.h           | 20 +++++++++++
+ include/exec/cpu-loop.h          | 35 +++++++++++++++++++
+ include/exec/exec-all.h          | 17 ----------
+ include/exec/tlb-common.h        |  4 +++
+ include/hw/core/cpu.h            | 58 ++++++++------------------------
+ include/qemu/plugin.h            |  2 +-
+ include/qemu/typedefs.h          |  1 -
+ accel/tcg/cpu-exec-common.c      |  2 +-
+ accel/tcg/cpu-exec.c             | 52 +++++++++++++++-------------
+ accel/tcg/cputlb.c               |  2 +-
+ accel/tcg/icount-common.c        |  7 ++--
+ accel/tcg/plugin-gen.c           |  9 +++--
+ accel/tcg/tb-maint.c             |  6 ++--
+ accel/tcg/tcg-accel-ops-icount.c | 14 ++++----
+ accel/tcg/tcg-accel-ops.c        |  2 ++
+ accel/tcg/translate-all.c        |  9 ++---
+ accel/tcg/watchpoint.c           |  5 +--
+ hw/core/cpu-common.c             |  9 +++--
+ linux-user/main.c                |  2 +-
+ plugins/core.c                   |  9 ++---
+ system/physmem.c                 | 37 +++++++++++++++-----
+ target/arm/tcg/helper-a64.c      |  1 +
+ target/s390x/tcg/mem_helper.c    |  1 +
+ 26 files changed, 195 insertions(+), 132 deletions(-)
+ create mode 100644 include/exec/cpu-loop.h
+
+-- 
+2.41.0
 
 
