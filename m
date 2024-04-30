@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2D98B7B02
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 17:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F23968B7B21
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 17:09:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1p4q-000125-7x; Tue, 30 Apr 2024 11:07:28 -0400
+	id 1s1p6j-0003lq-L0; Tue, 30 Apr 2024 11:09:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s1p4S-0000ze-DF
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 11:07:05 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s1p6Q-0003Gt-Gd
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 11:09:06 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s1p4Q-0000AY-81
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 11:07:04 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-5196fe87775so6471185e87.3
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 08:07:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s1p6N-0000yS-Gp
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 11:09:06 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-56e37503115so6297391a12.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 08:09:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714489618; x=1715094418; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1714489742; x=1715094542; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DGNe/5kNutRKm5uz4mTsWbXpNf42QSU6anrwo6QJebg=;
- b=Ebnu/dBhF2myrVXslHwCl9Vr1YR7HZcIjtkR0Ds3vAzX3jV0+DEzpc6su66qkv2Nkx
- G97BYDYudfsSq5hzHnIsaW5+C/iAiZD4IwvC3WC93AQ7VrSII1gas+iYHpyPE8nMIzJ8
- 3VTRAMKo1R8OiNhrqxygz6VRIqKRkFOsXzFz6dB6/8DOH6eoWSIB47cLsKj0EDEKPH6L
- 4448wBDcvj799ysMgeBrFDoLP92a6tbZF/Ji3O7WKzJoCEGrg+h6Szz8U7GdIiYMxf/P
- DHyaG45QqaPLUYWHk5+6LJbILtbwN3GHQqw/mcs9bSCE5vOIb37QBIq3hOcL3E4nM6Lp
- jDAA==
+ bh=kstWA/A41b+HIEwe5CE0/GXOQwIeOb+3kH17kJQI4m4=;
+ b=n+7c+GKC2s9kUBlJF3dHpvWu4yf8p8ewYTJusuHfkRP3YTDLw2vTYhgQrA5SPcc+o3
+ b3OLWHKCaprLzgcR5WVPW9Z10ABdbZ8Z3pmb/E14H63+3jLH47MkjlAEgp4DKHhaFEYL
+ hoIIGPjZkBhV2gtrXQFS98IzN9G0fFw+ADVKsqZMRQz2KO5Ei3DL7NiWt/t3Ge6+oC0s
+ FhNVFcal4G/m9RVAiCZ7ibLb58BPgIy0omrBRkHnvnqlawaTILIN1OOKAxag2hOh0huK
+ h1OfAzWeXaIMpDVr2K5VZn7UTqOBxsHn7M/Ag+JUtOcSf2NSpY+kFUINPW0t7b3NySC5
+ Wjcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714489618; x=1715094418;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1714489742; x=1715094542;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DGNe/5kNutRKm5uz4mTsWbXpNf42QSU6anrwo6QJebg=;
- b=kTo0aDmXEdpmVmy3m+2LmaBfVCChfNyk3KXioi3HUi6k7JlN4PqoqhjVfOGF2xF438
- QjWR6uJulpK0a2Cuwo03DaRaANS9LDxkfYaySVam78Iiatdz2X2t3Fh1Y+7hTOQdsYEf
- aTKXsHB2V/AfFk31itH/aKLLC4NdO6hV/ux9jvfIJ1xzrZ11yy0JQU7HSXL3C9RPdFKr
- 0WCd0L9rVCp3LY7F07t5bOAqQ9ro94Vk37Rciu3ppg3Xb5KQJ2Uv8TjifgTKcYKkhh40
- IXqMNZ8McFeOF9oTNHK4sMLqZ/JHyAeY8ECcdyx+HEH7qlypQZ7CAhd31EriYvx8Ymd9
- cV2g==
-X-Gm-Message-State: AOJu0YzU8fWuvtZqwEd6J8MFTIgImajJ1N6OAwq3Twc2yqgVpORFc+sK
- A7gBTwH3MfSiBoTEPVs1S23LPAg1O9DN9rhzy5HhQl95zByxzJl2k/7DTg==
-X-Google-Smtp-Source: AGHT+IGh1IMzyKILTn1jOKJNN/J1d60hIQ8cDdnoAbW4m5fexs4SvWWZDrg1cPKiaiv7StLNdWrpFg==
-X-Received: by 2002:a19:5f19:0:b0:51b:e0f0:e4f8 with SMTP id
- t25-20020a195f19000000b0051be0f0e4f8mr7009382lfb.31.1714489618436; 
- Tue, 30 Apr 2024 08:06:58 -0700 (PDT)
-Received: from archlinux.. (pd9ed788d.dip0.t-ipconnect.de. [217.237.120.141])
- by smtp.gmail.com with ESMTPSA id
- 11-20020a0564021f4b00b005727e826977sm2345741edz.19.2024.04.30.08.06.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 08:06:57 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 6/6] hw/i386/pc_sysfw: Alias rather than copy isa-bios
- region
-Date: Tue, 30 Apr 2024 17:06:43 +0200
-Message-ID: <20240430150643.111976-7-shentey@gmail.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240430150643.111976-1-shentey@gmail.com>
-References: <20240430150643.111976-1-shentey@gmail.com>
+ bh=kstWA/A41b+HIEwe5CE0/GXOQwIeOb+3kH17kJQI4m4=;
+ b=WWIkgZsi1R+TkYh6XGu1LytpNfhPRanNkClf9rwIU6xzpDyyxg41BfOxzQ2RrvNOQ+
+ 0OyOQlPZcncah2LnLdpDQg7cw8aJqvxA+gO/2YF554Y7EHQMemruwLdRSAr/bGl26bfw
+ eATi27ap685QjPU51Lx0ks3OdawiEnRNyrfWun/X0TyijWiaa0RCm7vB7Z1KNs0rIOxq
+ Fg6BccrpDYtyYaYbr7FJNrccOMetWd9fnQ6WRgIpdn/Nm7EvAmn9JUkBce5gQWEoC/u4
+ dEyDUDyGmgCv6L61JwsCroL9FGt8DeoYGXe28ucQ/OxbEs7MDE2g678NLbK4oGWfDHqP
+ x1/g==
+X-Gm-Message-State: AOJu0YxzfHKIONdmVPKlVu8iDTg2MA0t8uliii1owYNY2PwrXlNYke1A
+ e/lTpkxwJlai4TBsMsPP4qfmCvOPH5aESKZewt+Y9PYGy0lS1FY04mLAT2l5botH7nlpYKUVogh
+ zeL/LIeXsqZfR2SXI+jy2+J+s6ng9wP7fL7lRxQ==
+X-Google-Smtp-Source: AGHT+IF6gYi4OIpotj3DhL/Y78FmeK6gT1FkpgXfKWFWVRk7GQ+4VFsgPdmCu1ACT72f6q4Prt9nkhgKz6SPDr75T74=
+X-Received: by 2002:a50:8d5a:0:b0:572:7bae:7e74 with SMTP id
+ t26-20020a508d5a000000b005727bae7e74mr47119edt.32.1714489741704; Tue, 30 Apr
+ 2024 08:09:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x129.google.com
+References: <20240424200929.240921-1-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240424200929.240921-1-ines.varhol@telecom-paris.fr>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 Apr 2024 16:08:50 +0100
+Message-ID: <CAFEAcA9ssyX3knVnJAi3N6_aGgQ6HQYw-5iPxirWweJFkd64NQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/5] Add device DM163 (led driver, matrix colors shield
+ & display)
+To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Samuel Tardieu <sam@rfc1149.net>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, 
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,113 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the -bios case the "isa-bios" memory region is an alias to the BIOS mapped
-to the top of the 4G memory boundary. Do the same in the -pflash case, but only
-for new machine versions for migration compatibility. This establishes common
-behavior and makes pflash commands work in the "isa-bios" region which some
-real-world legacy bioses rely on.
+On Wed, 24 Apr 2024 at 21:09, In=C3=A8s Varhol <ines.varhol@telecom-paris.f=
+r> wrote:
+>
+> This device implements the IM120417002 colors shield v1.1 for Arduino
+> (which relies on the DM163 8x3-channel led driving logic) and features
+> a simple display of an 8x8 RGB matrix. This color shield can be plugged
+> on the Arduino board (or the B-L475E-IOT01A board) to drive an 8x8
+> RGB led matrix. This RGB led matrix takes advantage of retinal persistanc=
+e
+> to seemingly display different colors in each row.
+>
 
-Note that in the sev_enabled() case, the "isa-bios" memory region in the -pflash
-case will now also point to encrypted memory, just like it already does in the
--bios case.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- include/hw/i386/pc.h | 1 +
- hw/i386/pc.c         | 1 +
- hw/i386/pc_piix.c    | 3 +++
- hw/i386/pc_q35.c     | 2 ++
- hw/i386/pc_sysfw.c   | 8 +++++++-
- 5 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index e52290916c..ad9c3d9ba8 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -119,6 +119,7 @@ struct PCMachineClass {
-     bool enforce_aligned_dimm;
-     bool broken_reserved_end;
-     bool enforce_amd_1tb_hole;
-+    bool isa_bios_alias;
- 
-     /* generate legacy CPU hotplug AML */
-     bool legacy_cpu_hotplug;
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 08c7de416f..ce61bb7fc1 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1811,6 +1811,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->has_reserved_memory = true;
-     pcmc->enforce_aligned_dimm = true;
-     pcmc->enforce_amd_1tb_hole = true;
-+    pcmc->isa_bios_alias = true;
-     /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
-      * to be used at the moment, 32K should be enough for a while.  */
-     pcmc->acpi_data_size = 0x20000 + 0x8000;
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8850c49c66..d4e9deb509 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -525,12 +525,15 @@ DEFINE_I440FX_MACHINE(v9_1, "pc-i440fx-9.1", NULL,
- 
- static void pc_i440fx_9_0_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+
-     pc_i440fx_9_1_machine_options(m);
-     m->alias = NULL;
-     m->is_default = false;
- 
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-+    pcmc->isa_bios_alias = false;
- }
- 
- DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index bb53a51ac1..bd7db4abac 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -378,10 +378,12 @@ DEFINE_Q35_MACHINE(v9_1, "pc-q35-9.1", NULL,
- 
- static void pc_q35_9_0_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_9_1_machine_options(m);
-     m->alias = NULL;
-     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-+    pcmc->isa_bios_alias = false;
- }
- 
- DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 82d37cb376..ac88ad4eb9 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -135,6 +135,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
-                                 MemoryRegion *rom_memory)
- {
-     X86MachineState *x86ms = X86_MACHINE(pcms);
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-     hwaddr total_size = 0;
-     int i;
-     BlockBackend *blk;
-@@ -184,7 +185,12 @@ static void pc_system_flash_map(PCMachineState *pcms,
- 
-         if (i == 0) {
-             flash_mem = pflash_cfi01_get_memory(system_flash);
--            pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
-+            if (pcmc->isa_bios_alias) {
-+                x86_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem,
-+                                  true);
-+            } else {
-+                pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
-+            }
- 
-             /* Encrypt the pflash boot ROM */
-             if (sev_enabled()) {
--- 
-2.45.0
+Applied to target-arm.next, thanks.
 
+-- PMM
 
