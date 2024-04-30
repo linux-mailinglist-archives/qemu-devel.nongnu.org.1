@@ -2,80 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AF48B79CF
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984F38B7A23
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:40:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1oXv-0006WI-OO; Tue, 30 Apr 2024 10:33:27 -0400
+	id 1s1oea-0001Zf-HB; Tue, 30 Apr 2024 10:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1oXt-0006Vj-CJ
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:33:25 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oeW-0001ZR-3U
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:40:16 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1oXr-0001jR-Gf
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:33:24 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41ba1ba55ffso24401705e9.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 07:33:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714487600; x=1715092400; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=PuTyecA750ZIQlqesrmVLk05d5eM6TamqpN3e1baQF8=;
- b=rlr5GZUMU6HzXe4WY2ll1zD13efkBQ1IiB0hgrkW1U+zYYYS8druPCAqMYAZcWsJS5
- rioS4CWPjwLD87ayfd97ojkE3VgNd/GkvzzOYyRsOxfnzOi41ziorVVNjTkqTt7c0717
- RWF5Gyvz6xdot54J5T6N2T/ImPWIxtHZbaFwN4Ur+t8jqniGUvYZ/Z6Rp+AqN5NGsfH6
- kzud08djYDJPMOBpldUKXMCPiv+9TzJAd37aVRYuiMWfjX7W9DtwMmeXsU6J5h7OGtJd
- klEGCjJedHyW+TbnGvmLaiTlNqiinnjkpHWp1mgFESFVrBNeR39kvCIlyoMQpGdYk0qP
- WmNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714487600; x=1715092400;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PuTyecA750ZIQlqesrmVLk05d5eM6TamqpN3e1baQF8=;
- b=fKAxNHPq9TT7/5tAR9wNe1SPVwO83s6E+ezuiExdrB2JhUYPGreIK51OzEPRFW8ufb
- i7/BIKmxY+6WwS+vDhiFSzRbAxok+gDRoprt5VwCEkS4xMps5ldcTRW64XLZMPx3JB4f
- hsqmu72j3zX1eeXxHjzg1u1RDr9aIRC4g7nnve2YJPjVoAVQgBk/1APlnEFrV87Ge7OZ
- s5VCIarbtSteOgWLtyP0Pk92nIWMeGVasXPtqPDe4reEA3L+7TZmlaJhQuA1bRd3IWmy
- t+sE2hTwZBgi3ciQGbR5W1s3zM+jp9Ww+ZV51Vqm+mWufEGx2o9edG4Fe7Gc+C7Aw4zb
- SgEw==
-X-Gm-Message-State: AOJu0Yxwr+Qu63qggBE2ct24n7nFsMbuFXhzQS2P935+mRdvcDSdVl/b
- sx1wvarHITent8wXz+0TDKZuyjmg7DBkkzPoUX7KLFDI4Kzq61Bg0FzqxbGajH1UGFKIptATPUm
- +
-X-Google-Smtp-Source: AGHT+IGMmpJjmdkvNWI9g+AjRGa4RsrGU0+u9JcDN9MEbqM5CHTuEbA7tNEuTOuJiDV/L9s/eC9kBw==
-X-Received: by 2002:a05:600c:4f87:b0:418:3d59:c13a with SMTP id
- n7-20020a05600c4f8700b004183d59c13amr2788331wmq.9.1714487600436; 
- Tue, 30 Apr 2024 07:33:20 -0700 (PDT)
-Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
- [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- v17-20020a05600c445100b0041c130520fbsm9939741wmn.46.2024.04.30.07.33.18
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 07:33:20 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Paul Cercueil <paul@crapouillou.net>
-Subject: [PATCH v2] target/sh4: Fix SUBV opcode
-Date: Tue, 30 Apr 2024 16:33:17 +0200
-Message-ID: <20240430143317.75663-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s1oeU-0002zJ-Ek
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:40:15 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BDCC5340E7;
+ Tue, 30 Apr 2024 14:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714488011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8xokP/uANEfBtWpRCNRhf8jZ/yffq0uZUY+MoeGwgl0=;
+ b=D6mSDL4ZAysj0vtjkaT/vCIyeeLvFCZcAX/kT3sULR/JjZumuADJODq1AtFx9A5aXNp/ZR
+ fTzY7isaUZezpopdafhrEFm108I9E2kl/5mXHFEdk9VGyYq+b9IQ8lufoBVy4Z/JQDTQjM
+ gSK3IMPG/7Ug/DUn2z7t5ICoTXNU+Eg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714488011;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8xokP/uANEfBtWpRCNRhf8jZ/yffq0uZUY+MoeGwgl0=;
+ b=Bpz2M8q80gZ4hE/BatXFsOHVFo8EIz/TEo6NnR6Zk9S6gpz/bpI4fqxzozLGEhvK9xuDrv
+ 9L7Zvm+isR6CCcAA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=D6mSDL4Z;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Bpz2M8q8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714488011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8xokP/uANEfBtWpRCNRhf8jZ/yffq0uZUY+MoeGwgl0=;
+ b=D6mSDL4ZAysj0vtjkaT/vCIyeeLvFCZcAX/kT3sULR/JjZumuADJODq1AtFx9A5aXNp/ZR
+ fTzY7isaUZezpopdafhrEFm108I9E2kl/5mXHFEdk9VGyYq+b9IQ8lufoBVy4Z/JQDTQjM
+ gSK3IMPG/7Ug/DUn2z7t5ICoTXNU+Eg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714488011;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8xokP/uANEfBtWpRCNRhf8jZ/yffq0uZUY+MoeGwgl0=;
+ b=Bpz2M8q80gZ4hE/BatXFsOHVFo8EIz/TEo6NnR6Zk9S6gpz/bpI4fqxzozLGEhvK9xuDrv
+ 9L7Zvm+isR6CCcAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 48700133A7;
+ Tue, 30 Apr 2024 14:40:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id AsI3BMsCMWZqTQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 30 Apr 2024 14:40:11 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>, peterx@redhat.com
+Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
+Subject: Re: [PATCH v6 5/5] qapi: introduce exit-on-error parameter for
+ migrate-incoming
+In-Reply-To: <20240430085646.2359711-6-vsementsov@yandex-team.ru>
+References: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
+ <20240430085646.2359711-6-vsementsov@yandex-team.ru>
+Date: Tue, 30 Apr 2024 11:40:08 -0300
+Message-ID: <878r0uncc7.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MISSING_XM_UA(0.00)[];
+ ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_SEVEN(0.00)[8]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: BDCC5340E7
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -6.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,44 +126,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The documentation says:
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-  SUBV Rm, Rn        Rn - Rm -> Rn, underflow -> T
+> Now we do set MIGRATION_FAILED state, but don't give a chance to
+> orchestrator to query migration state and get the error.
+>
+> Let's provide a possibility for QMP-based orchestrators to get an error
+> like with outgoing migration.
+>
+> For hmp_migrate_incoming(), let's enable the new behavior: HMP is not
+> and ABI, it's mostly intended to use by developer and it makes sense
+> not to stop the process.
+>
+> For x-exit-preconfig, let's keep the old behavior:
+>  - it's called from init(), so here we want to keep current behavior by
+>    default
+>  - it does exit on error by itself as well
+> So, if we want to change the behavior of x-exit-preconfig, it should be
+> another patch.
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
 
-The overflow / underflow can be calculated as:
-
-  T = ((Rn ^ Rm) & (Result ^ Rn)) >> 31
-
-However we were using the incorrect:
-
-  T = ((Rn ^ Rm) & (Result ^ Rm)) >> 31
-
-Fix by using the Rn register instead of Rm.
-
-Cc: qemu-stable@nongnu.org
-Fixes: ad8d25a11f ("target-sh4: implement addv and subv using TCG")
-Reported-by: Paul Cercueil <paul@crapouillou.net>
-Suggested-by: Paul Cercueil <paul@crapouillou.net>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2318
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/sh4/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 4a1dd0d1f4..3e013b7c7c 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -933,7 +933,7 @@ static void _decode_opc(DisasContext * ctx)
-             t0 = tcg_temp_new();
-             tcg_gen_sub_i32(t0, REG(B11_8), REG(B7_4));
-             t1 = tcg_temp_new();
--            tcg_gen_xor_i32(t1, t0, REG(B7_4));
-+            tcg_gen_xor_i32(t1, t0, REG(B11_8));
-             t2 = tcg_temp_new();
-             tcg_gen_xor_i32(t2, REG(B11_8), REG(B7_4));
-             tcg_gen_and_i32(t1, t1, t2);
--- 
-2.41.0
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
