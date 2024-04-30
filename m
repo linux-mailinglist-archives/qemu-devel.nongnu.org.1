@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42B48B80BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 21:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0518B80B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 21:43:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1tNd-00075A-8p; Tue, 30 Apr 2024 15:43:09 -0400
+	id 1s1tNc-00074c-30; Tue, 30 Apr 2024 15:43:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1tNa-00073u-6B
+ id 1s1tNa-00073p-0Y
  for qemu-devel@nongnu.org; Tue, 30 Apr 2024 15:43:06 -0400
-Received: from mail-io1-xd32.google.com ([2607:f8b0:4864:20::d32])
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1tNX-0006kz-KT
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 15:43:05 -0400
-Received: by mail-io1-xd32.google.com with SMTP id
- ca18e2360f4ac-7dedc577011so62704739f.3
+ id 1s1tNX-0006lC-DN
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 15:43:04 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-234db9dde9bso2541710fac.1
  for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 12:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714506181; x=1715110981; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714506182; x=1715110982; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oO6lVL+LVK6xULV3eqZmGPXjUDThyU0i78qX8xOIR9w=;
- b=IFcYC42udXyZLO8cURfsKnbyrTtAgg5E9OTLzTxaR7EOhJKmprgazy0APBJ4PE2Isi
- lryanpzj9+nWFsPec9Ajv9Bb41TBVJ1EihbvV4naQtR6Dyd4FMp8WUJXmPCgX9b6vL6c
- Q9s9s/frq9lsmyCCzyyIqMq5QVAH+3eZy1E3VnEg+hoN9dIicAMnibuxt4zwvADAZJJS
- WK884PpxZdKhZ6XGkwNVNwnnVbvW+qis1DD0G1go/usgpF75+eIRKzIkWbSJyE/mEdLG
- TFA7Enw15K8rMYQQX+nKPr9MuUVlCPwDRYmEwjN9Tv4P4lqKMgRy3cW59mqKd1hZ3wFB
- DmrA==
+ bh=xZeDc+rGPQ24e0m555YcdhuR3YwVPpI0p6P9+s6hA88=;
+ b=C/g84SjjRBUlvu6UltOh8AGqIpezWPyrh8XldhnZh5bHOmZkib9fstVJp3xfdZWSPj
+ Fxb38lj3vxHesNT1TZt68lsc7jkyy9xuMQvLLYHfchReWzV2CLP/vugGgwXpiwpJIiRC
+ 94/nWQ1ZZM50R/EgG+KLPSzIykk3+Cx1XgXS8qjl2MdvSViXxGaflAbY/mrdiCvJo1Kt
+ qezumWvMAcRBUD5MmMBaBLWQfRhORle+r52KqYQFU0+/N3er2HXEVfnTDRGP3nHEAybJ
+ VUq6CBuPPRl11Yo74bvYk6NFEJxjZ5wMlAJFSCPJr67n0WOIxgPLrwdr9IoppCa2q4qd
+ dOkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714506181; x=1715110981;
+ d=1e100.net; s=20230601; t=1714506182; x=1715110982;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oO6lVL+LVK6xULV3eqZmGPXjUDThyU0i78qX8xOIR9w=;
- b=mSBLAAerG3t57bJ5Ai3QD4R7PIBheTBz0YKaZpVNJA49PpmOIcltzAgSWPBIEUY0oR
- iIiYzTujVAI1pZBFuO9kRvXUOctox4mBAKZfTICS2mVNouzC5dMS5fjvbqcQDzjaYH+b
- 1wSidEbekLPfRB1ewl7m1fb91PsZUhuo6HAgMo0Vs3HIZGHMinMGPGfjUWbwMFTgdVWB
- +/eGoEk48ht/po/QdgNJ97LInel/132oGrtK0Z89oQlXYTgYUBdrfm2uvmvClTFSy16e
- o4E71YTGXQzepHgYFvPV0L96EF5PZRxAyR4Ag8C8yd8utHpegcNa/tQ5JhE1bMPMUqx7
- a4gQ==
-X-Gm-Message-State: AOJu0YzohwT5Qr5euf6ZjOHY+1xaiAilxTOLtCZvKXVhXJ/PaTKegDWl
- fcMmfmVdMht4iOnZsFbobQNNY1jc56CCaVqyhhYvkCqy78MRW6LATPEJuknpapP9ci+Zfc/lok3
- 1
-X-Google-Smtp-Source: AGHT+IG1ktcSOZd74dI8WzrdkbFPn2ORIAtjZzBYt9V/03se4a80N6LIxedt/DS5lEPYHuAmpUNklA==
-X-Received: by 2002:a05:6e02:19c7:b0:36a:2a57:9393 with SMTP id
- r7-20020a056e0219c700b0036a2a579393mr950428ill.3.1714506181328; 
- Tue, 30 Apr 2024 12:43:01 -0700 (PDT)
+ bh=xZeDc+rGPQ24e0m555YcdhuR3YwVPpI0p6P9+s6hA88=;
+ b=fZVirYqv05Br5lh2IvsVpP3VGIXy528Ved7HLl2wdmJqzNuVsyltfOzPLXptqWYJbt
+ cvyLefOzft756o70GgfN4A5Oav/cLWj71elKowvGrKKXmOnntKPGawA8cQOPcAuJ0+9X
+ DSIORiis5fSh8/sivZfiKLmH/lv7oZYf0A1VF6yy5Pq/04IgY95wWMDiDVmHYM0G8v/R
+ vi6vsrhJW6n8VWqn5qkzJs6cYBEuNjolfMGELV4s8JSI2/00CCeg56Xg5bECBeTi+tFE
+ HxRUXTEs5rmOCycO2A/KaLZ2AQk+aHtHJumwjLO2mG+kAqxxnlpBF27lw5oJTNVPmg1I
+ QbDw==
+X-Gm-Message-State: AOJu0YwKy9PgRKs0emUyQYwlF75ycCN0851COE+ZHUj0IadFEYWw02qM
+ SNQSdSXVDY5zCXsS66d2TcayPgevIUt57fUm2F1xUWrfHt5AVoDBucuiaE7xUXBnbf1y3wHeoNU
+ L
+X-Google-Smtp-Source: AGHT+IGp8sBIP44JchRabfRi/cIPD9nyJoYQBmX5ehvtgkZHU2aWJkE7NGFKw5AjA3fGJEIsG/al1A==
+X-Received: by 2002:a05:6870:f22a:b0:220:873d:dbcc with SMTP id
+ t42-20020a056870f22a00b00220873ddbccmr566264oao.49.1714506182119; 
+ Tue, 30 Apr 2024 12:43:02 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d12-20020a63360c000000b005d880b41598sm20861523pga.94.2024.04.30.12.43.00
+ d12-20020a63360c000000b005d880b41598sm20861523pga.94.2024.04.30.12.43.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 12:43:00 -0700 (PDT)
+ Tue, 30 Apr 2024 12:43:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v7 07/10] util/bufferiszero: Introduce biz_accel_fn typedef
-Date: Tue, 30 Apr 2024 12:42:50 -0700
-Message-Id: <20240430194253.904768-8-richard.henderson@linaro.org>
+Subject: [PATCH v7 08/10] util/bufferiszero: Simplify
+ test_buffer_is_zero_next_accel
+Date: Tue, 30 Apr 2024 12:42:51 -0700
+Message-Id: <20240430194253.904768-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240430194253.904768-1-richard.henderson@linaro.org>
 References: <20240430194253.904768-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d32;
- envelope-from=richard.henderson@linaro.org; helo=mail-io1-xd32.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,44 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Because the three alternatives are monotonic, we don't need
+to keep a couple of bitmasks, just identify the strongest
+alternative at startup.
+
+Generalize test_buffer_is_zero_next_accel and init_accel
+by always defining an accel_table array.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ util/bufferiszero.c | 81 ++++++++++++++++++++-------------------------
+ 1 file changed, 35 insertions(+), 46 deletions(-)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index c9a7ded016..f9af7841ba 100644
+index f9af7841ba..7218154a13 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -26,7 +26,8 @@
- #include "qemu/bswap.h"
+@@ -27,7 +27,6 @@
  #include "host/cpuinfo.h"
  
--static bool (*buffer_is_zero_accel)(const void *, size_t);
-+typedef bool (*biz_accel_fn)(const void *, size_t);
-+static biz_accel_fn buffer_is_zero_accel;
+ typedef bool (*biz_accel_fn)(const void *, size_t);
+-static biz_accel_fn buffer_is_zero_accel;
  
  static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
  {
-@@ -184,7 +185,7 @@ select_accel_cpuinfo(unsigned info)
-     /* Array is sorted in order of algorithm preference. */
-     static const struct {
-         unsigned bit;
--        bool (*fn)(const void *, size_t);
-+        biz_accel_fn fn;
-     } all[] = {
+@@ -179,60 +178,35 @@ buffer_zero_avx2(const void *buf, size_t len)
+ }
+ #endif /* CONFIG_AVX2_OPT */
+ 
+-static unsigned __attribute__((noinline))
+-select_accel_cpuinfo(unsigned info)
+-{
+-    /* Array is sorted in order of algorithm preference. */
+-    static const struct {
+-        unsigned bit;
+-        biz_accel_fn fn;
+-    } all[] = {
++static biz_accel_fn const accel_table[] = {
++    buffer_is_zero_int_ge256,
++    buffer_zero_sse2,
  #ifdef CONFIG_AVX2_OPT
-         { CPUINFO_AVX2,    buffer_zero_avx2 },
-@@ -231,7 +232,7 @@ bool test_buffer_is_zero_next_accel(void)
- #define INIT_ACCEL buffer_is_zero_int_ge256
+-        { CPUINFO_AVX2,    buffer_zero_avx2 },
++    buffer_zero_avx2,
+ #endif
+-        { CPUINFO_SSE2,    buffer_zero_sse2 },
+-        { CPUINFO_ALWAYS,  buffer_is_zero_int_ge256 },
+-    };
++};
+ 
+-    for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
+-        if (info & all[i].bit) {
+-            buffer_is_zero_accel = all[i].fn;
+-            return all[i].bit;
+-        }
++static unsigned best_accel(void)
++{
++    unsigned info = cpuinfo_init();
++
++#ifdef CONFIG_AVX2_OPT
++    if (info & CPUINFO_AVX2) {
++        return 2;
+     }
+-    return 0;
++#endif
++    return info & CPUINFO_SSE2 ? 1 : 0;
+ }
+ 
+-static unsigned used_accel;
+-
+-static void __attribute__((constructor)) init_accel(void)
+-{
+-    used_accel = select_accel_cpuinfo(cpuinfo_init());
+-}
+-
+-#define INIT_ACCEL NULL
+-
+-bool test_buffer_is_zero_next_accel(void)
+-{
+-    /*
+-     * Accumulate the accelerators that we've already tested, and
+-     * remove them from the set to test this round.  We'll get back
+-     * a zero from select_accel_cpuinfo when there are no more.
+-     */
+-    unsigned used = select_accel_cpuinfo(cpuinfo & ~used_accel);
+-    used_accel |= used;
+-    return used;
+-}
+ #else
+-bool test_buffer_is_zero_next_accel(void)
+-{
+-    return false;
+-}
+-
+-#define INIT_ACCEL buffer_is_zero_int_ge256
++#define best_accel() 0
++static biz_accel_fn const accel_table[1] = {
++    buffer_is_zero_int_ge256
++};
  #endif
  
--static bool (*buffer_is_zero_accel)(const void *, size_t) = INIT_ACCEL;
-+static biz_accel_fn buffer_is_zero_accel = INIT_ACCEL;
+-static biz_accel_fn buffer_is_zero_accel = INIT_ACCEL;
++static biz_accel_fn buffer_is_zero_accel;
++static unsigned accel_index;
  
  bool buffer_is_zero_ool(const void *buf, size_t len)
  {
+@@ -257,3 +231,18 @@ bool buffer_is_zero_ge256(const void *buf, size_t len)
+ {
+     return buffer_is_zero_accel(buf, len);
+ }
++
++bool test_buffer_is_zero_next_accel(void)
++{
++    if (accel_index != 0) {
++        buffer_is_zero_accel = accel_table[--accel_index];
++        return true;
++    }
++    return false;
++}
++
++static void __attribute__((constructor)) init_accel(void)
++{
++    accel_index = best_accel();
++    buffer_is_zero_accel = accel_table[accel_index];
++}
 -- 
 2.34.1
 
