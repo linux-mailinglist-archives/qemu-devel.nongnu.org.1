@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303D08B77E7
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 946A08B79E9
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 16:35:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1o2f-0002cY-8K; Tue, 30 Apr 2024 10:01:09 -0400
+	id 1s1oZj-0007vS-3O; Tue, 30 Apr 2024 10:35:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1o2L-0002X9-AA
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:00:50 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <paul@crapouillou.net>)
+ id 1s1nFd-00043N-Hf; Tue, 30 Apr 2024 09:10:30 -0400
+Received: from aposti.net ([89.234.176.197])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1o2H-0002tS-KN
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 10:00:49 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2dd6a7ae2dcso91530231fa.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 07:00:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714485643; x=1715090443; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xJf8wNVMGR0MP4vhP++ZGvQJmrzt6ceEedWUAcLKAGY=;
- b=xnASAZ1PA05FAMPPNF3y9NJgjOmeJBz2pwPFWI39n2Ock9mVKCaDdXBXhLKEuoVLX1
- fvRDJBYS8+ad1FZGQ2DM3rpdmWLgliBYaIz4OAwkDZPxGknBbM/K6yrsTJbvJoWNelzr
- vmfC3+YEEAr7U2kj6PocgKoWouYBc1+xsr37Wj+Sk2tirpMOk6u0nh4Ib7V6ynulW/Y3
- +h6ysRL4Wg2k7mPo2u2DCj1optrQt9qRvYpSnLAgfI0VPbdyX/6/8q4IiC4U6EHcov1g
- K45WZWILQ+1SmyRxCSi5a8fF3F2rJHH4262LmbRCVrghUMyJ67Eqe+YQPRO6hcvV04RA
- Pflg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714485643; x=1715090443;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xJf8wNVMGR0MP4vhP++ZGvQJmrzt6ceEedWUAcLKAGY=;
- b=v+WX7l0rUR/+aUfmcflrOQer9WYufn85y5aRdfjXAEUIFqpoYxiyhkT1QdF7WXoxc4
- D9ZlEN0Y4X4Xky12Md+EoN2NW2UiKo5x0QaDSkARCIVvVrnkOGLPUAesYhQ5JaaAmpW3
- oTgtkQPSAf6IuipJDPq132RxRezbFkNKJzupV42UJv35BUy8SHvZxVpNLwMoRqL+PqCa
- AGMwRcxehAe0xdAymsQH0esIm0pYsGJMdM7jUUDC+QGVAdSQJuGBLl6ZPBJM7YAP4N91
- 4HRo043K7nACEHpUEDzWciZz9GLG7/U/4YcjKQ8Sq32uqfgS6DkzpLUoUdPDO4ZANFsb
- jOmQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU4x5nnw7xgcm4tOKjho7e7FMTNc0y9J0kzj7NP/2HeO1cEglJGz3JaZNdxPtY1/yCcCLEdHE/K5Ck39V5j81G6fnR/bqc=
-X-Gm-Message-State: AOJu0YxbXm+cLIlQD/B7qNEQ/IOtShQow0oP7VA5IwNVY0rOFSH4BdjH
- ihMCkWXbbh4vWfzJ6rI9iuxB8bj3QDBLAPovJcNlyFeYpO0GfFX+m8CVnUW2Qdw=
-X-Google-Smtp-Source: AGHT+IGc9AvgcOl8gFvb5vRUc0Mh2i1GNb+MomowizfWy8TmYVthvDfNw6tHTEt1iCWx5ypOGzi10w==
-X-Received: by 2002:a2e:2a06:0:b0:2e0:c363:f9dc with SMTP id
- q6-20020a2e2a06000000b002e0c363f9dcmr3196323ljq.40.1714485642898; 
- Tue, 30 Apr 2024 07:00:42 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- v10-20020a05600c470a00b0041bfa349cadsm11062705wmo.16.2024.04.30.07.00.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 07:00:42 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 2/2] target/arm: Implement FEAT WFxT and enable for '-cpu max'
-Date: Tue, 30 Apr 2024 15:00:35 +0100
-Message-Id: <20240430140035.3889879-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240430140035.3889879-1-peter.maydell@linaro.org>
-References: <20240430140035.3889879-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <paul@crapouillou.net>)
+ id 1s1nFb-0000gJ-R0; Tue, 30 Apr 2024 09:10:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+ s=mail; t=1714482622;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=L11LylNAsm08CAc4r4VflhYc6URkkvPybYidQ+31FTU=;
+ b=vVi6bZUk4/aT0GZtD6T5boEXmzkYCpBlVA3RBTpUrBWVoPIvQzAeFx9OhgPFX6OaBIGROH
+ hNJneqIF4vtFfvn1p1RI/JP/u6irt/43cJnXE7RgUe2+F7VmU5eFoYjKqvLpEEoPFin6AB
+ cbPFGSzP5xhG5HPUhBe9Q5Ep6gHWdww=
+Message-ID: <f83f10fe154da03fa4704c2255f0fa0ce4fc4dcb.camel@crapouillou.net>
+Subject: Re: [RFC PATCH] target/sh4: Fix SUBV opcode
+From: Paul Cercueil <paul@crapouillou.net>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, qemu-stable@nongnu.org
+Date: Tue, 30 Apr 2024 15:10:21 +0200
+In-Reply-To: <20240430120650.70539-1-philmd@linaro.org>
+References: <20240430120650.70539-1-philmd@linaro.org>
+Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
+ keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
+ LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
+ FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
+ z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
+ +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
+ 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
+ 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
+ 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
+ dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
+ 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
+ rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
+ lBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFC
+ qaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IWYXnd
+ JO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN70
+ 62DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOt
+ X0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEA
+ AYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/
+ Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmc
+ Gu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2z
+ McLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/
+ 7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2c
+ LUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=89.234.176.197; envelope-from=paul@crapouillou.net;
+ helo=aposti.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 30 Apr 2024 10:35:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,382 +86,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_WFxT introduces new instructions WFIT and WFET, which are like
-the existing WFI and WFE but allow the guest to pass a timeout value
-in a register.  The instructions will wait for an interrupt/event as
-usual, but will also stop waiting when the value of CNTVCT_EL0 is
-greater than or equal to the specified timeout value.
+Hi Philippe,
 
-We implement WFIT by setting up a timer to expire at the right
-point; when the timer expires it sets the EXITTB interrupt, which
-will cause the CPU to leave the halted state. If we come out of
-halt for some other reason, we unset the pending timer.
+Le mardi 30 avril 2024 =C3=A0 14:06 +0200, Philippe Mathieu-Daud=C3=A9 a =
+=C3=A9crit=C2=A0:
+> The documentation says:
+>=20
+> =C2=A0 SUBV Rm, Rn=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Rn - Rm -> R=
+n, underflow -> T
+>=20
+> While correctly performing the substraction, the underflow
+> is not detected.
+>=20
+> While we can check the high xored bit for overflow, for
+> underflow we need to check the xored value is not negative.
 
-We implement WFET as a nop, which is architecturally permitted and
-matches the way we currently make WFE a nop.
+This fix still does not work properly; it will incorrectly set the
+underflow bit when the sign changes from positive to negative.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/emulation.rst  |  1 +
- target/arm/cpu-features.h      |  5 ++++
- target/arm/cpu.h               |  3 ++
- target/arm/helper.h            |  1 +
- target/arm/internals.h         |  8 +++++
- target/arm/tcg/a64.decode      |  4 +++
- target/arm/cpu.c               | 38 ++++++++++++++++++++++++
- target/arm/helper.c            |  4 +--
- target/arm/machine.c           | 20 +++++++++++++
- target/arm/tcg/cpu64.c         |  1 +
- target/arm/tcg/op_helper.c     | 54 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-a64.c | 41 ++++++++++++++++++++++++++
- 12 files changed, 178 insertions(+), 2 deletions(-)
+e.g. Rn =3D=3D 0 and Rm =3D=3D 2, the result will be Rn =3D=3D -2, without =
+any
+underflow.
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index a9ae7ede9fc..d283c985d14 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -108,6 +108,7 @@ the following architecture extensions:
- - FEAT_UAO (Unprivileged Access Override control)
- - FEAT_VHE (Virtualization Host Extensions)
- - FEAT_VMID16 (16-bit VMID)
-+- FEAT_WFxT (WFE and WFI instructions with timeout)
- - FEAT_XNX (Translation table stage 2 Unprivileged Execute-never)
- - SVE (The Scalable Vector Extension)
- - SVE2 (The Scalable Vector Extension v2)
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index b300d0446d8..c59ca104fe1 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -571,6 +571,11 @@ static inline bool isar_feature_aa64_i8mm(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, I8MM) != 0;
- }
- 
-+static inline bool isar_feature_aa64_wfxt(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, WFXT) >= 2;
-+}
-+
- static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index 97997dbd087..e8e6024fe30 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -868,6 +868,9 @@ struct ArchCPU {
-      * pmu_op_finish() - it does not need other handling during migration
-      */
-     QEMUTimer *pmu_timer;
-+    /* Timer used for WFxT timeouts */
-+    QEMUTimer *wfxt_timer;
-+
-     /* GPIO outputs for generic timer */
-     qemu_irq gt_timer_outputs[NUM_GTIMERS];
-     /* GPIO output for GICv3 maintenance interrupt signal */
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 2b027333053..a85de78c8fc 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -53,6 +53,7 @@ DEF_HELPER_2(exception_pc_alignment, noreturn, env, tl)
- DEF_HELPER_1(setend, void, env)
- DEF_HELPER_2(wfi, void, env, i32)
- DEF_HELPER_1(wfe, void, env)
-+DEF_HELPER_2(wfit, void, env, i64)
- DEF_HELPER_1(yield, void, env)
- DEF_HELPER_1(pre_hvc, void, env)
- DEF_HELPER_2(pre_smc, void, env, i32)
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index b53f5e8ff2a..bd32883890d 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1760,4 +1760,12 @@ bool check_watchpoint_in_range(int i, target_ulong addr);
- CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr);
- int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type);
- int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type);
-+
-+/* Return the current value of the system counter in ticks */
-+uint64_t gt_get_countervalue(CPUARMState *env);
-+/*
-+ * Return the currently applicable offset between the system counter
-+ * and CNTVCT_EL0 (this will be either 0 or the value of CNTVOFF_EL2).
-+ */
-+uint64_t gt_virt_cnt_offset(CPUARMState *env);
- #endif
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 0e7656fd158..7aea5cba5ea 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -183,6 +183,10 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
-   NOP           1101 0101 0000 0011 0010 ---- --- 11111
- }
- 
-+# System instructions with register argument
-+WFET            1101 0101 0000 0011 0001 0000 000 rd:5
-+WFIT            1101 0101 0000 0011 0001 0000 001 rd:5
-+
- # Barriers
- 
- CLREX           1101 0101 0000 0011 0011 ---- 010 11111
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index a152def2413..006092a6b12 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1132,6 +1132,33 @@ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
-     return arm_cpu_data_is_big_endian(env);
- }
- 
-+static bool arm_cpu_exec_halt(CPUState *cs)
-+{
-+    bool leave_halt = cpu_has_work(cs);
-+
-+    if (leave_halt) {
-+        /* We're about to come out of WFI/WFE: disable the WFxT timer */
-+        ARMCPU *cpu = ARM_CPU(cs);
-+        if (cpu->wfxt_timer) {
-+            timer_del(cpu->wfxt_timer);
-+        }
-+    }
-+    return leave_halt;
-+}
-+
-+static void arm_wfxt_timer_cb(void *opaque)
-+{
-+    ARMCPU *cpu = opaque;
-+    CPUState *cs = CPU(cpu);
-+
-+    /*
-+     * We expect the CPU to be halted; this will cause arm_cpu_is_work()
-+     * to return true (so we will come out of halt even with no other
-+     * pending interrupt), and the TCG accelerator's cpu_exec_interrupt()
-+     * function auto-clears the CPU_INTERRUPT_EXITTB flag for us.
-+     */
-+    cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
-+}
- #endif
- 
- static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
-@@ -1874,6 +1901,9 @@ static void arm_cpu_finalizefn(Object *obj)
-     if (cpu->pmu_timer) {
-         timer_free(cpu->pmu_timer);
-     }
-+    if (cpu->wfxt_timer) {
-+        timer_free(cpu->wfxt_timer);
-+    }
- #endif
- }
- 
-@@ -2357,6 +2387,13 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
- #endif
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-+    if (tcg_enabled() && cpu_isar_feature(aa64_wfxt, cpu)) {
-+        cpu->wfxt_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                       arm_wfxt_timer_cb, cpu);
-+    }
-+#endif
-+
-     if (tcg_enabled()) {
-         /*
-          * Don't report some architectural features in the ID registers
-@@ -2611,6 +2648,7 @@ static const TCGCPUOps arm_tcg_ops = {
- #else
-     .tlb_fill = arm_cpu_tlb_fill,
-     .cpu_exec_interrupt = arm_cpu_exec_interrupt,
-+    .cpu_exec_halt = arm_cpu_exec_halt,
-     .do_interrupt = arm_cpu_do_interrupt,
-     .do_transaction_failed = arm_cpu_do_transaction_failed,
-     .do_unaligned_access = arm_cpu_do_unaligned_access,
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 6b224826fbb..f7bb2d6ba8a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2658,7 +2658,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
-     }
- }
- 
--static uint64_t gt_get_countervalue(CPUARMState *env)
-+uint64_t gt_get_countervalue(CPUARMState *env)
- {
-     ARMCPU *cpu = env_archcpu(env);
- 
-@@ -2793,7 +2793,7 @@ static uint64_t gt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return gt_get_countervalue(env) - gt_phys_cnt_offset(env);
- }
- 
--static uint64_t gt_virt_cnt_offset(CPUARMState *env)
-+uint64_t gt_virt_cnt_offset(CPUARMState *env)
- {
-     uint64_t hcr;
- 
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index b2b39b24755..0a722ca7e75 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -242,6 +242,25 @@ static const VMStateDescription vmstate_irq_line_state = {
-     }
- };
- 
-+static bool wfxt_timer_needed(void *opaque)
-+{
-+    ARMCPU *cpu = opaque;
-+
-+    /* We'll only have the timer object if FEAT_WFxT is implemented */
-+    return cpu->wfxt_timer;
-+}
-+
-+static const VMStateDescription vmstate_wfxt_timer = {
-+    .name = "cpu/wfxt-timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = wfxt_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(wfxt_timer, ARMCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static bool m_needed(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-@@ -957,6 +976,7 @@ const VMStateDescription vmstate_arm_cpu = {
- #endif
-         &vmstate_serror,
-         &vmstate_irq_line_state,
-+        &vmstate_wfxt_timer,
-         NULL
-     }
- };
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 62c4663512b..47ea51d3aa5 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1150,6 +1150,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = cpu->isar.id_aa64isar2;
-     t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
-     t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
-     cpu->isar.id_aa64isar2 = t;
- 
-     t = cpu->isar.id_aa64pfr0;
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index c199b69fbff..c083e5cfb87 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -409,6 +409,60 @@ void HELPER(wfi)(CPUARMState *env, uint32_t insn_len)
- #endif
- }
- 
-+void HELPER(wfit)(CPUARMState *env, uint64_t timeout)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    /*
-+     * WFI in the user-mode emulator is technically permitted but not
-+     * something any real-world code would do. AArch64 Linux kernels
-+     * trap it via SCTRL_EL1.nTWI and make it an (expensive) NOP;
-+     * AArch32 kernels don't trap it so it will delay a bit.
-+     * For QEMU, make it NOP here, because trying to raise EXCP_HLT
-+     * would trigger an abort.
-+     */
-+    return;
-+#else
-+    ARMCPU *cpu = env_archcpu(env);
-+    CPUState *cs = env_cpu(env);
-+    int target_el = check_wfx_trap(env, false);
-+    /* The WFIT should time out when CNTVCT_EL0 >= the specified value. */
-+    uint64_t cntval = gt_get_countervalue(env);
-+    uint64_t offset = gt_virt_cnt_offset(env);
-+    uint64_t cntvct = cntval - offset;
-+    uint64_t nexttick;
-+
-+    if (cpu_has_work(cs) || cntvct >= timeout) {
-+        /*
-+         * Don't bother to go into our "low power state" if
-+         * we would just wake up immediately.
-+         */
-+        return;
-+    }
-+
-+    if (target_el) {
-+        env->pc -= 4;
-+        raise_exception(env, EXCP_UDEF, syn_wfx(1, 0xe, 0, false),
-+                        target_el);
-+    }
-+
-+    if (uadd64_overflow(timeout, offset, &nexttick)) {
-+        nexttick = UINT64_MAX;
-+    }
-+    if (nexttick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-+        /*
-+         * If the timeout is too long for the signed 64-bit range
-+         * of a QEMUTimer, let it expire early.
-+         */
-+        timer_mod_ns(cpu->wfxt_timer, INT64_MAX);
-+    } else {
-+        timer_mod(cpu->wfxt_timer, nexttick);
-+    }
-+    cs->exception_index = EXCP_HLT;
-+    cs->halted = 1;
-+    cpu_loop_exit(cs);
-+#endif
-+}
-+
- void HELPER(wfe)(CPUARMState *env)
- {
-     /* This is a hint instruction that is semantically different
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 976094a5c80..591be43279c 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1690,6 +1690,47 @@ static bool trans_WFE(DisasContext *s, arg_WFI *a)
-     return true;
- }
- 
-+static bool trans_WFIT(DisasContext *s, arg_WFIT *a)
-+{
-+    if (!dc_isar_feature(aa64_wfxt, s)) {
-+        return false;
-+    }
-+
-+    /*
-+     * Because we need to pass the register value to the helper,
-+     * it's easier to emit the code now, unlike trans_WFI which
-+     * defers it to aarch64_tr_tb_stop(). That means we need to
-+     * check ss_active so that single-stepping a WFIT doesn't halt.
-+     */
-+    if (s->ss_active) {
-+        /* Act like a NOP under architectural singlestep */
-+        return true;
-+    }
-+
-+    gen_a64_update_pc(s, 4);
-+    gen_helper_wfit(tcg_env, cpu_reg(s, a->rd));
-+    /* Go back to the main loop to check for interrupts */
-+    s->base.is_jmp = DISAS_EXIT;
-+    return true;
-+}
-+
-+static bool trans_WFET(DisasContext *s, arg_WFET *a)
-+{
-+    if (!dc_isar_feature(aa64_wfxt, s)) {
-+        return false;
-+    }
-+
-+    /*
-+     * We rely here on our WFE implementation being a NOP, so we
-+     * don't need to do anything different to handle the WFET timeout
-+     * from what trans_WFE does.
-+     */
-+    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
-+        s->base.is_jmp = DISAS_WFE;
-+    }
-+    return true;
-+}
-+
- static bool trans_XPACLRI(DisasContext *s, arg_XPACLRI *a)
- {
-     if (s->pauth_active) {
--- 
-2.34.1
+Cheers,
+-Paul
+
+>=20
+> Cc: qemu-stable@nongnu.org
+> Fixes: ad8d25a11f ("target-sh4: implement addv and subv using TCG")
+> Reported-by: Paul Cercueil <paul@crapouillou.net>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2318
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> =C2=A0target/sh4/translate.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+> index 4a1dd0d1f4..1c48d8ebea 100644
+> --- a/target/sh4/translate.c
+> +++ b/target/sh4/translate.c
+> @@ -937,7 +937,7 @@ static void _decode_opc(DisasContext * ctx)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+t2 =3D tcg_temp_new();
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+tcg_gen_xor_i32(t2, REG(B11_8), REG(B7_4));
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+tcg_gen_and_i32(t1, t1, t2);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_g=
+en_shri_i32(cpu_sr_t, t1, 31);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tcg_g=
+en_setcondi_i32(TCG_COND_GE, cpu_sr_t, t1, 0);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+tcg_gen_mov_i32(REG(B11_8), t0);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
 
 
