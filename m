@@ -2,67 +2,216 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0678B6D9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 10:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0DC8B6DFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 11:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1jIW-0003V8-Eh; Tue, 30 Apr 2024 04:57:12 -0400
+	id 1s1jYL-00025O-22; Tue, 30 Apr 2024 05:13:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1jIS-0003S3-K8
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:08 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1s1jYE-00023u-Mp
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:13:26 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1s1jIN-0000wt-Hy
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:57:08 -0400
-Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:2a2a:0:640:d546:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 1FFB4608DF;
- Tue, 30 Apr 2024 11:57:02 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8829::1:3c])
- by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id muME9V11IOs0-G5JClCnL; Tue, 30 Apr 2024 11:57:01 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714467421;
- bh=hPl5qi27J+/Tg/0IfFFrYhoTft2ShBb4TNFFRz0LIM4=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=wfcHTtt60x/XsOJaMUW7haMIF0/7vS5J9XmlSHILYhoEpp7dSkKZPyRRxHyNTafaD
- 5FidVnwy69oKvxJhVz7PdN5cNiFCHo9O77094xETkry7Vfez+BcKVcV21maCIeGr5z
- DWj17IcaR2WrR305iewyg6EOPcFfiQe2tyV1ZWKk=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: peterx@redhat.com,
-	farosas@suse.de
-Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
- qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
-Subject: [PATCH v6 5/5] qapi: introduce exit-on-error parameter for
- migrate-incoming
-Date: Tue, 30 Apr 2024 11:56:46 +0300
-Message-Id: <20240430085646.2359711-6-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
-References: <20240430085646.2359711-1-vsementsov@yandex-team.ru>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1s1jYC-0007jx-0O
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:13:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714468404; x=1746004404;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=HVvoNHDPUc3MBT1ts7f9eI3YCusvtbEJJ3BxXXh7eBo=;
+ b=i5RGy9KZS+D7mbLP7RLGF90eMoD6EePox/G2As5nLNT+416ZOcvUc7A1
+ muDUErnr5thvPS+m39s9jpp6o8NnLhbpx6roqGdpUrgDXBatCHBCTw8xd
+ vA2F/g6YhFJ+X/Ca1uoyMFccP7xf3bYi5ie4FdTik5R+NB6yzH5hAmAhm
+ Rdz/ESkAA0jYxbdsynxZLzPWw3gzj7K/U4hgTPZf98801T+PPSbDbrnMr
+ xAF4eYeVdY3s1jz5qvrlAsnl7mDHln1Zgs5qVON/M+4zpT/UqGG6JQAZu
+ PzrBKkX3sLE5ZtUqIIn07ktuQJf+oIcZFnI9Sz2ARlE9phy/QfucZqXOu Q==;
+X-CSE-ConnectionGUID: QThQEA13QauPLGsoWFDTJA==
+X-CSE-MsgGUID: cmN665S5SzeQUFxyz3xoJQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="20848707"
+X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; d="scan'208";a="20848707"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Apr 2024 02:13:18 -0700
+X-CSE-ConnectionGUID: zIR6AnUnTZm/vzxiF0/fIw==
+X-CSE-MsgGUID: 5eOzSNkjQaqFNb5LmJD3Eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; d="scan'208";a="26901591"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 30 Apr 2024 02:13:17 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 30 Apr 2024 02:13:16 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 30 Apr 2024 02:13:16 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 30 Apr 2024 02:13:16 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 30 Apr 2024 02:13:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CzlKkYjdwk1uW7eKPjG4FXgH9BkQm0a+BQGIk3t0b3K+NtCRpDoFW0Bxwx9u4m2/RM/meKxXSeeeOtZXL44sANmiYNFw58rfW++0FprAh3xIGutslvPXwgcWRB30eDTZdMdWtjMbXvTg6wnE8RZ5mYIP2lyno4W5NYXtTNzVGQ7QPtwFW9kzqIixSCLEoKcTja/amec4HNDSxiXn812DeXqNrpsy1lZTyzq6b+YjZsTAAJQ/y/2U78q6udfEXNjUCE38KrFLoGl1QwBoJ4pZL1II+NHRKt8EDysu6tL/w4frQqsWgS/I6OmD2wRAyDyJU7bg0uFOxNUV+Ki0c3XqVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HVvoNHDPUc3MBT1ts7f9eI3YCusvtbEJJ3BxXXh7eBo=;
+ b=cPcgrBKTUvneINn1lVpF5VjuPCoKBNd7gxWXDqFoMQ6pkvMX0RImbzBleta1on6QhaRwPwZy5EgVwCu+gBu4h/DlqEnjHTYiVNmwRaxq8+YIVTFICEu83HLg+XhclxIeH6Ty0b/LEjxweceWBCkhlqMLTdz1a5dPgDFHaPbfY6bDRvFmEj6ihnOpNseDr8eJf80MWZ2doMdllTByvqg9a64L7hEjqyD7En1AFL5yoY0/3pHVOLfbw/+uRY97kmjUUe6R6T3ZrP9fbEUvm9HFHOY3XkT+AXprU5inreMipZ4rdtM6JBqmXZ6MOLO43fpPMEdTVqSy7KK5aYIFUsSh1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by PH0PR11MB7614.namprd11.prod.outlook.com (2603:10b6:510:28f::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.36; Tue, 30 Apr
+ 2024 09:13:14 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129%7]) with mapi id 15.20.7519.031; Tue, 30 Apr 2024
+ 09:13:14 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "jgg@nvidia.com"
+ <jgg@nvidia.com>, "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Peng, Chao P"
+ <chao.p.peng@intel.com>
+Subject: RE: [PATCH v3 02/19] vfio/container: Introduce
+ HostIOMMUDeviceLegacyVFIO device
+Thread-Topic: [PATCH v3 02/19] vfio/container: Introduce
+ HostIOMMUDeviceLegacyVFIO device
+Thread-Index: AQHamgH9z0N3F43eA02TiqIADP11SLGAck2AgAAVDDA=
+Date: Tue, 30 Apr 2024 09:13:13 +0000
+Message-ID: <SJ0PR11MB6744D20165F8D9F8383CA115921A2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
+ <20240429065046.3688701-3-zhenzhong.duan@intel.com>
+ <5160adfc-9630-49f0-a2a4-f6987c819bc5@redhat.com>
+In-Reply-To: <5160adfc-9630-49f0-a2a4-f6987c819bc5@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH0PR11MB7614:EE_
+x-ms-office365-filtering-correlation-id: 438b4d11-d561-4a2a-8b68-08dc68f5c3be
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230031|376005|1800799015|7416005|366007|38070700009; 
+x-microsoft-antispam-message-info: =?utf-8?B?dnJzcy9oVDRkRERpNktaMTBVRjY2OVR4MVAvVlFVMFA5Qjh2Rk9LTCtCclVv?=
+ =?utf-8?B?RDFkTW15TEVWempqeEVua2cvTzFXWEhvdGp2VHBmelh4UWJoZjlQdHVDTlk0?=
+ =?utf-8?B?MWEzbFg1RFkwWGRKTE9UR2pyc055cHd5SnVlT2NzMHdpSHUzZFZrT0FFQktE?=
+ =?utf-8?B?a0RlRjEwTm1CY3U1cnBmRjZuNjlybzVOdVBubzZMRE82eGdVc0dJTUJGeGdK?=
+ =?utf-8?B?Wk9VclFlQTJQUWhFTjVpa0hSM2lkN05hSEJLUUpwaDV0bkRPSnVzUVJjbnJp?=
+ =?utf-8?B?RnQveU1UQ3Zjc3lGdmowb0xyZTJleFNSNU9qVVRtTGZpZ1JEaGUwTEkyb3V1?=
+ =?utf-8?B?NlVkRzZObUptdWJlM25QSkxaQWk5cVJzZVZjQklUenZneVBOaDFGNlRuWEVG?=
+ =?utf-8?B?QkRhU2Z3ZjEvY2FFRWxHUWtCcm9Db2FvZUxFMThqalBTSmlSUTVtdSswK1Nl?=
+ =?utf-8?B?bSsyVGdzazNObGRKVC9BR3MwL0swMC9EQWtzNitBZENlSncvM1p2SnQ1N1F0?=
+ =?utf-8?B?YUpXT0ZCTGh0M2VnWnVIakhyQ2pRc2xQTDlpdTlHTDVnT1pTZG1JNXZvNE1Z?=
+ =?utf-8?B?cytIYXhQMnlOZTQ4YUs2eDRVVmlHSlBMd2doQkdXNUc3eFplUmR3eDJCN1BH?=
+ =?utf-8?B?OWovY2hkQ2oyREwrUVNtdzcxRW5NTEF6YnNhU1llRytvdDBLak9uUTBxR0tV?=
+ =?utf-8?B?SmZjNjJsYlpvSWZhNjRoZXdyQ3VCYWRlYzhFb2RCZ1JyMEEwNy80K0lPOUJt?=
+ =?utf-8?B?UWE1OG1qNjNLUUYyQVFvbGhoaEFveDRJeXZoMWlnRHNROTRaZFJLUXdyWEZS?=
+ =?utf-8?B?WXRKcGdEOUdsblM3RCt3NERTQ2x2MzZBZWlWTzRaUnR2RmxmQ05iSTBaalYw?=
+ =?utf-8?B?c0tpeVU0YkVXRmpZM0hkWnJIVjFzUUl5dHN6ZVJzUElrY1ZmeS9tUUJRQVEr?=
+ =?utf-8?B?QjdTZGZMNy9XU0JKcUU4SmZRdnF1dkVtcVQ0R3o1aFpUTlgvR3IyL3NYdzg4?=
+ =?utf-8?B?V0hNT0JTM3k4TkZhbTMxQXJaMmpaNm1ENjhKKzF0Mzk0ZkZLMEhqWXZWZElp?=
+ =?utf-8?B?WkxxNnNYelZyTnNjczZZZXlqUnREN1pKT1JOUEpEZmtVeTlZN2JsUmFTUm5Z?=
+ =?utf-8?B?b1VFcUZZRVllS3BuenpJRk81VDBhVnJwdWwzc2JKeG0zaWRtaE5ZWXplTndv?=
+ =?utf-8?B?bDRXZU9yRXRMUGZsWGdPTUd5c0w2WWpjTTRWUkhiUm5SZ1lEOUV3elp3S0Qy?=
+ =?utf-8?B?aVR4Z002TFJNbGJzekh5WWJITFFSQUhTSDIvdGs4OFFIWnBYYmJCclZydlM3?=
+ =?utf-8?B?VFk4c0VxWFRPQWd0b21FN2l0WVlpNkhOUnJpU1FnR3NucGNiMnJsTEZRUW1r?=
+ =?utf-8?B?Q3BpSE9BMVZIVHJIN0RZbzd2TUdIaGxRNlYzTlh2S2NoSzJNall2R0Z5OTlX?=
+ =?utf-8?B?b29HN3lpSmM2aXFtb2N3UkdUSDNlVHdENDNDTnM5WGplNFVRY3UrbHJoNEVo?=
+ =?utf-8?B?ZFVIZnQ1K1BFUUZOM21pR0Q0QXg5U3JaeEU1NzVrbk9XQmoxWmlyMmZXNGtB?=
+ =?utf-8?B?T2pmMnRKYkFjcFlON0RRQUlwa3d5RVRpRE0rcnFhS3ZFVHgvR05ZUUZsaURo?=
+ =?utf-8?B?bDZCWFFyZlYvWEd5cXMvVmdKSXhYR0x2UEFmRXdub2NtYW02SnhpbmwvQWxO?=
+ =?utf-8?B?dktDalUvVmVZWWxpVmJmbjNvc3Y2aHp1eVphaXg1QTB1c0t6ZUdydks1cGU5?=
+ =?utf-8?B?YlFoYWpJOUtxc3VoakdkWlBoWm13dk1kL0M4bncyd2pXQ3FZekViWjZBc2xY?=
+ =?utf-8?B?THhBSkJVUFV1VFpBODBsdz09?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(7416005)(366007)(38070700009); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bnR1cWpmdmcwc2F4eW9tZkV4V3JsUU1WdjRlYjFJUXpEWko0Ny9zRVR0N1Zi?=
+ =?utf-8?B?RnN2UjlqR0NzMU0zQTZkUndXUEhBVzZnUDZsK2IwTHRzL3RaUEljRnFWOUFT?=
+ =?utf-8?B?WEJMWHpUS3YrbmlHWGNTUVhUcmFJKzN5dXlVRnZBWDdGb3Y0Mld0RThseThR?=
+ =?utf-8?B?d1NiYVQwL3V2Rm5hcytpWFBnMUpRam12YUZKVTBJZHhZUWNTS29zdEpEY1ZE?=
+ =?utf-8?B?OXk3aEUwSFZWRVhjMmRuOGliK2NUa1Z6bkNXdlUwd0plUmpzRCtIY1lTR2VH?=
+ =?utf-8?B?THNsS29SZGdNTmFCL0U3bmwwWU5ITEtUZkhrZCtGeEI5Y0tOWWNpa2x3WUdG?=
+ =?utf-8?B?QWJNbHdsVjNYVjVDbVJOMUkxWC9vWTJDVTFabnVHMHlwWTJSVFB6K3JGai9H?=
+ =?utf-8?B?cXVHVTd1SjEvZlJMODlDMmt2aEpKaVVZNjBiaFNUR2xFRGpqbWJKcDA0RFJx?=
+ =?utf-8?B?Nm9IT2FFNy9HNUE3dlNxQUVnclZ2T09zc0lMbVBLOHZoc2Z2UnBwVEtRWjIy?=
+ =?utf-8?B?cldoNDhPcFp3VzVHdDFFelNqVEoyMzBQa3VhejIvSHdGR0ZnU3hSeHFCSUR5?=
+ =?utf-8?B?SDcyVlJWMW9WVGpYbkZ4MmlFeHBXSGZlbTA1UGhla1hWTEI1VDd6Wlk0RDlq?=
+ =?utf-8?B?aDdZRDNVNlNuT1BzNUtFR1o3QW9ublFRdTFnTGdQV0JaL3o2SVkzdEx4RU40?=
+ =?utf-8?B?RXQ0enBOUFAyQk9BTGc5V0JGSzYvVUZ2Q09ZNWlReGJOY200YlRQTWIvNFlq?=
+ =?utf-8?B?K3NJRkh5YTJ1SFEwYmJaTllyVjl0YnRSTEk2dUVXdGxoNitiTGo4R0ovTmx6?=
+ =?utf-8?B?cEJBYXp3MW1NM3IwTml2VHdqKzRIa1NVbllUeitzNUVMSlR2dVMvU3l3bzlM?=
+ =?utf-8?B?dEk0SDNRbWV0SDVaTXJ3OXZVc25peVhiby9SS1J3eHNsZWVuWk1Hc1B3M1hp?=
+ =?utf-8?B?Wm5IMGQ2RXdldGJPc1BKS2JBaUJNMUlPeXhPbnlXME1XQmx2YWpSVkhLUEVX?=
+ =?utf-8?B?bWt4djB1d0Vrb2U4SW9jc2JZc052OURsb1FraVI3YkdTVVNlVnRka2g3NFZL?=
+ =?utf-8?B?RmNmZDcyM25ZZnNxdVkwdTRkTVM5QnRYNFh4LzhJeFpQaFFDWklyQytqdGNM?=
+ =?utf-8?B?M1ZaNEN5T1NxWU0rbXVBbEs5VXFRblh4RmJjcFF2bndsbloxT1U3WVRBUC9x?=
+ =?utf-8?B?Q08vVHFaUWVEKzQ1M1BBVVZ1b2ZTZDNlY0xOUjVBUWlBVVNJSVdiOVZwT0hM?=
+ =?utf-8?B?K09NLzR1OFR6dVRFbUxZRmtDOW8wMWpKa3JYUjhFT1JzSUlIeWVrRWJDUFJQ?=
+ =?utf-8?B?YmpyTlJVcGtuenNTcXJid29PeXd5YzBhYXJDNFhVeE5yaCt3akRPd3hvMjBD?=
+ =?utf-8?B?OFh0citNaEl6MGNFZ2IzKzNzblVYWEZ3a1V1dEdoSjU3L05LQTZpcXVsOFUr?=
+ =?utf-8?B?UEVYMVJ4YkZoYnUwNFNuUmNQczNKcXpMa0R3aytMMmJyNUR0THh0cHd2R2dP?=
+ =?utf-8?B?eWhrTDR1QnJLcDBzMHF3aWYrLytDT2NTRXFIUzk4amVmM1VPeDhnOWdicE55?=
+ =?utf-8?B?SGhuVzIxWnhyVldydE9JYWxMSnYxZ1J6enF1M1k1NThCZFozSUJUWHhkN2g1?=
+ =?utf-8?B?MnB1SDhxc2RVVXZOOWpKWkE2Y3RpelpCUTNuUGVBQWxvZnVoNFIweUZFVmRH?=
+ =?utf-8?B?MFExaVBiSk9HaG5US2dNT0xVV1NxdHV6WDlDSHFKdlNvaVBXSlArWFFJWWMz?=
+ =?utf-8?B?QjNaSEtwMThLaTN3aGpoSE85cGVUQkxUV2l0bjlRUVh4dFREanNsMjFvMkxs?=
+ =?utf-8?B?NUJ6WEw4V2dSZEJmK25wM3FKdkJCa3UxeXEveGVsRmNzTGcwajBHZGNLamRh?=
+ =?utf-8?B?Yi9qYXJ1aFNTT0QwR0tCWmg0eE9qSmtQeHBLb0lrcmYzRmJ0eCtnR2ZvUTNJ?=
+ =?utf-8?B?TU1pZHd4cmdtcFpvVnlnK2h4SkF6bmRWRk4ySnFBb3BMeEZEdHNBbE9DeWFZ?=
+ =?utf-8?B?dElaL1E1NjFTNGd5QWY1Mm55NWxBTUZtTkpkUUt5bjhQMVJvUDZhMk1jQzVV?=
+ =?utf-8?B?SlozWHhieHlHVEV3YmIreXQ5cnBJemRKdGpTWXhXRE0yRnA4bzBZcVJIR1Jn?=
+ =?utf-8?Q?85z5lVXExPUz/2J415HT9WC/X?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 438b4d11-d561-4a2a-8b68-08dc68f5c3be
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2024 09:13:13.9473 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mUqA5FyU0HXXZ1aL+N7zT1ZSf7YY9H+tA3qDafnFmekFOBSJ3hiUeN+n20eRtZuoswvGl2yn0aSu0DUkLr+TtDPQAAQjYxeDPR33W3snsjg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7614
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.198.163.9;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -74,183 +223,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now we do set MIGRATION_FAILED state, but don't give a chance to
-orchestrator to query migration state and get the error.
-
-Let's provide a possibility for QMP-based orchestrators to get an error
-like with outgoing migration.
-
-For hmp_migrate_incoming(), let's enable the new behavior: HMP is not
-and ABI, it's mostly intended to use by developer and it makes sense
-not to stop the process.
-
-For x-exit-preconfig, let's keep the old behavior:
- - it's called from init(), so here we want to keep current behavior by
-   default
- - it does exit on error by itself as well
-So, if we want to change the behavior of x-exit-preconfig, it should be
-another patch.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Markus Armbruster <armbru@redhat.com>
----
- migration/migration-hmp-cmds.c |  2 +-
- migration/migration.c          | 33 +++++++++++++++++++++++++++------
- migration/migration.h          |  3 +++
- qapi/migration.json            |  7 ++++++-
- system/vl.c                    |  3 ++-
- 5 files changed, 39 insertions(+), 9 deletions(-)
-
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 7e96ae6ffd..23181bbee1 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -466,7 +466,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate_incoming(NULL, true, caps, &err);
-+    qmp_migrate_incoming(NULL, true, caps, true, false, &err);
-     qapi_free_MigrationChannelList(caps);
- 
- end:
-diff --git a/migration/migration.c b/migration/migration.c
-index a9599838e6..289afa8d85 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -72,6 +72,8 @@
- #define NOTIFIER_ELEM_INIT(array, elem)    \
-     [elem] = NOTIFIER_WITH_RETURN_LIST_INITIALIZER((array)[elem])
- 
-+#define INMIGRATE_DEFAULT_EXIT_ON_ERROR true
-+
- static NotifierWithReturnList migration_state_notifiers[] = {
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_NORMAL),
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_REBOOT),
-@@ -234,6 +236,8 @@ void migration_object_init(void)
-     qemu_cond_init(&current_incoming->page_request_cond);
-     current_incoming->page_requested = g_tree_new(page_request_addr_cmp);
- 
-+    current_incoming->exit_on_error = INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     migration_object_check(current_migration, &error_fatal);
- 
-     blk_mig_init();
-@@ -800,12 +804,14 @@ fail:
- 
-     migration_incoming_state_destroy();
- 
--    WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
--        error_report_err(s->error);
--        s->error = NULL;
--    }
-+    if (mis->exit_on_error) {
-+        WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
-+            error_report_err(s->error);
-+            s->error = NULL;
-+        }
- 
--    exit(EXIT_FAILURE);
-+        exit(EXIT_FAILURE);
-+    }
- }
- 
- /**
-@@ -1314,6 +1320,15 @@ static void fill_destination_migration_info(MigrationInfo *info)
-         break;
-     }
-     info->status = mis->state;
-+
-+    if (!info->error_desc) {
-+        MigrationState *s = migrate_get_current();
-+        QEMU_LOCK_GUARD(&s->error_mutex);
-+
-+        if (s->error) {
-+            info->error_desc = g_strdup(error_get_pretty(s->error));
-+        }
-+    }
- }
- 
- MigrationInfo *qmp_query_migrate(Error **errp)
-@@ -1797,10 +1812,13 @@ void migrate_del_blocker(Error **reasonp)
- }
- 
- void qmp_migrate_incoming(const char *uri, bool has_channels,
--                          MigrationChannelList *channels, Error **errp)
-+                          MigrationChannelList *channels,
-+                          bool has_exit_on_error, bool exit_on_error,
-+                          Error **errp)
- {
-     Error *local_err = NULL;
-     static bool once = true;
-+    MigrationIncomingState *mis = migration_incoming_get_current();
- 
-     if (!once) {
-         error_setg(errp, "The incoming migration has already been started");
-@@ -1815,6 +1833,9 @@ void qmp_migrate_incoming(const char *uri, bool has_channels,
-         return;
-     }
- 
-+    mis->exit_on_error =
-+        has_exit_on_error ? exit_on_error : INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     qemu_start_incoming_migration(uri, has_channels, channels, &local_err);
- 
-     if (local_err) {
-diff --git a/migration/migration.h b/migration/migration.h
-index 8045e39c26..95995a818e 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -227,6 +227,9 @@ struct MigrationIncomingState {
-      * is needed as this field is updated serially.
-      */
-     unsigned int switchover_ack_pending_num;
-+
-+    /* Do exit on incoming migration failure */
-+    bool exit_on_error;
- };
- 
- MigrationIncomingState *migration_incoming_get_current(void);
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 8c65b90328..9feed413b5 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1837,6 +1837,10 @@
- # @channels: list of migration stream channels with each stream in the
- #     list connected to a destination interface endpoint.
- #
-+# @exit-on-error: Exit on incoming migration failure.  Default true.
-+#     When set to false, the failure triggers a MIGRATION event, and
-+#     error details could be retrieved with query-migrate.  (since 9.1)
-+#
- # Since: 2.3
- #
- # Notes:
-@@ -1889,7 +1893,8 @@
- ##
- { 'command': 'migrate-incoming',
-              'data': {'*uri': 'str',
--                      '*channels': [ 'MigrationChannel' ] } }
-+                      '*channels': [ 'MigrationChannel' ],
-+                      '*exit-on-error': 'bool' } }
- 
- ##
- # @xen-save-devices-state:
-diff --git a/system/vl.c b/system/vl.c
-index 7756eac81e..79cd498395 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2723,7 +2723,8 @@ void qmp_x_exit_preconfig(Error **errp)
-     if (incoming) {
-         Error *local_err = NULL;
-         if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, false, NULL, &local_err);
-+            qmp_migrate_incoming(incoming, false, NULL, true, true,
-+                                 &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
--- 
-2.34.1
-
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
+IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBSZTogW1BBVENIIHYzIDAyLzE5XSB2ZmlvL2Nv
+bnRhaW5lcjogSW50cm9kdWNlDQo+SG9zdElPTU1VRGV2aWNlTGVnYWN5VkZJTyBkZXZpY2UNCj4N
+Cj5PbiA0LzI5LzI0IDA4OjUwLCBaaGVuemhvbmcgRHVhbiB3cm90ZToNCj4+IEhvc3RJT01NVURl
+dmljZUxlZ2FjeVZGSU8gcmVwcmVzZW50cyBhIGhvc3QgSU9NTVUgZGV2aWNlIHVuZGVyDQo+VkZJ
+Tw0KPj4gbGVnYWN5IGNvbnRhaW5lciBiYWNrZW5kLg0KPj4NCj4+IEl0IGluY2x1ZGVzIGEgbGlu
+ayB0byBWRklPRGV2aWNlLg0KPg0KPkkgZG9uJ3Qgc2VlIGFueSB1c2Ugb2YgdGhpcyBhdHRyaWJ1
+dGUuIE1heSBiZSBpbnRyb2R1Y2UgbGF0ZXIgd2hlbiBuZWVkZWQuDQoNCkluZGVlZCwgd2lsbCBy
+ZW1vdmUuDQoNClRoZW4gJ3N0cnVjdCBIb3N0SU9NTVVEZXZpY2VMZWdhY3lWRklPJyBpcyBzYW1l
+IGFzDQpzdHJ1Y3QgSG9zdElPTU1VRGV2aWNlLg0KDQpOb3QgY2xlYXIgaWYgaXQncyBwcmVmZXJy
+ZWQgdG8gcmVtb3ZlICdzdHJ1Y3QgSG9zdElPTU1VRGV2aWNlTGVnYWN5VkZJTycNCmFuZCB1c2Ug
+SG9zdElPTU1VRGV2aWNlIGluc3RlYWQuIFNvbWV0aGluZyBsaWtlOg0KDQpPQkpFQ1RfREVDTEFS
+RV9TSU1QTEVfVFlQRShIb3N0SU9NTVVEZXZpY2UsDQogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIEhPU1RfSU9NTVVfREVWSUNFX0xFR0FDWV9WRklPKQ0KDQpUaGFu
+a3MNClpoZW56aG9uZw0KDQo+DQo+VGhhbmtzLA0KPg0KPkMuDQo+DQo+Pg0KPj4gU3VnZ2VzdGVk
+LWJ5OiBFcmljIEF1Z2VyIDxlcmljLmF1Z2VyQHJlZGhhdC5jb20+DQo+PiBTdWdnZXN0ZWQtYnk6
+IEPDqWRyaWMgTGUgR29hdGVyIDxjbGdAcmVkaGF0LmNvbT4NCj4+IFNpZ25lZC1vZmYtYnk6IFpo
+ZW56aG9uZyBEdWFuIDx6aGVuemhvbmcuZHVhbkBpbnRlbC5jb20+DQo+PiAtLS0NCj4+ICAgaW5j
+bHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmggfCAxMiArKysrKysrKysrKysNCj4+ICAgaHcvdmZp
+by9jb250YWluZXIuYyAgICAgICAgICAgfCAgNiArKysrKy0NCj4+ICAgMiBmaWxlcyBjaGFuZ2Vk
+LCAxNyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2lu
+Y2x1ZGUvaHcvdmZpby92ZmlvLWNvbW1vbi5oIGIvaW5jbHVkZS9ody92ZmlvL3ZmaW8tDQo+Y29t
+bW9uLmgNCj4+IGluZGV4IGI5ZGE2YzA4ZWYuLmFhM2FiZTBhMTggMTAwNjQ0DQo+PiAtLS0gYS9p
+bmNsdWRlL2h3L3ZmaW8vdmZpby1jb21tb24uaA0KPj4gKysrIGIvaW5jbHVkZS9ody92ZmlvL3Zm
+aW8tY29tbW9uLmgNCj4+IEBAIC0zMSw2ICszMSw3IEBADQo+PiAgICNlbmRpZg0KPj4gICAjaW5j
+bHVkZSAic3lzZW11L3N5c2VtdS5oIg0KPj4gICAjaW5jbHVkZSAiaHcvdmZpby92ZmlvLWNvbnRh
+aW5lci1iYXNlLmgiDQo+PiArI2luY2x1ZGUgInN5c2VtdS9ob3N0X2lvbW11X2RldmljZS5oIg0K
+Pj4NCj4+ICAgI2RlZmluZSBWRklPX01TR19QUkVGSVggInZmaW8gJXM6ICINCj4+DQo+PiBAQCAt
+MTQ3LDYgKzE0OCwxNyBAQCB0eXBlZGVmIHN0cnVjdCBWRklPR3JvdXAgew0KPj4gICAgICAgYm9v
+bCByYW1fYmxvY2tfZGlzY2FyZF9hbGxvd2VkOw0KPj4gICB9IFZGSU9Hcm91cDsNCj4+DQo+PiAr
+I2RlZmluZSBUWVBFX0hPU1RfSU9NTVVfREVWSUNFX0xFR0FDWV9WRklPDQo+VFlQRV9IT1NUX0lP
+TU1VX0RFVklDRSAiLWxlZ2FjeS12ZmlvIg0KPj4gK09CSkVDVF9ERUNMQVJFX1NJTVBMRV9UWVBF
+KEhvc3RJT01NVURldmljZUxlZ2FjeVZGSU8sDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgSE9TVF9JT01NVV9ERVZJQ0VfTEVHQUNZX1ZGSU8pDQo+PiArDQo+PiArLyogQWJzdHJhY3Qg
+b2YgaG9zdCBJT01NVSBkZXZpY2Ugd2l0aCBWRklPIGxlZ2FjeSBjb250YWluZXIgYmFja2VuZCAq
+Lw0KPj4gK3N0cnVjdCBIb3N0SU9NTVVEZXZpY2VMZWdhY3lWRklPIHsNCj4+ICsgICAgSG9zdElP
+TU1VRGV2aWNlIHBhcmVudF9vYmo7DQo+PiArDQo+PiArICAgIFZGSU9EZXZpY2UgKnZkZXY7DQo+
+PiArfTsNCj4+ICsNCj4+ICAgdHlwZWRlZiBzdHJ1Y3QgVkZJT0RNQUJ1ZiB7DQo+PiAgICAgICBR
+ZW11RG1hQnVmIGJ1ZjsNCj4+ICAgICAgIHVpbnQzMl90IHBvc194LCBwb3NfeSwgcG9zX3VwZGF0
+ZXM7DQo+PiBkaWZmIC0tZ2l0IGEvaHcvdmZpby9jb250YWluZXIuYyBiL2h3L3ZmaW8vY29udGFp
+bmVyLmMNCj4+IGluZGV4IDc3YmRlYzI3NmUuLjNiNjgyNjk5NmEgMTAwNjQ0DQo+PiAtLS0gYS9o
+dy92ZmlvL2NvbnRhaW5lci5jDQo+PiArKysgYi9ody92ZmlvL2NvbnRhaW5lci5jDQo+PiBAQCAt
+MTE0OCw3ICsxMTQ4LDExIEBAIHN0YXRpYyBjb25zdCBUeXBlSW5mbyB0eXBlc1tdID0gew0KPj4g
+ICAgICAgICAgIC5uYW1lID0gVFlQRV9WRklPX0lPTU1VX0xFR0FDWSwNCj4+ICAgICAgICAgICAu
+cGFyZW50ID0gVFlQRV9WRklPX0lPTU1VLA0KPj4gICAgICAgICAgIC5jbGFzc19pbml0ID0gdmZp
+b19pb21tdV9sZWdhY3lfY2xhc3NfaW5pdCwNCj4+IC0gICAgfSwNCj4+ICsgICAgfSwgew0KPj4g
+KyAgICAgICAgLm5hbWUgPSBUWVBFX0hPU1RfSU9NTVVfREVWSUNFX0xFR0FDWV9WRklPLA0KPj4g
+KyAgICAgICAgLnBhcmVudCA9IFRZUEVfSE9TVF9JT01NVV9ERVZJQ0UsDQo+PiArICAgICAgICAu
+aW5zdGFuY2Vfc2l6ZSA9IHNpemVvZihIb3N0SU9NTVVEZXZpY2VMZWdhY3lWRklPKSwNCj4+ICsg
+ICAgfQ0KPj4gICB9Ow0KPj4NCj4+ICAgREVGSU5FX1RZUEVTKHR5cGVzKQ0KDQo=
 
