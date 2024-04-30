@@ -2,85 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DA88B7E11
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B568B7E1D
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1qs9-0005hr-GK; Tue, 30 Apr 2024 13:02:29 -0400
+	id 1s1quw-0007Fm-4f; Tue, 30 Apr 2024 13:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s1qs4-0005hG-VF
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:02:26 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s1qs3-0008Is-7z
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:02:24 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a5872b74c44so671692166b.3
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 10:02:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714496541; x=1715101341; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=osCiuEVNYG+PPaHcPlypRGOqacuwydIi76ZnIDE9sQk=;
- b=t3Xc4xAAZRvQWK8RWy9TrFnJrSXMkDNaTDhQ/OnRAjkVX65ckYGHcJ1QZqfg646OgH
- N2E9WS5Jc9ziit4UAqpt8j54eBV6KvfIRYBtlzmx84WaKMwogPJZPlFg9ZXaEAU0o0DS
- a+tXgJ8/W1Hk8eIBXHr40cQ4XG7D1Hq61M7CTo3liXXeOKD8Az+4tiTuJbL/+pSysFXY
- tZzZgGNswJgNVdaMa5JPh/H3Rywvo3f2wqmdJPWPVhIePd5iMTSz9iBFox0VUWDvpfcI
- B4SXR22Wae1eaqR74zLsk6D+4uCcCJPjU5UeR/feR+s6AhqwaoGNHvzLFl0KtWyQd5a9
- wkJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714496541; x=1715101341;
- h=content-transfer-encoding:mime-version:message-id:date:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=osCiuEVNYG+PPaHcPlypRGOqacuwydIi76ZnIDE9sQk=;
- b=jb73hWg4shulF5uLODR4d7+gmGLV7dHuVycxZdriElhO2OlLbH+AtHP5K/XzEg5TWX
- zKmA9KwWS/ruZiVPoFo/NYIYJac4/X1Ju+hGKDZZE4iQKlNjbX+mZYaMBA9Iw4ORKz2r
- vuCwCpwSJTxm8hZ4D+PA8bI9dlbVnq+av8vPT6enYW6ThK+VRFbu4ia1oraDOzML/WLQ
- tBocEi5qmQL57M25/MZ9W5agr2HzM8YDkJKEnznacSJ1hZmECA+zR9gY3D1yxH6UrbEF
- Py0hgpyS3Nak+sAXEEIBM3gu9HNkURIQlmIdRqT/C7hWn1IBs1TklKApS6gX+ZlI9Btw
- ZaxA==
-X-Gm-Message-State: AOJu0YzKc0SKq0sIcQRo+5Rt73e6/yV7q5YqUy1O5D3VJpkU62xWBqm2
- 9XE+Cs2ZUEMs3RW8bHRh4CtUpbopmPKZo8+11XW9hOjqWPT/5wTrlH/gYG0FrdQ=
-X-Google-Smtp-Source: AGHT+IFrBfBWTFKRNWOVO2CvuVavEqBbTYGJ/y31lKpHYez8i0PUVt0BA4a+Xb+YVdUR51C9RMHGxQ==
-X-Received: by 2002:a17:906:2542:b0:a52:1770:965 with SMTP id
- j2-20020a170906254200b00a5217700965mr171541ejb.42.1714496540975; 
- Tue, 30 Apr 2024 10:02:20 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a14-20020a1709065f8e00b00a559bbe8a00sm12536400eju.100.2024.04.30.10.02.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 10:02:20 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 174E05F7A7;
- Tue, 30 Apr 2024 18:02:20 +0100 (BST)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Thomas Huth
- <thuth@redhat.com>,
- michael@amarulasolutions.com,  linux-amarula@amarulasolutions.com
-Subject: Re: [PATCH 1/1] tests/fp/meson: don't build fp-bench test if fenv.h
- is missing
-In-Reply-To: <20240430164752.645521-1-dario.binacchi@amarulasolutions.com>
- (Dario Binacchi's message of "Tue, 30 Apr 2024 18:47:52 +0200")
-References: <20240430164752.645521-1-dario.binacchi@amarulasolutions.com>
-Date: Tue, 30 Apr 2024 18:02:20 +0100
-Message-ID: <8734r24wdf.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1s1quq-0007Em-1S; Tue, 30 Apr 2024 13:05:16 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1s1qun-0000KZ-VY; Tue, 30 Apr 2024 13:05:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
+ Content-Type; bh=5/BneL5evxaFu8vnJNayxymlseYFnPNU1TvUICNE1Sk=; b=M9wnP3HpjZcw
+ EHLIEWaafbazwyW6kmQAb3YTYgZepxhJlkJSCaCCRBXQwy2cPQgLWGpmD1QU2f9ghcFM3NQ6K5/+9
+ hp/lqoQHH48XXuFLkGafnEjMX75VVm5xZxI7mINW/p/2xbCAaHVH2yDIufyswEop+CSwECoD/Y0Qi
+ uVGegNJQ/tpnxQW/DDPuWlhXYJ6B42nYTK6ytmO3Cxsfg9otII5jiGGOtrwTjJW5+3JiyUpbucWjn
+ HEOTxYs+6ghHZ8ny3zfNeF5OMNrJDWKyzLIcTvS26nB62PJYr0/y+M7DAdeQntXb6WQ3Cn1m26M5c
+ uc23u+ltRhZdNDJ6QC/CDA==;
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <den@openvz.org>) id 1s1qrN-00G7ab-0u;
+ Tue, 30 Apr 2024 19:04:59 +0200
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: den@openvz.org, Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH 1/1] prealloc: add truncate mode for prealloc filter
+Date: Tue, 30 Apr 2024 19:05:10 +0200
+Message-Id: <20240430170510.148812-1-den@openvz.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
+ helo=relay.virtuozzo.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,26 +59,148 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Denis V. Lunev" <den@openvz.org>
+From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dario Binacchi <dario.binacchi@amarulasolutions.com> writes:
+Preallocate filter allows to implement really interesting setups.
 
-> The fp-bench test (i. e. tests/fp/fp-bench.c) use fenv.h that is not
-> always provided by the libc (uClibc). The patch disables its compilation
-> in case the header is not available.
->
-> The patch is based on a suggestion from Paolo Bonzini, which you can
-> find at the following link.
->
-> Link: https://lists.nongnu.org/archive/html/qemu-devel/2021-03/msg00492.h=
-tml
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Assume that we have
+* shared block device, f.e. iSCSI LUN, implemented with some HW device
+* clustered LVM on top of it
+* QCOW2 image stored inside LVM volume
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+This allows very cheap clustered setups with all QCOW2 features intact.
+Currently supported setups using QCOW2 with data_file option are not
+so cool as snapshots are not allowed, QCOW2 should be placed into some
+additional distributed storage and so on.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Though QCOW2 inside LVM volume has a drawback. The image is growing and
+in order to accomodate that image LVM volume is to be resized. This
+could be done externally using ENOSPACE event/condition but this is
+cumbersome.
+
+This patch introduces native implementation for such a setup. We should
+just put prealloc filter in between QCOW2 format and file nodes. In that
+case LVM will be resized at proper moment and that is done effectively
+as resizing is done in chinks.
+
+The patch adds allocation mode for this purpose in order to distinguish
+'fallocate' for ordinary file system and 'truncate'.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+CC: Kevin Wolf <kwolf@redhat.com>
+CC: Hanna Reitz <hreitz@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ block/preallocate.c | 50 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 48 insertions(+), 2 deletions(-)
+
+diff --git a/block/preallocate.c b/block/preallocate.c
+index 4d82125036..6d31627325 100644
+--- a/block/preallocate.c
++++ b/block/preallocate.c
+@@ -33,10 +33,24 @@
+ #include "block/block-io.h"
+ #include "block/block_int.h"
+ 
++typedef enum PreallocateMode {
++    PREALLOCATE_MODE_FALLOCATE = 0,
++    PREALLOCATE_MODE_TRUNCATE = 1,
++    PREALLOCATE_MODE__MAX = 2,
++} PreallocateMode;
++
++static QEnumLookup prealloc_mode_lookup = {
++    .array = (const char *const[]) {
++        "falloc",
++        "truncate",
++    },
++    .size = PREALLOCATE_MODE__MAX,
++};
+ 
+ typedef struct PreallocateOpts {
+     int64_t prealloc_size;
+     int64_t prealloc_align;
++    PreallocateMode prealloc_mode;
+ } PreallocateOpts;
+ 
+ typedef struct BDRVPreallocateState {
+@@ -79,6 +93,7 @@ typedef struct BDRVPreallocateState {
+ 
+ #define PREALLOCATE_OPT_PREALLOC_ALIGN "prealloc-align"
+ #define PREALLOCATE_OPT_PREALLOC_SIZE "prealloc-size"
++#define PREALLOCATE_OPT_MODE "mode"
+ static QemuOptsList runtime_opts = {
+     .name = "preallocate",
+     .head = QTAILQ_HEAD_INITIALIZER(runtime_opts.head),
+@@ -94,7 +109,14 @@ static QemuOptsList runtime_opts = {
+             .type = QEMU_OPT_SIZE,
+             .help = "how much to preallocate, default 128M",
+         },
+-        { /* end of list */ }
++        {
++            .name = PREALLOCATE_OPT_MODE,
++            .type = QEMU_OPT_STRING,
++            .help = "Preallocation mode on image expansion "
++                    "(allowed values: falloc, truncate)",
++            .def_value_str = "falloc",
++        },
++        { /* end of list */ },
+     },
+ };
+ 
+@@ -102,6 +124,8 @@ static bool preallocate_absorb_opts(PreallocateOpts *dest, QDict *options,
+                                     BlockDriverState *child_bs, Error **errp)
+ {
+     QemuOpts *opts = qemu_opts_create(&runtime_opts, NULL, 0, &error_abort);
++    Error *local_err = NULL;
++    char *buf;
+ 
+     if (!qemu_opts_absorb_qdict(opts, options, errp)) {
+         return false;
+@@ -112,6 +136,17 @@ static bool preallocate_absorb_opts(PreallocateOpts *dest, QDict *options,
+     dest->prealloc_size =
+         qemu_opt_get_size(opts, PREALLOCATE_OPT_PREALLOC_SIZE, 128 * MiB);
+ 
++    buf = qemu_opt_get_del(opts, PREALLOCATE_OPT_MODE);
++    /* prealloc_mode can be downgraded later during allocate_clusters */
++    dest->prealloc_mode = qapi_enum_parse(&prealloc_mode_lookup, buf,
++                                          PREALLOCATE_MODE_FALLOCATE,
++                                          &local_err);
++    g_free(buf);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return false;
++    }
++
+     qemu_opts_del(opts);
+ 
+     if (!QEMU_IS_ALIGNED(dest->prealloc_align, BDRV_SECTOR_SIZE)) {
+@@ -335,9 +370,20 @@ handle_write(BlockDriverState *bs, int64_t offset, int64_t bytes,
+ 
+     want_merge_zero = want_merge_zero && (prealloc_start <= offset);
+ 
+-    ret = bdrv_co_pwrite_zeroes(
++    switch (s->opts.prealloc_mode) {
++    case PREALLOCATE_MODE_FALLOCATE:
++        ret = bdrv_co_pwrite_zeroes(
+             bs->file, prealloc_start, prealloc_end - prealloc_start,
+             BDRV_REQ_NO_FALLBACK | BDRV_REQ_SERIALISING | BDRV_REQ_NO_WAIT);
++        break;
++    case PREALLOCATE_MODE_TRUNCATE:
++        ret = bdrv_co_truncate(bs->file, prealloc_end, false,
++                               PREALLOC_MODE_OFF, 0, NULL);
++        break;
++    default:
++        return false;
++    }
++
+     if (ret < 0) {
+         s->file_end = ret;
+         return false;
+-- 
+2.39.3
+
 
