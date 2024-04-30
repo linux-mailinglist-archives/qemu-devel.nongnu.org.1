@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1775C8B75C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B578B75B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:29:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1mbE-0006G0-Hv; Tue, 30 Apr 2024 08:28:44 -0400
+	id 1s1mbK-0006GU-Iv; Tue, 30 Apr 2024 08:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbC-0006FW-G2
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:42 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbH-0006GD-Nc
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:48 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbA-0001mI-Oa
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:42 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-56e1bbdb362so6035640a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbG-0001mS-6S
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:47 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5727dc6d3edso2754482a12.0
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714480119; x=1715084919; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714480124; x=1715084924; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9yEYkKsw4zhtRR56kF5ijigZ4qIRFvAlOOJdkN8sEkM=;
- b=FDsdpwYuc1ksLXcUu5WAgZxg8FYVYXgioenZoKRWSWvm+BXIdYUiUaxs1oIBFI6h3r
- j6Xjzmn9z/nv5pn9m+p+IyhH8fjPSw8bEG1MtRfZQ7rIo1z40eWOQBrrojmeaUqkD3Wm
- bKdHw/K+wGqfbtAxBNKgndYhfit8fHqWZSED7tNQ5SbwbJ856Os57BRySmD6jgrEUtOL
- W4YkqZFz3pERrbJzl+yVcGqwIZ1mSJ+XCFZmMQlQHEEw7JQNaQqBVhDAx+s4dogpAn5a
- i0YgYVs+8T8UXZ1gT86Uf3CUxel2QE//vmUZfCJIcqLpp3LyEvVhwydPoS9NLsfnJABk
- miXQ==
+ bh=ooSUJZwGp/lYPuvOeREBaY5/HVZbZHNsZQAPgbRFeRs=;
+ b=YJ7v3Ij15YFcA+DiK+i84nn65P9Pp89OdONRCOmzlIt2U6XOV2n4rAjlEL1WaAE4G2
+ XnDMs82p4KjUJpgsNLM5i3gs2U67LbiR0YBidiFdJDy6PgTXH6UR/VfvwFB8l758FkO2
+ 6bjYJF3sOA2c0TX4EtB+uo2V+7wYnUnWzIaS4IquhnoisYmWnJn3hWD0xZ1Jx17S3AU8
+ OvuEw9ctVYHKbRbF7nsIzw1izAl/Wzk+6LLFHZQyoDASzficwhy8NTtlfpVW45oqjk9q
+ rC4Yy9x/Plm9Y7/RSPalw3EnKHpLTJ8EAM1AHNOpUl92kiNOUt9faGTeTLF1vnwu2R6F
+ CYYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714480119; x=1715084919;
+ d=1e100.net; s=20230601; t=1714480124; x=1715084924;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9yEYkKsw4zhtRR56kF5ijigZ4qIRFvAlOOJdkN8sEkM=;
- b=s8Szr1TFtQa49eQNyBzSqlQavLKW9nmu5JYWvB8qtcy5hwWJZxT2OmNXus1IFM438x
- MeD0+FysmGNTmWeISHE4qwysL9VuBQ8CB63xQq0dC9OxkKXLbJkqW3FHZBvek1XhWJaQ
- Yo4tw4CqXwDVHbcCxtfYGVwTVRdDvHMcvhIvLY59QWuMm/EX0r2+1n2e6FBj5x/opD08
- pwqZ3CLjQ9lyCzY1HyGLRPfJucdS2qCMvzw3Eo96JKb9/IIemLjnLFiDZH1PSo0hBBiq
- 8NDVdUpG0aZMLdacsJMkapq/Gm6FboKOoc769DS+PssSK6UQFIzQDkSw0G/JtIhDxw9J
- 0YtA==
-X-Gm-Message-State: AOJu0YyHnKEJnEwfvHtSYNENlgJkUlsIzdHun9uZZtqt3RjonIBdBk7s
- JvyPT6PGeoyRSY3U/nOL14zwDM+xnsBRd2YjNLXHeBgFaBVOq+jmhAbp2zNLXO4AW25dfbDQh8d
- C
-X-Google-Smtp-Source: AGHT+IHP/Rk64KVTigc6owxsEUulEALFzfOTXFddiC/CUFPFAoZPSVIjg13/p0hLUBb3qz5Sj276fg==
-X-Received: by 2002:a17:906:2318:b0:a59:2e36:16ce with SMTP id
- l24-20020a170906231800b00a592e3616cemr1330654eja.34.1714480119016; 
- Tue, 30 Apr 2024 05:28:39 -0700 (PDT)
+ bh=ooSUJZwGp/lYPuvOeREBaY5/HVZbZHNsZQAPgbRFeRs=;
+ b=cehYG6GrndI2sX1MkDYxhbr0nooaD2TS5y0q/L9BWepbDJxuGO19/RA1c8JN4WEi/L
+ 7ElSX/gEsQ9tGHnMOHm/+OIpYWxB55+NttuZJWm38JZbOjZkXEOg4DQ2KfE6BStTkcKJ
+ R0hwp1ZtCVLhvbZw2kz6LDpbZtaWsUSvTSeE4bBr2dktI5QvuL581KWlDH8GNyorryln
+ uQwL3CKBToSAT03PKb6rdr0OB8lb+6hJGqxUyGi2reJe8F0jPXyYLDydnLeuxCiiEq9a
+ CDHs//+qaYcBLbiHVgVr4eONDV17mGN1Fo2bksCkA8xbt71PWbCNUSQxhvc7toRhOYf8
+ JiIg==
+X-Gm-Message-State: AOJu0YxOpVzhPSb6mBXZ9ciaoJLLORPTnRxDS1b3aKUwxqeQYyDALbmT
+ ZZUtzmzZudQzm0GxvHXMs7WgJg/lKf8VvOFiibGFNMullV95bR8d0S44liXGBsH25przOevCKgt
+ J
+X-Google-Smtp-Source: AGHT+IE0NrAH5HwXpziXFPJDlw7JEGkOXLNE/qHTOAccOfuuI4GCbax6sC2Z9hCRPuLB7u4cAGiGOA==
+X-Received: by 2002:a17:906:cec7:b0:a55:358f:783c with SMTP id
+ si7-20020a170906cec700b00a55358f783cmr1726082ejb.24.1714480124581; 
+ Tue, 30 Apr 2024 05:28:44 -0700 (PDT)
 Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
  [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- ku2-20020a170907788200b00a58c0c48756sm5674974ejc.32.2024.04.30.05.28.37
+ fw5-20020a170906c94500b00a5908cb01b4sm1803720ejb.17.2024.04.30.05.28.43
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 05:28:38 -0700 (PDT)
+ Tue, 30 Apr 2024 05:28:44 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 05/13] accel/tcg: Restrict cpu_loop_exit_requested() to TCG
-Date: Tue, 30 Apr 2024 14:27:59 +0200
-Message-ID: <20240430122808.72025-6-philmd@linaro.org>
+Subject: [PATCH v3 06/13] accel/tcg: Restrict IcountDecr / can_do_io / CPUTLB
+ to TCG
+Date: Tue, 30 Apr 2024 14:28:00 +0200
+Message-ID: <20240430122808.72025-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240430122808.72025-1-philmd@linaro.org>
 References: <20240430122808.72025-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,128 +94,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Next commit will restrict IcountDecr to TCG, so the
-inlined cpu_loop_exit_requested(), which is specific
-to TCG, won't compile when TCG is disabled. Move it
-to the new "exec/cpu-loop.h" header.
+IcountDecr union, the can_do_io field, the CPUTLB* structures
+and the "exec/tlb-common.h" header are only required for TCG.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240428221450.26460-12-philmd@linaro.org>
+Message-Id: <20240428221450.26460-16-philmd@linaro.org>
 ---
- include/exec/cpu-loop.h       | 35 +++++++++++++++++++++++++++++++++++
- include/exec/exec-all.h       | 17 -----------------
- accel/tcg/cpu-exec.c          |  1 +
- target/arm/tcg/helper-a64.c   |  1 +
- target/s390x/tcg/mem_helper.c |  1 +
- 5 files changed, 38 insertions(+), 17 deletions(-)
- create mode 100644 include/exec/cpu-loop.h
+ include/exec/tlb-common.h | 4 ++++
+ include/hw/core/cpu.h     | 9 ++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/exec/cpu-loop.h b/include/exec/cpu-loop.h
-new file mode 100644
-index 0000000000..36ce4064fd
---- /dev/null
-+++ b/include/exec/cpu-loop.h
-@@ -0,0 +1,35 @@
-+/*
-+ *  Translation CPU loop (target agnostic)
-+ *
-+ *  Copyright (c) 2003 Fabrice Bellard
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+#ifndef TRANSLATION_CPU_LOOP_H
-+#define TRANSLATION_CPU_LOOP_H
-+
+diff --git a/include/exec/tlb-common.h b/include/exec/tlb-common.h
+index dc5a5faa0b..a529c9f056 100644
+--- a/include/exec/tlb-common.h
++++ b/include/exec/tlb-common.h
+@@ -19,6 +19,10 @@
+ #ifndef EXEC_TLB_COMMON_H
+ #define EXEC_TLB_COMMON_H 1
+ 
 +#ifndef CONFIG_TCG
 +#error Can only include this header with TCG
 +#endif
 +
-+#include "qemu/atomic.h"
-+#include "hw/core/cpu.h"
-+
-+/**
-+ * cpu_loop_exit_requested:
-+ * @cpu: The CPU state to be tested
-+ *
-+ * Indicate if somebody asked for a return of the CPU to the main loop
-+ * (e.g., via cpu_exit() or cpu_interrupt()).
-+ *
-+ * This is helpful for architectures that support interruptible
-+ * instructions. After writing back all state to registers/memory, this
-+ * call can be used to check if it makes sense to return to the main loop
-+ * or to continue executing the interruptible instruction.
-+ */
-+static inline bool cpu_loop_exit_requested(CPUState *cpu)
-+{
-+    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
-+}
-+
-+#endif
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 2cd7b8f61b..544e35dd24 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -29,23 +29,6 @@
- #include "exec/translation-block.h"
- #include "qemu/clang-tsa.h"
+ #define CPU_TLB_ENTRY_BITS 5
  
--/**
-- * cpu_loop_exit_requested:
-- * @cpu: The CPU state to be tested
-- *
-- * Indicate if somebody asked for a return of the CPU to the main loop
-- * (e.g., via cpu_exit() or cpu_interrupt()).
-- *
-- * This is helpful for architectures that support interruptible
-- * instructions. After writing back all state to registers/memory, this
-- * call can be used to check if it makes sense to return to the main loop
-- * or to continue executing the interruptible instruction.
-- */
--static inline bool cpu_loop_exit_requested(CPUState *cpu)
--{
--    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
--}
--
- #if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
- /* cputlb.c */
+ /* Minimalized TLB entry for use by TCG fast path. */
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 91e793e590..47b499f9f1 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -27,7 +27,6 @@
+ #include "exec/vaddr.h"
+ #include "exec/memattrs.h"
+ #include "exec/mmu-access-type.h"
+-#include "exec/tlb-common.h"
+ #include "qapi/qapi-types-run-state.h"
+ #include "qemu/bitmap.h"
+ #include "qemu/rcu_queue.h"
+@@ -256,6 +255,9 @@ typedef struct CPUTLBEntryFull {
+     } extra;
+ } CPUTLBEntryFull;
+ 
++#ifdef CONFIG_TCG
++#include "exec/tlb-common.h"
++
+ /*
+  * Data elements that are per MMU mode, minus the bits accessed by
+  * the TCG fast path.
+@@ -311,11 +313,9 @@ typedef struct CPUTLBCommon {
+  * negative offsets are at the end of the struct.
+  */
+ typedef struct CPUTLB {
+-#ifdef CONFIG_TCG
+     CPUTLBCommon c;
+     CPUTLBDesc d[NB_MMU_MODES];
+     CPUTLBDescFast f[NB_MMU_MODES];
+-#endif
+ } CPUTLB;
+ 
+ /*
+@@ -337,6 +337,7 @@ typedef union IcountDecr {
+ #endif
+     } u16;
+ } IcountDecr;
++#endif
+ 
  /**
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 9af66bc191..eedba056ba 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -32,6 +32,7 @@
- #include "qemu/main-loop.h"
- #include "sysemu/cpus.h"
- #include "exec/cpu-all.h"
-+#include "exec/cpu-loop.h"
- #include "sysemu/cpu-timers.h"
- #include "exec/replay-core.h"
- #include "sysemu/tcg.h"
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 0ea8668ab4..b294f6bfd0 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -29,6 +29,7 @@
- #include "internals.h"
- #include "qemu/crc32c.h"
- #include "exec/exec-all.h"
-+#include "exec/cpu-loop.h"
- #include "exec/cpu_ldst.h"
- #include "qemu/int128.h"
- #include "qemu/atomic128.h"
-diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
-index 6a308c5553..8435825fa5 100644
---- a/target/s390x/tcg/mem_helper.c
-+++ b/target/s390x/tcg/mem_helper.c
-@@ -26,6 +26,7 @@
- #include "exec/helper-proto.h"
- #include "exec/exec-all.h"
- #include "exec/page-protection.h"
-+#include "exec/cpu-loop.h"
- #include "exec/cpu_ldst.h"
- #include "hw/core/tcg-cpu-ops.h"
- #include "qemu/int128.h"
+  * CPUNegativeOffsetState: Elements of CPUState most efficiently accessed
+@@ -345,6 +346,7 @@ typedef union IcountDecr {
+  * @plugin_mem_cbs: active plugin memory callbacks
+  */
+ typedef struct CPUNegativeOffsetState {
++#ifdef CONFIG_TCG
+     CPUTLB tlb;
+ #ifdef CONFIG_PLUGIN
+     /*
+@@ -354,6 +356,7 @@ typedef struct CPUNegativeOffsetState {
+ #endif
+     IcountDecr icount_decr;
+     bool can_do_io;
++#endif
+ } CPUNegativeOffsetState;
+ 
+ struct KVMState;
 -- 
 2.41.0
 
