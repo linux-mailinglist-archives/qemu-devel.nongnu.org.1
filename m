@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD338B75C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B52088B75C5
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:31:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1mbR-0006cP-FV; Tue, 30 Apr 2024 08:28:57 -0400
+	id 1s1mbn-0006r9-10; Tue, 30 Apr 2024 08:29:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbO-0006M5-Lx
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:54 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbT-0006ij-ST
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:29:01 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbL-0001ml-Rm
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:53 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a5544fd07easo744872866b.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbR-0001oL-Og
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:59 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-51b526f0fc4so7069691e87.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714480130; x=1715084930; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714480135; x=1715084935; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QG9ucb92ZcQwmYoVuXz0eICf2+cSWUN0kpwrk3Psu28=;
- b=BGTdl9/8H48bbUYBp/hQv6OPg9C0EF3K1rzpakyvDz3ipDu6uDwmBfcDRTCu3YP3+J
- g5n0KKfBNo1b7MfwmPjwOqJZQ85zyMCtrqvyuXzWKN3TE/As5r57SuUdWjkr5CcN9WV7
- n/14Kf61NH7byx3ol4iq6+3XWfC2TdtqqiyQspOldATouXYRjR/OrddxvgC0pOQm1z1I
- n2Xncc/8uFZPoAn0HYlxnLMX+0npM9c/eI5X6sNrmB79l1PLJKCs02rrb61drIH4i3Yk
- 9qbxAhdT1uGlAXI5hKjaT0itLTLzcfZzBr8ayh6vEB0byAo5++MD9UoJS7Yn26wH4vY6
- 5/dQ==
+ bh=Y/XVft3u1TnXcfWULCA1fWxoECDnyMfyO72+jOrBPL4=;
+ b=FLcKm/y5sS1wVYDhI6NyD3FR/EuSIeaT+NKRJL7g7gtZZLtdfsZ8kyIqnodOQ/vVwS
+ fq52cMEvDGz/NUUKjlyZhs2qLRrQS2tWpu638FeJeKULZuBfxx00XcactMNrODwK5b9V
+ wpm3xYWfMxxvFZ3OMly4h1ttX1PO9uHf+KJoFAoMuxp862CESH0vSsGyeA8SzaQIuTKL
+ IZ8vFW79O8LpQ9F6EPnBpoEK2sOJyWBvu/DNkNOipn/i0ruw3BC4F+jDrNhmau9OGUk+
+ ntWIL7jyE/5lgffyxQv9kVg6uWyNleadmgmD/KvzPjTjt2sjERzpl096VGGxXp/kU3gB
+ F/lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714480130; x=1715084930;
+ d=1e100.net; s=20230601; t=1714480135; x=1715084935;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QG9ucb92ZcQwmYoVuXz0eICf2+cSWUN0kpwrk3Psu28=;
- b=Ce74XU9BE0s5gk1flm/SwWwFvnHSM1H6Ir+Uwwzff/vOwd0FbcLese2KDSYBJZGGr0
- yYaPc6BfdhaDY3TeB1P+6mU82E9HYZwxcI5r7j8a5QKeGx+Q0W98iJcic5EUWt5EtzTH
- kwvwjD7R0I9zs08VGVNu/j34QDD89CmJ/0UCm/DU+NsQt5i9YRWM6EWtcz7tGrwPXdmY
- DcqpButghrJ+BIZP+TH/Tq6daGIcGH/PNc4P/uVajQbG1xOWEwrjmO7N49EPPduVzL3l
- f1rVoWo5SwEtFvGX6ytk2TVng7nmQdE6TK0tf9eEjn756PbYHGsMYSk7pdZxK43jFSjI
- X6iQ==
-X-Gm-Message-State: AOJu0YxSWBcQPLgMpNOMa6wsyvjRXJFrhfqFg0+c0E2EFjgknga6oPI+
- vmP0KT42Dq5uspYbFpCeU5sWqONx0HNKEiGcr6tHnnzIQrGfi7xnIjxI5FoXDW3nAsuez299+z3
- R
-X-Google-Smtp-Source: AGHT+IH0mlYPeKO/91einC09WEWZCaHGm+jjC8bXo0smZnLfh2mPKEvFmUhdxGKj+XhBDnQX0FnOHA==
-X-Received: by 2002:a17:906:cec7:b0:a55:358f:783c with SMTP id
- si7-20020a170906cec700b00a55358f783cmr1726302ejb.24.1714480130003; 
- Tue, 30 Apr 2024 05:28:50 -0700 (PDT)
+ bh=Y/XVft3u1TnXcfWULCA1fWxoECDnyMfyO72+jOrBPL4=;
+ b=FeguuF2EAXDc/bydnlO16FYievyZBQjw9+aD+u9BKoG/qvgSysf2oxqlTXDP5N+StB
+ RGx7ggS5XGOsXk8u7UUGgm4MoUSu6Bt6ZXsCcBo3/0xOWmlEzVaDIBBIiSg3HyaVvbds
+ x/4NG+IKaBfFBD5qYu4evlQqoODfI90YNKsrOKN8r6LxBmxQXds1v+n3QAatlG2oC7jY
+ +hGqyA8CouYhYoNELuY3ZlDoLv65mLD/FdVkLxuYF2r2Q35eieV56Wc1XtvZ4PVpMuOf
+ tZsGOC7snyQyD6Sv89mZ74zQOCP4xBm5wVQXvKWmo2cVGHL1D9w5fSfiMR5KQUW2PHi0
+ Z1Cg==
+X-Gm-Message-State: AOJu0Yz5lh7eaJQaqGFwLoIyzkOodJYdKERFvigLfV0QtiAkELXb/hCq
+ oGLgXT+bv2Vy3BTTeXwrHsenQv03wd5LcqLT0pwio/mZe2NrGqoS2gN1cw496OWmB0h5C5+KneD
+ L
+X-Google-Smtp-Source: AGHT+IGlbPpfglTIHu9qPV598dFthJMmRuG7AWoCKx8JQsZBH7OSUL4m0KLTGtVqOYSdB06y+Eyddg==
+X-Received: by 2002:a19:ad0b:0:b0:516:d448:b42a with SMTP id
+ t11-20020a19ad0b000000b00516d448b42amr1657561lfc.26.1714480135516; 
+ Tue, 30 Apr 2024 05:28:55 -0700 (PDT)
 Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
  [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- q21-20020a170906771500b00a51d408d446sm15063232ejm.26.2024.04.30.05.28.48
+ mc11-20020a170906eb4b00b00a5256d8c956sm14996887ejb.61.2024.04.30.05.28.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 05:28:49 -0700 (PDT)
+ Tue, 30 Apr 2024 05:28:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 07/13] accel/tcg: Move @jmp_env from CPUState to TCG
+Subject: [PATCH v3 08/13] accel/tcg: Move @cflags_next_tb from CPUState to TCG
  AccelCPUState
-Date: Tue, 30 Apr 2024 14:28:01 +0200
-Message-ID: <20240430122808.72025-8-philmd@linaro.org>
+Date: Tue, 30 Apr 2024 14:28:02 +0200
+Message-ID: <20240430122808.72025-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240430122808.72025-1-philmd@linaro.org>
 References: <20240430122808.72025-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,113 +94,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@jmp_env is specific to TCG accelerator, move it to its AccelCPUState.
+@cflags_next_tb is specific to TCG accelerator, move it to
+its AccelCPUState.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240428221450.26460-17-philmd@linaro.org>
+Message-Id: <20240428221450.26460-19-philmd@linaro.org>
 ---
- accel/tcg/internal-common.h | 1 +
- accel/tcg/tcg-accel-ops.h   | 1 +
- accel/tcg/vcpu-state.h      | 2 ++
- include/hw/core/cpu.h       | 1 -
- accel/tcg/cpu-exec-common.c | 2 +-
- accel/tcg/cpu-exec.c        | 6 +++---
- 6 files changed, 8 insertions(+), 5 deletions(-)
+ accel/tcg/vcpu-state.h    |  2 ++
+ include/hw/core/cpu.h     |  1 -
+ accel/tcg/cpu-exec.c      | 12 ++++++------
+ accel/tcg/tb-maint.c      |  4 ++--
+ accel/tcg/tcg-accel-ops.c |  1 +
+ accel/tcg/translate-all.c |  2 +-
+ accel/tcg/watchpoint.c    |  5 +++--
+ hw/core/cpu-common.c      |  1 -
+ 8 files changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-index 867426500f..cb507053f5 100644
---- a/accel/tcg/internal-common.h
-+++ b/accel/tcg/internal-common.h
-@@ -11,6 +11,7 @@
- 
- #include "exec/cpu-common.h"
- #include "exec/translation-block.h"
-+#include "accel/tcg/vcpu-state.h"
- 
- extern int64_t max_delay;
- extern int64_t max_advance;
-diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/tcg-accel-ops.h
-index 44c4079972..ed41a087a3 100644
---- a/accel/tcg/tcg-accel-ops.h
-+++ b/accel/tcg/tcg-accel-ops.h
-@@ -13,6 +13,7 @@
- #define TCG_ACCEL_OPS_H
- 
- #include "sysemu/cpus.h"
-+#include "accel/tcg/vcpu-state.h"
- 
- void tcg_cpu_destroy(CPUState *cpu);
- int tcg_cpu_exec(CPUState *cpu);
 diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index 35c2695a77..3a0ea2d47a 100644
+index 3a0ea2d47a..5b09279140 100644
 --- a/accel/tcg/vcpu-state.h
 +++ b/accel/tcg/vcpu-state.h
 @@ -13,6 +13,8 @@
   * @plugin_state: per-CPU plugin state
   */
  struct AccelCPUState {
-+    sigjmp_buf jmp_env;
++    uint32_t cflags_next_tb;
 +
+     sigjmp_buf jmp_env;
+ 
  #ifdef CONFIG_USER_ONLY
-     TaskState *ts;
- #endif /* !CONFIG_USER_ONLY */
 diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 47b499f9f1..f1fe43dbea 100644
+index f1fe43dbea..97a0baf874 100644
 --- a/include/hw/core/cpu.h
 +++ b/include/hw/core/cpu.h
-@@ -475,7 +475,6 @@ struct CPUState {
-     int64_t icount_budget;
-     int64_t icount_extra;
-     uint64_t random_seed;
--    sigjmp_buf jmp_env;
- 
-     QemuMutex work_mutex;
-     QSIMPLEQ_HEAD(, qemu_work_item) work_list;
-diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
-index bc9b1a260e..ec45482305 100644
---- a/accel/tcg/cpu-exec-common.c
-+++ b/accel/tcg/cpu-exec-common.c
-@@ -38,7 +38,7 @@ void cpu_loop_exit(CPUState *cpu)
-     cpu->neg.can_do_io = true;
-     /* Undo any setting in generated code.  */
-     qemu_plugin_disable_mem_helpers(cpu);
--    siglongjmp(cpu->jmp_env, 1);
-+    siglongjmp(cpu->accel->jmp_env, 1);
- }
- 
- void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc)
+@@ -468,7 +468,6 @@ struct CPUState {
+     bool crash_occurred;
+     bool exit_request;
+     int exclusive_context_count;
+-    uint32_t cflags_next_tb;
+     /* updates protected by BQL */
+     uint32_t interrupt_request;
+     int singlestep_enabled;
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index eedba056ba..443b688c01 100644
+index 443b688c01..2edfad78b3 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -554,7 +554,7 @@ static void cpu_exec_longjmp_cleanup(CPUState *cpu)
-      * support such a thing.  We'd have to properly register unwind info
-      * for the JIT for EH, rather that just for GDB.
-      *
--     * Alternative 2: Set and restore cpu->jmp_env in tb_gen_code to
-+     * Alternative 2: Set and restore cpu->accel->jmp_env in tb_gen_code to
-      * capture the cpu_loop_exit longjmp, perform the cleanup, and
-      * jump again to arrive here.
+@@ -721,7 +721,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+         if (replay_has_exception()
+             && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0) {
+             /* Execute just one insn to trigger exception pending in the log */
+-            cpu->cflags_next_tb = (curr_cflags(cpu) & ~CF_USE_ICOUNT)
++            cpu->accel->cflags_next_tb = (curr_cflags(cpu) & ~CF_USE_ICOUNT)
+                 | CF_NOIRQ | 1;
+         }
+ #endif
+@@ -784,7 +784,7 @@ static inline bool icount_exit_request(CPUState *cpu)
+     if (!icount_enabled()) {
+         return false;
+     }
+-    if (cpu->cflags_next_tb != -1 && !(cpu->cflags_next_tb & CF_USE_ICOUNT)) {
++    if (!(cpu->accel->cflags_next_tb == -1 || cpu->accel->cflags_next_tb & CF_USE_ICOUNT)) {
+         return false;
+     }
+     return cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0;
+@@ -798,7 +798,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+      * skip checking here. Any pending interrupts will get picked up
+      * by the next TB we execute under normal cflags.
       */
-@@ -578,7 +578,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
-     uint32_t flags, cflags;
-     int tb_exit;
- 
--    if (sigsetjmp(cpu->jmp_env, 0) == 0) {
-+    if (sigsetjmp(cpu->accel->jmp_env, 0) == 0) {
-         start_exclusive();
-         g_assert(cpu == current_cpu);
-         g_assert(!cpu->running);
-@@ -1039,7 +1039,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
- static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
- {
-     /* Prepare setjmp context for exception handling. */
--    if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
-+    if (unlikely(sigsetjmp(cpu->accel->jmp_env, 0) != 0)) {
-         cpu_exec_longjmp_cleanup(cpu);
+-    if (cpu->cflags_next_tb != -1 && cpu->cflags_next_tb & CF_NOIRQ) {
++    if (cpu->accel->cflags_next_tb != -1 && cpu->accel->cflags_next_tb & CF_NOIRQ) {
+         return false;
      }
  
+@@ -948,7 +948,7 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+     if (insns_left > 0 && insns_left < tb->icount)  {
+         assert(insns_left <= CF_COUNT_MASK);
+         assert(cpu->icount_extra == 0);
+-        cpu->cflags_next_tb = (tb->cflags & ~CF_COUNT_MASK) | insns_left;
++        cpu->accel->cflags_next_tb = (tb->cflags & ~CF_COUNT_MASK) | insns_left;
+     }
+ #endif
+ }
+@@ -980,11 +980,11 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
+              * have CF_INVALID set, -1 is a convenient invalid value that
+              * does not require tcg headers for cpu_common_reset.
+              */
+-            cflags = cpu->cflags_next_tb;
++            cflags = cpu->accel->cflags_next_tb;
+             if (cflags == -1) {
+                 cflags = curr_cflags(cpu);
+             } else {
+-                cpu->cflags_next_tb = -1;
++                cpu->accel->cflags_next_tb = -1;
+             }
+ 
+             if (check_for_breakpoints(cpu, pc, &cflags)) {
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 19ae6793f3..2d5faca9fd 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -1084,7 +1084,7 @@ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
+     if (current_tb_modified) {
+         /* Force execution of one insn next time.  */
+         CPUState *cpu = current_cpu;
+-        cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
++        cpu->accel->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
+         return true;
+     }
+     return false;
+@@ -1154,7 +1154,7 @@ tb_invalidate_phys_page_range__locked(struct page_collection *pages,
+     if (current_tb_modified) {
+         page_collection_unlock(pages);
+         /* Force execution of one insn next time.  */
+-        current_cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
++        current_cpu->accel->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(current_cpu);
+         mmap_unlock();
+         cpu_loop_exit_noexc(current_cpu);
+     }
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 56bbad9fcd..d9132a5835 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -89,6 +89,7 @@ static void tcg_cpu_reset_hold(CPUState *cpu)
+ 
+     qatomic_set(&cpu->neg.icount_decr.u32, 0);
+     cpu->neg.can_do_io = true;
++    cpu->accel->cflags_next_tb = -1;
+ }
+ 
+ /* mask must never be zero, except for A20 change call */
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index b67adce20e..3a8199a761 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -631,7 +631,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+      * operations only (which execute after completion) so we don't
+      * double instrument the instruction.
+      */
+-    cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
++    cpu->accel->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | n;
+ 
+     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+         vaddr pc = cpu->cc->get_pc(cpu);
+diff --git a/accel/tcg/watchpoint.c b/accel/tcg/watchpoint.c
+index d3aab11458..0a40bfdc85 100644
+--- a/accel/tcg/watchpoint.c
++++ b/accel/tcg/watchpoint.c
+@@ -26,6 +26,7 @@
+ #include "sysemu/replay.h"
+ #include "hw/core/tcg-cpu-ops.h"
+ #include "hw/core/cpu.h"
++#include "accel/tcg/vcpu-state.h"
+ 
+ /*
+  * Return true if this watchpoint address matches the specified
+@@ -100,7 +101,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+                  */
+                 if (!cpu->neg.can_do_io) {
+                     /* Force execution of one insn next time.  */
+-                    cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
++                    cpu->accel->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
+                     cpu_loop_exit_restore(cpu, ra);
+                 }
+                 /*
+@@ -132,7 +133,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
+                 cpu_loop_exit(cpu);
+             } else {
+                 /* Force execution of one insn next time.  */
+-                cpu->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
++                cpu->accel->cflags_next_tb = 1 | CF_NOIRQ | curr_cflags(cpu);
+                 mmap_unlock();
+                 cpu_loop_exit_noexc(cpu);
+             }
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index ea342213d6..b6631b6245 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -124,7 +124,6 @@ static void cpu_common_reset_hold(Object *obj, ResetType type)
+     cpu->icount_extra = 0;
+     cpu->exception_index = -1;
+     cpu->crash_occurred = false;
+-    cpu->cflags_next_tb = -1;
+ 
+     cpu_exec_reset_hold(cpu);
+ }
 -- 
 2.41.0
 
