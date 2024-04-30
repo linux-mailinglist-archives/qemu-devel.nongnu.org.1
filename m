@@ -2,86 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E258B7EB0
+	by mail.lfdr.de (Postfix) with ESMTPS id 243458B7EB1
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1rMv-0002Y9-42; Tue, 30 Apr 2024 13:34:17 -0400
+	id 1s1rMx-0002Ym-2Y; Tue, 30 Apr 2024 13:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s1rMs-0002Xg-EL
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:14 -0400
-Received: from wfout6-smtp.messagingengine.com ([64.147.123.149])
+ id 1s1rMv-0002YB-0i
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:17 -0400
+Received: from wfhigh8-smtp.messagingengine.com ([64.147.123.159])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s1rMq-0007vt-CT
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:14 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailfout.west.internal (Postfix) with ESMTP id 9D9FB1C00143;
- Tue, 30 Apr 2024 13:34:08 -0400 (EDT)
+ id 1s1rMr-0007wW-29
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:16 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailfhigh.west.internal (Postfix) with ESMTP id 2A6BA1800131;
+ Tue, 30 Apr 2024 13:34:11 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Tue, 30 Apr 2024 13:34:08 -0400
+ by compute1.internal (MEProxy); Tue, 30 Apr 2024 13:34:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  invisiblethingslab.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:from:from:in-reply-to
- :message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
- t=1714498448; x=1714584848; bh=WeGqWSH3Ql0/UUTBACI5OChTrfYb4YhZ
- sRvfkZTj+GY=; b=3mxz6f6jog5W03cvLHlsE62OdCF6yTK7DnZsWlz4oiBYheIC
- BGiNKTMAeATtTaWcqI5M0xLm4n3U4FkOqXRx5EQDwMu/XGMI3kAbfE6xSUKzZdBd
- KJ438xgkvEE2DJ5SDWUKb0i8A56Xshqdql0QY3yPj5YvmWuzTdzjOnyMbJnnkTTE
- aehk4RzU1zdAwACd6UGfYZwQWYHixFT8h2IX85wv9vyh6kiGk9yiMSMrQjWk2zzl
- +51jtbFOPVU3psNoXqC7H/IciRHXS0c5czKd86OcvhFyvzIge5n8oARyNz07j4eD
- 3mismrEkMKu6FYyq30//02PbcotovbpvBG3ifw==
+ :in-reply-to:message-id:mime-version:references:reply-to:subject
+ :subject:to:to; s=fm3; t=1714498450; x=1714584850; bh=nuTget59Mx
+ Wc4IfoutnOU8Z20vpZN60QWE54LVhF6ms=; b=t4Ug7DTH9FfnRfuc/DODFmSS+l
+ mD3jFWNfTrDtk7In2zJy+/OPeCt3KXtdl2nJV4pPZ2pvRXZrzLRMaQ4HSJh2nmh0
+ V5gEtjUJIw9ZR7MvqvJgq4O+gGn7AcMRtE/Z1CXm3dUdod15IuAk59wpsntnewXt
+ WTuR8l8zcOqHlNITJrI2WGfCL9LTNvJrfdZIXIotk+26lkHQJ1fwnUhSgllKhIQY
+ WzAMxX0WVQx6yRos3yZfcn29od3bqXl2hh+aIr8v7tigAEI/8wfIAaXcwpQukTOK
+ aR9Z3QgUv9XdkNhO7eVOd5bKqcf9rjUNAM35ioRx88Gnk345JrHRpZ2aXUpQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1714498448; x=1714584848; bh=WeGqWSH3Ql0/U
- UTBACI5OChTrfYb4YhZsRvfkZTj+GY=; b=BlAGQGxPcVAIqPrAY7EpvB5jgY+pT
- NApxQ2P16DZm3WVJQUZDwi0tfB5DKtwNlSk99SSOW/pQHchkGHAM2oB5QRqsc2+3
- YVEOQTtTDL2w8CI+K4NvwqxhJ0s/1Tc1bCODmUX2NPDwGHsEj/8/vREUWMjX+CTS
- +npZHNk5bCpqL0z+/0QY0V949nIgMs8X/S9HXfdFaiofq68u1piJBt7Yzdw7utRl
- aqLHcsNLreGOX+/Xo8F45NlVpqDrCgZqlXUPO/V89zPNGhO7Tvw15nZqq4V4enUk
- 92d8kUdNeXAeK6DDBzVI5vfcCXW3Jo6eCh4Hiu4/dIQzvcvaNL/5/7VZQ==
-X-ME-Sender: <xms:jysxZh_iXHNCNw-YZ_178xJCRxqRMw0CfkQKZ2NqSl3RMtXPTUFY8A>
- <xme:jysxZls9PjCLW77qf-tAkihNH3MZbZSxAdw3EJj3WYr0edZOfDGlsZ_nXlnTYIrO9
- c6o1n0yLuKkOQ>
-X-ME-Received: <xmr:jysxZvA55OYHasHAIBOAjn6YAOWBk5gXkiVlyoRuxbY6D5vC7MWIUATfFIgOTHtlUtxfG1BO>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedguddufecutefuodetggdotefrod
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1714498450; x=
+ 1714584850; bh=nuTget59MxWc4IfoutnOU8Z20vpZN60QWE54LVhF6ms=; b=M
+ a5VxVonW0Qm9fs0XA8C4EYYeA8DQOTjBKfXaGV/IyykiUtCZvtyM/uTomp4mv1fn
+ dRdED+lgGT4CKODfGELmTYvp7vP6OTKsISeGWLdzSTEZO7wY3tUS3wsdAojn4SO2
+ rbFknN3N+VsLGoW4xZ+csJs64Hm21a33zH94MPXbzfU7vahcAVrRjSE1iBEzTPiT
+ CZ9/tvnSkkAJsp6ZU7j2SwY3/xC2nzylX1sEZdGPGGhVU/Qxf8UAXZXdgMDG+7VT
+ eLeS0QMaUQbrJLxdg7fhC7q6D8fG0sWT0AX1lAy8PhmERJ+colLa7cCICJUEvNhO
+ OS6YCyB70T/AkM8N25Qkw==
+X-ME-Sender: <xms:kisxZh0Fo4lMf2nSVZu4SyOZzK5kxzdH4kL7NUyeoyW_z_QEKVRf3w>
+ <xme:kisxZoFXszW32A-TTvRXzlkKiPhNl1JIWJlD_SAXzAF3l93G0wzyAnVx7IboPNH1Q
+ SaacV4Rs8Fu6Q>
+X-ME-Received: <xmr:kisxZh6ARn4DD695f7h_6_8F0pjACmIStS_M2ww1QwIZYOwK-Awkhu7Qvy0CoZGokGlr3zIG>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedgudduvdcutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofggtgfgsehtke
- ertdertdejnecuhfhrohhmpeforghrvghkucforghrtgiihihkohifshhkihdqifpkrhgv
- tghkihcuoehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtoh
- hmqeenucggtffrrghtthgvrhhnpeelkefhudelteelleelteetveeffeetffekteetjeeh
- lefggeekleeghefhtdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
- grihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggs
- rdgtohhm
-X-ME-Proxy: <xmx:jysxZle3XSnMXMNlz8AIbf-k_UyJDQHpOT7nmf03YRpTpyj9jaU1qg>
- <xmx:kCsxZmP-FoKIO7KJgKiCh0H8Ue097ceU_wQstF7mdodvUmAM0FVs6Q>
- <xmx:kCsxZnnegerD3GUl1oACQ8WVRvOPc1imIkG80drZdAqL2CqSGobLOA>
- <xmx:kCsxZgsBVv9F1WUQT6vOxC88qyRDRhQhapig1l5tWiN-khb7cOEqog>
- <xmx:kCsxZo223S0O567oFT374yn4_bTr5U-fKiiLzRESKPLg_UIoTbtSEXPh>
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepofgr
+ rhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghkse
+ hinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhep
+ gfeuudehgfdvfeehhedujeehfeduveeugefhkefhheelgeevudetueeiudfggfffnecuve
+ hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghr
+ vghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:kisxZu3sqn_kCe8IxidhA89Idnv0ff0ssnKP-hyd_Tf7SHZfsV_R2w>
+ <xmx:kisxZkGTYxkpPG3HIUpIsg4xKpQrvThJLiq8_IfLB-VEPeFSYyHTSA>
+ <xmx:kisxZv-0hOQmKdJXx-FMJwXnhHoWnVA5ASLPzuKTBB7f7KGfdqEm0w>
+ <xmx:kisxZhm8z_a6Ti25Z7Dr_DceznWeqzME7RGli6flyZ_b-qySe4Wh0Q>
+ <xmx:kisxZpNap_XR-F0uWa0HzYv_wpAK3Kh1uxNyGxxn6LOlhSlJkfvFeHtC>
 Feedback-ID: i1568416f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Apr 2024 13:34:07 -0400 (EDT)
+ 30 Apr 2024 13:34:09 -0400 (EDT)
 From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
  <marmarek@invisiblethingslab.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-Subject: [PATCH v2 0/3] Fix MSI-X handling for Xen HVM
-Date: Tue, 30 Apr 2024 19:33:08 +0200
-Message-ID: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
+ <marmarek@invisiblethingslab.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
+Subject: [PATCH v2 1/3] hw/xen/xen_pt: Save back data only for declared
+ registers
+Date: Tue, 30 Apr 2024 19:33:09 +0200
+Message-ID: <3cc5a7d2e0338112fb87806c813627bdf5dbd2a5.1714498385.git-series.marmarek@invisiblethingslab.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
+References: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=64.147.123.149;
+Received-SPF: none client-ip=64.147.123.159;
  envelope-from=marmarek@invisiblethingslab.com;
- helo=wfout6-smtp.messagingengine.com
+ helo=wfhigh8-smtp.messagingengine.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
@@ -104,36 +111,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes handling MSI-X when device model is running in a stubdomain.
-The main part is to avoid accessing /dev/mem, which also fixes running dom0
-with lockdown enabled.
+Call pci_default_write_config() in xen_pt_pci_write_config() only for
+registers that have matching XenPTRegInfo structure, and do that only after
+resolving any custom handlers. This is important for two reasons:
+1. XenPTRegInfo has ro_mask which needs to be enforced - Xen-specific
+   hooks do that on their own (especially xen_pt_*_reg_write()).
+2. Not setting value early allows hooks to see the old value too.
 
-It depends on a behavior change of Xen that was just comitted, and signaled
-with a feature flag. If Xen is too old (and XENFEAT_dm_msix_all_writes flag is
-not set), fallback to the old behavior.
+If it would be only about the first point, setting PCIDevice.wmask would
+probably be sufficient, but given the second point, restructure those
+writes.
 
-The other part is a fix to enforce read-only registers in the config space.
-This fixes MSI-X setup for iwlwifi Linux driver, as it happen to write to MSI-X
-capability id reg (as a workaround for some older device which has another
-register there). It should be no-op, but due to a bug in xen_pt code,
-it broke MSI-X detection.
+Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+---
+v2:
+ - rewrite commit message, previous one was very misleading
+ - fix loop saving register values
+ - fix int overflow when calculating write mask
+---
+ hw/xen/xen_pt.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-All those patches have been shipped in Qubes OS 4.2 already, and prove to fix
-the issue.
-
-See individual commit messages for details.
-
-Marek Marczykowski-Górecki (3):
-  hw/xen/xen_pt: Save back data only for declared registers
-  Update Xen's features.h header
-  Do not access /dev/mem in MSI-X PCI passthrough on Xen
-
- hw/xen/xen_pt.c                     | 24 +++++++-
- hw/xen/xen_pt_msi.c                 | 94 ++++++++++++++++++------------
- include/hw/xen/interface/features.h | 17 +++++-
- 3 files changed, 99 insertions(+), 36 deletions(-)
-
-base-commit: 2358f1b60f73287fe606c7ff48043b4f9e1c2d0f
+diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+index 3635d1b..cea2e18 100644
+--- a/hw/xen/xen_pt.c
++++ b/hw/xen/xen_pt.c
+@@ -256,6 +256,7 @@ static void xen_pt_pci_write_config(PCIDevice *d, uint32_t addr,
+     uint32_t find_addr = addr;
+     XenPTRegInfo *reg = NULL;
+     bool wp_flag = false;
++    uint32_t emul_mask = 0, write_val;
+ 
+     if (xen_pt_pci_config_access_check(d, addr, len)) {
+         return;
+@@ -311,7 +312,6 @@ static void xen_pt_pci_write_config(PCIDevice *d, uint32_t addr,
+     }
+ 
+     memory_region_transaction_begin();
+-    pci_default_write_config(d, addr, val, len);
+ 
+     /* adjust the read and write value to appropriate CFC-CFF window */
+     read_val <<= (addr & 3) << 3;
+@@ -371,6 +371,9 @@ static void xen_pt_pci_write_config(PCIDevice *d, uint32_t addr,
+                 return;
+             }
+ 
++            emul_mask |= ((1L << (reg->size * 8)) - 1)
++                         << ((find_addr & 3) * 8);
++
+             /* calculate next address to find */
+             emul_len -= reg->size;
+             if (emul_len > 0) {
+@@ -397,6 +400,25 @@ static void xen_pt_pci_write_config(PCIDevice *d, uint32_t addr,
+     /* need to shift back before passing them to xen_host_pci_set_block. */
+     val >>= (addr & 3) << 3;
+ 
++    /* store emulated registers after calling their handlers */
++    write_val = val;
++    for (index = 0; index < len; index += emul_len) {
++        emul_len = 0;
++        while (emul_mask & 0xff) {
++            emul_len++;
++            emul_mask >>= 8;
++        }
++        if (emul_len) {
++            uint32_t mask = ((1L << (emul_len * 8)) - 1);
++            pci_default_write_config(d, addr + index, write_val & mask,
++                                     emul_len);
++        } else {
++            emul_mask >>= 8;
++            emul_len = 1;
++        }
++        write_val >>= emul_len * 8;
++    }
++
+     memory_region_transaction_commit();
+ 
+ out:
 -- 
 git-series 0.9.1
 
