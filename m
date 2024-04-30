@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37E78B6B41
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1795B8B6B44
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 09:17:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1hh0-0001Ob-IN; Tue, 30 Apr 2024 03:14:22 -0400
+	id 1s1hgy-0001Nn-TP; Tue, 30 Apr 2024 03:14:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgy-0001Nl-1V
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgw-0001MD-Db
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgw-0008Tl-Gr
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1hgu-0008TW-RV
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 03:14:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714461257;
+ s=mimecast20190719; t=1714461256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rUlNiLOE+jPVHXcXzgEHVPWYRipoE14e5TSk0HWDpsw=;
- b=GqA6zOgU+IXR0b3H0RMKyIiqkRIro1uWVlbzACopQwIDEAsTRWd8CW6rRp6TT2O2IqNcxh
- zhX2UvR46cOplZFCuB9HigIVta1naOTQTD6to8LivqvnttMczifF3VPQiY1hWNMmxyj018
- q3xYbgFMyMJr9GXiStGAknJXQ34b0Mc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-W6MdsolHPYmh3NHGQEgROw-1; Tue, 30 Apr 2024 03:14:11 -0400
-X-MC-Unique: W6MdsolHPYmh3NHGQEgROw-1
+ bh=VASDeVyKHpvEH7J2Q5TVqloiw1u+C8/hjy+8eNt4gh0=;
+ b=fMvb7nnwJOtjY+nqcKgiuNtxcPk/Z5VfXxUELlPfMZEhrX8re0NlPEamevZmaCjYpfxhst
+ tZnsFBYgCYrS/Ptc3uITizlc+/MLiAk3ghcoy4KNF0VEFf0iZI6yCMeOkxEIMtYgAl+EG8
+ iZrPL9MA44fY+lT6ujakeG1vDdX1rvw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-33yU4QoTP3yZBcFUOhRtdA-1; Tue,
+ 30 Apr 2024 03:14:12 -0400
+X-MC-Unique: 33yU4QoTP3yZBcFUOhRtdA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 330CC803505;
- Tue, 30 Apr 2024 07:14:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 860761C031A0;
+ Tue, 30 Apr 2024 07:14:12 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.79])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2D4F540C6CC1;
- Tue, 30 Apr 2024 07:14:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7811F40C140B;
+ Tue, 30 Apr 2024 07:14:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Lev Kujawski <lkujaw@mailbox.org>
-Subject: [PULL 17/19] tests/qtest/ide-test: Verify READ NATIVE MAX ADDRESS is
- not limited
-Date: Tue, 30 Apr 2024 09:13:38 +0200
-Message-ID: <20240430071340.413305-18-thuth@redhat.com>
+Subject: [PULL 18/19] .gitlab-ci.d/cirrus.yml: Shorten the runtime of the
+ macOS and FreeBSD jobs
+Date: Tue, 30 Apr 2024 09:13:39 +0200
+Message-ID: <20240430071340.413305-19-thuth@redhat.com>
 In-Reply-To: <20240430071340.413305-1-thuth@redhat.com>
 References: <20240430071340.413305-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -78,103 +77,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Lev Kujawski <lkujaw@mailbox.org>
+Cirrus-CI introduced limitations to the free CI minutes. To avoid that
+we are consuming them too fast, let's drop the usual targets that are
+not that important since they are either a subset of another target
+(like i386 or ppc being a subset of x86_64 or ppc64 respectively), or
+since there is still a similar target with the opposite endianness
+(like xtensa/xtensael, microblaze/microblazeel etc.).
 
-Verify that the ATA command READ NATIVE MAX ADDRESS returns the last
-valid CHS tuple for the native device rather than any limit
-established by INITIALIZE DEVICE PARAMETERS.
-
-Signed-off-by: Lev Kujawski <lkujaw@mailbox.org>
-Message-ID: <20221010085229.2431276-2-lkujaw@mailbox.org>
+Message-ID: <20240429100113.53357-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/ide-test.c | 47 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ .gitlab-ci.d/cirrus.yml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/qtest/ide-test.c b/tests/qtest/ide-test.c
-index d6b4f6e36a..90ba6b298b 100644
---- a/tests/qtest/ide-test.c
-+++ b/tests/qtest/ide-test.c
-@@ -34,7 +34,8 @@
- #include "hw/pci/pci_ids.h"
- #include "hw/pci/pci_regs.h"
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index 4671f069c3..49f86fadaf 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -57,6 +57,7 @@ x64-freebsd-13-build:
+     CIRRUS_VM_RAM: 8G
+     UPDATE_COMMAND: pkg update; pkg upgrade -y
+     INSTALL_COMMAND: pkg install -y
++    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu
+     TEST_TARGETS: check
  
--#define TEST_IMAGE_SIZE 64 * 1024 * 1024
-+/* Specified by ATA (physical) CHS geometry for ~64 MiB device.  */
-+#define TEST_IMAGE_SIZE ((130 * 16 * 63) * 512)
+ aarch64-macos-13-base-build:
+@@ -72,6 +73,7 @@ aarch64-macos-13-base-build:
+     INSTALL_COMMAND: brew install
+     PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
+     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
++    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
+     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
  
- #define IDE_PCI_DEV     1
- #define IDE_PCI_FUNC    1
-@@ -88,11 +89,13 @@ enum {
- enum {
-     CMD_DSM         = 0x06,
-     CMD_DIAGNOSE    = 0x90,
-+    CMD_INIT_DP     = 0x91,  /* INITIALIZE DEVICE PARAMETERS */
-     CMD_READ_DMA    = 0xc8,
-     CMD_WRITE_DMA   = 0xca,
-     CMD_FLUSH_CACHE = 0xe7,
-     CMD_IDENTIFY    = 0xec,
-     CMD_PACKET      = 0xa0,
-+    CMD_READ_NATIVE = 0xf8,  /* READ NATIVE MAX ADDRESS */
- 
-     CMDF_ABORT      = 0x100,
-     CMDF_NO_BM      = 0x200,
-@@ -560,6 +563,46 @@ static void string_cpu_to_be16(uint16_t *s, size_t bytes)
-     }
- }
- 
-+static void test_specify(void)
-+{
-+    QTestState *qts;
-+    QPCIDevice *dev;
-+    QPCIBar bmdma_bar, ide_bar;
-+    uint16_t cyls;
-+    uint8_t heads, spt;
-+
-+    qts = ide_test_start(
-+        "-blockdev driver=file,node-name=hda,filename=%s "
-+        "-device ide-hd,drive=hda,bus=ide.0,unit=0 ",
-+        tmp_path[0]);
-+
-+    dev = get_pci_device(qts, &bmdma_bar, &ide_bar);
-+
-+    /* Initialize drive with zero sectors per track and one head.  */
-+    qpci_io_writeb(dev, ide_bar, reg_nsectors, 0);
-+    qpci_io_writeb(dev, ide_bar, reg_device, 0);
-+    qpci_io_writeb(dev, ide_bar, reg_command, CMD_INIT_DP);
-+
-+    /* READ NATIVE MAX ADDRESS (CHS mode).  */
-+    qpci_io_writeb(dev, ide_bar, reg_device, 0xa0);
-+    qpci_io_writeb(dev, ide_bar, reg_command, CMD_READ_NATIVE);
-+
-+    heads = qpci_io_readb(dev, ide_bar, reg_device) & 0xf;
-+    ++heads;
-+    g_assert_cmpint(heads, ==, 16);
-+
-+    cyls = qpci_io_readb(dev, ide_bar, reg_lba_high) << 8;
-+    cyls |= qpci_io_readb(dev, ide_bar, reg_lba_middle);
-+    ++cyls;
-+    g_assert_cmpint(cyls, ==, 130);
-+
-+    spt = qpci_io_readb(dev, ide_bar, reg_lba_low);
-+    g_assert_cmpint(spt, ==, 63);
-+
-+    ide_test_quit(qts);
-+    free_pci_device(dev);
-+}
-+
- static void test_identify(void)
- {
-     QTestState *qts;
-@@ -1077,6 +1120,8 @@ int main(int argc, char **argv)
-     /* Run the tests */
-     g_test_init(&argc, &argv, NULL);
- 
-+    qtest_add_func("/ide/read_native", test_specify);
-+
-     qtest_add_func("/ide/identify", test_identify);
- 
-     qtest_add_func("/ide/diagnostic", test_diagnostic);
+ aarch64-macos-14-base-build:
 -- 
 2.44.0
 
