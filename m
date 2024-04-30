@@ -2,82 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F3B8B75BC
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7378B75C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1mcY-0007iv-R1; Tue, 30 Apr 2024 08:30:09 -0400
+	id 1s1mcx-0001ch-P1; Tue, 30 Apr 2024 08:30:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbv-0007Ev-Sa
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:29:28 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbt-0001pw-MT
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:29:27 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-56e1bbdb362so6036272a12.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:29:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714480164; x=1715084964; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PBJVq2+6UkUPok0cTSz4FPYy6QLevZUsxobHr1lZ+c8=;
- b=J/6FuXeF/lztwLPYB9gqZbZ5f6HSv8/s2r06wg+32TKHzH5qmbBZ8RimyG/eO32y3g
- X/dGJu2+bnSyEvrWAlZokDqqVKPWqlJaVpXtGHf6WxjWmzu1UDA6YcJXQUMhqybXzZV5
- OoDmoeDqaMRW4ZA60wMm1MzoKzB7HOwF+mENdc/Em5LJNgZBgHeqGE7o4fKXg/rl2kgv
- cBwMeOhS//ckQZIgBXKt2nTiXqlA+zY58bhQwx/7YjYrQXYx6ZrLQO5F0omogPftS7Gb
- 4E89bp/6kNgBPkC2tBuyC/Gj2Xs3LsGXcEAIAI0LcaXrbDMTwsMOv7S1+Gn4pSVqBxpi
- Lt+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714480164; x=1715084964;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PBJVq2+6UkUPok0cTSz4FPYy6QLevZUsxobHr1lZ+c8=;
- b=w7oCxj+TX2DeLM+j3l+m+LTDlkkGG5iZWZnWfUOjBD+xkS4wTehCXll7I85RP4vnn+
- 5W4n1BGYOsl4k3DYi5QOsWI0LkSXrX93Sp9hW+rOm/ZdwGHITee2w6EV48ekRdUWMUT7
- L9epPkA+XtC9P7rtRDf3+OMdRG2aoTaosS2iQtnZRsEEPyelfgt0GMEbL8oYfNWnwCQq
- d+UjiBa+xImwwX1xZ8vNByiMQ7ymlGlsXmEwMUXItWionWV9KrxlxLPYOxXI2EKc0p1Y
- H4tVEw4wDm+oynXra/Gt5DoipJJlZwHKO267+ibpcPani3TjuTLH/BSAatiUHLXI6lnO
- ccNg==
-X-Gm-Message-State: AOJu0Yxp8oi76Jr5MFv2R32g76gE5CtlHJ3F0uvqQmDlXvSqHowvXcNJ
- Dkt0WRDQrj+Ev1qP4byz5LHe2jsvr0k+QrGD2vMrjLo5wpcMTNLjOBPSC9sm393D6wQaAy7P68n
- G
-X-Google-Smtp-Source: AGHT+IEovet6ktpAa9UgFPwNuPUakXTaWuaEZNKog6fZ0miX7/bp7ju29aVS5NEnCImtvwIRAuCdCA==
-X-Received: by 2002:a17:907:94c3:b0:a58:eba0:b358 with SMTP id
- dn3-20020a17090794c300b00a58eba0b358mr9681285ejc.53.1714480163739; 
- Tue, 30 Apr 2024 05:29:23 -0700 (PDT)
-Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
- [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- g10-20020a17090613ca00b00a58ee5b1d18sm3639943ejc.160.2024.04.30.05.29.22
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 05:29:23 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Anton Johansson <anjo@rev.ng>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 13/13] accel/tcg: Move @tb_jmp_cache from CPUState to TCG
- AccelCPUState
-Date: Tue, 30 Apr 2024 14:28:07 +0200
-Message-ID: <20240430122808.72025-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240430122808.72025-1-philmd@linaro.org>
-References: <20240430122808.72025-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1s1mct-0001Kc-Dr
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:30:27 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1s1mcq-0001vP-6j
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:30:27 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 5D851480F2;
+ Tue, 30 Apr 2024 14:30:21 +0200 (CEST)
+Message-ID: <b3215169-005d-4766-ad19-3b649ff0e4c9@proxmox.com>
+Date: Tue, 30 Apr 2024 14:30:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 5/5] virtio-gpu: fix scanout migration post-load
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20240312140216.313618-1-marcandre.lureau@redhat.com>
+ <20240312140216.313618-6-marcandre.lureau@redhat.com>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20240312140216.313618-6-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,170 +58,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@tb_jmp_cache is specific to TCG accelerator, move it to its
-AccelCPUState. Remove the NULL check in tcg_flush_jmp_cache().
+Am 12.03.24 um 15:02 schrieb marcandre.lureau@redhat.com:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> The current post-loading code for scanout has a FIXME: it doesn't take
+> the resource region/rect into account. But there is more, when adding
+> blob migration support in commit f66767f75c9, I didn't realize that blob
+> resources could be used for scanouts. This situationn leads to a crash
+> during post-load, as they don't have an associated res->image.
+> 
+> virtio_gpu_do_set_scanout() handle all cases, but requires the
+> associated virtio_gpu_framebuffer, which is currently not saved during
+> migration.
+> 
+> Add a v2 of "virtio-gpu-one-scanout" with the framebuffer fields, so we
+> can restore blob scanouts, as well as fixing the existing FIXME.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Reviewed-by: Sebastian Ott <sebott@redhat.com>
 
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240428221450.26460-21-philmd@linaro.org>
----
- accel/tcg/tb-jmp-cache.h  | 4 ++--
- accel/tcg/vcpu-state.h    | 2 ++
- include/hw/core/cpu.h     | 2 --
- include/qemu/typedefs.h   | 1 -
- accel/tcg/cpu-exec.c      | 7 +++----
- accel/tcg/cputlb.c        | 2 +-
- accel/tcg/tb-maint.c      | 2 +-
- accel/tcg/translate-all.c | 7 +------
- 8 files changed, 10 insertions(+), 17 deletions(-)
+Hi,
+unfortunately, this broke migration from pre-9.0 to 9.0:
 
-diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
-index 184bb3e3e2..c3a505e394 100644
---- a/accel/tcg/tb-jmp-cache.h
-+++ b/accel/tcg/tb-jmp-cache.h
-@@ -22,12 +22,12 @@
-  * non-NULL value of 'tb'.  Strictly speaking pc is only needed for
-  * CF_PCREL, but it's used always for simplicity.
-  */
--struct CPUJumpCache {
-+typedef struct CPUJumpCache {
-     struct rcu_head rcu;
-     struct {
-         TranslationBlock *tb;
-         vaddr pc;
-     } array[TB_JMP_CACHE_SIZE];
--};
-+} CPUJumpCache;
- 
- #endif /* ACCEL_TCG_TB_JMP_CACHE_H */
-diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index 716a0119c4..7fff5413e9 100644
---- a/accel/tcg/vcpu-state.h
-+++ b/accel/tcg/vcpu-state.h
-@@ -7,6 +7,7 @@
- #define ACCEL_TCG_VCPU_STATE_H
- 
- #include "hw/core/cpu.h"
-+#include "tb-jmp-cache.h"
- 
- /**
-  * AccelCPUState: vCPU fields specific to TCG accelerator
-@@ -19,6 +20,7 @@ struct AccelCPUState {
-     uint32_t cflags_next_tb;
- 
-     sigjmp_buf jmp_env;
-+    CPUJumpCache tb_jmp_cache;
- 
- #ifdef CONFIG_USER_ONLY
-     TaskState *ts;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index f06bb1e93a..c0c28befd3 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -479,8 +479,6 @@ struct CPUState {
-     AddressSpace *as;
-     MemoryRegion *memory;
- 
--    CPUJumpCache *tb_jmp_cache;
--
-     GArray *gdb_regs;
-     int gdb_num_regs;
-     int gdb_num_g_regs;
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 36f2825725..daf9009332 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -44,7 +44,6 @@ typedef struct CPUAddressSpace CPUAddressSpace;
- typedef struct CPUArchState CPUArchState;
- typedef struct CPUPluginState CPUPluginState;
- typedef struct CpuInfoFast CpuInfoFast;
--typedef struct CPUJumpCache CPUJumpCache;
- typedef struct CPUState CPUState;
- typedef struct CPUTLBEntryFull CPUTLBEntryFull;
- typedef struct DeviceListener DeviceListener;
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index a491278082..f813c68d1e 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -262,7 +262,7 @@ static inline TranslationBlock *tb_lookup(CPUState *cpu, vaddr pc,
-     tcg_debug_assert(!(cflags & CF_INVALID));
- 
-     hash = tb_jmp_cache_hash_func(pc);
--    jc = cpu->tb_jmp_cache;
-+    jc = &cpu->accel->tb_jmp_cache;
- 
-     tb = qatomic_read(&jc->array[hash].tb);
-     if (likely(tb &&
-@@ -1011,7 +1011,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-                  * for the fast lookup
-                  */
-                 h = tb_jmp_cache_hash_func(pc);
--                jc = cpu->tb_jmp_cache;
-+                jc = &cpu->accel->tb_jmp_cache;
-                 jc->array[h].pc = pc;
-                 qatomic_set(&jc->array[h].tb, tb);
-             }
-@@ -1090,7 +1090,6 @@ bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
-         tcg_target_initialized = true;
-     }
- 
--    cpu->tb_jmp_cache = g_new0(CPUJumpCache, 1);
-     tlb_init(cpu);
- #ifndef CONFIG_USER_ONLY
-     tcg_iommu_init_notifier_list(cpu);
-@@ -1108,5 +1107,5 @@ void tcg_exec_unrealizefn(CPUState *cpu)
- #endif /* !CONFIG_USER_ONLY */
- 
-     tlb_destroy(cpu);
--    g_free_rcu(cpu->tb_jmp_cache, rcu);
-+    g_free_rcu(&cpu->accel->tb_jmp_cache, rcu);
- }
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index cdb3e12dfb..eaa60d1da2 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -156,7 +156,7 @@ static void tlb_window_reset(CPUTLBDesc *desc, int64_t ns,
- 
- static void tb_jmp_cache_clear_page(CPUState *cpu, vaddr page_addr)
- {
--    CPUJumpCache *jc = cpu->tb_jmp_cache;
-+    CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
-     int i, i0;
- 
-     if (unlikely(!jc)) {
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 2d5faca9fd..83758648f2 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -888,7 +888,7 @@ static void tb_jmp_cache_inval_tb(TranslationBlock *tb)
-         uint32_t h = tb_jmp_cache_hash_func(tb->pc);
- 
-         CPU_FOREACH(cpu) {
--            CPUJumpCache *jc = cpu->tb_jmp_cache;
-+            CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
- 
-             if (qatomic_read(&jc->array[h].tb) == tb) {
-                 qatomic_set(&jc->array[h].tb, NULL);
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 3a8199a761..9b02f21b23 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -652,12 +652,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
-  */
- void tcg_flush_jmp_cache(CPUState *cpu)
- {
--    CPUJumpCache *jc = cpu->tb_jmp_cache;
--
--    /* During early initialization, the cache may not yet be allocated. */
--    if (unlikely(jc == NULL)) {
--        return;
--    }
-+    CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
- 
-     for (int i = 0; i < TB_JMP_CACHE_SIZE; i++) {
-         qatomic_set(&jc->array[i].tb, NULL);
--- 
-2.41.0
+> vmstate_load_state_field virtio-gpu:virtio-gpu
+> vmstate_load_state_field virtio-gpu-scanouts:parent_obj.enable
+> vmstate_load_state_field virtio-gpu-scanouts:parent_obj.conf.max_outputs
+> vmstate_load_state_field virtio-gpu-scanouts:parent_obj.scanout
+> vmstate_load_state_field virtio-gpu-one-scanout:resource_id
+> vmstate_load_state_field virtio-gpu-one-scanout:width
+> vmstate_load_state_field virtio-gpu-one-scanout:height
+> vmstate_load_state_field virtio-gpu-one-scanout:x
+> vmstate_load_state_field virtio-gpu-one-scanout:y
+> vmstate_load_state_field virtio-gpu-one-scanout:cursor.resource_id
+> vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_x
+> vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_y
+> vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.x
+> vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.y
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.format
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.bytes_pp
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.width
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.height
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.stride
+> vmstate_load_state_field virtio-gpu-one-scanout:fb.offset
+> qemu-system-x86_64: Missing section footer for 0000:00:02.0/virtio-gpu
+> qemu-system-x86_64: Error -22 while loading VM state
+
+It wrongly tries to load the fb fields even though they should be
+guarded by version 2.
+
+Looking at it with GDB, in vmstate_load_state(), when we come to
+field->name == parent_obj.scanout, the
+
+>                 } else if (field->flags & VMS_STRUCT) {
+>                     ret = vmstate_load_state(f, field->vmsd, curr_elem,
+>                                              field->vmsd->version_id);
+
+branch will be taken and suddenly we'll have a call to
+vmstate_load_state() for vmsd==vmstate_virtio_gpu_scanout with
+version_id==2 rather than version_id==1, because that is
+field->vmsd->version_id (i.e. the .version_id in VMStateDescription
+vmstate_virtio_gpu_scanout).
+
+Would it have been necessary to version the VMStateDescription
+vmstate_virtio_gpu_scanouts too using VMS_VSTRUCT (or am I
+misinterpreting the use case for that)?
+
+Best Regards,
+Fiona
 
 
