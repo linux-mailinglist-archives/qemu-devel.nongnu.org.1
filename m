@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC338B6CA8
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 10:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E9C8B6CAE
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 10:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1iiR-0007Wf-MH; Tue, 30 Apr 2024 04:19:55 -0400
+	id 1s1ik8-0000sA-R4; Tue, 30 Apr 2024 04:21:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1iiG-0007QM-Lk
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:19:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1iiC-0002Wh-KM
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:19:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714465180;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=uO//olb4+eASICal0010LBnYnskJaQvOgDr4LIleKfs=;
- b=E1z9YB267jFcapVchoFo25VAJ0MCTopA24WHFBQ8sSAXqnypUKe0AJSWb5qyFsY5NXYiy0
- AhJMBu+8VGH+EjnzlGa3HvqxGNyTCXTLdGPcYuvMfyFOeOvb6DCMkHm5h36Sy6Wgdddn8K
- ZDqdBD83ytb3uJZty+T/pRRjXFZHR74=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-8VqLkmUAOoSZtDuMOZM0RA-1; Tue, 30 Apr 2024 04:19:35 -0400
-X-MC-Unique: 8VqLkmUAOoSZtDuMOZM0RA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A044F18065B2;
- Tue, 30 Apr 2024 08:19:34 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C41840C6DAE;
- Tue, 30 Apr 2024 08:19:34 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7097B21E66C8; Tue, 30 Apr 2024 10:19:33 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-block@nongnu.org,  raphael@enfabrica.net,  mst@redhat.com,
- qemu-devel@nongnu.org,  armbru@redhat.com,  eblake@redhat.com,
- eduardo@habkost.net,  berrange@redhat.com,  pbonzini@redhat.com,
- hreitz@redhat.com,  kwolf@redhat.com,  yc-core@yandex-team.ru
-Subject: Re: [PATCH v4 3/3] qapi: introduce device-sync-config
-In-Reply-To: <20240429101623.1992943-4-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Mon, 29 Apr 2024 13:16:23 +0300")
-References: <20240429101623.1992943-1-vsementsov@yandex-team.ru>
- <20240429101623.1992943-4-vsementsov@yandex-team.ru>
-Date: Tue, 30 Apr 2024 10:19:33 +0200
-Message-ID: <877cgfcley.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1s1ik5-0000r7-RB
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:21:38 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1s1ik2-0003A8-Nx
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 04:21:37 -0400
+Received: from loongson.cn (unknown [10.20.42.173])
+ by gateway (Coremail) with SMTP id _____8CxLOsEqjBm4VUFAA--.11051S3;
+ Tue, 30 Apr 2024 16:21:25 +0800 (CST)
+Received: from [10.20.42.173] (unknown [10.20.42.173])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxndwBqjBmifUKAA--.26376S3; 
+ Tue, 30 Apr 2024 16:21:23 +0800 (CST)
+Subject: Re: [PATCH 0/5] hw/loongarch: Refine numa memory map
+To: gaosong <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20240318080121.2836548-1-maobibo@loongson.cn>
+ <1f480301-996c-f314-e41e-55d842d934e9@loongson.cn>
+From: maobibo <maobibo@loongson.cn>
+Message-ID: <89f96ba4-35bd-2f6e-efb6-462cbff02504@loongson.cn>
+Date: Tue, 30 Apr 2024 16:21:21 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+In-Reply-To: <1f480301-996c-f314-e41e-55d842d934e9@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8AxndwBqjBmifUKAA--.26376S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr17ur45uw1Dtr4kXw4UZFc_yoW8Zr1xpw
+ sayF1YkrW0yF9ayr1fG3srWFyYy3WxGwnrXFy2vFykCr43Ar10vr4rZryv9F9xX3y8Jr1I
+ gF18Kw17uF17J3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CP
+ fJUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -29
+X-Spam_score: -3.0
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.127,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,201 +80,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+Sure, I will rebase and send the new version.
 
-> Add command to sync config from vhost-user backend to the device. It
-> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
-> triggered interrupt to the guest or just not available (not supported
-> by vhost-user server).
->
-> Command result is racy if allow it during migration. Let's allow the
-> sync only in RUNNING state.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  hw/block/vhost-user-blk.c |  1 +
->  hw/virtio/virtio-pci.c    |  9 ++++++++
->  include/hw/qdev-core.h    |  3 +++
->  qapi/qdev.json            | 23 +++++++++++++++++++
->  system/qdev-monitor.c     | 48 +++++++++++++++++++++++++++++++++++++++
->  5 files changed, 84 insertions(+)
->
-> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-> index 091d2c6acf..2f301f380c 100644
-> --- a/hw/block/vhost-user-blk.c
-> +++ b/hw/block/vhost-user-blk.c
-> @@ -588,6 +588,7 @@ static void vhost_user_blk_class_init(ObjectClass *klass, void *data)
->  
->      device_class_set_props(dc, vhost_user_blk_properties);
->      dc->vmsd = &vmstate_vhost_user_blk;
-> +    dc->sync_config = vhost_user_blk_sync_config;
->      set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
->      vdc->realize = vhost_user_blk_device_realize;
->      vdc->unrealize = vhost_user_blk_device_unrealize;
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index b1d02f4b3d..0d91e8b5dc 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -2351,6 +2351,14 @@ static void virtio_pci_dc_realize(DeviceState *qdev, Error **errp)
->      vpciklass->parent_dc_realize(qdev, errp);
->  }
->  
-> +static int virtio_pci_sync_config(DeviceState *dev, Error **errp)
-> +{
-> +    VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
-> +    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-> +
-> +    return qdev_sync_config(DEVICE(vdev), errp);
-> +}
-> +
->  static void virtio_pci_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -2367,6 +2375,7 @@ static void virtio_pci_class_init(ObjectClass *klass, void *data)
->      device_class_set_parent_realize(dc, virtio_pci_dc_realize,
->                                      &vpciklass->parent_dc_realize);
->      rc->phases.hold = virtio_pci_bus_reset_hold;
-> +    dc->sync_config = virtio_pci_sync_config;
->  }
->  
->  static const TypeInfo virtio_pci_info = {
-> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-> index 9228e96c87..87135bdcdf 100644
-> --- a/include/hw/qdev-core.h
-> +++ b/include/hw/qdev-core.h
-> @@ -95,6 +95,7 @@ typedef void (*DeviceUnrealize)(DeviceState *dev);
->  typedef void (*DeviceReset)(DeviceState *dev);
->  typedef void (*BusRealize)(BusState *bus, Error **errp);
->  typedef void (*BusUnrealize)(BusState *bus);
-> +typedef int (*DeviceSyncConfig)(DeviceState *dev, Error **errp);
->  
->  /**
->   * struct DeviceClass - The base class for all devices.
-> @@ -162,6 +163,7 @@ struct DeviceClass {
->      DeviceReset reset;
->      DeviceRealize realize;
->      DeviceUnrealize unrealize;
-> +    DeviceSyncConfig sync_config;
->  
->      /**
->       * @vmsd: device state serialisation description for
-> @@ -546,6 +548,7 @@ bool qdev_hotplug_allowed(DeviceState *dev, Error **errp);
->   */
->  HotplugHandler *qdev_get_hotplug_handler(DeviceState *dev);
->  void qdev_unplug(DeviceState *dev, Error **errp);
-> +int qdev_sync_config(DeviceState *dev, Error **errp);
->  void qdev_simple_device_unplug_cb(HotplugHandler *hotplug_dev,
->                                    DeviceState *dev, Error **errp);
->  void qdev_machine_creation_done(void);
-> diff --git a/qapi/qdev.json b/qapi/qdev.json
-> index facaa0bc6a..fc5e125a45 100644
-> --- a/qapi/qdev.json
-> +++ b/qapi/qdev.json
-> @@ -161,3 +161,26 @@
->  ##
->  { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
->    'data': { '*device': 'str', 'path': 'str' } }
-> +
-> +##
-> +# @device-sync-config:
-> +#
-> +# Synchronize device configuration from host to guest part.  First,
-> +# copy the configuration from the host part (backend) to the guest
-> +# part (frontend).  Then notify guest software that device
-> +# configuration changed.
+Regards
+Bibo Mao
 
-Blank line here, please.
-
-> +# The command may be used to notify the guest about block device
-> +# capcity change.  Currently only vhost-user-blk device supports
-> +# this.
-> +#
-> +# @id: the device's ID or QOM path
-> +#
-> +# Features:
-> +#
-> +# @unstable: The command is experimental.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'command': 'device-sync-config',
-> +  'features': [ 'unstable' ],
-> +  'data': {'id': 'str'} }
-> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> index 264978aa40..47bfc0506e 100644
-> --- a/system/qdev-monitor.c
-> +++ b/system/qdev-monitor.c
-> @@ -23,6 +23,7 @@
->  #include "monitor/monitor.h"
->  #include "monitor/qdev.h"
->  #include "sysemu/arch_init.h"
-> +#include "sysemu/runstate.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-commands-qdev.h"
->  #include "qapi/qmp/dispatch.h"
-> @@ -971,6 +972,53 @@ void qmp_device_del(const char *id, Error **errp)
->      }
->  }
->  
-> +int qdev_sync_config(DeviceState *dev, Error **errp)
-> +{
-> +    DeviceClass *dc = DEVICE_GET_CLASS(dev);
-> +
-> +    if (!dc->sync_config) {
-> +        error_setg(errp, "device-sync-config is not supported for '%s'",
-> +                   object_get_typename(OBJECT(dev)));
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return dc->sync_config(dev, errp);
-> +}
-> +
-> +void qmp_device_sync_config(const char *id, Error **errp)
-> +{
-> +    DeviceState *dev;
-> +
-> +    /*
-> +     * During migration there is a race between syncing`configuration and
-> +     * migrating it (if migrate first, that target would get outdated version),
-> +     * so let's just not allow it.
-
-Wrap comment lines around column 70 for legibility, please.
-
-> +     *
-> +     * Moreover, let's not rely on setting up interrupts in paused
-> +     * state, which may be a part of migration process.
-
-We discussed this in review of v3.  You wanted to check whether the
-problem is real.  Is it?
-
-> +     */
-> +
-> +    if (migration_is_running()) {
-> +        error_setg(errp, "Config synchronization is not allowed "
-> +                   "during migration");
-> +        return;
-> +    }
-> +
-> +    if (!runstate_is_running()) {
-> +        error_setg(errp, "Config synchronization allowed only in '%s' state, "
-
-Suggest a line break after errp,
-
-> +                   "current state is '%s'", RunState_str(RUN_STATE_RUNNING),
-> +                   RunState_str(runstate_get()));
-> +        return;
-> +    }
-> +
-> +    dev = find_device_state(id, true, errp);
-> +    if (!dev) {
-> +        return;
-> +    }
-> +
-> +    qdev_sync_config(dev, errp);
-> +}
-> +
->  void hmp_device_add(Monitor *mon, const QDict *qdict)
->  {
->      Error *err = NULL;
+On 2024/4/30 下午4:15, gaosong wrote:
+> Hi,
+> 
+> 在 2024/3/18 下午4:01, Bibo Mao 写道:
+>> One LoongArch virt machine platform, there is limitation for memory
+>> map information. The minimum memory size is 256M and minimum memory
+>> size for numa node0 is 256M also. With qemu numa qtest, it is possible
+>> that memory size of numa node0 is 128M.
+>>
+>> Limitations for minimum memory size for both total memory and numa
+>> node0 is removed here, including acpi srat table, fadt memory map table
+>> and fw_cfg memory map table.
+>>
+>> Also remove numa node about memory region, there is only low memory
+>> region and how memory region.
+> For this series,
+> Reviewed-by: Song Gao <gaosong@loongson.cn>
+> 
+> After PR[1] merge in, patch3 and patch4 need Rebase.
+> Also, how about enabling LoongArch architecture numa-test?
+> 
+> like this:
+> 
+>     --- a/tests/qtest/meson.build
+>     +++ b/tests/qtest/meson.build
+>     @@ -127,6 +127,8 @@ else
+>         dbus_vmstate1 = []
+>       endif
+> 
+>     +qtests_loongarch64 = ['numa-test'] + qtests_filter
+>     +
+>       qtests_x86_64 = qtests_i386
+> 
+>       qtests_alpha = ['boot-serial-test'] + \
+> 
+> 
+> [1] https://patchew.org/QEMU/20240429023043.2607982-1-gaosong@loongson.cn/
+> 
+> 
+> Thanks.
+> Song Gao
+>> Bibo Mao (5):
+>>    hw/loongarch: Refine acpi srat table for numa memory
+>>    hw/loongarch: Refine fadt memory table for numa memory
+>>    hw/loongarch: Refine fwcfg memory map
+>>    hw/loongarch: Refine system dram memory region
+>>    hw/loongarch: Remove minimum and default memory size
+>>
+>>   hw/loongarch/acpi-build.c |  58 +++++++------
+>>   hw/loongarch/virt.c       | 168 ++++++++++++++++++++++++++------------
+>>   2 files changed, 152 insertions(+), 74 deletions(-)
+>>
+>>
+>> base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+> 
 
 
