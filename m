@@ -2,146 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F2C8B69D3
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 07:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1558B69E7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 07:27:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1frV-0000kF-O7; Tue, 30 Apr 2024 01:17:05 -0400
+	id 1s1g15-0004A8-L0; Tue, 30 Apr 2024 01:26:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1s1frS-0000jj-SY
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 01:17:03 -0400
-Received: from mail-mw2nam12on20600.outbound.protection.outlook.com
- ([2a01:111:f403:200a::600]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1g12-00049W-RI
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 01:26:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1s1frN-0006af-Ok
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 01:17:02 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m5T3DOYCZsDjIKdB1xpvNbj85ruUzwQQDJh7ACkQDU4FoedYO0BaK/7QfdGFNJhoONSCMZ7aQa8YCUbXZ74pugo+jr4kh4ZRTCkqxl9QYDqyv02IrXmvTiC+qzQOfVgPuxr8EfMdxdTnZ8/HDxMg8QZ0a1IBIzfEY6uYElNvknsj/FvfckyJ9jDCP1Cz1570sTzGlRwVMqEAUeLk5bDKVj27NjSZfiB8ozn5qDgEPVqqUtM3o8EOPfTn2z+YKSXzEX691QwtWohVj6IF7KCyk2YLUWhH5a24vOR5Fp+OdSVER0wGqjpwCw5JF7ZpIHokz2bZKmDx9G4UXYXTp++o5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uZ6EB4ySYq+wDgPEQhcBbWuo6kce+vcwHrrkjaessfg=;
- b=LqUlaR1/B5ZmKUd6pqroeUSaCIGm9r/3hJF3rN0rI8Wr8v+hcR7GlIstA+Xk4E02LOfE7hRIO3714fUBPE9DyHTgbtDWFsmUDG8AgGsRQtFOvkUrGHOX5QwCfKJZTREC2Tj4R5zzwA+dfFDZsCrHJRmy/4O6HX/U//fbJtnQrpBg5adOJ4xl5+7bYd6wq8dg6P+O3XfyWK1yhSZ8dTGFzKioQQuKC7wuYifMyFK5n87TrrJYB4u9z2zF6jEIeB34OBSTGOTtqjl9BAwwJpNU1wM42dPePn/w+ktqApQeoCBwUoQrMBX033zL03jBdSZjZ4xthNxE9mQvnqm5dlP/WA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uZ6EB4ySYq+wDgPEQhcBbWuo6kce+vcwHrrkjaessfg=;
- b=Rpox3utOfQn3ma5Q5cHp0uaqmjo5NtM3R5Jjsu9WNWg71WGIqRC84qP0Kf+wxf0+oS/vesAFeDq0ADZubc38mNNKMdoDXfh/hXCX1syLz6kQS4u81YiIKDH0Q3SzhoQSJ8vpkyFj9ugU/M6TtBOWRBPUQhzEwZ097myVu5Cp96AFUYcBHj0Mq3X9TNAjr05jYTb3pOYRRZZ9fP8aeKmOIGcCQ25XcbmO3sCQYMkw7k1/boIHnW9NssiU5F6jrDbZuhjKAjOGXdXRM+GTsfK3XuDp1xp4gn/n6voyRYZK+jcoZ+wH1nNWd49O5x5jLPYriAEyqluvKaS8yD1nI3JBiw==
-Received: from BN8PR15CA0043.namprd15.prod.outlook.com (2603:10b6:408:80::20)
- by PH7PR12MB6395.namprd12.prod.outlook.com (2603:10b6:510:1fd::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35; Tue, 30 Apr
- 2024 05:16:52 +0000
-Received: from BN1PEPF0000468C.namprd05.prod.outlook.com
- (2603:10b6:408:80:cafe::3d) by BN8PR15CA0043.outlook.office365.com
- (2603:10b6:408:80::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35 via Frontend
- Transport; Tue, 30 Apr 2024 05:16:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF0000468C.mail.protection.outlook.com (10.167.243.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7544.18 via Frontend Transport; Tue, 30 Apr 2024 05:16:51 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 29 Apr
- 2024 22:16:35 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 29 Apr
- 2024 22:16:34 -0700
-Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Mon, 29 Apr
- 2024 22:16:32 -0700
-From: Avihai Horon <avihaih@nvidia.com>
-To: <qemu-devel@nongnu.org>
-CC: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, Eric Blake
- <eblake@redhat.com>, Peter Xu <peterx@redhat.com>, Fabiano Rosas
- <farosas@suse.de>, Joao Martins <joao.m.martins@oracle.com>, Maor Gottlieb
- <maorg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH 3/3] vfio/migration: Don't emit STOP_COPY state change event
- twice
-Date: Tue, 30 Apr 2024 08:16:21 +0300
-Message-ID: <20240430051621.19597-4-avihaih@nvidia.com>
-X-Mailer: git-send-email 2.21.3
-In-Reply-To: <20240430051621.19597-1-avihaih@nvidia.com>
-References: <20240430051621.19597-1-avihaih@nvidia.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1g0y-00084Y-52
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 01:26:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714454810;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ijDlNVLToT3HRYiGff0G7UxysWf3wd/3dFkRSr/pZuU=;
+ b=e0MzCZUpxFN2cjYi+FUZ6Xgqw8eqzTbXdWaE04sG58Qjjlk7Du4E2rniKeZcxT5gk9FjOu
+ W9I2GS6TsFdsZG+qs9WPBeog348BTH3lDOzslHldRaiA5gmhZ9+mAh4kNW7JnyCJSnBVZ+
+ w/ce1wmVLctOLtcuas7Zif0JxPrlgpU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-cXLea1O1PRmC8Lh-2xqhPw-1; Tue, 30 Apr 2024 01:26:47 -0400
+X-MC-Unique: cXLea1O1PRmC8Lh-2xqhPw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 493F11005D5C;
+ Tue, 30 Apr 2024 05:26:47 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DC98C581C8;
+ Tue, 30 Apr 2024 05:26:46 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 074C521E66E5; Tue, 30 Apr 2024 07:26:46 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Collin Walling <walling@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org,  qemu-devel@nongnu.org,  thuth@redhat.com,
+ david@redhat.com,  wangyanan55@huawei.com,  philmd@linaro.org,
+ marcel.apfelbaum@gmail.com,  eduardo@habkost.net
+Subject: Re: [PATCH v4 1/2] target/s390x: report deprecated-props in
+ cpu-model-expansion reply
+In-Reply-To: <20240429191059.11806-2-walling@linux.ibm.com> (Collin Walling's
+ message of "Mon, 29 Apr 2024 15:10:58 -0400")
+References: <20240429191059.11806-1-walling@linux.ibm.com>
+ <20240429191059.11806-2-walling@linux.ibm.com>
+Date: Tue, 30 Apr 2024 07:26:46 +0200
+Message-ID: <87zftbe7zd.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000468C:EE_|PH7PR12MB6395:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38644ec4-279c-4b83-ef9d-08dc68d4be65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230031|376005|36860700004|82310400014|1800799015; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2XsrvNY/p+IBqqOMu9BuBqIyBQVz6e4gdhMo/OGgm5n2LWkfuCUTlJnrP51r?=
- =?us-ascii?Q?CsdyUQrAf6FdoZ4dbdX+GjVZhjsgdGutAch3EO60OTYvgXeRznyOgHZN39Ly?=
- =?us-ascii?Q?ztbFOjw6fyoAbyyD2Jm+YwOItbcCrUwpZgQ1VwWJCS4DeupCd6qXXf+Ykdji?=
- =?us-ascii?Q?BAJfrtVYouawehlbYs/a8c5loSRqOS+gav+lZiSoSwHgiY55F8OcGoVILEK1?=
- =?us-ascii?Q?1lYOtsJavPYrYKpzH0r8BFEjoYyElQbgtjGcoObjxLVZzsB7QHcNebAMiJ+G?=
- =?us-ascii?Q?2dqvs0TilUlDC0HY2IUIyATSBuSiSTvcO0OGkme6WHy0wtBD2i8vnIQZiF+g?=
- =?us-ascii?Q?oEC7O4nMvsAg8Ijf7/gOT2GTvbjsScXFy3HSqUSBx294sa2x226TCraNtwZM?=
- =?us-ascii?Q?vvkrA7jQ+khgLYECOPFxcYOJ4Cyos36J0LVXZVhn1wE24ARE8lexvjyYFLmf?=
- =?us-ascii?Q?X8OH0oqfnw6TTihQ6poOXAIPj0hjcOpgr9ZtvJ9epsnImLgUyloghrfCiX0p?=
- =?us-ascii?Q?n+KaI9vUiCcVwvzpVrVWNlI2QDuCU140C/1WkSZFQiEsMNJllqa5nhOlYSBj?=
- =?us-ascii?Q?aCfvfOhw3B2qx+o72K4yTroyViXAREO0M/BcGegh9qvF2ftf5wDSM/PejRnL?=
- =?us-ascii?Q?i3vc4ETEVB7usUCOmjqm4gpTTLqvzv9LWQZwP+oBJnHzLHAPcPauRVknL/4Z?=
- =?us-ascii?Q?k3fvRag3Al3n+qzUYxueRIF0Hre2DX2YGL7I7i1g1Rn/qAGqxivjQPjPPYcr?=
- =?us-ascii?Q?COczCrznUqgv6Ap4iWxikHrBnPeXCNoqR89EjFpYXJpuG1+3nWV34E2k+6EO?=
- =?us-ascii?Q?QmJwOrjazhVoNFjYzkhFqB0nIOr32wTw7r+EBP9efh7qU8F1PakE05VqdcTR?=
- =?us-ascii?Q?tu7nS+DhSEKTH86qNazhfC4RRi4CKlnIcqfHFQa4XHJpKGFbbqw/3H696TiD?=
- =?us-ascii?Q?zJk/ouVbMNLMQezMZDf7qKt9MpPoZQH455jshcLgiMOOOUS1AkWrrG2BLDHe?=
- =?us-ascii?Q?VX4YfKq5agSUmHjVZlg1TkQYSSfITqi7AM0smlh8EYocwfQYt89BpeMJSb+W?=
- =?us-ascii?Q?zOyRYRJ4HbRrQ1C6CyXZ5js9+OXRfjp/38fUTX2qE5HCTaDlMWC/8om5g5vC?=
- =?us-ascii?Q?tmNo10l3gnyHoIcUmVjcU6AWzC9YNaZpAILhjr5ivp6avV621SQRQF2nFsCu?=
- =?us-ascii?Q?L3cXGqcpx0Dox7r6SLLgUViqklyTFo2DG9/4fOjmLl1cIsYNxkNU+ahQ4shs?=
- =?us-ascii?Q?YZI5fpGb+UFEw+n8dS52ADtRhR+SlveMjmrwMH65zNtNq6e6j+poExIWOEfv?=
- =?us-ascii?Q?rJKk0DVf4fWox792S+QwteRj7hZA05poK1V7bHwfEhQj+OX/6hI3BSzYl9yb?=
- =?us-ascii?Q?FdeIZ5y/u3Q0WTMjOtUq4Cztwfhy?=
-X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 05:16:51.4287 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38644ec4-279c-4b83-ef9d-08dc68d4be65
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF0000468C.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6395
-Received-SPF: softfail client-ip=2a01:111:f403:200a::600;
- envelope-from=avihaih@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -157,53 +83,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When migrating a VFIO device that supports pre-copy, it is transitioned
-to STOP_COPY twice: once in vfio_vmstate_change() and second time in
-vfio_save_complete_precopy().
+Collin Walling <walling@linux.ibm.com> writes:
 
-The second transition is harmless, as it's a STOP_COPY->STOP_COPY no-op
-transition. However, with the newly added migration state change QAPI
-event, the STOP_COPY state change event is undesirably emitted twice.
+> Retain a list of deprecated features disjoint from any particular
+> CPU model. A query-cpu-model-expansion reply will now provide a list of
+> properties (i.e. features) that are flagged as deprecated. Example:
+>
+>     {
+>       "return": {
+>         "model": {
+>           "name": "z14.2-base",
+>           "deprecated-props": [
+>             "bpb",
+>             "csske"
+>           ],
+>           "props": {
+>             "pfmfi": false,
+>             "exrl": true,
+>             ...a lot more props...
+>             "skey": false,
+>             "vxpdeh2": false
+>           }
+>         }
+>       }
+>     }
+>
+> It is recommended that s390 guests operate with these features
+> explicitly disabled to ensure compatability with future hardware.
+>
+> Signed-off-by: Collin Walling <walling@linux.ibm.com>
 
-Prevent this by conditionally transitioning to STOP_COPY state in
-vfio_save_complete_precopy().
-
-Note that the STOP_COPY transition in vfio_save_complete_precopy() is
-essential for VFIO devices that don't support pre-copy, for migrating an
-already stopped guest and for snapshots.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
----
- hw/vfio/migration.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 6bbccf6545..30a2b2ea74 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -591,14 +591,17 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
- static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
-+    VFIOMigration *migration = vbasedev->migration;
-     ssize_t data_size;
-     int ret;
- 
-     /* We reach here with device state STOP or STOP_COPY only */
--    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
--                                   VFIO_DEVICE_STATE_STOP);
--    if (ret) {
--        return ret;
-+    if (migration->device_state == VFIO_DEVICE_STATE_STOP) {
-+        ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
-+                                       VFIO_DEVICE_STATE_STOP);
-+        if (ret) {
-+            return ret;
-+        }
-     }
- 
-     do {
--- 
-2.26.3
+QAPI schema
+Acked-by: Markus Armbruster <armbru@redhat.com>
 
 
