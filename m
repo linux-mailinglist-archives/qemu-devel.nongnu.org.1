@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06C48B75BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1775C8B75C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 14:30:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1mbA-0006FF-Tk; Tue, 30 Apr 2024 08:28:40 -0400
+	id 1s1mbE-0006G0-Hv; Tue, 30 Apr 2024 08:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mb9-0006Ey-4o
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:39 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbC-0006FW-G2
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:42 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mb6-0001m6-5h
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:37 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-5724e69780bso6122112a12.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1mbA-0001mI-Oa
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 08:28:42 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-56e1bbdb362so6035640a12.1
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 05:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714480113; x=1715084913; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714480119; x=1715084919; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vs8/EwahA8HMee2TONOEQYHYQ4HWUqmabB9riV3Xfko=;
- b=ER0SWZOCgMyMM158Ts1gcX7wbA0x8jiQY0TIbphtFX9y7LFDbCHX4PtmLsdpqtZKF4
- BQ3t5A2CWCqYbEIHm4wRBeV50qlzL5M4JyOW7CpuW8BcOKrUO3bS05y40vBKvX2WZSoT
- 8EL1II0m7LbrElb1gq5f8PaRxTnTTYzB1/G69+GBBUgYsqEA7EtXL8uH4VbV+kmZd7cs
- xOW7+3uUG86YwiljRJnEhPZZWrcguE7J1ahuUbDH9Z0LDIWNB3DltfDUgjUppgnm+pUP
- 1yGV9+5gfrBj4CGYA7i1SkxTjEtA21i/Ya6rUtZz5J4YwRy3DBpUZyxAjT71C8fvxntd
- 05vA==
+ bh=9yEYkKsw4zhtRR56kF5ijigZ4qIRFvAlOOJdkN8sEkM=;
+ b=FDsdpwYuc1ksLXcUu5WAgZxg8FYVYXgioenZoKRWSWvm+BXIdYUiUaxs1oIBFI6h3r
+ j6Xjzmn9z/nv5pn9m+p+IyhH8fjPSw8bEG1MtRfZQ7rIo1z40eWOQBrrojmeaUqkD3Wm
+ bKdHw/K+wGqfbtAxBNKgndYhfit8fHqWZSED7tNQ5SbwbJ856Os57BRySmD6jgrEUtOL
+ W4YkqZFz3pERrbJzl+yVcGqwIZ1mSJ+XCFZmMQlQHEEw7JQNaQqBVhDAx+s4dogpAn5a
+ i0YgYVs+8T8UXZ1gT86Uf3CUxel2QE//vmUZfCJIcqLpp3LyEvVhwydPoS9NLsfnJABk
+ miXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714480113; x=1715084913;
+ d=1e100.net; s=20230601; t=1714480119; x=1715084919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vs8/EwahA8HMee2TONOEQYHYQ4HWUqmabB9riV3Xfko=;
- b=If9il+aJ+52WYMdVmU/dQ685IXRtpuw8Gv4A7ltL5oPcr1BtzTHF3oQTDq1DFSC515
- mpd26X0/HNN2ItD3JdJSBlSWUujPUMB0mso4DxLe/TJSFhYZ6Xd2fzZhD4+WYZ52/dph
- eA01IAnkoyYmgqS+Ml+qIZ0uvagOJJ39t/b2Qf0Ty3uetKcxpycvfsjO/Wzhv5uj2tmv
- NpJR2PCK5KNgaoTOAvHb4Se0MwkSQA+ubIPG0c/HwPueSR47zN2ffr+iqr6ZG9VSUGsc
- crOFMJ1pd9CQ9Rb4rXFTyky+3fT6nuojc7zYflqXioyrRIGGgK1+iMQmN6YbfvFn2frG
- UXUA==
-X-Gm-Message-State: AOJu0Yye06MhZcN7DBVQ5S1R3nTtHzlgTXKtvSHdB7GeUXUcyIuBW2lZ
- fexbfYs72cmm0qTFc4ouu+bNwkm5IR1acy6dDz4S9lEi//tDM1RfNUp1X0CrgeTp8mJyby6WtJj
- 8
-X-Google-Smtp-Source: AGHT+IFsK2+13HtZRS6ctq+u+XyFgE0+bqmugd+oEdgd4bd3pgLryIzH9k72jTSxUOulsD9ArGWFWg==
-X-Received: by 2002:a05:6402:3496:b0:572:8aab:441c with SMTP id
- v22-20020a056402349600b005728aab441cmr2988718edc.26.1714480113524; 
- Tue, 30 Apr 2024 05:28:33 -0700 (PDT)
+ bh=9yEYkKsw4zhtRR56kF5ijigZ4qIRFvAlOOJdkN8sEkM=;
+ b=s8Szr1TFtQa49eQNyBzSqlQavLKW9nmu5JYWvB8qtcy5hwWJZxT2OmNXus1IFM438x
+ MeD0+FysmGNTmWeISHE4qwysL9VuBQ8CB63xQq0dC9OxkKXLbJkqW3FHZBvek1XhWJaQ
+ Yo4tw4CqXwDVHbcCxtfYGVwTVRdDvHMcvhIvLY59QWuMm/EX0r2+1n2e6FBj5x/opD08
+ pwqZ3CLjQ9lyCzY1HyGLRPfJucdS2qCMvzw3Eo96JKb9/IIemLjnLFiDZH1PSo0hBBiq
+ 8NDVdUpG0aZMLdacsJMkapq/Gm6FboKOoc769DS+PssSK6UQFIzQDkSw0G/JtIhDxw9J
+ 0YtA==
+X-Gm-Message-State: AOJu0YyHnKEJnEwfvHtSYNENlgJkUlsIzdHun9uZZtqt3RjonIBdBk7s
+ JvyPT6PGeoyRSY3U/nOL14zwDM+xnsBRd2YjNLXHeBgFaBVOq+jmhAbp2zNLXO4AW25dfbDQh8d
+ C
+X-Google-Smtp-Source: AGHT+IHP/Rk64KVTigc6owxsEUulEALFzfOTXFddiC/CUFPFAoZPSVIjg13/p0hLUBb3qz5Sj276fg==
+X-Received: by 2002:a17:906:2318:b0:a59:2e36:16ce with SMTP id
+ l24-20020a170906231800b00a592e3616cemr1330654eja.34.1714480119016; 
+ Tue, 30 Apr 2024 05:28:39 -0700 (PDT)
 Received: from m1x-phil.lan (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
  [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- c26-20020aa7c99a000000b00572405680e8sm5631919edt.21.2024.04.30.05.28.32
+ ku2-20020a170907788200b00a58c0c48756sm5674974ejc.32.2024.04.30.05.28.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 30 Apr 2024 05:28:33 -0700 (PDT)
+ Tue, 30 Apr 2024 05:28:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 04/13] accel/tcg: Move @plugin_state from CPUState to TCG
- AccelCPUState
-Date: Tue, 30 Apr 2024 14:27:58 +0200
-Message-ID: <20240430122808.72025-5-philmd@linaro.org>
+Subject: [PATCH v3 05/13] accel/tcg: Restrict cpu_loop_exit_requested() to TCG
+Date: Tue, 30 Apr 2024 14:27:59 +0200
+Message-ID: <20240430122808.72025-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240430122808.72025-1-philmd@linaro.org>
 References: <20240430122808.72025-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,147 +93,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@plugin_state is specific to TCG accelerator, move it to
-its AccelCPUState.
+Next commit will restrict IcountDecr to TCG, so the
+inlined cpu_loop_exit_requested(), which is specific
+to TCG, won't compile when TCG is disabled. Move it
+to the new "exec/cpu-loop.h" header.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240429213050.55177-5-philmd@linaro.org>
+Message-Id: <20240428221450.26460-12-philmd@linaro.org>
 ---
- accel/tcg/vcpu-state.h | 5 +++++
- include/hw/core/cpu.h  | 5 -----
- accel/tcg/plugin-gen.c | 4 +++-
- hw/core/cpu-common.c   | 3 ++-
- plugins/core.c         | 7 ++++---
- 5 files changed, 14 insertions(+), 10 deletions(-)
+ include/exec/cpu-loop.h       | 35 +++++++++++++++++++++++++++++++++++
+ include/exec/exec-all.h       | 17 -----------------
+ accel/tcg/cpu-exec.c          |  1 +
+ target/arm/tcg/helper-a64.c   |  1 +
+ target/s390x/tcg/mem_helper.c |  1 +
+ 5 files changed, 38 insertions(+), 17 deletions(-)
+ create mode 100644 include/exec/cpu-loop.h
 
-diff --git a/accel/tcg/vcpu-state.h b/accel/tcg/vcpu-state.h
-index e30368edae..35c2695a77 100644
---- a/accel/tcg/vcpu-state.h
-+++ b/accel/tcg/vcpu-state.h
-@@ -10,11 +10,16 @@
- 
- /**
-  * AccelCPUState: vCPU fields specific to TCG accelerator
-+ * @plugin_state: per-CPU plugin state
-  */
- struct AccelCPUState {
- #ifdef CONFIG_USER_ONLY
-     TaskState *ts;
- #endif /* !CONFIG_USER_ONLY */
+diff --git a/include/exec/cpu-loop.h b/include/exec/cpu-loop.h
+new file mode 100644
+index 0000000000..36ce4064fd
+--- /dev/null
++++ b/include/exec/cpu-loop.h
+@@ -0,0 +1,35 @@
++/*
++ *  Translation CPU loop (target agnostic)
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++#ifndef TRANSLATION_CPU_LOOP_H
++#define TRANSLATION_CPU_LOOP_H
 +
-+#ifdef CONFIG_PLUGIN
-+    CPUPluginState *plugin_state;
-+#endif /* CONFIG_PLUGIN */
- };
++#ifndef CONFIG_TCG
++#error Can only include this header with TCG
++#endif
++
++#include "qemu/atomic.h"
++#include "hw/core/cpu.h"
++
++/**
++ * cpu_loop_exit_requested:
++ * @cpu: The CPU state to be tested
++ *
++ * Indicate if somebody asked for a return of the CPU to the main loop
++ * (e.g., via cpu_exit() or cpu_interrupt()).
++ *
++ * This is helpful for architectures that support interruptible
++ * instructions. After writing back all state to registers/memory, this
++ * call can be used to check if it makes sense to return to the main loop
++ * or to continue executing the interruptible instruction.
++ */
++static inline bool cpu_loop_exit_requested(CPUState *cpu)
++{
++    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
++}
++
++#endif
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 2cd7b8f61b..544e35dd24 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -29,23 +29,6 @@
+ #include "exec/translation-block.h"
+ #include "qemu/clang-tsa.h"
  
- #ifdef CONFIG_USER_ONLY
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 571ef3e514..91e793e590 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -423,7 +423,6 @@ struct qemu_work_item;
-  * @kvm_fd: vCPU file descriptor for KVM.
-  * @work_mutex: Lock to prevent multiple access to @work_list.
-  * @work_list: List of pending asynchronous work.
-- * @plugin_state: per-CPU plugin state
-  * @ignore_memory_transaction_failures: Cached copy of the MachineState
-  *    flag of the same name: allows the board to suppress calling of the
-  *    CPU do_transaction_failed hook function.
-@@ -514,10 +513,6 @@ struct CPUState {
-     /* Use by accel-block: CPU is executing an ioctl() */
-     QemuLockCnt in_ioctl_lock;
- 
--#ifdef CONFIG_PLUGIN
--    CPUPluginState *plugin_state;
--#endif
+-/**
+- * cpu_loop_exit_requested:
+- * @cpu: The CPU state to be tested
+- *
+- * Indicate if somebody asked for a return of the CPU to the main loop
+- * (e.g., via cpu_exit() or cpu_interrupt()).
+- *
+- * This is helpful for architectures that support interruptible
+- * instructions. After writing back all state to registers/memory, this
+- * call can be used to check if it makes sense to return to the main loop
+- * or to continue executing the interruptible instruction.
+- */
+-static inline bool cpu_loop_exit_requested(CPUState *cpu)
+-{
+-    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
+-}
 -
-     /* TODO Move common fields from CPUArchState here. */
-     int cpu_index;
-     int cluster_index;
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index fd268c79b5..88d720d549 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -52,6 +52,7 @@
- #include "exec/plugin-gen.h"
- #include "exec/translator.h"
- #include "exec/helper-proto-common.h"
-+#include "accel/tcg/vcpu-state.h"
- 
- #define HELPER_H  "accel/tcg/plugin-helpers.h"
- #include "exec/helper-info.c.inc"
-@@ -872,7 +873,8 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
- {
-     bool ret = false;
- 
--    if (test_bit(QEMU_PLUGIN_EV_VCPU_TB_TRANS, cpu->plugin_state->event_mask)) {
-+    if (test_bit(QEMU_PLUGIN_EV_VCPU_TB_TRANS,
-+                 cpu->accel->plugin_state->event_mask)) {
-         struct qemu_plugin_tb *ptb = tcg_ctx->plugin_tb;
-         int i;
- 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index f2826d0409..ea342213d6 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -31,6 +31,7 @@
- #include "hw/qdev-properties.h"
- #include "trace.h"
- #ifdef CONFIG_PLUGIN
-+#include "accel/tcg/vcpu-state.h"
- #include "qemu/plugin.h"
- #endif
- 
-@@ -215,7 +216,7 @@ static void cpu_common_realizefn(DeviceState *dev, Error **errp)
-     /* Plugin initialization must wait until the cpu start executing code */
- #ifdef CONFIG_PLUGIN
-     if (tcg_enabled()) {
--        cpu->plugin_state = qemu_plugin_create_vcpu_state();
-+        cpu->accel->plugin_state = qemu_plugin_create_vcpu_state();
-         async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_NULL);
-     }
- #endif
-diff --git a/plugins/core.c b/plugins/core.c
-index a097d02788..722224e5d8 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -28,6 +28,7 @@
- #include "exec/tb-flush.h"
- #include "tcg/tcg.h"
- #include "tcg/tcg-op.h"
-+#include "accel/tcg/vcpu-state.h"
- #include "plugin.h"
- 
- struct qemu_plugin_cb {
-@@ -55,7 +56,7 @@ struct qemu_plugin_ctx *plugin_id_to_ctx_locked(qemu_plugin_id_t id)
- 
- static void plugin_cpu_update__async(CPUState *cpu, run_on_cpu_data data)
- {
--    bitmap_copy(cpu->plugin_state->event_mask,
-+    bitmap_copy(cpu->accel->plugin_state->event_mask,
-                 &data.host_ulong, QEMU_PLUGIN_EV_MAX);
-     tcg_flush_jmp_cache(cpu);
- }
-@@ -396,7 +397,7 @@ qemu_plugin_vcpu_syscall(CPUState *cpu, int64_t num, uint64_t a1, uint64_t a2,
-     struct qemu_plugin_cb *cb, *next;
-     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_SYSCALL;
- 
--    if (!test_bit(ev, cpu->plugin_state->event_mask)) {
-+    if (!test_bit(ev, cpu->accel->plugin_state->event_mask)) {
-         return;
-     }
- 
-@@ -418,7 +419,7 @@ void qemu_plugin_vcpu_syscall_ret(CPUState *cpu, int64_t num, int64_t ret)
-     struct qemu_plugin_cb *cb, *next;
-     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_SYSCALL_RET;
- 
--    if (!test_bit(ev, cpu->plugin_state->event_mask)) {
-+    if (!test_bit(ev, cpu->accel->plugin_state->event_mask)) {
-         return;
-     }
- 
+ #if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
+ /* cputlb.c */
+ /**
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 9af66bc191..eedba056ba 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -32,6 +32,7 @@
+ #include "qemu/main-loop.h"
+ #include "sysemu/cpus.h"
+ #include "exec/cpu-all.h"
++#include "exec/cpu-loop.h"
+ #include "sysemu/cpu-timers.h"
+ #include "exec/replay-core.h"
+ #include "sysemu/tcg.h"
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 0ea8668ab4..b294f6bfd0 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -29,6 +29,7 @@
+ #include "internals.h"
+ #include "qemu/crc32c.h"
+ #include "exec/exec-all.h"
++#include "exec/cpu-loop.h"
+ #include "exec/cpu_ldst.h"
+ #include "qemu/int128.h"
+ #include "qemu/atomic128.h"
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 6a308c5553..8435825fa5 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -26,6 +26,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/exec-all.h"
+ #include "exec/page-protection.h"
++#include "exec/cpu-loop.h"
+ #include "exec/cpu_ldst.h"
+ #include "hw/core/tcg-cpu-ops.h"
+ #include "qemu/int128.h"
 -- 
 2.41.0
 
