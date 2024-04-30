@@ -2,93 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5200A8B6781
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 03:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B74D8B679C
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 03:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1cOz-0005M7-My; Mon, 29 Apr 2024 21:35:25 -0400
+	id 1s1cXs-0007Vt-8m; Mon, 29 Apr 2024 21:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1s1cOv-0005Li-Sr
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:35:21 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
- id 1s1cOt-0002ZA-TU
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:35:21 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2e01d666c88so21639891fa.2
- for <qemu-devel@nongnu.org>; Mon, 29 Apr 2024 18:35:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1714440917; x=1715045717; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JK6AfpJ2aW8PjDzkKlJGD7mCKDCqNFkZFV/kQYcm4yw=;
- b=dUzTNXWe5/uL/dTO0Q9vAa7RT7NlG/JkHun6gyM5FosF4xWvaEMGNYjuHTRVhitFed
- sVyBgoXaxZZ78Nvn8xvr2dL+m3Xj/mab+nwCSKkyetlZoo+ULAS5NjkhP9u0CbBEecWT
- gcvULIRFdh3cm1S16jRrwFQ/onPcfcoGNbU3prqzZzqFTi8ZuyATjdjJSK9kleLQxkao
- caSRr2t3t+wP7szDmmR5IQ4jIOm7Ul/Ut+Mxz9Uzc/TNM+chBJPZP5nbUFRgToHDyFJD
- nDRqKCYni+HcgxXtzV0e1Vrcu7N2CIw92PRNxyoGrjmxhUS+iX7AKRgN6cSTz49vXcPS
- 3ccw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714440917; x=1715045717;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JK6AfpJ2aW8PjDzkKlJGD7mCKDCqNFkZFV/kQYcm4yw=;
- b=uFrDDnWN+Psen94bNU6zImT+9yTodz0wu/+9BWLML/XIhHJXXM4anffYTS/zOOQJZA
- mT/SCPLilJ8L4eDonbHGUxeLhoyae8xMv0W9WEIAHSuHTnrBVUhbJNgwEjwkiLuYqinH
- l6DeR/BDZJQQ2nTNUGFC86u4so7KCHeJX/sUdnCvSgTz7JJC1HgAlRVvI12LR9SWx7KO
- NN7CgNsHRBBYMytRgoAOW5roaPQ6wM5hYiD9LhW0OGG7WA8gDdh5+hYueFKa52u7X00d
- CFtxAGhhDMl8qe/buxoYHYZDT8siTGdpfzTOhCkIdqJHiKzioFpClv5AsQDNn6JuYmSs
- ypZg==
-X-Gm-Message-State: AOJu0Yyv4vgpT2cCoPd8eoBIUwFSpGC8QnlyrUkcvcUulswelulyxWnn
- 3/kTJzJWxBIaWOnQ57kb8Ze6ZDPptx3QwAp/qmh/70SL0Sv8ntPmq+xS5d8awVEfU4l/hURtnBf
- 0YH0LIsVwY2h64MBo066pBLwbMSxLAcFXKcAKeVRR9wVgpS4aLnLYBIBv6Fjeap5DIiCwUhqMTF
- hRHPa7tVyl6RuN6BWcY7nWDBcRaSlj6xhhX1weoqdNXQ==
-X-Google-Smtp-Source: AGHT+IGK0gaKdi5G8gLJqXIoyFev/24M/5mj93qW/ejsy78UHLv8g21Upb2imX+BXZXe1h6mgadvSg==
-X-Received: by 2002:a2e:a0c9:0:b0:2dd:ceb9:8ef5 with SMTP id
- f9-20020a2ea0c9000000b002ddceb98ef5mr836283ljm.12.1714440916020; 
- Mon, 29 Apr 2024 18:35:16 -0700 (PDT)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com.
- [209.85.208.182]) by smtp.gmail.com with ESMTPSA id
- z21-20020a2e8415000000b002db98d0f2c8sm3683228ljg.85.2024.04.29.18.35.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Apr 2024 18:35:15 -0700 (PDT)
-Received: by mail-lj1-f182.google.com with SMTP id
- 38308e7fff4ca-2d858501412so65973831fa.0; 
- Mon, 29 Apr 2024 18:35:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCWRdpKZ/1dv2FJktRgNHCMcSYq65YSwLduVVNhPAKJF63uDiarI8NAuaFUQ3yw9+ngRkCJCVBT/75pN56+FCN6MhsvDNc8=
-X-Received: by 2002:a2e:a363:0:b0:2e0:c6ec:bcf8 with SMTP id
- i3-20020a2ea363000000b002e0c6ecbcf8mr775279ljn.41.1714440915302; Mon, 29 Apr
- 2024 18:35:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1s1cXp-0007Vj-TU
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:44:33 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1s1cXn-0004KD-CD
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:44:33 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxN+n7TDBmqjoFAA--.5165S3;
+ Tue, 30 Apr 2024 09:44:28 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Axjlf4TDBmYbwKAA--.20852S3; 
+ Tue, 30 Apr 2024 09:44:26 +0800 (CST)
+Subject: Re: [PATCH] target/loongarch: Put cpucfg operation before CSR register
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20240428031651.1354587-1-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <7a2553ca-8283-63f0-427b-8dfe12d3c96b@loongson.cn>
+Date: Tue, 30 Apr 2024 09:44:24 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20240307160319.675044-1-dbarboza@ventanamicro.com>
- <20240307160319.675044-6-dbarboza@ventanamicro.com>
-In-Reply-To: <20240307160319.675044-6-dbarboza@ventanamicro.com>
-From: Frank Chang <frank.chang@sifive.com>
-Date: Tue, 30 Apr 2024 09:35:03 +0800
-X-Gmail-Original-Message-ID: <CANzO1D1-JgOR-A7+TWAFcU5xMn3Lw8jiMtEriS65ziVnk8ni=Q@mail.gmail.com>
-Message-ID: <CANzO1D1-JgOR-A7+TWAFcU5xMn3Lw8jiMtEriS65ziVnk8ni=Q@mail.gmail.com>
-Subject: Re: [PATCH v2 05/15] hw/riscv: add riscv-iommu-sys platform device
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com, tjeznach@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=frank.chang@sifive.com; helo=mail-lj1-x233.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+In-Reply-To: <20240428031651.1354587-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Axjlf4TDBmYbwKAA--.20852S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cw48ury5CryUZrWxGry8Zwc_yoW8Cw1Upr
+ 9xCan0gr15tryvkw4UZa9xXr98Wr4Sgw47WFy7t3s3Cr45Wr1kXr4rKrZFvF15J3yFgFyj
+ qF43JFs093WUXagCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+ Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+ 8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AK
+ xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+ AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+ 14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF1lIx
+ kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+ wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+ 4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1CPfJUU
+ UUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.127, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,157 +80,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-
-Daniel Henrique Barboza <dbarboza@ventanamicro.com> =E6=96=BC 2024=E5=B9=B4=
-3=E6=9C=888=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=8812:05=E5=AF=AB=E9=
-=81=93=EF=BC=9A
+ÔÚ 2024/4/28 ÉÏÎç11:16, Bibo Mao Ð´µÀ:
+> On Loongarch, cpucfg is register for cpu feature, some other registers
+> depend on cpucfg feature such as perf CSR registers. Here put cpucfg
+> read/write operations before CSR register, so that KVM knows how many
+> perf CSR registers are valid from pre-set cpucfg feature information.
 >
-> From: Tomasz Jeznach <tjeznach@rivosinc.com>
->
-> This device models the RISC-V IOMMU as a sysbus device.
->
-> Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 > ---
->  hw/riscv/meson.build       |  2 +-
->  hw/riscv/riscv-iommu-sys.c | 93 ++++++++++++++++++++++++++++++++++++++
->  include/hw/riscv/iommu.h   |  4 ++
->  3 files changed, 98 insertions(+), 1 deletion(-)
->  create mode 100644 hw/riscv/riscv-iommu-sys.c
+>   target/loongarch/kvm/kvm.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+
+Thanks.
+Song Gao
+> diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+> index 8224d94333..bc75552d0f 100644
+> --- a/target/loongarch/kvm/kvm.c
+> +++ b/target/loongarch/kvm/kvm.c
+> @@ -587,22 +587,22 @@ int kvm_arch_get_registers(CPUState *cs)
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_get_csr(cs);
+> +    ret = kvm_loongarch_get_cpucfg(cs);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_get_regs_fp(cs);
+> +    ret = kvm_loongarch_get_csr(cs);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_get_mpstate(cs);
+> +    ret = kvm_loongarch_get_regs_fp(cs);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_get_cpucfg(cs);
+> +    ret = kvm_loongarch_get_mpstate(cs);
+>       return ret;
+>   }
+>   
+> @@ -615,22 +615,22 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_put_csr(cs, level);
+> +    ret = kvm_loongarch_put_cpucfg(cs);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_put_regs_fp(cs);
+> +    ret = kvm_loongarch_put_csr(cs, level);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_put_mpstate(cs);
+> +    ret = kvm_loongarch_put_regs_fp(cs);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    ret = kvm_loongarch_put_cpucfg(cs);
+> +    ret = kvm_loongarch_put_mpstate(cs);
+>       return ret;
+>   }
+>   
 >
-> diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
-> index 4674cec6c4..e37c5d78e2 100644
-> --- a/hw/riscv/meson.build
-> +++ b/hw/riscv/meson.build
-> @@ -10,6 +10,6 @@ riscv_ss.add(when: 'CONFIG_SIFIVE_U', if_true: files('s=
-ifive_u.c'))
->  riscv_ss.add(when: 'CONFIG_SPIKE', if_true: files('spike.c'))
->  riscv_ss.add(when: 'CONFIG_MICROCHIP_PFSOC', if_true: files('microchip_p=
-fsoc.c'))
->  riscv_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
-> -riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu.c',=
- 'riscv-iommu-pci.c'))
-> +riscv_ss.add(when: 'CONFIG_RISCV_IOMMU', if_true: files('riscv-iommu.c',=
- 'riscv-iommu-pci.c', 'riscv-iommu-sys.c'))
->
->  hw_arch +=3D {'riscv': riscv_ss}
-> diff --git a/hw/riscv/riscv-iommu-sys.c b/hw/riscv/riscv-iommu-sys.c
-> new file mode 100644
-> index 0000000000..4305cf8d79
-> --- /dev/null
-> +++ b/hw/riscv/riscv-iommu-sys.c
-> @@ -0,0 +1,93 @@
-> +/*
-> + * QEMU emulation of an RISC-V IOMMU (Ziommu) - Platform Device
-> + *
-> + * Copyright (C) 2022-2023 Rivos Inc.
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License alo=
-ng
-> + * with this program; if not, see <http://www.gnu.org/licenses/>.
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +#include "hw/pci/pci_bus.h"
-> +#include "hw/qdev-properties.h"
-> +#include "hw/sysbus.h"
-> +#include "qapi/error.h"
-> +#include "qapi/error.h"
-> +#include "qemu/error-report.h"
-> +#include "qemu/host-utils.h"
-> +#include "qemu/module.h"
-> +#include "qemu/osdep.h"
-> +#include "qom/object.h"
-> +
-> +#include "riscv-iommu.h"
-> +
-> +/* RISC-V IOMMU System Platform Device Emulation */
-> +
-> +struct RISCVIOMMUStateSys {
-> +    SysBusDevice     parent;
-> +    uint64_t         addr;
-> +    RISCVIOMMUState  iommu;
-> +};
-> +
-> +static void riscv_iommu_sys_realize(DeviceState *dev, Error **errp)
-> +{
-> +    RISCVIOMMUStateSys *s =3D RISCV_IOMMU_SYS(dev);
-> +    PCIBus *pci_bus;
-> +
-> +    qdev_realize(DEVICE(&s->iommu), NULL, errp);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iommu.regs_mr);
-> +    if (s->addr) {
-> +        sysbus_mmio_map(SYS_BUS_DEVICE(s), 0, s->addr);
-> +    }
-> +
-> +    pci_bus =3D (PCIBus *) object_resolve_path_type("", TYPE_PCI_BUS, NU=
-LL);
-> +    if (pci_bus) {
-> +        riscv_iommu_pci_setup_iommu(&s->iommu, pci_bus, errp);
-> +    }
-> +}
-> +
-> +static void riscv_iommu_sys_init(Object *obj)
-> +{
-> +    RISCVIOMMUStateSys *s =3D RISCV_IOMMU_SYS(obj);
-> +    RISCVIOMMUState *iommu =3D &s->iommu;
-> +
-> +    object_initialize_child(obj, "iommu", iommu, TYPE_RISCV_IOMMU);
-> +    qdev_alias_all_properties(DEVICE(iommu), obj);
-> +}
-> +
-> +static Property riscv_iommu_sys_properties[] =3D {
-> +    DEFINE_PROP_UINT64("addr", RISCVIOMMUStateSys, addr, 0),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static void riscv_iommu_sys_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc =3D DEVICE_CLASS(klass);
-> +    dc->realize =3D riscv_iommu_sys_realize;
-> +    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-> +    device_class_set_props(dc, riscv_iommu_sys_properties);
-> +}
-> +
-> +static const TypeInfo riscv_iommu_sys =3D {
-> +    .name          =3D TYPE_RISCV_IOMMU_SYS,
-> +    .parent        =3D TYPE_SYS_BUS_DEVICE,
-> +    .class_init    =3D riscv_iommu_sys_class_init,
-> +    .instance_init =3D riscv_iommu_sys_init,
-> +    .instance_size =3D sizeof(RISCVIOMMUStateSys),
-> +};
-> +
-> +static void riscv_iommu_register_sys(void)
-> +{
-> +    type_register_static(&riscv_iommu_sys);
-> +}
-> +
-> +type_init(riscv_iommu_register_sys)
-> diff --git a/include/hw/riscv/iommu.h b/include/hw/riscv/iommu.h
-> index 403b365893..c8d28a79a1 100644
-> --- a/include/hw/riscv/iommu.h
-> +++ b/include/hw/riscv/iommu.h
-> @@ -33,4 +33,8 @@ typedef struct RISCVIOMMUSpace RISCVIOMMUSpace;
->  OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStatePci, RISCV_IOMMU_PCI)
->  typedef struct RISCVIOMMUStatePci RISCVIOMMUStatePci;
->
-> +#define TYPE_RISCV_IOMMU_SYS "riscv-iommu-device"
-> +OBJECT_DECLARE_SIMPLE_TYPE(RISCVIOMMUStateSys, RISCV_IOMMU_SYS)
-> +typedef struct RISCVIOMMUStateSys RISCVIOMMUStateSys;
-> +
->  #endif
-> --
-> 2.43.2
->
->
+> base-commit: a118c4aff4087eafb68f7132b233ad548cf16376
+
 
