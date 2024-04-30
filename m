@@ -2,76 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C6C8B6DF4
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA9A8B6DF7
 	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 11:14:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1jYJ-000241-Ly; Tue, 30 Apr 2024 05:13:31 -0400
+	id 1s1jYi-0002BB-1Q; Tue, 30 Apr 2024 05:13:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1jYD-000237-Ip
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:13:25 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s1jYB-0007lT-Rr
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 05:13:25 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a58989cd1f8so695281466b.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 02:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714468401; x=1715073201; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4b7s5t82Qtk2HNVX1E2RkYSvx7ZAGcIt/bW0ToHMJiw=;
- b=ZfOpYOL5ab/+577oTIZ8Rh0enYBkO0xc1uCdSmsy3G4gxopkxoGhfBIF1bnR7kwp3z
- WUptZDSzQORJDW//VwVcXYmh7kSd/AUrdngQOR7t1svj08FEmKyiczxRLC0Gddw9Ivj6
- gMgQkmoNc5XfA1LWo8i9N0QSO2ZpotGWVXP89D0dS5N0RrJlP/SoAaO8yiBdeMen+wZm
- NNkc/RSoZa8UTNckYJFz2w60XwvjfhO7oxGGL/W3oLe24Z9r8o2YC6ceWyKS6sPuqDhQ
- Td3Bnqw1/uuOIzDo7rHL8CSg3OovzRNWT6ORp3onj4sn+W9yZrRLYkWDNl1X4fg1/IZL
- IfAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714468401; x=1715073201;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4b7s5t82Qtk2HNVX1E2RkYSvx7ZAGcIt/bW0ToHMJiw=;
- b=LHQw6D8RHKZsHaW0BcFlm4QGHU8A6FKUy5DDfFshaO6VLneIIo5p+EvjujztzBJNLm
- uBLGnhLJIQvjS6qDBLdhYqgOMVg6dSN6atLXLwBHXZ0Z/edg5RWo4RojhpIKQeAQSMlW
- /A1A9KAXDS5QUR95jd0LPiZAZMZRakmbSyJxDeJTWmTPAMdQ21/I5IDhwpsOwd9KPL71
- yvheKe65ROsIvbrWp71Ml4YdXp/QEXR4197vyFw9gQkfDHcScoCyUAfgDljvzk9AoC1a
- KQWrPgsWwB1kdn3fXbRSxkR5XIElXzxOr1vmnb0jeBpexd3YN8uiBAUKHaCoelu56aag
- dI5Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsAGfzAmjMU6EBSbU+7GppR94bsDshWkvu4sOz2OQqmdzebhammzAXSpCf6S//C5dLWldBbV8QP2vblrRwyXV5nBQsmU4=
-X-Gm-Message-State: AOJu0Yziy2BQrXc5M0QIlSU6UrnOeCH/P1TFY07dvbskdVyYdCImMDGz
- TC+zFWKmIfdv3PFOq29lwTCIGtliHC66rxLBGf00OXDX0bpd+Z3b96UzsMu+G8c=
-X-Google-Smtp-Source: AGHT+IHS7aoE0F6fh7sc5GkzKXvZcFQm8yLKouOCvEqctQaFEZNECT1tOpHih/aH1Yai1094DzGY6Q==
-X-Received: by 2002:a17:906:d8d4:b0:a58:deb8:8b2b with SMTP id
- re20-20020a170906d8d400b00a58deb88b2bmr6072757ejb.56.1714468401358; 
- Tue, 30 Apr 2024 02:13:21 -0700 (PDT)
-Received: from [192.168.69.100] (mab78-h01-176-184-55-179.dsl.sta.abo.bbox.fr.
- [176.184.55.179]) by smtp.gmail.com with ESMTPSA id
- hx11-20020a170906846b00b00a46d2e9fd73sm14918238ejc.222.2024.04.30.02.13.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 02:13:20 -0700 (PDT)
-Message-ID: <e7751fd0-2bf5-439a-8c11-83cd660ef670@linaro.org>
-Date: Tue, 30 Apr 2024 11:13:19 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1s1jYc-00027o-Fw; Tue, 30 Apr 2024 05:13:50 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1s1jYY-0007r3-B9; Tue, 30 Apr 2024 05:13:50 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:2a2a:0:640:d546:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id D838860C8A;
+ Tue, 30 Apr 2024 12:13:38 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8829::1:3c])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id UDNYMV11IqM0-a7wRbi3z; Tue, 30 Apr 2024 12:13:38 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1714468418;
+ bh=pOIEHltlGMdkFjSPIDqctLRSpihrM8IdbznrAsXlSns=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=aVMp+AT5E+zN3QKAek2D5iUdKxde7O2i05fRG9bs6SFjj5TAnXxOos8SrNH1s/YIu
+ RvBct8tihz6nmF+h80zxHpe3eC7Hz7HmQSvCgri40q0se05cddZvNB2d1+BP/DRHl/
+ t6BWS1yBF1jLldY7D5X/7LWG494eULGQROLoCHbc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ jsnow@redhat.com, f.ebner@proxmox.com,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH] iotests/pylintrc: allow up to 10 similar lines
+Date: Tue, 30 Apr 2024 12:13:29 +0300
+Message-Id: <20240430091329.2365053-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Update my email address
-To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>, Paul Durrant <paul@xen.org>, 
- Anthony PERARD <anthony@xenproject.org>
-References: <20240429154938.19340-1-anthony.perard@citrix.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240429154938.19340-1-anthony.perard@citrix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,14 +69,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/4/24 17:49, Anthony PERARD wrote:
-> From: Anthony PERARD <anthony.perard@citrix.com>
-> 
-> Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-> ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+We want to have similar QMP objects in different tests. Reworking these
+objects to make common parts by calling some helper functions doesn't
+seem good. It's a lot more comfortable to see the whole QAPI request in
+one place.
 
-Thanks, patch queued.
+So, let's increase the limit, to unblock further commit
+"iotests: add backup-discard-source"
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+
+Hi all! That's a patch to unblock my PR
+"[PULL 0/6] Block jobs patches for 2024-04-29"
+  <20240429115157.2260885-1-vsementsov@yandex-team.ru>
+  https://patchew.org/QEMU/20240429115157.2260885-1-vsementsov@yandex-team.ru/
+
+
+ tests/qemu-iotests/pylintrc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/qemu-iotests/pylintrc b/tests/qemu-iotests/pylintrc
+index de2e0c2781..05b75ee59b 100644
+--- a/tests/qemu-iotests/pylintrc
++++ b/tests/qemu-iotests/pylintrc
+@@ -55,4 +55,4 @@ max-line-length=79
+ 
+ [SIMILARITIES]
+ 
+-min-similarity-lines=6
++min-similarity-lines=10
+-- 
+2.34.1
 
 
