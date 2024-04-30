@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1EC8B7D7D
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6768B7D80
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 18:50:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1qf3-0002OA-28; Tue, 30 Apr 2024 12:48:57 -0400
+	id 1s1qfO-0002Y4-Uc; Tue, 30 Apr 2024 12:49:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1qf0-0002Hg-Kb
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:54 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1s1qf4-0002Ot-La
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:58 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s1qev-0005cD-J0
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:54 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41b79451145so35703845e9.3
+ id 1s1qew-0005cL-95
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 12:48:58 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-41b7a26326eso35504325e9.3
  for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 09:48:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1714495727; x=1715100527; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=c6JJbqohxseNO79U2Bdi9j1VL8AGsp3zzZqnjvDFGr0=;
- b=y84HdGzKyGNZRSWKWnLtnPb93jMCwT2hKVw3V+ccIOum83flams7aqpk1NbyCZHPci
- l1FggY1Yiik59+pfnoeX4Mg/CqZOivAx7Qz9rJoC5ukPqK4EV39Us+Wi47863HoSKFrg
- 10scOZXPDvCPyU8yMyuApQJMINGfKoYdRwgSZWpjmLk35xD7xBkYM9zL70AYySpfrVou
- GLZrDkFHMGhQ7E3e1r4ux9xgWySkAMTtP4e19sdjzS6qUmOJ7VVR46jSubp7gb0nsFRj
- zKg5XOifR3d5xhBq/nU2Zy/36oyoS3ndYfKRxqzs465sSUiRtvt9GBOLT2oHXpahGyXh
- 4wgg==
+ :reply-to; bh=EicQ/uN3TXAQIq8jK5susffL3tHL9yIq4ZmNUswR4uA=;
+ b=PxeEydKljkJzLRygze4nOmshAvz/DjOL0jDWYZmwMJjdlNYWY2YkEa87AnPHh+wOPy
+ e9wHE+d2vEDgNFqRPIqVd8kOI0YTcyYXI1Z0XurYUhQ1Pg7OEHlDxulrdUrhuNB7zqA1
+ uWS/p8g5xKwjRo2ZxxbkRXcNWm3hmdu+2T864Y4aTflf1Gbd95nIduFOFv20EWNB1L1+
+ ++twQp/QtEAtPQfnkURB5eh2sm6/LHXIBRUr+u9FY2D2FvF4/KgTyVQ/Q9VQY4YVW8FW
+ SI3B8oqRJMCVTrNcjzWa3kseyYk/fxFKo9aD5YfRzy6WYyT/mFDeRYir2rEUmjMx01u8
+ bh9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1714495727; x=1715100527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=c6JJbqohxseNO79U2Bdi9j1VL8AGsp3zzZqnjvDFGr0=;
- b=lN/WrplsIELTy2QGs3pHsLim9GGNwtxVMYU6oAemD46etO07LYw8pHi1m0CT3zMBo9
- uau1o44mJRBntijClnCXCOqspmt5h7nJ6S/8f9uqjXZqJ+9/551ytk8ppPY8RZNr8oH/
- VGIW4C7F3AxsdN+0Sg/R0SmH7DcRyQT6v+ZA6GLknExkv3hs/vChO56JlP9ndiLgG68l
- xK1D/F8b3GvmJhovychodxI/wraZtgtgtXkd5lza/lW5/tYuvk9OjeW6hZ8IsapeagHQ
- k0panXI8PVBule/g+3vLLyjH859Finpg9C1AT/LKN0vB8jWCpAXZqxkciYCtUFJBoFJF
- gvzw==
-X-Gm-Message-State: AOJu0Yz08EEIbfNlVwkF2NdEr3t430Bd65YroBv8yUJBS1M5M4qmyDZo
- /8ST1WOtnQZy+i6ZRad8pf9K7aUs9YPUqRgq6JbxUi1wF7GrVsftE+zF0KmhGYd9pG+EcuokHza
- X
-X-Google-Smtp-Source: AGHT+IF6j+bL1mzBkMypGlpNub//3eQy/hVfHnbfJ911ZKR+ZVmNF+DoJZVqRnOQcvrwnABjHFBzsQ==
-X-Received: by 2002:a05:600c:3b02:b0:418:f991:8ad4 with SMTP id
- m2-20020a05600c3b0200b00418f9918ad4mr79671wms.6.1714495727034; 
+ bh=EicQ/uN3TXAQIq8jK5susffL3tHL9yIq4ZmNUswR4uA=;
+ b=JhM1lk8xlLLY2Xngle5f982gU/lgYfLh+oCo0fcLeauGgEW6DmLVp0DYMWv8tL6+bV
+ XDycY8lupjBmPE2rkLgyPOt5/i7jV9AYC21S6CgvjnVHcZYUfrCp+ReXWSMRGngb/ZoM
+ iv/jsqDNyONfNh88ClqYH7ZtlCMUOAVy06xXtQ9f9Tz97StJDmGk/9/FHlJOvpPncTKn
+ KGaHy5Ex0x6K6ia1uPlrb4YFFHYVzsQPTa3lWm7dHhU7Qbn7ML8OI/jPnEWE+2zD3oir
+ 8P/VSO1TAJ24xBmkGkckUYygyJQzzQExryFREn9ONO+lFLZ2VmPhEfrEaGrA0YE+S0AI
+ w2jg==
+X-Gm-Message-State: AOJu0Yxe5vR+FY0azNZ+wvcyqQGdapwfAznnmSEVrB5xlJnYJ5tQ8tNX
+ oirzBkZtd7MroMV8bFBxo36vG70fALRS1zngs1gqgLy4f1nHAHo5l9Ml933q2gvvQfFfTx0SAyL
+ D
+X-Google-Smtp-Source: AGHT+IEF3JhZHczV1AksrXYBkLpCJx7HX7k3HhCEkSC14TvIyptVfeONEpfvYj/Y/3w/cx0V5Z00iA==
+X-Received: by 2002:a05:600c:4f4b:b0:41a:f936:5326 with SMTP id
+ m11-20020a05600c4f4b00b0041af9365326mr80447wmq.15.1714495727599; 
  Tue, 30 Apr 2024 09:48:47 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- b6-20020a05600c4e0600b0041be3383a2fsm12920384wmq.19.2024.04.30.09.48.46
+ b6-20020a05600c4e0600b0041be3383a2fsm12920384wmq.19.2024.04.30.09.48.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 09:48:46 -0700 (PDT)
+ Tue, 30 Apr 2024 09:48:47 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/21] target/arm: Enable FEAT_ETS2 for -cpu max
-Date: Tue, 30 Apr 2024 17:48:27 +0100
-Message-Id: <20240430164842.4074734-7-peter.maydell@linaro.org>
+Subject: [PULL 07/21] target/arm: Implement ID_AA64MMFR3_EL1
+Date: Tue, 30 Apr 2024 17:48:28 +0100
+Message-Id: <20240430164842.4074734-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240430164842.4074734-1-peter.maydell@linaro.org>
 References: <20240430164842.4074734-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,80 +92,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_ETS2 is a tighter set of guarantees about memory ordering
-involving translation table walks than the old FEAT_ETS; FEAT_ETS has
-been retired from the Arm ARM and the old ID_AA64MMFR1.ETS == 1
-now gives no greater guarantees than ETS == 0.
-
-FEAT_ETS2 requires:
- * the virtual address of a load or store that appears in program
-   order after a DSB cannot be translated until after the DSB
-   completes (section B2.10.9)
- * TLB maintenance operations that only affect translations without
-   execute permission are guaranteed complete after a DSB
-   (R_BLDZX)
- * if a memory access RW2 is ordered-before memory access RW2,
-   then RW1 is also ordered-before any translation table walk
-   generated by RW2 that generates a Translation, Address size
-   or Access flag fault (R_NNFPF, I_CLGHP)
-
-As with FEAT_ETS, QEMU is already compliant, because we do not
-reorder translation table walk memory accesses relative to other
-memory accesses, and we always guarantee to have finished TLB
-maintenance as soon as the TLB op is done.
-
-Update the documentation to list FEAT_ETS2 instead of the
-no-longer-existent FEAT_ETS, and update the 'max' CPU ID registers.
+Newer versions of the Arm ARM (e.g.  rev K.a) now define fields for
+ID_AA64MMFR3_EL1.  Implement this register, so that we can set the
+fields if we need to.  There's no behaviour change here since we
+don't currently set the register value to non-zero.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240418152004.2106516-4-peter.maydell@linaro.org
+Message-id: 20240418152004.2106516-5-peter.maydell@linaro.org
 ---
- docs/system/arm/emulation.rst | 2 +-
- target/arm/tcg/cpu32.c        | 2 +-
- target/arm/tcg/cpu64.c        | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ target/arm/cpu.h     | 17 +++++++++++++++++
+ target/arm/helper.c  |  6 ++++--
+ target/arm/hvf/hvf.c |  2 ++
+ target/arm/kvm.c     |  2 ++
+ 4 files changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index d70b66f7530..307539cff91 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -50,7 +50,7 @@ the following architecture extensions:
- - FEAT_EL2 (Support for execution at EL2)
- - FEAT_EL3 (Support for execution at EL3)
- - FEAT_EPAC (Enhanced pointer authentication)
--- FEAT_ETS (Enhanced Translation Synchronization)
-+- FEAT_ETS2 (Enhanced Translation Synchronization)
- - FEAT_EVT (Enhanced Virtualization Traps)
- - FEAT_F32MM (Single-precision Matrix Multiplication)
- - FEAT_F64MM (Double-precision Matrix Multiplication)
-diff --git a/target/arm/tcg/cpu32.c b/target/arm/tcg/cpu32.c
-index de8f2be9416..b5a60682fa6 100644
---- a/target/arm/tcg/cpu32.c
-+++ b/target/arm/tcg/cpu32.c
-@@ -67,7 +67,7 @@ void aa32_max_features(ARMCPU *cpu)
-     cpu->isar.id_mmfr4 = t;
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 17efc5d565a..1f90590f937 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1011,6 +1011,7 @@ struct ArchCPU {
+         uint64_t id_aa64mmfr0;
+         uint64_t id_aa64mmfr1;
+         uint64_t id_aa64mmfr2;
++        uint64_t id_aa64mmfr3;
+         uint64_t id_aa64dfr0;
+         uint64_t id_aa64dfr1;
+         uint64_t id_aa64zfr0;
+@@ -2206,6 +2207,22 @@ FIELD(ID_AA64MMFR2, BBM, 52, 4)
+ FIELD(ID_AA64MMFR2, EVT, 56, 4)
+ FIELD(ID_AA64MMFR2, E0PD, 60, 4)
  
-     t = cpu->isar.id_mmfr5;
--    t = FIELD_DP32(t, ID_MMFR5, ETS, 1);          /* FEAT_ETS */
-+    t = FIELD_DP32(t, ID_MMFR5, ETS, 2);          /* FEAT_ETS2 */
-     cpu->isar.id_mmfr5 = t;
++FIELD(ID_AA64MMFR3, TCRX, 0, 4)
++FIELD(ID_AA64MMFR3, SCTLRX, 4, 4)
++FIELD(ID_AA64MMFR3, S1PIE, 8, 4)
++FIELD(ID_AA64MMFR3, S2PIE, 12, 4)
++FIELD(ID_AA64MMFR3, S1POE, 16, 4)
++FIELD(ID_AA64MMFR3, S2POE, 20, 4)
++FIELD(ID_AA64MMFR3, AIE, 24, 4)
++FIELD(ID_AA64MMFR3, MEC, 28, 4)
++FIELD(ID_AA64MMFR3, D128, 32, 4)
++FIELD(ID_AA64MMFR3, D128_2, 36, 4)
++FIELD(ID_AA64MMFR3, SNERR, 40, 4)
++FIELD(ID_AA64MMFR3, ANERR, 44, 4)
++FIELD(ID_AA64MMFR3, SDERR, 52, 4)
++FIELD(ID_AA64MMFR3, ADERR, 56, 4)
++FIELD(ID_AA64MMFR3, SPEC_FPACC, 60, 4)
++
+ FIELD(ID_AA64DFR0, DEBUGVER, 0, 4)
+ FIELD(ID_AA64DFR0, TRACEVER, 4, 4)
+ FIELD(ID_AA64DFR0, PMUVER, 8, 4)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 6b224826fbb..bb0e1baf628 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -9004,11 +9004,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+               .resetvalue = cpu->isar.id_aa64mmfr2 },
+-            { .name = "ID_AA64MMFR3_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
++            { .name = "ID_AA64MMFR3_EL1", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 3,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+-              .resetvalue = 0 },
++              .resetvalue = cpu->isar.id_aa64mmfr3 },
+             { .name = "ID_AA64MMFR4_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 7, .opc2 = 4,
+               .access = PL1_R, .type = ARM_CP_CONST,
+@@ -9165,6 +9165,8 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .exported_bits = R_ID_AA64MMFR1_AFP_MASK },
+             { .name = "ID_AA64MMFR2_EL1",
+               .exported_bits = R_ID_AA64MMFR2_AT_MASK },
++            { .name = "ID_AA64MMFR3_EL1",
++              .exported_bits = 0 },
+             { .name = "ID_AA64MMFR*_EL1_RESERVED",
+               .is_glob = true },
+             { .name = "ID_AA64DFR0_EL1",
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 8e942f89b35..08d0757438c 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -497,6 +497,7 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
+ #endif
+     { HV_SYS_REG_ID_AA64MMFR1_EL1, HVF_SYSREG(0, 7, 3, 0, 1) },
+     { HV_SYS_REG_ID_AA64MMFR2_EL1, HVF_SYSREG(0, 7, 3, 0, 2) },
++    /* Add ID_AA64MMFR3_EL1 here when HVF supports it */
  
-     t = cpu->isar.id_pfr0;
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 8ad05c53e8d..ebb585afd85 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1196,7 +1196,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64MMFR1, LO, 1);       /* FEAT_LOR */
-     t = FIELD_DP64(t, ID_AA64MMFR1, PAN, 3);      /* FEAT_PAN3 */
-     t = FIELD_DP64(t, ID_AA64MMFR1, XNX, 1);      /* FEAT_XNX */
--    t = FIELD_DP64(t, ID_AA64MMFR1, ETS, 1);      /* FEAT_ETS */
-+    t = FIELD_DP64(t, ID_AA64MMFR1, ETS, 2);      /* FEAT_ETS2 */
-     t = FIELD_DP64(t, ID_AA64MMFR1, HCX, 1);      /* FEAT_HCX */
-     t = FIELD_DP64(t, ID_AA64MMFR1, TIDCP1, 1);   /* FEAT_TIDCP1 */
-     cpu->isar.id_aa64mmfr1 = t;
+     { HV_SYS_REG_MDSCR_EL1, HVF_SYSREG(0, 2, 2, 0, 2) },
+     { HV_SYS_REG_SCTLR_EL1, HVF_SYSREG(1, 0, 3, 0, 0) },
+@@ -855,6 +856,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         { HV_SYS_REG_ID_AA64MMFR0_EL1, &host_isar.id_aa64mmfr0 },
+         { HV_SYS_REG_ID_AA64MMFR1_EL1, &host_isar.id_aa64mmfr1 },
+         { HV_SYS_REG_ID_AA64MMFR2_EL1, &host_isar.id_aa64mmfr2 },
++        /* Add ID_AA64MMFR3_EL1 here when HVF supports it */
+     };
+     hv_vcpu_t fd;
+     hv_return_t r = HV_SUCCESS;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 21ebbf3b8f8..7cf5cf31dec 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -331,6 +331,8 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+                               ARM64_SYS_REG(3, 0, 0, 7, 1));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr2,
+                               ARM64_SYS_REG(3, 0, 0, 7, 2));
++        err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr3,
++                              ARM64_SYS_REG(3, 0, 0, 7, 3));
+ 
+         /*
+          * Note that if AArch32 support is not present in the host,
 -- 
 2.34.1
 
