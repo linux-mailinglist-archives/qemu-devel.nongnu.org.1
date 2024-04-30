@@ -2,136 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9368B6FAB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 12:30:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324C78B746F
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 13:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1kjn-0004Jt-Gd; Tue, 30 Apr 2024 06:29:27 -0400
+	id 1s1lfz-0004QP-Qr; Tue, 30 Apr 2024 07:29:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1kjm-0004J0-22
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 06:29:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
+ id 1s1lfZ-0004Pf-3u
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:29:10 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s1kjk-0005Uv-7W
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 06:29:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714472962;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=aW3OTZQEeRLexcIL/yRGaeeXgT2rr2+rfi0/6bm4v8E=;
- b=H5INFIEWLOKLXXzzYcPlZQIxR02Ff0N8nITdJliBpzp3y6hxCceTtMpdK1f8WJuaFOqZpn
- 5pVR5+XU5QaFke8o6+38kXqXupyXNSg4K4ow75IIQLH7kG9rqux30AX324bgZA2ZrftHT9
- QdmszvH3OspUEddWo9oA2+jBoLtAh3g=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-21-iY1GhaM_OsGh4aesfhhKRg-1; Tue, 30 Apr 2024 06:29:20 -0400
-X-MC-Unique: iY1GhaM_OsGh4aesfhhKRg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-790f55f69a7so287977485a.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 03:29:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714472960; x=1715077760;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=aW3OTZQEeRLexcIL/yRGaeeXgT2rr2+rfi0/6bm4v8E=;
- b=bwmWbYG1Hv0mKkO/rjH90xTo29zLQFvnHDBNU2ZgZibhrHaP0dg+VphzUPKboOQVFH
- HuU/O1B4N3XfypOmkwd/4X2vgERt4Fv5tBDB0Svxm34E3kKU2Pxz22B0ZK/yUQBi4ZEb
- U+g6LcEg7e8zwXpUh3bofzHS+arF++A2dDaWhBcYWDIEcQBZgo82bS77uIPudRWJ9AC1
- uoTzhAM9moDnW9fmZZ/CXaLflaWbZSxDHMA3PUCM6AfsPfQitD5YckLFKdhR2BPIYxtt
- NqTW8nOzsC0VJYEiYoE4D1OrYcwciQL5H41VP9PljNhmSy70UEmQbgsXMKvy+nJpQHmc
- jYJQ==
-X-Gm-Message-State: AOJu0Yw0p3fgJynIh26Tc1jkVnA1nMF3jrwLi2mZfWfzkAd4ZAnJ74M4
- kAUOhe8bkF4/6LD/D4nFpzskXPDEJkUiDg+vDpNPCQSvOVM6w7VrZejXSyN7Loa80P74m0f70mO
- VFmbDuFh7reioCdODOHugCpLecHi2KRSqnVzAEqKAfF2qKliEiqnE
-X-Received: by 2002:a05:620a:4510:b0:790:ad7a:d147 with SMTP id
- t16-20020a05620a451000b00790ad7ad147mr2764833qkp.62.1714472960150; 
- Tue, 30 Apr 2024 03:29:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJyp2d5vR1ErATnz/wUu8iodvbb9Yad4cBs8q8y3+w4v45TAtNt63u/kxMjUP4gghlIEvg7g==
-X-Received: by 2002:a05:620a:4510:b0:790:ad7a:d147 with SMTP id
- t16-20020a05620a451000b00790ad7ad147mr2764811qkp.62.1714472959852; 
- Tue, 30 Apr 2024 03:29:19 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de.
- [109.43.179.34]) by smtp.gmail.com with ESMTPSA id
- m6-20020ae9e006000000b0078efdcd9aa6sm11295972qkk.127.2024.04.30.03.29.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 03:29:19 -0700 (PDT)
-Message-ID: <05cab8d3-bda0-4452-92d7-061f4719eba7@redhat.com>
-Date: Tue, 30 Apr 2024 12:29:14 +0200
+ (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
+ id 1s1lfM-0007ev-SH
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:29:08 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 1BE00CE0F7F;
+ Tue, 30 Apr 2024 11:28:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C6AC2BBFC;
+ Tue, 30 Apr 2024 11:28:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1714476528;
+ bh=Y6scN/f6gfKI80HAF7k6NMVT4Ov0pD6EG38opDcY3eg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=YMp2AXho3G2MY70z85QwWyt0CaYdk2uD+089ahe57TrdW4YJ2b3gBKUKII9WGdV+D
+ HB7Lp2latqnx/okeWDJEG5jYyNrUFtdt8n22V1KJfWhZoR9hEav3qAJwo+3GcfkQjM
+ kZVhCiJFpebZ5CeQRVUw2MH0sSInCzc/JOeKlbNA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev,
+ qemu-devel@nongnu.org, Breno Leitao <leitao@debian.org>,
+ Heng Qi <hengqi@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ "David S. Miller" <davem@davemloft.net>, Konstantin Ovsepian <ovs@ovs.to>
+Subject: [PATCH 6.1 061/110] virtio_net: Do not send RSS key if it is not
+ supported
+Date: Tue, 30 Apr 2024 12:40:30 +0200
+Message-ID: <20240430103049.368332554@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240430103047.561802595@linuxfoundation.org>
+References: <20240430103047.561802595@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/about: Automatically deprecate versioned machine
- types older than 6 years
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- devel@lists.libvirt.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Laurent Vivier <laurent@vivier.eu>,
- qemu-s390x@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-References: <20240430064529.411699-1-thuth@redhat.com>
- <ZjDAGuONZ_Zem3fL@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <ZjDAGuONZ_Zem3fL@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=gregkh@linuxfoundation.org; helo=sin.source.kernel.org
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,60 +72,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/04/2024 11.55, Daniel P. Berrangé wrote:
-> On Tue, Apr 30, 2024 at 08:45:29AM +0200, Thomas Huth wrote:
->> Old machine types often have bugs or work-arounds that affect our
->> possibilities to move forward with the QEMU code base (see for example
->> https://gitlab.com/qemu-project/qemu/-/issues/2213 for a bug that likely
->> cannot be fixed without breaking live migration with old machine types,
->> or https://lists.gnu.org/archive/html/qemu-devel/2018-12/msg04516.html or
->> commit ea985d235b86). So instead of going through the process of manually
->> deprecating old machine types again and again, let's rather add an entry
->> that can stay, which declares that machine types older than 6 years are
->> considered as deprecated automatically. Six years should be sufficient to
->> support the release cycles of most Linux distributions.
-> 
-> Reading this again, I think we're mixing two concepts here.
-> 
-> With this 6 year cut off, we're declaring the actual *removal* date,
-> not the deprecation date.
-> 
-> A deprecation is something that happens prior to removal normally,
-> to give people a warning of /future/ removal, as a suggestion
-> that they stop using it.
-> 
-> If we never set the 'deprecation_reason' on a machine type, then
-> unless someone reads this doc, they'll never realize they are on
-> a deprecated machine.
-> 
-> When it comes to machine types, I see deprecation as a way to tell
-> people they should not deploy a /new/ VM on a machine type, only
-> use it for back compat (incoming migration / restore from saved
-> image) with existing deployed VMs.
-> 
-> If we delete a machine on the 6 year anniversary, then users
-> don't want to be deploying /new/ VMs using that on the
-> 5 year anniversary as it only gives a 1 year upgrade window.
-> 
-> So how long far back do we consider it reasonable for a user
-> to deploy a /new/ VM on an old machine type ? 1 year, 2 years,
-> 3 years ?
-> 
-> 
-> How about picking the half way point ?  3 years ?
-> 
-> ie, set deprecation_reason for any machine that is 3 years
-> old, but declare that our deprecation cycle lasts for
-> 3 years, instead of the normal 1 year, when applied to
-> machine types.
-> 
-> This would give a strong hint that users should get off the
-> old machine type, several years before its finally deleted.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Sounds like a good idea, too! Since I have to drop this patch here anyway, 
-could you maybe write such a new patch? (or do you want me to try to 
-formulate this?)
+------------------
 
-  Thomas
+From: Breno Leitao <leitao@debian.org>
+
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
+
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
+
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
+
+    # ethtool -X eth0  hfunc toeplitz
+
+This is how the problem happens:
+
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
+
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
+
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
+
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+
+6) virtio_error() (also QEMU function) set the device as broken
+
+    vdev->broken = true;
+
+7) Qemu bails out, and do not repond this crazy kernel.
+
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
+
+9) The kernel is waiting doing the following :
+
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
+
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
+
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Cc: stable@vger.kernel.org
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/virtio_net.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2948,19 +2948,35 @@ static int virtnet_get_rxfh(struct net_d
+ static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
+ 
+ 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = indir[i];
++		update = true;
+ 	}
+-	if (key)
++
++	if (key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
++		update = true;
++	}
+ 
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -3852,13 +3868,15 @@ static int virtnet_probe(struct virtio_d
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+ 
+
 
 
