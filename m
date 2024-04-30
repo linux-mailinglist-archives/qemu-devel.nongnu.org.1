@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0051B8B7EAB
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E258B7EB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:34:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1rKB-0001Jy-DK; Tue, 30 Apr 2024 13:31:27 -0400
+	id 1s1rMv-0002Y9-42; Tue, 30 Apr 2024 13:34:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1rK7-0001JX-OU
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:31:24 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1rK2-0007SJ-CK
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:31:23 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f0aeee172dso38373b3a.1
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 10:31:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714498276; x=1715103076; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=X/0BQ0Zo0xdN//RoQCbUKq7i7MvhbnttPfBvLSp3mMs=;
- b=onM5SP6RxVVPXzJCzzWKwRS+PNJxjuh6eFkJ45q0XQ08sysGmv67qfVZVF6bZ2kenx
- ObHoPB2vUtpxOu353KPRK8GfD8eRzvH4N3ZKA5N9gACXVt/8mvz31jnh1oO3P+1RbuCv
- 6qLhHrY+bF7v6pY2C+fVZ6zuXlnN1aM12+iLuHNXyt5L2ekZfw1YOO1t3v9irgEsbSys
- l53saiWOXV474lRFNhnFBrkKlRQokgGgxCoRstgjOMZvNy5jywQ4yPmrIzS+0aXN40vy
- SYapQrOf55qGYqtD3zSQlTsVca2AZw4noJyw+P01qOInopbJCzqPJXzOPqGOkWtQt5TG
- mJgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714498276; x=1715103076;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X/0BQ0Zo0xdN//RoQCbUKq7i7MvhbnttPfBvLSp3mMs=;
- b=khjRO3759+JLlAo3/3qmN2MzCtQUIhFA3MU1rFvXhcSdVaTat1kv9Vm8IRS9eYg+9Y
- JX3SImkH0pXOWb6Ciry0NDku15CruiO08j8LAKj+CGRPLgbKrFaSgxuZ6s0w3/CmPtGs
- PteC8tpSrLOgN82gzR5mX7J0NT1l3DMDLr7N/2ZkpAnvxeCyfeQVah0KvmRBHQmbkNcJ
- /T15JTpyu93yCRoviPtefjdduvrcPcU0u5eI4BKG3DsNDN2mKyYWXBye6RQ1smHwWmnX
- CWGONZGuELB2OgvhuG2HB+3k1CaeoHSKdpAsCfgIja+2/DBdGhKYCMLFhdpgM3O0GkOu
- pgVA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUURxNr91hsLUK2TrHKTPkAWOLNg+tQCHWB9QnCW56woPEdrHA8G/KXQZaCRF768hPhhj8ngdFXiaQzgx+Fi57PGNQesJ8=
-X-Gm-Message-State: AOJu0Yx2DIrgQEgqb7r3CHYg9aoXnYJ84ziHIBwIZLyfn44xM/eZIMtY
- CgT4PexIim31vfIuaG2hFVmoEbSha9mOnX4TTqA3HJy39b6Cbdm3Nv3B/WeYmfbmSqxCJqjO9RT
- z
-X-Google-Smtp-Source: AGHT+IFUvp/HuhzbX3mEuUrHR6MDWw0LhcII6hRj7gEuozf3dfGkqDJ5fNhYnvec/1rgtd67/cokag==
-X-Received: by 2002:a05:6a00:2450:b0:6ea:c7bd:90e3 with SMTP id
- d16-20020a056a00245000b006eac7bd90e3mr706698pfj.14.1714498275955; 
- Tue, 30 Apr 2024 10:31:15 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- b186-20020a62cfc3000000b006ecf56cb55fsm22839331pfg.96.2024.04.30.10.31.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 30 Apr 2024 10:31:15 -0700 (PDT)
-Message-ID: <8004c7bf-3185-4eba-8e1b-4a913bc1143f@linaro.org>
-Date: Tue, 30 Apr 2024 10:31:13 -0700
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1s1rMs-0002Xg-EL
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:14 -0400
+Received: from wfout6-smtp.messagingengine.com ([64.147.123.149])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1s1rMq-0007vt-CT
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:14 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailfout.west.internal (Postfix) with ESMTP id 9D9FB1C00143;
+ Tue, 30 Apr 2024 13:34:08 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute5.internal (MEProxy); Tue, 30 Apr 2024 13:34:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ invisiblethingslab.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:from:from:in-reply-to
+ :message-id:mime-version:reply-to:subject:subject:to:to; s=fm3;
+ t=1714498448; x=1714584848; bh=WeGqWSH3Ql0/UUTBACI5OChTrfYb4YhZ
+ sRvfkZTj+GY=; b=3mxz6f6jog5W03cvLHlsE62OdCF6yTK7DnZsWlz4oiBYheIC
+ BGiNKTMAeATtTaWcqI5M0xLm4n3U4FkOqXRx5EQDwMu/XGMI3kAbfE6xSUKzZdBd
+ KJ438xgkvEE2DJ5SDWUKb0i8A56Xshqdql0QY3yPj5YvmWuzTdzjOnyMbJnnkTTE
+ aehk4RzU1zdAwACd6UGfYZwQWYHixFT8h2IX85wv9vyh6kiGk9yiMSMrQjWk2zzl
+ +51jtbFOPVU3psNoXqC7H/IciRHXS0c5czKd86OcvhFyvzIge5n8oARyNz07j4eD
+ 3mismrEkMKu6FYyq30//02PbcotovbpvBG3ifw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; t=1714498448; x=1714584848; bh=WeGqWSH3Ql0/U
+ UTBACI5OChTrfYb4YhZsRvfkZTj+GY=; b=BlAGQGxPcVAIqPrAY7EpvB5jgY+pT
+ NApxQ2P16DZm3WVJQUZDwi0tfB5DKtwNlSk99SSOW/pQHchkGHAM2oB5QRqsc2+3
+ YVEOQTtTDL2w8CI+K4NvwqxhJ0s/1Tc1bCODmUX2NPDwGHsEj/8/vREUWMjX+CTS
+ +npZHNk5bCpqL0z+/0QY0V949nIgMs8X/S9HXfdFaiofq68u1piJBt7Yzdw7utRl
+ aqLHcsNLreGOX+/Xo8F45NlVpqDrCgZqlXUPO/V89zPNGhO7Tvw15nZqq4V4enUk
+ 92d8kUdNeXAeK6DDBzVI5vfcCXW3Jo6eCh4Hiu4/dIQzvcvaNL/5/7VZQ==
+X-ME-Sender: <xms:jysxZh_iXHNCNw-YZ_178xJCRxqRMw0CfkQKZ2NqSl3RMtXPTUFY8A>
+ <xme:jysxZls9PjCLW77qf-tAkihNH3MZbZSxAdw3EJj3WYr0edZOfDGlsZ_nXlnTYIrO9
+ c6o1n0yLuKkOQ>
+X-ME-Received: <xmr:jysxZvA55OYHasHAIBOAjn6YAOWBk5gXkiVlyoRuxbY6D5vC7MWIUATfFIgOTHtlUtxfG1BO>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedguddufecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecunecujfgurhephffvvefufffkofggtgfgsehtke
+ ertdertdejnecuhfhrohhmpeforghrvghkucforghrtgiihihkohifshhkihdqifpkrhgv
+ tghkihcuoehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtoh
+ hmqeenucggtffrrghtthgvrhhnpeelkefhudelteelleelteetveeffeetffekteetjeeh
+ lefggeekleeghefhtdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+ grihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggs
+ rdgtohhm
+X-ME-Proxy: <xmx:jysxZle3XSnMXMNlz8AIbf-k_UyJDQHpOT7nmf03YRpTpyj9jaU1qg>
+ <xmx:kCsxZmP-FoKIO7KJgKiCh0H8Ue097ceU_wQstF7mdodvUmAM0FVs6Q>
+ <xmx:kCsxZnnegerD3GUl1oACQ8WVRvOPc1imIkG80drZdAqL2CqSGobLOA>
+ <xmx:kCsxZgsBVv9F1WUQT6vOxC88qyRDRhQhapig1l5tWiN-khb7cOEqog>
+ <xmx:kCsxZo223S0O567oFT374yn4_bTr5U-fKiiLzRESKPLg_UIoTbtSEXPh>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Apr 2024 13:34:07 -0400 (EDT)
+From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+Subject: [PATCH v2 0/3] Fix MSI-X handling for Xen HVM
+Date: Tue, 30 Apr 2024 19:33:08 +0200
+Message-ID: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] target/arm: Implement FEAT WFxT and enable for '-cpu
- max'
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240430140035.3889879-1-peter.maydell@linaro.org>
- <20240430140035.3889879-3-peter.maydell@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240430140035.3889879-3-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=64.147.123.149;
+ envelope-from=marmarek@invisiblethingslab.com;
+ helo=wfout6-smtp.messagingengine.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,32 +104,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/30/24 07:00, Peter Maydell wrote:
-> +    if (uadd64_overflow(timeout, offset, &nexttick)) {
-> +        nexttick = UINT64_MAX;
-> +    }
-> +    if (nexttick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-> +        /*
-> +         * If the timeout is too long for the signed 64-bit range
-> +         * of a QEMUTimer, let it expire early.
-> +         */
-> +        timer_mod_ns(cpu->wfxt_timer, INT64_MAX);
-> +    } else {
-> +        timer_mod(cpu->wfxt_timer, nexttick);
-> +    }
+This series fixes handling MSI-X when device model is running in a stubdomain.
+The main part is to avoid accessing /dev/mem, which also fixes running dom0
+with lockdown enabled.
 
-The use of both UINT64_MAX and INT64_MAX is confusing.  Perhaps
+It depends on a behavior change of Xen that was just comitted, and signaled
+with a feature flag. If Xen is too old (and XENFEAT_dm_msix_all_writes flag is
+not set), fallback to the old behavior.
 
-     if (uadd64_overflow(timeout, offset, &nexttick) ||
-         nexttick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-         nexttick = INT64_MAX;
-     }
-     timer_mod(cpu->wfxt_timer, nexttick);
+The other part is a fix to enforce read-only registers in the config space.
+This fixes MSI-X setup for iwlwifi Linux driver, as it happen to write to MSI-X
+capability id reg (as a workaround for some older device which has another
+register there). It should be no-op, but due to a bug in xen_pt code,
+it broke MSI-X detection.
 
+All those patches have been shipped in Qubes OS 4.2 already, and prove to fix
+the issue.
 
-Anyway,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+See individual commit messages for details.
 
+Marek Marczykowski-Górecki (3):
+  hw/xen/xen_pt: Save back data only for declared registers
+  Update Xen's features.h header
+  Do not access /dev/mem in MSI-X PCI passthrough on Xen
 
-r~
+ hw/xen/xen_pt.c                     | 24 +++++++-
+ hw/xen/xen_pt_msi.c                 | 94 ++++++++++++++++++------------
+ include/hw/xen/interface/features.h | 17 +++++-
+ 3 files changed, 99 insertions(+), 36 deletions(-)
+
+base-commit: 2358f1b60f73287fe606c7ff48043b4f9e1c2d0f
+-- 
+git-series 0.9.1
 
