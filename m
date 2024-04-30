@@ -2,81 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435078B80B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 21:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 763DD8B81B7
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 23:02:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1tNk-00075y-3w; Tue, 30 Apr 2024 15:43:16 -0400
+	id 1s1uaj-0006VF-9z; Tue, 30 Apr 2024 17:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1tNi-00075j-2n
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 15:43:14 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s1tNa-0006li-Ht
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 15:43:13 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5aa2551d33dso4121499eaf.0
- for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 12:43:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714506184; x=1715110984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=P8aiuTj5/6yjo0wKZf1j2mdDbeTtUm906YMvC+PIZPk=;
- b=KWkETIoyPXdYR+JOUg8Dxlxk7DS5MqnBbiKGSAp9Ov0cyrPPYPsVdFiHQctGXwmZeW
- Y6mRaRfbUVQ+Ka5lUWjWaFrqM0DEWq8jzj9yU3CJhUlxpbzOuhJM+HN5uTdKaokwf2EG
- VIO+GEgDWPVWYv9Ylpc0255cLaXdvKB8STVLjZqMuACCNUxgWuKCtjX+2fQCxdWnGkMB
- QcMns2Ytk/AUouO49WHxPRS4aoAMNUsE7okWFf69Lqr/RDWferasLaKYRbcHNUQi0wXR
- iyMN7k8Q+lUNyrbgLZKS0pzFNaXHRNIrvPbettxoTJ0Q5BZMZNvA5W6W6FHj3d6RYktR
- H4Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714506184; x=1715110984;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=P8aiuTj5/6yjo0wKZf1j2mdDbeTtUm906YMvC+PIZPk=;
- b=HW2QQx9l1x10Totkk6iNDPdCwhh1BVjLwMrI4r71oTc/SJpU4QWrr62aUvR8RqKBCU
- J0dyupfFnxAVFU6/hLXYv4XQ8DK4ZWR/Jwhx0vjzJxFygi9FNyOvuBUYUQEeuQtwjDXG
- a6whd5xYOF4c1IPxZZlsOohKEo2F28Jy4GFX4odVum3JdHhVW0G6wVE4hXHB9gMlxS2f
- XJX4OpGW3mseU4FzIcpsbhhLeFXAe7QEy8G6DLK++XvWgrAXAlbRlKjqNW+VjZ0sWPLI
- 6YyE8mRGXJqdmXe/yR86JlDUs/1T4n7A3FboAaKByDRY4WgiXlRUJ+hG2fnZwhbLReX/
- Pt/g==
-X-Gm-Message-State: AOJu0YxsPdrIyhdFxxm75JnDUXqUZlzBxJ2Geg0RlVeiCLQjAfsHgEs1
- FKuIoXZE7XO/iItsenHs0JK6XqnfNouxs8DqMF17Z44dUrdvhbeUuTIswLo551c0sywBVXCRJDn
- F
-X-Google-Smtp-Source: AGHT+IHfBl+oazG3UWvzGGlWkOGI/C2QhkRfYf3qCUph+JcVQY7TlL1sDBzIfoh3Dh2SjT+q1ioDUw==
-X-Received: by 2002:a05:6358:988b:b0:17f:729a:8562 with SMTP id
- q11-20020a056358988b00b0017f729a8562mr391176rwa.3.1714506184111; 
- Tue, 30 Apr 2024 12:43:04 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d12-20020a63360c000000b005d880b41598sm20861523pga.94.2024.04.30.12.43.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 30 Apr 2024 12:43:03 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Subject: [PATCH v7 10/10] tests/bench: Add bufferiszero-bench
-Date: Tue, 30 Apr 2024 12:42:53 -0700
-Message-Id: <20240430194253.904768-11-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240430194253.904768-1-richard.henderson@linaro.org>
-References: <20240430194253.904768-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <alison.schofield@intel.com>)
+ id 1s1uad-0006Ut-Se
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:00:40 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alison.schofield@intel.com>)
+ id 1s1uaa-0003BO-R8
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 17:00:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714510836; x=1746046836;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=vdWN7QRH0YXJmkbLF+hixAQIFdQAmc9j6LgT2dm/sKo=;
+ b=mxyYaODNtfnxf1d+m0G7b//QIl3K9EHQW33OcYDHmo4sp6vw1LqhBu4P
+ fIGTjlzOHZLrQecfHm43Xi/RLYn8V1/7qh+KqUQfNN9KUOkJz531JXb7U
+ 4xAk1EA9NRSE9Qx7XEKqyMOqzVFNGu2pkDsdbqExvP2VGUglg08nNbtdO
+ UflJFKOC/osLt5SYR9vAm1uv+kwVdfFjAm7FK+AmPSIbpxOecvPaviFJH
+ i8tU37K3S/sqtIgC4S4GYXZDYQVXbWBFWiu/oebofWeGBIz0ZggxE1/4d
+ WvoFHWmu0O+HD8EjQxGiuJSD+60dxKKc1m+cB1+zvhRggQPNc2NVbRP06 Q==;
+X-CSE-ConnectionGUID: WH0VwiANR5Kh/XIkzTHaqg==
+X-CSE-MsgGUID: rH5vMIuYQo+PlcdwSHMUKA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="21390711"
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="21390711"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Apr 2024 14:00:32 -0700
+X-CSE-ConnectionGUID: tpGZ1fq7SomA55V7CuCaRg==
+X-CSE-MsgGUID: x0D8q4GfSfmds34g6CSnbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; d="scan'208";a="57474316"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2)
+ ([10.251.17.48])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Apr 2024 14:00:32 -0700
+Date: Tue, 30 Apr 2024 14:00:30 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
+ Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
+ dave@stgolabs.net, ira.weiny@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] cxl/core: correct length of DPA field masks
+Message-ID: <ZjFb7p4wn9bcUrzU@aschofie-mobl2>
+References: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
+ <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
+Received-SPF: pass client-ip=198.175.65.13;
+ envelope-from=alison.schofield@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,82 +83,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Benchmark each acceleration function vs an aligned buffer of zeros.
+On Wed, Apr 17, 2024 at 03:50:52PM +0800, Shiyang Ruan wrote:
+> The length of Physical Address in General Media Event Record/DRAM Event
+> Record is 64-bit, so the field mask should be defined as such length.
+> Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
+> mask off the upper-32-bits of DPA addresses. The cxl_poison event is
+> unaffected.
+> 
+> If userspace was doing its own DPA-to-HPA translation this could lead to
+> incorrect page retirement decisions, but there is no known consumer
+> (like rasdaemon) of this event today.
+> 
+> Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
+> Cc: <stable@vger.kernel.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/bench/bufferiszero-bench.c | 47 ++++++++++++++++++++++++++++++++
- tests/bench/meson.build          |  1 +
- 2 files changed, 48 insertions(+)
- create mode 100644 tests/bench/bufferiszero-bench.c
+Hi Ruan,
 
-diff --git a/tests/bench/bufferiszero-bench.c b/tests/bench/bufferiszero-bench.c
-new file mode 100644
-index 0000000000..222695c1fa
---- /dev/null
-+++ b/tests/bench/bufferiszero-bench.c
-@@ -0,0 +1,47 @@
-+/*
-+ * QEMU buffer_is_zero speed benchmark
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "qemu/units.h"
-+
-+static void test(const void *opaque)
-+{
-+    size_t max = 64 * KiB;
-+    void *buf = g_malloc0(max);
-+    int accel_index = 0;
-+
-+    do {
-+        if (accel_index != 0) {
-+            g_test_message("%s", "");  /* gnu_printf Werror for simple "" */
-+        }
-+        for (size_t len = 1 * KiB; len <= max; len *= 4) {
-+            double total = 0.0;
-+
-+            g_test_timer_start();
-+            do {
-+                buffer_is_zero_ge256(buf, len);
-+                total += len;
-+            } while (g_test_timer_elapsed() < 0.5);
-+
-+            total /= MiB;
-+            g_test_message("buffer_is_zero #%d: %2zuKB %8.0f MB/sec",
-+                           accel_index, len / (size_t)KiB,
-+                           total / g_test_timer_last());
-+        }
-+        accel_index++;
-+    } while (test_buffer_is_zero_next_accel());
-+
-+    g_free(buf);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_data_func("/cutils/bufferiszero/speed", NULL, test);
-+    return g_test_run();
-+}
-diff --git a/tests/bench/meson.build b/tests/bench/meson.build
-index 7e76338a52..4cd7a2f6b5 100644
---- a/tests/bench/meson.build
-+++ b/tests/bench/meson.build
-@@ -21,6 +21,7 @@ benchs = {}
- 
- if have_block
-   benchs += {
-+     'bufferiszero-bench': [],
-      'benchmark-crypto-hash': [crypto],
-      'benchmark-crypto-hmac': [crypto],
-      'benchmark-crypto-cipher': [crypto],
--- 
-2.34.1
+This fixup is important for the Event DPA->HPA translation work, so I
+grabbed it, updated it with most* of the review comments, and posted
+with that set. I expect you saw that in your mailbox.
 
+DaveJ queued it in a topic branch for 6.10 here:
+https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-6.10/dpa-to-hpa
+
+*I did not create a common mask for events and poison because I wanted to
+limit the changes. If you'd like to make that change it would be welcomed.
+
+-- Alison
+
+> ---
+>  drivers/cxl/core/trace.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+> index e5f13260fc52..cdfce932d5b1 100644
+> --- a/drivers/cxl/core/trace.h
+> +++ b/drivers/cxl/core/trace.h
+> @@ -253,7 +253,7 @@ TRACE_EVENT(cxl_generic_event,
+>   * DRAM Event Record
+>   * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+>   */
+> -#define CXL_DPA_FLAGS_MASK			0x3F
+> +#define CXL_DPA_FLAGS_MASK			0x3FULL
+>  #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
+>  
+>  #define CXL_DPA_VOLATILE			BIT(0)
+> -- 
+> 2.34.1
+> 
 
