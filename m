@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDF98B7357
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 13:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8008B74FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 13:56:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1lTE-0008Px-GN; Tue, 30 Apr 2024 07:16:24 -0400
+	id 1s1m4T-0002lM-Tz; Tue, 30 Apr 2024 07:54:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1lTB-0008OA-Pf
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:16:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s1lT9-0004tP-W2
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:16:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714475779;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Xn3psMRettsiwEkjxHMlaszxT/PcG8xOOrto5+1tM5U=;
- b=JVjM5ro4vJ5uqibwXJIegpBEPbtwCaUFq+2hNFvsbzc47dXu+cREKwUDCFJm+DZ+5U7L7U
- qbRgAOr2g6+gEtQ5oxADx71/+FG36n+nEVYDa+jqjPezZv01maQQaQt/EemSvZAiA/EVqv
- +oblwCAguTuXaZwmn5/j2tUqz62fPXs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-5k3KpysaOFS6IzIYy7OeHg-1; Tue, 30 Apr 2024 07:16:15 -0400
-X-MC-Unique: 5k3KpysaOFS6IzIYy7OeHg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D0F38032FA;
- Tue, 30 Apr 2024 11:16:15 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 06AF0EC681;
- Tue, 30 Apr 2024 11:16:15 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0CD4321E66C8; Tue, 30 Apr 2024 13:16:14 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Markus Armbruster <armbru@redhat.com>,  qemu-block@nongnu.org,
- raphael@enfabrica.net,  mst@redhat.com,  qemu-devel@nongnu.org,
- eblake@redhat.com,  eduardo@habkost.net,  berrange@redhat.com,
- pbonzini@redhat.com,  hreitz@redhat.com,  kwolf@redhat.com,
- yc-core@yandex-team.ru
-Subject: Re: [PATCH v4 2/3] vhost-user-blk: split vhost_user_blk_sync_config()
-In-Reply-To: <3c146e4c-8197-457e-99fc-9301879bf41b@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Tue, 30 Apr 2024 11:27:58 +0300")
-References: <20240429101623.1992943-1-vsementsov@yandex-team.ru>
- <20240429101623.1992943-3-vsementsov@yandex-team.ru>
- <87edanclky.fsf@pond.sub.org>
- <3c146e4c-8197-457e-99fc-9301879bf41b@yandex-team.ru>
-Date: Tue, 30 Apr 2024 13:16:14 +0200
-Message-ID: <87a5lb9k3l.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s1m4R-0002l3-Me
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:54:51 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s1m4P-0003nn-Tf
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 07:54:51 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5709cb80b03so5704639a12.2
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 04:54:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714478088; x=1715082888; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=/w8ZfqcwLDuaXEK2065a8lJ15TslsQ7OuTKnRb73YNA=;
+ b=fdG1CZAzYkAwvOZUDz+lYca7fTDrrAjatsanBfzofYm2ouvS6rJ1/xdY07OHlrbISL
+ dG12jiFB5io8XIr02AYXCTUoMqVrOXIpH0axADLnv7AsuCk0dTUufdxhzl4rjBXuFiKS
+ TydbWBRScEMHvRBOAT4WfU7XPH9/DYTqJy26vFxydP0QjYs4x72diTwyS2f8ncRQyY4G
+ /AQAMvYysJdbUKv0lwxrZNtSRTSyKDyUik7MSg3ytmd++DkEeYvyUJsGUdmY8P5hujGN
+ utFoPbNnyZwFIMFutWD8cYQhngqsyEd+I9UPh/3wCqvebRGhnm2iifHGIDewTVqbtOwV
+ OvKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714478088; x=1715082888;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/w8ZfqcwLDuaXEK2065a8lJ15TslsQ7OuTKnRb73YNA=;
+ b=iUbbMoieTDi5tffGESxCBtoyoWJ8XCdX2myTBPqKaLTtBWIJsLWN/47igjDi6hCAaQ
+ 85SBSp0PLNNeQDH8DH1SfhXKRO1752kHCk6LbT1V01XvUEzsAQi3FsbkuUGwqxMumAM+
+ RJjyMHrTYlVM28tSPfSriNShftpwuZBI5V8T8SNPdWUAcg3oPOi2bTmvGLAELeCdlEnx
+ A/yDgbU9umRFLFQNXO+bs38OH3LzyHq8gvJn8HBLhhCKj0/odC2xJK1BIyiJbDRXN2fr
+ 5UWSiPdh5JdX4hTeQEfeernK+H8rcZ32BEYXCpZJGoqBBCEJQToM7ceBFvpHNquZ5wYX
+ /Bkg==
+X-Gm-Message-State: AOJu0YxR+lAhpXd/3QFZTMArGf0Y5Y0+qfsDTK8Uy0RbALEu+zWNB83X
+ QubpPyGsUkdsf4qVL38FPAP1ZQulycaAZrlkPhftC8offHnoWpQBMn44xc/x8icnCy8EcqCd5hR
+ mlLEa5f1FS0Nx/cHBFl5HbAN701sFTNStR0RWow==
+X-Google-Smtp-Source: AGHT+IELyCgUqfF8XYS5QA8tJgG1LetZJYN9YpJup//taoTT78/6RlzJCbyTVqiutyHpovf31tM1jmEuGZNtQ9Wh6s8=
+X-Received: by 2002:a50:d555:0:b0:572:a158:8a7c with SMTP id
+ f21-20020a50d555000000b00572a1588a7cmr396552edj.42.1714478087785; Tue, 30 Apr
+ 2024 04:54:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20231114020927.62315-1-j@getutm.app>
+In-Reply-To: <20231114020927.62315-1-j@getutm.app>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 30 Apr 2024 12:54:36 +0100
+Message-ID: <CAFEAcA97U9Z-NAdkJ688EmPWycZtVQR5eP11-pDBBnxyd54b_A@mail.gmail.com>
+Subject: Re: [PATCH v5 00/14] tpm: introduce TPM CRB SysBus device
+To: Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,81 +85,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
-
-> On 30.04.24 11:15, Markus Armbruster wrote:
->> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
->> 
->>> Split vhost_user_blk_sync_config() out from
->>> vhost_user_blk_handle_config_change(), to be reused in the following
->>> commit.
->>>
->>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>> ---
->>>   hw/block/vhost-user-blk.c | 26 +++++++++++++++++++-------
->>>   1 file changed, 19 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
->>> index 9e6bbc6950..091d2c6acf 100644
->>> --- a/hw/block/vhost-user-blk.c
->>> +++ b/hw/block/vhost-user-blk.c
->>> @@ -88,27 +88,39 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
->>>       s->blkcfg.wce = blkcfg->wce;
->>>   }
->>>   +static int vhost_user_blk_sync_config(DeviceState *dev, Error **errp)
->>> +{
->>> +    int ret;
->>> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->>
->> Note for later: all this function does with paramter @dev is cast it to
->> VirtIODevice *.
->> 
->>> +    VHostUserBlk *s = VHOST_USER_BLK(vdev);
->>> +
->>> +    ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
->>> +                               vdev->config_len, errp);
->>> +    if (ret < 0) {
->>> +        return ret;
->>> +    }
->>> +
->>> +    memcpy(vdev->config, &s->blkcfg, vdev->config_len);
->>> +    virtio_notify_config(vdev);
->>> +
->>> +    return 0;
->>> +}
->>> +
->>>  static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
->>>  {
->>>      int ret;
->>> -    VirtIODevice *vdev = dev->vdev;
->>> -    VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
->>>      Error *local_err = NULL;
->>>
->>>      if (!dev->started) {
->>>          return 0;
->>>      }
->>>
->>> -    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
->>> -                               vdev->config_len, &local_err);
->>> +    ret = vhost_user_blk_sync_config(DEVICE(dev->vdev), &local_err);
->>
->> dev->vdev is a VirtIODevice *.  You cast it to DeviceState * for
->> vhost_user_blk_sync_config(), which casts it right back.
->> Could you simply pass it as is instead?
+On Tue, 14 Nov 2023 at 02:10, Joelle van Dyne <j@getutm.app> wrote:
+> The impetus for this patch set is to get TPM 2.0 working on Windows 11 ARM64.
+> Windows' tpm.sys does not seem to work on a TPM TIS device (as verified with
+> VMWare's implementation). However, the current TPM CRB device uses a fixed
+> system bus address that is reserved for RAM in ARM64 Virt machines.
 >
-> vhost_user_blk_sync_config() is generic handler, which will be used as ->sync_config() in the following commit, so it's good and convenient for it to have DeviceState* argument.
+> In the process of adding the TPM CRB SysBus device, we also went ahead and
+> cleaned up some of the existing TPM hardware code and fixed some bugs. We used
+> the TPM TIS devices as a template for the TPM CRB devices and refactored out
+> common code. We moved the ACPI DSDT generation to the device in order to handle
+> dynamic base address requirements as well as reduce redundent code in different
+> machine ACPI generation. We also changed the tpm_crb device to use the ISA bus
+> instead of depending on the default system bus as the device only was built for
+> the PC configuration.
+>
+> Another change is that the TPM CRB registers are now mapped in the same way that
+> the pflash ROM devices are mapped. It is a memory region whose writes are
+> trapped as MMIO accesses. This was needed because Apple Silicon does not decode
+> LDP (AARCH64 load pair of registers) caused page faults. @agraf suggested that
+> we do this to avoid having to do AARCH64 decoding in the HVF backend's fault
+> handler.
 
-Ah, that's what I missed.
+I had a conversation about this on IRC a week or so back (though I
+forget who with, sorry) that made me realise there's a problem with this
+approach, and I wanted to write that up for the mailing list.
 
->>>      if (ret < 0) {
->>>          error_report_err(local_err);
->>>          return ret;
->>>      }
->>>
->>> -    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
->>> -    virtio_notify_config(dev->vdev);
->>> -
->>>      return 0;
->>>  }
+The problem with turning this into a memory-backed device rather than
+an MMIO backed device is that it breaks KVM on Arm CPUs which don't
+have FEAT_S2FWB (i.e. anything older than Armv8.4). This is because
+without FEAT_S2FWB the guest and host will disagree about the memory
+attributes of the region:
+ * the host knows this is RAM backed and it's normal-cacheable
+   (certainly as far as the mapping that QEMU itself has)
+ * the guest thinks it's real hardware device registers and maps it
+   as Device
+The resulting mismatch in cacheability attributes can cause unexpected
+behaviour where the guest and QEMU views of the memory contents don't
+necessarily match up. (This is the same underlying issue that means
+that you can't use QEMU devices that emulate VGA framebuffers on
+AArch64 KVM without FEAT_S2FWB.)
 
+With FEAT_S2FWB the problem goes away because the hypervisor can
+override the guest's specified memory attributes to get rid of
+the attribute mismatch.
+
+So given that this would cause a regression for KVM, my preference
+is to stick with the current "the device is backed by MMIO read
+and write functions in the normal way". If a particular guest is
+trying to access it with LDP/STP that is best fixed in the guest.
+
+Potentially we could emulate (interpret) some subset of complex
+load/store insns in QEMU at the point where we get the "took a
+data abort but no syndrome information". This ought to be doable
+in a way that's shareable between hvf and KVM, and we can write
+a decodetree file for the insns we want to interpret. (I would
+not try to share with TCG decodetree, though the patterns can
+probably be copied across.)
+
+thanks
+-- PMM
 
