@@ -2,99 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC1B8B7EB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C358B7EFB
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 19:40:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1rN1-0002Zk-8R; Tue, 30 Apr 2024 13:34:23 -0400
+	id 1s1rRR-0006p1-AN; Tue, 30 Apr 2024 13:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s1rMx-0002Z6-Vd
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:19 -0400
-Received: from wfout6-smtp.messagingengine.com ([64.147.123.149])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s1rMw-0007xt-3v
- for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:34:19 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailfout.west.internal (Postfix) with ESMTP id 618C11C00194;
- Tue, 30 Apr 2024 13:34:16 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Tue, 30 Apr 2024 13:34:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- invisiblethingslab.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm3; t=1714498455; x=1714584855; bh=cI21Y0/d9U
- N+EtZKm1PiuxpPhL0dJGUf3Jiak+yaf+w=; b=4mUX2jId99dyBegeNN3WaFF94Z
- MTRq7+Tjqh+6Tpapp3wAsdLoadPqRi+PYkarkFhci9A46CeLUoTex45ubshubkOK
- r3Yqmi/7nbFG4KLc/DmA2GExp+y5j/mE6J1oTfMPh995G+RsnDbYHSdGWMsmxOYm
- LnkC7QBNglASynK+eyYkANqPT+RLSMynfUjVqc9Nr1DXeoGGeJQUqCK1fnCiqgxH
- OVi3Ce0PvyFA6JVJ8i47sjt2Ny4Ay6qu1rVnDRJlqqSxuV/x6ZomUoyftn3DUPZW
- Ma4+N0RXzv8w6bbzaFk4YLS8OeDxFOtVD0R9CKhtpqeKEvPl37ILNIVdQfxw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1714498455; x=
- 1714584855; bh=cI21Y0/d9UN+EtZKm1PiuxpPhL0dJGUf3Jiak+yaf+w=; b=V
- WE41IGJmX7U60sEoh77DQB4iVMzfr5WG5awmm3bWGDI4YNubsWK3UkF0O0oiHgxO
- XEEj6WwidnLNg090xxa5Ilz73qoA3iVrdIi+qCh7UC1F9Yhcual5gRzaX5CXAcVy
- g9iV2Da8+6q8bvNbDhjo6HAPfVtKAYxpeufc28UXFl4TtMI8Sgc5iptCFyG0Jgue
- yyIK5NwqwXF89PIgmOHuRFzIu/EjT/FhcQaWoh594U2T57K3FnR0L7APXt2EJopj
- 43+qUhy3IKd1lj7IfevqphDcoOY+M4xuTqh4DvKakwKps7rQA4Y8nD7a7BeDY4E2
- 6wjiSPH30uxUJShGh8nQg==
-X-ME-Sender: <xms:lysxZtDU470guAexIlom9LhsQz4vbyrOjEdmxVQSmSimr4_o3FAWkg>
- <xme:lysxZriY6mKIqUAgSmmAQCiqjlY55vARn2wlASxwDYOIzGXBkaAcy9CMRorNgn674
- 6yhhxJ1P7FHag>
-X-ME-Received: <xmr:lysxZomuGDTa3jBSV6sRNP80ymKElGUUcQbY6QKyqgIR06Dx0ardHjgV1Ib96pYpmsk19jY1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedguddufecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomhepofgr
- rhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghkse
- hinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhep
- gfeuudehgfdvfeehhedujeehfeduveeugefhkefhheelgeevudetueeiudfggfffnecuve
- hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghr
- vghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:lysxZnzSgFQVe-JT6yiqnD8XAFDxg9V8lLjt36JexItyIulE8Kh5lA>
- <xmx:lysxZiTLiIZpafnLHCzW9H2SjPAiGpv26fBUAikNd0UnxDPUSS38JA>
- <xmx:lysxZqZy1yxaZPr1huwSs3nISVjnDhwfEG95kG40ofZZmqgcT1tKTA>
- <xmx:lysxZjSGYsBDkAg_zWA5RoiwuJrKTPD3GngfodKJJYcDA4IcUj41pA>
- <xmx:lysxZvJ6ZPyXN6OU17W0zx7ghwzs0F_fCzHd9tp6jDRgRXZ5gQBKZBVD>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Apr 2024 13:34:14 -0400 (EDT)
-From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
-Subject: [PATCH v2 3/3] Do not access /dev/mem in MSI-X PCI passthrough on Xen
-Date: Tue, 30 Apr 2024 19:33:11 +0200
-Message-ID: <6ab3359790f4c325089a589809ebbf50ea07b31e.1714498385.git-series.marmarek@invisiblethingslab.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
-References: <cover.ea761e8c87cc41550b01d6fbc1cd1116af55e288.1714498385.git-series.marmarek@invisiblethingslab.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1rRL-0006oE-8q
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:38:51 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s1rRJ-0000vf-G5
+ for qemu-devel@nongnu.org; Tue, 30 Apr 2024 13:38:51 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6ece8991654so5546638b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 30 Apr 2024 10:38:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714498726; x=1715103526; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=uVyv5hRg6B037RfNy6Jiaqghy84UvaDe+kTUw/jD0qU=;
+ b=AJirJJ+NrIqwZ4Tv3vVabXnqBI98d7jW5889ZqBY9ck9WWxI2z2z4cpB/DuXLY0T3n
+ zbZxYOmrAMN2QhP0Qjb9W6qDCEv/CHSmyDr761+IVwfuKxTlGtQGOci2M9a5ClANnIun
+ vhh32eA8ZVZFZ7nEtQteyfUlZ9Z78qnF2GR+DEykbSS2sG5t5vnnfGHvVkFFVn5wjE/A
+ 3sRFOd7kqRqBYByM9oV9k+nt5nRU9P4tXq6zYpwbmozCTEeN3m5jUiapSep8V225YqIm
+ jwXdgbyY0iaBaKMdQksvHTk5+X/FhN3GKgw6IAQtlE3J0Q+8a9KNsh5XZnoF6lqBRolF
+ MEMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714498726; x=1715103526;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uVyv5hRg6B037RfNy6Jiaqghy84UvaDe+kTUw/jD0qU=;
+ b=WShedbYqsgCxH8Qps0GCvRMOVLv6QvZYDvxbxnRzr/RUlVOW8Z7pXyIAOz9W+qG6Sg
+ NtExEBrF/lAWDqMImeITb1fRJPzuUZE4F7G5YwjTdmDB/vM4CICSM7F57n1o7mykj6pP
+ yZII3sOugWpHZQuNdKbcALsI2Ke84t9ceMECbZRSJeX9ZBwaxI9rUEaorrZYObJCPNO0
+ EBkfn6X5UcP7/TkDGTIEH9EGi3LZS2A3wir+Xki370dYbtfEUgA10Mwaogv0f0URHDNi
+ NM5dwcMREwbBrddGv0SaFM4evi89v5MSKfY4wKgxZIjjG0DHAbhnwucD76nYe5KKbJ0T
+ iVBw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtm7o/jj1joWcRO4YDmEOypNxr2u1vmZ+Yc1LrjT3vtkC533x/n01Jv9DQ1oLGen18eKXh445IU+xDCTDaGDDpyKVnUNU=
+X-Gm-Message-State: AOJu0YzLl7bS6m8J1Ay11ImS15fX63toruLzQf8hxSqsn7HlGYpM5IwB
+ +23Qn4xS7R5iZ7OX+VnKJ6mDk3dLAzy653ifQVhoafVojHajmLthRy4eQAaUO88=
+X-Google-Smtp-Source: AGHT+IHSKYG4Dav9MCEd9I5UUO+08nmgNKNY0vsk3if9XqqC2/0/9W1cFI4K+ocZGmAuivchjOaKxw==
+X-Received: by 2002:a05:6a21:9204:b0:1aa:282e:8dac with SMTP id
+ tl4-20020a056a21920400b001aa282e8dacmr779203pzb.0.1714498726640; 
+ Tue, 30 Apr 2024 10:38:46 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ n66-20020a632745000000b0060fc94219b0sm6304555pgn.45.2024.04.30.10.38.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 30 Apr 2024 10:38:46 -0700 (PDT)
+Message-ID: <38c57237-665d-4016-a6c6-ba8ceb04b24d@linaro.org>
+Date: Tue, 30 Apr 2024 10:38:44 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=64.147.123.149;
- envelope-from=marmarek@invisiblethingslab.com;
- helo=wfout6-smtp.messagingengine.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] accel/tcg: Make TCGCPUOps::cpu_exec_halt return bool
+ for whether to halt
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20240430140035.3889879-1-peter.maydell@linaro.org>
+ <20240430140035.3889879-2-peter.maydell@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240430140035.3889879-2-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,175 +98,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The /dev/mem is used for two purposes:
- - reading PCI_MSIX_ENTRY_CTRL_MASKBIT
- - reading Pending Bit Array (PBA)
+On 4/30/24 07:00, Peter Maydell wrote:
+> The TCGCPUOps::cpu_exec_halt method is called from cpu_handle_halt()
+> when the CPU is halted, so that a target CPU emulation can do
+> anything target-specific it needs to do.  (At the moment we only use
+> this on i386.)
+> 
+> The current specification of the method doesn't allow the target
+> specific code to do something different if the CPU is about to come
+> out of the halt state, because cpu_handle_halt() only determines this
+> after the method has returned.  (If the method called cpu_has_work()
+> itself this would introduce a potential race if an interrupt arrived
+> between the target's method implementation checking and
+> cpu_handle_halt() repeating the check.)
+> 
+> Change the definition of the method so that it returns a bool to
+> tell cpu_handle_halt() whether to stay in halt or not.
+> 
+> We will want this for the Arm target, where FEAT_WFxT wants to do
+> some work only for the case where the CPU is in halt but about to
+> leave it.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   include/hw/core/tcg-cpu-ops.h       | 11 +++++++++--
+>   target/i386/tcg/helper-tcg.h        |  2 +-
+>   accel/tcg/cpu-exec.c                |  7 +++++--
+>   target/i386/tcg/sysemu/seg_helper.c |  3 ++-
+>   4 files changed, 17 insertions(+), 6 deletions(-)
 
-The first one was originally done because when Xen did not send all
-vector ctrl writes to the device model, so QEMU might have outdated old
-register value. If Xen is new enough, this has been changed, so QEMU can
-now use its cached value of the register instead. Detect the "new
-enough" based on XENFEAT_dm_msix_all_writes bit in XENVER_get_features.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-The Pending Bit Array (PBA) handling is for the case where it lives on
-the same page as the MSI-X table itself. Xen has been extended to handle
-this case too (as well as other registers that may live on those pages),
-so QEMU handling is not necessary anymore.
+I like Alex's suggested rename.
 
-Additionally, reading from /dev/mem is trapped and emulated by Xen, so
-QEMU doesn't see real values anyway. And if it did, this method is prone
-to race conditions. Removing /dev/mem access is useful to work within
-stubdomain (avoids emulated reads and potential races), and necessary
-when dom0 kernel runs in lockdown mode (where /dev/mem is unavailable at
-all).
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -669,11 +669,14 @@ static inline bool cpu_handle_halt(CPUState *cpu)
+>   #ifndef CONFIG_USER_ONLY
+>       if (cpu->halted) {
+>           const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+> +        bool leave_halt;
+>   
+>           if (tcg_ops->cpu_exec_halt) {
+> -            tcg_ops->cpu_exec_halt(cpu);
+> +            leave_halt = tcg_ops->cpu_exec_halt(cpu);
+> +        } else {
+> +            leave_halt = cpu_has_work(cpu);
+>           }
+> -        if (!cpu_has_work(cpu)) {
+> +        if (!leave_halt) {
+>               return true;
+>           }
 
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
----
-Changes in v2:
-- Make change conditional on new Xen version (tested via
-  XENFEAT_dm_msix_all_writes)
-- add few comments
----
- hw/xen/xen_pt_msi.c | 94 ++++++++++++++++++++++++++++------------------
- 1 file changed, 59 insertions(+), 35 deletions(-)
+As a followup, I would also suggest making implementation of the hook mandatory.
+We already require the has_work hook to be set; it would simply be a matter of copying the 
+function pointer to the second slot.
 
-diff --git a/hw/xen/xen_pt_msi.c b/hw/xen/xen_pt_msi.c
-index 09cca4e..836cc9c 100644
---- a/hw/xen/xen_pt_msi.c
-+++ b/hw/xen/xen_pt_msi.c
-@@ -460,15 +460,23 @@ static void pci_msix_write(void *opaque, hwaddr addr,
-         entry->updated = true;
-     } else if (msix->enabled && entry->updated &&
-                !(val & PCI_MSIX_ENTRY_CTRL_MASKBIT)) {
--        const volatile uint32_t *vec_ctrl;
--
-         /*
--         * If Xen intercepts the mask bit access, entry->vec_ctrl may not be
--         * up-to-date. Read from hardware directly.
-+         * Reading mask bit from hardware directly is needed on older Xen only.
-          */
--        vec_ctrl = s->msix->phys_iomem_base + entry_nr * PCI_MSIX_ENTRY_SIZE
--            + PCI_MSIX_ENTRY_VECTOR_CTRL;
--        xen_pt_msix_update_one(s, entry_nr, *vec_ctrl);
-+        if (s->msix->phys_iomem_base) {
-+            /* Memory mapped registers */
-+            const volatile uint32_t *vec_ctrl;
-+
-+            /*
-+             * If Xen intercepts the mask bit access, entry->vec_ctrl may not be
-+             * up-to-date. Read from hardware directly.
-+             */
-+            vec_ctrl = s->msix->phys_iomem_base + entry_nr * PCI_MSIX_ENTRY_SIZE
-+                + PCI_MSIX_ENTRY_VECTOR_CTRL;
-+            xen_pt_msix_update_one(s, entry_nr, *vec_ctrl);
-+        } else {
-+            xen_pt_msix_update_one(s, entry_nr, entry->latch(VECTOR_CTRL));
-+        }
-     }
- 
-     set_entry_value(entry, offset, val);
-@@ -493,7 +501,12 @@ static uint64_t pci_msix_read(void *opaque, hwaddr addr,
-         return get_entry_value(&msix->msix_entry[entry_nr], offset);
-     } else {
-         /* Pending Bit Array (PBA) */
--        return *(uint32_t *)(msix->phys_iomem_base + addr);
-+        if (s->msix->phys_iomem_base) {
-+            return *(uint32_t *)(msix->phys_iomem_base + addr);
-+        }
-+        XEN_PT_LOG(&s->dev, "reading PBA, addr 0x%lx, offset 0x%lx\n",
-+                   addr, addr - msix->total_entries * PCI_MSIX_ENTRY_SIZE);
-+        return 0xFFFFFFFF;
-     }
- }
- 
-@@ -528,8 +541,8 @@ int xen_pt_msix_init(XenPCIPassthroughState *s, uint32_t base)
-     uint32_t table_off = 0;
-     int i, total_entries, bar_index;
-     XenHostPCIDevice *hd = &s->real_device;
-+    xen_feature_info_t xc_version_info = { 0 };
-     PCIDevice *d = &s->dev;
--    int fd = -1;
-     XenPTMSIX *msix = NULL;
-     int rc = 0;
- 
-@@ -543,6 +556,10 @@ int xen_pt_msix_init(XenPCIPassthroughState *s, uint32_t base)
-         return -1;
-     }
- 
-+    if (xc_version(xen_xc, XENVER_get_features, &xc_version_info) < 0) {
-+        return -1;
-+    }
-+
-     rc = xen_host_pci_get_word(hd, base + PCI_MSIX_FLAGS, &control);
-     if (rc) {
-         XEN_PT_ERR(d, "Failed to read PCI_MSIX_FLAGS field\n");
-@@ -576,33 +593,40 @@ int xen_pt_msix_init(XenPCIPassthroughState *s, uint32_t base)
-     msix->table_base = s->real_device.io_regions[bar_index].base_addr;
-     XEN_PT_LOG(d, "get MSI-X table BAR base 0x%"PRIx64"\n", msix->table_base);
- 
--    fd = open("/dev/mem", O_RDWR);
--    if (fd == -1) {
--        rc = -errno;
--        XEN_PT_ERR(d, "Can't open /dev/mem: %s\n", strerror(errno));
--        goto error_out;
--    }
--    XEN_PT_LOG(d, "table_off = 0x%x, total_entries = %d\n",
--               table_off, total_entries);
--    msix->table_offset_adjust = table_off & 0x0fff;
--    msix->phys_iomem_base =
--        mmap(NULL,
--             total_entries * PCI_MSIX_ENTRY_SIZE + msix->table_offset_adjust,
--             PROT_READ,
--             MAP_SHARED | MAP_LOCKED,
--             fd,
--             msix->table_base + table_off - msix->table_offset_adjust);
--    close(fd);
--    if (msix->phys_iomem_base == MAP_FAILED) {
--        rc = -errno;
--        XEN_PT_ERR(d, "Can't map physical MSI-X table: %s\n", strerror(errno));
--        goto error_out;
--    }
--    msix->phys_iomem_base = (char *)msix->phys_iomem_base
--        + msix->table_offset_adjust;
-+    /* Accessing /dev/mem is needed only on older Xen. */
-+    if (!(xc_version_info.submap & (1U << XENFEAT_dm_msix_all_writes))) {
-+        int fd = -1;
-+
-+        fd = open("/dev/mem", O_RDWR);
-+        if (fd == -1) {
-+            rc = -errno;
-+            XEN_PT_ERR(d, "Can't open /dev/mem: %s\n", strerror(errno));
-+            goto error_out;
-+        }
-+        XEN_PT_LOG(d, "table_off = 0x%x, total_entries = %d\n",
-+                   table_off, total_entries);
-+        msix->table_offset_adjust = table_off & 0x0fff;
-+        msix->phys_iomem_base =
-+            mmap(NULL,
-+                 total_entries * PCI_MSIX_ENTRY_SIZE
-+                 + msix->table_offset_adjust,
-+                 PROT_READ,
-+                 MAP_SHARED | MAP_LOCKED,
-+                 fd,
-+                 msix->table_base + table_off - msix->table_offset_adjust);
-+        close(fd);
-+        if (msix->phys_iomem_base == MAP_FAILED) {
-+            rc = -errno;
-+            XEN_PT_ERR(d, "Can't map physical MSI-X table: %s\n",
-+                       strerror(errno));
-+            goto error_out;
-+        }
-+        msix->phys_iomem_base = (char *)msix->phys_iomem_base
-+            + msix->table_offset_adjust;
- 
--    XEN_PT_LOG(d, "mapping physical MSI-X table to %p\n",
--               msix->phys_iomem_base);
-+        XEN_PT_LOG(d, "mapping physical MSI-X table to %p\n",
-+                   msix->phys_iomem_base);
-+    }
- 
-     memory_region_add_subregion_overlap(&s->bar[bar_index], table_off,
-                                         &msix->mmio,
--- 
-git-series 0.9.1
+Also, the assert in cpu_has_work could be moved to startup, as Phil has started to do with 
+some of the other hooks.
+
+
+r~
+
 
