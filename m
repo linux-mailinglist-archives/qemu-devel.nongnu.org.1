@@ -2,97 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9DE8B6739
-	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 03:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E99678B6797
+	for <lists+qemu-devel@lfdr.de>; Tue, 30 Apr 2024 03:41:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s1c3D-0001rs-NA; Mon, 29 Apr 2024 21:12:55 -0400
+	id 1s1cUO-0006h4-9U; Mon, 29 Apr 2024 21:41:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1s1c3A-0001re-Uc
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:12:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1s1c37-00078Y-5z
- for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:12:52 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43U13C9X011441; Tue, 30 Apr 2024 01:12:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=PYAT3a7lcFf1KEt5ef+OMX5bdrrww1iNPYOQzy6tqbA=;
- b=dePbQUYDZxYgz6cPA16ivKsFglAxXpZAQlgQJGJ3X5wK6V7xnwVelX19M4UbHpoTPauR
- JBbGgikazPszoClTRCEqraRDrwVtJVZVgmf/o6A3qkuk/Qpu1hJYEhcVSsh738A5G/fQ
- J5peggYPOOwMlGMPZJXSnJXw55DnNDXx1Xx2lvQB+cpXJHzN/cEA6HKo1mP3dlW/J+ds
- wbAFNRQJtnwv0CCuK1f8dm/JHNHD0799L651jNOUPImMkLHweFwh5oRG4CUpeCEoirI4
- sOMUk3mMmaDpp/mm80sAm5l6G+N2RacXWU4G1yc2AhPPvG9qKHJYk1Xek+3e7EeGkl0V Ng== 
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xtpmjr0db-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Apr 2024 01:12:43 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43TLiVwj003210; Tue, 30 Apr 2024 01:12:42 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xscppacvb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 30 Apr 2024 01:12:42 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43U1Cch015728920
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 30 Apr 2024 01:12:40 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C62B2004F;
- Tue, 30 Apr 2024 01:12:38 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D63072004B;
- Tue, 30 Apr 2024 01:12:37 +0000 (GMT)
-Received: from heavy (unknown [9.171.51.254])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 30 Apr 2024 01:12:37 +0000 (GMT)
-Date: Tue, 30 Apr 2024 03:12:36 +0200
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Anton Johansson <anjo@rev.ng>
-Subject: Re: [PATCH v2 10/13] accel/tcg: Remove NULL check in
- tcg_flush_jmp_cache()
-Message-ID: <hb6uqj3e5yowzwj2tq7tmmjgq6fir7hyojz3u2bdwlovyijaj5@ghv4ajqqvpkf>
-References: <20240429213050.55177-1-philmd@linaro.org>
- <20240429213050.55177-11-philmd@linaro.org>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20240429213050.55177-11-philmd@linaro.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WO-5WZU_Yj9x371iiDAsvVRLe6yYue3n
-X-Proofpoint-ORIG-GUID: WO-5WZU_Yj9x371iiDAsvVRLe6yYue3n
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1s1cUL-0006fC-Bz
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:40:57 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1s1cUI-0003bC-Ia
+ for qemu-devel@nongnu.org; Mon, 29 Apr 2024 21:40:57 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8CxZ_AdTDBmcToFAA--.17545S3;
+ Tue, 30 Apr 2024 09:40:45 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Bxut0cTDBmyrsKAA--.25914S2; 
+ Tue, 30 Apr 2024 09:40:44 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, philmd@linaro.org, maobibo@loongson.cn,
+ zhaotianrui@loongson.cn, lixianglai@loongso.cn
+Subject: [PATCH] target/loongarch/kvm: Fix VM recovery from disk failures
+Date: Tue, 30 Apr 2024 09:23:56 +0800
+Message-Id: <20240430012356.2620763-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-29_22,2024-04-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 adultscore=0 mlxlogscore=999 clxscore=1011 mlxscore=0
- impostorscore=0 spamscore=0 suspectscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404300007
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Bxut0cTDBmyrsKAA--.25914S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,44 +62,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 29, 2024 at 11:30:47PM +0200, Philippe Mathieu-Daudé wrote:
-> I /think/ this check added in commit 4e4fa6c12d ("accel/tcg:
-> Complete cpu initialization before registration") is now
-> unnecessary, but I don't have the WASM reproducer mentioned
-> in:
-> https://lore.kernel.org/qemu-devel/20221027141856.w5umjgklawgu7pqv@heavy/
-> to confirm. Ilya, do you mind testing? If so, we could
-> squash this with the previous patch.
-> 
-> Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  accel/tcg/translate-all.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
-> 
-> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-> index ca1e193633..9b02f21b23 100644
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -652,14 +652,8 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
->   */
->  void tcg_flush_jmp_cache(CPUState *cpu)
->  {
-> -    CPUJumpCache *jc;
-> +    CPUJumpCache *jc = &cpu->accel->tb_jmp_cache;
->  
-> -    /* During early initialization, the cache may not yet be allocated. */
-> -    if (unlikely(cpu->accel == NULL)) {
-> -        return;
-> -    }
-> -
-> -    jc = &cpu->accel->tb_jmp_cache;
->      for (int i = 0; i < TB_JMP_CACHE_SIZE; i++) {
->          qatomic_set(&jc->array[i].tb, NULL);
->      }
-> -- 
-> 2.41.0
-> 
+vmstate does not save kvm_state_conter,
+which can cause VM recovery from disk to fail.
 
-Sure, I'll have a look tomorrow.
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ target/loongarch/machine.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index c7029fb9b4..4cd1bf06ff 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -191,6 +191,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
+         VMSTATE_STRUCT_ARRAY(env.tlb, LoongArchCPU, LOONGARCH_TLB_MAX,
+                              0, vmstate_tlb, LoongArchTLB),
+ 
++        VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
++
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription * const []) {
+-- 
+2.25.1
+
 
