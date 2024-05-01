@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED3C8B8F95
+	by mail.lfdr.de (Postfix) with ESMTPS id 3102E8B8F96
 	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:33:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2Ejm-00023B-RS; Wed, 01 May 2024 14:31:27 -0400
+	id 1s2El2-0003oO-2Y; Wed, 01 May 2024 14:32:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Eim-00019a-4w
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:26 -0400
+ id 1s2Ej9-0001fY-5r
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Eik-0003ia-AC
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:23 -0400
+ id 1s2Eiy-0003ko-I5
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714588221;
+ s=mimecast20190719; t=1714588234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qw8atOBPdCUegCfiLQoTw0dka9Jo7NFjTdIkCzwC7Kk=;
- b=F0S4CPBLRHQHU62kgOubdMRVBpEH/h+JHzDw8bk+2WiQ1ImvSjjnR0XKKKkwB38dohNmZD
- HDAJZq63oNQrwvGLPxvNYx9HBJX987xe7MtIL1gkHiTcPOxdaVfi5L7P6nktzxLws+uMvF
- trENZ90QAaeTfCgJRIitN30fybd2VRA=
+ bh=55LYe09ZkKTt5KEzMkOfymT9wIM5eYrex0lvCFU2yqA=;
+ b=JHuq+7r5yTBNY2OFazu6hYDSdVGwYjvT4IFGxNMalhnkNi9K24heeIZp02htYyqpYaSQ5C
+ USbdztgsQqQ7nRNUOVHw8H4a+OkKBAAxXAaSttB4/N+3VOwdcY3jXBS4lsDMhrO3wxmMqa
+ g9kCFVEs3ymDGMxhd5oGBtisbu5tkm4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-116-yVh6gb_HOmG9yx9bOLjtww-1; Wed, 01 May 2024 14:30:17 -0400
-X-MC-Unique: yVh6gb_HOmG9yx9bOLjtww-1
+ us-mta-352-3vzO9TcOM86q7dj0xX7y_w-1; Wed, 01 May 2024 14:30:28 -0400
+X-MC-Unique: 3vzO9TcOM86q7dj0xX7y_w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CB3BD80B935;
- Wed,  1 May 2024 18:30:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BFF3A80E95D;
+ Wed,  1 May 2024 18:30:27 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3204EAC6A;
- Wed,  1 May 2024 18:30:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2470A8C4;
+ Wed,  1 May 2024 18:30:17 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -63,10 +63,10 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 13/14] hw/i386: remove obsolete manual deprecation reason
- string of i440fx machines
-Date: Wed,  1 May 2024 19:27:58 +0100
-Message-ID: <20240501182759.2934195-14-berrange@redhat.com>
+Subject: [PATCH 14/14] docs: document special exception for machine type
+ deprecation & removal
+Date: Wed,  1 May 2024 19:27:59 +0100
+Message-ID: <20240501182759.2934195-15-berrange@redhat.com>
 In-Reply-To: <20240501182759.2934195-1-berrange@redhat.com>
 References: <20240501182759.2934195-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -80,8 +80,8 @@ X-Spam_score: -3.0
 X-Spam_bar: ---
 X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.897,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,33 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The automatic deprecation mechanism introduced in the preceeding patches
-will mark every i440fx machine upto and including 2.12 as deprecated. As
-such we can revert the manually added deprecation which was a subset:
-
-  commit c7437f0ddb8ee45bf96d949ddfcbb7697ae3d415
-  Author: Thomas Huth <thuth@redhat.com>
-  Date:   Fri Oct 6 09:52:47 2023 +0200
-
-    docs/about: Mark the old pc-i440fx-2.0 - 2.3 machine types as deprecated
+This extends the deprecation policy to indicate that versioned machine
+types will be marked deprecated after 3 years, and then subject to
+removal after a further 3 years has passed.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/i386/pc_piix.c | 1 -
- 1 file changed, 1 deletion(-)
+ docs/about/deprecated.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 9f92504cc4..4137e03f6f 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -812,7 +812,6 @@ static void pc_i440fx_machine_2_3_options(MachineClass *m)
- {
-     pc_i440fx_machine_2_4_options(m);
-     m->hw_version = "2.3.0";
--    m->deprecation_reason = "old and unattended - use a newer version instead";
-     compat_props_add(m->compat_props, hw_compat_2_3, hw_compat_2_3_len);
-     compat_props_add(m->compat_props, pc_compat_2_3, pc_compat_2_3_len);
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 7b8aafa15b..55120e774c 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -11,6 +11,18 @@ releases, the feature is liable to be removed. Deprecated features may also
+ generate warnings on the console when QEMU starts up, or if activated via a
+ monitor command, however, this is not a mandatory requirement.
+ 
++As a special exception to this general timeframe, rather than have an
++indefinite lifetime, versioned machine types are only intended to be
++supported for a period of 6 years, equivalent to 18 QEMU releases. All
++versioned machine types will be automatically marked deprecated after an
++initial 3 years (9 QEMU releases) has passed, and will then be deleted after
++a further 3 year period has passed. It is recommended that a deprecated
++machine type is only used for incoming migrations and restore of saved state,
++for pre-existing VM deployments. Newly deployed VMs should exclusively use a
++non-deprecated machine type, with use of the most recent version highly
++recommended. Non-versioned machine types follow the general feature
++deprecation policy.
++
+ Prior to the 2.10.0 release there was no official policy on how
+ long features would be deprecated prior to their removal, nor
+ any documented list of which features were deprecated. Thus
 -- 
 2.43.0
 
