@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7668B9272
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 01:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F438B9292
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 01:49:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2Jbe-00028S-Rs; Wed, 01 May 2024 19:43:22 -0400
+	id 1s2Jbj-0002C2-5s; Wed, 01 May 2024 19:43:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2Jbb-00026M-Uv; Wed, 01 May 2024 19:43:20 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1s2Jbb-00026N-Vt; Wed, 01 May 2024 19:43:20 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2JbZ-0004zd-Bx; Wed, 01 May 2024 19:43:19 -0400
+ id 1s2Jba-0004zf-DT; Wed, 01 May 2024 19:43:19 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id E15804E6040;
- Thu, 02 May 2024 01:43:12 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id E910E4E6041;
+ Thu, 02 May 2024 01:43:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Irote1dMBxbJ; Thu,  2 May 2024 01:43:10 +0200 (CEST)
+ with ESMTP id NcIB0Ex5fDl1; Thu,  2 May 2024 01:43:12 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id EE28B4E6041; Thu, 02 May 2024 01:43:10 +0200 (CEST)
-Message-Id: <c60019daaf0218b64205ba2ec4d5f8edca20776a.1714606359.git.balaton@eik.bme.hu>
+ id 0733F4E6054; Thu, 02 May 2024 01:43:12 +0200 (CEST)
+Message-Id: <41b1a7009a742d88a4338da8ba2335e657f18f91.1714606359.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1714606359.git.balaton@eik.bme.hu>
 References: <cover.1714606359.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 05/28] target/ppc/mmu_common.c: Move calculation of a value
+Subject: [PATCH v2 06/28] target/ppc/mmu_common.c: Move calculation of a value
  closer to its usage
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -38,9 +38,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Thu, 02 May 2024 01:43:10 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Thu, 02 May 2024 01:43:12 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -61,42 +61,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In mmubooke_check_tlb() prot2 is calculated first but only used after
-an unrelated check that can return before tha value is used. Move the
-calculation after the check, closer to where it is used, to keep them
-together and avoid computing it when not needed.
+In mmubooke206_check_tlb() prot2 is calculated first but only used
+after an unrelated check that can return before tha value is used.
+Move the calculation after the check, closer to where it is used, to
+keep them together and avoid computing it when not needed.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ target/ppc/mmu_common.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 751403f1c8..168ff842a5 100644
+index 168ff842a5..b0aca8ec02 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -634,12 +634,6 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
-         return -1;
-     }
+@@ -828,6 +828,18 @@ static int mmubooke206_check_tlb(CPUPPCState *env, ppcmas_tlb_t *tlb,
  
--    if (FIELD_EX64(env->msr, MSR, PR)) {
--        prot2 = tlb->prot & 0xF;
--    } else {
--        prot2 = (tlb->prot >> 4) & 0xF;
+ found_tlb:
+ 
++    /* Check the address space and permissions */
++    if (access_type == MMU_INST_FETCH) {
++        /* There is no way to fetch code using epid load */
++        assert(!use_epid);
++        as = FIELD_EX64(env->msr, MSR, IR);
++    }
++
++    if (as != ((tlb->mas1 & MAS1_TS) >> MAS1_TS_SHIFT)) {
++        qemu_log_mask(CPU_LOG_MMU, "%s: AS doesn't match\n", __func__);
++        return -1;
++    }
++
+     if (pr) {
+         if (tlb->mas7_3 & MAS3_UR) {
+             prot2 |= PAGE_READ;
+@@ -849,19 +861,6 @@ found_tlb:
+             prot2 |= PAGE_EXEC;
+         }
+     }
+-
+-    /* Check the address space and permissions */
+-    if (access_type == MMU_INST_FETCH) {
+-        /* There is no way to fetch code using epid load */
+-        assert(!use_epid);
+-        as = FIELD_EX64(env->msr, MSR, IR);
 -    }
 -
-     /* Check the address space */
-     if ((access_type == MMU_INST_FETCH ?
-         FIELD_EX64(env->msr, MSR, IR) :
-@@ -648,6 +642,11 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
-         return -1;
-     }
- 
-+    if (FIELD_EX64(env->msr, MSR, PR)) {
-+        prot2 = tlb->prot & 0xF;
-+    } else {
-+        prot2 = (tlb->prot >> 4) & 0xF;
-+    }
+-    if (as != ((tlb->mas1 & MAS1_TS) >> MAS1_TS_SHIFT)) {
+-        qemu_log_mask(CPU_LOG_MMU, "%s: AS doesn't match\n", __func__);
+-        return -1;
+-    }
+-
      *prot = prot2;
      if (prot2 & prot_for_access_type(access_type)) {
          qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
