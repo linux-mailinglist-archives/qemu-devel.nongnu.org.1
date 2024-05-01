@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C662D8B863B
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 09:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4FA8B8645
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 09:46:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s24dA-0000qb-JR; Wed, 01 May 2024 03:43:56 -0400
+	id 1s24dD-0000ro-Q6; Wed, 01 May 2024 03:43:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s24d8-0000pv-CT
- for qemu-devel@nongnu.org; Wed, 01 May 2024 03:43:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s24d9-0000q4-0Y
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 03:43:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s24d6-0003Xr-16
+ id 1s24d7-0003Yo-4a
  for qemu-devel@nongnu.org; Wed, 01 May 2024 03:43:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714549431;
+ s=mimecast20190719; t=1714549432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xda9vZ/4orUHg9RUs409tFjFC6HKizyWCmMyjF5kot0=;
- b=d3N2fJY6udmE343LImKJxHdQh1U12nMjHykCR4/YpV/Q1yD2Vzbwt+y/YGuUB+XXMvcO4m
- H2z2LbY2rNOFMUw2I2Jf7ra06ZSCY9KLU9vTvwGiE428VuWBxJeP1XWTj33M0n+ssqFVLL
- Q2l4sABJmGKUDOfnTCCtSuAkNJ58bco=
+ bh=5ApRFGbbknxQSccF48FIq+n+vGsbiLpevcGTik4+zII=;
+ b=ah8UjfnXTw8uWjgKQnEVoLzlYQbZ6bV3JuAByw194WFzGE6ZzUx9rPE0w7qo6hGOuXyazP
+ VgFNBOIEiCBgqt+Z5qWfVIsthu0SGJTz/ksOkkUj0ePzf8ghU54tiTTOUI/6AnTiBzMXxd
+ U1GcxbDpoDNzL0GC4bMKCDYFBWnXKH0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-jKoAtm4SMpSzinv62u3C9A-1; Wed, 01 May 2024 03:43:47 -0400
-X-MC-Unique: jKoAtm4SMpSzinv62u3C9A-1
+ us-mta-100-vaHHOTMDPv6FBeeCVnMK3w-1; Wed, 01 May 2024 03:43:48 -0400
+X-MC-Unique: vaHHOTMDPv6FBeeCVnMK3w-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24B6018065B2;
- Wed,  1 May 2024 07:43:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6448D800CA2;
+ Wed,  1 May 2024 07:43:48 +0000 (UTC)
 Received: from srv1.redhat.com (unknown [10.45.224.97])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2C7BF477F80;
- Wed,  1 May 2024 07:43:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6AC0340BAA2;
+ Wed,  1 May 2024 07:43:47 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 3/9] qga/commands-posix: qmp_guest_shutdown: use ga_run_command
+Subject: [PULL 4/9] qga/commands-posix: qmp_guest_set_time: use ga_run_command
  helper
-Date: Wed,  1 May 2024 10:43:34 +0300
-Message-ID: <20240501074340.19641-4-kkostiuk@redhat.com>
+Date: Wed,  1 May 2024 10:43:35 +0300
+Message-ID: <20240501074340.19641-5-kkostiuk@redhat.com>
 In-Reply-To: <20240501074340.19641-1-kkostiuk@redhat.com>
 References: <20240501074340.19641-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -82,92 +82,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-Also remove the G_GNUC_UNUSED attribute added in the previous commit from
-the helper.
+There's no need to check for the existence of "/sbin/hwclock", the
+exec() call will do that for us.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Link: https://lore.kernel.org/r/20240320161648.158226-4-andrey.drobyshev@virtuozzo.com
+Link: https://lore.kernel.org/r/20240320161648.158226-5-andrey.drobyshev@virtuozzo.com
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 ---
- qga/commands-posix.c | 39 ++++++---------------------------------
- 1 file changed, 6 insertions(+), 33 deletions(-)
+ qga/commands-posix.c | 43 +++----------------------------------------
+ 1 file changed, 3 insertions(+), 40 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 9b1bdf194c..cb9eed9a0b 100644
+index cb9eed9a0b..545f3c99dc 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -108,7 +108,6 @@ static ssize_t ga_pipe_read_str(int fd[2], char **str)
-  * sending string to stdin and taking error message from
-  * stdout/err.
-  */
--G_GNUC_UNUSED
- static int ga_run_command(const char *argv[], const char *in_str,
-                           const char *action, Error **errp)
+@@ -279,21 +279,9 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
+ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
  {
-@@ -230,8 +229,6 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
- {
-     const char *shutdown_flag;
-     Error *local_err = NULL;
--    pid_t pid;
+     int ret;
 -    int status;
+-    pid_t pid;
+     Error *local_err = NULL;
+     struct timeval tv;
+-    static const char hwclock_path[] = "/sbin/hwclock";
+-    static int hwclock_available = -1;
+-
+-    if (hwclock_available < 0) {
+-        hwclock_available = (access(hwclock_path, X_OK) == 0);
+-    }
+-
+-    if (!hwclock_available) {
+-        error_setg(errp, QERR_UNSUPPORTED);
+-        return;
+-    }
++    const char *argv[] = {"/sbin/hwclock", has_time ? "-w" : "-s", NULL};
  
- #ifdef CONFIG_SOLARIS
-     const char *powerdown_flag = "-i5";
-@@ -260,46 +257,22 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
-         return;
-     }
- 
+     /* If user has passed a time, validate and set it. */
+     if (has_time) {
+@@ -324,37 +312,12 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
+      * just need to synchronize the hardware clock. However, if no time was
+      * passed, user is requesting the opposite: set the system time from the
+      * hardware clock (RTC). */
 -    pid = fork();
 -    if (pid == 0) {
--        /* child, start the shutdown */
 -        setsid();
 -        reopen_fd_to_null(0);
 -        reopen_fd_to_null(1);
 -        reopen_fd_to_null(2);
 -
-+    const char *argv[] = {"/sbin/shutdown",
- #ifdef CONFIG_SOLARIS
--        execl("/sbin/shutdown", "shutdown", shutdown_flag, "-g0", "-y",
--              "hypervisor initiated shutdown", (char *)NULL);
-+                          shutdown_flag, "-g0", "-y",
- #elif defined(CONFIG_BSD)
--        execl("/sbin/shutdown", "shutdown", shutdown_flag, "+0",
--               "hypervisor initiated shutdown", (char *)NULL);
-+                          shutdown_flag, "+0",
- #else
--        execl("/sbin/shutdown", "shutdown", "-h", shutdown_flag, "+0",
--               "hypervisor initiated shutdown", (char *)NULL);
-+                          "-h", shutdown_flag, "+0",
- #endif
+-        /* Use '/sbin/hwclock -w' to set RTC from the system time,
+-         * or '/sbin/hwclock -s' to set the system time from RTC. */
+-        execl(hwclock_path, "hwclock", has_time ? "-w" : "-s", NULL);
 -        _exit(EXIT_FAILURE);
 -    } else if (pid < 0) {
 -        error_setg_errno(errp, errno, "failed to create child process");
 -        return;
 -    }
-+                          "hypervisor initiated shutdown", (char *) NULL};
- 
+-
 -    ga_wait_child(pid, &status, &local_err);
-+    ga_run_command(argv, NULL, "shutdown", &local_err);
++    ga_run_command(argv, NULL, "set hardware clock to system time",
++                   &local_err);
      if (local_err) {
          error_propagate(errp, local_err);
          return;
      }
- 
+-
 -    if (!WIFEXITED(status)) {
 -        error_setg(errp, "child process has terminated abnormally");
 -        return;
 -    }
 -
 -    if (WEXITSTATUS(status)) {
--        error_setg(errp, "child process has failed to shutdown");
+-        error_setg(errp, "hwclock failed to set hardware clock to system time");
 -        return;
 -    }
--
-     /* succeeded */
  }
  
+ typedef enum {
 -- 
 2.44.0
 
