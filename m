@@ -2,111 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A488B8C07
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 16:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 913C28B8C4A
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 16:57:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2B8G-0000X2-Qh; Wed, 01 May 2024 10:40:28 -0400
+	id 1s2BMx-0003Jc-TV; Wed, 01 May 2024 10:55:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s2B7m-00009Q-BY; Wed, 01 May 2024 10:39:58 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s2BMv-0003Ih-Cv
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 10:55:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s2B7k-0002eh-1n; Wed, 01 May 2024 10:39:58 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 441EWOxt011855; Wed, 1 May 2024 14:39:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=owqMuNs2PuJ+LI4WF5pATtFmVNFysTS4In073xDw06M=;
- b=rXWDpG8ybO4L2YZdSmw2ae0bNdfjwQN/OTGJaLeq1T7GMBs836RuwISVcVMpEE5UUKwm
- 0gpzJ7KVpHNSwC5jUmLJMA9a8r0emNGj5xDSWhfvpmAUCiEjgKXhW9tK2tYCMcPxVNdz
- +ftYDMwrG1PUIWeeqlOhCq/DjM1E7CIzjhK0nCeTO4HWVyCZbN5LmueJ3B107H5LWWCe
- fsgYTOwxmaxrfFY6iHs37HcUvlyeGPyGjHd1vWIJIsIjVV0/AIUOQ+4BWvdVbVWJIaJs
- pFZwi11GSKdvZms4BRN1SLHlRRcCUFV0d4PrQeVVrNkuEe1REGzOcdq/YZucCbVhaT4u Cw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xuqjg80h6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 May 2024 14:39:43 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 441EdhFd021383;
- Wed, 1 May 2024 14:39:43 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xuqjg80h4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 May 2024 14:39:43 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 441Dsqni022334; Wed, 1 May 2024 14:39:42 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xsd6mttw9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 May 2024 14:39:42 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 441EdapH44237148
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 May 2024 14:39:38 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6A35A2004D;
- Wed,  1 May 2024 14:39:36 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D0FA020040;
- Wed,  1 May 2024 14:39:33 +0000 (GMT)
-Received: from [9.179.7.120] (unknown [9.179.7.120])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  1 May 2024 14:39:33 +0000 (GMT)
-Message-ID: <6263e5b1-853a-41bc-ba24-d3a68ba857c5@linux.ibm.com>
-Date: Wed, 1 May 2024 20:09:32 +0530
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s2BMt-0007SO-N4
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 10:55:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714575333;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aDKNmjBt2XVxNh6XjPNq7FBa91pFzJyG8q4ncdW3W6I=;
+ b=KSDo5Po+HtDL2iKadHIWrDMSVzeY3SCiJpysMaMIHsQYxhms9rFyoWNzCztsOAZ7v1wjP6
+ FuPF0qlpvXH4M4HTAd6kYq/ud7dWd32F50qCTbXD9Gs6RsmgT0EkVb/3zZoYG3/UsCcFU8
+ 51ueIEpGw4TLVnFRb8tbXq8g2i37ut8=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-2-_Z_TPm9cNJWzIgY-L7AyFA-1; Wed, 01 May 2024 10:55:32 -0400
+X-MC-Unique: _Z_TPm9cNJWzIgY-L7AyFA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6a0e5402962so5037576d6.2
+ for <qemu-devel@nongnu.org>; Wed, 01 May 2024 07:55:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714575331; x=1715180131;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aDKNmjBt2XVxNh6XjPNq7FBa91pFzJyG8q4ncdW3W6I=;
+ b=cQ7dOBRRavP/CvMHHJMXJS+ZWgpkNMdYIvAAo4QCk8rtB6yCg2ZktZ6MKQUSXS5vP+
+ 3srMXZRzTsZDgkVRIa06UxRouqQptJXVc/eXvHngSp2FlO7a82AHUrnMb3HbI0Z7NU9C
+ u7efPT1GZU0OPuh5EpZdNyML2ueqBpMdSmi2aKmN8aQy0RqtC/atxDgiEkya7OvX6x0f
+ cqSwm5TCCutkq5xP8aqNIcKN5lLIn+Hrh41f+F0F6lEoERn4Q3gjkAP/6/s27WYeICEa
+ qEvOgnJnfRixRgcmhXZ/S2ICJfuUtG+3fMlnBmB7jwXFOf6Tzkzz7zNuKCrsq1COhq3W
+ IiAQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW3JrEwyXkKZiJnfPAVHese/xY9ZnNVebAK+2gmoiYz653PLvq1EJR+LV12mYxz2dAhs0MtPxnnOtNhEXL2YBkkyknz5WA=
+X-Gm-Message-State: AOJu0YzyV/SHWimfC/3wJxamE8WnCLpeEJy1RUEjXfDtfCBVbUzeM9ly
+ T6913ifILQMD5gGLN/tiw6RTWhjyNODQkc4bdwga6Ai86v9K0JsiXoD8GGspeNisFSL/6YsxNMN
+ eHBS18eflIY3Hta9XaqtYbjGhUIgyf4IMpHVmhiMZb97MiOUMMexC
+X-Received: by 2002:a05:6214:411b:b0:6a0:d5b0:11b9 with SMTP id
+ kc27-20020a056214411b00b006a0d5b011b9mr2706784qvb.6.1714575331121; 
+ Wed, 01 May 2024 07:55:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfvs3wbM8Lfs0BzBVBaf7+gNoN9gagum93m+JGroWWseGktNnlkqSZtSJ6U62VPqxrhYzAKg==
+X-Received: by 2002:a05:6214:411b:b0:6a0:d5b0:11b9 with SMTP id
+ kc27-20020a056214411b00b006a0d5b011b9mr2706745qvb.6.1714575330351; 
+ Wed, 01 May 2024 07:55:30 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ z15-20020a0cf00f000000b0069942e76d99sm12395014qvk.48.2024.05.01.07.55.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 01 May 2024 07:55:29 -0700 (PDT)
+Date: Wed, 1 May 2024 10:55:27 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PULL 5/5] virtio-gpu: fix scanout migration post-load
+Message-ID: <ZjJX3530Q5h9cHox@x1n>
+References: <20240312140216.313618-1-marcandre.lureau@redhat.com>
+ <20240312140216.313618-6-marcandre.lureau@redhat.com>
+ <b3215169-005d-4766-ad19-3b649ff0e4c9@proxmox.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] ppc/pseries: Add Power11 cpu type
-From: Aditya Gupta <adityag@linux.ibm.com>
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20240426110023.733309-1-adityag@linux.ibm.com>
- <20240426110023.733309-2-adityag@linux.ibm.com>
- <d35b2a2d-1307-46bf-81ae-747a0e62d6be@kaod.org>
- <p57z4il36laqlccge3llmbzveepyzad7dokxpoipxh22t2y2s3@tsiegjpijeas>
- <f39f0e4a-6f9f-45f7-9f84-1663f20cd755@kaod.org>
- <358a26db-d447-453d-8313-376f00e8c902@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <358a26db-d447-453d-8313-376f00e8c902@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lcaDCk0zZfdQbUIKWAPapkjRLltkDdRD
-X-Proofpoint-ORIG-GUID: KBfx_WW8DeaaGs2qLolTq13xES6rjIVf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-01_14,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 spamscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- mlxlogscore=688 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2405010102
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <b3215169-005d-4766-ad19-3b649ff0e4c9@proxmox.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.897,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,41 +103,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On Tue, Apr 30, 2024 at 02:30:19PM +0200, Fiona Ebner wrote:
+> Am 12.03.24 um 15:02 schrieb marcandre.lureau@redhat.com:
+> > From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> > 
+> > The current post-loading code for scanout has a FIXME: it doesn't take
+> > the resource region/rect into account. But there is more, when adding
+> > blob migration support in commit f66767f75c9, I didn't realize that blob
+> > resources could be used for scanouts. This situationn leads to a crash
+> > during post-load, as they don't have an associated res->image.
+> > 
+> > virtio_gpu_do_set_scanout() handle all cases, but requires the
+> > associated virtio_gpu_framebuffer, which is currently not saved during
+> > migration.
+> > 
+> > Add a v2 of "virtio-gpu-one-scanout" with the framebuffer fields, so we
+> > can restore blob scanouts, as well as fixing the existing FIXME.
+> > 
+> > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> > Reviewed-by: Sebastian Ott <sebott@redhat.com>
+> 
+> Hi,
+> unfortunately, this broke migration from pre-9.0 to 9.0:
+> 
+> > vmstate_load_state_field virtio-gpu:virtio-gpu
+> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.enable
+> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.conf.max_outputs
+> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.scanout
+> > vmstate_load_state_field virtio-gpu-one-scanout:resource_id
+> > vmstate_load_state_field virtio-gpu-one-scanout:width
+> > vmstate_load_state_field virtio-gpu-one-scanout:height
+> > vmstate_load_state_field virtio-gpu-one-scanout:x
+> > vmstate_load_state_field virtio-gpu-one-scanout:y
+> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.resource_id
+> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_x
+> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_y
+> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.x
+> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.y
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.format
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.bytes_pp
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.width
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.height
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.stride
+> > vmstate_load_state_field virtio-gpu-one-scanout:fb.offset
+> > qemu-system-x86_64: Missing section footer for 0000:00:02.0/virtio-gpu
+> > qemu-system-x86_64: Error -22 while loading VM state
+> 
+> It wrongly tries to load the fb fields even though they should be
+> guarded by version 2.
+> 
+> Looking at it with GDB, in vmstate_load_state(), when we come to
+> field->name == parent_obj.scanout, the
+> 
+> >                 } else if (field->flags & VMS_STRUCT) {
+> >                     ret = vmstate_load_state(f, field->vmsd, curr_elem,
+> >                                              field->vmsd->version_id);
+> 
+> branch will be taken and suddenly we'll have a call to
+> vmstate_load_state() for vmsd==vmstate_virtio_gpu_scanout with
+> version_id==2 rather than version_id==1, because that is
+> field->vmsd->version_id (i.e. the .version_id in VMStateDescription
+> vmstate_virtio_gpu_scanout).
+> 
+> Would it have been necessary to version the VMStateDescription
+> vmstate_virtio_gpu_scanouts too using VMS_VSTRUCT (or am I
+> misinterpreting the use case for that)?
 
->>
->> Skiboot reports :
->>
->> [    0.121234172,6] P11 DD1.00 detected
->>
-> It is a DD2.0, with major revision = 0x2, and minor revision = 0. 
-> Might need some change in skiboot. Will post a v3 series with changes.
->
-The issue was in QEMU, not skiboot.
+Looks right.  And there's only one such user which is when it's introduced
+in 2018.  It's sad we can't simply already use vmsd subsections even if
+that was there before this VSTRUCT thing, and that should work with
+internal versioning.  Maybe we introduced that because we can't replace a
+VMS_STRUCT to subsections?
 
+https://lore.kernel.org/qemu-devel/1524670052-28373-1-git-send-email-minyard@acm.org/#t
 
-QEMU sets CFAM id for Power10 as DD1.0 (hw/ppc/pnv.c: 2093):
-
-         k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
-
-CFAM is same for Power11, and hence for both 'powernv10' and 
-'powernv11', skiboot shows DD1.0.
-
-It should be `0x220da04980000000` for DD2.0.
-
-Should I update the CFAM in a separate patch ?
-
+OTOH, I don't think vmsd versioning would work for ping-pong migrations.
+Migrating backwards should fail with 'not supported' with vmsd versionings.
+Depending on the requirement (in this virtio-gpu case, it looks like
+applicable to be used in a cluster and doing back-and-forth moves?), we may
+want to support bi-directional migrations which should be superior.  That
+will need to stick with machine type check (compat fields in hw_compat_*,
+then conditionally save/load fields) to guarantee migration can work back
+and forth.
 
 Thanks,
 
-Aditya Gupta
+-- 
+Peter Xu
 
-
->
-> Thanks,
->
-> - Aditya Gupta
->
->>
->> C.
 
