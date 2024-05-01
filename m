@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4318B8A1D
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 14:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7127E8B8A2A
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 14:41:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s29BJ-0000HS-Ic; Wed, 01 May 2024 08:35:29 -0400
+	id 1s29Fu-0002TU-AZ; Wed, 01 May 2024 08:40:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1s29BF-0000Cc-TX; Wed, 01 May 2024 08:35:26 -0400
-Received: from fout1-smtp.messagingengine.com ([103.168.172.144])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1s29BD-0000sJ-Iz; Wed, 01 May 2024 08:35:25 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfout.nyi.internal (Postfix) with ESMTP id 45A431380257;
- Wed,  1 May 2024 08:35:20 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Wed, 01 May 2024 08:35:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1714566920; x=
- 1714653320; bh=4Uxsqqc03JuzU3QX3BGCuJDJlXqHUpBjQy72b9DKNTk=; b=j
- /amkfuADtRm83fP45Kdi48cQFE/AiglPbXOBDHpHrMyVGojROx/BlKjUChrfyTX9
- COruTPjjH3b4WQ9VDOQ9IStGBmxhG3B438QUDby/01IgfRFardxR7c0AKm4HVrVI
- MlmNU8M7VQxLMV5BPVp5RK9q6BWgnSjVtdTmISo9B6UZhbg8ul5ltAiXjj4qVpMv
- vcs9uwkUw3idRr4LAVLn7atG3WtZHql7eYiVYCdW3lVGPr4Cd7OMGGxoFKn8EEh/
- w9aVuc0E8E3BftjqRHTKLCoWvVd/+tfAX04qq1JNZr8NwZfzHNJ/2xwae7/bLx88
- QiHffUZkxVyNWJv0/coZA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1714566920; x=1714653320; bh=4Uxsqqc03JuzU3QX3BGCuJDJlXqH
- UpBjQy72b9DKNTk=; b=FyIY3lfPRK9YyTMgb4leRPeMNrAEuqj3TnUi5sd0o+KR
- 8a7bMneQAwDgYxcFZ0HknYRsHuIUIwIhxmswgn0sgguvnqqgtF3RU2GB+rhZaJF0
- ZM+LhcE7gqn0CaHylmgRX2ujOv5e/wf+7QO2QeXho/JN7Uq8PVLjOEU7BqzAMoSE
- ibgD04J8KWwoI7QqIw54fS92ZLAJDCAKGkXayP2RJBL6y1oRAL9fuOPF1Lq/Gg+K
- +iJQYLK5rg0pxmTfv7D43NYt0Kwuk5+Yzw1gWZA/m9Sn+DUO8R2i7Nsw2oW1C9rv
- YW4qsMywgudIB+QaStgrqJ1cjfdL3ODbvR+BgCVgGg==
-X-ME-Sender: <xms:BzcyZhw-jSaiHxuUor1KRc33G9XkTxRBkLFF4zusoyULHXWPhELdqg>
- <xme:BzcyZhS2tiEZ_3At-GKg9viIJAyInDt6B5PzTW4KYcxM07Fxl7gR4vm-J90uEK9OF
- GQeV35cncDI4fA_-P4>
-X-ME-Received: <xmr:BzcyZrXWMayktnXZTLEXgiGDO0O2fS-yA46SL3Of3VDjvDTEaQ5OzxuoyCVx_gsmqtFo9WPvkd6xSFa0Mgo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdduhedgkeelucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehgtd
- erredttdejnecuhfhrohhmpefmlhgruhhsucflvghnshgvnhcuoehithhssehirhhrvghl
- vghvrghnthdrughkqeenucggtffrrghtthgvrhhnpeejgfejfeffvdeuhfeifefhgffgue
- elhedukeevjeevtdduudegieegteffffejveenucevlhhushhtvghrufhiiigvpedtnecu
- rfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:BzcyZjh13kFKu2JC13m9ss4CJq1ZGseAlqYnFl358-FwAn9ajUpauA>
- <xmx:BzcyZjD968R6WZJWQuuTPu-rS9jVRI1j0G_BwQLVCnlNVZD1HlGE2w>
- <xmx:BzcyZsKJGmcdC2GIJPKAjeV4HPp_4b8lyDdR-MzAGukI8p94_ePhqQ>
- <xmx:BzcyZiCFhmtOTnlB_Y49jLSVa62O-NIbVBdLcGPjH04bXenw_bZI3Q>
- <xmx:CDcyZl1idjSlpJiuwN_uz8G2dCvbWqDnazps1dkwLvDKmjQbh4DzZlZf>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 May 2024 08:35:18 -0400 (EDT)
-Date: Wed, 1 May 2024 14:35:12 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: "Berg, John" <jhnberg@amazon.co.uk>
-Cc: "kbusch@kernel.org" <kbusch@kernel.org>,
- "foss@defmacro.it" <foss@defmacro.it>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>
-Subject: Re: [PATCH] hw/nvme: Add support for setting the MQES for the NVMe
- emulation
-Message-ID: <ZjI3AOEZ4GzFdKTg@cormorant.local>
-References: <20240404120418.1611513-1-jhnberg@amazon.co.uk>
- <Zg6kmPGVZOVhfDbo@cormorant.local>
- <cecde5a0e57f4551872969798049f29fe28b3fb6.camel@amazon.co.uk>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="dWm52+v5vRuCnNVj"
-Content-Disposition: inline
-In-Reply-To: <cecde5a0e57f4551872969798049f29fe28b3fb6.camel@amazon.co.uk>
-Received-SPF: pass client-ip=103.168.172.144; envelope-from=its@irrelevant.dk;
- helo=fout1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s29Fr-0002Sp-P3; Wed, 01 May 2024 08:40:11 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s29Fn-0001Vj-KY; Wed, 01 May 2024 08:40:11 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1e4266673bbso60913845ad.2; 
+ Wed, 01 May 2024 05:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1714567205; x=1715172005; darn=nongnu.org;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3BIm4pgGKNf8okZ2IErhShj3MesXwQRAI20Hssshcfo=;
+ b=S2lUp1dSU8DmUWCp9hDqVtrJ+D6eyhqiKRFg25MKU3XNaInP4uFnsP5ez4VO2ZFlYZ
+ 9NAsAt45sdMiXvjIks3cMMWEFuhJpWen9fyZwlC/oxPIAbPP2bmKdq02fE3wAW6Wl1Pe
+ zaj4mKyNMWx9KM9tyErWtq051Rrdm03knMdLpu6C4y/8Srlsp1e7uCFfP6F7fEn55uPn
+ yg/inY7Khy/yMQnBFLgDNiFFf5r4KTCaYVz/QI1epx+Qdfh+LwCcUNKBQYOzQaFysN9I
+ NAmF0eZszfyhgzj9rk0yxDYEiz7TELyIud0IIEA8ldsyt6l3rCkRndPQLc1qC0EaTDNq
+ p74A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714567205; x=1715172005;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=3BIm4pgGKNf8okZ2IErhShj3MesXwQRAI20Hssshcfo=;
+ b=IlRR6tEy5wndO+fYejjLP9Oh3W+Uhxj7raqQTjkMkXUdowOPiimsdsQ3WWYORJ4F19
+ 26yxT7r4hjgoTFA/MJO9TS1ftNxGFqS4QZK1xz8qVsaVyHLMMvZZ2/7YqVWEAEA5unBk
+ 7uc18Y4m2an/VnHZcvC9lsvTUNgj8He5ZFzdNeR0yszfFdfM5g95pi5v79pkeuBOYbkX
+ dGVyxeIPk8yY7/ky7ki+6XN+1qXPb2mgR+SMc0ktCu+a9gPpT7GEGD6CiU5TBKkMMjgz
+ +IKTlWbW8yE6W5QtpdfZ6hM7O1P3OdB1kqqno3eT5pV9V3mkoVpZzr0gYQqHh+kvoBMm
+ xb0A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxWDynbStrlxcL1TXX1Ygv5RY8gCYEDaG8U/4Ga9yPcTuSe9Evx0ZDf33HtmlFHu4qgtAigJJYT77Eovt2OP36jIq9
+X-Gm-Message-State: AOJu0YzFBfj6S5Qj6xn1wnRIxkSuj2lBJockKVe25vTl2wE+k47PUFKP
+ U0/mLVeafg11hCwNhfqKLnq8jS3URit6jpSG4jGeBZOwlIHyPNSn
+X-Google-Smtp-Source: AGHT+IE4AGzpqKaVPr276/gQw32EGb3jLr5E6v5yW3uDb9HVs/gXuqMF6jdjtxwcoGVTJyx/8IXD2w==
+X-Received: by 2002:a17:903:904:b0:1e6:413:9df1 with SMTP id
+ ll4-20020a170903090400b001e604139df1mr2512192plb.41.1714567205458; 
+ Wed, 01 May 2024 05:40:05 -0700 (PDT)
+Received: from localhost ([1.146.40.196]) by smtp.gmail.com with ESMTPSA id
+ w3-20020a170902a70300b001e83a718d87sm24149256plq.19.2024.05.01.05.40.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 May 2024 05:40:05 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 01 May 2024 22:39:59 +1000
+Message-Id: <D0YBCHP9K12V.3JU88W5WITYRM@gmail.com>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
+ <fbarrat@linux.ibm.com>, "Saif Abrar" <saif.abrar@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] ppc/pnv: Begin a more complete ADU LPC model for
+ POWER9/10
+X-Mailer: aerc 0.17.0
+References: <20240417110215.808926-1-npiggin@gmail.com>
+ <20240417110215.808926-2-npiggin@gmail.com>
+ <577fd77f-a6b9-41f5-8193-f2cc80503a7d@kaod.org>
+In-Reply-To: <577fd77f-a6b9-41f5-8193-f2cc80503a7d@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,101 +95,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---dWm52+v5vRuCnNVj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On May  1 12:27, Berg, John wrote:
-> On Thu, 2024-04-04 at 15:01 +0200, Klaus Jensen wrote:
-> > On Apr=C2=A0 4 13:04, John Berg wrote:
-> > > From: John Berg <jhnberg@amazon.com>
-> > >=20
-> > > The MQES field in the CAP register describes the Maximum Queue
-> > > Entries
-> > > Supported for the IO queues of an NVMe controller. Adding a +1 to
-> > > the
-> > > value in this field results in the total queue size. A full queue
-> > > is
-> > > when a queue of size N contains N - 1 entries, and the minimum
-> > > queue
-> > > size is 2. Thus the lowest MQES value is 1.
-> > >=20
-> > > This patch adds the new mqes property to the NVMe emulation which
-> > > allows
-> > > a user to specify the maximum queue size by setting this property.
-> > > This
-> > > is useful as it enables testing of NVMe controller where the MQES
-> > > is
-> > > relatively small. The smallest NVMe queue size supported in NVMe is
-> > > 2
-> > > submission and completion entries, which means that the smallest
-> > > legal
-> > > mqes value is 1.
-> > >=20
-> > > The following example shows how the mqes can be set for a the NVMe
-> > > emulation:
-> > >=20
-> > > -drive id=3Dnvme0,if=3Dnone,file=3Dnvme.img,format=3Draw
-> > > -device nvme,drive=3Dnvme0,serial=3Dfoo,mqes=3D1
-> > >=20
-> > > If the mqes property is not provided then the default mqes will
-> > > still be
-> > > 0x7ff (the queue size is 2048 entries).
-> > >=20
-> > > Signed-off-by: John Berg <jhnberg@amazon.co.uk>
-> > > ---
-> > > =C2=A0hw/nvme/ctrl.c | 9 ++++++++-
-> > > =C2=A0hw/nvme/nvme.h | 1 +
-> > > =C2=A02 files changed, 9 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> > > index 127c3d2383..86cda9bc73 100644
-> > > --- a/hw/nvme/ctrl.c
-> > > +++ b/hw/nvme/ctrl.c
-> > > @@ -7805,6 +7805,12 @@ static bool nvme_check_params(NvmeCtrl *n,
-> > > Error **errp)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> > > =C2=A0
-> > > +=C2=A0=C2=A0=C2=A0 if (params->mqes < 1)
-> > > +=C2=A0=C2=A0=C2=A0 {
+On Wed Apr 17, 2024 at 9:25 PM AEST, C=C3=A9dric Le Goater wrote:
+> Hello Nick,
+>
+> On 4/17/24 13:02, Nicholas Piggin wrote:
+> > This implements a framework for an ADU unit model.
 > >=20
-> > Please keep the `{` on the same line as the `if`. I think
-> > checkpatch.pl
-> > should catch this.
+> > The ADU unit actually implements XSCOM, which is the bridge between MMI=
+O
+> > and PIB. However it also includes control and status registers and othe=
+r
+> > functions that are exposed as PIB (xscom) registers.
 > >=20
-> > No need to send a v2, I'll fix it up when I apply it to nvme-next :)
+> > To keep things simple, pnv_xscom.c remains the XSCOM bridge
+> > implementation, and pnv_adu.c implements the ADU registers and other
+> > functions.
 > >=20
-> > Thanks!
->=20
->=20
-> Hello
->=20
-> Sorry for chasing. I was just wondering when this patch will be
-> applied. I can send a second revision if that helps.
->=20
+> > So far, just the ADU no-op registers in the pnv_xscom.c default handler
+> > are moved over to the adu model.
+> >=20
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >   include/hw/ppc/pnv_adu.h   |  34 ++++++++++++
+> >   include/hw/ppc/pnv_chip.h  |   3 +
+> >   include/hw/ppc/pnv_xscom.h |   6 ++
+> >   hw/ppc/pnv.c               |  16 ++++++
+> >   hw/ppc/pnv_adu.c           | 111 ++++++++++++++++++++++++++++++++++++=
++
+> >   hw/ppc/pnv_xscom.c         |   9 ---
+> >   hw/ppc/meson.build         |   1 +
+> >   hw/ppc/trace-events        |   4 ++
+> >   8 files changed, 175 insertions(+), 9 deletions(-)
+> >   create mode 100644 include/hw/ppc/pnv_adu.h
+> >   create mode 100644 hw/ppc/pnv_adu.c
+> >=20
+> > diff --git a/include/hw/ppc/pnv_adu.h b/include/hw/ppc/pnv_adu.h
+> > new file mode 100644
+> > index 0000000000..9dc91857a9
+> > --- /dev/null
+> > +++ b/include/hw/ppc/pnv_adu.h
+> > @@ -0,0 +1,34 @@
+> > +/*
+> > + * QEMU PowerPC PowerNV Emulation of some ADU behaviour
+> > + *
+> > + * Copyright (c) 2024, IBM Corporation.
+> > + *
+> > + * SPDX-License-Identifier: LGPL-2.1-or-later
+>
+>
+> Did you mean GPL-2.0-or-later ?
 
-No need for the sorry. My apologies. It feel off my radar, so thanks for
-the bump.
+Hey Cedric,
 
-I've queued this on nvme-next, will send a pull for master ASAP.
+Thanks for reviewing, I've been away so sorry for the late reply.
 
---dWm52+v5vRuCnNVj
-Content-Type: application/pgp-signature; name="signature.asc"
+It just came from one of the headers I copied which was LGPL. But
+there's really nothing much in it and could find a GPL header to
+copy. Is GPL-2.0-or-later preferred?
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmYyNv8ACgkQTeGvMW1P
-DemfDAf/TVUsVC/JaQuNMIDkVeBgVhdY9AEU2a0AfNKDia0qwIY5J6nzltwFWaRw
-ptUa4k6xCQhgp21v74+LUnAgr4y3wq+1PxBbZTiPq98SzX5o9QpQezMMWdxKep1k
-9HrZQn7K5K5s8buijipFXvx2pA0Jhd6TQmLZxs3iS2G8zZiVuk0ZYkQYXpwM6IFm
-ETEaVCVjvCNR+SQ6BpANsjPB2xUeoq6Od5gkRaSSAHwkWpexddDrRDMvf0j9aEic
-zF1Np7P2rJxiu+X7gpEMi9/fVOw9MMciAw5hxJpAPgsEYRioSlNMJNBJcZf8GN0Z
-T/I++JBObitL3cOS1jihfhkLT5JIUA==
-=OGiP
------END PGP SIGNATURE-----
-
---dWm52+v5vRuCnNVj--
+Thanks,
+Nick
 
