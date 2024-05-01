@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439EA8B8F84
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3D18B8F87
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2Eh0-00068T-I5; Wed, 01 May 2024 14:28:35 -0400
+	id 1s2Eh9-0006Fn-2m; Wed, 01 May 2024 14:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Egy-000681-4f
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s2Eh6-0006EO-Kn
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Egw-0003HF-Ac
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:31 -0400
+ id 1s2Eh5-0003JL-2A
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714588109;
+ s=mimecast20190719; t=1714588117;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vMfJHsYvmobgy61on1Rj2n79uU4DdyDjA58g4hgCPZk=;
- b=WNokclXkdD7V4ASF825n3+j3x5vn5zqAazKQq/yhUg8629hDXK/xzBs66YgUzW6SoCGEGR
- hWJ3RKxYP5qDtS0cKX27OfGSS9DlTnz3LbPFFQ7rdPmKIokfwP//Yqb/IBbK69cDS2kYgY
- rC56jM8x53TFct5/M3fQBUz9e8MZaLM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-217-ShCAsNVtMimk0zYHe1Sygg-1; Wed,
- 01 May 2024 14:28:24 -0400
-X-MC-Unique: ShCAsNVtMimk0zYHe1Sygg-1
+ bh=GfZjvRgY+N1hSW4FRFPg1V3Orbmg+ibOyYup93C+b3Y=;
+ b=AvcGuKQAX8ROt+YrGY/tC/vmJr6WaMsuTci8AsT+OO+7kvymJoCmofv/h7f6jm8FSrDWTb
+ YJzi54DoI19LFGwR/WpygoUbHgoAHfDU+lSfTS88vn2GHgDBYR2Ba9RgICHQh9qmOfDZgl
+ Rq/NfphigWehNszLPxnVU9ara/Pa1+0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-542-A9S8f-g_OUmaAcYVWFtxJQ-1; Wed, 01 May 2024 14:28:32 -0400
+X-MC-Unique: A9S8f-g_OUmaAcYVWFtxJQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39577380390B;
- Wed,  1 May 2024 18:28:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9237830D37;
+ Wed,  1 May 2024 18:28:31 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8FABE6958;
- Wed,  1 May 2024 18:28:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 879FC8C4;
+ Wed,  1 May 2024 18:28:23 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -63,17 +63,17 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 01/14] include/hw: add helpers for defining versioned machine
- types
-Date: Wed,  1 May 2024 19:27:46 +0100
-Message-ID: <20240501182759.2934195-2-berrange@redhat.com>
+Subject: [PATCH 02/14] hw/arm: convert 'virt' machine definitions to use new
+ macros
+Date: Wed,  1 May 2024 19:27:47 +0100
+Message-ID: <20240501182759.2934195-3-berrange@redhat.com>
 In-Reply-To: <20240501182759.2934195-1-berrange@redhat.com>
 References: <20240501182759.2934195-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -97,195 +97,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The various targets which define versioned machine types have
-a bunch of obfuscated macro code for defining unique function
-and variable names using string concatenation.
-
-This addes a couple of helpers to improve the clarity of such
-code macro.
+This changes the DEFINE_VIRT_MACHINE macro to use the common
+helpers for constructing versioned symbol names and strings,
+bringing greater consistency across targets.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/hw/boards.h | 166 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 166 insertions(+)
+ hw/arm/virt.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 2fa800f11a..47ca450fca 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -414,6 +414,172 @@ struct MachineState {
-     struct NumaState *numa_state;
- };
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 3c93c0c0a6..24b104dfa7 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -101,33 +101,35 @@ static void arm_virt_compat_set(MachineClass *mc)
+                      arm_virt_compat_len);
+ }
  
-+/*
-+ * The macros which follow are intended to facilitate the
-+ * definition of versioned machine types, using a somewhat
-+ * similar pattern across targets:
-+ *
-+ *  #define DEFINE_VIRT_MACHINE_IMPL(latest, ...) \
-+ *      static void MACHINE_VER_SYM(class_init, virt, __VA_ARGS__)( \
-+ *          ObjectClass *oc, \
-+ *          void *data) \
-+ *      { \
-+ *          MachineClass *mc = MACHINE_CLASS(oc); \
-+ *          MACHINE_VER_SYM(options, virt, __VA_ARGS__)(mc); \
-+ *          mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " Virtual Machine"; \
-+ *          if (latest) { \
-+ *              mc->alias = "virt"; \
-+ *          } \
-+ *      } \
-+ *      static const TypeInfo MACHINE_VER_SYM(info, virt, __VA_ARGS__) = { \
-+ *          .name = MACHINE_VER_TYPE_NAME("virt", __VA_ARGS__), \
-+ *          .parent = TYPE_VIRT_MACHINE, \
-+ *          .class_init = MACHINE_VER_SYM(class_init, virt, __VA_ARGS__), \
-+ *      }; \
-+ *      static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-+ *      { \
-+ *          type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
-+ *      } \
-+ *      type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
-+ *
-+ * Following this, one (or more) helpers can be added for
-+ * whichever scenarios need to be catered for with a machine:
-+ *
-+ *  // Normal 2 digit, marked as latest eg 'virt-9.0'
-+ *  #define DEFINE_VIRT_MACHINE_LATEST(major, minor) \
-+ *      DEFINE_VIRT_MACHINE_IMPL(true, major, minor)
-+ *
-+ *  // Normal 2 digit eg 'virt-9.0'
-+ *  #define DEFINE_VIRT_MACHINE(major, minor) \
-+ *      DEFINE_VIRT_MACHINE_IMPL(false, major, minor)
-+ *
-+ *  // Bugfix 3 digit  eg 'virt-9.0.1'
-+ *  #define DEFINE_VIRT_MACHINE_BUGFIX(major, minor, micro) \
-+ *      DEFINE_VIRT_MACHINE_IMPL(false, major, minor, micro)
-+ *
-+ *  // Tagged 2 digit  eg 'virt-9.0-extra'
-+ *  #define DEFINE_VIRT_MACHINE_TAGGED(major, minor, tag) \
-+ *      DEFINE_VIRT_MACHINE_IMPL(false, major, minor, _, tag)
-+ *
-+ *  // Tagged bugffix 2 digit  eg 'virt-9.0.1-extra'
-+ *  #define DEFINE_VIRT_MACHINE_TAGGED(major, minor, micro, tag) \
-+ *      DEFINE_VIRT_MACHINE_IMPL(false, major, minor, micro, _, tag)
-+ */
-+
-+#define _MACHINE_VER_PICK(x1, x2, x3, x4, x5, x6, ...) x6
-+
-+/*
-+ * Construct a human targetted machine version string.
-+ *
-+ * Can be invoked with various signatures
-+ *
-+ *  MACHINE_VER_STR(sym, prefix, major, minor)
-+ *  MACHINE_VER_STR(sym, prefix, major, minor, micro)
-+ *  MACHINE_VER_STR(sym, prefix, major, minor, _, tag)
-+ *  MACHINE_VER_STR(sym, prefix, major, minor, micro, _, tag)
-+ *
-+ * Respectively emitting symbols with the format
-+ *
-+ *   "{major}.{minor}"
-+ *   "{major}.{minor}-{tag}"
-+ *   "{major}.{minor}.{micro}"
-+ *   "{major}.{minor}.{micro}-{tag}"
-+ */
-+#define _MACHINE_VER_STR2(major, minor) \
-+    #major "." #minor
-+
-+#define _MACHINE_VER_STR3(major, minor, micro) \
-+    #major "." #minor "." #micro
-+
-+#define _MACHINE_VER_STR4(major, minor, _unused_, tag) \
-+    #major "." #minor "-" #tag
-+
-+#define _MACHINE_VER_STR5(major, minor, micro, _unused_, tag) \
-+    #major "." #minor "." #micro "-" #tag
-+
-+#define MACHINE_VER_STR(...) \
-+    _MACHINE_VER_PICK(__VA_ARGS__, \
-+                      _MACHINE_VER_STR5, \
-+                      _MACHINE_VER_STR4, \
-+                      _MACHINE_VER_STR3, \
-+                      _MACHINE_VER_STR2) (__VA_ARGS__)
-+
-+
-+/*
-+ * Construct a QAPI type name for a versioned machine
-+ * type
-+ *
-+ * Can be invoked with various signatures
-+ *
-+ *  MACHINE_VER_TYPE_NAME(prefix, major, minor)
-+ *  MACHINE_VER_TYPE_NAME(prefix, major, minor, micro)
-+ *  MACHINE_VER_TYPE_NAME(prefix, major, minor, _, tag)
-+ *  MACHINE_VER_TYPE_NAME(prefix, major, minor, micro, _, tag)
-+ *
-+ * Respectively emitting symbols with the format
-+ *
-+ *   "{prefix}-{major}.{minor}"
-+ *   "{prefix}-{major}.{minor}.{micro}"
-+ *   "{prefix}-{major}.{minor}-{tag}"
-+ *   "{prefix}-{major}.{minor}.{micro}-{tag}"
-+ */
-+#define _MACHINE_VER_TYPE_NAME2(prefix, major, minor)   \
-+    prefix "-" #major "." #minor TYPE_MACHINE_SUFFIX
-+
-+#define _MACHINE_VER_TYPE_NAME3(prefix, major, minor, micro) \
-+    prefix "-" #major "." #minor "." #micro TYPE_MACHINE_SUFFIX
-+
-+#define _MACHINE_VER_TYPE_NAME4(prefix, major, minor, _unused_, tag) \
-+    prefix "-" #major "." #minor "-" #tag TYPE_MACHINE_SUFFIX
-+
-+#define _MACHINE_VER_TYPE_NAME5(prefix, major, minor, micro, _unused_, tag) \
-+    prefix "-" #major "." #minor "." #micro "-" #tag TYPE_MACHINE_SUFFIX
-+
-+#define MACHINE_VER_TYPE_NAME(prefix, ...) \
-+    _MACHINE_VER_PICK(__VA_ARGS__, \
-+                      _MACHINE_VER_TYPE_NAME5, \
-+                      _MACHINE_VER_TYPE_NAME4, \
-+                      _MACHINE_VER_TYPE_NAME3, \
-+                      _MACHINE_VER_TYPE_NAME2) (prefix, __VA_ARGS__)
-+
-+/*
-+ * Construct a name for a versioned machine type that is
-+ * suitable for use as a C symbol (function/variable/etc).
-+ *
-+ * Can be invoked with various signatures
-+ *
-+ *  MACHINE_VER_SYM(sym, prefix, major, minor)
-+ *  MACHINE_VER_SYM(sym, prefix, major, minor, micro)
-+ *  MACHINE_VER_SYM(sym, prefix, major, minor, _, tag)
-+ *  MACHINE_VER_SYM(sym, prefix, major, minor, micro, _, tag)
-+ *
-+ * Respectively emitting symbols with the format
-+ *
-+ *   {prefix}_machine_{major}_{minor}_{sym}
-+ *   {prefix}_machine_{major}_{minor}_{micro}_{sym}
-+ *   {prefix}_machine_{major}_{minor}_{tag}_{sym}
-+ *   {prefix}_machine_{major}_{minor}_{micro}_{tag}_{sym}
-+ */
-+#define _MACHINE_VER_SYM2(sym, prefix, major, minor) \
-+    prefix ## _machine_ ## major ## _ ## minor ## _ ## sym
-+
-+#define _MACHINE_VER_SYM3(sym, prefix, major, minor, micro) \
-+    prefix ## _machine_ ## major ## _ ## minor ## _ ## micro ## _ ## sym
-+
-+#define _MACHINE_VER_SYM4(sym, prefix, major, minor, _unused_, tag) \
-+    prefix ## _machine_ ## major ## _ ## minor ## _ ## tag ## _ ## sym
-+
-+#define _MACHINE_VER_SYM5(sym, prefix, major, minor, micro, _unused_, tag) \
-+    prefix ## _machine_ ## major ## _ ## minor ## _ ## micro ## _ ## tag ## _ ## sym
-+
-+#define MACHINE_VER_SYM(sym, prefix, ...) \
-+    _MACHINE_VER_PICK(__VA_ARGS__, \
-+                      _MACHINE_VER_SYM5, \
-+                      _MACHINE_VER_SYM4, \
-+                      _MACHINE_VER_SYM3, \
-+                      _MACHINE_VER_SYM2) (sym, prefix, __VA_ARGS__)
-+
-+
- #define DEFINE_MACHINE(namestr, machine_initfn) \
-     static void machine_initfn##_class_init(ObjectClass *oc, void *data) \
+-#define DEFINE_VIRT_MACHINE_LATEST(major, minor, latest) \
+-    static void virt_##major##_##minor##_class_init(ObjectClass *oc, \
+-                                                    void *data) \
++#define DEFINE_VIRT_MACHINE_IMPL(latest, ...) \
++    static void MACHINE_VER_SYM(class_init, virt, __VA_ARGS__)( \
++        ObjectClass *oc, \
++        void *data) \
      { \
+         MachineClass *mc = MACHINE_CLASS(oc); \
+         arm_virt_compat_set(mc); \
+-        virt_machine_##major##_##minor##_options(mc); \
+-        mc->desc = "QEMU " # major "." # minor " ARM Virtual Machine"; \
++        MACHINE_VER_SYM(options, virt, __VA_ARGS__)(mc); \
++        mc->desc = "QEMU " MACHINE_VER_STR(__VA_ARGS__) " ARM Virtual Machine"; \
+         if (latest) { \
+             mc->alias = "virt"; \
+         } \
+     } \
+-    static const TypeInfo machvirt_##major##_##minor##_info = { \
+-        .name = MACHINE_TYPE_NAME("virt-" # major "." # minor), \
++    static const TypeInfo MACHINE_VER_SYM(info, virt, __VA_ARGS__) = \
++    { \
++        .name = MACHINE_VER_TYPE_NAME("virt", __VA_ARGS__), \
+         .parent = TYPE_VIRT_MACHINE, \
+-        .class_init = virt_##major##_##minor##_class_init, \
++        .class_init = MACHINE_VER_SYM(class_init, virt, __VA_ARGS__), \
+     }; \
+-    static void machvirt_machine_##major##_##minor##_init(void) \
++    static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
+     { \
+-        type_register_static(&machvirt_##major##_##minor##_info); \
++        type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
+     } \
+-    type_init(machvirt_machine_##major##_##minor##_init);
++    type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
+ 
+ #define DEFINE_VIRT_MACHINE_AS_LATEST(major, minor) \
+-    DEFINE_VIRT_MACHINE_LATEST(major, minor, true)
++    DEFINE_VIRT_MACHINE_IMPL(true, major, minor)
+ #define DEFINE_VIRT_MACHINE(major, minor) \
+-    DEFINE_VIRT_MACHINE_LATEST(major, minor, false)
++    DEFINE_VIRT_MACHINE_IMPL(false, major, minor)
+ 
+ 
+ /* Number of external interrupt lines to configure the GIC with */
 -- 
 2.43.0
 
