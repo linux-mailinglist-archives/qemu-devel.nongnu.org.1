@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D468B8F97
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6148B8F98
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2EjQ-0001P4-Th; Wed, 01 May 2024 14:31:08 -0400
+	id 1s2Ej7-00012C-Jk; Wed, 01 May 2024 14:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Eig-0000wv-GM
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:19 -0400
+ id 1s2Eid-0000mq-Pz
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2Eic-0003hC-Ik
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:16 -0400
+ id 1s2Eia-0003gn-F2
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:30:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714588213;
+ s=mimecast20190719; t=1714588211;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ke0YNYbnoXN8Yjpeec2ghn7fsjIWg8CqwiI8sUJouLY=;
- b=NFSi+ySgFngx/OKVzgHIR8yodWdJMU4ksUcUW4wR/ORj/hFHndVcXYEvNrI7cmXkR3IMtG
- O6eV4q7nXz3T0W7jqZe0O821nkVUtHMX0/sfPurg7sKJrS+ezw85BB2XzLCfCjto1Tlz/v
- VA30ZQ8Sf4WjsMQwl0ESfPSydYFl25s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-257-Ewdeei-uOr6t6kUQ2jwBjw-1; Wed,
- 01 May 2024 14:30:03 -0400
-X-MC-Unique: Ewdeei-uOr6t6kUQ2jwBjw-1
+ bh=YB7cR1t0lR/9NNcOkNXfOcxVeFr4MAisnSRdl+0uzHQ=;
+ b=BuS5Z0zqnG8dv99h3AkXyQSmQjx5abM0ataaUa+w9GxYEGbqMuTuEvneGahwJPA5Z8DRYM
+ wO+7Gj9ZFrQbYJQGQ7Lyb5hWETnb+TnfzVwE2M3aXZVbsXWsVMkSio6YxDJSxjEOQWJAon
+ YcnjSgUavWxcWFCIaPjT3aSsFJtLvcQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-PW1zqcQFPJuc7hJlCHJ-Dw-1; Wed, 01 May 2024 14:30:07 -0400
+X-MC-Unique: PW1zqcQFPJuc7hJlCHJ-Dw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F7543C0274D;
- Wed,  1 May 2024 18:30:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E2ADD80017B;
+ Wed,  1 May 2024 18:30:05 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 176846958;
- Wed,  1 May 2024 18:29:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4E237AC6A;
+ Wed,  1 May 2024 18:30:00 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
@@ -63,10 +63,10 @@ Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 11/14] hw: skip registration of outdated versioned machine
- types
-Date: Wed,  1 May 2024 19:27:56 +0100
-Message-ID: <20240501182759.2934195-12-berrange@redhat.com>
+Subject: [PATCH 12/14] hw/ppc: remove obsolete manual deprecation reason
+ string of spapr machines
+Date: Wed,  1 May 2024 19:27:57 +0100
+Message-ID: <20240501182759.2934195-13-berrange@redhat.com>
 In-Reply-To: <20240501182759.2934195-1-berrange@redhat.com>
 References: <20240501182759.2934195-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -81,7 +81,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.897,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,85 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This calls the MACHINE_VER_DELETION() macro in the machine type
-registration method, so that when a versioned machine type reaches
-the end of its life, it is no longer registered with QOM and thus
-cannot be used.
+The automatic deprecation mechanism introduced in the preceeding patches
+will mark every spapr machine upto and including 2.12 as deprecated. As
+such we can revert the manually added deprecation which was a subset:
 
-The actual definition of the machine type should be deleted at
-this point, but experience shows that can easily be forgotten.
-By skipping registration the manual code deletion task can be
-done at any later date.
+  commit 1392617d35765d5d912625fbb5cab1ffbed8e140
+  Author: Cédric Le Goater <clg@kaod.org>
+  Date:   Tue Jan 23 16:37:02 2024 +1000
+
+    spapr: Tag pseries-2.1 - 2.11 machines as deprecated
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/arm/virt.c              | 1 +
- hw/m68k/virt.c             | 1 +
- hw/ppc/spapr.c             | 1 +
- hw/s390x/s390-virtio-ccw.c | 1 +
- include/hw/i386/pc.h       | 1 +
- 5 files changed, 5 insertions(+)
+ hw/ppc/spapr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index e2e10523a3..0786f82da6 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -123,6 +123,7 @@ static void arm_virt_compat_set(MachineClass *mc)
-     }; \
-     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 37bb36b385..cda199af8f 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -356,6 +356,7 @@ type_init(virt_machine_register_types)
-     }; \
-     static void MACHINE_VER_SYM(register, virt, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register_static(&MACHINE_VER_SYM(info, virt, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, virt, __VA_ARGS__));
 diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 7f5412f2ed..2aad99a2f2 100644
+index 2aad99a2f2..1b8fa71eb8 100644
 --- a/hw/ppc/spapr.c
 +++ b/hw/ppc/spapr.c
-@@ -4808,6 +4808,7 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
-     };                                                               \
-     static void MACHINE_VER_SYM(register, spapr, __VA_ARGS__)(void)  \
-     {                                                                \
-+        MACHINE_VER_DELETION(__VA_ARGS__);                           \
-         type_register(&MACHINE_VER_SYM(info, spapr, __VA_ARGS__));   \
-     }                                                                \
-     type_init(MACHINE_VER_SYM(register, spapr, __VA_ARGS__))
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 289a687434..723021f644 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -862,6 +862,7 @@ bool css_migration_enabled(void)
-     };                                                                        \
-     static void MACHINE_VER_SYM(register, ccw, __VA_ARGS__)(void)             \
-     {                                                                         \
-+        MACHINE_VER_DELETION(__VA_ARGS__);                                    \
-         type_register_static(&MACHINE_VER_SYM(info, ccw, __VA_ARGS__));       \
-     }                                                                         \
-     type_init(MACHINE_VER_SYM(register, ccw, __VA_ARGS__))
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index acc17c7dac..a605f223d5 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -337,6 +337,7 @@ extern const size_t pc_compat_2_0_len;
-     }; \
-     static void MACHINE_VER_SYM(register, namesym, __VA_ARGS__)(void) \
-     { \
-+        MACHINE_VER_DELETION(__VA_ARGS__); \
-         type_register(&MACHINE_VER_SYM(info, namesym, __VA_ARGS__)); \
-     } \
-     type_init(MACHINE_VER_SYM(register, namesym, __VA_ARGS__));
+@@ -5140,7 +5140,6 @@ static void spapr_machine_2_11_class_options(MachineClass *mc)
+     spapr_machine_2_12_class_options(mc);
+     smc->default_caps.caps[SPAPR_CAP_HTM] = SPAPR_CAP_ON;
+     compat_props_add(mc->compat_props, hw_compat_2_11, hw_compat_2_11_len);
+-    mc->deprecation_reason = "old and not maintained - use a 2.12+ version";
+ }
+ 
+ DEFINE_SPAPR_MACHINE(2, 11);
 -- 
 2.43.0
 
