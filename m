@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888518B8F7E
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1438B8F85
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 20:29:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2Eb6-0003Ts-IZ; Wed, 01 May 2024 14:22:28 -0400
+	id 1s2Egq-000677-MH; Wed, 01 May 2024 14:28:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <James.Bottomley@HansenPartnership.com>)
- id 1s2Eb3-0003Ti-7N
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:22:25 -0400
-Received: from bedivere.hansenpartnership.com ([2607:fcd0:100:8a00::2])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s2Ego-00065P-KR
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <James.Bottomley@HansenPartnership.com>)
- id 1s2Eb1-0002VZ-3K
- for qemu-devel@nongnu.org; Wed, 01 May 2024 14:22:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=hansenpartnership.com; s=20151216; t=1714587740;
- bh=nlC8u5FNep/I5qxNcgxypJDAaWmD0zfcfY0gi9iaGdE=;
- h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
- b=sB783Rw6XFEvSN5LwnBq24CYSakzoXusCJA14khLCkVakgpjDA1m0vfo7ag/ObU8t
- mPMygTffFIdjFAzjTbxkepo7+sfLQNFI+4AgNdpIZnlhqhJpZXX8tCz5KFBBeGJvZF
- bfVAGD/mD6vneJHPBJw2YklOY8Nh4mER8xECRFao=
-Received: from localhost (localhost [127.0.0.1])
- by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2436812817E1;
- Wed,  1 May 2024 14:22:20 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id dhCky9v0qs23; Wed,  1 May 2024 14:22:20 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=hansenpartnership.com; s=20151216; t=1714587739;
- bh=nlC8u5FNep/I5qxNcgxypJDAaWmD0zfcfY0gi9iaGdE=;
- h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
- b=gxn9N9DcoWyTE94+l46DQjLpNFK8Wj3zRpJbPGfVp/vJ9cFqKV9RyIaad6c5JPMWb
- 1L0dd0Pk05u+yCgiofrDBiwd18JIxXe3E50fM5dgKfgL1HtH4J5pH7T1WjNEdNWlMy
- ZzuEDXPRhqCRXIcxvX6UN7gLVawLe0I2APij/G4w=
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown
- [IPv6:2601:5c4:4302:c21::a774])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s2Egl-0003GD-Cj
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 14:28:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714588098;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=gto1UuAU9WpqeW8SpTuCOa7URFT6vnbKkqsxudrwjOc=;
+ b=csfH74adve1nvCvp8+DNt7CRi/ben62xv9ki6tMlyDl8xFvqrWUmmn0uG8YVzAEaTZQBdA
+ BCObfwLv3a3fj5aMOdeRtdfMiYfhmyyodOgCqjbbfISX4GCzAcT+a9UgsfAm1MAOCXUG3s
+ lN24e7Em0Iw5xiS6iR4DqOV6a9TxI5E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-311-Gyrs1OTHPbqoj5064iKzkg-1; Wed, 01 May 2024 14:28:14 -0400
+X-MC-Unique: Gyrs1OTHPbqoj5064iKzkg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits)
- server-digest SHA256) (Client did not present a certificate)
- by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 7514012817D6;
- Wed,  1 May 2024 14:22:19 -0400 (EDT)
-Message-ID: <251dffb90c274efbb4b5e0cae21745287730c02c.camel@HansenPartnership.com>
-Subject: Re: [PATCH v10 2/2] tpm: add backend for mssim
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: "Daniel P ." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>, Markus
- Armbruster <armbru@redhat.com>
-Date: Wed, 01 May 2024 14:22:17 -0400
-In-Reply-To: <b7bc97f6-ba49-4ee8-8c59-cf79712933f1@linux.ibm.com>
-References: <20240430190855.2811-1-James.Bottomley@HansenPartnership.com>
- <20240430190855.2811-3-James.Bottomley@HansenPartnership.com>
- <2825c9bb-a4d5-4196-b025-5f46571b3953@linux.ibm.com>
- <c97f84c7d6e026450644466313b6347b00841a43.camel@HansenPartnership.com>
- <8347cf6a-7c9f-48f8-a3a7-4053aefd2176@linux.ibm.com>
- <f10810369c716e53dc9568868cb8b83efbe5be19.camel@HansenPartnership.com>
- <b7bc97f6-ba49-4ee8-8c59-cf79712933f1@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5313F80591B;
+ Wed,  1 May 2024 18:28:13 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.121])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6CD01151EF;
+ Wed,  1 May 2024 18:28:05 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clegoate@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-arm@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 00/14] hw: define and enforce a standard lifecycle for
+ versioned machines
+Date: Wed,  1 May 2024 19:27:45 +0100
+Message-ID: <20240501182759.2934195-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:fcd0:100:8a00::2;
- envelope-from=James.Bottomley@HansenPartnership.com;
- helo=bedivere.hansenpartnership.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.897,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,69 +94,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2024-05-01 at 13:20 -0400, Stefan Berger wrote:
-> 
-> 
-> On 5/1/24 12:52, James Bottomley wrote:
-> > On Wed, 2024-05-01 at 12:31 -0400, Stefan Berger wrote:
-> > > 
-> > > 
-> > > On 5/1/24 12:21, James Bottomley wrote:
-> > > > On Tue, 2024-04-30 at 17:12 -0400, Stefan Berger wrote:
-> > > > > On 4/30/24 15:08, James Bottomley wrote:
-> > > > [...]
-> > > > > > +The mssim backend supports snapshotting and migration by
-> > > > > > not resetting
-> > > > > 
-> > > > > I don't thing snapshotting is supported because snapshooting
-> > > > > would require you to be able to set the state of the vTPM
-> > > > > from the snapshot you started. I would remove the claim.
-> > > > 
-> > > > I thought we established last time that it can definitely do
-> > > > both (and I've tested it because you asked me to). 
-> > > > Snapshotting and migration are essentially the same thing, with
-> > > > snapshotting being easier because it can be done on the same
-> > > > host meaning the same command line parameters.  If you migrate
-> > > > to a different host you need the socket to point back to the
-> > > > host serving the vTPM.
-> > > > 
-> > > > To do this easily you simply keep the vTPM running while the VM
-> > > > is undergoing snapshot and migration.  If you're thinking of
-> > > > and extended down time for the snapshot, then it's up to the
-> > > > vTPM implementation to store the state (or simply keep it
-> > > > running for an extended time doing nothing).
-> > > 
-> > > Which part of the code injects the state into the vTPM so that it
-> > > resumes with the state of the TPM (PCRs, NVRAM indices, keys,
-> > > sessions etc.) from when the snapshot was taken?
-> > 
-> > We've had this conversation before too:
-> > 
-> > https://lore.kernel.org/qemu-devel/f928986fd4095b1f27c83ede96f3b0dd65ad965e.camel@linux.ibm.com/T/#u
-> > 
-> > But the synopsis is nothing does.  The design is to be entirely
-> > independent of vTPM implementation: it will actually work with any
-> > TPM obeying the simulator IP protocol (MS reference, ibmswtpm2 or
-> > even your swtpm) but the price of this is that the user has to
-> > preserve the vTPM state, by whatever means they deem appropriate,
-> > independently of the VM snapshot image.
-> 
-> Unless your backend can retrieve the state upon snapshot save and
-> inject state into the vTPM upon snapshot resume, 'snapshotting' is
-> not working  (correctly).
+Thomas proposed a new deprecation and removal policy for versioned
+machine types that would see them liable for deletion after 6 years:
 
-That's too narrow a definition.  Snapshot is working if you can capture
-and restore the machine state.  A qemu snapshot can helpfully capture
-some device states, but not all of it (Devices that are passed through,
-like accelerators and AI units, are particularly problematic).  How you
-get the external device state (IBM cloud has an elaborate scripted
-state capture for GPUs, for instance) is up to the person implementing
-the snapshot.  For this case, the added doc specifically warns "... the
-state of the Microsoft Simulator server must be preserved (or the
-server kept running) outside of QEMU for restore to be successful", so
-I don't think there's going to be an expectation mismatch.
+  https://lists.nongnu.org/archive/html/qemu-devel/2024-04/msg04683.html
 
-James
+This suggest was met with broad approval, however, I suggested that we
+could take it further and actually mark them deprecated sooner, at the
+3 year timeframe, and also fully automate the enablement of the runtime
+deprecation warning without developer intervention on every release
+cycle.
 
+This series implements my suggestions.
+
+The first patch introduces some helper macros and documents a standard
+code pattern for defining versioned machine types across targets.
+
+The next 6 patches convert existing targets with versioned machine
+types (arm, s390x, ppc, m68k, i386) to use the new helper macros and
+code patterns.
+
+A further patch introduces some helper macros for automating the
+handling of deprecation and deletion of versioned machine types.
+
+Two more patches then enable the deprecation and deletion logic
+across all versioned machines
+
+Finally we do some cleanup and document the new policy.
+
+........a tangent about VERSION file handling.......
+
+One oddity here, is that during the development and release
+candidate phases the automatic logic in this series has an off-by-1
+error.
+
+This is because when we, for example, add the "9.1" machine type
+versions, the VERSION file is still reporting '9.0.50', and then
+'9.0.9{1,2,3,4}'.
+
+IOW, during development and in rc candidates, we fail to deprecate
+and delete 1 machine type. We should already have deprecated the
+6.1 machine types, but the most recently deprecated is 6.0.
+This is pretty harmless since the final release does the right
+thing.
+
+I wonder, however, whether we would benefit from changing how we
+update the VERSION file.
+
+eg instead of re-using the micro digit to indicate a dev or rc
+snapshot, represent those explicitly. eg "9.1.0-dev" and
+"9.1.0-rc1", "9.1.0-rc2", etc in VERSION.
+
+We don't use the full QEMU_VERSION in the code in all that many
+places. It appears in some help messages for command line tools,
+and in QMP query-version response, and in a few other misc places.
+At a glance it appears all of those places would easily handle a
+tagged version.
+
+For release candidates in particular I think it would be saner
+to show the user the actual version the release is about to become,
+rather than the previous release's version. This would make the
+reported version match the rc tarball naming too which would be
+nice.
+
+Anyway, this isn't a blocker for this machine type versioning
+proposal, just a thought....
+
+Daniel P. Berrangé (14):
+  include/hw: add helpers for defining versioned machine types
+  hw/arm: convert 'virt' machine definitions to use new macros
+  hw/s390x: convert 'ccw' machine definitions to use new macros
+  hw/ppc: convert 'spapr' machine definitions to use new macros
+  hw/m68k: convert 'virt' machine definitions to use new macros
+  hw/i386: convert 'i440fx' machine definitions to use new macros
+  hw/i386: convert 'q35' machine definitions to use new macros
+  include/hw: add macros for deprecation & removal of versioned machines
+  hw: temporarily disable deletion of versioned machine types
+  hw: set deprecation info for all versioned machine types
+  hw: skip registration of outdated versioned machine types
+  hw/ppc: remove obsolete manual deprecation reason string of spapr
+    machines
+  hw/i386: remove obsolete manual deprecation reason string of i440fx
+    machines
+  docs: document special exception for machine type deprecation &
+    removal
+
+ docs/about/deprecated.rst  |  12 ++
+ hw/arm/virt.c              |  30 +++--
+ hw/i386/pc_piix.c          | 252 +++++++++++++++-------------------
+ hw/i386/pc_q35.c           | 215 +++++++++++++----------------
+ hw/m68k/virt.c             |  53 +++++---
+ hw/ppc/spapr.c             |  96 +++++++------
+ hw/s390x/s390-virtio-ccw.c |  98 ++++++++------
+ include/hw/boards.h        | 268 +++++++++++++++++++++++++++++++++++++
+ include/hw/i386/pc.h       |  32 +++++
+ 9 files changed, 666 insertions(+), 390 deletions(-)
+
+-- 
+2.43.0
 
 
