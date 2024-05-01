@@ -2,136 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C598B8D83
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 17:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686F28B8D97
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 18:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2CJv-0004a8-5E; Wed, 01 May 2024 11:56:35 -0400
+	id 1s2CN9-0005xW-6k; Wed, 01 May 2024 11:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1s2CJs-0004Yw-HA
- for qemu-devel@nongnu.org; Wed, 01 May 2024 11:56:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s2CN7-0005wS-B7
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 11:59:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1s2CJr-0002bb-16
- for qemu-devel@nongnu.org; Wed, 01 May 2024 11:56:32 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s2CN5-0003BI-JS
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 11:59:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714578989;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=njF9BZronOprvbMtXQnFSz4Z4MdL4g0LqRgDd8LUSmg=;
- b=RiWT/N905rrXn8kwkOzhSbdVQdQ4IZGDNrBIN8BFmsoHofc0o2f5uInZXhFKJKQepalQ8U
- i8aapFsxfPpK2FRO5MYz0nVKR/m+1hGeJRV8DH/z9lQMxhVt/620hiLi2d8MQNZzwyuHAO
- YBGKxRFF2fV9VVmm8iqrmQjQAYY9D0A=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-tFvVZAWmM3eVwoAG1qr52w-1; Wed, 01 May 2024 11:56:28 -0400
-X-MC-Unique: tFvVZAWmM3eVwoAG1qr52w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-417fb8195d7so31414035e9.0
- for <qemu-devel@nongnu.org>; Wed, 01 May 2024 08:56:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714578987; x=1715183787;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=njF9BZronOprvbMtXQnFSz4Z4MdL4g0LqRgDd8LUSmg=;
- b=qXvn6gd9THOjSx++K7tpOkiTpkdHd4fe4k4WEIa1NFzSuTVxnmgWUxTh87mxjLhPW6
- LpTtOP3VXSbB12rewuUYlkOpp8IVteDbuCA3cevvJRpKGoZKxTSVMHd+4SFxXkXD9T90
- 8YAuhy2Yo5j2Xqci24KWUur/GexxYtSPSDoOjcKLZQN4o89jF+7Sg9B02cJVV94csbUv
- ENtwoWOrMnmxj56+bqVV9su08ql7P7Cu1lsUnCkRULqhJ0Tkau2jEwVITAkmyXpCjABK
- G4bfXgcLolHnmKKJ1H+kWy/p0BxyNfbkfkkonLEhFuszybiTCMAb8BSuMbUyKAcAQvMM
- flnA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUf5TBSbS5Y3+7WHH34he4mGft6J0X+EH6Eg94C6bjX2PyjK6q5/RE1tnm4sk4nQReaaAwiXp2tww8Vt+z0qaB77lvp51E=
-X-Gm-Message-State: AOJu0Yzm8nVFQGOie3IwBpYqS/y/wInqb3sln1Rb8dzOqUD7DbAmryZ5
- x3CGFZEBePMDr6yPudU8QqLhE/YAKIi0hQYWQ7Drzm77lkIGXgj85OFIvmRkj1umGFd09Tmjqji
- vmx/xXxw69h6h0z/0t8PJ2HIbyk0nPu9gCZ/wgqkOVlnEoRWutqtx
-X-Received: by 2002:a05:600c:4511:b0:418:2ccf:cbc7 with SMTP id
- t17-20020a05600c451100b004182ccfcbc7mr2198991wmo.2.1714578987032; 
- Wed, 01 May 2024 08:56:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWCVOrOQtkilRHEbLWHhaM5082r//7NzdTOgFRmNMHoU7Qop//a/wnPi+vbeNxoJk3VtN5DA==
-X-Received: by 2002:a05:600c:4511:b0:418:2ccf:cbc7 with SMTP id
- t17-20020a05600c451100b004182ccfcbc7mr2198967wmo.2.1714578986569; 
- Wed, 01 May 2024 08:56:26 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c712:aa00:299:f96e:f7b3:adae?
- (p200300cbc712aa000299f96ef7b3adae.dip0.t-ipconnect.de.
- [2003:cb:c712:aa00:299:f96e:f7b3:adae])
- by smtp.gmail.com with ESMTPSA id
- c6-20020a05600c0a4600b0041be58cdf83sm2623979wmq.4.2024.05.01.08.56.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 01 May 2024 08:56:26 -0700 (PDT)
-Message-ID: <aaf1dbf6-4676-4f69-bdf8-861511d2b36a@redhat.com>
-Date: Wed, 1 May 2024 17:56:24 +0200
+ s=mimecast20190719; t=1714579190;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Y+WXWSfMB8bYsvbR9uG135VHQK2ogCtNcSxFIO7sjho=;
+ b=Yu5xVK035WuijLRGv/H9bTduETfqtIIKxtrKEmuTSaB1OCPEBaVcgQokAykedLlq9AeF/P
+ VMBGuwChy9fmtMHJ2bHpnp6pj/BvkhefNj7GmYi/reFLhJPA+AWpc6kaQKXw99zmkJaMzP
+ GW31eXH7zb7M+zP2zrz2M8Z4CtuIN0U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-khy_QbaTPi2VscbUDZmBew-1; Wed,
+ 01 May 2024 11:59:47 -0400
+X-MC-Unique: khy_QbaTPi2VscbUDZmBew-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E47F1C05156;
+ Wed,  1 May 2024 15:59:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.121])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D85F81121312;
+ Wed,  1 May 2024 15:59:40 +0000 (UTC)
+Date: Wed, 1 May 2024 16:59:38 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Michael Galaxy <mgalaxy@akamai.com>, Yu Zhang <yu.zhang@ionos.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ "integration@gluster.org" <integration@gluster.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, arei.gonglei@huawei.com,
+ pannengyuan@huawei.com
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Message-ID: <ZjJm6rcqS5EhoKgK@redhat.com>
+References: <ZhWa0YeAb9ySVKD1@x1n>
+ <082a21b0-d4d1-9f6c-24b5-bee56263008e@fujitsu.com>
+ <ZhaY2_cO6CrQFCt3@x1n> <Zhfxoaz9yNTx8Btd@x1n>
+ <CAHEcVy7POArt+CmY8dyNTzLJp3XxXgjh3k8=C=9K+_cw1CSJFA@mail.gmail.com>
+ <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ <Zi-1OvxA5MIHjklU@x1n> <877cgfe2yw.fsf@pond.sub.org>
+ <ZjClMb-6MddpvHqQ@redhat.com> <ZjJgQcPQ29HJsTpY@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/17] softmmu: let qemu_map_ram_ptr() use
- qemu_ram_ptr_length()
-To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org, jgross@suse.com,
- Vikram Garhwal <vikram.garhwal@amd.com>,
- "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240430164939.925307-1-edgar.iglesias@gmail.com>
- <20240430164939.925307-2-edgar.iglesias@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240430164939.925307-2-edgar.iglesias@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZjJgQcPQ29HJsTpY@x1n>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -152,29 +102,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30.04.24 18:49, Edgar E. Iglesias wrote:
-> From: Juergen Gross <jgross@suse.com>
+On Wed, May 01, 2024 at 11:31:13AM -0400, Peter Xu wrote:
+> What I worry more is whether this is really what we want to keep rdma in
+> qemu, and that's also why I was trying to request for some serious
+> performance measurements comparing rdma v.s. nics.  And here when I said
+> "we" I mean both QEMU community and any company that will support keeping
+> rdma around.
 > 
-> qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so
-> modify qemu_ram_ptr_length() a little bit and use it for
-> qemu_map_ram_ptr(), too.
+> The problem is if NICs now are fast enough to perform at least equally
+> against rdma, and if it has a lower cost of overall maintenance, does it
+> mean that rdma migration will only be used by whoever wants to keep them in
+> the products and existed already?  In that case we should simply ask new
+> users to stick with tcp, and rdma users should only drop but not increase.
 > 
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-> Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-> Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-> ---
+> It seems also destined that most new migration features will not support
+> rdma: see how much we drop old features in migration now (which rdma
+> _might_ still leverage, but maybe not), and how much we add mostly multifd
+> relevant which will probably not apply to rdma at all.  So in general what
+> I am worrying is a both-loss condition, if the company might be easier to
+> either stick with an old qemu (depending on whether other new features are
+> requested to be used besides RDMA alone), or do periodic rebase with RDMA
+> downstream only.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+I don't know much about the originals of RDMA support in QEMU and why
+this particular design was taken. It is indeed a huge maint burden to
+have a completely different code flow for RDMA with 4000+ lines of
+custom protocol signalling which is barely understandable.
 
+I would note that /usr/include/rdma/rsocket.h provides a higher level
+API that is a 1-1 match of the normal kernel 'sockets' API. If we had
+leveraged that, then QIOChannelSocket class and the QAPI SocketAddress
+type could almost[1] trivially have supported RDMA. There would have
+been almost no RDMA code required in the migration subsystem, and all
+the modern features like compression, multifd, post-copy, etc would
+"just work".
+
+I guess the 'rsocket.h' shim may well limit some of the possible
+performance gains, but it might still have been a better tradeoff
+to have not quite so good peak performance, but with massively
+less maint burden.
+
+With regards,
+Daniel
+
+[1] "almost" trivially, because the poll() integration for rsockets
+    requires a bit more magic sauce since rsockets FDs are not
+    really FDs from the kernel's POV. Still, QIOCHannel likely can
+    abstract that probme.
 -- 
-Cheers,
-
-David / dhildenb
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
