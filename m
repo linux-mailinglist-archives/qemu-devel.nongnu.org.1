@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3D38B9283
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 01:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C389F8B928F
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 01:48:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2Jbe-00027l-63; Wed, 01 May 2024 19:43:22 -0400
+	id 1s2Jbc-00026G-F7; Wed, 01 May 2024 19:43:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2Jba-00023v-Lv; Wed, 01 May 2024 19:43:18 -0400
+ id 1s2JbZ-00023Z-EN; Wed, 01 May 2024 19:43:17 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2JbV-0004yw-Sl; Wed, 01 May 2024 19:43:17 -0400
+ id 1s2JbV-0004yx-SQ; Wed, 01 May 2024 19:43:17 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 97DCB4E603A;
- Thu, 02 May 2024 01:43:08 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9CB974E602E;
+ Thu, 02 May 2024 01:43:09 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Es2ihNabPT2q; Thu,  2 May 2024 01:43:06 +0200 (CEST)
+ with ESMTP id NFhyPfUeK5U8; Thu,  2 May 2024 01:43:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A0D6C4E602E; Thu, 02 May 2024 01:43:06 +0200 (CEST)
-Message-Id: <b0108fa07b84dfeb0fd0337b88c38f34d8d16cfc.1714606359.git.balaton@eik.bme.hu>
+ id AF3994E6039; Thu, 02 May 2024 01:43:07 +0200 (CEST)
+Message-Id: <f70b29e524d06be5d5289fe211fece641606dacf.1714606359.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1714606359.git.balaton@eik.bme.hu>
 References: <cover.1714606359.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 01/28] target/ppc: Fix gen_sc to use correct nip
+Subject: [PATCH v2 02/28] target/ppc: Move patching nip from exception handler
+ to helper_scv
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Thu, 02 May 2024 01:43:06 +0200 (CEST)
+Date: Thu, 02 May 2024 01:43:07 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,154 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most exceptions are raised with nip pointing to the faulting
-instruction but the sc instruction generating a syscall exception
-leaves nip pointing to next instruction. Fix gen_sc to not use
-gen_exception_err() which sets nip back but correctly set nip to
-pc_next so we don't have to patch this in the exception handlers.
+From: Nicholas Piggin <npiggin@gmail.com>
 
+Unlike sc, for scv a facility unavailable interrupt must be generated
+if FSCR[SCV]=0 so we can't raise the exception with nip set to next
+instruction but we can move advancing nip if the FSCR check passes to
+helper_scv so the exception handler does not need to change it.
+
+[balaton: added commit message]
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/excp_helper.c | 43 ++--------------------------------------
- target/ppc/translate.c   | 15 ++++++--------
- 2 files changed, 8 insertions(+), 50 deletions(-)
+ target/ppc/excp_helper.c | 2 +-
+ target/ppc/translate.c   | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 0712098cf7..92fe535815 100644
+index 92fe535815..5aa84bccd2 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -116,7 +116,7 @@ static void dump_syscall(CPUPPCState *env)
-                   ppc_dump_gpr(env, 0), ppc_dump_gpr(env, 3),
-                   ppc_dump_gpr(env, 4), ppc_dump_gpr(env, 5),
-                   ppc_dump_gpr(env, 6), ppc_dump_gpr(env, 7),
--                  ppc_dump_gpr(env, 8), env->nip);
-+                  ppc_dump_gpr(env, 8), env->nip - 4);
- }
+@@ -1415,7 +1415,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+     case POWERPC_EXCP_SYSCALL_VECTORED: /* scv exception                     */
+         lev = env->error_code;
+         dump_syscall(env);
+-        env->nip += 4;
+         new_msr |= env->msr & ((target_ulong)1 << MSR_EE);
+         new_msr |= env->msr & ((target_ulong)1 << MSR_RI);
  
- static void dump_hcall(CPUPPCState *env)
-@@ -131,7 +131,7 @@ static void dump_hcall(CPUPPCState *env)
-                   ppc_dump_gpr(env, 7), ppc_dump_gpr(env, 8),
-                   ppc_dump_gpr(env, 9), ppc_dump_gpr(env, 10),
-                   ppc_dump_gpr(env, 11), ppc_dump_gpr(env, 12),
--                  env->nip);
-+                  env->nip - 4);
- }
- 
- #ifdef CONFIG_TCG
-@@ -516,12 +516,6 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-         dump_syscall(env);
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
-         break;
-     case POWERPC_EXCP_FIT:       /* Fixed-interval timer interrupt           */
-         trace_ppc_excp_print("FIT");
-@@ -632,12 +626,6 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-         dump_syscall(env);
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
-         break;
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
-     case POWERPC_EXCP_DECR:      /* Decrementer exception                    */
-@@ -780,13 +768,6 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-         } else {
-             dump_syscall(env);
-         }
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
--
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-@@ -932,13 +913,6 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-         } else {
-             dump_syscall(env);
-         }
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
--
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-@@ -1098,12 +1072,6 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
-         break;
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-         dump_syscall(env);
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
-         break;
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
-     case POWERPC_EXCP_APU:       /* Auxiliary processor unavailable          */
-@@ -1428,13 +1396,6 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-         } else {
-             dump_syscall(env);
-         }
--
--        /*
--         * We need to correct the NIP which in this case is supposed
--         * to point to the next instruction
--         */
--        env->nip += 4;
--
-         /* "PAPR mode" built-in hypercall emulation */
-         if (lev == 1 && books_vhyp_handles_hcall(cpu)) {
-             PPCVirtualHypervisorClass *vhc =
+@@ -2524,6 +2523,7 @@ void helper_ppc_maybe_interrupt(CPUPPCState *env)
+ void helper_scv(CPUPPCState *env, uint32_t lev)
+ {
+     if (env->spr[SPR_FSCR] & (1ull << FSCR_SCV)) {
++        env->nip += 4;
+         raise_exception_err(env, POWERPC_EXCP_SYSCALL_VECTORED, lev);
+     } else {
+         raise_exception_err(env, POWERPC_EXCP_FU, FSCR_IC_SCV);
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 93ffec787c..e112c44a02 100644
+index e112c44a02..1d4e9f0679 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -4472,22 +4472,19 @@ static void gen_hrfid(DisasContext *ctx)
- #endif
- 
- /* sc */
--#if defined(CONFIG_USER_ONLY)
--#define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL_USER
--#else
--#define POWERPC_SYSCALL POWERPC_EXCP_SYSCALL
--#endif
- static void gen_sc(DisasContext *ctx)
+@@ -4493,7 +4493,11 @@ static void gen_scv(DisasContext *ctx)
  {
--    uint32_t lev;
--
-     /*
-      * LEV is a 7-bit field, but the top 6 bits are treated as a reserved
-      * field (i.e., ignored). ISA v3.1 changes that to 5 bits, but that is
-      * for Ultravisor which TCG does not support, so just ignore the top 6.
-      */
--    lev = (ctx->opcode >> 5) & 0x1;
--    gen_exception_err(ctx, POWERPC_SYSCALL, lev);
-+    uint32_t lev = (ctx->opcode >> 5) & 0x1;
-+#ifdef CONFIG_USER_ONLY
-+    gen_exception_err(ctx, POWERPC_EXCP_SYSCALL_USER, lev);
-+#else
-+    gen_exception_err_nip(ctx, POWERPC_EXCP_SYSCALL, lev, ctx->base.pc_next);
-+#endif
- }
+     uint32_t lev = (ctx->opcode >> 5) & 0x7F;
  
- #if defined(TARGET_PPC64)
+-    /* Set the PC back to the faulting instruction. */
++    /*
++     * Set the PC back to the scv instruction (unlike sc), because a facility
++     * unavailable interrupt must be generated if FSCR[SCV]=0. The helper
++     * advances nip if the FSCR check passes.
++     */
+     gen_update_nip(ctx, ctx->cia);
+     gen_helper_scv(tcg_env, tcg_constant_i32(lev));
+ 
 -- 
 2.30.9
 
