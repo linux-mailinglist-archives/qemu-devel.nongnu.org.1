@@ -2,80 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8C08B8BFA
-	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 16:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A488B8C07
+	for <lists+qemu-devel@lfdr.de>; Wed,  1 May 2024 16:40:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2B6O-00038Y-FD; Wed, 01 May 2024 10:38:32 -0400
+	id 1s2B8G-0000X2-Qh; Wed, 01 May 2024 10:40:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2B5x-0002ja-Kj
- for qemu-devel@nongnu.org; Wed, 01 May 2024 10:38:11 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2B5w-0002D8-2t
- for qemu-devel@nongnu.org; Wed, 01 May 2024 10:38:05 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1e50a04c317so37749165ad.1
- for <qemu-devel@nongnu.org>; Wed, 01 May 2024 07:38:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714574283; x=1715179083; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
- b=BprKGdB7b9NZil8ImgEMzUk1wSkPlY2rjadiv2XcVGC/WRHeiu3Z0rTvBKsdeEL034
- UNMNohEzVLJEr/IPmb3RoeopMBZ+mkh8HLK0mH4QOh+skPMulncaqvlvq8g5KjmUG65/
- XiUYCqf1MW2QLKGdWi3CXNOhdCDOaTunOY2XuXYR0kaLc/bHUVMRhSPe/KPlIJxp6duT
- c+7HtRIrSqyDcs63sNThEoWLAsZ+8saIZxe7bg1FZb2t1fpYMLjpAnV+NVCi2ITA7Pph
- 6CUsAXdGKWnbLcMxs20VKg2RYvTrpXWOEAPfXDK4MWVL/XSqP47YePFyuNFUxC0o/0lM
- a1DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714574283; x=1715179083;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
- b=AhVVyWyHQ9XKxJ+y/VG1yu7diQ9D+1cVKIT20gI/9B1jLNnOExZAY3ksqkvbmGNv6k
- UYfoIwGhy7O67wQ8P8pcHXkN/Gcp5n/bLS2UgsBHCXRpN4XgykFbXn6AzdH5O+eDEx2l
- HhQUCrK6kf56jC1mv6j4YyL7EhA8yAEsy07VGiLVGROLPqkCjVaxVEont2GtblK+jaYv
- bYhs5H8GDXrZu82B4SkB77ggix6UVg3H/kiyrjRd9gHvNhY/m3qwER0HpTdORHMzwt3Q
- 7hqutOuLYD+6xrDw0mbN4xp4ZZ0GoidKIwGVbNHQMoKQPbzDVV7P9tTbRVTVunQWMXFy
- nFXA==
-X-Gm-Message-State: AOJu0YzFfuTkztYpZD3ogqz7wyl3QMvgeA6OW+/o4cFLuB7ZJt8hSajY
- 1bH3kLB2we3vcb2w5/rE9OW6lVbeUKavpPi5vhpW4QO6+6hoakKuZKyFyGK2l7WN8VB0wNuucoh
- +
-X-Google-Smtp-Source: AGHT+IEBbd9bh4IAw0TvBLUqE76Ggryq9JHHmr7afNkw4ixqSlfUr4WPrCGbHPBIkLO273Ey8NaJZw==
-X-Received: by 2002:a17:902:e892:b0:1eb:c3d4:349c with SMTP id
- w18-20020a170902e89200b001ebc3d4349cmr2786402plg.30.1714574282800; 
- Wed, 01 May 2024 07:38:02 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- h12-20020a170902f54c00b001ebd73f61fcsm5751573plf.121.2024.05.01.07.38.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 May 2024 07:38:02 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 20/20] plugins: Update the documentation block for plugin-gen.c
-Date: Wed,  1 May 2024 07:37:39 -0700
-Message-Id: <20240501143739.10541-21-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240501143739.10541-1-richard.henderson@linaro.org>
-References: <20240501143739.10541-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1s2B7m-00009Q-BY; Wed, 01 May 2024 10:39:58 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1s2B7k-0002eh-1n; Wed, 01 May 2024 10:39:58 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 441EWOxt011855; Wed, 1 May 2024 14:39:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=owqMuNs2PuJ+LI4WF5pATtFmVNFysTS4In073xDw06M=;
+ b=rXWDpG8ybO4L2YZdSmw2ae0bNdfjwQN/OTGJaLeq1T7GMBs836RuwISVcVMpEE5UUKwm
+ 0gpzJ7KVpHNSwC5jUmLJMA9a8r0emNGj5xDSWhfvpmAUCiEjgKXhW9tK2tYCMcPxVNdz
+ +ftYDMwrG1PUIWeeqlOhCq/DjM1E7CIzjhK0nCeTO4HWVyCZbN5LmueJ3B107H5LWWCe
+ fsgYTOwxmaxrfFY6iHs37HcUvlyeGPyGjHd1vWIJIsIjVV0/AIUOQ+4BWvdVbVWJIaJs
+ pFZwi11GSKdvZms4BRN1SLHlRRcCUFV0d4PrQeVVrNkuEe1REGzOcdq/YZucCbVhaT4u Cw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xuqjg80h6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 May 2024 14:39:43 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 441EdhFd021383;
+ Wed, 1 May 2024 14:39:43 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xuqjg80h4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 May 2024 14:39:43 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 441Dsqni022334; Wed, 1 May 2024 14:39:42 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xsd6mttw9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 May 2024 14:39:42 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 441EdapH44237148
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 May 2024 14:39:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6A35A2004D;
+ Wed,  1 May 2024 14:39:36 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D0FA020040;
+ Wed,  1 May 2024 14:39:33 +0000 (GMT)
+Received: from [9.179.7.120] (unknown [9.179.7.120])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  1 May 2024 14:39:33 +0000 (GMT)
+Message-ID: <6263e5b1-853a-41bc-ba24-d3a68ba857c5@linux.ibm.com>
+Date: Wed, 1 May 2024 20:09:32 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] ppc/pseries: Add Power11 cpu type
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20240426110023.733309-1-adityag@linux.ibm.com>
+ <20240426110023.733309-2-adityag@linux.ibm.com>
+ <d35b2a2d-1307-46bf-81ae-747a0e62d6be@kaod.org>
+ <p57z4il36laqlccge3llmbzveepyzad7dokxpoipxh22t2y2s3@tsiegjpijeas>
+ <f39f0e4a-6f9f-45f7-9f84-1663f20cd755@kaod.org>
+ <358a26db-d447-453d-8313-376f00e8c902@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <358a26db-d447-453d-8313-376f00e8c902@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: lcaDCk0zZfdQbUIKWAPapkjRLltkDdRD
+X-Proofpoint-ORIG-GUID: KBfx_WW8DeaaGs2qLolTq13xES6rjIVf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-01_14,2024-04-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ mlxscore=0 spamscore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ mlxlogscore=688 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2405010102
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,55 +122,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/plugin-gen.c | 31 ++++---------------------------
- 1 file changed, 4 insertions(+), 27 deletions(-)
+Hi Cédric,
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index d914d64de0..3db74ae9bf 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -14,33 +14,10 @@
-  * Injecting the desired instrumentation could be done with a second
-  * translation pass that combined the instrumentation requests, but that
-  * would be ugly and inefficient since we would decode the guest code twice.
-- * Instead, during TB translation we add "empty" instrumentation calls for all
-- * possible instrumentation events, and then once we collect the instrumentation
-- * requests from plugins, we either "fill in" those empty events or remove them
-- * if they have no requests.
-- *
-- * When "filling in" an event we first copy the empty callback's TCG ops. This
-- * might seem unnecessary, but it is done to support an arbitrary number
-- * of callbacks per event. Take for example a regular instruction callback.
-- * We first generate a callback to an empty helper function. Then, if two
-- * plugins register one callback each for this instruction, we make two copies
-- * of the TCG ops generated for the empty callback, substituting the function
-- * pointer that points to the empty helper function with the plugins' desired
-- * callback functions. After that we remove the empty callback's ops.
-- *
-- * Note that the location in TCGOp.args[] of the pointer to a helper function
-- * varies across different guest and host architectures. Instead of duplicating
-- * the logic that figures this out, we rely on the fact that the empty
-- * callbacks point to empty functions that are unique pointers in the program.
-- * Thus, to find the right location we just have to look for a match in
-- * TCGOp.args[]. This is the main reason why we first copy an empty callback's
-- * TCG ops and then fill them in; regardless of whether we have one or many
-- * callbacks for that event, the logic to add all of them is the same.
-- *
-- * When generating more than one callback per event, we make a small
-- * optimization to avoid generating redundant operations. For instance, for the
-- * second and all subsequent callbacks of an event, we do not need to reload the
-- * CPU's index into a TCG temp, since the first callback did it already.
-+ * Instead, during TB translation we add "plugin_cb" marker opcodes
-+ * for all possible instrumentation events, and then once we collect the
-+ * instrumentation requests from plugins, we generate code for those markers
-+ * or remove them if they have no requests.
-  */
- #include "qemu/osdep.h"
- #include "qemu/plugin.h"
--- 
-2.34.1
+>>
+>> Skiboot reports :
+>>
+>> [    0.121234172,6] P11 DD1.00 detected
+>>
+> It is a DD2.0, with major revision = 0x2, and minor revision = 0. 
+> Might need some change in skiboot. Will post a v3 series with changes.
+>
+The issue was in QEMU, not skiboot.
 
+
+QEMU sets CFAM id for Power10 as DD1.0 (hw/ppc/pnv.c: 2093):
+
+         k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
+
+CFAM is same for Power11, and hence for both 'powernv10' and 
+'powernv11', skiboot shows DD1.0.
+
+It should be `0x220da04980000000` for DD2.0.
+
+Should I update the CFAM in a separate patch ?
+
+
+Thanks,
+
+Aditya Gupta
+
+
+>
+> Thanks,
+>
+> - Aditya Gupta
+>
+>>
+>> C.
 
