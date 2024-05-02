@@ -2,48 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC48B9293
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 01:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B31148B92B7
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 02:18:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2JcM-0002vM-K9; Wed, 01 May 2024 19:44:06 -0400
+	id 1s2K8N-0000It-9i; Wed, 01 May 2024 20:17:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2JcG-0002oh-BL; Wed, 01 May 2024 19:44:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s2JcE-00054V-No; Wed, 01 May 2024 19:44:00 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 295E84E6056;
- Thu, 02 May 2024 01:43:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 7m8bG9PRqHY2; Thu,  2 May 2024 01:43:35 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3FBFA4E6055; Thu, 02 May 2024 01:43:35 +0200 (CEST)
-Message-Id: <a99aeec44ad192f842d66f7514702bd5d5f912ad.1714606359.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1714606359.git.balaton@eik.bme.hu>
-References: <cover.1714606359.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 28/28] target/ppc: Split off common 4xx TLB init
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s2K8L-0000IV-OL
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 20:17:09 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s2K8K-0001z6-6P
+ for qemu-devel@nongnu.org; Wed, 01 May 2024 20:17:09 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-234db9dde9bso3132843fac.1
+ for <qemu-devel@nongnu.org>; Wed, 01 May 2024 17:17:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714609026; x=1715213826; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=75uTeGVmMeSa8zwPqloLaRC9fOP9T0eokl39jYzKJPo=;
+ b=hDdpm9vLdzU/ApGLVbIZRBg6n0KfX7K9C9OxI+3ZkwUgqypGEaZ7Gl7WWe329YnexV
+ Ce4FObXkNy0ZMbJSMUbvEwpump/4EKxuHtaSbk/bA9KHm8MkNaOIfrXEi+D5vt6hnIXf
+ pPDDBBoBtgQqlTfvlG0ZK8jj+abbYXWUl51Ziw/jOS2jtkYLgoT24vqF/lBZON6YUf07
+ C+qzAlt4seLHDNoGMqHIWK2vddipybOd1IGEuDzdp4SzgGoX8lk1cKW7cfglnHAtiXEi
+ UATRBo6h5Jy57aaO/J/RPsY/8AJvyDGJjfFKdta3yBwb4zE8kzEsg0iHh5a/o/YLstvZ
+ Ilew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714609026; x=1715213826;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=75uTeGVmMeSa8zwPqloLaRC9fOP9T0eokl39jYzKJPo=;
+ b=lWP+xBeilR1hm/h25eAHmmjyL+M5yuV1NM+vR5cfuhvEno2Xfbi0lBg9KFZdKcMLzi
+ js1sC4zYAL7HkIS+FwkLo1JJ/Jl1VuKucHbot4te6XWizccXhZ8mPvKLf46DnKU7GqJg
+ 4gtpaO3t+HWN3YAvPVYh0cvRioYzBIOmBBBboDQjxaFwv/TYSwUZnxsy/Bz3cA3ylVOA
+ FEDTthgZaDELsuA56FvP/wVpgFMhcC7Kfv95FyoCdP2+L4Sn3PGraVpvUX8Lg3xTsTBu
+ g287epqFSig7dXieM4uEN3wXgW69CCx1I7UOgwCfzeb34YQt6yI3TOoEKHAR863ReGAs
+ A9YQ==
+X-Gm-Message-State: AOJu0YyDpVrIiH2rAYivRSn2iay4fm7+PVDsqIRvOcFRjhm6Rrgp5ac4
+ Vv0Dro3AdSbboCXmBjsBAvuKJExe7lCkh3b4LxAaVGDcdx6i09XUZUlmXj4mmjhQMnZib56gOtl
+ a
+X-Google-Smtp-Source: AGHT+IFPMHTjAiBr9eM6Pfxcyre4p7k27Wulk0nkK10IkITWZDcFwLFgLsJZBhG+iTcQlnxAJL2M2A==
+X-Received: by 2002:a05:6870:8a0f:b0:220:873d:dbcc with SMTP id
+ p15-20020a0568708a0f00b00220873ddbccmr769475oaq.49.1714609026305; 
+ Wed, 01 May 2024 17:17:06 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ 81-20020a630254000000b005f80080586asm20842079pgc.93.2024.05.01.17.17.05
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 01 May 2024 17:17:05 -0700 (PDT)
+Message-ID: <b6d1892f-d84c-4960-b913-80b984fb4b26@linaro.org>
+Date: Wed, 1 May 2024 17:17:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Thu, 02 May 2024 01:43:35 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/20] tcg patch queue
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20240501143739.10541-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20240501143739.10541-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,106 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Several 4xx related CPUs have the same TLB settings. Split it off in a
-common function in cpu_init.
+On 5/1/24 07:37, Richard Henderson wrote:
+> The following changes since commit 9c6c079bc6723da8061ccfb44361d67b1dd785dd:
+> 
+>    Merge tag 'pull-target-arm-20240430' ofhttps://git.linaro.org/people/pmaydell/qemu-arm  into staging (2024-04-30 09:58:54 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20240501
+> 
+> for you to fetch changes up to 917d7f8d948d706e275c9f33169b9dd0149ded1e:
+> 
+>    plugins: Update the documentation block for plugin-gen.c (2024-04-30 16:12:05 -0700)
+> 
+> ----------------------------------------------------------------
+> plugins: Rewrite plugin tcg expansion
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- target/ppc/cpu_init.c | 46 ++++++++++++++++---------------------------
- 1 file changed, 17 insertions(+), 29 deletions(-)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 07ad788e54..d7e85c1b07 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -2107,18 +2107,22 @@ static int check_pow_hid0_74xx(CPUPPCState *env)
-     return 0;
- }
- 
-+static void init_tlbs_4xx(CPUPPCState *env)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    env->nb_tlb = 64;
-+    env->nb_ways = 1;
-+    env->tlb_type = TLB_EMB;
-+#endif
-+}
-+
- static void init_proc_405(CPUPPCState *env)
- {
-     register_40x_sprs(env);
-     register_405_sprs(env);
-     register_usprgh_sprs(env);
- 
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+    init_tlbs_4xx(env);
-     init_excp_4xx(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2185,12 +2189,8 @@ static void init_proc_440EP(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_4xx(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2282,12 +2282,7 @@ static void init_proc_440GP(CPUPPCState *env)
-     register_440_sprs(env);
-     register_usprgh_sprs(env);
- 
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+    init_tlbs_4xx(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2355,12 +2350,8 @@ static void init_proc_440x5(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_4xx(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2717,11 +2708,8 @@ static void init_proc_e200(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_4xx(env);
-     init_excp_e200(env, 0xFFFF0000UL);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
--- 
-2.30.9
+
+r~
 
 
