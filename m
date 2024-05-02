@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2292B8B9453
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 07:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A7D8B945E
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 07:47:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2PFD-0008NW-NJ; Thu, 02 May 2024 01:44:36 -0400
+	id 1s2PFL-0008TI-Ji; Thu, 02 May 2024 01:44:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2PF5-0008MK-MX
- for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:27 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1s2PFA-0008NT-4C
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:33 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2PEz-0002bD-NA
- for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:27 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f2f6142d64so7057737b3a.2
- for <qemu-devel@nongnu.org>; Wed, 01 May 2024 22:44:21 -0700 (PDT)
+ id 1s2PF1-0002bO-Gj
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:30 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-5af23552172so4531678eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 01 May 2024 22:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714628660; x=1715233460; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Uh/e9AC7IaGAogX1ZpLqkQ+Kxck2qAEP70TLZWNb2mc=;
- b=f3YtZMG4iJkLd5jv6GCJVHedFCOfbsSPTHNh+jXqpT7qvJsqdrXt0nZRG/wRJ+PeRw
- 7P9R3aRaiuJQhCS6NE995/lPIG07Xvr2xR0IdTihs5wqdMBeaayD0RGCVcjuJt6UH4Qv
- AHcmx5rptkSIagrkV0RdBOLfkxjLQJjDRa1txg59kJK3W2jd3FlX38Fqgj0Y2qit1oeJ
- mouD3/uP1me2dE6V/AlKRczfnAHVRb8hrhUnBN5xinULShFe5Q7kP7wwdQ9swXkulWyi
- ldQjXah0VPRGn2JUPlLZ/5iQs6Wm66BwICIp/Fiy2kDjpBytnTssHd+E8tQ+68dS0xZA
- i4pw==
+ d=linaro.org; s=google; t=1714628661; x=1715233461; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ADqNlAkDm96SQVHhIMZpqIxZeOqZ/sxONedvIjC0scE=;
+ b=hrS1yJ9h4CDdp3kWKbkwFo9hfKvHVz2DLBTEWTrNUO7PbRFmmV14Hj7VkIox4We0/G
+ MGgbawWMdZ7dbb65xpoxwHqC04Cu/8lQ6k2OzzvychUvl1O/wIs2LJOuVYlKNexoa/R7
+ J5UE5CxGmjXUvhhF21rtJNdwtrtEBIyzPFRk5MYHoGqg1dIEgi9Aqq/ezyqG3oO9FrJ1
+ GiJCgnj1exTqR1HzmCA1J9nGqtva/LW1AsIfcCKCTGAAH1H0BJYZBnTNmGbMHrYMXPdQ
+ fHJCmjEJ+7OPf9jj31nVGv+nkR5nvAafxfdn+kiTNxNquf8lwOGxfxF7unZ4ij96FzMl
+ JyWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714628660; x=1715233460;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Uh/e9AC7IaGAogX1ZpLqkQ+Kxck2qAEP70TLZWNb2mc=;
- b=crl3g345oN/RTEKbIoUKG/sV2pfF+AxTLSpUr6V7BSrtNKbUjOGpqaHiU/+vgSHesS
- cZt/w1KBbj8swlkK3TD476BR2WKi0sSIcUKhok9zuR7g4hSEaByLTm4/PK4dOjWNfwTF
- fvH86wwmNzt/BbdYZA9AH+fTIqtPQR8wywtNfYmtQvOLZKs68hrrqm+MO83DZGm06Eqn
- c1V1op99KpK8cdMJiozDTdK1ij0GAdqOApPJ2vhAsAnl0N4N1xl/6eVymcneA7UPo28E
- Dnw6moyy/FOmi0DULsWsuE11riGyTuNT+Hi1N+o3PgMVUt8Gmtd1tmqQqVpxorHEhS/N
- HUjA==
-X-Gm-Message-State: AOJu0YyZjxcc15t1ZRxSO3v5JuCwCkU1oRUb7E3ON5yOgO3yyhu0Ylqv
- 4DbOL/wl0YRewy6FRxRUBGuYj+YhpJrpE53bvAak69eESLkzSfRFJYUepJUwl6NIzpU3VMpGLdZ
- V
-X-Google-Smtp-Source: AGHT+IGTlEBNULUOw3UXzBI9eQ5z1S63Wi58QBl71qTl1NZ4nfnS1NVpj+yMWUyEc3VguhDUnJJLbw==
-X-Received: by 2002:a05:6a00:3a16:b0:6ec:f9d3:d0c6 with SMTP id
- fj22-20020a056a003a1600b006ecf9d3d0c6mr1381405pfb.16.1714628660012; 
+ d=1e100.net; s=20230601; t=1714628661; x=1715233461;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ADqNlAkDm96SQVHhIMZpqIxZeOqZ/sxONedvIjC0scE=;
+ b=lAa/s6xr8zTyIXbh+YShFjBhtSmoSqVCIkP30B0qtDQw+RWqRd+cuJWGpmqhZiqmrZ
+ RB2a5Xxnbmw8qG+wdZ1bulaVMQJn73ShpGjBxmfas+jCBZ7bWuiyU0AxeynGoHA2o6LP
+ uBiZr+ghcIN7l/ktiv6E2A6zsT2Z9SF/zw/5t7t4OSx4PIBKHzzUGg7tc8TM5yNf8Ith
+ BAUUaGQrnprFfoJWUAmyu+9xPIRq58o0s8Z45r9+8SwKck2oAIFjjil1LNxJeeW+Xf6X
+ KYSPOnIi1L9A4qx03aCedB8lM5nS5gPabSBRwEZy5M4n/RtDQdnDFx0NCWzM396TJfqI
+ 71Bw==
+X-Gm-Message-State: AOJu0YwMdN9dDdg/NYfKBkyAPNuCmwux3fpXHo/j4WxjhcOq+DiEknt/
+ Mdh4Pn2YFQ0PBoYTmuD+hJhQaeI9/lW2UtVGdzjBxLlZyYWoMVCxWOMMPuY8VnJQyl+qNPaw8Fn
+ 7
+X-Google-Smtp-Source: AGHT+IHUY1OOIPERORejxuxUKhRMKGRdyno2lzbvKMWu8fD+Gl995g2vJFaqgbmsh4V0EnPFkHHnuA==
+X-Received: by 2002:a05:6358:d3a7:b0:17e:53f9:6985 with SMTP id
+ mp39-20020a056358d3a700b0017e53f96985mr1586564rwb.14.1714628660924; 
  Wed, 01 May 2024 22:44:20 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e18-20020a656492000000b006089cf2cde5sm294401pgv.26.2024.05.01.22.44.18
+ e18-20020a656492000000b006089cf2cde5sm294401pgv.26.2024.05.01.22.44.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 May 2024 22:44:19 -0700 (PDT)
+ Wed, 01 May 2024 22:44:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, iii@linux.ibm.com, david@redhat.com,
  thuth@redhat.com
-Subject: [PATCH 00/14] target/s390x: Fix and improve PER
-Date: Wed,  1 May 2024 22:44:03 -0700
-Message-Id: <20240502054417.234340-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/14] target/s390x: Do not use unwind for per_check_exception
+Date: Wed,  1 May 2024 22:44:04 -0700
+Message-Id: <20240502054417.234340-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240502054417.234340-1-richard.henderson@linaro.org>
+References: <20240502054417.234340-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,57 +93,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out from 
+Using exception unwind via tcg_s390_program_interrupt,
+we discard the current value of psw.addr, which discards
+the result of a branch.
 
-v1: https://lore.kernel.org/qemu-devel/20220906101747.344559-1-richard.henderson@linaro.org/
-v4: https://lore.kernel.org/qemu-devel/20230220184052.163465-1-richard.henderson@linaro.org/
+Pass in the address of the next instruction, which may
+not be sequential.  Pass in ilen, which we would have
+gotten from unwind and is passed to the exception handler.
+Sync cc_op before the call, which we would have gotten
+from unwind.
 
-after I noticed that the testcase,
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/s390x/helper.h          |  2 +-
+ target/s390x/tcg/excp_helper.c |  2 +-
+ target/s390x/tcg/misc_helper.c | 23 ++++++++++++++++++++---
+ target/s390x/tcg/translate.c   | 13 +++++++------
+ 4 files changed, 29 insertions(+), 11 deletions(-)
 
-https://lore.kernel.org/qemu-devel/20221130174610.434590-2-iii@linux.ibm.com/
-
-does not actually work under KVM.
-
-In fact, support for PER_CR9_EVENT_BRANCH in TCG is broken.
-This cleans it up and improves things so that when only one PER bit
-is set (what I assume to be the normal state of afairs), we have
-less overhead.
-
-I'm not sure that all of the interactions are correct, particularly
-with multiple PER triggers or other exceptions.  For that, we'd need
-a more complex test case.  But at least branches match hardware now.
-
-
-r~
-
-
-Richard Henderson (14):
-  target/s390x: Do not use unwind for per_check_exception
-  target/s390x: Move cpu_get_tb_cpu_state out of line
-  target/s390x: Update CR9 bits
-  target/s390x: Record separate PER bits in TB flags
-  target/s390x: Disable conditional branch-to-next for PER
-  target/s390x: Introduce help_goto_indirect
-  target/s390x: Simplify help_branch
-  target/s390x: Split per_breaking_event from per_branch_*
-  target/s390x: Raise exception from helper_per_branch
-  target/s390x: Raise exception from per_store_real
-  target/s390x: Fix helper_per_ifetch flags
-  target/s390x: Simplify per_ifetch, per_check_exception
-  target/s390x: Adjust check of noreturn in translate_one
-  tests/tcg/s390x: Add per.S
-
- target/s390x/cpu.h                      |  83 ++++----
- target/s390x/helper.h                   |   8 +-
- target/s390x/cpu.c                      |  36 ++++
- target/s390x/tcg/excp_helper.c          |   2 +-
- target/s390x/tcg/misc_helper.c          |  68 ++++---
- target/s390x/tcg/translate.c            | 248 +++++++++---------------
- tests/tcg/s390x/Makefile.softmmu-target |   1 +
- tests/tcg/s390x/per.S                   |  82 ++++++++
- 8 files changed, 302 insertions(+), 226 deletions(-)
- create mode 100644 tests/tcg/s390x/per.S
-
+diff --git a/target/s390x/helper.h b/target/s390x/helper.h
+index cc1c20e9e3..96ab71e877 100644
+--- a/target/s390x/helper.h
++++ b/target/s390x/helper.h
+@@ -359,7 +359,7 @@ DEF_HELPER_FLAGS_4(ipte, TCG_CALL_NO_RWG, void, env, i64, i64, i32)
+ DEF_HELPER_FLAGS_1(ptlb, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_3(lra, i64, env, i64, i64)
+-DEF_HELPER_1(per_check_exception, void, env)
++DEF_HELPER_FLAGS_3(per_check_exception, TCG_CALL_NO_WG, void, env, i64, i32)
+ DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_RWG, void, env, i64, i64)
+ DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_RWG, void, env, i64)
+ DEF_HELPER_FLAGS_1(per_store_real, TCG_CALL_NO_RWG, void, env)
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index f1c33f7967..4c0b692c9e 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -209,7 +209,7 @@ static void do_program_interrupt(CPUS390XState *env)
+ 
+     switch (env->int_pgm_code) {
+     case PGM_PER:
+-        advance = !(env->per_perc_atmid & PER_CODE_EVENT_NULLIFICATION);
++        /* advance already handled */
+         break;
+     case PGM_ASCE_TYPE:
+     case PGM_REG_FIRST_TRANS:
+diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
+index 8764846ce8..8c27998ab9 100644
+--- a/target/s390x/tcg/misc_helper.c
++++ b/target/s390x/tcg/misc_helper.c
+@@ -20,6 +20,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
++#include "qemu/log.h"
+ #include "cpu.h"
+ #include "s390x-internal.h"
+ #include "qemu/host-utils.h"
+@@ -590,10 +591,26 @@ void HELPER(chsc)(CPUS390XState *env, uint64_t inst)
+ #endif
+ 
+ #ifndef CONFIG_USER_ONLY
+-void HELPER(per_check_exception)(CPUS390XState *env)
++G_NORETURN static void per_raise_exception(CPUS390XState *env)
+ {
+-    if (env->per_perc_atmid) {
+-        tcg_s390_program_interrupt(env, PGM_PER, GETPC());
++    trigger_pgm_exception(env, PGM_PER);
++    cpu_loop_exit(env_cpu(env));
++}
++
++G_NORETURN static void per_raise_exception_log(CPUS390XState *env)
++{
++    qemu_log_mask(CPU_LOG_INT, "PER interrupt after %#" PRIx64 "\n",
++                  env->per_address);
++    per_raise_exception(env);
++}
++
++void HELPER(per_check_exception)(CPUS390XState *env, uint64_t next_pc,
++                                 uint32_t ilen)
++{
++    if (unlikely(env->per_perc_atmid)) {
++        env->psw.addr = next_pc;
++        env->int_pgm_ilen = ilen;
++        per_raise_exception_log(env);
+     }
+ }
+ 
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 90a74ee795..2319dcf259 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -6426,13 +6426,14 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
+ 
+ #ifndef CONFIG_USER_ONLY
+     if (s->base.tb->flags & FLAG_MASK_PER) {
+-        /* An exception might be triggered, save PSW if not already done.  */
+-        if (ret == DISAS_NEXT || ret == DISAS_TOO_MANY) {
+-            tcg_gen_movi_i64(psw_addr, s->pc_tmp);
+-        }
++        TCGv_i64 next_pc = psw_addr;
+ 
+-        /* Call the helper to check for a possible PER exception.  */
+-        gen_helper_per_check_exception(tcg_env);
++        if (ret == DISAS_NEXT || ret == DISAS_TOO_MANY) {
++            next_pc = tcg_constant_i64(s->pc_tmp);
++        }
++        update_cc_op(s);
++        gen_helper_per_check_exception(tcg_env, next_pc,
++                                       tcg_constant_i32(s->ilen));
+     }
+ #endif
+ 
 -- 
 2.34.1
 
