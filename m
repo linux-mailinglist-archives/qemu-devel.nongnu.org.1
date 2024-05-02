@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAC18B9DE9
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 17:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A603C8B9DE2
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 17:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2YlQ-0001RH-82; Thu, 02 May 2024 11:54:28 -0400
+	id 1s2YlR-0001Yc-1H; Thu, 02 May 2024 11:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s2YlB-00013G-CU
- for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s2YlE-00017I-9d
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s2Yl8-0002Oj-I3
- for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:12 -0400
+ id 1s2Yl9-0002P0-JY
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714665248;
+ s=mimecast20190719; t=1714665251;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NFofCkIX6ZCOAYjcqWsduwPTtWRGt+ZtQlacHrjsajI=;
- b=Tnk7fnQu57LGF+YF34g3/ux9JVCVdjTuuLlmaEE7PBv59p/dms+RB1vrfUxFc7uU34+W4+
- xjz58Z4uDYiNIEd2of3ibUkGthnYf2eWVP0LngbvUDngrZAkr2yhYczkoHQgzkJ1aJvFqp
- lQHr5wy2pF/T+apZormEoyqJavPSGtQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PBc91Al63eay/PNo3RVE1I5QeuiworYFdD0LlT+cZG4=;
+ b=jTNp0e7vxDJdmWFS800v6XHiSjB7AqlNuzml1jQLnNAL1fSgI82ad+s7mSDy5EW4TbvHCW
+ 4uzl5W9bqGPZLwGoxJ/kYuc382TgEX+GRJ9tw0hrv/WYBl/iC0NeyMIQtEMBayQUwMBhim
+ 3uNA9Tjj/qFCFOoLJJFcDRzPsmbfLtE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-H09UaJtrOLW_JDS5E0CiLQ-1; Thu, 02 May 2024 11:54:07 -0400
-X-MC-Unique: H09UaJtrOLW_JDS5E0CiLQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a58bca80981so439737166b.0
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 08:54:07 -0700 (PDT)
+ us-mta-660--OmuU557OrKqDm7he4i-hg-1; Thu, 02 May 2024 11:54:09 -0400
+X-MC-Unique: -OmuU557OrKqDm7he4i-hg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-571fdbf99f4so465158a12.3
+ for <qemu-devel@nongnu.org>; Thu, 02 May 2024 08:54:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714665246; x=1715270046;
+ d=1e100.net; s=20230601; t=1714665248; x=1715270048;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NFofCkIX6ZCOAYjcqWsduwPTtWRGt+ZtQlacHrjsajI=;
- b=YmFh9rmgrT0q/Ut2K/J//Hu1wJIz2iABO3kzrtpu5wYNMzBpvmu/JYLVABAmdTKKuR
- 306cSOC0J94aKykiHBbU1Wt1GjnaYRspb4fhOw5wNKKOcKPCkiKiQIyzxF5/7SzjeZoJ
- ckEomehJspHF38/JAel45JOIJ2wP/Fk2TzGxIKtCfoRO8BN0J85m8GXmJqdHZ0MVRiVg
- UIdXLm7qVtzepCiE2TmQqQX6pIzeD1VUE91mF3009CTj5O3wcZT0fSqpgzpvX8oL3iUk
- dgJUsjl0/7s6BuLvZvg74fGI2eiu6RKOdK/BJey8bCsrX/ChnIdeKIhR6cL+3FF7rUah
- vSVA==
-X-Gm-Message-State: AOJu0YwhPaR+5heB4c2Jzzbe6Ph9CjScAvX+ZofekOvaKoAGtXYRh6gI
- CChNlXKAuwQpcliVUuGjNUN/pO+YJYgsH3pqfo2eqfGmhz5qfIKidciUBMHffVJz7p37yn3JR8S
- 4RA3egNkktOrsQu3Rl5yj97xNEEKfmK5Na3nuwXr6WG1QHTPhGPxGU/r2vpI/w+7JGk6FTliCzL
- +zdtVHdn5ylIjtHi/F5rDnrUws1bq3ZTiGbM7W
-X-Received: by 2002:a17:906:37c8:b0:a58:849f:4d18 with SMTP id
- o8-20020a17090637c800b00a58849f4d18mr4304485ejc.35.1714665245944; 
- Thu, 02 May 2024 08:54:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEy2xl4oXlR5Uy/S1LKZDYXexegjbuDZq6qyaXqbSNnWvLJNEoK1oNy43kalRgsPt0Sipp5tw==
-X-Received: by 2002:a17:906:37c8:b0:a58:849f:4d18 with SMTP id
- o8-20020a17090637c800b00a58849f4d18mr4304476ejc.35.1714665245563; 
- Thu, 02 May 2024 08:54:05 -0700 (PDT)
+ bh=PBc91Al63eay/PNo3RVE1I5QeuiworYFdD0LlT+cZG4=;
+ b=t8JD6nUwBpqNSa+uYP6LPoVG0KMj7vZ1cdnWxGSWePG8CuOS8b6kC4TteuVBAEGjrQ
+ edSB9mylLyzWOHYhUKpRbELt4uO4YbQb8+P0xjm/DnCujTSWPrEzyZUPE8Do3QpJsS+v
+ AMY7gxXZxa7Q4hBP4d0AB7cvR9yH30GQXVMQDjNcrbFKnCEgty/sdopSX00VJHFyzo9s
+ deGD4XDPhd1AqelniS0LFYJ7KT98F2kZASsi/q9GcVSUBuNL47+HVFS8lAHms+LY7KXw
+ NMG/z/AH5/vrt6MQndax1cFANlH/TrxR8R3lcSCfcAgP+F1ziMu5hOJpUsc3TQIf78qJ
+ a/YA==
+X-Gm-Message-State: AOJu0Yy/PBtP0wCwdWyCGn/YqOKLNSSuonaOb8F6Elbhtw1Yigf8noNU
+ 1IzljgUTm5CJQjRD7vuwcfcb2kxF5vu0aM/mv4J+FmiZpJtNvYc7Ot5l8xKvfYV+Ns1cPNkmhnI
+ EqH7tPSXfbvO/nj/PYW/yYb+5zdHb0yeyhruk+cBsd3dSPL+XGUr2hvcDeRHaPxhuWrRrksjYJG
+ +5K9TPhcZBtN5DlPtxJBFUCbJAM2SAo+aQWehD
+X-Received: by 2002:a50:bb02:0:b0:56e:2cb6:480e with SMTP id
+ y2-20020a50bb02000000b0056e2cb6480emr4816816ede.38.1714665248279; 
+ Thu, 02 May 2024 08:54:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGriFC25raM7vICZKZk1VvmSfhez5MMIgmve613I0TnVQrSmUVvmLJOXH1DZmvVCbu4QPQSAA==
+X-Received: by 2002:a50:bb02:0:b0:56e:2cb6:480e with SMTP id
+ y2-20020a50bb02000000b0056e2cb6480emr4816802ede.38.1714665247940; 
+ Thu, 02 May 2024 08:54:07 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- mj17-20020a170906af9100b00a58f1eff266sm690173ejb.189.2024.05.02.08.54.04
+ w14-20020a056402128e00b0057278b1b139sm653698edv.29.2024.05.02.08.54.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 May 2024 08:54:05 -0700 (PDT)
+ Thu, 02 May 2024 08:54:07 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 12/13] tcg: remove CPU* types from typedefs.h
-Date: Thu,  2 May 2024 17:53:30 +0200
-Message-ID: <20240502155331.109297-13-pbonzini@redhat.com>
+Subject: [PATCH 13/13] pci: remove some types from typedefs.h
+Date: Thu,  2 May 2024 17:53:31 +0200
+Message-ID: <20240502155331.109297-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240502155331.109297-1-pbonzini@redhat.com>
 References: <20240502155331.109297-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -100,107 +100,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hw/core/cpu.h is already using struct forward declarations in some cases
-to avoid inclusions, and otherwise CPUAddressSpace and CPUJumpCache
-are only used together with their definition.  CPUTLBEntryFull is
-always used when their definition is available.  Remove all three
-from typedefs.h.
+For types that are embedded in structs defined by pci.h, the definition
+is pretty much required to be available.  Remove them from typedefs.h.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/tcg/tb-jmp-cache.h |  4 ++--
- include/hw/core/cpu.h    | 10 ++++++++--
- include/qemu/typedefs.h  |  3 ---
- system/physmem.c         |  4 ++--
- 4 files changed, 12 insertions(+), 9 deletions(-)
+ include/hw/pci/pcie.h       |  3 +++
+ include/hw/pci/pcie_aer.h   | 38 ++++++++++++++++++-------------------
+ include/hw/pci/pcie_sriov.h |  8 ++++----
+ include/qemu/typedefs.h     |  5 -----
+ 4 files changed, 26 insertions(+), 28 deletions(-)
 
-diff --git a/accel/tcg/tb-jmp-cache.h b/accel/tcg/tb-jmp-cache.h
-index 184bb3e3e2e..c3a505e394a 100644
---- a/accel/tcg/tb-jmp-cache.h
-+++ b/accel/tcg/tb-jmp-cache.h
-@@ -22,12 +22,12 @@
-  * non-NULL value of 'tb'.  Strictly speaking pc is only needed for
-  * CF_PCREL, but it's used always for simplicity.
-  */
--struct CPUJumpCache {
-+typedef struct CPUJumpCache {
-     struct rcu_head rcu;
-     struct {
-         TranslationBlock *tb;
-         vaddr pc;
-     } array[TB_JMP_CACHE_SIZE];
+diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
+index 11f5a91bbb7..5eddb909769 100644
+--- a/include/hw/pci/pcie.h
++++ b/include/hw/pci/pcie.h
+@@ -27,6 +27,9 @@
+ #include "hw/pci/pcie_sriov.h"
+ #include "hw/hotplug.h"
+ 
++typedef struct PCIEPort PCIEPort;
++typedef struct PCIESlot PCIESlot;
++
+ typedef enum {
+     /* these bits must match the bits in Slot Control/Status registers.
+      * PCI_EXP_HP_EV_xxx = PCI_EXP_SLTCTL_xxxE = PCI_EXP_SLTSTA_xxx
+diff --git a/include/hw/pci/pcie_aer.h b/include/hw/pci/pcie_aer.h
+index 4a9f0ea69dc..4d8c0e05077 100644
+--- a/include/hw/pci/pcie_aer.h
++++ b/include/hw/pci/pcie_aer.h
+@@ -25,8 +25,23 @@
+ 
+ /* definitions which PCIExpressDevice uses */
+ 
++/* error */
++typedef struct PCIEAERErr {
++    uint32_t status;    /* error status bits */
++    uint16_t source_id; /* bdf */
++
++#define PCIE_AER_ERR_IS_CORRECTABLE     0x1     /* correctable/uncorrectable */
++#define PCIE_AER_ERR_MAYBE_ADVISORY     0x2     /* maybe advisory non-fatal */
++#define PCIE_AER_ERR_HEADER_VALID       0x4     /* TLP header is logged */
++#define PCIE_AER_ERR_TLP_PREFIX_PRESENT 0x8     /* TLP Prefix is logged */
++    uint16_t flags;
++
++    uint32_t header[4]; /* TLP header */
++    uint32_t prefix[4]; /* TLP header prefix */
++} PCIEAERErr;
++
+ /* AER log */
+-struct PCIEAERLog {
++typedef struct PCIEAERLog {
+     /* This structure is saved/loaded.
+        So explicitly size them instead of unsigned int */
+ 
+@@ -48,11 +63,11 @@ struct PCIEAERLog {
+ 
+     /* Error log. log_max-sized array */
+     PCIEAERErr *log;
 -};
-+} CPUJumpCache;
++} PCIEAERLog;
  
- #endif /* ACCEL_TCG_TB_JMP_CACHE_H */
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index a23d39f6a0c..1382a986158 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -85,6 +85,12 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
+ /* aer error message: error signaling message has only error severity and
+    source id. See 2.2.8.3 error signaling messages */
+-struct PCIEAERMsg {
++typedef struct PCIEAERMsg {
+     /*
+      * PCI_ERR_ROOT_CMD_{COR, NONFATAL, FATAL}_EN
+      * = PCI_EXP_DEVCTL_{CERE, NFERE, FERE}
+@@ -60,7 +75,7 @@ struct PCIEAERMsg {
+     uint32_t severity;
  
- typedef struct CPUWatchpoint CPUWatchpoint;
+     uint16_t source_id; /* bdf */
+-};
++} PCIEAERMsg;
  
-+/* see physmem.c */
-+struct CPUAddressSpace;
-+
-+/* see accel/tcg/tb-jmp-cache.h */
-+struct CPUJumpCache;
-+
- /* see accel-cpu.h */
- struct AccelCPUClass;
+ static inline bool
+ pcie_aer_msg_is_uncor(const PCIEAERMsg *msg)
+@@ -69,21 +84,6 @@ pcie_aer_msg_is_uncor(const PCIEAERMsg *msg)
+         msg->severity == PCI_ERR_ROOT_CMD_FATAL_EN;
+ }
  
-@@ -473,12 +479,12 @@ struct CPUState {
-     QemuMutex work_mutex;
-     QSIMPLEQ_HEAD(, qemu_work_item) work_list;
+-/* error */
+-struct PCIEAERErr {
+-    uint32_t status;    /* error status bits */
+-    uint16_t source_id; /* bdf */
+-
+-#define PCIE_AER_ERR_IS_CORRECTABLE     0x1     /* correctable/uncorrectable */
+-#define PCIE_AER_ERR_MAYBE_ADVISORY     0x2     /* maybe advisory non-fatal */
+-#define PCIE_AER_ERR_HEADER_VALID       0x4     /* TLP header is logged */
+-#define PCIE_AER_ERR_TLP_PREFIX_PRESENT 0x8     /* TLP Prefix is logged */
+-    uint16_t flags;
+-
+-    uint32_t header[4]; /* TLP header */
+-    uint32_t prefix[4]; /* TLP header prefix */
+-};
+-
+ extern const VMStateDescription vmstate_pcie_aer_log;
  
--    CPUAddressSpace *cpu_ases;
-+    struct CPUAddressSpace *cpu_ases;
-     int num_ases;
-     AddressSpace *as;
-     MemoryRegion *memory;
+ int pcie_aer_init(PCIDevice *dev, uint8_t cap_ver, uint16_t offset,
+diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
+index b77eb7bf58a..450cbef6c20 100644
+--- a/include/hw/pci/pcie_sriov.h
++++ b/include/hw/pci/pcie_sriov.h
+@@ -15,17 +15,17 @@
  
--    CPUJumpCache *tb_jmp_cache;
-+    struct CPUJumpCache *tb_jmp_cache;
+ #include "hw/pci/pci.h"
  
-     GArray *gdb_regs;
-     int gdb_num_regs;
+-struct PCIESriovPF {
++typedef struct PCIESriovPF {
+     uint16_t num_vfs;   /* Number of virtual functions created */
+     uint8_t vf_bar_type[PCI_NUM_REGIONS];   /* Store type for each VF bar */
+     const char *vfname; /* Reference to the device type used for the VFs */
+     PCIDevice **vf;     /* Pointer to an array of num_vfs VF devices */
+-};
++} PCIESriovPF;
+ 
+-struct PCIESriovVF {
++typedef struct PCIESriovVF {
+     PCIDevice *pf;      /* Pointer back to owner physical function */
+     uint16_t vf_number; /* Logical VF number of this function */
+-};
++} PCIESriovVF;
+ 
+ void pcie_sriov_pf_init(PCIDevice *dev, uint16_t offset,
+                         const char *vfname, uint16_t vf_dev_id,
 diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 7e3597e94c5..d23020ed232 100644
+index d23020ed232..5d999e20d7c 100644
 --- a/include/qemu/typedefs.h
 +++ b/include/qemu/typedefs.h
-@@ -38,12 +38,9 @@ typedef struct BusState BusState;
- typedef struct Chardev Chardev;
- typedef struct Clock Clock;
- typedef struct ConfidentialGuestSupport ConfidentialGuestSupport;
--typedef struct CPUAddressSpace CPUAddressSpace;
- typedef struct CPUArchState CPUArchState;
- typedef struct CPUPluginState CPUPluginState;
--typedef struct CPUJumpCache CPUJumpCache;
- typedef struct CPUState CPUState;
--typedef struct CPUTLBEntryFull CPUTLBEntryFull;
- typedef struct DeviceState DeviceState;
- typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
- typedef struct DisplayChangeListener DisplayChangeListener;
-diff --git a/system/physmem.c b/system/physmem.c
-index 1a81c226bae..6dc58b34bbb 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -158,12 +158,12 @@ static void tcg_commit(MemoryListener *listener);
-  * @memory_dispatch: its dispatch pointer (cached, RCU protected)
-  * @tcg_as_listener: listener for tracking changes to the AddressSpace
-  */
--struct CPUAddressSpace {
-+typedef struct CPUAddressSpace {
-     CPUState *cpu;
-     AddressSpace *as;
-     struct AddressSpaceDispatch *memory_dispatch;
-     MemoryListener tcg_as_listener;
--};
-+} CPUAddressSpace;
- 
- struct DirtyBitmapSnapshot {
-     ram_addr_t start;
+@@ -78,13 +78,8 @@ typedef struct ObjectClass ObjectClass;
+ typedef struct PCIBridge PCIBridge;
+ typedef struct PCIBus PCIBus;
+ typedef struct PCIDevice PCIDevice;
+-typedef struct PCIEAERErr PCIEAERErr;
+-typedef struct PCIEAERLog PCIEAERLog;
+-typedef struct PCIEAERMsg PCIEAERMsg;
+ typedef struct PCIEPort PCIEPort;
+ typedef struct PCIESlot PCIESlot;
+-typedef struct PCIESriovPF PCIESriovPF;
+-typedef struct PCIESriovVF PCIESriovVF;
+ typedef struct PCIExpressDevice PCIExpressDevice;
+ typedef struct PCIExpressHost PCIExpressHost;
+ typedef struct PCIHostDeviceAddress PCIHostDeviceAddress;
 -- 
 2.44.0
 
