@@ -2,83 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D0C8B9A98
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 14:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E2B8B9AC5
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 14:24:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2VM8-0008UL-Iw; Thu, 02 May 2024 08:16:08 -0400
+	id 1s2VTw-0003A5-D8; Thu, 02 May 2024 08:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2VM4-0008So-8u
- for qemu-devel@nongnu.org; Thu, 02 May 2024 08:16:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s2VTl-00038s-Cz
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 08:24:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2VLu-0001RS-OM
- for qemu-devel@nongnu.org; Thu, 02 May 2024 08:16:01 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s2VTg-0002iM-Gk
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 08:24:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714652153;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1714652635;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=dMYitP7Vq+BpFO1f6Ueqlnu4u7GGKKaZQULRhMdXP4o=;
- b=HUQd13iw7wtoxz/qv6NcLpW5/2Nv8svPgOw9U1roMq5wg3DGozB7m8+5xBfNavLyrEVQ03
- LjDNYRisiCxUlvcqnAfUOd4zjBrYICHV4/VVwbWDO5nnZJOCLeD7gd71CxneecpoEpKu2+
- 9GKXF80EW1FGpfGIBdttY+osNfsDn4U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-43-JDDgPq6LMye7SwQfj6dGwA-1; Thu,
- 02 May 2024 08:15:50 -0400
-X-MC-Unique: JDDgPq6LMye7SwQfj6dGwA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=30A6CtrWUvckYRSxS1S8p28SL81PqqfbP2H+zFEpKmU=;
+ b=gKuA6xNc0HdVb4aywGviEGWbLR2ML8r7xXr6A6PLCr1sY+Ptvn6NFJZS9sHBcHKoLa5LVS
+ UN8gkVlozucBcI4BwInrP4aj63cOy3YMu5rU/GYNRiBdb43hWhPoHJkxyaAgfTiukSYgjr
+ MK9fupU295CaRg7hMf7n7DuutBDBFok=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-306-xyWNNgC4PMKQLr-BfONWGg-1; Thu, 02 May 2024 08:23:51 -0400
+X-MC-Unique: xyWNNgC4PMKQLr-BfONWGg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A728B299E746;
- Thu,  2 May 2024 12:15:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3F916492BC7;
- Thu,  2 May 2024 12:15:46 +0000 (UTC)
-Date: Thu, 2 May 2024 13:15:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clegoate@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Laurent Vivier <laurent@vivier.eu>, qemu-arm@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org
-Subject: Re: [PATCH 13/14] hw/i386: remove obsolete manual deprecation reason
- string of i440fx machines
-Message-ID: <ZjOD8CpDVRV_OW-F@redhat.com>
-References: <20240501182759.2934195-1-berrange@redhat.com>
- <20240501182759.2934195-14-berrange@redhat.com>
- <500cec2c-a598-4185-b275-a1435a848c88@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9115800935;
+ Thu,  2 May 2024 12:23:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A33FC1000628;
+ Thu,  2 May 2024 12:23:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C256B21E66E5; Thu,  2 May 2024 14:23:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  David Hildenbrand <david@redhat.com>,  Igor Mammedov
+ <imammedo@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>,  Philippe Mathieu-Daude
+ <philmd@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,  "Daniel P.
+ Berrange" <berrange@redhat.com>
+Subject: Re: [PATCH V1 18/26] migration: cpr-exec-args parameter
+In-Reply-To: <1714406135-451286-19-git-send-email-steven.sistare@oracle.com>
+ (Steve Sistare's message of "Mon, 29 Apr 2024 08:55:27 -0700")
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-19-git-send-email-steven.sistare@oracle.com>
+Date: Thu, 02 May 2024 14:23:49 +0200
+Message-ID: <87cyq4767e.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <500cec2c-a598-4185-b275-a1435a848c88@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -86,7 +69,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.476,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,62 +82,93 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 02, 2024 at 02:08:58PM +0200, Thomas Huth wrote:
-> On 01/05/2024 20.27, Daniel P. Berrangé wrote:
-> > The automatic deprecation mechanism introduced in the preceeding patches
-> > will mark every i440fx machine upto and including 2.12 as deprecated. As
-> > such we can revert the manually added deprecation which was a subset:
-> > 
-> >    commit c7437f0ddb8ee45bf96d949ddfcbb7697ae3d415
-> >    Author: Thomas Huth <thuth@redhat.com>
-> >    Date:   Fri Oct 6 09:52:47 2023 +0200
-> > 
-> >      docs/about: Mark the old pc-i440fx-2.0 - 2.3 machine types as deprecated
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   hw/i386/pc_piix.c | 1 -
-> >   1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> > index 9f92504cc4..4137e03f6f 100644
-> > --- a/hw/i386/pc_piix.c
-> > +++ b/hw/i386/pc_piix.c
-> > @@ -812,7 +812,6 @@ static void pc_i440fx_machine_2_3_options(MachineClass *m)
-> >   {
-> >       pc_i440fx_machine_2_4_options(m);
-> >       m->hw_version = "2.3.0";
-> > -    m->deprecation_reason = "old and unattended - use a newer version instead";
-> >       compat_props_add(m->compat_props, hw_compat_2_3, hw_compat_2_3_len);
-> >       compat_props_add(m->compat_props, pc_compat_2_3, pc_compat_2_3_len);
-> >   }
-> 
-> This will conflict with Philippe's "hw/i386: Remove deprecated pc-i440fx-2.0
-> -> 2.3 machines" patch series (which should easy to resolve, though).
+Steve Sistare <steven.sistare@oracle.com> writes:
 
-Yep, there are a few places in my series which will conflict with
-that.
+> Create the cpr-exec-args migration parameter, defined as a list of
+> strings.  It will be used for cpr-exec migration mode in a subsequent
+> patch.
+>
+> No functional change, except that cpr-exec-args is shown by the
+> 'info migrate' command.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-I've just looked at Philippe's code and everything has at least
-one R-b. I had a minor comment but I could address that in this
-series.
+[...]
 
-IOW, ideally we could merge Philippe's series now, to reduce
-code in flight touching the same areas.
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 8c65b90..49710e7 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -914,6 +914,9 @@
+>  #     See description in @ZeroPageDetection.  Default is 'multifd'.
+>  #     (since 9.0)
+>  #
+> +# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
+> +#    See @cpr-exec for details.  (Since 9.1)
+> +#
 
-> Anyway:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> 
+You mean migration mode @cpr-exec, don't you?
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+If yes, dangling reference until PATCH 20 adds it.  Okay, but worth a
+mention in the commit message.
+
+Suggest "See MigMode @cpr-exec for details."
+
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -948,7 +951,8 @@
+>             { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
+>             'vcpu-dirty-limit',
+>             'mode',
+> -           'zero-page-detection'] }
+> +           'zero-page-detection',
+> +           'cpr-exec-args'] }
+>  
+>  ##
+>  # @MigrateSetParameters:
+> @@ -1122,6 +1126,9 @@
+>  #     See description in @ZeroPageDetection.  Default is 'multifd'.
+>  #     (since 9.0)
+>  #
+> +# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
+> +#    See @cpr-exec for details.  (Since 9.1)
+> +#
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -1176,7 +1183,8 @@
+>                                              'features': [ 'unstable' ] },
+>              '*vcpu-dirty-limit': 'uint64',
+>              '*mode': 'MigMode',
+> -            '*zero-page-detection': 'ZeroPageDetection'} }
+> +            '*zero-page-detection': 'ZeroPageDetection',
+> +            '*cpr-exec-args': [ 'str' ]} }
+>  
+>  ##
+>  # @migrate-set-parameters:
+> @@ -1354,6 +1362,9 @@
+>  #     See description in @ZeroPageDetection.  Default is 'multifd'.
+>  #     (since 9.0)
+>  #
+> +# @cpr-exec-args: Arguments passed to new QEMU for @cpr-exec mode.
+> +#    See @cpr-exec for details.  (Since 9.1)
+> +#
+>  # Features:
+>  #
+>  # @deprecated: Member @block-incremental is deprecated.  Use
+> @@ -1405,7 +1416,8 @@
+>                                              'features': [ 'unstable' ] },
+>              '*vcpu-dirty-limit': 'uint64',
+>              '*mode': 'MigMode',
+> -            '*zero-page-detection': 'ZeroPageDetection'} }
+> +            '*zero-page-detection': 'ZeroPageDetection',
+> +            '*cpr-exec-args': [ 'str' ]} }
+>  
+>  ##
+>  # @query-migrate-parameters:
 
 
