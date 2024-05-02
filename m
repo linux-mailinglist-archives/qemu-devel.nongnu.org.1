@@ -2,83 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62DD8BA117
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 21:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279938BA12E
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 21:59:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2cCV-0001rX-Q8; Thu, 02 May 2024 15:34:39 -0400
+	id 1s2cZO-0003un-8h; Thu, 02 May 2024 15:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2cCT-0001rN-Hs
- for qemu-devel@nongnu.org; Thu, 02 May 2024 15:34:37 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2cCR-0002Q4-V3
- for qemu-devel@nongnu.org; Thu, 02 May 2024 15:34:37 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1ec4b2400b6so30317945ad.3
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 12:34:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714678473; x=1715283273; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2hGn/DHVYavwVrjLznd5Ajv07F+ebRruiVBK8WBc5pw=;
- b=jMt84HCrxkNn8rurAM/4LQFXRZnZk2yZfoaRIkLPGt8QnCb9s7eZZWgtbwa151TYWi
- atfditA0m3tJCGQD7S+81qD5ZC4Sb/G+9vKuUu1hn7hkOhfeFV55ovzLfMZv3+40RhMo
- gVC+pJbavoFiCx5kcG7NZs8X5uLvytCVphUGl5HhEkCHVPJsOW3TwC6iL33AyEFSWf7+
- 0xJ9r92ZqPo5jVhJsn29Z4pgD2JtjbBBWLkfTKy6ijt7oQEIoFUB5dM+jOi4MZ75llwL
- U+bhdzIbIsuyPbjQZe6Nz2NMJhxMzRRDYJR8U60VZJ1GvuZVW0maQc4ZEHFDKOCxLp9P
- i/mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714678473; x=1715283273;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2hGn/DHVYavwVrjLznd5Ajv07F+ebRruiVBK8WBc5pw=;
- b=uHxqJggkgfocMvKUqfEYvIUcqxTVVEmD4PjImh+Gef3J6W3P86vYRdzmfMR0UT2+L3
- +InQfQzNyhCzl4honmYg+CzeIPL6/TrBr/4IwrtTMM9Z3jDn5ooUCPWkjOuQy5g0Cwk+
- dFa4yWDWxKP5a9vyBXhTScw9B8IfuYdBhAPj97hGhWJdA9mWqUsqXgKeQaUp70t5sGAE
- 6krVlJ50SHgjM9FyN+/JMf3GqeCh99uR+vsI5HUKllvDXsk1g0JQMYPU0TJ8/t1ccm9s
- WMoaebe1Qea5s+Gvm2NKfftiRy9uhFwI/Ki0AhW527nW36iGwy/sCQ5ywHWs+1GwkL02
- KnUg==
-X-Gm-Message-State: AOJu0YwlTZ5YdeQm7Q7jYcEQsO6IvZVbuMwIlFI8f3KKSv/5jA2XowLM
- 6LvUI6Y8E/uuvFTRZ4Elpg1l3L/30QouQR7IjwIBbn/QSXpx4nSjorT1VJ7CD/cBxPKVUmIoILF
- a
-X-Google-Smtp-Source: AGHT+IEIeH0B8s4mIP92oRapGT/Sw90+33kdCor7g5LSR9ZqJRxDlj0NnSPr7lZz3rT+8+alhy6znw==
-X-Received: by 2002:a17:902:ea06:b0:1ec:28e4:691f with SMTP id
- s6-20020a170902ea0600b001ec28e4691fmr682727plg.63.1714678473012; 
- Thu, 02 May 2024 12:34:33 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- kr12-20020a170903080c00b001e668c1060bsm1699604plb.122.2024.05.02.12.34.32
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 May 2024 12:34:32 -0700 (PDT)
-Message-ID: <d8ce6ce2-acf7-4b22-b66f-4a6bfcb2011f@linaro.org>
-Date: Thu, 2 May 2024 12:34:30 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] tcg: Misc improvements
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s2cZK-0003tc-RY; Thu, 02 May 2024 15:58:14 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s2cZJ-0006ob-0H; Thu, 02 May 2024 15:58:14 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C6617639E0;
+ Thu,  2 May 2024 22:58:09 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 1B51DC54F4;
+ Thu,  2 May 2024 22:57:59 +0300 (MSK)
+Received: (nullmailer pid 832018 invoked by uid 1000);
+ Thu, 02 May 2024 19:57:59 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-References: <20240424170908.759043-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20240424170908.759043-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] Re-enable riscv64-debian-cross-container (debian riscv64 is
+ finally usable again!)
+Date: Thu,  2 May 2024 22:40:46 +0300
+Message-Id: <20240502194046.830825-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,35 +59,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.
+Revert "gitlab-ci: Disable the riscv64-debian-cross-container by default"
+This reverts commit f51f90c65ed7706c3c4f7a889ce3d6b7ab75ef6a.
 
-On 4/24/24 10:09, Richard Henderson wrote:
-> One patch to allow two output operands from gvec expansion,
-> to be used by target/arm for updating QC.
-> 
-> One patch to record the result of the generic breakpoint
-> search so target translators do not need to repeat it.
-> 
-> Three small optimization patches.
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (5):
->    tcg: Add write_aofs to GVecGen3i
->    tcg/i386: Simplify immediate 8-bit logical vector shifts
->    tcg/i386: Optimize setcond of TST{EQ,NE} with 0xffffffff
->    tcg/optimize: Optimize setcond with zmask
->    accel/tcg: Introduce CF_BP_PAGE
-> 
->   include/exec/translation-block.h |   1 +
->   include/tcg/tcg-op-gvec-common.h |   2 +
->   accel/tcg/cpu-exec.c             |   2 +-
->   tcg/optimize.c                   | 110 +++++++++++++++++++++++++++++++
->   tcg/tcg-op-gvec.c                |  30 ++++++---
->   tcg/i386/tcg-target.c.inc        |  78 ++++++++--------------
->   6 files changed, 165 insertions(+), 58 deletions(-)
-> 
+Hopefully it wont be very unstable.
+
+Since riscv64 is now a release architecture in debian, we can try switching
+to debian testing instead of debian sid.  Also, debian-ports part of the
+archive isn't needed anymore.
+
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ .gitlab-ci.d/container-cross.yml | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
+index e3103940a0..dbffed3f21 100644
+--- a/.gitlab-ci.d/container-cross.yml
++++ b/.gitlab-ci.d/container-cross.yml
+@@ -77,7 +77,6 @@ riscv64-debian-cross-container:
+   allow_failure: true
+   variables:
+     NAME: debian-riscv64-cross
+-    QEMU_JOB_OPTIONAL: 1
+ 
+ s390x-debian-cross-container:
+   extends: .container_job_template
+-- 
+2.39.2
 
 
