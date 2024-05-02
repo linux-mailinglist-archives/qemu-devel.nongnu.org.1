@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73D248B9DDA
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 17:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 177618B9DE3
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 17:55:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2YlC-0000w4-Nv; Thu, 02 May 2024 11:54:18 -0400
+	id 1s2YlL-0000wh-Hi; Thu, 02 May 2024 11:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s2Yl0-0000uc-MA
- for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:02 -0400
+ id 1s2Yl2-0000vZ-H2
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s2Yky-0002Nu-48
- for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:02 -0400
+ id 1s2Yl0-0002O6-Os
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 11:54:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714665239;
+ s=mimecast20190719; t=1714665242;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lZJdvq9u+pJ5rwgcC5tolr3XsO6TG5/7lA6NafLezNw=;
- b=Wcq4ve/UJVLvoi5S9WOkB9D3uiSO85T/GV/0kgeNRaHo8b/Flxxm/UoN2tMZrXKcfkSEfO
- bSdGf7JJTTrJNTSqcq/yrsFiegowknljk6LJz4usITUHLPmOycEpDbZQ2FaLVdX8RvHqJz
- 5SxPcRT8HPGd8hS3nws1JC5qU3aFfes=
+ bh=zpuIfHd1pI+7vJT1eF7UBY58QTQrgHV52BgrnbSJIjI=;
+ b=dT8p81BANOnxHDCiy+h2Roh8o9NT6qu7hHDdU+IFi/TFdpxKinCOEY5KU0jiFDsgd0p8HU
+ Mp9yyF68R2bJv5d73Uj6hGiYdalALgz5D+BvEVzEoxzJHdfZJdxYSVy4i9yf+ROqJh5wqZ
+ TBB8mQU7VUto+ImGik4c8n0WhRiSsvc=
 Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
  [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-189-UOI9T2-dMEuukaLLyGHJRw-1; Thu, 02 May 2024 11:53:57 -0400
-X-MC-Unique: UOI9T2-dMEuukaLLyGHJRw-1
+ us-mta-121-rL5WaxKeOtCYCvsr5N6UYg-1; Thu, 02 May 2024 11:54:00 -0400
+X-MC-Unique: rL5WaxKeOtCYCvsr5N6UYg-1
 Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5725f45da8eso620488a12.0
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 08:53:57 -0700 (PDT)
+ 4fb4d7f45d1cf-572146eeed3so936584a12.2
+ for <qemu-devel@nongnu.org>; Thu, 02 May 2024 08:54:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714665236; x=1715270036;
+ d=1e100.net; s=20230601; t=1714665238; x=1715270038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lZJdvq9u+pJ5rwgcC5tolr3XsO6TG5/7lA6NafLezNw=;
- b=Vjvpo+7eeiJloy/Of2aiacyhRJ35H0Ie53+HpP9VM15nKChTGChkDJHHt8QayXfZ4K
- 0ziHRrtW3p7bGEMXGOaVXCK/9UnwzFB608iqGg8wDp0xcF4KeRDDyiG2rvOUwAONT6aY
- zbao7QVShpVMOyLqa+z6D1wN4X5VdPruJeEhFa2ZBgsY1/5zg42/L+bxVwZUkhVvm0Vg
- S88KoOPdMTpXbELXRylZ/OEuVxtaEyPtVPLyam0E3S19vHI8TaO7GapWXfWnoNARwqNh
- CBB6xs0m47oGx+eZWHRtaoEUqbUnPwz0Z1FQ6/8ntHaBxj6Yx7kYHyRTI+eLPHJxGqOq
- HqEw==
-X-Gm-Message-State: AOJu0YzC8Aib9XiKd9Tc/62nX6CgK172nKoO9m9HUqYFvDrLoBp7/AkI
- xyTRddldhvyjdgB/kPyN5zS3mRPShpLcGLAIK9iuUdIFReXnsWl6MklPRv5Y3dVgpeUx+MiLCIc
- 5x5cfQnBKoZ+qJiGYKfFkJt3xhwdQnIxhbCHLsGgcKmawz7vbeMJbPjPUXt6n0TuSbQmyyo/j8w
- QbfnRgmVUeILPiX1YI0kywJ/NyR2OoFuwB6DW3
-X-Received: by 2002:a50:9f28:0:b0:568:c6a2:f427 with SMTP id
- b37-20020a509f28000000b00568c6a2f427mr1697489edf.27.1714665235876; 
- Thu, 02 May 2024 08:53:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE+vxRpf9L8OFjXnd7+Eax+UJbrfaZfG+jkCTnWqZMKhFx05cg9A/ERjvA1cjscqbve2A8KqA==
-X-Received: by 2002:a50:9f28:0:b0:568:c6a2:f427 with SMTP id
- b37-20020a509f28000000b00568c6a2f427mr1697480edf.27.1714665235523; 
- Thu, 02 May 2024 08:53:55 -0700 (PDT)
+ bh=zpuIfHd1pI+7vJT1eF7UBY58QTQrgHV52BgrnbSJIjI=;
+ b=Oh/QsVfoXGPU6QpwHc6MkAnluQsbjo6xgrLm7HfLSa8K4peFMQU75Noxt1VlN4XUk7
+ hsFI5brSTg2e6NeFzGFD0hFIBAxtfKUbtx9GNaiei03MCWzSLcJFC2Zy+Y+N6sUinH1E
+ YozztpMvvTYweQ1mIfWHhiUYOuLADWSe/tlXR1zCGnorcKndKOvRe3aSfB/zrjuxpXql
+ JtMiu8NrHnbTedZeEPa0PaQA27UX30DLdC8+h5T7Piis3MgtwBeskq9gWuLzWW8kUtDo
+ uGcMf4UYUrhBVofoGWAhcUF577HyrZNHi3quySfDTsUHDmerYDlHQuM/TX0tLaC7Wb1X
+ HC2g==
+X-Gm-Message-State: AOJu0YwFennoMCRj3jcw92j1Rr1tVm9PrvDnBLr6tTDZzUgLVnUY5gtF
+ t4Jjk4cn5gZjyDgbN/7cT3WJtSlYLvgBjd0789sncBdKINX4luRLBewDDAQhFfKcVnFUfYU0AXY
+ rehZiogeP59KfrVI4abFUqfYauWB+V9aRcLoie24LHAJ099+H8I5zzlWJ1RB/xacZ7qAPiPXLgL
+ SxJ0B+/Q+dGl1uvmSD3OG/LlgTCt5AITrqPEpK
+X-Received: by 2002:a50:8acf:0:b0:572:404f:5199 with SMTP id
+ k15-20020a508acf000000b00572404f5199mr3924476edk.5.1714665238422; 
+ Thu, 02 May 2024 08:53:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrs4kA4vJBcXcm7Gg0HtbOS5cldCbqgzuZwnaSMejoqdyd37NMRo90fFmGHS9DhEg9iNihpg==
+X-Received: by 2002:a50:8acf:0:b0:572:404f:5199 with SMTP id
+ k15-20020a508acf000000b00572404f5199mr3924462edk.5.1714665237993; 
+ Thu, 02 May 2024 08:53:57 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- fk4-20020a056402398400b005701eaa2023sm665014edb.72.2024.05.02.08.53.53
+ ee53-20020a056402293500b0056fede24155sm656982edb.89.2024.05.02.08.53.57
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 May 2024 08:53:53 -0700 (PDT)
+ Thu, 02 May 2024 08:53:57 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 08/13] migration: remove PostcopyDiscardState from typedefs.h
-Date: Thu,  2 May 2024 17:53:26 +0200
-Message-ID: <20240502155331.109297-9-pbonzini@redhat.com>
+Subject: [PATCH 09/13] monitor: remove MonitorDef from typedefs.h
+Date: Thu,  2 May 2024 17:53:27 +0200
+Message-ID: <20240502155331.109297-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240502155331.109297-1-pbonzini@redhat.com>
 References: <20240502155331.109297-1-pbonzini@redhat.com>
@@ -100,48 +100,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is defined and referred to exclusively from a .c file.
+MonitorDef is defined by hmp-target.h, and all users except one already
+include it; the reason why the stubs do not include it, is because
+hmp-target.h currently can only be used in files that are compiled
+per target.  However, that is easily fixed.  Because the benefit of
+having MonitorDef in typedefs.h is very small, do it and remove the
+type from typedefs.h.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/qemu/typedefs.h  | 1 -
- migration/postcopy-ram.c | 4 ++--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ include/monitor/hmp-target.h | 11 +++++++----
+ include/qemu/typedefs.h      |  1 -
+ stubs/target-monitor-defs.c  |  3 +--
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
+diff --git a/include/monitor/hmp-target.h b/include/monitor/hmp-target.h
+index d78e979f053..b679aaebbff 100644
+--- a/include/monitor/hmp-target.h
++++ b/include/monitor/hmp-target.h
+@@ -25,11 +25,10 @@
+ #ifndef MONITOR_HMP_TARGET_H
+ #define MONITOR_HMP_TARGET_H
+ 
++typedef struct MonitorDef MonitorDef;
++
++#ifdef COMPILING_PER_TARGET
+ #include "cpu.h"
+-
+-#define MD_TLONG 0
+-#define MD_I32   1
+-
+ struct MonitorDef {
+     const char *name;
+     int offset;
+@@ -37,6 +36,10 @@ struct MonitorDef {
+                              int val);
+     int type;
+ };
++#endif
++
++#define MD_TLONG 0
++#define MD_I32   1
+ 
+ const MonitorDef *target_monitor_defs(void);
+ int target_get_monitor_def(CPUState *cs, const char *name, uint64_t *pval);
 diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index ab24ca2876c..2b1948a19ac 100644
+index 2b1948a19ac..b71a36d02b2 100644
 --- a/include/qemu/typedefs.h
 +++ b/include/qemu/typedefs.h
-@@ -96,7 +96,6 @@ typedef struct PCIExpressDevice PCIExpressDevice;
- typedef struct PCIExpressHost PCIExpressHost;
- typedef struct PCIHostDeviceAddress PCIHostDeviceAddress;
- typedef struct PCIHostState PCIHostState;
--typedef struct PostcopyDiscardState PostcopyDiscardState;
- typedef struct Property Property;
- typedef struct PropertyInfo PropertyInfo;
- typedef struct QBool QBool;
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index eccff499cb2..34197795482 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -44,7 +44,7 @@
-  */
- #define MAX_DISCARDS_PER_COMMAND 12
+@@ -75,7 +75,6 @@ typedef struct MemoryRegionSection MemoryRegionSection;
+ typedef struct MigrationIncomingState MigrationIncomingState;
+ typedef struct MigrationState MigrationState;
+ typedef struct Monitor Monitor;
+-typedef struct MonitorDef MonitorDef;
+ typedef struct MSIMessage MSIMessage;
+ typedef struct NetClientState NetClientState;
+ typedef struct NetFilterState NetFilterState;
+diff --git a/stubs/target-monitor-defs.c b/stubs/target-monitor-defs.c
+index ac07b19064c..35a0a342772 100644
+--- a/stubs/target-monitor-defs.c
++++ b/stubs/target-monitor-defs.c
+@@ -1,6 +1,5 @@
+ #include "qemu/osdep.h"
+-
+-const MonitorDef *target_monitor_defs(void);
++#include "monitor/hmp-target.h"
  
--struct PostcopyDiscardState {
-+typedef struct PostcopyDiscardState {
-     const char *ramblock_name;
-     uint16_t cur_entry;
-     /*
-@@ -54,7 +54,7 @@ struct PostcopyDiscardState {
-     uint64_t length_list[MAX_DISCARDS_PER_COMMAND];
-     unsigned int nsentwords;
-     unsigned int nsentcmds;
--};
-+} PostcopyDiscardState;
- 
- static NotifierWithReturnList postcopy_notifier_list;
- 
+ const MonitorDef *target_monitor_defs(void)
+ {
 -- 
 2.44.0
 
