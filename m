@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D338BA012
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 20:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 705368BA00D
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 20:10:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2aru-0003C8-Lh; Thu, 02 May 2024 14:09:18 -0400
+	id 1s2arp-0003BR-OJ; Thu, 02 May 2024 14:09:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s2arg-00039p-Eb
+ id 1s2arg-00039q-F7
  for qemu-devel@nongnu.org; Thu, 02 May 2024 14:09:04 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s2are-0003QA-Ca
+ id 1s2are-0003QG-M0
  for qemu-devel@nongnu.org; Thu, 02 May 2024 14:09:04 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1e5715a9ebdso69893485ad.2
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 11:09:00 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1eb24e3a2d9so59303375ad.1
+ for <qemu-devel@nongnu.org>; Thu, 02 May 2024 11:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714673339; x=1715278139; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eEKz2fdxb3Ho556vvKlYysLgP1Mh/cb34mGEE34PM3A=;
- b=H4Bgq4U6Qc/GpD9Pz23/PhQuD3NzBjCSgwFhclv+AauGQN4jxE1KOX05G4wdyk7npu
- 9FjVWQUtmcS+3BnGOGGL4U6noUlUaT35xMLb24kPohaxw6MoKPgs9uPk+d5aZl44a26Z
- YlzbT6r1rAPKxDtjFeMLhx0ZgsgDV+YU0eYFLvYHyIvoySEYb63c0IFuPW2UXIIm5nbU
- aj+8Veup5Z6nWNPrQNcSfxeP5xQcK0ppC8qCEIiKaxhDnxfJn0v+N8pa3txUmpqUgJIp
- rfDKUiretq9uLbBg+44qggHPB4dI6YLGGjHx6uDY55VdPEUa/sV9nQuDEL5fgSfy4lOg
- 5C2g==
+ d=linaro.org; s=google; t=1714673340; x=1715278140; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FLV/GYrIEX0gQTx5Yxot837zR7KR8Gz9r47zkNmBYYY=;
+ b=Cr0kDxMrP10E4nwTqTXVq/Cedma/FHeJDKD9U2DfHQ9l1BmNTSspZ7stnDyX1GQUzt
+ 4ywuYLhbNBEZ6VrDj4iwlwqvlZCaUkut2BKZ+AH7WYW9x5mS0xLM98JHQk1Z1uQzAIte
+ vKQ0mxAUYHKOgizbmOrRi6OQW+6wmCjQ/UxxKLjJ+R1y99/VJTneldZjtKEfTLej6Ghj
+ Bne5uP3MAovmh3qN3Ks7wNMcKG7b6E5TrmJIxPqd0TYzypg+lJO2WDJs8YLQvfsO7Y3G
+ IIURaKNnfBlh8FmeorPNDC8aVy5aJJJZDU37zTPYY4An1IWKjOo4N4YsNI72wqIAuD6s
+ 1CIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714673339; x=1715278139;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eEKz2fdxb3Ho556vvKlYysLgP1Mh/cb34mGEE34PM3A=;
- b=wTiV1gK4s+EM+j/PAc1m1WqLaD7hl8bpQpvPNOJZITDqJXNR1RzOcxNS40AVAgBhu1
- 60doFojdHPku6vgbPzv7NWHApKV/8M7z2+/lghBFBx8eYYjE/+ZApPFI8QWIQM+QiOJu
- knZ8Zm32ZKWeTYJ0qi7fBWfAjdZU+HLAeh4s7ONDptQe3BXisBpVISl5ZvigoTdNTx/5
- v+lh31Q99v+XNdQvlf8xxhi8nWYXMWGQQi8wENHrzYewKNFncEJEEobZNJJ4g3YvmtFe
- LxFi6YisrStzmvLvPILqzX0wnY0/1D3EmRfEXc2/JoDa6t6BrdPnOcjKEkuJi2wTehmB
- 4iYQ==
-X-Gm-Message-State: AOJu0Yzr0qreHjXj9HY9uq73A3chidsIa+RxDV21ZTD2nzKjl79e7rHn
- P1XKwRA1PDRUsfWJ+1pxsTSF8JwF+1XyoDFx4X3ZZRL4EqMz7oxQ/UI2vZiwT+HtrbaZyJ2i/f7
- nwRs=
-X-Google-Smtp-Source: AGHT+IHx2YpOzGHvzwJbsQczCn52GRpr7jRkZzHnjSzUZc6RzAJ7UWHiyALc2a+JpokP1/koLtjdLw==
-X-Received: by 2002:a17:902:d2c9:b0:1e4:cb0e:2988 with SMTP id
- n9-20020a170902d2c900b001e4cb0e2988mr504220plc.2.1714673339123; 
- Thu, 02 May 2024 11:08:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714673340; x=1715278140;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=FLV/GYrIEX0gQTx5Yxot837zR7KR8Gz9r47zkNmBYYY=;
+ b=UX4+/ZcU0+JioeFXNQbtn0N/gO/cJ/+sBY7jA7sp7TQGpBUfDuPrGlSh/AoFqiHu5G
+ kPpC/DI87joUub7wB2YDZHgepRpsz02D8snGl9xO4RMh7KXObhaPkrd7A8VGJhI8MOXN
+ pi/8Kh3Wbg69zMj7/4PTcWOvZ5zMdwHChBPi4A4HlWGtR7qllU2LP+c5sgTChBSwbThl
+ Co/w2Sxgk4xEZPltXMkeHoXgeAl/sglDocE8F3taTzJuvYi6C/rublSoDx25Pa3E7aQD
+ jc6avcgZHJIyh/dEANBSM4M/U7P0MWOHiF6ojawOcbG0T2i2a0OqLTyYiMgLUXrPCDn0
+ DZug==
+X-Gm-Message-State: AOJu0YxblCUcKmomKMCGZPImGHYoKAJ0K0PxYczpeDnbuikLzKklDN56
+ rsqtitc8Qds26Mf5UTtf+DVPRSP6zLe2a5ngtuNe/QAcJaWJlnI+Akk0qepipNZduZLNzRSuWek
+ Y/v4=
+X-Google-Smtp-Source: AGHT+IEQ9XrhrXfALcpHYfc1cCghI0x70H+smCfXtc0UYukNeQRQtAjZIXXtz5hHxxOfe2UOBFqRqw==
+X-Received: by 2002:a17:902:f648:b0:1e4:19e3:56cb with SMTP id
+ m8-20020a170902f64800b001e419e356cbmr624624plg.12.1714673340285; 
+ Thu, 02 May 2024 11:09:00 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::ecd0])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001ebd73f61fcsm1615605plg.121.2024.05.02.11.08.57
+ c17-20020a170902d49100b001ebd73f61fcsm1615605plg.121.2024.05.02.11.08.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 May 2024 11:08:58 -0700 (PDT)
+ Thu, 02 May 2024 11:08:59 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -63,15 +64,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 0/9] TCG plugins new inline operations
-Date: Thu,  2 May 2024 11:08:38 -0700
-Message-Id: <20240502180847.287673-1-pierrick.bouvier@linaro.org>
+Subject: [PATCH v5 1/9] plugins: prepare introduction of new inline ops
+Date: Thu,  2 May 2024 11:08:39 -0700
+Message-Id: <20240502180847.287673-2-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20240502180847.287673-1-pierrick.bouvier@linaro.org>
+References: <20240502180847.287673-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,64 +96,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series implement two new operations for plugins:
-- Store inline allows to write a specific value to a scoreboard.
-- Conditional callback executes a callback only when a given condition is true.
-  The condition is evaluated inline.
+Until now, only add_u64 was available, and all functions assumed this or
+were named uniquely.
 
-It's possible to mix various inline operations (add, store) with conditional
-callbacks, allowing efficient "trap" based counters.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+---
+ include/qemu/plugin.h  |  2 +-
+ accel/tcg/plugin-gen.c |  6 +++---
+ plugins/core.c         | 14 ++++++++++++--
+ 3 files changed, 16 insertions(+), 6 deletions(-)
 
-It builds on top of new scoreboard API, introduced in the previous series.
-
-NOTE: Two patches still need review
-
-v2
---
-
-- fixed issue with udata not being passed to conditional callback
-- added specific test for this in tests/plugin/inline.c (udata was NULL before).
-
-v3
---
-
-- rebased on top of "plugins: Rewrite plugin code generation":
-  20240316015720.3661236-1-richard.henderson@linaro.org
-- single pass code generation
-- small cleanups for code generation
-
-v4
---
-
-- remove op field from qemu_plugin_inline_cb
-- use tcg_constant_i64 to load immediate value to store
-
-v5
---
-
-- rebase on top of master now that Richard's series was merged
-
-Pierrick Bouvier (9):
-  plugins: prepare introduction of new inline ops
-  plugins: extract generate ptr for qemu_plugin_u64
-  plugins: add new inline op STORE_U64
-  tests/plugin/inline: add test for STORE_U64 inline op
-  plugins: conditional callbacks
-  tests/plugin/inline: add test for conditional callback
-  plugins: distinct types for callbacks
-  plugins: extract cpu_index generate
-  plugins: remove op from qemu_plugin_inline_cb
-
- include/qemu/plugin.h        |  42 +++++++----
- include/qemu/qemu-plugin.h   |  80 ++++++++++++++++++++-
- plugins/plugin.h             |  12 +++-
- accel/tcg/plugin-gen.c       | 136 +++++++++++++++++++++++++++--------
- plugins/api.c                |  39 ++++++++++
- plugins/core.c               | 109 ++++++++++++++++++++--------
- tests/plugin/inline.c        | 130 +++++++++++++++++++++++++++++++--
- plugins/qemu-plugins.symbols |   2 +
- 8 files changed, 466 insertions(+), 84 deletions(-)
-
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index 18062528c17..bee1647cfc4 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -69,7 +69,7 @@ union qemu_plugin_cb_sig {
+ enum plugin_dyn_cb_type {
+     PLUGIN_CB_REGULAR,
+     PLUGIN_CB_MEM_REGULAR,
+-    PLUGIN_CB_INLINE,
++    PLUGIN_CB_INLINE_ADD_U64,
+ };
+ 
+ /*
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 3db74ae9bfe..8028ae76c3a 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -113,7 +113,7 @@ static void gen_udata_cb(struct qemu_plugin_dyn_cb *cb)
+     tcg_temp_free_i32(cpu_index);
+ }
+ 
+-static void gen_inline_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
+ {
+     GArray *arr = cb->inline_insn.entry.score->data;
+     size_t offset = cb->inline_insn.entry.offset;
+@@ -158,8 +158,8 @@ static void inject_cb(struct qemu_plugin_dyn_cb *cb)
+     case PLUGIN_CB_REGULAR:
+         gen_udata_cb(cb);
+         break;
+-    case PLUGIN_CB_INLINE:
+-        gen_inline_cb(cb);
++    case PLUGIN_CB_INLINE_ADD_U64:
++        gen_inline_add_u64_cb(cb);
+         break;
+     default:
+         g_assert_not_reached();
+diff --git a/plugins/core.c b/plugins/core.c
+index 0213513ec65..a8557b54ff7 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -316,6 +316,16 @@ static struct qemu_plugin_dyn_cb *plugin_get_dyn_cb(GArray **arr)
+     return &g_array_index(cbs, struct qemu_plugin_dyn_cb, cbs->len - 1);
+ }
+ 
++static enum plugin_dyn_cb_type op_to_cb_type(enum qemu_plugin_op op)
++{
++    switch (op) {
++    case QEMU_PLUGIN_INLINE_ADD_U64:
++        return PLUGIN_CB_INLINE_ADD_U64;
++    default:
++        g_assert_not_reached();
++    }
++}
++
+ void plugin_register_inline_op_on_entry(GArray **arr,
+                                         enum qemu_plugin_mem_rw rw,
+                                         enum qemu_plugin_op op,
+@@ -326,7 +336,7 @@ void plugin_register_inline_op_on_entry(GArray **arr,
+ 
+     dyn_cb = plugin_get_dyn_cb(arr);
+     dyn_cb->userp = NULL;
+-    dyn_cb->type = PLUGIN_CB_INLINE;
++    dyn_cb->type = op_to_cb_type(op);
+     dyn_cb->rw = rw;
+     dyn_cb->inline_insn.entry = entry;
+     dyn_cb->inline_insn.op = op;
+@@ -551,7 +561,7 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
+             cb->regular.f.vcpu_mem(cpu->cpu_index, make_plugin_meminfo(oi, rw),
+                                    vaddr, cb->userp);
+             break;
+-        case PLUGIN_CB_INLINE:
++        case PLUGIN_CB_INLINE_ADD_U64:
+             exec_inline_op(cb, cpu->cpu_index);
+             break;
+         default:
 -- 
 2.39.2
 
