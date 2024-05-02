@@ -2,102 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887978BA189
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 22:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E9D8BA18C
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 22:25:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2cxs-0007wK-Py; Thu, 02 May 2024 16:23:36 -0400
+	id 1s2cxr-0007vr-Nq; Thu, 02 May 2024 16:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s2cxi-0007tE-QW
- for qemu-devel@nongnu.org; Thu, 02 May 2024 16:23:28 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s2cxk-0007tW-38
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 16:23:30 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s2cxh-0002n1-60
- for qemu-devel@nongnu.org; Thu, 02 May 2024 16:23:26 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s2cxh-0002nJ-UU
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 16:23:27 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BA2EE1FD0E;
- Thu,  2 May 2024 20:23:22 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 8CB031FD18;
+ Thu,  2 May 2024 20:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714681402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1714681404; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yox7412cGTtUL2CQXPQpWip+SE1+94y2VLTqWSN6JyE=;
- b=qGLbMKqgV+PLVLbAgOuyaSiBTnaA+lce8RO5YCO8hOmPW+IfrrNi8VIfsAOjMv5VTbHi2d
- O/LWIqPay7tblBj6H3x1PdhyIOOlksrX93gPpXQ5IgWHQAoQ+/HYppYa34KIL39UxKE0Ms
- mxHdq5X5jaZ2r8V84pI/2BEehOeOeLo=
+ bh=S+6ohOs8r7Uea7SyKPjqTFtiY9Ar+9l4fF6rc6w5alA=;
+ b=WVVaAmO5NnQGqVtJaxvCay83hoDdO4yn5Dejf+41fOK6k8reUrTWLP8BtGBQlDuk8WPP73
+ zY1G0dGVUxW//JeBuV4boPaS1uWHQByfJv1sKapXmyrrmQll9loofYvWqgPA5fqRH6djoj
+ Uo4SNXe5pau1jdDQu162+EgUvkps8Ug=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714681402;
+ s=susede2_ed25519; t=1714681404;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yox7412cGTtUL2CQXPQpWip+SE1+94y2VLTqWSN6JyE=;
- b=YB6BLCuIO10fVAEwWEkm+fWZQea8JZwEJ0YhtB51WiIZ0pWGCz0k2h2N9bobk2TYqFgGjS
- cS5rCGrtJXR1iPBQ==
+ bh=S+6ohOs8r7Uea7SyKPjqTFtiY9Ar+9l4fF6rc6w5alA=;
+ b=KI05ptweLnGFG1hFC/55mxKvmHm5S0/3nbQ1hB9mfuA3QViWhEr94E6lBNXL8AqBAT/Mcw
+ cyjADr4Ad9lLJ2BQ==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1714681402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1714681404; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yox7412cGTtUL2CQXPQpWip+SE1+94y2VLTqWSN6JyE=;
- b=qGLbMKqgV+PLVLbAgOuyaSiBTnaA+lce8RO5YCO8hOmPW+IfrrNi8VIfsAOjMv5VTbHi2d
- O/LWIqPay7tblBj6H3x1PdhyIOOlksrX93gPpXQ5IgWHQAoQ+/HYppYa34KIL39UxKE0Ms
- mxHdq5X5jaZ2r8V84pI/2BEehOeOeLo=
+ bh=S+6ohOs8r7Uea7SyKPjqTFtiY9Ar+9l4fF6rc6w5alA=;
+ b=WVVaAmO5NnQGqVtJaxvCay83hoDdO4yn5Dejf+41fOK6k8reUrTWLP8BtGBQlDuk8WPP73
+ zY1G0dGVUxW//JeBuV4boPaS1uWHQByfJv1sKapXmyrrmQll9loofYvWqgPA5fqRH6djoj
+ Uo4SNXe5pau1jdDQu162+EgUvkps8Ug=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1714681402;
+ s=susede2_ed25519; t=1714681404;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yox7412cGTtUL2CQXPQpWip+SE1+94y2VLTqWSN6JyE=;
- b=YB6BLCuIO10fVAEwWEkm+fWZQea8JZwEJ0YhtB51WiIZ0pWGCz0k2h2N9bobk2TYqFgGjS
- cS5rCGrtJXR1iPBQ==
+ bh=S+6ohOs8r7Uea7SyKPjqTFtiY9Ar+9l4fF6rc6w5alA=;
+ b=KI05ptweLnGFG1hFC/55mxKvmHm5S0/3nbQ1hB9mfuA3QViWhEr94E6lBNXL8AqBAT/Mcw
+ cyjADr4Ad9lLJ2BQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B07A13957;
- Thu,  2 May 2024 20:23:21 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2FC4F13957;
+ Thu,  2 May 2024 20:23:22 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 0JXcCDn2M2ZZUQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 02 May 2024 20:23:21 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 6N3NOTr2M2ZZUQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 02 May 2024 20:23:22 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Will Gyda <vilhelmgyda@gmail.com>, Peter Xu <peterx@redhat.com>
-Subject: [PULL 01/13] migration/ram.c: API Conversion qemu_mutex_lock(),
- and qemu_mutex_unlock() to WITH_QEMU_LOCK_GUARD macro
-Date: Thu,  2 May 2024 17:23:04 -0300
-Message-Id: <20240502202316.29924-2-farosas@suse.de>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 02/13] migration: move trace-point from migrate_fd_error to
+ migrate_set_error
+Date: Thu,  2 May 2024 17:23:05 -0300
+Message-Id: <20240502202316.29924-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240502202316.29924-1-farosas@suse.de>
 References: <20240502202316.29924-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- FREEMAIL_CC(0.00)[linaro.org,gmail.com,redhat.com];
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_THREE(0.00)[4];
+ MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
+ TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -120,43 +119,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Will Gyda <vilhelmgyda@gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-migration/ram.c: API Conversion qemu_mutex_lock(),
-and qemu_mutex_unlock() to WITH_QEMU_LOCK_GUARD macro
+Cover more cases by trace-point.
 
-Signed-off-by: Will Gyda <vilhelmgyda@gmail.com>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/ram.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ migration/migration.c  | 4 +++-
+ migration/trace-events | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index a975c5af16..50df1e9cd2 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1066,14 +1066,14 @@ static void migration_bitmap_sync(RAMState *rs, bool last_stage)
-     trace_migration_bitmap_sync_start();
-     memory_global_dirty_log_sync(last_stage);
- 
--    qemu_mutex_lock(&rs->bitmap_mutex);
--    WITH_RCU_READ_LOCK_GUARD() {
--        RAMBLOCK_FOREACH_NOT_IGNORED(block) {
--            ramblock_sync_dirty_bitmap(rs, block);
-+    WITH_QEMU_LOCK_GUARD(&rs->bitmap_mutex) {
-+        WITH_RCU_READ_LOCK_GUARD() {
-+            RAMBLOCK_FOREACH_NOT_IGNORED(block) {
-+                ramblock_sync_dirty_bitmap(rs, block);
-+            }
-+            stat64_set(&mig_stats.dirty_bytes_last_sync, ram_bytes_remaining());
-         }
--        stat64_set(&mig_stats.dirty_bytes_last_sync, ram_bytes_remaining());
+diff --git a/migration/migration.c b/migration/migration.c
+index b5af6b5105..2dc6a063e9 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1421,6 +1421,9 @@ static void migrate_fd_cleanup_bh(void *opaque)
+ void migrate_set_error(MigrationState *s, const Error *error)
+ {
+     QEMU_LOCK_GUARD(&s->error_mutex);
++
++    trace_migrate_error(error_get_pretty(error));
++
+     if (!s->error) {
+         s->error = error_copy(error);
      }
--    qemu_mutex_unlock(&rs->bitmap_mutex);
+@@ -1444,7 +1447,6 @@ static void migrate_error_free(MigrationState *s)
  
-     memory_global_after_dirty_log_sync();
-     trace_migration_bitmap_sync_end(rs->num_dirty_pages_period);
+ static void migrate_fd_error(MigrationState *s, const Error *error)
+ {
+-    trace_migrate_fd_error(error_get_pretty(error));
+     assert(s->to_dst_file == NULL);
+     migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
+                       MIGRATION_STATUS_FAILED);
+diff --git a/migration/trace-events b/migration/trace-events
+index f0e1cb80c7..d0c44c3853 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -152,7 +152,7 @@ multifd_set_outgoing_channel(void *ioc, const char *ioctype, const char *hostnam
+ # migration.c
+ migrate_set_state(const char *new_state) "new state %s"
+ migrate_fd_cleanup(void) ""
+-migrate_fd_error(const char *error_desc) "error=%s"
++migrate_error(const char *error_desc) "error=%s"
+ migrate_fd_cancel(void) ""
+ migrate_handle_rp_req_pages(const char *rbname, size_t start, size_t len) "in %s at 0x%zx len 0x%zx"
+ migrate_pending_exact(uint64_t size, uint64_t pre, uint64_t post) "exact pending size %" PRIu64 " (pre = %" PRIu64 " post=%" PRIu64 ")"
 -- 
 2.35.3
 
