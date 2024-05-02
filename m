@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCF48B9459
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 07:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE538B9457
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 07:46:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2PFY-00009M-SH; Thu, 02 May 2024 01:44:56 -0400
+	id 1s2PFQ-00005x-3V; Thu, 02 May 2024 01:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2PFM-0008UO-7O
- for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:44 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1s2PFB-0008NX-0h
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:33 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2PF4-0002cP-05
- for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:43 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-23db0b5dd28so517246fac.2
- for <qemu-devel@nongnu.org>; Wed, 01 May 2024 22:44:25 -0700 (PDT)
+ id 1s2PF5-0002ct-FO
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 01:44:32 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6ea2ac4607aso3833093a34.3
+ for <qemu-devel@nongnu.org>; Wed, 01 May 2024 22:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714628665; x=1715233465; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714628666; x=1715233466; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I2qMHX2+XNKUy8pt8yib4yrbmg7rCMDrLvF6E3jB/iQ=;
- b=h+nBeluu6wX3LOz0iyFqSzrNqJTCHzUKybYjnzRRRFhDAKfGS837SgvCnh/MTbIhDw
- aaiAXLhGuENdPBsDzAo2by38sr9AXT9KlF0Y3I2WkC723i2zLdvGlIwFutiLr9pwnY5O
- wMoyO8v3Kz0qS5IO8DlP9R75JHAMxWjaXZkUir/CCJxfh9/sRAGg4nf+7e+QSIPcDBxP
- xQ0t5+6ttbyTxtEdSEQsi+8px/6wWHpyXf6KJVd+iDeQLrVymk5octFlL55AlXxVXHyE
- HKXR5peJ2ZFxIDsyflQdZ4CSifs80pSzFjDHMoeS/3m2qpZ4YpUzhw0HuD4+V2hReKz0
- BG0w==
+ bh=Fuiq9TfywDbJprPpCqgLClsfOUB0xDNyU+e5J9WUAuU=;
+ b=QJs0DrNnU/c1Vueuq8Dc5mm44e0BhAFOhxwDnDwPvaYzQRKoaf1oCeGl/Yj+d+rwBn
+ X0rzsIDD6LMsqCX7FMboR4zaZL611y1bYj0ckL/c2a2V+5H5fnfWV03qSJYlh+040s1d
+ 8tee509FGcjhdqO0gz0dVyrX3YmjzbF0vDqXXmysOz8eslsU9ES2Lpbzd5lWgp5WEvdB
+ d0fjR0i61p447YLVDQcBiz9PYO0R12Ucrk4tU8kFLhT6QDhdzR3Et22S72Ec/QZp2NHo
+ A2iBX/tWHnlH/+foeTx2G7Pegzm8heouAHXqRHvNRWa8o+bwkYc/po/hO4H1l8zHvBcj
+ JzQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714628665; x=1715233465;
+ d=1e100.net; s=20230601; t=1714628666; x=1715233466;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I2qMHX2+XNKUy8pt8yib4yrbmg7rCMDrLvF6E3jB/iQ=;
- b=FpFInaLCho2W/urOkLNc2rff167ZjEHh7UjLG7EhSrcURwrNxL7dGD5jbqpS6oRKRT
- IshBBLZUQ0/WcRFitepbpuJ6qkxxaOlzk2EL0wCytIIy0vqWeVOYHyCBnFRy1o5AtMNw
- sJdLtFrMyUGuyTFCG1n3yAcl9D4Ec+KEt6/L4LlJ8JZfjbrIC889C7NYgp5+LEU9BxqK
- N0WXi3gMS1uJNXewKcDYz5hrVQFBTWk5B690bCEBIX/FIZen6+vsg40MZDHJbMkZNDNr
- OSpT5bg93IrGAs/tqzVFVBlDhOiZF/0IsRWr84NgqWGN73uC7SONxRxckgyr3I10XKqA
- nDZw==
-X-Gm-Message-State: AOJu0Yzl22IFkiA7VkO2PGA6BY9UtIdDuusvW85uZC10cpTjsWDhFmBp
- lfXCIdZRrzL83uAcggLHWpnb5VCCHQ8VtM558Zfi7CmmggXlDtZ+TF5jDmvxrb+g8O8pGeDqrr6
- L
-X-Google-Smtp-Source: AGHT+IFnbxn/+FHcQHKZ2ouEnOWfISkF36KYrciVmgstNqS3pJ4JD5oIIx9j7ALJ+Fp9Lo7a6LVLag==
-X-Received: by 2002:a05:6870:b629:b0:22e:b2da:af39 with SMTP id
- cm41-20020a056870b62900b0022eb2daaf39mr1377566oab.47.1714628664753; 
- Wed, 01 May 2024 22:44:24 -0700 (PDT)
+ bh=Fuiq9TfywDbJprPpCqgLClsfOUB0xDNyU+e5J9WUAuU=;
+ b=I1sqk6sSU5MY1fdDEIswdhM6uSaqG/IQ2z866wP1TCYHQzui9ctOsXlEfClDcHnVRK
+ z0e1W9onelunglo9uV6V2gBCsrcbbPQzapnXEigq2foiBGRiXQ1Zcj9fqbp8POUQPBaY
+ gJgzJRZTkvMOsmc3bRrLOCb54jfN+NdDZ+8fHKonzTmXgumSsDhga0WmS7HTvDpmN+FE
+ 5VkHv84bzQAFLS5ZHUA9VzGMik2qhXflfPqD+rYIaThkQ6Qwd24wy0akNCvMDo1VNeFX
+ 18lO7LHxVyyqG4nkPvWrIuN4WEqUF5KjCsOkcJSrFYex8w4C8LikgydtpzRvkw6CL/ox
+ IqGA==
+X-Gm-Message-State: AOJu0Yzr8kSuSUPvbVDICsTosHAE26VnVpnkwv18n91M0i3Bi5bTeFEz
+ lVp1gzQmIDWR/znTIEZ2i5BvkIdN/OrpIRyBY7amCpLhns+IznFLFdix20tEk31GQvlPu3PW542
+ W
+X-Google-Smtp-Source: AGHT+IG0xYv2uIQqckm5wcK5KqitnMG0RvsgD8PC+M6h2NKLCwb3PmZEkQaJXuPa0vJr3NWLXPxkkw==
+X-Received: by 2002:a05:6870:b28a:b0:232:ff53:44fe with SMTP id
+ c10-20020a056870b28a00b00232ff5344femr5088160oao.38.1714628665894; 
+ Wed, 01 May 2024 22:44:25 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e18-20020a656492000000b006089cf2cde5sm294401pgv.26.2024.05.01.22.44.24
+ e18-20020a656492000000b006089cf2cde5sm294401pgv.26.2024.05.01.22.44.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 May 2024 22:44:24 -0700 (PDT)
+ Wed, 01 May 2024 22:44:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, iii@linux.ibm.com, david@redhat.com,
- thuth@redhat.com
-Subject: [PATCH 05/14] target/s390x: Disable conditional branch-to-next for PER
-Date: Wed,  1 May 2024 22:44:08 -0700
-Message-Id: <20240502054417.234340-6-richard.henderson@linaro.org>
+ thuth@redhat.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 06/14] target/s390x: Introduce help_goto_indirect
+Date: Wed,  1 May 2024 22:44:09 -0700
+Message-Id: <20240502054417.234340-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240502054417.234340-1-richard.henderson@linaro.org>
 References: <20240502054417.234340-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,42 +95,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For PER, we require a conditional call to helper_per_branch
-for the conditional branch.  Fold the remaining optimization
-into a call to helper_goto_direct, which will take care of
-the remaining gbea adjustment.
+Add a small helper to handle unconditional indirect jumps.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/translate.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ target/s390x/tcg/translate.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 3622c5c883..c3c821430d 100644
+index c3c821430d..b1a93070cb 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -1133,13 +1133,13 @@ static DisasJumpType help_branch(DisasContext *s, DisasCompare *c,
-         goto egress;
+@@ -1120,6 +1120,13 @@ static DisasJumpType help_goto_direct(DisasContext *s, uint64_t dest)
      }
-     if (is_imm) {
--        if (dest == s->pc_tmp) {
--            /* Branch to next.  */
--            per_branch(s, true);
--            ret = DISAS_NEXT;
--            goto egress;
--        }
--        if (c->cond == TCG_COND_ALWAYS) {
-+        /*
-+         * Do not optimize a conditional branch if PER enabled, because we
-+         * still need a conditional call to helper_per_branch.
-+         */
-+        if (c->cond == TCG_COND_ALWAYS
-+            || (dest == s->pc_tmp &&
-+                !(s->base.tb->flags & FLAG_MASK_PER_BRANCH))) {
-             ret = help_goto_direct(s, dest);
+ }
+ 
++static DisasJumpType help_goto_indirect(DisasContext *s, TCGv_i64 dest)
++{
++    tcg_gen_mov_i64(psw_addr, dest);
++    per_branch(s, false);
++    return DISAS_PC_UPDATED;
++}
++
+ static DisasJumpType help_branch(DisasContext *s, DisasCompare *c,
+                                  bool is_imm, int imm, TCGv_i64 cdest)
+ {
+@@ -1150,9 +1157,7 @@ static DisasJumpType help_branch(DisasContext *s, DisasCompare *c,
              goto egress;
          }
+         if (c->cond == TCG_COND_ALWAYS) {
+-            tcg_gen_mov_i64(psw_addr, cdest);
+-            per_branch(s, false);
+-            ret = DISAS_PC_UPDATED;
++            ret = help_goto_indirect(s, cdest);
+             goto egress;
+         }
+     }
+@@ -1465,9 +1470,7 @@ static DisasJumpType op_bas(DisasContext *s, DisasOps *o)
+ {
+     pc_to_link_info(o->out, s, s->pc_tmp);
+     if (o->in2) {
+-        tcg_gen_mov_i64(psw_addr, o->in2);
+-        per_branch(s, false);
+-        return DISAS_PC_UPDATED;
++        return help_goto_indirect(s, o->in2);
+     } else {
+         return DISAS_NEXT;
+     }
+@@ -1497,9 +1500,7 @@ static DisasJumpType op_bal(DisasContext *s, DisasOps *o)
+ {
+     save_link_info(s, o);
+     if (o->in2) {
+-        tcg_gen_mov_i64(psw_addr, o->in2);
+-        per_branch(s, false);
+-        return DISAS_PC_UPDATED;
++        return help_goto_indirect(s, o->in2);
+     } else {
+         return DISAS_NEXT;
+     }
 -- 
 2.34.1
 
