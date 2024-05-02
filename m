@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C390C8BA1BD
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 22:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5878BA217
+	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 23:17:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2dRj-0001j1-V7; Thu, 02 May 2024 16:54:28 -0400
+	id 1s2dmH-0008KW-W5; Thu, 02 May 2024 17:15:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s2dRd-0001ib-9v; Thu, 02 May 2024 16:54:21 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s2dRb-000882-4U; Thu, 02 May 2024 16:54:21 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 04CEE63A0C;
- Thu,  2 May 2024 23:54:26 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id EDB9CC552D;
- Thu,  2 May 2024 23:54:15 +0300 (MSK)
-Message-ID: <34584520-cf5d-47c8-a8a2-ca177a89edef@tls.msk.ru>
-Date: Thu, 2 May 2024 23:54:15 +0300
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1s2dmF-0008J0-Sp
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 17:15:39 -0400
+Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1s2dmE-0002nx-56
+ for qemu-devel@nongnu.org; Thu, 02 May 2024 17:15:39 -0400
+Received: by mail-il1-x132.google.com with SMTP id
+ e9e14a558f8ab-36c0ef5f7ebso37791035ab.0
+ for <qemu-devel@nongnu.org>; Thu, 02 May 2024 14:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714684535; x=1715289335; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4oV0Bq5JAyOVtAmAE/+atb+/0axiHuyH+IUkyLsJWWY=;
+ b=ATavs0YOPqU33wc56JB5XSkJmqlkRQ6i0b9hjHucRvPDyTaczLO5qco5YTsQfX1O8n
+ 6WunhNwNNqSBiI48rYmo8XR5E7WN8eV8M8boAXGfesyh1aUns2253YhC4TxaP99j0yH+
+ e252Aa2QWpSqmyt+RWtqnwUGrSRyY5iccHKBRaKn5U2TlBND9tu7gm6qfMXrfUecPiX0
+ 8Hfau/R0HRa8remln+SyBQBaJW83Kb/d6Vs3tJi1Gs+MZAzGqbiMGocmrgUmZ9O8k7yo
+ fZkSaWSDrsLPBQlNDDptA5yJaSRg8be5pb5Qcef3v5Gs0aE8v8Y9B5+edeiEtdOLkdRj
+ T1sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714684535; x=1715289335;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4oV0Bq5JAyOVtAmAE/+atb+/0axiHuyH+IUkyLsJWWY=;
+ b=cj/yLqG+H6U2DtyDZY+KnbJpPkwIku6OZDfyIpFaA572S0/RHSMkgHdDJdrO9nzxy6
+ 0mWO0ZIU0ICDLpFjh9t0egfcNIobjXrpTkqSAZQz+RXXd+jcFnwnsRBrxT9J433erpU2
+ 8xC44UoO/HAtETJKI1PU0RdGTWyCKgYZ3DdcRsJMCOPewwM4ur1BdXmwbovRHA7Wgcha
+ CdQUWryFXdPIUQuH2WaMmJE98gqgkEw3xnT6PoN72sTxdpmB+FXuaUn25OvTxodqf14/
+ CCficdELlLKcdGhKrEMEWA8/vPrscAJbrXSz4BvAx5FImRIaFLYferY6Qx+9nCH38B+P
+ CR5w==
+X-Gm-Message-State: AOJu0YwlhIc07rP3sNf9KvruH4XuRwcgaBXRI9aYPMNMLJKwyjPTjvJY
+ TrlQUE4U/bEc0Pqr6hU7GU/OeOFVEP461kCwPaPXmKxM0lEf+7H055q2VDg6fz7FWjD2ZFvGhe7
+ Mjrc=
+X-Google-Smtp-Source: AGHT+IEK0CdH4M0GOajsJW6kTiVAew+rJKliu7dAVz/+t3tkhC35dkQdByhF+vjkf8i9goqx+9Fi9A==
+X-Received: by 2002:a92:cd8b:0:b0:36a:ff3a:f135 with SMTP id
+ r11-20020a92cd8b000000b0036aff3af135mr1240394ilb.15.1714684535596; 
+ Thu, 02 May 2024 14:15:35 -0700 (PDT)
+Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::ecd0])
+ by smtp.gmail.com with ESMTPSA id
+ d14-20020a63f24e000000b0060063c4be3bsm1700915pgk.14.2024.05.02.14.15.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 May 2024 14:15:35 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v6 0/9] TCG plugins new inline operations
+Date: Thu,  2 May 2024 14:15:13 -0700
+Message-Id: <20240502211522.346467-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Re-enable riscv64-debian-cross-container (debian riscv64
- is finally usable again!)
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240502194046.830825-1-mjt@tls.msk.ru>
- <3ce937fb-afb9-4ea2-97ab-b8dc0952e9be@linaro.org>
- <9969663a-0f00-435b-b507-fb6a429cb4db@tls.msk.ru>
- <2cdaeac2-d57b-4daa-826e-d57d55d5dad0@linaro.org>
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <2cdaeac2-d57b-4daa-826e-d57d55d5dad0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::132;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-il1-x132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,41 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.05.2024 23:41, Richard Henderson wrote:
-> On 5/2/24 13:08, Michael Tokarev wrote:
->> This thing works now with sid/unstable, this is what this patch is about.
-> 
-> It worked when first introduced, then failed, then worked...
-> Sid is too unstable for our usage as a gating test.
+This series implement two new operations for plugins:
+- Store inline allows to write a specific value to a scoreboard.
+- Conditional callback executes a callback only when a given condition is true.
+  The condition is evaluated inline.
 
-unstable can be unstable at times.  Generally it works, and can fail
-during short periods.
+It's possible to mix various inline operations (add, store) with conditional
+callbacks, allowing efficient "trap" based counters.
 
-riscv64 didn't work since it got promoted to release arch last year, due
-to non-working multiarch because many riscv64 packages in debian had
-different version numbers compared to other architectures (due to rebuilds
-of binaries).  Later on whole sid was broken by a large time64 transition
-and a lot of breakages in this area.  This is now being completed and
-is migrated to testing, which is finally available for riscv64 too as
-a release arch.
+It builds on top of new scoreboard API, introduced in the previous series.
 
-I wouldn't switch to testing just yet, because at this point, unstable
-will usually be more stable, or, rather, it will be broken for much
-shorter periods of time than testing, due to migration delays.
+v2
+--
 
-It will take some more time for debian testing to become more or less
-stable in this context.  But lack of riscv testing already cost me a
-*stable* release which failed to *build* (8.2.3 fails to build on
-riscv64).  So I think it is more important to run this job on sid
-than not to run it at all.
+- fixed issue with udata not being passed to conditional callback
+- added specific test for this in tests/plugin/inline.c (udata was NULL before).
 
-Thanks,
+v3
+--
 
-/mjt
+- rebased on top of "plugins: Rewrite plugin code generation":
+  20240316015720.3661236-1-richard.henderson@linaro.org
+- single pass code generation
+- small cleanups for code generation
+
+v4
+--
+
+- remove op field from qemu_plugin_inline_cb
+- use tcg_constant_i64 to load immediate value to store
+
+v5
+--
+
+- rebase on top of master now that Richard's series was merged
+
+v6
+--
+
+- more elaborated commit messages
+
+Pierrick Bouvier (9):
+  plugins: prepare introduction of new inline ops
+  plugins: extract generate ptr for qemu_plugin_u64
+  plugins: add new inline op STORE_U64
+  tests/plugin/inline: add test for STORE_U64 inline op
+  plugins: conditional callbacks
+  tests/plugin/inline: add test for conditional callback
+  plugins: distinct types for callbacks
+  plugins: extract cpu_index generate
+  plugins: remove op from qemu_plugin_inline_cb
+
+ include/qemu/plugin.h        |  42 +++++++----
+ include/qemu/qemu-plugin.h   |  80 ++++++++++++++++++++-
+ plugins/plugin.h             |  12 +++-
+ accel/tcg/plugin-gen.c       | 136 +++++++++++++++++++++++++++--------
+ plugins/api.c                |  39 ++++++++++
+ plugins/core.c               | 109 ++++++++++++++++++++--------
+ tests/plugin/inline.c        | 130 +++++++++++++++++++++++++++++++--
+ plugins/qemu-plugins.symbols |   2 +
+ 8 files changed, 466 insertions(+), 84 deletions(-)
+
 -- 
-GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
-New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
-Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
-Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
+2.39.2
 
 
