@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A098BAF92
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AE68BAF9E
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:15:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2ubN-0005q5-6Q; Fri, 03 May 2024 11:13:33 -0400
+	id 1s2ucd-0008QS-0z; Fri, 03 May 2024 11:14:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2ubJ-0005oG-7E
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:29 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uca-0008BE-66
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:14:48 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2ubG-00076w-GU
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:28 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e3c3aa8938so62133365ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:13:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2ucY-0007E7-4H
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:14:47 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-34db9a38755so2907864f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714749205; x=1715354005; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=P8aiuTj5/6yjo0wKZf1j2mdDbeTtUm906YMvC+PIZPk=;
- b=dhh5hm3Et4gSwin9L7A54VkF/R/ffpuO4p3Dc//5aC50N4P/UdcT9lqBSNU1dilSwZ
- ZVy7JwxyEg3sGyuBc7zlQosXJLBxfWUQ5hc+elmPN1Syan6FW8jDqziLvSABoFHrEwb6
- aJPecNLL7u2751eyug6jrm+OnrXE88DTk7sZAgFLkqgthQCsIx0XqNBlx//Jk/j8DSar
- XKPzda8RBWfiljpCnolvZnOeNvYoWDsaNH7lzN3hZVfrnyXVBTlmjfnU95tybYiAAKDU
- e39UuchtouwvER9LuJR6iZUGdMCnx50AGez60PzNyuU+HmV/zaUVojqtmY7fh+eFPMOq
- FPUQ==
+ d=linaro.org; s=google; t=1714749284; x=1715354084; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3j0xFl8oKFR8mdSxmKo8qchQMG5/VsIZgpcMfzHX9A0=;
+ b=l1PuebJbvyJmYfgJbEuwnbr7J+apZBPRzuTnSTwTxhRwdptCsxO2oGStuXqRvmDV9c
+ KEc9YHIPSpStC8OT+YRrwtm471kI+bM7r7j3i14fNtIJA3BqzYd1nJurFZH8eGbzj6TI
+ 0rYaytlXHZ/6IqbzVsTmX454kS32qSZD4aUJF++wTRvV4dwG/wCFG4ceXdhjkoKGamw0
+ 53CC2e0pjbDKD5cHVuryD4g8yhSguYq7IcTpF47SBoRDsYRM9wrEA+5/ddeADaiBHP7R
+ wsdU5PEJN2LL6KJKarxTQKMCJ1FrWOSINokRraJcGb1tcAp3yvJYWgw+ymUUfb1aB/bG
+ v7AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714749205; x=1715354005;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=P8aiuTj5/6yjo0wKZf1j2mdDbeTtUm906YMvC+PIZPk=;
- b=ubG9fq0xT9tIvefD0g+JzFQ5unJfPM+lY/oZf3kAC+jJ1oLqyreisbErYnWe9Sl5cH
- ae7LhU3F8TK6qV8PxMbodTIIls9Sroo/sOfsyCx2a+RGikPJ+7HjCSRfx1TWUJ7vSTS2
- vOnx+YXR4MJbzBh50vOkqZXlsDTWmCXGQsgAj4erPFdsyUkueKJ9tk6bo9rZU07PTNOr
- Hd/1weAAMsIeX+Wp5O0XUPqGIEmo44NI117x+bSgv//oXZ3g3FCh3tiOC2XoKjPd7iaf
- Jux48jjWeA72pEGtlGFovefsI0Y/8TSBuEwDeYh5fcb6lyZ61LPLFR3NMr6D7riG31Gb
- Yp/A==
-X-Gm-Message-State: AOJu0Yx81wGjS807cKKRmYLMnT34kKvIanDiMVEWkQVN8v20I1IdCFyH
- qdBT+CPA+PkLsx93dmVkUycdxfCNooO+J47adSU7wnL0ZwYT3iMyo3Q4EmcnjilaSFKXdkmzcbk
- h
-X-Google-Smtp-Source: AGHT+IG2rEdg0/DbGOhIhWo300L2aS9pjhb9N/r2M+Z5xBqcs4Ul7LEwdvq/+tI3to8j6E2PplfKtw==
-X-Received: by 2002:a17:902:cf04:b0:1ec:4054:9f47 with SMTP id
- i4-20020a170902cf0400b001ec40549f47mr3670436plg.26.1714749205079; 
- Fri, 03 May 2024 08:13:25 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ d=1e100.net; s=20230601; t=1714749284; x=1715354084;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3j0xFl8oKFR8mdSxmKo8qchQMG5/VsIZgpcMfzHX9A0=;
+ b=s7FQ6VKf0k/asENObiBczPlwq6o/AirfzKL6aFdOngkTRj83th0Ab6lyUoVrtH8AZ7
+ XR+1ZXdq0plN1Dm4NbiqnSCi3TEYMSyBLIBriYwqL/rmeFZyktPrF7pj1zSJnsJa+Pel
+ FtKdKfL9SxTuLQD3B/Z2VVSOwm8Yio9bc7scNwJck4VVIbBlOrES4g9FvbUysvWSfpy8
+ LuKvGpgE3hUD/uwH/Jt/wmjPyxxj7YZOjmilLxMlcZq3Hs+TF4oZD7wqH5gc+6KPAyoy
+ IQkoGK0aG/Lrphm/UUl3fCNUnsuxDiyOUKDn7nzYWp+b4JNphUrrEUMD7fiPuaEkPb9Q
+ Bf5A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCURLIT5gaJbXIS1pIT+V3P0wHpbm4wcx9rQAUJb9y/whgfzRgyD8F2EsG7HIXnHjGmDok/WUL3kg+qczuUyH0gb0DFXf/g=
+X-Gm-Message-State: AOJu0Yz7NNdxfOvsM0Xd2T+7TjYi5252Iz3xP9j3yiUFtylcB4l5JtgC
+ H13EvgVxD9jb9P68hm5Onr05adEG7ZRsDztfCQoDMNS8QdZaLo5uwqLUjTylDX6BiYluZGtqz+g
+ G
+X-Google-Smtp-Source: AGHT+IEH4Z2Uzw+s7OUolJ0HOAVQh2CYKez0KX8mROomAgnAhU7hEJqg45Ai0f6LohJ0qP4DEoVr2Q==
+X-Received: by 2002:adf:ef0d:0:b0:34c:6382:290c with SMTP id
+ e13-20020adfef0d000000b0034c6382290cmr2878647wro.39.1714749284368; 
+ Fri, 03 May 2024 08:14:44 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- p10-20020a170902c70a00b001e81c778784sm3366611plp.67.2024.05.03.08.13.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 May 2024 08:13:24 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/10] tests/bench: Add bufferiszero-bench
-Date: Fri,  3 May 2024 08:13:14 -0700
-Message-Id: <20240503151314.336357-11-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240503151314.336357-1-richard.henderson@linaro.org>
-References: <20240503151314.336357-1-richard.henderson@linaro.org>
+ r8-20020a5d4988000000b0034cceee9051sm3965883wrq.105.2024.05.03.08.14.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 03 May 2024 08:14:43 -0700 (PDT)
+Message-ID: <bd3d819b-2bf1-4451-8f34-75385b8b342a@linaro.org>
+Date: Fri, 3 May 2024 17:14:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kvm: ppc: disable sPAPR code if CONFIG_PSERIES is disabled
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240503134918.232633-1-pbonzini@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240503134918.232633-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,82 +93,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Benchmark each acceleration function vs an aligned buffer of zeros.
+On 3/5/24 15:49, Paolo Bonzini wrote:
+> target/ppc/kvm.c calls out to code in hw/ppc/spapr*.c; that code is
+> not present and fails to link if CONFIG_PSERIES is not enabled.
+> Adjust kvm.c to depend on CONFIG_PSERIES instead of TARGET_PPC64,
+> and compile out anything that requires cap_papr, because only
+> the pseries machine will call kvmppc_set_papr().
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/ppc/kvm.c | 17 +++++++++++++----
+>   1 file changed, 13 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tests/bench/bufferiszero-bench.c | 47 ++++++++++++++++++++++++++++++++
- tests/bench/meson.build          |  1 +
- 2 files changed, 48 insertions(+)
- create mode 100644 tests/bench/bufferiszero-bench.c
-
-diff --git a/tests/bench/bufferiszero-bench.c b/tests/bench/bufferiszero-bench.c
-new file mode 100644
-index 0000000000..222695c1fa
---- /dev/null
-+++ b/tests/bench/bufferiszero-bench.c
-@@ -0,0 +1,47 @@
-+/*
-+ * QEMU buffer_is_zero speed benchmark
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or
-+ * (at your option) any later version.  See the COPYING file in the
-+ * top-level directory.
-+ */
-+#include "qemu/osdep.h"
-+#include "qemu/cutils.h"
-+#include "qemu/units.h"
-+
-+static void test(const void *opaque)
-+{
-+    size_t max = 64 * KiB;
-+    void *buf = g_malloc0(max);
-+    int accel_index = 0;
-+
-+    do {
-+        if (accel_index != 0) {
-+            g_test_message("%s", "");  /* gnu_printf Werror for simple "" */
-+        }
-+        for (size_t len = 1 * KiB; len <= max; len *= 4) {
-+            double total = 0.0;
-+
-+            g_test_timer_start();
-+            do {
-+                buffer_is_zero_ge256(buf, len);
-+                total += len;
-+            } while (g_test_timer_elapsed() < 0.5);
-+
-+            total /= MiB;
-+            g_test_message("buffer_is_zero #%d: %2zuKB %8.0f MB/sec",
-+                           accel_index, len / (size_t)KiB,
-+                           total / g_test_timer_last());
-+        }
-+        accel_index++;
-+    } while (test_buffer_is_zero_next_accel());
-+
-+    g_free(buf);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_data_func("/cutils/bufferiszero/speed", NULL, test);
-+    return g_test_run();
-+}
-diff --git a/tests/bench/meson.build b/tests/bench/meson.build
-index 7e76338a52..4cd7a2f6b5 100644
---- a/tests/bench/meson.build
-+++ b/tests/bench/meson.build
-@@ -21,6 +21,7 @@ benchs = {}
- 
- if have_block
-   benchs += {
-+     'bufferiszero-bench': [],
-      'benchmark-crypto-hash': [crypto],
-      'benchmark-crypto-hmac': [crypto],
-      'benchmark-crypto-cipher': [crypto],
--- 
-2.34.1
 
 
