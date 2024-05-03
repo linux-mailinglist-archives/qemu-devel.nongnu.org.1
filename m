@@ -2,77 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7178BAF71
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:11:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B69A8BAF95
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2uZE-0004GM-HW; Fri, 03 May 2024 11:11:20 -0400
+	id 1s2ubD-0005j2-P9; Fri, 03 May 2024 11:13:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uZB-00047F-HP
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:11:17 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s2ub9-0005iZ-LS
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:19 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uZ9-0006ss-Mo
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:11:17 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-34e0d47bd98so1259314f8f.0
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:11:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s2ub7-00074x-LT
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:19 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1ecc23e6c9dso19239265ad.2
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714749073; x=1715353873; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=iWQu0vn7bWg8b4EBgJzp9H8e2CETaI73TY3LETBvTBA=;
- b=HKTHszbnyOKqdMETAwNwf6OJQowYyC8I74R4QMVKZXpYmbQ+w7uz1su9Bb0iJyH9IR
- UdyT3plaC+eKquTngjEVCeWgc/Atji/TYsyoosY7U9wclFgT7uojYVAndoa86HHuFXCQ
- zKQcPPqqCh5RraskU1ddEvyGNgSUfYjK2R6pHlNz18wMjyyEnXRrZUebKnMpqxfdYpzT
- ts9sFDN6nskJz4tc8sk5DpjiRQ3y24GQmfgTBmM8bXFr8xcaZgqV4id73IsscBmD0FI3
- bI1JVuNFy9A4csfMLkWUpN0bVB5agsKAkxjQU4YWN9jY8bhP9VhEOG9TDkH056oMOBAU
- Tv8A==
+ d=linaro.org; s=google; t=1714749196; x=1715353996; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KN7mvNM4ccaoGCBt4lKkk9TGSRN8QN005qBKGqmNmQY=;
+ b=kw0lTyQ+c1ZCUtodmrK5gEQSyKqAOKxnJIWk3+RfaRp8ng6BqSzSuvlW35Z9pNThX6
+ IhGaIb325lHcICb1DAis3viRM1Ve2BURM1Nx34+d3orFXqx2EZ53Kopl3d2wNecBMlnV
+ hAANShptiPQtexvTt03eCfPO2vGgTaDriEApDSdRylUE/tKtM7rwoLxW1FJKb36XlCUw
+ R5g8XzVrTgZwV/nAYnUycIl30A4Hq8C7Qau7t3O0OXWfMn49/dOJbBj5Ud+2VLP8jGIB
+ Ze1nUJzEsG6HFw3uMngXWBkqvEv2HoX+quBUM1el3YKj2UbsHkw4rXRdyEYm8lLsz+hu
+ xmLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714749073; x=1715353873;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iWQu0vn7bWg8b4EBgJzp9H8e2CETaI73TY3LETBvTBA=;
- b=TP896KtsJfVSA3Mc8bj8VJ2Mg7GtswGM2hn9apJCunQYKTX81hxDB/nmDHpWiNJpqs
- lIvTe48yzdhYykc3exozdfHZItDJwmAK9l5qN1bbOJLY620U0laPF0KoS93pU5W9XRsK
- WFlLweMIzOsyHwDW5jOdByQw5FOchAw9qyz102ip4BTh7Ks1d1Se4oi7t0dC0RkIQSMK
- a2UIj+yf9lpVLmIoNthg5xqs0Ma2paBrIy5JNBJCsvZRdv3Tq3FentKkw5GcJno8C3Uv
- bugy8sGg2n7TJsfWOB+TuzOs2giQ9buEgEc1cotjXnQGY6J/2HLNuJLmdZRCUjYWwFK3
- o9DA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU28TjWtQmnv1G4jmP0LDuNM7/1WwPov71tWcbK6E6CeCUHiHPbELqFGNW514zqd3EPelK5kX9/6tWmMzA8msR2bwRNX4k=
-X-Gm-Message-State: AOJu0YzOeYk2uV4nvn619hf485SPSrHQewWXJYOS7krFeLHTE/xPgO0I
- NNeMbOiySFFZr5bY1orGGLu+mPB8RVW9ldcM9fcUbJkzGjiGtbIrdqlRdLR71gDaHKntjMA1fsM
- C
-X-Google-Smtp-Source: AGHT+IEgavh8L2OVH7JtIYhrrJlaYDqGDpSw+2dbtb1W4j67rnU4dtBFMJOmmDmlTD9fEtnqAcvRcA==
-X-Received: by 2002:a5d:6d82:0:b0:346:47a6:e77e with SMTP id
- l2-20020a5d6d82000000b0034647a6e77emr6800133wrs.27.1714749073636; 
- Fri, 03 May 2024 08:11:13 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.179.187])
+ d=1e100.net; s=20230601; t=1714749196; x=1715353996;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KN7mvNM4ccaoGCBt4lKkk9TGSRN8QN005qBKGqmNmQY=;
+ b=neYvIqqF3VPj651PKUdOcHVfvfRDHlS0oa4+5CViN6Q1RZEevOY2Q7gKta2UFBKaNL
+ 3VcN8mxV8ydSCfjYeE+qjdEmikPVfT3swkPzAi089u2zwt8VDTBELdGAXeg/alehQjHq
+ dMoea75o8RW4lKf57Per0zOo3lac1PxkWanwKh3VvS+f8w2B4Rym9pgnHenlMRxnJhwS
+ XDqpFxB19mJdx377JP9HsE9jB7dpw3WthQVMGD2VuIZJmmbKGdXhrv1+V2BtOi7LJvNI
+ bQbsN69gIqIVGcfez3Q+MipiHni5ksfGt1kecMWG72UK7tJsbJVbd0leiKOIUP9qYTLE
+ fVrQ==
+X-Gm-Message-State: AOJu0Yyga9qf4NplReKGjP2g0Af4HZntn0K8U9VkWrF6fC7M1c1gC1Zv
+ RLXeKW1VndCB8oDA/waR1iOi4JK0P9mR7DM7i3vvnHFHC92DBbp6iFKG2SVsSRyXum9eAHwuY7t
+ T
+X-Google-Smtp-Source: AGHT+IGUc57MLWps77qcv7x4UIlxDAdfzTgoPVnLgTjfX9HtXrDlW8uSLo3tCATuhfOD9LiMf1gINQ==
+X-Received: by 2002:a17:902:f681:b0:1eb:5323:c320 with SMTP id
+ l1-20020a170902f68100b001eb5323c320mr3200609plg.56.1714749196155; 
+ Fri, 03 May 2024 08:13:16 -0700 (PDT)
+Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- s14-20020adfe00e000000b0034e553f6174sm2456415wrh.98.2024.05.03.08.11.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 May 2024 08:11:13 -0700 (PDT)
-Message-ID: <1fb3b93a-0d5d-4a7e-9246-8d46c0caf249@linaro.org>
-Date: Fri, 3 May 2024 17:11:11 +0200
+ p10-20020a170902c70a00b001e81c778784sm3366611plp.67.2024.05.03.08.13.15
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 May 2024 08:13:15 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/10] bufferiszero improvements
+Date: Fri,  3 May 2024 08:13:04 -0700
+Message-Id: <20240503151314.336357-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 08/33] accel/tcg: Record DisasContextBase in tcg_ctx
- for plugins
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240424233131.988727-1-richard.henderson@linaro.org>
- <20240424233131.988727-9-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240424233131.988727-9-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,13 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/4/24 01:31, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg.h      | 1 +
->   accel/tcg/plugin-gen.c | 1 +
->   2 files changed, 2 insertions(+)
+The following changes since commit 4977ce198d2390bff8c71ad5cb1a5f6aa24b56fb:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'pull-tcg-20240501' of https://gitlab.com/rth7680/qemu into staging (2024-05-01 15:15:33 -0700)
 
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240503
+
+for you to fetch changes up to a06d9eddb015a9f5895161b0a3958a2e4be21579:
+
+  tests/bench: Add bufferiszero-bench (2024-05-03 08:03:35 -0700)
+
+----------------------------------------------------------------
+util/bufferiszero:
+  - Remove sse4.1 and avx512 variants
+  - Reorganize for early test for acceleration
+  - Remove useless prefetches
+  - Optimize sse2, avx2 and integer variants
+  - Add simd acceleration for aarch64
+  - Add bufferiszero-bench
+
+----------------------------------------------------------------
+Alexander Monakov (5):
+      util/bufferiszero: Remove SSE4.1 variant
+      util/bufferiszero: Remove AVX512 variant
+      util/bufferiszero: Reorganize for early test for acceleration
+      util/bufferiszero: Remove useless prefetches
+      util/bufferiszero: Optimize SSE2 and AVX2 variants
+
+Richard Henderson (5):
+      util/bufferiszero: Improve scalar variant
+      util/bufferiszero: Introduce biz_accel_fn typedef
+      util/bufferiszero: Simplify test_buffer_is_zero_next_accel
+      util/bufferiszero: Add simd acceleration for aarch64
+      tests/bench: Add bufferiszero-bench
+
+ include/qemu/cutils.h            |  32 ++-
+ tests/bench/bufferiszero-bench.c |  47 ++++
+ util/bufferiszero.c              | 465 +++++++++++++++++++++------------------
+ tests/bench/meson.build          |   1 +
+ 4 files changed, 324 insertions(+), 221 deletions(-)
+ create mode 100644 tests/bench/bufferiszero-bench.c
 
