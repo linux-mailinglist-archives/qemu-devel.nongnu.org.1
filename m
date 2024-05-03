@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B69A8BAF95
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F172C8BAF9C
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:14:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2ubD-0005j2-P9; Fri, 03 May 2024 11:13:23 -0400
+	id 1s2ubG-0005jm-1Y; Fri, 03 May 2024 11:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2ub9-0005iZ-LS
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:19 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1s2ubB-0005iq-2B
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:21 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2ub7-00074x-LT
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:19 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1ecc23e6c9dso19239265ad.2
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:13:17 -0700 (PDT)
+ id 1s2ub9-000751-EJ
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:13:20 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1e83a2a4f2cso62324865ad.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714749196; x=1715353996; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=KN7mvNM4ccaoGCBt4lKkk9TGSRN8QN005qBKGqmNmQY=;
- b=kw0lTyQ+c1ZCUtodmrK5gEQSyKqAOKxnJIWk3+RfaRp8ng6BqSzSuvlW35Z9pNThX6
- IhGaIb325lHcICb1DAis3viRM1Ve2BURM1Nx34+d3orFXqx2EZ53Kopl3d2wNecBMlnV
- hAANShptiPQtexvTt03eCfPO2vGgTaDriEApDSdRylUE/tKtM7rwoLxW1FJKb36XlCUw
- R5g8XzVrTgZwV/nAYnUycIl30A4Hq8C7Qau7t3O0OXWfMn49/dOJbBj5Ud+2VLP8jGIB
- Ze1nUJzEsG6HFw3uMngXWBkqvEv2HoX+quBUM1el3YKj2UbsHkw4rXRdyEYm8lLsz+hu
- xmLA==
+ d=linaro.org; s=google; t=1714749197; x=1715353997; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=r70v09Z1jYUdUmudZIEve8pIi40latYcxErAtIALfYA=;
+ b=bCX45hanuh12xfSLrREoVERgPPhNpoxZMbUqFy1RjeusOE+hfgBys0ykkIeqOPuUNF
+ sWv6bTo87iXZawMPoTM8ELlZgtmQ7QyWs/WEH1acmfvYj1yBg/wqv3DcbFQ9PUUx4MpY
+ h1YvuvXbeXuq0IFOs6LU3To6WA7NNTVCbyvlsrB6d1IDRZFCQ79ZMaiBdNEeBvSVTCSq
+ 8xjIKHhUEzz6AqcsBHQ36pOiRGfZ4ZlPWzN2dymmq+u7xPrtXV6YEA7qsDxia6Cb9M3y
+ HhUZIEYI+vHbsSF+3v/DvnIyLddGABUkve2rCgh9xn4CmIwgcRJdaByFMZmT88MuOUbl
+ /P1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714749196; x=1715353996;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KN7mvNM4ccaoGCBt4lKkk9TGSRN8QN005qBKGqmNmQY=;
- b=neYvIqqF3VPj651PKUdOcHVfvfRDHlS0oa4+5CViN6Q1RZEevOY2Q7gKta2UFBKaNL
- 3VcN8mxV8ydSCfjYeE+qjdEmikPVfT3swkPzAi089u2zwt8VDTBELdGAXeg/alehQjHq
- dMoea75o8RW4lKf57Per0zOo3lac1PxkWanwKh3VvS+f8w2B4Rym9pgnHenlMRxnJhwS
- XDqpFxB19mJdx377JP9HsE9jB7dpw3WthQVMGD2VuIZJmmbKGdXhrv1+V2BtOi7LJvNI
- bQbsN69gIqIVGcfez3Q+MipiHni5ksfGt1kecMWG72UK7tJsbJVbd0leiKOIUP9qYTLE
- fVrQ==
-X-Gm-Message-State: AOJu0Yyga9qf4NplReKGjP2g0Af4HZntn0K8U9VkWrF6fC7M1c1gC1Zv
- RLXeKW1VndCB8oDA/waR1iOi4JK0P9mR7DM7i3vvnHFHC92DBbp6iFKG2SVsSRyXum9eAHwuY7t
- T
-X-Google-Smtp-Source: AGHT+IGUc57MLWps77qcv7x4UIlxDAdfzTgoPVnLgTjfX9HtXrDlW8uSLo3tCATuhfOD9LiMf1gINQ==
-X-Received: by 2002:a17:902:f681:b0:1eb:5323:c320 with SMTP id
- l1-20020a170902f68100b001eb5323c320mr3200609plg.56.1714749196155; 
- Fri, 03 May 2024 08:13:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714749197; x=1715353997;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=r70v09Z1jYUdUmudZIEve8pIi40latYcxErAtIALfYA=;
+ b=WLv4AurvgYJNO7cQaM+PlcU8M0Dgef3gGAffSLvRCNw+C6uIVfPCaZQ8EL/uvROc3h
+ 5vlxU8fJSs1dmlaxSLrid3+LQoB3PuI0i65BCMecTpSHnwSfpUZzxzkJTPRHZnWvrVYv
+ DpI0NOsMvRK/veo3RGvCqLeLVb/N80ThZnPib3RZrY8v4AZZ5xWrc/TFpc8DVjF9OH9F
+ e/gVZMOQMLkPNTbusiGEBz3mMa0qR2gB7/s6lFRXaHTy6PHyANIMmqrIcaymAB0FhEhF
+ asyuuTCFnu6wVTt29LtGnF5mgtd7Swdux0c2PvyqiohGZ3+UFPVMCbcZ2M8F2T2sNnDO
+ oqFg==
+X-Gm-Message-State: AOJu0Yxr15UuRBxq3PobhTsZ9iRj1r1YMbnz1gdrNsokYM06E+3joqw/
+ mNV4N+dIBiMOGHX7RwzUGtxM0en04hsLXUHidyttbS2fpvUXSgt+woD1InmmhbC/2XGlNVmxznD
+ t
+X-Google-Smtp-Source: AGHT+IExqUZaPArOxYMq0yy0LKMYSdD905BB1iK6eKbvKItYIIqokf6ucQMJYh+SSJZjQbNfYhX+Sw==
+X-Received: by 2002:a17:902:82c8:b0:1ea:b3ba:79f5 with SMTP id
+ u8-20020a17090282c800b001eab3ba79f5mr2767694plz.60.1714749197283; 
+ Fri, 03 May 2024 08:13:17 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- p10-20020a170902c70a00b001e81c778784sm3366611plp.67.2024.05.03.08.13.15
- for <qemu-devel@nongnu.org>
+ p10-20020a170902c70a00b001e81c778784sm3366611plp.67.2024.05.03.08.13.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 May 2024 08:13:15 -0700 (PDT)
+ Fri, 03 May 2024 08:13:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/10] bufferiszero improvements
-Date: Fri,  3 May 2024 08:13:04 -0700
-Message-Id: <20240503151314.336357-1-richard.henderson@linaro.org>
+Cc: Alexander Monakov <amonakov@ispras.ru>,
+ Mikhail Romanov <mmromanov@ispras.ru>
+Subject: [PULL 01/10] util/bufferiszero: Remove SSE4.1 variant
+Date: Fri,  3 May 2024 08:13:05 -0700
+Message-Id: <20240503151314.336357-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240503151314.336357-1-richard.henderson@linaro.org>
+References: <20240503151314.336357-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,46 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 4977ce198d2390bff8c71ad5cb1a5f6aa24b56fb:
+From: Alexander Monakov <amonakov@ispras.ru>
 
-  Merge tag 'pull-tcg-20240501' of https://gitlab.com/rth7680/qemu into staging (2024-05-01 15:15:33 -0700)
+The SSE4.1 variant is virtually identical to the SSE2 variant, except
+for using 'PTEST+JNZ' in place of 'PCMPEQB+PMOVMSKB+CMP+JNE' for testing
+if an SSE register is all zeroes. The PTEST instruction decodes to two
+uops, so it can be handled only by the complex decoder, and since
+CMP+JNE are macro-fused, both sequences decode to three uops. The uops
+comprising the PTEST instruction dispatch to p0 and p5 on Intel CPUs, so
+PCMPEQB+PMOVMSKB is comparatively more flexible from dispatch
+standpoint.
 
-are available in the Git repository at:
+Hence, the use of PTEST brings no benefit from throughput standpoint.
+Its latency is not important, since it feeds only a conditional jump,
+which terminates the dependency chain.
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240503
+I never observed PTEST variants to be faster on real hardware.
 
-for you to fetch changes up to a06d9eddb015a9f5895161b0a3958a2e4be21579:
+Signed-off-by: Alexander Monakov <amonakov@ispras.ru>
+Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240206204809.9859-2-amonakov@ispras.ru>
+---
+ util/bufferiszero.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-  tests/bench: Add bufferiszero-bench (2024-05-03 08:03:35 -0700)
+diff --git a/util/bufferiszero.c b/util/bufferiszero.c
+index 3e6a5dfd63..f5a3634f9a 100644
+--- a/util/bufferiszero.c
++++ b/util/bufferiszero.c
+@@ -100,34 +100,6 @@ buffer_zero_sse2(const void *buf, size_t len)
+ }
+ 
+ #ifdef CONFIG_AVX2_OPT
+-static bool __attribute__((target("sse4")))
+-buffer_zero_sse4(const void *buf, size_t len)
+-{
+-    __m128i t = _mm_loadu_si128(buf);
+-    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
+-    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
+-
+-    /* Loop over 16-byte aligned blocks of 64.  */
+-    while (likely(p <= e)) {
+-        __builtin_prefetch(p);
+-        if (unlikely(!_mm_testz_si128(t, t))) {
+-            return false;
+-        }
+-        t = p[-4] | p[-3] | p[-2] | p[-1];
+-        p += 4;
+-    }
+-
+-    /* Finish the aligned tail.  */
+-    t |= e[-3];
+-    t |= e[-2];
+-    t |= e[-1];
+-
+-    /* Finish the unaligned tail.  */
+-    t |= _mm_loadu_si128(buf + len - 16);
+-
+-    return _mm_testz_si128(t, t);
+-}
+-
+ static bool __attribute__((target("avx2")))
+ buffer_zero_avx2(const void *buf, size_t len)
+ {
+@@ -221,7 +193,6 @@ select_accel_cpuinfo(unsigned info)
+ #endif
+ #ifdef CONFIG_AVX2_OPT
+         { CPUINFO_AVX2,    128, buffer_zero_avx2 },
+-        { CPUINFO_SSE4,     64, buffer_zero_sse4 },
+ #endif
+         { CPUINFO_SSE2,     64, buffer_zero_sse2 },
+         { CPUINFO_ALWAYS,    0, buffer_zero_int },
+-- 
+2.34.1
 
-----------------------------------------------------------------
-util/bufferiszero:
-  - Remove sse4.1 and avx512 variants
-  - Reorganize for early test for acceleration
-  - Remove useless prefetches
-  - Optimize sse2, avx2 and integer variants
-  - Add simd acceleration for aarch64
-  - Add bufferiszero-bench
-
-----------------------------------------------------------------
-Alexander Monakov (5):
-      util/bufferiszero: Remove SSE4.1 variant
-      util/bufferiszero: Remove AVX512 variant
-      util/bufferiszero: Reorganize for early test for acceleration
-      util/bufferiszero: Remove useless prefetches
-      util/bufferiszero: Optimize SSE2 and AVX2 variants
-
-Richard Henderson (5):
-      util/bufferiszero: Improve scalar variant
-      util/bufferiszero: Introduce biz_accel_fn typedef
-      util/bufferiszero: Simplify test_buffer_is_zero_next_accel
-      util/bufferiszero: Add simd acceleration for aarch64
-      tests/bench: Add bufferiszero-bench
-
- include/qemu/cutils.h            |  32 ++-
- tests/bench/bufferiszero-bench.c |  47 ++++
- util/bufferiszero.c              | 465 +++++++++++++++++++++------------------
- tests/bench/meson.build          |   1 +
- 4 files changed, 324 insertions(+), 221 deletions(-)
- create mode 100644 tests/bench/bufferiszero-bench.c
 
