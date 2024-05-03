@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76038BB01E
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B178BB021
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:38:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2uyP-0003iC-0v; Fri, 03 May 2024 11:37:21 -0400
+	id 1s2uyP-0003rd-Su; Fri, 03 May 2024 11:37:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uy7-0003H9-LC
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:37:05 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uyC-0003Ko-MN
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:37:12 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uy6-0002ke-3P
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:37:03 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a556d22fa93so1171399666b.3
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:37:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uyB-0002l2-40
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:37:08 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a5991a443b1so179616666b.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:37:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714750620; x=1715355420; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714750625; x=1715355425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WlnSWxk2ckicORZmY3MYyhbs7CkzbKWbFMF7/22EQlk=;
- b=QY77vbzuo/L4noxT8m+Z3aT6G+HxboxSVbS/o9ZhA+qLlWp7utgXhTm4pYoXSyedPj
- Qc5NFSKM5vosYPniyyyTxQ/zrP6mZvZhcvl1g8IRhtLJooUP3e4eTBSRQInQUXyO6sWy
- 4mF/DJbQ+1n/etO5CbcBtahZLd794o1Gt5mVdek4lySpCvRgttTHooBz8jlqmzuljg0u
- qFpAIb0m8J30gw2BvThprYy0N/D0uVKczgz6p1b3EX62b/0yfNCVLizfQEugw3YBbUdM
- rk03rvEV3x+QgT24DpG7p6Yv7wnaMWQxcZ7ecd6BgUperm/20sMIN+EKGk7jm8QKcdJG
- oDLw==
+ bh=zMmV30WDdZVboe02eVG5MkgpkSOVDl1PK3DuW0Q/4bA=;
+ b=e3rZfAfNzfl3zDIxymETYVhB0sL5Cfy1Z1ArZCvmwUZu0HpDnxbKqHg1I75sGs74SY
+ Lu4wfHx+n00T2tO28hNlzPmlElDLQBzCRMz4EMyCRgoNupdaf240oKUelupZExBdV6rJ
+ xaK9KMYdWuMoKyDed7Btt3823Ys3kK74DYaNwlHLdw7+wWvPgbH+ft8bZAIsxaV0DNHB
+ pM6qSy4zg6FwxROb1TNHumJskZCOZ/OsLmG5CaVu+U7X2AVpFypbBBgp3sLkVyW5xZaZ
+ vbCmmYAeV5x+OHyHBLXn1j3DtlqQeetFUvlGXKHx7qqjbhrDTS/UcXPqqfCbSbWVRQTA
+ 31Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714750620; x=1715355420;
+ d=1e100.net; s=20230601; t=1714750625; x=1715355425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WlnSWxk2ckicORZmY3MYyhbs7CkzbKWbFMF7/22EQlk=;
- b=LWJFBt/9ZiRHPdZJvfemeCh4wmP7R24hEXO2nQueQypmwoV9aLi/vcb4Q1RwQelIzB
- 01No3gkIIuybL+lJF6B4htBL/64Nv4wQBjTNo2DUKpH/SEbGO3Q80QB8oDu5S0ecxs++
- Sv+HZUlICXH3pH01iwu4ZZFHy6ZiZjEOb1/VabzcXFatQ37PMSUJXjieaa+BBJWGj+Q0
- H6CZHFjk93/7G0pSpYnPaRrY5u7oOHNUOQtLhLcoitECKdMMGn4RJHkL68ypUBj7WaNu
- txvmZM36uuuY5LXYMhIkBq9Ci9RlISgQdZ5QpAficGnNXY7GSsALbJEFta3NsCzW57Qk
- B0AQ==
-X-Gm-Message-State: AOJu0Yx+mJCjyEJWJHvvF2H0md1gM4KVWnTUjNLjJktoydPJ5ImJ4V3d
- XDuO4hBkecHbX/j+kBMosOvMIZYvm/KiNv7DfsWdjmA0ViHOKCY7Nj2cy48bCOBkN18UFMiS9qO
- M
-X-Google-Smtp-Source: AGHT+IG2v/TkD232kbxZ4sbwld86DlpKEL0TpPFek3f/Rflb6q63KQobkHyp4fDpFgPUD+xhnZHKDQ==
-X-Received: by 2002:a17:906:3811:b0:a59:3eef:122e with SMTP id
- v17-20020a170906381100b00a593eef122emr1977695ejc.36.1714750620130; 
- Fri, 03 May 2024 08:37:00 -0700 (PDT)
+ bh=zMmV30WDdZVboe02eVG5MkgpkSOVDl1PK3DuW0Q/4bA=;
+ b=IFpT1kwgSibfsixmFPo8+P0idTnhzW0n5OSFt7h5qAP7IozPeLZYJCvmXSxw/fGawM
+ fuB6Q90TkSKcRqK4s2UTsCfOO0YaTWXduO7G4GXZlzdkfSJSXcx3LxOKqdvD5viyPSsd
+ EbN2B1LgRLhTJO5H1k0FuwP+fMT9Jf820cPM93affUnBtsHJjR1JpqLyMmpwBLqaKN6H
+ fYthB/0ewN1YZ7fWT2367c2+zpM248DiJn/tmXSHaDCWiw9HDM+OEtlytHgWXrbxZRGa
+ EuOuafu4Zd5f54p4LnvVbfFxLVPLwlxW2mHgzMo7Id8tWFyTBNH/AdvockKZ706CE3eN
+ Yjww==
+X-Gm-Message-State: AOJu0Yy9NHOgJqF/ZJA9vrU81iLB2GwGZP/1OZSeqxPxHP+iQeZjuQCQ
+ w1yhSfN/vDIpbw/OHr2i6ynFjMrhFcAtkgwie+BeXrobInH2H05UEHGuXosJn3ApO+HLO3J2B32
+ u
+X-Google-Smtp-Source: AGHT+IE1VuW+VHFXGOYmb5PVVtYpDBMWfYmCeR0Nvbhrkczf9UsXRNsJSBByKL8JSIe018n68UzSOw==
+X-Received: by 2002:a17:906:f2d4:b0:a57:e5fd:a77d with SMTP id
+ gz20-20020a170906f2d400b00a57e5fda77dmr2055447ejb.5.1714750625471; 
+ Fri, 03 May 2024 08:37:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- mc20-20020a170906eb5400b00a599a85777dsm483492ejb.153.2024.05.03.08.36.59
+ z4-20020a17090655c400b00a5931d77634sm1825010ejp.34.2024.05.03.08.37.04
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 08:36:59 -0700 (PDT)
+ Fri, 03 May 2024 08:37:05 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 08/14] plugins: Update stale comment
-Date: Fri,  3 May 2024 17:36:07 +0200
-Message-ID: <20240503153613.38709-9-philmd@linaro.org>
+Cc: Anthony PERARD <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 09/14] MAINTAINERS: Update my email address
+Date: Fri,  3 May 2024 17:36:08 +0200
+Message-ID: <20240503153613.38709-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503153613.38709-1-philmd@linaro.org>
 References: <20240503153613.38709-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,29 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"plugin_mask" was renamed as "event_mask" in commit c006147122
-("plugins: create CPUPluginState and migrate plugin_mask").
+From: Anthony PERARD <anthony.perard@citrix.com>
 
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+Acked-by: Paul Durrant <paul@xen.org>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Message-ID: <20240429154938.19340-1-anthony.perard@citrix.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240427155714.53669-3-philmd@linaro.org>
 ---
- plugins/core.c | 2 +-
+ MAINTAINERS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 11ca20e626..09c98382f5 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -373,7 +373,7 @@ void qemu_plugin_tb_trans_cb(CPUState *cpu, struct qemu_plugin_tb *tb)
-     struct qemu_plugin_cb *cb, *next;
-     enum qemu_plugin_event ev = QEMU_PLUGIN_EV_VCPU_TB_TRANS;
- 
--    /* no plugin_mask check here; caller should have checked */
-+    /* no plugin_state->event_mask check here; caller should have checked */
- 
-     QLIST_FOREACH_SAFE_RCU(cb, &plugin.cb_lists[ev], entry, next) {
-         qemu_plugin_vcpu_tb_trans_cb_t func = cb->f.vcpu_tb_trans;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 96411e6adf..2f08cc528e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -532,7 +532,7 @@ Guest CPU Cores (Xen)
+ ---------------------
+ X86 Xen CPUs
+ M: Stefano Stabellini <sstabellini@kernel.org>
+-M: Anthony Perard <anthony.perard@citrix.com>
++M: Anthony PERARD <anthony@xenproject.org>
+ M: Paul Durrant <paul@xen.org>
+ L: xen-devel@lists.xenproject.org
+ S: Supported
 -- 
 2.41.0
 
