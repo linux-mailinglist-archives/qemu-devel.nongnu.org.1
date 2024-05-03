@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC688BA7A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF49E8BA79F
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2nEO-0001Yl-JQ; Fri, 03 May 2024 03:21:21 -0400
+	id 1s2nER-0001pM-3k; Fri, 03 May 2024 03:21:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nE9-0001Rz-UK
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:21:06 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nEI-0001bk-2w
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:21:15 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nE8-0001Ou-5n
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:21:05 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41b5e74fa83so60090355e9.0
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:21:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nED-0001SZ-A3
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:21:13 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-41b4ff362a8so82478865e9.0
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714720862; x=1715325662; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714720867; x=1715325667; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iBtqCI5zdcZgATynvjUhC/8nsk7GHPhWu+QqfEEwrBQ=;
- b=ZTVi/nuG600iqJGGTJGx6pH7KTyfhJoaChGG0ujIoNH9+99vBm+XS1kckTYrAABXRS
- SrVrI7zg84KxnGafRBYhncqkyDpuW52yon0z8fKNFXYyy+dIq9yLvf7+ilw5X4Ff4nWC
- 4gWC7n+gkuzACsxtQPFjld+lo41FGMaEBFhJgOWYsCPjafbOw4haYhnxmrgOg1Qhhu8D
- /KzNarkZe48m9br9vg3woRvGXm0/aEWCRHPYkCPE6JiJkJJcnXOmdg1mcBoHwqG2xWUY
- oHDtGJBq5jUAEgZqVgQWBDG6nbBupE8KKWfa6U/tN2//eW236HwkexCeJOlUZCWiS8/8
- qg/Q==
+ bh=EQCp32MhwULxErW3cF6VE6b6u1RptQVLJu9xOLH0dkQ=;
+ b=d4r9X6kQgI4R2xBTP+/PmHJsYtqBysVg3CINwa+RFLY6Us8a8zKtvjQN83cXXb2mkv
+ l+r0k7AYIIuedO7G/B1Z0AaVYnd9H3nLvFowxxcs1184yljpidgdJpSOGJ0fCtxvEZcm
+ UZWDIGwmGna6vNCMzgTJC88KVdRyW3M5XNy/x+BB2sIS558TwK6T1FR4BfPcf3xnmAc/
+ yYB7kyDZTgWI6RNK+nhPGRy8ECjP6NVz/iI67aV21aOis1TUAufFzUMEN8Y+Vf86jHim
+ SoeiJ3iraNVIDjOiF2S8XGL95YWJFYip5riJg9UUAuH2waopQQCLepcm7LPdjdiENghe
+ CJKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714720862; x=1715325662;
+ d=1e100.net; s=20230601; t=1714720867; x=1715325667;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iBtqCI5zdcZgATynvjUhC/8nsk7GHPhWu+QqfEEwrBQ=;
- b=ErrSCvzrgFbb4Kqu43Oa/ox1EqkEvhdJGqSGBzilXQx+eTX+PBrVTYUi4N6TdpDg8m
- ODOzUnHswRSW0BgcCiZVm3ziKqjbSgcHt8qCwgeNRlbl2DCBX8nF9VH/V5Bt8jbzZAcV
- kLPF7QdWXlJn+CIDlZFcdVvNVUfbDDU9JkgYL1NB8Cz0lzj9tfWDaaHdCFOsTT4BmpQt
- FPveeKnshK9fFWNysM4TyXyOuASKgZdjAeJQCI/on7LSbCSwQmxhuX97QTZp0Yq8BX0M
- hnbJBeVDFXYVd5jcGhHnGWRXN1iRM1V8nATRpTWExloLjwrCCWDVVL/acOyRE4+gDJFp
- IB/A==
-X-Gm-Message-State: AOJu0YwzXmanfwuIbVdfZfQLTemBSiFg4qbbaiY1bvmTusSWxOUsC1rw
- oK/3oSf/6/wguWSvTONZ2Tnq9ms1/IYN0C7yL9IRkT4Y96dJKzZ9xj/SQ9/Q+iGI76xxr8+hyYT
- J
-X-Google-Smtp-Source: AGHT+IGVWUZtMGiepNAcBTuGndRf87Ag6+KWHnN3F8WW9rnsRMGx8d/lAyMQC/gnS6jPH446LvF78Q==
-X-Received: by 2002:a05:600c:354a:b0:418:f991:8ad4 with SMTP id
- i10-20020a05600c354a00b00418f9918ad4mr1435766wmq.6.1714720861871; 
- Fri, 03 May 2024 00:21:01 -0700 (PDT)
+ bh=EQCp32MhwULxErW3cF6VE6b6u1RptQVLJu9xOLH0dkQ=;
+ b=r/k18m/kTmZyPnkxripa47ZgfPpXQmBvBsom4wM20MC6/SQNOH0OWP/4RpUYij8Vpb
+ /f1dfoq4cuW+woVRodokL931YJPSmyEoBH7+fc7lh1+NLiBPh/jHGfCmitQPTuDSrId9
+ fP7ttKgw1Q/i6PvtjSxrgZQMLZUFfBoBtIkIRpiZmH3Z6zeWP9u+w+zzF1rLTYb1jCuy
+ PPU1UfJI0uReRHfVQP7l2eg5cczPTnG3TDveHJsLJ8Azh4fosS1UUSj7GV5O+iRvhDV0
+ PW4GBULGv2DINrzHzdMYmFMTCDBcpsQL5jA8TtrX1AUizoWEv+bfuc5qMvF5lPiom3yT
+ C/hQ==
+X-Gm-Message-State: AOJu0Ywwz0x8scebyroi/1PijWGfdcT2Myvm+GrukM5qqmE/qga4hf/c
+ WXSo33h/Xfw2Vuet/wlIHpeL2P3P85rru+QQz0x9bH05lOcon6rjsydHmH8JBtpaQmN2NuGu4wZ
+ U
+X-Google-Smtp-Source: AGHT+IGcTYuRhNBmXuyECvQjIuS5ZxV/+xzmf9Epgr/QCz2LwXu+dSjjTx7DkV37+YqN742j2vKFQg==
+X-Received: by 2002:adf:e4c3:0:b0:34d:8fac:9540 with SMTP id
+ v3-20020adfe4c3000000b0034d8fac9540mr1565830wrm.59.1714720867450; 
+ Fri, 03 May 2024 00:21:07 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- b20-20020a05600c4e1400b0041892857924sm4635480wmq.36.2024.05.03.00.21.00
+ r2-20020adfce82000000b0034dd7984d7fsm3011625wrn.94.2024.05.03.00.21.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 00:21:01 -0700 (PDT)
+ Fri, 03 May 2024 00:21:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 8/9] target/alpha: Split out gen_pc_disp
-Date: Fri,  3 May 2024 09:20:12 +0200
-Message-ID: <20240503072014.24751-9-philmd@linaro.org>
+Subject: [PATCH v2 9/9] target/alpha: Implement CF_PCREL
+Date: Fri,  3 May 2024 09:20:13 +0200
+Message-ID: <20240503072014.24751-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503072014.24751-1-philmd@linaro.org>
 References: <20240503072014.24751-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,127 +94,134 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Prepare for pcrel by not modifying cpu_pc before use,
-in the case of JSR.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/translate.c | 41 ++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ target/alpha/cpu.c       | 23 ++++++++++++++++++++++-
+ target/alpha/translate.c | 29 +++++++++++++++++++++++++----
+ 2 files changed, 47 insertions(+), 5 deletions(-)
 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index c1a55e5153..86402d96d5 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -252,6 +252,11 @@ static void st_flag_byte(TCGv val, unsigned shift)
-     tcg_gen_st8_i64(val, tcg_env, get_flag_ofs(shift));
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index f98d022671..0e2fbcb397 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -38,12 +38,27 @@ static vaddr alpha_cpu_get_pc(CPUState *cs)
+     return env->pc;
  }
  
-+static void gen_pc_disp(DisasContext *ctx, TCGv dest, int32_t disp)
++static void alpha_cpu_synchronize_from_tb(CPUState *cs,
++                                          const TranslationBlock *tb)
 +{
-+    tcg_gen_movi_i64(dest, ctx->base.pc_next + disp);
++    /* The program counter is always up to date with CF_PCREL. */
++    if (!(tb_cflags(tb) & CF_PCREL)) {
++        CPUAlphaState *env = cpu_env(cs);
++        env->pc = tb->pc;
++    }
 +}
 +
- static void gen_excp_1(int exception, int error_code)
+ static void alpha_restore_state_to_opc(CPUState *cs,
+                                        const TranslationBlock *tb,
+                                        const uint64_t *data)
  {
-     TCGv_i32 tmp1, tmp2;
-@@ -263,7 +268,7 @@ static void gen_excp_1(int exception, int error_code)
- 
- static DisasJumpType gen_excp(DisasContext *ctx, int exception, int error_code)
- {
--    tcg_gen_movi_i64(cpu_pc, ctx->base.pc_next);
-+    gen_pc_disp(ctx, cpu_pc, 0);
-     gen_excp_1(exception, error_code);
-     return DISAS_NORETURN;
+     CPUAlphaState *env = cpu_env(cs);
+-    env->pc = data[0];
++
++    if (tb_cflags(tb) & CF_PCREL) {
++        env->pc = (env->pc & TARGET_PAGE_MASK) | data[0];
++    } else {
++        env->pc = data[0];
++    }
  }
-@@ -427,14 +432,12 @@ static DisasJumpType gen_store_conditional(DisasContext *ctx, int ra, int rb,
  
+ static bool alpha_cpu_has_work(CPUState *cs)
+@@ -78,6 +93,11 @@ static void alpha_cpu_realizefn(DeviceState *dev, Error **errp)
+     AlphaCPUClass *acc = ALPHA_CPU_GET_CLASS(dev);
+     Error *local_err = NULL;
+ 
++#ifndef CONFIG_USER_ONLY
++    /* Use pc-relative instructions in system-mode */
++    cs->tcg_cflags |= CF_PCREL;
++#endif
++
+     cpu_exec_realizefn(cs, &local_err);
+     if (local_err != NULL) {
+         error_propagate(errp, local_err);
+@@ -190,6 +210,7 @@ static const struct SysemuCPUOps alpha_sysemu_ops = {
+ 
+ static const TCGCPUOps alpha_tcg_ops = {
+     .initialize = alpha_translate_init,
++    .synchronize_from_tb = alpha_cpu_synchronize_from_tb,
+     .restore_state_to_opc = alpha_restore_state_to_opc,
+ 
+ #ifdef CONFIG_USER_ONLY
+diff --git a/target/alpha/translate.c b/target/alpha/translate.c
+index 86402d96d5..db847e7a23 100644
+--- a/target/alpha/translate.c
++++ b/target/alpha/translate.c
+@@ -54,6 +54,9 @@ struct DisasContext {
+     uint32_t tbflags;
+     int mem_idx;
+ 
++    /* True if generating pc-relative code.  */
++    bool pcrel;
++
+     /* implver and amask values for this CPU.  */
+     int implver;
+     int amask;
+@@ -254,7 +257,12 @@ static void st_flag_byte(TCGv val, unsigned shift)
+ 
+ static void gen_pc_disp(DisasContext *ctx, TCGv dest, int32_t disp)
+ {
+-    tcg_gen_movi_i64(dest, ctx->base.pc_next + disp);
++    uint64_t addr = ctx->base.pc_next + disp;
++    if (ctx->pcrel) {
++        tcg_gen_addi_i64(dest, cpu_pc, addr - ctx->base.pc_first);
++    } else {
++        tcg_gen_movi_i64(dest, addr);
++    }
+ }
+ 
+ static void gen_excp_1(int exception, int error_code)
+@@ -433,8 +441,14 @@ static DisasJumpType gen_store_conditional(DisasContext *ctx, int ra, int rb,
  static void gen_goto_tb(DisasContext *ctx, int idx, int32_t disp)
  {
--    uint64_t dest = ctx->base.pc_next + disp;
--
--    if (translator_use_goto_tb(&ctx->base, dest)) {
-+    if (translator_use_goto_tb(&ctx->base, ctx->base.pc_next + disp)) {
-         tcg_gen_goto_tb(idx);
--        tcg_gen_movi_i64(cpu_pc, dest);
-+        gen_pc_disp(ctx, cpu_pc, disp);
+     if (translator_use_goto_tb(&ctx->base, ctx->base.pc_next + disp)) {
+-        tcg_gen_goto_tb(idx);
+-        gen_pc_disp(ctx, cpu_pc, disp);
++        /* With PCREL, PC must always be up-to-date. */
++        if (ctx->pcrel) {
++            gen_pc_disp(ctx, cpu_pc, disp);
++            tcg_gen_goto_tb(idx);
++        } else {
++            tcg_gen_goto_tb(idx);
++            gen_pc_disp(ctx, cpu_pc, disp);
++        }
          tcg_gen_exit_tb(ctx->base.tb, idx);
      } else {
--        tcg_gen_movi_i64(cpu_pc, dest);
-+        gen_pc_disp(ctx, cpu_pc, disp);
-         tcg_gen_lookup_and_goto_ptr();
-     }
- }
-@@ -442,7 +445,7 @@ static void gen_goto_tb(DisasContext *ctx, int idx, int32_t disp)
- static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
+         gen_pc_disp(ctx, cpu_pc, disp);
+@@ -2852,6 +2866,7 @@ static void alpha_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+ 
+     ctx->tbflags = ctx->base.tb->flags;
+     ctx->mem_idx = alpha_env_mmu_index(env);
++    ctx->pcrel = ctx->base.tb->cflags & CF_PCREL;
+     ctx->implver = env->implver;
+     ctx->amask = env->amask;
+ 
+@@ -2887,7 +2902,13 @@ static void alpha_tr_tb_start(DisasContextBase *db, CPUState *cpu)
+ 
+ static void alpha_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
  {
-     if (ra != 31) {
--        tcg_gen_movi_i64(ctx->ir[ra], ctx->base.pc_next);
-+        gen_pc_disp(ctx, ctx->ir[ra], 0);
-     }
+-    tcg_gen_insn_start(dcbase->pc_next);
++    DisasContext *ctx = container_of(dcbase, DisasContext, base);
++
++    if (ctx->pcrel) {
++        tcg_gen_insn_start(dcbase->pc_next & ~TARGET_PAGE_MASK);
++    } else {
++        tcg_gen_insn_start(dcbase->pc_next);
++    }
+ }
  
-     /* Notice branch-to-next; used to initialize RA with the PC.  */
-@@ -1091,7 +1094,7 @@ static DisasJumpType gen_call_pal(DisasContext *ctx, int palcode)
-             }
- 
-             /* Allow interrupts to be recognized right away.  */
--            tcg_gen_movi_i64(cpu_pc, ctx->base.pc_next);
-+            gen_pc_disp(ctx, cpu_pc, 0);
-             return DISAS_PC_UPDATED_NOCHAIN;
- 
-         case 0x36:
-@@ -1138,19 +1141,17 @@ static DisasJumpType gen_call_pal(DisasContext *ctx, int palcode)
- #else
-     {
-         TCGv tmp = tcg_temp_new();
--        uint64_t exc_addr = ctx->base.pc_next;
--        uint64_t entry = ctx->palbr;
-+        uint64_t entry;
- 
-+        gen_pc_disp(ctx, tmp, 0);
-         if (ctx->tbflags & ENV_FLAG_PAL_MODE) {
--            exc_addr |= 1;
-+            tcg_gen_ori_i64(tmp, tmp, 1);
-         } else {
--            tcg_gen_movi_i64(tmp, 1);
--            st_flag_byte(tmp, ENV_FLAG_PAL_SHIFT);
-+            st_flag_byte(tcg_constant_i64(1), ENV_FLAG_PAL_SHIFT);
-         }
--
--        tcg_gen_movi_i64(tmp, exc_addr);
-         tcg_gen_st_i64(tmp, tcg_env, offsetof(CPUAlphaState, exc_addr));
- 
-+        entry = ctx->palbr;
-         entry += (palcode & 0x80
-                   ? 0x2000 + (palcode - 0x80) * 64
-                   : 0x1000 + palcode * 64);
-@@ -2344,9 +2345,13 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
-         /* JMP, JSR, RET, JSR_COROUTINE.  These only differ by the branch
-            prediction stack action, which of course we don't implement.  */
-         vb = load_gpr(ctx, rb);
--        tcg_gen_andi_i64(cpu_pc, vb, ~3);
-         if (ra != 31) {
--            tcg_gen_movi_i64(ctx->ir[ra], ctx->base.pc_next);
-+            tmp = tcg_temp_new();
-+            tcg_gen_andi_i64(tmp, vb, ~3);
-+            gen_pc_disp(ctx, ctx->ir[ra], 0);
-+            tcg_gen_mov_i64(cpu_pc, tmp);
-+        } else {
-+            tcg_gen_andi_i64(cpu_pc, vb, ~3);
-         }
-         ret = DISAS_PC_UPDATED;
-         break;
-@@ -2908,7 +2913,7 @@ static void alpha_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         gen_goto_tb(ctx, 0, 0);
-         break;
-     case DISAS_PC_STALE:
--        tcg_gen_movi_i64(cpu_pc, ctx->base.pc_next);
-+        gen_pc_disp(ctx, cpu_pc, 0);
-         /* FALLTHRU */
-     case DISAS_PC_UPDATED:
-         tcg_gen_lookup_and_goto_ptr();
+ static void alpha_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
 -- 
 2.41.0
 
