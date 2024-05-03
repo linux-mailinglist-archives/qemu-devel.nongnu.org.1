@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC828BAF4F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 16:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2484A8BAF51
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 16:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2uLV-0003qw-Uv; Fri, 03 May 2024 10:57:10 -0400
+	id 1s2uMl-0005FO-Lk; Fri, 03 May 2024 10:58:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2uLS-0003pu-TC
- for qemu-devel@nongnu.org; Fri, 03 May 2024 10:57:06 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uMh-00058g-8S
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 10:58:25 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2uLP-0003gh-2I
- for qemu-devel@nongnu.org; Fri, 03 May 2024 10:57:04 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1e4bf0b3e06so91493295ad.1
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 07:57:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uMb-0003sL-5A
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 10:58:19 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a58772187d8so1290397966b.3
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 07:58:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714748219; x=1715353019; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714748294; x=1715353094; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=OLX1EpLepR6jPESgXBFSn2SlHVmWjXY9QLHhdTdk4Do=;
- b=DfPw/0MGZXrIN77wnU/mCmQxbeiow3Rr7HbbtcOYOZhLrmyXdudGn2NeznKIPqlaB5
- 3WncHuoZ2pZACjZYW4h5R3ZQL7I/hpzeESh7cyngu+BRssqbHDdQWS98CKTeYyqUsz9r
- TyXsVMxaL0QimsmKT6jyjDTkEm/jcewjN4+0T0G85N4pM5+DobLtvgWebivf3Y99TyK2
- d8Hc3eqRkNYnZ+3d2DAZH6kt18q32qqUOi+hvVA0nj/LzJQXP6riBcY1GdlP3kS2+CGv
- kvt47fMbvRrMT+aaYO+MZkeqAbu6lBPxn+N6sf2nZplhrLwI27ynpqiVyrNtJ0ODGReE
- niFA==
+ bh=HHFBgWtcBeYxK+i5BuVSxC9MHuW8xFh3C8v3HLX40ZQ=;
+ b=coxeZlVvG6t3lFvxXXkV8MV3gyn0y8E7s/rbwAR2t+cHgptnpMtgAibxJgok1MHudU
+ 98owfERMJePxXODnC+eDJ/dtxBJWFeAVDUGs24KNyV0pRwfor8nMwWERWuxtJktgxPtn
+ v1ex3aAWMsRzOj43qTiJ0X9U3/H7jNDv6S0LDbt0W4uZxJqrHwO8yEDbiLU+VEbrFj5g
+ aU7LqypviW1IqIiNt1ZBGhqGXJISY/y5+3jxF5OznBSG6is6waG9yQx8DQlq9P7ok/xY
+ UR8/qHVOw6Gv0on3zC2/a3uNLiRcUSbxM+T/M+P4XiSYZRc4RzLejb30MHCc/Ror6Juq
+ Ug6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714748219; x=1715353019;
+ d=1e100.net; s=20230601; t=1714748294; x=1715353094;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OLX1EpLepR6jPESgXBFSn2SlHVmWjXY9QLHhdTdk4Do=;
- b=fNiHzrbczbgWQykRIjcnQZJlhFb/9v1XUpMSxSypd76U0+YMEdEH3SsUmxBVYvagC5
- f/y6s7fMMnIVjTOVSryGPpP1QRe9Uc/ngr0iCdttgSigJdvAlXIg3pWGbhNnZGqIrKmI
- PnLaVILYpt9Cua/tyknYe1qEzKe9WbpLLH2nQYA2E84FY0Kv7M6h+4omVp1gZpGUqN5y
- v6ZnQDpl9JVD8SzWmiw7IuSbl2BqqqXgBCjtwdQOHrJ59Fn/0Hc888WMDcC38+x4Yn7W
- SQknGtwlAheT7GKY57mB5/FRDGU6bo3YeRBMq+ORqI35aF4wEP+fwgMfpPWsMGNS+Gt7
- BOMw==
-X-Gm-Message-State: AOJu0YxaP6NMJdHJXsW654+MNwtWDMLBiqXVcRHTkwu+sExfZj5qXvHb
- WG8qPIVcXQJcaayUoaYDlXrIq9mQVIKFg9q9Vxwr/SH9thjKaJfkIlf+Ms1e070=
-X-Google-Smtp-Source: AGHT+IH0zpfBXYxQ3A5Fhd8+caeiMXLEisvJMVTazD9FKm5zJForMcu+gIXqATOrtNMCY265NPjFKQ==
-X-Received: by 2002:a17:903:2349:b0:1e0:ca47:4d96 with SMTP id
- c9-20020a170903234900b001e0ca474d96mr3063243plh.3.1714748219273; 
- Fri, 03 May 2024 07:56:59 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ bh=HHFBgWtcBeYxK+i5BuVSxC9MHuW8xFh3C8v3HLX40ZQ=;
+ b=qMMFo7aAED7fNzBuRtsflHX/UQnjK+XXBWaUELAqPHLqLfoxJk62k2eKaudQTw5Aqu
+ O6I0+XPU2WUIG8ksewLnPioPR/qLXiwMj5kF4labouBgkvcfp0BBKSb/S0mIAE/30B+i
+ AHXPmhjvvrXJx1u90RZAo2er22qtFgYrGI6OAemBeMraI0zhjWnUZeMQT4bJ5UZbyPhD
+ 5MCIqEvBiP5aRUU3aLeL5Vw9GLw/nDBMIjHki/MdW3cZrvtJQjy7kDWOqxleTmlewPcH
+ WePpiDiQKw2XxP/rQKN3TUBslyhrRjKNMUq6eru9DY4ccnNTPPklbA0vLA8TcSLjD1wO
+ 06xw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXpHo2XLaJ85D24W6ujWw7NwZNX/FUNQRdGDC2+GJYJS2BjPsvoOlbQjKU+0ycAROGHKH5dNxKJyACl7Dwb3LS55EkpR1k=
+X-Gm-Message-State: AOJu0Yy/qbirpOW1E8oKO9ghAJUULLc+KrsnmbzRSoI5G7MyjKMhE8VL
+ f6L7FmJtDme92MxkbRPOvS6U/BIXuIp6oLucB4gNtBc7ACFzbsXU85n3Zja3qpY=
+X-Google-Smtp-Source: AGHT+IH6039xxoCpm/B9EXU1Y8Gnfml+9EyQeP56YyfHI4Ndr5cwbE/vaJ9DDo3ox4zr0VfelFEcTg==
+X-Received: by 2002:a17:906:816:b0:a55:5ff4:ff4f with SMTP id
+ e22-20020a170906081600b00a555ff4ff4fmr2557709ejd.71.1714748293949; 
+ Fri, 03 May 2024 07:58:13 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- o5-20020a170902d4c500b001ea02c8412asm3329500plg.119.2024.05.03.07.56.58
+ q6-20020a1709060e4600b00a5875dd74c2sm1790061eji.131.2024.05.03.07.58.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 May 2024 07:56:58 -0700 (PDT)
-Message-ID: <d394161d-9e88-45dc-9f72-e07e4d8803e2@linaro.org>
-Date: Fri, 3 May 2024 07:56:56 -0700
+ Fri, 03 May 2024 07:58:13 -0700 (PDT)
+Message-ID: <4906224c-b37e-4480-adc7-362ad2023b36@linaro.org>
+Date: Fri, 3 May 2024 16:58:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] Hexagon: add PC alignment check and exception
-To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Cc: qemu-devel@nongnu.org, bcain@quicinc.com, sidneym@quicinc.com,
- ale@rev.ng, anjo@rev.ng, ltaylorsimpson@gmail.com, laurent@vivier.eu
-References: <c5613f05-5cfe-4f8a-b5b2-0d62ea1cf808@linaro.org>
- <20240503134635.78067-1-quic_mathbern@quicinc.com>
+Subject: Re: [PATCH] target/arm: Restrict translation disabled alignment check
+ to VMSA
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>,
+ qemu-stable@nongnu.org
+References: <20240424170908.759043-1-richard.henderson@linaro.org>
+ <20240424170908.759043-2-richard.henderson@linaro.org>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240503134635.78067-1-quic_mathbern@quicinc.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240424170908.759043-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,44 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/3/24 06:38, Matheus Tavares Bernardino wrote:
-> On Thu, 2 May 2024 13:00:34 -0700 Richard Henderson <richard.henderson@linaro.org> wrote:
->>
->> On 5/2/24 12:20, Matheus Tavares Bernardino wrote:
->>>
->>> +
->>> +void test_multi_cof(void)
->>> +{
->>> +    asm volatile(
->>> +        "p0 = cmp.eq(r0, r0)\n"
->>> +        "{\n"
->>> +        "    if (p0) jump test_multi_cof_unaligned\n"
->>> +        "    if (!p0) jump 1f\n"
->>> +        "}\n"
->>> +        "1: nop\n"
->>
->> Does it work to write "jump 1f+1" or something?
+On 24/4/24 19:09, Richard Henderson wrote:
+> For cpus using PMSA, when the MPU is disabled, the default memory
+> type is Normal, Non-cachable.
 > 
-> Unfortunately no :( The assembler will align the address when encoding the
-> instruction. The only working examples I could think of is using a separated
-> file, like before, or manually encoding the instruction with a misaligned
-> address and place it with a `.word` directive... Any preferences, or other
-> suggestions?
+> Fixes: 59754f85ed3 ("target/arm: Do memory type alignment check when translation disabled")
+> Reported-by: Clément Chigot <chigot@adacore.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> 
+> Since v9 will likely be tagged tomorrow without this fixed,
+> Cc: qemu-stable@nongnu.org
+> 
+> ---
+>   target/arm/tcg/hflags.c | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+> index 5da1b0fc1d..66de30b828 100644
+> --- a/target/arm/tcg/hflags.c
+> +++ b/target/arm/tcg/hflags.c
+> @@ -38,8 +38,16 @@ static bool aprofile_require_alignment(CPUARMState *env, int el, uint64_t sctlr)
+>       }
+>   
+>       /*
+> -     * If translation is disabled, then the default memory type is
+> -     * Device(-nGnRnE) instead of Normal, which requires that alignment
+> +     * With PMSA, when the MPU is disabled, all memory types in the
+> +     * default map is Normal.
+> +     */
+> +    if (arm_feature(env, ARM_FEATURE_PMSA)) {
+> +        return false;
+> +    }
+> +
+> +    /*
+> +     * With VMSA, if translation is disabled, then the default memory type
+> +     * is Device(-nGnRnE) instead of Normal, which requires that alignment
+>        * be enforced.  Since this affects all ram, it is most efficient
+>        * to handle this during translation.
+>        */
 
-Oof.  The assembler is being too helpful.  :-P
-
-Perhaps using a different section could solve the fragility issue:
-
-asm("
-	.pushsection .text.evil
-	.org 3
-	...
-	.popsection
-");
-
-(adjusting syntax as necessary for correctness), then it doesn't matter where in the 
-output assembly the fragment lands.
-
-
-r~
+This one is in target-arm.next:
+https://lore.kernel.org/qemu-devel/CAFEAcA98UrBLsAXKzLSkUnC2G_RZd56veqUkSGSttoADfkEKGA@mail.gmail.com/
 
