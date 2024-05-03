@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1850B8BAB9F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 13:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A55828BABBD
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 13:39:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2rA9-0006CI-Kf; Fri, 03 May 2024 07:33:13 -0400
+	id 1s2rEU-0000jQ-6W; Fri, 03 May 2024 07:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s2r9z-00069z-SJ
- for qemu-devel@nongnu.org; Fri, 03 May 2024 07:33:05 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s2r9x-0005ZJ-GU
- for qemu-devel@nongnu.org; Fri, 03 May 2024 07:33:02 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-572babec735so2167951a12.0
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 04:32:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714735972; x=1715340772; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L/TbeM/fPg8U0GiB5URaurHvHt+Aum+D52DEKWcmoZM=;
- b=zXUDod9fgDtZqqsmQY4TRYHlLfCBfid2wDMqWc+Ow/4lxZwkx4Rd/cWbsbVKTkqP5/
- h+FIutKv4xXBG9QnZWGS/ooCcaoQjL375mtmMy6Sz97BhMfg7+aJhLl7K7tXFqaGn50A
- 7cpbv6Ew8u/pAOg9DvlB5xxKiBhegONl00i1+4TQC+XDZTMcWspPijHdOtEqB+Oh+q7X
- b1ElyNrsM8cXX9eTvt3Jabm1YRA+vHWScT/FBcjs3LPyuCy2IZ6zzyND9av+dsdf6eZm
- Z/VzWIPoKjiFf5rIQ4Nok71+17a9EvYP+P6bF6JlAMJCtQ3V15pOlR6CMrftyimNDaBw
- cewg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714735972; x=1715340772;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=L/TbeM/fPg8U0GiB5URaurHvHt+Aum+D52DEKWcmoZM=;
- b=I4m4uN4PCNeWlH7Yo+hVSs+tQVuhKx1JSC6TCo04wFlbdHNEdSMqFDjEribYvgLT2D
- haXoUx7hb6QpXn+Kma0d72FOKxFw9+qY+rP+U59fjGdCQ5uiLS8o7bk4oHjKqc0qYYnv
- fh1jw1MV7njlqXUt3n3WCVWnJBd34uW2oq7JXAFGmzaXeoToPnnxHeSOGxlPCsamZlLG
- 1Y2v+G+AbATAAvgtDmRntbwwQb/VKMVcdo0vUVcqHZl0IBNcofeEWiFRg/GFO41ri1ck
- zJLmR98dB7kXGKYeTm9c1/DpAS+Kdo8iX/MFI/TsZMW4cGDFk8u1zYkoZYx84wuyLbZ8
- zCFA==
-X-Gm-Message-State: AOJu0YycZ3acg88TmwPkwBZ0e1u1fF/lalTWyIP1n3BJ3da9erpW9bSM
- eeMcQ/5/bQ9h0mgFqLT5HI1RX3lremZAZlQvXM3u/ZqYOwj7lobHrAxXJqwNvfLRrc4SU7/O43q
- eTDx47AvA5bJ9pbxik1m8VV2alRXmcMp26y4t7g==
-X-Google-Smtp-Source: AGHT+IHzI8jKJRWGVdyVdTI0jefSgcTKBcejUWovPVsRdDeCNMXdJWofDmqgXgUMyvJGcl9XxamdqrIz5nSGaIfCjYY=
-X-Received: by 2002:a50:c348:0:b0:56e:2daf:1edf with SMTP id
- q8-20020a50c348000000b0056e2daf1edfmr1773946edb.21.1714735972097; Fri, 03 May
- 2024 04:32:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
+ id 1s2rES-0000jE-Fi
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 07:37:40 -0400
+Received: from esa3.hc1455-7.c3s2.iphmx.com ([207.54.90.49])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
+ id 1s2rEL-0006p7-6d
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 07:37:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+ t=1714736253; x=1746272253;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=dxkrvDCZNoTH6UzikNB5h5QEWMplJ94dcTU6BIAt1iM=;
+ b=HiXnqK5U9Q6rC0wxMjo9ZEGjbvyI13VZt4y4TJQ8u4DAWb9BehC1xAkY
+ XxZ+5AlE/E7H/VCC8N/CdnjKpxxH6YN4rcdAsZU027MSgFMdnrdJqHy98
+ A1aHeobU1firv8JRRv9vwNAok19ZSeMvGE/FAvms3VGpAm8gCODHOS/eE
+ IhSrxjzNYWMBwK3na17RZC1Y7tNEMw3HLEExvDRgFBMchaism+rQyixhd
+ 7GzBQCQQrG40g/T0qyjIxkoC/FREomkqioF4eBh9qMWWrzdOkdRRW1GEF
+ dUNOzcDv34ZmlbEVjHF3ZvHGk0qK+YWHtu7InsIzZ/m1poNiB67LdtaMZ g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="157295852"
+X-IronPort-AV: E=Sophos;i="6.07,251,1708354800"; d="scan'208";a="157295852"
+Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
+ by esa3.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 May 2024 20:37:30 +0900
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com
+ [192.168.83.66])
+ by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id CF596C6909
+ for <qemu-devel@nongnu.org>; Fri,  3 May 2024 20:37:27 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
+ [192.51.206.21])
+ by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 0DA8920806
+ for <qemu-devel@nongnu.org>; Fri,  3 May 2024 20:37:27 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+ by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 901FE2008BCE1
+ for <qemu-devel@nongnu.org>; Fri,  3 May 2024 20:37:26 +0900 (JST)
+Received: from [10.193.128.195] (unknown [10.193.128.195])
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id EC6DE1A0002;
+ Fri,  3 May 2024 19:37:25 +0800 (CST)
+Message-ID: <f9e1c047-192b-4d50-8588-5a90bfe7e96b@fujitsu.com>
+Date: Fri, 3 May 2024 19:37:25 +0800
 MIME-Version: 1.0
-References: <20240503111019.210717-1-pbonzini@redhat.com>
-In-Reply-To: <20240503111019.210717-1-pbonzini@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 3 May 2024 12:32:40 +0100
-Message-ID: <CAFEAcA8s5zWH7PMnKjdZFoPVEB+p2obo_0MKSXjrh0dxE244WQ@mail.gmail.com>
-Subject: Re: [PATCH] stm32l4x5_usart: add missing class_size
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] cxl/core: correct length of DPA field masks
+To: Alison Schofield <alison.schofield@intel.com>
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org
+References: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
+ <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
+ <ZjFb7p4wn9bcUrzU@aschofie-mobl2>
+In-Reply-To: <ZjFb7p4wn9bcUrzU@aschofie-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28358.007
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28358.007
+X-TMASE-Result: 10--8.932000-10.000000
+X-TMASE-MatchedRID: 5U6uFEJz7+qPvrMjLFD6eHchRkqzj/bEC/ExpXrHizw0tugJQ9Wdwwvz
+ nYJVXoOYa/8aZGNpfqY65m9meG/WS9fk7hbCEuNogvmNrsT46HIQARQHZYEjpND0fCJzqdHb1a9
+ Gw6X1fIgreMjPCBtKqxPT4WWiXjYzIQPGoj5DOk5f2SdIdby5dcdvO1Rp+sgmqRTAHcwAECdm2e
+ 55IVZ1oM2JZjaQ73l9ZcW/i2O53DhdInhzedP5B1hRyidsElYkRYYm6fbhZvXRnp8Qx+pp65hj4
+ 4rNETuJIvrftAIhWmLy9zcRSkKate2aXYCZD9Vi3IFFT9wqfr19LQinZ4QefNQdB5NUNSsiDrBA
+ jvbPhh50HSe131POnsZW5ai5WKlyS8vbBiSyYXmfus/r6APjpOYSCtCVlxicSPNjBqdf6x+OGgM
+ 3MsQ7s35uyI/OFesN886gGzbqib5WV8McR6Zfhr93LmVDgtT58wykF/dkuej3FzhuUqY+wb77j9
+ TR8omKbFWdBw/YcNq7b6knBzvluw==
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Received-SPF: pass client-ip=207.54.90.49;
+ envelope-from=ruansy.fnst@fujitsu.com; helo=esa3.hc1455-7.c3s2.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,66 +97,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Shiyang Ruan <ruansy.fnst@fujitsu.com>
+From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 3 May 2024 at 12:10, Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> Depending on the phase of the moon, this seems to be causing CI failures =
-on FreeBSD.
-> Fortunately, valgrind catches it too, and in a fully deterministic way:
->
-> =3D=3D210026=3D=3D Invalid write of size 4
-> =3D=3D210026=3D=3D    at 0x5222F3: stm32l4x5_lpuart_class_init (stm32l4x5=
-_usart.c:611)
-> =3D=3D210026=3D=3D    by 0xA499E1: object_class_foreach_tramp (object.c:1=
-132)
-> =3D=3D210026=3D=3D    by 0x5A60BEA: g_hash_table_foreach (ghash.c:2117)
-> =3D=3D210026=3D=3D    by 0xA4A190: object_class_foreach (object.c:1154)
-> =3D=3D210026=3D=3D    by 0xA4A190: object_class_get_list (object.c:1211)
-> =3D=3D210026=3D=3D    by 0x7A5777: select_machine (vl.c:1664)
-> =3D=3D210026=3D=3D    by 0x7A5777: qemu_create_machine (vl.c:2104)
-> =3D=3D210026=3D=3D    by 0x7A5777: qemu_init (vl.c:3667)
-> =3D=3D210026=3D=3D    by 0x47E528: main (main.c:47)
-> =3D=3D210026=3D=3D  Address 0xe131340 is 0 bytes after a block of size 19=
-2 alloc'd
-> =3D=3D210026=3D=3D    at 0x4849E60: calloc (vg_replace_malloc.c:1595)
-> =3D=3D210026=3D=3D    by 0x5A79F71: g_malloc0 (gmem.c:133)
-> =3D=3D210026=3D=3D    by 0xA48E9B: type_initialize (object.c:361)
-> =3D=3D210026=3D=3D    by 0xA48E9B: type_initialize (object.c:336)
-> =3D=3D210026=3D=3D    by 0xA499E1: object_class_foreach_tramp (object.c:1=
-132)
-> =3D=3D210026=3D=3D    by 0x5A60BEA: g_hash_table_foreach (ghash.c:2117)
-> =3D=3D210026=3D=3D    by 0xA4A190: object_class_foreach (object.c:1154)
-> =3D=3D210026=3D=3D    by 0xA4A190: object_class_get_list (object.c:1211)
-> =3D=3D210026=3D=3D    by 0x7A5777: select_machine (vl.c:1664)
-> =3D=3D210026=3D=3D    by 0x7A5777: qemu_create_machine (vl.c:2104)
-> =3D=3D210026=3D=3D    by 0x7A5777: qemu_init (vl.c:3667)
-> =3D=3D210026=3D=3D    by 0x47E528: main (main.c:47)
->
-> Cc: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-> Cc: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  hw/char/stm32l4x5_usart.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
-> index 2627aab8324..8dbcc7e19e7 100644
-> --- a/hw/char/stm32l4x5_usart.c
-> +++ b/hw/char/stm32l4x5_usart.c
-> @@ -615,6 +615,7 @@ static const TypeInfo stm32l4x5_usart_types[] =3D {
->      {
->          .name           =3D TYPE_STM32L4X5_USART_BASE,
->          .parent         =3D TYPE_SYS_BUS_DEVICE,
-> +        .class_size     =3D sizeof(Stm32l4x5UsartBaseClass),
->          .instance_size  =3D sizeof(Stm32l4x5UsartBaseState),
->          .instance_init  =3D stm32l4x5_usart_base_init,
->          .class_init     =3D stm32l4x5_usart_base_class_init,
 
-This is already upstream as commit afdc29b4a3a5, I think.
 
-thanks
--- PMM
+在 2024/5/1 5:00, Alison Schofield 写道:
+> On Wed, Apr 17, 2024 at 03:50:52PM +0800, Shiyang Ruan wrote:
+>> The length of Physical Address in General Media Event Record/DRAM Event
+>> Record is 64-bit, so the field mask should be defined as such length.
+>> Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
+>> mask off the upper-32-bits of DPA addresses. The cxl_poison event is
+>> unaffected.
+>>
+>> If userspace was doing its own DPA-to-HPA translation this could lead to
+>> incorrect page retirement decisions, but there is no known consumer
+>> (like rasdaemon) of this event today.
+>>
+>> Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
+>> Cc: <stable@vger.kernel.org>
+>> Cc: Dan Williams <dan.j.williams@intel.com>
+>> Cc: Davidlohr Bueso <dave@stgolabs.net>
+>> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Cc: Ira Weiny <ira.weiny@intel.com>
+>> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> 
+> Hi Ruan,
+> 
+> This fixup is important for the Event DPA->HPA translation work, so I
+> grabbed it, updated it with most* of the review comments, and posted
+> with that set. I expect you saw that in your mailbox.
+
+Yes, I saw that.  Nice fix!
+
+> 
+> DaveJ queued it in a topic branch for 6.10 here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/log/?h=for-6.10/dpa-to-hpa
+> 
+
+That's good!
+
+> *I did not create a common mask for events and poison because I wanted to
+> limit the changes. If you'd like to make that change it would be welcomed.
+
+Ok~
+
+
+--
+Thanks,
+Ruan.
+
+> 
+> -- Alison
+> 
+>> ---
+>>   drivers/cxl/core/trace.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+>> index e5f13260fc52..cdfce932d5b1 100644
+>> --- a/drivers/cxl/core/trace.h
+>> +++ b/drivers/cxl/core/trace.h
+>> @@ -253,7 +253,7 @@ TRACE_EVENT(cxl_generic_event,
+>>    * DRAM Event Record
+>>    * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+>>    */
+>> -#define CXL_DPA_FLAGS_MASK			0x3F
+>> +#define CXL_DPA_FLAGS_MASK			0x3FULL
+>>   #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
+>>   
+>>   #define CXL_DPA_VOLATILE			BIT(0)
+>> -- 
+>> 2.34.1
+>>
 
