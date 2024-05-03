@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FCD8BA79B
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B368BA79A
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:20:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2nDf-0000ny-3b; Fri, 03 May 2024 03:20:35 -0400
+	id 1s2nDm-0000vy-1M; Fri, 03 May 2024 03:20:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDb-0000nY-Km
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:32 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDg-0000qc-WE
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:37 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDa-0001Fy-1m
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:31 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41b9dff6be8so48346885e9.3
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:20:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDf-0001Jv-Fy
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:36 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-41bab13ca4eso47319245e9.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:20:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714720828; x=1715325628; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714720833; x=1715325633; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8EARN2QjxHRUGZxuseUERnN42PxuL4o+f6Wcb9HZQWs=;
- b=DkBYiH557yNNBU1cotc8JpNpaREkjGKuyovslqu4gVAOZLLVc4sXZSnA46nPUYBGGF
- 4R5FnnwwhR51DjYORFyXOciN43ktEC5dw2DNcxZYSct9tWTar8QJ6vmaInD4mfdxGbqU
- dR13LAykaXvpQd6yhC67bd9XZRYGPiO2jXVZwVkKGERbokV/tbTai+JBIV3cnEeiNid3
- dwE2jmU4fjSXGG0/s+E7aPgDCcUin10hAOz6Q8LBDGYFo5I/9D2S6XRtbb4P88bToJPT
- Lzdwm5/vXvxD/0+vXlv9NOVoZPEmLHjXsBdCAZb6RTXjyrKCSMiIKSuOx70v82cNuGiN
- pE2g==
+ bh=NsUohuRZS7qAWRTP4Ddk/BzlIY+4ubmA4ImrHbv8aR0=;
+ b=wDtQuuOqJM0npisIlpNYTH+InvckwZLRz1xOeD0vGVuUCAmK1ttuDmLUS7Xs+kquXO
+ clOdj6QUBPGc+i/2ZjdKSo87hAAOguXmltknGOZ2HoSFkKOcDTnMVzSF9sn7/S1a5sXZ
+ J5uqT8iqqhwygFoBahDQoF5XhKm+XvXzTKaZz5r0YwWzW9s5NP1q9piqr5js1MqsdnUF
+ T5Ial6H1jUjH2hniSk/VrWx3C/MgYPNCcgMV/6haKgPGmFfwY6UMuzclUZZh/3xifcig
+ jVfAKVsGvKQpDcIO3+4Du6ozz87RMOcNXU/m0++X05e+u6FHGVbewNoExYiVyvj5KKym
+ naEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714720828; x=1715325628;
+ d=1e100.net; s=20230601; t=1714720833; x=1715325633;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8EARN2QjxHRUGZxuseUERnN42PxuL4o+f6Wcb9HZQWs=;
- b=dNVo81QxGIXD8I03FObKCmWTUlarLNmU1t1t8mZd0/7D8j2YwEsHpUUfq7gxcdy8L2
- 1NTQ8ZZ3cTZc1BgGcz72PEWy5iU5Rb8N8JSPk25JQss1aJY7+wCEMJJX7IqZ3g6to4JV
- ISV/MvpzlAEDnY0HQMXb5GbyJFPc4L+pjv6YNp4c0bG2AqnNTqbrL4WkRzqRfMrhPXLZ
- hn0I3W+88YtEQcO0nbEIE3cENYLYK8zJrY0RuIjjSKFT4LPOVli0Tr743MEewVsptE5O
- qIN4oasGJWNiJdzFftrrXPosCRg8L+/jJT9Ui9m4nJV3yWOH5R1B3CD3P+ydG6cCFkdk
- qhUw==
-X-Gm-Message-State: AOJu0YztDfOp74P7dtKLTdzQzgacl8A4RAXjqc66j66/OmZon6m7KA5l
- qlMCFUiepGYIbtmsnVVWzO6BncvGnIFgdLFeDvPLv/2wkGHxq5f1XJGBjDN3WRNuATk1HFpz8s0
- X
-X-Google-Smtp-Source: AGHT+IFzLqFgruACRlcbDgcsiCs1HBQ1o2MXbo9y9xLlQcvYxrbyTRVociy5pDtUOjIDzGGeAMGJTw==
-X-Received: by 2002:a05:600c:35c8:b0:41e:1bc1:36de with SMTP id
- r8-20020a05600c35c800b0041e1bc136demr764642wmq.26.1714720828030; 
- Fri, 03 May 2024 00:20:28 -0700 (PDT)
+ bh=NsUohuRZS7qAWRTP4Ddk/BzlIY+4ubmA4ImrHbv8aR0=;
+ b=YuZuGWIQLB9FWBSxMMdA6siyhyBAEc2z8royL4WJPKYMDMZCux0KGeSuIld5Ra0Iga
+ JOCvaNyLiYhGLChG3wWSGaaqXzH/diIPfSJouMGbKUv5km3y/vJoc+qwqWl/tOEFUK5b
+ +c16S2DVxPkp0oaZMQNB9Rj+PB/ETrkaFy5QP/BJI5MAd8iVBP7uMhdk0JRjTYeveOoH
+ 6Mysp5FnXR18gYVwUfUjrdDV4CnkjWteLQ2o0k3QrlN1R0XNi6CuGpIIcjOx53eU3ffb
+ +KNdVxu9VuoZViBt5+xBN2R+Ue6wh6pDda9cv6AB684e9B3VXS7d9k7AQh7PdxRxed0a
+ qe1w==
+X-Gm-Message-State: AOJu0Yxghya53lZMft36vC9KlzPQ3Vc/0OjOWuYMd3RBjYpaKt4WqX4G
+ AosHOSlnPi2mFMkjdXjzxGfPbDwn8tg9K0wGz6RxjP3J5y135aB+yWuc2MiCboLpYiR/tHibRZM
+ H
+X-Google-Smtp-Source: AGHT+IGGTxiOEu9QkkOju77VfPTN6btJoBaOvWPRgotA53tTtRDavLH0FimYCkTGSjRL+cheVmLh/A==
+X-Received: by 2002:a05:600c:5118:b0:41a:34c3:2297 with SMTP id
+ o24-20020a05600c511800b0041a34c32297mr1356974wms.5.1714720833657; 
+ Fri, 03 May 2024 00:20:33 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- bd13-20020a05600c1f0d00b0041c012ca327sm4557609wmb.45.2024.05.03.00.20.26
+ c7-20020a05600c0a4700b0041ba0439a78sm8317697wmq.45.2024.05.03.00.20.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 00:20:27 -0700 (PDT)
+ Fri, 03 May 2024 00:20:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/9] target/alpha: Hoist branch shift to initial decode
-Date: Fri,  3 May 2024 09:20:06 +0200
-Message-ID: <20240503072014.24751-3-philmd@linaro.org>
+Subject: [PATCH v2 3/9] target/alpha: Use DISAS_NEXT definition instead of
+ magic '0' value
+Date: Fri,  3 May 2024 09:20:07 +0200
+Message-ID: <20240503072014.24751-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503072014.24751-1-philmd@linaro.org>
 References: <20240503072014.24751-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +95,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240424234436.995410-4-richard.henderson@linaro.org>
+[PMD: Split bigger patch, part 1/5]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/translate.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/alpha/translate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index a97cd54f0c..52c2e6248b 100644
+index 52c2e6248b..9ad7bf6e5f 100644
 --- a/target/alpha/translate.c
 +++ b/target/alpha/translate.c
-@@ -432,7 +432,7 @@ static bool use_goto_tb(DisasContext *ctx, uint64_t dest)
+@@ -440,8 +440,10 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
  
- static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
- {
--    uint64_t dest = ctx->base.pc_next + (disp << 2);
-+    uint64_t dest = ctx->base.pc_next + disp;
- 
-     if (ra != 31) {
-         tcg_gen_movi_i64(ctx->ir[ra], ctx->base.pc_next);
-@@ -455,7 +455,7 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
- static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
-                                         TCGv cmp, uint64_t imm, int32_t disp)
- {
--    uint64_t dest = ctx->base.pc_next + (disp << 2);
-+    uint64_t dest = ctx->base.pc_next + disp;
-     TCGLabel *lab_true = gen_new_label();
- 
-     if (use_goto_tb(ctx, dest)) {
-@@ -1382,7 +1382,7 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
-     real_islit = islit = extract32(insn, 12, 1);
-     lit = extract32(insn, 13, 8);
- 
--    disp21 = sextract32(insn, 0, 21);
-+    disp21 = sextract32(insn, 0, 21) * 4;
-     disp16 = sextract32(insn, 0, 16);
-     disp12 = sextract32(insn, 0, 12);
- 
+     /* Notice branch-to-next; used to initialize RA with the PC.  */
+     if (disp == 0) {
+-        return 0;
+-    } else if (use_goto_tb(ctx, dest)) {
++        return DISAS_NEXT;
++    }
++
++    if (use_goto_tb(ctx, dest)) {
+         tcg_gen_goto_tb(0);
+         tcg_gen_movi_i64(cpu_pc, dest);
+         tcg_gen_exit_tb(ctx->base.tb, 0);
 -- 
 2.41.0
 
