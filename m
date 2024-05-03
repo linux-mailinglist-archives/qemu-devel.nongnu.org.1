@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08768BAC96
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 14:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CAB8BACB7
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 14:43:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2s8x-0007uB-NL; Fri, 03 May 2024 08:36:05 -0400
+	id 1s2sFg-0004UA-EC; Fri, 03 May 2024 08:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2s8E-0007Fo-Bm
- for qemu-devel@nongnu.org; Fri, 03 May 2024 08:35:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s2s8A-0002nZ-9T
- for qemu-devel@nongnu.org; Fri, 03 May 2024 08:35:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714739707;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pWj+HnS8N6/jcUpATLvn3zKB5cbBEMbtsZN5xw5kBws=;
- b=hCiTcJu9bROqKfo9Hb0IKv/4diCeHIYKDBnH4bJr6jii68a2hrNeb6iv7l1dklIIExFJDH
- NS1CLVzZ99qubgEYHdcc/QkFqojR0YT7SBX2Kb1mOvNKHqs7nadbgbELEYGuLFANaWEoj0
- brQDsqZHoBHODnrQg/74jeOM+aoCDps=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-n7i_lRwhMVOmwufLibs9aQ-1; Fri, 03 May 2024 08:35:04 -0400
-X-MC-Unique: n7i_lRwhMVOmwufLibs9aQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72F5A886F07;
- Fri,  3 May 2024 12:35:03 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A93A40C6CC0;
- Fri,  3 May 2024 12:34:59 +0000 (UTC)
-Date: Fri, 3 May 2024 13:34:57 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clegoate@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Laurent Vivier <laurent@vivier.eu>, qemu-arm@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org
-Subject: Re: [PATCH 00/14] hw: define and enforce a standard lifecycle for
- versioned machines
-Message-ID: <ZjTZ8YrxElWp1A8x@redhat.com>
-References: <20240501182759.2934195-1-berrange@redhat.com>
- <CAFEAcA9LTsdjHpip1F=BPhrRUbH++3eW4HjjH4Xn6yN18pHtjQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1s2sFc-0004T7-7R
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 08:42:56 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1s2sFZ-0004Et-NT
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 08:42:55 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1eca195a7c8so25739545ad.2
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 05:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1714740171; x=1715344971; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6EtT61KpBPa2eCBY2p0PwNLKs+b9PV1vePmApP7UedU=;
+ b=SqJNT3qK4L2IFgx6d8bC8Bzb7i79pBqmqcVqDjBexNRF1w2ZJHXPOQabI7pGjjynXD
+ KPjOtzqdl7sQhywe01qAR/xz1+TmPf4bUe2nYFHmIPPXefdbIBGd+L7uoidqbncyh88L
+ J3qtPhNQj/euakYshbsibUlRUF3+1usmonldjwskMKu66HPIsReuRI/kjuY++/n3deQQ
+ cOoT/f14e0cYu+M3zRuhc+IWHmE6VSNkq4r/C5kFNqtNH51OISiblTuMXXndX3fmEqZB
+ 05BJmgtRygRv9QH4WtL3+lMpYd5rErXp8UigtTMLyEyYQ1ONBYBUGc90bDdB+jkCfjjH
+ d7hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714740171; x=1715344971;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6EtT61KpBPa2eCBY2p0PwNLKs+b9PV1vePmApP7UedU=;
+ b=Vz1862SE/DUTZ03Y4EYhXDEjxbMWrwCG1zRkp+71kEhEAGCOT6PN6MXhwVKad0lMqe
+ S2X4L9Fxo3MXr7clsWQSp5FgxCCdzDZdavaeQRi3B77LQMtZOrDmWgeviT8O7NH6SLg7
+ j8YWEVPqUO9pkwhRHxzhU8AvuPxZdthcwkuNF226Nw1PtWwR2t9s/RVtpuGkWFOj2kC/
+ U//BX8zCBYMJ7sv4vDBwE5IG1hK2KRfdghDxHi7T8YxnBB+PRIfL9ZvAUs6YPxL9pj5k
+ wYHu5IGBN9k6suHlrY8DwD0Yq9VkAfu18hP8izKKnlUHyVgGLqao0OmuymfMtbStMToz
+ 67NQ==
+X-Gm-Message-State: AOJu0YyWthilNXHBUCl7KyV6REk9lwpkYp87k+ySkla+ZXatkTDC3k66
+ 0p6aS1UsuwEe87f613bMZv7cmag+QzMGToGCDCbrE5ji5MYQSJ8pe4IyjxtDVRLFBrQRJ3hy3FH
+ V
+X-Google-Smtp-Source: AGHT+IE5FjOw33Mnz1mLnJletlNHGKo50IggPL+HqovUUgul8bwgwWsA9v7v2XBr5Kb5fZcoHHAjMQ==
+X-Received: by 2002:a17:902:ce0f:b0:1eb:5452:8606 with SMTP id
+ k15-20020a170902ce0f00b001eb54528606mr3320900plg.48.1714740171602; 
+ Fri, 03 May 2024 05:42:51 -0700 (PDT)
+Received: from grind.. ([187.11.154.208]) by smtp.gmail.com with ESMTPSA id
+ f7-20020a170902684700b001e3cee88212sm3192998pln.230.2024.05.03.05.42.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 May 2024 05:42:51 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, kraxel@redhat.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [RFC PATCH 0/1] pci: allocate a PCI ID for RISC-V IOMMU
+Date: Fri,  3 May 2024 09:42:43 -0300
+Message-ID: <20240503124244.8804-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFEAcA9LTsdjHpip1F=BPhrRUbH++3eW4HjjH4Xn6yN18pHtjQ@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.483,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,94 +88,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 03, 2024 at 01:14:27PM +0100, Peter Maydell wrote:
-> On Wed, 1 May 2024 at 19:28, Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > I wonder, however, whether we would benefit from changing how we
-> > update the VERSION file.
-> >
-> > eg instead of re-using the micro digit to indicate a dev or rc
-> > snapshot, represent those explicitly. eg "9.1.0-dev" and
-> > "9.1.0-rc1", "9.1.0-rc2", etc in VERSION.
-> >
-> > We don't use the full QEMU_VERSION in the code in all that many
-> > places. It appears in some help messages for command line tools,
-> > and in QMP query-version response, and in a few other misc places.
-> > At a glance it appears all of those places would easily handle a
-> > tagged version.
-> >
-> > For release candidates in particular I think it would be saner
-> > to show the user the actual version the release is about to become,
-> > rather than the previous release's version. This would make the
-> > reported version match the rc tarball naming too which would be
-> > nice.
-> 
-> I think the theory behind the VERSION file is that we want
-> to be able to express the version:
->  * purely numerically
->  * in a strictly ascending order
-> 
-> We expose the assumption of numeric versions in places like
-> QMP's query-version command, which reports it as a set of ints.
+Hi,
 
-Right, we have:
+In this RFC I want to check with Gerd and others if it's ok to add a PCI
+id for the RISC-V IOMMU device. It's currently under review in [1]. The
+idea is to fold this patch into the RISC-V IOMMU series if we're all ok
+with this change.
 
-#     -> { "execute": "query-version" }
-#     <- {
-#           "return":{
-#              "qemu":{
-#                 "major":0,
-#                 "minor":11,
-#                 "micro":5
-#              },
-#              "package":""
-#           }
-#        }
+Gerd, we picked the ID right after the PCI UFS device. Let me know if
+you want another ID instead. 
 
 
-We could add an extra field to it thus:
+Daniel Henrique Barboza (1):
+  pci-ids.rst: add Red Hat pci-id for generic IOMMU device
 
+ docs/specs/pci-ids.rst | 2 ++
+ include/hw/pci/pci.h   | 1 +
+ 2 files changed, 3 insertions(+)
 
-#     -> { "execute": "query-version" }
-#     <- {
-#           "return":{
-#              "qemu":{
-#                 "major":0,
-#                 "minor":11,
-#                 "micro":5,
-#                 "tag": "rc2"
-#              },
-#              "package":""
-#           }
-#        }
-
-arguably we are still in strictly ascending order for the
-numeric part, we merely didn't bump the numeric part of
-the value at rc releases.
-
-> I think there's probably scope for making the "human friendly"
-> version string be surfaced instead of the strictly-numeric
-> one in more places, but I worry that breaking the "always
-> numeric and ascending" rule might have subtle breakage for
-> us or for downstream uses...
-
-Downstream I see no issues. There are already many projects which
-use a '-dev' or '-rcNN' suffix for tarballs of unreleased versions,
-and distros have guidelines on how they deal with this.
-
-In fact downstream already deals with it for QEMU, because they will
-typically set packaging versioning based on the version as seen in
-the tarball name, not the different version seen in the VERSION file
-(and thus QMP).
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.44.0
 
 
