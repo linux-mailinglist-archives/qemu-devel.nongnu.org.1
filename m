@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2978BB0DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 18:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D45D8BB0E5
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 18:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2vhh-0001aU-DX; Fri, 03 May 2024 12:24:09 -0400
+	id 1s2vm4-0003Th-By; Fri, 03 May 2024 12:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1s2vhf-0001Zw-Bz; Fri, 03 May 2024 12:24:07 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1s2vhc-0002af-Mt; Fri, 03 May 2024 12:24:07 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VWGJN4Q65z6K5Xs;
- Sat,  4 May 2024 00:21:08 +0800 (CST)
-Received: from lhrpeml500004.china.huawei.com (unknown [7.191.163.9])
- by mail.maildlp.com (Postfix) with ESMTPS id 3EA321400D9;
- Sat,  4 May 2024 00:23:59 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 3 May 2024 17:23:58 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
- Fri, 3 May 2024 17:23:58 +0100
-To: Vishnu Pajjuri <vishnu@amperemail.onmicrosoft.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>, "gankulkarni@os.amperecomputing.com"
- <gankulkarni@os.amperecomputing.com>
-Subject: RE: [PATCH V8 1/8] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Topic: [PATCH V8 1/8] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Index: AQHadCEigDg8Rw6JCkW/vDs/2Ez4xbFYN50AgC3FyZA=
-Date: Fri, 3 May 2024 16:23:58 +0000
-Message-ID: <8a1fc3ee6a5d4f8fb8ffb9993c90c1b9@huawei.com>
-References: <20240312020000.12992-1-salil.mehta@huawei.com>
- <20240312020000.12992-2-salil.mehta@huawei.com>
- <565ba0ac-a070-4784-a882-2eeab9c91541@amperemail.onmicrosoft.com>
-In-Reply-To: <565ba0ac-a070-4784-a882-2eeab9c91541@amperemail.onmicrosoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.152.25]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s2vm2-0003TI-61
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 12:28:38 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s2vm0-0003aN-Jm
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 12:28:37 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a524ecaf215so1345941766b.2
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 09:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714753715; x=1715358515; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5QcAtR3CP0dKrpmYLCBHjaCV//LHjKr7WeUxEfJJ08E=;
+ b=Tz2IwvI6Fy00IjE1APSSVPC84m4Ct/G3tuvu+qQydz/PlQWvWGIosctGArjRGmv0p1
+ 736wgvpCauNCuM3tS4AIzAuvclncwS/I5AO8QPdUvicQxB9E6maH8BCO03QGI+akymXd
+ itCFQ3V7vZsYwIbXqUpks7igOqdDidG7ktfjBWnPuL38GYk1RHebVbCDOl/OLt0lBOSy
+ 8HgHWetB8Eo4r891jv6TZ4+Ctn/LsD6BVQkzWEZZvYEBUg1qECv3LXLMjYEKpIcN+/9U
+ WP2bCs8cF+9Ks7DL2ncaVmeLgiaAFAMvzBVYdtcVvvMsclP2HaBS5RAOa+F+jZZvkiwa
+ nbmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714753715; x=1715358515;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5QcAtR3CP0dKrpmYLCBHjaCV//LHjKr7WeUxEfJJ08E=;
+ b=Yg1wAMuu9dUFNTHttFdubRyfOp7FdVDtRnhUAG99EqTFqSYAbpEgxZTVwCq4OSw3ef
+ f0JkUmR8JKfggN4VwJ0JzNOkjc3gCDIM6EXo/pQ0IeK+CHFtKI6dNlkd3Jp4kgss9WaB
+ syhffY7GL0wEqdz6DAU48UE3sEfGWQkQXzpa1lMQ4v7zod27WoZNlt1E57SitNrsswAX
+ bV5WSUY4pqOdhNlKP3+PmVSeUjdDr+C2rvKgCgZhB+ZTYseNFnceAAWklnhgdZpiNY2b
+ 9yGRqyx6PBJ+maUF0LLJ0+Kc8NjwQUYv0pQ4sXdA3yLUSNFiXQfFScKy/uL+WXQVR9rg
+ w/pw==
+X-Gm-Message-State: AOJu0Yw+btcdMQe8zEJWMZdWdx+5ZNdJtOqUcDXtSBNskOAKobHbEWY6
+ EX4XDb0/zjgQ7/sJt6TCF79668Y4C7Z1uInUqra6tTKjOz3htN5dZ2zlKuWj0Wc8hhAVTI/ILBy
+ AfOsaEbIPvtgnKgNcOh+Y3ikHgeRc/34QrYKFJg==
+X-Google-Smtp-Source: AGHT+IFsLrlq3KvTgoXHTMyCpeuqDtqAHa9T5wKohKFqUv1P5udbewLHzmp5tnQtR65QDgZq+fa9NPKu00Hmz1pSMrg=
+X-Received: by 2002:a50:d657:0:b0:572:a6e9:58ca with SMTP id
+ c23-20020a50d657000000b00572a6e958camr1926353edj.10.1714753715094; Fri, 03
+ May 2024 09:28:35 -0700 (PDT)
 MIME-Version: 1.0
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+References: <20240419183135.12276-1-dorjoychy111@gmail.com>
+In-Reply-To: <20240419183135.12276-1-dorjoychy111@gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 3 May 2024 17:28:23 +0100
+Message-ID: <CAFEAcA9w1PeT4X=eX6Xh64vNWC1FPQdgGCXJkf0+=3kDLuYVsQ@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: fix MPIDR value for ARM CPUs with SMT
+To: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,174 +82,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgVmlzaG51LA0KDQo+ICBGcm9tOiBWaXNobnUgUGFqanVyaSA8dmlzaG51QGFtcGVyZW1haWwu
-b25taWNyb3NvZnQuY29tPiANCj4gIFNlbnQ6IFRodXJzZGF5LCBBcHJpbCA0LCAyMDI0IDM6MDAg
-UE0NCj4gIFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjggMS84XSBhY2NlbC9rdm06IEV4dHJhY3QgY29t
-bW9uIEtWTSB2Q1BVIHtjcmVhdGlvbixwYXJraW5nfSBjb2RlDQo+ICANCj4gIEhpIFNhbGlsLA0K
-Pj4gIE9uIDEyLTAzLTIwMjQgMDc6MjksIFNhbGlsIE1laHRhIHdyb3RlOg0KPj4gIEtWTSB2Q1BV
-IGNyZWF0aW9uIGlzIGRvbmUgb25jZSBkdXJpbmcgdGhlIHZDUFUgcmVhbGl6YXRpb24gd2hlbiBR
-ZW11IHZDUFUgdGhyZWFkDQo+PiAgaXMgc3Bhd25lZC4gVGhpcyBpcyBjb21tb24gdG8gYWxsIHRo
-ZSBhcmNoaXRlY3R1cmVzIGFzIG9mIG5vdy4NCj4+ICANCj4+ICBIb3QtdW5wbHVnIG9mIHZDUFUg
-cmVzdWx0cyBpbiBkZXN0cnVjdGlvbiBvZiB0aGUgdkNQVSBvYmplY3QgaW4gUU9NIGJ1dCB0aGUN
-Cj4+ICBjb3JyZXNwb25kaW5nIEtWTSB2Q1BVIG9iamVjdCBpbiB0aGUgSG9zdCBLVk0gaXMgbm90
-IGRlc3Ryb3llZCBhcyBLVk0gZG9lc24ndA0KPj4gIHN1cHBvcnQgdkNQVSByZW1vdmFsLiBUaGVy
-ZWZvcmUsIGl0cyByZXByZXNlbnRhdGl2ZSBLVk0gdkNQVSBvYmplY3QvY29udGV4dCBpbg0KPj4g
-IFFlbXUgaXMgcGFya2VkLg0KPj4gIA0KPj4gIFJlZmFjdG9yIGFyY2hpdGVjdHVyZSBjb21tb24g
-bG9naWMgc28gdGhhdCBzb21lIEFQSXMgY291bGQgYmUgcmV1c2VkIGJ5IHZDUFUNCj4+ICBIb3Rw
-bHVnIGNvZGUgb2Ygc29tZSBhcmNoaXRlY3R1cmVzIGxpa2VzIEFSTSwgTG9vbmdzb24gZXRjLiBV
-cGRhdGUgbmV3L29sZCBBUElzDQo+PiAgd2l0aCB0cmFjZSBldmVudHMgaW5zdGVhZCBvZiBEUFJJ
-TlRGLiBObyBmdW5jdGlvbmFsIGNoYW5nZSBpcyBpbnRlbmRlZCBoZXJlLg0KPj4gIA0KPj4gIFNp
-Z25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIG1haWx0bzpzYWxpbC5tZWh0YUBodWF3ZWkuY29tDQo+
-PiAgUmV2aWV3ZWQtYnk6IEdhdmluIFNoYW4gbWFpbHRvOmdzaGFuQHJlZGhhdC5jb20NCj4+ICBU
-ZXN0ZWQtYnk6IFZpc2hudSBQYWpqdXJpIG1haWx0bzp2aXNobnVAb3MuYW1wZXJlY29tcHV0aW5n
-LmNvbQ0KPj4gIFJldmlld2VkLWJ5OiBKb25hdGhhbiBDYW1lcm9uIG1haWx0bzpKb25hdGhhbi5D
-YW1lcm9uQGh1YXdlaS5jb20NCj4+ICBUZXN0ZWQtYnk6IFhpYW5nbGFpIExpIG1haWx0bzpsaXhp
-YW5nbGFpQGxvb25nc29uLmNuDQo+PiAgVGVzdGVkLWJ5OiBNaWd1ZWwgTHVpcyBtYWlsdG86bWln
-dWVsLmx1aXNAb3JhY2xlLmNvbQ0KPj4gIFJldmlld2VkLWJ5OiBTaGFvcWluIEh1YW5nIG1haWx0
-bzpzaGFodWFuZ0ByZWRoYXQuY29tDQo+PiAgLS0tDQo+PiAgIGFjY2VsL2t2bS9rdm0tYWxsLmMg
-ICAgfCA2NCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4+ICAg
-YWNjZWwva3ZtL3RyYWNlLWV2ZW50cyB8ICA1ICsrKy0NCj4+ICAgaW5jbHVkZS9zeXNlbXUva3Zt
-LmggICB8IDE2ICsrKysrKysrKysrDQo+PiAgIDMgZmlsZXMgY2hhbmdlZCwgNjkgaW5zZXJ0aW9u
-cygrKSwgMTYgZGVsZXRpb25zKC0pDQo+PiAgDQo+PiAgZGlmZiAtLWdpdCBhL2FjY2VsL2t2bS9r
-dm0tYWxsLmMgYi9hY2NlbC9rdm0va3ZtLWFsbC5jDQo+PiAgaW5kZXggYThjZWNkMDQwZS4uM2Jj
-MzIwN2JkYSAxMDA2NDQNCj4+ICAtLS0gYS9hY2NlbC9rdm0va3ZtLWFsbC5jDQo+PiAgKysrIGIv
-YWNjZWwva3ZtL2t2bS1hbGwuYw0KPj4gIEBAIC0xMjYsNiArMTI2LDcgQEAgc3RhdGljIFFlbXVN
-dXRleCBrbWxfc2xvdHNfbG9jazsNCj4+ICAgI2RlZmluZSBrdm1fc2xvdHNfdW5sb2NrKCkgIHFl
-bXVfbXV0ZXhfdW5sb2NrKCZrbWxfc2xvdHNfbG9jaykNCj4+ICAgDQo+PiAgIHN0YXRpYyB2b2lk
-IGt2bV9zbG90X2luaXRfZGlydHlfYml0bWFwKEtWTVNsb3QgKm1lbSk7DQo+PiAgK3N0YXRpYyBp
-bnQga3ZtX2dldF92Y3B1KEtWTVN0YXRlICpzLCB1bnNpZ25lZCBsb25nIHZjcHVfaWQpOw0KPj4g
-ICANCj4+ICAgc3RhdGljIGlubGluZSB2b2lkIGt2bV9yZXNhbXBsZV9mZF9yZW1vdmUoaW50IGdz
-aSkNCj4+ICAgew0KPj4gIEBAIC0zMTQsMTQgKzMxNSw1MyBAQCBlcnI6DQo+PiAgcmV0dXJuIHJl
-dDsNCj4+ICAgfQ0KPj4gICANCj4+ICArdm9pZCBrdm1fcGFya192Y3B1KENQVVN0YXRlICpjcHUp
-DQo+PiAgK3sNCj4+ICArICAgIHN0cnVjdCBLVk1QYXJrZWRWY3B1ICp2Y3B1Ow0KPj4gICsNCj4+
-ICArICAgIHRyYWNlX2t2bV9wYXJrX3ZjcHUoY3B1LT5jcHVfaW5kZXgsIGt2bV9hcmNoX3ZjcHVf
-aWQoY3B1KSk7DQo+ICBJdCdzIGdvb2QgaWYgd2UgYWRkIGt2bV9mZCB0byB0cmFjZS4NCj4gIEl0
-IHdpbGwgYmUgdXNlZnVsIHRvIGNyb3NzIHZlcmlmeSBrdm1fZ2V0X3ZjcHUoKSdzIGt2bV9mZCB3
-aXRoIHBhcmtlZCB2Y3B1Lg0KDQoNCkFncmVlZC4gQnV0IHRoaXMgaXMgY3VycmVudGx5IGNhbGxl
-ZCBpbiBjb250ZXh0IHRvIGNyZWF0ZSBhbmQgZGVzdHJveSB2Q1BVDQp3aGVyZSB0aGUgdHJhY2Ug
-YWxyZWFkeSBleGlzdHMgd2l0aCB0aGUgaW5mbyB5b3UgYXJlIHNlZWtpbmcuIEhhdmluZw0KdHJh
-Y2UgaGVyZSBtaWdodCBkdXBsaWNhdGUgdGhlIGluZm8gYW5kIGVuZCB1cCBpbmNyZWFzaW5nIHRo
-ZSBub2lzZS4NCg0KTGV0IG1lIGtub3cgaWYgeW91IHRoaW5rIG90aGVyd2lzZSBvciBoYXZlIHNv
-bWV0aGluZyBlbHNlIHRvIGFkZC4NCg0KVGhhbmtzDQoNCiANCj4+ICArDQo+PiAgKyAgICB2Y3B1
-ID0gZ19tYWxsb2MwKHNpemVvZigqdmNwdSkpOw0KPj4gICsgICAgdmNwdS0+dmNwdV9pZCA9IGt2
-bV9hcmNoX3ZjcHVfaWQoY3B1KTsNCj4+ICArICAgIHZjcHUtPmt2bV9mZCA9IGNwdS0+a3ZtX2Zk
-Ow0KPj4gICsgICAgUUxJU1RfSU5TRVJUX0hFQUQoJmt2bV9zdGF0ZS0+a3ZtX3BhcmtlZF92Y3B1
-cywgdmNwdSwgbm9kZSk7DQo+PiAgK30NCj4+ICArDQo+PiAgK2ludCBrdm1fY3JlYXRlX3ZjcHUo
-Q1BVU3RhdGUgKmNwdSkNCj4+ICArew0KPj4gICsgICAgdW5zaWduZWQgbG9uZyB2Y3B1X2lkID0g
-a3ZtX2FyY2hfdmNwdV9pZChjcHUpOw0KPj4gICsgICAgS1ZNU3RhdGUgKnMgPSBrdm1fc3RhdGU7
-DQo+PiAgKyAgICBpbnQga3ZtX2ZkOw0KPj4gICsNCj4+ICArICAgIHRyYWNlX2t2bV9jcmVhdGVf
-dmNwdShjcHUtPmNwdV9pbmRleCwga3ZtX2FyY2hfdmNwdV9pZChjcHUpKTsNCj4gIHZjcHVfaWQg
-Y2FuIGJlIHVzZWQgaW5zdGVhZCBvZiBrdm1fYXJjaF92Y3B1X2lkKGNwdSkuDQoNCg0KS1ZNIGFy
-Y2ggVkNQVSBJZCBlbnN1cmVzIHRoYXQgSUQgYmVpbmcgdHJhY2VkIGlzIG1lYW5pbmdmdWwgZm9y
-IHRoYXQNCmFyY2hpdGVjdHVyZS4gVGhlIHdheSBDUFUgSUQgZ2V0cyBjYWxjdWxhdGVkIGluIG9u
-IGRpZmZlcmVudCBhcmNoaXRlY3R1cmVzDQpjb3VsZCBiZSBkaWZmZXJlbnQuIEhlbmNlLCBpdHMg
-dmFsdWUgbWlnaHQgYmUgcXVpdGUgZGlmZmVyZW50Lg0KDQogIA0KPj4gICsNCj4+ICArICAgIC8q
-IGNoZWNrIGlmIHRoZSBLVk0gdkNQVSBhbHJlYWR5IGV4aXN0IGJ1dCBpcyBwYXJrZWQgKi8NCj4+
-ICArICAgIGt2bV9mZCA9IGt2bV9nZXRfdmNwdShzLCB2Y3B1X2lkKTsNCj4+ICArICAgIGlmIChr
-dm1fZmQgPCAwKSB7DQo+PiAgKz4gICAvKiB2Q1BVIG5vdCBwYXJrZWQ6IGNyZWF0ZSBhIG5ldyBL
-Vk0gdkNQVSAqLw0KPj4gICs+ICAga3ZtX2ZkID0ga3ZtX3ZtX2lvY3RsKHMsIEtWTV9DUkVBVEVf
-VkNQVSwgdmNwdV9pZCk7DQo+PiAgKz4gICBpZiAoa3ZtX2ZkIDwgMCkgew0KPj4gICs+ICAgICAg
-IGVycm9yX3JlcG9ydCgiS1ZNX0NSRUFURV9WQ1BVIElPQ1RMIGZhaWxlZCBmb3IgdkNQVSAlbHUi
-LCB2Y3B1X2lkKTsNCj4+ICArPiAgICAgICByZXR1cm4ga3ZtX2ZkOw0KPj4gICs+ICAgfQ0KPj4g
-ICsgICAgfQ0KPj4gICsNCj4+ICArICAgIGNwdS0+a3ZtX2ZkID0ga3ZtX2ZkOw0KPj4gICsgICAg
-Y3B1LT5rdm1fc3RhdGUgPSBzOw0KPj4gICsgICAgY3B1LT52Y3B1X2RpcnR5ID0gdHJ1ZTsNCj4+
-ICArICAgIGNwdS0+ZGlydHlfcGFnZXMgPSAwOw0KPj4gICsgICAgY3B1LT50aHJvdHRsZV91c19w
-ZXJfZnVsbCA9IDA7DQo+PiAgKw0KPj4gICsgICAgcmV0dXJuIDA7DQo+PiAgK30NCj4+ICArDQo+
-PiAgIHN0YXRpYyBpbnQgZG9fa3ZtX2Rlc3Ryb3lfdmNwdShDUFVTdGF0ZSAqY3B1KQ0KPj4gICB7
-DQo+PiAgICAgICBLVk1TdGF0ZSAqcyA9IGt2bV9zdGF0ZTsNCj4+ICAgICAgIGxvbmcgbW1hcF9z
-aXplOw0KPj4gIC0gICAgc3RydWN0IEtWTVBhcmtlZFZjcHUgKnZjcHUgPSBOVUxMOw0KPj4gICAg
-ICAgaW50IHJldCA9IDA7DQo+PiAgIA0KPj4gIC0gICAgdHJhY2Vfa3ZtX2Rlc3Ryb3lfdmNwdSgp
-Ow0KPj4gICsgICAgdHJhY2Vfa3ZtX2Rlc3Ryb3lfdmNwdShjcHUtPmNwdV9pbmRleCwga3ZtX2Fy
-Y2hfdmNwdV9pZChjcHUpKTsNCj4+ICAgDQo+PiAgICAgICByZXQgPSBrdm1fYXJjaF9kZXN0cm95
-X3ZjcHUoY3B1KTsNCj4+ICAgICAgIGlmIChyZXQgPCAwKSB7DQo+PiAgQEAgLTM0NywxMCArMzg3
-LDcgQEAgc3RhdGljIGludCBkb19rdm1fZGVzdHJveV92Y3B1KENQVVN0YXRlICpjcHUpDQo+PiAg
-PiAgICB9DQo+PiAgICAgICB9DQo+PiAgIA0KPj4gIC0gICAgdmNwdSA9IGdfbWFsbG9jMChzaXpl
-b2YoKnZjcHUpKTsNCj4+ICAtICAgIHZjcHUtPnZjcHVfaWQgPSBrdm1fYXJjaF92Y3B1X2lkKGNw
-dSk7DQo+PiAgLSAgICB2Y3B1LT5rdm1fZmQgPSBjcHUtPmt2bV9mZDsNCj4+ICAtICAgIFFMSVNU
-X0lOU0VSVF9IRUFEKCZrdm1fc3RhdGUtPmt2bV9wYXJrZWRfdmNwdXMsIHZjcHUsIG5vZGUpOw0K
-Pj4gICsgICAga3ZtX3BhcmtfdmNwdShjcHUpOw0KPj4gICBlcnI6DQo+PiAgICAgICByZXR1cm4g
-cmV0Ow0KPj4gICB9DQo+PiAgQEAgLTM3MSw2ICs0MDgsOCBAQCBzdGF0aWMgaW50IGt2bV9nZXRf
-dmNwdShLVk1TdGF0ZSAqcywgdW5zaWduZWQgbG9uZyB2Y3B1X2lkKQ0KPj4gID4gICAgaWYgKGNw
-dS0+dmNwdV9pZCA9PSB2Y3B1X2lkKSB7DQo+PiAgPiAgICAgICAgaW50IGt2bV9mZDsNCj4+ICAg
-DQo+PiAgKz4gICAgICAgdHJhY2Vfa3ZtX2dldF92Y3B1KHZjcHVfaWQpOw0KPiAgSXQncyBnb29k
-IGlmIHdlIGFkZCBrdm1fZmQgdG8gdHJhY2UuDQo+ICBJdCB3aWxsIGJlIHVzZWZ1bCB0byBjcm9z
-cyB2ZXJpZnkga3ZtX2dldF92Y3B1J3Mga3ZtX2ZkIHdpdGggcGFya2VkIHZjcHUuDQoNCg0KSSBj
-YW4gYnV0IEknbSB3b25kZXJpbmcgd2h5IHlvdSd2ZSByYWlzZWQgdGhpcz8gUGVyaGFwcywgSSdt
-IG5vdCBhd2FyZSBvZiB0aGUNCmludGVyZmFjZSB5b3UgYXJlIHVzaW5nIHRvIGNvbmZpZ3VyZSB0
-aGUgVk1zIGFuZCBob3cgdHJhY2VzIGFjcm9zcyBkaWZlcmVudA0KVk1zIGdldCByZWZsZWN0ZWQu
-IFBsZWFzZSBoZWxwIGluIG15IHVuZGVyc3RhbmRpbmcuDQoNCg0KPj4gICsNCj4+ICA+ICAgICAg
-ICBRTElTVF9SRU1PVkUoY3B1LCBub2RlKTsNCj4+ICA+ICAgICAgICBrdm1fZmQgPSBjcHUtPmt2
-bV9mZDsNCj4+ICA+ICAgICAgICBnX2ZyZWUoY3B1KTsNCj4+ICBAQCAtMzc4LDcgKzQxNyw3IEBA
-IHN0YXRpYyBpbnQga3ZtX2dldF92Y3B1KEtWTVN0YXRlICpzLCB1bnNpZ25lZCBsb25nIHZjcHVf
-aWQpDQo+PiAgPiAgICB9DQo+PiAgICAgICB9DQo+PiAgIA0KPj4gIC0gICAgcmV0dXJuIGt2bV92
-bV9pb2N0bChzLCBLVk1fQ1JFQVRFX1ZDUFUsICh2b2lkICopdmNwdV9pZCk7DQo+PiAgKyAgICBy
-ZXR1cm4gLUVOT0VOVDsNCj4+ICAgfQ0KPj4gICANCj4+ICAgaW50IGt2bV9pbml0X3ZjcHUoQ1BV
-U3RhdGUgKmNwdSwgRXJyb3IgKiplcnJwKQ0KPj4gIEBAIC0zODksMTkgKzQyOCwxNCBAQCBpbnQg
-a3ZtX2luaXRfdmNwdShDUFVTdGF0ZSAqY3B1LCBFcnJvciAqKmVycnApDQo+PiAgIA0KPj4gICAg
-ICAgdHJhY2Vfa3ZtX2luaXRfdmNwdShjcHUtPmNwdV9pbmRleCwga3ZtX2FyY2hfdmNwdV9pZChj
-cHUpKTsNCj4+ICAgDQo+PiAgLSAgICByZXQgPSBrdm1fZ2V0X3ZjcHUocywga3ZtX2FyY2hfdmNw
-dV9pZChjcHUpKTsNCj4+ICArICAgIHJldCA9IGt2bV9jcmVhdGVfdmNwdShjcHUpOw0KPj4gICAg
-ICAgaWYgKHJldCA8IDApIHsNCj4+ICAtICAgZXJyb3Jfc2V0Z19lcnJubyhlcnJwLCAtcmV0LCAi
-a3ZtX2luaXRfdmNwdToga3ZtX2dldF92Y3B1IGZhaWxlZCAoJWx1KSIsDQo+PiAgKyAgIGVycm9y
-X3NldGdfZXJybm8oZXJycCwgLXJldCwNCj4+ICArICAgICAgICAgICJrdm1faW5pdF92Y3B1OiBr
-dm1fY3JlYXRlX3ZjcHUgZmFpbGVkICglbHUpIiwNCj4gICAgICAgICAgICAga3ZtX2FyY2hfdmNw
-dV9pZChjcHUpKTsNCj4+ICAgICAgZ290byBlcnI7DQo+PiAgICAgICB9DQo+PiAgIA0KPj4gIC0g
-ICAgY3B1LT5rdm1fZmQgPSByZXQ7DQo+PiAgLSAgICBjcHUtPmt2bV9zdGF0ZSA9IHM7DQo+PiAg
-LSAgICBjcHUtPnZjcHVfZGlydHkgPSB0cnVlOw0KPj4gIC0gICAgY3B1LT5kaXJ0eV9wYWdlcyA9
-IDA7DQo+PiAgLSAgICBjcHUtPnRocm90dGxlX3VzX3Blcl9mdWxsID0gMDsNCj4+ICAtDQo+PiAg
-ICAgICBtbWFwX3NpemUgPSBrdm1faW9jdGwocywgS1ZNX0dFVF9WQ1BVX01NQVBfU0laRSwgMCk7
-DQo+PiAgICAgICBpZiAobW1hcF9zaXplIDwgMCkgew0KPj4gICAgICByZXQgPSBtbWFwX3NpemU7
-DQo+PiAgZGlmZiAtLWdpdCBhL2FjY2VsL2t2bS90cmFjZS1ldmVudHMgYi9hY2NlbC9rdm0vdHJh
-Y2UtZXZlbnRzDQo+PiAgaW5kZXggYTI1OTAyNTk3Yi4uNTU1OGNmZjBkYyAxMDA2NDQNCj4+ICAt
-LS0gYS9hY2NlbC9rdm0vdHJhY2UtZXZlbnRzDQo+PiAgKysrIGIvYWNjZWwva3ZtL3RyYWNlLWV2
-ZW50cw0KPj4gIEBAIC05LDYgKzksMTAgQEAga3ZtX2RldmljZV9pb2N0bChpbnQgZmQsIGludCB0
-eXBlLCB2b2lkICphcmcpICJkZXYgZmQgJWQsIHR5cGUgMHgleCwgYXJnICVwIg0KPj4gICBrdm1f
-ZmFpbGVkX3JlZ19nZXQodWludDY0X3QgaWQsIGNvbnN0IGNoYXIgKm1zZykgIldhcm5pbmc6IFVu
-YWJsZSB0byByZXRyaWV2ZSBPTkVSRUcgJSIgUFJJdTY0ICIgZnJvbSBLVk06ICVzIg0KPj4gICBr
-dm1fZmFpbGVkX3JlZ19zZXQodWludDY0X3QgaWQsIGNvbnN0IGNoYXIgKm1zZykgIldhcm5pbmc6
-IFVuYWJsZSB0byBzZXQgT05FUkVHICUiIFBSSXU2NCAiIHRvIEtWTTogJXMiDQo+PiAgIGt2bV9p
-bml0X3ZjcHUoaW50IGNwdV9pbmRleCwgdW5zaWduZWQgbG9uZyBhcmNoX2NwdV9pZCkgImluZGV4
-OiAlZCBpZDogJWx1Ig0KPj4gICtrdm1fY3JlYXRlX3ZjcHUoaW50IGNwdV9pbmRleCwgdW5zaWdu
-ZWQgbG9uZyBhcmNoX2NwdV9pZCkgImluZGV4OiAlZCBpZDogJWx1Ig0KPj4gICtrdm1fZ2V0X3Zj
-cHUodW5zaWduZWQgbG9uZyBhcmNoX2NwdV9pZCkgImlkOiAlbHUiDQo+PiAgK2t2bV9kZXN0cm95
-X3ZjcHUoaW50IGNwdV9pbmRleCwgdW5zaWduZWQgbG9uZyBhcmNoX2NwdV9pZCkgImluZGV4OiAl
-ZCBpZDogJWx1Ig0KPj4gICtrdm1fcGFya192Y3B1KGludCBjcHVfaW5kZXgsIHVuc2lnbmVkIGxv
-bmcgYXJjaF9jcHVfaWQpICJpbmRleDogJWQgaWQ6ICVsdSINCj4+ICAga3ZtX2lycWNoaXBfY29t
-bWl0X3JvdXRlcyh2b2lkKSAiIg0KPj4gICBrdm1faXJxY2hpcF9hZGRfbXNpX3JvdXRlKGNoYXIg
-Km5hbWUsIGludCB2ZWN0b3IsIGludCB2aXJxKSAiZGV2ICVzIHZlY3RvciAlZCB2aXJxICVkIg0K
-Pj4gICBrdm1faXJxY2hpcF91cGRhdGVfbXNpX3JvdXRlKGludCB2aXJxKSAiVXBkYXRpbmcgTVNJ
-IHJvdXRlIHZpcnE9JWQiDQo+PiAgQEAgLTI1LDcgKzI5LDYgQEAga3ZtX2RpcnR5X3JpbmdfcmVh
-cGVyKGNvbnN0IGNoYXIgKnMpICIlcyINCj4+ICAga3ZtX2RpcnR5X3JpbmdfcmVhcCh1aW50NjRf
-dCBjb3VudCwgaW50NjRfdCB0KSAicmVhcGVkICUiUFJJdTY0IiBwYWdlcyAodG9vayAlIlBSSWk2
-NCIgdXMpIg0KPj4gICBrdm1fZGlydHlfcmluZ19yZWFwZXJfa2ljayhjb25zdCBjaGFyICpyZWFz
-b24pICIlcyINCj4+ICAga3ZtX2RpcnR5X3JpbmdfZmx1c2goaW50IGZpbmlzaGVkKSAiJWQiDQo+
-PiAgLWt2bV9kZXN0cm95X3ZjcHUodm9pZCkgIiINCj4+ICAga3ZtX2ZhaWxlZF9nZXRfdmNwdV9t
-bWFwX3NpemUodm9pZCkgIiINCj4+ICAga3ZtX2NwdV9leGVjKHZvaWQpICIiDQo+PiAgIGt2bV9p
-bnRlcnJ1cHRfZXhpdF9yZXF1ZXN0KHZvaWQpICIiDQo+PiAgZGlmZiAtLWdpdCBhL2luY2x1ZGUv
-c3lzZW11L2t2bS5oIGIvaW5jbHVkZS9zeXNlbXUva3ZtLmgNCj4+ICBpbmRleCBmYWQ5YTdlOGZm
-Li4yZWQ5MjhhYTcxIDEwMDY0NA0KPj4gIC0tLSBhL2luY2x1ZGUvc3lzZW11L2t2bS5oDQo+PiAg
-KysrIGIvaW5jbHVkZS9zeXNlbXUva3ZtLmgNCj4+ICBAQCAtNDM1LDYgKzQzNSwyMiBAQCB2b2lk
-IGt2bV9zZXRfc2lnbWFza19sZW4oS1ZNU3RhdGUgKnMsIHVuc2lnbmVkIGludCBzaWdtYXNrX2xl
-bik7DQo+PiAgIGludCBrdm1fcGh5c2ljYWxfbWVtb3J5X2FkZHJfZnJvbV9ob3N0KEtWTVN0YXRl
-ICpzLCB2b2lkICpyYW1fYWRkciwNCj4+ICA+ICA+ICA+ICA+ICA+ICAgICAgIGh3YWRkciAqcGh5
-c19hZGRyKTsNCj4+ICAgDQo+PiAgKy8qKg0KPj4gICsgKiBrdm1fY3JlYXRlX3ZjcHUgLSBHZXRz
-IGEgcGFya2VkIEtWTSB2Q1BVIG9yIGNyZWF0ZXMgYSBLVk0gdkNQVQ0KPj4gICsgKiBAY3B1OiBR
-T00gQ1BVU3RhdGUgb2JqZWN0IGZvciB3aGljaCBLVk0gdkNQVSBoYXMgdG8gYmUgZmV0Y2hlZC9j
-cmVhdGVkLg0KPj4gICsgKg0KPj4gICsgKiBAcmV0dXJuczogMCB3aGVuIHN1Y2Nlc3MsIGVycm5v
-ICg8MCkgd2hlbiBmYWlsZWQuDQo+PiAgKyAqLw0KPj4gICtpbnQga3ZtX2NyZWF0ZV92Y3B1KENQ
-VVN0YXRlICpjcHUpOw0KPj4gICsNCj4+ICArLyoqDQo+PiAgKyAqIGt2bV9wYXJrX3ZjcHUgLSBQ
-YXJrIFFFTVUgS1ZNIHZDUFUgY29udGV4dA0KPj4gICsgKiBAY3B1OiBRT00gQ1BVU3RhdGUgb2Jq
-ZWN0IGZvciB3aGljaCBRRU1VIEtWTSB2Q1BVIGNvbnRleHQgaGFzIHRvIGJlIHBhcmtlZC4NCj4+
-ICArICoNCj4+ICArICogQHJldHVybnM6IG5vbmUNCj4+ICArICovDQo+PiAgK3ZvaWQga3ZtX3Bh
-cmtfdmNwdShDUFVTdGF0ZSAqY3B1KTsNCj4+ICArDQo+PiAgICNlbmRpZiAvKiBORUVEX0NQVV9I
-ICovDQo+PiAgIA0KPj4gICB2b2lkIGt2bV9jcHVfc3luY2hyb25pemVfc3RhdGUoQ1BVU3RhdGUg
-KmNwdSk7DQo+ICBPdGhlcndpc2UsIExvb2tzIGdvb2QgdG8gbWUuICBGZWVsIGZyZWUgdG8gYWRk
-DQo+ICBSZXZpZXdlZC1ieTogIlZpc2hudSBQYWpqdXJpIiBtYWlsdG86dmlzaG51QG9zLmFtcGVy
-ZWNvbXB1dGluZy5jb20NCj4gIFRoYW5rcywNCg0KVGhhbmtzLg0KU2FsaWwNCg0KDQoNCj4gIC1W
-aXNobnUNCg0K
+On Fri, 19 Apr 2024 at 19:31, Dorjoy Chowdhury <dorjoychy111@gmail.com> wrote:
+>
+> Some ARM CPUs advertise themselves as SMT by having the MT[24] bit set
+> to 1 in the MPIDR register. These CPUs have the thread id in Aff0[7:0]
+> bits, CPU id in Aff1[15:8] bits and cluster id in Aff2[23:16] bits in
+> MPIDR.
+>
+> On the other hand, ARM CPUs without SMT have the MT[24] bit set to 0,
+> CPU id in Aff0[7:0] bits and cluster id in Aff1[15:8] bits in MPIDR.
+>
+> The mpidr_read_val() function always reported non-SMT i.e., MT=0 style
+> MPIDR value which means it was wrong for the following CPUs with SMT
+> supported by QEMU:
+>     - cortex-a55
+>     - cortex-a76
+>     - cortex-a710
+>     - neoverse-v1
+>     - neoverse-n1
+>     - neoverse-n2
+
+This has definitely turned out to be rather more complicated
+than I thought it would be when I wrote up the original issue
+in gitlab, so sorry about that.
+
+I still need to think through how we should deal with the
+interaction between what the CPU type implies about the MPIDR
+format and the topology information provided by the user.
+I probably won't get to that next week, because I'm on holiday
+for most of it, but I will see if I can at least make a start.
+
+In the meantime, there is one tiny bit of this that we can
+do now:
+
+> diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+> index cc68b5d8f1..9d5dcf1a3f 100644
+> --- a/hw/arm/npcm7xx.c
+> +++ b/hw/arm/npcm7xx.c
+> @@ -487,7 +487,7 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
+>      /* CPUs */
+>      for (i = 0; i < nc->num_cpus; i++) {
+>          object_property_set_int(OBJECT(&s->cpu[i]), "mp-affinity",
+> -                                arm_build_mp_affinity(i, NPCM7XX_MAX_NUM_CPUS),
+> +                                arm_build_mp_affinity(ARM_CPU(&s->cpu[i]), i, NPCM7XX_MAX_NUM_CPUS),
+>                                  &error_abort);
+>          object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
+>                                  NPCM7XX_GIC_CPU_IF_ADDR, &error_abort);
+
+In this file, the value of the mp-affinity property that the
+board is setting is always the same as the default value it
+would have anyway. So we can delete the call to
+object_property_set_int() entirely, which gives us one fewer
+place we need to deal with when we do eventually figure out
+how the MPIDR values should work.
+
+If you like you can submit a separate patch which deletes
+this one call.
+
+thanks
+-- PMM
 
