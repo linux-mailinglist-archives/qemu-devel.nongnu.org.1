@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B42A8BAD42
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 15:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FC38BAD6D
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 15:17:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2sgQ-0007cG-7I; Fri, 03 May 2024 09:10:38 -0400
+	id 1s2sld-0002YA-Ny; Fri, 03 May 2024 09:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2sgO-0007c2-4i
- for qemu-devel@nongnu.org; Fri, 03 May 2024 09:10:36 -0400
+ id 1s2slb-0002Xh-Rt
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 09:15:59 -0400
 Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s2sgM-0001PA-Jm
- for qemu-devel@nongnu.org; Fri, 03 May 2024 09:10:35 -0400
+ id 1s2slU-00026q-Nd
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 09:15:59 -0400
 Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f44ed6e82fso311037b3a.3
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 06:10:34 -0700 (PDT)
+ d2e1a72fcca58-6f450f43971so224069b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 06:15:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714741833; x=1715346633; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714742151; x=1715346951; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=I/qd8oZ2HnJZTizzNiciGt3jRN4Q26fbAbnpLDb7B0M=;
- b=xwYPtMUIStPFIJESDdpdkUi+SXp2O7wVWQyMLW0dnZt5Rjiehdkt/noNLdOFp2WkYi
- 2DCeXsm4LLjwlEYGw1CG3mTRu7RaTMUDvi1wJkl3AwLaPms1R9e00UpDYZ/Ls+eed1eA
- JTYjs5SAZWbcc/MzCncQLFD3LuzBa8c4OarqNlZfZTM9ma8Xcf5WtD2UkH092zQ94CPZ
- 5zYFIQVgOcQfNjrX7DIy5sWWnSBdUVfg0jbKLcwdo00qr+pRXjK6AbQInueRJClGFaCe
- +QPcuPocVjJAKbvei5tnTTmtHJgvQBQ1L0f3z3hlOc40HYg4qchCuqsTN/d3Q1v2IOFI
- CPGw==
+ bh=3r2UsCbl1pjB5ghw8OOKO21wDRMjUTv0dCjpAQXQIoQ=;
+ b=LS+yb93xBlyQfkHlS0ZzwGolp7JBJRHx5oADKhBGGUxhBhO8DukbTccPEYp1+1dmDt
+ RPHnSx8Goo3fOz4eEgWci/B05JXSdIG9rWMyel06ugIJFf9/ozHOV9x2AXvjvHlRD6yG
+ /kBJgqGKRLQJen/s5xs2KCYC5NIeb5yQywV6u8TeRG+GH2WI/IwoWWI8QJ3l9j7HapFr
+ yia1AvEJ7ZKhP2BZAHJuLz2KxdRb7fFv/JFE8uT19O97zxldlzDgMdDyJGDi/9OyMHKN
+ D4xigxCmDktkdK1kkMFQG1ANCLIhSMG6DraxQqo5rXqtdHVGX4JmJHh3+pDRMFLNvWIo
+ wsnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714741833; x=1715346633;
+ d=1e100.net; s=20230601; t=1714742151; x=1715346951;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I/qd8oZ2HnJZTizzNiciGt3jRN4Q26fbAbnpLDb7B0M=;
- b=FEcSYgXDykNOQY7zEBBJDLX4//IaMIO37igW4m+DO4aehaBobUmvw7D4TT7fIbmNWn
- 78R99ZYo5IB9S5eqe4HMA+EtIA71buU7jSz5gC9PkbLOHnLpUPI9XxK94jAH+aIuKaQs
- 4iwYMBSuP5ohtxQV2CYeDXTQXFFgIxNSfusF5JfR3nSPEq0NRixc/sPCTviokUhUJjqV
- k2mG3CAF555O+zMz8nEMwUFhIs7InXbQFygvxyuBmLJXmLPzOct/74rQj/b9P12UdSUh
- FmiQMaTGpAAzQ7BIhnOkzGbRehuB2+6S09tihS2+qCO9INPAatkoZzj/25x1KiY5Ae1M
- 5HCQ==
-X-Gm-Message-State: AOJu0YwuF6dvmGiwTMjkipzr5c0ev9am7tTBr8GU4aLNiW8A8L56xAF5
- 7aJVSDuVJZyfYtLjWbrRzVsNfSMKp43lg1cQB1cZyfUchH6Ghsy4ZVYHebyj+nY=
-X-Google-Smtp-Source: AGHT+IF0/hUfzjonRG2t6X+ybcznJAPkDk/TYS2tpKkdXh5NSRNSl7hcVmpy3EjaagoH9pCJQ9bYDg==
-X-Received: by 2002:a05:6a00:2411:b0:6f4:41f2:b869 with SMTP id
- z17-20020a056a00241100b006f441f2b869mr2491381pfh.21.1714741832966; 
- Fri, 03 May 2024 06:10:32 -0700 (PDT)
+ bh=3r2UsCbl1pjB5ghw8OOKO21wDRMjUTv0dCjpAQXQIoQ=;
+ b=XHxx70lZXELIJsBM/zmujcv7EdRvOLL3ky/mJ2JR5vDVvePUPOWoYfriACHboNx6Sg
+ tjpIgWFSsNFTI+4xkYJk7Qe6YdlQOhFHWQfnz7zMY3q1TSfkRedDUS9e06g3kh4K1wP0
+ f3MS4zFLQ31k9Oi4cCp6MUu9Han1fS64j0GOFz//HnWtBPfnolKDsNbFO9vI6qTQNiGd
+ hkvcMKpGtFtoanjV5Vb4cpWQVqm2ZIor4VHsvbyBZ7eRQ6bfdnrBjHEgaghUZ6C7O5Lq
+ QEVOOuofsFM2IyPAoN35DIgBjZJ6APi06J2ohKavIgAY0c12N7xhIxRW5o2CYuDak6ua
+ ZRmg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUCgLCYV4aioGtEbiQ60hHsHefazWtuoj6a6FOP5MR9pjblvIwhFnp+CEyjqLW+4B9ccpTp+s2EI6Z8ZkcNareYTSos7OY=
+X-Gm-Message-State: AOJu0Yxk4OxVNQh7WS7h1GTFvrTp/g92n7QtKsqHLCvUsDro9Cncnaxd
+ bLvz1lna70R2lxfzKXdSOdEMXdDVS3IQZePdj4Jj6T0ixuo3k+vSWGJzBy2W4YI=
+X-Google-Smtp-Source: AGHT+IFYxkjxZsYPclV1iVxdlLvJYyhr4V7GzNM3AnBeFnkzc8hpBFmI/FRje7rMSTg1w1ChrscUCA==
+X-Received: by 2002:a05:6a20:748f:b0:1a7:919f:2b60 with SMTP id
+ p15-20020a056a20748f00b001a7919f2b60mr3138161pzd.37.1714742151224; 
+ Fri, 03 May 2024 06:15:51 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e9-20020aa78249000000b006f43480dac7sm3003731pfn.59.2024.05.03.06.10.32
+ e5-20020aa78245000000b006f44e845915sm944530pfn.74.2024.05.03.06.15.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 03 May 2024 06:10:32 -0700 (PDT)
-Message-ID: <4c683c02-64fa-47b8-882c-bd19c90897de@linaro.org>
-Date: Fri, 3 May 2024 06:10:30 -0700
+ Fri, 03 May 2024 06:15:50 -0700 (PDT)
+Message-ID: <bc36cf5c-45d0-45a0-adb0-801b6ec61c7a@linaro.org>
+Date: Fri, 3 May 2024 06:15:48 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 13/13] hmp/migration: Fix documents for "migrate" command
-To: Fabiano Rosas <farosas@suse.de>, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-References: <20240502202316.29924-1-farosas@suse.de>
- <20240502202316.29924-14-farosas@suse.de> <87bk5n1ius.fsf@pond.sub.org>
- <87cyq3njnr.fsf@suse.de>
+Subject: Re: [PATCH] tests/qtest: skip m48t59-test if the machine is not absent
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+References: <20240503085104.187538-1-pbonzini@redhat.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <87cyq3njnr.fsf@suse.de>
+In-Reply-To: <20240503085104.187538-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
@@ -96,57 +95,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/3/24 05:51, Fabiano Rosas wrote:
-> Markus Armbruster <armbru@redhat.com> writes:
+On 5/3/24 01:51, Paolo Bonzini wrote:
+> Together with the series at https://patchew.org/QEMU/20240423131612.28362-1-pbonzini@redhat.com/,
+> this allows adding sparc-softmmu to the target list of the
+> build-without-defaults CI job.
 > 
->> Fabiano Rosas <farosas@suse.de> writes:
->>
->>> From: Peter Xu <peterx@redhat.com>
->>>
->>> Peter missed the Sphinx HMP document for the "resume/-r" flag in commit
->>> 7a4da28b26 ("qmp: hmp: add migrate "resume" option").  Add it.  Avoid
->>> adding a Fixes to make life easier for the stable maintainer.
->>>
->>> When at it, slightly cleanup the lines, move "detach/-d" to a separate
->>> section rather than appending it at the end of the command description.
->>>
->>> Cc: Dr. David Alan Gilbert <dave@treblig.org>
->>> Cc: Fabiano Rosas <farosas@suse.de>
->>> Cc: Markus Armbruster <armbru@redhat.com>
->>> Signed-off-by: Peter Xu <peterx@redhat.com>
->>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>>   hmp-commands.hx | 9 +++++++--
->>>   1 file changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/hmp-commands.hx b/hmp-commands.hx
->>> index ebca2cdced..484a8a1c3a 100644
->>> --- a/hmp-commands.hx
->>> +++ b/hmp-commands.hx
->>> @@ -918,8 +918,13 @@ ERST
->>>   
->>>   
->>>   SRST
->>> -``migrate [-d]`` *uri*
->>> -  Migrate to *uri* (using -d to not wait for completion).
->>> +``migrate [-d] [-r]`` *uri*
->>> +  Migrate the current VM to *uri*.
->>> +
->>> +  ``-d``
->>> +    Run this command asynchronously, so that the command doesn't wait for completion.
->>> +  ``-r``
->>> +    Resume a paused postcopy migration.
->>>   ERST
->>>   
->>>       {
->>
->> I have questions on this one.
-> 
-> Yep, I should have waited longer before queuing this one, my bad.
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   tests/qtest/m48t59-test.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
 
-Ok, I will not process this pull request.
+s/absent/present/ in subject.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
+
+> 
+> diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
+> index b9cd209165a..605797ab785 100644
+> --- a/tests/qtest/m48t59-test.c
+> +++ b/tests/qtest/m48t59-test.c
+> @@ -262,11 +262,12 @@ int main(int argc, char **argv)
+>       base_setup();
+>   
+>       g_test_init(&argc, &argv, NULL);
+> -
+> -    if (g_test_slow()) {
+> -        /* Do not run this in timing-sensitive environments */
+> -        qtest_add_func("/rtc/bcd-check-time", bcd_check_time);
+> +    if (qtest_has_machine(base_machine)) {
+> +        if (g_test_slow()) {
+> +            /* Do not run this in timing-sensitive environments */
+> +            qtest_add_func("/rtc/bcd-check-time", bcd_check_time);
+> +        }
+> +        qtest_add_func("/rtc/fuzz-registers", fuzz_registers);
+>       }
+> -    qtest_add_func("/rtc/fuzz-registers", fuzz_registers);
+>       return g_test_run();
+>   }
+
 
