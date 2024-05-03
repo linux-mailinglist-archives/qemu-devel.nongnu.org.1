@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7A38BA99F
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 11:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1C78BA9A2
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 11:18:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2p2X-0001gK-GR; Fri, 03 May 2024 05:17:13 -0400
+	id 1s2p2b-0001h6-Sv; Fri, 03 May 2024 05:17:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2p2T-0001fo-QK
- for qemu-devel@nongnu.org; Fri, 03 May 2024 05:17:10 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2p2Z-0001gr-FI
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 05:17:15 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2p2S-0003W2-1s
- for qemu-devel@nongnu.org; Fri, 03 May 2024 05:17:09 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41c7ac73fddso47135005e9.3
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 02:17:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2p2X-0003ZV-Ir
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 05:17:15 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-41bab13ca4eso47913325e9.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 02:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714727826; x=1715332626; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714727831; x=1715332631; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PjIC0hzeanG/udtndv7wQlWjrcv140/3TttCqxYBKio=;
- b=vyAsJSFdzRAB59KiGFBTE1CgT6NAo+7hWEYTEt+7+xJcGa/egpYRQs6ZUiK78nmC9A
- nHMKPgaap9PS6wNbTMtfePZ8+C/NgrSab8MseYZKVQl3TLgiW/rfLBVvLZ76fvi1rd91
- B0wBHQRY5TV4mFfrRLXjhfO2qRvJgPfGQ5gHnmZTsy3dtjWmWDj7/EStihuBELz+26HQ
- Imei76ghl/CYBEgUPNUFjA0S1BbP7wghyc0pLcG+6A1Aw3Cx43hCGjSZDfZQabL5pNwc
- ueQ3xlcu6O2R6/5/UIqx6Btcdfnnr+dYtH9WHhYxMiffhh2AZD0bfDZTy6I1AG9vuoVi
- ydLg==
+ bh=1/nrhpPctNIFKbTVUUpB8iSj1laj4YlC2viiNoCursk=;
+ b=CWddUIEsDjkjJn/C7tFITvsJvhbVTwmpRy1MdbpZMX19W5vghItn59iOjZjF0O3s7Q
+ ihIfCX8PSPvTkQkNCNEARSWIXKEsM4ik8A01UoGSslC85CY6KYiTtZhpz+Nrbo+bfTF1
+ OMpIKTVl0lBsHk6uVyaOCmbp49DtSJ0lMfAe34NE/3nQqM3qO+wG0QjW6wK2aU311ocM
+ 3pBVHQW+1V4ZlYbxxPGMJLrbb8MabJtupV4m3msCDMiLnWr92d+/w2nclKNpvp14f8xV
+ eaKW9vc3vakyVZDH2S2siwvQfNbSvbKUCZT4lspF4MOB1XcFFE6uRCerdGsBHhv2ceDI
+ EQYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714727826; x=1715332626;
+ d=1e100.net; s=20230601; t=1714727831; x=1715332631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PjIC0hzeanG/udtndv7wQlWjrcv140/3TttCqxYBKio=;
- b=b20RYfTXBqx1rNcFE1rTW/ErHpxHqnBhlRpCq+rp1Ew1y7PM+01XiB77cwlVhOPDtS
- akazTXB+pZnH+C58fe/ynYJGkvF2p/v3JZcTqF/541omiJlw72Evg7FE6Y/gRiUepbID
- km4q9CkhX+baztTYkNx7zHz9EnwkRD3S8c2vWpOrLZIRNk7ElomO1hJQVW2wZAfGpC2M
- VgCi029z8xbfm9O8weA4qBzF0xeH/OOlitKpkpWQpoMypsdbyq0mlFd7g90wGeouv9Mk
- Qka0kbl51FuhurTyfvgFZC/7WToVUXdcBRkyT3CZGIjDv2ApAksDMzP2Pj5QlxSBReB/
- BZwQ==
-X-Gm-Message-State: AOJu0Yy9J2VIRjZvPs0yUYvZhr4M9KhqwOrXDax4HMZnPeq1Fi4PmHh1
- R/VoHq6PqylnmXUrS04EhFaCj5+nvZbX9xiQ8Ut+KfHOMCMFE3oPoYEgPqmqX01XgJ+MA4wV044
- /
-X-Google-Smtp-Source: AGHT+IG/FFyoXSUNl/gadz+vDS7gFr30tHUVXGHIG9FXGx7e4jbsodR7p3jqV8YChuy9T1TddUipaA==
-X-Received: by 2002:a05:600c:1d0a:b0:41b:fa34:9e48 with SMTP id
- l10-20020a05600c1d0a00b0041bfa349e48mr2099286wms.30.1714727825926; 
- Fri, 03 May 2024 02:17:05 -0700 (PDT)
+ bh=1/nrhpPctNIFKbTVUUpB8iSj1laj4YlC2viiNoCursk=;
+ b=tP8mBrfFxzKcRy3rHtvn3fAo6Svn4bbL5NpsiLCydSkzsnXiQBkYmKi6sO8cy5E1aW
+ vp/GbxeYFsHD7H0akF256/GYcDOy4i/jXm3OkKvf+3pYC//Pxh4W8smxOhekFzMwtRsQ
+ C6ywcrlh8sEbQHzNzLs1g/GQ5eY7jrlLhRcPkY/WZDCwkNy2qi5dNI+fuu61OnWocyQa
+ oajlYpFRyAFBM6H0XYJzxweJ5S4cC/PIDr6UPDTktOHBvCL+Jua2Td1qiSyKVr8TSm8R
+ Sc+Y+ii6wBg0ntUPfDFL6NnaE0j1avLjknM/kfp5LEg9ag9/hb4CJbnFWgPINKRdq65Q
+ Z4Iw==
+X-Gm-Message-State: AOJu0Yz2Iy2IrndwZYo5ow63Nxe5ghlRmZCW6Gj5TEIaH5dn3OLfJ9oX
+ DaJjDaZ2jOlKYbTaA5qqYjkZKbeo364FoiTqP2ChpdKfnEh/U+kQpVBJT8VNTnumif1jia1AbuJ
+ o
+X-Google-Smtp-Source: AGHT+IFhMFavlVYSQdlv0sePo5k2M3EhmwgnCeQeIZNBxg4ry9OwgJVPIy/Qax4P7lKC8rhSmdQyRw==
+X-Received: by 2002:a05:600c:4505:b0:41a:a08f:2696 with SMTP id
+ t5-20020a05600c450500b0041aa08f2696mr1765123wmo.12.1714727831576; 
+ Fri, 03 May 2024 02:17:11 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- p9-20020a05600c1d8900b0041563096e15sm8721875wms.5.2024.05.03.02.17.04
+ t1-20020a05600001c100b0034e0a3a9e14sm3273731wrx.75.2024.05.03.02.17.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 02:17:05 -0700 (PDT)
+ Fri, 03 May 2024 02:17:11 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -62,17 +62,18 @@ Cc: Warner Losh <imp@bsdimp.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Kyle Evans <kevans@freebsd.org>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/5] accel/tcg: Simplify meson.build using subdir_done()
-Date: Fri,  3 May 2024 11:16:53 +0200
-Message-ID: <20240503091657.26468-2-philmd@linaro.org>
+Subject: [PATCH 2/5] accel/tcg: Move system emulation files under sysemu/
+ subdirectory
+Date: Fri,  3 May 2024 11:16:54 +0200
+Message-ID: <20240503091657.26468-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503091657.26468-1-philmd@linaro.org>
 References: <20240503091657.26468-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,65 +96,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If CONFIG_TCG is not defined, skip this directory calling
-subdir_done(). Then since we know CONFIG_TCG is defined,
-we don't need to check for it.
+Some files are specific to system emulation. Move them under
+their own sysemu/ directory. This might help to notice what
+is affected (user, system or both) when doing global refactors.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/meson.build | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ accel/tcg/{ => sysemu}/tcg-accel-ops-icount.h |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops-mttcg.h  |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops-rr.h     |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops.h        |  0
+ accel/tcg/{ => sysemu}/icount-common.c        |  0
+ accel/tcg/{ => sysemu}/monitor.c              |  4 ++--
+ accel/tcg/{ => sysemu}/tcg-accel-ops-icount.c |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops-mttcg.c  |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops-rr.c     |  0
+ accel/tcg/{ => sysemu}/tcg-accel-ops.c        |  0
+ accel/tcg/meson.build                         | 14 ++------------
+ accel/tcg/sysemu/meson.build                  | 11 +++++++++++
+ 12 files changed, 15 insertions(+), 14 deletions(-)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-icount.h (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-mttcg.h (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-rr.h (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops.h (100%)
+ rename accel/tcg/{ => sysemu}/icount-common.c (100%)
+ rename accel/tcg/{ => sysemu}/monitor.c (99%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-icount.c (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-mttcg.c (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops-rr.c (100%)
+ rename accel/tcg/{ => sysemu}/tcg-accel-ops.c (100%)
+ create mode 100644 accel/tcg/sysemu/meson.build
 
+diff --git a/accel/tcg/tcg-accel-ops-icount.h b/accel/tcg/sysemu/tcg-accel-ops-icount.h
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-icount.h
+rename to accel/tcg/sysemu/tcg-accel-ops-icount.h
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.h b/accel/tcg/sysemu/tcg-accel-ops-mttcg.h
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-mttcg.h
+rename to accel/tcg/sysemu/tcg-accel-ops-mttcg.h
+diff --git a/accel/tcg/tcg-accel-ops-rr.h b/accel/tcg/sysemu/tcg-accel-ops-rr.h
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-rr.h
+rename to accel/tcg/sysemu/tcg-accel-ops-rr.h
+diff --git a/accel/tcg/tcg-accel-ops.h b/accel/tcg/sysemu/tcg-accel-ops.h
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops.h
+rename to accel/tcg/sysemu/tcg-accel-ops.h
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/sysemu/icount-common.c
+similarity index 100%
+rename from accel/tcg/icount-common.c
+rename to accel/tcg/sysemu/icount-common.c
+diff --git a/accel/tcg/monitor.c b/accel/tcg/sysemu/monitor.c
+similarity index 99%
+rename from accel/tcg/monitor.c
+rename to accel/tcg/sysemu/monitor.c
+index 093efe9714..620c18d267 100644
+--- a/accel/tcg/monitor.c
++++ b/accel/tcg/sysemu/monitor.c
+@@ -17,8 +17,8 @@
+ #include "sysemu/cpu-timers.h"
+ #include "sysemu/tcg.h"
+ #include "tcg/tcg.h"
+-#include "internal-common.h"
+-#include "tb-context.h"
++#include "../internal-common.h"
++#include "../tb-context.h"
+ 
+ 
+ static void dump_drift_info(GString *buf)
+diff --git a/accel/tcg/tcg-accel-ops-icount.c b/accel/tcg/sysemu/tcg-accel-ops-icount.c
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-icount.c
+rename to accel/tcg/sysemu/tcg-accel-ops-icount.c
+diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/sysemu/tcg-accel-ops-mttcg.c
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-mttcg.c
+rename to accel/tcg/sysemu/tcg-accel-ops-mttcg.c
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/sysemu/tcg-accel-ops-rr.c
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops-rr.c
+rename to accel/tcg/sysemu/tcg-accel-ops-rr.c
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/sysemu/tcg-accel-ops.c
+similarity index 100%
+rename from accel/tcg/tcg-accel-ops.c
+rename to accel/tcg/sysemu/tcg-accel-ops.c
 diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index aef80de967..f40959436e 100644
+index f40959436e..8d263a71cd 100644
 --- a/accel/tcg/meson.build
 +++ b/accel/tcg/meson.build
-@@ -1,8 +1,11 @@
--common_ss.add(when: 'CONFIG_TCG', if_true: files(
-+if not config_all_accel.has_key('CONFIG_TCG')
-+   subdir_done()
-+endif
-+
-+common_ss.add(files(
-   'cpu-exec-common.c',
- ))
--tcg_specific_ss = ss.source_set()
--tcg_specific_ss.add(files(
-+specific_ss.add(files(
-   'tcg-all.c',
-   'cpu-exec.c',
-   'tb-maint.c',
-@@ -11,24 +14,23 @@ tcg_specific_ss.add(files(
-   'translate-all.c',
-   'translator.c',
- ))
--tcg_specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
--tcg_specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
-+specific_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
-+specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
- if get_option('plugins')
--  tcg_specific_ss.add(files('plugin-gen.c'))
-+  specific_ss.add(files('plugin-gen.c'))
+@@ -20,19 +20,9 @@ if get_option('plugins')
+   specific_ss.add(files('plugin-gen.c'))
  endif
--specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_specific_ss)
  
--specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
-+specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files(
+-specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files(
++specific_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files( # SOFTMMU
    'cputlb.c',
    'watchpoint.c',
  ))
  
--system_ss.add(when: ['CONFIG_TCG'], if_true: files(
+-system_ss.add(files(
+-  'icount-common.c',
+-  'monitor.c',
+-))
+-
+-tcg_module_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files(
+-  'tcg-accel-ops.c',
+-  'tcg-accel-ops-mttcg.c',
+-  'tcg-accel-ops-icount.c',
+-  'tcg-accel-ops-rr.c',
+-))
++subdir('sysemu')
+diff --git a/accel/tcg/sysemu/meson.build b/accel/tcg/sysemu/meson.build
+new file mode 100644
+index 0000000000..d0b4939ba9
+--- /dev/null
++++ b/accel/tcg/sysemu/meson.build
+@@ -0,0 +1,11 @@
 +system_ss.add(files(
-   'icount-common.c',
-   'monitor.c',
- ))
- 
--tcg_module_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
++  'icount-common.c',
++  'monitor.c',
++))
++
 +tcg_module_ss.add(when: ['CONFIG_SYSTEM_ONLY'], if_true: files(
-   'tcg-accel-ops.c',
-   'tcg-accel-ops-mttcg.c',
-   'tcg-accel-ops-icount.c',
++  'tcg-accel-ops.c',
++  'tcg-accel-ops-mttcg.c',
++  'tcg-accel-ops-icount.c',
++  'tcg-accel-ops-rr.c',
++))
 -- 
 2.41.0
 
