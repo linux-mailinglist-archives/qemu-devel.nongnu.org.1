@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097B48BA799
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FCD8BA79B
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2nDb-0000mz-1t; Fri, 03 May 2024 03:20:31 -0400
+	id 1s2nDf-0000ny-3b; Fri, 03 May 2024 03:20:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDW-0000mW-JX
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:26 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDb-0000nY-Km
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:32 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDU-0001Ev-Rj
- for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:26 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-41dc9c83e57so9514845e9.0
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:20:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDa-0001Fy-1m
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:31 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-41b9dff6be8so48346885e9.3
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:20:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714720822; x=1715325622; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714720828; x=1715325628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oukcdiVQUJdJhgIgSZBe2+14jjl41PU9P9dpGWfTjTk=;
- b=dcYmfF/EtOphQuIq3jWxJ4YtudV6e9gc1wVOLZUax7vj+JMabRayq4zCf2rGDUFita
- jUzjy/iREpX0tU6pJ1XXlKYLCol3kVXa1+Dlv+wvnbLRlquwDB7Zj163FYEZIm2YTy9S
- tPC4BSxU2Fn9jeJJPuzLdc21j2KTLSPjCLaKdKKzSDFDVFe6oSZcutl5AgL7aJ3mBno2
- m0o9nPUDJFPZeJeqpIZ9BdPoS10NgmPrXzbv65haxukKaLRLW7ZXtQII2IwqA7OTZw7t
- Sx+IE95540L3saj0RxjEUmZ4RjKyAj/wZ83ScvwY+N4KoqGvb/BCoIWBE8mbP3J14EEX
- MlmQ==
+ bh=8EARN2QjxHRUGZxuseUERnN42PxuL4o+f6Wcb9HZQWs=;
+ b=DkBYiH557yNNBU1cotc8JpNpaREkjGKuyovslqu4gVAOZLLVc4sXZSnA46nPUYBGGF
+ 4R5FnnwwhR51DjYORFyXOciN43ktEC5dw2DNcxZYSct9tWTar8QJ6vmaInD4mfdxGbqU
+ dR13LAykaXvpQd6yhC67bd9XZRYGPiO2jXVZwVkKGERbokV/tbTai+JBIV3cnEeiNid3
+ dwE2jmU4fjSXGG0/s+E7aPgDCcUin10hAOz6Q8LBDGYFo5I/9D2S6XRtbb4P88bToJPT
+ Lzdwm5/vXvxD/0+vXlv9NOVoZPEmLHjXsBdCAZb6RTXjyrKCSMiIKSuOx70v82cNuGiN
+ pE2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714720822; x=1715325622;
+ d=1e100.net; s=20230601; t=1714720828; x=1715325628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oukcdiVQUJdJhgIgSZBe2+14jjl41PU9P9dpGWfTjTk=;
- b=noPATPhO+EKAVJbSjBCcqf3hF9Y/YfPmhUrjMBv6lM2ZuTd2XX2bJfNvb0y4cTvzu/
- XZJaH5TlAX73gNNqWRhDVtJVmuiS+iA70FGg8hBwBtes26lcoE7ae8+RjKCSWiSh/sQe
- v9S/spyB5utKxoYOcw5Iga+ZIe31YBuv7DL4Vq2yuv0+n8rjCMJxGnlG32yFANUCP/WU
- CvbZlRhBwIN9hX7RuEQSPy5KZH1Gl/juGbmPtRwV6Nt/b/svgY/0U+f55noL5AlCE0mF
- Zz7kpmHDOGz3mFnkWMKz7cigiJ6XxZA6RDvP01C7kNJUpawB949ogalKUdPF3VXojJUK
- O8dQ==
-X-Gm-Message-State: AOJu0YwuWyvd1FEv2Loek9lUVsoiyqGwiQcs0mAfrrkX0NwIv7kSBf68
- Q9lSkE2Xr+qEyD2TzlWXNxcW0c7UBC+WPhVvU422VlREmgYyYNWyAiLdQOxkQMZhQ0edKeqUzKm
- K
-X-Google-Smtp-Source: AGHT+IF+yYBvz2+rAu6snEmmeAWQ6Kp5GRIEJzmeLgwZY24GezuB4EMpbDefaeDlz25DADJNsrIHGw==
-X-Received: by 2002:a05:600c:4508:b0:417:eb5d:281b with SMTP id
- t8-20020a05600c450800b00417eb5d281bmr4361515wmo.17.1714720822399; 
- Fri, 03 May 2024 00:20:22 -0700 (PDT)
+ bh=8EARN2QjxHRUGZxuseUERnN42PxuL4o+f6Wcb9HZQWs=;
+ b=dNVo81QxGIXD8I03FObKCmWTUlarLNmU1t1t8mZd0/7D8j2YwEsHpUUfq7gxcdy8L2
+ 1NTQ8ZZ3cTZc1BgGcz72PEWy5iU5Rb8N8JSPk25JQss1aJY7+wCEMJJX7IqZ3g6to4JV
+ ISV/MvpzlAEDnY0HQMXb5GbyJFPc4L+pjv6YNp4c0bG2AqnNTqbrL4WkRzqRfMrhPXLZ
+ hn0I3W+88YtEQcO0nbEIE3cENYLYK8zJrY0RuIjjSKFT4LPOVli0Tr743MEewVsptE5O
+ qIN4oasGJWNiJdzFftrrXPosCRg8L+/jJT9Ui9m4nJV3yWOH5R1B3CD3P+ydG6cCFkdk
+ qhUw==
+X-Gm-Message-State: AOJu0YztDfOp74P7dtKLTdzQzgacl8A4RAXjqc66j66/OmZon6m7KA5l
+ qlMCFUiepGYIbtmsnVVWzO6BncvGnIFgdLFeDvPLv/2wkGHxq5f1XJGBjDN3WRNuATk1HFpz8s0
+ X
+X-Google-Smtp-Source: AGHT+IFzLqFgruACRlcbDgcsiCs1HBQ1o2MXbo9y9xLlQcvYxrbyTRVociy5pDtUOjIDzGGeAMGJTw==
+X-Received: by 2002:a05:600c:35c8:b0:41e:1bc1:36de with SMTP id
+ r8-20020a05600c35c800b0041e1bc136demr764642wmq.26.1714720828030; 
+ Fri, 03 May 2024 00:20:28 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- s7-20020a05600c384700b0041c12324eb6sm8377191wmr.22.2024.05.03.00.20.21
+ bd13-20020a05600c1f0d00b0041c012ca327sm4557609wmb.45.2024.05.03.00.20.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 00:20:21 -0700 (PDT)
+ Fri, 03 May 2024 00:20:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/9] target/alpha: Use cpu_env in preference to ALPHA_CPU
-Date: Fri,  3 May 2024 09:20:05 +0200
-Message-ID: <20240503072014.24751-2-philmd@linaro.org>
+Subject: [PATCH v2 2/9] target/alpha: Hoist branch shift to initial decode
+Date: Fri,  3 May 2024 09:20:06 +0200
+Message-ID: <20240503072014.24751-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503072014.24751-1-philmd@linaro.org>
 References: <20240503072014.24751-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,79 +94,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-ALPHA_CPU has a dynamic object type assert, which is
-unnecessary considering that these are all class hooks.
-
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/alpha/cpu.c    | 15 ++++++---------
- target/alpha/helper.c |  8 ++++----
- 2 files changed, 10 insertions(+), 13 deletions(-)
+ target/alpha/translate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 05f9ee41e9..f98d022671 100644
---- a/target/alpha/cpu.c
-+++ b/target/alpha/cpu.c
-@@ -28,25 +28,22 @@
+diff --git a/target/alpha/translate.c b/target/alpha/translate.c
+index a97cd54f0c..52c2e6248b 100644
+--- a/target/alpha/translate.c
++++ b/target/alpha/translate.c
+@@ -432,7 +432,7 @@ static bool use_goto_tb(DisasContext *ctx, uint64_t dest)
  
- static void alpha_cpu_set_pc(CPUState *cs, vaddr value)
+ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
  {
--    AlphaCPU *cpu = ALPHA_CPU(cs);
--
--    cpu->env.pc = value;
-+    CPUAlphaState *env = cpu_env(cs);
-+    env->pc = value;
- }
+-    uint64_t dest = ctx->base.pc_next + (disp << 2);
++    uint64_t dest = ctx->base.pc_next + disp;
  
- static vaddr alpha_cpu_get_pc(CPUState *cs)
+     if (ra != 31) {
+         tcg_gen_movi_i64(ctx->ir[ra], ctx->base.pc_next);
+@@ -455,7 +455,7 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
+ static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
+                                         TCGv cmp, uint64_t imm, int32_t disp)
  {
--    AlphaCPU *cpu = ALPHA_CPU(cs);
--
--    return cpu->env.pc;
-+    CPUAlphaState *env = cpu_env(cs);
-+    return env->pc;
- }
+-    uint64_t dest = ctx->base.pc_next + (disp << 2);
++    uint64_t dest = ctx->base.pc_next + disp;
+     TCGLabel *lab_true = gen_new_label();
  
- static void alpha_restore_state_to_opc(CPUState *cs,
-                                        const TranslationBlock *tb,
-                                        const uint64_t *data)
- {
--    AlphaCPU *cpu = ALPHA_CPU(cs);
--
--    cpu->env.pc = data[0];
-+    CPUAlphaState *env = cpu_env(cs);
-+    env->pc = data[0];
- }
+     if (use_goto_tb(ctx, dest)) {
+@@ -1382,7 +1382,7 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
+     real_islit = islit = extract32(insn, 12, 1);
+     lit = extract32(insn, 13, 8);
  
- static bool alpha_cpu_has_work(CPUState *cs)
-diff --git a/target/alpha/helper.c b/target/alpha/helper.c
-index d6d4353edd..c5e4958f8b 100644
---- a/target/alpha/helper.c
-+++ b/target/alpha/helper.c
-@@ -124,7 +124,7 @@ void alpha_cpu_record_sigsegv(CPUState *cs, vaddr address,
-                               MMUAccessType access_type,
-                               bool maperr, uintptr_t retaddr)
- {
--    AlphaCPU *cpu = ALPHA_CPU(cs);
-+    CPUAlphaState *env = cpu_env(cs);
-     target_ulong mmcsr, cause;
+-    disp21 = sextract32(insn, 0, 21);
++    disp21 = sextract32(insn, 0, 21) * 4;
+     disp16 = sextract32(insn, 0, 16);
+     disp12 = sextract32(insn, 0, 12);
  
-     /* Assuming !maperr, infer the missing protection. */
-@@ -155,9 +155,9 @@ void alpha_cpu_record_sigsegv(CPUState *cs, vaddr address,
-     }
- 
-     /* Record the arguments that PALcode would give to the kernel. */
--    cpu->env.trap_arg0 = address;
--    cpu->env.trap_arg1 = mmcsr;
--    cpu->env.trap_arg2 = cause;
-+    env->trap_arg0 = address;
-+    env->trap_arg1 = mmcsr;
-+    env->trap_arg2 = cause;
- }
- #else
- /* Returns the OSF/1 entMM failure indication, or -1 on success.  */
 -- 
 2.41.0
 
