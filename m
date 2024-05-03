@@ -2,111 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A023B8BA788
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C78B8BA74E
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 08:59:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2nBp-0007r4-8T; Fri, 03 May 2024 03:18:41 -0400
+	id 1s2ms7-0007tE-Ra; Fri, 03 May 2024 02:58:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s2nBm-0007jg-Js; Fri, 03 May 2024 03:18:38 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s2ms5-0007sw-Et
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 02:58:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1s2nBk-0000s8-L9; Fri, 03 May 2024 03:18:38 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 4435vrZK003118; Fri, 3 May 2024 07:18:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vSQj1LgiSYWliMNCjXFADwiW7LHnXFq1AhUpVyJPzWg=;
- b=If9l5fvYJM2GqfRJLWl/sPiGRBrLV1F9s4B2bZf/Zvuxfe3ITugJK+kIfATqBj8vEdcm
- 5QBcTBUfhdAWiK1iPXnzvxyRpcVOtuAamgJXKMgzdB6P7zmRoSOwJaoIdg3RXrVpPk6d
- yX53S8Rj39KFQvACgu5j9x0p2afAuUFesYpklgoTtEIEs1499JNbEs/9641aeSmk4Pzm
- +ik0VVz6a0BiJOJvcHvRDgeKNLeOVsCBwAYK8FKvLjrYhaKvT7FEDqj7pIrEmNRk5ixX
- fFkoEROz9NrXT6OYyaarCPtIspHPBCZ4OVBE28FKhzrz3JOgtLQi4qwSf23yatB/B2ht Tg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xvt7vr60e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 May 2024 07:18:22 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4437ILQl004330;
- Fri, 3 May 2024 07:18:21 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xvt7vr60b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 May 2024 07:18:21 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 4436YIM1003613; Fri, 3 May 2024 06:53:47 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xscppv9xv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 May 2024 06:53:47 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 4436rfVh55836932
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 May 2024 06:53:43 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 446AD2006C;
- Fri,  3 May 2024 06:53:41 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C893E2005A;
- Fri,  3 May 2024 06:53:38 +0000 (GMT)
-Received: from [9.109.199.72] (unknown [9.109.199.72])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  3 May 2024 06:53:38 +0000 (GMT)
-Message-ID: <9f3bf2bb-34d9-4e13-9bdb-cdefea95771d@linux.ibm.com>
-Date: Fri, 3 May 2024 12:23:37 +0530
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s2ms3-0005cE-Ho
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 02:58:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714719494;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=eDZPYmK50eCIDTIHf93sFTCdqZZ3eNlFHBHQtlOZx60=;
+ b=h+K54LJlPSMJJzbvNHxbfjkNR+7xGcT8I4jXpWyDSAjKJIXdCKadGjYXv+Xqv49q25n1pp
+ cI7ZO6Q91oNRopvuwh7KK594NB+3fvzeDKRta947+pMYsz756U92n9EMmZ8nQ8hLuVW1P6
+ ReAtYS7owZ31pIkmPnYwZM0ElhuRBpc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-xlO1pe2AMja9HAls93UoXA-1; Fri,
+ 03 May 2024 02:58:11 -0400
+X-MC-Unique: xlO1pe2AMja9HAls93UoXA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B497D28EC100;
+ Fri,  3 May 2024 06:58:10 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 82AB6492BC6;
+ Fri,  3 May 2024 06:58:10 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8241C21E6682; Fri,  3 May 2024 08:58:09 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] hmp/migration: Fix documents for "migrate" command
+In-Reply-To: <20240502154729.370938-1-peterx@redhat.com> (Peter Xu's message
+ of "Thu, 2 May 2024 11:47:29 -0400")
+References: <20240502154729.370938-1-peterx@redhat.com>
+Date: Fri, 03 May 2024 08:58:09 +0200
+Message-ID: <87fruz1iwu.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/10] ppc: Make Power11 as default cpu type for
- 'pseries' and 'powernv'
-To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20240426110023.733309-1-adityag@linux.ibm.com>
- <20240426110023.733309-10-adityag@linux.ibm.com>
- <3d64c7e6-6128-4723-b7c5-11967b0a7457@kaod.org>
- <D0ZQNVR81YNL.EMCJHV8VARRB@gmail.com>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <D0ZQNVR81YNL.EMCJHV8VARRB@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4AUoEKTg52-55ifJSoc2ryztkVf40svS
-X-Proofpoint-GUID: e684Pb4rGqhA0ojzTkhluiZlTC8TwvB3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-03_03,2024-05-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 priorityscore=1501 mlxlogscore=316 spamscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2405030051
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.476,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,28 +80,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 03/05/24 10:22, Nicholas Piggin wrote:
+Peter Xu <peterx@redhat.com> writes:
 
-> On Sat Apr 27, 2024 at 12:32 AM AEST, Cédric Le Goater wrote:
->> On 4/26/24 13:00, Aditya Gupta wrote:
->>> Make Power11 as default cpu type for 'pseries' and 'powernv' machine type,
->>> with Power11 being the newest supported Power processor in QEMU.
->> This is too early. We should merge Power11 support first, possibly in 9.1,
->> and then change default in a future release, 9.2, 10.0
-> Agree. Since P10 is the released chip that is what users will want
-> to use. Developers can set -cpu by hand.
+> Peter missed the Sphinx HMP document for the "resume/-r" flag in commit
+> 7a4da28b26 ("qmp: hmp: add migrate "resume" option").  Add it.  Avoid
+> adding a Fixes to make life easier for the stable maintainer.
 
-Yes. I have dropped that patch from my v3.
+I'm curious: how does not adding Fixes: make life easier?
 
+> When at it, slightly cleanup the lines, move "detach/-d" to a separate
+> section rather than appending it at the end of the command description.
+>
+> Cc: Dr. David Alan Gilbert <dave@treblig.org>
+> Cc: Fabiano Rosas <farosas@suse.de>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>
+> Based-on: <20240430142737.29066-1-farosas@suse.de>
+> ("[PATCH v3 0/6] migration removals & deprecations")
+> ---
+>  hmp-commands.hx | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/hmp-commands.hx b/hmp-commands.hx
+> index ebca2cdced..484a8a1c3a 100644
+> --- a/hmp-commands.hx
+> +++ b/hmp-commands.hx
+> @@ -918,8 +918,13 @@ ERST
+       {
+           .name       = "migrate",
+           .args_type  = "detach:-d,blk:-b,inc:-i,resume:-r,uri:s",
+           .params     = "[-d] [-b] [-i] [-r] uri",
+           .help       = "migrate to URI (using -d to not wait for completion)"
+                         "\n\t\t\t -b for migration without shared storage with"
+                         " full copy of disk\n\t\t\t -i for migration without "
+                         "shared storage with incremental copy of disk "
+                         "(base image shared between src and destination)"
+                         "\n\t\t\t -r to resume a paused migration",
+           .cmd        = hmp_migrate,
+       },
+>  
+>  
+>  SRST
+> -``migrate [-d]`` *uri*
+> -  Migrate to *uri* (using -d to not wait for completion).
+> +``migrate [-d] [-r]`` *uri*
+> +  Migrate the current VM to *uri*.
 
-About v3, I am blocked on a issue due to PCR values being same for P10 & 
-P11. Will post the series after that gets sorted out.
+Could there be any other VM than the current one?  Scratch "current"?
 
+> +
+> +  ``-d``
+> +    Run this command asynchronously, so that the command doesn't wait for completion.
 
-Thanks,
+What is run asynchronously, and what isn't waiting?  These are two
+different entities, aren't they?  Calling them "this command" and "the
+command" is confusing :)
 
-Aditya Gupta
+Perhaps
 
-> Thanks,
-> Nick
+       Start the migration process, but do not wait for its completion.
+
+Maybe add a hint on how to wait or poll for completion?
+
+> +  ``-r``
+> +    Resume a paused postcopy migration.
+
+.help doesn't have "postcopy".  Should it?
+
+>  ERST
+>  
+>      {
+
 
