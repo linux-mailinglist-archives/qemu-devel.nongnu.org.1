@@ -2,136 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DEF8BA731
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 08:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A023B8BA788
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:18:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2mgJ-00065r-59; Fri, 03 May 2024 02:46:07 -0400
+	id 1s2nBp-0007r4-8T; Fri, 03 May 2024 03:18:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s2mfw-00064a-0E
- for qemu-devel@nongnu.org; Fri, 03 May 2024 02:45:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1s2nBm-0007jg-Js; Fri, 03 May 2024 03:18:38 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s2mfu-0003Xu-44
- for qemu-devel@nongnu.org; Fri, 03 May 2024 02:45:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714718739;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=I/GE0N5VVYivTvZwfJAccEioqsvNvBQA7s9yMrgl4gg=;
- b=WPNm3jpPwqxHpXmQEv9Igd7hOghmoyk8ebuNoFQ8PfhkJkQgxPGIaPxDAPAi2mEuEDP3ui
- 4iecHrljUISTpgneN12TLBqec/sMPmC2Joo25fabM6R2JwmNW64QcFWUp7AyFBF2YgwOqT
- u4UtvWyLq/aT5WiFGIKHN3yMUarOeeg=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-9rTFgvvbN1Ou6LD8rGOahA-1; Fri, 03 May 2024 02:45:38 -0400
-X-MC-Unique: 9rTFgvvbN1Ou6LD8rGOahA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-790f62cb748so540799285a.1
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 23:45:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714718738; x=1715323538;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I/GE0N5VVYivTvZwfJAccEioqsvNvBQA7s9yMrgl4gg=;
- b=P43y65WeMxkhPZXRpgbqGcabkCegItwavg+vdjzVEkgtDrE1/tvQ98HJKXbWvxBqF0
- xFvLD0Nhst6rmOntEcb8jbojUVj1/cC8fiMIMasuAYH3/xu868fEHisvrke2fEfjgek/
- 8ohz0/HMCIOYoxcw7o/DiH/jRJVHb4t0SUpxIoBaq9viGLiue7Xvvylp80OP3ONN+iKB
- fJWUqJKw/w3WWT7PJkbwI7WOYkxoouZu1iGuK/oY9Xwi5mCMPIJSpv3nP52J+I1TssBv
- WR2D0pTWv4jL3ITOuxlLczLIoJHV3bfT0duoMTs8wVo9vVhMmsrqSpE8zooXah7iu4aA
- YQRw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCViddg9QSAxBFv0UF5UXEvGPKI7rRasmii2FSVXH+B3+whzHlqd7ansqcqUkCWW4A0liwSOB3d7OHprnr5lGZWqEFekc7Y=
-X-Gm-Message-State: AOJu0YzcX9ECvpeE8tMfJZ6h3sRfOA2SVb7e2RAwSe+eeMEn6tPGhcNE
- cImxZgWUFmHk3Q1y2UYRGcJXnn5PfWxKERDPjG1ltgixMyxkBRVNBrwTvl3NM4VXprvrYd2AVZe
- 1bOyCyxXeHBZX+qgI01YWjPbCPsKVqgI3AM41brXftPbmVDjiRCwG
-X-Received: by 2002:a05:620a:2790:b0:792:7f5d:46c6 with SMTP id
- g16-20020a05620a279000b007927f5d46c6mr965846qkp.16.1714718738005; 
- Thu, 02 May 2024 23:45:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJsIcKxkzoBo7AXEcxFC33fxX56MGXmqZd6aJCzcgr+BOC726RE1ZSDVS8tBrbNiD3xsW3Hg==
-X-Received: by 2002:a05:620a:2790:b0:792:7f5d:46c6 with SMTP id
- g16-20020a05620a279000b007927f5d46c6mr965829qkp.16.1714718737559; 
- Thu, 02 May 2024 23:45:37 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de.
- [109.43.179.34]) by smtp.gmail.com with ESMTPSA id
- g3-20020a05620a218300b0078ebe12976dsm987183qka.19.2024.05.02.23.45.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 May 2024 23:45:37 -0700 (PDT)
-Message-ID: <0ea35d63-c6fa-4ad6-b1af-5c0dca2a3e80@redhat.com>
-Date: Fri, 3 May 2024 08:45:34 +0200
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1s2nBk-0000s8-L9; Fri, 03 May 2024 03:18:38 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 4435vrZK003118; Fri, 3 May 2024 07:18:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=vSQj1LgiSYWliMNCjXFADwiW7LHnXFq1AhUpVyJPzWg=;
+ b=If9l5fvYJM2GqfRJLWl/sPiGRBrLV1F9s4B2bZf/Zvuxfe3ITugJK+kIfATqBj8vEdcm
+ 5QBcTBUfhdAWiK1iPXnzvxyRpcVOtuAamgJXKMgzdB6P7zmRoSOwJaoIdg3RXrVpPk6d
+ yX53S8Rj39KFQvACgu5j9x0p2afAuUFesYpklgoTtEIEs1499JNbEs/9641aeSmk4Pzm
+ +ik0VVz6a0BiJOJvcHvRDgeKNLeOVsCBwAYK8FKvLjrYhaKvT7FEDqj7pIrEmNRk5ixX
+ fFkoEROz9NrXT6OYyaarCPtIspHPBCZ4OVBE28FKhzrz3JOgtLQi4qwSf23yatB/B2ht Tg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xvt7vr60e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 May 2024 07:18:22 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4437ILQl004330;
+ Fri, 3 May 2024 07:18:21 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xvt7vr60b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 May 2024 07:18:21 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 4436YIM1003613; Fri, 3 May 2024 06:53:47 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xscppv9xv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 03 May 2024 06:53:47 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 4436rfVh55836932
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 May 2024 06:53:43 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 446AD2006C;
+ Fri,  3 May 2024 06:53:41 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C893E2005A;
+ Fri,  3 May 2024 06:53:38 +0000 (GMT)
+Received: from [9.109.199.72] (unknown [9.109.199.72])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  3 May 2024 06:53:38 +0000 (GMT)
+Message-ID: <9f3bf2bb-34d9-4e13-9bdb-cdefea95771d@linux.ibm.com>
+Date: Fri, 3 May 2024 12:23:37 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 7/9] qga/commands-posix: qmp_guest_set_user_password: use
- ga_run_command helper
-To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-References: <20240501074340.19641-1-kkostiuk@redhat.com>
- <20240501074340.19641-8-kkostiuk@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 09/10] ppc: Make Power11 as default cpu type for
+ 'pseries' and 'powernv'
+To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20240426110023.733309-1-adityag@linux.ibm.com>
+ <20240426110023.733309-10-adityag@linux.ibm.com>
+ <3d64c7e6-6128-4723-b7c5-11967b0a7457@kaod.org>
+ <D0ZQNVR81YNL.EMCJHV8VARRB@gmail.com>
 Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240501074340.19641-8-kkostiuk@redhat.com>
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <D0ZQNVR81YNL.EMCJHV8VARRB@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.476,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4AUoEKTg52-55ifJSoc2ryztkVf40svS
+X-Proofpoint-GUID: e684Pb4rGqhA0ojzTkhluiZlTC8TwvB3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-03_03,2024-05-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 mlxlogscore=316 spamscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2405030051
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,69 +122,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 01/05/2024 09.43, Konstantin Kostiuk wrote:
-> From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> 
-> There's no need to check for the existence of the "chpasswd", "pw"
-> executables, as the exec() call will do that for us.
-> 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-> Link: https://lore.kernel.org/r/20240320161648.158226-8-andrey.drobyshev@virtuozzo.com
-> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-> ---
->   qga/commands-posix.c | 96 ++++++--------------------------------------
->   1 file changed, 13 insertions(+), 83 deletions(-)
-> 
-> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-> index 9910957ff5..7a065c4085 100644
-> --- a/qga/commands-posix.c
-> +++ b/qga/commands-posix.c
-> @@ -2151,14 +2151,8 @@ void qmp_guest_set_user_password(const char *username,
->                                    Error **errp)
->   {
->       Error *local_err = NULL;
-> -    char *passwd_path = NULL;
-> -    pid_t pid;
-> -    int status;
-> -    int datafd[2] = { -1, -1 };
-> -    char *rawpasswddata = NULL;
-> +    g_autofree char *rawpasswddata = NULL;
->       size_t rawpasswdlen;
-> -    char *chpasswddata = NULL;
-> -    size_t chpasswdlen;
->   
->       rawpasswddata = (char *)qbase64_decode(password, -1, &rawpasswdlen, errp);
->       if (!rawpasswddata) {
-> @@ -2169,95 +2163,31 @@ void qmp_guest_set_user_password(const char *username,
->   
->       if (strchr(rawpasswddata, '\n')) {
->           error_setg(errp, "forbidden characters in raw password");
-> -        goto out;
-> +        return;
->       }
->   
->       if (strchr(username, '\n') ||
->           strchr(username, ':')) {
->           error_setg(errp, "forbidden characters in username");
-> -        goto out;
-> +        return;
->       }
->   
->   #ifdef __FreeBSD__
-> -    chpasswddata = g_strdup(rawpasswddata);
-> -    passwd_path = g_find_program_in_path("pw");
-> +    g_autofree char *chpasswdata = g_strdup(rawpasswddata);
+On 03/05/24 10:22, Nicholas Piggin wrote:
 
-  Hi!
+> On Sat Apr 27, 2024 at 12:32 AM AEST, Cédric Le Goater wrote:
+>> On 4/26/24 13:00, Aditya Gupta wrote:
+>>> Make Power11 as default cpu type for 'pseries' and 'powernv' machine type,
+>>> with Power11 being the newest supported Power processor in QEMU.
+>> This is too early. We should merge Power11 support first, possibly in 9.1,
+>> and then change default in a future release, 9.2, 10.0
+> Agree. Since P10 is the released chip that is what users will want
+> to use. Developers can set -cpu by hand.
 
-This broke compilation on FreeBSD:
+Yes. I have dropped that patch from my v3.
 
-  https://gitlab.com/qemu-project/qemu/-/jobs/6760232764#L7125
 
-Looks like a typo in the variable name?
+About v3, I am blocked on a issue due to PCR values being same for P10 & 
+P11. Will post the series after that gets sorted out.
 
-  Thomas
 
+Thanks,
+
+Aditya Gupta
+
+> Thanks,
+> Nick
 
