@@ -2,48 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B0C8BA784
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FFB58BA7A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 09:22:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2nAG-0005pb-ON; Fri, 03 May 2024 03:17:05 -0400
+	id 1s2nDT-0000lb-Mx; Fri, 03 May 2024 03:20:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s2nAA-0005ia-47; Fri, 03 May 2024 03:16:58 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s2nA1-0000ZG-KO; Fri, 03 May 2024 03:16:53 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6AD2063BB8;
- Fri,  3 May 2024 10:16:52 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8ACCAC5911;
- Fri,  3 May 2024 10:16:41 +0300 (MSK)
-Received: (nullmailer pid 841122 invoked by uid 1000);
- Fri, 03 May 2024 07:16:41 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDQ-0000lP-Ta
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:20 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2nDP-0001Ed-9u
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 03:20:20 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2db7c6b5598so113156911fa.1
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 00:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714720817; x=1715325617; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UVi2/lBwGMlU7cAoTgtyiExKPhec9x+jnIKMxcEwUS0=;
+ b=lkngX/r1TiJ4NzZvsShY8s7mh612J/XqYMzEB1KD+AyfyiBxKpi9IuDgyHIY2Dg831
+ AqgqgCJMyqP/51X667Cyim+mSuWHoR8L9WU90fm9lCM5SOIPhTBP9s398Mngvk2itbxv
+ uhquVt22Tua1fxaxG3aRXF6zmx/OVgwE8AYWy6fmIZ37YBuepyIO4S3xwLkVUgRfhTAI
+ 6SKi1GXhmAXfEtkCWWYS8hS72Inhys/mLTqQREhV10Xpf5tYaHN15BsrdXsTnHt56m91
+ bdgZIi5SJ7mUj0f4wLnEqIMaJCx3CMlOzYMQoXHWEUDKHySnbL39lET/MXUjg82uRcBo
+ /XWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714720817; x=1715325617;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UVi2/lBwGMlU7cAoTgtyiExKPhec9x+jnIKMxcEwUS0=;
+ b=DceEVd5p6tBTwbkmL06BSlzQMz5pfIiCWVYXPMn19uz5pNVxXA9bDhbTc3LJnTR44J
+ 9JjijUUVEvyp88KexFYgjXjFyosfvLfdNq3UfLyDfBzbd0hsOMc2WJNe01jlAaT5tCGv
+ 8IcEUp9rVBU/A2cVrDsQCQdZ4YIyzo61fbHFDMi3UZ8Ap0a32b47PIokmk0FuG1Vne6h
+ hb6eQAp1E1kCxbc/RjQ3pOwDLo6XVr7zUlndDT0Mvj1gXYXCFASvNPZkR72XdM/dt1TD
+ SQFfpsaADatPLS8G/djNm/Lqd9v49LgV3VZPuDUyc49M6tH+e92fafsZ1c8zpVNh4+sl
+ L2xw==
+X-Gm-Message-State: AOJu0YwfebveS7zAegfGVI08Y15qLGhA/YC1/gyADNvpGeqWhboLKuHb
+ Cqj/WFh7+Koe66nw//xn4DGiuJkz76M9Pn4q7FW1JedhWjMzZhL6PdCTBdTXcXznVSjiz5Rm/ep
+ V
+X-Google-Smtp-Source: AGHT+IG8pvS7OjdfvSIdVy3KrqHqft9VSymUlhHaYbriZQPFAyq9L4MxmWnEbXVFWU1fM52inQLxXg==
+X-Received: by 2002:a2e:80d4:0:b0:2d7:17e0:ff56 with SMTP id
+ r20-20020a2e80d4000000b002d717e0ff56mr1238689ljg.18.1714720816778; 
+ Fri, 03 May 2024 00:20:16 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.179.187])
+ by smtp.gmail.com with ESMTPSA id
+ k7-20020a7bc407000000b0041674bf7d4csm8251830wmi.48.2024.05.03.00.20.15
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 03 May 2024 00:20:16 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2] Re-enable riscv64-debian-cross-container (debian riscv64
- is finally usable again!)
-Date: Fri,  3 May 2024 10:16:34 +0300
-Message-Id: <20240503071634.841103-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/9] target/alpha: Implement CF_PCREL
+Date: Fri,  3 May 2024 09:20:04 +0200
+Message-ID: <20240503072014.24751-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,44 +89,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Revert "gitlab-ci: Disable the riscv64-debian-cross-container by default"
-This reverts commit f51f90c65ed7706c3c4f7a889ce3d6b7ab75ef6a.
+Since v1:
+- Split complex patch 4 in 5 simpler ones (Phil)
 
-riscv64 in debian has been non-functioning for almost a year, after the
-architecture has been promoted to release architecture and all binary
-packages started to be re-built, making the port not multi-arch-co-installable
-for a long time (in debian, multi-arch packages must be of the same version,
-but when a package is rebuilt on one architecture it gets a version bump too).
-Later on, debiah had a long time64_t transition which made sid unusable for
-quite some time too.  Both such events happens in debian very rarely (like,
-once in 10 years or so - for example, previous big transition like that was
-libc5 => libc6 transition).  Now both of these are finished (where qemu is
-concerned anyway).
+Implement pc-relative tcg code generation.
 
-Hopefully debian unstable wont be very unstable.  At the very least it is
-better to have sporadic CI failures here than no riscv64 coverage at all.
+Philippe Mathieu-Daudé (1):
+  target/alpha: Simplify gen_bcond_internal()
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
-v2: drop a TODO comment which turned out to be confused, replacing it
- with the description why debian riscv64 were unusable.
+Richard Henderson (8):
+  target/alpha: Use cpu_env in preference to ALPHA_CPU
+  target/alpha: Hoist branch shift to initial decode
+  target/alpha: Use DISAS_NEXT definition instead of magic '0' value
+  target/alpha: Inline DISAS_PC_UPDATED and return DISAS_NORETURN
+  target/alpha: Return DISAS_NORETURN once
+  target/alpha: Split out gen_goto_tb
+  target/alpha: Split out gen_pc_disp
+  target/alpha: Implement CF_PCREL
 
- .gitlab-ci.d/container-cross.yml | 1 -
- 1 file changed, 1 deletion(-)
+ target/alpha/cpu.c       |  32 ++++++++---
+ target/alpha/helper.c    |   8 +--
+ target/alpha/translate.c | 117 +++++++++++++++++++++------------------
+ 3 files changed, 91 insertions(+), 66 deletions(-)
 
-diff --git a/.gitlab-ci.d/container-cross.yml b/.gitlab-ci.d/container-cross.yml
-index e3103940a0..dbffed3f21 100644
---- a/.gitlab-ci.d/container-cross.yml
-+++ b/.gitlab-ci.d/container-cross.yml
-@@ -77,7 +77,6 @@ riscv64-debian-cross-container:
-   allow_failure: true
-   variables:
-     NAME: debian-riscv64-cross
--    QEMU_JOB_OPTIONAL: 1
- 
- s390x-debian-cross-container:
-   extends: .container_job_template
 -- 
-2.39.2
+2.41.0
 
 
