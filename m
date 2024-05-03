@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B858BB012
-	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68928BB00D
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 17:37:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2uxi-0002fQ-DE; Fri, 03 May 2024 11:36:38 -0400
+	id 1s2uxk-0002jw-RI; Fri, 03 May 2024 11:36:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uxe-0002dJ-ON
- for qemu-devel@nongnu.org; Fri, 03 May 2024 11:36:34 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uxf-0002dh-EC
+ for qemu-devel@nongnu.org; Fri, 03 May 2024 11:36:36 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uxU-0002gu-RM
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s2uxY-0002iW-5v
  for qemu-devel@nongnu.org; Fri, 03 May 2024 11:36:34 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a598e483ad1so201169466b.1
- for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:36:24 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a5544fd07easo1415802966b.0
+ for <qemu-devel@nongnu.org>; Fri, 03 May 2024 08:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714750581; x=1715355381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714750586; x=1715355386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qelxLGP2VCXMcEaYFfotFC/hB/WzQHtK8MoPoOxRZLk=;
- b=SWG7IwiF0hlbTzKfHggGbvPMrDm2eq+V2hDWynWlf71l1HEMpkjkvJZ953/WpJNqvl
- sE+oKstxVoAHqapwzYgfF4yy35JfgxAM3LTLHaeVxPLJ6syCh7fVxTE6oHzZtOporS21
- +vqts7ObvVFxBxmLmdUPI6Zx0fFrJ0IJdlI1OL4eRu2pGiIlg6Eczmc8WfELBedEKD16
- glE/aT8RtC2ShGjCsH8OcoTThwW9KP5fE4HHWH2VsWhN+YadhZETQ6YrurgrFEHudGVv
- rG/uYkRztR+pbXEAEN099Paga7O4psHbPkaA0QNnkDD+mQQVsA/rm+ZjRR8CdWGmId62
- jv9Q==
+ bh=wFd49aZe/euzrWDlHUHUg155F0vz6PnPtpjDws04jXo=;
+ b=lS/lf9U/3LarHv/N0KnfdsehswvsngOToa+iTJRnVXHUyr6AiYvVbPw+yBsgiSE9L3
+ 45H4bk9PUfnQJR70IPvA3RSp6BhUEF3mnE9r1uZBlFmSm6F9vA583So8vpvilBYC3gbI
+ Z7o0thmPU/kmle5RI0JDDTQr0JISJplgoP5S8BfgWsdZ/dAT4eAUM3YaEPYQbBhKn6Bf
+ OidCPn36x9Af7wTxDGAAISm4dvitWi/UEoAyxJmTNX9+8ZOIacavfrQBf8VtUzlS2lPN
+ bh1KdUMZboD7MDh2Fr8j+QWUgi0zPdsROEXPTsTzJ0xsVarpcZE0wAr96kXESt+i5QXP
+ uWfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714750581; x=1715355381;
+ d=1e100.net; s=20230601; t=1714750586; x=1715355386;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qelxLGP2VCXMcEaYFfotFC/hB/WzQHtK8MoPoOxRZLk=;
- b=xNAkCdHc2+wOHNwwXsDgPFeATVhp15bppO9Ay4cWChYBxXe8Kj1UyPAL1vq3DMhcQZ
- X70oMhAESt28ZMgB/DXkNclnk8/cz7AQUnAQazV+yT7RO5nDPbY2aPB8oCKbwJ1ey2rR
- AYK6tgG150te4143BdpqeIimboUC49fyhljrjWO3t8B0uu+dMSYLDYOjkUrEITE97vKa
- 6p4IuSZyhcWXJwOKn3fMP6Yr3q9/g8NWKAtGOn6Ds4aW6XFmWt8iIEN/Vw81BAz2tx8j
- l5LKu6Jf24zePfxvHoiIOZk7Y9VcK8PldUL0PX9UenGH6f+3OVV+zq9c95TgCjmVs7JV
- 8FuQ==
-X-Gm-Message-State: AOJu0YwBEWSv+PWqH3RZikcaK4IwI5M5T9LD6RdTylTefGU3kI7dXfsD
- yttJcFkmnyjtS686CsYnsSlGNmoYa++ECoobAqF8WztJ2m3uzuVUJqSdt45q5H3GqIlOqsW4E65
- I
-X-Google-Smtp-Source: AGHT+IHP8UgbbxZJkY2wPsKk10m+06Fv5PmLStsZ2jm39BEBjX6hxZnELZdZjJRlxNGSwgNNkwXtjQ==
-X-Received: by 2002:a50:cccf:0:b0:56e:2cfc:1d3d with SMTP id
- b15-20020a50cccf000000b0056e2cfc1d3dmr1662067edj.16.1714750580994; 
- Fri, 03 May 2024 08:36:20 -0700 (PDT)
+ bh=wFd49aZe/euzrWDlHUHUg155F0vz6PnPtpjDws04jXo=;
+ b=L7Z88KN/2UQ9GtPEpX/m3soy/rm0ARFVPHSzCKfCFM5IfVFc+kBa3WaWEx5u/kGPSn
+ 8RHduo0TGk78+4qw5tZF6/ecdW0Fbn1FFyO4tXuI9Neo7BvqiFv0uTEk4QCjF2UGeWud
+ UPFjNelogcIrKNgkb/oiQoOZn5+OFl6fi4aMdlOMMfnUuddnpd+p+dLNPDM6o+2ahHrU
+ dwBfdi9kirLxJ/6R+YbEL9uLt6LriCjDuWqrYUI4nFHzHmLyKW19WBp9UjppOIqRTW9z
+ zvoCrzDNynRbsrRzaD5VuqQcJSMPd2mMXIRuxTtX5+VHTNGb8DZj0r7EJm8ncrtvMAFZ
+ k1Qg==
+X-Gm-Message-State: AOJu0YyV1S0ZESvVKCuERdAFgV+W3QKPBlnX1XV7Z3Ox5eGSozXxb51F
+ FAl5xLPjQjptS6e+E+SEkIktiqFrcaBU/wCgnWBnHYuyhsc7/6sL8dJe8tM2VOl3A0PBVeqHuCt
+ 7
+X-Google-Smtp-Source: AGHT+IFd7swF3hnq2QoaMpUB/rIG3XWKMkN8LxBYjviRpntebRofr4lhqIDIo5AWY08jOPNgO9OBvA==
+X-Received: by 2002:a17:906:6889:b0:a59:86a7:2785 with SMTP id
+ n9-20020a170906688900b00a5986a72785mr1907271ejr.28.1714750586240; 
+ Fri, 03 May 2024 08:36:26 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.179.187])
  by smtp.gmail.com with ESMTPSA id
- p4-20020a056402074400b00572b2ad900fsm1763494edy.46.2024.05.03.08.36.20
+ c17-20020a1709060fd100b00a526a992d82sm1810177ejk.4.2024.05.03.08.36.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 03 May 2024 08:36:20 -0700 (PDT)
+ Fri, 03 May 2024 08:36:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/14] accel/nvmm: Fix NULL dereference in nvmm_init_vcpu()
-Date: Fri,  3 May 2024 17:36:00 +0200
-Message-ID: <20240503153613.38709-2-philmd@linaro.org>
+Subject: [PULL 02/14] accel/whpx: Fix NULL dereference in whpx_init_vcpu()
+Date: Fri,  3 May 2024 17:36:01 +0200
+Message-ID: <20240503153613.38709-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240503153613.38709-1-philmd@linaro.org>
 References: <20240503153613.38709-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,32 +94,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 When mechanically moving the @dirty field to AccelCPUState
-in commit 79f1926b2d, we neglected cpu->accel is still NULL
+in commit 9ad49538c7, we neglected cpu->accel is still NULL
 when we want to dereference it.
 
+Fixes: 9ad49538c7 ("accel/whpx: Use accel-specific per-vcpu @dirty field")
 Reported-by: Volker Rümelin <vr_qemu@t-online.de>
 Suggested-by: Volker Rümelin <vr_qemu@t-online.de>
-Fixes: 79f1926b2d ("accel/nvmm: Use accel-specific per-vcpu @dirty field")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240429091918.27429-3-philmd@linaro.org>
+Message-Id: <20240429091918.27429-2-philmd@linaro.org>
 ---
- target/i386/nvmm/nvmm-all.c | 2 +-
+ target/i386/whpx/whpx-all.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/nvmm/nvmm-all.c b/target/i386/nvmm/nvmm-all.c
-index f9cced53b3..65768aca03 100644
---- a/target/i386/nvmm/nvmm-all.c
-+++ b/target/i386/nvmm/nvmm-all.c
-@@ -982,7 +982,7 @@ nvmm_init_vcpu(CPUState *cpu)
-         }
+diff --git a/target/i386/whpx/whpx-all.c b/target/i386/whpx/whpx-all.c
+index b08e644517..a6674a826d 100644
+--- a/target/i386/whpx/whpx-all.c
++++ b/target/i386/whpx/whpx-all.c
+@@ -2236,7 +2236,7 @@ int whpx_init_vcpu(CPUState *cpu)
      }
  
+     vcpu->interruptable = true;
 -    cpu->accel->dirty = true;
-+    qcpu->dirty = true;
-     cpu->accel = qcpu;
- 
-     return 0;
++    vcpu->dirty = true;
+     cpu->accel = vcpu;
+     max_vcpu_index = max(max_vcpu_index, cpu->cpu_index);
+     qemu_add_vm_change_state_handler(whpx_cpu_update_state, env);
 -- 
 2.41.0
 
