@@ -2,86 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80C18BA221
-	for <lists+qemu-devel@lfdr.de>; Thu,  2 May 2024 23:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 733018BA63D
+	for <lists+qemu-devel@lfdr.de>; Fri,  3 May 2024 06:48:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s2dnl-0000ve-Uj; Thu, 02 May 2024 17:17:14 -0400
+	id 1s2kpD-0002pg-NB; Fri, 03 May 2024 00:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s2dnK-0000bW-Gu
- for qemu-devel@nongnu.org; Thu, 02 May 2024 17:16:53 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s2kou-0002o0-KC; Fri, 03 May 2024 00:46:53 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s2dnI-00037U-8v
- for qemu-devel@nongnu.org; Thu, 02 May 2024 17:16:46 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f44a2d1e3dso191064b3a.3
- for <qemu-devel@nongnu.org>; Thu, 02 May 2024 14:16:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s2kop-000715-3r; Fri, 03 May 2024 00:46:52 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2ab1ddfded1so7505678a91.1; 
+ Thu, 02 May 2024 21:46:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714684601; x=1715289401; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=7nW8wWwhxosg+VAULOzhg+bzl+H+otSgm1Tg2j55OfY=;
- b=q80OB6fsmpvJ86x9UcsRx4F3wzPYUKHc0zREdoYDvoq2UV80tC7CuKMfpRiFOKxcdd
- t2E5XzUf1ixsOblOkxyoSp3yi4p5qcqB68KjjJABX4w24PeA8G/5JjQMqZSPh4tB3B1s
- ZDpyW68ja/CfCglgXc96gYCWFm4Vr+9qxa7uez/geJhVodAxRiiAr5o7cbiL+yXsO62U
- H6LzZ/uy0K1aPZPTAxlMddf+pTKKTKyXfj7LHQv8+TZ4hV4Wt2Wvk7l12NgLblSmxJIe
- im2wrO65DM+F7BMoSlkfzv9lW8mDldihCv0fyRL4GyIQM3uJMqkWeuNmUMDOupFhRL7o
- hXIQ==
+ d=gmail.com; s=20230601; t=1714711604; x=1715316404; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2nLS0kQnSWCitBKKgUPaN9NajP8s8UZrbebLEcSaDrM=;
+ b=V90zbi55iaBKoemNHnRJHF37yxd/szgFc4xU5baXaEwHSgXdOS156Dyk0hlv+Y2dc/
+ PtoVIO3N1nP3fZntxb3zMEgUtwo5chOU0WhPVzf7/qDBVtIw8xYvkj5QKfGu2on/+kyb
+ GeLHNneRscedA73i44+8l6F6NDUhjX1AHkT7gn5x4MzCKVf9D/JA2a56m2NiG9kSsIz1
+ XF1zshT9OcrqUY/SHUho5cb3ed8j3xGTj1N8FGsAIAYc6iD1iGq5wmnWFecBfIx4WRec
+ MSR/Xpn8Q+OFFHLDD1YpHQ8sabem/A0IE2FcKneFnoyoK3tti7lN0/2HajdrgBnvSv9Q
+ FeGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714684601; x=1715289401;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7nW8wWwhxosg+VAULOzhg+bzl+H+otSgm1Tg2j55OfY=;
- b=T0wODZSOTpNku2fp2TjUP8dFz+t58HakkIROuQKzTBAX3McwF3PFAaYnuvXGobC3m7
- JaE+xH+gn9UoDzDZ3uZwAymhwUR1xhoXHrNwvGVXA4ukCAfIkLFSv4bexShCcauXrYff
- ZyiA6klX4lsOUv2CkFTpewo52g1vxBaeiLfJo17J6Cuebc9vtsHkhq2FuTy+oJAsDbtg
- fZvs9lXrvY+Hg/qbsjjwuKiWoTOUFkKR/Efq+/oxIVfFGt5B3GzVFMRjVqSpBxsxL1IT
- Ywrc7WZVCcpLEBNXi368fqdD1xTygfUoZMxg7aVRs8tR6cGlKbBWqSh8SEnltTkbH3t4
- cmCQ==
+ d=1e100.net; s=20230601; t=1714711604; x=1715316404;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=2nLS0kQnSWCitBKKgUPaN9NajP8s8UZrbebLEcSaDrM=;
+ b=P1x2JP/xsbgo+9IRascIzQH0KCtXTxxbXEtdApXpKl8hAU8K60/KKg4GhR/IJHbMJr
+ 0DrLcbfSUrdzMzi7JnByKZfQTpxzA2oQrfWBiAMceNfDveKsmXo4hqPlIH0+Vtce+DRo
+ nar1PEXiWDEJ/9R5bMatoqwnzrEIoerlc5UUaL/nGe67qoyM2NP6hWrZ3QmUh27KSQQd
+ ozv3zl/JpBCHjT9aROkr+hX/ro8pSqBdX5InYTvio5XndLUHvOtkoaLj6SWT5n5FxmzE
+ H/ut5011vcBQO3insc8mfkmvpZXfOD/TsFDTOfZCWRSGDkoXHdtuu7jGfqcJqsq/YSXp
+ Nqqg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUPVNJVz5suor39fmcMJfhqpHt60EoeA1BXd0f1+pRrhTEbaTm6/KEpfzB8A5kQ8P8+FfyECqao9mUa1ajARGp2CN5XIEo=
-X-Gm-Message-State: AOJu0YxaadFaYUDzgVs1+H/5PCTHrWHddn+6xBu/0FwcAUd/ZchWtFqa
- UqBgUJ0nDRL+N1gp0fRsY+X56KF9lXz59ufY0nmNgg/puoVaq6+Zd/SxvL5uKT1M1yj5wfBdeKj
- eYgI=
-X-Google-Smtp-Source: AGHT+IE0jROmTQ/W0SOIMJU+PVfOyMtaM17KDCiF0veQxDb2jHe5SMqLs5txszH5CiqLZx2wk3Tnlg==
-X-Received: by 2002:a05:6a00:148d:b0:6ed:d68d:948a with SMTP id
- v13-20020a056a00148d00b006edd68d948amr810056pfu.23.1714684600644; 
- Thu, 02 May 2024 14:16:40 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:9384:1d00::ecd0? ([2604:3d08:9384:1d00::ecd0])
- by smtp.gmail.com with ESMTPSA id
- x16-20020a056a000bd000b006f3ef4e7551sm1711926pfu.217.2024.05.02.14.16.39
+ AJvYcCWXedRCG911JUESeSN0AaKeFwQWuh/dExQ6hnRKr3hspSSn7I6opB51TUOynrSMkcU/2azaidq8KtXiPHr84XiXdNJmDrI=
+X-Gm-Message-State: AOJu0YzpB7Zi3ExEfclkXY2Pokd0g4Q09RZZNYy762RVL4Q7AY2NwPIn
+ g7Wz0PAChAQQ5MyAWpKOfGjR5QjwbjMj9hV71ieoubbT68LtVnMw
+X-Google-Smtp-Source: AGHT+IH4R78qjWRf/tmKXhJVGp1QBLZr5XjUdb3cbrTKWrUli3N7SZHvLjmyJjp0jCOknS1J3C380A==
+X-Received: by 2002:a17:90a:a888:b0:2b4:3669:8b87 with SMTP id
+ h8-20020a17090aa88800b002b436698b87mr793290pjq.4.1714711604173; 
+ Thu, 02 May 2024 21:46:44 -0700 (PDT)
+Received: from localhost ([1.146.23.181]) by smtp.gmail.com with ESMTPSA id
+ gz13-20020a17090b0ecd00b002b143417622sm2192703pjb.12.2024.05.02.21.46.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 02 May 2024 14:16:40 -0700 (PDT)
-Message-ID: <38188b6e-fa36-4c14-9f0f-763826bc9363@linaro.org>
-Date: Thu, 2 May 2024 14:16:38 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/9] TCG plugins new inline operations
-To: Gustavo Romero <gustavo.romero@linaro.org>, qemu-devel@nongnu.org
-References: <20240502180847.287673-1-pierrick.bouvier@linaro.org>
- <b78563fd-1c06-8ee1-5508-39b3e83249cf@linaro.org>
- <b083716a-dd1e-4edb-ba57-530c7661305f@linaro.org>
- <b3474554-0333-27c2-df47-146e5ef317d9@linaro.org>
- <6f37fbce-9fcc-ab7d-08fc-cfd8bb470f9b@linaro.org>
-Content-Language: en-US
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <6f37fbce-9fcc-ab7d-08fc-cfd8bb470f9b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x433.google.com
+ Thu, 02 May 2024 21:46:43 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 May 2024 14:46:38 +1000
+Message-Id: <D0ZQJ5JD4FF1.WSLV5C6W8A4H@gmail.com>
+Cc: <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH] ppc/pnv: Introduce pnv_chip_foreach_cpu()
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>
+X-Mailer: aerc 0.17.0
+References: <20240424093048.180966-1-clg@redhat.com>
+In-Reply-To: <20240424093048.180966-1-clg@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,82 +93,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gNS8yLzI0IDEzOjQ4LCBHdXN0YXZvIFJvbWVybyB3cm90ZToNCj4gSGkgUGllcnJpY2ss
-DQo+IA0KPiBPbiA1LzIvMjQgNTowOSBQTSwgR3VzdGF2byBSb21lcm8gd3JvdGU6DQo+PiBP
-biA1LzIvMjQgNDo0NSBQTSwgUGllcnJpY2sgQm91dmllciB3cm90ZToNCj4+PiBIaSBHdXN0
-YXZvLA0KPj4+DQo+Pj4gT24gNS8yLzI0IDEyOjE2LCBHdXN0YXZvIFJvbWVybyB3cm90ZToN
-Cj4+Pj4gSGkgUGllcnJpY2ssDQo+Pj4+DQo+Pj4+IE9uIDUvMi8yNCAzOjA4IFBNLCBQaWVy
-cmljayBCb3V2aWVyIHdyb3RlOg0KPj4+Pj4gVGhpcyBzZXJpZXMgaW1wbGVtZW50IHR3byBu
-ZXcgb3BlcmF0aW9ucyBmb3IgcGx1Z2luczoNCj4+Pj4+IC0gU3RvcmUgaW5saW5lIGFsbG93
-cyB0byB3cml0ZSBhIHNwZWNpZmljIHZhbHVlIHRvIGEgc2NvcmVib2FyZC4NCj4+Pj4+IC0g
-Q29uZGl0aW9uYWwgY2FsbGJhY2sgZXhlY3V0ZXMgYSBjYWxsYmFjayBvbmx5IHdoZW4gYSBn
-aXZlbiBjb25kaXRpb24gaXMgdHJ1ZS4NCj4+Pj4+ICDCoMKgwqAgVGhlIGNvbmRpdGlvbiBp
-cyBldmFsdWF0ZWQgaW5saW5lLg0KPj4+Pj4NCj4+Pj4+IEl0J3MgcG9zc2libGUgdG8gbWl4
-IHZhcmlvdXMgaW5saW5lIG9wZXJhdGlvbnMgKGFkZCwgc3RvcmUpIHdpdGggY29uZGl0aW9u
-YWwNCj4+Pj4+IGNhbGxiYWNrcywgYWxsb3dpbmcgZWZmaWNpZW50ICJ0cmFwIiBiYXNlZCBj
-b3VudGVycy4NCj4+Pj4+DQo+Pj4+PiBJdCBidWlsZHMgb24gdG9wIG9mIG5ldyBzY29yZWJv
-YXJkIEFQSSwgaW50cm9kdWNlZCBpbiB0aGUgcHJldmlvdXMgc2VyaWVzLg0KPj4+Pj4NCj4+
-Pj4+IE5PVEU6IFR3byBwYXRjaGVzIHN0aWxsIG5lZWQgcmV2aWV3DQo+Pj4+Pg0KPj4+Pj4g
-djINCj4+Pj4+IC0tIA0KPj4+Pj4NCj4+Pj4+IC0gZml4ZWQgaXNzdWUgd2l0aCB1ZGF0YSBu
-b3QgYmVpbmcgcGFzc2VkIHRvIGNvbmRpdGlvbmFsIGNhbGxiYWNrDQo+Pj4+PiAtIGFkZGVk
-IHNwZWNpZmljIHRlc3QgZm9yIHRoaXMgaW4gdGVzdHMvcGx1Z2luL2lubGluZS5jICh1ZGF0
-YSB3YXMgTlVMTCBiZWZvcmUpLg0KPj4+Pj4NCj4+Pj4+IHYzDQo+Pj4+PiAtLSANCj4+Pj4+
-DQo+Pj4+PiAtIHJlYmFzZWQgb24gdG9wIG9mICJwbHVnaW5zOiBSZXdyaXRlIHBsdWdpbiBj
-b2RlIGdlbmVyYXRpb24iOg0KPj4+Pj4gIMKgwqDCoCAyMDI0MDMxNjAxNTcyMC4zNjYxMjM2
-LTEtcmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZw0KPj4+Pj4gLSBzaW5nbGUgcGFzcyBj
-b2RlIGdlbmVyYXRpb24NCj4+Pj4+IC0gc21hbGwgY2xlYW51cHMgZm9yIGNvZGUgZ2VuZXJh
-dGlvbg0KPj4+Pj4NCj4+Pj4+IHY0DQo+Pj4+PiAtLSANCj4+Pj4+DQo+Pj4+PiAtIHJlbW92
-ZSBvcCBmaWVsZCBmcm9tIHFlbXVfcGx1Z2luX2lubGluZV9jYg0KPj4+Pj4gLSB1c2UgdGNn
-X2NvbnN0YW50X2k2NCB0byBsb2FkIGltbWVkaWF0ZSB2YWx1ZSB0byBzdG9yZQ0KPj4+Pj4N
-Cj4+Pj4+IHY1DQo+Pj4+PiAtLSANCj4+Pj4+DQo+Pj4+PiAtIHJlYmFzZSBvbiB0b3Agb2Yg
-bWFzdGVyIG5vdyB0aGF0IFJpY2hhcmQncyBzZXJpZXMgd2FzIG1lcmdlZA0KPj4+Pj4NCj4+
-Pj4+IFBpZXJyaWNrIEJvdXZpZXIgKDkpOg0KPj4+Pj4gIMKgwqDCoCBwbHVnaW5zOiBwcmVw
-YXJlIGludHJvZHVjdGlvbiBvZiBuZXcgaW5saW5lIG9wcw0KPj4+Pj4gIMKgwqDCoCBwbHVn
-aW5zOiBleHRyYWN0IGdlbmVyYXRlIHB0ciBmb3IgcWVtdV9wbHVnaW5fdTY0DQo+Pj4+PiAg
-wqDCoMKgIHBsdWdpbnM6IGFkZCBuZXcgaW5saW5lIG9wIFNUT1JFX1U2NA0KPj4+Pj4gIMKg
-wqDCoCB0ZXN0cy9wbHVnaW4vaW5saW5lOiBhZGQgdGVzdCBmb3IgU1RPUkVfVTY0IGlubGlu
-ZSBvcA0KPj4+Pj4gIMKgwqDCoCBwbHVnaW5zOiBjb25kaXRpb25hbCBjYWxsYmFja3MNCj4+
-Pj4+ICDCoMKgwqAgdGVzdHMvcGx1Z2luL2lubGluZTogYWRkIHRlc3QgZm9yIGNvbmRpdGlv
-bmFsIGNhbGxiYWNrDQo+Pj4+PiAgwqDCoMKgIHBsdWdpbnM6IGRpc3RpbmN0IHR5cGVzIGZv
-ciBjYWxsYmFja3MNCj4+Pj4+ICDCoMKgwqAgcGx1Z2luczogZXh0cmFjdCBjcHVfaW5kZXgg
-Z2VuZXJhdGUNCj4+Pj4+ICDCoMKgwqAgcGx1Z2luczogcmVtb3ZlIG9wIGZyb20gcWVtdV9w
-bHVnaW5faW5saW5lX2NiDQo+Pj4+Pg0KPj4+Pj4gIMKgwqAgaW5jbHVkZS9xZW11L3BsdWdp
-bi5owqDCoMKgwqDCoMKgwqAgfMKgIDQyICsrKysrKystLS0tDQo+Pj4+PiAgwqDCoCBpbmNs
-dWRlL3FlbXUvcWVtdS1wbHVnaW4uaMKgwqAgfMKgIDgwICsrKysrKysrKysrKysrKysrKysr
-LQ0KPj4+Pj4gIMKgwqAgcGx1Z2lucy9wbHVnaW4uaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCB8wqAgMTIgKysrLQ0KPj4+Pj4gIMKgwqAgYWNjZWwvdGNnL3BsdWdpbi1nZW4uY8KgwqDC
-oMKgwqDCoCB8IDEzNiArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLQ0KPj4+
-Pj4gIMKgwqAgcGx1Z2lucy9hcGkuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
-wqAgMzkgKysrKysrKysrKw0KPj4+Pj4gIMKgwqAgcGx1Z2lucy9jb3JlLmPCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIHwgMTA5ICsrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0N
-Cj4+Pj4+ICDCoMKgIHRlc3RzL3BsdWdpbi9pbmxpbmUuY8KgwqDCoMKgwqDCoMKgIHwgMTMw
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLQ0KPj4+Pj4gIMKgwqAgcGx1Z2lu
-cy9xZW11LXBsdWdpbnMuc3ltYm9scyB8wqDCoCAyICsNCj4+Pj4+ICDCoMKgIDggZmlsZXMg
-Y2hhbmdlZCwgNDY2IGluc2VydGlvbnMoKyksIDg0IGRlbGV0aW9ucygtKQ0KPj4+Pg0KPj4+
-PiBUaGUgZGVzY3JpcHRpb24gaW4gdGhlIGNvbW1pdCBtZXNzYWdlIG9mIHBhdGNoZXMgMS85
-LCAyLzksIDYvOSwgNy85LCBhbmQgOC85IGlzIG1pc3NpbmcuDQo+Pj4+DQo+Pj4+IElzIHRo
-aXMgaW50ZW50aW9uYWw/DQo+Pj4+DQo+Pj4NCj4+PiBEbyB5b3UgbWVhbiB0aGVyZSBpcyBu
-byBtdWx0aWxpbmUgY29tbWl0IG1lc3NhZ2UgZm9yIHRob3NlIGNoYW5nZXM/DQo+Pj4gSW5k
-ZWVkLCBmb3Igc29tZSBvZiB0aG9zZSBwYXRjaGVzLCB0aGUgY2hhbmdlIGlzIGEgc2luZ2xl
-IGxpbmUgY29tbWl0IG1lc3NhZ2UuDQo+Pg0KPj4gSSBqdXN0IHNlZSBhIGNvbW1pdCB0aXRs
-ZSBhbmQgdGhlIFNpZ25lZC1vZmYtYnkuIEZvciBleGFtcGxlLCBpbiA4LzkNCj4+IEkgc2Vl
-IHRoZSBmb2xsb3dpbmcgb24gZ2l0IGxvZzoNCj4+DQo+PiBjb21taXQgZjUxODg5OGFhMDli
-NDJlMzE3Yjg4NzIzN2JiNzVhNDMyYjQ3N2M2ZA0KPj4gQXV0aG9yOiBQaWVycmljayBCb3V2
-aWVyIDxwaWVycmljay5ib3V2aWVyQGxpbmFyby5vcmc+DQo+PiBEYXRlOsKgwqAgVGh1IE1h
-eSAyIDExOjA4OjQ2IDIwMjQgLTA3MDANCj4+DQo+PiAgIMKgwqDCoCBwbHVnaW5zOiBleHRy
-YWN0IGNwdV9pbmRleCBnZW5lcmF0ZQ0KPj4gICDCoMKgwqAgUmV2aWV3ZWQtYnk6IFJpY2hh
-cmQgSGVuZGVyc29uIDxyaWNoYXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnPg0KPj4gICDCoMKg
-wqAgU2lnbmVkLW9mZi1ieTogUGllcnJpY2sgQm91dmllciA8cGllcnJpY2suYm91dmllckBs
-aW5hcm8ub3JnPg0KPj4NCj4+IEl0IGhhcyBvbmx5IHRoZSB0aXRsZTogInBsdWdpbnM6IGV4
-dHJhY3QgY3B1X2luZGV4IGdlbmVyYXRlIg0KPj4gYW5kIFItYiBhbmQgUy1iLCBzbyBubyBk
-ZXNjcmlwdGlvbiBhYm91dCB0aGUgY2hhbmdlcy4NCj4gDQo+IFRoZSBkZXNjcmlwdGlvbiAo
-dGhlIGJvZHkgb2YgdGhlIGNvbW1pdCBtZXNzYWdlKSBpcyBtZW50aW9uZWQgaGVyZToNCj4g
-DQo+IGh0dHBzOi8vd3d3LnFlbXUub3JnL2RvY3MvbWFzdGVyL2RldmVsL3N1Ym1pdHRpbmct
-YS1wYXRjaC5odG1sI3dyaXRlLWEtbWVhbmluZ2Z1bC1jb21taXQtbWVzc2FnZQ0KPiANCj4g
-QWZ0ZXIgcXVpY2tseSBsb29raW5nIGF0IHRoZSBjb21taXR0ZWQgbG9ncywgSSBkbyBub3Rp
-Y2Ugc29tZSBjb21taXRzIG1pc3NpbmcgaXQsDQo+IGJ1dCBJIHJlYWxseSBiZWxpZXZlIGl0
-J3MgaW1wb3J0YW50IHRvIGhhdmUgaXQgZm9yIHRoZSByZWFzb25zIG91dGxpbmVkIGluIHRo
-ZXNlDQo+IGd1aWRlbGluZXMuDQo+IA0KDQpZb3UncmUgcmlnaHQsIEkganVzdCBzZW50IGEg
-djYgd2l0aCBtb3JlIGVsYWJvcmF0ZWQgY29tbWl0IG1lc3NhZ2VzLg0KDQpUaGFua3MsDQpQ
-aWVycmljaw0KDQo+IA0KPiBDaGVlcnMsDQo+IEd1c3Rhdm8NCg==
+On Wed Apr 24, 2024 at 7:30 PM AEST, C=C3=A9dric Le Goater wrote:
+> This helper routine uses the machine definition, sockets, cores and
+> threads, to loop on all CPUs of the machine. Replace CPU_FOREACH()
+> with it.
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> ---
+>  hw/ppc/pnv.c | 48 ++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 36 insertions(+), 12 deletions(-)
+>
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 6e3a5ccdec764c8f6cbd076e27f59c7082e64876..5f400ed127921c4c3a45bc548=
+63b2cafa53e7030 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -2264,6 +2264,21 @@ PowerPCCPU *pnv_chip_find_cpu(PnvChip *chip, uint3=
+2_t pir)
+>      return NULL;
+>  }
+> =20
+> +static void pnv_chip_foreach_cpu(PnvChip *chip,
+> +                   void (*fn)(PnvChip *chip, PowerPCCPU *cpu, void *opaq=
+ue),
+> +                   void *opaque)
+> +{
+> +    int i, j;
+> +
+> +    for (i =3D 0; i < chip->nr_cores; i++) {
+> +        PnvCore *pc =3D chip->cores[i];
+> +
+> +        for (j =3D 0; j < CPU_CORE(pc)->nr_threads; j++) {
+> +            fn(chip, pc->threads[j], opaque);
+> +        }
+> +    }
+> +}
+> +
+>  static ICSState *pnv_ics_get(XICSFabric *xi, int irq)
+>  {
+>      PnvMachineState *pnv =3D PNV_MACHINE(xi);
+> @@ -2332,23 +2347,26 @@ static ICPState *pnv_icp_get(XICSFabric *xi, int =
+pir)
+>      return cpu ? ICP(pnv_cpu_state(cpu)->intc) : NULL;
+>  }
+> =20
+> +static void pnv_pic_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
+> +                                    void *opaque)
+> +{
+> +    PNV_CHIP_GET_CLASS(chip)->intc_print_info(chip, cpu, opaque);
+> +}
+> +
+>  static void pnv_pic_print_info(InterruptStatsProvider *obj,
+>                                 Monitor *mon)
+>  {
+>      PnvMachineState *pnv =3D PNV_MACHINE(obj);
+>      int i;
+> -    CPUState *cs;
+> =20
+> -    CPU_FOREACH(cs) {
+> -        PowerPCCPU *cpu =3D POWERPC_CPU(cs);
+> +    for (i =3D 0; i < pnv->num_chips; i++) {
+> +        PnvChip *chip =3D pnv->chips[i];
+> =20
+> -        /* XXX: loop on each chip/core/thread instead of CPU_FOREACH() *=
+/
+> -        PNV_CHIP_GET_CLASS(pnv->chips[0])->intc_print_info(pnv->chips[0]=
+, cpu,
+> -                                                           mon);
+> -    }
+> +        /* First CPU presenters */
+> +        pnv_chip_foreach_cpu(chip, pnv_pic_intc_print_info, mon);
+> =20
+> -    for (i =3D 0; i < pnv->num_chips; i++) {
+> -        PNV_CHIP_GET_CLASS(pnv->chips[i])->pic_print_info(pnv->chips[i],=
+ mon);
+> +        /* Then other devices, PHB, PSI, XIVE */
+> +        PNV_CHIP_GET_CLASS(chip)->pic_print_info(chip, mon);
+>      }
+>  }
+> =20
+> @@ -2549,12 +2567,18 @@ static void pnv_cpu_do_nmi_on_cpu(CPUState *cs, r=
+un_on_cpu_data arg)
+>      }
+>  }
+> =20
+> +static void pnv_cpu_do_nmi(PnvChip *chip, PowerPCCPU *cpu, void *opaque)
+> +{
+> +    async_run_on_cpu(CPU(cpu), pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_NULL);
+> +}
+> +
+>  static void pnv_nmi(NMIState *n, int cpu_index, Error **errp)
+>  {
+> -    CPUState *cs;
+> +    PnvMachineState *pnv =3D PNV_MACHINE(qdev_get_machine());
+> +    int i;
+> =20
+> -    CPU_FOREACH(cs) {
+> -        async_run_on_cpu(cs, pnv_cpu_do_nmi_on_cpu, RUN_ON_CPU_NULL);
+> +    for (i =3D 0; i < pnv->num_chips; i++) {
+> +        pnv_chip_foreach_cpu(pnv->chips[i], pnv_cpu_do_nmi, NULL);
+>      }
+>  }
+> =20
+
 
