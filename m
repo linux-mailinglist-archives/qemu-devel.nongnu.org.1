@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB468BBA22
+	by mail.lfdr.de (Postfix) with ESMTPS id 526CF8BBA20
 	for <lists+qemu-devel@lfdr.de>; Sat,  4 May 2024 10:46:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3B0i-00084F-AT; Sat, 04 May 2024 04:44:48 -0400
+	id 1s3B0j-00084f-L7; Sat, 04 May 2024 04:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1s3B0g-00083V-2J; Sat, 04 May 2024 04:44:46 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1s3B0h-00083k-BL; Sat, 04 May 2024 04:44:47 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1s3B0b-0001Uf-Aj; Sat, 04 May 2024 04:44:45 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6f45f1179c3so108819b3a.3; 
- Sat, 04 May 2024 01:44:40 -0700 (PDT)
+ id 1s3B0e-0001Vk-W6; Sat, 04 May 2024 04:44:47 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6edc61d0ff6so410576b3a.2; 
+ Sat, 04 May 2024 01:44:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714812278; x=1715417078; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0/9jpqWzfP6QUw5FjWRXmb86sEKcV2SZni9T89hbtGw=;
- b=CxFg2uAPhqP+by97Als/FUQZyvdsLSycZe9cFLLyMyHtFhjpMoVs46MU0ET/aIsgoe
- H8YpnF/pIgvinQuedI5Al4v3LCUKfvPky/lmpEcibBissb/0WNdFcst/xzcT7ewkmpwM
- K52ArcSSO/QeUaUOJGtwKs3Id0nkicv60QeGq+Dva+gv0NwnyxR1GooO8rzdTVOpY3Dg
- CgeKgNLGj2lNGnNDiLpzvdL5owZxTNvE2CN9sDkShXKFlj5MXEqW661vpHJopatM7U9X
- CstfdVNq0oC+uTXm5jtn7lVWnwTPd/LLoTEjOQioMCa31PnMOPBNVawrMBXuh/Ut9h0L
- 4bJw==
+ d=gmail.com; s=20230601; t=1714812282; x=1715417082; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iFVIMyRlD8/BSmSylP4xvcbNRqi2JvuqJ8ggirzVAcY=;
+ b=DB1DA1t5tXxXOwO/ptWZiy947nvb6Morxt1u/ufhi8PQf6RxSyuYuHN4dOe2/8rEMU
+ 8w/fnB34jChig8d3qzrEpgrwbvxYOKPhI5yOWdxKzaTFG1THzQwl9SowOo+3mepyvb8D
+ RozuItXOmUVXB37WXXdKYG7Yc5BU5i5b5ypg5EQ3Bd9GyymWxuNvAot7NaDhl1IeHUxZ
+ jQhyQ3wy8uaB7vd64ikSm/4Sxn17I4I8JAKk1yVRfdM9TagkVfpz8DsHBLTKwIpS1Wvz
+ dQoedrrqF9UMqtGfXMCmNqXi5Ki+iWPHHGI8sR8GfKeUnN3N8oGYsZG0wMjL34f//wgZ
+ JNgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714812278; x=1715417078;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0/9jpqWzfP6QUw5FjWRXmb86sEKcV2SZni9T89hbtGw=;
- b=jFYfYaQVxTqw2WNT9F3DIbEZMkCM7KbkVlmxwIdLd3xSNGmXFloQhrdGaOJfh9Ttt7
- P/k8VkZj0FypOEcq98utm0NPStpVEhDz38V6fWBedH09s+eKeUZkx5I2HlKmS7jmjryu
- RJ+zFR3oWJEZXMNZtEjKofYxMPro5ndakJczrnJdez/NdChMXI54cAq9MpO0SdmNkR5B
- NqVa0+N8Y09ApasWxF5jfsM4noLDoLBVF/UjN9m1vN9qzzmoCtgNltKecpQP6KbTCIJo
- IzISgfLZQ8kaddZ+3Ov906MV0CKvcNeM9aDNJ6vpVQZ46SxvkjhlXzAGhscYYrREaOrv
- MzyQ==
+ d=1e100.net; s=20230601; t=1714812282; x=1715417082;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iFVIMyRlD8/BSmSylP4xvcbNRqi2JvuqJ8ggirzVAcY=;
+ b=SHJBD5/SkIJi5foLC0zAEJSIA6dnhT0PjMq+kIKbA3VCI97HSN08Oq8l/DRrtHqmpH
+ wZi/NL85ap00IypVMH27+7DDUJd7wqVz3y8N8Pcx6NELhBxHuCv6aEKGihfbdiAoXdlX
+ KGLq2Twm2crNfVxi19z9nGbOZt+4Qu+CQvx7pTgSxOeDr81q8MvIaKi3vHFeiVYBxt/T
+ jy1pBCL6VPKAY1FJOJL+m3gSXzybYI66QPFZw5dKcxsiql0cLyhUyZ10PnU9LSGyoszt
+ TlFC1kfQa7vKcahWZ9uLcTewJXnlVt/JSuOcs4OJRs87BpliA2T/y4BnJuuSm/DryVyg
+ Y6Rg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU57BL/FSuAurnM6XjcdMv4dtd73BYsJL6ETV/OOlvKFBVStUEWYdB+5F7KIkzDugxZyW+RDHBDOyggntC5cgOx4Xo/lAw=
-X-Gm-Message-State: AOJu0YxTNkXEAnOW64PN8DWk53AheiSesKPgnP+Ji5Zc2TFsVLdYAupg
- ToTuIpnFvAWzSbxHq8mVHqM7s6KYOfV8bm+vOd5V7sbUvpF3OvptMlA6489h
-X-Google-Smtp-Source: AGHT+IGscS4lAVwPVRQUrGpZ+/IAiSKUncDGLIlLgdRN6KxnEU4NiyWCN6S6kLoscqhcs/UJFID/7w==
-X-Received: by 2002:a05:6a00:842:b0:6f3:89d3:cb1c with SMTP id
- q2-20020a056a00084200b006f389d3cb1cmr5623544pfk.16.1714812278197; 
- Sat, 04 May 2024 01:44:38 -0700 (PDT)
+ AJvYcCVcVbo/V6bSV6b+yh0bn7O6hXS1V8D4uFeMAYwdTrJ36QLp6aIa32M1kbCF57g6BiKyO8eZiaTPwqMB5MQY9HrGvb5gyfo=
+X-Gm-Message-State: AOJu0YwCH17n8P1QMYhnVMkWbYXGT/b53HvSHg9IEcBnVeReog7DTKGR
+ FtuRJzQ3Wm4F/5DCAs2pHZkaBb6GhqEQ7lar03WDWZhvDuGSpNTRb8yQc5Jw
+X-Google-Smtp-Source: AGHT+IGwePShG1wgYeY6sScrGEhr0oOuh+dbaY7QTZCOS0QN0zXsaziZTW5R3tYEVuAky25k8tvIDg==
+X-Received: by 2002:a05:6a00:10d2:b0:6ea:e2d8:468 with SMTP id
+ d18-20020a056a0010d200b006eae2d80468mr6393129pfu.26.1714812281926; 
+ Sat, 04 May 2024 01:44:41 -0700 (PDT)
 Received: from amjad-pc.. ([192.228.203.229]) by smtp.gmail.com with ESMTPSA id
- ei32-20020a056a0080e000b006f44e64dfe3sm2310393pfb.177.2024.05.04.01.44.36
+ ei32-20020a056a0080e000b006f44e64dfe3sm2310393pfb.177.2024.05.04.01.44.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 04 May 2024 01:44:37 -0700 (PDT)
+ Sat, 04 May 2024 01:44:41 -0700 (PDT)
 From: Amjad Alsharafi <amjadsharafi10@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  "open list:vvfat" <qemu-block@nongnu.org>,
  Amjad Alsharafi <amjadsharafi10@gmail.com>
-Subject: [PATCH v2 0/5] vvfat: Fix write bugs for large files and add iotests
-Date: Sat,  4 May 2024 16:44:18 +0800
-Message-ID: <cover.1714811679.git.amjadsharafi10@gmail.com>
+Subject: [PATCH v2 1/5] vvfat: Fix bug in writing to middle of file
+Date: Sat,  4 May 2024 16:44:19 +0800
+Message-ID: <2871281d8ea41fb4d7ef8f9beeaba017a1717019.1714811679.git.amjadsharafi10@gmail.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <cover.1714811679.git.amjadsharafi10@gmail.com>
+References: <cover.1714811679.git.amjadsharafi10@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=amjadsharafi10@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=amjadsharafi10@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -90,64 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
-  Added iotests for `vvfat` driver along with a simple `fat16` module to run the tests.
+Before this commit, the behavior when calling `commit_one_file` for
+example with `offset=0x2000` (second cluster), what will happen is that
+we won't fetch the next cluster from the fat, and instead use the first
+cluster for the read operation.
 
-v1:
-  https://patchew.org/QEMU/20240327201231.31046-1-amjadsharafi10@gmail.com/
-  Fix the issue of writing to the middle of the file in vvfat
+This is due to off-by-one error here, where `i=0x2000 !< offset=0x2000`,
+thus not fetching the next cluster.
 
-Amjad Alsharafi (5):
-  vvfat: Fix bug in writing to middle of file
-  vvfat: Fix usage of `info.file.offset`
-  vvfat: Fix reading files with non-continuous clusters
-  iotests: Add `vvfat` tests
-  iotests: Filter out `vvfat` fmt from failing tests
+Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
+---
+ block/vvfat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- .gitlab-ci.d/buildtest.yml                    |   1 +
- block/vvfat.c                                 |  32 +-
- tests/qemu-iotests/001                        |   1 +
- tests/qemu-iotests/002                        |   1 +
- tests/qemu-iotests/003                        |   1 +
- tests/qemu-iotests/005                        |   1 +
- tests/qemu-iotests/008                        |   1 +
- tests/qemu-iotests/009                        |   1 +
- tests/qemu-iotests/010                        |   1 +
- tests/qemu-iotests/011                        |   1 +
- tests/qemu-iotests/012                        |   1 +
- tests/qemu-iotests/021                        |   1 +
- tests/qemu-iotests/032                        |   1 +
- tests/qemu-iotests/033                        |   1 +
- tests/qemu-iotests/052                        |   1 +
- tests/qemu-iotests/094                        |   1 +
- tests/qemu-iotests/120                        |   2 +-
- tests/qemu-iotests/140                        |   1 +
- tests/qemu-iotests/145                        |   1 +
- tests/qemu-iotests/157                        |   1 +
- tests/qemu-iotests/159                        |   2 +-
- tests/qemu-iotests/170                        |   2 +-
- tests/qemu-iotests/192                        |   1 +
- tests/qemu-iotests/197                        |   2 +-
- tests/qemu-iotests/208                        |   2 +-
- tests/qemu-iotests/215                        |   2 +-
- tests/qemu-iotests/236                        |   2 +-
- tests/qemu-iotests/251                        |   1 +
- tests/qemu-iotests/307                        |   2 +-
- tests/qemu-iotests/308                        |   2 +-
- tests/qemu-iotests/check                      |   2 +-
- tests/qemu-iotests/fat16.py                   | 507 ++++++++++++++++++
- tests/qemu-iotests/meson.build                |   3 +-
- .../tests/export-incoming-iothread            |   2 +-
- tests/qemu-iotests/tests/fuse-allow-other     |   1 +
- .../tests/mirror-ready-cancel-error           |   2 +-
- tests/qemu-iotests/tests/regression-vhdx-log  |   1 +
- tests/qemu-iotests/tests/vvfat                | 400 ++++++++++++++
- tests/qemu-iotests/tests/vvfat.out            |   5 +
- 39 files changed, 967 insertions(+), 26 deletions(-)
- create mode 100644 tests/qemu-iotests/fat16.py
- create mode 100755 tests/qemu-iotests/tests/vvfat
- create mode 100755 tests/qemu-iotests/tests/vvfat.out
-
+diff --git a/block/vvfat.c b/block/vvfat.c
+index 9d050ba3ae..ab342f0743 100644
+--- a/block/vvfat.c
++++ b/block/vvfat.c
+@@ -2525,7 +2525,7 @@ commit_one_file(BDRVVVFATState* s, int dir_index, uint32_t offset)
+         return -1;
+     }
+ 
+-    for (i = s->cluster_size; i < offset; i += s->cluster_size)
++    for (i = s->cluster_size; i <= offset; i += s->cluster_size)
+         c = modified_fat_get(s, c);
+ 
+     fd = qemu_open_old(mapping->path, O_RDWR | O_CREAT | O_BINARY, 0666);
 -- 
 2.44.0
 
