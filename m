@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39E68BBCDA
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 May 2024 17:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4454E8BBCD0
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 May 2024 17:40:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3HU8-00022P-6h; Sat, 04 May 2024 11:39:36 -0400
+	id 1s3HU9-00022f-0N; Sat, 04 May 2024 11:39:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3HU6-00021U-05
+ id 1s3HU6-00022E-S4
  for qemu-devel@nongnu.org; Sat, 04 May 2024 11:39:34 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3HU4-0006EI-IO
- for qemu-devel@nongnu.org; Sat, 04 May 2024 11:39:33 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-61eba9f9c5dso453659a12.0
+ id 1s3HU5-0006EU-8d
+ for qemu-devel@nongnu.org; Sat, 04 May 2024 11:39:34 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2b12b52fbe0so433244a91.0
  for <qemu-devel@nongnu.org>; Sat, 04 May 2024 08:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714837171; x=1715441971; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714837172; x=1715441972; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qfHxYfQijfNm9q0rpqswl8HrggnkGTpjh4fn75ISOwE=;
- b=zEdJ5CqNivpkqZWidMWcOhn8pqX2VYxrrCWeo1uuniGyPZrp1OicMfFMvw895wITvM
- kEtN3JPaL2ULV6EBxjNMetZXcayRsz1wrwF9prOLYYmkRMUpZTBbFUH4q5/kPpdebBLi
- 2Xn66THU1El2xAym/GO+LTMjUM2YMs+NIpMuNunE44fsFKnz1HBYAqVHEejY8xdVQf+x
- Xt/pXeT7iV8RzhAg2ggnJyexkLWKkbLm4vBRKj1YCSXpZhQe61z36e0Whts+cDcZesER
- X3VU05X3JRzTaHEfOcpcDfrRIbsyY9Rnqix0G8PUP6Hgrbp/xrnM0H9ZxD+Q/Q3PWBYz
- jo9g==
+ bh=fi/ZQeRrecbB7BBaXRi3+3SwPGSOgsgXACvVx9J1knk=;
+ b=uGpEVFSSEr8060cP509cO+f4sPuHs+61OeLKLcmndJaneWGPUcAcYvrjRXF+n7M2XK
+ pO3EprLaXPujlCOdCUoD2qAiluaOjhhNebN28oEJ3C7qBagfIXb25nKc5DTqhg3fTiS9
+ kh5EEDQdGkce/sD1hLtUoKrN2RdsuRJHANcg0g9Ur6hb8Wz/K5r8lbrcrnycZ2O2xNvg
+ veTlY/eKbKSQCMINRzN8Pf9hyUcSNiXEDWyjZFTiA/KkYcMWo0e0730tL0ffXL9gCgtU
+ VuNBhCJAj7M49IYzpxXlTlqyRXhAEHkp9kNDCoytSCwO1+ImiBIOpwO8q2J1vFdQTaxN
+ JdGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714837171; x=1715441971;
+ d=1e100.net; s=20230601; t=1714837172; x=1715441972;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qfHxYfQijfNm9q0rpqswl8HrggnkGTpjh4fn75ISOwE=;
- b=tjLCbRUidFxjApdv6c9Z+w0tv8NiLI8yXjTXDyUX/12Ysd8lM6Gk4Eq0YGDhugeq/w
- Wx1LCotoxDiQ44V6QI7VpqAgXflnnysEq6MkHAQuP+I+A5lCY2zcCcgat0OksgT/csM5
- JnLrf7HeuUU69JyQW292jkLHzl6TIeL2Kwq/hWM+IhMpDtdkCWfjAD53gdYSaam7yw9G
- e3+L9MymJfzRdm+LZ+9mOxawzNjbUzjm3/Df3VbFirKzUybbZa/G/wHzNJfHeK2n3Nr9
- TFY6hKh0yyl5kjb5GnJRQPN9XZbEdLMDdb4TpyBy0gRhW5/R+w5jUr1wDXnz82w42VAv
- 4z3Q==
-X-Gm-Message-State: AOJu0Yx8hMuq/ORVWmKEKWPEve7oN64GdE5IhHVdOuNGQkb3cls+Fnxl
- Rnx2vH+8mHpwsQ7lmF4g0A9fOVgYkkhKSgll1Efw0TOkaFvrME/l1rAm8PCpLeI/9MCwLHK9vNl
- i
-X-Google-Smtp-Source: AGHT+IFH8oA2Gk266QDn6+yaWXIiCenPKzKHAqasXAHBPApOVt/nSnEGZcrbWLKjfopeXL3jzYC4uQ==
-X-Received: by 2002:a17:902:f609:b0:1df:f681:3cd8 with SMTP id
- n9-20020a170902f60900b001dff6813cd8mr7201555plg.12.1714837171063; 
+ bh=fi/ZQeRrecbB7BBaXRi3+3SwPGSOgsgXACvVx9J1knk=;
+ b=hSI3C05QS4+fiCOgTxrvDk2eHTSlra8UotxkUyl+jcTkJi9aqUDY2tV4mkGiiOqiaE
+ nqY3HkeUW4kgTOlyGgYg4b7fy8189/poGf7D8YP1P6nPCyZKR/H6SxxiLM4LU7G+12sJ
+ 90aNU3YQdjFuyw0OFYTgkeqa5rvCMkayF38ZB42toAJG0oGQokjRRDXkWa/VEWQkND43
+ P3W2qoHg3tBGOFgxcV+zHpi/kKVlzyYZ/d0W3zOGm3w9nJcrMVU8EyBkSs9OFVXm4Xt3
+ FBJDUus1Gr7IJOfiu8lTOzMQpWuwdUt+MiZJ6ItvuIVBWkiJ6InDA/NCO+OuGoIgigul
+ fiWQ==
+X-Gm-Message-State: AOJu0YxhNVmHRBm1NUGgXdQThyYv+hr0BVkeDNoueXbdBMpF2m1Omb7l
+ zglpx99UDd1Wh4SbIgHBDtmc6LN3pA9FvTWRW0dhRBvgIaG7iZNEXHksv+IFe6T6zFPw0D5Ge7m
+ 0
+X-Google-Smtp-Source: AGHT+IG/hzdw5QCUao4sdoXVF0FENHoiHnoJROWBIlnUDLQRv7rt+zJGfwwarl4+o9JEA9QkQg3AEQ==
+X-Received: by 2002:a17:90b:684:b0:2b4:329e:e373 with SMTP id
+ m4-20020a17090b068400b002b4329ee373mr5941195pjz.6.1714837171872; 
  Sat, 04 May 2024 08:39:31 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- n15-20020a170902e54f00b001e4d22f828fsm5197859plf.33.2024.05.04.08.39.30
+ n15-20020a170902e54f00b001e4d22f828fsm5197859plf.33.2024.05.04.08.39.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 04 May 2024 08:39:30 -0700 (PDT)
+ Sat, 04 May 2024 08:39:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/9] target/alpha: Use DISAS_NEXT definition instead of magic
- '0' value
-Date: Sat,  4 May 2024 08:39:20 -0700
-Message-Id: <20240504153926.357845-4-richard.henderson@linaro.org>
+Subject: [PULL 4/9] target/alpha: Inline DISAS_PC_UPDATED and return
+ DISAS_NORETURN
+Date: Sat,  4 May 2024 08:39:21 -0700
+Message-Id: <20240504153926.357845-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240504153926.357845-1-richard.henderson@linaro.org>
 References: <20240504153926.357845-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,32 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Inline DISAS_PC_UPDATED switch case from alpha_tr_tb_stop():
+
+    switch (ctx->base.is_jmp) {
+    ...
+    case DISAS_PC_UPDATED:
+        tcg_gen_lookup_and_goto_ptr();
+        break;
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Message-Id: <20240424234436.995410-4-richard.henderson@linaro.org>
-[PMD: Split bigger patch, part 1/5]
+[PMD: Split bigger patch, part 2/5]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240503072014.24751-4-philmd@linaro.org>
+Message-Id: <20240503072014.24751-5-philmd@linaro.org>
 ---
  target/alpha/translate.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 52c2e6248b..9ad7bf6e5f 100644
+index 9ad7bf6e5f..01914e7b56 100644
 --- a/target/alpha/translate.c
 +++ b/target/alpha/translate.c
-@@ -440,8 +440,10 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
- 
-     /* Notice branch-to-next; used to initialize RA with the PC.  */
-     if (disp == 0) {
--        return 0;
--    } else if (use_goto_tb(ctx, dest)) {
-+        return DISAS_NEXT;
-+    }
-+
-+    if (use_goto_tb(ctx, dest)) {
-         tcg_gen_goto_tb(0);
+@@ -450,7 +450,8 @@ static DisasJumpType gen_bdirect(DisasContext *ctx, int ra, int32_t disp)
+         return DISAS_NORETURN;
+     } else {
          tcg_gen_movi_i64(cpu_pc, dest);
-         tcg_gen_exit_tb(ctx->base.tb, 0);
+-        return DISAS_PC_UPDATED;
++        tcg_gen_lookup_and_goto_ptr();
++        return DISAS_NORETURN;
+     }
+ }
+ 
+@@ -479,7 +480,8 @@ static DisasJumpType gen_bcond_internal(DisasContext *ctx, TCGCond cond,
+         TCGv_i64 p = tcg_constant_i64(ctx->base.pc_next);
+ 
+         tcg_gen_movcond_i64(cond, cpu_pc, cmp, i, d, p);
+-        return DISAS_PC_UPDATED;
++        tcg_gen_lookup_and_goto_ptr();
++        return DISAS_NORETURN;
+     }
+ }
+ 
 -- 
 2.34.1
 
