@@ -2,77 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661768BBE07
-	for <lists+qemu-devel@lfdr.de>; Sat,  4 May 2024 22:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B55028BBE10
+	for <lists+qemu-devel@lfdr.de>; Sat,  4 May 2024 22:35:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3M1B-0007Un-L5; Sat, 04 May 2024 16:30:02 -0400
+	id 1s3M6U-0006Qn-Pl; Sat, 04 May 2024 16:35:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s3M15-0007Sj-5p
- for qemu-devel@nongnu.org; Sat, 04 May 2024 16:29:55 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s3M6A-0006P8-5k; Sat, 04 May 2024 16:35:10 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s3M13-0005Xj-FF
- for qemu-devel@nongnu.org; Sat, 04 May 2024 16:29:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1714854592;
- bh=Xu37N/eYm5FupJGfibsY8+PUHgOjlRAxNiRBYbUz/IA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ywY4l/BzbWmas+yddcjYZ3ovzEUNN++FJi85lT6OKwg+41RuKjg8RegnG5mqHj1Oq
- DtxqUtfVuLhIbNzbqFjXeWSBysJytJtRLtkKkvSsVBuCuFg9/fTKRAykl1j9qubYt1
- 5KZVORNIC3i1jXjAnx1MYyTIBo+IgHAmk+oFR2595UwKI4O3vdKM3K1bFiD3liWVtk
- eS4XRcBdNQiatcxlOuIUJSuUwzxZ5ijEM+BLHsF4BaTnh86x2CBKUHpCljhT/o4860
- NJgPftaKrxTyzgciJ8fgJ+zQXnMh8iRES0L281DLRugU7SzAa2hYMcydNgmpmmy9Ka
- TOEQEM8Zwd5ZQ==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7EF38378215C;
- Sat,  4 May 2024 20:29:50 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v10 10/10] virtio-gpu: Support Venus context
-Date: Sat,  4 May 2024 23:28:34 +0300
-Message-ID: <20240504202834.399780-11-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240504202834.399780-1-dmitry.osipenko@collabora.com>
-References: <20240504202834.399780-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s3M64-0006Vs-KN; Sat, 04 May 2024 16:35:09 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 14B086412B;
+ Sat,  4 May 2024 23:35:14 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 09D7AC669A;
+ Sat,  4 May 2024 23:35:00 +0300 (MSK)
+Message-ID: <df14595f-3a26-4b7f-948d-df522f487b92@tls.msk.ru>
+Date: Sat, 4 May 2024 23:34:59 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fixes: Indentation using TABs and improve formatting
+To: Tanmay <tanmaynpatil105@gmail.com>, qemu-stable@nongnu.org,
+ QEMU Developers <qemu-devel@nongnu.org>
+References: <CAHnsOnM6gzcjpmEqCN0cFjZKXZCK_ZGAphuf46xWmUyBcNrAxQ@mail.gmail.com>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAHnsOnM6gzcjpmEqCN0cFjZKXZCK_ZGAphuf46xWmUyBcNrAxQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,143 +81,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+04.05.2024 21:58, Tanmay wrote:
+> Hi,
+> 
+> I have attached a patch file that fixes indentation and formatting for some files as listed in https://gitlab.com/qemu-project/qemu/-/issues/373 
+> <https://gitlab.com/qemu-project/qemu/-/issues/373>.
 
-Request Venus when initializing VirGL and if venus=true flag is set for
-virtio-gpu-gl device.
+it is sort of good you posted this patch to stable@.  It has absolutely nothing to do
+with stable, but it serves as a an example of things which should - in my opinion -
+not be done at all.  We had another similar change, 55339361276a "sh4: Coding style:
+Remove tabs", which makes all further changes (fixes) in this area basically
+non-back-portable to previous stable series.
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu-gl.c     |  2 ++
- hw/display/virtio-gpu-virgl.c  | 22 ++++++++++++++++++----
- hw/display/virtio-gpu.c        | 13 +++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- meson.build                    |  1 +
- 5 files changed, 37 insertions(+), 4 deletions(-)
+FWIW,
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index cd39e0650862..f2e4da56d8c4 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -138,6 +138,8 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-+    DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 1babda4efad5..a0a5e5b7a3de 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1091,6 +1091,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#ifdef VIRGL_RENDERER_VENUS
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1121,7 +1126,7 @@ static void virtio_gpu_virgl_add_capset(GArray *capset_ids, uint32_t capset_id)
- 
- GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset_max_ver, capset_max_size;
-     GArray *capset_ids;
- 
-     capset_ids = g_array_new(false, false, sizeof(uint32_t));
-@@ -1130,12 +1135,21 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-     virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL);
- 
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
--    if (capset2_max_ver) {
-+                               &capset_max_ver,
-+                               &capset_max_size);
-+    if (capset_max_ver) {
-         virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
-+
-     return capset_ids;
- }
- 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 45c1f2006712..e86326b25a72 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1491,6 +1491,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef HAVE_VIRGL_VENUS
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+#else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 105308a36865..8b7bbf853fe8 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -117,6 +118,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/meson.build b/meson.build
-index 9a00e29a80cf..5e59f031b4b7 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2290,6 +2290,7 @@ if virgl.version().version_compare('>=1.0.0')
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
-   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
-   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
-+  config_host_data.set('HAVE_VIRGL_VENUS', 1)
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
+/mjt
 -- 
-2.44.0
+GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
+New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
+Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
+Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
 
 
