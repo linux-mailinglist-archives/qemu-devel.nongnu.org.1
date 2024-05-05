@@ -2,52 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A67F8BC324
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 20:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA378BC359
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 21:52:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3gyl-0002xY-2J; Sun, 05 May 2024 14:52:55 -0400
+	id 1s3htb-0001GA-9u; Sun, 05 May 2024 15:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s3gyi-0002xG-Ji
- for qemu-devel@nongnu.org; Sun, 05 May 2024 14:52:52 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1s3htV-0001G0-N7
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 15:51:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s3gyg-0006w0-DG
- for qemu-devel@nongnu.org; Sun, 05 May 2024 14:52:52 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8A5A44E6031;
- Sun, 05 May 2024 20:52:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Y5gDt24dzGgd; Sun,  5 May 2024 20:52:45 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9E5104E601D; Sun, 05 May 2024 20:52:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9C73B746E3B;
- Sun, 05 May 2024 20:52:45 +0200 (CEST)
-Date: Sun, 5 May 2024 20:52:45 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-cc: peter.maydell@linaro.org, laurent@vivier.eu, qemu-devel@nongnu.org
-Subject: Re: [PATCH 6/7] target/ppc: Remove unused struct 'mmu_ctx_hash32'
-In-Reply-To: <20240505171444.333302-7-dave@treblig.org>
-Message-ID: <c9c5eebe-7f72-ddf4-5192-d504ac964396@eik.bme.hu>
-References: <20240505171444.333302-1-dave@treblig.org>
- <20240505171444.333302-7-dave@treblig.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1s3htT-0007tv-Vx
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 15:51:33 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 22D376437E;
+ Sun,  5 May 2024 22:51:44 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 1F92BC754F;
+ Sun,  5 May 2024 22:51:28 +0300 (MSK)
+Message-ID: <95ab6dcf-cc96-4472-93ab-f08682b37d5e@tls.msk.ru>
+Date: Sun, 5 May 2024 22:51:27 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [sdl-qemu] [PATCH v1] /hw/intc/arm_gic WRONG ARGUMENTS
+To: Andrey Shumilin <shum.sdl@nppct.ru>, qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org
+References: <a4cbfe6c-27d6-4df0-ae31-db0d60d88f9e@nppct.ru>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <a4cbfe6c-27d6-4df0-ae31-db0d60d88f9e@nppct.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,35 +81,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 5 May 2024, Dr. David Alan Gilbert wrote:
-> I think it's use was removed by
-> Commit 5883d8b296 ("mmu-hash*: Don't use full ppc_hash{32,
-> 64}_translate() path for get_phys_page_debug()")
->
-> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+05.05.2024 20:58, Andrey Shumilin wrote:
+[unreadable text skipped]
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+FWIW, your message is very difficult to read due to colors used within.
 
-> ---
-> target/ppc/mmu-hash32.c | 6 ------
-> 1 file changed, 6 deletions(-)
->
-> diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-> index 3976416840..746321329c 100644
-> --- a/target/ppc/mmu-hash32.c
-> +++ b/target/ppc/mmu-hash32.c
-> @@ -36,12 +36,6 @@
-> #  define LOG_BATS(...) do { } while (0)
-> #endif
->
-> -struct mmu_ctx_hash32 {
-> -    hwaddr raddr;      /* Real address              */
-> -    int prot;                      /* Protection bits           */
-> -    int key;                       /* Access key                */
-> -};
-> -
-> static int ppc_hash32_pp_prot(int key, int pp, int nx)
-> {
->     int prot;
->
+/mjt
 
