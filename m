@@ -2,58 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44268BC16F
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 16:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B6C8BC2C4
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3cux-0003Ux-6V; Sun, 05 May 2024 10:32:43 -0400
+	id 1s3fS1-0001ji-Rk; Sun, 05 May 2024 13:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1s3cus-0003Om-RX
- for qemu-devel@nongnu.org; Sun, 05 May 2024 10:32:38 -0400
-Received: from out-178.mta1.migadu.com ([2001:41d0:203:375::b2])
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fRz-0001gr-8k
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:14:59 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
- id 1s3cuo-0002UM-N8
- for qemu-devel@nongnu.org; Sun, 05 May 2024 10:32:38 -0400
-Message-ID: <960d6344-4aa5-4644-ba97-a06d21f4ead8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1714919543;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VY+njysv1MdU4u1nHnnqJGdW72Ge39UFiDFeON+QGqE=;
- b=taJ5kOdk2wl3oHJ8XlNRBIB/QtmTn9jYIKgmTYIaKOTNIEyB1/RBoYpuzOCNXYP7P0r7oi
- U7AnvcfyROoRjp0lA3/UKJhUggXT1et8mYL/ijzskc+wbJhGeYB/u/Lpn7ghgzTYS7pV7R
- A50jGzcXrBGpmyoBepbyUxQW/MQZNN8=
-Date: Sun, 5 May 2024 22:31:54 +0800
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fRx-0005hY-25
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:14:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+ :Subject; bh=PnpACvcW7IcKgJBPfeh+nx3cyRj1I2VUIdxtNjnmg5I=; b=j1DbTNT6evTj62eb
+ OehpbvXdvAg17Qxz9ums+TIVkeVgcq4DDrVQOW9vDC0G+OxmByd/7NlLl3+CaVskp6G/N/Res3sm8
+ TnqXqkba7ovi6nOWIWYU1MUCPn84780zPcdmCqd56P6cfRAaPZr37Xnur+Lc0U2cBIQlZCP9WsRb2
+ xoruR/eYG5ERD6YFiw/3ioe/rYCAgnrcwFPPwxw3ps2UfthpvPuAk1rVDYNMAi8/iRtFJEVK1NUHo
+ bKCV5mabjQIRZXNJylf0hF8q/eOClx7ZvgLHL3VDu69ZtcP4+B/ze6rL9by0eLeFrlIerUrWwTBuc
+ tZrVr6EIXoSptFJFsA==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+ by mx.treblig.org with esmtp (Exim 4.96)
+ (envelope-from <dave@treblig.org>) id 1s3fRr-004nca-0E;
+ Sun, 05 May 2024 17:14:51 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: peter.maydell@linaro.org,
+	laurent@vivier.eu
+Cc: qemu-devel@nongnu.org,
+	"Dr. David Alan Gilbert" <dave@treblig.org>
+Subject: [PATCH 0/7] Remove some unused structures
+Date: Sun,  5 May 2024 18:14:37 +0100
+Message-ID: <20240505171444.333302-1-dave@treblig.org>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-Subject: Re: [PATCH] hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug
- System registers
-To: Alexander Graf <agraf@csgraf.de>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, peter.maydell@linaro.org,
- wanghaibin.wang@huawei.com
-References: <20240503153453.54389-1-zenghui.yu@linux.dev>
- <f0c19830-d4e0-4585-b960-7dd3fa1a3c76@csgraf.de>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-In-Reply-To: <f0c19830-d4e0-4585-b960-7dd3fa1a3c76@csgraf.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:203:375::b2;
- envelope-from=zenghui.yu@linux.dev; helo=out-178.mta1.migadu.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dave@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,44 +63,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/5/5 21:18, Alexander Graf wrote:
-> 
-> On 03.05.24 19:34, Zenghui Yu wrote:
->> We wrongly encoded ID_AA64PFR1_EL1 using {3,0,0,4,2} in 
->> hvf_sreg_match[] so
->> we fail to get the expected ARMCPRegInfo from cp_regs hash table with the
->> wrong key.
->>
->> Fix it with the correct encoding {3,0,0,4,1}. With that fixed, the Linux
->> guest can properly detect FEAT_SSBS2 on my M1 HW.
->>
->> All DBG{B,W}{V,C}R_EL1 registers are also wrongly encoded with op0 == 14.
->> It happens to work because HVF_SYSREG(CRn, CRm, 14, op1, op2) equals to
->> HVF_SYSREG(CRn, CRm, 2, op1, op2), by definition. But we shouldn't 
->> rely on
->> it.
->>
->> Fixes: a1477da3ddeb ("hvf: Add Apple Silicon support")
->> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-> 
-> 
-> Nice catch! Did you find them only because of functional issues or have 
-> you taken an automated pass somehow to validate the sysreg definitions 
-> are correct?
+A bunch of structs that are currently unused,
+found with a simple script and a bit of eyeballing.
 
-Neither, this was found by code inspection. I was just curious about how
-VMM would interact with hypervisor to expose features to the guest. Docs
-at https://developer.apple.com/documentation/hypervisor are not that
-detailed (I may need to read further ;-) ).
+The only one I'm that suspicious of is the SPARC
+one, where the patch which removed the use is a bit
+confusing to me.
 
-P.S., I verified on M1 that ID_AA64PFR1_EL1 is 0x20 at
-hvf_arm_get_host_cpu_features() stage and is overwritten as 0x0 later
-w/o this patch, which indicates the (guest visible) feature ID registers
-are "writable" to some extent.
+Tested with a 
+  --target-list=ppc-softmmu,m68k-softmmu,x86_64-softmmu,arm-softmmu,aarch64-softmmu,cris-linux-user,i386-linux-user,sparc-linux-user
+and 'make check' on x86 linux.
 
-> Reviewed-by: Alexander Graf <agraf@csgraf.de>
+Dave
 
-Thanks!
+Dr. David Alan Gilbert (7):
+  linux-user: cris: Remove unused struct 'rt_signal_frame'
+  linux-user: i386/signal: Remove unused fp structs
+  linux-user: sparc: Remove unused struct 'target_mc_fq'
+  hw/usb/dev-network: Remove unused struct 'rndis_config_parameter'
+  hw/arm/bcm2836: Remove unusued struct 'BCM283XClass'
+  target/ppc: Remove unused struct 'mmu_ctx_hash32'
+  net/can: Remove unused struct 'CanBusState'
 
-Zenghui
+ hw/arm/bcm2836.c          | 12 ------------
+ hw/usb/dev-network.c      |  8 --------
+ linux-user/cris/signal.c  |  8 --------
+ linux-user/i386/signal.c  | 10 ----------
+ linux-user/sparc/signal.c |  5 -----
+ net/can/can_host.c        |  6 ------
+ target/ppc/mmu-hash32.c   |  6 ------
+ 7 files changed, 55 deletions(-)
+
+-- 
+2.45.0
+
 
