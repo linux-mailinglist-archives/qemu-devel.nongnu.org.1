@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA9A8BC2C0
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE838BC2C3
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3fS3-0001kr-Rp; Sun, 05 May 2024 13:15:03 -0400
+	id 1s3fS4-0001mI-MO; Sun, 05 May 2024 13:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS1-0001jW-5J
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS1-0001kS-RC
  for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:01 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fRz-0005iL-ND
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:00 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS0-0005iP-EM
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=6Hyxc6NsbvquaujV8/AXCDaGepCJvLT6ei8fyjF4/nE=; b=OD48jMksWpwm1NDk
- Oop1yNMQF2iIL+ovEdBVaVDFlu+v5h9OjSHj85fBXGBy99iCKFuI/czUlfMpS4UIiykhy7gqtZOhQ
- iWUtb/g67AHf87laQEsALvSkKWINd2tzqXGmZWVmFG1m4CbQLdZYKmqaimOb7Bt9dVfTOf2vBlW0u
- fUB9kgMQf+nPLzp0rwj/H+Y5mzP9UTS47c3L/tBy8mfjE2S9LdJ3c4MXNfIvYyjxlXxFMfFus2+sV
- 9wPdtC+7516Za9QpQf6aaTTWmLaa+zOHUqOCDj03755olCOObyCIdgw9gzHNqR1XOKg5OTeFOv6Jr
- gCb/E1Mq9NRoZPkpXA==;
+ :Subject; bh=dvBQsdhoKWzcCD+yDUk815AXmrrJkhfKRJl8yZEaMZc=; b=PygIKR8bGoCBF9ll
+ gwWtdJk59KMllGgjEuxzSDdNgS0xI4SV32eSt1I4V2ALtjMivxV43r8zSliVQIukqlg96v0oGddim
+ acZ/jStzb8vJ54irbJ3R1pqUmTN8Mp7c3i+qz2xKL17KwEQbBkCfeIzj+QAOuKmM4/Jv01PLYoCYV
+ oEIXqORX4I3yCMRJ6Dvcizui56oI7iWLLi61osu0qWotZpRgLZZIPE3UEOU44gSkYEvZKF+w4WwbF
+ FvektniCbGbDh1sGABeyqqU+2dDKOi6z35PLptjX3EYbVZ2aBg7OQtsS+Fby87NfU2e5yTSpWgvYl
+ mFN4xIBabBmVQyO6/w==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1s3fRw-004nca-2q;
- Sun, 05 May 2024 17:14:56 +0000
+ (envelope-from <dave@treblig.org>) id 1s3fRx-004nca-1t;
+ Sun, 05 May 2024 17:14:57 +0000
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 To: peter.maydell@linaro.org,
 	laurent@vivier.eu
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 3/7] linux-user: sparc: Remove unused struct 'target_mc_fq'
-Date: Sun,  5 May 2024 18:14:40 +0100
-Message-ID: <20240505171444.333302-4-dave@treblig.org>
+Subject: [PATCH 4/7] hw/usb/dev-network: Remove unused struct
+ 'rndis_config_parameter'
+Date: Sun,  5 May 2024 18:14:41 +0100
+Message-ID: <20240505171444.333302-5-dave@treblig.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240505171444.333302-1-dave@treblig.org>
 References: <20240505171444.333302-1-dave@treblig.org>
@@ -65,34 +66,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This struct is unused since Peter's
-Commit b8ae597f0e6d ("linux-user/sparc: Fix errors in target_ucontext
-structures")
-
-However, hmm, I'm a bit confused since that commit modifies the
-structure and then removes it, was that intentional?
+As far as I can tell it was never used.
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- linux-user/sparc/signal.c | 5 -----
- 1 file changed, 5 deletions(-)
+ hw/usb/dev-network.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/linux-user/sparc/signal.c b/linux-user/sparc/signal.c
-index f164b74032..8181b8b92c 100644
---- a/linux-user/sparc/signal.c
-+++ b/linux-user/sparc/signal.c
-@@ -546,11 +546,6 @@ void setup_sigtramp(abi_ulong sigtramp_page)
- typedef abi_ulong target_mc_greg_t;
- typedef target_mc_greg_t target_mc_gregset_t[SPARC_MC_NGREG];
+diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
+index 2c33e36cad..d00d68b21d 100644
+--- a/hw/usb/dev-network.c
++++ b/hw/usb/dev-network.c
+@@ -475,14 +475,6 @@ struct rndis_packet_msg_type {
+     le32 Reserved;
+ };
  
--struct target_mc_fq {
--    abi_ulong mcfq_addr;
--    uint32_t mcfq_insn;
+-struct rndis_config_parameter {
+-    le32 ParameterNameOffset;
+-    le32 ParameterNameLength;
+-    le32 ParameterType;
+-    le32 ParameterValueOffset;
+-    le32 ParameterValueLength;
 -};
 -
- /*
-  * Note the manual 16-alignment; the kernel gets this because it
-  * includes a "long double qregs[16]" in the mcpu_fregs union,
+ /* implementation specific */
+ enum rndis_state
+ {
 -- 
 2.45.0
 
