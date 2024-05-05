@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1A08BC2DC
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4511C8BC347
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 21:41:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3fls-0000YQ-B9; Sun, 05 May 2024 13:35:32 -0400
+	id 1s3hid-0006zw-2S; Sun, 05 May 2024 15:40:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3flk-0000VR-Fk
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:35:27 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3flf-0007Om-1l
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:35:24 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-2343ae31a9bso830280fac.1
- for <qemu-devel@nongnu.org>; Sun, 05 May 2024 10:35:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714930517; x=1715535317; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B8T6VoYBthPtZSmCdHfaJk9u2APspxXe3l2AUJpAcUU=;
- b=RrBGd7b7FRPcd9omC4Arye1ySBTvgLXpbX5Zt2WtNC2SXXXuQM4w5vVwIqMZQPCViw
- 43YACu8yCy5pDEpXSsRbDxJdBBWLBz1ZizVPAnKBL7nkVc8btZWMTJXn+E4NdaEgqclG
- sf5QYgwfp2y3eDOUDRQmmPEqDnKmPSuQSzOV9/U0VnFcVuRk8OjkjCLDc0kc/464H+c/
- 43BXRP1sj4Ba7TyGyjONUJIj76EaxB6HMy9BT0lpvMdUi9L+IVFnqaITI0v+kD6w/MAj
- +VLGmlw9qTDSYQcbI7sR3UfCBIVApvtVU5nZZhLbIeRKU7oz/cZhSLaR2qbXGusr6W7a
- hxNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714930517; x=1715535317;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B8T6VoYBthPtZSmCdHfaJk9u2APspxXe3l2AUJpAcUU=;
- b=XZ0ImJBS6QjWYT3t6/k8W1XPzDyl+q4ShwEpKY2+RJCy29Y6dMJAT2EfzawHoiabXV
- SCR0hzg2b//i+eYO31YqLrdUVw7vdu8c9/QDBXQUFBhp+HiOkHuCkiGb+mS6amgv6nmH
- oZkCMgJvHvHruFQOL0V9p+pwoyrVnTPwFCzDrR7wbY+oP1jCRj2IaDsFpzN33Bo6NhQq
- a6L/DYiuuo2Xra6Xo6AthT1nDIt8O83WeDEdgqOz7VmUlyUzR9Jq7qWk0MKamwYovwUb
- iXwnKAgF4bH9iR483dmPIQMjGabFq6jhfWwX9zyQNsHjBdUCmLgN2HxYmaR88DztB0u+
- v/Mw==
-X-Gm-Message-State: AOJu0Yx82DCBe0Ou750iRXp4sPa834I99MzlTTNS5L4mA1EUElxOoYTT
- NvX4pqFGMRk6+0fr+Vjq2VWiHA9REi85OoXnz4J87scN26w67pdmI3+ORPeLYGk=
-X-Google-Smtp-Source: AGHT+IFFo9HheVw5AgpMSDwgUPKN3PYf98XpLUlT0bDtEOk20fQYlpt++K8E47L0KDCF+8Es0ZatYQ==
-X-Received: by 2002:a05:6870:ac24:b0:22e:caed:b1f with SMTP id
- kw36-20020a056870ac2400b0022ecaed0b1fmr10264288oab.2.1714930516696; 
- Sun, 05 May 2024 10:35:16 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- h7-20020a056a00230700b006f46bc0999fsm1581199pfh.155.2024.05.05.10.35.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 05 May 2024 10:35:16 -0700 (PDT)
-Message-ID: <0b1375d2-ee39-4225-a3c2-c95abd69968d@linaro.org>
-Date: Sun, 5 May 2024 10:35:14 -0700
+ (Exim 4.90_1) (envelope-from <shum.sdl@nppct.ru>) id 1s3g91-0001Kp-IS
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:59:27 -0400
+Received: from mail.nppct.ru ([195.133.245.4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <shum.sdl@nppct.ru>) id 1s3g8w-00015b-Dl
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:59:27 -0400
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+ by mail.nppct.ru (Postfix) with ESMTP id BAB491C21EE
+ for <qemu-devel@nongnu.org>; Sun,  5 May 2024 20:59:05 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+ reason="pass (just generated,
+ assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+ subject:subject:from:from:to:content-language:user-agent
+ :mime-version:date:date:message-id:content-type:content-type; s=
+ dkim; t=1714931940; x=1715795941; bh=HOnnFmCGWnyDiLRNiOX1E6aIF9V
+ xjlASbO8gZu593GY=; b=g59hJPApxbCrKKa0hp0wvWQRcyE6UQs3WP5YpWMGAyP
+ pz7svs/xd/FotQiYDFqqghHNN1oGmiILb4vj4nQXi8ufgT0XCZkpr/5aq4GzR19f
+ SbKx9wBHPZu4pb92P5pibBlFpR+fNRQoUx3TVAwS8VuzsdYNFI/KVA0FnUV8PQRc
+ =
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+ by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id UJM-yckjos70 for <qemu-devel@nongnu.org>;
+ Sun,  5 May 2024 20:59:00 +0300 (MSK)
+Received: from [10.66.66.2] (unknown [176.222.55.70])
+ by mail.nppct.ru (Postfix) with ESMTPSA id E0ADF1C21CA;
+ Sun,  5 May 2024 20:58:59 +0300 (MSK)
+Content-Type: multipart/alternative;
+ boundary="------------HgWSsB0QfRhUjR1G53jvsJpC"
+Message-ID: <a4cbfe6c-27d6-4df0-ae31-db0d60d88f9e@nppct.ru>
+Date: Sun, 5 May 2024 20:58:59 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] linux-user: i386/signal: Remove unused fp structs
-To: "Dr. David Alan Gilbert" <dave@treblig.org>, peter.maydell@linaro.org,
- laurent@vivier.eu
-Cc: qemu-devel@nongnu.org
-References: <20240505171444.333302-1-dave@treblig.org>
- <20240505171444.333302-3-dave@treblig.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240505171444.333302-3-dave@treblig.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
+Content-Language: ru
+To: qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org
+From: Andrey Shumilin <shum.sdl@nppct.ru>
+Subject: [sdl-qemu] [PATCH v1] /hw/intc/arm_gic WRONG ARGUMENTS
+Received-SPF: pass client-ip=195.133.245.4; envelope-from=shum.sdl@nppct.ru;
+ helo=mail.nppct.ru
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 05 May 2024 15:40:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,48 +73,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/24 10:14, Dr. David Alan Gilbert wrote:
-> The structs 'target_fpxreg' and 'target_xmmreg' are unused since
-> Paolo's:
-> 
-> Commit 2796f290b546 ("linux-user: i386/signal: support FXSAVE fpstate on
-> 32-bit emulation")
-> 
-> Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
-> ---
->   linux-user/i386/signal.c | 10 ----------
->   1 file changed, 10 deletions(-)
+This is a multi-part message in MIME format.
+--------------HgWSsB0QfRhUjR1G53jvsJpC
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-I have
+ 1. Possibly mismatched call arguments in function 'gic_apr_ns_view':
+    'cpu' and 'regno' passed in place of 'int regno' and 'int cpu'.
+ 2. Possibly mismatched call arguments in function
+    'gic_apr_write_ns_view': 'cpu' and 'regno' passed in place of 'int
+    regno' and 'int cpu'.
 
-https://lore.kernel.org/qemu-devel/20240409050302.1523277-1-richard.henderson@linaro.org/
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-which cleans this up.  I need to refresh and resubmit.
+From 23b142f5046ba9d3aec57217f6d8f3127f9bff69 Mon Sep 17 00:00:00 2001
 
+From: Andrey Shumilin <shum.sdl@nppct.ru>
+Date: Sun, 5 May 2024 20:13:40 +0300
+Subject: [PATCH] Patch hw/intc/arm_gic.c
 
-r~
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+---
+  hw/intc/arm_gic.c | 4 ++--
+  1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-> index 990048f42a..9bf602b388 100644
-> --- a/linux-user/i386/signal.c
-> +++ b/linux-user/i386/signal.c
-> @@ -34,16 +34,6 @@ struct target_fpreg {
->       uint16_t exponent;
->   };
->   
-> -struct target_fpxreg {
-> -    uint16_t significand[4];
-> -    uint16_t exponent;
-> -    uint16_t padding[3];
-> -};
-> -
-> -struct target_xmmreg {
-> -    uint32_t element[4];
-> -};
-> -
->   struct target_fpx_sw_bytes {
->       uint32_t magic1;
->       uint32_t extended_size;
+diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
+index 7a34bc0998..47f01e45e3 100644
+--- a/hw/intc/arm_gic.c
++++ b/hw/intc/arm_gic.c
+@@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s, int 
+cpu, int offset,
+              *data = s->h_apr[gic_get_vcpu_real_id(cpu)];
+          } else if (gic_cpu_ns_access(s, cpu, attrs)) {
+              /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
+-            *data = gic_apr_ns_view(s, regno, cpu);
++            *data = gic_apr_ns_view(s, cpu, regno);
+          } else {
+              *data = s->apr[regno][cpu];
+          }
+@@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState *s, int 
+cpu, int offset,
+              s->h_apr[gic_get_vcpu_real_id(cpu)] = value;
+          } else if (gic_cpu_ns_access(s, cpu, attrs)) {
+              /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
+-            gic_apr_write_ns_view(s, regno, cpu, value);
++            gic_apr_write_ns_view(s, cpu, regno, value);
+          } else {
+              s->apr[regno][cpu] = value;
+          }
+--------------HgWSsB0QfRhUjR1G53jvsJpC
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <ol>
+      <li><span
+style="color: rgb(246, 247, 249); font-family: Sergoe-UI; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(47, 52, 60); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Possibly
+          mismatched call arguments in function 'gic_apr_ns_view': 'cpu'
+          and 'regno' passed in place of 'int regno' and 'int cpu'. </span></li>
+      <li><span
+style="color: rgb(246, 247, 249); font-family: Sergoe-UI; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(47, 52, 60); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Possibly
+          mismatched call arguments in function 'gic_apr_write_ns_view':
+          'cpu' and 'regno' passed in place of 'int regno' and 'int
+          cpu'.</span></li>
+    </ol>
+    <pre class="moz-quote-pre" wrap="">Found by Linux Verification Center (linuxtesting.org) with SVACE.
+</pre>
+    <p></p>
+    <p><span
+style="color: rgb(246, 247, 249); font-family: Sergoe-UI; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(47, 52, 60); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">From
+        23b142f5046ba9d3aec57217f6d8f3127f9bff69 Mon Sep 17 00:00:00
+        2001</span></p>
+    <p><span
+style="color: rgb(246, 247, 249); font-family: Sergoe-UI; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(47, 52, 60); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></p>
+    <span
+style="color: rgb(246, 247, 249); font-family: Sergoe-UI; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(47, 52, 60); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">From:
+      Andrey Shumilin <a class="moz-txt-link-rfc2396E" href="mailto:shum.sdl@nppct.ru">&lt;shum.sdl@nppct.ru&gt;</a><br>
+      Date: Sun, 5 May 2024 20:13:40 +0300<br>
+      Subject: [PATCH] Patch hw/intc/arm_gic.c<br>
+      <br>
+      Signed-off-by: Andrey Shumilin <a class="moz-txt-link-rfc2396E" href="mailto:shum.sdl@nppct.ru">&lt;shum.sdl@nppct.ru&gt;</a><br>
+      ---<br>
+       hw/intc/arm_gic.c | 4 ++--<br>
+       1 file changed, 2 insertions(+), 2 deletions(-)<br>
+      <br>
+      diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c<br>
+      index 7a34bc0998..47f01e45e3 100644<br>
+      --- a/hw/intc/arm_gic.c<br>
+      +++ b/hw/intc/arm_gic.c<br>
+      @@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s,
+      int cpu, int offset,<br>
+                   *data = s-&gt;h_apr[gic_get_vcpu_real_id(cpu)];<br>
+               } else if (gic_cpu_ns_access(s, cpu, attrs)) {<br>
+                   /* NS view of GICC_APR&lt;n&gt; is the top half of
+      GIC_NSAPR&lt;n&gt; */<br>
+      -            *data = gic_apr_ns_view(s, regno, cpu);<br>
+      +            *data = gic_apr_ns_view(s, cpu, regno);<br>
+               } else {<br>
+                   *data = s-&gt;apr[regno][cpu];<br>
+               }<br>
+      @@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState
+      *s, int cpu, int offset,<br>
+                   s-&gt;h_apr[gic_get_vcpu_real_id(cpu)] = value;<br>
+               } else if (gic_cpu_ns_access(s, cpu, attrs)) {<br>
+                   /* NS view of GICC_APR&lt;n&gt; is the top half of
+      GIC_NSAPR&lt;n&gt; */<br>
+      -            gic_apr_write_ns_view(s, regno, cpu, value);<br>
+      +            gic_apr_write_ns_view(s, cpu, regno, value);<br>
+               } else {<br>
+                   s-&gt;apr[regno][cpu] = value;<br>
+               }<br>
+    </span>
+  </body>
+</html>
+
+--------------HgWSsB0QfRhUjR1G53jvsJpC--
 
