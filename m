@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE98BC2C5
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D3B8BC2C1
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3fS5-0001mf-SA; Sun, 05 May 2024 13:15:05 -0400
+	id 1s3fS6-0001nd-D3; Sun, 05 May 2024 13:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS3-0001lm-Mu
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:03 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS4-0001mN-8r
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:04 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS2-0005ir-7f
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:03 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS2-0005j2-NN
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=6VcNWgHQlHoShRzZIx36jlPM5YOe1vzWmwbKSfnn+dc=; b=L4t5UBx5HLLbWed4
- VAa+J3vSIQqJSDLxPcmXdpH0IyFkyABEwLb/30+AypW1rfrogTcLO6+oB0zdclSCJJGJcN2EKSCVp
- ZQy4XO45F1KX6sPXCG7t3A4GwqW1fD81LTWuCHysWdqiMB06IZv33BpBzGS9qqhfepbBfAO3pChC4
- E/7cvLQZOWgk+j8RX1oRrkgtr8a8Av5u50LnYmPxuSSZh4m3hQDlNa36uOyBcjYITsC0Az2Lzk4UF
- KTd0HFybYUlIaBMSu6i3qUqR7HYl77fQNy5bl8XfCxeXfMrTMZQC8kF/uibCpLesWQggOuKXfRrZU
- Z4aUYRl72Pku4Jc2bw==;
+ :Subject; bh=y1pCsRYGvDr35bTdn+QJCzGL0DPnvrEX9HngvWUCCiY=; b=CLldyQ/GepXz30TX
+ murXN/Jw/Mv89fwyq/EomrecGaLftEpIhLn5nfMwiqgpXRX5h2TEnr+ZB2Q+GLetUWyuzRv3xNAlM
+ DSDtA3bBtrZLoHXs0bEPIAXTms8bOeDcFwtIbRyOEqvaFH4HtPn5sbRnELzoNlUIMADgiCNdb2emN
+ o1TSDQrU5qGiFVL8Y4fxEJtOqENuGcEw6wpAnCojuCkCqti4zrzcvfYd2OL33OycwjUJOSdrpo3CW
+ zr4bM4fk/pSo2uo3pGXTE8f9fKaxa2SBV6M+9mHsz09mRvmVTP1a7q6duX/wInjVPkUw61a+jE9rO
+ l9kpYFRZiFK+pJaTNQ==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1s3fRz-004nca-0E;
+ (envelope-from <dave@treblig.org>) id 1s3fRz-004nca-2d;
  Sun, 05 May 2024 17:14:59 +0000
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 To: peter.maydell@linaro.org,
 	laurent@vivier.eu
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 6/7] target/ppc: Remove unused struct 'mmu_ctx_hash32'
-Date: Sun,  5 May 2024 18:14:43 +0100
-Message-ID: <20240505171444.333302-7-dave@treblig.org>
+Subject: [PATCH 7/7] net/can: Remove unused struct 'CanBusState'
+Date: Sun,  5 May 2024 18:14:44 +0100
+Message-ID: <20240505171444.333302-8-dave@treblig.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240505171444.333302-1-dave@treblig.org>
 References: <20240505171444.333302-1-dave@treblig.org>
@@ -65,32 +65,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I think it's use was removed by
-Commit 5883d8b296 ("mmu-hash*: Don't use full ppc_hash{32,
-64}_translate() path for get_phys_page_debug()")
+As far as I can tell this struct has never been used in this
+file (it is used in can_core.c).
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- target/ppc/mmu-hash32.c | 6 ------
+ net/can/can_host.c | 6 ------
  1 file changed, 6 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 3976416840..746321329c 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -36,12 +36,6 @@
- #  define LOG_BATS(...) do { } while (0)
- #endif
+diff --git a/net/can/can_host.c b/net/can/can_host.c
+index a3c84028c6..b2fe553f91 100644
+--- a/net/can/can_host.c
++++ b/net/can/can_host.c
+@@ -34,12 +34,6 @@
+ #include "net/can_emu.h"
+ #include "net/can_host.h"
  
--struct mmu_ctx_hash32 {
--    hwaddr raddr;      /* Real address              */
--    int prot;                      /* Protection bits           */
--    int key;                       /* Access key                */
+-struct CanBusState {
+-    Object object;
+-
+-    QTAILQ_HEAD(, CanBusClientState) clients;
 -};
 -
- static int ppc_hash32_pp_prot(int key, int pp, int nx)
+ static void can_host_disconnect(CanHostState *ch)
  {
-     int prot;
+     CanHostClass *chc = CAN_HOST_GET_CLASS(ch);
 -- 
 2.45.0
 
