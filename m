@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C21A8BC2C6
-	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE98BC2C5
+	for <lists+qemu-devel@lfdr.de>; Sun,  5 May 2024 19:16:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3fST-0001v0-O1; Sun, 05 May 2024 13:15:29 -0400
+	id 1s3fS5-0001mf-SA; Sun, 05 May 2024 13:15:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fSG-0001qT-0J
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:23 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS3-0001lm-Mu
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:03 -0400
 Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS1-0005ic-4H
- for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:15 -0400
+ (Exim 4.90_1) (envelope-from <dave@treblig.org>) id 1s3fS2-0005ir-7f
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 13:15:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
  ; s=bytemarkmx;
  h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
- :Subject; bh=dFPS7Oal1lrCOrfCkqIetV7yrx9zbnK4KyW+11VM5yo=; b=DNjckBOtkSMt/zKD
- ZxPSd/o84tiJQo5KRC1JXJAinWzHsHCOAjStttbGwfCcIk41C+XOhE2oEogKk77CRbXCBjM2pSbsH
- EmFq45dy++D73W5z1SATSja0p6poOPrQjT0l6UweJ7DrU7SWTFj66IZIRG0CnzVnVMyrJF59PXHNq
- s9YNqEaDBSI25Eb4EN8cvOisl3BPrgzEJyWkgKDuJo2b9sLwv4JBUqJR8EWv9mHr8jNAcZ+IcBXdy
- J/UuXkvRWdESjKJEmPbm5tF00QJ++0+DzUrBfYisZ2kJRghp6JHuG337d8NS/b3ARruNns7HUD0zc
- yRqptzLH8KcT+IsBVA==;
+ :Subject; bh=6VcNWgHQlHoShRzZIx36jlPM5YOe1vzWmwbKSfnn+dc=; b=L4t5UBx5HLLbWed4
+ VAa+J3vSIQqJSDLxPcmXdpH0IyFkyABEwLb/30+AypW1rfrogTcLO6+oB0zdclSCJJGJcN2EKSCVp
+ ZQy4XO45F1KX6sPXCG7t3A4GwqW1fD81LTWuCHysWdqiMB06IZv33BpBzGS9qqhfepbBfAO3pChC4
+ E/7cvLQZOWgk+j8RX1oRrkgtr8a8Av5u50LnYmPxuSSZh4m3hQDlNa36uOyBcjYITsC0Az2Lzk4UF
+ KTd0HFybYUlIaBMSu6i3qUqR7HYl77fQNy5bl8XfCxeXfMrTMZQC8kF/uibCpLesWQggOuKXfRrZU
+ Z4aUYRl72Pku4Jc2bw==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
  by mx.treblig.org with esmtp (Exim 4.96)
- (envelope-from <dave@treblig.org>) id 1s3fRy-004nca-0t;
- Sun, 05 May 2024 17:14:58 +0000
+ (envelope-from <dave@treblig.org>) id 1s3fRz-004nca-0E;
+ Sun, 05 May 2024 17:14:59 +0000
 From: "Dr. David Alan Gilbert" <dave@treblig.org>
 To: peter.maydell@linaro.org,
 	laurent@vivier.eu
 Cc: qemu-devel@nongnu.org,
 	"Dr. David Alan Gilbert" <dave@treblig.org>
-Subject: [PATCH 5/7] hw/arm/bcm2836: Remove unusued struct 'BCM283XClass'
-Date: Sun,  5 May 2024 18:14:42 +0100
-Message-ID: <20240505171444.333302-6-dave@treblig.org>
+Subject: [PATCH 6/7] target/ppc: Remove unused struct 'mmu_ctx_hash32'
+Date: Sun,  5 May 2024 18:14:43 +0100
+Message-ID: <20240505171444.333302-7-dave@treblig.org>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240505171444.333302-1-dave@treblig.org>
 References: <20240505171444.333302-1-dave@treblig.org>
@@ -65,38 +65,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This struct has been unused since
-Commit f932093ae165 ("hw/arm/bcm2836: Split out common part of BCM283X
-classes")
+I think it's use was removed by
+Commit 5883d8b296 ("mmu-hash*: Don't use full ppc_hash{32,
+64}_translate() path for get_phys_page_debug()")
 
 Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
 ---
- hw/arm/bcm2836.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ target/ppc/mmu-hash32.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/hw/arm/bcm2836.c b/hw/arm/bcm2836.c
-index db191661f2..40a379bc36 100644
---- a/hw/arm/bcm2836.c
-+++ b/hw/arm/bcm2836.c
-@@ -18,18 +18,6 @@
- #include "target/arm/cpu-qom.h"
- #include "target/arm/gtimer.h"
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 3976416840..746321329c 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -36,12 +36,6 @@
+ #  define LOG_BATS(...) do { } while (0)
+ #endif
  
--struct BCM283XClass {
--    /*< private >*/
--    DeviceClass parent_class;
--    /*< public >*/
--    const char *name;
--    const char *cpu_type;
--    unsigned core_count;
--    hwaddr peri_base; /* Peripheral base address seen by the CPU */
--    hwaddr ctrl_base; /* Interrupt controller and mailboxes etc. */
--    int clusterid;
+-struct mmu_ctx_hash32 {
+-    hwaddr raddr;      /* Real address              */
+-    int prot;                      /* Protection bits           */
+-    int key;                       /* Access key                */
 -};
 -
- static Property bcm2836_enabled_cores_property =
-     DEFINE_PROP_UINT32("enabled-cpus", BCM283XBaseState, enabled_cpus, 0);
- 
+ static int ppc_hash32_pp_prot(int key, int pp, int nx)
+ {
+     int prot;
 -- 
 2.45.0
 
