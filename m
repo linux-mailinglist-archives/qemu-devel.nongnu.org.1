@@ -2,53 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA028BC601
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 05:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0518BC650
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 05:49:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3oca-00079k-N3; Sun, 05 May 2024 23:02:32 -0400
+	id 1s3pL6-0007cz-PK; Sun, 05 May 2024 23:48:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1s3ocY-00079Q-Lm
- for qemu-devel@nongnu.org; Sun, 05 May 2024 23:02:30 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1s3ocW-0008Ix-B0
- for qemu-devel@nongnu.org; Sun, 05 May 2024 23:02:30 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8Bx9eo_SDhmW+IHAA--.10417S3;
- Mon, 06 May 2024 11:02:23 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxvlcuSDhmFvwRAA--.31503S7; 
- Mon, 06 May 2024 11:02:17 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v3 5/5] tests: Add migration test for loongarch64
-Date: Mon,  6 May 2024 11:02:06 +0800
-Message-Id: <20240506030206.2119832-6-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240506030206.2119832-1-maobibo@loongson.cn>
-References: <20240506030206.2119832-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s3pL4-0007cA-BP
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 23:48:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s3pL2-00045y-2v
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 23:48:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714967306;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VSK62MJbU3FHTHsma8iEmMQD+HKDSbuD0OhWsE/hw6g=;
+ b=H9C+uOqTwQiJor5QYrQLF3DIkmVSUKfQJwuN3+qMugcFtvY8aKrkkmDubvlQfxcyYK+6g7
+ IGxOYpFHU+sME+7/9tdH8V1Mmyivit3ym5DSHEZVzLRRRUHHDYvPiBZ3P6OqdA/kUO4rDS
+ anl597EhP+nZ5umV8i0BW4kFvJ1iVQc=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-uUCOm00ROWKHqfE_0oJCmA-1; Sun, 05 May 2024 23:48:24 -0400
+X-MC-Unique: uUCOm00ROWKHqfE_0oJCmA-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-5d8bff2b792so1816457a12.1
+ for <qemu-devel@nongnu.org>; Sun, 05 May 2024 20:48:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714967303; x=1715572103;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VSK62MJbU3FHTHsma8iEmMQD+HKDSbuD0OhWsE/hw6g=;
+ b=vdCADP2HbuJgKiE+zY4jG09CghJeAW355GXR15MozRbgv/URX4G1bvu2aN2xZGxecG
+ AEUma+6RmEeAYqoTUbQ0A/ZVMqoZK5+DuB3ntMi9bLvk9IFYIX4IEQ1dwVDKnTXqXHGf
+ bqOsxq60xAbXHNeVxMJBtl2G4YD5B2DNg1aFQRiknRhdhCLJ2R7DCqKY4x72xUPB0eF+
+ sqTXoa5BlLHCa3t7m7J+zerT1lkwBnuhMRXVG2+i984gHNpXvtc2jw8Qq7k94m/+3fBD
+ KXhexc87GfhkR60Z3YRDgOGDVM6SQCkaGFO4QynCYem5q6Rq9McnJ4zDLfSkEpn5u+EX
+ ExQA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX6ZCUO7djZrFYCwmwgrtFxcN0xxs40fuGfuSJmv2z77I7IP3FeplqHC7utn76pZIGk3GeSqb8L4MK0uGc8rDNZ8cME9ug=
+X-Gm-Message-State: AOJu0YwbzIYT/Qvkqiy0LG0rXhc1/bCrMa2Zaot/36JikqzASoe6UkkM
+ h2tjsngiZ2/2YIhCY3hINEaWejoHDpQAu7jIqZxEokXySYdgbHUM+2Aehwk/DrwijszDaqUxe7U
+ qbE/vQdLYWeNLOrFttOBdCMU6rBs5rerFJxDS20vW5BWW755Ei8olREHqwI8rFW0tk704bEC3I9
+ cmKtJ6jDW1F74u75H5lG9j0ep/d50=
+X-Received: by 2002:a05:6300:8a0d:b0:1ac:34cc:b323 with SMTP id
+ jp13-20020a0563008a0d00b001ac34ccb323mr8804180pzc.33.1714967303132; 
+ Sun, 05 May 2024 20:48:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGXnClhD4pShFaQfAMeUeU+40pPyF/eC7uPp6x5JOFYW+IceIGj4C1hd5rGkTLsQvS0eF98Z1hgBkARsT5/pNU=
+X-Received: by 2002:a05:6300:8a0d:b0:1ac:34cc:b323 with SMTP id
+ jp13-20020a0563008a0d00b001ac34ccb323mr8804168pzc.33.1714967302773; Sun, 05
+ May 2024 20:48:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxvlcuSDhmFvwRAA--.31503S7
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240428-auto-v1-0-7b012216a120@daynix.com>
+ <20240429030329-mutt-send-email-mst@kernel.org>
+ <e7b29a10-addf-4fed-9092-73652cb16cce@daynix.com>
+In-Reply-To: <e7b29a10-addf-4fed-9092-73652cb16cce@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 6 May 2024 11:48:11 +0800
+Message-ID: <CACGkMEs9-afb2btypPqeLNTJA_vAhdTa5kqZxuCUPUBtQiELog@mail.gmail.com>
+Subject: Re: [PATCH 0/3] virtio-net: Convert feature properties to OnOffAuto
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Luigi Rizzo <rizzo@iet.unipi.it>, 
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
+ Vincenzo Maffione <v.maffione@gmail.com>, 
+ Andrew Melnychenko <andrew@daynix.com>,
+ Yuri Benditovich <yuri.benditovich@daynix.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, 
+ 20240428-rss-v10-0-73cbaa91aeb6@daynix.com, 
+ Jonathon Jongsma <jjongsma@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.431,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,208 +110,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds migration test support for loongarch64. The test code
-comes from aarch64 mostly, only that it booted as bios in qemu since
-kernel requires elf format and bios uses binary format.
+On Wed, May 1, 2024 at 3:20=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix.=
+com> wrote:
+>
+> On 2024/04/29 16:05, Michael S. Tsirkin wrote:
+> > On Sun, Apr 28, 2024 at 04:21:06PM +0900, Akihiko Odaki wrote:
+> >> Based-on: <20240428-rss-v10-0-73cbaa91aeb6@daynix.com>
+> >> ("[PATCH v10 00/18] virtio-net RSS/hash report fixes and improvements"=
+)
+> >>
+> >> Some features are not always available, and virtio-net used to disable
+> >> them when not available even if the corresponding properties were
+> >> explicitly set to "on".
 
-In addition to providing the binary, this patch also includes the source
-code and the build script in tests/migration/loongarch64. So users can
-change the source and/or re-compile the binary as they wish.
+I think we'd better fail the initialization in this case, otherwise it
+might confuse libvirt.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
----
- tests/migration/Makefile                 |  2 +-
- tests/migration/loongarch64/Makefile     | 18 +++++++++
- tests/migration/loongarch64/a-b-kernel.S | 49 ++++++++++++++++++++++++
- tests/migration/loongarch64/a-b-kernel.h | 16 ++++++++
- tests/migration/migration-test.h         |  3 ++
- tests/qtest/meson.build                  |  4 ++
- tests/qtest/migration-test.c             | 10 +++++
- 7 files changed, 101 insertions(+), 1 deletion(-)
- create mode 100644 tests/migration/loongarch64/Makefile
- create mode 100644 tests/migration/loongarch64/a-b-kernel.S
- create mode 100644 tests/migration/loongarch64/a-b-kernel.h
+Adding Jonathon for more comments.
 
-diff --git a/tests/migration/Makefile b/tests/migration/Makefile
-index 13e99b1692..cfebfe23f8 100644
---- a/tests/migration/Makefile
-+++ b/tests/migration/Makefile
-@@ -5,7 +5,7 @@
- # See the COPYING file in the top-level directory.
- #
- 
--TARGET_LIST = i386 aarch64 s390x
-+TARGET_LIST = i386 aarch64 s390x loongarch64
- 
- SRC_PATH = ../..
- 
-diff --git a/tests/migration/loongarch64/Makefile b/tests/migration/loongarch64/Makefile
-new file mode 100644
-index 0000000000..5d8719205f
---- /dev/null
-+++ b/tests/migration/loongarch64/Makefile
-@@ -0,0 +1,18 @@
-+# To specify cross compiler prefix, use CROSS_PREFIX=
-+#   $ make CROSS_PREFIX=loongarch64-linux-gnu-
-+
-+.PHONY: all clean
-+all: a-b-kernel.h
-+
-+a-b-kernel.h: loongarch64.kernel
-+	echo "$$__note" > $@
-+	xxd -i $< | sed -e 's/.*int.*//' >> $@
-+
-+loongarch64.kernel: loongarch64.elf
-+	$(CROSS_PREFIX)objcopy -j .text -O binary $< $@
-+
-+loongarch64.elf: a-b-kernel.S
-+	$(CROSS_PREFIX)gcc -o $@ -nostdlib -Wl,--build-id=none $<
-+
-+clean:
-+	$(RM) *.kernel *.elf
-diff --git a/tests/migration/loongarch64/a-b-kernel.S b/tests/migration/loongarch64/a-b-kernel.S
-new file mode 100644
-index 0000000000..cd543345fe
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.S
-@@ -0,0 +1,49 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2024 Loongson Technology Corporation Limited
-+ */
-+#include "../migration-test.h"
-+
-+#define LOONGARCH_CSR_CRMD          0
-+#define LOONGARCH_VIRT_UART         0x1FE001E0
-+.section .text
-+
-+    .globl  _start
-+_start:
-+    /* output char 'A' to UART16550 */
-+    li.d    $t0, LOONGARCH_VIRT_UART
-+    li.w    $t1, 'A'
-+    st.b    $t1, $t0, 0
-+
-+    /* traverse test memory region */
-+    li.d    $t0, LOONGARCH_TEST_MEM_START
-+    li.d    $t1, LOONGARCH_TEST_MEM_END
-+    li.d    $t2, TEST_MEM_PAGE_SIZE
-+    li.d    $t4, LOONGARCH_VIRT_UART
-+    li.w    $t5, 'B'
-+
-+clean:
-+    st.b    $zero, $t0, 0
-+    add.d   $t0,   $t0, $t2
-+    bne     $t0,   $t1, clean
-+    /* keeps a counter so we can limit the output speed */
-+    addi.d  $t6,   $zero, 0
-+
-+mainloop:
-+    li.d    $t0, LOONGARCH_TEST_MEM_START
-+
-+innerloop:
-+    ld.bu   $t3, $t0, 0
-+    addi.w  $t3, $t3, 1
-+    ext.w.b $t3, $t3
-+    st.b    $t3, $t0, 0
-+    add.d   $t0, $t0, $t2
-+    bne     $t0, $t1, innerloop
-+
-+    addi.d  $t6, $t6, 1
-+    andi    $t6, $t6, 31
-+    bnez    $t6, mainloop
-+
-+    st.b    $t5, $t4, 0
-+    b       mainloop
-+    nop
-diff --git a/tests/migration/loongarch64/a-b-kernel.h b/tests/migration/loongarch64/a-b-kernel.h
-new file mode 100644
-index 0000000000..b3fe466754
---- /dev/null
-+++ b/tests/migration/loongarch64/a-b-kernel.h
-@@ -0,0 +1,16 @@
-+/* This file is automatically generated from the assembly file in
-+* tests/migration/loongarch64. Edit that file and then run "make all"
-+* inside tests/migration to update, and then remember to send both
-+* the header and the assembler differences in your patch submission.
-+*/
-+unsigned char loongarch64_kernel[] = {
-+  0x0c, 0xc0, 0x3f, 0x14, 0x8c, 0x81, 0x87, 0x03, 0x0d, 0x04, 0x81, 0x03,
-+  0x8d, 0x01, 0x00, 0x29, 0x0c, 0x00, 0x04, 0x14, 0x0d, 0x80, 0x0c, 0x14,
-+  0x2e, 0x00, 0x00, 0x14, 0x10, 0xc0, 0x3f, 0x14, 0x10, 0x82, 0x87, 0x03,
-+  0x11, 0x08, 0x81, 0x03, 0x80, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00,
-+  0x8d, 0xf9, 0xff, 0x5f, 0x12, 0x00, 0xc0, 0x02, 0x0c, 0x00, 0x04, 0x14,
-+  0x8f, 0x01, 0x00, 0x2a, 0xef, 0x05, 0x80, 0x02, 0xef, 0x5d, 0x00, 0x00,
-+  0x8f, 0x01, 0x00, 0x29, 0x8c, 0xb9, 0x10, 0x00, 0x8d, 0xed, 0xff, 0x5f,
-+  0x52, 0x06, 0xc0, 0x02, 0x52, 0x7e, 0x40, 0x03, 0x5f, 0xde, 0xff, 0x47,
-+  0x11, 0x02, 0x00, 0x29, 0xff, 0xd7, 0xff, 0x53, 0x00, 0x00, 0x40, 0x03
-+};
-diff --git a/tests/migration/migration-test.h b/tests/migration/migration-test.h
-index 68512c0b1b..f402e48349 100644
---- a/tests/migration/migration-test.h
-+++ b/tests/migration/migration-test.h
-@@ -32,4 +32,7 @@
-  */
- #define ARM_TEST_MAX_KERNEL_SIZE (512 * 1024)
- 
-+/* LoongArch64 */
-+#define LOONGARCH_TEST_MEM_START (32 * 1024 * 1024)
-+#define LOONGARCH_TEST_MEM_END   (100 * 1024 * 1024)
- #endif /* MIGRATION_TEST_H */
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 6f2f594ace..661b8dd97f 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -256,6 +256,10 @@ qtests_s390x = \
- qtests_riscv32 = \
-   (config_all_devices.has_key('CONFIG_SIFIVE_E_AON') ? ['sifive-e-aon-watchdog-test'] : [])
- 
-+qtests_loongarch64 = \
-+  qtests_filter + \
-+  ['migration-test']
-+
- qos_test_ss = ss.source_set()
- qos_test_ss.add(
-   'ac97-test.c',
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 5d6d8cd634..fbae5a7d03 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -128,6 +128,7 @@ static char *bootpath;
- #include "tests/migration/i386/a-b-bootblock.h"
- #include "tests/migration/aarch64/a-b-kernel.h"
- #include "tests/migration/s390x/a-b-bios.h"
-+#include "tests/migration/loongarch64/a-b-kernel.h"
- 
- static void bootfile_create(char *dir, bool suspend_me)
- {
-@@ -154,6 +155,9 @@ static void bootfile_create(char *dir, bool suspend_me)
-         content = aarch64_kernel;
-         len = sizeof(aarch64_kernel);
-         g_assert(sizeof(aarch64_kernel) <= ARM_TEST_MAX_KERNEL_SIZE);
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        content = loongarch64_kernel;
-+        len = sizeof(loongarch64_kernel);
-     } else {
-         g_assert_not_reached();
-     }
-@@ -782,6 +786,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         arch_opts = g_strdup_printf("-cpu max -kernel %s", bootpath);
-         start_address = ARM_TEST_MEM_START;
-         end_address = ARM_TEST_MEM_END;
-+    } else if (strcmp(arch, "loongarch64") == 0) {
-+        memory_size = "256M";
-+        machine_alias = "virt";
-+        arch_opts = g_strdup_printf("-cpu la464 -bios %s", bootpath);
-+        start_address = LOONGARCH_TEST_MEM_START;
-+        end_address = LOONGARCH_TEST_MEM_END;
-     } else {
-         g_assert_not_reached();
-     }
--- 
-2.39.3
+> >>
+> >> Convert feature properties to OnOffAuto so that the user can explicitl=
+y
+> >> tell QEMU to automatically select the value by setting them "auto".
+> >> QEMU will give an error if they are set "on".
+> >>
+> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >
+> > Should we maybe bite the bullet allow "auto" for all binary/boolean
+> > properties? Just ignore "auto" if no one cares ATM.
+>
+> It is not always obvious whether "auto" should be considered as "on" or
+> "off" for existing boolean properties. The properties this patch deals
+> with are to enable features so "auto" should be considered as "on" if
+> possible. However, other properties may mean to disable features, and in
+> such a case, "auto" should be considered as "off".
+>
+> It may still make sense to accept "auto" for all virtio-net feature bits
+> for consistency. In particular, I left guest_rsc_ext property boolean
+> since nobody cares "auto" for that feature, but this can be converted to
+> OnOffAuto.
+>
+
+Thanks
 
 
