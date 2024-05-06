@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3648BD79E
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 00:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A93208BD7A4
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 00:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s46uI-00037K-Hj; Mon, 06 May 2024 18:34:02 -0400
+	id 1s46yl-0005ON-Rx; Mon, 06 May 2024 18:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46uB-00036a-5q
- for qemu-devel@nongnu.org; Mon, 06 May 2024 18:33:56 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46yj-0005Nw-RX
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 18:38:37 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46u8-0008BM-KM
- for qemu-devel@nongnu.org; Mon, 06 May 2024 18:33:54 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2e242b1dfd6so27343081fa.0
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 15:33:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46yi-0000XV-8d
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 18:38:37 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2e3b1b6e9ddso16599321fa.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 15:38:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715034831; x=1715639631; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715035114; x=1715639914; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NKZK7GhS22Ca4xYjYmBUZmlou/jP7ZyWM7qv7q9Fwhk=;
- b=UjR9zyofrSg2lflP+V1qug56Nb7aMiJYM2ltUt5nMzKOaLq3PYat1PwacFMW2s5owE
- 7nHu+tu7BxXuad8Isegq8HmtCuu0vXon7kEDwaPFmy82F/Yuw3lAWbA0lNUY5uQ9358k
- //gx+AErIpG8OKnGEMQJRvZACOSSrFQCJdRiHI84x4pBfO5mPPmBVBYfIgExoS3CBZJ/
- PpkU7WsWSs5qHET8oZ+pmoCiK6zzD9Mws96J9yj7CDxEkPpmwWObHTND42hSRGrMuKtm
- yPtuLYWYgsxDoVaMXH3WfwyUfYB2GZi5cUt+1BMdJd1ecrbCOrwdNHb8qltYvpAp55y4
- iUsg==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=SC/qAlyxjg8JK8IgWA4GSnyQguXiKkEdt3S7NFpbIVQ=;
+ b=c+kJrQP0Lnl+OfChuYjMnLX7f+ukNFSDfF99aBkQ8KgPxMQGb+lOYeOTaVLkd5h/ZN
+ A9vs4kStF+uoGzd68+WAWNQ3QcFOHDIv7dygKMCgB0dntOaVxAm9bIejcSI52lzKdP3d
+ JLZ46KW3LilVrPhs0n4mr3DcdRwcyzsXZXlwOZMpoiCBgvs9wofMA6vdSahwwAqGl5Dk
+ Fwf8rH5iH+BsGJo+p2lh0W+LHrRAjCjV6FtmfIXm536dtJmmw2aVCtbXK5wvLQvg80/z
+ j7aPlEvrHIsW4mG3+9c+9Alp0ILUAiRnsniaDeLERiBktGrZzkHLfhMhaG8rrMPfDWsF
+ Y//w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715034831; x=1715639631;
+ d=1e100.net; s=20230601; t=1715035114; x=1715639914;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NKZK7GhS22Ca4xYjYmBUZmlou/jP7ZyWM7qv7q9Fwhk=;
- b=UKbaYnoaeWt+35cpTdp0VbZ5AqF2vjqnJ6gjeeFQtsc7zWU+5HoQWOtsN6h92EPKUX
- 3EX+ssj4j2ObqQtp8pBvrNyt5auHk9I/OdFc+eH4wq7d7UiBobuFY9tOVcw8Pnux9z+p
- uVILYWfgnUD9/eJiW8v0O1hRyV9MQFL1WWQTs0FzcGn+gWGEZsEwtpAa8Ri4W0+5wU3u
- t16YPSR0WkGgtHaeWCykB/fQ/6CYVJQVi3f8jJGkELRdPuXkAAkrb4xYKTOlQxmPSAHo
- UPUju5hRl9jlp+izgm6IxVHFWC5BsWgLF8oWrkDFUNcYHYnrTNehC1pnqZaXYatJrb2X
- 4XGg==
+ bh=SC/qAlyxjg8JK8IgWA4GSnyQguXiKkEdt3S7NFpbIVQ=;
+ b=kr3QzXuT64GsDn5Lu81fJ9Iu4Ff8hXaI7aVadUoXmHBvL0jq5sv28jDBSrVLD6a5xO
+ 4szRtzAznScAJJeyfvC59GBHRtv+pqxbnqDB3VKDeUdoyi/tMyBQLxNZ1yDLhTVEDohT
+ XenJFx1CtG5N/rYv0ncaRhdc+V/4Qf4M3em6FACFp4P817D0BEIZr2ZB/WXMec6T41AS
+ sHMQun0a5PjnCHjcpDB9sHUFcbdaVEve0bKjH7G6ySTL+znAd2SkpafjoyUUtQlgHmC1
+ xpXREKCthz5BaHpfz6tHMUefVjT+PehfJc35JiZ75dXcBB1kcXmJHbVYnTh3AgnaC9Zt
+ nmJw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCViMzK/cMTtpBhamfPUT1bI11ZcZLL/yijGo5ctb0w103uWRCBstzlTxP4yxMOZIduwJhlSiiXnLKR3FKAoYuwOS2m4epM=
-X-Gm-Message-State: AOJu0YytcfwYEaQQVz2xIWkV2QJs765V1VyFkfiXw/BjSIsEZGx+Kzgu
- ydMKBfGgh+KP3zafj5wu7ygJAji/bTsABqMyTBzIBBA/LYmXG23BbYbYcs/Nweo=
-X-Google-Smtp-Source: AGHT+IGiTJT9x2U8Hcyn95hUme9j/2Uvosw8QjwWGLrqhq/JL+XYxH92nK6euvCavwE43gYg385o5A==
-X-Received: by 2002:a05:651c:553:b0:2e2:12d1:bd6f with SMTP id
- q19-20020a05651c055300b002e212d1bd6fmr8181066ljp.46.1715034830749; 
- Mon, 06 May 2024 15:33:50 -0700 (PDT)
+ AJvYcCXLnz5ygrb4cbrSMDDhzeHhAWomTqxPqDRlI1Y8Y9+1fbsqMJ41pL31BI8YXyH3RVgI3YrHMAvNw67KG6HR0kRF55pU/jw=
+X-Gm-Message-State: AOJu0YzSI9xLJuccSYgmo+4mILbL8h1c3tP3ijbwu0/drbdTnKfrDIhz
+ 8xaeXYUN8YtiP3L7SK5XKMyKoLH7xbwfFFEetQHOoVXGSyj9Epz4BL8vfBjn75HfBFVd5tQEU1m
+ 0
+X-Google-Smtp-Source: AGHT+IEHLFwKh08nc+8tS8RTg7bFdjsGvJHx7dVRCKGzCHYGixUHujvd589HGNEyFulNRgqVnfErFg==
+X-Received: by 2002:a2e:7314:0:b0:2e0:298d:65ec with SMTP id
+ o20-20020a2e7314000000b002e0298d65ecmr7764447ljc.17.1715035114009; 
+ Mon, 06 May 2024 15:38:34 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.211.4])
  by smtp.gmail.com with ESMTPSA id
- i16-20020a05600c355000b0041b61504565sm17609419wmq.28.2024.05.06.15.33.49
+ x8-20020a2e8808000000b002da968f03f9sm1717120ljh.89.2024.05.06.15.38.32
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 May 2024 15:33:50 -0700 (PDT)
-Message-ID: <3b612068-e407-4e3d-b344-6623268f262f@linaro.org>
-Date: Tue, 7 May 2024 00:33:48 +0200
+ Mon, 06 May 2024 15:38:33 -0700 (PDT)
+Message-ID: <2ff08074-c532-4774-bf92-e6eefe7f00db@linaro.org>
+Date: Tue, 7 May 2024 00:38:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/57] target/arm: Split out gengvec64.c
+Subject: Re: [PATCH v2 15/33] plugins: Merge alloc_tcg_plugin_context into
+ plugin_gen_tb_start
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-References: <20240506010403.6204-1-richard.henderson@linaro.org>
- <20240506010403.6204-3-richard.henderson@linaro.org>
+References: <20240424233131.988727-1-richard.henderson@linaro.org>
+ <20240424233131.988727-16-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240506010403.6204-3-richard.henderson@linaro.org>
+In-Reply-To: <20240424233131.988727-16-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,21 +95,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 03:03, Richard Henderson wrote:
-> Split some routines out of translate-a64.c and translate-sve.c
-> that are used by both.
+On 25/4/24 01:31, Richard Henderson wrote:
+> We don't need to allocate plugin context at startup,
+> we can wait until we actually use it.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/tcg/translate-a64.h |   4 +
->   target/arm/tcg/gengvec64.c     | 190 +++++++++++++++++++++++++++++++++
->   target/arm/tcg/translate-a64.c |  26 -----
->   target/arm/tcg/translate-sve.c | 145 +------------------------
->   target/arm/tcg/meson.build     |   1 +
->   5 files changed, 197 insertions(+), 169 deletions(-)
->   create mode 100644 target/arm/tcg/gengvec64.c
-
-Reviewed using git-diff --color-moved=dimmed-zebra
+>   accel/tcg/plugin-gen.c | 36 ++++++++++++++++++++----------------
+>   tcg/tcg.c              | 11 -----------
+>   2 files changed, 20 insertions(+), 27 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
