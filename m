@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506A98BC8BC
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 108098BC8D0
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:00:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t9e-0007Nr-Kh; Mon, 06 May 2024 03:52:58 -0400
+	id 1s3t9g-0007Sn-Cu; Mon, 06 May 2024 03:53:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9V-0006x6-F9
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:49 -0400
+ id 1s3t9Y-00074Q-7p
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9U-0001kS-08
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:49 -0400
+ id 1s3t9W-0001km-Oy
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981967;
+ s=mimecast20190719; t=1714981970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mvZpu2Iq5b9J0WyrI5CvCUA5A69cf72SB0raiRtSeqI=;
- b=F3/ZAvzrzZX5StpszdTD6fKQgp1kI1Qo0OqAKGwJECYLgL00sGj4qN7Gadh3EiGT6yfNDC
- 5LULrBND9K6lSYcbxUAcr3btAbopK/LayEzgsAORx3xfThtnKo29NfB7nwmKfVhKP2b5J0
- 05MYCQq3Pw0KSaam9Ega1kwhzzITgOs=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XG+/YIdax3MeleXDpFVwjxPQHTXWj33Onf7v92r1kBM=;
+ b=LiBe2eUWFMVAq+OR8BqG/KA/lUhJwJGNrT2ssogo+LKXvJmBS1JGi7bKoV65AWn/9N/PPb
+ vIxfPoELLVgo5kT+FBbGR0kNcuS5pHBG9lO0FM7rKVZjS3qbsKZ7uYC1SvjmOAD706nlBM
+ jlMIX5DF3Q3jUOCSCUWZUhjtOmArdSU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-fjicvz39P46IzkCeZcMsoA-1; Mon, 06 May 2024 03:52:46 -0400
-X-MC-Unique: fjicvz39P46IzkCeZcMsoA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59ad486084so71618966b.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:46 -0700 (PDT)
+ us-mta-46-UV1pcIvVNsm_GS1DSjTVrQ-1; Mon, 06 May 2024 03:52:48 -0400
+X-MC-Unique: UV1pcIvVNsm_GS1DSjTVrQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-572cbbdb450so577733a12.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981964; x=1715586764;
+ d=1e100.net; s=20230601; t=1714981967; x=1715586767;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mvZpu2Iq5b9J0WyrI5CvCUA5A69cf72SB0raiRtSeqI=;
- b=uO7lM0+FBI58EF5Hs/eIide2dYa7sUIA/IGpIWCZCqDeb8OMcnutOLqJ7aVBlROvwV
- rmy0LfFLDgN7JalZPl4aH6beREHgLZd93bAfEz8pc8NGBOJMWrEqnaJZrCSx2pe33vEO
- xO2nEvFZIzTtZXaq5RP/IB6wAwSHJweiQa/OyiWxftxCX2FLDGdjQMJzWa4DE5bCLNp4
- bVPwoiBsrP1IuPdrQuLg3q8XCmISjODpLHI2r2vXJhORuE7+8yJIp6ECJHO5dje6Qv+C
- I2ekbcGOSRzuioDHXrF/y0FkncGMHVxTJ0drz/QeHf9VO/w8ftxN8W3lPEQUVvLKEk26
- wXMw==
-X-Gm-Message-State: AOJu0YzUbF3h0lTeMMCviaEInFLY1mYlUxCRaK7HrbNA/31nSumpFawh
- 6ZhYhb2HwFsuVMGCtklBzEnY0lOIwf+0XH7weLBvz/kYWn/ukX+tci5Ljy8/y/o8NQoi4X/4PFE
- Fs8A5Q7PA4u+1F3YuwhQOqamEfm9PNAt8JwaexEr4lpfyR6UZkt/Zds/6blhOM7zh/yeub9ijDE
- b0xruySW8QJL8/eKLTB3eQx6d3J2A9kKehVTXN
-X-Received: by 2002:a17:907:6d0e:b0:a59:b590:5d71 with SMTP id
- sa14-20020a1709076d0e00b00a59b5905d71mr3285665ejc.0.1714981964534; 
- Mon, 06 May 2024 00:52:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzI2M8OroqzgRnIE9vJYiWOwhftLMQYlWdONrjLZihuUipPCSrM6fV43YQpt0B3k4MEP1gbw==
-X-Received: by 2002:a17:907:6d0e:b0:a59:b590:5d71 with SMTP id
- sa14-20020a1709076d0e00b00a59b5905d71mr3285653ejc.0.1714981964262; 
- Mon, 06 May 2024 00:52:44 -0700 (PDT)
+ bh=XG+/YIdax3MeleXDpFVwjxPQHTXWj33Onf7v92r1kBM=;
+ b=blxLuBkHx8fZ3ebuY/ohyBL2jhzWMS5z1hM5rErFSVAqCZWHMoj8tPMxtRxlhzRB7M
+ 1LgexXNssNd58gDob8H85tnFLP4mhO90AC5bUl1ZHgCd+D/JXQVonVGGCpIJ21hRMSYe
+ XnzETu/rTuYQxUZtOL/wem/97ZMQdDsixebiJ4R5PgjcuCxk0IfOUgWjMrOTTlahbauW
+ mJ5IjCAhVPBYnm4ceuFX6+OAyeSms3Zb/Tk3it7+QDvtmdelbtZpf6Dykv1vff06fAAU
+ ZIMBt5iZyr/wFKO5dceRgZDjJ0Bs8HlngAF1gRBqtLt9OM74mPjkKbRsZuzoJDo5Jidr
+ 9KDQ==
+X-Gm-Message-State: AOJu0Ywn7ewx9BlJqXk6h0ZpkGSgSxYNQYI2BTggREbI+VIeytXocWua
+ x+hDcoA7wIN8v6zi5PNNvqcZS7jDRbN0E2dXrYAR62k2s6MX8CQ6J10mWgX/r1Z5wSdAd6mNiNA
+ lRko6zqym+yjP3wER8bqKJoL12tQrjnD5iQyIfE/T8MCNcMs6QAhnlJMhqTiZ08oYD+n5JNjxcp
+ pJf2gecdd6WTSPqF7dvyJwUvsbbVWB1AkvBT18
+X-Received: by 2002:a50:a6de:0:b0:572:a158:8a7c with SMTP id
+ f30-20020a50a6de000000b00572a1588a7cmr4748349edc.42.1714981966940; 
+ Mon, 06 May 2024 00:52:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKf69+QdXUeyjIZW5AhSICU/Bv/WaTYiPx0PKIqGt41tDHB4450UEumV9CTwItOWnv2mgzfQ==
+X-Received: by 2002:a50:a6de:0:b0:572:a158:8a7c with SMTP id
+ f30-20020a50a6de000000b00572a1588a7cmr4748338edc.42.1714981966473; 
+ Mon, 06 May 2024 00:52:46 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- wk16-20020a170907055000b00a59db6e54e2sm337589ejb.85.2024.05.06.00.52.43
+ n15-20020a05640206cf00b00572b029ca57sm4788976edy.25.2024.05.06.00.52.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:52:43 -0700 (PDT)
+ Mon, 06 May 2024 00:52:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 31/46] fw_cfg: remove useless declarations from typedefs.h
-Date: Mon,  6 May 2024 09:51:10 +0200
-Message-ID: <20240506075125.8238-32-pbonzini@redhat.com>
+Subject: [PULL 32/46] qdev-core: remove DeviceListener from typedefs.h
+Date: Mon,  6 May 2024 09:51:11 +0200
+Message-ID: <20240506075125.8238-33-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
@@ -101,43 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only FWCfgState is used as part of APIs such as acpi_ghes_add_fw_cfg.
-Everything else need not be in typedefs.h.
+It is needed in very few places, which already depend on other parts of
+qdev-core.h files.  The benefit of having it in typedefs.h is small.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/nvram/fw_cfg.h | 2 ++
- include/qemu/typedefs.h   | 3 ---
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ include/hw/qdev-core.h  | 1 +
+ include/qemu/typedefs.h | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
-index c1f81a5f13a..d173998803c 100644
---- a/include/hw/nvram/fw_cfg.h
-+++ b/include/hw/nvram/fw_cfg.h
-@@ -59,6 +59,8 @@ typedef struct fw_cfg_dma_access FWCfgDmaAccess;
- typedef void (*FWCfgCallback)(void *opaque);
- typedef void (*FWCfgWriteCallback)(void *opaque, off_t start, size_t len);
+diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+index 9228e96c87e..5336728a23f 100644
+--- a/include/hw/qdev-core.h
++++ b/include/hw/qdev-core.h
+@@ -294,6 +294,7 @@ struct DeviceState {
+     MemReentrancyGuard mem_reentrancy_guard;
+ };
  
-+typedef struct FWCfgEntry FWCfgEntry;
-+
- struct FWCfgState {
-     /*< private >*/
-     SysBusDevice parent_obj;
++typedef struct DeviceListener DeviceListener;
+ struct DeviceListener {
+     void (*realize)(DeviceListener *listener, DeviceState *dev);
+     void (*unrealize)(DeviceListener *listener, DeviceState *dev);
 diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 50c277cf0b4..949d3e1daf9 100644
+index 949d3e1daf9..66f0b146c8c 100644
 --- a/include/qemu/typedefs.h
 +++ b/include/qemu/typedefs.h
-@@ -56,9 +56,6 @@ typedef struct DumpState DumpState;
- typedef struct Error Error;
- typedef struct EventNotifier EventNotifier;
- typedef struct FlatView FlatView;
--typedef struct FWCfgEntry FWCfgEntry;
--typedef struct FWCfgIoState FWCfgIoState;
--typedef struct FWCfgMemState FWCfgMemState;
- typedef struct FWCfgState FWCfgState;
- typedef struct GraphicHwOps GraphicHwOps;
- typedef struct HostMemoryBackend HostMemoryBackend;
+@@ -47,7 +47,6 @@ typedef struct CpuInfoFast CpuInfoFast;
+ typedef struct CPUJumpCache CPUJumpCache;
+ typedef struct CPUState CPUState;
+ typedef struct CPUTLBEntryFull CPUTLBEntryFull;
+-typedef struct DeviceListener DeviceListener;
+ typedef struct DeviceState DeviceState;
+ typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
+ typedef struct DisplayChangeListener DisplayChangeListener;
 -- 
 2.44.0
 
