@@ -2,85 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8B28BC67B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 06:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D3A8BC694
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 06:41:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3pnR-0005vQ-Fh; Mon, 06 May 2024 00:17:50 -0400
+	id 1s3q9U-0000fU-HD; Mon, 06 May 2024 00:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3pmm-0005eh-K6
- for qemu-devel@nongnu.org; Mon, 06 May 2024 00:17:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3pu9-0007AP-Gg
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 00:24:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3pmd-0005cK-95
- for qemu-devel@nongnu.org; Mon, 06 May 2024 00:17:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3pu7-00046n-DX
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 00:24:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714969017;
+ s=mimecast20190719; t=1714969482;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+4o6fUPTxOKqSEtjPIy4r5K8cAkugBj9GPgh0G4waFY=;
- b=W5EcAWAaPgotBTBoGp4sn5coIaYUtdLye98KzjfcDSpOK0rO6PZUhd59sO/zuxKHjYLKKO
- fMVy9j/cWN1VEzMCjLJkJsTozZrgaQxRRY+SlaOPLqny5PqtUGpZ3B9DfQB90DxHGFBPMF
- qpVg+wKMZYWVKTApgdpc+KEQxo4fDUU=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=25OyZR437XJUiwnrMVJuMWb0yzsdMaQZhmspaZMxKJk=;
+ b=VE88dLKANb5k/Y3V7i2poH/ZpseL+WOR3g1MWK1437J122xd442KTyTSmlv4OCFAVcQCHe
+ mw8RXPhzuwoE+A6BgrcfuZMdpO8TuiZd6UXW3M4YLNwxIDIzqE123+woLJnQanhXaf8Yz2
+ lssqX++UUetPEXyRVaO5XVsULk3vUH4=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-tIg78q6aM3uU__ks-uQwsA-1; Mon, 06 May 2024 00:16:56 -0400
-X-MC-Unique: tIg78q6aM3uU__ks-uQwsA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2e22623b573so12375451fa.3
- for <qemu-devel@nongnu.org>; Sun, 05 May 2024 21:16:56 -0700 (PDT)
+ us-mta-327-uf_4Q9_4PNiNHzm9oA_79Q-1; Mon, 06 May 2024 00:24:41 -0400
+X-MC-Unique: uf_4Q9_4PNiNHzm9oA_79Q-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-43ad0f16513so20571901cf.0
+ for <qemu-devel@nongnu.org>; Sun, 05 May 2024 21:24:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714969015; x=1715573815;
+ d=1e100.net; s=20230601; t=1714969481; x=1715574281;
  h=content-transfer-encoding:in-reply-to:autocrypt:content-language
  :from:references:cc:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+4o6fUPTxOKqSEtjPIy4r5K8cAkugBj9GPgh0G4waFY=;
- b=BuaSDPqX4HZS+fD6RvrvQMCqaGSGP7Y2YZlsT6/nBzU9xVqymyVYjVBWA2sQRBK6U1
- mYXBsLrvjyg4YwhtwTS8w4CFgdAhWTETWacHyE0W/MBpr07iBOtQ2gQ2CE+pUiW+Xc6D
- 2Yp1ASyZmcDpvnajJ/+dGRGGuwt3I0uzWuXC6emVUk0bJE5PnkSfGFY+u3H6eVt2OML2
- PBM7QIA2J7Mi1WoAuic7BND7y1R6ScRLBMXk7kNbSzq7uSwuQsj89u3zo6vGMCJLN92l
- pU9oYwGwH1vQxNuhV5AGOL9Ep4w/xmunyxlAnMF/PvTUuWEa7K+yrl3pXf5kE0ozO3tE
- q5NQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXWqGEb7unNCpIKoQePvzY7XDd9U4NPFiU8On/XiwWmqPcV1N2Ua7GRwDhz9jTvyAW4DbP39e174iN3YtVxRa6jrtmfX5k=
-X-Gm-Message-State: AOJu0Ywa1RxVqmyWRuEgAsy8C/yOJ3N3y4vCQh3VvzK2WLbUYnckkuC+
- ws/saKgKXHhb5gHF7oKPQC3QDkh++3oVJxXFmTetmT86t4EKTWwPOeEkNr92BcshnFhUWIzMh7w
- 6A/Bhr70WcRTZmfjS5/ougoBxhxNEs47KoDoSvBWjSmw4bulEncSW
-X-Received: by 2002:a2e:b5b0:0:b0:2df:baf3:2ae3 with SMTP id
- f16-20020a2eb5b0000000b002dfbaf32ae3mr4604421ljn.29.1714969014866; 
- Sun, 05 May 2024 21:16:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH+k4o97O4FU1huoQxxW8CYK05USF/uEl6BkxJRYTBkjdqUwplIdNkEddmcySbU9JALqG7l4w==
-X-Received: by 2002:a2e:b5b0:0:b0:2df:baf3:2ae3 with SMTP id
- f16-20020a2eb5b0000000b002dfbaf32ae3mr4604404ljn.29.1714969014452; 
- Sun, 05 May 2024 21:16:54 -0700 (PDT)
+ bh=25OyZR437XJUiwnrMVJuMWb0yzsdMaQZhmspaZMxKJk=;
+ b=D+YJhyTlrMdJVIc/ySPbwy2eNBt7kj/pS8P8Z+Qc2HEFqNj3JRwSOQlPVUQKL5FOLR
+ T46neiFg6/+Bp1h981PWMbQF4IjgU3/DoiJYf+fg515ZIvW8UTBLlXYEExRLkef7tuYB
+ FsSXYmwyOYeqt68OzAm2YGDCx51PAbsWyr6LjloSqu86n9NF/ZLiMPv2b7VWD+1sEoMC
+ D15iglZH8c3+vkxTLTwnEnkn7qRol5dJGBu6XNZSehudykeVYuygNB8WahiKOUTn2js/
+ uty1aYyzjebpwxJTBLKowno8tKuZSK1Elb7XlkDQDq3dw8AsYORZv3MB2i9MInF+UN5w
+ 24tA==
+X-Gm-Message-State: AOJu0YwoWo9U61jdnzjUloFupyDjeM9pASg281+0tlKLB5++y2/GYMGZ
+ a+i7De/85vncL/0rF/bfbOJ/pCO5lapJj6hjqdLFKVtSYhgArTmtogFK0f7AonrrooW1kjoL0NR
+ WkYR2F2JdqGVEVNAY5uQCswaxUTEhMbFdnTZGmFe/mFID4q8IP6Yi
+X-Received: by 2002:ac8:7d54:0:b0:43a:8248:26f with SMTP id
+ h20-20020ac87d54000000b0043a8248026fmr8886297qtb.27.1714969480721; 
+ Sun, 05 May 2024 21:24:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG8CxiVsBCXAkYlrQmqnQ+G2UhQok2Q7wnGxc1Lod4N+W4fDlGOzJQpMcG4iiTr49BeIn/TLw==
+X-Received: by 2002:ac8:7d54:0:b0:43a:8248:26f with SMTP id
+ h20-20020ac87d54000000b0043a8248026fmr8886284qtb.27.1714969480223; 
+ Sun, 05 May 2024 21:24:40 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de.
  [109.43.179.34]) by smtp.gmail.com with ESMTPSA id
- s11-20020a05600c45cb00b00419f572671dsm14549232wmo.20.2024.05.05.21.16.53
+ fe13-20020a05622a4d4d00b0043842dc662esm4708471qtb.4.2024.05.05.21.24.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 05 May 2024 21:16:53 -0700 (PDT)
-Message-ID: <cf86b648-b150-428e-b415-01db237158ef@redhat.com>
-Date: Mon, 6 May 2024 06:16:52 +0200
+ Sun, 05 May 2024 21:24:39 -0700 (PDT)
+Message-ID: <b1a4b08c-e288-4319-ac4a-7d6ca1256755@redhat.com>
+Date: Mon, 6 May 2024 06:24:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] tests/qtest: Check STM32L4x5 clock connections
-To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+Subject: Re: [PATCH v3 1/5] hw/loongarch: Rename LOONGARCH_MACHINE with
+ VIRT_MACHINE
+To: Bibo Mao <maobibo@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>,
- Samuel Tardieu <samuel.tardieu@telecom-paris.fr>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20240505140556.373711-1-ines.varhol@telecom-paris.fr>
- <20240505140556.373711-5-ines.varhol@telecom-paris.fr>
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <20240506030206.2119832-1-maobibo@loongson.cn>
+ <20240506030206.2119832-2-maobibo@loongson.cn>
 From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -125,9 +119,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240505140556.373711-5-ines.varhol@telecom-paris.fr>
+In-Reply-To: <20240506030206.2119832-2-maobibo@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
@@ -135,8 +129,8 @@ X-Spam_score: -2.6
 X-Spam_bar: --
 X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.431,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -152,23 +146,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/05/2024 16.05, Inès Varhol wrote:
-> For USART, GPIO and SYSCFG devices, check that clock frequency before
-> and after enabling the peripheral clock in RCC is correct.
+On 06/05/2024 05.02, Bibo Mao wrote:
+> On LoongArch system, there is only virt machine type now, name
+> LOONGARCH_MACHINE is confused, rename it with VIRT_MACHINE. Machine name
+> about Other real hw boards can be added in future.
 > 
-> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 > ---
-> Hello,
-> 
-> Should these tests be regrouped in stm32l4x5_rcc-test.c ?
+...
+> @@ -1245,7 +1244,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
+>   
+>   static const TypeInfo loongarch_machine_types[] = {
+>       {
+> -        .name           = TYPE_LOONGARCH_MACHINE,
+> +        .name           = TYPE_VIRT_MACHINE,
+>           .parent         = TYPE_MACHINE,
+>           .instance_size  = sizeof(LoongArchMachineState),
+>           .class_init     = loongarch_class_init,
+> diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+> index 4e14bf6060..5ea2f0370d 100644
+> --- a/include/hw/loongarch/virt.h
+> +++ b/include/hw/loongarch/virt.h
+> @@ -73,8 +73,8 @@ struct LoongArchMachineState {
+>       struct loongarch_boot_info bootinfo;
+>   };
+>   
+> -#define TYPE_LOONGARCH_MACHINE  MACHINE_TYPE_NAME("virt")
+> -OBJECT_DECLARE_SIMPLE_TYPE(LoongArchMachineState, LOONGARCH_MACHINE)
+> +#define TYPE_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
+> +OBJECT_DECLARE_SIMPLE_TYPE(LoongArchMachineState, VIRT_MACHINE)
+>   bool loongarch_is_acpi_enabled(LoongArchMachineState *lams);
+>   void loongarch_acpi_setup(LoongArchMachineState *lams);
+>   #endif
 
   Hi,
 
-sounds mostly like a matter of taste at a first glance. Or what would be the 
-benefit of putting everything into the *rcc-test.c file? Could you maybe 
-consolidate the get_clock_freq_hz() function that way? (maybe that 
-get_clock_freq_hz() function could also be consolidated as a inline function 
-in a shared header instead?)
+there are currently some efforts going on to create the possibility to link 
+a QEMU binary that contains all targets in one binary. Since we already have 
+a TYPE_VIRT_MACHINE for other targets, I wonder whether it might be better 
+to use LOONGARCH_VIRT_MACHINE than just VIRT_MACHINE here? Philippe, could 
+you comment on this?
 
   Thomas
 
