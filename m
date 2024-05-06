@@ -2,73 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1703E8BC9A2
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E7F8BC99C
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:36:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3tqK-0001Gd-Fh; Mon, 06 May 2024 04:37:04 -0400
+	id 1s3tot-0008Jy-B4; Mon, 06 May 2024 04:35:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s3tpo-0000Xb-UE; Mon, 06 May 2024 04:36:33 -0400
-Received: from mgamail.intel.com ([198.175.65.21])
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1s3toX-0008Hi-8q
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:35:14 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s3tpl-0000Ph-Nm; Mon, 06 May 2024 04:36:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714984590; x=1746520590;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=VCF6u8oVy3Wi3LVUsnYbMKrCt4do+wtmtDG5utpCYSA=;
- b=XgHtAdVzaw0nPpmGwnk5BvTv0le/JT4MT8WLSi1/BmwIGJaihGWvvFa6
- oRO8oJ+wSJTpv+WW8JYJhsYRFioHRwbD4Piyy2VqSESI+MUdFDLi8bHnE
- 42HIR6dDD6ZgCDrkBYsV3hcxC/+RqwCgwEmXQTqXVF1vDtFamJkXIiShV
- UZ1MjWNpxubxVJw89o+yjKCBPBcw3JwbD9ErYRJ8gEID3QT6d8Az58V7s
- btgLYA7E1VyOQNPaZw7n2b6YIFPpx4bizYCwBvuJyihVEj44iYbtIWG3X
- 29j3TD+2jG7gSjujG7QSvEUxB8F8oVtcs4noR7buz48TPz1sjYcyG73RC A==;
-X-CSE-ConnectionGUID: 42+A2SRCRDSudvt8IfRRjQ==
-X-CSE-MsgGUID: XPCOyLApRsmr7YasE52tqg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10647861"
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="10647861"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 01:36:26 -0700
-X-CSE-ConnectionGUID: sx/musMPQ4eVXFlvyHC78g==
-X-CSE-MsgGUID: luVOiZkMRVys07//LA/gYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="28606592"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 01:36:23 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- qemu-ppc@nongnu.org (open list:sPAPR (pseries))
-Subject: [PATCH 3/3] vfio: Make VFIOIOMMUClass::add_window() and its wrapper
- return bool
-Date: Mon,  6 May 2024 16:33:52 +0800
-Message-Id: <20240506083352.4037226-4-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1s3toR-00006Y-6r
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:35:11 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:379a:0:640:b005:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0CEC860CF5;
+ Mon,  6 May 2024 11:34:59 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown
+ [2a02:6b8:b081:1319::1:21])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id qYSunJ3IYOs0-J8RU2Ngv; Mon, 06 May 2024 11:34:58 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1714984498;
+ bh=xPDWZJqmvmhCPj6oX0+mNKUHgkYuT3vZDw+8XdUON5g=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=D3gYaegNuJHduo5nNMFljEyKHDc5vpCKLy41bXecHNdyh0UsuCb5yrC1Vv4vDapJ4
+ JvqdVC4f/tYDNYL6bkAZSfY7E4yaNh8YwqVmzU5HR3+fHnBfwGxBVTt9K+FVKlJodT
+ 9Fex/AgtY2hpqqoOzMDuJoCH3H4qR2Ck9Y95NL9c=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH v3] mc146818rtc: add a way to generate RTC interrupts via QMP
+Date: Mon,  6 May 2024 11:34:20 +0300
+Message-Id: <20240506083420.557726-1-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240506083352.4037226-1-zhenzhong.duan@intel.com>
-References: <20240506083352.4037226-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.21;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.431,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,149 +71,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make VFIOIOMMUClass::add_window() and its wrapper function
-vfio_container_add_section_window() return bool.
+This can be used to force-synchronize the time in guest after a long
+stop-cont pause, which can be useful for serverless-type workload.
 
-This is to follow the coding standand to return bool if 'Error **'
-is used to pass error.
+Also add a comment to highlight the fact that this (and one other QMP
+command) only works for the MC146818 RTC controller.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- include/hw/vfio/vfio-container-base.h | 12 ++++++------
- hw/vfio/common.c                      |  2 +-
- hw/vfio/container-base.c              |  8 ++++----
- hw/vfio/spapr.c                       | 16 ++++++++--------
- 4 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index 68539e3bed..e96cda78c8 100644
---- a/include/hw/vfio/vfio-container-base.h
-+++ b/include/hw/vfio/vfio-container-base.h
-@@ -76,9 +76,9 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
- int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-                              hwaddr iova, ram_addr_t size,
-                              IOMMUTLBEntry *iotlb);
--int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
--                                      MemoryRegionSection *section,
--                                      Error **errp);
-+bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
-+                                       MemoryRegionSection *section,
-+                                       Error **errp);
- void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
-                                        MemoryRegionSection *section);
- int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
-@@ -131,9 +131,9 @@ struct VFIOIOMMUClass {
-     int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
+Changes since v0:
+- Rename to rtc-inject-irq to match other similar API
+- Add a comment to highlight that this only works for the I386 RTC
+
+Changes since v1:
+- Added a description below the QMP command to explain how it can be
+  used and what it does.
+
+Changes since v2:
+- Add a 'broadcast' suffix.
+- Change the comments to explain the flags we're setting.
+- Change the command description to fix styling & explain that it's a broadcast command.
+
+---
+ hw/rtc/mc146818rtc.c         | 20 ++++++++++++++++++++
+ include/hw/rtc/mc146818rtc.h |  1 +
+ qapi/misc-target.json        | 19 +++++++++++++++++++
+ 3 files changed, 40 insertions(+)
+
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index 3379f92748..2b3754f5c6 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -107,6 +107,11 @@ static void rtc_coalesced_timer_update(MC146818RtcState *s)
+ static QLIST_HEAD(, MC146818RtcState) rtc_devices =
+     QLIST_HEAD_INITIALIZER(rtc_devices);
  
-     /* SPAPR specific */
--    int (*add_window)(VFIOContainerBase *bcontainer,
--                      MemoryRegionSection *section,
--                      Error **errp);
-+    bool (*add_window)(VFIOContainerBase *bcontainer,
-+                       MemoryRegionSection *section,
-+                       Error **errp);
-     void (*del_window)(VFIOContainerBase *bcontainer,
-                        MemoryRegionSection *section);
-     void (*release)(VFIOContainerBase *bcontainer);
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 890d30910e..9f1f2e19f7 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -585,7 +585,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    if (vfio_container_add_section_window(bcontainer, section, &err)) {
-+    if (!vfio_container_add_section_window(bcontainer, section, &err)) {
-         goto fail;
-     }
- 
-diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
-index 913ae49077..98d71b3144 100644
---- a/hw/vfio/container-base.c
-+++ b/hw/vfio/container-base.c
-@@ -31,12 +31,12 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
-     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
- }
- 
--int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
--                                      MemoryRegionSection *section,
--                                      Error **errp)
-+bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
-+                                       MemoryRegionSection *section,
-+                                       Error **errp)
++/*
++ * NOTE:
++ * The two QMP functions below are _only_ implemented for the MC146818.
++ * All other RTC devices ignore this.
++ */
+ void qmp_rtc_reset_reinjection(Error **errp)
  {
-     if (!bcontainer->ops->add_window) {
--        return 0;
-+        return true;
+     MC146818RtcState *s;
+@@ -116,6 +121,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
      }
- 
-     return bcontainer->ops->add_window(bcontainer, section, errp);
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 148b257c9c..47b040f1bc 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -323,7 +323,7 @@ static int vfio_spapr_create_window(VFIOContainer *container,
-     return 0;
  }
  
--static int
-+static bool
- vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
-                                         MemoryRegionSection *section,
-                                         Error **errp)
-@@ -351,13 +351,13 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
-             error_setg(errp, "Container %p can't map guest IOVA region"
-                        " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container,
-                        iova, end);
--            return -EINVAL;
-+            return false;
-         }
--        return 0;
-+        return true;
-     }
++void qmp_rtc_inject_irq_broadcast(Error **errp)
++{
++    MC146818RtcState *s;
++
++    QLIST_FOREACH(s, &rtc_devices, link) {
++        // Update-ended interrupt enable
++        s->cmos_data[RTC_REG_B] |= REG_B_UIE;
++
++        // Interrupt request flag | update interrupt flag
++        s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
++
++        qemu_irq_raise(s->irq);
++    }
++}
++
+ static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
+ {
+     kvm_reset_irq_delivered();
+diff --git a/include/hw/rtc/mc146818rtc.h b/include/hw/rtc/mc146818rtc.h
+index 97cec0b3e8..e9dd0f9c72 100644
+--- a/include/hw/rtc/mc146818rtc.h
++++ b/include/hw/rtc/mc146818rtc.h
+@@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int base_year,
+ void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int val);
+ int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
+ void qmp_rtc_reset_reinjection(Error **errp);
++void qmp_rtc_inject_irq_broadcast(Error **errp);
  
-     if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
--        return 0;
-+        return true;
-     }
+ #endif /* HW_RTC_MC146818RTC_H */
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 4e0a6492a9..7d388a3753 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -19,6 +19,25 @@
+ { 'command': 'rtc-reset-reinjection',
+   'if': 'TARGET_I386' }
  
-     /* For now intersections are not allowed, we may relax this later */
-@@ -373,14 +373,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
-                 section->offset_within_address_space +
-                     int128_get64(section->size) - 1,
-                 hostwin->min_iova, hostwin->max_iova);
--            return -EINVAL;
-+            return false;
-         }
-     }
- 
-     ret = vfio_spapr_create_window(container, section, &pgsize);
-     if (ret) {
-         error_setg_errno(errp, -ret, "Failed to create SPAPR window");
--        return ret;
-+        return false;
-     }
- 
-     vfio_host_win_add(scontainer, section->offset_within_address_space,
-@@ -406,14 +406,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
-                                      "vfio: failed GROUP_SET_SPAPR_TCE for "
-                                      "KVM VFIO device %d and group fd %d",
-                                      param.tablefd, param.groupfd);
--                    return -errno;
-+                    return false;
-                 }
-                 trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
-             }
-         }
-     }
- #endif
--    return 0;
-+    return true;
- }
- 
- static void
++##
++# @rtc-inject-irq-broadcast:
++#
++# Inject an RTC interrupt for all existing RTCs on the system.
++# The interrupt forces the guest to synchronize the time with RTC.
++# This is useful after a long stop-cont pause, which is common for
++# serverless-type workload.
++#
++# Since: 9.1
++#
++# Example:
++#
++#     -> { "execute": "rtc-inject-irq-broadcast" }
++#     <- { "return": {} }
++#
++##
++{ 'command': 'rtc-inject-irq-broadcast',
++  'if': 'TARGET_I386' }
++
+ ##
+ # @SevState:
+ #
 -- 
 2.34.1
 
