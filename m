@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1614B8BCE3D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B719C8BCE27
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:39:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xcu-0003hO-Vg; Mon, 06 May 2024 08:39:29 -0400
+	id 1s3xcZ-0002S4-5E; Mon, 06 May 2024 08:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcI-00020D-4z
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:54 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcN-00029j-KG
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:56 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcF-00023T-Ku
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:49 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2e1fa824504so27400131fa.0
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:38:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcL-00024R-Vo
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:55 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-41b782405bbso12299285e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:38:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714999125; x=1715603925; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714999132; x=1715603932; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vxHJc/1SpfLp2sqgCrwCIMC13iOcC35tqJ/KVJcg7HA=;
- b=yyg5AJny7xRj7kPEDDqstg1Ud7nzkoVP5YNIdJ8ktWJaNZqMvJTZPqM+cN3OIrQIZv
- TFAGPUBFc+lLfmu51DEh0rL9JuWZEMNVrE+J6ebmZeEjxBeoo+lk2R8krLMVgCHuEWf6
- ap2EI5xEp+GIrOxn/hdL0T7EpmacVBD2BPulX82lsqTTcf4YzkRNIvb9koXCC4QZBaNW
- K5QIOKk9oRIgRgrxlsXDE911hNF2p5jrdd6rZN+b5rSYvALJqJ9sdEfcPxPWElgZYocY
- GBuLh2Q+GcSYMUIFTBffD/kiWFJk1THOUb+mG35tjxv3alptPH8tQnXiG5/PVKo3ZIfp
- V9LQ==
+ bh=MWoGQoSIt5HJcg/7P1ISVDqkVosvqIqVP9M622YHe5M=;
+ b=La5yRQyhNUHvqYbzCjBpMDsFjxSRZPmpWiajSsN81nP6qxvifdVoRGcbv6z/sdTVAY
+ eGGc+O2eZSgY8jzMkifpRodc0nvVPZPcsMgw4Ec+v4HK0Gt8sijz9YcUQYaZv7f3oDNz
+ 1qKPxkJXpAPL/6i2g7+kGJ2Ehr1nwuh78EZr4sYfb6tChbaEQTUCeg21Y+kZRDT3ccb5
+ 36TrFx7ZIx9J2yz8HJQAtWfg9P15Wn5/0g+eqUim4ogysYjVwUwwict4l7SM9Bx84/AJ
+ ltXrISwLwGXuEY7CFmsiQim0lNZqb9eSYyjAAQAH/9CMFiUA9yRJ7O4/Opa4QOv8905G
+ 6IDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714999125; x=1715603925;
+ d=1e100.net; s=20230601; t=1714999132; x=1715603932;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vxHJc/1SpfLp2sqgCrwCIMC13iOcC35tqJ/KVJcg7HA=;
- b=dOMA30NK5t6z4XVauOc883WzCcOuDzvMwpXt2m7k/9FwhgtmI+0fXGcDZwzPMPl0J+
- /ChQUuIJXVfHWQWM8LAHR9SWbx0+yeMmYCN19/jDvlDNJXdAKr30ZJqRYRpSjRYS2w8j
- cJLgtozQGJxQI39xx0DHW1htartcQhT1yPL41DQv+/kWYkl5zJuosVhqGM8j0AerwST9
- nstdMk70tfygnHmm5Cjlz+hImkt0jK5+kyJVAK8WBnxipR0sua5vYhYShMmVxY47E+PZ
- Pxe1QY1Ch1MHFwCxmtnb/BsioLzwkyO2fuWXTkvt8lHvBEfEgKHVJ0khCQeQUPyMRtYJ
- 5Rnw==
-X-Gm-Message-State: AOJu0Yxuez9+Zux9AqwJPKZuBzKMg9KwhwJ1xiCJKoJrijw+aOJNneer
- FCv5GgcZoVTIQCUSGtFCvsowQPv/CTG1u9XiYBw534pDWUQPu2h2i/EoAGAZbPHYEuWR/TPhNzK
- 1
-X-Google-Smtp-Source: AGHT+IFC0LPB4olsiT3y1Bh5ew7RgDQQfYf4Nemr/FJ1CeDUyos4obzEm2Rn5CajZ7hqSlUBvZD3xQ==
-X-Received: by 2002:a2e:9006:0:b0:2dc:b964:b15 with SMTP id
- h6-20020a2e9006000000b002dcb9640b15mr6152525ljg.25.1714999125390; 
- Mon, 06 May 2024 05:38:45 -0700 (PDT)
+ bh=MWoGQoSIt5HJcg/7P1ISVDqkVosvqIqVP9M622YHe5M=;
+ b=Oalgnxa5Mbwb9qRsqWSD0EHQrPhAVonRiReLVsE3CrpGbLtKwTIQYL4HKBDlWVMgo4
+ bwLw0bK1dWPFODB8xt9JovZ1pG+V3Hac/MIa6HKpIfs9DKFeR7bGhsPHQXWPm5CNiopH
+ uTE+CuCOyPESAZSSGg9i1yRs2ZobfNKJKqE6Vbc3N1sN6G1Z+TnQeHc5WDy4UktXh0wl
+ jtMOzyQX0OFpCzJdgB5wimYf2vkIFuTZPgzaFEwSZjRtI3ovE/I8mSMdsadkwGpm10G+
+ nlnKemQdpowBZ5tRgVQ87f9WaQvL5sMWtDJgCQOiee2TnDUVT7EMOmIF0G3/ydcl4GMY
+ WqUA==
+X-Gm-Message-State: AOJu0YwK4PtLWNWcW0aJPPdu0WtfD1sBnKdjSkMvkbK9lAQ5c6IOC3B/
+ X8y7DRG7be+88HwCbkZyPEujUpanOqDNtq8d9ecLP2XCQBB+CkLF+2GSb4YxuPGZ8CiEjEc06XD
+ i
+X-Google-Smtp-Source: AGHT+IEEKxGgR8uzTnXxoiyWNQFOtvMckALTQc8UCk01ccBfQbxWu6YAkx0PcAPukj9m3vdKjolwRw==
+X-Received: by 2002:a05:600c:46ce:b0:41b:851a:af43 with SMTP id
+ q14-20020a05600c46ce00b0041b851aaf43mr7683963wmo.11.1714999131824; 
+ Mon, 06 May 2024 05:38:51 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.211.4]) by smtp.gmail.com with ESMTPSA id
- m7-20020a05600c4f4700b0041b434e5869sm19638255wmq.43.2024.05.06.05.38.44
+ v6-20020a5d6106000000b0034d743eb8dfsm10598284wrt.29.2024.05.06.05.38.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 May 2024 05:38:44 -0700 (PDT)
+ Mon, 06 May 2024 05:38:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/28] accel/tcg: Restrict qemu_plugin_vcpu_exit_hook() to TCG
- plugins
-Date: Mon,  6 May 2024 14:37:10 +0200
-Message-ID: <20240506123728.65278-11-philmd@linaro.org>
+Subject: [PULL 11/28] accel/tcg: Restrict cpu_plugin_mem_cbs_enabled() to TCG
+Date: Mon,  6 May 2024 14:37:11 +0200
+Message-ID: <20240506123728.65278-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240506123728.65278-1-philmd@linaro.org>
 References: <20240506123728.65278-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,44 +91,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_plugin_vcpu_exit_hook() is specific to TCG plugins,
-so must be restricted to it in cpu_common_unrealizefn(),
-similarly to how qemu_plugin_create_vcpu_state() is
-restricted in the cpu_common_realizefn() counterpart.
+So far cpu_plugin_mem_cbs_enabled() is only called from
+TCG, so reduce it to accel/tcg/.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240429213050.55177-2-philmd@linaro.org>
+Message-Id: <5f59c754-44e5-4743-a2dd-87ef8e13eadf@linaro.org>
 ---
- hw/core/cpu-common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ accel/tcg/internal-common.h | 17 +++++++++++++++++
+ include/hw/core/cpu.h       | 17 -----------------
+ 2 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index a72d48d9e1..0f0a247f56 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -30,7 +30,9 @@
- #include "hw/boards.h"
- #include "hw/qdev-properties.h"
- #include "trace.h"
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index ead53cb8a5..cbeff39e3e 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -24,4 +24,21 @@ static inline bool cpu_in_serial_context(CPUState *cs)
+     return !tcg_cflags_has(cs, CF_PARALLEL) || cpu_in_exclusive_context(cs);
+ }
+ 
++/**
++ * cpu_plugin_mem_cbs_enabled() - are plugin memory callbacks enabled?
++ * @cs: CPUState pointer
++ *
++ * The memory callbacks are installed if a plugin has instrumented an
++ * instruction for memory. This can be useful to know if you want to
++ * force a slow path for a series of memory accesses.
++ */
++static inline bool cpu_plugin_mem_cbs_enabled(const CPUState *cpu)
++{
 +#ifdef CONFIG_PLUGIN
- #include "qemu/plugin.h"
++    return !!cpu->plugin_mem_cbs;
++#else
++    return false;
 +#endif
++}
++
+ #endif
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 173349b0bd..a001bafcf8 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -1111,23 +1111,6 @@ void cpu_watchpoint_remove_by_ref(CPUState *cpu, CPUWatchpoint *watchpoint);
+ void cpu_watchpoint_remove_all(CPUState *cpu, int mask);
+ #endif
  
- CPUState *cpu_by_arch_id(int64_t id)
- {
-@@ -236,9 +238,11 @@ static void cpu_common_unrealizefn(DeviceState *dev)
-     CPUState *cpu = CPU(dev);
- 
-     /* Call the plugin hook before clearing the cpu is fully unrealized */
-+#ifdef CONFIG_PLUGIN
-     if (tcg_enabled()) {
-         qemu_plugin_vcpu_exit_hook(cpu);
-     }
-+#endif
- 
-     /* NOTE: latest generic point before the cpu is fully unrealized */
-     cpu_exec_unrealizefn(cpu);
+-/**
+- * cpu_plugin_mem_cbs_enabled() - are plugin memory callbacks enabled?
+- * @cs: CPUState pointer
+- *
+- * The memory callbacks are installed if a plugin has instrumented an
+- * instruction for memory. This can be useful to know if you want to
+- * force a slow path for a series of memory accesses.
+- */
+-static inline bool cpu_plugin_mem_cbs_enabled(const CPUState *cpu)
+-{
+-#ifdef CONFIG_PLUGIN
+-    return !!cpu->plugin_mem_cbs;
+-#else
+-    return false;
+-#endif
+-}
+-
+ /**
+  * cpu_get_address_space:
+  * @cpu: CPU to get address space from
 -- 
 2.41.0
 
