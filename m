@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A05E8BC913
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D02F38BC91F
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:06:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t96-0005tU-31; Mon, 06 May 2024 03:52:24 -0400
+	id 1s3t97-0005u0-Bf; Mon, 06 May 2024 03:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8d-0005jP-DV
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:55 -0400
+ id 1s3t8h-0005lF-Jc
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8Z-0001Ut-MF
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:54 -0400
+ id 1s3t8g-0001cF-37
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981899;
+ s=mimecast20190719; t=1714981917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=U47eDFslvtODaOBLy6JXUf96nPFKYjL+ASHgodulSSE=;
- b=GS364NWKcGOVCtQ2d+bsXw8mzMktCE2YRh7OcoqtZC84RSNOro6JyLePSiODR6pWyWk7Ug
- +Ek3qcV9/XTCqiinDLjvhYwt+lCMiUbUN6BkTzp5d5jQo83AYjjyVRm+KDrNjLflvMhrmM
- JAAjEM4yvC36nRR4vxTM/xRfcIDff2I=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fbRcX/gpwNAE5Vz8aXltJ8y/z7iGDUMqF8FDXO7YTrk=;
+ b=FKJcSlzwQOlJ+6WFe0mcREwhRWq3v1+0HdhcFWpPxDlgHgiJmC8Vqqcflj5j8deeoFts82
+ zWgrZfAeYhKTcKwQaFsK9fzJxVl6HJovPn9q/GWCnKw1c3U2VKX7QRzAjicfB9IZfg2SdK
+ ++N5d4wS3qqVYoa73SpjQlaC8oBiGDQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-ODbux_P3PqO8N_umyOs0Jg-1; Mon, 06 May 2024 03:51:37 -0400
-X-MC-Unique: ODbux_P3PqO8N_umyOs0Jg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a59a17f35c8so100093566b.0
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:51:37 -0700 (PDT)
+ us-mta-612-JTlkYXEtNxOPvP1NPmPStw-1; Mon, 06 May 2024 03:51:55 -0400
+X-MC-Unique: JTlkYXEtNxOPvP1NPmPStw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a59c0ecd59cso80944666b.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:51:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981896; x=1715586696;
+ d=1e100.net; s=20230601; t=1714981914; x=1715586714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U47eDFslvtODaOBLy6JXUf96nPFKYjL+ASHgodulSSE=;
- b=p7xqT8LVTVeqPyxj3Syl7SBF7hCdJyv+iy3BwWQ5Sz6cqWsQN4sgNuRsQGpKweMjq7
- 75NNTFqGjNhQoeShxtXFBBvZhY0uEHFDCoUz+eP/LaffhkRqTCLQcAj1CPTFxFeXz19h
- +ooxQPAHwwinxVECcy4OW1tyiCpYUgKLJPzzMGJKhjQ7zyChbDgZQ1Ahk1L06QrPmoqt
- Xrh5qiRIqmD0Lac4k7xAXVvC0h9TqRRAl6JiBnhZQs3R/SvBK5ULNT34aswvGhicGr8l
- kLdzkvgi4YTeniYcqhdP7c3uT9mNdH10/gss3o37nOkzpHsgluazraqSwWAeNkmZUPgc
- QUNw==
-X-Gm-Message-State: AOJu0YykXC5bcc4f2bcfmjjXqQyutR+N1ypt+GyPz7zd9NNPRNqmwtBe
- N8twrsh7UDJG26kL7yFJ2JgaInCkNtZbKMOLcMAHhtzbLZLX490ArP4UP/kT2K8TEngRbKfqHPn
- BPAm3alKXnhDE9M7ys8AUzE1FEq/8+qZ55KnafxxVLMqQsIlMze2bm7FR1YMP6XqDKATjnjNZsn
- XeIs/sTa0Ll48F8OEyiWEuwDMzcJKQK5VoQW35
-X-Received: by 2002:a17:907:9403:b0:a59:c9b1:cb64 with SMTP id
- dk3-20020a170907940300b00a59c9b1cb64mr2226473ejc.62.1714981895940; 
- Mon, 06 May 2024 00:51:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAodIeeAwqUU0lZ/vKcSPARM9xLUseQ7v9CTvDNCa1N3EO6YtpTX8R5KwaPf11UASNETz0zA==
-X-Received: by 2002:a17:907:9403:b0:a59:c9b1:cb64 with SMTP id
- dk3-20020a170907940300b00a59c9b1cb64mr2226459ejc.62.1714981895582; 
- Mon, 06 May 2024 00:51:35 -0700 (PDT)
+ bh=fbRcX/gpwNAE5Vz8aXltJ8y/z7iGDUMqF8FDXO7YTrk=;
+ b=tcyN1AO+2zGOR6Xmv7m2S+2EcaHP6pNvH4jyK3qJyjiQTG/VSJcQchGj4QnSPxhmvN
+ aCVB2NkHDiLG7I+etKKRqNQu/wJK3xoqchtMQKVptWHuP8vXYUCiMEwrFW2blFeN9rfy
+ I958/eLiDSm5JUuMqzgyCnglvsHDf34TIfrClAj1PZzE12QxUkyuKnJRcCnKnSvkXeRS
+ k9jaL+P6BGnYKsQVY/VNieo3UDzdRear4ZJzn9mr1JDFlqIDXTXLaqGLa6tOsyqkLVqX
+ Zos+LbXpg6PFH2NxkdWvYGdvBzpDIVzmqxX6rS/1Fdplx1ppNSVRMS8eR8NohctvXghQ
+ i7Jg==
+X-Gm-Message-State: AOJu0YwWGyl/KbAHx/W6GrvU7LDqRviMQxbbdL+ZAA9cgpM5ZAexBJ4J
+ tw479RobEYFgfXM4lYmrC8uHE4L/3zgDTTPMNUum4ABnCjwwUKaRHXQMcsgHxJ+hUEthkKEC01X
+ UV1o75dEXq3TO07jLcRfSdx+fen1FfieeD1FsoyIyImWokz91iykgNMyyqn/b0smZisiGrZo+WZ
+ g2MZ1v7zHjkx9h5WYEeeYV2pxc7QhjXe9w0D+P
+X-Received: by 2002:a17:907:72c3:b0:a59:c327:25b with SMTP id
+ du3-20020a17090772c300b00a59c327025bmr3838279ejc.12.1714981913761; 
+ Mon, 06 May 2024 00:51:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbwUXK78DOT3sgz02OV/1U7wlH5CqztiV4RjBKZKrp28UiBgNHuOWS9opKzrs5LIqwyAXTUQ==
+X-Received: by 2002:a17:907:72c3:b0:a59:c327:25b with SMTP id
+ du3-20020a17090772c300b00a59c327025bmr3838260ejc.12.1714981913437; 
+ Mon, 06 May 2024 00:51:53 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- m19-20020a1709060d9300b00a599f627807sm3274717eji.140.2024.05.06.00.51.34
+ bf14-20020a170907098e00b00a59c3e28917sm1571335ejc.70.2024.05.06.00.51.52
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:51:34 -0700 (PDT)
+ Mon, 06 May 2024 00:51:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/46] tests/qtest: skip m48t59-test if the machine is absent
-Date: Mon,  6 May 2024 09:50:42 +0200
-Message-ID: <20240506075125.8238-4-pbonzini@redhat.com>
+Subject: [PULL 10/46] cris: switch boards to "default y"
+Date: Mon,  6 May 2024 09:50:49 +0200
+Message-ID: <20240506075125.8238-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
@@ -100,38 +100,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Together with the series at https://patchew.org/QEMU/20240423131612.28362-1-pbonzini@redhat.com/,
-this allows adding sparc-softmmu to the target list of the
-build-without-defaults CI job.
+Some targets use "default y" for boards to filter out those that require
+TCG.  For consistency we are switching all other targets to do the same.
+Continue with CRIS.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+No changes to generated config-devices.mak file.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/qtest/m48t59-test.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ configs/devices/cris-softmmu/default.mak | 5 ++---
+ .gitlab-ci.d/buildtest.yml               | 3 ++-
+ hw/cris/Kconfig                          | 2 ++
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
-index b9cd209165a..605797ab785 100644
---- a/tests/qtest/m48t59-test.c
-+++ b/tests/qtest/m48t59-test.c
-@@ -262,11 +262,12 @@ int main(int argc, char **argv)
-     base_setup();
+diff --git a/configs/devices/cris-softmmu/default.mak b/configs/devices/cris-softmmu/default.mak
+index 5932cf4d06f..ff73cd40847 100644
+--- a/configs/devices/cris-softmmu/default.mak
++++ b/configs/devices/cris-softmmu/default.mak
+@@ -1,5 +1,4 @@
+ # Default configuration for cris-softmmu
  
-     g_test_init(&argc, &argv, NULL);
--
--    if (g_test_slow()) {
--        /* Do not run this in timing-sensitive environments */
--        qtest_add_func("/rtc/bcd-check-time", bcd_check_time);
-+    if (qtest_has_machine(base_machine)) {
-+        if (g_test_slow()) {
-+            /* Do not run this in timing-sensitive environments */
-+            qtest_add_func("/rtc/bcd-check-time", bcd_check_time);
-+        }
-+        qtest_add_func("/rtc/fuzz-registers", fuzz_registers);
-     }
--    qtest_add_func("/rtc/fuzz-registers", fuzz_registers);
-     return g_test_run();
- }
+-# Boards:
+-#
+-CONFIG_AXIS=y
++# Boards are selected by default, uncomment to keep out of the build.
++# CONFIG_AXIS=n
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 3a03cdb0151..f4dc5666467 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -662,7 +662,8 @@ build-without-defaults:
+       --disable-pie
+       --disable-qom-cast-debug
+       --disable-strip
+-    TARGETS: alpha-softmmu avr-softmmu s390x-softmmu sh4-softmmu
++    TARGETS: alpha-softmmu avr-softmmu cris-softmmu
++      s390x-softmmu sh4-softmmu
+       sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
+     MAKE_CHECK_ARGS: check
+ 
+diff --git a/hw/cris/Kconfig b/hw/cris/Kconfig
+index 884ad2cbc0d..26c7eef7437 100644
+--- a/hw/cris/Kconfig
++++ b/hw/cris/Kconfig
+@@ -1,5 +1,7 @@
+ config AXIS
+     bool
++    default y
++    depends on CRIS
+     select ETRAXFS
+     select PFLASH_CFI02
+     select NAND
 -- 
 2.44.0
 
