@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3072E8BD50D
+	by mail.lfdr.de (Postfix) with ESMTPS id 574278BD50E
 	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 20:59:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s43XQ-0003Jh-LY; Mon, 06 May 2024 14:58:12 -0400
+	id 1s43XQ-0003Ji-Ne; Mon, 06 May 2024 14:58:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1s43XN-0003D8-Ca
+ id 1s43XN-0003D9-Dm
  for qemu-devel@nongnu.org; Mon, 06 May 2024 14:58:09 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1s43XK-0004xR-IX
+ id 1s43XK-0004xj-J0
  for qemu-devel@nongnu.org; Mon, 06 May 2024 14:58:07 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-5aa1bf6cb40so1681699eaf.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 11:58:05 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6f048a08628so626392a34.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 11:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715021884; x=1715626684; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715021885; x=1715626685; darn=nongnu.org;
  h=content-language:thread-index:content-transfer-encoding
  :mime-version:message-id:date:subject:in-reply-to:references:cc:to
  :from:from:to:cc:subject:date:message-id:reply-to;
- bh=0TXSMVzZM6M7T+GPklPOiQ00Gsxnlir1MpB4uIkdFrw=;
- b=WYIw8VViRmPWycDAXcu6q9hjk1XqZ8p0+rHKo34kaltLKzASS7baKA+Fn2NGijDs6I
- V3Rzw3piBlckVLo1/hJct0ea4rZNxj+RmahH9W58T58m2Y6ZOiviTQbYL9zqyn1pT+3Q
- RURwgRbX4tIjHRROIh5uQg0X3s4W+kN0TFJ5t03vaaI1PjEZM4Wh5MHjC+riPVJMJH6A
- Q24o1+L98F1myQtJvJVPzubRNe1tT5kPNthWykYcRAxAYqc+qDIebJB9Ev88ZDeN/j9I
- boJmXrQE/kVfcIAthbQE9JlcVsDtWth8LxFNAZAraoGtC2RObOHsH+jd0qC6pTbsjkNZ
- iC9Q==
+ bh=t2EkUA9/lTSjw4F/MmwRSMe8EPOOZErqs5N9e+sXW1A=;
+ b=WrtyGz/L5V7ZRij9zfJmqYjVfSCcNTd9v3yMBVeSplOyzTB0P1S4W+EaDGySOjVM2H
+ ghTvZ5dDachrG1jlSoXkaUUaWimlOlpC2uQmBEF4kQvr1taQc30iOYfQYy5lJJTQ2nwl
+ j1/U/teWXfiVVABjEYrsAXPrrruAKuRkCvi/rsVqw3WvfdjArodV3RONSk6cAn4wnLB4
+ m8TF/ciQxmpO5ISDIBIJHa7AcpQUZfb2oFfUqU7gsjyiQ89/+5l2ydTpZamhYSOWC1Bt
+ ngGGj1t390qitCuYX1NOW/UcmxiNl0NFKuceDFzjx2QxfeA/dXQYjE3bn+21hi4JtgvC
+ Vtrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715021884; x=1715626684;
+ d=1e100.net; s=20230601; t=1715021885; x=1715626685;
  h=content-language:thread-index:content-transfer-encoding
  :mime-version:message-id:date:subject:in-reply-to:references:cc:to
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0TXSMVzZM6M7T+GPklPOiQ00Gsxnlir1MpB4uIkdFrw=;
- b=CeGov+TINVUpumlB2h8GPKWiXJXz1i/QLt9+LJ5QZmArB+7al9a64JC/DE2Ar8lh0y
- a399HynnZ9OBKHHJdlNRShgPEcoQRmpwSPU4qTeaq4N3/JSZMm8mHMraHRqpGpcqQr7A
- Qd8ELgQHft63s5R/2zUt8/kzTcxCWGkG+THIkYXgLQJTjPY58JR0ylmnVXj7HPN0Q8Iz
- 4tvCgxGZArcEick0Glz6/OjGMl41pFA95nkLAnQGkX/KL6IOcGfU4BmPaC6rpNwEBWg8
- kEIuTbl8cgljRcyMysDh6/vFILtDY+CVYAjK/3MpKsCZfmn9LkG1uOcPbGP8+syW9yMS
- kwbw==
+ bh=t2EkUA9/lTSjw4F/MmwRSMe8EPOOZErqs5N9e+sXW1A=;
+ b=AMuCe1FdNDlMNW/Pcq8EV2WoZLNR2PDoTG2YtVl0wpk+PW/ud+GpFSNtlDHElj2vwX
+ oOlV0V/JJrGe2SYxLMA9xud9mTqlpbhnvXOYywiMRBUzt8BChySgde+Vw2X2vHdRI+kw
+ +x70rQI8QBQaEBdDx9i6svfAbC8ZfoFI1Uih4x+G4DjdG118LfTbprQgrrmWsNENnnn/
+ ZREJD1WGpYDPOv4Tx8D85/EP8P7oDT1/Tg/7L3c4Su2NbQvvo8DXvNR97sNQKHP/uHTS
+ KRvqvQjDgr0FNbrP3s6B1cPWaZasRyfkuit+uwpXCwqdlnVtHMmQcygbGY2mXJW0mS0m
+ VR3A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWkOMe/hnFuYgR7fPX9RJh9vIBSHMgaDyOOn50Jbxshsxm10IGD41xmQJJhTiv8Dv+wJcThGRuR2g9GPPDcyEa/YN1C0kw=
-X-Gm-Message-State: AOJu0YzImgWp3o9CYT2C1lPxvCgWUTRRZYCEzqtobQLOZWqS4SKkMWRa
- zBZmz51r+jbjGgkFLOhOwHyIBBf2SmtkiVUPWdqb9cMjtHZ3ypmA
-X-Google-Smtp-Source: AGHT+IFx+s/V/RswGpNLVVvBol5BcEgtIz85Cr2Z9A4lRWz0YBKa4iysq03G8Lq+NvLH4bAwiEL8WQ==
-X-Received: by 2002:a4a:4bc6:0:b0:5a9:cef4:fcea with SMTP id
- q189-20020a4a4bc6000000b005a9cef4fceamr11650149ooa.1.1715021881860; 
- Mon, 06 May 2024 11:58:01 -0700 (PDT)
+ AJvYcCW6uNxxz2sqJC4pf3FRHCO4zbfN5Qj3trrwiTR/AF5FRgBFJsfYJh0KlDKGZ3HDwpaNsVDqG+uf1uBTawsy3kFaBy3HmO8=
+X-Gm-Message-State: AOJu0YyAxVlW0NBtwg57nr2CTceCp0yaoY6J+sGDZSecS8ylcnszv4XH
+ ihd5ZCx9ZGIf90OhsJwKi/qzOeiN/3rHdFUWNjO5yWGw5lKHuRfg
+X-Google-Smtp-Source: AGHT+IHFB4KS84OB6zn3yY+Q6/8zW/bdA/K3CbGd9pRz1HwNFbQ0Mf817FcTerUVr+egtJTdhpb0Hw==
+X-Received: by 2002:a05:6830:246a:b0:6f0:4492:4850 with SMTP id
+ 46e09a7af769-6f08d09b570mr240900a34.11.1715021884685; 
+ Mon, 06 May 2024 11:58:04 -0700 (PDT)
 Received: from DESKTOPUU50BPD ([2603:8080:1f00:9c00:b108:eb17:4557:755d])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a4ae849000000b005a4c3d44cadsm2067993oom.38.2024.05.06.11.58.00
+ m9-20020a4ae849000000b005a4c3d44cadsm2067993oom.38.2024.05.06.11.58.03
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 May 2024 11:58:01 -0700 (PDT)
+ Mon, 06 May 2024 11:58:04 -0700 (PDT)
 From: <ltaylorsimpson@gmail.com>
 To: "'Anton Johansson'" <anjo@rev.ng>,
 	<qemu-devel@nongnu.org>
 Cc: <ale@rev.ng>,
 	<bcain@quicinc.com>
 References: <20240506183117.32268-1-anjo@rev.ng>
- <20240506183117.32268-4-anjo@rev.ng>
-In-Reply-To: <20240506183117.32268-4-anjo@rev.ng>
-Subject: RE: [PATCH 3/4] target/hexagon: idef-parser fix leak of init_list
-Date: Mon, 6 May 2024 13:58:00 -0500
-Message-ID: <067f01da9fe7$51597590$f40c60b0$@gmail.com>
+ <20240506183117.32268-2-anjo@rev.ng>
+In-Reply-To: <20240506183117.32268-2-anjo@rev.ng>
+Subject: RE: [PATCH 1/4] target/hexagon: idef-parser remove unused defines
+Date: Mon, 6 May 2024 13:58:03 -0500
+Message-ID: <068001da9fe7$52f8f4c0$f8eade40$@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJLdJdU/DG86JVEEIa8gVqwbMNhjgHc4CmKsJn8l4A=
+Thread-Index: AQJLdJdU/DG86JVEEIa8gVqwbMNhjgK5rscQsJMUGxA=
 Content-Language: en-us
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,53 +107,19 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 > Sent: Monday, May 6, 2024 1:31 PM
 > To: qemu-devel@nongnu.org
 > Cc: ale@rev.ng; ltaylorsimpson@gmail.com; bcain@quicinc.com
-> Subject: [PATCH 3/4] target/hexagon: idef-parser fix leak of init_list
+> Subject: [PATCH 1/4] target/hexagon: idef-parser remove unused defines
 > 
-> gen_inst_init_args() is called for instructions using a predicate as an
-rvalue.
-> Upon first call, the list of arguments which might need initialization
-init_list is
-> freed to indicate that they have been processed. For instructions without
-an
-> rvalue predicate,
-> gen_inst_init_args() isn't called and init_list will never be freed.
+> Before switching to GArray/g_string_printf we used fixed size arrays for
+> output buffers and instructions arguments among other things.
 > 
-> Free init_list from free_instruction() if it hasn't already been freed.
+> Macros defining the sizes of these buffers were left behind, remove them.
 > 
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > ---
->  target/hexagon/idef-parser/parser-helpers.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/target/hexagon/idef-parser/parser-helpers.c
-> b/target/hexagon/idef-parser/parser-helpers.c
-> index 95f2b43076..bae01c2bb8 100644
-> --- a/target/hexagon/idef-parser/parser-helpers.c
-> +++ b/target/hexagon/idef-parser/parser-helpers.c
-> @@ -2121,6 +2121,13 @@ void free_instruction(Context *c)
->          g_string_free(g_array_index(c->inst.strings, GString*, i), TRUE);
->      }
->      g_array_free(c->inst.strings, TRUE);
-> +    /*
-> +     * Free list of arguments that might need initialization, if they
-haven't
-> +     * already been free'd.
-> +     */
-> +    if (c->inst.init_list) {
-> +        g_array_free(c->inst.init_list, TRUE);
-> +    }
->      /* Free INAME token value */
->      g_string_free(c->inst.name, TRUE);
->      /* Free variables and registers */
+>  target/hexagon/idef-parser/idef-parser.h | 10 ----------
+>  1 file changed, 10 deletions(-)
 
-Why not do this in gen_inst_init_args just before this?
-   /* Free argument init list once we have initialized everything */
-    g_array_free(c->inst.init_list, TRUE);
-    c->inst.init_list = NULL;
-
-
-Taylor
-
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 
 
 
