@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B308BCD0F
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B08BCD14
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3wmT-0001lA-0p; Mon, 06 May 2024 07:45:17 -0400
+	id 1s3wnE-0002EW-4f; Mon, 06 May 2024 07:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1s3wmP-0001kk-VD
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:45:14 -0400
+ id 1s3wmU-0001q0-NJ
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:45:29 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1s3wmJ-0001sh-LQ
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:45:13 -0400
+ id 1s3wmL-0001t5-Rt
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:45:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=LfeUNHCUlXdUgrM1iqoBXdGRDuj1orIgD/TwK4KQqss=; b=DOSoeXazQ4Q2YvpuJWrpQ646MB
- y0Su0CLwitQLrxi2Z9QE0puwazeDtRKnZekJqbLz3MXRyhchUPF+eJqaLtQuTmgLdlWZ5SDJoF6aO
- gGvZlgWFQmPmge1aTDe9ZAQhC840+IvQKFwPZiFFa6um6n8erJ17aoDywjDEOhFvQ7zdnvZd3abLl
- olZ5xecB8HMOSdytE06YNw/1rPCnQz7ovBTcWfdfJYpIvSs3NIzHe8Pj5osWdHrLGzcAnMeE8GVFP
- 81ZFAPlDxVwwY0XQyNnAWpWOqLzoghnnU5TViEYlBgf3gx9wathfH3Lbt6NOoVeVwfuSdOoSbRWmG
- Y7NML8tcwIhDucVgIK3A/3vbFcXGFTaF7Dz5e3o+2tOIYGQmRA2km8QWzaUQpylVAyIwsDPDM6kRT
- arkML2pPws+Zljv/nML5qWyeAuhysYp0XPPCqFEt/8lnKAGJdHU7/g01kCMFsJfdZE5aKKRxP4+TV
- K+sKDVdsfgR/Tyh/GhQdTRemY8mujfDvRZqgzq2N+GexlkBb6H/8aJSSdw8ct41jVrZopUzPETSGm
- 8RU1r0UAt6qiILJ+TBA1rPZsRi6lSKhrvSEyKp7uLfCMCOqJpAg8QLao9sPBqju76+YX0oOdNy0uy
- QUKRsxxm2mxWRkRJoF+AYuN+SPahiiOfOiK3Lfzx8=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Iv0qu/DvouHMUWkJhrQofFhP1SlFQ9rAt+Y/ankr54U=; b=wzAmXBls+P8XEEE3Kc3Wdh5H5Q
+ voHUvFR578+ssAmiTE6/yGKmwzGUoZ1iUfE9iiRAyF48aZWUHJFkLGhxKp3C3l+8FxlVMvORxkoxa
+ y9cESB8oKjKerigqUdmGYcxD1ApZnagV8r1ZBl/MNH2oJzXf3rH6OGR7yNOsK8XfFf0tTc008/6Bh
+ 8yiw6RvQgl74rvB/nIny8/MKnCVMITpbdQKhVOiSqFbNK6vTKj9LAofNtVSgKwmkowoV8a5P0Agcc
+ RnmHlZnVLev3eWoIkPaetwDalTihvq/3QZJq8kPIMwp7+j3b79lI4GF4nqdYoA6nkHXxNlgaDNzbU
+ az7mqV0JY29USIYCJHLWFyyXhHRCiCYzBuxMLNMm0Nt7fVMGaQhEsiHoNy4/G5BVTbBztweidr7tE
+ qRsfmlyQsk2zpFnfFo5eyS6d1HLqqj+whJoRM4ULi+flNnm0S+mumVSFNqyW/wNh+JkkcZ1/K1wCz
+ kSYZO7RsLO3LSsOCa2vYYYXFQ1fXH15zZ9B6+/yoCuQkO/PmhT/ageKxodZnMSntYS3vYWwfHrQqw
+ 4wQvmWPSmJIESQrgJZD46HCiE1v/mNwM1uCSEYD0vqVZc/IT1mwkz+8BGYiu/4ojqXTLppazy4wSx
+ P0TiVyWnfDi95Y+J9AI4VQaDWlu4hGoLOCUuE+K38=;
 Received: from [2a00:23c4:8bb4:4000:b60d:a162:d698:c802]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1s3wl8-0005pA-7G; Mon, 06 May 2024 12:43:58 +0100
+ id 1s3wlC-0005pA-8v; Mon, 06 May 2024 12:44:02 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: qemu-devel@nongnu.org,
 	richard.henderson@linaro.org
-Date: Mon,  6 May 2024 12:44:39 +0100
-Message-Id: <20240506114451.331311-1-mark.cave-ayland@ilande.co.uk>
+Date: Mon,  6 May 2024 12:44:40 +0100
+Message-Id: <20240506114451.331311-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240506114451.331311-1-mark.cave-ayland@ilande.co.uk>
+References: <20240506114451.331311-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:b60d:a162:d698:c802
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 00/12] qemu-sparc queue 20240506
+Subject: [PULL 01/12] target/sparc/cpu: Rename the CPU models with a "+" in
+ their names
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,52 +78,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 248f6f62df073a3b4158fd0093863ab885feabb5:
+From: Thomas Huth <thuth@redhat.com>
 
-  Merge tag 'pull-axp-20240504' of https://gitlab.com/rth7680/qemu into staging (2024-05-04 08:39:46 -0700)
+Commit b447378e12 ("qom/object: Limit type names to alphanumerical ...")
+cut down the amount of allowed characters for QOM types to a saner set.
+The "+" character was meant to be included in this set, so we had to
+add a hack there to still allow the legacy names of POWER and Sparc64
+CPUs. However, instead of putting such a hack in the common QOM code,
+there is a much better place to do this: The sparc_cpu_class_by_name()
+function which is used to look up the names of all Sparc CPUs.
+Thus let's finally get rid of the "+" in the Sparc CPU names, and provide
+backward compatibility for the old names via some simple checks in the
+sparc_cpu_class_by_name() function.
 
-are available in the Git repository at:
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240419084812.504779-2-thuth@redhat.com>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ qom/object.c       |  8 --------
+ target/sparc/cpu.c | 14 ++++++++++++--
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-  https://github.com/mcayland/qemu.git tags/qemu-sparc-20240506
+diff --git a/qom/object.c b/qom/object.c
+index 44ec8f6460..157a45c5f8 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -157,14 +157,6 @@ static bool type_name_is_valid(const char *name)
+                         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                         "0123456789-_.");
+ 
+-    /* Allow some legacy names with '+' in it for compatibility reasons */
+-    if (name[plen] == '+') {
+-        if (plen >= 17 && g_str_has_prefix(name, "Sun-UltraSparc-I")) {
+-            /* Allow "Sun-UltraSparc-IV+" and "Sun-UltraSparc-IIIi+" */
+-            return true;
+-        }
+-    }
+-
+     return plen == slen;
+ }
+ 
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 485d416925..7487ae034d 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -314,7 +314,7 @@ static const sparc_def_t sparc_defs[] = {
+         .features = CPU_DEFAULT_FEATURES,
+     },
+     {
+-        .name = "Sun UltraSparc IV+",
++        .name = "Sun UltraSparc IV plus",
+         .iu_version = ((0x3eULL << 48) | (0x19ULL << 32) | (0x22ULL << 24)),
+         .fpu_version = 0x00000000,
+         .mmu_version = mmu_us_12,
+@@ -323,7 +323,7 @@ static const sparc_def_t sparc_defs[] = {
+         .features = CPU_DEFAULT_FEATURES | CPU_FEATURE_CMT,
+     },
+     {
+-        .name = "Sun UltraSparc IIIi+",
++        .name = "Sun UltraSparc IIIi plus",
+         .iu_version = ((0x3eULL << 48) | (0x22ULL << 32) | (0ULL << 24)),
+         .fpu_version = 0x00000000,
+         .mmu_version = mmu_us_3,
+@@ -762,6 +762,16 @@ static ObjectClass *sparc_cpu_class_by_name(const char *cpu_model)
+     char *typename;
+ 
+     typename = sparc_cpu_type_name(cpu_model);
++
++    /* Fix up legacy names with '+' in it */
++    if (g_str_equal(typename, SPARC_CPU_TYPE_NAME("Sun-UltraSparc-IV+"))) {
++        g_free(typename);
++        typename = g_strdup(SPARC_CPU_TYPE_NAME("Sun-UltraSparc-IV-plus"));
++    } else if (g_str_equal(typename, SPARC_CPU_TYPE_NAME("Sun-UltraSparc-IIIi+"))) {
++        g_free(typename);
++        typename = g_strdup(SPARC_CPU_TYPE_NAME("Sun-UltraSparc-IIIi-plus"));
++    }
++
+     oc = object_class_by_name(typename);
+     g_free(typename);
+     return oc;
+-- 
+2.39.2
 
-for you to fetch changes up to d6f898cf85c92389182d22f0bcc3a11d7194fc94:
-
-  target/sparc: Split out do_ms16b (2024-05-05 21:02:48 +0100)
-
-----------------------------------------------------------------
-qemu-sparc queue
-- Default to modern virtio with iommu_platform enabled for sun4u
-- Fixes for various VIS instructions from Richard
-- CPU name updates from Thomas
-
-----------------------------------------------------------------
-Mark Cave-Ayland (1):
-      hw/sparc64: set iommu_platform=on for virtio devices attached to the sun4u machine
-
-Richard Henderson (7):
-      linux-user/sparc: Add more hwcap bits for sparc64
-      target/sparc: Fix FEXPAND
-      target/sparc: Fix FMUL8x16
-      target/sparc: Fix FMUL8x16A{U,L}
-      target/sparc: Fix FMULD8*X16
-      target/sparc: Fix FPMERGE
-      target/sparc: Split out do_ms16b
-
-Thomas Huth (4):
-      target/sparc/cpu: Rename the CPU models with a "+" in their names
-      target/sparc/cpu: Avoid spaces by default in the CPU names
-      docs/system/target-sparc: Improve the Sparc documentation
-      docs/about: Deprecate the old "UltraSparc" CPU names that contain a "+"
-
- docs/about/deprecated.rst    |   9 +++
- docs/system/target-sparc.rst |  12 +--
- hw/sparc64/sun4u.c           |   7 ++
- linux-user/elfload.c         |  48 +++++++----
- qom/object.c                 |   8 --
- target/sparc/cpu.c           |  66 ++++++++-------
- target/sparc/helper.h        |  11 +--
- target/sparc/insns.decode    |   2 +-
- target/sparc/translate.c     | 129 ++++++++++++++++++++++++++---
- target/sparc/vis_helper.c    | 189 +++++++++++--------------------------------
- 10 files changed, 265 insertions(+), 216 deletions(-)
 
