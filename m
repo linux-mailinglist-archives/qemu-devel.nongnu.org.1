@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5ED18BC9B8
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B668BC9B6
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3trp-0003JQ-VJ; Mon, 06 May 2024 04:38:38 -0400
+	id 1s3trZ-0002t3-PI; Mon, 06 May 2024 04:38:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s3trB-0002kj-DW
- for qemu-devel@nongnu.org; Mon, 06 May 2024 04:37:59 -0400
+ id 1s3trC-0002lV-J4
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:38:00 -0400
 Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s3tr4-0000h1-AO
- for qemu-devel@nongnu.org; Mon, 06 May 2024 04:37:51 -0400
+ id 1s3tr7-0000gt-2o
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:37:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714984671; x=1746520671;
+ t=1714984673; x=1746520673;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6b8fQgx7Op0HXHhqxIxjSxz8+c7AgotUR0Avan3azfw=;
- b=lSGi51c/Sskc8mdC3wHZz2N3Kod+TvB94P18RvW94LVNjGiIKSHkSILF
- efmI71rLjSetZdAg9Dx+7wXdqwqI55CSUnvc6crxTAG/Rg46THkuRo1Ne
- bpbCujue/Q/7QHM40ibPaPftWx/ZZT2QefraocJaIRGm9exSQ814L5jQk
- 9SWCi9kj7iL3n9K7QqQlSERKnzg89ZQw08TaMhDpaRHcZDY347jmza+7H
- cGrxpBJR1U2+/KO5CDu1W2RNQm26C+/fVKOgZZsljBiuyXvP48nody3tu
- g/YuZiYpfMy1ZXGPMFUdgS26N1xSqcF/sqp1ITy8/QeDEGtfha8OFLaFs g==;
-X-CSE-ConnectionGUID: Vhm8s6DZShyyryDAtC1HHA==
-X-CSE-MsgGUID: JJTxZumJTYK63g3oavVl8w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="14533322"
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="14533322"
+ bh=1YsI4Fnl026ibo8C5oM4++UbsFuSKVGk5i1HUX040ys=;
+ b=aPQQOoNfoJosQ5+m02EuKSvxe7rZKPqIvKlEes3ufrJJwMLrlikt7hS6
+ AqCprw0oFvgSXq/V1ZQPvhdkFnuWViq83sAUZB9+vnfdAtLbrslptzPdw
+ m3RF4Lf5/aI+B4sDahPSSa11A3ZDREihlJHo1ZHsL3llM3zIAKsCAJS4G
+ EN1rTYf0xdh7Cl9dP4HvAI3daItHGDTbptwfMJT0mFHPSaQK0veRmrpqJ
+ hQkbNrhA+tiSuoufq9IHkxf5Gb9BHytEH6Y88q6MlEqkstcQ7dij58V2M
+ bY1YvCUAhDJ29NbcqDtS/mTHewNBGp2f81gl09/fst/zkPQkB2YwltZqb Q==;
+X-CSE-ConnectionGUID: zkhXYbw0TxS8CnekNDs9fg==
+X-CSE-MsgGUID: bArIM+ohRZOA7xuVw5I+BQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="14533332"
+X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="14533332"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 01:37:49 -0700
-X-CSE-ConnectionGUID: skDLIEgISQa/0elSUVLlRw==
-X-CSE-MsgGUID: IiUrCKOmRPa5vo3DiG3F3Q==
+ 06 May 2024 01:37:52 -0700
+X-CSE-ConnectionGUID: JtEF03fMQCKxoB2LHt3g0Q==
+X-CSE-MsgGUID: NLFPo/ICSoO+WRHnkSCYWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="28186718"
+X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="28186723"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 06 May 2024 01:37:46 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 06 May 2024 01:37:49 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -53,10 +53,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
  Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
  kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 1/6] target/i386/kvm: Add feature bit definitions for KVM
- CPUID
-Date: Mon,  6 May 2024 16:51:48 +0800
-Message-Id: <20240506085153.2834841-2-zhao1.liu@intel.com>
+Subject: [PATCH v2 2/6] target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
+ MSR_KVM_SYSTEM_TIME definitions
+Date: Mon,  6 May 2024 16:51:49 +0800
+Message-Id: <20240506085153.2834841-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240506085153.2834841-1-zhao1.liu@intel.com>
 References: <20240506085153.2834841-1-zhao1.liu@intel.com>
@@ -86,165 +86,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add feature definitions for KVM_CPUID_FEATURES in CPUID (
-CPUID[4000_0001].EAX and CPUID[4000_0001].EDX), to get rid of lots of
-offset calculations.
+These 2 MSRs have been already defined in kvm_para.h (standard-headers/
+asm-x86/kvm_para.h).
 
+Remove QEMU local definitions to avoid duplication.
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-v2: Fixed a typo.
-v1: Changed the prefix from CPUID_FEAT_KVM_* to CPUID_KVM_*. (Xiaoyao)
----
- hw/i386/kvm/clock.c   |  5 ++---
- target/i386/cpu.h     | 23 +++++++++++++++++++++++
- target/i386/kvm/kvm.c | 28 ++++++++++++++--------------
- 3 files changed, 39 insertions(+), 17 deletions(-)
+ target/i386/kvm/kvm.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
-index 40aa9a32c32c..ce416c05a3d0 100644
---- a/hw/i386/kvm/clock.c
-+++ b/hw/i386/kvm/clock.c
-@@ -27,7 +27,6 @@
- #include "qapi/error.h"
- 
- #include <linux/kvm.h>
--#include "standard-headers/asm-x86/kvm_para.h"
- #include "qom/object.h"
- 
- #define TYPE_KVM_CLOCK "kvmclock"
-@@ -334,8 +333,8 @@ void kvmclock_create(bool create_always)
- 
-     assert(kvm_enabled());
-     if (create_always ||
--        cpu->env.features[FEAT_KVM] & ((1ULL << KVM_FEATURE_CLOCKSOURCE) |
--                                       (1ULL << KVM_FEATURE_CLOCKSOURCE2))) {
-+        cpu->env.features[FEAT_KVM] & (CPUID_KVM_CLOCK |
-+                                       CPUID_KVM_CLOCK2)) {
-         sysbus_create_simple(TYPE_KVM_CLOCK, -1, NULL);
-     }
- }
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 565c7a98c37c..66948c68616e 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -27,6 +27,7 @@
- #include "qapi/qapi-types-common.h"
- #include "qemu/cpu-float.h"
- #include "qemu/timer.h"
-+#include "standard-headers/asm-x86/kvm_para.h"
- 
- #define XEN_NR_VIRQS 24
- 
-@@ -948,6 +949,28 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- /* Packets which contain IP payload have LIP values */
- #define CPUID_14_0_ECX_LIP              (1U << 31)
- 
-+/* (Old) KVM paravirtualized clocksource */
-+#define CPUID_KVM_CLOCK            (1U << KVM_FEATURE_CLOCKSOURCE)
-+/* (New) KVM specific paravirtualized clocksource */
-+#define CPUID_KVM_CLOCK2           (1U << KVM_FEATURE_CLOCKSOURCE2)
-+/* KVM asynchronous page fault */
-+#define CPUID_KVM_ASYNCPF          (1U << KVM_FEATURE_ASYNC_PF)
-+/* KVM stolen (when guest vCPU is not running) time accounting */
-+#define CPUID_KVM_STEAL_TIME       (1U << KVM_FEATURE_STEAL_TIME)
-+/* KVM paravirtualized end-of-interrupt signaling */
-+#define CPUID_KVM_PV_EOI           (1U << KVM_FEATURE_PV_EOI)
-+/* KVM paravirtualized spinlocks support */
-+#define CPUID_KVM_PV_UNHALT        (1U << KVM_FEATURE_PV_UNHALT)
-+/* KVM host-side polling on HLT control from the guest */
-+#define CPUID_KVM_POLL_CONTROL     (1U << KVM_FEATURE_POLL_CONTROL)
-+/* KVM interrupt based asynchronous page fault*/
-+#define CPUID_KVM_ASYNCPF_INT      (1U << KVM_FEATURE_ASYNC_PF_INT)
-+/* KVM 'Extended Destination ID' support for external interrupts */
-+#define CPUID_KVM_MSI_EXT_DEST_ID  (1U << KVM_FEATURE_MSI_EXT_DEST_ID)
-+
-+/* Hint to KVM that vCPUs expect never preempted for an unlimited time */
-+#define CPUID_KVM_HINTS_REALTIME    (1U << KVM_HINTS_REALTIME)
-+
- /* CLZERO instruction */
- #define CPUID_8000_0008_EBX_CLZERO      (1U << 0)
- /* Always save/restore FP error pointers */
 diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index c5943605ee3a..d9e03891113f 100644
+index d9e03891113f..b2c52ec9561f 100644
 --- a/target/i386/kvm/kvm.c
 +++ b/target/i386/kvm/kvm.c
-@@ -527,13 +527,13 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          * be enabled without the in-kernel irqchip
-          */
-         if (!kvm_irqchip_in_kernel()) {
--            ret &= ~(1U << KVM_FEATURE_PV_UNHALT);
-+            ret &= ~CPUID_KVM_PV_UNHALT;
-         }
-         if (kvm_irqchip_is_split()) {
--            ret |= 1U << KVM_FEATURE_MSI_EXT_DEST_ID;
-+            ret |= CPUID_KVM_MSI_EXT_DEST_ID;
-         }
-     } else if (function == KVM_CPUID_FEATURES && reg == R_EDX) {
--        ret |= 1U << KVM_HINTS_REALTIME;
-+        ret |= CPUID_KVM_HINTS_REALTIME;
-     }
+@@ -79,9 +79,6 @@
+ #define KVM_APIC_BUS_CYCLE_NS       1
+ #define KVM_APIC_BUS_FREQUENCY      (1000000000ULL / KVM_APIC_BUS_CYCLE_NS)
  
-     return ret;
-@@ -3377,20 +3377,20 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
-         kvm_msr_entry_add(cpu, MSR_IA32_TSC, env->tsc);
-         kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, env->system_time_msr);
-         kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, env->wall_clock_msr);
--        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_ASYNC_PF_INT)) {
-+        if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
-             kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, env->async_pf_int_msr);
-         }
--        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_ASYNC_PF)) {
-+        if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF) {
-             kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_EN, env->async_pf_en_msr);
-         }
--        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_PV_EOI)) {
-+        if (env->features[FEAT_KVM] & CPUID_KVM_PV_EOI) {
-             kvm_msr_entry_add(cpu, MSR_KVM_PV_EOI_EN, env->pv_eoi_en_msr);
-         }
--        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_STEAL_TIME)) {
-+        if (env->features[FEAT_KVM] & CPUID_KVM_STEAL_TIME) {
-             kvm_msr_entry_add(cpu, MSR_KVM_STEAL_TIME, env->steal_time_msr);
-         }
- 
--        if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_POLL_CONTROL)) {
-+        if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
-             kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, env->poll_control_msr);
-         }
- 
-@@ -3842,19 +3842,19 @@ static int kvm_get_msrs(X86CPU *cpu)
- #endif
-     kvm_msr_entry_add(cpu, MSR_KVM_SYSTEM_TIME, 0);
-     kvm_msr_entry_add(cpu, MSR_KVM_WALL_CLOCK, 0);
--    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_ASYNC_PF_INT)) {
-+    if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF_INT) {
-         kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_INT, 0);
-     }
--    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_ASYNC_PF)) {
-+    if (env->features[FEAT_KVM] & CPUID_KVM_ASYNCPF) {
-         kvm_msr_entry_add(cpu, MSR_KVM_ASYNC_PF_EN, 0);
-     }
--    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_PV_EOI)) {
-+    if (env->features[FEAT_KVM] & CPUID_KVM_PV_EOI) {
-         kvm_msr_entry_add(cpu, MSR_KVM_PV_EOI_EN, 0);
-     }
--    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_STEAL_TIME)) {
-+    if (env->features[FEAT_KVM] & CPUID_KVM_STEAL_TIME) {
-         kvm_msr_entry_add(cpu, MSR_KVM_STEAL_TIME, 0);
-     }
--    if (env->features[FEAT_KVM] & (1 << KVM_FEATURE_POLL_CONTROL)) {
-+    if (env->features[FEAT_KVM] & CPUID_KVM_POLL_CONTROL) {
-         kvm_msr_entry_add(cpu, MSR_KVM_POLL_CONTROL, 1);
-     }
-     if (has_architectural_pmu_version > 0) {
-@@ -5487,7 +5487,7 @@ uint64_t kvm_swizzle_msi_ext_dest_id(uint64_t address)
-         return address;
-     }
-     env = &X86_CPU(first_cpu)->env;
--    if (!(env->features[FEAT_KVM] & (1 << KVM_FEATURE_MSI_EXT_DEST_ID))) {
-+    if (!(env->features[FEAT_KVM] & CPUID_KVM_MSI_EXT_DEST_ID)) {
-         return address;
-     }
- 
+-#define MSR_KVM_WALL_CLOCK  0x11
+-#define MSR_KVM_SYSTEM_TIME 0x12
+-
+ /* A 4096-byte buffer can hold the 8-byte kvm_msrs header, plus
+  * 255 kvm_msr_entry structs */
+ #define MSR_BUF_SIZE 4096
 -- 
 2.34.1
 
