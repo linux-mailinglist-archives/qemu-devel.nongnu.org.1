@@ -2,91 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E638BD188
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF1EA8BD18C
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:33:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s40Jt-0007jB-Gt; Mon, 06 May 2024 11:32:01 -0400
+	id 1s40Jt-0007j6-Dk; Mon, 06 May 2024 11:32:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s40Jp-0007hE-1D
+ id 1s40Jp-0007hF-1x
  for qemu-devel@nongnu.org; Mon, 06 May 2024 11:31:59 -0400
 Received: from wfhigh1-smtp.messagingengine.com ([64.147.123.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s40Jk-0003JY-Vm
+ id 1s40Jk-0003Jj-W0
  for qemu-devel@nongnu.org; Mon, 06 May 2024 11:31:55 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
- by mailfhigh.west.internal (Postfix) with ESMTP id 4205B1800123;
- Mon,  6 May 2024 11:31:48 -0400 (EDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailfhigh.west.internal (Postfix) with ESMTP id 0E4F21800143;
+ Mon,  6 May 2024 11:31:49 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute7.internal (MEProxy); Mon, 06 May 2024 11:31:48 -0400
+ by compute3.internal (MEProxy); Mon, 06 May 2024 11:31:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm1; t=1715009507; x=1715095907; bh=9q
- kPuxLpOL5az0FyzD29sfaThSDlmwI4Ujxs7bT7BR8=; b=KVLeYhVMvtfUYec51w
- 6yyYM0/TbdVzyQ8I3lbnwG0pAsWPx1aZqaa06VTX4DKWrXQTFeC37XmXmW1xb3Yd
- CKtVgh76g00/S56Ra88lKbbduGBEMz1jnc7L3p7as3Oira2aFl5/m2MEs+Tfpkhn
- +ouNhkojOJtCbA9pa1rOUpr6yK+6CvGtkLgHdatMGt8oiaQ+v1VNpbR70Nuf4Yo3
- IMdCM33tJC9rDAxfSQxMVXgfbGm+uPssIfjqeOf8urgbDTvedg+NJbiKp2InIt0S
- Xje9jEf8MHUlH4DkIz/0MZokI6OIkQehoojLwhxeg3pKMMVWNZRQviubgI7CMi3U
- cBEg==
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm1; t=1715009509;
+ x=1715095909; bh=2kuNcBBCNIBTaFBvxiXhPQn5uSFy+yrNa24i85xHEC8=; b=
+ hFMJsVrDm6ThZcwKdF0fGyzgnmkpZSjN4PwsK1xfn14m6Zt9GPpvXs8+hoDiZTSz
+ 3EnLLd3GO6Cl27NbjS7y17wx0IMlu5p1HN6CaZzFSZWBw4aMuiJOLjhOKViNFSRO
+ t4hH3y179ge74aLTQKevsbwBJ/uv/REcoZ596E9de30v2mHsM41MOvbZK8tx0CXA
+ NSSVSs5QEhy/sCXsCbJYExCF4LTjsADAGk4OGLAlbf8Hf4WVmTCZ1xkOEPz4pdQn
+ LYYnaf3WGB+sIcosJiUx4SUR8ZOEeGWZ1z0JILi2G6Td2lpIXhxf7k4l8Nl7hCi4
+ 938DptHH8FiK2C7fhk7x+Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1715009507; x=1715095907; bh=9qkPuxLpOL5az
- 0FyzD29sfaThSDlmwI4Ujxs7bT7BR8=; b=i9O0CvE6y1rU7LI1Cp9X128T/16rZ
- Nw03rMQCxy1ktStAKXQSSnJt350eNCg8et/ID/Z7RO4aruUvs1XGNO5wMh/xmCZ3
- U8YvA05hKCZApd0qaChd6CAN/zMQe6EdUjWXHfXRg5VzeckJ7Q2wVcVtGCNh42hZ
- 1gQKWdaSd9hJ+SJiLMAs8pIvT5wv6J1vzdSncG8ovUYe6NBwPcdslh3umknXjMy6
- T+jOlPik5Lse0BGIljCJiKwoV71sCXmgdA2cRHZCn+ph7CJFymS4eJIsI26wyj72
- hbakmg2CnZl4eZ6NI4Dag+1KYtmMzCny1yc5sm1CMpHSQvevKwwOWyyhQ==
-X-ME-Sender: <xms:4_c4ZlewNoX7xU7kSfsdodGL4sJDbhBDTYBMRBsG7Nx5eX8zBrtvWA>
- <xme:4_c4ZjNb4SSInvNciEe7ZutSVavFzcMg4WLT2XZfLVh4FGkiC3wxcQfPLuWNd9yj4
- 5igVzryVrZ0ScGszq4>
-X-ME-Received: <xmr:4_c4Zuj-R3C7qx5gNz-c74CSXIA1Y0s6MNrjNfA1-MTv7bmKj3Vgv1Q>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715009509; x=
+ 1715095909; bh=2kuNcBBCNIBTaFBvxiXhPQn5uSFy+yrNa24i85xHEC8=; b=K
+ VWua7GEZG3f0rCctUinQBOhsg2mhh3bhN1av5uh/Y9zCjFTxMztsnc17iwRyAzWD
+ 0uzJs4S+49UiAUP3FS+jci7GCa8gdAZ4J2qq8B1ZBojE3JGiyw4ay43yz/U7gLIH
+ mL1xcdbKj89UKa9AuU6XscWDfr2NLYAVXfuQROVuhU5hj7zFRrx6rF5vT0SvtRHb
+ 7n8HunH1DwUxhdnRZodlnIUqReASU4yGOUYcHAdwRLb7+AuGEo7cCDlUwBepxNRU
+ egIleIZD1kdDNyCGix5M3Px3JxfnMS4K3u4m/CdG5pcY3CoSTqq23nHCtgEMl6Ug
+ GZFNzU+DFT/RjYoU0svNA==
+X-ME-Sender: <xms:5fc4ZtsfHGwi45qPW6wq2IGHmSREmap2PcMtfl6hsud6Bly4SHfh2w>
+ <xme:5fc4ZmductxnWObj1IGIX_tCQMLeXbVk0oTvcvg5WX9jYW3vstI3KLoLx1en2Y_lM
+ lYnpvhGm06K2qCheWk>
+X-ME-Received: <xmr:5fc4ZgzkPbwnzNOfyvVHRD8NSY4nLKoeBxzwGhX8pYty0dnCMI8s9Bw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddviedgledtucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffufffkgggtgffvvefosehtkeertdertdejnecuhfhrohhmpeflihgrgihu
- nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
- ftrfgrthhtvghrnhepkeejgfdtteeljeeuvdeiteegheefleehgeevuefgfeevhfevheeh
- hfefieegvdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
- homhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:4_c4Zu9kb_AT68gca3Nob57dmI_YpG5YHpHjWmyQ5T6lDsbIs7tiig>
- <xmx:4_c4Zht4tP6mF-qJmMffNdBtzon6CN8T5ImNsEhnjah4PzHdEAEBwQ>
- <xmx:4_c4ZtEBijrl4NhLs-CsOFu2l8fyLktcobq909AN5t2l-I6LROLUkw>
- <xmx:4_c4ZoMdrkeOc_gxtKApzFlCboyFlxKTczzr4cjsO9E-iFUe_cTzOw>
- <xmx:4_c4ZpJwyDrvGq4jzKgxgWhMaCbYTeDVtAJ3qurfyIDc2HzmaqSCfP96>
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
+ gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+ cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
+ veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:5fc4ZkNNMKmn8V0ZZvQft_5XKxQMN9s4ei7GwXMWdu46lvD30nrhgA>
+ <xmx:5fc4Zt_bAv-U8uOiIKBic1-_s1Fa-lFokMwALKTujQliibvO6WiZOA>
+ <xmx:5fc4ZkWUPLpEyfmkpd0RthqCOdXZkH_SUG9oXfl9vBmM1Vjvl3PKWw>
+ <xmx:5fc4ZuewOrEwPEMgwvDEIQ2tptTpOvWKTP4L-N6pLlgOA2dwI3qagA>
+ <xmx:5fc4ZoZdh9BiQfq3EuHGDQ_f4FHsjw3ssNgyOl2DcqGt5909r6fTmZIj>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 May 2024 11:31:47 -0400 (EDT)
+ 6 May 2024 11:31:48 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 0/5] hw/mips: Proper multi core support
-Date: Mon, 06 May 2024 16:31:34 +0100
-Message-Id: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
+Date: Mon, 06 May 2024 16:31:35 +0100
+Subject: [PATCH 1/5] target/mips: Make globalnumber a CPU property
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIANb3OGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDUwMz3dzMgmLd4twCXcvENMtUc8PEFItkIyWg8oKi1LTMCrBR0bG1tQC
- V8DEGWgAAAA==
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240506-mips-smp-v1-1-3cc234786910@flygoat.com>
+References: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
+In-Reply-To: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2782;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3976;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=oNlozXeAJRJUSVaV0fKqi4kZN1E3eUjY+6x2UcXdfzA=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSL7487riTP+lh30eRIuPBRnh87hU5wHr1jM/Wl9T0JI
- U6O4jnsHaUsDGIcDLJiiiwhAkp9GxovLrj+IOsPzBxWJpAhDFycAjCRZF2G//53D+xfsuI5S+zW
- Z5/8tDV+6AkeDnl+XFB/Q9enA092d/UyMhx0EjOTSztyeX1LR2Dxvv4dd7fUdqk/kJE6Hlh66P2
- dRbwA
+ bh=CJg+yb6JSEoXL9V2aoefjDejZ9YFbsgnL4KcYazjW70=;
+ b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSL74+bF+kt7ckz/LWGMWIl23a5xZLH/mrsP1Evvt1p1
+ evutwpLOkpZGMQ4GGTFFFlCBJT6NjReXHD9QdYfmDmsTCBDGLg4BWAiyT2MDIfU1DY9vsxQo712
+ rd+ZU7ndDiynp1uW3UoVl9F/4DzHQJGRYclvFsvlkxpmuN1rmJvknPZvusrq1O9etr+WR2atObs
+ jiAsA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=64.147.123.152;
@@ -113,78 +113,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+GlobalNumber marks topology information of a CPU instance.
 
-This series implemented propper multiple core support for MIPS
-CPS systsm.
-
-Previously all CPUs are being implemented as a smt thread in a
-single core. Now it respects topology supplied in QEMU args.
-
-To test:
-Build a latest kernel with 64r6el_defconfig (tested on 6.6,
-next-20240506).
-
-Then run:
-```
-qemu-system-mips64el -M boston -cpu I6500 -kernel ~/linux-next/vmlinux -smp 4,cores=2,threads=2 -append "console=ttyS0,115200" -nographic
-```
-In dmesg of guest kernel:
-```
-[    0.000000] VP topology {2,2} total 4
-...
-[    0.085190] smp: Bringing up secondary CPUs ...
-[    0.090219] Primary instruction cache 64kB, VIPT, 4-way, linesize 64 bytes.
-[    0.095461] Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 64 bytes
-[    0.096658] CPU1 revision is: 0001b000 (MIPS I6500)
-[    0.096718] FPU revision is: 20f30300
-[    0.124711] Synchronize counters for CPU 1: done.
-[    0.940979] Primary instruction cache 64kB, VIPT, 4-way, linesize 64 bytes.
-[    0.941041] Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 64 bytes
-[    0.941256] CPU2 revision is: 0001b000 (MIPS I6500)
-[    0.941289] FPU revision is: 20f30300
-[    0.965322] Synchronize counters for CPU 2: done.
-[    1.260937] Primary instruction cache 64kB, VIPT, 4-way, linesize 64 bytes.
-[    1.261001] Primary data cache 64kB, 4-way, PIPT, no aliases, linesize 64 bytes
-[    1.261172] CPU3 revision is: 0001b000 (MIPS I6500)
-[    1.261209] FPU revision is: 20f30300
-[    1.285390] Synchronize counters for CPU 3: done.
-[    1.346985] smp: Brought up 1 node, 4 CPUs
-```
-
-Please review.
-
-Thanks
-
-To: qemu-devel@nongnu.org
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Make it a CPU property to allow CPS to override topology information.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-Jiaxun Yang (5):
-      target/mips: Make globalnumber a CPU property
-      hw/msic/mips_cmgcr: Implement multicore functions
-      hw/msic/mips_cpc: Implement multi core support
-      hw/mips/cps: Implement multi core support
-      hw/mips/boston: Implement multi core support
+ target/mips/cpu.c            | 16 +++++++++++++++-
+ target/mips/cpu.h            | 10 +++++++++-
+ target/mips/sysemu/machine.c |  5 ++---
+ 3 files changed, 26 insertions(+), 5 deletions(-)
 
- hw/mips/boston.c             |  37 +++++++++-
- hw/mips/cps.c                |  66 ++++++++++-------
- hw/misc/mips_cmgcr.c         | 168 +++++++++++++++++++++++++++++++++++--------
- hw/misc/mips_cpc.c           |  97 ++++++++++++++++++-------
- include/hw/mips/cps.h        |   1 +
- include/hw/misc/mips_cmgcr.h |  87 +++++++++++++++++++---
- include/hw/misc/mips_cpc.h   |  15 +++-
- target/mips/cpu.c            |  16 ++++-
- target/mips/cpu.h            |  10 ++-
- target/mips/sysemu/machine.c |   5 +-
- 10 files changed, 403 insertions(+), 99 deletions(-)
----
-base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
-change-id: 20240506-mips-smp-9af9e71ad8c2
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index bbe01d07dd..762000d09b 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -296,7 +296,6 @@ static void mips_cpu_reset_hold(Object *obj, ResetType type)
+     env->CP0_Random = env->tlb->nb_tlb - 1;
+     env->tlb->tlb_in_use = env->tlb->nb_tlb;
+     env->CP0_Wired = 0;
+-    env->CP0_GlobalNumber = (cs->cpu_index & 0xFF) << CP0GN_VPId;
+     env->CP0_EBase = KSEG0_BASE | (cs->cpu_index & 0x3FF);
+     if (env->CP0_Config3 & (1 << CP0C3_CMGCR)) {
+         env->CP0_CMGCRBase = 0x1fbf8000 >> 4;
+@@ -484,6 +483,12 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     env->exception_base = (int32_t)0xBFC00000;
+ 
++#if !defined(CONFIG_USER_ONLY)
++    if (env->CP0_GlobalNumber == -1) {
++        env->CP0_GlobalNumber = (cs->cpu_index & 0xFF) << CP0GN_VPId;
++    }
++#endif
++
+ #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
+     mmu_init(env, env->cpu_model);
+ #endif
+@@ -563,6 +568,13 @@ static const TCGCPUOps mips_tcg_ops = {
+ };
+ #endif /* CONFIG_TCG */
+ 
++static Property mips_cpu_properties[] = {
++#if !defined(CONFIG_USER_ONLY)
++    DEFINE_PROP_INT32("globalnumber", MIPSCPU, env.CP0_GlobalNumber, -1),
++#endif
++    DEFINE_PROP_END_OF_LIST(),
++};
++
+ static void mips_cpu_class_init(ObjectClass *c, void *data)
+ {
+     MIPSCPUClass *mcc = MIPS_CPU_CLASS(c);
+@@ -592,6 +604,8 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
+ #ifdef CONFIG_TCG
+     cc->tcg_ops = &mips_tcg_ops;
+ #endif /* CONFIG_TCG */
++
++    device_class_set_props(dc, mips_cpu_properties);
+ }
+ 
+ static const TypeInfo mips_cpu_type_info = {
+diff --git a/target/mips/cpu.h b/target/mips/cpu.h
+index 3e906a175a..7499608678 100644
+--- a/target/mips/cpu.h
++++ b/target/mips/cpu.h
+@@ -612,8 +612,13 @@ typedef struct CPUArchState {
+ # define CP0EnLo_RI 31
+ # define CP0EnLo_XI 30
+ #endif
+-    int32_t CP0_GlobalNumber;
++    /* CP0_GlobalNumber is preserved across CPU reset. */
+ #define CP0GN_VPId 0
++#define CP0GN_VPId_MASK (0xFFUL << CP0GN_VPId)
++#define CP0GN_CoreNum 8
++#define CP0GN_CoreNum_MASK (0xFUL << CP0GN_CoreNum)
++#define CP0GN_ClusterNum 16
++#define CP0GN_ClusterNum_MASK (0xFUL << CP0GN_ClusterNum)
+ /*
+  * CP0 Register 4
+  */
+@@ -1175,6 +1180,9 @@ typedef struct CPUArchState {
+     struct {} end_reset_fields;
+ 
+     /* Fields from here on are preserved across CPU reset. */
++#if !defined(CONFIG_USER_ONLY)
++    int32_t CP0_GlobalNumber;
++#endif
+     CPUMIPSMVPContext *mvp;
+ #if !defined(CONFIG_USER_ONLY)
+     CPUMIPSTLBContext *tlb;
+diff --git a/target/mips/sysemu/machine.c b/target/mips/sysemu/machine.c
+index 213fd637fc..235d640862 100644
+--- a/target/mips/sysemu/machine.c
++++ b/target/mips/sysemu/machine.c
+@@ -218,8 +218,8 @@ static const VMStateDescription vmstate_tlb = {
+ 
+ const VMStateDescription vmstate_mips_cpu = {
+     .name = "cpu",
+-    .version_id = 21,
+-    .minimum_version_id = 21,
++    .version_id = 22,
++    .minimum_version_id = 22,
+     .post_load = cpu_post_load,
+     .fields = (const VMStateField[]) {
+         /* Active TC */
+@@ -257,7 +257,6 @@ const VMStateDescription vmstate_mips_cpu = {
+         VMSTATE_INT32(env.CP0_VPEOpt, MIPSCPU),
+         VMSTATE_UINT64(env.CP0_EntryLo0, MIPSCPU),
+         VMSTATE_UINT64(env.CP0_EntryLo1, MIPSCPU),
+-        VMSTATE_INT32(env.CP0_GlobalNumber, MIPSCPU),
+         VMSTATE_UINTTL(env.CP0_Context, MIPSCPU),
+         VMSTATE_INT32(env.CP0_MemoryMapID, MIPSCPU),
+         VMSTATE_INT32(env.CP0_PageMask, MIPSCPU),
 
-Best regards,
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.34.1
 
 
