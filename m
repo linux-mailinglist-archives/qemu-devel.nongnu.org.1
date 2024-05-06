@@ -2,69 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AE68BC693
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 06:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B45FC8BC69A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 06:51:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3q4l-0008Bc-KH; Mon, 06 May 2024 00:35:43 -0400
+	id 1s3qIl-0003gq-8l; Mon, 06 May 2024 00:50:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3q4O-0008Ah-PN
- for qemu-devel@nongnu.org; Mon, 06 May 2024 00:35:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3qAo-0001Os-Gh
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 00:42:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3q4L-0007er-Lk
- for qemu-devel@nongnu.org; Mon, 06 May 2024 00:35:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s3qAm-00026b-9F
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 00:41:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714970114;
+ s=mimecast20190719; t=1714970512;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/IrMaIZ7x3lgENYc9ugl9JIbOOi1yXjgWO0ZkwOSlCU=;
- b=SJfoY/rpGu8+AEoUB6bJLw/a0fdu0GlNWkiJ1ww0Pd0csdlx2tiPhkAsFVBn9NkQgIzOyw
- rfoZGesfQ8oUSq5LCdVvjnyVlL+QXwdn8CczPC7ldO/OeijEmlxrmCyU/gtANS7EemdrcB
- /oK/X3FQFEAGincdganobEHE4fn3FoI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=JR8n/Tllmjm0G1lB8+ML5Tpv6SVFI1c7XPk5XjIsyD4=;
+ b=iBK42qDy/DQkzgySYvKPg1aJVSQpZHSe+CYvuKnfQrhpQnbtIMJCqAGO8Fmpym5yBHbbV8
+ Ws2NmmWl9Lr+RMauWTkuvGpfIknqLDw0J8/47gqqwF6fhBCW3xhso4mJgET1wNk+puyu5o
+ u+QKqpFoZ1sAZj9oX2zFFzBdOKRpJCQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-y0HFMy22Ml-aqudyjiL9ig-1; Mon, 06 May 2024 00:35:09 -0400
-X-MC-Unique: y0HFMy22Ml-aqudyjiL9ig-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E4F1800CA2;
- Mon,  6 May 2024 04:35:09 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EF337210FD25;
- Mon,  6 May 2024 04:35:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0153621E6680; Mon,  6 May 2024 06:35:07 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: qemu-devel@nongnu.org,  Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,  Michael Roth
- <michael.roth@amd.com>,
- Eric Blake <eblake@redhat.com>,  Peter Xu <peterx@redhat.com>,  Fabiano
- Rosas <farosas@suse.de>,  Joao Martins <joao.m.martins@oracle.com>,  Maor
- Gottlieb <maorg@nvidia.com>
-Subject: Re: [PATCH 1/3] qapi/vfio: Add VFIO device migration state change
- QAPI event
-In-Reply-To: <3d6438e0-550e-4f66-8932-45191ff64b8b@nvidia.com> (Avihai Horon's
- message of "Sun, 5 May 2024 10:48:01 +0300")
-References: <20240430051621.19597-1-avihaih@nvidia.com>
- <20240430051621.19597-2-avihaih@nvidia.com>
- <87msp88nrg.fsf@pond.sub.org>
- <3d6438e0-550e-4f66-8932-45191ff64b8b@nvidia.com>
-Date: Mon, 06 May 2024 06:35:07 +0200
-Message-ID: <871q6ftv5w.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-686-OcGXeRWaOb6_GU4fo7CEHg-1; Mon, 06 May 2024 00:41:50 -0400
+X-MC-Unique: OcGXeRWaOb6_GU4fo7CEHg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7928d36432bso271120685a.0
+ for <qemu-devel@nongnu.org>; Sun, 05 May 2024 21:41:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714970510; x=1715575310;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JR8n/Tllmjm0G1lB8+ML5Tpv6SVFI1c7XPk5XjIsyD4=;
+ b=NeCiK640VP37XXB7Vox9ZGcNM6/fWNNTPbNQlyVqZ2AFkbT6p7zKOuVb/vs52wezz0
+ jy0ADk6ia0qoHFVL4H5RncYRDTLAMRzajIvzvE+6dxUWZpu731sffW9KLxEzFQHCiICH
+ DHGNDvP+Ukcshq1JTdSmdtmU5DUl0lvDAoEwXjWEMxOUz+4sbaqrrqQHM+IGimpJN02k
+ ogqcWNVUx+9oIyZj/JQMi3xZvt45EcD+FxVAQF32/QALQnuQ4eJwXH7MJxXINWIGJe3o
+ /sprz3OCX2ddrYtbbgwW4SshRal2SB2ivDhIHBm3bPzvK1DZF0YTjx7Tpfr0zZjQ1GqQ
+ IJ+w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWtHaspX6whkYLQO1o9JdWuhSrAbNb9yES4sXZ1ZNMTt1G9lD1LWkFnrpk/9qASiVAXdaV3rk11Ia6AXZHMod0JWp9N3tA=
+X-Gm-Message-State: AOJu0YzIgzkVLSYl2xIZVCy3/q4QErH7ELBLiUbEGsmtNlUDt2k/6qHB
+ IpPPHhr9LjD3VqJcOgQy5K+fX3zpoVPSrP1dx8dt4+5CTzzW43NWhl0+xWkMw/3vPG8i8R1Vc6+
+ 1PU3es8V9t5muFGVfwmIhdwtSWFIDwgF6Lys+9bRej6BXdc/Hymzq
+X-Received: by 2002:a05:620a:27cd:b0:790:f930:e1ca with SMTP id
+ i13-20020a05620a27cd00b00790f930e1camr12220821qkp.26.1714970510348; 
+ Sun, 05 May 2024 21:41:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8h5hUygpID12a/NyNyZ1mOTH2BlPIWhlr1oxQWezag4HVTWqZIZ3/sVk5pkk6zEXisZDMxw==
+X-Received: by 2002:a05:620a:27cd:b0:790:f930:e1ca with SMTP id
+ i13-20020a05620a27cd00b00790f930e1camr12220804qkp.26.1714970509751; 
+ Sun, 05 May 2024 21:41:49 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-179-34.web.vodafone.de.
+ [109.43.179.34]) by smtp.gmail.com with ESMTPSA id
+ g4-20020a05620a108400b00790676d0fe2sm3523983qkk.121.2024.05.05.21.41.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 05 May 2024 21:41:49 -0700 (PDT)
+Message-ID: <b655fa90-d9a8-475b-ac65-27bf12a48916@redhat.com>
+Date: Mon, 6 May 2024 06:41:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Fixes: Indentation using TABs and improve formatting
+To: Michael Tokarev <mjt@tls.msk.ru>, Tanmay <tanmaynpatil105@gmail.com>,
+ qemu-stable@nongnu.org, QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-arm <qemu-arm@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>
+References: <CAHnsOnM6gzcjpmEqCN0cFjZKXZCK_ZGAphuf46xWmUyBcNrAxQ@mail.gmail.com>
+ <df14595f-3a26-4b7f-948d-df522f487b92@tls.msk.ru>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <df14595f-3a26-4b7f-948d-df522f487b92@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -88,30 +145,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avihai Horon <avihaih@nvidia.com> writes:
+On 04/05/2024 22.34, Michael Tokarev wrote:
+> 04.05.2024 21:58, Tanmay wrote:
+>> Hi,
+>>
+>> I have attached a patch file that fixes indentation and formatting for 
+>> some files as listed in https://gitlab.com/qemu-project/qemu/-/issues/373 
+>> <https://gitlab.com/qemu-project/qemu/-/issues/373>.
+> 
+> it is sort of good you posted this patch to stable@.  It has absolutely 
+> nothing to do
+> with stable, but it serves as a an example of things which should - in my 
+> opinion -
+> not be done at all.
 
-> On 02/05/2024 14:19, Markus Armbruster wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> Avihai Horon <avihaih@nvidia.com> writes:
->>
->>> Add a new QAPI event for VFIO device migration state change. This event
->>> will be emitted when a VFIO device changes its migration state, for
->>> example, during migration or when stopping/starting the guest.
->>>
->>> This event can be used by management applications to get updates on the
->>> current state of the VFIO device for their own purposes.
->>>
->>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
->>
->> Can you explain briefly why this event makes sense only for VFIO devices?
->
-> VFIO devices have their own protocol for migration and a unique set of migration states.
-> This event holds info about these VFIO migration states, which I think cannot be described in the same accuracy by other events such as run state or migration states.
+I disagree. Yes, clean-up patches like this make it somewhat difficult to 
+backport other patches to stable, but that should not be the reason to not 
+do cleanups at all. If we keep badly formatted code in the repository, 
+people will copy-n-paste it to other places, or if you have to do fixes in 
+sources that have mixed TABs and spaces, you often get complaints from 
+checkpatch.pl though it is not your fault. So we should get this straight at 
+one point in time.
 
-Would it make sense to work this into the commit message?
+So, Tanmay, could you please resend your patch, this time to 
+qemu-devel@nongnu.org instead of qemu-stable, and CC: qemu-arm@nongnu.org 
+and the corresponding ARM maintainers (you can use 
+scripts/get_maintainers.pl to find out the correct maintainers that should 
+be CC:-ed). And if possible, please send your patch inline and not as an 
+attachment (so it's possible to comment on the patch via hitting the reply 
+button), preferably with "git send-email" instead of using your e-mail program.
 
-[...]
+  Thanks!
+   Thomas
 
 
