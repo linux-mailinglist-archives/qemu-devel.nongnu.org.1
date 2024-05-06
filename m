@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72A08BC893
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:50:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE218BC8AB
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:53:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t6B-0004OL-8t; Mon, 06 May 2024 03:49:23 -0400
+	id 1s3t94-0005ox-PI; Mon, 06 May 2024 03:52:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3t5y-0004GH-5P
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:49:11 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3t5w-0000xk-6k
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:49:09 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-41bab13ca81so17301485e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714981746; x=1715586546; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AG9JPJ2NO0frLDtYOlHEhWYFOcm6MOuVJVo5/lWL+g4=;
- b=gG/ozM4auoUUcbP/6tSdeFpX9q5ZFT9sua1RpB+WFP66y/8Z2UKBw/CuzWr29bwdPb
- vJy3gNSw0dGqWUGg6XCn/+FshQ0oAhFlAOKvVE2yeaJZdTaddjIlgH1jgtY/BLrWzORG
- gia7sekFKIWPXiPVTjktAjuDNMZ4Lx1KgxBGsZuuUMzwES8PCkTyowYBtJIw2zJ+rBrq
- j9xunW3xQjaE3kObL8kslakGdPsbjaUPiWT+kY8Rg11niza2h6rkGSlIkiFsYOgB6kDj
- psbr93F9mWHgEaJiYGN4ant7SjJvBNWW0SbOwA7VT/Jk0Y1JDMaRrgStWv8vKHMwbZxD
- hE9g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s3t8Y-0005im-JE
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s3t8G-0001Ty-KE
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714981891;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=L4WRAN9XGJxlv/trcKHOtT6UAUrYBzNnWxQxyfQyt98=;
+ b=dGuH7HKEAAaCHVR1tL4IatNkxphj32gdAYyiQ97tTjITNwH8NgBipJ4WBB2j8eumm1zKOc
+ 0GNH4Wz8Eu38jcSg3SYR8FhjduaEwSYPgwSRSAzDC/s3Eg7fARcpPzAn++J2MEpByVszm2
+ HGwVkq4vBuORDk7uKLWKURMiJAMWUCw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-1H_B0KDfMxanROt3FaaFLw-1; Mon, 06 May 2024 03:51:29 -0400
+X-MC-Unique: 1H_B0KDfMxanROt3FaaFLw-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a59a63a1f78so89181466b.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:51:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981746; x=1715586546;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AG9JPJ2NO0frLDtYOlHEhWYFOcm6MOuVJVo5/lWL+g4=;
- b=KGn6xhA1b1ZijEFFuGvGqMiMuXvBb94VT087eeoELDLn9yKKhwkKtJud4hmW9dxGnO
- 1CON8LyjTA4q7vdq+QXBrQBal15KmTJymu1M4TfmlV4ULIcqlz+RL76RS1M11rSKvD2B
- cVi6cSZ9KH61Mn5H5XIeDObbqxLJyP1Zidxuf7pmA1QYlmQrv0C0RAwwU7631jPVPyjs
- 35hlWvsrlFtmy4AKJHGjvi5AdTRqpIfdT6X1ZWcLLioyuAOk4yiau23yRFPidKH0BtJJ
- dFNXVH+SOhjE4sx5cR9HeVU6XMyC/2qD7SGWtlnWo6hssojtW4wgGzkLVCghCHyG0OkN
- 7yKQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWD1nywxKDafTckhN6fGYo4ci9Bc7CvATVncFN6VHyD4SQjy1AiXm9c0PMXxWvBmujULZL40cAdNLAKT67IbzYe/d1mGBQ=
-X-Gm-Message-State: AOJu0Yw25ja7dAD9wiEfjW3tnOcMJ8SZ21FVyMLm/a4Vehulv2R9gNT5
- KBEYRFCJABF4Lv5trllhb5wbp50MYnR8/vOf4vksDX6jBOs9/VsKDhTm1tyxoA69ycOG6ZCNn+q
- P
-X-Google-Smtp-Source: AGHT+IF9x0q4MGsWgaIRvAWwMR9RbMRYKTPrvfmC24q2OhSJf4YhJ3KzWui3CTZyPZ0MlEM138mtcA==
-X-Received: by 2002:a05:600c:1e09:b0:418:a706:3209 with SMTP id
- ay9-20020a05600c1e0900b00418a7063209mr10053658wmb.31.1714981746453; 
- Mon, 06 May 2024 00:49:06 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.211.4])
+ d=1e100.net; s=20230601; t=1714981888; x=1715586688;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L4WRAN9XGJxlv/trcKHOtT6UAUrYBzNnWxQxyfQyt98=;
+ b=NraFWF5HQ4iX9l9G41rRPItxeLRpS0MktWkIPydhUdj9uOIycw6KK/IbPAXnmSvzpM
+ 3furIndxEuFV57cqMUBIOwPf1lld9Wg2DFH48ebLJKyrAPac46OaVmxnlKQAZai3NQMJ
+ j1oTeJAUlkVvkQCd8dwX8PFP47187lXvHr5RZEBZ42Z0WTg7BoB37uJA8o8QDxqlDnz6
+ ugrXCWx2j84gSLaFRSqNTzBvcGhRbM4WdMydH2TULr30QRubga5a+9cV9b9VLjsif8vM
+ 4FBw73rMR2YQdnSibfAwLWlxzaVd8a23yi0C4/LIOJKeBb5+cyKG15g62XE2co9ZeNtF
+ okCQ==
+X-Gm-Message-State: AOJu0Yx5B4gKZ/YWVGBXFD2cF1s0ZrgGL+H6Q6S4nftpNfMj3n4bP2GK
+ 08HJo6o+ndAXJLUU0YX9egTsGBxUwnQHLakP65jQyBxs3WwxFzEgEIjc3FEwqVV/ZIaiC/aqwTp
+ Y+A1JMDGHxeBSWKnCLaawHFCMcWIV1SUWyOM77rD8vhQ7/jA5N4ApLSxzHXRIKgoeBakcm46ECF
+ ptQCjNTnj7sF3Jaj9r6oFQXR3/AR5P51Dx9un5
+X-Received: by 2002:a17:906:4882:b0:a58:725b:a021 with SMTP id
+ v2-20020a170906488200b00a58725ba021mr5727571ejq.15.1714981887829; 
+ Mon, 06 May 2024 00:51:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEe25VEBBRtN0lSQGAguPSD1QBhlp9p/vGY5tpJ6sxrezxzHYOWiUhDS1dzFL7emCRI+0gDHg==
+X-Received: by 2002:a17:906:4882:b0:a58:725b:a021 with SMTP id
+ v2-20020a170906488200b00a58725ba021mr5727556ejq.15.1714981887293; 
+ Mon, 06 May 2024 00:51:27 -0700 (PDT)
+Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- w15-20020a05600c474f00b0041ea90d11edsm5178504wmo.31.2024.05.06.00.49.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 May 2024 00:49:06 -0700 (PDT)
-Message-ID: <5c1507b8-7f6e-419e-972e-af4fc98e9112@linaro.org>
-Date: Mon, 6 May 2024 09:49:04 +0200
+ ze11-20020a170906ef8b00b00a59ab4f5f79sm2538140ejb.212.2024.05.06.00.51.26
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 May 2024 00:51:26 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/46] Mostly build system and other cleanups patches for
+ 2024-05-06
+Date: Mon,  6 May 2024 09:50:39 +0200
+Message-ID: <20240506075125.8238-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [sdl-qemu] [PATCH v1] /hw/intc/arm_gic WRONG ARGUMENTS
-To: Andrey Shumilin <shum.sdl@nppct.ru>, Michael Tokarev <mjt@tls.msk.ru>,
- qemu-devel@nongnu.org
-Cc: sdl.qemu@linuxtesting.org, qemu-arm <qemu-arm@nongnu.org>
-References: <a4cbfe6c-27d6-4df0-ae31-db0d60d88f9e@nppct.ru>
- <95ab6dcf-cc96-4472-93ab-f08682b37d5e@tls.msk.ru>
- <4c4dfebb-698d-466f-90b0-9475ad4c123a@nppct.ru>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <4c4dfebb-698d-466f-90b0-9475ad4c123a@nppct.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.431,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,59 +98,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/24 21:57, Andrey Shumilin wrote:
->  1. Possibly mismatched call arguments in function 'gic_apr_ns_view':
->     'cpu' and 'regno' passed in place of 'int regno' and 'int cpu'.
->  2. Possibly mismatched call arguments in function
->     'gic_apr_write_ns_view': 'cpu' and 'regno' passed in place of 'int
->     regno' and 'int cpu'.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
+The following changes since commit 4977ce198d2390bff8c71ad5cb1a5f6aa24b56fb:
 
-Fixes: 51fd06e0ee ("hw/intc/arm_gic: Fix handling of GICC_APR<n>, 
-GICC_NSAPR<n> registers")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+  Merge tag 'pull-tcg-20240501' of https://gitlab.com/rth7680/qemu into staging (2024-05-01 15:15:33 -0700)
 
-> 
->  From 23b142f5046ba9d3aec57217f6d8f3127f9bff69 Mon Sep 17 00:00:00 2001
-> From: Andrey Shumilin <shum.sdl@nppct.ru>
-> Date: Sun, 5 May 2024 20:13:40 +0300
-> Subject: [PATCH] Patch hw/intc/arm_gic.c
+are available in the Git repository at:
 
-Your patch is malformed, see:
-https://www.qemu.org/docs/master/devel/submitting-a-patch.html#submitting-your-patches
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-> 
-> Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-> ---
->   hw/intc/arm_gic.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
-> index 7a34bc0998..47f01e45e3 100644
-> --- a/hw/intc/arm_gic.c
-> +++ b/hw/intc/arm_gic.c
-> @@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s, int 
-> cpu, int offset,
->               *data = s->h_apr[gic_get_vcpu_real_id(cpu)];
->           } else if (gic_cpu_ns_access(s, cpu, attrs)) {
->               /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
-> -            *data = gic_apr_ns_view(s, regno, cpu);
-> +            *data = gic_apr_ns_view(s, cpu, regno);
->           } else {
->               *data = s->apr[regno][cpu];
->           }
-> @@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState *s, int 
-> cpu, int offset,
->               s->h_apr[gic_get_vcpu_real_id(cpu)] = value;
->           } else if (gic_cpu_ns_access(s, cpu, attrs)) {
->               /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
-> -            gic_apr_write_ns_view(s, regno, cpu, value);
-> +            gic_apr_write_ns_view(s, cpu, regno, value);
->           } else {
->               s->apr[regno][cpu] = value;
->           }
-> 
+for you to fetch changes up to deb686ef0e609ceaec0daa5dc88eb5b3dd9701b0:
+
+  qga/commands-posix: fix typo in qmp_guest_set_user_password (2024-05-03 19:36:51 +0200)
+
+----------------------------------------------------------------
+* target/i386: Introduce SapphireRapids-v3 to add missing features
+* switch boards to "default y"
+* allow building emulators without any board
+* configs: list "implied" device groups in the default configs
+* remove unnecessary declarations from typedefs.h
+* target/i386: Give IRQs a chance when resetting HF_INHIBIT_IRQ_MASK
+
+----------------------------------------------------------------
+Lei Wang (1):
+      target/i386: Introduce SapphireRapids-v3 to add missing features
+
+Paolo Bonzini (44):
+      Kconfig: kvm: allow building without any board
+      tests/qtest: skip m48t59-test if the machine is absent
+      gitlab-ci: adjust msys2-64bit to be able to run qtest
+      kvm: ppc: disable sPAPR code if CONFIG_PSERIES is disabled
+      configs: list "implied" device groups in the default configs
+      alpha: switch boards to "default y"
+      arm: switch boards to "default y"
+      avr: switch boards to "default y"
+      cris: switch boards to "default y"
+      hppa: switch boards to "default y"
+      i386: switch boards to "default y"
+      loongarch: switch boards to "default y"
+      m68k: switch boards to "default y"
+      microblaze: switch boards to "default y"
+      meson: make target endianneess available to Kconfig
+      mips: switch boards to "default y"
+      openrisc: switch boards to "default y"
+      ppc: switch boards to "default y"
+      riscv: switch boards to "default y"
+      rx: switch boards to "default y"
+      s390x: switch boards to "default y"
+      sh4: switch boards to "default y"
+      sparc: switch boards to "default y"
+      tricore: switch boards to "default y"
+      xtensa: switch boards to "default y"
+      docs: document new convention for Kconfig board symbols
+      bitmap: Use g_try_new0/g_new0/g_renew
+      build: do not build virtio-vga-gl if virgl/opengl not available
+      fw_cfg: remove useless declarations from typedefs.h
+      qdev-core: remove DeviceListener from typedefs.h
+      numa: remove types from typedefs.h
+      net: remove AnnounceTimer from typedefs.h
+      qemu-option: remove QemuOpt from typedefs.h
+      intc: remove PICCommonState from typedefs.h
+      lockable: remove QemuLockable from typedefs.h
+      migration: remove PostcopyDiscardState from typedefs.h
+      monitor: remove MonitorDef from typedefs.h
+      qapi/machine: remove types from typedefs.h
+      display: remove GraphicHwOps from typedefs.h
+      tcg: remove CPU* types from typedefs.h
+      pci: remove some types from typedefs.h
+      kvm: move target-dependent interrupt routing out of kvm-all.c
+      migration: do not include coroutine_int.h
+      qga/commands-posix: fix typo in qmp_guest_set_user_password
+
+Ruihan Li (1):
+      target/i386: Give IRQs a chance when resetting HF_INHIBIT_IRQ_MASK
+
+ docs/devel/kconfig.rst                          | 14 +++++-
+ configs/devices/alpha-softmmu/default.mak       |  5 +-
+ configs/devices/arm-softmmu/default.mak         |  5 +-
+ configs/devices/avr-softmmu/default.mak         |  5 +-
+ configs/devices/cris-softmmu/default.mak        |  5 +-
+ configs/devices/hppa-softmmu/default.mak        |  5 +-
+ configs/devices/i386-softmmu/default.mak        | 11 ++---
+ configs/devices/loongarch64-softmmu/default.mak |  6 ++-
+ configs/devices/m68k-softmmu/default.mak        | 13 +++---
+ configs/devices/microblaze-softmmu/default.mak  |  9 ++--
+ configs/devices/mips-softmmu/common.mak         |  5 +-
+ configs/devices/mips64-softmmu/default.mak      |  4 +-
+ configs/devices/mips64el-softmmu/default.mak    | 10 ++--
+ configs/devices/or1k-softmmu/default.mak        |  9 ++--
+ configs/devices/ppc-softmmu/default.mak         | 30 +++++++-----
+ configs/devices/ppc64-softmmu/default.mak       |  8 ++--
+ configs/devices/riscv32-softmmu/default.mak     | 17 ++++---
+ configs/devices/riscv64-softmmu/default.mak     | 19 ++++----
+ configs/devices/rx-softmmu/default.mak          |  3 +-
+ configs/devices/s390x-softmmu/default.mak       |  5 +-
+ configs/devices/sh4-softmmu/default.mak         |  7 ++-
+ configs/devices/sparc-softmmu/default.mak       |  7 ++-
+ configs/devices/sparc64-softmmu/default.mak     |  7 ++-
+ configs/devices/tricore-softmmu/default.mak     |  7 ++-
+ configs/devices/xtensa-softmmu/default.mak      | 11 +++--
+ meson.build                                     | 12 +++--
+ accel/tcg/tb-jmp-cache.h                        |  4 +-
+ hw/display/vga_int.h                            |  1 +
+ include/hw/core/cpu.h                           | 11 ++++-
+ include/hw/intc/i8259.h                         |  2 +
+ include/hw/nvram/fw_cfg.h                       |  2 +
+ include/hw/pci/pcie.h                           |  3 ++
+ include/hw/pci/pcie_aer.h                       | 38 +++++++--------
+ include/hw/pci/pcie_sriov.h                     |  8 ++--
+ include/hw/qdev-core.h                          |  1 +
+ include/hw/s390x/adapter.h                      |  4 +-
+ include/monitor/hmp-target.h                    | 11 +++--
+ include/net/announce.h                          |  4 +-
+ include/qemu/bitmap.h                           | 19 ++++----
+ include/qemu/coroutine.h                        |  4 +-
+ include/qemu/lockable.h                         |  4 +-
+ include/qemu/option.h                           |  2 +
+ include/qemu/typedefs.h                         | 24 ----------
+ include/sysemu/kvm.h                            |  5 +-
+ include/sysemu/numa.h                           |  8 ++--
+ migration/migration.h                           |  2 +-
+ accel/kvm/kvm-all.c                             | 62 ++-----------------------
+ hw/hyperv/hyperv.c                              | 25 ++++++++++
+ hw/intc/s390_flic_kvm.c                         | 28 +++++++++++
+ migration/postcopy-ram.c                        |  4 +-
+ qga/commands-posix.c                            |  2 +-
+ stubs/target-monitor-defs.c                     |  3 +-
+ system/physmem.c                                |  4 +-
+ target/i386/cpu.c                               | 11 +++++
+ target/i386/tcg/translate.c                     | 14 ++++--
+ target/ppc/kvm.c                                | 17 +++++--
+ tests/qtest/m48t59-test.c                       | 11 +++--
+ .gitlab-ci.d/buildtest.yml                      |  9 +++-
+ .gitlab-ci.d/windows.yml                        |  5 +-
+ hw/alpha/Kconfig                                |  2 +
+ hw/arm/Kconfig                                  |  2 +
+ hw/avr/Kconfig                                  |  3 ++
+ hw/cris/Kconfig                                 |  2 +
+ hw/display/meson.build                          | 14 +++---
+ hw/hppa/Kconfig                                 |  2 +
+ hw/i386/Kconfig                                 | 10 +++-
+ hw/loongarch/Kconfig                            |  2 +
+ hw/m68k/Kconfig                                 | 10 ++++
+ hw/microblaze/Kconfig                           |  6 +++
+ hw/mips/Kconfig                                 | 12 +++++
+ hw/openrisc/Kconfig                             |  4 ++
+ hw/ppc/Kconfig                                  | 26 +++++++++++
+ hw/riscv/Kconfig                                | 14 ++++++
+ hw/rx/Kconfig                                   |  2 +
+ hw/s390x/Kconfig                                |  2 +
+ hw/sh4/Kconfig                                  |  4 ++
+ hw/sparc/Kconfig                                |  4 ++
+ hw/sparc64/Kconfig                              |  4 ++
+ hw/tricore/Kconfig                              |  4 ++
+ hw/xtensa/Kconfig                               |  6 +++
+ target/Kconfig                                  |  3 ++
+ target/arm/Kconfig                              |  2 +
+ target/i386/Kconfig                             |  3 ++
+ target/ppc/Kconfig                              |  1 +
+ 84 files changed, 455 insertions(+), 280 deletions(-)
+-- 
+2.44.0
 
 
