@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800738BD784
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 00:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAE58BD79D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 00:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s46QD-0003ky-VW; Mon, 06 May 2024 18:02:57 -0400
+	id 1s46u0-000335-67; Mon, 06 May 2024 18:33:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46QC-0003kq-KG
- for qemu-devel@nongnu.org; Mon, 06 May 2024 18:02:56 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46ty-00032q-0Z
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 18:33:42 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46QB-000558-6p
- for qemu-devel@nongnu.org; Mon, 06 May 2024 18:02:56 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41ba1ba5591so18342395e9.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 15:02:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s46tu-0007gB-MX
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 18:33:41 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-34e0d8b737eso2766375f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 15:33:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715032972; x=1715637772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715034817; x=1715639617; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Z/NM+IXBlP1LsbnNYizGmHdOl7jEWI4LmUu/NXT7fi0=;
- b=C9Jd7H35NJwfFNGrEZNKjQa1sgXcuyewnyeZQxSnJvaFwW4HLlAlElPVaylNr+cMZv
- kZzWPVrCGhO3ot9OBonW52Uj9H5rs2NXRLHzrH/6ZHSfIdN6zysa0Wy5TauT8Zi9wBw2
- QOsJ0130vQZ1MPDdW6nK00EmkSyEeeJqLeEWWxs4g/0LCEYH97CJDPpVCwXxN/7NpcCl
- rby9gb93AQiUR/toWpk4ubt2/zgnarGJxsltFUlhLXqF40adQLZybdMD3UBtK2GIh3gT
- L+sGvTUHeCr30IKEFlWU/GJrQtyUgBS+5TJIsdaL2ycO03RJccJugm8xTMyrr5tC2a9B
- x8xg==
+ bh=H7ZJustMiW7nPUhItgoQuxYxEP3+MgCQY5iJTzlGbgQ=;
+ b=hOg/fywDe4BEAtu8OzY/V/WtyMg3aD+dml5VBPXNF63gxUeuN+yoRtjAQ0GDnACk1D
+ M1/sPEZKbmlRcZwqsXhseCaIF4Y7tmGK7rh8lkJdv34myrJpYmhdRTRBja/VPa8W8wXN
+ SdS2v9TRR/5tzb/NyKUQ72h32t4lKqxE7BPPZkEXk33ipAdcNF3LNPhiFeXXqzg+KJ0s
+ bkFzYnLBBeQbySEITtT9rKshSASXimZ0pVfUg/mn3vaRVys4I+g/kBCoYx8PKFPGyFQb
+ kwqMO6SCRtIFEt5wgF5MtvDn7XnD0PLfREEiBIg8Pq3gthx0zJiDTNmukaUyAVuiPno+
+ D3xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715032972; x=1715637772;
+ d=1e100.net; s=20230601; t=1715034817; x=1715639617;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z/NM+IXBlP1LsbnNYizGmHdOl7jEWI4LmUu/NXT7fi0=;
- b=I3/wDDnL7VCGvCiTsyj/+6PtWE43mRN4MiCtkz3kI2SY1TOj2G0YnOuzpcenmYqhJG
- UXzESs7eJYrJRrnXt/IlA0LaCfwT4CEtuDx7Sk6Pktcatw42nntPu1JB/8FnCtVSDVUV
- R20xMs0ko2WOF1dATnb/NdQorJseMPl+KKiED9FBoHxqPIahpRSebAmXRy2ZxiONRcJK
- XeBfvsSWjVSjbZfxr4tLR64AvI440BZUjIKfE5hEmguOlJr5xVUgZBQsH/H7HLgFDcqf
- rdjOiFLXM1VfneoDGVeYygKwcjhhVsLvFW98zzqhKGhQdwLvwY6NJ/bBy9MrkxVAnBYw
- uffQ==
+ bh=H7ZJustMiW7nPUhItgoQuxYxEP3+MgCQY5iJTzlGbgQ=;
+ b=L76QR1s1OnUiUsRCGbcyz9+8t4WQe+Coqno/qFWibt59k7Zys8hg29RJBJ/uveMnML
+ p6gvIrmTNhylPzSnnQ6I/llla7F3UdviRfzBrsJLFixkXBdqq0pX9Li2dBHdY4O9TQpj
+ zqyeaOHK62r5er3w8MzYAUNr8xd6vout7MIaaFcJFwZWkokIRDZdzzNVyf4eB2XdKnF6
+ ljiw7epfjvFZC1vSBJcEkb4A4AJ25A2rhGz6m2NbhbrhSiepJRAQIe7iUQbp3svqJVs0
+ 4Vsiq8mfICgyYjkt51A+3tja4P/u9Y/naYCV5C/sxds8dmu9LnGmskRbQdoFeYc57Duc
+ wTVA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVPO8rMytTpkRg/zGwXI3FvyS5S+fViC7fIi1DodU6cLmN5UZ7SGZNp0IVKPHjSryoHA/0lgFfBM7VBUgL6vgASR2ecil8=
-X-Gm-Message-State: AOJu0Yw9hyBGUC4pzp4gT525I7DUg1RIlr0POyRuXXs8BLghpXASI0NQ
- X7iUb05bTjbQjBVmqn3g4eESfH5OhyNy1TzjWaNtNZ33AZgNXl7KQLO2rbo2Rw4=
-X-Google-Smtp-Source: AGHT+IFoz7Gt4zM4nFapQOYeo69hl1dUZrXoHFOMUhqTXLwKjfl/EvrDeTl6yKE6IbBLjhmeiBXohQ==
-X-Received: by 2002:a05:600c:a06:b0:41d:9d8c:5a34 with SMTP id
- z6-20020a05600c0a0600b0041d9d8c5a34mr8823252wmp.9.1715032972174; 
- Mon, 06 May 2024 15:02:52 -0700 (PDT)
+ AJvYcCUEq6smtU7NK20jJvbmO7HnLCLgeTba+q3Yof0V+JjJwja1Z6srkt83cYyleMpCSl5PzL5luAwiUbeLiuTkRU3uR/AFrCo=
+X-Gm-Message-State: AOJu0Yy83poX4y62f5dJtXC2CuBRWuRVRgt1qfbGy5PpuH24hFln4pGD
+ qhhvrxYJQ25MquxI0EvZ9mGwcpQPTDIn32jd1vHx/+UeceElZxgTQj1zcxP+LOc=
+X-Google-Smtp-Source: AGHT+IGVSBA19t2NutuW1U5s2o0my4FwmVuUFuJnSH/CwD00IBTDOUwDwZ8NcqJreqOMrYwpzcQoUA==
+X-Received: by 2002:adf:f04c:0:b0:34d:a19b:56b2 with SMTP id
+ t12-20020adff04c000000b0034da19b56b2mr840269wro.3.1715034816899; 
+ Mon, 06 May 2024 15:33:36 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.211.4])
  by smtp.gmail.com with ESMTPSA id
- v14-20020a05600c470e00b00417e8be070csm17275734wmo.9.2024.05.06.15.02.51
+ z18-20020adff752000000b0034e19861891sm11555047wrp.33.2024.05.06.15.33.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 May 2024 15:02:51 -0700 (PDT)
-Message-ID: <d5770936-75ca-43be-b4a8-2919f6f2dae3@linaro.org>
-Date: Tue, 7 May 2024 00:02:50 +0200
+ Mon, 06 May 2024 15:33:36 -0700 (PDT)
+Message-ID: <b7367d66-f4be-463c-87cf-105235a04c68@linaro.org>
+Date: Tue, 7 May 2024 00:33:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gitlab: Rename ubuntu-22.04-s390x-all to *-system
+Subject: Re: [PATCH 01/57] target/arm: Split out gengvec.c
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, thuth@redhat.com
-References: <20240506202341.422814-1-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org
+References: <20240506010403.6204-1-richard.henderson@linaro.org>
+ <20240506010403.6204-2-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240506202341.422814-1-richard.henderson@linaro.org>
+In-Reply-To: <20240506010403.6204-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,14 +94,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/5/24 22:23, Richard Henderson wrote:
-> We already build the linux-user binaries with
-> ubuntu-22.04-s390x-all-linux, so there's no need to do it again.
-> 
+On 6/5/24 03:03, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+>   target/arm/tcg/translate.h |    5 +
+>   target/arm/tcg/gengvec.c   | 1612 ++++++++++++++++++++++++++++++++++++
+>   target/arm/tcg/translate.c | 1588 -----------------------------------
+>   target/arm/tcg/meson.build |    1 +
+>   4 files changed, 1618 insertions(+), 1588 deletions(-)
+>   create mode 100644 target/arm/tcg/gengvec.c
+
+Reviewed using git-diff --color-moved=dimmed-zebra
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
