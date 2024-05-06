@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903F08BCE5B
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FEE8BCE71
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:50:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xlR-00009f-8Y; Mon, 06 May 2024 08:48:27 -0400
+	id 1s3xmA-0001g5-Eh; Mon, 06 May 2024 08:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3xkQ-0008Ix-PZ
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:47:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3xki-0000CQ-LP
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:47:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3xkO-0007gm-Bm
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:47:14 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3xkd-0008IJ-QA
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:47:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714999631;
+ s=mimecast20190719; t=1714999647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
  bh=wwoNoBAQctnjKbg8GrBPALpUHhrtoPUT6YPIylLznK4=;
- b=am00xrLjXaya+TnKy++pQIJkozlGwLMihAO88O3T3Ats2SoIRWdg7V4yKyCjKFngDLjtuk
- xCVQ4MyDcpJRCOHHg1r/i0cUdcT51cnIB+UCJ/zmYJKZT5zEpUEldweO1npUpQvKrbmQT8
- C6uRMSoYlICD6V8r8IOKdoWiUTYazQQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-187-VlQjCfQhOFeQgxJCCQuBhA-1; Mon,
- 06 May 2024 08:47:08 -0400
-X-MC-Unique: VlQjCfQhOFeQgxJCCQuBhA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ b=UtHZxmntXbqyRU7Swbk3J9jQin7kbfzFZkFvZCi5xv/yIBCo8I9RYS0G/QEI2bSEpbfPMJ
+ YXje28Y+SnkuaevOQj8nMqYnaIYpYHzol2HmJgP6AMhgM/9X8PKCZxnb0JPDWq1k3Qf8mS
+ wjbBe+pv8snmgWcCXfstIWvg2/62PfY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-74-CqyylUmLNrKmzdrl_3iYSA-1; Mon, 06 May 2024 08:47:26 -0400
+X-MC-Unique: CqyylUmLNrKmzdrl_3iYSA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BCA138035AD;
- Mon,  6 May 2024 12:47:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB1D380017B;
+ Mon,  6 May 2024 12:47:25 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DF4881C060D0;
- Mon,  6 May 2024 12:47:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BCA93AC68;
+ Mon,  6 May 2024 12:47:25 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id EF96221E6806; Mon,  6 May 2024 14:47:06 +0200 (CEST)
+ id CE39321E6806; Mon,  6 May 2024 14:47:24 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: Re: [PATCH 6/7] qga/qapi-schema: Drop "Returns" section where
- default is fine WIP
-In-Reply-To: <20240506110254.3965097-13-armbru@redhat.com> (Markus
- Armbruster's message of "Mon, 6 May 2024 13:02:52 +0200")
+Subject: Re: [PATCH 7/7] find untagged sections WIP
+In-Reply-To: <20240506110254.3965097-14-armbru@redhat.com> (Markus
+ Armbruster's message of "Mon, 6 May 2024 13:02:53 +0200")
 References: <20240506110254.3965097-1-armbru@redhat.com>
- <20240506110254.3965097-13-armbru@redhat.com>
-Date: Mon, 06 May 2024 14:47:06 +0200
-Message-ID: <877cg7nm45.fsf@pond.sub.org>
+ <20240506110254.3965097-14-armbru@redhat.com>
+Date: Mon, 06 May 2024 14:47:24 +0200
+Message-ID: <8734qvnm3n.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
