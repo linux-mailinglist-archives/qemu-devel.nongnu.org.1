@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9B58BCE2C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAD58BCE29
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:39:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xcz-0004X5-7h; Mon, 06 May 2024 08:39:33 -0400
+	id 1s3xd1-0004hi-At; Mon, 06 May 2024 08:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xco-0003rS-Py
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:39:23 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcv-0004Ak-54
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:39:29 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcl-00027y-NJ
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:39:21 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41b794510cdso15114335e9.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:39:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xcr-0002AP-Tq
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:39:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41b869326daso12685915e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:39:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714999157; x=1715603957; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714999163; x=1715603963; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s/Fp8DKElE44Fn+ap9z01bjvDp7koqMm6QbA7s6TWS0=;
- b=fb4GpYfMg6cUPm0Bmlf46mTeWVPFZI9VgXhV9CMID8Rn6b8pl+ShGu8bnbGScH2gWT
- fDMmCwCGyeTnBVXbGxcu7mWIRjHMneLOJC3v+grY8vG1eVOzOR9lSBEVvdWEG0j9EizQ
- zwcXOkGn5iwxb+COBwSiJS3lnflJKxUKXjTiSplzWN2BldlzQj3qLUmsRS4Lda17TKU3
- uWG0g5lhkkawt0Pl/oFT7v7z3alDcYI4y0cDa5Sz0hHd6lOZ6QhxX2scyrPL4FbXvwPS
- Tz7vLKYi4nAKUjf8Mjt7vbXnKHbv9IlPwArywk6v0c3PZvkS97BCUO7uG/64IqdtiG7Z
- x52w==
+ bh=M2dIn65/w/ORbBuM0bD/NrI0A+aMa+5s4kd6JrVU3Ow=;
+ b=ne9/5zCF4a6KBoTxso5oiw1IT0sa2um0InHsTdtLsJ4qRxmES+r1vLagCwbG8Hg30S
+ 0U296T7XMfbIKbOt4zrBwc09wI0V0ZOsaDNMf2XJV3mY5H3biL0LIPaZ+DA52a4W3kh3
+ ENwdn98zXGwN7/1lBhkQeDcs9auHq8n4qDExo6iTaAwKQ/7CfYfQ7a4K7X+adfOe46f4
+ RIFAIn1KOWN9VlSPWnDX/oj2NZNPs2bvkDfLtvWTPMGNLmzxd7Ix//hjnAIANnf3UCwH
+ BYp8N1VDYKvPPXHfZIwOxFsNkoLw44YXOEODQJArQuFQGkhnlzmqzLkZKqPlK16a/oIs
+ r9qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714999157; x=1715603957;
+ d=1e100.net; s=20230601; t=1714999163; x=1715603963;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s/Fp8DKElE44Fn+ap9z01bjvDp7koqMm6QbA7s6TWS0=;
- b=i5PcfzY63byK2oLMAjkcDGgNJr/5KJRdQCUu4h0rKVDdbHRKZpD7VqSUJvBOMHPEmZ
- 1VqJDGGeMWxxfm/P/+yvhUgK8EdIS/RQPyat+F+qMBXFVT12Peq6Z3GoNgf9jv0WU2RY
- OUzNmfDKcLNCZUF1scPQODLG73hfrK4JHKiXvHPDLkOxjJSzggCJNifXL7E5kjZ6ZkQJ
- vGJXv6d4ozFggq45bsSPnF7sE6qdSrYKAxlxQZXcBlGz90la5IqRalQSUahVR+vBiWnk
- N012480KoklR4W6xpJEYRAvx29KWXCoGh1w7eyWqKduuIAgPZp+4e6m85E2unCw1h9qn
- p5mg==
-X-Gm-Message-State: AOJu0Yw7aYkzRKWyEZ6NyeJXBmWpJqKoRhyYfP1dtwQ7g2wR6z1nBtng
- NeII4pN1mWE/QWg5/+zwsDDEQTVHh9L6zk30TUZ0bmz5OL6uWftfeyU/33GrZxyo90jqMlUEyHQ
- Q
-X-Google-Smtp-Source: AGHT+IG6+HGdXHbsGqMQFJxAOHi9y8kE6+10UOueQ0oU/hK5fsCgavf11g/uzy3dW3WYUFbPf61crQ==
-X-Received: by 2002:a05:6000:d87:b0:34d:a1fb:8f73 with SMTP id
- dv7-20020a0560000d8700b0034da1fb8f73mr7057376wrb.4.1714999157442; 
- Mon, 06 May 2024 05:39:17 -0700 (PDT)
+ bh=M2dIn65/w/ORbBuM0bD/NrI0A+aMa+5s4kd6JrVU3Ow=;
+ b=RGwEfhHAldY4TPdlediV2FGzl+OdiLlyW4rgpLzK/3YdTNVcy2QDjD5Tv5kYYpJbC2
+ MZmX4hBe8vkFXRx0oe046eb85TcMJIpHWfFq7ejm4AZybZjpluyas9OYDNXd3fi4lhpq
+ IEE7N4E4JLabqvstlPwVLB9mY+tVmkNJVgqJv1BSYPIIFojNlleaCI+WKKy47FdJ2vPu
+ T5LYvz+QdzKwqCK4Rg38Kr2mHYDLDAGkMdsYtv0h87yw68Z1sleSZCFdEZzEO5JSyjI9
+ n4ebNHtr+XebNVQSzVzN6v/9bvf5QEQQzux41+11qnx1Lx+N2ltX0jUJgE9uwL391NUv
+ nh4w==
+X-Gm-Message-State: AOJu0YxDtAZyv3+BLqbN40DAmEhVK8YcaCS1YY7BhUO1R0PJM1M0X7Wb
+ wKfv51qfBT4wPRw5Yau59di21E0d3ShmBGoyzPHJdh7RxakMbRIc293VmS9K4+O3HMPkNyNTwrj
+ a
+X-Google-Smtp-Source: AGHT+IG5LkalA9evUZcXrg2R+nrEB2VaTNou43/ArIbteJYO9aS4/UNI94k7ZjyXXW7zG/TkPHWsgg==
+X-Received: by 2002:a05:6000:1963:b0:34a:d1d4:cb3c with SMTP id
+ da3-20020a056000196300b0034ad1d4cb3cmr9155061wrb.39.1714999163635; 
+ Mon, 06 May 2024 05:39:23 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.211.4]) by smtp.gmail.com with ESMTPSA id
- n8-20020adffe08000000b0034df2d0bd71sm10588152wrr.12.2024.05.06.05.39.16
+ t7-20020a5d6907000000b00349bd105089sm10559984wru.47.2024.05.06.05.39.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 May 2024 05:39:17 -0700 (PDT)
+ Mon, 06 May 2024 05:39:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 15/28] user: Use get_task_state() helper
-Date: Mon,  6 May 2024 14:37:15 +0200
-Message-ID: <20240506123728.65278-16-philmd@linaro.org>
+Cc: Juergen Gross <jgross@suse.com>, Vikram Garhwal <vikram.garhwal@amd.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+ David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 16/28] softmmu: let qemu_map_ram_ptr() use qemu_ram_ptr_length()
+Date: Mon,  6 May 2024 14:37:16 +0200
+Message-ID: <20240506123728.65278-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240506123728.65278-1-philmd@linaro.org>
 References: <20240506123728.65278-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,82 +95,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Get the TaskState pointer calling get_task_state().
+From: Juergen Gross <jgross@suse.com>
 
+qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so
+modify qemu_ram_ptr_length() a little bit and use it for
+qemu_map_ram_ptr(), too.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240227223501.28475-4-vikram.garhwal@amd.com>
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-ID: <20240430164939.925307-2-edgar.iglesias@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240428221450.26460-11-philmd@linaro.org>
 ---
- gdbstub/gdbstub.c     | 3 ++-
- gdbstub/user-target.c | 4 ++--
- linux-user/syscall.c  | 4 ++--
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ system/physmem.c | 56 ++++++++++++++++++++----------------------------
+ 1 file changed, 23 insertions(+), 33 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 9c2b8b5d0a..b3574997ea 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -32,6 +32,7 @@
- #include "exec/gdbstub.h"
- #include "gdbstub/syscalls.h"
- #ifdef CONFIG_USER_ONLY
-+#include "accel/tcg/vcpu-state.h"
- #include "gdbstub/user.h"
- #else
- #include "hw/cpu/cluster.h"
-@@ -1661,7 +1662,7 @@ static void handle_query_supported(GArray *params, void *user_ctx)
+diff --git a/system/physmem.c b/system/physmem.c
+index 44e477a1a5..8278e31c1a 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2189,43 +2189,17 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t length)
+ }
+ #endif /* !_WIN32 */
  
- #if defined(CONFIG_USER_ONLY)
- #if defined(CONFIG_LINUX)
--    if (gdbserver_state.c_cpu->opaque) {
-+    if (get_task_state(gdbserver_state.c_cpu)) {
-         g_string_append(gdbserver_state.str_buf, ";qXfer:auxv:read+");
-     }
-     g_string_append(gdbserver_state.str_buf, ";QCatchSyscalls+");
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index 6646684a4c..a9c6c64512 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -216,7 +216,7 @@ void gdb_handle_query_offsets(GArray *params, void *user_ctx)
+-/* Return a host pointer to ram allocated with qemu_ram_alloc.
+- * This should not be used for general purpose DMA.  Use address_space_map
+- * or address_space_rw instead. For local memory (e.g. video ram) that the
+- * device owns, use memory_region_get_ram_ptr.
+- *
+- * Called within RCU critical section.
+- */
+-void *qemu_map_ram_ptr(RAMBlock *block, ram_addr_t addr)
+-{
+-    if (block == NULL) {
+-        block = qemu_get_ram_block(addr);
+-        addr -= block->offset;
+-    }
+-
+-    if (xen_enabled() && block->host == NULL) {
+-        /* We need to check if the requested address is in the RAM
+-         * because we don't want to map the entire memory in QEMU.
+-         * In that case just map until the end of the page.
+-         */
+-        if (block->offset == 0) {
+-            return xen_map_cache(addr, 0, 0, false);
+-        }
+-
+-        block->host = xen_map_cache(block->offset, block->max_length, 1, false);
+-    }
+-    return ramblock_ptr(block, addr);
+-}
+-
+-/* Return a host pointer to guest's ram. Similar to qemu_map_ram_ptr
+- * but takes a size argument.
++/*
++ * Return a host pointer to guest's ram.
+  *
+  * Called within RCU critical section.
+  */
+ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+                                  hwaddr *size, bool lock)
  {
-     TaskState *ts;
+-    if (*size == 0) {
++    hwaddr len = 0;
++
++    if (size && *size == 0) {
+         return NULL;
+     }
  
--    ts = gdbserver_state.c_cpu->opaque;
-+    ts = get_task_state(gdbserver_state.c_cpu);
-     g_string_printf(gdbserver_state.str_buf,
-                     "Text=" TARGET_ABI_FMT_lx
-                     ";Data=" TARGET_ABI_FMT_lx
-@@ -252,7 +252,7 @@ void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx)
+@@ -2233,7 +2207,10 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+         block = qemu_get_ram_block(addr);
+         addr -= block->offset;
+     }
+-    *size = MIN(*size, block->max_length - addr);
++    if (size) {
++        *size = MIN(*size, block->max_length - addr);
++        len = *size;
++    }
  
-     offset = get_param(params, 0)->val_ul;
-     len = get_param(params, 1)->val_ul;
--    ts = gdbserver_state.c_cpu->opaque;
-+    ts = get_task_state(gdbserver_state.c_cpu);
-     saved_auxv = ts->info->saved_auxv;
-     auxv_len = ts->info->auxv_len;
- 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1b42e80f9a..b9b5a387b3 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6463,7 +6463,7 @@ static abi_long do_prctl(CPUArchState *env, abi_long option, abi_long arg2,
- 
-     case PR_GET_TID_ADDRESS:
-         {
--            TaskState *ts = env_cpu(env)->opaque;
-+            TaskState *ts = get_task_state(env_cpu(env));
-             return put_user_ual(ts->child_tidptr, arg2);
+     if (xen_enabled() && block->host == NULL) {
+         /* We need to check if the requested address is in the RAM
+@@ -2241,7 +2218,7 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+          * In that case just map the requested area.
+          */
+         if (block->offset == 0) {
+-            return xen_map_cache(addr, *size, lock, lock);
++            return xen_map_cache(addr, len, lock, lock);
          }
  
-@@ -8124,7 +8124,7 @@ static int open_self_maps_2(void *opaque, target_ulong guest_start,
- static int open_self_maps_1(CPUArchState *env, int fd, bool smaps)
+         block->host = xen_map_cache(block->offset, block->max_length, 1, lock);
+@@ -2250,6 +2227,19 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+     return ramblock_ptr(block, addr);
+ }
+ 
++/*
++ * Return a host pointer to ram allocated with qemu_ram_alloc.
++ * This should not be used for general purpose DMA.  Use address_space_map
++ * or address_space_rw instead. For local memory (e.g. video ram) that the
++ * device owns, use memory_region_get_ram_ptr.
++ *
++ * Called within RCU critical section.
++ */
++void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
++{
++    return qemu_ram_ptr_length(ram_block, addr, NULL, false);
++}
++
+ /* Return the offset of a hostpointer within a ramblock */
+ ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)
  {
-     struct open_self_maps_data d = {
--        .ts = env_cpu(env)->opaque,
-+        .ts = get_task_state(env_cpu(env)),
-         .host_maps = read_self_maps(),
-         .fd = fd,
-         .smaps = smaps
 -- 
 2.41.0
 
