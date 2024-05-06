@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFCA8BCE39
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FCB8BCE42
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:43:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xex-0004WB-5g; Mon, 06 May 2024 08:41:35 -0400
+	id 1s3xeq-00049L-0W; Mon, 06 May 2024 08:41:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xe0-0003e2-KO
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:50 -0400
-Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xeC-0003iI-Nx
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:53 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xdy-0002YD-St
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:36 -0400
-Received: by mail-lj1-x229.google.com with SMTP id
- 38308e7fff4ca-2e2a4c20870so24071431fa.3
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:40:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xe8-0002ZX-LO
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:48 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2e242b1dfd6so21495251fa.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:40:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714999232; x=1715604032; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714999239; x=1715604039; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xkL5eliVD3ZZyqFaQzJbXHxlNyzeRrAKJ2SMZi0kzO4=;
- b=ovsYD8s3naKOvQQJqIeDrdxWzaSWix53h+sqY/IfbEIKdejNEv1PgyB7LEehaZwa5q
- dIZjptyuufVad0ZxoSkah2tG2jEE3uj6K4fwMG4NUY4ADSoC7JxsRCClt9QwbBfQPinn
- rKxWgbAMTIZNdfVlgP5bYWx9+rorb8nNbHJV+eoGtSJOuqKYdHGu6qRCZWEn2s5C5fS6
- RBRz8U6RfEhgqAVDW3Z/U12KQc2BDWtnk2e2N+YdPAWX7mo35D+fXE+dZaUI6Qyd8+Au
- m5cKHvpEWZDfMwNJD2xHxeygFQSwkE5hdXannBC5SjG3hU5jRjwOwAubnxvo6YLRg7g/
- 6xOw==
+ bh=g0IuTaR/rYPSDHaMLMAN6l0+lNFCpJZOF1M4qKW9REw=;
+ b=dmgSOB5kYn/53JNrBSp7WSF9MDAMHJcaipEADqQrHj0YEcllNGEuGb2ss0TqLy6TWM
+ yVk+lg4x26GJyxp88MxgoO8Fjd18XvwqZcUCC9yN21JmpHX0Y/2VuExJ8iuzJQjgeubP
+ 2ZdbEfruDk3BmvmNI0kfhM8cIbW9shAqKGa/mFkOc2Hv03b2K1GLSEwQKCsCz++SRa9P
+ USSPlGytcN64Xh6/KyR9kD8BWCnLEdS6OlYqisPTt69WuriiPt8V4rYNIgPSK2/qWnqO
+ 0Upkfd6WqRrfhT5t/L/XP2557/tpltZaletqyoSz/NwQaJ8as8+bB9EBz3BRyvFV9K8U
+ fQvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714999232; x=1715604032;
+ d=1e100.net; s=20230601; t=1714999239; x=1715604039;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xkL5eliVD3ZZyqFaQzJbXHxlNyzeRrAKJ2SMZi0kzO4=;
- b=SfoD/I/V+jDIkkzWI+VpGmyiWURFzD2gm3hZoMwVZVbwsqRBQrkY3HP5WgT7fJrDAT
- MjJoLyIp/yXGG5EzaKzJVpX/ZaCFptD3tvar0KOHt8eHTQvUaWNov6wgEfPzhuyoVCw1
- imIzisvfu8iqYQP/WNcly7r2VZBjQtRIG1p20IehL6+VPCPWYdVW1wi9IxhLzqWrsvEI
- 5ahx5X5LCcMMrpNu3HES5DxMf174PglENxPTYMcXBrQkRtB5ki6KgCIB6vfxBPM7HDZl
- BRFFWDLIv0MAh22XAqyvL0pamBQCe4JEPmrWz1YHhFzyf43QhW2Chgk2cxNHILh1Xkc/
- Buqw==
-X-Gm-Message-State: AOJu0Yz//bEpiX+RtPevT6CZWSUoWNXFD41n9JDgZGGi5x2gtqv/N62z
- biq2VNcvmlsPp/VwMeC+qOUBxa/ClBSa5/oR215fvvZxVO63MAyC0RmvuVs3ijI4NYzIVrF5cS8
- m
-X-Google-Smtp-Source: AGHT+IEapOKP390YtIWRC3pM7KQmejmHpo+AOYFejMDBJlkEmfwnkzR8O3wZSfEqGXuUEqx0Eb2irQ==
-X-Received: by 2002:a2e:a58d:0:b0:2e0:1349:1eb0 with SMTP id
- m13-20020a2ea58d000000b002e013491eb0mr7318261ljp.43.1714999232200; 
- Mon, 06 May 2024 05:40:32 -0700 (PDT)
+ bh=g0IuTaR/rYPSDHaMLMAN6l0+lNFCpJZOF1M4qKW9REw=;
+ b=M/3RteKKXUEZvYTKQQP9YoUxMmPirIX5GpfE+w6WZU9efszY3zmrttl9/0jhSzWAcN
+ JLSlF6xJJh0o6fjopwAiRPUvYK+KXB5JEv+iO/4Fx0uy2GUaEqDf+rMjiDRW9ZRdwmL7
+ f7kYDSJLi8Z8iNm+zSZcDqHFPD0E/7OLL4nkYUduNmPAt+Yz5SlXhIy1U6Pn0K0bDHaD
+ wo+auSxQY4KkHh7+QrqyRq3Uj98mlSEmiSHsqVciBu/d71jnMqqJqTWGFWrp9eght+lr
+ zuUlUPpSN3GSbpeVnsq/mbNn9wGzDZHwvLSRBinOZR65V12KYBVdclBJxnNuDwOaWUvi
+ R1+w==
+X-Gm-Message-State: AOJu0YwptYVjDk2JndE7CVgIYEyendnDDwPEdzLe446tiNnuM/mSaFdY
+ HGRLKqszUNCUmOqaPRmT8r5Vt36+rnDri5W8asuE8FOxHOjA+KmBkgM7qy6zi3mokdGHQojyMBv
+ a
+X-Google-Smtp-Source: AGHT+IHeSLRnwD3T2bj3xVb3JO1H7O5UcHw5rFWIF3GeirjrV5PGE5wiz1PSX7isIel3AgFSmPwREg==
+X-Received: by 2002:a2e:9d19:0:b0:2da:d986:e387 with SMTP id
+ t25-20020a2e9d19000000b002dad986e387mr6514067lji.50.1714999238791; 
+ Mon, 06 May 2024 05:40:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.211.4]) by smtp.gmail.com with ESMTPSA id
- v17-20020a05600c471100b0041abdaf8c6asm19693892wmo.13.2024.05.06.05.40.31
+ g7-20020a05600c4ec700b0041902ebc87esm15959719wmq.35.2024.05.06.05.40.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 May 2024 05:40:31 -0700 (PDT)
+ Mon, 06 May 2024 05:40:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+Cc: Bin Meng <bin.meng.cn@windriver.com>, Bin Meng <bmeng.cn@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 27/28] MAINTAINERS: Update Aleksandar Rikalo email
-Date: Mon,  6 May 2024 14:37:27 +0200
-Message-ID: <20240506123728.65278-28-philmd@linaro.org>
+Subject: [PULL 28/28] MAINTAINERS: Update my email address
+Date: Mon,  6 May 2024 14:37:28 +0200
+Message-ID: <20240506123728.65278-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240506123728.65278-1-philmd@linaro.org>
 References: <20240506123728.65278-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::229;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,67 +91,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+From: Bin Meng <bin.meng.cn@windriver.com>
 
-Syrmia LLC has been acquired recently and the syrmia.com domain will
-disappear soon, so updating my email in the MAINTAINERS file.
+The old Wind River email address (bin.meng@windriver.com) is no longer
+available due to an internal infrastructure change within the company.
+While a new email address (bin.meng.cn@windriver.com) has been assigned
+to me, I am unable to find a way to send this patch directly from the
+new address. Presumably, the basic authentication with client submission
+(SMTP AUTH) [1] has been disabled by the company's IT.
 
-Signed-off-by: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Message-ID: <20240209062147.62453-1-aleksandar.rikalo@syrmia.com>
+Switch to use my personal email address instead.
+
+Signed-off-by: Bin Meng <bin.meng.cn@windriver.com>
+Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+
+[1] https://learn.microsoft.com/en-us/exchange/mail-flow-best-practices/how-to-set-up-a-multifunction-device-or-application-to-send-email-using-microsoft-365-or-office-365
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240505072312.2776074-1-bmeng.cn@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- MAINTAINERS | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ MAINTAINERS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 595808fc96..63ada48bb4 100644
+index 63ada48bb4..84391777db 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -285,7 +285,7 @@ MIPS TCG CPUs
+@@ -320,7 +320,7 @@ F: tests/tcg/ppc*/*
+ RISC-V TCG CPUs
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ M: Alistair Francis <alistair.francis@wdc.com>
+-M: Bin Meng <bin.meng@windriver.com>
++M: Bin Meng <bmeng.cn@gmail.com>
+ R: Weiwei Li <liwei1518@gmail.com>
+ R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+@@ -1603,7 +1603,7 @@ F: include/hw/riscv/opentitan.h
+ F: include/hw/*/ibex_*.h
+ 
+ Microchip PolarFire SoC Icicle Kit
+-M: Bin Meng <bin.meng@windriver.com>
++M: Bin Meng <bmeng.cn@gmail.com>
+ L: qemu-riscv@nongnu.org
+ S: Supported
+ F: docs/system/riscv/microchip-icicle-kit.rst
+@@ -1630,7 +1630,7 @@ F: include/hw/char/shakti_uart.h
+ 
+ SiFive Machines
+ M: Alistair Francis <Alistair.Francis@wdc.com>
+-M: Bin Meng <bin.meng@windriver.com>
++M: Bin Meng <bmeng.cn@gmail.com>
+ M: Palmer Dabbelt <palmer@dabbelt.com>
+ L: qemu-riscv@nongnu.org
+ S: Supported
+@@ -2126,7 +2126,7 @@ F: hw/ssi/xilinx_*
+ 
+ SD (Secure Card)
  M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Aurelien Jarno <aurelien@aurel32.net>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
--R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-+R: Aleksandar Rikalo <arikalo@gmail.com>
+-M: Bin Meng <bin.meng@windriver.com>
++M: Bin Meng <bmeng.cn@gmail.com>
+ L: qemu-block@nongnu.org
  S: Odd Fixes
- F: target/mips/
- F: disas/*mips.c
-@@ -1335,7 +1335,7 @@ F: include/hw/mips/
- 
- Jazz
- M: Hervé Poussineau <hpoussin@reactos.org>
--R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-+R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Maintained
- F: hw/mips/jazz.c
- F: hw/display/g364fb.c
-@@ -1357,7 +1357,7 @@ F: tests/avocado/linux_ssh_mips_malta.py
- F: tests/avocado/machine_mips_malta.py
- 
- Mipssim
--R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-+R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Orphan
- F: hw/mips/mipssim.c
- F: hw/net/mipsnet.c
-@@ -1385,7 +1385,7 @@ F: tests/avocado/machine_mips_loongson3v.py
- 
- Boston
- M: Paul Burton <paulburton@kernel.org>
--R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-+R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Odd Fixes
- F: hw/core/loader-fit.c
- F: hw/mips/boston.c
-@@ -3762,7 +3762,7 @@ M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Aurelien Jarno <aurelien@aurel32.net>
- R: Huacai Chen <chenhuacai@kernel.org>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
--R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-+R: Aleksandar Rikalo <arikalo@gmail.com>
- S: Odd Fixes
- F: tcg/mips/
- 
+ F: include/hw/sd/sd*
 -- 
 2.41.0
 
