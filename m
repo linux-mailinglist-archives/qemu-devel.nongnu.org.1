@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CA58BC533
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 03:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE358BC53B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 03:15:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3mqV-0002Kn-MJ; Sun, 05 May 2024 21:08:47 -0400
+	id 1s3mqZ-0002qt-Sv; Sun, 05 May 2024 21:08:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3mps-0008C1-TM
+ id 1s3mps-0008Bb-Op
  for qemu-devel@nongnu.org; Sun, 05 May 2024 21:08:12 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3mpb-0003OD-Sv
- for qemu-devel@nongnu.org; Sun, 05 May 2024 21:07:59 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6f453d2c5a1so1428382b3a.2
+ id 1s3mpb-0003OI-Dh
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 21:08:01 -0400
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-23ee34c33ceso1150053fac.3
  for <qemu-devel@nongnu.org>; Sun, 05 May 2024 18:07:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714957669; x=1715562469; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714957670; x=1715562470; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dL7mAB8TBpKQiJ0NobasPIhB/RF/PQ9QibMDfx0vRQo=;
- b=Vkf9TTBPA7ICmsuAzQggoAOTyayTCCP+bKzSKny4VrZ1s9hLJwgkpTKpvnPJlC1slI
- GauMKpHk5+Nunuk3ejH13LRMsOSiTdw9mnYE8zVqB0Nqj+IAFp/cNkExym7bpVNSN2yw
- CRYldVkLzdaCJO+4v6PLO45Px+rPOtcq6SS0Pg7cGrBUtD4+A4xoFk2+bdyAjb0YYe3a
- fmhdwMueu0xafWBMB4vw0WBkye7NAnO9bHoI1LNkfnDA4Q3MQWDvfuURHtBbKH223nR1
- xkoJNKy9usi1wMwnmYlezPMCZg+g4YxuaP9x677ro6Y+yaAAOpLffY/0EGLhJY6014l2
- s9Gw==
+ bh=lTrtIrGTzsjY6zTvjWTNn1IEML+p3AEfl++05Y17EPM=;
+ b=VSHU3VOFXHcGf+1L1vdmtwbXqKCAP6tYdwcHv23UzcPJFZIjE5rDQ6xuigEZShQcav
+ Z4u/wplZbm3uCouVT/jryJOx0rmt7vBi/v0U3nEwa7w0o1/2hNkxu1nTDrjln4KGPgLE
+ QJkltr22jlrpOq55EzHm5UKUq7nlDfrnO5GCvRB0Vs8E8ZcCFYevvpQAAgEXwyTfMEFd
+ bAr/HbRHntU7hv/lSALNt3c5DgQAZnMX2JOGb9XdlD953WNOxnxbTaoa22hQGNRNNdCf
+ awXkvj55IzAgMKf1GTqP9vBzx1gDFLH7VszRJJ3TRvU9eLRe8CdD8On80IXsxiSC2GaC
+ b1Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714957669; x=1715562469;
+ d=1e100.net; s=20230601; t=1714957670; x=1715562470;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dL7mAB8TBpKQiJ0NobasPIhB/RF/PQ9QibMDfx0vRQo=;
- b=RshX4jDmfFRhTmtO8J/QUP2nZo5AdA99SrddsP7r8+LiRhwkf3qJ0WBcO8Z33g7uGc
- n4puKEj5tlqCyundWRnkUb4B+A0Luq7LrB0/nU0yPspCn9MZj8vz1zHNnUaxn5K83Kxy
- O5wigrMynqrTr9ZLjmLth8Z1VH0alG8D9PyOlxF0pNaoTxPsxT5Ps7S8CZba5G0FDbi9
- rmBoZRQ8xXnUIywvsrN4o/2Q2kJ7NU2H4EdlnuwaA8/Gb+fv/q7UR4htWwdTaXHOwiaT
- ceaAI+2az9kUkC1zV36wp+NoFYEEznGLrkcj2nsICaHdoWjUzHzmB1OMnIvsOHITJoNI
- Csbg==
-X-Gm-Message-State: AOJu0Yw9JRMQVwj+B2Qsv11TsYudgdnEgRn+8qOsIHFRWyl/IQWk+Yl5
- JiiFOpoIVrzG84sEhyU3lYgMyyF+j43qogwE6GlxVcdv4qk8pkLBe9pOs7Rjcnrjy00WfHGZtJo
- a
-X-Google-Smtp-Source: AGHT+IFkZyE8jFpjoJJnROWv62/dkyrCdvlaeAnDpqTt4sClvXqeUBlri33D7Sw2bpwMsJXAqX1YRg==
-X-Received: by 2002:a05:6a21:168d:b0:1a7:a6f3:1827 with SMTP id
- np13-20020a056a21168d00b001a7a6f31827mr9335135pzb.46.1714957669346; 
- Sun, 05 May 2024 18:07:49 -0700 (PDT)
+ bh=lTrtIrGTzsjY6zTvjWTNn1IEML+p3AEfl++05Y17EPM=;
+ b=ITY/unERgIG1vxzlYcEGtkxE6D+OdkcAGvFLCLacpiqKLSG8novquRxjlKuhxrT/ke
+ u6DQqF91PIb/wUInQuWANn0fhrlTy3KovVcXRZ0VO4D5ZJ16e/2p0ujY8/q1cLNcEf3t
+ Py32UmzWNAE1nrzrUM7ZQMbOCc8+Yfs8aCoznqXXqLcUjgnE/iFDzHLo93cZzzykRh3W
+ E998SX+uLrztZ8ajx9TIMfuZ3eorD8zmVJ1HMJAgVDa54d7kQMG03lmzYt96CwMcw/wJ
+ AsxCppg8YpKDp/VJ7ltPl5na3q6sTUaqCE0EUIe+teRNFsPgJAj6NL9J9njBzHF2qU4G
+ xG9w==
+X-Gm-Message-State: AOJu0YySFpsU/0V9zw6C3d9CJskfy4199QtLAytRdk2kMLN5FsLJ6XQB
+ rViWAdWlLc30FLbkGJuWP6cRt+g+PpQSyjOGH+y6XBSI5XLtSGfawGiLfmunASD9TKZbzZ0YkmP
+ q
+X-Google-Smtp-Source: AGHT+IFb1/8qr5/aAjYTFH4AHptBOnYEeGVzOmBPGOVmJtwIKzZ2yD6vUCRmGBPIylfBIN0XVAfWfg==
+X-Received: by 2002:a05:6870:8898:b0:22b:5bc1:66f5 with SMTP id
+ m24-20020a056870889800b0022b5bc166f5mr10727143oam.16.1714957670175; 
+ Sun, 05 May 2024 18:07:50 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- kp4-20020a056a00464400b006e580678dfbsm6577287pfb.193.2024.05.05.18.07.48
+ kp4-20020a056a00464400b006e580678dfbsm6577287pfb.193.2024.05.05.18.07.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 05 May 2024 18:07:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 53/57] target/arm: Convert SABA, SABD, UABA, UABD to decodetree
-Date: Sun,  5 May 2024 18:03:59 -0700
-Message-Id: <20240506010403.6204-54-richard.henderson@linaro.org>
+Subject: [PATCH 54/57] target/arm: Convert MUL, PMUL to decodetree
+Date: Sun,  5 May 2024 18:04:00 -0700
+Message-Id: <20240506010403.6204-55-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240506010403.6204-1-richard.henderson@linaro.org>
 References: <20240506010403.6204-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,79 +94,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a64.decode      |  4 ++++
- target/arm/tcg/translate-a64.c | 22 ++++++----------------
- 2 files changed, 10 insertions(+), 16 deletions(-)
+ target/arm/tcg/a64.decode      |  5 ++++
+ target/arm/tcg/translate-a64.c | 51 +++++++++++++---------------------
+ 2 files changed, 25 insertions(+), 31 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 9b68444595..e1667775f6 100644
+index e1667775f6..dbeb5667fd 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -922,6 +922,10 @@ SMAX_v          0.00 1110 ..1 ..... 01100 1 ..... ..... @qrrr_e
- UMAX_v          0.10 1110 ..1 ..... 01100 1 ..... ..... @qrrr_e
- SMIN_v          0.00 1110 ..1 ..... 01101 1 ..... ..... @qrrr_e
- UMIN_v          0.10 1110 ..1 ..... 01101 1 ..... ..... @qrrr_e
-+SABD_v          0.00 1110 ..1 ..... 01110 1 ..... ..... @qrrr_e
-+UABD_v          0.10 1110 ..1 ..... 01110 1 ..... ..... @qrrr_e
-+SABA_v          0.00 1110 ..1 ..... 01111 1 ..... ..... @qrrr_e
-+UABA_v          0.10 1110 ..1 ..... 01111 1 ..... ..... @qrrr_e
+@@ -926,6 +926,8 @@ SABD_v          0.00 1110 ..1 ..... 01110 1 ..... ..... @qrrr_e
+ UABD_v          0.10 1110 ..1 ..... 01110 1 ..... ..... @qrrr_e
+ SABA_v          0.00 1110 ..1 ..... 01111 1 ..... ..... @qrrr_e
+ UABA_v          0.10 1110 ..1 ..... 01111 1 ..... ..... @qrrr_e
++MUL_v           0.00 1110 ..1 ..... 10011 1 ..... ..... @qrrr_e
++PMUL_v          0.10 1110 001 ..... 10011 1 ..... ..... @qrrr_b
  
  ### Advanced SIMD scalar x indexed element
  
+@@ -967,3 +969,6 @@ FMLAL_vi        0.00 1111 10 .. .... 0000 . 0 ..... .....   @qrrx_h
+ FMLSL_vi        0.00 1111 10 .. .... 0100 . 0 ..... .....   @qrrx_h
+ FMLAL2_vi       0.10 1111 10 .. .... 1000 . 0 ..... .....   @qrrx_h
+ FMLSL2_vi       0.10 1111 10 .. .... 1100 . 0 ..... .....   @qrrx_h
++
++MUL_vi          0.00 1111 01 .. .... 1000 . 0 ..... .....   @qrrx_h
++MUL_vi          0.00 1111 10 . ..... 1000 . 0 ..... .....   @qrrx_s
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 9ab73fc330..2e746d2877 100644
+index 2e746d2877..cd39fa1f20 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -5465,6 +5465,10 @@ TRANS(SMAX_v, do_gvec_fn3_no64, a, tcg_gen_gvec_smax)
- TRANS(UMAX_v, do_gvec_fn3_no64, a, tcg_gen_gvec_umax)
- TRANS(SMIN_v, do_gvec_fn3_no64, a, tcg_gen_gvec_smin)
- TRANS(UMIN_v, do_gvec_fn3_no64, a, tcg_gen_gvec_umin)
-+TRANS(SABA_v, do_gvec_fn3_no64, a, gen_gvec_saba)
-+TRANS(UABA_v, do_gvec_fn3_no64, a, gen_gvec_uaba)
-+TRANS(SABD_v, do_gvec_fn3_no64, a, gen_gvec_sabd)
-+TRANS(UABD_v, do_gvec_fn3_no64, a, gen_gvec_uabd)
+@@ -5469,6 +5469,8 @@ TRANS(SABA_v, do_gvec_fn3_no64, a, gen_gvec_saba)
+ TRANS(UABA_v, do_gvec_fn3_no64, a, gen_gvec_uaba)
+ TRANS(SABD_v, do_gvec_fn3_no64, a, gen_gvec_sabd)
+ TRANS(UABD_v, do_gvec_fn3_no64, a, gen_gvec_uabd)
++TRANS(MUL_v, do_gvec_fn3_no64, a, tcg_gen_gvec_mul)
++TRANS(PMUL_v, do_gvec_op3_ool, a, 0, gen_helper_gvec_pmul_b)
  
  static bool do_cmop_v(DisasContext *s, arg_qrrr_e *a, TCGCond cond)
  {
-@@ -10923,8 +10927,6 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
-             return;
-         }
-         /* fall through */
--    case 0xe: /* SABD, UABD */
--    case 0xf: /* SABA, UABA */
+@@ -5695,6 +5697,22 @@ TRANS_FEAT(FMLSL_vi, aa64_fhm, do_fmlal_idx, a, true, false)
+ TRANS_FEAT(FMLAL2_vi, aa64_fhm, do_fmlal_idx, a, false, true)
+ TRANS_FEAT(FMLSL2_vi, aa64_fhm, do_fmlal_idx, a, true, true)
+ 
++static bool do_int3_vector_idx(DisasContext *s, arg_qrrx_e *a,
++                               gen_helper_gvec_3 * const fns[2])
++{
++    assert(a->esz == MO_16 || a->esz == MO_32);
++    if (fp_access_check(s)) {
++        gen_gvec_op3_ool(s, a->q, a->rd, a->rn, a->rm, a->idx, fns[a->esz - 1]);
++    }
++    return true;
++}
++
++static gen_helper_gvec_3 * const f_vector_idx_mul[2] = {
++    gen_helper_gvec_mul_idx_h,
++    gen_helper_gvec_mul_idx_s,
++};
++TRANS(MUL_vi, do_int3_vector_idx, a, f_vector_idx_mul)
++
+ /*
+  * Advanced SIMD scalar pairwise
+  */
+@@ -10921,12 +10939,6 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
+     int rd = extract32(insn, 0, 5);
+ 
+     switch (opcode) {
+-    case 0x13: /* MUL, PMUL */
+-        if (u && size != 0) {
+-            unallocated_encoding(s);
+-            return;
+-        }
+-        /* fall through */
      case 0x12: /* MLA, MLS */
          if (size == 3) {
              unallocated_encoding(s);
-@@ -10957,6 +10959,8 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
-     case 0x0b: /* SQRSHL, UQRSHL */
-     case 0x0c: /* SMAX, UMAX */
-     case 0x0d: /* SMIN, UMIN */
-+    case 0x0e: /* SABD, UABD */
-+    case 0x0f: /* SABA, UABA */
+@@ -10963,6 +10975,7 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
+     case 0x0f: /* SABA, UABA */
      case 0x10: /* ADD, SUB */
      case 0x11: /* CMTST, CMEQ */
++    case 0x13: /* MUL, PMUL */
          unallocated_encoding(s);
-@@ -10968,20 +10972,6 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
+         return;
+     }
+@@ -10972,13 +10985,6 @@ static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
      }
  
      switch (opcode) {
--    case 0xe: /* SABD, UABD */
--        if (u) {
--            gen_gvec_fn3(s, is_q, rd, rn, rm, gen_gvec_uabd, size);
--        } else {
--            gen_gvec_fn3(s, is_q, rd, rn, rm, gen_gvec_sabd, size);
+-    case 0x13: /* MUL, PMUL */
+-        if (!u) { /* MUL */
+-            gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_mul, size);
+-        } else {  /* PMUL */
+-            gen_gvec_op3_ool(s, is_q, rd, rn, rm, 0, gen_helper_gvec_pmul_b);
 -        }
 -        return;
--    case 0xf: /* SABA, UABA */
--        if (u) {
--            gen_gvec_fn3(s, is_q, rd, rn, rm, gen_gvec_uaba, size);
--        } else {
--            gen_gvec_fn3(s, is_q, rd, rn, rm, gen_gvec_saba, size);
+     case 0x12: /* MLA, MLS */
+         if (u) {
+             gen_gvec_fn3(s, is_q, rd, rn, rm, gen_gvec_mls, size);
+@@ -12192,7 +12198,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+     TCGv_ptr fpst;
+ 
+     switch (16 * u + opcode) {
+-    case 0x08: /* MUL */
+     case 0x10: /* MLA */
+     case 0x14: /* MLS */
+         if (is_scalar) {
+@@ -12279,6 +12284,7 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+     case 0x01: /* FMLA */
+     case 0x04: /* FMLSL */
+     case 0x05: /* FMLS */
++    case 0x08: /* MUL */
+     case 0x09: /* FMUL */
+     case 0x18: /* FMLAL2 */
+     case 0x19: /* FMULX */
+@@ -12401,22 +12407,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+         }
+         return;
+ 
+-    case 0x08: /* MUL */
+-        if (!is_long && !is_scalar) {
+-            static gen_helper_gvec_3 * const fns[3] = {
+-                gen_helper_gvec_mul_idx_h,
+-                gen_helper_gvec_mul_idx_s,
+-                gen_helper_gvec_mul_idx_d,
+-            };
+-            tcg_gen_gvec_3_ool(vec_full_reg_offset(s, rd),
+-                               vec_full_reg_offset(s, rn),
+-                               vec_full_reg_offset(s, rm),
+-                               is_q ? 16 : 8, vec_full_reg_size(s),
+-                               index, fns[size - 1]);
+-            return;
 -        }
--        return;
-     case 0x13: /* MUL, PMUL */
-         if (!u) { /* MUL */
-             gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_mul, size);
+-        break;
+-
+     case 0x10: /* MLA */
+         if (!is_long && !is_scalar) {
+             static gen_helper_gvec_4 * const fns[3] = {
+@@ -12485,7 +12475,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+             read_vec_element_i32(s, tcg_op, rn, pass, is_scalar ? size : MO_32);
+ 
+             switch (16 * u + opcode) {
+-            case 0x08: /* MUL */
+             case 0x10: /* MLA */
+             case 0x14: /* MLS */
+             {
 -- 
 2.34.1
 
