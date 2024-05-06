@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294098BC8F2
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1028BC8D5
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:00:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t97-0005uK-NP; Mon, 06 May 2024 03:52:25 -0400
+	id 1s3t9P-0006Qz-8v; Mon, 06 May 2024 03:52:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8n-0005o4-Vr
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s3t8u-0005pj-37
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8m-0001dV-If
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:05 -0400
+ id 1s3t8r-0001e3-FX
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981923;
+ s=mimecast20190719; t=1714981928;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Tpj0GLKdyQenhxApFtKcWrPJj8IHK+zOooWEIXzunbA=;
- b=Z4OJxBz1zDzbQEtph0v6gR6+orTCHZIYs3q5/Rb8ZPBWc/ENZk/LBPvy76QwY5fAzvDT1R
- XCFUul6U1lJOZ1K+AZRkTU8e0od+6/GvM+Z7qk94N9XucNiedw/G44juh29XlaqIi8JAYI
- KPKGBSM+6CkQ+le0wndfxq6yLqIe2I8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cP3nWL94R08Eo67ZV+TaTc1CdPSmPODit+By5QzQoEE=;
+ b=gUZ1DGigP0OlyS0Awr0xNNZvvrt9ZbqcEyHlTKfM5/9JiBt9r+M2Af2+s74xwq2JiE5C+Z
+ fwAYuf7B5oG4yAZwR1WQkPXnGarQLbo8/NoKMaYv5EgHQgZqII1MQ8Gzo8lWVi9wiSDsX5
+ Eh4p40Nz6DSLgoLVGemketaFfnVAx6k=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-HpUuD6daOaSMRGMGtyowxQ-1; Mon, 06 May 2024 03:52:02 -0400
-X-MC-Unique: HpUuD6daOaSMRGMGtyowxQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a59cbb6f266so53706266b.3
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:02 -0700 (PDT)
+ us-mta-398-MMSJi--VOT-puKbRGEWYxQ-1; Mon, 06 May 2024 03:52:06 -0400
+X-MC-Unique: MMSJi--VOT-puKbRGEWYxQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-572ba1df326so501289a12.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981920; x=1715586720;
+ d=1e100.net; s=20230601; t=1714981925; x=1715586725;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tpj0GLKdyQenhxApFtKcWrPJj8IHK+zOooWEIXzunbA=;
- b=j0fFHCkMXpKK3Gvsf4xLaGS5k560BiaDGvlOedGGMIga9sfopSwB7Mv8KC3wpn2Sju
- DxcrHEanjKBSSb/koDAi9CQaKo/7b2oLQCj4fzYvyTMfoMebsH7tMETpqXzEqkn5S8ey
- gsqwlwRZtaanoskJCNYNHj/1GRSLn4uOPowiVU00U/Na+Cx3Wfgl8h6NUVnvQjgODRFH
- FnlsN1/0fCvfFtmvJr+ZGdGlpyHTVKLDvrmRghs+7G6dcpxKU+MpSRywwbhzEAMuRlZ9
- 4N6RxUzjoOqJkr/RTOc1WfBttaBY1yXaL3WbLY12pjlYWE9pLcfWmI9bq0nVwSewHScO
- JUJA==
-X-Gm-Message-State: AOJu0YzFjHCieei++Y42EhKytJ2dOpjuiXzsLWh+RWEWkmbVh+OLKqq1
- X1nRufQxmvG9utqhseX3LfPMlNMmU5jcokKaogwl5L1hiFcwn3DrosfoV3eU/V5e44LSV32QUBT
- WWObAib4bNq8BOkJ3tPJxsr+Ikdf604gZUvMpe8COIFQdj9VxMwhT0q7LW/21LS9trTe2Rws0ih
- lai2mpqYXndx9Xkq6QCBNR/LE7nMlbAtiypuDb
-X-Received: by 2002:a17:906:ddb:b0:a59:bfd6:bf2c with SMTP id
- p27-20020a1709060ddb00b00a59bfd6bf2cmr3833946eji.7.1714981920571; 
- Mon, 06 May 2024 00:52:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJxDIuqJSJw5yF5zNogglTpt690fUknOLHcXwCcv6f48mWw6z+EOdKZVnWAr3Vyha4KVVaHQ==
-X-Received: by 2002:a17:906:ddb:b0:a59:bfd6:bf2c with SMTP id
- p27-20020a1709060ddb00b00a59bfd6bf2cmr3833926eji.7.1714981920211; 
- Mon, 06 May 2024 00:52:00 -0700 (PDT)
+ bh=cP3nWL94R08Eo67ZV+TaTc1CdPSmPODit+By5QzQoEE=;
+ b=p4DoxWE2zqHK0tbXLDlR5OLWxOPqMvZYCHeguYqDnVlFEk+3KI4MRL5F/vZUNaRAUV
+ KtbC4w9yssUA3eeaKJ2NQkf4dHSg0e6Glx475f3u3Exj50pXtvAyhypm3S0f28/DChSP
+ 3zvtURKGDjvaTS4k5vWGGCBwdtti23jWsG2h7PqKMzhJgSxEKwl0YrNmnMEDYoOvuwYO
+ 7eqWqI6ab7j1NQP+HUAbG49861Nu8GGW/O6ITiTsCGxjm2HqEmJOQzLTwsL/zrLYix6j
+ fcV6U7UdjoOaGnZvi2DgiGNUaIKTsFcf5tPK8snXsQ+7sttMFhxiqPad6piTn7XQ6BOS
+ a7/w==
+X-Gm-Message-State: AOJu0YwAqkR4cfIkq6Brb+cMLKAiPlfd7Dr2kkzSXAEfNaPM8O60HZah
+ i04TqIq1Fqp0z+Cdna7eVlqnrWrxjK8RwepynPlqBqKXerjMHFLwKdv9rcqJHtJIQxarAT/RoGG
+ JXg4PA9nNhc6mNRDmPrWuU0DaOG7+etdGOZkOmqZdCrirTZw35h3D06DOmuCfPJH6yTShTHbJfg
+ c7gc9FyaKhp20yQsWi+A6brh3XEQNA0O9zjRSm
+X-Received: by 2002:a50:8a96:0:b0:572:65d3:803c with SMTP id
+ j22-20020a508a96000000b0057265d3803cmr7680805edj.0.1714981925306; 
+ Mon, 06 May 2024 00:52:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHy9p1zDeCaFNCPq87ATV8ryWATOXqbWc8CoJP6jDYnU7Gokxn6w26XZyA7AtCA+hqDVtPWHg==
+X-Received: by 2002:a50:8a96:0:b0:572:65d3:803c with SMTP id
+ j22-20020a508a96000000b0057265d3803cmr7680790edj.0.1714981924903; 
+ Mon, 06 May 2024 00:52:04 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- fy20-20020a170906b7d400b00a59ac65a13csm2546977ejb.179.2024.05.06.00.51.59
+ ze15-20020a170906ef8f00b00a59ae3efb03sm2425669ejb.3.2024.05.06.00.52.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:51:59 -0700 (PDT)
+ Mon, 06 May 2024 00:52:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/46] loongarch: switch boards to "default y"
-Date: Mon,  6 May 2024 09:50:52 +0200
-Message-ID: <20240506075125.8238-14-pbonzini@redhat.com>
+Subject: [PULL 15/46] microblaze: switch boards to "default y"
+Date: Mon,  6 May 2024 09:50:54 +0200
+Message-ID: <20240506075125.8238-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -102,55 +102,75 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with Loongarch.
+Continue with Microblaze.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/loongarch64-softmmu/default.mak | 3 ++-
- .gitlab-ci.d/buildtest.yml                      | 4 ++--
- hw/loongarch/Kconfig                            | 2 ++
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ configs/devices/microblaze-softmmu/default.mak | 9 ++++-----
+ .gitlab-ci.d/buildtest.yml                     | 3 ++-
+ hw/microblaze/Kconfig                          | 6 ++++++
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/configs/devices/loongarch64-softmmu/default.mak b/configs/devices/loongarch64-softmmu/default.mak
-index 0893112b81d..ffe705836fd 100644
---- a/configs/devices/loongarch64-softmmu/default.mak
-+++ b/configs/devices/loongarch64-softmmu/default.mak
-@@ -3,4 +3,5 @@
- # Uncomment the following lines to disable these optional devices:
- # CONFIG_PCI_DEVICES=n
+diff --git a/configs/devices/microblaze-softmmu/default.mak b/configs/devices/microblaze-softmmu/default.mak
+index db8c6e4bba3..583e3959bb7 100644
+--- a/configs/devices/microblaze-softmmu/default.mak
++++ b/configs/devices/microblaze-softmmu/default.mak
+@@ -1,7 +1,6 @@
+ # Default configuration for microblaze-softmmu
  
--CONFIG_LOONGARCH_VIRT=y
+-# Boards:
+-#
+-CONFIG_PETALOGIX_S3ADSP1800=y
+-CONFIG_PETALOGIX_ML605=y
+-CONFIG_XLNX_ZYNQMP_PMU=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_LOONGARCH_VIRT=n
++# CONFIG_PETALOGIX_S3ADSP1800=n
++# CONFIG_PETALOGIX_ML605=n
++# CONFIG_XLNX_ZYNQMP_PMU=n
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 75222c4450b..a82848ba55b 100644
+index a91e8d359d5..e2e92f25c58 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -648,8 +648,8 @@ build-tci:
+@@ -648,7 +648,8 @@ build-tci:
      - make check-tcg
  
  # Check our reduced build configurations
--# requires libfdt: aarch64, arm, i386, x86_64
--# does not build without boards: i386, x86_64
-+# requires libfdt: aarch64, arm, i386, loongarch64, x86_64
-+# does not build without boards: i386, loongarch64, x86_64
+-# requires libfdt: aarch64, arm, i386, loongarch64, x86_64
++# requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
++#   x86_64
+ # does not build without boards: i386, loongarch64, x86_64
  build-without-defaults:
    extends: .native_build_job_template
-   needs:
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index 5727efed6d8..78640505630 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
+diff --git a/hw/microblaze/Kconfig b/hw/microblaze/Kconfig
+index e2697ced9cc..d78ba843fac 100644
+--- a/hw/microblaze/Kconfig
++++ b/hw/microblaze/Kconfig
 @@ -1,5 +1,7 @@
- config LOONGARCH_VIRT
+ config PETALOGIX_S3ADSP1800
      bool
 +    default y
-+    depends on LOONGARCH64
-     select PCI
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     imply VIRTIO_VGA
++    depends on MICROBLAZE
+     select PFLASH_CFI01
+     select XILINX
+     select XILINX_AXI
+@@ -8,6 +10,8 @@ config PETALOGIX_S3ADSP1800
+ 
+ config PETALOGIX_ML605
+     bool
++    default y
++    depends on MICROBLAZE
+     select PFLASH_CFI01
+     select SERIAL
+     select SSI_M25P80
+@@ -18,4 +22,6 @@ config PETALOGIX_ML605
+ 
+ config XLNX_ZYNQMP_PMU
+     bool
++    default y
++    depends on MICROBLAZE
+     select XLNX_ZYNQMP
 -- 
 2.44.0
 
