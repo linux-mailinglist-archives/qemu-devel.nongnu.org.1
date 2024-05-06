@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7798BC840
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7D38BC872
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:37:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3scU-0002fY-6w; Mon, 06 May 2024 03:18:42 -0400
+	id 1s3sth-0006tv-Ki; Mon, 06 May 2024 03:36:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s3sc6-0002ey-78
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:18:18 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s3sc3-0000kR-C1
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:18:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714979895; x=1746515895;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=cFirAcoZTRqKJ0iTk0DBL2WwrpmPyYIfO3yUwwGZOEo=;
- b=iAlosSfttNvO+221VT257NCJJtFhLh344Y6+2e5Qhjs69f47Kb/YeyYd
- sXVPP0EoiSKwgzWKVt8iDbjhU9/wlQ88v3Gq/2JVJvNhWEfGj8vpERL9M
- FN1wokhJ1zOr5sxO/SMPuqkyvTYhutEvjl+tO66Nw26GECUwp4pN3VYG1
- kbwX+pRGorKtIxWnWUigwyR4VeeOAgZoSC+wh/wNdqmUolBxGJ0PXxX6O
- epHN0InMhpI0b6Nz+7mvZc3JpmtV4VLjQnTXG4HtBYLNM8nprRIKWNw0J
- LZcXJGUeY+xLVIw36UTJtZqJJAZbbH8AbcDL18WOVediYUepIQaAEW/Lo g==;
-X-CSE-ConnectionGUID: bbHgnzUVSCeZSU4nLUTdFw==
-X-CSE-MsgGUID: C7hk6K+vSdWjhFSumFaCkg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="13656876"
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="13656876"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 00:18:12 -0700
-X-CSE-ConnectionGUID: f9xDeTiUQHeKMsD+XB8KEg==
-X-CSE-MsgGUID: 8oLN0wnCRg+q+bMEHLQhqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; d="scan'208";a="28162719"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 06 May 2024 00:18:10 -0700
-Date: Mon, 6 May 2024 15:32:21 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Tejus GK <tejus.gk@nutanix.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Babu Moger <babu.moger@amd.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v11 19/21] i386: Add cache topology info in CPUCacheInfo
-Message-ID: <ZjiHhVSEjyxitWvg@intel.com>
-References: <20240424154929.1487382-1-zhao1.liu@intel.com>
- <20240424154929.1487382-20-zhao1.liu@intel.com>
- <6766AC1F-96D1-41F0-AAEB-CE4158662A51@nutanix.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3stN-0006qO-Dc
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:36:09 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3stL-0003Lh-BY
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:36:09 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-41bab13ca4eso10348085e9.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:36:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714980964; x=1715585764; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YFnYVa5Z9A3Ixu3zalShu0+hblIDFvee9LCFlf1WZho=;
+ b=zl4ecdU0EU9kT+hc8JIChkn+OFbKKAZ2JsJAnto/7oDXbyJp/DwV30VginrjNwvd/D
+ JbcUdPiYwxJANyCj+VV8mONNJYsslnbMCWybMu6D5LCY0VAs0mzAyEYgdDAktkpNBind
+ hRPWhOcRxemAD6QN0tZvSugldghlCiRDlkpXu/AwengwJw2HtILgY/FkdhLLa1CmiO0C
+ IwVgLzlz19n99lPYnH76sKeA8qQ5ABPWZr01bmlMdBDgn4zVa25uzI4Bp2OC3DYK0z5h
+ Mep62kmdrubpNtfblrpokG4XtxdjOdiVN4QaVdk3dzIFlWh4wG+SdmlC44VkHgyELmWL
+ V7Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714980964; x=1715585764;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YFnYVa5Z9A3Ixu3zalShu0+hblIDFvee9LCFlf1WZho=;
+ b=brEDWRfhl4sOdLUFQlZg4dNli/78rMTbTAUFukglg+v2pN7mq5jpciK5P8/3Dz4jll
+ WcQeTsOrlzZtOB1fH4YRLo3CcfmtHBDHZv1DNZNUi0le963W2EfQL/0NhiWNQO+vdfgO
+ ATQTjYJO8gtww9ryeC55CVKQGgDBISIBzaVpBt2wIAAgG8ivN5QxdUH8Jsv/to6L+H/k
+ gmMJftX4LcuAgggFaxAQvKpdJzabJzoSgwCr4FLXzIRWvJT81pWGwAD/M/iWh7jR+txn
+ 1UefA6qt5kwT8p7jWgVi0zx6CQl4wqHz2JfKR0RglV5IH5pTKQRYUskHxA2/MxT4Scmu
+ kPgQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWt0o9EsRzWHiFFinbNmHy7uPpZiAGBN3BA6rS8MsVNOo+kSNgwiaVg9IRqiV90gs4CYDsy2Y90EPg2jvQGsFW3yk/wLUw=
+X-Gm-Message-State: AOJu0Yyo4iN2FhxpggsSR2iyFsFdFUE3j1UYmZQbfS6E6C8T84iJNZXO
+ JEwKOvP0dd4vJftXkvF4aA/hQGHJkWpb9zgVfr5znV0lpliuYh8DwexrxfOj2to=
+X-Google-Smtp-Source: AGHT+IGonj0xw/F4WwfLCTnFKHjYMelkdAaAD6/J1aWx9gs+ohDyLSOTB6IdAnaPtvjmJBHdaabZ6A==
+X-Received: by 2002:a05:600c:45cd:b0:418:f826:58c3 with SMTP id
+ s13-20020a05600c45cd00b00418f82658c3mr7565747wmo.15.1714980964656; 
+ Mon, 06 May 2024 00:36:04 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.211.4])
+ by smtp.gmail.com with ESMTPSA id
+ fl25-20020a05600c0b9900b0041e9c1d6f4esm5819108wmb.48.2024.05.06.00.36.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 May 2024 00:36:04 -0700 (PDT)
+Message-ID: <1bf7ccb0-49e0-41d0-8600-4db47c2d2e34@linaro.org>
+Date: Mon, 6 May 2024 09:36:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] hw/arm/npcm7xx: remove setting of mp-affinity
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Dorjoy Chowdhury <dorjoychy111@gmail.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, kfting@nuvoton.com, wuhaotsh@google.com
+References: <20240504141733.14813-1-dorjoychy111@gmail.com>
+ <de22b9fc-6d8c-47aa-a192-878904efd3db@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <de22b9fc-6d8c-47aa-a192-878904efd3db@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6766AC1F-96D1-41F0-AAEB-CE4158662A51@nutanix.com>
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.431,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,82 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tejus,
+On 4/5/24 16:32, Richard Henderson wrote:
+> On 5/4/24 07:17, Dorjoy Chowdhury wrote:
+>> The value of the mp-affinity property being set in npcm7xx_realize is
+>> always the same as the default value it would have when arm_cpu_realizefn
+>> is called if the property is not set here. So there is no need to set
+>> the property value in npcm7xx_realize function.
+>>
+>> Signed-off-by: Dorjoy Chowdhury<dorjoychy111@gmail.com>
+>> ---
+>>   hw/arm/npcm7xx.c | 3 ---
+>>   1 file changed, 3 deletions(-)
 
-(Also +Paolo/Daniel)
+Implicitly in
+https://lore.kernel.org/qemu-devel/20231212162935.42910-31-philmd@linaro.org/
 
-On Tue, Apr 30, 2024 at 06:14:52AM +0000, Tejus GK wrote:
-> Date: Tue, 30 Apr 2024 06:14:52 +0000
-> From: Tejus GK <tejus.gk@nutanix.com>
-> Subject: Re: [PATCH v11 19/21] i386: Add cache topology info in CPUCacheInfo
-> 
-> 
-> 
-> On 24 Apr 2024, at 9:19 PM, Zhao Liu <zhao1.liu@intel.com> wrote:
-> 
-> @@ -2140,6 +2164,7 @@ static const CPUCaches epyc_milan_cache_info = {
->         .lines_per_tag = 1,
->         .self_init = 1,
->         .no_invd_sharing = true,
-> +        .share_level = CPU_TOPO_LEVEL_CORE,
->     },
->     .l1i_cache = &(CPUCacheInfo) {
->         .type = INSTRUCTION_CACHE,
-> @@ -2152,6 +2177,7 @@ static const CPUCaches epyc_milan_cache_info = {
->         .lines_per_tag = 1,
->         .self_init = 1,
->         .no_invd_sharing = true,
-> +        .share_level = CPU_TOPO_LEVEL_CORE,
->     },
->     .l2_cache = &(CPUCacheInfo) {
->         .type = UNIFIED_CACHE,
-> @@ -2162,6 +2188,7 @@ static const CPUCaches epyc_milan_cache_info = {
->         .partitions = 1,
->         .sets = 1024,
->         .lines_per_tag = 1,
-> +        .share_level = CPU_TOPO_LEVEL_CORE,
->     },
->     .l3_cache = &(CPUCacheInfo) {
->         .type = UNIFIED_CACHE,
-> @@ -2175,6 +2202,7 @@ static const CPUCaches epyc_milan_cache_info = {
->         .self_init = true,
->         .inclusive = true,
->         .complex_indexing = true,
-> +        .share_level = CPU_TOPO_LEVEL_DIE,
->     },
-> };
-> 
-> 
-> Hi Zhao and Babu, thank you for this patch. I have a slightly
-> off-topic question about this patch. Firstly, many AMD CPU models
-> have pre-defined cache sizes for the various cache levels; how are
-> these values decided? I couldn't figure that out from the patches that
-> introduced those changes.
-
-I understand the AMD pre-defined cache idea started from this
-discussion:
-
-https://lore.kernel.org/qemu-devel/20180320175427.GU3417@localhost.localdomain/
-
-From the discussion, it appears that AMD's cache information is encoded
-according to the spec/datasheet for each generation of EPYC.
-
-> Secondly, there isn't any pre-defined cache size for Intel, and the
-> legacy cache values are used. This value can be vastly different from
-> what actual available caches might be. Is there any reason why
-> something like that for Intel has yet to be introduced?
-
-Previously, there should be a lack of reason to introduce on Intel side,
-or haven't met the relevant need/issue before.
-
-I understand that AMD's reason is to make the cache information in the
-Guest with a specific CPU model look more correct and to be able to
-better emulate the Host environment.
-
-Hi @Paolo and @Daniel, do you think Intel should also add correct cache
-info for each CPU model?
-
-Thanks,
-Zhao
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
