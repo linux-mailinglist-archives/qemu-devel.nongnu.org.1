@@ -2,80 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FCB8BCE42
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:43:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C4E8BCE23
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xeq-00049L-0W; Mon, 06 May 2024 08:41:30 -0400
+	id 1s3xck-0002oB-GH; Mon, 06 May 2024 08:39:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xeC-0003iI-Nx
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:53 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3xe8-0002ZX-LO
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:40:48 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2e242b1dfd6so21495251fa.0
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:40:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714999239; x=1715604039; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=g0IuTaR/rYPSDHaMLMAN6l0+lNFCpJZOF1M4qKW9REw=;
- b=dmgSOB5kYn/53JNrBSp7WSF9MDAMHJcaipEADqQrHj0YEcllNGEuGb2ss0TqLy6TWM
- yVk+lg4x26GJyxp88MxgoO8Fjd18XvwqZcUCC9yN21JmpHX0Y/2VuExJ8iuzJQjgeubP
- 2ZdbEfruDk3BmvmNI0kfhM8cIbW9shAqKGa/mFkOc2Hv03b2K1GLSEwQKCsCz++SRa9P
- USSPlGytcN64Xh6/KyR9kD8BWCnLEdS6OlYqisPTt69WuriiPt8V4rYNIgPSK2/qWnqO
- 0Upkfd6WqRrfhT5t/L/XP2557/tpltZaletqyoSz/NwQaJ8as8+bB9EBz3BRyvFV9K8U
- fQvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714999239; x=1715604039;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=g0IuTaR/rYPSDHaMLMAN6l0+lNFCpJZOF1M4qKW9REw=;
- b=M/3RteKKXUEZvYTKQQP9YoUxMmPirIX5GpfE+w6WZU9efszY3zmrttl9/0jhSzWAcN
- JLSlF6xJJh0o6fjopwAiRPUvYK+KXB5JEv+iO/4Fx0uy2GUaEqDf+rMjiDRW9ZRdwmL7
- f7kYDSJLi8Z8iNm+zSZcDqHFPD0E/7OLL4nkYUduNmPAt+Yz5SlXhIy1U6Pn0K0bDHaD
- wo+auSxQY4KkHh7+QrqyRq3Uj98mlSEmiSHsqVciBu/d71jnMqqJqTWGFWrp9eght+lr
- zuUlUPpSN3GSbpeVnsq/mbNn9wGzDZHwvLSRBinOZR65V12KYBVdclBJxnNuDwOaWUvi
- R1+w==
-X-Gm-Message-State: AOJu0YwptYVjDk2JndE7CVgIYEyendnDDwPEdzLe446tiNnuM/mSaFdY
- HGRLKqszUNCUmOqaPRmT8r5Vt36+rnDri5W8asuE8FOxHOjA+KmBkgM7qy6zi3mokdGHQojyMBv
- a
-X-Google-Smtp-Source: AGHT+IHeSLRnwD3T2bj3xVb3JO1H7O5UcHw5rFWIF3GeirjrV5PGE5wiz1PSX7isIel3AgFSmPwREg==
-X-Received: by 2002:a2e:9d19:0:b0:2da:d986:e387 with SMTP id
- t25-20020a2e9d19000000b002dad986e387mr6514067lji.50.1714999238791; 
- Mon, 06 May 2024 05:40:38 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.211.4]) by smtp.gmail.com with ESMTPSA id
- g7-20020a05600c4ec700b0041902ebc87esm15959719wmq.35.2024.05.06.05.40.37
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 06 May 2024 05:40:38 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Bin Meng <bin.meng.cn@windriver.com>, Bin Meng <bmeng.cn@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/28] MAINTAINERS: Update my email address
-Date: Mon,  6 May 2024 14:37:28 +0200
-Message-ID: <20240506123728.65278-29-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240506123728.65278-1-philmd@linaro.org>
-References: <20240506123728.65278-1-philmd@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <ysato@users.sourceforge.jp>)
+ id 1s3xcF-0001u5-C7
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:48 -0400
+Received: from ik1-413-38519.vs.sakura.ne.jp ([153.127.30.23]
+ helo=sakura.ysato.name) by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <ysato@users.sourceforge.jp>) id 1s3xcD-00022i-3U
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:38:47 -0400
+Received: from SIOS1075.ysato.ml (ZM005235.ppp.dion.ne.jp [222.8.5.235])
+ by sakura.ysato.name (Postfix) with ESMTPSA id 3643A1C00D7;
+ Mon,  6 May 2024 21:38:37 +0900 (JST)
+Date: Mon, 06 May 2024 21:38:34 +0900
+Message-ID: <87o79j15f9.wl-ysato@users.sourceforge.jp>
+From: Yoshinori Sato <ysato@users.sourceforge.jp>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Richard Henderson <richard.henderson@linaro.org>,	qemu-devel@nongnu.org,
+ zack@buhman.org,	peter.maydell@linaro.org,	Cole Robinson
+ <crobinso@redhat.com>,	Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH for-9.0 v3 0/4] target/sh4: Fix mac.[lw]
+In-Reply-To: <26711de4-180b-4448-8d79-30efec984900@tls.msk.ru>
+References: <20240406053732.191398-1-richard.henderson@linaro.org>
+ <26711de4-180b-4448-8d79-30efec984900@tls.msk.ru>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+Received-SPF: softfail client-ip=153.127.30.23;
+ envelope-from=ysato@users.sourceforge.jp; helo=sakura.ysato.name
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, KHOP_HELO_FCRDNS=0.259,
+ SPF_HELO_NONE=0.001, SPF_SOFTFAIL=0.665 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,70 +59,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bin Meng <bin.meng.cn@windriver.com>
+On Sat, 04 May 2024 17:25:52 +0900,
+Michael Tokarev wrote:
+> 
+> 06.04.2024 08:37, Richard Henderson wrote:
+> > Zack's recent patches, tidied a little bit, and with
+> > test cases added.
+> 
+> These fixes ended up in stable-8.2, but not in stable-7.2.
+> This is because in 7.2, the context is a bit different.
+> 
+> Later, a couple other fixes in this area come from Philippe
+> (Fix ADDV & SUBV opcodes) which are easy to pick up but it
+> wants changes in tests/tcg/sh4/Makefile.target introduced
+> in this patchset.
+> 
+> b0f2f2976b "target/sh4: mac.w: memory accesses are 16-bit words"
+> also needs 03a0d87e8d "target/sh4: Use MO_ALIGN where required",
+> but this one, while simple, is a big one and doesn't apply to
+> 7.2 directly in many places in target/sh4/translate.c, in parts
+> due to bebd5cb300 "target/sh4: Drop tcg_temp_free" (but can be
+> easily tweaked manually).
+> 
+> Or I can hand-apply b0f2f2976b (s/MO_TESL/MO_TESW) without
+> 03a0d87e8d (add MO_ALIGN).
+> 
+> Does picking up this stuff for 7.2 make sense?
+> 
+> (Cc'ing Cole for general stable-7.2 feedback on redhat side).
+> 
+> Thanks,
+> 
+> /mjt
+> 
+> > Richard Henderson (1):
+> >    target/sh4: Merge mach and macl into a union
+> > 
+> > Zack Buhman (3):
+> >    target/sh4: mac.w: memory accesses are 16-bit words
+> >    target/sh4: Fix mac.l with saturation enabled
+> >    target/sh4: Fix mac.w with saturation enabled
+> > 
+> >   target/sh4/cpu.h              | 14 ++++++--
+> >   target/sh4/helper.h           |  4 +--
+> >   target/sh4/op_helper.c        | 51 +++++++++++++++-----------
+> >   target/sh4/translate.c        |  4 +--
+> >   tests/tcg/sh4/test-macl.c     | 67 +++++++++++++++++++++++++++++++++++
+> >   tests/tcg/sh4/test-macw.c     | 61 +++++++++++++++++++++++++++++++
+> >   tests/tcg/sh4/Makefile.target |  8 +++++
+> >   7 files changed, 182 insertions(+), 27 deletions(-)
+> >   create mode 100644 tests/tcg/sh4/test-macl.c
+> >   create mode 100644 tests/tcg/sh4/test-macw.c
+> > 
+> 
+> -- 
+> GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
+> New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
+> Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
+> Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
+> 
 
-The old Wind River email address (bin.meng@windriver.com) is no longer
-available due to an internal infrastructure change within the company.
-While a new email address (bin.meng.cn@windriver.com) has been assigned
-to me, I am unable to find a way to send this patch directly from the
-new address. Presumably, the basic authentication with client submission
-(SMTP AUTH) [1] has been disabled by the company's IT.
+Does this mean you changed it like this?
+I think this is fine.
 
-Switch to use my personal email address instead.
+index 7db3468b01..f3bf0fc50a 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -844,9 +844,9 @@ static void _decode_opc(DisasContext * ctx)
+ 	{
+ 	    TCGv arg0, arg1;
+ 	    arg0 = tcg_temp_new();
+-            tcg_gen_qemu_ld_i32(arg0, REG(B7_4), ctx->memidx, MO_TESL);
++            tcg_gen_qemu_ld_i32(arg0, REG(B7_4), ctx->memidx, MO_TESW);
+ 	    arg1 = tcg_temp_new();
+-            tcg_gen_qemu_ld_i32(arg1, REG(B11_8), ctx->memidx, MO_TESL);
++            tcg_gen_qemu_ld_i32(arg1, REG(B11_8), ctx->memidx, MO_TESW);
+             gen_helper_macw(cpu_env, arg0, arg1);
+ 	    tcg_temp_free(arg1);
+ 	    tcg_temp_free(arg0);
 
-Signed-off-by: Bin Meng <bin.meng.cn@windriver.com>
-Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
-
-[1] https://learn.microsoft.com/en-us/exchange/mail-flow-best-practices/how-to-set-up-a-multifunction-device-or-application-to-send-email-using-microsoft-365-or-office-365
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240505072312.2776074-1-bmeng.cn@gmail.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- MAINTAINERS | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 63ada48bb4..84391777db 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -320,7 +320,7 @@ F: tests/tcg/ppc*/*
- RISC-V TCG CPUs
- M: Palmer Dabbelt <palmer@dabbelt.com>
- M: Alistair Francis <alistair.francis@wdc.com>
--M: Bin Meng <bin.meng@windriver.com>
-+M: Bin Meng <bmeng.cn@gmail.com>
- R: Weiwei Li <liwei1518@gmail.com>
- R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
- R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-@@ -1603,7 +1603,7 @@ F: include/hw/riscv/opentitan.h
- F: include/hw/*/ibex_*.h
- 
- Microchip PolarFire SoC Icicle Kit
--M: Bin Meng <bin.meng@windriver.com>
-+M: Bin Meng <bmeng.cn@gmail.com>
- L: qemu-riscv@nongnu.org
- S: Supported
- F: docs/system/riscv/microchip-icicle-kit.rst
-@@ -1630,7 +1630,7 @@ F: include/hw/char/shakti_uart.h
- 
- SiFive Machines
- M: Alistair Francis <Alistair.Francis@wdc.com>
--M: Bin Meng <bin.meng@windriver.com>
-+M: Bin Meng <bmeng.cn@gmail.com>
- M: Palmer Dabbelt <palmer@dabbelt.com>
- L: qemu-riscv@nongnu.org
- S: Supported
-@@ -2126,7 +2126,7 @@ F: hw/ssi/xilinx_*
- 
- SD (Secure Card)
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
--M: Bin Meng <bin.meng@windriver.com>
-+M: Bin Meng <bmeng.cn@gmail.com>
- L: qemu-block@nongnu.org
- S: Odd Fixes
- F: include/hw/sd/sd*
 -- 
-2.41.0
-
+Yosinori Sato
 
