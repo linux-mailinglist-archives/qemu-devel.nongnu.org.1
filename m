@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990E8BD0F9
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F114C8BD105
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:06:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3zqp-00047J-SV; Mon, 06 May 2024 11:01:59 -0400
+	id 1s3zuN-00069x-Na; Mon, 06 May 2024 11:05:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1s3zqn-000472-OF
- for qemu-devel@nongnu.org; Mon, 06 May 2024 11:01:57 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1s3zqm-0003io-8D
- for qemu-devel@nongnu.org; Mon, 06 May 2024 11:01:57 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-5aa20adda1dso1467425eaf.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 08:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715007714; x=1715612514; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pEjhjrqEJ5hFirUN3tktRysnyA8F2DZew47dDvO3nkM=;
- b=kq0qPyvJ8DCrs2P3RUcxp8Xc6Fjg9hWoCNoWCKtd6LZdRAmqWKNmW13xaMPOFi7uKA
- 7av0GQmcinFyq8yD30iEHWYxwKDpNx4fDP973LErExi0bytquvr7y/Wfv1eWEe6TYuw5
- gJqcYPngCYulMTBVqTR9vgK3+F+QV4TV0MrJoKxjW3x4fDqRPhZ1zJ/0VXJ6kkGJwbY7
- C8jpjicXzFV1n2Wl3i9SNEGS1e6gcVMUPbZ+d1KrKWIo4VNZzIujwj9DyJfmlAPuaKe1
- gMfvfNlv5NOZgUc2VQ9+TMPJOevJKkzNcbzugL+LlzD2T/Ut3PHNLAzTXEqghzELhfd/
- T5kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715007714; x=1715612514;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pEjhjrqEJ5hFirUN3tktRysnyA8F2DZew47dDvO3nkM=;
- b=e+vvjyRn1GmR4LnVx1YfG3oszxAaCnZ1263uRpjoOtXSm0UZZTolx/1kv8Nm7CI674
- 9McS2MoxrQYH4UZZD6rUjlshyUWrRG/nLpFOPQbYh/4ooVNsfeD35vyOgKLMs76JE6W8
- DAggWcFhdoKs+o2ixlI6syNP0yPggIUxfveXuXkCkO8y5S/dl1s6lreeqZSvZvyao3eK
- 6zcMkGa8U5i/MvlGhHMu4R4uygiEXGaDC9fwuzSWESqFiZzj8Mrw5vtkL95ypIinI/Hq
- 8ElceawGhpTxF4a2vKIcslRqQxpwNmXSbQVt5APWEAsFeegYfK6oucyy7STqsMjKL8Qm
- CjKw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVdejkFsMH3x8CG44JbuN6rIHNkQyeKzNX4q4DT9Nay7ngsD2Wr2lwEFhWyrYaka/Hs29wgUi5EHM7TJE0NqtYcKAd5zwE=
-X-Gm-Message-State: AOJu0Yz3ZRIs4bI2iRnJ0B+myi6/0OtLZcnCeaT1Acn5gCwatlfWmqja
- sb6D7Or769Ud3NPaqEN6qmHI5Luz0mCks1BDXOieTck+axCBR3S99gryoT94RFbdZMkcL9kibME
- HEtUlPMHNjobUutAr00XMb3do2rw=
-X-Google-Smtp-Source: AGHT+IGPY9/n8grycb3WbmSg2fuE9ntnbmfotLJsLCgCLPQ8KIiN7OR855ioOhWxpE0Qai5c/UmXZzK7qISh0P9vlKo=
-X-Received: by 2002:a4a:e9f1:0:b0:5b2:bc0:f385 with SMTP id
- w17-20020a4ae9f1000000b005b20bc0f385mr3357323ooc.8.1715007713813; Mon, 06 May
- 2024 08:01:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1s3zuF-00069i-QK; Mon, 06 May 2024 11:05:31 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1s3zuB-00048N-7Q; Mon, 06 May 2024 11:05:31 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 446An4xT027841; Mon, 6 May 2024 15:04:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=sxmoEDrgs4aK3aRw7bqi5Mt7+IXcnDK4W8vqb/J5rgg=;
+ b=hezcPf7yGwgChYdap6Z2D4AQmLO6secxcFjY/doqyZ0tOkSI4LaZAd76IhrvBSYRR2dw
+ Vpb1Sv/MD2UtrYtT/Sbybl9BLOXiwcIz2ijW3EmddrVuRexk3Iz6kg4nXSVncnlTxynS
+ yBUHoA+l+EXCtI+P/C0uvf2WDnJnBoVSJ0WOJATq86PXbaStUMiWXRSktprt864ta85p
+ DSS5f+eNaTU8EhnBew7Ny7CyZaNL6RMOoJZS+xN+YK6BBMbqdAAYit3uPeo50j65+IW4
+ h15jfgntG1PuFev5L7HmpvQJWYV477uL4o3EHA5NMjegPUFFvDLDg3rcL9T232A2VJqo Xg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xwd2dtt6a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 06 May 2024 15:04:37 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 446DhZBJ006927; Mon, 6 May 2024 15:04:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3xwbf6rwcx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 06 May 2024 15:04:36 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 446F4ZlH002521;
+ Mon, 6 May 2024 15:04:35 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-221-117.vpn.oracle.com
+ [10.39.221.117])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3xwbf6rw8e-1; Mon, 06 May 2024 15:04:35 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [PATCH 0/6] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Mon,  6 May 2024 11:04:22 -0400
+Message-Id: <20240506150428.1203387-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240304100554.1143763-1-mnissler@rivosinc.com>
- <ZeWho6ZW41tg0rob@x1n>
- <CAGNS4TYd7qVjLb6VCUSQa9DrYivwJV5UDhdSnSde0t2UCMpXrg@mail.gmail.com>
-In-Reply-To: <CAGNS4TYd7qVjLb6VCUSQa9DrYivwJV5UDhdSnSde0t2UCMpXrg@mail.gmail.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 6 May 2024 11:01:41 -0400
-Message-ID: <CAJSP0QVxJ__44uTHfZ+Ry0u9iL0QxyL-ca7ypO6YUmyEE5WL0A@mail.gmail.com>
-Subject: Re: [PATCH v8 0/5] Support message-based DMA in vfio-user server
-To: Jagannathan Raman <jag.raman@oracle.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, 
- QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- john.levon@nutanix.com, David Hildenbrand <david@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
- Peter Xu <peterx@redhat.com>, Mattias Nissler <mnissler@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-06_09,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxlogscore=999
+ phishscore=0 spamscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2405060104
+X-Proofpoint-GUID: 8jNvZxpo6hnf5fCyenSMBj2RzZ8vgtqh
+X-Proofpoint-ORIG-GUID: 8jNvZxpo6hnf5fCyenSMBj2RzZ8vgtqh
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,15 +99,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Mar 2024 at 03:54, Mattias Nissler <mnissler@rivosinc.com> wrote:
->
-> Stefan, to the best of my knowledge this is fully reviewed and ready
-> to go in - can you kindly pick it up or advise in case there's
-> something I missed? Thanks!
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-This code is outside the areas that I maintain. I think it would make
-sense for Jag to merge it and send a pull request as vfio-user
-maintainer.
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-Stefan
+The core feature behind this solution is a buffer mechanism in the form
+of a VirtQueue's used_elems VirtQueueElement array. This allows devices
+who always use buffers in-order by default to have a minimal overhead
+impact. Devices that may not always use buffers in-order likely will
+experience a performance hit. How large that performance hit is will
+depend on how frequent elements are completed out-of-order.
+
+A VirtQueue whose device who uses this feature will use its used_elems
+VirtQueueElement array to hold used VirtQueueElements. The index that
+used elements are placed in used_elems is the same index on the
+used/descriptor ring that would satisfy the in-order requirement. In
+other words, used elements are placed in their in-order locations on
+used_elems and are only written to the used/descriptor ring once the
+elements on used_elems are able to continue their expected order.
+
+To differentiate between a "used" and "unused" element on the used_elems
+array (a "used" element being an element that has returned from
+processing and an "unused" element being an element that has not yet
+been processed), we added a boolean 'filled' member to the
+VirtQueueElement struct. This flag is set to true when the element comes
+back from processing (virtqueue_ordered_fill) and then set back to false
+once it's been written to the used/descriptor ring
+(virtqueue_ordered_flush).
+
+---
+v1: Move series from RFC to PATCH for submission.
+
+Jonah Palmer (6):
+  virtio: Add bool to VirtQueueElement
+  virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER support
+  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c    |   1 +
+ hw/net/vhost_net.c           |   2 +
+ hw/scsi/vhost-scsi.c         |   1 +
+ hw/scsi/vhost-user-scsi.c    |   1 +
+ hw/virtio/vhost-user-fs.c    |   1 +
+ hw/virtio/vhost-user-vsock.c |   1 +
+ hw/virtio/virtio.c           | 118 ++++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio.h   |   5 +-
+ net/vhost-vdpa.c             |   1 +
+ 9 files changed, 127 insertions(+), 4 deletions(-)
+
+-- 
+2.39.3
+
 
