@@ -2,89 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC7E8BD50C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 20:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2822F8BD514
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 21:01:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s43XR-0003Nv-Et; Mon, 06 May 2024 14:58:13 -0400
+	id 1s43aZ-0006t1-0z; Mon, 06 May 2024 15:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1s43XO-0003HQ-IE
- for qemu-devel@nongnu.org; Mon, 06 May 2024 14:58:10 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1s43Zd-0006bx-Sm
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 15:00:40 -0400
+Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1s43XN-0004yJ-3H
- for qemu-devel@nongnu.org; Mon, 06 May 2024 14:58:10 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-5aa362cc2ccso1547489eaf.3
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 11:58:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
+ id 1s43ZY-0005Pe-5p
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 15:00:27 -0400
+Received: by mail-pj1-x1029.google.com with SMTP id
+ 98e67ed59e1d1-2ac9b225a91so1621673a91.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 12:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715021887; x=1715626687; darn=nongnu.org;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Waa/3QqtGDLTGCVQMC1IzaXr3Qpxi263kxmAGkc6qHc=;
- b=a/fVV3kZZ09elhI3qQRRXSNJxyqxAzOouSHKl6/Ge0zZoIW0LTdHwgp3Ev3gCttN5N
- gUn1BF8W3TymfJCd3K8/TWofyR6B8Ulx9QS/hRFge86oZU44UVWYqDacmpHkmdUJQZ4C
- kWap3ONLOmSuHnGZXrrWCNAKUj2YE85mJw8pEiZv3JhFMY+26j2L+4LRJ+St2EWVc9ap
- fDSCaquxU0K0JntWMsex85XrOUNnr/BEmgiJCKl8sbvlaJix/XGIoesxwIrheaRTl92/
- Hi1Ml99VkQ7wCTpl4SG0uDN/B7YsB8S7vOmN+TLrCqL0QcDzfWjssNH2mrYBzCo8Wpqm
- /OTw==
+ d=gmail.com; s=20230601; t=1715022017; x=1715626817; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nx55YKW7SO1z394BS1S+XUqrjENESfE/9CViqjcHFPg=;
+ b=YCXMewtiX1jS/ZJHkzlW2/JFNgXwOi6j3HjTvzLGSMJs4B9aD3mes+rSFSlkNeBnwY
+ dSbATTvNSGtwxpAqSlH8E2kBSqiy4aVYA3JxoSuOIEQacjdBrDcyT+H3YWzmshciw9vw
+ 98b05zuCZ6kiekPgRc5W6poUdCrduqzXS0sbBPar+xvG7o6JdGga+hr21XEFv9lxp2s2
+ 4Ytc5eSNJuDZdsYwqyolsy6MH+1fFaozxlkEWZeINf8nJwHT2P8r6Z2FzAT+H5V8Cn3l
+ MWQEG3bX8dQxDMTDPzYwVpvzIhxJo4/hoMdYhuzFBmsOVLa0bD5t0zHW8nW9Yby/3Mj+
+ Gq9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715021887; x=1715626687;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Waa/3QqtGDLTGCVQMC1IzaXr3Qpxi263kxmAGkc6qHc=;
- b=CBJLTasR3pLYnMLCj1tfMc/2GhTrTiAA+NX6srfNygu+4qgK3Enbq6RXA23fOselLq
- kA9YmH5r57QptTL5C1xK0JtYb8mOsIRaaOWiEIAmijiXeXYrNWki/Qpm4IANEEepxm4n
- 9icE8/vAnnYnhEJlR74ZSFMKhuXDHkzs3MewT2r/I2N97jForJMUMdDFA2qnQFS3nvuI
- YqKD5MsmjFDRI25MrPMTsilDJZQUIZSaAwLQGOPYLS1neqcl8rZcSUbPOk/sRXRnAoYV
- OiIIqKl8gmGw7Y7rtIAUVU/Lgv93iyzEs27vP01Ud4m2Vs1yroSmRIEpelCK8cI3E7jq
- VtCQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUbXQDu5J21Fxgy2PSpb3QS2gjuFbT0qO+8D/D9I7iyaPvcfRByT6q70TBA5Hs7uikqTwIN6hrBtgLwl5XK0IzI2Gsgw4o=
-X-Gm-Message-State: AOJu0YyUHhdEswWVRrB2YX+n3pFn2Pit8PiFeY39d3m6H+j7TwV0Loi2
- SKdeLovHYjQK2X3EiN1eoDDTAJTeoxfVtiPGE364i+3HfsR+xpoh
-X-Google-Smtp-Source: AGHT+IEKg1nc8o8wb8i/XP3fEE6opJKvO7iMOKv/rbsgVrNwIQz6ZlyjvlmsSypgEEdsiOcXV9Svqg==
-X-Received: by 2002:a4a:ad41:0:b0:5af:c4b3:969a with SMTP id
- s1-20020a4aad41000000b005afc4b3969amr10674911oon.6.1715021887299; 
- Mon, 06 May 2024 11:58:07 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2603:8080:1f00:9c00:b108:eb17:4557:755d])
+ d=1e100.net; s=20230601; t=1715022017; x=1715626817;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nx55YKW7SO1z394BS1S+XUqrjENESfE/9CViqjcHFPg=;
+ b=HOxHxADS4NXavouzMnxH0qye5l2HNkDMqxt7pNKw8HCsW/A3W+naOdr+k1Xh14lkNh
+ Trch5VDLsQpubHkn12gYmVFhRr9ACJygGoe9FFAGkT2A2l/iuH9X6+HPsJoLdOJcFxSP
+ i47aAi+S9fmO6gGKIhWsnKA+xk2eDI+4wcZMvrcc6UY7/GjV/WAhWHj2+DBSnYs2ar87
+ aZOvHB6jgF7P7AavrQyKWv53YA3Tdl/ctSb3UKT72fffAiwWjdVzgdtxVTaFIUO4uGba
+ lLZHbopPDr04Xh1P5MxHpPwX2VYgMre59HW7FtNpA1cedxsMtFq8zmZROaIg7qer4yOU
+ t9kg==
+X-Gm-Message-State: AOJu0YyWeArnBuyXExycAxg+CBOMK+vwS6uuAYVvrzPMbOk3iKFhh6id
+ N0As9OnigTrmS7sTx0kBDfiit0dWZGtyS/zOFeGq7O67XId9cZgM
+X-Google-Smtp-Source: AGHT+IH+jUTBZW6DlwgKWxxcMpFxSZLuAmEo3wSE7tnZk5YIEYGJL/y1hGujRESa/lUBLtPP/SFGQA==
+X-Received: by 2002:a17:90b:230e:b0:2b1:a632:60f6 with SMTP id
+ mt14-20020a17090b230e00b002b1a63260f6mr8736911pjb.44.1715022016346; 
+ Mon, 06 May 2024 12:00:16 -0700 (PDT)
+Received: from valdaarhun.localnet ([223.233.87.247])
  by smtp.gmail.com with ESMTPSA id
- m9-20020a4ae849000000b005a4c3d44cadsm2067993oom.38.2024.05.06.11.58.06
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 May 2024 11:58:06 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Anton Johansson'" <anjo@rev.ng>,
-	<qemu-devel@nongnu.org>
-Cc: <ale@rev.ng>,
-	<bcain@quicinc.com>
-References: <20240506183117.32268-1-anjo@rev.ng>
- <20240506183117.32268-3-anjo@rev.ng>
-In-Reply-To: <20240506183117.32268-3-anjo@rev.ng>
-Subject: RE: [PATCH 2/4] target/hexagon: idef-parser remove undefined functions
-Date: Mon, 6 May 2024 13:58:06 -0500
-Message-ID: <068101da9fe7$5493b900$fdbb2b00$@gmail.com>
+ sv12-20020a17090b538c00b002b1979d3af9sm7425460pjb.0.2024.05.06.12.00.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 May 2024 12:00:15 -0700 (PDT)
+From: Sahil <icegambit91@gmail.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: qemu-level <qemu-devel@nongnu.org>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: Re: Intention to work on GSoC project
+Date: Tue, 07 May 2024 00:30:12 +0530
+Message-ID: <13514535.uLZWGnKmhe@valdaarhun>
+In-Reply-To: <4912056.31r3eYUQgx@valdaarhun>
+References: <13625712.uLZWGnKmhe@valdaarhun>
+ <CAJaqyWdD7futYvUFt7=zV1xsoBdyAET6mvneOOjR2oob2U1-qg@mail.gmail.com>
+ <4912056.31r3eYUQgx@valdaarhun>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJLdJdU/DG86JVEEIa8gVqwbMNhjgHtYVb/sJl2PtA=
-Content-Language: en-us
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-oo1-xc2b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
+ envelope-from=icegambit91@gmail.com; helo=mail-pj1-x1029.google.com
+X-Spam_score_int: 15
+X-Spam_score: 1.5
+X-Spam_bar: +
+X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
+ FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,21 +94,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
+It's been a while since I last gave an update. Sorry about that. I am ready
+to get my hands dirty and start with the implementation.
 
-> -----Original Message-----
-> From: Anton Johansson <anjo@rev.ng>
-> Sent: Monday, May 6, 2024 1:31 PM
-> To: qemu-devel@nongnu.org
-> Cc: ale@rev.ng; ltaylorsimpson@gmail.com; bcain@quicinc.com
-> Subject: [PATCH 2/4] target/hexagon: idef-parser remove undefined
-> functions
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> ---
->  target/hexagon/idef-parser/parser-helpers.h | 13 -------------
->  1 file changed, 13 deletions(-)
+I have gone through the source of linux's drivers/virtio/virtio_ring.c [1], and
+QEMU's hw/virtio/virtio.c [2] and hw/virtio/vhost-shadow-virtqueue.c [3].
 
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+Before actually starting I would like to make sure I am on the right track. In
+vhost-shadow-virtqueue.c, there's a function "vhost_svq_add" which in turn
+calls "vhost_svq_add_split".
+
+Shall I start by implementing a mechanism to check if the feature bit
+"VIRTIO_F_RING_PACKED" is set (using "virtio_vdev_has_feature")? And
+if it's supported, "vhost_svq_add" should call "vhost_svq_add_packed".
+Following this, I can then start implementing "vhost_svq_add_packed"
+and progress from there.
+
+What are your thoughts on this?
+
+Thanks,
+Sahil
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/virtio/virtio.c
+[2] https://gitlab.com/qemu-project/qemu/-/blob/master/hw/virtio/virtio.c
+[3] https://gitlab.com/qemu-project/qemu/-/blob/master/hw/virtio/vhost-shadow-virtqueue.c
+
 
 
