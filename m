@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F198BCCA0
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2398BCC9E
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:07:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3w7s-00036s-5G; Mon, 06 May 2024 07:03:20 -0400
+	id 1s3w7p-00034M-Qe; Mon, 06 May 2024 07:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7f-0002on-Ew
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7h-0002p1-8A
  for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7X-0003eh-4Q
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:07 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7a-0003ff-0G
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714993378;
+ s=mimecast20190719; t=1714993380;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HXdJA2BHeqHIiC0EhCGjai0a7ae19Qf0y5BbHTMjxDU=;
- b=c9ZdTfLC/s/pIp3qGBcZW26GAb4pFzaNi9OWASkEmya+CsjxTYB+kSzO6Vwxc91bYJFap7
- baM8/IsODAC01szduQkakYQ8poiJeY412mSkta7uEgtz2M6sxaAfiUTsA0bE9bprwVQqAd
- PB1GJ0xTh69uSBEdH4VVU5kM0t1CiJU=
+ bh=J8RSpZZLrRS8WOQQUR42C1CPkY6YivCRHFnCrRmGr9E=;
+ b=DiHgB3oYDhGmADNBtiCB2sh4KRtpDR2YYUQKE9jd9h4UC8t3zILNLFPBmtmx8cUG5VBVQl
+ uAfPSDBeQ3LMFfhk2PazE/akahcP7i5sPABKhk0VL4wBD5PjtLZqK3It4QE+I8JUmP1Uks
+ KBAOoJTImp6gHpYlJOmF7buooDYEdy0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-IQb2DXQAOEWhUQLVOe_OXQ-1; Mon, 06 May 2024 07:02:56 -0400
-X-MC-Unique: IQb2DXQAOEWhUQLVOe_OXQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-531-ogNOqIK0OZuLcqG4sVsRLQ-1; Mon, 06 May 2024 07:02:56 -0400
+X-MC-Unique: ogNOqIK0OZuLcqG4sVsRLQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 774AB1049C93;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96B0718065AE;
  Mon,  6 May 2024 11:02:56 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 58075200B09C;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5864CEC683;
  Mon,  6 May 2024 11:02:56 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 47A6421E5D28; Mon,  6 May 2024 13:02:54 +0200 (CEST)
+ id 4A80021E5D29; Mon,  6 May 2024 13:02:54 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 3/7] qapi: make returns sections special WIP
-Date: Mon,  6 May 2024 13:02:46 +0200
-Message-ID: <20240506110254.3965097-7-armbru@redhat.com>
+Subject: [PULL 4/7] qapi: Rename QAPISchemaObjectType.variants to .branches
+Date: Mon,  6 May 2024 13:02:47 +0200
+Message-ID: <20240506110254.3965097-8-armbru@redhat.com>
 In-Reply-To: <20240506110254.3965097-1-armbru@redhat.com>
 References: <20240506110254.3965097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -79,127 +79,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-returns moves in generated output
----
- docs/sphinx/qapidoc.py         |  8 ++++++++
- scripts/qapi/parser.py         |  4 ++--
- tests/qapi-schema/doc-good.out |  4 ++--
- tests/qapi-schema/doc-good.txt | 12 ++++++------
- tests/qapi-schema/test-qapi.py |  2 ++
- 5 files changed, 20 insertions(+), 10 deletions(-)
+A previous commit narrowed the type of QAPISchemaObjectType.variants
+from QAPISchemaVariants to QAPISchemaBranches.  Rename it to
+.branches.
 
-diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index f19f5ded78..24bf1d9a90 100644
---- a/docs/sphinx/qapidoc.py
-+++ b/docs/sphinx/qapidoc.py
-@@ -250,6 +250,13 @@ def _nodes_for_features(self, doc):
-         section += dlnode
-         return [section]
+Same for .__init__() parameter @variants.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ scripts/qapi/commands.py |  2 +-
+ scripts/qapi/events.py   |  2 +-
+ scripts/qapi/gen.py      |  2 +-
+ scripts/qapi/schema.py   | 36 ++++++++++++++++++------------------
+ scripts/qapi/types.py    |  2 +-
+ 5 files changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/scripts/qapi/commands.py b/scripts/qapi/commands.py
+index d1fdf4182c..79951a841f 100644
+--- a/scripts/qapi/commands.py
++++ b/scripts/qapi/commands.py
+@@ -64,7 +64,7 @@ def gen_call(name: str,
+         assert arg_type
+         argstr = '&arg, '
+     elif arg_type:
+-        assert not arg_type.variants
++        assert not arg_type.branches
+         for memb in arg_type.members:
+             assert not memb.ifcond.is_present()
+             if memb.need_has():
+diff --git a/scripts/qapi/events.py b/scripts/qapi/events.py
+index 3cf01e96b6..d1f639981a 100644
+--- a/scripts/qapi/events.py
++++ b/scripts/qapi/events.py
+@@ -51,7 +51,7 @@ def gen_param_var(typ: QAPISchemaObjectType) -> str:
  
-+    def _nodes_for_returns(self, doc, ret_type):
-+        if doc.returns:
-+            section = self._make_section('Returns')
-+            self._parse_text_into_node(doc.returns.text, section)
-+            return [section]
-+        return []
-+
-     def _nodes_for_since(self, doc):
-         if doc.since:
-             # TODO emphasis
-@@ -343,6 +350,7 @@ def visit_command(self, name, info, ifcond, features, arg_type,
-         self._add_doc('Command',
-                       self._nodes_for_arguments(doc,
-                                                 arg_type if boxed else None)
-+                      + self._nodes_for_returns(doc, ret_type)
-                       + self._nodes_for_features(doc)
-                       + self._nodes_for_sections(doc)
-                       + self._nodes_for_if_section(ifcond)
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 0237d13da9..e8a482c37d 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -646,7 +646,7 @@ def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
-         self.errors: Optional[QAPIDoc.Section] = None
-         # "Since" section
-         self.since: Optional[QAPIDoc.Section] = None
--        # sections other than .body, .args, .features, .since
-+        # sections other than .body, .args, .features, .returns, .since
-         self.sections: List[QAPIDoc.Section] = []
+     Initialize it with the function arguments defined in `gen_event_send`.
+     """
+-    assert not typ.variants
++    assert not typ.branches
+     ret = mcgen('''
+     %(c_name)s param = {
+ ''',
+diff --git a/scripts/qapi/gen.py b/scripts/qapi/gen.py
+index 5412716617..6a8abe0041 100644
+--- a/scripts/qapi/gen.py
++++ b/scripts/qapi/gen.py
+@@ -118,7 +118,7 @@ def build_params(arg_type: Optional[QAPISchemaObjectType],
+         ret += '%s arg' % arg_type.c_param_type()
+         sep = ', '
+     elif arg_type:
+-        assert not arg_type.variants
++        assert not arg_type.branches
+         for memb in arg_type.members:
+             assert not memb.ifcond.is_present()
+             ret += sep
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 2b67992aee..c9ff794d0c 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -524,20 +524,20 @@ def __init__(
+         features: Optional[List[QAPISchemaFeature]],
+         base: Optional[str],
+         local_members: List[QAPISchemaObjectTypeMember],
+-        variants: Optional[QAPISchemaBranches],
++        branches: Optional[QAPISchemaBranches],
+     ):
+-        # struct has local_members, optional base, and no variants
+-        # union has base, variants, and no local_members
++        # struct has local_members, optional base, and no branches
++        # union has base, branches, and no local_members
+         super().__init__(name, info, doc, ifcond, features)
+-        self.meta = 'union' if variants else 'struct'
++        self.meta = 'union' if branches else 'struct'
+         for m in local_members:
+             m.set_defined_in(name)
+-        if variants is not None:
+-            variants.set_defined_in(name)
++        if branches is not None:
++            branches.set_defined_in(name)
+         self._base_name = base
+         self.base = None
+         self.local_members = local_members
+-        self.variants = variants
++        self.branches = branches
+         self.members: List[QAPISchemaObjectTypeMember]
+         self._check_complete = False
  
-     def end(self) -> None:
-@@ -683,7 +683,7 @@ def new_tagged_section(self, info: QAPISourceInfo, tag: str) -> None:
+@@ -561,7 +561,7 @@ def check(self, schema: QAPISchema) -> None:
+             self.base = schema.resolve_type(self._base_name, self.info,
+                                             "'base'")
+             if (not isinstance(self.base, QAPISchemaObjectType)
+-                    or self.base.variants):
++                    or self.base.branches):
                  raise QAPISemError(
-                     info, "duplicated '%s' section" % tag)
-             self.since = section
--        if tag != 'Since':
-+        if tag not in ('Returns', 'Since'):
-             self.sections.append(section)
-         self.all_sections.append(section)
+                     self.info,
+                     "'base' requires a struct type, %s isn't"
+@@ -577,9 +577,9 @@ def check(self, schema: QAPISchema) -> None:
+         # Cast down to the subtype.
+         members = cast(List[QAPISchemaObjectTypeMember], list(seen.values()))
  
-diff --git a/tests/qapi-schema/doc-good.out b/tests/qapi-schema/doc-good.out
-index 716a9a4102..f2be711a2c 100644
---- a/tests/qapi-schema/doc-good.out
-+++ b/tests/qapi-schema/doc-good.out
-@@ -165,14 +165,14 @@ description starts on the same line
- remainder indented differently
-     arg=arg3
+-        if self.variants:
+-            self.variants.check(schema, seen)
+-            self.variants.check_clash(self.info, seen)
++        if self.branches:
++            self.branches.check(schema, seen)
++            self.branches.check_clash(self.info, seen)
  
-+    section=Returns
-+@Object
-     feature=cmd-feat1
- a feature
-     feature=cmd-feat2
- another feature
-     section=Note
- @arg3 is undocumented
--    section=Returns
--@Object
-     section=Errors
- some
-     section=TODO
-diff --git a/tests/qapi-schema/doc-good.txt b/tests/qapi-schema/doc-good.txt
-index 56d50d4992..fd88301431 100644
---- a/tests/qapi-schema/doc-good.txt
-+++ b/tests/qapi-schema/doc-good.txt
-@@ -184,6 +184,12 @@ Arguments
-    Not documented
+         self.members = members
+         self._check_complete = True  # mark completed
+@@ -595,8 +595,8 @@ def check_clash(
+         assert self._checked
+         for m in self.members:
+             m.check_clash(info, seen)
+-        if self.variants:
+-            self.variants.check_clash(info, seen)
++        if self.branches:
++            self.branches.check_clash(info, seen)
  
+     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
+         super().connect_doc(doc)
+@@ -612,7 +612,7 @@ def is_implicit(self) -> bool:
+         return self.name.startswith('q_')
  
-+Returns
-+~~~~~~~
-+
-+"Object"
-+
-+
- Features
- ~~~~~~~~
+     def is_empty(self) -> bool:
+-        return not self.members and not self.variants
++        return not self.members and not self.branches
  
-@@ -200,12 +206,6 @@ Note
- "arg3" is undocumented
+     def has_conditional_members(self) -> bool:
+         return any(m.ifcond.is_present() for m in self.members)
+@@ -635,10 +635,10 @@ def visit(self, visitor: QAPISchemaVisitor) -> None:
+         super().visit(visitor)
+         visitor.visit_object_type(
+             self.name, self.info, self.ifcond, self.features,
+-            self.base, self.local_members, self.variants)
++            self.base, self.local_members, self.branches)
+         visitor.visit_object_type_flat(
+             self.name, self.info, self.ifcond, self.features,
+-            self.members, self.variants)
++            self.members, self.branches)
  
  
--Returns
--~~~~~~~
--
--"Object"
--
--
- Errors
- ~~~~~~
+ class QAPISchemaAlternateType(QAPISchemaType):
+@@ -1035,7 +1035,7 @@ def check(self, schema: QAPISchema) -> None:
+                     "command's 'data' cannot take %s"
+                     % arg_type.describe())
+             self.arg_type = arg_type
+-            if self.arg_type.variants and not self.boxed:
++            if self.arg_type.branches and not self.boxed:
+                 raise QAPISemError(
+                     self.info,
+                     "command's 'data' can take %s only with 'boxed': true"
+@@ -1103,7 +1103,7 @@ def check(self, schema: QAPISchema) -> None:
+                     "event's 'data' cannot take %s"
+                     % typ.describe())
+             self.arg_type = typ
+-            if self.arg_type.variants and not self.boxed:
++            if self.arg_type.branches and not self.boxed:
+                 raise QAPISemError(
+                     self.info,
+                     "event's 'data' can take %s only with 'boxed': true"
+diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
+index 69f5f6ffd0..0dd0b00ada 100644
+--- a/scripts/qapi/types.py
++++ b/scripts/qapi/types.py
+@@ -171,7 +171,7 @@ def gen_object(name: str, ifcond: QAPISchemaIfCond,
+         if not isinstance(obj, QAPISchemaObjectType):
+             continue
+         ret += gen_object(obj.name, obj.ifcond, obj.base,
+-                          obj.local_members, obj.variants)
++                          obj.local_members, obj.branches)
  
-diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
-index 642daa29a4..1628efe0f3 100755
---- a/tests/qapi-schema/test-qapi.py
-+++ b/tests/qapi-schema/test-qapi.py
-@@ -127,6 +127,8 @@ def test_frontend(fname):
-         print('    body=\n%s' % doc.body.text)
-         for arg, section in doc.args.items():
-             print('    arg=%s\n%s' % (arg, section.text))
-+        if doc.returns:
-+            print('    section=%s\n%s' % (doc.returns.tag, doc.returns.text))
-         for feat, section in doc.features.items():
-             print('    feature=%s\n%s' % (feat, section.text))
-         for section in doc.sections:
+     ret += mcgen('''
+ 
 -- 
 2.44.0
 
