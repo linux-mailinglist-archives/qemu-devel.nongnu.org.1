@@ -2,152 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307458BCDA1
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2018BCD75
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 14:08:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3xHy-0005Je-Sd; Mon, 06 May 2024 08:17:50 -0400
+	id 1s3x7N-0001zp-SW; Mon, 06 May 2024 08:06:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1s3xH7-0005EO-VQ
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:16:59 -0400
-Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2414::601]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s3x7K-0001zU-QK
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:06:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1s3xH3-0006tD-Mw
- for qemu-devel@nongnu.org; Mon, 06 May 2024 08:16:57 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=imqeize+YkEsROjdOpp4Qr28qZCj1G2ZVQ5ULMANNq7d14dLNWWO9GUhTO7LJMDjMnaaVTh/A7Fk5zQQSshnyfsf6cl388rGi/ZceriCoxujP5N2tD2t61mu21Iv4+/zxKO1tsOqCjyozrbw7xXSNEYxy2vvLRGKffPq/tHHv8MaNqKr7FY5OmtwrMc1AIxVmKtAYd8rC3lDFW7+QK5ZA1eQtS5sEYPpcZBXyXpNEc2jshCavjC6X1m1ninPkHViXZfG2yLV+VbexgiwLT6V1RLswWme4+Mxh8frcqmD4NHJzsB+Yh5a/mOunq6AW4Gj7vyW4H66dBDRh92zF0Y7kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7DnXuexr0LePGfk7OD7FEW5M8laEtUULs/4mYS/qURo=;
- b=MBsaC26KY7+G/e+Qanmzq40i4QFmux9XBoiQNsopa2vNhL8XC9J+L8mLx0densxt0Gr2h1IwBxOHSFDRJSjY4Mm1VpqBzNvWXZnqaLiY6FBJGAckW1QiAwpXQg5S2MSbYw7lM4vyz0WGXDPEjzyqr11bIsmS1mnMv/FFSPLfX99DRhmgL9S28LN+7Z28wMVP5PagElSxpf/5q//7CmbjvV4LmY2LV0OaqUmnxgbc72IeQn6QaeJQvHRenPd88XGcI+M+7pJd2EZ7GtSEjI+pyj2PXFgoQr6HVBjiDolEJMN51EksQ/qU89FQNEO+HRXaUuKY9dPALMSHsfNZoN3ZFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7DnXuexr0LePGfk7OD7FEW5M8laEtUULs/4mYS/qURo=;
- b=gxtJta8CmY1IcXVCFxvioLxLoamkifRv2Rcd+PWyAOAz6B5vrunmbcem8RjUGKhYpk8FoBsNqpp6j8J50FGcETzMtEPGPXLGBPnGJRaMLOZX9lbjPAZD4LisFziNmCI0ddWLexSBv/cOCDAxiT+HdFoeJg3/zIoFfcb6mMlNXrTaqgnd9BNYzb1oxyEqQncDmdHITZcoC4GMvdktillxbOn/bbDBskNAmdyKkIfbxusHwtfb7KkFOMko7oPEaVEkw6P1sZJ91tm5J3bIN0zFnCGkW1wPr93RxtYqO6viLQcSOqfYSFgzFoYzytFIFruwlTwTT0PZcBYW071SW6KbVQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by DS7PR12MB5743.namprd12.prod.outlook.com (2603:10b6:8:72::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.30; Mon, 6 May
- 2024 12:05:42 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e%3]) with mapi id 15.20.7544.041; Mon, 6 May 2024
- 12:05:42 +0000
-Date: Mon, 6 May 2024 09:05:41 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>
-Subject: Re: [PATCH v3 00/19] Add a host IOMMU device abstraction to check
- with vIOMMU
-Message-ID: <20240506120541.GG3341011@nvidia.com>
-References: <20240429065046.3688701-1-zhenzhong.duan@intel.com>
- <c245b234-60d5-4ee6-a947-c7526d58698e@redhat.com>
- <SJ0PR11MB6744A435E58FC69DF37AA148921C2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB6744A435E58FC69DF37AA148921C2@SJ0PR11MB6744.namprd11.prod.outlook.com>
-X-ClientProxiedBy: SN7P222CA0022.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:124::7) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s3x7I-0000NL-T2
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 08:06:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714997207;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9C6FQ+bzUf15ctYtAuf3nSeEPdMzu1pXVkHwqZduYtI=;
+ b=FBzpnYdhdgol4mA8cGajf8NG6zsYW5yJ4LBXu7uaqWeU0aV2kw/y01oeuO0alvycexEuRU
+ iiUWaEKGuYoZtexzYTqJTdj2fDRfij1JmXXYHOv1LMHf9ukTAu4CKhAFTbbD1c/fklEDI/
+ X4JKHxUaAW+a6REPlqIMt7Lr71suQUs=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-pkVwAEryMtaNHhy27E85ag-1; Mon, 06 May 2024 08:06:43 -0400
+X-MC-Unique: pkVwAEryMtaNHhy27E85ag-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-51f60b1644cso1608593e87.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 05:06:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714997202; x=1715602002;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9C6FQ+bzUf15ctYtAuf3nSeEPdMzu1pXVkHwqZduYtI=;
+ b=DrpTJ+zy/3cFsjfTD2GbKQdCzMi2JJzPBs32xPmHGjEUxkj8ZQ8hTVDwRD28JEJWqY
+ CqiraXaFA+wuzGDPyevcYWlWGxPphTvbssraGOwwqeI8YP+6Gdh83tuMp1ug4KuvEydq
+ DUTGmVGlna3fPigDPZBja/kEPaXGvGjrboU/HHWrDaaX7NSdlTAb96nOSj9kFX69Yma7
+ treoxbFdSfdE67dH0bhj9GE7CwDBOytjgl4HD7Agf21fmnDzzW4Ep64pBdu4eerF1wab
+ NhuAV+2xJisfULqq8j9FJUGyZhQyDgelKhK4CdiyOyMzJJqbt4qK+jEuzldG52i8WD0U
+ c6Fw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGH359qX29RHJwLlnHQc1kV6w7/ThIDTpFIOhmdP2kcDMqOOOuUbkZkx2ikJJtxsYYu+Ps+7Gvrhdn46PLBFfiW8ubCRU=
+X-Gm-Message-State: AOJu0YxdxPg4t0HUWj6ZYll38vhRK/mG1d4azZnxkW13otXH7/dQDBH5
+ /euW03XYgtZsMMWU/4a9pWd9JELbN3+4VUOhK6hrGtFgi1RbuAeWtPN22+BUpdEOXvAyc+k5kGX
+ OYmmhKpAKAdB6g8ycwbTXrZKX74OFjAYiGEFo2F4emC3TgCycKJwQ
+X-Received: by 2002:a19:ac48:0:b0:51e:e754:27dd with SMTP id
+ r8-20020a19ac48000000b0051ee75427ddmr7283428lfc.41.1714997202424; 
+ Mon, 06 May 2024 05:06:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE3mYBO8PyvyQW/Keyy0au60P34z8QQlXBHfAHO/erLeNzxZQ4oXx84OJZRpSrun2roVkpGkQ==
+X-Received: by 2002:a19:ac48:0:b0:51e:e754:27dd with SMTP id
+ r8-20020a19ac48000000b0051ee75427ddmr7283409lfc.41.1714997201877; 
+ Mon, 06 May 2024 05:06:41 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0?
+ ([2a01:e0a:280:24f0:eb4a:c9d8:c8bb:c0b0])
+ by smtp.gmail.com with ESMTPSA id
+ d1-20020a05600c34c100b0041c130520f3sm19570306wmq.6.2024.05.06.05.06.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 May 2024 05:06:41 -0700 (PDT)
+Message-ID: <f470f4cb-285e-43d7-907e-d4e75d776f99@redhat.com>
+Date: Mon, 6 May 2024 14:06:39 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|DS7PR12MB5743:EE_
-X-MS-Office365-Filtering-Correlation-Id: a68c02ae-70a4-47b3-7649-08dc6dc4da69
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|376005|366007|1800799015;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6FH8MTsUz7Lt4A+4wSRbVpgxi9mrNqEAYwVqG6Px9cn533lQYvDhJjx+diHP?=
- =?us-ascii?Q?tF8g1OgZ25zfgMpD1Cjn8EKamJtllGa6dHUlp7ARO3Xm+tYYdG4bUiv93QqY?=
- =?us-ascii?Q?QnI4p0dhXEtTj8XokztLR14Hrrq1ROoBkHoGNwZGZMfbuk3rsPkj7EoC+k4i?=
- =?us-ascii?Q?CHD0XxSw18hoKvzMXjdvr/qquJn3By0ypfx/6iUpr6zTmnJvzEQUFOMLWaq5?=
- =?us-ascii?Q?o3EoB5MjWD2PRWhOxjpBe3kA8cWiZh5i5vIkjVZN5km12Wmji6T156b09XjV?=
- =?us-ascii?Q?qi24D+3sk9u6YTyWWgst/OEdwf/SO4vp3WK+dZkU8I0n78yh9+NI8rpFv310?=
- =?us-ascii?Q?jmazAvXoxyWyPm//dhnzxxuZkPmph2UmGwUOlrdMsqxhxGKkICyRA5nlnk2r?=
- =?us-ascii?Q?v5t+ysDSQgMVTlgmiByAt96WgAk3iFqr419FyNUE5rUxsvOa/SGQYVWA4OMC?=
- =?us-ascii?Q?apwO1zzW842do2ogh6kSN+/pI0Yin/+YvklCgcvMx9dZX9SKHQwGBoK5tKrM?=
- =?us-ascii?Q?VXHLDjJhiOM5LZekSZsanbT9Qscy6f9N7x9rSuM69PM4THZ/0D/6ui4JCAeO?=
- =?us-ascii?Q?yI4cevwBFTcoITqDqQvRp0Httrw1W9XsqTkvXvFD+yVUXsGHgRAhP+a3ygYl?=
- =?us-ascii?Q?sTkqarkIgSIRwLTxsSbNXcTG8MBBBqykkeLKnipQLmE5wa64f3uOT85BMOsu?=
- =?us-ascii?Q?mMUB/M1ZviAMHQT5qcYEUkat4zxySarCaMFzkz/8ulHL9BZRFTrmk9WnAo5n?=
- =?us-ascii?Q?ppIJPAdlUQMHOZSJstBBp62o4Fy+c+JL0NwNrtOReg0jzgh8HD4yII4ynMBm?=
- =?us-ascii?Q?Vu7iVJC3v7oQQkkEuPWKcqA/L1+1dlQ68zAA29h6Z2qyKZUI/IFDBujWFqgy?=
- =?us-ascii?Q?5z0NtqffWys1lGTw+PHgi68tUWKJxpbBIzzb2l5cqM71ArQjeZBeHJOKikX/?=
- =?us-ascii?Q?zqewVM4cOiQlO7osuSY0ojan6tuRoI16qUAm2VpVfFL+UVmBph9wArDVKv1W?=
- =?us-ascii?Q?FPcV1MOXXPz7ph2Vo1Ahauqi7qj2rhgJxZdv0Omk2vpo3YsfwhrfVdxmX5lm?=
- =?us-ascii?Q?QXSPJULxkYttgODwbGDeKYTZggW2ZooJ3TPp5im9CfI7y5RIHOef0huVu1bt?=
- =?us-ascii?Q?17AZ4O5Atu33b0Bg0j9cd/Wgn9F1s6X75o8tLpTwjLNuPjaB4C3kXA3qF0l+?=
- =?us-ascii?Q?Mifv0ZXL5NvyI35V3ms4wmdTFqQMUm3Ec/Ciiqp/LEB/fGIoI4MkuDf6wbkI?=
- =?us-ascii?Q?MAsuoKL4CbGckV6+Jry0VuralkEXxOhtr5pQ7NYZMQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB3849.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(7416005)(376005)(366007)(1800799015); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vB/p1Ky4tyfHbp18LXpycV/13aZzd9cvrc+FC1XmzF6B4mzmmKLzvG5mQMeA?=
- =?us-ascii?Q?y8OvyKekoctH/Oa0N4usy6et0zo3Canp8duQgT/1ElbTcd5kL+Ia6CSD/tLt?=
- =?us-ascii?Q?FsMjKWAJI40BmBkXZvqLV1LdThXDzZn7CLM8KeHT2vjAhULEbzV0OXNx/y5W?=
- =?us-ascii?Q?dIwfTxNKRcDtVr0CaWnFFv13esyGYhb84k5E831DwrVx1xr+j8a3uFMoScjx?=
- =?us-ascii?Q?z66INj/5jco8a4xAnNykAlqM8iJkG/7pgq6gbRDQQUmisWC9wGCqdJGOh1i/?=
- =?us-ascii?Q?w/vQDGjuOXeJzCEsCH5FICIxpFLDg1XANDZ2D/V9wFF+Yu0rc7fPl+3MFa2C?=
- =?us-ascii?Q?tcA0SZrv7DgbamP4W22f706tOcre+9eS3JZfnRTcU86jXTDtRoT/7fa4Gqq2?=
- =?us-ascii?Q?7O0FnUuGOdZG6yrBh/vFVM1isb+WkhwPAOEudg/rTlE7cWVTuHzj+HROlwaz?=
- =?us-ascii?Q?9tuBa65QRqP99kiwZ+QrUGrcCtsZa2eJzP+O68KYB9LsmrpoXil5DF+vMLlR?=
- =?us-ascii?Q?ym4cUuRspOyZryVjonvqZVXPC1jErJ1n+56gqwItSJemIoxHk/H6ciHTzfGb?=
- =?us-ascii?Q?oihK+Rfg9LmusAeazsfSK2nN/tGXM/v5kqD6HycJeUgeDoecm/WwKu0ZjUuo?=
- =?us-ascii?Q?b3IWCPzc/i9yEEBXgm5eH6WKpTPMmcUwapQGlxZyT3B9cqvZOTuLrXC0+6R8?=
- =?us-ascii?Q?LPg4CZgfbW/1Mgwb8agpAbtAN7DblAR3XlhEUWhwQNJpNvWHuj5cEii6IO3Y?=
- =?us-ascii?Q?/ME1Wy4a+9PaElqKE2dxjBJSj04c8sMetiM9NF5YILh6ZMnOKFjhFpWKAZgL?=
- =?us-ascii?Q?XNqiSsM4Yxy3jEvN7+Ij/ncRGv7jGfGnWMj0OJSTN9o/rfhvZLzGWozyZZMf?=
- =?us-ascii?Q?L7vwTc5KwUjUFjdchgWnSrbAAcawEvkBBaSUvXF6iezeIjYaGo6amOeecoRl?=
- =?us-ascii?Q?4GHe+9s89a06Ff6k3wDPZHCD4C10+pj3mYqRvCa7KHSs1alvNuiSathTCpQm?=
- =?us-ascii?Q?VAc755MNSWpT8YwZcbjfvkl+jnzRn/PFYPMSpybJX834i1PZAXzzaztaHBiQ?=
- =?us-ascii?Q?eBgZHoqFx1MUiXHKjO9GMVWwC8Opy7rCfsIP0KZvGoBncV54mEZAOfpwRMX/?=
- =?us-ascii?Q?L7U+6hxZyC+6Vu6oj4OtIL3QYPljbemWmGmMpTE1GtH/kZQtPpMP4UOyn9pP?=
- =?us-ascii?Q?G1CTlEtKUB0LqJAmPI8R/LFQ2au/PrRfuVd57RquYceIrBQiOgb1dWdgVq6s?=
- =?us-ascii?Q?VrmzKWhZLiK/6moqYP3HcYEDhOWO7n0erxn6wTcvfItRbzt4mLud4RgHaT2j?=
- =?us-ascii?Q?Ujt4w+tMAhFO60dZ4RGtFA7PjsztbyW6rjW75uIYS62o668hSCvxsvXsiiNG?=
- =?us-ascii?Q?KAieL9Cex3WnC64NPxHoYLkKe88dUyrEnzdXrFkEfeF57qGp55yPEzu/sh7R?=
- =?us-ascii?Q?uXGM90a7uyAw5fCD2AlGVFOzWbHPw7asj5gXYE5NCNVFLoZiTfRGRuyq+RCt?=
- =?us-ascii?Q?HJdRDR51Cddwp2wA+ai5Nm7Sata7xPsYJH2NhhwtMWR/1WpOHdqGYGBGQEir?=
- =?us-ascii?Q?Do6XGSeEYRnwZQceeLs=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a68c02ae-70a4-47b3-7649-08dc6dc4da69
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2024 12:05:42.6429 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x1MrfDPWyHnad+axgCIVzf8/KyiWmgB2OJQID/cCHrBfZE1GLmT7sTvzSzFavku4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5743
-Received-SPF: softfail client-ip=2a01:111:f403:2414::601;
- envelope-from=jgg@nvidia.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] vfio: Make VFIOIOMMUClass::add_window() and its
+ wrapper return bool
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com, 
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>
+References: <20240506083352.4037226-1-zhenzhong.duan@intel.com>
+ <20240506083352.4037226-4-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240506083352.4037226-4-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,13 +108,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 06, 2024 at 02:30:47AM +0000, Duan, Zhenzhong wrote:
+On 5/6/24 10:33, Zhenzhong Duan wrote:
+> Make VFIOIOMMUClass::add_window() and its wrapper function
+> vfio_container_add_section_window() return bool.
+> 
+> This is to follow the coding standand to return bool if 'Error **'
+> is used to pass error.
+> 
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-> I'm not clear how useful multiple iommufd instances support are.
-> One possible benefit is for security? It may bring a slightly fine-grained
-> isolation in kernel.
 
-No. I don't think there is any usecase, it is only harmful.
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
-Jason
+One comment below for the spapr maintainers,
+
+
+> ---
+>   include/hw/vfio/vfio-container-base.h | 12 ++++++------
+>   hw/vfio/common.c                      |  2 +-
+>   hw/vfio/container-base.c              |  8 ++++----
+>   hw/vfio/spapr.c                       | 16 ++++++++--------
+>   4 files changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index 68539e3bed..e96cda78c8 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -76,9 +76,9 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+>   int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+>                                hwaddr iova, ram_addr_t size,
+>                                IOMMUTLBEntry *iotlb);
+> -int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+> -                                      MemoryRegionSection *section,
+> -                                      Error **errp);
+> +bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+> +                                       MemoryRegionSection *section,
+> +                                       Error **errp);
+>   void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+>                                          MemoryRegionSection *section);
+>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+> @@ -131,9 +131,9 @@ struct VFIOIOMMUClass {
+>       int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
+>   
+>       /* SPAPR specific */
+> -    int (*add_window)(VFIOContainerBase *bcontainer,
+> -                      MemoryRegionSection *section,
+> -                      Error **errp);
+> +    bool (*add_window)(VFIOContainerBase *bcontainer,
+> +                       MemoryRegionSection *section,
+> +                       Error **errp);
+>       void (*del_window)(VFIOContainerBase *bcontainer,
+>                          MemoryRegionSection *section);
+>       void (*release)(VFIOContainerBase *bcontainer);
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 890d30910e..9f1f2e19f7 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -585,7 +585,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>           return;
+>       }
+>   
+> -    if (vfio_container_add_section_window(bcontainer, section, &err)) {
+> +    if (!vfio_container_add_section_window(bcontainer, section, &err)) {
+>           goto fail;
+>       }
+>   
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index 913ae49077..98d71b3144 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -31,12 +31,12 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+>       return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
+>   }
+>   
+> -int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+> -                                      MemoryRegionSection *section,
+> -                                      Error **errp)
+> +bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+> +                                       MemoryRegionSection *section,
+> +                                       Error **errp)
+>   {
+>       if (!bcontainer->ops->add_window) {
+> -        return 0;
+> +        return true;
+>       }
+>   
+>       return bcontainer->ops->add_window(bcontainer, section, errp);
+> diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+> index 148b257c9c..47b040f1bc 100644
+> --- a/hw/vfio/spapr.c
+> +++ b/hw/vfio/spapr.c
+> @@ -323,7 +323,7 @@ static int vfio_spapr_create_window(VFIOContainer *container,
+>       return 0;
+>   }
+>   
+> -static int
+> +static bool
+>   vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+>                                           MemoryRegionSection *section,
+>                                           Error **errp)
+> @@ -351,13 +351,13 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+>               error_setg(errp, "Container %p can't map guest IOVA region"
+>                          " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container,
+>                          iova, end);
+> -            return -EINVAL;
+> +            return false;
+>           }
+> -        return 0;
+> +        return true;
+>       }
+>   
+>       if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+> -        return 0;
+> +        return true;
+>       }
+>   
+>       /* For now intersections are not allowed, we may relax this later */
+> @@ -373,14 +373,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+>                   section->offset_within_address_space +
+>                       int128_get64(section->size) - 1,
+>                   hostwin->min_iova, hostwin->max_iova);
+> -            return -EINVAL;
+> +            return false;
+>           }
+>       }
+>   
+>       ret = vfio_spapr_create_window(container, section, &pgsize);
+
+vfio_spapr_create_window() contains several calls to error_report() which
+would be good to replace with error_setg().
+
+
+Thanks,
+
+C.
+
+
+
+
+>       if (ret) {
+>           error_setg_errno(errp, -ret, "Failed to create SPAPR window");
+> -        return ret;
+> +        return false;
+>       }
+>   
+>       vfio_host_win_add(scontainer, section->offset_within_address_space,
+> @@ -406,14 +406,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+>                                        "vfio: failed GROUP_SET_SPAPR_TCE for "
+>                                        "KVM VFIO device %d and group fd %d",
+>                                        param.tablefd, param.groupfd);
+> -                    return -errno;
+> +                    return false;
+>                   }
+>                   trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+>               }
+>           }
+>       }
+>   #endif
+> -    return 0;
+> +    return true;
+>   }
+>   
+>   static void
+
 
