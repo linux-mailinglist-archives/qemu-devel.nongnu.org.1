@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1224F8BC930
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025648BC946
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:15:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3tR2-0003Zi-2u; Mon, 06 May 2024 04:10:56 -0400
+	id 1s3tR5-0003tA-IV; Mon, 06 May 2024 04:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3tQm-0003UD-VT
+ id 1s3tQo-0003UN-Fo
  for qemu-devel@nongnu.org; Mon, 06 May 2024 04:10:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3tQg-0002NB-Nq
- for qemu-devel@nongnu.org; Mon, 06 May 2024 04:10:39 -0400
+ id 1s3tQm-0002NQ-KG
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:10:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714983032;
+ s=mimecast20190719; t=1714983036;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lTEjkpuKyY2Y+K0Igbw0Rw9OKqigSJ52nD4y0sLqCyU=;
- b=hvOrH4B4e6D/KyeJXkyzYiZryFJIvnCxtnlZp0hS0hMnYzXvBJC/sp2dso6SsmPtundj0r
- wRnthhE3qQGUZR0D3X1CXJO1fT7hfudIKrGBBkoYE6rDnMc2IgH0PeC8sFWoZ7B6zRNixS
- ODnwrBqDnB6WWKjA9UqgwrCb9Cl/8TA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HpLnINNltKNYuICEAfgrVDWivbsafSJrxfeDwCfqtJ4=;
+ b=e1N0NsWJDG5bv7WF/P9Xmo0iyZYeAN5fhF3unrcIk1EAFmiP8RWHcpfreE3xHGdjXrWyh3
+ aRhPp7zoVZPzzkC2C5YQBIfYZgGA+ojYvI8zoEsQmzKbW+KLqH0mFO6PntVjKtXfkhxnuY
+ Am3TXdug755SEltlro9iY0tKbAqX30k=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-t2nTA3O4PGWBGcYkpDJkdA-1; Mon, 06 May 2024 04:10:30 -0400
-X-MC-Unique: t2nTA3O4PGWBGcYkpDJkdA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59cdf2141eso37363066b.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 01:10:29 -0700 (PDT)
+ us-mta-484-7IidAv3sO8OkDVxME77caA-1; Mon, 06 May 2024 04:10:34 -0400
+X-MC-Unique: 7IidAv3sO8OkDVxME77caA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a592c35ac06so174047466b.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 01:10:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714983027; x=1715587827;
+ d=1e100.net; s=20230601; t=1714983031; x=1715587831;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lTEjkpuKyY2Y+K0Igbw0Rw9OKqigSJ52nD4y0sLqCyU=;
- b=aPQGEuW5XnN0aH4I6mPA4stcXkNFtSuL2UbIcb//orcW6JpoWKRT5f2KsXgM4iQxzb
- SKeJdZXi0mNmLfUahD1noPB5+pbYunImwO8I9bJkg0zrs97sMEnbSfXuRZV3zJbt6/U6
- /zFZ1rFKDyrFG3XHRgnxQaNcdljQASbtc9s0p0R3dWJqEb/VI2IAQmAlMcD/s0c0r2Fp
- u2Rw0rc4Z7ZAOA1rX/A4Usc+c2vc2vd6/c/UFmxaK+/ZWomOAar53Ww2fXgoOphASLDj
- iMSL9fniJ4WNtHCIzyZcKgMLqyGt13f2SOLCBlZ5hib1/V5/BwXjnkMO14vfhX2phq4n
- hlTg==
-X-Gm-Message-State: AOJu0YxUxzsm5ejsiO9N2oS/0GF9RON3iVEwJDrSgek8Aq/Uv9Zx0MOr
- +bMlw3zguJTEVcPbuLWezM6RIbpshJXvxp7S8+N3zFh8N/Z8WyveE6F6kPm5RrzrSxpsoes4Jxw
- dQr9pg3yknviHALuU6WTthlL1iKWcmyBItajmkgoWoAs8h+BBGlh9d8/IO7JpCT6JtTGcus5au/
- gUaJ6aYSyT1husQsApV1tqfMxOtf1p6gaSoYEs
-X-Received: by 2002:a17:906:f59f:b0:a59:aa68:9992 with SMTP id
- cm31-20020a170906f59f00b00a59aa689992mr4250255ejd.18.1714983027628; 
- Mon, 06 May 2024 01:10:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEawiz1EwDd+R8fBJm7KEmllnR6/h5hC5rj8opA2121ZKVB5Riiyn2POpP0cbahUMZroWuFLA==
-X-Received: by 2002:a17:906:f59f:b0:a59:aa68:9992 with SMTP id
- cm31-20020a170906f59f00b00a59aa689992mr4250231ejd.18.1714983027200; 
- Mon, 06 May 2024 01:10:27 -0700 (PDT)
+ bh=HpLnINNltKNYuICEAfgrVDWivbsafSJrxfeDwCfqtJ4=;
+ b=RATToVTcfgdRe1Y38BImd6RYJxT9u1xM3IgR1Y6bwY2pbpPeXlfFIZq8f+YdvhWm8G
+ bDhFLyY8UfEfZQQoDvLafbjybth08BVwuUg2hwRA7OJAhCuc1xbtOZWLy6AYBQe1fpZf
+ BFLVWuxWHrY3uWkKAIN8KWmUy54p4FkhY9lLH7VwbAIYNd4bRry/h4u4jj2U+cptVzHf
+ 1Uqhe5YpRuq5buX9wdGkjS0nvj6fp2eiYy0VMpLa+2XXpQIW0wHjj5htlFinVaY//HOv
+ mvTfGJI0QHDlEyXUX7G2et1OdkC9Ko9WeVWXABhFlV0jNtetl+V37tvMohtFtcwcjCF0
+ BreA==
+X-Gm-Message-State: AOJu0YyZ6re9EpFuXsKEGG7khOdp6yJl+R6D02k/wp5ni99D4QInS8OD
+ xCw0zN5sgTaO01qsiEP+2Btb8h/k8qOwThX3F5DQNG/6vTlqEIiDWZ2yAmvJWVXoL76zesHUJsr
+ L9YxE2Aj2D/sr6712wUDpTCMg/NAkrqy2Qj45O16Tvd7dkFc8+j5Krg32lIcsb1ZeV8QbJ83NkZ
+ xA3Y3Blla/Mk6BGGKiz3T3vceZ0DwZzG3FF617
+X-Received: by 2002:a17:907:7ea9:b0:a59:c307:2a4c with SMTP id
+ qb41-20020a1709077ea900b00a59c3072a4cmr3324973ejc.25.1714983031064; 
+ Mon, 06 May 2024 01:10:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECWzhwWoyTBgLQZy1Vxl1K6/YzesK5BFXpNhpVH/jq4jCL07ke/tXJXJ1tDWlGm1IVgT3n/A==
+X-Received: by 2002:a17:907:7ea9:b0:a59:c307:2a4c with SMTP id
+ qb41-20020a1709077ea900b00a59c3072a4cmr3324959ejc.25.1714983030727; 
+ Mon, 06 May 2024 01:10:30 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- hg12-20020a1709072ccc00b00a59b6eed3c4sm2047529ejc.45.2024.05.06.01.10.26
+ z18-20020a1709060bf200b00a59cf813f34sm857801ejg.144.2024.05.06.01.10.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 01:10:26 -0700 (PDT)
+ Mon, 06 May 2024 01:10:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	zhao1.liu@intel.com
-Subject: [PATCH v2 09/25] target/i386: clarify the "reg" argument of functions
- returning CCPrepare
-Date: Mon,  6 May 2024 10:09:41 +0200
-Message-ID: <20240506080957.10005-10-pbonzini@redhat.com>
+Subject: [PATCH v2 10/25] target/i386: cleanup *gen_eob*
+Date: Mon,  6 May 2024 10:09:42 +0200
+Message-ID: <20240506080957.10005-11-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506080957.10005-1-pbonzini@redhat.com>
 References: <20240506080957.10005-1-pbonzini@redhat.com>
@@ -102,72 +101,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Create a new wrapper for syscall/sysret, and do not go through multiple
+layers of wrappers.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ target/i386/tcg/translate.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 2cd7868d596..7efd12cbe7e 100644
+index 7efd12cbe7e..e36ed4dcc10 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -937,7 +937,7 @@ static CCPrepare gen_prepare_sign_nz(TCGv src, MemOp size)
-     }
+@@ -2782,7 +2782,7 @@ static void gen_bnd_jmp(DisasContext *s)
+    If RECHECK_TF, emit a rechecking helper for #DB, ignoring the state of
+    S->TF.  This is used by the syscall/sysret insns.  */
+ static void
+-do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
++gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
+ {
+     bool inhibit_reset;
+ 
+@@ -2816,28 +2816,27 @@ do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
  }
  
--/* compute eflags.C to reg */
-+/* compute eflags.C, trying to store it in reg if not NULL */
- static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+ static inline void
+-gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf)
++gen_eob_syscall(DisasContext *s)
  {
-     MemOp size;
-@@ -1008,7 +1008,7 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
-     }
+-    do_gen_eob_worker(s, inhibit, recheck_tf, false);
++    gen_eob_worker(s, false, true, false);
  }
  
--/* compute eflags.P to reg */
-+/* compute eflags.P, trying to store it in reg if not NULL */
- static CCPrepare gen_prepare_eflags_p(DisasContext *s, TCGv reg)
+-/* End of block.
+-   If INHIBIT, set HF_INHIBIT_IRQ_MASK if it isn't already set.  */
+-static void gen_eob_inhibit_irq(DisasContext *s, bool inhibit)
++/* End of block.  Set HF_INHIBIT_IRQ_MASK if it isn't already set.  */
++static void gen_eob_inhibit_irq(DisasContext *s)
  {
-     gen_compute_eflags(s);
-@@ -1016,7 +1016,7 @@ static CCPrepare gen_prepare_eflags_p(DisasContext *s, TCGv reg)
-                          .imm = CC_P };
+-    gen_eob_worker(s, inhibit, false);
++    gen_eob_worker(s, true, false, false);
  }
  
--/* compute eflags.S to reg */
-+/* compute eflags.S, trying to store it in reg if not NULL */
- static CCPrepare gen_prepare_eflags_s(DisasContext *s, TCGv reg)
+ /* End of block, resetting the inhibit irq flag.  */
+ static void gen_eob(DisasContext *s)
  {
-     switch (s->cc_op) {
-@@ -1040,7 +1040,7 @@ static CCPrepare gen_prepare_eflags_s(DisasContext *s, TCGv reg)
-     }
+-    gen_eob_worker(s, false, false);
++    gen_eob_worker(s, false, false, false);
  }
  
--/* compute eflags.O to reg */
-+/* compute eflags.O, trying to store it in reg if not NULL */
- static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
+ /* Jump to register */
+ static void gen_jr(DisasContext *s)
  {
-     switch (s->cc_op) {
-@@ -1060,7 +1060,7 @@ static CCPrepare gen_prepare_eflags_o(DisasContext *s, TCGv reg)
-     }
+-    do_gen_eob_worker(s, false, false, true);
++    gen_eob_worker(s, false, false, true);
  }
  
--/* compute eflags.Z to reg */
-+/* compute eflags.Z, trying to store it in reg if not NULL */
- static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
- {
-     switch (s->cc_op) {
-@@ -1090,8 +1090,9 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
-     }
- }
- 
--/* perform a conditional store into register 'reg' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranteed not to be used. */
-+/* return how to compute jump opcode 'b'.  'reg' can be clobbered
-+ * if needed; it may be used for CCPrepare.reg if that will
-+ * provide more freedom in the translation of a subsequent setcond. */
- static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
- {
-     int inv, jcc_op, cond;
+ /* Jump to eip+diff, truncating the result to OT. */
+@@ -5590,7 +5589,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             gen_set_eflags(s, IF_MASK);
+             /* interruptions are enabled only the first insn after sti */
+             gen_update_eip_next(s);
+-            gen_eob_inhibit_irq(s, true);
++            gen_eob_inhibit_irq(s);
+         }
+         break;
+     case 0x62: /* bound */
+@@ -5724,7 +5723,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         /* TF handling for the syscall insn is different. The TF bit is  checked
+            after the syscall insn completes. This allows #DB to not be
+            generated after one has entered CPL0 if TF is set in FMASK.  */
+-        gen_eob_worker(s, false, true);
++        gen_eob_syscall(s);
+         break;
+     case 0x107: /* sysret */
+         /* For Intel SYSRET is only valid in long mode */
+@@ -5743,7 +5742,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+                checked after the sysret insn completes. This allows #DB to be
+                generated "as if" the syscall insn in userspace has just
+                completed.  */
+-            gen_eob_worker(s, false, true);
++            gen_eob_syscall(s);
+         }
+         break;
+     case 0x1a2: /* cpuid */
+@@ -7058,7 +7057,7 @@ static void i386_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+     case DISAS_EOB_INHIBIT_IRQ:
+         gen_update_cc_op(dc);
+         gen_update_eip_cur(dc);
+-        gen_eob_inhibit_irq(dc, true);
++        gen_eob_inhibit_irq(dc);
+         break;
+     case DISAS_JUMP:
+         gen_jr(dc);
 -- 
 2.45.0
 
