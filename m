@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188BC8BCC9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 563628BCC90
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:04:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3w7j-0002or-NE; Mon, 06 May 2024 07:03:11 -0400
+	id 1s3w7t-000370-3K; Mon, 06 May 2024 07:03:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7a-0002lI-Po
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7l-0002zJ-Tx
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7X-0003eK-3Z
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7Y-0003fB-Oi
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714993377;
+ s=mimecast20190719; t=1714993379;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6eEWV2K0C1KrW1v+KAMV4hsT6507/sgqEaxxVW9IdH0=;
- b=RLfFpRMk2jW6PZ1IrLtPAzxNAYm7npAzqw0ygIScUFVxTDVhjMz04Ht4WXk/jpH/SGT0Ac
- DOSOxK7AGKrE00ZeWeKc6Tjgykx4HRVawoyEo7qxYZsik9up2UWfMGR1rZu095tCAs6d7X
- v4gAW5rvj1pd3BMsCYm/dbuO9ZGmQbM=
+ bh=0HyK5KN6GldWKkRkTEG+2uybFCTYX4jopamCnwdYdr0=;
+ b=b8W/GiQa9rYEm8RVzcVVX05QfRpGONZULnDZB6tKIiVY2aWiqe82fccdfkyDg51K9Q7xM3
+ 0a8iWJ2a7+EaE5a6kReIvxQBPnimqWtv/IUwE2bgxXlTjbftlt1yqaCSskSk/ILRkGZWrc
+ yrSPikSp/qHS+hk11ZprP8QpQ77FZ9M=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-zn8WYcdUMkKNhvanyTCQ3Q-1; Mon, 06 May 2024 07:02:55 -0400
-X-MC-Unique: zn8WYcdUMkKNhvanyTCQ3Q-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-635-uAe7wgmWMdyVaUXAycijLg-1; Mon, 06 May 2024 07:02:55 -0400
+X-MC-Unique: uAe7wgmWMdyVaUXAycijLg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7992180021A;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7844718065AE;
  Mon,  6 May 2024 11:02:55 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2728D1C060D0;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 27141200B2C4;
  Mon,  6 May 2024 11:02:55 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3C22C21E65ED; Mon,  6 May 2024 13:02:54 +0200 (CEST)
+ id 3F2F821E657E; Mon,  6 May 2024 13:02:54 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH 1/7] qapi: make since sections special WIP
-Date: Mon,  6 May 2024 13:02:42 +0200
-Message-ID: <20240506110254.3965097-3-armbru@redhat.com>
+Subject: [PULL 2/7] qapi: Rename visitor parameter @variants to @branches
+Date: Mon,  6 May 2024 13:02:43 +0200
+Message-ID: <20240506110254.3965097-4-armbru@redhat.com>
 In-Reply-To: <20240506110254.3965097-1-armbru@redhat.com>
 References: <20240506110254.3965097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -79,117 +79,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-since moves to end in generated output
+The previous commit narrowed the type of .visit_object_type()
+parameter @variants from QAPISchemaVariants to QAPISchemaBranches.
+Rename it to @branches.
+
+Same for .visit_object_type_flat().
+
+A few of these pass @branches to helper functions:
+QAPISchemaGenRSTVisitor.visit_object_type() to ._nodes_for_members()
+and ._nodes_for_variant_when(), and
+QAPISchemaGenVisitVisitor.visit_object_type() to
+gen_visit_object_members().  Rename the helpers' @variants parameters
+to @branches as well.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- docs/sphinx/qapidoc.py         | 22 +++++++++++++++++-----
- scripts/qapi/parser.py         |  5 +++--
- tests/qapi-schema/test-qapi.py |  2 ++
- 3 files changed, 22 insertions(+), 7 deletions(-)
+ docs/sphinx/qapidoc.py         | 18 +++++++++---------
+ scripts/qapi/introspect.py     |  8 ++++----
+ scripts/qapi/schema.py         |  4 ++--
+ scripts/qapi/types.py          |  4 ++--
+ scripts/qapi/visit.py          | 12 ++++++------
+ tests/qapi-schema/test-qapi.py |  4 ++--
+ 6 files changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
-index 8d428c64b0..ac81003f0e 100644
+index 8d428c64b0..71362ba929 100644
 --- a/docs/sphinx/qapidoc.py
 +++ b/docs/sphinx/qapidoc.py
-@@ -250,6 +250,13 @@ def _nodes_for_features(self, doc):
-         section += dlnode
-         return [section]
+@@ -145,22 +145,22 @@ def _nodes_for_one_member(self, member):
+             term.extend(self._nodes_for_ifcond(member.ifcond))
+         return term
  
-+    def _nodes_for_since(self, doc):
-+        if doc.since:
-+            section = self._make_section('Since')
-+            self._parse_text_into_node(doc.since.text, section)
-+            return [section]
-+        return []
-+
-     def _nodes_for_example(self, exampletext):
-         """Return list of doctree nodes for a code example snippet"""
-         return [nodes.literal_block(exampletext, exampletext)]
-@@ -305,7 +312,8 @@ def visit_enum_type(self, name, info, ifcond, features, members, prefix):
-                       self._nodes_for_enum_values(doc)
-                       + self._nodes_for_features(doc)
-                       + self._nodes_for_sections(doc)
--                      + self._nodes_for_if_section(ifcond))
-+                      + self._nodes_for_if_section(ifcond)
-+                      + self._nodes_for_since(doc))
+-    def _nodes_for_variant_when(self, variants, variant):
++    def _nodes_for_variant_when(self, branches, variant):
+         """Return list of Text, literal nodes for variant 'when' clause
+ 
+         Return a list of doctree nodes which give text like
+         'when tagname is variant (If: ...)' suitable for use in
+-        the 'variants' part of a definition list.
++        the 'branches' part of a definition list.
+         """
+         term = [nodes.Text(' when '),
+-                nodes.literal('', variants.tag_member.name),
++                nodes.literal('', branches.tag_member.name),
+                 nodes.Text(' is '),
+                 nodes.literal('', '"%s"' % variant.name)]
+         if variant.ifcond.is_present():
+             term.extend(self._nodes_for_ifcond(variant.ifcond))
+         return term
+ 
+-    def _nodes_for_members(self, doc, what, base=None, variants=None):
++    def _nodes_for_members(self, doc, what, base=None, branches=None):
+         """Return list of doctree nodes for the table of members"""
+         dlnode = nodes.definition_list()
+         for section in doc.args.values():
+@@ -178,14 +178,14 @@ def _nodes_for_members(self, doc, what, base=None, variants=None):
+                                          nodes.literal('', base.doc_type())],
+                                         None)
+ 
+-        if variants:
+-            for v in variants.variants:
++        if branches:
++            for v in branches.variants:
+                 if v.type.name == 'q_empty':
+                     continue
+                 assert not v.type.is_implicit()
+                 term = [nodes.Text('The members of '),
+                         nodes.literal('', v.type.doc_type())]
+-                term.extend(self._nodes_for_variant_when(variants, v))
++                term.extend(self._nodes_for_variant_when(branches, v))
+                 dlnode += self._make_dlitem(term, None)
+ 
+         if not dlnode.children:
+@@ -308,12 +308,12 @@ def visit_enum_type(self, name, info, ifcond, features, members, prefix):
+                       + self._nodes_for_if_section(ifcond))
  
      def visit_object_type(self, name, info, ifcond, features,
-                           base, members, variants):
-@@ -316,7 +324,8 @@ def visit_object_type(self, name, info, ifcond, features,
-                       self._nodes_for_members(doc, 'Members', base, variants)
-                       + self._nodes_for_features(doc)
-                       + self._nodes_for_sections(doc)
--                      + self._nodes_for_if_section(ifcond))
-+                      + self._nodes_for_if_section(ifcond)
-+                      + self._nodes_for_since(doc))
- 
-     def visit_alternate_type(self, name, info, ifcond, features, variants):
+-                          base, members, variants):
++                          base, members, branches):
          doc = self._cur_doc
-@@ -324,7 +333,8 @@ def visit_alternate_type(self, name, info, ifcond, features, variants):
-                       self._nodes_for_members(doc, 'Members')
+         if base and base.is_implicit():
+             base = None
+         self._add_doc('Object',
+-                      self._nodes_for_members(doc, 'Members', base, variants)
++                      self._nodes_for_members(doc, 'Members', base, branches)
                        + self._nodes_for_features(doc)
                        + self._nodes_for_sections(doc)
--                      + self._nodes_for_if_section(ifcond))
-+                      + self._nodes_for_if_section(ifcond)
-+                      + self._nodes_for_since(doc))
+                       + self._nodes_for_if_section(ifcond))
+diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
+index b866517942..7852591490 100644
+--- a/scripts/qapi/introspect.py
++++ b/scripts/qapi/introspect.py
+@@ -336,13 +336,13 @@ def visit_object_type_flat(self, name: str, info: Optional[QAPISourceInfo],
+                                ifcond: QAPISchemaIfCond,
+                                features: List[QAPISchemaFeature],
+                                members: List[QAPISchemaObjectTypeMember],
+-                               variants: Optional[QAPISchemaBranches]) -> None:
++                               branches: Optional[QAPISchemaBranches]) -> None:
+         obj: SchemaInfoObject = {
+             'members': [self._gen_object_member(m) for m in members]
+         }
+-        if variants:
+-            obj['tag'] = variants.tag_member.name
+-            obj['variants'] = [self._gen_variant(v) for v in variants.variants]
++        if branches:
++            obj['tag'] = branches.tag_member.name
++            obj['variants'] = [self._gen_variant(v) for v in branches.variants]
+         self._gen_tree(name, 'object', obj, ifcond, features)
  
-     def visit_command(self, name, info, ifcond, features, arg_type,
-                       ret_type, gen, success_response, boxed, allow_oob,
-@@ -335,7 +345,8 @@ def visit_command(self, name, info, ifcond, features, arg_type,
-                                                 arg_type if boxed else None)
-                       + self._nodes_for_features(doc)
-                       + self._nodes_for_sections(doc)
--                      + self._nodes_for_if_section(ifcond))
-+                      + self._nodes_for_if_section(ifcond)
-+                      + self._nodes_for_since(doc))
+     def visit_alternate_type(self, name: str, info: Optional[QAPISourceInfo],
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 5cdedfc2c8..65c82dd4f1 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -215,7 +215,7 @@ def visit_object_type(
+         features: List[QAPISchemaFeature],
+         base: Optional[QAPISchemaObjectType],
+         members: List[QAPISchemaObjectTypeMember],
+-        variants: Optional[QAPISchemaBranches],
++        branches: Optional[QAPISchemaBranches],
+     ) -> None:
+         pass
  
-     def visit_event(self, name, info, ifcond, features, arg_type, boxed):
-         doc = self._cur_doc
-@@ -344,7 +355,8 @@ def visit_event(self, name, info, ifcond, features, arg_type, boxed):
-                                                 arg_type if boxed else None)
-                       + self._nodes_for_features(doc)
-                       + self._nodes_for_sections(doc)
--                      + self._nodes_for_if_section(ifcond))
-+                      + self._nodes_for_if_section(ifcond)
-+                      + self._nodes_for_since(doc))
+@@ -226,7 +226,7 @@ def visit_object_type_flat(
+         ifcond: QAPISchemaIfCond,
+         features: List[QAPISchemaFeature],
+         members: List[QAPISchemaObjectTypeMember],
+-        variants: Optional[QAPISchemaBranches],
++        branches: Optional[QAPISchemaBranches],
+     ) -> None:
+         pass
  
-     def symbol(self, doc, entity):
-         """Add documentation for one symbol to the document tree
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index 7b13a583ac..0237d13da9 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -646,7 +646,7 @@ def __init__(self, info: QAPISourceInfo, symbol: Optional[str] = None):
-         self.errors: Optional[QAPIDoc.Section] = None
-         # "Since" section
-         self.since: Optional[QAPIDoc.Section] = None
--        # sections other than .body, .args, .features
-+        # sections other than .body, .args, .features, .since
-         self.sections: List[QAPIDoc.Section] = []
+diff --git a/scripts/qapi/types.py b/scripts/qapi/types.py
+index 23cdf3e83e..0abb78f3a8 100644
+--- a/scripts/qapi/types.py
++++ b/scripts/qapi/types.py
+@@ -350,13 +350,13 @@ def visit_object_type(self,
+                           features: List[QAPISchemaFeature],
+                           base: Optional[QAPISchemaObjectType],
+                           members: List[QAPISchemaObjectTypeMember],
+-                          variants: Optional[QAPISchemaBranches]) -> None:
++                          branches: Optional[QAPISchemaBranches]) -> None:
+         # Nothing to do for the special empty builtin
+         if name == 'q_empty':
+             return
+         with ifcontext(ifcond, self._genh):
+             self._genh.preamble_add(gen_fwd_object_or_array(name))
+-        self._genh.add(gen_object(name, ifcond, base, members, variants))
++        self._genh.add(gen_object(name, ifcond, base, members, branches))
+         with ifcontext(ifcond, self._genh, self._genc):
+             if base and not base.is_implicit():
+                 self._genh.add(gen_upcast(name, base))
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index 990685498f..fbae5f3e4e 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -64,7 +64,7 @@ def gen_visit_members_decl(name: str) -> str:
+ def gen_visit_object_members(name: str,
+                              base: Optional[QAPISchemaObjectType],
+                              members: List[QAPISchemaObjectTypeMember],
+-                             variants: Optional[QAPISchemaBranches]) -> str:
++                             branches: Optional[QAPISchemaBranches]) -> str:
+     ret = mcgen('''
  
-     def end(self) -> None:
-@@ -683,7 +683,8 @@ def new_tagged_section(self, info: QAPISourceInfo, tag: str) -> None:
-                 raise QAPISemError(
-                     info, "duplicated '%s' section" % tag)
-             self.since = section
--        self.sections.append(section)
-+        if tag != 'Since':
-+            self.sections.append(section)
-         self.all_sections.append(section)
+ bool visit_type_%(c_name)s_members(Visitor *v, %(c_name)s *obj, Error **errp)
+@@ -132,8 +132,8 @@ def gen_visit_object_members(name: str,
+ ''')
+         ret += memb.ifcond.gen_endif()
  
-     def _new_description(self, info: QAPISourceInfo, name: str,
+-    if variants:
+-        tag_member = variants.tag_member
++    if branches:
++        tag_member = branches.tag_member
+         assert isinstance(tag_member.type, QAPISchemaEnumType)
+ 
+         ret += mcgen('''
+@@ -141,7 +141,7 @@ def gen_visit_object_members(name: str,
+ ''',
+                      c_name=c_name(tag_member.name))
+ 
+-        for var in variants.variants:
++        for var in branches.variants:
+             case_str = c_enum_const(tag_member.type.name, var.name,
+                                     tag_member.type.prefix)
+             ret += var.ifcond.gen_if()
+@@ -394,14 +394,14 @@ def visit_object_type(self,
+                           features: List[QAPISchemaFeature],
+                           base: Optional[QAPISchemaObjectType],
+                           members: List[QAPISchemaObjectTypeMember],
+-                          variants: Optional[QAPISchemaBranches]) -> None:
++                          branches: Optional[QAPISchemaBranches]) -> None:
+         # Nothing to do for the special empty builtin
+         if name == 'q_empty':
+             return
+         with ifcontext(ifcond, self._genh, self._genc):
+             self._genh.add(gen_visit_members_decl(name))
+             self._genc.add(gen_visit_object_members(name, base,
+-                                                    members, variants))
++                                                    members, branches))
+             # TODO Worth changing the visitor signature, so we could
+             # directly use rather than repeat type.is_implicit()?
+             if not name.startswith('q_'):
 diff --git a/tests/qapi-schema/test-qapi.py b/tests/qapi-schema/test-qapi.py
-index 40095431ae..642daa29a4 100755
+index 40095431ae..7c67ad8d9b 100755
 --- a/tests/qapi-schema/test-qapi.py
 +++ b/tests/qapi-schema/test-qapi.py
-@@ -131,6 +131,8 @@ def test_frontend(fname):
-             print('    feature=%s\n%s' % (feat, section.text))
-         for section in doc.sections:
-             print('    section=%s\n%s' % (section.tag, section.text))
-+        if doc.since:
-+            print('    section=%s\n%s' % (doc.since.tag, doc.since.text))
+@@ -48,7 +48,7 @@ def visit_array_type(self, name, info, ifcond, element_type):
+         self._print_if(ifcond)
  
+     def visit_object_type(self, name, info, ifcond, features,
+-                          base, members, variants):
++                          base, members, branches):
+         print('object %s' % name)
+         if base:
+             print('    base %s' % base.name)
+@@ -57,7 +57,7 @@ def visit_object_type(self, name, info, ifcond, features,
+                   % (m.name, m.type.name, m.optional))
+             self._print_if(m.ifcond, 8)
+             self._print_features(m.features, indent=8)
+-        self._print_variants(variants)
++        self._print_variants(branches)
+         self._print_if(ifcond)
+         self._print_features(features)
  
- def open_test_result(dir_name, file_name, update):
 -- 
 2.44.0
 
