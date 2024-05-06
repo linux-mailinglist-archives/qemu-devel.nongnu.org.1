@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1028BC8D5
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352C18BC8A5
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t9P-0006Qz-8v; Mon, 06 May 2024 03:52:44 -0400
+	id 1s3t9F-00068E-O8; Mon, 06 May 2024 03:52:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8u-0005pj-37
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s3t8v-0005qT-OC
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8r-0001e3-FX
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:10 -0400
+ id 1s3t8t-0001eK-S8
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981928;
+ s=mimecast20190719; t=1714981931;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cP3nWL94R08Eo67ZV+TaTc1CdPSmPODit+By5QzQoEE=;
- b=gUZ1DGigP0OlyS0Awr0xNNZvvrt9ZbqcEyHlTKfM5/9JiBt9r+M2Af2+s74xwq2JiE5C+Z
- fwAYuf7B5oG4yAZwR1WQkPXnGarQLbo8/NoKMaYv5EgHQgZqII1MQ8Gzo8lWVi9wiSDsX5
- Eh4p40Nz6DSLgoLVGemketaFfnVAx6k=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=D0edKtfywX3SnvAhiP6Z2wG4KJKnWgcP/HKkK2g/aBA=;
+ b=YS8rZR4GSRwowVP4OHHMZ8KonboD+V6GKTFvb3R9D+xh9a5EcBbZNfTVQONfofR10FX+Nn
+ Q0+uf4Dkrp0uc8bQclKwB+UexmycRzorRQGBKZtntXvqq2SlO6SzcAMIX9Ts3SvL4xmrep
+ eW5WKNNj5aakADUYsMf66GAmoPunhPE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-MMSJi--VOT-puKbRGEWYxQ-1; Mon, 06 May 2024 03:52:06 -0400
-X-MC-Unique: MMSJi--VOT-puKbRGEWYxQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-572ba1df326so501289a12.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:06 -0700 (PDT)
+ us-mta-175-jhNOLEpcNpi9j3l971kqyg-1; Mon, 06 May 2024 03:52:09 -0400
+X-MC-Unique: jhNOLEpcNpi9j3l971kqyg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a59c2583f0bso51903866b.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981925; x=1715586725;
+ d=1e100.net; s=20230601; t=1714981927; x=1715586727;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cP3nWL94R08Eo67ZV+TaTc1CdPSmPODit+By5QzQoEE=;
- b=p4DoxWE2zqHK0tbXLDlR5OLWxOPqMvZYCHeguYqDnVlFEk+3KI4MRL5F/vZUNaRAUV
- KtbC4w9yssUA3eeaKJ2NQkf4dHSg0e6Glx475f3u3Exj50pXtvAyhypm3S0f28/DChSP
- 3zvtURKGDjvaTS4k5vWGGCBwdtti23jWsG2h7PqKMzhJgSxEKwl0YrNmnMEDYoOvuwYO
- 7eqWqI6ab7j1NQP+HUAbG49861Nu8GGW/O6ITiTsCGxjm2HqEmJOQzLTwsL/zrLYix6j
- fcV6U7UdjoOaGnZvi2DgiGNUaIKTsFcf5tPK8snXsQ+7sttMFhxiqPad6piTn7XQ6BOS
- a7/w==
-X-Gm-Message-State: AOJu0YwAqkR4cfIkq6Brb+cMLKAiPlfd7Dr2kkzSXAEfNaPM8O60HZah
- i04TqIq1Fqp0z+Cdna7eVlqnrWrxjK8RwepynPlqBqKXerjMHFLwKdv9rcqJHtJIQxarAT/RoGG
- JXg4PA9nNhc6mNRDmPrWuU0DaOG7+etdGOZkOmqZdCrirTZw35h3D06DOmuCfPJH6yTShTHbJfg
- c7gc9FyaKhp20yQsWi+A6brh3XEQNA0O9zjRSm
-X-Received: by 2002:a50:8a96:0:b0:572:65d3:803c with SMTP id
- j22-20020a508a96000000b0057265d3803cmr7680805edj.0.1714981925306; 
- Mon, 06 May 2024 00:52:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHy9p1zDeCaFNCPq87ATV8ryWATOXqbWc8CoJP6jDYnU7Gokxn6w26XZyA7AtCA+hqDVtPWHg==
-X-Received: by 2002:a50:8a96:0:b0:572:65d3:803c with SMTP id
- j22-20020a508a96000000b0057265d3803cmr7680790edj.0.1714981924903; 
- Mon, 06 May 2024 00:52:04 -0700 (PDT)
+ bh=D0edKtfywX3SnvAhiP6Z2wG4KJKnWgcP/HKkK2g/aBA=;
+ b=vms090WsuHbx+5vtPpy9qgGv72WivzXSttQ3VwgY39lhKA62sEbs/mpIdF70sTdfZw
+ iSRgrAfAf4zMVZIVGypHo049gVjrGtAZW0Re4cqYR+5ViI0vQFkHuMY9m/5lAUe5EIo1
+ X4hxbTmiw1+1IKE3OhaD2WA8pljGloS/tjNJ/7kItuH+0oYsMFxQIw+C6sEZGKC8h1Hz
+ nTCWCy4XC+OiirpSfO7urqv2wBOERaTk8FxF3uOufHB/sxczLFNXuWGAVc5cBSAc1qQm
+ DqfNg2UuAvdMD2j34qtaK9+kWHwbYpF6vUuSRChLGY8jAvSPHCueN2disidvv0eHfjL0
+ 9JmA==
+X-Gm-Message-State: AOJu0YyRloXeQii5of0x2AETawGprXsbQVybUxl+T4t++cmmmq9Bhr/Y
+ NpCTAmHgE/CbIHOj9RKsdQBiJI++CqUXUVhum2u2w7S7a3/rQGppLKzmTRfZvDQxW+NczhQRkv1
+ 4C4V9lPjK1rbBufDqDXqu6aypo+GUh5LR2jl+5PJec6VZLQb4lYCAhR5MFyV1w5PJnynqoSb/il
+ 9L9AXk2qssjG4sxe5mt0gxe0xwV+3T78xcNeWg
+X-Received: by 2002:a17:907:980d:b0:a59:cfab:50d with SMTP id
+ ji13-20020a170907980d00b00a59cfab050dmr1272069ejc.2.1714981927535; 
+ Mon, 06 May 2024 00:52:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZS2Qrjc+l3+yBbOFnIp+kZcWbkUWQE38GaQKhMZOH0GQtGvj7bV5hrVRu7Xe0bfTCJjvFSw==
+X-Received: by 2002:a17:907:980d:b0:a59:cfab:50d with SMTP id
+ ji13-20020a170907980d00b00a59cfab050dmr1272055ejc.2.1714981927177; 
+ Mon, 06 May 2024 00:52:07 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- ze15-20020a170906ef8f00b00a59ae3efb03sm2425669ejb.3.2024.05.06.00.52.04
+ w24-20020a17090652d800b00a59aa17f23fsm2573863ejn.203.2024.05.06.00.52.06
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:52:04 -0700 (PDT)
+ Mon, 06 May 2024 00:52:06 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/46] microblaze: switch boards to "default y"
-Date: Mon,  6 May 2024 09:50:54 +0200
-Message-ID: <20240506075125.8238-16-pbonzini@redhat.com>
+Subject: [PULL 16/46] meson: make target endianneess available to Kconfig
+Date: Mon,  6 May 2024 09:50:55 +0200
+Message-ID: <20240506075125.8238-17-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -102,75 +102,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with Microblaze.
-
-No changes to generated config-devices.mak file.
+MIPS boards may only be available for big-endian or only for
+little-endian emulators, add a symbol so that this can be described
+with a "depends on" clause.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/microblaze-softmmu/default.mak | 9 ++++-----
- .gitlab-ci.d/buildtest.yml                     | 3 ++-
- hw/microblaze/Kconfig                          | 6 ++++++
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ meson.build    | 12 +++++++-----
+ target/Kconfig |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/configs/devices/microblaze-softmmu/default.mak b/configs/devices/microblaze-softmmu/default.mak
-index db8c6e4bba3..583e3959bb7 100644
---- a/configs/devices/microblaze-softmmu/default.mak
-+++ b/configs/devices/microblaze-softmmu/default.mak
-@@ -1,7 +1,6 @@
- # Default configuration for microblaze-softmmu
+diff --git a/meson.build b/meson.build
+index 5db2dbc12ec..43da4923721 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3005,7 +3005,7 @@ foreach target : target_dirs
+     }
+   endif
  
--# Boards:
--#
--CONFIG_PETALOGIX_S3ADSP1800=y
--CONFIG_PETALOGIX_ML605=y
--CONFIG_XLNX_ZYNQMP_PMU=y
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_PETALOGIX_S3ADSP1800=n
-+# CONFIG_PETALOGIX_ML605=n
-+# CONFIG_XLNX_ZYNQMP_PMU=n
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index a91e8d359d5..e2e92f25c58 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -648,7 +648,8 @@ build-tci:
-     - make check-tcg
+-  accel_kconfig = []
++  target_kconfig = []
+   foreach sym: accelerators
+     if sym == 'CONFIG_TCG' or target in accelerator_targets.get(sym, [])
+       config_target += { sym: 'y' }
+@@ -3015,10 +3015,10 @@ foreach target : target_dirs
+       else
+         config_target += { 'CONFIG_TCG_BUILTIN': 'y' }
+       endif
+-      accel_kconfig += [ sym + '=y' ]
++      target_kconfig += [ sym + '=y' ]
+     endif
+   endforeach
+-  if accel_kconfig.length() == 0
++  if target_kconfig.length() == 0
+     if default_targets
+       continue
+     endif
+@@ -3078,6 +3078,9 @@ foreach target : target_dirs
+                                                configuration: config_target_data)}
  
- # Check our reduced build configurations
--# requires libfdt: aarch64, arm, i386, loongarch64, x86_64
-+# requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
-+#   x86_64
- # does not build without boards: i386, loongarch64, x86_64
- build-without-defaults:
-   extends: .native_build_job_template
-diff --git a/hw/microblaze/Kconfig b/hw/microblaze/Kconfig
-index e2697ced9cc..d78ba843fac 100644
---- a/hw/microblaze/Kconfig
-+++ b/hw/microblaze/Kconfig
-@@ -1,5 +1,7 @@
- config PETALOGIX_S3ADSP1800
-     bool
-+    default y
-+    depends on MICROBLAZE
-     select PFLASH_CFI01
-     select XILINX
-     select XILINX_AXI
-@@ -8,6 +10,8 @@ config PETALOGIX_S3ADSP1800
+   if target.endswith('-softmmu')
++    target_kconfig += 'CONFIG_' + config_target['TARGET_ARCH'].to_upper() + '=y'
++    target_kconfig += 'CONFIG_TARGET_BIG_ENDIAN=' + config_target['TARGET_BIG_ENDIAN']
++
+     config_input = meson.get_external_property(target, 'default')
+     config_devices_mak = target + '-config-devices.mak'
+     config_devices_mak = configure_file(
+@@ -3088,8 +3091,7 @@ foreach target : target_dirs
+       command: [minikconf,
+                 get_option('default_devices') ? '--defconfig' : '--allnoconfig',
+                 config_devices_mak, '@DEPFILE@', '@INPUT@',
+-                host_kconfig, accel_kconfig,
+-                'CONFIG_' + config_target['TARGET_ARCH'].to_upper() + '=y'])
++                host_kconfig, target_kconfig])
  
- config PETALOGIX_ML605
-     bool
-+    default y
-+    depends on MICROBLAZE
-     select PFLASH_CFI01
-     select SERIAL
-     select SSI_M25P80
-@@ -18,4 +22,6 @@ config PETALOGIX_ML605
- 
- config XLNX_ZYNQMP_PMU
-     bool
-+    default y
-+    depends on MICROBLAZE
-     select XLNX_ZYNQMP
+     config_devices_data = configuration_data()
+     config_devices = keyval.load(config_devices_mak)
+diff --git a/target/Kconfig b/target/Kconfig
+index 5275a93ad02..7f64112e9e7 100644
+--- a/target/Kconfig
++++ b/target/Kconfig
+@@ -17,3 +17,6 @@ source sh4/Kconfig
+ source sparc/Kconfig
+ source tricore/Kconfig
+ source xtensa/Kconfig
++
++config TARGET_BIG_ENDIAN
++    bool
 -- 
 2.44.0
 
