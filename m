@@ -2,94 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192BD8BC4F1
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 02:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75398BC504
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 03:05:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3mSP-0008BD-Iy; Sun, 05 May 2024 20:43:53 -0400
+	id 1s3mm8-0007XK-2i; Sun, 05 May 2024 21:04:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s3mSN-0008An-58
- for qemu-devel@nongnu.org; Sun, 05 May 2024 20:43:51 -0400
-Received: from wfout5-smtp.messagingengine.com ([64.147.123.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1s3mSL-0002GF-DJ
- for qemu-devel@nongnu.org; Sun, 05 May 2024 20:43:50 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailfout.west.internal (Postfix) with ESMTP id 0032B1C00123;
- Sun,  5 May 2024 20:43:47 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Sun, 05 May 2024 20:43:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- invisiblethingslab.com; h=cc:cc:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm3; t=1714956227;
- x=1715042627; bh=GSTBJNSEtl8MwjGUTXO9Irkbt9SMO1bvpJFfCxULEdk=; b=
- jD1TZwyPzPt4dO3thb15WX/xsDD+AanvfIg/yz/6c6iIx5SJ6EUzke6NXMrqqqIL
- +sUJJRxRMESyBmeGNdeOmEXkCnRt1C1OcQf3Tsff+TPGIeTK9+ZYRcO/TlOXP/ty
- 86Is6vmf0EKfU0rq0oJCvr95TsteFhs+Smc1ldYLZymAToatwaz3RXHfenzAIUmb
- pEEZ0tTClPrFzE+n3uj8q3fBCk3U1ZPGax28cghZEXvq+ekQnvD01uqBufEh3Jsc
- tYywbWhmAknM/kdmjeR6gYJ6f9Z4AvSAm11KpSfUB+KrzHfBDphjH0TGHOi+ALPG
- QqEE1i9sh3GTx3KO8HioQg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1714956227; x=1715042627; bh=GSTBJNSEtl8MwjGUTXO9Irkbt9SM
- O1bvpJFfCxULEdk=; b=b9klGxDDCj442mToWgJY15IcU5X4Sf4Mt/ZodLeBMpfx
- pMISYm1bvqYLXd/4tVbxb4p0igcwJc3ILmIAZ3YxHKjMBKF9K0YV4kNS7oNZbFek
- 57QBdWOZho+mIaQDD2tHxVrWLdn/YwkFIaf4uDOlvxsWHu1JSIjU8v1IJLgeBa4f
- tV25IXt8lGDdK+rZeoHKlZD1FjH0apuD08ljovQaTUgCvUFEqKU9P0ekxkGqfoVu
- GDh+SYeGImCnDLk/hBZYcrJeTNwR1b+ugZM6ZOxuwCLyo20RkbRB38bN8ZTBh+zg
- BL0rX2NDXz2ttLawbQHK4u7SAikuc6ICI5NoeDVpNQ==
-X-ME-Sender: <xms:wyc4ZuNuPOwstAw5XkcjCoRIlun8tg4T3OBr11-GC7xZxYmX9ORR3w>
- <xme:wyc4Zs9ElTyNvUBgCwcGJ8WMBWPOWrhiwNhvpNbWuqE5qwTUxcU80ZoBD71qhnAOH
- 7-lqeGmJ7jW_Q>
-X-ME-Received: <xmr:wyc4ZlSelM8ZZcGC5V2ItfyywTuK11vzbovNAEJUraIFHQLdemM4sZ6iMjRPxpMaUwOYakB2FvdN7Nshjqj5E8c_hsCaJ0BmjA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddvhedgfeekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehgtd
- erredttdejnecuhfhrohhmpeforghrvghkucforghrtgiihihkohifshhkihdqifpkrhgv
- tghkihcuoehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtoh
- hmqeenucggtffrrghtthgvrhhnpefgudelteefvefhfeehieetleeihfejhfeludevteet
- keevtedtvdegueetfeejudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
- grihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthhhinhhgshhlrggs
- rdgtohhm
-X-ME-Proxy: <xmx:wyc4ZutN2vpf2tzmYpUD_JWnUmUE_vOIOc0TCNw80YSmo2iOZlg5lA>
- <xmx:wyc4ZmcT3MvnimRHyoHYlIKBRMAkBc7vBAaLv2W5Ez_iwFZo76t_4Q>
- <xmx:wyc4Zi1p_TvKPIZpZAUaKZWFYnprQth70xV6khNGmNX6YIQX9KZlqQ>
- <xmx:wyc4Zq_HfaWwQZDBLmBv4bVFs8X7YXrfBwCPbVAuA9uK8NaTcnwy-w>
- <xmx:wyc4ZqEL1z8ujawolbPm8EwH3j7-iCnTRbPhs2viPpF1VUnae-ZjTyJc>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 5 May 2024 20:43:46 -0400 (EDT)
-Date: Mon, 6 May 2024 02:43:44 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s3mm1-0007XB-9r
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 21:04:09 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s3mlz-0002PA-8R
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 21:04:09 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2b432be5e80so919826a91.1
+ for <qemu-devel@nongnu.org>; Sun, 05 May 2024 18:04:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714957445; x=1715562245; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xGhq9LzTfkszi3eC9eGpwYSHg3GUJVHkvKWRYudIa4w=;
+ b=LItZTQV0vdNqFFXK+X3xzRokJFcGyzfqVfeGnCHtd5I9OjkOZRZSjTWgnLQ2zw4Hwz
+ mHLHomdNeW/kOt7jMpGfcB1Jx4+2elhLTZryoY8PyMgRCK/I2NX/Kxaxuuw0Oi/T1XWX
+ 11pJAqlpZ4z8+ayNF9wbFVb9lXqPgzWVCi6qu73RJzab7NaH+8QU4fxNDk6IqeEvUPX6
+ OYhp56Hyx2AE5PUUvNQqph6RoBl4yW3UyDA8NgLMpdhoymGs4rw/BkyMc0e8LtDg9WO/
+ m0ilEYcn+zmrWmvm79Gmeq1bhw0s4/9LSodKONLPMPSz+FN7rDr0iTTP1FPw98aLUSfT
+ P1Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714957445; x=1715562245;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xGhq9LzTfkszi3eC9eGpwYSHg3GUJVHkvKWRYudIa4w=;
+ b=faVGF/13bBaBAD791vTKDGRiI0etAkVOVgo+vuEwAQ+a6j/fANoq5vn7gNTLe/Ep7G
+ FBNOEGXgtSlk1rSkqB4sSd2TBDVV7uBSRzJlGylJIYb861lBiSwOKi8j1bEsUyJKwB8R
+ k7YHOs0CiJAzy2rvgG9KuiALFHOSO+yJgtM+C7Bhgj7bmwU10rnyxg6Yjhj4uYbyyQ9E
+ CPrrMixi//r8Qy9zIpKKx56Sq34FinoQJgLM2owlpHRa6Q5tGFc7jMm/tZzQtvKi3QpN
+ uhYbKQkGYpDxNZR/ON+46INZHRkh3o9TUMSFldUJreNgxXtR6VpYPqL2dekEq0BGZC5J
+ KyqQ==
+X-Gm-Message-State: AOJu0YxCKuA/rG+TDdxQrVFQ8eDpg9pj52gdgu5bGlKYy4GmPeairQii
+ aU3E4ghNWiby/NVRQlgj9Xk+2HdJGEH0NacVV00upmVLfRdrEt9glpED9cPq7aqMyMKcOq/L3Mv
+ 9
+X-Google-Smtp-Source: AGHT+IHptYwh1W4EZKPXWPNC89Pl6PqwcLFGqnffSiqjgO3RIB0AubhONlTwUXvUMShf205f0hm+cA==
+X-Received: by 2002:a17:90a:f597:b0:2b3:79ad:856d with SMTP id
+ ct23-20020a17090af59700b002b379ad856dmr7764929pjb.48.1714957445381; 
+ Sun, 05 May 2024 18:04:05 -0700 (PDT)
+Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ pv7-20020a17090b3c8700b002a5f44353d2sm8958232pjb.7.2024.05.05.18.04.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 05 May 2024 18:04:04 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: anthony@xenproject.org
-Subject: Re: [PATCH v3 0/3] Fix MSI-X handling for Xen HVM
-Message-ID: <ZjgnwLZ__HbNauHW@mail-itl>
-References: <cover.f5d45e3c2fb87552abfaf80982b0b724fca2134c.1714955598.git-series.marmarek@invisiblethingslab.com>
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 00/57] target/arm: Convert a64 advsimd to decodetree (part 1)
+Date: Sun,  5 May 2024 18:03:06 -0700
+Message-Id: <20240506010403.6204-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="fSX2++y3p9WVUB3a"
-Content-Disposition: inline
-In-Reply-To: <cover.f5d45e3c2fb87552abfaf80982b0b724fca2134c.1714955598.git-series.marmarek@invisiblethingslab.com>
-Received-SPF: none client-ip=64.147.123.148;
- envelope-from=marmarek@invisiblethingslab.com;
- helo=wfout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,81 +89,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Based-on: 20240424170908.759043-1-richard.henderson@linaro.org
+("[PATCH 0/5] tcg: Misc improvements")
 
---fSX2++y3p9WVUB3a
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 6 May 2024 02:43:44 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: qemu-devel@nongnu.org
-Cc: anthony@xenproject.org
-Subject: Re: [PATCH v3 0/3] Fix MSI-X handling for Xen HVM
+In the process, convert more code to gvec as well -- I will need
+the gvec code for implementing SME2.  I guess this is about 1/3
+of the job done, but there's no reason to wait until the patch
+set is completely unwieldy.
 
-On Mon, May 06, 2024 at 02:33:19AM +0200, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> This series fixes handling MSI-X when device model is running in a stubdo=
-main.
-> The main part is to avoid accessing /dev/mem, which also fixes running do=
-m0
-> with lockdown enabled.
->=20
-> It depends on a behavior change of Xen that was just comitted, and signal=
-ed
-> with a feature flag. If Xen is too old (and XENFEAT_dm_msix_all_writes fl=
-ag is
-> not set), fallback to the old behavior.
->=20
-> The other part is a fix to enforce read-only registers in the config spac=
-e.
-> This fixes MSI-X setup for iwlwifi Linux driver, as it happen to write to=
- MSI-X
-> capability id reg (as a workaround for some older device which has another
-> register there). It should be no-op, but due to a bug in xen_pt code,
-> it broke MSI-X detection.
->=20
-> All those patches have been shipped in Qubes OS 4.2 already, and prove to=
- fix
-> the issue.
->=20
-> See individual commit messages for details.
 
-Initially I sent the series with the old Anthony's address, but just in
-case I forwarded it to his new address too.
+r~
 
-> Marek Marczykowski-G=C3=B3recki (3):
->   hw/xen/xen_pt: Save back data only for declared registers
->   Update Xen's features.h header
->   Do not access /dev/mem in MSI-X PCI passthrough on Xen
->=20
->  hw/xen/xen_pt.c                     |  7 +-
->  hw/xen/xen_pt_msi.c                 | 94 ++++++++++++++++++------------
->  include/hw/xen/interface/features.h | 17 +++++-
->  3 files changed, 82 insertions(+), 36 deletions(-)
->=20
-> base-commit: 2358f1b60f73287fe606c7ff48043b4f9e1c2d0f
-> --=20
-> git-series 0.9.1
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+Richard Henderson (57):
+  target/arm: Split out gengvec.c
+  target/arm: Split out gengvec64.c
+  target/arm: Convert Cryptographic AES to decodetree
+  target/arm: Convert Cryptographic 3-register SHA to decodetree
+  target/arm: Convert Cryptographic 2-register SHA to decodetree
+  target/arm: Convert Cryptographic 3-register SHA512 to decodetree
+  target/arm: Convert Cryptographic 2-register SHA512 to decodetree
+  target/arm: Convert Cryptographic 4-register to decodetree
+  target/arm: Convert Cryptographic 3-register, imm2 to decodetree
+  target/arm: Convert XAR to decodetree
+  target/arm: Convert Advanced SIMD copy to decodetree
+  target/arm: Convert FMULX to decodetree
+  target/arm: Convert FADD, FSUB, FDIV, FMUL to decodetree
+  target/arm: Convert FMAX, FMIN, FMAXNM, FMINNM to decodetree
+  target/arm: Expand vfp neg and abs inline
+  target/arm: Convert FNMUL to decodetree
+  target/arm: Convert FMLA, FMLS to decodetree
+  target/arm: Convert FCMEQ, FCMGE, FCMGT, FACGE, FACGT to decodetree
+  target/arm: Convert FABD to decodetree
+  target/arm: Convert FRECPS, FRSQRTS to decodetree
+  target/arm: Convert FADDP to decodetree
+  target/arm: Convert FMAXP, FMINP, FMAXNMP, FMINNMP to decodetree
+  target/arm: Use gvec for neon faddp, fmaxp, fminp
+  target/arm: Convert ADDP to decodetree
+  target/arm: Use gvec for neon padd
+  target/arm: Convert SMAXP, SMINP, UMAXP, UMINP to decodetree
+  target/arm: Use gvec for neon pmax, pmin
+  target/arm: Convert FMLAL, FMLSL to decodetree
+  target/arm: Convert disas_simd_3same_logic to decodetree
+  target/arm: Improve vector UQADD, UQSUB, SQADD, SQSUB
+  target/arm: Convert SUQADD and USQADD to gvec
+  target/arm: Inline scalar SUQADD and USQADD
+  target/arm: Inline scalar SQADD, UQADD, SQSUB, UQSUB
+  target/arm: Convert SQADD, SQSUB, UQADD, UQSUB to decodetree
+  target/arm: Convert SUQADD, USQADD to decodetree
+  target/arm: Convert SSHL, USHL to decodetree
+  target/arm: Convert SRSHL and URSHL (register) to gvec
+  target/arm: Convert SRSHL, URSHL to decodetree
+  target/arm: Convert SQSHL and UQSHL (register) to gvec
+  target/arm: Convert SQSHL, UQSHL to decodetree
+  target/arm: Convert SQRSHL and UQRSHL (register) to gvec
+  target/arm: Convert SQRSHL, UQRSHL to decodetree
+  target/arm: Convert ADD, SUB (vector) to decodetree
+  target/arm: Convert CMGT, CMHI, CMGE, CMHS, CMTST, CMEQ to decodetree
+  target/arm: Use TCG_COND_TSTNE in gen_cmtst_{i32,i64}
+  target/arm: Convert SHADD, UHADD to gvec
+  target/arm: Convert SHADD, UHADD to decodetree
+  target/arm: Convert SHSUB, UHSUB to gvec
+  target/arm: Convert SHSUB, UHSUB to decodetree
+  target/arm: Convert SRHADD, URHADD to gvec
+  target/arm: Convert SRHADD, URHADD to decodetree
+  target/arm: Convert SMAX, SMIN, UMAX, UMIN to decodetree
+  target/arm: Convert SABA, SABD, UABA, UABD to decodetree
+  target/arm: Convert MUL, PMUL to decodetree
+  target/arm: Convert MLA, MLS to decodetree
+  target/arm: Tidy SQDMULH, SQRDMULH (vector)
+  target/arm: Convert SQDMULH, SQRDMULH to decodetree
 
---fSX2++y3p9WVUB3a
-Content-Type: application/pgp-signature; name="signature.asc"
+ target/arm/helper.h             |  164 +-
+ target/arm/tcg/helper-a64.h     |   12 +
+ target/arm/tcg/translate-a64.h  |   18 +
+ target/arm/tcg/translate.h      |   95 +
+ target/arm/tcg/a64.decode       |  416 +++-
+ target/arm/tcg/neon-dp.decode   |   37 +-
+ target/arm/tcg/gengvec.c        | 2308 +++++++++++++++++
+ target/arm/tcg/gengvec64.c      |  367 +++
+ target/arm/tcg/neon_helper.c    |  511 +---
+ target/arm/tcg/translate-a64.c  | 4080 ++++++++++---------------------
+ target/arm/tcg/translate-neon.c |  254 +-
+ target/arm/tcg/translate-sve.c  |  145 +-
+ target/arm/tcg/translate-vfp.c  |   54 +-
+ target/arm/tcg/translate.c      | 1588 ------------
+ target/arm/tcg/vec_helper.c     |  349 ++-
+ target/arm/vfp_helper.c         |   30 -
+ target/arm/tcg/meson.build      |    2 +
+ 17 files changed, 5121 insertions(+), 5309 deletions(-)
+ create mode 100644 target/arm/tcg/gengvec.c
+ create mode 100644 target/arm/tcg/gengvec64.c
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.34.1
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmY4J8AACgkQ24/THMrX
-1yyslwf/fZ3h+ODQqbgt5MSSsOYekZRwcU3wZawlDx5gb/nhX5clI5qTmd0clobn
-wgTsuqV/0G5Cc3T5m9B7exB4A2Sp/ukb7XAUeUJPBgwFJarzk9ajgU/mWNUQm/yZ
-E2PqzMy18Ad0NisdfEtPMcATQDsti/uUVZ5bHXvWgDU03EeVzbD33Rl7mTO/+S2t
-ucZZJGNWzDDLaxu4l1ZABPsglHeArbT8KewD8wi2qFdgXHiRCtirn8TKsk8v9uo6
-IGQRY3Lk/g2YFyGwZQLBPBU3cOibs5RRVWgLtCqoF7J3QzZT33X9/9QtD/piQMl4
-EGO7Xf9B0pyPIpokQmLV7keE3dBHuA==
-=LTG+
------END PGP SIGNATURE-----
-
---fSX2++y3p9WVUB3a--
 
