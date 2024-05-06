@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5641B8BC50D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 03:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110CE8BC556
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 03:17:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3mnJ-0000Dn-HT; Sun, 05 May 2024 21:05:29 -0400
+	id 1s3moI-0003Ci-2i; Sun, 05 May 2024 21:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3mmp-0008HL-HX
- for qemu-devel@nongnu.org; Sun, 05 May 2024 21:04:59 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1s3mmx-0008P5-6R
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 21:05:19 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s3mmO-0002Wj-5l
- for qemu-devel@nongnu.org; Sun, 05 May 2024 21:04:59 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6ee13f19e7eso1119061b3a.1
+ id 1s3mmO-0002XA-65
+ for qemu-devel@nongnu.org; Sun, 05 May 2024 21:05:06 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2b4a7671abaso875745a91.0
  for <qemu-devel@nongnu.org>; Sun, 05 May 2024 18:04:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714957469; x=1715562269; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714957470; x=1715562270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CVH4TAIDRWme3yMtSBgUZ8IafS4+dEzCRM1PJD/VZRo=;
- b=i1rXVI9jcTVMQDliC0SBuOBhgsUxBHRqNynDV/vcRn3id8X6Vk8LeVWkLkYN6iP8ez
- yq7+R3hA0tdRRt18EILCtRsSVKtGSttCnJEmVS/d5FocxafS0kavoqZhuZNnJSP5Ge9b
- zlwCJ2aN6zJpgH4TdBKyA7P6OWXsUSYgXH5dWprN78g/OsiDvQZCmWT5S3W0/dK720UT
- 9bevJWXPVUfdyPzIdFLAM2CtjPJeYzSCyPagMpoQ0MKnghw1ZAhVsyX3KDMh1ibd0idn
- ufABVboDLQKDAWgUPibz/c46O8GHFdU3T3XG5u8EEpWPtk5H59GqJ2y3L1gb+ShV3kst
- aBsg==
+ bh=XbPodXVfNYDOBeFPuI23bmSPTaq8W6PthVSB/YmIGHc=;
+ b=xEJDXnh2pC61OPsT3B2r4ySQf/qWqVEwuUKICjBbdXynHLB4OrSR5nah8Xkukc5YYX
+ xSch0ttaOtU2dy6Gv53AwO0+E0bXnhf5t3bUmd05BUDbBUzGHGXciIDFucL4n3uk5Ba0
+ dDYusYRdK64Eak0x0TypzviXBj3iAmuJYHpMyXn5BFjgwR/P6U9RUWl+wWA5vBLgI+U+
+ 0eDDsgcXoT4X1HqdrZsheQMmIJFaj16XO1+nnngNFnC7IY8LQiFKfZOR1d7zrdM80bUM
+ 7ymAziiFZ8Q0m5jthHOVZe14QXks6c88s1tUmSbN7S6H1rgUDcOPGtEAgUilS/hfTwb5
+ zrBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714957469; x=1715562269;
+ d=1e100.net; s=20230601; t=1714957470; x=1715562270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CVH4TAIDRWme3yMtSBgUZ8IafS4+dEzCRM1PJD/VZRo=;
- b=HI72xMOL5T8+Kx45Nf3W84Sn7/+ysJM8ZrR5pSb+wKBZdjhNmXhqwajdivIFgqwnEN
- 1L8d9bnVT7FtyGcWlY+rJda+TNw0yjMwNte4tjAhLolmcdMSdaXOZqTEU7VeEy5rY56d
- lPWpsYW2vWnNI7zVH3/FjzpFlaPgs7rcD1VM6Z3WjrAWhqcimGA334c7jepM1VVSJGBU
- qe5emtbiuFDCK/Gby48NWdbGTMw06KmUKo8uNLzR/ZxSxoCz4fE0mAIasRl+ODjw8uFb
- WqQ77XiGh3eo3LY6KskcVxt24b32ckepkPnIEtTx5XXwxk6E5HgWPZRxM3Lb4A/vslR2
- VwXg==
-X-Gm-Message-State: AOJu0Ywjn6iYPwn/P3nu5CKYmUa4FjCW4cMIoxdNnGOyTNq3JlOfBBGZ
- fiY+ormql0kCUhdtu+Wbg50pDE8FyssWFUkdrMGZIlasF66+4UWqRw+ejrWNy3+t4bgT7g8u+Cb
- 1
-X-Google-Smtp-Source: AGHT+IHdqpl+aAlSCRLpAaTNoRKnJRtXDaso6CTfGxjHoWdJncNXoXwcYERLD9hp/rruW+OWzL8CHg==
-X-Received: by 2002:a05:6a21:339d:b0:1a7:a3ee:5e4a with SMTP id
- yy29-20020a056a21339d00b001a7a3ee5e4amr9378719pzb.33.1714957469129; 
+ bh=XbPodXVfNYDOBeFPuI23bmSPTaq8W6PthVSB/YmIGHc=;
+ b=DbVzaig7AvqDkZo+eADY+bLsIdEkZ0W1xL/OblvIYd+eJjKdFAKDg9dzMcJh36BmAB
+ 9cuuXTuYBboxb7QTkxUWDzSBSarn7D4Qg9Zi6d8D7a1U1dlLlHWAzN3lgh0zw0KpuFDm
+ MKbCcM42RuANJ4BpWtL01eaaB9GR3eN8ZgAOM+Ji8pwPEUzNISg9QToCyrGqOBcz7lsD
+ 9JLmritY5Avdif6r1iMepIjeju8p5YnMj+4z04/nN/rCbgRlYCujoz7hl2CxqYx/lac5
+ nHDJlPARjZbehf7eA/mCn5AhemCLWZ7zRM7RgSaoS/T79Ssze6z4x1UaJc5WKeogFeYS
+ PcAA==
+X-Gm-Message-State: AOJu0Yz4wjeavLBMKtUFpe9wK692Z2qRg66BKMyI9ReWvvbyiiWeZe9y
+ l+i8sb/NCSWkMLV1kIfzcpGYL1G6p4frPnanJGS9CVafEphwuH32ZMxo9/JZLFjO0nsX+wkLYfF
+ J
+X-Google-Smtp-Source: AGHT+IH1nKlQX1OvMfSGrqLWnpfiKJH0Bzm4PKXM/WrQ+1I99uqS38yQ4ASj2+dTUC4tVSTITNzObg==
+X-Received: by 2002:a17:90a:650a:b0:2a2:70f6:8f67 with SMTP id
+ i10-20020a17090a650a00b002a270f68f67mr7393275pjj.30.1714957469835; 
  Sun, 05 May 2024 18:04:29 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- pv7-20020a17090b3c8700b002a5f44353d2sm8958232pjb.7.2024.05.05.18.04.28
+ pv7-20020a17090b3c8700b002a5f44353d2sm8958232pjb.7.2024.05.05.18.04.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 May 2024 18:04:28 -0700 (PDT)
+ Sun, 05 May 2024 18:04:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 29/57] target/arm: Convert disas_simd_3same_logic to decodetree
-Date: Sun,  5 May 2024 18:03:35 -0700
-Message-Id: <20240506010403.6204-30-richard.henderson@linaro.org>
+Subject: [PATCH 30/57] target/arm: Improve vector UQADD, UQSUB, SQADD, SQSUB
+Date: Sun,  5 May 2024 18:03:36 -0700
+Message-Id: <20240506010403.6204-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240506010403.6204-1-richard.henderson@linaro.org>
 References: <20240506010403.6204-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,138 +91,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This includes AND, ORR, EOR, BIC, ORN, BSF, BIT, BIF.
+No need for a full comparison; xor produces non-zero bits
+for QC just fine.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a64.decode      | 10 +++++
- target/arm/tcg/translate-a64.c | 68 ++++++++++------------------------
- 2 files changed, 29 insertions(+), 49 deletions(-)
+ target/arm/tcg/gengvec.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 9aa4fb9bd0..d0618ca794 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -55,6 +55,7 @@
- @rrr_q1e3       ........ ... rm:5 ...... rn:5 rd:5      &qrrr_e q=1 esz=3
- @rrrr_q1e3      ........ ... rm:5 . ra:5 rn:5 rd:5      &qrrrr_e q=1 esz=3
- 
-+@qrrr_b         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=0
- @qrrr_h         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=1
- @qrrr_sd        . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=%esz_sd
- @qrrr_e         . q:1 ...... esz:2 . rm:5 ...... rn:5 rd:5  &qrrr_e
-@@ -847,6 +848,15 @@ SMINP_v         0.00 1110 ..1 ..... 10101 1 ..... ..... @qrrr_e
- UMAXP_v         0.10 1110 ..1 ..... 10100 1 ..... ..... @qrrr_e
- UMINP_v         0.10 1110 ..1 ..... 10101 1 ..... ..... @qrrr_e
- 
-+AND_v           0.00 1110 001 ..... 00011 1 ..... ..... @qrrr_b
-+BIC_v           0.00 1110 011 ..... 00011 1 ..... ..... @qrrr_b
-+ORR_v           0.00 1110 101 ..... 00011 1 ..... ..... @qrrr_b
-+ORN_v           0.00 1110 111 ..... 00011 1 ..... ..... @qrrr_b
-+EOR_v           0.10 1110 001 ..... 00011 1 ..... ..... @qrrr_b
-+BSL_v           0.10 1110 011 ..... 00011 1 ..... ..... @qrrr_b
-+BIT_v           0.10 1110 101 ..... 00011 1 ..... ..... @qrrr_b
-+BIF_v           0.10 1110 111 ..... 00011 1 ..... ..... @qrrr_b
-+
- ### Advanced SIMD scalar x indexed element
- 
- FMUL_si         0101 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a082ce8441..cbb63c9d30 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -5281,6 +5281,24 @@ TRANS(SMINP_v, do_gvec_fn3_no64, a, gen_gvec_sminp)
- TRANS(UMAXP_v, do_gvec_fn3_no64, a, gen_gvec_umaxp)
- TRANS(UMINP_v, do_gvec_fn3_no64, a, gen_gvec_uminp)
- 
-+TRANS(AND_v, do_gvec_fn3, a, tcg_gen_gvec_and)
-+TRANS(BIC_v, do_gvec_fn3, a, tcg_gen_gvec_andc)
-+TRANS(ORR_v, do_gvec_fn3, a, tcg_gen_gvec_or)
-+TRANS(ORN_v, do_gvec_fn3, a, tcg_gen_gvec_orc)
-+TRANS(EOR_v, do_gvec_fn3, a, tcg_gen_gvec_xor)
-+
-+static bool do_bitsel(DisasContext *s, bool is_q, int d, int a, int b, int c)
-+{
-+    if (fp_access_check(s)) {
-+        gen_gvec_fn4(s, is_q, d, a, b, c, tcg_gen_gvec_bitsel, 0);
-+    }
-+    return true;
-+}
-+
-+TRANS(BSL_v, do_bitsel, a->q, a->rd, a->rd, a->rn, a->rm)
-+TRANS(BIT_v, do_bitsel, a->q, a->rd, a->rm, a->rn, a->rd)
-+TRANS(BIF_v, do_bitsel, a->q, a->rd, a->rm, a->rd, a->rn)
-+
- /*
-  * Advanced SIMD scalar/vector x indexed element
-  */
-@@ -10895,52 +10913,6 @@ static void disas_simd_three_reg_diff(DisasContext *s, uint32_t insn)
-     }
+diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
+index 22c9d17dce..bfe6885a01 100644
+--- a/target/arm/tcg/gengvec.c
++++ b/target/arm/tcg/gengvec.c
+@@ -1217,21 +1217,21 @@ void gen_gvec_sshl(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+     tcg_gen_gvec_3(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
  }
  
--/* Logic op (opcode == 3) subgroup of C3.6.16. */
--static void disas_simd_3same_logic(DisasContext *s, uint32_t insn)
--{
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int rm = extract32(insn, 16, 5);
--    int size = extract32(insn, 22, 2);
--    bool is_u = extract32(insn, 29, 1);
--    bool is_q = extract32(insn, 30, 1);
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    switch (size + 4 * is_u) {
--    case 0: /* AND */
--        gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_and, 0);
--        return;
--    case 1: /* BIC */
--        gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_andc, 0);
--        return;
--    case 2: /* ORR */
--        gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_or, 0);
--        return;
--    case 3: /* ORN */
--        gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_orc, 0);
--        return;
--    case 4: /* EOR */
--        gen_gvec_fn3(s, is_q, rd, rn, rm, tcg_gen_gvec_xor, 0);
--        return;
--
--    case 5: /* BSL bitwise select */
--        gen_gvec_fn4(s, is_q, rd, rd, rn, rm, tcg_gen_gvec_bitsel, 0);
--        return;
--    case 6: /* BIT, bitwise insert if true */
--        gen_gvec_fn4(s, is_q, rd, rm, rn, rd, tcg_gen_gvec_bitsel, 0);
--        return;
--    case 7: /* BIF, bitwise insert if false */
--        gen_gvec_fn4(s, is_q, rd, rm, rd, rn, tcg_gen_gvec_bitsel, 0);
--        return;
--
--    default:
--        g_assert_not_reached();
--    }
--}
--
- /* Integer op subgroup of C3.6.16. */
- static void disas_simd_3same_int(DisasContext *s, uint32_t insn)
+-static void gen_uqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_uqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
  {
-@@ -11206,12 +11178,10 @@ static void disas_simd_three_reg_same(DisasContext *s, uint32_t insn)
-     int opcode = extract32(insn, 11, 5);
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_add_vec(vece, x, a, b);
+     tcg_gen_usadd_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
  
-     switch (opcode) {
--    case 0x3: /* logic ops */
--        disas_simd_3same_logic(s, insn);
--        break;
-     default:
-         disas_simd_3same_int(s, insn);
-         break;
-+    case 0x3: /* logic ops */
-     case 0x14: /* SMAXP, UMAXP */
-     case 0x15: /* SMINP, UMINP */
-     case 0x17: /* ADDP */
+ void gen_gvec_uqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_usadd_vec, INDEX_op_cmp_vec, INDEX_op_add_vec, 0
++        INDEX_op_usadd_vec, INDEX_op_add_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_uqadd_vec,
+@@ -1259,21 +1259,21 @@ void gen_gvec_uqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_sqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_sqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_add_vec(vece, x, a, b);
+     tcg_gen_ssadd_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_sqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_ssadd_vec, INDEX_op_cmp_vec, INDEX_op_add_vec, 0
++        INDEX_op_ssadd_vec, INDEX_op_add_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_sqadd_vec,
+@@ -1301,21 +1301,21 @@ void gen_gvec_sqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_uqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_uqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_sub_vec(vece, x, a, b);
+     tcg_gen_ussub_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_uqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_ussub_vec, INDEX_op_cmp_vec, INDEX_op_sub_vec, 0
++        INDEX_op_ussub_vec, INDEX_op_sub_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_uqsub_vec,
+@@ -1343,21 +1343,21 @@ void gen_gvec_uqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_sqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_sqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_sub_vec(vece, x, a, b);
+     tcg_gen_sssub_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_sqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_sssub_vec, INDEX_op_cmp_vec, INDEX_op_sub_vec, 0
++        INDEX_op_sssub_vec, INDEX_op_sub_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_sqsub_vec,
 -- 
 2.34.1
 
