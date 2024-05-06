@@ -2,90 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280DF8BC826
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 178D28BC85B
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:29:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3sXR-0000cp-Ad; Mon, 06 May 2024 03:13:29 -0400
+	id 1s3slw-0004oO-T6; Mon, 06 May 2024 03:28:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1s3sX9-0000c0-6D
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:13:11 -0400
-Received: from fout8-smtp.messagingengine.com ([103.168.172.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>) id 1s3sX2-00084U-3W
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:13:08 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailfout.nyi.internal (Postfix) with ESMTP id 4B5F91380097;
- Mon,  6 May 2024 03:13:01 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Mon, 06 May 2024 03:13:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1714979581; x=
- 1715065981; bh=FnOn90UbIzbektb8O/fqi76ef1wt9a4KE8F/dvxGVUQ=; b=e
- 4nulRnS9mXfkymiM3kdL1mfw730z4BBnaF/QuPqr7bv5tQNSGn81MXMaFAhFhxX8
- DccAoOq/NYPvwuUZ8Wxg8166UKaVR851Koay3lw7N0TXNZNmE9A8VErfjm9jY4/W
- yf2u81CHwxWu65HPL9u4kIh8jAI7EU+8Sm4PTDJtXkxljnoYtGWEo27X3MwxNdgl
- Emt5Q/szH1HTUoVACvyGHsllsYldNRM4Dy/V/CzX+kfDDs/sPHYgNXG7Z1SscKKx
- wQqTqvorU+00yQ4Oacva00VGHTJyqKV3Z+PzEW8wnBY9YFby8utwfWUO03Mlzg0B
- U7GPKHKVqyp4P8XNLddaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1714979581; x=1715065981; bh=FnOn90UbIzbektb8O/fqi76ef1wt
- 9a4KE8F/dvxGVUQ=; b=h6wR52ROyuRongCnOVL8MDOjn3Jq2HW98GlZAmURBDcK
- e0sWrsRkZsR2zhmVoL6inI5r7opBe7DfWay9aXof0qaeKarbw25N0QlarK/K5vqh
- okjdcN0B+7FCiU0U6iBFxt+qiD5xfHex7gMfvWMWumwc4WNZCO5LjM4D95IszlPz
- zm3+c0wliujG5f3yNv1dlTrF50OJsTqeYH/fcrU/xKFfJXpAJhMYIzP+OKXd460Z
- 9ZjnKcTyW+qgdueVzmlT14G20N51l8fpjcwGNAYYyL/yClEnKpCZYJ+zAVWP2fOk
- sw1KyQ4xjk1bAZkyqR7BEtrmfL4x/75YDpZuXh7lUg==
-X-ME-Sender: <xms:_II4ZmuAM-i6ONUhdx_DkV5BXJhafxJLA3LSdFixfT2d2Mq7UMonXQ>
- <xme:_II4Zrfr55c6AdMPl67-3dKgu3A3egmJuLxlpl7iC59NjpBlWnc1VGK5dchCpMwIo
- 6ZfiIMeOd8JlHvV-Rs>
-X-ME-Received: <xmr:_II4ZhwfmgECf8KpM2DRMstwoqJxrJ8CjZhQXzpc9UUqWC4KlGeM_5iFxloK>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddvhedgudduiecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
- uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
- ffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- hithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:_II4ZhPTRWHq8vgjxgAXYTHkd3UNiX53BBr8uJ2j_Y-Tg23-sj7puQ>
- <xmx:_II4Zm-1JXL_qEN6ubr0rifMp1H0caz4DU4pzOCViFDsNg1VVY2Y3A>
- <xmx:_II4ZpWWSoBap9FODTqXrwBYkkPh7X0NE3Pfr5cXakJ2yO81o5mwHg>
- <xmx:_II4ZveMBR1v7wU1DefBc75SvnIELVbNIQJtUZ_GTZ5PydDqFKeXVg>
- <xmx:_YI4ZtlHnKcy3ap-LEkj1zQfHo_IFRkU2ouU2u7QwXb8nilx7a-x1SWt>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 May 2024 03:13:00 -0400 (EDT)
-Date: Mon, 6 May 2024 09:12:55 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Vincent Fu <vincentfu@gmail.com>
-Cc: qemu-devel@nongnu.org, k.jensen@samsung.com,
- Vincent Fu <vincent.fu@samsung.com>
-Subject: Re: [PATCH] hw/nvme: fix number of PIDs for FDP RUH update
-Message-ID: <ZjiC9zVPuRJ81nBE@cormorant.local>
-References: <20240503175004.1573-1-vincent.fu@samsung.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3skh-0004Te-2v
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:27:14 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3skR-00058T-Ra
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:27:09 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-41dc9c83e57so21464545e9.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714980413; x=1715585213; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=R2iZSo2OZ5TU+QCPEHkJIeNkbXqV81wBC0Jjzr20pA4=;
+ b=FikLF/jYzapsNrp3x4K09jNBzuK8SXkRr196sHz79HxY+lxQkOsTRGpMyqGoL+d7Jx
+ cpp6u8vPOY0mg/+mxs2eGqUm2jWdWyORE1Ktf61yuFtiRkthapdyq3CG2c6Q+/wBkdn8
+ xh1we+EyxPX3b2eE6vFzCHpUYsTaAw+LWo/nOxEPdZLkB1xLSfsoGbvbdqrfiUZBKTaY
+ crIJc2N9ND2b+q2YFjMR9/15GH5+RzCXCwJ+HnL8aOPy5/FM1O2R+OVAkDvLZQK5yeBh
+ p68/q2JOCQ1DQSVrYZjXiUdp0mrNiuimtcMFAutuS3oG3je6jelLPMRZgeFKDOIpZy+/
+ lLfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714980413; x=1715585213;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=R2iZSo2OZ5TU+QCPEHkJIeNkbXqV81wBC0Jjzr20pA4=;
+ b=izLy2dQw4kUJ23uPCQSqGV+AXWaml6If6Ul0MEjAmSFoHpW0VfTyfpCRIKrqjZTAYJ
+ wdoV5enlBo1KbDUfZ1vG8JtI8cKOU1seEgflIJVVElZP46r9BFQ1InBW5Tt+Jm3dt2SS
+ XmfstYysqJdnCBGau+4l6eI4Q1aktAx/rUIiy4vVPh8KgHsngOje1+Ghgw0SjYXo2bw0
+ u6U4A7jYjmKBT5v1sKHyK7jwrlbrNry7ItejzBgXNS2w+Xsf/Mhs+bR41ItXH+Cr+whD
+ KfT7bnJISUSYmvjXZNqSIgyZy7z1ZWqRY1whgXgJPmTH04IL2fzAFBxGaMvhsajXu2C9
+ +jkA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXJqIpjPE8xTcfqyk1oa10iWv+Kqw+rKRO8doJwOEZx0/or5SPWjJr/Gm4DWAHXbokQ8L3i0fCI9Nwvi2fej0rXqHOSVio=
+X-Gm-Message-State: AOJu0Yw/1hmzzX97K77eEVFZYk/GEQlOFRqSpnvCl3v1XtI0+5ocaxq1
+ d3NFHXStKDxJ00XaTIU0CQodw56OY3WosxnNSAD3J1r2N3IX/l2E08gxdzfpH50=
+X-Google-Smtp-Source: AGHT+IEMRFFRIi8vVQ9vhp+ydBguevZUIz72fmVm8JM/nBWL17wc9x1JIJo9v2NqxtukfPPJPRXL8Q==
+X-Received: by 2002:a05:600c:3b99:b0:418:bdcd:e59b with SMTP id
+ n25-20020a05600c3b9900b00418bdcde59bmr10961862wms.7.1714980413262; 
+ Mon, 06 May 2024 00:26:53 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.211.4])
+ by smtp.gmail.com with ESMTPSA id
+ je8-20020a05600c1f8800b0041bf28aa11dsm14993283wmb.42.2024.05.06.00.26.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 May 2024 00:26:52 -0700 (PDT)
+Message-ID: <c9eb8dda-b716-4409-965d-4d43edfb29d5@linaro.org>
+Date: Mon, 6 May 2024 09:26:50 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="TLvKzQMBfu3xAMD3"
-Content-Disposition: inline
-In-Reply-To: <20240503175004.1573-1-vincent.fu@samsung.com>
-Received-SPF: pass client-ip=103.168.172.151; envelope-from=its@irrelevant.dk;
- helo=fout8-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] include/exec/cpu-common.h: Rename PAGE_BITS macro to
+ PAGE_RWX
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-trivial@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240505121008.44A0D4E602D@zero.eik.bme.hu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240505121008.44A0D4E602D@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,64 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---TLvKzQMBfu3xAMD3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On May  3 13:50, Vincent Fu wrote:
-> The number of PIDs is in the upper 16 bits of cdw10. So we need to
-> right-shift by 16 bits instead of only a single bit.
->=20
-> Signed-off-by: Vincent Fu <vincent.fu@samsung.com>
+On 5/5/24 14:10, BALATON Zoltan wrote:
+> This macro can be used to abbreviate PAGE_READ | PAGE_WRITE | PAGE_EXEC
+> for which PAGE_RWX is a better name and renaming it also shows it is
+> not related to TARGET_PAGE_BITS.
+> 
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  hw/nvme/ctrl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index 127c3d2383..e89f9f7808 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -4352,7 +4352,7 @@ static uint16_t nvme_io_mgmt_send_ruh_update(NvmeCt=
-rl *n, NvmeRequest *req)
->      NvmeNamespace *ns =3D req->ns;
->      uint32_t cdw10 =3D le32_to_cpu(cmd->cdw10);
->      uint16_t ret =3D NVME_SUCCESS;
-> -    uint32_t npid =3D (cdw10 >> 1) + 1;
-> +    uint32_t npid =3D (cdw10 >> 16) + 1;
->      unsigned int i =3D 0;
->      g_autofree uint16_t *pids =3D NULL;
->      uint32_t maxnpid;
-> --=20
-> 2.43.0
->=20
+>   accel/tcg/user-exec.c      | 2 +-
+>   bsd-user/mmap.c            | 6 +++---
+>   include/exec/cpu-common.h  | 2 +-
+>   linux-user/elfload.c       | 2 +-
+>   linux-user/mmap.c          | 2 +-
+>   target/cris/mmu.c          | 4 ++--
+>   target/microblaze/helper.c | 2 +-
+>   7 files changed, 10 insertions(+), 10 deletions(-)
 
-Hi Vincent,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thanks, LGTM! Applied to nvme-next!
+and patch queued, thanks!
 
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
-
-I'll also add,
-
-Cc: qemu-stable@nongnu.org
-Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
-
---TLvKzQMBfu3xAMD3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmY4gvYACgkQTeGvMW1P
-DemrLAf+LHMavj4uK5Mj5opww2bjXGhNKO3ujOOHZfpq031TXM+6Q/I5ik9Le0Cx
-udH4VI4QLrirNHy/oASvBH+QKeVzAZsA3b2rts9535vF7AZE8MYzQoaGuRxGj40B
-qQNe1LCOYGBU+fNGt6lkcUQmTmOB3LDeKPjT4SUYMJM45LjqPjuf7Ys6zviO4d7J
-xcVIsyPae5gbJIoT5F7UfVNxJYBu9ZreWo1osLmy0yWo5fcmVLuUAxqmzbt89CLT
-BJk9ptYYCzPa4Ub2CoTivQXYCnaGjom2KWUBTXgLSAGeJj5dqNuI2bQ+co2aUpSW
-HkdKjKnC/hvhzBzeJiLcL3y4hz2ayw==
-=jOPi
------END PGP SIGNATURE-----
-
---TLvKzQMBfu3xAMD3--
 
