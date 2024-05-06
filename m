@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17BC8BD18E
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C7A8BD18F
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 17:33:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s40Ju-0007jx-8I; Mon, 06 May 2024 11:32:02 -0400
+	id 1s40Jv-0007kD-8A; Mon, 06 May 2024 11:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s40Jp-0007hH-Rn
+ id 1s40Jr-0007hw-DE
  for qemu-devel@nongnu.org; Mon, 06 May 2024 11:31:59 -0400
 Received: from wfhigh1-smtp.messagingengine.com ([64.147.123.152])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s40Jm-0003Oy-Rs
- for qemu-devel@nongnu.org; Mon, 06 May 2024 11:31:57 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfhigh.west.internal (Postfix) with ESMTP id 80DE218000D3;
- Mon,  6 May 2024 11:31:53 -0400 (EDT)
+ id 1s40Jo-0003RL-OQ
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 11:31:59 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailfhigh.west.internal (Postfix) with ESMTP id 30A421800153;
+ Mon,  6 May 2024 11:31:55 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Mon, 06 May 2024 11:31:53 -0400
+ by compute2.internal (MEProxy); Mon, 06 May 2024 11:31:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm1; t=1715009513;
- x=1715095913; bh=zSuWjtonhAvpP4vNszbrhHmYCXZDb4UBfgKX0cnoSL0=; b=
- rbaLDADTSjnTGw0axYkJbC7X/MZhZfIKK6klrN6qvoNSahUg4DdVooXLQL2Xa7nl
- R9qntdRhKSoyJWup5zXHVNqeZB/afdRhBJnsWfrKocs8bNzU2bqSN9rVp3gMt+lA
- NY+LW+/ltQONAM06IWcDvdAi6v+bbVTmz5D7FFg5qC/dB2x0dR67CCfpUtJm95Ov
- ExXJTwRvjMjFyVasijTOL7F3yMaB6SxlaSGgxjcl48wq30spjdl8MYq3MhlJlAQJ
- 1Nsd5+//tIxzH+XePb6UujgKRHhPkaDlft07VynnIuVAF2lje+x0BsQqj5Pqku0t
- GBf5gHI9JtV92aRLZ5Av4g==
+ :references:reply-to:subject:subject:to:to; s=fm1; t=1715009514;
+ x=1715095914; bh=nPIbGPamlN+9KKqIN+ZYNQjFTgy446GDwC+t8kWt5Mo=; b=
+ SU1pVRz5c/o04E/X/JByliBslJhzlKM+tTD3yrwnGCp49ncYw7tfR1Q0peVVBHkI
+ y9YuEHh3L2jES6Wd+qxLoDOa0g5xQcChKlVCWzCS9qYQ7is3V74qWY8QCaATTYot
+ XXLEyKqcqcFpfO2dKCy4RWNMRdxVLORqgKDX5K1v5y1ElMOGFZD14bDcOhrAcUt6
+ i4Hos4ZyUGJPvzWc4Gz6S+DDzUZefxQQg1V+s7PJSQIBOw83X3tPGnbYeE/zG/B4
+ /FwiivgakzSCQVdF3KHb3+gH8vPqEkTxiGxNgRcoSoHCA8HUl/qlgJ6vLGn5IgwC
+ RtRsjrrEObihHdStNWwn2A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715009513; x=
- 1715095913; bh=zSuWjtonhAvpP4vNszbrhHmYCXZDb4UBfgKX0cnoSL0=; b=R
- kFXBLFY+HAwKlQp996KoSZ5rJ8F4jUqzVOZCnJbLhGN9AI0zxEJ0nGnpi/6u0zOV
- wdA1K8WgtxRk2NkmfIS4sPUsJKGMgaL2Un7W5NbPsgBBgdIrgQ7glwxTDOt2jaJL
- Pn1chn2iwMQRFpO+1uzE2QcvbPvPQzSCXSZkGUciO2ZHlZxpIcEPFdHOoW+SUNtq
- q4KFEbaDK7taH41gZFb2HZVsBvLaL8AYiqeBVbImiLBiTARlxRWk8+5nLbb8jEAT
- 3ahDgX04vOAQYh/oY2zkDyO9ooACaJNBzx0g0MuHvtyjU2wGyWOVM7TiryTtLPAm
- HxZMLwPGilTMdrtwup/5Q==
-X-ME-Sender: <xms:6Pc4ZsF0hKZe34eRwYHwXyfAdB7piiJ7Nf6LnlZBr9dyT6pMSakNHg>
- <xme:6Pc4ZlU4LS9Wi9P_pl3zwz-rQKZZzdaaXXWBInLjBv_1WHkfiZpOZN1db5HoXvnIF
- 1Nq0VTs77iyngEaHYM>
-X-ME-Received: <xmr:6Pc4ZmKymVI0HHIC-5HC3M0fMCngb4Jh2Q64D1YHoZTmgYm1dsY3Gls>
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715009514; x=
+ 1715095914; bh=nPIbGPamlN+9KKqIN+ZYNQjFTgy446GDwC+t8kWt5Mo=; b=N
+ AKwTAZEBRSGe6n4t7CHZvE0q+VnsqImdiVgdUGw8VFhuuE0ARt3QAJb7Taq5Kppv
+ mjGmpRvGHh2/oLjJr/M12X4MrLOpqc5qyJtYV4Ko88R8Vq1Swji7GLW/yk8ayBxl
+ yjcKo0llzQRaCSfK7yacUHY6lK7+IKDfFnX84lA7envgGIs7ryczTCBdf2+Aeyro
+ 0ggHfWq7gg6ZJ7jXJn6vOteku55ImzWXNBkIjZ0Nt0jjn8bOSANQjZ0a7yeN74zL
+ In5B6zo2QRB+EwNVV6XbWg8xvWwRcDO3QfgdBGCmGg90NOQaUkswTFITMv0iRSSy
+ 0qgRgy8vsLbMFOWHK0RcQ==
+X-ME-Sender: <xms:6vc4ZqD6A1bbNJZgmgNRs_8Q06yITop_6-SOgs5sUMmld1yGuTTsWg>
+ <xme:6vc4ZkiSU0Ywr-OzyssdekxQGSdO8Ke4xQiJvqWLnVEK743UCdRrUmsk5FF0nahzQ
+ NFxKX3wCGHyvUpXw3I>
+X-ME-Received: <xmr:6vc4ZtlQwkjkX3RYPPhTKkPI0T7a61clPa8crWrXJ46oFQ3VKWGFMIc>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddviedgledtucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -59,34 +59,34 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddviedgledtucetufdoteggod
  cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
  veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
  hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:6Pc4ZuFr8PQ5WL9ZeSiNlfQkrlbYwqtfAY89FcXxAMP_ufMzwrp6Iw>
- <xmx:6fc4ZiXZ-RgQZt0gh4lMSArk8thAJ6mnMfgKtAC9snXZlG1wcBtfVg>
- <xmx:6fc4ZhNPe-BlfZXnyHIcXjgU1s-8-IX4Ss18Phq2l70oc5a3Rj7ZTA>
- <xmx:6fc4Zp1OrS90chXHfxhmmdlnIXXvxaL4xX695ldsNF8WfHPDld55Jw>
- <xmx:6fc4ZhRkaaa2SbpwL-W87hNb4_6DMIHuTjLs6xYM0NB15yOY52g-YVmy>
+X-ME-Proxy: <xmx:6vc4ZozOTor1Zfcs9jlK_YwFKO6NtFM7zhg47GSVywnnM5R5WsuWNw>
+ <xmx:6vc4ZvR9c77_9Raz3m7tyZajI344mZbi0r2wYVyLtX75QQSWwzAieA>
+ <xmx:6vc4ZjZ1LBD4fcPIGWauzR5a1VM5VX9lBogKG2C0Hh6xZWuw0wxTeA>
+ <xmx:6vc4ZoT9oSjh2Cp0q7pXAwoGd1TchczTKYWMaxCOh76hbI2d7Lho6Q>
+ <xmx:6vc4ZpcL_hK-DotKrOI3J9qvyXTvVwukAQT7Z45qi_f10fFXbnn2-uaB>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 6 May 2024 11:31:52 -0400 (EDT)
+ 6 May 2024 11:31:53 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Mon, 06 May 2024 16:31:37 +0100
-Subject: [PATCH 3/5] hw/msic/mips_cpc: Implement multi core support
+Date: Mon, 06 May 2024 16:31:38 +0100
+Subject: [PATCH 4/5] hw/mips/cps: Implement multi core support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240506-mips-smp-v1-3-3cc234786910@flygoat.com>
+Message-Id: <20240506-mips-smp-v1-4-3cc234786910@flygoat.com>
 References: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
 In-Reply-To: <20240506-mips-smp-v1-0-3cc234786910@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8389;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6178;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=KYFqNiS8gSxVVeBLA/WE1udVx7/n3BTMqPVVrQQtEP4=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSL749/XeFWqRQ43Hu9k8uEmW1FQ6B1zxyZjUovir6KC
- tY9KXHrKGVhEONgkBVTZAkRUOrb0HhxwfUHWX9g5rAygQxh4OIUgInYZTEyrNy64ePDhut7m3mO
- lbxYyfuF3ZtnT2XKHk9by+r6LW0zVBl+s+wz9fVbYfY34poe4wyZR7cZ1/a5x7YfLUzldjt21ec
- oMwA=
+ bh=/FjpNTd8i6ZiVBgPVy4jFS2xatx8RS7XQ1Hw3unLW38=;
+ b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSL748PM0v6eK1lFHq3YKrZUlXOrc9mlD511q9NrOae6
+ nL7cjJTRykLgxgHg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAExkFR/DHx7LnpULs/+HzLp2
+ /tflc1Y3ziSfdd9qGBgpE2SlzZa8tpGR4RbfoktF179eVZmbNEt6UoTIywOfVpaWemaefLxLwqn
+ flRkA
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=64.147.123.152;
@@ -113,240 +113,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement multiple physical core support for MIPS CPC
-controller. Including some R/O configuration registers
-and VP bring up support on multiple cores.
+Implement multiple physical core support by creating
+CPU devices accorading to the new topology and passing
+pcore/vp information to CPC and CMGCR sub-devices.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- hw/misc/mips_cpc.c         | 97 ++++++++++++++++++++++++++++++++++------------
- include/hw/misc/mips_cpc.h | 15 ++++++-
- 2 files changed, 85 insertions(+), 27 deletions(-)
+ hw/mips/cps.c         | 66 +++++++++++++++++++++++++++++++--------------------
+ include/hw/mips/cps.h |  1 +
+ 2 files changed, 41 insertions(+), 26 deletions(-)
 
-diff --git a/hw/misc/mips_cpc.c b/hw/misc/mips_cpc.c
-index 1e8fd2e699..f6a2f29088 100644
---- a/hw/misc/mips_cpc.c
-+++ b/hw/misc/mips_cpc.c
-@@ -25,9 +25,25 @@
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
- 
-+#include "hw/misc/mips_cmgcr.h"
- #include "hw/misc/mips_cpc.h"
- #include "hw/qdev-properties.h"
- 
-+static inline int cpc_vpnum_to_corenum(MIPSCPCState *cpc, int vpnum)
-+{
-+    return vpnum / cpc->num_vp;
-+}
-+
-+static inline int cpc_vpnum_to_vpid(MIPSCPCState *cpc, int vpnum)
-+{
-+    return vpnum % cpc->num_vp;
-+}
-+
-+static inline MIPSCPCPCoreState *cpc_vpnum_to_pcs(MIPSCPCState *cpc, int vpnum)
-+{
-+    return &cpc->pcs[cpc_vpnum_to_corenum(cpc, vpnum)];
-+}
-+
- static inline uint64_t cpc_vp_run_mask(MIPSCPCState *cpc)
- {
-     return (1ULL << cpc->num_vp) - 1;
-@@ -39,36 +55,41 @@ static void mips_cpu_reset_async_work(CPUState *cs, run_on_cpu_data data)
- 
-     cpu_reset(cs);
-     cs->halted = 0;
--    cpc->vp_running |= 1ULL << cs->cpu_index;
-+    cpc_vpnum_to_pcs(cpc, cs->cpu_index)->vp_running |=
-+            1 << cpc_vpnum_to_vpid(cpc, cs->cpu_index);
- }
- 
--static void cpc_run_vp(MIPSCPCState *cpc, uint64_t vp_run)
-+static void cpc_run_vp(MIPSCPCState *cpc, int pcore, uint64_t vp_run)
- {
--    CPUState *cs = first_cpu;
-+    MIPSCPCPCoreState *pcs = &cpc->pcs[pcore];
- 
--    CPU_FOREACH(cs) {
--        uint64_t i = 1ULL << cs->cpu_index;
--        if (i & vp_run & ~cpc->vp_running) {
-+    for (int vpid = 0; vpid < cpc->num_vp; vpid++) {
-+        if ((1 << vpid) & vp_run & ~pcs->vp_running) {
-+            int vpnum = pcore * cpc->num_vp + vpid;
-             /*
-              * To avoid racing with a CPU we are just kicking off.
-              * We do the final bit of preparation for the work in
-              * the target CPUs context.
-              */
--            async_safe_run_on_cpu(cs, mips_cpu_reset_async_work,
--                                  RUN_ON_CPU_HOST_PTR(cpc));
-+            async_safe_run_on_cpu(qemu_get_cpu(vpnum),
-+                                    mips_cpu_reset_async_work,
-+                                    RUN_ON_CPU_HOST_PTR(cpc));
-+            pcs->vp_running |= 1 << vpid;
-         }
-     }
- }
- 
--static void cpc_stop_vp(MIPSCPCState *cpc, uint64_t vp_stop)
-+static void cpc_stop_vp(MIPSCPCState *cpc, int pcore, uint64_t vp_stop)
- {
--    CPUState *cs = first_cpu;
-+    MIPSCPCPCoreState *pcs = &cpc->pcs[pcore];
-+
-+    for (int vpid = 0; vpid < cpc->num_vp; vpid++) {
-+        if ((1 << vpid) & vp_stop & pcs->vp_running) {
-+            int vpnum = pcore * cpc->num_vp + vpid;
-+            CPUState *cs = qemu_get_cpu(vpnum);
- 
--    CPU_FOREACH(cs) {
--        uint64_t i = 1ULL << cs->cpu_index;
--        if (i & vp_stop & cpc->vp_running) {
-             cpu_interrupt(cs, CPU_INTERRUPT_HALT);
--            cpc->vp_running &= ~i;
-+            pcs->vp_running &= ~(1 << vpid);
-         }
-     }
- }
-@@ -77,15 +98,20 @@ static void cpc_write(void *opaque, hwaddr offset, uint64_t data,
-                       unsigned size)
- {
-     MIPSCPCState *s = opaque;
-+    int current_corenum = cpc_vpnum_to_corenum(s, current_cpu->cpu_index);
- 
-     switch (offset) {
-     case CPC_CL_BASE_OFS + CPC_VP_RUN_OFS:
-+        cpc_run_vp(s, current_corenum, data);
-+        break;
-     case CPC_CO_BASE_OFS + CPC_VP_RUN_OFS:
--        cpc_run_vp(s, data & cpc_vp_run_mask(s));
-+        cpc_run_vp(s, mips_gcr_get_redirect_corenum(s->gcr), data);
-         break;
-     case CPC_CL_BASE_OFS + CPC_VP_STOP_OFS:
-+        cpc_stop_vp(s, current_corenum, data);
-+        break;
-     case CPC_CO_BASE_OFS + CPC_VP_STOP_OFS:
--        cpc_stop_vp(s, data & cpc_vp_run_mask(s));
-+        cpc_stop_vp(s, mips_gcr_get_redirect_corenum(s->gcr), data);
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP,
-@@ -101,9 +127,13 @@ static uint64_t cpc_read(void *opaque, hwaddr offset, unsigned size)
-     MIPSCPCState *s = opaque;
- 
-     switch (offset) {
-+    case CPC_CL_BASE_OFS + CPC_CL_STAT_CONF_OFS:
-+    case CPC_CO_BASE_OFS + CPC_CL_STAT_CONF_OFS:
-+        return CPC_CL_STAT_CONF_SEQ_STATE_U6 << CPC_CL_STAT_CONF_SEQ_STATE_SHF;
-     case CPC_CL_BASE_OFS + CPC_VP_RUNNING_OFS:
-+        return cpc_vpnum_to_pcs(s, current_cpu->cpu_index)->vp_running;
-     case CPC_CO_BASE_OFS + CPC_VP_RUNNING_OFS:
--        return s->vp_running;
-+        return s->pcs[mips_gcr_get_redirect_corenum(s->gcr)].vp_running;
-     default:
-         qemu_log_mask(LOG_UNIMP,
-                       "%s: Bad offset 0x%x\n",  __func__, (int)offset);
-@@ -137,9 +167,11 @@ static void mips_cpc_realize(DeviceState *dev, Error **errp)
-     if (s->vp_start_running > cpc_vp_run_mask(s)) {
-         error_setg(errp,
-                    "incorrect vp_start_running 0x%" PRIx64 " for num_vp = %d",
--                   s->vp_running, s->num_vp);
-+                   s->vp_start_running, s->num_vp);
+diff --git a/hw/mips/cps.c b/hw/mips/cps.c
+index 07b73b0a1f..6cf02379a9 100644
+--- a/hw/mips/cps.c
++++ b/hw/mips/cps.c
+@@ -73,31 +73,43 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
          return;
      }
+ 
+-    for (int i = 0; i < s->num_vp; i++) {
+-        MIPSCPU *cpu = MIPS_CPU(object_new(s->cpu_type));
+-        CPUMIPSState *env = &cpu->env;
++    object_initialize_child(OBJECT(dev), "gcr", &s->gcr, TYPE_MIPS_GCR);
+ 
+-        /* All VPs are halted on reset. Leave powering up to CPC. */
+-        object_property_set_bool(OBJECT(cpu), "start-powered-off", true,
+-                                 &error_abort);
++    for (int corenum = 0; corenum < s->num_pcore; corenum++) {
++        for (int vpid = 0; vpid < s->num_vp; vpid++) {
++            int vpnum = corenum * s->num_vp + vpid;
++            int32_t globalnumber = (corenum << CP0GN_CoreNum) | vpid;
+ 
+-        /* All cores use the same clock tree */
+-        qdev_connect_clock_in(DEVICE(cpu), "clk-in", s->clock);
++            MIPSCPU *cpu = MIPS_CPU(object_new(s->cpu_type));
++            CPUMIPSState *env = &cpu->env;
+ 
+-        if (!qdev_realize_and_unref(DEVICE(cpu), NULL, errp)) {
+-            return;
+-        }
++            /* All VPs are halted on reset. Leave powering up to CPC. */
++            object_property_set_bool(OBJECT(cpu), "start-powered-off", true,
++                                    &error_abort);
 +
-+    s->pcs = g_new(MIPSCPCPCoreState, s->num_pcores);
++            object_property_set_int(OBJECT(cpu), "globalnumber", globalnumber,
++                                    &error_abort);
++
++            /* All cores use the same clock tree */
++            qdev_connect_clock_in(DEVICE(cpu), "clk-in", s->clock);
++
++            if (!qdev_realize_and_unref(DEVICE(cpu), NULL, errp)) {
++                return;
++            }
++
++            g_assert(vpnum == CPU(cpu)->cpu_index);
+ 
+-        /* Init internal devices */
+-        cpu_mips_irq_init_cpu(cpu);
+-        cpu_mips_clock_init(cpu);
++            /* Init internal devices */
++            cpu_mips_irq_init_cpu(cpu);
++            cpu_mips_clock_init(cpu);
+ 
+-        if (cpu_mips_itu_supported(env)) {
+-            itu_present = true;
+-            /* Attach ITC Tag to the VP */
+-            env->itc_tag = mips_itu_get_tag_region(&s->itu);
++            if (cpu_mips_itu_supported(env)) {
++                itu_present = true;
++                /* Attach ITC Tag to the VP */
++                env->itc_tag = mips_itu_get_tag_region(&s->itu);
++            }
++            qemu_register_reset(main_cpu_reset, cpu);
+         }
+-        qemu_register_reset(main_cpu_reset, cpu);
+     }
+ 
+     /* Inter-Thread Communication Unit */
+@@ -119,8 +131,12 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+     object_initialize_child(OBJECT(dev), "cpc", &s->cpc, TYPE_MIPS_CPC);
+     object_property_set_uint(OBJECT(&s->cpc), "num-vp", s->num_vp,
+                             &error_abort);
++    object_property_set_uint(OBJECT(&s->cpc), "num-pcore", s->num_pcore,
++                            &error_abort);
+     object_property_set_int(OBJECT(&s->cpc), "vp-start-running", 1,
+                             &error_abort);
++    object_property_set_link(OBJECT(&s->cpc), "gcr", OBJECT(&s->gcr),
++                            &error_abort);
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->cpc), errp)) {
+         return;
+     }
+@@ -130,7 +146,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+ 
+     /* Global Interrupt Controller */
+     object_initialize_child(OBJECT(dev), "gic", &s->gic, TYPE_MIPS_GIC);
+-    object_property_set_uint(OBJECT(&s->gic), "num-vp", s->num_vp,
++    object_property_set_uint(OBJECT(&s->gic), "num-vp", s->num_vp * s->num_pcore,
+                             &error_abort);
+     object_property_set_uint(OBJECT(&s->gic), "num-irq", 128,
+                             &error_abort);
+@@ -141,16 +157,13 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
+     memory_region_add_subregion(&s->container, 0,
+                             sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->gic), 0));
+ 
+-    /* Global Configuration Registers */
+-    gcr_base = MIPS_CPU(first_cpu)->env.CP0_CMGCRBase << 4;
+-
+-    object_initialize_child(OBJECT(dev), "gcr", &s->gcr, TYPE_MIPS_GCR);
++    gcr_base = GCR_BASE_ADDR;
++    object_property_set_uint(OBJECT(&s->gcr), "num-pcores", s->num_pcore,
++                            &error_abort);
+     object_property_set_uint(OBJECT(&s->gcr), "num-vp", s->num_vp,
+                             &error_abort);
+     object_property_set_int(OBJECT(&s->gcr), "gcr-rev", 0x800,
+                             &error_abort);
+-    object_property_set_int(OBJECT(&s->gcr), "gcr-base", gcr_base,
+-                            &error_abort);
+     object_property_set_link(OBJECT(&s->gcr), "gic", OBJECT(&s->gic.mr),
+                              &error_abort);
+     object_property_set_link(OBJECT(&s->gcr), "cpc", OBJECT(&s->cpc.mr),
+@@ -164,6 +177,7 @@ static void mips_cps_realize(DeviceState *dev, Error **errp)
  }
  
- static void mips_cpc_reset(DeviceState *dev)
-@@ -147,25 +179,40 @@ static void mips_cpc_reset(DeviceState *dev)
-     MIPSCPCState *s = MIPS_CPC(dev);
- 
-     /* Reflect the fact that all VPs are halted on reset */
--    s->vp_running = 0;
-+    for (int i = 0; i < s->num_pcores; i++) {
-+        s->pcs[i].vp_running = 0;
-+    }
- 
--    /* Put selected VPs into run state */
--    cpc_run_vp(s, s->vp_start_running);
-+    /* Put selected VPs on core 0 into run state */
-+    cpc_run_vp(s, 0, s->vp_start_running);
- }
- 
--static const VMStateDescription vmstate_mips_cpc = {
--    .name = "mips-cpc",
-+static const VMStateDescription vmstate_mips_cpc_pcs = {
-+    .name = "mips-cpc/pcs",
-     .version_id = 0,
-     .minimum_version_id = 0,
-     .fields = (const VMStateField[]) {
--        VMSTATE_UINT64(vp_running, MIPSCPCState),
-+        VMSTATE_UINT64(vp_running, MIPSCPCPCoreState),
-+        VMSTATE_END_OF_LIST()
-+    },
-+};
-+
-+static const VMStateDescription vmstate_mips_cpc = {
-+    .name = "mips-cpc",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_STRUCT_VARRAY_ALLOC(pcs, MIPSCPCState, num_pcores, 0,
-+                                    vmstate_mips_cpc_pcs, MIPSCPCPCoreState),
-         VMSTATE_END_OF_LIST()
-     },
- };
- 
- static Property mips_cpc_properties[] = {
--    DEFINE_PROP_UINT32("num-vp", MIPSCPCState, num_vp, 0x1),
-+    DEFINE_PROP_INT32("num-vp", MIPSCPCState, num_vp, 0x1),
-+    DEFINE_PROP_INT32("num-pcore", MIPSCPCState, num_pcores, 0x1),
-     DEFINE_PROP_UINT64("vp-start-running", MIPSCPCState, vp_start_running, 0x1),
-+    DEFINE_PROP_LINK("gcr", MIPSCPCState, gcr, TYPE_MIPS_GCR, MIPSGCRState *),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/misc/mips_cpc.h b/include/hw/misc/mips_cpc.h
-index fcafbd5e00..e88acf4681 100644
---- a/include/hw/misc/mips_cpc.h
-+++ b/include/hw/misc/mips_cpc.h
-@@ -30,6 +30,10 @@
- #define CPC_CO_BASE_OFS     0x4000
- 
- /* CPC register offsets relative to block offsets */
-+#define CPC_CL_CMD_OFS      0x00
-+#define CPC_CL_STAT_CONF_OFS    0x08
-+#define CPC_CL_STAT_CONF_SEQ_STATE_SHF  19
-+#define CPC_CL_STAT_CONF_SEQ_STATE_U6   7
- #define CPC_VP_STOP_OFS     0x20
- #define CPC_VP_RUN_OFS      0x28
- #define CPC_VP_RUNNING_OFS  0x30
-@@ -37,14 +41,21 @@
- #define TYPE_MIPS_CPC "mips-cpc"
- OBJECT_DECLARE_SIMPLE_TYPE(MIPSCPCState, MIPS_CPC)
- 
-+typedef struct MIPSCPCPCoreState MIPSCPCPCoreState;
-+struct MIPSCPCPCoreState {
-+    uint64_t vp_running;
-+};
-+
- struct MIPSCPCState {
+ static Property mips_cps_properties[] = {
++    DEFINE_PROP_UINT32("num-pcore", MIPSCPSState, num_pcore, 1),
+     DEFINE_PROP_UINT32("num-vp", MIPSCPSState, num_vp, 1),
+     DEFINE_PROP_UINT32("num-irq", MIPSCPSState, num_irq, 256),
+     DEFINE_PROP_STRING("cpu-type", MIPSCPSState, cpu_type),
+diff --git a/include/hw/mips/cps.h b/include/hw/mips/cps.h
+index 04d636246a..ea184b46a9 100644
+--- a/include/hw/mips/cps.h
++++ b/include/hw/mips/cps.h
+@@ -35,6 +35,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(MIPSCPSState, MIPS_CPS)
+ struct MIPSCPSState {
      SysBusDevice parent_obj;
  
--    uint32_t num_vp;
-+    int32_t num_pcores;
-+    int32_t num_vp;
-     uint64_t vp_start_running; /* VPs running from restart */
-+    MIPSGCRState *gcr;
- 
-     MemoryRegion mr;
--    uint64_t vp_running; /* Indicates which VPs are in the run state */
-+    MIPSCPCPCoreState *pcs;
- };
- 
- #endif /* MIPS_CPC_H */
++    uint32_t num_pcore;
+     uint32_t num_vp;
+     uint32_t num_irq;
+     char *cpu_type;
 
 -- 
 2.34.1
