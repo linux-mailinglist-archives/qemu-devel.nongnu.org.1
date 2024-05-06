@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D188BD49A
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 20:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1336A8BD49D
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 20:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s437S-0000ge-Jc; Mon, 06 May 2024 14:31:22 -0400
+	id 1s437S-0000vv-Pw; Mon, 06 May 2024 14:31:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s436F-0000UB-R5
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s436E-0000Sw-6Y
  for qemu-devel@nongnu.org; Mon, 06 May 2024 14:30:10 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s436E-0006lX-5b
- for qemu-devel@nongnu.org; Mon, 06 May 2024 14:30:07 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s436B-0006lp-61
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 14:30:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=pKujwA3KPnHlFZcH0s4W2NUvMS0SIdrbZna3AKE57Nk=; b=r5+qv4xFoK3gmoE
- 3G3hc3uZuMaEKMfp7yOwdZrtLr0tM3FdGiafbVSHyKBqAkRFD8ckkuA+PE+Wx3ab9etoSO4oBmJUw
- daFsTyS5114gqqF6u4Me/EldCPRU/fP9x3lXSFfrey41HwQ7eN3h2rSW/0WP24A8zX574vogZf56W
- 48=;
+ List-Help; bh=GJF+Sz6x4AUpNN0GfoyFi916cCA6Pbkoi+xPdgr51OQ=; b=KLBYfskOO58Eouz
+ l7gjXynTSy27s70Y3/tLkAitHQx7AJw+zoR7AsecWPHAiApQGkfwiJSmkODgZFr7r3adI1en5/vL/
+ PTGSbvHZ4kg2AmfnAFP7688HrI/8x7JZBY01/+I4cBdirHJdksNM3NoGnSLHYfn06Ea/DvTEYV9Sp
+ dE=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	ltaylorsimpson@gmail.com,
 	bcain@quicinc.com
-Subject: [PATCH 3/4] target/hexagon: idef-parser fix leak of init_list
-Date: Mon,  6 May 2024 20:31:16 +0200
-Message-ID: <20240506183117.32268-4-anjo@rev.ng>
+Subject: [PATCH 4/4] target/hexagon: idef-parser simplify predicate init
+Date: Mon,  6 May 2024 20:31:17 +0200
+Message-ID: <20240506183117.32268-5-anjo@rev.ng>
 In-Reply-To: <20240506183117.32268-1-anjo@rev.ng>
 References: <20240506183117.32268-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,37 +61,69 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gen_inst_init_args() is called for instructions using a predicate as an
-rvalue. Upon first call, the list of arguments which might need
-initialization init_list is freed to indicate that they have been
-processed. For instructions without an rvalue predicate,
-gen_inst_init_args() isn't called and init_list will never be freed.
-
-Free init_list from free_instruction() if it hasn't already been freed.
+Only predicate instruction arguments need to be initialized by
+idef-parser. This commit removes registers from the init_list and
+simplifies gen_inst_init_args() slightly.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- target/hexagon/idef-parser/parser-helpers.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ target/hexagon/idef-parser/idef-parser.y    |  2 --
+ target/hexagon/idef-parser/parser-helpers.c | 20 +++++++++-----------
+ 2 files changed, 9 insertions(+), 13 deletions(-)
 
+diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
+index cd2612eb8c..9ffb9f9699 100644
+--- a/target/hexagon/idef-parser/idef-parser.y
++++ b/target/hexagon/idef-parser/idef-parser.y
+@@ -233,8 +233,6 @@ code : '{' statements '}'
+ argument_decl : REG
+                 {
+                     emit_arg(c, &@1, &$1);
+-                    /* Enqueue register into initialization list */
+-                    g_array_append_val(c->inst.init_list, $1);
+                 }
+               | PRED
+                 {
 diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
-index 95f2b43076..bae01c2bb8 100644
+index bae01c2bb8..33e8f82007 100644
 --- a/target/hexagon/idef-parser/parser-helpers.c
 +++ b/target/hexagon/idef-parser/parser-helpers.c
-@@ -2121,6 +2121,13 @@ void free_instruction(Context *c)
-         g_string_free(g_array_index(c->inst.strings, GString*, i), TRUE);
+@@ -1652,26 +1652,24 @@ void gen_inst(Context *c, GString *iname)
+ 
+ 
+ /*
+- * Initialize declared but uninitialized registers, but only for
+- * non-conditional instructions
++ * Initialize declared but uninitialized instruction arguments. Only needed for
++ * predicate arguments, initialization of registers is handled by the Hexagon
++ * frontend.
+  */
+ void gen_inst_init_args(Context *c, YYLTYPE *locp)
+ {
++    /* If init_list is NULL arguments have already been initialized */
+     if (!c->inst.init_list) {
+         return;
      }
-     g_array_free(c->inst.strings, TRUE);
-+    /*
-+     * Free list of arguments that might need initialization, if they haven't
-+     * already been free'd.
-+     */
-+    if (c->inst.init_list) {
-+        g_array_free(c->inst.init_list, TRUE);
-+    }
-     /* Free INAME token value */
-     g_string_free(c->inst.name, TRUE);
-     /* Free variables and registers */
+ 
+     for (unsigned i = 0; i < c->inst.init_list->len; i++) {
+         HexValue *val = &g_array_index(c->inst.init_list, HexValue, i);
+-        if (val->type == REGISTER_ARG) {
+-            /* Nothing to do here */
+-        } else if (val->type == PREDICATE) {
+-            char suffix = val->is_dotnew ? 'N' : 'V';
+-            EMIT_HEAD(c, "tcg_gen_movi_i%u(P%c%c, 0);\n", val->bit_width,
+-                      val->pred.id, suffix);
+-        } else {
+-            yyassert(c, locp, false, "Invalid arg type!");
+-        }
++        yyassert(c, locp, val->type == PREDICATE,
++                 "Only predicates need to be initialized!");
++        char suffix = val->is_dotnew ? 'N' : 'V';
++        EMIT_HEAD(c, "tcg_gen_movi_i%u(P%c%c, 0);\n", val->bit_width,
++                  val->pred.id, suffix);
+     }
+ 
+     /* Free argument init list once we have initialized everything */
 -- 
 2.44.0
 
