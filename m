@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F5A8BCFB0
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 16:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538508BCFCC
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 16:13:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3yzt-0000hE-AU; Mon, 06 May 2024 10:07:17 -0400
+	id 1s3z4t-0002rr-TU; Mon, 06 May 2024 10:12:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3yzq-0000fq-KB
- for qemu-devel@nongnu.org; Mon, 06 May 2024 10:07:14 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3z4e-0002nr-8S
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 10:12:13 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3yzj-0003Ne-45
- for qemu-devel@nongnu.org; Mon, 06 May 2024 10:07:14 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2e0933d3b5fso25299291fa.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 07:07:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3z4b-0004yM-2T
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 10:12:10 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-51ff65b1e14so2327681e87.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 07:12:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715004425; x=1715609225; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715004727; x=1715609527; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ys3nXqHYRv3BJVb6DxHAxB8fKiZMOgfbiFOG3Qz/k7M=;
- b=GuJ+hBtc3vzhMGtsaOZoV8tl5wI5srMjCf8EGBPvAlUH/pg1is3B520gav2rm2wmDA
- fxSXU9+Own2DWfIA3Ns8jhOnlWLgJoF/PFadgtZbLlsOiTeoX7PFRTqZsmprPUKYuaK6
- EnSKk6sM9eb5BTt2CcTLnjkMIMcy/a7U94FPsomb5Xrc2Hbba30cNQu4ClmOS3eaRhHf
- hH6lYv5hY3bgn0OR4TQAuPcncjxmkxB7qrnL70rSKe+XAiwNc/Ta1/JIIgtzCn9kSxrX
- jUme3w0Toj5Fmx3NSwgmcPBTZSjL1iW+ayob4xjgY4Mhau+jAQVZ3LG25VCLWrl3csOD
- aYTQ==
+ bh=2bumhZu9zHcL59l3ZUdMSQkrRfCpNmOMQc2cYu0vo8A=;
+ b=PPtIK3MKDCfVh3MAlWlBw80Gk+6Jb1mx8gTOEZ/98E+XJIlSq7kNdo+cmq7ztUNnAl
+ omKzg3BN/NAy9CkCdT3PtecAo8Xk24wG3zdj1H9Ji9Zww6rcbzdt0ISxBzQsStJZNFzM
+ JJ3K0zFzCYuGcxZUf++luy/CIMdNxaabA+Drg+vLEOaQqizfJVTNT0ycGyjQmYpvuCUo
+ DYBdgr56rHFgxxhX4iPJ06moXlbeYE7o94amhD472lefwvFFlJ1C1x+rImqUykimWy6k
+ 01bopjv4n8FKCn1sX9bIf2leH/MOgG5iuxWT/sOswd95P8PrVZAZKhPAm3tqmmPNCI2R
+ qu5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715004425; x=1715609225;
+ d=1e100.net; s=20230601; t=1715004727; x=1715609527;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ys3nXqHYRv3BJVb6DxHAxB8fKiZMOgfbiFOG3Qz/k7M=;
- b=FukY5BBTUyFeC4OWLnsXLe8A47IMfhxapdvY31CejwtZK7mDrw6/CqJ5itLGTUjQ5l
- 6nDtNP64vb/WqmG75x6J8LyAyTWaTl7BZLVyFQvFYHY+U3GhgqRIn8Ld0H89b6pZa2zk
- Wnjol6399k/kASV8sBgu8aIngPjUr8WfI5HCK1bC2R+ues9oJCPJxM7UfOy7buLwd+tA
- 9t5gCu3Odx0Y+cZBrpwtAM94164GuVjGggWly2VWwa6nurV4TSBt5L8C8DTU4YwthA4a
- ozUZxeOBSAjlWlCMJ5YJ7zNC8HBhXi2R0mmNz2+3Zw5LCpiL7pwdih3hZxnORj/I/J9n
- nNaA==
+ bh=2bumhZu9zHcL59l3ZUdMSQkrRfCpNmOMQc2cYu0vo8A=;
+ b=kf1xdkM9bdxa5OziL1EGHvqAi1XkCQIrl+WMvuasuzi6OwE8TWsHOwZb5BwiSdjxcW
+ oJhH3N6OCEcX7ytZ5xJzhaF86ceeDh25kUgMyNX0f9zWxJhXg/uvTaM2jJ2d0PRji/wP
+ UXluty77abqlV6PLOnJhKcgzhYVVLZC/WPm8wEmX/BY7Lqi0sCoVzL+VxgEedUW7pcDa
+ 6SIay7N6CdSivWuXoUfamlJZ56+NVmawM5k4yAZe1ibigjziQ45Vl12Bf/L3M3/NmCUm
+ opYBijMxTqwwuP9cf6uN0SG4+7UFczriH1Izel/6FEj1IqRme+lb/BpBXhq7Jelktm9l
+ qyMQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2+IJGLar6miBE6i/92AmkHg9PeCqDxgZvFMm/2OQviU1Cu0xYJyJEIykGPLfYde0bEY/Gi+c2467Jvi6stEBBGgF3Ez0=
-X-Gm-Message-State: AOJu0YxF+Ovg70z6dIe/WVhGbvPg7+PVfKBLa75ppYU7VziXpU/LkOqK
- qHSQfnHTLmmhLoKr+fXMGoRBkEfzbiTRNfs7KdsTOw9ciesaCluh9I8/h1ygbC+kfgcwaoI+8M2
- G
-X-Google-Smtp-Source: AGHT+IGceLeYci/usnQ0gyQEOeEUqkuVTq8+pUeR85picBG1vRykWUSiAJaw9RdVCXJ407I5lHr+Kg==
-X-Received: by 2002:a2e:9a90:0:b0:2de:bae:b306 with SMTP id
- p16-20020a2e9a90000000b002de0baeb306mr7551409lji.8.1715004425291; 
- Mon, 06 May 2024 07:07:05 -0700 (PDT)
+ AJvYcCXnhjjz0MeaNitNcCsqMv5neIwM0fRs0EyMMFucteY9WVUK44PozCYE4hjKfMANKP1VMQN3bkirxk0uR5pcjhE+HK0s7pY=
+X-Gm-Message-State: AOJu0YwvMt5X4i+84a/03zMMZXpVAz17SpzJhMPzH6T2IXoJLLFb+jJG
+ h7DlWSBdYmsmMNVayJCaF157c1IrppdL7SFD3c6m31UedXMl87hEs1UEcPcheoc=
+X-Google-Smtp-Source: AGHT+IG9VDPWBxIawuw6kzInVtqk+/tf+i/FS3YjXhyyn9bFJ+3F7V0Z8TcG4DwBf0nid+ckSBK9IQ==
+X-Received: by 2002:a05:6512:238e:b0:520:9df8:f245 with SMTP id
+ c14-20020a056512238e00b005209df8f245mr2441449lfv.1.1715004727020; 
+ Mon, 06 May 2024 07:12:07 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.211.4])
  by smtp.gmail.com with ESMTPSA id
- p20-20020a05600c469400b0041bc41287cesm16252017wmo.16.2024.05.06.07.07.03
+ n10-20020a5d67ca000000b0034dcc70929dsm10752845wrw.83.2024.05.06.07.12.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 May 2024 07:07:03 -0700 (PDT)
-Message-ID: <0b2b8ac1-475e-4bbb-b4d2-7a65da563ba2@linaro.org>
-Date: Mon, 6 May 2024 16:07:02 +0200
+ Mon, 06 May 2024 07:12:06 -0700 (PDT)
+Message-ID: <f846aaed-5d58-4f23-8a89-fbea80e6f13a@linaro.org>
+Date: Mon, 6 May 2024 16:12:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] MAINTAINERS: Update my email address
-To: Bin Meng <bmeng.cn@gmail.com>, qemu-devel@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>
-Cc: Bin Meng <bin.meng.cn@windriver.com>
-References: <20240505072312.2776074-1-bmeng.cn@gmail.com>
+Subject: Re: [PATCH v2 5/7] target/sparc: Fix FMULD8*X16
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: mark.cave-ayland@ilande.co.uk
+References: <20240502165528.244004-1-richard.henderson@linaro.org>
+ <20240502165528.244004-6-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240505072312.2776074-1-bmeng.cn@gmail.com>
+In-Reply-To: <20240502165528.244004-6-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,28 +94,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/5/24 09:23, Bin Meng wrote:
-> From: Bin Meng <bin.meng.cn@windriver.com>
+On 2/5/24 18:55, Richard Henderson wrote:
+> Not only do these instructions have f32 inputs, they also do not
+> perform rounding.  Since these are relatively simple, implement
+> them properly inline.
 > 
-> The old Wind River email address (bin.meng@windriver.com) is no longer
-> available due to an internal infrastructure change within the company.
-> While a new email address (bin.meng.cn@windriver.com) has been assigned
-> to me, I am unable to find a way to send this patch directly from the
-> new address. Presumably, the basic authentication with client submission
-> (SMTP AUTH) [1] has been disabled by the company's IT.
-> 
-> Switch to use my personal email address instead.
-> 
-> Signed-off-by: Bin Meng <bin.meng.cn@windriver.com>
-> Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
-> 
-> [1] https://learn.microsoft.com/en-us/exchange/mail-flow-best-practices/how-to-set-up-a-multifunction-device-or-application-to-send-email-using-microsoft-365-or-office-365
-> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
-> 
-> Changes in v2:
-> - Provide more background info for the email address change
+>   target/sparc/helper.h     |  2 --
+>   target/sparc/translate.c  | 48 +++++++++++++++++++++++++++++++++++----
+>   target/sparc/vis_helper.c | 46 -------------------------------------
+>   3 files changed, 44 insertions(+), 52 deletions(-)
 
-Queued, thanks.
 
+> +static void gen_op_fmuld8ulx16(TCGv_i64 dst, TCGv_i32 src1, TCGv_i32 src2)
+> +{
+> +    TCGv_i32 t0 = tcg_temp_new_i32();
+> +    TCGv_i32 t1 = tcg_temp_new_i32();
+> +    TCGv_i32 t2 = tcg_temp_new_i32();
+> +
+> +    tcg_gen_ext8u_i32(t0, src1);
+> +    tcg_gen_ext16s_i32(t1, src2);
+> +    tcg_gen_mul_i32(t0, t0, t1);
+> +
+> +    tcg_gen_extract_i32(t1, src1, 16, 8);
+> +    tcg_gen_sextract_i32(t2, src2, 16, 16);
+> +    tcg_gen_mul_i32(t1, t1, t2);
+> +
+> +    tcg_gen_concat_i32_i64(dst, t0, t1);
+> +}
+> +
+> +static void gen_op_fmuld8sux16(TCGv_i64 dst, TCGv_i32 src1, TCGv_i32 src2)
+> +{
+> +    TCGv_i32 t0 = tcg_temp_new_i32();
+> +    TCGv_i32 t1 = tcg_temp_new_i32();
+> +    TCGv_i32 t2 = tcg_temp_new_i32();
+> +
+> +    /*
+> +     * The insn description talks about extracting the upper 8 bits
+> +     * of the signed 16-bit input rs1, performing the multiply, then
+> +     * shifting left by 8 bits.  Instead, zap the lower 8 bits of
+> +     * the rs1 input, which avoids the need for two shifts.
+
+Nice.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> +     */
+> +    tcg_gen_ext16s_i32(t0, src1);
+> +    tcg_gen_andi_i32(t0, t0, ~0xff);
+> +    tcg_gen_ext16s_i32(t1, src2);
+> +    tcg_gen_mul_i32(t0, t0, t1);
+> +
+> +    tcg_gen_sextract_i32(t1, src1, 16, 16);
+> +    tcg_gen_andi_i32(t1, t1, ~0xff);
+> +    tcg_gen_sextract_i32(t2, src2, 16, 16);
+> +    tcg_gen_mul_i32(t1, t1, t2);
+> +
+> +    tcg_gen_concat_i32_i64(dst, t0, t1);
+> +}
 
