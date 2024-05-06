@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9357D8BCC98
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB788BCC91
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 13:04:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3w7q-00034P-Hg; Mon, 06 May 2024 07:03:18 -0400
+	id 1s3w7m-0002zq-UF; Mon, 06 May 2024 07:03:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7h-0002p0-4J
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7f-0002om-F5
  for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7Z-0003fS-Ts
- for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:08 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s3w7X-0003ej-7y
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 07:03:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714993380;
+ s=mimecast20190719; t=1714993378;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OA65odhw6yvz8wFdh9oVTxjcsGiEwAHIVPPzhH06qI0=;
- b=Jm6Qc6KjVIjalf9TtU8zyzurHAhioN1zNy7naFp3zKYjr5HhHKWXds75X6Y2y8xHRurMMJ
- vg7xt/S5UZh0DXtXD6xKrlLzZaXl9mttGuyo84o1byYIX7Z1XZ5pa0jDTle7He80DJmTW3
- hS/mKfC4d985axPy+bNtPGwd5ocw0Cw=
+ bh=ra3UHb3T8zQv2R0nHBXpbhmQsfMIG/kMMF2WRy9zyZo=;
+ b=YjYFkAmZCkdsBYdFISl8N2U1XDxjLJipcjpS8PwvjJ6iKhzMmuSUpSBJxXy/gDwO7YKXW3
+ drLjDTALJKDnx+FvmwHLJTZ3BHrqhreHaWOJnGHIItw2NXqFoGnXr8pdQysObrhJEme+sF
+ u5G5YYodFZguzY/KsRWR53Gp+f6g2no=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-531-FojZnOdKPZaK3ZQ-ze9Dag-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-_gKCVzV8NVepu-nMb8c9ew-1; Mon,
  06 May 2024 07:02:56 -0400
-X-MC-Unique: FojZnOdKPZaK3ZQ-ze9Dag-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+X-MC-Unique: _gKCVzV8NVepu-nMb8c9ew-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91CB329AA3AF;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96B0A1C0514B;
  Mon,  6 May 2024 11:02:56 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 580266958;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 59983EC685;
  Mon,  6 May 2024 11:02:56 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 55CDA21D49C0; Mon,  6 May 2024 13:02:54 +0200 (CEST)
+ id 5881D21D49C2; Mon,  6 May 2024 13:02:54 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PULL 6/7] qapi: Move conditional code from QAPISchemaVariants to its
- subtypes
-Date: Mon,  6 May 2024 13:02:51 +0200
-Message-ID: <20240506110254.3965097-12-armbru@redhat.com>
+Subject: [PATCH 6/7] qga/qapi-schema: Drop "Returns" section where default is
+ fine WIP
+Date: Mon,  6 May 2024 13:02:52 +0200
+Message-ID: <20240506110254.3965097-13-armbru@redhat.com>
 In-Reply-To: <20240506110254.3965097-1-armbru@redhat.com>
 References: <20240506110254.3965097-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
@@ -80,197 +80,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPISchemaVariants.check()'s code is almost entirely conditional on
-union vs. alternate type.
-
-Move the conditional code to QAPISchemaBranches.check() and
-QAPISchemaAlternatives.check(), where the conditions are always
-satisfied.
-
-Attribute QAPISchemaVariants.tag_name is now only used by
-QAPISchemaBranches.  Move it there.
-
-Refactor the three types' .__init__() to make them a bit simpler.
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/schema.py | 138 ++++++++++++++++++++---------------------
- 1 file changed, 69 insertions(+), 69 deletions(-)
+ qga/qapi-schema.json | 40 +++++-----------------------------------
+ 1 file changed, 5 insertions(+), 35 deletions(-)
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 9bdbfd52b2..c5b824f1fd 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -719,20 +719,11 @@ def visit(self, visitor: QAPISchemaVisitor) -> None:
- class QAPISchemaVariants:
-     def __init__(
-         self,
--        tag_name: Optional[str],
-         info: QAPISourceInfo,
--        tag_member: Optional[QAPISchemaObjectTypeMember],
-         variants: List[QAPISchemaVariant],
-     ):
--        # Unions pass tag_name but not tag_member.
--        # Alternates pass tag_member but not tag_name.
--        # After check(), tag_member is always set.
--        assert bool(tag_member) != bool(tag_name)
--        assert (isinstance(tag_name, str) or
--                isinstance(tag_member, QAPISchemaObjectTypeMember))
--        self._tag_name = tag_name
-         self.info = info
--        self._tag_member = tag_member
-+        self._tag_member: Optional[QAPISchemaObjectTypeMember] = None
-         self.variants = variants
- 
-     @property
-@@ -749,58 +740,66 @@ def set_defined_in(self, name: str) -> None:
-             v.set_defined_in(name)
- 
-     def check(
--        self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
-+            self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
-     ) -> None:
--        if self._tag_name:      # union
--            # We need to narrow the member type:
--            tmp = seen.get(c_name(self._tag_name))
--            assert tmp is None or isinstance(tmp, QAPISchemaObjectTypeMember)
--            self._tag_member = tmp
-+        for v in self.variants:
-+            v.check(schema)
- 
--            base = "'base'"
--            # Pointing to the base type when not implicit would be
--            # nice, but we don't know it here
--            if not self._tag_member or self._tag_name != self._tag_member.name:
--                raise QAPISemError(
--                    self.info,
--                    "discriminator '%s' is not a member of %s"
--                    % (self._tag_name, base))
--            # Here we do:
--            assert self.tag_member.defined_in
--            base_type = schema.lookup_type(self.tag_member.defined_in)
--            assert base_type
--            if not base_type.is_implicit():
--                base = "base type '%s'" % self.tag_member.defined_in
--            if not isinstance(self.tag_member.type, QAPISchemaEnumType):
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must be of enum type"
--                    % (self._tag_name, base))
--            if self.tag_member.optional:
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must not be optional"
--                    % (self._tag_name, base))
--            if self.tag_member.ifcond.is_present():
--                raise QAPISemError(
--                    self.info,
--                    "discriminator member '%s' of %s must not be conditional"
--                    % (self._tag_name, base))
--        else:                   # alternate
--            assert self._tag_member
--            assert isinstance(self.tag_member.type, QAPISchemaEnumType)
--            assert not self.tag_member.optional
--            assert not self.tag_member.ifcond.is_present()
--        if self._tag_name:      # union
--            # branches that are not explicitly covered get an empty type
--            assert self.tag_member.defined_in
--            cases = {v.name for v in self.variants}
--            for m in self.tag_member.type.members:
--                if m.name not in cases:
--                    v = QAPISchemaVariant(m.name, self.info,
--                                          'q_empty', m.ifcond)
--                    v.set_defined_in(self.tag_member.defined_in)
--                    self.variants.append(v)
-+
-+class QAPISchemaBranches(QAPISchemaVariants):
-+    def __init__(self,
-+                 info: QAPISourceInfo,
-+                 variants: List[QAPISchemaVariant],
-+                 tag_name: str):
-+        super().__init__(info, variants)
-+        self._tag_name = tag_name
-+
-+    def check(
-+            self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
-+    ) -> None:
-+        # We need to narrow the member type:
-+        tmp = seen.get(c_name(self._tag_name))
-+        assert tmp is None or isinstance(tmp, QAPISchemaObjectTypeMember)
-+        self._tag_member = tmp
-+
-+        base = "'base'"
-+        # Pointing to the base type when not implicit would be
-+        # nice, but we don't know it here
-+        if not self._tag_member or self._tag_name != self._tag_member.name:
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator '%s' is not a member of %s"
-+                % (self._tag_name, base))
-+        # Here we do:
-+        assert self.tag_member.defined_in
-+        base_type = schema.lookup_type(self.tag_member.defined_in)
-+        assert base_type
-+        if not base_type.is_implicit():
-+            base = "base type '%s'" % self.tag_member.defined_in
-+        if not isinstance(self.tag_member.type, QAPISchemaEnumType):
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must be of enum type"
-+                % (self._tag_name, base))
-+        if self.tag_member.optional:
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must not be optional"
-+                % (self._tag_name, base))
-+        if self.tag_member.ifcond.is_present():
-+            raise QAPISemError(
-+                self.info,
-+                "discriminator member '%s' of %s must not be conditional"
-+                % (self._tag_name, base))
-+        # branches that are not explicitly covered get an empty type
-+        assert self.tag_member.defined_in
-+        cases = {v.name for v in self.variants}
-+        for m in self.tag_member.type.members:
-+            if m.name not in cases:
-+                v = QAPISchemaVariant(m.name, self.info,
-+                                      'q_empty', m.ifcond)
-+                v.set_defined_in(self.tag_member.defined_in)
-+                self.variants.append(v)
-         if not self.variants:
-             raise QAPISemError(self.info, "union has no branches")
-         for v in self.variants:
-@@ -834,20 +833,21 @@ def check_clash(
-             v.type.check_clash(info, dict(seen))
- 
- 
--class QAPISchemaBranches(QAPISchemaVariants):
--    def __init__(self,
--                 info: QAPISourceInfo,
--                 variants: List[QAPISchemaVariant],
--                 tag_name: str):
--        super().__init__(tag_name, info, None, variants)
--
--
- class QAPISchemaAlternatives(QAPISchemaVariants):
-     def __init__(self,
-                  info: QAPISourceInfo,
-                  variants: List[QAPISchemaVariant],
-                  tag_member: QAPISchemaObjectTypeMember):
--        super().__init__(None, info, tag_member, variants)
-+        super().__init__(info, variants)
-+        self._tag_member = tag_member
-+
-+    def check(
-+            self, schema: QAPISchema, seen: Dict[str, QAPISchemaMember]
-+    ) -> None:
-+        super().check(schema, seen)
-+        assert isinstance(self.tag_member.type, QAPISchemaEnumType)
-+        assert not self.tag_member.optional
-+        assert not self.tag_member.ifcond.is_present()
- 
- 
- class QAPISchemaMember:
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index d5af155007..fe41670ed2 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -194,8 +194,6 @@
+ #
+ # Get some information about the guest agent.
+ #
+-# Returns: @GuestAgentInfo
+-#
+ # Since: 0.15.0
+ ##
+ { 'command': 'guest-info',
+@@ -277,8 +275,6 @@
+ # @count: maximum number of bytes to read (default is 4KB, maximum is
+ #     48MB)
+ #
+-# Returns: @GuestFileRead
+-#
+ # Since: 0.15.0
+ ##
+ { 'command': 'guest-file-read',
+@@ -312,8 +308,6 @@
+ # @count: bytes to write (actual bytes, after base64-decode), default
+ #     is all content in buf-b64 buffer after base64 decoding
+ #
+-# Returns: @GuestFileWrite
+-#
+ # Since: 0.15.0
+ ##
+ { 'command': 'guest-file-write',
+@@ -379,8 +373,6 @@
+ #
+ # @whence: Symbolic or numeric code for interpreting offset
+ #
+-# Returns: @GuestFileSeek
+-#
+ # Since: 0.15.0
+ ##
+ { 'command': 'guest-file-seek',
+@@ -419,9 +411,6 @@
+ #
+ # Get guest fsfreeze state.
+ #
+-# Returns: GuestFsfreezeStatus ("thawed", "frozen", etc., as defined
+-#     below)
+-#
+ # Note: This may fail to properly report the current state as a result
+ #     of some other guest processes having issued an fs freeze/thaw.
+ #
+@@ -725,8 +714,6 @@
+ #
+ # Get list of guest IP addresses, MAC addresses and netmasks.
+ #
+-# Returns: List of GuestNetworkInterface
+-#
+ # Since: 1.1
+ ##
+ { 'command': 'guest-network-get-interfaces',
+@@ -760,6 +747,7 @@
+ #
+ # Returns: The list of all VCPUs the guest knows about.  Each VCPU is
+ #     put on the list exactly once, but their order is unspecified.
++#     TODO
+ #
+ # Since: 1.5
+ ##
+@@ -1009,6 +997,7 @@
+ #     the physical disks.  On Linux these are all root block devices
+ #     of non-zero size including e.g. removable devices, loop devices,
+ #     NBD, etc.
++#     TODO
+ #
+ # Since: 5.2
+ ##
+@@ -1045,6 +1034,7 @@
+ #     The returned mountpoints may be specified to
+ #     @guest-fsfreeze-freeze-list.  Network filesystems (such as CIFS
+ #     and NFS) are not listed.
++#     TODO
+ #
+ # Since: 2.2
+ ##
+@@ -1108,6 +1098,7 @@
+ # Returns: The list of all memory blocks the guest knows about.  Each
+ #     memory block is put on the list exactly once, but their order is
+ #     unspecified.
++#     TODO
+ #
+ # Since: 2.3
+ ##
+@@ -1179,6 +1170,7 @@
+ #     Note: it will return an empty list if the @mem-blks list was
+ #     empty on input, or there is an error, and in this case, guest
+ #     state will not be changed.
++#     TODO
+ #
+ # Since: 2.3
+ ##
+@@ -1203,8 +1195,6 @@
+ #
+ # Get information relating to guest memory blocks.
+ #
+-# Returns: @GuestMemoryBlockInfo
+-#
+ # Since: 2.3
+ ##
+ { 'command': 'guest-get-memory-block-info',
+@@ -1249,8 +1239,6 @@
+ #
+ # @pid: pid returned from guest-exec
+ #
+-# Returns: GuestExecStatus
+-#
+ # Since: 2.5
+ ##
+ { 'command': 'guest-exec-status',
+@@ -1322,8 +1310,6 @@
+ # @capture-output: bool flag to enable capture of stdout/stderr of
+ #     running process.  Defaults to false.
+ #
+-# Returns: PID
+-#
+ # Since: 2.5
+ ##
+ { 'command': 'guest-exec',
+@@ -1351,8 +1337,6 @@
+ # or even present in DNS or some other name service at all.  It need
+ # not even be unique on your local network or site, but usually it is.
+ #
+-# Returns: the host name of the machine
+-#
+ # Since: 2.10
+ ##
+ { 'command': 'guest-get-host-name',
+@@ -1381,8 +1365,6 @@
+ #
+ # Retrieves a list of currently active users on the VM.
+ #
+-# Returns: A unique list of users.
+-#
+ # Since: 2.10
+ ##
+ { 'command': 'guest-get-users',
+@@ -1407,8 +1389,6 @@
+ #
+ # Retrieves the timezone information from the guest.
+ #
+-# Returns: A GuestTimezone dictionary.
+-#
+ # Since: 2.10
+ ##
+ { 'command': 'guest-get-timezone',
+@@ -1483,8 +1463,6 @@
+ #
+ # Retrieve guest operating system information
+ #
+-# Returns: @GuestOSInfo
+-#
+ # Since: 2.10
+ ##
+ { 'command': 'guest-get-osinfo',
+@@ -1550,8 +1528,6 @@
+ #
+ # Retrieve information about device drivers in Windows guest
+ #
+-# Returns: @GuestDeviceInfo
+-#
+ # Since: 5.2
+ ##
+ { 'command': 'guest-get-devices',
+@@ -1579,8 +1555,6 @@
+ #
+ # @username: the user account to add the authorized keys
+ #
+-# Returns: @GuestAuthorizedKeys
+-#
+ # Since: 5.2
+ ##
+ { 'command': 'guest-ssh-get-authorized-keys',
+@@ -1707,8 +1681,6 @@
+ #
+ # Retrieve information about disk stats.
+ #
+-# Returns: List of disk stats of guest.
+-#
+ # Since: 7.1
+ ##
+ { 'command': 'guest-get-diskstats',
+@@ -1791,8 +1763,6 @@
+ #
+ # Retrieve information about CPU stats.
+ #
+-# Returns: List of CPU stats of guest.
+-#
+ # Since: 7.1
+ ##
+ { 'command': 'guest-get-cpustats',
 -- 
 2.44.0
 
