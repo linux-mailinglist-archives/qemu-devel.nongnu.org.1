@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A4C8BC90D
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 147728BC8E6
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:01:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3tAl-0001kt-JO; Mon, 06 May 2024 03:54:07 -0400
+	id 1s3tAu-0001xB-67; Mon, 06 May 2024 03:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3tA2-0008Tt-RR
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s3tA9-000091-5Y
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3tA0-0001or-TW
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:22 -0400
+ id 1s3tA2-0001qV-SI
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714982000;
+ s=mimecast20190719; t=1714982002;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=B5HjsvcOl2UMW2kd+0qfMXmm+QI4Al82cfzwR58R5Iw=;
- b=Ddo6VDZhV2pwUeFW8h4K5MKVsPHkTLlcepVDT640ubYqEjIyUIZqJnR/9ZHvVGqT0jWLE+
- 2ZHmivjFXXtoqZXfMPsduajlT7baK/pW5OtZLqMSe0ry+vBF0moUV2O1pPnZxheXYylAds
- sHydh8NGeKUa58JLvqXfuVXf7cCE7l0=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HoGDH+Rv7yjyMA09L6ivkS5qMJY1NeD7GH9r1OMOy2A=;
+ b=aDhsmsP3E8GAgmn8YDzj9R3uyfZUSNdG+pdv/OskIFd2dpKrMZIgsrEw/Fpm/8Gz52/34i
+ FFQYhtus/pyJcmdVtUJhz4X/ju1TgLtfzVMtwhniGz6YDZ2+ofg/KR8oeZLj3Po2SaDaO1
+ /G9T3dCsrBkZG7cnY7qht+SWjqlVyiE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-529-xVBLdwATP7KZnoUfs8KYwA-1; Mon, 06 May 2024 03:53:18 -0400
-X-MC-Unique: xVBLdwATP7KZnoUfs8KYwA-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-5725f45da8eso311820a12.0
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:53:18 -0700 (PDT)
+ us-mta-478-RRL5lvGRNo-iRUmMz4SKqw-1; Mon, 06 May 2024 03:53:20 -0400
+X-MC-Unique: RRL5lvGRNo-iRUmMz4SKqw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a59cdf2141eso36414766b.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:53:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981997; x=1715586797;
+ d=1e100.net; s=20230601; t=1714981999; x=1715586799;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B5HjsvcOl2UMW2kd+0qfMXmm+QI4Al82cfzwR58R5Iw=;
- b=VFVY/O7Vdqbi6ks5PLllkQw94Rv8+QS6OSuWEa3W9c90pBAbMCfWAn6HsKpqS8jlu0
- SFyGOeBGuePQ5ZuNCcYlj9+IOtDr9y8cB6nQ8OYkEoiFuepy5ISjNV4mYQ4ioBmTWE/U
- yuVMtPvUxCxC2XLTMmgvhVioD3wvQCb2bih/mvgP1pouosMFmU5kLoP9RVGlkbpQ58l4
- 1Fd7KFwGA4S8qc8hTlPVyQXurGZ770TN/2mKmRrQwVOK6MwwiMlS2ACkPw3oboUdvoPI
- UFaXYDkdBmmNVxToLDlxfA2XcJueYyRI+4JJZOq+zSwePwqO3O3vci+gnSI+0GJNhs8x
- HsWw==
-X-Gm-Message-State: AOJu0YxigZirI4S0/P1agYQIm8oXLsHjQ5xHjnevGt+r9jGRbnXo2qc9
- m4SLIw21cSaoNnNbS1wCD55d9j3UG0Q6w+MjLq25UxbinisSjjEL6JcMCGh6WR7Cat+UVcXV903
- C/8PzKjWXv36iz4tEP3DusO7W/+WXmrCK4ZCnt0Id/LfWIbgsipfYKnBSlKq7J8GcIHY6JXvRto
- HAYGcLxydNZ1GY16/rco0rU2Y6MZxYxRNSHM4f
-X-Received: by 2002:a50:aadc:0:b0:56f:e4f7:fbd9 with SMTP id
- r28-20020a50aadc000000b0056fe4f7fbd9mr6111765edc.20.1714981997022; 
- Mon, 06 May 2024 00:53:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkXRb2XIWOBMaN8DgaSx3nuLesMCNot8X0Y/udzJQl6Rcrrs27An34u8lK1qCq0218TvSXiQ==
-X-Received: by 2002:a50:aadc:0:b0:56f:e4f7:fbd9 with SMTP id
- r28-20020a50aadc000000b0056fe4f7fbd9mr6111752edc.20.1714981996599; 
- Mon, 06 May 2024 00:53:16 -0700 (PDT)
+ bh=HoGDH+Rv7yjyMA09L6ivkS5qMJY1NeD7GH9r1OMOy2A=;
+ b=i/nvzzthgpgDDsNcx+OCalnHQA5Z1VAinyO4hef+2QTkxkvYAyNPL1zjr/iFuXccls
+ DTwY9La4K0lwtg0SNxoVMYSZBnu6vOVl1okjee+R5C8gcIH0La8iklxLPFIzqtNoBvOd
+ sFt2bk0/zKf2prVDvKuQ+IGJKrCO+sUGK3WJaLSHrdnNLhDibtJabj72d/SmN4Y5BYaz
+ 5MnPdJ26zumfY5PsWe2ZFM2QtbMhmDVDKn17LDlmImaoikLiavYizgj8jg7ukFLkJYRe
+ qHjHjhx3V5C6s2Xh73cEn2R/5MUYphh0rcNg+dUdJf1PZTblHBwrwGpKSU2h/18tiJIo
+ AoIw==
+X-Gm-Message-State: AOJu0YwOXMOUdRbhDpA0MDPdSusaBy+KFq+UwWs0D9AhGKCaCfKlDplX
+ Xbn7IqExaS1oUuJJXSpdIIa9sD5X+OYmMTMyR+uTqYSFyndGdYpTycFFfi3om1DW/3mOgwqgRzZ
+ IBy6YeJAz5ID4HYpooG21ro1UY+k3KkaiTSfrp+g/gVnUkdBjNMPUrhl5KTM+ARYNr710+qQxA4
+ +7Zi/RHKdyuwp3ga9PQf4eqZiDA77TlANkbpvC
+X-Received: by 2002:a17:906:b012:b0:a59:d6d8:b24e with SMTP id
+ v18-20020a170906b01200b00a59d6d8b24emr480232ejy.22.1714981999226; 
+ Mon, 06 May 2024 00:53:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqpZpb2xfiTNorA4wyKgRAykP6qSIhP4NTxuFfg/io7y1wA/7mTNSlVcXNPtNbJmfmTKr0fw==
+X-Received: by 2002:a17:906:b012:b0:a59:d6d8:b24e with SMTP id
+ v18-20020a170906b01200b00a59d6d8b24emr480222ejy.22.1714981998937; 
+ Mon, 06 May 2024 00:53:18 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- h25-20020a0564020e9900b00572cfb37bd6sm4047294eda.8.2024.05.06.00.53.16
- for <qemu-devel@nongnu.org>
+ bm26-20020a170906c05a00b00a5588a9fe66sm4868540ejb.86.2024.05.06.00.53.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:53:16 -0700 (PDT)
+ Mon, 06 May 2024 00:53:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 44/46] kvm: move target-dependent interrupt routing out of
- kvm-all.c
-Date: Mon,  6 May 2024 09:51:23 +0200
-Message-ID: <20240506075125.8238-45-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 45/46] migration: do not include coroutine_int.h
+Date: Mon,  6 May 2024 09:51:24 +0200
+Message-ID: <20240506075125.8238-46-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -101,232 +100,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let hw/hyperv/hyperv.c and hw/intc/s390_flic.c handle (respectively)
-SynIC and adapter routes, removing the code from target-independent
-files.  This also removes the only occurrence of AdapterInfo outside
-s390 code, so remove that from typedefs.h.
+Migration code needs no private fields of the coroutine backend.
+Include the "regular" coroutine.h header.
 
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/s390x/adapter.h |  4 +--
- include/qemu/typedefs.h    |  1 -
- include/sysemu/kvm.h       |  5 +--
- accel/kvm/kvm-all.c        | 62 ++------------------------------------
- hw/hyperv/hyperv.c         | 25 +++++++++++++++
- hw/intc/s390_flic_kvm.c    | 28 +++++++++++++++++
- 6 files changed, 61 insertions(+), 64 deletions(-)
+ migration/migration.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/s390x/adapter.h b/include/hw/s390x/adapter.h
-index 7f1703508c4..d4fadc4f7f8 100644
---- a/include/hw/s390x/adapter.h
-+++ b/include/hw/s390x/adapter.h
-@@ -12,12 +12,12 @@
- #ifndef S390X_ADAPTER_H
- #define S390X_ADAPTER_H
- 
--struct AdapterInfo {
-+typedef struct AdapterInfo {
-     uint64_t ind_addr;
-     uint64_t summary_addr;
-     uint64_t ind_offset;
-     uint32_t summary_offset;
-     uint32_t adapter_id;
--};
-+} AdapterInfo;
- 
- #endif
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 5d999e20d7c..2ff50bf5970 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -23,7 +23,6 @@
-  */
- typedef struct AccelCPUState AccelCPUState;
- typedef struct AccelState AccelState;
--typedef struct AdapterInfo AdapterInfo;
- typedef struct AddressSpace AddressSpace;
- typedef struct AioContext AioContext;
- typedef struct Aml Aml;
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index eaf801bc934..c31d9c73566 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -470,10 +470,11 @@ static inline void kvm_irqchip_commit_route_changes(KVMRouteChange *c)
-     }
- }
- 
-+int kvm_irqchip_get_virq(KVMState *s);
- void kvm_irqchip_release_virq(KVMState *s, int virq);
- 
--int kvm_irqchip_add_adapter_route(KVMState *s, AdapterInfo *adapter);
--int kvm_irqchip_add_hv_sint_route(KVMState *s, uint32_t vcpu, uint32_t sint);
-+void kvm_add_routing_entry(KVMState *s,
-+                           struct kvm_irq_routing_entry *entry);
- 
- int kvm_irqchip_add_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
-                                        EventNotifier *rn, int virq);
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index d7281b93f3b..c0be9f5eedb 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -1909,8 +1909,8 @@ void kvm_irqchip_commit_routes(KVMState *s)
-     assert(ret == 0);
- }
- 
--static void kvm_add_routing_entry(KVMState *s,
--                                  struct kvm_irq_routing_entry *entry)
-+void kvm_add_routing_entry(KVMState *s,
-+                           struct kvm_irq_routing_entry *entry)
- {
-     struct kvm_irq_routing_entry *new;
-     int n, size;
-@@ -2007,7 +2007,7 @@ void kvm_irqchip_change_notify(void)
-     notifier_list_notify(&kvm_irqchip_change_notifiers, NULL);
- }
- 
--static int kvm_irqchip_get_virq(KVMState *s)
-+int kvm_irqchip_get_virq(KVMState *s)
- {
-     int next_virq;
- 
-@@ -2165,62 +2165,6 @@ static int kvm_irqchip_assign_irqfd(KVMState *s, EventNotifier *event,
-     return kvm_vm_ioctl(s, KVM_IRQFD, &irqfd);
- }
- 
--int kvm_irqchip_add_adapter_route(KVMState *s, AdapterInfo *adapter)
--{
--    struct kvm_irq_routing_entry kroute = {};
--    int virq;
--
--    if (!kvm_gsi_routing_enabled()) {
--        return -ENOSYS;
--    }
--
--    virq = kvm_irqchip_get_virq(s);
--    if (virq < 0) {
--        return virq;
--    }
--
--    kroute.gsi = virq;
--    kroute.type = KVM_IRQ_ROUTING_S390_ADAPTER;
--    kroute.flags = 0;
--    kroute.u.adapter.summary_addr = adapter->summary_addr;
--    kroute.u.adapter.ind_addr = adapter->ind_addr;
--    kroute.u.adapter.summary_offset = adapter->summary_offset;
--    kroute.u.adapter.ind_offset = adapter->ind_offset;
--    kroute.u.adapter.adapter_id = adapter->adapter_id;
--
--    kvm_add_routing_entry(s, &kroute);
--
--    return virq;
--}
--
--int kvm_irqchip_add_hv_sint_route(KVMState *s, uint32_t vcpu, uint32_t sint)
--{
--    struct kvm_irq_routing_entry kroute = {};
--    int virq;
--
--    if (!kvm_gsi_routing_enabled()) {
--        return -ENOSYS;
--    }
--    if (!kvm_check_extension(s, KVM_CAP_HYPERV_SYNIC)) {
--        return -ENOSYS;
--    }
--    virq = kvm_irqchip_get_virq(s);
--    if (virq < 0) {
--        return virq;
--    }
--
--    kroute.gsi = virq;
--    kroute.type = KVM_IRQ_ROUTING_HV_SINT;
--    kroute.flags = 0;
--    kroute.u.hv_sint.vcpu = vcpu;
--    kroute.u.hv_sint.sint = sint;
--
--    kvm_add_routing_entry(s, &kroute);
--    kvm_irqchip_commit_routes(s);
--
--    return virq;
--}
--
- #else /* !KVM_CAP_IRQ_ROUTING */
- 
- void kvm_init_irq_routing(KVMState *s)
-diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
-index 3ea54ba818b..483dcca3083 100644
---- a/hw/hyperv/hyperv.c
-+++ b/hw/hyperv/hyperv.c
-@@ -373,6 +373,31 @@ int hyperv_set_event_flag(HvSintRoute *sint_route, unsigned eventno)
-     return ret;
- }
- 
-+static int kvm_irqchip_add_hv_sint_route(KVMState *s, uint32_t vcpu, uint32_t sint)
-+{
-+    struct kvm_irq_routing_entry kroute = {};
-+    int virq;
-+
-+    if (!kvm_gsi_routing_enabled()) {
-+        return -ENOSYS;
-+    }
-+    virq = kvm_irqchip_get_virq(s);
-+    if (virq < 0) {
-+        return virq;
-+    }
-+
-+    kroute.gsi = virq;
-+    kroute.type = KVM_IRQ_ROUTING_HV_SINT;
-+    kroute.flags = 0;
-+    kroute.u.hv_sint.vcpu = vcpu;
-+    kroute.u.hv_sint.sint = sint;
-+
-+    kvm_add_routing_entry(s, &kroute);
-+    kvm_irqchip_commit_routes(s);
-+
-+    return virq;
-+}
-+
- HvSintRoute *hyperv_sint_route_new(uint32_t vp_index, uint32_t sint,
-                                    HvSintMsgCb cb, void *cb_data)
- {
-diff --git a/hw/intc/s390_flic_kvm.c b/hw/intc/s390_flic_kvm.c
-index baaa30dcb73..330f08dfdc2 100644
---- a/hw/intc/s390_flic_kvm.c
-+++ b/hw/intc/s390_flic_kvm.c
-@@ -324,6 +324,34 @@ static int kvm_s390_io_adapter_map(S390FLICState *fs, uint32_t id,
-     return r ? -errno : 0;
- }
- 
-+static int kvm_irqchip_add_adapter_route(KVMState *s, AdapterInfo *adapter)
-+{
-+    struct kvm_irq_routing_entry kroute = {};
-+    int virq;
-+
-+    if (!kvm_gsi_routing_enabled()) {
-+        return -ENOSYS;
-+    }
-+
-+    virq = kvm_irqchip_get_virq(s);
-+    if (virq < 0) {
-+        return virq;
-+    }
-+
-+    kroute.gsi = virq;
-+    kroute.type = KVM_IRQ_ROUTING_S390_ADAPTER;
-+    kroute.flags = 0;
-+    kroute.u.adapter.summary_addr = adapter->summary_addr;
-+    kroute.u.adapter.ind_addr = adapter->ind_addr;
-+    kroute.u.adapter.summary_offset = adapter->summary_offset;
-+    kroute.u.adapter.ind_offset = adapter->ind_offset;
-+    kroute.u.adapter.adapter_id = adapter->adapter_id;
-+
-+    kvm_add_routing_entry(s, &kroute);
-+
-+    return virq;
-+}
-+
- static int kvm_s390_add_adapter_routes(S390FLICState *fs,
-                                        AdapterRoutes *routes)
- {
+diff --git a/migration/migration.h b/migration/migration.h
+index 8045e39c26f..6c612c03819 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -19,7 +19,7 @@
+ #include "qapi/qapi-types-migration.h"
+ #include "qapi/qmp/json-writer.h"
+ #include "qemu/thread.h"
+-#include "qemu/coroutine_int.h"
++#include "qemu/coroutine.h"
+ #include "io/channel.h"
+ #include "io/channel-buffer.h"
+ #include "net/announce.h"
 -- 
 2.44.0
 
