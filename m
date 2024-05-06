@@ -2,59 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E7F8BC99C
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE58E8BC9CD
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:42:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3tot-0008Jy-B4; Mon, 06 May 2024 04:35:35 -0400
+	id 1s3tvt-0000eg-Q3; Mon, 06 May 2024 04:42:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1s3toX-0008Hi-8q
- for qemu-devel@nongnu.org; Mon, 06 May 2024 04:35:14 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1s3toR-00006Y-6r
- for qemu-devel@nongnu.org; Mon, 06 May 2024 04:35:11 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:379a:0:640:b005:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0CEC860CF5;
- Mon,  6 May 2024 11:34:59 +0300 (MSK)
-Received: from d-tatianin-lin.yandex-team.ru (unknown
- [2a02:6b8:b081:1319::1:21])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id qYSunJ3IYOs0-J8RU2Ngv; Mon, 06 May 2024 11:34:58 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1714984498;
- bh=xPDWZJqmvmhCPj6oX0+mNKUHgkYuT3vZDw+8XdUON5g=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=D3gYaegNuJHduo5nNMFljEyKHDc5vpCKLy41bXecHNdyh0UsuCb5yrC1Vv4vDapJ4
- JvqdVC4f/tYDNYL6bkAZSfY7E4yaNh8YwqVmzU5HR3+fHnBfwGxBVTt9K+FVKlJodT
- 9Fex/AgtY2hpqqoOzMDuJoCH3H4qR2Ck9Y95NL9c=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH v3] mc146818rtc: add a way to generate RTC interrupts via QMP
-Date: Mon,  6 May 2024 11:34:20 +0300
-Message-Id: <20240506083420.557726-1-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3tvV-0000bL-Q9
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:42:25 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s3tvU-0001OW-3U
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 04:42:25 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-52006fbae67so2167148e87.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 01:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714984941; x=1715589741; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Y/y3A+Whe4/vlM9oBR9QL5Dz3x3dqJLja5EldNh1/co=;
+ b=OF5y6Pr710kk7V8U1o1W2fPoQeYlwbSOJdBfYykCA+qtts0fhmXW7qnVV9pABNLhjW
+ gnUrELtvGxM6jUpBxitoacTeeKsQEkqKVmfnyUq4eBf7jasSWiUGLJorr8Meak3tS1rK
+ 2sAImsYbqomWmvX6bnSSzHL30wuVW/i54E50VGYRfW7tfU6Bw67H+o9KYuCP/PY5br0u
+ 9gcyIQbu+zXofy8lD8xzbcj+47N+aIKZZ4kC8z3BrZpEmvdrGKJQbIlIAfS57HqGxHyK
+ kuCVAjkSeRLI2O+yrM4ZdTmjBfewVLFpDFiBWOpVEgtlEa/Ugvai61WQ642Ews+lgI2G
+ Ow2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714984941; x=1715589741;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y/y3A+Whe4/vlM9oBR9QL5Dz3x3dqJLja5EldNh1/co=;
+ b=k4fMWLgMdl1ZGr9cESwhKNWYUuaFkOaSI4yvEli16dgHdmZYFHvh0WhgSuYO3L0Yul
+ parb53xzJ3xCbcOlC31tEq83TckfbS9pjsPtuYjvw0FRlH6CJ4vqQzC+x95vtI2Lenl1
+ qzUoEmpY9RbMGjkLOEWFnvbNXviuXepUAXDabBMS25FQUjt54fypLQ02+Nwll2X12cWR
+ xtlGVvDtJ72ONGU+Eyq1RG8z5QMSh7XlBwfNRZuYQoDfIEBL+MqRFHp1FtjAZxqcxzVv
+ Yap5HBHPtjkjI/KiEdPEomcA+HsbYzioAxf0wWE7GCcdpy6YyKsaAR71/PMAJKCWASPf
+ l4uA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXU8oP9QfnO2ghQQ0zpD+Lpc2e/65C1TXE6YY1HX9DwS4vHz11ITDcQT6c+XYg88AuK2Qwk8GtvVjAR4FWaCD6gRdhfi1o=
+X-Gm-Message-State: AOJu0YxKEtTizuuHrHj3YGIWL6vKgyL+Ol9DRjaWyr+EsC6mg+VhEXwT
+ 2llOhBxImWoYA3lEVGoh3P58RLjwBEZkvRMZdTzVYFhdJ5P3O/RxAg0nUQYLraPb6hw7ak5UhlZ
+ 9
+X-Google-Smtp-Source: AGHT+IFUhzBtoH9DUKIVz0WPt12kHeFCcCeyIg7mVxPGq1OpGcnMuVt5NqYLgHV69PNO0717Or456g==
+X-Received: by 2002:ac2:43bc:0:b0:51b:e46c:19fd with SMTP id
+ t28-20020ac243bc000000b0051be46c19fdmr5644963lfl.18.1714984941498; 
+ Mon, 06 May 2024 01:42:21 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.211.4])
+ by smtp.gmail.com with ESMTPSA id
+ c16-20020adffb10000000b0034f0633e322sm3037266wrr.38.2024.05.06.01.42.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 06 May 2024 01:42:20 -0700 (PDT)
+Message-ID: <9ddae62b-68e4-47dd-8fec-a5ec6a01c6f3@linaro.org>
+Date: Mon, 6 May 2024 10:42:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] MAINTAINERS: Update my email address
+To: Bin Meng <bmeng.cn@gmail.com>, qemu-devel@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>
+Cc: Bin Meng <bin.meng.cn@windriver.com>
+References: <20240505072312.2776074-1-bmeng.cn@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240505072312.2776074-1-bmeng.cn@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,114 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This can be used to force-synchronize the time in guest after a long
-stop-cont pause, which can be useful for serverless-type workload.
+On 5/5/24 09:23, Bin Meng wrote:
+> From: Bin Meng <bin.meng.cn@windriver.com>
+> 
+> The old Wind River email address (bin.meng@windriver.com) is no longer
+> available due to an internal infrastructure change within the company.
+> While a new email address (bin.meng.cn@windriver.com) has been assigned
+> to me, I am unable to find a way to send this patch directly from the
+> new address. Presumably, the basic authentication with client submission
+> (SMTP AUTH) [1] has been disabled by the company's IT.
+> 
+> Switch to use my personal email address instead.
+> 
+> Signed-off-by: Bin Meng <bin.meng.cn@windriver.com>
+> Signed-off-by: Bin Meng <bmeng.cn@gmail.com>
+> 
+> [1] https://learn.microsoft.com/en-us/exchange/mail-flow-best-practices/how-to-set-up-a-multifunction-device-or-application-to-send-email-using-microsoft-365-or-office-365
+> 
+> ---
+> 
+> Changes in v2:
+> - Provide more background info for the email address change
+> 
+>   MAINTAINERS | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 
-Also add a comment to highlight the fact that this (and one other QMP
-command) only works for the MC146818 RTC controller.
-
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
-
-Changes since v0:
-- Rename to rtc-inject-irq to match other similar API
-- Add a comment to highlight that this only works for the I386 RTC
-
-Changes since v1:
-- Added a description below the QMP command to explain how it can be
-  used and what it does.
-
-Changes since v2:
-- Add a 'broadcast' suffix.
-- Change the comments to explain the flags we're setting.
-- Change the command description to fix styling & explain that it's a broadcast command.
-
----
- hw/rtc/mc146818rtc.c         | 20 ++++++++++++++++++++
- include/hw/rtc/mc146818rtc.h |  1 +
- qapi/misc-target.json        | 19 +++++++++++++++++++
- 3 files changed, 40 insertions(+)
-
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index 3379f92748..2b3754f5c6 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -107,6 +107,11 @@ static void rtc_coalesced_timer_update(MC146818RtcState *s)
- static QLIST_HEAD(, MC146818RtcState) rtc_devices =
-     QLIST_HEAD_INITIALIZER(rtc_devices);
- 
-+/*
-+ * NOTE:
-+ * The two QMP functions below are _only_ implemented for the MC146818.
-+ * All other RTC devices ignore this.
-+ */
- void qmp_rtc_reset_reinjection(Error **errp)
- {
-     MC146818RtcState *s;
-@@ -116,6 +121,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
-     }
- }
- 
-+void qmp_rtc_inject_irq_broadcast(Error **errp)
-+{
-+    MC146818RtcState *s;
-+
-+    QLIST_FOREACH(s, &rtc_devices, link) {
-+        // Update-ended interrupt enable
-+        s->cmos_data[RTC_REG_B] |= REG_B_UIE;
-+
-+        // Interrupt request flag | update interrupt flag
-+        s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
-+
-+        qemu_irq_raise(s->irq);
-+    }
-+}
-+
- static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
- {
-     kvm_reset_irq_delivered();
-diff --git a/include/hw/rtc/mc146818rtc.h b/include/hw/rtc/mc146818rtc.h
-index 97cec0b3e8..e9dd0f9c72 100644
---- a/include/hw/rtc/mc146818rtc.h
-+++ b/include/hw/rtc/mc146818rtc.h
-@@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int base_year,
- void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int val);
- int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
- void qmp_rtc_reset_reinjection(Error **errp);
-+void qmp_rtc_inject_irq_broadcast(Error **errp);
- 
- #endif /* HW_RTC_MC146818RTC_H */
-diff --git a/qapi/misc-target.json b/qapi/misc-target.json
-index 4e0a6492a9..7d388a3753 100644
---- a/qapi/misc-target.json
-+++ b/qapi/misc-target.json
-@@ -19,6 +19,25 @@
- { 'command': 'rtc-reset-reinjection',
-   'if': 'TARGET_I386' }
- 
-+##
-+# @rtc-inject-irq-broadcast:
-+#
-+# Inject an RTC interrupt for all existing RTCs on the system.
-+# The interrupt forces the guest to synchronize the time with RTC.
-+# This is useful after a long stop-cont pause, which is common for
-+# serverless-type workload.
-+#
-+# Since: 9.1
-+#
-+# Example:
-+#
-+#     -> { "execute": "rtc-inject-irq-broadcast" }
-+#     <- { "return": {} }
-+#
-+##
-+{ 'command': 'rtc-inject-irq-broadcast',
-+  'if': 'TARGET_I386' }
-+
- ##
- # @SevState:
- #
--- 
-2.34.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
