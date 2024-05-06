@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D53D8BC8B0
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 506A98BC8BC
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:57:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t9c-000753-Ll; Mon, 06 May 2024 03:52:56 -0400
+	id 1s3t9e-0007Nr-Kh; Mon, 06 May 2024 03:52:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9U-0006vP-8r
+ id 1s3t9V-0006x6-F9
  for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9S-0001kO-PN
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:48 -0400
+ id 1s3t9U-0001kS-08
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981966;
+ s=mimecast20190719; t=1714981967;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jbyp55wNTG92uU0JjszKTSa5YnO873pTqXSIixUoRHU=;
- b=FYzpzr9ijyDeJjJqdwy9mMrrIl+IL4vw7854UriqZx+O9fHSOFNooazTRPiUWm1mKZi2+o
- J2tnLAW8mfbqb7SS2xBKQAvTvn+x5mU1hCkQcMx6mvHN+g1mp+s2uJJdeS1ayLFa0HhWO5
- SBgN28Unin2y0MxPdhoX0MqpT5pMU4Y=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mvZpu2Iq5b9J0WyrI5CvCUA5A69cf72SB0raiRtSeqI=;
+ b=F3/ZAvzrzZX5StpszdTD6fKQgp1kI1Qo0OqAKGwJECYLgL00sGj4qN7Gadh3EiGT6yfNDC
+ 5LULrBND9K6lSYcbxUAcr3btAbopK/LayEzgsAORx3xfThtnKo29NfB7nwmKfVhKP2b5J0
+ 05MYCQq3Pw0KSaam9Ega1kwhzzITgOs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-zqT_sUdxNFaKxEF6mmwLAg-1; Mon, 06 May 2024 03:52:44 -0400
-X-MC-Unique: zqT_sUdxNFaKxEF6mmwLAg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-51f60b1644cso1404925e87.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:43 -0700 (PDT)
+ us-mta-688-fjicvz39P46IzkCeZcMsoA-1; Mon, 06 May 2024 03:52:46 -0400
+X-MC-Unique: fjicvz39P46IzkCeZcMsoA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a59ad486084so71618966b.1
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981962; x=1715586762;
+ d=1e100.net; s=20230601; t=1714981964; x=1715586764;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jbyp55wNTG92uU0JjszKTSa5YnO873pTqXSIixUoRHU=;
- b=rcgMTSCf2bzCpvDET6tq3hGSqvybVVoVLM08lUcVus49pzzpcfYQyrYOo/IfOq8pst
- ZG2lDh7Jox+pHhBQHnP3CRghdqJhybB0vgInuSmj6fr6lXFTZ3KZ4WP83MGktQhjqS3I
- U8s2ijm7rMdYmtJwh0H+PRsEAt/pxllUuV1X/VKbBGj9Inn+jWg5dY6RKmYbafEVGcf6
- uM3t5Q38jTm4eiSVDwl8NBUDPee5NpbPB67NoxLlkpiOpADlswz0Lxvfcyxv6OaX9ADU
- v3B7xPINV4PrB8zumhEckT1hB9AiA6RUsGzr/TOxJk0MICEGHBxtM7YPhZgxgXbVXx47
- cNOg==
-X-Gm-Message-State: AOJu0Yxae7QBUTiWWZ4XS3ZU92smHJH8uTmqDkaCuJUF5iyAUOdn3O1f
- 1MvOcEVaxFCceY9A7stGogboVr2+uq/f1Afriy2KVeLziHMYB0RjPpea0XoW8W3GffBoCGZfvsn
- HZBweTMWdg78DceH20tQe5iryyQBButwGsbKZ6xOj4FmOGfbS8nc7XSDNNyExLvvlw+NczteNxG
- BF8GrAvDncoKnAHE0QJ/9A5HFDBMDTVaqOA4eG
-X-Received: by 2002:ac2:5a50:0:b0:51b:1868:7cce with SMTP id
- r16-20020ac25a50000000b0051b18687ccemr8227854lfn.63.1714981962268; 
- Mon, 06 May 2024 00:52:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMja2BM/4D0h20Ww9gvlgaUhdF3iNFEE5qWpfNn/srgH91mFwK/FlQo4o6TZr4iU8gCbGBCA==
-X-Received: by 2002:ac2:5a50:0:b0:51b:1868:7cce with SMTP id
- r16-20020ac25a50000000b0051b18687ccemr8227839lfn.63.1714981961742; 
- Mon, 06 May 2024 00:52:41 -0700 (PDT)
+ bh=mvZpu2Iq5b9J0WyrI5CvCUA5A69cf72SB0raiRtSeqI=;
+ b=uO7lM0+FBI58EF5Hs/eIide2dYa7sUIA/IGpIWCZCqDeb8OMcnutOLqJ7aVBlROvwV
+ rmy0LfFLDgN7JalZPl4aH6beREHgLZd93bAfEz8pc8NGBOJMWrEqnaJZrCSx2pe33vEO
+ xO2nEvFZIzTtZXaq5RP/IB6wAwSHJweiQa/OyiWxftxCX2FLDGdjQMJzWa4DE5bCLNp4
+ bVPwoiBsrP1IuPdrQuLg3q8XCmISjODpLHI2r2vXJhORuE7+8yJIp6ECJHO5dje6Qv+C
+ I2ekbcGOSRzuioDHXrF/y0FkncGMHVxTJ0drz/QeHf9VO/w8ftxN8W3lPEQUVvLKEk26
+ wXMw==
+X-Gm-Message-State: AOJu0YzUbF3h0lTeMMCviaEInFLY1mYlUxCRaK7HrbNA/31nSumpFawh
+ 6ZhYhb2HwFsuVMGCtklBzEnY0lOIwf+0XH7weLBvz/kYWn/ukX+tci5Ljy8/y/o8NQoi4X/4PFE
+ Fs8A5Q7PA4u+1F3YuwhQOqamEfm9PNAt8JwaexEr4lpfyR6UZkt/Zds/6blhOM7zh/yeub9ijDE
+ b0xruySW8QJL8/eKLTB3eQx6d3J2A9kKehVTXN
+X-Received: by 2002:a17:907:6d0e:b0:a59:b590:5d71 with SMTP id
+ sa14-20020a1709076d0e00b00a59b5905d71mr3285665ejc.0.1714981964534; 
+ Mon, 06 May 2024 00:52:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzI2M8OroqzgRnIE9vJYiWOwhftLMQYlWdONrjLZihuUipPCSrM6fV43YQpt0B3k4MEP1gbw==
+X-Received: by 2002:a17:907:6d0e:b0:a59:b590:5d71 with SMTP id
+ sa14-20020a1709076d0e00b00a59b5905d71mr3285653ejc.0.1714981964262; 
+ Mon, 06 May 2024 00:52:44 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- wr8-20020a170907700800b00a59be52ff98sm1857060ejb.191.2024.05.06.00.52.41
- for <qemu-devel@nongnu.org>
+ wk16-20020a170907055000b00a59db6e54e2sm337589ejb.85.2024.05.06.00.52.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:52:41 -0700 (PDT)
+ Mon, 06 May 2024 00:52:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 30/46] build: do not build virtio-vga-gl if virgl/opengl not
- available
-Date: Mon,  6 May 2024 09:51:09 +0200
-Message-ID: <20240506075125.8238-31-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 31/46] fw_cfg: remove useless declarations from typedefs.h
+Date: Mon,  6 May 2024 09:51:10 +0200
+Message-ID: <20240506075125.8238-32-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -101,41 +101,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If virgl and opengl are not available, the build process creates a useless
-libvirtio-vga-gl module that does not have any device in it.  Follow the
-example of virtio-vga-rutabaga and do not build the module at all in that
-case.
+Only FWCfgState is used as part of APIs such as acpi_ghes_add_fw_cfg.
+Everything else need not be in typedefs.h.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/display/meson.build | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ include/hw/nvram/fw_cfg.h | 2 ++
+ include/qemu/typedefs.h   | 3 ---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 7893b94c8ee..7db05eace97 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -125,12 +125,14 @@ if config_all_devices.has_key('CONFIG_VIRTIO_VGA')
-                                          if_false: files('acpi-vga-stub.c'))
-   hw_display_modules += {'virtio-vga': virtio_vga_ss}
+diff --git a/include/hw/nvram/fw_cfg.h b/include/hw/nvram/fw_cfg.h
+index c1f81a5f13a..d173998803c 100644
+--- a/include/hw/nvram/fw_cfg.h
++++ b/include/hw/nvram/fw_cfg.h
+@@ -59,6 +59,8 @@ typedef struct fw_cfg_dma_access FWCfgDmaAccess;
+ typedef void (*FWCfgCallback)(void *opaque);
+ typedef void (*FWCfgWriteCallback)(void *opaque, off_t start, size_t len);
  
--  virtio_vga_gl_ss = ss.source_set()
--  virtio_vga_gl_ss.add(when: ['CONFIG_VIRTIO_VGA', virgl, opengl],
--                       if_true: [files('virtio-vga-gl.c'), pixman])
--  virtio_vga_gl_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-vga.c'),
--                                            if_false: files('acpi-vga-stub.c'))
--  hw_display_modules += {'virtio-vga-gl': virtio_vga_gl_ss}
-+  if virgl.found() and opengl.found()
-+    virtio_vga_gl_ss = ss.source_set()
-+    virtio_vga_gl_ss.add(when: ['CONFIG_VIRTIO_VGA', virgl, opengl],
-+                         if_true: [files('virtio-vga-gl.c'), pixman])
-+    virtio_vga_gl_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-vga.c'),
-+                                              if_false: files('acpi-vga-stub.c'))
-+    hw_display_modules += {'virtio-vga-gl': virtio_vga_gl_ss}
-+  endif
- 
-   if rutabaga.found()
-     virtio_vga_rutabaga_ss = ss.source_set()
++typedef struct FWCfgEntry FWCfgEntry;
++
+ struct FWCfgState {
+     /*< private >*/
+     SysBusDevice parent_obj;
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 50c277cf0b4..949d3e1daf9 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -56,9 +56,6 @@ typedef struct DumpState DumpState;
+ typedef struct Error Error;
+ typedef struct EventNotifier EventNotifier;
+ typedef struct FlatView FlatView;
+-typedef struct FWCfgEntry FWCfgEntry;
+-typedef struct FWCfgIoState FWCfgIoState;
+-typedef struct FWCfgMemState FWCfgMemState;
+ typedef struct FWCfgState FWCfgState;
+ typedef struct GraphicHwOps GraphicHwOps;
+ typedef struct HostMemoryBackend HostMemoryBackend;
 -- 
 2.44.0
 
