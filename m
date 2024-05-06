@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C117C8BC8DA
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 172FF8BC8D1
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:00:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3tAU-0000dd-0p; Mon, 06 May 2024 03:53:50 -0400
+	id 1s3tAm-0001lj-M1; Mon, 06 May 2024 03:54:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9s-00088m-2T
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s3t9x-0008Jf-PI
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9q-0001nR-Dy
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:11 -0400
+ id 1s3t9t-0001nz-P7
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981989;
+ s=mimecast20190719; t=1714981992;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fT1y4KqRaxFcPgY6/amvw3l0h4xpM4rtBuLLxm77NYA=;
- b=gLbRnRoebOZoSJLeep9iF+2WoQ+u5wWRJwldHvNxLjSAPON/ybVWUnmd3p04pSYCgAovnJ
- 05nZxmKVTapIlg/XA2919vLkT5Rub59ZliiiMubVk5L/SU6p9MRptkXy0UHhA5GF9bC5Sh
- JZG/L1ZuYVcNXW8bKUPoSYMrrPzlB1o=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vx3cqDAGG/FUVVIhy0ip+ac1LgAXvC3VwS8/rT+0MBI=;
+ b=FB4u42VFxOTlbkbjSJLVymUYzBmKijTpFsvo/ooi3DoTXwad4J+CXTH+2nGdl48E1ftaGo
+ J7HzQCsaGkmd3nBkJL6YmcYzl0vjDd7/ibWWmrzWUsATl5AyVxpzR+xzsdnCdPF1L3I81V
+ PiqobrprmmQ/WXNQ29k8m11Yk2Nduvk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-h7n7uO4XM-W4UXOFHTYIhA-1; Mon, 06 May 2024 03:53:08 -0400
-X-MC-Unique: h7n7uO4XM-W4UXOFHTYIhA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59c0ecd59cso81001766b.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:53:08 -0700 (PDT)
+ us-mta-222-_XiwniApPouKA-YoDNLV1w-1; Mon, 06 May 2024 03:53:10 -0400
+X-MC-Unique: _XiwniApPouKA-YoDNLV1w-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a59bfd32b8fso71385166b.3
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:53:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981987; x=1715586787;
+ d=1e100.net; s=20230601; t=1714981989; x=1715586789;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fT1y4KqRaxFcPgY6/amvw3l0h4xpM4rtBuLLxm77NYA=;
- b=NDBRaICSXp3b4b9SCQ1yt3ivIlhbkEBa9lw3YJk3El3ua+ckhwja9jy3Itr4IjCI6G
- uNlDaSm6gvH3hUm8p7x9jkszWV20XpuDJ0ARL3+ruT1W3mosBE6j3etPRaVtfKiofP60
- bchN8ieer9OTk+S1OE2AfaEBUE/NaA4KaQL+0n7/Ida+zFPF8GtM5e1AwyT+bGKdUoc4
- xpfeQnj0CKXAxbBuFTzgCVqsITiblJQQf0ybchZK6l6Xj12Gx8jmM3/zyrD6vEA+zTLc
- /l4fU8zYuKpl/WsThG5U7aCgVbEfaN9LXeCwfBL7BHD33D71/D4ePyLOiDPqtSDi4fBG
- L/IQ==
-X-Gm-Message-State: AOJu0YyBKJ9R4DXlJ166YRdWAGkQ0Ve/7J3Ct5XYAjM7VC+EabSC/X90
- TFhnbK/o+wQi/lEG1ijyRrP3rgynoPLbS+wRlS4ecU1JO577uNPu/RVH7T7hAwYIVuhuCepliwr
- KI39HC+OfSlFE7YlxuDWJENhvuXxcZNB370e20YmTG8paeaACIVoaKvriQV1tSXMak8otv+a8pr
- mzI6VPrZ3oX2ym8uOpxHoNET/Dl6ng07BsDJGn
-X-Received: by 2002:a17:906:aad7:b0:a59:a8a4:a5aa with SMTP id
- kt23-20020a170906aad700b00a59a8a4a5aamr5203490ejb.44.1714981986863; 
- Mon, 06 May 2024 00:53:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFL8j0yafyXmQL6Vowj+aq3whBUCYhkWpYqxgexTkC0flFxyuwGNgO4Xcn0Kf73jdpEoZFSog==
-X-Received: by 2002:a17:906:aad7:b0:a59:a8a4:a5aa with SMTP id
- kt23-20020a170906aad700b00a59a8a4a5aamr5203476ejb.44.1714981986481; 
- Mon, 06 May 2024 00:53:06 -0700 (PDT)
+ bh=vx3cqDAGG/FUVVIhy0ip+ac1LgAXvC3VwS8/rT+0MBI=;
+ b=CcpmVhyVkoqpdPhG4eA1GiKazHK0hYKYbxv5uX6kzp5xtfxDSHyWvyEstDKkXcjhhe
+ 6I52dwkEiEGD8IlqVXW/Y2G10p5t1UvPwGTNkwivyfU/cgLVDXOCHiRg5q+0S32ArSus
+ Fse32eG/T1ipyRslHuXAz9gKV41Dd4cSM65XgYLWIVxu2bLfJsY/UrsvOuxyNKBo7jQ6
+ YxPqYOSbHHEpITeiDyzcGCshut6vsRKMLE1PsJtvTpe08wL4j1B22tpRDHD0FBH+AIVJ
+ 9C+jtr6XB8/Jbu7CdqGZptn+y1UBHyxAKfqFYjdSXllMlyb8Hd38V1gKOhAzF9ijrCoU
+ 6QqA==
+X-Gm-Message-State: AOJu0YyKd+7UxIzLIIKgk2mzxYJ8ULTZKhnI9WzwtPa0i7l+5DNhyeGw
+ 4CjinHLSBTVo4c3D/jQLEuzLLw0KaOPNeyImXY90L9BT0l2LyBAtFWLYB1EwMjtv0/gIVXrhbMI
+ IfnEEfG2+uZkdsst+V5dsDx0zwmd4DmAERf1S3npi3bsZ12BHvBR2gRFYtZcOIbFa4/hXkBY3Wk
+ PmliISoXmwYwEWY0k7/cqRETHQDJlmLHUDYH8v
+X-Received: by 2002:a17:906:2bc4:b0:a59:adf8:a6d5 with SMTP id
+ n4-20020a1709062bc400b00a59adf8a6d5mr3235870ejg.72.1714981989420; 
+ Mon, 06 May 2024 00:53:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGOFmjkT3cSnAj5zlggx2UCg96ZnxgEm6Q5D4mk7hv5lJ9f81m2ESqCzxSYoHP+mIZsNeAbsg==
+X-Received: by 2002:a17:906:2bc4:b0:a59:adf8:a6d5 with SMTP id
+ n4-20020a1709062bc400b00a59adf8a6d5mr3235855ejg.72.1714981989000; 
+ Mon, 06 May 2024 00:53:09 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- jl24-20020a17090775d800b00a599acaff03sm3624761ejc.19.2024.05.06.00.53.05
- for <qemu-devel@nongnu.org>
+ rn9-20020a170906d92900b00a59a229564fsm3009364ejb.108.2024.05.06.00.53.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:53:06 -0700 (PDT)
+ Mon, 06 May 2024 00:53:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 40/46] qapi/machine: remove types from typedefs.h
-Date: Mon,  6 May 2024 09:51:19 +0200
-Message-ID: <20240506075125.8238-41-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 41/46] display: remove GraphicHwOps from typedefs.h
+Date: Mon,  6 May 2024 09:51:20 +0200
+Message-ID: <20240506075125.8238-42-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -100,44 +101,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-They are needed in very few places, which already depends on other generated QAPI
-files.  The benefit of having these types in typedefs.h is small.
+Basically all uses of GraphicHwOps are defining an instance of it, which requires the
+full definition of the struct.  It is pointless to have it in typedefs.h.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/core/cpu.h   | 1 +
- include/qemu/typedefs.h | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ hw/display/vga_int.h    | 1 +
+ include/qemu/typedefs.h | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 46b99a7ea55..a23d39f6a0c 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -28,6 +28,7 @@
- #include "exec/memattrs.h"
- #include "exec/mmu-access-type.h"
- #include "exec/tlb-common.h"
-+#include "qapi/qapi-types-machine.h"
- #include "qapi/qapi-types-run-state.h"
- #include "qemu/bitmap.h"
- #include "qemu/rcu_queue.h"
+diff --git a/hw/display/vga_int.h b/hw/display/vga_int.h
+index 876a1d3697b..f77c1c11457 100644
+--- a/hw/display/vga_int.h
++++ b/hw/display/vga_int.h
+@@ -25,6 +25,7 @@
+ #ifndef HW_VGA_INT_H
+ #define HW_VGA_INT_H
+ 
++#include "ui/console.h"
+ #include "exec/ioport.h"
+ #include "exec/memory.h"
+ 
 diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index b71a36d02b2..78598f27f32 100644
+index 78598f27f32..7e3597e94c5 100644
 --- a/include/qemu/typedefs.h
 +++ b/include/qemu/typedefs.h
-@@ -37,12 +37,10 @@ typedef struct BusClass BusClass;
- typedef struct BusState BusState;
- typedef struct Chardev Chardev;
- typedef struct Clock Clock;
--typedef struct CompatProperty CompatProperty;
- typedef struct ConfidentialGuestSupport ConfidentialGuestSupport;
- typedef struct CPUAddressSpace CPUAddressSpace;
- typedef struct CPUArchState CPUArchState;
- typedef struct CPUPluginState CPUPluginState;
--typedef struct CpuInfoFast CpuInfoFast;
- typedef struct CPUJumpCache CPUJumpCache;
- typedef struct CPUState CPUState;
- typedef struct CPUTLBEntryFull CPUTLBEntryFull;
+@@ -53,7 +53,6 @@ typedef struct Error Error;
+ typedef struct EventNotifier EventNotifier;
+ typedef struct FlatView FlatView;
+ typedef struct FWCfgState FWCfgState;
+-typedef struct GraphicHwOps GraphicHwOps;
+ typedef struct HostMemoryBackend HostMemoryBackend;
+ typedef struct I2CBus I2CBus;
+ typedef struct I2SCodec I2SCodec;
 -- 
 2.44.0
 
