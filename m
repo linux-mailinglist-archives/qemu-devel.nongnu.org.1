@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02F38BC91F
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD49B8BC91A
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 10:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t97-0005u0-Bf; Mon, 06 May 2024 03:52:26 -0400
+	id 1s3t95-0005sl-Jc; Mon, 06 May 2024 03:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8h-0005lF-Jc
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s3t8r-0005p3-FN
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8g-0001cF-37
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:51:59 -0400
+ id 1s3t8p-0001dl-Ss
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981917;
+ s=mimecast20190719; t=1714981926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fbRcX/gpwNAE5Vz8aXltJ8y/z7iGDUMqF8FDXO7YTrk=;
- b=FKJcSlzwQOlJ+6WFe0mcREwhRWq3v1+0HdhcFWpPxDlgHgiJmC8Vqqcflj5j8deeoFts82
- zWgrZfAeYhKTcKwQaFsK9fzJxVl6HJovPn9q/GWCnKw1c3U2VKX7QRzAjicfB9IZfg2SdK
- ++N5d4wS3qqVYoa73SpjQlaC8oBiGDQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eITcF/h9MNjyV6fka9J98I4MflYQxu806VbEWIkwiqU=;
+ b=a/w0js4rEC4YJSwfVkmps2AbRj2YIBlO1YYxJyKwJVDp8rVpURpebVb98CgHfzLW8YjPlR
+ igT3MO0ySz1OIZsH2cRgBxUxTbQ/Ve3NS+h/Q1r4iOy0BaG+cUp0p5l2I/WnD+uI5wwEh5
+ pFmPpHSP5mp/UtINFim4TfM4sYRFBy8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-JTlkYXEtNxOPvP1NPmPStw-1; Mon, 06 May 2024 03:51:55 -0400
-X-MC-Unique: JTlkYXEtNxOPvP1NPmPStw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59c0ecd59cso80944666b.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:51:55 -0700 (PDT)
+ us-mta-519-V6F_0eSWNEWB2qpa3k6-Ng-1; Mon, 06 May 2024 03:52:04 -0400
+X-MC-Unique: V6F_0eSWNEWB2qpa3k6-Ng-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a59cdf2141eso36349266b.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981914; x=1715586714;
+ d=1e100.net; s=20230601; t=1714981923; x=1715586723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fbRcX/gpwNAE5Vz8aXltJ8y/z7iGDUMqF8FDXO7YTrk=;
- b=tcyN1AO+2zGOR6Xmv7m2S+2EcaHP6pNvH4jyK3qJyjiQTG/VSJcQchGj4QnSPxhmvN
- aCVB2NkHDiLG7I+etKKRqNQu/wJK3xoqchtMQKVptWHuP8vXYUCiMEwrFW2blFeN9rfy
- I958/eLiDSm5JUuMqzgyCnglvsHDf34TIfrClAj1PZzE12QxUkyuKnJRcCnKnSvkXeRS
- k9jaL+P6BGnYKsQVY/VNieo3UDzdRear4ZJzn9mr1JDFlqIDXTXLaqGLa6tOsyqkLVqX
- Zos+LbXpg6PFH2NxkdWvYGdvBzpDIVzmqxX6rS/1Fdplx1ppNSVRMS8eR8NohctvXghQ
- i7Jg==
-X-Gm-Message-State: AOJu0YwWGyl/KbAHx/W6GrvU7LDqRviMQxbbdL+ZAA9cgpM5ZAexBJ4J
- tw479RobEYFgfXM4lYmrC8uHE4L/3zgDTTPMNUum4ABnCjwwUKaRHXQMcsgHxJ+hUEthkKEC01X
- UV1o75dEXq3TO07jLcRfSdx+fen1FfieeD1FsoyIyImWokz91iykgNMyyqn/b0smZisiGrZo+WZ
- g2MZ1v7zHjkx9h5WYEeeYV2pxc7QhjXe9w0D+P
-X-Received: by 2002:a17:907:72c3:b0:a59:c327:25b with SMTP id
- du3-20020a17090772c300b00a59c327025bmr3838279ejc.12.1714981913761; 
- Mon, 06 May 2024 00:51:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGbwUXK78DOT3sgz02OV/1U7wlH5CqztiV4RjBKZKrp28UiBgNHuOWS9opKzrs5LIqwyAXTUQ==
-X-Received: by 2002:a17:907:72c3:b0:a59:c327:25b with SMTP id
- du3-20020a17090772c300b00a59c327025bmr3838260ejc.12.1714981913437; 
- Mon, 06 May 2024 00:51:53 -0700 (PDT)
+ bh=eITcF/h9MNjyV6fka9J98I4MflYQxu806VbEWIkwiqU=;
+ b=Vd5lzEa+0GsuaQ0qLB087noAUgtE3rcFSI1vtVceA/V5JUXiG6iW0vSG8/jNCkuy/c
+ /jc1241XdM7/uCfUG4dEs7RIxoCpPnfuTVXUr9frHWYBXsNLPNDOoKJQviWHWejn6twz
+ rrGIsnCGsuopataOZUsISQzO0U0gk1g7J71y+9K0uqtWOxo+CyzFWPvS0SPXZautx+vE
+ mLwfMqPZnNt9wjR2xGYlSe0xEjmOZgWSvHRJN0rnRl+JKGt3BHjn+4GkEObAE0o4YGXY
+ UhezV56nvJFUp6lHvw27Cqs71dAz+MPDE5bh8RlgCohjGII7xm8d6WadigfU4XY0FUqO
+ MR+A==
+X-Gm-Message-State: AOJu0YwsE+sQPw1bB/MJ1TUh3Nk2k6drpzPqnp1OuoaRP9NbwR8kJh61
+ yB6glAMKyDh3zCJMb6ycLPRrnFRBFz5Zj+ma6HutBNdal+Ok44poqwYyclYnXge+MEg7WBkOBSL
+ QkZBrTNekZoHb2AlbMMJqhe2WLRwjFixmbXmTnrMJv4K+8JaMVj+OQJiPzrqVuK3g0PvKjDd2Hi
+ ZvTOSLh55IWlvRm0yKrnnUM0LiBtwCuvykfOUX
+X-Received: by 2002:a17:906:26d7:b0:a59:7ed4:fad5 with SMTP id
+ u23-20020a17090626d700b00a597ed4fad5mr5185549ejc.54.1714981923000; 
+ Mon, 06 May 2024 00:52:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJf2lfL6FEtXsvvNAZvQ4mkJAM5hMsWgRgjpdoyZgm9VAEl5aGPNz5XXe5mZucpzCbRGMHkQ==
+X-Received: by 2002:a17:906:26d7:b0:a59:7ed4:fad5 with SMTP id
+ u23-20020a17090626d700b00a597ed4fad5mr5185531ejc.54.1714981922632; 
+ Mon, 06 May 2024 00:52:02 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- bf14-20020a170907098e00b00a59c3e28917sm1571335ejc.70.2024.05.06.00.51.52
+ bk15-20020a170906b0cf00b00a52244ab819sm5008600ejb.170.2024.05.06.00.52.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:51:52 -0700 (PDT)
+ Mon, 06 May 2024 00:52:02 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/46] cris: switch boards to "default y"
-Date: Mon,  6 May 2024 09:50:49 +0200
-Message-ID: <20240506075125.8238-11-pbonzini@redhat.com>
+Subject: [PULL 14/46] m68k: switch boards to "default y"
+Date: Mon,  6 May 2024 09:50:53 +0200
+Message-ID: <20240506075125.8238-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
@@ -102,55 +102,92 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with CRIS.
+Continue with m68k.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/cris-softmmu/default.mak | 5 ++---
- .gitlab-ci.d/buildtest.yml               | 3 ++-
- hw/cris/Kconfig                          | 2 ++
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ configs/devices/m68k-softmmu/default.mak | 13 ++++++-------
+ .gitlab-ci.d/buildtest.yml               |  2 +-
+ hw/m68k/Kconfig                          | 10 ++++++++++
+ 3 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/configs/devices/cris-softmmu/default.mak b/configs/devices/cris-softmmu/default.mak
-index 5932cf4d06f..ff73cd40847 100644
---- a/configs/devices/cris-softmmu/default.mak
-+++ b/configs/devices/cris-softmmu/default.mak
-@@ -1,5 +1,4 @@
- # Default configuration for cris-softmmu
+diff --git a/configs/devices/m68k-softmmu/default.mak b/configs/devices/m68k-softmmu/default.mak
+index 8dcaa28ed38..3ceda6b041b 100644
+--- a/configs/devices/m68k-softmmu/default.mak
++++ b/configs/devices/m68k-softmmu/default.mak
+@@ -1,9 +1,8 @@
+ # Default configuration for m68k-softmmu
  
 -# Boards:
 -#
--CONFIG_AXIS=y
+-CONFIG_AN5206=y
+-CONFIG_MCF5208=y
+-CONFIG_NEXTCUBE=y
+-CONFIG_Q800=y
+-CONFIG_M68K_VIRT=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_AXIS=n
++# CONFIG_AN5206=n
++# CONFIG_MCF5208=n
++# CONFIG_NEXTCUBE=n
++# CONFIG_Q800=n
++# CONFIG_M68K_VIRT=n
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 3a03cdb0151..f4dc5666467 100644
+index a82848ba55b..a91e8d359d5 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
-@@ -662,7 +662,8 @@ build-without-defaults:
+@@ -663,7 +663,7 @@ build-without-defaults:
        --disable-pie
        --disable-qom-cast-debug
        --disable-strip
--    TARGETS: alpha-softmmu avr-softmmu s390x-softmmu sh4-softmmu
-+    TARGETS: alpha-softmmu avr-softmmu cris-softmmu
-+      s390x-softmmu sh4-softmmu
+-    TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu
++    TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu m68k-softmmu
+       s390x-softmmu sh4-softmmu
        sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
      MAKE_CHECK_ARGS: check
- 
-diff --git a/hw/cris/Kconfig b/hw/cris/Kconfig
-index 884ad2cbc0d..26c7eef7437 100644
---- a/hw/cris/Kconfig
-+++ b/hw/cris/Kconfig
-@@ -1,5 +1,7 @@
- config AXIS
+diff --git a/hw/m68k/Kconfig b/hw/m68k/Kconfig
+index d88741ec9d1..0092cda4e9c 100644
+--- a/hw/m68k/Kconfig
++++ b/hw/m68k/Kconfig
+@@ -1,20 +1,28 @@
+ config AN5206
      bool
 +    default y
-+    depends on CRIS
-     select ETRAXFS
-     select PFLASH_CFI02
-     select NAND
++    depends on M68K
+     select COLDFIRE
+     select PTIMER
+ 
+ config MCF5208
+     bool
++    default y
++    depends on M68K
+     select COLDFIRE
+     select PTIMER
+ 
+ config NEXTCUBE
+     bool
++    default y
++    depends on M68K
+     select FRAMEBUFFER
+     select ESCC
+ 
+ config Q800
+     bool
++    default y
++    depends on M68K
+     select MAC_VIA
+     select NUBUS
+     select MACFB
+@@ -29,6 +37,8 @@ config Q800
+ 
+ config M68K_VIRT
+     bool
++    default y
++    depends on M68K
+     select M68K_IRQC
+     select VIRT_CTRL
+     select GOLDFISH_PIC
 -- 
 2.44.0
 
