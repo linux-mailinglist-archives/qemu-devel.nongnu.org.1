@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1468BC8B2
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A37498BC8B1
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:54:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t9n-0007mt-Ic; Mon, 06 May 2024 03:53:07 -0400
+	id 1s3tAS-0008WH-Ol; Mon, 06 May 2024 03:53:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9j-0007ZW-21
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:03 -0400
+ id 1s3t9l-0007o9-UY
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t9h-0001m4-JB
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:02 -0400
+ id 1s3t9j-0001mI-6m
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:53:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981980;
+ s=mimecast20190719; t=1714981982;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uYqiJiD3cHkBOXJK8l/nxNS2jHk461xYcqaYdRiiYtg=;
- b=AlV5FUHY5sJj+jKQ5Jw8aFuud+raY/DjNVDTqr2IQmZfSvzEQopwM3D23QyDMDCZmb6S7x
- w24vseQ5kFc0ljKWQ1Nj7vRmKM1LkM6MXIO0vxu3Jju5vzUWVjYllkihr2bF4MHpw9BDIO
- fxBgdDp05WYiprXB/m4izrWUp6v5q4k=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aMFGRpwt2MBQ9BUPbkLkgJfLIroL0bh0oM+o3o5bzu8=;
+ b=M7iloKjM5FQL6I9OEiDbREjFE6WfTl1czHvpI7bPqqJiHVovU8NyEQWAQJoVl5TaZ0wpgl
+ by09Qlu05onVcRBwIiwZkk0xPs8Q6eRQKvIXNTconXTPRCronxuYxI0aYcJG+WbN3gjGjZ
+ zkkN/QCu9PrKrwKlBOK/XqdfLy9EFwA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-304-4_QaOxtTN_-xiZ7Dfp3zVw-1; Mon, 06 May 2024 03:52:58 -0400
-X-MC-Unique: 4_QaOxtTN_-xiZ7Dfp3zVw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-572a0c5ece9so818425a12.2
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:58 -0700 (PDT)
+ us-mta-376-0fp_OR84NFeXSGm23n76aQ-1; Mon, 06 May 2024 03:53:01 -0400
+X-MC-Unique: 0fp_OR84NFeXSGm23n76aQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a59c3cf5f83so65166266b.2
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:53:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981977; x=1715586777;
+ d=1e100.net; s=20230601; t=1714981979; x=1715586779;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uYqiJiD3cHkBOXJK8l/nxNS2jHk461xYcqaYdRiiYtg=;
- b=fwrFwOZ1ytqsuseNWBnwLw/DSy0ciW8U3rb2rSyf9JAmCzO2T7HsC1VWMleiF0WSJO
- wRVUDYAzI/vRTty1z0bd6yaeDlJxMUukkwiVNSlncxN6jEMFyOfZBqIv/ZQG0t/D28pU
- GWwmxd2MONQB9VNJQIjYtOEjJyaK2ev7Z62pne2iK9l5uul7FBue6PpSrX4jXTQaSdO9
- rcrgkjk4gt1EyIrS7WF9qCqt+DNS3KS+6ARZewt782qtxO3NlWNWJ0Yg7nZBkxFznmNL
- OIRbVRSnkxT30DQrNcv0Q4fXcDsEpIsM0OCTc6/UrhjwoJ2w6zWasetrNvJGFPszFtri
- Lkpg==
-X-Gm-Message-State: AOJu0YywvnzXbjxj+zJY9p+3m3elTXBY9ja0M71OOFOBy4qEES5ClphR
- WfFptRS40xotHnLSxUikQbu8e0ZY6yH9qWs7MZxVSstyYhso8Z+rFPwCwLie4plBZY/GL5g42nu
- JVpuo/varViAZOmd7iljqmiq2x213UAcWVtQF/JGgfqLjmFtljAuukdLNbtP1cxLJpzAcIut35o
- IlJ9s4/hgZuIjXUXWn64xmoHaCU2QoU1a7/e+S
-X-Received: by 2002:a50:cdde:0:b0:572:9d87:9aa3 with SMTP id
- h30-20020a50cdde000000b005729d879aa3mr6088127edj.36.1714981976871; 
- Mon, 06 May 2024 00:52:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwn4ba2TUupKhjfFRVRr75PJoma4/O5fEZ5D2rhMBv8qgvaZMgJEm5/NcCzQc5jbRcU8wv+w==
-X-Received: by 2002:a50:cdde:0:b0:572:9d87:9aa3 with SMTP id
- h30-20020a50cdde000000b005729d879aa3mr6088118edj.36.1714981976528; 
- Mon, 06 May 2024 00:52:56 -0700 (PDT)
+ bh=aMFGRpwt2MBQ9BUPbkLkgJfLIroL0bh0oM+o3o5bzu8=;
+ b=Gf65Kp4hUsIG/N+K4CwmtN/64tJv9kWzIy/r8CzLJiiqMm0d+8OHTKA6Ai5T0R9Tc3
+ JLWXde/eMiWJw1Zf1IbPN9FuRlEnJTXigIoN30Od/9aolzsPK3mV8sPmycYAdD42g28g
+ SLPTtngv+VZtFfVro37wlIz9PXiBrnEv5pYwC9rzIksYGaFM9wGdozMgelh1kwOgKYvy
+ +r2s0ZWy1n4cKFikbgB6tFr9P5OPoJPrXYn/JTMI7wSLQnX9YTpCFYj50Rc+6Ll55ptK
+ lJ54Tb/m4LhrQc4NszjYcliz9WTtpXnmWN9B3OZeGKttpm0Mf67Byn5nLjUCoeR13wLR
+ dDnQ==
+X-Gm-Message-State: AOJu0YwgPV7b4hv9ZLx5k6cD3k/E/kPxJG3QSlPaL8XLx90lGMuoKAQI
+ VDpM5EALzotif4nS7d+JsAHhcqn68aFLWyAKZN5dM9cBDmOX4LI4bj6CQ/hgkVxdBjPQm9B8ktf
+ JrHSi9923ciRITRoFlSmNVSXXLz1O/hRcLBjxeCG3Rg8vnkEPpkGsDbT9WxLjnNr24ldFRd3m3o
+ iIL/LfEg/AElhj4aeIduSoustCWlEPtSf6klZj
+X-Received: by 2002:a17:907:28c2:b0:a59:9e01:e788 with SMTP id
+ en2-20020a17090728c200b00a599e01e788mr4307619ejc.34.1714981979354; 
+ Mon, 06 May 2024 00:52:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5G+vZDqLJMPUBVbRk49Dvv2JGQKGMy2W4e5ngrPKvXzNpnZRwSoh2R9U0CYtm42Lth7EHVg==
+X-Received: by 2002:a17:907:28c2:b0:a59:9e01:e788 with SMTP id
+ en2-20020a17090728c200b00a599e01e788mr4307610ejc.34.1714981979003; 
+ Mon, 06 May 2024 00:52:59 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- h9-20020a0564020e0900b00572d58cffe1sm3720062edh.2.2024.05.06.00.52.55
+ v6-20020a1709067d8600b00a599e65808asm3375943ejo.18.2024.05.06.00.52.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:52:56 -0700 (PDT)
+ Mon, 06 May 2024 00:52:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/46] intc: remove PICCommonState from typedefs.h
-Date: Mon,  6 May 2024 09:51:15 +0200
-Message-ID: <20240506075125.8238-37-pbonzini@redhat.com>
+Subject: [PULL 37/46] lockable: remove QemuLockable from typedefs.h
+Date: Mon,  6 May 2024 09:51:16 +0200
+Message-ID: <20240506075125.8238-38-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
@@ -101,40 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move it to the existing "PIC related things" header, hw/intc/i8259.h.
+Using QemuLockable almost always requires going through QEMU_MAKE_LOCKABLE().
+Therefore, there is little point in having the typedef always present.  Move
+it to lockable.h, with only a small adjustment to coroutine.h (which has
+a tricky co-dependency with lockable.h due to defining CoMutex *and*
+using QemuLockable as a part of the CoQueue API).
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/intc/i8259.h | 2 ++
- include/qemu/typedefs.h | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ include/qemu/coroutine.h | 4 ++--
+ include/qemu/lockable.h  | 4 ++--
+ include/qemu/typedefs.h  | 1 -
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/hw/intc/i8259.h b/include/hw/intc/i8259.h
-index c4125757753..1f2420231f1 100644
---- a/include/hw/intc/i8259.h
-+++ b/include/hw/intc/i8259.h
-@@ -3,6 +3,8 @@
+diff --git a/include/qemu/coroutine.h b/include/qemu/coroutine.h
+index e6aff453017..ff3084538b8 100644
+--- a/include/qemu/coroutine.h
++++ b/include/qemu/coroutine.h
+@@ -84,6 +84,8 @@ static inline coroutine_fn void qemu_co_mutex_assert_locked(CoMutex *mutex)
+            mutex->holder == qemu_coroutine_self());
+ }
  
- /* i8259.c */
- 
-+typedef struct PICCommonState PICCommonState;
++#include "qemu/lockable.h"
 +
- extern PICCommonState *isa_pic;
+ /**
+  * CoQueues are a mechanism to queue coroutines in order to continue executing
+  * them later.  They are similar to condition variables, but they need help
+@@ -281,8 +283,6 @@ void qemu_coroutine_inc_pool_size(unsigned int additional_pool_size);
+  */
+ void qemu_coroutine_dec_pool_size(unsigned int additional_pool_size);
  
- /*
+-#include "qemu/lockable.h"
+-
+ /**
+  * Sends a (part of) iovec down a socket, yielding when the socket is full, or
+  * Receives data into a (part of) iovec from a socket,
+diff --git a/include/qemu/lockable.h b/include/qemu/lockable.h
+index 9823220446d..62110d2eb74 100644
+--- a/include/qemu/lockable.h
++++ b/include/qemu/lockable.h
+@@ -18,11 +18,11 @@
+ 
+ typedef void QemuLockUnlockFunc(void *);
+ 
+-struct QemuLockable {
++typedef struct QemuLockable {
+     void *object;
+     QemuLockUnlockFunc *lock;
+     QemuLockUnlockFunc *unlock;
+-};
++} QemuLockable;
+ 
+ static inline __attribute__((__always_inline__)) QemuLockable *
+ qemu_make_lockable(void *x, QemuLockable *lockable)
 diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 4519f0cd613..090e219248a 100644
+index 090e219248a..ab24ca2876c 100644
 --- a/include/qemu/typedefs.h
 +++ b/include/qemu/typedefs.h
-@@ -96,7 +96,6 @@ typedef struct PCIExpressDevice PCIExpressDevice;
- typedef struct PCIExpressHost PCIExpressHost;
- typedef struct PCIHostDeviceAddress PCIHostDeviceAddress;
- typedef struct PCIHostState PCIHostState;
--typedef struct PICCommonState PICCommonState;
- typedef struct PostcopyDiscardState PostcopyDiscardState;
- typedef struct Property Property;
- typedef struct PropertyInfo PropertyInfo;
+@@ -105,7 +105,6 @@ typedef struct QEMUBH QEMUBH;
+ typedef struct QemuConsole QemuConsole;
+ typedef struct QEMUCursor QEMUCursor;
+ typedef struct QEMUFile QEMUFile;
+-typedef struct QemuLockable QemuLockable;
+ typedef struct QemuMutex QemuMutex;
+ typedef struct QemuOpts QemuOpts;
+ typedef struct QemuOptsList QemuOptsList;
 -- 
 2.44.0
 
