@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6F78BC8A3
-	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AD08BC8B5
+	for <lists+qemu-devel@lfdr.de>; Mon,  6 May 2024 09:56:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s3t99-0005w9-34; Mon, 06 May 2024 03:52:27 -0400
+	id 1s3t98-0005vU-LS; Mon, 06 May 2024 03:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8x-0005r7-AN
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:17 -0400
+ id 1s3t90-0005rZ-7Z
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s3t8v-0001eo-PT
- for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:15 -0400
+ id 1s3t8y-0001fJ-QA
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 03:52:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714981933;
+ s=mimecast20190719; t=1714981935;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/DU50XkwxYuhVEPBKoJ+oPs10H2H4J3RCxabXElmSlk=;
- b=HQj3UxhAH94Xmm7DobP80eUgDlgzejyHG1c5XjgSQRGvakHQVj9URmG0u6mEjVvaDMT80F
- hkVnCYYmWAFw62NfsY6dIOoZte8sD0Q6Q3J4RgmaO6s80jjYnzFL3oRF4CJ90a2DGxPdXz
- DYVbujhVNSch9gPfPMlr/f2O0KRFUco=
+ bh=8lqW75R0kfx7mTOUqcSRaHg3gZohk47UGz1fTQcjeIM=;
+ b=TIq7txPVaiOab6BQqhtyeBDTEnMKEz+aCy1wgF+QFNoscmqYABRdn1XobC+a//U30mOLtN
+ JUOUpZ12/DKp/XH5r+Niz4bNYZZz6IcoFgrTdLPEcjqKlVlncDmGjBkCZHbN7+PthUEQny
+ 5qcci2ZjmIib9UG2/rBOsxFJ5ZiVhq4=
 Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
  [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-BLuM4K8aPhWFYvTiU4nOLQ-1; Mon, 06 May 2024 03:52:11 -0400
-X-MC-Unique: BLuM4K8aPhWFYvTiU4nOLQ-1
+ us-mta-199-1bxTInLcPbOekdHWk8VG7w-1; Mon, 06 May 2024 03:52:14 -0400
+X-MC-Unique: 1bxTInLcPbOekdHWk8VG7w-1
 Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-572ef3eb368so215269a12.1
- for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:11 -0700 (PDT)
+ 4fb4d7f45d1cf-5729ec37366so846500a12.0
+ for <qemu-devel@nongnu.org>; Mon, 06 May 2024 00:52:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714981930; x=1715586730;
+ d=1e100.net; s=20230601; t=1714981932; x=1715586732;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/DU50XkwxYuhVEPBKoJ+oPs10H2H4J3RCxabXElmSlk=;
- b=rp9SYc9kKHvF2qvP00z6MoajbBdMJhAD898jUJUvZxt8ASQ3yfZ2luWQC61sYsoja/
- gqSD9y3DKO6hAiMVw2yDKoBZ4o+UC9WhlSG4M5hRc712xE1EB9NdkCB8FyWZ3GqpEYh+
- w6IUcguChpbps8x3Qs2QDDN/5cy476ksc3KauboIOwtFe9iCp3qu+EV/HXKCcNZES9QQ
- fpS9kr2xIKsc6Hq6a7cLmQ4nYFqybwH+6uIKnI+DpXkYASlWxal6MLD+ZkE2WS2rIR9E
- JRO4znKodvB7pBMYlYLrADF7p5vVLwHjH++UveraVM1Ju5hh8QhDekwp01kvgChdFrFc
- I7Gg==
-X-Gm-Message-State: AOJu0YwCobcYib34CVCuVVSK1cv4i1MUoJ70a+3UafI4RlrgrygW+Y5v
- 7w7bDHq/8Uj+lcYxqRhm0GFEISyBj7DI8G4qWM/973ykKErXyfyX1is7zVhC4JujP6Fk2CcZYjU
- Z5OXKQsC3heC30MSSiRMDBI7Snz9Yq7DwLe22gGS1um1xrVXSKRPWZS+f2k0o01JakXlzpl1DC0
- 8OqeCik12pW1njJ5fZqyUM50a3ngQWMf/IKO3h
-X-Received: by 2002:a50:8e16:0:b0:572:a17d:a302 with SMTP id
- 22-20020a508e16000000b00572a17da302mr4940693edw.42.1714981930094; 
- Mon, 06 May 2024 00:52:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZ1+JV4lAk76pz7VFh1V5aSwRct4x0ttUcgJXg2KVa7LVUKokJ3k7xa2dhB4uAsJ30L6fkDA==
-X-Received: by 2002:a50:8e16:0:b0:572:a17d:a302 with SMTP id
- 22-20020a508e16000000b00572a17da302mr4940683edw.42.1714981929766; 
- Mon, 06 May 2024 00:52:09 -0700 (PDT)
+ bh=8lqW75R0kfx7mTOUqcSRaHg3gZohk47UGz1fTQcjeIM=;
+ b=EM0rDf8uX8CLZL4gYUr4tgbyEqU0j5i8Xg1Mk8AL+pqw/+ZPVFv/WGK/FGk3fiTdvu
+ W8XflfcqHPwxQs03y2A0eVn0I9Q2J/QfrLffzFeVilwwsw1/6Bv7WQg7Hw8jka57f/2j
+ U+leMhccW2LPGvmOtJtxECbo64f/nlYpXrljsHyjsMRUwFPik3NQz1rZzPaAnybb/Usw
+ zN21tfBGUq+ZJrdqE2dFQlJHuhPIQrxrMtnZLCC71fSw3/cVcBnCUGHjERilrMWRWi5E
+ baWA0gIuEEYydxFE2cZRf+48daaXzO+xKz1j3gqLWeIG/z52Mi3CcFoRtYETimAizEWe
+ FkRQ==
+X-Gm-Message-State: AOJu0Yzs5BNjbMdzE01VyZaPQXk1cr5LjXRNCR81PtbVqu+VMw5rvfcc
+ i0jPz2QUr1Z+5yqslQNXbs5W8kF0JFEVnfDapp9OC3R5anEeK1P8i4QwIFJsrZZQ/tRa2pvfITy
+ sIWT8962JnIvCZpF3oDHbopGdxyUyICJphU/or30XUmutXOugTHRCDTxpWRxVVKzUA396KtPVGp
+ sDQbWK0jLOgEAy9k2S01EcF8G+XWynxgFI/eRy
+X-Received: by 2002:a50:d69a:0:b0:56e:5735:db2b with SMTP id
+ r26-20020a50d69a000000b0056e5735db2bmr6619427edi.29.1714981932567; 
+ Mon, 06 May 2024 00:52:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdZGwzDz0rMx1uOrDSEGgnwPZ7uVHbH46UET/dGuuoEL4DXdyTPbzk23sappGmawUR7QlPYQ==
+X-Received: by 2002:a50:d69a:0:b0:56e:5735:db2b with SMTP id
+ r26-20020a50d69a000000b0056e5735db2bmr6619419edi.29.1714981932202; 
+ Mon, 06 May 2024 00:52:12 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- d10-20020a50ea8a000000b00571c1df911fsm4845755edo.37.2024.05.06.00.52.09
+ q12-20020a50c34c000000b00572459a4ffesm5074877edb.56.2024.05.06.00.52.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 May 2024 00:52:09 -0700 (PDT)
+ Mon, 06 May 2024 00:52:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/46] mips: switch boards to "default y"
-Date: Mon,  6 May 2024 09:50:56 +0200
-Message-ID: <20240506075125.8238-18-pbonzini@redhat.com>
+Subject: [PULL 18/46] openrisc: switch boards to "default y"
+Date: Mon,  6 May 2024 09:50:57 +0200
+Message-ID: <20240506075125.8238-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240506075125.8238-1-pbonzini@redhat.com>
 References: <20240506075125.8238-1-pbonzini@redhat.com>
@@ -102,138 +102,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with MIPS.
+Continue with OpenRISC.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/mips-softmmu/common.mak      |  5 +++--
- configs/devices/mips64-softmmu/default.mak   |  4 +++-
- configs/devices/mips64el-softmmu/default.mak | 10 ++++++----
- .gitlab-ci.d/buildtest.yml                   |  3 ++-
- hw/mips/Kconfig                              | 12 ++++++++++++
- 5 files changed, 26 insertions(+), 8 deletions(-)
+ configs/devices/or1k-softmmu/default.mak | 5 ++---
+ .gitlab-ci.d/buildtest.yml               | 2 +-
+ hw/openrisc/Kconfig                      | 4 ++++
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index 416a5d353e8..b50107feafe 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -4,5 +4,6 @@
- # CONFIG_PCI_DEVICES=n
+diff --git a/configs/devices/or1k-softmmu/default.mak b/configs/devices/or1k-softmmu/default.mak
+index 3aecdf9d738..efe3bc278bc 100644
+--- a/configs/devices/or1k-softmmu/default.mak
++++ b/configs/devices/or1k-softmmu/default.mak
+@@ -5,6 +5,5 @@
  # CONFIG_TEST_DEVICES=n
  
--CONFIG_MALTA=y
--CONFIG_MIPSSIM=y
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_MALTA=n
-+# CONFIG_MIPSSIM=n
-diff --git a/configs/devices/mips64-softmmu/default.mak b/configs/devices/mips64-softmmu/default.mak
-index 566672f3c22..1b8d7ced1c6 100644
---- a/configs/devices/mips64-softmmu/default.mak
-+++ b/configs/devices/mips64-softmmu/default.mak
-@@ -1,4 +1,6 @@
- # Default configuration for mips64-softmmu
- 
- include ../mips-softmmu/common.mak
--CONFIG_JAZZ=y
-+
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_JAZZ=n
-diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
-index 88a37cf27f1..9dce346c4fb 100644
---- a/configs/devices/mips64el-softmmu/default.mak
-+++ b/configs/devices/mips64el-softmmu/default.mak
-@@ -1,7 +1,9 @@
- # Default configuration for mips64el-softmmu
- 
- include ../mips-softmmu/common.mak
--CONFIG_FULOONG=y
--CONFIG_LOONGSON3V=y
--CONFIG_JAZZ=y
--CONFIG_MIPS_BOSTON=y
-+
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_FULOONG=n
-+# CONFIG_LOONGSON3V=n
-+# CONFIG_JAZZ=n
-+# CONFIG_MIPS_BOSTON=n
+ # Boards:
+-#
+-CONFIG_OR1K_SIM=y
+-CONFIG_OR1K_VIRT=y
++# CONFIG_OR1K_SIM=n
++# CONFIG_OR1K_VIRT=n
 diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index e2e92f25c58..811132443a7 100644
+index 811132443a7..49cd50c354d 100644
 --- a/.gitlab-ci.d/buildtest.yml
 +++ b/.gitlab-ci.d/buildtest.yml
 @@ -649,7 +649,7 @@ build-tci:
  
  # Check our reduced build configurations
  # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
--#   x86_64
-+#   mips64el, x86_64
+-#   mips64el, x86_64
++#   mips64el, or1k, x86_64
  # does not build without boards: i386, loongarch64, x86_64
  build-without-defaults:
    extends: .native_build_job_template
-@@ -665,6 +665,7 @@ build-without-defaults:
-       --disable-qom-cast-debug
-       --disable-strip
-     TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu m68k-softmmu
-+      mips-softmmu mips64-softmmu mipsel-softmmu
-       s390x-softmmu sh4-softmmu
-       sparc64-softmmu hexagon-linux-user i386-linux-user s390x-linux-user
-     MAKE_CHECK_ARGS: check
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 5c83ef49cf6..9bccb363eb9 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
+diff --git a/hw/openrisc/Kconfig b/hw/openrisc/Kconfig
+index 97af258b556..9c9015e0a5d 100644
+--- a/hw/openrisc/Kconfig
++++ b/hw/openrisc/Kconfig
 @@ -1,5 +1,7 @@
- config MALTA
+ config OR1K_SIM
      bool
 +    default y
-+    depends on MIPS
-     imply PCNET_PCI
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-@@ -13,11 +15,15 @@ config MALTA
- 
- config MIPSSIM
-     bool
-+    default y
-+    depends on MIPS
++    depends on OPENRISC
      select SERIAL
-     select MIPSNET
+     select OPENCORES_ETH
+     select OMPIC
+@@ -7,6 +9,8 @@ config OR1K_SIM
  
- config JAZZ
+ config OR1K_VIRT
      bool
 +    default y
-+    depends on MIPS64
-     select ISA_BUS
-     select RC4030
-     select I8259
-@@ -38,6 +44,8 @@ config JAZZ
- 
- config FULOONG
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
++    depends on OPENRISC
      imply PCI_DEVICES
+     imply VIRTIO_VGA
      imply TEST_DEVICES
-     imply ATI_VGA
-@@ -48,6 +56,8 @@ config FULOONG
- 
- config LOONGSON3V
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VIRTIO_PCI
-@@ -69,6 +79,8 @@ config MIPS_CPS
- 
- config MIPS_BOSTON
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     select FITLOADER
 -- 
 2.44.0
 
