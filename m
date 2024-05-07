@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61858BE069
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:57:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957DA8BE094
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 13:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4IUM-0004TP-Uc; Tue, 07 May 2024 06:56:02 -0400
+	id 1s4IUR-0004W9-EX; Tue, 07 May 2024 06:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUL-0004Si-7M
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:01 -0400
+ id 1s4IUM-0004TW-KI
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUI-0002IW-Lz
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:00 -0400
+ id 1s4IUK-0002K3-MY
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715079358;
+ s=mimecast20190719; t=1715079360;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tkxSghSjR4ENCOCTqTHpgkYlq4A0zKbSI7o1Uqb86F0=;
- b=V1tuXzjyErynjufFeMveKA6n+xx5CSR1qY4/bOKLeupHmCB4SFgHmNg9nbTw1BaRI/XWWk
- uMOUf9Axxrtcwm3uf1fzQZSqxnLQiaPfP3klHFHuM6zPSOg+AC8kcvmiRSZKaBBnH20CXZ
- sUC2qy0+ubghQ3ylOF1hriGxXNoBu6c=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fKbSH8kRpOPx4Gy5HcgM9terWCl4SkTItkgdxARkYTo=;
+ b=OlJhm0P93I9u/YH6M/gQlkw2vB3piqG1wiGVkCzL0H2dxjplS0hlQoqzFdG2dBocnB5s0l
+ 2qxZ3Xr9zCryO3zVd4YZcd/7YyaDz8HC4FT04W4pB0b9NAscXLzqBSlFqU7znVfRCKnj/S
+ 2YJz7Bv0HAJ9Zd9BmUzbm3RwE5zBU4I=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-kbKkT9tsOW2Mm4GxJezk_g-1; Tue, 07 May 2024 06:55:56 -0400
-X-MC-Unique: kbKkT9tsOW2Mm4GxJezk_g-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a599dbd2b6aso173944966b.2
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:55:56 -0700 (PDT)
+ us-mta-444-6HVQ2nZfPEenso_LcSxs_Q-1; Tue, 07 May 2024 06:55:58 -0400
+X-MC-Unique: 6HVQ2nZfPEenso_LcSxs_Q-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a59a17f35c8so197006266b.0
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:55:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715079354; x=1715684154;
+ d=1e100.net; s=20230601; t=1715079357; x=1715684157;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tkxSghSjR4ENCOCTqTHpgkYlq4A0zKbSI7o1Uqb86F0=;
- b=mqXj3AxI4hgN9Q/RuB615gNCP1Yuz/zcvF1Uu0wZVKM847+AjnPmrpZYEyq3m++bsF
- xoPbSKMrJnIxw38IMo2rsONZ1xrwwdd2XHiV1aFWdXCQb7ii0XhhQMSog7yKpgt7ErFV
- XKr2Sa/yi7lqJmnPS+E/SDR1gzdtaUMk80a1LhMDJCJqaCPpNVRDstAQ5nIOX6qzDJBI
- FMlEgkqn6TY4Wx+d5pEGJNi9niGGkQWfCQoxsqVc8mnsTbvmOrPa+FHlfnEw3Ye6tYYv
- ubFRaT1t3S+0xQxzsg+WCRmLtyk/ZsZ/1kUfZAlpFAMtiQjnZVD5n86FO0VQcYufcb+M
- McqQ==
-X-Gm-Message-State: AOJu0YxR3uIFIuUaG2rADCZaW72t60zg6EPiYt0sQMp9KQelL8msMTW3
- Buaq+AKpkoGdbPmNgkuYcgO1h5Wj0j8PYE86XDHpM2MGiAcqvfBTKqQmcD3l3p/sTZQCeJEFVRm
- RKYnz0v3jRBFvI5wfIn10nY3SKkqOJPnpOMSzoUfdOnJKgTrbhUkY0mkTCsz3/VtHiDGCk/omc2
- mNMIajwq4L7UaN9u3Yn/b9sLhO3oJQfPFu/LnP
-X-Received: by 2002:a17:907:9403:b0:a59:c833:d272 with SMTP id
- dk3-20020a170907940300b00a59c833d272mr4957014ejc.13.1715079354715; 
- Tue, 07 May 2024 03:55:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQ+UleOGqhS8Nex6FtITqtnfUeMlUjNIknLx51OILuUl9yAJ8BKhKTTZIeXRcfDgR6vss6kA==
-X-Received: by 2002:a17:907:9403:b0:a59:c833:d272 with SMTP id
- dk3-20020a170907940300b00a59c833d272mr4956997ejc.13.1715079354418; 
- Tue, 07 May 2024 03:55:54 -0700 (PDT)
+ bh=fKbSH8kRpOPx4Gy5HcgM9terWCl4SkTItkgdxARkYTo=;
+ b=kkSM9CKBaVv93Eahr9hfdfaohNGdDV/jFaBrOCLEIN25d3o9PcmOiouvCdlxOBT/32
+ AHrnUbyzQZGMy+Mv7MP4AWtt22GxLR5/PIlLjKZM2PHULN2tx3LnWUO0drTLyqOkVpVZ
+ ktTqUwNRkPCgeu2aIvNQGaptZiSxP3++zNBVheFeXFNGTMVQdC0cBK/ha0ooixfRY8Qr
+ Jj3fhuYChhDTHAz7GDJIjAHOX1jUtC4GVS9j8mRi6q5mkUJTHksgrD4vyWmcbydvkErD
+ kghYt9No2EVoyeEC2JZU8Yr79MFLDxe4XJWQzdscuRHezyfx4ubNhOXld0aCyHIMjhGK
+ lUfg==
+X-Gm-Message-State: AOJu0YxDhwNPp5EeGnJNE3SnTNyJ7rdaivfLaJHEQe7CsOKmKgnltMxv
+ jN4YSabKJNFg0ESrEKVfWWApieESGCUXd1hvKiGQkJfu0JH0FFaG0MjzkqW6N3Odg266eBpYGQn
+ kqwD1FBfwi843VLCsFNoIGvv4XMY4lXZetbiRF+VLHVio5jaSOqCK9Dy35vnvvd3551SKRLd0YJ
+ r6594qhKTXS84wIWo74+27MqsT8S2RPj/9Y1+Y
+X-Received: by 2002:a17:906:730d:b0:a59:bf27:c3a with SMTP id
+ di13-20020a170906730d00b00a59bf270c3amr4983818ejc.71.1715079357152; 
+ Tue, 07 May 2024 03:55:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGX/nLBWJ3uXc1YrxMUcn4c4WK3VNQkthION/ztGQ11iZIFL7kRBMscUeoGOhRUmKpJHS+TCw==
+X-Received: by 2002:a17:906:730d:b0:a59:bf27:c3a with SMTP id
+ di13-20020a170906730d00b00a59bf270c3amr4983809ejc.71.1715079356854; 
+ Tue, 07 May 2024 03:55:56 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- bo15-20020a170906d04f00b00a59b87dd0bbsm3396150ejb.161.2024.05.07.03.55.53
+ z21-20020a170906715500b00a599c8b6531sm4830975ejj.178.2024.05.07.03.55.56
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 03:55:53 -0700 (PDT)
+ Tue, 07 May 2024 03:55:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/26] target/i386: cc_op is not dynamic in gen_jcc1
-Date: Tue,  7 May 2024 12:55:17 +0200
-Message-ID: <20240507105538.180704-6-pbonzini@redhat.com>
+Subject: [PULL 06/26] target/i386: cleanup cc_op changes for REP/REPZ/REPNZ
+Date: Tue,  7 May 2024 12:55:18 +0200
+Message-ID: <20240507105538.180704-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240507105538.180704-1-pbonzini@redhat.com>
 References: <20240507105538.180704-1-pbonzini@redhat.com>
@@ -100,38 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resetting cc_op to CC_OP_DYNAMIC should be done at control flow junctions,
-which is not the case here.  This translation block is ending and the
-only effect of calling set_cc_op() would be a discard of s->cc_srcT.
-This discard is useless (it's a temporary, not a global) and in fact
-prevents gen_prepare_cc from returning s->cc_srcT.
+gen_update_cc_op must be called before control flow splits.  Do it
+where the jump on ECX!=0 is translated.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+On the other hand, remove the call before gen_jcc1, which takes care of
+it already, and explain why REPZ/REPNZ need not use CC_OP_DYNAMIC---the
+translation block ends before any control-flow-dependent cc_op could
+be observed.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/i386/tcg/translate.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 9aecd415b38..3f1d2858fc9 100644
+index 3f1d2858fc9..466fee38c0e 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -1227,13 +1227,13 @@ static inline void gen_jcc1_noeob(DisasContext *s, int b, TCGLabel *l1)
+@@ -1242,11 +1242,15 @@ static inline void gen_jcc1(DisasContext *s, int b, TCGLabel *l1)
+ }
  
- /* Generate a conditional jump to label 'l1' according to jump opcode
-    value 'b'. In the fast case, T0 is guaranteed not to be used.
--   A translation block must end soon.  */
-+   One or both of the branches will call gen_jmp_rel, so ensure
-+   cc_op is clean.  */
- static inline void gen_jcc1(DisasContext *s, int b, TCGLabel *l1)
+ /* XXX: does not work with gdbstub "ice" single step - not a
+-   serious problem */
++   serious problem.  The caller can jump to the returned label
++   to stop the REP but, if the flags have changed, it has to call
++   gen_update_cc_op before doing so.  */
+ static TCGLabel *gen_jz_ecx_string(DisasContext *s)
  {
-     CCPrepare cc = gen_prepare_cc(s, b, s->T0);
+     TCGLabel *l1 = gen_new_label();
+     TCGLabel *l2 = gen_new_label();
++
++    gen_update_cc_op(s);
+     gen_op_jnz_ecx(s, l1);
+     gen_set_label(l2);
+     gen_jmp_rel_csize(s, 0, 1);
+@@ -1342,7 +1346,6 @@ static void gen_repz(DisasContext *s, MemOp ot,
+                      void (*fn)(DisasContext *s, MemOp ot))
+ {
+     TCGLabel *l2;
+-    gen_update_cc_op(s);
+     l2 = gen_jz_ecx_string(s);
+     fn(s, ot);
+     gen_op_add_reg_im(s, s->aflag, R_ECX, -1);
+@@ -1364,15 +1367,18 @@ static void gen_repz2(DisasContext *s, MemOp ot, int nz,
+                       void (*fn)(DisasContext *s, MemOp ot))
+ {
+     TCGLabel *l2;
+-    gen_update_cc_op(s);
+     l2 = gen_jz_ecx_string(s);
+     fn(s, ot);
+     gen_op_add_reg_im(s, s->aflag, R_ECX, -1);
+-    gen_update_cc_op(s);
+     gen_jcc1(s, (JCC_Z << 1) | (nz ^ 1), l2);
+     if (s->repz_opt) {
+         gen_op_jz_ecx(s, l2);
+     }
++    /*
++     * Only one iteration is done at a time, so the translation
++     * block ends unconditionally after this instruction and there
++     * is no control flow junction - no need to set CC_OP_DYNAMIC.
++     */
+     gen_jmp_rel_csize(s, -cur_insn_len(s), 0);
+ }
  
-     gen_update_cc_op(s);
--    set_cc_op(s, CC_OP_DYNAMIC);
-     if (cc.use_reg2) {
-         tcg_gen_brcond_tl(cc.cond, cc.reg, cc.reg2, l1);
-     } else {
 -- 
 2.45.0
 
