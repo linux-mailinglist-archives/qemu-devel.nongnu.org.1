@@ -2,83 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D610C8BDDF3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BCB8BDE0C
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:23:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Gyg-0004Mr-Jd; Tue, 07 May 2024 05:19:14 -0400
+	id 1s4H2U-0008JX-QB; Tue, 07 May 2024 05:23:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4Gyd-0004MT-Ex; Tue, 07 May 2024 05:19:11 -0400
-Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4Gyc-0003wN-0K; Tue, 07 May 2024 05:19:11 -0400
-Received: by mail-pj1-x102d.google.com with SMTP id
- 98e67ed59e1d1-2b3c711dfd3so2253187a91.2; 
- Tue, 07 May 2024 02:19:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715073548; x=1715678348; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ChL5QlV/NNuHxB5hQirEygLiXEwndmqvymPljTskbBg=;
- b=ZzHx5hwju4MWOFk6jlkRjGch0Feids1IZXFK+7PsJT4Mzfo5tzqIWsS1O8WXS7bZAM
- gP6DFUbV9kirrQhRkXslI23yN0n3ADOqF4Wd0nx3DbekNsYHOHe1oTS8eUQ2SU+s5agb
- d/4tfsr5Bp/5VXVCdoz02pa5iGyOYFMfJ8lCk5eYEAdcyn7cyTitpWA6t4paIR1a5TQl
- 92fA0YS/u6/Hka/LRfTTt2SiJ8T61fIiPJeCcRKny+x1o5lCWD/4/nzyAfR3x/qi6sS6
- 28RoA2woCHnf5UNdmS3dnhDAXd7uAir3eEREkSHrVY+o/M2IYeXRIVUAy7pTB7ylc0UV
- 4GPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715073548; x=1715678348;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ChL5QlV/NNuHxB5hQirEygLiXEwndmqvymPljTskbBg=;
- b=Qh0VPi/sZ8lbHiDjTihNat2z8JINDRwUsiUckbGYYdV36W/3YKwzovkxwsUihmVchI
- wTY0xPlPXMfaEL+7IfgQ7MPqca6O3I/TJU9xnh9ApjVr7pPrhJ4Po9sJSLMFLSfBbQuN
- 8Z/oUso6drvRNXQqZeq5xCtrzTcRYNnRMQMxfMk0r7KQFKVRXyz8xdv7wbAHbaC7BWXN
- Y55D2WYW8qb8vNCAKBQkDW1wI/IOF6zEq0eu7sWIH3QioMLcbzLT9gzUZmK+wsGF+usk
- lPFx+D+drYFOXtgionQLA5YyCfaziUvT9frmMRbCMc4087xJLBBplWInVS706rVH/lfp
- LrsQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWUBurqKtAjOjNu2J5Aj2rHTbEsFT0ZX5zV6M3a4FC8N8aGQjqb94UsehU9PlUSG3Oq705vSalpcGICkCuCxo7LLi2B+dvFWcnV+u09pI8/Boe7NRgsaArdXfg=
-X-Gm-Message-State: AOJu0YyF2stk4xptTmshbKwA50ZiAYHIxW/7i9Vce0AnP4B5prxl5zS4
- eYDPAAj2q1M1FiLC/bjWpq88H6jRloyN1Jxlda4QBRgea4UZ2zkI
-X-Google-Smtp-Source: AGHT+IEqTwp3eNYxt9wFRLX0BMBgl4LH+T38k0f5k4yjigFTuU68blmKJBCtUkfZw0rOayqpYqEB5w==
-X-Received: by 2002:a17:90b:1487:b0:2b2:9660:7d44 with SMTP id
- js7-20020a17090b148700b002b296607d44mr9730581pjb.25.1715073548141; 
- Tue, 07 May 2024 02:19:08 -0700 (PDT)
-Received: from localhost (220-245-239-57.tpgi.com.au. [220.245.239.57])
- by smtp.gmail.com with ESMTPSA id
- d20-20020a17090ae29400b0029bf32b524esm11336481pjz.13.2024.05.07.02.19.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 May 2024 02:19:07 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1s4H2S-0008JM-PI
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:08 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1s4H2Q-00007g-0v
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715073786; x=1746609786;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ECtMSJ4Hf7GDWod1eZLnSy0ZFBCaVKwnTWBkNVKQzzE=;
+ b=LMPTwr61H3cnsz+R17ao1naz7fiGEtvqEzYdNq88MmEZ+aJKNLki/CdF
+ TWW9NXPYyKh69mHBQsij8kEgLxRaKunBZMy1oqoDGizFQ5QzkGEOdEH2o
+ wh99cil+/5wtIugoCzoKjx4pAHI2+gsipouQp6T2JUEaPAstHz8McQa7M
+ TjqVZKhhZu8o1dvfkC/40pe5tqQbphoOL5s3y8ZXfYgOSgpRy0VWTAkaA
+ iddItofkQt7ayp+IobRYu0IrK0FMh+2KyigMZh6qaJA/XztvPnx5zHqh/
+ OWI5aNrpDZlgcKd5FvX0W9lwz3gQbDATXTE7MRSdwp6ka5N+UvVi0JVmH g==;
+X-CSE-ConnectionGUID: mV8QFqDKQViin+snYekEfA==
+X-CSE-MsgGUID: kqYfAPxqRUiCFwvyWD06wg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10785173"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="10785173"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 02:23:01 -0700
+X-CSE-ConnectionGUID: 2qzGpL4OT6aRwqvX1Ogz0A==
+X-CSE-MsgGUID: i0maunaIRBei4cgE6QrAjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28553237"
+Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2024 02:22:58 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v4 00/19] Add a host IOMMU device abstraction to check with
+ vIOMMU
+Date: Tue,  7 May 2024 17:20:24 +0800
+Message-Id: <20240507092043.1172717-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 May 2024 19:19:02 +1000
-Message-Id: <D13ATWC6RQVA.9ZLADDX17XUU@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 05/28] target/ppc/mmu_common.c: Move calculation of a
- value closer to its usage
-From: "Nicholas Piggin" <npiggin@gmail.com>
-X-Mailer: aerc 0.17.0
-References: <cover.1714606359.git.balaton@eik.bme.hu>
- <c60019daaf0218b64205ba2ec4d5f8edca20776a.1714606359.git.balaton@eik.bme.hu>
-In-Reply-To: <c60019daaf0218b64205ba2ec4d5f8edca20776a.1714606359.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.21;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,50 +83,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu May 2, 2024 at 9:43 AM AEST, BALATON Zoltan wrote:
-> In mmubooke_check_tlb() prot2 is calculated first but only used after
-> an unrelated check that can return before tha value is used. Move the
-> calculation after the check, closer to where it is used, to keep them
-> together and avoid computing it when not needed.
->
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Hi,
 
-Reviwed-by: Nicholas Piggin <npiggin@gmail.com>
+This series introduce a HostIOMMUDevice abstraction and sub-classes.
+Also HostIOMMUDeviceCaps structure in HostIOMMUDevice and a new interface
+between vIOMMU and HostIOMMUDevice.
 
-> ---
->  target/ppc/mmu_common.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index 751403f1c8..168ff842a5 100644
-> --- a/target/ppc/mmu_common.c
-> +++ b/target/ppc/mmu_common.c
-> @@ -634,12 +634,6 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppce=
-mb_tlb_t *tlb,
->          return -1;
->      }
-> =20
-> -    if (FIELD_EX64(env->msr, MSR, PR)) {
-> -        prot2 =3D tlb->prot & 0xF;
-> -    } else {
-> -        prot2 =3D (tlb->prot >> 4) & 0xF;
-> -    }
-> -
->      /* Check the address space */
->      if ((access_type =3D=3D MMU_INST_FETCH ?
->          FIELD_EX64(env->msr, MSR, IR) :
-> @@ -648,6 +642,11 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppce=
-mb_tlb_t *tlb,
->          return -1;
->      }
-> =20
-> +    if (FIELD_EX64(env->msr, MSR, PR)) {
-> +        prot2 =3D tlb->prot & 0xF;
-> +    } else {
-> +        prot2 =3D (tlb->prot >> 4) & 0xF;
-> +    }
->      *prot =3D prot2;
->      if (prot2 & prot_for_access_type(access_type)) {
->          qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
+HostIOMMUDeviceClass::realize() is introduced to initialize
+HostIOMMUDeviceCaps and other fields of HostIOMMUDevice variants.
+
+HostIOMMUDeviceClass::check_cap() is introduced to query host IOMMU
+device capabilities.
+
+The class tree is as below:
+
+                              HostIOMMUDevice
+                                     | .caps
+                                     | .realize()
+                                     | .check_cap()
+                                     |
+            .-----------------------------------------------.
+            |                        |                      |
+HostIOMMUDeviceLegacyVFIO  {HostIOMMUDeviceLegacyVDPA}  HostIOMMUDeviceIOMMUFD
+            |                        |                      | [.iommufd]
+                                                            | [.devid]
+                                                            | [.ioas_id]
+                                                            | [.attach_hwpt()]
+                                                            | [.detach_hwpt()]
+                                                            |
+                                            .----------------------.
+                                            |                      |
+                         HostIOMMUDeviceIOMMUFDVFIO  {HostIOMMUDeviceIOMMUFDVDPA}
+                                          | [.vdev]                | {.vdev}
+
+* The attributes in [] will be implemented in nesting series.
+* The classes in {} will be implemented in future.
+* .vdev in different class points to different agent device,
+* i.e., for VFIO it points to VFIODevice.
+
+PATCH1-4: Introduce HostIOMMUDevice and its sub classes
+PATCH5-11: Introduce HostIOMMUDeviceCaps, implement .realize() and .check_cap() handler
+PATCH12-16: Create HostIOMMUDevice instance and pass to vIOMMU
+PATCH17-19: Implement compatibility check between host IOMMU and vIOMMU(intel_iommu)
+
+Qemu code can be found at:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_preq_v4
+
+Besides the compatibility check in this series, in nesting series, this
+host IOMMU device is extended for much wider usage. For anyone interested
+on the nesting series, here is the link:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_rfcv2
+
+Thanks
+Zhenzhong
+
+Changelog:
+v3:
+- move properties vdev, iommufd and devid to nesting series where need it (Cédric)
+- fix 32bit build with clz64 (Cédric)
+- change check_cap naming to get_cap (Cédric)
+- return bool if error is passed through errp (Cédric)
+- drop HostIOMMUDevice[LegacyVFIO|IOMMUFD|IOMMUFDVFIO] declaration (Cédric)
+- drop HOST_IOMMU_DEVICE_CAP_IOMMUFD (Cédric)
+- replace include directive with forward declaration (Cédric)
+
+v2:
+- use QOM to abstract host IOMMU device and its sub-classes (Cédric)
+- move host IOMMU device creation in attach_device() (Cédric)
+- refine pci_device_set/unset_iommu_device doc further (Eric)
+- define host IOMMU info format of different backend
+- implement get_host_iommu_info() for different backend (Cédric)
+- drop cap/ecap update logic (MST)
+- check aw-bits from get_host_iommu_info() in legacy mode
+
+v1:
+- use HostIOMMUDevice handle instead of union in VFIODevice (Eric)
+- change host_iommu_device_init to host_iommu_device_create
+- allocate HostIOMMUDevice in host_iommu_device_create callback
+  and set the VFIODevice base_hdev handle (Eric)
+- refine pci_device_set/unset_iommu_device doc (Eric)
+- use HostIOMMUDevice handle instead of union in VTDHostIOMMUDevice (Eric)
+- convert HostIOMMUDevice to sub object pointer in vtd_check_hdev
+
+rfcv2:
+- introduce common abstract HostIOMMUDevice and sub struct for different BEs (Eric, Cédric)
+- remove iommufd_device.[ch] (Cédric)
+- remove duplicate iommufd/devid define from VFIODevice (Eric)
+- drop the p in aliased_pbus and aliased_pdevfn (Eric)
+- assert devfn and iommu_bus in pci_device_get_iommu_bus_devfn (Cédric, Eric)
+- use errp in iommufd_device_get_info (Eric)
+- split and simplify cap/ecap check/sync code in intel_iommu.c (Cédric)
+- move VTDHostIOMMUDevice declaration to intel_iommu_internal.h (Cédric)
+- make '(vtd->cap_reg >> 16) & 0x3fULL' a MACRO and add missed '+1' (Cédric)
+- block migration if vIOMMU cap/ecap updated based on host IOMMU cap/ecap
+- add R-B
+
+
+Yi Liu (2):
+  hw/pci: Introduce pci_device_[set|unset]_iommu_device()
+  intel_iommu: Implement [set|unset]_iommu_device() callbacks
+
+Zhenzhong Duan (17):
+  backends: Introduce HostIOMMUDevice abstract
+  vfio/container: Introduce TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO device
+  backends/iommufd: Introduce abstract TYPE_HOST_IOMMU_DEVICE_IOMMUFD
+    device
+  vfio/iommufd: Introduce TYPE_HOST_IOMMU_DEVICE_IOMMUFD_VFIO device
+  backends/host_iommu_device: Introduce HostIOMMUDeviceCaps
+  range: Introduce range_get_last_bit()
+  vfio/container: Implement HostIOMMUDeviceClass::realize() handler
+  backends/iommufd: Introduce helper function
+    iommufd_backend_get_device_info()
+  vfio/iommufd: Implement HostIOMMUDeviceClass::realize() handler
+  vfio/container: Implement HostIOMMUDeviceClass::get_cap() handler
+  backends/iommufd: Implement HostIOMMUDeviceClass::get_cap() handler
+  vfio: Introduce VFIOIOMMUClass::hiod_typename attribute
+  vfio: Create host IOMMU device instance
+  hw/pci: Introduce helper function pci_device_get_iommu_bus_devfn()
+  vfio/pci: Pass HostIOMMUDevice to vIOMMU
+  intel_iommu: Extract out vtd_cap_init() to initialize cap/ecap
+  intel_iommu: Check compatibility with host IOMMU capabilities
+
+ MAINTAINERS                           |   2 +
+ hw/i386/intel_iommu_internal.h        |   8 ++
+ include/hw/i386/intel_iommu.h         |   3 +
+ include/hw/pci/pci.h                  |  38 ++++-
+ include/hw/vfio/vfio-common.h         |   7 +
+ include/hw/vfio/vfio-container-base.h |   3 +
+ include/qemu/range.h                  |  11 ++
+ include/sysemu/host_iommu_device.h    |  92 ++++++++++++
+ include/sysemu/iommufd.h              |  20 +++
+ backends/host_iommu_device.c          |  42 ++++++
+ backends/iommufd.c                    |  77 +++++++---
+ hw/i386/intel_iommu.c                 | 195 ++++++++++++++++++++------
+ hw/pci/pci.c                          |  75 +++++++++-
+ hw/vfio/common.c                      |  16 ++-
+ hw/vfio/container.c                   |  50 ++++++-
+ hw/vfio/iommufd.c                     |  44 +++++-
+ hw/vfio/pci.c                         |  19 ++-
+ backends/Kconfig                      |   5 +
+ backends/meson.build                  |   1 +
+ 19 files changed, 638 insertions(+), 70 deletions(-)
+ create mode 100644 include/sysemu/host_iommu_device.h
+ create mode 100644 backends/host_iommu_device.c
+
+-- 
+2.34.1
 
 
