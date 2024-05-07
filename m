@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E828BE62F
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC588BE60E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:35:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4LuA-0005jd-Gj; Tue, 07 May 2024 10:34:54 -0400
+	id 1s4LuC-0005ui-24; Tue, 07 May 2024 10:34:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4Lu7-0005ca-Hy
- for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:51 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1s4Lu9-0005mX-EJ
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:53 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4Lu5-00025N-N0
- for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:51 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-53fbf2c42bfso2448278a12.3
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:34:49 -0700 (PDT)
+ id 1s4Lu6-00029d-Vf
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:52 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-61be599ab77so1284485a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715092488; x=1715697288;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715092489; x=1715697289;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s8UQwJWo0cr2ZRaC4+6kRjAHtdNM0XskKMAiaHBTEPQ=;
- b=QoEjEsmjN7rpWd/sbNtl7UgF+fLVGYN/nN8XE2byNqc5u4OpwDuZSwFI0iZcN2fyUe
- Mr/qqZdmyCqE1F4EqSqaLw7W9mV+6U5CE79Vkgzg5GTitlmWfUJ5pbp5U1SDR6eqUpzY
- qJOQKMV3khOpu4Wbw1l9VJr/6QoPY5K4VZsQF2HDAe+PG+wWc7TP9lxV14XtwJiMsbFD
- K3HISguEtmNK0ocJPYNavcZPPBVu4Wj6PsgjgaF8zbGIB24uL+zqVqpw4sXsb2V9xraH
- zkXrUwJ0wBro0o+BFGqVAop6OYBCqtsJOgM0fW+2rZPIzeaGEXx/G6NFzp4VdeyqmPHC
- UcrA==
+ bh=sbl6Cn/2SrMdVp5f3zSpmcxRHU/zOlM5ad+nfpeWxEI=;
+ b=p1TucNDFm1yz5YTJE0XXJFcD0/nLRZ7uoH0ezXEEZXHsB7oAGXCvvKnAT9hs7rpYqs
+ pxnoPwjUpyX+kFTC9H0abGkfBaoIfHvqXxEQ66wEtF2NxhS9pWYtFKEcpv4wgROTbDY7
+ tt8FouP6UEbQ6sCuJRZgH2JBDiaEHBP0Mxax4ARffdre03O0gO+H20mUr8RV5qsW3x95
+ /MPiUBf7gYTf9UOHs2w6DSKBR8n7IngxUfvd/g+cbYQh7OlsCNHNaWuC/c++J6jAwocr
+ AAVj2soLSdS2PAvCp4Fj+lCEBoi4lgMK4fv/4cdFlIOzs24LLJT5LwzYmPI0Xupvdvve
+ ufyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715092488; x=1715697288;
+ d=1e100.net; s=20230601; t=1715092489; x=1715697289;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s8UQwJWo0cr2ZRaC4+6kRjAHtdNM0XskKMAiaHBTEPQ=;
- b=IEGPbQcChUc7g98n7efzu9Voo6oLqkDMW0Q/ysbB0astLKzsGrpAwoO2fjrIHXAF7S
- JqPllvsnuwO2hH4k5BhkvUJ8ij2MmQT1GtRKzlOy/4CMtB2/OHZ3YfQ004wAAkGCxoza
- xbT9FERzMwHBDByjEcWgfWgCcLsfAX8jri9cc8AnzMrmE4TDq46aqtKhP+eC3aNyj8t6
- DgW7q65edmzVMfi9Szf/o5o4Q/ZXYPOMhw2neMginCsSmib13P+Gma6qPsHlhUEgJWDV
- /4Zd0PAd59zRAJP9mVsrrTSjFyhuP4FqfSnO6kwIhjN2KFa2a+hGAMtEcki8625WYaik
- TDIw==
+ bh=sbl6Cn/2SrMdVp5f3zSpmcxRHU/zOlM5ad+nfpeWxEI=;
+ b=AhSHFob0/rDmyJ9/d1EkqAO3TJ7zm/S+oR6Xrvmmk57SMq3YI9VLhXWroqMKmWHhmE
+ 7Dt5qRfNzuw/mnR+JAXzxFt2KiqIWUEtXWRbrrhHG19Uc+JW+YL8xn0u5JW+pRg2G/JL
+ 8Kgkx0siVL7zqX6E/s8xpulpENuEI59E8LKBRlOT4yPnfLBT6SSfYbDzh3/pnqLSe+C8
+ 9D+F14VUGa36r0QN7WYBmOKROwVGhfPFaIb3vM7AIgqqwHvG9YFg+iNGmmsRvByGI0t/
+ ZhiG+oYKFJrQnmdxHMLDwf2n5ku0HONPKBynEw2PFH4u68Pawa1ybCUuWNJopz9QSP0A
+ Y4gg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXXDK7qNj03ehKFPN/nCe+0UzQtV93DJcWrlY6JgWMxjGKnuYqrbQo0BcuT/1t46qPjxTK2/aO6i27BQmKkGeIeCufLu+I=
-X-Gm-Message-State: AOJu0YyszQmhhc1nr+hj5iXGExFNiQ32kqirYCL0fuNA0FUI78vCr+aC
- J1AEaxJU8tN9AboB4aVU0SkRbFWD4Dfd8GIC6KdEL/hF5YH+lZqndbDH2+44zfE=
-X-Google-Smtp-Source: AGHT+IFBTyD6yAwtLJxwTETKda7qnBJZeLRZUN8zPZ2/2WnkHx+uAAfr3lvbB02xC4trri8CqeudzQ==
-X-Received: by 2002:a05:6a20:e188:b0:1a7:7505:ac97 with SMTP id
- ks8-20020a056a20e18800b001a77505ac97mr15903702pzb.11.1715092488112; 
- Tue, 07 May 2024 07:34:48 -0700 (PDT)
+ AJvYcCWbLF3eeCIvg49P4nUVyjkinIwk7RFcBndxCkW7MnryTUWAqk4h/Y8HV4llXNhWeEKrV/4F/w3aD18MwM4XRSvv2FWZRpA=
+X-Gm-Message-State: AOJu0YyidnmWTrcAO0xA6gmF4YKRGgVQmuG/ojQJqkpq2NMJKVSwqLOX
+ arka/1tbEwwoVdbqddfB282xtNYpCeQq7sk9ZUhtttjcHUI6Y72ivOZQjRJcOfE=
+X-Google-Smtp-Source: AGHT+IHdlMQCs6zcK93GNzEvvKDxWklWZXVFDJ6lpxj36R68laHWvEnFnnTAounX3BP/kW8UScNp4Q==
+X-Received: by 2002:a17:90b:400b:b0:2b2:9b67:198a with SMTP id
+ ie11-20020a17090b400b00b002b29b67198amr13356767pjb.34.1715092489324; 
+ Tue, 07 May 2024 07:34:49 -0700 (PDT)
 Received: from mnissler.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- pq10-20020a17090b3d8a00b002af8056917csm11827206pjb.29.2024.05.07.07.34.47
+ pq10-20020a17090b3d8a00b002af8056917csm11827206pjb.29.2024.05.07.07.34.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 07:34:47 -0700 (PDT)
+ Tue, 07 May 2024 07:34:49 -0700 (PDT)
 From: Mattias Nissler <mnissler@rivosinc.com>
 To: jag.raman@oracle.com, peterx@redhat.com, stefanha@redhat.com,
  qemu-devel@nongnu.org
@@ -68,19 +68,20 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH v10 1/7] system/physmem: Replace qemu_mutex_lock() calls with
- QEMU_LOCK_GUARD
-Date: Tue,  7 May 2024 07:34:25 -0700
-Message-ID: <20240507143431.464382-2-mnissler@rivosinc.com>
+ Mattias Nissler <mnissler@rivosinc.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v10 2/7] system/physmem: Propagate AddressSpace to MapClient
+ helpers
+Date: Tue,  7 May 2024 07:34:26 -0700
+Message-ID: <20240507143431.464382-3-mnissler@rivosinc.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240507143431.464382-1-mnissler@rivosinc.com>
 References: <20240507143431.464382-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=mnissler@rivosinc.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,66 +103,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Propagate AddressSpace handler to following helpers:
+- register_map_client()
+- unregister_map_client()
+- notify_map_clients[_locked]()
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Rename them using 'address_space_' prefix instead of 'cpu_'.
 
-Simplify cpu_[un]register_map_client() and cpu_notify_map_clients()
-by replacing the pair of qemu_mutex_lock/qemu_mutex_unlock calls by
-the WITH_QEMU_LOCK_GUARD() macro.
+The AddressSpace argument will be used in the next commit.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+Message-ID: <20240507094210.300566-2-mnissler@rivosinc.com>
+[PMD: Split patch, part 1/2]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Mattias Nissler <mnissler@rivosinc.com>
 ---
- system/physmem.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ include/exec/cpu-common.h |  2 --
+ include/exec/memory.h     | 26 ++++++++++++++++++++++++--
+ system/dma-helpers.c      |  4 ++--
+ system/physmem.c          | 24 ++++++++++++------------
+ 4 files changed, 38 insertions(+), 18 deletions(-)
 
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 8bc397e251..815342d043 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -147,8 +147,6 @@ void *cpu_physical_memory_map(hwaddr addr,
+                               bool is_write);
+ void cpu_physical_memory_unmap(void *buffer, hwaddr len,
+                                bool is_write, hwaddr access_len);
+-void cpu_register_map_client(QEMUBH *bh);
+-void cpu_unregister_map_client(QEMUBH *bh);
+ 
+ bool cpu_physical_memory_is_io(hwaddr phys_addr);
+ 
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index dadb5cd65a..e1e0c5a3de 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -2946,8 +2946,8 @@ bool address_space_access_valid(AddressSpace *as, hwaddr addr, hwaddr len,
+  * May return %NULL and set *@plen to zero(0), if resources needed to perform
+  * the mapping are exhausted.
+  * Use only for reads OR writes - not for read-modify-write operations.
+- * Use cpu_register_map_client() to know when retrying the map operation is
+- * likely to succeed.
++ * Use address_space_register_map_client() to know when retrying the map
++ * operation is likely to succeed.
+  *
+  * @as: #AddressSpace to be accessed
+  * @addr: address within that address space
+@@ -2972,6 +2972,28 @@ void *address_space_map(AddressSpace *as, hwaddr addr,
+ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+                          bool is_write, hwaddr access_len);
+ 
++/*
++ * address_space_register_map_client: Register a callback to invoke when
++ * resources for address_space_map() are available again.
++ *
++ * address_space_map may fail when there are not enough resources available,
++ * such as when bounce buffer memory would exceed the limit. The callback can
++ * be used to retry the address_space_map operation. Note that the callback
++ * gets automatically removed after firing.
++ *
++ * @as: #AddressSpace to be accessed
++ * @bh: callback to invoke when address_space_map() retry is appropriate
++ */
++void address_space_register_map_client(AddressSpace *as, QEMUBH *bh);
++
++/*
++ * address_space_unregister_map_client: Unregister a callback that has
++ * previously been registered and not fired yet.
++ *
++ * @as: #AddressSpace to be accessed
++ * @bh: callback to unregister
++ */
++void address_space_unregister_map_client(AddressSpace *as, QEMUBH *bh);
+ 
+ /* Internal functions, part of the implementation of address_space_read.  */
+ MemTxResult address_space_read_full(AddressSpace *as, hwaddr addr,
+diff --git a/system/dma-helpers.c b/system/dma-helpers.c
+index 9b221cf94e..74013308f5 100644
+--- a/system/dma-helpers.c
++++ b/system/dma-helpers.c
+@@ -169,7 +169,7 @@ static void dma_blk_cb(void *opaque, int ret)
+     if (dbs->iov.size == 0) {
+         trace_dma_map_wait(dbs);
+         dbs->bh = aio_bh_new(ctx, reschedule_dma, dbs);
+-        cpu_register_map_client(dbs->bh);
++        address_space_register_map_client(dbs->sg->as, dbs->bh);
+         return;
+     }
+ 
+@@ -197,7 +197,7 @@ static void dma_aio_cancel(BlockAIOCB *acb)
+     }
+ 
+     if (dbs->bh) {
+-        cpu_unregister_map_client(dbs->bh);
++        address_space_unregister_map_client(dbs->sg->as, dbs->bh);
+         qemu_bh_delete(dbs->bh);
+         dbs->bh = NULL;
+     }
 diff --git a/system/physmem.c b/system/physmem.c
-index d3a3d8a45c..5486014cf2 100644
+index 5486014cf2..27e754ff57 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -3086,7 +3086,7 @@ void cpu_register_map_client(QEMUBH *bh)
- {
-     MapClient *client = g_malloc(sizeof(*client));
+@@ -3065,24 +3065,24 @@ QemuMutex map_client_list_lock;
+ static QLIST_HEAD(, MapClient) map_client_list
+     = QLIST_HEAD_INITIALIZER(map_client_list);
  
--    qemu_mutex_lock(&map_client_list_lock);
-+    QEMU_LOCK_GUARD(&map_client_list_lock);
-     client->bh = bh;
-     QLIST_INSERT_HEAD(&map_client_list, client, link);
-     /* Write map_client_list before reading in_use.  */
-@@ -3094,7 +3094,6 @@ void cpu_register_map_client(QEMUBH *bh)
-     if (!qatomic_read(&bounce.in_use)) {
-         cpu_notify_map_clients_locked();
-     }
--    qemu_mutex_unlock(&map_client_list_lock);
+-static void cpu_unregister_map_client_do(MapClient *client)
++static void address_space_unregister_map_client_do(MapClient *client)
+ {
+     QLIST_REMOVE(client, link);
+     g_free(client);
  }
  
- void cpu_exec_init_all(void)
-@@ -3117,21 +3116,19 @@ void cpu_unregister_map_client(QEMUBH *bh)
+-static void cpu_notify_map_clients_locked(void)
++static void address_space_notify_map_clients_locked(AddressSpace *as)
  {
      MapClient *client;
  
--    qemu_mutex_lock(&map_client_list_lock);
-+    QEMU_LOCK_GUARD(&map_client_list_lock);
+     while (!QLIST_EMPTY(&map_client_list)) {
+         client = QLIST_FIRST(&map_client_list);
+         qemu_bh_schedule(client->bh);
+-        cpu_unregister_map_client_do(client);
++        address_space_unregister_map_client_do(client);
+     }
+ }
+ 
+-void cpu_register_map_client(QEMUBH *bh)
++void address_space_register_map_client(AddressSpace *as, QEMUBH *bh)
+ {
+     MapClient *client = g_malloc(sizeof(*client));
+ 
+@@ -3092,7 +3092,7 @@ void cpu_register_map_client(QEMUBH *bh)
+     /* Write map_client_list before reading in_use.  */
+     smp_mb();
+     if (!qatomic_read(&bounce.in_use)) {
+-        cpu_notify_map_clients_locked();
++        address_space_notify_map_clients_locked(as);
+     }
+ }
+ 
+@@ -3112,23 +3112,23 @@ void cpu_exec_init_all(void)
+     qemu_mutex_init(&map_client_list_lock);
+ }
+ 
+-void cpu_unregister_map_client(QEMUBH *bh)
++void address_space_unregister_map_client(AddressSpace *as, QEMUBH *bh)
+ {
+     MapClient *client;
+ 
+     QEMU_LOCK_GUARD(&map_client_list_lock);
      QLIST_FOREACH(client, &map_client_list, link) {
          if (client->bh == bh) {
-             cpu_unregister_map_client_do(client);
+-            cpu_unregister_map_client_do(client);
++            address_space_unregister_map_client_do(client);
              break;
          }
      }
--    qemu_mutex_unlock(&map_client_list_lock);
  }
  
- static void cpu_notify_map_clients(void)
+-static void cpu_notify_map_clients(void)
++static void address_space_notify_map_clients(AddressSpace *as)
  {
--    qemu_mutex_lock(&map_client_list_lock);
-+    QEMU_LOCK_GUARD(&map_client_list_lock);
-     cpu_notify_map_clients_locked();
--    qemu_mutex_unlock(&map_client_list_lock);
+     QEMU_LOCK_GUARD(&map_client_list_lock);
+-    cpu_notify_map_clients_locked();
++    address_space_notify_map_clients_locked(as);
  }
  
  static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr len,
+@@ -3195,8 +3195,8 @@ flatview_extend_translation(FlatView *fv, hwaddr addr,
+  * May map a subset of the requested range, given by and returned in *plen.
+  * May return NULL if resources needed to perform the mapping are exhausted.
+  * Use only for reads OR writes - not for read-modify-write operations.
+- * Use cpu_register_map_client() to know when retrying the map operation is
+- * likely to succeed.
++ * Use address_space_register_map_client() to know when retrying the map
++ * operation is likely to succeed.
+  */
+ void *address_space_map(AddressSpace *as,
+                         hwaddr addr,
+@@ -3279,7 +3279,7 @@ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+     memory_region_unref(bounce.mr);
+     /* Clear in_use before reading map_client_list.  */
+     qatomic_set_mb(&bounce.in_use, false);
+-    cpu_notify_map_clients();
++    address_space_notify_map_clients(as);
+ }
+ 
+ void *cpu_physical_memory_map(hwaddr addr,
 -- 
 2.43.2
 
