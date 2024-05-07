@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64978BDBD0
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B85BB8BDBD6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4EZu-0003MR-6l; Tue, 07 May 2024 02:45:30 -0400
+	id 1s4EZx-0003Nf-2J; Tue, 07 May 2024 02:45:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZp-0003Ai-Nm; Tue, 07 May 2024 02:45:25 -0400
+ id 1s4EZt-0003MS-2q; Tue, 07 May 2024 02:45:29 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZn-0005Ee-Q9; Tue, 07 May 2024 02:45:25 -0400
+ id 1s4EZr-0005Ee-1S; Tue, 07 May 2024 02:45:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715064323; x=1746600323;
+ t=1715064327; x=1746600327;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rWCmMnV1q1IK9J8/rklP7DJaZKe+3/GfmS6fjHmvrBA=;
- b=JId9YO+/RPhknLbN823AyIwejXWl6x+E5C+laLOEMA2eeAuDrpihZpA2
- r5WRdZcUnYy7RU/dC4vRV0dxKnAdnIMlO6OpBR3Z8tVP2dIsq0d1WXu0q
- zPml6da38RD0z4kaFvf7j45GUB1+FTFmk5Izz45P8Mw37eivdRXJypxwC
- J5Jk5xM25zgCVPtcUOYJ96XNVCYGeEOtCuN20SOW+2IIiVkbth7Pmv42q
- ldAvcaBrEioUxhF8y9zIayZxYJOp0aNikOfAsvjyk56+0E0Gpyt4p19uw
- j/j4LV99Zs76oeDbSJj7uIHtNa948qDyT+r5uj8740SfEkIpoIStIpVFQ w==;
-X-CSE-ConnectionGUID: J5tzOFWfRTyoSFEoVIrsMQ==
-X-CSE-MsgGUID: 5RLh7t2aQR2WqIPK9+CZfg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240241"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240241"
+ bh=Fr2V/QTY5Uvx5YftWpQRTt6S3xGiOTCE5jGwZtbQdsU=;
+ b=fiidDAv9+HykJmFHcnfnh69OL21pG8JjPmYhZ8UmTiEavxCjKq4qOyPU
+ JravKaMoaCFBmNZLI/lWoCbYP/drn1Hymnpoqc28tXm3v6nKchlA4R3EV
+ QLxdVta7uCewkngzzEGxEFpOEQorYuyornpqOma3j6qlv7YnMeVYUuwkC
+ EJTsY36e2nzKAaIQxulefDfaT4pFkLx32Py1q+uDje2WSRTiOktfvHX85
+ gsewzf+SBccZTK3vgeweO5pw9WOYUFMbVdki2BMpFoIsHvuvwnCcLnxxh
+ zyBZMHs9P851EWwNjYxDk7nPNCakUixFh8PxDwYFovInf0n6S7NH5ozG5 w==;
+X-CSE-ConnectionGUID: 1bSqa3PaSXmWWyyHGpUb3g==
+X-CSE-MsgGUID: t7AG60xSQHeusECym9lPMg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240250"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240250"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:22 -0700
-X-CSE-ConnectionGUID: vqfwdyJnR8iKgsyowHcRHw==
-X-CSE-MsgGUID: yKzcCdkRQ6yK5DQh3X1Nyw==
+ 06 May 2024 23:45:25 -0700
+X-CSE-ConnectionGUID: IhIgOb1yRqumB+oXQPqczg==
+X-CSE-MsgGUID: 9S4wHYRaQpauabDbvHWNXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407522"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407526"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:20 -0700
+ 06 May 2024 23:45:23 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,9 +51,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  David Gibson <david@gibson.dropbear.id.au>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  qemu-ppc@nongnu.org (open list:sPAPR (pseries))
-Subject: [PATCH v2 04/11] vfio: Make VFIOIOMMUClass::setup() return bool
-Date: Tue,  7 May 2024 14:42:45 +0800
-Message-Id: <20240507064252.457884-5-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 05/11] vfio: Make VFIOIOMMUClass::add_window() and its
+ wrapper return bool
+Date: Tue,  7 May 2024 14:42:46 +0800
+Message-Id: <20240507064252.457884-6-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507064252.457884-1-zhenzhong.duan@intel.com>
 References: <20240507064252.457884-1-zhenzhong.duan@intel.com>
@@ -84,6 +85,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Make VFIOIOMMUClass::add_window() and its wrapper function
+vfio_container_add_section_window() return bool.
+
 This is to follow the coding standand to return bool if 'Error **'
 is used to pass error.
 
@@ -91,122 +95,140 @@ Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-container-base.h |  2 +-
- hw/vfio/container.c                   | 10 +++++-----
- hw/vfio/spapr.c                       | 12 +++++-------
- 3 files changed, 11 insertions(+), 13 deletions(-)
+ include/hw/vfio/vfio-container-base.h | 12 ++++++------
+ hw/vfio/common.c                      |  2 +-
+ hw/vfio/container-base.c              |  8 ++++----
+ hw/vfio/spapr.c                       | 16 ++++++++--------
+ 4 files changed, 19 insertions(+), 19 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
-index c839cfd9cb..68539e3bed 100644
+index 68539e3bed..e96cda78c8 100644
 --- a/include/hw/vfio/vfio-container-base.h
 +++ b/include/hw/vfio/vfio-container-base.h
-@@ -111,7 +111,7 @@ struct VFIOIOMMUClass {
-     InterfaceClass parent_class;
+@@ -76,9 +76,9 @@ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+                              hwaddr iova, ram_addr_t size,
+                              IOMMUTLBEntry *iotlb);
+-int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+-                                      MemoryRegionSection *section,
+-                                      Error **errp);
++bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
++                                       MemoryRegionSection *section,
++                                       Error **errp);
+ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+                                        MemoryRegionSection *section);
+ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+@@ -131,9 +131,9 @@ struct VFIOIOMMUClass {
+     int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
  
-     /* basic feature */
--    int (*setup)(VFIOContainerBase *bcontainer, Error **errp);
-+    bool (*setup)(VFIOContainerBase *bcontainer, Error **errp);
-     int (*dma_map)(const VFIOContainerBase *bcontainer,
-                    hwaddr iova, ram_addr_t size,
-                    void *vaddr, bool readonly);
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index ea3b145913..85a8a369dc 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -505,7 +505,7 @@ static void vfio_get_iommu_info_migration(VFIOContainer *container,
+     /* SPAPR specific */
+-    int (*add_window)(VFIOContainerBase *bcontainer,
+-                      MemoryRegionSection *section,
+-                      Error **errp);
++    bool (*add_window)(VFIOContainerBase *bcontainer,
++                       MemoryRegionSection *section,
++                       Error **errp);
+     void (*del_window)(VFIOContainerBase *bcontainer,
+                        MemoryRegionSection *section);
+     void (*release)(VFIOContainerBase *bcontainer);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 890d30910e..9f1f2e19f7 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -585,7 +585,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+         return;
      }
+ 
+-    if (vfio_container_add_section_window(bcontainer, section, &err)) {
++    if (!vfio_container_add_section_window(bcontainer, section, &err)) {
+         goto fail;
+     }
+ 
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 913ae49077..98d71b3144 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -31,12 +31,12 @@ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+     return bcontainer->ops->dma_unmap(bcontainer, iova, size, iotlb);
  }
  
--static int vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
-+static bool vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
+-int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+-                                      MemoryRegionSection *section,
+-                                      Error **errp)
++bool vfio_container_add_section_window(VFIOContainerBase *bcontainer,
++                                       MemoryRegionSection *section,
++                                       Error **errp)
  {
-     VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-                                             bcontainer);
-@@ -515,7 +515,7 @@ static int vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
-     ret = vfio_get_iommu_info(container, &info);
+     if (!bcontainer->ops->add_window) {
+-        return 0;
++        return true;
+     }
+ 
+     return bcontainer->ops->add_window(bcontainer, section, errp);
+diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
+index 148b257c9c..47b040f1bc 100644
+--- a/hw/vfio/spapr.c
++++ b/hw/vfio/spapr.c
+@@ -323,7 +323,7 @@ static int vfio_spapr_create_window(VFIOContainer *container,
+     return 0;
+ }
+ 
+-static int
++static bool
+ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+                                         MemoryRegionSection *section,
+                                         Error **errp)
+@@ -351,13 +351,13 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+             error_setg(errp, "Container %p can't map guest IOVA region"
+                        " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container,
+                        iova, end);
+-            return -EINVAL;
++            return false;
+         }
+-        return 0;
++        return true;
+     }
+ 
+     if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+-        return 0;
++        return true;
+     }
+ 
+     /* For now intersections are not allowed, we may relax this later */
+@@ -373,14 +373,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+                 section->offset_within_address_space +
+                     int128_get64(section->size) - 1,
+                 hostwin->min_iova, hostwin->max_iova);
+-            return -EINVAL;
++            return false;
+         }
+     }
+ 
+     ret = vfio_spapr_create_window(container, section, &pgsize);
      if (ret) {
-         error_setg_errno(errp, -ret, "Failed to get VFIO IOMMU info");
+         error_setg_errno(errp, -ret, "Failed to create SPAPR window");
 -        return ret;
 +        return false;
      }
  
-     if (info->flags & VFIO_IOMMU_INFO_PGSIZES) {
-@@ -531,7 +531,7 @@ static int vfio_legacy_setup(VFIOContainerBase *bcontainer, Error **errp)
-     vfio_get_info_iova_range(info, bcontainer);
- 
-     vfio_get_iommu_info_migration(container, info);
--    return 0;
-+    return true;
- }
- 
- static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-@@ -633,8 +633,8 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
- 
-     assert(bcontainer->ops->setup);
- 
--    ret = bcontainer->ops->setup(bcontainer, errp);
--    if (ret) {
-+    if (!bcontainer->ops->setup(bcontainer, errp)) {
-+        ret = -EINVAL;
-         goto enable_discards_exit;
-     }
- 
-diff --git a/hw/vfio/spapr.c b/hw/vfio/spapr.c
-index 0d949bb728..148b257c9c 100644
---- a/hw/vfio/spapr.c
-+++ b/hw/vfio/spapr.c
-@@ -458,8 +458,8 @@ static void vfio_spapr_container_release(VFIOContainerBase *bcontainer)
-     }
- }
- 
--static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
--                                      Error **errp)
-+static bool vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-+                                       Error **errp)
- {
-     VFIOContainer *container = container_of(bcontainer, VFIOContainer,
-                                             bcontainer);
-@@ -480,7 +480,7 @@ static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-         ret = ioctl(fd, VFIO_IOMMU_ENABLE);
-         if (ret) {
-             error_setg_errno(errp, errno, "failed to enable container");
--            return -errno;
-+            return false;
+     vfio_host_win_add(scontainer, section->offset_within_address_space,
+@@ -406,14 +406,14 @@ vfio_spapr_container_add_section_window(VFIOContainerBase *bcontainer,
+                                      "vfio: failed GROUP_SET_SPAPR_TCE for "
+                                      "KVM VFIO device %d and group fd %d",
+                                      param.tablefd, param.groupfd);
+-                    return -errno;
++                    return false;
+                 }
+                 trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+             }
          }
-     } else {
-         scontainer->prereg_listener = vfio_prereg_listener;
-@@ -488,7 +488,6 @@ static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-         memory_listener_register(&scontainer->prereg_listener,
-                                  &address_space_memory);
-         if (bcontainer->error) {
--            ret = -1;
-             error_propagate_prepend(errp, bcontainer->error,
-                     "RAM memory listener initialization failed: ");
-             goto listener_unregister_exit;
-@@ -500,7 +499,6 @@ static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-     if (ret) {
-         error_setg_errno(errp, errno,
-                          "VFIO_IOMMU_SPAPR_TCE_GET_INFO failed");
--        ret = -errno;
-         goto listener_unregister_exit;
      }
- 
-@@ -527,13 +525,13 @@ static int vfio_spapr_container_setup(VFIOContainerBase *bcontainer,
-                           0x1000);
-     }
- 
+ #endif
 -    return 0;
 +    return true;
- 
- listener_unregister_exit:
-     if (v2) {
-         memory_listener_unregister(&scontainer->prereg_listener);
-     }
--    return ret;
-+    return false;
  }
  
- static void vfio_iommu_spapr_class_init(ObjectClass *klass, void *data)
+ static void
 -- 
 2.34.1
 
