@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6238A8BDC81
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 09:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8844D8BDC8C
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 09:41:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4FM1-0000XC-49; Tue, 07 May 2024 03:35:13 -0400
+	id 1s4FRk-0002to-8d; Tue, 07 May 2024 03:41:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4FLj-0000Wl-Gi
- for qemu-devel@nongnu.org; Tue, 07 May 2024 03:34:57 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4FRS-0002sn-KW
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 03:40:53 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4FLh-0005uX-Fi
- for qemu-devel@nongnu.org; Tue, 07 May 2024 03:34:54 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41ba1ba5591so20898145e9.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 00:34:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4FRQ-0006zk-FT
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 03:40:50 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a59b178b75bso459737566b.0
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 00:40:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715067291; x=1715672091; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715067647; x=1715672447; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=oOAotrvpO0LMM8zVjtpr+DfXCL6BT1nfHqvQAWpPdZA=;
- b=fpklyt1YxwZRByuLK/pJHxnbF0fE41V6KHW3xguKa9DN+CGxOKybu8jsl7YP46HF/r
- Dl/c1mUal1H1cx1VhKlfYLiC6ap59RrG/7OBxn/d5Sni36ghtG/OT1Bc7UdplkS5MrAj
- T7a/5aHvN3bTdSlCDwr7VIJjg1uAs7aWXblhvhLF5BpSWj64mLAQN6/iP4I6MjwpXyFn
- ohpMabrGSI+4o49T3t1F3aZ/Og2agJBph7Pq6IVR1OUSlIvGc3KoCxsUuypV4+EwqPy4
- eZCqd94vqMmodYK2304KCep8A7zapQdjzw06bBTSWTdfwk3PbbhLMp2x99mUgw9FTP0W
- nnVA==
+ bh=ohQpebxloZmTa5OTDw+eQkur3N3qk+mh/ihiFxbrmD4=;
+ b=RKZC5vHHP3rFhdZvZOB6nU7sBgSJwmRlP1kGHjqS4rWpKsJbCtesFaTXwxOpLun0jg
+ 8vbMaIkPIh623suOFQTeGv50PBxRLtAh74V32BZOt6eT0r8brd52WkiFZTDlhG3FwcPs
+ DlH2dRKEFnX0pH0UgN0S30fABBFPiICcObaGNEKV7ueQGVp+NXQ7dqeD5T8j5wyzc8vx
+ H0JggMuu0JNGpW/d1xk70x4jVFtvNOs4KbtemvJD7s71uX3YamIixuVJsN1I+Nsc35TO
+ I/OKxJJ2VYY//wO8S4DwbfJMa6QVGYJhVz1r6pQPcf5EIEKin8d3rqM7Npc0bvVYj1pr
+ qk+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715067291; x=1715672091;
+ d=1e100.net; s=20230601; t=1715067647; x=1715672447;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oOAotrvpO0LMM8zVjtpr+DfXCL6BT1nfHqvQAWpPdZA=;
- b=plvqu62DIB2P3uOeMJEhSqI6S0ePTiL0FygFYZzlaJv6JQeFM5PWO3uNO9OT8WEQ4u
- AePr3h9opjnVf4G/3pw0LL6jyBM6wlMmzudQFC+M/WjSK7meaCkBDCkUtDdYb6NMNpzO
- sDSFTi8yXY8h7MHLsYbb80eOqTpl/z6t6gTIeJNcPNVPT2shQ1VTuMV7thyWVZmtEBh/
- l9zTVCXHyyRxBpgWey1a4D2Wb/j9fFaJG1ZQ7wjOxi0cuBil+yYnq6AqckYNbbaAsKE6
- 9UMcc2uws9yKDLvEixG/RvBXvX7d58lEyBZR2ae03sVloXgi57A4o9aVLnoYthm1rZia
- Ur8A==
+ bh=ohQpebxloZmTa5OTDw+eQkur3N3qk+mh/ihiFxbrmD4=;
+ b=SiC+gumS12w/wxBf194nboyta6wgdL8hi7+DmkG5+L9nO7yVnBdrCrRjIAs2rJdVH/
+ AORE44q6NwrgxDoucmgcUBu64rUdqTzAibhL31VPMKys5pTP231d041XQh3IQ9MqJkXt
+ 3manPipXx59twwU/d0vecldsffMCxewnFTLm3xct/CUOviqihp90q2wJbnLnYwZfEtN6
+ 5s5uIJDs7y5UXOqB7noWDUArECbwvTm6O98k3s/sqPxECK0mEp7R5Qo6GkLlYBY0pvXR
+ eKVPm2DzN4rGq6Wq8tuoj/rpAE7YoGcPOYCvq4OufqGt19ch0xxxB3tl2HjG0rOykJm3
+ x8RA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX8xIpGAbP/+P7GuvkIA+3p830wXt9CUfRKgdRWFVFc+oHbCSbWD2PUgjd76BJVmvsUAlkyHHaVGLtLOGIMcTY7fvOJWS4=
-X-Gm-Message-State: AOJu0Yzl8U6HDE9hSZe3wAXQ4M3blUo19y7U2k2viK7iKIrMQUNJZ0vA
- E9SLSi6m9ycZElf76NyOp6E3RgawulzwRO9iTBgBBm3xpNHEY0myx6MhO7T6bA8pINaWviek3Oe
- 0
-X-Google-Smtp-Source: AGHT+IFDHujBb+NvvAFd2mulC4CCyHhVCH+J7UHB86nov8ISQj25YPBjqQWgjTR0bmu4wTg6ionM5Q==
-X-Received: by 2002:adf:a18f:0:b0:34c:b31e:18de with SMTP id
- u15-20020adfa18f000000b0034cb31e18demr8377402wru.35.1715067290933; 
- Tue, 07 May 2024 00:34:50 -0700 (PDT)
+ AJvYcCVe6jp1txR5TtRCWRW6s0RuZ5UJ1jEpBxUc/L4Zc7jMV6QP1WZg/Bv7roMFtMgTMuPCx+emydMRbqIBdEFCEXOtFGwMoOE=
+X-Gm-Message-State: AOJu0YyyPmOFAkSpHD5cyvDNAu+GZwoWE+AmxMIk6Bsha+uZiDnZf/BA
+ eAu+KL6SNfzul9QnGyO3FeKTiIuLNwU/bbbNWCvUTl+fC84NEvH32dW8YeiPxhm99fSIM0PaOIo
+ v
+X-Google-Smtp-Source: AGHT+IHdHd3kXUk5XBVxzXCOJrCqKM+sirrVTWDhukEx85Ij9ZLq/zqc9tD3/D/JGPtFyhJy1QG6lQ==
+X-Received: by 2002:a50:c304:0:b0:56d:c295:dde3 with SMTP id
+ a4-20020a50c304000000b0056dc295dde3mr8840048edb.35.1715067646933; 
+ Tue, 07 May 2024 00:40:46 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.177.243])
  by smtp.gmail.com with ESMTPSA id
- j30-20020a5d6e5e000000b0034db5f648a8sm12347091wrz.77.2024.05.07.00.34.50
+ cq27-20020a056402221b00b005727eb1ed6asm6030572edb.68.2024.05.07.00.40.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 May 2024 00:34:50 -0700 (PDT)
-Message-ID: <4b070489-9676-4dff-8ccd-47b224f9ee62@linaro.org>
-Date: Tue, 7 May 2024 09:34:48 +0200
+ Tue, 07 May 2024 00:40:46 -0700 (PDT)
+Message-ID: <d5e37b1f-fac0-48ff-ae47-59090b5b50c0@linaro.org>
+Date: Tue, 7 May 2024 09:40:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] hw/xtensa: require libfdt
+Subject: Re: [PATCH 1/4] meson: remove system/internal distinction for libfdt
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20240507071948.105022-1-pbonzini@redhat.com>
- <20240507071948.105022-4-pbonzini@redhat.com>
+ <20240507071948.105022-2-pbonzini@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240507071948.105022-4-pbonzini@redhat.com>
+In-Reply-To: <20240507071948.105022-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,18 +95,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/5/24 09:19, Paolo Bonzini wrote:
-> All other boards require libfdt if it can be used (including for example
-> i386/x86_64), so change the "imply" to "select" and always allow -dtb
-> in qemu-system-xtensa.
+> Treat libfdt like slirp and the other dependencies that use --enable-download;
+> remove the ability to force usage of the subproject.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/xtensa/xtfpga.c | 9 ---------
->   hw/xtensa/Kconfig  | 4 ++--
->   2 files changed, 2 insertions(+), 11 deletions(-)
+>   meson.build                   | 69 +++++++++++++++--------------------
+>   meson_options.txt             |  6 +--
+>   scripts/meson-buildoptions.sh |  4 +-
+>   3 files changed, 34 insertions(+), 45 deletions(-)
+
+
+> diff --git a/meson_options.txt b/meson_options.txt
+> index adc77bae0cd..90902c19d1c 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -308,9 +308,9 @@ option('vduse_blk_export', type: 'feature', value: 'auto',
+>   
+>   option('capstone', type: 'feature', value: 'auto',
+>          description: 'Whether and how to find the capstone library')
+> -option('fdt', type: 'combo', value: 'auto',
+> -       choices: ['disabled', 'enabled', 'auto', 'system', 'internal'],
+> -       description: 'Whether and how to find the libfdt library')
+> +option('fdt', type: 'feature', value: 'auto',
+> +       deprecated: { 'system': 'enabled' },
+
+TIL deprecated options:
+https://mesonbuild.com/Build-options.html#deprecated-options
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
 
 
 
