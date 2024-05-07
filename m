@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044818BDD67
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:44:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA1A8BDD66
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:44:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4GPV-0003SF-Fd; Tue, 07 May 2024 04:42:53 -0400
+	id 1s4GPa-0003eI-Qh; Tue, 07 May 2024 04:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GPI-0003N5-JP; Tue, 07 May 2024 04:42:40 -0400
+ id 1s4GPO-0003TJ-Kf; Tue, 07 May 2024 04:42:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GPG-0003DR-4z; Tue, 07 May 2024 04:42:40 -0400
+ id 1s4GPL-0003Dh-Jf; Tue, 07 May 2024 04:42:45 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AA80764BC7;
+ by isrv.corpit.ru (Postfix) with ESMTP id BD3E464BC8;
  Tue,  7 May 2024 11:42:48 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8C2B9C85B0;
+ by tsrv.corpit.ru (Postfix) with SMTP id AA06EC85B1;
  Tue,  7 May 2024 11:42:29 +0300 (MSK)
-Received: (nullmailer pid 1026521 invoked by uid 1000);
+Received: (nullmailer pid 1026524 invoked by uid 1000);
  Tue, 07 May 2024 08:42:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.4 03/16] target/riscv/kvm: change timer regs size to u64
-Date: Tue,  7 May 2024 11:42:02 +0300
-Message-Id: <20240507084226.1026455-3-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
+ Fabiano Rosas <farosas@suse.de>, Zhang Chen <chen.zhang@intel.com>,
+ Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.4 04/16] migration/colo: Fix bdrv_graph_rdlock_main_loop:
+ Assertion `!qemu_in_coroutine()' failed.
+Date: Tue,  7 May 2024 11:42:03 +0300
+Message-Id: <20240507084226.1026455-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
 References: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
@@ -59,100 +60,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-KVM_REG_RISCV_TIMER regs are always u64 according to the KVM API, but at
-this moment we'll return u32 regs if we're running a RISCV32 target.
+bdrv_activate_all() should not be called from the coroutine context, move
+it to the QEMU thread colo_process_incoming_thread() with the bql_lock
+protected.
 
-Use the kvm_riscv_reg_id_u64() helper in RISCV_TIMER_REG() to fix it.
+The backtrace is as follows:
+ #4  0x0000561af7948362 in bdrv_graph_rdlock_main_loop () at ../block/graph-lock.c:260
+ #5  0x0000561af7907a68 in graph_lockable_auto_lock_mainloop (x=0x7fd29810be7b) at /patch/to/qemu/include/block/graph-lock.h:259
+ #6  0x0000561af79167d1 in bdrv_activate_all (errp=0x7fd29810bed0) at ../block.c:6906
+ #7  0x0000561af762b4af in colo_incoming_co () at ../migration/colo.c:935
+ #8  0x0000561af7607e57 in process_incoming_migration_co (opaque=0x0) at ../migration/migration.c:793
+ #9  0x0000561af7adbeeb in coroutine_trampoline (i0=-106876144, i1=22042) at ../util/coroutine-ucontext.c:175
+ #10 0x00007fd2a5cf21c0 in  () at /lib64/libc.so.6
 
-Reported-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20231208183835.2411523-4-dbarboza@ventanamicro.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 10f86d1b845087d14b58d65dd2a6e3411d1b6529)
+Cc: qemu-stable@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2277
+Fixes: 2b3912f135 ("block: Mark bdrv_first_blk() and bdrv_is_root_node() GRAPH_RDLOCK")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Zhang Chen <chen.zhang@intel.com>
+Tested-by: Zhang Chen <chen.zhang@intel.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Link: https://lore.kernel.org/r/20240417025634.1014582-1-lizhijian@fujitsu.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit 2cc637f1ea08d2a1b19fc5b1a30bc609f948de93)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: fixup bql_lock() => qemu_mutex_lock_iothread() for v8.2.0-444-g195801d700c0
+ "system/cpus: rename qemu_mutex_lock_iothread() to bql_lock()")
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 82ed4455a5..ddbe820e10 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -88,7 +88,7 @@ static uint64_t kvm_riscv_reg_id_u64(uint64_t type, uint64_t idx)
- #define RISCV_CSR_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_CSR, \
-                  KVM_REG_RISCV_CSR_REG(name))
- 
--#define RISCV_TIMER_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_TIMER, \
-+#define RISCV_TIMER_REG(name)  kvm_riscv_reg_id_u64(KVM_REG_RISCV_TIMER, \
-                  KVM_REG_RISCV_TIMER_REG(name))
- 
- #define RISCV_FP_F_REG(idx)  kvm_riscv_reg_id_u32(KVM_REG_RISCV_FP_F, idx)
-@@ -111,17 +111,17 @@ static uint64_t kvm_riscv_reg_id_u64(uint64_t type, uint64_t idx)
-         } \
-     } while (0)
- 
--#define KVM_RISCV_GET_TIMER(cs, env, name, reg) \
-+#define KVM_RISCV_GET_TIMER(cs, name, reg) \
-     do { \
--        int ret = kvm_get_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
-+        int ret = kvm_get_one_reg(cs, RISCV_TIMER_REG(name), &reg); \
-         if (ret) { \
-             abort(); \
-         } \
-     } while (0)
- 
--#define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
-+#define KVM_RISCV_SET_TIMER(cs, name, reg) \
-     do { \
--        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
-+        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(name), &reg); \
-         if (ret) { \
-             abort(); \
-         } \
-@@ -649,10 +649,10 @@ static void kvm_riscv_get_regs_timer(CPUState *cs)
-         return;
+diff --git a/migration/colo.c b/migration/colo.c
+index 4447e34914..8f301b7e57 100644
+--- a/migration/colo.c
++++ b/migration/colo.c
+@@ -830,6 +830,16 @@ static void *colo_process_incoming_thread(void *opaque)
+         return NULL;
      }
  
--    KVM_RISCV_GET_TIMER(cs, env, time, env->kvm_timer_time);
--    KVM_RISCV_GET_TIMER(cs, env, compare, env->kvm_timer_compare);
--    KVM_RISCV_GET_TIMER(cs, env, state, env->kvm_timer_state);
--    KVM_RISCV_GET_TIMER(cs, env, frequency, env->kvm_timer_frequency);
-+    KVM_RISCV_GET_TIMER(cs, time, env->kvm_timer_time);
-+    KVM_RISCV_GET_TIMER(cs, compare, env->kvm_timer_compare);
-+    KVM_RISCV_GET_TIMER(cs, state, env->kvm_timer_state);
-+    KVM_RISCV_GET_TIMER(cs, frequency, env->kvm_timer_frequency);
++    /* Make sure all file formats throw away their mutable metadata */
++    qemu_mutex_lock_iothread();
++    bdrv_activate_all(&local_err);
++    if (local_err) {
++        qemu_mutex_unlock_iothread();
++        error_report_err(local_err);
++        return NULL;
++    }
++    qemu_mutex_unlock_iothread();
++
+     failover_init_state();
  
-     env->kvm_timer_dirty = true;
- }
-@@ -666,8 +666,8 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
-         return;
+     mis->to_src_file = qemu_file_get_return_path(mis->from_src_file);
+@@ -917,7 +927,6 @@ out:
+ int coroutine_fn colo_incoming_co(void)
+ {
+     MigrationIncomingState *mis = migration_incoming_get_current();
+-    Error *local_err = NULL;
+     QemuThread th;
+ 
+     assert(qemu_mutex_iothread_locked());
+@@ -926,13 +935,6 @@ int coroutine_fn colo_incoming_co(void)
+         return 0;
      }
  
--    KVM_RISCV_SET_TIMER(cs, env, time, env->kvm_timer_time);
--    KVM_RISCV_SET_TIMER(cs, env, compare, env->kvm_timer_compare);
-+    KVM_RISCV_SET_TIMER(cs, time, env->kvm_timer_time);
-+    KVM_RISCV_SET_TIMER(cs, compare, env->kvm_timer_compare);
+-    /* Make sure all file formats throw away their mutable metadata */
+-    bdrv_activate_all(&local_err);
+-    if (local_err) {
+-        error_report_err(local_err);
+-        return -EINVAL;
+-    }
+-
+     qemu_thread_create(&th, "COLO incoming", colo_process_incoming_thread,
+                        mis, QEMU_THREAD_JOINABLE);
  
-     /*
-      * To set register of RISCV_TIMER_REG(state) will occur a error from KVM
-@@ -676,7 +676,7 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
-      * TODO If KVM changes, adapt here.
-      */
-     if (env->kvm_timer_state) {
--        KVM_RISCV_SET_TIMER(cs, env, state, env->kvm_timer_state);
-+        KVM_RISCV_SET_TIMER(cs, state, env->kvm_timer_state);
-     }
- 
-     /*
-@@ -685,7 +685,7 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
-      * during the migration.
-      */
-     if (migration_is_running(migrate_get_current()->state)) {
--        KVM_RISCV_GET_TIMER(cs, env, frequency, reg);
-+        KVM_RISCV_GET_TIMER(cs, frequency, reg);
-         if (reg != env->kvm_timer_frequency) {
-             error_report("Dst Hosts timer frequency != Src Hosts");
-         }
 -- 
 2.39.2
 
