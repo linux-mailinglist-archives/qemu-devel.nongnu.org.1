@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491638BE082
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45718BE091
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4IV2-00058R-Hg; Tue, 07 May 2024 06:56:44 -0400
+	id 1s4IV8-0005PZ-JR; Tue, 07 May 2024 06:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUl-0004qG-5N
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:29 -0400
+ id 1s4IUl-0004tG-Vb
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUc-0002k8-9D
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:24 -0400
+ id 1s4IUg-0002mG-3V
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715079376;
+ s=mimecast20190719; t=1715079378;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UF2McxSx47efKZhPTXJyVZFej15pDLGXmUBpaUrKS0Y=;
- b=P1Z1tAqzBf2Rp+JLJ8Rmxyz4uKmJJQyDJUQcSSc4oc8+am5el1Q+NdOXWc4OXrMLxmbpel
- gbj5pd5qJllNfuaW1CU9leZAoiVz4O4aq9GtXXwfyf7pSDd7uc6CTL60jND1ONf1qWd101
- hBXs554z0D3mKyphHx1e7CN+hKTjSVQ=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g/+PRY71fvlOmnyQmwPQ1nJad3AvfbtFUdZispqu/rI=;
+ b=fItG5ND1hgFiYEnW4s0cwxrkhNoZ7ivza2ggLaY1uTBXgcjmxWjptH46NQhtIrCyKGAmyg
+ wqcn9OAjwRZJDKS6BR69uVkheQCGu5w9x74ANGNKbtWWnUHSLtoCJqZNWrKLVKh04xe7pE
+ 52R9+9G89BjHbav/6xnVYGmrVoOnn3E=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-GBgKv-_fOy-7QyknfoZV9Q-1; Tue, 07 May 2024 06:56:14 -0400
-X-MC-Unique: GBgKv-_fOy-7QyknfoZV9Q-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a59a0d2280cso216700266b.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:14 -0700 (PDT)
+ us-mta-130-yo6uHtnBOLa5eAhNU6CSmA-1; Tue, 07 May 2024 06:56:17 -0400
+X-MC-Unique: yo6uHtnBOLa5eAhNU6CSmA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-572f3859ff2so838789a12.3
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715079373; x=1715684173;
+ d=1e100.net; s=20230601; t=1715079376; x=1715684176;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UF2McxSx47efKZhPTXJyVZFej15pDLGXmUBpaUrKS0Y=;
- b=MYRkcjyNC8QlI+BNd5EkiaH51VEiJ7fS8X7iw3erYv6tQgZer8w3fuDFchHgZ6wWnq
- tMh27L+edtd0AZWKF/lpGfIalmenGCNtbXZmsIl+NdVnlMjZLiPq1TbTh/nTdpvvj8vg
- pQ31En7j/zXED+Zo0QgJ2KJX9xyNRDAJhVTa2bJieSvAOvuWVvYomgn2uceZ9cgLndu7
- 9QV2auLsjoGBuNZDzkh3CnKx7rtxYrFv6i4CqY1kwRY+7mDetedxMNp+OKJGgYX3vemk
- k4Tmf2Q6n6Suj6hWTAJ+WpHorpga+2Czqq58y82Jc4dsLHwcb1vMizBeYpV8+6eQVItP
- RbYQ==
-X-Gm-Message-State: AOJu0Yzdaf1SnO059ONsx5px5Kjz7q6hNOk6v4BQ7btdOL/n+D7HrR17
- bRHeH6FKgARPPorBvWeaUnsq0vO4XoI0scY7aXsyRTVw7AKWrH7l7l29c3GB3aee8SVKk+BBms+
- Xx23tvr7Sg5I2bsViw40jZpNz/NLrTiGDgxdXajHK2M4CGKUsycygYPA620wcZ1TybgYNoLHdvT
- BGGWF+gBUrTXYZeIbmppXxgTDVXy6QjKiHjBjj
-X-Received: by 2002:a17:907:20b4:b0:a59:8786:3850 with SMTP id
- pw20-20020a17090720b400b00a5987863850mr7522687ejb.72.1715079373107; 
- Tue, 07 May 2024 03:56:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzemfcHKYfqRj1tfVaADzZShKosA5MOMEot+J/YzhBKxxKNsvGNWClx3RywrU4eq/z4XE38g==
-X-Received: by 2002:a17:907:20b4:b0:a59:8786:3850 with SMTP id
- pw20-20020a17090720b400b00a5987863850mr7522682ejb.72.1715079372778; 
- Tue, 07 May 2024 03:56:12 -0700 (PDT)
+ bh=g/+PRY71fvlOmnyQmwPQ1nJad3AvfbtFUdZispqu/rI=;
+ b=Kr7wgPhPXzZqamnIDPf/41v2go/DnQCjVZW83fuU7B8I2aN7PTBAsSqmOIz0oIIc7t
+ seu2AGCWu+ao73aSwlJ0RSGErVzX23ePAFxwhwPBq5Xk/S2G84xju4o8xHOJwHdYTnue
+ q7igXbMA3uL0eZGq7RCXnUPCNdeP9CnQYQsHlH9EP3R6HZVHeTi7bCD6tnuS6CE2x8Xp
+ m+9lPfiEC/He7tKoJmSYM6/xn9LuZWA5HsuqDtiOkD8ugjgeMb8lnc845nwYXG0K3Kly
+ CHY8Vak0Hc9bLBJJ8LKgoceNv+S3QQP4KxZgGkTXgRqftlwra9qMPg2o3ZMl1jLOqbbK
+ kpbQ==
+X-Gm-Message-State: AOJu0YyqOOOc2NtXn+wQ/Ch2/3+t7TGoFnZPwVEPVxKRY83GE+JQK+zc
+ BdYXM4d7Rg9mfNl00arjmnh5md3Y1cQKT3KRut6Z5fz9DD8kMB5fxUkQQN691Tp3oZq4SYMol2x
+ c4GR5+DgjVN2a3oCCGyr7tXeDCISh9amNmVm1O5pD9WM+Mt4oGczwrGT8XyPzP4M92HQGKKsr31
+ U7K6min56r0QTfFOSB7ppVWFaBaC8cngeY0/3q
+X-Received: by 2002:a50:9e45:0:b0:56e:64a:2a47 with SMTP id
+ z63-20020a509e45000000b0056e064a2a47mr6800763ede.42.1715079375667; 
+ Tue, 07 May 2024 03:56:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwyTqEpABa9deuZ38jVK1KVpBkVEnUnhdP5lmzIsDYBIXh61pzjR+kVyG1c1IC7cRCli7ovw==
+X-Received: by 2002:a50:9e45:0:b0:56e:64a:2a47 with SMTP id
+ z63-20020a509e45000000b0056e064a2a47mr6800749ede.42.1715079375181; 
+ Tue, 07 May 2024 03:56:15 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- ks15-20020a170906f84f00b00a59da4386e0sm1764946ejb.148.2024.05.07.03.56.11
+ j5-20020aa7c0c5000000b005723bcad44bsm6138634edp.41.2024.05.07.03.56.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 03:56:11 -0700 (PDT)
+ Tue, 07 May 2024 03:56:14 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/26] target/i386: reintroduce debugging mechanism
-Date: Tue,  7 May 2024 12:55:24 +0200
-Message-ID: <20240507105538.180704-13-pbonzini@redhat.com>
+Subject: [PULL 13/26] target/i386: move 00-5F opcodes to new decoder
+Date: Tue,  7 May 2024 12:55:25 +0200
+Message-ID: <20240507105538.180704-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240507105538.180704-1-pbonzini@redhat.com>
 References: <20240507105538.180704-1-pbonzini@redhat.com>
@@ -103,78 +103,461 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c      | 27 +++++++++++++++++++++++++++
- target/i386/tcg/decode-new.c.inc |  3 +++
- 2 files changed, 30 insertions(+)
+ target/i386/tcg/translate.c      |   2 +-
+ target/i386/tcg/decode-new.c.inc | 120 ++++++++++++++++++
+ target/i386/tcg/emit.c.inc       | 202 +++++++++++++++++++++++++++++++
+ 3 files changed, 323 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index f018d6303a9..6a0c74c225f 100644
+index 6a0c74c225f..8bc1828a6bc 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2969,6 +2969,9 @@ static void gen_sty_env_A0(DisasContext *s, int offset, bool align)
-     tcg_gen_qemu_st_i128(t, s->tmp0, mem_index, mop);
- }
- 
-+static bool first = true;
-+static unsigned long limit;
-+
- #include "decode-new.h"
- #include "emit.c.inc"
- #include "decode-new.c.inc"
-@@ -3124,15 +3127,39 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
- 
-     prefixes = 0;
- 
-+    if (first) {
-+        const char *limit_str = getenv("QEMU_I386_LIMIT");
-+        limit = limit_str ? atol(limit_str) : -1;
-+        first = false;
-+    }
-+    bool use_new = true;
-+#ifdef CONFIG_USER_ONLY
-+    use_new &= limit > 0;
-+#endif
-+
-  next_byte:
-     s->prefix = prefixes;
-     b = x86_ldub_code(env, s);
-     /* Collect prefixes.  */
-     switch (b) {
-     default:
-+#ifndef CONFIG_USER_ONLY
-+        use_new &= b <= limit;
-+#endif
-+        if (use_new && 0) {
-+            disas_insn_new(s, cpu, b);
-+            return true;
-+        }
-         break;
-     case 0x0f:
-         b = x86_ldub_code(env, s) + 0x100;
-+#ifndef CONFIG_USER_ONLY
-+        use_new &= b <= limit;
-+#endif
-+        if (use_new && 0) {
-+            disas_insn_new(s, cpu, b);
-+            return true;
-+        }
-         break;
-     case 0xf3:
-         prefixes |= PREFIX_REPZ;
+@@ -3146,7 +3146,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+ #ifndef CONFIG_USER_ONLY
+         use_new &= b <= limit;
+ #endif
+-        if (use_new && 0) {
++        if (use_new && b <= 0x5f) {
+             disas_insn_new(s, cpu, b);
+             return true;
+         }
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 426c4594120..3fc6485d74c 100644
+index 3fc6485d74c..1e792426ff5 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -1689,6 +1689,9 @@ static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
-     X86DecodeFunc decode_func = decode_root;
-     uint8_t cc_live;
+@@ -121,6 +121,8 @@
  
-+#ifdef CONFIG_USER_ONLY
-+    if (limit) { --limit; }
-+#endif
-     s->has_modrm = false;
+ #define X86_OP_GROUP2(op, op0, s0, op1, s1, ...)                  \
+     X86_OP_GROUP3(op, op0, s0, 2op, s0, op1, s1, ## __VA_ARGS__)
++#define X86_OP_GROUPw(op, op0, s0, ...)                           \
++    X86_OP_GROUP3(op, op0, s0, None, None, None, None, ## __VA_ARGS__)
+ #define X86_OP_GROUP0(op, ...)                                    \
+     X86_OP_GROUP3(op, None, None, None, None, None, None, ## __VA_ARGS__)
  
-  next_byte:
+@@ -140,12 +142,23 @@
+         .op3 = X86_TYPE_I, .s3 = X86_SIZE_b,                      \
+         ## __VA_ARGS__)
+ 
++/*
++ * Short forms that are mostly useful for ALU opcodes and other
++ * one-byte opcodes.  For vector instructions it is usually
++ * clearer to write all three operands explicitly, because the
++ * corresponding gen_* function will use OP_PTRn rather than s->T0
++ * and s->T1.
++ */
++#define X86_OP_ENTRYrr(op, op0, s0, op1, s1, ...)                 \
++    X86_OP_ENTRY3(op, None, None, op0, s0, op1, s1, ## __VA_ARGS__)
+ #define X86_OP_ENTRY2(op, op0, s0, op1, s1, ...)                  \
+     X86_OP_ENTRY3(op, op0, s0, 2op, s0, op1, s1, ## __VA_ARGS__)
+ #define X86_OP_ENTRYw(op, op0, s0, ...)                           \
+     X86_OP_ENTRY3(op, op0, s0, None, None, None, None, ## __VA_ARGS__)
+ #define X86_OP_ENTRYr(op, op0, s0, ...)                           \
+     X86_OP_ENTRY3(op, None, None, None, None, op0, s0, ## __VA_ARGS__)
++#define X86_OP_ENTRY1(op, op0, s0, ...)                           \
++    X86_OP_ENTRY3(op, op0, s0, 2op, s0, None, None, ## __VA_ARGS__)
+ #define X86_OP_ENTRY0(op, ...)                                    \
+     X86_OP_ENTRY3(op, None, None, None, None, None, None, ## __VA_ARGS__)
+ 
+@@ -1096,7 +1109,114 @@ static void decode_0F(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint
+ }
+ 
+ static const X86OpEntry opcodes_root[256] = {
++    [0x00] = X86_OP_ENTRY2(ADD, E,b, G,b, lock),
++    [0x01] = X86_OP_ENTRY2(ADD, E,v, G,v, lock),
++    [0x02] = X86_OP_ENTRY2(ADD, G,b, E,b, lock),
++    [0x03] = X86_OP_ENTRY2(ADD, G,v, E,v, lock),
++    [0x04] = X86_OP_ENTRY2(ADD, 0,b, I,b, lock),   /* AL, Ib */
++    [0x05] = X86_OP_ENTRY2(ADD, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x06] = X86_OP_ENTRYr(PUSH, ES, w, chk(i64)),
++    [0x07] = X86_OP_ENTRYw(POP, ES, w, chk(i64)),
++
++    [0x10] = X86_OP_ENTRY2(ADC, E,b, G,b, lock),
++    [0x11] = X86_OP_ENTRY2(ADC, E,v, G,v, lock),
++    [0x12] = X86_OP_ENTRY2(ADC, G,b, E,b, lock),
++    [0x13] = X86_OP_ENTRY2(ADC, G,v, E,v, lock),
++    [0x14] = X86_OP_ENTRY2(ADC, 0,b, I,b, lock),   /* AL, Ib */
++    [0x15] = X86_OP_ENTRY2(ADC, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x16] = X86_OP_ENTRYr(PUSH, SS, w, chk(i64)),
++    [0x17] = X86_OP_ENTRYw(POP, SS, w, chk(i64)),
++
++    [0x20] = X86_OP_ENTRY2(AND, E,b, G,b, lock),
++    [0x21] = X86_OP_ENTRY2(AND, E,v, G,v, lock),
++    [0x22] = X86_OP_ENTRY2(AND, G,b, E,b, lock),
++    [0x23] = X86_OP_ENTRY2(AND, G,v, E,v, lock),
++    [0x24] = X86_OP_ENTRY2(AND, 0,b, I,b, lock),   /* AL, Ib */
++    [0x25] = X86_OP_ENTRY2(AND, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x26] = {},
++    [0x27] = X86_OP_ENTRY0(DAA, chk(i64)),
++
++    [0x30] = X86_OP_ENTRY2(XOR, E,b, G,b, lock),
++    [0x31] = X86_OP_ENTRY2(XOR, E,v, G,v, lock),
++    [0x32] = X86_OP_ENTRY2(XOR, G,b, E,b, lock),
++    [0x33] = X86_OP_ENTRY2(XOR, G,v, E,v, lock),
++    [0x34] = X86_OP_ENTRY2(XOR, 0,b, I,b, lock),   /* AL, Ib */
++    [0x35] = X86_OP_ENTRY2(XOR, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x36] = {},
++    [0x37] = X86_OP_ENTRY0(AAA, chk(i64)),
++
++    [0x40] = X86_OP_ENTRY1(INC, 0,v, chk(i64)),
++    [0x41] = X86_OP_ENTRY1(INC, 1,v, chk(i64)),
++    [0x42] = X86_OP_ENTRY1(INC, 2,v, chk(i64)),
++    [0x43] = X86_OP_ENTRY1(INC, 3,v, chk(i64)),
++    [0x44] = X86_OP_ENTRY1(INC, 4,v, chk(i64)),
++    [0x45] = X86_OP_ENTRY1(INC, 5,v, chk(i64)),
++    [0x46] = X86_OP_ENTRY1(INC, 6,v, chk(i64)),
++    [0x47] = X86_OP_ENTRY1(INC, 7,v, chk(i64)),
++
++    [0x50] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x51] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x52] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x53] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x54] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x55] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x56] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++    [0x57] = X86_OP_ENTRYr(PUSH, LoBits,d64),
++
++
++    [0x08] = X86_OP_ENTRY2(OR, E,b, G,b, lock),
++    [0x09] = X86_OP_ENTRY2(OR, E,v, G,v, lock),
++    [0x0A] = X86_OP_ENTRY2(OR, G,b, E,b, lock),
++    [0x0B] = X86_OP_ENTRY2(OR, G,v, E,v, lock),
++    [0x0C] = X86_OP_ENTRY2(OR, 0,b, I,b, lock),   /* AL, Ib */
++    [0x0D] = X86_OP_ENTRY2(OR, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x0E] = X86_OP_ENTRYr(PUSH, CS, w, chk(i64)),
+     [0x0F] = X86_OP_GROUP0(0F),
++
++    [0x18] = X86_OP_ENTRY2(SBB, E,b, G,b, lock),
++    [0x19] = X86_OP_ENTRY2(SBB, E,v, G,v, lock),
++    [0x1A] = X86_OP_ENTRY2(SBB, G,b, E,b, lock),
++    [0x1B] = X86_OP_ENTRY2(SBB, G,v, E,v, lock),
++    [0x1C] = X86_OP_ENTRY2(SBB, 0,b, I,b, lock),   /* AL, Ib */
++    [0x1D] = X86_OP_ENTRY2(SBB, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x1E] = X86_OP_ENTRYr(PUSH, DS, w, chk(i64)),
++    [0x1F] = X86_OP_ENTRYw(POP, DS, w, chk(i64)),
++
++    [0x28] = X86_OP_ENTRY2(SUB, E,b, G,b, lock),
++    [0x29] = X86_OP_ENTRY2(SUB, E,v, G,v, lock),
++    [0x2A] = X86_OP_ENTRY2(SUB, G,b, E,b, lock),
++    [0x2B] = X86_OP_ENTRY2(SUB, G,v, E,v, lock),
++    [0x2C] = X86_OP_ENTRY2(SUB, 0,b, I,b, lock),   /* AL, Ib */
++    [0x2D] = X86_OP_ENTRY2(SUB, 0,v, I,z, lock),   /* rAX, Iz */
++    [0x2E] = {},
++    [0x2F] = X86_OP_ENTRY0(DAS, chk(i64)),
++
++    [0x38] = X86_OP_ENTRYrr(SUB, E,b, G,b),
++    [0x39] = X86_OP_ENTRYrr(SUB, E,v, G,v),
++    [0x3A] = X86_OP_ENTRYrr(SUB, G,b, E,b),
++    [0x3B] = X86_OP_ENTRYrr(SUB, G,v, E,v),
++    [0x3C] = X86_OP_ENTRYrr(SUB, 0,b, I,b),   /* AL, Ib */
++    [0x3D] = X86_OP_ENTRYrr(SUB, 0,v, I,z),   /* rAX, Iz */
++    [0x3E] = {},
++    [0x3F] = X86_OP_ENTRY0(AAS, chk(i64)),
++
++    [0x48] = X86_OP_ENTRY1(DEC, 0,v, chk(i64)),
++    [0x49] = X86_OP_ENTRY1(DEC, 1,v, chk(i64)),
++    [0x4A] = X86_OP_ENTRY1(DEC, 2,v, chk(i64)),
++    [0x4B] = X86_OP_ENTRY1(DEC, 3,v, chk(i64)),
++    [0x4C] = X86_OP_ENTRY1(DEC, 4,v, chk(i64)),
++    [0x4D] = X86_OP_ENTRY1(DEC, 5,v, chk(i64)),
++    [0x4E] = X86_OP_ENTRY1(DEC, 6,v, chk(i64)),
++    [0x4F] = X86_OP_ENTRY1(DEC, 7,v, chk(i64)),
++
++    [0x58] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x59] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5A] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5B] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5C] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5D] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5E] = X86_OP_ENTRYw(POP, LoBits,d64),
++    [0x5F] = X86_OP_ENTRYw(POP, LoBits,d64),
+ };
+ 
+ #undef mmx
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 0e00f6635dd..a64186b8957 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -352,6 +352,20 @@ static void prepare_update2_cc(X86DecodedInsn *decode, DisasContext *s, CCOp op)
+     decode->cc_op = op;
+ }
+ 
++static void prepare_update_cc_incdec(X86DecodedInsn *decode, DisasContext *s, CCOp op)
++{
++    gen_compute_eflags_c(s, s->T1);
++    prepare_update2_cc(decode, s, op);
++}
++
++static void prepare_update3_cc(X86DecodedInsn *decode, DisasContext *s, CCOp op, TCGv reg)
++{
++    decode->cc_src2 = reg;
++    decode->cc_src = s->T1;
++    decode->cc_dst = s->T0;
++    decode->cc_op = op;
++}
++
+ static void gen_store_sse(DisasContext *s, X86DecodedInsn *decode, int src_ofs)
+ {
+     MemOp ot = decode->op[0].ot;
+@@ -1040,6 +1054,37 @@ static void gen_##uname(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
+ VSIB_AVX(VPGATHERD, vpgatherd)
+ VSIB_AVX(VPGATHERQ, vpgatherq)
+ 
++static void gen_AAA(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_update_cc_op(s);
++    gen_helper_aaa(tcg_env);
++    set_cc_op(s, CC_OP_EFLAGS);
++}
++
++static void gen_AAS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_update_cc_op(s);
++    gen_helper_aas(tcg_env);
++    set_cc_op(s, CC_OP_EFLAGS);
++}
++
++static void gen_ADC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++    TCGv c_in = tcg_temp_new();
++
++    gen_compute_eflags_c(s, c_in);
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_add_tl(s->T0, c_in, s->T1);
++        tcg_gen_atomic_add_fetch_tl(s->T0, s->A0, s->T0,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_add_tl(s->T0, s->T0, s->T1);
++        tcg_gen_add_tl(s->T0, s->T0, c_in);
++    }
++    prepare_update3_cc(decode, s, CC_OP_ADCB + ot, c_in);
++}
++
+ /* ADCX/ADOX do not have memory operands and can use set_cc_op.  */
+ static void gen_ADCOX(DisasContext *s, CPUX86State *env, MemOp ot, int cc_op)
+ {
+@@ -1093,11 +1138,37 @@ static void gen_ADCX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     gen_ADCOX(s, env, decode->op[0].ot, CC_OP_ADCX);
+ }
+ 
++static void gen_ADD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_add_fetch_tl(s->T0, s->A0, s->T1,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_add_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update2_cc(decode, s, CC_OP_ADDB + ot);
++}
++
+ static void gen_ADOX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     gen_ADCOX(s, env, decode->op[0].ot, CC_OP_ADOX);
+ }
+ 
++static void gen_AND(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_and_fetch_tl(s->T0, s->A0, s->T1,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_and_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update1_cc(decode, s, CC_OP_LOGICB + ot);
++}
++
+ static void gen_ANDN(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     MemOp ot = decode->op[0].ot;
+@@ -1331,6 +1402,34 @@ static void gen_CVTTPx2PI(DisasContext *s, CPUX86State *env, X86DecodedInsn *dec
+     }
+ }
+ 
++static void gen_DAA(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_update_cc_op(s);
++    gen_helper_daa(tcg_env);
++    set_cc_op(s, CC_OP_EFLAGS);
++}
++
++static void gen_DAS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_update_cc_op(s);
++    gen_helper_das(tcg_env);
++    set_cc_op(s, CC_OP_EFLAGS);
++}
++
++static void gen_DEC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    tcg_gen_movi_tl(s->T1, -1);
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_add_fetch_tl(s->T0, s->A0, s->T1,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_add_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update_cc_incdec(decode, s, CC_OP_DECB + ot);
++}
++
+ static void gen_EMMS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     gen_helper_emms(tcg_env);
+@@ -1349,6 +1448,20 @@ static void gen_EXTRQ_r(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
+     gen_helper_extrq_r(tcg_env, OP_PTR0, OP_PTR2);
+ }
+ 
++static void gen_INC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    tcg_gen_movi_tl(s->T1, 1);
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_add_fetch_tl(s->T0, s->A0, s->T1,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_add_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update_cc_incdec(decode, s, CC_OP_INCB + ot);
++}
++
+ static void gen_INSERTQ_i(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     TCGv_i32 length = tcg_constant_i32(decode->immediate & 63);
+@@ -1501,6 +1614,19 @@ static void gen_MULX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     }
+ }
+ 
++static void gen_OR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_atomic_or_fetch_tl(s->T0, s->A0, s->T1,
++                                   s->mem_index, ot | MO_LE);
++    } else {
++        tcg_gen_or_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update1_cc(decode, s, CC_OP_LOGICB + ot);
++}
++
+ static void gen_PALIGNR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     TCGv_i32 imm = tcg_constant8u_i32(decode->immediate);
+@@ -1744,6 +1870,18 @@ static void gen_PMOVMSKB(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
+     }
+ }
+ 
++static void gen_POP(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = gen_pop_T0(s);
++    if (decode->op[0].has_ea) {
++        /* NOTE: order is important for MMU exceptions */
++        gen_op_st_v(s, ot, s->T0, s->A0);
++        decode->op[0].unit = X86_OP_SKIP;
++    }
++    /* NOTE: writing back registers after update is important for pop %sp */
++    gen_pop_update(s, ot);
++}
++
+ static void gen_PSHUFW(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     TCGv_i32 imm = tcg_constant8u_i32(decode->immediate);
+@@ -1890,6 +2028,11 @@ static void gen_PSLLDQ_i(DisasContext *s, CPUX86State *env, X86DecodedInsn *deco
+     }
+ }
+ 
++static void gen_PUSH(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_push_v(s, s->T1);
++}
++
+ static void gen_RORX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     MemOp ot = decode->op[0].ot;
+@@ -1924,6 +2067,28 @@ static void gen_SARX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     tcg_gen_sar_tl(s->T0, s->T0, s->T1);
+ }
+ 
++static void gen_SBB(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[0].ot;
++    TCGv c_in = tcg_temp_new();
++
++    gen_compute_eflags_c(s, c_in);
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_add_tl(s->T0, s->T1, c_in);
++        tcg_gen_neg_tl(s->T0, s->T0);
++        tcg_gen_atomic_add_fetch_tl(s->T0, s->A0, s->T0,
++                                    s->mem_index, ot | MO_LE);
++    } else {
++        /*
++         * TODO: SBB reg, reg could use gen_prepare_eflags_c followed by
++         * negsetcond, and CC_OP_SUBB as the cc_op.
++         */
++        tcg_gen_sub_tl(s->T0, s->T0, s->T1);
++        tcg_gen_sub_tl(s->T0, s->T0, c_in);
++    }
++    prepare_update3_cc(decode, s, CC_OP_SBBB + ot, c_in);
++}
++
+ static void gen_SHA1NEXTE(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     gen_helper_sha1nexte(OP_PTR0, OP_PTR1, OP_PTR2);
+@@ -2011,6 +2176,22 @@ static void gen_STMXCSR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decod
+     tcg_gen_ld32u_tl(s->T0, tcg_env, offsetof(CPUX86State, mxcsr));
+ }
+ 
++static void gen_SUB(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    MemOp ot = decode->op[1].ot;
++
++    if (s->prefix & PREFIX_LOCK) {
++        tcg_gen_neg_tl(s->T0, s->T1);
++        tcg_gen_atomic_fetch_add_tl(s->cc_srcT, s->A0, s->T0,
++                                    s->mem_index, ot | MO_LE);
++        tcg_gen_sub_tl(s->T0, s->cc_srcT, s->T1);
++    } else {
++        tcg_gen_mov_tl(s->cc_srcT, s->T0);
++        tcg_gen_sub_tl(s->T0, s->T0, s->T1);
++    }
++    prepare_update2_cc(decode, s, CC_OP_SUBB + ot);
++}
++
+ static void gen_VAESIMC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     assert(!s->vex_l);
+@@ -2490,3 +2671,24 @@ static void gen_VZEROUPPER(DisasContext *s, CPUX86State *env, X86DecodedInsn *de
+         tcg_gen_gvec_dup_imm(MO_64, offset, 16, 16, 0);
+     }
+ }
++
++static void gen_XOR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    /* special case XOR reg, reg */
++    if (decode->op[1].unit == X86_OP_INT &&
++        decode->op[2].unit == X86_OP_INT &&
++        decode->op[1].n == decode->op[2].n) {
++        tcg_gen_movi_tl(s->T0, 0);
++        decode->cc_op = CC_OP_CLR;
++    } else {
++        MemOp ot = decode->op[1].ot;
++
++        if (s->prefix & PREFIX_LOCK) {
++            tcg_gen_atomic_xor_fetch_tl(s->T0, s->A0, s->T1,
++                                        s->mem_index, ot | MO_LE);
++        } else {
++            tcg_gen_xor_tl(s->T0, s->T0, s->T1);
++        }
++        prepare_update1_cc(decode, s, CC_OP_LOGICB + ot);
++    }
++}
 -- 
 2.45.0
 
