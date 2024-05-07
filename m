@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69878BDF84
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F058BDFAA
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Hqv-0008Dg-5T; Tue, 07 May 2024 06:15:17 -0400
+	id 1s4I0x-0005j2-2H; Tue, 07 May 2024 06:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1s4Hqt-0008DL-2A
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:15:15 -0400
-Received: from mail-yw1-x1132.google.com ([2607:f8b0:4864:20::1132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1s4Hqr-0007t7-8e
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:15:14 -0400
-Received: by mail-yw1-x1132.google.com with SMTP id
- 00721157ae682-61be4b98766so34010057b3.3
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:15:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715076911; x=1715681711; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PpKQRCEqyzJjjbPPWpSEgjupZ5HS3Nt1X99gw53bpPo=;
- b=GGITFLzLGGsPTCoX9WHVQ584iH84q81+dJc64TCTVWjUQzwtECHpgTKNZB0t1ak7Xp
- //aNpHR/1osf75BGs4OB5YOkt1w7rcemxOIA2kHI12yGHboenTt1zbt+BuhpE9GtJlXD
- /9/AbNLit9Vrdwc7zwXFVdkURUCnBQh+A86p0xoAeC6hQJCJCqF6WwNUHb9KoC+pp6lT
- pqzQVJgQfJXFA8VHMD3FY+orKeNT9yl8ulbkNexYFbbKkhseM4wnrWJ/dFE9KTUmXFxH
- I9ohUb9k/xfKNkMQ7NyAMaB8iGIf/eBYBhM3Llp6OZ679SDqzt/MdybFrkVjlc2X+9C4
- 0vxA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s4I0u-0005Yx-4W
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:25:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s4I0n-0005PM-85
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:25:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715077522;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=N3RXN8ix4uYhIoxR9CrWaV+79qB0ZqSj9DDEjl5UtMc=;
+ b=PpIotjJX6HCGczHujV6NzT9QTm7UtVHwr4sxmRCvEa9vPyhaw/uQpHemG8HoT6mYiNjyOt
+ A56BBPJAfaQLmVo9QDZYrOZXemaPulUPc8ALCX368XVmzGO2I0RaZ/2DYzRsGaWQ4huNgr
+ 3y2Rjjz3UsI+0fmu7BNJ1M2RIGGbovw=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-19-pc2TMzQyMC6U4dvVyYZM4A-1; Tue, 07 May 2024 06:25:20 -0400
+X-MC-Unique: pc2TMzQyMC6U4dvVyYZM4A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-34d8ccf34f8so2231982f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:25:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715076911; x=1715681711;
+ d=1e100.net; s=20230601; t=1715077519; x=1715682319;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PpKQRCEqyzJjjbPPWpSEgjupZ5HS3Nt1X99gw53bpPo=;
- b=ENIUyCHmzrWC265SfM1Vt8hy8Rd5ISq/D6A6VCCYU/2ERwtnum03WqAv5RykK0jV/l
- X9lwPDQKQXoRCHWkvC7czqXN9A1ONvDxfcKJTXxSQpwWM807GGIGxbkzxIRo6XFaovWb
- pQZUSiF5DYl4emlLsEpvAEXRI7rqdXQ7Nx+FBuUBGcoySWKF24hVdylZtZD3ZImZR0B2
- e5NityccN4dBKYGc1u9KDvrLKWJ8hiJKJNZLe0LIQNgyrxndT38iKIJY80ImelsNPWXI
- tWMqmjqCXGScY5RT8xYyZZYAl4VLhmnVOBgPlT6un0ZdjrZBwdv6QVpV6vrEUFlwb6nN
- xd6Q==
-X-Gm-Message-State: AOJu0YwBl+SIQfHkiFjokfYGlgk6uj2e9F8dre5zKqzrRXJnCSKt3eO0
- 9jhreKDCTjRjM1cBFQAIi0zaokvVm4XsyGNdYc/vcCmzlfEbBTEfp9sIGpxfXZsL3W+xm+2fQqb
- 2diG0vssDvfMTUfpJDKFiPn3LOVM=
-X-Google-Smtp-Source: AGHT+IFl8se267y1h1ElikM7wgwT34ose40NrHPKAXO38rG0J0U/cPfZQ1n08ygfMiUaUhqpUR4tP7PZrg8hSJSd/rA=
-X-Received: by 2002:a81:451c:0:b0:61b:33c9:4ee5 with SMTP id
- s28-20020a81451c000000b0061b33c94ee5mr11335086ywa.46.1715076911018; Tue, 07
- May 2024 03:15:11 -0700 (PDT)
+ bh=N3RXN8ix4uYhIoxR9CrWaV+79qB0ZqSj9DDEjl5UtMc=;
+ b=CfxZn6qvIoH4eITBy9WnzgaafJUsl1lmWtRy7INrwLME7bxckhngX6nJu/goMEPokq
+ DJwUY805xaSb8Lz4zAqQbywID9LWBvu6kcP5BaqqHTeB3pbehc0xnYlRw29gph2FQ4tF
+ EfOzAZ4RQXMUYNeNe7LfyfyEA7qcQoOnM5z5NlI/GfQHsoqHAVC0znSMKqEpZ+Nbhcc7
+ dhcS8IvSM6mYZ/ZfDcU2A4k+YFEvxI2vzHvmgBnnJ7tJx0iowh/UNPj8ywkf232/yG9R
+ 95k1OQA+0kJjK2c8X6LpFWahp1hyo5IHOiwK0h9CJpNrtirDOzctQooqfKEsUPCsvBzf
+ KA8g==
+X-Gm-Message-State: AOJu0Yy+dEYt9hzdxo5X1s5f/yoCJpbY1mG+1bc7ABH0LgU+45c8Warm
+ JvJfQVTZdi0D8fXyAkC0ptDVVZLrwfQP0Knsz2Mx547m0sSCENp9cRdUuV2QUqg7N0QcnuoU/0T
+ WfbQK/w5t1+mMxf+s5cUmjddSk76KOqgmOkSKIThBBTiTJ8zi3iUYBXcArGYYCI0NVl9R05EveT
+ 5Ww2uSnE9ffce3x6rt+zhJQzQqFVyXMANDtn29uQ==
+X-Received: by 2002:a5d:674f:0:b0:34c:5f3a:f44e with SMTP id
+ l15-20020a5d674f000000b0034c5f3af44emr7239700wrw.45.1715077518873; 
+ Tue, 07 May 2024 03:25:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuaQNK+9v0QurQIYL4RtwmusEUptIRtqWTIrEx9GxgClc8JD9qPbUEwpoG7TGuEj7uLnnpz69plvhdnjsgNtk=
+X-Received: by 2002:a5d:674f:0:b0:34c:5f3a:f44e with SMTP id
+ l15-20020a5d674f000000b0034c5f3af44emr7239695wrw.45.1715077518502; Tue, 07
+ May 2024 03:25:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240312140216.313618-1-marcandre.lureau@redhat.com>
- <20240312140216.313618-6-marcandre.lureau@redhat.com>
- <b3215169-005d-4766-ad19-3b649ff0e4c9@proxmox.com>
-In-Reply-To: <b3215169-005d-4766-ad19-3b649ff0e4c9@proxmox.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 7 May 2024 14:14:59 +0400
-Message-ID: <CAJ+F1C+UMCTrSSE9Mx2BvrH=ydjVg+3S7hkFk+143wz1Eh9BDQ@mail.gmail.com>
-Subject: Re: [PULL 5/5] virtio-gpu: fix scanout migration post-load
-To: Fiona Ebner <f.ebner@proxmox.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- Sebastian Ott <sebott@redhat.com>, peter.maydell@linaro.org, 
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20240507071948.105022-1-pbonzini@redhat.com>
+ <20240507071948.105022-3-pbonzini@redhat.com>
+ <db5af536-718b-48d8-9f82-57dc0ff9e74d@linaro.org>
+In-Reply-To: <db5af536-718b-48d8-9f82-57dc0ff9e74d@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 7 May 2024 12:25:06 +0200
+Message-ID: <CABgObfYBuUj6fzSEf5XbvY99EVrCMUmPziafwQUNE6t4cpqndg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] kconfig: express dependency of individual boards on
+ libfdt
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1132;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,105 +97,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
-
-On Tue, Apr 30, 2024 at 4:31=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
-rote:
+On Tue, May 7, 2024 at 9:48=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org> wrote:
 >
-> Am 12.03.24 um 15:02 schrieb marcandre.lureau@redhat.com:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> On 7/5/24 09:19, Paolo Bonzini wrote:
+> > Now that boards are enabled by default and the "CONFIG_FOO=3Dy"
+> > entries are gone from configs/devices/, there cannot be any more
+> > a conflicts between the default contents of configs/devices/
+> > and a failed "depends on" clause.
 > >
-> > The current post-loading code for scanout has a FIXME: it doesn't take
-> > the resource region/rect into account. But there is more, when adding
-> > blob migration support in commit f66767f75c9, I didn't realize that blo=
-b
-> > resources could be used for scanouts. This situationn leads to a crash
-> > during post-load, as they don't have an associated res->image.
+> > With this change, each individual board or target can express
+> > whether it needs FDT.  It can also include it in the
+> > build via "select DEVICE_TREE", instead of having each hw/*/meson.build
+> > file do it by hand, and this will bring in more components
+> > such as CONFIG_GUEST_LOADER.
 > >
-> > virtio_gpu_do_set_scanout() handle all cases, but requires the
-> > associated virtio_gpu_framebuffer, which is currently not saved during
-> > migration.
+> > This allows building non-microvm x86 emulators without having
+> > libfdt available.
 > >
-> > Add a v2 of "virtio-gpu-one-scanout" with the framebuffer fields, so we
-> > can restore blob scanouts, as well as fixing the existing FIXME.
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > Reviewed-by: Sebastian Ott <sebott@redhat.com>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >   meson.build               |  1 +
+> >   Kconfig.host              |  3 +++
+> >   hw/arm/Kconfig            |  5 +++++
+> >   hw/arm/meson.build        |  2 +-
+> >   hw/core/Kconfig           |  9 ++++++++-
+> >   hw/core/meson.build       |  2 +-
+> >   hw/i386/Kconfig           |  3 ++-
+> >   hw/loongarch/Kconfig      |  3 ++-
+> >   hw/loongarch/meson.build  |  2 +-
+> >   hw/mips/Kconfig           |  1 +
+> >   hw/mips/meson.build       |  2 +-
+> >   hw/openrisc/Kconfig       |  2 ++
+> >   hw/openrisc/meson.build   |  4 ++--
+> >   hw/ppc/Kconfig            | 15 ++++++++-------
+> >   hw/ppc/meson.build        |  4 +---
+> >   hw/riscv/Kconfig          |  4 ++++
+> >   hw/riscv/meson.build      |  2 +-
+> >   hw/rx/Kconfig             |  3 ++-
+> >   hw/xtensa/Kconfig         |  1 +
+> >   system/meson.build        |  2 +-
+> >   target/arm/Kconfig        |  2 ++
+> >   target/microblaze/Kconfig |  1 +
+> >   target/openrisc/Kconfig   |  1 +
+> >   target/riscv/Kconfig      |  2 ++
+> >   24 files changed, 54 insertions(+), 22 deletions(-)
 >
-> Hi,
-> unfortunately, this broke migration from pre-9.0 to 9.0:
 >
-> > vmstate_load_state_field virtio-gpu:virtio-gpu
-> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.enable
-> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.conf.max_output=
-s
-> > vmstate_load_state_field virtio-gpu-scanouts:parent_obj.scanout
-> > vmstate_load_state_field virtio-gpu-one-scanout:resource_id
-> > vmstate_load_state_field virtio-gpu-one-scanout:width
-> > vmstate_load_state_field virtio-gpu-one-scanout:height
-> > vmstate_load_state_field virtio-gpu-one-scanout:x
-> > vmstate_load_state_field virtio-gpu-one-scanout:y
-> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.resource_id
-> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_x
-> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.hot_y
-> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.x
-> > vmstate_load_state_field virtio-gpu-one-scanout:cursor.pos.y
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.format
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.bytes_pp
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.width
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.height
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.stride
-> > vmstate_load_state_field virtio-gpu-one-scanout:fb.offset
-> > qemu-system-x86_64: Missing section footer for 0000:00:02.0/virtio-gpu
-> > qemu-system-x86_64: Error -22 while loading VM state
+> > diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+> > index 6808135c1f7..aefde0c69a3 100644
+> > --- a/hw/arm/meson.build
+> > +++ b/hw/arm/meson.build
+> > @@ -1,5 +1,5 @@
+> >   arm_ss =3D ss.source_set()
+> > -arm_ss.add(files('boot.c'), fdt)
+> > +arm_ss.add(files('boot.c'))
 >
-> It wrongly tries to load the fb fields even though they should be
-> guarded by version 2.
->
-> Looking at it with GDB, in vmstate_load_state(), when we come to
-> field->name =3D=3D parent_obj.scanout, the
->
-> >                 } else if (field->flags & VMS_STRUCT) {
-> >                     ret =3D vmstate_load_state(f, field->vmsd, curr_ele=
-m,
-> >                                              field->vmsd->version_id);
->
-> branch will be taken and suddenly we'll have a call to
-> vmstate_load_state() for vmsd=3D=3Dvmstate_virtio_gpu_scanout with
-> version_id=3D=3D2 rather than version_id=3D=3D1, because that is
-> field->vmsd->version_id (i.e. the .version_id in VMStateDescription
-> vmstate_virtio_gpu_scanout).
->
-> Would it have been necessary to version the VMStateDescription
-> vmstate_virtio_gpu_scanouts too using VMS_VSTRUCT (or am I
-> misinterpreting the use case for that)?
->
+> Don't we need to add fdt includes path to CPPFLAGS?
 
-Sigh.. this is embarrassing. This patch didn't receive enough testing
-and breaks pre-9.0/9.0 forward and backward migrations.
+Good catch! I thought it'd be done automatically for all dependencies
+included in common_ss (system_ss is included in common_ss and lists
+fdt as a dependency), but actually it needs a small tweak:
 
-I think it would be reasonable to revert the patch, but it's already
-in 9.0. Is that acceptable?
+diff --git a/meson.build b/meson.build
+index 24502f4ff6a..342df23269d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3898,7 +3898,7 @@ foreach target : target_dirs
 
-There are various issues about versioning:
-- VMStateDescription (vmsd) version_id are not in the stream (only
-start & full section headers), so any nested version bump should
-somehow be bubbled up/down..
-- machine versions don't have specific vmsd version_id associations
-(that I can see, or is there any way to do that?)
-- virtio-gpu uses even lower-level vmstate API and hardcodes version
-to 1 in general
+   target_common =3D common_ss.apply(config_target, strict: false)
+   objects =3D common_all.extract_objects(target_common.sources())
+-  deps =3D target_common.dependencies()
++  arch_deps +=3D target_common.dependencies()
 
-Ideally, I wished adding versionized fields the way done in this patch
-would simply work, but this is really, sadly, not supported atm.
+   target_specific =3D specific_ss.apply(config_target, strict: false)
+   arch_srcs +=3D target_specific.sources()
+@@ -3954,7 +3954,7 @@ foreach target : target_dirs
+     emulator =3D executable(exe_name, exe['sources'],
+                install: true,
+                c_args: c_args,
+-               dependencies: arch_deps + deps + exe['dependencies'],
++               dependencies: arch_deps + exe['dependencies'],
+                objects: lib.extract_all_objects(recursive: true),
+                link_depends: [block_syms, qemu_syms],
+                link_args: link_args,
 
-And it would be great to have some testing for back/forward migrations.
+I'll include it in a v2 once I test it more fully.
 
-Any thoughts, corrections, encouragement perhaps? :)
+Paolo
 
-thanks
-
-
---
-Marc-Andr=C3=A9 Lureau
 
