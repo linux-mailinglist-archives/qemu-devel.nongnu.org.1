@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F2D8BE0D8
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 13:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 797718BE0D9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 13:20:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Irc-0005ct-5O; Tue, 07 May 2024 07:20:05 -0400
+	id 1s4Iri-0005mv-0K; Tue, 07 May 2024 07:20:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s4IrA-0005Zo-F2
- for qemu-devel@nongnu.org; Tue, 07 May 2024 07:19:37 -0400
+ id 1s4IrC-0005aN-3i
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 07:19:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s4Ir8-0004b1-F2
- for qemu-devel@nongnu.org; Tue, 07 May 2024 07:19:36 -0400
+ id 1s4IrA-0004bS-Go
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 07:19:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715080772;
+ s=mimecast20190719; t=1715080775;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=f6OuYjBZrv88ojVjhaTMeYTflAUOFWIhb7MzDrZLKuw=;
- b=Wg4Wrc09WEWowXwUtOObcCkL0TJOOPYrmaXglfdiuvb0q6S8k9CHDHbTBVRcNZ36Llufb6
- vwZ1K79ygY9++OMXkeqJ4TDCNzshsEdvbMjUB5jMOTvEFnmYsMynV++mNOw+sU4OeNXUE8
- O0d/DhuwPsVYvV9b+2JUSlTxTMfVmgA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-lIce3OWHOI2c4Cn3cdf7GQ-1; Tue,
- 07 May 2024 07:19:26 -0400
-X-MC-Unique: lIce3OWHOI2c4Cn3cdf7GQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cjD+pLQAzEz3hSpVswv/eVzgjOqKuEXPtf2X1BGzsXY=;
+ b=b1AeqDJN2JkrGem6wb0X1CYkoJ95jnXzingK+Nm/gIx6i9AzhqgIX3EEnXFAQg4Z7pMWaD
+ P1p950Pxi2T92Vk78kMu8ONgLhM2RhS99QUJgE/7swzQRbWVAerS8osg6IKZkG5mY+1Fdp
+ sIKj/7P/oNgDpfTkFMQrmowsiZhco+U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-286-iCDstKqsOgyVoX2yMOHQZg-1; Tue, 07 May 2024 07:19:31 -0400
+X-MC-Unique: iCDstKqsOgyVoX2yMOHQZg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB27538012C6;
- Tue,  7 May 2024 11:19:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D396801719;
+ Tue,  7 May 2024 11:19:30 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4837710000AD;
- Tue,  7 May 2024 11:19:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8B60140317A;
+ Tue,  7 May 2024 11:19:28 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -51,14 +52,16 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, peter.maydell@linaro.org,
  "Michael S. Tsirkin" <mst@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- =?unknown-8bit?q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: [PATCH 0/4] Fix "virtio-gpu: fix scanout migration post-load"
-Date: Tue,  7 May 2024 15:19:16 +0400
-Message-ID: <20240507111920.1594897-1-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 1/4] migration: add "exists" info to load-state-field trace
+Date: Tue,  7 May 2024 15:19:17 +0400
+Message-ID: <20240507111920.1594897-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20240507111920.1594897-1-marcandre.lureau@redhat.com>
+References: <20240507111920.1594897-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -86,34 +89,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ migration/vmstate.c    | 5 +++--
+ migration/trace-events | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-The aforementioned patch breaks virtio-gpu device migrations for versions
-pre-9.0/9.0, both forwards and backwards. Versioning of `VMS_STRUCT` is more
-complex than it may initially appear, as evidenced in the problematic commit
-dfcf74fa68c ("virtio-gpu: fix scanout migration post-load").
-
-To resolve this, we need to propagate the `vmstate` `version_id` through the
-nested structures. Additionally, we should tie specific machine version to a
-corresponding `version_id` to maintain migration compatibility.
-
-`VMS_VSTRUCT` allows specifying the appropriate version of the nested structure
-to use.
-
-Marc-André Lureau (4):
-  migration: add "exists" info to load-state-field trace
-  include/migration: add VMSTATE_VSTRUCT_TEST_VARRAY_UINT32
-  virtio-gpu: use a VMState variant for the scanout field
-  virtio-gpu: add x-vmstate-version
-
- include/hw/virtio/virtio-gpu.h |  1 +
- include/migration/vmstate.h    | 12 ++++++++++++
- hw/core/machine.c              |  1 +
- hw/display/virtio-gpu.c        | 28 +++++++++++++++++++++-------
- migration/vmstate.c            |  5 +++--
- migration/trace-events         |  2 +-
- 6 files changed, 39 insertions(+), 10 deletions(-)
-
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index ef26f26ccd..b51212a75b 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -128,8 +128,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         }
+     }
+     while (field->name) {
+-        trace_vmstate_load_state_field(vmsd->name, field->name);
+-        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
++        bool exists = vmstate_field_exists(vmsd, field, opaque, version_id);
++        trace_vmstate_load_state_field(vmsd->name, field->name, exists);
++        if (exists) {
+             void *first_elem = opaque + field->offset;
+             int i, n_elems = vmstate_n_elems(opaque, field);
+             int size = vmstate_size(opaque, field);
+diff --git a/migration/trace-events b/migration/trace-events
+index f0e1cb80c7..d327d29ca0 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -58,7 +58,7 @@ postcopy_page_req_sync(void *host_addr) "sync page req %p"
+ vmstate_load_field_error(const char *field, int ret) "field \"%s\" load failed, ret = %d"
+ vmstate_load_state(const char *name, int version_id) "%s v%d"
+ vmstate_load_state_end(const char *name, const char *reason, int val) "%s %s/%d"
+-vmstate_load_state_field(const char *name, const char *field) "%s:%s"
++vmstate_load_state_field(const char *name, const char *field, bool exists) "%s:%s exists=%d"
+ vmstate_n_elems(const char *name, int n_elems) "%s: %d"
+ vmstate_subsection_load(const char *parent) "%s"
+ vmstate_subsection_load_bad(const char *parent,  const char *sub, const char *sub2) "%s: %s/%s"
 -- 
 2.41.0.28.gd7d8841f67
 
