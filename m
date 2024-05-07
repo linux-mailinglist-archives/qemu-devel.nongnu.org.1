@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEBD8BDD58
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5758BDD55
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4GPP-0003Nd-42; Tue, 07 May 2024 04:42:47 -0400
+	id 1s4GPJ-0003Kb-6l; Tue, 07 May 2024 04:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GPE-0003KP-Mt; Tue, 07 May 2024 04:42:36 -0400
+ id 1s4GPD-0003K1-M1; Tue, 07 May 2024 04:42:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GP8-0003CX-Iv; Tue, 07 May 2024 04:42:36 -0400
+ id 1s4GP8-0003Ca-Dw; Tue, 07 May 2024 04:42:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6B7AD64BC4;
- Tue,  7 May 2024 11:42:45 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6300F64BC5;
+ Tue,  7 May 2024 11:42:46 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 54D5AC85AD;
- Tue,  7 May 2024 11:42:26 +0300 (MSK)
-Received: (nullmailer pid 1026502 invoked by uid 1000);
- Tue, 07 May 2024 08:42:26 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 513EAC85AE;
+ Tue,  7 May 2024 11:42:27 +0300 (MSK)
+Received: (nullmailer pid 1026510 invoked by uid 1000);
+ Tue, 07 May 2024 08:42:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Michael Roth <michael.roth@amd.com>
-Subject: [Stable-8.2.4 00/16] Patch Round-up for stable 8.2.4 (planned for
- 2024-05-12)
-Date: Tue,  7 May 2024 11:41:59 +0300
-Message-Id: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.4 01/16] target/riscv/kvm: change KVM_REG_RISCV_FP_F to
+ u32
+Date: Tue,  7 May 2024 11:42:00 +0300
+Message-Id: <20240507084226.1026455-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
+References: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -42,7 +44,7 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -58,59 +60,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v8.2.4:
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.2
+KVM_REG_RISCV_FP_F regs have u32 size according to the API, but by using
+kvm_riscv_reg_id() in RISCV_FP_F_REG() we're returning u64 sizes when
+running with TARGET_RISCV64. The most likely reason why no one noticed
+this is because we're not implementing kvm_cpu_synchronize_state() in
+RISC-V yet.
 
-The release is planned for 2024-05-12, to address a few issues
-encountered with v8.2.3 release, - a bit wrong tarball with some
-replication hiccups in the CDN behind download.qemu.org, and a
-build failure on riscv. The planning page:
+Create a new helper that returns a KVM ID with u32 size and use it in
+RISCV_FP_F_REG().
 
-  https://wiki.qemu.org/Planning/8.2
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20231208183835.2411523-2-dbarboza@ventanamicro.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+(cherry picked from commit 49c211ffca00fdf7c0c29072c224e88527a14838)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index c1675158fe..2eef2be86a 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -72,6 +72,11 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+     return id;
+ }
+ 
++static uint64_t kvm_riscv_reg_id_u32(uint64_t type, uint64_t idx)
++{
++    return KVM_REG_RISCV | KVM_REG_SIZE_U32 | type | idx;
++}
++
+ #define RISCV_CORE_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_CORE, \
+                  KVM_REG_RISCV_CORE_REG(name))
+ 
+@@ -81,7 +86,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+ #define RISCV_TIMER_REG(env, name)  kvm_riscv_reg_id(env, KVM_REG_RISCV_TIMER, \
+                  KVM_REG_RISCV_TIMER_REG(name))
+ 
+-#define RISCV_FP_F_REG(env, idx)  kvm_riscv_reg_id(env, KVM_REG_RISCV_FP_F, idx)
++#define RISCV_FP_F_REG(idx)  kvm_riscv_reg_id_u32(KVM_REG_RISCV_FP_F, idx)
+ 
+ #define RISCV_FP_D_REG(env, idx)  kvm_riscv_reg_id(env, KVM_REG_RISCV_FP_D, idx)
+ 
+@@ -586,7 +591,7 @@ static int kvm_riscv_get_regs_fp(CPUState *cs)
+     if (riscv_has_ext(env, RVF)) {
+         uint32_t reg;
+         for (i = 0; i < 32; i++) {
+-            ret = kvm_get_one_reg(cs, RISCV_FP_F_REG(env, i), &reg);
++            ret = kvm_get_one_reg(cs, RISCV_FP_F_REG(i), &reg);
+             if (ret) {
+                 return ret;
+             }
+@@ -620,7 +625,7 @@ static int kvm_riscv_put_regs_fp(CPUState *cs)
+         uint32_t reg;
+         for (i = 0; i < 32; i++) {
+             reg = env->fpr[i];
+-            ret = kvm_set_one_reg(cs, RISCV_FP_F_REG(env, i), &reg);
++            ret = kvm_set_one_reg(cs, RISCV_FP_F_REG(i), &reg);
+             if (ret) {
+                 return ret;
+             }
+-- 
+2.39.2
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 49c211ffca00 Daniel Henrique Barboza:
-   target/riscv/kvm: change KVM_REG_RISCV_FP_F to u32
-02 450bd6618fda Daniel Henrique Barboza:
-   target/riscv/kvm: change KVM_REG_RISCV_FP_D to u64
-03 10f86d1b8450 Daniel Henrique Barboza:
-   target/riscv/kvm: change timer regs size to u64
-04 2cc637f1ea08 Li Zhijian:
-   migration/colo: Fix bdrv_graph_rdlock_main_loop: Assertion 
-   `!qemu_in_coroutine()' failed.
-05 04f6fb897a5a Michael Tokarev:
-   linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
-06 ae6d91a7e9b7 Zhu Yangyang:
-   nbd/server: do not poll within a coroutine context
-07 4fa333e08dd9 Eric Blake:
-   nbd/server: Mark negotiation functions as coroutine_fn
-08 06479dbf3d7d Li Zhijian:
-   backends/cryptodev-builtin: Fix local_error leaks
-09 0cbb322f70e8 Michael Tokarev:
-   target/loongarch/cpu.c: typo fix: expection
-10 dcc5c018c7e6 Peter Maydell:
-   tests/avocado: update sunxi kernel from armbian to 6.6.16
-11 a88a04906b96 Thomas Huth:
-   .gitlab-ci.d/cirrus.yml: Shorten the runtime of the macOS and FreeBSD jobs
-12 f2c8aeb1afef Jeuk Kim:
-   hw/ufs: Fix buffer overflow bug
-13 4b00855f0ee2 Alexandra Diupina:
-   hw/dmax/xlnx_dpdma: fix handling of address_extension descriptor fields
-14 eb656a60fd93 Philippe Mathieu-Daudé:
-   hw/arm/npcm7xx: Store derivative OTP fuse key in little endian
-15 c365e6b07057 Philippe Mathieu-Daudé:
-   target/sh4: Fix ADDV opcode
-16 e88a856efd1d Philippe Mathieu-Daudé:
-   target/sh4: Fix SUBV opcode
 
