@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5F08BE602
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C525B8BE60A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:34:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Lt6-0003GD-0M; Tue, 07 May 2024 10:33:48 -0400
+	id 1s4Lt9-0003Ox-Q0; Tue, 07 May 2024 10:33:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsj-0003BJ-Oj
+ id 1s4Lsj-0003BR-QQ
  for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:30 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4LsZ-0001MB-S1
+ id 1s4Lsa-0001MK-Ii
  for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:24 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1e83a2a4f2cso15629175ad.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:14 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1eb0e08bfd2so17930625ad.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715092393; x=1715697193; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715092394; x=1715697194; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mlyxowCfDvQ4k38rhsOdlKnMfFj+X+kXRTg8aR1HewM=;
- b=UkLxQY9s1PjinGJz+oaOQTfEjQVPaanZTgLcyy+aS3re8JlQlKSv+0EhGxJG7xlKGd
- C9fZZ8NVzB/ORXL07U+lq037s11/P4EmwwO1X/8jM6Uq1ZaZ/uSGK/fGs/B7JObhCqJY
- snH6iAE6Q53Thr+iYXBUDwmkormGesEZvyBYH0eQyI9hZoRb0tLqoyfFNzu3nUhHkF0G
- uAp9mMF/aOD63XUIXBMoVVgqhwc0JxER9Y16OMujFXctGO0p+ucwr7nH2lTu7gls1/wr
- wR5hQgVHtYsKKkF+img7C4om2HqxfcfX5dx4+OMQmnTAzOjLxqoowLsYqkqVhHHqAy9K
- H44w==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5odWkAYeVMNCe6Cty3EzFB4YygxLZJZYtuimpCAAowk=;
+ b=ElexNxAod7TGJHvlmsMOZgmZDNZlitUaXUoHL6AmfVd/+92UAywgSLISqaqMaWRPq9
+ jT4ha7oCC/eBiiAuiUUGvXhY1H86PNReZybtkW+MA36Kyu0za9fQ1cArR4kMcYJElA/x
+ CTcD8Cd1oStwT7Yw0Lwco2IV3pMVm4iJK2cXTi7bYrtZyNDmzmLvz9YmKrlh6HzwmhoF
+ eraGmVd/Ov59uyGY4Q9Q0HYlwNTWqwOah1cqhlsY5BCbydH1DnDEC1lfIV3ulGuoyk13
+ Scjp8u15FX7PvpDztEAfNB7T1ECprN1i0gTT/xmVIzgN7cc+XyEdyv7m+1+lmINm8WSS
+ Gmaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715092393; x=1715697193;
+ d=1e100.net; s=20230601; t=1715092394; x=1715697194;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mlyxowCfDvQ4k38rhsOdlKnMfFj+X+kXRTg8aR1HewM=;
- b=ohSKkoEL/Y6D5UE2iLoXxodmCxvKFdBvdevSwUoR+zYLHzRzlDYjW6qlOIEi7QfMat
- HxW85YmJ2VL+v+G//mmwqZxBfrfFQiMZFXKm/igP+G6/CHc1chT8zFQ1uZxB2Xe4TkKk
- P6szdce7E3YmgTjHp3uSVfETi5PqnYW1yoRrATtNgXuLHBoxSyCgUXlnLs+EmKvo1WjQ
- E/om4uPKOxDPHX24kdW94nPab8AWxuWICmDkaQ+DiK5WSetQhCumvVmb+aFfYttju3/N
- YCSDUz181sRJGGmqDcGUTl7W3qEHzXSwPCY3HSPA8cjK1hvFM/3jP9evEQK/g9CPZxHE
- 0rdw==
-X-Gm-Message-State: AOJu0Yz+eWp+RSp5fU4r+R9zOJGq3DdSIQLbF0OKcsT2aMVXk29eN5Q0
- Tg7Sib0WxzykXeN+P2zeTZNs8U/6JqW1rVzj5DIboNCs+DB6widI+DjMXCwZGusqQp73jSyu2qu
- v
-X-Google-Smtp-Source: AGHT+IEK/E6uv3D8Y7iAidoTKGPLxa4jNkOTWPLMk8YK4knC2HDazq9xGzQUz7atJWTqdckc+spFEQ==
-X-Received: by 2002:a17:902:dacb:b0:1eb:527e:a8ad with SMTP id
- q11-20020a170902dacb00b001eb527ea8admr18694179plx.51.1715092393410; 
- Tue, 07 May 2024 07:33:13 -0700 (PDT)
+ bh=5odWkAYeVMNCe6Cty3EzFB4YygxLZJZYtuimpCAAowk=;
+ b=QiVNA9rJWnYgQgoGpnpm7RiBYl2104AvCuFO531X7ewnYxC1ehB3jIHi7XI3P1QnZq
+ 90DukE2XLD8ehjhNJn6DSUqn1Ae0wEiwLM6ifIbc1lM4Mhk+zcR0qI2uF457Q68ymVyn
+ rIN1yvDDC5kVdSB3OTmMV4+L1lJ8VTl1IgU4p/uEC47Tf1oljz4APkvkc6cxpu5oD21o
+ XZrefvVps8NIxVCxyimyEp9+mMO3XI2ljKziQ2NggqhnfA2G8Yc3I59wC+TWicOELPKy
+ jwDpz6ehZOup0yJOw45gUdOY8971VmiL59sRVGyAZpy9YyCICVm2i7jyjl2ktaRjmJ9U
+ 3uMA==
+X-Gm-Message-State: AOJu0YzOkcbwdfZ/rKRFnX/DIT8wilRo9OyKb2sW+iA2EpTJymCPtPpa
+ 69iImsZU4IJYmk6koigKuSJsglcpAZ1ezhYgYMsVNqo3YeHobamnqv1PnsVn9DFN47+X48hy4zG
+ S
+X-Google-Smtp-Source: AGHT+IGbo/R87qjbZJ6QppuTS7cd6ecYBvKy/TZpIhcllv2dglDOyo3xsbBhPMfRu+aWAvNecVl9yg==
+X-Received: by 2002:a17:902:6503:b0:1e0:a3dd:82df with SMTP id
+ b3-20020a170902650300b001e0a3dd82dfmr12718209plk.38.1715092394503; 
+ Tue, 07 May 2024 07:33:14 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.12
+ p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.13
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 07:33:13 -0700 (PDT)
+ Tue, 07 May 2024 07:33:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/9] tcg/i386: Optimize setcond of TST{EQ,NE} with 0xffffffff
-Date: Tue,  7 May 2024 07:33:03 -0700
-Message-Id: <20240507143309.5528-4-richard.henderson@linaro.org>
+Subject: [PULL 4/9] tcg/optimize: Optimize setcond with zmask
+Date: Tue,  7 May 2024 07:33:04 -0700
+Message-Id: <20240507143309.5528-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507143309.5528-1-richard.henderson@linaro.org>
 References: <20240507143309.5528-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,64 +91,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This may be treated as a 32-bit EQ/NE comparison against 0,
-which is in turn treated as a LTU/GEU comparison against 1.
+If we can show that high bits of an input are zero,
+then we may optimize away some comparisons.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/i386/tcg-target.c.inc | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ tcg/optimize.c | 110 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 110 insertions(+)
 
-diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
-index 6837c519b0..59235b4f38 100644
---- a/tcg/i386/tcg-target.c.inc
-+++ b/tcg/i386/tcg-target.c.inc
-@@ -1658,6 +1658,7 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-                             TCGArg dest, TCGArg arg1, TCGArg arg2,
-                             int const_arg2, bool neg)
- {
-+    int cmp_rexw = rexw;
-     bool inv = false;
-     bool cleared;
-     int jcc;
-@@ -1674,6 +1675,18 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-         }
-         break;
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 2e9e5725a9..8886f7037a 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -2099,6 +2099,108 @@ static bool fold_remainder(OptContext *ctx, TCGOp *op)
+     return false;
+ }
  
-+    case TCG_COND_TSTNE:
-+        inv = true;
-+        /* fall through */
-+    case TCG_COND_TSTEQ:
-+        /* If arg2 is -1, convert to LTU/GEU vs 1. */
-+        if (const_arg2 && arg2 == 0xffffffffu) {
-+            arg2 = 1;
-+            cmp_rexw = 0;
-+            goto do_ltu;
-+        }
-+        break;
++static bool fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
++{
++    uint64_t a_zmask, b_val;
++    TCGCond cond;
 +
-     case TCG_COND_LEU:
-         inv = true;
-         /* fall through */
-@@ -1697,7 +1710,7 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-          * We can then use NEG or INC to produce the desired result.
-          * This is always smaller than the SETCC expansion.
-          */
--        tcg_out_cmp(s, TCG_COND_LTU, arg1, arg2, const_arg2, rexw);
-+        tcg_out_cmp(s, TCG_COND_LTU, arg1, arg2, const_arg2, cmp_rexw);
- 
-         /* X - X - C = -C = (C ? -1 : 0) */
-         tgen_arithr(s, ARITH_SBB + (neg ? rexw : 0), dest, dest);
-@@ -1744,7 +1757,7 @@ static void tcg_out_setcond(TCGContext *s, int rexw, TCGCond cond,
-         cleared = true;
++    if (!arg_is_const(op->args[2])) {
++        return false;
++    }
++
++    a_zmask = arg_info(op->args[1])->z_mask;
++    b_val = arg_info(op->args[2])->val;
++    cond = op->args[3];
++
++    if (ctx->type == TCG_TYPE_I32) {
++        a_zmask = (uint32_t)a_zmask;
++        b_val = (uint32_t)b_val;
++    }
++
++    /*
++     * A with only low bits set vs B with high bits set means that A < B.
++     */
++    if (a_zmask < b_val) {
++        bool inv = false;
++
++        switch (cond) {
++        case TCG_COND_NE:
++        case TCG_COND_LEU:
++        case TCG_COND_LTU:
++            inv = true;
++            /* fall through */
++        case TCG_COND_GTU:
++        case TCG_COND_GEU:
++        case TCG_COND_EQ:
++            return tcg_opt_gen_movi(ctx, op, op->args[0], neg ? -inv : inv);
++        default:
++            break;
++        }
++    }
++
++    /*
++     * A with only lsb set is already boolean.
++     */
++    if (a_zmask <= 1) {
++        bool convert = false;
++        bool inv = false;
++
++        switch (cond) {
++        case TCG_COND_EQ:
++            inv = true;
++            /* fall through */
++        case TCG_COND_NE:
++            convert = (b_val == 0);
++            break;
++        case TCG_COND_LTU:
++        case TCG_COND_TSTEQ:
++            inv = true;
++            /* fall through */
++        case TCG_COND_GEU:
++        case TCG_COND_TSTNE:
++            convert = (b_val == 1);
++            break;
++        default:
++            break;
++        }
++        if (convert) {
++            TCGOpcode add_opc, xor_opc, neg_opc;
++
++            if (!inv && !neg) {
++                return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
++            }
++
++            switch (ctx->type) {
++            case TCG_TYPE_I32:
++                add_opc = INDEX_op_add_i32;
++                neg_opc = INDEX_op_neg_i32;
++                xor_opc = INDEX_op_xor_i32;
++                break;
++            case TCG_TYPE_I64:
++                add_opc = INDEX_op_add_i64;
++                neg_opc = INDEX_op_neg_i64;
++                xor_opc = INDEX_op_xor_i64;
++                break;
++            default:
++                g_assert_not_reached();
++            }
++
++            if (!inv) {
++                op->opc = neg_opc;
++            } else if (neg) {
++                op->opc = add_opc;
++                op->args[2] = arg_new_constant(ctx, -1);
++            } else {
++                op->opc = xor_opc;
++                op->args[2] = arg_new_constant(ctx, 1);
++            }
++            return false;
++        }
++    }
++
++    return false;
++}
++
+ static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
+ {
+     TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc;
+@@ -2200,6 +2302,10 @@ static bool fold_setcond(OptContext *ctx, TCGOp *op)
+     if (i >= 0) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
      }
++
++    if (fold_setcond_zmask(ctx, op, false)) {
++        return true;
++    }
+     fold_setcond_tst_pow2(ctx, op, false);
  
--    jcc = tcg_out_cmp(s, cond, arg1, arg2, const_arg2, rexw);
-+    jcc = tcg_out_cmp(s, cond, arg1, arg2, const_arg2, cmp_rexw);
-     tcg_out_modrm(s, OPC_SETCC | jcc, 0, dest);
+     ctx->z_mask = 1;
+@@ -2214,6 +2320,10 @@ static bool fold_negsetcond(OptContext *ctx, TCGOp *op)
+     if (i >= 0) {
+         return tcg_opt_gen_movi(ctx, op, op->args[0], -i);
+     }
++
++    if (fold_setcond_zmask(ctx, op, true)) {
++        return true;
++    }
+     fold_setcond_tst_pow2(ctx, op, true);
  
-     if (!cleared) {
+     /* Value is {0,-1} so all bits are repetitions of the sign. */
 -- 
 2.34.1
 
