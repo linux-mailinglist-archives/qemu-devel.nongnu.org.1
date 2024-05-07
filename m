@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5ECB8BEC14
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 21:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8E98BEC19
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 21:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Q21-0008H5-Na; Tue, 07 May 2024 14:59:17 -0400
+	id 1s4Q21-0008H7-VM; Tue, 07 May 2024 14:59:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1s4Q1w-0008BZ-9H; Tue, 07 May 2024 14:59:12 -0400
-Received: from zproxy1.enst.fr ([137.194.2.220])
+ id 1s4Q1w-0008Bz-KA; Tue, 07 May 2024 14:59:12 -0400
+Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1s4Q1t-0006AY-Oi; Tue, 07 May 2024 14:59:12 -0400
+ id 1s4Q1t-0006Aq-QR; Tue, 07 May 2024 14:59:12 -0400
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 684E0C0D42;
- Tue,  7 May 2024 20:59:06 +0200 (CEST)
+ by zproxy1.enst.fr (Postfix) with ESMTP id 950FFC0D30;
+ Tue,  7 May 2024 20:59:07 +0200 (CEST)
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id g9swbZKmrxF5; Tue,  7 May 2024 20:59:06 +0200 (CEST)
+ id rRhCOOj9oPHE; Tue,  7 May 2024 20:59:07 +0200 (CEST)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 1F267C0D05;
- Tue,  7 May 2024 20:59:06 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 1F267C0D05
+ by zproxy1.enst.fr (Postfix) with ESMTP id 20766C0D05;
+ Tue,  7 May 2024 20:59:07 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 20766C0D05
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1715108346;
- bh=4q9F1KFq8sdqxwF5xSxJc78lBnQxNP2O8xDUaS5oTfI=;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1715108347;
+ bh=IrR2Qad9VCbTE2UXFB7znMO4uXFwPBsww9btUNUzoLQ=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=CkOpbmBN4kXG4LKSrs4+H4Eftbab8Ro19UjTkb3oS5uaiPwYq1PfDvmWyKgBrzaQn
- nTLXcE8HKlFjXg85UIxAofNcyRRBmO1KRUAJkoVTyuctIZtXWvs4lDlSGTqbdwUKWQ
- acPgAqmTbXD06YTk+y0rUyAdSCQtlgiHB1Xli2+Q=
+ b=iBJWW5Iushq9As6knhZAr2A6kTMU6O0DT2RCom6Xa1EMibDuVCxMFtUkiJcCwwg36
+ d3hjqp4lYE2l09iEiw4znVXs+GyQu1yAHPMNTZ5ZeGO1rnNaedcrpkvx1yOfZ6NW8X
+ S6XFU6OaI2Pyh93/8blmrgaZmgktdEWuPi9m6G7U=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id 2XikcvDPsNp8; Tue,  7 May 2024 20:59:06 +0200 (CEST)
+ id giaDoVpdQgOG; Tue,  7 May 2024 20:59:07 +0200 (CEST)
 Received: from inesv-Inspiron-3501.enst.fr (unknown
  [IPv6:2a04:8ec0:0:124::190c])
- by zproxy1.enst.fr (Postfix) with ESMTPSA id 27E13C0D30;
- Tue,  7 May 2024 20:59:05 +0200 (CEST)
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 25264C0D30;
+ Tue,  7 May 2024 20:59:06 +0200 (CEST)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -51,17 +51,16 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 3/4] hw/char: Add QOM property for STM32L4x5 USART clock
- frequency
-Date: Tue,  7 May 2024 20:55:40 +0200
-Message-ID: <20240507185854.34572-4-ines.varhol@telecom-paris.fr>
+Subject: [PATCH 4/4] tests/qtest: Check STM32L4x5 clock connections
+Date: Tue,  7 May 2024 20:55:41 +0200
+Message-ID: <20240507185854.34572-5-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240507185854.34572-1-ines.varhol@telecom-paris.fr>
 References: <20240507185854.34572-1-ines.varhol@telecom-paris.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=137.194.2.220;
+Received-SPF: pass client-ip=2001:660:330f:2::dc;
  envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,63 +83,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This QOM property will be used to check the clock frequency from QTests.
+For USART, GPIO and SYSCFG devices, check that clock frequency before
+and after enabling the peripheral clock in RCC is correct.
 
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 ---
- hw/char/stm32l4x5_usart.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ tests/qtest/stm32l4x5.h             | 40 +++++++++++++++++++++++++++++
+ tests/qtest/stm32l4x5_gpio-test.c   | 23 +++++++++++++++++
+ tests/qtest/stm32l4x5_syscfg-test.c | 19 ++++++++++++--
+ tests/qtest/stm32l4x5_usart-test.c  | 26 +++++++++++++++++++
+ 4 files changed, 106 insertions(+), 2 deletions(-)
+ create mode 100644 tests/qtest/stm32l4x5.h
 
-diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
-index fc5dcac0c4..5fb3874f35 100644
---- a/hw/char/stm32l4x5_usart.c
-+++ b/hw/char/stm32l4x5_usart.c
-@@ -26,6 +26,7 @@
- #include "hw/clock.h"
- #include "hw/irq.h"
- #include "hw/qdev-clock.h"
-+#include "qapi/visitor.h"
- #include "hw/qdev-properties.h"
- #include "hw/qdev-properties-system.h"
- #include "hw/registerfields.h"
-@@ -523,6 +524,14 @@ static Property stm32l4x5_usart_base_properties[] =3D=
- {
-     DEFINE_PROP_END_OF_LIST(),
- };
-=20
-+static void clock_freq_get(Object *obj, Visitor *v,
-+    const char *name, void *opaque, Error **errp)
+diff --git a/tests/qtest/stm32l4x5.h b/tests/qtest/stm32l4x5.h
+new file mode 100644
+index 0000000000..b8ef6698b2
+--- /dev/null
++++ b/tests/qtest/stm32l4x5.h
+@@ -0,0 +1,40 @@
++/*
++ * QTest testcase header for STM32L4X5 :
++ * used for consolidating common objects in stm32l4x5_*-test.c
++ *
++ * Copyright (c) 2024 Arnaud Minier <arnaud.minier@telecom-paris.fr>
++ * Copyright (c) 2024 In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or la=
+ter.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "libqtest.h"
++
++/*
++ * MSI (4 MHz) is used as system clock source after startup
++ * from Reset.
++ * AHB, APB1 and APB2 prescalers are set to 1 at reset.
++ */
++#define SYSCLK_FREQ_HZ 4000000
++#define RCC_AHB2ENR 0x4002104C
++#define RCC_APB1ENR1 0x40021058
++#define RCC_APB1ENR2 0x4002105C
++#define RCC_APB2ENR 0x40021060
++
++
++static inline uint32_t get_clock_freq_hz(QTestState *qts, const char *pa=
+th)
 +{
-+    Stm32l4x5UsartBaseState *s =3D STM32L4X5_USART_BASE(obj);
-+    uint32_t clock_freq_hz =3D clock_get_hz(s->clk);
-+    visit_type_uint32(v, name, &clock_freq_hz, errp);
++    uint32_t clock_freq_hz =3D 0;
++    QDict *r;
++
++    r =3D qtest_qmp(qts, "{ 'execute': 'qom-get', 'arguments':"
++        " { 'path': %s, 'property': 'clock-freq-hz'} }", path);
++    g_assert_false(qdict_haskey(r, "error"));
++    clock_freq_hz =3D qdict_get_int(r, "return");
++    qobject_unref(r);
++    return clock_freq_hz;
 +}
 +
- static void stm32l4x5_usart_base_init(Object *obj)
- {
-     Stm32l4x5UsartBaseState *s =3D STM32L4X5_USART_BASE(obj);
-@@ -534,6 +543,9 @@ static void stm32l4x5_usart_base_init(Object *obj)
-     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
-=20
-     s->clk =3D qdev_init_clock_in(DEVICE(s), "clk", NULL, s, 0);
 +
-+    object_property_add(obj, "clock-freq-hz", "uint32",
-+                        clock_freq_get, NULL, NULL, NULL);
+diff --git a/tests/qtest/stm32l4x5_gpio-test.c b/tests/qtest/stm32l4x5_gp=
+io-test.c
+index 72a7823406..5c62125736 100644
+--- a/tests/qtest/stm32l4x5_gpio-test.c
++++ b/tests/qtest/stm32l4x5_gpio-test.c
+@@ -10,6 +10,7 @@
+=20
+ #include "qemu/osdep.h"
+ #include "libqtest-single.h"
++#include "stm32l4x5.h"
+=20
+ #define GPIO_BASE_ADDR 0x48000000
+ #define GPIO_SIZE      0x400
+@@ -505,6 +506,26 @@ static void test_bsrr_brr(const void *data)
+     gpio_writel(gpio, ODR, reset(gpio, ODR));
  }
 =20
- static int stm32l4x5_usart_base_post_load(void *opaque, int version_id)
-@@ -546,8 +558,8 @@ static int stm32l4x5_usart_base_post_load(void *opaqu=
-e, int version_id)
++static void test_clock_enable(void)
++{
++    /*
++     * For each GPIO, enable its clock in RCC
++     * and check that its clock frequency changes to SYSCLK_FREQ_HZ
++     */
++    unsigned int gpio_id;
++
++    for (uint32_t gpio =3D GPIO_A; gpio <=3D GPIO_H; gpio +=3D GPIO_B - =
+GPIO_A) {
++        gpio_id =3D get_gpio_id(gpio);
++        g_autofree char *path =3D g_strdup_printf("/machine/soc/gpio%c",
++                                                gpio_id + 'a');
++        g_assert_cmpuint(get_clock_freq_hz(global_qtest, path), =3D=3D, =
+0);
++        /* Enable the gpio clock */
++        writel(RCC_AHB2ENR, readl(RCC_AHB2ENR) | (0x1 << gpio_id));
++        g_assert_cmpuint(get_clock_freq_hz(global_qtest, path), =3D=3D,
++                         SYSCLK_FREQ_HZ);
++    }
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -556,6 +577,8 @@ int main(int argc, char **argv)
+     qtest_add_data_func("stm32l4x5/gpio/test_bsrr_brr2",
+                         test_data(GPIO_D, 0),
+                         test_bsrr_brr);
++    qtest_add_func("stm32l4x5/gpio/test_clock_enable",
++                   test_clock_enable);
 =20
- static const VMStateDescription vmstate_stm32l4x5_usart_base =3D {
-     .name =3D TYPE_STM32L4X5_USART_BASE,
--    .version_id =3D 1,
--    .minimum_version_id =3D 1,
-+    .version_id =3D 2,
-+    .minimum_version_id =3D 2,
-     .post_load =3D stm32l4x5_usart_base_post_load,
-     .fields =3D (VMStateField[]) {
-         VMSTATE_UINT32(cr1, Stm32l4x5UsartBaseState),
+     qtest_start("-machine b-l475e-iot01a");
+     ret =3D g_test_run();
+diff --git a/tests/qtest/stm32l4x5_syscfg-test.c b/tests/qtest/stm32l4x5_=
+syscfg-test.c
+index 506ca08bc2..2ff0d5e9e0 100644
+--- a/tests/qtest/stm32l4x5_syscfg-test.c
++++ b/tests/qtest/stm32l4x5_syscfg-test.c
+@@ -10,6 +10,7 @@
+=20
+ #include "qemu/osdep.h"
+ #include "libqtest-single.h"
++#include "stm32l4x5.h"
+=20
+ #define SYSCFG_BASE_ADDR 0x40010000
+ #define SYSCFG_MEMRMP 0x00
+@@ -26,7 +27,8 @@
+ #define INVALID_ADDR 0x2C
+=20
+ /* SoC forwards GPIOs to SysCfg */
+-#define SYSCFG "/machine/soc"
++#define SOC "/machine/soc"
++#define SYSCFG "/machine/soc/syscfg"
+ #define EXTI "/machine/soc/exti"
+=20
+ static void syscfg_writel(unsigned int offset, uint32_t value)
+@@ -41,7 +43,7 @@ static uint32_t syscfg_readl(unsigned int offset)
+=20
+ static void syscfg_set_irq(int num, int level)
+ {
+-   qtest_set_irq_in(global_qtest, SYSCFG, NULL, num, level);
++   qtest_set_irq_in(global_qtest, SOC, NULL, num, level);
+ }
+=20
+ static void system_reset(void)
+@@ -301,6 +303,17 @@ static void test_irq_gpio_multiplexer(void)
+     syscfg_writel(SYSCFG_EXTICR1, 0x00000000);
+ }
+=20
++static void test_clock_enable(void)
++{
++    g_assert_cmpuint(get_clock_freq_hz(global_qtest, SYSCFG), =3D=3D, 0)=
+;
++
++    /* Enable SYSCFG clock */
++    writel(RCC_APB2ENR, readl(RCC_APB2ENR) | (0x1 << 0));
++
++    g_assert_cmpuint(get_clock_freq_hz(global_qtest, SYSCFG), =3D=3D,
++                                       SYSCLK_FREQ_HZ);
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -325,6 +338,8 @@ int main(int argc, char **argv)
+                    test_irq_pin_multiplexer);
+     qtest_add_func("stm32l4x5/syscfg/test_irq_gpio_multiplexer",
+                    test_irq_gpio_multiplexer);
++    qtest_add_func("stm32l4x5/syscfg/test_clock_enable",
++                   test_clock_enable);
+=20
+     qtest_start("-machine b-l475e-iot01a");
+     ret =3D g_test_run();
+diff --git a/tests/qtest/stm32l4x5_usart-test.c b/tests/qtest/stm32l4x5_u=
+sart-test.c
+index 8902518233..7a5671be99 100644
+--- a/tests/qtest/stm32l4x5_usart-test.c
++++ b/tests/qtest/stm32l4x5_usart-test.c
+@@ -12,6 +12,7 @@
+ #include "libqtest.h"
+ #include "hw/misc/stm32l4x5_rcc_internals.h"
+ #include "hw/registerfields.h"
++#include "stm32l4x5.h"
+=20
+ #define RCC_BASE_ADDR 0x40021000
+ /* Use USART 1 ADDR, assume the others work the same */
+@@ -296,6 +297,30 @@ static void test_send_str(void)
+     qtest_quit(qts);
+ }
+=20
++static void check_clock(QTestState *qts, const char *path, uint32_t rcc_=
+reg,
++                        uint32_t reg_offset)
++{
++    g_assert_cmpuint(get_clock_freq_hz(qts, path), =3D=3D, 0);
++    qtest_writel(qts, rcc_reg, qtest_readl(qts, rcc_reg) | (0x1 << reg_o=
+ffset));
++    g_assert_cmpuint(get_clock_freq_hz(qts, path), =3D=3D, SYSCLK_FREQ_H=
+Z);
++}
++
++static void test_clock_enable(void)
++{
++    /*
++     * For each USART device, enable its clock in RCC
++     * and check that its clock frequency is SYSCLK_FREQ_HZ
++     */
++    QTestState *qts =3D qtest_init("-M b-l475e-iot01a");
++
++    check_clock(qts, "machine/soc/usart[0]", RCC_APB2ENR, 14);
++    check_clock(qts, "machine/soc/usart[1]", RCC_APB1ENR1, 17);
++    check_clock(qts, "machine/soc/usart[2]", RCC_APB1ENR1, 18);
++    check_clock(qts, "machine/soc/uart[0]", RCC_APB1ENR1, 19);
++    check_clock(qts, "machine/soc/uart[1]", RCC_APB1ENR1, 20);
++    check_clock(qts, "machine/soc/lpuart1", RCC_APB1ENR2, 0);
++}
++
+ int main(int argc, char **argv)
+ {
+     int ret;
+@@ -308,6 +333,7 @@ int main(int argc, char **argv)
+     qtest_add_func("stm32l4x5/usart/send_char", test_send_char);
+     qtest_add_func("stm32l4x5/usart/receive_str", test_receive_str);
+     qtest_add_func("stm32l4x5/usart/send_str", test_send_str);
++    qtest_add_func("stm32l4x5/usart/clock_enable", test_clock_enable);
+     ret =3D g_test_run();
+=20
+     return ret;
 --=20
 2.43.2
 
