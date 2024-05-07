@@ -2,83 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A0B8BE8D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 18:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71748BE8E5
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 18:28:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Ndw-0005il-Bs; Tue, 07 May 2024 12:26:16 -0400
+	id 1s4Ng0-0007y3-1F; Tue, 07 May 2024 12:28:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Ndt-0005iU-Hj
- for qemu-devel@nongnu.org; Tue, 07 May 2024 12:26:13 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Ndr-0003Xj-QA
- for qemu-devel@nongnu.org; Tue, 07 May 2024 12:26:13 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6f489e64eb3so1167611b3a.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 09:26:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715099170; x=1715703970; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sIv8FscywEVwlamzYg4H1ui6NHBx+YBcmennfBK4cFk=;
- b=Dw2yX6QElTbJljpZ8m8ChXbV1Sufeo0naoLmGD2GFkbEbGLq4pAAgVQ1obtUpty5Do
- XM2l1bk9/JAUyngBLpcNOopEfKD5gptpN0ZBf/fKZ13qK2LHSsM6RzlEJrYbcSYFGB7g
- bROHTBl5Pxneihkd2bQV3Lo7yUJRA0uWUQqbrlhjPdQmQvfqagcvynlMZp46PdRZrxXB
- b4KvHprmKWJFKYrwBXNRjpsUdqEMoAj291MDRJoMOo2xswxFlCNR4rau7wN53SgtyC+V
- qpd28RoFD9Vso/pzxSSe4QgwuWy+eIvhveimNwrVB4IPmkXqoqyDnAzn9IU3izSKucjB
- o8oA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s4Nfx-0007xQ-Km
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 12:28:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s4Nfv-0004fo-Hb
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 12:28:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715099298;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=FexGU1JIdjYxpurIK1Zea34T+rkXy+iMm0Y82JZzEoE=;
+ b=MEoQnpBTknKhtWVc5afPd8Ejw0au+Kegr0rykg+pTJE6oTwEaT31DcLazJFGtqSjhfy4D/
+ QSLT2rBxwaIwwDoNVG/ITK+f1wCv6rxuZSla1BKksdLE8RmaGKSvjAT5DtVkBngQnD9fDX
+ GJKJNEOniJ8atfR2rSvpAeixymiT6bM=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-dU5kYVGbP5epahm0fZ8CLw-1; Tue, 07 May 2024 12:28:16 -0400
+X-MC-Unique: dU5kYVGbP5epahm0fZ8CLw-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-5b22d772714so315850eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 09:28:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715099170; x=1715703970;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :to:from:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1715099296; x=1715704096;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sIv8FscywEVwlamzYg4H1ui6NHBx+YBcmennfBK4cFk=;
- b=CaUW668UA2Op/2suKKuSnFP6ag/tJYLii2t3aJSJX2Bk1rIT02mpaO/x1P7V3sRcCy
- CyxullcwzReeerT6G+Lzmt5U+iokdtq3EZnBC+ElQEBYRS0EHfZV4bIBqTPDhP4UpFCU
- iX+F9VDe8Yc+VOcm9DXCJN6wEFn4o0mQ2JHzS1OsNNPD2nmiU5gceZ2YYsDFmED1gV59
- DH21a5d4pts/gw4Hh+8Hx8PqXzq6KvwwRcvh821banEd/rBjqg6uK/F6ES4Vl5wGegfT
- 5P6DDE/5EqaktMm8mHaMSTfzw1xfrgR1B1/ryWBCmFryIrc/RwqHBX4AElTDxxum2P4S
- LeuA==
-X-Gm-Message-State: AOJu0YxPTghMqwpesXZAsvXFx1jH8W6Kc8wnVILdpRSrDMoOT2DL9CGE
- lNtxqqDLO+hqsupJGQOxLoS7e7ChNnxbmxWaEhWHuOq/4gwlpvsHG9TZEe0Mh17cUFLtyvbnPMw
- D
-X-Google-Smtp-Source: AGHT+IGKJpwW4w75Syor7eLRoUrM8kh/3PvUYPes8GWY+dweJHSQyqXvgpH0KSDjK8iiKH8hCG4Ccg==
-X-Received: by 2002:a05:6a20:ddaf:b0:1af:a5b1:2906 with SMTP id
- adf61e73a8af0-1afc8d1b24bmr218783637.7.1715099170239; 
- Tue, 07 May 2024 09:26:10 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- h7-20020a056a00230700b006f46bc0999fsm4915632pfh.155.2024.05.07.09.26.09
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 May 2024 09:26:09 -0700 (PDT)
-Message-ID: <b1f37a14-b4a9-4822-a4c6-7af632e64899@linaro.org>
-Date: Tue, 7 May 2024 09:26:08 -0700
+ bh=FexGU1JIdjYxpurIK1Zea34T+rkXy+iMm0Y82JZzEoE=;
+ b=byCq3efx4l4wC9Bcg6Lg7szIpaC6QpbU6tN0U3teFcqxwHyfjNek0dllWW70rDCuVN
+ efyQsONXrBUTqYemjy/VcEmZ+X/Ony3fnVPCdD6kTenodtjbMM4Z1BZhGBaMFh3AROPz
+ 739uQ18Xqw/zzx9mZlkGpque+wlz1feugBOJ9c4qxTxqqzgCai8HEPMk9nImpBlDjN9y
+ rySSA66prBmfbcXBmgpY9ghUptaj2z3zOi3ie/2t+OeWIFIpr7m+utyOxb0mVMEBUZYk
+ eUBx4m9Lae4JysFX0OzKyPFOAX+hyCpg5DekrCKFzBY9WUQFGva9RbR8pHBievZ3v044
+ XwEg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVG82ssZumQ94NFGj+D/5XPgYZ9Yd2/2+a7rnaD2F7G8lD25JDC98XNhdFw0OfBq3Rkb0TGhAjgoJn13NbKPBdWDxdlMSc=
+X-Gm-Message-State: AOJu0YyWCgWETDSEPEkIF0/pO/ia7jKy1/wI3rypLaxEojGiwV+m/+WR
+ nVQkxeyWxtYZP56bT702jvvtHJpEcShBesL8xWjqEtlKEI0Ua82LfCw7UYa+NkqA82fhvRIkkXM
+ b0XBLQVYMS/oyCt+/tLBtwpkw0QvId+bE2pwBFSNNbDo+DyL/yFYB
+X-Received: by 2002:a05:6358:5289:b0:192:89b7:b4b5 with SMTP id
+ e5c5f4694b2df-192d397385bmr19925355d.3.1715099295707; 
+ Tue, 07 May 2024 09:28:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3RyE9qwPw0GhTVfKphG9z33nVzR/cYVfPeGZFapoUHEWLC//1Gp5OlKCqOUJi4AGXw5ctiA==
+X-Received: by 2002:a05:6358:5289:b0:192:89b7:b4b5 with SMTP id
+ e5c5f4694b2df-192d397385bmr19920655d.3.1715099295060; 
+ Tue, 07 May 2024 09:28:15 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ o3-20020a655203000000b005f750f36968sm8702087pgp.42.2024.05.07.09.28.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 07 May 2024 09:28:14 -0700 (PDT)
+Date: Tue, 7 May 2024 12:28:08 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Gonglei (Arei)" <arei.gonglei@huawei.com>
+Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Michael Galaxy <mgalaxy@akamai.com>, Yu Zhang <yu.zhang@ionos.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ "integration@gluster.org" <integration@gluster.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pannengyuan <pannengyuan@huawei.com>,
+ Xiexiangyou <xiexiangyou@huawei.com>, zhengchuan <zhengchuan@huawei.com>
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Message-ID: <ZjpWmG2aUJLkYxJm@x1n>
+References: <Zhfxoaz9yNTx8Btd@x1n>
+ <CAHEcVy7POArt+CmY8dyNTzLJp3XxXgjh3k8=C=9K+_cw1CSJFA@mail.gmail.com>
+ <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ <Zi-1OvxA5MIHjklU@x1n> <877cgfe2yw.fsf@pond.sub.org>
+ <ZjClMb-6MddpvHqQ@redhat.com> <ZjJgQcPQ29HJsTpY@x1n>
+ <7e902e4e576a4e199e36d28f99bd55e5@huawei.com>
+ <Zjj0xa-3KrFHTK0S@x1n>
+ <addaa8d094904315a466533763689ead@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/9] tcg + misc patch queue
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-References: <20240507143309.5528-1-richard.henderson@linaro.org>
-Content-Language: en-US
-In-Reply-To: <20240507143309.5528-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <addaa8d094904315a466533763689ead@huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,32 +127,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/24 07:33, Richard Henderson wrote:
-> The following changes since commit d4c453f64824bbeec56c7e72aa83019a7db70d9e:
+On Tue, May 07, 2024 at 01:50:43AM +0000, Gonglei (Arei) wrote:
+> Hello,
 > 
->    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu  into staging (2024-05-06 08:34:34 -0700)
+> > -----Original Message-----
+> > From: Peter Xu [mailto:peterx@redhat.com]
+> > Sent: Monday, May 6, 2024 11:18 PM
+> > To: Gonglei (Arei) <arei.gonglei@huawei.com>
+> > Cc: Daniel P. Berrangé <berrange@redhat.com>; Markus Armbruster
+> > <armbru@redhat.com>; Michael Galaxy <mgalaxy@akamai.com>; Yu Zhang
+> > <yu.zhang@ionos.com>; Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>; Jinpu Wang
+> > <jinpu.wang@ionos.com>; Elmar Gerdes <elmar.gerdes@ionos.com>;
+> > qemu-devel@nongnu.org; Yuval Shaia <yuval.shaia.ml@gmail.com>; Kevin Wolf
+> > <kwolf@redhat.com>; Prasanna Kumar Kalever
+> > <prasanna.kalever@redhat.com>; Cornelia Huck <cohuck@redhat.com>;
+> > Michael Roth <michael.roth@amd.com>; Prasanna Kumar Kalever
+> > <prasanna4324@gmail.com>; integration@gluster.org; Paolo Bonzini
+> > <pbonzini@redhat.com>; qemu-block@nongnu.org; devel@lists.libvirt.org;
+> > Hanna Reitz <hreitz@redhat.com>; Michael S. Tsirkin <mst@redhat.com>;
+> > Thomas Huth <thuth@redhat.com>; Eric Blake <eblake@redhat.com>; Song
+> > Gao <gaosong@loongson.cn>; Marc-André Lureau
+> > <marcandre.lureau@redhat.com>; Alex Bennée <alex.bennee@linaro.org>;
+> > Wainer dos Santos Moschetta <wainersm@redhat.com>; Beraldo Leal
+> > <bleal@redhat.com>; Pannengyuan <pannengyuan@huawei.com>;
+> > Xiexiangyou <xiexiangyou@huawei.com>
+> > Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+> > 
+> > On Mon, May 06, 2024 at 02:06:28AM +0000, Gonglei (Arei) wrote:
+> > > Hi, Peter
+> > 
+> > Hey, Lei,
+> > 
+> > Happy to see you around again after years.
+> > 
+> Haha, me too.
 > 
-> are available in the Git repository at:
+> > > RDMA features high bandwidth, low latency (in non-blocking lossless
+> > > network), and direct remote memory access by bypassing the CPU (As you
+> > > know, CPU resources are expensive for cloud vendors, which is one of
+> > > the reasons why we introduced offload cards.), which TCP does not have.
+> > 
+> > It's another cost to use offload cards, v.s. preparing more cpu resources?
+> > 
+> Software and hardware offload converged architecture is the way to go for all cloud vendors 
+> (Including comprehensive benefits in terms of performance, cost, security, and innovation speed), 
+> it's not just a matter of adding the resource of a DPU card.
 > 
->    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20240507
+> > > In some scenarios where fast live migration is needed (extremely short
+> > > interruption duration and migration duration) is very useful. To this
+> > > end, we have also developed RDMA support for multifd.
+> > 
+> > Will any of you upstream that work?  I'm curious how intrusive would it be
+> > when adding it to multifd, if it can keep only 5 exported functions like what
+> > rdma.h does right now it'll be pretty nice.  We also want to make sure it works
+> > with arbitrary sized loads and buffers, e.g. vfio is considering to add IO loads to
+> > multifd channels too.
+> > 
 > 
-> for you to fetch changes up to f578b66e8c70ddea71d44db6e2c7abbcd757d684:
-> 
->    gitlab: Streamline ubuntu-22.04-s390x (2024-05-06 23:40:36 -0700)
-> 
-> ----------------------------------------------------------------
-> tcg: Add write_aofs to GVecGen3i
-> tcg/i386: Simplify immediate 8-bit logical vector shifts
-> tcg/i386: Optimize setcond of TST{EQ,NE} with 0xffffffff
-> tcg/optimize: Optimize setcond with zmask
-> accel/tcg: Introduce CF_BP_PAGE
-> target/sh4: Update DisasContextBase.insn_start
-> gitlab: Drop --static from s390x linux-user build
-> gitlab: Streamline ubuntu-22.04-s390x
+> In fact, we sent the patchset to the community in 2021. Pls see:
+> https://lore.kernel.org/all/20210203185906.GT2950@work-vm/T/
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+I wasn't aware of that for sure in the past..
 
+Multifd has changed quite a bit in the last 9.0 release, that may not apply
+anymore.  One thing to mention is please look at Dan's comment on possible
+use of rsocket.h:
 
-r~
+https://lore.kernel.org/all/ZjJm6rcqS5EhoKgK@redhat.com/
+
+And Jinpu did help provide an initial test result over the library:
+
+https://lore.kernel.org/qemu-devel/CAMGffEk8wiKNQmoUYxcaTHGtiEm2dwoCF_W7T0vMcD-i30tUkA@mail.gmail.com/
+
+It looks like we have a chance to apply that in QEMU.
+
+> 
+> 
+> > One thing to note that the question here is not about a pure performance
+> > comparison between rdma and nics only.  It's about help us make a decision
+> > on whether to drop rdma, iow, even if rdma performs well, the community still
+> > has the right to drop it if nobody can actively work and maintain it.
+> > It's just that if nics can perform as good it's more a reason to drop, unless
+> > companies can help to provide good support and work together.
+> > 
+> 
+> We are happy to provide the necessary review and maintenance work for RDMA
+> if the community needs it.
+> 
+> CC'ing Chuan Zheng.
+
+I'm not sure whether you and Jinpu's team would like to work together and
+provide a final solution for rdma over multifd.  It could be much simpler
+than the original 2021 proposal if the rsocket API will work out.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
