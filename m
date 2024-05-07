@@ -2,55 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D728BE2ED
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 15:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C06DB8BE2F2
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 15:05:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4KRQ-0005kk-NZ; Tue, 07 May 2024 09:01:08 -0400
+	id 1s4KUj-0008S0-3A; Tue, 07 May 2024 09:04:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1s4KRB-0005fA-TS; Tue, 07 May 2024 09:00:55 -0400
+ id 1s4KUA-0008OM-Ns; Tue, 07 May 2024 09:03:58 -0400
 Received: from dedi548.your-server.de ([85.10.215.148])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1s4KR4-0006ee-It; Tue, 07 May 2024 09:00:53 -0400
+ id 1s4KU8-0007vm-Hc; Tue, 07 May 2024 09:03:58 -0400
 Received: from sslproxy03.your-server.de ([88.198.220.132])
  by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.94.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1s4KR0-000MMf-5i; Tue, 07 May 2024 15:00:42 +0200
+ id 1s4KU5-000MRi-8F; Tue, 07 May 2024 15:03:53 +0200
 Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
  by sslproxy03.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
  (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1s4KQz-0000Ju-2B; Tue, 07 May 2024 15:00:42 +0200
+ id 1s4KU4-000Oxd-2J; Tue, 07 May 2024 15:03:53 +0200
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 807154801C5;
- Tue,  7 May 2024 15:00:41 +0200 (CEST)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 848F44801C4;
+ Tue,  7 May 2024 15:03:52 +0200 (CEST)
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id ka85TsFLx1OJ; Tue,  7 May 2024 15:00:41 +0200 (CEST)
+ with ESMTP id coLy0hcI8Veq; Tue,  7 May 2024 15:03:52 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 2C5E7480157;
- Tue,  7 May 2024 15:00:41 +0200 (CEST)
+ by mail.embedded-brains.de (Postfix) with ESMTP id 46BFD4801C8;
+ Tue,  7 May 2024 15:03:52 +0200 (CEST)
 X-Virus-Scanned: amavis at zimbra.eb.localhost
 Received: from mail.embedded-brains.de ([127.0.0.1])
  by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id dGjl-po6kgHo; Tue,  7 May 2024 15:00:41 +0200 (CEST)
+ with ESMTP id 1cp1o9Swq9VE; Tue,  7 May 2024 15:03:52 +0200 (CEST)
 Received: from zimbra.eb.localhost (unknown [192.168.96.242])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 0589B4801C4;
- Tue,  7 May 2024 15:00:41 +0200 (CEST)
+ by mail.embedded-brains.de (Postfix) with ESMTPSA id 2098B480045;
+ Tue,  7 May 2024 15:03:52 +0200 (CEST)
 From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Luc Michel <luc@lmichel.fr>,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 2/2] hw/intc/arm_gic: Fix writes to GICD_ITARGETSRn
-Date: Tue,  7 May 2024 15:00:38 +0200
-Message-Id: <20240507130038.86787-2-sebastian.huber@embedded-brains.de>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH 0/2] Zynq 7000 SoC improvements
+Date: Tue,  7 May 2024 15:03:47 +0200
+Message-Id: <20240507130349.86851-1-sebastian.huber@embedded-brains.de>
 X-Mailer: git-send-email 2.35.3
-In-Reply-To: <CAFEAcA8DAt+o-XZepg8xtj4i3xLW_yChwPnDZVM0O=rW8+9qJQ@mail.gmail.com>
-References: <CAFEAcA8DAt+o-XZepg8xtj4i3xLW_yChwPnDZVM0O=rW8+9qJQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Authenticated-Sender: smtp-embedded@poldi-networks.de
@@ -77,42 +73,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the GICv2 specification section 4.3.12, "Interrupt Processor
-Targets Registers, GICD_ITARGETSRn":
+Add support for the cache controller and up to two Cortex-A9 MPCore.
 
-"Any change to a CPU targets field value:
-[...]
-* Has an effect on any pending interrupts. This means:
-  - adding a CPU interface to the target list of a pending interrupt make=
-s that
-    interrupt pending on that CPU interface
-  - removing a CPU interface from the target list of a pending interrupt
-    removes the pending state of that interrupt on that CPU interface."
+Sebastian Huber (2):
+  hw/arm/xilinx_zynq: Add cache controller
+  hw/arm/xilinx_zynq: Support up to two CPU cores
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
----
- hw/intc/arm_gic.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/arm/xilinx_zynq.c | 43 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
-diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
-index 20b3f701e0..79aee56053 100644
---- a/hw/intc/arm_gic.c
-+++ b/hw/intc/arm_gic.c
-@@ -1397,6 +1397,13 @@ static void gic_dist_writeb(void *opaque, hwaddr o=
-ffset,
-                 value =3D ALL_CPU_MASK;
-             }
-             s->irq_target[irq] =3D value & ALL_CPU_MASK;
-+            if (irq >=3D GIC_INTERNAL && s->irq_state[irq].pending) {
-+                /*
-+                 * Changing the target of an interrupt that is currently
-+                 * pending updates the set of CPUs it is pending on.
-+                 */
-+                GIC_DIST_SET_PENDING(irq, value);
-+            }
-         }
-     } else if (offset < 0xf00) {
-         /* Interrupt Configuration.  */
 --=20
 2.35.3
 
