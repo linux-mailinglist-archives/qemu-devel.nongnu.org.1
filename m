@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CB98BE05B
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 751638BE060
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:57:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4IUS-0004Y7-9M; Tue, 07 May 2024 06:56:08 -0400
+	id 1s4IUW-0004b5-5p; Tue, 07 May 2024 06:56:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUP-0004WF-7Y
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s4IUR-0004Yj-RT
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUN-0002Kn-9Q
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:04 -0400
+ id 1s4IUP-0002WP-Gp
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715079362;
+ s=mimecast20190719; t=1715079364;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Gpm22Ugye1O7VXn9KZgvuT4kSCO+qP9oafJZ8q2VGXU=;
- b=JBAc+eZIoTJzACJh8CMMW0MSq4AJFJC+slnhM20HZJ93xJm8SlOa+1PuDF5wvuuM+0sjDS
- ZaD9VcrM7nHLlLoOs6WY1Mc2dYB/YpsriQ0FBmJ2ljI0TCf2gTyO8kOXts6lNJmc8B+yUa
- KqDPpRn5KpDzwXPmdnxczAEH3Rd6lI0=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=A9ortWfv584lxxmsMIWihvg3kGQaWQkicwj3fJ5Ld9A=;
+ b=AxLOl59QqgwshfQOvTL062pmqC59yKKq38Y3z3MHUtTnSGUvUQqHWf+OflT3HGPSV9GJUh
+ D6fRgJwaiCyKsnUv1onmjVM6vt2s4ES8PNqTF8JESZfyyAsvb7S0SwzuOi6m45gEIRxX7E
+ 5K62/rVndgVZDRtZgEj2saVh6xf+teY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-tLyd75EQPD-nCWl94w60iQ-1; Tue, 07 May 2024 06:56:01 -0400
-X-MC-Unique: tLyd75EQPD-nCWl94w60iQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a59a17f35c8so197009166b.0
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:00 -0700 (PDT)
+ us-mta-591-mLIaGZY6PaujKB2LB7IKPw-1; Tue, 07 May 2024 06:56:03 -0400
+X-MC-Unique: mLIaGZY6PaujKB2LB7IKPw-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-572afd6e96fso1157748a12.2
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715079359; x=1715684159;
+ d=1e100.net; s=20230601; t=1715079361; x=1715684161;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gpm22Ugye1O7VXn9KZgvuT4kSCO+qP9oafJZ8q2VGXU=;
- b=WT7T/zdasboIcIFO877/5G85PdxoxDepRJrZzm4KJjPlA7Kf9ltbqDrgwfBjgd+2pu
- yZcjFmnb+RWI1Z1pNhe+rGhgQaUaqp/GQtzL0TJaPSgA11dnInT6ilkSJGyZItI4jGLQ
- +96HHop1hZfGGluzMljs/TSsMUKKzNAFYNQWMf5QDA5SHtPNluAl3ve2vMS+pf7IKJHY
- BUgQIwGA7wvY8Z0qreZVrYe9JukjydM4FcfwoxPPW5LJqyc7CRsrfXtvl0C3a96/Pi1B
- N58QvzfBDYGbb3COteilEO37VdPZV+iJ4WZYTXCoyrRPKPQE0Yw5HhvoIxcbrGkQxBJx
- 0wiw==
-X-Gm-Message-State: AOJu0YwNZiTVhbsz56zzifgr+6nv583mb5VizQodclXpaHht35Z8Z/SG
- dVxT2qjsECJfoA59UKwnS0azLynsXiwR6fKm7CmkgUs3mVjNxdKmJcg+0mLa93QkKprd95ong0g
- lQFOc19G8ELMxnZPlQFyFmIsFX4KSPRdGPFMnNwPi8dWNDR1dMTbjxx232QHF6VB6CE5lu7flp1
- GpNQq4F5rbSf4Bg3kZF63bwfdGjpjP1p/kBCh2
-X-Received: by 2002:a17:906:5614:b0:a59:beb2:62cc with SMTP id
- f20-20020a170906561400b00a59beb262ccmr4461901ejq.61.1715079359367; 
- Tue, 07 May 2024 03:55:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlfS+UswdilWfJwX4pjBpgMzyGMMA8yxpZfKJk4v4E9gAYMjV2abP3gEG9LMJ39rOn7wsoRQ==
-X-Received: by 2002:a17:906:5614:b0:a59:beb2:62cc with SMTP id
- f20-20020a170906561400b00a59beb262ccmr4461889ejq.61.1715079359007; 
- Tue, 07 May 2024 03:55:59 -0700 (PDT)
+ bh=A9ortWfv584lxxmsMIWihvg3kGQaWQkicwj3fJ5Ld9A=;
+ b=dSXl47iM37rjqP8D6ik5qTBSVD8o9vSqHp8f51Zk+w/TU5wbe1KnFVPmm++N7OCyfY
+ bvvYg3WUB4e20N/pnv5Kkbm5uk/bCltOcL5cWtDqJET5g6SbwTRaiUn/8QuRq35stdI5
+ eL+3C1g1W4StzdXroU8myRNkmlDOM/9lt5IK36IkwTMiu68vsdaxRyC3Nr/7DZ1b/F4H
+ dXMTMDV+mugJdUHNrTqsFTb9FLtM4+gLr3dgqMhSeeErmzpU8TSshlb0MniP+fpLhb6l
+ 0bK5Ei0IHUYzn8RUh54RsuOrSWDe4+RThxnZ8Nr+VL+k4uBMWWSxKsPxtnOOkDNUQ1UL
+ 6LPA==
+X-Gm-Message-State: AOJu0YxetDG+vcjTSsIpnSEtSWqROHaFtG2lUKIES7RNuK2WD751RQKy
+ y2OnjRvgpZ927K3JZvjqXFaUolo+mT8lsvIfsTAUJFrcuSlGPKyyachuF6gLOw6BmFeE4WHGaXs
+ ZtsR8HnORr1PBcmI6EChEwRhoDHIO3FOWEoaRAgNbWB2/TQ3pLK8FbORdH5gwO0neZb022fTbN/
+ 4k22erD36TwQZPhggtvVoE0fct9mcqAFek1QQ1
+X-Received: by 2002:a50:8d5a:0:b0:56e:7722:553 with SMTP id
+ t26-20020a508d5a000000b0056e77220553mr12031362edt.24.1715079361589; 
+ Tue, 07 May 2024 03:56:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjYLwznJkvM2TgjZVM+ZvGWgQEsh0o3IZKqbRvp9WGfRrJlQ0+anJ3jC91qxxToMkgUlncpQ==
+X-Received: by 2002:a50:8d5a:0:b0:56e:7722:553 with SMTP id
+ t26-20020a508d5a000000b0056e77220553mr12031348edt.24.1715079361219; 
+ Tue, 07 May 2024 03:56:01 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- f14-20020a1709062c4e00b00a599a437294sm4943086ejh.129.2024.05.07.03.55.58
+ e15-20020a056402088f00b0057232df2e5dsm6252894edy.32.2024.05.07.03.56.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 03:55:58 -0700 (PDT)
+ Tue, 07 May 2024 03:56:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 07/26] target/i386: pull cc_op update to callers of
- gen_jmp_rel{, _csize}
-Date: Tue,  7 May 2024 12:55:19 +0200
-Message-ID: <20240507105538.180704-8-pbonzini@redhat.com>
+Subject: [PULL 08/26] target/i386: extend cc_* when using them to compute flags
+Date: Tue,  7 May 2024 12:55:20 +0200
+Message-ID: <20240507105538.180704-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240507105538.180704-1-pbonzini@redhat.com>
 References: <20240507105538.180704-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,66 +100,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gen_update_cc_op must be called before control flow splits.  Doing it
-in gen_jmp_rel{,_csize} may hide bugs, instead assert that cc_op is
-clean---even if that means a few more calls to gen_update_cc_op().
-
-With this new invariant, setting cc_op to CC_OP_DYNAMIC is unnecessary
-since the caller should have done it.
+Instead of using s->tmp0 or s->tmp4 as the result, just extend the cc_*
+registers in place.  It is harmless and, if multiple setcc instructions
+are used, the optimizer will be able to remove the redundant ones.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ target/i386/tcg/translate.c | 44 +++++++++++++++----------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 466fee38c0e..024da6d88eb 100644
+index 024da6d88eb..7292908adc3 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2853,6 +2853,8 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
-     target_ulong new_pc = s->pc + diff;
-     target_ulong new_eip = new_pc - s->cs_base;
+@@ -940,28 +940,24 @@ static CCPrepare gen_prepare_sign_nz(TCGv src, MemOp size)
+ /* compute eflags.C to reg */
+ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+ {
+-    TCGv t0, t1;
+     MemOp size;
  
-+    assert(!s->cc_op_dirty);
-+
-     /* In 64-bit mode, operand size is fixed at 64 bits. */
-     if (!CODE64(s)) {
-         if (ot == MO_16) {
-@@ -2866,9 +2868,6 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
-     }
-     new_eip &= mask;
+     switch (s->cc_op) {
+     case CC_OP_SUBB ... CC_OP_SUBQ:
+         /* (DATA_TYPE)CC_SRCT < (DATA_TYPE)CC_SRC */
+         size = s->cc_op - CC_OP_SUBB;
+-        t1 = gen_ext_tl(s->tmp0, cpu_cc_src, size, false);
+-        /* If no temporary was used, be careful not to alias t1 and t0.  */
+-        t0 = t1 == cpu_cc_src ? s->tmp0 : reg;
+-        tcg_gen_mov_tl(t0, s->cc_srcT);
+-        gen_extu(size, t0);
+-        goto add_sub;
++        gen_ext_tl(s->cc_srcT, s->cc_srcT, size, false);
++        gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++        return (CCPrepare) { .cond = TCG_COND_LTU, .reg = s->cc_srcT,
++                             .reg2 = cpu_cc_src, .use_reg2 = true };
  
--    gen_update_cc_op(s);
--    set_cc_op(s, CC_OP_DYNAMIC);
+     case CC_OP_ADDB ... CC_OP_ADDQ:
+         /* (DATA_TYPE)CC_DST < (DATA_TYPE)CC_SRC */
+         size = s->cc_op - CC_OP_ADDB;
+-        t1 = gen_ext_tl(s->tmp0, cpu_cc_src, size, false);
+-        t0 = gen_ext_tl(reg, cpu_cc_dst, size, false);
+-    add_sub:
+-        return (CCPrepare) { .cond = TCG_COND_LTU, .reg = t0,
+-                             .reg2 = t1, .use_reg2 = true };
++        gen_ext_tl(cpu_cc_dst, cpu_cc_dst, size, false);
++        gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++        return (CCPrepare) { .cond = TCG_COND_LTU, .reg = cpu_cc_dst,
++                             .reg2 = cpu_cc_src, .use_reg2 = true };
+ 
+     case CC_OP_LOGICB ... CC_OP_LOGICQ:
+     case CC_OP_CLR:
+@@ -984,8 +980,8 @@ static CCPrepare gen_prepare_eflags_c(DisasContext *s, TCGv reg)
+ 
+     case CC_OP_BMILGB ... CC_OP_BMILGQ:
+         size = s->cc_op - CC_OP_BMILGB;
+-        t0 = gen_ext_tl(reg, cpu_cc_src, size, false);
+-        return (CCPrepare) { .cond = TCG_COND_EQ, .reg = t0 };
++        gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++        return (CCPrepare) { .cond = TCG_COND_EQ, .reg = cpu_cc_src };
+ 
+     case CC_OP_ADCX:
+     case CC_OP_ADCOX:
+@@ -1098,7 +1094,6 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
+     int inv, jcc_op, cond;
+     MemOp size;
+     CCPrepare cc;
+-    TCGv t0;
+ 
+     inv = b & 1;
+     jcc_op = (b >> 1) & 7;
+@@ -1109,24 +1104,21 @@ static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
+         size = s->cc_op - CC_OP_SUBB;
+         switch (jcc_op) {
+         case JCC_BE:
+-            tcg_gen_mov_tl(s->tmp4, s->cc_srcT);
+-            gen_extu(size, s->tmp4);
+-            t0 = gen_ext_tl(s->tmp0, cpu_cc_src, size, false);
+-            cc = (CCPrepare) { .cond = TCG_COND_LEU, .reg = s->tmp4,
+-                               .reg2 = t0, .use_reg2 = true };
++            gen_ext_tl(s->cc_srcT, s->cc_srcT, size, false);
++            gen_ext_tl(cpu_cc_src, cpu_cc_src, size, false);
++            cc = (CCPrepare) { .cond = TCG_COND_LEU, .reg = s->cc_srcT,
++                               .reg2 = cpu_cc_src, .use_reg2 = true };
+             break;
 -
-     if (tb_cflags(s->base.tb) & CF_PCREL) {
-         tcg_gen_addi_tl(cpu_eip, cpu_eip, new_pc - s->pc_save);
-         /*
-@@ -5146,6 +5145,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-                         : (int16_t)insn_get(env, s, MO_16));
-             gen_push_v(s, eip_next_tl(s));
-             gen_bnd_jmp(s);
-+            gen_update_cc_op(s);
-             gen_jmp_rel(s, dflag, diff, 0);
-         }
-         break;
-@@ -5169,6 +5169,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-                         ? (int32_t)insn_get(env, s, MO_32)
-                         : (int16_t)insn_get(env, s, MO_16));
-             gen_bnd_jmp(s);
-+            gen_update_cc_op(s);
-             gen_jmp_rel(s, dflag, diff, 0);
-         }
-         break;
-@@ -5189,6 +5190,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0xeb: /* jmp Jb */
-         {
-             int diff = (int8_t)insn_get(env, s, MO_8);
-+            gen_update_cc_op(s);
-             gen_jmp_rel(s, dflag, diff, 0);
-         }
-         break;
+         case JCC_L:
+             cond = TCG_COND_LT;
+             goto fast_jcc_l;
+         case JCC_LE:
+             cond = TCG_COND_LE;
+         fast_jcc_l:
+-            tcg_gen_mov_tl(s->tmp4, s->cc_srcT);
+-            gen_exts(size, s->tmp4);
+-            t0 = gen_ext_tl(s->tmp0, cpu_cc_src, size, true);
+-            cc = (CCPrepare) { .cond = cond, .reg = s->tmp4,
+-                               .reg2 = t0, .use_reg2 = true };
++            gen_ext_tl(s->cc_srcT, s->cc_srcT, size, true);
++            gen_ext_tl(cpu_cc_src, cpu_cc_src, size, true);
++            cc = (CCPrepare) { .cond = cond, .reg = s->cc_srcT,
++                               .reg2 = cpu_cc_src, .use_reg2 = true };
+             break;
+ 
+         default:
 -- 
 2.45.0
 
