@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19598BDD72
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095AD8BDD6E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 10:45:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4GQR-0004ix-Tt; Tue, 07 May 2024 04:43:52 -0400
+	id 1s4GQR-0004fI-Gd; Tue, 07 May 2024 04:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GQA-0004SO-02; Tue, 07 May 2024 04:43:38 -0400
+ id 1s4GQ9-0004SM-At; Tue, 07 May 2024 04:43:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1s4GQ8-0003HC-36; Tue, 07 May 2024 04:43:33 -0400
+ id 1s4GQ7-0003LI-Cv; Tue, 07 May 2024 04:43:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6940F64BD2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7B71264BD3;
  Tue,  7 May 2024 11:42:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 58039C85BB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 68D82C85BC;
  Tue,  7 May 2024 11:42:30 +0300 (MSK)
-Received: (nullmailer pid 1026555 invoked by uid 1000);
+Received: (nullmailer pid 1026558 invoked by uid 1000);
  Tue, 07 May 2024 08:42:29 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Avi Fishman <Avi.Fishman@nuvoton.com>,
- Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.4 14/16] hw/arm/npcm7xx: Store derivative OTP fuse key in
- little endian
-Date: Tue,  7 May 2024 11:42:13 +0300
-Message-Id: <20240507084226.1026455-14-mjt@tls.msk.ru>
+ Paul Cercueil <paul@crapouillou.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.4 15/16] target/sh4: Fix ADDV opcode
+Date: Tue,  7 May 2024 11:42:14 +0300
+Message-Id: <20240507084226.1026455-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
 References: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
@@ -64,39 +64,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Use little endian for derivative OTP fuse key.
+The documentation says:
+
+  ADDV Rm, Rn        Rn + Rm -> Rn, overflow -> T
+
+But QEMU implementation was:
+
+  ADDV Rm, Rn        Rn + Rm -> Rm, overflow -> T
+
+Fix by filling the correct Rm register.
+
+Add tests provided by Paul Cercueil.
 
 Cc: qemu-stable@nongnu.org
-Fixes: c752bb079b ("hw/nvram: NPCM7xx OTP device model")
-Suggested-by: Avi Fishman <Avi.Fishman@nuvoton.com>
+Fixes: ad8d25a11f ("target-sh4: implement addv and subv using TCG")
+Reported-by: Paul Cercueil <paul@crapouillou.net>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2317
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240422125813.1403-1-philmd@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit eb656a60fd93262b1e519b3162888bf261df7f68)
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+Message-Id: <20240430163125.77430-2-philmd@linaro.org>
+(cherry picked from commit c365e6b0705788866a65e7b8206bd4c5332595cd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index 15ff21d047..8753812c37 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -24,6 +24,7 @@
- #include "hw/qdev-clock.h"
- #include "hw/qdev-properties.h"
- #include "qapi/error.h"
-+#include "qemu/bswap.h"
- #include "qemu/units.h"
- #include "sysemu/sysemu.h"
+diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+index 5aa10d3946..d8dcfc3a20 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -715,7 +715,7 @@ static void _decode_opc(DisasContext * ctx)
+             tcg_gen_xor_i32(t2, REG(B7_4), REG(B11_8));
+             tcg_gen_andc_i32(cpu_sr_t, t1, t2);
+             tcg_gen_shri_i32(cpu_sr_t, cpu_sr_t, 31);
+-            tcg_gen_mov_i32(REG(B7_4), t0);
++            tcg_gen_mov_i32(REG(B11_8), t0);
+         }
+         return;
+     case 0x2009: /* and Rm,Rn */
+diff --git a/tests/tcg/sh4/Makefile.target b/tests/tcg/sh4/Makefile.target
+index c3d7fa86e3..39751c41b2 100644
+--- a/tests/tcg/sh4/Makefile.target
++++ b/tests/tcg/sh4/Makefile.target
+@@ -20,3 +20,6 @@ TESTS += test-macl
  
-@@ -377,7 +378,7 @@ static void npcm7xx_init_fuses(NPCM7xxState *s)
-      * The initial mask of disabled modules indicates the chip derivative (e.g.
-      * NPCM750 or NPCM730).
-      */
--    value = tswap32(nc->disabled_modules);
-+    value = cpu_to_le32(nc->disabled_modules);
-     npcm7xx_otp_array_write(&s->fuse_array, &value, NPCM7XX_FUSE_DERIVATIVE,
-                             sizeof(value));
- }
+ test-macw: CFLAGS += -O -g
+ TESTS += test-macw
++
++test-addv: CFLAGS += -O -g
++TESTS += test-addv
+diff --git a/tests/tcg/sh4/test-addv.c b/tests/tcg/sh4/test-addv.c
+new file mode 100644
+index 0000000000..ca87fe746a
+--- /dev/null
++++ b/tests/tcg/sh4/test-addv.c
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++
++#include <limits.h>
++#include <stdio.h>
++#include <stdlib.h>
++
++static void addv(const int a, const int b, const int res, const int carry)
++{
++    int o = a, c;
++
++    asm volatile("addv %2,%0\n"
++                 "movt %1\n"
++                 : "+r"(o), "=r"(c) : "r"(b) : );
++
++    if (c != carry || o != res) {
++        printf("ADDV %d, %d = %d/%d [T = %d/%d]\n", a, b, o, res, c, carry);
++        abort();
++    }
++}
++
++int main(void)
++{
++    addv(INT_MAX, 1, INT_MIN, 1);
++    addv(INT_MAX - 1, 1, INT_MAX, 0);
++
++    return 0;
++}
 -- 
 2.39.2
 
