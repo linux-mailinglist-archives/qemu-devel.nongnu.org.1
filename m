@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44CC8BE625
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2F18BE62B
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:37:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4LtA-0003P9-TJ; Tue, 07 May 2024 10:33:52 -0400
+	id 1s4Ltx-00041d-WF; Tue, 07 May 2024 10:34:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsk-0003BW-89
- for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:30 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s4LtW-0003vK-3i
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:14 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsg-0001Mj-6U
- for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:25 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1ecd9a81966so34885695ad.0
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1s4LtT-0001T6-V0
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 10:34:13 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a59a17fcc6bso736056466b.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715092399; x=1715697199; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1715092450; x=1715697250; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tacbeao5rfkPxJFPTQiS5odWwv69qO+6Pb46/LGm6jU=;
- b=DLPPs2kL9bHa5plRpZEu7OPEUY22LePlsUnjBDNY5vshifm6QPN8iOis3GnVLuktcK
- Ex+B5aTZPyosZdTh2f04fhKqBC/aMufke6oXVy2fB4uhAkZEUh/bSTxj4KBq4WDqltMW
- +/TWzVrnmBHe4j0BvLya9lDrj1rhe7bVsooR0jlopN3v0D/Wf7RQ6vwqJy+rM+CtL9gk
- avBfIWAZJBmoP1ONnACAa+GbHJS/VM9WoRVX/2ECtP+6luLoOjE0aIuinhmhQdqj6xvC
- pILqeY2iBA34FxoSAn+8s/az2VGAdnJ+AnLOAXIQdwoiusz6wqrFyUEXE1jr1ha/c9x7
- qZtA==
+ bh=ntWHXiVvwmKn2Krp2k/HmlVIEqFVi5OvZ8aK44T1d7I=;
+ b=zcO9/SKT5YQisGj4g36pNqKIcuZmh0UMsOPjuGSVdDenbyCuuqHSXmcY3C/hJT/7dH
+ ARZ384yZJ4nGzihy1EaeVfZbMPB6kRlGzbxJX4UVsFIUWop2KqoGauDZHbvzzlXvF5yj
+ VQ3Us69y+mTL9SSqbDTB9dW4zx6wUv5xRn0X84Fpb20gEwrZhddwr5ZtCMaLBqn4+wQ2
+ FEF3xViFKtILVyX6VwfvpTwalNNgL/vGkV8PB6Yl/F1+yUU6TRygxrRu5LMU+vbo7Kcv
+ DbgRXMdcTbuUx2cFBuSigo6zikWVQIOTRoSILQsEAyI5rpwE3btiKqNkfFloDOcj0aGf
+ R61A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715092399; x=1715697199;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1715092450; x=1715697250;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tacbeao5rfkPxJFPTQiS5odWwv69qO+6Pb46/LGm6jU=;
- b=mY5MH8B6MIAOnT9T9dOBaZHiOo13CbRMxLZ4o42VzCsFy48r6AMSxZKMOCOJiNE4p8
- OLhIk4WfxdgqT0IHA6qUidl7ZK/Q+RD+459PKuw1SY4lTt4wSGQT+T0SoIzLrC1DWqhd
- CuOWC8cynFc5nCTjWpZbmleByMOorz3f/ozCx53SIf21g92fhxf4wUhNUfZKuPnqYRm6
- V35FoA37yN+2/OkluqFnjeEtXbvS01pUh61NUjNYf0oTxfSerj9lLZ+KJVvAEE+Z7f9H
- s/JD4yvkWSTM4ocmRaP8FzYUPF9jCoQ4XjM6nqKfVlhleCaU1ZFaUTUEVXxJs+5R+8th
- ETmg==
-X-Gm-Message-State: AOJu0Yyf2Q53iA8TG5Aw/9CsR0nUr9+bb4nHnVwIsnC/3NukCnodkNZW
- WaF8u+CqjjaO9/dajdO6XdaL3mS2kzkDt6iEko021EvyfnKPLhgPnCsipYjQ3RD5oQJQDBMv7Pg
- Q
-X-Google-Smtp-Source: AGHT+IFNUGW7y4URfvUftnCmdOepzCpwlxN2NmW0v+0aGlRU9b1J+j+dg070Jw0MXLemYh+bnOBKEg==
-X-Received: by 2002:a17:902:ec84:b0:1eb:527e:a89e with SMTP id
- d9443c01a7336-1ee63463d05mr43662915ad.26.1715092398871; 
- Tue, 07 May 2024 07:33:18 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 07:33:18 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 9/9] gitlab: Streamline ubuntu-22.04-s390x
-Date: Tue,  7 May 2024 07:33:09 -0700
-Message-Id: <20240507143309.5528-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240507143309.5528-1-richard.henderson@linaro.org>
-References: <20240507143309.5528-1-richard.henderson@linaro.org>
+ bh=ntWHXiVvwmKn2Krp2k/HmlVIEqFVi5OvZ8aK44T1d7I=;
+ b=tbY5xMcCWk50BgtRt1lyLa7JWaJ1Wc6Uv9F2e+uRNwNoQG0BNWo0FGPDFxNn5b5uS1
+ /ehkx0BMHDXVOqw7e/aXHBK3y7FzQOlkU9zNrbnE3z7KzQjBZ1jh4VgVeBrnINysPTxS
+ z7ypPJGN4LkwA7WIIlbP36wOyrqcH8kIi8S/dbH9BTPAUmerOEOGOiVjr7qy1PSfn9em
+ qOBrPUveiCCYRS1mxStp2EN+dvUPJyKt4LKhBL1CkPcNadIDHXrRRsdEIUTZcD0yWMJ/
+ tSjR9x/13IbEc2jILYk1CdUniRE8nZUTWWA+0TcxNY9eEpEnpAw5umwgT+A1JQc9i7q3
+ QiqQ==
+X-Gm-Message-State: AOJu0YzP9pS+Qhol/rLUwyyJfod2muQGxhfxLfkGxrWgEG7v9uVtu1ig
+ xn6rN4ckPYaIrhXBSnj9qAscDrFiaALRZkHkKPclbJ1Q7NEjBjB3SbF0UBnipsHqodbIwYGRhxv
+ kIb/+cqSwo1LA2VnTYuEvHmFeleTALuhmPdYPuw==
+X-Google-Smtp-Source: AGHT+IEgjbpMTYLl8o+SWEeZ4UueyoRyriKytYKBk6ZwWoViisHbVbBBffpDUCTAbha69xn34VxDWkHjdxifDW++Zs4=
+X-Received: by 2002:a05:6402:14f:b0:572:a1ec:1562 with SMTP id
+ s15-20020a056402014f00b00572a1ec1562mr1563524edu.13.1715092450408; Tue, 07
+ May 2024 07:34:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+References: <20240507142737.95735-1-philmd@linaro.org>
+In-Reply-To: <20240507142737.95735-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 7 May 2024 15:33:58 +0100
+Message-ID: <CAFEAcA9-Dj76m9usxvZgRxcTXucX4+uo2pjxk1sHqAJwbnww5g@mail.gmail.com>
+Subject: Re: [PATCH] misc: Use QEMU header path relative to include/ directory
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Jeuk Kim <jeuk20.kim@samsung.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Klaus Jensen <its@irrelevant.dk>, 
+ Jesper Devantier <foss@defmacro.it>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,47 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have one job to build user binaries and one job for system.
-Disable tools and docs in the user job, and disable building
-the user binaries in the system job.
+On Tue, 7 May 2024 at 15:28, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> QEMU headers are relative to the include/ directory,
+> not to the project root directory. Remove "include/".
+>
+> See also:
+> https://www.qemu.org/docs/master/devel/style.html#include-directives
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/audio/virtio-snd.c   | 2 +-
+>  hw/rtc/ls7a_rtc.c       | 2 +-
+>  target/i386/gdbstub.c   | 2 +-
+>  tests/qtest/nvme-test.c | 2 +-
+>  tests/qtest/ufs-test.c  | 2 +-
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-index 0a2d2bd332..25935048e2 100644
---- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-+++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
-@@ -15,13 +15,13 @@ ubuntu-22.04-s390x-all-linux:
-  script:
-  - mkdir build
-  - cd build
-- - ../configure --enable-debug --disable-system
-+ - ../configure --enable-debug --disable-system --disable-tools --disable-docs
-    || { cat config.log meson-logs/meson-log.txt; exit 1; }
-  - make --output-sync -j`nproc`
-  - make --output-sync check-tcg
-  - make --output-sync -j`nproc` check
- 
--ubuntu-22.04-s390x-all:
-+ubuntu-22.04-s390x-all-system:
-  extends: .custom_runner_template
-  needs: []
-  stage: build
-@@ -35,7 +35,7 @@ ubuntu-22.04-s390x-all:
-  script:
-  - mkdir build
-  - cd build
-- - ../configure
-+ - ../configure --disable-user
-    || { cat config.log meson-logs/meson-log.txt; exit 1; }
-  - make --output-sync -j`nproc`
-  - make --output-sync -j`nproc` check
--- 
-2.34.1
-
+thanks
+-- PMM
 
