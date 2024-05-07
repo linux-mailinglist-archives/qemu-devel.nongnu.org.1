@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8DC8BDBDB
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EB38BDBD2
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4EZm-00037s-1c; Tue, 07 May 2024 02:45:22 -0400
+	id 1s4EZq-00038m-Fb; Tue, 07 May 2024 02:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZh-000366-08
+ id 1s4EZg-000365-RS
  for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:17 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZd-0004xu-UE
+ id 1s4EZf-000550-3m
  for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715064314; x=1746600314;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ZAnWuegHbLPuSZnA6eackL2uGPiM3H6HFgwU9RDIcpk=;
- b=XM2pOeQHxidBnUjYGxeKXgpHR4bwVwmoxnDPJN7BeLqc3UVJVRBWHD6K
- H0cbfojG3RIM2O5WxkWny08hup27EBYIIFffeTGnSWJIYWhG+rRkdEhza
- gIa0/XOA/+JBzdPj0rp/PZfzK+ykBLgW+iklCs1VfmECAcmo1htUe9n/Q
- ftMZr7UzGkDQUliMQQAAxMLddLPyAK+Krxcxb0ruxx8SJ2+TzZKjI/1f8
- MhufBc6czH6pMec0aJb7EkZiJtcGTw7ENlKaI3qWbgibSpzTqpYbDoq2r
- xdBRHHtZ+pDiJBP4drXPnmSThSXamoYaHUGngg2QQ8bOxrJ1eERYu8plv w==;
-X-CSE-ConnectionGUID: cZxZLW6kSMqYoZ3jof8l0g==
-X-CSE-MsgGUID: EKsqaEEvQzae+cAHOSKHng==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240211"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240211"
+ t=1715064315; x=1746600315;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=bFd4oSxT+3OuxTU6241PGfq4mw6h6aaCpEOi35TjN4M=;
+ b=eT3xpiBQJe4DpwgQ25U8sF5RU3NCRwGlIJ+LKF6fVQH9z6goEfFAVOVl
+ i3u7aQ3ItXk5j8+33h45pFZkv/619KtaOCQ2v9xBGlCJpDGcA1zNNHsgE
+ oYFuPTTYIJcL6EQYm4I0DSfbkxbxkzkl/RR98m68qzYSh7MNHd9jq7E0a
+ oBY+A7WXikFzOQZ562y14llf5/GBW0YZ7Tj/HWbR2Z3219+ZsfeBuZFe/
+ F/kolaDJoUpundul1FqVbK9s7FyCiXu1e1LRmHCZvgCfP1dzDqJ65wnQa
+ +WuLuAi67Hu1wvSFVYIiAud1lcYEKsSVeQDVqX80yAP0b12bbezy7toX6 Q==;
+X-CSE-ConnectionGUID: QnpaZsFLSZiKsLgN9sbEhg==
+X-CSE-MsgGUID: N+Vi9G9jT2SVMcJWiCJuTQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240215"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240215"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:11 -0700
-X-CSE-ConnectionGUID: vveMYWi5TU+d1fL4ZwvRqQ==
-X-CSE-MsgGUID: nU5hhprUTG2U29BcVXIUbg==
+ 06 May 2024 23:45:13 -0700
+X-CSE-ConnectionGUID: DpczNi9WRzyxRpESV0KdSQ==
+X-CSE-MsgGUID: klhrWXTZQ5qjIi74yUkZZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407501"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407506"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:09 -0700
+ 06 May 2024 23:45:11 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 00/11] VFIO: misc cleanups
-Date: Tue,  7 May 2024 14:42:41 +0800
-Message-Id: <20240507064252.457884-1-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 01/11] vfio/pci: Use g_autofree in vfio_realize
+Date: Tue,  7 May 2024 14:42:42 +0800
+Message-Id: <20240507064252.457884-2-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240507064252.457884-1-zhenzhong.duan@intel.com>
+References: <20240507064252.457884-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.10;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -79,65 +80,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Local pointer name is allocated before vfio_attach_device() call
+and freed after the call.
 
-This is a cleanup series to change functions in hw/vfio/ to return bool 
-when the error is passed through errp parameter, also some cleanup
-with g_autofree.
+Same for tmp when calling realpath().
 
-See discussion at https://lists.gnu.org/archive/html/qemu-devel/2024-04/msg04782.html
+Use 'g_autofree' to avoid the g_free() calls.
 
-This series processed below files:
-hw/vfio/container.c
-hw/vfio/iommufd.c
-hw/vfio/cpr.c
-backends/iommufd.c
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+---
+ hw/vfio/pci.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-So above files are clean now, there are still other files need processing
-in hw/vfio.
-
-Test done on x86 platform:
-vfio device hotplug/unplug with different backend
-reboot
-
-Thanks
-Zhenzhong
-
-Changelog:
-v2:
-- split out g_autofree code as a patch (Cédric)
-- add processing for more files
-
-Zhenzhong Duan (11):
-  vfio/pci: Use g_autofree in vfio_realize
-  vfio/pci: Use g_autofree in iommufd_cdev_get_info_iova_range()
-  vfio: Make VFIOIOMMUClass::attach_device() and its wrapper return bool
-  vfio: Make VFIOIOMMUClass::setup() return bool
-  vfio: Make VFIOIOMMUClass::add_window() and its wrapper return bool
-  vfio/container: Make vfio_connect_container() return bool
-  vfio/container: Make vfio_set_iommu() return bool
-  vfio/container: Make vfio_get_device() return bool
-  vfio/iommufd: Make iommufd_cdev_*() return bool
-  vfio/cpr: Make vfio_cpr_register_container() return bool
-  backends/iommufd: Make iommufd_backend_*() return bool
-
- include/hw/vfio/vfio-common.h         |   6 +-
- include/hw/vfio/vfio-container-base.h |  18 ++---
- include/sysemu/iommufd.h              |   6 +-
- backends/iommufd.c                    |  29 +++----
- hw/vfio/ap.c                          |   6 +-
- hw/vfio/ccw.c                         |   6 +-
- hw/vfio/common.c                      |   6 +-
- hw/vfio/container-base.c              |   8 +-
- hw/vfio/container.c                   |  81 +++++++++----------
- hw/vfio/cpr.c                         |   4 +-
- hw/vfio/iommufd.c                     | 109 +++++++++++---------------
- hw/vfio/pci.c                         |  12 ++-
- hw/vfio/platform.c                    |   7 +-
- hw/vfio/spapr.c                       |  28 +++----
- backends/trace-events                 |   4 +-
- 15 files changed, 147 insertions(+), 183 deletions(-)
-
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 64780d1b79..576b21e2bb 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2946,12 +2946,13 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     ERRP_GUARD();
+     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+-    char *tmp, *subsys;
++    char *subsys;
+     Error *err = NULL;
+     int i, ret;
+     bool is_mdev;
+     char uuid[UUID_STR_LEN];
+-    char *name;
++    g_autofree char *name = NULL;
++    g_autofree char *tmp = NULL;
+ 
+     if (vbasedev->fd < 0 && !vbasedev->sysfsdev) {
+         if (!(~vdev->host.domain || ~vdev->host.bus ||
+@@ -2982,7 +2983,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+      */
+     tmp = g_strdup_printf("%s/subsystem", vbasedev->sysfsdev);
+     subsys = realpath(tmp, NULL);
+-    g_free(tmp);
+     is_mdev = subsys && (strcmp(subsys, "/sys/bus/mdev") == 0);
+     free(subsys);
+ 
+@@ -3003,7 +3003,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ 
+     ret = vfio_attach_device(name, vbasedev,
+                              pci_device_iommu_address_space(pdev), errp);
+-    g_free(name);
+     if (ret) {
+         goto error;
+     }
 -- 
 2.34.1
 
