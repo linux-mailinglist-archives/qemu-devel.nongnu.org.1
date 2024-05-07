@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACD38BE1D7
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 14:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2108BE1D8
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 14:17:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4JkD-0002fd-FA; Tue, 07 May 2024 08:16:29 -0400
+	id 1s4JkM-0002rV-Jv; Tue, 07 May 2024 08:16:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4Jjh-0002UL-9N; Tue, 07 May 2024 08:15:57 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4Jje-0001AA-1u; Tue, 07 May 2024 08:15:57 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ee12baa01cso15404615ad.0; 
- Tue, 07 May 2024 05:15:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715084151; x=1715688951; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=J5kOGEZOH3kr5i5gRHOIyLGZC9Gv4+bB/EqJKIONsXo=;
- b=epoHi/z2y5mk0P7PMI/edmtoZe9ULZ+XkiHzot7XiA0FSZIeRhDgJDy4bzZzntXhzp
- uiYaMscSxzgTQA+3mEKNDdWV3IbJTq4p/UhRKVA92McaAj5NP1I8J9AejjQlE2Jirb6c
- HcNj+V3DaHJZlQvGjKPgOk5miVgdEqzw9zaFDWHtMhYoT+bxSmiqf3le2269Cn6eUhMd
- OyOYe3QZLBpd4uJLnFDwEXYDcE2+Lu3W51fChQON4Wo2vP1yDS3Bj271ICc1xi4uMR+s
- ivK/++NxiITW09A81WsdyBzDLOltVE1/0gA38+4MWWEd57U5dVlrUyzgvKOdvYIyb+Qi
- Wt4w==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s4Jjx-0002hA-5P
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 08:16:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s4Jju-0001BM-IZ
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 08:16:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715084169;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bgZwf+OJofzKjlUr04LDgMXG05JK4FwCCbz2PQ0UvOY=;
+ b=BHXxb/qsm8hgB2Ts0NtydHkI64YQI0hvKNDyoTTqqdG2Qpr33C8QioUNm35AgcjMvBZDOR
+ lZtVatovguXJ4b8XHM7a/P2W+7XjFzBj5MNDQiPBRFtLS2OZ5YugdyuVWP67ljlzTkKzvt
+ Xa7aR0HX88zcQby/KOt3dI0cxRzupsg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-198-qjNxqft7PFaDpQ6izA_rBA-1; Tue, 07 May 2024 08:16:08 -0400
+X-MC-Unique: qjNxqft7PFaDpQ6izA_rBA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-41bf6751b28so11242805e9.2
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 05:16:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715084151; x=1715688951;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=J5kOGEZOH3kr5i5gRHOIyLGZC9Gv4+bB/EqJKIONsXo=;
- b=M9kbL4DoG+ByD1Dz9nPhiQIeN7a0fvg8vh/wXY3m/p/pAnZPL7hlmllicIzJIpJaVb
- w5JNQNxxWLYwXXxRbDq6AKdd5Aq8aYJKCB2MVWFjCg9LBDUca3bsH6lIpTL5A2DKU3Mw
- pcOJv5SufQbLdonBMo08bEX1maPOUjhka//5giK+UC2tljGwccI0ApNZ/qcc3Uqf+AZ6
- vuDns0MuUnh7sLR6guuAW1yabWwLiTXj1awiiqjREkcasMPZ0bqBexvCqyt99joc9t3Q
- 6XlmLktdwRewVJo5GTkb2I09GHaC+8mp/5kGuCbIb8XDF0LQ4615vJuZlLMTkW34LdXl
- 0Osw==
+ d=1e100.net; s=20230601; t=1715084167; x=1715688967;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bgZwf+OJofzKjlUr04LDgMXG05JK4FwCCbz2PQ0UvOY=;
+ b=LuJxAE3nb49coT0mUYar+4s58cEMg1csevxcU4vpMR852lrWjjDGXvKvNL9fxFOMsz
+ xva61nDUURXS4ofCtu+J3igzYUWVdKLOrb+/wPiMy4dVReovjJWQPv6fwGDy4MT+IWKm
+ MUQgBuPA8cnH8qMUI27ENkmRJ3u0tVWuTjJFaogjH+vRYHJkobrqpe31+WFKzLL/bPxf
+ JcyTNEJWAdOJBFwkdR1b0vzSATvVznjhPt8Tt1wfsGYv9I6cQBQLGcaIchMTaLl7um7F
+ KhdC9h6m3X//v9s0nvCqAcb+dFkWT7n4ph2Txg7+27hn0s0dE/YHkJoKQDk7YZ1qtl5w
+ dWuA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXYAB1QdJsBQuUKii/rvTdrfvOuINgQltNult/BG8auCaw+/RuNhBoUXt0SynOijxsVo6a3mvfBpdH1iA8QArVmZJOthFjK7thE0dMk9/Ltvl1dFrYvoM6qz2g=
-X-Gm-Message-State: AOJu0Yx0mf2eYowx2NVJv9Wds4ZQoqT0QzCCimTY4e/EzKHgbggM7zhh
- /zjIjvMyUykz9ie/tMD7Dfpo6lGEuN4gwfbnsuz5/FCaKuFBnBpwv1llIg==
-X-Google-Smtp-Source: AGHT+IHGwe8boBTZqZ5RXe2A7AaKmBF3BZvlLew0yZXlMUWS995yiGp3pJ3oaTtIW8fOQqVXSPYfqQ==
-X-Received: by 2002:a17:902:c948:b0:1eb:61a4:a2bc with SMTP id
- i8-20020a170902c94800b001eb61a4a2bcmr16736004pla.43.1715084151537; 
- Tue, 07 May 2024 05:15:51 -0700 (PDT)
-Received: from localhost (220-245-239-57.tpgi.com.au. [220.245.239.57])
+ AJvYcCW7xG423cAX5XfrRFGam92hWcSXZ9ViJvZSxWPQhpxZ/iC38SoPLTqrjM1f2AhTRzKXpLsCsGTk71dT010K4czl5EM3fBU=
+X-Gm-Message-State: AOJu0YznHRD5yTsjyTYxQzww9sYhFJaveMywij6UgUCJ301KLMM3BgJT
+ XP+MG7DW1/AqmYBAPqXWQCqpKvr+XAmmQO7fgz+oxREaCwUbx77qpeWat9xHMznPToHST759N2D
+ btzZG8Mqyc86NR9ZL3BCR657UH23/zijcuZ487dkWHfRIKFh4snUE
+X-Received: by 2002:a05:600c:154d:b0:41d:7c48:5558 with SMTP id
+ f13-20020a05600c154d00b0041d7c485558mr9942349wmg.4.1715084167368; 
+ Tue, 07 May 2024 05:16:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7w3ShEFozqTWFC4/DOgKfFqUgSgkwC2sz2Uo8Rsuq1sTpp6rHjIgh5njg2knGBps2I9wvMg==
+X-Received: by 2002:a05:600c:154d:b0:41d:7c48:5558 with SMTP id
+ f13-20020a05600c154d00b0041d7c485558mr9942336wmg.4.1715084166998; 
+ Tue, 07 May 2024 05:16:06 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- kj6-20020a17090306c600b001ec48815491sm9910848plb.101.2024.05.07.05.15.49
+ p17-20020a05600c469100b0041b083e16e2sm23385788wmo.2.2024.05.07.05.16.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 May 2024 05:15:51 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 May 2024 22:15:46 +1000
-Message-Id: <D13EL7XP1XVE.2NI5UGPDDEX8N@gmail.com>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 25/28] target/ppc/mmu_common.c: Simplify
- ppc_booke_xlate()
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.17.0
-References: <cover.1714606359.git.balaton@eik.bme.hu>
- <b3caa952ce91c07bcc958a3662349418c5716673.1714606359.git.balaton@eik.bme.hu>
-In-Reply-To: <b3caa952ce91c07bcc958a3662349418c5716673.1714606359.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ Tue, 07 May 2024 05:16:06 -0700 (PDT)
+Message-ID: <63fd5fb0-7176-4e86-bf11-4e5e35b4b2fd@redhat.com>
+Date: Tue, 7 May 2024 14:16:05 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 02/19] vfio/container: Introduce
+ TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO device
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, mst@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, clement.mathieu--drif@eviden.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, chao.p.peng@intel.com
+References: <20240507092043.1172717-1-zhenzhong.duan@intel.com>
+ <20240507092043.1172717-3-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240507092043.1172717-3-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,199 +106,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Will review this if we can get -4 case removed...
+On 5/7/24 11:20, Zhenzhong Duan wrote:
+> TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO represents a host IOMMU device under
+> VFIO legacy container backend.
+> 
+> It will have its own realize implementation.
+> 
+> Suggested-by: Eric Auger <eric.auger@redhat.com>
+> Suggested-by: Cédric Le Goater <clg@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   include/hw/vfio/vfio-common.h | 3 +++
+>   hw/vfio/container.c           | 5 ++++-
+>   2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index e4c60374fa..05a199ce65 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -31,6 +31,7 @@
+>   #endif
+>   #include "sysemu/sysemu.h"
+>   #include "hw/vfio/vfio-container-base.h"
+> +#include "sysemu/host_iommu_device.h"
 
-Don't know if I'm too keen on doing the fetch branch first
-and asymmetric (if vs switch) checking of ret in the fetch
-vs data cases. I think with -4 case removed things will
-look much nicer.
+This breaks build on windows because <linux/iommufd.h> is included
+by <sysemu/host_iommu_device.h>. See patch 5.
+
 
 Thanks,
-Nick
 
-On Thu May 2, 2024 at 9:43 AM AEST, BALATON Zoltan wrote:
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->  target/ppc/mmu_common.c | 147 +++++++++++++++-------------------------
->  1 file changed, 56 insertions(+), 91 deletions(-)
->
-> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index d61c41d8c9..b76611da80 100644
-> --- a/target/ppc/mmu_common.c
-> +++ b/target/ppc/mmu_common.c
-> @@ -1261,106 +1261,71 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vad=
-dr eaddr,
->      }
-> =20
->      log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-> +    env->error_code =3D 0;
-> +    if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206 && ret =3D=3D -1) {
-> +        booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
-> +    }
->      if (access_type =3D=3D MMU_INST_FETCH) {
-> -        switch (ret) {
-> -        case -1:
-> +        if (ret =3D=3D -1) {
->              /* No matches in page tables or TLB */
-> -            switch (env->mmu_model) {
-> -            case POWERPC_MMU_BOOKE206:
-> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mm=
-u_idx);
-> -                /* fall through */
-> -            case POWERPC_MMU_BOOKE:
-> -                cs->exception_index =3D POWERPC_EXCP_ITLB;
-> -                env->error_code =3D 0;
-> -                env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> -                env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, acc=
-ess_type);
-> -                break;
-> -            default:
-> -                g_assert_not_reached();
-> -            }
-> -            break;
-> -        case -2:
-> -            /* Access rights violation */
-> -            cs->exception_index =3D POWERPC_EXCP_ISI;
-> -            env->error_code =3D 0;
-> -            break;
-> -        case -3:
-> -            /* No execute protection violation */
-> -            cs->exception_index =3D POWERPC_EXCP_ISI;
-> -            env->spr[SPR_BOOKE_ESR] =3D 0;
-> -            env->error_code =3D 0;
-> -            break;
-> -        case -4:
-> -            /* Direct store exception */
-> -            /* No code fetch is allowed in direct-store areas */
-> +            cs->exception_index =3D POWERPC_EXCP_ITLB;
-> +            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> +            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
-type);
-> +        } else {
->              cs->exception_index =3D POWERPC_EXCP_ISI;
-> -            env->error_code =3D 0;
-> -            break;
-> -        }
-> -    } else {
-> -        switch (ret) {
-> -        case -1:
-> -            /* No matches in page tables or TLB */
-> -            switch (env->mmu_model) {
-> -            case POWERPC_MMU_BOOKE206:
-> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mm=
-u_idx);
-> -                /* fall through */
-> -            case POWERPC_MMU_BOOKE:
-> -                cs->exception_index =3D POWERPC_EXCP_DTLB;
-> -                env->error_code =3D 0;
-> -                env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> -                env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, acc=
-ess_type);
-> -                break;
-> -            default:
-> -                g_assert_not_reached();
-> +            if (ret =3D=3D -3) {
-> +                /* No execute protection violation */
-> +                env->spr[SPR_BOOKE_ESR] =3D 0;
->              }
-> +        }
-> +        return false;
-> +    }
+C.
+
+
+>   
+>   #define VFIO_MSG_PREFIX "vfio %s: "
+>   
+> @@ -147,6 +148,8 @@ typedef struct VFIOGroup {
+>       bool ram_block_discard_allowed;
+>   } VFIOGroup;
+>   
+> +#define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
 > +
-> +    switch (ret) {
-> +    case -1:
-> +        /* No matches in page tables or TLB */
-> +        cs->exception_index =3D POWERPC_EXCP_DTLB;
-> +        env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> +        env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_type=
-);
-> +        break;
-> +    case -2:
-> +        /* Access rights violation */
-> +        cs->exception_index =3D POWERPC_EXCP_DSI;
-> +        env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> +        env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_type=
-);
-> +        break;
-> +    case -4:
-> +        /* Direct store exception */
-> +        env->spr[SPR_DAR] =3D eaddr;
-> +        switch (env->access_type) {
-> +        case ACCESS_FLOAT:
-> +            /* Floating point load/store */
-> +            cs->exception_index =3D POWERPC_EXCP_ALIGN;
-> +            env->error_code =3D POWERPC_EXCP_ALIGN_FP;
->              break;
-> -        case -2:
-> -            /* Access rights violation */
-> +        case ACCESS_RES:
-> +            /* lwarx, ldarx or stwcx. */
->              cs->exception_index =3D POWERPC_EXCP_DSI;
-> -            env->error_code =3D 0;
-> -            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> -            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
-type);
-> +            if (access_type =3D=3D MMU_DATA_STORE) {
-> +                env->spr[SPR_DSISR] =3D 0x06000000;
-> +            } else {
-> +                env->spr[SPR_DSISR] =3D 0x04000000;
-> +            }
->              break;
-> -        case -4:
-> -            /* Direct store exception */
-> -            switch (env->access_type) {
-> -            case ACCESS_FLOAT:
-> -                /* Floating point load/store */
-> -                cs->exception_index =3D POWERPC_EXCP_ALIGN;
-> -                env->error_code =3D POWERPC_EXCP_ALIGN_FP;
-> -                env->spr[SPR_DAR] =3D eaddr;
-> -                break;
-> -            case ACCESS_RES:
-> -                /* lwarx, ldarx or stwcx. */
-> -                cs->exception_index =3D POWERPC_EXCP_DSI;
-> -                env->error_code =3D 0;
-> -                env->spr[SPR_DAR] =3D eaddr;
-> -                if (access_type =3D=3D MMU_DATA_STORE) {
-> -                    env->spr[SPR_DSISR] =3D 0x06000000;
-> -                } else {
-> -                    env->spr[SPR_DSISR] =3D 0x04000000;
-> -                }
-> -                break;
-> -            case ACCESS_EXT:
-> -                /* eciwx or ecowx */
-> -                cs->exception_index =3D POWERPC_EXCP_DSI;
-> -                env->error_code =3D 0;
-> -                env->spr[SPR_DAR] =3D eaddr;
-> -                if (access_type =3D=3D MMU_DATA_STORE) {
-> -                    env->spr[SPR_DSISR] =3D 0x06100000;
-> -                } else {
-> -                    env->spr[SPR_DSISR] =3D 0x04100000;
-> -                }
-> -                break;
-> -            default:
-> -                printf("DSI: invalid exception (%d)\n", ret);
-> -                cs->exception_index =3D POWERPC_EXCP_PROGRAM;
-> -                env->error_code =3D POWERPC_EXCP_INVAL | POWERPC_EXCP_IN=
-VAL_INVAL;
-> -                env->spr[SPR_DAR] =3D eaddr;
-> -                break;
-> +        case ACCESS_EXT:
-> +            /* eciwx or ecowx */
-> +            cs->exception_index =3D POWERPC_EXCP_DSI;
-> +            if (access_type =3D=3D MMU_DATA_STORE) {
-> +                env->spr[SPR_DSISR] =3D 0x06100000;
-> +            } else {
-> +                env->spr[SPR_DSISR] =3D 0x04100000;
->              }
->              break;
-> +        default:
-> +            printf("DSI: invalid exception (%d)\n", ret);
-> +            cs->exception_index =3D POWERPC_EXCP_PROGRAM;
-> +            env->error_code =3D POWERPC_EXCP_INVAL | POWERPC_EXCP_INVAL_=
-INVAL;
-> +            break;
->          }
->      }
->      return false;
+>   typedef struct VFIODMABuf {
+>       QemuDmaBuf buf;
+>       uint32_t pos_x, pos_y, pos_updates;
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 86266f3b83..1b4fc2f3e8 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -1139,7 +1139,10 @@ static const TypeInfo types[] = {
+>           .name = TYPE_VFIO_IOMMU_LEGACY,
+>           .parent = TYPE_VFIO_IOMMU,
+>           .class_init = vfio_iommu_legacy_class_init,
+> -    },
+> +    }, {
+> +        .name = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO,
+> +        .parent = TYPE_HOST_IOMMU_DEVICE,
+> +    }
+>   };
+>   
+>   DEFINE_TYPES(types)
 
 
