@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA8E8BDE9B
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B88658BDEA6
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:44:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4HLY-0004Pb-90; Tue, 07 May 2024 05:42:52 -0400
+	id 1s4HLV-0004Of-Ht; Tue, 07 May 2024 05:42:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4HLG-0004Jr-By
+ id 1s4HLG-0004Jq-B1
  for qemu-devel@nongnu.org; Tue, 07 May 2024 05:42:35 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4HLE-0007QJ-9Z
+ id 1s4HLE-0007QX-Pr
  for qemu-devel@nongnu.org; Tue, 07 May 2024 05:42:34 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6ed3587b93bso1814043a34.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 02:42:31 -0700 (PDT)
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-5aa1bf6cb40so2028558eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 02:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715074950; x=1715679750;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715074951; x=1715679751;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ewN5YfXgUpF8Cx+aqolyklTQ+08U+mpSJMGlBwx0Dlg=;
- b=YvYgW7hFjIXFmikyyyYftrCtGZFE5u+AXqIHvc4eiKu1WQNQ+k1R/Pa01JhdetfKx5
- zqWplDi1Onw4kLONIWfmMg5L8XLZoZFtKFjej5l9ddAnr+ckP5dY0g5EfMga+GmDvL2Y
- 5sabjOlPyilcKL71ACW0/W8urAhpRSGCkKqs3YDGihZkbgfAe0l/GvBxPgY/OLaj9kkz
- 3OjNDzlbZ2W4b47XT+8XzgBm0n/nYQCYQT7CVrDyf75AUJClTN7jy+LN34kmvsvKcOJ0
- NtKvUeNyfp1dLxHKKwdolblGBDh+05lpyNpnVeMA0No8ln4NIqSpgj106DWRmO+GTvbP
- WklQ==
+ bh=VQRoBwM3VtnsocziBWRdu7rYUqFpcQLBHetkRLLTiYU=;
+ b=LMbbNQ7kd/cCVdVhY9bCb9lkOCosyI6Wb0OMNKvzQd0ldmsicpIb6n37ojB5f2R8l0
+ WLJDJ+58RdFNWD87d8dpkLQfAVsUC6kw0dXdagObPSm2WIpvT00ZvYAu/YNRTs6tcGjr
+ Q+cyuSo8RTcTVM5tQhvPvO/+7w80VXhPxin6Pw+jAZjMCq8+L6oCiWK0DcbOaTJOLPkV
+ 9g39h5rEHaO2fmTwRctVa+5jbF+zohlPhBD058UtsQKgoSDdW1hhVu07nwMK1GbYF93l
+ NSZ+ZYniZHWHy1mgC7Niqz1bYNEusfDl8sLSeCRkaYhUSpRSHGYAsMhUuNBWBx0mX2Nb
+ S//w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715074950; x=1715679750;
+ d=1e100.net; s=20230601; t=1715074951; x=1715679751;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ewN5YfXgUpF8Cx+aqolyklTQ+08U+mpSJMGlBwx0Dlg=;
- b=KPhaQkcBex3rpK9xqSBvU91DsDbhm0n3pOZW5T4hMhNRdMQOXVq57BvwDWyYmW511I
- EfReqs+hFU+g0HqYk04VCm8+JaxIwsIU/5OoLRiDLd1DL2ntw/PkEX2v5pekaa1XUJi4
- EZRM/Abrp7V2LvC6krbbej6w2Fg+4/MLPXR4UHS4fExJaTWLG4/c4xMldtUILTaRuKwu
- qVRhFl15Ur0kVrlfMtR6rQ/qO7Od5vxe0TomDAcraksUl2GXSOGVs/ivOiARcXRu7sFU
- 3x53DwUBhpLRbtWA7sKQWlTuUfu8IYcKvOpjqZSQE1wPjXuCvdEQa8EK3u9970UsuTmV
- Aq4g==
+ bh=VQRoBwM3VtnsocziBWRdu7rYUqFpcQLBHetkRLLTiYU=;
+ b=lYhhcQOpZWe94oAuEeaK0TR/KFnKR+U7YTDz6Rn0jux4FLW+XH4249ljrbq+9HFKjE
+ m6o5mg2sd7hzx4FRFsq2lFkafviZLo3PSTo0A6zMYNAhudTUGnyjlbwuAboi5ET2QrCs
+ uH9Pr8KrRXJbjbFnI0PPbYEq6g3cLvRgPeR/OIayw3w9r7aKCV+AD4SF+WNN5NYvWZcM
+ mFqffW43xTft6sULOZT+8BJD82YSCb/0U0XllzuWdyl27QWWAFIaYExjE2fjbrAovuCa
+ CDE5IDmx4GOo4VEZDFvbVBM7vniyCOwKtOWAJaNVY5vqCeJgl7+1cnlqcTOWfH5sH8Nu
+ KMyA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVO5mI7IvRTH+O8AayUgj9IZmKeT8knF8MpItpeNzy/x62Uo9XoIXAOcIXsm1XzwsSSegiRyfPcIbv5s3pGrq3/fw0REOo=
-X-Gm-Message-State: AOJu0Yzu8g1v6/jI5WUrX+RQOFsW/3Ay3UiuM8Rxsysn2T9cUMdJLhb9
- 8l0kqGrBhax2j+oGwO9K7//a9BthjZT55hwzVrpsuiEdh0O4Uobu7HwsSEqoSqn0rmF3L49XDN7
- QAvs=
-X-Google-Smtp-Source: AGHT+IHYzwVUdNOxjML2aJXwljgWyN/FbRxpDMsUPtArjV4772T89nd8x2l7CEDrrDx40hWBeIbBUA==
-X-Received: by 2002:a05:6870:40c7:b0:233:56e5:ff99 with SMTP id
- l7-20020a05687040c700b0023356e5ff99mr13847055oal.23.1715074950498; 
- Tue, 07 May 2024 02:42:30 -0700 (PDT)
+ AJvYcCV5ITn6MMFP9OV2JmOPKDpiAb2OkTFoh7m2ASmYOk7KlE3zrasPo/46HTqqHzqT2AM/xhQJlanP9cj5aHmsEafzYCn4QNE=
+X-Gm-Message-State: AOJu0Yz0IeKC2NuD57Ln8wDtXYq6RdT98CE/zz6Z6a2bToXO9Y6C7p3y
+ Oocqpn/5Vw+e9yS9JMePY3pRfL0mcdFb2Q1gpNaZzkIeNLvIgTiEFFZiD8yQUg4=
+X-Google-Smtp-Source: AGHT+IEG/0TuRLwzQxW/D1sjrN+5fUhu4/gTpvaJuEd30uRZlJBkD1RtlW187x6s3KB6l2+vTrI4Eg==
+X-Received: by 2002:a05:6870:c0cb:b0:239:876b:b23d with SMTP id
+ e11-20020a056870c0cb00b00239876bb23dmr15527133oad.24.1715074951638; 
+ Tue, 07 May 2024 02:42:31 -0700 (PDT)
 Received: from mnissler.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- p4-20020a62ab04000000b006f45257d3f7sm6434114pff.45.2024.05.07.02.42.29
+ p4-20020a62ab04000000b006f45257d3f7sm6434114pff.45.2024.05.07.02.42.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 02:42:30 -0700 (PDT)
+ Tue, 07 May 2024 02:42:31 -0700 (PDT)
 From: Mattias Nissler <mnissler@rivosinc.com>
 To: stefanha@redhat.com, qemu-devel@nongnu.org, peterx@redhat.com,
  jag.raman@oracle.com
@@ -71,16 +70,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>, john.levon@nutanix.com,
  Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH v9 4/5] vfio-user: Message-based DMA support
-Date: Tue,  7 May 2024 02:42:08 -0700
-Message-ID: <20240507094210.300566-5-mnissler@rivosinc.com>
+Subject: [PATCH v9 5/5] vfio-user: Fix config space access byte order
+Date: Tue,  7 May 2024 02:42:09 -0700
+Message-ID: <20240507094210.300566-6-mnissler@rivosinc.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240507094210.300566-1-mnissler@rivosinc.com>
 References: <20240507094210.300566-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=mnissler@rivosinc.com; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=mnissler@rivosinc.com; helo=mail-oo1-xc2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,172 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wire up support for DMA for the case where the vfio-user client does not
-provide mmap()-able file descriptors, but DMA requests must be performed
-via the VFIO-user protocol. This installs an indirect memory region,
-which already works for pci_dma_{read,write}, and pci_dma_map works
-thanks to the existing DMA bounce buffering support.
+PCI config space is little-endian, so on a big-endian host we need to
+perform byte swaps for values as they are passed to and received from
+the generic PCI config space access machinery.
 
-Note that while simple scenarios work with this patch, there's a known
-race condition in libvfio-user that will mess up the communication
-channel. See https://github.com/nutanix/libvfio-user/issues/279 for
-details as well as a proposed fix.
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
 ---
- hw/remote/trace-events    |   2 +
- hw/remote/vfio-user-obj.c | 100 ++++++++++++++++++++++++++++++++------
- 2 files changed, 87 insertions(+), 15 deletions(-)
+ hw/remote/vfio-user-obj.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/remote/trace-events b/hw/remote/trace-events
-index 0d1b7d56a5..358a68fb34 100644
---- a/hw/remote/trace-events
-+++ b/hw/remote/trace-events
-@@ -9,6 +9,8 @@ vfu_cfg_read(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x -> 0x%x"
- vfu_cfg_write(uint32_t offset, uint32_t val) "vfu: cfg: 0x%x <- 0x%x"
- vfu_dma_register(uint64_t gpa, size_t len) "vfu: registering GPA 0x%"PRIx64", %zu bytes"
- vfu_dma_unregister(uint64_t gpa) "vfu: unregistering GPA 0x%"PRIx64""
-+vfu_dma_read(uint64_t gpa, size_t len) "vfu: DMA read 0x%"PRIx64", %zu bytes"
-+vfu_dma_write(uint64_t gpa, size_t len) "vfu: DMA write 0x%"PRIx64", %zu bytes"
- vfu_bar_register(int i, uint64_t addr, uint64_t size) "vfu: BAR %d: addr 0x%"PRIx64" size 0x%"PRIx64""
- vfu_bar_rw_enter(const char *op, uint64_t addr) "vfu: %s request for BAR address 0x%"PRIx64""
- vfu_bar_rw_exit(const char *op, uint64_t addr) "vfu: Finished %s of BAR address 0x%"PRIx64""
 diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index d9b879e056..a15e291c9a 100644
+index a15e291c9a..0e93d7a7b4 100644
 --- a/hw/remote/vfio-user-obj.c
 +++ b/hw/remote/vfio-user-obj.c
-@@ -300,6 +300,63 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-     return count;
- }
- 
-+static MemTxResult vfu_dma_read(void *opaque, hwaddr addr, uint64_t *val,
-+                                unsigned size, MemTxAttrs attrs)
-+{
-+    MemoryRegion *region = opaque;
-+    vfu_ctx_t *vfu_ctx = VFU_OBJECT(region->owner)->vfu_ctx;
-+    uint8_t buf[sizeof(uint64_t)];
-+
-+    trace_vfu_dma_read(region->addr + addr, size);
-+
-+    g_autofree dma_sg_t *sg = g_malloc0(dma_sg_size());
-+    vfu_dma_addr_t vfu_addr = (vfu_dma_addr_t)(region->addr + addr);
-+    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_READ) < 0 ||
-+        vfu_sgl_read(vfu_ctx, sg, 1, buf) != 0) {
-+        return MEMTX_ERROR;
-+    }
-+
-+    *val = ldn_he_p(buf, size);
-+
-+    return MEMTX_OK;
-+}
-+
-+static MemTxResult vfu_dma_write(void *opaque, hwaddr addr, uint64_t val,
-+                                 unsigned size, MemTxAttrs attrs)
-+{
-+    MemoryRegion *region = opaque;
-+    vfu_ctx_t *vfu_ctx = VFU_OBJECT(region->owner)->vfu_ctx;
-+    uint8_t buf[sizeof(uint64_t)];
-+
-+    trace_vfu_dma_write(region->addr + addr, size);
-+
-+    stn_he_p(buf, size, val);
-+
-+    g_autofree dma_sg_t *sg = g_malloc0(dma_sg_size());
-+    vfu_dma_addr_t vfu_addr = (vfu_dma_addr_t)(region->addr + addr);
-+    if (vfu_addr_to_sgl(vfu_ctx, vfu_addr, size, sg, 1, PROT_WRITE) < 0 ||
-+        vfu_sgl_write(vfu_ctx, sg, 1, buf) != 0) {
-+        return MEMTX_ERROR;
-+    }
-+
-+    return MEMTX_OK;
-+}
-+
-+static const MemoryRegionOps vfu_dma_ops = {
-+    .read_with_attrs = vfu_dma_read,
-+    .write_with_attrs = vfu_dma_write,
-+    .endianness = DEVICE_HOST_ENDIAN,
-+    .valid = {
-+        .min_access_size = 1,
-+        .max_access_size = 8,
-+        .unaligned = true,
-+    },
-+    .impl = {
-+        .min_access_size = 1,
-+        .max_access_size = 8,
-+    },
-+};
-+
- static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
- {
-     VfuObject *o = vfu_get_private(vfu_ctx);
-@@ -308,17 +365,30 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
-     g_autofree char *name = NULL;
-     struct iovec *iov = &info->iova;
- 
--    if (!info->vaddr) {
--        return;
--    }
--
-     name = g_strdup_printf("mem-%s-%"PRIx64"", o->device,
--                           (uint64_t)info->vaddr);
-+                           (uint64_t)iov->iov_base);
- 
-     subregion = g_new0(MemoryRegion, 1);
- 
--    memory_region_init_ram_ptr(subregion, NULL, name,
--                               iov->iov_len, info->vaddr);
-+    if (info->vaddr) {
-+        memory_region_init_ram_ptr(subregion, OBJECT(o), name,
-+                                   iov->iov_len, info->vaddr);
-+    } else {
-+        /*
-+         * Note that I/O regions' MemoryRegionOps handle accesses of at most 8
-+         * bytes at a time, and larger accesses are broken down. However,
-+         * many/most DMA accesses are larger than 8 bytes and VFIO-user can
-+         * handle large DMA accesses just fine, thus this size restriction
-+         * unnecessarily hurts performance, in particular given that each
-+         * access causes a round trip on the VFIO-user socket.
-+         *
-+         * TODO: Investigate how to plumb larger accesses through memory
-+         * regions, possibly by amending MemoryRegionOps or by creating a new
-+         * memory region type.
-+         */
-+        memory_region_init_io(subregion, OBJECT(o), &vfu_dma_ops, subregion,
-+                              name, iov->iov_len);
-+    }
- 
-     dma_as = pci_device_iommu_address_space(o->pci_dev);
- 
-@@ -330,20 +400,20 @@ static void dma_register(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
- static void dma_unregister(vfu_ctx_t *vfu_ctx, vfu_dma_info_t *info)
- {
-     VfuObject *o = vfu_get_private(vfu_ctx);
-+    MemoryRegionSection mr_section;
-     AddressSpace *dma_as = NULL;
--    MemoryRegion *mr = NULL;
--    ram_addr_t offset;
- 
--    mr = memory_region_from_host(info->vaddr, &offset);
--    if (!mr) {
-+    dma_as = pci_device_iommu_address_space(o->pci_dev);
-+
-+    mr_section =
-+        memory_region_find(dma_as->root, (hwaddr)info->iova.iov_base, 1);
-+    if (!mr_section.mr) {
-         return;
-     }
- 
--    dma_as = pci_device_iommu_address_space(o->pci_dev);
--
--    memory_region_del_subregion(dma_as->root, mr);
-+    memory_region_del_subregion(dma_as->root, mr_section.mr);
- 
--    object_unparent((OBJECT(mr)));
-+    object_unparent((OBJECT(mr_section.mr)));
- 
-     trace_vfu_dma_unregister((uint64_t)info->iova.iov_base);
- }
+@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+     while (bytes > 0) {
+         len = (bytes > pci_access_width) ? pci_access_width : bytes;
+         if (is_write) {
+-            memcpy(&val, ptr, len);
++            val = ldn_le_p(ptr, len);
+             pci_host_config_write_common(o->pci_dev, offset,
+                                          pci_config_size(o->pci_dev),
+                                          val, len);
+@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+         } else {
+             val = pci_host_config_read_common(o->pci_dev, offset,
+                                               pci_config_size(o->pci_dev), len);
+-            memcpy(ptr, &val, len);
++            stn_le_p(ptr, len, val);
+             trace_vfu_cfg_read(offset, val);
+         }
+         offset += len;
 -- 
 2.43.2
 
