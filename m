@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCFB68BDE26
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7E18BDE24
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4H2Y-0008Lr-BT; Tue, 07 May 2024 05:23:14 -0400
+	id 1s4H2d-0008Vw-N2; Tue, 07 May 2024 05:23:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4H2W-0008Kr-Fy
- for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:12 -0400
+ id 1s4H2a-0008Ni-7a
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:16 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4H2U-00008K-Sx
- for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:12 -0400
+ id 1s4H2Y-00008K-J4
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715073790; x=1746609790;
+ t=1715073794; x=1746609794;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=p7P8aFLeoc4zseIGlhl+TlPbNc3qYP0grqWyfXSUiLo=;
- b=UyjSdZQxAUl6YuxjED1m8+qGX41Y2d/sA40zbA3fbnGn++Bez9msdQgY
- qsYRQzmHEQIpskPNQ4gD1qUA8e0QAkMckQEwNsrpS8vx77P4wn2hQ8IYo
- MznDOsOPeAvsR/z0bxGDvFDYaTyIsA0gjrS4YLqGBr5HyreaxQqH6z3S5
- ZO4GEvd5Lqkm9qqqZsE+PhyvFiNPpaFy59CHwHYetB99zeO0RwwUV0yDW
- R8Cnh/99KCw1HiG5wC30ieOkpvX7KniDoj7nFw2/7yW8wNK8ka5d4cLtn
- t8HL1FC6EESnNV9NXzZnpPF2EjWJ6a+O+0NrZWA7uO774oaf5wF+Jtx74 A==;
-X-CSE-ConnectionGUID: si6I/AfBRRKeGh2UppY0Kg==
-X-CSE-MsgGUID: dTrOn2PlTd2GMQuXgcFSoQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10785185"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="10785185"
+ bh=HyMVnPMTTEUPdrB/hPu5Ki1bM4XiJMJIG5t/CiWycQo=;
+ b=IZcxQFb3pOr1EbmiKSyhJRMK4CqxJM8udfbB1D0HguZrL5Ofuj4QITMx
+ N57L+Cym8151I17jgmjcncU9diOx5snNFHQvx/eGVIOruJxjSYvqzkd/k
+ bzukjMhy7qUQw3Ggv5Tes15KDtBBvUfw729WSyC6X7mRUPEeZHE4Wdx8G
+ b6Vc/rIxXdiQGqciwCPB+kttTF7k6JxBP04JP96YMCMqt8ljqbiHS7Nm7
+ lmlbNzwmtR0rdklN7z0NG1+VJaa9O+OV9aJkqHdedQ2ZDakxJ4pdvwm/h
+ 3+QsLDkERx/Xyoq9WW49MCJ99zptzJzuZXIYJUfKaaZKIEhl0nnjUlnnx A==;
+X-CSE-ConnectionGUID: x1g8tC/9RyCmmQRkzKmRPQ==
+X-CSE-MsgGUID: U/d7zMnqSACYcvYc4c+79Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="10785192"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="10785192"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 02:23:09 -0700
-X-CSE-ConnectionGUID: +eggQQB2RIeAkkyFRoHxDA==
-X-CSE-MsgGUID: YDQtqEWPSSi1YX+a0gGm/Q==
+ 07 May 2024 02:23:13 -0700
+X-CSE-ConnectionGUID: qR6OjBf3TLuihySds+RiXQ==
+X-CSE-MsgGUID: 0rGw4IQASL6k/0LZoM17kQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28553249"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28553258"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2024 02:23:06 -0700
+ 07 May 2024 02:23:10 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,10 +51,10 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v4 02/19] vfio/container: Introduce
- TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO device
-Date: Tue,  7 May 2024 17:20:26 +0800
-Message-Id: <20240507092043.1172717-3-zhenzhong.duan@intel.com>
+Subject: [PATCH v4 03/19] backends/iommufd: Introduce abstract
+ TYPE_HOST_IOMMU_DEVICE_IOMMUFD device
+Date: Tue,  7 May 2024 17:20:27 +0800
+Message-Id: <20240507092043.1172717-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507092043.1172717-1-zhenzhong.duan@intel.com>
 References: <20240507092043.1172717-1-zhenzhong.duan@intel.com>
@@ -85,56 +85,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO represents a host IOMMU device under
-VFIO legacy container backend.
+TYPE_HOST_IOMMU_DEVICE_IOMMUFD represents a host IOMMU device under
+iommufd backend.
 
-It will have its own realize implementation.
+It will have its own .get_cap() implementation.
 
-Suggested-by: Eric Auger <eric.auger@redhat.com>
+Opportunistically, add missed header to include/sysemu/iommufd.h.
+
 Suggested-by: Cédric Le Goater <clg@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h | 3 +++
- hw/vfio/container.c           | 5 ++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/sysemu/iommufd.h | 16 ++++++++++++++++
+ backends/iommufd.c       | 35 ++++++++++++++++++-----------------
+ 2 files changed, 34 insertions(+), 17 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index e4c60374fa..05a199ce65 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -31,6 +31,7 @@
- #endif
- #include "sysemu/sysemu.h"
- #include "hw/vfio/vfio-container-base.h"
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index 293bfbe967..f6e6d6e1f9 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -1,9 +1,23 @@
++/*
++ * iommufd container backend declaration
++ *
++ * Copyright (C) 2024 Intel Corporation.
++ * Copyright Red Hat, Inc. 2024
++ *
++ * Authors: Yi Liu <yi.l.liu@intel.com>
++ *          Eric Auger <eric.auger@redhat.com>
++ *          Zhenzhong Duan <zhenzhong.duan@intel.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
+ #ifndef SYSEMU_IOMMUFD_H
+ #define SYSEMU_IOMMUFD_H
+ 
+ #include "qom/object.h"
+ #include "exec/hwaddr.h"
+ #include "exec/cpu-common.h"
 +#include "sysemu/host_iommu_device.h"
  
- #define VFIO_MSG_PREFIX "vfio %s: "
- 
-@@ -147,6 +148,8 @@ typedef struct VFIOGroup {
-     bool ram_block_discard_allowed;
- } VFIOGroup;
- 
-+#define TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO TYPE_HOST_IOMMU_DEVICE "-legacy-vfio"
+ #define TYPE_IOMMUFD_BACKEND "iommufd"
+ OBJECT_DECLARE_TYPE(IOMMUFDBackend, IOMMUFDBackendClass, IOMMUFD_BACKEND)
+@@ -33,4 +47,6 @@ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly);
+ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+                               hwaddr iova, ram_addr_t size);
 +
- typedef struct VFIODMABuf {
-     QemuDmaBuf buf;
-     uint32_t pos_x, pos_y, pos_updates;
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 86266f3b83..1b4fc2f3e8 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -1139,7 +1139,10 @@ static const TypeInfo types[] = {
-         .name = TYPE_VFIO_IOMMU_LEGACY,
-         .parent = TYPE_VFIO_IOMMU,
-         .class_init = vfio_iommu_legacy_class_init,
--    },
++#define TYPE_HOST_IOMMU_DEVICE_IOMMUFD TYPE_HOST_IOMMU_DEVICE "-iommufd"
+ #endif
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index c506afbdac..012f18d8d8 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -208,23 +208,24 @@ int iommufd_backend_unmap_dma(IOMMUFDBackend *be, uint32_t ioas_id,
+     return ret;
+ }
+ 
+-static const TypeInfo iommufd_backend_info = {
+-    .name = TYPE_IOMMUFD_BACKEND,
+-    .parent = TYPE_OBJECT,
+-    .instance_size = sizeof(IOMMUFDBackend),
+-    .instance_init = iommufd_backend_init,
+-    .instance_finalize = iommufd_backend_finalize,
+-    .class_size = sizeof(IOMMUFDBackendClass),
+-    .class_init = iommufd_backend_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_USER_CREATABLE },
+-        { }
++static const TypeInfo types[] = {
++    {
++        .name = TYPE_IOMMUFD_BACKEND,
++        .parent = TYPE_OBJECT,
++        .instance_size = sizeof(IOMMUFDBackend),
++        .instance_init = iommufd_backend_init,
++        .instance_finalize = iommufd_backend_finalize,
++        .class_size = sizeof(IOMMUFDBackendClass),
++        .class_init = iommufd_backend_class_init,
++        .interfaces = (InterfaceInfo[]) {
++            { TYPE_USER_CREATABLE },
++            { }
++        }
 +    }, {
-+        .name = TYPE_HOST_IOMMU_DEVICE_LEGACY_VFIO,
++        .name = TYPE_HOST_IOMMU_DEVICE_IOMMUFD,
 +        .parent = TYPE_HOST_IOMMU_DEVICE,
-+    }
++        .abstract = true,
+     }
  };
  
- DEFINE_TYPES(types)
+-static void register_types(void)
+-{
+-    type_register_static(&iommufd_backend_info);
+-}
+-
+-type_init(register_types);
++DEFINE_TYPES(types)
 -- 
 2.34.1
 
