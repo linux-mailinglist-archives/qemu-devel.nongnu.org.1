@@ -2,72 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BBD8BDE0A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D3D8BDE3B
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:30:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4H2R-0008J0-1f; Tue, 07 May 2024 05:23:07 -0400
+	id 1s4H9Z-0005Tm-JD; Tue, 07 May 2024 05:30:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s4H2O-0008Ik-N6
- for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:04 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4H9R-0005KX-0q; Tue, 07 May 2024 05:30:22 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s4H2N-00007R-9F
- for qemu-devel@nongnu.org; Tue, 07 May 2024 05:23:04 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a59c04839caso585563266b.2
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 02:23:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4H9O-0001Im-Gd; Tue, 07 May 2024 05:30:20 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-23bd61fbd64so2016639fac.0; 
+ Tue, 07 May 2024 02:30:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715073780; x=1715678580; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+48BOP0KWPtZgfp4Doobp5+mRrlLoRtclMPFjpAog2w=;
- b=nKJgw1cA0rjqWJ2XlP/T0KQ33rrCH4Rj5Fs5iO8+i+KYo43q9zONR/wI1rs72vSHJp
- GCRy81Z8cV9U2qteWDiDRPDVzyZJgO/4KE3FBlwx7Ucvcy/14fYcQO3yNu34DUo8Cyam
- X4OOBrkX+1SHr+A2zeY3QmqdXuhxlmTwOJqel85v0IiUofqg1v86eaLVKsBxnqnTb9WI
- CF7ayQTQJj/kUmLUTEHv9PRFaTumIVbw5G2xd9Y3DquWjoHWdv/InIv5s3WmmxHchNgU
- BkNuejzP2BPbjs59B4rwl8qSekZMxu66banSrYdJIqd8Z9Q/x4eBl8qbW434GkztsFym
- UXag==
+ d=gmail.com; s=20230601; t=1715074215; x=1715679015; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EWfeKHutv1hGflkS2VGbGxzwr5SuEdP4sDX10fX2SfM=;
+ b=Hjpq8SCmXjUKydCZceZDCEw49HxnQHCgj+UVCgO/9CdMnjrJSYPPGLe4tiDyIGU6V/
+ VQN8V2tmzQCSeSg5HB3qHLZK+JMWnxdmfc5jaH9XXG6XNL3Qj8JDW+k5T296r/MaoPTQ
+ z7T5ovaumIU0A02jJj2e/QItxGz1AEHNcUCJ6ubcY0DF02ku/MhamyxKa7NUyHpk+cQA
+ nUaaMZMpHTFBvZyYjgvGgPw6gg/syItdVLjseoBb3P9wR1CRm4DRZzpaB7gTtg7MR7cW
+ WIk2/TFa12w0cYIkaB+n42VhD/PDNee7z/nPyQambulTosM5DIKxcBdNrtq32kIip6Aq
+ 7JZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715073780; x=1715678580;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+48BOP0KWPtZgfp4Doobp5+mRrlLoRtclMPFjpAog2w=;
- b=WKyxOR9qS8fzrIjgDzGUisbaPksY8T0NG1Yigi61ncKV5GvsWgif/0WVMRh6yQq29S
- lnQ551mDWh6Jqa3M3ixjXT3QqLamwTTTcW64Hh5If6tBR7qAs6r+hJwrW8bIDgdZzjpD
- LLf1oCmIsATybNYc4IOT+nTc3Ya7EAQLa6Yr2ZRikX2lwtSbHcy3bVD9J3dZMwcIPs5s
- HiERFprSyC6pIyYRl09BEYtr6JYLQdoFhM2vC8R44j0deMcH1OIMFH+hPGYf9BG4Sz+3
- AmPNr/DKqhAqOA2DgrSuryaRhMLxFSXJjoFCzFolmR0D5detTLbmRJEZ7sUe1vFX8OWL
- tsQw==
-X-Gm-Message-State: AOJu0YwJT1WF6tXd9WSmJvM3PARk7NF21DkQU7cNpxatzWLYotMnLyVM
- WIw3rrmcVHqF1nt65u2Q/GOL35R+gWcDWCg/Dk0VZ1yi9AmNMXXtRsk6v/CPDUlKawOzhGLez4E
- xUkBU3zvtiW0f0R9oXhN3RVREwDQRUsjQmvelOA==
-X-Google-Smtp-Source: AGHT+IGEcraNUs1+6cCHzrrRat5Jk9I2ULuxD2n3WlM8sK1vbN5IAa5DrIhPS73EdfJEZNetgTO6Hm06QUHOmoOCpzw=
-X-Received: by 2002:a50:cd93:0:b0:572:8aab:441c with SMTP id
- p19-20020a50cd93000000b005728aab441cmr8210109edi.26.1715073780275; Tue, 07
- May 2024 02:23:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240506202020.422514-1-richard.henderson@linaro.org>
-In-Reply-To: <20240506202020.422514-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 7 May 2024 10:22:49 +0100
-Message-ID: <CAFEAcA8qs-uVcuFKez8QKsA92QRjpD_YxbosXKf7sDao9OiR4A@mail.gmail.com>
-Subject: Re: [PATCH] gitlab: Drop --static from s390x linux-user build
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, alex.bennee@linaro.org, thuth@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x630.google.com
+ d=1e100.net; s=20230601; t=1715074215; x=1715679015;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=EWfeKHutv1hGflkS2VGbGxzwr5SuEdP4sDX10fX2SfM=;
+ b=qMfRpKjpCWi7spFfghXKsNdID7IrMIZCX2UlFzggfLz+jAdM2EgZAA4SK4+4Q1N1R+
+ xtRuVlGWmKF2pPqvpW0ozgKR4DtCpjE2j+SWDXFcjYeMyod7YeUg2k2NANhB+dZebX2e
+ 0S6ImV3fyPCN5wn6kz+Q7/1BmY1rsDxIa4H/c4lxJZ9iB6YCua2LDetlH+tbwGBDr1Yy
+ 2WokEdEu/y4OTcinXMtHRB7z04aY14rbCCDhf5uqh1Rkdf2n+3BJcLXEoodK4AdaIrSu
+ YH0FToi7dkHYquLFH+v50LTj/DUM9eQrfNGTR6viG/85c10Kmqxw3PTevgOF1YorSsp/
+ 971A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5oc06y+9iQC2d3fQPIVXP2xm3JncMG1EzcHxiWwkIcYqoKbcgPiUL2W8AMUfS0MoPYaHBdu40P+kcDcrO8aBgQFA6CBwPxxHQPHutB3y8mfU+qrG+zf5kLCY=
+X-Gm-Message-State: AOJu0YySQvCNNsuEeDRdTZck2lIgSrx3TSpYKHzPqZVUOP6sWXYt7A8r
+ O/+E/HmSJ8cmAt5W143nlNWMJsYW/kkHlmdDPsxICKM6WhRBTJSi
+X-Google-Smtp-Source: AGHT+IGszwckOo03BCbmwxcedgt6/V6VZqoxlnATo/pc1oiIS/lPKH6goA52nMlQG+5BYrntDq5Sjg==
+X-Received: by 2002:a05:6871:5223:b0:23d:a4ce:b82f with SMTP id
+ ht35-20020a056871522300b0023da4ceb82fmr14961793oac.5.1715074215010; 
+ Tue, 07 May 2024 02:30:15 -0700 (PDT)
+Received: from localhost (220-245-239-57.tpgi.com.au. [220.245.239.57])
+ by smtp.gmail.com with ESMTPSA id
+ fx13-20020a056a00820d00b006ead1509847sm8942436pfb.216.2024.05.07.02.30.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 07 May 2024 02:30:14 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 07 May 2024 19:30:09 +1000
+Message-Id: <D13B2EWZN5GU.3L686RNTRX35A@gmail.com>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v2 07/28] target/ppc/mmu_common.c: Remove unneeded local
+ variable
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1714606359.git.balaton@eik.bme.hu>
+ <99eb8fb0b992a30e9588226c6c1010185cf1341b.1714606359.git.balaton@eik.bme.hu>
+In-Reply-To: <99eb8fb0b992a30e9588226c6c1010185cf1341b.1714606359.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=npiggin@gmail.com; helo=mail-oa1-x2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,20 +95,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 6 May 2024 at 21:21, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Thu May 2, 2024 at 9:43 AM AEST, BALATON Zoltan wrote:
+> In mmubooke_check_tlb() and mmubooke206_check_tlb() we can assign the
+> value directly the the destination, no need to have a separate local
+> variable for it.
 >
-> The host does not have the correct libraries installed for static pie,
-> which causes host/guest address space interference for some tests.
-> There's no real gain from linking statically, so drop it.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+
+For a minute I thought this changed the interface to now update
+ctx->prot even if the lookup failed, but it already does that in
+some cases so... no issue.
+
+If this was more widely used API we'd rather change it to never
+update *prot on failure, but okay we can do this.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
+>  target/ppc/mmu_common.c | 30 +++++++++++++-----------------
+>  1 file changed, 13 insertions(+), 17 deletions(-)
+>
+> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+> index b0aca8ec02..74c3b814c9 100644
+> --- a/target/ppc/mmu_common.c
+> +++ b/target/ppc/mmu_common.c
+> @@ -627,8 +627,6 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcem=
+b_tlb_t *tlb,
+>                                hwaddr *raddr, int *prot, target_ulong add=
+ress,
+>                                MMUAccessType access_type, int i)
+>  {
+> -    int prot2;
+> -
+>      if (!mmubooke_check_pid(env, tlb, raddr, address, i)) {
+>          qemu_log_mask(CPU_LOG_MMU, "%s: TLB entry not found\n", __func__=
+);
+>          return -1;
+> @@ -643,17 +641,16 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppc=
+emb_tlb_t *tlb,
+>      }
+> =20
+>      if (FIELD_EX64(env->msr, MSR, PR)) {
+> -        prot2 =3D tlb->prot & 0xF;
+> +        *prot =3D tlb->prot & 0xF;
+>      } else {
+> -        prot2 =3D (tlb->prot >> 4) & 0xF;
+> +        *prot =3D (tlb->prot >> 4) & 0xF;
+>      }
+> -    *prot =3D prot2;
+> -    if (prot2 & prot_for_access_type(access_type)) {
+> +    if (*prot & prot_for_access_type(access_type)) {
+>          qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
+>          return 0;
+>      }
+> =20
+> -    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, prot=
+2);
+> +    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, *pro=
+t);
+>      return access_type =3D=3D MMU_INST_FETCH ? -3 : -2;
+>  }
+> =20
+> @@ -794,7 +791,6 @@ static int mmubooke206_check_tlb(CPUPPCState *env, pp=
+cmas_tlb_t *tlb,
+>                                   target_ulong address,
+>                                   MMUAccessType access_type, int mmu_idx)
+>  {
+> -    int prot2 =3D 0;
+>      uint32_t epid;
+>      bool as, pr;
+>      bool use_epid =3D mmubooke206_get_as(env, mmu_idx, &epid, &as, &pr);
+> @@ -840,34 +836,34 @@ found_tlb:
+>          return -1;
+>      }
+> =20
+> +    *prot =3D 0;
+>      if (pr) {
+>          if (tlb->mas7_3 & MAS3_UR) {
+> -            prot2 |=3D PAGE_READ;
+> +            *prot |=3D PAGE_READ;
+>          }
+>          if (tlb->mas7_3 & MAS3_UW) {
+> -            prot2 |=3D PAGE_WRITE;
+> +            *prot |=3D PAGE_WRITE;
+>          }
+>          if (tlb->mas7_3 & MAS3_UX) {
+> -            prot2 |=3D PAGE_EXEC;
+> +            *prot |=3D PAGE_EXEC;
+>          }
+>      } else {
+>          if (tlb->mas7_3 & MAS3_SR) {
+> -            prot2 |=3D PAGE_READ;
+> +            *prot |=3D PAGE_READ;
+>          }
+>          if (tlb->mas7_3 & MAS3_SW) {
+> -            prot2 |=3D PAGE_WRITE;
+> +            *prot |=3D PAGE_WRITE;
+>          }
+>          if (tlb->mas7_3 & MAS3_SX) {
+> -            prot2 |=3D PAGE_EXEC;
+> +            *prot |=3D PAGE_EXEC;
+>          }
+>      }
+> -    *prot =3D prot2;
+> -    if (prot2 & prot_for_access_type(access_type)) {
+> +    if (*prot & prot_for_access_type(access_type)) {
+>          qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
+>          return 0;
+>      }
+> =20
+> -    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, prot=
+2);
+> +    qemu_log_mask(CPU_LOG_MMU, "%s: no prot match: %x\n", __func__, *pro=
+t);
+>      return access_type =3D=3D MMU_INST_FETCH ? -3 : -2;
+>  }
+> =20
 
-The lack of rcrt1.o seems to be a bug in the Ubuntu Jammy (22.04) libc6-dev
-packages. It is present in the versions in Mantic (23.04) and Noble
-(24.04).
-
-thanks
--- PMM
 
