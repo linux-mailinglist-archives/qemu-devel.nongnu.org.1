@@ -2,118 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D498BEEE5
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 23:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C18238BEFBD
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 00:22:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4SRd-00059U-Hs; Tue, 07 May 2024 17:33:53 -0400
+	id 1s4TAy-0003Dt-UB; Tue, 07 May 2024 18:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4SRb-000590-Fm
- for qemu-devel@nongnu.org; Tue, 07 May 2024 17:33:51 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4SRZ-0007jh-Vs
- for qemu-devel@nongnu.org; Tue, 07 May 2024 17:33:51 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 30748345DE;
- Tue,  7 May 2024 21:33:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715117628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7kkhSZ3cvi9TiBQo7ca6OAX4phYJ5pn+wkNKv6vj4Y=;
- b=1fyl78267tJVjsQxFjTa3hcZOJCjD4SiDpjD5pAsjZhZmJ1BKV0BrMzt83te+CA39sTNCa
- TBQ42ovY6mVoxFTPbQbAHZHeHABsAxHQfZNk51pVxsrxMaqKYTCZ+R3KyXGIQYzw7IyDKK
- ZCrStYIkmM4cUv6kbNv5yBY8UQua8oA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715117628;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7kkhSZ3cvi9TiBQo7ca6OAX4phYJ5pn+wkNKv6vj4Y=;
- b=rrOcjRjiiJLE3joWx3qe1khx0MybgsrcrO8PTQrhEibxAq0V1+9zGyu9c3iel/KM2Doo/D
- MHeU1rMLZuUvpCDA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1fyl7826;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rrOcjRji
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715117628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7kkhSZ3cvi9TiBQo7ca6OAX4phYJ5pn+wkNKv6vj4Y=;
- b=1fyl78267tJVjsQxFjTa3hcZOJCjD4SiDpjD5pAsjZhZmJ1BKV0BrMzt83te+CA39sTNCa
- TBQ42ovY6mVoxFTPbQbAHZHeHABsAxHQfZNk51pVxsrxMaqKYTCZ+R3KyXGIQYzw7IyDKK
- ZCrStYIkmM4cUv6kbNv5yBY8UQua8oA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715117628;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=B7kkhSZ3cvi9TiBQo7ca6OAX4phYJ5pn+wkNKv6vj4Y=;
- b=rrOcjRjiiJLE3joWx3qe1khx0MybgsrcrO8PTQrhEibxAq0V1+9zGyu9c3iel/KM2Doo/D
- MHeU1rMLZuUvpCDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ADFAB139CB;
- Tue,  7 May 2024 21:33:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id cK+XHDueOmboRQAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 07 May 2024 21:33:47 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Igor
- Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe Mathieu-Daude
- <philmd@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Daniel P.
- Berrange" <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: Re: [PATCH V1 08/26] migration: vmstate_info_void_ptr
-In-Reply-To: <1714406135-451286-9-git-send-email-steven.sistare@oracle.com>
-References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
- <1714406135-451286-9-git-send-email-steven.sistare@oracle.com>
-Date: Tue, 07 May 2024 18:33:45 -0300
-Message-ID: <87le4ll32e.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <jean-christophe@blues-softwares.net>)
+ id 1s4TAw-0003Db-Ar
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 18:20:42 -0400
+Received: from mx.franceserv.fr ([62.4.19.99])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jean-christophe@blues-softwares.net>)
+ id 1s4TAt-0003zV-T5
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 18:20:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=blues-softwares.net;
+ s=fsh1; t=1715120435;
+ bh=ZJZfRWUxBw3d2Y6Gw5qtw7aXYN10/ANcqrPSbs9wd2I=;
+ h=Date:Subject:From:To:From;
+ b=sKhswfedaceH5y6IY5QEPLmLQMfsqhMlohN+0Mg4XpfxoEeZWc7nnxA9AorUrKpOR
+ rdjm0kMEVIk9pNx9USbV0xH7JT0VIvxbXRr2xAy+o2jZkN2S9N8QfAxPz9QFTZh39C
+ BbVlqMIOJNei7LBrn/ZtJzweM0WKqJ167fdGtNkc2JRTWEDixi5UJK7Cefd/QCuuUJ
+ 1dlCP9gTwfnQy7EcPvayehlEMbK29mKcana54b+qfF8k0T/DJSDBLCeJmJnBkC+Bmu
+ Ikljo+Q3XBjdQQlQ7xbcvtoZ7I2AxyKW8XGJ8aKJ5r4VHgaLn8oiavLP7Wnu6ULbX5
+ Tg5LH7UTWK/iw==
+Date: Wed, 08 May 2024 00:20:32 +0200
+Subject: How unsubscribe 
+Message-ID: <1bcaad65-48f0-408b-88dd-814361934fe6@email.android.com>
+X-Android-Message-ID: <1bcaad65-48f0-408b-88dd-814361934fe6@email.android.com>
+From: Jean-Christophe <jean-christophe@blues-softwares.net>
+To: qemu-devel@nongnu.org
+Importance: Normal
+X-Priority: 3
+X-MSMail-Priority: Normal
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-5.00 / 50.00]; BAYES_HAM(-2.99)[99.96%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim]; SUSPICIOUS_RECIPS(1.50)[];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCPT_COUNT_TWELVE(0.00)[12]; MIME_TRACE(0.00)[0:+];
- FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_TLS_ALL(0.00)[];
- TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FREEMAIL_CC(0.00)[redhat.com,habkost.net,gmail.com,linaro.org,oracle.com];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- TAGGED_RCPT(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- MISSING_XM_UA(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 30748345DE
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -5.00
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
+X-Abuse-Reports-To: abuse@franceserv.fr
+X-Spam-Score: 1.80
+X-Spamd-Bar: +
+Received-SPF: pass client-ip=62.4.19.99;
+ envelope-from=jean-christophe@blues-softwares.net; helo=mx.franceserv.fr
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,12 +67,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
+PGRpdiBkaXI9J2F1dG8nPkhlbGxvLDxkaXYgZGlyPSJhdXRvIj5Ib3cgdW5zdWJzY3JpYmUgPzwv
+ZGl2PjxkaXYgZGlyPSJhdXRvIj5EZWFyJm5ic3A7PC9kaXY+PC9kaXY+
 
-> Define VMSTATE_VOID_PTR so the value of a pointer (but not its target)
-> can be saved in the migration stream.  This will be needed for CPR.
->
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
