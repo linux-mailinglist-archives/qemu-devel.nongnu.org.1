@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12CA8BE085
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3087D8BE08E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 12:59:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4IV3-0005Eq-7B; Tue, 07 May 2024 06:56:45 -0400
+	id 1s4IV8-0005NZ-59; Tue, 07 May 2024 06:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUl-0004tF-Uz
+ id 1s4IUm-0004uL-FL
  for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4IUh-0002nu-OL
- for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:26 -0400
+ id 1s4IUi-0002oK-Cq
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 06:56:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715079382;
+ s=mimecast20190719; t=1715079383;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iZskpahCL8fMZ3dnYfpNiV+O41Ks34W1d8N4wIdihHY=;
- b=UircwwWAbpbDGU/NqOWQUm2EyoHVQDqWFbZgXo2UvV8aKFg/ZSN0y5J7L0vyktRa+0mVtK
- MNFYukX1X+DqmBQHm7atXqGLQmfdNdgsLefUn9td4KeKnq6Mz5EdVuZBnAKoPlXhKscxTi
- wdOBsZQaoAxXW3ZJPYBwBtVhYekArAQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CEpDyUKulqMJAILlx9bT2KyS4H1JorB2/FN7/WZ3adA=;
+ b=LGIUZMRkhltjXwIfUQ2yxkO84ziQ23dZrepxGohEDEllRq50yO1MKoeIzcnEhCrjAmGqvo
+ xHnLp/oh1+Y6rMpoQ7m2sWDS8k/Kh4iFuBftcoHQigH16MKyMP/axwiHWn87o75G56vS7Q
+ gSwYPa5W29hOQeTNbzXvMnCEke1/g9k=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-UYa4qWZfPEycikP14oyf_g-1; Tue, 07 May 2024 06:56:19 -0400
-X-MC-Unique: UYa4qWZfPEycikP14oyf_g-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59e9ac4c74so45500266b.2
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:19 -0700 (PDT)
+ us-mta-222-x5gpE6tjM_KFbcsI1WuAUw-1; Tue, 07 May 2024 06:56:22 -0400
+X-MC-Unique: x5gpE6tjM_KFbcsI1WuAUw-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-51b0eed7614so2402840e87.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 03:56:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715079378; x=1715684178;
+ d=1e100.net; s=20230601; t=1715079380; x=1715684180;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iZskpahCL8fMZ3dnYfpNiV+O41Ks34W1d8N4wIdihHY=;
- b=nbfj/U4Vcp2Z8tcFSri0xgxU3i7fy7s+Leg05SAMDVqkK07n6ig1kPI7ZcaG3M9xPp
- QaEe5I6rcVS8XbR2SepszYrPXPyxNLulbT+baVXExOWf01aZdlH55c05ahBahUTP9Izl
- XpHddtxj6uwFCTnA6H7nx80Kt+Cvu9EtvSlX6lrZZpwKo74gkhU8hG3mj4v2ZBg83oM2
- b6BRFr2fVL7U+lRaKUEMK2CG34txCVOgzygOPZ1iD7kJOQBcXbXXRLH9DDPU5tmT3Q6J
- pWdfjxVPp4uUv/oNhmfhFE4dvQvH9FjGZWgm9edsJ7xyFL99d8RqiwvEJVjnvftjR/Rg
- fAkQ==
-X-Gm-Message-State: AOJu0YxBJgNpV/FENqNmPqf0dJJeVrB5F1i2e3/yTy1F9p9EAhMeDyU3
- sLi+hRCz5SIg4C3/yXBmXpJvOjyZ2t5PVUaywRrAxaBbauvdBUaGhsXXn+U+e3Ng766IqtVIVcP
- AcF+isTyMkw2B027n7UxXhKpnXqb/coZFxB+e2VkJk28HIENt3fMSVtaKJKmPORYCjt+eRg0ys8
- O4B6e9/tyX//GVRfKWQt/guATV3XpY2oHP4rqY
-X-Received: by 2002:a17:906:c141:b0:a59:bdb7:73f4 with SMTP id
- dp1-20020a170906c14100b00a59bdb773f4mr6341644ejc.61.1715079378004; 
- Tue, 07 May 2024 03:56:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFlvzahWRjcgB9CFQ6MGRs4XBtUI00tbsz6Fm/AnyhxuXFrUtbJS8meZbkVrURwhwPFmPGsxw==
-X-Received: by 2002:a17:906:c141:b0:a59:bdb7:73f4 with SMTP id
- dp1-20020a170906c14100b00a59bdb773f4mr6341628ejc.61.1715079377536; 
- Tue, 07 May 2024 03:56:17 -0700 (PDT)
+ bh=CEpDyUKulqMJAILlx9bT2KyS4H1JorB2/FN7/WZ3adA=;
+ b=TTSUJ19vIpE2er8NaI+9301zH50Nf0/wHww8tbpoQLknj3K5y1Hf5y9y/rzM/6tMPV
+ MPFOqpVnyyB7VSA/JT0QpELwzgMzzB6Ho0D36X+Dw8pe7jFvP8e3DONkzx1Wn+2Qr6F4
+ 6qT2LCLiGEUeKLtRfOStP7CcPANa3vqNJi/mpV69tonxyyULBySeim0aT+mvw73kknip
+ t8JTmwlY+QA9NLoz7x/vZy61dVQ78vwxd1G3yFTM7KvFDd+LDvGoKxBELqBC9hwfD1FC
+ DcKMtFloYPVBetWi3uqpYlRsLUrAq6JZQ22uVGQMB8qBVfw3T3FSJ2DovDqYZLgq3Esr
+ ScbA==
+X-Gm-Message-State: AOJu0YyD1cVaNlUdFdEx38vgpms1SKdG/IT8LIDCcSssI0QLZ/6Z4Ue0
+ WSQ9NiBmKGpr6699AtFWpnLXax1mN1mWzphzVjqZCau2Oe20WMcGMjxpupDQtfsPAW1v9RI/RPj
+ sZ+zhIClUFdyhYKABTVE1kGYa6jKPtRE3ZQBLHIxZfFM0Qz80ZT9y3dwQRrhi+WnbbeW76r6XOq
+ PxgWtFyTFaksQweGffouqnOlwfDeqYahogWxY1
+X-Received: by 2002:a05:6512:2117:b0:51b:bb22:f21 with SMTP id
+ q23-20020a056512211700b0051bbb220f21mr10033122lfr.38.1715079380357; 
+ Tue, 07 May 2024 03:56:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiK2GpYmHcvFADHi9k2ipPDXaOoA1FY0C18Rr59sct7ycqS+VKLxHzzAQMxSakVDuIHMOFag==
+X-Received: by 2002:a05:6512:2117:b0:51b:bb22:f21 with SMTP id
+ q23-20020a056512211700b0051bbb220f21mr10033105lfr.38.1715079379969; 
+ Tue, 07 May 2024 03:56:19 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- hg12-20020a1709072ccc00b00a59b6eed3c4sm3380061ejc.45.2024.05.07.03.56.16
+ gf12-20020a170906e20c00b00a5884e0ad1asm6292989ejb.33.2024.05.07.03.56.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 03:56:17 -0700 (PDT)
+ Tue, 07 May 2024 03:56:19 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/26] target/i386: extract gen_far_call/jmp,
- reordering temporaries
-Date: Tue,  7 May 2024 12:55:26 +0200
-Message-ID: <20240507105538.180704-15-pbonzini@redhat.com>
+Subject: [PULL 15/26] target/i386: allow instructions with more than one
+ immediate
+Date: Tue,  7 May 2024 12:55:27 +0200
+Message-ID: <20240507105538.180704-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240507105538.180704-1-pbonzini@redhat.com>
 References: <20240507105538.180704-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,173 +101,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract the code into new functions, and swap T0/T1 so that T0 corresponds
-to the first immediate in the instruction stream.
+While keeping decode->immediate for convenience and for 4-operand instructions,
+store the immediate in X86DecodedOp as well.  This enables instructions
+with more than one immediate such as ENTER.  It can also be used for far
+calls and jumps.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 93 +++++++++++++++++++++----------------
- 1 file changed, 53 insertions(+), 40 deletions(-)
+ target/i386/tcg/decode-new.h     | 17 ++++++++++++-----
+ target/i386/tcg/decode-new.c.inc |  2 +-
+ target/i386/tcg/emit.c.inc       |  4 +++-
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 8bc1828a6bc..e5672df9b94 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -2512,12 +2512,13 @@ static inline void gen_op_movl_T0_seg(DisasContext *s, X86Seg seg_reg)
-                      offsetof(CPUX86State,segs[seg_reg].selector));
- }
+diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
+index 15e6bfef4b1..8ffde8d1cd6 100644
+--- a/target/i386/tcg/decode-new.h
++++ b/target/i386/tcg/decode-new.h
+@@ -271,16 +271,23 @@ typedef struct X86DecodedOp {
+     bool has_ea;
+     int offset;   /* For MMX and SSE */
  
--static inline void gen_op_movl_seg_T0_vm(DisasContext *s, X86Seg seg_reg)
-+static void gen_op_movl_seg_real(DisasContext *s, X86Seg seg_reg, TCGv seg)
+-    /*
+-     * This field is used internally by macros OP0_PTR/OP1_PTR/OP2_PTR,
+-     * do not access directly!
+-     */
+-    TCGv_ptr v_ptr;
++    union {
++	target_ulong imm;
++        /*
++         * This field is used internally by macros OP0_PTR/OP1_PTR/OP2_PTR,
++         * do not access directly!
++         */
++        TCGv_ptr v_ptr;
++    };
+ } X86DecodedOp;
+ 
+ struct X86DecodedInsn {
+     X86OpEntry e;
+     X86DecodedOp op[3];
++    /*
++     * Rightmost immediate, for convenience since most instructions have
++     * one (and also for 4-operand instructions).
++     */
+     target_ulong immediate;
+     AddressParts mem;
+ 
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 1e792426ff5..c6fd7a053bd 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1473,7 +1473,7 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+     case X86_TYPE_I:  /* Immediate */
+     case X86_TYPE_J:  /* Relative offset for a jump */
+         op->unit = X86_OP_IMM;
+-        decode->immediate = insn_get_signed(env, s, op->ot);
++        decode->immediate = op->imm = insn_get_signed(env, s, op->ot);
+         break;
+ 
+     case X86_TYPE_L:  /* The upper 4 bits of the immediate select a 128-bit register */
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index a64186b8957..fc065caae79 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -259,7 +259,7 @@ static void gen_load(DisasContext *s, X86DecodedInsn *decode, int opn, TCGv v)
+         }
+         break;
+     case X86_OP_IMM:
+-        tcg_gen_movi_tl(v, decode->immediate);
++        tcg_gen_movi_tl(v, op->imm);
+         break;
+ 
+     case X86_OP_MMX:
+@@ -283,6 +283,8 @@ static void gen_load(DisasContext *s, X86DecodedInsn *decode, int opn, TCGv v)
+ static TCGv_ptr op_ptr(X86DecodedInsn *decode, int opn)
  {
--    tcg_gen_ext16u_tl(s->T0, s->T0);
--    tcg_gen_st32_tl(s->T0, tcg_env,
-+    TCGv selector = tcg_temp_new();
-+    tcg_gen_ext16u_tl(selector, seg);
-+    tcg_gen_st32_tl(selector, tcg_env,
-                     offsetof(CPUX86State,segs[seg_reg].selector));
--    tcg_gen_shli_tl(cpu_seg_base[seg_reg], s->T0, 4);
-+    tcg_gen_shli_tl(cpu_seg_base[seg_reg], selector, 4);
- }
- 
- /* move T0 to seg_reg and compute if the CPU state may change. Never
-@@ -2537,13 +2538,45 @@ static void gen_movl_seg_T0(DisasContext *s, X86Seg seg_reg)
-             s->base.is_jmp = DISAS_EOB_NEXT;
-         }
-     } else {
--        gen_op_movl_seg_T0_vm(s, seg_reg);
-+        gen_op_movl_seg_real(s, seg_reg, s->T0);
-         if (seg_reg == R_SS) {
-             s->base.is_jmp = DISAS_EOB_INHIBIT_IRQ;
-         }
+     X86DecodedOp *op = &decode->op[opn];
++
++    assert(op->unit == X86_OP_MMX || op->unit == X86_OP_SSE);
+     if (op->v_ptr) {
+         return op->v_ptr;
      }
- }
- 
-+static void gen_far_call(DisasContext *s)
-+{
-+    TCGv_i32 new_cs = tcg_temp_new_i32();
-+    tcg_gen_trunc_tl_i32(new_cs, s->T1);
-+    if (PE(s) && !VM86(s)) {
-+        gen_helper_lcall_protected(tcg_env, new_cs, s->T0,
-+                                   tcg_constant_i32(s->dflag - 1),
-+                                   eip_next_tl(s));
-+    } else {
-+        TCGv_i32 new_eip = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(new_eip, s->T0);
-+        gen_helper_lcall_real(tcg_env, new_cs, new_eip,
-+                              tcg_constant_i32(s->dflag - 1),
-+                              eip_next_i32(s));
-+    }
-+    s->base.is_jmp = DISAS_JUMP;
-+}
-+
-+static void gen_far_jmp(DisasContext *s)
-+{
-+    if (PE(s) && !VM86(s)) {
-+        TCGv_i32 new_cs = tcg_temp_new_i32();
-+        tcg_gen_trunc_tl_i32(new_cs, s->T1);
-+        gen_helper_ljmp_protected(tcg_env, new_cs, s->T0,
-+                                  eip_next_tl(s));
-+    } else {
-+        gen_op_movl_seg_real(s, R_CS, s->T1);
-+        gen_op_jmp_v(s, s->T0);
-+    }
-+    s->base.is_jmp = DISAS_JUMP;
-+}
-+
- static void gen_svm_check_intercept(DisasContext *s, uint32_t type)
- {
-     /* no SVM activated; fast case */
-@@ -3654,23 +3687,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             if (mod == 3) {
-                 goto illegal_op;
-             }
--            gen_op_ld_v(s, ot, s->T1, s->A0);
-+            gen_op_ld_v(s, ot, s->T0, s->A0);
-             gen_add_A0_im(s, 1 << ot);
--            gen_op_ld_v(s, MO_16, s->T0, s->A0);
--        do_lcall:
--            if (PE(s) && !VM86(s)) {
--                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
--                gen_helper_lcall_protected(tcg_env, s->tmp2_i32, s->T1,
--                                           tcg_constant_i32(dflag - 1),
--                                           eip_next_tl(s));
--            } else {
--                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
--                tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T1);
--                gen_helper_lcall_real(tcg_env, s->tmp2_i32, s->tmp3_i32,
--                                      tcg_constant_i32(dflag - 1),
--                                      eip_next_i32(s));
--            }
--            s->base.is_jmp = DISAS_JUMP;
-+            gen_op_ld_v(s, MO_16, s->T1, s->A0);
-+            gen_far_call(s);
-             break;
-         case 4: /* jmp Ev */
-             if (dflag == MO_16) {
-@@ -3684,19 +3704,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             if (mod == 3) {
-                 goto illegal_op;
-             }
--            gen_op_ld_v(s, ot, s->T1, s->A0);
-+            gen_op_ld_v(s, ot, s->T0, s->A0);
-             gen_add_A0_im(s, 1 << ot);
--            gen_op_ld_v(s, MO_16, s->T0, s->A0);
--        do_ljmp:
--            if (PE(s) && !VM86(s)) {
--                tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
--                gen_helper_ljmp_protected(tcg_env, s->tmp2_i32, s->T1,
--                                          eip_next_tl(s));
--            } else {
--                gen_op_movl_seg_T0_vm(s, R_CS);
--                gen_op_jmp_v(s, s->T1);
--            }
--            s->base.is_jmp = DISAS_JUMP;
-+            gen_op_ld_v(s, MO_16, s->T1, s->A0);
-+            gen_far_jmp(s);
-             break;
-         case 6: /* push Ev */
-             gen_push_v(s, s->T0);
-@@ -5136,7 +5147,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             /* pop selector */
-             gen_add_A0_im(s, 1 << dflag);
-             gen_op_ld_v(s, dflag, s->T0, s->A0);
--            gen_op_movl_seg_T0_vm(s, R_CS);
-+            gen_op_movl_seg_real(s, R_CS, s->T0);
-             /* add stack offset */
-             gen_stack_update(s, val + (2 << dflag));
-         }
-@@ -5181,10 +5192,11 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             offset = insn_get(env, s, ot);
-             selector = insn_get(env, s, MO_16);
- 
--            tcg_gen_movi_tl(s->T0, selector);
--            tcg_gen_movi_tl(s->T1, offset);
-+            tcg_gen_movi_tl(s->T0, offset);
-+            tcg_gen_movi_tl(s->T1, selector);
-         }
--        goto do_lcall;
-+        gen_far_call(s);
-+        break;
-     case 0xe9: /* jmp im */
-         {
-             int diff = (dflag != MO_16
-@@ -5205,10 +5217,11 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             offset = insn_get(env, s, ot);
-             selector = insn_get(env, s, MO_16);
- 
--            tcg_gen_movi_tl(s->T0, selector);
--            tcg_gen_movi_tl(s->T1, offset);
-+            tcg_gen_movi_tl(s->T0, offset);
-+            tcg_gen_movi_tl(s->T1, selector);
-         }
--        goto do_ljmp;
-+        gen_far_jmp(s);
-+        break;
-     case 0xeb: /* jmp Jb */
-         {
-             int diff = (int8_t)insn_get(env, s, MO_8);
 -- 
 2.45.0
 
