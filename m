@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DB08BD9E1
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 05:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7568BD9DD
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 05:50:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Bpn-0004kN-5K; Mon, 06 May 2024 23:49:43 -0400
+	id 1s4Bpp-0004mH-1M; Mon, 06 May 2024 23:49:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1s4BpZ-0004iU-Tz
- for qemu-devel@nongnu.org; Mon, 06 May 2024 23:49:30 -0400
+ id 1s4Bpj-0004kh-31
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 23:49:39 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1s4BpQ-0003Oz-Ry
- for qemu-devel@nongnu.org; Mon, 06 May 2024 23:49:29 -0400
+ (envelope-from <maobibo@loongson.cn>) id 1s4BpQ-0003PA-RB
+ for qemu-devel@nongnu.org; Mon, 06 May 2024 23:49:37 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxuemzpDlmnqkIAA--.11255S3;
+ by gateway (Coremail) with SMTP id _____8BxtOqzpDlmn6kIAA--.11384S3;
  Tue, 07 May 2024 11:49:07 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxrlexpDlmi4sTAA--.33863S5; 
- Tue, 07 May 2024 11:49:06 +0800 (CST)
+ AQAAf8CxrlexpDlmi4sTAA--.33863S6; 
+ Tue, 07 May 2024 11:49:07 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 3/6] hw/loongarch: Refine fwcfg memory map
-Date: Tue,  7 May 2024 11:49:01 +0800
-Message-Id: <20240507034904.2391129-4-maobibo@loongson.cn>
+Subject: [PATCH v2 4/6] hw/loongarch: Refine system dram memory region
+Date: Tue,  7 May 2024 11:49:02 +0800
+Message-Id: <20240507034904.2391129-5-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240507034904.2391129-1-maobibo@loongson.cn>
 References: <20240507034904.2391129-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxrlexpDlmi4sTAA--.33863S5
+X-CM-TRANSID: AQAAf8CxrlexpDlmi4sTAA--.33863S6
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,114 +64,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Memory map table for fwcfg is used for UEFI BIOS, UEFI BIOS uses the first
-entry from fwcfg memory map as the first memory HOB, the second memory HOB
-will be used if the first memory HOB is used up.
+For system dram memory region, it is not necessary to use numa node
+information. There is only low memory region and high memory region.
 
-Memory map table for fwcfg does not care about numa node, however in
-generic the first memory HOB is part of numa node0, so that runtime
-memory of UEFI which is allocated from the first memory HOB is located
-at numa node0.
+Remove numa node information for ddr memory region here, it can reduce
+memory region number about LoongArch virt machine.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/loongarch/virt.c | 60 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 3 deletions(-)
+ hw/loongarch/virt.c | 55 ++++++++++++++-------------------------------
+ 1 file changed, 17 insertions(+), 38 deletions(-)
 
 diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index db76bc94f8..aca8290795 100644
+index aca8290795..5abfe0a9d7 100644
 --- a/hw/loongarch/virt.c
 +++ b/hw/loongarch/virt.c
-@@ -914,6 +914,62 @@ static const MemoryRegionOps loongarch_qemu_ops = {
-     },
- };
- 
-+static void fw_cfg_add_memory(MachineState *ms)
-+{
-+    hwaddr base, size, ram_size, gap;
-+    int nb_numa_nodes, nodes;
-+    NodeInfo *numa_info;
-+
-+    ram_size = ms->ram_size;
-+    base = VIRT_LOWMEM_BASE;
-+    gap = VIRT_LOWMEM_SIZE;
-+    nodes = nb_numa_nodes = ms->numa_state->num_nodes;
-+    numa_info = ms->numa_state->nodes;
-+    if (!nodes) {
-+        nodes = 1;
-+    }
-+
-+    /* add fw_cfg memory map of node0 */
-+    if (nb_numa_nodes) {
-+        size = numa_info[0].node_mem;
-+    } else {
-+        size = ram_size;
-+    }
-+
-+    if (size >= gap) {
-+        memmap_add_entry(base, gap, 1);
-+        size -= gap;
-+        base = VIRT_HIGHMEM_BASE;
-+        gap = ram_size - VIRT_LOWMEM_SIZE;
-+    }
-+
-+    if (size) {
-+        memmap_add_entry(base, size, 1);
-+        base += size;
-+    }
-+
-+    if (nodes < 2) {
-+        return;
-+    }
-+
-+    /* add fw_cfg memory map of other nodes */
-+    size = ram_size - numa_info[0].node_mem;
-+    gap  = VIRT_LOWMEM_BASE + VIRT_LOWMEM_SIZE;
-+    if (base < gap && (base + size) > gap) {
-+        /*
-+         * memory map for the maining nodes splited into two part
-+         *   lowram:  [base, +(gap - base))
-+         *   highram: [VIRT_HIGHMEM_BASE, +(size - (gap - base)))
-+         */
-+        memmap_add_entry(base, gap - base, 1);
-+        size -= gap - base;
-+        base = VIRT_HIGHMEM_BASE;
-+    }
-+
-+   if (size)
-+        memmap_add_entry(base, size, 1);
-+}
-+
- static void loongarch_init(MachineState *machine)
+@@ -974,18 +974,13 @@ static void loongarch_init(MachineState *machine)
  {
      LoongArchCPU *lacpu;
-@@ -962,9 +1018,9 @@ static void loongarch_init(MachineState *machine)
-     fdt_add_cpu_nodes(lams);
+     const char *cpu_model = machine->cpu_type;
+-    ram_addr_t offset = 0;
+-    ram_addr_t ram_size = machine->ram_size;
+-    uint64_t highram_size = 0, phyAddr = 0;
+     MemoryRegion *address_space_mem = get_system_memory();
+     LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
+-    int nb_numa_nodes = machine->numa_state->num_nodes;
+-    NodeInfo *numa_info = machine->numa_state->nodes;
+     int i;
++    hwaddr base, size, ram_size = machine->ram_size;
+     const CPUArchIdList *possible_cpus;
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+     CPUState *cpu;
+-    char *ramName = NULL;
  
+     if (!cpu_model) {
+         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
+@@ -1020,41 +1015,27 @@ static void loongarch_init(MachineState *machine)
      fdt_add_memory_nodes(machine);
-+    fw_cfg_add_memory(machine);
+     fw_cfg_add_memory(machine);
  
-     /* Node0 memory */
--    memmap_add_entry(VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 1);
-     memory_region_init_alias(&lams->lowmem, NULL, "loongarch.node0.lowram",
-                              machine->ram, offset, VIRT_LOWMEM_SIZE);
-     memory_region_add_subregion(address_space_mem, phyAddr, &lams->lowmem);
-@@ -977,7 +1033,6 @@ static void loongarch_init(MachineState *machine)
-         highram_size = ram_size - VIRT_LOWMEM_SIZE;
+-    /* Node0 memory */
+-    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.node0.lowram",
+-                             machine->ram, offset, VIRT_LOWMEM_SIZE);
+-    memory_region_add_subregion(address_space_mem, phyAddr, &lams->lowmem);
+-
+-    offset += VIRT_LOWMEM_SIZE;
+-    if (nb_numa_nodes > 0) {
+-        assert(numa_info[0].node_mem > VIRT_LOWMEM_SIZE);
+-        highram_size = numa_info[0].node_mem - VIRT_LOWMEM_SIZE;
+-    } else {
+-        highram_size = ram_size - VIRT_LOWMEM_SIZE;
++    size = ram_size;
++    base = VIRT_LOWMEM_BASE;
++    if (size > VIRT_LOWMEM_SIZE) {
++        size = VIRT_LOWMEM_SIZE;
      }
-     phyAddr = VIRT_HIGHMEM_BASE;
--    memmap_add_entry(phyAddr, highram_size, 1);
-     memory_region_init_alias(&lams->highmem, NULL, "loongarch.node0.highram",
-                               machine->ram, offset, highram_size);
-     memory_region_add_subregion(address_space_mem, phyAddr, &lams->highmem);
-@@ -992,7 +1047,6 @@ static void loongarch_init(MachineState *machine)
-         memory_region_init_alias(nodemem, NULL, ramName, machine->ram,
-                                  offset,  numa_info[i].node_mem);
-         memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
--        memmap_add_entry(phyAddr, numa_info[i].node_mem, 1);
-         offset += numa_info[i].node_mem;
-         phyAddr += numa_info[i].node_mem;
+-    phyAddr = VIRT_HIGHMEM_BASE;
+-    memory_region_init_alias(&lams->highmem, NULL, "loongarch.node0.highram",
+-                              machine->ram, offset, highram_size);
+-    memory_region_add_subregion(address_space_mem, phyAddr, &lams->highmem);
+-
+-    /* Node1 - Nodemax memory */
+-    offset += highram_size;
+-    phyAddr += highram_size;
+-
+-    for (i = 1; i < nb_numa_nodes; i++) {
+-        MemoryRegion *nodemem = g_new(MemoryRegion, 1);
+-        ramName = g_strdup_printf("loongarch.node%d.ram", i);
+-        memory_region_init_alias(nodemem, NULL, ramName, machine->ram,
+-                                 offset,  numa_info[i].node_mem);
+-        memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
+-        offset += numa_info[i].node_mem;
+-        phyAddr += numa_info[i].node_mem;
++
++    memory_region_init_alias(&lams->lowmem, NULL, "loongarch.lowram",
++                              machine->ram, base, size);
++    memory_region_add_subregion(address_space_mem, base, &lams->lowmem);
++    base += size;
++    if (ram_size - size) {
++        base = VIRT_HIGHMEM_BASE;
++        memory_region_init_alias(&lams->highmem, NULL, "loongarch.highram",
++                machine->ram, VIRT_LOWMEM_BASE + size, ram_size - size);
++        memory_region_add_subregion(address_space_mem, base, &lams->highmem);
++        base += ram_size - size;
      }
+ 
+     /* initialize device memory address space */
+     if (machine->ram_size < machine->maxram_size) {
+         ram_addr_t device_mem_size = machine->maxram_size - machine->ram_size;
+-        hwaddr device_mem_base;
+ 
+         if (machine->ram_slots > ACPI_MAX_RAM_SLOTS) {
+             error_report("unsupported amount of memory slots: %"PRIu64,
+@@ -1068,9 +1049,7 @@ static void loongarch_init(MachineState *machine)
+                          "%d bytes", TARGET_PAGE_SIZE);
+             exit(EXIT_FAILURE);
+         }
+-        /* device memory base is the top of high memory address. */
+-        device_mem_base = ROUND_UP(VIRT_HIGHMEM_BASE + highram_size, 1 * GiB);
+-        machine_memory_devices_init(machine, device_mem_base, device_mem_size);
++        machine_memory_devices_init(machine, base, device_mem_size);
+     }
+ 
+     /* load the BIOS image. */
 -- 
 2.39.3
 
