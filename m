@@ -2,129 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D572C8BE404
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 15:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F18548BE40D
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 15:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Kt7-00065n-9j; Tue, 07 May 2024 09:29:45 -0400
+	id 1s4Kuf-00074F-IN; Tue, 07 May 2024 09:31:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1s4Kt2-00064k-PA
- for qemu-devel@nongnu.org; Tue, 07 May 2024 09:29:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1s4KuS-0006zE-2C
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 09:31:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1s4Kt1-0004El-7E
- for qemu-devel@nongnu.org; Tue, 07 May 2024 09:29:40 -0400
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1s4KuP-0004dN-HR
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 09:31:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715088576;
+ s=mimecast20190719; t=1715088659;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jeBh9he9L3RYYnPUwQGI0wQVWgoBLGbRAPnfXnK0nQo=;
- b=Fa6FgKD0bsnqZzFsMoKsmpG5CgihlHnJkmebNPZ1HpjxH5K5D7ekTlFqp6AKR96CAZu1rQ
- rB0RtAOjiZUyT4oWQThidsustJ7d3DFrFuP85rByVNtB0GQwIff1BJ0cd4Xjoeb0ZUBZ6B
- cpHtzL4lgzBs2rRVWMimFp/SPjvOsE4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=mSxVLygJ03xrEvM8RQU8DJe7UVHN1OiJgL7KHQ9arvA=;
+ b=N3k7i81pkSWQfyQ24xPTxcgD1XSsT/Bp8KPxBhVItitm2of1BOlBWC/N8lN9agXN8JWexS
+ Kx5pKOuXFx1vKsgYHO8J6I2MRF8Zkras9IWWFP/1ILp4Z6/6PdUzQu/yH9KDRKHyJZx+By
+ erggHV7UTf2QzX7ngVoR8eX6+fEy6qg=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-YbnPWwsrP--bRs6u35VVmA-1; Tue, 07 May 2024 09:29:34 -0400
-X-MC-Unique: YbnPWwsrP--bRs6u35VVmA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-41a38f6e371so13431715e9.2
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 06:29:34 -0700 (PDT)
+ us-mta-395-oW2JNKmMMSSOoRdvIhKIkA-1; Tue, 07 May 2024 09:30:57 -0400
+X-MC-Unique: oW2JNKmMMSSOoRdvIhKIkA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-572baf39435so5119871a12.1
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 06:30:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715088573; x=1715693373;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jeBh9he9L3RYYnPUwQGI0wQVWgoBLGbRAPnfXnK0nQo=;
- b=NC83HVgOGnBlTVOktIrtySUWybKvnFDofQbDSLqn0Vqgr7FAy66IYOWxCFVn6nops5
- itidTUQDbHR+kI6Nf7G9gHsh9GAPcBuPOfoQjfCrgPAYLbwGLuTMNgEcntOHSZiduG1i
- CAGY1eN7CWMBfr5zazosakGiXPnbsTID/zYdVf7KstfiXVCMZNAHBrxgROXxzhdCbetK
- 84tGOfPdhaCFgwY3Tr7QTyFWV5gljrwbKSpKWNIImeDk2edGcdW1PfloQATSMR5QEvET
- 9auGllotSkvBspGzvXCgDoVX3DCrnA8d8FugQKpqEoCJqfPBzSPZitFeWZlYEsxGRp/1
- dy0w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXDuf3YSV+5V6uf/yDeYZY5/LPJAbeWR53oz1bx3GtmhFB9Q/iMl9IRLbUaIlvWcCKHyGzFsIiEKDQV4qc//+NMhm5tNWU=
-X-Gm-Message-State: AOJu0YzBZwoyr+vNub2wd1AYBE4KWTViP82Q8ordPvFspI3BAD3N0Qiz
- OXFE3d2aZ1SvaHPeZFLXeEw64C9OXRvdtnj3xdHQ5Cnn26UnMuBbXGjgQqzwvO5W8k6+VEzEacu
- QkiVsz/GKuGtjgjQqnyew9StUZdm/EVP8mCS4ALW7j+1p4tIOs2vP
-X-Received: by 2002:a05:600c:1c03:b0:416:605b:5868 with SMTP id
- j3-20020a05600c1c0300b00416605b5868mr10002823wms.35.1715088573515; 
- Tue, 07 May 2024 06:29:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdrWj3XAdgD/wSuNMV7bu7LqRGs6B6XpdeUbckJJY0ZmBnv1xxQUTnzyaGCojs3IvWP0msig==
-X-Received: by 2002:a05:600c:1c03:b0:416:605b:5868 with SMTP id
- j3-20020a05600c1c0300b00416605b5868mr10002804wms.35.1715088573100; 
- Tue, 07 May 2024 06:29:33 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- q20-20020a05600c46d400b0041bc412899fsm23445763wmo.42.2024.05.07.06.29.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 May 2024 06:29:32 -0700 (PDT)
-Message-ID: <4e6c9c96-3adf-41d4-9869-90da27a38ae3@redhat.com>
-Date: Tue, 7 May 2024 15:29:31 +0200
+ d=1e100.net; s=20230601; t=1715088656; x=1715693456;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=mSxVLygJ03xrEvM8RQU8DJe7UVHN1OiJgL7KHQ9arvA=;
+ b=CqmtK5KmS6N65FdQkkCaJBorSaBO0f91/RlYWrWzsdXpfou6/wDLw/93PfaPYBTDTN
+ RsKf6TKDjAghnmR5FC0C7nTq4GHA5HUGS6keRTn9LCDszQr8/RhMKtpgrgonwaIvoqdc
+ xEPFTdUw6eoPPgofyL/KacL0wU/0bWcy85bSM101Nvr3NS3OGXaREdDuAzzZ7MLXyeym
+ 39qzShbInPH53yEW0AVpb3SkyirgP8NLI5/5jwhL4Yx7ryd9bna+rt1oao/3e1fThiAC
+ k6ZYoPwrdhenIVhm7fpOoUWjpnbuapFWLDwp+PYUwOnmNlNcoDjRQUCLcEvI6TTb5Dsn
+ gBZA==
+X-Gm-Message-State: AOJu0YwS9L8CvbyTMSXjnBtcZLnYjzf5BYs7eYTjvjJ84qJC3Am4HwnT
+ aUgano/TZZQik2YzrpdT8EK/kKxfFAjuBla/0L/sodJimweFLN2tbp2Q+xMySLqQq1/2Llf2zP0
+ uug2Gtwb1eEdj7oM12jFyoScjLAlxKnsR64MDUh0V1dSziK9+1uz+xh+tRxUb4s4ioruwBr5Tnt
+ J56+6ayr3jKVyNO8Os3u06s8UH12w=
+X-Received: by 2002:aa7:c642:0:b0:572:a852:c756 with SMTP id
+ 4fb4d7f45d1cf-57311032728mr2265201a12.12.1715088656674; 
+ Tue, 07 May 2024 06:30:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF22U3B+1SBBDw2SYhC7sQfWA5b6xzE3vCrQrzjZKIYrsCtTHUeQu6rrDxag2L3/L8xyTiE1BlxX7jVNVZixX0=
+X-Received: by 2002:aa7:c642:0:b0:572:a852:c756 with SMTP id
+ 4fb4d7f45d1cf-57311032728mr2265185a12.12.1715088656266; Tue, 07 May 2024
+ 06:30:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/14] target/s390x: Fix helper_per_ifetch flags
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, iii@linux.ibm.com, thuth@redhat.com
-References: <20240502054417.234340-1-richard.henderson@linaro.org>
- <20240502054417.234340-12-richard.henderson@linaro.org>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240502054417.234340-12-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+References: <20240425015342.1033815-1-dongwon.kim@intel.com>
+ <20240425015342.1033815-5-dongwon.kim@intel.com>
+In-Reply-To: <20240425015342.1033815-5-dongwon.kim@intel.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 7 May 2024 17:30:44 +0400
+Message-ID: <CAMxuvawNf3+yG2dGtPr3ej7u0uRB-93s0Uq5DSWJTwtqM5NFDw@mail.gmail.com>
+Subject: Re: [PATCH v12 4/6] ui/console: Use qemu_dmabuf_set_..() helpers
+ instead
+To: dongwon.kim@intel.com
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -132,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,34 +96,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02.05.24 07:44, Richard Henderson wrote:
-> CPU state is read on the exception path.
-> 
-> Fixes: 83bb161299c ("target-s390x: PER instruction-fetch nullification event support")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Hi
+
+On Thu, Apr 25, 2024 at 5:58=E2=80=AFAM <dongwon.kim@intel.com> wrote:
+>
+> From: Dongwon Kim <dongwon.kim@intel.com>
+>
+> This commit updates all occurrences where these fields were
+> set directly have been updated to utilize helper functions.
+>
+> v7: removed prefix, "dpy_gl_" from all helpers
+>
+> v8: Introduction of helpers was removed as those were already added
+>     by the previous commit
+>
+> Suggested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+> Cc: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
 > ---
->   target/s390x/helper.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-> index 5611155ba1..31bd193322 100644
-> --- a/target/s390x/helper.h
-> +++ b/target/s390x/helper.h
-> @@ -361,7 +361,7 @@ DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
->   DEF_HELPER_3(lra, i64, env, i64, i64)
->   DEF_HELPER_FLAGS_3(per_check_exception, TCG_CALL_NO_WG, void, env, i64, i32)
->   DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_WG, void, env, i64, i32)
-> -DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_RWG, void, env, i64)
-> +DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_WG, void, env, i64)
->   DEF_HELPER_FLAGS_2(per_store_real, TCG_CALL_NO_WG, noreturn, env, i32)
->   DEF_HELPER_FLAGS_1(stfl, TCG_CALL_NO_RWG, void, env)
->   
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
--- 
-Cheers,
-
-David / dhildenb
+>  ui/egl-helpers.c | 16 +++++++++-------
+>  ui/gtk-egl.c     |  4 ++--
+>  ui/gtk-gl-area.c |  4 ++--
+>  ui/gtk.c         |  6 +++---
+>  4 files changed, 16 insertions(+), 14 deletions(-)
+>
+> diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+> index 3f96e63d25..99b2ebbe23 100644
+> --- a/ui/egl-helpers.c
+> +++ b/ui/egl-helpers.c
+> @@ -348,8 +348,8 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+>          return;
+>      }
+>
+> -    glGenTextures(1, &dmabuf->texture);
+> -    texture =3D qemu_dmabuf_get_texture(dmabuf);
+> +    glGenTextures(1, &texture);
+> +    qemu_dmabuf_set_texture(dmabuf, texture);
+>      glBindTexture(GL_TEXTURE_2D, texture);
+>      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+>      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+> @@ -368,7 +368,7 @@ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf)
+>      }
+>
+>      glDeleteTextures(1, &texture);
+> -    dmabuf->texture =3D 0;
+> +    qemu_dmabuf_set_texture(dmabuf, 0);
+>  }
+>
+>  void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+> @@ -382,7 +382,7 @@ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+>          sync =3D eglCreateSyncKHR(qemu_egl_display,
+>                                  EGL_SYNC_NATIVE_FENCE_ANDROID, NULL);
+>          if (sync !=3D EGL_NO_SYNC_KHR) {
+> -            dmabuf->sync =3D sync;
+> +            qemu_dmabuf_set_sync(dmabuf, sync);
+>          }
+>      }
+>  }
+> @@ -390,12 +390,14 @@ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+>  void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf)
+>  {
+>      void *sync =3D qemu_dmabuf_get_sync(dmabuf);
+> +    int fence_fd;
+>
+>      if (sync) {
+> -        dmabuf->fence_fd =3D eglDupNativeFenceFDANDROID(qemu_egl_display=
+,
+> -                                                      sync);
+> +        fence_fd =3D eglDupNativeFenceFDANDROID(qemu_egl_display,
+> +                                              sync);
+> +        qemu_dmabuf_set_fence_fd(dmabuf, fence_fd);
+>          eglDestroySyncKHR(qemu_egl_display, sync);
+> -        dmabuf->sync =3D NULL;
+> +        qemu_dmabuf_set_sync(dmabuf, NULL);
+>      }
+>  }
+>
+> diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+> index 7a45daefa1..ec0bf45482 100644
+> --- a/ui/gtk-egl.c
+> +++ b/ui/gtk-egl.c
+> @@ -87,7 +87,7 @@ void gd_egl_draw(VirtualConsole *vc)
+>              if (!qemu_dmabuf_get_draw_submitted(dmabuf)) {
+>                  return;
+>              } else {
+> -                dmabuf->draw_submitted =3D false;
+> +                qemu_dmabuf_set_draw_submitted(dmabuf, false);
+>              }
+>          }
+>  #endif
+> @@ -381,7 +381,7 @@ void gd_egl_flush(DisplayChangeListener *dcl,
+>      if (vc->gfx.guest_fb.dmabuf &&
+>          !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+>          graphic_hw_gl_block(vc->gfx.dcl.con, true);
+> -        vc->gfx.guest_fb.dmabuf->draw_submitted =3D true;
+> +        qemu_dmabuf_set_draw_submitted(vc->gfx.guest_fb.dmabuf, true);
+>          gtk_egl_set_scanout_mode(vc, true);
+>          gtk_widget_queue_draw_area(area, x, y, w, h);
+>          return;
+> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+> index 2d70280803..9a3f3d0d71 100644
+> --- a/ui/gtk-gl-area.c
+> +++ b/ui/gtk-gl-area.c
+> @@ -63,7 +63,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
+>              if (!qemu_dmabuf_get_draw_submitted(dmabuf)) {
+>                  return;
+>              } else {
+> -                dmabuf->draw_submitted =3D false;
+> +                qemu_dmabuf_set_draw_submitted(dmabuf, false);
+>              }
+>          }
+>  #endif
+> @@ -291,7 +291,7 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *=
+dcl,
+>      if (vc->gfx.guest_fb.dmabuf &&
+>          !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+>          graphic_hw_gl_block(vc->gfx.dcl.con, true);
+> -        vc->gfx.guest_fb.dmabuf->draw_submitted =3D true;
+> +        qemu_dmabuf_set_draw_submitted(vc->gfx.guest_fb.dmabuf, true);
+>          gtk_gl_area_set_scanout_mode(vc, true);
+>      }
+>      gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 237c913b26..3a6832eb1b 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -598,11 +598,11 @@ void gd_hw_gl_flushed(void *vcon)
+>      QemuDmaBuf *dmabuf =3D vc->gfx.guest_fb.dmabuf;
+>      int fence_fd;
+>
+> -    if (dmabuf->fence_fd >=3D 0) {
+> -        fence_fd =3D qemu_dmabuf_get_fence_fd(dmabuf);
+> +    fence_fd =3D qemu_dmabuf_get_fence_fd(dmabuf);
+> +    if (fence_fd >=3D 0) {
+>          qemu_set_fd_handler(fence_fd, NULL, NULL, NULL);
+>          close(fence_fd);
+> -        dmabuf->fence_fd =3D -1;
+> +        qemu_dmabuf_set_fence_fd(dmabuf, -1);
+>          graphic_hw_gl_block(vc->gfx.dcl.con, false);
+>      }
+>  }
+> --
+> 2.34.1
+>
 
 
