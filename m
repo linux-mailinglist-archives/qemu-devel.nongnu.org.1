@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C525B8BE60A
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:34:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 621FD8BE62A
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:37:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4Lt9-0003Ox-Q0; Tue, 07 May 2024 10:33:51 -0400
+	id 1s4LtA-0003P6-JW; Tue, 07 May 2024 10:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsj-0003BR-QQ
+ id 1s4Lsk-0003BV-41
  for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:30 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsa-0001MK-Ii
- for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:24 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1eb0e08bfd2so17930625ad.1
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:15 -0700 (PDT)
+ id 1s4Lsd-0001MR-MJ
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:25 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1ee0132a6f3so19265455ad.0
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715092394; x=1715697194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715092395; x=1715697195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=5odWkAYeVMNCe6Cty3EzFB4YygxLZJZYtuimpCAAowk=;
- b=ElexNxAod7TGJHvlmsMOZgmZDNZlitUaXUoHL6AmfVd/+92UAywgSLISqaqMaWRPq9
- jT4ha7oCC/eBiiAuiUUGvXhY1H86PNReZybtkW+MA36Kyu0za9fQ1cArR4kMcYJElA/x
- CTcD8Cd1oStwT7Yw0Lwco2IV3pMVm4iJK2cXTi7bYrtZyNDmzmLvz9YmKrlh6HzwmhoF
- eraGmVd/Ov59uyGY4Q9Q0HYlwNTWqwOah1cqhlsY5BCbydH1DnDEC1lfIV3ulGuoyk13
- Scjp8u15FX7PvpDztEAfNB7T1ECprN1i0gTT/xmVIzgN7cc+XyEdyv7m+1+lmINm8WSS
- Gmaw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=v6IIOegRVX0IRNGiRvdKLFUu17MQmdNwKORAfdJtFaw=;
+ b=w1wvSFHG4ykTETQyRuC0EGd/Tz5I8DFt0v3UlPgGhliV/0ECmLa44H0BBLsZ+feegb
+ DYnr7l8MR7J1+m5r+WJ0mWlCLe5LE/ZlUMB51Ul7Bw83KqMXrPf6p4DQ7R/+XdwIR0f3
+ s5KfusXdMUoHhAo3lwrigHgLmwCk3Apo+/9aV2a5fUG8BGDuvIBnSUSAHl6sJpIiw6tT
+ dthfx5PbJNRk7vjxpnns+EIc2w31KmJtbEpTApOMwFuVLrMoETAgnLyIN72MspSeTZpO
+ 5hXejSFDpddUUZxUWK+f47Qkc5NkOmNEm/FCDqKXaNQOu1yCcTeqyXo+xU+WrZyvIAK/
+ gPKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715092394; x=1715697194;
+ d=1e100.net; s=20230601; t=1715092395; x=1715697195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5odWkAYeVMNCe6Cty3EzFB4YygxLZJZYtuimpCAAowk=;
- b=QiVNA9rJWnYgQgoGpnpm7RiBYl2104AvCuFO531X7ewnYxC1ehB3jIHi7XI3P1QnZq
- 90DukE2XLD8ehjhNJn6DSUqn1Ae0wEiwLM6ifIbc1lM4Mhk+zcR0qI2uF457Q68ymVyn
- rIN1yvDDC5kVdSB3OTmMV4+L1lJ8VTl1IgU4p/uEC47Tf1oljz4APkvkc6cxpu5oD21o
- XZrefvVps8NIxVCxyimyEp9+mMO3XI2ljKziQ2NggqhnfA2G8Yc3I59wC+TWicOELPKy
- jwDpz6ehZOup0yJOw45gUdOY8971VmiL59sRVGyAZpy9YyCICVm2i7jyjl2ktaRjmJ9U
- 3uMA==
-X-Gm-Message-State: AOJu0YzOkcbwdfZ/rKRFnX/DIT8wilRo9OyKb2sW+iA2EpTJymCPtPpa
- 69iImsZU4IJYmk6koigKuSJsglcpAZ1ezhYgYMsVNqo3YeHobamnqv1PnsVn9DFN47+X48hy4zG
- S
-X-Google-Smtp-Source: AGHT+IGbo/R87qjbZJ6QppuTS7cd6ecYBvKy/TZpIhcllv2dglDOyo3xsbBhPMfRu+aWAvNecVl9yg==
-X-Received: by 2002:a17:902:6503:b0:1e0:a3dd:82df with SMTP id
- b3-20020a170902650300b001e0a3dd82dfmr12718209plk.38.1715092394503; 
- Tue, 07 May 2024 07:33:14 -0700 (PDT)
+ bh=v6IIOegRVX0IRNGiRvdKLFUu17MQmdNwKORAfdJtFaw=;
+ b=U0RgePzhUx+RTRWBw8UWo4BrS2vhhrIzEky8yBz3N9glE2GFC5Z0OGU+kXcK2Eez1E
+ n4DCEbqy0jIr/PdYh279hkD8G9y+3l2rQqbig/tMomzBggP/9GtsZFUoSxc7dEKriWAk
+ TDITJg74Hl3Jf2kNzlRERSmzhrlR9vuuMOZZFslCnn3b/No1bjlOG+soQ8K/1wLsvQcH
+ VH0PGD2DkiVEHtbLjbA0U0Hv4YLi7hrXAsVYfKVZrDziYqTQViaI6H2er4/N9jlcsTdg
+ OgZPahND+qCS3bNzVTxcJPDgRi366j4bqf6SV0z7Npce7KMob2/1tFzPZFt7jAqwPNWc
+ Nluw==
+X-Gm-Message-State: AOJu0YwMt+oebVkEPohVusZ2k4v2hxlhIDmMFvv+CtEMDyd4KvKsruXQ
+ aI6oR14vc8heQ2+/O6WrrjZckVOD33dytpog/dF6eePRKykhbdQbT8WxdVgN9uPCfT6GgV10LPv
+ a
+X-Google-Smtp-Source: AGHT+IEDQHppY2z0ZOAy0qMx4WOpq/zFMdMd/mlRoZh0GQXYK+CtARNHtfzoKpBc0W3d0bPLWPkqaw==
+X-Received: by 2002:a17:903:240a:b0:1e6:40f1:93be with SMTP id
+ e10-20020a170903240a00b001e640f193bemr15652254plo.27.1715092395403; 
+ Tue, 07 May 2024 07:33:15 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.13
- for <qemu-devel@nongnu.org>
+ p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 07:33:14 -0700 (PDT)
+ Tue, 07 May 2024 07:33:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/9] tcg/optimize: Optimize setcond with zmask
-Date: Tue,  7 May 2024 07:33:04 -0700
-Message-Id: <20240507143309.5528-5-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 5/9] accel/tcg: Introduce CF_BP_PAGE
+Date: Tue,  7 May 2024 07:33:05 -0700
+Message-Id: <20240507143309.5528-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507143309.5528-1-richard.henderson@linaro.org>
 References: <20240507143309.5528-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,149 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we can show that high bits of an input are zero,
-then we may optimize away some comparisons.
+Record the fact that we've found a breakpoint on the page
+in which a TranslationBlock is running.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c | 110 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 110 insertions(+)
+ include/exec/translation-block.h | 1 +
+ accel/tcg/cpu-exec.c             | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 2e9e5725a9..8886f7037a 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -2099,6 +2099,108 @@ static bool fold_remainder(OptContext *ctx, TCGOp *op)
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index 48211c890a..a6d1af6e9b 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -77,6 +77,7 @@ struct TranslationBlock {
+ #define CF_PARALLEL      0x00008000 /* Generate code for a parallel context */
+ #define CF_NOIRQ         0x00010000 /* Generate an uninterruptible TB */
+ #define CF_PCREL         0x00020000 /* Opcodes in TB are PC-relative */
++#define CF_BP_PAGE       0x00040000 /* Breakpoint present in code page */
+ #define CF_CLUSTER_MASK  0xff000000 /* Top 8 bits are cluster ID */
+ #define CF_CLUSTER_SHIFT 24
+ 
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index 225e5fbd3e..6a764f527b 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -371,7 +371,7 @@ static bool check_for_breakpoints_slow(CPUState *cpu, vaddr pc,
+      * breakpoints are removed.
+      */
+     if (match_page) {
+-        *cflags = (*cflags & ~CF_COUNT_MASK) | CF_NO_GOTO_TB | 1;
++        *cflags = (*cflags & ~CF_COUNT_MASK) | CF_NO_GOTO_TB | CF_BP_PAGE | 1;
+     }
      return false;
  }
- 
-+static bool fold_setcond_zmask(OptContext *ctx, TCGOp *op, bool neg)
-+{
-+    uint64_t a_zmask, b_val;
-+    TCGCond cond;
-+
-+    if (!arg_is_const(op->args[2])) {
-+        return false;
-+    }
-+
-+    a_zmask = arg_info(op->args[1])->z_mask;
-+    b_val = arg_info(op->args[2])->val;
-+    cond = op->args[3];
-+
-+    if (ctx->type == TCG_TYPE_I32) {
-+        a_zmask = (uint32_t)a_zmask;
-+        b_val = (uint32_t)b_val;
-+    }
-+
-+    /*
-+     * A with only low bits set vs B with high bits set means that A < B.
-+     */
-+    if (a_zmask < b_val) {
-+        bool inv = false;
-+
-+        switch (cond) {
-+        case TCG_COND_NE:
-+        case TCG_COND_LEU:
-+        case TCG_COND_LTU:
-+            inv = true;
-+            /* fall through */
-+        case TCG_COND_GTU:
-+        case TCG_COND_GEU:
-+        case TCG_COND_EQ:
-+            return tcg_opt_gen_movi(ctx, op, op->args[0], neg ? -inv : inv);
-+        default:
-+            break;
-+        }
-+    }
-+
-+    /*
-+     * A with only lsb set is already boolean.
-+     */
-+    if (a_zmask <= 1) {
-+        bool convert = false;
-+        bool inv = false;
-+
-+        switch (cond) {
-+        case TCG_COND_EQ:
-+            inv = true;
-+            /* fall through */
-+        case TCG_COND_NE:
-+            convert = (b_val == 0);
-+            break;
-+        case TCG_COND_LTU:
-+        case TCG_COND_TSTEQ:
-+            inv = true;
-+            /* fall through */
-+        case TCG_COND_GEU:
-+        case TCG_COND_TSTNE:
-+            convert = (b_val == 1);
-+            break;
-+        default:
-+            break;
-+        }
-+        if (convert) {
-+            TCGOpcode add_opc, xor_opc, neg_opc;
-+
-+            if (!inv && !neg) {
-+                return tcg_opt_gen_mov(ctx, op, op->args[0], op->args[1]);
-+            }
-+
-+            switch (ctx->type) {
-+            case TCG_TYPE_I32:
-+                add_opc = INDEX_op_add_i32;
-+                neg_opc = INDEX_op_neg_i32;
-+                xor_opc = INDEX_op_xor_i32;
-+                break;
-+            case TCG_TYPE_I64:
-+                add_opc = INDEX_op_add_i64;
-+                neg_opc = INDEX_op_neg_i64;
-+                xor_opc = INDEX_op_xor_i64;
-+                break;
-+            default:
-+                g_assert_not_reached();
-+            }
-+
-+            if (!inv) {
-+                op->opc = neg_opc;
-+            } else if (neg) {
-+                op->opc = add_opc;
-+                op->args[2] = arg_new_constant(ctx, -1);
-+            } else {
-+                op->opc = xor_opc;
-+                op->args[2] = arg_new_constant(ctx, 1);
-+            }
-+            return false;
-+        }
-+    }
-+
-+    return false;
-+}
-+
- static void fold_setcond_tst_pow2(OptContext *ctx, TCGOp *op, bool neg)
- {
-     TCGOpcode and_opc, sub_opc, xor_opc, neg_opc, shr_opc;
-@@ -2200,6 +2302,10 @@ static bool fold_setcond(OptContext *ctx, TCGOp *op)
-     if (i >= 0) {
-         return tcg_opt_gen_movi(ctx, op, op->args[0], i);
-     }
-+
-+    if (fold_setcond_zmask(ctx, op, false)) {
-+        return true;
-+    }
-     fold_setcond_tst_pow2(ctx, op, false);
- 
-     ctx->z_mask = 1;
-@@ -2214,6 +2320,10 @@ static bool fold_negsetcond(OptContext *ctx, TCGOp *op)
-     if (i >= 0) {
-         return tcg_opt_gen_movi(ctx, op, op->args[0], -i);
-     }
-+
-+    if (fold_setcond_zmask(ctx, op, true)) {
-+        return true;
-+    }
-     fold_setcond_tst_pow2(ctx, op, true);
- 
-     /* Value is {0,-1} so all bits are repetitions of the sign. */
 -- 
 2.34.1
 
