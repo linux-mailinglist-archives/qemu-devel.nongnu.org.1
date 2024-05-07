@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DF28BDBCF
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A308BDBD1
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 08:46:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4EZz-0003OH-8k; Tue, 07 May 2024 02:45:35 -0400
+	id 1s4Ea2-0003PF-0c; Tue, 07 May 2024 02:45:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZw-0003Nh-Ef
- for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:32 -0400
+ id 1s4EZz-0003OX-5k
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:35 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4EZu-0005Ee-Lm
- for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:32 -0400
+ id 1s4EZx-00064G-FY
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 02:45:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715064330; x=1746600330;
+ t=1715064333; x=1746600333;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8uhN4/mEpj2+F2/bXHdbPWxUB6o5pfA6i0tofvxnefU=;
- b=aBqM0PG9xt44gdUI7/e0CRdegEzPiJQ4kGcntA2zs1rpJ76/i7x4GzXd
- 9UHzYOV4PA7nSfsEfHmwwNVT1a9SBQzPbKfbCaX4vqLveKdXbdyxacGG6
- KM3dtkH6T0ViQjMr7XpD+4Fcq7drhq5co2vwp3n8NZTKc5lTwgLTCcx8w
- eH+QUK2xQzTDUJn/nMO9hCISseE6KyjRVUqHPuItqLd1bHOcqIMLPfDN2
- y2PiNLd6g4ItBV7n0x8ouNh9QhmxWJGWIjtngdMZ401gAuSMobXxlaRHA
- 24YcRtnD7z66PCY63aveCxvKAaFxt/HTBkriHw2NcrxolHuK+m6DtDHzj A==;
-X-CSE-ConnectionGUID: bfWfwt8xTyK3LInTwFZ4yQ==
-X-CSE-MsgGUID: zBew0Vk0QdSHyaV/xGc8kg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240259"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240259"
+ bh=cYvBAeX/uBwyCnQDxeXOBKmDJDyEp69Jn47l2XHzo/0=;
+ b=hTrG+I/ALZnlV7aTs2/MoWQWCm2Vy0y2yZMgYC4P67Se8DYhtfKXg9Je
+ qgz2ZjwXpj7zclE7KdVAiLOZkcB1MCdvObnIq//bOg4stOVfrRfbGZtSS
+ 3kHNqOgOt+vFAQh3M/KiffqW8LQna5w8/bA5o58rmXLZmvvMj92JwFCuG
+ tDogifSfNnRR8EK10vAQA+Ij8PEJ5d4oNiUNHWs1dUu9GEa2FnIioGHJu
+ Va/tC4iG2AX0wYkQ3d91ikzISVgXdwVX4MXTh985vMSQsDloBXXL0ajA5
+ L/eKQ/B8oUOgZ2uymcH/ExaTrMTGybojW9Dt/Pv9JiGwUQPtFtoN0nCJr w==;
+X-CSE-ConnectionGUID: CyfBaMmhTcSK3PJpgo6ORw==
+X-CSE-MsgGUID: /nOCcclNSregmn+74jGXtg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="22240266"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="22240266"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:30 -0700
-X-CSE-ConnectionGUID: AKKcguHGSL6vB/sonc2ziQ==
-X-CSE-MsgGUID: ng4yOO1iQeWpJWlJnFZ+pg==
+ 06 May 2024 23:45:32 -0700
+X-CSE-ConnectionGUID: P06yk2QcTaSkJVA5GRJyUw==
+X-CSE-MsgGUID: 6/APm0E3QyuAxnh29+dGqA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407534"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; d="scan'208";a="28407538"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2024 23:45:28 -0700
+ 06 May 2024 23:45:30 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 07/11] vfio/container: Make vfio_set_iommu() return bool
-Date: Tue,  7 May 2024 14:42:48 +0800
-Message-Id: <20240507064252.457884-8-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 08/11] vfio/container: Make vfio_get_device() return bool
+Date: Tue,  7 May 2024 14:42:49 +0800
+Message-Id: <20240507064252.457884-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507064252.457884-1-zhenzhong.duan@intel.com>
 References: <20240507064252.457884-1-zhenzhong.duan@intel.com>
@@ -87,74 +87,77 @@ is used to pass error.
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/container.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ hw/vfio/container.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 0a7edfcc43..5fb4bee082 100644
+index 5fb4bee082..b02583ea16 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -391,21 +391,20 @@ static const VFIOIOMMUClass *vfio_get_iommu_class(int iommu_type, Error **errp)
-     return VFIO_IOMMU_CLASS(klass);
+@@ -800,8 +800,8 @@ static void vfio_put_group(VFIOGroup *group)
+     g_free(group);
  }
  
--static int vfio_set_iommu(VFIOContainer *container, int group_fd,
--                          VFIOAddressSpace *space, Error **errp)
-+static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
-+                           VFIOAddressSpace *space, Error **errp)
+-static int vfio_get_device(VFIOGroup *group, const char *name,
+-                           VFIODevice *vbasedev, Error **errp)
++static bool vfio_get_device(VFIOGroup *group, const char *name,
++                            VFIODevice *vbasedev, Error **errp)
  {
--    int iommu_type, ret;
-+    int iommu_type;
-     const VFIOIOMMUClass *vioc;
- 
-     iommu_type = vfio_get_iommu_type(container, errp);
-     if (iommu_type < 0) {
--        return iommu_type;
+     g_autofree struct vfio_device_info *info = NULL;
+     int fd;
+@@ -813,14 +813,14 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
+         error_append_hint(errp,
+                       "Verify all devices in group %d are bound to vfio-<bus> "
+                       "or pci-stub and not already in use\n", group->groupid);
+-        return fd;
 +        return false;
      }
  
--    ret = ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container->fd);
--    if (ret) {
-+    if (ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
-         error_setg_errno(errp, errno, "Failed to set group container");
--        return -errno;
+     info = vfio_get_device_info(fd);
+     if (!info) {
+         error_setg_errno(errp, errno, "error getting device info");
+         close(fd);
+-        return -1;
 +        return false;
      }
  
-     while (ioctl(container->fd, VFIO_SET_IOMMU, iommu_type)) {
-@@ -420,7 +419,7 @@ static int vfio_set_iommu(VFIOContainer *container, int group_fd,
-             continue;
+     /*
+@@ -835,7 +835,7 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
+             error_setg(errp, "Inconsistent setting of support for discarding "
+                        "RAM (e.g., balloon) within group");
+             close(fd);
+-            return -1;
++            return false;
          }
-         error_setg_errno(errp, errno, "Failed to set iommu for container");
--        return -errno;
-+        return false;
-     }
  
-     container->iommu_type = iommu_type;
-@@ -428,11 +427,11 @@ static int vfio_set_iommu(VFIOContainer *container, int group_fd,
-     vioc = vfio_get_iommu_class(iommu_type, errp);
-     if (!vioc) {
-         error_setg(errp, "No available IOMMU models");
--        return -EINVAL;
-+        return false;
-     }
+         if (!group->ram_block_discard_allowed) {
+@@ -856,7 +856,7 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
  
-     vfio_container_init(&container->bcontainer, space, vioc);
+     vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
+ 
 -    return 0;
 +    return true;
  }
  
- static int vfio_get_iommu_info(VFIOContainer *container,
-@@ -613,8 +612,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     container->fd = fd;
-     bcontainer = &container->bcontainer;
+ static void vfio_put_base_device(VFIODevice *vbasedev)
+@@ -909,7 +909,6 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+     VFIODevice *vbasedev_iter;
+     VFIOGroup *group;
+     VFIOContainerBase *bcontainer;
+-    int ret;
  
--    ret = vfio_set_iommu(container, group->fd, space, errp);
--    if (ret) {
-+    if (!vfio_set_iommu(container, group->fd, space, errp)) {
-         goto free_container_exit;
+     if (groupid < 0) {
+         return false;
+@@ -929,8 +928,7 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+             return false;
+         }
      }
- 
+-    ret = vfio_get_device(group, name, vbasedev, errp);
+-    if (ret) {
++    if (!vfio_get_device(group, name, vbasedev, errp)) {
+         vfio_put_group(group);
+         return false;
+     }
 -- 
 2.34.1
 
