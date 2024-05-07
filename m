@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2ED08BDE9D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FC68BDEA9
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 11:44:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4HLL-0004Ii-6Y; Tue, 07 May 2024 05:42:42 -0400
+	id 1s4HLP-0004Jo-FB; Tue, 07 May 2024 05:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4HLD-0004I2-9I
+ id 1s4HLD-0004IB-N9
  for qemu-devel@nongnu.org; Tue, 07 May 2024 05:42:31 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1s4HL9-0007Pc-Gs
+ id 1s4HLB-0007Pg-CU
  for qemu-devel@nongnu.org; Tue, 07 May 2024 05:42:31 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6f45020ac2cso2286235b3a.0
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 02:42:26 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6f4603237e0so1655180b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 02:42:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715074946; x=1715679746;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715074947; x=1715679747;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GunWbuHn3ELCoV+IaCCFT9isaig+7LX+4N5SL4LnV/s=;
- b=fo03d4g96yIYlhv/pHQGXCAPsHTYcy0VAG+16f/GqrOg9lVI8JYYEDrFrUdpG0p7Jn
- de1ECwMC8xXulng+BXmZJdBQxIpJEpQtqnFLZ6UnhQyCzHECvyha2Zfh2m5NOlrMdIZm
- Ir9NRCyxV6MaZ+j3zdr5ENIbqfoR4i+ocCVoQtBfWCOnt/ah/dqPCfG24bgeb+S42m0v
- d5SSIL0CLhy6OUwApimTk4RTr+Oqe1qx6diObw0C9D0zgDmXFyBR37dPxbiBXjqro8Rf
- +UIU7HCmTEGByViLKWDZpH4+++OCv1rycnD/SYhRl5OuAbWTGBadULuVt41tHg38tvpu
- 9Ghg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Zq/AsfKdGVYkpDOoF8EeenFxen7rsKomtQ+chi3yprY=;
+ b=NeyLEst8hzEZEyZS3gmBnoo9T9PudFJ2asbyTf8+lXqnKyj0IrU7Yz0EbxA+7+SUq7
+ FIOtCQkCXUAMV/pk6vdlNthxDksFJe0V2fUTfWXRcF7yM/28FLClVxLylFS4Z+O/o5b7
+ d08wYVPnDGGDkasl0qGi4vAIInKzAEKQV8snMk+TOJHz4zb9KYrPuNchX66oKwTYuwp5
+ TNbq2rXM+ViGG1a2fkK9Lu9NHKC14JdciI6xmD4xng6efW0cpXzCqLYzwa0Ydstb7OXY
+ I2uBfsVHbDiISLujONB3zbl8Fiu3bqQwKgim0jn88VC5E1SBewZMZJ8xbm4714PMaZ3n
+ y76g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715074946; x=1715679746;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GunWbuHn3ELCoV+IaCCFT9isaig+7LX+4N5SL4LnV/s=;
- b=TYGR8PPaaRv15o0SIX/M6kVlxMCvmmwAgEeKqeQicsx8DNtN0Mi5uMpkt2WFYebrLk
- hGRJ20+QW5GAGeNyqIRWJpfPtasDTCCuJRqYqsc0Me73ZP7QZHm4d0DcJDaicdzH8Qu7
- HGN5lWQhLfgwVJuiuciC+lkQTfYMy8SK+pTKV2/IZWnSjrmOHObjZgBWtHVUFVacj6jI
- dzcdLi9NapPInJ++lfrLrOiJApLwKngcv/mTfN78+mvvVrZWSkFQkjOn8JPvHcXxQ2Az
- yBbFPyM1qWBedgjP7u2shklSh19vxeIb7ArOBuzQ/VX/f8CyQIUowdHb0dH+B6mWcBH6
- 2zpA==
+ d=1e100.net; s=20230601; t=1715074947; x=1715679747;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Zq/AsfKdGVYkpDOoF8EeenFxen7rsKomtQ+chi3yprY=;
+ b=fGHSVYZGC4kfpStwXLLbPegZ0g+P5ScA80xQL0PSqKlveTZedpVD3oCgXF66qOYRYF
+ fp1jY6SB/9STTymHK3yfnXB3EpOQJ2/5lstZkzqS36EVqs9lkFdnl6Fd/T9rt4iU/pKL
+ eJYNhhZ8mxdbA9xvBXMKMjV5oJz9v/JiTndHNToTUeeQ2Ema7UsYn+MKSBwimEVnDQBI
+ YrD+3ioFn3t/c5j+iuhJgQ8qw/uF/EGVoMVNGAWOUDoV9CwGJ8M/Nb+1+2B2s5Dxl4rw
+ 7wYxQg1Zn2/Y2Qb6UVrrcYWx7B77KoEBb6xDnOG+BYiMZ8R4yGWHl0dzA5rVdszoPq3y
+ ir6A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWjfMScd+KXT0OsJNwP0z/awdNm+C36wT1PxeNxg/gqKHJ2T7SAz33fqcTtxnnlMv2XEWzc3Cxd++EpNJqsbMtf6tmp/hI=
-X-Gm-Message-State: AOJu0Yw7ufyqmbJK0j5Tiqm+09m73kv5MBeFkucvfRBv09iJHX7qwisp
- 7cKAUA4mimZzGGrDhtpKoG1hlBXRDUHY7GzlDpDRVf/fN1OEH5Vy/sHzgqynIyM=
-X-Google-Smtp-Source: AGHT+IGoq8I45eWv8MPsd3kUQzA7GC11oZyP8NtGfaXTQiLFCcB3K/smai51Cy1UOdcSnaD9Byz0mw==
-X-Received: by 2002:a05:6a00:21cc:b0:6f4:74b5:f536 with SMTP id
- t12-20020a056a0021cc00b006f474b5f536mr6792415pfj.34.1715074945750; 
- Tue, 07 May 2024 02:42:25 -0700 (PDT)
+ AJvYcCUvaPszoqsuw+pZ/laAwfGNpvfLTC084CX7AToktv641uFnq0P+X3YU2v/ZdRc9QZwQzQgvyPSEwl6M9bt6f0Uhm0MdsJw=
+X-Gm-Message-State: AOJu0YwVu1VCejdq9BVAvmx1xDzOQdsuG8TOhAmcp4crxFro3XHWmkMc
+ o07VJ2Qqij3Yrd13/WDEzmy4VA7mE1scpS7zrBGSdYtvYdV0aBkAk2f4AROyPrY=
+X-Google-Smtp-Source: AGHT+IHQjdqGAu4ASsvD4sRT3TWZE5zYzPMfsC/EjILNGt3vaP0wtza0s3v69wYo1drkIciDNClQVw==
+X-Received: by 2002:a05:6a00:2d93:b0:6ed:ca65:68b with SMTP id
+ d2e1a72fcca58-6f48e8696ebmr2994849b3a.4.1715074946970; 
+ Tue, 07 May 2024 02:42:26 -0700 (PDT)
 Received: from mnissler.ba.rivosinc.com ([64.71.180.162])
  by smtp.gmail.com with ESMTPSA id
- p4-20020a62ab04000000b006f45257d3f7sm6434114pff.45.2024.05.07.02.42.24
+ p4-20020a62ab04000000b006f45257d3f7sm6434114pff.45.2024.05.07.02.42.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 02:42:25 -0700 (PDT)
+ Tue, 07 May 2024 02:42:26 -0700 (PDT)
 From: Mattias Nissler <mnissler@rivosinc.com>
 To: stefanha@redhat.com, qemu-devel@nongnu.org, peterx@redhat.com,
  jag.raman@oracle.com
@@ -68,16 +69,18 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>, john.levon@nutanix.com,
- Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH v9 0/5] Support message-based DMA in vfio-user server
-Date: Tue,  7 May 2024 02:42:04 -0700
-Message-ID: <20240507094210.300566-1-mnissler@rivosinc.com>
+ Mattias Nissler <mnissler@rivosinc.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v9 1/5] softmmu: Per-AddressSpace bounce buffering
+Date: Tue,  7 May 2024 02:42:05 -0700
+Message-ID: <20240507094210.300566-2-mnissler@rivosinc.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240507094210.300566-1-mnissler@rivosinc.com>
+References: <20240507094210.300566-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,111 +102,351 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds basic support for message-based DMA in qemu's vfio-user
-server. This is useful for cases where the client does not provide file
-descriptors for accessing system memory via memory mappings. My motivating use
-case is to hook up device models as PCIe endpoints to a hardware design. This
-works by bridging the PCIe transaction layer to vfio-user, and the endpoint
-does not access memory directly, but sends memory requests TLPs to the hardware
-design in order to perform DMA.
+Instead of using a single global bounce buffer, give each AddressSpace
+its own bounce buffer. The MapClient callback mechanism moves to
+AddressSpace accordingly.
 
-Note that more work is needed to make message-based DMA work well: qemu
-currently breaks down DMA accesses into chunks of size 8 bytes at maximum, each
-of which will be handled in a separate vfio-user DMA request message. This is
-quite terrible for large DMA accesses, such as when nvme reads and writes
-page-sized blocks for example. Thus, I would like to improve qemu to be able to
-perform larger accesses, at least for indirect memory regions. I have something
-working locally, but since this will likely result in more involved surgery and
-discussion, I am leaving this to be addressed in a separate patch.
+This is in preparation for generalizing bounce buffer handling further
+to allow multiple bounce buffers, with a total allocation limit
+configured per AddressSpace.
 
-Changes from v1:
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+---
+ include/exec/cpu-common.h |   2 -
+ include/exec/memory.h     |  45 ++++++++++++++++-
+ system/dma-helpers.c      |   4 +-
+ system/memory.c           |   7 +++
+ system/physmem.c          | 101 ++++++++++++++++----------------------
+ 5 files changed, 93 insertions(+), 66 deletions(-)
 
-* Address Stefan's review comments. In particular, enforce an allocation limit
-  and don't drop the map client callbacks given that map requests can fail when
-  hitting size limits.
-
-* libvfio-user version bump now included in the series.
-
-* Tested as well on big-endian s390x. This uncovered another byte order issue
-  in vfio-user server code that I've included a fix for.
-
-Changes from v2:
-
-* Add a preparatory patch to make bounce buffering an AddressSpace-specific
-  concept.
-
-* The total buffer size limit parameter is now per AdressSpace and can be
-  configured for PCIDevice via a property.
-
-* Store a magic value in first bytes of bounce buffer struct as a best effort
-  measure to detect invalid pointers in address_space_unmap.
-
-Changes from v3:
-
-* libvfio-user now supports twin-socket mode which uses separate sockets for
-  client->server and server->client commands, respectively. This addresses the
-  concurrent command bug triggered by server->client DMA access commands. See
-  https://github.com/nutanix/libvfio-user/issues/279 for details.
-
-* Add missing teardown code in do_address_space_destroy.
-
-* Fix bounce buffer size bookkeeping race condition.
-
-* Generate unmap notification callbacks unconditionally.
-
-* Some cosmetic fixes.
-
-Changes from v4:
-
-* Fix accidentally dropped memory_region_unref, control flow restored to match
-  previous code to simplify review.
-
-* Some cosmetic fixes.
-
-Changes from v5:
-
-* Unregister indirect memory region in libvfio-user dma_unregister callback.
-
-Changes from v6:
-
-* Rebase, resolve straightforward merge conflict in system/dma-helpers.c
-
-Changes from v7:
-
-* Rebase (applied cleanly)
-
-* Restore various Reviewed-by and Tested-by tags that I failed to carry
-  forward (I double-checked that the patches haven't changed since the reviewed
-  version)
-
-Changes from v8:
-
-* Rebase (clean)
-
-* Change bounce buffer size accounting to use uint32_t so it works also on
-  hosts that don't support uint64_t atomics, such as mipsel. As a consequence
-  overflows are a real concern now, so switch to a cmpxchg loop for allocating
-  bounce buffer space.
-
-Mattias Nissler (5):
-  softmmu: Per-AddressSpace bounce buffering
-  softmmu: Support concurrent bounce buffers
-  Update subprojects/libvfio-user
-  vfio-user: Message-based DMA support
-  vfio-user: Fix config space access byte order
-
- hw/pci/pci.c                  |   8 ++
- hw/remote/trace-events        |   2 +
- hw/remote/vfio-user-obj.c     | 104 +++++++++++++++++++++----
- include/exec/cpu-common.h     |   2 -
- include/exec/memory.h         |  41 +++++++++-
- include/hw/pci/pci_device.h   |   3 +
- subprojects/libvfio-user.wrap |   2 +-
- system/dma-helpers.c          |   4 +-
- system/memory.c               |   8 ++
- system/physmem.c              | 143 ++++++++++++++++++----------------
- 10 files changed, 228 insertions(+), 89 deletions(-)
-
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 8bc397e251..815342d043 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -147,8 +147,6 @@ void *cpu_physical_memory_map(hwaddr addr,
+                               bool is_write);
+ void cpu_physical_memory_unmap(void *buffer, hwaddr len,
+                                bool is_write, hwaddr access_len);
+-void cpu_register_map_client(QEMUBH *bh);
+-void cpu_unregister_map_client(QEMUBH *bh);
+ 
+ bool cpu_physical_memory_is_io(hwaddr phys_addr);
+ 
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index dadb5cd65a..d417d7f363 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1112,6 +1112,19 @@ struct MemoryListener {
+     QTAILQ_ENTRY(MemoryListener) link_as;
+ };
+ 
++typedef struct AddressSpaceMapClient {
++    QEMUBH *bh;
++    QLIST_ENTRY(AddressSpaceMapClient) link;
++} AddressSpaceMapClient;
++
++typedef struct {
++    MemoryRegion *mr;
++    void *buffer;
++    hwaddr addr;
++    hwaddr len;
++    bool in_use;
++} BounceBuffer;
++
+ /**
+  * struct AddressSpace: describes a mapping of addresses to #MemoryRegion objects
+  */
+@@ -1129,6 +1142,12 @@ struct AddressSpace {
+     struct MemoryRegionIoeventfd *ioeventfds;
+     QTAILQ_HEAD(, MemoryListener) listeners;
+     QTAILQ_ENTRY(AddressSpace) address_spaces_link;
++
++    /* Bounce buffer to use for this address space. */
++    BounceBuffer bounce;
++    /* List of callbacks to invoke when buffers free up */
++    QemuMutex map_client_list_lock;
++    QLIST_HEAD(, AddressSpaceMapClient) map_client_list;
+ };
+ 
+ typedef struct AddressSpaceDispatch AddressSpaceDispatch;
+@@ -2946,8 +2965,8 @@ bool address_space_access_valid(AddressSpace *as, hwaddr addr, hwaddr len,
+  * May return %NULL and set *@plen to zero(0), if resources needed to perform
+  * the mapping are exhausted.
+  * Use only for reads OR writes - not for read-modify-write operations.
+- * Use cpu_register_map_client() to know when retrying the map operation is
+- * likely to succeed.
++ * Use address_space_register_map_client() to know when retrying the map
++ * operation is likely to succeed.
+  *
+  * @as: #AddressSpace to be accessed
+  * @addr: address within that address space
+@@ -2972,6 +2991,28 @@ void *address_space_map(AddressSpace *as, hwaddr addr,
+ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+                          bool is_write, hwaddr access_len);
+ 
++/*
++ * address_space_register_map_client: Register a callback to invoke when
++ * resources for address_space_map() are available again.
++ *
++ * address_space_map may fail when there are not enough resources available,
++ * such as when bounce buffer memory would exceed the limit. The callback can
++ * be used to retry the address_space_map operation. Note that the callback
++ * gets automatically removed after firing.
++ *
++ * @as: #AddressSpace to be accessed
++ * @bh: callback to invoke when address_space_map() retry is appropriate
++ */
++void address_space_register_map_client(AddressSpace *as, QEMUBH *bh);
++
++/*
++ * address_space_unregister_map_client: Unregister a callback that has
++ * previously been registered and not fired yet.
++ *
++ * @as: #AddressSpace to be accessed
++ * @bh: callback to unregister
++ */
++void address_space_unregister_map_client(AddressSpace *as, QEMUBH *bh);
+ 
+ /* Internal functions, part of the implementation of address_space_read.  */
+ MemTxResult address_space_read_full(AddressSpace *as, hwaddr addr,
+diff --git a/system/dma-helpers.c b/system/dma-helpers.c
+index 9b221cf94e..74013308f5 100644
+--- a/system/dma-helpers.c
++++ b/system/dma-helpers.c
+@@ -169,7 +169,7 @@ static void dma_blk_cb(void *opaque, int ret)
+     if (dbs->iov.size == 0) {
+         trace_dma_map_wait(dbs);
+         dbs->bh = aio_bh_new(ctx, reschedule_dma, dbs);
+-        cpu_register_map_client(dbs->bh);
++        address_space_register_map_client(dbs->sg->as, dbs->bh);
+         return;
+     }
+ 
+@@ -197,7 +197,7 @@ static void dma_aio_cancel(BlockAIOCB *acb)
+     }
+ 
+     if (dbs->bh) {
+-        cpu_unregister_map_client(dbs->bh);
++        address_space_unregister_map_client(dbs->sg->as, dbs->bh);
+         qemu_bh_delete(dbs->bh);
+         dbs->bh = NULL;
+     }
+diff --git a/system/memory.c b/system/memory.c
+index 49f1cb2c38..642a449f8c 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -3174,6 +3174,9 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name)
+     as->ioeventfds = NULL;
+     QTAILQ_INIT(&as->listeners);
+     QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
++    as->bounce.in_use = false;
++    qemu_mutex_init(&as->map_client_list_lock);
++    QLIST_INIT(&as->map_client_list);
+     as->name = g_strdup(name ? name : "anonymous");
+     address_space_update_topology(as);
+     address_space_update_ioeventfds(as);
+@@ -3181,6 +3184,10 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name)
+ 
+ static void do_address_space_destroy(AddressSpace *as)
+ {
++    assert(!qatomic_read(&as->bounce.in_use));
++    assert(QLIST_EMPTY(&as->map_client_list));
++    qemu_mutex_destroy(&as->map_client_list_lock);
++
+     assert(QTAILQ_EMPTY(&as->listeners));
+ 
+     flatview_unref(as->current_map);
+diff --git a/system/physmem.c b/system/physmem.c
+index d3a3d8a45c..632da6508a 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3046,55 +3046,37 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len)
+                                      NULL, len, FLUSH_CACHE);
+ }
+ 
+-typedef struct {
+-    MemoryRegion *mr;
+-    void *buffer;
+-    hwaddr addr;
+-    hwaddr len;
+-    bool in_use;
+-} BounceBuffer;
+-
+-static BounceBuffer bounce;
+-
+-typedef struct MapClient {
+-    QEMUBH *bh;
+-    QLIST_ENTRY(MapClient) link;
+-} MapClient;
+-
+-QemuMutex map_client_list_lock;
+-static QLIST_HEAD(, MapClient) map_client_list
+-    = QLIST_HEAD_INITIALIZER(map_client_list);
+-
+-static void cpu_unregister_map_client_do(MapClient *client)
++static void
++address_space_unregister_map_client_do(AddressSpaceMapClient *client)
+ {
+     QLIST_REMOVE(client, link);
+     g_free(client);
+ }
+ 
+-static void cpu_notify_map_clients_locked(void)
++static void address_space_notify_map_clients_locked(AddressSpace *as)
+ {
+-    MapClient *client;
++    AddressSpaceMapClient *client;
+ 
+-    while (!QLIST_EMPTY(&map_client_list)) {
+-        client = QLIST_FIRST(&map_client_list);
++    while (!QLIST_EMPTY(&as->map_client_list)) {
++        client = QLIST_FIRST(&as->map_client_list);
+         qemu_bh_schedule(client->bh);
+-        cpu_unregister_map_client_do(client);
++        address_space_unregister_map_client_do(client);
+     }
+ }
+ 
+-void cpu_register_map_client(QEMUBH *bh)
++void address_space_register_map_client(AddressSpace *as, QEMUBH *bh)
+ {
+-    MapClient *client = g_malloc(sizeof(*client));
++    AddressSpaceMapClient *client = g_malloc(sizeof(*client));
+ 
+-    qemu_mutex_lock(&map_client_list_lock);
++    qemu_mutex_lock(&as->map_client_list_lock);
+     client->bh = bh;
+-    QLIST_INSERT_HEAD(&map_client_list, client, link);
++    QLIST_INSERT_HEAD(&as->map_client_list, client, link);
+     /* Write map_client_list before reading in_use.  */
+     smp_mb();
+-    if (!qatomic_read(&bounce.in_use)) {
+-        cpu_notify_map_clients_locked();
++    if (!qatomic_read(&as->bounce.in_use)) {
++        address_space_notify_map_clients_locked(as);
+     }
+-    qemu_mutex_unlock(&map_client_list_lock);
++    qemu_mutex_unlock(&as->map_client_list_lock);
+ }
+ 
+ void cpu_exec_init_all(void)
+@@ -3110,28 +3092,27 @@ void cpu_exec_init_all(void)
+     finalize_target_page_bits();
+     io_mem_init();
+     memory_map_init();
+-    qemu_mutex_init(&map_client_list_lock);
+ }
+ 
+-void cpu_unregister_map_client(QEMUBH *bh)
++void address_space_unregister_map_client(AddressSpace *as, QEMUBH *bh)
+ {
+-    MapClient *client;
++    AddressSpaceMapClient *client;
+ 
+-    qemu_mutex_lock(&map_client_list_lock);
+-    QLIST_FOREACH(client, &map_client_list, link) {
++    qemu_mutex_lock(&as->map_client_list_lock);
++    QLIST_FOREACH(client, &as->map_client_list, link) {
+         if (client->bh == bh) {
+-            cpu_unregister_map_client_do(client);
++            address_space_unregister_map_client_do(client);
+             break;
+         }
+     }
+-    qemu_mutex_unlock(&map_client_list_lock);
++    qemu_mutex_unlock(&as->map_client_list_lock);
+ }
+ 
+-static void cpu_notify_map_clients(void)
++static void address_space_notify_map_clients(AddressSpace *as)
+ {
+-    qemu_mutex_lock(&map_client_list_lock);
+-    cpu_notify_map_clients_locked();
+-    qemu_mutex_unlock(&map_client_list_lock);
++    qemu_mutex_lock(&as->map_client_list_lock);
++    address_space_notify_map_clients_locked(as);
++    qemu_mutex_unlock(&as->map_client_list_lock);
+ }
+ 
+ static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr len,
+@@ -3198,8 +3179,8 @@ flatview_extend_translation(FlatView *fv, hwaddr addr,
+  * May map a subset of the requested range, given by and returned in *plen.
+  * May return NULL if resources needed to perform the mapping are exhausted.
+  * Use only for reads OR writes - not for read-modify-write operations.
+- * Use cpu_register_map_client() to know when retrying the map operation is
+- * likely to succeed.
++ * Use address_space_register_map_client() to know when retrying the map
++ * operation is likely to succeed.
+  */
+ void *address_space_map(AddressSpace *as,
+                         hwaddr addr,
+@@ -3222,25 +3203,25 @@ void *address_space_map(AddressSpace *as,
+     mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
+ 
+     if (!memory_access_is_direct(mr, is_write)) {
+-        if (qatomic_xchg(&bounce.in_use, true)) {
++        if (qatomic_xchg(&as->bounce.in_use, true)) {
+             *plen = 0;
+             return NULL;
+         }
+         /* Avoid unbounded allocations */
+         l = MIN(l, TARGET_PAGE_SIZE);
+-        bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
+-        bounce.addr = addr;
+-        bounce.len = l;
++        as->bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
++        as->bounce.addr = addr;
++        as->bounce.len = l;
+ 
+         memory_region_ref(mr);
+-        bounce.mr = mr;
++        as->bounce.mr = mr;
+         if (!is_write) {
+             flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
+-                               bounce.buffer, l);
++                          as->bounce.buffer, l);
+         }
+ 
+         *plen = l;
+-        return bounce.buffer;
++        return as->bounce.buffer;
+     }
+ 
+ 
+@@ -3258,7 +3239,7 @@ void *address_space_map(AddressSpace *as,
+ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+                          bool is_write, hwaddr access_len)
+ {
+-    if (buffer != bounce.buffer) {
++    if (buffer != as->bounce.buffer) {
+         MemoryRegion *mr;
+         ram_addr_t addr1;
+ 
+@@ -3274,15 +3255,15 @@ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+         return;
+     }
+     if (is_write) {
+-        address_space_write(as, bounce.addr, MEMTXATTRS_UNSPECIFIED,
+-                            bounce.buffer, access_len);
++        address_space_write(as, as->bounce.addr, MEMTXATTRS_UNSPECIFIED,
++                            as->bounce.buffer, access_len);
+     }
+-    qemu_vfree(bounce.buffer);
+-    bounce.buffer = NULL;
+-    memory_region_unref(bounce.mr);
++    qemu_vfree(as->bounce.buffer);
++    as->bounce.buffer = NULL;
++    memory_region_unref(as->bounce.mr);
+     /* Clear in_use before reading map_client_list.  */
+-    qatomic_set_mb(&bounce.in_use, false);
+-    cpu_notify_map_clients();
++    qatomic_set_mb(&as->bounce.in_use, false);
++    address_space_notify_map_clients(as);
+ }
+ 
+ void *cpu_physical_memory_map(hwaddr addr,
 -- 
 2.43.2
 
