@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8918BE60D
-	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9678B8BE62E
+	for <lists+qemu-devel@lfdr.de>; Tue,  7 May 2024 16:37:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4LtA-0003P7-UN; Tue, 07 May 2024 10:33:52 -0400
+	id 1s4Lt8-0003Nw-R5; Tue, 07 May 2024 10:33:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsk-0003BS-0K
+ id 1s4Lsk-0003BU-32
  for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:30 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s4Lsd-0001MV-MR
+ id 1s4Lsd-0001MY-Mb
  for qemu-devel@nongnu.org; Tue, 07 May 2024 10:33:25 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1ee12baa01cso16719745ad.0
- for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:17 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1e3ca546d40so24408225ad.3
+ for <qemu-devel@nongnu.org>; Tue, 07 May 2024 07:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715092396; x=1715697196; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715092397; x=1715697197; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gCKDBZgmkxkw60aZ1JTPBVFXSTJpz/Y7AMgu8NmXySI=;
- b=rU21QaQqyzZDyWF+otofLRzwyXy8DlkglFIyd6LY/hux+bSBj5Kyseh7dbrxWwY79K
- Yq1Ctj+cBoCyq9V05WR6etxlH5QjeR60wX3AnUOSHxl7tyELUozlc/UcRAwuQBFS2Tam
- XqikWDOxQpB15s8+Byc84C6ttKOOOdXgb6dAO/OM2/uvw0o/vfaD5V2p2YfzhUSnv8OH
- tCyFuNylElULJ1Lpj+ZU75P1EjMeJF1MVht6TOTAt3wjFe2fIfcKlHztANpU48OjLJXV
- Zb1KudVmlSsEGSDL/+qN2a9Wu9tft0k81jb0BvoLHPBhNCpwangUb0g82FHgeF521Vle
- 3aTw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=F9wcs8XKRd8uFWf7+gb0OcRlyNEORvMcLw5aFQixK3I=;
+ b=exJL8WmvBh3xm/Yf5nUUXByN0DD9XOyFGYgu1H5PSva61bSPT0X+1h7PXfFx9mTO4a
+ D78ImuFihonl8+GKeWAyC0XZPKFqhhVH0aXxzxC373SabYtRvEUTAUlrka8itGAEhx3K
+ CxRXtG7STDkW1iz5VcfKQi5PELTrt3RKEkLIvSwxBd0Ogm77fmlBCR9VOvXWvnrrG9JP
+ opGxn9Y/Lgo5rMQfUx0xiyXZHlm1A6+pL/bCrAifuqYzWAK9cVSOroAlKVxeoK4jv93q
+ wwnBDhpfexNX8vJoAaOlLOLF4AM6Eh7qsCrT9Ov8Wx9BO5OsLs5eCllUeoaDE8T1rahF
+ EK8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715092396; x=1715697196;
+ d=1e100.net; s=20230601; t=1715092397; x=1715697197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gCKDBZgmkxkw60aZ1JTPBVFXSTJpz/Y7AMgu8NmXySI=;
- b=bmvm2A5qR/rAfU6Uvb7bKI9cPdD/567utmYr07UbGTkGtkKsn5brR33U+grBBZ8GyV
- OvDVXjYHZjMPlga4EoSEnXxfvGT1RufDcE/gREm7/GjykYxzcFGBMvBKC8nsF+6QT+Rl
- olgMLkGQ70k3AKjqnjRRJmOVdcdHqW/ZY3jI5BOBJlB5QfDmOpL+VKpRclfMvOGPpOv6
- 8TrDThgb/CzF9+/99TWeX9wXc90oJWIIVcvORrK7CO3WKoRhO8wgJFHoCDW6MUQBHP5+
- KxNh+e5dJDL4VilF19ig68xrMColLmoNaYXABr7Z4ZePJCHAfnEvGBv6xOlW1n9izP6r
- x5nA==
-X-Gm-Message-State: AOJu0YwvbHp9rWKHGRqxjQRuSER3o+PVrstnwppLuVEyhzvSYkxFMwhz
- k84TrCZJlwUfuycJ0GW66FN7M+hzt5r/8tvuRhv+UVqGSB/OC57O0G8j6FCYNijfl2A1bwNeDp1
- s
-X-Google-Smtp-Source: AGHT+IHWo/vw1iNCOfcDjUQe03i3bd2Av3k6ZYTsrZlgi045cAAmeQ6o+oZGM5MgZ6pzeezIyRS3OA==
-X-Received: by 2002:a17:902:d50c:b0:1e5:d0e3:b960 with SMTP id
- b12-20020a170902d50c00b001e5d0e3b960mr16194495plg.11.1715092396486; 
- Tue, 07 May 2024 07:33:16 -0700 (PDT)
+ bh=F9wcs8XKRd8uFWf7+gb0OcRlyNEORvMcLw5aFQixK3I=;
+ b=SJoDsQc0j9E+RfWDZ5zdnN2AwQBAEdElohFzDxzPlwwWYMMlKFo8lhOquP4BRD1REH
+ N4SuXuD+4Dedv8Rc2RB6oAeH41ugbzCIjDjw/oz4VPbarHC6J42TDp+pdmHkzOAlJcqk
+ /GxvZtEXeMXrA+qn6UtaGKxyMni1XJc7bcRLcvAuuX8hlIbQ+WAu4Ea2AVXP7ZkYkinl
+ CU3EWkT9he/ZPM1c+FmNKTg6Ufnk8dZ7IlmMH0rEfQkq4/3rFEdWhedoXz0vi/pw8VYc
+ F12lJvIhIN/+JX770vpPY14c2dXB28GBTnEjm9eXkE/qqdZYImxeeeIWTRB1qphipUCh
+ eYvg==
+X-Gm-Message-State: AOJu0YztqKGQasWJJe4SCwIp7tfFWpDYRH5RYiUEHWevprBOD5yu9K8H
+ WyfJ+VdvS5gQwbJ14ianW3UPIPK/mBw7mQc9HRCAPyp63caj01uuI1jlejf0VYVOKxt9ogVobbs
+ 8
+X-Google-Smtp-Source: AGHT+IENKPIb5sj4Nv4wpzwGY1d3UMydu3ShWciFIEfHgxGHpCaOntvNQic76qEgyGOtTvx2NmMHbA==
+X-Received: by 2002:a17:903:18d:b0:1dd:c288:899f with SMTP id
+ z13-20020a170903018d00b001ddc288899fmr16181288plg.18.1715092397212; 
+ Tue, 07 May 2024 07:33:17 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.15
- for <qemu-devel@nongnu.org>
+ p3-20020a170902780300b001ed2d84c1cbsm8690097pll.193.2024.05.07.07.33.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 May 2024 07:33:15 -0700 (PDT)
+ Tue, 07 May 2024 07:33:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 6/9] target/sh4: Update DisasContextBase.insn_start
-Date: Tue,  7 May 2024 07:33:06 -0700
-Message-Id: <20240507143309.5528-7-richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 7/9] gitlab: Drop --disable-libssh from ubuntu-22.04-s390x.yml
+Date: Tue,  7 May 2024 07:33:07 -0700
+Message-Id: <20240507143309.5528-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240507143309.5528-1-richard.henderson@linaro.org>
 References: <20240507143309.5528-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,27 +92,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Match the extra inserts of INDEX_op_insn_start, fixing
-the db->num_insns != 1 assert in translator_loop.
+This was a workaround for ubuntu 20.04.
 
-Fixes: dcd092a0636 ("accel/tcg: Improve can_do_io management")
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sh4/translate.c | 1 +
- 1 file changed, 1 insertion(+)
+ .gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index e599ab9d1a..b3282f3ac7 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -2189,6 +2189,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
-      */
-     for (i = 1; i < max_insns; ++i) {
-         tcg_gen_insn_start(pc + i * 2, ctx->envflags);
-+        ctx->base.insn_start = tcg_last_op();
-     }
- }
- #endif
+diff --git a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+index 105981879f..2b9e1ff749 100644
+--- a/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
++++ b/.gitlab-ci.d/custom-runners/ubuntu-22.04-s390x.yml
+@@ -35,7 +35,7 @@ ubuntu-22.04-s390x-all:
+  script:
+  - mkdir build
+  - cd build
+- - ../configure --disable-libssh
++ - ../configure
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
+@@ -57,7 +57,7 @@ ubuntu-22.04-s390x-alldbg:
+  script:
+  - mkdir build
+  - cd build
+- - ../configure --enable-debug --disable-libssh
++ - ../configure --enable-debug
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make clean
+  - make --output-sync -j`nproc`
+@@ -80,7 +80,7 @@ ubuntu-22.04-s390x-clang:
+  script:
+  - mkdir build
+  - cd build
+- - ../configure --disable-libssh --cc=clang --cxx=clang++ --enable-sanitizers
++ - ../configure --cc=clang --cxx=clang++ --enable-sanitizers
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
+@@ -101,7 +101,7 @@ ubuntu-22.04-s390x-tci:
+  script:
+  - mkdir build
+  - cd build
+- - ../configure --disable-libssh --enable-tcg-interpreter
++ - ../configure --enable-tcg-interpreter
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make --output-sync -j`nproc`
+ 
+@@ -122,7 +122,7 @@ ubuntu-22.04-s390x-notcg:
+  script:
+  - mkdir build
+  - cd build
+- - ../configure --disable-libssh --disable-tcg
++ - ../configure --disable-tcg
+    || { cat config.log meson-logs/meson-log.txt; exit 1; }
+  - make --output-sync -j`nproc`
+  - make --output-sync -j`nproc` check
 -- 
 2.34.1
 
