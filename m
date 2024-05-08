@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4BB8BFE10
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE01A8BFE7F
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4h5r-0005Cr-6J; Wed, 08 May 2024 09:12:23 -0400
+	id 1s4hBr-0005tA-4F; Wed, 08 May 2024 09:18:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4h5p-0005CD-8r; Wed, 08 May 2024 09:12:21 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1s4hBO-0005np-7V; Wed, 08 May 2024 09:18:07 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4h5n-0001UI-Gd; Wed, 08 May 2024 09:12:20 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f44bcbaae7so3328471b3a.2; 
- Wed, 08 May 2024 06:12:18 -0700 (PDT)
+ id 1s4hBK-0002XN-H5; Wed, 08 May 2024 09:18:05 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1edf506b216so23689285ad.2; 
+ Wed, 08 May 2024 06:18:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715173937; x=1715778737; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715174278; x=1715779078; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2dBMKpwgs823k+0HdgakBvb+PExtC6R1IbH4IGUW/VI=;
- b=QRyutxQukjzcAimOA008fnDCx2ndgCRUZj29uYaefYbbY7sQJ8CkicyzL/Jm3awK/V
- ryhr+SbzjVGezWkuEyFcfJZaInHK4dboYMzq3LADo4oHdimfnZ6qdeQJB5KVhchVG/RZ
- lLKUVOByLIaYVhp3/XkGJFFcBMimzWK2XemqjVOJSvaa1BqEmjGrSFtjzOcqsy81myyU
- NmB9U7TJkTB/51SM8gz9nOdm2aPVnQpQ626M9ilQalCqBFXbcHAm39D8fc4qcC63fNix
- wa7h9JZTVtMku1fNXiV31HpSuQXXfhfHaF9k2zxQ2xwNM6RHWZsBs8mqJ4MCu5k9DVQq
- kIEg==
+ bh=Ig4eN1BpKH6nCDo4aALwl+5py7Hm+Oporkfqz7XA5LQ=;
+ b=jQaZALDplGUkA3oSaN3/DvfekW7kfKYHW+RgT0T4XlVO4MZgRhZOK8bPeDecPYDLXF
+ JiiiiopGsIvUgfM5hWFv7ZebJ6m+Q3bjLYLwNgt9xD8QAr8foYI+5oJkC1UUtFDRHsHO
+ 1IRzBdZbB2fSAKI01bVw7J7TeYodhnQeMKxbf8hapOVruCDiqZb+kflmCX5chM4xCLsY
+ ugLtRIOOPlSq2o0dliWwQtA65jb7S0aATdeb4RRxN6vy7+lyR7oSz31oEQv/u5xoaS8v
+ fPb8kNhgaF2MuyqbeFWph6DCRK7EApMMnmaCVUSMTv2xtDhcWxMhmGNjxJqKnF/kND98
+ IsrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715173937; x=1715778737;
+ d=1e100.net; s=20230601; t=1715174278; x=1715779078;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=2dBMKpwgs823k+0HdgakBvb+PExtC6R1IbH4IGUW/VI=;
- b=JuRPBI4weRJpc78XrZjvdMIcm14vVamH59DEGljz2OXJ+yq9rwarlhpuh2dfT80HqO
- FGiJhWDXrkRWmk3bRskFr4y5r3RsWv9AR8It5h2uspVTHp3+nlURAjIP5uR1BquHi2RL
- oUbIRKd8hxAnw9tC+PAz1uiwXnI7qav2e54rZWb54onTo9o7IxA4jT3jibZC9T0u6cdY
- dLSRRPUR2PO0oE9RwH243+QgT06KgcyciD2OZTPf5FV6iffx7Wb1mAa8LM3kWMtTDx21
- EGSKAPV4UQODVx+1uKviW8OdYH+/cZ1KdM0OL9jp/zkMIAkEFIloVu0FLhyDFWv4svQq
- 1FGg==
+ bh=Ig4eN1BpKH6nCDo4aALwl+5py7Hm+Oporkfqz7XA5LQ=;
+ b=V02lb90apIRCrY7sXccWfbn4wYBITin36F9zCdfU8hORN860Tp9yeSS3SgwKQrFWuN
+ r9SAxEjY4uawsUlowzM5XpKdh7ewBMYC16Iv53bV4NvVo7Ch4mGdOcGic7Eq8iPAvkRs
+ dIpwRpkoNJLJkkCv58nW4EyAVglXDZm1XFyQYbZpxttJwM+BOHhXM6sn30E35XHPbS1B
+ vS2zZDeiRq8o+jBWnJ4jlpRHSQe56Wp7tTQGrXIJyzghXekKOL9ijG+avv0w8qjdyGqR
+ 7blgyVEIblHYVfQx8NMOf+J2JVtq3nnHnSOq2qffVVOVThbXoi/1rgsbyxZsJvnwPe7y
+ Ki5Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9eEF6R+R3iFUTvS8bmyVwWR9lhI42X+hbzAhSs/zjgdn+Ew+p5RK8epFTZSL7Y4aIsw/G5F0dV89KomD7KkMstP5wi/QrQO+9CEWqqtXNr2dLyRbW9KtQtv8=
-X-Gm-Message-State: AOJu0YzRjOQEsNEoDEbaaKWG2exSb8oZo5l6k41dwZDoR2WOCoErNrVh
- gEC4o+eqD6FzH3Ejpjut1pJ3ur/OCE7qZYjFMMBGzfbIiVdPC9L6
-X-Google-Smtp-Source: AGHT+IEGJjnnsRoJLM89PcZ0SuROcEtvAY2L1ws8oU9hvyKxT89cZJKvP4pVtb0gFJXhJotqDUmPTA==
-X-Received: by 2002:a05:6a21:7882:b0:1af:41d1:732e with SMTP id
- adf61e73a8af0-1afc8dc6c5bmr3220400637.46.1715173937513; 
- Wed, 08 May 2024 06:12:17 -0700 (PDT)
+ AJvYcCVT2Q6014zzDEgcqYHk3HgUvL8wx2ZeHL2zqHhevM46mEaAFTsrgjzAeDz8j3sDlp9dXm/6EH6aZUUeOABG8Km4NhLxkFh1JVYNQ02iUeEvDl+juP8rMoIOvXg=
+X-Gm-Message-State: AOJu0YyikppZdZpirGCjG93H5bdJFNcB/xGk70Rw9GhElBh2xAJjT3X+
+ ZpsqdXtUaoktAEovt/lss7ZRHhkEudo9OFvngGFXhkkjFGYaHAzq
+X-Google-Smtp-Source: AGHT+IFHvk5szkRoyea0HY4cDSZKJpY1+ztM1offnBFhJNoozYA9Ulw4m2bfj2e+5lnpVbqpqmqWkg==
+X-Received: by 2002:a17:902:db09:b0:1e4:4ade:f504 with SMTP id
+ d9443c01a7336-1eeb0998a2fmr30176535ad.46.1715174278051; 
+ Wed, 08 May 2024 06:17:58 -0700 (PDT)
 Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
- hy12-20020a056a006a0c00b006ed26aa0ae6sm11138296pfb.54.2024.05.08.06.12.15
+ lb5-20020a170902fa4500b001dd69aca213sm11752374plb.270.2024.05.08.06.17.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 06:12:17 -0700 (PDT)
+ Wed, 08 May 2024 06:17:57 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 May 2024 23:12:12 +1000
-Message-Id: <D14AEZ3KMI1B.5O131WO4JO7@gmail.com>
+Date: Wed, 08 May 2024 23:17:52 +1000
+Message-Id: <D14AJB3VXJL0.18D5ZU7FZFOLN@gmail.com>
 Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH v3 25/33] target/ppc/mmu_common.c: Remove BookE handling
- from get_physical_address_wtlb()
+Subject: Re: [PATCH v3 26/33] target/ppc/mmu_common.c: Simplify
+ ppc_booke_xlate() part 1
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
 X-Mailer: aerc 0.17.0
 References: <cover.1715125376.git.balaton@eik.bme.hu>
- <31a3baf4f598b8ebd0108180c3f5e26ebfbaff64.1715125376.git.balaton@eik.bme.hu>
-In-Reply-To: <31a3baf4f598b8ebd0108180c3f5e26ebfbaff64.1715125376.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+ <5074c129ebfea0e1dfc22ef4691d8b62038d59b2.1715125376.git.balaton@eik.bme.hu>
+In-Reply-To: <5074c129ebfea0e1dfc22ef4691d8b62038d59b2.1715125376.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,101 +95,114 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
-> This function is no longer called for BookE MMU model so remove parts
-> related to it. This has uncovered a few may be used uninitialised
-> warnings that are also fixed.
+> Move setting error_code that appears in every case out in front and
+> hoist the common fall through case for BOOKE206 as well which allows
+> removing the nested switches.
 >
+=20
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->  target/ppc/mmu_common.c | 25 +++++--------------------
->  1 file changed, 5 insertions(+), 20 deletions(-)
+>  target/ppc/mmu_common.c | 41 ++++++++++++-----------------------------
+>  1 file changed, 12 insertions(+), 29 deletions(-)
 >
 > diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index 83dc041a77..788e2bebd5 100644
+> index 788e2bebd5..c725a7932f 100644
 > --- a/target/ppc/mmu_common.c
 > +++ b/target/ppc/mmu_common.c
-> @@ -629,12 +629,10 @@ static int mmubooke_get_physical_address(CPUPPCStat=
-e *env, mmu_ctx_t *ctx,
->          ret =3D mmubooke_check_tlb(env, tlb, &raddr, &ctx->prot, address=
-,
->                                   access_type, i);
->          if (ret !=3D -1) {
-> -            if (ret >=3D 0) {
-> -                ctx->raddr =3D raddr;
-> -            }
->              break;
->          }
+> @@ -1205,58 +1205,41 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vadd=
+r eaddr,
 >      }
-> +    ctx->raddr =3D raddr;
-
-Not sure if this is quite the right thing to do or if it's just masking
-used uninits.
-
->      qemu_log_mask(CPU_LOG_MMU,
->                    "%s: access %s " TARGET_FMT_lx " =3D> " HWADDR_FMT_plx
->                    " %d %d\n", __func__, ret < 0 ? "refused" : "granted",
-> @@ -841,9 +839,6 @@ static int mmubooke206_get_physical_address(CPUPPCSta=
-te *env, mmu_ctx_t *ctx,
->              ret =3D mmubooke206_check_tlb(env, tlb, &raddr, &ctx->prot, =
-address,
->                                          access_type, mmu_idx);
->              if (ret !=3D -1) {
-> -                if (ret >=3D 0) {
-> -                    ctx->raddr =3D raddr;
-> -                }
->                  goto found_tlb;
->              }
->          }
-> @@ -851,6 +846,7 @@ static int mmubooke206_get_physical_address(CPUPPCSta=
-te *env, mmu_ctx_t *ctx,
 > =20
->  found_tlb:
-> =20
-> +    ctx->raddr =3D raddr;
->      qemu_log_mask(CPU_LOG_MMU, "%s: access %s " TARGET_FMT_lx " =3D> "
->                    HWADDR_FMT_plx " %d %d\n", __func__,
->                    ret < 0 ? "refused" : "granted", address, raddr,
-> @@ -1107,20 +1103,9 @@ static int get_physical_address_wtlb(CPUPPCState *=
-env, mmu_ctx_t *ctx,
->                                       MMUAccessType access_type, int type=
-,
->                                       int mmu_idx)
->  {
-> -    bool real_mode;
-> -
-> -    if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE) {
-> -        return mmubooke_get_physical_address(env, ctx, eaddr, access_typ=
-e);
-> -    } else if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
-> -        return mmubooke206_get_physical_address(env, ctx, eaddr, access_=
-type,
-> -                                                mmu_idx);
-> -    }
+>      log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
+> +    env->error_code =3D 0;
+> +    if (ret =3D=3D -1) {
+> +        if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
+> +            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_id=
+x);
+> +        }
+> +    }
+>      if (access_type =3D=3D MMU_INST_FETCH) {
+>          switch (ret) {
+>          case -1:
+>              /* No matches in page tables or TLB */
+> -            switch (env->mmu_model) {
+> -            case POWERPC_MMU_BOOKE206:
+> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mm=
+u_idx);
+> -                /* fall through */
+> -            case POWERPC_MMU_BOOKE:
+> -                cs->exception_index =3D POWERPC_EXCP_ITLB;
+> -                env->error_code =3D 0;
+> -                env->spr[SPR_BOOKE_DEAR] =3D eaddr;
+> -                env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, acc=
+ess_type);
+> -                break;
+> -            default:
+> -                g_assert_not_reached();
+> -            }
+> +            cs->exception_index =3D POWERPC_EXCP_ITLB;
+> +            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
+> +            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
+type);
+>              break;
+>          case -2:
+>              /* Access rights violation */
+>              cs->exception_index =3D POWERPC_EXCP_ISI;
+> -            env->error_code =3D 0;
+>              break;
+>          case -3:
+>              /* No execute protection violation */
+>              cs->exception_index =3D POWERPC_EXCP_ISI;
+>              env->spr[SPR_BOOKE_ESR] =3D 0;
 
-Also still don't like how this gets removed here rather than when it's
-stopped being called. I know it's a tangle but it would be better to
-try squash the would-be warnings first, then put this in the same as
-the previous patch.
+I don't know BookE well but AFAIKS it says ESR if not set explicitly
+is generally cleared to 0 by interrupts which I guess is the case here.
+I don't see why the same would not apply to the -2 case either. That
+would reduce special cases.
 
-Add /* quiet used uninit */ warnings if they can't be fixed properly.
+Although that's a behaviour change. It's possible current beahviour is
+deliberate or matches some particular CPU. Not something for this
+series.
 
 Thanks,
 Nick
 
-> -
-> -    real_mode =3D (type =3D=3D ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR,=
- IR)
-> -                                      : !FIELD_EX64(env->msr, MSR, DR);
-> -    if (real_mode && (env->mmu_model =3D=3D POWERPC_MMU_SOFT_6xx ||
-> -                      env->mmu_model =3D=3D POWERPC_MMU_SOFT_4xx ||
-> -                      env->mmu_model =3D=3D POWERPC_MMU_REAL)) {
-> +    bool real_mode =3D (type =3D=3D ACCESS_CODE) ? !FIELD_EX64(env->msr,=
- MSR, IR)
-> +                                           : !FIELD_EX64(env->msr, MSR, =
-DR);
-> +    if (real_mode) {
->          memset(ctx, 0, sizeof(*ctx));
->          ctx->raddr =3D eaddr;
->          ctx->prot =3D PAGE_RWX;
+> -            env->error_code =3D 0;
+>              break;
+>          }
+>      } else {
+>          switch (ret) {
+>          case -1:
+>              /* No matches in page tables or TLB */
+> -            switch (env->mmu_model) {
+> -            case POWERPC_MMU_BOOKE206:
+> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mm=
+u_idx);
+> -                /* fall through */
+> -            case POWERPC_MMU_BOOKE:
+> -                cs->exception_index =3D POWERPC_EXCP_DTLB;
+> -                env->error_code =3D 0;
+> -                env->spr[SPR_BOOKE_DEAR] =3D eaddr;
+> -                env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, acc=
+ess_type);
+> -                break;
+> -            default:
+> -                g_assert_not_reached();
+> -            }
+> +            cs->exception_index =3D POWERPC_EXCP_DTLB;
+> +            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
+> +            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
+type);
+>              break;
+>          case -2:
+>              /* Access rights violation */
+>              cs->exception_index =3D POWERPC_EXCP_DSI;
+> -            env->error_code =3D 0;
+>              env->spr[SPR_BOOKE_DEAR] =3D eaddr;
+>              env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
+type);
+>              break;
 
 
