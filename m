@@ -2,99 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F5E8C07D2
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2598C07D6
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4qpc-0003B0-Tk; Wed, 08 May 2024 19:36:17 -0400
+	id 1s4qpc-00039g-If; Wed, 08 May 2024 19:36:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpX-0002tm-Eq
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:11 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpZ-00033b-U3
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:13 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpU-0002TL-Ge
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:11 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpW-0002UF-Nz
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:13 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 35AD15D392;
- Wed,  8 May 2024 23:36:07 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4940837725;
+ Wed,  8 May 2024 23:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bu8KuEGO9tZwmVBqA8ncjfkgnv45Vf4NF85Yzr2wLdo=;
- b=sE0J0NvgWCWTzdH2FZFYWeq4X7JbMla58eS8l2+xQXTclrQBpNWPkdiwB4DXFfD1u7izJE
- BeZTffT40VBcHqYA3QLDrbrOifjBNzzYO6Zp97MhuDEs1b6r3XlfWj0DVm3V+GVqo74KIt
- PfJoKCzPrZiQ8CztSypfOWTUQHxBLC0=
+ bh=NMgdBzy6B6BZ+ndeqFAhyOm8zroXBnrmqFiaqChf4Hw=;
+ b=AEVAspSlIx6Rf0TpVEmFyuvo9OyUT1tJ6zTPsI6u5b2pHmjzDrfgKbKZT+Gweo3msllM73
+ v0GHuGurg74UJkyDjHfOdVLB6OcuQTk8d98FcHfmxSTAeb6kwUBXLkHhf/R28c9mrRvGl2
+ 1ytTNXB//Y6gPY28qeL/gKW3BJ/RsNs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211367;
+ s=susede2_ed25519; t=1715211369;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bu8KuEGO9tZwmVBqA8ncjfkgnv45Vf4NF85Yzr2wLdo=;
- b=oWg6dsCzy6tSKHia1FN9B3nHCGTZ97iYmDXPc8zDks4BnwdYiCzajgstMCaZk4snCcSA7M
- 8Yn1LZLB3hrRbbDA==
-Authentication-Results: smtp-out2.suse.de;
-	none
+ bh=NMgdBzy6B6BZ+ndeqFAhyOm8zroXBnrmqFiaqChf4Hw=;
+ b=qU7AIzB9egfDWik8PjZZUKS+z/+H71hWqDzkEVbCnOctI9+eCk49aB5UT5OQ5zj1HusQqM
+ +vSQPbMC76CIDnAA==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=AEVAspSl;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qU7AIzB9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bu8KuEGO9tZwmVBqA8ncjfkgnv45Vf4NF85Yzr2wLdo=;
- b=sE0J0NvgWCWTzdH2FZFYWeq4X7JbMla58eS8l2+xQXTclrQBpNWPkdiwB4DXFfD1u7izJE
- BeZTffT40VBcHqYA3QLDrbrOifjBNzzYO6Zp97MhuDEs1b6r3XlfWj0DVm3V+GVqo74KIt
- PfJoKCzPrZiQ8CztSypfOWTUQHxBLC0=
+ bh=NMgdBzy6B6BZ+ndeqFAhyOm8zroXBnrmqFiaqChf4Hw=;
+ b=AEVAspSlIx6Rf0TpVEmFyuvo9OyUT1tJ6zTPsI6u5b2pHmjzDrfgKbKZT+Gweo3msllM73
+ v0GHuGurg74UJkyDjHfOdVLB6OcuQTk8d98FcHfmxSTAeb6kwUBXLkHhf/R28c9mrRvGl2
+ 1ytTNXB//Y6gPY28qeL/gKW3BJ/RsNs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211367;
+ s=susede2_ed25519; t=1715211369;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bu8KuEGO9tZwmVBqA8ncjfkgnv45Vf4NF85Yzr2wLdo=;
- b=oWg6dsCzy6tSKHia1FN9B3nHCGTZ97iYmDXPc8zDks4BnwdYiCzajgstMCaZk4snCcSA7M
- 8Yn1LZLB3hrRbbDA==
+ bh=NMgdBzy6B6BZ+ndeqFAhyOm8zroXBnrmqFiaqChf4Hw=;
+ b=qU7AIzB9egfDWik8PjZZUKS+z/+H71hWqDzkEVbCnOctI9+eCk49aB5UT5OQ5zj1HusQqM
+ +vSQPbMC76CIDnAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1048113A27;
- Wed,  8 May 2024 23:36:05 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A00BF13A27;
+ Wed,  8 May 2024 23:36:07 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id MAU0MmUMPGZ7FQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:36:05 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eJGHGWcMPGZ7FQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:36:07 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v2 12/13] migration: Deprecate fd: for file migration
-Date: Wed,  8 May 2024 20:35:40 -0300
-Message-Id: <20240508233541.2403-13-farosas@suse.de>
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL v2 13/13] hmp/migration: Fix "migrate" command's documentation
+Date: Wed,  8 May 2024 20:35:41 -0300
+Message-Id: <20240508233541.2403-14-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240508233541.2403-1-farosas@suse.de>
 References: <20240508233541.2403-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_THREE(0.00)[3];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
+ DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 4940837725
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -117,91 +130,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fd: URI can currently trigger two different types of migration, a
-TCP migration using sockets and a file migration using a plain
-file. This is in conflict with the recently introduced (8.2) QMP
-migrate API that takes structured data as JSON-like format. We cannot
-keep the same backend for both types of migration because with the new
-API the code is more tightly coupled to the type of transport. This
-means a TCP migration must use the 'socket' transport and a file
-migration must use the 'file' transport.
+From: Peter Xu <peterx@redhat.com>
 
-If we keep allowing fd: when using a file, this creates an issue when
-the user converts the old-style (fd:) to the new style ("transport":
-"socket") invocation because the file descriptor in question has
-previously been allowed to be either a plain file or a socket.
+Peter missed the Sphinx HMP document for the "resume/-r" flag in commit
+7a4da28b26 ("qmp: hmp: add migrate "resume" option").  Add it.
 
-To avoid creating too much confusion, we can simply deprecate the fd:
-+ file usage, which is thought to be rarely used currently and instead
-establish a 1:1 correspondence between fd: URI and socket transport,
-and file: URI and file transport.
+When at it, slightly cleanup the lines around:
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+  - Move "detach/-d" to a separate section rather than appending it at the
+  end of the command description. Add a hint for how to query the migration
+  results in detached mode.
+
+  - Add "postcopy" keyword to "resume/-r" help messages, as it only applies
+  to postcopy.
+
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Cc: Fabiano Rosas <farosas@suse.de>
+Fixes: 7a4da28b26 ("qmp: hmp: add migrate "resume" option")
+Reported-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- docs/about/deprecated.rst | 14 ++++++++++++++
- migration/fd.c            | 12 ++++++++++++
- 2 files changed, 26 insertions(+)
+ hmp-commands.hx | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 64b8f838be..f5f111495b 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -473,3 +473,17 @@ both, older and future versions of QEMU.
- The ``blacklist`` config file option has been renamed to ``block-rpcs``
- (to be in sync with the renaming of the corresponding command line
- option).
-+
-+Migration
-+---------
-+
-+``fd:`` URI when used for file migration (since 9.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+The ``fd:`` URI can currently provide a file descriptor that
-+references either a socket or a plain file. These are two different
-+types of migration. In order to reduce ambiguity, the ``fd:`` URI
-+usage of providing a file descriptor to a plain file has been
-+deprecated in favor of explicitly using the ``file:`` URI with the
-+file descriptor being passed as an ``fdset``. Refer to the ``add-fd``
-+command documentation for details on the ``fdset`` usage.
-diff --git a/migration/fd.c b/migration/fd.c
-index 449adaa2de..aab5189eac 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -20,6 +20,8 @@
- #include "file.h"
- #include "migration.h"
- #include "monitor/monitor.h"
-+#include "qemu/error-report.h"
-+#include "qemu/sockets.h"
- #include "io/channel-util.h"
- #include "trace.h"
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index ebca2cdced..06746f0afc 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -912,14 +912,20 @@ ERST
+         .args_type  = "detach:-d,resume:-r,uri:s",
+         .params     = "[-d] [-r] uri",
+         .help       = "migrate to URI (using -d to not wait for completion)"
+-		      "\n\t\t\t -r to resume a paused migration",
++		      "\n\t\t\t -r to resume a paused postcopy migration",
+         .cmd        = hmp_migrate,
+     },
  
-@@ -32,6 +34,11 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
-         return;
-     }
  
-+    if (!fd_is_socket(fd)) {
-+        warn_report("fd: migration to a file is deprecated."
-+                    " Use file: instead.");
-+    }
+ SRST
+-``migrate [-d]`` *uri*
+-  Migrate to *uri* (using -d to not wait for completion).
++``migrate [-d] [-r]`` *uri*
++  Migrate the VM to *uri*.
 +
-     trace_migration_fd_outgoing(fd);
-     ioc = qio_channel_new_fd(fd, errp);
-     if (!ioc) {
-@@ -61,6 +68,11 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-         return;
-     }
++  ``-d``
++    Start the migration process, but do not wait for its completion.  To
++    query an ongoing migration process, use "info migrate".
++  ``-r``
++    Resume a paused postcopy migration.
+ ERST
  
-+    if (!fd_is_socket(fd)) {
-+        warn_report("fd: migration to a file is deprecated."
-+                    " Use file: instead.");
-+    }
-+
-     trace_migration_fd_incoming(fd);
- 
-     ioc = qio_channel_new_fd(fd, errp);
+     {
 -- 
 2.35.3
 
