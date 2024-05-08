@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F658BF8FD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 10:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F0B8BF854
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 10:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4cwm-0005mr-Be; Wed, 08 May 2024 04:46:44 -0400
+	id 1s4cVP-0004L6-T6; Wed, 08 May 2024 04:18:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4cwk-0005lw-KR
- for qemu-devel@nongnu.org; Wed, 08 May 2024 04:46:42 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4cVN-0004Kt-KT
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 04:18:25 -0400
 Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4cwi-0006hD-Ol
- for qemu-devel@nongnu.org; Wed, 08 May 2024 04:46:42 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4cVL-0004qh-Q0
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 04:18:25 -0400
 Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a59e4136010so559505666b.3
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 01:46:40 -0700 (PDT)
+ a640c23a62f3a-a59a387fbc9so1018116266b.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 01:18:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715157999; x=1715762799; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eoHl+ES6kSyEzEnTAZM0QjRpAgoNP9Iphczzu+a7Cwk=;
- b=DZh/H+i9bfKsQnqzTfLyTivuxkUfU56wbJTRmeA8nMVquVeFAeqJNaY9SDqqTdzlsU
- Yh1YHp+gKA6uINzs26MpC3OM5noK1NoEm3oGQ4x+Idu1fiIrabgdXlZM/rDwlQRj9PMM
- 565rO8kzeJdpzrjo0uw+l4/LiInTdfuklqYJfWKbSJzRw/TTJB7VS6Pa3bQStQGn9tP8
- LaYzRytprvmraLdiHGy/rZqIUHx/ZnhKILUJf3UFhdRZBP8f8+LN39cl3fxcOc/1T2zo
- 13s//gIuLS9F+kR0srV57hL7bcl6pbMPi1wYeImIGFOWL2UEYHqceKHGrPqFzyqT8Nx7
- S7TQ==
+ d=linaro.org; s=google; t=1715156301; x=1715761101; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=WrN6DO/QUAWAtwLoL/56YyAMpvxSKjgFx91S3d3we4Q=;
+ b=oZYByWGNGEGSRWaAJnkZ5DQmdX1jyd/DtvR8SS/yxdme8BliCpqeGdk0H4NfwC2e+9
+ iQX25HYWLXnO9HfTkJXaBEmrLW9UDcF5Y8QerQymIhin+2jxJm6S0q6/jROXKCEP0J3P
+ 0AbcorJJ2JGmdh/BFaFDe2XplNEdzjJ19brC+rAmzfY/86YuWvHY5x7qQpEj1xp430hD
+ FAI+v99fSpDvBbbobBJBsXZp7JIlMFn/hmAiA0rMM11OFdFtq8rzHUJG7VPtY1m6bSHX
+ nzq6OnmwsIivIJSLKBOnC4VWJeJ83DpKlXMKbROnOcJr4VqapL6XymCBLju7DhWgzUBw
+ +qYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715157999; x=1715762799;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eoHl+ES6kSyEzEnTAZM0QjRpAgoNP9Iphczzu+a7Cwk=;
- b=ONQV+yr+ZXdUIn2vFzA1Np5cStRB4UNXUCJCz/9U6OP/U7PUrDwWs1tmMy+eyuqy5Q
- u33Brz/XWsc0D2TYuHKqzGt/0Pzhih+f7GcXRXbdQO0oqeldjdqZ8+4LiV7scezQvonM
- oB6v7x2kMq00tsZrCBoH+Yf7PH94QMUpPTX/D66KpNP3Bygu5uk+OJ8ULBumJ2j1MiIL
- A69PMI72AAJlkJ0pGhwNeRPPZKfy/ApryrQS0OQrEd7otxmerTwHhKnreNlL5lYYhPRl
- gvGW456afEA/8rfBE2+S3QK8W4m1d4yANKJm9uU50b25xi8wmlDpwQLsWmMj32KW54+c
- eDrQ==
+ d=1e100.net; s=20230601; t=1715156301; x=1715761101;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WrN6DO/QUAWAtwLoL/56YyAMpvxSKjgFx91S3d3we4Q=;
+ b=THKaK2VcXB1kjgTQA4aMtvZBequeMBWOxViSYzDX8EAd9/NvS3PlL3E1MpXFSxS4xD
+ hfb+QoSdsnxgN/aFW813h4v7ubhidqAhGNotDJM3rRvbjVoejCF06nk8CnglINztGJ1/
+ Qq2K6yoa2RYksTdfavJ6D0/WXegApApTOKIXsDEarPl9YJkjHVuR38iUwyRjJRzeHdoo
+ w2MXFWOVMFd0rFV7JR/nH1rvDdZg2h/CXTVYGbwF/9cdPgBD60o3+jjHHBAK04IX3/gZ
+ kMHor3Ycdu8O3YLq7Tci8vziezAEC/gjpY98cXFMsUsvBadFVqn30cV/5rRoTSxrPmwW
+ mHww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/BIepbJRjYlbMH+uzNY7ryJQs1707J1BwxHHoRkgSszdbv9sYJ2+3irHc/OB+zXIObbwEz1Em+ZupnBNSlgQC9xLKI80=
-X-Gm-Message-State: AOJu0YwMd+fl6oB4QxRcqC9RKQ9eg5kMzh9B/bqz19JA4uymGtpueVss
- QapEg2yteSNESlMB/oHd8UrvynfPdbU2+s+l49puzzOF/e+TXlzuPlNe2g==
-X-Google-Smtp-Source: AGHT+IGjl2Ng/hVsNAjM560PAlDgPJduMdMHPFxUI/joxNin9us4t0+Hi3TZ/Rb3gPwdm9e2maf2zg==
-X-Received: by 2002:a50:8d41:0:b0:572:67d9:3400 with SMTP id
- 4fb4d7f45d1cf-5731da9adb1mr1478416a12.39.1715157998474; 
- Wed, 08 May 2024 01:46:38 -0700 (PDT)
-Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
- [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- g17-20020a056402091100b00571bbaa1c45sm7353136edz.1.2024.05.08.01.46.37
+ AJvYcCVgDN6W9o29O58kSdHcQ3bsBUdOtDVW5PgI3BTVGeKA1+hcZ//VWihVewgQkQrUdm44X0a5KxTstoz5gucE1RkXs1gQGDQ=
+X-Gm-Message-State: AOJu0Yxu4fgykKT0qH5s8/LnJZtouP5S8uTUJpeA90MFhgasWakSBh16
+ wyPQzp4b2hXtxpJICuTVf3RRRseIJffA5ZoXzU7RHLbW2C7JPrY9BVhjce4QXG0=
+X-Google-Smtp-Source: AGHT+IGzr93Q2c4cbaZwBS85AT8eZO6479iUjYMC+8fQ9gP0e1CSD9Zyj3e/BscFnghH5SLNuDKLmg==
+X-Received: by 2002:a17:906:f1c1:b0:a55:88b9:dabd with SMTP id
+ a640c23a62f3a-a59fb9e5096mr104985566b.63.1715156301379; 
+ Wed, 08 May 2024 01:18:21 -0700 (PDT)
+Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
+ [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
+ kf6-20020a17090776c600b00a599a97a66fsm6061160ejc.55.2024.05.08.01.18.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 01:46:38 -0700 (PDT)
-Date: Wed, 08 May 2024 08:17:05 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_6/6=5D_hw/i386/pc=5Fsysfw=3A_?=
- =?US-ASCII?Q?Alias_rather_than_copy_isa-bios_region?=
-In-Reply-To: <65316058-d2e1-4250-91e6-4da22c1279ed@linaro.org>
-References: <20240430150643.111976-1-shentey@gmail.com>
- <20240430150643.111976-7-shentey@gmail.com>
- <65316058-d2e1-4250-91e6-4da22c1279ed@linaro.org>
-Message-ID: <CDABAD92-BAD8-41A4-97A2-1C13C72552F8@gmail.com>
+ Wed, 08 May 2024 01:18:19 -0700 (PDT)
+Message-ID: <bbeed431-838c-4c52-b943-c9a39ba0807f@linaro.org>
+Date: Wed, 8 May 2024 10:18:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/33] accel/tcg: Reorg translator_ld*
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240424233131.988727-1-richard.henderson@linaro.org>
+ <20240424233131.988727-5-richard.henderson@linaro.org>
+ <aa92898b-860f-482f-b105-40d8b8c16a9e@linaro.org>
+ <67e50ffb-b680-473b-aeda-bbab678d37c7@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <67e50ffb-b680-473b-aeda-bbab678d37c7@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,83 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/5/24 18:49, Richard Henderson wrote:
+> On 5/6/24 15:47, Philippe Mathieu-Daudé wrote:
+>> On 25/4/24 01:31, Richard Henderson wrote:
+>>> Reorg translator_access into translator_ld, with a more
+>>> memcpy-ish interface.  If both pages are in ram, do not
+>>> go through the caller's slow path.
+>>>
+>>> Assert that the access is within the two pages that we are
+>>> prepared to protect, per TranslationBlock.  Allow access
+>>> prior to pc_first, so long as it is within the first page.
+>>>
+>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>> ---
+>>>   accel/tcg/translator.c | 189 ++++++++++++++++++++++-------------------
+>>>   1 file changed, 101 insertions(+), 88 deletions(-)
+>>
+>>
+>>>   uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, 
+>>> vaddr pc)
+>>>   {
+>>> -    uint64_t ret, plug;
+>>> -    void *p = translator_access(env, db, pc, sizeof(ret));
+>>> +    uint64_t raw, tgt;
+>>> -    if (p) {
+>>> -        plugin_insn_append(pc, p, sizeof(ret));
+>>> -        return ldq_p(p);
+>>> +    if (translator_ld(env, db, &raw, pc, sizeof(raw))) {
+>>> +        tgt = tswap64(raw);
+>>> +    } else {
+>>> +        tgt = cpu_ldl_code(env, pc);
+>>
+>> cpu_ldq_code() ?
+> 
+> Oops, yes indeed.  Fixed.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
-Am 30=2E April 2024 15:39:21 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <ph=
-ilmd@linaro=2Eorg>:
->On 30/4/24 17:06, Bernhard Beschow wrote:
->> In the -bios case the "isa-bios" memory region is an alias to the BIOS =
-mapped
->> to the top of the 4G memory boundary=2E Do the same in the -pflash case=
-, but only
->> for new machine versions for migration compatibility=2E This establishe=
-s common
->> behavior and makes pflash commands work in the "isa-bios" region which =
-some
->> real-world legacy bioses rely on=2E
->
->Can you amend a diff of 'info mtree' here to see how the layout changes?
-
-Will do=2E
-
-Right now I have to manually sort the output to get a minimal diff=2E Is t=
-here a way to get a stable ordering of the memory regions? How would one fi=
-x that if this is currently impossible? With stable orderings we could have=
- automated memory map tests which had been handy in the past=2E
-
->
->> Note that in the sev_enabled() case, the "isa-bios" memory region in th=
-e -pflash
->> case will now also point to encrypted memory, just like it already does=
- in the
->> -bios case=2E
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   include/hw/i386/pc=2Eh | 1 +
->>   hw/i386/pc=2Ec         | 1 +
->>   hw/i386/pc_piix=2Ec    | 3 +++
->>   hw/i386/pc_q35=2Ec     | 2 ++
->>   hw/i386/pc_sysfw=2Ec   | 8 +++++++-
->>   5 files changed, 14 insertions(+), 1 deletion(-)
->
->I'm still not convinced we need a migration back compat for this=2E=2E=2E
-
-A copy behaves different than an alias, thus there is a behavioral change=
-=2E Whether it really matters in practice for the kind of guests we care ab=
-out I can't tell=2E Therefore I'd keep the compat machinery=2E
-
-Best regards,
-Bernhard
-
->
->> diff --git a/hw/i386/pc_sysfw=2Ec b/hw/i386/pc_sysfw=2Ec
->> index 82d37cb376=2E=2Eac88ad4eb9 100644
->> --- a/hw/i386/pc_sysfw=2Ec
->> +++ b/hw/i386/pc_sysfw=2Ec
->> @@ -135,6 +135,7 @@ static void pc_system_flash_map(PCMachineState *pcm=
-s,
->>                                   MemoryRegion *rom_memory)
->>   {
->>       X86MachineState *x86ms =3D X86_MACHINE(pcms);
->> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
->>       hwaddr total_size =3D 0;
->>       int i;
->>       BlockBackend *blk;
->> @@ -184,7 +185,12 @@ static void pc_system_flash_map(PCMachineState *pc=
-ms,
->>             if (i =3D=3D 0) {
->>               flash_mem =3D pflash_cfi01_get_memory(system_flash);
->> -            pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
->> +            if (pcmc->isa_bios_alias) {
->> +                x86_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_=
-mem,
->> +                                  true);
->> +            } else {
->> +                pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_m=
-em);
->> +            }
->>                 /* Encrypt the pflash boot ROM */
->>               if (sev_enabled()) {
->
 
