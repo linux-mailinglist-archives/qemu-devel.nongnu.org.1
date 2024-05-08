@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442328C03B5
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3728C0394
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lNK-00016j-Ly; Wed, 08 May 2024 13:46:42 -0400
+	id 1s4lND-0000T5-8k; Wed, 08 May 2024 13:46:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMO-0000Md-VT
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:00 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMV-0000NQ-Nn
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:59 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMN-0007Mo-7C
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:44 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2e271acb015so393671fa.1
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMS-0007N8-Nz
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:51 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a59ad344f7dso2378466b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190341; x=1715795141; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190346; x=1715795146; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MM3UbV0Lmc+hoeU+fuxpwFUEKRXI1CPAUdZ2U052B24=;
- b=TmMrKTP3UlqGea3lw7v7gfF1+3ga6Ar7TIomHOEIOfv92v9BPaWJm40mQZyYd+4Nj8
- FsGYPQy3OkC0N94xtfi+eI14SL44YNN9OVDQs68QIsWr6rtnVYhM0TAt8d0RdqWnphcy
- LgHHoekAJreWl7zh7mr18MPy0BYkX1XvvjEo19qyhpAAuNEEsXHAED8G4LI5YXK1v0it
- gntzk/VUJkiatJqrcpJenAmdnkS5+Ie95s/Q3BsuJgxKu6TVoRkIIC+pSv7FQNlsv3MX
- OibztCIs+rrJmkvtA18uRLHkbD9nYzb4x6LqW8wNr29sI7UtjInot6vTYnWigLO8uRDP
- HkpQ==
+ bh=9pAi+aT7uG1PQ0D1DDKsbWx9K3/GOCCjH1yeKFgaO1M=;
+ b=RD8Q0OKiOwNtpmnG3lwoMpAtV3yOO4EEfXZPiaVN9+mzKumdrgPzP+ukWkf1qSnpfP
+ LRzMTpO8oQbBjP4+6Tf/Q9nZmB7iY0j+vFcsz2vX1qIiJF9F+kjSEvm1Yp2m3UjsiKFq
+ eOJg4VK0TWrjEqeVByq+8mr9F2mnSY5fFPXcYLKOm/AVhHVl/1NBQ+8dEvwlgJ0sg02H
+ jfap8aMTPcFFX7uzcS0WQxphclb1LzVECsaSIKjsGDyuoEUTZGS3KQdqLz4eiPPac8DA
+ c77Dz65MGDlY1C6dem8ll2TZxrrTU3grt/sv87otXrKjcflKshtMVdoKpx+Dppr+lJtz
+ VYhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190341; x=1715795141;
+ d=1e100.net; s=20230601; t=1715190346; x=1715795146;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MM3UbV0Lmc+hoeU+fuxpwFUEKRXI1CPAUdZ2U052B24=;
- b=wZsw3BVxM/yV/rRgqWQETZi5W0aVUjXGle/2r4cEUKmjamldqdvzhzKbVxfFR/XJuK
- fbCFXk/KULBJ0Dn0Knq7Lalm5GB6EnUaqbULzCssgKeA1+nDJExAYmLwC7x8cCs+fPuj
- ZU1ZHyWOgdQnT3lNe1MjBrj0v9PgR/X0JBnGBDJI+sC5rFxlIIEWLa/B4Ig59/339ozU
- esH4CeN0ZIHfyUnRBpD4XeqYm6u/TyyIWDV3hOjGEaJxxSTZ6Qp7QCbW4onax0BTmZDl
- kNuM0Fp//f6hu7v6uqyfFaAUtPdFeWMyElM0FeJGPMPj3GxfXQc6pvVglZmotgIUzZny
- OXaQ==
-X-Gm-Message-State: AOJu0Yy6QMnnwNOJDgZNkGTSBBBq0O617RUjLZVufypWF0XP2xr92LU0
- crY5/qaLGgyLLTVN6uFZU6pFVXO2xga8EQrW+iuIWyhGXyXAlNewdXx9nrinPG9gFpeZ3dYpDEJ
- a
-X-Google-Smtp-Source: AGHT+IEhUfXu/rlXvYTc5hrbD7X+lpAUoFFF1d7ns3/ARc4tSoJSaAlrmYlUn3fjcqxxu7uSQhjIeg==
-X-Received: by 2002:a05:6512:ba3:b0:51d:2eba:614 with SMTP id
- 2adb3069b0e04-5217cc455c7mr2542247e87.53.1715190340781; 
- Wed, 08 May 2024 10:45:40 -0700 (PDT)
+ bh=9pAi+aT7uG1PQ0D1DDKsbWx9K3/GOCCjH1yeKFgaO1M=;
+ b=HItP761zPKvgRoGBiDViaRJCsrKUd8bSJtktq18XuM5GZK9/1sbkhNr0MwP1P1o5R1
+ nigiyxnCY/9qarvavPo/y7gevb9CWV3cVP+tY7j8nTySax6jxMYa4RUiP3dalQqJyXZx
+ xS++ZVmgtnk4VNeBfo31E1jX0yKci3OKJddJqle1EDMbOno/Py3BV5uBZ86zlt1mOh0e
+ A9bTLU6Aa1y1zfak6keeHTTyzcq+iKxqmGWm5l7iKUC9CvWzla5uvEe/Q43iKEdNCq5C
+ BQeaDboAw2QK+2DIWaRMucsWiCL3/pvxemm7BskXAUnSv1sIjhDVoNxTA1IfJKQBxHV/
+ DF6g==
+X-Gm-Message-State: AOJu0YwyYakXuPACHRI21pPMlYGyjw0t6U7nJgAuN1LPYfOiRDgl2XZu
+ ZYjNVAH03aQaJImjWk6ug7VX2H60P5r05CyLwB9y9x7g5DlIgeKFKSSdVoFDbjg2H+YbUOEgJtL
+ H
+X-Google-Smtp-Source: AGHT+IHoHdefWcSQX/hK3X99KMRKvnXfMoMkUdvvKxRTA+hTyLcmi5ZDsWMFsuL1MTai6auwQd8nrg==
+X-Received: by 2002:a50:cdc9:0:b0:572:7280:89d6 with SMTP id
+ 4fb4d7f45d1cf-5731d9a7cdamr2228272a12.7.1715190346399; 
+ Wed, 08 May 2024 10:45:46 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- co22-20020a0564020c1600b00572a865af10sm7834857edb.44.2024.05.08.10.45.39
+ n10-20020a056402434a00b00572df643637sm5956680edc.62.2024.05.08.10.45.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:45:40 -0700 (PDT)
+ Wed, 08 May 2024 10:45:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Mattias Nissler <mnissler@rivosinc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Jagannathan Raman <jag.raman@oracle.com>
-Subject: [PULL 05/26] hw/remote/vfio-user: Fix config space access byte order
-Date: Wed,  8 May 2024 19:44:49 +0200
-Message-ID: <20240508174510.60470-6-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mattias Nissler <mnissler@rivosinc.com>, Peter Xu <peterx@redhat.com>
+Subject: [PULL 06/26] system/physmem: Replace qemu_mutex_lock() calls with
+ QEMU_LOCK_GUARD
+Date: Wed,  8 May 2024 19:44:50 +0200
+Message-ID: <20240508174510.60470-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +94,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mattias Nissler <mnissler@rivosinc.com>
+Simplify cpu_[un]register_map_client() and cpu_notify_map_clients()
+by replacing the pair of qemu_mutex_lock/qemu_mutex_unlock calls by
+the WITH_QEMU_LOCK_GUARD() macro.
 
-PCI config space is little-endian, so on a big-endian host we need to
-perform byte swaps for values as they are passed to and received from
-the generic PCI config space access machinery.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-Message-ID: <20240507094210.300566-6-mnissler@rivosinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Mattias Nissler <mnissler@rivosinc.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20240507123025.93391-2-philmd@linaro.org>
 ---
- hw/remote/vfio-user-obj.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ system/physmem.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index d9b879e056..8dbafafb9e 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-     while (bytes > 0) {
-         len = (bytes > pci_access_width) ? pci_access_width : bytes;
-         if (is_write) {
--            memcpy(&val, ptr, len);
-+            val = ldn_le_p(ptr, len);
-             pci_host_config_write_common(o->pci_dev, offset,
-                                          pci_config_size(o->pci_dev),
-                                          val, len);
-@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-         } else {
-             val = pci_host_config_read_common(o->pci_dev, offset,
-                                               pci_config_size(o->pci_dev), len);
--            memcpy(ptr, &val, len);
-+            stn_le_p(ptr, len, val);
-             trace_vfu_cfg_read(offset, val);
+diff --git a/system/physmem.c b/system/physmem.c
+index d3a3d8a45c..26f42f4a6f 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -25,6 +25,7 @@
+ #include "qemu/cacheflush.h"
+ #include "qemu/hbitmap.h"
+ #include "qemu/madvise.h"
++#include "qemu/lockable.h"
+ 
+ #ifdef CONFIG_TCG
+ #include "hw/core/tcg-cpu-ops.h"
+@@ -3086,7 +3087,7 @@ void cpu_register_map_client(QEMUBH *bh)
+ {
+     MapClient *client = g_malloc(sizeof(*client));
+ 
+-    qemu_mutex_lock(&map_client_list_lock);
++    QEMU_LOCK_GUARD(&map_client_list_lock);
+     client->bh = bh;
+     QLIST_INSERT_HEAD(&map_client_list, client, link);
+     /* Write map_client_list before reading in_use.  */
+@@ -3094,7 +3095,6 @@ void cpu_register_map_client(QEMUBH *bh)
+     if (!qatomic_read(&bounce.in_use)) {
+         cpu_notify_map_clients_locked();
+     }
+-    qemu_mutex_unlock(&map_client_list_lock);
+ }
+ 
+ void cpu_exec_init_all(void)
+@@ -3117,21 +3117,19 @@ void cpu_unregister_map_client(QEMUBH *bh)
+ {
+     MapClient *client;
+ 
+-    qemu_mutex_lock(&map_client_list_lock);
++    QEMU_LOCK_GUARD(&map_client_list_lock);
+     QLIST_FOREACH(client, &map_client_list, link) {
+         if (client->bh == bh) {
+             cpu_unregister_map_client_do(client);
+             break;
          }
-         offset += len;
+     }
+-    qemu_mutex_unlock(&map_client_list_lock);
+ }
+ 
+ static void cpu_notify_map_clients(void)
+ {
+-    qemu_mutex_lock(&map_client_list_lock);
++    QEMU_LOCK_GUARD(&map_client_list_lock);
+     cpu_notify_map_clients_locked();
+-    qemu_mutex_unlock(&map_client_list_lock);
+ }
+ 
+ static bool flatview_access_valid(FlatView *fv, hwaddr addr, hwaddr len,
 -- 
 2.41.0
 
