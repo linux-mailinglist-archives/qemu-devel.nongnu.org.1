@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EA48BFADB
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 12:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F72F8BFADC
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 12:26:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4eSv-0003Qe-3l; Wed, 08 May 2024 06:24:01 -0400
+	id 1s4eUi-000576-0G; Wed, 08 May 2024 06:25:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4eSs-0003M6-0p
- for qemu-devel@nongnu.org; Wed, 08 May 2024 06:23:58 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4eUX-00052W-5d
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 06:25:42 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4eSq-00017t-Cm
- for qemu-devel@nongnu.org; Wed, 08 May 2024 06:23:57 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-572c65cea55so1157489a12.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 03:23:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4eUJ-0001RM-9O
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 06:25:28 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-572baf393ddso1152949a12.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 03:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715163835; x=1715768635; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715163925; x=1715768725; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=iSoMj/QENrdvbGE/2j0uDqYs24OnJN3Dolk07t3af88=;
- b=iDA7yC4IUMd5Fki9DNAI8vsbzLwBK8XB+mpE854gk6PNgTW1FGoOupYoqyEJuRcrCd
- 8wJxrEMpABa4BoadtiF3sKdg32Mcpps3hBeg1+Esi8/uWp0sdz5pFl8eYzlJSV/5CCZe
- 3F6iosXtal+jLXxLiRyWR+QN/YPg7d8K4/1gxGG1+BCmPzAp6230txIh3EZVfm7c8Sj0
- 5evfd0vor/mifZZRM/A4k8s3Cad+sBm8X5U4ZZFOxZvjZ7Wl2/ZPgZ5j0luccB1rttzc
- +EZ8xRS2sZSiaN0dWPUMzbeB+HkYhpoADjv0zmbgsIAqZojZp2rhcPTjhaVWED6l1gg6
- ke3w==
+ bh=KHP5dZHLTlMD54OFLJb+OOtWtf+YD8/0FHwOK39AkYg=;
+ b=vy+9FNY42n57Rf53siolLZGwfHvYmAE+DWu5r7kyX0181kJCCAED093r3l/QN+SnO2
+ 0OrKK7WxFxtdLoVApXYyts/NnP9sRN9iiVZZUmYifhK2tHf7KdytNUuYGuf7S/3L7ZdT
+ GnQPlaplmBItToteGqIg6LWcT+UbbI4g7y4aqJLL2ql79X9gcMujhglSgUrEuLEZMIak
+ nxB2cjTjIF43RQj5SFjw0LQdJj6E4XLydwSv89r7j+S49ylOsosW2wsS1NujKOB/kuSS
+ VyCdymO10m3G4uc6+q7lmpwAAg/fLiLWY2vGrlp2QMf2N8qOSt14yEWJl0uUjk0S+Svx
+ +uZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715163835; x=1715768635;
+ d=1e100.net; s=20230601; t=1715163925; x=1715768725;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iSoMj/QENrdvbGE/2j0uDqYs24OnJN3Dolk07t3af88=;
- b=PzFgArgrWkzqvoT2wtxvkswCCoKMIhFoAgmmJJ6qgBRLmUaPjBrlBivE003GDQ8x7D
- V4A+JZR7ZSBu4xFRQjspnZFzeJKA+l0UYxm9/Ndfbq6b1L5XsBE3OkH8grQClAAwrcGC
- xmrIZi5i5R+B7dMt+72wm+MZqDLw1Y+ah7v6XpTOCPJdqM7EQjsdMTNgGK3G9OW4EvrQ
- aQJcgor9S0+QDfDTU3AQlRtBfszf82c8DAxgSEz/SSftgG1+EfPGerK4+5g15cG3kWCv
- 5I5Y5S4sqU8IRAm4DJj+hAtvfhyq2Thx8151Vdq/HMwd9aV1o4IM/2SYOt8Q5P69qKsX
- a1RA==
+ bh=KHP5dZHLTlMD54OFLJb+OOtWtf+YD8/0FHwOK39AkYg=;
+ b=wTNL6GvYiKe6z3iLU1+2CqKq0j8NfFsVEO6zQwFQKeamqEYPX6ogp6JqJr/03T678S
+ OhEZ0HoknNGiku8NsPzQ40i2zGn/NzLeFFkRfMRTg9MAE0o8g/MnP2X4u/w/XqnOYZqJ
+ N0Sy7CHSwqmF1oVvCqtibEFxGmaCy9Q5SMT2a8kLcFG0m3IzRGUh+Wos7gvv6N/ILeIW
+ p6JVO6Lup8USm19A0rxo+b7p2KUv+kg+otV/7jRIqPRnOkRRS9ai6FB0XO6TQ8Q1jUK7
+ HkIfTojxiTZxzphsPylqNjxCkao4BXRpVlNVZP7eN5Z+S+O3KTh8pknxO9+/hvJDh2cQ
+ HS0A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV+yOUWvRWgI8EpHmR2Olv2aeDBEKZnhjDyhfX9OV0Xr2uHorYqRt5aMJRUVU35UzePuZnlWjlJ409bQdS5gB3Rnl17kJU=
-X-Gm-Message-State: AOJu0Yxb1KGuwU42FAAhBh5gukgkbYSPkvMswIodLMlgtZlO9zCZ1++m
- upY9lrD3A8D4v2DfpZlInC5AM1I8V79O2V7tu2tzq0OcEfnzsjvTnDDEmxGMbtc=
-X-Google-Smtp-Source: AGHT+IHhPYNtUtzMtIqiucGegwGEjvJoN3Yh1D1UHZ+TuzqGUHY4WaNls9RECuXBUbY6pB4O6QF28w==
-X-Received: by 2002:a50:9fa2:0:b0:572:3eaa:a637 with SMTP id
- 4fb4d7f45d1cf-5731d826f71mr1960167a12.2.1715163834703; 
- Wed, 08 May 2024 03:23:54 -0700 (PDT)
+ AJvYcCWVPFisc9kMkKk5pOESZNRCSF0XblB8Ik4EF3XB3rLwjJYIepgWmhKoQMmT4yyBphjFqUT/l8040I1/ggw+mNNDuXjFi0E=
+X-Gm-Message-State: AOJu0Yx/6C6nLH7+89/J1MYpsrDdynuUQJqEI16ej90UD4dfkIq3LKpa
+ fGSL+0ovauQysayllBslHRlr7qShOqpjAvZV7ku4LgTVPB9uuEP28oLBnOYf77Y=
+X-Google-Smtp-Source: AGHT+IEGy0JTm1d+g8GxvN++EdpMFKqhgh4oTrI3sLJx81KSloXHc7RD1G+kmMYsa9gaU1S1WbzWYA==
+X-Received: by 2002:a17:906:22cd:b0:a59:b17c:c9d2 with SMTP id
+ a640c23a62f3a-a59e4cea47fmr371588966b.12.1715163925253; 
+ Wed, 08 May 2024 03:25:25 -0700 (PDT)
 Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- p8-20020aa7c888000000b00572aba0d8a0sm7396683eds.88.2024.05.08.03.23.52
+ b3-20020a170906d10300b00a59edf10304sm1803473ejz.76.2024.05.08.03.25.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 03:23:54 -0700 (PDT)
-Message-ID: <10ac492b-f848-4ae2-84a9-435f40d22fe7@linaro.org>
-Date: Wed, 8 May 2024 12:23:51 +0200
+ Wed, 08 May 2024 03:25:24 -0700 (PDT)
+Message-ID: <068c432a-d54b-454f-bed8-2c5dd9fe2284@linaro.org>
+Date: Wed, 8 May 2024 12:25:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/12] libvhost-user: set msg.msg_control to NULL when
- it is empty
+Subject: Re: [PATCH v4 05/12] contrib/vhost-user-blk: fix bind() using the
+ right size of the address
 To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
 Cc: Jason Wang <jasowang@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
@@ -76,14 +76,14 @@ Cc: Jason Wang <jasowang@redhat.com>, Coiby Xu <Coiby.Xu@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
 References: <20240508074457.12367-1-sgarzare@redhat.com>
- <20240508074457.12367-2-sgarzare@redhat.com>
+ <20240508074457.12367-6-sgarzare@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240508074457.12367-2-sgarzare@redhat.com>
+In-Reply-To: <20240508074457.12367-6-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,17 +107,38 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/5/24 09:44, Stefano Garzarella wrote:
-> On some OS (e.g. macOS) sendmsg() returns -1 (errno EINVAL) if
-> the `struct msghdr` has the field `msg_controllen` set to 0, but
-> `msg_control` is not NULL.
+> On macOS passing `-s /tmp/vhost.socket` parameter to the vhost-user-blk
+> application, the bind was done on `/tmp/vhost.socke` pathname,
+> missing the last character.
 > 
-> Reviewed-by: Eric Blake <eblake@redhat.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+> This sounds like one of the portability problems described in the
+> unix(7) manpage:
+> 
+>     Pathname sockets
+>         When  binding  a socket to a pathname, a few rules should
+>         be observed for maximum portability and ease of coding:
+> 
+>         •  The pathname in sun_path should be null-terminated.
+> 
+>         •  The length of the pathname, including the  terminating
+>            null byte, should not exceed the size of sun_path.
+> 
+>         •  The  addrlen  argument  that  describes  the enclosing
+>            sockaddr_un structure should have a value of at least:
+> 
+>                offsetof(struct sockaddr_un, sun_path) +
+>                strlen(addr.sun_path)+1
+> 
+>            or,  more  simply,  addrlen  can   be   specified   as
+>            sizeof(struct sockaddr_un).
+> 
+> So let's follow the last advice and simplify the code as well.
+> 
 > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
->   subprojects/libvhost-user/libvhost-user.c | 1 +
->   1 file changed, 1 insertion(+)
+>   contrib/vhost-user-blk/vhost-user-blk.c | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
