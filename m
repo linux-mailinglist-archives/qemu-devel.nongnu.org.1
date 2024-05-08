@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A038C03BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25A78C03AA
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:48:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lNN-0001Ix-Db; Wed, 08 May 2024 13:46:45 -0400
+	id 1s4lNO-0001UB-Vh; Wed, 08 May 2024 13:46:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMw-0000ZY-RS
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:22 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lN1-0000db-Bh
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:30 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMu-0007fK-18
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:17 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-51fdc9af005so7098907e87.3
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMz-0007kB-P6
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:23 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a599eedc8eeso60266b.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190373; x=1715795173; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190379; x=1715795179; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6stDyKXFGIAMi9PnetBYz+6nX0n+ya95MLEN0LwCIIY=;
- b=eB0B7BxStzHWRsMhXhbLNWbrDUoA4Xo0mGw2OpZWyUNfFJOLbHmCVVgVVMdHs/F+do
- PNjxaq6pGdBnEg3vLoE4QbaU1TRHdKimXUzLJgBcC//BDXS54ZpKbT688O1Ug96uI5lN
- HU3GEXVG0Dvp6XdIopn66w2lGxPntERwLRUU8rt6U93pjx35LrOH0uxf0DCJx6XAOxEo
- edh76BGFmirj3JtPml/5Uop2e+N+EBjhJ5kC7LN90UARG1BS/deLZWOub6lc0Svfh1Xu
- zR9PYNBcaEYu0qADEe65rRszCj0yUNX6A1gH20sY0oo6s2AGX2JpKY0RZ0l71dMYTCAL
- kx2Q==
+ bh=qcFeebFaXd8v0A/qKGNyCc1bIKWkAGLVbbLNEb4Qok8=;
+ b=JZUlr0XbKLoRRKT34Ci96HeWztKchZEGAh07qntfN0VGjKQpgY68n9lzpwiWNeouI0
+ wFwj6qbfzVVPKkKM5RFcmQqyqJ08w4M+aXYtxsC0vmULVN6FJ4gftZTmS/u++AH4tNCO
+ mQCJIGdKqbk22vhLAWwxkG25X1ydpFw07KuJLm1fJowvO5e9u8adimJ/7AdJrp4Zbb5U
+ c7oLmqeulh/lyt6c0WpHGWJNvoeKOkyyxhvRg0SZiVD+ZQCPd5UB+E27Yw46P6B4egPE
+ kKU+5wlNHxNnCY4TQguvlmjVNtPJIi974MAEQqeMJr5cjyo82WFpVMX6UMv6wSjdeYye
+ ed3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190373; x=1715795173;
+ d=1e100.net; s=20230601; t=1715190379; x=1715795179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6stDyKXFGIAMi9PnetBYz+6nX0n+ya95MLEN0LwCIIY=;
- b=B+FMn6p4mvkgVivavjjbZrWbblSsYNvWpIdykOCBvVodl8XWqv97FuuqKnAWnEESB7
- YVkqqtZLUFkzOsNMLZQ8dH0lflSmOVl6pb6J55LOj2kvM1XjuFhM4VORhWwI6P3+8r2p
- 0eSjcQ0IPITt24kOWxbL7wTS3DI/pxaOaeTJkWrMEELAnuPnd6tj9ONJm+4AQGuHmzMp
- cGmfF33Zd3YzqzGD7/vuLIKGFYlaOGD1CDrfyKI30y1iB78g9mkU0CNFt4y4QH21bLvC
- RYB9OMLFZyG4shn2h3W7V0jpSXgULLA0ITC9m54YutN654UZsD8ZSLoJ7k/E7eAuHd9g
- DQLA==
-X-Gm-Message-State: AOJu0Yy9A9Ag/ojWRIaAgKKjN0FI4/RdeX2KUxlLJDRmazvavvZs1BQ9
- 2LsYNFtKbmvHQTzI4czXHZVaKXNXadGkjzb+pYkH/0BAlDXsiAInwI1jmoivdNyFKFdianCDMtH
- w
-X-Google-Smtp-Source: AGHT+IFDtPj91HHZf867uKJDZvpTgM2Vu5rcgiaVP+jt4Jpewi/J+mORZiXgK4Z4Wr//N2ftqO1tzQ==
-X-Received: by 2002:ac2:5bc7:0:b0:51f:6ab6:9e5b with SMTP id
- 2adb3069b0e04-5217c7605e0mr2635058e87.36.1715190373527; 
- Wed, 08 May 2024 10:46:13 -0700 (PDT)
+ bh=qcFeebFaXd8v0A/qKGNyCc1bIKWkAGLVbbLNEb4Qok8=;
+ b=PbWXG/sGFIm671v0qjtC9gPUZsdaZFXbtEV2t7zYtWSA2ASjwtpxtWqHv3P9mVyoeb
+ MCX5MVxkvKFh+QdHHCS64eQ8WawZPBO9cWq4q1sXdF2regJTiC3BLOx0tPG+N2U9BUW4
+ KfidyHwd4bFKj5UaXjvOAqHtFlwP4GIMQoSXrevJjEhyyky02AUFkGgNo31iDCVmwS2D
+ IDlhGU75qwcGem/3LY3Zm6gZAvJunCRtcK7I22Nj/wvkz76HlBjrmYoXo0yMfFrKbeQ6
+ dViolCAcUHnzH3auDK4ZPAkv24m9d7ZI68F142lRfbuWnb7UHU/kU7f8w6z7ddEaAI76
+ iGOA==
+X-Gm-Message-State: AOJu0YyfGiQfo+SmBcrZvw8GL0pVRsybMRhh+gYiuwzxt8FyNel+ISJe
+ 9b8fomH9SxcKNSkioa8RElz8XyTBupN8UgQ9Aqk0cmOXji3aaYYDC15NGFkR5/7QJNILx7yf3fC
+ I
+X-Google-Smtp-Source: AGHT+IH3ruLoYR9K8XbjxhRnaaEaX5LcvDIFkzkRLmh+sceRuZESBoAQL0Ebi+sJTZv0ps9P7jyCiA==
+X-Received: by 2002:a17:906:61a:b0:a59:9ef3:f6df with SMTP id
+ a640c23a62f3a-a59fb941d7bmr183102766b.22.1715190378732; 
+ Wed, 08 May 2024 10:46:18 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- wk16-20020a170907055000b00a59db6e54e2sm3290909ejb.85.2024.05.08.10.46.12
+ z3-20020a170906270300b00a55bb18e3d7sm7763243ejc.168.2024.05.08.10.46.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:46:13 -0700 (PDT)
+ Wed, 08 May 2024 10:46:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
+Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/26] hw/i386: Add the possibility to use i440fx and isapc
- without FDC
-Date: Wed,  8 May 2024 19:44:55 +0200
-Message-ID: <20240508174510.60470-12-philmd@linaro.org>
+Subject: [PULL 12/26] hw/i386/x86: Eliminate two if statements in
+ x86_bios_rom_init()
+Date: Wed,  8 May 2024 19:44:56 +0200
+Message-ID: <20240508174510.60470-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,72 +93,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Bernhard Beschow <shentey@gmail.com>
 
-The i440fx and the isapc machines can be used in binaries without
-FDC, too. We just have to make sure that they don't try to instantiate
-the FDC when it is not available.
+Given that memory_region_set_readonly() is a no-op when the readonlyness is
+already as requested it is possible to simplify the pattern
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240425184315.553329-4-thuth@redhat.com>
+  if (condition) {
+    foo(true);
+  }
+
+to
+
+  foo(condition);
+
+which is shorter and allows to see the invariant of the code more easily.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240430150643.111976-2-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_piix.c | 6 ++++--
- hw/i386/Kconfig   | 2 --
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ hw/i386/x86.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8850c49c66..99efb3c45c 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -317,8 +317,8 @@ static void pc_init1(MachineState *machine, const char *pci_type)
-     }
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 3d5b51e92d..2a4f3ee285 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1163,9 +1163,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+         load_image_size(filename, ptr, bios_size);
+         x86_firmware_configure(ptr, bios_size);
+     } else {
+-        if (!isapc_ram_fw) {
+-            memory_region_set_readonly(bios, true);
+-        }
++        memory_region_set_readonly(bios, !isapc_ram_fw);
+         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
+         if (ret != 0) {
+             goto bios_error;
+@@ -1182,9 +1180,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+                                         0x100000 - isa_bios_size,
+                                         isa_bios,
+                                         1);
+-    if (!isapc_ram_fw) {
+-        memory_region_set_readonly(isa_bios, true);
+-    }
++    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
  
-     /* init basic PC hardware */
--    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc, true,
--                         0x4);
-+    pc_basic_device_init(pcms, isa_bus, x86ms->gsi, x86ms->rtc,
-+                         !MACHINE_CLASS(pcmc)->no_floppy, 0x4);
- 
-     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
- 
-@@ -501,6 +501,7 @@ static void pc_i440fx_machine_options(MachineClass *m)
-     m->default_machine_opts = "firmware=bios-256k.bin";
-     m->default_display = "std";
-     m->default_nic = "e1000";
-+    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_RAMFB_DEVICE);
-     machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
-@@ -931,6 +932,7 @@ static void isapc_machine_options(MachineClass *m)
-     pcmc->has_reserved_memory = false;
-     m->default_nic = "ne2k_isa";
-     m->default_cpu_type = X86_CPU_TYPE_NAME("486");
-+    m->no_floppy = !module_object_class_by_name(TYPE_ISA_FDC);
-     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
- }
- 
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 58ca8f246d..40b1e44580 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -72,7 +72,6 @@ config I440FX
-     imply VMPORT
-     imply VMMOUSE
-     select ACPI_PIIX4
--    select FDC_ISA
-     select PC_PCI
-     select PC_ACPI
-     select PCI_I440FX
-@@ -88,7 +87,6 @@ config ISAPC
-     depends on I386
-     imply VGA_ISA
-     select ISA_BUS
--    select FDC_ISA
-     select PC
-     select IDE_ISA
-     # FIXME: it is in the same file as i440fx, and does not compile
+     /* map all the bios at the top of memory */
+     memory_region_add_subregion(rom_memory,
 -- 
 2.41.0
 
