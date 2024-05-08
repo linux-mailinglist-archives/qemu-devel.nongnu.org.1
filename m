@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023D58C0743
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 00:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025238C0742
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 00:16:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4pZk-0006bU-AN; Wed, 08 May 2024 18:15:48 -0400
+	id 1s4pZl-0006h1-Rm; Wed, 08 May 2024 18:15:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4pZX-0006b5-MV
- for qemu-devel@nongnu.org; Wed, 08 May 2024 18:15:37 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4pZd-0006bh-GH
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 18:15:47 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4pZV-0003ke-Vy
- for qemu-devel@nongnu.org; Wed, 08 May 2024 18:15:35 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-41b79450f8cso1624485e9.3
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 15:15:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4pZa-0003m6-JM
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 18:15:41 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-41b7a26326eso2013565e9.3
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 15:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715206531; x=1715811331; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715206537; x=1715811337; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7whZLzg21d/liml4UNZ34ou/FOI3IC4dYsrPvQ2r0tc=;
- b=P4IBk4l7tT993IicnohPjhkY1kfl0f+uBRvxzeNyCBH7BmVof/CA7U7hVzpwPKIsjr
- gnIZIPCPql7zD6GIvv6EzhzwhZfL+DPhs+9lD92/DATH7KNXIign0CSvD7jz2CaSy/fc
- DgAcYUSeLgwWwZTnd2OfFmU4fE+rG1yrHsznOTgqygFQINKAv+oefR/smK+cZQLWTjNW
- Vg7RJhzC0aZf6OMlq3BfflUx4cOWocVhs2pxQi+LFbq0AEa6/0Wi8vJvep/qdDte5cYn
- R3W4ve3S0qYWMpJjamsx9mnnjjjIa4OIhTJRmcbKfVl79lDtiAXc7q0RfZvlMqAh+qxF
- mJPA==
+ bh=4D66cNAv7qIHWiiTBuwSDDuqQfsTkK/hRZN0LCYj6aY=;
+ b=Wfkd+b8rfi5hPnJGLyqGtsO6ya9AUFiCOTNAuCAFG7YcIltzpNmmcT1DMlM0jz10IT
+ qfKHknx1qpV9J7lCr1m2kHUThQ+DthNtlFztm5V3PQI+1HQV7j21gIudOj+zM09c7uH0
+ OdcnTa97stz3i4u5nYT6T6rO4knHXMb8ApylPahaYEEMzeAJ8IALpvjaYqsyQooYT/42
+ 8CWKEh+fJkcw3eITa3xcmLDWvyhAzzfrR+Za6sfIPmOvRZ7kb7Mb4VZ6ENENMIZiaXLX
+ tQKslZ/j/1CKYzdBxVEglQ9/FZj6rVXr54PuQHkYGQTjJ3ygUasfvnwkz7HmKCM2giKb
+ H+yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715206531; x=1715811331;
+ d=1e100.net; s=20230601; t=1715206537; x=1715811337;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7whZLzg21d/liml4UNZ34ou/FOI3IC4dYsrPvQ2r0tc=;
- b=gRaOTuSsdUWVfZieE91pd10dobPnd/JXgp2+Euc9kaMiVU52RQN4hj93c8R1T6hEJF
- urOC6yyVqg2ydc9nMV9aNhX3s8noYy9BJP0IlLUMnAxnDAFSsT7ss0BiB1+UcurPgDV7
- BioEofDhjBVxLGeCBANBc0QnlP1JjZsBlWuNtx3ATWTaEW9SaCtJFYohXxT04EFE5wr6
- GN1uwrYmsnjJzwUJi3kgogJ1kE28WzFRPjpyLdNjgQP8SZ1cqaxM4ihUsyiyN95hk5QC
- ak8c3hPC1W4IjItZ/ZSjwkw4hThPohv+yEtBrBbTtU/f5hicRijiPoRRgOr3FMyVgeta
- h6KQ==
-X-Gm-Message-State: AOJu0YwLUz7T+/KkCqQlleybwWsufRy1kOAYwtt99ILw8Xk4cRuzCApD
- 76Y+auuY9ueh2p4iBeIIsCfImd5FD5xUz93GF9doqaQq+MHNEKRKO+CM7DGPUYWiemNEzwMYDQp
- I
-X-Google-Smtp-Source: AGHT+IF5uribdVMGvTLjDilieqVEW2GJrYmjne9iafGd5eRDxqOg5cXmVE4IPAxwPtKd5dPFp/81Mw==
-X-Received: by 2002:a05:600c:3b22:b0:41b:55b1:6cfc with SMTP id
- 5b1f17b1804b1-41f71cc14famr27983225e9.1.1715206531458; 
- Wed, 08 May 2024 15:15:31 -0700 (PDT)
+ bh=4D66cNAv7qIHWiiTBuwSDDuqQfsTkK/hRZN0LCYj6aY=;
+ b=s5D2tVqfkH/YM4ty/1I6CljKTbIC9dtCCNvJXakaI4dF8m+zbnxrxr3GpHvLMoWEP1
+ GqDIX6Ub/32IivNXRO+J/lSudzg+nW/KOAHTT6mA0q/2nLXcgZiOfUmISavdfPTmAEZi
+ ilWONmIFrj/sFQuL8lyDLL/gxYvH2kHbDDEpBBCdnoKpn4eeVwAGtSLfCM3k5fPlZr2P
+ i/KxFgjqNcvdQ4czlNeSBfazHRi60YKtr5DAr7bs2+/Im46qVjeWF24bztNi8wwZWO+G
+ rYbm/TMiAI0t6pxKDRZ7xmNr8D8Rh16CD8radOCCDEYmid1m62Ao42vG9+aiktHMmdCS
+ vteg==
+X-Gm-Message-State: AOJu0YxLxwD2hSixYsHeGzfzSArcNX8iOTaLJe0L4vS9BnhJoeEyK8lw
+ En4p4FchouSWBAfI9NInZO3Bx8K7PFKb1okIbEYWe7gRMOBHpa+majfxUPynW8ar0Z8J3wHxO9k
+ V
+X-Google-Smtp-Source: AGHT+IGgXjR5q5QwjFgDaeG6bUJ4eSMfbZ81WlZsNIcc48/DDGMkgwA+fO33uzYLaTA/e4Wv30bowg==
+X-Received: by 2002:a7b:c45a:0:b0:41b:d4a3:ad6a with SMTP id
+ 5b1f17b1804b1-41f71ec1adcmr35196295e9.17.1715206536948; 
+ Wed, 08 May 2024 15:15:36 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41f87c254bfsm36821865e9.17.2024.05.08.15.15.30
+ 5b1f17b1804b1-41f87c254bfsm36824835e9.17.2024.05.08.15.15.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 15:15:31 -0700 (PDT)
+ Wed, 08 May 2024 15:15:36 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 15/28] hw/i386/x86: Don't leak "pc.bios" memory region
-Date: Thu,  9 May 2024 00:15:17 +0200
-Message-ID: <20240508221518.72350-3-philmd@linaro.org>
+Subject: [PULL v2 16/28] hw/i386/x86: Extract x86_isa_bios_init() from
+ x86_bios_rom_init()
+Date: Thu,  9 May 2024 00:15:18 +0200
+Message-ID: <20240508221518.72350-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508221518.72350-1-philmd@linaro.org>
 References: <20240508221518.72350-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,90 +95,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Fix the leaking in x86_bios_rom_init() by adding a "bios" attribute to
-X86MachineState. Note that it is only used in the -bios case.
+The function is inspired by pc_isa_bios_init() and should eventually replace it.
+Using x86_isa_bios_init() rather than pc_isa_bios_init() fixes pflash commands
+to work in the isa-bios region.
+
+While at it convert the magic number 0x100000 (== 1MiB) to increase readability.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-ID: <20240508175507.22270-5-shentey@gmail.com>
+Message-ID: <20240508175507.22270-6-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/x86.h |  6 ++++++
- hw/i386/x86.c         | 13 ++++++-------
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ include/hw/i386/x86.h |  2 ++
+ hw/i386/x86.c         | 25 ++++++++++++++++---------
+ 2 files changed, 18 insertions(+), 9 deletions(-)
 
 diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index a07de79167..55c6809ae0 100644
+index 55c6809ae0..d7b7d3f3ce 100644
 --- a/include/hw/i386/x86.h
 +++ b/include/hw/i386/x86.h
-@@ -53,6 +53,12 @@ struct X86MachineState {
-     GMappedFile *initrd_mapped_file;
-     HotplugHandler *acpi_dev;
+@@ -129,6 +129,8 @@ void x86_cpu_unplug_request_cb(HotplugHandler *hotplug_dev,
+ void x86_cpu_unplug_cb(HotplugHandler *hotplug_dev,
+                        DeviceState *dev, Error **errp);
  
-+    /*
-+     * Map the whole BIOS just underneath the 4 GiB address boundary. Only used
-+     * in the ROM (-bios) case.
-+     */
-+    MemoryRegion bios;
-+
-     /*
-      * Map the upper 128 KiB of the BIOS just underneath the 1 MiB address
-      * boundary.
++void x86_isa_bios_init(MemoryRegion *isa_bios, MemoryRegion *isa_memory,
++                       MemoryRegion *bios, bool read_only);
+ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+                        MemoryRegion *rom_memory, bool isapc_ram_fw);
+ 
 diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 457e8a34a5..29167de97d 100644
+index 29167de97d..c61f4ebfa6 100644
 --- a/hw/i386/x86.c
 +++ b/hw/i386/x86.c
-@@ -1133,7 +1133,6 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+@@ -1128,12 +1128,25 @@ void x86_load_linux(X86MachineState *x86ms,
+     nb_option_roms++;
+ }
+ 
++void x86_isa_bios_init(MemoryRegion *isa_bios, MemoryRegion *isa_memory,
++                       MemoryRegion *bios, bool read_only)
++{
++    uint64_t bios_size = memory_region_size(bios);
++    uint64_t isa_bios_size = MIN(bios_size, 128 * KiB);
++
++    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
++                             bios_size - isa_bios_size, isa_bios_size);
++    memory_region_add_subregion_overlap(isa_memory, 1 * MiB - isa_bios_size,
++                                        isa_bios, 1);
++    memory_region_set_readonly(isa_bios, read_only);
++}
++
+ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+                        MemoryRegion *rom_memory, bool isapc_ram_fw)
  {
      const char *bios_name;
      char *filename;
--    MemoryRegion *bios;
-     int bios_size, isa_bios_size;
+-    int bios_size, isa_bios_size;
++    int bios_size;
      ssize_t ret;
  
-@@ -1149,8 +1148,8 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
-         (bios_size % 65536) != 0) {
-         goto bios_error;
-     }
--    bios = g_malloc(sizeof(*bios));
--    memory_region_init_ram(bios, NULL, "pc.bios", bios_size, &error_fatal);
-+    memory_region_init_ram(&x86ms->bios, NULL, "pc.bios", bios_size,
-+                           &error_fatal);
-     if (sev_enabled()) {
-         /*
-          * The concept of a "reset" simply doesn't exist for
-@@ -1159,11 +1158,11 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
-          * the firmware as rom to properly re-initialize on reset.
-          * Just go for a straight file load instead.
-          */
--        void *ptr = memory_region_get_ram_ptr(bios);
-+        void *ptr = memory_region_get_ram_ptr(&x86ms->bios);
-         load_image_size(filename, ptr, bios_size);
-         x86_firmware_configure(ptr, bios_size);
-     } else {
--        memory_region_set_readonly(bios, !isapc_ram_fw);
-+        memory_region_set_readonly(&x86ms->bios, !isapc_ram_fw);
-         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
-         if (ret != 0) {
-             goto bios_error;
-@@ -1173,7 +1172,7 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+     /* BIOS load */
+@@ -1171,14 +1184,8 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+     g_free(filename);
  
      /* map the last 128KB of the BIOS in ISA space */
-     isa_bios_size = MIN(bios_size, 128 * KiB);
--    memory_region_init_alias(&x86ms->isa_bios, NULL, "isa-bios", bios,
-+    memory_region_init_alias(&x86ms->isa_bios, NULL, "isa-bios", &x86ms->bios,
-                              bios_size - isa_bios_size, isa_bios_size);
-     memory_region_add_subregion_overlap(rom_memory,
-                                         0x100000 - isa_bios_size,
-@@ -1184,7 +1183,7 @@ void x86_bios_rom_init(X86MachineState *x86ms, const char *default_firmware,
+-    isa_bios_size = MIN(bios_size, 128 * KiB);
+-    memory_region_init_alias(&x86ms->isa_bios, NULL, "isa-bios", &x86ms->bios,
+-                             bios_size - isa_bios_size, isa_bios_size);
+-    memory_region_add_subregion_overlap(rom_memory,
+-                                        0x100000 - isa_bios_size,
+-                                        &x86ms->isa_bios,
+-                                        1);
+-    memory_region_set_readonly(&x86ms->isa_bios, !isapc_ram_fw);
++    x86_isa_bios_init(&x86ms->isa_bios, rom_memory, &x86ms->bios,
++                      !isapc_ram_fw);
+ 
      /* map all the bios at the top of memory */
      memory_region_add_subregion(rom_memory,
-                                 (uint32_t)(-bios_size),
--                                bios);
-+                                &x86ms->bios);
-     return;
- 
- bios_error:
 -- 
 2.41.0
 
