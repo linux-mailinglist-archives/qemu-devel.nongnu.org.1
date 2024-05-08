@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C93B8C03AB
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442328C03B5
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:50:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lNG-0000vx-0t; Wed, 08 May 2024 13:46:38 -0400
+	id 1s4lNK-00016j-Ly; Wed, 08 May 2024 13:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMJ-0000M1-PY
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:58 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMO-0000Md-VT
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:00 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMH-0007Kz-W3
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:39 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a59d0810f59so2275466b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMN-0007Mo-7C
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:44 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2e271acb015so393671fa.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190335; x=1715795135; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190341; x=1715795141; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4gAKoZA8GiThrSy3LlK57brDrhpN7s+nDa4hQZ9Yrx4=;
- b=xztPN7IBBEOzcv7Ko63eivjgOQG1G1yu0sRmVoMvtlFUKRFI5FpaCp0Jw7J9qVrzs0
- 5RhzrGsOdPbfgAUIa9UR2mFg+WP16d0WexNHB2+sfEQTxZwXZCG7FqEty9Q03qOECkEe
- TTkJ4++b3amcKaB9xS5cOiaXPWxMAH8ua7JUXhNNGz+qaQwArO3j1NpcIsaa3I36eg5G
- rWEg6xd223GVnNDTNms69/zrkIUMfs0m/ju8abSXKpolYKSq31PI8WiA8RoQnj5m1rfM
- picxx6DMWP01QJtG913N7No83csvCId1tzB7Gf25GK7tHhxXv5GsoIbFR+gYqo3DXN8z
- 5mIQ==
+ bh=MM3UbV0Lmc+hoeU+fuxpwFUEKRXI1CPAUdZ2U052B24=;
+ b=TmMrKTP3UlqGea3lw7v7gfF1+3ga6Ar7TIomHOEIOfv92v9BPaWJm40mQZyYd+4Nj8
+ FsGYPQy3OkC0N94xtfi+eI14SL44YNN9OVDQs68QIsWr6rtnVYhM0TAt8d0RdqWnphcy
+ LgHHoekAJreWl7zh7mr18MPy0BYkX1XvvjEo19qyhpAAuNEEsXHAED8G4LI5YXK1v0it
+ gntzk/VUJkiatJqrcpJenAmdnkS5+Ie95s/Q3BsuJgxKu6TVoRkIIC+pSv7FQNlsv3MX
+ OibztCIs+rrJmkvtA18uRLHkbD9nYzb4x6LqW8wNr29sI7UtjInot6vTYnWigLO8uRDP
+ HkpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190335; x=1715795135;
+ d=1e100.net; s=20230601; t=1715190341; x=1715795141;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4gAKoZA8GiThrSy3LlK57brDrhpN7s+nDa4hQZ9Yrx4=;
- b=X0GRXjLNIZUUY/PEZUKx0nn2LjfnkFRjb78YfCA3PAJ2HD4nz20KR5t/rGWq8hdTgZ
- DVtXwfpPEsTxM19dSJ4zdhKHroULOzLw5qTVR0Q/DXtMsmgTabrZFwCHRX4UcjT5jAQZ
- 8p/r4OZp1vG7184B62YYcozFQcfA8x+NTK1OSdS1dXsQ7gLbzpymTXGXpDk1gvUHYN6G
- OGlG9Z4xJsEmwqgSZ4sycRcfHSxh03rdIiq2fwf/giuv+urC8V2tsDZWfoyKqnvWeu+J
- +z48MEDtiNB2fRtFQKsL+f9HcTx4VFF736NYFVmjMEI7LCKdpfYzlX0K9ay2HQGgrCm2
- fQvQ==
-X-Gm-Message-State: AOJu0YycahPWelAaDlyr2396lftFt/ov/XM8iP+umvZi96Sjv/g3RR7D
- 02qTNW+hoWebT3xYzGjYzCBEObH9YwuZc4KJm4LOG2EdaislyDRxs05Zzu5pXTvhZRiBak+GPsV
- I
-X-Google-Smtp-Source: AGHT+IEixw6bc8oLqJY9DvIOYyNkfjsNzMGXlCRIptu5A3zVApqBYU3Tg9UVjkS7sDj7TiyoUdsBDQ==
-X-Received: by 2002:a17:906:368e:b0:a59:c0a6:25d3 with SMTP id
- a640c23a62f3a-a59fb819d1amr195236366b.12.1715190335302; 
- Wed, 08 May 2024 10:45:35 -0700 (PDT)
+ bh=MM3UbV0Lmc+hoeU+fuxpwFUEKRXI1CPAUdZ2U052B24=;
+ b=wZsw3BVxM/yV/rRgqWQETZi5W0aVUjXGle/2r4cEUKmjamldqdvzhzKbVxfFR/XJuK
+ fbCFXk/KULBJ0Dn0Knq7Lalm5GB6EnUaqbULzCssgKeA1+nDJExAYmLwC7x8cCs+fPuj
+ ZU1ZHyWOgdQnT3lNe1MjBrj0v9PgR/X0JBnGBDJI+sC5rFxlIIEWLa/B4Ig59/339ozU
+ esH4CeN0ZIHfyUnRBpD4XeqYm6u/TyyIWDV3hOjGEaJxxSTZ6Qp7QCbW4onax0BTmZDl
+ kNuM0Fp//f6hu7v6uqyfFaAUtPdFeWMyElM0FeJGPMPj3GxfXQc6pvVglZmotgIUzZny
+ OXaQ==
+X-Gm-Message-State: AOJu0Yy6QMnnwNOJDgZNkGTSBBBq0O617RUjLZVufypWF0XP2xr92LU0
+ crY5/qaLGgyLLTVN6uFZU6pFVXO2xga8EQrW+iuIWyhGXyXAlNewdXx9nrinPG9gFpeZ3dYpDEJ
+ a
+X-Google-Smtp-Source: AGHT+IEhUfXu/rlXvYTc5hrbD7X+lpAUoFFF1d7ns3/ARc4tSoJSaAlrmYlUn3fjcqxxu7uSQhjIeg==
+X-Received: by 2002:a05:6512:ba3:b0:51d:2eba:614 with SMTP id
+ 2adb3069b0e04-5217cc455c7mr2542247e87.53.1715190340781; 
+ Wed, 08 May 2024 10:45:40 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- z7-20020a1709060ac700b00a59a0ddcc3dsm6077937ejf.44.2024.05.08.10.45.34
+ co22-20020a0564020c1600b00572a865af10sm7834857edb.44.2024.05.08.10.45.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:45:34 -0700 (PDT)
+ Wed, 08 May 2024 10:45:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
- David Gibson <david@gibson.dropber.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/26] hw/ppc/spapr_pci: Replace g_memdup() by g_memdup2()
-Date: Wed,  8 May 2024 19:44:48 +0200
-Message-ID: <20240508174510.60470-5-philmd@linaro.org>
+Cc: Mattias Nissler <mnissler@rivosinc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jagannathan Raman <jag.raman@oracle.com>
+Subject: [PULL 05/26] hw/remote/vfio-user: Fix config space access byte order
+Date: Wed,  8 May 2024 19:44:49 +0200
+Message-ID: <20240508174510.60470-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,48 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@redhat.com>
+From: Mattias Nissler <mnissler@rivosinc.com>
 
-Per https://discourse.gnome.org/t/port-your-module-from-g-memdup-to-g-memdup2-now/5538
+PCI config space is little-endian, so on a big-endian host we need to
+perform byte swaps for values as they are passed to and received from
+the generic PCI config space access machinery.
 
-  The old API took the size of the memory to duplicate as a guint,
-  whereas most memory functions take memory sizes as a gsize. This
-  made it easy to accidentally pass a gsize to g_memdup(). For large
-  values, that would lead to a silent truncation of the size from 64
-  to 32 bits, and result in a heap area being returned which is
-  significantly smaller than what the caller expects. This can likely
-  be exploited in various modules to cause a heap buffer overflow.
-
-Replace g_memdup() by the safer g_memdup2() wrapper.
-
-Trivially safe because the argument was directly from sizeof.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@redhat.com>
-Acked-by: David Gibson <david@gibson.dropber.id.au>
-Message-Id: <20210903174510.751630-17-philmd@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
+Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+Message-ID: <20240507094210.300566-6-mnissler@rivosinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/spapr_pci.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ hw/remote/vfio-user-obj.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
-index 72cfba419a..7cf9904c35 100644
---- a/hw/ppc/spapr_pci.c
-+++ b/hw/ppc/spapr_pci.c
-@@ -2188,10 +2188,9 @@ static int spapr_pci_post_load(void *opaque, int version_id)
-     int i;
- 
-     for (i = 0; i < sphb->msi_devs_num; ++i) {
--        key = g_memdup(&sphb->msi_devs[i].key,
--                       sizeof(sphb->msi_devs[i].key));
--        value = g_memdup(&sphb->msi_devs[i].value,
--                         sizeof(sphb->msi_devs[i].value));
-+        key = g_memdup2(&sphb->msi_devs[i].key, sizeof(sphb->msi_devs[i].key));
-+        value = g_memdup2(&sphb->msi_devs[i].value,
-+                          sizeof(sphb->msi_devs[i].value));
-         g_hash_table_insert(sphb->msi, key, value);
-     }
-     g_free(sphb->msi_devs);
+diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+index d9b879e056..8dbafafb9e 100644
+--- a/hw/remote/vfio-user-obj.c
++++ b/hw/remote/vfio-user-obj.c
+@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+     while (bytes > 0) {
+         len = (bytes > pci_access_width) ? pci_access_width : bytes;
+         if (is_write) {
+-            memcpy(&val, ptr, len);
++            val = ldn_le_p(ptr, len);
+             pci_host_config_write_common(o->pci_dev, offset,
+                                          pci_config_size(o->pci_dev),
+                                          val, len);
+@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+         } else {
+             val = pci_host_config_read_common(o->pci_dev, offset,
+                                               pci_config_size(o->pci_dev), len);
+-            memcpy(ptr, &val, len);
++            stn_le_p(ptr, len, val);
+             trace_vfu_cfg_read(offset, val);
+         }
+         offset += len;
 -- 
 2.41.0
 
