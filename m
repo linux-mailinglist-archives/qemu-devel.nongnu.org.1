@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF938BFD2C
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8C8BFD2E
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4gS6-0005ar-02; Wed, 08 May 2024 08:31:18 -0400
+	id 1s4gS6-0005bD-KS; Wed, 08 May 2024 08:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4gRz-0005Yu-A0; Wed, 08 May 2024 08:31:13 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
+ id 1s4gS3-0005Zv-7U; Wed, 08 May 2024 08:31:15 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4gRv-00037b-DW; Wed, 08 May 2024 08:31:10 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-5ca29c131ebso3205738a12.0; 
- Wed, 08 May 2024 05:31:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
+ id 1s4gS0-00039d-OV; Wed, 08 May 2024 08:31:14 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2b5f3e20615so1259351a91.1; 
+ Wed, 08 May 2024 05:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715171464; x=1715776264; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6GpM2Wau9g7vnLLFGS1shdiSHE3sPS8g3dHSCTmh/6c=;
- b=fe5is1pz1W1OCy0exaVWf5NWeJOKnPP3laLpuYNUd106ZoihoODGH1gV/kTmEXU1id
- gCauFOXxzcv4BBbP5PlNGQI7hnNZf4UxJAH/1oo+f+rGExBC42qcZnscZbbkKmz6I8b5
- CGvWxHDZwgdBKVt0pww81i2GWoR1+oolzemC3NUwhmC7Z0SnLbsCDA5ZF4NcF5cWKLHS
- Q7r5kyhDpGZgEKEzVWHpL+Hhx1Yey/pZUI3GyOiW5f1xWliFyAa/NsKw8WeRABSprmlO
- JyYyfoVQ+0KDaoOF4Fy7hNLFYQGkObchoE/jJqWDLQ6RuctrH26v+cFwk+ioQRg7TOyQ
- bECQ==
+ d=gmail.com; s=20230601; t=1715171471; x=1715776271; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1lsDAQRXh7yx6cHADQ4jcz0kpWjTe153NCu8REQVIjQ=;
+ b=MMey56Z8MfaL9JySvJMiy91W9xLLGzVU5YQWdBeTdvlNda3zGPOfH69OfDDkFj3lV+
+ Y9Kxog9gY2+G7y9uNmwSjxVt9WgGJe7Fnc+HkC5PnTXdMB4bmufF0SxUxzieW/wXK/aI
+ yRi7AgPrq3/KzE7ji9qlGmC9Ze8iP3H2P9YjlzuQm3yHlcyrxum0JR9OpHBqcdE4ICLR
+ v7y2FasOJgIyLTA5DtJACGf+J/gUIxN7luY2kTBJ2tFPdeQVurnoNtnRLy/7Mwdarm8C
+ kILUY4t3U23wYpckk4zyxgIgwjPlcjVtXT/JHOV3nbGL4S2Rwq2+FKHizQODuEcGZvOl
+ mMbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715171464; x=1715776264;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=6GpM2Wau9g7vnLLFGS1shdiSHE3sPS8g3dHSCTmh/6c=;
- b=QV3LHzJp5ZyPa/h8sixMcwfMnx79rQIX5nn1PxceV/cuF6mJ4hVNlFKgHDkcZ2xpzK
- VGDNsKah1hJ/JrBNv4Pduf2ghf9LOKXbFkRdnnvxnupk9QRvp5StIVLVKQ9ykagUOKvM
- jsa/uWV7qW1Vq2NANOyKoboxlQNcSIlB9klf8CxveO/B6aTcnAjbU0wIx6MT5VeMrWWA
- a8NqMmXTRMFr0n42BGPtiIByqcOyA5gy8IYoF7YDIgu3CLFPxRwSHbt/AQ3zRNRsyv9y
- 4sngTaEVdyUAr0y/Kc2jSSX3Rw1isRaS13wHPrTNmc9LZd+in+zfvruSERLMwxAj4se1
- GMqA==
+ d=1e100.net; s=20230601; t=1715171471; x=1715776271;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1lsDAQRXh7yx6cHADQ4jcz0kpWjTe153NCu8REQVIjQ=;
+ b=Eb/p0TPxUGvN7q/g5CaM2ZYK7u1nYXuMFuacrO43SVnfuHvByJdY2G0FzR+3P7mNMo
+ zeVuj+8zy2aZG3dYHYZfKRxRTnf2Z+0ZJyqPr/Pzez98DLVa3pqFp2asWm/ylb/zjzOE
+ W2vFAIB6aDYIS4Pybb48hm/K+NwwI4z4zt7DPLinJchRicOLTJPmz9OcJCz9ViiUHE+A
+ G5Aw9hremyggKl8RIKmnS5nzwqszCun7xnDLhWz08QCNSsFOu1LTiWWHNMo8ugm0ejlL
+ E8vDHRPmTi42bV3N20g/vC+Eo6xR3rKK16VwjNIL97xDs5NzATEY8iawy5TxLnMeFfJH
+ lxxA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVA6U8D4IYf/21U8WnbQqO00MZ1MEook/iwJQi1C9YBA32CFChTMa5K4uIIlVy3FA6gffJ+LPec/0rtxMCKtL5dnAdNHHo=
-X-Gm-Message-State: AOJu0YwEVrug3FauYf3FPgctAp7U9GsmO/ZbVvZkVmLPmBwDtb0bo6xn
- TLXFfkzRspTXnHVN/dW09X9OeFCvJdR5r2jwWQyGgpBqzNLsgnsrm24J/Q==
-X-Google-Smtp-Source: AGHT+IHsdEzOsg+0VUkyyAwLXWC3VdaTCWunh1jnlnKO+hWzfscOypM84mIX+IeF0DlvE2GOVvG6yg==
-X-Received: by 2002:a05:6a20:1592:b0:1a7:ae5d:5fb4 with SMTP id
- adf61e73a8af0-1afc8d4df22mr2805232637.28.1715171464236; 
- Wed, 08 May 2024 05:31:04 -0700 (PDT)
-Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
- bf5-20020a656d05000000b0062070308b0esm6921812pgb.46.2024.05.08.05.31.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 05:31:03 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 May 2024 22:30:57 +1000
-Message-Id: <D149JDYPG4NB.GTUPG8F1OZL2@gmail.com>
-Cc: <qemu-ppc@nongnu.org>, "Thomas Huth" <thuth@redhat.com>
-Subject: Re: [PATCH v2] ppc: Deprecate 'ref405ep' machine and 405 CPUs
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.17.0
-References: <20240507123332.641708-1-clg@redhat.com>
-In-Reply-To: <20240507123332.641708-1-clg@redhat.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
+ AJvYcCWG/cth88Vn0Mkd9oDWv0WQCw8bispDwYP8yJ888FZHNZlH9gh4XUG/lOA0ZKwDBxCJWLfPeoP1pD9pQ5uTvRxt5MCRmSM=
+X-Gm-Message-State: AOJu0YxaZq6X3Crpa+AoK11tTyJoOIOoEY5S2eoZpxNHsLO5yYZXecCl
+ lOQFz+knFKtQHhyQaoQcyMU+bWOmerSBTWDEosAicKefS8gowxVT
+X-Google-Smtp-Source: AGHT+IERRKvlt4f/29ek77AzCX6pmv4lyPX0eGjM/YSzIf7pA+1BQmUbWOx+jcKr3GE2wEDMxGppwQ==
+X-Received: by 2002:a17:90a:a90:b0:2a4:e9d:9888 with SMTP id
+ 98e67ed59e1d1-2b6165a3afdmr2333754a91.16.1715171470950; 
+ Wed, 08 May 2024 05:31:10 -0700 (PDT)
+Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
+ y12-20020a17090a134c00b002b62079c52fsm1310984pjf.26.2024.05.08.05.31.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 May 2024 05:31:10 -0700 (PDT)
+From: Minwoo Im <minwoo.im.dev@gmail.com>
+To: Klaus Jensen <its@irrelevant.dk>,
+	Keith Busch <kbusch@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Minwoo Im <minwoo.im@samsung.com>, Minwoo Im <minwoo.im.dev@gmail.com>
+Subject: [PATCH v3 0/4] hw/nvme: FDP and SR-IOV enhancements
+Date: Wed,  8 May 2024 21:31:03 +0900
+Message-Id: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=minwoo.im.dev@gmail.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,57 +89,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue May 7, 2024 at 10:33 PM AEST, C=C3=A9dric Le Goater wrote:
-> The 'ref405ep' machine and PPC 405 CPU have no known users, firmware
-> images are not available, OpenWRT dropped support in 2019, U-Boot in
-> 2017, Linux also is dropping support in 2024. It is time to let go of
-> this ancient hardware and focus on newer CPUs and platforms.
->
-> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+Hello,
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+This patchset has rebased on the latest master and replaced 3rd patch
+to one which allocates a dynamic array for secondary controller list
+based on the maximum number of VFs (sriov_max_vfs) rather than a static
+size of static array as Klaus suggested.  Rest of the patchset are the
+same with the previous one.
 
-> ---
->  v2: fixed header line
->
->  docs/about/deprecated.rst | 8 ++++++++
->  hw/ppc/ppc405_boards.c    | 1 +
->  2 files changed, 9 insertions(+)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 03f8b1b655e071432ecd9decf61e194821d06928..e22acb17f296362509a3e143b=
-a61bafd210a6c91 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -258,6 +258,14 @@ dropping the ``cheetah`` OMAP1 board, because we don=
-'t have any
->  test images for it and don't know of anybody who does; the ``sx1``
->  and ``sx1-v1`` OMAP1 machines remain supported for now.
-> =20
-> +PPC 405 ``ref405ep`` machine (since 9.1)
-> +''''''''''''''''''''''''''''''''''''''''
-> +
-> +The ``ref405ep`` machine and PPC 405 CPU have no known users, firmware
-> +images are not available, OpenWRT dropped support in 2019, U-Boot in
-> +2017, Linux also is dropping support in 2024. It is time to let go of
-> +this ancient hardware and focus on newer CPUs and platforms.
-> +
->  Backend options
->  ---------------
-> =20
-> diff --git a/hw/ppc/ppc405_boards.c b/hw/ppc/ppc405_boards.c
-> index 4092ebc1ab59de14b66ebad2be7eb019faf45db1..c44e7ed162fae5ec884ba4e45=
-8138f84430a8460 100644
-> --- a/hw/ppc/ppc405_boards.c
-> +++ b/hw/ppc/ppc405_boards.c
-> @@ -350,6 +350,7 @@ static void ppc405_machine_class_init(ObjectClass *oc=
-, void *data)
->      mc->init =3D ppc405_init;
->      mc->default_ram_size =3D 128 * MiB;
->      mc->default_ram_id =3D "ppc405.ram";
-> +    mc->deprecation_reason =3D "machine is old and unmaintained";
->  }
-> =20
->  static const TypeInfo ppc405_machine_type =3D {
+This patchset has been tested with the following simple script more than
+127 VFs.
+
+	-device nvme-subsys,id=subsys0 \
+	-device ioh3420,id=rp2,multifunction=on,chassis=12 \
+	-device nvme,serial=foo,id=nvme0,bus=rp2,subsys=subsys0,mdts=9,msix_qsize=130,max_ioqpairs=260,sriov_max_vfs=129,sriov_vq_flexible=258,sriov_vi_flexible=129 \
+
+	$ cat nvme-enable-vfs.sh
+	#!/bin/bash
+
+	nr_vfs=129
+
+	for (( i=1; i<=$nr_vfs; i++ ))
+	do
+		nvme virt-mgmt /dev/nvme0 -c $i -r 0 -a 8 -n 2
+		nvme virt-mgmt /dev/nvme0 -c $i -r 1 -a 8 -n 1
+	done
+
+	bdf="0000:01:00.0"
+	sysfs="/sys/bus/pci/devices/$bdf"
+	nvme="/sys/bus/pci/drivers/nvme"
+
+	echo 0 > $sysfs/sriov_drivers_autoprobe
+	echo $nr_vfs > $sysfs/sriov_numvfs
+
+	for (( i=1; i<=$nr_vfs; i++ ))
+	do
+		nvme virt-mgmt /dev/nvme0 -c $i -a 9
+
+		echo "nvme" > $sysfs/virtfn$(($i-1))/driver_override
+		bdf="$(basename $(readlink $sysfs/virtfn$(($i-1))))"
+		echo $bdf > $nvme/bind
+	done
+
+Thanks,
+
+v3:
+ - Replace [3/4] patch with one allocating a dyanmic array of secondary
+   controller list rather than a static array with a fixed size of
+   maximum number of VF to support (Suggested by Klaus).
+v2:                                                     
+ - Added [2/4] commit to fix crash due to entry overflow
+
+Minwoo Im (4):
+  hw/nvme: add Identify Endurance Group List
+  hw/nvme: separate identify data for sec. ctrl list
+  hw/nvme: Allocate sec-ctrl-list as a dynamic array
+  hw/nvme: Expand VI/VQ resource to uint32
+
+ hw/nvme/ctrl.c       | 59 +++++++++++++++++++++++++++-----------------
+ hw/nvme/nvme.h       | 19 +++++++-------
+ hw/nvme/subsys.c     | 10 +++++---
+ include/block/nvme.h |  1 +
+ 4 files changed, 54 insertions(+), 35 deletions(-)
+
+-- 
+2.34.1
 
 
