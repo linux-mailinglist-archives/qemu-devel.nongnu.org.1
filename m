@@ -2,52 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAB68C00E9
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 17:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135698C00EA
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 17:27:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4jBJ-00075a-Tv; Wed, 08 May 2024 11:26:09 -0400
+	id 1s4jBs-0007QK-4c; Wed, 08 May 2024 11:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s4jBG-000757-LD; Wed, 08 May 2024 11:26:06 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s4jBD-0005Lg-Ce; Wed, 08 May 2024 11:26:04 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 333F34E6010;
- Wed, 08 May 2024 17:26:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id jAtowhCBasuh; Wed,  8 May 2024 17:25:59 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3DAAC4E6001; Wed, 08 May 2024 17:25:59 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 3C3067470B7;
- Wed, 08 May 2024 17:25:59 +0200 (CEST)
-Date: Wed, 8 May 2024 17:25:59 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v3 26/33] target/ppc/mmu_common.c: Simplify
- ppc_booke_xlate() part 1
-In-Reply-To: <D14AJB3VXJL0.18D5ZU7FZFOLN@gmail.com>
-Message-ID: <8ea53cfc-963f-000c-f5dc-d6bd61db3fbb@eik.bme.hu>
-References: <cover.1715125376.git.balaton@eik.bme.hu>
- <5074c129ebfea0e1dfc22ef4691d8b62038d59b2.1715125376.git.balaton@eik.bme.hu>
- <D14AJB3VXJL0.18D5ZU7FZFOLN@gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4jBo-0007P4-J9
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 11:26:40 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4jBm-0005U9-LM
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 11:26:40 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a59cdf7cd78so934910266b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 08:26:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715181997; x=1715786797; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=q8yrkXUx80MzjUBiXjjhVxMVwQxWyhVHLFybrRVar0g=;
+ b=U0cYuDfhW8bNraNyUSgvppbqoOXQfvhk5vHh9z3ruA7KbrwoXjEi0p3KLO7wMU9DsP
+ XWZcdzkXsXqBsfEi3rP132znza+2A3CHzDvYXpJZdIFVMHQyZS3LId2/vXxqWEMQ51Go
+ IE/bnlCkwwph/NeZ6D2bBnBa7acuj/Wgjw25DMN2Kq+2+7WH4GscCX1BEkj919TRLu+6
+ mQW0EvDpcru/NFFccY13F14dY6rhU2GcU5axAFRXUURncjvRjO0nQS0/PM4cdQvA7PK/
+ A1W5LiOakiHZwAZQ3sClTvVN6HAvfW8QwCAJUJt3nTTqRhWQc1pSqAmg7pAW75uw7MUZ
+ 58zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715181997; x=1715786797;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q8yrkXUx80MzjUBiXjjhVxMVwQxWyhVHLFybrRVar0g=;
+ b=OIdwvtOS9+urMIk1Tq9fJ2Bsj9lTDyYKAj5wc9/GJ0kfrDTVjVn8QKTa6WkJF6CpYS
+ /SwPNo7xWSWxO4qO/Y8wtGkQIPv/bwxT6PeOPYc///0bePtYWfPqfRYOVvFEaCndvKCF
+ GlU6hXuRnwQ1UBbedCsvNdgYNtQnYxp5aqe2zmgt/3l4gOaoMbWDhTEw9NgqalXbcKZH
+ 9rnsxPjZWK2LqBiNfgOG/lUMMelN/h+wyCLE0hfQ1KQd3bHtuqDFPlibzOjmlHSLI+ao
+ AH1QEfGsMmuXX8/m6anmdC/5xJ01DyA4oFBghXbxR4E6lNJOiCrBrZVMpi5yrr0yrSBV
+ Xw6A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVKF289b6oAU4O1GQiKEo0uLBVBHn/zJJwRKxBIJ43D/CjXOjgXGGqYQc/0czZACTSzFdZnvnfKJhdy8EgaH2pE9sICh+o=
+X-Gm-Message-State: AOJu0YxFQ6TCgs17ZFPW0zW8ks1aanh+gfgTDhGdxLrYE4xVCXE7Lx2h
+ lNjUp1eJ9Q33vG53svgZ3ac+IyqkS9+ly7S4n9p3BpRh8wXfmX0xsZFdnZvDfIo=
+X-Google-Smtp-Source: AGHT+IHP7XIu8ddKMQSmBeNRFaO8JzQ/DvAVUOBnyHaFxfB/NttJ0XR6nmXOyQwgGmxkSlaoHKw7Pg==
+X-Received: by 2002:a17:906:2551:b0:a59:c9ce:3390 with SMTP id
+ a640c23a62f3a-a59fb9595d8mr177464466b.30.1715181996629; 
+ Wed, 08 May 2024 08:26:36 -0700 (PDT)
+Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
+ [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
+ kt1-20020a170906aac100b00a52295e014bsm7763190ejb.92.2024.05.08.08.26.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 May 2024 08:26:36 -0700 (PDT)
+Message-ID: <a73858d1-c744-4a9b-b688-098e5dda9e12@linaro.org>
+Date: Wed, 8 May 2024 17:26:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 18/33] disas: Split disas.c
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240424233131.988727-1-richard.henderson@linaro.org>
+ <20240424233131.988727-19-richard.henderson@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240424233131.988727-19-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,116 +93,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 8 May 2024, Nicholas Piggin wrote:
-> On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
->> Move setting error_code that appears in every case out in front and
->> hoist the common fall through case for BOOKE206 as well which allows
->> removing the nested switches.
->>
->
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
->
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>  target/ppc/mmu_common.c | 41 ++++++++++++-----------------------------
->>  1 file changed, 12 insertions(+), 29 deletions(-)
->>
->> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
->> index 788e2bebd5..c725a7932f 100644
->> --- a/target/ppc/mmu_common.c
->> +++ b/target/ppc/mmu_common.c
->> @@ -1205,58 +1205,41 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
->>      }
->>
->>      log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
->> +    env->error_code = 0;
->> +    if (ret == -1) {
->> +        if (env->mmu_model == POWERPC_MMU_BOOKE206) {
->> +            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
->> +        }
->> +    }
->>      if (access_type == MMU_INST_FETCH) {
->>          switch (ret) {
->>          case -1:
->>              /* No matches in page tables or TLB */
->> -            switch (env->mmu_model) {
->> -            case POWERPC_MMU_BOOKE206:
->> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
->> -                /* fall through */
->> -            case POWERPC_MMU_BOOKE:
->> -                cs->exception_index = POWERPC_EXCP_ITLB;
->> -                env->error_code = 0;
->> -                env->spr[SPR_BOOKE_DEAR] = eaddr;
->> -                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
->> -                break;
->> -            default:
->> -                g_assert_not_reached();
->> -            }
->> +            cs->exception_index = POWERPC_EXCP_ITLB;
->> +            env->spr[SPR_BOOKE_DEAR] = eaddr;
->> +            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
->>              break;
->>          case -2:
->>              /* Access rights violation */
->>              cs->exception_index = POWERPC_EXCP_ISI;
->> -            env->error_code = 0;
->>              break;
->>          case -3:
->>              /* No execute protection violation */
->>              cs->exception_index = POWERPC_EXCP_ISI;
->>              env->spr[SPR_BOOKE_ESR] = 0;
->
-> I don't know BookE well but AFAIKS it says ESR if not set explicitly
-> is generally cleared to 0 by interrupts which I guess is the case here.
-> I don't see why the same would not apply to the -2 case either. That
-> would reduce special cases.
->
-> Although that's a behaviour change. It's possible current beahviour is
-> deliberate or matches some particular CPU. Not something for this
-> series.
+On 25/4/24 01:31, Richard Henderson wrote:
+> The routines in disas-common.c are also used from disas-mon.c.
+> Otherwise the rest of disassembly is only used from tcg.
+> While we're at it, put host and target code into separate files.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   disas/disas-internal.h |   4 +
+>   include/disas/disas.h  |   4 +
+>   disas/disas-common.c   | 117 ++++++++++++++
+>   disas/disas-host.c     | 129 ++++++++++++++++
+>   disas/disas-target.c   |  84 ++++++++++
+>   disas/disas.c          | 337 -----------------------------------------
+>   disas/objdump.c        |  37 +++++
+>   disas/meson.build      |   8 +-
+>   8 files changed, 381 insertions(+), 339 deletions(-)
+>   create mode 100644 disas/disas-common.c
+>   create mode 100644 disas/disas-host.c
+>   create mode 100644 disas/disas-target.c
+>   delete mode 100644 disas/disas.c
+>   create mode 100644 disas/objdump.c
 
-I don't know what the correct behaviour should be so I just tried to keep 
-what was there. After this clean it should be simpler to find out and 
-correct this later.
 
-Regards,
-BALATON Zoltan
+> diff --git a/include/disas/disas.h b/include/disas/disas.h
+> index 176775eff7..54a5e68443 100644
+> --- a/include/disas/disas.h
+> +++ b/include/disas/disas.h
+> @@ -2,13 +2,17 @@
+>   #define QEMU_DISAS_H
+>   
+>   /* Disassemble this for me please... (debugging). */
+> +#ifdef CONFIG_TCG
+>   void disas(FILE *out, const void *code, size_t size);
+>   void target_disas(FILE *out, CPUState *cpu, uint64_t code, size_t size);
+> +#endif
+>   
+>   void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
+>                      int nb_insn, bool is_physical);
+>   
+> +#ifdef CONFIG_PLUGIN
 
-> Thanks,
-> Nick
->
->> -            env->error_code = 0;
->>              break;
->>          }
->>      } else {
->>          switch (ret) {
->>          case -1:
->>              /* No matches in page tables or TLB */
->> -            switch (env->mmu_model) {
->> -            case POWERPC_MMU_BOOKE206:
->> -                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
->> -                /* fall through */
->> -            case POWERPC_MMU_BOOKE:
->> -                cs->exception_index = POWERPC_EXCP_DTLB;
->> -                env->error_code = 0;
->> -                env->spr[SPR_BOOKE_DEAR] = eaddr;
->> -                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
->> -                break;
->> -            default:
->> -                g_assert_not_reached();
->> -            }
->> +            cs->exception_index = POWERPC_EXCP_DTLB;
->> +            env->spr[SPR_BOOKE_DEAR] = eaddr;
->> +            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
->>              break;
->>          case -2:
->>              /* Access rights violation */
->>              cs->exception_index = POWERPC_EXCP_DSI;
->> -            env->error_code = 0;
->>              env->spr[SPR_BOOKE_DEAR] = eaddr;
->>              env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
->>              break;
->
->
->
+Although implied, could be within the previous CONFIG_TCG block.
+
+>   char *plugin_disas(CPUState *cpu, uint64_t addr, size_t size);
+> +#endif
+
+Reviewed using git-diff --color-moved=dimmed-zebra:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
