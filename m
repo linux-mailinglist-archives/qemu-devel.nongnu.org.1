@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521178BFE1D
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 140738BFE18
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:13:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4h5v-0005FA-RJ; Wed, 08 May 2024 09:12:27 -0400
+	id 1s4h5u-0005EJ-Kg; Wed, 08 May 2024 09:12:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1s4dkv-0007f0-GH
- for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:33 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1s4dl0-0007mw-P0
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:38 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1s4dkt-0000aE-TU
- for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:33 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5ff57410ebbso3329570a12.1
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 02:38:31 -0700 (PDT)
+ id 1s4dky-0000bA-4S
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:37 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1ee0132a6f3so27414645ad.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 02:38:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1715161110; x=1715765910; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1715161115; x=1715765915; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gFPFIrQSwbonOV1Lxc6f0KhdGy2FCqSxIxef8n97aRY=;
- b=D/uBsBmkWjLRrY/iME4smJluXXkpSMzSb4fprqPvDWpbb0h7T4ZERihkmB+VLtRH2d
- uLrSq/lzeFXDZLMs475ICN13OIKtb4O4jlxUuPuADskSH0c7jWWgcHiPecGQYAM6RN1q
- GcxdjFiDFbSOMHG36Fdsd/mOf1JVBBdXxxoXG70egBRgyk0uV6TDctDvyi/VqdDML6O7
- UMSDGTPgbyX7PC5+7Xk4jhmr6PArO4OJ7eKmo2rgpcVjoMdY2/V1KnKWXGZWsMpgn+8r
- IjGmp95+Gmn7dZO9Ao7CHS0S+LbBuekNkE5unQ/5x1pOXz6rmXtrXJqHUrwg+zYgUMZK
- yY4A==
+ bh=RLmdC7xgHK3n63q1edNAVO95cmP2mjRHETTCOF2flbQ=;
+ b=CfKjj8WRWhC6XVOLeoMcv1G01FLEE1qwRpvxtv8aQ3EUM/+4qnh39RJNZmxwsrbUhH
+ vfQ+TaWk4Bky2RnEifaIOOt0cFFBTD0BS7q7FD/0OK5MjL+HVUboiHK2DIi6PqKMpbI/
+ snTlWBXfWXyMB+z7FxzJdmaIpM9J1FwT1QC/l9XyvYzfmLFrl2gXLkdnv9RKX5Dz/PbZ
+ XF8YE/K3jHCIv4jhH88LTYZBcTj+IQ/iKMpYO4YVKbPJrP1hEtTJ+eXiK7aGpHW9fT1y
+ IM35ZMLRvNBiQvfQqWkaHN8o1ENdKU0aHZENSdkPq4wZqUz/zaqCyk1ZURhVS9fTTktU
+ oHvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715161110; x=1715765910;
+ d=1e100.net; s=20230601; t=1715161115; x=1715765915;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gFPFIrQSwbonOV1Lxc6f0KhdGy2FCqSxIxef8n97aRY=;
- b=ajXwAnhyBKggDgUDdHA5/ykQyb7ZZyBBz5EUGJAXcBHKIkYFj/sMbHN9+znV3I/yaO
- 6VzYBGuTdUuSmnfqmetyxSM3bctN3Qo6oJzw01vD33i7waq7jwNKAKiSbY1M28sWIqYn
- HaKFDq9BHr5kzmo29QGTz4lUo3kdqjjDHleKQBQtnRsYfgscKkhmU72hzYnvb5AE9c5j
- ny8wsgS/a5exDYUM9ya0KVcOEpMTnJK1SLwh7e+T6dOexMLJyFf6hsvxAauKenTIyIFj
- uXYPJNj0S0pxJ+mJ7q7OUqOOwspiMKjlL0xzeqMCAa4qbX0T2BeB69C88cA+A4RTF0Fz
- A7KA==
+ bh=RLmdC7xgHK3n63q1edNAVO95cmP2mjRHETTCOF2flbQ=;
+ b=VBzweRjOpF2yY190vY68ZCNw76/7VbuKlwJcRbs6CC7Nbb3+oKPytqmXAxEI0+5enK
+ zZKD07BOdqOeR5bE8qK1MPxmBlQ71SO10sCfw0UTpF8VjcDLerHyeyVs4o0+BtTKdq1R
+ GzpPWXqihEbWhZstL11E7QH3/05J9gznNO7M8jaesoN21KcMztdWyZ4Se37OfAubqHkq
+ NLr663bBdYxYnVYvBw9t4wELBn8q/8DDlBYLPAJA4jcpK9/g7BIQhrA/Xbu0FdPkj8WE
+ o9YhXGJ6g6S7rUTIzUjN1ccomKaPDbDjL7h8N5YgkmDR5aULQljw9cDxzdK/8FmvbDZ+
+ RuRg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWqXLQ0iW6QnEDCp8IK2WB+z2HBOaYIl+YjzFxoem2IZ1CQ4QnbeYFoOen4OmMcjMqd3C4Y7FTseQpYqfD7enUBWX05pqg=
-X-Gm-Message-State: AOJu0YyABDR5qVCBe3XvAZTMPuuQhjWyR0jqoCMf8zl8zktzRoP+ihQ0
- 3Wr/PUQ+aztCiIbjjVFgp904h9xA6j9x59kj8m7ltLQsKJv3W8pUtjsWNELqNrA=
-X-Google-Smtp-Source: AGHT+IHVkAh3WR5P0kjIKVVEosIeAvI3hhDd1eD4VvY/gSFtVxjx9dZbAysNNXqL9FWwiXwOSv9HfA==
-X-Received: by 2002:a17:902:b48f:b0:1e4:4000:a576 with SMTP id
- d9443c01a7336-1eeb0795f3emr19156935ad.43.1715161110685; 
- Wed, 08 May 2024 02:38:30 -0700 (PDT)
+ AJvYcCXQwzswGchIWYMbhIT6sbI+2bAZILDotnCHUnh0SgQEyzYUe7PA1dRgf38XyMwFf9FuDKnti4Ot0bYo/IdHPTTJPdZtX4A=
+X-Gm-Message-State: AOJu0Yw/pSqJPAw8wCsYRA7ZhYP3nGqQDUJqYhRaQdbln7mlM0FtYbVJ
+ vf002Aczc7e6YhFyoPlVqWWRj1zfbqSzsJhXOaFyA+gI7d9O+9n52gwfgnd1VMc=
+X-Google-Smtp-Source: AGHT+IGiQVmoghL6gesnyA9ypkJn2wokeKSw7nKcC10NA6sZ5iYgjXdmtulOk9J+mfI71azCJd/shw==
+X-Received: by 2002:a17:902:eb55:b0:1eb:704c:43b3 with SMTP id
+ d9443c01a7336-1eeb039e93fmr20501085ad.24.1715161114721; 
+ Wed, 08 May 2024 02:38:34 -0700 (PDT)
 Received: from n37-006-243.byted.org ([180.184.51.134])
  by smtp.gmail.com with ESMTPSA id
- p16-20020a1709027ed000b001ee13eb2bedsm4992178plb.98.2024.05.08.02.38.27
+ p16-20020a1709027ed000b001ee13eb2bedsm4992178plb.98.2024.05.08.02.38.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 May 2024 02:38:30 -0700 (PDT)
+ Wed, 08 May 2024 02:38:34 -0700 (PDT)
 From: Changqi Lu <luchangqi.123@bytedance.com>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
@@ -66,23 +66,24 @@ Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
  kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
  Changqi Lu <luchangqi.123@bytedance.com>,
  zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH 6/9] block/nvme: add reservation command protocol constants
-Date: Wed,  8 May 2024 17:36:26 +0800
-Message-Id: <20240508093629.441057-7-luchangqi.123@bytedance.com>
+Subject: [PATCH 7/9] hw/nvme: add helper functions for converting reservation
+ types
+Date: Wed,  8 May 2024 17:36:27 +0800
+Message-Id: <20240508093629.441057-8-luchangqi.123@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20240508093629.441057-1-luchangqi.123@bytedance.com>
 References: <20240508093629.441057-1-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=luchangqi.123@bytedance.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Wed, 08 May 2024 09:12:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,65 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add constants for the NVMe persistent command protocol.
-The constants include the reservation command opcode and
-reservation type values defined in section 7 of the NVMe
-2.0 specification.
+This commit introduces two helper functions
+that facilitate the conversion between the
+reservation types used in the NVME protocol
+and those used in the block layer.
 
 Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- include/block/nvme.h | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ hw/nvme/nvme.h | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/include/block/nvme.h b/include/block/nvme.h
-index bb231d0b9a..3409fba762 100644
---- a/include/block/nvme.h
-+++ b/include/block/nvme.h
-@@ -633,6 +633,10 @@ enum NvmeIoCommands {
-     NVME_CMD_WRITE_ZEROES       = 0x08,
-     NVME_CMD_DSM                = 0x09,
-     NVME_CMD_VERIFY             = 0x0c,
-+    NVME_CMD_RESV_REGISTER      = 0x0d,
-+    NVME_CMD_RESV_REPORT        = 0x0e,
-+    NVME_CMD_RESV_ACQUIRE       = 0x11,
-+    NVME_CMD_RESV_RELEASE       = 0x15,
-     NVME_CMD_IO_MGMT_RECV       = 0x12,
-     NVME_CMD_COPY               = 0x19,
-     NVME_CMD_IO_MGMT_SEND       = 0x1d,
-@@ -641,6 +645,32 @@ enum NvmeIoCommands {
-     NVME_CMD_ZONE_APPEND        = 0x7d,
- };
+diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
+index bed8191bd5..6abe479410 100644
+--- a/hw/nvme/nvme.h
++++ b/hw/nvme/nvme.h
+@@ -474,6 +474,46 @@ static inline const char *nvme_io_opc_str(uint8_t opc)
+     }
+ }
  
-+typedef enum {
-+    NVME_RESV_REGISTER_ACTION_REGISTER      = 0x00,
-+    NVME_RESV_REGISTER_ACTION_UNREGISTER    = 0x01,
-+    NVME_RESV_REGISTER_ACTION_REPLACE       = 0x02,
-+} NVME_RESV_REGISTER_ACTION;
++static inline NVMEResvType block_pr_type_to_nvme(BlockPrType type)
++{
++    switch (type) {
++    case BLK_PR_WRITE_EXCLUSIVE:
++        return NVME_RESV_WRITE_EXCLUSIVE;
++    case BLK_PR_EXCLUSIVE_ACCESS:
++        return NVME_RESV_EXCLUSIVE_ACCESS;
++    case BLK_PR_WRITE_EXCLUSIVE_REGS_ONLY:
++        return NVME_RESV_WRITE_EXCLUSIVE_REGS_ONLY;
++    case BLK_PR_EXCLUSIVE_ACCESS_REGS_ONLY:
++        return NVME_RESV_EXCLUSIVE_ACCESS_REGS_ONLY;
++    case BLK_PR_WRITE_EXCLUSIVE_ALL_REGS:
++        return NVME_RESV_WRITE_EXCLUSIVE_ALL_REGS;
++    case BLK_PR_EXCLUSIVE_ACCESS_ALL_REGS:
++        return NVME_RESV_EXCLUSIVE_ACCESS_ALL_REGS;
++    }
 +
-+typedef enum {
-+    NVME_RESV_RELEASE_ACTION_RELEASE        = 0x00,
-+    NVME_RESV_RELEASE_ACTION_CLEAR          = 0x01,
-+} NVME_RESV_RELEASE_ACTION;
++    return 0;
++}
 +
-+typedef enum {
-+    NVME_RESV_ACQUIRE_ACTION_ACQUIRE            = 0x00,
-+    NVME_RESV_ACQUIRE_ACTION_PREEMPT            = 0x01,
-+    NVME_RESV_ACQUIRE_ACTION_PREEMPT_AND_ABORT  = 0x02,
-+} NVME_RESV_ACQUIRE_ACTION;
++static inline BlockPrType nvme_pr_type_to_block(NVMEResvType type)
++{
++    switch (type) {
++    case NVME_RESV_WRITE_EXCLUSIVE:
++        return BLK_PR_WRITE_EXCLUSIVE;
++    case NVME_RESV_EXCLUSIVE_ACCESS:
++        return BLK_PR_EXCLUSIVE_ACCESS;
++    case NVME_RESV_WRITE_EXCLUSIVE_REGS_ONLY:
++        return BLK_PR_WRITE_EXCLUSIVE_REGS_ONLY;
++    case NVME_RESV_EXCLUSIVE_ACCESS_REGS_ONLY:
++        return BLK_PR_EXCLUSIVE_ACCESS_REGS_ONLY;
++    case NVME_RESV_WRITE_EXCLUSIVE_ALL_REGS:
++        return BLK_PR_WRITE_EXCLUSIVE_ALL_REGS;
++    case NVME_RESV_EXCLUSIVE_ACCESS_ALL_REGS:
++        return BLK_PR_EXCLUSIVE_ACCESS_ALL_REGS;
++    }
 +
-+typedef enum {
-+    NVME_RESV_WRITE_EXCLUSIVE               = 0x01,
-+    NVME_RESV_EXCLUSIVE_ACCESS              = 0x02,
-+    NVME_RESV_WRITE_EXCLUSIVE_REGS_ONLY     = 0x03,
-+    NVME_RESV_EXCLUSIVE_ACCESS_REGS_ONLY    = 0x04,
-+    NVME_RESV_WRITE_EXCLUSIVE_ALL_REGS      = 0x05,
-+    NVME_RESV_EXCLUSIVE_ACCESS_ALL_REGS     = 0x06,
-+} NVMEResvType;
++    return 0;
++}
 +
- typedef struct QEMU_PACKED NvmeDeleteQ {
-     uint8_t     opcode;
-     uint8_t     flags;
+ typedef struct NvmeSQueue {
+     struct NvmeCtrl *ctrl;
+     uint16_t    sqid;
 -- 
 2.20.1
 
