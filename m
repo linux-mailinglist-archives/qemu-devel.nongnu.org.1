@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF348BFD2F
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 917A68BFD4F
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:39:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4gSN-0005iS-EN; Wed, 08 May 2024 08:31:35 -0400
+	id 1s4gYb-00031A-AO; Wed, 08 May 2024 08:38:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1s4gSL-0005gV-CN; Wed, 08 May 2024 08:31:33 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4gXn-0002lT-DF; Wed, 08 May 2024 08:37:20 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1s4gSC-0003Aw-Ia; Wed, 08 May 2024 08:31:33 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1ee5235f5c9so21834755ad.2; 
- Wed, 08 May 2024 05:31:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4gXl-0005JZ-P0; Wed, 08 May 2024 08:37:11 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f43ee95078so3829885b3a.1; 
+ Wed, 08 May 2024 05:37:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715171483; x=1715776283; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1715171826; x=1715776626; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RXQz1dwRLC7iNrSUqXMbmSa+SmczD7+CTqmM7iOnNMU=;
- b=PDQuUlycWAcq4rW1FJ9YE4RiuL3Dk7Kp5Xj2AAG+Wp8SGLTNcu20IHWniZfui0V2aF
- fm4P193EW5Q2FO10BnDaN4z2BDyIQtGye3WHdjH7qmBTqZqLokNa39f59/+mSeOxZbUd
- VHCNCziaHCsQh8+5DUCPoqkEK4S+oWrv+TKvtP3rOY0HII8ti7hzyOVwTPj/VYCDeNgi
- noBPo+zjy2GNZYo+BpiMDbnmPppqRWc+k/KAGlII0LUyNXg+JwWnzaoTzu5Gy+UBn88y
- KOsZ9E2CMj7iGME+lkJAd2LIu3zNRCzkT/GQN+2RYOVK8t8fushNW30dzrq0SeKkz7m8
- nU3A==
+ bh=7VXByjdim0aNjUK7fR6kAyAUSfQPZjwFoKkgzvwvfQI=;
+ b=IN9zJLGma0ACo9HbFBG6NJKDrsJTA3SLs9ARI7/OlGWW/qydkdBdcAMx0fWX5HvJTp
+ fxQlmxsUnkk76HjrIW1K+uhmcUDy1wE1qyzM9sMtLpJvlIlhceAtGZRyN0fHGSyFtiZN
+ BrIQMPXb/+3APL10hV2JcAgYeIGfFGRiyp1aEzNvR4D7g8XPPElzdWCcFE41yeY853T1
+ F/p+mIA2XQ1d4BRWgolBualCjG2Hb8FKgjy2JoKWJUHklNZMK+oJ8EndVyRJ5pB41Ztu
+ 533Ed1/wS6FAmqSZkmOvq91OtAKF/Yx6Y0OwMBPOlWabrFCFAXudr/SECadQGJZaS3Gv
+ Y9dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715171483; x=1715776283;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RXQz1dwRLC7iNrSUqXMbmSa+SmczD7+CTqmM7iOnNMU=;
- b=fnvYJ4VbmbIU+ebh88sCF9+hmegL1nCaDSGU4EB6iVIn8CeikBP1Z7PKf7zhqJ+RKT
- OHWrAd2AahU0aSo7JfuC0J54GpXkgdhbuZ0PQCAvO/3MRYJ76IsnZ7/zwtl731dd41hH
- zCyLgzUdrPHiPeBqinH0f4OlsFvlFZbW7xT3zpNesgKvzFWKoFH+fkd2M/tSOLfoIgo0
- JaWo5MR5efwFUNwFjjMLt/qdf+M+Wjzz3x52lPz53+EDhIaR7POQ+7cehhSqjjfV67Nr
- YxW5fDa20SHjMumhc8ZN9RKL0YP/RwS05lg59KkNZ3XtgFZdFryLNRhKzDrsvN15oJqJ
- 8Vmw==
+ d=1e100.net; s=20230601; t=1715171826; x=1715776626;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=7VXByjdim0aNjUK7fR6kAyAUSfQPZjwFoKkgzvwvfQI=;
+ b=PbvgZ8hKTsuZyms3pvYdUqR8slrt/cfkGIZTC9rECGXcKg04QwKNdoSvlPKq4j//iw
+ rtnrUKtyCE3ztJEZKb2F/5tPff2ErvX3KkY9wT6dbULoevWsIKvh5ThgqTyjSgG22Piz
+ /AmX7Jm1h0YVdaOzMBy+DJ+Rklotb8skwXR+Yckt5YAN/T+H5kzyaCsmVTJaMz7PcVPZ
+ k1vBgRW/rT3p936YZxqMApFoU0VZmuEo6a+Y5+KkLqYtPY8MHbhaYSnoBJYFs5fErkUW
+ tyCFW8P4RczqwWtXPMNv3FF6B7qBHMeK3cWWT6lQyCXBYgavfWQCl/vKBvqM2O3qaGqx
+ StfQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUvoQHnVU1vliBxravUnnMU23+YvPpXLEuDo4d6+eWKD39AgXSUelSKuYEXmj4q/v4PIiHA7R/fQh7j4t3bAImM8rmrIgU=
-X-Gm-Message-State: AOJu0YzXCR+/I0SD9veQuaU6h6pkKzX4TOL9YSnkYb5LoTTyV5QszYIa
- 5IxVnu7wqGyV4PWNgArjEtUg25d2N28pJdyR0YrH7TALlhiIBPul
-X-Google-Smtp-Source: AGHT+IGkqU8PlSae/qWJE8ew/mjttkZD0XyX5fXU2OI2ATvXVkYSBp+Lnuic/fJYGsjtPCEXqcKq+w==
-X-Received: by 2002:a17:902:eb87:b0:1eb:152a:5a6e with SMTP id
- d9443c01a7336-1eeb03a6a3bmr30119205ad.3.1715171482695; 
- Wed, 08 May 2024 05:31:22 -0700 (PDT)
-Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001ebd73f61fcsm11708026plg.121.2024.05.08.05.31.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 May 2024 05:31:22 -0700 (PDT)
-From: Minwoo Im <minwoo.im.dev@gmail.com>
-To: Klaus Jensen <its@irrelevant.dk>,
-	Keith Busch <kbusch@kernel.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Minwoo Im <minwoo.im@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH v3 4/4] hw/nvme: Expand VI/VQ resource to uint32
-Date: Wed,  8 May 2024 21:31:07 +0900
-Message-Id: <20240508123107.87919-5-minwoo.im.dev@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
-References: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=minwoo.im.dev@gmail.com; helo=mail-pl1-x62b.google.com
+ AJvYcCUxKcCZZg64ByUbj1RAnAK6SrlV46R+i9uVNWrYjI8txbpAuEHVWP9nNg8Kx0CKuVBe6uChfDYp3OYSoc4uW5jTc6cW
+X-Gm-Message-State: AOJu0YxudsohAUhiUHk7IwGO33V9N/UsofXRNY7RV4vrphEoiYyhmqWP
+ bd074N1fqMi+aYwviInKRf4cMy/tMg+9CjJJr5+erNJiwGRpU9m+
+X-Google-Smtp-Source: AGHT+IFy1bPi5jejFOOr8LIKN0uOy6IFs74x2Ut8nT0S4mLXC0y1pc9ZkTQfiU9tap+ylKeC/nd+Xg==
+X-Received: by 2002:a05:6a21:3948:b0:1af:cefe:dbab with SMTP id
+ adf61e73a8af0-1afcefedc59mr537335637.5.1715171825863; 
+ Wed, 08 May 2024 05:37:05 -0700 (PDT)
+Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
+ t4-20020a170902a5c400b001e7b82f33eesm11689985plq.291.2024.05.08.05.37.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 May 2024 05:37:05 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 May 2024 22:37:00 +1000
+Message-Id: <D149O0V77ABT.1ODT0ZNPBL9WK@gmail.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
+ Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v2 27/28] target/ppc: Remove id_tlbs flag from CPU env
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>
+X-Mailer: aerc 0.17.0
+References: <cover.1714606359.git.balaton@eik.bme.hu>
+ <5a24db3d48babe4e855707a01954b1827712772f.1714606359.git.balaton@eik.bme.hu>
+ <D13EWAGCZ9F6.1LCJ4K7W21C3L@gmail.com>
+ <11d79524-f9d1-6200-0889-515c9d0dbf9c@eik.bme.hu>
+In-Reply-To: <11d79524-f9d1-6200-0889-515c9d0dbf9c@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,57 +95,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Minwoo Im <minwoo.im@samsung.com>
+On Wed May 8, 2024 at 2:02 AM AEST, BALATON Zoltan wrote:
+> On Tue, 7 May 2024, Nicholas Piggin wrote:
+> > On Thu May 2, 2024 at 9:43 AM AEST, BALATON Zoltan wrote:
+> >> This flag for split instruction/data TLBs is only set for 6xx soft TLB
+> >> MMU model and not used otherwise so no need to have a separate flag
+> >> for that.
+> >>
+> >> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> >> ---
+> >>  hw/ppc/pegasos2.c        |  2 +-
+> >>  target/ppc/cpu.h         |  1 -
+> >>  target/ppc/cpu_init.c    | 19 +++++--------------
+> >>  target/ppc/helper_regs.c |  1 -
+> >>  target/ppc/mmu_common.c  | 10 ++--------
+> >>  target/ppc/mmu_helper.c  | 12 ++----------
+> >>  6 files changed, 10 insertions(+), 35 deletions(-)
+> >>
+> >> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+> >> index 04d6decb2b..dfc6fab180 100644
+> >> --- a/hw/ppc/pegasos2.c
+> >> +++ b/hw/ppc/pegasos2.c
+> >> @@ -984,7 +984,7 @@ static void *build_fdt(MachineState *machine, int =
+*fdt_size)
+> >>                            cpu->env.icache_line_size);
+> >>      qemu_fdt_setprop_cell(fdt, cp, "i-cache-line-size",
+> >>                            cpu->env.icache_line_size);
+> >> -    if (cpu->env.id_tlbs) {
+> >> +    if (cpu->env.tlb_type =3D=3D TLB_6XX) {
+> >
+> > Want to just add the standard comment here?
+> >
+> >    /* 6xx has separate TLBs for instructions and data */
+>
+> I think that comment would be redundant here because it's clear from the=
+=20
+> i-tlb, d-tlb this adds so I can do without a comment in this machine if=
+=20
+> you don't mind. (If this was not in my machine I would not mind adding a=
+=20
+> comment but I'd keep this one simple.) I think comments should only be=20
+> added for things that are not clear from code.
 
-VI and VQ resources cover queue resources in each VFs in SR-IOV.
-Current maximum I/O queue pair size is 0xffff, we can expand them to
-cover the full number of I/O queue pairs.
+Yes. "Obvious" stuff just builds up until it's not.
 
-This patch also fixed Identify Secondary Controller List overflow due to
-expand of number of secondary controllers.
+If you make a simple inline function to test if tlb is split and it can
+est TLB_6XX then you don't need the comment.
 
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 8 ++++----
- hw/nvme/nvme.h | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8db6828ab2a9..5a94f47b1cf1 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8460,10 +8460,10 @@ static Property nvme_props[] = {
-                        params.sriov_vq_flexible, 0),
-     DEFINE_PROP_UINT16("sriov_vi_flexible", NvmeCtrl,
-                        params.sriov_vi_flexible, 0),
--    DEFINE_PROP_UINT8("sriov_max_vi_per_vf", NvmeCtrl,
--                      params.sriov_max_vi_per_vf, 0),
--    DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
--                      params.sriov_max_vq_per_vf, 0),
-+    DEFINE_PROP_UINT32("sriov_max_vi_per_vf", NvmeCtrl,
-+                       params.sriov_max_vi_per_vf, 0),
-+    DEFINE_PROP_UINT32("sriov_max_vq_per_vf", NvmeCtrl,
-+                       params.sriov_max_vq_per_vf, 0),
-     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
-                      false),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index cc6b4a3a64c2..aa708725c875 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -534,8 +534,8 @@ typedef struct NvmeParams {
-     uint32_t  sriov_max_vfs;
-     uint16_t sriov_vq_flexible;
-     uint16_t sriov_vi_flexible;
--    uint8_t  sriov_max_vq_per_vf;
--    uint8_t  sriov_max_vi_per_vf;
-+    uint32_t  sriov_max_vq_per_vf;
-+    uint32_t  sriov_max_vi_per_vf;
-     bool     msix_exclusive_bar;
- } NvmeParams;
- 
--- 
-2.34.1
-
+Thanks,
+Nick
 
