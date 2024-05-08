@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE1C8C03FC
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 20:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC798C041D
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 20:07:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lb0-0007TP-Ce; Wed, 08 May 2024 14:00:50 -0400
+	id 1s4lfd-0004Va-LW; Wed, 08 May 2024 14:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4laO-00079E-5m
- for qemu-devel@nongnu.org; Wed, 08 May 2024 14:00:15 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1s4lfP-0004UM-8w
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 14:05:27 -0400
+Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4laH-00035r-P7
- for qemu-devel@nongnu.org; Wed, 08 May 2024 14:00:09 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a59ad344f7dso5588966b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 11:00:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1s4lfM-0005LR-Hk
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 14:05:23 -0400
+Received: by mail-oo1-xc2b.google.com with SMTP id
+ 006d021491bc7-5b203ce4ef0so6525eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 11:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715191203; x=1715796003; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1ZJO32XRbS5gpW7VoJZLLKNMjRbTvTZBxoboBCyFSrg=;
- b=hY9ZGiYJ4ZKPRhsqY/z0qmgUqOOCIKahCKu1P8h7SyAm7MBW1Oo1Acl0KalX7E2UTI
- XZYL01eYMKb7z2TG2D/Cg0xK8Rlsw09kxOZrY2oA1KSpogRYNFh2uHxZ/gZj5GHnkG+3
- 3uEdCCchvI1M/fYlwAmQmuKQvfMlPdt6+VhZWlJjUOh826+yUzaXF8SpKe4i1z5aFFvX
- 1zLWWRjPE5b3KCD3fdmhPSOhdAsDQUW1qitA7uQ2t1nlE8Izq9/ni5gsoa/layaUNHDe
- PDRUdV+Di6et22qQpXIc3r0xVzIB6m7oWXR+FAJlOsfDdDXtilVGB8pt6lqgxLiG0nr8
- BuuQ==
+ d=gmail.com; s=20230601; t=1715191517; x=1715796317; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=eENa/BZ/fp6up6GGz0T8HJY5xaqtroVQNCQ7oEBn7fs=;
+ b=UVMkkOz4EUv1uLLEN2RLwcMPpCcftnlhTMD590wt6EC2frRz4kkeyLvZVEZrCK+oNb
+ 9UXFA/FWgVl7abOnj5o8UarR4fAknEsdoMToxK/4dP0wEU8RiRJEQlWLnvgCryifGeRZ
+ ts25794/QULdY1gFvBy5I51oA3zlMfwNOHESO8usQ4668s0bTBlIEakUXPybIWlO7yyJ
+ DE0L79Jq3Sjn6pNklvURm1VSbnIEMm3whkZRZc5TtKQ8h+Yp/+ClAUKwbsQHZ160QCQl
+ LFyK6MWlzyhcau1/q+qt+ouJUWF5k75KZ9sJ7ENsknNi+69zxbMIKl4ayvT0IYpLuYu7
+ d6KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715191203; x=1715796003;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1ZJO32XRbS5gpW7VoJZLLKNMjRbTvTZBxoboBCyFSrg=;
- b=MWlvJmcxNmwOyUcwUJjoLdevatp3OC6nWfO8QZwrxV+ujboz5vdPWMQeaElmyaEAEM
- kCyT3BdG7A5xCd12njfMvkDrkQafcCdpCLjMTwoXju5/4keTlFuJwFRzSgNPsLAmHPWo
- GPzTE5YZsLvFk+QoAdkjUJlEkhEwkdkigM/j9iWxtrMDcu3+VVn/m4a5vUcmNk0ZAEc9
- byMpUXNQMj/64UIiJUV3MXxmagVJ4U5EKRvXnG7Lb7AoIxHbxQ6p70gJWwbMY3NJNa3n
- zooYNTv35qPwLqYzvYjlYbQAiUtu7Or0paoJItfCO3XEfoQvMp7nYathYlWjmLmJn9ik
- qlSw==
+ d=1e100.net; s=20230601; t=1715191517; x=1715796317;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=eENa/BZ/fp6up6GGz0T8HJY5xaqtroVQNCQ7oEBn7fs=;
+ b=sMCUKb56JJLwgw9eZgJeKHwe6Y9qjYpTQZI+5ac6yy4Dgf+y9Q8knJdayghNUnfqUV
+ YuYoE0M4QQ4JunZ/s4s2eD68QgXkCBkeCPvRV7qopgCcD6D9ncBTMuGq0sIVyW63g0NC
+ Ej7dktMDzLl1FQmoNJwjWGecNOrCnBG7AJUj4cI606lULb04e2Z0r12+WikFxZvErf1B
+ VJa7M4KSfu3i4xXS/zXooUEq+DQ0zV08pnlA0a4cU9RXYNgJkHDW9Ix+BscgsexVSrRe
+ U7T4nyU9xUejBrQowMUQMmOEGgVCkIQka8P2YGzf+femQvdO91JczWHyXCcArtLJ+Wjx
+ vMQA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUlSuVdQP2EVS9ztEi2CSvU7fsZYg8L2YsSLmNsCUCDbNueTp5GZPLWgTMM8CwUNWaHTW3i3fB8l4j1ehIkUMZQBjtNR1U=
-X-Gm-Message-State: AOJu0Yyq4PTJGcK449pxV0epUYrewzIl9CFqA0s+DIMMOCjayd0oEEvb
- r1bnIswlXf+rYuOGS7dJot5Vq0+t6S6OfazzoOsj7GvatGKWMTQq
-X-Google-Smtp-Source: AGHT+IHKsQIrAXYaLCuoVclvOpnutgB+N5EhYedplX4Zal4SUz1FXVZ6SQlGtb3lTqOHDwAvb9RNhg==
-X-Received: by 2002:a17:906:c444:b0:a59:c28a:7ec2 with SMTP id
- a640c23a62f3a-a59fb95dc67mr194023166b.41.1715191203110; 
- Wed, 08 May 2024 11:00:03 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-013-167-103.77.13.pool.telefonica.de.
- [77.13.167.103]) by smtp.gmail.com with ESMTPSA id
- cf14-20020a170906b2ce00b00a59ef203579sm2135820ejb.138.2024.05.08.11.00.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 11:00:02 -0700 (PDT)
-Date: Wed, 08 May 2024 18:00:01 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Sergio Lopez <slp@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_0/6=5D_This_series_changes_the_=22isa?=
- =?US-ASCII?Q?-bios=22_MemoryRegion_to_be_an_alias_rather_than_a?=
-In-Reply-To: <5bf68cc8-a602-4362-b1c7-0096a2df3f07@linaro.org>
-References: <20240430150643.111976-1-shentey@gmail.com>
- <5bf68cc8-a602-4362-b1c7-0096a2df3f07@linaro.org>
-Message-ID: <4CA13F27-AC09-461B-AEDC-44ABF3FE3400@gmail.com>
+ AJvYcCWQtP4gVYcxlqz29N+LyRuzb/NfUjBoD38a1l3nFputvYoq3fW0rjfcGDpWrGwr9tqEU/8fisAmH6XNgpHzITY/dRbDWX8=
+X-Gm-Message-State: AOJu0YyjC3NZuPYePYBKG3jZy3OaMUiWmDIv/Si0xJqnChf3dgMY3rn8
+ YfhkApu7UuSUntHzDafNkUnoIA54IfG1nFVMAcZedSZqAGLX6OyujRBqVnXGybhz7OmzpyvQ+2k
+ 6uTU1pA8vGxxNMdMyykZKQ85/L78=
+X-Google-Smtp-Source: AGHT+IGhWG4dz+kFxrU5hYik2+BHPtja35yNpr2LuXwibCiun1MJcz9X4Mq2x18zpp7KJpSowwe2RXnbttH488r7ryA=
+X-Received: by 2002:a4a:8c32:0:b0:5af:292b:6982 with SMTP id
+ 006d021491bc7-5b24d5e6a16mr3202601eaf.5.1715191516878; Wed, 08 May 2024
+ 11:05:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62c.google.com
+References: <20240508043229.3433128-1-zhao1.liu@intel.com>
+In-Reply-To: <20240508043229.3433128-1-zhao1.liu@intel.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 8 May 2024 14:05:04 -0400
+Message-ID: <CAJSP0QX0y_J1pu+hgUNhXn7bFJfoAMm9Ux9vq3u+k_UDjwK8Ww@mail.gmail.com>
+Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
+ as WARN
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,26 +91,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 8=2E Mai 2024 14:53:49 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <philm=
-d@linaro=2Eorg>:
->On 30/4/24 17:06, Bernhard Beschow wrote:
+On Wed, 8 May 2024 at 00:19, Zhao Liu <zhao1.liu@intel.com> wrote:
 >
->> Bernhard Beschow (6):
->>    hw/i386/x86: Eliminate two if statements in x86_bios_rom_init()
->>    hw/i386: Have x86_bios_rom_init() take X86MachineState rather than
->>      MachineState
->>    hw/i386/x86: Don't leak "isa-bios" memory regions
+> In some trace log, there're unstable timestamp breaking temporal
+> ordering of trace records. For example:
 >
->Patches 1-3 queued=2E
+> kvm_run_exit -0.015 pid=3289596 cpu_index=0x0 reason=0x6
+> kvm_vm_ioctl -0.020 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> kvm_vm_ioctl -0.021 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>
+> Negative delta intervals tend to get drowned in the massive trace logs,
+> and an unstable timestamp can corrupt the calculation of intervals
+> between two events adjacent to it.
+>
+> Therefore, mark the outputs with unstable timestamps as WARN like:
 
-Phil,
+Why are the timestamps non-monotonic?
 
-you requested comments on the bios attributes which clashes with patch 3=
-=2E I've just sent a new iteration of my series with all your requests addr=
-essed, including the comments=2E
+In a situation like that maybe not only the negative timestamps are
+useless but even some positive timestamps are incorrect. I think it's
+worth understanding the nature of the instability before merging a
+fix.
 
-Best regards,
-Bernhard
+Stefan
+
+>
+> WARN: skip unstable timestamp: kvm_run_exit cur(8497404907761146)-pre(8497404907761161) pid=3289596 cpu_index=0x0 reason=0x6
+> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908603653)-pre(8497404908603673) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908625787)-pre(8497404908625808) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>
+> This would help to identify unusual events.
+>
+> And skip them without updating Formatter2.last_timestamp_ns to avoid
+> time back.
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  scripts/simpletrace.py | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
+> index cef81b0707f0..23911dddb8a6 100755
+> --- a/scripts/simpletrace.py
+> +++ b/scripts/simpletrace.py
+> @@ -343,6 +343,17 @@ def __init__(self):
+>          def catchall(self, *rec_args, event, timestamp_ns, pid, event_id):
+>              if self.last_timestamp_ns is None:
+>                  self.last_timestamp_ns = timestamp_ns
+> +
+> +            if timestamp_ns < self.last_timestamp_ns:
+> +                fields = [
+> +                    f'{name}={r}' if is_string(type) else f'{name}=0x{r:x}'
+> +                    for r, (type, name) in zip(rec_args, event.args)
+> +                ]
+> +                print(f'WARN: skip unstable timestamp: {event.name} '
+> +                      f'cur({timestamp_ns})-pre({self.last_timestamp_ns}) {pid=} ' +
+> +                      f' '.join(fields))
+> +                return
+> +
+>              delta_ns = timestamp_ns - self.last_timestamp_ns
+>              self.last_timestamp_ns = timestamp_ns
+>
+> --
+> 2.34.1
+>
+>
 
