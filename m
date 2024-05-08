@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AA48BFE08
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4BB8BFE10
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4h3N-0003j8-BN; Wed, 08 May 2024 09:09:49 -0400
+	id 1s4h5r-0005Cr-6J; Wed, 08 May 2024 09:12:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4h3J-0003h4-VN
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:09:45 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4h5p-0005CD-8r; Wed, 08 May 2024 09:12:21 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4h3H-0000AF-S2
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:09:45 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-41a72f3a20dso30320345e9.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 06:09:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4h5n-0001UI-Gd; Wed, 08 May 2024 09:12:20 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6f44bcbaae7so3328471b3a.2; 
+ Wed, 08 May 2024 06:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715173781; x=1715778581; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6B8V0UM88iludJv8S2NPlSRGWpVJPYuG/YvkxpPfWN4=;
- b=HLGoK5le6JllWAJPzkJssxJJCWikwWeTXgVi7ioK81PZCHNVPbOJ+LcDV7Kl4H8VNS
- eY6ecHYY5SYi5/Ez3IVxNIrUDRgIVJWrExbYO+RSfet49XuQBSvQhEZLlqtybL3CD9Je
- KF0yRfqovdQIQedrUFZLsq83I7S9gsmfgLn6QaZvmANpDPSPfRYykMEH8Mbc+1/zg4Yn
- ruDeS6FoGHXvUXYjjCzc/6zOW0zRY4AovHQStC+A4hf8CWvkaTU+HMOQoL9/b0BfiU2D
- NUm//jOSCPNRlGF7hphtx36mdUxdehER0FLR7avrEK+O4c9BP1dtYlpcyGwzdmQSbTHw
- qQEw==
+ d=gmail.com; s=20230601; t=1715173937; x=1715778737; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2dBMKpwgs823k+0HdgakBvb+PExtC6R1IbH4IGUW/VI=;
+ b=QRyutxQukjzcAimOA008fnDCx2ndgCRUZj29uYaefYbbY7sQJ8CkicyzL/Jm3awK/V
+ ryhr+SbzjVGezWkuEyFcfJZaInHK4dboYMzq3LADo4oHdimfnZ6qdeQJB5KVhchVG/RZ
+ lLKUVOByLIaYVhp3/XkGJFFcBMimzWK2XemqjVOJSvaa1BqEmjGrSFtjzOcqsy81myyU
+ NmB9U7TJkTB/51SM8gz9nOdm2aPVnQpQ626M9ilQalCqBFXbcHAm39D8fc4qcC63fNix
+ wa7h9JZTVtMku1fNXiV31HpSuQXXfhfHaF9k2zxQ2xwNM6RHWZsBs8mqJ4MCu5k9DVQq
+ kIEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715173781; x=1715778581;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6B8V0UM88iludJv8S2NPlSRGWpVJPYuG/YvkxpPfWN4=;
- b=nLNdTpxK6HXJD4uCrSlkLZGprFG39dW0KegA9gkxgY+Mpwv/85Q3yS2kBAglQ3L61k
- YhfmxELP87EWw930fmngSvA15+MS3c5XYs/TFHoBlk6VOUm+7CQ5hSArA1+XZomsCbzw
- 10UQyuTSD1mQam5n5SHx8wnwPv8+FnC0NspMNgilLaS/1H5aRCGOTHGo0u8l5fWFdBW2
- 9ZsC71b/xr+O1BrP4kcow33c1Bhvrzp+zQ1j73X/+xiLiiVl2109fuP2IqqaN3SmRzGa
- snOomf6OEajUfZkI7aBjGNOLgPM91tbsAROD7YBhqM+TP+mpeEvg5vcO3DqRSYjLUbg9
- GxCQ==
-X-Gm-Message-State: AOJu0Yw+MirKNfAgokKxpqHjhyqXkbc4XVKp+fUc9gk+6BHebLwy1wKs
- udjSTSlhvoaqCnNRr5ltP9IuUr/BhtkYSGPKDiYiq5MkWIpNHC9uqaD5c9zp2+g=
-X-Google-Smtp-Source: AGHT+IHneBI2BPhlwuORowqh5zZA8lxVr4o91c/eaB1auU/UW4nGP2M0gdszaV3AK9CVzi6VQwSKWA==
-X-Received: by 2002:a05:600c:4ec9:b0:418:969a:b316 with SMTP id
- 5b1f17b1804b1-41f71302ad9mr19200285e9.1.1715173781474; 
- Wed, 08 May 2024 06:09:41 -0700 (PDT)
-Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
- [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41f87d2045asm22744025e9.27.2024.05.08.06.09.40
+ d=1e100.net; s=20230601; t=1715173937; x=1715778737;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=2dBMKpwgs823k+0HdgakBvb+PExtC6R1IbH4IGUW/VI=;
+ b=JuRPBI4weRJpc78XrZjvdMIcm14vVamH59DEGljz2OXJ+yq9rwarlhpuh2dfT80HqO
+ FGiJhWDXrkRWmk3bRskFr4y5r3RsWv9AR8It5h2uspVTHp3+nlURAjIP5uR1BquHi2RL
+ oUbIRKd8hxAnw9tC+PAz1uiwXnI7qav2e54rZWb54onTo9o7IxA4jT3jibZC9T0u6cdY
+ dLSRRPUR2PO0oE9RwH243+QgT06KgcyciD2OZTPf5FV6iffx7Wb1mAa8LM3kWMtTDx21
+ EGSKAPV4UQODVx+1uKviW8OdYH+/cZ1KdM0OL9jp/zkMIAkEFIloVu0FLhyDFWv4svQq
+ 1FGg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU9eEF6R+R3iFUTvS8bmyVwWR9lhI42X+hbzAhSs/zjgdn+Ew+p5RK8epFTZSL7Y4aIsw/G5F0dV89KomD7KkMstP5wi/QrQO+9CEWqqtXNr2dLyRbW9KtQtv8=
+X-Gm-Message-State: AOJu0YzRjOQEsNEoDEbaaKWG2exSb8oZo5l6k41dwZDoR2WOCoErNrVh
+ gEC4o+eqD6FzH3Ejpjut1pJ3ur/OCE7qZYjFMMBGzfbIiVdPC9L6
+X-Google-Smtp-Source: AGHT+IEGJjnnsRoJLM89PcZ0SuROcEtvAY2L1ws8oU9hvyKxT89cZJKvP4pVtb0gFJXhJotqDUmPTA==
+X-Received: by 2002:a05:6a21:7882:b0:1af:41d1:732e with SMTP id
+ adf61e73a8af0-1afc8dc6c5bmr3220400637.46.1715173937513; 
+ Wed, 08 May 2024 06:12:17 -0700 (PDT)
+Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
+ hy12-20020a056a006a0c00b006ed26aa0ae6sm11138296pfb.54.2024.05.08.06.12.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 06:09:41 -0700 (PDT)
-Message-ID: <210757c3-c949-4dd1-bd7d-c33db3aa390e@linaro.org>
-Date: Wed, 8 May 2024 15:09:39 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
- as WARN
-To: Zhao Liu <zhao1.liu@intel.com>, Mads Ynddal <mads@ynddal.dk>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20240508043229.3433128-1-zhao1.liu@intel.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240508043229.3433128-1-zhao1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+ Wed, 08 May 2024 06:12:17 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 May 2024 23:12:12 +1000
+Message-Id: <D14AEZ3KMI1B.5O131WO4JO7@gmail.com>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v3 25/33] target/ppc/mmu_common.c: Remove BookE handling
+ from get_physical_address_wtlb()
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1715125376.git.balaton@eik.bme.hu>
+ <31a3baf4f598b8ebd0108180c3f5e26ebfbaff64.1715125376.git.balaton@eik.bme.hu>
+In-Reply-To: <31a3baf4f598b8ebd0108180c3f5e26ebfbaff64.1715125376.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,57 +94,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/5/24 06:32, Zhao Liu wrote:
-> In some trace log, there're unstable timestamp breaking temporal
-> ordering of trace records. For example:
-> 
-> kvm_run_exit -0.015 pid=3289596 cpu_index=0x0 reason=0x6
-> kvm_vm_ioctl -0.020 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
-> kvm_vm_ioctl -0.021 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
-> 
-> Negative delta intervals tend to get drowned in the massive trace logs,
-> and an unstable timestamp can corrupt the calculation of intervals
-> between two events adjacent to it.
-> 
-> Therefore, mark the outputs with unstable timestamps as WARN like:
-> 
-> WARN: skip unstable timestamp: kvm_run_exit cur(8497404907761146)-pre(8497404907761161) pid=3289596 cpu_index=0x0 reason=0x6
-> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908603653)-pre(8497404908603673) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
-> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908625787)-pre(8497404908625808) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
-> 
-> This would help to identify unusual events.
-> 
-> And skip them without updating Formatter2.last_timestamp_ns to avoid
-> time back.
-
-Can't we reorder them instead?
-
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
+> This function is no longer called for BookE MMU model so remove parts
+> related to it. This has uncovered a few may be used uninitialised
+> warnings that are also fixed.
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->   scripts/simpletrace.py | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
-> index cef81b0707f0..23911dddb8a6 100755
-> --- a/scripts/simpletrace.py
-> +++ b/scripts/simpletrace.py
-> @@ -343,6 +343,17 @@ def __init__(self):
->           def catchall(self, *rec_args, event, timestamp_ns, pid, event_id):
->               if self.last_timestamp_ns is None:
->                   self.last_timestamp_ns = timestamp_ns
-> +
-> +            if timestamp_ns < self.last_timestamp_ns:
-> +                fields = [
-> +                    f'{name}={r}' if is_string(type) else f'{name}=0x{r:x}'
-> +                    for r, (type, name) in zip(rec_args, event.args)
-> +                ]
-> +                print(f'WARN: skip unstable timestamp: {event.name} '
-> +                      f'cur({timestamp_ns})-pre({self.last_timestamp_ns}) {pid=} ' +
-> +                      f' '.join(fields))
-> +                return
-> +
->               delta_ns = timestamp_ns - self.last_timestamp_ns
->               self.last_timestamp_ns = timestamp_ns
->   
+>  target/ppc/mmu_common.c | 25 +++++--------------------
+>  1 file changed, 5 insertions(+), 20 deletions(-)
+>
+> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+> index 83dc041a77..788e2bebd5 100644
+> --- a/target/ppc/mmu_common.c
+> +++ b/target/ppc/mmu_common.c
+> @@ -629,12 +629,10 @@ static int mmubooke_get_physical_address(CPUPPCStat=
+e *env, mmu_ctx_t *ctx,
+>          ret =3D mmubooke_check_tlb(env, tlb, &raddr, &ctx->prot, address=
+,
+>                                   access_type, i);
+>          if (ret !=3D -1) {
+> -            if (ret >=3D 0) {
+> -                ctx->raddr =3D raddr;
+> -            }
+>              break;
+>          }
+>      }
+> +    ctx->raddr =3D raddr;
+
+Not sure if this is quite the right thing to do or if it's just masking
+used uninits.
+
+>      qemu_log_mask(CPU_LOG_MMU,
+>                    "%s: access %s " TARGET_FMT_lx " =3D> " HWADDR_FMT_plx
+>                    " %d %d\n", __func__, ret < 0 ? "refused" : "granted",
+> @@ -841,9 +839,6 @@ static int mmubooke206_get_physical_address(CPUPPCSta=
+te *env, mmu_ctx_t *ctx,
+>              ret =3D mmubooke206_check_tlb(env, tlb, &raddr, &ctx->prot, =
+address,
+>                                          access_type, mmu_idx);
+>              if (ret !=3D -1) {
+> -                if (ret >=3D 0) {
+> -                    ctx->raddr =3D raddr;
+> -                }
+>                  goto found_tlb;
+>              }
+>          }
+> @@ -851,6 +846,7 @@ static int mmubooke206_get_physical_address(CPUPPCSta=
+te *env, mmu_ctx_t *ctx,
+> =20
+>  found_tlb:
+> =20
+> +    ctx->raddr =3D raddr;
+>      qemu_log_mask(CPU_LOG_MMU, "%s: access %s " TARGET_FMT_lx " =3D> "
+>                    HWADDR_FMT_plx " %d %d\n", __func__,
+>                    ret < 0 ? "refused" : "granted", address, raddr,
+> @@ -1107,20 +1103,9 @@ static int get_physical_address_wtlb(CPUPPCState *=
+env, mmu_ctx_t *ctx,
+>                                       MMUAccessType access_type, int type=
+,
+>                                       int mmu_idx)
+>  {
+> -    bool real_mode;
+> -
+> -    if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE) {
+> -        return mmubooke_get_physical_address(env, ctx, eaddr, access_typ=
+e);
+> -    } else if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
+> -        return mmubooke206_get_physical_address(env, ctx, eaddr, access_=
+type,
+> -                                                mmu_idx);
+> -    }
+
+Also still don't like how this gets removed here rather than when it's
+stopped being called. I know it's a tangle but it would be better to
+try squash the would-be warnings first, then put this in the same as
+the previous patch.
+
+Add /* quiet used uninit */ warnings if they can't be fixed properly.
+
+Thanks,
+Nick
+
+> -
+> -    real_mode =3D (type =3D=3D ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR,=
+ IR)
+> -                                      : !FIELD_EX64(env->msr, MSR, DR);
+> -    if (real_mode && (env->mmu_model =3D=3D POWERPC_MMU_SOFT_6xx ||
+> -                      env->mmu_model =3D=3D POWERPC_MMU_SOFT_4xx ||
+> -                      env->mmu_model =3D=3D POWERPC_MMU_REAL)) {
+> +    bool real_mode =3D (type =3D=3D ACCESS_CODE) ? !FIELD_EX64(env->msr,=
+ MSR, IR)
+> +                                           : !FIELD_EX64(env->msr, MSR, =
+DR);
+> +    if (real_mode) {
+>          memset(ctx, 0, sizeof(*ctx));
+>          ctx->raddr =3D eaddr;
+>          ctx->prot =3D PAGE_RWX;
 
 
