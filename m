@@ -2,103 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83EA8BFDFE
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AA48BFE08
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:10:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4h0l-00086y-Ge; Wed, 08 May 2024 09:07:07 -0400
+	id 1s4h3N-0003j8-BN; Wed, 08 May 2024 09:09:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s4h0b-0007tU-1G
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:57 -0400
-Received: from fhigh5-smtp.messagingengine.com ([103.168.172.156])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s4h0Y-0006Pk-UF
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:56 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id 67137114010A;
- Wed,  8 May 2024 09:06:54 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Wed, 08 May 2024 09:06:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm1; t=1715173614;
- x=1715260014; bh=4LwRiEoSvlUmlDOR6/fQshKnOWo4pgpnzj5irs2FRIE=; b=
- SJgFrGGeTDrmAaPAEw2L8kSakC8s4CxiraOW8vMFp4zAkLr5RR0rhd7gIBPB8kBr
- aZGzAsRqK2IJLcKcY3TuV8NS2fNbmJ+2dbPgEw3du0k4UYl2hsY0yPiZKKhN3pkT
- fTJIgRk8PIzNYSSKpaFSdcHM1O0ThZc99RlBQUFupQkrEm3foUSDvI7k+0U3Symw
- BQz+5AjSGrEfMnBeZvRnXgc/x/m2z/ppjdjtcG2p8UiOms551lL4F5R35QmZH9aA
- DB3EE72mVbcbRoZy4hcX08KTE2oEHPGEK9tF0+2FmPQ0BphaEABBWWzWh5Q+R7CS
- RwC/bf1IObmsf8gxL1gu8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715173614; x=
- 1715260014; bh=4LwRiEoSvlUmlDOR6/fQshKnOWo4pgpnzj5irs2FRIE=; b=R
- SZu7Pbq6ZW8zeCTB642pAxQT5iWBHi/FqGGlFCo7LQpDZ69JoanQXRepRVW8I/oy
- wzfShKHF+DOHM0eD/DC8MZF6cJwfleBK0H29ymIT34O5XxSfqTxmC/1E+e4gf16E
- XUTUteBA/Qh12r4CDWUTbPdO18dTKGUndAoeYyQwCaIOeNnPjr2xj+I2qMNA4TGr
- ruLp9lzjneRoV14/BDM/PwwdI8gEkLJq3iaZWu+aLl0chD1jv4m6czBj3JlgaWSB
- WQzdU1PkYKVXlvpAKJj7yOAc4UJhqkhTq1cfg+5HQRwn0ITMR9bcR5VOKXvP0SIB
- ia1o2splFu+wZ4jL3KbLw==
-X-ME-Sender: <xms:7Xg7Zvp1Ielr6sdRSQr38-Q1__yVcufJfAEx-1Qctvh5Q6X7-FJGeQ>
- <xme:7Xg7ZprzqymuHCU6qNkb6pMHAUOdCxsyiYC_fR8n6bGCT74QvpegGjA8Q7Uq5OfYA
- 0RrzH8v4RvqeBHdp-A>
-X-ME-Received: <xmr:7Xg7ZsNsa1D7zdk5AmUezbGz5pI5mFJ8GKQw-g_TixtgtmSe2aCZzc8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeftddgheelucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
- gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
- cuggftrfgrthhtvghrnhephffgvdfgveelveeutedukedukeekfeevjeeiieeikeehveei
- tefgveduudeuudeknecuffhomhgrihhnpehiohgtshhrrdhmrhenucevlhhushhtvghruf
- hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehf
- lhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:7ng7Zi7tG2QmqmzYBI0MTRWewhgjRB9buh7ZI_Rycc7MuXhFZSoHtQ>
- <xmx:7ng7Zu4Up329tEhUXtdNn5EYxpJrL6eCas-xWbG8-KM7d7TumFyI1w>
- <xmx:7ng7ZqhZQM0mU4Ve9PvJc75FKoZ2OW-j2Uyu12m0uom5BVPXphN_EA>
- <xmx:7ng7Zg6ucP5KhpcZ2rd8o0yaRM4jLkFS5k9TjT6DErdqYZsPrOKdWg>
- <xmx:7ng7ZgQ3tcVWBjKPxD64ehC52kRd-vu32o9IdHOn21GDLbdQTqJkjdVP>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 May 2024 09:06:53 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Wed, 08 May 2024 14:06:50 +0100
-Subject: [PATCH 5/5] hw/mips/loongson3_virt: Wire up loongson_ipi device
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4h3J-0003h4-VN
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 09:09:45 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4h3H-0000AF-S2
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 09:09:45 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-41a72f3a20dso30320345e9.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 06:09:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715173781; x=1715778581; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=6B8V0UM88iludJv8S2NPlSRGWpVJPYuG/YvkxpPfWN4=;
+ b=HLGoK5le6JllWAJPzkJssxJJCWikwWeTXgVi7ioK81PZCHNVPbOJ+LcDV7Kl4H8VNS
+ eY6ecHYY5SYi5/Ez3IVxNIrUDRgIVJWrExbYO+RSfet49XuQBSvQhEZLlqtybL3CD9Je
+ KF0yRfqovdQIQedrUFZLsq83I7S9gsmfgLn6QaZvmANpDPSPfRYykMEH8Mbc+1/zg4Yn
+ ruDeS6FoGHXvUXYjjCzc/6zOW0zRY4AovHQStC+A4hf8CWvkaTU+HMOQoL9/b0BfiU2D
+ NUm//jOSCPNRlGF7hphtx36mdUxdehER0FLR7avrEK+O4c9BP1dtYlpcyGwzdmQSbTHw
+ qQEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715173781; x=1715778581;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6B8V0UM88iludJv8S2NPlSRGWpVJPYuG/YvkxpPfWN4=;
+ b=nLNdTpxK6HXJD4uCrSlkLZGprFG39dW0KegA9gkxgY+Mpwv/85Q3yS2kBAglQ3L61k
+ YhfmxELP87EWw930fmngSvA15+MS3c5XYs/TFHoBlk6VOUm+7CQ5hSArA1+XZomsCbzw
+ 10UQyuTSD1mQam5n5SHx8wnwPv8+FnC0NspMNgilLaS/1H5aRCGOTHGo0u8l5fWFdBW2
+ 9ZsC71b/xr+O1BrP4kcow33c1Bhvrzp+zQ1j73X/+xiLiiVl2109fuP2IqqaN3SmRzGa
+ snOomf6OEajUfZkI7aBjGNOLgPM91tbsAROD7YBhqM+TP+mpeEvg5vcO3DqRSYjLUbg9
+ GxCQ==
+X-Gm-Message-State: AOJu0Yw+MirKNfAgokKxpqHjhyqXkbc4XVKp+fUc9gk+6BHebLwy1wKs
+ udjSTSlhvoaqCnNRr5ltP9IuUr/BhtkYSGPKDiYiq5MkWIpNHC9uqaD5c9zp2+g=
+X-Google-Smtp-Source: AGHT+IHneBI2BPhlwuORowqh5zZA8lxVr4o91c/eaB1auU/UW4nGP2M0gdszaV3AK9CVzi6VQwSKWA==
+X-Received: by 2002:a05:600c:4ec9:b0:418:969a:b316 with SMTP id
+ 5b1f17b1804b1-41f71302ad9mr19200285e9.1.1715173781474; 
+ Wed, 08 May 2024 06:09:41 -0700 (PDT)
+Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
+ [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-41f87d2045asm22744025e9.27.2024.05.08.06.09.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 May 2024 06:09:41 -0700 (PDT)
+Message-ID: <210757c3-c949-4dd1-bd7d-c33db3aa390e@linaro.org>
+Date: Wed, 8 May 2024 15:09:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
+ as WARN
+To: Zhao Liu <zhao1.liu@intel.com>, Mads Ynddal <mads@ynddal.dk>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20240508043229.3433128-1-zhao1.liu@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240508043229.3433128-1-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240508-loongson3-ipi-v1-5-1a7b67704664@flygoat.com>
-References: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
-In-Reply-To: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
-To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5935;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=42RH1oyQ4ZbhZ7p6E7IwxbgswyXKZxwfM2nsZMpXqU8=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjTriucBEdaTbeJiz8p5Te99dm5a6bSdnZMy3nV52z7xe
- F0Veqijo5SFQYyDQVZMkSVEQKlvQ+PFBdcfZP2BmcPKBDKEgYtTACZyvoyRYb/zSYv3H4/11ST9
- j+Pl6j3x37ZuO6vU+22X3Op7ZjzJY2b4KxR4eq/TfpHbLLOvLsyPlnb72um+PUL3943ohoKzNle
- 3cgEA
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.156;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,161 +94,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wire up loongson_ipi device for loongson3_virt machine, so we
-can have SMP support for TCG backend as well.
+On 8/5/24 06:32, Zhao Liu wrote:
+> In some trace log, there're unstable timestamp breaking temporal
+> ordering of trace records. For example:
+> 
+> kvm_run_exit -0.015 pid=3289596 cpu_index=0x0 reason=0x6
+> kvm_vm_ioctl -0.020 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> kvm_vm_ioctl -0.021 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> 
+> Negative delta intervals tend to get drowned in the massive trace logs,
+> and an unstable timestamp can corrupt the calculation of intervals
+> between two events adjacent to it.
+> 
+> Therefore, mark the outputs with unstable timestamps as WARN like:
+> 
+> WARN: skip unstable timestamp: kvm_run_exit cur(8497404907761146)-pre(8497404907761161) pid=3289596 cpu_index=0x0 reason=0x6
+> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908603653)-pre(8497404908603673) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908625787)-pre(8497404908625808) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> 
+> This would help to identify unusual events.
+> 
+> And skip them without updating Formatter2.last_timestamp_ns to avoid
+> time back.
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- hw/mips/Kconfig           |  1 +
- hw/mips/loongson3_bootp.c |  2 --
- hw/mips/loongson3_bootp.h |  3 +++
- hw/mips/loongson3_virt.c  | 39 +++++++++++++++++++++++++++++++++++++--
- 4 files changed, 41 insertions(+), 4 deletions(-)
+Can't we reorder them instead?
 
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 5c83ef49cf6f..6f09fedc946e 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -57,6 +57,7 @@ config LOONGSON3V
-     imply USB_OHCI_PCI
-     select SERIAL
-     select GOLDFISH_RTC
-+    select LOONGSON_IPI
-     select LOONGSON_LIOINTC
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     select MSI_NONBROKEN
-diff --git a/hw/mips/loongson3_bootp.c b/hw/mips/loongson3_bootp.c
-index f99af229327a..474d3556b2e5 100644
---- a/hw/mips/loongson3_bootp.c
-+++ b/hw/mips/loongson3_bootp.c
-@@ -25,8 +25,6 @@
- #include "hw/boards.h"
- #include "hw/mips/loongson3_bootp.h"
- 
--#define LOONGSON3_CORE_PER_NODE 4
--
- static void init_cpu_info(void *g_cpuinfo, uint64_t cpu_freq)
- {
-     struct efi_cpuinfo_loongson *c = g_cpuinfo;
-diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
-index 1b0dd3b59171..9091265df7fc 100644
---- a/hw/mips/loongson3_bootp.h
-+++ b/hw/mips/loongson3_bootp.h
-@@ -200,6 +200,8 @@ struct boot_params {
-     struct efi_reset_system_t reset_system;
- };
- 
-+#define LOONGSON3_CORE_PER_NODE 4
-+
- /* Overall MMIO & Memory layout */
- enum {
-     VIRT_LOWMEM,
-@@ -211,6 +213,7 @@ enum {
-     VIRT_BIOS_ROM,
-     VIRT_UART,
-     VIRT_LIOINTC,
-+    VIRT_IPI,
-     VIRT_PCIE_MMIO,
-     VIRT_HIGHMEM
- };
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index b10a611a98f4..1052fb7d6747 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -36,6 +36,7 @@
- #include "hw/mips/loongson3_bootp.h"
- #include "hw/misc/unimp.h"
- #include "hw/intc/i8259.h"
-+#include "hw/intc/loongson_ipi.h"
- #include "hw/loader.h"
- #include "hw/isa/superio.h"
- #include "hw/pci/msi.h"
-@@ -74,6 +75,7 @@ const MemMapEntry virt_memmap[] = {
-     [VIRT_PCIE_ECAM] =   { 0x1a000000,     0x2000000 },
-     [VIRT_BIOS_ROM] =    { 0x1fc00000,      0x200000 },
-     [VIRT_UART] =        { 0x1fe001e0,           0x8 },
-+    [VIRT_IPI] =         { 0x3ff01000,         0x400 },
-     [VIRT_LIOINTC] =     { 0x3ff01400,          0x64 },
-     [VIRT_PCIE_MMIO] =   { 0x40000000,    0x40000000 },
-     [VIRT_HIGHMEM] =     { 0x80000000,           0x0 }, /* Variable */
-@@ -466,6 +468,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     Clock *cpuclk;
-     CPUMIPSState *env;
-     DeviceState *liointc;
-+    DeviceState *ipi = NULL;
-     char *filename;
-     const char *kernel_cmdline = machine->kernel_cmdline;
-     const char *kernel_filename = machine->kernel_filename;
-@@ -475,6 +478,7 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     MemoryRegion *ram = g_new(MemoryRegion, 1);
-     MemoryRegion *bios = g_new(MemoryRegion, 1);
-     MemoryRegion *iomem = g_new(MemoryRegion, 1);
-+    MemoryRegion *iocsr = g_new(MemoryRegion, 1);
- 
-     /* TODO: TCG will support all CPU types */
-     if (!kvm_enabled()) {
-@@ -508,6 +512,19 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     create_unimplemented_device("mmio fallback 0", 0x10000000, 256 * MiB);
-     create_unimplemented_device("mmio fallback 1", 0x30000000, 256 * MiB);
- 
-+    memory_region_init(iocsr, OBJECT(machine), "loongson3.iocsr", UINT32_MAX);
-+
-+    /* IPI controller is in kernel for KVM */
-+    if (!kvm_enabled()) {
-+        ipi = qdev_new(TYPE_LOONGSON_IPI);
-+        qdev_prop_set_uint32(ipi, "num-cpu", machine->smp.cpus);
-+        sysbus_realize_and_unref(SYS_BUS_DEVICE(ipi), &error_fatal);
-+        memory_region_add_subregion(iocsr, SMP_IPI_MAILBOX,
-+            sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 0));
-+        memory_region_add_subregion(iocsr, MAIL_SEND_ADDR,
-+            sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi), 1));
-+    }
-+
-     liointc = qdev_new("loongson.liointc");
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(liointc), &error_fatal);
- 
-@@ -524,6 +541,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     clock_set_hz(cpuclk, DEF_LOONGSON3_FREQ);
- 
-     for (i = 0; i < machine->smp.cpus; i++) {
-+        int node = i / LOONGSON3_CORE_PER_NODE;
-+        int core = i % LOONGSON3_CORE_PER_NODE;
-         int ip;
- 
-         /* init CPUs */
-@@ -534,12 +553,28 @@ static void mips_loongson3_virt_init(MachineState *machine)
-         cpu_mips_clock_init(cpu);
-         qemu_register_reset(main_cpu_reset, cpu);
- 
--        if (i >= 4) {
-+        if (ipi) {
-+            hwaddr base = ((hwaddr)node << 44) + virt_memmap[VIRT_IPI].base;
-+            base += core * 0x100;
-+            qdev_connect_gpio_out(ipi, i, cpu->env.irq[6]);
-+            sysbus_mmio_map(SYS_BUS_DEVICE(ipi), i + 2, base);
-+        }
-+
-+        if (ase_lcsr_available(&MIPS_CPU(cpu)->env)) {
-+            MemoryRegion *core_iocsr = g_new(MemoryRegion, 1);
-+            g_autofree char *name = g_strdup_printf("loongson3.core%d_iocsr", i);
-+            memory_region_init_alias(core_iocsr, OBJECT(machine), name,
-+                                     iocsr, 0, UINT32_MAX);
-+            memory_region_add_subregion(&MIPS_CPU(cpu)->env.iocsr.mr,
-+                                        0, core_iocsr);
-+        }
-+
-+        if (node > 0) {
-             continue; /* Only node-0 can be connected to LIOINTC */
-         }
- 
-         for (ip = 0; ip < 4 ; ip++) {
--            int pin = i * 4 + ip;
-+            int pin = core * LOONGSON3_CORE_PER_NODE + ip;
-             sysbus_connect_irq(SYS_BUS_DEVICE(liointc),
-                                pin, cpu->env.irq[ip + 2]);
-         }
-
--- 
-2.34.1
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   scripts/simpletrace.py | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
+> index cef81b0707f0..23911dddb8a6 100755
+> --- a/scripts/simpletrace.py
+> +++ b/scripts/simpletrace.py
+> @@ -343,6 +343,17 @@ def __init__(self):
+>           def catchall(self, *rec_args, event, timestamp_ns, pid, event_id):
+>               if self.last_timestamp_ns is None:
+>                   self.last_timestamp_ns = timestamp_ns
+> +
+> +            if timestamp_ns < self.last_timestamp_ns:
+> +                fields = [
+> +                    f'{name}={r}' if is_string(type) else f'{name}=0x{r:x}'
+> +                    for r, (type, name) in zip(rec_args, event.args)
+> +                ]
+> +                print(f'WARN: skip unstable timestamp: {event.name} '
+> +                      f'cur({timestamp_ns})-pre({self.last_timestamp_ns}) {pid=} ' +
+> +                      f' '.join(fields))
+> +                return
+> +
+>               delta_ns = timestamp_ns - self.last_timestamp_ns
+>               self.last_timestamp_ns = timestamp_ns
+>   
 
 
