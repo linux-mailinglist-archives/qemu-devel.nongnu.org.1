@@ -2,50 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77148BFFD8
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 16:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E728C0000
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 16:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4iCV-00083A-HH; Wed, 08 May 2024 10:23:19 -0400
+	id 1s4iJx-0001cR-2L; Wed, 08 May 2024 10:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s4iCT-000832-O5
- for qemu-devel@nongnu.org; Wed, 08 May 2024 10:23:17 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s4iCR-0000FR-L0
- for qemu-devel@nongnu.org; Wed, 08 May 2024 10:23:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
- :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=f1Lk5qRs/YvBXQV9R4mnp+GPaBVqrdmTaPNt3LhIbLE=; b=i+HNkV9nFrcFi4k
- Ms8NNcbOOcknZaq7EYMrqekeWO1Gk0nk9w04wEJuf8rK0Px7r41SAfr6JJeMNd2B5rsOy48Mpc1L1
- aUbqX1ovwPkeLQ7XdFzb+wgVSvQK/vixm2t1D4MsNXNxoy5uQxxDndoy270UAtKyP/T9gdsA9YDoV
- ec=;
-Date: Wed, 8 May 2024 16:24:01 +0200
-To: ltaylorsimpson@gmail.com
-Cc: qemu-devel@nongnu.org, ale@rev.ng, bcain@quicinc.com
-Subject: Re: [PATCH 3/4] target/hexagon: idef-parser fix leak of init_list
-Message-ID: <jsusre6vphnnyoengz74djo2dvaoiz3auruhkmcc2pygv73w3u@hk7zhipgpbz6>
-References: <20240506183117.32268-1-anjo@rev.ng>
- <20240506183117.32268-4-anjo@rev.ng>
- <067f01da9fe7$51597590$f40c60b0$@gmail.com>
- <f7fmzerjibovuo7uevxmold5g6jvvjazfckhtv6tqkatpgbtzy@ging72uqq27r>
- <071701daa0c2$5988d450$0c9a7cf0$@gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4iJt-0001c5-7r
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 10:30:57 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4iJq-00026T-DB
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 10:30:55 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a59a0168c75so1173511566b.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 07:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715178652; x=1715783452; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qJeX4PTvGBUc/QZ27oUBczxM8HKxjR/gxBCc/BA1cII=;
+ b=oRuU8YMA02uZeS6ieB4/8e1HSfB5yv3jZvof02kZgCz+o6ctuzTI8WzL8xwGGDkLCU
+ Xe594qUihhtx+2qvSvwwP3vrTJ7TvQa6gDpjtWL1+OF8RlT8nveTV8GMaEpV6Y16qWVg
+ lzU/v3QvbsQc6o3z2CBqLseBQlu9uJLH3hNlhEuVA/nj5F1JBiXO296jrW2DzRYdooc7
+ cjS9PDhdsNu8WxEV8Eo+93XVYf14Bb4rOMNuN1nx9aI64Kw6NjXN2sj7J3pXj6KhfcJf
+ ZQNamzKqnPMN3rrAefXfwhyTiAppeaVnJ6Kp8NZowCCKgK8EQA2NJXCk68jYYsigChFN
+ sjqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715178652; x=1715783452;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qJeX4PTvGBUc/QZ27oUBczxM8HKxjR/gxBCc/BA1cII=;
+ b=KmhYxkRUIMQssKpd3mmEcG7f39EpHu6j8M79nQWUHq9ZO5r8I7l9PnIrq0oFgI5gEk
+ MXRrir0nEWsNCwAzVO8tmjCuv6KX4OWZwGytw6jiQ0rRcqxuwfH+q1uwDetudI8Wl6fL
+ TVBd1S8GaWwmSbC9JxvDxIw3FZv8o72A5Tj841AayUeETFx3ZesfrWZsguvXhHNIe0kZ
+ xSW9UhVov9PFGNJH+8vFP9XEefWmEX0hkBWebBIrV3+fnWa9k+cWe4UnbdGjaqK+Z7mf
+ LyhrNcb8SqN3bsIR2y9tZ/LCGHohc8mGJtSmyaUOOm0Fed+lRuMnCILyssjTm3zsrVxm
+ 1HKQ==
+X-Gm-Message-State: AOJu0Yx+JEdOYpu6qwPgSrCF4l/XDGiom9w4dlfOGUtqUkyVFUPaUiuh
+ Q2mzrK92cbMYADVoNcPDgn0W4j9L4hIEweYwIT62qil7pYnCo8c2PRjtOYhjBOnoagwBDIPDt/Y
+ Q
+X-Google-Smtp-Source: AGHT+IEq6JyPjgUiVC8YD3Kgnqtq2FaVGoBA5DJInxTDw0/A0BB5rSmWc49S6Lqo9+EIufr9QH/7Rw==
+X-Received: by 2002:a17:906:2c09:b0:a59:bfab:b257 with SMTP id
+ a640c23a62f3a-a59fb9f2e08mr160099766b.65.1715178651983; 
+ Wed, 08 May 2024 07:30:51 -0700 (PDT)
+Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
+ [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
+ b8-20020a170906834800b00a59b126af69sm5026190ejy.159.2024.05.08.07.30.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 May 2024 07:30:51 -0700 (PDT)
+Message-ID: <f860769b-22a0-44b7-8c27-f1cc099b24bb@linaro.org>
+Date: Wed, 8 May 2024 16:30:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <071701daa0c2$5988d450$0c9a7cf0$@gmail.com>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] crypto: Allow building with GnuTLS but without
+ Libtasn1
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+References: <20240502095642.93368-1-philmd@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240502095642.93368-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -59,97 +93,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  'Anton Johansson' <anjo@rev.ng>
-From:  'Anton Johansson' via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/05/24, ltaylorsimpson@gmail.com wrote:
+ping?
+
+On 2/5/24 11:56, Philippe Mathieu-Daudé wrote:
+> Since v1:
+> - split in 3
+> - remove "crypto-tls-x509-helpers.h" (danpb)
+> - include pkix_asn1_tab.c.inc
 > 
+> Philippe Mathieu-Daudé (3):
+>    crypto: Remove 'crypto-tls-x509-helpers.h' from
+>      crypto-tls-psk-helpers.c
+>    crypto: Restrict pkix_asn1_tab[] to crypto-tls-x509-helpers.c
+>    crypto: Allow building with GnuTLS but without Libtasn1
 > 
-> > -----Original Message-----
-> > From: 'Anton Johansson' <anjo@rev.ng>
-> > Sent: Tuesday, May 7, 2024 4:47 AM
-> > To: ltaylorsimpson@gmail.com
-> > Cc: qemu-devel@nongnu.org; ale@rev.ng; bcain@quicinc.com
-> > Subject: Re: [PATCH 3/4] target/hexagon: idef-parser fix leak of init_list
-> > 
-> > On 06/05/24, ltaylorsimpson@gmail.com wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Anton Johansson <anjo@rev.ng>
-> > > > Sent: Monday, May 6, 2024 1:31 PM
-> > > > To: qemu-devel@nongnu.org
-> > > > Cc: ale@rev.ng; ltaylorsimpson@gmail.com; bcain@quicinc.com
-> > > > Subject: [PATCH 3/4] target/hexagon: idef-parser fix leak of
-> > > > init_list
-> > > >
-> > > > gen_inst_init_args() is called for instructions using a predicate as
-> > > > an
-> > > rvalue.
-> > > > Upon first call, the list of arguments which might need
-> > > > initialization
-> > > init_list is
-> > > > freed to indicate that they have been processed. For instructions
-> > > > without
-> > > an
-> > > > rvalue predicate,
-> > > > gen_inst_init_args() isn't called and init_list will never be freed.
-> > > >
-> > > > Free init_list from free_instruction() if it hasn't already been freed.
-> > > >
-> > > > Signed-off-by: Anton Johansson <anjo@rev.ng>
-> > > > ---
-> > > >  target/hexagon/idef-parser/parser-helpers.c | 7 +++++++
-> > > >  1 file changed, 7 insertions(+)
-> > > >
-> > > > diff --git a/target/hexagon/idef-parser/parser-helpers.c
-> > > > b/target/hexagon/idef-parser/parser-helpers.c
-> > > > index 95f2b43076..bae01c2bb8 100644
-> > > > --- a/target/hexagon/idef-parser/parser-helpers.c
-> > > > +++ b/target/hexagon/idef-parser/parser-helpers.c
-> > > > @@ -2121,6 +2121,13 @@ void free_instruction(Context *c)
-> > > >          g_string_free(g_array_index(c->inst.strings, GString*, i), TRUE);
-> > > >      }
-> > > >      g_array_free(c->inst.strings, TRUE);
-> > > > +    /*
-> > > > +     * Free list of arguments that might need initialization, if
-> > > > + they
-> > > haven't
-> > > > +     * already been free'd.
-> > > > +     */
-> > > > +    if (c->inst.init_list) {
-> > > > +        g_array_free(c->inst.init_list, TRUE);
-> > > > +    }
-> > > >      /* Free INAME token value */
-> > > >      g_string_free(c->inst.name, TRUE);
-> > > >      /* Free variables and registers */
-> > >
-> > > Why not do this in gen_inst_init_args just before this?
-> > >    /* Free argument init list once we have initialized everything */
-> > >     g_array_free(c->inst.init_list, TRUE);
-> > >     c->inst.init_list = NULL;
-> > 
-> > Thanks for the reviews Taylor! I'm not sure I understand what you mean
-> > here, we already free init_list in gen_inst_init_args, since gen_inst_init_args
-> > won't be called for all instructions we need to also free from a common
-> > place.
-> > 
-> > //Anton
-> 
-> It just seems more natural to free the elements of the array at the same place you free the array itself.  If there are valid reasons for doing it elsewhere, I'm OK with that.
-> 
-> Taylor
-> 
+>   meson.build                                         | 1 +
+>   tests/unit/crypto-tls-x509-helpers.h                | 3 ---
+>   tests/unit/crypto-tls-psk-helpers.c                 | 1 -
+>   tests/unit/crypto-tls-x509-helpers.c                | 6 +++++-
+>   tests/unit/{pkix_asn1_tab.c => pkix_asn1_tab.c.inc} | 5 +----
+>   tests/qtest/meson.build                             | 3 +--
+>   tests/unit/meson.build                              | 6 +++---
+>   7 files changed, 11 insertions(+), 14 deletions(-)
+>   rename tests/unit/{pkix_asn1_tab.c => pkix_asn1_tab.c.inc} (99%)
 > 
 
-Ah I see what you mean. The array and its elements are either freed in
-gen_inst_init_args or free_instruction so they do occur together. The
-"freeing of variables and registers" comment only refers to declared
-TCGvs and has nothing to do with the arguments.
-
-Comment is a bit outdated so I've updated it.
-
-//Anton
 
