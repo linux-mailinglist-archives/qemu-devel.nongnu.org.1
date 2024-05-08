@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DA48C0399
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9558C03A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:47:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lNY-0001xe-2R; Wed, 08 May 2024 13:46:56 -0400
+	id 1s4lNb-0002WF-CG; Wed, 08 May 2024 13:46:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNN-0001TV-HD
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:46 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNP-0001bG-BC
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:47 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNE-000876-Gk
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:44 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a59a934ad50so113566b.1
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNM-0008D3-7O
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:46 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-52006fbae67so6406817e87.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190394; x=1715795194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190400; x=1715795200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UguGimYqXuNIuHMxRKx653I2XHRjMEXQECfBmO+9eUw=;
- b=q8efY3QMXs25FXLKsppBbPa2djKXFG5ByUiMOaQXT/ESMULOflOeP+WR8911QbBznO
- FOsZegF4DRhiHK7KeoAP+QJU81IT4UOmz0KRZX/IopgQ9VOG0Qy1hg3vrLNYOaM7eJEc
- 7olBm5iU1rcchtlCF73SUJuY5uP/tORlsepElrdAgn+Dsyy2DIBydQ5AHUzVZ8K2pWwx
- o5JuzMm3CK68n/Hjy64vExAciJ881otBY6sD3Mk5V8M4Hoi2wLH0/St5tCVhfWwStMl6
- Nz1yHfQx36CQ5WmfD4E6RTRRgYVJlX16YwVvpLAsXqkP0sxnc4gWYJuG11/bdWzShKo1
- W9yw==
+ bh=GPE5QkM3UVuJG2oSH/R/5VD41xXCvV77aOjIZTcxo54=;
+ b=TUWuxB08d6y1AyGl/eo4K0nkMolHUr6gHdD5nzYkiC8xcJPfbOVr6R366I4L2QZBV4
+ apyIEOwK3lw6jYLmpvfZLuETj8PXwdV/hdgfxnUmEvmu0lAZvwt0zhj58l4K2XhtQU6u
+ LuNfy4HvZBlXmUBpCyByx+AxQhy/5NIPOZ/DtnjGtiXr832uPaiIdBVFALKhICXy9ptj
+ OVGxfHK8DdUlZOV4Kv7ooFuA7pE0YT8cFATzBk8ZDl7celFioGtVDmDQkcyVox44Fpf2
+ f5pcusD6ZL9qwPD8umAr1W/D+i3TQkbDEt9ZELrqrmOQICVTRgC+HQKRb7AQqmLs7JQk
+ lN2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190394; x=1715795194;
+ d=1e100.net; s=20230601; t=1715190400; x=1715795200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UguGimYqXuNIuHMxRKx653I2XHRjMEXQECfBmO+9eUw=;
- b=IlpbIO0NOT07pG+DZBIY0yEdNbY6yDR4FwiZx8N7KBt7hVwLYoQ6WxI0hbzJY1ZTGb
- BTcxS8Rjz/kvAzdAMDJEBisVO6Dk2WRtvhX13x805xRp09k2VEa7bNFkPnr9QcaN/QsW
- bzG3mWbzrpISKunx0loT5Ouzf93WpsoudRnUNIMZB1u+0vo3P8E7JkUkWWWqKcMUiUps
- cC8uDqEcbzJylVFKxTwLUkEkCI5s1MC6IPfEZgK69zxzNVmKu96PqnnSiuxCDjTY2P+j
- BBMor46T6mckPwWIw2EEgK+02jyL9R/WB8MzjFj0kPKpleiAo+5gNPGyYUr9tMfftVue
- 8xXw==
-X-Gm-Message-State: AOJu0Yy8XP6k+w/NmvArtOZkUngU/ANYtL9xC91kYqECvcq+PKLI2X+F
- 2bjEvL3f0dv9ou6VBpFyAlqmyqD02y683go/ogB1xPMkgp4Nk1bjLyQHaEaf4O3dpMaHAQSZxX7
- R
-X-Google-Smtp-Source: AGHT+IEX6zS0qic8kWg5idSPUkKP4U54IrN4JAowE1MbNU7WvOdTbl8WPNceJXBC3JETVObmoKt1Ag==
-X-Received: by 2002:a17:906:509:b0:a59:c23d:85d8 with SMTP id
- a640c23a62f3a-a59fb9cf5admr212341566b.51.1715190394578; 
- Wed, 08 May 2024 10:46:34 -0700 (PDT)
+ bh=GPE5QkM3UVuJG2oSH/R/5VD41xXCvV77aOjIZTcxo54=;
+ b=XLf5504jJQ2KVRwRpMB0nD2jrKZVN0/O8kZ+mkGBvUxPTs3WGbcBOLGzrMEe/0k7kf
+ 1OpP7mbxqs5xD8JzOMywhKQ52k4ZjxkGdwuCK1djouNOYd4I1hZOvgv8NF3tc+KgjNf9
+ wsi3ovbnBeRq3KtX7uqNOhrd0meAqnZ8GIJ3UPnyOCPK+2NWvxyacAWtW8a0nLDewJy7
+ KA0VUX8j2GB6oD6yglogacD4WgvvcD6D630GB4zvYl9RzK9mpsygzNkLUtB8tRHkKfK8
+ 50JE9QDswmBVv7ZRyVPAE5OGjo6yteGEbgvzbPdSl1jgCEhJ9ulJCFDJMbsk7SQEsmVf
+ DoGg==
+X-Gm-Message-State: AOJu0YyMxqvCLHJENsxC/pnkcWnHmc1ZomlU+lp96o+l6ZQZIx6ulzxM
+ Rk7KYCy7GsSXJzDS6SM5qmkoMS70DAL3AyLrzvuJCs6V/GelRjnPM71UelcqEJYxNPpLfi8M/Kw
+ +
+X-Google-Smtp-Source: AGHT+IGcm7HmIryW+8B1YXF0I2Q5Qg9mUyJ+OLx11aQQRuCnJRd8gZWP1Q2ZJefh2fUzDia+pIkqPw==
+X-Received: by 2002:ac2:4c9a:0:b0:51b:9254:91e2 with SMTP id
+ 2adb3069b0e04-5217cd497f9mr1944854e87.55.1715190399963; 
+ Wed, 08 May 2024 10:46:39 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- q21-20020a170906a09500b00a59f9ecfc36sm1473501ejy.114.2024.05.08.10.46.33
+ t16-20020a170906609000b00a59d7505366sm3418640ejj.62.2024.05.08.10.46.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:46:34 -0700 (PDT)
+ Wed, 08 May 2024 10:46:39 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+Cc: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/26] hw/usb/dev-network: Remove unused struct
- 'rndis_config_parameter'
-Date: Wed,  8 May 2024 19:44:59 +0200
-Message-ID: <20240508174510.60470-16-philmd@linaro.org>
+Subject: [PULL 16/26] hw/gpio: Handle clock migration in STM32L4x5 gpios
+Date: Wed,  8 May 2024 19:45:00 +0200
+Message-ID: <20240508174510.60470-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,37 +92,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-As far as I can tell it was never used.
+STM32L4x5 GPIO wasn't migrating its clock.
 
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240505171444.333302-5-dave@treblig.org>
+Message-ID: <20240507185854.34572-3-ines.varhol@telecom-paris.fr>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/usb/dev-network.c | 8 --------
- 1 file changed, 8 deletions(-)
+ hw/gpio/stm32l4x5_gpio.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/hw/usb/dev-network.c b/hw/usb/dev-network.c
-index 2c33e36cad..d00d68b21d 100644
---- a/hw/usb/dev-network.c
-+++ b/hw/usb/dev-network.c
-@@ -475,14 +475,6 @@ struct rndis_packet_msg_type {
-     le32 Reserved;
- };
+diff --git a/hw/gpio/stm32l4x5_gpio.c b/hw/gpio/stm32l4x5_gpio.c
+index 71bf5fddb2..30d8d6cba4 100644
+--- a/hw/gpio/stm32l4x5_gpio.c
++++ b/hw/gpio/stm32l4x5_gpio.c
+@@ -20,6 +20,7 @@
+ #include "qemu/log.h"
+ #include "hw/gpio/stm32l4x5_gpio.h"
+ #include "hw/irq.h"
++#include "hw/clock.h"
+ #include "hw/qdev-clock.h"
+ #include "hw/qdev-properties.h"
+ #include "qapi/visitor.h"
+@@ -426,8 +427,8 @@ static void stm32l4x5_gpio_realize(DeviceState *dev, Error **errp)
  
--struct rndis_config_parameter {
--    le32 ParameterNameOffset;
--    le32 ParameterNameLength;
--    le32 ParameterType;
--    le32 ParameterValueOffset;
--    le32 ParameterValueLength;
--};
--
- /* implementation specific */
- enum rndis_state
- {
+ static const VMStateDescription vmstate_stm32l4x5_gpio = {
+     .name = TYPE_STM32L4X5_GPIO,
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (VMStateField[]){
+         VMSTATE_UINT32(moder, Stm32l4x5GpioState),
+         VMSTATE_UINT32(otyper, Stm32l4x5GpioState),
+@@ -441,6 +442,7 @@ static const VMStateDescription vmstate_stm32l4x5_gpio = {
+         VMSTATE_UINT32(ascr, Stm32l4x5GpioState),
+         VMSTATE_UINT16(disconnected_pins, Stm32l4x5GpioState),
+         VMSTATE_UINT16(pins_connected_high, Stm32l4x5GpioState),
++        VMSTATE_CLOCK(clk, Stm32l4x5GpioState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
 -- 
 2.41.0
 
