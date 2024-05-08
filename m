@@ -2,56 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681528BFCD0
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAEE8BFE17
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:13:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4g0v-0004T3-An; Wed, 08 May 2024 08:03:13 -0400
+	id 1s4h5s-0005DZ-Pf; Wed, 08 May 2024 09:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1s4g0m-0004R6-Ja
- for qemu-devel@nongnu.org; Wed, 08 May 2024 08:03:05 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1s4g0j-00017V-1r
- for qemu-devel@nongnu.org; Wed, 08 May 2024 08:03:04 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZDGX73SZz6K6Pr;
- Wed,  8 May 2024 19:59:48 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 6A1E7140B38;
- Wed,  8 May 2024 20:02:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 8 May
- 2024 13:02:54 +0100
-Date: Wed, 8 May 2024 13:02:52 +0100
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>
-Subject: Re: CXL numa error on arm64 qemu virt machine
-Message-ID: <20240508130252.00006367@Huawei.com>
-In-Reply-To: <20240508080051.3756934-1-wangyuquan1236@phytium.com.cn>
-References: <20240508080051.3756934-1-wangyuquan1236@phytium.com.cn>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1s4dkb-0007La-O4
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:13 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
+ id 1s4dkZ-0000WN-2Z
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:38:13 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1edfc57ac0cso25495555ad.3
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 02:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1715161087; x=1715765887; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IAz7iaY05iUXwWWdMEiJCHMpa1weX6eAJlOf0zRUJsI=;
+ b=cIo5GA11maEZMRszk41DojX2YvOX2Tl/9zKDb/pTUnW0CwbkyCdI+abCnlO1U0Sb0T
+ 7VY7O/ecsmIrnjXputDtfeJijg85B/jSaaDKDXURMQO1jyKqOiTiTu2fKT/xALu0Fi4i
+ MRFWBOyjFYRWk5flkncvWrWZT8Yu6GXKIsBt9X2E3wZzx7eWEiab1tSspI2Qn+3rIO8S
+ o5ZULWLPlZ/pfFanNbTLuQMFVt/Rtc5qa579A/77etK7fmWcnoq80qEF5EnqmU3JAM79
+ L2afySdXH9JrCC+lP9cNvzhhgKSejobQhpy/vT7Vs8rkx9c9whEFWtGmYXYsntlWH1c1
+ wtRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715161087; x=1715765887;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IAz7iaY05iUXwWWdMEiJCHMpa1weX6eAJlOf0zRUJsI=;
+ b=g+rnzQ7tkFfKXDOFWb4p1uiaoDeZuBFspxxI/Bu71PL3VX18w/Iyyut2vp8bx5DQbV
+ I2uIArVC5FTeMOuCFt4s0dQZ5fQhonLwAH83uFHUPsxwgJfWN5Yd7rOHcPWxyqT0y66I
+ 4HGVH+H4TAJyT0b5YeUoS7kmfcTyeSnOEHnRNr1OIepZ4NMYAAFj1yGZHHlS2GFnEaA0
+ XjDBZVLvtm5Z/2tjqFjSolpAWwlnSf4iGqKm6aW0b15RAoTDzhEesV4XPuWCSC9mUKUD
+ 1fiXzHMWgacQOhoMsG9fGbLCd6nnZ04s8e5pt/hmn9QWNk8lN1UwSnO9iRe03y24mqNB
+ L9jg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGhgsvCUEmFUUK8/a1pK1BbKNwV1JpWFtNPvO2hkHH0l9O7pGzbAXFAafAVA/JV4nSmpvA4VaCQxrDMqRKcjffc86gPT8=
+X-Gm-Message-State: AOJu0YxdZAUd4X6doGvJ9ys84bRpv/28Nrx1N+CCa+mCXXZ5JJstu8ch
+ L8iCreaJP4HoEgTBuGCnw2kJ5PY2SAPZvXg4njjXdozumnN7FVQM+66bh/caztQ=
+X-Google-Smtp-Source: AGHT+IFW9RCkoIY5BOEXclPdOm2PKvfv8Ss+V9Je/tx3ER+sMYEQcD9WHY0UyvkfRhb3P1ns7f03ZQ==
+X-Received: by 2002:a17:903:1cf:b0:1ee:b35e:963f with SMTP id
+ d9443c01a7336-1eeb35e9676mr18298735ad.26.1715161086796; 
+ Wed, 08 May 2024 02:38:06 -0700 (PDT)
+Received: from n37-006-243.byted.org ([180.184.51.134])
+ by smtp.gmail.com with ESMTPSA id
+ p16-20020a1709027ed000b001ee13eb2bedsm4992178plb.98.2024.05.08.02.38.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 08 May 2024 02:38:06 -0700 (PDT)
+From: Changqi Lu <luchangqi.123@bytedance.com>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
+ ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
+ kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
+ Changqi Lu <luchangqi.123@bytedance.com>
+Subject: [PATCH 0/9] Support persistent reservation operations
+Date: Wed,  8 May 2024 17:36:20 +0800
+Message-Id: <20240508093629.441057-1-luchangqi.123@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 08 May 2024 09:12:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,116 +92,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 8 May 2024 16:00:51 +0800
-Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+Hi,
 
-> Hello, Jonathan
-> 
-> Recently I run some cxl tests on qemu virt(branch:cxl-2024-04-22-draft) but met some
-> problems.
-> 
-> Problems: 
-> 1) the virt machine could not set the right numa topology from user input;
-> 
-> My Qemu numa set:
-> -object memory-backend-ram,size=2G,id=mem0 \
-> -numa node,nodeid=0,cpus=0-1,memdev=mem0 \
-> -object memory-backend-ram,size=2G,id=mem1 \
-> -numa node,nodeid=1,cpus=2-3,memdev=mem1 \
+I am going to introduce persistent reservation for QEMU block.
+There are three parts in this series:
 
-That is setting up the main DRAM nodes, unrelated to
-CXL memory. For CXL memory you need to use generic
-port entries (in my gitlab qemu tree - with examples but not upstream yet)
-However, if you get some breakage
+Firstly, at the block layer, the commit abstracts seven APIs related to
+the persistent reservation command. These APIs including reading keys,
+reading reservations, registering, reserving, releasing, clearing and preempting.
 
-> 
-> However, the system shows:
-> root@ubuntu-jammy-arm64:~# numactl -H
-> 	available: 1 nodes (0)
-> 	node 0 cpus: 0 1 2 3
-> 	node 0 size: 4166 MB
-> 	node 0 free: 3920 MB
-> 	node distances:
-> 	node   0 
-> 	0:  10 
-> 
-> Boot Kernel print:
-> [    0.000000] ACPI: SRAT: Node 0 PXM 0 [mem 0x40000000-0xbfffffff]
-> [    0.000000] ACPI: SRAT: Node 1 PXM 1 [mem 0xc0000000-0x13fffffff]
-> [    0.000000] ACPI: Unknown target node for memory at 0x10000000000, assuming node 0
-> [    0.000000] NUMA: Warning: invalid memblk node 16 [mem 0x0000000004000000-0x0000000007ffffff]
-> [    0.000000] NUMA: Faking a node at [mem 0x0000000004000000-0x000000013fffffff]
-> [    0.000000] NUMA: NODE_DATA [mem 0x13f7f89c0-0x13f7fafff]
-> 
-> 2) it seems like the problem of allocating numa node in arm for cxl memory still exists;
-> Previous discussion: https://lore.kernel.org/linux-cxl/20231011150620.0000212a@Huawei.com/
-> 
-> root@debian-bullseye-arm64:~# cxl create-region -d decoder0.0 -t ram
-> [   68.653873] cxl region0: Bypassing cpu_cache_invalidate_memregion() for testing!
-> [   68.660568] Unknown target node for memory at 0x10000000000, assuming node 0
+Next, the commit implements the necessary pr-related operation APIs for both the
+SCSI protocol and NVMe protocol at the device layer. This ensures that the necessary
+functionality is available for handling persistent reservations in these protocols.
 
-You need a load of kernel changes for NUMA nodes to work correctly with
-CXL memory on arm64 platforms.  I have some working code but need to tidy
-up a few corners that came up in an internal review earlier this week.
+Finally, the commit includes adaptations to the iscsi driver at the driver layer
+to verify the correct implementation and functionality of the changes.
 
-I have some travel coming up so may take a week or so to get those out.
+With these changes, GFS works fine in the guest. Also, sg-utils(for SCSI block) and
+nvme-cli(for NVMe block) work fine too.
 
-Curiously that invalid memblk has nothing to do with the CXL fixed memory window
-Could you check if that is happening for you without the CXL patches?
+Changqi Lu (9):
+  block: add persistent reservation in/out api
+  block/raw: add persistent reservation in/out driver
+  scsi/constant: add persistent reservation in/out protocol constants
+  scsi/util: add helper functions for persistent reservation types
+    conversion
+  hw/scsi: add persistent reservation in/out api for scsi device
+  block/nvme: add reservation command protocol constants
+  hw/nvme: add helper functions for converting reservation types
+  hw/nvme: add reservation protocal command
+  block/iscsi: add persistent reservation in/out driver
 
-> 
-> If not, maybe I could try to do something to help fix this problem.
-> 
-> 
-> My full qemu command line:
-> qemu-system-aarch64 \
-> -M virt,gic-version=3,cxl=on \
-> -m 4G \
-> -smp 4 \
-> -object memory-backend-ram,size=2G,id=mem0 \
-> -numa node,nodeid=0,cpus=0-1,memdev=mem0 \
-> -object memory-backend-ram,size=2G,id=mem1 \
-> -numa node,nodeid=1,cpus=2-3,memdev=mem1 \
-> -cpu cortex-a57 \
-> -bios QEMU_EFI.fd.bak \
-> -device virtio-blk-pci,drive=hd,bus=pcie.0 \
-> -drive if=none,id=hd,file=../disk/debos_arm64.ext \
-> -nographic \
-> -object memory-backend-file,id=mem2,mem-path=/tmp/mem2,size=256M,share=true \
-> -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-> -device cxl-rp,port=0,bus=cxl.1,id=root_port13,chassis=0,slot=2 \
-> -device cxl-type3,bus=root_port13,volatile-memdev=mem2,id=cxl-mem1 \
-> -M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G \
-> -qmp tcp:127.0.0.1:4444,server,nowait \
-> 
-> Qemu version: the lastest commit of branch cxl-2024-04-22-draft in "https://gitlab.com/jic23/qemu" 
-> Kernel version: 6.6.0
+ block/block-backend.c             | 386 +++++++++++++++++++++++++++++
+ block/io.c                        | 161 ++++++++++++
+ block/iscsi.c                     | 390 ++++++++++++++++++++++++++++++
+ block/raw-format.c                |  55 +++++
+ hw/nvme/ctrl.c                    | 304 ++++++++++++++++++++++-
+ hw/nvme/nvme.h                    |  44 ++++
+ hw/scsi/scsi-disk.c               | 302 +++++++++++++++++++++++
+ include/block/block-common.h      |   9 +
+ include/block/block-io.h          |  19 ++
+ include/block/block_int-common.h  |  31 +++
+ include/block/nvme.h              |  67 +++++
+ include/scsi/constants.h          |  29 +++
+ include/scsi/utils.h              |   5 +
+ include/sysemu/block-backend-io.h |  22 ++
+ scsi/utils.c                      |  40 +++
+ 15 files changed, 1863 insertions(+), 1 deletion(-)
 
-Whilst it doesn't work yet (because of missing kernel support)
-you'll need something that looks more like the generic ports test added in 
-https://gitlab.com/jic23/qemu/-/commit/6589c527920ba22fe0923b60b58d33a8e9fd371e
-
-Most importantly
--numa node,nodeid=2 -object acpi-generic-port,id=gp0,pci-bus-cxl.1,node=2
-+ the bits setting distances etc.  Note CXL memory does not provide SLIT like
-data at the moment, so the test above won't help you identify if it is correctly
-set up.  That's a gap in general in the kernel support. Whilst we'd love
-it if everyone moved to hmat derived information we may need to provide
-some fallback.
-
-Jonathan
-
-
-
-
-> 
-> Many thanks
-> Yuquan
-> 
+-- 
+2.20.1
 
 
