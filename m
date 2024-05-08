@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B298C03B0
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A79C8C03B6
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:50:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lNc-0002mW-Vd; Wed, 08 May 2024 13:47:01 -0400
+	id 1s4lNc-0002jz-MJ; Wed, 08 May 2024 13:47:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNV-0002AX-98
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:54 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNX-0002Nm-Qc
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:56 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNQ-0008IA-0V
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:52 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a59b097b202so2562766b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lNV-0008NS-A3
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:46:55 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-51f60817e34so5567041e87.2
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:46:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190405; x=1715795205; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190411; x=1715795211; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MvmYkwM/vtus+gTFbMymcQXt7CwFyRNe8VlkJ3oWH6M=;
- b=HVNHj3K2OIXkdH+wsxNcXWxn5VzagTNa11PiIQvKN3GiRDLAcYQ5hMVF+nO3lj9Qs0
- OFAju4QI9JoQ/x966YiwwbTx/IDlkPDXQdjqhPRAsFnW1987HJmpvdBEQK9KSWYpYUWc
- Qk0kpqEc+zq74YGYJRG8zrilUNs5t6crcFNrQIlQsXDqH8IBc3dASz4vKoZJsZdp3y4r
- km36CHEinh1UnjElnEBSy/DSabpgHAqFkoav2YHXJBemctb0qFXqMhalptdk+jX2+MUH
- kZ3os9b3X3U5rHqYfFqlI9dxHKep+TGtEtgziV/dv+dGliLD+K+dU0eryRwxbng0e1j1
- FXFg==
+ bh=4ksHT3bB/Mu2+/CUZFpNJqWT39TDBSsmRF88s5MP6rA=;
+ b=O4Z48j9AVvCjFHDzDesqLZHTJsINN2l31GJkU9xbkek91JkL3+P7Tqc5oZnSurOgv0
+ I7ti91Ge+zxbr31k65ZGuIYEQoNGd6CwWd9l3S/PWo57i8f1VASDQkLUbEfSe9Ngnk6d
+ XMPMb7s9K9NgPgebnGd+u4w6yANQaj3bOzvNHEfp5CbnAmnc7IhqyI5LYIvNGfu9Y+ZK
+ N2RvNObdTcQy2ayr8M/wYwN3yFVql/XxNzXjH+PUdB7NAvi18dIbtJYCnZo1ffEgRONH
+ 19wDz7cAqa1joKYHwxOBTOQmRiocGWS3NqH5oI9teetHgZrJ7SUKzji7PUaOBkcNAEbO
+ 058g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190405; x=1715795205;
+ d=1e100.net; s=20230601; t=1715190411; x=1715795211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MvmYkwM/vtus+gTFbMymcQXt7CwFyRNe8VlkJ3oWH6M=;
- b=OX6W0wmwvNPGxs/rnYz3cz1XrvchmNi1rZoe0Udir7ML9fbcE0jJuo8P1vBs8+jmp7
- EtVLoSomlXB9vI0refQ+r9UzHorIjsgzM5y57M750w7CWPjDvQQPDSXGKIeXnHrRpuPz
- s00mFnS5Xpd1ZSuWTBIK4l+Zg3UWj9DFfx9570nTLcpfk1ALnMyBqiGc6QBv/LKkx386
- Anse8gveAmw3+SQAyUL8ttgOqzJPjKl28X54wAyrFzxai/zsYypom2GjcB3S5ob1S0a2
- qjmRHKCUY04tBF1q8DZkv7Rjf/h9Kjf4zoIGFjE4VjrmymDNWrKrzXI7uACKF/93tf7j
- AA9w==
-X-Gm-Message-State: AOJu0Yzf5bsUzwEPej+k0AJIY7hzRNtRND4AG+YbExhknPjTjOZcFWw6
- mAs52sfQufMvY2FjvpJddWRup1caS7UnH4rh/RJNEZ7KQsF5LSXNFAMJKHmp35qfhCWHYZQkQAH
- k
-X-Google-Smtp-Source: AGHT+IF26hRzWZQQz/L7HTj2f+65lx+LGGImSfo+vjzv/tEhlb5+9KyVzLr9GXO+pyHHYTPj/UZuOw==
-X-Received: by 2002:a17:906:6051:b0:a59:bbd6:bb39 with SMTP id
- a640c23a62f3a-a59fb9c6be6mr220795066b.55.1715190405295; 
- Wed, 08 May 2024 10:46:45 -0700 (PDT)
+ bh=4ksHT3bB/Mu2+/CUZFpNJqWT39TDBSsmRF88s5MP6rA=;
+ b=i3Hu1tBO1+O3UoCAWziqvia+gG3bUoFI7GXQD2+tzai+eLBIGDUXp5zlPr+rKmWHBU
+ 3GD8R37pzVC6BcKDoDDgiay+Bijw6Z80AEr0fv3wg1i6vFkiAO5tEVsCTeFlvEKGChgu
+ rPepF70xy9dLKthaHOdlvJJwsmvLp40tUPl20jhyBjGlVQRfRzyd/ri0Cue4wUNea9Iu
+ 2YTEQqYVzwSbt/0cvAxjeHiWcBOOUNdNyyxRcG4VQZ7igMy9ewpU517GCeRy8wwCGNpg
+ nay6Y+Acni5RzkgrUwi4cEwyCB2sRVy+GSbND9UBFteYpxZ3Fl2wepaW2qPE5vHVp5SH
+ IXVQ==
+X-Gm-Message-State: AOJu0YwFPY7kEpYtBCefKbrKPJlFKMj80pigBEyPLR6BgUG2hUky8nQs
+ WT6n0C9MJ7pnIWmrLJ5rhP3TFK9WV2Z9AKxoE5cNx04Na6aWHlOvLpuEurLt1NFnVCn2MVlO5Pu
+ +
+X-Google-Smtp-Source: AGHT+IF3DwLW/VGQCis1GT3b/8D7+Buh8NcG6JCXcSNfw3SrPAl9nHmQuI3jejdB5UUXRn9DxRVV3Q==
+X-Received: by 2002:a05:6512:3b92:b0:51e:f68b:d266 with SMTP id
+ 2adb3069b0e04-5217cc42a62mr2596591e87.50.1715190410789; 
+ Wed, 08 May 2024 10:46:50 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- d12-20020a17090648cc00b00a59a874136fsm5744899ejt.214.2024.05.08.10.46.44
+ q8-20020a170906a08800b00a59ce3ec763sm3925589ejy.154.2024.05.08.10.46.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:46:44 -0700 (PDT)
+ Wed, 08 May 2024 10:46:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Nicholas Piggin <npiggin@gmail.com>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 17/26] hw/ppc: Deprecate 'ref405ep' machine and 405 CPUs
-Date: Wed,  8 May 2024 19:45:01 +0200
-Message-ID: <20240508174510.60470-18-philmd@linaro.org>
+Subject: [PULL 18/26] hw/loongarch: move memory map to boot.c
+Date: Wed,  8 May 2024 19:45:02 +0200
+Message-ID: <20240508174510.60470-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,53 +93,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-The 'ref405ep' machine and PPC 405 CPU have no known users, firmware
-images are not available, OpenWRT dropped support in 2019, U-Boot in
-2017, Linux also is dropping support in 2024. It is time to let go of
-this ancient hardware and focus on newer CPUs and platforms.
+Ensure that it can be used even if virt.c is not included in the build, as
+is the case for --without-default-devices.
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20240507123332.641708-1-clg@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240507145135.270803-1-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/about/deprecated.rst | 8 ++++++++
- hw/ppc/ppc405_boards.c    | 1 +
- 2 files changed, 9 insertions(+)
+ include/hw/loongarch/boot.h | 10 ++++++++++
+ include/hw/loongarch/virt.h | 10 ----------
+ hw/loongarch/boot.c         |  3 +++
+ hw/loongarch/virt.c         |  3 ---
+ .gitlab-ci.d/buildtest.yml  |  2 +-
+ 5 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 03f8b1b655..e22acb17f2 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -258,6 +258,14 @@ dropping the ``cheetah`` OMAP1 board, because we don't have any
- test images for it and don't know of anybody who does; the ``sx1``
- and ``sx1-v1`` OMAP1 machines remain supported for now.
+diff --git a/include/hw/loongarch/boot.h b/include/hw/loongarch/boot.h
+index 4ebcc89dcf..b3b870df1f 100644
+--- a/include/hw/loongarch/boot.h
++++ b/include/hw/loongarch/boot.h
+@@ -104,6 +104,16 @@ struct loongarch_boot_info {
+     uint64_t a0, a1, a2;
+ };
  
-+PPC 405 ``ref405ep`` machine (since 9.1)
-+''''''''''''''''''''''''''''''''''''''''
++extern struct memmap_entry *memmap_table;
++extern unsigned memmap_entries;
 +
-+The ``ref405ep`` machine and PPC 405 CPU have no known users, firmware
-+images are not available, OpenWRT dropped support in 2019, U-Boot in
-+2017, Linux also is dropping support in 2024. It is time to let go of
-+this ancient hardware and focus on newer CPUs and platforms.
++struct memmap_entry {
++    uint64_t address;
++    uint64_t length;
++    uint32_t type;
++    uint32_t reserved;
++};
 +
- Backend options
- ---------------
+ void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info);
  
-diff --git a/hw/ppc/ppc405_boards.c b/hw/ppc/ppc405_boards.c
-index 4092ebc1ab..c44e7ed162 100644
---- a/hw/ppc/ppc405_boards.c
-+++ b/hw/ppc/ppc405_boards.c
-@@ -350,6 +350,7 @@ static void ppc405_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = ppc405_init;
-     mc->default_ram_size = 128 * MiB;
-     mc->default_ram_id = "ppc405.ram";
-+    mc->deprecation_reason = "machine is old and unmaintained";
+ #endif /* HW_LOONGARCH_BOOT_H */
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 4e14bf6060..fdbd2b146f 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -37,16 +37,6 @@
+ 
+ #define FDT_BASE                0x100000
+ 
+-extern struct memmap_entry *memmap_table;
+-extern unsigned memmap_entries;
+-
+-struct memmap_entry {
+-    uint64_t address;
+-    uint64_t length;
+-    uint32_t type;
+-    uint32_t reserved;
+-};
+-
+ struct LoongArchMachineState {
+     /*< private >*/
+     MachineState parent_obj;
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index 7d1630b2e7..03f6301a77 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -15,6 +15,9 @@
+ #include "sysemu/reset.h"
+ #include "sysemu/qtest.h"
+ 
++struct memmap_entry *memmap_table;
++unsigned memmap_entries;
++
+ ram_addr_t initrd_offset;
+ uint64_t initrd_size;
+ 
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index c0999878df..504e1fb349 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -516,9 +516,6 @@ static void virt_powerdown_req(Notifier *notifier, void *opaque)
+     acpi_send_event(s->acpi_ged, ACPI_POWER_DOWN_STATUS);
  }
  
- static const TypeInfo ppc405_machine_type = {
+-struct memmap_entry *memmap_table;
+-unsigned memmap_entries;
+-
+ static void memmap_add_entry(uint64_t address, uint64_t length, uint32_t type)
+ {
+     /* Ensure there are no duplicate entries. */
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index e9402a68a7..bab6194564 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -650,7 +650,7 @@ build-tci:
+ # Check our reduced build configurations
+ # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
+ #   mips64el, or1k, ppc, ppc64, riscv32, riscv64, rx, x86_64
+-# does not build without boards: i386, loongarch64, s390x, sh4, sh4eb, x86_64
++# does not build without boards: i386, s390x, sh4, sh4eb, x86_64
+ build-without-defaults:
+   extends: .native_build_job_template
+   needs:
 -- 
 2.41.0
 
