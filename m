@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04858BFEA2
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA8D8BFEAC
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:24:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4hFc-0008RA-Hi; Wed, 08 May 2024 09:22:28 -0400
+	id 1s4hGN-0001nO-RE; Wed, 08 May 2024 09:23:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4hF7-00083I-Jo; Wed, 08 May 2024 09:22:04 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1s4hG9-0001hk-0N; Wed, 08 May 2024 09:23:03 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4hF3-0003HA-RO; Wed, 08 May 2024 09:21:56 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6f447260f9dso3235742b3a.0; 
- Wed, 08 May 2024 06:21:53 -0700 (PDT)
+ id 1s4hG6-0004FR-GG; Wed, 08 May 2024 09:23:00 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6ed9fc77bbfso3264809b3a.1; 
+ Wed, 08 May 2024 06:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715174512; x=1715779312; darn=nongnu.org;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=gmail.com; s=20230601; t=1715174575; x=1715779375; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EI+aW5pswkdFCTCLttuA3RuJKFUvLOwAf8ON/XmbjeU=;
- b=ZLJttHezeID/8Hhu5LVwTxp7J9vWxeQ+8vWGPX5EUiy7g1IBhLtCbj3YEi4VfBPP5w
- bQRBsAMuCWV1eCq2qBsfmlsiTIPlNuGyoiRDp5yzdqVQLO8iMLrNOdXVPQpNK5h1GSxx
- pfo7LJ4z1csGh9DMUnJcxuJ+8SBQB0kFKOislpRspS/JrsLWi5FdDejdIKZCyGF9qfZt
- aoHB5822CwrHPuowW/3dmz/dEl9fFip7mQ96BnLyOmufNZHtQFUK8KIDPFJWvne/ao7T
- 11YcUcjxreHD4jeKXzq9hunR/3THmEInF1GASdh9kTabcfpNEWPPSPhFtfFOZ8Sug0Tz
- N19w==
+ bh=Q/n0n+zCiBPrH5BiX8omhLSBTynULzIwzR9PYNH+tHw=;
+ b=i5e7i+AMWOxDkwGgd/gf4wxzOvvN5EyTkDkYIyDGrRrtNrMBW93NJphSJy4JcTeajP
+ 4UP0h59gfcRGryWSdnC7+IgtiUJlH4QXYn5d94934+AVnz2pApd7xSvn/LhSqzNEB0qP
+ IhxG1pBgGBiTmqLLe7Ig+de7qdVTVQSVTht/xftd2rzeAr+Ek76F8alFjfgZ2eDqZ5Zv
+ Hwq2OAMymF5aa08GvcCidEvpVcd2uc/RzIRffr5KEJxN8es0bjek24zxyxRMptV3+cH/
+ Eit+tXpOy8IeOH2cgtKGONYyDDRGeLIzDb6XaDbsyLi/S/YfLHV9cswo12X1ddBIq+4W
+ T20w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715174512; x=1715779312;
- h=in-reply-to:references:cc:to:from:subject:message-id:date
+ d=1e100.net; s=20230601; t=1715174575; x=1715779375;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=EI+aW5pswkdFCTCLttuA3RuJKFUvLOwAf8ON/XmbjeU=;
- b=GlOlQK/WhRCqoIZXgUss1gz+CdxKJcsVnjdciBmvhHD8CJiZwQcoVl4yTl3n8mXDtE
- 8TxAm3tTQXRxZ4CsI9d4LliKAWFKqGJjxIHqYVoWf/ncxYGkCZGaudq7hbyHCno2VJhQ
- qb/85+DuwTcBV8pIqPfkr1a/QI3yS8ODdnF3Kh8MPZ55tQIDPe+O0tqAjzxNpAQBrE/Z
- apc1xfnsd+053MWiJpji323LhiFL5hmytNqiBIf8OIJtmpFeqSChAW/YYrMecQj66wgH
- DL+oxHYBKlPlXd+v++b95ZonUwh4mczAMHOwyiK6S1/xg099UOWp5Su40fA4Vg/3OF38
- fMAw==
+ bh=Q/n0n+zCiBPrH5BiX8omhLSBTynULzIwzR9PYNH+tHw=;
+ b=iIWAWO2Zmcj4C/w7dS5LhsOejjaCzWCXfpoiLKt2EpOboJdh8vHT+2lbiiuVNi/KfA
+ JiD5Q58re9kjpzn/CZUspIhQtOJIoMuQoahbRKx9yvW6ahlpDnL7QPYk0pSDlfLTwvHy
+ baQymfa/CB1Fxzl/xDp2rkcJBELQ30n7OI+Zv1drpQ9OwxBylFURpvtg4grD3ywf7DK7
+ 7L5BqL5cwBJAVKmDKCZae0pt8PU1PmIwWOltWXopuZ3YAmKEDVRMCjUhQmgxC4y7WJbT
+ FcR5u12lBR4qNbSPPPZY/TdQhtEhRDlLoHE3eQTgvLbk6bgqfc9LYI75QD3SKNpKI1a9
+ xu7Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWWEC0ImH9jP9EwkdDLtfGM6lcIhqCHiePao/5d9AmcjZmaszr8dNk8zMlIjUrH1rY9oolzRqfNYccPLg0Bgstc4zDiZN95WYC/KwIoBMxyf4dXA5zPoY/jEKU=
-X-Gm-Message-State: AOJu0YxCksqDBPhmvfUPQgr1o+rUvdZZd6SqNq/CtP4pyOC4YO2AARAS
- JH0kxnthPt0uuHzXOIQCGw/pepVQ1lBFqT3tLIU0jc1Rt4a1qtOHc3f80A==
-X-Google-Smtp-Source: AGHT+IEsMjzNr9Rc2vsaBb6I6ajtzKPN++RqRppW79+1siH+X7zcgMukT5wSaQwjfOdr50K8O+m9TQ==
-X-Received: by 2002:a05:6300:8095:b0:1a7:aecd:9785 with SMTP id
- adf61e73a8af0-1afc8d3d59cmr2776626637.25.1715174511873; 
- Wed, 08 May 2024 06:21:51 -0700 (PDT)
+ AJvYcCWJLxWZgYvqTbtTqYlpDVDXbUoB/Gpk0Q86U4gneqfH/hxsvK7EN93Qtl9C4zFVAvtN5SQJfYzD8m7XDjcP7N+iLXEAgh/X07wAiwrGimXhTBLGdVz7hIr+sh0=
+X-Gm-Message-State: AOJu0YyYI1NkWXDwJpwk5eVmRDqLxsOy9ugyOFP9rbhk9NgLfZP3J6Ul
+ 7kpMkLiZM1hI28vV12qI8JhSVnYgnvaK1u7KCRd6HkoFcVjSSaF+
+X-Google-Smtp-Source: AGHT+IGkEMVHd+/9vOt3+i1q7Uhwobr9T9gBYemOa9aHkE+DscpnllU3OB8T1IRt1O1DjheGgOFRpA==
+X-Received: by 2002:a05:6a20:d04e:b0:1af:55e7:633d with SMTP id
+ adf61e73a8af0-1afc8afc54bmr3061125637.0.1715174575329; 
+ Wed, 08 May 2024 06:22:55 -0700 (PDT)
 Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
- d3-20020a17090ac24300b002b1cad4fd97sm1398907pjx.25.2024.05.08.06.21.49
+ gx14-20020a056a001e0e00b006f44be6cef2sm9408027pfb.114.2024.05.08.06.22.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 06:21:51 -0700 (PDT)
+ Wed, 08 May 2024 06:22:54 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 May 2024 23:21:46 +1000
-Message-Id: <D14AMAUZ44BZ.1PQBLRVTX4NU5@gmail.com>
-Subject: Re: [PATCH v3 28/33] target/ppc/mmu_common.c: Move BookE MMU
- functions together
+Date: Wed, 08 May 2024 23:22:48 +1000
+Message-Id: <D14AN35W73CG.M5JMRK9M5P8I@gmail.com>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v3 31/33] target/ppc/mmu-hash32.c: Drop a local variable
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
  <qemu-ppc@nongnu.org>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
 X-Mailer: aerc 0.17.0
 References: <cover.1715125376.git.balaton@eik.bme.hu>
- <814d4b4526282af7854f52cf6a268245c33c674a.1715125376.git.balaton@eik.bme.hu>
-In-Reply-To: <814d4b4526282af7854f52cf6a268245c33c674a.1715125376.git.balaton@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+ <2cb59eadd107d11b47635da829e578a55f263013.1715125376.git.balaton@eik.bme.hu>
+In-Reply-To: <2cb59eadd107d11b47635da829e578a55f263013.1715125376.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,280 +94,62 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> In ppc_hash32_xlate() the value of need_prop is checked in two places
+> but precalculating it does not help because when we reach the first
+> check we always return and not reach the second place so the value
+> will only be used once. We can drop the local variable and calculate
+> it when needed, which makes these checks using it similar to other
+> places with such checks.
 
-Okay for now but we should split into a new file soon.
+Sure, why not.
 
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-> ---
->  target/ppc/mmu_common.c | 226 ++++++++++++++++++++--------------------
->  1 file changed, 113 insertions(+), 113 deletions(-)
 >
-> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-> index 04e5ad661d..a6e7b64049 100644
-> --- a/target/ppc/mmu_common.c
-> +++ b/target/ppc/mmu_common.c
-> @@ -854,6 +854,119 @@ found_tlb:
->      return ret;
->  }
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>  target/ppc/mmu-hash32.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+>
+> diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+> index 960751a50e..b5d7aeed4e 100644
+> --- a/target/ppc/mmu-hash32.c
+> +++ b/target/ppc/mmu-hash32.c
+> @@ -347,7 +347,6 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, M=
+MUAccessType access_type,
+>      hwaddr pte_offset;
+>      ppc_hash_pte32_t pte;
+>      int prot;
+> -    int need_prot;
+>      hwaddr raddr;
 > =20
-> +static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong =
-address,
-> +                                         MMUAccessType access_type, int =
-mmu_idx)
-> +{
-> +    uint32_t epid;
-> +    bool as, pr;
-> +    uint32_t missed_tid =3D 0;
-> +    bool use_epid =3D mmubooke206_get_as(env, mmu_idx, &epid, &as, &pr);
-> +
-> +    if (access_type =3D=3D MMU_INST_FETCH) {
-> +        as =3D FIELD_EX64(env->msr, MSR, IR);
-> +    }
-> +    env->spr[SPR_BOOKE_MAS0] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_TLBSELD=
-_MASK;
-> +    env->spr[SPR_BOOKE_MAS1] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_TSIZED_=
-MASK;
-> +    env->spr[SPR_BOOKE_MAS2] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_WIMGED_=
-MASK;
-> +    env->spr[SPR_BOOKE_MAS3] =3D 0;
-> +    env->spr[SPR_BOOKE_MAS6] =3D 0;
-> +    env->spr[SPR_BOOKE_MAS7] =3D 0;
-> +
-> +    /* AS */
-> +    if (as) {
-> +        env->spr[SPR_BOOKE_MAS1] |=3D MAS1_TS;
-> +        env->spr[SPR_BOOKE_MAS6] |=3D MAS6_SAS;
-> +    }
-> +
-> +    env->spr[SPR_BOOKE_MAS1] |=3D MAS1_VALID;
-> +    env->spr[SPR_BOOKE_MAS2] |=3D address & MAS2_EPN_MASK;
-> +
-> +    if (!use_epid) {
-> +        switch (env->spr[SPR_BOOKE_MAS4] & MAS4_TIDSELD_PIDZ) {
-> +        case MAS4_TIDSELD_PID0:
-> +            missed_tid =3D env->spr[SPR_BOOKE_PID];
-> +            break;
-> +        case MAS4_TIDSELD_PID1:
-> +            missed_tid =3D env->spr[SPR_BOOKE_PID1];
-> +            break;
-> +        case MAS4_TIDSELD_PID2:
-> +            missed_tid =3D env->spr[SPR_BOOKE_PID2];
-> +            break;
-> +        }
-> +        env->spr[SPR_BOOKE_MAS6] |=3D env->spr[SPR_BOOKE_PID] << 16;
-> +    } else {
-> +        missed_tid =3D epid;
-> +        env->spr[SPR_BOOKE_MAS6] |=3D missed_tid << 16;
-> +    }
-> +    env->spr[SPR_BOOKE_MAS1] |=3D (missed_tid << MAS1_TID_SHIFT);
-> +
-> +
-> +    /* next victim logic */
-> +    env->spr[SPR_BOOKE_MAS0] |=3D env->last_way << MAS0_ESEL_SHIFT;
-> +    env->last_way++;
-> +    env->last_way &=3D booke206_tlb_ways(env, 0) - 1;
-> +    env->spr[SPR_BOOKE_MAS0] |=3D env->last_way << MAS0_NV_SHIFT;
-> +}
-> +
-> +static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
-> +                            MMUAccessType access_type,
-> +                            hwaddr *raddrp, int *psizep, int *protp,
-> +                            int mmu_idx, bool guest_visible)
-> +{
-> +    CPUState *cs =3D CPU(cpu);
-> +    CPUPPCState *env =3D &cpu->env;
-> +    mmu_ctx_t ctx;
-> +    int ret;
-> +
-> +    if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
-> +        ret =3D mmubooke206_get_physical_address(env, &ctx, eaddr, acces=
-s_type,
-> +                                               mmu_idx);
-> +    } else {
-> +        ret =3D mmubooke_get_physical_address(env, &ctx, eaddr, access_t=
-ype);
-> +    }
-> +    if (ret =3D=3D 0) {
-> +        *raddrp =3D ctx.raddr;
-> +        *protp =3D ctx.prot;
-> +        *psizep =3D TARGET_PAGE_BITS;
-> +        return true;
-> +    } else if (!guest_visible) {
-> +        return false;
-> +    }
-> +
-> +    log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-> +    env->error_code =3D 0;
-> +    switch (ret) {
-> +    case -1:
-> +        /* No matches in page tables or TLB */
-> +        if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
-> +            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_id=
-x);
-> +        }
-> +        cs->exception_index =3D (access_type =3D=3D MMU_INST_FETCH) ?
-> +                              POWERPC_EXCP_ITLB : POWERPC_EXCP_DTLB;
-> +        env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> +        env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_type=
-);
-> +        break;
-> +    case -2:
-> +        /* Access rights violation */
-> +        cs->exception_index =3D (access_type =3D=3D MMU_INST_FETCH) ?
-> +                              POWERPC_EXCP_ISI : POWERPC_EXCP_DSI;
-> +        if (access_type !=3D MMU_INST_FETCH) {
-> +            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> +            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
-type);
-> +        }
-> +        break;
-> +    case -3:
-> +        /* No execute protection violation */
-> +        if (access_type =3D=3D MMU_INST_FETCH) {
-> +            cs->exception_index =3D POWERPC_EXCP_ISI;
-> +            env->spr[SPR_BOOKE_ESR] =3D 0;
-> +        }
-> +        break;
-> +    }
-> +
-> +    return false;
-> +}
-> +
->  static const char *book3e_tsize_to_str[32] =3D {
->      "1K", "2K", "4K", "8K", "16K", "32K", "64K", "128K", "256K", "512K",
->      "1M", "2M", "4M", "8M", "16M", "32M", "64M", "128M", "256M", "512M",
-> @@ -1125,119 +1238,6 @@ static int get_physical_address_wtlb(CPUPPCState =
-*env, mmu_ctx_t *ctx,
+>      /* There are no hash32 large pages. */
+> @@ -361,13 +360,11 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr,=
+ MMUAccessType access_type,
+>          return true;
 >      }
->  }
 > =20
-> -static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong =
-address,
-> -                                         MMUAccessType access_type, int =
-mmu_idx)
-> -{
-> -    uint32_t epid;
-> -    bool as, pr;
-> -    uint32_t missed_tid =3D 0;
-> -    bool use_epid =3D mmubooke206_get_as(env, mmu_idx, &epid, &as, &pr);
+> -    need_prot =3D prot_for_access_type(access_type);
 > -
-> -    if (access_type =3D=3D MMU_INST_FETCH) {
-> -        as =3D FIELD_EX64(env->msr, MSR, IR);
-> -    }
-> -    env->spr[SPR_BOOKE_MAS0] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_TLBSELD=
-_MASK;
-> -    env->spr[SPR_BOOKE_MAS1] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_TSIZED_=
-MASK;
-> -    env->spr[SPR_BOOKE_MAS2] =3D env->spr[SPR_BOOKE_MAS4] & MAS4_WIMGED_=
-MASK;
-> -    env->spr[SPR_BOOKE_MAS3] =3D 0;
-> -    env->spr[SPR_BOOKE_MAS6] =3D 0;
-> -    env->spr[SPR_BOOKE_MAS7] =3D 0;
-> -
-> -    /* AS */
-> -    if (as) {
-> -        env->spr[SPR_BOOKE_MAS1] |=3D MAS1_TS;
-> -        env->spr[SPR_BOOKE_MAS6] |=3D MAS6_SAS;
-> -    }
-> -
-> -    env->spr[SPR_BOOKE_MAS1] |=3D MAS1_VALID;
-> -    env->spr[SPR_BOOKE_MAS2] |=3D address & MAS2_EPN_MASK;
-> -
-> -    if (!use_epid) {
-> -        switch (env->spr[SPR_BOOKE_MAS4] & MAS4_TIDSELD_PIDZ) {
-> -        case MAS4_TIDSELD_PID0:
-> -            missed_tid =3D env->spr[SPR_BOOKE_PID];
-> -            break;
-> -        case MAS4_TIDSELD_PID1:
-> -            missed_tid =3D env->spr[SPR_BOOKE_PID1];
-> -            break;
-> -        case MAS4_TIDSELD_PID2:
-> -            missed_tid =3D env->spr[SPR_BOOKE_PID2];
-> -            break;
-> -        }
-> -        env->spr[SPR_BOOKE_MAS6] |=3D env->spr[SPR_BOOKE_PID] << 16;
-> -    } else {
-> -        missed_tid =3D epid;
-> -        env->spr[SPR_BOOKE_MAS6] |=3D missed_tid << 16;
-> -    }
-> -    env->spr[SPR_BOOKE_MAS1] |=3D (missed_tid << MAS1_TID_SHIFT);
-> -
-> -
-> -    /* next victim logic */
-> -    env->spr[SPR_BOOKE_MAS0] |=3D env->last_way << MAS0_ESEL_SHIFT;
-> -    env->last_way++;
-> -    env->last_way &=3D booke206_tlb_ways(env, 0) - 1;
-> -    env->spr[SPR_BOOKE_MAS0] |=3D env->last_way << MAS0_NV_SHIFT;
-> -}
-> -
-> -static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
-> -                            MMUAccessType access_type,
-> -                            hwaddr *raddrp, int *psizep, int *protp,
-> -                            int mmu_idx, bool guest_visible)
-> -{
-> -    CPUState *cs =3D CPU(cpu);
-> -    CPUPPCState *env =3D &cpu->env;
-> -    mmu_ctx_t ctx;
-> -    int ret;
-> -
-> -    if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
-> -        ret =3D mmubooke206_get_physical_address(env, &ctx, eaddr, acces=
-s_type,
-> -                                               mmu_idx);
-> -    } else {
-> -        ret =3D mmubooke_get_physical_address(env, &ctx, eaddr, access_t=
-ype);
-> -    }
-> -    if (ret =3D=3D 0) {
-> -        *raddrp =3D ctx.raddr;
-> -        *protp =3D ctx.prot;
-> -        *psizep =3D TARGET_PAGE_BITS;
-> -        return true;
-> -    } else if (!guest_visible) {
-> -        return false;
-> -    }
-> -
-> -    log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-> -    env->error_code =3D 0;
-> -    switch (ret) {
-> -    case -1:
-> -        /* No matches in page tables or TLB */
-> -        if (env->mmu_model =3D=3D POWERPC_MMU_BOOKE206) {
-> -            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_id=
-x);
-> -        }
-> -        cs->exception_index =3D (access_type =3D=3D MMU_INST_FETCH) ?
-> -                              POWERPC_EXCP_ITLB : POWERPC_EXCP_DTLB;
-> -        env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> -        env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_type=
-);
-> -        break;
-> -    case -2:
-> -        /* Access rights violation */
-> -        cs->exception_index =3D (access_type =3D=3D MMU_INST_FETCH) ?
-> -                              POWERPC_EXCP_ISI : POWERPC_EXCP_DSI;
-> -        if (access_type !=3D MMU_INST_FETCH) {
-> -            env->spr[SPR_BOOKE_DEAR] =3D eaddr;
-> -            env->spr[SPR_BOOKE_ESR] =3D mmubooke206_esr(mmu_idx, access_=
-type);
-> -        }
-> -        break;
-> -    case -3:
-> -        /* No execute protection violation */
-> -        if (access_type =3D=3D MMU_INST_FETCH) {
-> -            cs->exception_index =3D POWERPC_EXCP_ISI;
-> -            env->spr[SPR_BOOKE_ESR] =3D 0;
-> -        }
-> -        break;
-> -    }
-> -
-> -    return false;
-> -}
-> -
->  /* Perform address translation */
->  /* TODO: Split this by mmu_model. */
->  static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+>      /* 2. Check Block Address Translation entries (BATs) */
+>      if (env->nb_BATs !=3D 0) {
+>          raddr =3D ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, =
+mmu_idx);
+>          if (raddr !=3D -1) {
+> -            if (need_prot & ~*protp) {
+> +            if (prot_for_access_type(access_type) & ~*protp) {
+>                  if (guest_visible) {
+>                      if (access_type =3D=3D MMU_INST_FETCH) {
+>                          cs->exception_index =3D POWERPC_EXCP_ISI;
+> @@ -435,7 +432,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, M=
+MUAccessType access_type,
+> =20
+>      prot =3D ppc_hash32_pte_prot(mmu_idx, sr, pte);
+> =20
+> -    if (need_prot & ~prot) {
+> +    if (prot_for_access_type(access_type) & ~prot) {
+>          /* Access right violation */
+>          qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
+>          if (guest_visible) {
 
 
