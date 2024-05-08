@@ -2,84 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CB48BFD67
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:41:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6026E8BFD81
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:45:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4gc1-0005wg-NT; Wed, 08 May 2024 08:41:33 -0400
+	id 1s4ge6-0006tf-NQ; Wed, 08 May 2024 08:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1s4gbw-0005v1-R5
- for qemu-devel@nongnu.org; Wed, 08 May 2024 08:41:29 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4ge5-0006tD-67; Wed, 08 May 2024 08:43:41 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1s4gbu-00064g-LD
- for qemu-devel@nongnu.org; Wed, 08 May 2024 08:41:28 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6f450f43971so3393104b3a.3
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 05:41:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1s4ge3-0007JO-Ds; Wed, 08 May 2024 08:43:40 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5f415fd71f8so3285821a12.3; 
+ Wed, 08 May 2024 05:43:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1715172083; x=1715776883; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+rlAW1ekL9rCpFLaN3Hr4fOoUor3667dgRxwCKd5zXw=;
- b=eLNNpO8d/YiLSUYpplLegm2W8Q3rXoWITF0zYdHrw0KK/M3EiCUm0pTqeo9oRWnqSR
- R8qiEz+Do2NHnHPiyIxr05Iz1UG0nYi8UjP20fCbNYBxpnasqkC7vjBDGWtIIpVFQU63
- OTVKca1CIwiXvoEOSfkFYDBia4Hs56ek2MIt5CPTMElG3j0MsK50fRCebOElrFSRIA+U
- 2y+OagfZT/GG03up04/i2zu6rmcnS9sENGS1DUjVDjwfeKZxbY6CcK7FW17I1hUgiXgk
- 7NiPYFGCg9CsM2/AaekpyXeiUvi4WgeeALujIiNnCNeeIdBAhlAtuaFGOBi3+uao9/YJ
- S8XA==
+ d=gmail.com; s=20230601; t=1715172217; x=1715777017; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ieZ0vCdr6R64hCFjE9M9F/pX46I1vACKS4vqu4E0bLI=;
+ b=l3N/pS7B7fF9zfljH1Y8hN7UaBOliKOnSGQkSC2tej+qQ3N5YIsRvNgz1jsmrECftu
+ 5yvN7F594pJlZz56EwBxCn0hCBi6oh7LPjB5TPJmE7h0HhMmHLefuG/a4d7lDhDy7fvz
+ mzCR3+VKKZbiYM4/eCOYm42bT4MITS4soOVlDnWc+fAnlvtqzYPUwfDtiBioF7K+sz4F
+ /jSFzz7jR7PEw1oSGnQJzro/s7fEusgkwjs8+BUNiGLRuHdEtK8gXahQZRuRUQn3lbCO
+ ITGKud9UtOOH1iUX+MdjJ8jFenK8ef1OYgHkk+zc1fFYRtsdtBByV+QHG2GVWTBzP/OJ
+ 3LvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715172083; x=1715776883;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+rlAW1ekL9rCpFLaN3Hr4fOoUor3667dgRxwCKd5zXw=;
- b=QzstBS2Xy3VI7kD98Otf47iKCxVVh6H+VBzatBoB05mu95Xi7yetgq/GC8bDjP8Fgm
- iEjmvOdRjGMNLP9q7hZpeG/FElC7mr05bVBHLANjBKnR9XzR17R8DtY+I0+ikCyH/kaD
- mODlmW94PORM1DoCNkTVl+J9WLU5IkX+NsX4xfX1VHDWYg+RQvg/x/qmQjokbweBu3W5
- wp+g8wScbRbW96X6Izg61tAPQO58pOhugzlqK2P+EIf5zCm+BvdFjqbbmFlG4Se5XBA+
- OeAiSla8Kva5B8xRIHY+zPqxBC4mh/r2rFH+HU6S2VlQ3kyw5WCEtvvBqJ327tdMBxjk
- ammw==
-X-Gm-Message-State: AOJu0YziNpNyOi8imd7/o/GFkDHN4Ddt8mKuhyBwx09uiVOj+BuX+CWz
- 6Cc7bGe7gnH8ezHr9Vn1PRwvfmGkOn4h9m4VlzWfp1n9FrrDztn8Xm3VWtXRZ4EgCcj/xnmu4qt
- Y
-X-Google-Smtp-Source: AGHT+IGxepVqlf7Hhu77rpJgoOQ5AAW11AgU4gjDDvSfWZFqB+v4zVyO/23RAzAQkHSht3XCdVRyVQ==
-X-Received: by 2002:a62:bd17:0:b0:6ed:60a4:777b with SMTP id
- d2e1a72fcca58-6f49c1fd756mr2314575b3a.8.1715172082977; 
- Wed, 08 May 2024 05:41:22 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.42.168])
- by smtp.gmail.com with ESMTPSA id
- m13-20020a62f20d000000b006f45831ac05sm7715561pfh.0.2024.05.08.05.41.20
+ d=1e100.net; s=20230601; t=1715172217; x=1715777017;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ieZ0vCdr6R64hCFjE9M9F/pX46I1vACKS4vqu4E0bLI=;
+ b=AYpv1Fo/wAy5DeS7ZBzOhGW8zP32N9VLUSlggTO7G2IGEmAgEPOkwq/OPaDxUwnebZ
+ L83OEJ0bDt7oQO6wyY+mFKGc38Al2hynaf499266rXhbt2XrWISTHJu++ZHwynnCMOuV
+ OtvN1tNlTpKvXMlovETfGIe/1S3EeeMu63QnkHxYZjI60R2RLGBZyKUtjNk55SSnIEnl
+ ntzlCPCDasiqkPN6Bi4mctkIkTCmvJUvDxKTNXHInASj37G5yWKZVMiLwUpgMPdJNREF
+ dvm7ddCWHwaNz5m2BA1sdWQUcgm4APjbVB375ZqMJ+/NhQyZJiGFTSI5acDXN1L6sWpB
+ FDcw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXRwuwaFvjVu1heHlKwHm7NLH6W5uzMtpKR9Oz2rzENCtfVL20k7XUa9AW6wnydtCZzKWjaAN5Vn3XfEThBZaJZaz6blk9Jh41HSkeUErxgIDzpLPc7r1WNH1Y=
+X-Gm-Message-State: AOJu0YwiRhPTWX3RwhOu6HyQ0W2ovdHWFCcFRNFBcST0WG7E0C1Rxcxz
+ Kkw5h7/ho72Q+Pva3n1Vl1i6bnQN6O/28ENsQf0xz2yCvgQAGW9W
+X-Google-Smtp-Source: AGHT+IFAEDv493x5+DFzZQHkPHEpG9YC1RCNTcWfeSo/37kmn1cDtcthhJDmDgqNQedhlT5ZyoF5Xg==
+X-Received: by 2002:a05:6a21:622:b0:1af:814f:ce69 with SMTP id
+ adf61e73a8af0-1afc8dea26bmr2232470637.38.1715172217439; 
+ Wed, 08 May 2024 05:43:37 -0700 (PDT)
+Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2b62886b608sm1334840a91.27.2024.05.08.05.43.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 05:41:22 -0700 (PDT)
-Message-ID: <d8fcb94e-86cf-4497-b450-1a32e4606512@ventanamicro.com>
-Date: Wed, 8 May 2024 09:41:18 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/1] pci: allocate a PCI ID for RISC-V IOMMU
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, ajones@ventanamicro.com, kraxel@redhat.com
-References: <20240503124244.8804-1-dbarboza@ventanamicro.com>
- <CAFEAcA_gu40QoTXUPP2f=8vGvEOTbGWKtqR3b-e7YYhbFG0aiw@mail.gmail.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAFEAcA_gu40QoTXUPP2f=8vGvEOTbGWKtqR3b-e7YYhbFG0aiw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42c.google.com
+ Wed, 08 May 2024 05:43:36 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 May 2024 22:43:31 +1000
+Message-Id: <D149T0JQP30B.19VOKY5L4ZMSV@gmail.com>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
+Subject: Re: [PATCH v3 10/33] target/ppc/mmu_common.c: Move else branch to
+ avoid large if block
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>, <qemu-devel@nongnu.org>,
+ <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1715125376.git.balaton@eik.bme.hu>
+ <ee43b245720833981a9c8152920fde31713f78e4.1715125376.git.balaton@eik.bme.hu>
+In-Reply-To: <ee43b245720833981a9c8152920fde31713f78e4.1715125376.git.balaton@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,54 +94,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
+> In mmu6xx_get_physical_address() we have a large if block with a two
+> line else branch that effectively returns. Invert the condition and
+> move the else there to allow deindenting the large if block to make
+> the flow easier to follow.
+>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+>  target/ppc/mmu_common.c | 71 ++++++++++++++++++++---------------------
+>  1 file changed, 34 insertions(+), 37 deletions(-)
+>
+> diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+> index 181273579b..9d337a73ba 100644
+> --- a/target/ppc/mmu_common.c
+> +++ b/target/ppc/mmu_common.c
+> @@ -405,47 +405,44 @@ static int mmu6xx_get_physical_address(CPUPPCState =
+*env, mmu_ctx_t *ctx,
+>      ret =3D -1;
+>      if (!ds) {
+>          /* Check if instruction fetch is allowed, if needed */
+> -        if (type !=3D ACCESS_CODE || ctx->nx =3D=3D 0) {
+> -            /* Page address translation */
+> -            qemu_log_mask(CPU_LOG_MMU, "htab_base " HWADDR_FMT_plx
+> -                    " htab_mask " HWADDR_FMT_plx
+> -                    " hash " HWADDR_FMT_plx "\n",
+> -                    ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu), =
+hash);
+> -            ctx->hash[0] =3D hash;
+> -            ctx->hash[1] =3D ~hash;
+> -
+> -            /* Initialize real address with an invalid value */
+> -            ctx->raddr =3D (hwaddr)-1ULL;
+> -            /* Software TLB search */
+> -            ret =3D ppc6xx_tlb_check(env, ctx, eaddr, access_type);
+> +        if (type =3D=3D ACCESS_CODE && ctx->nx) {
+> +            qemu_log_mask(CPU_LOG_MMU, "No access allowed\n");
+> +            return -3;
+> +        }
 
+Function is already inconsistent with assigning ret and falling
+through to the return ret at the end vs returning immediately, so
+okay since you're tidying it up.
 
-On 5/7/24 12:44, Peter Maydell wrote:
-> On Fri, 3 May 2024 at 13:43, Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->> Hi,
->>
->> In this RFC I want to check with Gerd and others if it's ok to add a PCI
->> id for the RISC-V IOMMU device. It's currently under review in [1]. The
->> idea is to fold this patch into the RISC-V IOMMU series if we're all ok
->> with this change.
-> 
-> My question here would be "why is this risc-v specific?" (and more
-> generally "what is this for?" -- the cover letter and patch and
-> documentation page provide almost no information about what this
-> device is and why it needs to exist rather than using either
-> virtio-iommu or else a model of a real hardware IOMMU.)
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-The RISC-V IOMMU device emulation under review ([1]) is a reference implementation of
-the riscv-iommu spec [2]. AFAIK it is similar to what we already have with aarch64 'smmuv3'
-'virt' bus, i.e. an impl of ARM's SMMUv3 that isn't tied to a specific vendor.
+> +        /* Page address translation */
+> +        qemu_log_mask(CPU_LOG_MMU, "htab_base " HWADDR_FMT_plx " htab_ma=
+sk "
+> +                      HWADDR_FMT_plx " hash " HWADDR_FMT_plx "\n",
+> +                      ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu)=
+, hash);
+> +        ctx->hash[0] =3D hash;
+> +        ctx->hash[1] =3D ~hash;
+> +
+> +        /* Initialize real address with an invalid value */
+> +        ctx->raddr =3D (hwaddr)-1ULL;
+> +        /* Software TLB search */
+> +        ret =3D ppc6xx_tlb_check(env, ctx, eaddr, access_type);
+>  #if defined(DUMP_PAGE_TABLES)
+> -            if (qemu_loglevel_mask(CPU_LOG_MMU)) {
+> -                CPUState *cs =3D env_cpu(env);
+> -                hwaddr curaddr;
+> -                uint32_t a0, a1, a2, a3;
+> -
+> -                qemu_log("Page table: " HWADDR_FMT_plx " len " HWADDR_FM=
+T_plx
+> -                         "\n", ppc_hash32_hpt_base(cpu),
+> -                         ppc_hash32_hpt_mask(cpu) + 0x80);
+> -                for (curaddr =3D ppc_hash32_hpt_base(cpu);
+> -                     curaddr < (ppc_hash32_hpt_base(cpu)
+> -                                + ppc_hash32_hpt_mask(cpu) + 0x80);
+> -                     curaddr +=3D 16) {
+> -                    a0 =3D ldl_phys(cs->as, curaddr);
+> -                    a1 =3D ldl_phys(cs->as, curaddr + 4);
+> -                    a2 =3D ldl_phys(cs->as, curaddr + 8);
+> -                    a3 =3D ldl_phys(cs->as, curaddr + 12);
+> -                    if (a0 !=3D 0 || a1 !=3D 0 || a2 !=3D 0 || a3 !=3D 0=
+) {
+> -                        qemu_log(HWADDR_FMT_plx ": %08x %08x %08x %08x\n=
+",
+> -                                 curaddr, a0, a1, a2, a3);
+> -                    }
+> +        if (qemu_loglevel_mask(CPU_LOG_MMU)) {
+> +            CPUState *cs =3D env_cpu(env);
+> +            hwaddr curaddr;
+> +            uint32_t a0, a1, a2, a3;
+> +
+> +            qemu_log("Page table: " HWADDR_FMT_plx " len " HWADDR_FMT_pl=
+x "\n",
+> +                     ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu) =
++ 0x80);
+> +            for (curaddr =3D ppc_hash32_hpt_base(cpu);
+> +                 curaddr < (ppc_hash32_hpt_base(cpu)
+> +                            + ppc_hash32_hpt_mask(cpu) + 0x80);
+> +                 curaddr +=3D 16) {
+> +                a0 =3D ldl_phys(cs->as, curaddr);
+> +                a1 =3D ldl_phys(cs->as, curaddr + 4);
+> +                a2 =3D ldl_phys(cs->as, curaddr + 8);
+> +                a3 =3D ldl_phys(cs->as, curaddr + 12);
+> +                if (a0 !=3D 0 || a1 !=3D 0 || a2 !=3D 0 || a3 !=3D 0) {
+> +                    qemu_log(HWADDR_FMT_plx ": %08x %08x %08x %08x\n",
+> +                             curaddr, a0, a1, a2, a3);
+>                  }
+>              }
+> -#endif
+> -        } else {
+> -            qemu_log_mask(CPU_LOG_MMU, "No access allowed\n");
+> -            ret =3D -3;
+>          }
+> +#endif
+>      } else {
+>          qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
+>          /* Direct-store segment : absolutely *BUGGY* for now */
 
-The difference here is that the riscv-iommu spec, ratified by RISC-V International (RVI),
-predicts that the device could be implemented as a PCIe device. But RVI didn't bother
-assigning a PCI ID for their reference IOMMU. The existing implementation in [1] is using
-a Rivos PCI ID that we're treating as a placeholder only. We need an ID that reflects that
-this is a device that adheres to the riscv-iommu spec, not to an IOMMU of any particular
-vendor.
-
-Since RVI doesn't provide a PCI ID for it we went to Red Hat, and they were kind enough
-to give us a PCI ID for the RISC-V IOMMU reference device.
-
-I'll do a proper job this time and add all this context in the commit msg. Including a
-proper shout-out to Gerd and Red Hat.
-
-
-
-Thanks,
-
-
-Daniel
-
-
-[1] https://lore.kernel.org/qemu-riscv/20240307160319.675044-1-dbarboza@ventanamicro.com/
-[2] https://github.com/riscv-non-isa/riscv-iommu/releases/tag/v1.0.0
-
-> 
-> thanks
-> -- PMM
 
