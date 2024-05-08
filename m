@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8C8BFD2E
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C4A8BFD34
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4gS6-0005bD-KS; Wed, 08 May 2024 08:31:18 -0400
+	id 1s4gS7-0005bf-Tv; Wed, 08 May 2024 08:31:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1s4gS3-0005Zv-7U; Wed, 08 May 2024 08:31:15 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1s4gS5-0005bA-Lb; Wed, 08 May 2024 08:31:17 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1s4gS0-00039d-OV; Wed, 08 May 2024 08:31:14 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2b5f3e20615so1259351a91.1; 
- Wed, 08 May 2024 05:31:11 -0700 (PDT)
+ id 1s4gS3-00039t-Vh; Wed, 08 May 2024 08:31:17 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1e651a9f3ffso22166615ad.1; 
+ Wed, 08 May 2024 05:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715171471; x=1715776271; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1lsDAQRXh7yx6cHADQ4jcz0kpWjTe153NCu8REQVIjQ=;
- b=MMey56Z8MfaL9JySvJMiy91W9xLLGzVU5YQWdBeTdvlNda3zGPOfH69OfDDkFj3lV+
- Y9Kxog9gY2+G7y9uNmwSjxVt9WgGJe7Fnc+HkC5PnTXdMB4bmufF0SxUxzieW/wXK/aI
- yRi7AgPrq3/KzE7ji9qlGmC9Ze8iP3H2P9YjlzuQm3yHlcyrxum0JR9OpHBqcdE4ICLR
- v7y2FasOJgIyLTA5DtJACGf+J/gUIxN7luY2kTBJ2tFPdeQVurnoNtnRLy/7Mwdarm8C
- kILUY4t3U23wYpckk4zyxgIgwjPlcjVtXT/JHOV3nbGL4S2Rwq2+FKHizQODuEcGZvOl
- mMbA==
+ d=gmail.com; s=20230601; t=1715171474; x=1715776274; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=41zciqobW1lSQYD67CMpHII/+O0mLdb6RkZbAdkYnvw=;
+ b=aWQpjIWgUwGFPb5a8dylvy6UO1mWnn3SXcPHXFlddfQ7UzaCz419gYza2QW2Xa48ej
+ ZzQRpuPMFtruZhuXrqVIk7l8UIPkwsmka7v2qFA8i1YX0XND5TJ2k2MZZ0IJTQS5bWtJ
+ 6ptex7yjwGyaHDiv5YORCCANIwcCGaueFcncb93IRFm4h6gP55C/haAoRZUxdOD46oeP
+ zhbLk3ovogYQPWxigXwny2jWHgATeOpiKapYf/3whRC4fZe9EAzUBzUEaZ2IKzJqhU13
+ 9vygKat985uMB/k3Wx+KtsWlAgilX5hrFqM7RzCleMjvCm++paoxHvkq8dyByGHqQXR7
+ IOLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715171471; x=1715776271;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1lsDAQRXh7yx6cHADQ4jcz0kpWjTe153NCu8REQVIjQ=;
- b=Eb/p0TPxUGvN7q/g5CaM2ZYK7u1nYXuMFuacrO43SVnfuHvByJdY2G0FzR+3P7mNMo
- zeVuj+8zy2aZG3dYHYZfKRxRTnf2Z+0ZJyqPr/Pzez98DLVa3pqFp2asWm/ylb/zjzOE
- W2vFAIB6aDYIS4Pybb48hm/K+NwwI4z4zt7DPLinJchRicOLTJPmz9OcJCz9ViiUHE+A
- G5Aw9hremyggKl8RIKmnS5nzwqszCun7xnDLhWz08QCNSsFOu1LTiWWHNMo8ugm0ejlL
- E8vDHRPmTi42bV3N20g/vC+Eo6xR3rKK16VwjNIL97xDs5NzATEY8iawy5TxLnMeFfJH
- lxxA==
+ d=1e100.net; s=20230601; t=1715171474; x=1715776274;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=41zciqobW1lSQYD67CMpHII/+O0mLdb6RkZbAdkYnvw=;
+ b=bIfOcGvKh0OExYVq9k9rfiPU+HpI5Y6u7rK2i0oboYUINUgDaPIu437amjSmopq6X1
+ jFmiZDZMFJHGJXYv5f6262L28tG7y0wbraNicZ9PKQ+VXpXt0MHbUTF8u5vgrx6q39YG
+ D3b2+cox2D1aPN2dd3R0VwwmoMS5Nx8OzCFZEjpJZ9AMadFvbCSIYPxihLslEeVTOJYf
+ rowsdaKIacrqQFvFWWK65Z7/qq5yMyrtLGIsBALvZIX8trIb9SfpWr5XsISA8R8huViu
+ zPNgekZBSfO3Oiw1Fwdanncipq2Z8kFY4IrjjVWwN70rg9XTHkuPhCdAspyCc8HAFdaB
+ wV4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWG/cth88Vn0Mkd9oDWv0WQCw8bispDwYP8yJ888FZHNZlH9gh4XUG/lOA0ZKwDBxCJWLfPeoP1pD9pQ5uTvRxt5MCRmSM=
-X-Gm-Message-State: AOJu0YxaZq6X3Crpa+AoK11tTyJoOIOoEY5S2eoZpxNHsLO5yYZXecCl
- lOQFz+knFKtQHhyQaoQcyMU+bWOmerSBTWDEosAicKefS8gowxVT
-X-Google-Smtp-Source: AGHT+IERRKvlt4f/29ek77AzCX6pmv4lyPX0eGjM/YSzIf7pA+1BQmUbWOx+jcKr3GE2wEDMxGppwQ==
-X-Received: by 2002:a17:90a:a90:b0:2a4:e9d:9888 with SMTP id
- 98e67ed59e1d1-2b6165a3afdmr2333754a91.16.1715171470950; 
- Wed, 08 May 2024 05:31:10 -0700 (PDT)
+ AJvYcCVpFkdJ8nZutuZ5l6HqF4JttoIqfuPa8o9xy192Z5vVT0Y8junc1+5VbjrjT7boKspIryuwgtXCvsbzuKUCXvEwOHzMZoo=
+X-Gm-Message-State: AOJu0YyR/BwF2pOeJzJ67L0Zx5lx8J2fb6WlQQsu8xPqd+oS/xfZA89X
+ T6SFya2r39ME0nas16Z0+o67TKtxZghT+69gzNnXSQiPOJ7ivq42R+aAWQ==
+X-Google-Smtp-Source: AGHT+IGNcVh4SAxQDXmWeZr40KH95b2x0M7A7hh1Zzq+UlNU4mzN1qV6EhOobm6wZCrX14M6J1c/1w==
+X-Received: by 2002:a17:902:ce8a:b0:1e1:1791:3681 with SMTP id
+ d9443c01a7336-1eeb0796948mr29718035ad.61.1715171473939; 
+ Wed, 08 May 2024 05:31:13 -0700 (PDT)
 Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
- y12-20020a17090a134c00b002b62079c52fsm1310984pjf.26.2024.05.08.05.31.10
+ b3-20020a170902d30300b001e2a479954dsm11741336plc.181.2024.05.08.05.31.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 May 2024 05:31:10 -0700 (PDT)
+ Wed, 08 May 2024 05:31:13 -0700 (PDT)
 From: Minwoo Im <minwoo.im.dev@gmail.com>
 To: Klaus Jensen <its@irrelevant.dk>,
 	Keith Busch <kbusch@kernel.org>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Minwoo Im <minwoo.im@samsung.com>, Minwoo Im <minwoo.im.dev@gmail.com>
-Subject: [PATCH v3 0/4] hw/nvme: FDP and SR-IOV enhancements
-Date: Wed,  8 May 2024 21:31:03 +0900
-Message-Id: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
+ Minwoo Im <minwoo.im@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
+Subject: [PATCH v3 1/4] hw/nvme: add Identify Endurance Group List
+Date: Wed,  8 May 2024 21:31:04 +0900
+Message-Id: <20240508123107.87919-2-minwoo.im.dev@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
+References: <20240508123107.87919-1-minwoo.im.dev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=minwoo.im.dev@gmail.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=minwoo.im.dev@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,69 +92,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+From: Minwoo Im <minwoo.im@samsung.com>
 
-This patchset has rebased on the latest master and replaced 3rd patch
-to one which allocates a dynamic array for secondary controller list
-based on the maximum number of VFs (sriov_max_vfs) rather than a static
-size of static array as Klaus suggested.  Rest of the patchset are the
-same with the previous one.
+Commit 73064edfb864 ("hw/nvme: flexible data placement emulation")
+intorudced NVMe FDP feature to nvme-subsys and nvme-ctrl with a
+single endurance group #1 supported.  This means that controller should
+return proper identify data to host with Identify Endurance Group List
+(CNS 19h).  But, yes, only just for the endurance group #1.  This patch
+allows host applications to ask for which endurance group is available
+and utilize FDP through that endurance group.
 
-This patchset has been tested with the following simple script more than
-127 VFs.
-
-	-device nvme-subsys,id=subsys0 \
-	-device ioh3420,id=rp2,multifunction=on,chassis=12 \
-	-device nvme,serial=foo,id=nvme0,bus=rp2,subsys=subsys0,mdts=9,msix_qsize=130,max_ioqpairs=260,sriov_max_vfs=129,sriov_vq_flexible=258,sriov_vi_flexible=129 \
-
-	$ cat nvme-enable-vfs.sh
-	#!/bin/bash
-
-	nr_vfs=129
-
-	for (( i=1; i<=$nr_vfs; i++ ))
-	do
-		nvme virt-mgmt /dev/nvme0 -c $i -r 0 -a 8 -n 2
-		nvme virt-mgmt /dev/nvme0 -c $i -r 1 -a 8 -n 1
-	done
-
-	bdf="0000:01:00.0"
-	sysfs="/sys/bus/pci/devices/$bdf"
-	nvme="/sys/bus/pci/drivers/nvme"
-
-	echo 0 > $sysfs/sriov_drivers_autoprobe
-	echo $nr_vfs > $sysfs/sriov_numvfs
-
-	for (( i=1; i<=$nr_vfs; i++ ))
-	do
-		nvme virt-mgmt /dev/nvme0 -c $i -a 9
-
-		echo "nvme" > $sysfs/virtfn$(($i-1))/driver_override
-		bdf="$(basename $(readlink $sysfs/virtfn$(($i-1))))"
-		echo $bdf > $nvme/bind
-	done
-
-Thanks,
-
-v3:
- - Replace [3/4] patch with one allocating a dyanmic array of secondary
-   controller list rather than a static array with a fixed size of
-   maximum number of VF to support (Suggested by Klaus).
-v2:                                                     
- - Added [2/4] commit to fix crash due to entry overflow
-
-Minwoo Im (4):
-  hw/nvme: add Identify Endurance Group List
-  hw/nvme: separate identify data for sec. ctrl list
-  hw/nvme: Allocate sec-ctrl-list as a dynamic array
-  hw/nvme: Expand VI/VQ resource to uint32
-
- hw/nvme/ctrl.c       | 59 +++++++++++++++++++++++++++-----------------
- hw/nvme/nvme.h       | 19 +++++++-------
- hw/nvme/subsys.c     | 10 +++++---
+Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+---
+ hw/nvme/ctrl.c       | 22 ++++++++++++++++++++++
  include/block/nvme.h |  1 +
- 4 files changed, 54 insertions(+), 35 deletions(-)
+ 2 files changed, 23 insertions(+)
 
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d238346..18672f66193f 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -5629,6 +5629,26 @@ static uint16_t nvme_identify_nslist_csi(NvmeCtrl *n, NvmeRequest *req,
+     return nvme_c2h(n, list, data_len, req);
+ }
+ 
++static uint16_t nvme_endurance_group_list(NvmeCtrl *n, NvmeRequest *req)
++{
++    uint16_t list[NVME_CONTROLLER_LIST_SIZE] = {};
++    uint16_t *nr_ids = &list[0];
++    uint16_t *ids = &list[1];
++    uint16_t endgid = le32_to_cpu(req->cmd.cdw11) & 0xffff;
++
++    /*
++     * The current nvme-subsys only supports Endurance Group #1.
++     */
++    if (!endgid) {
++        *nr_ids = 1;
++        ids[0] = 1;
++    } else {
++        *nr_ids = 0;
++    }
++
++    return nvme_c2h(n, list, sizeof(list), req);
++}
++
+ static uint16_t nvme_identify_ns_descr_list(NvmeCtrl *n, NvmeRequest *req)
+ {
+     NvmeNamespace *ns;
+@@ -5744,6 +5764,8 @@ static uint16_t nvme_identify(NvmeCtrl *n, NvmeRequest *req)
+         return nvme_identify_nslist(n, req, false);
+     case NVME_ID_CNS_CS_NS_ACTIVE_LIST:
+         return nvme_identify_nslist_csi(n, req, true);
++    case NVME_ID_CNS_ENDURANCE_GROUP_LIST:
++        return nvme_endurance_group_list(n, req);
+     case NVME_ID_CNS_CS_NS_PRESENT_LIST:
+         return nvme_identify_nslist_csi(n, req, false);
+     case NVME_ID_CNS_NS_DESCR_LIST:
+diff --git a/include/block/nvme.h b/include/block/nvme.h
+index bb231d0b9ad0..7c77d38174a7 100644
+--- a/include/block/nvme.h
++++ b/include/block/nvme.h
+@@ -1074,6 +1074,7 @@ enum NvmeIdCns {
+     NVME_ID_CNS_CTRL_LIST             = 0x13,
+     NVME_ID_CNS_PRIMARY_CTRL_CAP      = 0x14,
+     NVME_ID_CNS_SECONDARY_CTRL_LIST   = 0x15,
++    NVME_ID_CNS_ENDURANCE_GROUP_LIST  = 0x19,
+     NVME_ID_CNS_CS_NS_PRESENT_LIST    = 0x1a,
+     NVME_ID_CNS_CS_NS_PRESENT         = 0x1b,
+     NVME_ID_CNS_IO_COMMAND_SET        = 0x1c,
 -- 
 2.34.1
 
