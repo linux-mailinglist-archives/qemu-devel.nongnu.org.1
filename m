@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF4B8BFDFB
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A3D8BFDFA
 	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 15:07:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4h0k-000817-15; Wed, 08 May 2024 09:07:06 -0400
+	id 1s4h0i-0007ub-8n; Wed, 08 May 2024 09:07:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s4h0X-0007rZ-LQ
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:54 -0400
-Received: from fout1-smtp.messagingengine.com ([103.168.172.144])
+ id 1s4h0W-0007qD-75
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:53 -0400
+Received: from fhigh5-smtp.messagingengine.com ([103.168.172.156])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s4h0T-0006OZ-J4
- for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:52 -0400
+ id 1s4h0U-0006Od-8V
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 09:06:51 -0400
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailfout.nyi.internal (Postfix) with ESMTP id 6CD74138039D;
- Wed,  8 May 2024 09:06:47 -0400 (EDT)
+ by mailfhigh.nyi.internal (Postfix) with ESMTP id 95ECF11400A9;
+ Wed,  8 May 2024 09:06:48 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Wed, 08 May 2024 09:06:47 -0400
+ by compute4.internal (MEProxy); Wed, 08 May 2024 09:06:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm1; t=1715173607; x=1715260007; bh=jn
- GnVyVaSX82w74g6koZ59nwTqEKZcESW9WuE/D2ggI=; b=nFiBLxpvyseDsowuMg
- UoDaa18pk1m5e6C0fLDYmbYyIbQp2EbdCiIQaAxYumH9y5OVCkme2+s2i0NjZNrL
- XgRxmxjfS3So3Rhq/jGr4A/RHSoMoPukGCvRvBaBWn+5K7+1TIteHq8WP4HPD9Ta
- i39ZorN5IK1JJt2ucgK2k7XwOdvCeanuvAqGyCmTE/JobP6LXOmaMTr/SoFTJLnS
- /6+yYUTnXuxWMQduyWYtSNp9CpW9HBpmYN6isSgc+DMu1OeX6MUfPIK8OElQihk0
- ni9FcJmT08EhPzcpTIKKqciSh42yqN/7+PzizEGzfA/9I81PUjvFAZsahfu1HDSS
- FOhg==
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to; s=fm1; t=1715173608;
+ x=1715260008; bh=g5AGJQsCRBWM46vr8fanAwmhzs3usL3t2dVss5J1yqQ=; b=
+ XDt1HkWKOYo40TcxP3MpY9za1/CtSkmGFDhoCgdGZqlN1d8RP9smgT6/+HBNIt6N
+ UdhTNs3Djq4FLwaakQa9UIH2TxIrV0iTCwfvtUPD/1qbcLwpvnH+9xzJ6ja9D43/
+ mxxzw7a3WmNP7zuEx2EUqYhKYLBwfViLqFzmvOq36LlE4UeUfHi926VN179J1UuF
+ VXHbZ+55mSzJmRcqlGHAQXS36vdE7eomzDU1XuocdnDL2ycaSetX+DsQnawIq0p/
+ 4IF4Lcfa+wEONtbWceR3SZ1xKOngD8H5B8qYfOWaoPbXutki/2D15OY1PMJswTwX
+ jutOtzeQH6kPbJrJz/G8Hw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1715173607; x=1715260007; bh=jnGnVyVaSX82w
- 74g6koZ59nwTqEKZcESW9WuE/D2ggI=; b=EOkUK31E2TP59Jla/HvRand+226kE
- JFphZ5sY3kjGP2ta5B1ibQJBpXx3OwBfzGSgDLJ+fuve984+xSHJ7uR9iYg94hCl
- YlsaWbmCkrMayjObiwyQWWN6x18Ism7aS6nHGdE40rqeeMtWz/h78f86TNEKrR2+
- TQn5zNANe3/enANO2OARiZ3fwZlnvXQHt8ZUbR/FK9zAZoEkXoUm7+6WZqjuTDWu
- VNDQLTOYxdLd6iX6gT5VnPHruTaR2PQWvVcSER4w3WJ0cCY3GIQvDg1TFr7rv5Cw
- ZkkgkuOvtQvtrmJ6hX2NMfcik/mDG3iPfcS6JsuU2CqT6pU/Ft2R8GXHg==
-X-ME-Sender: <xms:5ng7Zvd1MVDI2AzKFZ7kXxpewTzO57AOygrdnV9ZCYMLomCrFARYDQ>
- <xme:5ng7ZlNAtc7hrQWwBtxtgIwImocmz-rXl1WfJU7ybaTJ2c3K6gjIXN_qnYAe8umXs
- qAnR3a5-cE1sGIabqw>
-X-ME-Received: <xmr:5ng7ZohN2xj_uJkTc3oWb49T2O_VKqgJjeTU0YBWuEaTiiiycUyDygc>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1715173608; x=
+ 1715260008; bh=g5AGJQsCRBWM46vr8fanAwmhzs3usL3t2dVss5J1yqQ=; b=X
+ UBCXxx1vokAUF0nkwzgnT4TkoIu0MM3mOtqpK1dje46J3IfWoz+x37GR+DOnXo5v
+ 3dhPNR16FidtRiycZP5XazbCN3dThHeYzZ4w0XXQ0dqjvACSKaIoGbyd4vuwbiQ4
+ jPrcFd5DISq73G4Lw3tzqQh83Q2EVFu7ImNHNrl6wr4IECu2XbRYfwJogbk5Izrb
+ afdebnDdjOu0ARH276AGxAagquU385Nx+XJGKnLq628NU0cTHRUMQxdkRELqwTjp
+ Dbg75ma6Alqz8u9AwGnt+bb56G9hzlG+8Re5b9ZL7iNSUCZ3slv6VQXenytW5SN+
+ 2Fn39xC1Tp9mUKqvFt/zQ==
+X-ME-Sender: <xms:6Hg7ZrEeMHA--Zax6iP-W-d93ZCeSgZ7n_EwflP0k5NgQR6OVBMGSA>
+ <xme:6Hg7ZoUzMhG3OgErkLIrL-sjiLozZli_Sx2P7FXEkF5w59XkDeI_4t51jhi6ia4vj
+ CBGIqhcBbrXgz6pL38>
+X-ME-Received: <xmr:6Hg7ZtLFpTjWwplkZlHEoPu36RfcGc-Wo20wlxstbFdvJH_A6YSaxjs>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeftddgheelucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
- nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
- ftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeugfegvdeuueejkeejteek
- kedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
- hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehf
- lhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:5ng7Zg-fS0v_OUPS8hDh2zY2tBboGGvKo8rUEn9zqQbPqJGQRTqluQ>
- <xmx:5ng7Zrv3MeAUJOIgZ3aX0WX4N8eNd5NHijeaFZx6fgDrM0mJ_Z4BWA>
- <xmx:5ng7ZvEYI2WRhd45v5eDllIZiWaLIvamaSbGSwOluMnzywHJsmWYVg>
- <xmx:5ng7ZiO2IwcmGmJq_v7-zglFfp7o-E_q8wGyNvoyk2jWvV_dOqBR_w>
- <xmx:53g7ZhUTledTonjVKrpVdb4GcBKSff61_NkSVbWuK9mNCsxwWPj6ILwg>
+ cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
+ gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+ cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
+ veegffegudekjeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:6Hg7ZpFSy8xb0Flm7uPequhAaew6DN8EhPB9Xs90MWM_FIMI6-d1tw>
+ <xmx:6Hg7ZhUysPa06AY7r4uZN4SdB5HQmFw3dZ9jbMGaTikRo4lR13c5cQ>
+ <xmx:6Hg7ZkPNRjjBIVzddyIdChkCOc72FJrz3CWSwEQnSRrCIqGS7Y6kXw>
+ <xmx:6Hg7Zg0p8VgIX9s8n1t8sdiOwDR2PO-WZoXZv0omA58XTe6F8ofY7g>
+ <xmx:6Hg7ZvcOUCdiSdKbAjz815hJM7eN-fESz8P7Nl50IuH78YR0YrSOLEo9>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 May 2024 09:06:45 -0400 (EDT)
+ 8 May 2024 09:06:47 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH 0/5] hw/mips/loongson3_virt: Implement IPI support
-Date: Wed, 08 May 2024 14:06:45 +0100
-Message-Id: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
+Date: Wed, 08 May 2024 14:06:46 +0100
+Subject: [PATCH 1/5] hw/intc/loongarch_ipi: Remove pointless MAX_CPU check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOV4O2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDUwML3Zz8/Lz04vw8Y93MgkxdM9NUS8skE/NkEwMDJaCegqLUtMwKsHn
- RsbW1AJBj2iNfAAAA
+Message-Id: <20240508-loongson3-ipi-v1-1-1a7b67704664@flygoat.com>
+References: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
+In-Reply-To: <20240508-loongson3-ipi-v1-0-1a7b67704664@flygoat.com>
 To: qemu-devel@nongnu.org
 Cc: Huacai Chen <chenhuacai@kernel.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Song Gao <gaosong@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1851;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3108;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=RNpManGZDaFKesf/J/X1tS8+Fj/80EvRr5E7vS3L70U=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjTriufp056Ype4yO18dHiTKlnk3qf9vSuNsWccSd5+r6
- 7/Nd6zvKGVhEONgkBVTZAkRUOrb0HhxwfUHWX9g5rAygQxh4OIUgIn4rWP4pzxVftrPNraFXueK
- //RfndsbGzvzPtfEkgv7LE82HJDhOcDwT2dNeNa29nnxM1L+F7PM+C0y133e+eibBWJz+D7Nfj0
- nhREA
+ bh=yyui5VrB+HEHO5BEGR45OrgLwCnSb++bUDOf4iIbLDU=;
+ b=owGbwMvMwCHmXMhTe71c8zDjabUkhjTriudpEac2POuXYN8bdXRLUQpn+5FrM3OVHisY3vP7+
+ 87h6JyTHaUsDGIcDLJiiiwhAkp9GxovLrj+IOsPzBxWJpAhDFycAjCRuP8M/3P+rSmXKWGPTve+
+ zBW7RZm38vatjxoOOYwnz2omZU1Zc4Lhr9DCCSzF9/huOXjc2KZYpdmu4lUwY7V1VMC6jtaaRus
+ afgA=
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=103.168.172.144;
- envelope-from=jiaxun.yang@flygoat.com; helo=fout1-smtp.messagingengine.com
+Received-SPF: pass client-ip=103.168.172.156;
+ envelope-from=jiaxun.yang@flygoat.com; helo=fhigh5-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -115,50 +114,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+Since cpuid will be checked by ipi_getcpu anyway, there is
+no point to enforce MAX_CPU here.
 
-This series enabled IPI support for loongson3 virt board, loosely
-based on my previous work[1].
-It generalized loongarch_ipi device to share among both loongarch
-and MIPS machines. 
-
-Thanks
-
-[1]: https://lore.kernel.org/all/20230521102307.87081-1-jiaxun.yang@flygoat.com/
-
-To: qemu-devel@nongnu.org
-Cc: Song Gao <gaosong@loongson.cn>
+This also saved us from including loongarch board header.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
-Jiaxun Yang (5):
-      hw/intc/loongarch_ipi: Remove pointless MAX_CPU check
-      hw/intc/loongarch_ipi: Rename as loongson_ipi
-      hw/intc/loongson_ipi: Implement IOCSR address space for MIPS
-      hw/intc/loongson_ipi: Provide per core MMIO address spaces
-      hw/mips/loongson3_virt: Wire up loongson_ipi device
+ hw/intc/loongarch_ipi.c | 19 ++-----------------
+ hw/intc/trace-events    |  2 --
+ 2 files changed, 2 insertions(+), 19 deletions(-)
 
- MAINTAINERS                                        |   4 +
- hw/intc/Kconfig                                    |   2 +-
- hw/intc/loongarch_ipi.c                            |  19 +-
- hw/intc/loongson_ipi.c                             | 411 +++++++++++++++++++++
- hw/intc/meson.build                                |   2 +-
- hw/intc/trace-events                               |   8 +-
- hw/loongarch/Kconfig                               |   2 +-
- hw/loongarch/virt.c                                |   4 +-
- hw/mips/Kconfig                                    |   1 +
- hw/mips/loongson3_bootp.c                          |   2 -
- hw/mips/loongson3_bootp.h                          |   3 +
- hw/mips/loongson3_virt.c                           |  39 +-
- .../hw/intc/{loongarch_ipi.h => loongson_ipi.h}    |  14 +-
- include/hw/loongarch/virt.h                        |   2 +-
- 14 files changed, 475 insertions(+), 38 deletions(-)
----
-base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
-change-id: 20240508-loongson3-ipi-65e99b47c400
+diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+index a184112b0923..44b3b9c138d6 100644
+--- a/hw/intc/loongarch_ipi.c
++++ b/hw/intc/loongarch_ipi.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include "hw/boards.h"
+ #include "hw/sysbus.h"
+ #include "hw/intc/loongarch_ipi.h"
+ #include "hw/irq.h"
+@@ -13,9 +14,8 @@
+ #include "qapi/error.h"
+ #include "qemu/log.h"
+ #include "exec/address-spaces.h"
+-#include "hw/loongarch/virt.h"
+ #include "migration/vmstate.h"
+-#include "target/loongarch/internals.h"
++#include "target/loongarch/cpu.h"
+ #include "trace.h"
+ 
+ static MemTxResult loongarch_ipi_readl(void *opaque, hwaddr addr,
+@@ -122,11 +122,6 @@ static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
+     CPUState *cs;
+ 
+     cpuid = extract32(val, 16, 10);
+-    if (cpuid >= LOONGARCH_MAX_CPUS) {
+-        trace_loongarch_ipi_unsupported_cpuid("IOCSR_MAIL_SEND", cpuid);
+-        return MEMTX_DECODE_ERROR;
+-    }
+-
+     cs = ipi_getcpu(cpuid);
+     if (cs == NULL) {
+         return MEMTX_DECODE_ERROR;
+@@ -146,11 +141,6 @@ static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
+     CPUState *cs;
+ 
+     cpuid = extract32(val, 16, 10);
+-    if (cpuid >= LOONGARCH_MAX_CPUS) {
+-        trace_loongarch_ipi_unsupported_cpuid("IOCSR_ANY_SEND", cpuid);
+-        return MEMTX_DECODE_ERROR;
+-    }
+-
+     cs = ipi_getcpu(cpuid);
+     if (cs == NULL) {
+         return MEMTX_DECODE_ERROR;
+@@ -201,11 +191,6 @@ static MemTxResult loongarch_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+         break;
+     case IOCSR_IPI_SEND:
+         cpuid = extract32(val, 16, 10);
+-        if (cpuid >= LOONGARCH_MAX_CPUS) {
+-            trace_loongarch_ipi_unsupported_cpuid("IOCSR_IPI_SEND", cpuid);
+-            return MEMTX_DECODE_ERROR;
+-        }
+-
+         /* IPI status vector */
+         vector = extract8(val, 0, 5);
+         cs = ipi_getcpu(cpuid);
+diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+index 47340b5bc138..a979784f9bee 100644
+--- a/hw/intc/trace-events
++++ b/hw/intc/trace-events
+@@ -294,8 +294,6 @@ sh_intc_set(int id, int enable) "setting interrupt group %d to %d"
+ # loongarch_ipi.c
+ loongarch_ipi_read(unsigned size, uint64_t addr, uint64_t val) "size: %u addr: 0x%"PRIx64 "val: 0x%"PRIx64
+ loongarch_ipi_write(unsigned size, uint64_t addr, uint64_t val) "size: %u addr: 0x%"PRIx64 "val: 0x%"PRIx64
+-loongarch_ipi_unsupported_cpuid(const char *s, uint32_t cpuid) "%s unsupported cpuid 0x%" PRIx32
+-
+ # loongarch_pch_pic.c
+ loongarch_pch_pic_irq_handler(int irq, int level) "irq %d level %d"
+ loongarch_pch_pic_low_readw(unsigned size, uint64_t addr, uint64_t val) "size: %u addr: 0x%"PRIx64 "val: 0x%" PRIx64
 
-Best regards,
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.34.1
 
 
