@@ -2,92 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718758C07D1
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 036708C07E1
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4qph-0003Hf-7b; Wed, 08 May 2024 19:36:21 -0400
+	id 1s4qpT-0002gi-T8; Wed, 08 May 2024 19:36:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpb-0003Ak-Rd
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:15 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpQ-0002g9-2B
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:04 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpL-0002O1-Bm
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:15 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpN-0002PL-AD
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:03 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 239E1376F9;
- Wed,  8 May 2024 23:35:58 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id ED0F85D38D;
+ Wed,  8 May 2024 23:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
- b=KXxzqabKwXV6yA17SJIzDytukp0lm55dpNWGSa4UEyZcktfOZBGe0US5443soK3dVhiOq3
- AbKAVajCLwbK9XeIQNF7iB1AHushq979UJNm47014BKYdpYIEjlD7D3ooOrC96icF2oWwc
- NEAYdl9CTbm18RICgVsKWn7jozgIAGA=
+ bh=NC828tU6joOKcaR8xfW2xQsLwu3JPWLUWZIZkxbv6bU=;
+ b=1gx0moKMAtSUbXrsUB7l4ybBuGQkg9ge3IomOA2Q0J4R2BxmgG3tUlGWR5UC29oFrj4G3N
+ h0KrxFf2XKK3U6VNZqXQjZOoTAtYscE8Y4LvkG2/5HIcvh1zku1hreiSWcUsd7RHDMRF8h
+ 14nPtLQBUhJEzWe4Sjzr00ZyZiB1krk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211358;
+ s=susede2_ed25519; t=1715211360;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
- b=Gt3+1RMsZcprum7UevBLIIQC4bogMbuZk1aJ9ph+zLdB+PP4N4P05idOZvrR8c7Go6O5oK
- fRs8XoLII5RQT7CQ==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KXxzqabK;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gt3+1RMs
+ bh=NC828tU6joOKcaR8xfW2xQsLwu3JPWLUWZIZkxbv6bU=;
+ b=B3Lh7zikjMKgSryQe73PEjsWg34N8HwXlVVpyWoRtxzh7C9GKPZ/Ou5K15lF/qpJSebbkd
+ 97IJmjPV0CFPacBQ==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=fC5HHXg1;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7XI4X3At
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
- b=KXxzqabKwXV6yA17SJIzDytukp0lm55dpNWGSa4UEyZcktfOZBGe0US5443soK3dVhiOq3
- AbKAVajCLwbK9XeIQNF7iB1AHushq979UJNm47014BKYdpYIEjlD7D3ooOrC96icF2oWwc
- NEAYdl9CTbm18RICgVsKWn7jozgIAGA=
+ bh=NC828tU6joOKcaR8xfW2xQsLwu3JPWLUWZIZkxbv6bU=;
+ b=fC5HHXg1WXVbbKWw/MfPYJZe7LJ8sPwyJy+gOYypD1e/Zul/mHxf56JdJm5NLlr5C/2URp
+ qi30YwtvkzAnhCBJb2CehJIxCioeFLi/J3ZBYxEwv367qvjfWIETCDV3dHXJzXN+h+CrKv
+ q7x16e8498qfhUVXw4iajTNS12xm8GY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211358;
+ s=susede2_ed25519; t=1715211359;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
- b=Gt3+1RMsZcprum7UevBLIIQC4bogMbuZk1aJ9ph+zLdB+PP4N4P05idOZvrR8c7Go6O5oK
- fRs8XoLII5RQT7CQ==
+ bh=NC828tU6joOKcaR8xfW2xQsLwu3JPWLUWZIZkxbv6bU=;
+ b=7XI4X3AtGFxKOhvEo8jnU9Qat/ndKQg5YgooEXNySInJJTpPVZpcvJiIwMM8i6+dguWNXy
+ CHxn5ONaZpXqedDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9BB013A27;
- Wed,  8 May 2024 23:35:56 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8DCDF13A27;
+ Wed,  8 May 2024 23:35:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 8GXkH1wMPGZ7FQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:35:56 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8C8vFV4MPGZ7FQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:35:58 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL v2 07/13] migration: Remove 'skipped' field from MigrationStats
-Date: Wed,  8 May 2024 20:35:35 -0300
-Message-Id: <20240508233541.2403-8-farosas@suse.de>
+Subject: [PULL v2 08/13] migration: Remove 'inc' option from migrate command
+Date: Wed,  8 May 2024 20:35:36 -0300
+Message-Id: <20240508233541.2403-9-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240508233541.2403-1-farosas@suse.de>
 References: <20240508233541.2403-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 239E1376F9
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[];
@@ -105,13 +101,18 @@ X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
  RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
  DKIM_TRACE(0.00)[suse.de:+]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: ED0F85D38D
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -3.01
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,114 +129,505 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'skipped' field of the MigrationStats struct has been deprecated
-in 8.1. Time to remove it.
+The block incremental option for block migration has been deprecated
+in 8.2 in favor of using the block-mirror feature. Remove it now.
 
-Deprecation commit 7b24d32634 ("migration: skipped field is really
-obsolete.").
+Deprecation commit 40101f320d ("migration: migrate 'inc' command
+option is deprecated.").
 
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- docs/about/deprecated.rst       | 6 ------
- docs/about/removed-features.rst | 6 ++++++
- migration/migration-hmp-cmds.c  | 2 --
- migration/migration.c           | 2 --
- qapi/migration.json             | 8 --------
- 5 files changed, 6 insertions(+), 18 deletions(-)
+ docs/about/deprecated.rst       |  9 ------
+ docs/about/removed-features.rst | 14 +++++++++
+ hmp-commands.hx                 | 13 +++-----
+ migration/block.c               |  1 -
+ migration/migration-hmp-cmds.c  | 18 ++---------
+ migration/migration.c           | 24 +++++----------
+ migration/options.c             | 30 +-----------------
+ migration/options.h             |  5 ---
+ qapi/migration.json             | 54 +++++++--------------------------
+ 9 files changed, 39 insertions(+), 129 deletions(-)
 
 diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 03f8b1b655..94d3e53513 100644
+index 94d3e53513..1dfbd5fad4 100644
 --- a/docs/about/deprecated.rst
 +++ b/docs/about/deprecated.rst
-@@ -477,12 +477,6 @@ option).
+@@ -477,15 +477,6 @@ option).
  Migration
  ---------
  
--``skipped`` MigrationStats field (since 8.1)
--''''''''''''''''''''''''''''''''''''''''''''
+-``inc`` migrate command option (since 8.2)
+-''''''''''''''''''''''''''''''''''''''''''
 -
--``skipped`` field in Migration stats has been deprecated.  It hasn't
--been used for more than 10 years.
+-Use blockdev-mirror with NBD instead.
 -
- ``inc`` migrate command option (since 8.2)
+-As an intermediate step the ``inc`` functionality can be achieved by
+-setting the ``block-incremental`` migration parameter to ``true``.
+-But this parameter is also deprecated.
+-
+ ``blk`` migrate command option (since 8.2)
  ''''''''''''''''''''''''''''''''''''''''''
  
 diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 53ca08aba9..c4cb2692d0 100644
+index c4cb2692d0..7da4b3df14 100644
 --- a/docs/about/removed-features.rst
 +++ b/docs/about/removed-features.rst
-@@ -614,6 +614,12 @@ was superseded by ``sections``.
- Member ``section-size`` in the return value of ``query-sgx-capabilities``
- was superseded by ``sections``.
+@@ -620,6 +620,13 @@ was superseded by ``sections``.
+ Member ``skipped`` of the ``MigrationStats`` struct hasn't been used
+ for more than 10 years. Removed with no replacement.
  
-+``query-migrate`` return value member ``skipped`` (removed in 9.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++``migrate`` command option ``inc`` (removed in 9.1)
++'''''''''''''''''''''''''''''''''''''''''''''''''''
 +
-+Member ``skipped`` of the ``MigrationStats`` struct hasn't been used
-+for more than 10 years. Removed with no replacement.
++Use blockdev-mirror with NBD instead. See "QMP invocation for live
++storage migration with ``blockdev-mirror`` + NBD" in
++docs/interop/live-block-operations.rst for a detailed explanation.
 +
  Human Monitor Protocol (HMP) commands
  -------------------------------------
  
+@@ -680,6 +687,13 @@ This command didn't produce any output already. Removed with no replacement.
+ The ``singlestep`` command has been replaced by the ``one-insn-per-tb``
+ command, which has the same behaviour but a less misleading name.
+ 
++``migrate`` command ``-i`` option (removed in 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''
++
++Use blockdev-mirror with NBD instead. See "QMP invocation for live
++storage migration with ``blockdev-mirror`` + NBD" in
++docs/interop/live-block-operations.rst for a detailed explanation.
++
+ Host Architectures
+ ------------------
+ 
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 2e2a3bcf98..7978302949 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -909,26 +909,21 @@ ERST
+ 
+     {
+         .name       = "migrate",
+-        .args_type  = "detach:-d,blk:-b,inc:-i,resume:-r,uri:s",
+-        .params     = "[-d] [-b] [-i] [-r] uri",
++        .args_type  = "detach:-d,blk:-b,resume:-r,uri:s",
++        .params     = "[-d] [-b] [-r] uri",
+         .help       = "migrate to URI (using -d to not wait for completion)"
+ 		      "\n\t\t\t -b for migration without shared storage with"
+-		      " full copy of disk\n\t\t\t -i for migration without "
+-		      "shared storage with incremental copy of disk "
+-		      "(base image shared between src and destination)"
+-                      "\n\t\t\t -r to resume a paused migration",
++		      " full copy of disk\n\t\t\t -r to resume a paused migration",
+         .cmd        = hmp_migrate,
+     },
+ 
+ 
+ SRST
+-``migrate [-d] [-b] [-i]`` *uri*
++``migrate [-d] [-b]`` *uri*
+   Migrate to *uri* (using -d to not wait for completion).
+ 
+   ``-b``
+     for migration with full copy of disk
+-  ``-i``
+-    for migration with incremental copy of disk (base image is shared)
+ ERST
+ 
+     {
+diff --git a/migration/block.c b/migration/block.c
+index bae6e94891..87ec1a7e68 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -419,7 +419,6 @@ static int init_blk_migration(QEMUFile *f, Error **errp)
+         bmds->bulk_completed = 0;
+         bmds->total_sectors = sectors;
+         bmds->completed_sectors = 0;
+-        bmds->shared_base = migrate_block_incremental();
+ 
+         assert(i < num_bs);
+         bmds_bs[i].bmds = bmds;
 diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 23181bbee1..b6b2035f64 100644
+index b6b2035f64..8446c0721a 100644
 --- a/migration/migration-hmp-cmds.c
 +++ b/migration/migration-hmp-cmds.c
-@@ -105,8 +105,6 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
-                        info->ram->total >> 10);
-         monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
-                        info->ram->duplicate);
--        monitor_printf(mon, "skipped: %" PRIu64 " pages\n",
--                       info->ram->skipped);
-         monitor_printf(mon, "normal: %" PRIu64 " pages\n",
-                        info->ram->normal);
-         monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
+@@ -332,10 +332,6 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: %u ms\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_X_CHECKPOINT_DELAY),
+             params->x_checkpoint_delay);
+-        assert(params->has_block_incremental);
+-        monitor_printf(mon, "%s: %s\n",
+-            MigrationParameter_str(MIGRATION_PARAMETER_BLOCK_INCREMENTAL),
+-            params->block_incremental ? "on" : "off");
+         monitor_printf(mon, "%s: %u\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_MULTIFD_CHANNELS),
+             params->multifd_channels);
+@@ -616,10 +612,6 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
+         p->has_x_checkpoint_delay = true;
+         visit_type_uint32(v, param, &p->x_checkpoint_delay, &err);
+         break;
+-    case MIGRATION_PARAMETER_BLOCK_INCREMENTAL:
+-        p->has_block_incremental = true;
+-        visit_type_bool(v, param, &p->block_incremental, &err);
+-        break;
+     case MIGRATION_PARAMETER_MULTIFD_CHANNELS:
+         p->has_multifd_channels = true;
+         visit_type_uint8(v, param, &p->multifd_channels, &err);
+@@ -767,18 +759,12 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
+ {
+     bool detach = qdict_get_try_bool(qdict, "detach", false);
+     bool blk = qdict_get_try_bool(qdict, "blk", false);
+-    bool inc = qdict_get_try_bool(qdict, "inc", false);
+     bool resume = qdict_get_try_bool(qdict, "resume", false);
+     const char *uri = qdict_get_str(qdict, "uri");
+     Error *err = NULL;
+     g_autoptr(MigrationChannelList) caps = NULL;
+     g_autoptr(MigrationChannel) channel = NULL;
+ 
+-    if (inc) {
+-        warn_report("option '-i' is deprecated;"
+-                    " use blockdev-mirror with NBD instead");
+-    }
+-
+     if (blk) {
+         warn_report("option '-b' is deprecated;"
+                     " use blockdev-mirror with NBD instead");
+@@ -790,8 +776,8 @@ void hmp_migrate(Monitor *mon, const QDict *qdict)
+     }
+     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
+ 
+-    qmp_migrate(NULL, true, caps, !!blk, blk, !!inc, inc,
+-                 false, false, true, resume, &err);
++    qmp_migrate(NULL, true, caps, !!blk, blk, false, false,
++                true, resume, &err);
+     if (hmp_handle_error(mon, err)) {
+         return;
+     }
 diff --git a/migration/migration.c b/migration/migration.c
-index 289afa8d85..a4be929e40 100644
+index a4be929e40..11a13fa20c 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1156,8 +1156,6 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
-     info->ram->transferred = migration_transferred_bytes();
-     info->ram->total = ram_bytes_total();
-     info->ram->duplicate = stat64_get(&mig_stats.zero_pages);
--    /* legacy value.  It is not used anymore */
--    info->ram->skipped = 0;
-     info->ram->normal = stat64_get(&mig_stats.normal_pages);
-     info->ram->normal_bytes = info->ram->normal * page_size;
-     info->ram->mbps = s->mbps;
+@@ -1935,14 +1935,9 @@ bool migration_is_blocked(Error **errp)
+ }
+ 
+ /* Returns true if continue to migrate, or false if error detected */
+-static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+-                            bool resume, Error **errp)
++static bool migrate_prepare(MigrationState *s, bool blk, bool resume,
++                            Error **errp)
+ {
+-    if (blk_inc) {
+-        warn_report("parameter 'inc' is deprecated;"
+-                    " use blockdev-mirror with NBD instead");
+-    }
+-
+     if (blk) {
+         warn_report("parameter 'blk' is deprecated;"
+                     " use blockdev-mirror with NBD instead");
+@@ -2032,12 +2027,12 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+         }
+     }
+ 
+-    if (blk || blk_inc) {
++    if (blk) {
+         if (migrate_colo()) {
+             error_setg(errp, "No disk migration is required in COLO mode");
+             return false;
+         }
+-        if (migrate_block() || migrate_block_incremental()) {
++        if (migrate_block()) {
+             error_setg(errp, "Command options are incompatible with "
+                        "current migration capabilities");
+             return false;
+@@ -2048,10 +2043,6 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+         s->must_remove_block_options = true;
+     }
+ 
+-    if (blk_inc) {
+-        migrate_set_block_incremental(true);
+-    }
+-
+     if (migrate_init(s, errp)) {
+         return false;
+     }
+@@ -2061,8 +2052,8 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
+ 
+ void qmp_migrate(const char *uri, bool has_channels,
+                  MigrationChannelList *channels, bool has_blk, bool blk,
+-                 bool has_inc, bool inc, bool has_detach, bool detach,
+-                 bool has_resume, bool resume, Error **errp)
++                 bool has_detach, bool detach, bool has_resume, bool resume,
++                 Error **errp)
+ {
+     bool resume_requested;
+     Error *local_err = NULL;
+@@ -2101,8 +2092,7 @@ void qmp_migrate(const char *uri, bool has_channels,
+     }
+ 
+     resume_requested = has_resume && resume;
+-    if (!migrate_prepare(s, has_blk && blk, has_inc && inc,
+-                         resume_requested, errp)) {
++    if (!migrate_prepare(s, has_blk && blk, resume_requested, errp)) {
+         /* Error detected, put into errp */
+         return;
+     }
+diff --git a/migration/options.c b/migration/options.c
+index 239f5ecfb4..5b16d99bd9 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -486,7 +486,7 @@ bool migrate_caps_check(bool *old_caps, bool *new_caps, Error **errp)
+ 
+ #ifndef CONFIG_LIVE_BLOCK_MIGRATION
+     if (new_caps[MIGRATION_CAPABILITY_BLOCK]) {
+-        error_setg(errp, "QEMU compiled without old-style (blk/-b, inc/-i) "
++        error_setg(errp, "QEMU compiled without old-style (blk/-b) "
+                    "block migration");
+         error_append_hint(errp, "Use blockdev-mirror with NBD instead.\n");
+         return false;
+@@ -763,13 +763,6 @@ bool migrate_has_block_bitmap_mapping(void)
+     return s->parameters.has_block_bitmap_mapping;
+ }
+ 
+-bool migrate_block_incremental(void)
+-{
+-    MigrationState *s = migrate_get_current();
+-
+-    return s->parameters.block_incremental;
+-}
+-
+ uint32_t migrate_checkpoint_delay(void)
+ {
+     MigrationState *s = migrate_get_current();
+@@ -948,15 +941,6 @@ ZeroPageDetection migrate_zero_page_detection(void)
+     return s->parameters.zero_page_detection;
+ }
+ 
+-/* parameter setters */
+-
+-void migrate_set_block_incremental(bool value)
+-{
+-    MigrationState *s = migrate_get_current();
+-
+-    s->parameters.block_incremental = value;
+-}
+-
+ /* parameters helpers */
+ 
+ void block_cleanup_parameters(void)
+@@ -966,7 +950,6 @@ void block_cleanup_parameters(void)
+     if (s->must_remove_block_options) {
+         /* setting to false can never fail */
+         migrate_cap_set(MIGRATION_CAPABILITY_BLOCK, false, &error_abort);
+-        migrate_set_block_incremental(false);
+         s->must_remove_block_options = false;
+     }
+ }
+@@ -1020,8 +1003,6 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->downtime_limit = s->parameters.downtime_limit;
+     params->has_x_checkpoint_delay = true;
+     params->x_checkpoint_delay = s->parameters.x_checkpoint_delay;
+-    params->has_block_incremental = true;
+-    params->block_incremental = s->parameters.block_incremental;
+     params->has_multifd_channels = true;
+     params->multifd_channels = s->parameters.multifd_channels;
+     params->has_multifd_compression = true;
+@@ -1081,7 +1062,6 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_max_bandwidth = true;
+     params->has_downtime_limit = true;
+     params->has_x_checkpoint_delay = true;
+-    params->has_block_incremental = true;
+     params->has_multifd_channels = true;
+     params->has_multifd_compression = true;
+     params->has_multifd_zlib_level = true;
+@@ -1359,9 +1339,6 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+         dest->x_checkpoint_delay = params->x_checkpoint_delay;
+     }
+ 
+-    if (params->has_block_incremental) {
+-        dest->block_incremental = params->block_incremental;
+-    }
+     if (params->has_multifd_channels) {
+         dest->multifd_channels = params->multifd_channels;
+     }
+@@ -1502,11 +1479,6 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+         colo_checkpoint_delay_set();
+     }
+ 
+-    if (params->has_block_incremental) {
+-        warn_report("block migration is deprecated;"
+-                    " use blockdev-mirror with NBD instead");
+-        s->parameters.block_incremental = params->block_incremental;
+-    }
+     if (params->has_multifd_channels) {
+         s->parameters.multifd_channels = params->multifd_channels;
+     }
+diff --git a/migration/options.h b/migration/options.h
+index ab8199e207..fa5eb177df 100644
+--- a/migration/options.h
++++ b/migration/options.h
+@@ -67,7 +67,6 @@ bool migrate_cap_set(int cap, bool value, Error **errp);
+ const BitmapMigrationNodeAliasList *migrate_block_bitmap_mapping(void);
+ bool migrate_has_block_bitmap_mapping(void);
+ 
+-bool migrate_block_incremental(void);
+ uint32_t migrate_checkpoint_delay(void);
+ int migrate_compress_level(void);
+ int migrate_compress_threads(void);
+@@ -92,10 +91,6 @@ const char *migrate_tls_hostname(void);
+ uint64_t migrate_xbzrle_cache_size(void);
+ ZeroPageDetection migrate_zero_page_detection(void);
+ 
+-/* parameters setters */
+-
+-void migrate_set_block_incremental(bool value);
+-
+ /* parameters helpers */
+ 
+ bool migrate_params_check(MigrationParameters *params, Error **errp);
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 9feed413b5..2dd70f1c0e 100644
+index 2dd70f1c0e..b7d3ad015a 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -23,9 +23,6 @@
+@@ -839,13 +839,6 @@
+ # @x-checkpoint-delay: The delay time (in ms) between two COLO
+ #     checkpoints in periodic mode.  (Since 2.8)
  #
- # @duplicate: number of duplicate (zero) pages (since 1.2)
- #
--# @skipped: number of skipped zero pages.  Always zero, only provided
--#     for compatibility (since 1.5)
+-# @block-incremental: Affects how much storage is migrated when the
+-#     block migration capability is enabled.  When false, the entire
+-#     storage backing chain is migrated into a flattened image at the
+-#     destination; when true, only the active qcow2 layer is migrated
+-#     and the destination must already have access to the same backing
+-#     chain as was used on the source.  (since 2.10)
 -#
- # @normal: number of normal pages (since 1.2)
+ # @multifd-channels: Number of channels used to migrate data in
+ #     parallel.  This is the same number that the number of sockets
+ #     used for migration.  The default value is 2 (since 4.0)
+@@ -908,10 +901,9 @@
  #
- # @normal-bytes: number of normal bytes sent (since 1.2)
-@@ -63,16 +60,11 @@
- #     between 0 and @dirty-sync-count * @multifd-channels.  (since
- #     7.1)
+ # Features:
  #
--# Features:
+-# @deprecated: Member @block-incremental is deprecated.  Use
+-#     blockdev-mirror with NBD instead.  Members @compress-level,
+-#     @compress-threads, @decompress-threads and @compress-wait-thread
+-#     are deprecated because @compression is deprecated.
++# @deprecated: Members @compress-level, @compress-threads,
++#     @decompress-threads and @compress-wait-thread are deprecated
++#     because @compression is deprecated.
+ #
+ # @unstable: Members @x-checkpoint-delay and
+ #     @x-vcpu-dirty-limit-period are experimental.
+@@ -931,7 +923,6 @@
+            'tls-creds', 'tls-hostname', 'tls-authz', 'max-bandwidth',
+            'avail-switchover-bandwidth', 'downtime-limit',
+            { 'name': 'x-checkpoint-delay', 'features': [ 'unstable' ] },
+-           { 'name': 'block-incremental', 'features': [ 'deprecated' ] },
+            'multifd-channels',
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+@@ -1047,13 +1038,6 @@
+ # @x-checkpoint-delay: The delay time (in ms) between two COLO
+ #     checkpoints in periodic mode.  (Since 2.8)
+ #
+-# @block-incremental: Affects how much storage is migrated when the
+-#     block migration capability is enabled.  When false, the entire
+-#     storage backing chain is migrated into a flattened image at the
+-#     destination; when true, only the active qcow2 layer is migrated
+-#     and the destination must already have access to the same backing
+-#     chain as was used on the source.  (since 2.10)
 -#
--# @deprecated: Member @skipped is always zero since 1.5.3
+ # @multifd-channels: Number of channels used to migrate data in
+ #     parallel.  This is the same number that the number of sockets
+ #     used for migration.  The default value is 2 (since 4.0)
+@@ -1116,10 +1100,9 @@
+ #
+ # Features:
+ #
+-# @deprecated: Member @block-incremental is deprecated.  Use
+-#     blockdev-mirror with NBD instead.  Members @compress-level,
+-#     @compress-threads, @decompress-threads and @compress-wait-thread
+-#     are deprecated because @compression is deprecated.
++# @deprecated: Members @compress-level, @compress-threads,
++#     @decompress-threads and @compress-wait-thread are deprecated
++#     because @compression is deprecated.
+ #
+ # @unstable: Members @x-checkpoint-delay and
+ #     @x-vcpu-dirty-limit-period are experimental.
+@@ -1154,8 +1137,6 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': { 'type': 'bool',
+-                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+@@ -1279,13 +1260,6 @@
+ # @x-checkpoint-delay: the delay time between two COLO checkpoints.
+ #     (Since 2.8)
+ #
+-# @block-incremental: Affects how much storage is migrated when the
+-#     block migration capability is enabled.  When false, the entire
+-#     storage backing chain is migrated into a flattened image at the
+-#     destination; when true, only the active qcow2 layer is migrated
+-#     and the destination must already have access to the same backing
+-#     chain as was used on the source.  (since 2.10)
 -#
+ # @multifd-channels: Number of channels used to migrate data in
+ #     parallel.  This is the same number that the number of sockets
+ #     used for migration.  The default value is 2 (since 4.0)
+@@ -1348,10 +1322,9 @@
+ #
+ # Features:
+ #
+-# @deprecated: Member @block-incremental is deprecated.  Use
+-#     blockdev-mirror with NBD instead.  Members @compress-level,
+-#     @compress-threads, @decompress-threads and @compress-wait-thread
+-#     are deprecated because @compression is deprecated.
++# @deprecated: Members @compress-level, @compress-threads,
++#     @decompress-threads and @compress-wait-thread are deprecated
++#     because @compression is deprecated.
+ #
+ # @unstable: Members @x-checkpoint-delay and
+ #     @x-vcpu-dirty-limit-period are experimental.
+@@ -1383,8 +1356,6 @@
+             '*downtime-limit': 'uint64',
+             '*x-checkpoint-delay': { 'type': 'uint32',
+                                      'features': [ 'unstable' ] },
+-            '*block-incremental': { 'type': 'bool',
+-                                    'features': [ 'deprecated' ] },
+             '*multifd-channels': 'uint8',
+             '*xbzrle-cache-size': 'size',
+             '*max-postcopy-bandwidth': 'size',
+@@ -1736,8 +1707,6 @@
+ #
+ # @blk: do block migration (full disk copy)
+ #
+-# @inc: incremental disk copy migration
+-#
+ # @detach: this argument exists only for compatibility reasons and is
+ #     ignored by QEMU
+ #
+@@ -1745,8 +1714,8 @@
+ #
+ # Features:
+ #
+-# @deprecated: Members @inc and @blk are deprecated.  Use
+-#     blockdev-mirror with NBD instead.
++# @deprecated: Member @blk is deprecated.  Use blockdev-mirror with
++#     NBD instead.
+ #
  # Since: 0.14
+ #
+@@ -1814,7 +1783,6 @@
+   'data': {'*uri': 'str',
+            '*channels': [ 'MigrationChannel' ],
+            '*blk': { 'type': 'bool', 'features': [ 'deprecated' ] },
+-           '*inc': { 'type': 'bool', 'features': [ 'deprecated' ] },
+            '*detach': 'bool', '*resume': 'bool' } }
+ 
  ##
- { 'struct': 'MigrationStats',
-   'data': {'transferred': 'int', 'remaining': 'int', 'total': 'int' ,
-            'duplicate': 'int',
--           'skipped': { 'type': 'int', 'features': [ 'deprecated' ] },
-            'normal': 'int',
-            'normal-bytes': 'int', 'dirty-pages-rate': 'int',
-            'mbps': 'number', 'dirty-sync-count': 'int',
 -- 
 2.35.3
 
