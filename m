@@ -2,46 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4A08C07BA
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7838C07C8
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:39:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4qpJ-0002dw-LL; Wed, 08 May 2024 19:35:57 -0400
+	id 1s4qpX-0002qY-ML; Wed, 08 May 2024 19:36:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s4qpH-0002dR-Da; Wed, 08 May 2024 19:35:55 -0400
+ id 1s4qpT-0002id-Vq; Wed, 08 May 2024 19:36:07 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s4qpF-0002JJ-Ic; Wed, 08 May 2024 19:35:55 -0400
+ id 1s4qpS-0002Rt-5d; Wed, 08 May 2024 19:36:07 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 88EBA4E6030;
- Thu, 09 May 2024 01:35:51 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id A00224E642D;
+ Thu, 09 May 2024 01:36:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id XOGayBQsySuI; Thu,  9 May 2024 01:35:49 +0200 (CEST)
+ with ESMTP id 2LQX8M2CgcOS; Thu,  9 May 2024 01:36:02 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 95C4E4E6013; Thu, 09 May 2024 01:35:49 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 93E05746E3B;
- Thu, 09 May 2024 01:35:49 +0200 (CEST)
-Date: Thu, 9 May 2024 01:35:49 +0200 (CEST)
+ id AACF84E63BF; Thu, 09 May 2024 01:36:02 +0200 (CEST)
+Message-Id: <cover.1715209155.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Nicholas Piggin <npiggin@gmail.com>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH v3 33/33] target/ppc: Add a macro to check for page
- protection bit
-In-Reply-To: <D14ASGGTNSQB.3TX66EXAL001R@gmail.com>
-Message-ID: <7c4e51de-fdff-37b6-ffe5-2e7e26cffc17@eik.bme.hu>
-References: <cover.1715125376.git.balaton@eik.bme.hu>
- <a91a1b9455f88cbbeff2652fc4f44acd89e98215.1715125376.git.balaton@eik.bme.hu>
- <D14ASGGTNSQB.3TX66EXAL001R@gmail.com>
+Subject: [PATCH v4 00/33] Misc PPC exception and BookE MMU clean ups
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Date: Thu, 09 May 2024 01:36:02 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -64,86 +58,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 8 May 2024, Nicholas Piggin wrote:
-> On Wed May 8, 2024 at 10:15 AM AEST, BALATON Zoltan wrote:
->> Checking if a page protection bit is set for a given access type is a
->> common operation. Add a macro to avoid repeating the same check at
->> multiple places and also avoid a function call. As this relies on
->> access type and page protection bit values having certain relation
->> also add an assert to ensure that this assumption holds.
->>
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>  target/ppc/cpu_init.c    |  4 ++++
->>  target/ppc/internal.h    | 20 ++------------------
->>  target/ppc/mmu-hash32.c  |  6 +++---
->>  target/ppc/mmu-hash64.c  |  2 +-
->>  target/ppc/mmu-radix64.c |  2 +-
->>  target/ppc/mmu_common.c  | 26 +++++++++++++-------------
->>  6 files changed, 24 insertions(+), 36 deletions(-)
->>
->> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->> index 92c71b2a09..6639235544 100644
->> --- a/target/ppc/cpu_init.c
->> +++ b/target/ppc/cpu_init.c
->> @@ -7377,6 +7377,10 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
->>      resettable_class_set_parent_phases(rc, NULL, ppc_cpu_reset_hold, NULL,
->>                                         &pcc->parent_phases);
->>
->> +    /* CHECK_PROT_ACCESS relies on this MMU access and PAGE bits relation */
->> +    assert(MMU_DATA_LOAD == 0 && MMU_DATA_STORE == 1 && MMU_INST_FETCH == 2 &&
->> +           PAGE_READ == 1 && PAGE_WRITE == 2 && PAGE_EXEC == 4);
->> +
->
-> Can you use qemu_build_assert() for this?
+This series does some further clean up mostly around BookE MMU to
+untangle it from other MMU models. It also contains some other changes
+that I've come up with while working on this. The Simplify
+ppc_booke_xlate() part 1 and part 2 patches could be squashed together
+but left them separate for easier review.
 
-I've changed it to qemu_build_assert and seems to work.
+v4:
+- Add a (probably redundant) check for MPC8xx case in ppc_xlate so we
+don't have to care about it in lower levels
+- Detangle BookE related functions from mmu_ctx_t to avoid some used
+uninit work arounds and allow these to be moved out to mmu-booke.c
+- Some other tweaks asked during review
 
->>      cc->class_by_name = ppc_cpu_class_by_name;
->>      cc->has_work = ppc_cpu_has_work;
->>      cc->mmu_index = ppc_cpu_mmu_index;
->> diff --git a/target/ppc/internal.h b/target/ppc/internal.h
->> index 46176c4711..9880422ce3 100644
->> --- a/target/ppc/internal.h
->> +++ b/target/ppc/internal.h
->> @@ -234,24 +234,8 @@ void destroy_ppc_opcodes(PowerPCCPU *cpu);
->>  void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *ppc);
->>  const gchar *ppc_gdb_arch_name(CPUState *cs);
->>
->> -/**
->> - * prot_for_access_type:
->> - * @access_type: Access type
->> - *
->> - * Return the protection bit required for the given access type.
->> - */
->> -static inline int prot_for_access_type(MMUAccessType access_type)
->> -{
->> -    switch (access_type) {
->> -    case MMU_INST_FETCH:
->> -        return PAGE_EXEC;
->> -    case MMU_DATA_LOAD:
->> -        return PAGE_READ;
->> -    case MMU_DATA_STORE:
->> -        return PAGE_WRITE;
->> -    }
->> -    g_assert_not_reached();
->> -}
->> +/* Check if permission bit required for the access_type is set in prot */
->> +#define CHECK_PROT_ACCESS(prot, access_type) ((prot) & (1 << (access_type)))
->
-> We don't want to use a macro when an inline function will work.
->
-> Does the compiler not see the pattern and transform the existing
-> code into a shift? If it does then I would leave it. If not, then
-> just keep prot_for_access_type but make it a shift and maybe
-> comment the logic.
->
-> I would call the new function check_prot_for_access_type().
+v3:
+- Address review comments from Nick
+- Rebase on master
+- Squashed some patches together
+- Add some more patches I've done since last version
 
-That would be too long and does not fit on one line. Long names with 
-underscore and 80 char line limit does not go well together. I've left 
-this unchanged for now and wait for your reply on this.
+v2:
+- Fix user mode issue in patch 1 by keeping old behaviour for user mode
+- Add some more MMU clean up patches
 
 Regards,
 BALATON Zoltan
+
+
+BALATON Zoltan (33):
+  target/ppc: Fix gen_sc to use correct nip
+  target/ppc: Move patching nip from exception handler to helper_scv
+  target/ppc: Simplify syscall exception handlers
+  target/ppc: Remove unused helper
+  target/ppc/mmu_common.c: Move calculation of a value closer to its
+    usage
+  target/ppc/mmu_common.c: Remove unneeded local variable
+  target/ppc/mmu_common.c: Simplify checking for real mode
+  target/ppc/mmu_common.c: Drop cases for unimplemented MPC8xx MMU
+  target/ppc/mmu_common.c: Introduce mmu6xx_get_physical_address()
+  target/ppc/mmu_common.c: Move else branch to avoid large if block
+  target/ppc/mmu_common.c: Move some debug logging
+  target/ppc/mmu_common.c: Eliminate ret from
+    mmu6xx_get_physical_address()
+  target/ppc/mmu_common.c: Split out BookE cases before checking real
+    mode
+  target/ppc/mmu_common.c: Split off real mode cases in
+    get_physical_address_wtlb()
+  target/ppc/mmu_common.c: Inline and remove check_physical()
+  target/ppc/mmu_common.c: Fix misindented qemu_log_mask() calls
+  target/ppc/mmu_common.c: Deindent ppc_jumbo_xlate()
+  target/ppc/mmu_common.c: Replace hard coded constants in
+    ppc_jumbo_xlate()
+  target/ppc/mmu_common.c: Don't use mmu_ctx_t for
+    mmu40x_get_physical_address()
+  target/ppc/mmu_common.c: Don't use mmu_ctx_t in
+    mmubooke_get_physical_address()
+  target/ppc/mmu_common.c: Don't use mmu_ctx_t in
+    mmubooke206_get_physical_address()
+  target/ppc/mmu_common.c: Make get_physical_address_wtlb() static
+  target/ppc: Remove pp_check() and reuse ppc_hash32_pp_prot()
+  target/ppc/mmu_common.c: Remove BookE from direct store handling
+  target/ppc/mmu_common.c: Split off BookE handling from
+    ppc_jumbo_xlate()
+  target/ppc/mmu_common.c: Simplify ppc_booke_xlate() part 1
+  target/ppc/mmu_common.c: Simplify ppc_booke_xlate() part 2
+  target/ppc: Remove id_tlbs flag from CPU env
+  target/ppc: Split off common embedded TLB init
+  target/ppc/mmu-hash32.c: Drop a local variable
+  target/ppc/mmu-radix64.c: Drop a local variable
+  target/ppc: Add a macro to check for page protection bit
+  target/ppc: Move out BookE and related MMU functions from mmu_common.c
+
+ hw/ppc/pegasos2.c         |    2 +-
+ linux-user/ppc/cpu_loop.c |    2 -
+ target/ppc/cpu.h          |    9 +-
+ target/ppc/cpu_init.c     |   70 +--
+ target/ppc/excp_helper.c  |   67 +--
+ target/ppc/helper.h       |    2 -
+ target/ppc/helper_regs.c  |    1 -
+ target/ppc/internal.h     |   72 +--
+ target/ppc/meson.build    |    1 +
+ target/ppc/mmu-booke.c    |  532 +++++++++++++++++
+ target/ppc/mmu-booke.h    |   17 +
+ target/ppc/mmu-hash32.c   |   54 +-
+ target/ppc/mmu-hash64.c   |    2 +-
+ target/ppc/mmu-radix64.c  |    5 +-
+ target/ppc/mmu_common.c   | 1140 +++++++++----------------------------
+ target/ppc/mmu_helper.c   |   37 +-
+ target/ppc/translate.c    |   12 +-
+ 17 files changed, 903 insertions(+), 1122 deletions(-)
+ create mode 100644 target/ppc/mmu-booke.c
+ create mode 100644 target/ppc/mmu-booke.h
+
+-- 
+2.30.9
+
 
