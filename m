@@ -2,41 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A51B8BF4DA
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 05:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 547918BF4DE
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 05:12:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4XiI-00011X-IE; Tue, 07 May 2024 23:11:26 -0400
+	id 1s4XiG-0000zF-NV; Tue, 07 May 2024 23:11:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1s4XiC-0000y0-IB
- for qemu-devel@nongnu.org; Tue, 07 May 2024 23:11:20 -0400
+ id 1s4XiD-0000y5-1a
+ for qemu-devel@nongnu.org; Tue, 07 May 2024 23:11:21 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1s4Xi8-0006yS-PR
+ (envelope-from <maobibo@loongson.cn>) id 1s4Xi8-0006yT-Tj
  for qemu-devel@nongnu.org; Tue, 07 May 2024 23:11:20 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8BxFvBP7TpmxzAJAA--.24693S3;
+ by gateway (Coremail) with SMTP id _____8CxBetP7TpmyjAJAA--.13053S3;
  Wed, 08 May 2024 11:11:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxKORO7Tpm9hkVAA--.41182S2; 
- Wed, 08 May 2024 11:11:10 +0800 (CST)
+ AQAAf8AxKORO7Tpm9hkVAA--.41182S3; 
+ Wed, 08 May 2024 11:11:11 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	qemu-devel@nongnu.org
-Subject: [PATCH v4 0/5] Add migration test for loongarch64
-Date: Wed,  8 May 2024 11:11:05 +0800
-Message-Id: <20240508031110.2507477-1-maobibo@loongson.cn>
+Subject: [PATCH v4 1/5] hw/loongarch: Rename LOONGARCH_MACHINE with
+ LOONGARCH_VIRT_MACHINE
+Date: Wed,  8 May 2024 11:11:06 +0800
+Message-Id: <20240508031110.2507477-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240508031110.2507477-1-maobibo@loongson.cn>
+References: <20240508031110.2507477-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxKORO7Tpm9hkVAA--.41182S2
+X-CM-TRANSID: AQAAf8AxKORO7Tpm9hkVAA--.41182S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,55 +66,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Migration test case is added for loongarch64 here. Since compat machine
-type is required for migration test case, also compat machine qemu 9.0
-is added for loongarch virt machine.
+On LoongArch system, there is only virt machine type now, name
+LOONGARCH_MACHINE is confused, rename it with LOONGARCH_VIRT_MACHINE.
+Machine name about Other real hw boards can be added in future.
 
-Migration test case passes to run in both tcg and kvm mode with the
-patch, 54 migration subtests passes in 188 seconds.
-
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v3 ... v4:
-  1. Rename VIRT_MACHINE with LOONGARCH_VIRT_MACHINE since other
-architectures have the same machine type.
+ hw/loongarch/acpi-build.c   |  8 ++++----
+ hw/loongarch/boot.c         |  2 +-
+ hw/loongarch/virt.c         | 19 +++++++++----------
+ include/hw/loongarch/virt.h |  4 ++--
+ 4 files changed, 16 insertions(+), 17 deletions(-)
 
-v2 ... v3:
-  1. Refresh the patch based on the latest qemu version, solve the
-confliction issue.
-
-v1 ... v2:
-  1. Keep the default memory size unchanged with 1GB, only modify minimum
-memory size with 256MB
-  2. Remove tab char in file tests/migration/loongarch64/a-b-kernel.S
----
-Bibo Mao (5):
-  hw/loongarch: Rename LOONGARCH_MACHINE with LOONGARCH_VIRT_MACHINE
-  hw/loongarch: Rename LoongArchMachineState with
-    LoongArchVirtMachineState
-  hw/loongarch: Add compat machine for 9.0
-  hw/loongarch: Set minimium memory size as 256M
-  tests: Add migration test for loongarch64
-
- hw/loongarch/acpi-build.c                |  88 ++---
- hw/loongarch/boot.c                      |  10 +-
- hw/loongarch/fw_cfg.c                    |   2 +-
- hw/loongarch/fw_cfg.h                    |   2 +-
- hw/loongarch/virt.c                      | 393 ++++++++++++-----------
- include/hw/loongarch/virt.h              |   9 +-
- tests/migration/Makefile                 |   2 +-
- tests/migration/loongarch64/Makefile     |  18 ++
- tests/migration/loongarch64/a-b-kernel.S |  49 +++
- tests/migration/loongarch64/a-b-kernel.h |  16 +
- tests/migration/migration-test.h         |   3 +
- tests/qtest/meson.build                  |   4 +
- tests/qtest/migration-test.c             |  10 +
- 13 files changed, 370 insertions(+), 236 deletions(-)
- create mode 100644 tests/migration/loongarch64/Makefile
- create mode 100644 tests/migration/loongarch64/a-b-kernel.S
- create mode 100644 tests/migration/loongarch64/a-b-kernel.h
-
-
-base-commit: 4e66a08546a2588a4667766a1edab9caccf24ce3
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index e5ab1080af..c7150cc0c4 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -167,7 +167,7 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+     int i, arch_id, node_id;
+     uint64_t mem_len, mem_base;
+     int nb_numa_nodes = machine->numa_state->num_nodes;
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(machine);
+     MachineClass *mc = MACHINE_GET_CLASS(lams);
+     const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(machine);
+     AcpiTable table = { .sig = "SRAT", .rev = 1, .oem_id = lams->oem_id,
+@@ -279,7 +279,7 @@ static void
+ build_la_ged_aml(Aml *dsdt, MachineState *machine)
+ {
+     uint32_t event;
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(machine);
+ 
+     build_ged_aml(dsdt, "\\_SB."GED_DEVICE,
+                   HOTPLUG_HANDLER(lams->acpi_ged),
+@@ -391,7 +391,7 @@ static void
+ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+ {
+     Aml *dsdt, *scope, *pkg;
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(machine);
+     AcpiTable table = { .sig = "DSDT", .rev = 1, .oem_id = lams->oem_id,
+                         .oem_table_id = lams->oem_table_id };
+ 
+@@ -421,7 +421,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+ 
+ static void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(machine);
+     GArray *table_offsets;
+     AcpiFadtData fadt_data;
+     unsigned facs, rsdt, dsdt;
+diff --git a/hw/loongarch/boot.c b/hw/loongarch/boot.c
+index 7d1630b2e7..9b4a2d19a9 100644
+--- a/hw/loongarch/boot.c
++++ b/hw/loongarch/boot.c
+@@ -316,7 +316,7 @@ static void loongarch_direct_kernel_boot(struct loongarch_boot_info *info)
+ 
+ void loongarch_load_kernel(MachineState *ms, struct loongarch_boot_info *info)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(ms);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(ms);
+     int i;
+ 
+     /* register reset function */
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index c0999878df..6619cb52a9 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -880,7 +880,7 @@ static void loongarch_init(MachineState *machine)
+     ram_addr_t ram_size = machine->ram_size;
+     uint64_t highram_size = 0, phyAddr = 0;
+     MemoryRegion *address_space_mem = get_system_memory();
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(machine);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(machine);
+     int nb_numa_nodes = machine->numa_state->num_nodes;
+     NodeInfo *numa_info = machine->numa_state->nodes;
+     int i;
+@@ -1032,7 +1032,7 @@ bool loongarch_is_acpi_enabled(LoongArchMachineState *lams)
+ static void loongarch_get_acpi(Object *obj, Visitor *v, const char *name,
+                                void *opaque, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(obj);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(obj);
+     OnOffAuto acpi = lams->acpi;
+ 
+     visit_type_OnOffAuto(v, name, &acpi, errp);
+@@ -1041,14 +1041,14 @@ static void loongarch_get_acpi(Object *obj, Visitor *v, const char *name,
+ static void loongarch_set_acpi(Object *obj, Visitor *v, const char *name,
+                                void *opaque, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(obj);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(obj);
+ 
+     visit_type_OnOffAuto(v, name, &lams->acpi, errp);
+ }
+ 
+ static void loongarch_machine_initfn(Object *obj)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(obj);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(obj);
+ 
+     lams->acpi = ON_OFF_AUTO_AUTO;
+     lams->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
+@@ -1080,7 +1080,7 @@ static void virt_machine_device_pre_plug(HotplugHandler *hotplug_dev,
+ static void virt_mem_unplug_request(HotplugHandler *hotplug_dev,
+                                      DeviceState *dev, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(hotplug_dev);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+ 
+     /* the acpi ged is always exist */
+     hotplug_handler_unplug_request(HOTPLUG_HANDLER(lams->acpi_ged), dev,
+@@ -1098,7 +1098,7 @@ static void virt_machine_device_unplug_request(HotplugHandler *hotplug_dev,
+ static void virt_mem_unplug(HotplugHandler *hotplug_dev,
+                              DeviceState *dev, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(hotplug_dev);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+ 
+     hotplug_handler_unplug(HOTPLUG_HANDLER(lams->acpi_ged), dev, errp);
+     pc_dimm_unplug(PC_DIMM(dev), MACHINE(lams));
+@@ -1116,7 +1116,7 @@ static void virt_machine_device_unplug(HotplugHandler *hotplug_dev,
+ static void virt_mem_plug(HotplugHandler *hotplug_dev,
+                              DeviceState *dev, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(hotplug_dev);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+ 
+     pc_dimm_plug(PC_DIMM(dev), MACHINE(lams));
+     hotplug_handler_plug(HOTPLUG_HANDLER(lams->acpi_ged),
+@@ -1126,7 +1126,7 @@ static void virt_mem_plug(HotplugHandler *hotplug_dev,
+ static void loongarch_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+                                         DeviceState *dev, Error **errp)
+ {
+-    LoongArchMachineState *lams = LOONGARCH_MACHINE(hotplug_dev);
++    LoongArchMachineState *lams = LOONGARCH_VIRT_MACHINE(hotplug_dev);
+     MachineClass *mc = MACHINE_GET_CLASS(lams);
+ 
+     if (device_is_dynamic_sysbus(mc, dev)) {
+@@ -1208,7 +1208,6 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
+     MachineClass *mc = MACHINE_CLASS(oc);
+     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
+ 
+-    mc->desc = "Loongson-3A5000 LS7A1000 machine";
+     mc->init = loongarch_init;
+     mc->default_ram_size = 1 * GiB;
+     mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("la464");
+@@ -1245,7 +1244,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
+ 
+ static const TypeInfo loongarch_machine_types[] = {
+     {
+-        .name           = TYPE_LOONGARCH_MACHINE,
++        .name           = TYPE_LOONGARCH_VIRT_MACHINE,
+         .parent         = TYPE_MACHINE,
+         .instance_size  = sizeof(LoongArchMachineState),
+         .class_init     = loongarch_class_init,
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 4e14bf6060..224b51723c 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -73,8 +73,8 @@ struct LoongArchMachineState {
+     struct loongarch_boot_info bootinfo;
+ };
+ 
+-#define TYPE_LOONGARCH_MACHINE  MACHINE_TYPE_NAME("virt")
+-OBJECT_DECLARE_SIMPLE_TYPE(LoongArchMachineState, LOONGARCH_MACHINE)
++#define TYPE_LOONGARCH_VIRT_MACHINE  MACHINE_TYPE_NAME("virt")
++OBJECT_DECLARE_SIMPLE_TYPE(LoongArchMachineState, LOONGARCH_VIRT_MACHINE)
+ bool loongarch_is_acpi_enabled(LoongArchMachineState *lams);
+ void loongarch_acpi_setup(LoongArchMachineState *lams);
+ #endif
 -- 
 2.39.3
 
