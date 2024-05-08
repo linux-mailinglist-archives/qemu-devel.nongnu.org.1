@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486F48BF7B5
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 09:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FE48BF7B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 09:52:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4c5j-0006uW-4p; Wed, 08 May 2024 03:51:57 -0400
+	id 1s4c5r-00072k-0v; Wed, 08 May 2024 03:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4c5C-0006oP-N6
- for qemu-devel@nongnu.org; Wed, 08 May 2024 03:51:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s4c5H-0006r3-Il
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 03:51:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s4c5A-0003dl-GR
- for qemu-devel@nongnu.org; Wed, 08 May 2024 03:51:22 -0400
+ id 1s4c5E-0003eK-LX
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 03:51:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715154680;
+ s=mimecast20190719; t=1715154682;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/napxeXYVJfEIk7mLPLLFKGMsaq0EZv1d5O6ZzOMJfo=;
- b=bW3kZwktlzQdzlY9fRmZICAttQhYgPe4+EssSK0bKjXfmmA+6JzAwMuTL9Ni9gvFGsiAD1
- v8URVZmnofuzPlyj48A4V4WwEP4mcNDVHPfgO9omsK2EFKT/3127sonjVbMrgx+J0EBsWq
- +Jl87JsswGn8igfKgVOOnfjtl3UZJDs=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MIrdhYYSEjHQf62aM9cNEMsXn+yUWKJciAkldDNdnXg=;
+ b=Z852JXGeUIqxR7H3zXuCxbBBmqXClONRhpkOeZyy7AFB2I+JeMNx//cNsOIzo3XXE2P5en
+ G7SHgkEY5v315PfPRBilxh8XuNbKJaHyo4dtEooDYCkhC2Yo2ooqR+tVakWHOIFFdckW4e
+ +Df6cvfgNXHez22BjsByWgOteA3SH1U=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-uip_iEpzMl6pUwsRVIiZpA-1; Wed, 08 May 2024 03:51:18 -0400
-X-MC-Unique: uip_iEpzMl6pUwsRVIiZpA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-5725fffb621so1532360a12.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 00:51:18 -0700 (PDT)
+ us-mta-263-SLZYD8WWO7iI0q4No-MNNA-1; Wed, 08 May 2024 03:51:21 -0400
+X-MC-Unique: SLZYD8WWO7iI0q4No-MNNA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a599b55056bso229311066b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 00:51:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715154676; x=1715759476;
+ d=1e100.net; s=20230601; t=1715154679; x=1715759479;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/napxeXYVJfEIk7mLPLLFKGMsaq0EZv1d5O6ZzOMJfo=;
- b=M5b+kyuiZpNVUBYltrOjVhv8TcHpoUkk7S62eW1+lpIlyYC57fiJZTxsE9Ll2DKZOB
- tM67rP1VEo9ochSM273zNRTjfc9PHxtxCMnJblAW5yo4+t5kjakX7+khkBUS5ijgNnRx
- 0gSAqdyqz397mXvaL7vjLATSMusJTRwdqoKuQr3CbfDfJMiqSEV/e8Uk/JfE5KPqTnRn
- rJ/olXPbl6px6B/lbbWeD1dnMwq/4R8BXJyKy7q0eDpxZPcThIXIr2XXthYmmgfLuAMU
- BmK5Vlz5XILlj9pnutNLs+dzqBbEN/zgGFZshttJeQuFaojN9fdJaZnNvJ6xGF44krzi
- GO9A==
-X-Gm-Message-State: AOJu0YzOKfx/yCZlyGpu1f6m8GYncpoSJAGhuqIMldRHX0tvtBxCPGE2
- uOn3cMyOrGDzUhs+Ix/72OGXu/NAl2xRyjGulhzucVuJG230sLlUa1wg7eDRe6LfVfRVmHsDyRw
- DTyA7GFimNjKtBxLKRj9nBbBdj3p4LDlAYd35PZSKIZMEZ+O61mLfyeNiHOXF8wKm4xiEu+f71r
- 3Rp3u241dqmDFk+CGF+m9x0UGw1/3lEscjmTJc
-X-Received: by 2002:a50:d590:0:b0:56f:e75b:83aa with SMTP id
- 4fb4d7f45d1cf-5731d99b69cmr1376906a12.6.1715154676707; 
- Wed, 08 May 2024 00:51:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4Ue/4E4tIPoaGrBBp0z14WUJUMr3MvpP9s6dIdbdnfBOe6UYzqNSsfHU+XsrkLw+0g4+bGg==
-X-Received: by 2002:a50:d590:0:b0:56f:e75b:83aa with SMTP id
- 4fb4d7f45d1cf-5731d99b69cmr1376891a12.6.1715154676370; 
- Wed, 08 May 2024 00:51:16 -0700 (PDT)
+ bh=MIrdhYYSEjHQf62aM9cNEMsXn+yUWKJciAkldDNdnXg=;
+ b=Ncevx2p6wzZOqhPMSrXSwWT+hbq5/J1s2PsSX8/G9XCPIGmdRv6+j3lQvyh2I+Uoq7
+ YTO5Jhxo7AXSX0svT/v5yyLLvewSZb7Dosh4RbG7/Nv4amCQrAJl3XqbJAvbgibHWq/D
+ 2S7ktUXdDv88+39qHpXH+dZMgbMiY/AMVTcMb2gr9VWyDvED0Xr1sjqZ2HMmQ3bgxlAe
+ tj3toF/ZbdISEV6emzVY5+KHKSoUrJbFgcrzxW+E+d1KISwqZljxFjjnlukaCyi3F2oS
+ JBAb2fL+wzQaioXHluZguMw13cNxlCCrcutWeaxjI4ILuPg+jv+RCV3HZdYSxT/905xN
+ EmIA==
+X-Gm-Message-State: AOJu0Yy7AGb18mACxA/Gkn1OQCzMpS+CqTZw3k4qsdBfvPEdUNrZ9b4u
+ 34KdwYhi3F89wGUVYuzDBvBvIZ86+7nSDXC8oiJlVZaN62ADcg6SlGqe09EhlPTMJ58Yo1mKn44
+ zl6QWj2K064j5l22z41PUWE8zSDcSjdBAMwRtSRiG7texL9Gc5XXv6TctYuFILcZ91Yr5T68gKZ
+ i6UGFUD0Pd7U3ICrj7HZxCvpIwe9qAOs01ZHvs
+X-Received: by 2002:a17:906:3544:b0:a59:c319:f1de with SMTP id
+ a640c23a62f3a-a59fb92142cmr99529466b.15.1715154679285; 
+ Wed, 08 May 2024 00:51:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9qtpm71ABB/KR77HCLxnkvEHENcI++3tppPDHb8nbif/m/fxSSMUMWvL2P/K/ZrzspD1Dog==
+X-Received: by 2002:a17:906:3544:b0:a59:c319:f1de with SMTP id
+ a640c23a62f3a-a59fb92142cmr99528566b.15.1715154678891; 
+ Wed, 08 May 2024 00:51:18 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- t25-20020a056402241900b005725de35790sm7316323eda.61.2024.05.08.00.51.14
+ gc21-20020a170906c8d500b00a59a7bac0easm5175452ejb.164.2024.05.08.00.51.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 May 2024 00:51:14 -0700 (PDT)
+ Wed, 08 May 2024 00:51:17 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH 4/6] kconfig: express dependency of individual boards on libfdt
-Date: Wed,  8 May 2024 09:51:03 +0200
-Message-ID: <20240508075105.15510-5-pbonzini@redhat.com>
+Subject: [PATCH 5/6] hw/xtensa: require libfdt
+Date: Wed,  8 May 2024 09:51:04 +0200
+Message-ID: <20240508075105.15510-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240508075105.15510-1-pbonzini@redhat.com>
 References: <20240508075105.15510-1-pbonzini@redhat.com>
@@ -77,7 +77,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,332 +101,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that boards are enabled by default and the "CONFIG_FOO=y"
-entries are gone from configs/devices/, there cannot be any more
-a conflicts between the default contents of configs/devices/
-and a failed "depends on" clause.
-
-With this change, each individual board or target can express
-whether it needs FDT.  It can then include the common code in the
-build via "select DEVICE_TREE", which will also as tell meson to link
-with libfdt.
-
-This allows building non-microvm x86 emulators without having
-libfdt available.
+All other boards require libfdt if it can be used (including for example
+i386/x86_64), so change the "imply" to "select" and always allow -dtb
+in qemu-system-xtensa.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Kconfig.host              |  1 -
- hw/arm/Kconfig            |  5 +++++
- hw/i386/Kconfig           |  3 ++-
- hw/loongarch/Kconfig      |  3 ++-
- hw/mips/Kconfig           |  3 ++-
- hw/openrisc/Kconfig       |  2 ++
- hw/ppc/Kconfig            | 15 ++++++++-------
- hw/riscv/Kconfig          |  4 ++++
- hw/rx/Kconfig             |  3 ++-
- hw/xtensa/Kconfig         |  1 +
- target/arm/Kconfig        |  2 ++
- target/microblaze/Kconfig |  1 +
- target/openrisc/Kconfig   |  1 +
- target/riscv/Kconfig      |  2 ++
- 14 files changed, 34 insertions(+), 12 deletions(-)
+ hw/xtensa/xtfpga.c | 9 ---------
+ hw/xtensa/Kconfig  | 4 ++--
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/Kconfig.host b/Kconfig.host
-index a0d4a52131e..17f405004b3 100644
---- a/Kconfig.host
-+++ b/Kconfig.host
-@@ -25,7 +25,6 @@ config TPM
- 
- config FDT
-     bool
--    select DEVICE_TREE
- 
- config VHOST_USER
-     bool
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 98c264ed219..8b97683a45e 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -15,6 +15,7 @@ config ARM_VIRT
-     select ACPI
-     select ARM_SMMUV3
-     select GPIO_KEY
-+    select DEVICE_TREE
-     select FW_CFG_DMA
-     select PCI_EXPRESS
-     select PCI_EXPRESS_GENERIC_BRIDGE
-@@ -265,6 +266,7 @@ config SBSA_REF
-     default y
-     depends on TCG && AARCH64
-     imply PCI_DEVICES
-+    select DEVICE_TREE
-     select AHCI
-     select ARM_SMMUV3
-     select GPIO_KEY
-@@ -347,6 +349,7 @@ config VEXPRESS
-     bool
-     default y
-     depends on TCG && ARM
-+    select DEVICE_TREE
-     select A9MPCORE
-     select A15MPCORE
-     select ARM_MPTIMER
-@@ -492,6 +495,7 @@ config XLNX_ZYNQMP_ARM
-     select CPU_CLUSTER
-     select DDC
-     select DPCD
-+    select DEVICE_TREE
-     select SDHCI
-     select SSI
-     select SSI_M25P80
-@@ -509,6 +513,7 @@ config XLNX_VERSAL
-     depends on TCG && AARCH64
-     select ARM_GIC
-     select CPU_CLUSTER
-+    select DEVICE_TREE
-     select PL011
-     select CADENCE
-     select VIRTIO_MMIO
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index 4362164962c..5af47f4bf2f 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -115,7 +115,8 @@ config Q35
- config MICROVM
-     bool
-     default y
--    depends on I386
-+    depends on I386 && FDT
-+    select DEVICE_TREE
-     select SERIAL_ISA # for serial_hds_isa_init()
-     select ISA_BUS
-     select APIC
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index 78640505630..830cfef72db 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -1,7 +1,8 @@
- config LOONGARCH_VIRT
-     bool
-     default y
--    depends on LOONGARCH64
-+    depends on LOONGARCH64 && FDT
-+    select DEVICE_TREE
-     select PCI
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     imply VIRTIO_VGA
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 9bccb363eb9..a7f26edebe8 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -80,9 +80,10 @@ config MIPS_CPS
- config MIPS_BOSTON
-     bool
-     default y
--    depends on MIPS64 && !TARGET_BIG_ENDIAN
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN && FDT
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-+    select DEVICE_TREE
-     select FITLOADER
-     select MIPS_CPS
-     select PCI_EXPRESS_XILINX
-diff --git a/hw/openrisc/Kconfig b/hw/openrisc/Kconfig
-index 9c9015e0a5d..76b953c62c2 100644
---- a/hw/openrisc/Kconfig
-+++ b/hw/openrisc/Kconfig
-@@ -2,6 +2,7 @@ config OR1K_SIM
-     bool
-     default y
-     depends on OPENRISC
-+    select DEVICE_TREE
-     select SERIAL
-     select OPENCORES_ETH
-     select OMPIC
-@@ -14,6 +15,7 @@ config OR1K_VIRT
-     imply PCI_DEVICES
-     imply VIRTIO_VGA
-     imply TEST_DEVICES
-+    select DEVICE_TREE
-     select PCI
-     select PCI_EXPRESS_GENERIC_BRIDGE
-     select GOLDFISH_RTC
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 78f83e78ce5..347212f4dba 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -1,7 +1,7 @@
- config PSERIES
-     bool
-     default y
--    depends on PPC64
-+    depends on PPC64 && FDT
-     imply USB_OHCI_PCI
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-@@ -26,7 +26,7 @@ config SPAPR_RNG
- config POWERNV
-     bool
-     default y
--    depends on PPC64
-+    depends on PPC64 && FDT
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     select ISA_IPMI_BT
-@@ -52,7 +52,7 @@ config PPC405
- config PPC440
-     bool
-     default y
--    depends on PPC
-+    depends on PPC && FDT
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply E1000_PCI
-@@ -71,7 +71,7 @@ config PPC4XX
- config SAM460EX
-     bool
-     default y
--    depends on PPC
-+    depends on PPC && FDT
-     select PFLASH_CFI01
-     select IDE_SII3112
-     select M41T80
-@@ -168,19 +168,19 @@ config E500
- config E500PLAT
-     bool
-     default y
--    depends on PPC
-+    depends on PPC && FDT
-     select E500
- 
- config MPC8544DS
-     bool
-     default y
--    depends on PPC
-+    depends on PPC && FDT
-     select E500
- 
- config VIRTEX
-     bool
-     default y
--    depends on PPC
-+    depends on PPC && FDT
-     select PPC4XX
-     select PFLASH_CFI01
-     select SERIAL
-@@ -193,6 +193,7 @@ config FW_CFG_PPC
-     bool
- 
- config FDT_PPC
-+    select DEVICE_TREE
-     bool
- 
- config VOF
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index 5f5f9e31bb0..a2030e3a6ff 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -12,6 +12,7 @@ config MICROCHIP_PFSOC
-     depends on RISCV64
-     select CADENCE_SDHCI
-     select CPU_CLUSTER
-+    select DEVICE_TREE
-     select MCHP_PFSOC_DMC
-     select MCHP_PFSOC_IOSCB
-     select MCHP_PFSOC_MMUART
-@@ -37,6 +38,7 @@ config RISCV_VIRT
-     imply VIRTIO_VGA
-     imply TEST_DEVICES
-     imply TPM_TIS_SYSBUS
-+    select DEVICE_TREE
-     select RISCV_NUMA
-     select GOLDFISH_RTC
-     select PCI
-@@ -82,6 +84,7 @@ config SIFIVE_U
-     depends on RISCV32 || RISCV64
-     select CADENCE
-     select CPU_CLUSTER
-+    select DEVICE_TREE
-     select RISCV_ACLINT
-     select SIFIVE_GPIO
-     select SIFIVE_PDMA
-@@ -99,6 +102,7 @@ config SPIKE
-     bool
-     default y
-     depends on RISCV32 || RISCV64
-+    select DEVICE_TREE
-     select RISCV_NUMA
-     select HTIF
-     select RISCV_ACLINT
-diff --git a/hw/rx/Kconfig b/hw/rx/Kconfig
-index b2fa2b7eec3..aa9242d1ef6 100644
---- a/hw/rx/Kconfig
-+++ b/hw/rx/Kconfig
-@@ -8,5 +8,6 @@ config RX62N_MCU
- config RX_GDBSIM
-     bool
-     default y
--    depends on RX
-+    depends on RX && FDT
-+    select DEVICE_TREE
-     select RX62N_MCU
+diff --git a/hw/xtensa/xtfpga.c b/hw/xtensa/xtfpga.c
+index f49e6591dc2..955e8867a36 100644
+--- a/hw/xtensa/xtfpga.c
++++ b/hw/xtensa/xtfpga.c
+@@ -356,7 +356,6 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+             cur_tagptr = put_tag(cur_tagptr, BP_TAG_COMMAND_LINE,
+                                  strlen(kernel_cmdline) + 1, kernel_cmdline);
+         }
+-#ifdef CONFIG_FDT
+         if (dtb_filename) {
+             int fdt_size;
+             void *fdt = load_device_tree(dtb_filename, &fdt_size);
+@@ -373,14 +372,6 @@ static void xtfpga_init(const XtfpgaBoardDesc *board, MachineState *machine)
+             cur_lowmem = QEMU_ALIGN_UP(cur_lowmem + fdt_size, 4 * KiB);
+             g_free(fdt);
+         }
+-#else
+-        if (dtb_filename) {
+-            error_report("could not load DTB '%s': "
+-                         "FDT support is not configured in QEMU",
+-                         dtb_filename);
+-            exit(EXIT_FAILURE);
+-        }
+-#endif
+         if (initrd_filename) {
+             BpMemInfo initrd_location = { 0 };
+             int initrd_size = load_ramdisk(initrd_filename, cur_lowmem,
 diff --git a/hw/xtensa/Kconfig b/hw/xtensa/Kconfig
-index 443b415c2ba..8ea283a7a3b 100644
+index 8ea283a7a3b..fc5c785cfac 100644
 --- a/hw/xtensa/Kconfig
 +++ b/hw/xtensa/Kconfig
-@@ -15,6 +15,7 @@ config XTENSA_XTFPGA
+@@ -14,8 +14,8 @@ config XTENSA_VIRT
+ config XTENSA_XTFPGA
      bool
      default y
-     depends on XTENSA
-+    imply DEVICE_TREE
+-    depends on XTENSA
+-    imply DEVICE_TREE
++    depends on XTENSA && FDT
++    select DEVICE_TREE
      select OPENCORES_ETH
      select PFLASH_CFI01
      select SERIAL
-diff --git a/target/arm/Kconfig b/target/arm/Kconfig
-index 5847c5a74a7..7f8a2217ae1 100644
---- a/target/arm/Kconfig
-+++ b/target/arm/Kconfig
-@@ -6,6 +6,8 @@ config ARM
-     # translate.c v7m helpers under ARM_V7M.
-     select ARM_V7M if TCG
- 
-+    select DEVICE_TREE # needed by boot.c
-+
- config AARCH64
-     bool
-     select ARM
-diff --git a/target/microblaze/Kconfig b/target/microblaze/Kconfig
-index a5410d9218d..e91d58d88f2 100644
---- a/target/microblaze/Kconfig
-+++ b/target/microblaze/Kconfig
-@@ -1,2 +1,3 @@
- config MICROBLAZE
-     bool
-+    select DEVICE_TREE # needed by boot.c
-diff --git a/target/openrisc/Kconfig b/target/openrisc/Kconfig
-index e0da4ac1dfc..cd66c2e3b6c 100644
---- a/target/openrisc/Kconfig
-+++ b/target/openrisc/Kconfig
-@@ -1,2 +1,3 @@
- config OPENRISC
-     bool
-+    select DEVICE_TREE # needed by boot.c
-diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
-index adb7de3f37d..5f30df22f2f 100644
---- a/target/riscv/Kconfig
-+++ b/target/riscv/Kconfig
-@@ -1,7 +1,9 @@
- config RISCV32
-     bool
-     select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
-+    select DEVICE_TREE # needed by boot.c
- 
- config RISCV64
-     bool
-     select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
-+    select DEVICE_TREE # needed by boot.c
 -- 
 2.45.0
 
