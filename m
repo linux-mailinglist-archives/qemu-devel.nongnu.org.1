@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86268C039E
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C93B8C03AB
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:48:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lND-0000PK-0S; Wed, 08 May 2024 13:46:35 -0400
+	id 1s4lNG-0000vx-0t; Wed, 08 May 2024 13:46:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMD-0000Kz-6q
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:34 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMJ-0000M1-PY
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:58 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMB-0007Kc-Bj
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:32 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a59ad344f7dso2301066b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lMH-0007Kz-W3
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:45:39 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a59d0810f59so2275466b.0
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:45:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190329; x=1715795129; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190335; x=1715795135; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4OH+OdSI3NRi6kwuyf3vIVlVnfRZUW2MUDqdsivDFuU=;
- b=pE8Tg3XzkDRBNFc/Gbh6fHTM/R5yf5Bz3y02Sz75FzBChxpvmgD3koGUjqvRqAFVU4
- AwcLKl6sFriFUkuWHL/+zsMOLU1g5+KSAJzn6+S8wAbsidilNTE4KYVDfVLLxIXhD6FW
- G9FnLjlbgu2qej2vbONp0aqFTpOMAHfiCjvxy62EiTfocjGNQ5XnoNZLYtEREeGpNjAG
- 7Fmhs40Lw6O/st8GBP8h76fbWntzuxCIbFUJel2RGJNL2UQFNxzRe1jN2AjgR1kIoe+q
- gxjuwJ9PwKXXxC8zhPBrYG3NFZUeMRzuror701smBBmUyqGg41g2WezHECXkXj+t0n70
- 61kA==
+ bh=4gAKoZA8GiThrSy3LlK57brDrhpN7s+nDa4hQZ9Yrx4=;
+ b=xztPN7IBBEOzcv7Ko63eivjgOQG1G1yu0sRmVoMvtlFUKRFI5FpaCp0Jw7J9qVrzs0
+ 5RhzrGsOdPbfgAUIa9UR2mFg+WP16d0WexNHB2+sfEQTxZwXZCG7FqEty9Q03qOECkEe
+ TTkJ4++b3amcKaB9xS5cOiaXPWxMAH8ua7JUXhNNGz+qaQwArO3j1NpcIsaa3I36eg5G
+ rWEg6xd223GVnNDTNms69/zrkIUMfs0m/ju8abSXKpolYKSq31PI8WiA8RoQnj5m1rfM
+ picxx6DMWP01QJtG913N7No83csvCId1tzB7Gf25GK7tHhxXv5GsoIbFR+gYqo3DXN8z
+ 5mIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190329; x=1715795129;
+ d=1e100.net; s=20230601; t=1715190335; x=1715795135;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4OH+OdSI3NRi6kwuyf3vIVlVnfRZUW2MUDqdsivDFuU=;
- b=qk7Z14NBS9/TAbdWIp4z+kx8/8lI8IfsikIneVXTxIlXBE/J6OI04ZPEF9xA6Xt5jD
- rCcQGOAZMR6s3zioNGcTHddbC4nLQ55RgKsEcrf7twIPyE5RZJjpEnGYNdTuZhEve9/Q
- ZOmu9WyUMWzFd5yhmbPdFM0x1OmQoSoPCFXZi2h407bUajVOeCdvI0Z6EJSGCqD9cu7h
- SuGu+UP47FZhOWEjsWxqTkds8q82KQyxRRWxuoVR1iETfO1MmLNJ6gHnmQtI3TX1orZB
- v+jKuN7k9Gfo9/nh+I+dPe8IcxoxewarLXa6j7ce0XR/NFYosy5tEh9lMEbZwjjOEkGM
- 1RBw==
-X-Gm-Message-State: AOJu0YzuVNizcE6KrQwUjlh2vnbWsvTNuZk7Gox91e8Em6Ygkbwr0WWY
- DtM/vvvsD4gCWJVGIYsLQKnuV9Qvsqp0qZ4SE8ABrI7blDtcgslebF+Ydfb+Jp+gJtAGsSdROmX
- h
-X-Google-Smtp-Source: AGHT+IFiXTQ3xsWokvC+U2OW2s2TLDWVueDDmiEoj8wM4ynYT11xOqgmWHh7sZ+QSRNXfazggVIilg==
-X-Received: by 2002:a17:906:c802:b0:a59:9a68:7327 with SMTP id
- a640c23a62f3a-a59fb9ce261mr175867066b.54.1715190329529; 
- Wed, 08 May 2024 10:45:29 -0700 (PDT)
+ bh=4gAKoZA8GiThrSy3LlK57brDrhpN7s+nDa4hQZ9Yrx4=;
+ b=X0GRXjLNIZUUY/PEZUKx0nn2LjfnkFRjb78YfCA3PAJ2HD4nz20KR5t/rGWq8hdTgZ
+ DVtXwfpPEsTxM19dSJ4zdhKHroULOzLw5qTVR0Q/DXtMsmgTabrZFwCHRX4UcjT5jAQZ
+ 8p/r4OZp1vG7184B62YYcozFQcfA8x+NTK1OSdS1dXsQ7gLbzpymTXGXpDk1gvUHYN6G
+ OGlG9Z4xJsEmwqgSZ4sycRcfHSxh03rdIiq2fwf/giuv+urC8V2tsDZWfoyKqnvWeu+J
+ +z48MEDtiNB2fRtFQKsL+f9HcTx4VFF736NYFVmjMEI7LCKdpfYzlX0K9ay2HQGgrCm2
+ fQvQ==
+X-Gm-Message-State: AOJu0YycahPWelAaDlyr2396lftFt/ov/XM8iP+umvZi96Sjv/g3RR7D
+ 02qTNW+hoWebT3xYzGjYzCBEObH9YwuZc4KJm4LOG2EdaislyDRxs05Zzu5pXTvhZRiBak+GPsV
+ I
+X-Google-Smtp-Source: AGHT+IEixw6bc8oLqJY9DvIOYyNkfjsNzMGXlCRIptu5A3zVApqBYU3Tg9UVjkS7sDj7TiyoUdsBDQ==
+X-Received: by 2002:a17:906:368e:b0:a59:c0a6:25d3 with SMTP id
+ a640c23a62f3a-a59fb819d1amr195236366b.12.1715190335302; 
+ Wed, 08 May 2024 10:45:35 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- g17-20020a170906395100b00a59c3db0c50sm4608038eje.199.2024.05.08.10.45.28
+ z7-20020a1709060ac700b00a59a0ddcc3dsm6077937ejf.44.2024.05.08.10.45.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:45:29 -0700 (PDT)
+ Wed, 08 May 2024 10:45:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@redhat.com>,
+ David Gibson <david@gibson.dropber.id.au>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/26] hw/hppa/machine: Replace g_memdup() by g_memdup2()
-Date: Wed,  8 May 2024 19:44:47 +0200
-Message-ID: <20240508174510.60470-4-philmd@linaro.org>
+Subject: [PULL 04/26] hw/ppc/spapr_pci: Replace g_memdup() by g_memdup2()
+Date: Wed,  8 May 2024 19:44:48 +0200
+Message-ID: <20240508174510.60470-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,62 +110,31 @@ Replace g_memdup() by the safer g_memdup2() wrapper.
 Trivially safe because the argument was directly from sizeof.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@redhat.com>
-Message-Id: <20210903174510.751630-12-philmd@redhat.com>
+Acked-by: David Gibson <david@gibson.dropber.id.au>
+Message-Id: <20210903174510.751630-17-philmd@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/hppa/machine.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ hw/ppc/spapr_pci.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
-index 37ee6387e0..5d0a8739de 100644
---- a/hw/hppa/machine.c
-+++ b/hw/hppa/machine.c
-@@ -207,37 +207,37 @@ static FWCfgState *create_fw_cfg(MachineState *ms, PCIBus *pci_bus,
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 72cfba419a..7cf9904c35 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -2188,10 +2188,9 @@ static int spapr_pci_post_load(void *opaque, int version_id)
+     int i;
  
-     val = cpu_to_le64(MIN_SEABIOS_HPPA_VERSION);
-     fw_cfg_add_file(fw_cfg, "/etc/firmware-min-version",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     val = cpu_to_le64(HPPA_TLB_ENTRIES - btlb_entries);
-     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     val = cpu_to_le64(btlb_entries);
-     fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     len = strlen(mc->name) + 1;
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/machine",
--                    g_memdup(mc->name, len), len);
-+                    g_memdup2(mc->name, len), len);
- 
-     val = cpu_to_le64(soft_power_reg);
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/power-button-addr",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     val = cpu_to_le64(CPU_HPA + 16);
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/rtc-addr",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     val = cpu_to_le64(CPU_HPA + 24);
-     fw_cfg_add_file(fw_cfg, "/etc/hppa/DebugOutputPort",
--                    g_memdup(&val, sizeof(val)), sizeof(val));
-+                    g_memdup2(&val, sizeof(val)), sizeof(val));
- 
-     fw_cfg_add_i16(fw_cfg, FW_CFG_BOOT_DEVICE, ms->boot_config.order[0]);
-     qemu_register_boot_set(fw_cfg_boot_set, fw_cfg);
- 
-     fw_cfg_add_file(fw_cfg, "/etc/qemu-version",
--                    g_memdup(qemu_version, sizeof(qemu_version)),
-+                    g_memdup2(qemu_version, sizeof(qemu_version)),
-                     sizeof(qemu_version));
- 
-     fw_cfg_add_extra_pci_roots(pci_bus, fw_cfg);
+     for (i = 0; i < sphb->msi_devs_num; ++i) {
+-        key = g_memdup(&sphb->msi_devs[i].key,
+-                       sizeof(sphb->msi_devs[i].key));
+-        value = g_memdup(&sphb->msi_devs[i].value,
+-                         sizeof(sphb->msi_devs[i].value));
++        key = g_memdup2(&sphb->msi_devs[i].key, sizeof(sphb->msi_devs[i].key));
++        value = g_memdup2(&sphb->msi_devs[i].value,
++                          sizeof(sphb->msi_devs[i].value));
+         g_hash_table_insert(sphb->msi, key, value);
+     }
+     g_free(sphb->msi_devs);
 -- 
 2.41.0
 
