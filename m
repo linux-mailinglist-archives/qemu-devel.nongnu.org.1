@@ -2,108 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791A38C07C3
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 718758C07D1
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 01:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4qpP-0002g5-32; Wed, 08 May 2024 19:36:03 -0400
+	id 1s4qph-0003Hf-7b; Wed, 08 May 2024 19:36:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpL-0002fW-HT
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:00 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpb-0003Ak-Rd
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:15 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpJ-0002Lj-HC
- for qemu-devel@nongnu.org; Wed, 08 May 2024 19:35:59 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s4qpL-0002O1-Bm
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 19:36:15 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4F8385D38D;
- Wed,  8 May 2024 23:35:56 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 239E1376F9;
+ Wed,  8 May 2024 23:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T7TwvoAVe5RioVfpxD++Axd+EsFoR7/haRQrRhvgaKM=;
- b=oyFYwT6PxlJJ6ks+YUGxgvZ6OR5MIldFzyzRRF4dJGMWWL6I6a+cO5HIVe8DSDXryasNcT
- uOtZjajZUPplsvKJ8v85dRdNZCVwGV30t4SaGrEnud1GH8SVf6DkntCoRO5TnAZ8JGCcxd
- kZ+vHwHr+6N/x9lNO8J/efWEVO9X5kk=
+ bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
+ b=KXxzqabKwXV6yA17SJIzDytukp0lm55dpNWGSa4UEyZcktfOZBGe0US5443soK3dVhiOq3
+ AbKAVajCLwbK9XeIQNF7iB1AHushq979UJNm47014BKYdpYIEjlD7D3ooOrC96icF2oWwc
+ NEAYdl9CTbm18RICgVsKWn7jozgIAGA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211356;
+ s=susede2_ed25519; t=1715211358;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T7TwvoAVe5RioVfpxD++Axd+EsFoR7/haRQrRhvgaKM=;
- b=+UHqGcS9NYu/81yoz0TchQOMe9L1IIoW0cYy6GVnJlgZSzDp/DiPcM4IALpn8yjGAglyrQ
- XohTvO4E0n6MVjCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
+ bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
+ b=Gt3+1RMsZcprum7UevBLIIQC4bogMbuZk1aJ9ph+zLdB+PP4N4P05idOZvrR8c7Go6O5oK
+ fRs8XoLII5RQT7CQ==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KXxzqabK;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gt3+1RMs
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715211356; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1715211358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T7TwvoAVe5RioVfpxD++Axd+EsFoR7/haRQrRhvgaKM=;
- b=oyFYwT6PxlJJ6ks+YUGxgvZ6OR5MIldFzyzRRF4dJGMWWL6I6a+cO5HIVe8DSDXryasNcT
- uOtZjajZUPplsvKJ8v85dRdNZCVwGV30t4SaGrEnud1GH8SVf6DkntCoRO5TnAZ8JGCcxd
- kZ+vHwHr+6N/x9lNO8J/efWEVO9X5kk=
+ bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
+ b=KXxzqabKwXV6yA17SJIzDytukp0lm55dpNWGSa4UEyZcktfOZBGe0US5443soK3dVhiOq3
+ AbKAVajCLwbK9XeIQNF7iB1AHushq979UJNm47014BKYdpYIEjlD7D3ooOrC96icF2oWwc
+ NEAYdl9CTbm18RICgVsKWn7jozgIAGA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715211356;
+ s=susede2_ed25519; t=1715211358;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T7TwvoAVe5RioVfpxD++Axd+EsFoR7/haRQrRhvgaKM=;
- b=+UHqGcS9NYu/81yoz0TchQOMe9L1IIoW0cYy6GVnJlgZSzDp/DiPcM4IALpn8yjGAglyrQ
- XohTvO4E0n6MVjCA==
+ bh=lnhU60ekVuMyPHuQ6hN1D32Qj0fYBol5lki3fVtOe3Y=;
+ b=Gt3+1RMsZcprum7UevBLIIQC4bogMbuZk1aJ9ph+zLdB+PP4N4P05idOZvrR8c7Go6O5oK
+ fRs8XoLII5RQT7CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B174F13A27;
- Wed,  8 May 2024 23:35:54 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9BB013A27;
+ Wed,  8 May 2024 23:35:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id QIj2HVoMPGZ7FQAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:35:54 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 8GXkH1wMPGZ7FQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 08 May 2024 23:35:56 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PULL v2 06/13] qapi: introduce exit-on-error parameter for
- migrate-incoming
-Date: Wed,  8 May 2024 20:35:34 -0300
-Message-Id: <20240508233541.2403-7-farosas@suse.de>
+Subject: [PULL v2 07/13] migration: Remove 'skipped' field from MigrationStats
+Date: Wed,  8 May 2024 20:35:35 -0300
+Message-Id: <20240508233541.2403-8-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240508233541.2403-1-farosas@suse.de>
 References: <20240508233541.2403-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+X-Spam-Score: -3.01
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 239E1376F9
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FROM_HAS_DN(0.00)[]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ FROM_EQ_ENVFROM(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[5];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_THREE(0.00)[4];
+ DKIM_TRACE(0.00)[suse.de:+]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,187 +128,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+The 'skipped' field of the MigrationStats struct has been deprecated
+in 8.1. Time to remove it.
 
-Now we do set MIGRATION_FAILED state, but don't give a chance to
-orchestrator to query migration state and get the error.
+Deprecation commit 7b24d32634 ("migration: skipped field is really
+obsolete.").
 
-Let's provide a possibility for QMP-based orchestrators to get an error
-like with outgoing migration.
-
-For hmp_migrate_incoming(), let's enable the new behavior: HMP is not
-and ABI, it's mostly intended to use by developer and it makes sense
-not to stop the process.
-
-For x-exit-preconfig, let's keep the old behavior:
- - it's called from init(), so here we want to keep current behavior by
-   default
- - it does exit on error by itself as well
-So, if we want to change the behavior of x-exit-preconfig, it should be
-another patch.
-
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration-hmp-cmds.c |  2 +-
- migration/migration.c          | 33 +++++++++++++++++++++++++++------
- migration/migration.h          |  3 +++
- qapi/migration.json            |  7 ++++++-
- system/vl.c                    |  3 ++-
- 5 files changed, 39 insertions(+), 9 deletions(-)
+ docs/about/deprecated.rst       | 6 ------
+ docs/about/removed-features.rst | 6 ++++++
+ migration/migration-hmp-cmds.c  | 2 --
+ migration/migration.c           | 2 --
+ qapi/migration.json             | 8 --------
+ 5 files changed, 6 insertions(+), 18 deletions(-)
 
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 03f8b1b655..94d3e53513 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -477,12 +477,6 @@ option).
+ Migration
+ ---------
+ 
+-``skipped`` MigrationStats field (since 8.1)
+-''''''''''''''''''''''''''''''''''''''''''''
+-
+-``skipped`` field in Migration stats has been deprecated.  It hasn't
+-been used for more than 10 years.
+-
+ ``inc`` migrate command option (since 8.2)
+ ''''''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 53ca08aba9..c4cb2692d0 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -614,6 +614,12 @@ was superseded by ``sections``.
+ Member ``section-size`` in the return value of ``query-sgx-capabilities``
+ was superseded by ``sections``.
+ 
++``query-migrate`` return value member ``skipped`` (removed in 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++Member ``skipped`` of the ``MigrationStats`` struct hasn't been used
++for more than 10 years. Removed with no replacement.
++
+ Human Monitor Protocol (HMP) commands
+ -------------------------------------
+ 
 diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 7e96ae6ffd..23181bbee1 100644
+index 23181bbee1..b6b2035f64 100644
 --- a/migration/migration-hmp-cmds.c
 +++ b/migration/migration-hmp-cmds.c
-@@ -466,7 +466,7 @@ void hmp_migrate_incoming(Monitor *mon, const QDict *qdict)
-     }
-     QAPI_LIST_PREPEND(caps, g_steal_pointer(&channel));
- 
--    qmp_migrate_incoming(NULL, true, caps, &err);
-+    qmp_migrate_incoming(NULL, true, caps, true, false, &err);
-     qapi_free_MigrationChannelList(caps);
- 
- end:
+@@ -105,8 +105,6 @@ void hmp_info_migrate(Monitor *mon, const QDict *qdict)
+                        info->ram->total >> 10);
+         monitor_printf(mon, "duplicate: %" PRIu64 " pages\n",
+                        info->ram->duplicate);
+-        monitor_printf(mon, "skipped: %" PRIu64 " pages\n",
+-                       info->ram->skipped);
+         monitor_printf(mon, "normal: %" PRIu64 " pages\n",
+                        info->ram->normal);
+         monitor_printf(mon, "normal bytes: %" PRIu64 " kbytes\n",
 diff --git a/migration/migration.c b/migration/migration.c
-index a9599838e6..289afa8d85 100644
+index 289afa8d85..a4be929e40 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -72,6 +72,8 @@
- #define NOTIFIER_ELEM_INIT(array, elem)    \
-     [elem] = NOTIFIER_WITH_RETURN_LIST_INITIALIZER((array)[elem])
- 
-+#define INMIGRATE_DEFAULT_EXIT_ON_ERROR true
-+
- static NotifierWithReturnList migration_state_notifiers[] = {
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_NORMAL),
-     NOTIFIER_ELEM_INIT(migration_state_notifiers, MIG_MODE_CPR_REBOOT),
-@@ -234,6 +236,8 @@ void migration_object_init(void)
-     qemu_cond_init(&current_incoming->page_request_cond);
-     current_incoming->page_requested = g_tree_new(page_request_addr_cmp);
- 
-+    current_incoming->exit_on_error = INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     migration_object_check(current_migration, &error_fatal);
- 
-     blk_mig_init();
-@@ -800,12 +804,14 @@ fail:
- 
-     migration_incoming_state_destroy();
- 
--    WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
--        error_report_err(s->error);
--        s->error = NULL;
--    }
-+    if (mis->exit_on_error) {
-+        WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
-+            error_report_err(s->error);
-+            s->error = NULL;
-+        }
- 
--    exit(EXIT_FAILURE);
-+        exit(EXIT_FAILURE);
-+    }
- }
- 
- /**
-@@ -1314,6 +1320,15 @@ static void fill_destination_migration_info(MigrationInfo *info)
-         break;
-     }
-     info->status = mis->state;
-+
-+    if (!info->error_desc) {
-+        MigrationState *s = migrate_get_current();
-+        QEMU_LOCK_GUARD(&s->error_mutex);
-+
-+        if (s->error) {
-+            info->error_desc = g_strdup(error_get_pretty(s->error));
-+        }
-+    }
- }
- 
- MigrationInfo *qmp_query_migrate(Error **errp)
-@@ -1797,10 +1812,13 @@ void migrate_del_blocker(Error **reasonp)
- }
- 
- void qmp_migrate_incoming(const char *uri, bool has_channels,
--                          MigrationChannelList *channels, Error **errp)
-+                          MigrationChannelList *channels,
-+                          bool has_exit_on_error, bool exit_on_error,
-+                          Error **errp)
- {
-     Error *local_err = NULL;
-     static bool once = true;
-+    MigrationIncomingState *mis = migration_incoming_get_current();
- 
-     if (!once) {
-         error_setg(errp, "The incoming migration has already been started");
-@@ -1815,6 +1833,9 @@ void qmp_migrate_incoming(const char *uri, bool has_channels,
-         return;
-     }
- 
-+    mis->exit_on_error =
-+        has_exit_on_error ? exit_on_error : INMIGRATE_DEFAULT_EXIT_ON_ERROR;
-+
-     qemu_start_incoming_migration(uri, has_channels, channels, &local_err);
- 
-     if (local_err) {
-diff --git a/migration/migration.h b/migration/migration.h
-index 6c612c0381..f3406c43c8 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -227,6 +227,9 @@ struct MigrationIncomingState {
-      * is needed as this field is updated serially.
-      */
-     unsigned int switchover_ack_pending_num;
-+
-+    /* Do exit on incoming migration failure */
-+    bool exit_on_error;
- };
- 
- MigrationIncomingState *migration_incoming_get_current(void);
+@@ -1156,8 +1156,6 @@ static void populate_ram_info(MigrationInfo *info, MigrationState *s)
+     info->ram->transferred = migration_transferred_bytes();
+     info->ram->total = ram_bytes_total();
+     info->ram->duplicate = stat64_get(&mig_stats.zero_pages);
+-    /* legacy value.  It is not used anymore */
+-    info->ram->skipped = 0;
+     info->ram->normal = stat64_get(&mig_stats.normal_pages);
+     info->ram->normal_bytes = info->ram->normal * page_size;
+     info->ram->mbps = s->mbps;
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 8c65b90328..9feed413b5 100644
+index 9feed413b5..2dd70f1c0e 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -1837,6 +1837,10 @@
- # @channels: list of migration stream channels with each stream in the
- #     list connected to a destination interface endpoint.
+@@ -23,9 +23,6 @@
  #
-+# @exit-on-error: Exit on incoming migration failure.  Default true.
-+#     When set to false, the failure triggers a MIGRATION event, and
-+#     error details could be retrieved with query-migrate.  (since 9.1)
-+#
- # Since: 2.3
+ # @duplicate: number of duplicate (zero) pages (since 1.2)
  #
- # Notes:
-@@ -1889,7 +1893,8 @@
+-# @skipped: number of skipped zero pages.  Always zero, only provided
+-#     for compatibility (since 1.5)
+-#
+ # @normal: number of normal pages (since 1.2)
+ #
+ # @normal-bytes: number of normal bytes sent (since 1.2)
+@@ -63,16 +60,11 @@
+ #     between 0 and @dirty-sync-count * @multifd-channels.  (since
+ #     7.1)
+ #
+-# Features:
+-#
+-# @deprecated: Member @skipped is always zero since 1.5.3
+-#
+ # Since: 0.14
  ##
- { 'command': 'migrate-incoming',
-              'data': {'*uri': 'str',
--                      '*channels': [ 'MigrationChannel' ] } }
-+                      '*channels': [ 'MigrationChannel' ],
-+                      '*exit-on-error': 'bool' } }
- 
- ##
- # @xen-save-devices-state:
-diff --git a/system/vl.c b/system/vl.c
-index 7756eac81e..79cd498395 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2723,7 +2723,8 @@ void qmp_x_exit_preconfig(Error **errp)
-     if (incoming) {
-         Error *local_err = NULL;
-         if (strcmp(incoming, "defer") != 0) {
--            qmp_migrate_incoming(incoming, false, NULL, &local_err);
-+            qmp_migrate_incoming(incoming, false, NULL, true, true,
-+                                 &local_err);
-             if (local_err) {
-                 error_reportf_err(local_err, "-incoming %s: ", incoming);
-                 exit(1);
+ { 'struct': 'MigrationStats',
+   'data': {'transferred': 'int', 'remaining': 'int', 'total': 'int' ,
+            'duplicate': 'int',
+-           'skipped': { 'type': 'int', 'features': [ 'deprecated' ] },
+            'normal': 'int',
+            'normal-bytes': 'int', 'dirty-pages-rate': 'int',
+            'mbps': 'number', 'dirty-sync-count': 'int',
 -- 
 2.35.3
 
