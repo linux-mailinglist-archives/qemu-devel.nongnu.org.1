@@ -2,78 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7EE8BFD2A
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF938BFD2C
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 14:33:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4gS4-0005XG-4K; Wed, 08 May 2024 08:31:16 -0400
+	id 1s4gS6-0005ar-02; Wed, 08 May 2024 08:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4gRS-0005Pf-Qu; Wed, 08 May 2024 08:30:42 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1s4gRz-0005Yu-A0; Wed, 08 May 2024 08:31:13 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s4gRP-00035q-6x; Wed, 08 May 2024 08:30:38 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1edf506b216so23313455ad.2; 
- Wed, 08 May 2024 05:30:33 -0700 (PDT)
+ id 1s4gRv-00037b-DW; Wed, 08 May 2024 08:31:10 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5ca29c131ebso3205738a12.0; 
+ Wed, 08 May 2024 05:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715171432; x=1715776232; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715171464; x=1715776264; darn=nongnu.org;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o4qmmFmgHRQlppj/tK/ouq/AbDhqnlddI8qawmh2p8U=;
- b=Q+pNCMGfFIbdtVn7tgTevawOdW27D9axXQOiBVOyEB3b+vuDShzW5Q2zCv/S+cT3Q4
- BaSGtzihw48tqBVIbh2oa2EWgi6OYMoZzfGaTQozhpi0SxwWq70NvJvo7RkmWx70QEty
- 5ol9CZjgJgVsoawSLgWIXMMtU+SgcTPcQGH+l4FvSgiEabXqOF+CrT+e7iiLbLewUWNQ
- 6CMJZMPitey9AD3b91LGXgPGId4iMhiMIm41EaW8C+4gNEcxz4udFAn3xFBuC9jKrums
- PyJakdBRse1eXRpM3o83TUZzHLanjTbi6nh3QvJcdw+J9zDcYCS/YwM3Dievt7zUthcV
- A2bA==
+ bh=6GpM2Wau9g7vnLLFGS1shdiSHE3sPS8g3dHSCTmh/6c=;
+ b=fe5is1pz1W1OCy0exaVWf5NWeJOKnPP3laLpuYNUd106ZoihoODGH1gV/kTmEXU1id
+ gCauFOXxzcv4BBbP5PlNGQI7hnNZf4UxJAH/1oo+f+rGExBC42qcZnscZbbkKmz6I8b5
+ CGvWxHDZwgdBKVt0pww81i2GWoR1+oolzemC3NUwhmC7Z0SnLbsCDA5ZF4NcF5cWKLHS
+ Q7r5kyhDpGZgEKEzVWHpL+Hhx1Yey/pZUI3GyOiW5f1xWliFyAa/NsKw8WeRABSprmlO
+ JyYyfoVQ+0KDaoOF4Fy7hNLFYQGkObchoE/jJqWDLQ6RuctrH26v+cFwk+ioQRg7TOyQ
+ bECQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715171432; x=1715776232;
+ d=1e100.net; s=20230601; t=1715171464; x=1715776264;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=o4qmmFmgHRQlppj/tK/ouq/AbDhqnlddI8qawmh2p8U=;
- b=IgBZpxVlOb+mySyAAba/H8UYPJyYEYDrSuWcJjRcU79Wg2xvPIRWrIG3efvQOEbDSj
- /DHmhXOFeMXkelxJHGx2EkZhI+5LJfEbCefjUyAyGcMgZ9mYIltCZx8yq+W3AHuZlNYz
- oJ/MBSWC7n7afOhpxZgQvmeV6GL92/DdtSDa3lw70qCfDgbkQpXatKdjKkfc3DSeaWzT
- mSuWIC4uI4QWsdipeBS6zZLyp2IKe7uvpwgrtifGorvorXmZHlF1FlhHsG3A3rlUdz4D
- oVGRfKlTZQOV35Y5itXxKvBb82TiAZJ/jaoLmV3P0PXJFIJKYv7Y+B886u0meRoPiZIU
- dH2A==
+ bh=6GpM2Wau9g7vnLLFGS1shdiSHE3sPS8g3dHSCTmh/6c=;
+ b=QV3LHzJp5ZyPa/h8sixMcwfMnx79rQIX5nn1PxceV/cuF6mJ4hVNlFKgHDkcZ2xpzK
+ VGDNsKah1hJ/JrBNv4Pduf2ghf9LOKXbFkRdnnvxnupk9QRvp5StIVLVKQ9ykagUOKvM
+ jsa/uWV7qW1Vq2NANOyKoboxlQNcSIlB9klf8CxveO/B6aTcnAjbU0wIx6MT5VeMrWWA
+ a8NqMmXTRMFr0n42BGPtiIByqcOyA5gy8IYoF7YDIgu3CLFPxRwSHbt/AQ3zRNRsyv9y
+ 4sngTaEVdyUAr0y/Kc2jSSX3Rw1isRaS13wHPrTNmc9LZd+in+zfvruSERLMwxAj4se1
+ GMqA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXfM3pr5nYsZbM7vrbp7fDi+RxaTYDKs4k11ZRI7e5Qxk/bKe+zm/oLzwRN11FpKV7DmiupPTyC3ve66vOa/dtVhmXI
-X-Gm-Message-State: AOJu0YyY0Vr+ziDuoMlx+qkFzyPBPVrlZgA+I6RMHK217W1krCKsxlAe
- gwjzIcJbwPbobHzMYpX6eHoU/t63Uk6wxW3KgGRJhF9wWylOcbRt
-X-Google-Smtp-Source: AGHT+IFPj6GskyIz0bMqfsOyjCBWxTby3wRBbdgnLXzp2g9lS9LTvg/haTgjTw3klnGfqoLMtuZ4rA==
-X-Received: by 2002:a17:903:2301:b0:1eb:63d9:8d85 with SMTP id
- d9443c01a7336-1eeb03a5643mr29658135ad.14.1715171429774; 
- Wed, 08 May 2024 05:30:29 -0700 (PDT)
+ AJvYcCVA6U8D4IYf/21U8WnbQqO00MZ1MEook/iwJQi1C9YBA32CFChTMa5K4uIIlVy3FA6gffJ+LPec/0rtxMCKtL5dnAdNHHo=
+X-Gm-Message-State: AOJu0YwEVrug3FauYf3FPgctAp7U9GsmO/ZbVvZkVmLPmBwDtb0bo6xn
+ TLXFfkzRspTXnHVN/dW09X9OeFCvJdR5r2jwWQyGgpBqzNLsgnsrm24J/Q==
+X-Google-Smtp-Source: AGHT+IHsdEzOsg+0VUkyyAwLXWC3VdaTCWunh1jnlnKO+hWzfscOypM84mIX+IeF0DlvE2GOVvG6yg==
+X-Received: by 2002:a05:6a20:1592:b0:1a7:ae5d:5fb4 with SMTP id
+ adf61e73a8af0-1afc8d4df22mr2805232637.28.1715171464236; 
+ Wed, 08 May 2024 05:31:04 -0700 (PDT)
 Received: from localhost ([1.146.8.34]) by smtp.gmail.com with ESMTPSA id
- cp1-20020a170902e78100b001e403970ec0sm2418979plb.277.2024.05.08.05.30.26
+ bf5-20020a656d05000000b0062070308b0esm6921812pgb.46.2024.05.08.05.31.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 08 May 2024 05:30:29 -0700 (PDT)
+ Wed, 08 May 2024 05:31:03 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 May 2024 22:30:24 +1000
-Message-Id: <D149IYMCXH4Z.ZPIXWOVQVOZO@gmail.com>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
- Barboza" <danielhb413@gmail.com>
-Subject: Re: [PATCH v2 26/28] target/ppc/mmu_common.c: Move BookE MMU
- functions together
+Date: Wed, 08 May 2024 22:30:57 +1000
+Message-Id: <D149JDYPG4NB.GTUPG8F1OZL2@gmail.com>
+Cc: <qemu-ppc@nongnu.org>, "Thomas Huth" <thuth@redhat.com>
+Subject: Re: [PATCH v2] ppc: Deprecate 'ref405ep' machine and 405 CPUs
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "BALATON Zoltan" <balaton@eik.bme.hu>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.17.0
-References: <cover.1714606359.git.balaton@eik.bme.hu>
- <d5d70791bdf598cd28ee70fd058f51c257a2b969.1714606359.git.balaton@eik.bme.hu>
- <D13EMTIRPDQJ.2LCAHIOTN0W5N@gmail.com>
- <090308e7-e3c0-8129-bdae-c2e3a41a2aa5@eik.bme.hu>
-In-Reply-To: <090308e7-e3c0-8129-bdae-c2e3a41a2aa5@eik.bme.hu>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
+References: <20240507123332.641708-1-clg@redhat.com>
+In-Reply-To: <20240507123332.641708-1-clg@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue May 7, 2024 at 10:31 PM AEST, BALATON Zoltan wrote:
-> On Tue, 7 May 2024, Nicholas Piggin wrote:
-> > What do you think about adding mmu-book3e.c instead?
+On Tue May 7, 2024 at 10:33 PM AEST, C=C3=A9dric Le Goater wrote:
+> The 'ref405ep' machine and PPC 405 CPU have no known users, firmware
+> images are not available, OpenWRT dropped support in 2019, U-Boot in
+> 2017, Linux also is dropping support in 2024. It is time to let go of
+> this ancient hardware and focus on newer CPUs and platforms.
 >
-> I have considered that but found that some functions have to be in the=20
-> same file and declared static for the compiler to inline them otherwise I=
-=20
-> get worse performance. Maybe after these rearrangments it's now possible=
-=20
-> to move these out but as this series got a bit long already I dod not go=
-=20
-> through with that and left it for a follow up but I can give it a try.
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
 
-It would be nice.
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 
-What host machines are you using? I'm surprised inlining is causing
-so much performance unless it is something older or in-order.
-
-Should be able to move small common things inline to headers if it's
-important though, we should try to split since you've done most of
-the work now.
-
-Thanks,
-Nick
-
+> ---
+>  v2: fixed header line
 >
-> Thanks for the review so far, I'll try to make the changes that I=20
-> understood and submit and updated version. I'm not sure I got some of you=
-r=20
-> requests so that may need another round.
+>  docs/about/deprecated.rst | 8 ++++++++
+>  hw/ppc/ppc405_boards.c    | 1 +
+>  2 files changed, 9 insertions(+)
 >
-> Regards,
-> BALATON Zoltan
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 03f8b1b655e071432ecd9decf61e194821d06928..e22acb17f296362509a3e143b=
+a61bafd210a6c91 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -258,6 +258,14 @@ dropping the ``cheetah`` OMAP1 board, because we don=
+'t have any
+>  test images for it and don't know of anybody who does; the ``sx1``
+>  and ``sx1-v1`` OMAP1 machines remain supported for now.
+> =20
+> +PPC 405 ``ref405ep`` machine (since 9.1)
+> +''''''''''''''''''''''''''''''''''''''''
+> +
+> +The ``ref405ep`` machine and PPC 405 CPU have no known users, firmware
+> +images are not available, OpenWRT dropped support in 2019, U-Boot in
+> +2017, Linux also is dropping support in 2024. It is time to let go of
+> +this ancient hardware and focus on newer CPUs and platforms.
+> +
+>  Backend options
+>  ---------------
+> =20
+> diff --git a/hw/ppc/ppc405_boards.c b/hw/ppc/ppc405_boards.c
+> index 4092ebc1ab59de14b66ebad2be7eb019faf45db1..c44e7ed162fae5ec884ba4e45=
+8138f84430a8460 100644
+> --- a/hw/ppc/ppc405_boards.c
+> +++ b/hw/ppc/ppc405_boards.c
+> @@ -350,6 +350,7 @@ static void ppc405_machine_class_init(ObjectClass *oc=
+, void *data)
+>      mc->init =3D ppc405_init;
+>      mc->default_ram_size =3D 128 * MiB;
+>      mc->default_ram_id =3D "ppc405.ram";
+> +    mc->deprecation_reason =3D "machine is old and unmaintained";
+>  }
+> =20
+>  static const TypeInfo ppc405_machine_type =3D {
 
 
