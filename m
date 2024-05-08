@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BEE8C03AF
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5ECD8C03AC
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:49:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lOV-00051b-LL; Wed, 08 May 2024 13:47:55 -0400
+	id 1s4lOW-000587-Rh; Wed, 08 May 2024 13:47:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lO8-0004YE-HH
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:47:34 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lOE-0004zn-OS
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:47:39 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lO6-0000sL-71
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:47:32 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a59b178b75bso2868666b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:47:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4lOC-0000sh-Mh
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:47:38 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-51ef64d051bso4051676e87.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715190448; x=1715795248; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715190453; x=1715795253; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=npbkiNQNqy3L7L6w2vAeVZgTjq5H6cLzlHY7iLgQ/Nk=;
- b=Vf4MDnqiuD/OX7m1MgNqEBWtopf3rTQrC8DLgzqREzt7lytBWJ8SvwLGXBQwZHUzzC
- LB5gHaqCMuKIF/ZoEniSC0L5ULTJCzZ+njzS96uPsE2AttFdnCxNq/V/5LpBIX+bKUxX
- gEr4rXrLVRCE4TjO9CmlhOwIcCF6belCcD0dfUlJC73AmyCIUCsepVVrvtxwx3qSHxOG
- PyzM9f/7UrA27pMG7eBW9mndU/RhH2Uy1WbNlDu/YuRE+iEYOW7bY04KAOlOmdlONM5g
- 0dPfGjnqRwP5wvxVKMhLNxNcHt4aKsQy52WsPLV7MO2Fp/noFTxCOrPCVdtnTMOZFvOt
- d4fA==
+ bh=lB9PBXZLhPirLB2HUXLQgsvt1kdrJAYX5azy5DWGsCI=;
+ b=MeLbS01kJxZO3QcL5W0jG2Fioop4bHZEVXAeY77PDByAmpx7btIaqAu95Zhr7gFGZi
+ 42LjFFrvHJEXHt0Fq9MyUR+R5o8fszxlv7sWkc5icUGFfnzZYf76+qd1X1hXK9/5tb+o
+ iypk976AV/jjziCvXQL93//M/YEt5Tj6PNgCLvLTlASjUF40Br6bZMBcql4PqU0Aw3Am
+ n3YZkQELkwZrzEx/5tn5OWe8oIgvegr4ddKqO/k40r9pqJCU3wU6cjN99BhigZgNGOU0
+ t1Lb9mFUA6KR3iUEMfmgsbMLY7l+K90XcvVDTEi/xY4ZhaFY6SRmd9ENaK3N7knEBrtX
+ UPkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190448; x=1715795248;
+ d=1e100.net; s=20230601; t=1715190453; x=1715795253;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=npbkiNQNqy3L7L6w2vAeVZgTjq5H6cLzlHY7iLgQ/Nk=;
- b=gBfd/IpDA+e7JURf/TqL32yPe9XimjApeEYoGxxUbyWwsYmsCPfxN4/YHQTS7qcv+I
- BBikx8RLUz7HWD4t0FTjLtMyO/ZgAeFgsPm8c92vxmeaTtGo/SVqXbli5YP/AdoB9OGK
- cP+WkUv+9YdOHYbx1Z0qCiJVINVtP18O+v6el6E3Lb1TFvXbr3rCIrPiXzoi1uZHrMAQ
- O41Q6hkn7tFVgZdlYZCMt29Q+nbX4ua8gb7AXLr11sb1Daur/Ekxal4wavGC24oBvUVJ
- hTHis4hvcYrjvhlgUVcEwAyElBBMhx6LDsR9EtIt4QJ/VY/hVI9OQC+Xl45Pw//gx83H
- bqPw==
-X-Gm-Message-State: AOJu0Yz6DbSZK1PXhFXkkAnRvYCiCGivmDFCHPx7UkrYaM3zQRlp0JCA
- /8VXbdwjGDWfbevGgnJEx3ZnMUNk9gkwF7NEHfwLcCqd8FUOANCUcsS/Dio31VI2Y2DJeb4TV/O
- s
-X-Google-Smtp-Source: AGHT+IF3DpTVscXY7U8ySR2YjONVZTu7ImXYo2+cylfDeCKTjh9lUq67qz+Q5a0+xlH2iKgnT26GuQ==
-X-Received: by 2002:a17:907:60e:b0:a59:a431:a8ce with SMTP id
- a640c23a62f3a-a59fb94a3fdmr233568166b.2.1715190448072; 
- Wed, 08 May 2024 10:47:28 -0700 (PDT)
+ bh=lB9PBXZLhPirLB2HUXLQgsvt1kdrJAYX5azy5DWGsCI=;
+ b=eZsZ7S+uMCCnJ6u3DATlL8bz+NXHrgDZOojELYbS1TyP0xKCoaMkIyAiSKcXZWyOVM
+ NSRqa1vKsQxm/PcDVMH4pRBWTsmXwsoXBwg6qDwSmAdrSOdXXBRBz5mgcTGnS9lZf9Zq
+ NFap048ymTa+/9Ii2MWEADJg88E5+HPCU7vGvzXxQUxc5+wspQUmCYdx+orVaIslH1zB
+ xw6NJ6+4jEViIXMs3yA0ZeXDAI94/WbzDiEq+lcJwTDuiwBPEIX57hEALow889pxYJ8P
+ txTITXSriez79DhX0ySd/XURdOGPZT67Pdkm3TsYm4oaUr7fnpKMrQws6YKHx9XPwMkx
+ kNyw==
+X-Gm-Message-State: AOJu0YwW/GwHfewKhFPVaPhsO1a2Y1/hCrerWhWPva81DY6fg2T5xByC
+ uJx6Li9QrnMn5aFoo6lH6h2Lk1X7xPSJta6AMBjgwtCf3FizTHYJ17xtJ2Z/d6nPA2ebF+f1Ix/
+ Q
+X-Google-Smtp-Source: AGHT+IErf8jaj9iHB0AJKsDouPlhfOlLoBUYZAHmGlSzmEqaKasw5QbS+Tl/P3jHJ+L4c4PX6ieHxQ==
+X-Received: by 2002:ac2:5494:0:b0:51d:bbb:7a4e with SMTP id
+ 2adb3069b0e04-5217c3740bemr2007778e87.24.1715190453314; 
+ Wed, 08 May 2024 10:47:33 -0700 (PDT)
 Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- c3-20020a170906528300b00a4e5866448bsm7833784ejm.155.2024.05.08.10.47.27
+ el24-20020a170907285800b00a59b9263f59sm5007080ejc.102.2024.05.08.10.47.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 10:47:27 -0700 (PDT)
+ Wed, 08 May 2024 10:47:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 25/26] hw/intc/loongson_ipi: Implement IOCSR address space for
- MIPS
-Date: Wed,  8 May 2024 19:45:09 +0200
-Message-ID: <20240508174510.60470-26-philmd@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 26/26] misc: Use QEMU header path relative to include/ directory
+Date: Wed,  8 May 2024 19:45:10 +0200
+Message-ID: <20240508174510.60470-27-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240508174510.60470-1-philmd@linaro.org>
 References: <20240508174510.60470-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,110 +93,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+QEMU headers are relative to the include/ directory,
+not to the project root directory. Remove "include/".
 
-Implement IOCSR address space get functions for MIPS/Loongson CPUs.
+See also:
+https://www.qemu.org/docs/master/devel/style.html#include-directives
 
-For MIPS/Loongson without IOCSR (i.e. Loongson-3A1000), get_cpu_iocsr_as
-will return as null, and send_ipi_data will fail with MEMTX_DECODE_ERROR,
-which matches expected behavior on hardware.
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240508-loongson3-ipi-v1-3-1a7b67704664@flygoat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240507142737.95735-1-philmd@linaro.org>
 ---
- hw/intc/loongson_ipi.c | 39 ++++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
+ hw/audio/virtio-snd.c   | 2 +-
+ hw/rtc/ls7a_rtc.c       | 2 +-
+ target/i386/gdbstub.c   | 2 +-
+ tests/qtest/nvme-test.c | 2 +-
+ tests/qtest/ufs-test.c  | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/intc/loongson_ipi.c b/hw/intc/loongson_ipi.c
-index 8c888da3b2..93cc50a37a 100644
---- a/hw/intc/loongson_ipi.c
-+++ b/hw/intc/loongson_ipi.c
-@@ -15,7 +15,12 @@
+diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+index 6a2ee085c0..7d09800d1f 100644
+--- a/hw/audio/virtio-snd.c
++++ b/hw/audio/virtio-snd.c
+@@ -19,7 +19,7 @@
+ #include "qemu/iov.h"
  #include "qemu/log.h"
- #include "exec/address-spaces.h"
- #include "migration/vmstate.h"
-+#ifdef TARGET_LOONGARCH64
- #include "target/loongarch/cpu.h"
-+#endif
-+#ifdef TARGET_MIPS
-+#include "target/mips/cpu.h"
-+#endif
+ #include "qemu/error-report.h"
+-#include "include/qemu/lockable.h"
++#include "qemu/lockable.h"
+ #include "exec/tswap.h"
+ #include "sysemu/runstate.h"
  #include "trace.h"
+diff --git a/hw/rtc/ls7a_rtc.c b/hw/rtc/ls7a_rtc.c
+index ac28c1165b..052201c2cd 100644
+--- a/hw/rtc/ls7a_rtc.c
++++ b/hw/rtc/ls7a_rtc.c
+@@ -8,7 +8,7 @@
+ #include "qemu/osdep.h"
+ #include "hw/sysbus.h"
+ #include "hw/irq.h"
+-#include "include/hw/register.h"
++#include "hw/register.h"
+ #include "qemu/timer.h"
+ #include "sysemu/sysemu.h"
+ #include "qemu/cutils.h"
+diff --git a/target/i386/gdbstub.c b/target/i386/gdbstub.c
+index ebb000df6a..4acf485879 100644
+--- a/target/i386/gdbstub.c
++++ b/target/i386/gdbstub.c
+@@ -19,7 +19,7 @@
+  */
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "include/gdbstub/helpers.h"
++#include "gdbstub/helpers.h"
  
- static MemTxResult loongson_ipi_readl(void *opaque, hwaddr addr,
-@@ -56,18 +61,35 @@ static MemTxResult loongson_ipi_readl(void *opaque, hwaddr addr,
-     return MEMTX_OK;
- }
+ #ifdef TARGET_X86_64
+ static const int gpr_map[16] = {
+diff --git a/tests/qtest/nvme-test.c b/tests/qtest/nvme-test.c
+index 008d189b0f..5ad6821f7a 100644
+--- a/tests/qtest/nvme-test.c
++++ b/tests/qtest/nvme-test.c
+@@ -13,7 +13,7 @@
+ #include "libqtest.h"
+ #include "libqos/qgraph.h"
+ #include "libqos/pci.h"
+-#include "include/block/nvme.h"
++#include "block/nvme.h"
  
--static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr,
-+static AddressSpace *get_cpu_iocsr_as(CPUState *cpu)
-+{
-+#ifdef TARGET_LOONGARCH64
-+    return LOONGARCH_CPU(cpu)->env.address_space_iocsr;
-+#endif
-+#ifdef TARGET_MIPS
-+    if (ase_lcsr_available(&MIPS_CPU(cpu)->env)) {
-+        return &MIPS_CPU(cpu)->env.iocsr.as;
-+    }
-+#endif
-+    return NULL;
-+}
-+
-+static MemTxResult send_ipi_data(CPUState *cpu, uint64_t val, hwaddr addr,
-                           MemTxAttrs attrs)
- {
-     int i, mask = 0, data = 0;
-+    AddressSpace *iocsr_as = get_cpu_iocsr_as(cpu);
-+
-+    if (!iocsr_as) {
-+        return MEMTX_DECODE_ERROR;
-+    }
+ typedef struct QNvme QNvme;
  
-     /*
-      * bit 27-30 is mask for byte writing,
-      * if the mask is 0, we need not to do anything.
-      */
-     if ((val >> 27) & 0xf) {
--        data = address_space_ldl(env->address_space_iocsr, addr,
--                                 attrs, NULL);
-+        data = address_space_ldl(iocsr_as, addr, attrs, NULL);
-         for (i = 0; i < 4; i++) {
-             /* get mask for byte writing */
-             if (val & (0x1 << (27 + i))) {
-@@ -78,8 +100,9 @@ static void send_ipi_data(CPULoongArchState *env, uint64_t val, hwaddr addr,
+diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
+index 95e82f9472..82ec3f0671 100644
+--- a/tests/qtest/ufs-test.c
++++ b/tests/qtest/ufs-test.c
+@@ -13,7 +13,7 @@
+ #include "libqos/qgraph.h"
+ #include "libqos/pci.h"
+ #include "scsi/constants.h"
+-#include "include/block/ufs.h"
++#include "block/ufs.h"
  
-     data &= mask;
-     data |= (val >> 32) & ~mask;
--    address_space_stl(env->address_space_iocsr, addr,
--                      data, attrs, NULL);
-+    address_space_stl(iocsr_as, addr, data, attrs, NULL);
-+
-+    return MEMTX_OK;
- }
- 
- static int archid_cmp(const void *a, const void *b)
-@@ -130,8 +153,7 @@ static MemTxResult mail_send(uint64_t val, MemTxAttrs attrs)
-     /* override requester_id */
-     addr = SMP_IPI_MAILBOX + CORE_BUF_20 + (val & 0x1c);
-     attrs.requester_id = cs->cpu_index;
--    send_ipi_data(&LOONGARCH_CPU(cs)->env, val, addr, attrs);
--    return MEMTX_OK;
-+    return send_ipi_data(cs, val, addr, attrs);
- }
- 
- static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
-@@ -149,8 +171,7 @@ static MemTxResult any_send(uint64_t val, MemTxAttrs attrs)
-     /* override requester_id */
-     addr = val & 0xffff;
-     attrs.requester_id = cs->cpu_index;
--    send_ipi_data(&LOONGARCH_CPU(cs)->env, val, addr, attrs);
--    return MEMTX_OK;
-+    return send_ipi_data(cs, val, addr, attrs);
- }
- 
- static MemTxResult loongson_ipi_writel(void *opaque, hwaddr addr, uint64_t val,
+ /* Test images sizes in Bytes */
+ #define TEST_IMAGE_SIZE (64 * 1024 * 1024)
 -- 
 2.41.0
 
