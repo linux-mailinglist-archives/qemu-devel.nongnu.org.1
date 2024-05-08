@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724988BFFC9
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 16:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B12DB8BFFD7
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 16:24:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4i3H-0001Dl-R9; Wed, 08 May 2024 10:13:47 -0400
+	id 1s4iCK-00082H-RN; Wed, 08 May 2024 10:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4i3D-0001DL-Vt
- for qemu-devel@nongnu.org; Wed, 08 May 2024 10:13:44 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4iCJ-000828-8t
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 10:23:07 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4i38-0004NL-Bd
- for qemu-devel@nongnu.org; Wed, 08 May 2024 10:13:43 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-34da35cd01cso4078367f8f.2
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 07:13:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s4iCH-0000FB-Hq
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 10:23:07 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-52192578b95so924634e87.2
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 07:23:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715177616; x=1715782416; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bPs0zsG9VK2wQ8xgMVPcc5ZG9na1Q66b8plpnDmTE4Q=;
- b=kNstpwFXfFa0JcEjWS3AuJQMfdll8UMKEVXLc6z8T6KehKhDCd5kqf/MDPsVisArYK
- HkK734C8+67MmF7TbFP9nXlzF53WBy42x7iYiwpLWepHxy7C56G3SMyFyBjMMLYaij5q
- AwTTQ12Sub4cUdxxt3SLUif8EQDekrJgJw0wxXykpcNcTh2O4WsK0BFsOFm0nK0RwXTx
- 5TPVrJwJtnuXAbmTmJft06VqDkCfqn7DHc4FWQwlxOQZLLca8PznU4CNzyBRDfMx+bl1
- jb4AKkZMd5mHPl0kW+ncEwJDJu3LkeGB4UBqUDSlCJGHBa/L9Xe8K5FSK3q47pLitIyO
- Na/g==
+ d=linaro.org; s=google; t=1715178183; x=1715782983; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=r9b/KYGCpFg4e7Z6EStgo1qjH14mzmGzKeX8zTSKYSU=;
+ b=uM4/XLaRlNQwvnPg1C81KL9hDg+1IjTPyOTvX79NjUP1PTx7xV7q5GjaP03cQOYSYZ
+ DzgTNC7t7tNNMZ6Wv51os/gqhof34lOHTO5FEwdWsPWqrFK1rwsfsLTd1EyvzQkpSVUP
+ xFPeCYQR4mdNxOvmP65Yfd2xCzSSLf3bIBFxvm8vg7o6axudihlrQpUqWFqDV2KFoRh0
+ D1311vvg/wcKnP5Rqu6rEDhWPuuJZzXhL5pL2RlopILAiP6/Pwtqt4iKpw0g3wrPX8Vj
+ FoKqn3YuovBtgPK4shMx9jdorc9MVg01fWnJQy9Vk0D1fQBuS7iwI8QNDby3xsLBNa/g
+ vSOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715177616; x=1715782416;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bPs0zsG9VK2wQ8xgMVPcc5ZG9na1Q66b8plpnDmTE4Q=;
- b=eXMkoqrHn+1l+2GjNekESazq4RSyIY7NmWz5TgN+gaGx6uioIc2PTKe7Z/r3wWKr8+
- q9GyZBZfxYFzWHcchIAfAIGY+91MpHDEXkHwRtdB6zlCMOf0FlO+ce0eI9RunjY3JsRo
- 4uP96IzmDVDrBxDJ3NGzMBnXmYiy8iTBQsZ8SNieIZ2iMf1dq7+dcH+E8v2HZsmTauV6
- pgPEDEXoPVTUnASsoOUQ29pcPH0FD32q34WsOkF72Cgz+AzgcfAh7UVUhP9FrM3qUybd
- mbcQPtVA684wwU/8JaHn8Wms+wed0veWcwU6SQZgJS5JP2kDymeEsXvE1n2eZpePSEOt
- w6iA==
-X-Gm-Message-State: AOJu0YwDX2EbGlz7tW5lhPmDEyW0TjQYj7YhSyUx74qVYIwPsTDLEiuN
- IYb9XVfK8I+jwm5wfX+69sGNiwcBs9IqBvf+W2mZd9IcGEX/UP9WRoRds5mH26uGRbomIoCM+tw
- 4
-X-Google-Smtp-Source: AGHT+IFeFJ2JGx/ZmqmnLWoV4naAhKN//95DH/a/FJRlmyvlekEZnDKLAFljJJrZeKdNfWFT4+eRbQ==
-X-Received: by 2002:a05:6000:1104:b0:34f:96ba:ca3f with SMTP id
- ffacd0b85a97d-34fca621dbcmr3321638f8f.53.1715177616129; 
- Wed, 08 May 2024 07:13:36 -0700 (PDT)
-Received: from m1x-phil.lan (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1715178183; x=1715782983;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=r9b/KYGCpFg4e7Z6EStgo1qjH14mzmGzKeX8zTSKYSU=;
+ b=nNRjakseGv02trOdeFmuKzFoILKDxdHZZAOrGVXEdbjnKe+Jb2yVh8eIDNzqOBkn8n
+ 9F598Qbw1+eS6WbPSsmnhIBPwA6ulEIaWESpjgDJptIKq/+jGJx2c+lW+4TzDtmsSj51
+ oMuJIRSnEaCZR2FceU2bvJGjLEk13GW/uQb/ye2SR12wlWs/f2lBvI/pem9M8AvPpqDi
+ iGxx0D1vuYCcGnjv/8jJRwENP4vT4r3WxMpYHAaX8r2HpxOvGtfoRUR/TFgJXS6czoDg
+ SHnFvP5dgn/UzbBCKTHG6tkoUpeVWGhzptansHERDYNjuwdhW6iJpR6ujB4eNqi71nV+
+ KdGQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWyBF9YHPH5ZrLcOTblEE9PrPaayCF2NDzlFpgOkhYqNHqDhZXx+vcPXojCvZLehGVJecOF+UCNuZKDIejFpNOFVZZkVPc=
+X-Gm-Message-State: AOJu0YyGhQ3K4mz6M64RMcBxK+Cp0LC3FwKMv26APKXDqWrzLz+UeI8q
+ s4N99gHi4NktMBooqJc2s4T1sVJsOtUmOuc8SHBntcpGX8U5BsMlGMhLs4QFhE8=
+X-Google-Smtp-Source: AGHT+IGFImL3S0UnjIM+sSsWpyKtK9DMiXvYdGuYboviealbnYJUDVBB3WHD6WEC9uP5j055KlKwKQ==
+X-Received: by 2002:ac2:5230:0:b0:51a:df97:cc8e with SMTP id
+ 2adb3069b0e04-5217c276f4dmr1681356e87.4.1715178182818; 
+ Wed, 08 May 2024 07:23:02 -0700 (PDT)
+Received: from [192.168.69.100] (sar95-h02-176-184-10-250.dsl.sta.abo.bbox.fr.
  [176.184.10.250]) by smtp.gmail.com with ESMTPSA id
- d9-20020adff2c9000000b0034dd56189e8sm15448242wrp.22.2024.05.08.07.13.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 08 May 2024 07:13:35 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Luc Michel <luc@lmichel.fr>, Peter Maydell <peter.maydell@linaro.org>,
- Damien Hedde <damien.hedde@dahe.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-Subject: [PATCH] hw/clock: Expose 'freq-hz' QOM property
-Date: Wed,  8 May 2024 16:13:33 +0200
-Message-ID: <20240508141333.44610-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ 5b1f17b1804b1-41f87d1fa40sm24569915e9.20.2024.05.08.07.23.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 08 May 2024 07:23:02 -0700 (PDT)
+Message-ID: <3cf22fc2-222d-40a1-b27f-fda72d4b2be5@linaro.org>
+Date: Wed, 8 May 2024 16:23:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
+ as WARN
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240508043229.3433128-1-zhao1.liu@intel.com>
+ <210757c3-c949-4dd1-bd7d-c33db3aa390e@linaro.org>
+ <ZjuEOPPbGaZgY6gG@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <ZjuEOPPbGaZgY6gG@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,59 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Expose the clock frequency via the QOM 'freq-hz' property,
-as it might be useful for QTests.
+On 8/5/24 15:55, Zhao Liu wrote:
+> Hi Philippe,
+> 
+> On Wed, May 08, 2024 at 03:09:39PM +0200, Philippe Mathieu-Daudé wrote:
+>> Date: Wed, 8 May 2024 15:09:39 +0200
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable
+>>   timestamp as WARN
+>>
+>> On 8/5/24 06:32, Zhao Liu wrote:
+>>> In some trace log, there're unstable timestamp breaking temporal
+>>> ordering of trace records. For example:
+>>>
+>>> kvm_run_exit -0.015 pid=3289596 cpu_index=0x0 reason=0x6
+>>> kvm_vm_ioctl -0.020 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>>> kvm_vm_ioctl -0.021 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>>>
+>>> Negative delta intervals tend to get drowned in the massive trace logs,
+>>> and an unstable timestamp can corrupt the calculation of intervals
+>>> between two events adjacent to it.
+>>>
+>>> Therefore, mark the outputs with unstable timestamps as WARN like:
+>>>
+>>> WARN: skip unstable timestamp: kvm_run_exit cur(8497404907761146)-pre(8497404907761161) pid=3289596 cpu_index=0x0 reason=0x6
+>>> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908603653)-pre(8497404908603673) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>>> WARN: skip unstable timestamp: kvm_vm_ioctl cur(8497404908625787)-pre(8497404908625808) pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+>>>
+>>> This would help to identify unusual events.
+>>>
+>>> And skip them without updating Formatter2.last_timestamp_ns to avoid
+>>> time back.
+>>
+>> Can't we reorder them instead?
+> 
+> I think so...IIUC, when the current event with "wrong" timestamp is
+> detected, its previous events records have already been output and
+> cannot be reordered.
 
-HMP example:
+Well, this certainly need rework to cleverly handle out of sync
+events, reordering them to display them correctly.
 
-  $ qemu-system-mips -S -monitor stdio -M mipssim
-  (qemu) qom-get /machine/cpu-refclk freq-hz
-  12000000
+Skipping events really sounds a bad idea to me. Even more out
+of sync ones.
 
-Inspired-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/core/clock.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Some simple approach could be to queue up to N events, then sort them
+and unqueue N/2, while processing all events.
 
-diff --git a/hw/core/clock.c b/hw/core/clock.c
-index e212865307..55f86ef483 100644
---- a/hw/core/clock.c
-+++ b/hw/core/clock.c
-@@ -13,6 +13,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
-+#include "qapi/visitor.h"
- #include "hw/clock.h"
- #include "trace.h"
- 
-@@ -158,6 +159,14 @@ bool clock_set_mul_div(Clock *clk, uint32_t multiplier, uint32_t divider)
-     return true;
- }
- 
-+static void clock_prop_freq_get(Object *obj, Visitor *v, const char *name,
-+                                void *opaque, Error **errp)
-+{
-+    Clock *clk = CLOCK(obj);
-+    uint64_t freq_hz = clock_get_hz(clk);
-+    visit_type_uint64(v, name, &freq_hz, errp);
-+}
-+
- static void clock_initfn(Object *obj)
- {
-     Clock *clk = CLOCK(obj);
-@@ -166,6 +175,9 @@ static void clock_initfn(Object *obj)
-     clk->divider = 1;
- 
-     QLIST_INIT(&clk->children);
-+
-+    object_property_add(obj, "freq-hz", "uint64",
-+                        clock_prop_freq_get, NULL, NULL, NULL);
- }
- 
- static void clock_finalizefn(Object *obj)
--- 
-2.41.0
+Regards,
 
+Phil.
 
