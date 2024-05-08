@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178F08C03DE
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71B88C03E5
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 19:56:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4lVt-0001Bv-8P; Wed, 08 May 2024 13:55:33 -0400
+	id 1s4lVs-0001Bl-Ls; Wed, 08 May 2024 13:55:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4lVn-0001AW-0o
- for qemu-devel@nongnu.org; Wed, 08 May 2024 13:55:27 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4lVn-0001Am-OM
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 13:55:28 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4lVh-00027b-1i
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s4lVh-00027i-10
  for qemu-devel@nongnu.org; Wed, 08 May 2024 13:55:26 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-a59b097b202so4631866b.0
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:55:18 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a59c5c9c6aeso306366b.2
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 10:55:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715190916; x=1715795716; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lv4TLW1euMgeLNUuNRRaqUVuv3SXn2Y0b+IICdgy07o=;
- b=NNlUmw5z0ZBA2gdh3MVfnljdVMYBNxDRcCufhTeuNA6A5YlVcix1bf5X+JQAVMATKl
- 5lh8cRbOi/hfKHsAkPUjiUeOtp1t3+POp1hDn2kiwKOPbckHwYFuvfO2ziNFm7joRKWV
- bro667uwYqudNIg2vb0IKUdutPQT25XYCQ+C87wL0IhY+hbdWUewKRNPbiInvhOKYSZ5
- hMzhGnwhCWPyhlOD/795+aevcsQ22/bCwMxyOmZ9VRm7lKNP4VZE6fQmiGkVvCHtGvj/
- IjlWW1oIoi2MSA3FY/w+Qq4bPlekVtljesAaOIk0stLQ+jjAt0iEckoH1D+ikseCitKx
- zYkQ==
+ d=gmail.com; s=20230601; t=1715190917; x=1715795717; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EU56KqxsaM/0HEsRCm8u8nVsVnVRC1FhJWxFNu5K1Wg=;
+ b=ThrVwvUDsNMFMihZG35qCNfLsvH0/XDzYelLJ2oaWT1Xfxst4OSjpvuqaQy8QkT7Iz
+ yyf07m82XExEBe55Z0pVOJ44Z26IC5glTCyXMMDdp2tGyN6Cde4SAYtWsAPHGWfkH3ah
+ RkmWEMErZQVntyBphaISsayyNCiTpuu7nJ8VLavln9s+zhzcy0TVcGLg7kUGv7VqXcpU
+ 394eaz2M9fLUQqqx3M/3kf/dnxypZrgxlR05VfdTzMFMDv/ojOnpSnm9hOX6/u591E89
+ E7dnYVyzgudG4t5aOPJXaeNCi4aUK+sqHyEsujW7p6S1Cq+KZiRh2ulBTYPYthuE9B+H
+ Q2/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715190916; x=1715795716;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lv4TLW1euMgeLNUuNRRaqUVuv3SXn2Y0b+IICdgy07o=;
- b=DEEBeR3GAaw6drlvh8IM59cBCxwho8bPCu2Lpi+m4Bku7wk0N045jX+Hy06KAhppp8
- tnE5WBA0qWIM6u+70BBLejiV3zyTXF23R13Z1vKw4w0T6jBtd7QcVF2YRYeEM90g9TcF
- AFKndnIVlpyFabhaEkvUFRo6lM7Yypqlx0i0K/Bvg4fPLCy90yiK9jyNijF53QvhwaOw
- u+K1UYTLuAQ3QMLsiX2JzeLpLQFSBODRCBtWB1KWawBnP8VnmkxieuQ7KhI84BpENwSU
- yhBOLcJzSzlBYkBGKTqTVADXcVWa3e7ua6DKPBKXlEB6mbHwq1NIRlpySN6hIOZPBVfW
- hm9g==
-X-Gm-Message-State: AOJu0YzpKSsq9vMgRA4tMXgjW9Hf58PRx6ztlNHHA8OBy+RtUz4SsHl6
- cK6I2WXTKmZT9SUPTuvajU7YqtnFujp33NUFKYliShDIGSoC5bgVYk9hNA==
-X-Google-Smtp-Source: AGHT+IFoWm/qbO3pEBP8O3oqmsdkPJXA0pzGzLlFJhN37mbxF2cqY/vKEWlo79Jhkh9jnVDpBVWtfQ==
-X-Received: by 2002:a17:906:b78d:b0:a59:b543:c9f9 with SMTP id
- a640c23a62f3a-a59fb920d59mr261121966b.7.1715190916175; 
+ d=1e100.net; s=20230601; t=1715190917; x=1715795717;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EU56KqxsaM/0HEsRCm8u8nVsVnVRC1FhJWxFNu5K1Wg=;
+ b=Zltf5TdezuitE49zf/fcR8/TqeB70sfbO+a6jfFtkhPKKM/yX0ni984BEn60tqkpy+
+ oIZ8cIOzmCbsWBOosoVcxVqqTWLwz1hQ4puiDfhkA6NdFZE/IgCML0GVDt1seZkY0/ki
+ enG2/JRfMQ8uDYtv6ta9eOovCDyv1QoMVz7yft1DSWLf4wvHjPWbvc71jYaXK3QdS+nx
+ hIBglSi8vhrOjGIiNtNJMNG5WAcEyueAopLX7VYFoKeplTy0G/mU5JwX1+6B//FJW8GE
+ aichgTOvf7CzbuY/8K9E2FYETrkUF2VZ+OG3OUHAiKThlOeyg4edKl7rt9sg+fAsOuuE
+ JmKg==
+X-Gm-Message-State: AOJu0Ywc/eDnbAynS9FWTphyM3mg5ph7dRHpNOm9ZYHEYlGFn+9OxgAo
+ fuTXLEElccgAmneeKRMhG5C+09Un9Q5sPNdkZgENR8vM00+hUQJd1MbNDw==
+X-Google-Smtp-Source: AGHT+IFcLY8yA/vCzjycEdYGohWoZCib+pffxSmvqqoekHDpezhZ0FmuLQ+UDi5WlaeK0cUBkl9Djw==
+X-Received: by 2002:a17:906:4956:b0:a59:d39a:8d65 with SMTP id
+ a640c23a62f3a-a59fb95556dmr222797466b.21.1715190916911; 
  Wed, 08 May 2024 10:55:16 -0700 (PDT)
 Received: from archlinux.. (dynamic-077-013-167-103.77.13.pool.telefonica.de.
  [77.13.167.103]) by smtp.gmail.com with ESMTPSA id
- a24-20020a170906671800b00a59c5a129basm4483821ejp.80.2024.05.08.10.55.15
+ a24-20020a170906671800b00a59c5a129basm4483821ejp.80.2024.05.08.10.55.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 May 2024 10:55:15 -0700 (PDT)
+ Wed, 08 May 2024 10:55:16 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Sergio Lopez <slp@redhat.com>,
@@ -62,15 +63,18 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Sergio Lopez <slp@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v3 0/6] X86: Alias isa-bios area and clean up
-Date: Wed,  8 May 2024 19:55:01 +0200
-Message-ID: <20240508175507.22270-1-shentey@gmail.com>
+Subject: [PATCH v3 1/6] hw/i386/x86: Eliminate two if statements in
+ x86_bios_rom_init()
+Date: Wed,  8 May 2024 19:55:02 +0200
+Message-ID: <20240508175507.22270-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20240508175507.22270-1-shentey@gmail.com>
+References: <20240508175507.22270-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x634.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,58 +97,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series changes the "isa-bios" MemoryRegion to be an alias rather than =
-a=0D
-copy in the pflash case. This fixes issuing pflash commands in the isa-bios=
-=0D
-region which matches real hardware and which some real-world legacy bioses =
-I'm=0D
-running rely on. Furthermore, aliasing in the isa-bios area is already the=
-=0D
-current behavior in the bios (a.k.a. ROM) case, so this series consolidates=
-=0D
-behavior.=0D
-=0D
-For migration compatibility the aliasing is only performed on new versions =
-of=0D
-the q34 and pc machine types.=0D
-=0D
-v3:=0D
-* Amend commit message with a diff of `info mtree` (Phil)=0D
-* Add comments for bios memory regions (Phil)=0D
-=0D
-v2:=0D
-* Don't leak bios memory regions (Phil)=0D
-* Add compat machinery (Michael)=0D
-=0D
-Testing done:=0D
-* `make check` with qemu-system-x86_64 (QEMU 8.2.2) installed. All tests=0D
-  including migration tests pass.=0D
-* `make check-avocado`=0D
-=0D
-Best regards,=0D
-Bernhard=0D
-=0D
-Bernhard Beschow (6):=0D
-  hw/i386/x86: Eliminate two if statements in x86_bios_rom_init()=0D
-  hw/i386: Have x86_bios_rom_init() take X86MachineState rather than=0D
-    MachineState=0D
-  hw/i386/x86: Don't leak "isa-bios" memory regions=0D
-  hw/i386/x86: Don't leak "pc.bios" memory region=0D
-  hw/i386/x86: Extract x86_isa_bios_init() from x86_bios_rom_init()=0D
-  hw/i386/pc_sysfw: Alias rather than copy isa-bios region=0D
-=0D
- include/hw/i386/pc.h  |  1 +=0D
- include/hw/i386/x86.h | 17 +++++++++++++++-=0D
- hw/i386/microvm.c     |  2 +-=0D
- hw/i386/pc.c          |  1 +=0D
- hw/i386/pc_piix.c     |  3 +++=0D
- hw/i386/pc_q35.c      |  2 ++=0D
- hw/i386/pc_sysfw.c    | 17 ++++++++++------=0D
- hw/i386/x86.c         | 45 ++++++++++++++++++++++---------------------=0D
- 8 files changed, 58 insertions(+), 30 deletions(-)=0D
-=0D
--- =0D
-2.45.0=0D
-=0D
+Given that memory_region_set_readonly() is a no-op when the readonlyness is
+already as requested it is possible to simplify the pattern
+
+  if (condition) {
+    foo(true);
+  }
+
+to
+
+  foo(condition);
+
+which is shorter and allows to see the invariant of the code more easily.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/x86.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index 3d5b51e92d..2a4f3ee285 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1163,9 +1163,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+         load_image_size(filename, ptr, bios_size);
+         x86_firmware_configure(ptr, bios_size);
+     } else {
+-        if (!isapc_ram_fw) {
+-            memory_region_set_readonly(bios, true);
+-        }
++        memory_region_set_readonly(bios, !isapc_ram_fw);
+         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
+         if (ret != 0) {
+             goto bios_error;
+@@ -1182,9 +1180,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+                                         0x100000 - isa_bios_size,
+                                         isa_bios,
+                                         1);
+-    if (!isapc_ram_fw) {
+-        memory_region_set_readonly(isa_bios, true);
+-    }
++    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
+ 
+     /* map all the bios at the top of memory */
+     memory_region_add_subregion(rom_memory,
+-- 
+2.45.0
+
 
