@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0048BF94B
-	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 11:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A188BF969
+	for <lists+qemu-devel@lfdr.de>; Wed,  8 May 2024 11:13:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4dIF-0003yH-IE; Wed, 08 May 2024 05:08:55 -0400
+	id 1s4dMc-0004XK-5u; Wed, 08 May 2024 05:13:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4dHy-0003gk-54
- for qemu-devel@nongnu.org; Wed, 08 May 2024 05:08:40 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s4dHu-0006As-HI
- for qemu-devel@nongnu.org; Wed, 08 May 2024 05:08:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715159315; x=1746695315;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Hekfpiha/Rj7V7KVBExc5NCKEYWksRlYB1K0ySsENCU=;
- b=QEcuNHq+z5QbbzQjUxm5VNcq1Hh82VJ5ixnuq4XEpylX/R6LYFf+2ZXj
- oSax6IFsO2R/pD6PHRk7I3OfhIb1CujCpyXNMUacZQ1d57VFtVK+6/JLX
- YSFWwn6dQrC+1YwgJo9UFyE0NQJGFaubCsuGp+wVBY9VP80EVI+7I8duw
- lU+qFrmdO4JuOaFeTtuMUE4PekpYpLSauNEkC5WaMGLq1yGTahxxNF300
- poufUvUM9J9Asb6mHWFMi2DYWcnqkFk4qwY/l9kfFKhkgq5x5ILExtNI2
- 1Ytet1f+I05YMGEOR71/2h3gobamR6+/lDwQbEaWhSVCXYmWrte5mWH6j A==;
-X-CSE-ConnectionGUID: 0GscNwmAQyWnEQ7L/e14dA==
-X-CSE-MsgGUID: oinWrxCASx+Jze2vPrTsmw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="11161138"
-X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; d="scan'208";a="11161138"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 02:08:22 -0700
-X-CSE-ConnectionGUID: pVLPV03DT3ObTmfDQA6aUw==
-X-CSE-MsgGUID: Dhg9q+PtRSuMz670DFobpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; d="scan'208";a="29226732"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2024 02:08:17 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v5 19/19] intel_iommu: Check compatibility with host IOMMU
- capabilities
-Date: Wed,  8 May 2024 17:03:54 +0800
-Message-Id: <20240508090354.1815561-20-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240508090354.1815561-1-zhenzhong.duan@intel.com>
-References: <20240508090354.1815561-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1s4dMa-0004WF-1A
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:13:24 -0400
+Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1s4dMY-0007QA-Fk
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 05:13:23 -0400
+Received: by mail-qt1-x82b.google.com with SMTP id
+ d75a77b69052e-43ade9223c0so19724371cf.2
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 02:13:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1715159601; x=1715764401; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=omOATQVdU8puAda5atQ74QtzUxYUp6MoLUxCOOsXj2Y=;
+ b=UEhJA6lMFkdHBnCPVIzIHh/q/UFvD6x+gwmkTfeAvfdcH/ImrCy9f9GqeNGxwx83jQ
+ kQNutktK6DP5CN5VyfqjRB/hZeNZdIDsuwIXreODn3M5UKAR7YdXK7z8oqFNomQ8TzhY
+ JsljEeubE/wd49bVDWhmBO05sqNCvVljXhua4XTGrp6FlRXnhmb6ScsgfJ6UeI9guRgk
+ A6W65OHmMUUtiQZlcnXjinSuI3cJjnICQ2r9UGf+UK4Uh2/rnMg8ApxRKvtyXOk5XEug
+ hNf78E4k7//wbaExhraCdsJmPwwil/yexk/rwzBkPBcL1U3j/kneqXGGqi/gzRXrs/nN
+ dlag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715159601; x=1715764401;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=omOATQVdU8puAda5atQ74QtzUxYUp6MoLUxCOOsXj2Y=;
+ b=hUVbYu2YH6y9TG9GMThHAfrtehl/ruAd+CmFDJMBCmWaLB3ijX1QCJEJKa8FYu6om0
+ TrEz/0Z4TlKkTalnknnQmf6E3UJ6SUadpFFNt/vn92r6rHd+CqafB/K259pL6wM9JNvr
+ YYZ1Hha+xQi9lK7qHYF+6/LWfeCoWpNSGhhctGLCR0YfNPJpKJevtbRX1l8n/lthhGDf
+ BX6D4ZxCutgd9bFp5AAqeZfPtisAg2ZYQED/Lub8ewBc7VhJXjQNSQetd4RPMgU5NleX
+ Xh6N68v7ztJeKtXKdrdX4XlaE8CrPsVWj58KEcxjJIlaCxMHuOraHRCLYzjhiX/gbjV2
+ qtAA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU4Ry0nW70QrIy8x54UzEZuK36hxN5DVmjeUlEs2gMfjaRgyyyYRecAets04QLkT59FbjPo8Mw1Yd7rdUPNz8BYrLDTIjA=
+X-Gm-Message-State: AOJu0Yyevloqd3yPnUzzIwJIViz+uOGblFJoD4VwgQCV9PwOWqBdujIM
+ d0AUTPW0yCYVJwhkSiZACGveFWRrB48GVkxtj9y/cOnduuWa3bOLr/Cnjqpiwj1PAE3u3sTB6WL
+ JgDzrGKaxA4kZz1J6TUYdLo/GdOk=
+X-Google-Smtp-Source: AGHT+IEuKpn2yEUCaZSVRPMudJ5PJUJI5fYezpn1G9WanCvpYOMWTkIP0auyuY4a3610a6wVOS5ULM/ljTF7Jd5CiyA=
+X-Received: by 2002:a05:622a:1:b0:439:8741:5208 with SMTP id
+ d75a77b69052e-43dbf50f7femr21737311cf.23.1715159601280; Wed, 08 May 2024
+ 02:13:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.18;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <CAOGAQeqOVAHJ4VxQNKqO43hmLJdxpA6E_JEQrfL380SwT4Y73w@mail.gmail.com>
+ <Zh0NiI9ZfS5uzs5Z@redhat.com>
+ <CAOGAQerx0DmHvJNf05wuJFOtXVwDFTt7fy0-GmBZ7xKoLAHTKQ@mail.gmail.com>
+ <ZiDpM7ZusU0SvH7K@redhat.com>
+ <nga2k5uuvpqm2sovguofglw6u3reiqqurbn7vbdexanzrhmw42@vuje72e57egu>
+ <CAOGAQeqU692hHf3dU7udz8hwzP6KuFTNWir0mLcV-URF-JkFnA@mail.gmail.com>
+ <zyj7huwfzji6c5bkq44o56nizo7fju5kn2nqg2n5niuwdzsnkl@ykhg5yqruvwr>
+In-Reply-To: <zyj7huwfzji6c5bkq44o56nizo7fju5kn2nqg2n5niuwdzsnkl@ykhg5yqruvwr>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 8 May 2024 13:13:09 +0400
+Message-ID: <CAJ+F1CKvBW_khQ+zwKiunWGUQYtC_RKnVvUWbZpZALHv07efBw@mail.gmail.com>
+Subject: Re: Hermetic virtio-vsock in QEMU
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Roman Kiryanov <rkir@google.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, alex.bennee@linaro.org, 
+ QEMU Developers <qemu-devel@nongnu.org>, JP Cottin <jpcottin@google.com>, 
+ Erwin Jansen <jansene@google.com>, Mehdi Alizadeh <mett@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,72 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If check fails, host device (either VFIO or VDPA device) is not
-compatible with current vIOMMU config and should not be passed to
-guest.
+Hi
 
-Only aw_bits is checked for now, we don't care other capabilities
-before scalable modern mode is introduced.
+On Wed, May 8, 2024 at 11:50=E2=80=AFAM Stefano Garzarella <sgarzare@redhat=
+.com> wrote:
+>
+> Hi Roman,
+>
+> On Tue, May 07, 2024 at 11:20:50PM GMT, Roman Kiryanov wrote:
+> >Hi Stefano,
+> >
+> >On Tue, May 7, 2024 at 1:10=E2=80=AFAM Stefano Garzarella <sgarzare@redh=
+at.com> wrote:
+> >> I have no experience with Windows, but what we need for vhost-user is:
+> >>
+> >> - AF_UNIX and be able to send file descriptors using ancillary data
+> >>    (i.e. SCM_RIGHTS)
+> >
+> >As far as I understand, Windows does NOT support SCM_RIGHTS over AF_UNIX=
+.
+>
+> Thank you for the information. This is unfortunate and does not allow
+> us to use vhost-user as it is on Windows.
+>
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/i386/intel_iommu.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+fwiw, Windows has other mechanisms to share resources between processes.
 
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 747c988bc4..07bfd4f99e 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -20,6 +20,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include CONFIG_DEVICES /* CONFIG_HOST_IOMMU_DEVICE */
- #include "qemu/error-report.h"
- #include "qemu/main-loop.h"
- #include "qapi/error.h"
-@@ -3819,6 +3820,26 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
-     return vtd_dev_as;
- }
- 
-+static bool vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
-+                           Error **errp)
-+{
-+#ifdef CONFIG_HOST_IOMMU_DEVICE
-+    HostIOMMUDevice *hiod = vtd_hdev->dev;
-+    int ret;
-+
-+    /* Common checks */
-+    ret = host_iommu_device_get_cap(hiod, HOST_IOMMU_DEVICE_CAP_AW_BITS, errp);
-+    if (ret < 0) {
-+        return false;
-+    }
-+    if (s->aw_bits > ret) {
-+        error_setg(errp, "aw-bits %d > host aw-bits %d", s->aw_bits, ret);
-+        return false;
-+    }
-+#endif
-+    return true;
-+}
-+
- static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-                                      HostIOMMUDevice *hiod, Error **errp)
- {
-@@ -3848,6 +3869,12 @@ static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-     vtd_hdev->iommu_state = s;
-     vtd_hdev->dev = hiod;
- 
-+    if (!vtd_check_hdev(s, vtd_hdev, errp)) {
-+        g_free(vtd_hdev);
-+        vtd_iommu_unlock(s);
-+        return false;
-+    }
-+
-     new_key = g_malloc(sizeof(*new_key));
-     new_key->bus = bus;
-     new_key->devfn = devfn;
--- 
-2.34.1
+To share/pass sockets, you can use WSADuplicateSocket. For shared
+memory and other resources, DuplicateHandle API.
 
+(you can also share other things like D3D textures etc. those
+mechanisms are used to enable -display dbus on Windows efficiently)
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
