@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB0568C116B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 16:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AE68C1207
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 17:32:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s54z9-000083-As; Thu, 09 May 2024 10:43:03 -0400
+	id 1s55jf-0002ih-DA; Thu, 09 May 2024 11:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s54z2-00006B-Gh
- for qemu-devel@nongnu.org; Thu, 09 May 2024 10:42:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s55jR-0002hC-Ix
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:30:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s54z0-0000Xn-HI
- for qemu-devel@nongnu.org; Thu, 09 May 2024 10:42:56 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s55jH-0007sa-ER
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:30:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715265774;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=gWpsefT9732PAKZ8O8zhmmPqTHlV9coM34VJBc7Gf3c=;
- b=btACSh5RgG8M0VRRpAefUPwPC3TJ4V+8bERhgt1FV3Kwfp1dFR3vtA5GvGpqndfqpptr3Z
- wZOnnQikvc4BfUALqyTEbWAZS4hNrIoHwX+IWjVk/Akym5M3JhLT3qttrgTrc7u6vSZqNP
- 0ofv6UNaL6wD+ytf3fhHAQAMI0vo+fw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-38-naWbcMj6PmSEP8AZ2Qf3kw-1; Thu,
- 09 May 2024 10:42:50 -0400
-X-MC-Unique: naWbcMj6PmSEP8AZ2Qf3kw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D64BB3C11C61;
- Thu,  9 May 2024 14:42:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.79])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7874820898C0;
- Thu,  9 May 2024 14:42:46 +0000 (UTC)
-Date: Thu, 9 May 2024 15:42:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clegoate@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Laurent Vivier <laurent@vivier.eu>, qemu-arm@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-ppc@nongnu.org,
- David Gibson <david@gibson.dropbear.id.au>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org
-Subject: Re: [PATCH 08/14] include/hw: add macros for deprecation & removal
- of versioned machines
-Message-ID: <Zjzg5AAdysA6-_Kd@redhat.com>
-References: <20240501182759.2934195-1-berrange@redhat.com>
- <20240501182759.2934195-9-berrange@redhat.com>
- <b8027831-9f15-42e4-aa52-a071dc7bd384@redhat.com>
+ s=mimecast20190719; t=1715268634;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=q7HFYbK/sg4zW5sOnGvTduVZOWAmSnH/uZzaSod9kEU=;
+ b=LP3UIOlEqYT8cmcz4bqBNepfNb6DoePZz/Mo3e+V0bWwjdxzBzqrwLSbs4MeCmRKp17b/E
+ Y6PCmS3mIY6TmOJC8JeFeZ6BF/BezWjK0lgqBQFdZuqsBG3KcmVx9tP4rvd6OthcoX77NP
+ 5cz4LiGNREl0pf/Wlilee0HHs4kgEG8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-211-2dCkahqFOx6VTwWKNZG98g-1; Thu, 09 May 2024 11:25:31 -0400
+X-MC-Unique: 2dCkahqFOx6VTwWKNZG98g-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a599dbd2b6aso53776666b.2
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 08:25:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715268330; x=1715873130;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=q7HFYbK/sg4zW5sOnGvTduVZOWAmSnH/uZzaSod9kEU=;
+ b=OrnmhSHBqLcwQdr1DNRVcTQkND4qwysXglEm72H5w1tDiAeebl31rpLr3FdS0mbSNg
+ fWKKA/pZXoD/794Jl70xOB0olZd2/Z7tiidlIkzGemQ7jsziaDBGAw0M4gtd34ffeaf2
+ YFQsXpTV1Q9iBksTnfkgMxyFy7OxjDicBUBg6QLrJEEAPqdqGDWapbc3kxJ3JqT03OLC
+ BNpk/uO5xk+x9nL1+JMi1XJlkFVsK5d2YFLjLxQ8czjGs+T5sUFq/XXOvlv4Quj06dTy
+ s8J2liVNkQt49IzeiEuOrWD65dPo0HDOHE9ebvwp/P+7hZaKSRXl9FhiUGfqp8aR9pTd
+ 2jIg==
+X-Gm-Message-State: AOJu0YyFUDjOb4dlKgdYMuLzVBtYo+bFwxA3ARvKHFl3+ImVI+FQJQuI
+ B7/2wX8Rjzqzb7yyqojHAUZOCIy5NBQiAYCfkGOK7jL+biZwYCHA0PjMlyV4jxdMdNo5AH85UFH
+ CZFg2SeaVL7hYmjk4xH2Z6YC2F2lpKvyngF4Pp9e5i9ossUmpx9Tyg4mdk6a74qlEAd6S5Z6jpZ
+ eNOIpFaZBFStoVue9duj0v+IzARru2ZaF61Cuh
+X-Received: by 2002:a17:906:74d:b0:a59:bb20:9964 with SMTP id
+ a640c23a62f3a-a59fb94b8f0mr438799466b.23.1715268329816; 
+ Thu, 09 May 2024 08:25:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFi9HutHb9eeIkKh7F0R/L6Tx98PjJAOBvz6kRDVOFjfHik+mDCPHyJoA6qKVJ/T78eXP7qZg==
+X-Received: by 2002:a17:906:74d:b0:a59:bb20:9964 with SMTP id
+ a640c23a62f3a-a59fb94b8f0mr438797466b.23.1715268329238; 
+ Thu, 09 May 2024 08:25:29 -0700 (PDT)
+Received: from avogadro.local ([151.95.155.52])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a5a17b177fcsm83427766b.202.2024.05.09.08.25.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 May 2024 08:25:28 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+Subject: [PATCH] target/i386: fix operand size for DATA16 REX.W POPCNT
+Date: Thu,  9 May 2024 17:25:26 +0200
+Message-ID: <20240509152526.141855-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b8027831-9f15-42e4-aa52-a071dc7bd384@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -98,61 +94,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 02, 2024 at 12:59:05PM +0200, Thomas Huth wrote:
-> On 01/05/2024 20.27, Daniel P. Berrangé wrote:
-> > Versioned machines live for a long time to provide back compat for
-> > incoming migration and restore of saved images. To guide users away from
-> > usage of old machines, however, we want to deprecate any older than 3
-> > years (equiv of 9 releases), and delete any older than 6 years (equiva
-> > of 18 releases).
-> > 
-> > To get a standardized deprecation message and avoid having to remember
-> > to manually add it after three years, this introduces two macros to be
-> > used by targets when defining versioned machines.
-> > 
-> > * MACHINE_VER_DEPRECATION(major, minor)
-> > 
-> >    Automates the task of setting the 'deprecation_reason' field on the
-> >    machine, if-and-only-if the major/minor version is older than 3 years.
-> > 
-> > * MACHINE_VER_DEPRECATION(major, minor)
-> 
-> That should be MACHINE_VER_DELETION instead.
+According to the manual, 32-bit vs 64-bit is governed by REX.W
+and REX ignores the 0x66 prefix.  This can be confirmed with this
+program:
 
-Opps, yes.
+    #include <stdio.h>
+    int main()
+    {
+       int x = 0x12340000;
+       int y;
+       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+    }
 
-> 
-> >    Simulates the deletion of by skipping registration of the QOM type
-> >    for a versioned machine, if-and-only-if the major/minor version is
-> >    older than 6 years.
-> > 
-> > By using these two macros there is no longer any manual work required
-> > per-release to deprecate old machines. By preventing the use of machines
-> > that have reached their deletion date, it is also no neccessary to
-> 
-> s/neccessary/necessary/
-> 
-> > manually delete machines per-release. Deletion can be batched up once a
-> > year or whenever makes most sense.
-> > 
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >   include/hw/boards.h | 84 +++++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 84 insertions(+)
-> 
-> With the typos fixed:
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> 
+which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
+on QEMU.
 
-With regards,
-Daniel
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/translate.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
+
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 7d9f6b5c55b..5366dc32dd3 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -411,16 +411,6 @@ static inline MemOp mo_stacksize(DisasContext *s)
+     return CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
+ }
+ 
+-/* Select only size 64 else 32.  Used for SSE operand sizes.  */
+-static inline MemOp mo_64_32(MemOp ot)
+-{
+-#ifdef TARGET_X86_64
+-    return ot == MO_64 ? MO_64 : MO_32;
+-#else
+-    return MO_32;
+-#endif
+-}
+-
+ /* Select size 8 if lsb of B is clear, else OT.  Used for decoding
+    byte vs word opcodes.  */
+ static inline MemOp mo_b_d(int b, MemOp ot)
+@@ -4545,12 +4535,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         modrm = x86_ldub_code(env, s);
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+ 
+-        if (s->prefix & PREFIX_DATA) {
+-            ot = MO_16;
+-        } else {
+-            ot = mo_64_32(dflag);
+-        }
+-
++        ot = dflag;
+         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
+         gen_extu(ot, s->T0);
+         tcg_gen_mov_tl(cpu_cc_src, s->T0);
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.45.0
 
 
