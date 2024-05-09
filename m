@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9506C8C0881
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 02:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2ED58C0883
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 02:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4rj6-0005F7-6b; Wed, 08 May 2024 20:33:36 -0400
+	id 1s4ril-000599-QZ; Wed, 08 May 2024 20:33:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
- id 1s4rj2-0005EM-SA
- for qemu-devel@nongnu.org; Wed, 08 May 2024 20:33:32 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1s4rii-00057F-Vi
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 20:33:13 -0400
+Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
- id 1s4riy-0007HN-0s
- for qemu-devel@nongnu.org; Wed, 08 May 2024 20:33:31 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-41c7ac6f635so1979495e9.3
- for <qemu-devel@nongnu.org>; Wed, 08 May 2024 17:33:27 -0700 (PDT)
+ id 1s4riX-0007DJ-Qi
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 20:33:12 -0400
+Received: by mail-ua1-x92f.google.com with SMTP id
+ a1e0cc1a2514c-7f169d3ef53so133615241.1
+ for <qemu-devel@nongnu.org>; Wed, 08 May 2024 17:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715214806; x=1715819606; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715214780; x=1715819580; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5xgw5wxUmws1y67AnOkSJHjRhF1o61aXFO8Y+qGKPNA=;
- b=RRfJUjzxWInHV7j7t8VeWpj6e1pw7Fw4sl6gKJikMn1P2ahPYJmivp+9A7hOMuL746
- zxwoa+AGNGYtkjtrZ4wjaqgkjF22sWBWNrpow2Blwfp0MBhBZNDHQvqu1ZpVs3yqmiEt
- ABc5wxLC4nfAgkP+lT6/k6YKKRm2nl+iF4bVPRpBr1HG6cEoWbTIEfDdN1jz5mKULkaB
- 0FqQ9/afN5n7hNbvYbwWuagwL1rkovovxDu8sHxciJUABjB0Z4425WsGxsSSjYG3uBVp
- 7dtr9RAQNJu84aisB/ErPdVg70EjN/I76Bg9LZE4yDzwMVzytH2KHfL3IDR4zTWIG5Y9
- wVhQ==
+ bh=RHxAW5q+XhSSeUsE0U0/UkwazhR9o8eryca7JKCANSg=;
+ b=HDqZ9lma5Bmvmw/odZLcMGUDT0d9JgMGb3c+4QFd7zfDID/UW0+WWAFSX9wDa7aPrR
+ gkJ7R4JzXKqJ1ojqyEHr5B3FhA2UZ3KxAG/9LiYcOx3Pgvrv7G91StAFpczNOgK054Ol
+ fATGySEVzAz/GwJzYw2mOBNW4NxaisCqnhu/NjX1W6F/kM9cwFSncvNijC+4Nr8vQ0GB
+ PLeYr9ijo6sZPqUfGJHUsMLIeC/mjiK6LNQ4vgkatawhlTf1YCpj19dMeVef3ZPDfAdU
+ MPYvyT7F0Zn3MHYf5hAxAHlUmjnKmbbAlIxXHnqkjOxwZeT1O8s/0eAfjMpJ5Hr2CjOX
+ aLmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715214806; x=1715819606;
+ d=1e100.net; s=20230601; t=1715214780; x=1715819580;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=5xgw5wxUmws1y67AnOkSJHjRhF1o61aXFO8Y+qGKPNA=;
- b=aa3dJXnMCPTaVwB/FXQjO8hQpdn9X7y1EKrhb48sLya1/ovHfW2F2euNOSc1uH7a69
- 0leFe7sTIknPs0E9EyObGBnWSIwjO8SSVVWkQWIV53hyFjlZgvyYU2TNl541tRydlzCm
- 2t9UWmElZyaHhASXqkajAyjR3wRMkgB2LGpgfEFNmHxA7p892Aw9N2Ln3AdhytiyHnxr
- fIy22v5So7wnb1L8jkpbjtoprXfgDjLsi76zO8Vjk6bzXHhPc2mEG8BdlWQ0htyZEJ1a
- 29bBciSyDQpUFa/L9ppBMIfrIBTr07jE74Qjs/FNBCHwst/vjvSgLh0ScY1LqE9+XlSZ
- 7hdw==
+ bh=RHxAW5q+XhSSeUsE0U0/UkwazhR9o8eryca7JKCANSg=;
+ b=jscRV2z3TNA4g7H6rYv+K9o1PPPjPX7FWA45sbCdlxviVMF6qd1L8npQvKvmxWzVxo
+ pzD9CWSX/8ZBgc20u9j14h4F2NeaY76NYvqDxriWoNUTfOtM0KKYlj4S9iGNf7Vmh7t9
+ vZY/jMXXrTXW+111p9KrR4NRaXq54WaT/Q260JHw474jWnJJhOislyawFSPFFKX3OLNS
+ UoFIEu1TzigD7ez/LeMmvW0DIdDjJtqkklehN2voYtL58jJZLmrq++T6HdJ+x5S7nF7B
+ wcRYhloSFbi6pf0xFRYNF3oBzjftvOP2DObjNQqsnFyEjnkoWSMUnOgZZ5ssVVlkggBO
+ vZlw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUq+pmpDv+zs9masc8+975U8iKQklAMrWhNYpIkDAx4J86BeECAoy46URrX+0zxyNul+PLOJaD1BrjhESHYaN3KyLXZlhk=
-X-Gm-Message-State: AOJu0YwVYGwJfNYncY0SIHxTA+321Nc45HBvW3/9skq7SgCTqEeJGIqP
- TU2GC6u91qgBw0iPpfXMGDz6dMjDuVDeZUyAyQIh0DmO8VmDGttKmK3GNLrFQ0rhWO42ki0EA9Z
- S9G+EvsnntfcTW5APN67JQmRIgtYK9Q==
-X-Google-Smtp-Source: AGHT+IFRkKlbDTFW3OMqV2Ljs5sKmjfy13x0dJmNA3cVp+3G27zE84aluLjKP8ax8NjEtrZFREpuw1VEcQWMtIec0Ec=
-X-Received: by 2002:a05:600c:1f8f:b0:41a:8055:8b89 with SMTP id
- 5b1f17b1804b1-41f71cc1a0amr41561085e9.6.1715214805514; Wed, 08 May 2024
- 17:33:25 -0700 (PDT)
+ AJvYcCUunA8UHiA+pekkXVAH5DvBZUSmwvobREfdUekqn+IVrJk6id26IN7LarJIP/iPnHIWb6Enf0ETIH7exQa5voEsfTjue4g=
+X-Gm-Message-State: AOJu0YzGnV7lw5IKwuPBq5hAUPRw7U0f3Q4+lrQJiPODh/PDjGNw2Zxl
+ 0WRmxHnFZlJuazubRaMe1xutnrGyHVjEuc1e4mHcqs2BZ4xs1GbcfWwQMZdWj6lLJ0DCdYNwhRa
+ Uy61hnchvQaSDQ7q8bQomDW0Yt54=
+X-Google-Smtp-Source: AGHT+IFG3tAmzjvTeHO36rmidpLKLU+3gXayIrv+U93OzqOMrz3OluAM4a53FMESWfpP9kMZOXqBzw9UXJQdSXpqM1E=
+X-Received: by 2002:a67:ce82:0:b0:47e:b219:8f11 with SMTP id
+ ada2fe7eead31-47f3c375165mr4119598137.29.1715214780243; Wed, 08 May 2024
+ 17:33:00 -0700 (PDT)
 MIME-Version: 1.0
 References: <CACBuX0To1QWpOTE-HfbXv=tUVWVL0=pvn-+E28EL_mWuqfZ-sw@mail.gmail.com>
  <dcaed5da-5e94-4cb6-b5b8-0a571eac371b@tls.msk.ru>
@@ -68,9 +68,9 @@ Subject: Re: hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or OUT
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org, 
  Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: multipart/mixed; boundary="00000000000032bd9e0617fa9192"
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=dmamfmgm@gmail.com; helo=mail-wm1-x329.google.com
+Content-Type: multipart/mixed; boundary="000000000000b1955a0617fa8f42"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
+ envelope-from=dmamfmgm@gmail.com; helo=mail-ua1-x92f.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -94,10 +94,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000032bd9e0617fa9192
-Content-Type: multipart/alternative; boundary="00000000000032bd9d0617fa9190"
+--000000000000b1955a0617fa8f42
+Content-Type: multipart/alternative; boundary="000000000000b195580617fa8f40"
 
---00000000000032bd9d0617fa9190
+--000000000000b195580617fa8f40
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -296,7 +296,7 @@ e
 >>
 >>
 
---00000000000032bd9d0617fa9190
+--000000000000b195580617fa8f40
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -576,9 +576,9 @@ p(int index) &quot;port #%d&quot;<br>
 </blockquote></div></div>
 </blockquote></div></div>
 
---00000000000032bd9d0617fa9190--
+--000000000000b195580617fa8f40--
 
---00000000000032bd9e0617fa9192
+--000000000000b1955a0617fa8f42
 Content-Type: application/x-xz; name="testBadSetup.img.xz"
 Content-Disposition: attachment; filename="testBadSetup.img.xz"
 Content-Transfer-Encoding: base64
@@ -1591,7 +1591,7 @@ PfgpZAk7gMsqbN+1O/DEvS5fqg8+S2ZCkBMO/xCT+HF4WfgLzf+VKEYPqfx83vuaMC5WwI+F84OB
 wGXEJVP49ZE2MQWlsO5vwXBNRwzRkRGqrWAdus6xJxhcWYbpZlJYvul2rFnk5VsFCPnH2q38+1Ir
 dM0eWyBC+d1TPfgpZAk7gMsqbN+1O/DEvS5fqg8+S2ZCkBMO/xCT+HF4WfgLzf+VKEXe7fDW9AAA
 AAAA34aIzMuNsDEAAcG/A4CI9wQAAADCE/c7FBc7MAMAAAAABFla
---00000000000032bd9e0617fa9192
+--000000000000b1955a0617fa8f42
 Content-Type: application/x-xz; name="testCbpOffBy1.img.xz"
 Content-Disposition: attachment; filename="testCbpOffBy1.img.xz"
 Content-Transfer-Encoding: base64
@@ -2603,5 +2603,5 @@ gcBlxCVRDz+yncdMARgA7HNTp/2+rnwxGp+3jTFucJ6nI1/sKMuF0ZWYin4qkfIndfcZwAaYTZj9
 3vuaMC5WwI+F84OBwGXEJVP49ZE2MQWlsO5vwXBNRwzRkRGqrWAdus6xJxhcWYbpZlJYvul2rFnk
 5VsFCPnH2q38+1IrdM0eWyBC+d1TPfgpZAk7gMsqbN+1O/DEvS5fqg8+S2ZCkBMO/xCT+HF4WfgL
 zf+VKEXfI+5TAAAA8O+nlePoyKQAAZO/A4CI9wQAAAC3RRaGFBc7MAMAAAAABFla
---00000000000032bd9e0617fa9192--
+--000000000000b1955a0617fa8f42--
 
