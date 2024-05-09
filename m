@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69DA8C135E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A569B8C135A
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:03:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5797-0002Qa-Pv; Thu, 09 May 2024 13:01:29 -0400
+	id 1s5798-0002Ql-IP; Thu, 09 May 2024 13:01:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s5794-0002PH-5x
+ id 1s5794-0002PF-4f
  for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s5791-0003b5-PZ
- for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:25 -0400
+ id 1s5790-0003ax-5G
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1715274081;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fwuKd3xDQi5jqV7bVmAt6zG3iu3oNv9dZi8phhwclTk=;
- b=MYjfxszpUl9XXK0mukPWVayDE/AFn/U4dvwd6/ASuHNsjYOlEpHf9UC+6whoe68it0xJnq
- Lc0XzQNOoHgTDZLWXd7404GCvQUcAPiMnbl9BMChjT/YVY5kLS53FQ8tjI9+YS0+vuIiPq
- 1F3n+TSPXhvJbJPD8/JWckdkNJIjIDs=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1hcm1IKa8Lax1aQxNeVEkxaMcKmsJIcXMqbmtbDBUs4=;
+ b=G1xoXpT2HHfG7+630ZxmN6DAtjZtKKTKHNKRwqLlgCHxAA7et5yfjqWdrOa2o93cGWyLXc
+ XRbFTFoikzLiCLVLJAey+pzYocawMSmVr1AYqHNnfeQRITcWCvAEBOPVmNwyzePV8S+93G
+ p4i4ACxL2IibyCXLKBg83wZpli9ZcwI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-548-ltratU-dMjSEbkIlui_Qng-1; Thu, 09 May 2024 13:01:16 -0400
-X-MC-Unique: ltratU-dMjSEbkIlui_Qng-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-51fa40244f6so1025572e87.1
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:01:16 -0700 (PDT)
+ us-mta-487-3A3bRGTbNyyAAm5GD7kJSA-1; Thu, 09 May 2024 13:01:17 -0400
+X-MC-Unique: 3A3bRGTbNyyAAm5GD7kJSA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-572146eeed3so525443a12.2
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:01:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715274073; x=1715878873;
+ d=1e100.net; s=20230601; t=1715274076; x=1715878876;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fwuKd3xDQi5jqV7bVmAt6zG3iu3oNv9dZi8phhwclTk=;
- b=FmjHOTymRd3NYwcrQvGIliEfPMhf8qHY8QOhA8MLAUPpfVVkhTSmGbg4wc4Ig/MWp0
- /MWMXvjqhm+CouNV69m9V27YMORwsIxTOu1if1b1ntlOc4lJkYAypYoIspDO+YkoS9Ne
- vSXcLsrR0s0RboCUElvfjgcsuC9bLGNZgjb9oo+JIGmIthnfqlSn5po+noc643WjYs86
- VT5AmJpfTzDKdQA+1rL7ccNgz4CV1heeLS2wH4+KVTu4AVCgDzBnzCTf5nqQYgdo3lNf
- 2a7j/j1jQIw6Q23aAdvsGZBCHk+8D3wdYfCiWUMRbijMg3HvQ9QNE/58/yG9Sbzk2Tq4
- hZlQ==
-X-Gm-Message-State: AOJu0YwhNl4mqSHAnH9TwUsSSokH65l0URKT25lT0bhtqO7YIZSV0tOc
- 0OJVbnClQePhM1H5YU35obBY5Hjw6iZABv2MlrqRyq3vA/GpEkmxFz9xyPoQrofVcH98C50++r5
- uwhRTxpA5YwpakM69aGfKWOWQAklJkxOSrtglWqBaTGAbPKHPPDykzQ+rq7UaJ0boRPFNi4Dq9b
- iLJqyhOz7Op7PC6+R7ltC3ogeP1UwkDicn/NXd
-X-Received: by 2002:a05:6512:10c9:b0:51e:ef7f:4e89 with SMTP id
- 2adb3069b0e04-5220fb76884mr102864e87.6.1715274073420; 
- Thu, 09 May 2024 10:01:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+FRMeRZq1nvhsAjfLlfh8C25qyukNK0bbj5du0KKSnjG3G7MPmDDt9iw3+QmGWhALp4bOog==
-X-Received: by 2002:a05:6512:10c9:b0:51e:ef7f:4e89 with SMTP id
- 2adb3069b0e04-5220fb76884mr102842e87.6.1715274073045; 
- Thu, 09 May 2024 10:01:13 -0700 (PDT)
+ bh=1hcm1IKa8Lax1aQxNeVEkxaMcKmsJIcXMqbmtbDBUs4=;
+ b=Ia7fjbUJkpw4ZeicBHOwOVcNNFkpTlu9rBau1rozlfvbmkNktbaCIa5dWSYxxMUnBN
+ q57Yk3eLby4aZ5q7IosQaKsO0cF1pzyOes5ZfRokDJssoWI/0wz2cA0GJhyOudYJOt1E
+ o/QqWV2pG6qphvYb4/beW5GTF+fth+9hPIMZyXyHioeOnFpztXKaGCTsbgk0X446+YvD
+ wEMD1gYSt8mq5UBbnIz+yBDyR6rlKBj0PIi31WnjYAFNt2b8Td8Sf7XEexny7a6aYCnl
+ f2oaEW4UedtGSExQVNlBAYtp5LQC2Fb/e82q5Lcl62wFPm1ZQIk2j1v+vx/jUJaFqbNv
+ NMwA==
+X-Gm-Message-State: AOJu0Ywn/YfOlDPKDbvgFHRHpVWdjCnbjiUNvE8P4x/Sluqh69QNxnc7
+ lT4AZ4Q+AWn43X24fUniRFIK4hr8ST9Ebw5Osapxw3QrcO4QDRDLXEaGxfXXdlUC4SalLXjdRPs
+ XhLA+9A6TuVa9Pa6cef4qtZGnnGjFSeTBRJrwRYEtKpztjo8Qt/U1ci+h7QmL3qrjT6hWckKmO3
+ fyuB+Vq8gAvkcQ00lxmWRzGmGMR26MsEL+/PVL
+X-Received: by 2002:a50:870d:0:b0:572:5fff:accd with SMTP id
+ 4fb4d7f45d1cf-5734d590348mr230616a12.6.1715274076032; 
+ Thu, 09 May 2024 10:01:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGm9+FqysnC6/VwSzSZ14Ys8hBrm8NopkBaatfbB6POVSgRGtxAQjSM8OVv6l9TDMSvhi+dcg==
+X-Received: by 2002:a50:870d:0:b0:572:5fff:accd with SMTP id
+ 4fb4d7f45d1cf-5734d590348mr230600a12.6.1715274075691; 
+ Thu, 09 May 2024 10:01:15 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17922159sm93336666b.97.2024.05.09.10.01.10
+ 4fb4d7f45d1cf-5733c2c7d6esm880328a12.72.2024.05.09.10.01.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 10:01:11 -0700 (PDT)
+ Thu, 09 May 2024 10:01:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: thuth@redhat.com
-Subject: [PATCH 12/13] i386: select correct components for no-board build
-Date: Thu,  9 May 2024 19:00:43 +0200
-Message-ID: <20240509170044.190795-13-pbonzini@redhat.com>
+Subject: [PATCH 13/13] tests/qtest: arm: fix operation in a build without any
+ boards or devices
+Date: Thu,  9 May 2024 19:00:44 +0200
+Message-ID: <20240509170044.190795-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240509170044.190795-1-pbonzini@redhat.com>
 References: <20240509170044.190795-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -100,94 +101,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The local APIC is a part of the CPU and has callbacks that are invoked
-from multiple accelerators.
-
-The IOAPIC on the other hand is optional, but ioapic_eoi_broadcast is
-used by common x86 code to implement the IOAPIC's implicit EOI mode.
-Add a stub in case the IOAPIC device is not included but the APIC is.
+ARM/aarch64 are easy to fix because they already have to pass a machine
+type by hand.  Just guard the tests with a check that the machine actually
+exists.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/intc/ioapic-stub.c      | 29 +++++++++++++++++++++++++++++
- .gitlab-ci.d/buildtest.yml |  2 +-
- hw/intc/meson.build        |  2 +-
- target/i386/Kconfig        |  1 +
- 4 files changed, 32 insertions(+), 2 deletions(-)
- create mode 100644 hw/intc/ioapic-stub.c
+ tests/qtest/arm-cpu-features.c | 4 ++++
+ tests/qtest/migration-test.c   | 6 ++++++
+ tests/qtest/numa-test.c        | 4 ++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/hw/intc/ioapic-stub.c b/hw/intc/ioapic-stub.c
-new file mode 100644
-index 00000000000..4dcd86248da
---- /dev/null
-+++ b/hw/intc/ioapic-stub.c
-@@ -0,0 +1,29 @@
-+/*
-+ *  ioapic.c IOAPIC emulation logic
-+ *
-+ *  Copyright (c) 2004-2005 Fabrice Bellard
-+ *
-+ *  Split the ioapic logic from apic.c
-+ *  Xiantao Zhang <xiantao.zhang@intel.com>
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2.1 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/intc/ioapic.h"
-+
-+void ioapic_eoi_broadcast(int vector)
-+{
-+}
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index f8502905203..62616157206 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -650,7 +650,7 @@ build-tci:
- # Check our reduced build configurations
- # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
- #   mips64el, or1k, ppc, ppc64, riscv32, riscv64, rx, x86_64
--# does not build without boards: i386, x86_64
-+# fails qtest without boards: i386, x86_64
- build-without-defaults:
-   extends: .native_build_job_template
-   needs:
-diff --git a/hw/intc/meson.build b/hw/intc/meson.build
-index f4b540e6a8b..0d1b7d0a432 100644
---- a/hw/intc/meson.build
-+++ b/hw/intc/meson.build
-@@ -20,7 +20,7 @@ system_ss.add(when: 'CONFIG_GOLDFISH_PIC', if_true: files('goldfish_pic.c'))
- system_ss.add(when: 'CONFIG_HEATHROW_PIC', if_true: files('heathrow_pic.c'))
- system_ss.add(when: 'CONFIG_I8259', if_true: files('i8259_common.c', 'i8259.c'))
- system_ss.add(when: 'CONFIG_IMX', if_true: files('imx_avic.c', 'imx_gpcv2.c'))
--system_ss.add(when: 'CONFIG_IOAPIC', if_true: files('ioapic_common.c'))
-+system_ss.add(when: 'CONFIG_IOAPIC', if_true: files('ioapic_common.c'), if_false: files('ioapic-stub.c'))
- system_ss.add(when: 'CONFIG_OMAP', if_true: files('omap_intc.c'))
- system_ss.add(when: 'CONFIG_OPENPIC', if_true: files('openpic.c'))
- system_ss.add(when: 'CONFIG_PL190', if_true: files('pl190.c'))
-diff --git a/target/i386/Kconfig b/target/i386/Kconfig
-index ad9291d3b8f..6b0feef0299 100644
---- a/target/i386/Kconfig
-+++ b/target/i386/Kconfig
-@@ -1,5 +1,6 @@
- config I386
-     bool
-+    select APIC
-     # kvm_arch_fixup_msi_route() needs to access PCIDevice
-     select PCI if KVM
+diff --git a/tests/qtest/arm-cpu-features.c b/tests/qtest/arm-cpu-features.c
+index 9d6e6190d55..966c65d5c3e 100644
+--- a/tests/qtest/arm-cpu-features.c
++++ b/tests/qtest/arm-cpu-features.c
+@@ -632,6 +632,10 @@ int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
  
++    if (!qtest_has_machine("virt")) {
++        goto out;
++    }
++
+     if (qtest_has_accel("tcg")) {
+         qtest_add_data_func("/arm/query-cpu-model-expansion",
+                             NULL, test_query_cpu_model_expansion);
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 5d6d8cd6343..31045b69fa7 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -813,6 +813,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         kvm_opts = ",dirty-ring-size=4096";
+     }
+ 
++    if (!qtest_has_machine(machine_alias)) {
++        g_autofree char *msg = g_strdup_printf("machine %s not supported", machine_alias);
++        g_test_skip(msg);
++        return -1;
++    }
++
+     machine = resolve_machine_version(machine_alias, QEMU_ENV_SRC,
+                                       QEMU_ENV_DST);
+ 
+diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
+index 4f4404a4b14..7aa262dbb99 100644
+--- a/tests/qtest/numa-test.c
++++ b/tests/qtest/numa-test.c
+@@ -558,6 +558,9 @@ int main(int argc, char **argv)
+     }
+ 
+     if (g_str_equal(arch, "aarch64")) {
++        if (!qtest_has_machine("virt")) {
++            goto out;
++        }
+         g_string_append(args, " -machine virt");
+     }
+ 
+@@ -590,5 +593,6 @@ int main(int argc, char **argv)
+                             aarch64_numa_cpu);
+     }
+ 
++out:
+     return g_test_run();
+ }
 -- 
 2.45.0
 
