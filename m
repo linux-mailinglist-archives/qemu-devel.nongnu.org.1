@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970478C1358
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193F38C1357
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s578w-0002Hb-FP; Thu, 09 May 2024 13:01:18 -0400
+	id 1s578w-0002He-FC; Thu, 09 May 2024 13:01:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s578p-0002GS-0b
- for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s578q-0002H0-Ii
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s578m-0003YB-Vs
- for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:10 -0400
+ id 1s578o-0003YX-QY
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 13:01:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715274068;
+ s=mimecast20190719; t=1715274069;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lgqJCblTtWKOGjneOII9w24G3R5kWdUK9+a6Wm03r3E=;
- b=hu7qxq05qbpYlws5ewprlkip9E5a6RvU1X/1y/6QCHqYk4+H6ZKs+lDy+3NCvZcnZJ5o/b
- HpnYpPxU/6dasUQEK+ErboANg3h5yrPyO8vOcbjo+rmQPTRq15l24mhy2ir11Sk/jcGj2F
- vaYNk3wXodo4cF9HE25T8+xqIq7PnhE=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LVIFiD89QhCcDd/5PLOQqXkqJ//w22v0cKCzdxBuTYI=;
+ b=Fz5yOeZm/bgHlt67vJ6CK3Z0zcN5GzIAjj84e8R/BvCBOxWtgoaOSbbtoW0Crx2d5N7hxZ
+ FW2kuj60o8FJPGibvWMzQFxonwDfnYFfEV1OiHu6cLNFXJXOgyuE432gvuK+zv1edAA0GS
+ YKc/FibNUxW8rcWqdycR7t/bzR2qX+o=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-Dw_GSiN-N12x3ZK0erYOQg-1; Thu, 09 May 2024 13:01:06 -0400
-X-MC-Unique: Dw_GSiN-N12x3ZK0erYOQg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-5206ef0d6fdso961255e87.3
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:01:05 -0700 (PDT)
+ us-mta-345-lp0BVV2tOQGQgNbJ8A2kTA-1; Thu, 09 May 2024 13:01:08 -0400
+X-MC-Unique: lp0BVV2tOQGQgNbJ8A2kTA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-572cbbdb450so552937a12.1
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:01:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715274064; x=1715878864;
+ d=1e100.net; s=20230601; t=1715274066; x=1715878866;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lgqJCblTtWKOGjneOII9w24G3R5kWdUK9+a6Wm03r3E=;
- b=u1rqKT/oTJAGwepCxnkDICLZTnsw/uwIv8Q5GPn1IdigO86RSIuGaExRdxWc1BovwP
- eME2HIab7ZVGlTzLfnNuhPr1tmeIyur0y2WHsRXOeRLc+4oVuWrhwcSPSkufOQp61PEB
- UM2sK/zALK/+ig+RfDU2mqRc3LlJkAnyFBNRAkO3/4qe8FKJGGVKYxd7bW0mXCqwK/ng
- tqualg0fl04TooYZLoVfYYD5d0TGpjlkmijJQCNmbvdAERwqgoMfrB7ks3eitzlu2xy6
- B9hUeLqYpq+0NOwFBagXyRu0hKGhF9RiqWjDGMGXhFPaSGGynWWCt1kNv+6csg321iJK
- dk5w==
-X-Gm-Message-State: AOJu0Yy79M1ND6z6k3Mm6Y5ykBRameWw1jVFiJ62GocA4nrSe8BbN0aO
- 6Q9rMcZrJGcuwVrf0AjGu6UAqns92XJS5FiW0giaofDhWXn+NH0m07Gk0gwoJ0X1LG8Bj6O+b1U
- 6C6ESOSGsl9lE6e1UQktPcieH7KwjiySq4AEXdwSzC2ZDT/nb4Vjw2/+JGWV1OzuyYVnBk0Jdam
- kthOMUN9vbxlpMUiG/ZMv3kZUJVpiBWC5dfZFp
-X-Received: by 2002:a19:e043:0:b0:51d:2529:7c4d with SMTP id
- 2adb3069b0e04-5220f646013mr98117e87.0.1715274063955; 
- Thu, 09 May 2024 10:01:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBNPmqz2/dhBivLLDbKihMa1v+CFAs1PRZ6MxFKeBXvgFcB0GX88zY4XFkXUWqcloEYjz5Lw==
-X-Received: by 2002:a19:e043:0:b0:51d:2529:7c4d with SMTP id
- 2adb3069b0e04-5220f646013mr98108e87.0.1715274063596; 
- Thu, 09 May 2024 10:01:03 -0700 (PDT)
+ bh=LVIFiD89QhCcDd/5PLOQqXkqJ//w22v0cKCzdxBuTYI=;
+ b=qeLUIehD5oiLnMefOQHNIjK97AKY9oCogK6GzmIkJSmZOk6LXvhEQ0wtq7mzX7ZD0+
+ MXE+3YWvIoeItiYsh6ww2luedIKm0Tf+7fZHvo2n+iXsHAUUn2FVNFk9+ivpKWp8CKlQ
+ dzdsGSsbHPzintnpgEfwXoGwr1pMuAgVZh8eRRC05npBkM9OCl3c5rxKEeiNP53l33i3
+ 2rmNPuTB8weZr6iZhw2lkqp1YZ93iXHj8LpK7Z64CypucO0H/bMfLFoVtRx7r4HXrRmd
+ jLA9nQf1OiJ/Tl57qbzy1SuWDy8LpTx+txv/HeeYlFQOw3772xUZ4b5pfMcnw3RjwJHT
+ nbXg==
+X-Gm-Message-State: AOJu0Ywxc7OvWgchsP3Zy3ywT1Zrg44GRJvHI3Ld7gG0r5cDNFRTxdnt
+ uGyRwrsh/D6/K/DoCxRxnBQ7VjKlaDRQzF2cz8ihy/yPcmr6nSNcG3pESI7He8+FParIGZgYtsB
+ QFKwhYxMnmmmiiKV+zzNtgzXhTTUMNPXlUj2Yo24P8qRhK72CxITW8JRu/iJYvgGkVRNEB6ITTm
+ kYapcVpxJt72tCibteCgx66celP/C90VsxmnQF
+X-Received: by 2002:a50:ab05:0:b0:570:5b3d:91f with SMTP id
+ 4fb4d7f45d1cf-5734d5ceb5emr197384a12.23.1715274066206; 
+ Thu, 09 May 2024 10:01:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFb8A6sgQ+MbhQHdnzOlhWhAhzTxAFxIX9acXMl9AuIGc2QA5bXTpO3yKD+XUoHTB/N9MMblQ==
+X-Received: by 2002:a50:ab05:0:b0:570:5b3d:91f with SMTP id
+ 4fb4d7f45d1cf-5734d5ceb5emr197366a12.23.1715274065865; 
+ Thu, 09 May 2024 10:01:05 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b18110sm92085866b.225.2024.05.09.10.01.01
+ 4fb4d7f45d1cf-5733bbbfcfesm891663a12.0.2024.05.09.10.01.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 10:01:02 -0700 (PDT)
+ Thu, 09 May 2024 10:01:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: thuth@redhat.com
-Subject: [PATCH 08/13] i386: correctly select code in hw/i386 that depends on
- other components
-Date: Thu,  9 May 2024 19:00:39 +0200
-Message-ID: <20240509170044.190795-9-pbonzini@redhat.com>
+Subject: [PATCH 09/13] i386: pc: remove unnecessary MachineClass overrides
+Date: Thu,  9 May 2024 19:00:40 +0200
+Message-ID: <20240509170044.190795-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240509170044.190795-1-pbonzini@redhat.com>
 References: <20240509170044.190795-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,52 +100,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-fw_cfg.c and vapic.c are currently included unconditionally but
-depend on other components.  vapic.c depends on the local APIC,
-while fw_cfg.c includes a piece of AML builder code that depends
-on CONFIG_ACPI.
+There is no need to override these fields of MachineClass because they are
+already set to the right value in the superclass.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/fw_cfg.c    | 2 ++
- hw/i386/meson.build | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ include/hw/i386/x86.h | 4 ----
+ hw/i386/pc.c          | 3 ---
+ hw/i386/x86.c         | 6 +++---
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index d802d2787f0..6e0d9945d07 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -203,6 +203,7 @@ void fw_cfg_build_feature_control(MachineState *ms, FWCfgState *fw_cfg)
-     fw_cfg_add_file(fw_cfg, "etc/msr_feature_control", val, sizeof(*val));
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index d7b7d3f3ce0..c2062db13f5 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -114,10 +114,6 @@ uint32_t x86_cpu_apic_id_from_index(X86MachineState *pcms,
+ 
+ void x86_cpu_new(X86MachineState *pcms, int64_t apic_id, Error **errp);
+ void x86_cpus_init(X86MachineState *pcms, int default_cpu_version);
+-CpuInstanceProperties x86_cpu_index_to_props(MachineState *ms,
+-                                             unsigned cpu_index);
+-int64_t x86_get_default_cpu_node_id(const MachineState *ms, int idx);
+-const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms);
+ CPUArchId *x86_find_cpu_slot(MachineState *ms, uint32_t id, int *idx);
+ void x86_rtc_set_cpus_count(ISADevice *rtc, uint16_t cpus_count);
+ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 19f21953b4a..bfb46e9b548 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1826,9 +1826,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     assert(!mc->get_hotplug_handler);
+     mc->get_hotplug_handler = pc_get_hotplug_handler;
+     mc->hotplug_allowed = pc_hotplug_allowed;
+-    mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
+-    mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
+-    mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
+     mc->auto_enable_numa_with_memhp = true;
+     mc->auto_enable_numa_with_memdev = true;
+     mc->has_hotpluggable_cpus = true;
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index c61f4ebfa6a..fcef652c1e3 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -443,7 +443,7 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+     numa_cpu_pre_plug(cpu_slot, dev, errp);
  }
  
-+#ifdef CONFIG_ACPI
- void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg)
+-CpuInstanceProperties
++static CpuInstanceProperties
+ x86_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
  {
-     /*
-@@ -229,3 +230,4 @@ void fw_cfg_add_acpi_dsdt(Aml *scope, FWCfgState *fw_cfg)
-     aml_append(dev, aml_name_decl("_CRS", crs));
-     aml_append(scope, dev);
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+@@ -453,7 +453,7 @@ x86_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
+     return possible_cpus->cpus[cpu_index].props;
  }
-+#endif
-diff --git a/hw/i386/meson.build b/hw/i386/meson.build
-index d8b70ef3e9c..d9da676038c 100644
---- a/hw/i386/meson.build
-+++ b/hw/i386/meson.build
-@@ -1,12 +1,12 @@
- i386_ss = ss.source_set()
- i386_ss.add(files(
-   'fw_cfg.c',
--  'vapic.c',
-   'e820_memory_layout.c',
-   'multiboot.c',
-   'x86.c',
- ))
  
-+i386_ss.add(when: 'CONFIG_APIC', if_true: files('vapic.c'))
- i386_ss.add(when: 'CONFIG_X86_IOMMU', if_true: files('x86-iommu.c'),
-                                       if_false: files('x86-iommu-stub.c'))
- i386_ss.add(when: 'CONFIG_AMD_IOMMU', if_true: files('amd_iommu.c'),
+-int64_t x86_get_default_cpu_node_id(const MachineState *ms, int idx)
++static int64_t x86_get_default_cpu_node_id(const MachineState *ms, int idx)
+ {
+    X86CPUTopoIDs topo_ids;
+    X86MachineState *x86ms = X86_MACHINE(ms);
+@@ -467,7 +467,7 @@ int64_t x86_get_default_cpu_node_id(const MachineState *ms, int idx)
+    return topo_ids.pkg_id % ms->numa_state->num_nodes;
+ }
+ 
+-const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms)
++static const CPUArchIdList *x86_possible_cpu_arch_ids(MachineState *ms)
+ {
+     X86MachineState *x86ms = X86_MACHINE(ms);
+     unsigned int max_cpus = ms->smp.max_cpus;
 -- 
 2.45.0
 
