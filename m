@@ -2,76 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7E48C0D05
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 11:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A70088C0D58
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 11:16:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4zcj-0002EP-Uw; Thu, 09 May 2024 04:59:33 -0400
+	id 1s4zsG-0007kq-FD; Thu, 09 May 2024 05:15:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhengchuan@huawei.com>)
- id 1s4zcQ-0002E0-2F; Thu, 09 May 2024 04:59:14 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s4zs4-0007ja-QJ
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 05:15:24 -0400
+Received: from mail-co1nam11on2084.outbound.protection.outlook.com
+ ([40.107.220.84] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhengchuan@huawei.com>)
- id 1s4zcD-0007Yk-AF; Thu, 09 May 2024 04:59:05 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4VZm9d3HVNz1HBqy;
- Thu,  9 May 2024 16:57:25 +0800 (CST)
-Received: from dggpeml500005.china.huawei.com (unknown [7.185.36.59])
- by mail.maildlp.com (Postfix) with ESMTPS id 2E9D31400D2;
- Thu,  9 May 2024 16:58:43 +0800 (CST)
-Received: from [10.174.186.51] (10.174.186.51) by
- dggpeml500005.china.huawei.com (7.185.36.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 9 May 2024 16:58:41 +0800
-Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-To: Peter Xu <peterx@redhat.com>, "Gonglei (Arei)" <arei.gonglei@huawei.com>
-CC: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>, Markus
- Armbruster <armbru@redhat.com>, Michael Galaxy <mgalaxy@akamai.com>, Yu Zhang
- <yu.zhang@ionos.com>, "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, Jinpu
- Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Yuval Shaia
- <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>, Prasanna Kumar
- Kalever <prasanna.kalever@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Prasanna Kumar Kalever
- <prasanna4324@gmail.com>, "integration@gluster.org"
- <integration@gluster.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>, "devel@lists.libvirt.org"
- <devel@lists.libvirt.org>, Hanna Reitz <hreitz@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>, Eric Blake
- <eblake@redhat.com>, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, Wainer dos Santos
- Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>, Pannengyuan
- <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>
-References: <Zhfxoaz9yNTx8Btd@x1n>
- <CAHEcVy7POArt+CmY8dyNTzLJp3XxXgjh3k8=C=9K+_cw1CSJFA@mail.gmail.com>
- <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com> <Zi-1OvxA5MIHjklU@x1n>
- <877cgfe2yw.fsf@pond.sub.org> <ZjClMb-6MddpvHqQ@redhat.com>
- <ZjJgQcPQ29HJsTpY@x1n> <7e902e4e576a4e199e36d28f99bd55e5@huawei.com>
- <Zjj0xa-3KrFHTK0S@x1n> <addaa8d094904315a466533763689ead@huawei.com>
- <ZjpWmG2aUJLkYxJm@x1n>
-Message-ID: <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com>
-Date: Thu, 9 May 2024 16:58:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s4zs2-0005n4-Qq
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 05:15:24 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AvFiQacWN+kvsI6UTadzrqnp1OBGsTp6420YLAJaDPefLAuwt9ofV4t7pgLD1v6Oy8PmTWZeDKWGWaUa8jCQAbrZjdnDgcbDyk7fgjd/+noL8ssKPWuLZNc4nvHr40fZ9yremF6C2RFCEyKjiQwt/VCOYhaFDnTBpbtbk8a2rrquJJhUUyP29TmUuwgN0t3qRGfVmQeGcU742x66ZbhTR+HNVtIxlUxmRc9+Qq0qaWvbIz+sNXelJE7s1ber/3sUqRWQqQFb1TIYGjNR+xCU1wAO033wA5ODc7P0dYE++FP9y89lW0WofLZAuuvNwio+zhEaGvpVdddhjPesIfn90Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9VXi05EyuMj1VxPxRYbsUPnj4maZCV+ITcES+wKYJsI=;
+ b=cLLisJUMMnIGSx/uDyPppE0XtA0UCJ9JMKroXJsx/ut6QUt7uea6HzSzVTi9m/tMnYheBtkLQJw6X/61FStZ+nu9D6Gr9CqQIljUOKIsMK2H3azW5vq2bSxPl85mthI0gHRNEyk5g8I2QjQ2c9lEj6X5LSD9wRaog60i6ed5c+1g1PACijzAbpR+7ZPpK8wNYH6xSmL8hA3i+aC7Oz5ruaEDS3/Fd8LnfaeHTYpjiofEGO5y/vuYpXHBzssi3ZLZET5JsJSturKeN+NyyvK4WyKlgNZgi/2+09zPtyJ1EEm/kBpYkAbarL4OufzYOMo83sTaE2KK4DyAmj+IbmoUxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9VXi05EyuMj1VxPxRYbsUPnj4maZCV+ITcES+wKYJsI=;
+ b=GK/UVAm/px+f3eLWB8v7TbihF0OyRbH5jJJKkVFvNoiUPI4/SXYXZIJuZjqJzqzcYcPuZ6Oc6NcAcjFZBltHZk2HehDNxSHUMHGKgxMuKgnaMfi5H1iXy25NvANs+v4uFTG3rzuOS/KIUzZX3tXDVG42CRZlfS38zOBYRGYPOx7WeCQurEQT7Uhquq1Sovlj+V/NtZJXSEk22MD30RGZPF3q0JjbeQ7zQxi+IBpeN1h5KSVpwjOE1Ly7cEAqNzzCSR0+TZDB/sfWCIefc/mUCp+Lu51HS+Wfagzu4fU/9mRJLxSphklR59FmNgpjLtn07rZ9qAPpieSp9gWBkxyRRg==
+Received: from MW4PR03CA0015.namprd03.prod.outlook.com (2603:10b6:303:8f::20)
+ by DM6PR12MB4418.namprd12.prod.outlook.com (2603:10b6:5:28e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.47; Thu, 9 May
+ 2024 09:10:15 +0000
+Received: from CO1PEPF000042A8.namprd03.prod.outlook.com
+ (2603:10b6:303:8f:cafe::c9) by MW4PR03CA0015.outlook.office365.com
+ (2603:10b6:303:8f::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.42 via Frontend
+ Transport; Thu, 9 May 2024 09:10:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CO1PEPF000042A8.mail.protection.outlook.com (10.167.243.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7544.18 via Frontend Transport; Thu, 9 May 2024 09:10:14 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 May 2024
+ 02:09:58 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 May 2024
+ 02:09:58 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Thu, 9 May
+ 2024 02:09:55 -0700
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, Eric Blake
+ <eblake@redhat.com>, Peter Xu <peterx@redhat.com>, Fabiano Rosas
+ <farosas@suse.de>, Joao Martins <joao.m.martins@oracle.com>, Maor Gottlieb
+ <maorg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
+Subject: [PATCH v2 0/3] qapi/vfio: Add VFIO migration QAPI event
+Date: Thu, 9 May 2024 12:09:51 +0300
+Message-ID: <20240509090954.16447-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-In-Reply-To: <ZjpWmG2aUJLkYxJm@x1n>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.186.51]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500005.china.huawei.com (7.185.36.59)
-Received-SPF: pass client-ip=45.249.212.191;
- envelope-from=zhengchuan@huawei.com; helo=szxga05-in.huawei.com
-X-Spam_score_int: -60
-X-Spam_score: -6.1
-X-Spam_bar: ------
-X-Spam_report: (-6.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.944,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000042A8:EE_|DM6PR12MB4418:EE_
+X-MS-Office365-Filtering-Correlation-Id: f87f5af8-618f-4758-a0d4-08dc7007d68d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230031|36860700004|376005|1800799015|82310400017; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?v1jHvXmM5YlIgj1iTC4hfyoB1tLkQN/QyOV4Ie/Diap4dSBPRvZGX0qoCznW?=
+ =?us-ascii?Q?SdmG3eg7Ph4WwNyQCovE3XYOxgTwSWRY8Nicl6l50sMSsDzU6NVZLmkn6j/Z?=
+ =?us-ascii?Q?h0tTUaiJ4diQrNG9zwR7fcqO7kxYjNOHbl9TOTFXrcMmhpMJAUF1cVtfVskp?=
+ =?us-ascii?Q?9bdagsfZa4layChWZizyrtr/d2tWN+Fy8KvbVIlQwX8r6MbLC4lklM3St2mh?=
+ =?us-ascii?Q?1hPgT/smGpu7rA78WUsr6g5Q8fMOZzYQ2rCyU8FrX8BhD52XTZerOO3UGpsO?=
+ =?us-ascii?Q?Ghc/sMh4FG4Ud/BooxkHhI5/jS9ffH/Y9sZlK+HKj8TGnDQbFH9ALnlyG8vN?=
+ =?us-ascii?Q?8QvMWw/sxRXtsAcBUpRDDfYKOR9D6bNSyl8yYpjIwoKaCBSvEWOofrUOvgAP?=
+ =?us-ascii?Q?U2uaH/b245qhVG3tjdZJirqjsY9ehAFH9bnXMyBQu8KqAXCBQXJEvrggLqn0?=
+ =?us-ascii?Q?wYkrodIJZazIURokGZ2voBUTL1ciEGrzGb0E+ERNSrsvv9gUKfcnwwW1AMkW?=
+ =?us-ascii?Q?E/rbI/517ZFEOTMJ/DXIOGrnnVxN8zUjwIRea3uvU2yDaUTMB8vOGZvjQbJy?=
+ =?us-ascii?Q?hCHcOnyRkoFQdXfyJYXn08c5zXHHnnypQZwcwKdrcZ9sn4Cqe7I9zEjXoa5Z?=
+ =?us-ascii?Q?OkAN5Gt/m6A/9HEWv87MM8CnEZnRyQBxI5DrovW9bqUITUXO6c5mskoflLlB?=
+ =?us-ascii?Q?T28+EWCFgLEjfRocWVxqEwcbygqGmsX0qd5n0VsbWYzZtPeVT/Uj03rG+3LU?=
+ =?us-ascii?Q?1+qY9qdNsNkJYD7AnAeu4z2brKPJ+PWSlK7fnW5IJF0FEElfPlvnWKntV1SM?=
+ =?us-ascii?Q?VX//NUhGNd0YtZcVUTJbWt9cl40uemnLvr6mUgDLdOnk6odhrvHyGKEArO26?=
+ =?us-ascii?Q?uKtWyFR81DLZOeGtkkKhVpH4sRa3cXOHBMyqpWi0miuf7EqasZc3wqJogeOr?=
+ =?us-ascii?Q?ckK8JZHLuYFZnKh1mNENYBC/99hp4Efphed9Sov6mRoMcTbSBJxxv0Otg1k6?=
+ =?us-ascii?Q?HtDbYVeHttm0v0xHE4EcSDUzh/07gUQzV+ITzQWFbXWs1U14CKZtEt/XUAWt?=
+ =?us-ascii?Q?yUjj0fMZPQyWLmF51DFaIp6CuDqpdLlnH+R8Yjg3GBhssqOFETDuuNPlcsY/?=
+ =?us-ascii?Q?QoR9v7v3UAWcmxgbcB8J74KyhwrJaqXUnR+ZPWsfSeXOPF3rgOL4sr5XH+4V?=
+ =?us-ascii?Q?HghYkjjOvRXrZHBZqhKKk98QEM56IFgQvgDLfZwy+kFyhzKTnncSHbaUk/37?=
+ =?us-ascii?Q?O7NHXmi/bDKrVe2Q3r+Ny0Et5MiJbY9CbMkAGLE/TPobcW/GiELjC5S4U7kt?=
+ =?us-ascii?Q?K6v+6/+FXO3ClBjt31Le/wD29/MQKTFqWEgJC4rv0+F2sqMq12/tWN/8qwkp?=
+ =?us-ascii?Q?9mSTUf8=3D?=
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(36860700004)(376005)(1800799015)(82310400017); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 09:10:14.5049 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f87f5af8-618f-4758-a0d4-08dc7007d68d
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000042A8.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4418
+Received-SPF: softfail client-ip=40.107.220.84;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
+X-Spam_bar: --
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.582,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,129 +151,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Zheng Chuan <zhengchuan@huawei.com>
-From:  Zheng Chuan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Peter，Lei，Jinpu.
+Hello,
 
-On 2024/5/8 0:28, Peter Xu wrote:
-> On Tue, May 07, 2024 at 01:50:43AM +0000, Gonglei (Arei) wrote:
->> Hello,
->>
->>> -----Original Message-----
->>> From: Peter Xu [mailto:peterx@redhat.com]
->>> Sent: Monday, May 6, 2024 11:18 PM
->>> To: Gonglei (Arei) <arei.gonglei@huawei.com>
->>> Cc: Daniel P. Berrangé <berrange@redhat.com>; Markus Armbruster
->>> <armbru@redhat.com>; Michael Galaxy <mgalaxy@akamai.com>; Yu Zhang
->>> <yu.zhang@ionos.com>; Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>; Jinpu Wang
->>> <jinpu.wang@ionos.com>; Elmar Gerdes <elmar.gerdes@ionos.com>;
->>> qemu-devel@nongnu.org; Yuval Shaia <yuval.shaia.ml@gmail.com>; Kevin Wolf
->>> <kwolf@redhat.com>; Prasanna Kumar Kalever
->>> <prasanna.kalever@redhat.com>; Cornelia Huck <cohuck@redhat.com>;
->>> Michael Roth <michael.roth@amd.com>; Prasanna Kumar Kalever
->>> <prasanna4324@gmail.com>; integration@gluster.org; Paolo Bonzini
->>> <pbonzini@redhat.com>; qemu-block@nongnu.org; devel@lists.libvirt.org;
->>> Hanna Reitz <hreitz@redhat.com>; Michael S. Tsirkin <mst@redhat.com>;
->>> Thomas Huth <thuth@redhat.com>; Eric Blake <eblake@redhat.com>; Song
->>> Gao <gaosong@loongson.cn>; Marc-André Lureau
->>> <marcandre.lureau@redhat.com>; Alex Bennée <alex.bennee@linaro.org>;
->>> Wainer dos Santos Moschetta <wainersm@redhat.com>; Beraldo Leal
->>> <bleal@redhat.com>; Pannengyuan <pannengyuan@huawei.com>;
->>> Xiexiangyou <xiexiangyou@huawei.com>
->>> Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
->>>
->>> On Mon, May 06, 2024 at 02:06:28AM +0000, Gonglei (Arei) wrote:
->>>> Hi, Peter
->>>
->>> Hey, Lei,
->>>
->>> Happy to see you around again after years.
->>>
->> Haha, me too.
->>
->>>> RDMA features high bandwidth, low latency (in non-blocking lossless
->>>> network), and direct remote memory access by bypassing the CPU (As you
->>>> know, CPU resources are expensive for cloud vendors, which is one of
->>>> the reasons why we introduced offload cards.), which TCP does not have.
->>>
->>> It's another cost to use offload cards, v.s. preparing more cpu resources?
->>>
->> Software and hardware offload converged architecture is the way to go for all cloud vendors 
->> (Including comprehensive benefits in terms of performance, cost, security, and innovation speed), 
->> it's not just a matter of adding the resource of a DPU card.
->>
->>>> In some scenarios where fast live migration is needed (extremely short
->>>> interruption duration and migration duration) is very useful. To this
->>>> end, we have also developed RDMA support for multifd.
->>>
->>> Will any of you upstream that work?  I'm curious how intrusive would it be
->>> when adding it to multifd, if it can keep only 5 exported functions like what
->>> rdma.h does right now it'll be pretty nice.  We also want to make sure it works
->>> with arbitrary sized loads and buffers, e.g. vfio is considering to add IO loads to
->>> multifd channels too.
->>>
->>
->> In fact, we sent the patchset to the community in 2021. Pls see:
->> https://lore.kernel.org/all/20210203185906.GT2950@work-vm/T/
-> 
+This series adds a new QAPI event for VFIO device migration state 
+change. This event will be emitted when a VFIO device changes its
+state, for example, during migration or when stopping/starting the
+guest.
 
-Yes, I have sent the patchset of multifd support for rdma migration by taking over my colleague, and also
-sorry for not keeping on this work at that time due to some reasons.
-And also I am strongly agree with Lei that the RDMA protocol has some special advantages against with TCP
-in some scenario, and we are indeed to use it in our product.
+This event can be used by management applications to get updates on the
+current state of the VFIO device for their own purposes.
 
-> I wasn't aware of that for sure in the past..
-> 
-> Multifd has changed quite a bit in the last 9.0 release, that may not apply
-> anymore.  One thing to mention is please look at Dan's comment on possible
-> use of rsocket.h:
-> 
-> https://lore.kernel.org/all/ZjJm6rcqS5EhoKgK@redhat.com/
-> 
-> And Jinpu did help provide an initial test result over the library:
-> 
-> https://lore.kernel.org/qemu-devel/CAMGffEk8wiKNQmoUYxcaTHGtiEm2dwoCF_W7T0vMcD-i30tUkA@mail.gmail.com/
-> 
-> It looks like we have a chance to apply that in QEMU.
-> 
->>
->>
->>> One thing to note that the question here is not about a pure performance
->>> comparison between rdma and nics only.  It's about help us make a decision
->>> on whether to drop rdma, iow, even if rdma performs well, the community still
->>> has the right to drop it if nobody can actively work and maintain it.
->>> It's just that if nics can perform as good it's more a reason to drop, unless
->>> companies can help to provide good support and work together.
->>>
->>
->> We are happy to provide the necessary review and maintenance work for RDMA
->> if the community needs it.
->>
->> CC'ing Chuan Zheng.
-> 
-> I'm not sure whether you and Jinpu's team would like to work together and
-> provide a final solution for rdma over multifd.  It could be much simpler
-> than the original 2021 proposal if the rsocket API will work out.
-> 
-> Thanks,
-> 
-That's a good news to see the socket abstraction for RDMA!
-When I was developed the series above, the most pain is the RDMA migration has no QIOChannel abstraction and i need to take a 'fake channel'
-for it which is awkward in code implementation.
-So, as far as I know, we can do this by
-i. the first thing is that we need to evaluate the rsocket is good enough to satisfy our QIOChannel fundamental abstraction
-ii. if it works right, then we will continue to see if it can give us opportunity to hide the detail of rdma protocol
-    into rsocket by remove most of code in rdma.c and also some hack in migration main process.
-iii. implement the advanced features like multi-fd and multi-uri for rdma migration.
+A new per VFIO device capability, "migration-events", is added so events
+can be enabled only for the required devices. It is disabled by default.
 
-Since I am not familiar with rsocket, I need some times to look at it and do some quick verify with rdma migration based on rsocket.
-But, yes, I am willing to involved in this refactor work and to see if we can make this migration feature more better:）
+Feedback/comments are appreciated,
 
+Thanks.
+
+Changes from v1 [1]:
+* Added more info to patch #1 commit mesasge. (Markus)
+* Renamed VFIODeviceMigState to VfioMigrationState and
+  VFIO_DEVICE_MIG_STATE_CHANGED to VFIO_MIGRATION. (Joao, Markus)
+* Added qom-path and qdev id to VFIO_MIGRATION event data. (Markus)
+* Handled no-op state transitions in vfio_migration_set_state().
+  (Cedric)
+* Added helper to set VFIO state and emit VFIO event. (Peter)
+
+[1]
+https://lore.kernel.org/qemu-devel/20240430051621.19597-1-avihaih@nvidia.com/
+
+Avihai Horon (3):
+  qapi/vfio: Add VFIO migration QAPI event
+  vfio/migration: Emit VFIO migration QAPI event
+  vfio/migration: Don't emit STOP_COPY VFIO migration QAPI event twice
+
+ MAINTAINERS                   |  1 +
+ qapi/qapi-schema.json         |  1 +
+ qapi/vfio.json                | 67 +++++++++++++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h |  1 +
+ hw/vfio/migration.c           | 60 +++++++++++++++++++++++++++++--
+ hw/vfio/pci.c                 |  2 ++
+ qapi/meson.build              |  1 +
+ 7 files changed, 130 insertions(+), 3 deletions(-)
+ create mode 100644 qapi/vfio.json
 
 -- 
-Regards.
-Chuan
+2.26.3
+
 
