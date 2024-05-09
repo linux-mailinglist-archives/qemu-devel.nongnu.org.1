@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AE68C1207
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 17:32:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FAF08C11F3
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 17:27:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s55jf-0002ih-DA; Thu, 09 May 2024 11:31:07 -0400
+	id 1s55eS-0000Nf-Ec; Thu, 09 May 2024 11:25:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s55jR-0002hC-Ix
- for qemu-devel@nongnu.org; Thu, 09 May 2024 11:30:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s55eO-0000Md-97
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:25:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s55jH-0007sa-ER
- for qemu-devel@nongnu.org; Thu, 09 May 2024 11:30:49 -0400
+ id 1s55eL-0006Kv-FS
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:25:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715268634;
+ s=mimecast20190719; t=1715268336;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=q7HFYbK/sg4zW5sOnGvTduVZOWAmSnH/uZzaSod9kEU=;
- b=LP3UIOlEqYT8cmcz4bqBNepfNb6DoePZz/Mo3e+V0bWwjdxzBzqrwLSbs4MeCmRKp17b/E
- Y6PCmS3mIY6TmOJC8JeFeZ6BF/BezWjK0lgqBQFdZuqsBG3KcmVx9tP4rvd6OthcoX77NP
- 5cz4LiGNREl0pf/Wlilee0HHs4kgEG8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pKut2pWgSGhJinmu6Lcbnl9A90cPMPvnbW9ja96pAdo=;
+ b=GpJaktkgFlB6TeTFyVswA1idsYYYrMdSDBiIW6F81Z6Q6BqSgzYaYNaxSj7cuvY4CHhti3
+ /eBMWZp4fcN5jTJpn9bTIFJEGqRm0Pqy1hUMywCT0AJa137nasbikAwfD6oEgiabjpV65L
+ AldBobORZKuI99/iDpmI3LXWyngRHc4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-211-2dCkahqFOx6VTwWKNZG98g-1; Thu, 09 May 2024 11:25:31 -0400
-X-MC-Unique: 2dCkahqFOx6VTwWKNZG98g-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a599dbd2b6aso53776666b.2
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 08:25:31 -0700 (PDT)
+ us-mta-636-kTKwGN13PgGOpn1PIQyiCg-1; Thu, 09 May 2024 11:25:33 -0400
+X-MC-Unique: kTKwGN13PgGOpn1PIQyiCg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a59c69844aaso61189066b.0
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 08:25:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715268330; x=1715873130;
+ d=1e100.net; s=20230601; t=1715268332; x=1715873132;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=q7HFYbK/sg4zW5sOnGvTduVZOWAmSnH/uZzaSod9kEU=;
- b=OrnmhSHBqLcwQdr1DNRVcTQkND4qwysXglEm72H5w1tDiAeebl31rpLr3FdS0mbSNg
- fWKKA/pZXoD/794Jl70xOB0olZd2/Z7tiidlIkzGemQ7jsziaDBGAw0M4gtd34ffeaf2
- YFQsXpTV1Q9iBksTnfkgMxyFy7OxjDicBUBg6QLrJEEAPqdqGDWapbc3kxJ3JqT03OLC
- BNpk/uO5xk+x9nL1+JMi1XJlkFVsK5d2YFLjLxQ8czjGs+T5sUFq/XXOvlv4Quj06dTy
- s8J2liVNkQt49IzeiEuOrWD65dPo0HDOHE9ebvwp/P+7hZaKSRXl9FhiUGfqp8aR9pTd
- 2jIg==
-X-Gm-Message-State: AOJu0YyFUDjOb4dlKgdYMuLzVBtYo+bFwxA3ARvKHFl3+ImVI+FQJQuI
- B7/2wX8Rjzqzb7yyqojHAUZOCIy5NBQiAYCfkGOK7jL+biZwYCHA0PjMlyV4jxdMdNo5AH85UFH
- CZFg2SeaVL7hYmjk4xH2Z6YC2F2lpKvyngF4Pp9e5i9ossUmpx9Tyg4mdk6a74qlEAd6S5Z6jpZ
- eNOIpFaZBFStoVue9duj0v+IzARru2ZaF61Cuh
-X-Received: by 2002:a17:906:74d:b0:a59:bb20:9964 with SMTP id
- a640c23a62f3a-a59fb94b8f0mr438799466b.23.1715268329816; 
- Thu, 09 May 2024 08:25:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFi9HutHb9eeIkKh7F0R/L6Tx98PjJAOBvz6kRDVOFjfHik+mDCPHyJoA6qKVJ/T78eXP7qZg==
-X-Received: by 2002:a17:906:74d:b0:a59:bb20:9964 with SMTP id
- a640c23a62f3a-a59fb94b8f0mr438797466b.23.1715268329238; 
- Thu, 09 May 2024 08:25:29 -0700 (PDT)
+ bh=pKut2pWgSGhJinmu6Lcbnl9A90cPMPvnbW9ja96pAdo=;
+ b=o1krJdcgChmxVgSSUDsPEIFGvo5xRC4YnHpMYFVM8Rqtfdp7jdAFpKtHskB6kEq+65
+ 5D1VSMIrSYLKw8433hKGjbFg5gr0rT9EDDUvEqX2KmpXrwwjumMCO2bFugc0v+TrHDOx
+ 2RsalsJ0CsLRDnhO05/gOWIpOEOJTRnKzV8RBUeqQdvbPiS2NHwfIaoorcD3oFOtdeLy
+ 0/eUb2LI9ViLSnqM50JaMnlDtMD1+PMYPkOmX5pjb2MI71GCgEgu2QVkXNxs1z5i3569
+ RFPwdgf9qn8PQfipuNCNonR+L4a2FXHqTmlaeWLd4RMNSCUQOv8UuA86knBZxtqfEhkZ
+ bcFQ==
+X-Gm-Message-State: AOJu0YxLctDUJ/Z4uh6MP9pz34kStoZL+6JB8L5S0yKT9PC0w1BHlq4A
+ 4rDNY2Pm39hElaaZZt858miv4JaK1BjyzqptHK/MrFB9QPoKHZP5wmiXxCuPKFh2bH6n7UhOIfY
+ ug1PTP1GL2kTrvJ+vb/svDrmOKNlfWCHaO2tIwlUKSPEEzj8Z0pCNz3zPjyJxrF6e5k4wV6TMRl
+ YOTjdfhmyqmfclcxVH1iHn4x5qrzECBra8OeFg
+X-Received: by 2002:a17:906:e297:b0:a59:cfab:50e with SMTP id
+ a640c23a62f3a-a59fb94a3e5mr391251766b.16.1715268331785; 
+ Thu, 09 May 2024 08:25:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFef+CYPtN4iaiHyri4VwwCdl6MezoujE+hHix04nWAd/3WMtkKZqBQSEE+Hj2QSZdgaOZ6gw==
+X-Received: by 2002:a17:906:e297:b0:a59:cfab:50e with SMTP id
+ a640c23a62f3a-a59fb94a3e5mr391250866b.16.1715268331358; 
+ Thu, 09 May 2024 08:25:31 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b177fcsm83427766b.202.2024.05.09.08.25.28
+ a640c23a62f3a-a5a17b0140dsm83625566b.151.2024.05.09.08.25.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 08:25:28 -0700 (PDT)
+ Thu, 09 May 2024 08:25:30 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org
-Subject: [PATCH] target/i386: fix operand size for DATA16 REX.W POPCNT
-Date: Thu,  9 May 2024 17:25:26 +0200
-Message-ID: <20240509152526.141855-1-pbonzini@redhat.com>
+Subject: [PATCH] target/i386: rdpkru/wrpkru are no-prefix instructions
+Date: Thu,  9 May 2024 17:25:30 +0200
+Message-ID: <20240509152530.141898-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -97,64 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the manual, 32-bit vs 64-bit is governed by REX.W
-and REX ignores the 0x66 prefix.  This can be confirmed with this
-program:
-
-    #include <stdio.h>
-    int main()
-    {
-       int x = 0x12340000;
-       int y;
-       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-    }
-
-which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
-on QEMU.
+Reject 0x66/0xf3/0xf2 in front of them.
 
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+ target/i386/tcg/translate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 7d9f6b5c55b..5366dc32dd3 100644
+index 5366dc32dd3..3da4fdf64cc 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -411,16 +411,6 @@ static inline MemOp mo_stacksize(DisasContext *s)
-     return CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
- }
- 
--/* Select only size 64 else 32.  Used for SSE operand sizes.  */
--static inline MemOp mo_64_32(MemOp ot)
--{
--#ifdef TARGET_X86_64
--    return ot == MO_64 ? MO_64 : MO_32;
--#else
--    return MO_32;
--#endif
--}
--
- /* Select size 8 if lsb of B is clear, else OT.  Used for decoding
-    byte vs word opcodes.  */
- static inline MemOp mo_b_d(int b, MemOp ot)
-@@ -4545,12 +4535,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         modrm = x86_ldub_code(env, s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
- 
--        if (s->prefix & PREFIX_DATA) {
--            ot = MO_16;
--        } else {
--            ot = mo_64_32(dflag);
--        }
--
-+        ot = dflag;
-         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
-         gen_extu(ot, s->T0);
-         tcg_gen_mov_tl(cpu_cc_src, s->T0);
+@@ -3907,7 +3907,8 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
+             break;
+         case 0xee: /* rdpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3915,7 +3916,8 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
+             break;
+         case 0xef: /* wrpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
 -- 
 2.45.0
 
