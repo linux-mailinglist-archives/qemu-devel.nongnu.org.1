@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B938C176B
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 22:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9078C179A
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 22:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5AKw-0000Ar-3c; Thu, 09 May 2024 16:25:54 -0400
+	id 1s5AKy-0000Bm-LC; Thu, 09 May 2024 16:25:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5AKr-000073-0p; Thu, 09 May 2024 16:25:49 -0400
+ id 1s5AKs-00008l-JC; Thu, 09 May 2024 16:25:50 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5AKp-00011D-37; Thu, 09 May 2024 16:25:48 -0400
+ id 1s5AKq-00011z-BN; Thu, 09 May 2024 16:25:50 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 08A7B4E65D6;
- Thu, 09 May 2024 22:25:44 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1DC4C4E65BB;
+ Thu, 09 May 2024 22:25:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id NBc8zhvjGSHh; Thu,  9 May 2024 22:25:42 +0200 (CEST)
+ with ESMTP id 1-ZfiFXunV2S; Thu,  9 May 2024 22:25:43 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 195D14E65BB; Thu, 09 May 2024 22:25:42 +0200 (CEST)
-Message-Id: <f7b3176f06b9936bed9f30993e6e7a0c84821841.1715285340.git.balaton@eik.bme.hu>
+ id 2A8184E65D7; Thu, 09 May 2024 22:25:43 +0200 (CEST)
+Message-Id: <f2583540e2e54d4cae57c172b0aa16631b36056e.1715285340.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715285340.git.balaton@eik.bme.hu>
 References: <cover.1715285340.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v5 08/32] target/ppc/mmu_common.c: Move some debug logging
+Subject: [PATCH v5 09/32] target/ppc/mmu_common.c: Eliminate ret from
+ mmu6xx_get_physical_address()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Thu, 09 May 2024 22:25:42 +0200 (CEST)
+Date: Thu, 09 May 2024 22:25:43 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,106 +61,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the debug logging within ppc6xx_tlb_check() from after its only
-call to simplify the caller.
+Return directly, which is simpler than dragging a return value through
+multpile if and else blocks.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 54 ++++++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 30 deletions(-)
+ target/ppc/mmu_common.c | 84 +++++++++++++++++++----------------------
+ 1 file changed, 39 insertions(+), 45 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index ba60b4902b..89bfd9aa45 100644
+index 89bfd9aa45..03d9e6bfda 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -225,17 +225,14 @@ static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
-                       access_type == MMU_INST_FETCH ? 'I' : 'D');
-         switch (ppc6xx_tlb_pte_check(ctx, tlb->pte0, tlb->pte1,
-                                      0, access_type)) {
--        case -3:
--            /* TLB inconsistency */
--            return -1;
-         case -2:
-             /* Access violation */
-             ret = -2;
-             best = nr;
-             break;
--        case -1:
-+        case -1: /* No match */
-+        case -3: /* TLB inconsistency */
-         default:
--            /* No match */
-             break;
-         case 0:
-             /* access granted */
-@@ -251,14 +248,34 @@ static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
-         }
-     }
-     if (best != -1) {
--    done:
-+done:
-         qemu_log_mask(CPU_LOG_MMU, "found TLB at addr " HWADDR_FMT_plx
-                       " prot=%01x ret=%d\n",
-                       ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
-         /* Update page flags */
-         pte_update_flags(ctx, &env->tlb.tlb6[best].pte1, ret, access_type);
-     }
--
-+#if defined(DUMP_PAGE_TABLES)
-+    if (qemu_loglevel_mask(CPU_LOG_MMU)) {
-+        CPUState *cs = env_cpu(env);
-+        hwaddr base = ppc_hash32_hpt_base(env_archcpu(env));
-+        hwaddr len = ppc_hash32_hpt_mask(env_archcpu(env)) + 0x80;
-+        uint32_t a0, a1, a2, a3;
-+
-+        qemu_log("Page table: " HWADDR_FMT_plx " len " HWADDR_FMT_plx "\n",
-+                 base, len);
-+        for (hwaddr curaddr = base; curaddr < base + len; curaddr += 16) {
-+            a0 = ldl_phys(cs->as, curaddr);
-+            a1 = ldl_phys(cs->as, curaddr + 4);
-+            a2 = ldl_phys(cs->as, curaddr + 8);
-+            a3 = ldl_phys(cs->as, curaddr + 12);
-+            if (a0 != 0 || a1 != 0 || a2 != 0 || a3 != 0) {
-+                qemu_log(HWADDR_FMT_plx ": %08x %08x %08x %08x\n",
-+                         curaddr, a0, a1, a2, a3);
-+            }
-+        }
-+    }
-+#endif
-     return ret;
- }
+@@ -386,7 +386,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     target_ulong vsid, sr, pgidx;
+     int ds, target_page_bits;
+     bool pr;
+-    int ret;
  
-@@ -420,29 +437,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     /* First try to find a BAT entry if there are any */
+     if (env->nb_BATs && get_bat_6xx_tlb(env, ctx, eaddr, access_type) == 0) {
+@@ -419,7 +418,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     qemu_log_mask(CPU_LOG_MMU,
+             "pte segment: key=%d ds %d nx %d vsid " TARGET_FMT_lx "\n",
+             ctx->key, ds, ctx->nx, vsid);
+-    ret = -1;
+     if (!ds) {
+         /* Check if instruction fetch is allowed, if needed */
+         if (type == ACCESS_CODE && ctx->nx) {
+@@ -436,51 +434,47 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+         /* Initialize real address with an invalid value */
          ctx->raddr = (hwaddr)-1ULL;
          /* Software TLB search */
-         ret = ppc6xx_tlb_check(env, ctx, eaddr, access_type);
--#if defined(DUMP_PAGE_TABLES)
--        if (qemu_loglevel_mask(CPU_LOG_MMU)) {
--            CPUState *cs = env_cpu(env);
--            hwaddr curaddr;
--            uint32_t a0, a1, a2, a3;
+-        ret = ppc6xx_tlb_check(env, ctx, eaddr, access_type);
+-    } else {
+-        qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
+-        /* Direct-store segment : absolutely *BUGGY* for now */
 -
--            qemu_log("Page table: " HWADDR_FMT_plx " len " HWADDR_FMT_plx "\n",
--                     ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu) + 0x80);
--            for (curaddr = ppc_hash32_hpt_base(cpu);
--                 curaddr < (ppc_hash32_hpt_base(cpu)
--                            + ppc_hash32_hpt_mask(cpu) + 0x80);
--                 curaddr += 16) {
--                a0 = ldl_phys(cs->as, curaddr);
--                a1 = ldl_phys(cs->as, curaddr + 4);
--                a2 = ldl_phys(cs->as, curaddr + 8);
--                a3 = ldl_phys(cs->as, curaddr + 12);
--                if (a0 != 0 || a1 != 0 || a2 != 0 || a3 != 0) {
--                    qemu_log(HWADDR_FMT_plx ": %08x %08x %08x %08x\n",
--                             curaddr, a0, a1, a2, a3);
--                }
--            }
+-        switch (type) {
+-        case ACCESS_INT:
+-            /* Integer load/store : only access allowed */
+-            break;
+-        case ACCESS_CODE:
+-            /* No code fetch is allowed in direct-store areas */
+-            return -4;
+-        case ACCESS_FLOAT:
+-            /* Floating point load/store */
+-            return -4;
+-        case ACCESS_RES:
+-            /* lwarx, ldarx or srwcx. */
+-            return -4;
+-        case ACCESS_CACHE:
+-            /*
+-             * dcba, dcbt, dcbtst, dcbf, dcbi, dcbst, dcbz, or icbi
+-             *
+-             * Should make the instruction do no-op.  As it already do
+-             * no-op, it's quite easy :-)
+-             */
+-            ctx->raddr = eaddr;
+-            return 0;
+-        case ACCESS_EXT:
+-            /* eciwx or ecowx */
+-            return -4;
+-        default:
+-            qemu_log_mask(CPU_LOG_MMU, "ERROR: instruction should not need "
+-                          "address translation\n");
+-            return -4;
 -        }
--#endif
-     } else {
-         qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
-         /* Direct-store segment : absolutely *BUGGY* for now */
+-        if ((access_type == MMU_DATA_STORE || ctx->key != 1) &&
+-            (access_type == MMU_DATA_LOAD || ctx->key != 0)) {
+-            ctx->raddr = eaddr;
+-            ret = 2;
+-        } else {
+-            ret = -2;
+-        }
++        return ppc6xx_tlb_check(env, ctx, eaddr, access_type);
+     }
+ 
+-    return ret;
++    /* Direct-store segment : absolutely *BUGGY* for now */
++    qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
++    switch (type) {
++    case ACCESS_INT:
++        /* Integer load/store : only access allowed */
++        break;
++    case ACCESS_CODE:
++        /* No code fetch is allowed in direct-store areas */
++        return -4;
++    case ACCESS_FLOAT:
++        /* Floating point load/store */
++        return -4;
++    case ACCESS_RES:
++        /* lwarx, ldarx or srwcx. */
++        return -4;
++    case ACCESS_CACHE:
++        /*
++         * dcba, dcbt, dcbtst, dcbf, dcbi, dcbst, dcbz, or icbi
++         *
++         * Should make the instruction do no-op.  As it already do
++         * no-op, it's quite easy :-)
++         */
++        ctx->raddr = eaddr;
++        return 0;
++    case ACCESS_EXT:
++        /* eciwx or ecowx */
++        return -4;
++    default:
++        qemu_log_mask(CPU_LOG_MMU, "ERROR: instruction should not need address"
++                                   " translation\n");
++        return -4;
++    }
++    if ((access_type == MMU_DATA_STORE || ctx->key != 1) &&
++        (access_type == MMU_DATA_LOAD || ctx->key != 0)) {
++        ctx->raddr = eaddr;
++        return 2;
++    }
++    return -2;
+ }
+ 
+ /* Generic TLB check function for embedded PowerPC implementations */
 -- 
 2.30.9
 
