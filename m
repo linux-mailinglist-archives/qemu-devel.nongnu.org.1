@@ -2,146 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8B38C0D37
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 11:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2FD8C0DA5
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 11:41:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4znU-0004oW-6s; Thu, 09 May 2024 05:10:40 -0400
+	id 1s50Fm-0000zi-1l; Thu, 09 May 2024 05:39:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1s4znS-0004o9-7F
- for qemu-devel@nongnu.org; Thu, 09 May 2024 05:10:38 -0400
-Received: from mail-bn1nam02on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2407::601]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s50Fe-0000sB-ID
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 05:39:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1s4znM-0003T4-PR
- for qemu-devel@nongnu.org; Thu, 09 May 2024 05:10:37 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mdaySpgfM8n/vem47ABvCq8sBwiU47Lf1ksQ/Qt/Z8TggYumdNlYteQoXi4tQEzOGIM7CJ+Mfujjc6y8Kt88cVLJ26AoEIi0pEq1eD8zvdRocT7SgR7WZwVurNzATHN+boFEvDjMWEsHwUdsrcp+hgrJut/82Rp0AD0ykTrAukK9PninXdAXLT4j0TG+2mA+/+vT6pA5ut23f7SIpKEuP0BepIphbpuCY1z4QSuuY/lgWCZeQYe9SMTrjiJbZUFJavr0Teh5IqaUrgeGYiEve66eI0/DPtZlNEtSyx/CwTFJM9qmCgEdiT4R6V31QAFIWF3oJasxy7X49aVpyGsCzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5lWyV9quOOxfAeWLQKjuqBfvQRwQ9aN5eUYcsXLYsjY=;
- b=MkG+Nld3bVvTCxETiN/4JZuj29++B5CJGVEBf7gcuhSP9CcKeAjI+N2J5dtit/nAap2/FgqTCcRc1D2iMfMZ3JG4HbxcQScdCPUCKZ3L0kXuy4VuyAHOxXgj6YNDMF/H54LvTlZQaEFOnYNo16fmRI9/oCg7iJc3JHjI+UDbkSZh3mSypf6+IOWruSi/se71OUD4FylQL1AgmaHy6QBWH5gi/+QXJjFvKqNSXRbWSdI51L2cPdJGNjcBcCNm5DwfGzySIoZ0j7mFSOEepy8KJgTR+VvJ+K5rAlgu/k0AJhcI7nPOJrulOWEmnVEOoYUURm5NmH+bzYd6wsrkvkzhSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5lWyV9quOOxfAeWLQKjuqBfvQRwQ9aN5eUYcsXLYsjY=;
- b=nvpD710oqYo86fdZ8LIZVZrBd45Q4FctltSLq5ZMFHnE2QYE51IoSOFDRKXXaTanAqtBVA/fT/rMS4u9hetB8YFidaGQLr3QqzKq3dZRn2ws0Raodihh/XbBMPA4XUd6txV7gWGE87uiTB7Oy2g5cQTNiFiEdsXWlD0zRsM7Q2cW27119bHGGXfQT3pNAmdbQm9CeKuK5HOLVgAal74fOxgMq7SzJKKdySCZo7Krn3Hp40uZGKYosAONp5HCP8Dy/SKUZqGZ2WRM8x0e+iKk8eTX1ClDIpX10TzeTktXzS040efZMBCHtX/AncOP0LVdfi5v9uEMlGMX/pJpJKwL3w==
-Received: from BL1PR13CA0143.namprd13.prod.outlook.com (2603:10b6:208:2bb::28)
- by SN7PR12MB7021.namprd12.prod.outlook.com (2603:10b6:806:262::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.47; Thu, 9 May
- 2024 09:10:28 +0000
-Received: from BL6PEPF00022573.namprd02.prod.outlook.com
- (2603:10b6:208:2bb:cafe::f3) by BL1PR13CA0143.outlook.office365.com
- (2603:10b6:208:2bb::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.43 via Frontend
- Transport; Thu, 9 May 2024 09:10:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7544.18 via Frontend Transport; Thu, 9 May 2024 09:10:28 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 May 2024
- 02:10:09 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 9 May 2024
- 02:10:08 -0700
-Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Thu, 9 May
- 2024 02:10:05 -0700
-From: Avihai Horon <avihaih@nvidia.com>
-To: <qemu-devel@nongnu.org>
-CC: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>, Eric Blake
- <eblake@redhat.com>, Peter Xu <peterx@redhat.com>, Fabiano Rosas
- <farosas@suse.de>, Joao Martins <joao.m.martins@oracle.com>, Maor Gottlieb
- <maorg@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH v2 3/3] vfio/migration: Don't emit STOP_COPY VFIO migration
- QAPI event twice
-Date: Thu, 9 May 2024 12:09:54 +0300
-Message-ID: <20240509090954.16447-4-avihaih@nvidia.com>
-X-Mailer: git-send-email 2.21.3
-In-Reply-To: <20240509090954.16447-1-avihaih@nvidia.com>
-References: <20240509090954.16447-1-avihaih@nvidia.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s50Fc-0005ZQ-7h
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 05:39:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715247582;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=tWMEfH1X7j3akQx2P26p8Gh6oEBN+jSji0IPEB1N58I=;
+ b=D8aUc3rd+XuFzkQHWz7mEx9MozjYMgpO3WDEWEtNk3yX1snYNdJ1IT2UzYWs9jn0PiIFyP
+ l6MqP6XXGFGOHnzEBmwLdivym8mgAlVClyq5ixsiJYnE594UpLrTFwJLqPrFR7ISH4EJOZ
+ YGpv27hg6LvGVlHcH2do0Cycn70RqhQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-2eHFyz4kP56sIUOQky0lJw-1; Thu,
+ 09 May 2024 05:39:38 -0400
+X-MC-Unique: 2eHFyz4kP56sIUOQky0lJw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 699103C0C101;
+ Thu,  9 May 2024 09:39:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.142])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 03605C15BB9;
+ Thu,  9 May 2024 09:39:35 +0000 (UTC)
+Date: Thu, 9 May 2024 10:39:33 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org,
+ Eric Auger <eauger@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Dapeng Mi <dapeng1.mi@intel.com>
+Subject: Re: [PATCH v9] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+Message-ID: <ZjyZ1ZV7BGME_bY9@redhat.com>
+References: <20240409024940.180107-1-shahuang@redhat.com>
+ <Zh1j9b92UGPzr1-a@redhat.com> <Zjyb43JqMZA+bO4r@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|SN7PR12MB7021:EE_
-X-MS-Office365-Filtering-Correlation-Id: 535c83ff-2185-424a-f053-08dc7007dea0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230031|36860700004|376005|1800799015|82310400017; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NvohWKiYDR00GrllSuiXfK4OQw0wLXoMuWQlc9a/s4gy5hhclWxWm6K7Gxl8?=
- =?us-ascii?Q?h1P4k84qjlR4fwFLNiyr7SN8ThqhnMcr96FEkGdlnlfUcDxu2xeza5MXC5Wa?=
- =?us-ascii?Q?XBR6mAeOKm2K7zKywLewvrbFP6/4fH+VZOUtqVUgWa3h780wy+OZ0o0DGFP7?=
- =?us-ascii?Q?t801fW2zOGRFraRrlu3wtNpZUQctHxki+62e7w8ogbtdAstn2rkNLktJHBmI?=
- =?us-ascii?Q?8q8xaQIDTsCfCcuD0YqHm/POYBJmkCFXdGoFTwl/xjShWa2eCQwBDxWU9SUV?=
- =?us-ascii?Q?zCnzJHyYfdQnHCwQAi2Vy36cPDZyq57DUXnL/ivh4rAXEO6TSTROeMxaf21e?=
- =?us-ascii?Q?2uRdhgYbj72O/snac0ckXIBhsFkWnk75yyzbbVd4UhFsRdMsZg5aJbuZ/7Rg?=
- =?us-ascii?Q?6Qgt/KeInPebXNIunDDgacG67L3DKeNWmZ+KWMMl0MKmL1r2vm7EpNn48riO?=
- =?us-ascii?Q?wfXwuniyhSrYroyiVWZ+BdEDIgVs9ygRzXOdTgGQELI+TANpZe4tf0FGe4wX?=
- =?us-ascii?Q?d7BScj7CWEhEnDkKXJo17XzxP1iZs7CHKScvERkshgwN0b377z32xA6Yt7H7?=
- =?us-ascii?Q?fudIGw6GDrx6nOLk4MQiH2eh1Yfj+4UaPuDzJnVcDEDSX8Y+LDwz1RZZawEN?=
- =?us-ascii?Q?pPtj8U4PNj+LwLjEtPq3N4QFKdPKKscaRzptPLQRLCp2tZFDWLMY/7WJolaE?=
- =?us-ascii?Q?MI8SSyTZ5xeeiHGlgRJEFwj8NCblMIfn2iRwKOQAuZFCShbmi+kaKWpa69/i?=
- =?us-ascii?Q?QnbW+R3hpOvIodn+5G4PeIo7r9NP856o6NF/K+fTEDFpxylWTOxjT1zNsQnm?=
- =?us-ascii?Q?QwZV2q7/uR6chRJegHwxHNuGAX1TlsGY5b+vcsFj5gfvhlQIXLlfTVRxk2nB?=
- =?us-ascii?Q?2/cvZxfDckqU8CqcEY/FChBWf5nAt8quQkrzsORqIIgg2mOYqY5mtUqIeiK2?=
- =?us-ascii?Q?o5GbQqNydkZMzDj+Wlf4kNYXkYZffBq10nVjf0590vzr9/Wgl9o1UYvaO5ap?=
- =?us-ascii?Q?LYS1vAA8lzxqD4tOTf9LAquuyQivfiWUBAoTLhTmRpz894rRwErKmKj3ob3B?=
- =?us-ascii?Q?MTporCB6dtiGMK+SQb9DcXRFHxo2SKR4AoCSya/cWVIFiHkERCNIDD3jzTeU?=
- =?us-ascii?Q?dShobfA15NKhSDyy5msmITDiX1HbZYW2L9sNOnayVgYXwljn4Viq+DIZS12t?=
- =?us-ascii?Q?zx/RpoyF50bpioPOjFMxR6PB/nt7vceYJnWHV6sccAiC7vWKKmCMoZkcbvnG?=
- =?us-ascii?Q?4dnT93TpOZPw85FSElYc+HtM1ooLQoDQdzzD/hCL64TCAzx27Q24Mok+UfeL?=
- =?us-ascii?Q?uuk/MGodOtxFyv8iBgtlyhjbiBjfAgL6EtWi8E+9fNWq29zJ4wuAV/gIcYZV?=
- =?us-ascii?Q?6rM3eTTF1UeV2G/USHTqPV/xHfgc?=
-X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
- SFS:(13230031)(36860700004)(376005)(1800799015)(82310400017); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 09:10:28.0064 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 535c83ff-2185-424a-f053-08dc7007dea0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00022573.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7021
-Received-SPF: softfail client-ip=2a01:111:f403:2407::601;
- envelope-from=avihaih@nvidia.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
+In-Reply-To: <Zjyb43JqMZA+bO4r@intel.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.582,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,45 +85,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When migrating a VFIO device that supports pre-copy, it is transitioned
-to STOP_COPY twice: once in vfio_vmstate_change() and second time in
-vfio_save_complete_precopy().
+On Thu, May 09, 2024 at 05:48:19PM +0800, Zhao Liu wrote:
+> Hi Daniel & Shaoqin,
+> 
+> Since x86 also needs to implement PMU filter feature, though it uses
+> the different KVM ioctl, we can still make the QEMU API as general as
+> possible.
+> 
+> To move forward with both ARM and x86, I'd like to discuss my API
+> thinking with you. ;-)
+> 
+> On Mon, Apr 15, 2024 at 06:29:25PM +0100, Daniel P. Berrangé wrote:
+> > Date: Mon, 15 Apr 2024 18:29:25 +0100
+> > From: "Daniel P. Berrangé" <berrange@redhat.com>
+> > Subject: Re: [PATCH v9] arm/kvm: Enable support for
+> >  KVM_ARM_VCPU_PMU_V3_FILTER
+> > 
+> > On Mon, Apr 08, 2024 at 10:49:40PM -0400, Shaoqin Huang wrote:
+> > > The KVM_ARM_VCPU_PMU_V3_FILTER provides the ability to let the VMM decide
+> > > which PMU events are provided to the guest. Add a new option
+> > > `kvm-pmu-filter` as -cpu sub-option to set the PMU Event Filtering.
+> > > Without the filter, all PMU events are exposed from host to guest by
+> > > default. The usage of the new sub-option can be found from the updated
+> > > document (docs/system/arm/cpu-features.rst).
+> > > 
+> > > Here is an example which shows how to use the PMU Event Filtering, when
+> > > we launch a guest by use kvm, add such command line:
+> > > 
+> > >   # qemu-system-aarch64 \
+> > >         -accel kvm \
+> > >         -cpu host,kvm-pmu-filter="D:0x11-0x11"
+> > 
+> > I'm still against implementing this one-off custom parsed syntax
+> > for kvm-pmu-filter values. Once this syntax exists, we're locked
+> > into back-compatibility for multiple releases, and it will make
+> > a conversion to QAPI/JSON harder.
+> 
+> Daniel, I understand you mean the new specific string format makes
+> external API support more complicated, right?
+> 
+> What about the following options:
+> 
+> 1. Firstly, add a feature flag option in "-cpu" to enable kvm_filter
+> feature for CPU:
+> 
+> -cpu host,kvm-pmu-filter
+> 
+> 2. Then use "-object kvm-pmu-event" to configure PMU event properties.
+> Since x86's PMU filter has very complex encoding rules, we need the
+> following three variants (one for general case, the other two are x86
+> specific):
+> 
+> - General format:
+>   -object kvm-pmu-event,action=[allowed|denied],events=[event-list]
+> 
+>   e.g, as Shaoqin's example,
+>   -object kvm-pmu-event,action=allowed,events=0x11-0x11,0x23-0x23
+>   -object kvm-pmu-event,action=denied,events=0x23-0x3a
+> 
+> - x86 raw_event encoding format (for single raw format event encoding):
+>   -object kvm-pmu-event,action=[allowed|denied],mode=0,select="0x01",
+>           umask="0x3c",fixed-bitmap="0xffffffff"
+> 
+> - x86 masked_event encoding format (for mutiple masked event encoding):
+>   -object kvm-pmu-event,action=[allowed|denied],mode=masked,select="0x01",
+>           mask="0x3c",match="0x11",exclude=true|false
+> 
+> The whole API architecture looks more complex, but has the advantage of
+> being as general as possible and avoiding the introduction of new string
+> format parsing.
+> 
+> What do you think? Because the most important thing about this feature
+> is the API design, welcome your comments!
 
-The second transition is harmless, as it's a STOP_COPY->STOP_COPY no-op
-transition. However, with the newly added VFIO migration QAPI event, the
-STOP_COPY event is undesirably emitted twice.
+Please describe it in terms of a QAPI definition, as that's what we're
+striving for with all QEMU public interfaces. Once the QAPI design is
+agreed, then the -object mapping is trivial, as -object's JSON format
+supports arbitrary QAPI structures.
 
-Prevent this by returning early in vfio_migration_set_state() if
-new_state is the same as current device state.
 
-Note that the STOP_COPY transition in vfio_save_complete_precopy() is
-essential for VFIO devices that don't support pre-copy, for migrating an
-already stopped guest and for snapshots.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
----
- hw/vfio/migration.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 5a359c4c78..14ef9c924e 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -143,6 +143,10 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
-         (struct vfio_device_feature_mig_state *)feature->data;
-     int ret;
- 
-+    if (new_state == migration->device_state) {
-+        return 0;
-+    }
-+
-     feature->argsz = sizeof(buf);
-     feature->flags =
-         VFIO_DEVICE_FEATURE_SET | VFIO_DEVICE_FEATURE_MIG_DEVICE_STATE;
+With regards,
+Daniel
 -- 
-2.26.3
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
