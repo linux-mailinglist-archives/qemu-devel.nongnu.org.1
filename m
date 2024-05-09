@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D9E8C0C45
+	by mail.lfdr.de (Postfix) with ESMTPS id A442D8C0C44
 	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 10:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4ynu-0003pS-Q6; Thu, 09 May 2024 04:07:02 -0400
+	id 1s4ynz-0003qC-RL; Thu, 09 May 2024 04:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s4ynq-0003p1-7T
- for qemu-devel@nongnu.org; Thu, 09 May 2024 04:06:58 -0400
+ id 1s4yns-0003pQ-Aj
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 04:07:01 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s4ynn-0006CK-5z
- for qemu-devel@nongnu.org; Thu, 09 May 2024 04:06:57 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1s4ynn-0006CP-Sr
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 04:06:59 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxTesWhDxmtOQJAA--.19278S3;
- Thu, 09 May 2024 16:06:46 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cx7+sYhDxmuOQJAA--.25937S3;
+ Thu, 09 May 2024 16:06:48 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxhFYVhDxmfOYWAA--.27243S2; 
- Thu, 09 May 2024 16:06:45 +0800 (CST)
+ AQAAf8AxhFYVhDxmfOYWAA--.27243S3; 
+ Thu, 09 May 2024 16:06:47 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 0/3] loongarch-to-apply queue
-Date: Thu,  9 May 2024 16:06:42 +0800
-Message-Id: <20240509080645.457303-1-gaosong@loongson.cn>
+Cc: richard.henderson@linaro.org,
+	Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 1/3] hw/loongarch: Refine default numa id calculation
+Date: Thu,  9 May 2024 16:06:43 +0800
+Message-Id: <20240509080645.457303-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240509080645.457303-1-gaosong@loongson.cn>
+References: <20240509080645.457303-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxhFYVhDxmfOYWAA--.27243S2
+X-CM-TRANSID: AQAAf8AxhFYVhDxmfOYWAA--.27243S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,33 +63,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 4e66a08546a2588a4667766a1edab9caccf24ce3:
+From: Bibo Mao <maobibo@loongson.cn>
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-05-07 09:26:30 -0700)
+With numa_test test case, there is subcase named test_def_cpu_split(),
+there are 8 sockets and 2 numa nodes. Here is command line:
+"-machine smp.cpus=8,smp.sockets=8 -numa node,memdev=ram -numa node"
 
-are available in the Git repository at:
+The required result is:
+  node 0 cpus: 0 2 4 6
+  node 1 cpus: 1 3 5 7
+Test case numa_test fails on LoongArch, since the actual result is:
+  node 0 cpus: 0 1 2 3
+  node 1 cpus: 4 5 6 7
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240509
+It will be better if all the cpus in one socket share the same numa
+node. Here socket id is used to calculate numa id in function
+virt_get_default_cpu_node_id().
 
-for you to fetch changes up to 5872966db7abaa7f8753541b7a9f242df9752b50:
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240319022606.2994565-1-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/virt.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-  target/loongarch: Put cpucfg operation before CSR register (2024-05-09 15:19:22 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240509
-
-----------------------------------------------------------------
-Bibo Mao (3):
-      hw/loongarch: Refine default numa id calculation
-      target/loongarch: Add TCG macro in structure CPUArchState
-      target/loongarch: Put cpucfg operation before CSR register
-
- hw/loongarch/virt.c           | 11 +++++------
- target/loongarch/cpu.c        |  7 +++++--
- target/loongarch/cpu.h        | 16 ++++++++++------
- target/loongarch/cpu_helper.c |  9 +++++++++
- target/loongarch/kvm/kvm.c    | 16 ++++++++--------
- target/loongarch/machine.c    | 30 +++++++++++++++++++++++++-----
- 6 files changed, 62 insertions(+), 27 deletions(-)
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index c0999878df..12d20055fe 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1192,15 +1192,14 @@ virt_cpu_index_to_props(MachineState *ms, unsigned cpu_index)
+ 
+ static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
+ {
+-    int64_t nidx = 0;
++    int64_t socket_id;
+ 
+     if (ms->numa_state->num_nodes) {
+-        nidx = idx / (ms->smp.cpus / ms->numa_state->num_nodes);
+-        if (ms->numa_state->num_nodes <= nidx) {
+-            nidx = ms->numa_state->num_nodes - 1;
+-        }
++        socket_id = ms->possible_cpus->cpus[idx].props.socket_id;
++        return socket_id % ms->numa_state->num_nodes;
++    } else {
++        return 0;
+     }
+-    return nidx;
+ }
+ 
+ static void loongarch_class_init(ObjectClass *oc, void *data)
+-- 
+2.25.1
 
 
