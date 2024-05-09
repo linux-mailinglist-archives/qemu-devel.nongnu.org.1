@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EE08C11F4
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 17:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C145D8C1218
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 17:40:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s55eS-0000OA-Jd; Thu, 09 May 2024 11:25:45 -0400
+	id 1s55qf-0004GJ-T4; Thu, 09 May 2024 11:38:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s55eO-0000Me-Gf
- for qemu-devel@nongnu.org; Thu, 09 May 2024 11:25:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s55qU-0004Fd-A7
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:38:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s55eN-0006NK-2c
- for qemu-devel@nongnu.org; Thu, 09 May 2024 11:25:40 -0400
+ id 1s55qQ-0001ci-Uj
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 11:38:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715268338;
+ s=mimecast20190719; t=1715269085;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=zpotsg25Hj/ueq1pSaXUMSU1LC0Q+INR1K1IUm2B9pk=;
- b=QLUNBWLuwCIlbRp5GG4djqHVlZJjnUvGJyc9hnl+HoHC2eIDMsRweH46WjEFQCQecjjvNn
- +93vFJOIpeRon0PgbZ7XiwOWj7xvWwu3uSQZLHJSqOCPnFlDxwnI78fjMyAev6IUmzyflI
- qa12ryo3I9VShhTicSI7C7qWXWaGJ6o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=bxyi35+LlbyjVZaq5aTovqONZZ7WkQs0lO+7Pg+yDmk=;
+ b=cf9G0GZJdJ2xbVDVCWVVTvXy0xTgs4dYHrn5ek2Lf+B9IXtt7F4cVtd3t7Xqwd1IX0P3wQ
+ f72YOKmKt2zQvgG103VowJMvUNZNtB/tfFe9M4F/U9IGTRVj190OWocy02VmM6QtGp2Nc/
+ 6wWUYUmjpSaRx76WEWY3oP6wDfjjado=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-eH_3xK2VOBq4YCAtuDr1TQ-1; Thu, 09 May 2024 11:25:36 -0400
-X-MC-Unique: eH_3xK2VOBq4YCAtuDr1TQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a5a1b50d45cso46326066b.2
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 08:25:35 -0700 (PDT)
+ us-mta-611-2YPiQ4h8NCuq1WL8VEPJsQ-1; Thu, 09 May 2024 11:37:59 -0400
+X-MC-Unique: 2YPiQ4h8NCuq1WL8VEPJsQ-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-51f60b1644cso1116523e87.1
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 08:37:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715268334; x=1715873134;
+ d=1e100.net; s=20230601; t=1715269077; x=1715873877;
  h=content-transfer-encoding:mime-version:message-id:date:subject:to
  :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zpotsg25Hj/ueq1pSaXUMSU1LC0Q+INR1K1IUm2B9pk=;
- b=vggLYRzr6gHn+nGk/U7fhvIxt0i895kEDWRLpHapP6KBl2thh4fEw4pEG1rMO4WnHy
- ZEkTTG7Ch101Cs+o78Akm+PGjZYW2nL2VooGFyFFrvI/hG8hGwQrP1AXR2kkrVRj/ccd
- mu/01qtlUS28QViIP5M0R/6JgE9qs8JnNkplp0Ykyp1d1HPlKs2keMbfqnlZC3VUYC1w
- nseGh1/J2dKciskI0NQxB01wAP9OkoFEb+/SLjQ+vxYtAiaYZDdrb7y4w3eyfsRKAEWb
- W2M78jYekAugdUeIckB7ibdGBJBI1z+OYU1iQjBvixW2FMtZXsjB19X6QbTcdjF+8fsC
- Mvvg==
-X-Gm-Message-State: AOJu0YykWy7DIDS9uqiHW7Fzy3Ff8p71IdSjsGKRZbhNt8ORE9/NN2oq
- bpx3W7S0P4QtZ/D0k2GTUPcEgnAqsfnDkdVMt7N+nnLI1+iuW0P31cMx9bwqCuZEHhifmOcFAda
- KiOKbz5Hj3qzionvuo3yZC6ZurkZuwlFK5ne742nxMp9vxiDHK2LP/DjTZKlLEN3FL+t2CyStZM
- 9ZQzU6g1vFHf9d/4fSKkvla7weZ88yGbhriMlx
-X-Received: by 2002:a17:906:6d51:b0:a59:c2c3:bb45 with SMTP id
- a640c23a62f3a-a59fb9cd4femr398258566b.56.1715268334683; 
- Thu, 09 May 2024 08:25:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEdzmb1orLYiWLwhcGC2MDbexTcAHjB8ZkOP97QPAUgTPGU9iwvOVBgG/7D2vx8nOdL+hy/eA==
-X-Received: by 2002:a17:906:6d51:b0:a59:c2c3:bb45 with SMTP id
- a640c23a62f3a-a59fb9cd4femr398256166b.56.1715268334139; 
- Thu, 09 May 2024 08:25:34 -0700 (PDT)
+ bh=bxyi35+LlbyjVZaq5aTovqONZZ7WkQs0lO+7Pg+yDmk=;
+ b=EMlhpGk76Z/jI5w0kfZCrvHHspMlzHsHV/U1sXATtW/XgoFG4Z2yzNKonB/ui9ArVW
+ X6opGlTObNOMIHpNHlaslFHhUkF0wV7Npn64ahz0mIUrx+OtvHZy3bozadyJMwvxleJl
+ 8uXTdnFOjOSoydLnn+maDZe08IYdV4pxBjNhVLcSsOxODEvrkBLHqY+CUTovwFbgRdaB
+ BTeEDPr+3HBtoyZZ1vBnCSCUraVEDrtlINl7ARnpDDmqfjy3gBxCtL8T4N0ONz3mLc64
+ S5fwWAbHlDzIFr3M5Tmh0/pYn4mW41wT6n2fA50hKYpwydGDcYVgDPFWClIvv1RA+jEC
+ gdww==
+X-Gm-Message-State: AOJu0Yxrq8IyryAYUfYsTOpywErQNumisOjfL5Q8FwpuhuVAwarR0Srq
+ fBgQZ+auUfaRndM8B5bUAo6Nf00QfmmpDNT0KPaaGWkuyAvVve+u1SCbujrb1xzLR+OvpLtBC+U
+ ZCcmw9dH3qN5W2diTYtOS78hgyM2xpFwSAFa2Ot+HQMki+/sQKUZL4uvSAkueB/yxBs5slGUy8e
+ todeE2xTn+J4xnqw0LYnNDulBKdLOMekYacTJm
+X-Received: by 2002:ac2:5929:0:b0:51d:a1ab:98bc with SMTP id
+ 2adb3069b0e04-5217c3733cfmr5214488e87.2.1715269077399; 
+ Thu, 09 May 2024 08:37:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGjaFjXwyyBXSIIUVE2C1RMo4e0rlc4htEUN7Exu7TSwvC73aaLtospNSEmLbEt5B0FBpM1Xg==
+X-Received: by 2002:ac2:5929:0:b0:51d:a1ab:98bc with SMTP id
+ 2adb3069b0e04-5217c3733cfmr5214465e87.2.1715269076609; 
+ Thu, 09 May 2024 08:37:56 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781cdb5sm84692466b.29.2024.05.09.08.25.32
+ 4fb4d7f45d1cf-5733bea6557sm816571a12.13.2024.05.09.08.37.55
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 08:25:32 -0700 (PDT)
+ Thu, 09 May 2024 08:37:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH] tests/tcg: cover lzcnt/tzcnt/popcnt
-Date: Thu,  9 May 2024 17:25:32 +0200
-Message-ID: <20240509152532.141935-1-pbonzini@redhat.com>
+Subject: [PATCH] target/i386: move prefetch and multi-byte UD/NOP to new
+ decoder
+Date: Thu,  9 May 2024 17:37:55 +0200
+Message-ID: <20240509153755.143456-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -96,54 +97,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These are trivial to add, and moving them to the new decoder fixes some
+corner cases: raising #UD instead of an instruction fetch page fault for
+the undefined opcodes, and incorrectly rejecting 0F 18 prefetches with
+register operands (which are treated as reserved NOPs).
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/tcg/i386/test-i386.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ target/i386/tcg/decode-new.h     |  1 +
+ target/i386/tcg/translate.c      | 30 ------------------------------
+ target/i386/tcg/decode-new.c.inc | 24 +++++++++++++++++++++---
+ target/i386/tcg/emit.c.inc       |  5 +++++
+ 4 files changed, 27 insertions(+), 33 deletions(-)
 
-diff --git a/tests/tcg/i386/test-i386.c b/tests/tcg/i386/test-i386.c
-index 864c4e620d5..ce3bf74b5a8 100644
---- a/tests/tcg/i386/test-i386.c
-+++ b/tests/tcg/i386/test-i386.c
-@@ -715,6 +715,30 @@ void test_mul(void)
-     printf("%-10s A=" FMTLX " R=" FMTLX " %ld\n", #op, val, res, resz);\
+diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
+index 2ea06b44787..51ef0e621b9 100644
+--- a/target/i386/tcg/decode-new.h
++++ b/target/i386/tcg/decode-new.h
+@@ -50,6 +50,7 @@ typedef enum X86OpType {
+     X86_TYPE_EM, /* modrm byte selects an ALU memory operand */
+     X86_TYPE_WM, /* modrm byte selects an XMM/YMM memory operand */
+     X86_TYPE_I_unsigned, /* Immediate, zero-extended */
++    X86_TYPE_nop, /* modrm operand decoded but not loaded into s->T{0,1} */
+     X86_TYPE_2op, /* 2-operand RMW instruction */
+     X86_TYPE_LoBits, /* encoded in bits 0-2 of the operand + REX.B */
+     X86_TYPE_0, /* Hard-coded GPRs (RAX..RDI) */
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 3da4fdf64cc..de87775016b 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -4019,25 +4019,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             set_cc_op(s, CC_OP_EFLAGS);
+         }
+         break;
+-    case 0x118:
+-        modrm = x86_ldub_code(env, s);
+-        mod = (modrm >> 6) & 3;
+-        op = (modrm >> 3) & 7;
+-        switch(op) {
+-        case 0: /* prefetchnta */
+-        case 1: /* prefetchnt0 */
+-        case 2: /* prefetchnt0 */
+-        case 3: /* prefetchnt0 */
+-            if (mod == 3)
+-                goto illegal_op;
+-            gen_nop_modrm(env, s, modrm);
+-            /* nothing more to do */
+-            break;
+-        default: /* nop (multi byte) */
+-            gen_nop_modrm(env, s, modrm);
+-            break;
+-        }
+-        break;
+     case 0x11a:
+         modrm = x86_ldub_code(env, s);
+         if (s->flags & HF_MPX_EN_MASK) {
+@@ -4229,10 +4210,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         }
+         gen_nop_modrm(env, s, modrm);
+         break;
+-    case 0x119: case 0x11c ... 0x11f: /* nop (multi byte) */
+-        modrm = x86_ldub_code(env, s);
+-        gen_nop_modrm(env, s, modrm);
+-        break;
+ 
+     case 0x120: /* mov reg, crN */
+     case 0x122: /* mov crN, reg */
+@@ -4506,13 +4483,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         }
+         break;
+ 
+-    case 0x10d: /* 3DNow! prefetch(w) */
+-        modrm = x86_ldub_code(env, s);
+-        mod = (modrm >> 6) & 3;
+-        if (mod == 3)
+-            goto illegal_op;
+-        gen_nop_modrm(env, s, modrm);
+-        break;
+     case 0x1aa: /* rsm */
+         gen_svm_check_intercept(s, SVM_EXIT_RSM);
+         if (!(s->flags & HF_SMM_MASK))
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 0e1811399f8..4baf7672158 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -55,6 +55,10 @@
+  * mask could be applied (and the original sign-extended value would be
+  * optimized away by TCG) in the emitter function.
+  *
++ * Finally, a "nop" operand type is used for multi-byte NOPs.  It accepts
++ * any value of mod including 11b (unlike M) but it does not try to
++ * interpret the operand (like M).
++ *
+  * Vector operands
+  * ---------------
+  *
+@@ -1056,6 +1060,16 @@ static const X86OpEntry opcodes_0F[256] = {
+     [0xa0] = X86_OP_ENTRYr(PUSH, FS, w),
+     [0xa1] = X86_OP_ENTRYw(POP, FS, w),
+ 
++    [0x0b] = X86_OP_ENTRY0(UD),           /* UD2 */
++    [0x0d] = X86_OP_ENTRY1(NOP,  M,v),    /* 3DNow! prefetch */
++
++    [0x18] = X86_OP_ENTRY1(NOP,  nop,v),  /* prefetch/reserved NOP */
++    [0x19] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
++    [0x1c] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
++    [0x1d] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
++    [0x1e] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
++    [0x1f] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
++
+     [0x28] = X86_OP_ENTRY3(MOVDQ,      V,x,  None,None, W,x, vex1 p_00_66), /* MOVAPS */
+     [0x29] = X86_OP_ENTRY3(MOVDQ,      W,x,  None,None, V,x, vex1 p_00_66), /* MOVAPS */
+     [0x2A] = X86_OP_GROUP0(0F2A),
+@@ -1135,6 +1149,8 @@ static const X86OpEntry opcodes_0F[256] = {
+     [0xb6] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, zextT0), /* MOVZX */
+     [0xb7] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, zextT0), /* MOVZX */
+ 
++    /* decoded as modrm, which is visible as a difference between page fault and #UD */
++    [0xb9] = X86_OP_ENTRYr(UD,     nop,v),                        /* UD1 */
+     [0xbe] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, sextT0), /* MOVSX */
+     [0xbf] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, sextT0), /* MOVSX */
+ 
+@@ -1206,7 +1222,7 @@ static const X86OpEntry opcodes_0F[256] = {
+     [0xfc] = X86_OP_ENTRY3(PADDB,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
+     [0xfd] = X86_OP_ENTRY3(PADDW,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
+     [0xfe] = X86_OP_ENTRY3(PADDD,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
+-    /* 0xff = UD0 */
++    [0xff] = X86_OP_ENTRYr(UD,     nop,v),                        /* UD0 */
+ };
+ 
+ static void do_decode_0F(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
+@@ -1852,6 +1868,8 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
+         if ((modrm >> 6) == 3) {
+             return false;
+         }
++        /* fall through */
++    case X86_TYPE_nop:  /* modrm operand decoded but not fetched */
+     get_modrm:
+         decode_modrm(s, env, decode, op, type);
+         break;
+@@ -2397,8 +2415,8 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
+             switch (b) {
+             case 0x00 ... 0x03: /* mostly privileged instructions */
+             case 0x05 ... 0x09:
+-            case 0x0d:          /* 3DNow! prefetch */
+-            case 0x18 ... 0x23: /* prefetch, MPX, mov from/to CR and DR */
++            case 0x1a ... 0x1b: /* MPX */
++            case 0x20 ... 0x23: /* mov from/to CR and DR */
+             case 0x30 ... 0x35: /* more privileged instructions */
+             case 0xa2 ... 0xa5: /* CPUID, BT, SHLD */
+             case 0xaa ... 0xae: /* RSM, SHRD, grp15 */
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 58f255873ff..2dee33dd487 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -3517,6 +3517,11 @@ static void gen_SUB(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     prepare_update2_cc(decode, s, CC_OP_SUBB + ot);
  }
  
-+void test_xcnt(void)
++static void gen_UD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
 +{
-+    TEST_BSX(tzcntw, "w", 0);
-+    TEST_BSX(tzcntw, "w", 0x12340128);
-+    TEST_BSX(lzcntw, "w", 0);
-+    TEST_BSX(lzcntw, "w", 0x12340128);
-+    TEST_BSX(popcntw, "w", 0);
-+    TEST_BSX(popcntw, "w", 0x12340128);
-+    TEST_BSX(tzcntl, "k", 0);
-+    TEST_BSX(tzcntl, "k", 0x00340128);
-+    TEST_BSX(lzcntl, "k", 0);
-+    TEST_BSX(lzcntl, "k", 0x00340128);
-+    TEST_BSX(popcntl, "k", 0);
-+    TEST_BSX(popcntl, "k", 0x00340128);
-+#if defined(__x86_64__)
-+    TEST_BSX(tzcntq, "", 0);
-+    TEST_BSX(tzcntq, "", 0x003401281234);
-+    TEST_BSX(lzcntq, "", 0);
-+    TEST_BSX(lzcntq, "", 0x003401281234);
-+    TEST_BSX(popcntq, "", 0);
-+    TEST_BSX(popcntq, "", 0x003401281234);
-+#endif
++    gen_illegal_opcode(s);
 +}
 +
- void test_bsx(void)
+ static void gen_VAESIMC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
  {
-     TEST_BSX(bsrw, "w", 0);
-@@ -2162,6 +2186,7 @@ int main(int argc, char **argv)
-         func();
-     }
-     test_bsx();
-+    test_xcnt();
-     test_mul();
-     test_jcc();
-     test_loop();
+     assert(!s->vex_l);
 -- 
 2.45.0
 
