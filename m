@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE888C1773
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 22:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F648C1784
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 22:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5ALB-0000Je-Fb; Thu, 09 May 2024 16:26:09 -0400
+	id 1s5ALW-0000ij-UE; Thu, 09 May 2024 16:26:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5AL8-0000HU-5n; Thu, 09 May 2024 16:26:06 -0400
+ id 1s5ALR-0000UO-2U; Thu, 09 May 2024 16:26:25 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5AL4-000175-CJ; Thu, 09 May 2024 16:26:05 -0400
+ id 1s5ALP-00017Q-HI; Thu, 09 May 2024 16:26:24 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CEED24E65D6;
- Thu, 09 May 2024 22:25:59 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id D7F144E65CE;
+ Thu, 09 May 2024 22:26:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 6teW5-2nb_Jm; Thu,  9 May 2024 22:25:57 +0200 (CEST)
+ with ESMTP id r8yBOgnMOI7Z; Thu,  9 May 2024 22:25:58 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DF8CF4E65CE; Thu, 09 May 2024 22:25:57 +0200 (CEST)
-Message-Id: <f08537bb9beeb07d8017adc9ec34f7d54848dbc5.1715285340.git.balaton@eik.bme.hu>
+ id E9B114E65D5; Thu, 09 May 2024 22:25:58 +0200 (CEST)
+Message-Id: <052395ad8b1f691cef6d31773010f8e3ad452629.1715285340.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715285340.git.balaton@eik.bme.hu>
 References: <cover.1715285340.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v5 23/32] target/ppc/mmu_common.c: Move mmu_ctx_t type to
- mmu_common.c
+Subject: [PATCH v5 24/32] target/ppc/mmu_common.c: Simplify ppc_booke_xlate()
+ part 1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Thu, 09 May 2024 22:25:57 +0200 (CEST)
+Date: Thu, 09 May 2024 22:25:58 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,68 +61,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove mmu_ctx_t definition from internal.h as this type is only used
-within mmu_common.c.
+Move setting error_code that appears in every case out in front and
+hoist the common fall through case for BOOKE206 as well which allows
+removing the nested switches.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/internal.h   | 12 ------------
- target/ppc/mmu_common.c | 11 +++++++++++
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ target/ppc/mmu_common.c | 41 ++++++++++++-----------------------------
+ 1 file changed, 12 insertions(+), 29 deletions(-)
 
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index 5b28e8f3b0..46176c4711 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -292,8 +292,6 @@ static inline int ppc_hash32_pp_prot(int key, int pp, int nx)
-     return nx ? prot : prot | PAGE_EXEC;
- }
- 
--typedef struct mmu_ctx_t mmu_ctx_t;
--
- bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                       hwaddr *raddrp, int *psizep, int *protp,
-                       int mmu_idx, bool guest_visible);
-@@ -301,16 +299,6 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- /* Software driven TLB helpers */
- int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-                                     int way, int is_code);
--/* Context used internally during MMU translations */
--struct mmu_ctx_t {
--    hwaddr raddr;      /* Real address              */
--    hwaddr eaddr;      /* Effective address         */
--    int prot;                      /* Protection bits           */
--    hwaddr hash[2];    /* Pagetable hash values     */
--    target_ulong ptem;             /* Virtual segment ID | API  */
--    int key;                       /* Access key                */
--    int nx;                        /* Non-execute area          */
--};
- 
- #endif /* !CONFIG_USER_ONLY */
- 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index d7e4baa9cf..1ff2afdea7 100644
+index 1ff2afdea7..87f28efbf9 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -36,6 +36,17 @@
+@@ -1164,58 +1164,41 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
+     }
  
- /* #define DUMP_PAGE_TABLES */
- 
-+/* Context used internally during MMU translations */
-+typedef struct {
-+    hwaddr raddr;      /* Real address             */
-+    hwaddr eaddr;      /* Effective address        */
-+    int prot;          /* Protection bits          */
-+    hwaddr hash[2];    /* Pagetable hash values    */
-+    target_ulong ptem; /* Virtual segment ID | API */
-+    int key;           /* Access key               */
-+    int nx;            /* Non-execute area         */
-+} mmu_ctx_t;
-+
- void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
+     log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
++    env->error_code = 0;
++    if (ret == -1) {
++        if (env->mmu_model == POWERPC_MMU_BOOKE206) {
++            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
++        }
++    }
+     if (access_type == MMU_INST_FETCH) {
+         switch (ret) {
+         case -1:
+             /* No matches in page tables or TLB */
+-            switch (env->mmu_model) {
+-            case POWERPC_MMU_BOOKE206:
+-                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
+-                /* fall through */
+-            case POWERPC_MMU_BOOKE:
+-                cs->exception_index = POWERPC_EXCP_ITLB;
+-                env->error_code = 0;
+-                env->spr[SPR_BOOKE_DEAR] = eaddr;
+-                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
++            cs->exception_index = POWERPC_EXCP_ITLB;
++            env->spr[SPR_BOOKE_DEAR] = eaddr;
++            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+             break;
+         case -2:
+             /* Access rights violation */
+             cs->exception_index = POWERPC_EXCP_ISI;
+-            env->error_code = 0;
+             break;
+         case -3:
+             /* No execute protection violation */
+             cs->exception_index = POWERPC_EXCP_ISI;
+             env->spr[SPR_BOOKE_ESR] = 0;
+-            env->error_code = 0;
+             break;
+         }
+     } else {
+         switch (ret) {
+         case -1:
+             /* No matches in page tables or TLB */
+-            switch (env->mmu_model) {
+-            case POWERPC_MMU_BOOKE206:
+-                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
+-                /* fall through */
+-            case POWERPC_MMU_BOOKE:
+-                cs->exception_index = POWERPC_EXCP_DTLB;
+-                env->error_code = 0;
+-                env->spr[SPR_BOOKE_DEAR] = eaddr;
+-                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+-                break;
+-            default:
+-                g_assert_not_reached();
+-            }
++            cs->exception_index = POWERPC_EXCP_DTLB;
++            env->spr[SPR_BOOKE_DEAR] = eaddr;
++            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+             break;
+         case -2:
+             /* Access rights violation */
+             cs->exception_index = POWERPC_EXCP_DSI;
+-            env->error_code = 0;
+             env->spr[SPR_BOOKE_DEAR] = eaddr;
+             env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+             break;
 -- 
 2.30.9
 
