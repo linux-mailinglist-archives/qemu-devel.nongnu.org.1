@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67328C134E
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9C08C135F
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 19:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s578Z-0002CI-MA; Thu, 09 May 2024 13:00:55 -0400
+	id 1s578a-0002D0-B6; Thu, 09 May 2024 13:00:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s578X-0002Bm-Fd
- for qemu-devel@nongnu.org; Thu, 09 May 2024 13:00:53 -0400
+ id 1s578Y-0002Bu-2t
+ for qemu-devel@nongnu.org; Thu, 09 May 2024 13:00:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s578V-0003UC-IV
+ id 1s578V-0003UR-P6
  for qemu-devel@nongnu.org; Thu, 09 May 2024 13:00:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715274050;
+ s=mimecast20190719; t=1715274051;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=itudZeYBfZ/5DukRK1hcaOOUBJNhWgbPK+Y48SKsq5Q=;
- b=FvTch1plpv9Ec7Uq9xJW8uCXrePgFiV05iqGwUl8HPfoN5OyR4MqG5Gdy3X984k6AKqVU/
- rb8thEwl+Pm9DC/SDySIDnKMEuckpGIuewiLZ/zlduILuhwgcfWT5zi9vxc/UKdkNhYG1s
- mVg/y0gMd4xULCoLHWC9ChjSdgPbcGo=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CSdbbijnqqu6Q0jIu+Qkk/Gmy2abee1VL3NL5PRrhBA=;
+ b=LmOsU/dOeHaBGR6KF1+Vzn135yS0WVs/Xa+C002GCVhvUDLu3G79VwPIgoLHBilvQVMBtb
+ 5oHwXE3WS3z8GpJDc6fSr5knc70MbfPKUbSnR7ppsog3Exir1h0oPdOjGNT+RHih6V9bI1
+ QdCcPjkT7U+hqia1wY9arBH+4ncf2Hg=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-VXa4herLNMy389UVJsCMrQ-1; Thu, 09 May 2024 13:00:48 -0400
-X-MC-Unique: VXa4herLNMy389UVJsCMrQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2e2ec0c8807so8256911fa.1
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:00:48 -0700 (PDT)
+ us-mta-477-XQXVVISGMwGRnXM6zyidXA-1; Thu, 09 May 2024 13:00:49 -0400
+X-MC-Unique: XQXVVISGMwGRnXM6zyidXA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a5966e85bf6so191860666b.0
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 10:00:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715274046; x=1715878846;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=itudZeYBfZ/5DukRK1hcaOOUBJNhWgbPK+Y48SKsq5Q=;
- b=fHlrIKhzF8UDqGDiFu20TtiruCqSp5qeG7q0RNudfMahzoJniEOUxhuT2tY8zGOlPJ
- 3Vz9Pd8t2hhUxA+7oM58dck/S/Nxo5XDxLWgKvsgc3+0SDe46kfUtx0ryPsjX/DN0UVA
- i0F7GOPhHMQFUEJxi1I8pUUKagc6IWn+8QEUIq9KAWzhL+U+O+xlOVIBatward8Qi0g6
- EUBFkzbodlR4iLtITDPnknHvz5fXnC3Gb1rVGfw2cwuR3MKGU9JbOShTj6cqAVsUQ6/c
- cd1S3TZazXEMZHTYA/ETppP/+lXJlVE8b7Gjm91d0Mnkj3dT7qwkt+ePwywSVD0xwRML
- gVYg==
-X-Gm-Message-State: AOJu0Yz5zvdgoTIO/YtrmeiV+JO9JfSUgDYADg1llINqj8rT3p5hUG6j
- AnGMACzCX3TNM4yvLYfX1JBzALL9k9C8jC0dAfplfIBSXJuAYN8FatZGVVHi2SSfpsR3jRCTP+b
- uj5yRRvwGNDKIhnzHA4xbllcOZkw5SL3b34Yiib5R6vj363/68IQ7hd/c7GJxKDSJDC8P06fujn
- L6/se+aF7ezwQyB9u7gSB5v/uxHNH+ZqhPJctG
-X-Received: by 2002:a2e:a417:0:b0:2d8:713c:8313 with SMTP id
- 38308e7fff4ca-2e5205ec6dbmr99811fa.45.1715274045911; 
- Thu, 09 May 2024 10:00:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCQyTtokRLq1NXdxk9IxZ1YPOirbwFdnaenp6H5qOiP8OWN3PgsDeonDdE+JBh9RyQZ1aEKQ==
-X-Received: by 2002:a2e:a417:0:b0:2d8:713c:8313 with SMTP id
- 38308e7fff4ca-2e5205ec6dbmr99661fa.45.1715274045331; 
- Thu, 09 May 2024 10:00:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1715274047; x=1715878847;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CSdbbijnqqu6Q0jIu+Qkk/Gmy2abee1VL3NL5PRrhBA=;
+ b=EjK5W5WZwABhwOKcZKkHA/iPPqIz2YodlQOcSaXZo2pUR8L1a1fWm5O4Bt1TUNpw0M
+ RKyafDMR0gMROMNSXHu9ItPB7EzFJPXJPbfjJhSo0YoyKfKXJfVfdOxCP8IjCoVTm54P
+ Ow0bd9bbF92zbdI6RFuHS6Ah6JHUnXpwXblesHAjpfKr9cpzCJCsnMmt8DHhZaDdvSVx
+ ZnebBgiYILvdL2O4yAYytJ84dtIxVAOr5nY6YOx5sxMjO/SLCwFlQoatAoE4AaqKg4Si
+ nXnREX7Evi1ek0+mTKI97HbSwK+sRbJE4PJsT+06LrikV3FwgDp/WcPnxR+bH79OBeln
+ yadw==
+X-Gm-Message-State: AOJu0YxmrGE4JCFRis0OXfX4HG1+Jg1YJXG/voqS9jPnNZ/qya2EVlU4
+ iZVz7d+GA9ZQKb81phnpEodRGayigqdsxd6feD+apf5hh46LOw/3GrLoxd+7X03hlv1qUiFuA2g
+ kagVwAHcDxUg85mrt9RUXz6QYJuNBd3RwVeGZOYYqKges19NJFcDSg+mhgwcUf4ZYRON1ryIC9i
+ KiOBpc/u7IM7YwwLmWP19chz5S/cPaNVcvAqOm
+X-Received: by 2002:a17:906:308b:b0:a58:9a67:967b with SMTP id
+ a640c23a62f3a-a5a11844720mr261523066b.27.1715274047016; 
+ Thu, 09 May 2024 10:00:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9w7WUbqsGUYP9TFk+LYI8lDiO+u2ZSHR2NmcOcxtMBWkBS8hpZkMnI/0Qf3m6oIbjlQ/R8w==
+X-Received: by 2002:a17:906:308b:b0:a58:9a67:967b with SMTP id
+ a640c23a62f3a-a5a11844720mr261519966b.27.1715274046408; 
+ Thu, 09 May 2024 10:00:46 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733becfb77sm920595a12.41.2024.05.09.10.00.44
+ a640c23a62f3a-a5a1781cd90sm92868066b.20.2024.05.09.10.00.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 10:00:44 -0700 (PDT)
+ Thu, 09 May 2024 10:00:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: thuth@redhat.com
-Subject: [PATCH 00/13] fix --without-default-devices build and (mostly) tests
-Date: Thu,  9 May 2024 19:00:31 +0200
-Message-ID: <20240509170044.190795-1-pbonzini@redhat.com>
+Subject: [PATCH 01/13] s390x: move s390_cpu_addr2state to target/s390x/sigp.c
+Date: Thu,  9 May 2024 19:00:32 +0200
+Message-ID: <20240509170044.190795-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20240509170044.190795-1-pbonzini@redhat.com>
+References: <20240509170044.190795-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -97,96 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The recent change to make boards "default y" made them go away from
-a --without-default-devices build, because the boards are not anymore
-enabled explicitly in configs/devices/.
+This function has no dependency on the virtio-ccw machine type, though it
+assumes that the CPU address corresponds to the core_id and the index.
 
-This is a problem for some targets that were not fully ready for this
-and have generic target code that needs symbols from boards or devices.
-The more complicated ones are s390x and i386.  In some cases some
-components simply have to be required by target/ARCH/, but often
-it is better to move some code around, associating it with boards
-instead of targets or vice versa.
+If there is any need of something different or more fancy (unlikely)
+S390 can include a MachineClass subclass and implement it there.  For
+now, move it to sigp.c for simplicity.
 
---without-default-devices builds in practice will always use a
-custom config, but let's keep things tidy.  This series does
-this for s390x (patches 1 to 5) and x86 (patches 6 to 12).  As a
-small addendum, patch 13 fixes qtest for ARM (32- and 64-bit) on a
---without-default-devices build.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/s390x/s390-virtio-ccw.c | 16 ----------------
+ target/s390x/sigp.c        | 17 +++++++++++++++++
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
-The series seems huge, but it's mostly code movement.  Patch 10
-in particular moves board building code, which is unrelated to the
-X86MachineState superclass and has many dependencies on NUMA or
-hw/i386/pc-sysfw.c.
-
-I suspect that there are more issues, for example when building
-a CONFIG_MICROVM-only binary.  Fixing builds without boards on vanilla
-upstream configs is the more pressing problem, though.
-
-Patches 6 and 7 were tested with the Avocado Xen-on-KVM tests.
-
-Paolo
-
-
-Paolo Bonzini (13):
-  s390x: move s390_cpu_addr2state to target/s390x/sigp.c
-  s390_flic: add migration-enabled property
-  s390: move css_migration_enabled from machine to css.c
-  s390x: select correct components for no-board build
-  tests/qtest: s390x: fix operation in a build without any boards or
-    devices
-  xen: initialize legacy backends from xen_bus_init()
-  xen: register legacy backends via xen_backend_init
-  i386: correctly select code in hw/i386 that depends on other
-    components
-  i386: pc: remove unnecessary MachineClass overrides
-  hw/i386: split x86.c in multiple parts
-  hw/i386: move rtc-reset-reinjection command out of hw/rtc
-  i386: select correct components for no-board build
-  tests/qtest: arm: fix operation in a build without any boards or
-    devices
-
- include/hw/i386/x86.h               |   10 +-
- include/hw/rtc/mc146818rtc.h        |    2 +-
- include/hw/s390x/css.h              |    6 +
- include/hw/s390x/s390-virtio-ccw.h  |    7 -
- include/hw/s390x/s390_flic.h        |    1 +
- include/hw/xen/xen-legacy-backend.h |   14 +-
- include/hw/xen/xen_pvdev.h          |    1 -
- hw/9pfs/xen-9p-backend.c            |    8 +-
- hw/display/xenfb.c                  |    8 +-
- hw/i386/fw_cfg.c                    |    2 +
- hw/i386/monitor.c                   |   46 ++
- hw/i386/pc.c                        |    4 -
- hw/i386/x86-common.c                | 1007 +++++++++++++++++++++++++
- hw/i386/x86-cpu.c                   |   97 +++
- hw/i386/x86.c                       | 1058 +--------------------------
- hw/intc/ioapic-stub.c               |   29 +
- hw/intc/s390_flic.c                 |    6 +-
- hw/rtc/mc146818rtc.c                |   12 +-
- hw/s390x/css.c                      |   10 +-
- hw/s390x/s390-virtio-ccw.c          |   32 +-
- hw/usb/xen-usb.c                    |   14 +-
- hw/xen/xen-bus.c                    |    4 +
- hw/xen/xen-hvm-common.c             |    2 -
- hw/xen/xen-legacy-backend.c         |   16 -
- hw/xenpv/xen_machine_pv.c           |    5 +-
- target/s390x/sigp.c                 |   17 +
- tests/qtest/arm-cpu-features.c      |    4 +
- tests/qtest/drive_del-test.c        |    7 +-
- tests/qtest/migration-test.c        |    6 +
- tests/qtest/numa-test.c             |    4 +
- .gitlab-ci.d/buildtest.yml          |    4 +-
- hw/i386/meson.build                 |    7 +-
- hw/intc/meson.build                 |    2 +-
- target/i386/Kconfig                 |    1 +
- target/s390x/Kconfig                |    2 +
- 35 files changed, 1289 insertions(+), 1166 deletions(-)
- create mode 100644 hw/i386/monitor.c
- create mode 100644 hw/i386/x86-common.c
- create mode 100644 hw/i386/x86-cpu.c
- create mode 100644 hw/intc/ioapic-stub.c
-
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 4dcc2138200..feabc173eb3 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -50,22 +50,6 @@
+ 
+ static Error *pv_mig_blocker;
+ 
+-S390CPU *s390_cpu_addr2state(uint16_t cpu_addr)
+-{
+-    static MachineState *ms;
+-
+-    if (!ms) {
+-        ms = MACHINE(qdev_get_machine());
+-        g_assert(ms->possible_cpus);
+-    }
+-
+-    /* CPU address corresponds to the core_id and the index */
+-    if (cpu_addr >= ms->possible_cpus->len) {
+-        return NULL;
+-    }
+-    return S390_CPU(ms->possible_cpus->cpus[cpu_addr].cpu);
+-}
+-
+ static S390CPU *s390x_new_cpu(const char *typename, uint32_t core_id,
+                               Error **errp)
+ {
+diff --git a/target/s390x/sigp.c b/target/s390x/sigp.c
+index 9dd977349ab..ad0ad61177d 100644
+--- a/target/s390x/sigp.c
++++ b/target/s390x/sigp.c
+@@ -11,6 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "s390x-internal.h"
++#include "hw/boards.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/runstate.h"
+ #include "exec/address-spaces.h"
+@@ -435,6 +436,22 @@ static int sigp_set_architecture(S390CPU *cpu, uint32_t param,
+     return SIGP_CC_STATUS_STORED;
+ }
+ 
++S390CPU *s390_cpu_addr2state(uint16_t cpu_addr)
++{
++    static MachineState *ms;
++
++    if (!ms) {
++        ms = MACHINE(qdev_get_machine());
++        g_assert(ms->possible_cpus);
++    }
++
++    /* CPU address corresponds to the core_id and the index */
++    if (cpu_addr >= ms->possible_cpus->len) {
++        return NULL;
++    }
++    return S390_CPU(ms->possible_cpus->cpus[cpu_addr].cpu);
++}
++
+ int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3)
+ {
+     uint64_t *status_reg = &env->regs[r1];
 -- 
 2.45.0
 
