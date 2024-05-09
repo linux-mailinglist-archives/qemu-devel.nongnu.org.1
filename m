@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF4A8C0A27
-	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 05:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25FE8C0A46
+	for <lists+qemu-devel@lfdr.de>; Thu,  9 May 2024 05:46:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s4uRm-0003cu-6Q; Wed, 08 May 2024 23:27:54 -0400
+	id 1s4uiR-000088-Ub; Wed, 08 May 2024 23:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1s4uRk-0003cG-7x
- for qemu-devel@nongnu.org; Wed, 08 May 2024 23:27:52 -0400
-Received: from esa5.hc1455-7.c3s2.iphmx.com ([68.232.139.130])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s4uiP-00007w-Ic
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 23:45:05 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1s4uRh-000463-4H
- for qemu-devel@nongnu.org; Wed, 08 May 2024 23:27:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1715225267; x=1746761267;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GVmhNWvYuMl+TRo5ZwhycrsRqLYEmLmpGwmGYuDtGvM=;
- b=jJ0h6GwR0BkFSVpgGrNAL59Lu7qRvlLh0OpwvUJZL5hHUHSe2AmIwtwE
- puUdr1KiBKDmYJ59AfFnWAcjyJ+9GhkyvvODgeHecQ4/y4STOYKSi9f4K
- KGiCrH6Vjj8s3h9YQxA7Re4mMPYS6xTEGU4OQkg2L5BFzz5TXfV9aTC0r
- 9hY6j6SaHbVGVelIjz7TZpejMnnWb+gCUvYNZl/GoGJCPiw+Uovk65+Uc
- oQiovGIPgy++UN5tYS2bxoLqtDRINFF+5gdUcCEAFlLkwaLWv+0yfUWyI
- JdV+4phj2+4QCqixU0g2F50Qif/vIiDhaBQWOBn3LUStg+0q5On8PxJWv g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="157165426"
-X-IronPort-AV: E=Sophos;i="6.08,146,1712588400"; d="scan'208";a="157165426"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 May 2024 12:27:42 +0900
-Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
- [192.168.87.59])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id BF6C4E8E1C
- for <qemu-devel@nongnu.org>; Thu,  9 May 2024 12:27:41 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
- [192.51.206.22])
- by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id F2D7CBDB6A
- for <qemu-devel@nongnu.org>; Thu,  9 May 2024 12:27:40 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 8A5262C666F
- for <qemu-devel@nongnu.org>; Thu,  9 May 2024 12:27:40 +0900 (JST)
-Received: from localhost.localdomain (unknown [10.167.226.45])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id E98651A000D;
- Thu,  9 May 2024 11:27:39 +0800 (CST)
-To: Peter Xu <peterx@redhat.com>,
-	Fabiano Rosas <farosas@suse.de>
-Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, qemu-devel@nongnu.org,
- Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 3/3] migration/colo: Tidy up bql_unlock() around
- bdrv_activate_all()
-Date: Thu,  9 May 2024 11:31:06 +0800
-Message-Id: <20240509033106.1321880-3-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240509033106.1321880-1-lizhijian@fujitsu.com>
-References: <20240509033106.1321880-1-lizhijian@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s4uiM-0003FS-9v
+ for qemu-devel@nongnu.org; Wed, 08 May 2024 23:45:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715226302; x=1746762302;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=joleapBE/tDRjEAY8DKFkyHrno8CqOPI5WDEfCYBmRU=;
+ b=PQ9XV8Y/bTD8uCAkn6GAhx5mROAixNwSMjZ4qAoeE1pjO4G497yDv8FT
+ TgbbzSchEsO8nyoqTzVOfYukKaM+oObkXfDvCVFWCHgdvS8Go5wcuFb44
+ LCl4z9qMqYOh6WtrEooYAAs52OO9ODZ7Kivqp5G123jaIY9XlLXk2PFZa
+ a9ROjHufGfVY2pOb43gwet+/vcgBy9BspFhiyJ2rMsJSUYRLnRJYAeZPe
+ BZWrQBPjULld0PgIoZMCtcOmZ+pB4Z1DFnGuJrFDN34C7B48yHPfpeAHB
+ 0OPt9vKV2F/WUNEPSA4jOrVY2esCvCAtw1bV4RgTJFryjdh2rV9mRNbtH Q==;
+X-CSE-ConnectionGUID: 5T/cyZ1ZTaqBYMkePBSyWw==
+X-CSE-MsgGUID: 5y+rKYGdRYSz1yinvT99JA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11067"; a="21792501"
+X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="21792501"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 May 2024 20:44:58 -0700
+X-CSE-ConnectionGUID: 5c0Fyc1DTKSPnKW0PC412A==
+X-CSE-MsgGUID: /SEk426/T92AWOsJtiXRNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,146,1712646000"; d="scan'208";a="29055643"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 08 May 2024 20:44:57 -0700
+Date: Thu, 9 May 2024 11:59:10 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
+ as WARN
+Message-ID: <ZjxKDkZjAitxCasH@intel.com>
+References: <20240508043229.3433128-1-zhao1.liu@intel.com>
+ <CAJSP0QX0y_J1pu+hgUNhXn7bFJfoAMm9Ux9vq3u+k_UDjwK8Ww@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28372.002
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28372.002
-X-TMASE-Result: 10--4.358700-10.000000
-X-TMASE-MatchedRID: 9IrrHbNZyfpTorztX3wKRDBgCmbnj9JmwTlc9CcHMZerwqxtE531VNnf
- JrUSEbFDNYCBzzxsUnthuO+F4DLKpT+7nvNv6fe6ngIgpj8eDcBpkajQR5gb3savT21DsLD/UEh
- Wy9W70AEnRE+fI6etkmyD8trkO9mdwWwytO4EycIFdnSoTuV8apA1918zzYNWEwNF9ZEUYf9/da
- oMYxPppOWbgU3/1d0vmuemDR7HHuUf7ftDL+jmBcBgvHuudtHysNDybdOqCWh6WkJecb4mO8MYF
- nUbyvVJ/YPqDH/SjOk=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=68.232.139.130;
- envelope-from=lizhijian@fujitsu.com; helo=esa5.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJSP0QX0y_J1pu+hgUNhXn7bFJfoAMm9Ux9vq3u+k_UDjwK8Ww@mail.gmail.com>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.582,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,42 +80,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Li Zhijian <lizhijian@fujitsu.com>
-From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the code more tight.
+On Wed, May 08, 2024 at 02:05:04PM -0400, Stefan Hajnoczi wrote:
+> Date: Wed, 8 May 2024 14:05:04 -0400
+> From: Stefan Hajnoczi <stefanha@gmail.com>
+> Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable
+>  timestamp as WARN
+> 
+> On Wed, 8 May 2024 at 00:19, Zhao Liu <zhao1.liu@intel.com> wrote:
+> >
+> > In some trace log, there're unstable timestamp breaking temporal
+> > ordering of trace records. For example:
+> >
+> > kvm_run_exit -0.015 pid=3289596 cpu_index=0x0 reason=0x6
+> > kvm_vm_ioctl -0.020 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> > kvm_vm_ioctl -0.021 pid=3289596 type=0xffffffffc008ae67 arg=0x7ffeefb5aa60
+> >
+> > Negative delta intervals tend to get drowned in the massive trace logs,
+> > and an unstable timestamp can corrupt the calculation of intervals
+> > between two events adjacent to it.
+> >
+> > Therefore, mark the outputs with unstable timestamps as WARN like:
+> 
+> Why are the timestamps non-monotonic?
+> 
+> In a situation like that maybe not only the negative timestamps are
+> useless but even some positive timestamps are incorrect. I think it's
+> worth understanding the nature of the instability before merging a
+> fix.
 
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
-This change/comment suggested by "Michael Tokarev <mjt@tls.msk.ru>" came
-a bit late at that time, let's update it together in these minor set
-this time.
----
- migration/colo.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+I grabbed more traces (by -trace "*" to cover as many events as possible
+) and have a couple observations:
 
-diff --git a/migration/colo.c b/migration/colo.c
-index 991806c06a..1b6d9da1c8 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -838,12 +838,11 @@ static void *colo_process_incoming_thread(void *opaque)
-     /* Make sure all file formats throw away their mutable metadata */
-     bql_lock();
-     bdrv_activate_all(&local_err);
-+    bql_unlock();
-     if (local_err) {
--        bql_unlock();
-         error_report_err(local_err);
-         return NULL;
-     }
--    bql_unlock();
- 
-     failover_init_state();
- 
--- 
-2.31.1
+* It's not an issue with kvm's ioctl, and that qemu_mutex_lock/
+  object_dynamic_cast_assert accounted for the vast majority of all
+  exception timestamps.
+* The total exception timestamp occurrence probability was roughly 0.013%
+  (608 / 4,616,938) in a 398M trace file.
+* And the intervals between the "wrong" timestamp and its pre event are
+  almost all within 50ns, even more concentrated within 20ns (there are
+  even quite a few 1~10ns).
+
+Just a guess:
+
+Would it be possible that a trace event which is too short of an interval,
+and happen to meet a delay in signaling to send to writeout_thread?
+
+It seems that this short interval like a lack of real-time guarantees in
+the underlying mechanism...
+
+If it's QEMU's own issue, I feel like the intervals should be randomized,
+not just within 50ns...
+
+May I ask what you think? Any suggestions for researching this situation
+;-)
+
+Thanks,
+Zhao
 
 
