@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 249228C1E3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 08:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D698C1E38
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 08:41:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5Jw0-0001FM-1X; Fri, 10 May 2024 02:40:48 -0400
+	id 1s5JwJ-0001Om-JU; Fri, 10 May 2024 02:41:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5Jvd-00017e-WC
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5Jvd-00017d-W4
  for qemu-devel@nongnu.org; Fri, 10 May 2024 02:40:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5JvZ-0001ZA-In
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5Jva-0001ZM-Fs
  for qemu-devel@nongnu.org; Fri, 10 May 2024 02:40:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715323220;
+ s=mimecast20190719; t=1715323221;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Nd+475C9gFveQQ9v96nw/BgXcs4ZqBPdYgTk/af/SC8=;
- b=TdEIyef6BdXYQF9JES2S1tUoXUMaVPwNE0/3XlNeQxoIYu8t0FvdyH5BpzqlXpyxeBTbI+
- 9EKO5EKpShoQwFMVDs8GAHKgYyH1+EXzJRr+2cCmitJfLJiMh4Ybyzb1F/mnPAjqzG0URQ
- V0sB4gDqEqpoR27impRkEkhTyfCWQ/c=
+ bh=1YrFwTifzcXCgtn8nac43KEmXtUZ2NyyytKwMCkBfxw=;
+ b=Dqzu//xy+RkdFDiksn3HmHN0CDTcOR8q3mnqrmoUGlPezHyxVRk+DTuVuN+xsD6z0EIkVg
+ T/zlMiDc88knSNQdJn/DuHYlqOmcNFsW48JUetuWAXiAg2tXDZxmKVjR2+NYH4R2nVHAGO
+ 9fA71XuweDJHxd3et5/0j2GJX2zuCN0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-OzyRQs8_M0qxBp5FbMkzkA-1; Fri, 10 May 2024 02:40:16 -0400
-X-MC-Unique: OzyRQs8_M0qxBp5FbMkzkA-1
+ us-mta-516-qkXCWDNBMza0mmbPcv_-0A-1; Fri, 10 May 2024 02:40:18 -0400
+X-MC-Unique: qkXCWDNBMza0mmbPcv_-0A-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45D8E800A03;
- Fri, 10 May 2024 06:40:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55BC9185A780;
+ Fri, 10 May 2024 06:40:18 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.229])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EB2A82079267;
- Fri, 10 May 2024 06:40:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BAAE52079267;
+ Fri, 10 May 2024 06:40:16 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 7/8] qemu-options: Deprecate "-runas" and introduce "-run-with
- user=..." instead
-Date: Fri, 10 May 2024 08:40:00 +0200
-Message-ID: <20240510064001.26002-8-thuth@redhat.com>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 8/8] tests/qtest: Add some test cases support on LoongArch
+Date: Fri, 10 May 2024 08:40:01 +0200
+Message-ID: <20240510064001.26002-9-thuth@redhat.com>
 In-Reply-To: <20240510064001.26002-1-thuth@redhat.com>
 References: <20240510064001.26002-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -79,122 +77,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old "-runas" option has the disadvantage that it is not visible
-in the QAPI schema, so it is not available via the normal introspection
-mechanisms. We've recently introduced the "-run-with" option for exactly
-this purpose, which is meant to handle the options that affect the
-runtime behavior. Thus let's introduce a "user=..." parameter here now
-and deprecate the old "-runas" option.
+From: Bibo Mao <maobibo@loongson.cn>
 
-Message-ID: <20240506112058.51446-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Add boot-serial-test and filter test cases support on LoongArch system.
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <20240509084745.2514607-1-maobibo@loongson.cn>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/about/deprecated.rst |  6 ++++++
- system/vl.c               | 15 +++++++++++++++
- qemu-options.hx           | 15 +++++++++++----
- 3 files changed, 32 insertions(+), 4 deletions(-)
+ tests/qtest/boot-serial-test.c | 10 ++++++++++
+ tests/qtest/meson.build        |  3 +++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index e22acb17f2..6f709746db 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -61,6 +61,12 @@ configurations (e.g. -smp drawers=1,books=1,clusters=1 for x86 PC machine) is
- marked deprecated since 9.0, users have to ensure that all the topology members
- described with -smp are supported by the target machine.
- 
-+``-runas`` (since 9.1)
-+----------------------
-+
-+Use ``-run-with user=..`` instead.
-+
-+
- User-mode emulator command line arguments
- -----------------------------------------
- 
-diff --git a/system/vl.c b/system/vl.c
-index 7756eac81e..b031427440 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -773,6 +773,10 @@ static QemuOptsList qemu_run_with_opts = {
-             .name = "chroot",
-             .type = QEMU_OPT_STRING,
-         },
-+        {
-+            .name = "user",
-+            .type = QEMU_OPT_STRING,
-+        },
-         { /* end of list */ }
-     },
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index e3b7d65fe5..df389adeeb 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -26,6 +26,14 @@ static const uint8_t bios_avr[] = {
+     0x80, 0x93, 0xc6, 0x00, /* sts 0x00C6, r24 ; Output 'T' */
  };
-@@ -3586,6 +3590,7 @@ void qemu_init(int argc, char **argv)
-                 break;
- #if defined(CONFIG_POSIX)
-             case QEMU_OPTION_runas:
-+                warn_report("-runas is deprecated, use '-run-with user=...' instead");
-                 if (!os_set_runas(optarg)) {
-                     error_report("User \"%s\" doesn't exist"
-                                  " (and is not <uid>:<gid>)",
-@@ -3612,6 +3617,16 @@ void qemu_init(int argc, char **argv)
-                 if (str) {
-                     os_set_chroot(str);
-                 }
-+                str = qemu_opt_get(opts, "user");
-+                if (str) {
-+                    if (!os_set_runas(str)) {
-+                        error_report("User \"%s\" doesn't exist"
-+                                     " (and is not <uid>:<gid>)",
-+                                     optarg);
-+                        exit(1);
-+                    }
-+                }
+ 
++static const uint8_t bios_loongarch64[] = {
++    0x0c, 0xc0, 0x3f, 0x14,                 /* lu12i.w $t0, 0x1fe00    */
++    0x8c, 0x81, 0x87, 0x03,                 /* ori     $t0, $t0, 0x1e0 */
++    0x0d, 0x50, 0x81, 0x03,                 /* li.w    $t1, 'T'        */
++    0x8d, 0x01, 0x00, 0x29,                 /* st.b    $t1, $t0, 0     */
++    0xff, 0xf3, 0xff, 0x53,                 /*  b      -16  # loop     */
++};
 +
-                 break;
-             }
- #endif /* CONFIG_POSIX */
-diff --git a/qemu-options.hx b/qemu-options.hx
-index cf61f6b863..f5c01eeeb4 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4824,7 +4824,8 @@ DEF("runas", HAS_ARG, QEMU_OPTION_runas, \
- SRST
- ``-runas user``
-     Immediately before starting guest execution, drop root privileges,
--    switching to the specified user.
-+    switching to the specified user. This option is deprecated, use
-+    ``-run-with user=...`` instead.
- ERST
+ static const uint8_t kernel_mcf5208[] = {
+     0x41, 0xf9, 0xfc, 0x06, 0x00, 0x00,     /* lea 0xfc060000,%a0 */
+     0x10, 0x3c, 0x00, 0x54,                 /* move.b #'T',%d0 */
+@@ -167,6 +175,8 @@ static const testdef_t tests[] = {
+     { "sparc", "SS-600MP", "", "TMS390Z55" },
+     { "sparc64", "sun4u", "", "UltraSPARC" },
+     { "s390x", "s390-ccw-virtio", "", "device" },
++    { "loongarch64", "virt", "-cpu max", "TT", sizeof(bios_loongarch64),
++      NULL, bios_loongarch64 },
+     { "m68k", "mcf5208evb", "", "TT", sizeof(kernel_mcf5208), kernel_mcf5208 },
+     { "m68k", "next-cube", "", "TT", sizeof(bios_nextcube), 0, bios_nextcube },
+     { "microblaze", "petalogix-s3adsp1800", "", "TT",
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 6f2f594ace..86293051dc 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -139,6 +139,9 @@ qtests_hppa = ['boot-serial-test'] + \
+   qtests_filter + \
+   (config_all_devices.has_key('CONFIG_VGA') ? ['display-vga-test'] : [])
  
- DEF("prom-env", HAS_ARG, QEMU_OPTION_prom_env,
-@@ -4990,13 +4991,15 @@ DEF("qtest-log", HAS_ARG, QEMU_OPTION_qtest_log, "", QEMU_ARCH_ALL)
- 
- #ifdef CONFIG_POSIX
- DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
--    "-run-with [async-teardown=on|off][,chroot=dir]\n"
-+    "-run-with [async-teardown=on|off][,chroot=dir][user=username|uid:gid]\n"
-     "                Set miscellaneous QEMU process lifecycle options:\n"
-     "                async-teardown=on enables asynchronous teardown (Linux only)\n"
--    "                chroot=dir chroot to dir just before starting the VM\n",
-+    "                chroot=dir chroot to dir just before starting the VM\n"
-+    "                user=username switch to the specified user before starting the VM\n"
-+    "                user=uid:gid ditto, but use specified user-ID and group-ID instead\n",
-     QEMU_ARCH_ALL)
- SRST
--``-run-with [async-teardown=on|off][,chroot=dir]``
-+``-run-with [async-teardown=on|off][,chroot=dir][user=username|uid:gid]``
-     Set QEMU process lifecycle options.
- 
-     ``async-teardown=on`` enables asynchronous teardown. A new process called
-@@ -5013,6 +5016,10 @@ SRST
-     ``chroot=dir`` can be used for doing a chroot to the specified directory
-     immediately before starting the guest execution. This is especially useful
-     in combination with -runas.
++qtests_loongarch64 = qtests_filter + \
++  ['boot-serial-test']
 +
-+    ``user=username`` or ``user=uid:gid`` can be used to drop root privileges
-+    by switching to the specified user (via username) or user and group
-+    (via uid:gid) immediately before starting guest execution.
- ERST
- #endif
+ qtests_m68k = ['boot-serial-test'] + \
+   qtests_filter
  
 -- 
 2.45.0
