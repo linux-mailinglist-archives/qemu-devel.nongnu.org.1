@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97908C2690
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 16:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B7C8C268E
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 16:18:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5R4H-0006tu-Go; Fri, 10 May 2024 10:17:49 -0400
+	id 1s5R4J-0006uu-Bn; Fri, 10 May 2024 10:17:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1s5R4F-0006tb-L3; Fri, 10 May 2024 10:17:47 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ id 1s5R4G-0006tn-Qc; Fri, 10 May 2024 10:17:48 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1s5R4D-0001Sm-IO; Fri, 10 May 2024 10:17:47 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a59b097b202so495174966b.0; 
- Fri, 10 May 2024 07:17:44 -0700 (PDT)
+ id 1s5R4E-0001Sz-Ig; Fri, 10 May 2024 10:17:48 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a59ab4f60a6so464540366b.0; 
+ Fri, 10 May 2024 07:17:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715350663; x=1715955463; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715350664; x=1715955464; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=o9fjU59fGtvCVR/tbRDabxmDNDs6GCEKkABmHTUx8AE=;
- b=f8HBX5/WzVojM3XNnUBYwgnNeutK4di2vIGP3qoqeNmeE1pRx4nkYmFybpelHZOMmR
- disTuOYtjrgV37Y0UStlhA0iqtXExGutSa6VHi6RBs4QTOyJcfrnk3WKAX7Em+6scxpp
- lH5bhQR5Rx4YJV5fjlNiEcXysZzvz7qdsvfFvBgCSDORfCylzqfFrgP4fDJTVikUfqZw
- a5oP4U4kDeJ4A7X1NuDJhfBMSmJ/HlsqH/im7pKOOEURTedmbKn6+9S90xYaQ6EJ3gj7
- kCT90I4IpFWSBHIwo2pjMpJtdbTpllFf+0OpT0GCY055AcoFsIytpmrg6TTxRHV9Mlh4
- Ai1Q==
+ bh=/QJTpK5sg88UhGs/NKN8PlzaLghfj83OQw0oUqUPB0U=;
+ b=nUuRBq/lMsssgKu5AURlgJOhZ19xDafbUl2s19IQjB4IY0tPPXnRZg8xFk+VN0AFse
+ LWrxhnU5zZ0KvBPZxkJ8UDma+36dJrnsVEK5mF6u95PoXq6pu4FcEn4jihIkEEBM9EUJ
+ 924nA6RqpaodeTz799jGAQ2+rzZyK89vVR6Iavsv/UIwU7dgEtY7Fh2DbigspLB5VXTV
+ 3W9QSfO9PzCGqe8VeHQUx6PbvMwAa7y6XazqZ+SLSvzAwCK4c4/BNGNi2zn0UBFNB3S2
+ r65mdSZM+Vfr/lfDOkQDNR5NCAfJxKlxP1celxTvE+Bv5snJlhI2fojUllB8kOTAy8/W
+ 9EqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715350663; x=1715955463;
+ d=1e100.net; s=20230601; t=1715350664; x=1715955464;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o9fjU59fGtvCVR/tbRDabxmDNDs6GCEKkABmHTUx8AE=;
- b=xSR8sx2aql33XAQNuXzPBsWzWZfdUENS3Sq+nZFcpNbE9C9S/83QIK4+mVVpqMRkYN
- PGBaQ6WXwFdrt0h3dD5BrCka+1GHeXaAjLOMhLdPkQq3Rn2JXhTPTLNEo7GefT7Z8NDe
- js2Heh5x3fSPrVaCKc8dNufiLgMS1qyJMEyR3M/LPPLzenKOMyB/GnGnJ4iyNUm8+29W
- DSTUGSMYP9+MyBfvgwuat3wqJh++yJ3jZ1ys4JfcyiUSi0uvOS2O7h1LrAwlA1aDiq/b
- d9AOtzI6Xba3/VeInl+JKAFBki5HnxiQ5fCv4Niq+QcKxWfAeUpimlQTpHyP+w92AL+M
- A/tQ==
+ bh=/QJTpK5sg88UhGs/NKN8PlzaLghfj83OQw0oUqUPB0U=;
+ b=pCgWQeNjwO/IPTvJfgf5InPEauXlEXO/kQixjqnTOu/ABXnQzJeHMxwoVPVV8c0h1z
+ VpDR8ZWfts2+pB3zS+l+kT1GAY+0r5BrmmSQKGvtHa4uv1Q/S+J6R6R6l3xm/hYVbvpj
+ KKk9vnmhfXoemU+TJlFunTnU5S9mp/QHgnalt1kBd2qVXM0AKkjJLPaSiz0PjesWKDDI
+ nvh7O5Rkbhbyd3jqS+xASFqZYvO1yDBaxzkZjD9ptNSKZwtladcqChmaDMB5JIVsxD+U
+ g5IMfSZsf1jBsm52H1TAxP5dbY7u5KUf349GwxmEJZGDYqgjFaOueyH4h1E2WDLzP18F
+ S5BA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwDhrA6+YWo65WQrUUSJyucBz5eXTo3qEyJSeFDCO9YJWEImzrXE6h/9NNELOv/HeFPTv0qw4VrHo7g9nWIBqSsd9u
-X-Gm-Message-State: AOJu0YxWWIc2JjDXuyyyzZ/Xeua0rmZKsRpOaVc23ilKiL4a+TMQRbT2
- wYesF2Hzvqilv32K6VAq0g88ZoZX4e01TXf1TSjqL11nLzguQaGer8LUAw==
-X-Google-Smtp-Source: AGHT+IHt0qMyVTgYPSyttXJDG+K8xXdyNxPxtEdWWaoLEyuNLzrbRoB30YFMHbKInCdDumL1vBZ2Aw==
-X-Received: by 2002:a17:906:a8f:b0:a55:acd8:996c with SMTP id
- a640c23a62f3a-a5a2d55af14mr182233366b.29.1715350662698; 
- Fri, 10 May 2024 07:17:42 -0700 (PDT)
+ AJvYcCUz/eFva683RSwy2947wljiqVgDbCiDdU7yEPKnBBJUF8a7hPg2trKg1eTXDI5bUmNM1mZuQQyO8Ab78yOPPz5NAjF3
+X-Gm-Message-State: AOJu0YxfVanwhVQ7l2fBEtEdj7nq9FB5OLzfElTrwD9FSVtQnvDEmSWY
+ G8KwZGeP95+pJzNl+aN80L5PsmX7u//3h298WFgmh0BvMRGomX4ZrLVChw==
+X-Google-Smtp-Source: AGHT+IFgHgoroFxgpNwu6AAwABpFYOhUJXePt0GzToVqBYft/DdIy2wtc8Uk+9VIk8sWJrlCNSlcsw==
+X-Received: by 2002:a17:906:3809:b0:a59:a05c:b553 with SMTP id
+ a640c23a62f3a-a5a2d572471mr293679366b.17.1715350664618; 
+ Fri, 10 May 2024 07:17:44 -0700 (PDT)
 Received: from localhost.localdomain ([212.70.119.83])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17891f6esm190093466b.54.2024.05.10.07.17.41
+ a640c23a62f3a-a5a17891f6esm190093466b.54.2024.05.10.07.17.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 May 2024 07:17:42 -0700 (PDT)
+ Fri, 10 May 2024 07:17:44 -0700 (PDT)
 From: Rayhan Faizel <rayhan.faizel@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, peter.maydell@linaro.org, qemu-arm@nongnu.org,
  Rayhan Faizel <rayhan.faizel@gmail.com>
-Subject: [PATCH 1/3] hw/nvram: Add BCM2835 OTP device
-Date: Fri, 10 May 2024 19:40:08 +0530
-Message-Id: <20240510141010.656561-2-rayhan.faizel@gmail.com>
+Subject: [PATCH 2/3] hw/arm: Connect OTP device to BCM2835
+Date: Fri, 10 May 2024 19:40:09 +0530
+Message-Id: <20240510141010.656561-3-rayhan.faizel@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240510141010.656561-1-rayhan.faizel@gmail.com>
 References: <20240510141010.656561-1-rayhan.faizel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,271 +92,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The OTP device registers are currently stubbed. For now, the device
-houses the OTP rows which will be accessed directly by other peripherals.
-
 Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
 ---
- hw/nvram/bcm2835_otp.c         | 187 +++++++++++++++++++++++++++++++++
- hw/nvram/meson.build           |   1 +
- include/hw/nvram/bcm2835_otp.h |  43 ++++++++
- 3 files changed, 231 insertions(+)
- create mode 100644 hw/nvram/bcm2835_otp.c
- create mode 100644 include/hw/nvram/bcm2835_otp.h
+ hw/arm/bcm2835_peripherals.c         | 13 ++++++++++++-
+ include/hw/arm/bcm2835_peripherals.h |  3 ++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/hw/nvram/bcm2835_otp.c b/hw/nvram/bcm2835_otp.c
-new file mode 100644
-index 0000000000..a8d01c6f1d
---- /dev/null
-+++ b/hw/nvram/bcm2835_otp.c
-@@ -0,0 +1,187 @@
-+/*
-+ * BCM2835 One-Time Programmable (OTP) Memory
-+ *
-+ * The OTP implementation is mostly a stub except for the OTP rows
-+ * which are accessed directly by other peripherals such as the mailbox.
-+ *
-+ * The OTP registers are unimplemented due to lack of documentation.
-+ *
-+ * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-+ *
-+ * SPDX-License-Identifier: MIT
-+ */
+diff --git a/hw/arm/bcm2835_peripherals.c b/hw/arm/bcm2835_peripherals.c
+index 1695d8b453..7d735bb56c 100644
+--- a/hw/arm/bcm2835_peripherals.c
++++ b/hw/arm/bcm2835_peripherals.c
+@@ -116,6 +116,10 @@ static void raspi_peripherals_base_init(Object *obj)
+     object_property_add_const_link(OBJECT(&s->fb), "dma-mr",
+                                    OBJECT(&s->gpu_bus_mr));
+ 
++    /* OTP */
++    object_initialize_child(obj, "bcm2835-otp", &s->otp,
++                            TYPE_BCM2835_OTP);
 +
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
+     /* Property channel */
+     object_initialize_child(obj, "property", &s->property,
+                             TYPE_BCM2835_PROPERTY);
+@@ -374,6 +378,14 @@ void bcm_soc_peripherals_common_realize(DeviceState *dev, Error **errp)
+     sysbus_connect_irq(SYS_BUS_DEVICE(&s->fb), 0,
+                        qdev_get_gpio_in(DEVICE(&s->mboxes), MBOX_CHAN_FB));
+ 
++    /* OTP */
++    if (!sysbus_realize(SYS_BUS_DEVICE(&s->otp), errp)) {
++        return;
++    }
++
++    memory_region_add_subregion(&s->peri_mr, OTP_OFFSET,
++                sysbus_mmio_get_region(SYS_BUS_DEVICE(&s->otp), 0));
++
+     /* Property channel */
+     if (!sysbus_realize(SYS_BUS_DEVICE(&s->property), errp)) {
+         return;
+@@ -500,7 +512,6 @@ void bcm_soc_peripherals_common_realize(DeviceState *dev, Error **errp)
+     create_unimp(s, &s->i2s, "bcm2835-i2s", I2S_OFFSET, 0x100);
+     create_unimp(s, &s->smi, "bcm2835-smi", SMI_OFFSET, 0x100);
+     create_unimp(s, &s->bscsl, "bcm2835-spis", BSC_SL_OFFSET, 0x100);
+-    create_unimp(s, &s->otp, "bcm2835-otp", OTP_OFFSET, 0x80);
+     create_unimp(s, &s->dbus, "bcm2835-dbus", DBUS_OFFSET, 0x8000);
+     create_unimp(s, &s->ave0, "bcm2835-ave0", AVE0_OFFSET, 0x8000);
+     create_unimp(s, &s->v3d, "bcm2835-v3d", V3D_OFFSET, 0x1000);
+diff --git a/include/hw/arm/bcm2835_peripherals.h b/include/hw/arm/bcm2835_peripherals.h
+index 636203baa5..1eeaeec9e0 100644
+--- a/include/hw/arm/bcm2835_peripherals.h
++++ b/include/hw/arm/bcm2835_peripherals.h
+@@ -33,6 +33,7 @@
+ #include "hw/usb/hcd-dwc2.h"
+ #include "hw/ssi/bcm2835_spi.h"
+ #include "hw/i2c/bcm2835_i2c.h"
 +#include "hw/nvram/bcm2835_otp.h"
-+#include "migration/vmstate.h"
-+
-+/* OTP rows are 1-indexed */
-+uint32_t bcm2835_otp_read_row(BCM2835OTPState *s, unsigned int row)
-+{
-+    assert(row <= 66 && row >= 1);
-+
-+    return s->otp_rows[row - 1];
-+}
-+
-+void bcm2835_otp_write_row(BCM2835OTPState *s, unsigned int row,
-+                           uint32_t value)
-+{
-+    assert(row <= 66 && row >= 1);
-+
-+    /* Real OTP rows work as e-fuses */
-+    s->otp_rows[row - 1] |= value;
-+}
-+
-+static uint64_t bcm2835_otp_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    switch (addr) {
-+    case BCM2835_OTP_BOOTMODE_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_BOOTMODE_REG\n");
-+        break;
-+    case BCM2835_OTP_CONFIG_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CONFIG_REG\n");
-+        break;
-+    case BCM2835_OTP_CTRL_LO_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CTRL_LO_REG\n");
-+        break;
-+    case BCM2835_OTP_CTRL_HI_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CTRL_HI_REG\n");
-+        break;
-+    case BCM2835_OTP_STATUS_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_STATUS_REG\n");
-+        break;
-+    case BCM2835_OTP_BITSEL_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_BITSEL_REG\n");
-+        break;
-+    case BCM2835_OTP_DATA_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_DATA_REG\n");
-+        break;
-+    case BCM2835_OTP_ADDR_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_ADDR_REG\n");
-+        break;
-+    case BCM2835_OTP_WRITE_DATA_READ_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_WRITE_DATA_READ_REG\n");
-+        break;
-+    case BCM2835_OTP_INIT_STATUS_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_INIT_STATUS_REG\n");
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%" HWADDR_PRIx "\n", __func__, addr);
-+    }
-+
-+    return 0;
-+}
-+
-+static void bcm2835_otp_write(void *opaque, hwaddr addr,
-+                              uint64_t value, unsigned int size)
-+{
-+    switch (addr) {
-+    case BCM2835_OTP_BOOTMODE_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_BOOTMODE_REG\n");
-+        break;
-+    case BCM2835_OTP_CONFIG_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CONFIG_REG\n");
-+        break;
-+    case BCM2835_OTP_CTRL_LO_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CTRL_LO_REG\n");
-+        break;
-+    case BCM2835_OTP_CTRL_HI_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_CTRL_HI_REG\n");
-+        break;
-+    case BCM2835_OTP_STATUS_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_STATUS_REG\n");
-+        break;
-+    case BCM2835_OTP_BITSEL_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_BITSEL_REG\n");
-+        break;
-+    case BCM2835_OTP_DATA_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_DATA_REG\n");
-+        break;
-+    case BCM2835_OTP_ADDR_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_ADDR_REG\n");
-+        break;
-+    case BCM2835_OTP_WRITE_DATA_READ_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_WRITE_DATA_READ_REG\n");
-+        break;
-+    case BCM2835_OTP_INIT_STATUS_REG:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "bcm2835_otp: BCM2835_OTP_INIT_STATUS_REG\n");
-+        break;
-+    default:
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Bad offset 0x%" HWADDR_PRIx "\n", __func__, addr);
-+    }
-+}
-+
-+static const MemoryRegionOps bcm2835_otp_ops = {
-+    .read = bcm2835_otp_read,
-+    .write = bcm2835_otp_write,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static void bcm2835_otp_realize(DeviceState *dev, Error **errp)
-+{
-+    BCM2835OTPState *s = BCM2835_OTP(dev);
-+    memory_region_init_io(&s->iomem, OBJECT(dev), &bcm2835_otp_ops, s,
-+                          TYPE_BCM2835_OTP, 0x28);
-+    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->iomem);
-+
-+    memset(s->otp_rows, 0x00, sizeof(s->otp_rows));
-+}
-+
-+static const VMStateDescription vmstate_bcm2835_otp = {
-+    .name = TYPE_BCM2835_OTP,
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_UINT32_ARRAY(otp_rows, BCM2835OTPState, 66),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
-+static void bcm2835_otp_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->realize = bcm2835_otp_realize;
-+    dc->vmsd = &vmstate_bcm2835_otp;
-+}
-+
-+static const TypeInfo bcm2835_otp_info = {
-+    .name = TYPE_BCM2835_OTP,
-+    .parent = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(BCM2835OTPState),
-+    .class_init = bcm2835_otp_class_init,
-+};
-+
-+static void bcm2835_otp_register_types(void)
-+{
-+    type_register_static(&bcm2835_otp_info);
-+}
-+
-+type_init(bcm2835_otp_register_types)
-diff --git a/hw/nvram/meson.build b/hw/nvram/meson.build
-index 4996c72456..10f3639db6 100644
---- a/hw/nvram/meson.build
-+++ b/hw/nvram/meson.build
-@@ -1,5 +1,6 @@
- system_ss.add(files('fw_cfg-interface.c'))
- system_ss.add(files('fw_cfg.c'))
-+system_ss.add(when: 'CONFIG_RASPI', if_true: files('bcm2835_otp.c'))
- system_ss.add(when: 'CONFIG_CHRP_NVRAM', if_true: files('chrp_nvram.c'))
- system_ss.add(when: 'CONFIG_DS1225Y', if_true: files('ds1225y.c'))
- system_ss.add(when: 'CONFIG_NMC93XX_EEPROM', if_true: files('eeprom93xx.c'))
-diff --git a/include/hw/nvram/bcm2835_otp.h b/include/hw/nvram/bcm2835_otp.h
-new file mode 100644
-index 0000000000..ef02d3055c
---- /dev/null
-+++ b/include/hw/nvram/bcm2835_otp.h
-@@ -0,0 +1,43 @@
-+/*
-+ * BCM2835 One-Time Programmable (OTP) Memory
-+ *
-+ * Copyright (c) 2024 Rayhan Faizel <rayhan.faizel@gmail.com>
-+ *
-+ * SPDX-License-Identifier: MIT
-+ */
-+
-+#ifndef BCM2835_OTP_H
-+#define BCM2835_OTP_H
-+
-+#include "hw/sysbus.h"
-+#include "qom/object.h"
-+
-+#define TYPE_BCM2835_OTP "bcm2835-otp"
-+OBJECT_DECLARE_SIMPLE_TYPE(BCM2835OTPState, BCM2835_OTP)
-+
-+/* https://elinux.org/BCM2835_registers#OTP */
-+#define BCM2835_OTP_BOOTMODE_REG            0x00
-+#define BCM2835_OTP_CONFIG_REG              0x04
-+#define BCM2835_OTP_CTRL_LO_REG             0x08
-+#define BCM2835_OTP_CTRL_HI_REG             0x0c
-+#define BCM2835_OTP_STATUS_REG              0x10
-+#define BCM2835_OTP_BITSEL_REG              0x14
-+#define BCM2835_OTP_DATA_REG                0x18
-+#define BCM2835_OTP_ADDR_REG                0x1c
-+#define BCM2835_OTP_WRITE_DATA_READ_REG     0x20
-+#define BCM2835_OTP_INIT_STATUS_REG         0x24
-+
-+struct BCM2835OTPState {
-+    /* <private> */
-+    SysBusDevice parent_obj;
-+
-+    /* <public> */
-+    MemoryRegion iomem;
-+    uint32_t otp_rows[66];
-+};
-+
-+
-+uint32_t bcm2835_otp_read_row(BCM2835OTPState *s, unsigned int row);
-+void bcm2835_otp_write_row(BCM2835OTPState *s, unsigned row, uint32_t value);
-+
-+#endif
+ #include "hw/misc/unimp.h"
+ #include "qom/object.h"
+ 
+@@ -71,7 +72,7 @@ struct BCMSocPeripheralBaseState {
+     BCM2835SPIState spi[1];
+     BCM2835I2CState i2c[3];
+     OrIRQState orgated_i2c_irq;
+-    UnimplementedDeviceState otp;
++    BCM2835OTPState otp;
+     UnimplementedDeviceState dbus;
+     UnimplementedDeviceState ave0;
+     UnimplementedDeviceState v3d;
 -- 
 2.34.1
 
