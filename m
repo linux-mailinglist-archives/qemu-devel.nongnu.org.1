@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965F18C1D99
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 07:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 156278C1DCB
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 07:40:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5IZS-0007mB-3D; Fri, 10 May 2024 01:13:26 -0400
+	id 1s5Iyw-0007OR-VZ; Fri, 10 May 2024 01:39:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5IZN-0007lm-5H
- for qemu-devel@nongnu.org; Fri, 10 May 2024 01:13:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5IyR-0007CP-7W
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 01:39:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5IZB-0003Ts-I7
- for qemu-devel@nongnu.org; Fri, 10 May 2024 01:13:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5IyP-00029y-77
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 01:39:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715317988;
+ s=mimecast20190719; t=1715319551;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=GDO4URBpy/B8Pyf3jaCjdXLwiXk/IFjYXKw8KhbR+/g=;
- b=HObX9owlMN+K91Yp+hXU6OJRqZWMPTE6IdllHVxJmQEmi4320jIyaxFQzmjhbEy0BAXmE/
- VzlSrJ8XhVDUmNVkVk/J5lBu75iOGg9IRJKj3NOUwuaf0C3jayefABlo1uzIdNtXsIHNPj
- XvJ/0lIn26Ju3JmXPUW0JlzjKRcnLw8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MTq84RJdH7rfSVN+hVNfXsbSF8kOSLhnrY03iXIYaDw=;
+ b=NC0aanrzxdvgmbGFhBGMqWqtjZOPHpfbu0E17b8Q3n05pgiS+j22NS2hp1ffabIc/04m/W
+ IJjSxYX/rFEJM01GbJgY0aidmKEGNeByXSiCZEu+qZ3bW1h8lzXNqiXIooPFoG0HGTEN4C
+ 8alfM37gDids9q/lx5+fChNUCuHTMfU=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-kP_QQOv5OYOZoUrLJawafA-1; Fri, 10 May 2024 01:13:06 -0400
-X-MC-Unique: kP_QQOv5OYOZoUrLJawafA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a59efa9f108so76614266b.2
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 22:13:06 -0700 (PDT)
+ us-mta-103-sb5dXKQuM2-BywBQCYv1BQ-1; Fri, 10 May 2024 01:38:01 -0400
+X-MC-Unique: sb5dXKQuM2-BywBQCYv1BQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-51f0d924685so1363034e87.0
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 22:38:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715317985; x=1715922785;
+ d=1e100.net; s=20230601; t=1715319480; x=1715924280;
  h=content-transfer-encoding:in-reply-to:autocrypt:from
  :content-language:references:to:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=GDO4URBpy/B8Pyf3jaCjdXLwiXk/IFjYXKw8KhbR+/g=;
- b=dRDqLR7C3GicLZixg7wo5HH0K3TUSI44vTD9iPQN//+4DNKVRh6U4hkmKgilXltKYg
- 3HQZeLD5fw2kLVB/ETF6vV4yiqln3ZoC8aQ1SnX5KjrjHv+z3MZ+Rqtc1nlzhnrTh5zl
- I0M976xCjUjKQBHh/qCa0hkFHmzRDSrWJ6gjXIVXrC+EqlwilVuNJhAMJKme6jbSU1Rd
- 6yk0e/T1wP9ZyjaauzFUOZbI2gz0MaQxQM2kJ9watMj8hgKTO+24vrVPmwIELpbl/rKw
- /VUzqtwvs+cStMyY2CFIjxJiBoL2mlrkYwhBUEUgefVbDcP04KhsHIMlvwqfuvR6FLqP
- vGXw==
+ bh=MTq84RJdH7rfSVN+hVNfXsbSF8kOSLhnrY03iXIYaDw=;
+ b=crrtvc6BYRjRcq7Sfi0KZkZlxH4K3j/4KXQlqh4cr6R1QRx/Kt9RGOQ0FF4wQ3iohy
+ EUEh82q7BTpvO567MAch6dLvIzXsryMuBv2o8MR3PGmTzNRPWXsllSf36opdWdhRdekD
+ huxHv+598LMnlAgm2hVL5kd5PFCEyQrIRM61LylpsmAn3QDEunfpl/wLws2IsU0f/yv+
+ V880UTtNIZ6BFRD8abKYLZNKler3mvLiR2api56T6KJSxrfIwmR67wavCyrHQW+35MRf
+ CvOpy6reCix6s8SyplSLmvPN79VFFXLeuDoHMMvhBwd6gjOylg5rMOWrYq9DlnSengi+
+ ZO/A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWgpZPL87YYnWP3PRsMSnCIB15AF/KAlRoXxN0iJGsc0jAwZVl0UNRrQPkb9ncF+sFrxGT1raXU6LgZ09Qjov4R7LQEp3s=
-X-Gm-Message-State: AOJu0Yx5WC559uySP+FFMwxnk0zkFG/ls+1y9t6p8CjVCUl563Rq8zLq
- pp8o1SWbQH+NaFXXp2UTUcSy2Bh1kCXSEtsV9CMpgeQoU6Su36VT9LX7OLqIf55L82y+fY0ws+1
- EMSUpDzC0azHyMOvisR9p5/RSyzOr/yK/CTWipvWIkEnCmJS+xkjH
-X-Received: by 2002:a17:906:7f13:b0:a59:ca9c:4de9 with SMTP id
- a640c23a62f3a-a5a2d67ad68mr96751266b.76.1715317985267; 
- Thu, 09 May 2024 22:13:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESkHYsHNE8lGNF3HQrXOMfpZrhthzKx2ut1ukr5bSr6G0715tGw3kCyJjLymSCPGzsaY5NGg==
-X-Received: by 2002:a17:906:7f13:b0:a59:ca9c:4de9 with SMTP id
- a640c23a62f3a-a5a2d67ad68mr96749966b.76.1715317984881; 
- Thu, 09 May 2024 22:13:04 -0700 (PDT)
+ AJvYcCVSQJmHXQukCOmA/e9XdVzy8uvpvhciumZDwv3aaGbd6Qik4LKO7zdTw4Tyub2KNyrnipC+qxGHEDqouMgpEN1yzuD+lX8=
+X-Gm-Message-State: AOJu0YzAwyR0i1Q8H0iH4tYUb/q8NgUz3GL28g96nfz7nbqiG0NOlkWS
+ lPMOzNJXaeUoaW5wAvrJw2IjD7yiny8elfu2QsRP+s0CcLqhx4Y+sz1isZj3DGG6OSbGqHglRMP
+ 3A6eikTUxxcmgsgRYDult7TGytmS555SVrwVVtwYNKKlD1d8z71OX
+X-Received: by 2002:ac2:4845:0:b0:51a:f362:ab40 with SMTP id
+ 2adb3069b0e04-5220fc7cb4emr1098452e87.2.1715319480211; 
+ Thu, 09 May 2024 22:38:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEHdq7dXAhHgs+nj1ZulMLhU0p9/3mdu9Q5WKPzKaYcPa9Uf3JujeTMXY1YGDkSnyzaQ5tMyg==
+X-Received: by 2002:ac2:4845:0:b0:51a:f362:ab40 with SMTP id
+ 2adb3069b0e04-5220fc7cb4emr1098432e87.2.1715319479752; 
+ Thu, 09 May 2024 22:37:59 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-40-241-109.web.vodafone.de.
  [109.40.241.109]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781c269sm143494966b.38.2024.05.09.22.13.04
+ a640c23a62f3a-a5a1781cdb5sm146430066b.29.2024.05.09.22.37.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 09 May 2024 22:13:04 -0700 (PDT)
-Message-ID: <b1f83085-001e-4b1e-8589-dc974220e55d@redhat.com>
-Date: Fri, 10 May 2024 07:13:03 +0200
+ Thu, 09 May 2024 22:37:59 -0700 (PDT)
+Message-ID: <549e6861-b868-43d3-be7c-d99981fd6aa7@redhat.com>
+Date: Fri, 10 May 2024 07:37:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/13] tests/qtest: s390x: fix operation in a build
- without any boards or devices
+Subject: Re: [PATCH 03/13] s390: move css_migration_enabled from machine to
+ css.c
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20240509170044.190795-1-pbonzini@redhat.com>
- <20240509170044.190795-6-pbonzini@redhat.com>
+ <20240509170044.190795-4-pbonzini@redhat.com>
 Content-Language: en-US
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
@@ -117,7 +117,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240509170044.190795-6-pbonzini@redhat.com>
+In-Reply-To: <20240509170044.190795-4-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -127,8 +127,8 @@ X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,50 +145,160 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09/05/2024 19.00, Paolo Bonzini wrote:
-> Do the bare minimum to ensure that at least a vanilla
-> --without-default-devices build works for all targets except i386,
-> x86_64 and ppc64.  In particular this fixes s390x-softmmu; i386 and
-> x86_64 have about a dozen failing tests that do not pass -M and therefore
-> require a default machine type; ppc64 has the same issue, though only
-> with numa-test.
-> 
-> If we can for now ignore the cases where boards and devices are picked
-> by hand, drive_del-test however can be fixed easily; almost all tests
-> check for the virtio-blk or virtio-scsi device that they use, and are
-> already skipped.  Only one didn't get the memo; plus another one does
-> not need a machine at all and can be run with -M none.
+> The CSS subsystem uses global variables, just face the truth and use
+> a variable also for whether the CSS vmstate is in use; remove the
+> indirection of fetching it from the machine type, which makes the
+> TCG code depend unnecessarily on the virtio-ccw machine.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   tests/qtest/drive_del-test.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
+>   include/hw/s390x/css.h             |  6 ++++++
+>   include/hw/s390x/s390-virtio-ccw.h |  7 -------
+>   hw/s390x/css.c                     | 10 +++++++---
+>   hw/s390x/s390-virtio-ccw.c         | 15 +++------------
+>   4 files changed, 16 insertions(+), 22 deletions(-)
 > 
-> diff --git a/tests/qtest/drive_del-test.c b/tests/qtest/drive_del-test.c
-> index 8a6f3ac963d..7b67a4bbee4 100644
-> --- a/tests/qtest/drive_del-test.c
-> +++ b/tests/qtest/drive_del-test.c
-> @@ -173,7 +173,7 @@ static void test_drive_without_dev(void)
->       QTestState *qts;
+> diff --git a/include/hw/s390x/css.h b/include/hw/s390x/css.h
+> index ba72ee3dd20..8289e458370 100644
+> --- a/include/hw/s390x/css.h
+> +++ b/include/hw/s390x/css.h
+> @@ -333,4 +333,10 @@ static inline int ccw_dstream_read_buf(CcwDataStream *cds, void *buff, int len)
+>   #define ccw_dstream_read(cds, v) ccw_dstream_read_buf((cds), &(v), sizeof(v))
+>   #define ccw_dstream_write(cds, v) ccw_dstream_write_buf((cds), &(v), sizeof(v))
 >   
->       /* Start with an empty drive */
-> -    qts = qtest_init("-drive if=none,id=drive0");
-> +    qts = qtest_init("-drive if=none,id=drive0 -M none");
->   
->       /* Delete the drive */
->       drive_del(qts);
-> @@ -192,6 +192,11 @@ static void test_after_failed_device_add(void)
->       QDict *response;
->       QTestState *qts;
->   
-> +    if (!has_device_builtin("virtio-blk")) {
-> +        g_test_skip("Device virtio-blk is not available");
-> +        return;
-> +    }
+> +/**
+> + * true if (vmstate based) migration of the channel subsystem
+> + * is enabled, false if it is disabled.
+> + */
+> +extern bool css_migration_enabled;
 > +
->       snprintf(driver, sizeof(driver), "virtio-blk-%s",
->                qvirtio_get_dev_type());
+>   #endif
+> diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
+> index c1d46e78af8..c0494e511cb 100644
+> --- a/include/hw/s390x/s390-virtio-ccw.h
+> +++ b/include/hw/s390x/s390-virtio-ccw.h
+> @@ -43,7 +43,6 @@ struct S390CcwMachineClass {
+>       /*< public >*/
+>       bool ri_allowed;
+>       bool cpu_model_allowed;
+> -    bool css_migration_enabled;
+>       bool hpage_1m_allowed;
+>       int max_threads;
+>   };
+> @@ -55,10 +54,4 @@ bool cpu_model_allowed(void);
+>   /* 1M huge page mappings allowed by the machine */
+>   bool hpage_1m_allowed(void);
 >   
+> -/**
+> - * Returns true if (vmstate based) migration of the channel subsystem
+> - * is enabled, false if it is disabled.
+> - */
+> -bool css_migration_enabled(void);
+> -
+>   #endif
+> diff --git a/hw/s390x/css.c b/hw/s390x/css.c
+> index 295530963a6..b2d5327dbf4 100644
+> --- a/hw/s390x/css.c
+> +++ b/hw/s390x/css.c
+> @@ -23,6 +23,8 @@
+>   #include "hw/s390x/s390-virtio-ccw.h"
+>   #include "hw/s390x/s390-ccw.h"
+>   
+> +bool css_migration_enabled = true;
+> +
+>   typedef struct CrwContainer {
+>       CRW crw;
+>       QTAILQ_ENTRY(CrwContainer) sibling;
+> @@ -180,7 +182,7 @@ static const VMStateDescription vmstate_orb = {
+>   
+>   static bool vmstate_schdev_orb_needed(void *opaque)
+>   {
+> -    return css_migration_enabled();
+> +    return css_migration_enabled;
+>   }
+>   
+>   static const VMStateDescription vmstate_schdev_orb = {
+> @@ -388,7 +390,7 @@ static int subch_dev_post_load(void *opaque, int version_id)
+>           css_subch_assign(s->cssid, s->ssid, s->schid, s->devno, s);
+>       }
+>   
+> -    if (css_migration_enabled()) {
+> +    if (css_migration_enabled) {
+>           /* No compat voodoo to do ;) */
+>           return 0;
+>       }
+> @@ -412,7 +414,9 @@ static int subch_dev_post_load(void *opaque, int version_id)
+>   
+>   void css_register_vmstate(void)
+>   {
+> -    vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
+> +    if (css_migration_enabled) {
+> +        vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
+> +    }
+>   }
+>   
+>   IndAddr *get_indicator(hwaddr ind_addr, int len)
+> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+> index 1383e47eeb5..aa90703d518 100644
+> --- a/hw/s390x/s390-virtio-ccw.c
+> +++ b/hw/s390x/s390-virtio-ccw.c
+> @@ -275,11 +275,9 @@ static void ccw_init(MachineState *machine)
+>       s390_enable_css_support(s390_cpu_addr2state(0));
+>   
+>       ret = css_create_css_image(VIRTUAL_CSSID, true);
+> -
+>       assert(ret == 0);
+> -    if (css_migration_enabled()) {
+> -        css_register_vmstate();
+> -    }
+> +
+> +    css_register_vmstate();
+>   
+>       /* Create VirtIO network adapters */
+>       s390_create_virtio_net(BUS(css_bus), mc->default_nic);
+> @@ -741,7 +739,6 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
+>   
+>       s390mc->ri_allowed = true;
+>       s390mc->cpu_model_allowed = true;
+> -    s390mc->css_migration_enabled = true;
+>       s390mc->hpage_1m_allowed = true;
+>       s390mc->max_threads = 1;
+>       mc->init = ccw_init;
+> @@ -811,11 +808,6 @@ static const TypeInfo ccw_machine_info = {
+>       },
+>   };
+>   
+> -bool css_migration_enabled(void)
+> -{
+> -    return get_machine_class()->css_migration_enabled;
+> -}
+> -
+>   #define DEFINE_CCW_MACHINE(suffix, verstr, latest)                            \
+>       static void ccw_machine_##suffix##_class_init(ObjectClass *oc,            \
+>                                                     void *data)                 \
+> @@ -1171,7 +1163,6 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
+>   
+>   static void ccw_machine_2_9_class_options(MachineClass *mc)
+>   {
+> -    S390CcwMachineClass *s390mc = S390_CCW_MACHINE_CLASS(mc);
+>       static GlobalProperty compat[] = {
+>           { TYPE_S390_STATTRIB, "migration-enabled", "off", },
+>           { TYPE_S390_FLIC_COMMON, "migration-enabled", "off", },
+> @@ -1180,7 +1171,7 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
+>       ccw_machine_2_10_class_options(mc);
+>       compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
+>       compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
+> -    s390mc->css_migration_enabled = false;
+> +    css_migration_enabled = false;
+>   }
+>   DEFINE_CCW_MACHINE(2_9, "2.9", false);
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I think this is wrong: By adding this to ccw_machine_2_9_class_options the 
+variable now always gets set to false, even for newer machines, since the 
+*class_options functions are part of the "class_init" which is always done.
+You have to add it to ccw_machine_2_9_instance_options() instead to make it 
+work as expected.
+
+  Thomas
 
 
