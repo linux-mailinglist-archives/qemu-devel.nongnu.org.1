@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AEF8C2503
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 14:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 398698C24C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 14:24:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5PV3-0007Pr-4V; Fri, 10 May 2024 08:37:21 -0400
+	id 1s5PHe-0003FT-JP; Fri, 10 May 2024 08:23:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1s5PUz-0007PN-If
- for qemu-devel@nongnu.org; Fri, 10 May 2024 08:37:17 -0400
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1s5PUx-0004un-RQ
- for qemu-devel@nongnu.org; Fri, 10 May 2024 08:37:17 -0400
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-43c5c5496a3so7860631cf.0
- for <qemu-devel@nongnu.org>; Fri, 10 May 2024 05:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715344635; x=1715949435; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IwIb6KOs81iuMrgx1+Sc2gNb0aC2qX2JeNjNBzM/Unk=;
- b=BDScOCf4/S1VtTqqsX1yWurUtW9kifPy9drOuXNBPVEqGdCca3pNZuqEcxxaI/G/FZ
- 2KTZkqBPtuB8qLvS9zWH2uc8VNvI92augaeJ42/ac5JUcOWKywhW/eYmdfpV8zkaKEFA
- SYcE2TK236Q7dE78WoiWQcXpMCGvpKdMuw0dIxGBwUg1MkufIT1Cv9RKn5EwLSO2vb0j
- SUeMw8U4ATMR9tCvmfGY9vxMv06FPCVkvox4Vwy/Opy68xpbLxBMeEmkP6fk4jAcgdYV
- YFdWZnymBrHzlNkdFFTOnILwPs7MTPdU4uIhjsviNjtZLJAfPCWbZ5ks9jTXdVXwhKed
- itaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715344635; x=1715949435;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IwIb6KOs81iuMrgx1+Sc2gNb0aC2qX2JeNjNBzM/Unk=;
- b=nYO90fEK0aOAk3cdnmvbCQwQT+9kWU2mZGwoiVZDTSsDyMVk8eIQOEmGBWZB09IO/K
- tlO3C3iSwmDW9y9q8cFHs8sie+mAZDevJum3DEPBCzXjM0uKAeJ8kcDNXJrydaVbmGtD
- Srnk8Hm0Eo1+ZNtxf5T/TLj2OazhF/M3P6PieVYnf4D7TXiTnMq9plqaLerN24x5xUwe
- g6oW7UK9jKYHU1ZFkTNacy6XxuJmKdX5Qe/poZsvB6X+Z7q6Fj2tcI0DF8eBxMNU+y+D
- S5g928OQXGy2vVsHJ7AzxoIKhAPsst4aecV2vMwZL2KxhSP3DZEepA56Mrrtc3k+8LAJ
- e6pQ==
-X-Gm-Message-State: AOJu0Yx7FsDsOZD9f95403I9M/loqeUd1BLU72hzUIJz6IVt0wphFO0U
- GlpqA+VBFwN6jQ/fkw7y8jpLdpujGTa9nu/SeX96c9Uw1kQYSFkYI3rO4D7Z3wpFnoK524Qi4MF
- MEYKqx5jSuCa7TWuX4R1MIk5ZCpw=
-X-Google-Smtp-Source: AGHT+IHDJfHpOQXXiN7wRvTQuvJ5SgfPOJvC1vXTMBZzEshk3x4vNtdF8rXppmvG33Zi5svbmA0CRe6OkTlVL8Z5axc=
-X-Received: by 2002:a05:622a:105:b0:43a:abcd:c770 with SMTP id
- d75a77b69052e-43dfdac276dmr28873991cf.26.1715344634634; Fri, 10 May 2024
- 05:37:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s5PHW-0003Do-CH
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 08:23:23 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s5PHJ-00015z-W2
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 08:23:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715343790; x=1746879790;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=BMfNUCLvwufURjzLTTi66ysMSXRFSXPXdkm4Gvullis=;
+ b=cK1iC+JsKkjtozxuQJuVIK96WHdoh+yPmuX9vRb4gpDALAUGW4ERQF6+
+ hUgsZEzduhbqahAP/zJCpq9Z+Vk10qLrev/SD6EAPTBSY8a6RXlUmFR5i
+ gjnoFCVw8I5EfOdaTwKtfu7A2ceLPSzgj/0E3daDb/Ajg8lmVjTrak22g
+ PVmy830+/Ad+zyl2upLCKvdDotuFUQsZRkCuyf7LcbgNKU/nDmf0XPAQA
+ CFQRfNsN9dGOjPxWZiGEywZRMAvZemwHnuW9SwgZLQF07UHZ9X8y8ykPp
+ mhEErc4jPOQY9GiXYzBShHMQW3V/8H0E4dRRcyMUx3xP4aTRPKul64xVE A==;
+X-CSE-ConnectionGUID: 0DNRjvGXSNuDFLBf3lQmHg==
+X-CSE-MsgGUID: a2Cgx4A6TBijPgq/1PFssQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="14273150"
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="14273150"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 05:23:07 -0700
+X-CSE-ConnectionGUID: QA5Y55NEQsmP8hxEJRaIow==
+X-CSE-MsgGUID: drgU6KnVQxeQvDzGyU7tkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; d="scan'208";a="29562244"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 10 May 2024 05:23:06 -0700
+Date: Fri, 10 May 2024 20:37:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, thuth@redhat.com
+Subject: Re: [PATCH 11/13] hw/i386: move rtc-reset-reinjection command out of
+ hw/rtc
+Message-ID: <Zj4U/7U5iQKATpIV@intel.com>
+References: <20240509170044.190795-1-pbonzini@redhat.com>
+ <20240509170044.190795-12-pbonzini@redhat.com>
 MIME-Version: 1.0
-References: <20240508175403.3399895-1-dongwon.kim@intel.com>
-In-Reply-To: <20240508175403.3399895-1-dongwon.kim@intel.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 10 May 2024 16:37:03 +0400
-Message-ID: <CAJ+F1CKNb6degW2yHcNuoXTkxyDJJR-Bread0s8KRfL5Hmp_UQ@mail.gmail.com>
-Subject: Re: [PATCH v14 0/6] ui/console: Private QemuDmaBuf struct
-To: dongwon.kim@intel.com
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240509170044.190795-12-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.586,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,147 +80,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Thu, May 09, 2024 at 07:00:42PM +0200, Paolo Bonzini wrote:
+> Date: Thu,  9 May 2024 19:00:42 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH 11/13] hw/i386: move rtc-reset-reinjection command out of
+>  hw/rtc
+> X-Mailer: git-send-email 2.45.0
+> 
+> The rtc-reset-reinjection QMP command is specific to x86, other boards do not
+> have the ACK tracking functionality that is needed for RTC interrupt
+> reinjection.  Therefore the QMP command is only included in x86, but
+> qmp_rtc_reset_reinjection() is implemented by hw/rtc/mc146818rtc.c
+> and requires tracking of all created RTC devices.  Move the implementation
+> to hw/i386, so that 1) it is available even if no RTC device exist
+> 2) the only RTC that exists is easily found in x86ms->rtc.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  include/hw/rtc/mc146818rtc.h |  2 +-
+>  hw/i386/monitor.c            | 46 ++++++++++++++++++++++++++++++++++++
+>  hw/rtc/mc146818rtc.c         | 12 ++--------
+>  hw/i386/meson.build          |  1 +
+>  4 files changed, 50 insertions(+), 11 deletions(-)
+>  create mode 100644 hw/i386/monitor.c
 
-On Wed, May 8, 2024 at 10:01=E2=80=AFPM <dongwon.kim@intel.com> wrote:
->
-> From: Dongwon Kim <dongwon.kim@intel.com>
->
-> This series introduces privacy enhancements to the QemuDmaBuf struct
-> and its contained data to bolster security. it accomplishes this by
-> introducing of helper functions for allocating, deallocating, and
-> accessing individual fields within the struct and replacing all direct
-> references to individual fields in the struct with methods using helpers
-> throughout the codebase.
->
-> This change was made based on a suggestion from Marc-Andr=C3=A9 Lureau
-> <marcandre.lureau@redhat.com>
->
-> (Resumitting same patch series with this new cover-leter)
->
-> v6: fixed some typos in patch -
->     ui/console: Introduce dpy_gl_qemu_dmabuf_get_..() helpers)
->
-> v7: included minor fix (ui/gtk: Check if fence_fd is equal to or greater =
-than 0)
->     (Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>)
->
->     migrated all helpers and QemuDmaBuf struct into dmabuf.c and their pr=
-ototypes
->     to dmabuf.h for better encapsulation (ui/dmabuf: New dmabuf.c and dma=
-buf.h..)
->     (Daniel P. Berrang=C3=A9 <berrange@redhat.com> and
->      Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>)
->
->     removed 'dpy_gl' from all helpers' names
->     Defined autoptr clean up function for QemuDmaBuf*
->     (Daniel P. Berrang=C3=A9 <berrange@redhat.com>)
->
->     Minor corrections
->
-> v8: Introduce new dmabuf.c and dmabuf.h and all helper functions in the s=
-econd
->     patch in the series (ui/console: new dmabuf.h and dmabuf.c for QemuDm=
-a....)
->     (Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>)
->
-> v9: set dmabuf->allow_fences true when it is created in virtio-gpu-udmabu=
-f
->
->     removed unnecessary spaces were added in the patch,
->     'ui/console: Use qemu_dmabuf_new() a...'
->
-> v10: Change the license type for both dmabuf.h and dmabuf.c from MIT to
->      GPL to be in line with QEMU's default license
->      (Daniel P. Berrang=C3=A9 <berrange@redhat.com>)
->
-> v11: New helpers added - qemu_dmabuf_dup_fd, qemu_dmabuf_close for duplic=
-ating
->      and closing dmabuf->fd. And use them in places where applicable.
->      (Daniel P. Berrang=C3=A9 <berrange@redhat.com>)
->
->      qemu_dmabuf_free helper now close dmabuf->fd before freeing the stru=
-ct to
->      prevent any potential leakage (This eliminates the need for
->      qemu_dmabuf_close in several places as qemu_dmabuf_close is done any=
-way.)
->      (Daniel P. Berrang=C3=A9 <berrange@redhat.com>)
->
-> v12: --- qemu_dmabuf_free does not include qemu_dmabuf_close as there are=
- cases
->          where fd still needs to be used even after QemuDmaBuf struct is
->          destroyed (virtio-gpu: res->dmabuf_fd)
->
->      --- 'dmabuf' is now allocated space so it should be freed at the end=
- of
->          dbus_scanout_texture
->
-> v13: --- Immediately free dmabuf after it is released to prevent possible
->          leaking of the ptr
->          (Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>)
->
->      --- Use g_autoptr macro to define *dmabuf for auto clean up instead =
-of
->          calling qemu_dmabuf_free
->          (Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>)
->
-> v14: In ui/console: Use qemu_dmabuf_new() and free() helpers instead
->
->      --- (vhost-user-gpu) Change qemu_dmabuf_free back to g_clear_pointer
->          as it was done because of some misunderstanding (v13).
->
->      --- (vhost-user-gpu) g->dmabuf[m->scanout_id] needs to be set to NUL=
-L
->          to prevent freed dmabuf to be accessed again in case if(fd=3D=3D=
--1)break;
->          happens (before new dmabuf is allocated). Otherwise, it would ca=
-use
->          invalid memory access when the same function is executed. Also N=
-ULL
->          check should be done before qemu_dmabuf_close (it asserts dmabuf=
-!=3DNULL.).
->          (Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>)
->
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-thanks, queued
-
-> Dongwon Kim (6):
->   ui/gtk: Check if fence_fd is equal to or greater than 0
->   ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf struct and
->     helpers
->   ui/console: Use qemu_dmabuf_get_..() helpers instead
->   ui/console: Use qemu_dmabuf_set_..() helpers instead
->   ui/console: Use qemu_dmabuf_new() and free() helpers instead
->   ui/console: move QemuDmaBuf struct def to dmabuf.c
->
->  include/hw/vfio/vfio-common.h   |   2 +-
->  include/hw/virtio/virtio-gpu.h  |   4 +-
->  include/ui/console.h            |  20 +--
->  include/ui/dmabuf.h             |  49 +++++++
->  hw/display/vhost-user-gpu.c     |  32 +++--
->  hw/display/virtio-gpu-udmabuf.c |  27 ++--
->  hw/vfio/display.c               |  32 ++---
->  ui/console.c                    |   4 +-
->  ui/dbus-console.c               |   9 +-
->  ui/dbus-listener.c              |  71 +++++-----
->  ui/dmabuf.c                     | 229 ++++++++++++++++++++++++++++++++
->  ui/egl-headless.c               |  23 +++-
->  ui/egl-helpers.c                |  59 ++++----
->  ui/gtk-egl.c                    |  52 +++++---
->  ui/gtk-gl-area.c                |  41 ++++--
->  ui/gtk.c                        |  12 +-
->  ui/spice-display.c              |  50 ++++---
->  ui/meson.build                  |   1 +
->  18 files changed, 524 insertions(+), 193 deletions(-)
->  create mode 100644 include/ui/dmabuf.h
->  create mode 100644 ui/dmabuf.c
->
-> --
-> 2.34.1
->
->
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
