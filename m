@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 168A68C227B
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 12:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D18F8C227C
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 12:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5NpN-0001xc-Db; Fri, 10 May 2024 06:50:13 -0400
+	id 1s5NpO-0002Es-9k; Fri, 10 May 2024 06:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s5Noy-0001ob-75
- for qemu-devel@nongnu.org; Fri, 10 May 2024 06:49:49 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s5Np5-0001y8-Jp
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 06:49:58 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s5Nou-0001Wv-MD
- for qemu-devel@nongnu.org; Fri, 10 May 2024 06:49:46 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-41fd5dc04f0so9555255e9.0
- for <qemu-devel@nongnu.org>; Fri, 10 May 2024 03:49:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s5Np1-0001Xn-Rf
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 06:49:55 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2e538a264f7so7492651fa.0
+ for <qemu-devel@nongnu.org>; Fri, 10 May 2024 03:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715338183; x=1715942983; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715338188; x=1715942988; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=f6xsQqOmikZFwXbyDk6ZpqqheWDHvbw4l/2JG+MVzRA=;
- b=ByLvpVQETrEL0LhjnwyS/H2dH8apyGyxayszlwbsr5shLr6TWCJa1RlAJLncUCAP1d
- SEYGbxY7M9wxz7T46ArOORat3VSfk+PqbRGAXap8UERMC50GjMAfCbpZOwlufTQGRmsQ
- HN7JejWk3VIpoFLERcO1ibwPKb905O1rzWgZ3KFJzdBK4klNnnrgeoA8BqPCK2Bxt09/
- r9PT6cWcryce2vZc/UNJRODsRPns8VbrnQWs3Q+1vBPq67K3npKtKtWm2WnINTGnK+E9
- VV0GBn0stE0iSfmK0sjfqCFrGrDXplhPdK5rWAf3Hpy91VglOpjb5nZ2vkQBdntlyaQY
- FSow==
+ bh=59LwZUfkdqE1X1uqHmA8fJxVEaLTRUaAXUjy1rLp7lY=;
+ b=IfXz45XKO6AJC67MVD9EQ6RAv8BanVx/Gv4NWnwQFTkgiBg08dAuZev7H9ny5YiVCK
+ 7URbEMFhUlOb6eWfNSnOvB+22dHIauDPDTJxiwpSltdOvo3+ElLyDpjBKJF9G4DBIHRJ
+ iO1A/rMlZ7Peqg/HV3Dp8RN0tLNZrJTiBH6ebBSWFcVnuFeCNg2PdL9e2Uwiq3auYPQg
+ 38tyLNDjV45uSrZqM8dt6TUQzyofkv9zyJOBzyO+AEYx+6VKmW7ucndbVZ9HWLIjGtGa
+ 0NAOyojYyb9AUOa3k3F27K43dm9B4IDJtt02PYKY8OS+A4CoSdbCLmSPNFNNz1cn7lNP
+ IHIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715338183; x=1715942983;
+ d=1e100.net; s=20230601; t=1715338188; x=1715942988;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f6xsQqOmikZFwXbyDk6ZpqqheWDHvbw4l/2JG+MVzRA=;
- b=b8DfjKhYlxJgQafsfQHcBhwrxVNFFrlkwhoz9TNHkByZ12Pq3XasdajAAy69VOlRCL
- 5aO0KzFRGewAzwbp8D1vNoJBhUnFzn+7XSbSzun+JMOXA3pXrKI/srqlYgmkXqPF+Ojr
- pIBu0k/SkQrG/i81cQnd2j5UO316kszFIuJxmp0G9aFUVum9XhLxEGu9YH8+Eqjrobxu
- quEeTmmB//tWER1BvdRQFCIYehUJdbJDdcH/D4ZbjbrhfSVBjbnXlpKfiyveV/Hu60p2
- Oz9CfmK2g7J+h8MZ1lW64AnICoGs1KPvIm3TSTBtTobPfqfYEdPbJNVzn2fMzxzIHI7c
- IGEw==
-X-Gm-Message-State: AOJu0Yxu1U4ra6bPqOu0BY/5rWRQYCe0Z9BQtYBp7vYsv6EEdE54fxZU
- XQwmENs+MvlppOPVyv8xaML1ql+KflJJnIKQ5EH4HYyNy1y6yOVJr98wydTtobaU3TeRfpwuA2e
- +
-X-Google-Smtp-Source: AGHT+IH3RnmZXXuxt2IBSPxIon61ivul84ejF6Ul9PK/puKcX3RJUgwhud+k6udV+bWCsrG6K2uZGg==
-X-Received: by 2002:a05:600c:490a:b0:41f:dcdd:5631 with SMTP id
- 5b1f17b1804b1-41feaa30cfamr23776095e9.13.1715338182860; 
- Fri, 10 May 2024 03:49:42 -0700 (PDT)
+ bh=59LwZUfkdqE1X1uqHmA8fJxVEaLTRUaAXUjy1rLp7lY=;
+ b=X6fiAPLU0TlPS3r+ff3Y8O1ozBwJUyYX9KW1H7+6semO4hu0hA6wiWU4haCMMiS88s
+ ExjdsI2xXcvyZOFQWUCP1uWx8ETKPZrt1TDSImlsa1t8K8Cqv4NM+dQGp6tVHEfPUoxB
+ 0Wbo4VCpIEA/tic9EZdO4ZEh2R6IYemm4+FRuWlS1fF0sfdAfJOes6k0n/v0dyrIksFM
+ x1ixuk+5f6ofywjUP9q98C0D8mSou2UMFJrXUJhjM6i8TchjK6XU97HaTJfVj/vulO5h
+ hCX+ENSvjUClSvC71wuTZ36Zcw/YOw8U/rogib80lWaItUx29Pfye0bSR8maIvYW4hyg
+ ALNA==
+X-Gm-Message-State: AOJu0YyqSj7SZyMlmC+pNaBJLSg+w46SFpN2T0VYVgM8IB68jcwDNPyO
+ VbSZ38/z83mEIcOO2rAySbG0hKiakKDCSklGp/dDNY9eByu4OECdV5hpl6Fm7y41VMupYz+p5Mq
+ u
+X-Google-Smtp-Source: AGHT+IHXwM/S059R6UkOB6MRtl349Xb619zHzrqPuRu/IZXAzDzUInG0zBbE08W5hL9UPuwtPHGoJA==
+X-Received: by 2002:a2e:9e14:0:b0:2e1:c97b:6f1f with SMTP id
+ 38308e7fff4ca-2e5203a795emr13764691fa.51.1715338188613; 
+ Fri, 10 May 2024 03:49:48 -0700 (PDT)
 Received: from m1x-phil.lan (sev93-h02-176-184-17-152.dsl.sta.abo.bbox.fr.
  [176.184.17.152]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502baacf52sm4278278f8f.87.2024.05.10.03.49.41
+ 5b1f17b1804b1-41fccce2449sm60037515e9.16.2024.05.10.03.49.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 10 May 2024 03:49:42 -0700 (PDT)
+ Fri, 10 May 2024 03:49:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -67,17 +67,17 @@ Cc: Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/7] hw/xen: initialize legacy backends from xen_bus_init()
-Date: Fri, 10 May 2024 12:49:06 +0200
-Message-ID: <20240510104908.76908-6-philmd@linaro.org>
+Subject: [PATCH v2 6/7] hw/xen: register legacy backends via xen_backend_init
+Date: Fri, 10 May 2024 12:49:07 +0200
+Message-ID: <20240510104908.76908-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240510104908.76908-1-philmd@linaro.org>
 References: <20240510104908.76908-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::232;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,97 +102,171 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-Prepare for moving the calls to xen_be_register() under the
-control of xen_bus_init(), using the normal xen_backend_init()
-method that is used by the "modern" backends.
+It is okay to register legacy backends in the middle of xen_bus_init().
+All that the registration does is record the existence of the backend
+in xenstore.
 
-This requires the xenstore global variable to be initialized,
-which is done by xen_be_init().  To ensure that everything is
-ready at the time the xen_backend_init() functions are called,
-remove the xen_be_init() function from all the boards and
-place it directly in xen_bus_init().
+This makes it possible to remove them from the build without introducing
+undefined symbols in xen_be_init().  It also removes the need for the
+backend_register callback, whose only purpose is to avoid registering
+nonfunctional backends.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240509170044.190795-7-pbonzini@redhat.com>
+Message-ID: <20240509170044.190795-8-pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c              | 1 -
- hw/xen/xen-bus.c          | 4 ++++
- hw/xen/xen-hvm-common.c   | 2 --
- hw/xenpv/xen_machine_pv.c | 5 +----
- 4 files changed, 5 insertions(+), 7 deletions(-)
+ include/hw/xen/xen-legacy-backend.h | 11 ++---------
+ include/hw/xen/xen_pvdev.h          |  1 -
+ hw/9pfs/xen-9p-backend.c            |  8 +++++++-
+ hw/display/xenfb.c                  |  8 +++++++-
+ hw/usb/xen-usb.c                    | 14 ++++----------
+ hw/xen/xen-legacy-backend.c         | 16 ----------------
+ 6 files changed, 20 insertions(+), 38 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 505ea750f4..19f21953b4 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1250,7 +1250,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-             pci_create_simple(pcms->pcibus, -1, "xen-platform");
-         }
-         xen_bus_init();
--        xen_be_init();
-     }
- #endif
- 
-diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
-index fb82cc33e4..95b207ac8b 100644
---- a/hw/xen/xen-bus.c
-+++ b/hw/xen/xen-bus.c
-@@ -13,6 +13,7 @@
- #include "hw/sysbus.h"
- #include "hw/xen/xen.h"
- #include "hw/xen/xen-backend.h"
-+#include "hw/xen/xen-legacy-backend.h" /* xen_be_init() */
- #include "hw/xen/xen-bus.h"
- #include "hw/xen/xen-bus-helper.h"
- #include "monitor/monitor.h"
-@@ -329,6 +330,9 @@ static void xen_bus_realize(BusState *bus, Error **errp)
-         goto fail;
-     }
- 
-+    /* Initialize legacy backend core & drivers */
-+    xen_be_init();
-+
-     if (xs_node_scanf(xenbus->xsh, XBT_NULL, "", /* domain root node */
-                       "domid", NULL, "%u", &domid) == 1) {
-         xenbus->backend_id = domid;
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 1627da7398..2d1b032121 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -872,8 +872,6 @@ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
- 
-     xen_bus_init();
- 
--    xen_be_init();
--
-     return;
- 
- err:
-diff --git a/hw/xenpv/xen_machine_pv.c b/hw/xenpv/xen_machine_pv.c
-index 1130d1a147..b500ce0989 100644
---- a/hw/xenpv/xen_machine_pv.c
-+++ b/hw/xenpv/xen_machine_pv.c
-@@ -34,8 +34,7 @@ static void xen_init_pv(MachineState *machine)
- {
-     setup_xen_backend_ops();
- 
--    /* Initialize backend core & drivers */
--    xen_be_init();
-+    xen_bus_init();
- 
-     switch (xen_mode) {
-     case XEN_ATTACH:
-@@ -60,8 +59,6 @@ static void xen_init_pv(MachineState *machine)
-         vga_interface_created = true;
-     }
- 
--    xen_bus_init();
--
-     /* config cleanup hook */
-     atexit(xen_config_cleanup);
+diff --git a/include/hw/xen/xen-legacy-backend.h b/include/hw/xen/xen-legacy-backend.h
+index cfa43a984a..e55a14057f 100644
+--- a/include/hw/xen/xen-legacy-backend.h
++++ b/include/hw/xen/xen-legacy-backend.h
+@@ -66,15 +66,8 @@ static inline void xen_be_unmap_grant_ref(struct XenLegacyDevice *xendev,
+     return xen_be_unmap_grant_refs(xendev, ptr, &ref, 1);
  }
+ 
+-/* actual backend drivers */
+-extern const struct XenDevOps xen_kbdmouse_ops;     /* xen_framebuffer.c */
+-extern const struct XenDevOps xen_framebuffer_ops;  /* xen_framebuffer.c */
+-#ifdef CONFIG_VIRTFS
+-extern const struct XenDevOps xen_9pfs_ops;         /* xen-9p-backend.c  */
+-#endif
+-#ifdef CONFIG_USB_LIBUSB
+-extern const struct XenDevOps xen_usb_ops;          /* xen-usb.c         */
+-#endif
++/* backend drivers not included in all machines */
++extern const struct XenDevOps xen_framebuffer_ops;  /* xenfb.c */
+ 
+ /* configuration (aka xenbus setup) */
+ void xen_config_cleanup(void);
+diff --git a/include/hw/xen/xen_pvdev.h b/include/hw/xen/xen_pvdev.h
+index fd9a33e6ab..0c98444047 100644
+--- a/include/hw/xen/xen_pvdev.h
++++ b/include/hw/xen/xen_pvdev.h
+@@ -29,7 +29,6 @@ struct XenDevOps {
+                                  const char *node);
+     void      (*frontend_changed)(struct XenLegacyDevice *xendev,
+                                   const char *node);
+-    int       (*backend_register)(void);
+ };
+ 
+ struct XenLegacyDevice {
+diff --git a/hw/9pfs/xen-9p-backend.c b/hw/9pfs/xen-9p-backend.c
+index b1780eb819..79359d911a 100644
+--- a/hw/9pfs/xen-9p-backend.c
++++ b/hw/9pfs/xen-9p-backend.c
+@@ -513,7 +513,7 @@ static void xen_9pfs_alloc(struct XenLegacyDevice *xendev)
+     xenstore_write_be_int(xendev, "max-ring-page-order", MAX_RING_ORDER);
+ }
+ 
+-const struct XenDevOps xen_9pfs_ops = {
++static const struct XenDevOps xen_9pfs_ops = {
+     .size       = sizeof(Xen9pfsDev),
+     .flags      = DEVOPS_FLAG_NEED_GNTDEV,
+     .alloc      = xen_9pfs_alloc,
+@@ -522,3 +522,9 @@ const struct XenDevOps xen_9pfs_ops = {
+     .disconnect = xen_9pfs_disconnect,
+     .free       = xen_9pfs_free,
+ };
++
++static void xen_9pfs_register_backend(void)
++{
++    xen_be_register("9pfs", &xen_9pfs_ops);
++}
++xen_backend_init(xen_9pfs_register_backend);
+diff --git a/hw/display/xenfb.c b/hw/display/xenfb.c
+index dd83d0f5a5..b6d370bdf6 100644
+--- a/hw/display/xenfb.c
++++ b/hw/display/xenfb.c
+@@ -972,7 +972,7 @@ static void fb_event(struct XenLegacyDevice *xendev)
+ 
+ /* -------------------------------------------------------------------- */
+ 
+-const struct XenDevOps xen_kbdmouse_ops = {
++static const struct XenDevOps xen_kbdmouse_ops = {
+     .size       = sizeof(struct XenInput),
+     .init       = input_init,
+     .initialise = input_initialise,
+@@ -995,3 +995,9 @@ static const GraphicHwOps xenfb_ops = {
+     .gfx_update  = xenfb_update,
+     .ui_info     = xenfb_ui_info,
+ };
++
++static void xen_vkbd_register_backend(void)
++{
++    xen_be_register("vkbd", &xen_kbdmouse_ops);
++}
++xen_backend_init(xen_vkbd_register_backend);
+diff --git a/hw/usb/xen-usb.c b/hw/usb/xen-usb.c
+index 95a901e81f..13901625c0 100644
+--- a/hw/usb/xen-usb.c
++++ b/hw/usb/xen-usb.c
+@@ -1083,7 +1083,7 @@ static void usbback_event(struct XenLegacyDevice *xendev)
+     qemu_bh_schedule(usbif->bh);
+ }
+ 
+-const struct XenDevOps xen_usb_ops = {
++static const struct XenDevOps xen_usb_ops = {
+     .size            = sizeof(struct usbback_info),
+     .flags           = DEVOPS_FLAG_NEED_GNTDEV,
+     .init            = usbback_init,
+@@ -1095,15 +1095,9 @@ const struct XenDevOps xen_usb_ops = {
+     .event           = usbback_event,
+ };
+ 
+-#else /* USBIF_SHORT_NOT_OK */
+-
+-static int usbback_not_supported(void)
++static void xen_usb_register_backend(void)
+ {
+-    return -EINVAL;
++    xen_be_register("qusb", &xen_usb_ops);
+ }
+-
+-const struct XenDevOps xen_usb_ops = {
+-    .backend_register = usbback_not_supported,
+-};
+-
++xen_backend_init(xen_usb_register_backend);
+ #endif
+diff --git a/hw/xen/xen-legacy-backend.c b/hw/xen/xen-legacy-backend.c
+index 4dc3a561cf..5514184f9c 100644
+--- a/hw/xen/xen-legacy-backend.c
++++ b/hw/xen/xen-legacy-backend.c
+@@ -622,27 +622,11 @@ void xen_be_init(void)
+     qbus_set_bus_hotplug_handler(xen_sysbus);
+ 
+     xen_set_dynamic_sysbus();
+-
+-    xen_be_register("vkbd", &xen_kbdmouse_ops);
+-#ifdef CONFIG_VIRTFS
+-    xen_be_register("9pfs", &xen_9pfs_ops);
+-#endif
+-#ifdef CONFIG_USB_LIBUSB
+-    xen_be_register("qusb", &xen_usb_ops);
+-#endif
+ }
+ 
+ int xen_be_register(const char *type, const struct XenDevOps *ops)
+ {
+     char path[50];
+-    int rc;
+-
+-    if (ops->backend_register) {
+-        rc = ops->backend_register();
+-        if (rc) {
+-            return rc;
+-        }
+-    }
+ 
+     snprintf(path, sizeof(path), "device-model/%u/backends/%s", xen_domid,
+              type);
 -- 
 2.41.0
 
