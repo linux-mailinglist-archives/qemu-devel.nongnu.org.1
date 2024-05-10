@@ -2,106 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8268C202C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 11:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F808C2083
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 11:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5M9D-0004Fn-OS; Fri, 10 May 2024 05:02:35 -0400
+	id 1s5MJV-0006g6-EM; Fri, 10 May 2024 05:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1s5M99-0004Fa-AH
- for qemu-devel@nongnu.org; Fri, 10 May 2024 05:02:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1s5M92-0005Ou-0p
- for qemu-devel@nongnu.org; Fri, 10 May 2024 05:02:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715331743;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=97mDfnW/FUswJOMAX/dOwrdbcqkjmg7XGFv1yc9/EvA=;
- b=caXyyCa4ubT1DS89VE300/5HL0QaIibvjaSbi21Ulr4SsjKBaDfxSbW78ZYPGKhg8lXDqi
- SyuuD5lTj0+yzwFuV4UTd4CjaTUdN7ugtEi8He+3ycMFYMxJtyVuWbfGu4up60UN0Y8zWU
- FEqrsnYf9gM8WXAfVflIpivDuyFD2+A=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-CJWq_xeZMrmsKBeGpgp7xQ-1; Fri, 10 May 2024 05:02:21 -0400
-X-MC-Unique: CJWq_xeZMrmsKBeGpgp7xQ-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6f04345122eso1600600a34.0
- for <qemu-devel@nongnu.org>; Fri, 10 May 2024 02:02:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s5MJI-0006fS-Ej
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 05:13:03 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s5MJD-0008MM-Nj
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 05:12:58 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-41b2119da94so11824925e9.0
+ for <qemu-devel@nongnu.org>; Fri, 10 May 2024 02:12:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715332373; x=1715937173; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YqSxbDZF0XfZdmTBbKAQsuSowkJqen2aaRxH/t+J4jE=;
+ b=O1ftfOzH5hdvxjGE0ZJ7/dFoYDmiiohepZJk3/PDzJQU9uXtHy6npiSevMo3vYHApK
+ tS9Es3yqUObFX/p0utulJ7EqvYcpsRsi7WpkKCeEfJr6BDzRzN3Skb0j2ZSF6kj6MBpM
+ p4SqclZSIx9WE1MMj5GVkjf9UMK/jU31Rhu9rQmEMMBBB47v6NuyffYNqn1bRQzAPV0X
+ gSfxBx5b9KaPZ+OM39pSDLNiM7eKWOQEcjA4EZHwrYdHzBtyNPYhGBPdt2iGmLcIZrrD
+ UDzg+LkApg3+5+2nrbqi3BVkTRgKY96VtACR7ThPMDDeGlQ0GvFL/CkHc0JCf5HhR2IB
+ ARJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715331737; x=1715936537;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=97mDfnW/FUswJOMAX/dOwrdbcqkjmg7XGFv1yc9/EvA=;
- b=GbLps47CwJXuJ2q507cfwVLqwNvQwmoA8vhof7HML8G6fqnQEroBddoHkbYMNpaZWp
- a1Iw8NaMTUdqNlhN9KXqwwwqAWtxPxryhv0lwZGYFAYubGCnM5hR3H692YaiokpxyWBB
- iSBBiwWyqgfa7zaAd3wl6lbrDq0YRLRduIMxxErZ68rJQglD2wnhZy3ZLl09/FCc8Tax
- AjcS1OI3HHqNI997CJNHOLG5kbUT+JOAK1el4m+yyER+xA5MI7dXgeAsK2/JfBNuCoQN
- VHatwPQ0ZJRbHbqmeXFdrgxDh1xh8MgKIZ9MMHpVBZGFkK5sl4RHFsOZFG/IKfqhFnq/
- 8zHw==
-X-Gm-Message-State: AOJu0Yz4zQsqJWF9p0myJ/k4CYQc2EEjQV864iUdBNv7w09LHD9eXNGz
- mdgvfJo87xttjRZLTFgk2fuUCqxsRIyazRYHgqefftjze5Y5kjy6iADY4mDq8dNcSTZdYTvGkig
- HA9C9siLvumso94Fjb8aWNUgDRMwE9YRr2av9PWfRbVVvt8zVzHHY
-X-Received: by 2002:a9d:6b13:0:b0:6f0:3c41:648 with SMTP id
- 46e09a7af769-6f0e92ebdd0mr1854899a34.36.1715331736681; 
- Fri, 10 May 2024 02:02:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHS+yvGIdSiCRmjO5JV3htohoa7imzT73tAEzIhIwCQRhky0JPErqFBrQmnkwAQlKt/MBqVUg==
-X-Received: by 2002:a9d:6b13:0:b0:6f0:3c41:648 with SMTP id
- 46e09a7af769-6f0e92ebdd0mr1854861a34.36.1715331736314; 
- Fri, 10 May 2024 02:02:16 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-56.business.telecomitalia.it.
- [87.12.25.56]) by smtp.gmail.com with ESMTPSA id
- af79cd13be357-792bf2fc67esm159370785a.74.2024.05.10.02.02.12
+ d=1e100.net; s=20230601; t=1715332373; x=1715937173;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YqSxbDZF0XfZdmTBbKAQsuSowkJqen2aaRxH/t+J4jE=;
+ b=ImG22XbO7ZmRJo6Nw/lZhHcBeC6Tfcod13R49ocR/Bx+skiP+nri1NS7CPRkn5YrXd
+ LVA9eA8DiQmf5a7KQ7Jx1trHbZFgL56MAFDDmLI08J5CTecS/JLO0qkJEMBw/PT84Rjl
+ HcfWr1Y48VSd9S4xY52Qmaq3LXTH6UjCPwcBH5QJwk6R+0W2eax0msXKoxGur7PGoI0+
+ k5v9cUxU+RXQct0I5z6UtvHNhoCrRWlO9PQ3JMUzR2+2l1FgYblHyXXBiuFjYJbmOY7e
+ 10hen6KWKXQcowy2FBmSmRBM90zhkFurKRON39UI4YNyHuYzZrGzOyqL8mRQxqswuS56
+ GCbQ==
+X-Gm-Message-State: AOJu0YwJJQKORlzy5MBGSxKy17HCi0Ev6ilKFvNtrxvUVPZkRm4cn58P
+ NYufe+CgHbVrZy8TSB6076ixfpBrgJSiSi6LdqMAm+EDPhxoPWdtBEP4LRT4L7wh8Ruo3D6K4Nt
+ wt04=
+X-Google-Smtp-Source: AGHT+IHygWlu3kaamvv5jetXeHfYV+GINSdRX7DJWUimUxZYMMl22t3yxXSkZTW5sZuSomtHq/d4Mg==
+X-Received: by 2002:a05:600c:3548:b0:41b:4de0:7bff with SMTP id
+ 5b1f17b1804b1-41fead6d187mr14302765e9.35.1715332372912; 
+ Fri, 10 May 2024 02:12:52 -0700 (PDT)
+Received: from stoup.. (56.red-79-159-217.dynamicip.rima-tde.net.
+ [79.159.217.56]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-41fccce9426sm55844835e9.25.2024.05.10.02.12.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 May 2024 02:02:15 -0700 (PDT)
-Date: Fri, 10 May 2024 11:02:08 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- Coiby Xu <Coiby.Xu@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-block@nongnu.org, 
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, slp@redhat.com, 
- Brad Smith <brad@comstyle.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>,
- gmaglione@redhat.com, 
- Laurent Vivier <lvivier@redhat.com>, stefanha@redhat.com,
- David Hildenbrand <david@redhat.com>, 
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Igor Mammedov <imammedo@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH v4 09/12] contrib/vhost-user-blk: enable it on any POSIX
- system
-Message-ID: <zblon7kwhe5nyykiy72v7tdlj2bnx6feigcn47gewobdtz4wkw@ph7acs6hwrtj>
-References: <20240508074457.12367-1-sgarzare@redhat.com>
- <20240508074457.12367-10-sgarzare@redhat.com>
- <ed6199d5-63b8-4a03-8dc1-dce27bc93e92@linaro.org>
+ Fri, 10 May 2024 02:12:52 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn,
+	git@xen0n.name,
+	qemu-stable@nongnu.org
+Subject: [PATCH] tcg/loongarch64: Fill out tcg_out_{ld,st} for vector regs
+Date: Fri, 10 May 2024 11:12:51 +0200
+Message-Id: <20240510091251.7975-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed6199d5-63b8-4a03-8dc1-dce27bc93e92@linaro.org>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,59 +91,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 08, 2024 at 12:32:08PM GMT, Philippe Mathieu-Daudé wrote:
->On 8/5/24 09:44, Stefano Garzarella wrote:
->>Let's make the code more portable by adding defines from
->>block/file-posix.c to support O_DIRECT in other systems (e.g. macOS).
->>
->>vhost-user-server.c is a dependency, let's enable it for any POSIX
->>system.
->>
->>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->>---
->>v4:
->>- moved using of "qemu/bswap.h" API in a separate patch [Phil]
->>---
->>  meson.build                             |  2 --
->>  contrib/vhost-user-blk/vhost-user-blk.c | 14 ++++++++++++++
->>  util/meson.build                        |  4 +++-
->>  3 files changed, 17 insertions(+), 3 deletions(-)
->
->
->>diff --git a/contrib/vhost-user-blk/vhost-user-blk.c b/contrib/vhost-user-blk/vhost-user-blk.c
->>index 9492146855..a450337685 100644
->>--- a/contrib/vhost-user-blk/vhost-user-blk.c
->>+++ b/contrib/vhost-user-blk/vhost-user-blk.c
->>@@ -25,6 +25,20 @@
->>  #include <sys/ioctl.h>
->>  #endif
->>+/* OS X does not have O_DSYNC */
->>+#ifndef O_DSYNC
->>+#ifdef O_SYNC
->>+#define O_DSYNC O_SYNC
->>+#elif defined(O_FSYNC)
->>+#define O_DSYNC O_FSYNC
->>+#endif
->>+#endif
->>+
->>+/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
->>+#ifndef O_DIRECT
->>+#define O_DIRECT O_DSYNC
->>+#endif
->
->Could we add that in "qemu/osdep.h" instead?
+TCG register spill/fill uses tcg_out_ld/st with all types,
+not necessarily going through INDEX_op_{ld,st}_vec.
 
-Since "qemu/osdep.h" includes fcntl.h, I think it could be fine.
+Cc: qemu-stable@nongnu.org
+Fixes: 16288ded944 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2336
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/loongarch64/tcg-target.c.inc | 103 ++++++++++++++++++++++++-------
+ 1 file changed, 80 insertions(+), 23 deletions(-)
 
-@Hanna, @Kevin WDYT?
-
->
->Otherwise,
->Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->
-
-Thanks,
-Stefano
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 69c5b8ac4f..06ca1ab11c 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -808,18 +808,88 @@ static void tcg_out_ldst(TCGContext *s, LoongArchInsn opc, TCGReg data,
+     }
+ }
+ 
+-static void tcg_out_ld(TCGContext *s, TCGType type, TCGReg arg,
+-                       TCGReg arg1, intptr_t arg2)
++static void tcg_out_ld(TCGContext *s, TCGType type, TCGReg dest,
++                       TCGReg base, intptr_t offset)
+ {
+-    bool is_32bit = type == TCG_TYPE_I32;
+-    tcg_out_ldst(s, is_32bit ? OPC_LD_W : OPC_LD_D, arg, arg1, arg2);
++    switch (type) {
++    case TCG_TYPE_I32:
++        if (dest < TCG_REG_V0) {
++            tcg_out_ldst(s, OPC_LD_W, dest, base, offset);
++        } else {
++            tcg_out_dupm_vec(s, TCG_TYPE_I128, MO_32, dest, base, offset);
++        }
++        break;
++    case TCG_TYPE_I64:
++        if (dest < TCG_REG_V0) {
++            tcg_out_ldst(s, OPC_LD_D, dest, base, offset);
++        } else {
++            tcg_out_dupm_vec(s, TCG_TYPE_I128, MO_64, dest, base, offset);
++        }
++        break;
++    case TCG_TYPE_V128:
++        if (-0x800 <= offset && offset <= 0x7ff) {
++            tcg_out_opc_vld(s, dest, base, offset);
++        } else {
++            tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
++            tcg_out_opc_vldx(s, dest, base, TCG_REG_TMP0);
++        }
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
+-static void tcg_out_st(TCGContext *s, TCGType type, TCGReg arg,
+-                       TCGReg arg1, intptr_t arg2)
++static void tcg_out_st(TCGContext *s, TCGType type, TCGReg src,
++                       TCGReg base, intptr_t offset)
+ {
+-    bool is_32bit = type == TCG_TYPE_I32;
+-    tcg_out_ldst(s, is_32bit ? OPC_ST_W : OPC_ST_D, arg, arg1, arg2);
++    switch (type) {
++    case TCG_TYPE_I32:
++        if (src < TCG_REG_V0) {
++            tcg_out_ldst(s, OPC_ST_W, src, base, offset);
++        } else {
++            /* TODO: Could use fst_s, fstx_s */
++            if (offset < -0x100 || offset > 0xff || (offset & 3)) {
++                if (-0x800 <= offset && offset <= 0x7ff) {
++                    tcg_out_opc_addi_d(s, TCG_REG_TMP0, base, offset);
++                } else {
++                    tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
++                    tcg_out_opc_add_d(s, TCG_REG_TMP0, TCG_REG_TMP0, base);
++                }
++                base = TCG_REG_TMP0;
++                offset = 0;
++            }
++            tcg_out_opc_vstelm_w(s, src, base, offset, 0);
++        }
++        break;
++    case TCG_TYPE_I64:
++        if (src < TCG_REG_V0) {
++            tcg_out_ldst(s, OPC_ST_D, src, base, offset);
++        } else {
++            /* TODO: Could use fst_d, fstx_d */
++            if (offset < -0x100 || offset > 0xff || (offset & 7)) {
++                if (-0x800 <= offset && offset <= 0x7ff) {
++                    tcg_out_opc_addi_d(s, TCG_REG_TMP0, base, offset);
++                } else {
++                    tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
++                    tcg_out_opc_add_d(s, TCG_REG_TMP0, TCG_REG_TMP0, base);
++                }
++                base = TCG_REG_TMP0;
++                offset = 0;
++            }
++            tcg_out_opc_vstelm_d(s, src, base, offset, 0);
++        }
++        break;
++    case TCG_TYPE_V128:
++        if (-0x800 <= offset && offset <= 0x7ff) {
++            tcg_out_opc_vst(s, src, base, offset);
++        } else {
++            tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
++            tcg_out_opc_vstx(s, src, base, TCG_REG_TMP0);
++        }
++        break;
++    default:
++        g_assert_not_reached();
++    }
+ }
+ 
+ static bool tcg_out_sti(TCGContext *s, TCGType type, TCGArg val,
+@@ -1740,7 +1810,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+ {
+     TCGType type = vecl + TCG_TYPE_V64;
+     TCGArg a0, a1, a2, a3;
+-    TCGReg temp = TCG_REG_TMP0;
+     TCGReg temp_vec = TCG_VEC_TMP0;
+ 
+     static const LoongArchInsn cmp_vec_insn[16][4] = {
+@@ -1820,22 +1889,10 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+ 
+     switch (opc) {
+     case INDEX_op_st_vec:
+-        /* Try to fit vst imm */
+-        if (-0x800 <= a2 && a2 <= 0x7ff) {
+-            tcg_out_opc_vst(s, a0, a1, a2);
+-        } else {
+-            tcg_out_movi(s, TCG_TYPE_I64, temp, a2);
+-            tcg_out_opc_vstx(s, a0, a1, temp);
+-        }
++        tcg_out_st(s, type, a0, a1, a2);
+         break;
+     case INDEX_op_ld_vec:
+-        /* Try to fit vld imm */
+-        if (-0x800 <= a2 && a2 <= 0x7ff) {
+-            tcg_out_opc_vld(s, a0, a1, a2);
+-        } else {
+-            tcg_out_movi(s, TCG_TYPE_I64, temp, a2);
+-            tcg_out_opc_vldx(s, a0, a1, temp);
+-        }
++        tcg_out_ld(s, type, a0, a1, a2);
+         break;
+     case INDEX_op_and_vec:
+         tcg_out_opc_vand_v(s, a0, a1, a2);
+-- 
+2.34.1
 
 
