@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45D38C20CC
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 11:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0120C8C2082
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 11:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5MSi-0007Hj-5G; Fri, 10 May 2024 05:22:44 -0400
+	id 1s5MJl-0006ig-LJ; Fri, 10 May 2024 05:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5MSf-00079v-N2
- for qemu-devel@nongnu.org; Fri, 10 May 2024 05:22:41 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5MSb-0001kO-QM
- for qemu-devel@nongnu.org; Fri, 10 May 2024 05:22:41 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41b79451128so14088345e9.0
- for <qemu-devel@nongnu.org>; Fri, 10 May 2024 02:22:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715332956; x=1715937756; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pkRH8HotxI87BVId5J4rHn2LLaY9WkeC22bHlK1UmqU=;
- b=NpmmNBspPzbwk9UQLlZI96Gkqon7XzAhm18GW0ETtdkLLwZ9tbsmtp80Kcp5wJqyCw
- HWOBuCzW9nsjvRSl/kujh8CjwuYm5NSLXh9du/onvHjX5fsJcNbPdgpdpZSny/++rAEF
- jKHw3tRbRkhQSTyDrc/1tYmSqQWDEpwcv5HLenzdrg4FrdwIuCcZSKhXgELJIGv8w3MO
- M83Ym7Ly1nXHsws6FelLRzkj8dCRScRpoGPtsVdTuEBUS4J0EWCajHCcTqcKGar+Z6/D
- ruTLD4heQgRRVy+JbgNEcc6NK9LZHAxb5t8tEF106eh6/2xIafLPo884dENjb8dKwOtY
- 5seg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715332956; x=1715937756;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pkRH8HotxI87BVId5J4rHn2LLaY9WkeC22bHlK1UmqU=;
- b=ovPN1FnKq7haBrchjDneGr/bgqzBvTOtnhl58oqRq96JvJqBd1qpiFShgFy+mAH1sz
- 50t3hgdRYGFeDygfbJSCc+k83t5Yj01kzGrccRGDIKGFdWzS7fxDWd2p+RGYPPHGvTdd
- MyO7AT9YCmxK7ZIwhe+ckEUbFWA3ebKGAy8W8n3oRnAXA41YhPLp7wPT/phPhX7mj+Up
- b4mfWMc27fKnn9OEjCwdETSqYH6XQxvIBb3x2p5P1ZEzu+d1neOh53VdWh9uF3Qnj8bi
- 9UAb4Y2tr6MaC+3zVrP2oPWBHrhj5rdwf5j7M/X5Ile6DvlqvvTEh2fkDcqIMQLCPELy
- eH6g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCURuWvOoUU/nBeADHKvYxSPw/ZG6VP0k65QvL8VXdXlDOsIOjlXfTGPdmEUQrR1RnTL2o9NajLW3PfBuFcPJg2hgw0l2ps=
-X-Gm-Message-State: AOJu0YyQEMCU4DpD7OLBCp0ba4lyB/+I9iAuEPKSEUimJDhlukWRp+by
- aCwcg4OlNCN4eNhiHCScAuoQeagb2eJDmFuraNOGhihcnmh/t4NS8T9EkHzmvX0=
-X-Google-Smtp-Source: AGHT+IH2hw1D4RWUQ6ePi+5kAOs08fJgsKwFJ9xK/q+kcTTcrZ496LHxMIXI+hGBkg4tz+riwAYonw==
-X-Received: by 2002:a05:600c:1389:b0:41f:f053:edb4 with SMTP id
- 5b1f17b1804b1-41ff053ef30mr11812725e9.23.1715332956047; 
- Fri, 10 May 2024 02:22:36 -0700 (PDT)
-Received: from [192.168.51.227] (56.red-79-159-217.dynamicip.rima-tde.net.
- [79.159.217.56]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502baacfffsm4019355f8f.75.2024.05.10.02.22.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 10 May 2024 02:22:35 -0700 (PDT)
-Message-ID: <743f8c67-3289-458b-9536-61bc308dfb03@linaro.org>
-Date: Fri, 10 May 2024 11:22:34 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s5MJi-0006hq-I1
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 05:13:26 -0400
+Received: from mgamail.intel.com ([192.198.163.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s5MJR-0008Nr-OD
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 05:13:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715332390; x=1746868390;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=YKnyL1zebXTo6AGvNJTCdPY2g+GVkqs/p83tgJ3LPxw=;
+ b=Rwu4Nh0clK8EizXF95waYhi1c5mqvHojGeKirn4Bu+TFAKa9rAvdc9er
+ 5m0j8tjhLEHTfnTuF31QvJA7/sjR8n6JvZ4mjZb0SH+3yd/0ZStTxW3nj
+ F++fE+WBoMWY9E/oEt/fBhqe+6UhuKxHfn4Q6GKAd2zjEGHTkLcBIXxRE
+ 7f2ylGZZZp2QQjIrmCFaMNi4YBpzMWz9GsJi2nAHT0QyFmV1l58uR5y2T
+ P6qehWxlN30Snx5HhwvHeDp2Z/os/w0yJPofI4B+/kwdTblWQ9ddffOQa
+ gqnG22G1HNQG2fr9ZNNqIHudpqU4/WUgk1FDto2HPdTLIY8ELl1ZDY3p0 w==;
+X-CSE-ConnectionGUID: UqnSqwPMSGa+cj4UGCQ9Jg==
+X-CSE-MsgGUID: dayOEG31TxiCPs4Y2pl1ng==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="14254727"
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="14254727"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 May 2024 02:13:06 -0700
+X-CSE-ConnectionGUID: iIb2jAd5RqeEFe0LQjg5UA==
+X-CSE-MsgGUID: 8VXSMUFjT+6KnQ2oSl8iBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; d="scan'208";a="29496503"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa008.fm.intel.com with ESMTP; 10 May 2024 02:13:05 -0700
+Date: Fri, 10 May 2024 17:27:19 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] tests/tcg: cover lzcnt/tzcnt/popcnt
+Message-ID: <Zj3od3uT1ukuCVb6@intel.com>
+References: <20240509152532.141935-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/i386: rdpkru/wrpkru are no-prefix instructions
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20240509152530.141898-1-pbonzini@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240509152530.141898-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240509152532.141935-1-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,16 +78,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/9/24 17:25, Paolo Bonzini wrote:
-> Reject 0x66/0xf3/0xf2 in front of them.
+On Thu, May 09, 2024 at 05:25:32PM +0200, Paolo Bonzini wrote:
+> Date: Thu,  9 May 2024 17:25:32 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH] tests/tcg: cover lzcnt/tzcnt/popcnt
+> X-Mailer: git-send-email 2.45.0
 > 
-> Cc:qemu-stable@nongnu.org
-> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/tcg/translate.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+>  tests/tcg/i386/test-i386.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-r~
 
