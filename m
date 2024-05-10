@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FA78C2590
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 15:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB18C2589
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 15:18:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5Q8N-0005rX-71; Fri, 10 May 2024 09:17:59 -0400
+	id 1s5Q8O-0005rq-Lo; Fri, 10 May 2024 09:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1s5K8U-0001gM-Pc
- for qemu-devel@nongnu.org; Fri, 10 May 2024 02:53:42 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1s5K8Z-0001hF-5q
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 02:53:47 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1s5K8T-0004pQ-2M
- for qemu-devel@nongnu.org; Fri, 10 May 2024 02:53:42 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1ec4dc64c6cso11652905ad.0
- for <qemu-devel@nongnu.org>; Thu, 09 May 2024 23:53:40 -0700 (PDT)
+ id 1s5K8X-0004q4-IK
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 02:53:46 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6ed3cafd766so1576483b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 09 May 2024 23:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1715324019; x=1715928819; darn=nongnu.org;
+ d=sifive.com; s=google; t=1715324023; x=1715928823; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=myUSGxZ6KvD2m50MweZ9w07eN6Ng2ZhuGkrMddDWFfY=;
- b=YhzqElQQG35Qnc+odVyaNYcKY0j9zfsGFTYe1DMUsHRsyqjkUXZMi6eUAotdmMCrrF
- QLlcbYGIlEY660mPofqwYKGs2JGVRcwPpFyeUD840q8SgxtrabdD9cXpTphxaqnT6HYj
- aB3tmcTpujhsLLhpTvy+JAWswRGOg16M+Y9SO9YDYkrg/8Yu80AMX495Wx/nqUpsw1r4
- LZzPJDFhs9wAEQhB0sqnh9hKAvs2oELXLuYLxI1dJlpAaPBixRlPp9y5n98A1P3n51ad
- B+tErjxAJ8FYdm9qTa67a0MheM2773WvjXGuvpS5Q59A8X+eMUURH4WuPhYdQoiDnndS
- qHuA==
+ bh=wQ6x5YYUL/lDfqaZOQY3/NuL3tGGxwqwExXQMFAPOo4=;
+ b=RMF999yi/chZfC8i/HeNzcQiqg1lAuGEi3BOO9cJ4RKvj1Lc9B/v5GX2LiXErQC8U2
+ Lfe/gyy34/pJJEcrtgSgCDMCAxbFVLejI89MQuNrxkQvxd474MchAxmOPe8nJxpQE2yx
+ 1BdTexk2OMvSpvmWUOPboQjMN+6iUUQCG6i5FzgTDcOXg7YaRneAfJNUUVjX7lCrl9ON
+ voph5xTr4FB0ZcUX50x+xUt2nvqS7WzD5i7/Ky99S2CPRdaA74mxAMBLAHy1o9KjutUB
+ IUK34oNvUgzfVpw2cgNtUwDgPP4vRvWPlgzkLRzqTU6QOuxCXq1K3p5WyF3d4fDsqprg
+ o09g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715324019; x=1715928819;
+ d=1e100.net; s=20230601; t=1715324023; x=1715928823;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=myUSGxZ6KvD2m50MweZ9w07eN6Ng2ZhuGkrMddDWFfY=;
- b=th06z/9jaRxJKX4WxLHzLqn4fYdfC3hBtGh5baS81S3/zlRBPmOim8Zl6bSQIFhmbx
- phNhFkSDGmB8H0x+FuRd64lDW9yeE/Pv5CLndIO9ZoayFSmQ4BjDvUyROh8YjXMc48qG
- 96y6n8+4gthNYTcVIp0kP2v89dXTIXTcij+v7IIr7M6sa9HyoHIGzdVRU+xMstcEo+Us
- qLuXfLkVocNNfDyr7sD1RwlxS8zK66MXEwv9z2qU0y+HE1yXc7BBVY6ysxD9XexId9vO
- Syi+8TwrIT+oBZUWvgWRYVOOkCaq1gFR8GscZSwLW4zvPgovAukK+0snFgHmGt8FuVgb
- jswA==
-X-Gm-Message-State: AOJu0YwJkr6+raVfoGKc/u6A3fcZSfSwmlr0OcPNzpJCxlT0SvU4yA6+
- tKW0r568L4VRML6mrsTLTzYR6Uhpf9GugKPFBqNi/o09mGdsVcgMY7qHM9y88PO4wqGsjqusp2N
- UClCTw4Ebsbh62I85rmwMokn5IJsodIEybnPqNd3xNtLHYxJDLQk4XOW9O3cS8DfTD/e6RCnKHw
- 2mdNfjbjgllWcwhOQTm8ZV9LKHjYdJh7ScJMkTsg==
-X-Google-Smtp-Source: AGHT+IFGUFRFueFUDNZ9d5BFLoP8Hn1ZDnL5G0nYVH3EA/EArusX9dl1OazLYLdkHre6SLyO/nAP/g==
-X-Received: by 2002:a17:903:8c3:b0:1e8:a63b:d427 with SMTP id
- d9443c01a7336-1ef43f522b1mr22968315ad.49.1715324019119; 
- Thu, 09 May 2024 23:53:39 -0700 (PDT)
+ bh=wQ6x5YYUL/lDfqaZOQY3/NuL3tGGxwqwExXQMFAPOo4=;
+ b=J01+zXaAMl+QwxYh8u28bhUkKbGfg0esLiNRqIpOeVI+PWpWYD0SiZQCwxIb9UUhn5
+ WmT3HZifNIGy2nt1Ol/xTbPjSaoJThcCcvJGR2wkxYZPBkD3jO+3HDcLj7fqpzrsnASx
+ 2m30mO+tIuvbqzeJ2DMSi/Dz7Y2sd/TEY3Se7FCiozxnNcStoibcK/k18nJb9mxvAnrE
+ cl41xsYTw8F7btZ9H3m0Bx+kQmeyf0tGch5b9czezj+0ZvxE2ZE6cd5PDQBsRR634jCa
+ lui2iyFYqH1/nJJ24qVQ6XczprKBdcKsGoS6UUDNc7AcYeJ8rJgFsf1BLUV2k0BhpjLt
+ qmkg==
+X-Gm-Message-State: AOJu0Yzze2aVDrIvXqek2B08+s1CRQMgN64OV8y5Z2i8cjBrjK09VJxB
+ LgEAm3GuRKFjwnEsmbk4H6Hyrhm93XXyZ69+ayTbfB3aXMDUahlo2XQj7bH78Mj+xi1pppWLnVl
+ BRdMq9XlBlpkRiUL8Ino51HbE829tXX1PWpWufWb9Wks181v4VYapuVIoBNJfpS+Eubu80pa7iU
+ p0o7Bg3igUWuQChoTaUCiN/CyWQUYrkL9bS85WdA==
+X-Google-Smtp-Source: AGHT+IFHmlCOLyDzgMs9n27eOyHn22NwhAbhtFCaEYhwZn0J1+DEzVbg5zOaQoLE2fRFmtdpJSawgQ==
+X-Received: by 2002:a05:6a21:680b:b0:1ac:e07f:e3aa with SMTP id
+ adf61e73a8af0-1afde1b7264mr2328560637.48.1715324022840; 
+ Thu, 09 May 2024 23:53:42 -0700 (PDT)
 Received: from hsinchu36-syssw02.internal.sifive.com
  (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ef0bf31a7asm25579175ad.140.2024.05.09.23.53.37
+ d9443c01a7336-1ef0bf31a7asm25579175ad.140.2024.05.09.23.53.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 09 May 2024 23:53:38 -0700 (PDT)
+ Thu, 09 May 2024 23:53:42 -0700 (PDT)
 From: "Fea.Wang" <fea.wang@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -68,16 +68,16 @@ Cc: "Fea.Wang" <fea.wang@sifive.com>, Frank Chang <frank.chang@sifive.com>,
  Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 3/5] target/riscv: Add 'P1P13' bit in SMSTATEEN0
-Date: Fri, 10 May 2024 14:58:53 +0800
-Message-Id: <20240510065856.2436870-4-fea.wang@sifive.com>
+Subject: [PATCH 4/5] target/riscv: Add MEDELEGH, HEDELEGH csrs for RV32
+Date: Fri, 10 May 2024 14:58:54 +0800
+Message-Id: <20240510065856.2436870-5-fea.wang@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240510065856.2436870-1-fea.wang@sifive.com>
 References: <20240510065856.2436870-1-fea.wang@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=fea.wang@sifive.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=fea.wang@sifive.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,56 +101,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on privilege 1.13 spec, there should be a bit56 for 'P1P13' in
-SMSTATEEN0 that controls access to the hedeleg.
+Based on privileged spec 1.13, the RV32 needs to implement MEDELEGH
+and HEDELEGH for exception codes 32-47 for reserving and exception codes
+48-63 for custom use. Add the CSR number though the implementation is
+just reading zero and writing ignore. Besides, for accessing HEDELEGH, it
+should be controlled by mstateen0 'P1P13' bit.
 
 Signed-off-by: Fea.Wang <fea.wang@sifive.com>
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
 ---
- target/riscv/cpu_bits.h |  1 +
- target/riscv/csr.c      | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+ target/riscv/cpu_bits.h |  2 ++
+ target/riscv/csr.c      | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
 diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 74318a925c..28bd3fb0b4 100644
+index 28bd3fb0b4..f888025c59 100644
 --- a/target/riscv/cpu_bits.h
 +++ b/target/riscv/cpu_bits.h
-@@ -315,6 +315,7 @@
- #define SMSTATEEN0_CS       (1ULL << 0)
- #define SMSTATEEN0_FCSR     (1ULL << 1)
- #define SMSTATEEN0_JVT      (1ULL << 2)
-+#define SMSTATEEN0_P1P13    (1ULL << 56)
- #define SMSTATEEN0_HSCONTXT (1ULL << 57)
- #define SMSTATEEN0_IMSIC    (1ULL << 58)
- #define SMSTATEEN0_AIA      (1ULL << 59)
+@@ -156,6 +156,8 @@
+ 
+ /* 32-bit only */
+ #define CSR_MSTATUSH        0x310
++#define CSR_MEDELEGH        0x312
++#define CSR_HEDELEGH        0x612
+ 
+ /* Machine Trap Handling */
+ #define CSR_MSCRATCH        0x340
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 6b460ee0e8..d844ce770e 100644
+index d844ce770e..4d7313f456 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -2248,6 +2248,11 @@ static RISCVException write_mstateen0(CPURISCVState *env, int csrno,
-         wr_mask |= SMSTATEEN0_FCSR;
-     }
- 
-+    RISCVCPU *cpu = env_archcpu(env);
-+    if (cpu->env.priv_ver >= PRIV_VERSION_1_13_0) {
-+        wr_mask |= SMSTATEEN0_P1P13;
-+    }
-+
-     return write_mstateen(env, csrno, wr_mask, new_val);
+@@ -3227,6 +3227,33 @@ static RISCVException write_hedeleg(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
  }
  
-@@ -2283,6 +2288,11 @@ static RISCVException write_mstateen0h(CPURISCVState *env, int csrno,
- {
-     uint64_t wr_mask = SMSTATEEN_STATEEN | SMSTATEEN0_HSENVCFG;
- 
-+    RISCVCPU *cpu = env_archcpu(env);
-+    if (cpu->env.priv_ver >= PRIV_VERSION_1_13_0) {
-+            wr_mask |= SMSTATEEN0_P1P13;
++static RISCVException read_hedelegh(CPURISCVState *env, int csrno,
++                                   target_ulong *val)
++{
++    RISCVException ret;
++    ret = smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);
++    if (ret != RISCV_EXCP_NONE) {
++        return ret;
 +    }
 +
-     return write_mstateenh(env, csrno, wr_mask, new_val);
- }
++    /* Reserved, now read zero */
++    *val = 0;
++    return RISCV_EXCP_NONE;
++}
++
++static RISCVException write_hedelegh(CPURISCVState *env, int csrno,
++                                    target_ulong val)
++{
++    RISCVException ret;
++    ret = smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);
++    if (ret != RISCV_EXCP_NONE) {
++        return ret;
++    }
++
++    /* Reserved, now write ignore */
++    return RISCV_EXCP_NONE;
++}
++
+ static RISCVException rmw_hvien64(CPURISCVState *env, int csrno,
+                                     uint64_t *ret_val,
+                                     uint64_t new_val, uint64_t wr_mask)
+@@ -4674,6 +4701,10 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
  
+     [CSR_MSTATUSH]    = { "mstatush",   any32, read_mstatush,
+                           write_mstatush                                   },
++    [CSR_MEDELEGH]    = { "medelegh",   any32, read_zero, write_ignore,
++                          .min_priv_ver = PRIV_VERSION_1_13_0              },
++    [CSR_HEDELEGH]    = { "hedelegh",   any32, read_hedelegh, write_hedelegh,
++                          .min_priv_ver = PRIV_VERSION_1_13_0              },
+ 
+     /* Machine Trap Handling */
+     [CSR_MSCRATCH] = { "mscratch", any,  read_mscratch, write_mscratch,
 -- 
 2.34.1
 
