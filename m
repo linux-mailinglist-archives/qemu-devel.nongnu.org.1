@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239F48C1E3C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 08:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E748C1E44
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 08:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5JwH-0001LC-Dp; Fri, 10 May 2024 02:41:05 -0400
+	id 1s5JwI-0001N7-AQ; Fri, 10 May 2024 02:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5Jvc-00017V-Oz
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5Jvc-00017L-HK
  for qemu-devel@nongnu.org; Fri, 10 May 2024 02:40:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5JvU-0001YX-7z
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s5JvW-0001Ys-Ta
  for qemu-devel@nongnu.org; Fri, 10 May 2024 02:40:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715323214;
+ s=mimecast20190719; t=1715323218;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6xpWUrTrwmb2sPbB/T2wVkMw6wkiEdIERa3LN5Dp9G8=;
- b=fX8eXKcdO7t6dXpZKNiEZckNhnEWuu9ImRlpZP/+Ix/reK7lm8l5ihMpkd7S99OYcE6NoB
- Plif9uWjFp/1xQcDiIvGmEbz4I+7vOudkx4FjnTrwvVpFojSrSbOSLGQ0nHIr5xngP8u45
- VQH518YltCVwNZlaRxMxEk7R8VFdi0w=
+ bh=lyN2wHv1ijdGz2Ma84Ruv6QsDQCxtoidDGw13yagQg8=;
+ b=Gie1GSGmaNE2fPfMwK5Dz6wOIsItzMBqHLnZTp42Ke/3E2hvbwhTmQFqcAB52JTEYJpozw
+ BdTs+zpOpCvSb0jbhpC4568NJ18v882o7UI3qkL9zgrqrIKrOZcj3OS7jCO39lEXet6m+f
+ TMw978iieNC2BwlzuoU4RmOKS54D+QA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-AY87wLXuO9-lB1ZvE_pTJw-1; Fri,
- 10 May 2024 02:40:12 -0400
-X-MC-Unique: AY87wLXuO9-lB1ZvE_pTJw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-pdffeqLHN_-M7E5vqETdyw-1; Fri,
+ 10 May 2024 02:40:14 -0400
+X-MC-Unique: pdffeqLHN_-M7E5vqETdyw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 800E01C05145;
- Fri, 10 May 2024 06:40:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 79F143C0E642;
+ Fri, 10 May 2024 06:40:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.229])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 30D042079267;
- Fri, 10 May 2024 06:40:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 195E32079267;
+ Fri, 10 May 2024 06:40:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Collin Walling <walling@linux.ibm.com>,
- Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 5/8] target/s390x: report deprecated-props in
- cpu-model-expansion reply
-Date: Fri, 10 May 2024 08:39:58 +0200
-Message-ID: <20240510064001.26002-6-thuth@redhat.com>
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 6/8] target/s390x: flag te and cte as deprecated
+Date: Fri, 10 May 2024 08:39:59 +0200
+Message-ID: <20240510064001.26002-7-thuth@redhat.com>
 In-Reply-To: <20240510064001.26002-1-thuth@redhat.com>
 References: <20240510064001.26002-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -81,122 +80,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Collin Walling <walling@linux.ibm.com>
 
-Retain a list of deprecated features disjoint from any particular
-CPU model. A query-cpu-model-expansion reply will now provide a list of
-properties (i.e. features) that are flagged as deprecated. Example:
-
-    {
-      "return": {
-        "model": {
-          "name": "z14.2-base",
-          "deprecated-props": [
-            "bpb",
-            "csske"
-          ],
-          "props": {
-            "pfmfi": false,
-            "exrl": true,
-            ...a lot more props...
-            "skey": false,
-            "vxpdeh2": false
-          }
-        }
-      }
-    }
-
-It is recommended that s390 guests operate with these features
-explicitly disabled to ensure compatibility with future hardware.
+Add the CONSTRAINT_TRANSACTIONAL_EXE (cte) and TRANSACTIONAL_EXE (te)
+to the list of deprecated features.
 
 Signed-off-by: Collin Walling <walling@linux.ibm.com>
-Acked-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20240429191059.11806-2-walling@linux.ibm.com>
+Message-ID: <20240429191059.11806-3-walling@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- qapi/machine-target.json         |  7 ++++++-
- target/s390x/cpu_features.h      |  1 +
- target/s390x/cpu_features.c      | 14 ++++++++++++++
- target/s390x/cpu_models_sysemu.c |  8 ++++++++
- 4 files changed, 29 insertions(+), 1 deletion(-)
+ target/s390x/cpu_features.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 29e695aa06..2942853092 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -20,11 +20,16 @@
- #
- # @props: a dictionary of QOM properties to be applied
- #
-+# @deprecated-props: a list of properties that are flagged as deprecated
-+#     by the CPU vendor.  These props are a subset of the full model's
-+#     definition list of properties. (since 9.1)
-+#
- # Since: 2.8
- ##
- { 'struct': 'CpuModelInfo',
-   'data': { 'name': 'str',
--            '*props': 'any' } }
-+            '*props': 'any',
-+            '*deprecated-props': ['str'] } }
- 
- ##
- # @CpuModelExpansionType:
-diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
-index a9bd68a2e1..661a8cd6db 100644
---- a/target/s390x/cpu_features.h
-+++ b/target/s390x/cpu_features.h
-@@ -69,6 +69,7 @@ void s390_add_from_feat_block(S390FeatBitmap features, S390FeatType type,
-                           uint8_t *data);
- void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
-                                void (*fn)(const char *name, void *opaque));
-+void s390_get_deprecated_features(S390FeatBitmap features);
- 
- /* Definition of a CPU feature group */
- typedef struct {
 diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
-index d28eb65845..efafc9711c 100644
+index efafc9711c..cb4e2b8920 100644
 --- a/target/s390x/cpu_features.c
 +++ b/target/s390x/cpu_features.c
-@@ -212,6 +212,20 @@ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+@@ -218,6 +218,9 @@ void s390_get_deprecated_features(S390FeatBitmap features)
+          /* CSSKE is deprecated on newer generations */
+          S390_FEAT_CONDITIONAL_SSKE,
+          S390_FEAT_BPB,
++         /* Deprecated on z16 */
++         S390_FEAT_CONSTRAINT_TRANSACTIONAL_EXE,
++         S390_FEAT_TRANSACTIONAL_EXE
      };
- }
+     int i;
  
-+void s390_get_deprecated_features(S390FeatBitmap features)
-+{
-+    static const int feats[] = {
-+         /* CSSKE is deprecated on newer generations */
-+         S390_FEAT_CONDITIONAL_SSKE,
-+         S390_FEAT_BPB,
-+    };
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(feats); i++) {
-+        set_bit(feats[i], features);
-+    }
-+}
-+
- #define FEAT_GROUP_INIT(_name, _group, _desc)        \
-     {                                                \
-         .name = _name,                               \
-diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index 15be729c3d..977fbc6522 100644
---- a/target/s390x/cpu_models_sysemu.c
-+++ b/target/s390x/cpu_models_sysemu.c
-@@ -206,6 +206,14 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
-     } else {
-         info->props = QOBJECT(qdict);
-     }
-+
-+    /* features flagged as deprecated */
-+    bitmap_zero(bitmap, S390_FEAT_MAX);
-+    s390_get_deprecated_features(bitmap);
-+
-+    bitmap_and(bitmap, bitmap, model->def->full_feat, S390_FEAT_MAX);
-+    s390_feat_bitmap_to_ascii(bitmap, &info->deprecated_props, list_add_feat);
-+    info->has_deprecated_props = !!info->deprecated_props;
- }
- 
- CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
 -- 
 2.45.0
 
