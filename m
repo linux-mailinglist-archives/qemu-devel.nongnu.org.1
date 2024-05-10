@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A438C1F49
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 09:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1138C1F57
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 09:56:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5L0G-0004NY-Fe; Fri, 10 May 2024 03:49:16 -0400
+	id 1s5L60-0000ji-Ko; Fri, 10 May 2024 03:55:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1s5L0D-0004ID-Tb
- for qemu-devel@nongnu.org; Fri, 10 May 2024 03:49:13 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s5L5v-0000jP-BY
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 03:55:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1s5L0A-0002XT-Eo
- for qemu-devel@nongnu.org; Fri, 10 May 2024 03:49:13 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s5L5p-0003y9-6k
+ for qemu-devel@nongnu.org; Fri, 10 May 2024 03:55:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715327347;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wt0dTIt6d4wjvyBofQFW28KQCSensSnHLBQWx9Uno0Q=;
- b=CMfUug0s0c8SvIg6XUfRxNofouOU8xQpPSuHCdzxr00t1w30fKO+1C7mFI8chdY4xoB67r
- vqk1ctWxF4V1rS0C77eE/QXU8UDIxgUXznOLGdiH8A8vr4M3Ib7lChKO0q9Ty3Y4eaZw+w
- dvMnkj2jkxf/lFr5UF1sHQymSwlq2T0=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1715327700;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=TxjGqHCBLpiB4j52reyQtEpnVBuaR4g+TYsDx+g0QZM=;
+ b=bT7zXSDQzNhk2vKbitfxAtslnF2SRyKogObYHJt0NmUTyRR08tKYfUwIiSX04SOayH7eOm
+ uYWu7DCLRztCx/Nc7IR+M32V5i1F5/hvpURuQwm34rvlB7HBlN8RnZgvqhzZm3gs5q2+dw
+ P9eKK/FXInX+JP/3gk++AJF0EGyQXmM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-l9_3rDeON5WbTMuRor523Q-1; Fri, 10 May 2024 03:49:06 -0400
-X-MC-Unique: l9_3rDeON5WbTMuRor523Q-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-de617c7649dso2620760276.0
- for <qemu-devel@nongnu.org>; Fri, 10 May 2024 00:49:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715327346; x=1715932146;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Wt0dTIt6d4wjvyBofQFW28KQCSensSnHLBQWx9Uno0Q=;
- b=HM/ySNfrsBqA7CETb1quBaPEgHOr9hHgYyVpNVoODWdbGxOZ45+1OhWTfOhlkfwTJb
- HKMMFG2Dlh2kdf3MBGllQuGz8r7u2Kaqs6nvdTH8wZT3Y5uVYJ8GxMz8Id8OPo0dP0Qn
- /R2EXRv0PRXvJcDVjY9wZBnSlSnEvMcv0lZp4X3h6ozsp9hznBLLW/90/YJ21ke8u78u
- 9E2S6KKnJ0h4OI/QTAf5+0n8zYhJu8/us/SN+zYNq2ndYjHebNwk2z8bc7NoMZwHZZD8
- cRCzG5VypR3kL+ZaqvpDsQs1+dkvJBNUcJYNELaedFtextWilFjp6uXICFvpGS2Q0ShS
- PhkA==
-X-Gm-Message-State: AOJu0YyJu7IWBnFQD+avtJWXwoPjc1yNA1u2DU9BgeQfh0TP281x0bw9
- CBRg23JtGvhhkxP73r20ha7mas7hwYx8EWG8upFsU02+tHNG8ezHKTeftdE93yBvwOWD5ldEnGm
- grK9s7FK4nBAuZBSsiFS3Vdmvs/6P3YRYxEC6CcZtjfYY8xcsgTdfqa/pR4soSFSZPK/F5i9+l4
- 353qT58WQRpq8WXf5Up3Zm/j9VmWA=
-X-Received: by 2002:a25:c7d1:0:b0:de5:9d13:48ac with SMTP id
- 3f1490d57ef6-dee4f2f6deemr1926648276.5.1715327345871; 
- Fri, 10 May 2024 00:49:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFW6lIvSV6PJRfNnt0MAg8Qx5Eu3tgVC7KaSPbS66wUMfqoTkFK3NWaxowvf0IHZGExOZtYhdIRSzeah6BJyWI=
-X-Received: by 2002:a25:c7d1:0:b0:de5:9d13:48ac with SMTP id
- 3f1490d57ef6-dee4f2f6deemr1926624276.5.1715327345511; Fri, 10 May 2024
- 00:49:05 -0700 (PDT)
+ us-mta-67-aVySOaarMQGyTWUMAOUisg-1; Fri, 10 May 2024 03:54:58 -0400
+X-MC-Unique: aVySOaarMQGyTWUMAOUisg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6B7A185A783;
+ Fri, 10 May 2024 07:54:57 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.47])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CEFBD2044201;
+ Fri, 10 May 2024 07:54:53 +0000 (UTC)
+Date: Fri, 10 May 2024 08:54:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Steve Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V1 24/26] seccomp: cpr-exec blocker
+Message-ID: <Zj3SyzYMJzluwKoQ@redhat.com>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-25-git-send-email-steven.sistare@oracle.com>
 MIME-Version: 1.0
-References: <20240506150428.1203387-1-jonah.palmer@oracle.com>
- <20240506150428.1203387-5-jonah.palmer@oracle.com>
-In-Reply-To: <20240506150428.1203387-5-jonah.palmer@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 10 May 2024 09:48:29 +0200
-Message-ID: <CAJaqyWd8ALnpr5BVOFpWo1ndUu9Y3XHO0UKtHFzEOFW3FsmWpA@mail.gmail.com>
-Subject: Re: [PATCH 4/6] virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER
- support
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, raphael@enfabrica.net, 
- kwolf@redhat.com, hreitz@redhat.com, jasowang@redhat.com, pbonzini@redhat.com, 
- fam@euphon.net, stefanha@redhat.com, qemu-block@nongnu.org, 
- schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev, 
- si-wei.liu@oracle.com, boris.ostrovsky@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1714406135-451286-25-git-send-email-steven.sistare@oracle.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -84,7 +69,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.581,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,141 +82,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 6, 2024 at 5:06=E2=80=AFPM Jonah Palmer <jonah.palmer@oracle.co=
-m> wrote:
->
-> Add VIRTIO_F_IN_ORDER feature support for virtqueue_flush operations.
->
-> The goal of the virtqueue_flush operation when the VIRTIO_F_IN_ORDER
-> feature has been negotiated is to write elements to the used/descriptor
-> ring in-order and then update used_idx.
->
-> The function iterates through the VirtQueueElement used_elems array
-> in-order starting at vq->used_idx. If the element is valid (filled), the
-> element is written to the used/descriptor ring. This process continues
-> until we find an invalid (not filled) element.
->
-> If any elements were written, the used_idx is updated.
->
-> Tested-by: Lei Yang <leiyang@redhat.com>
-> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+On Mon, Apr 29, 2024 at 08:55:33AM -0700, Steve Sistare wrote:
+> cpr-exec mode needs permission to exec.  Block it if permission is denied.
+> 
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > ---
->  hw/virtio/virtio.c | 75 +++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 74 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index 064046b5e2..0efed2c88e 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -1006,6 +1006,77 @@ static void virtqueue_packed_flush(VirtQueue *vq, =
-unsigned int count)
->      }
+>  include/sysemu/seccomp.h |  1 +
+>  system/qemu-seccomp.c    | 10 ++++++++--
+>  system/vl.c              |  6 ++++++
+>  3 files changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/sysemu/seccomp.h b/include/sysemu/seccomp.h
+> index fe85989..023c0a1 100644
+> --- a/include/sysemu/seccomp.h
+> +++ b/include/sysemu/seccomp.h
+> @@ -22,5 +22,6 @@
+>  #define QEMU_SECCOMP_SET_RESOURCECTL (1 << 4)
+>  
+>  int parse_sandbox(void *opaque, QemuOpts *opts, Error **errp);
+> +uint32_t qemu_seccomp_get_opts(void);
+>  
+>  #endif
+> diff --git a/system/qemu-seccomp.c b/system/qemu-seccomp.c
+> index 5c20ac0..0d2a561 100644
+> --- a/system/qemu-seccomp.c
+> +++ b/system/qemu-seccomp.c
+> @@ -360,12 +360,18 @@ static int seccomp_start(uint32_t seccomp_opts, Error **errp)
+>      return rc < 0 ? -1 : 0;
 >  }
->
-> +static void virtqueue_ordered_flush(VirtQueue *vq)
+>  
+> +static uint32_t seccomp_opts;
+> +
+> +uint32_t qemu_seccomp_get_opts(void)
 > +{
-> +    unsigned int i =3D vq->used_idx;
-> +    unsigned int ndescs =3D 0;
-> +    uint16_t old =3D vq->used_idx;
-> +    bool packed;
-> +    VRingUsedElem uelem;
-> +
-> +    packed =3D virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED);
-> +
-> +    if (packed) {
-> +        if (unlikely(!vq->vring.desc)) {
-> +            return;
-> +        }
-> +    } else if (unlikely(!vq->vring.used)) {
-> +        return;
-> +    }
-> +
-> +    /* First expected in-order element isn't ready, nothing to do */
-> +    if (!vq->used_elems[i].filled) {
-> +        return;
-> +    }
-> +
-> +    /* Write first expected in-order element to used ring (split VQs) */
-> +    if (!packed) {
-> +        uelem.id =3D vq->used_elems[i].index;
-> +        uelem.len =3D vq->used_elems[i].len;
-> +        vring_used_write(vq, &uelem, i);
-> +    }
-> +
-> +    ndescs +=3D vq->used_elems[i].ndescs;
-> +    i +=3D ndescs;
-> +    if (i >=3D vq->vring.num) {
-> +        i -=3D vq->vring.num;
-> +    }
-> +
-> +    /* Search for more filled elements in-order */
-> +    while (vq->used_elems[i].filled) {
-> +        if (packed) {
-> +            virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, f=
-alse);
-> +        } else {
-> +            uelem.id =3D vq->used_elems[i].index;
-> +            uelem.len =3D vq->used_elems[i].len;
-> +            vring_used_write(vq, &uelem, i);
-> +        }
-> +
-> +        vq->used_elems[i].filled =3D false;
-> +        ndescs +=3D vq->used_elems[i].ndescs;
-> +        i +=3D ndescs;
-> +        if (i >=3D vq->vring.num) {
-> +            i -=3D vq->vring.num;
-> +        }
-> +    }
-> +
-
-I may be missing something, but you have split out the first case as a
-special one, totally out of the while loop. Can't it be contained in
-the loop checking !(packed && i =3D=3D vq->used_idx)? That would avoid
-code duplication.
-
-A comment can be added in the line of "first entry of packed is
-written the last so the guest does not see invalid descriptors".
-
-> +    if (packed) {
-> +        virtqueue_packed_fill_desc(vq, &vq->used_elems[vq->used_idx], 0,=
- true);
-> +        vq->used_idx +=3D ndescs;
-> +        if (vq->used_idx >=3D vq->vring.num) {
-> +            vq->used_idx -=3D vq->vring.num;
-> +            vq->used_wrap_counter ^=3D 1;
-> +            vq->signalled_used_valid =3D false;
-> +        }
-> +    } else {
-> +        vring_used_idx_set(vq, i);
-> +        if (unlikely((int16_t)(i - vq->signalled_used) < (uint16_t)(i - =
-old))) {
-> +            vq->signalled_used_valid =3D false;
-> +        }
-> +    }
-> +    vq->inuse -=3D ndescs;
+> +    return seccomp_opts;
 > +}
 > +
->  void virtqueue_flush(VirtQueue *vq, unsigned int count)
+>  int parse_sandbox(void *opaque, QemuOpts *opts, Error **errp)
 >  {
->      if (virtio_device_disabled(vq->vdev)) {
-> @@ -1013,7 +1084,9 @@ void virtqueue_flush(VirtQueue *vq, unsigned int co=
-unt)
->          return;
+>      if (qemu_opt_get_bool(opts, "enable", false)) {
+> -        uint32_t seccomp_opts = QEMU_SECCOMP_SET_DEFAULT
+> -                | QEMU_SECCOMP_SET_OBSOLETE;
+>          const char *value = NULL;
+> +        seccomp_opts = QEMU_SECCOMP_SET_DEFAULT | QEMU_SECCOMP_SET_OBSOLETE;
+>  
+>          value = qemu_opt_get(opts, "obsolete");
+>          if (value) {
+> diff --git a/system/vl.c b/system/vl.c
+> index 7252100..b76881e 100644
+> --- a/system/vl.c
+> +++ b/system/vl.c
+> @@ -76,6 +76,7 @@
+>  #include "hw/block/block.h"
+>  #include "hw/i386/x86.h"
+>  #include "hw/i386/pc.h"
+> +#include "migration/blocker.h"
+>  #include "migration/cpr.h"
+>  #include "migration/misc.h"
+>  #include "migration/snapshot.h"
+> @@ -2493,6 +2494,11 @@ static void qemu_process_early_options(void)
+>      QemuOptsList *olist = qemu_find_opts_err("sandbox", NULL);
+>      if (olist) {
+>          qemu_opts_foreach(olist, parse_sandbox, NULL, &error_fatal);
+> +        if (qemu_seccomp_get_opts() & QEMU_SECCOMP_SET_SPAWN) {
+> +            Error *blocker = NULL;
+> +            error_setg(&blocker, "-sandbox denies exec for cpr-exec");
+> +            migrate_add_blocker_mode(&blocker, MIG_MODE_CPR_EXEC, &error_fatal);
+> +        }
 >      }
->
-> -    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-> +    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
-> +        virtqueue_ordered_flush(vq);
-> +    } else if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) =
-{
->          virtqueue_packed_flush(vq, count);
->      } else {
->          virtqueue_split_flush(vq, count);
-> --
-> 2.39.3
->
+>  #endi
+
+There are a whole pile of features that get blocked wehn -sandbox is
+used. I'm not convinced we should be adding code to check for specific
+blocked features, as such a list will always be incomplete at best, and
+incorrectly block things at worst.
+
+I view this primarily as a documentation task for the cpr-exec command.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
