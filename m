@@ -2,48 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B7E8C272C
-	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 16:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2308C2751
+	for <lists+qemu-devel@lfdr.de>; Fri, 10 May 2024 17:07:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5Rb0-0004Qd-RQ; Fri, 10 May 2024 10:51:38 -0400
+	id 1s5RoX-00025E-Ay; Fri, 10 May 2024 11:05:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s5Rax-0004Ps-Mv
- for qemu-devel@nongnu.org; Fri, 10 May 2024 10:51:35 -0400
-Received: from rev.ng ([5.9.113.41])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s5RoT-000244-Se; Fri, 10 May 2024 11:05:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s5Raw-0001YQ-4n
- for qemu-devel@nongnu.org; Fri, 10 May 2024 10:51:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=FB/c935nqkUCLyLZwfTzB60TVF21Nogg5Ke/DCnSzv4=; b=OZCHeI0gXdRBXai
- NZ8N98vJPvtjB0NkPTDvNeGBhlwrrOTho4sMe15My/KpgAWUTh3bgY9k5Z9voSYy29Oj+BJRSOV0A
- FdF/PkkgINANyPrWKGCnG1NWbkdQK4h8X/pV3TDvnKyIbQn/Z0itg7zpp+jSm+q1PN/wXTNIKMqol
- lo=;
-To: qemu-devel@nongnu.org
-Cc: ale@rev.ng,
-	ltaylorsimpson@gmail.com,
-	bcain@quicinc.com
-Subject: [PATCH v2 4/4] target/hexagon: idef-parser simplify predicate init
-Date: Fri, 10 May 2024 16:52:44 +0200
-Message-ID: <20240510145244.5615-5-anjo@rev.ng>
-In-Reply-To: <20240510145244.5615-1-anjo@rev.ng>
-References: <20240510145244.5615-1-anjo@rev.ng>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1s5RoR-0003y3-T6; Fri, 10 May 2024 11:05:33 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D202B65C42;
+ Fri, 10 May 2024 18:05:25 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9C95CCBA4D;
+ Fri, 10 May 2024 18:05:23 +0300 (MSK)
+Message-ID: <19699ec5-34c8-4b7b-a6e5-e9db6136e0f3@tls.msk.ru>
+Date: Fri, 10 May 2024 18:05:23 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Stable-8.2.4 00/16] Patch Round-up for stable 8.2.4 (planned for
+ 2024-05-10)
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Roth <michael.roth@amd.com>
+References: <qemu-stable-8.2.4-20240506205855@cover.tls.msk.ru>
+ <42f8e938-b62d-4bbb-b39d-82bcb8ca21e8@tls.msk.ru>
+Content-Language: en-US
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <42f8e938-b62d-4bbb-b39d-82bcb8ca21e8@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,80 +80,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only predicate instruction arguments need to be initialized by
-idef-parser. This commit removes registers from the init_list and
-simplifies gen_inst_init_args() slightly.
+07.05.2024 11:45, Michael Tokarev wrote:
+> 07.05.2024 11:41, Michael Tokarev wrote:
+>> The following patches are queued for QEMU stable v8.2.4:
+>>
+>>    https://gitlab.com/qemu-project/qemu/-/commits/staging-8.2
+>>
+>> The release is planned for 2024-05-12, to address a few issues
+>> encountered with v8.2.3 release, - a bit wrong tarball with some
+>> replication hiccups in the CDN behind download.qemu.org, and a
+>> build failure on riscv.
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
----
- target/hexagon/idef-parser/idef-parser.y    |  2 --
- target/hexagon/idef-parser/parser-helpers.c | 26 +++++++++++----------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+> *sigh*. and sure thing, there's one more hiccup: I meant to make a
+> release in 2 days, ie, on May-10, not May-12..  (fixed in the Subject)
+There's another issue found in this series (also present in 9.0 and master
+currently), --
 
-diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
-index cd2612eb8c..9ffb9f9699 100644
---- a/target/hexagon/idef-parser/idef-parser.y
-+++ b/target/hexagon/idef-parser/idef-parser.y
-@@ -233,8 +233,6 @@ code : '{' statements '}'
- argument_decl : REG
-                 {
-                     emit_arg(c, &@1, &$1);
--                    /* Enqueue register into initialization list */
--                    g_array_append_val(c->inst.init_list, $1);
-                 }
-               | PRED
-                 {
-diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
-index c150c308be..a7dcd85fe4 100644
---- a/target/hexagon/idef-parser/parser-helpers.c
-+++ b/target/hexagon/idef-parser/parser-helpers.c
-@@ -1652,26 +1652,28 @@ void gen_inst(Context *c, GString *iname)
- 
- 
- /*
-- * Initialize declared but uninitialized registers, but only for
-- * non-conditional instructions
-+ * Initialize declared but uninitialized instruction arguments. Only needed for
-+ * predicate arguments, initialization of registers is handled by the Hexagon
-+ * frontend.
-  */
- void gen_inst_init_args(Context *c, YYLTYPE *locp)
- {
-+    HexValue *val = NULL;
-+    char suffix;
-+
-+    /* If init_list is NULL arguments have already been initialized */
-     if (!c->inst.init_list) {
-         return;
-     }
- 
-     for (unsigned i = 0; i < c->inst.init_list->len; i++) {
--        HexValue *val = &g_array_index(c->inst.init_list, HexValue, i);
--        if (val->type == REGISTER_ARG) {
--            /* Nothing to do here */
--        } else if (val->type == PREDICATE) {
--            char suffix = val->is_dotnew ? 'N' : 'V';
--            EMIT_HEAD(c, "tcg_gen_movi_i%u(P%c%c, 0);\n", val->bit_width,
--                      val->pred.id, suffix);
--        } else {
--            yyassert(c, locp, false, "Invalid arg type!");
--        }
-+        val = &g_array_index(c->inst.init_list, HexValue, i);
-+        suffix = val->is_dotnew ? 'N' : 'V';
-+        yyassert(c, locp, val->type == PREDICATE,
-+                 "Only predicates need to be initialized!");
-+        yyassert(c, locp, val->bit_width == 32,
-+                 "Predicates should always be 32 bits");
-+        EMIT_HEAD(c, "tcg_gen_movi_i32(P%c%c, 0);\n", val->pred.id, suffix);
-     }
- 
-     /* Free argument init list once we have initialized everything */
+   https://gitlab.com/qemu-project/qemu/-/issues/2321
+   https://gitlab.com/qemu-project/qemu/-/issues/2334
+
+Since the original change fixes a security issue (CVE-2024-4693),
+I think it's wise now to delay 8.2.4 release for some more time.
+
+Thanks,
+
+/mjt
 -- 
-2.45.0
+GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
+New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
+Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
+Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
 
 
