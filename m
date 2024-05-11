@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1618C2EB1
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8678C2E9A
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bq0-0000SS-UO; Fri, 10 May 2024 21:47:50 -0400
+	id 1s5bp4-00059X-4y; Fri, 10 May 2024 21:46:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5boy-0005DN-Qm; Fri, 10 May 2024 21:46:46 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1s5boU-00050O-OM; Fri, 10 May 2024 21:46:16 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bom-0003ab-Ia; Fri, 10 May 2024 21:46:44 -0400
+ id 1s5boT-0003bI-8d; Fri, 10 May 2024 21:46:14 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 56A3A4E677A;
- Sat, 11 May 2024 03:46:10 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 62A4D4E677D;
+ Sat, 11 May 2024 03:46:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id kc7dDemf80ZU; Sat, 11 May 2024 03:46:08 +0200 (CEST)
+ with ESMTP id YlU36BpN7Bak; Sat, 11 May 2024 03:46:09 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 646194E677B; Sat, 11 May 2024 03:46:08 +0200 (CEST)
-Message-Id: <c142fb1c8d6ad44e636df24c14166655ab221f5a.1715390232.git.balaton@eik.bme.hu>
+ id 751CB4E676F; Sat, 11 May 2024 03:46:09 +0200 (CEST)
+Message-Id: <361ef6504b5f6d483a25712e0443023e9bd670e8.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 28/48] target/ppc/mmu_common.c: Move mmu_ctx_t type to
- mmu_common.c
+Subject: [PATCH v6 29/48] target/ppc/mmu_common.c: Remove pte_update_flags()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,9 +37,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:46:08 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Sat, 11 May 2024 03:46:09 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -61,68 +60,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove mmu_ctx_t definition from internal.h as this type is only used
-within mmu_common.c.
+This function is used only once, its return value is ignored and one
+of its parameter is a return value from a previous call. It is better
+to inline it in the caller and remove it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/internal.h   | 12 ------------
- target/ppc/mmu_common.c | 11 +++++++++++
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ target/ppc/mmu_common.c | 41 +++++++++++++----------------------------
+ 1 file changed, 13 insertions(+), 28 deletions(-)
 
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index 5b28e8f3b0..46176c4711 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -292,8 +292,6 @@ static inline int ppc_hash32_pp_prot(int key, int pp, int nx)
-     return nx ? prot : prot | PAGE_EXEC;
- }
- 
--typedef struct mmu_ctx_t mmu_ctx_t;
--
- bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                       hwaddr *raddrp, int *psizep, int *protp,
-                       int mmu_idx, bool guest_visible);
-@@ -301,16 +299,6 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- /* Software driven TLB helpers */
- int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-                                     int way, int is_code);
--/* Context used internally during MMU translations */
--struct mmu_ctx_t {
--    hwaddr raddr;      /* Real address              */
--    hwaddr eaddr;      /* Effective address         */
--    int prot;                      /* Protection bits           */
--    hwaddr hash[2];    /* Pagetable hash values     */
--    target_ulong ptem;             /* Virtual segment ID | API  */
--    int key;                       /* Access key                */
--    int nx;                        /* Non-execute area          */
--};
- 
- #endif /* !CONFIG_USER_ONLY */
- 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 22c9894881..23005fdea4 100644
+index 23005fdea4..438d4c83b0 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -36,6 +36,17 @@
+@@ -139,39 +139,14 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+     return ret;
+ }
  
- /* #define DUMP_PAGE_TABLES */
+-static int pte_update_flags(mmu_ctx_t *ctx, target_ulong *pte1p,
+-                            int ret, MMUAccessType access_type)
+-{
+-    int store = 0;
+-
+-    /* Update page flags */
+-    if (!(*pte1p & 0x00000100)) {
+-        /* Update accessed flag */
+-        *pte1p |= 0x00000100;
+-        store = 1;
+-    }
+-    if (!(*pte1p & 0x00000080)) {
+-        if (access_type == MMU_DATA_STORE && ret == 0) {
+-            /* Update changed flag */
+-            *pte1p |= 0x00000080;
+-            store = 1;
+-        } else {
+-            /* Force page fault for first write access */
+-            ctx->prot &= ~PAGE_WRITE;
+-        }
+-    }
+-
+-    return store;
+-}
+-
+ /* Software driven TLB helpers */
  
-+/* Context used internally during MMU translations */
-+typedef struct {
-+    hwaddr raddr;      /* Real address             */
-+    hwaddr eaddr;      /* Effective address        */
-+    int prot;          /* Protection bits          */
-+    hwaddr hash[2];    /* Pagetable hash values    */
-+    target_ulong ptem; /* Virtual segment ID | API */
-+    int key;           /* Access key               */
-+    int nx;            /* Non-execute area         */
-+} mmu_ctx_t;
-+
- void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
+ static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
+                             target_ulong eaddr, MMUAccessType access_type)
  {
-     PowerPCCPU *cpu = env_archcpu(env);
+     ppc6xx_tlb_t *tlb;
+-    int nr, best, way;
+-    int ret;
++    target_ulong *pte1p;
++    int nr, best, way, ret;
+ 
+     best = -1;
+     ret = -1; /* No TLB found */
+@@ -224,7 +199,17 @@ done:
+                       " prot=%01x ret=%d\n",
+                       ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
+         /* Update page flags */
+-        pte_update_flags(ctx, &env->tlb.tlb6[best].pte1, ret, access_type);
++        pte1p = &env->tlb.tlb6[best].pte1;
++        *pte1p |= 0x00000100; /* Update accessed flag */
++        if (!(*pte1p & 0x00000080)) {
++            if (access_type == MMU_DATA_STORE && ret == 0) {
++                /* Update changed flag */
++                *pte1p |= 0x00000080;
++            } else {
++                /* Force page fault for first write access */
++                ctx->prot &= ~PAGE_WRITE;
++            }
++        }
+     }
+ #if defined(DUMP_PAGE_TABLES)
+     if (qemu_loglevel_mask(CPU_LOG_MMU)) {
 -- 
 2.30.9
 
