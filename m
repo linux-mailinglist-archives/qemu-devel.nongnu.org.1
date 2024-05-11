@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA87A8C3113
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4938C3114
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5lIr-0000JJ-Th; Sat, 11 May 2024 07:54:13 -0400
+	id 1s5lIs-0000Jw-L3; Sat, 11 May 2024 07:54:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIp-0000IO-Sx
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:11 -0400
+ id 1s5lIq-0000Ib-Ip
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:12 -0400
 Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIo-0006xn-1L
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:11 -0400
+ id 1s5lIo-0006y1-Md
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:12 -0400
 Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-34db6a29998so2132056f8f.0
- for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:09 -0700 (PDT)
+ ffacd0b85a97d-34e28e32ea4so1740610f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715428448; x=1716033248; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715428449; x=1716033249; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+n0y7sg4pr7eYBOPDNRNBiPuUSQ+dV4I1QimEXAPgY0=;
- b=C3i/Sm8L8fgcpfcGbXbup/T+72Vh1BcR7CdYP7UPkDqhSodM3sA2bLfKhgq/bXRS4i
- Esy3X+PASjmGBkTM6rKo5UTSuUZUdUpcEh8hQ/f9Ht1fS9lwQdx44yW7O4amMayv/cBG
- 7A2t9ASX/FHO5O7x4RYoOGZMYeyaHfB1AMIbPC0zs9hjzjPHgYLclGNDKE3LHYzbX2VJ
- lCenVMlNV7Edw3Eb9rFQEnbAmJjosPfV8E66jwSjAGvCBhtJkhZbLrdHZGT8dpq5HsjC
- To72mLEKqi5TP19kIGwrv/vHtx3EtlzcxQzoXl5FO2U+3waN3QjlqgSuDcEveT7zqcug
- RFNQ==
+ bh=fK+33hG7y7qtK+XmeBcuCbI8Hmdt6nSy4YCvnmn+BlU=;
+ b=wSlsbqcJBeruehim4alPKMSxmRDPdzNo36p22Fnkh/03yF+DgOG0PoyvEBKsLpsKG2
+ xfVVuYdzUSGkrWUT8VjmI3uRCSHKYvj/lQARa42tEtE7cVs6VzYEAfkeiNvmshAiFmi8
+ 5vJFmPHJH91+m1ReXyCDYC2MwbRbL/n8Alv6KyUFbpNZXnBg8CIDPzKVS5OJtxdr4wmt
+ 71n/WO3bFKnl+Q6FuvWRNHy1JF4DnCPRr6SZf5deah0zfDjOBVpnAvfioSj16l9ALz51
+ pGe5iZKvJGkPDAgsbV8lNm3UUraAuMcf4iv/qj0+Uwi9H09r+GLlRK7rVNlreb8Rwc5T
+ IdRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715428448; x=1716033248;
+ d=1e100.net; s=20230601; t=1715428449; x=1716033249;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+n0y7sg4pr7eYBOPDNRNBiPuUSQ+dV4I1QimEXAPgY0=;
- b=QUekZzpiceJAwlzl6gjeo54vtVjoO2coHTTt7tIBCMmjtuixg0X1gEWagzaqrNXN4M
- 0nQpjOrgh17mUba3MqkDAdW53N+tFYc9+n45HEHhQJIFT4/FxiFiBhc4a+XN72TDBYlz
- UvKt4bC8j4dOB9uYn2fFeW2vHlKcR1jXtSzQTEu7+Z24ombZJ+om/uMsptYbBD2hSV8l
- 3iQXyt2HZ0SD8oyfey5jyGBEPs+STt1K5iNzAULC4wxS3lWd5KCTHSdjD93dk8kAS9Ko
- e2j1Gj8gAlYrS4fB5KzmTlP6xZlgIAJtEsBEtOBcqBcQeN0g1h+OHtG6gz7aNEwG0M/a
- 0PJA==
-X-Gm-Message-State: AOJu0YyXhkfCRCeYZrCrnSxvE30Paloev8vWKC9ik1vjqGplnkvpewAY
- HbnNDF1ioEgNZfInQ4/RIo4opvh7sAhcb6pmJLTOFzLaMEQP9KLGeMIH8ZlVIXakSjh+GyeSjW2
- Rmnw=
-X-Google-Smtp-Source: AGHT+IGx8YpfbvnPnWHEJERLk/6K4MJFluddbQifr6adM54r+UsZr/q96TL9w3O1eyszFA7uP8tJug==
-X-Received: by 2002:adf:ec4d:0:b0:343:7b6b:dcc6 with SMTP id
- ffacd0b85a97d-3504a73bc6amr3813189f8f.30.1715428448496; 
- Sat, 11 May 2024 04:54:08 -0700 (PDT)
+ bh=fK+33hG7y7qtK+XmeBcuCbI8Hmdt6nSy4YCvnmn+BlU=;
+ b=KTfFUWCF2gspDTTlTCEFARW4Ig+J0uBRObl1l5v8Qch2I1dmz0y2ZSXENmmsvC/s8O
+ vXyFv0KTppJm9lFnjXkLvIuiYZXnPadSfi7IYkmNwUlS07L8JoNgwLfqEbJkezXr9UA1
+ SDiFQC4sD75atGumzCG1BqdAaWvt8FIvxKPMdBiyDlwHb3oalvos+gwfpHQh0s8Yjasq
+ VGO7njMyXgkYXg/qyyjjLgZRG0NyyG49TUWKAmhemwGXx5stEAv3FH4Oholk1+HApipI
+ zSPIRuPLDoeFSlLYaQS/s8yos0RksRzTNV1H+6Hnx51oNqmCFVljgJxtfmSTJJ0uU2kw
+ RM/A==
+X-Gm-Message-State: AOJu0Yx8Q5IG3TH6inPa619893usrak2lKv6KXF7ejbqTSpXOVPuDVbI
+ k8fTB0pBXKdvTJ1CbhooEJQ3Sr8pk5AqHnO8eUMrJDtnvwcIzwzbuffPkaMtauwYStn8IBx5aBD
+ JN+Q=
+X-Google-Smtp-Source: AGHT+IHgPt8H57AZtUUsJVQpox8VPsFKvhnx6y5anFqpzcG83pYyyf81tylHlg+AyHZaIX5Mj/VZLg==
+X-Received: by 2002:a5d:4b0d:0:b0:345:c1cc:2d85 with SMTP id
+ ffacd0b85a97d-3504a96a6femr3911614f8f.55.1715428449366; 
+ Sat, 11 May 2024 04:54:09 -0700 (PDT)
 Received: from stoup.. ([195.76.196.165]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.07
+ ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 May 2024 04:54:08 -0700 (PDT)
+ Sat, 11 May 2024 04:54:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 06/17] ppc64: Clean register values in reginfo_init
-Date: Sat, 11 May 2024 13:53:49 +0200
-Message-Id: <20240511115400.7587-7-richard.henderson@linaro.org>
+Subject: [PATCH 07/17] ppc64: Compare all bits of CCR
+Date: Sat, 11 May 2024 13:53:50 +0200
+Message-Id: <20240511115400.7587-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240511115400.7587-1-richard.henderson@linaro.org>
 References: <20240511115400.7587-1-richard.henderson@linaro.org>
@@ -91,69 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Smash the stack and thread pointers to deadbeef, as is common
-for the other architectures.  This allows us to drop these
-special cases within reginfo_is_eq and reginfo_dump_mismatch.
-
-Do not copy the unused special registers that are packed into gregs[].
-Most of these are related to system instructions and thus are not
-manipulable via the user-mode instructions targeted by RISU.  LNK and
-CTR are not initialized by risugen, and since in general we cannot
-test branches with risugen these can be ignored.  This leaves only
-XER and CCR as the only special registers to be copied.
+There are 32 bits in this register, and they are all valid
+comparision destinations.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu_reginfo_ppc64.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ risu_reginfo_ppc64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/risu_reginfo_ppc64.c b/risu_reginfo_ppc64.c
-index fc69805..67ea3ce 100644
+index 67ea3ce..109b87b 100644
 --- a/risu_reginfo_ppc64.c
 +++ b/risu_reginfo_ppc64.c
-@@ -44,16 +44,16 @@ int reginfo_size(struct reginfo *ri)
- /* reginfo_init: initialize with a ucontext */
- void reginfo_init(struct reginfo *ri, ucontext_t *uc, void *siaddr)
- {
--    int i;
--
-     memset(ri, 0, sizeof(*ri));
+@@ -78,7 +78,7 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
+         return 0;
+     }
  
-     ri->faulting_insn = *((uint32_t *) uc->uc_mcontext.regs->nip);
-     ri->nip = uc->uc_mcontext.regs->nip - image_start_address;
+-    if ((m->gregs[CCR] & 0x10) != (a->gregs[CCR] & 0x10)) {
++    if (m->gregs[CCR] != a->gregs[CCR]) {
+         return 0;
+     }
  
--    for (i = 0; i < NGREG; i++) {
--        ri->gregs[i] = uc->uc_mcontext.gp_regs[i];
--    }
-+    memcpy(ri->gregs, uc->uc_mcontext.gp_regs, 32 * sizeof(ri->gregs[0]));
-+    ri->gregs[1] = 0xdeadbeefdeadbeef;   /* sp */
-+    ri->gregs[13] = 0xdeadbeefdeadbeef;  /* tp */
-+    ri->gregs[XER] = uc->uc_mcontext.gp_regs[XER];
-+    ri->gregs[CCR] = uc->uc_mcontext.gp_regs[CCR];
- 
-     memcpy(ri->fpregs, uc->uc_mcontext.fp_regs, 32 * sizeof(double));
-     ri->fpscr = uc->uc_mcontext.fp_regs[32];
-@@ -69,10 +69,6 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
- {
-     int i;
-     for (i = 0; i < 32; i++) {
--        if (i == 1 || i == 13) {
--            continue;
--        }
--
-         if (m->gregs[i] != a->gregs[i]) {
-             return 0;
-         }
-@@ -150,9 +146,6 @@ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
-     int i;
- 
-     for (i = 0; i < 32; i++) {
--        if (i == 1 || i == 13) {
--            continue;
--        }
-         if (m->gregs[i] != a->gregs[i]) {
-             fprintf(f, "%*s%d: %016lx vs %016lx\n",
-                     6 - (1 < 10 ? 1 : 2), "r", i,
 -- 
 2.34.1
 
