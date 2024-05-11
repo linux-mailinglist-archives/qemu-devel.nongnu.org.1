@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2D28C2EA6
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95338C2E88
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:48:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bpj-0007K3-5J; Fri, 10 May 2024 21:47:31 -0400
+	id 1s5bpl-0007fh-0z; Fri, 10 May 2024 21:47:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5box-0005D8-Hb; Fri, 10 May 2024 21:46:46 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1s5boy-0005DM-Pe; Fri, 10 May 2024 21:46:46 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bou-0003dG-Ad; Fri, 10 May 2024 21:46:43 -0400
+ id 1s5bov-0003dY-8G; Fri, 10 May 2024 21:46:44 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B12814E6786;
- Sat, 11 May 2024 03:46:18 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C891E4E6782;
+ Sat, 11 May 2024 03:46:19 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id HyiGy3_R3q1l; Sat, 11 May 2024 03:46:16 +0200 (CEST)
+ with ESMTP id EGQlYyX93BA8; Sat, 11 May 2024 03:46:17 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C3D744E6784; Sat, 11 May 2024 03:46:16 +0200 (CEST)
-Message-Id: <668d6c1950389a6608d1621d81eb0edaa88d1cc0.1715390232.git.balaton@eik.bme.hu>
+ id DBE414E6780; Sat, 11 May 2024 03:46:17 +0200 (CEST)
+Message-Id: <08a36fae745d21953a36a9ec3d817c8608e324b3.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 36/48] target/ppc/mmu_common.c: Remove local name for a
- constant
+Subject: [PATCH v6 37/48] target/ppc/mmu_common.c: Remove single use local
+ variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,9 +38,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:46:16 +0200 (CEST)
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Date: Sat, 11 May 2024 03:46:17 +0200 (CEST)
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -61,42 +61,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mmask local variable is a less descriptive local name for a
-constant. Drop it and use the constant directly in the two places it
-is needed.
+The ptem variable in ppc6xx_tlb_pte_check() is used only once,
+simplify by removing it as the value is already clear itself without
+adding a local name for it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/ppc/mmu_common.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 9e0bfbda67..5d0090014a 100644
+index 5d0090014a..4ca700e31b 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -98,7 +98,7 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+@@ -98,7 +98,6 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
                                  target_ulong pte1, int h,
                                  MMUAccessType access_type)
  {
--    target_ulong ptem, mmask;
-+    target_ulong ptem;
+-    target_ulong ptem;
      int ret, pteh, ptev, pp;
  
      ret = -1;
-@@ -108,12 +108,11 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+@@ -107,9 +106,8 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+     pteh = (pte0 >> 6) & 1;
      if (ptev && h == pteh) {
          /* Check vsid & api */
-         ptem = pte0 & PTE_PTEM_MASK;
--        mmask = PTE_CHECK_MASK;
+-        ptem = pte0 & PTE_PTEM_MASK;
          pp = pte1 & 0x00000003;
-         if (ptem == ctx->ptem) {
+-        if (ptem == ctx->ptem) {
++        if ((pte0 & PTE_PTEM_MASK) == ctx->ptem) {
              if (ctx->raddr != (hwaddr)-1ULL) {
                  /* all matches should have equal RPN, WIMG & PP */
--                if ((ctx->raddr & mmask) != (pte1 & mmask)) {
-+                if ((ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
-                     qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
-                     return -3;
-                 }
+                 if ((ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
 -- 
 2.30.9
 
