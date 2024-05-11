@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE2138C310B
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDCB8C3116
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:56:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5lIq-0000IK-1m; Sat, 11 May 2024 07:54:12 -0400
+	id 1s5lIr-0000Ie-79; Sat, 11 May 2024 07:54:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIo-0000HM-67
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:10 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1s5lIp-0000ID-3n
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:11 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIm-0006xN-8a
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:09 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-34e0d8b737eso2208509f8f.1
- for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:07 -0700 (PDT)
+ id 1s5lIn-0006xZ-4B
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:10 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-34c8592b8dbso2240539f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1715428447; x=1716033247; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3X3XgI50snZLtrZ7HC0OWfW96V7yOplWwRGvCG/f16A=;
- b=oy7HA8sTwvYL1PsdUzrbFRMI7a8Ha8FeajpE9YJSLELz4Td8NtGJu1ONBbLLGQ2InN
- zAkerhVN44JSrmBHF8YOfBavNphAT1l9KBF10xzRrifam07w7uhuWlR6OiHQI8o3WqVt
- wPxvmLxi0W4gFPuWclEzDcUIBHmihIxenzl5DOdu1t6lH1/OT/DZC6TI4DtsYa7P7Ezo
- pNV/NM65synx3Z25l+Ac42AHB9EC4lUnv2ooZyfYGg2L0C52ABhVudm4Bom1Kcuo0qpu
- Jo5/v8YD3awYVdlS1TaQpwdJE6RdutbPaRU+RidGhOhQoSHy3RgzOeQvobRSD9eC9EUJ
- hXwQ==
+ bh=m32BdCDoIDtUZU97rjMJn0R/q9fXLMgEs1BlUjCyWs4=;
+ b=oB1R5M0vWv1DO3FldvS07YuNfuU8aeyfYlmwc9TB1F9yOgj1Jz1bAf9bhnemvzR6wG
+ OV1Sq5KWa3TlENtTuV5eAEkd9fqL+RublvRK2cEOvQD/UiXkvPaptMuJDn2xRHwkTxK4
+ Yp1Nxl9ptHCuRF5lbZGCATDXaHF8XZ85b9GvFIOUchBcb/c0W7EiRBDCCXGwpVILsFJL
+ BBJrY0nS7an44P6X3ENm7BedLmye3a7mbO2J0jFzBQrOoY4cp1OUNRxdmo/7zYR7uRak
+ WmGZhNE8eAbrX2ZFMHdt6lOgqcCPegVh7tkl+r3an55hiHA5rBraB3biDpUbtn+lCGDm
+ a3zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1715428447; x=1716033247;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3X3XgI50snZLtrZ7HC0OWfW96V7yOplWwRGvCG/f16A=;
- b=SsGj1Zf1e+dArXI46O3gUKxd01rq1OuVYvFR6F+UmP6Ct7Z4B7g1p+ZdK+o7wARCwI
- 5E82rNyl5nIWemjiV1PfXWV0w0Ip6fVjsLUEbK3I25E/VBB7eMJLS/Nle6L3jQPM7Fss
- qTDGOPwhc6SiTEPJ/TJDeDpmH9jtf5t7y+NNB9WymgV/AMzxPuJY5nccFbaNdVpXGHYh
- h441ndNO+ygSauBYW0sVadZYnR5xxmDMWZeNyaydp4p/pubSSe/Yo34R1knr/F96rYkM
- smGfZND5SjQY6/MO3HhY6hMRYjjZDraNeQl6U0rzeUBePxV3UT4hme3rTW0B59qOCymV
- 80kA==
-X-Gm-Message-State: AOJu0Yw9xxsDAJZ/3Vw8yZIgDD54EkiQGaqP3ZDx3yIoFFpX6/mw/GOy
- 5gm4G4si21pGIbHxSNpXa1BvchLxgCOOfcHn4l/ZcMyfxUQt2oXvv2SbDKw17MLiazzVyk1lFDc
- bbL0=
-X-Google-Smtp-Source: AGHT+IHlPmGlJB4Ek5LziByD919uV0aCe4JyvBFsNrP2+MClxLY+3S8+I1TVmYuYxXjh90ZP8bpuLg==
-X-Received: by 2002:a5d:6a42:0:b0:34d:d5e5:6816 with SMTP id
- ffacd0b85a97d-35018113161mr6982872f8f.8.1715428446910; 
- Sat, 11 May 2024 04:54:06 -0700 (PDT)
+ bh=m32BdCDoIDtUZU97rjMJn0R/q9fXLMgEs1BlUjCyWs4=;
+ b=HUtbRPihMnERShIcp+gppwSKG+0+ipcWNhsH+BiafaMogJvHxeMHiDjFeeppUUNtWh
+ 2uBJi4cqlH3sKLHjbGyDYZEwNKuAnLv/GKEwqoyPTXVHwa9ZOzkuNek/DhDdMZ56EbLv
+ uZauVKTUmrBYI9WrTSjWvjJgciu1lQ36HjIgcpYUfkfTb95WXMkn8OpvqeTfb2rkxls4
+ 6nEHr2pz6Tn2pGj1ERAm+MhobF+0f1LsG3O0qXOkPZ4hF86rToqzv5/vx5FBgBlWnJ+h
+ LclCzdOXXpyGjkn7GuB0FnoTFetFaa6UusHB67GLwDFyA9CuiP18ug29/q1M7ir9PBxr
+ k3dg==
+X-Gm-Message-State: AOJu0YxxL5K39RBbfpQnvJbBxbjkBQZWNzcU69SIvYs4FSTIN9NEbIfb
+ v6KS9+2PBG30VMbsb+rbOixc5gMOHG5ggy1rVNkfjiquK969dkpNsTzXlzlPkBpj2Ar50MMd/np
+ 8IbU=
+X-Google-Smtp-Source: AGHT+IHZMnFpf1Y2GHDVTd0LeF1e7fmOTek+tFrCz8wth4peVTgG+6xjpJnG9VN+1AZ/GMor4fffag==
+X-Received: by 2002:a5d:698d:0:b0:34b:2a61:b3c9 with SMTP id
+ ffacd0b85a97d-3504a73ece6mr3512221f8f.40.1715428447727; 
+ Sat, 11 May 2024 04:54:07 -0700 (PDT)
 Received: from stoup.. ([195.76.196.165]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.06
+ ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 May 2024 04:54:06 -0700 (PDT)
+ Sat, 11 May 2024 04:54:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 04/17] Add --fulldump and --diffdup options
-Date: Sat, 11 May 2024 13:53:47 +0200
-Message-Id: <20240511115400.7587-5-richard.henderson@linaro.org>
+Subject: [PATCH 05/17] Remove return value from reginfo_dump
+Date: Sat, 11 May 2024 13:53:48 +0200
+Message-Id: <20240511115400.7587-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240511115400.7587-1-richard.henderson@linaro.org>
 References: <20240511115400.7587-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,181 +91,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These allow the inspection of the trace files.
+No uses actually checked the error indication.  Even if we wanted
+to check ferror on the stream, we should do that generically rather
+than per arch.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu.c | 117 +++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 102 insertions(+), 15 deletions(-)
+ risu.h                     | 4 ++--
+ risu_reginfo_aarch64.c     | 8 +++-----
+ risu_reginfo_arm.c         | 6 ++----
+ risu_reginfo_i386.c        | 6 ++----
+ risu_reginfo_loongarch64.c | 6 ++----
+ risu_reginfo_m68k.c        | 6 ++----
+ risu_reginfo_ppc64.c       | 6 ++----
+ risu_reginfo_s390x.c       | 6 ++----
+ 8 files changed, 17 insertions(+), 31 deletions(-)
 
-diff --git a/risu.c b/risu.c
-index 9c31b8c..c28b4a5 100644
---- a/risu.c
-+++ b/risu.c
-@@ -483,23 +483,101 @@ static int apprentice(void)
+diff --git a/risu.h b/risu.h
+index 1b87af2..aa8cc22 100644
+--- a/risu.h
++++ b/risu.h
+@@ -120,8 +120,8 @@ void reginfo_init(struct reginfo *ri, ucontext_t *uc, void *siaddr);
+ /* return 1 if structs are equal, 0 otherwise. */
+ int reginfo_is_eq(struct reginfo *r1, struct reginfo *r2);
+ 
+-/* print reginfo state to a stream, returns 1 on success, 0 on failure */
+-int reginfo_dump(struct reginfo *ri, FILE * f);
++/* print reginfo state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE *f);
+ 
+ /* reginfo_dump_mismatch: print mismatch details to a stream */
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f);
+diff --git a/risu_reginfo_aarch64.c b/risu_reginfo_aarch64.c
+index da221d5..0161044 100644
+--- a/risu_reginfo_aarch64.c
++++ b/risu_reginfo_aarch64.c
+@@ -219,8 +219,8 @@ static void sve_dump_zreg_diff(FILE *f, int vq, const uint64_t *za,
      }
  }
  
--static int ismaster;
-+static int dump_trace(bool isfull)
-+{
-+    RisuResult res;
-+    int tick = 0;
-+
-+    while (1) {
-+        struct reginfo *this_ri;
-+
-+        this_ri = &ri[tick & 1];
-+        res = recv_register_info(this_ri);
-+
-+        switch (res) {
-+        case RES_OK:
-+            switch (header.risu_op) {
-+            case OP_COMPARE:
-+            case OP_TESTEND:
-+            case OP_SIGILL:
-+                printf("%s: (pc %#lx)\n", op_name(header.risu_op),
-+                       (unsigned long)header.pc);
-+
-+                if (isfull || tick == 0) {
-+                    reginfo_dump(this_ri, stdout);
-+                } else {
-+                    struct reginfo *prev_ri = &ri[(tick - 1) & 1];
-+
-+                    if (reginfo_is_eq(prev_ri, this_ri)) {
-+                        /*
-+                         * ??? There should never be no change -- at minimum
-+                         * PC should have advanced.  But for completeness...
-+                         */
-+                        printf("change detail: none\n");
-+                    } else {
-+                        printf("change detail (prev : next):\n");
-+                        reginfo_dump_mismatch(prev_ri, this_ri, stdout);
-+                    }
-+                }
-+                putchar('\n');
-+                if (header.risu_op == OP_TESTEND) {
-+                    return EXIT_SUCCESS;
-+                }
-+                tick++;
-+                break;
-+
-+            case OP_COMPAREMEM:
-+                /* TODO: Dump 8k of data? */
-+                /* fall through */
-+            default:
-+                printf("%s\n", op_name(header.risu_op));
-+                break;
-+            }
-+            break;
-+
-+        case RES_BAD_IO:
-+            fprintf(stderr, "I/O error\n");
-+            return EXIT_FAILURE;
-+        case RES_BAD_MAGIC:
-+            fprintf(stderr, "Unexpected magic number: %#08x\n", header.magic);
-+            return EXIT_FAILURE;
-+        case RES_BAD_SIZE:
-+            fprintf(stderr, "Unexpected payload size: %u\n", header.size);
-+            return EXIT_FAILURE;
-+        case RES_BAD_OP:
-+            fprintf(stderr, "Unexpected opcode: %d\n", header.risu_op);
-+            return EXIT_FAILURE;
-+        default:
-+            fprintf(stderr, "Unexpected recv result %d\n", res);
-+            return EXIT_FAILURE;
-+        }
-+    }
-+}
-+
-+enum {
-+    DO_APPRENTICE,
-+    DO_MASTER,
-+    DO_FULLDUMP,
-+    DO_DIFFDUMP,
-+};
-+
-+static int operation = DO_APPRENTICE;
- 
- static void usage(void)
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE * f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE * f)
  {
-     fprintf(stderr,
--            "Usage: risu [--master] [--host <ip>] [--port <port>] <image file>"
--            "\n\n");
--    fprintf(stderr,
--            "Run through the pattern file verifying each instruction\n");
--    fprintf(stderr, "between master and apprentice risu processes.\n\n");
--    fprintf(stderr, "Options:\n");
--    fprintf(stderr, "  --master          Be the master (server)\n");
--    fprintf(stderr, "  -t, --trace=FILE  Record/playback " TRACE_TYPE " trace file\n");
--    fprintf(stderr,
--            "  -h, --host=HOST   Specify master host machine (apprentice only)"
--            "\n");
--    fprintf(stderr,
-+            "Usage: risu [--master|--fulldump|--diffdump]\n"
-+            "            [--host <ip>] [--port <port>] <image file>\n"
-+            "\n"
-+            "Run through the pattern file verifying each instruction\n"
-+            "between master and apprentice risu processes.\n"
-+            "\n"
-+            "Options:\n"
-+            "  --master          Be the master (server)\n"
-+            "  --fulldump        Dump each record\n"
-+            "  --diffdump        Dump difference between each record\n"
-+            "  -t, --trace=FILE  Record/playback " TRACE_TYPE " trace file\n"
-+            "  -h, --host=HOST   Specify master host machine\n"
-             "  -p, --port=PORT   Specify the port to connect to/listen on "
-             "(default 9191)\n");
-     if (arch_extra_help) {
-@@ -511,7 +589,9 @@ static struct option * setup_options(char **short_opts)
- {
-     static struct option default_longopts[] = {
-         {"help", no_argument, 0, '?'},
--        {"master", no_argument, &ismaster, 1},
-+        {"master", no_argument, &operation, DO_MASTER},
-+        {"fulldump", no_argument, &operation, DO_FULLDUMP},
-+        {"diffdump", no_argument, &operation, DO_DIFFDUMP},
-         {"host", required_argument, 0, 'h'},
-         {"port", required_argument, 0, 'p'},
-         {"trace", required_argument, 0, 't'},
-@@ -519,7 +599,7 @@ static struct option * setup_options(char **short_opts)
-     };
-     struct option *lopts = &default_longopts[0];
- 
--    *short_opts = "h:p:t:";
-+    *short_opts = "d:h:p:t:";
- 
-     if (arch_long_opts) {
-         const size_t osize = sizeof(struct option);
-@@ -551,6 +631,7 @@ int main(int argc, char **argv)
-     struct option *longopts;
-     char *shortopts;
-     stack_t ss;
-+    bool ismaster;
- 
-     longopts = setup_options(&shortopts);
- 
-@@ -586,6 +667,8 @@ int main(int argc, char **argv)
+     int i;
+     fprintf(f, "  faulting insn %08x\n", ri->faulting_insn);
+@@ -263,7 +263,7 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+             sve_dump_preg(f, vq, p);
+             fprintf(f, "\n");
          }
+-        return !ferror(f);
++        return;
      }
  
-+    ismaster = operation == DO_MASTER;
-+
-     if (trace) {
-         if (strcmp(trace_fn, "-") == 0) {
-             comm_fd = ismaster ? STDOUT_FILENO : STDIN_FILENO;
-@@ -609,6 +692,10 @@ int main(int argc, char **argv)
+     for (i = 0; i < 32; i++) {
+@@ -271,8 +271,6 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+         fprintf(f, "  V%-2d    : %016" PRIx64 "%016" PRIx64 "\n",
+                 i, v[1], v[0]);
+     }
+-
+-    return !ferror(f);
+ }
+ 
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
+diff --git a/risu_reginfo_arm.c b/risu_reginfo_arm.c
+index 221bd8a..0e179be 100644
+--- a/risu_reginfo_arm.c
++++ b/risu_reginfo_arm.c
+@@ -161,8 +161,8 @@ int reginfo_is_eq(struct reginfo *r1, struct reginfo *r2)
+     return memcmp(r1, r2, sizeof(*r1)) == 0;    /* ok since we memset 0 */
+ }
+ 
+-/* reginfo_dump: print the state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE *f)
++/* reginfo_dump: print the state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE *f)
+ {
+     int i;
+     if (ri->faulting_insn_size == 2) {
+@@ -179,8 +179,6 @@ int reginfo_dump(struct reginfo *ri, FILE *f)
+                 i, (unsigned long long) ri->fpregs[i]);
+     }
+     fprintf(f, "  fpscr: %08x\n", ri->fpscr);
+-
+-    return !ferror(f);
+ }
+ 
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
+diff --git a/risu_reginfo_i386.c b/risu_reginfo_i386.c
+index 18d15ca..f4cf9a3 100644
+--- a/risu_reginfo_i386.c
++++ b/risu_reginfo_i386.c
+@@ -310,8 +310,8 @@ static char get_vecletter(uint64_t features)
+     }
+ }
+ 
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE *f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE *f)
+ {
+     uint64_t features;
+     int i, j, n, w;
+@@ -345,8 +345,6 @@ int reginfo_dump(struct reginfo *ri, FILE *f)
+             fprintf(f, "  k%-5d: %016" PRIx64 "\n", i, ri->kregs[i]);
          }
      }
+-
+-    return !ferror(f);
+ }
  
-+    if (operation == DO_FULLDUMP || operation == DO_DIFFDUMP) {
-+        return dump_trace(operation == DO_FULLDUMP);
-+    }
-+
-     imgfile = argv[optind];
-     if (!imgfile) {
-         fprintf(stderr, "Error: must specify image file name\n\n");
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
+diff --git a/risu_reginfo_loongarch64.c b/risu_reginfo_loongarch64.c
+index 630d6b2..060715f 100644
+--- a/risu_reginfo_loongarch64.c
++++ b/risu_reginfo_loongarch64.c
+@@ -159,8 +159,8 @@ int reginfo_is_eq(struct reginfo *r1, struct reginfo *r2)
+     return !memcmp(r1, r2, sizeof(*r1));
+ }
+ 
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE * f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE * f)
+ {
+     int i;
+     fprintf(f, "  faulting insn %08x\n", ri->faulting_insn);
+@@ -191,8 +191,6 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+             fprintf(f, "  vreg%-2d    : %016lx\n", i, ri->vregs[4 * i]);
+         }
+     }
+-
+-    return !ferror(f);
+ }
+ 
+ /* reginfo_dump_mismatch: print mismatch details to a stream */
+diff --git a/risu_reginfo_m68k.c b/risu_reginfo_m68k.c
+index 18ae1d8..a53244d 100644
+--- a/risu_reginfo_m68k.c
++++ b/risu_reginfo_m68k.c
+@@ -92,8 +92,8 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
+     return 1;
+ }
+ 
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE *f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE *f)
+ {
+     int i;
+     fprintf(f, "  pc            \e[1;101;37m0x%08x\e[0m\n", ri->pc);
+@@ -114,8 +114,6 @@ int reginfo_dump(struct reginfo *ri, FILE *f)
+     }
+ 
+     fprintf(f, "\n");
+-
+-    return !ferror(f);
+ }
+ 
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
+diff --git a/risu_reginfo_ppc64.c b/risu_reginfo_ppc64.c
+index 486bbf9..fc69805 100644
+--- a/risu_reginfo_ppc64.c
++++ b/risu_reginfo_ppc64.c
+@@ -103,8 +103,8 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
+     return 1;
+ }
+ 
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE * f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE * f)
+ {
+     int i;
+ 
+@@ -143,8 +143,6 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+                 ri->vrregs.vrregs[i][0], ri->vrregs.vrregs[i][1],
+                 ri->vrregs.vrregs[i][2], ri->vrregs.vrregs[i][3]);
+     }
+-
+-    return !ferror(f);
+ }
+ 
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
+diff --git a/risu_reginfo_s390x.c b/risu_reginfo_s390x.c
+index 9c8fcfd..cbf168e 100644
+--- a/risu_reginfo_s390x.c
++++ b/risu_reginfo_s390x.c
+@@ -82,8 +82,8 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
+            memcmp(&m->fprs, &a->fprs, sizeof(m->fprs)) == 0;
+ }
+ 
+-/* reginfo_dump: print state to a stream, returns nonzero on success */
+-int reginfo_dump(struct reginfo *ri, FILE * f)
++/* reginfo_dump: print state to a stream */
++void reginfo_dump(struct reginfo *ri, FILE * f)
+ {
+     int i;
+ 
+@@ -103,8 +103,6 @@ int reginfo_dump(struct reginfo *ri, FILE * f)
+                 i + 8, *(uint64_t *)&ri->fprs[i + 8]);
+     }
+     fprintf(f, "\tFPC: %8x\n\n", ri->fpc);
+-
+-    return !ferror(f);
+ }
+ 
+ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE *f)
 -- 
 2.34.1
 
