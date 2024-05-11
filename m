@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D3A8C2E93
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C9B8C2EA9
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:51:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bp7-0005Am-Q3; Fri, 10 May 2024 21:46:53 -0400
+	id 1s5bpb-0006UU-4H; Fri, 10 May 2024 21:47:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5boQ-0004wu-BZ; Fri, 10 May 2024 21:46:11 -0400
+ id 1s5boS-0004zN-K5; Fri, 10 May 2024 21:46:13 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5boA-0003Ns-LR; Fri, 10 May 2024 21:46:09 -0400
+ id 1s5boB-0003O3-Nj; Fri, 10 May 2024 21:46:11 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 456E04E6785;
- Sat, 11 May 2024 03:45:53 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 51E624E6786;
+ Sat, 11 May 2024 03:45:54 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id kmbr6vQkIwxF; Sat, 11 May 2024 03:45:51 +0200 (CEST)
+ with ESMTP id i9aHRlJlCy3K; Sat, 11 May 2024 03:45:52 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 5508E4E6786; Sat, 11 May 2024 03:45:51 +0200 (CEST)
-Message-Id: <7ff8076e04bd8f019e89585927d9c27aea86ed4d.1715390232.git.balaton@eik.bme.hu>
+ id 60EA84E6787; Sat, 11 May 2024 03:45:52 +0200 (CEST)
+Message-Id: <b10fd9ac35318a384623f0f258465265f01897e5.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 12/48] target/ppc/mmu_common.c: Split off real mode cases
- in get_physical_address_wtlb()
+Subject: [PATCH v6 13/48] target/ppc/mmu_common.c: Inline and remove
+ check_physical()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:45:51 +0200 (CEST)
+Date: Sat, 11 May 2024 03:45:52 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,76 +61,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The real mode handling is identical in the remaining switch cases.
-Split off these common real mode cases into a separate conditional to
-leave only the else branches in the switch that are different.
+This function just does two assignments and and unnecessary check that
+is always true so inline it in the only caller left and remove it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 34 +++++++++-------------------------
- 1 file changed, 9 insertions(+), 25 deletions(-)
+ target/ppc/mmu_common.c | 26 +++-----------------------
+ 1 file changed, 3 insertions(+), 23 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 9f177b6976..b13150ce23 100644
+index b13150ce23..2f412dd7c5 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1172,7 +1172,6 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-                                      MMUAccessType access_type, int type,
-                                      int mmu_idx)
- {
--    int ret = -1;
-     bool real_mode;
- 
-     if (env->mmu_model == POWERPC_MMU_BOOKE) {
-@@ -1184,38 +1183,23 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
- 
-     real_mode = (type == ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR, IR)
-                                       : !FIELD_EX64(env->msr, MSR, DR);
-+    if (real_mode && (env->mmu_model == POWERPC_MMU_SOFT_6xx ||
-+                      env->mmu_model == POWERPC_MMU_SOFT_4xx ||
-+                      env->mmu_model == POWERPC_MMU_REAL)) {
-+        return check_physical(env, ctx, eaddr, access_type);
-+    }
- 
-     switch (env->mmu_model) {
-     case POWERPC_MMU_SOFT_6xx:
--        if (real_mode) {
--            ret = check_physical(env, ctx, eaddr, access_type);
--        } else {
--            ret = mmu6xx_get_physical_address(env, ctx, eaddr, access_type,
--                                              type);
--        }
--        break;
--
-+        return mmu6xx_get_physical_address(env, ctx, eaddr, access_type, type);
-     case POWERPC_MMU_SOFT_4xx:
--        if (real_mode) {
--            ret = check_physical(env, ctx, eaddr, access_type);
--        } else {
--            ret = mmu40x_get_physical_address(env, ctx, eaddr, access_type);
--        }
--        break;
-+        return mmu40x_get_physical_address(env, ctx, eaddr, access_type);
-     case POWERPC_MMU_REAL:
--        if (real_mode) {
--            ret = check_physical(env, ctx, eaddr, access_type);
--        } else {
--            cpu_abort(env_cpu(env),
--                      "PowerPC in real mode do not do any translation\n");
--        }
--        return -1;
-+        cpu_abort(env_cpu(env),
-+                  "PowerPC in real mode do not do any translation\n");
-     default:
-         cpu_abort(env_cpu(env), "Unknown or invalid MMU model\n");
--        return -1;
+@@ -1145,28 +1145,6 @@ void dump_mmu(CPUPPCState *env)
      }
--
--    return ret;
  }
  
- static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong address,
+-static int check_physical(CPUPPCState *env, mmu_ctx_t *ctx, target_ulong eaddr,
+-                          MMUAccessType access_type)
+-{
+-    ctx->raddr = eaddr;
+-    ctx->prot = PAGE_READ | PAGE_EXEC;
+-
+-    switch (env->mmu_model) {
+-    case POWERPC_MMU_SOFT_6xx:
+-    case POWERPC_MMU_SOFT_4xx:
+-    case POWERPC_MMU_REAL:
+-    case POWERPC_MMU_BOOKE:
+-        ctx->prot |= PAGE_WRITE;
+-        break;
+-
+-    default:
+-        /* Caller's checks mean we should never get here for other models */
+-        g_assert_not_reached();
+-    }
+-
+-    return 0;
+-}
+-
+ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+                                      target_ulong eaddr,
+                                      MMUAccessType access_type, int type,
+@@ -1186,7 +1164,9 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     if (real_mode && (env->mmu_model == POWERPC_MMU_SOFT_6xx ||
+                       env->mmu_model == POWERPC_MMU_SOFT_4xx ||
+                       env->mmu_model == POWERPC_MMU_REAL)) {
+-        return check_physical(env, ctx, eaddr, access_type);
++        ctx->raddr = eaddr;
++        ctx->prot = PAGE_RWX;
++        return 0;
+     }
+ 
+     switch (env->mmu_model) {
 -- 
 2.30.9
 
