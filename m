@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE91A8C331B
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 20:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7BA8C332D
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 20:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5rGw-0005hr-Aq; Sat, 11 May 2024 14:16:38 -0400
+	id 1s5rPX-0000Iy-NO; Sat, 11 May 2024 14:25:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cyy@cyyself.name>)
- id 1s5rGp-0005gP-J7; Sat, 11 May 2024 14:16:33 -0400
-Received: from out203-205-221-191.mail.qq.com ([203.205.221.191])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1s5rPM-0000HB-Jf
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:20 -0400
+Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cyy@cyyself.name>)
- id 1s5rGm-0003JO-23; Sat, 11 May 2024 14:16:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
- t=1715451372; bh=ptDqAh+JyrxoTyU7jiEQOt6FQ3DkmM4RRxl41YjMsuQ=;
- h=Subject:From:In-Reply-To:Date:Cc:References:To;
- b=VWxIDNJvTL+RAdMBDn59h5PsLeHZMuuTozNOavYKzPNa/5qjP1+fdI2qEeSYHhayL
- nt2v/GLqw7pfbBTQy75kljheJ0EEsZSuHgBfFWh6WkP3F1unrXsWZedLD0CmHDd+30
- itXx+tJOZL6mGDOWliWa/opGZwvnlLBzGJqJQ+s0=
-Received: from smtpclient.apple ([114.253.253.76])
- by newxmesmtplogicsvrszb9-1.qq.com (NewEsmtp) with SMTP
- id EC62B8B7; Sun, 12 May 2024 01:59:06 +0800
-X-QQ-mid: xmsmtpt1715450346tsfzjzgsz
-Message-ID: <tencent_15B0A3132E564C6D8851A33F9F9360A8F606@qq.com>
-X-QQ-XMAILINFO: NvH2zBBgt3uTeVHmaSVjEgATpQzdvoHk9yzssfnb8ytJ7LHXhrm43LozF1xxDC
- s7rIqooNm1a193/eYrnBRnBuW2qGsi1X2YfB55VKnvcKtKqy+Q5e39r99mf8nRl6MdNpyfNunOo8
- mrANejJhqhoKz67N09/Ue4Gud+fBap39PPgCQfqABwyLbIUAhvB4xBkT3P4Tt+vLxwkn3eNvtiRt
- KQgi8E8SbdTMCLm8XvMU/cluy4B/tRXoHy9S95A0/P9NXnCbP27T77w8nu/0N5mS3D90jdZPU4bT
- 8MnvW5m2RUt2rufa5szxnQTdZ0c/t5t1/guY1EbyAO/LQP2E6CnAWKbyMJrZN3RyHf3lN5eJHhny
- Pk7bSJtOe3O6MD4jEADifk26QhrC4seO0BY60h9C3RXALLan1Ueom4WHoa6Pr2LuyDkqD7liZ/u8
- 5QPRcGllC7DcskAU9LqNflTuaHvx4YSCUoLCPTfcJlgYbf8z4ZqsJ40CiwWDLxQH+xbtKBC9BjW0
- +Po7gyAImgLtqROW1wQEhh3xBHa2UUQcLnL9GnNtBSf0df9dDVBB4fziBjSUfoMXi/uzpj4vwV0+
- s9vY3vLWfG1MXlNSP8xBjmZxCxB/qhzUVfNiPi2NkQSyB6LdGLaeqe8aUVQa/3yCJRqn5aiJPQK0
- Ge5ikD0t5EPWEmJ3Smq/sHm90DaCgAciriWn1yeq9CwTVrTY0uPIKz5yspMVt33E5sBzmmCqYU0k
- uoxddFYAVqVXmHIMrddsz9cqyEphha2pgFpwonAB3EC3M0s0sZbwKYiQ22cHo7uhaQjlV9x+JhTq
- OmbzYfj3DT8g39IzoRZAtBSrHMLXrU40v5qy0At1uyuqBIMzGwtKmQwjnACK/JerrfxqDpTSXuGR
- 5iZxmzcPFXskJCkpeBBAnSCG1CYsu65J1fC3Klj9sQ4+Hlm09oNK0HQfRrxnf/vqTMUq94ArR0EF
- V4ADLd5i/bhR0F4EI69g==
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH RESEND] target/riscv/cpu.c: fix Zvkb extension config
-From: Yangyu Chen <cyy@cyyself.name>
-In-Reply-To: <tencent_7E34EEF0F90B9A68BF38BEE09EC6D4877C0A@qq.com>
-Date: Sun, 12 May 2024 01:58:56 +0800
-Cc: qemu-devel@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Max Chou <max.chou@sifive.com>
-Content-Transfer-Encoding: quoted-printable
-X-OQ-MSGID: <D1676BE2-3962-4FC5-AAB0-32A89C8B50DC@cyyself.name>
-References: <tencent_7E34EEF0F90B9A68BF38BEE09EC6D4877C0A@qq.com>
-To: qemu-riscv@nongnu.org
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-Received-SPF: none client-ip=203.205.221.191; envelope-from=cyy@cyyself.name;
- helo=out203-205-221-191.mail.qq.com
-X-Spam_score_int: 10
-X-Spam_score: 1.0
-X-Spam_bar: +
-X-Spam_report: (1.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- HELO_DYNAMIC_IPADDR=1.951, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, RDNS_DYNAMIC=0.982, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1s5rPJ-0004xy-DB
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1715451913;
+ bh=jQ0Pw+WW0LJ51tJ+X//v//JYzorQJ2wh9aTB/8IaV7A=;
+ h=From:To:Cc:Subject:Date:From;
+ b=Tx0e4TRaBKkQjtVhpwoEfT9o13qqHdAlKRKIbWVUMgmuvj0Qo/r4D6p75kSZYD70v
+ ZRQrtW9zi34ooipoJ9F5xIhv/Au/dE9NcFWlKRuaxrDDSCPQW7EpPQ7ewxYmdnUI7T
+ lFkyVfGkMTVwQ2NH5jez/10a0lTO98yC4GIOD2eS14LmR2+x4U/nc1lyCkDhQcRePb
+ 3Qgr9De2/+Qs/WbxKLCovl9eTyLvmX8yiWWw93Ph08c0vwN0VpDr7IQknlgWWy70+D
+ d5oJ4bCybEmNbbthqEosVn0gGnbQaYZCVRiGUTj4xpjQCNDv2mT0XyCnu0xpGaeReR
+ Q6ZKMAefDLrlQ==
+Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: dmitry.osipenko)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 08EEF3780BFE;
+ Sat, 11 May 2024 18:25:10 +0000 (UTC)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
+ ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
+Subject: [PATCH v11 00/10] Support blob memory and venus on qemu
+Date: Sat, 11 May 2024 21:22:41 +0300
+Message-ID: <20240511182251.1442078-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.44.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=46.235.227.194;
+ envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,37 +87,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Note: This patch should also backport to stable-v8.2.
+Hello,
 
-> On May 11, 2024, at 19:26, Yangyu Chen <cyy@cyyself.name> wrote:
->=20
-> This code has a typo that writes zvkb to zvkg, causing users can't
-> enable zvkb through the config. This patch gets this fixed.
->=20
-> Signed-off-by: Yangyu Chen <cyy@cyyself.name>
-> Fixes: ea61ef7097d0 ("target/riscv: Move vector crypto extensions to =
-riscv_cpu_extensions")
-> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> ---
-> target/riscv/cpu.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index eb1a2e7d6d..13cd34adbd 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1535,7 +1535,7 @@ const RISCVCPUMultiExtConfig =
-riscv_cpu_extensions[] =3D {
->     /* Vector cryptography extensions */
->     MULTI_EXT_CFG_BOOL("zvbb", ext_zvbb, false),
->     MULTI_EXT_CFG_BOOL("zvbc", ext_zvbc, false),
-> -    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkg, false),
-> +    MULTI_EXT_CFG_BOOL("zvkb", ext_zvkb, false),
->     MULTI_EXT_CFG_BOOL("zvkg", ext_zvkg, false),
->     MULTI_EXT_CFG_BOOL("zvkned", ext_zvkned, false),
->     MULTI_EXT_CFG_BOOL("zvknha", ext_zvknha, false),
-> --=20
-> 2.43.0
->=20
+This series enables Vulkan Venus context support on virtio-gpu.
+
+All virglrender and almost all Linux kernel prerequisite changes
+needed by Venus are already in upstream. For kernel there is a pending
+KVM patchset that fixes mapping of compound pages needed for DRM drivers
+using TTM [1], othewrwise hostmem blob mapping will fail with a KVM error
+from Qemu.
+
+[1] https://lore.kernel.org/kvm/20240229025759.1187910-1-stevensd@google.com/
+
+You'll need to use recent Mesa version containing patch that removes
+dependency on cross-device feature from Venus that isn't supported by
+Qemu [2].
+
+[2] https://gitlab.freedesktop.org/mesa/mesa/-/commit/087e9a96d13155e26987befae78b6ccbb7ae242b
+
+Example Qemu cmdline that enables Venus:
+
+  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=true,venus=true \
+      -machine q35,accel=kvm,memory-backend=mem1 \
+      -object memory-backend-memfd,id=mem1,size=8G -m 8G
+
+
+Changes from V10 to V11
+
+- Replaced cmd_resume bool in struct ctrl_command with
+  "cmd->finished + !VIRTIO_GPU_FLAG_FENCE" checking as was requested
+  by Akihiko Odaki.
+
+- Reworked virgl_cmd_resource_unmap/unref_blob() to avoid re-adding
+  the 'async_unmap_in_progress' flag that was dropped in v9:
+
+    1. virgl_cmd_resource_[un]map_blob() now doesn't check itself whether
+       resource was previously mapped and lets virglrenderer to do the
+       checking.
+
+    2. error returned by virgl_renderer_resource_unmap() is now handled
+       and reported properly, previously the error wasn't checked. The
+       virgl_renderer_resource_unmap() fails if resource wasn't mapped.
+
+    3. virgl_cmd_resource_unref_blob() now doesn't allow to unref resource
+       that is mapped, it's a error condition if guest didn't unmap resource
+       before doing the unref. Previously unref was implicitly unmapping
+       resource.
+
+Changes from V9 to V10
+
+- Dropped 'async_unmap_in_progress' variable and switched to use
+  aio_bh_new() isntead of oneshot variant in the "blob commands" patch.
+
+- Further improved error messages by printing error code when actual error
+  occurrs and using ERR_UNSPEC instead of ERR_ENOMEM when we don't really
+  know if it was ENOMEM for sure.
+
+- Added vdc->unrealize for the virtio GL device and freed virgl data.
+
+- Dropped UUID and doc/migration patches. UUID feature isn't needed
+  anymore, instead we changed Mesa Venus driver to not require UUID.
+
+- Renamed virtio-gpu-gl "vulkan" property name back to "venus".
+
+Changes from V8 to V9
+
+- Added resuming of cmdq processing when hostmem MR is freed,
+  as was suggested by Akihiko Odaki.
+
+- Added more error messages, suggested by Akihiko Odaki
+
+- Dropped superfluous 'res->async_unmap_completed', suggested
+  by Akihiko Odaki.
+
+- Kept using cmd->suspended flag. Akihiko Odaki suggested to make
+  virtio_gpu_virgl_process_cmd() return false if cmd processing is
+  suspended, but it's not easy to implement due to ubiquitous
+  VIRTIO_GPU_FILL_CMD() macros that returns void, requiring to change
+  all the virtio-gpu processing code.
+
+- Added back virtio_gpu_virgl_resource as was requested by Akihiko Odaki,
+  though I'm not convinced it's really needed.
+
+- Switched to use GArray, renamed capset2_max_ver/size vars and moved
+  "vulkan" property definition to the virtio-gpu-gl device in the Venus
+  patch, like was suggested by Akihiko Odaki.
+
+- Moved UUID to virtio_gpu_virgl_resource and dropped UUID save/restore
+  since it will require bumping VM version and virgl device isn't miratable
+  anyways.
+
+- Fixed exposing UUID feature with Rutabaga
+
+- Dropped linux-headers update patch because headers were already updated
+  in Qemu/staging.
+
+- Added patch that updates virtio migration doc with a note about virtio-gpu
+  migration specifics, suggested by Akihiko Odaki.
+
+- Addressed coding style issue noticed by Akihiko Odaki
+
+Changes from V7 to V8
+
+- Supported suspension of virtio-gpu commands processing and made
+  unmapping of hostmem region asynchronous by blocking/suspending
+  cmd processing until region is unmapped. Suggested by Akihiko Odaki.
+
+- Fixed arm64 building of x86 targets using updated linux-headers.
+  Corrected the update script. Thanks to Rob Clark for reporting
+  the issue.
+
+- Added new patch that makes registration of virgl capsets dynamic.
+  Requested by Antonio Caggiano and Pierre-Eric Pelloux-Prayer.
+
+- Venus capset now isn't advertised if Vulkan is disabled with vulkan=false
+
+Changes from V6 to V7
+
+- Used scripts/update-linux-headers.sh to update Qemu headers based
+  on Linux v6.8-rc3 that adds Venus capset definition to virtio-gpu
+  protocol, was requested by Peter Maydel
+
+- Added r-bs that were given to v6 patches. Corrected missing s-o-bs
+
+- Dropped context_init Qemu's virtio-gpu device configuration flag,
+  was suggested by Marc-André Lureau
+
+- Added missing error condition checks spotted by Marc-André Lureau
+  and Akihiko Odaki, and few more
+
+- Returned back res->mr referencing to memory_region_init_ram_ptr() like
+  was suggested by Akihiko Odaki. Incorporated fix suggested by Pierre-Eric
+  to specify the MR name
+
+- Dropped the virgl_gpu_resource wrapper, cleaned up and simplified
+  patch that adds blob-cmd support
+
+- Fixed improper blob resource removal from resource list on resource_unref
+  that was spotted by Akihiko Odaki
+
+- Change order of the blob patches, was suggested by Akihiko Odaki.
+  The cmd_set_scanout_blob support is enabled first
+
+- Factored out patch that adds resource management support to virtio-gpu-gl,
+  was requested by Marc-André Lureau
+
+- Simplified and improved the UUID support patch, dropped the hash table
+  as we don't need it for now. Moved QemuUUID to virtio_gpu_simple_resource.
+  This all was suggested by Akihiko Odaki and Marc-André Lureau
+
+- Dropped console_has_gl() check, suggested by Akihiko Odaki
+
+- Reworked Meson cheking of libvirglrender features, made new features
+  available based on virglrender pkgconfig version instead of checking
+  symbols in header. This should fix build error using older virglrender
+  version, reported by Alex Bennée
+
+- Made enabling of Venus context configrable via new virtio-gpu device
+  "vulkan=true" flag, suggested by Marc-André Lureau. The flag is disabled
+  by default because it requires blob and hostmem options to be enabled
+  and configured
+
+Changes from V5 to V6
+
+- Move macros configurations under virgl.found() and rename
+  HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS.
+
+- Handle the case while context_init is disabled.
+
+- Enable context_init by default.
+
+- Move virtio_gpu_virgl_resource_unmap() into
+  virgl_cmd_resource_unmap_blob().
+
+- Introduce new struct virgl_gpu_resource to store virgl specific members.
+
+- Remove erro handling of g_new0, because glib will abort() on OOM.
+
+- Set resource uuid as option.
+
+- Implement optional subsection of vmstate_virtio_gpu_resource_uuid_state
+  for virtio live migration.
+
+- Use g_int_hash/g_int_equal instead of the default
+
+- Add scanout_blob function for virtio-gpu-virgl
+
+- Resolve the memory leak on virtio-gpu-virgl
+
+- Remove the unstable API flags check because virglrenderer is already 1.0
+
+- Squash the render server flag support into "Initialize Venus"
+
+Changes from V4 (virtio gpu V4) to V5
+
+- Inverted patch 5 and 6 because we should configure
+  HAVE_VIRGL_CONTEXT_INIT firstly.
+
+- Validate owner of memory region to avoid slowing down DMA.
+
+- Use memory_region_init_ram_ptr() instead of
+  memory_region_init_ram_device_ptr().
+
+- Adjust sequence to allocate gpu resource before virglrender resource
+  creation
+
+- Add virtio migration handling for uuid.
+
+- Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS.
+  https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd.com/
+
+- Add meson check to make sure unstable APIs defined from 0.9.0.
+
+Changes from V1 to V2 (virtio gpu V4)
+
+- Remove unused #include "hw/virtio/virtio-iommu.h"
+
+- Add a local function, called virgl_resource_destroy(), that is used
+  to release a vgpu resource on error paths and in resource_unref.
+
+- Remove virtio_gpu_virgl_resource_unmap from
+  virtio_gpu_cleanup_mapping(),
+  since this function won't be called on blob resources and also because
+  blob resources are unmapped via virgl_cmd_resource_unmap_blob().
+
+- In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
+  and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
+  has been fully initialized.
+
+- Memory region has a different life-cycle from virtio gpu resources
+  i.e. cannot be released synchronously along with the vgpu resource.
+  So, here the field "region" was changed to a pointer and is allocated
+  dynamically when the blob is mapped.
+  Also, since the pointer can be used to indicate whether the blob
+  is mapped, the explicite field "mapped" was removed.
+
+- In virgl_cmd_resource_map_blob(), add check on the value of
+  res->region, to prevent beeing called twice on the same resource.
+
+- Add a patch to enable automatic deallocation of memory regions to resolve
+  use-after-free memory corruption with a reference.
+
+Antonio Caggiano (2):
+  virtio-gpu: Handle resource blob commands
+  virtio-gpu: Support Venus context
+
+Dmitry Osipenko (4):
+  virtio-gpu: Unrealize GL device
+  virtio-gpu: Use pkgconfig version to decide which virgl features are
+    available
+  virtio-gpu: Don't require udmabuf when blobs and virgl are enabled
+  virtio-gpu: Support suspension of commands processing
+
+Huang Rui (2):
+  virtio-gpu: Support context-init feature with virglrenderer
+  virtio-gpu: Add virgl resource management
+
+Pierre-Eric Pelloux-Prayer (1):
+  virtio-gpu: Register capsets dynamically
+
+Robert Beckett (1):
+  virtio-gpu: Support blob scanout using dmabuf fd
+
+ hw/display/virtio-gpu-gl.c     |  23 +-
+ hw/display/virtio-gpu-virgl.c  | 541 +++++++++++++++++++++++++++++++--
+ hw/display/virtio-gpu.c        |  35 ++-
+ include/hw/virtio/virtio-gpu.h |  17 +-
+ meson.build                    |  10 +-
+ 5 files changed, 592 insertions(+), 34 deletions(-)
+
+-- 
+2.44.0
 
 
