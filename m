@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1368C3329
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 20:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E320D8C332E
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 20:27:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5rPW-0000Hn-4G; Sat, 11 May 2024 14:25:30 -0400
+	id 1s5rPY-0000JQ-Br; Sat, 11 May 2024 14:25:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s5rPM-0000HA-Jb
- for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:20 -0400
+ id 1s5rPN-0000Hb-TS
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:21 -0400
 Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s5rPK-0004y3-Ek
- for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:19 -0400
+ id 1s5rPL-0004y9-8W
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 14:25:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1715451915;
- bh=3bQCBHzTAYsqEJFg3UkbvZGLZxQ6fvJwm6Hfq6oVsPY=;
+ s=mail; t=1715451918;
+ bh=1QrzEIUmiKgQISv5QJY5+WLd9t8Tmm7ZRHDFI/lNffA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IZWG3Pu55IwAL+0tUIFQxB2KAP0zrXwkXPAE+58o8oLCTMRAOqH0SvQpPHYAY32oP
- hC3oh+iAxpgo8O7gYgpcfN4vemkkErxOH55PTDXaLi7JwnUy6j2WK1/+4Iz+zdP7GJ
- ucR4M+Ebmx/CHhUNxFIac3c2geO3jKGdOFi5tNnQKYWIGuiBZT96bWYfizjESV9gRW
- Qf0Zgche8ODwdqsk0DPA1yKlzIEO7etHemx8sxo708LAo1oddZTH3fMVkHAZJPPTAG
- iSmNl5WCm9aoOoAm9UXb4R1hTxR0SFkq/SjdlfhMpjv3Uc99QDB/V8nNzuHfenIIBL
- UKPL3dM93bT+g==
+ b=yHEyHha2dYG3+G+rfB3xNZXMV342ULPaQ0wddRkqPpGYggQhGrjm8A70HkIiP/nV3
+ MgXQUulJp2tS+SAQETKFnRZQFBHKpDsvqSFz77tmVWP2z0bdBNx/XEjsg9BgFHOFkW
+ 1QfMXj6uxdfsIKKV3tz/StK3ry7eJwCrC2WeL8ghTzcp5nscAkVTuDWE353iq3QwmA
+ 2Smg/OeVSaXPfhOgGxxWzho+5RvOXPBxiO1cL8KpWBEZIIIbH/hAg3cbpU4aNQHeUA
+ PciAHrmw6t3ZQmL9o1Z/HsFnQpCfkLnH47nFDBifUgDHI/hRaR7/42fT3f6ZjwQ1iw
+ hqGBe9kpMa1pA==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 885AB3782190;
- Sat, 11 May 2024 18:25:13 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id EC38F3782191;
+ Sat, 11 May 2024 18:25:15 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -57,9 +57,10 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v11 01/10] virtio-gpu: Unrealize GL device
-Date: Sat, 11 May 2024 21:22:42 +0300
-Message-ID: <20240511182251.1442078-2-dmitry.osipenko@collabora.com>
+Subject: [PATCH v11 02/10] virtio-gpu: Use pkgconfig version to decide which
+ virgl features are available
+Date: Sat, 11 May 2024 21:22:43 +0300
+Message-ID: <20240511182251.1442078-3-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240511182251.1442078-1-dmitry.osipenko@collabora.com>
 References: <20240511182251.1442078-1-dmitry.osipenko@collabora.com>
@@ -88,74 +89,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even though GL GPU doesn't support hotplugging today, free virgl
-resources when GL device is unrealized. For consistency.
+New virglrerenderer features were stabilized with release of v1.0.0.
+Presence of symbols in virglrenderer.h doesn't guarantee ABI compatibility
+with pre-release development versions of libvirglerender. Use virglrenderer
+version to decide reliably which virgl features are available.
 
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-gl.c     | 11 +++++++++++
- hw/display/virtio-gpu-virgl.c  |  9 +++++++++
- include/hw/virtio/virtio-gpu.h |  1 +
- 3 files changed, 21 insertions(+)
+ meson.build | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index e06be60dfbfc..0c0a8d136954 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -136,6 +136,16 @@ static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
-+{
-+    VirtIOGPU *g = VIRTIO_GPU(qdev);
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(qdev);
-+
-+    if (gl->renderer_inited) {
-+        virtio_gpu_virgl_deinit(g);
-+    }
-+}
-+
- static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -149,6 +159,7 @@ static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
-     vgc->update_cursor_data = virtio_gpu_gl_update_cursor_data;
- 
-     vdc->realize = virtio_gpu_gl_device_realize;
-+    vdc->unrealize = virtio_gpu_gl_device_unrealize;
-     vdc->reset = virtio_gpu_gl_reset;
-     device_class_set_props(dc, virtio_gpu_gl_properties);
- }
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 9f34d0e6619c..b0500eccf8e0 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -665,3 +665,12 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
- 
-     return capset2_max_ver ? 2 : 1;
- }
-+
-+void virtio_gpu_virgl_deinit(VirtIOGPU *g)
-+{
-+    if (g->fence_poll) {
-+        timer_free(g->fence_poll);
-+    }
-+
-+    virgl_renderer_cleanup(NULL);
-+}
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index ed44cdad6b34..b657187159d9 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -336,6 +336,7 @@ void virtio_gpu_virgl_fence_poll(VirtIOGPU *g);
- void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
- void virtio_gpu_virgl_reset(VirtIOGPU *g);
- int virtio_gpu_virgl_init(VirtIOGPU *g);
-+void virtio_gpu_virgl_deinit(VirtIOGPU *g);
- int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
- 
- #endif
+diff --git a/meson.build b/meson.build
+index 83ae4347c7f9..ca2798dbac37 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2286,11 +2286,8 @@ config_host_data.set('CONFIG_PNG', png.found())
+ config_host_data.set('CONFIG_VNC', vnc.found())
+ config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
+ config_host_data.set('CONFIG_VNC_SASL', sasl.found())
+-if virgl.found()
+-  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT',
+-                       cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
+-                                     prefix: '#include <virglrenderer.h>',
+-                                     dependencies: virgl))
++if virgl.version().version_compare('>=1.0.0')
++  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
+ endif
+ config_host_data.set('CONFIG_VIRTFS', have_virtfs)
+ config_host_data.set('CONFIG_VTE', vte.found())
 -- 
 2.44.0
 
