@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C85E8C311B
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 000D08C310C
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:55:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5lIv-0000Kz-BO; Sat, 11 May 2024 07:54:17 -0400
+	id 1s5lIw-0000LY-1t; Sat, 11 May 2024 07:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIt-0000KB-6m
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:15 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1s5lIu-0000Ko-Aw
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:16 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIr-0006ym-GR
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:14 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-51fc01b6fe7so2986530e87.0
+ id 1s5lIs-0006yx-5a
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:15 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2e09138a2b1so36033161fa.3
  for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715428451; x=1716033251; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715428452; x=1716033252; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=M2krjFClQtt6ewuvoLiaCYVCPhv1mkrudW+d9ZYqpvE=;
- b=OuDha/HbAEvMAA/AZ4WjmBozPBkAaxl+vOZP+yE0egI0+VhUriHSSm797fzs2RJUd+
- XohqjRmbDRVl6Ze8YVQc8GkL5W3xsTiizV5RRfCDNc0M1FtHy05FazIa/Dj//XSz1nrM
- 46EvoVA0bsbd0wB2uTKXVeHEGqK7wEAk8deHPgc3uyO64nuMXU73307U1MTYexqVS8MB
- kUPj6N9i4PD8L/nWy9d1qF+K+Vhq36FH2H0wN004zZNp/35wUz9DZnPS87xEMeWMFdGF
- UcW3QvIf71N+4QmkPhf5o1Z0QrvoQnRESY9UEVjpPKayOGym6Hse/q3Fp0egvuiKk/zm
- NBBQ==
+ bh=cCWM57OHz2JIAYU8qBsg/sKiTEv/cPu3ovotF6RL+Z8=;
+ b=kfWURy32Zi2yAYisiVAsgy741USynyaBZnMAnSUKuxo1eAfBA8GsRjMVCz+7nvK6GZ
+ B8tg6XW7EH5UsWBbL8wOB9k39lVSoUSWPxSow/OIZ5y4cjz3PLfVxtx7s6aQcaglbL+x
+ OHNjQ3y4TOwii3jTQ/s5s9f+gOv1vp3OnobafJ6dtG/QmOxU51WH8A2g/hmPq7HAq6rj
+ SuMwrHDn/JS9frG5TI0XPcilNdtJOpW6i0evtLoj9iRY7C90ujQQf1piSuxOtKDSAFs1
+ Ijkw/7AykcD3m7G7iLChcjvgWn2dB6Kjmh8LVIHCEw1I9lmM5BVOB4Fe6tOZlaBG1Q3y
+ 0nQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715428451; x=1716033251;
+ d=1e100.net; s=20230601; t=1715428452; x=1716033252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=M2krjFClQtt6ewuvoLiaCYVCPhv1mkrudW+d9ZYqpvE=;
- b=KJ37eT8JqqOTjbINpJ8KT1XOqU27Ldg6ZSv6ex/wVx9Curz2/pd5xALW6Yh720xLDc
- rFrOEpIvTDxuIfmIaTzyQPNIYDkXPaWprhmfhGj4S7uXJsDh4KX71h8K/gHbtlQqyCqV
- vlHaw/5ZqrVq4VJFYSzW4iPlF+trMK9MS/ShooLqijgquSmUk9VkYGGRY40EyAzKx6q/
- taV3rNIlj87IPpFeLfvXA0Lc2wDpRuYnS6KfnUcrDp1BSA1J4nynyxl0um1o2lLRZA6Q
- Gsil/9br9t6gRQcxsyoGqGZ9yY1cfkyHC/Eg1DMervl2MkMMyXlVUWd4dDSBT+LRrwqP
- FmBA==
-X-Gm-Message-State: AOJu0YyD+t/RPZrGioCwKmsO3gDna9zqhZPWTXZdK3Gctux4gpyw4ZrB
- 9TGuoNPP1tY2/EQLdNNeNcL5RQywtDcwXq8M7bkm6bEs8oV5DdVLE29xJiGJudpYiYxSb5JPd+L
- Rws4=
-X-Google-Smtp-Source: AGHT+IG6l7v4tIhLFQzBgJn9n8SIws77LlPkOfBOoN8fvoy1RRLSV2j0oMlilu5Mn1fgv1j34oKzhA==
-X-Received: by 2002:ac2:4831:0:b0:51d:38ee:ddda with SMTP id
- 2adb3069b0e04-5221057932amr3200192e87.52.1715428451509; 
- Sat, 11 May 2024 04:54:11 -0700 (PDT)
+ bh=cCWM57OHz2JIAYU8qBsg/sKiTEv/cPu3ovotF6RL+Z8=;
+ b=IQkzETg+5Kn707cUV3tnU9kunQjemzf9wmF2h4V40aLSj/lVFh1H4mEbTs6dXNMs67
+ 8o92FLQm8trX/TgFr1maTIpYp9P8OvrtC+SdDpvM6KxchL1Z/ULRXHJzTSkcZWJuYVpF
+ g+A8AC4inNVex8o2AUooJfnqwlcyXDgj5mOjebxV+2LLUAZzRrMlbXQH3TYHoJcJV6Dq
+ JnZ1mh58hBHattqyIKTudUDKd/WC6/or+4WcP+DZvre0RirHI4I3EPYBSUNN3z/Vq5/t
+ VPIJU4gqnlSHqzVWPu1J89qI+QYzsGXVvH5entAzK/fYfYMJrUHywz9mTTt4FXoxkybb
+ cunA==
+X-Gm-Message-State: AOJu0Ywx/ELUFj1/LdQRcD2F0rSPw3Uab8umcnJBhJf3XsivZirpwUZI
+ MtOT22F/rbbd6Gv9uCDckW27XxgcRGeY9ytZnsAAzViylWM8/5XceCkHW11dEFGK1gs5SZNq1+x
+ E8vI=
+X-Google-Smtp-Source: AGHT+IF3gseo0zQlzpUdlDtgdnibkTBQluOCJVlesMeJydhNK0HKiM3UOHhZtgQKr9KrAO5cHbNZYQ==
+X-Received: by 2002:a05:6512:308f:b0:51a:c21b:73fb with SMTP id
+ 2adb3069b0e04-5221007498fmr3804932e87.44.1715428452385; 
+ Sat, 11 May 2024 04:54:12 -0700 (PDT)
 Received: from stoup.. ([195.76.196.165]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.10
+ ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 May 2024 04:54:11 -0700 (PDT)
+ Sat, 11 May 2024 04:54:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 09/17] ppc64: Clean up reginfo_dump
-Date: Sat, 11 May 2024 13:53:52 +0200
-Message-Id: <20240511115400.7587-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/17] aarch64: Tidy reginfo dumping ahead of ZA state
+Date: Sat, 11 May 2024 13:53:53 +0200
+Message-Id: <20240511115400.7587-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240511115400.7587-1-richard.henderson@linaro.org>
 References: <20240511115400.7587-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,78 +91,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Dump only the registers that we copied in reginfo_init.
-Improve the formatting and layout of what we do dump.
+A misalignment for sve_vl, plus add a bit more space
+on the left for the ZA[n] field name.
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu_reginfo_ppc64.c | 51 ++++++++++++++++++--------------------------
- 1 file changed, 21 insertions(+), 30 deletions(-)
+ risu_reginfo_aarch64.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/risu_reginfo_ppc64.c b/risu_reginfo_ppc64.c
-index e0c650b..730a565 100644
---- a/risu_reginfo_ppc64.c
-+++ b/risu_reginfo_ppc64.c
-@@ -75,38 +75,29 @@ void reginfo_dump(struct reginfo *ri, FILE * f)
+diff --git a/risu_reginfo_aarch64.c b/risu_reginfo_aarch64.c
+index 0161044..86e70ab 100644
+--- a/risu_reginfo_aarch64.c
++++ b/risu_reginfo_aarch64.c
+@@ -183,6 +183,18 @@ static int sve_preg_is_eq(int vq, const void *p1, const void *p2)
+     return memcmp(p1, p2, vq * 2) == 0;
+ }
+ 
++static void sve_dump_zreg(FILE *f, int vq, const uint64_t *z)
++{
++    const char *pad = "";
++    int q;
++
++    for (q = 0; q < vq; q++) {
++        fprintf(f, "%s[%-2d] %016" PRIx64 "%016" PRIx64 "\n",
++                pad, q, z[2 * q + 1], z[2 * q]);
++        pad = "           "; /* 11 spaces */
++    }
++}
++
+ static void sve_dump_preg(FILE *f, int vq, const uint16_t *p)
  {
-     int i;
+     int q;
+@@ -211,10 +223,10 @@ static void sve_dump_zreg_diff(FILE *f, int vq, const uint64_t *za,
+         uint64_t zb0 = zb[2 * q], zb1 = zb[2 * q + 1];
  
--    fprintf(f, "  faulting insn 0x%x\n", ri->faulting_insn);
--    fprintf(f, "  prev insn     0x%x\n", ri->prev_insn);
--    fprintf(f, "  prev addr    0x%" PRIx64 "\n\n", ri->nip);
--
--    for (i = 0; i < 16; i++) {
--        fprintf(f, "\tr%2d: %16lx\tr%2d: %16lx\n", i, ri->gregs[i],
--                i + 16, ri->gregs[i + 16]);
--    }
--
--    fprintf(f, "\n");
--    fprintf(f, "\tnip    : %16lx\n", ri->gregs[32]);
--    fprintf(f, "\tmsr    : %16lx\n", ri->gregs[33]);
--    fprintf(f, "\torig r3: %16lx\n", ri->gregs[34]);
--    fprintf(f, "\tctr    : %16lx\n", ri->gregs[35]);
--    fprintf(f, "\tlnk    : %16lx\n", ri->gregs[36]);
--    fprintf(f, "\txer    : %16lx\n", ri->gregs[37]);
--    fprintf(f, "\tccr    : %16lx\n", ri->gregs[38]);
--    fprintf(f, "\tmq     : %16lx\n", ri->gregs[39]);
--    fprintf(f, "\ttrap   : %16lx\n", ri->gregs[40]);
--    fprintf(f, "\tdar    : %16lx\n", ri->gregs[41]);
--    fprintf(f, "\tdsisr  : %16lx\n", ri->gregs[42]);
--    fprintf(f, "\tresult : %16lx\n", ri->gregs[43]);
--    fprintf(f, "\tdscr   : %16lx\n\n", ri->gregs[44]);
--
--    for (i = 0; i < 16; i++) {
--        fprintf(f, "\tf%2d: %016lx\tf%2d: %016lx\n", i, ri->fpregs[i],
--                i + 16, ri->fpregs[i + 16]);
--    }
--    fprintf(f, "\tfpscr: %016lx\n\n", ri->fpscr);
-+    fprintf(f, "%6s: %08x\n", "insn", ri->faulting_insn);
-+    fprintf(f, "%6s: %016lx\n", "pc", ri->nip);
- 
-     for (i = 0; i < 32; i++) {
--        fprintf(f, "vr%02d: %8x, %8x, %8x, %8x\n", i,
-+        fprintf(f, "%*s%d: %016lx%s",
-+                6 - (i < 10 ? 1 : 2), "r", i, ri->gregs[i],
-+                i & 1 ? "\n" : "  ");
-+    }
-+
-+    fprintf(f, "%6s: %016lx  %6s: %016lx\n",
-+            "xer", ri->gregs[XER],
-+            "ccr", ri->gregs[CCR]);
-+
-+    for (i = 0; i < 32; i++) {
-+        fprintf(f, "%*s%d: %016lx%s",
-+                6 - (i < 10 ? 1 : 2), "f", i, ri->fpregs[i],
-+                i & 1 ? "\n" : "  ");
-+    }
-+    fprintf(f, "%6s: %016lx\n", "fpscr", ri->fpscr);
-+
-+    for (i = 0; i < 32; i++) {
-+        fprintf(f, "%*s%d: %08x %08x %08x %08x\n",
-+                6 - (i < 10 ? 1 : 2), "vr", i,
-                 ri->vrregs.vrregs[i][0], ri->vrregs.vrregs[i][1],
-                 ri->vrregs.vrregs[i][2], ri->vrregs.vrregs[i][3]);
+         if (za0 != zb0 || za1 != zb1) {
+-            fprintf(f, "%sq%-2d: %016" PRIx64 "%016" PRIx64
++            fprintf(f, "%s[%-2d]: %016" PRIx64 "%016" PRIx64
+                     " vs %016" PRIx64 "%016" PRIx64"\n",
+                     pad, q, za1, za0, zb1, zb0);
+-            pad = "      ";
++            pad = "           "; /* 11 spaces */
+         }
      }
+ }
+@@ -237,19 +249,14 @@ void reginfo_dump(struct reginfo *ri, FILE * f)
+ 
+     if (ri->sve_vl) {
+         int vq = sve_vq_from_vl(ri->sve_vl);
+-        int q;
+ 
+         fprintf(f, "  vl     : %d\n", ri->sve_vl);
+ 
+         for (i = 0; i < SVE_NUM_ZREGS; i++) {
+             uint64_t *z = reginfo_zreg(ri, vq, i);
+ 
+-            fprintf(f, "  Z%-2d q%-2d: %016" PRIx64 "%016" PRIx64 "\n",
+-                    i, 0, z[1], z[0]);
+-            for (q = 1; q < vq; ++q) {
+-                fprintf(f, "      q%-2d: %016" PRIx64 "%016" PRIx64 "\n",
+-                        q, z[q * 2 + 1], z[q * 2]);
+-            }
++            fprintf(f, "  Z%-2d    : ", i);
++            sve_dump_zreg(f, vq, z);
+         }
+ 
+         for (i = 0; i < SVE_NUM_PREGS + 1; i++) {
+@@ -312,7 +319,7 @@ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
+     }
+ 
+     if (m->sve_vl != a->sve_vl) {
+-        fprintf(f, "  vl    : %d vs %d\n", m->sve_vl, a->sve_vl);
++        fprintf(f, "  vl     : %d vs %d\n", m->sve_vl, a->sve_vl);
+     }
+ 
+     if (m->sve_vl) {
+@@ -323,7 +330,7 @@ void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
+             uint64_t *za = reginfo_zreg(a, vq, i);
+ 
+             if (!sve_zreg_is_eq(vq, zm, za)) {
+-                fprintf(f, "  Z%-2d ", i);
++                fprintf(f, "  Z%-2d    : ", i);
+                 sve_dump_zreg_diff(f, vq, zm, za);
+             }
+         }
 -- 
 2.34.1
 
