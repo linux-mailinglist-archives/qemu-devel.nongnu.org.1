@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8189D8C2EA0
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A8F8C2E8B
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:48:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bpq-0008Do-8N; Fri, 10 May 2024 21:47:38 -0400
+	id 1s5bpw-0000Fm-PC; Fri, 10 May 2024 21:47:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bpO-0005gd-Bw; Fri, 10 May 2024 21:47:11 -0400
+ id 1s5bpR-0005tI-Of; Fri, 10 May 2024 21:47:16 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bpG-0003t5-Q6; Fri, 10 May 2024 21:47:09 -0400
+ id 1s5bpH-0003ty-EN; Fri, 10 May 2024 21:47:13 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 60DA24E6793;
- Sat, 11 May 2024 03:46:30 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 6FBAF4E6796;
+ Sat, 11 May 2024 03:46:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id ykQqyr0Jzshq; Sat, 11 May 2024 03:46:28 +0200 (CEST)
+ with ESMTP id h-ws64tSbtvQ; Sat, 11 May 2024 03:46:29 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 70BAF4E6794; Sat, 11 May 2024 03:46:28 +0200 (CEST)
-Message-Id: <ef7ef7e376ce2a9d6e206c089e8e3780a95b8354.1715390232.git.balaton@eik.bme.hu>
+ id 7D8844E6795; Sat, 11 May 2024 03:46:29 +0200 (CEST)
+Message-Id: <7e8f8f964bd758621fd1c82d4d2533bc36c9ead4.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 47/48] target/ppc/mmu_common.c: Remove single use local
- variable
+Subject: [PATCH v6 48/48] target/ppc/mmu_common.c: Simplify a switch statement
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:46:28 +0200 (CEST)
+Date: Sat, 11 May 2024 03:46:29 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,43 +60,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In mmu6xx_get_physical_address() tagtet_page_bits local is declared to
-use TARGET_PAGE_BITS only once. Drop the unneeded variable.
+In mmu6xx_get_physical_address() the switch handles all cases so the
+default is never reached and can be dropped. Also group together cases
+which just return -4.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/ppc/mmu_common.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index d15683e3e4..7eb072a950 100644
+index 7eb072a950..dfbc1af679 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -321,7 +321,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     PowerPCCPU *cpu = env_archcpu(env);
-     hwaddr hash;
-     target_ulong vsid, sr, pgidx;
--    int target_page_bits;
-     bool pr, ds, nx;
- 
-     /* First try to find a BAT entry if there are any */
-@@ -338,7 +337,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     ds = sr & SR32_T;
-     nx = sr & SR32_NX;
-     vsid = sr & 0x00FFFFFF;
--    target_page_bits = TARGET_PAGE_BITS;
-     qemu_log_mask(CPU_LOG_MMU,
-                   "Check segment v=" TARGET_FMT_lx " %d " TARGET_FMT_lx
-                   " nip=" TARGET_FMT_lx " lr=" TARGET_FMT_lx
-@@ -347,7 +345,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-                   (int)FIELD_EX64(env->msr, MSR, IR),
-                   (int)FIELD_EX64(env->msr, MSR, DR), pr ? 1 : 0,
-                   access_type == MMU_DATA_STORE, type);
--    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> target_page_bits;
-+    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> TARGET_PAGE_BITS;
-     hash = vsid ^ pgidx;
-     ctx->ptem = (vsid << 7) | (pgidx >> 10);
- 
+@@ -375,15 +375,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     case ACCESS_INT:
+         /* Integer load/store : only access allowed */
+         break;
+-    case ACCESS_CODE:
+-        /* No code fetch is allowed in direct-store areas */
+-        return -4;
+-    case ACCESS_FLOAT:
+-        /* Floating point load/store */
+-        return -4;
+-    case ACCESS_RES:
+-        /* lwarx, ldarx or srwcx. */
+-        return -4;
+     case ACCESS_CACHE:
+         /*
+          * dcba, dcbt, dcbtst, dcbf, dcbi, dcbst, dcbz, or icbi
+@@ -393,12 +384,10 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+          */
+         ctx->raddr = eaddr;
+         return 0;
+-    case ACCESS_EXT:
+-        /* eciwx or ecowx */
+-        return -4;
+-    default:
+-        qemu_log_mask(CPU_LOG_MMU, "ERROR: instruction should not need address"
+-                                   " translation\n");
++    case ACCESS_CODE: /* No code fetch is allowed in direct-store areas */
++    case ACCESS_FLOAT: /* Floating point load/store */
++    case ACCESS_RES: /* lwarx, ldarx or srwcx. */
++    case ACCESS_EXT: /* eciwx or ecowx */
+         return -4;
+     }
+     if ((access_type == MMU_DATA_STORE || ctx->key != 1) &&
 -- 
 2.30.9
 
