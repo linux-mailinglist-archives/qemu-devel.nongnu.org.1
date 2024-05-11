@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4938C3114
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70E58C3111
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 13:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5lIs-0000Jw-L3; Sat, 11 May 2024 07:54:14 -0400
+	id 1s5lIu-0000KO-DX; Sat, 11 May 2024 07:54:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIq-0000Ib-Ip
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:12 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1s5lIr-0000JN-Ms
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:13 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s5lIo-0006y1-Md
- for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:12 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-34e28e32ea4so1740610f8f.2
- for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:10 -0700 (PDT)
+ id 1s5lIp-0006yS-Ql
+ for qemu-devel@nongnu.org; Sat, 11 May 2024 07:54:13 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3504f34a086so1337674f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 11 May 2024 04:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715428449; x=1716033249; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715428450; x=1716033250; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fK+33hG7y7qtK+XmeBcuCbI8Hmdt6nSy4YCvnmn+BlU=;
- b=wSlsbqcJBeruehim4alPKMSxmRDPdzNo36p22Fnkh/03yF+DgOG0PoyvEBKsLpsKG2
- xfVVuYdzUSGkrWUT8VjmI3uRCSHKYvj/lQARa42tEtE7cVs6VzYEAfkeiNvmshAiFmi8
- 5vJFmPHJH91+m1ReXyCDYC2MwbRbL/n8Alv6KyUFbpNZXnBg8CIDPzKVS5OJtxdr4wmt
- 71n/WO3bFKnl+Q6FuvWRNHy1JF4DnCPRr6SZf5deah0zfDjOBVpnAvfioSj16l9ALz51
- pGe5iZKvJGkPDAgsbV8lNm3UUraAuMcf4iv/qj0+Uwi9H09r+GLlRK7rVNlreb8Rwc5T
- IdRA==
+ bh=AMtGB7SdOO69qhWqUoEC0VG8+kqB1EisNhBCOHuP3kg=;
+ b=mUPRLVI6FX5E0XkZkpwku1p+C8OVUBr6373mCqg8W6Txv/t8rTjU1jlWk0xZLeEGAo
+ YU9m97BAEKKdNYHN0JJ8hxY6ksi1r+77vDqSX0Zj/BXqGznNSiA+m78KKnH0/vPYnbC9
+ s4iptqU44iYejg+EMyhIgTJWtoOUsGOrmSbahogtdqk9V6gEtfAKHD0p0njpOJr9Slqk
+ PW51YwI9qaP6RIaDnOVIX73/0UJS1G0S9jL4BPqVCJ2jjI5kuPJmKeXFzhLp6/ydLyOX
+ XeM+GezaYvyEnovEaH2GEGJw8tOD6jtw2aT7aamkR1s43/pK+Uvdq9QRvTqz3QzjbdZT
+ FZ6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715428449; x=1716033249;
+ d=1e100.net; s=20230601; t=1715428450; x=1716033250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fK+33hG7y7qtK+XmeBcuCbI8Hmdt6nSy4YCvnmn+BlU=;
- b=KTfFUWCF2gspDTTlTCEFARW4Ig+J0uBRObl1l5v8Qch2I1dmz0y2ZSXENmmsvC/s8O
- vXyFv0KTppJm9lFnjXkLvIuiYZXnPadSfi7IYkmNwUlS07L8JoNgwLfqEbJkezXr9UA1
- SDiFQC4sD75atGumzCG1BqdAaWvt8FIvxKPMdBiyDlwHb3oalvos+gwfpHQh0s8Yjasq
- VGO7njMyXgkYXg/qyyjjLgZRG0NyyG49TUWKAmhemwGXx5stEAv3FH4Oholk1+HApipI
- zSPIRuPLDoeFSlLYaQS/s8yos0RksRzTNV1H+6Hnx51oNqmCFVljgJxtfmSTJJ0uU2kw
- RM/A==
-X-Gm-Message-State: AOJu0Yx8Q5IG3TH6inPa619893usrak2lKv6KXF7ejbqTSpXOVPuDVbI
- k8fTB0pBXKdvTJ1CbhooEJQ3Sr8pk5AqHnO8eUMrJDtnvwcIzwzbuffPkaMtauwYStn8IBx5aBD
- JN+Q=
-X-Google-Smtp-Source: AGHT+IHgPt8H57AZtUUsJVQpox8VPsFKvhnx6y5anFqpzcG83pYyyf81tylHlg+AyHZaIX5Mj/VZLg==
-X-Received: by 2002:a5d:4b0d:0:b0:345:c1cc:2d85 with SMTP id
- ffacd0b85a97d-3504a96a6femr3911614f8f.55.1715428449366; 
- Sat, 11 May 2024 04:54:09 -0700 (PDT)
+ bh=AMtGB7SdOO69qhWqUoEC0VG8+kqB1EisNhBCOHuP3kg=;
+ b=SYS8MQ+psxHkCoVjpiLQWH0EvHsR98RQklGaOtuLQp86ZTsy7xKPw9uksm6Mbur94n
+ Ti08YUxQQCUkTMDpoc9J2hBGFX8UwOGAnu/xN9MOdwFS3HbeOJi0fyj/E+WO+dDey3DX
+ qMC8L/gDvAUL2NF/12fLV2cXVdwcCgaMrAP0VCn2pOO5VthKl8yogW5EWIn3VASZEDOi
+ UE9NlQ5DN8H/XmSRZdYpLCI4sYiCQtqP+a8mkBn5JzpwK9lnNmI9K7lCWfm6KzCgcpqy
+ qX+zgDugx/fS6HfxyyuZ3pploeC+Efee+zZVa1hfiHO3bBk0Xu3X/465YGvo94AZvkdg
+ a0pA==
+X-Gm-Message-State: AOJu0YxJ8KAdd+l5zaKH40trxrmfutmVBsxkEeyxWVvIBvK4DJsuBiWk
+ y9aDDbwVNH37/TKuq5ODvAuJGXTKFs/ZCVliXNzgnT/kDQ5Kn13uQZ+7yvzO92pQ6+strXeVKQI
+ Xznw=
+X-Google-Smtp-Source: AGHT+IFYdfEMVbDqUwGL9dZZEosJ0J9+/IiaKIhl6shyMkoeI3hlio74PUAs5QhGAbZ/7LiQXAK2gA==
+X-Received: by 2002:adf:f8c4:0:b0:34c:6677:b7de with SMTP id
+ ffacd0b85a97d-3504a632e11mr3986688f8f.2.1715428450334; 
+ Sat, 11 May 2024 04:54:10 -0700 (PDT)
 Received: from stoup.. ([195.76.196.165]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.08
+ ffacd0b85a97d-3502bbbbf20sm6764797f8f.93.2024.05.11.04.54.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 11 May 2024 04:54:09 -0700 (PDT)
+ Sat, 11 May 2024 04:54:10 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH 07/17] ppc64: Compare all bits of CCR
-Date: Sat, 11 May 2024 13:53:50 +0200
-Message-Id: <20240511115400.7587-8-richard.henderson@linaro.org>
+Subject: [PATCH 08/17] ppc64: Simplify reginfo_is_eq
+Date: Sat, 11 May 2024 13:53:51 +0200
+Message-Id: <20240511115400.7587-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240511115400.7587-1-richard.henderson@linaro.org>
 References: <20240511115400.7587-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,27 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are 32 bits in this register, and they are all valid
-comparision destinations.
+Since we now only copy into reginfo exactly what we want to compare,
+and since we zero all unused padding and reserved space, we need not
+enumerate each field for comparison, but defer to memcmp.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu_reginfo_ppc64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ risu_reginfo_ppc64.c | 31 +------------------------------
+ 1 file changed, 1 insertion(+), 30 deletions(-)
 
 diff --git a/risu_reginfo_ppc64.c b/risu_reginfo_ppc64.c
-index 67ea3ce..109b87b 100644
+index 109b87b..e0c650b 100644
 --- a/risu_reginfo_ppc64.c
 +++ b/risu_reginfo_ppc64.c
-@@ -78,7 +78,7 @@ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
-         return 0;
-     }
+@@ -67,36 +67,7 @@ void reginfo_init(struct reginfo *ri, ucontext_t *uc, void *siaddr)
+ /* reginfo_is_eq: compare the reginfo structs, returns nonzero if equal */
+ int reginfo_is_eq(struct reginfo *m, struct reginfo *a)
+ {
+-    int i;
+-    for (i = 0; i < 32; i++) {
+-        if (m->gregs[i] != a->gregs[i]) {
+-            return 0;
+-        }
+-    }
+-
+-    if (m->gregs[XER] != a->gregs[XER]) {
+-        return 0;
+-    }
+-
+-    if (m->gregs[CCR] != a->gregs[CCR]) {
+-        return 0;
+-    }
+-
+-    for (i = 0; i < 32; i++) {
+-        if (m->fpregs[i] != a->fpregs[i]) {
+-            return 0;
+-        }
+-    }
+-
+-    for (i = 0; i < 32; i++) {
+-        if (m->vrregs.vrregs[i][0] != a->vrregs.vrregs[i][0] ||
+-            m->vrregs.vrregs[i][1] != a->vrregs.vrregs[i][1] ||
+-            m->vrregs.vrregs[i][2] != a->vrregs.vrregs[i][2] ||
+-            m->vrregs.vrregs[i][3] != a->vrregs.vrregs[i][3]) {
+-            return 0;
+-        }
+-    }
+-    return 1;
++    return memcmp(m, a, sizeof(*m)) == 0;
+ }
  
--    if ((m->gregs[CCR] & 0x10) != (a->gregs[CCR] & 0x10)) {
-+    if (m->gregs[CCR] != a->gregs[CCR]) {
-         return 0;
-     }
- 
+ /* reginfo_dump: print state to a stream */
 -- 
 2.34.1
 
