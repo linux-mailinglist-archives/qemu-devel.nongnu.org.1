@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6E08C2EA5
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 509548C2EAD
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:52:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bpc-0006nY-Ur; Fri, 10 May 2024 21:47:24 -0400
+	id 1s5bpd-0006wq-Ub; Fri, 10 May 2024 21:47:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bov-00059a-7Y; Fri, 10 May 2024 21:46:41 -0400
+ id 1s5bov-00059Z-5i; Fri, 10 May 2024 21:46:41 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5bol-0003aG-J6; Fri, 10 May 2024 21:46:34 -0400
+ id 1s5bol-0003aN-J5; Fri, 10 May 2024 21:46:34 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1D0984E6776;
- Sat, 11 May 2024 03:46:06 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2EF154E6779;
+ Sat, 11 May 2024 03:46:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id BppnSrO99ROe; Sat, 11 May 2024 03:46:04 +0200 (CEST)
+ with ESMTP id p9ZV8JUGf8wj; Sat, 11 May 2024 03:46:05 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 2B91E4E676F; Sat, 11 May 2024 03:46:04 +0200 (CEST)
-Message-Id: <1a008fd890e5e6a1edfbef18d67433a14e16b047.1715390232.git.balaton@eik.bme.hu>
+ id 3F3EE4E6775; Sat, 11 May 2024 03:46:05 +0200 (CEST)
+Message-Id: <6634f51ba231bb8dcb70f81b8878e41e6b9bd93d.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 24/48] target/ppc/mmu_common.c: Simplify ppc_booke_xlate()
- part 2
+Subject: [PATCH v6 25/48] target/ppc/mmu_common.c: Split off real mode
+ handling from get_physical_address_wtlb()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:46:04 +0200 (CEST)
+Date: Sat, 11 May 2024 03:46:05 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,84 +61,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge the code fetch and data access cases in a common switch.
+Add ppc_real_mode_xlate() to handle real mode translation and allow
+removing this case from ppc_jumbo_xlate().
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 52 ++++++++++++++++-------------------------
- 1 file changed, 20 insertions(+), 32 deletions(-)
+ target/ppc/mmu_common.c | 46 ++++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 19 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index e51aad1354..3d29c44111 100644
+index 3d29c44111..14d05d84e1 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1181,45 +1181,33 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
- 
-     log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-     env->error_code = 0;
--    if (ret == -1) {
-+    switch (ret) {
-+    case -1:
-+        /* No matches in page tables or TLB */
-         if (env->mmu_model == POWERPC_MMU_BOOKE206) {
-             booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
-         }
+@@ -1077,23 +1077,12 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+                                      MMUAccessType access_type, int type,
+                                      int mmu_idx)
+ {
+-    bool real_mode = (type == ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR, IR)
+-                                           : !FIELD_EX64(env->msr, MSR, DR);
+-    if (real_mode) {
+-        ctx->raddr = eaddr;
+-        ctx->prot = PAGE_RWX;
+-        return 0;
 -    }
--    if (access_type == MMU_INST_FETCH) {
--        switch (ret) {
--        case -1:
--            /* No matches in page tables or TLB */
--            cs->exception_index = POWERPC_EXCP_ITLB;
--            env->spr[SPR_BOOKE_DEAR] = eaddr;
--            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
--            break;
--        case -2:
--            /* Access rights violation */
--            cs->exception_index = POWERPC_EXCP_ISI;
--            break;
--        case -3:
--            /* No execute protection violation */
--            cs->exception_index = POWERPC_EXCP_ISI;
--            env->spr[SPR_BOOKE_ESR] = 0;
--            break;
--        }
--    } else {
--        switch (ret) {
--        case -1:
--            /* No matches in page tables or TLB */
--            cs->exception_index = POWERPC_EXCP_DTLB;
--            env->spr[SPR_BOOKE_DEAR] = eaddr;
--            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
--            break;
--        case -2:
--            /* Access rights violation */
--            cs->exception_index = POWERPC_EXCP_DSI;
-+        cs->exception_index = (access_type == MMU_INST_FETCH) ?
-+                              POWERPC_EXCP_ITLB : POWERPC_EXCP_DTLB;
-+        env->spr[SPR_BOOKE_DEAR] = eaddr;
-+        env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
-+        break;
-+    case -2:
-+        /* Access rights violation */
-+        cs->exception_index = (access_type == MMU_INST_FETCH) ?
-+                              POWERPC_EXCP_ISI : POWERPC_EXCP_DSI;
-+        if (access_type != MMU_INST_FETCH) {
-             env->spr[SPR_BOOKE_DEAR] = eaddr;
-             env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
--            break;
-         }
-+        break;
-+    case -3:
-+        /* No execute protection violation */
-+        cs->exception_index = POWERPC_EXCP_ISI;
-+        env->spr[SPR_BOOKE_ESR] = 0;
-+        break;
+-
+     switch (env->mmu_model) {
+     case POWERPC_MMU_SOFT_6xx:
+         return mmu6xx_get_physical_address(env, ctx, eaddr, access_type, type);
+     case POWERPC_MMU_SOFT_4xx:
+         return mmu40x_get_physical_address(env, &ctx->raddr, &ctx->prot, eaddr,
+                                            access_type);
+-    case POWERPC_MMU_REAL:
+-        cpu_abort(env_cpu(env),
+-                  "PowerPC in real mode do not do any translation\n");
+     default:
+         cpu_abort(env_cpu(env), "Unknown or invalid MMU model\n");
      }
-+
+@@ -1211,6 +1200,24 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
      return false;
  }
  
++static bool ppc_real_mode_xlate(PowerPCCPU *cpu, vaddr eaddr,
++                                MMUAccessType access_type,
++                                hwaddr *raddrp, int *psizep, int *protp)
++{
++    CPUPPCState *env = &cpu->env;
++
++    if (access_type == MMU_INST_FETCH ? !FIELD_EX64(env->msr, MSR, IR)
++                                      : !FIELD_EX64(env->msr, MSR, DR)) {
++        *raddrp = eaddr;
++        *protp = PAGE_RWX;
++        *psizep = TARGET_PAGE_BITS;
++        return true;
++    } else if (env->mmu_model == POWERPC_MMU_REAL) {
++        cpu_abort(CPU(cpu), "PowerPC in real mode shold not do translation\n");
++    }
++    return false;
++}
++
+ /* Perform address translation */
+ /* TODO: Split this by mmu_model. */
+ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+@@ -1224,6 +1231,10 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+     int type;
+     int ret;
+ 
++    if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, protp)) {
++        return true;
++    }
++
+     if (access_type == MMU_INST_FETCH) {
+         /* code access */
+         type = ACCESS_CODE;
+@@ -1263,11 +1274,8 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+                 env->spr[SPR_40x_DEAR] = eaddr;
+                 env->spr[SPR_40x_ESR] = 0x00000000;
+                 break;
+-            case POWERPC_MMU_REAL:
+-                cpu_abort(cs, "PowerPC in real mode should never raise "
+-                              "any MMU exceptions\n");
+             default:
+-                cpu_abort(cs, "Unknown or invalid MMU model\n");
++                g_assert_not_reached();
+             }
+             break;
+         case -2:
+@@ -1319,11 +1327,8 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+                     env->spr[SPR_40x_ESR] = 0x00000000;
+                 }
+                 break;
+-            case POWERPC_MMU_REAL:
+-                cpu_abort(cs, "PowerPC in real mode should never raise "
+-                              "any MMU exceptions\n");
+             default:
+-                cpu_abort(cs, "Unknown or invalid MMU model\n");
++                g_assert_not_reached();
+             }
+             break;
+         case -2:
+@@ -1417,6 +1422,9 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     case POWERPC_MMU_BOOKE206:
+         return ppc_booke_xlate(cpu, eaddr, access_type, raddrp,
+                                psizep, protp, mmu_idx, guest_visible);
++    case POWERPC_MMU_REAL:
++        return ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep,
++                                   protp);
+     case POWERPC_MMU_MPC8xx:
+         cpu_abort(env_cpu(&cpu->env), "MPC8xx MMU model is not implemented\n");
+     default:
 -- 
 2.30.9
 
