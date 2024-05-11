@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C0B8C2EAC
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E398C2E9F
+	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 03:50:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5bpg-0007Ay-Qf; Fri, 10 May 2024 21:47:28 -0400
+	id 1s5bpk-0007eW-Ps; Fri, 10 May 2024 21:47:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5boY-000521-Kx; Fri, 10 May 2024 21:46:20 -0400
+ id 1s5box-0005D7-AJ; Fri, 10 May 2024 21:46:46 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s5boX-0003cK-38; Fri, 10 May 2024 21:46:18 -0400
+ id 1s5bos-0003ck-1w; Fri, 10 May 2024 21:46:43 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 869EB4E678F;
- Sat, 11 May 2024 03:46:14 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8BD524E6781;
+ Sat, 11 May 2024 03:46:15 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id YEP6kGFqNAlI; Sat, 11 May 2024 03:46:12 +0200 (CEST)
+ with ESMTP id 3XEiT_lKDBN3; Sat, 11 May 2024 03:46:13 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 971EA4E677E; Sat, 11 May 2024 03:46:12 +0200 (CEST)
-Message-Id: <12999fa29610b9be017a3c06c4f3bd14982d345b.1715390232.git.balaton@eik.bme.hu>
+ id A16EC4E677F; Sat, 11 May 2024 03:46:13 +0200 (CEST)
+Message-Id: <6861fd8ff9c659e9b31528a6260af967faf577e8.1715390232.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715390232.git.balaton@eik.bme.hu>
 References: <cover.1715390232.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v6 32/48] target/ppc/mmu-hash32.c: Drop a local variable
+Subject: [PATCH v6 33/48] target/ppc/mmu-radix64.c: Drop a local variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Sat, 11 May 2024 03:46:12 +0200 (CEST)
+Date: Sat, 11 May 2024 03:46:13 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,55 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In ppc_hash32_xlate() the value of need_prop is checked in two places
-but precalculating it does not help because when we reach the first
-check we always return and not reach the second place so the value
-will only be used once. We can drop the local variable and calculate
-it when needed, which makes these checks using it similar to other
-places with such checks.
+The value is only used once so no need to introduce a local variable
+for it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-hash32.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ target/ppc/mmu-radix64.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 21fc731771..bf5ce129d2 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -341,7 +341,6 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     hwaddr pte_offset;
-     ppc_hash_pte32_t pte;
-     int prot;
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 8daf71d2db..395ce3b782 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -185,7 +185,6 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
+                                    int mmu_idx, bool partition_scoped)
+ {
+     CPUPPCState *env = &cpu->env;
 -    int need_prot;
-     hwaddr raddr;
  
-     /* There are no hash32 large pages. */
-@@ -355,13 +354,11 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-         return true;
+     /* Check Page Attributes (pte58:59) */
+     if ((pte & R_PTE_ATT) == R_PTE_ATT_NI_IO && access_type == MMU_INST_FETCH) {
+@@ -210,8 +209,8 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
      }
  
+     /* Check if requested access type is allowed */
 -    need_prot = prot_for_access_type(access_type);
--
-     /* 2. Check Block Address Translation entries (BATs) */
-     if (env->nb_BATs != 0) {
-         raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
-         if (raddr != -1) {
--            if (need_prot & ~*protp) {
-+            if (prot_for_access_type(access_type) & ~*protp) {
-                 if (guest_visible) {
-                     if (access_type == MMU_INST_FETCH) {
-                         cs->exception_index = POWERPC_EXCP_ISI;
-@@ -429,7 +426,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- 
-     prot = ppc_hash32_pte_prot(mmu_idx, sr, pte);
- 
--    if (need_prot & ~prot) {
-+    if (prot_for_access_type(access_type) & ~prot) {
-         /* Access right violation */
-         qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
-         if (guest_visible) {
+-    if (need_prot & ~*prot) { /* Page Protected for that Access */
++    if (prot_for_access_type(access_type) & ~*prot) {
++        /* Page Protected for that Access */
+         *fault_cause |= access_type == MMU_INST_FETCH ? SRR1_NOEXEC_GUARD :
+                                                         DSISR_PROTFAULT;
+         return true;
 -- 
 2.30.9
 
