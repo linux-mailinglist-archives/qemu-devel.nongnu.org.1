@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2762F8C35EE
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:22:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7268C35F1
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:22:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66Js-0003y7-FX; Sun, 12 May 2024 06:20:40 -0400
+	id 1s66Jr-0003y4-OT; Sun, 12 May 2024 06:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1s66Jm-0003w3-GE; Sun, 12 May 2024 06:20:34 -0400
+ id 1s66Jn-0003wE-19; Sun, 12 May 2024 06:20:35 -0400
 Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
- id 1s66Jh-0007P5-6k; Sun, 12 May 2024 06:20:32 -0400
+ id 1s66Jh-0007P7-By; Sun, 12 May 2024 06:20:33 -0400
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id D00BFC05D0;
- Sun, 12 May 2024 12:20:20 +0200 (CEST)
+ by zproxy1.enst.fr (Postfix) with ESMTP id 002F2C05FC;
+ Sun, 12 May 2024 12:20:22 +0200 (CEST)
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
- id zwol3mqBYL1N; Sun, 12 May 2024 12:20:20 +0200 (CEST)
+ id Lg59lpfSxPJC; Sun, 12 May 2024 12:20:21 +0200 (CEST)
 Received: from localhost (localhost [IPv6:::1])
- by zproxy1.enst.fr (Postfix) with ESMTP id 7AC0CC05C1;
- Sun, 12 May 2024 12:20:20 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 7AC0CC05C1
+ by zproxy1.enst.fr (Postfix) with ESMTP id A0337C056A;
+ Sun, 12 May 2024 12:20:21 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr A0337C056A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
- s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1715509220;
- bh=tdwT/SWQvpyZmB/2pZelE0+kiYbs+C+sPzXNCmDVBC0=;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1715509221;
+ bh=qiG46x/VOVkiEpvcA+8VprXyXNI6r0F6dCCONYL27mo=;
  h=From:To:Date:Message-ID:MIME-Version;
- b=VxkB9g3reWHsHTKVQLGteAc6s7j0hoaAY9rrPHnYLK81jg1H2iKzYoe0l3MXl2zOM
- GTxCHksdP7BheNH2SZxIwp/jevmJYRR52vD7UNHSEZUa2mzSkU7brWnB2L8+z7svDA
- SwBZilOEL2rKw4d1yiBPxenLmgKfYZy4ARV2Pb7Y=
+ b=w7FlTDEcbrLoYZ4L1JsHJf62SkTcLInq6wwRyAj3DUJD7ttvYU1fjjLMfleB0x3y3
+ V8JN/fRZJx6xx6lQP2DCS8TPekUx8QeubTLkeJyXdawUNmIveJUm65lazehc+HBZDg
+ 0eZpR8IEra/5RFzDv4W5awe3z3okamZt2dakvcwU=
 X-Virus-Scanned: amavis at enst.fr
 Received: from zproxy1.enst.fr ([IPv6:::1])
  by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
- id RQhBWCDGoAe8; Sun, 12 May 2024 12:20:20 +0200 (CEST)
+ id VM7xPjZhPqjF; Sun, 12 May 2024 12:20:21 +0200 (CEST)
 Received: from inesv-Inspiron-3501.enst.fr (unknown
  [IPv6:2a04:8ec0:0:124::190c])
- by zproxy1.enst.fr (Postfix) with ESMTPSA id B7C49C056A;
- Sun, 12 May 2024 12:20:19 +0200 (CEST)
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id 6E057C05B2;
+ Sun, 12 May 2024 12:20:20 +0200 (CEST)
 From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
-Subject: [PATCH 0/3] Connect STM32L4x5 USART devices to the EXTI
-Date: Sun, 12 May 2024 12:19:39 +0200
-Message-ID: <20240512102013.211127-1-ines.varhol@telecom-paris.fr>
+Subject: [PATCH 1/3] hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
+Date: Sun, 12 May 2024 12:19:40 +0200
+Message-ID: <20240512102013.211127-2-ines.varhol@telecom-paris.fr>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240512102013.211127-1-ines.varhol@telecom-paris.fr>
+References: <20240512102013.211127-1-ines.varhol@telecom-paris.fr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -77,24 +79,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-STM32L4x5 EXTI was handling only configurable interrupts
-(such as those coming from STM32L4x5 SYSCFG which was the
-only device connected to the EXTI).
-This patch adds support for direct line interrupts and
-connects the existing STM32L4x5 USART devices to the EXTI.
+Up until now, the EXTI implementation had 16 inbound GPIOs connected to
+the 16 outbound GPIOs of STM32L4x5 SYSCFG.
+The EXTI actually handles 40 lines (namely 5 from STM32L4x5 USART
+devices which are already implemented in QEMU).
+In order to connect USART devices to EXTI, this commit consolidates
+constants `EXTI_NUM_INTERRUPT_OUT_LINES` (40) and
+`EXTI_NUM_GPIO_EVENT_IN_LINES` (16) into `EXTI_NUM_LINES` (40).
 
 Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+---
+ include/hw/misc/stm32l4x5_exti.h | 4 ++--
+ hw/misc/stm32l4x5_exti.c         | 6 ++----
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-In=C3=A8s Varhol (3):
-  hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
-  hw/misc: In STM32L4x5 EXTI, handle direct line interrupts
-  hw/arm: In STM32L4x5 SOC, connect USART devices to EXTI
-
- include/hw/misc/stm32l4x5_exti.h |  4 ++--
- hw/arm/stm32l4x5_soc.c           | 24 +++++++++++-------------
- hw/misc/stm32l4x5_exti.c         | 29 ++++++++++++++++++++++++-----
- 3 files changed, 37 insertions(+), 20 deletions(-)
-
+diff --git a/include/hw/misc/stm32l4x5_exti.h b/include/hw/misc/stm32l4x5=
+_exti.h
+index be961d2f01..82f75a2417 100644
+--- a/include/hw/misc/stm32l4x5_exti.h
++++ b/include/hw/misc/stm32l4x5_exti.h
+@@ -30,7 +30,7 @@
+ #define TYPE_STM32L4X5_EXTI "stm32l4x5-exti"
+ OBJECT_DECLARE_SIMPLE_TYPE(Stm32l4x5ExtiState, STM32L4X5_EXTI)
+=20
+-#define EXTI_NUM_INTERRUPT_OUT_LINES 40
++#define EXTI_NUM_LINES 40
+ #define EXTI_NUM_REGISTER 2
+=20
+ struct Stm32l4x5ExtiState {
+@@ -45,7 +45,7 @@ struct Stm32l4x5ExtiState {
+     uint32_t swier[EXTI_NUM_REGISTER];
+     uint32_t pr[EXTI_NUM_REGISTER];
+=20
+-    qemu_irq irq[EXTI_NUM_INTERRUPT_OUT_LINES];
++    qemu_irq irq[EXTI_NUM_LINES];
+ };
+=20
+ #endif
+diff --git a/hw/misc/stm32l4x5_exti.c b/hw/misc/stm32l4x5_exti.c
+index 495a0004ab..eebefc6cd3 100644
+--- a/hw/misc/stm32l4x5_exti.c
++++ b/hw/misc/stm32l4x5_exti.c
+@@ -42,7 +42,6 @@
+ #define EXTI_SWIER2 0x30
+ #define EXTI_PR2    0x34
+=20
+-#define EXTI_NUM_GPIO_EVENT_IN_LINES 16
+ #define EXTI_MAX_IRQ_PER_BANK 32
+ #define EXTI_IRQS_BANK0  32
+ #define EXTI_IRQS_BANK1  8
+@@ -241,7 +240,7 @@ static void stm32l4x5_exti_init(Object *obj)
+ {
+     Stm32l4x5ExtiState *s =3D STM32L4X5_EXTI(obj);
+=20
+-    for (size_t i =3D 0; i < EXTI_NUM_INTERRUPT_OUT_LINES; i++) {
++    for (size_t i =3D 0; i < EXTI_NUM_LINES; i++) {
+         sysbus_init_irq(SYS_BUS_DEVICE(obj), &s->irq[i]);
+     }
+=20
+@@ -249,8 +248,7 @@ static void stm32l4x5_exti_init(Object *obj)
+                           TYPE_STM32L4X5_EXTI, 0x400);
+     sysbus_init_mmio(SYS_BUS_DEVICE(obj), &s->mmio);
+=20
+-    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq,
+-                      EXTI_NUM_GPIO_EVENT_IN_LINES);
++    qdev_init_gpio_in(DEVICE(obj), stm32l4x5_exti_set_irq, EXTI_NUM_LINE=
+S);
+ }
+=20
+ static const VMStateDescription vmstate_stm32l4x5_exti =3D {
 --=20
 2.43.2
 
