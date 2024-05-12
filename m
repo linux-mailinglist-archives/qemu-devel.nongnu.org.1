@@ -2,75 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99AEF8C35E8
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2762F8C35EE
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s65zt-0000bT-GH; Sun, 12 May 2024 06:00:01 -0400
+	id 1s66Js-0003y7-FX; Sun, 12 May 2024 06:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s65zq-0000au-73
- for qemu-devel@nongnu.org; Sun, 12 May 2024 05:59:58 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1s65zo-0004kr-R8
- for qemu-devel@nongnu.org; Sun, 12 May 2024 05:59:57 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4200ee78f35so7908365e9.1
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 02:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715507994; x=1716112794; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=y/uBphHmmPv9z/as7JOnNYaoi1OreX05Ww8SM9wCY5Y=;
- b=b5WsUk3NgeZCcPXOcVN6UWFuCLL3c47dlBejh6SfJyOx+pW9lISWqDqoshpudYmQC3
- idxnBlpXB5RjHbjISFTqMtoE7QcPs/FMpS7/+frYR0T1mFn1PiZDlf0mtQI5Lz75we4o
- Q9eXZvNBA//YDuFRDW0EN4DwDps3KLkYo1tw7lPRK9jLEY4xe1vhrK9y66RRpup5nybr
- m+7RZjS/5GHUmPu7oknCCWXJLXoi0SuO+h8R3CZ38GUpaHNRBCXuX7N+0cVKC9PbJmX6
- CfCmtZ83ls5L4gq0/WMUfNRztWf04YnrteV9oNnTlepJZ7+Wukd6FPbMnwWxVIZU1j+7
- xb8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715507994; x=1716112794;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=y/uBphHmmPv9z/as7JOnNYaoi1OreX05Ww8SM9wCY5Y=;
- b=R20GgC44wG6sHFbzhiA1Gbqytzlj6+Zu7m/VH9DWExTVc5V3NAi5tPQaiv28S9yXlq
- C9Tqvs52hIsH4Bj5Ejl7zkavRgVHhAY2WDAH2RNVJdXj8Vzv42W9qQnAfN+sji7Z+tfS
- 45jmWatDVpnBQTdjtKGl4ck1r9bP8gJv1VX8YETVye8P2oZdp8iXBpqtMBuB/nz9/JVg
- RP9qTrStVmqSveesyDD5b0ZgBORLzU4Qw2ZEElxUTe31CCEpWHj16swlebxwybLoRONA
- 87tNnU+jbteGSPB4IWcYormdaGvMp5fb8rSdpKC/qZUYgj1pijWW1vJzbDUPgFEv0hw/
- MoXw==
-X-Gm-Message-State: AOJu0YzAAAJNaMZH/R1bFu8Fwe3exfAia2EhPklMhQVQ4RXbsCcAIkJa
- Kg5IkzjloMH63fXXDZH0A92UzVOh5LFSoqJLMpqp1QW39JMtHLVkeBByvg==
-X-Google-Smtp-Source: AGHT+IESiivUqtrQZKxwA4NJCNj8T1iqwjkKTvP5P1dxxlZMVSjfQndiveeqqSSetk6IUJNCxy6bOg==
-X-Received: by 2002:a05:600c:4487:b0:41b:60ae:7827 with SMTP id
- 5b1f17b1804b1-41feaa443d4mr71865915e9.24.1715507993913; 
- Sun, 12 May 2024 02:59:53 -0700 (PDT)
-Received: from archlinux.. (dynamic-077-191-209-238.77.191.pool.telefonica.de.
- [77.191.209.238]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41fccee934csm122175715e9.38.2024.05.12.02.59.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 02:59:53 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1s66Jm-0003w3-GE; Sun, 12 May 2024 06:20:34 -0400
+Received: from zproxy1.enst.fr ([2001:660:330f:2::dc])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1s66Jh-0007P5-6k; Sun, 12 May 2024 06:20:32 -0400
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id D00BFC05D0;
+ Sun, 12 May 2024 12:20:20 +0200 (CEST)
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id zwol3mqBYL1N; Sun, 12 May 2024 12:20:20 +0200 (CEST)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy1.enst.fr (Postfix) with ESMTP id 7AC0CC05C1;
+ Sun, 12 May 2024 12:20:20 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy1.enst.fr 7AC0CC05C1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1715509220;
+ bh=tdwT/SWQvpyZmB/2pZelE0+kiYbs+C+sPzXNCmDVBC0=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=VxkB9g3reWHsHTKVQLGteAc6s7j0hoaAY9rrPHnYLK81jg1H2iKzYoe0l3MXl2zOM
+ GTxCHksdP7BheNH2SZxIwp/jevmJYRR52vD7UNHSEZUa2mzSkU7brWnB2L8+z7svDA
+ SwBZilOEL2rKw4d1yiBPxenLmgKfYZy4ARV2Pb7Y=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy1.enst.fr ([IPv6:::1])
+ by localhost (zproxy1.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id RQhBWCDGoAe8; Sun, 12 May 2024 12:20:20 +0200 (CEST)
+Received: from inesv-Inspiron-3501.enst.fr (unknown
+ [IPv6:2a04:8ec0:0:124::190c])
+ by zproxy1.enst.fr (Postfix) with ESMTPSA id B7C49C056A;
+ Sun, 12 May 2024 12:20:19 +0200 (CEST)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH] ui/sdl2: Allow host to power down screen
-Date: Sun, 12 May 2024 11:59:45 +0200
-Message-ID: <20240512095945.1879-1-shentey@gmail.com>
-X-Mailer: git-send-email 2.45.0
+Cc: qemu-arm@nongnu.org, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
+Subject: [PATCH 0/3] Connect STM32L4x5 USART devices to the EXTI
+Date: Sun, 12 May 2024 12:19:39 +0200
+Message-ID: <20240512102013.211127-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x32b.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:660:330f:2::dc;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy1.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,29 +77,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By default, SDL disables the screen saver which prevents the host from powering
-down the screen even if the screen is locked. This results in draining the
-battery needlessly when the host isn't connected to a wall charger. Fix that by
-enabling the screen saver.
+STM32L4x5 EXTI was handling only configurable interrupts
+(such as those coming from STM32L4x5 SYSCFG which was the
+only device connected to the EXTI).
+This patch adds support for direct line interrupts and
+connects the existing STM32L4x5 USART devices to the EXTI.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- ui/sdl2.c | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
 
-diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 4971963f00..0a0eb5a42d 100644
---- a/ui/sdl2.c
-+++ b/ui/sdl2.c
-@@ -874,6 +874,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
-     SDL_SetHint(SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED, "0");
- #endif
-     SDL_SetHint(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4, "1");
-+    SDL_EnableScreenSaver();
-     memset(&info, 0, sizeof(info));
-     SDL_VERSION(&info.version);
- 
--- 
-2.45.0
+In=C3=A8s Varhol (3):
+  hw/misc: In STM32L4x5 EXTI, consolidate 2 constants
+  hw/misc: In STM32L4x5 EXTI, handle direct line interrupts
+  hw/arm: In STM32L4x5 SOC, connect USART devices to EXTI
+
+ include/hw/misc/stm32l4x5_exti.h |  4 ++--
+ hw/arm/stm32l4x5_soc.c           | 24 +++++++++++-------------
+ hw/misc/stm32l4x5_exti.c         | 29 ++++++++++++++++++++++++-----
+ 3 files changed, 37 insertions(+), 20 deletions(-)
+
+--=20
+2.43.2
 
 
