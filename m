@@ -2,101 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8249D8C33BD
-	for <lists+qemu-devel@lfdr.de>; Sat, 11 May 2024 22:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B428C35C8
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 11:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s5tIw-0007tg-3n; Sat, 11 May 2024 16:26:50 -0400
+	id 1s6549-0004cp-Fm; Sun, 12 May 2024 05:00:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s5tIu-0007tL-Ie
- for qemu-devel@nongnu.org; Sat, 11 May 2024 16:26:48 -0400
-Received: from wfout4-smtp.messagingengine.com ([64.147.123.147])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s5tIs-0001pY-IE
- for qemu-devel@nongnu.org; Sat, 11 May 2024 16:26:48 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfout.west.internal (Postfix) with ESMTP id 336D81C00096;
- Sat, 11 May 2024 16:26:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Sat, 11 May 2024 16:26:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm1; t=1715459202; x=1715545602; bh=gQ
- KPojefqIVdr5JNAd4NOG05AsiCaQAwxbfiM2/Wk/k=; b=TNGaTca/4li7kYadib
- yyvyRwTf9uT+hn8brW58dc3DgwGRnJJFKKjVu5BboCCq2SVIKru4t64N7nklB4eE
- rlpBuPSY7iObODG5EUip+s3YBYplc+xQZoe02su9QLgIch6xXRjCUpcJ52fFDIP1
- u8twejNmLOJJfYzTXn3EoCiE6umrUL768Tt6tR8UAHu6KFVnD2AahcuPsd/DzzD/
- GlTz7LYft0qeuTdgkwpcZc1puySWuZzuAHNMRCrkSJ9JgDHIm9zAvNNjZdAt7WEV
- BIYLaSJLLViDDZxHfgZRQo2nAwRZww9bQiOhYECjEDpn2p0stAXlROIKLycOJuEL
- q85w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1715459202; x=1715545602; bh=gQKPojefqIVdr
- 5JNAd4NOG05AsiCaQAwxbfiM2/Wk/k=; b=QQRg9dJK+mgKRgU73FV5nv1eFafrB
- 3umGZWwgTwsim6X8ZH639eybruHuVnm0z/0vl41BUqR9WxpQt1g//MKr/wlDm9qw
- qyMhyKyy+5f+/SpR6HOjnEdsZOWuLY9yD6alLUdBcR1tOFhryM4BhMMALTaFEgyF
- I1y7BsHlKqRWoyqWTkJLDG2MiKE3X4M+LKujTJRyVjLodHgxUl1FTqkd61UZlD5V
- 7jgP56nrNDTiHSF2Sb/xH4PpIuWRaLNu8ZwwbKuXzZSVsX85fqoQHEMQZjtVHFzZ
- d3GTapm4l+OnnKsrJFjs03JPQOo1b5osJaI7AldZSg5oII5gFbqyQ1m5A==
-X-ME-Sender: <xms:gtQ_ZrOQCyRtAOXFmZ08NjI5mxikvWEnaauuqMhN75q6O03McikLBA>
- <xme:gtQ_Zl-K56Oqaz7fh3qKpxJVfxPoSL8DyOxC1LQbOqM8FyzuXObcvNS56CFFmgkuB
- jJTJROaMpjZXE0jpzI>
-X-ME-Received: <xmr:gtQ_ZqSc27jqUy8oLn3_DFNoO9uNaja3dRHRoj_E_cKMtliXNYxnObM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegtddgudegkecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheplfhirgig
- uhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
- ggtffrrghtthgvrhhnpeffteeugeektdfgjeevuedvgffhgedtvdfghedugefhgeehteeu
- udehudevjeethfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
- hrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:gtQ_Zvt1UOhzbQo90Yg8Bc8RksuWxhCen-_YMa76OeSjGNIJBJVieQ>
- <xmx:gtQ_ZjeC6d3dsREfKxWGXFqMSMYTpqO3kjVQlnGNs9NGqoueC2aIYw>
- <xmx:gtQ_Zr13BIV1-sqsP_xWTu_TfJTaT0kPwpaFdxEnKu3vF9AbK7P9zA>
- <xmx:gtQ_Zv9aVGHeT4IIv2q7AgVWdsAZBEFSMbZJ1_bQPglsvH16DMQTCw>
- <xmx:gtQ_Zv4364I1JvPinuPIZj59FxqQS3lX7CCNDaRu-rtOauQkpwY0iy39>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 11 May 2024 16:26:41 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Sat, 11 May 2024 21:26:35 +0100
-Subject: [PATCH] mips64el-softmmu: Enable MTTCG
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240511-mips_mttcg-v1-1-1b71d9b85234@flygoat.com>
-X-B4-Tracking: v=1; b=H4sIAHrUP2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDU0ND3dzMguL43JKS5HRdE/NEsyRDSwNzkyRjJaCGgqLUtMwKsGHRsbW
- 1AIaoWSdcAAAA
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1s6546-0004cF-Sh; Sun, 12 May 2024 05:00:18 -0400
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
+ id 1s6545-0000pz-AW; Sun, 12 May 2024 05:00:18 -0400
+Received: by mail-ej1-x62c.google.com with SMTP id
+ a640c23a62f3a-a5a5cce2ce6so69198966b.3; 
+ Sun, 12 May 2024 02:00:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1715504414; x=1716109214; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=s2HUUSV/R8kHZKSr121aPfLsWX8/+1NKAhwK3cedQig=;
+ b=CnSae8VyhVRHxPbnvqPS6aYSGk5WL8H9EQMiX7YhegCcAvk7crL/JmfjLxmWXUsuQW
+ zEp+i5/N8Mq4CsSO0dKt9oGIOq5SE7xgl1HaKYixaDqIfobMMjo0y9HZ1pXg6t50MD3x
+ ryFB3Dx4lKjYyahOAYE7nfqY/5SrzntY5ibfCxqHIfry2OZ9R1seTKBCDFjvsR0V6XoU
+ 0cKE1gu3paasdceMA4Y15td+kB+4LLi1Wua8uv81OdZcd58Qhrj5lXOmu/zf35mxZ63H
+ 4FBZMqIZYkuuxUmdoYZZ2+uyeteqk7J0YMGzmscXvYP50eUPTwth4RIE2liNtFmQAx0A
+ DDfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715504414; x=1716109214;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s2HUUSV/R8kHZKSr121aPfLsWX8/+1NKAhwK3cedQig=;
+ b=ZQIn9J80SgWPwSzv8NSOY0pqeHGKdiz8ZPh83Zce/6PZtTAC3VkIRxluw8el2jOTr2
+ TUX73tBiCwmCPqDE6LfSugKKQjWzqb1Eply820B8Gjy+WKu6XVZJKY8KkHxrSULuADUg
+ gP0qzfY53Mhi6y9I0fVJSGX8GtKrqcZ3nQ+YdTldIXswGq1BnS7S6RZveFufQH5N1unT
+ 44DjWmldNirn/54MpWFWVcR8qSDIL43yUSlHSCEIwpwE6EQyc9TKOS4GcunQnYUX63xP
+ LAYFXv0NjLbNp55WravYH2R6EM3YkEqTu56GPu+E4MAEDb34FfJjNfUPxvgM3QYz49uB
+ apDA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWuPx01AfotSquAmMuIJXr8wnARAD6/2SJFI/L09AeA7kEXYUEOh0z/zIiIaYpo0hsDPhX8BSa0t7NWT0gDUOFqvsO6
+X-Gm-Message-State: AOJu0YwPEenOnNTt/IeUlqmPFi5bETdFX4uFMq0o9cWQ90ekPqRlVdx7
+ SsVflGG8Q8L30vpV8CX71Qc74YJ1u4Gx03B7zb9CIFsNzwfmsIJc+9spGw==
+X-Google-Smtp-Source: AGHT+IF0TbT2N6rFBEBx9taO0of0xFoGS8TLGmiKYBj3TU6h0qZ8S8KIq2QNQQlclcsJ8lwvb4BdBQ==
+X-Received: by 2002:a17:906:17c5:b0:a59:c9ad:bd26 with SMTP id
+ a640c23a62f3a-a5a2d54c601mr431144566b.12.1715504413771; 
+ Sun, 12 May 2024 02:00:13 -0700 (PDT)
+Received: from localhost.localdomain ([212.70.119.223])
+ by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a5a1781cf9csm432214366b.7.2024.05.12.02.00.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 12 May 2024 02:00:13 -0700 (PDT)
+From: Rayhan Faizel <rayhan.faizel@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2652;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=dQbwlpBpzTP6I6Mh3Lfo9FcvSurXB4/+FmQzeaP8ZP4=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjT7K81bee342az0ArifFsR0iSeH3Ju6rvSlauapRPFjy
- SG35uzsKGVhEONgkBVTZAkRUOrb0HhxwfUHWX9g5rAygQxh4OIUgInMOMfIcKEwTKpMXehyfIJq
- +vmLDI2CQY7vzRw4WQvsTkxiZz51kZHh4qvLmmxyNmEK9xbtYKz4Zb9lz5ymeg/3vHOT5lSJhN3
- nAAA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=64.147.123.147;
- envelope-from=jiaxun.yang@flygoat.com; helo=wfout4-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Cc: qemu-trivial@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org (open list:Raspberry Pi)
+Subject: [PATCH] docs/system: Remove ADC from raspi documentation
+Date: Sun, 12 May 2024 14:27:16 +0530
+Message-Id: <20240512085716.222326-1-rayhan.faizel@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
+ envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,86 +91,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MTTCG was disabled in a092a9554771 ("configure: disable MTTCG
-for MIPS guests") due to test case instability.
+None of the RPi boards have ADC on-board. In real life, an external ADC chip
+is required to operate on analog signals.
 
-I was able to reproduce this issue with in latest QEMU and look
-into reason behind that.
-
-What actually happend is kernel's CP0 timer synchronisation
-mechanism assumed a consistent latency in memory access between
-cores, which TCG can't guarantee. Thus there is a huge drift in
-count value between cores, and in early kernel versions CP0 timer
-is always used as sched_clock.
-
-sched_clock drift back on some cores triggered RCU watchdog in
-some extreme cases.
-
-This can be resolved by setting clocksource to MIPS, which allows
-clocksource to drift together with sched_clock. However this will
-leed to other problems after boot.
-
-Another option would beupdating kernel to later version, which
-will use GIC as sched_clock.
-
-In non-MTTCG build, the execution is slow enough so kernel won't
-observe back drifts.
-
-Test results:
-
-With clocksource=MIPS
-```
- ~/tmp/retry/retry.py -n 100 -c -- ./qemu-system-mips64el \
-    -display none -vga none -serial mon:stdio \
-    -machine malta -kernel ./vmlinux-4.7.0-rc1.I6400 \
-    -cpu I6400 -smp 8 -vga std \
-    -append "printk.time=0 clocksource=MIPS console=tty0 console=ttyS0 panic=-1" \
-    --no-reboot
-
-100, 0, PASS, 5.258126, 100, 100, -
-Results summary:
-0: 100 times (100.00%), avg time 6.508 (55.53 varience/7.45 deviation)
-Ran command 100 times, 100 passes
-```
-
-With linux-next:
-```
- ~/tmp/retry/retry.py -n 100 -c -- ./qemu-system-mips64el \
-    -display none -vga none -serial mon:stdio \
-    -machine malta -kernel ~/linux-next/vmlinux \
-    -cpu I6400 -smp 8 -vga std \
-    -append "printk.time=0 console=tty0 console=ttyS0 panic=-1" \
-    --no-reboot
-
-100, 0, PASS, 4.507921, 100, 100, -
-Results summary:
-0: 100 times (100.00%), avg time 4.233 (0.04 varience/0.21 deviation)
-Ran command 100 times, 100 passes
-```
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
 ---
-I'll leave the test case alone as it's already marked as QEMU_TEST_FLAKY_TESTS
----
- configs/targets/mips64el-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
+ docs/system/arm/raspi.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/configs/targets/mips64el-softmmu.mak b/configs/targets/mips64el-softmmu.mak
-index 8d9ab3ddc4b1..199b1d909a7d 100644
---- a/configs/targets/mips64el-softmmu.mak
-+++ b/configs/targets/mips64el-softmmu.mak
-@@ -1,3 +1,4 @@
- TARGET_ARCH=mips64
- TARGET_BASE_ARCH=mips
-+TARGET_SUPPORTS_MTTCG=y
- TARGET_NEED_FDT=y
-
----
-base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
-change-id: 20240511-mips_mttcg-47a6b19074b3
-
-Best regards,
+diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
+index fbec1da6a1..44eec3f1c3 100644
+--- a/docs/system/arm/raspi.rst
++++ b/docs/system/arm/raspi.rst
+@@ -40,7 +40,6 @@ Implemented devices
+ Missing devices
+ ---------------
+ 
+- * Analog to Digital Converter (ADC)
+  * Pulse Width Modulation (PWM)
+  * PCIE Root Port (raspi4b)
+  * GENET Ethernet Controller (raspi4b)
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.34.1
 
 
