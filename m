@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0188C3606
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC498C3619
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:54:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66ml-0003JM-5Z; Sun, 12 May 2024 06:50:31 -0400
+	id 1s66mx-0003RE-Qb; Sun, 12 May 2024 06:50:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mh-0003Hx-GQ
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s66mm-0003KD-G0
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66me-000617-J4
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:27 -0400
+ id 1s66mk-00065L-Fe
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511022;
+ s=mimecast20190719; t=1715511028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vXhGQDPZfGkC+s8BiEwU/MjSAqm+dVULEK5Gka2d9us=;
- b=Gy662JP2bqCeFJ5R2bEq111Ae1Fb5PPo2sqkeL77vGHnslicquo5K95OSS7C1xUZ38KYBY
- TP/CMmwp69ZKxCvtH8w5kf3pxwnfP5F6QSi22DshsYCASW2+riTwhZGSlZsEpNLpCyf5wo
- avEkjJxF9cg71HD1Kc21lI1LjocUUkE=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Gg0/8OEdOJATol7CmuQ+nthGOZbWRnfNOiRj2A7n9c0=;
+ b=CprhyGxWGXB7x8HyIvvHCfW8M3w2sOxn5OYX1LTE1LslGZP1HlE8OD3SPaEnDV/JBL59oZ
+ EA6RLf1tHIYvHybU5C7/vJbpAwGu6zD3N0LGKtCVlu4prCYh+3WqLXqplBwavp3ldmJ0my
+ TnVE6kWjAWv5sPhtRFEPt5qBtRlpono=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-457-plPLbWASN-ySfntO4xolvA-1; Sun, 12 May 2024 06:50:21 -0400
-X-MC-Unique: plPLbWASN-ySfntO4xolvA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-572a203c05dso1800005a12.0
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:21 -0700 (PDT)
+ us-mta-152-Fps4fZjaObyOM-SADQkSmg-1; Sun, 12 May 2024 06:50:25 -0400
+X-MC-Unique: Fps4fZjaObyOM-SADQkSmg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a59c69844aaso207767266b.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511019; x=1716115819;
+ d=1e100.net; s=20230601; t=1715511022; x=1716115822;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vXhGQDPZfGkC+s8BiEwU/MjSAqm+dVULEK5Gka2d9us=;
- b=FH3APe0B2kR8GnhmdcWPOyvZuJlXnxURbRXrxaKKceTh9qyNzuOHjckELJDpXtFodM
- 2j0cjTsV/2DxLMH/1h9MHNwQfiWVxatGQSEJ+E5taHC4uAbSE2EY+bEdVmesngCzOzX8
- bteO8zWT/rAj2jrs67GXMkK9MfE27r3VSP1mSgsVkbQLcnh84ThWicrT4uj+BWGs60Q9
- hwVRFEACai+OqsTBiazYgY6QBDI7zLXyhyt3YjQ+HiMGHFLvzTCBlIghH6DpNY6TMPVK
- 02Znqsp8ea5jxx+OWQqfXFnKX4Hn3bY6EzDP9uhlkdA9gV2uZa/gqsMcFfdWJ9FFli+o
- +Q1A==
-X-Gm-Message-State: AOJu0Yy04i753Cp4m/XLNrZ4W72T8PcgYcvJUuLiac4DC3h+ebHRuM19
- 4XP2A5tcCZFm9/wEhd9F/yuGEQIXSN0HCDO82wyrVl89/Wn2oIn3UjxwAw7pGcJ/5/hjnKOW2iU
- +ifTpP27t4ETPgUDBcOjPRhEbMydc665nbw0141ez5gxas8LmFc1WnjAtRack/e68DU6VpEwnrJ
- nnCdpe1EjO4u31kqvfjFFRpf7Zn20Bc4ts5X0B
-X-Received: by 2002:a50:9e61:0:b0:572:e7ac:eeaf with SMTP id
- 4fb4d7f45d1cf-5734d5ccc9cmr4881395a12.19.1715511019708; 
- Sun, 12 May 2024 03:50:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgz7CA19EKkAhyGBPiJNen3umaPKNkWLOFPadFeyvftJq/qi5w71EXmPsC0Z3c56ie37InCA==
-X-Received: by 2002:a50:9e61:0:b0:572:e7ac:eeaf with SMTP id
- 4fb4d7f45d1cf-5734d5ccc9cmr4881387a12.19.1715511019338; 
- Sun, 12 May 2024 03:50:19 -0700 (PDT)
+ bh=Gg0/8OEdOJATol7CmuQ+nthGOZbWRnfNOiRj2A7n9c0=;
+ b=IWAXO8NQHl1BBpA1JQUIuKg8ZkY4uItNkJu7AUugC19maTFWTfMZDk8RvJoaKgA0/2
+ OxOnFRtGZtihIJcGtWL/TZzNeXyfr07vnU2tOdhL8XxJxm7mm3Dz6OT+2C8fCIt8ZxAp
+ 1qcwKJrNky83txj/7qsfTuJ4oaKl3vIajYaGGCOBBQPZKiuVI25hPVkzXyRNTC6t9EYt
+ Ud3iZwHQ7pAqPcsvXQLGxEUq0iFMBkXIlqVfRqoI5nHgb7ijQMUPQLexRPUOeVik3EKr
+ uaC2gY3QRClhc/vTKOB10kUr6TxSgIy4ICM6aDOxhB2Uo8xGhXnhjdfGnr3WZIBdgbrY
+ j9Ug==
+X-Gm-Message-State: AOJu0YzhsePxCDgxF0ScSwynUENImK1AkRZvh7syD0ZAXr3WRhNn3OCL
+ nYIfLboY5WRWlHQf0cF/5Tjh+YVfDscqkfcnIp9M5IyzrV0ZPnDF1wRTAEhqPE/eA8ViVer3vdd
+ ceZce5+woDs9sMz3s51h9736QVS5AppKAqCS8Gwf4GC+X+dgxVJyFXsvrePx5pqP2+l3i6+fOeV
+ pYQMLhDiKXUtbTGZ5+opuU7ImAzxq8xQd9hJNY
+X-Received: by 2002:a17:906:2dd0:b0:a59:cfe5:947d with SMTP id
+ a640c23a62f3a-a5a2d5f1569mr497867366b.40.1715511022458; 
+ Sun, 12 May 2024 03:50:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdvYhROVrS9O6mAElgd92Jwz+1YgT4jc4eaASbcgNxqMgpMZSL9LubZksugO8ZbR5SmTcbmw==
+X-Received: by 2002:a17:906:2dd0:b0:a59:cfe5:947d with SMTP id
+ a640c23a62f3a-a5a2d5f1569mr497866766b.40.1715511022106; 
+ Sun, 12 May 2024 03:50:22 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733c2cb331sm4570720a12.67.2024.05.12.03.50.17
+ a640c23a62f3a-a5a17894d6dsm444472866b.71.2024.05.12.03.50.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:17 -0700 (PDT)
+ Sun, 12 May 2024 03:50:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>
-Subject: [PULL 12/27] s390x: select correct components for no-board build
-Date: Sun, 12 May 2024 12:49:30 +0200
-Message-ID: <20240512104945.130198-13-pbonzini@redhat.com>
+Subject: [PULL 13/27] tests/qtest: s390x: fix operation in a build without any
+ boards or devices
+Date: Sun, 12 May 2024 12:49:31 +0200
+Message-ID: <20240512104945.130198-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -100,46 +101,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Do the bare minimum to ensure that at least a vanilla
+--without-default-devices build works for all targets except i386,
+x86_64 and ppc64.  In particular this fixes s390x-softmmu; i386 and
+x86_64 have about a dozen failing tests that do not pass -M and therefore
+require a default machine type; ppc64 has the same issue, though only
+with numa-test.
+
+If we can for now ignore the cases where boards and devices are picked
+by hand, drive_del-test however can be fixed easily; almost all tests
+check for the virtio-blk or virtio-scsi device that they use, and are
+already skipped.  Only one didn't get the memo; plus another one does
+not need a machine at all and can be run with -M none.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240509170044.190795-5-pbonzini@redhat.com>
+Message-ID: <20240509170044.190795-6-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 4 ++--
- target/s390x/Kconfig       | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ tests/qtest/drive_del-test.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 786c8f92090..8ca3e0586c7 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -650,7 +650,7 @@ build-tci:
- # Check our reduced build configurations
- # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
- #   mips64el, or1k, ppc, ppc64, riscv32, riscv64, rx, x86_64
--# does not build without boards: i386, s390x, x86_64
-+# does not build without boards: i386, x86_64
- build-without-defaults:
-   extends: .native_build_job_template
-   needs:
-@@ -666,7 +666,7 @@ build-without-defaults:
-       --disable-strip
-     TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu m68k-softmmu
-       mips-softmmu mips64-softmmu mipsel-softmmu
--      sh4-softmmu sh4eb-softmmu sparc-softmmu
-+      s390x-softmmu sh4-softmmu sh4eb-softmmu sparc-softmmu
-       sparc64-softmmu tricore-softmmu xtensa-softmmu xtensaeb-softmmu
-       hexagon-linux-user i386-linux-user s390x-linux-user
-     MAKE_CHECK_ARGS: check
-diff --git a/target/s390x/Kconfig b/target/s390x/Kconfig
-index 72da48136c6..d886be48b47 100644
---- a/target/s390x/Kconfig
-+++ b/target/s390x/Kconfig
-@@ -1,2 +1,4 @@
- config S390X
-     bool
-+    select PCI
-+    select S390_FLIC
+diff --git a/tests/qtest/drive_del-test.c b/tests/qtest/drive_del-test.c
+index 8a6f3ac963d..7b67a4bbee4 100644
+--- a/tests/qtest/drive_del-test.c
++++ b/tests/qtest/drive_del-test.c
+@@ -173,7 +173,7 @@ static void test_drive_without_dev(void)
+     QTestState *qts;
+ 
+     /* Start with an empty drive */
+-    qts = qtest_init("-drive if=none,id=drive0");
++    qts = qtest_init("-drive if=none,id=drive0 -M none");
+ 
+     /* Delete the drive */
+     drive_del(qts);
+@@ -192,6 +192,11 @@ static void test_after_failed_device_add(void)
+     QDict *response;
+     QTestState *qts;
+ 
++    if (!has_device_builtin("virtio-blk")) {
++        g_test_skip("Device virtio-blk is not available");
++        return;
++    }
++
+     snprintf(driver, sizeof(driver), "virtio-blk-%s",
+              qvirtio_get_dev_type());
+ 
 -- 
 2.45.0
 
