@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058A18C3945
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DA98C3940
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:31:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6IcH-0001Pn-0i; Sun, 12 May 2024 19:28:29 -0400
+	id 1s6IcR-0001Y8-MC; Sun, 12 May 2024 19:28:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcF-0001Oq-Ef; Sun, 12 May 2024 19:28:27 -0400
+ id 1s6IcF-0001P6-ML; Sun, 12 May 2024 19:28:27 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcA-0000LY-2H; Sun, 12 May 2024 19:28:26 -0400
+ id 1s6IcB-0000Lj-3A; Sun, 12 May 2024 19:28:27 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 9930E4E676F;
- Mon, 13 May 2024 01:28:00 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id A27BA4E6778;
+ Mon, 13 May 2024 01:28:01 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id BFx2ZMulTijl; Mon, 13 May 2024 01:27:58 +0200 (CEST)
+ with ESMTP id UDarCFUdzJZt; Mon, 13 May 2024 01:27:59 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A282A4E6778; Mon, 13 May 2024 01:27:58 +0200 (CEST)
-Message-Id: <dd4a3e96a09b1fb1b966f6c21cc80601229be8eb.1715555763.git.balaton@eik.bme.hu>
+ id AFF3E4E6779; Mon, 13 May 2024 01:27:59 +0200 (CEST)
+Message-Id: <6409d95aec6f1300adf64224c47568d0c07cf366.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 25/61] target/ppc/mmu_common.c: Split off 40x cases from
- ppc_jumbo_xlate()
+Subject: [PATCH v7 26/61] target/ppc/mmu_common.c: Transform ppc_jumbo_xlate()
+ into ppc_6xx_xlate()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:27:58 +0200 (CEST)
+Date: Mon, 13 May 2024 01:27:59 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,204 +61,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce ppc_40x_xlate() to split off 40x handlning leaving only 6xx
-in ppc_jumbo_xlate() now.
+Now that only 6xx cases left in ppc_jumbo_xlate() we can change it
+to ppc_6xx_xlate() also removing get_physical_address_wtlb().
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 150 +++++++++++++++++++++++++---------------
- 1 file changed, 93 insertions(+), 57 deletions(-)
+ target/ppc/internal.h   |  5 +----
+ target/ppc/mmu_common.c | 38 ++++++++++++--------------------------
+ 2 files changed, 13 insertions(+), 30 deletions(-)
 
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 98b41a970c..4a4f9b9ec8 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -262,10 +262,7 @@ typedef struct mmu_ctx_t mmu_ctx_t;
+ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                       hwaddr *raddrp, int *psizep, int *protp,
+                       int mmu_idx, bool guest_visible);
+-int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+-                                     target_ulong eaddr,
+-                                     MMUAccessType access_type, int type,
+-                                     int mmu_idx);
++
+ /* Software driven TLB helpers */
+ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
+                                     int way, int is_code);
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index ab912da821..ddb014e0aa 100644
+index ddb014e0aa..961062bca1 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1258,6 +1258,74 @@ static bool ppc_real_mode_xlate(PowerPCCPU *cpu, vaddr eaddr,
+@@ -1112,22 +1112,6 @@ void dump_mmu(CPUPPCState *env)
+     }
+ }
+ 
+-int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+-                                     target_ulong eaddr,
+-                                     MMUAccessType access_type, int type,
+-                                     int mmu_idx)
+-{
+-    switch (env->mmu_model) {
+-    case POWERPC_MMU_SOFT_6xx:
+-        return mmu6xx_get_physical_address(env, ctx, eaddr, access_type, type);
+-    case POWERPC_MMU_SOFT_4xx:
+-        return mmu40x_get_physical_address(env, &ctx->raddr, &ctx->prot, eaddr,
+-                                           access_type);
+-    default:
+-        cpu_abort(env_cpu(env), "Unknown or invalid MMU model\n");
+-    }
+-}
+-
+ static void booke206_update_mas_tlb_miss(CPUPPCState *env, target_ulong address,
+                                          MMUAccessType access_type, int mmu_idx)
+ {
+@@ -1326,12 +1310,10 @@ static bool ppc_40x_xlate(PowerPCCPU *cpu, vaddr eaddr,
      return false;
  }
  
-+static bool ppc_40x_xlate(PowerPCCPU *cpu, vaddr eaddr,
+-/* Perform address translation */
+-/* TODO: Split this by mmu_model. */
+-static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+-                            MMUAccessType access_type,
+-                            hwaddr *raddrp, int *psizep, int *protp,
+-                            int mmu_idx, bool guest_visible)
++static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
 +                          MMUAccessType access_type,
 +                          hwaddr *raddrp, int *psizep, int *protp,
 +                          int mmu_idx, bool guest_visible)
-+{
-+    CPUState *cs = CPU(cpu);
-+    CPUPPCState *env = &cpu->env;
-+    int ret;
-+
-+    if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, protp)) {
-+        return true;
-+    }
-+
-+    ret = mmu40x_get_physical_address(env, raddrp, protp, eaddr, access_type);
-+    if (ret == 0) {
-+        *psizep = TARGET_PAGE_BITS;
-+        return true;
-+    } else if (!guest_visible) {
-+        return false;
-+    }
-+
-+    log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-+    if (access_type == MMU_INST_FETCH) {
-+        switch (ret) {
-+        case -1:
-+            /* No matches in page tables or TLB */
-+            cs->exception_index = POWERPC_EXCP_ITLB;
-+            env->error_code = 0;
-+            env->spr[SPR_40x_DEAR] = eaddr;
-+            env->spr[SPR_40x_ESR] = 0x00000000;
-+            break;
-+        case -2:
-+            /* Access rights violation */
-+            cs->exception_index = POWERPC_EXCP_ISI;
-+            env->error_code = 0x08000000;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+    } else {
-+        switch (ret) {
-+        case -1:
-+            /* No matches in page tables or TLB */
-+            cs->exception_index = POWERPC_EXCP_DTLB;
-+            env->error_code = 0;
-+            env->spr[SPR_40x_DEAR] = eaddr;
-+            if (access_type == MMU_DATA_STORE) {
-+                env->spr[SPR_40x_ESR] = 0x00800000;
-+            } else {
-+                env->spr[SPR_40x_ESR] = 0x00000000;
-+            }
-+            break;
-+        case -2:
-+            /* Access rights violation */
-+            cs->exception_index = POWERPC_EXCP_DSI;
-+            env->error_code = 0;
-+            env->spr[SPR_40x_DEAR] = eaddr;
-+            if (access_type == MMU_DATA_STORE) {
-+                env->spr[SPR_40x_ESR] |= 0x00800000;
-+            }
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+    }
-+    return false;
-+}
-+
- /* Perform address translation */
- /* TODO: Split this by mmu_model. */
- static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-@@ -1301,23 +1369,11 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-         switch (ret) {
-         case -1:
-             /* No matches in page tables or TLB */
--            switch (env->mmu_model) {
--            case POWERPC_MMU_SOFT_6xx:
--                cs->exception_index = POWERPC_EXCP_IFTLB;
--                env->error_code = 1 << 18;
--                env->spr[SPR_IMISS] = eaddr;
--                env->spr[SPR_ICMP] = 0x80000000 | ctx.ptem;
--                goto tlb_miss;
--            case POWERPC_MMU_SOFT_4xx:
--                cs->exception_index = POWERPC_EXCP_ITLB;
--                env->error_code = 0;
--                env->spr[SPR_40x_DEAR] = eaddr;
--                env->spr[SPR_40x_ESR] = 0x00000000;
--                break;
--            default:
--                g_assert_not_reached();
--            }
--            break;
-+            cs->exception_index = POWERPC_EXCP_IFTLB;
-+            env->error_code = 1 << 18;
-+            env->spr[SPR_IMISS] = eaddr;
-+            env->spr[SPR_ICMP] = 0x80000000 | ctx.ptem;
-+            goto tlb_miss;
-         case -2:
-             /* Access rights violation */
-             cs->exception_index = POWERPC_EXCP_ISI;
-@@ -1339,54 +1395,31 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-         switch (ret) {
-         case -1:
-             /* No matches in page tables or TLB */
--            switch (env->mmu_model) {
--            case POWERPC_MMU_SOFT_6xx:
--                if (access_type == MMU_DATA_STORE) {
--                    cs->exception_index = POWERPC_EXCP_DSTLB;
--                    env->error_code = 1 << 16;
--                } else {
--                    cs->exception_index = POWERPC_EXCP_DLTLB;
--                    env->error_code = 0;
--                }
--                env->spr[SPR_DMISS] = eaddr;
--                env->spr[SPR_DCMP] = 0x80000000 | ctx.ptem;
--            tlb_miss:
--                env->error_code |= ctx.key << 19;
--                env->spr[SPR_HASH1] = ppc_hash32_hpt_base(cpu) +
--                  get_pteg_offset32(cpu, ctx.hash[0]);
--                env->spr[SPR_HASH2] = ppc_hash32_hpt_base(cpu) +
--                  get_pteg_offset32(cpu, ctx.hash[1]);
--                break;
--            case POWERPC_MMU_SOFT_4xx:
--                cs->exception_index = POWERPC_EXCP_DTLB;
-+            if (access_type == MMU_DATA_STORE) {
-+                cs->exception_index = POWERPC_EXCP_DSTLB;
-+                env->error_code = 1 << 16;
-+            } else {
-+                cs->exception_index = POWERPC_EXCP_DLTLB;
-                 env->error_code = 0;
--                env->spr[SPR_40x_DEAR] = eaddr;
--                if (access_type == MMU_DATA_STORE) {
--                    env->spr[SPR_40x_ESR] = 0x00800000;
--                } else {
--                    env->spr[SPR_40x_ESR] = 0x00000000;
--                }
--                break;
--            default:
--                g_assert_not_reached();
-             }
-+            env->spr[SPR_DMISS] = eaddr;
-+            env->spr[SPR_DCMP] = 0x80000000 | ctx.ptem;
-+tlb_miss:
-+            env->error_code |= ctx.key << 19;
-+            env->spr[SPR_HASH1] = ppc_hash32_hpt_base(cpu) +
-+                                  get_pteg_offset32(cpu, ctx.hash[0]);
-+            env->spr[SPR_HASH2] = ppc_hash32_hpt_base(cpu) +
-+                                  get_pteg_offset32(cpu, ctx.hash[1]);
-             break;
-         case -2:
-             /* Access rights violation */
-             cs->exception_index = POWERPC_EXCP_DSI;
-             env->error_code = 0;
--            if (env->mmu_model == POWERPC_MMU_SOFT_4xx) {
--                env->spr[SPR_40x_DEAR] = eaddr;
--                if (access_type == MMU_DATA_STORE) {
--                    env->spr[SPR_40x_ESR] |= 0x00800000;
--                }
-+            env->spr[SPR_DAR] = eaddr;
-+            if (access_type == MMU_DATA_STORE) {
-+                env->spr[SPR_DSISR] = 0x0A000000;
-             } else {
--                env->spr[SPR_DAR] = eaddr;
--                if (access_type == MMU_DATA_STORE) {
--                    env->spr[SPR_DSISR] = 0x0A000000;
--                } else {
--                    env->spr[SPR_DSISR] = 0x08000000;
--                }
-+                env->spr[SPR_DSISR] = 0x08000000;
-             }
-             break;
-         case -4:
-@@ -1462,6 +1495,9 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     case POWERPC_MMU_BOOKE206:
-         return ppc_booke_xlate(cpu, eaddr, access_type, raddrp,
-                                psizep, protp, mmu_idx, guest_visible);
-+    case POWERPC_MMU_SOFT_4xx:
-+        return ppc_40x_xlate(cpu, eaddr, access_type, raddrp,
+ {
+     CPUState *cs = CPU(cpu);
+     CPUPPCState *env = &cpu->env;
+@@ -1353,8 +1335,10 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
+         type = ACCESS_INT;
+     }
+ 
+-    ret = get_physical_address_wtlb(env, &ctx, eaddr, access_type,
+-                                    type, mmu_idx);
++    ctx.prot = 0;
++    ctx.hash[0] = 0;
++    ctx.hash[1] = 0;
++    ret = mmu6xx_get_physical_address(env, &ctx, eaddr, access_type, type);
+     if (ret == 0) {
+         *raddrp = ctx.raddr;
+         *protp = ctx.prot;
+@@ -1498,14 +1482,16 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     case POWERPC_MMU_SOFT_4xx:
+         return ppc_40x_xlate(cpu, eaddr, access_type, raddrp,
+                              psizep, protp, mmu_idx, guest_visible);
++    case POWERPC_MMU_SOFT_6xx:
++        return ppc_6xx_xlate(cpu, eaddr, access_type, raddrp,
 +                             psizep, protp, mmu_idx, guest_visible);
      case POWERPC_MMU_REAL:
          return ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep,
                                     protp);
+     case POWERPC_MMU_MPC8xx:
+         cpu_abort(env_cpu(&cpu->env), "MPC8xx MMU model is not implemented\n");
+     default:
+-        return ppc_jumbo_xlate(cpu, eaddr, access_type, raddrp,
+-                               psizep, protp, mmu_idx, guest_visible);
++        cpu_abort(CPU(cpu), "Unknown or invalid MMU model\n");
+     }
+ }
+ 
 -- 
 2.30.9
 
