@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1EA8C3960
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0802F8C395B
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Id5-0002UT-KW; Sun, 12 May 2024 19:29:19 -0400
+	id 1s6Id8-0002p0-PC; Sun, 12 May 2024 19:29:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Icf-00021C-2s; Sun, 12 May 2024 19:28:53 -0400
+ id 1s6Icf-00021D-2k; Sun, 12 May 2024 19:28:53 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Icb-0000RI-G6; Sun, 12 May 2024 19:28:52 -0400
+ id 1s6Icd-0000Ri-A4; Sun, 12 May 2024 19:28:52 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0CA4D4E678B;
- Mon, 13 May 2024 01:28:28 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 17B764E678C;
+ Mon, 13 May 2024 01:28:29 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id mlbtngsYEV8L; Mon, 13 May 2024 01:28:26 +0200 (CEST)
+ with ESMTP id jAeRcyTP1tBo; Mon, 13 May 2024 01:28:27 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1D1BB4E678C; Mon, 13 May 2024 01:28:26 +0200 (CEST)
-Message-Id: <0a6a9c230fd4a941dec8b13a0845b3dcbba75f13.1715555763.git.balaton@eik.bme.hu>
+ id 2A86C4E678D; Mon, 13 May 2024 01:28:27 +0200 (CEST)
+Message-Id: <d57adbc137f68713cc34a2982ed414f82c6ffaa0.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 51/61] target/ppc: Add function to get protection key for
- hash32 MMU
+Subject: [PATCH v7 52/61] target/ppc/mmu-hash32.c: Inline and remove
+ ppc_hash32_pte_prot()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:28:26 +0200 (CEST)
+Date: Mon, 13 May 2024 01:28:27 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,80 +61,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a function to get key bit from SR and use it instead of open coded
-version.
+This is used only once and can be inlined.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 9 ++++++---
- target/ppc/mmu-hash32.h | 5 +++++
- target/ppc/mmu_common.c | 3 +--
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ target/ppc/mmu-hash32.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
 diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index d5f2057eb1..8e5e83f46a 100644
+index 8e5e83f46a..9de42713b3 100644
 --- a/target/ppc/mmu-hash32.c
 +++ b/target/ppc/mmu-hash32.c
-@@ -42,7 +42,7 @@ static int ppc_hash32_pte_prot(int mmu_idx,
- {
-     unsigned pp, key;
+@@ -37,17 +37,6 @@
+ #  define LOG_BATS(...) do { } while (0)
+ #endif
  
--    key = !!(mmuidx_pr(mmu_idx) ? (sr & SR32_KP) : (sr & SR32_KS));
-+    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
-     pp = pte.pte1 & HPTE32_R_PP;
- 
-     return ppc_hash32_pp_prot(key, pp, !!(sr & SR32_NX));
-@@ -145,7 +145,6 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+-static int ppc_hash32_pte_prot(int mmu_idx,
+-                               target_ulong sr, ppc_hash_pte32_t pte)
+-{
+-    unsigned pp, key;
+-
+-    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
+-    pp = pte.pte1 & HPTE32_R_PP;
+-
+-    return ppc_hash32_pp_prot(key, pp, !!(sr & SR32_NX));
+-}
+-
+ static target_ulong hash32_bat_size(int mmu_idx,
+                                     target_ulong batu, target_ulong batl)
  {
+@@ -341,10 +330,10 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
      CPUState *cs = CPU(cpu);
      CPUPPCState *env = &cpu->env;
--    int key = !!(mmuidx_pr(mmu_idx) ? (sr & SR32_KP) : (sr & SR32_KS));
- 
-     qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
- 
-@@ -206,7 +205,11 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
-         cpu_abort(cs, "ERROR: insn should not need address translation\n");
-     }
- 
--    *prot = key ? PAGE_READ | PAGE_WRITE : PAGE_READ;
-+    if (ppc_hash32_key(mmuidx_pr(mmu_idx), sr)) {
-+        *prot = PAGE_READ | PAGE_WRITE;
-+    } else {
-+        *prot = PAGE_READ;
-+    }
-     if (check_prot_access_type(*prot, access_type)) {
-         *raddr = eaddr;
-         return true;
-diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
-index bf99161858..6e5796d7cb 100644
---- a/target/ppc/mmu-hash32.h
-+++ b/target/ppc/mmu-hash32.h
-@@ -102,6 +102,11 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
-     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
- }
- 
-+static inline bool ppc_hash32_key(bool pr, target_ulong sr)
-+{
-+    return pr ? (sr & SR32_KP) : (sr & SR32_KS);
-+}
-+
- static inline int ppc_hash32_pp_prot(bool key, int pp, bool nx)
- {
+     target_ulong sr;
+-    hwaddr pte_offset;
++    hwaddr pte_offset, raddr;
+     ppc_hash_pte32_t pte;
++    bool key;
      int prot;
-diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index f09f7417c2..3d028a2008 100644
---- a/target/ppc/mmu_common.c
-+++ b/target/ppc/mmu_common.c
-@@ -310,8 +310,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     pr = FIELD_EX64(env->msr, MSR, PR);
+-    hwaddr raddr;
  
-     sr = env->sr[eaddr >> 28];
--    ctx->key = (((sr & 0x20000000) && pr) ||
--                ((sr & 0x40000000) && !pr)) ? 1 : 0;
-+    ctx->key = ppc_hash32_key(pr, sr);
-     ds = sr & SR32_T;
-     nx = sr & SR32_NX;
-     vsid = sr & SR32_VSID;
+     /* There are no hash32 large pages. */
+     *psizep = TARGET_PAGE_BITS;
+@@ -426,8 +415,8 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                 "found PTE at offset %08" HWADDR_PRIx "\n", pte_offset);
+ 
+     /* 7. Check access permissions */
+-
+-    prot = ppc_hash32_pte_prot(mmu_idx, sr, pte);
++    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
++    prot = ppc_hash32_pp_prot(key, pte.pte1 & HPTE32_R_PP, sr & SR32_NX);
+ 
+     if (!check_prot_access_type(prot, access_type)) {
+         /* Access right violation */
 -- 
 2.30.9
 
