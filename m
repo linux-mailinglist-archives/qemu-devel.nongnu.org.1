@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086A78C360A
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0188C3606
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66ms-0003K0-4G; Sun, 12 May 2024 06:50:39 -0400
+	id 1s66ml-0003JM-5Z; Sun, 12 May 2024 06:50:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mh-0003I8-PS
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:28 -0400
+ id 1s66mh-0003Hx-GQ
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mc-0005yp-6B
+ id 1s66me-000617-J4
  for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511020;
+ s=mimecast20190719; t=1715511022;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gfN5pIMWePirJMYr8BLI6kCZBJjEIGwqQo+31f8yoso=;
- b=NZLPMaqgDrxSOsBqY5GnjUsN/z4lU5yLhTrDaHCeVPT94nHaryyPOos10gwkcegKwOo3q4
- 3RokoXaUlhGK4/tZ3FA53R1oLDLfa14BZxUxSB57V2yQUbyGgrLJTa61aGC8Dv+cGIr35/
- hI4aS+GacAC+pLyPN1Z3Ucckyt9nC8g=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vXhGQDPZfGkC+s8BiEwU/MjSAqm+dVULEK5Gka2d9us=;
+ b=Gy662JP2bqCeFJ5R2bEq111Ae1Fb5PPo2sqkeL77vGHnslicquo5K95OSS7C1xUZ38KYBY
+ TP/CMmwp69ZKxCvtH8w5kf3pxwnfP5F6QSi22DshsYCASW2+riTwhZGSlZsEpNLpCyf5wo
+ avEkjJxF9cg71HD1Kc21lI1LjocUUkE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-FwzJYihPN_mw7YOdGf24FQ-1; Sun, 12 May 2024 06:50:18 -0400
-X-MC-Unique: FwzJYihPN_mw7YOdGf24FQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a59a5b06802so183941066b.1
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:18 -0700 (PDT)
+ us-mta-457-plPLbWASN-ySfntO4xolvA-1; Sun, 12 May 2024 06:50:21 -0400
+X-MC-Unique: plPLbWASN-ySfntO4xolvA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-572a203c05dso1800005a12.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511017; x=1716115817;
+ d=1e100.net; s=20230601; t=1715511019; x=1716115819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gfN5pIMWePirJMYr8BLI6kCZBJjEIGwqQo+31f8yoso=;
- b=gDPTNO7Nyr5o3PE45HuDkrH4BzT912aA+rOAfMYPVRoQyTZsTaU7+Zwq6l3nTMEq4G
- xrXZVUKsCj9zIL3CvzI4/BLT5UFLn0Oc/j8lNgog5JfnnGPoVST+tslBtM1dEJcAs1FD
- udHUqsrco3Ii7Eot8X8XddX8bOHlT8VbOBewPhWo3JNShyHmpc+hrHsu8ECBPLt7kzFP
- eAwtASBoH91kdZNsBhaz0+d56ID67jRYnoAlYIHeDvgVQy/eExJVDruJeT1QUcnRX10g
- vHPP/n1sgNYqTec8H7z0b2ZFunBh/BMaP0ShXbCUMcrxLqZy1qZvo2vn9crIc/kWsg1a
- kJVw==
-X-Gm-Message-State: AOJu0Yw9ZM4TOECn6pgqwxq2SaEzTQq15DZwDAeiBVtsd07CYHLadwm7
- uXFMHGs5zDkmERJdbOhx+XejemkkQK08O23wukqN8Ih981wLPCF77EOOKNQNyhzQytPUMA0amqX
- QNB3Lzml+YeZRDEVjfXOnx1JAlD6zv21mFgieLA9RqX789KW+KARK+iC000tYkqFE9ThhXtdVdi
- YCpkM3T8YcC34x72pT+NC/efyZ5qNXrO/MvZwJ
-X-Received: by 2002:a17:906:13c8:b0:a59:cbb5:e09e with SMTP id
- a640c23a62f3a-a5a2d6669b6mr458407766b.58.1715511016928; 
- Sun, 12 May 2024 03:50:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTBdq/PtFKE3Kd5gsBGvxpmDaY7rjCnTkAsGbZEyLx7yRKhUaLxtf+NaWp/QmaT9JlCcFHAQ==
-X-Received: by 2002:a17:906:13c8:b0:a59:cbb5:e09e with SMTP id
- a640c23a62f3a-a5a2d6669b6mr458407266b.58.1715511016463; 
- Sun, 12 May 2024 03:50:16 -0700 (PDT)
+ bh=vXhGQDPZfGkC+s8BiEwU/MjSAqm+dVULEK5Gka2d9us=;
+ b=FH3APe0B2kR8GnhmdcWPOyvZuJlXnxURbRXrxaKKceTh9qyNzuOHjckELJDpXtFodM
+ 2j0cjTsV/2DxLMH/1h9MHNwQfiWVxatGQSEJ+E5taHC4uAbSE2EY+bEdVmesngCzOzX8
+ bteO8zWT/rAj2jrs67GXMkK9MfE27r3VSP1mSgsVkbQLcnh84ThWicrT4uj+BWGs60Q9
+ hwVRFEACai+OqsTBiazYgY6QBDI7zLXyhyt3YjQ+HiMGHFLvzTCBlIghH6DpNY6TMPVK
+ 02Znqsp8ea5jxx+OWQqfXFnKX4Hn3bY6EzDP9uhlkdA9gV2uZa/gqsMcFfdWJ9FFli+o
+ +Q1A==
+X-Gm-Message-State: AOJu0Yy04i753Cp4m/XLNrZ4W72T8PcgYcvJUuLiac4DC3h+ebHRuM19
+ 4XP2A5tcCZFm9/wEhd9F/yuGEQIXSN0HCDO82wyrVl89/Wn2oIn3UjxwAw7pGcJ/5/hjnKOW2iU
+ +ifTpP27t4ETPgUDBcOjPRhEbMydc665nbw0141ez5gxas8LmFc1WnjAtRack/e68DU6VpEwnrJ
+ nnCdpe1EjO4u31kqvfjFFRpf7Zn20Bc4ts5X0B
+X-Received: by 2002:a50:9e61:0:b0:572:e7ac:eeaf with SMTP id
+ 4fb4d7f45d1cf-5734d5ccc9cmr4881395a12.19.1715511019708; 
+ Sun, 12 May 2024 03:50:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFgz7CA19EKkAhyGBPiJNen3umaPKNkWLOFPadFeyvftJq/qi5w71EXmPsC0Z3c56ie37InCA==
+X-Received: by 2002:a50:9e61:0:b0:572:e7ac:eeaf with SMTP id
+ 4fb4d7f45d1cf-5734d5ccc9cmr4881387a12.19.1715511019338; 
+ Sun, 12 May 2024 03:50:19 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a534bfb05sm182150566b.36.2024.05.12.03.50.15
- for <qemu-devel@nongnu.org>
+ 4fb4d7f45d1cf-5733c2cb331sm4570720a12.67.2024.05.12.03.50.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:16 -0700 (PDT)
+ Sun, 12 May 2024 03:50:17 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/27] s390: move css_migration_enabled from machine to css.c
-Date: Sun, 12 May 2024 12:49:29 +0200
-Message-ID: <20240512104945.130198-12-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 12/27] s390x: select correct components for no-board build
+Date: Sun, 12 May 2024 12:49:30 +0200
+Message-ID: <20240512104945.130198-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
@@ -100,156 +100,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CSS subsystem uses global variables, just face the truth and use
-a variable also for whether the CSS vmstate is in use; remove the
-indirection of fetching it from the machine type, which makes the
-TCG code depend unnecessarily on the virtio-ccw machine.
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240509170044.190795-4-pbonzini@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240509170044.190795-5-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/s390x/css.h             |  6 ++++++
- include/hw/s390x/s390-virtio-ccw.h |  7 -------
- hw/s390x/css.c                     | 10 +++++++---
- hw/s390x/s390-virtio-ccw.c         | 15 +++------------
- 4 files changed, 16 insertions(+), 22 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 4 ++--
+ target/s390x/Kconfig       | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/s390x/css.h b/include/hw/s390x/css.h
-index ba72ee3dd20..8289e458370 100644
---- a/include/hw/s390x/css.h
-+++ b/include/hw/s390x/css.h
-@@ -333,4 +333,10 @@ static inline int ccw_dstream_read_buf(CcwDataStream *cds, void *buff, int len)
- #define ccw_dstream_read(cds, v) ccw_dstream_read_buf((cds), &(v), sizeof(v))
- #define ccw_dstream_write(cds, v) ccw_dstream_write_buf((cds), &(v), sizeof(v))
- 
-+/**
-+ * true if (vmstate based) migration of the channel subsystem
-+ * is enabled, false if it is disabled.
-+ */
-+extern bool css_migration_enabled;
-+
- #endif
-diff --git a/include/hw/s390x/s390-virtio-ccw.h b/include/hw/s390x/s390-virtio-ccw.h
-index 7605d06bff1..996864a34e2 100644
---- a/include/hw/s390x/s390-virtio-ccw.h
-+++ b/include/hw/s390x/s390-virtio-ccw.h
-@@ -46,7 +46,6 @@ struct S390CcwMachineClass {
-     /*< public >*/
-     bool ri_allowed;
-     bool cpu_model_allowed;
--    bool css_migration_enabled;
-     bool hpage_1m_allowed;
-     int max_threads;
- };
-@@ -58,10 +57,4 @@ bool cpu_model_allowed(void);
- /* 1M huge page mappings allowed by the machine */
- bool hpage_1m_allowed(void);
- 
--/**
-- * Returns true if (vmstate based) migration of the channel subsystem
-- * is enabled, false if it is disabled.
-- */
--bool css_migration_enabled(void);
--
- #endif
-diff --git a/hw/s390x/css.c b/hw/s390x/css.c
-index 295530963a6..b2d5327dbf4 100644
---- a/hw/s390x/css.c
-+++ b/hw/s390x/css.c
-@@ -23,6 +23,8 @@
- #include "hw/s390x/s390-virtio-ccw.h"
- #include "hw/s390x/s390-ccw.h"
- 
-+bool css_migration_enabled = true;
-+
- typedef struct CrwContainer {
-     CRW crw;
-     QTAILQ_ENTRY(CrwContainer) sibling;
-@@ -180,7 +182,7 @@ static const VMStateDescription vmstate_orb = {
- 
- static bool vmstate_schdev_orb_needed(void *opaque)
- {
--    return css_migration_enabled();
-+    return css_migration_enabled;
- }
- 
- static const VMStateDescription vmstate_schdev_orb = {
-@@ -388,7 +390,7 @@ static int subch_dev_post_load(void *opaque, int version_id)
-         css_subch_assign(s->cssid, s->ssid, s->schid, s->devno, s);
-     }
- 
--    if (css_migration_enabled()) {
-+    if (css_migration_enabled) {
-         /* No compat voodoo to do ;) */
-         return 0;
-     }
-@@ -412,7 +414,9 @@ static int subch_dev_post_load(void *opaque, int version_id)
- 
- void css_register_vmstate(void)
- {
--    vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
-+    if (css_migration_enabled) {
-+        vmstate_register(NULL, 0, &vmstate_css, &channel_subsys);
-+    }
- }
- 
- IndAddr *get_indicator(hwaddr ind_addr, int len)
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 756b4f40aed..3d0bc3e7f2e 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -283,11 +283,9 @@ static void ccw_init(MachineState *machine)
-     s390_enable_css_support(s390_cpu_addr2state(0));
- 
-     ret = css_create_css_image(VIRTUAL_CSSID, true);
--
-     assert(ret == 0);
--    if (css_migration_enabled()) {
--        css_register_vmstate();
--    }
-+
-+    css_register_vmstate();
- 
-     /* Create VirtIO network adapters */
-     s390_create_virtio_net(BUS(css_bus), mc->default_nic);
-@@ -749,7 +747,6 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
- 
-     s390mc->ri_allowed = true;
-     s390mc->cpu_model_allowed = true;
--    s390mc->css_migration_enabled = true;
-     s390mc->hpage_1m_allowed = true;
-     s390mc->max_threads = 1;
-     mc->init = ccw_init;
-@@ -819,11 +816,6 @@ static const TypeInfo ccw_machine_info = {
-     },
- };
- 
--bool css_migration_enabled(void)
--{
--    return get_machine_class()->css_migration_enabled;
--}
--
- #define DEFINE_CCW_MACHINE(suffix, verstr, latest)                            \
-     static void ccw_machine_##suffix##_class_init(ObjectClass *oc,            \
-                                                   void *data)                 \
-@@ -1179,7 +1171,6 @@ static void ccw_machine_2_9_instance_options(MachineState *machine)
- 
- static void ccw_machine_2_9_class_options(MachineClass *mc)
- {
--    S390CcwMachineClass *s390mc = S390_CCW_MACHINE_CLASS(mc);
-     static GlobalProperty compat[] = {
-         { TYPE_S390_STATTRIB, "migration-enabled", "off", },
-         { TYPE_S390_FLIC_COMMON, "migration-enabled", "off", },
-@@ -1188,7 +1179,7 @@ static void ccw_machine_2_9_class_options(MachineClass *mc)
-     ccw_machine_2_10_class_options(mc);
-     compat_props_add(mc->compat_props, hw_compat_2_9, hw_compat_2_9_len);
-     compat_props_add(mc->compat_props, compat, G_N_ELEMENTS(compat));
--    s390mc->css_migration_enabled = false;
-+    css_migration_enabled = false;
- }
- DEFINE_CCW_MACHINE(2_9, "2.9", false);
- 
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 786c8f92090..8ca3e0586c7 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -650,7 +650,7 @@ build-tci:
+ # Check our reduced build configurations
+ # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
+ #   mips64el, or1k, ppc, ppc64, riscv32, riscv64, rx, x86_64
+-# does not build without boards: i386, s390x, x86_64
++# does not build without boards: i386, x86_64
+ build-without-defaults:
+   extends: .native_build_job_template
+   needs:
+@@ -666,7 +666,7 @@ build-without-defaults:
+       --disable-strip
+     TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu m68k-softmmu
+       mips-softmmu mips64-softmmu mipsel-softmmu
+-      sh4-softmmu sh4eb-softmmu sparc-softmmu
++      s390x-softmmu sh4-softmmu sh4eb-softmmu sparc-softmmu
+       sparc64-softmmu tricore-softmmu xtensa-softmmu xtensaeb-softmmu
+       hexagon-linux-user i386-linux-user s390x-linux-user
+     MAKE_CHECK_ARGS: check
+diff --git a/target/s390x/Kconfig b/target/s390x/Kconfig
+index 72da48136c6..d886be48b47 100644
+--- a/target/s390x/Kconfig
++++ b/target/s390x/Kconfig
+@@ -1,2 +1,4 @@
+ config S390X
+     bool
++    select PCI
++    select S390_FLIC
 -- 
 2.45.0
 
