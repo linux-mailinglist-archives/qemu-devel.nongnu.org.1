@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC498C3619
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D798C3610
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66mx-0003RE-Qb; Sun, 12 May 2024 06:50:44 -0400
+	id 1s66mw-0003Pg-E8; Sun, 12 May 2024 06:50:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mm-0003KD-G0
+ id 1s66mm-0003KC-Fu
  for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mk-00065L-Fe
+ id 1s66mk-00065P-4A
  for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1715511028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Gg0/8OEdOJATol7CmuQ+nthGOZbWRnfNOiRj2A7n9c0=;
- b=CprhyGxWGXB7x8HyIvvHCfW8M3w2sOxn5OYX1LTE1LslGZP1HlE8OD3SPaEnDV/JBL59oZ
- EA6RLf1tHIYvHybU5C7/vJbpAwGu6zD3N0LGKtCVlu4prCYh+3WqLXqplBwavp3ldmJ0my
- TnVE6kWjAWv5sPhtRFEPt5qBtRlpono=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZSGuDMNpKG/eAq72x1kmer1D/P80D6LHphVej7Q/tIQ=;
+ b=L2b98urSTGx+s70+T30EOZYgPze0R495m3U9+Xj6RQxtaJPUhCv5LrpBDpkUK221/u3jhK
+ NnLF0s95hDVy4btOS6gkK6Oi8xfIzkuP5BsZDRnzyxSuzdm39OY5c6elach6cAGvknpMWk
+ 0PKXmABSspH19zmwC4n6p2IR071Bq2w=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-Fps4fZjaObyOM-SADQkSmg-1; Sun, 12 May 2024 06:50:25 -0400
-X-MC-Unique: Fps4fZjaObyOM-SADQkSmg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a59c69844aaso207767266b.0
+ us-mta-13-PYiQ5xCiOWaq5AhWv_wR3w-1; Sun, 12 May 2024 06:50:25 -0400
+X-MC-Unique: PYiQ5xCiOWaq5AhWv_wR3w-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-34da8f1bf7cso2316341f8f.2
  for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511022; x=1716115822;
+ d=1e100.net; s=20230601; t=1715511024; x=1716115824;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gg0/8OEdOJATol7CmuQ+nthGOZbWRnfNOiRj2A7n9c0=;
- b=IWAXO8NQHl1BBpA1JQUIuKg8ZkY4uItNkJu7AUugC19maTFWTfMZDk8RvJoaKgA0/2
- OxOnFRtGZtihIJcGtWL/TZzNeXyfr07vnU2tOdhL8XxJxm7mm3Dz6OT+2C8fCIt8ZxAp
- 1qcwKJrNky83txj/7qsfTuJ4oaKl3vIajYaGGCOBBQPZKiuVI25hPVkzXyRNTC6t9EYt
- Ud3iZwHQ7pAqPcsvXQLGxEUq0iFMBkXIlqVfRqoI5nHgb7ijQMUPQLexRPUOeVik3EKr
- uaC2gY3QRClhc/vTKOB10kUr6TxSgIy4ICM6aDOxhB2Uo8xGhXnhjdfGnr3WZIBdgbrY
- j9Ug==
-X-Gm-Message-State: AOJu0YzhsePxCDgxF0ScSwynUENImK1AkRZvh7syD0ZAXr3WRhNn3OCL
- nYIfLboY5WRWlHQf0cF/5Tjh+YVfDscqkfcnIp9M5IyzrV0ZPnDF1wRTAEhqPE/eA8ViVer3vdd
- ceZce5+woDs9sMz3s51h9736QVS5AppKAqCS8Gwf4GC+X+dgxVJyFXsvrePx5pqP2+l3i6+fOeV
- pYQMLhDiKXUtbTGZ5+opuU7ImAzxq8xQd9hJNY
-X-Received: by 2002:a17:906:2dd0:b0:a59:cfe5:947d with SMTP id
- a640c23a62f3a-a5a2d5f1569mr497867366b.40.1715511022458; 
- Sun, 12 May 2024 03:50:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdvYhROVrS9O6mAElgd92Jwz+1YgT4jc4eaASbcgNxqMgpMZSL9LubZksugO8ZbR5SmTcbmw==
-X-Received: by 2002:a17:906:2dd0:b0:a59:cfe5:947d with SMTP id
- a640c23a62f3a-a5a2d5f1569mr497866766b.40.1715511022106; 
- Sun, 12 May 2024 03:50:22 -0700 (PDT)
+ bh=ZSGuDMNpKG/eAq72x1kmer1D/P80D6LHphVej7Q/tIQ=;
+ b=Uk3Rfrzb0EQ+kkJuEtupsUIbVvFgOVOcaB+lxEy3q2ETT69Pr8SveCDliDOGr+Ydgd
+ Mdi8NDjnGi605WG8r2mEy6TLNdhOCRjHF7NXSsLrboaiTIzc5HKtGM3XruW24iV8VBER
+ 4rfvPzSB1ukfG1weNfuYiMyV7R8sGWMpTEVnFfVxEkSDeQFgT3yAOOx24qqiyNT04Uo1
+ B4ULsfTPiEN+SFwlT5y83q1gRxDkE54sDyxsbufDJHcjDJMZlCWYejV/plk+0yQmGkV0
+ PQZtY/elQjiki9gs5DdbT+RHGHbdmowHCV66272RJW18yRXeT0QPrWwFme/AGqUWzPAt
+ oYYg==
+X-Gm-Message-State: AOJu0Yw3C3rpc4DK7Q6XRO6ls1LqHmgDJDqB8Fog/navfubHjaf4e2Ac
+ wFv4fPv3rLExSs595ckRMImmoGhSMKTVIp1rlRIRvFAqmf1IYlyjVIZxqnHtjwXrTTHaLvVoLNQ
+ 1JInaNK098pptlWpSKGlLlk3aoA6M1wLo/nb/I+ZMXrrkAzWZUISndSCuEqHvpzyJQeRG+UZ8ET
+ OJ1cR3kxsQ4NbepQ71x47Wa8h5hYhnRI1Mweyb
+X-Received: by 2002:adf:e9c9:0:b0:34f:2cea:c86b with SMTP id
+ ffacd0b85a97d-3504a969544mr6532913f8f.48.1715511024426; 
+ Sun, 12 May 2024 03:50:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkhJc1t81UL/dR3Ah1xBWLvJT/IiqPRQWVpyd1xZdZQ5FhB+YrETCvbjLT11ZggsjQyl5sjA==
+X-Received: by 2002:adf:e9c9:0:b0:34f:2cea:c86b with SMTP id
+ ffacd0b85a97d-3504a969544mr6532899f8f.48.1715511023981; 
+ Sun, 12 May 2024 03:50:23 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17894d6dsm444472866b.71.2024.05.12.03.50.20
+ a640c23a62f3a-a5a1781cf91sm441728666b.1.2024.05.12.03.50.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:20 -0700 (PDT)
+ Sun, 12 May 2024 03:50:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-Subject: [PULL 13/27] tests/qtest: s390x: fix operation in a build without any
- boards or devices
-Date: Sun, 12 May 2024 12:49:31 +0200
-Message-ID: <20240512104945.130198-14-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 14/27] xen: initialize legacy backends from xen_bus_init()
+Date: Sun, 12 May 2024 12:49:32 +0200
+Message-ID: <20240512104945.130198-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,52 +101,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do the bare minimum to ensure that at least a vanilla
---without-default-devices build works for all targets except i386,
-x86_64 and ppc64.  In particular this fixes s390x-softmmu; i386 and
-x86_64 have about a dozen failing tests that do not pass -M and therefore
-require a default machine type; ppc64 has the same issue, though only
-with numa-test.
+Prepare for moving the calls to xen_be_register() under the
+control of xen_bus_init(), using the normal xen_backend_init()
+method that is used by the "modern" backends.
 
-If we can for now ignore the cases where boards and devices are picked
-by hand, drive_del-test however can be fixed easily; almost all tests
-check for the virtio-blk or virtio-scsi device that they use, and are
-already skipped.  Only one didn't get the memo; plus another one does
-not need a machine at all and can be run with -M none.
+This requires the xenstore global variable to be initialized,
+which is done by xen_be_init().  To ensure that everything is
+ready at the time the xen_backend_init() functions are called,
+remove the xen_be_init() function from all the boards and
+place it directly in xen_bus_init().
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240509170044.190795-6-pbonzini@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240509170044.190795-7-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/qtest/drive_del-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/i386/pc.c              | 1 -
+ hw/xen/xen-bus.c          | 4 ++++
+ hw/xen/xen-hvm-common.c   | 2 --
+ hw/xenpv/xen_machine_pv.c | 5 +----
+ 4 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/tests/qtest/drive_del-test.c b/tests/qtest/drive_del-test.c
-index 8a6f3ac963d..7b67a4bbee4 100644
---- a/tests/qtest/drive_del-test.c
-+++ b/tests/qtest/drive_del-test.c
-@@ -173,7 +173,7 @@ static void test_drive_without_dev(void)
-     QTestState *qts;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 505ea750f4d..19f21953b4a 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1250,7 +1250,6 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+             pci_create_simple(pcms->pcibus, -1, "xen-platform");
+         }
+         xen_bus_init();
+-        xen_be_init();
+     }
+ #endif
  
-     /* Start with an empty drive */
--    qts = qtest_init("-drive if=none,id=drive0");
-+    qts = qtest_init("-drive if=none,id=drive0 -M none");
+diff --git a/hw/xen/xen-bus.c b/hw/xen/xen-bus.c
+index fb82cc33e48..95b207ac8b4 100644
+--- a/hw/xen/xen-bus.c
++++ b/hw/xen/xen-bus.c
+@@ -13,6 +13,7 @@
+ #include "hw/sysbus.h"
+ #include "hw/xen/xen.h"
+ #include "hw/xen/xen-backend.h"
++#include "hw/xen/xen-legacy-backend.h" /* xen_be_init() */
+ #include "hw/xen/xen-bus.h"
+ #include "hw/xen/xen-bus-helper.h"
+ #include "monitor/monitor.h"
+@@ -329,6 +330,9 @@ static void xen_bus_realize(BusState *bus, Error **errp)
+         goto fail;
+     }
  
-     /* Delete the drive */
-     drive_del(qts);
-@@ -192,6 +192,11 @@ static void test_after_failed_device_add(void)
-     QDict *response;
-     QTestState *qts;
- 
-+    if (!has_device_builtin("virtio-blk")) {
-+        g_test_skip("Device virtio-blk is not available");
-+        return;
-+    }
++    /* Initialize legacy backend core & drivers */
++    xen_be_init();
 +
-     snprintf(driver, sizeof(driver), "virtio-blk-%s",
-              qvirtio_get_dev_type());
+     if (xs_node_scanf(xenbus->xsh, XBT_NULL, "", /* domain root node */
+                       "domid", NULL, "%u", &domid) == 1) {
+         xenbus->backend_id = domid;
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 1627da73982..2d1b0321214 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -872,8 +872,6 @@ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
  
+     xen_bus_init();
+ 
+-    xen_be_init();
+-
+     return;
+ 
+ err:
+diff --git a/hw/xenpv/xen_machine_pv.c b/hw/xenpv/xen_machine_pv.c
+index 1130d1a1479..b500ce09891 100644
+--- a/hw/xenpv/xen_machine_pv.c
++++ b/hw/xenpv/xen_machine_pv.c
+@@ -34,8 +34,7 @@ static void xen_init_pv(MachineState *machine)
+ {
+     setup_xen_backend_ops();
+ 
+-    /* Initialize backend core & drivers */
+-    xen_be_init();
++    xen_bus_init();
+ 
+     switch (xen_mode) {
+     case XEN_ATTACH:
+@@ -60,8 +59,6 @@ static void xen_init_pv(MachineState *machine)
+         vga_interface_created = true;
+     }
+ 
+-    xen_bus_init();
+-
+     /* config cleanup hook */
+     atexit(xen_config_cleanup);
+ }
 -- 
 2.45.0
 
