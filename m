@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF9F8C3616
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D492D8C360F
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66nE-0003fs-IG; Sun, 12 May 2024 06:51:00 -0400
+	id 1s66nD-0003eJ-J4; Sun, 12 May 2024 06:50:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66n0-0003VW-EL
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s66n5-0003XR-1P
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66my-000698-UP
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:46 -0400
+ id 1s66n1-00069k-Os
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511043;
+ s=mimecast20190719; t=1715511047;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rXo9sva3/rn1vjZeUYeBkrkHGuS3CAewAGjT9QThyKs=;
- b=c8h0nDeNUex9xk+I4YuuoSt8TZ84OdDvjZDdE7YRXcDfrqUao+uyrJ58iXtNeN9H0kYcE5
- QNj+SIWT9BXpV7F3uL76ruPkpzN7r6vqpJF6gYtivP4McfwQXUpFFNTdOW8bcMC7r+CO7A
- e12DhARKvdgngfGeU1zOhjzCgrkBfic=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6sCNMrkKeZGAI3K68LvfjrDFWNMHzM25PeT31SaOJsk=;
+ b=E2iMLhtEOXqXSQIzd6bOVowuZHEGxyKe8lPY+Lmw0cuU2BL8L6d8Pf4yKsTcXp0ZGN3ARq
+ IWFBzr/u0r5fym6hgmj+LgTbwRaFqFpjnoIgH5Hpsu57u1MCbDfJ68fagBQbLW1WoAeij/
+ 2EqHEp7En9vTBPCSJ3icfs4jY0IJ8/A=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-Tv_2ziPFOtOujpsxYfqN0A-1; Sun, 12 May 2024 06:50:41 -0400
-X-MC-Unique: Tv_2ziPFOtOujpsxYfqN0A-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a5a5fdd6185so23518166b.1
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:41 -0700 (PDT)
+ us-mta-473-AvdETE70O5GBFWf4gMrlgg-1; Sun, 12 May 2024 06:50:45 -0400
+X-MC-Unique: AvdETE70O5GBFWf4gMrlgg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-572babec6c6so4570876a12.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511040; x=1716115840;
+ d=1e100.net; s=20230601; t=1715511043; x=1716115843;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rXo9sva3/rn1vjZeUYeBkrkHGuS3CAewAGjT9QThyKs=;
- b=q1TVrkK8gWOQ8HLNNMlULtFCHAIByUus6cFC8E06pQDLcJHgqro4PWe4FF117ZiL2t
- lWNMKXuPS5rcxqwLpcsi2gIVZi6EUL1+C8ezBGHgexU0TUN0s+jyZHhCk/Ikalt3wIR2
- GBH1KHI5SYeSSZtnR6fWJF2c1KwdROh8LxZK4MUlaut+Rw1Yua2b6TWMUDabo8iqcoeW
- Qx6iIcW1DiXCtoM4clHekP3IzvocooNF3SwwO/Yb9Z9mrzlTh4JThVqrf6efFo/bjQcL
- O/EJsleZVbsPdeQCpgU62afy1kmTH09PDDDyJGYENBWGujFKiRz4RpoI623V7/OjlcP1
- O/vg==
-X-Gm-Message-State: AOJu0YzUhNoXQYSpIFCXuZXRnSGHQjKbYXn5KcVlydO2MBXSxFxCk6v3
- nsSbHrE3cd5AKcYBXyic1BiFIOY7E4owSc54MrbFoERLefJdOTS3HCLwi3BvCG4dfJVtJ6KHwzh
- 8TxMFQuHV00q5H/sv0wuk+LjGEFklNOejj3zTul7MTNB9EhBWcG/0mMO/l0x1KJOEIIU0HEuWt2
- ik3FHcC4N8eqE0mpnT89VxI4TgzVnqcCA77zJ+
-X-Received: by 2002:a17:906:f582:b0:a5a:66a7:47f3 with SMTP id
- a640c23a62f3a-a5a66a74d79mr8023666b.35.1715511040193; 
- Sun, 12 May 2024 03:50:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/k3G50ADBzwMCeQtcTA0uCRkG17Brpa8gGAmAAFyIkSLQFZf2FAoWhJeC/z7OPhvW/GVXTw==
-X-Received: by 2002:a17:906:f582:b0:a5a:66a7:47f3 with SMTP id
- a640c23a62f3a-a5a66a74d79mr8022566b.35.1715511039928; 
- Sun, 12 May 2024 03:50:39 -0700 (PDT)
+ bh=6sCNMrkKeZGAI3K68LvfjrDFWNMHzM25PeT31SaOJsk=;
+ b=BDxoqgE2oUkRLkufTnq928nm3mckCaB4GiKYkKwWeAFoV4oCwAbBFy6joANGzj8Lif
+ SZlnpIOJqnL/hakCoUmmZ88L5XnBv+CU3mG4rQ68HJMLLY2nhBwV6NaGaYnYCXDjbDlz
+ bwSf28TwxsVnQuZ7rvHHkhmMSRqnRm70RiSRsQ6XZ5IxJb7FHzc0fMlTNuMRkdF5CxJK
+ +zCY8VGxJ+erINK3kPgDbwZxGdc2fMDOFM54wizoYi7rdeSqau0jOUogJEOGVy0LKeBM
+ Yl8pbggnXx0UzWha6MOdlO/wpnjPdKc0WZ7rXExXa+oetxCDQr2QTpyfwutXZBR/6MXZ
+ Avcg==
+X-Gm-Message-State: AOJu0Yw/Xoo1tEhmaFOLWFXuwOJVD+BFrYbhnUYEpSkt3Jr90LmQBWfy
+ iBAF/LV76wWtJIHEiX3z//N9Tc1NoHnXiujIQF70mQNUbyZUoG2QVzYj9pbYDt0SSuXcfpBhe9e
+ bm7RGPdPuEOS8RMwBA2CNqu4yQffUiClB0KZg/jU7sCgHwwcU71zIoVBU/zNCez0XvYIKrZ2kHN
+ nG3a/uYNe1eUDe4G1svzgmD8WO/V0Cyv1qKsQR
+X-Received: by 2002:a50:9fa7:0:b0:572:a172:be71 with SMTP id
+ 4fb4d7f45d1cf-5734d6f2765mr6393879a12.14.1715511042948; 
+ Sun, 12 May 2024 03:50:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0VGSDA5320UpaDj/jn4GtDtC1jpN2ruo/6zUcyMc9EIMpgmu1B+zOSgmfHlsV1AP2PEkQvg==
+X-Received: by 2002:a50:9fa7:0:b0:572:a172:be71 with SMTP id
+ 4fb4d7f45d1cf-5734d6f2765mr6393870a12.14.1715511042604; 
+ Sun, 12 May 2024 03:50:42 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b17a06sm438997466b.219.2024.05.12.03.50.37
+ 4fb4d7f45d1cf-57421480d99sm2581389a12.8.2024.05.12.03.50.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:38 -0700 (PDT)
+ Sun, 12 May 2024 03:50:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 21/27] tests/qtest: arm: fix operation in a build without any
- boards or devices
-Date: Sun, 12 May 2024 12:49:39 +0200
-Message-ID: <20240512104945.130198-22-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 22/27] meson: pick libfdt from common_ss when building
+ target-specific files
+Date: Sun, 12 May 2024 12:49:40 +0200
+Message-ID: <20240512104945.130198-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
@@ -79,7 +78,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -103,74 +102,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ARM/aarch64 are easy to fix because they already have to pass a machine
-type by hand.  Just guard the tests with a check that the machine actually
-exists.
+Avoid having to list dependencies such as libfdt twice, both on common_ss
+and specific_ss.  Instead, just take all the dependencies in common_ss
+and allow the target-specific libqemu-*.fa library to use them.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240509170044.190795-14-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/qtest/arm-cpu-features.c | 4 ++++
- tests/qtest/migration-test.c   | 6 ++++++
- tests/qtest/numa-test.c        | 4 ++++
- 3 files changed, 14 insertions(+)
+ meson.build              | 14 +++++++++++---
+ hw/arm/meson.build       |  2 +-
+ hw/loongarch/meson.build |  2 +-
+ hw/mips/meson.build      |  2 +-
+ hw/openrisc/meson.build  |  4 ++--
+ hw/ppc/meson.build       |  4 +---
+ hw/riscv/meson.build     |  2 +-
+ 7 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/tests/qtest/arm-cpu-features.c b/tests/qtest/arm-cpu-features.c
-index 9d6e6190d55..966c65d5c3e 100644
---- a/tests/qtest/arm-cpu-features.c
-+++ b/tests/qtest/arm-cpu-features.c
-@@ -632,6 +632,10 @@ int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
+diff --git a/meson.build b/meson.build
+index 83ae4347c7f..ab1f44b25c2 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3867,15 +3867,23 @@ foreach target : target_dirs
  
-+    if (!qtest_has_machine("virt")) {
-+        goto out;
-+    }
+   target_common = common_ss.apply(config_target, strict: false)
+   objects = common_all.extract_objects(target_common.sources())
+-  deps = target_common.dependencies()
++  arch_deps += target_common.dependencies()
+ 
+   target_specific = specific_ss.apply(config_target, strict: false)
+   arch_srcs += target_specific.sources()
+   arch_deps += target_specific.dependencies()
+ 
++  # allow using headers from the dependencies but do not include the sources,
++  # because this emulator only needs those in "objects".  For external
++  # dependencies, the full dependency is included below in the executable.
++  lib_deps = []
++  foreach dep : arch_deps
++    lib_deps += dep.partial_dependency(compile_args: true, includes: true)
++  endforeach
 +
-     if (qtest_has_accel("tcg")) {
-         qtest_add_data_func("/arm/query-cpu-model-expansion",
-                             NULL, test_query_cpu_model_expansion);
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 7a1345f80f8..e8d3555f56b 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -781,6 +781,12 @@ static int test_migrate_start(QTestState **from, QTestState **to,
-         kvm_opts = ",dirty-ring-size=4096";
-     }
+   lib = static_library('qemu-' + target,
+                  sources: arch_srcs + genh,
+-                 dependencies: arch_deps,
++                 dependencies: lib_deps,
+                  objects: objects,
+                  include_directories: target_inc,
+                  c_args: c_args,
+@@ -3923,7 +3931,7 @@ foreach target : target_dirs
+     emulator = executable(exe_name, exe['sources'],
+                install: true,
+                c_args: c_args,
+-               dependencies: arch_deps + deps + exe['dependencies'],
++               dependencies: arch_deps + exe['dependencies'],
+                objects: lib.extract_all_objects(recursive: true),
+                link_depends: [block_syms, qemu_syms],
+                link_args: link_args,
+diff --git a/hw/arm/meson.build b/hw/arm/meson.build
+index 6808135c1f7..aefde0c69a3 100644
+--- a/hw/arm/meson.build
++++ b/hw/arm/meson.build
+@@ -1,5 +1,5 @@
+ arm_ss = ss.source_set()
+-arm_ss.add(files('boot.c'), fdt)
++arm_ss.add(files('boot.c'))
+ arm_ss.add(when: 'CONFIG_ARM_VIRT', if_true: files('virt.c'))
+ arm_ss.add(when: 'CONFIG_ACPI', if_true: files('virt-acpi-build.c'))
+ arm_ss.add(when: 'CONFIG_DIGIC', if_true: files('digic_boards.c'))
+diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
+index d306d82c2ee..bce7ebac97e 100644
+--- a/hw/loongarch/meson.build
++++ b/hw/loongarch/meson.build
+@@ -3,7 +3,7 @@ loongarch_ss.add(files(
+     'fw_cfg.c',
+     'boot.c',
+ ))
+-loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: [files('virt.c'), fdt])
++loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: files('virt.c'))
+ loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
  
-+    if (!qtest_has_machine(machine_alias)) {
-+        g_autofree char *msg = g_strdup_printf("machine %s not supported", machine_alias);
-+        g_test_skip(msg);
-+        return -1;
-+    }
-+
-     machine = resolve_machine_version(machine_alias, QEMU_ENV_SRC,
-                                       QEMU_ENV_DST);
+ hw_arch += {'loongarch': loongarch_ss}
+diff --git a/hw/mips/meson.build b/hw/mips/meson.build
+index f06d88f3430..ca37c42d900 100644
+--- a/hw/mips/meson.build
++++ b/hw/mips/meson.build
+@@ -9,7 +9,7 @@ if 'CONFIG_TCG' in config_all_accel
+ mips_ss.add(when: 'CONFIG_JAZZ', if_true: files('jazz.c'))
+ mips_ss.add(when: 'CONFIG_MIPSSIM', if_true: files('mipssim.c'))
+ mips_ss.add(when: 'CONFIG_FULOONG', if_true: files('fuloong2e.c'))
+-mips_ss.add(when: 'CONFIG_MIPS_BOSTON', if_true: [files('boston.c'), fdt])
++mips_ss.add(when: 'CONFIG_MIPS_BOSTON', if_true: files('boston.c'))
+ endif
  
-diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-index 4f4404a4b14..7aa262dbb99 100644
---- a/tests/qtest/numa-test.c
-+++ b/tests/qtest/numa-test.c
-@@ -558,6 +558,9 @@ int main(int argc, char **argv)
-     }
+ hw_arch += {'mips': mips_ss}
+diff --git a/hw/openrisc/meson.build b/hw/openrisc/meson.build
+index 2dbc6365bb7..82f1f0ef1cc 100644
+--- a/hw/openrisc/meson.build
++++ b/hw/openrisc/meson.build
+@@ -1,7 +1,7 @@
+ openrisc_ss = ss.source_set()
+ openrisc_ss.add(files('cputimer.c'))
+ openrisc_ss.add(files('boot.c'))
+-openrisc_ss.add(when: 'CONFIG_OR1K_SIM', if_true: [files('openrisc_sim.c'), fdt])
+-openrisc_ss.add(when: 'CONFIG_OR1K_VIRT', if_true: [files('virt.c'), fdt])
++openrisc_ss.add(when: 'CONFIG_OR1K_SIM', if_true: files('openrisc_sim.c'))
++openrisc_ss.add(when: 'CONFIG_OR1K_VIRT', if_true: files('virt.c'))
  
-     if (g_str_equal(arch, "aarch64")) {
-+        if (!qtest_has_machine("virt")) {
-+            goto out;
-+        }
-         g_string_append(args, " -machine virt");
-     }
+ hw_arch += {'openrisc': openrisc_ss}
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index d096636ee7f..3ebbf329bcc 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -3,9 +3,7 @@ ppc_ss.add(files(
+   'ppc.c',
+   'ppc_booke.c',
+ ))
+-ppc_ss.add(when: 'CONFIG_FDT_PPC', if_true: [files(
+-  'fdt.c',
+-), fdt])
++ppc_ss.add(when: 'CONFIG_FDT_PPC', if_true: files('fdt.c'))
+ ppc_ss.add(when: 'CONFIG_FW_CFG_PPC', if_true: files('fw_cfg.c'))
  
-@@ -590,5 +593,6 @@ int main(int argc, char **argv)
-                             aarch64_numa_cpu);
-     }
- 
-+out:
-     return g_test_run();
- }
+ # IBM pSeries (sPAPR)
+diff --git a/hw/riscv/meson.build b/hw/riscv/meson.build
+index 2f7ee81be3c..f872674093a 100644
+--- a/hw/riscv/meson.build
++++ b/hw/riscv/meson.build
+@@ -1,5 +1,5 @@
+ riscv_ss = ss.source_set()
+-riscv_ss.add(files('boot.c'), fdt)
++riscv_ss.add(files('boot.c'))
+ riscv_ss.add(when: 'CONFIG_RISCV_NUMA', if_true: files('numa.c'))
+ riscv_ss.add(files('riscv_hart.c'))
+ riscv_ss.add(when: 'CONFIG_OPENTITAN', if_true: files('opentitan.c'))
 -- 
 2.45.0
 
