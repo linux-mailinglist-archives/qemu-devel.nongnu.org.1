@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B908C35F6
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 211D18C3615
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66SI-0007WA-RN; Sun, 12 May 2024 06:29:22 -0400
+	id 1s66mM-00039B-3L; Sun, 12 May 2024 06:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s66SG-0007Vl-Ag
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:29:20 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s66SE-0001Un-O6
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:29:20 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-34da35cd01cso3101363f8f.2
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:29:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715509756; x=1716114556; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QwPr5EtNNaz/C16YN205D9pkomcVcn8tvY+4+dDIYaM=;
- b=rAjbX6Td9DGm+msEx8+vcRPqgW4i3UFzur+OxQPIx3yKV/9pIcOLmX040HaaqsYjry
- 9pKmqUyUNe+EZ/t73LIN5cPIbwlT3vOyKpcHgB41lNdGPboLWDFdimL0hlsppu2wn2PX
- vkFg2a5g8eVf1gx4UYSCdNCqfxccoTYArLvRg54JjURmC5yXsfFaGCFmTG95bDX+PaEF
- P7gqfHnitN/49FZBFNu/2ytf3OpLuAY2xS7mfZ9XUM0FeJgABrFuOzE6wRm18OdMc1f9
- LB/ZiThjuRLQUx+G4WHB+PMSy8aJbqitM2WKU8ojI18aCscNG4/dLOCJqbqKsZjFq7LV
- gblA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s66mK-00038P-K9
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1s66mI-0005iM-HA
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715511001;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZBK/0J79AFkGIYrouMMvcVR75PpIU5FUpx+qVNNoumU=;
+ b=M2CgZv70yIhwTH6OPvRi7HiTc+n4YigOwOgllCpel3bL+E3UA96wLPCuCLAOMNf9+2MlZA
+ psaOlhdQXn74HyRonkThdyE3tkTlntxIqqKbkJYpWBll1zst2O7zy3Z8CH3YmQdvIhG43C
+ Hpbqt4EmGqYvAgtpUmF+YqRR/9BerAE=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-duJDW5iMMCCAHLme1BD3Rg-1; Sun, 12 May 2024 06:49:49 -0400
+X-MC-Unique: duJDW5iMMCCAHLme1BD3Rg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5732229087bso2154481a12.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:49:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715509756; x=1716114556;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QwPr5EtNNaz/C16YN205D9pkomcVcn8tvY+4+dDIYaM=;
- b=MyNbYavlHKScNK/fw13/EOu/FzjBM/a6oUBFKORW3FpQyrfBAM2DSKwcUrhkvVHcmh
- 9NAUZDZz9aleuDTRF63XNpc6wKvJXD06T6/lUExx4FoNcGAisUQ1cm66D+4QegTxUhB7
- VlXu137aZEpm/wVzObfVTTs/dYSSf8Vaj9wcAOfqKpGvvzvCMwNISxxBe+wyaTvJAUMy
- FD1OBDxm79OVl71U1JU1fqZ7wj2MzuRJGHtgzim8qJg5SONwfsphsatIc5nwvNdLpvQj
- pD0S3Q+SXGrD4p/o66Kk5MCcMeUpR2kJyM3woDnjx/JIL7/eQ0WCiQsqA1Jm0NWpwkSn
- rClA==
-X-Gm-Message-State: AOJu0YyxGgBg0SLITjEb3OzcyekRCxZpVzTPmkbRVaqktzIu2GDVCDuM
- LQpwjkSzULoGqfs9DcvdlMQSfZVpxCtHfMsTdFTWDceaBPdCXBY3Fq/ez+m2OsU=
-X-Google-Smtp-Source: AGHT+IE9N9OC4mNm5Odq+RbI5+5G1wlZqamZUwYc1yQdb6OQlRA7K5Xe1ktYf/QxVfWnOlw4Z/h6Gw==
-X-Received: by 2002:a5d:53c5:0:b0:34a:9adc:c364 with SMTP id
- ffacd0b85a97d-3504a630f38mr5987908f8f.8.1715509755958; 
- Sun, 12 May 2024 03:29:15 -0700 (PDT)
-Received: from [192.168.51.227] (12.red-213-97-13.staticip.rima-tde.net.
- [213.97.13.12]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502b896ab0sm8671590f8f.41.2024.05.12.03.29.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 12 May 2024 03:29:15 -0700 (PDT)
-Message-ID: <b85e90da-cf99-431c-8a64-80cbba21ea89@linaro.org>
-Date: Sun, 12 May 2024 12:29:13 +0200
+ d=1e100.net; s=20230601; t=1715510988; x=1716115788;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZBK/0J79AFkGIYrouMMvcVR75PpIU5FUpx+qVNNoumU=;
+ b=ViZNouL2cJFDf55sLMSvzOVP+saQBDUFl5/qnJbihyzp/tHOJgFSWc4mO2YHo4EMSJ
+ fV5wgLFFl/t1a6AKGKzZnSDKEmopIC0irO4KGof0k3k+VlppqF9tS2SNpu7VhNIAyQig
+ DpSKadQjX3hy2MGnexDecrCgc3hzW/hlfpRfzhgXbzy8ScodEfj7ynb9TCO9Uw3b5qTX
+ fXry62pZO4fzTIT35vs6NamIQlWxVTUIzCkEHng7600VnWBNPu7TB+4/xz94RPEgYxMf
+ Mrz839gYo8V6psZ4z6rWjhKvMvMxsxMpW4nfAd/jZG2WsDZtUqefW7JYU/J6DZ6jTzfz
+ +MzA==
+X-Gm-Message-State: AOJu0YyXWZzZF9m1XSCQrc3tUHThMEHC2DslPJbsSjpc7TDQn9SlAE27
+ Cj9hNXDv1XdC2Uw/EcbtbvBU1w7lZOtaNFOjteNfC7ZaQ/pXkii1Lv6g/6XQacjjT78NSbH/b6C
+ cGMWDRcx5A+CPTPqA2cLJwJwCwGJUQSHfxWpoqP7MrQimLb2aLL+OKTB3rWH8PyMeueJku9sVNG
+ rWt2DF+Bv7+yAE8RR+HXH2zfSxkxeo2PFD9ClW
+X-Received: by 2002:a50:baeb:0:b0:56e:2e0:79d1 with SMTP id
+ 4fb4d7f45d1cf-5734d5973b7mr5083268a12.4.1715510988022; 
+ Sun, 12 May 2024 03:49:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFE/b5Rz7jF00tc/9QJv9/pDunoGVPiqAC++6gltrsGatOgVSx5NPjO9jaj2YCnPSBrmrlP8Q==
+X-Received: by 2002:a50:baeb:0:b0:56e:2e0:79d1 with SMTP id
+ 4fb4d7f45d1cf-5734d5973b7mr5083251a12.4.1715510987523; 
+ Sun, 12 May 2024 03:49:47 -0700 (PDT)
+Received: from avogadro.local ([151.95.155.52])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5733becfcccsm4555918a12.40.2024.05.12.03.49.46
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 12 May 2024 03:49:47 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/27] Build/arch cleanups, target/i386 fixes for 2024-05-10
+Date: Sun, 12 May 2024 12:49:18 +0200
+Message-ID: <20240512104945.130198-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: target/ppc: Move VMX int add/sub saturate insns to decodetree.
-To: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
- harshpb@linux.ibm.com, lucas.araujo@eldorado.org.br
-References: <20240512093847.18099-1-rathc@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240512093847.18099-1-rathc@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.587,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,37 +97,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/12/24 11:38, Chinmay Rath wrote:
-> 1. vsubsbs and bcdtrunc :
-> 
-> In this pair, bcdtrunc has the insn flag check PPC2_ISA300 in the
-> vmx-impl file, within the GEN_VXFORM_DUAL macro, which does this flag
-> check.
-> However it also has this flag check in the vmx-ops file.
-> Hence I have retained the same in the new entry in the vmx-ops file.
-> This is consistent with the behaviour in done in the following commit :
-> https://github.com/qemu/qemu/commit/b132be53a4ba6a0a40d5643d791822f958a36e53
-> So even though the flag check is removed from the vmx-impl file, it is
-> retained in the vmx-ops file. All good here.
-> 
-> 2. vadduhs and vmul10euq :
-> 
-> In this pair, vmul10euq has the insn flag check PPC2_ISA300 in the
-> vmx-impl file, check done within the GEN_VXFORM_DUAL macro.
-> However the same flag was NOT originally present in the
-> vmx-ops file, so I have NOT included in its new entry in the vmx-ops
-> file. I have done this, following the behaviour done in the following
-> commit :
-> https://github.com/qemu/qemu/commit/c85929b2ddf6bbad737635c9b85213007ec043af
-> So this flag check for vmul10euq is excluded now. Is this not a problem ?
-> I feel that this leads to the flag check being skipped now, however this
-> behaviour was followed in the above mentioned commit.
+The following changes since commit dafec285bdbfe415ac6823abdc510e0b92c3f094:
 
-This second link is for VAVG* and VABSD*.
+  Merge tag 'pull-request-2024-05-10' of https://gitlab.com/thuth/qemu into staging (2024-05-10 09:41:35 +0200)
 
-Yes you are correct that this second case was done incorrectly. Thankfully the mistake was 
-fixed in the very next commit, when VABSD* was converted to decodetree as well.
+are available in the Git repository at:
 
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-r~
+for you to fetch changes up to 9b089d254a5623baef01f7d0ec37331c1155f1ce:
+
+  configs: disable emulators that require it if libfdt is not found (2024-05-10 15:45:15 +0200)
+
+----------------------------------------------------------------
+* target/i386: miscellaneous changes, mostly TCG-related
+* fix --without-default-devices build
+* fix --without-default-devices qtests on s390x and arm
+
+----------------------------------------------------------------
+Paolo Bonzini (27):
+      target/i386: remove PCOMMIT from TCG, deprecate property
+      target/i386: fix operand size for DATA16 REX.W POPCNT
+      target/i386: rdpkru/wrpkru are no-prefix instructions
+      target/i386: move prefetch and multi-byte UD/NOP to new decoder
+      target/i386: fix feature dependency for WAITPKG
+      tests/tcg: cover lzcnt/tzcnt/popcnt
+      configure: quote -D options that are passed through to meson
+      sh4: select correct components for no-board build
+      s390x: move s390_cpu_addr2state to target/s390x/sigp.c
+      s390_flic: add migration-enabled property
+      s390: move css_migration_enabled from machine to css.c
+      s390x: select correct components for no-board build
+      tests/qtest: s390x: fix operation in a build without any boards or devices
+      xen: initialize legacy backends from xen_bus_init()
+      xen: register legacy backends via xen_backend_init
+      i386: correctly select code in hw/i386 that depends on other components
+      i386: pc: remove unnecessary MachineClass overrides
+      hw/i386: split x86.c in multiple parts
+      hw/i386: move rtc-reset-reinjection command out of hw/rtc
+      i386: select correct components for no-board build
+      tests/qtest: arm: fix operation in a build without any boards or devices
+      meson: pick libfdt from common_ss when building target-specific files
+      meson: move libfdt together with other dependencies
+      kconfig: allow compiling out QEMU device tree code per target
+      kconfig: express dependency of individual boards on libfdt
+      hw/xtensa: require libfdt
+      configs: disable emulators that require it if libfdt is not found
+
+ docs/about/deprecated.rst                |    8 +
+ configure                                |    2 +-
+ configs/targets/aarch64-softmmu.mak      |    1 +
+ configs/targets/arm-softmmu.mak          |    1 +
+ configs/targets/i386-softmmu.mak         |    1 -
+ configs/targets/loongarch64-softmmu.mak  |    1 +
+ configs/targets/microblaze-softmmu.mak   |    1 +
+ configs/targets/microblazeel-softmmu.mak |    1 +
+ configs/targets/mips64el-softmmu.mak     |    1 -
+ configs/targets/or1k-softmmu.mak         |    1 +
+ configs/targets/ppc-softmmu.mak          |    1 -
+ configs/targets/ppc64-softmmu.mak        |    1 +
+ configs/targets/riscv32-softmmu.mak      |    1 +
+ configs/targets/riscv64-softmmu.mak      |    1 +
+ configs/targets/rx-softmmu.mak           |    1 +
+ configs/targets/x86_64-softmmu.mak       |    1 -
+ meson.build                              |  100 +--
+ include/hw/i386/x86.h                    |   10 +-
+ include/hw/rtc/mc146818rtc.h             |    2 +-
+ include/hw/s390x/css.h                   |    6 +
+ include/hw/s390x/s390-virtio-ccw.h       |    7 -
+ include/hw/s390x/s390_flic.h             |    1 +
+ include/hw/xen/xen-legacy-backend.h      |   14 +-
+ include/hw/xen/xen_pvdev.h               |    1 -
+ include/monitor/hmp.h                    |    1 +
+ include/sysemu/device_tree.h             |    1 -
+ target/i386/cpu.h                        |    2 -
+ target/i386/tcg/decode-new.h             |    1 +
+ hw/9pfs/xen-9p-backend.c                 |    8 +-
+ hw/display/xenfb.c                       |    8 +-
+ hw/i386/fw_cfg.c                         |    2 +
+ hw/i386/monitor.c                        |   46 ++
+ hw/i386/pc.c                             |    4 -
+ hw/i386/x86-common.c                     | 1007 ++++++++++++++++++++++++++++
+ hw/i386/x86-cpu.c                        |   97 +++
+ hw/i386/x86.c                            | 1058 +-----------------------------
+ hw/intc/ioapic-stub.c                    |   29 +
+ hw/intc/s390_flic.c                      |    6 +-
+ hw/rtc/mc146818rtc.c                     |   12 +-
+ hw/s390x/css.c                           |   10 +-
+ hw/s390x/s390-virtio-ccw.c               |   32 +-
+ hw/usb/xen-usb.c                         |   14 +-
+ hw/xen/xen-bus.c                         |    4 +
+ hw/xen/xen-hvm-common.c                  |    2 -
+ hw/xen/xen-legacy-backend.c              |   16 -
+ hw/xenpv/xen_machine_pv.c                |    5 +-
+ hw/xtensa/xtfpga.c                       |    9 -
+ monitor/hmp-cmds.c                       |   17 +
+ system/device_tree-stub.c                |   10 +
+ system/device_tree.c                     |   14 -
+ target/i386/cpu.c                        |    6 +-
+ target/i386/tcg/translate.c              |   65 +-
+ target/s390x/sigp.c                      |   17 +
+ tests/qtest/arm-cpu-features.c           |    4 +
+ tests/qtest/drive_del-test.c             |    7 +-
+ tests/qtest/migration-test.c             |    6 +
+ tests/qtest/numa-test.c                  |    4 +
+ tests/tcg/i386/test-i386.c               |   25 +
+ target/i386/tcg/decode-new.c.inc         |   24 +-
+ target/i386/tcg/emit.c.inc               |    5 +
+ .gitlab-ci.d/buildtest.yml               |    9 +-
+ Kconfig.host                             |    3 +
+ hw/arm/Kconfig                           |    5 +
+ hw/arm/meson.build                       |    2 +-
+ hw/core/Kconfig                          |    9 +-
+ hw/core/meson.build                      |    2 +-
+ hw/i386/Kconfig                          |    3 +-
+ hw/i386/meson.build                      |    7 +-
+ hw/intc/meson.build                      |    2 +-
+ hw/loongarch/Kconfig                     |    3 +-
+ hw/loongarch/meson.build                 |    2 +-
+ hw/mips/Kconfig                          |    3 +-
+ hw/mips/meson.build                      |    2 +-
+ hw/openrisc/Kconfig                      |    2 +
+ hw/openrisc/meson.build                  |    4 +-
+ hw/ppc/Kconfig                           |   15 +-
+ hw/ppc/meson.build                       |    4 +-
+ hw/riscv/Kconfig                         |    4 +
+ hw/riscv/meson.build                     |    2 +-
+ hw/rx/Kconfig                            |    3 +-
+ hw/sh4/meson.build                       |    2 +-
+ hw/xtensa/Kconfig                        |    3 +-
+ system/meson.build                       |    4 +-
+ target/arm/Kconfig                       |    2 +
+ target/i386/Kconfig                      |    1 +
+ target/microblaze/Kconfig                |    1 +
+ target/openrisc/Kconfig                  |    1 +
+ target/riscv/Kconfig                     |    2 +
+ target/s390x/Kconfig                     |    2 +
+ target/sh4/Kconfig                       |    2 +
+ 90 files changed, 1515 insertions(+), 1334 deletions(-)
+ create mode 100644 hw/i386/monitor.c
+ create mode 100644 hw/i386/x86-common.c
+ create mode 100644 hw/i386/x86-cpu.c
+ create mode 100644 hw/intc/ioapic-stub.c
+ create mode 100644 system/device_tree-stub.c
+-- 
+2.45.0
+
 
