@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BC98C3967
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE2E8C3943
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:31:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Icc-0001tC-9j; Sun, 12 May 2024 19:28:50 -0400
+	id 1s6Icb-0001sE-Ow; Sun, 12 May 2024 19:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcP-0001gv-TX; Sun, 12 May 2024 19:28:37 -0400
+ id 1s6IcP-0001h0-UC; Sun, 12 May 2024 19:28:38 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcL-0000O7-LW; Sun, 12 May 2024 19:28:35 -0400
+ id 1s6IcL-0000OM-RY; Sun, 12 May 2024 19:28:35 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 2415D4E677A;
- Mon, 13 May 2024 01:28:11 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3EE9B4E6777;
+ Mon, 13 May 2024 01:28:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id azeHe6LhD2SP; Mon, 13 May 2024 01:28:09 +0200 (CEST)
+ with ESMTP id 46H_CQ5CLMR9; Mon, 13 May 2024 01:28:10 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 33DEB4E6777; Mon, 13 May 2024 01:28:09 +0200 (CEST)
-Message-Id: <ed76f84bb9b16f8ecffa6ed6154b97fc7a8acdc1.1715555763.git.balaton@eik.bme.hu>
+ id 4CB6C4E677C; Mon, 13 May 2024 01:28:10 +0200 (CEST)
+Message-Id: <b9605839090fd145b067db34b2bdce45548c0631.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 35/61] target/ppc: Remove pp_check() and reuse
- ppc_hash32_pp_prot()
+Subject: [PATCH v7 36/61] target/ppc/mmu_common.c: Remove local name for a
+ constant
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:28:09 +0200 (CEST)
+Date: Mon, 13 May 2024 01:28:10 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,193 +61,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppc_hash32_pp_prot() function in mmu-hash32.c is the same as
-pp_check() in mmu_common.c, merge these to remove duplicated code.
-Define the common function as static lnline otherwise exporting the
-function from mmu-hash32.c would stop the compiler inlining it which
-results in slightly lower performance.
+The mmask local variable is a less descriptive local name for a
+constant. Drop it and use the constant directly in the two places it
+is needed.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 45 -----------------------------------------
- target/ppc/mmu-hash32.h | 36 +++++++++++++++++++++++++++++++++
- target/ppc/mmu_common.c | 44 ++--------------------------------------
- 3 files changed, 38 insertions(+), 87 deletions(-)
+ target/ppc/mmu_common.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 1e8f1df0f0..d5f2057eb1 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -37,51 +37,6 @@
- #  define LOG_BATS(...) do { } while (0)
- #endif
- 
--static int ppc_hash32_pp_prot(int key, int pp, int nx)
--{
--    int prot;
--
--    if (key == 0) {
--        switch (pp) {
--        case 0x0:
--        case 0x1:
--        case 0x2:
--            prot = PAGE_READ | PAGE_WRITE;
--            break;
--
--        case 0x3:
--            prot = PAGE_READ;
--            break;
--
--        default:
--            abort();
--        }
--    } else {
--        switch (pp) {
--        case 0x0:
--            prot = 0;
--            break;
--
--        case 0x1:
--        case 0x3:
--            prot = PAGE_READ;
--            break;
--
--        case 0x2:
--            prot = PAGE_READ | PAGE_WRITE;
--            break;
--
--        default:
--            abort();
--        }
--    }
--    if (nx == 0) {
--        prot |= PAGE_EXEC;
--    }
--
--    return prot;
--}
--
- static int ppc_hash32_pte_prot(int mmu_idx,
-                                target_ulong sr, ppc_hash_pte32_t pte)
- {
-diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
-index 7119a63d97..bf99161858 100644
---- a/target/ppc/mmu-hash32.h
-+++ b/target/ppc/mmu-hash32.h
-@@ -102,6 +102,42 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
-     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
- }
- 
-+static inline int ppc_hash32_pp_prot(bool key, int pp, bool nx)
-+{
-+    int prot;
-+
-+    if (key) {
-+        switch (pp) {
-+        case 0x0:
-+            prot = 0;
-+            break;
-+        case 0x1:
-+        case 0x3:
-+            prot = PAGE_READ;
-+            break;
-+        case 0x2:
-+            prot = PAGE_READ | PAGE_WRITE;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+    } else {
-+        switch (pp) {
-+        case 0x0:
-+        case 0x1:
-+        case 0x2:
-+            prot = PAGE_READ | PAGE_WRITE;
-+            break;
-+        case 0x3:
-+            prot = PAGE_READ;
-+            break;
-+        default:
-+            g_assert_not_reached();
-+        }
-+    }
-+    return nx ? prot : prot | PAGE_EXEC;
-+}
-+
- typedef struct {
-     uint32_t pte0, pte1;
- } ppc_hash_pte32_t;
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index e1462a25dd..9e0bfbda67 100644
+index 9e0bfbda67..5d0090014a 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -77,44 +77,6 @@ void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
- /*****************************************************************************/
- /* PowerPC MMU emulation */
- 
--static int pp_check(int key, int pp, int nx)
--{
--    int access;
--
--    /* Compute access rights */
--    access = 0;
--    if (key == 0) {
--        switch (pp) {
--        case 0x0:
--        case 0x1:
--        case 0x2:
--            access |= PAGE_WRITE;
--            /* fall through */
--        case 0x3:
--            access |= PAGE_READ;
--            break;
--        }
--    } else {
--        switch (pp) {
--        case 0x0:
--            access = 0;
--            break;
--        case 0x1:
--        case 0x3:
--            access = PAGE_READ;
--            break;
--        case 0x2:
--            access = PAGE_READ | PAGE_WRITE;
--            break;
--        }
--    }
--    if (nx == 0) {
--        access |= PAGE_EXEC;
--    }
--
--    return access;
--}
--
- int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-                                     int way, int is_code)
- {
-@@ -137,7 +99,7 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+@@ -98,7 +98,7 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+                                 target_ulong pte1, int h,
                                  MMUAccessType access_type)
  {
-     target_ulong ptem, mmask;
--    int access, ret, pteh, ptev, pp;
-+    int ret, pteh, ptev, pp;
+-    target_ulong ptem, mmask;
++    target_ulong ptem;
+     int ret, pteh, ptev, pp;
  
      ret = -1;
-     /* Check validity and table match */
-@@ -156,11 +118,9 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+@@ -108,12 +108,11 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+     if (ptev && h == pteh) {
+         /* Check vsid & api */
+         ptem = pte0 & PTE_PTEM_MASK;
+-        mmask = PTE_CHECK_MASK;
+         pp = pte1 & 0x00000003;
+         if (ptem == ctx->ptem) {
+             if (ctx->raddr != (hwaddr)-1ULL) {
+                 /* all matches should have equal RPN, WIMG & PP */
+-                if ((ctx->raddr & mmask) != (pte1 & mmask)) {
++                if ((ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
+                     qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
                      return -3;
                  }
-             }
--            /* Compute access rights */
--            access = pp_check(ctx->key, pp, ctx->nx);
-             /* Keep the matching PTE information */
-             ctx->raddr = pte1;
--            ctx->prot = access;
-+            ctx->prot = ppc_hash32_pp_prot(ctx->key, pp, ctx->nx);
-             if (check_prot_access_type(ctx->prot, access_type)) {
-                 /* Access granted */
-                 qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
 -- 
 2.30.9
 
