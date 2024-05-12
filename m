@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4D88C3603
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B71C8C360C
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66nF-0003g4-Kr; Sun, 12 May 2024 06:51:01 -0400
+	id 1s66nQ-0004Bq-TK; Sun, 12 May 2024 06:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66n6-0003Xc-Ia
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s66nO-0004BB-Gj
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:51:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66n4-00069v-Vl
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:52 -0400
+ id 1s66nL-0006By-RP
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:51:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511050;
+ s=mimecast20190719; t=1715511067;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=06tnROEYbNdlOjy/Cabi3aQ+xVn+VV5Uf85hOLxVCTM=;
- b=cT7CT4xXAKK55sZ72rmrWVmOYsIXbAJyH+e/FVsjx6UJr2YlIa2M8S58m+8MCxE/ymSjoh
- Yq6y/QibX/RCdWeeMGTLdIwBjoVVeWpWjckp6jSeLCL9eXeXx/KXmDASNSwGHlBpBhjxrA
- XBg7ETwlf/MS1IdY2d/gOlAgcTcAutc=
+ bh=hW5lAzuYFmwUJnqjO73xIeOPUtbnvcAIpBiDfIIrD/Q=;
+ b=NBa1Qt8KnZshvrMs22Kp+70pSWpeJM0lE0AGm3Q7Gv80dFIge+kGeV38GeiySfiMlcKIA4
+ 97yr3+y89YlBYY76JQXniLXnmZdO4IdjMNmcdbAKV/TygQ0unVn7XFGmVRzkgEdQDweiN9
+ GpFdj+6NOioXn9l8cExigcIvnWagxjA=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-idc5n44jNG2zlnfwGQD-kQ-1; Sun, 12 May 2024 06:50:48 -0400
-X-MC-Unique: idc5n44jNG2zlnfwGQD-kQ-1
+ us-mta-631-I7Sx8uUrNa2rMlbF8NMmaA-1; Sun, 12 May 2024 06:50:50 -0400
+X-MC-Unique: I7Sx8uUrNa2rMlbF8NMmaA-1
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a59a1fe7396so227179966b.3
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:48 -0700 (PDT)
+ a640c23a62f3a-a5a2adccf95so95437366b.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511046; x=1716115846;
+ d=1e100.net; s=20230601; t=1715511049; x=1716115849;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=06tnROEYbNdlOjy/Cabi3aQ+xVn+VV5Uf85hOLxVCTM=;
- b=nNFctuTvjlCarGGBa7FXQVYHze7eIoBb+Koq0KhpOOJgGMHGe//uQIAm7zY4PnzTDp
- 6zJh8eqFMQxoip09kGTjvGYj0GSvu/2VBw2PORyp870CPV0Cj3qrPpHyEDXx0l8v+Gdu
- tvUTjaq6yLAlaEu0PZVohiepR6AG2TPGGaHxd9tDE0t15vHyJgZdgtYR4P/Ly6I+VMRm
- oCNEC1Xu1TdaIqbrd4mMQjtmkQ6RJV7sCnv6lMqovwl53XIHHOHWNupkkf0jxcOD5/5h
- qFGCfgE0V9M/V1sbH4hqpS42J4KOLc3SWubdeFYzXn+bIRimdt7P44G+Dwg9jYgSVpaW
- Kx6w==
-X-Gm-Message-State: AOJu0YwEt4nFQL1gC7xlsJMtmbrgdSeSoMlP2wz/9XLwPvwdxfw2Qhba
- D7M6WBOoesfmCIyGge3YjZ69AVI6svp4F8WVh8h27W15Hs2/yF86L19bmF9y6oELh+2yqIWR8r/
- gWjDe2X/P0iM2LGPDMiQD8xkCAPMWXw4siZudBXcu5Kn0FR+cuw5FpkTV+eNtOA0LRGhzf0Qzd6
- cpievbgIU+hFAXxPVZtp9BM+W3CFMyIllvd8YM
-X-Received: by 2002:a17:907:26c9:b0:a59:ba2b:5913 with SMTP id
- a640c23a62f3a-a5a2d66b525mr593301466b.62.1715511045952; 
- Sun, 12 May 2024 03:50:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhgSuvqUHo8+OApbS+2ShTQmb+abIloJGP3oYeTOLzlneCoW6XvL862kgoXDAN6CQvuIsTwA==
-X-Received: by 2002:a17:907:26c9:b0:a59:ba2b:5913 with SMTP id
- a640c23a62f3a-a5a2d66b525mr593300466b.62.1715511045532; 
- Sun, 12 May 2024 03:50:45 -0700 (PDT)
+ bh=hW5lAzuYFmwUJnqjO73xIeOPUtbnvcAIpBiDfIIrD/Q=;
+ b=K9GqJRtcfJ86I9jc/uQs8Uq5xY4F5fQwQ0VL0Ozbk3Dc4YcE6FV67OchfoEvJqSPsB
+ cNbL0mN0GqboFC8SlfKv05FYlGiD+E5lohzXbLGWCfKuJsweJGuK8adzQ6jp50LG3ohS
+ KRYNgyOhBFBZSWeNSztIvvkndFZpK57+PjrvJ2NLCMhEIxKVCt1C19m9kXbxe4UAw1JS
+ tf0h4kEDR4mg63cENAFARN3wwDas/8TEuwUgLYATXQH2mEDdcs9CWXjRYDU+AdoLpHNS
+ apTa4xBzJhSgI2GeIGdc9uZrlqUn1IhIrkN/MPQczBV4pkYk5GZeKrk4NqLnpba9J8EG
+ y/Hw==
+X-Gm-Message-State: AOJu0YzEyzGLM+rknF32G+Y5HR+VSSGlckSgZaWx68t63OLlsaeXDSOR
+ CnOg+ZKq3c4PzWrxEjDqZTN3NLlfoTqqDtX1KAwhlX49bGO01sT/NKLAOaIIO0ptawL41uHkT9R
+ 4uSthRsfMvaKPUJCjOypuK5GEC50zebEBm6D9s8cQFnmkySuZeidaCPvbC0w+jO/qoXGsWG5imq
+ na46CrPzlkQRoEiFhwGihruXbDTgg6lfRi0Tov
+X-Received: by 2002:a50:d793:0:b0:570:5bcc:f749 with SMTP id
+ 4fb4d7f45d1cf-5734d67f3ccmr6207830a12.29.1715511049249; 
+ Sun, 12 May 2024 03:50:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8NrPDl2tJJ2XaqRWa2SXq43FoPTjdrixtU/l7nU7BSqMfFhu66zyuUJhBK9ezffuNFyU7fg==
+X-Received: by 2002:a50:d793:0:b0:570:5bcc:f749 with SMTP id
+ 4fb4d7f45d1cf-5734d67f3ccmr6207818a12.29.1715511048808; 
+ Sun, 12 May 2024 03:50:48 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b17cd0sm442135366b.214.2024.05.12.03.50.43
+ 4fb4d7f45d1cf-5733bea65aasm4581623a12.5.2024.05.12.03.50.46
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:43 -0700 (PDT)
+ Sun, 12 May 2024 03:50:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/27] meson: move libfdt together with other dependencies
-Date: Sun, 12 May 2024 12:49:41 +0200
-Message-ID: <20240512104945.130198-24-pbonzini@redhat.com>
+Subject: [PULL 24/27] kconfig: allow compiling out QEMU device tree code per
+ target
+Date: Sun, 12 May 2024 12:49:42 +0200
+Message-ID: <20240512104945.130198-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
@@ -101,148 +101,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the libfdt detection code together with other dependencies instead
-of keeping it with subprojects.  This has the disadvantage of performing
-the detection even if no target requires libfdt; but it has the advantage
-that Kconfig will be able to observe the availability of the library.
+Introduce a new Kconfig symbol, CONFIG_DEVICE_TREE, that specifies whether
+to include the common device tree code in system/device_tree.c and to
+link to libfdt.  For now, include it unconditionally if libfdt is
+available.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- meson.build | 79 ++++++++++++++++++++++++++---------------------------
- 1 file changed, 38 insertions(+), 41 deletions(-)
+ meson.build                  |  1 +
+ include/monitor/hmp.h        |  1 +
+ include/sysemu/device_tree.h |  1 -
+ monitor/hmp-cmds.c           | 17 +++++++++++++++++
+ system/device_tree-stub.c    | 10 ++++++++++
+ system/device_tree.c         | 14 --------------
+ Kconfig.host                 |  4 ++++
+ hw/core/Kconfig              |  9 ++++++++-
+ hw/core/meson.build          |  2 +-
+ system/meson.build           |  4 +++-
+ 10 files changed, 45 insertions(+), 18 deletions(-)
+ create mode 100644 system/device_tree-stub.c
 
 diff --git a/meson.build b/meson.build
-index ab1f44b25c2..dd4a28f8f8f 100644
+index dd4a28f8f8f..8b90ea6cf70 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1858,6 +1858,34 @@ if numa.found() and not cc.links('''
-   endif
+@@ -2989,6 +2989,7 @@ host_kconfig = \
+   (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
+   (opengl.found() ? ['CONFIG_OPENGL=y'] : []) + \
+   (x11.found() ? ['CONFIG_X11=y'] : []) + \
++  (fdt.found() ? ['CONFIG_FDT=y'] : []) + \
+   (have_vhost_user ? ['CONFIG_VHOST_USER=y'] : []) + \
+   (have_vhost_vdpa ? ['CONFIG_VHOST_VDPA=y'] : []) + \
+   (have_vhost_kernel ? ['CONFIG_VHOST_KERNEL=y'] : []) + \
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index f4cf8f6717d..954f3c83ad9 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -180,5 +180,6 @@ void hmp_ioport_write(Monitor *mon, const QDict *qdict);
+ void hmp_boot_set(Monitor *mon, const QDict *qdict);
+ void hmp_info_mtree(Monitor *mon, const QDict *qdict);
+ void hmp_info_cryptodev(Monitor *mon, const QDict *qdict);
++void hmp_dumpdtb(Monitor *mon, const QDict *qdict);
+ 
+ #endif
+diff --git a/include/sysemu/device_tree.h b/include/sysemu/device_tree.h
+index 8eab3959341..eb601522f88 100644
+--- a/include/sysemu/device_tree.h
++++ b/include/sysemu/device_tree.h
+@@ -134,7 +134,6 @@ int qemu_fdt_add_path(void *fdt, const char *path);
+     } while (0)
+ 
+ void qemu_fdt_dumpdtb(void *fdt, int size);
+-void hmp_dumpdtb(Monitor *mon, const QDict *qdict);
+ 
+ /**
+  * qemu_fdt_setprop_sized_cells_from_array:
+diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+index 871898ac46b..ea79148ee85 100644
+--- a/monitor/hmp-cmds.c
++++ b/monitor/hmp-cmds.c
+@@ -22,6 +22,7 @@
+ #include "monitor/monitor-internal.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-control.h"
++#include "qapi/qapi-commands-machine.h"
+ #include "qapi/qapi-commands-misc.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qemu/cutils.h"
+@@ -443,3 +444,19 @@ void hmp_info_mtree(Monitor *mon, const QDict *qdict)
+ 
+     mtree_info(flatview, dispatch_tree, owner, disabled);
+ }
++
++#if defined(CONFIG_FDT)
++void hmp_dumpdtb(Monitor *mon, const QDict *qdict)
++{
++    const char *filename = qdict_get_str(qdict, "filename");
++    Error *local_err = NULL;
++
++    qmp_dumpdtb(filename, &local_err);
++
++    if (hmp_handle_error(mon, local_err)) {
++        return;
++    }
++
++    monitor_printf(mon, "dtb dumped to %s", filename);
++}
++#endif
+diff --git a/system/device_tree-stub.c b/system/device_tree-stub.c
+new file mode 100644
+index 00000000000..bddda6fa37a
+--- /dev/null
++++ b/system/device_tree-stub.c
+@@ -0,0 +1,10 @@
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qapi/qapi-commands-machine.h"
++
++#ifdef CONFIG_FDT
++void qmp_dumpdtb(const char *filename, Error **errp)
++{
++    error_setg(errp, "This machine doesn't have a FDT");
++}
++#endif
+diff --git a/system/device_tree.c b/system/device_tree.c
+index eb5166ca360..2e38259d34f 100644
+--- a/system/device_tree.c
++++ b/system/device_tree.c
+@@ -668,20 +668,6 @@ void qmp_dumpdtb(const char *filename, Error **errp)
+     }
+ }
+ 
+-void hmp_dumpdtb(Monitor *mon, const QDict *qdict)
+-{
+-    const char *filename = qdict_get_str(qdict, "filename");
+-    Error *local_err = NULL;
+-
+-    qmp_dumpdtb(filename, &local_err);
+-
+-    if (hmp_handle_error(mon, local_err)) {
+-        return;
+-    }
+-
+-    info_report("dtb dumped to %s", filename);
+-}
+-
+ void qemu_fdt_randomize_seeds(void *fdt)
+ {
+     int noffset, poffset, len;
+diff --git a/Kconfig.host b/Kconfig.host
+index f6a2a131e6c..a0d4a52131e 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -23,6 +23,10 @@ config IVSHMEM
+ config TPM
+     bool
+ 
++config FDT
++    bool
++    select DEVICE_TREE
++
+ config VHOST_USER
+     bool
+ 
+diff --git a/hw/core/Kconfig b/hw/core/Kconfig
+index 9397503656d..24411f59306 100644
+--- a/hw/core/Kconfig
++++ b/hw/core/Kconfig
+@@ -4,8 +4,14 @@ config EMPTY_SLOT
+ config PTIMER
+     bool
+ 
++config DEVICE_TREE
++    bool
++    # fail the build if libfdt not found
++    depends on FDT
++
+ config FITLOADER
+     bool
++    depends on DEVICE_TREE
+ 
+ config GENERIC_LOADER
+     bool
+@@ -14,13 +20,14 @@ config GENERIC_LOADER
+ config GUEST_LOADER
+     bool
+     default y
+-    depends on TCG
++    depends on TCG && DEVICE_TREE
+ 
+ config OR_IRQ
+     bool
+ 
+ config PLATFORM_BUS
+     bool
++    depends on DEVICE_TREE
+ 
+ config REGISTER
+     bool
+diff --git a/hw/core/meson.build b/hw/core/meson.build
+index f20d4143f7a..a3d9bab9f42 100644
+--- a/hw/core/meson.build
++++ b/hw/core/meson.build
+@@ -16,7 +16,7 @@ common_ss.add(files('cpu-common.c'))
+ common_ss.add(files('machine-smp.c'))
+ system_ss.add(when: 'CONFIG_FITLOADER', if_true: files('loader-fit.c'))
+ system_ss.add(when: 'CONFIG_GENERIC_LOADER', if_true: files('generic-loader.c'))
+-system_ss.add(when: ['CONFIG_GUEST_LOADER', fdt], if_true: files('guest-loader.c'))
++system_ss.add(when: 'CONFIG_GUEST_LOADER', if_true: files('guest-loader.c'))
+ system_ss.add(when: 'CONFIG_OR_IRQ', if_true: files('or-irq.c'))
+ system_ss.add(when: 'CONFIG_PLATFORM_BUS', if_true: files('platform-bus.c'))
+ system_ss.add(when: 'CONFIG_PTIMER', if_true: files('ptimer.c'))
+diff --git a/system/meson.build b/system/meson.build
+index 25e21172505..a296270cb00 100644
+--- a/system/meson.build
++++ b/system/meson.build
+@@ -32,7 +32,9 @@ if have_tpm
  endif
  
-+fdt = not_found
-+fdt_opt = get_option('fdt')
-+if fdt_opt == 'enabled' and get_option('wrap_mode') == 'nodownload'
-+  fdt_opt = 'system'
-+endif
-+if fdt_opt in ['enabled', 'system'] or (fdt_opt == 'auto' and have_system)
-+  fdt = cc.find_library('fdt', required: fdt_opt == 'system')
-+  if fdt.found() and cc.links('''
-+     #include <libfdt.h>
-+     #include <libfdt_env.h>
-+     int main(void) { fdt_find_max_phandle(NULL, NULL); return 0; }''',
-+       dependencies: fdt)
-+    fdt_opt = 'system'
-+  elif fdt_opt != 'system'
-+    fdt_opt = get_option('wrap_mode') == 'nodownload' ? 'disabled' : 'internal'
-+    fdt = not_found
-+  else
-+    error('system libfdt is too old (1.5.1 or newer required)')
-+  endif
-+endif
-+if fdt_opt == 'internal'
-+  assert(not fdt.found())
-+  libfdt_proj = subproject('dtc', required: true,
-+                           default_options: ['tools=false',  'yaml=disabled',
-+                                             'python=disabled', 'default_library=static'])
-+  fdt = libfdt_proj.get_variable('libfdt_dep')
-+endif
-+
- rdma = not_found
- if not get_option('rdma').auto() or have_system
-   libumad = cc.find_library('ibumad', required: get_option('rdma'))
-@@ -2199,6 +2227,7 @@ config_host_data.set('CONFIG_BSD', host_os in bsd_oses)
- config_host_data.set('CONFIG_CAPSTONE', capstone.found())
- config_host_data.set('CONFIG_COCOA', cocoa.found())
- config_host_data.set('CONFIG_DARWIN', host_os == 'darwin')
-+config_host_data.set('CONFIG_FDT', fdt.found())
- config_host_data.set('CONFIG_FUZZ', get_option('fuzzing'))
- config_host_data.set('CONFIG_GCOV', get_option('b_coverage'))
- config_host_data.set('CONFIG_LIBUDEV', libudev.found())
-@@ -3024,14 +3053,16 @@ foreach target : target_dirs
-     error('No accelerator available for target @0@'.format(target))
-   endif
- 
--  actual_target_dirs += target
-   config_target += keyval.load('configs/targets' / target + '.mak')
-   config_target += { 'TARGET_' + config_target['TARGET_ARCH'].to_upper(): 'y' }
- 
--  if 'TARGET_NEED_FDT' in config_target
-+  if 'TARGET_NEED_FDT' in config_target and not fdt.found()
-     fdt_required += target
-+    continue
-   endif
- 
-+  actual_target_dirs += target
-+
-   # Add default keys
-   if 'TARGET_BASE_ARCH' not in config_target
-     config_target += {'TARGET_BASE_ARCH': config_target['TARGET_ARCH']}
-@@ -3119,6 +3150,10 @@ genh += custom_target('config-poison.h',
-                       command: [find_program('scripts/make-config-poison.sh'),
-                                 target_configs_h])
- 
-+if fdt_required.length() > 0
-+  error('fdt disabled but required by targets ' + ', '.join(fdt_required))
-+endif
-+
- ###############
- # Subprojects #
- ###############
-@@ -3129,44 +3164,6 @@ if have_system and vfio_user_server_allowed
-   libvfio_user_dep = libvfio_user_proj.get_variable('libvfio_user_dep')
+ system_ss.add(when: seccomp, if_true: files('qemu-seccomp.c'))
+-system_ss.add(when: fdt, if_true: files('device_tree.c'))
++system_ss.add(when: 'CONFIG_DEVICE_TREE',
++              if_true: [fdt, files('device_tree.c')],
++              if_false: files('device_tree-stub.c'))
+ if host_os == 'linux'
+   system_ss.add(files('async-teardown.c'))
  endif
- 
--fdt = not_found
--fdt_opt = get_option('fdt')
--if fdt_required.length() > 0 or fdt_opt == 'enabled'
--  if fdt_opt == 'disabled'
--    error('fdt disabled but required by targets ' + ', '.join(fdt_required))
--  endif
--
--  if fdt_opt in ['enabled', 'auto', 'system']
--    if get_option('wrap_mode') == 'nodownload'
--      fdt_opt = 'system'
--    endif
--    fdt = cc.find_library('fdt', required: fdt_opt == 'system')
--    if fdt.found() and cc.links('''
--       #include <libfdt.h>
--       #include <libfdt_env.h>
--       int main(void) { fdt_find_max_phandle(NULL, NULL); return 0; }''',
--         dependencies: fdt)
--      fdt_opt = 'system'
--    elif fdt_opt == 'system'
--       error('system libfdt requested, but it is too old (1.5.1 or newer required)')
--    else
--      fdt_opt = 'internal'
--      fdt = not_found
--    endif
--  endif
--  if not fdt.found()
--    assert(fdt_opt == 'internal')
--    libfdt_proj = subproject('dtc', required: true,
--                             default_options: ['tools=false',  'yaml=disabled',
--                                               'python=disabled', 'default_library=static'])
--    fdt = libfdt_proj.get_variable('libfdt_dep')
--  endif
--else
--  fdt_opt = 'disabled'
--endif
--
--config_host_data.set('CONFIG_FDT', fdt.found())
--
- vhost_user = not_found
- if host_os == 'linux' and have_vhost_user
-   libvhost_user = subproject('libvhost-user')
-@@ -4417,7 +4414,7 @@ summary_info += {'Linux AIO support': libaio}
- summary_info += {'Linux io_uring support': linux_io_uring}
- summary_info += {'ATTR/XATTR support': libattr}
- summary_info += {'RDMA support':      rdma}
--summary_info += {'fdt support':       fdt_opt == 'disabled' ? false : fdt_opt}
-+summary_info += {'fdt support':       fdt_opt == 'internal' ? 'internal' : fdt}
- summary_info += {'libcap-ng support': libcap_ng}
- summary_info += {'bpf support':       libbpf}
- summary_info += {'rbd support':       rbd}
 -- 
 2.45.0
 
