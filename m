@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3978C3973
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 272548C3952
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Icn-00027k-JT; Sun, 12 May 2024 19:29:01 -0400
+	id 1s6Ico-0002AZ-UC; Sun, 12 May 2024 19:29:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcX-0001sp-EF; Sun, 12 May 2024 19:28:45 -0400
+ id 1s6IcX-0001sr-Ey; Sun, 12 May 2024 19:28:45 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6IcU-0000Pb-QL; Sun, 12 May 2024 19:28:44 -0400
+ id 1s6IcU-0000Pa-Qw; Sun, 12 May 2024 19:28:44 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 8156B4E6785;
- Mon, 13 May 2024 01:28:17 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 89EBA4E6780;
+ Mon, 13 May 2024 01:28:18 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id GCPtUcavqjUj; Mon, 13 May 2024 01:28:15 +0200 (CEST)
+ with ESMTP id m5vZubAdvzkc; Mon, 13 May 2024 01:28:16 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 91F0B4E6780; Mon, 13 May 2024 01:28:15 +0200 (CEST)
-Message-Id: <ea7f9d436177b324b36554fc1e96238b3d93bc22.1715555763.git.balaton@eik.bme.hu>
+ id 9AC184E6782; Mon, 13 May 2024 01:28:16 +0200 (CEST)
+Message-Id: <f1c2f9bab86995b1acacb1be4e25f050cfd07aa6.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 41/61] target/ppc/mmu_common.c: Return directly in
+Subject: [PATCH v7 42/61] target/ppc/mmu_common.c: Simplify
  ppc6xx_tlb_pte_check()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:28:15 +0200 (CEST)
+Date: Mon, 13 May 2024 01:28:16 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,45 +61,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of using a local ret variable return directly and remove the
-local.
+Invert conditions to avoid deep nested ifs and return early instead.
+Remove some obvious comments that don't add more clarity.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ target/ppc/mmu_common.c | 44 ++++++++++++++++++-----------------------
+ 1 file changed, 19 insertions(+), 25 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 0c7cbab2bc..a035cefcad 100644
+index a035cefcad..564fcc7cfb 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -98,9 +98,6 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-                                 target_ulong pte1, int pteh,
+@@ -99,32 +99,26 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
                                  MMUAccessType access_type)
  {
--    int ret;
--
--    ret = -1;
      /* Check validity and table match */
-     if (pte_is_valid(pte0) && ((pte0 >> 6) & 1) == pteh) {
-         /* Check vsid & api */
-@@ -119,16 +116,15 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-             if (check_prot_access_type(ctx->prot, access_type)) {
-                 /* Access granted */
-                 qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
--                ret = 0;
-+                return 0;
-             } else {
-                 /* Access right violation */
-                 qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
--                ret = -2;
-+                return -2;
-             }
-         }
+-    if (pte_is_valid(pte0) && ((pte0 >> 6) & 1) == pteh) {
+-        /* Check vsid & api */
+-        if ((pte0 & PTE_PTEM_MASK) == ctx->ptem) {
+-            if (ctx->raddr != (hwaddr)-1ULL) {
+-                /* all matches should have equal RPN, WIMG & PP */
+-                if ((ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
+-                    qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
+-                    return -3;
+-                }
+-            }
+-            /* Keep the matching PTE information */
+-            ctx->raddr = pte1;
+-            ctx->prot = ppc_hash32_pp_prot(ctx->key, pte1 & HPTE32_R_PP,
+-                                           ctx->nx);
+-            if (check_prot_access_type(ctx->prot, access_type)) {
+-                /* Access granted */
+-                qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
+-                return 0;
+-            } else {
+-                /* Access right violation */
+-                qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
+-                return -2;
+-            }
+-        }
++    if (!pte_is_valid(pte0) || ((pte0 >> 6) & 1) != pteh ||
++        (pte0 & PTE_PTEM_MASK) != ctx->ptem) {
++        return -1;
++    }
++    /* all matches should have equal RPN, WIMG & PP */
++    if (ctx->raddr != (hwaddr)-1ULL &&
++        (ctx->raddr & PTE_CHECK_MASK) != (pte1 & PTE_CHECK_MASK)) {
++        qemu_log_mask(CPU_LOG_MMU, "Bad RPN/WIMG/PP\n");
++        return -3;
++    }
++    /* Keep the matching PTE information */
++    ctx->raddr = pte1;
++    ctx->prot = ppc_hash32_pp_prot(ctx->key, pte1 & HPTE32_R_PP, ctx->nx);
++    if (check_prot_access_type(ctx->prot, access_type)) {
++        qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
++        return 0;
++    } else {
++        qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
++        return -2;
      }
--
--    return ret;
-+    return -1;
+-    return -1;
  }
  
  /* Software driven TLB helpers */
