@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A0F8C3951
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 358AD8C393E
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:30:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6IdD-00036a-No; Sun, 12 May 2024 19:29:27 -0400
+	id 1s6Id9-0002v1-U1; Sun, 12 May 2024 19:29:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Icf-00021B-0k; Sun, 12 May 2024 19:28:53 -0400
+ id 1s6Icd-00020z-TB; Sun, 12 May 2024 19:28:53 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Icb-0000Qs-4T; Sun, 12 May 2024 19:28:52 -0400
+ id 1s6Icb-0000Qu-3y; Sun, 12 May 2024 19:28:51 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C3E5D4E6784;
- Mon, 13 May 2024 01:28:22 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id CBDB84E6787;
+ Mon, 13 May 2024 01:28:23 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id hMnK_polx22k; Mon, 13 May 2024 01:28:20 +0200 (CEST)
+ with ESMTP id vajg1yB-yD97; Mon, 13 May 2024 01:28:21 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CFA304E6787; Mon, 13 May 2024 01:28:20 +0200 (CEST)
-Message-Id: <7f7f4f3a96a4befaa4e03598e10ff89bf0e1756e.1715555763.git.balaton@eik.bme.hu>
+ id DAE704E6788; Mon, 13 May 2024 01:28:21 +0200 (CEST)
+Message-Id: <447b618211423732bb6b3c7e12982a7c9ea2d042.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 46/61] target/ppc/mmu_common.c: Convert local variable to
- bool
+Subject: [PATCH v7 47/61] target/ppc/mmu_common.c: Remove single use local
+ variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:28:20 +0200 (CEST)
+Date: Mon, 13 May 2024 01:28:21 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,38 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In mmu6xx_get_physical_address() ds is used as bool, declare it as
-such. Also use named constant instead of hex value.
+In mmu6xx_get_physical_address() tagtet_page_bits local is declared
+only to use TARGET_PAGE_BITS once. Drop the unneeded variable.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ target/ppc/mmu_common.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index b1ae32f39f..9b73581fc7 100644
+index 9b73581fc7..1a2b4158d5 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -321,8 +321,8 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+@@ -321,7 +321,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
      PowerPCCPU *cpu = env_archcpu(env);
      hwaddr hash;
      target_ulong vsid, sr, pgidx;
--    int ds, target_page_bits;
--    bool pr, nx;
-+    int target_page_bits;
-+    bool pr, ds, nx;
+-    int target_page_bits;
+     bool pr, ds, nx;
  
      /* First try to find a BAT entry if there are any */
-     if (env->nb_BATs && get_bat_6xx_tlb(env, ctx, eaddr, access_type) == 0) {
-@@ -335,7 +335,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     sr = env->sr[eaddr >> 28];
-     ctx->key = (((sr & 0x20000000) && pr) ||
-                 ((sr & 0x40000000) && !pr)) ? 1 : 0;
--    ds = sr & 0x80000000 ? 1 : 0;
-+    ds = sr & SR32_T;
+@@ -338,7 +337,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     ds = sr & SR32_T;
      nx = sr & SR32_NX;
      vsid = sr & SR32_VSID;
-     target_page_bits = TARGET_PAGE_BITS;
+-    target_page_bits = TARGET_PAGE_BITS;
+     qemu_log_mask(CPU_LOG_MMU,
+                   "Check segment v=" TARGET_FMT_lx " %d " TARGET_FMT_lx
+                   " nip=" TARGET_FMT_lx " lr=" TARGET_FMT_lx
+@@ -347,7 +345,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+                   (int)FIELD_EX64(env->msr, MSR, IR),
+                   (int)FIELD_EX64(env->msr, MSR, DR), pr ? 1 : 0,
+                   access_type == MMU_DATA_STORE, type);
+-    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> target_page_bits;
++    pgidx = (eaddr & ~SEGMENT_MASK_256M) >> TARGET_PAGE_BITS;
+     hash = vsid ^ pgidx;
+     ctx->ptem = (vsid << 7) | (pgidx >> 10);
+ 
 -- 
 2.30.9
 
