@@ -2,85 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693608C36A4
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 15:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC528C3668
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 14:22:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s699i-0005a8-9p; Sun, 12 May 2024 09:22:22 -0400
+	id 1s68Bf-00017D-Pm; Sun, 12 May 2024 08:20:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hikalium@hikalium.com>)
- id 1s659m-00061W-Dj
- for qemu-devel@nongnu.org; Sun, 12 May 2024 05:06:10 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hikalium@hikalium.com>)
- id 1s659k-00027Q-NC
- for qemu-devel@nongnu.org; Sun, 12 May 2024 05:06:10 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5e4f79007ffso2308718a12.2
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 02:06:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=hikalium-com.20230601.gappssmtp.com; s=20230601; t=1715504767; x=1716109567;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VdI1fpsD0kqTy3hmKUodHG+ojwqTaKIz+PipLhkc9ks=;
- b=nsdNJ0rPO9GNeAij8kDscLTd3BpdDuAqvZ83YimpRXO2whK3AZ4bqFj9zP2VqPtHVt
- vkWuXwIT8cyNc2JweIUphM4MN8hWfXf8uGPHA7/b/P7XhKLrqdy6DrL/LNxe0ftpB/T0
- UopXteQDfkXioGwtWpMTqlVxFJQ/1v8Tv1IemzIBWKy0Eyj0P/qe3/kKaB+JqaXNhqfq
- 95N9GmlrGWGqhsS+BtjXiY2/mPF8RtkTIIuXxUiK5iuKfjtZ9vhNEJh+oQBNgKSlxQ9+
- vCudle3ln4RHdAJp8h5HxOlICij2ithYiz8Ez8hx99nli0R6ju29HdF7odcKdpDeUfci
- vwag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715504767; x=1716109567;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VdI1fpsD0kqTy3hmKUodHG+ojwqTaKIz+PipLhkc9ks=;
- b=FfKEuIhiIeCAu2YXeFRBPwT5EIQHtRUIFu5wdNhl+lk2BchWpRTeOpFzDbteDPnQEi
- q20kQM76lx1pLEADLAO+aNMOP1iU7rnKHDICG5svdGNsCs4HSG5HvESaSTj9AhFHmWcJ
- jBRLO/PPcqnKr96i0Jo6J1xphxwLEwYNIe9Os0TqmPBr9jNvPGR/rD04h08vkXQQ4LHb
- 1lHfr/O+WjC5dDlD85SFhUzjTHZahnm3A4+NxYwFuXosyJDOoP3n9SQd/yai+NMwXnw1
- moLeQpC1zYGrRzgJRjk9ofZ8wrQsRyuD55pZsVsG0hMd4hNXWvw6++K5BRpCxQpBEd1h
- TsQg==
-X-Gm-Message-State: AOJu0YwPhDiT2KWN9hRQVfJa8OkEe3F5Oayn+U5AghIffhRKkoYRjSJ6
- DHTIvOLrChNZdlda49VJExKDMk7huKHwSJ1Yn3/JBDY4G5r+vkcz5FGakb1KepFSW2qBQOJ1j/B
- 4F40=
-X-Google-Smtp-Source: AGHT+IHzaFaWA0ORhyEAuRUc8VZzBf6c2Pe2AYrUfroo7+Gpt4JvsGC5vZT4R5BdEpeVBCQsCWYvYg==
-X-Received: by 2002:a05:6a20:d42f:b0:1af:b89c:a8df with SMTP id
- adf61e73a8af0-1afde1b7194mr7473508637.43.1715504766826; 
- Sun, 12 May 2024 02:06:06 -0700 (PDT)
-Received: from penguin.lxd (113x36x63x49.ap113.ftth.ucom.ne.jp. [113.36.63.49])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2ade232sm5466466b3a.104.2024.05.12.02.06.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 02:06:06 -0700 (PDT)
-From: hikalium <hikalium@hikalium.com>
-To: qemu-devel@nongnu.org
-Cc: hikalium <hikalium@hikalium.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 2/2] Fix mouse/motion event scaling issue with GTK display
- backend
-Date: Sun, 12 May 2024 18:04:29 +0900
-Message-Id: <20240512090429.29123-2-hikalium@hikalium.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240512090429.29123-1-hikalium@hikalium.com>
-References: <20240512090429.29123-1-hikalium@hikalium.com>
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1s68Bd-00016x-8N
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 08:20:17 -0400
+Received: from wfout5-smtp.messagingengine.com ([64.147.123.148])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
+ id 1s68Bb-0001r6-3I
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 08:20:16 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailfout.west.internal (Postfix) with ESMTP id 25C891C00121;
+ Sun, 12 May 2024 08:20:13 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Sun, 12 May 2024 08:20:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+ cc:cc:content-transfer-encoding:content-type:content-type:date
+ :date:from:from:in-reply-to:message-id:mime-version:reply-to
+ :subject:subject:to:to; s=fm1; t=1715516412; x=1715602812; bh=+A
+ 0wIJUp2tZgdSmjqd3MGPiSgOY7MNp4bOtWkf2swTM=; b=Xm9ydNE2frGRAscjFY
+ 5LlEwwmoF8ZlC6o7tbWEICH+WbBjip0QcNYvy5uPAOnh2chaeehSPCteY2+kDhQ1
+ BOIF7Xd+JCyi94qj1g2KB7IKyQAQ/PKexJCmxk+ZU47BRoqqYVQhOcyp1gxZbuEj
+ SK3dddUA8NZxP2C/qLCr2oT3tJrDk54n6N6cl3HI63LWyqwQI5H0zgRbvq/rUPUl
+ uuXjDGGOSeLxl+y0JehjbVZcUubkMPpHUFUtNlJnR4qNCSYHLdLPm8o5YNxvwu0u
+ KAhhI7Rv6SUp3L0doR7f/HSJAKQbFU4mD6BNdupHQvmjO43L9Ys0uE9fxAZOki2r
+ Jyug==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; t=1715516412; x=1715602812; bh=+A0wIJUp2tZgd
+ Smjqd3MGPiSgOY7MNp4bOtWkf2swTM=; b=fGNYWzdNRqDT2LN3J4Qhis2U2rJQo
+ RfQFpcpBXjKg3td21sOoyflSzRBLsMhJ0ZP3tHWYZ75TV0OTvnSdJArI8PgNa4Lt
+ 1sTPqqmGrPFQgw88Z+BzaBHf3gDwv1+Hcl9W9cBkLYZnRN9HLB4Nu8P5iw/mKThG
+ rEdW24BFaJZmG4jfvsJ+DI3V/3brb8z2L/wd80rlyDYAHCAU365eGLgQHMu8i35R
+ Nhe+dEhwQroz76WnYFhD8xwZ7D40X0d1U0BIUW3PTyP/FgYp94XJB+88+w6lzS76
+ C4PYvk4a4I2ayxaT8Lnku2A3DMlN6adMkGyFI5GNkTQEVlnFT/7vPgsbQ==
+X-ME-Sender: <xms:_LNAZma1dXDESZn6xD7K1qWo7dqG65tw0oFkD5gdDYpijISu_pu9ww>
+ <xme:_LNAZpb8FZnXlw_GAwd98zYbbZfcBSdkJNK7vteYeezc7aigX7-n9Yxh92d3Y-IN0
+ DQuDV17fk2YzWmhNjo>
+X-ME-Received: <xmr:_LNAZg-o89TBrKwoOGno3NoinRTdkAd8WYteckZjvaOoxUwkAMIlqPI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegvddghedtucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
+ nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
+ ftrfgrthhtvghrnhepffetueegkedtgfejveeuvdfghfegtddvgfehudeghfegheetuedu
+ heduveejtefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+ homhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:_LNAZop0c8kzqYrarFzyv2vq1zasSM7obHtVkXAy98NCEuQV8TNMQg>
+ <xmx:_LNAZhpfWNgFvx2z2myU6HQpD-zRR3OH6BmVfnn0aUK9iWDvreYneA>
+ <xmx:_LNAZmR28DvTWO3fXln_UKKvDt8yo4Km2Al_NSVBu9YyzIMdZQ7csg>
+ <xmx:_LNAZhrSjd4tBvUYadCDMQYCzA3HpMF8eIhd3ClizGL7IqzjTvnXHQ>
+ <xmx:_LNAZinKeZ4OjQna8udVYkq-X6wzsbEjdmHo08QtYuH9wiN-Rkc2FmBZ>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 12 May 2024 08:20:11 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Sun, 12 May 2024 13:20:09 +0100
+Subject: [PATCH] hw/mips/loongson3_virt: Implement node counter timer
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52d;
- envelope-from=hikalium@hikalium.com; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240512-loongson3_hpt-v1-1-5cb9cbae649b@flygoat.com>
+X-B4-Tracking: v=1; b=H4sIAPizQGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDU0ND3Zz8/Lz04vw84/iMghLd5CQDI3NLgyQjk5QkJaCegqLUtMwKsHn
+ RsbW1ABd1xjVfAAAA
+To: qemu-devel@nongnu.org
+Cc: Huacai Chen <chenhuacai@kernel.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5537;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=jvxnlOaDvJlj5RIgl3BRnMjVOw/prK94TNO/RhAswU8=;
+ b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSHzb/vlTwVN7JTKeQqeNp5uuvPtx37PKfo59X8qFlpz
+ N2wRnZFRwkLgxgHg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEzEuJqRobNQ7b90e8jtA3/X
+ he97EvJlgc7De98s72l5lTtcm1vNzcjwPXpZCv/BXXuMjS+9z+3/Z3Dz02uJ3n79lWvvrlwTGLW
+ PEQA=
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+Received-SPF: pass client-ip=64.147.123.148;
+ envelope-from=jiaxun.yang@flygoat.com; helo=wfout5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Sun, 12 May 2024 09:22:18 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,75 +114,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove gtk_widget_get_scale_factor() usage from the calculation of
-the motion events in the GTK backend to make it work correctly on
-environments that have `gtk_widget_get_scale_factor() != 1`.
+Node counter is a timer presents on Loongson-3 chips, which runs
+as fast as CPU clock. It's being mapped into a MMIO location.
 
-This scale factor usage had been introduced in the commit f14aab420c and
-at that time the window size was used for calculating the things and it
-was working correctly. However, in the commit 2f31663ed4 the logic
-switched to use the widget size instead of window size and because of
-the change the usage of scale factor becomes invalid (since widgets use
-`vc->gfx.scale_{x, y}` for scaling).o
+Emulate this for loongson3_virt machine, in hope that kernel can
+use it as a better clock source.
 
-Tested on Crostini on ChromeOS (15823.51.0) with an external display.
+Hardware's behavior on 32-bit read/write is also emulated in case
+legacy kernel is trying to use it with hi/lo splitted read.
 
-Fixes: 2f31663ed4 ("ui/gtk: use widget size for cursor motion event")
-Fixes: f14aab420c ("ui: fix incorrect pointer position on highdpi with
-gtk")
-
-Signed-off-by: hikalium <hikalium@hikalium.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
- ui/gtk.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ hw/mips/loongson3_bootp.h |  1 +
+ hw/mips/loongson3_virt.c  | 38 ++++++++++++++++++++++++++++++++++----
+ 2 files changed, 35 insertions(+), 4 deletions(-)
 
-diff --git a/ui/gtk.c b/ui/gtk.c
-index ebae888d4f..4386198c95 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -887,7 +887,7 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
-     int x, y;
-     int mx, my;
-     int fbh, fbw;
--    int ww, wh, ws;
-+    int ww, wh;
+diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
+index 1b0dd3b59171..c6a435397d2c 100644
+--- a/hw/mips/loongson3_bootp.h
++++ b/hw/mips/loongson3_bootp.h
+@@ -210,6 +210,7 @@ enum {
+     VIRT_PCIE_ECAM,
+     VIRT_BIOS_ROM,
+     VIRT_UART,
++    VIRT_NODECNT,
+     VIRT_LIOINTC,
+     VIRT_PCIE_MMIO,
+     VIRT_HIGHMEM
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index b10a611a98f4..b78ac8032096 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -74,6 +74,7 @@ const MemMapEntry virt_memmap[] = {
+     [VIRT_PCIE_ECAM] =   { 0x1a000000,     0x2000000 },
+     [VIRT_BIOS_ROM] =    { 0x1fc00000,      0x200000 },
+     [VIRT_UART] =        { 0x1fe001e0,           0x8 },
++    [VIRT_NODECNT] =     { 0x3ff00408,           0x8 },
+     [VIRT_LIOINTC] =     { 0x3ff01400,          0x64 },
+     [VIRT_PCIE_MMIO] =   { 0x40000000,    0x40000000 },
+     [VIRT_HIGHMEM] =     { 0x80000000,           0x0 }, /* Variable */
+@@ -92,6 +93,7 @@ static const MemMapEntry loader_rommap[] = {
  
-     if (!vc->gfx.ds) {
-         return TRUE;
-@@ -895,11 +895,15 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
- 
-     fbw = surface_width(vc->gfx.ds) * vc->gfx.scale_x;
-     fbh = surface_height(vc->gfx.ds) * vc->gfx.scale_y;
--
-     ww = gtk_widget_get_allocated_width(widget);
-     wh = gtk_widget_get_allocated_height(widget);
--    ws = gtk_widget_get_scale_factor(widget);
- 
-+    /*
-+     * `widget` may not have the same size with the frame buffer.
-+     * In such cases, some paddings are needed around the `vc`.
-+     * To achieve that, `vc` will be displayed at (mx, my)
-+     * so that it is displayed at the center of the widget.
-+     */
-     mx = my = 0;
-     if (ww > fbw) {
-         mx = (ww - fbw) / 2;
-@@ -908,8 +912,12 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
-         my = (wh - fbh) / 2;
+ struct LoongsonMachineState {
+     MachineState parent_obj;
++    Clock *cpuclk;
+     MemoryRegion *pio_alias;
+     MemoryRegion *mmio_alias;
+     MemoryRegion *ecam_alias;
+@@ -145,6 +147,29 @@ static const MemoryRegionOps loongson3_pm_ops = {
      }
+ };
  
--    x = (motion->x - mx) / vc->gfx.scale_x * ws;
--    y = (motion->y - my) / vc->gfx.scale_y * ws;
-+    /*
-+     * `motion` is reported in `widget` coordinates
-+     * so translating it to the coordinates in `vc`.
-+     */
-+    x = (motion->x - mx) / vc->gfx.scale_x;
-+    y = (motion->y - my) / vc->gfx.scale_y;
++static uint64_t loongson3_nodecnt_read(void *opaque,
++                                        hwaddr addr, unsigned size)
++{
++    LoongsonMachineState *s = opaque;
++    int64_t now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    uint64_t ticks = clock_ns_to_ticks(s->cpuclk, now_ns);
++
++    if (addr == 0x4) {
++        return ticks >> 32;
++    }
++
++    return ticks;
++}
++
++static const MemoryRegionOps loongson3_nodecnt_ops = {
++    .read  = loongson3_nodecnt_read,
++    .endianness = DEVICE_NATIVE_ENDIAN,
++    .valid.min_access_size = 4,
++    .valid.max_access_size = 8,
++    .impl.min_access_size = 4,
++    .impl.max_access_size = 8,
++};
++
+ #define DEF_LOONGSON3_FREQ (800 * 1000 * 1000)
  
-     trace_gd_motion_event(ww, wh, gtk_widget_get_scale_factor(widget), x, y);
+ static uint64_t get_cpu_freq_hz(void)
+@@ -463,7 +488,6 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     int i;
+     long bios_size;
+     MIPSCPU *cpu;
+-    Clock *cpuclk;
+     CPUMIPSState *env;
+     DeviceState *liointc;
+     char *filename;
+@@ -471,10 +495,12 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     const char *kernel_filename = machine->kernel_filename;
+     const char *initrd_filename = machine->initrd_filename;
+     ram_addr_t ram_size = machine->ram_size;
++    LoongsonMachineState *ms = LOONGSON_MACHINE(machine);
+     MemoryRegion *address_space_mem = get_system_memory();
+     MemoryRegion *ram = g_new(MemoryRegion, 1);
+     MemoryRegion *bios = g_new(MemoryRegion, 1);
+     MemoryRegion *iomem = g_new(MemoryRegion, 1);
++    MemoryRegion *nodecnt = g_new(MemoryRegion, 1);
  
+     /* TODO: TCG will support all CPU types */
+     if (!kvm_enabled()) {
+@@ -520,14 +546,14 @@ static void mips_loongson3_virt_init(MachineState *machine)
+     sysbus_create_simple("goldfish_rtc", virt_memmap[VIRT_RTC].base,
+                          qdev_get_gpio_in(liointc, RTC_IRQ));
+ 
+-    cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
+-    clock_set_hz(cpuclk, DEF_LOONGSON3_FREQ);
++    ms->cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
++    clock_set_hz(ms->cpuclk, DEF_LOONGSON3_FREQ);
+ 
+     for (i = 0; i < machine->smp.cpus; i++) {
+         int ip;
+ 
+         /* init CPUs */
+-        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
++        cpu = mips_cpu_create_with_clock(machine->cpu_type, ms->cpuclk);
+ 
+         /* Init internal devices */
+         cpu_mips_irq_init_cpu(cpu);
+@@ -553,6 +579,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
+                            machine->ram, 0, virt_memmap[VIRT_LOWMEM].size);
+     memory_region_init_io(iomem, NULL, &loongson3_pm_ops,
+                            NULL, "loongson3_pm", virt_memmap[VIRT_PM].size);
++    memory_region_init_io(nodecnt, NULL, &loongson3_nodecnt_ops, ms,
++                          "loongson3_nodecnt", virt_memmap[VIRT_NODECNT].size);
+ 
+     memory_region_add_subregion(address_space_mem,
+                       virt_memmap[VIRT_LOWMEM].base, ram);
+@@ -562,6 +590,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
+                       virt_memmap[VIRT_HIGHMEM].base, machine->ram);
+     memory_region_add_subregion(address_space_mem,
+                       virt_memmap[VIRT_PM].base, iomem);
++    memory_region_add_subregion(address_space_mem,
++                      virt_memmap[VIRT_NODECNT].base, nodecnt);
+ 
+     /*
+      * We do not support flash operation, just loading bios.bin as raw BIOS.
+
+---
+base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
+change-id: 20240511-loongson3_hpt-cb02790b24db
+
+Best regards,
 -- 
-2.39.2
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
 
