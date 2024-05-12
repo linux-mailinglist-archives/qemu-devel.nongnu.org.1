@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93CD8C3609
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70C98C3611
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66nB-0003by-2B; Sun, 12 May 2024 06:50:57 -0400
+	id 1s66me-0003Gl-F3; Sun, 12 May 2024 06:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66my-0003Ud-LH
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s66mY-0003F9-Qq
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mj-00065N-EU
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:44 -0400
+ id 1s66mW-0005u0-VB
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511028;
+ s=mimecast20190719; t=1715511016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MwL5OXC5zx1oU7jPsvk03CZtymhzKTh+ZmsFA1G7QZs=;
- b=PBjCRkM8k7lCZHcQVBL+yNTddnZ4ETIKhY1hrVdx1urHERS9fTuXegO6BDghHJ7FDHzslc
- xBYv7GyPENT0OJjFG9qNoZhzruZTJRejzj5WgHEw8kwAOvOSp1mjX6s4c66CtcLPJ5sA/n
- ovzEmNvXVEy1SdLJhmyCPE+VhFF4MAg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=16FC5lp67uehiw7i+v0tZwBGhuHhyMS3WmvcfffWhrM=;
+ b=bhRna411v0RgaY8KIblhINAbfq4xZpAJJvjnKHrGKtqYGWa0yEz/6aOsmjRxj4jjnGPwAd
+ 0ac42de3ruuYgztGBTnzGQT7LdrBKLuOX4KUIj1dQn0fiFxGuw25WZxnE/SkbKwduR7qei
+ lpedvJv4wZFQF3OnlmkVy+KSsSW2wWA=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-_r35OW57ODKjhZk1K0upoQ-1; Sun, 12 May 2024 06:50:12 -0400
-X-MC-Unique: _r35OW57ODKjhZk1K0upoQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a55709e5254so151010966b.3
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:12 -0700 (PDT)
+ us-mta-451-qdpJ33xZPUyfyEvn7wJrDA-1; Sun, 12 May 2024 06:50:14 -0400
+X-MC-Unique: qdpJ33xZPUyfyEvn7wJrDA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a59a0d2280cso269980266b.1
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715511010; x=1716115810;
+ d=1e100.net; s=20230601; t=1715511013; x=1716115813;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MwL5OXC5zx1oU7jPsvk03CZtymhzKTh+ZmsFA1G7QZs=;
- b=MVXd7wcJw791musJrgIFND1uj3DoWVdfWELkYWBZpI4CM4BZK0JdCMkpG8yMea5SxK
- Twq+tGsymCX1G5qwG6S33XLuO6M4uj/OK8u71nolAUmvHj/0qi54VVwjJ1i6LSk8sf95
- YcvLLNtBgwLN5zS+Rc6xTP0y8jAvYEez5QbkfM0YPEODqYnlCA9ghF8AgOjk5xyKI18B
- A+vmv02ER8PkrhFJUxLWiDYWL0mC4T0ZiMySX7+Neo0OqbQhOtJMHQTYeQ06K9lnk92d
- fM8shOUSS9izCPvnzvMof3aNNNha+DaJNCsjF4M3Kv2/sIgU8KW/N14RolAqgXB8jjrA
- gx0Q==
-X-Gm-Message-State: AOJu0YxS8riMfWyHRDIOSClmewzcF9c3b7oOro8dgo9+XRfxQxjKXI+L
- ES5EbOYkH8mrh7fldH4icc9MvNhrK6eqf9r1EUVGcpTu1DCVwJrYCU35OHPrrNYvldvnA8yuKbh
- TU7Rf2KiGOpvDFxW46RX6N4jEYvr3qIZ0/N6Z/cgVxtJeDqZIk0UWNwHJGU3Rg2VPbgbdsPN7c7
- m44wrMiCcHvas5kqiX8Q2bl5xkJSsy1ZuGWbVP
-X-Received: by 2002:a17:906:6805:b0:a59:bfab:b257 with SMTP id
- a640c23a62f3a-a5a2d6761d9mr443923766b.65.1715511010212; 
- Sun, 12 May 2024 03:50:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGk7zX7uw/ah3Oc7ESgoy80OxMu8Ido3+jta8+9JS48lmeCkCerdIkcOSYDXMPW+TISn5pfyA==
-X-Received: by 2002:a17:906:6805:b0:a59:bfab:b257 with SMTP id
- a640c23a62f3a-a5a2d6761d9mr443923166b.65.1715511009804; 
- Sun, 12 May 2024 03:50:09 -0700 (PDT)
+ bh=16FC5lp67uehiw7i+v0tZwBGhuHhyMS3WmvcfffWhrM=;
+ b=bl6i1I7PExC0biRbSXtdmTYtzp/UaOi/wJea/QOA7ymrDcTNuTDwPkriqvt357q94l
+ m1zT38cF/KBoJJuKzyjevlcGp99PfR7ft34BiuhiPBeWSf+ADGbRpmS3tpKXV+sXfZMV
+ yGCuxAwKEMVyMo4zpSztyjoxPjo8T3zLrNQ3KA0FJ5ntKKIZGgqhr6VHcg3Qkh8qjLqb
+ sGmiOrG9pjJUCFvEnTq1YpKwp1KAhnsRiRYbO06JYZVNsE8Ae2oFonsNKt60BrweF5MV
+ cL2FySB3gtoqIx/OgbiEBKwX9gf6SnM0Cui/cbKc6igF2AisE6ym06Lyxcj4o+fkcYvB
+ YVmw==
+X-Gm-Message-State: AOJu0YyvDjOH3mfywxUgDWhzVNos+2MBXRiei2y2Lh8oPzzhrYG0O3U3
+ 3Kv9hky4y7OMKjj67LnMJjURe1LUyeSxAvGnpu7UZo3f727X4c6+W/zRRe9xmfoeGlhALbcMirK
+ G4kxkBf7azdcqZH0ACAITJrOuhR+BA3ROcgeu1nXikcrZ/H3hOR/yu7plK7UZ1pHEmtY2wlVGmh
+ C5EXLi16xos3QXzZRrzM7S1qiUBLZOrSUJBd7y
+X-Received: by 2002:a17:906:a28c:b0:a59:e5ca:db31 with SMTP id
+ a640c23a62f3a-a5a2d54c743mr441517866b.16.1715511012849; 
+ Sun, 12 May 2024 03:50:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbq7l9MYqBEUTYZaw//UmYJM1odEY1ZffePHiZBloA/aC+52xGNrjVy2GINHZIq5c0BYlRCA==
+X-Received: by 2002:a17:906:a28c:b0:a59:e5ca:db31 with SMTP id
+ a640c23a62f3a-a5a2d54c743mr441516766b.16.1715511012486; 
+ Sun, 12 May 2024 03:50:12 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781cd9csm440935266b.37.2024.05.12.03.50.08
+ a640c23a62f3a-a5a17b0195dsm441401966b.184.2024.05.12.03.50.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:50:08 -0700 (PDT)
+ Sun, 12 May 2024 03:50:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 08/27] sh4: select correct components for no-board build
-Date: Sun, 12 May 2024 12:49:26 +0200
-Message-ID: <20240512104945.130198-9-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 09/27] s390x: move s390_cpu_addr2state to target/s390x/sigp.c
+Date: Sun, 12 May 2024 12:49:27 +0200
+Message-ID: <20240512104945.130198-10-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -26
 X-Spam_score: -2.7
 X-Spam_bar: --
 X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.587,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,57 +100,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
+This function has no dependency on the virtio-ccw machine type, though it
+assumes that the CPU address corresponds to the core_id and the index.
+
+If there is any need of something different or more fancy (unlikely)
+S390 can include a MachineClass subclass and implement it there.  For
+now, move it to sigp.c for simplicity.
+
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240509170044.190795-2-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- .gitlab-ci.d/buildtest.yml | 5 +++--
- hw/sh4/meson.build         | 2 +-
- target/sh4/Kconfig         | 2 ++
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ hw/s390x/s390-virtio-ccw.c | 16 ----------------
+ target/s390x/sigp.c        | 17 +++++++++++++++++
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 9836d81c24d..786c8f92090 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -650,7 +650,7 @@ build-tci:
- # Check our reduced build configurations
- # requires libfdt: aarch64, arm, i386, loongarch64, microblaze, microblazeel,
- #   mips64el, or1k, ppc, ppc64, riscv32, riscv64, rx, x86_64
--# does not build without boards: i386, s390x, sh4, sh4eb, x86_64
-+# does not build without boards: i386, s390x, x86_64
- build-without-defaults:
-   extends: .native_build_job_template
-   needs:
-@@ -665,7 +665,8 @@ build-without-defaults:
-       --disable-qom-cast-debug
-       --disable-strip
-     TARGETS: alpha-softmmu avr-softmmu cris-softmmu hppa-softmmu m68k-softmmu
--      mips-softmmu mips64-softmmu mipsel-softmmu sparc-softmmu
-+      mips-softmmu mips64-softmmu mipsel-softmmu
-+      sh4-softmmu sh4eb-softmmu sparc-softmmu
-       sparc64-softmmu tricore-softmmu xtensa-softmmu xtensaeb-softmmu
-       hexagon-linux-user i386-linux-user s390x-linux-user
-     MAKE_CHECK_ARGS: check
-diff --git a/hw/sh4/meson.build b/hw/sh4/meson.build
-index 424d5674dea..70e814c3a28 100644
---- a/hw/sh4/meson.build
-+++ b/hw/sh4/meson.build
-@@ -1,5 +1,5 @@
- sh4_ss = ss.source_set()
--sh4_ss.add(files(
-+sh4_ss.add(when: 'CONFIG_SH7750', if_true: files(
-   'sh7750.c',
-   'sh7750_regnames.c',
- ))
-diff --git a/target/sh4/Kconfig b/target/sh4/Kconfig
-index 2397c860280..93b92f1e480 100644
---- a/target/sh4/Kconfig
-+++ b/target/sh4/Kconfig
-@@ -1,2 +1,4 @@
- config SH4
-     bool
-+    # needed for sh_intc_get_pending_vector
-+    select SH_INTC
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 2afaf45ce60..42628fc45d2 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -50,22 +50,6 @@
+ 
+ static Error *pv_mig_blocker;
+ 
+-S390CPU *s390_cpu_addr2state(uint16_t cpu_addr)
+-{
+-    static MachineState *ms;
+-
+-    if (!ms) {
+-        ms = MACHINE(qdev_get_machine());
+-        g_assert(ms->possible_cpus);
+-    }
+-
+-    /* CPU address corresponds to the core_id and the index */
+-    if (cpu_addr >= ms->possible_cpus->len) {
+-        return NULL;
+-    }
+-    return S390_CPU(ms->possible_cpus->cpus[cpu_addr].cpu);
+-}
+-
+ static S390CPU *s390x_new_cpu(const char *typename, uint32_t core_id,
+                               Error **errp)
+ {
+diff --git a/target/s390x/sigp.c b/target/s390x/sigp.c
+index 9dd977349ab..ad0ad61177d 100644
+--- a/target/s390x/sigp.c
++++ b/target/s390x/sigp.c
+@@ -11,6 +11,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "s390x-internal.h"
++#include "hw/boards.h"
+ #include "sysemu/hw_accel.h"
+ #include "sysemu/runstate.h"
+ #include "exec/address-spaces.h"
+@@ -435,6 +436,22 @@ static int sigp_set_architecture(S390CPU *cpu, uint32_t param,
+     return SIGP_CC_STATUS_STORED;
+ }
+ 
++S390CPU *s390_cpu_addr2state(uint16_t cpu_addr)
++{
++    static MachineState *ms;
++
++    if (!ms) {
++        ms = MACHINE(qdev_get_machine());
++        g_assert(ms->possible_cpus);
++    }
++
++    /* CPU address corresponds to the core_id and the index */
++    if (cpu_addr >= ms->possible_cpus->len) {
++        return NULL;
++    }
++    return S390_CPU(ms->possible_cpus->cpus[cpu_addr].cpu);
++}
++
+ int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3)
+ {
+     uint64_t *status_reg = &env->regs[r1];
 -- 
 2.45.0
 
