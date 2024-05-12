@@ -2,102 +2,154 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC528C3668
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 14:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8EF8C373B
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 18:10:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s68Bf-00017D-Pm; Sun, 12 May 2024 08:20:19 -0400
+	id 1s6Bky-0002DS-5O; Sun, 12 May 2024 12:09:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s68Bd-00016x-8N
- for qemu-devel@nongnu.org; Sun, 12 May 2024 08:20:17 -0400
-Received: from wfout5-smtp.messagingengine.com ([64.147.123.148])
+ (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
+ id 1s6Bku-0002DG-6W
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 12:08:57 -0400
+Received: from bactrian.cherry.relay.mailchannels.net ([23.83.223.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1s68Bb-0001r6-3I
- for qemu-devel@nongnu.org; Sun, 12 May 2024 08:20:16 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfout.west.internal (Postfix) with ESMTP id 25C891C00121;
- Sun, 12 May 2024 08:20:13 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Sun, 12 May 2024 08:20:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:message-id:mime-version:reply-to
- :subject:subject:to:to; s=fm1; t=1715516412; x=1715602812; bh=+A
- 0wIJUp2tZgdSmjqd3MGPiSgOY7MNp4bOtWkf2swTM=; b=Xm9ydNE2frGRAscjFY
- 5LlEwwmoF8ZlC6o7tbWEICH+WbBjip0QcNYvy5uPAOnh2chaeehSPCteY2+kDhQ1
- BOIF7Xd+JCyi94qj1g2KB7IKyQAQ/PKexJCmxk+ZU47BRoqqYVQhOcyp1gxZbuEj
- SK3dddUA8NZxP2C/qLCr2oT3tJrDk54n6N6cl3HI63LWyqwQI5H0zgRbvq/rUPUl
- uuXjDGGOSeLxl+y0JehjbVZcUubkMPpHUFUtNlJnR4qNCSYHLdLPm8o5YNxvwu0u
- KAhhI7Rv6SUp3L0doR7f/HSJAKQbFU4mD6BNdupHQvmjO43L9Ys0uE9fxAZOki2r
- Jyug==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:message-id:mime-version:reply-to:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1715516412; x=1715602812; bh=+A0wIJUp2tZgd
- Smjqd3MGPiSgOY7MNp4bOtWkf2swTM=; b=fGNYWzdNRqDT2LN3J4Qhis2U2rJQo
- RfQFpcpBXjKg3td21sOoyflSzRBLsMhJ0ZP3tHWYZ75TV0OTvnSdJArI8PgNa4Lt
- 1sTPqqmGrPFQgw88Z+BzaBHf3gDwv1+Hcl9W9cBkLYZnRN9HLB4Nu8P5iw/mKThG
- rEdW24BFaJZmG4jfvsJ+DI3V/3brb8z2L/wd80rlyDYAHCAU365eGLgQHMu8i35R
- Nhe+dEhwQroz76WnYFhD8xwZ7D40X0d1U0BIUW3PTyP/FgYp94XJB+88+w6lzS76
- C4PYvk4a4I2ayxaT8Lnku2A3DMlN6adMkGyFI5GNkTQEVlnFT/7vPgsbQ==
-X-ME-Sender: <xms:_LNAZma1dXDESZn6xD7K1qWo7dqG65tw0oFkD5gdDYpijISu_pu9ww>
- <xme:_LNAZpb8FZnXlw_GAwd98zYbbZfcBSdkJNK7vteYeezc7aigX7-n9Yxh92d3Y-IN0
- DQuDV17fk2YzWmhNjo>
-X-ME-Received: <xmr:_LNAZg-o89TBrKwoOGno3NoinRTdkAd8WYteckZjvaOoxUwkAMIlqPI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegvddghedtucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
- nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
- ftrfgrthhtvghrnhepffetueegkedtgfejveeuvdfghfegtddvgfehudeghfegheetuedu
- heduveejtefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
- homhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:_LNAZop0c8kzqYrarFzyv2vq1zasSM7obHtVkXAy98NCEuQV8TNMQg>
- <xmx:_LNAZhpfWNgFvx2z2myU6HQpD-zRR3OH6BmVfnn0aUK9iWDvreYneA>
- <xmx:_LNAZmR28DvTWO3fXln_UKKvDt8yo4Km2Al_NSVBu9YyzIMdZQ7csg>
- <xmx:_LNAZhrSjd4tBvUYadCDMQYCzA3HpMF8eIhd3ClizGL7IqzjTvnXHQ>
- <xmx:_LNAZinKeZ4OjQna8udVYkq-X6wzsbEjdmHo08QtYuH9wiN-Rkc2FmBZ>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 12 May 2024 08:20:11 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Sun, 12 May 2024 13:20:09 +0100
-Subject: [PATCH] hw/mips/loongson3_virt: Implement node counter timer
+ (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
+ id 1s6Bkr-0003ow-T5
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 12:08:55 -0400
+X-Sender-Id: _forwarded-from|134.3.94.10
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id 583327630AF
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 16:08:49 +0000 (UTC)
+Received: from outbound1.eu.mailhop.org (unknown [127.0.0.6])
+ (Authenticated sender: duocircle)
+ by relay.mailchannels.net (Postfix) with ESMTPA id B6E617626FF
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 16:08:48 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1715530129; a=rsa-sha256;
+ cv=pass;
+ b=lfC4RXDxauqXDN6lh++gJveEWplLBTptBuWjZb05VZbV8/f4te9Zw1eI6VY1yQ9utb/7bd
+ yykY/idboj2Qd32Ytj2lqafQctR+y/2LazcqGF8ZKd7mDKfssjsUMtzs64z4+vThiYp9iU
+ A8iglPgsUxgqo+QcsDJ+/6xzmIF/MPZRL7FYknKcEFjO3rkhNx5JM7mF2s2mMpfqqJw1Fy
+ xQpj6Fw4f9amQnAgCGq/WmTN7dPcaTRwq7+Nc7SFe3eeoyTOYcV5NVnlUhlGL8M9VBnMxE
+ CNAI0JsWTTv9EySDOImZ0ec6IzTSp1bleYONkAS6FtOzEB9TI5heHjIutS3VhA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net; s=arc-2022; t=1715530129;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=D6A8ryl9wdE6A8gjzfy+/t3vAvdxENVJQZjv27wuTC0=;
+ b=xovKpIty9VinqVhcEyTQjBNrPQFWf596H7ZD5UoE5to7bXTG52tz6DZkMB2Z01hQJvYZ30
+ 6EzjYUzLSbU+zNRHrnXKnJ05RYFHy+hooK7shdQNmAUps1Nq2A76oawroam76l9bDeMcSQ
+ nl8NzalVhK1m03XrY3gpDPAMu1WtVjprjkzBNC5R7x/ncav+7PrnHSOzQpcR0CX+JgzOo3
+ MC0LMeBFfTFKQ4UkzmzSlV4PfhzIjRf+rNKXnbm04ocfhswFlUm9Uv2pAgYUhXDXdO8TCU
+ csUmH8qqyUp+C24FGdJUPCrPz8s/482Dk+xVVgsTGOArsGugeJiiuFuS2ea4bA==
+ARC-Authentication-Results: i=2; rspamd-68bbddc7f5-qjdxh;
+ arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
+ auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
+X-Sender-Id: _forwarded-from|134.3.94.10
+X-MC-Relay: Junk
+X-MailChannels-SenderId: _forwarded-from|134.3.94.10
+X-MailChannels-Auth-Id: duocircle
+X-Coil-Snatch: 1cb0f8485c9bc67e_1715530129231_1193868879
+X-MC-Loop-Signature: 1715530129231:1394076708
+X-MC-Ingress-Time: 1715530129230
+Received: from outbound1.eu.mailhop.org (outbound1.eu.mailhop.org
+ [52.28.251.132]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.107.48.229 (trex/6.9.2); Sun, 12 May 2024 16:08:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1715530124; cv=none;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ b=FwAq2bhXa9tL8s1A2O3//rQXnygmj4Swef/zJgMK49sRZqcupR5XQfMJ9b6Ch0VhoN9PrcHpyBNIk
+ 3KABu8oLKd1W/3rWn9/R+wFudVLJjzjeRkZp8O7846Hm2oJAmBb0hqDF6Z88P50bPKpsJODoJ0Kn5H
+ PQO5EYTLa+0pT759XHOQUhdVnZ84Xe6A4/qJUdoKbh+3VInCBRVfy7oMVz5iVQQCvHnhn3hP5M4OFf
+ xMU35MtAdpttU9VGJ8OPT4t+jxJDQLl1cLcwaNlLhkc57ZF8yZ05GFdmCZYbwIrVbHIFqfOmsbsaih
+ AOd1VH342/6cJWWpEfeuZ/uMmeC+Sgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=arc-outbound20181012;
+ h=content-transfer-encoding:content-type:mime-version:message-id:date:
+ references:in-reply-to:subject:cc:to:from:dkim-signature:dkim-signature:
+ dkim-signature:from;
+ bh=D6A8ryl9wdE6A8gjzfy+/t3vAvdxENVJQZjv27wuTC0=;
+ b=ogDWd/lh609GptSg/GKI9Gml1G4WkTP70wyXcpOqfSVyZKmaiwjh/TNJyOPXe1L0U/WXuXBr3f2Ze
+ 5I4blLJ6AUfF/m8hf+ixvd/YRW36JrMnrVScQopVjfc27eInka1SR3CvuPUkuKS6nhrK1Y8yX6YBCr
+ G50fOHij7zt1+HLgIIq0gEgO+5+VDXktzvKiBaveBWms9doi48rIakNAyCe6kPFA7NiANNMoGhccd0
+ xeP8NGrwP6ojn08sEVeLk25eS9YlD1xGXseL2rezK7wQOnM7dyNy7KEScxFFfsr+d7xgB+WzTPKJ+m
+ 8eDcAPT91zv5kQeEvwbXoltPX5AN+Fw==
+ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
+ spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
+ dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
+ header.b=ddbT9RUP; 
+ dmarc=none header.from=stackframe.org;
+ arc=none header.oldest-pass=0;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=stackframe.org; s=duo-1634547266507-560c42ae;
+ h=content-transfer-encoding:content-type:mime-version:message-id:date:
+ references:in-reply-to:subject:cc:to:from:from;
+ bh=D6A8ryl9wdE6A8gjzfy+/t3vAvdxENVJQZjv27wuTC0=;
+ b=NVyZjaj2Bv5OQtgpHmrCZUJ8wkYGfBrXg30MjGzHlxO+I9j7eB7cleWLf6lziU8CZuQrxDPtyRWTZ
+ vpzD9tHniQCFaYxm57vbCQYFbAR4ucNJJ8Cl+qzKv6j2BOQylzQrbqfgJSEjxQpObcxDyECawov/xq
+ JmEsh+yW0gGn73Dc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=outbound.mailhop.org; s=dkim-high;
+ h=content-transfer-encoding:content-type:mime-version:message-id:date:
+ references:in-reply-to:subject:cc:to:from:from;
+ bh=D6A8ryl9wdE6A8gjzfy+/t3vAvdxENVJQZjv27wuTC0=;
+ b=sNuYLxbNLFOvZGGkZP8FB2YWw2CaXbpqarqqLnSlwjZoc+QAVGCHTEB+ketP/mMPKHi4PHohOoXbG
+ xZyxdx43q6zIclOpwfDl6LWt/MUavqJ+qBP5n4ec1iS/BteNDuXFKPRbgLzeCGE5hF7sZj8JV0WqpY
+ lcP6E0JSlk92LLfbd2HqAFusfaE/gfslxCj1dRS+jKBxn/Jtb1KHnZE2g+pvgEc8jFvO5p5NF9AlR1
+ 1LX6A27BK5dLQqq4Sblp1QCzTl9LnfjZ+a8LiNc9plv09Wx2V4N9wm0r2I9IcnZGflUOBNFLAAw2KD
+ rqNHroTOvKGRmSEsNp9GbdX4PYDQTyg==
+X-Originating-IP: 130.180.31.158
+X-MHO-RoutePath: dG9ta2lzdG5lcm51
+X-MHO-User: e5bd767f-1079-11ef-9401-afa6fccf0072
+X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
+X-Mail-Handler: DuoCircle Outbound SMTP
+Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
+ by outbound3.eu.mailhop.org (Halon) with ESMTPSA
+ id e5bd767f-1079-11ef-9401-afa6fccf0072;
+ Sun, 12 May 2024 16:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=D6A8ryl9wdE6A8gjzfy+/t3vAvdxENVJQZjv27wuTC0=; b=ddbT9RUPm1YC9ndnVAVG4ucUou
+ +TAJchuGLqVgS6OfL6qSoWhOYfyAWYitEQv/9JuqN+LzudXYZK0U6nRVEHYn3FS1jODvbjTkXjoR0
+ UU8viUSDgZAWurttPcy1FlEsa1aj8THkheMDhuPt1gsK7eNiy/QISknyKxtSWJ5/rr/YDW87H1CsZ
+ 9E/MAq+gCzP34SffS9j4MgZs/5VWBGOZV+xjLcKT+UGGtH//Y3kukFXdpVMa9E9+t/YKLku43fwm2
+ kazm5yQo21eHzOZ0kAWHLNjwIRXYAizFt/0ZCwsayewV+g/TQUImqu8kYGHo3rb7VuotgPKvISzB5
+ 5kRs9/1g==;
+Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
+ helo=t14.stackframe.org.stackframe.org)
+ by mail.duncanthrax.net with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
+ (envelope-from <svens@stackframe.org>) id 1s6Bke-004VBg-09;
+ Sun, 12 May 2024 18:08:40 +0200
+From: Sven Schnelle <svens@stackframe.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ qemu-devel@nongnu.org,  Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 00/45] target/hppa: Misc improvements
+In-Reply-To: <9e271098-ce7b-46ad-9eb8-b49b912eaa49@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 10 May 2024 16:48:14
+ +0200")
+References: <20240425000023.1002026-1-richard.henderson@linaro.org>
+ <9e271098-ce7b-46ad-9eb8-b49b912eaa49@linaro.org>
+Date: Sun, 12 May 2024 18:08:35 +0200
+Message-ID: <875xvjovwc.fsf@t14.stackframe.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240512-loongson3_hpt-v1-1-5cb9cbae649b@flygoat.com>
-X-B4-Tracking: v=1; b=H4sIAPizQGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDU0ND3Zz8/Lz04vw84/iMghLd5CQDI3NLgyQjk5QkJaCegqLUtMwKsHn
- RsbW1ABd1xjVfAAAA
-To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5537;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=jvxnlOaDvJlj5RIgl3BRnMjVOw/prK94TNO/RhAswU8=;
- b=owGbwMvMwCHmXMhTe71c8zDjabUkhjSHzb/vlTwVN7JTKeQqeNp5uuvPtx37PKfo59X8qFlpz
- N2wRnZFRwkLgxgHg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEzEuJqRobNQ7b90e8jtA3/X
- he97EvJlgc7De98s72l5lTtcm1vNzcjwPXpZCv/BXXuMjS+9z+3/Z3Dz02uJ3n79lWvvrlwTGLW
- PEQA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
-Received-SPF: pass client-ip=64.147.123.148;
- envelope-from=jiaxun.yang@flygoat.com; helo=wfout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=23.83.223.9; envelope-from=svens@stackframe.org;
+ helo=bactrian.cherry.relay.mailchannels.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,147 +166,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Node counter is a timer presents on Loongson-3 chips, which runs
-as fast as CPU clock. It's being mapped into a MMIO location.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Emulate this for loongson3_virt machine, in hope that kernel can
-use it as a better clock source.
+> Cc'ing Helge & Sven as I'm going to skip this series.
+>
+> Suggestion:
+>
+> -- >8 --
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 1b79767d61..be7535b55e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -254,6 +254,8 @@ F: target/hexagon/gen_idef_parser_funcs.py
+>
+>  HPPA (PA-RISC) TCG CPUs
+>  M: Richard Henderson <richard.henderson@linaro.org>
+> +R: Helge Deller <deller@gmx.de>
+> +R: Sven Schnelle <svens@stackframe.org>
+>  S: Maintained
+>  F: target/hppa/
+>  F: disas/hppa.c
+> @@ -1214,6 +1216,7 @@ HP-PARISC Machines
+>  HP B160L, HP C3700
+>  M: Richard Henderson <richard.henderson@linaro.org>
+>  R: Helge Deller <deller@gmx.de>
+> +R: Sven Schnelle <svens@stackframe.org>
+>  S: Odd Fixes
+>  F: configs/devices/hppa-softmmu/default.mak
+>  F: hw/display/artist.c
 
-Hardware's behavior on 32-bit read/write is also emulated in case
-legacy kernel is trying to use it with hi/lo splitted read.
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- hw/mips/loongson3_bootp.h |  1 +
- hw/mips/loongson3_virt.c  | 38 ++++++++++++++++++++++++++++++++++----
- 2 files changed, 35 insertions(+), 4 deletions(-)
-
-diff --git a/hw/mips/loongson3_bootp.h b/hw/mips/loongson3_bootp.h
-index 1b0dd3b59171..c6a435397d2c 100644
---- a/hw/mips/loongson3_bootp.h
-+++ b/hw/mips/loongson3_bootp.h
-@@ -210,6 +210,7 @@ enum {
-     VIRT_PCIE_ECAM,
-     VIRT_BIOS_ROM,
-     VIRT_UART,
-+    VIRT_NODECNT,
-     VIRT_LIOINTC,
-     VIRT_PCIE_MMIO,
-     VIRT_HIGHMEM
-diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
-index b10a611a98f4..b78ac8032096 100644
---- a/hw/mips/loongson3_virt.c
-+++ b/hw/mips/loongson3_virt.c
-@@ -74,6 +74,7 @@ const MemMapEntry virt_memmap[] = {
-     [VIRT_PCIE_ECAM] =   { 0x1a000000,     0x2000000 },
-     [VIRT_BIOS_ROM] =    { 0x1fc00000,      0x200000 },
-     [VIRT_UART] =        { 0x1fe001e0,           0x8 },
-+    [VIRT_NODECNT] =     { 0x3ff00408,           0x8 },
-     [VIRT_LIOINTC] =     { 0x3ff01400,          0x64 },
-     [VIRT_PCIE_MMIO] =   { 0x40000000,    0x40000000 },
-     [VIRT_HIGHMEM] =     { 0x80000000,           0x0 }, /* Variable */
-@@ -92,6 +93,7 @@ static const MemMapEntry loader_rommap[] = {
- 
- struct LoongsonMachineState {
-     MachineState parent_obj;
-+    Clock *cpuclk;
-     MemoryRegion *pio_alias;
-     MemoryRegion *mmio_alias;
-     MemoryRegion *ecam_alias;
-@@ -145,6 +147,29 @@ static const MemoryRegionOps loongson3_pm_ops = {
-     }
- };
- 
-+static uint64_t loongson3_nodecnt_read(void *opaque,
-+                                        hwaddr addr, unsigned size)
-+{
-+    LoongsonMachineState *s = opaque;
-+    int64_t now_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    uint64_t ticks = clock_ns_to_ticks(s->cpuclk, now_ns);
-+
-+    if (addr == 0x4) {
-+        return ticks >> 32;
-+    }
-+
-+    return ticks;
-+}
-+
-+static const MemoryRegionOps loongson3_nodecnt_ops = {
-+    .read  = loongson3_nodecnt_read,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 4,
-+    .impl.max_access_size = 8,
-+};
-+
- #define DEF_LOONGSON3_FREQ (800 * 1000 * 1000)
- 
- static uint64_t get_cpu_freq_hz(void)
-@@ -463,7 +488,6 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     int i;
-     long bios_size;
-     MIPSCPU *cpu;
--    Clock *cpuclk;
-     CPUMIPSState *env;
-     DeviceState *liointc;
-     char *filename;
-@@ -471,10 +495,12 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     const char *kernel_filename = machine->kernel_filename;
-     const char *initrd_filename = machine->initrd_filename;
-     ram_addr_t ram_size = machine->ram_size;
-+    LoongsonMachineState *ms = LOONGSON_MACHINE(machine);
-     MemoryRegion *address_space_mem = get_system_memory();
-     MemoryRegion *ram = g_new(MemoryRegion, 1);
-     MemoryRegion *bios = g_new(MemoryRegion, 1);
-     MemoryRegion *iomem = g_new(MemoryRegion, 1);
-+    MemoryRegion *nodecnt = g_new(MemoryRegion, 1);
- 
-     /* TODO: TCG will support all CPU types */
-     if (!kvm_enabled()) {
-@@ -520,14 +546,14 @@ static void mips_loongson3_virt_init(MachineState *machine)
-     sysbus_create_simple("goldfish_rtc", virt_memmap[VIRT_RTC].base,
-                          qdev_get_gpio_in(liointc, RTC_IRQ));
- 
--    cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
--    clock_set_hz(cpuclk, DEF_LOONGSON3_FREQ);
-+    ms->cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
-+    clock_set_hz(ms->cpuclk, DEF_LOONGSON3_FREQ);
- 
-     for (i = 0; i < machine->smp.cpus; i++) {
-         int ip;
- 
-         /* init CPUs */
--        cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk);
-+        cpu = mips_cpu_create_with_clock(machine->cpu_type, ms->cpuclk);
- 
-         /* Init internal devices */
-         cpu_mips_irq_init_cpu(cpu);
-@@ -553,6 +579,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
-                            machine->ram, 0, virt_memmap[VIRT_LOWMEM].size);
-     memory_region_init_io(iomem, NULL, &loongson3_pm_ops,
-                            NULL, "loongson3_pm", virt_memmap[VIRT_PM].size);
-+    memory_region_init_io(nodecnt, NULL, &loongson3_nodecnt_ops, ms,
-+                          "loongson3_nodecnt", virt_memmap[VIRT_NODECNT].size);
- 
-     memory_region_add_subregion(address_space_mem,
-                       virt_memmap[VIRT_LOWMEM].base, ram);
-@@ -562,6 +590,8 @@ static void mips_loongson3_virt_init(MachineState *machine)
-                       virt_memmap[VIRT_HIGHMEM].base, machine->ram);
-     memory_region_add_subregion(address_space_mem,
-                       virt_memmap[VIRT_PM].base, iomem);
-+    memory_region_add_subregion(address_space_mem,
-+                      virt_memmap[VIRT_NODECNT].base, nodecnt);
- 
-     /*
-      * We do not support flash operation, just loading bios.bin as raw BIOS.
-
----
-base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
-change-id: 20240511-loongson3_hpt-cb02790b24db
-
-Best regards,
--- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
-
+Please don't add me as reviewer - i'm only looking in irregular
+intervals at hppa tcg in qemu.
 
