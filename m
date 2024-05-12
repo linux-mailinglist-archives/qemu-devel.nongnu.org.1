@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB2A8C3617
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B098C3612
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:52:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66mM-00039Y-LX; Sun, 12 May 2024 06:50:06 -0400
+	id 1s66mY-0003E5-LM; Sun, 12 May 2024 06:50:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mK-00037p-Fx
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
+ id 1s66mS-0003Bl-EF
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mI-0005iu-UI
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
+ id 1s66mR-0005lj-1h
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511002;
+ s=mimecast20190719; t=1715511010;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S4SP0e59ZeDX5lkN+/W5vKvtoIw2mXuzTdWnwNY+pAw=;
- b=LYy0UQffsRJneHfjiyzARjMqK2FKM6SHEx9LMtCg11px+T98sCTWqdvIv4dBWzs1LmeDRa
- J++eCH8ZMr67AfSzMsFz4g4y9zS8yJCOYMvukksJjoM69oMpLJI8c8r+BgIfXnF0S7TI1P
- TytN9QpR3ybUKp5t7pUDLhHs0vkToxw=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g8iZLgFACevdnZM5syfkzgEYfCmu0MQtpbdIpOzga9E=;
+ b=FTT38iGJ6UD1yetcUM0RtUw1gNMZQizdxbjzBTnL/3Rrb5Essey5Qmxb8TkLVMuwiqJNwT
+ rcU6OGAbMxQHtoqyLVvHPZcb297HUqXQ/PJ1uhZOEaVj61nFlknOS/jUvDqeQBils1CAR5
+ A4vfYjjPQr5wXb+ovKYa29nA3qEHtls=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-smMwzhx7PnqaBouQ-KdQHQ-1; Sun, 12 May 2024 06:49:55 -0400
-X-MC-Unique: smMwzhx7PnqaBouQ-KdQHQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-51f98fc5a80so3031426e87.1
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:49:55 -0700 (PDT)
+ us-mta-653-JGnjKaPDPZa1eycM3pSBIQ-1; Sun, 12 May 2024 06:49:59 -0400
+X-MC-Unique: JGnjKaPDPZa1eycM3pSBIQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-51fa975896eso2948962e87.3
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:49:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715510993; x=1716115793;
+ d=1e100.net; s=20230601; t=1715510996; x=1716115796;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S4SP0e59ZeDX5lkN+/W5vKvtoIw2mXuzTdWnwNY+pAw=;
- b=OmjNdiGPm9aRr5ju+I7VlWtk12bioUhsuG/GJ7zwlLz62TadtbAQzzuDRKPLuFSHFu
- BUmdEkSZpNLq2xy8wUTf+XDzSqz/XmHCWypttAmj69I6rgqhhvUfPxQhJNoxu2st4wdQ
- p5A8cRjlZgArC2DrNEKXjPP2w6nwLvla9VkTakj9ydrxCYrn2AAc4TM4ZutFiWK2RXUX
- IE1i1stI7a4wihWs5xDk5s5FiPSc6H19HMFcRTJJ1cJ04kldNrB6yzKyrxqUQTImc/Hk
- R+hQyszt0unWdT9QxZhGq0fWRGECt0zUK34vwl5h74SGo21UgS4PtJ2Dd0Ve4uU1KEv4
- lfCw==
-X-Gm-Message-State: AOJu0YwQkxt6g/jZsk3e9ukFtmXj7Vy45MdHwxTaSHnJe+dDt0bmDM2V
- cp767jbxW+Mx3ubXlqQ14pIJwAjB8SXDHp5KIGnNG9ppX2CP1zehbiCn+dceyIsRrDsGKGQgz+h
- 5TpjZgvAScsjjMhHtnyAJcjTWhG+yzWjshoTBkxTfSuSx+UY84HqXOt7mCxfuGkndzaWcVt2FA+
- PTULf3fYaWrH4eC0+fQVV33s+XEDXhCAgapsJJ
-X-Received: by 2002:a05:6512:2386:b0:51b:bb0f:b43f with SMTP id
- 2adb3069b0e04-5221057b55dmr6309704e87.43.1715510993014; 
- Sun, 12 May 2024 03:49:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEo2iCmaI5g55zTfvBegiMZRV4L9hqyc4C1m5ZrO2BJsxuCZ7j+bY7Q7tJtp3w7adS8SVQgMg==
-X-Received: by 2002:a05:6512:2386:b0:51b:bb0f:b43f with SMTP id
- 2adb3069b0e04-5221057b55dmr6309688e87.43.1715510992387; 
- Sun, 12 May 2024 03:49:52 -0700 (PDT)
+ bh=g8iZLgFACevdnZM5syfkzgEYfCmu0MQtpbdIpOzga9E=;
+ b=LRva/dMqlJb1KYxwhkbc5867xuFe1VI6TsNB1fNCrhFsZ7VMNAzkIBXAvwijhlCbBZ
+ 7W2sP5ECOMAjZV1EynBFumrnWCAZ9PQsN2cKA0WdpWLowqB+QPyHutuZsdgS0/W6qLic
+ 7F8HzBm4Vv7qJtxAK8Xj2NByuzUHTVtRW2GjQ5NAHGUVyaqtCTU//ZF9VGfynx4iXHmr
+ Yd14Z0TI350v9JreMeJTWfgOF0QLKgLFoM3I9HYb1NMfNq7DqmGyZuzIhM8BeHPQWd+g
+ JaBTnJAciG2pmc5cUt64RJD839+VW3jnlFTvVU5k3SQ8lFbyq/eBb48XeQmu8HqIMMFx
+ QLfQ==
+X-Gm-Message-State: AOJu0YwBPN8vVKWuRj/HMR8N14/4Xb+lmrQ7WZT+TmGnJ53cJx4Iv9Dd
+ ctYHjoKlAC/FrO0H3fnDDjfcrKp5MfCBhYaQRijS/OOHQSrdkNQHSP21f4aIszsQpzt71hgjjKM
+ /k5Fsd4zd3F/Tgv8M06dKLWFOOa2PvH6ML6BsY72bJ3PH0U246njKQypc3CDUUUPabIQRjCgzgC
+ x0XLN8qwJ/4piOR0EFmbnajA4hNkTrN7tBjWdj
+X-Received: by 2002:a05:6512:3d19:b0:51a:b110:3214 with SMTP id
+ 2adb3069b0e04-5221007029cmr5339917e87.49.1715510996127; 
+ Sun, 12 May 2024 03:49:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFyan34vmRDxS/QnHHjnbzPz7m4VR0UbRQFWFSdeSGybTC3Q1f8TpK25v1yrcMAGU7fW4zJqw==
+X-Received: by 2002:a05:6512:3d19:b0:51a:b110:3214 with SMTP id
+ 2adb3069b0e04-5221007029cmr5339902e87.49.1715510995641; 
+ Sun, 12 May 2024 03:49:55 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-574c122827bsm764151a12.78.2024.05.12.03.49.50
+ a640c23a62f3a-a5a17b177desm441858666b.207.2024.05.12.03.49.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:49:50 -0700 (PDT)
+ Sun, 12 May 2024 03:49:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/27] target/i386: fix operand size for DATA16 REX.W POPCNT
-Date: Sun, 12 May 2024 12:49:20 +0200
-Message-ID: <20240512104945.130198-3-pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 03/27] target/i386: rdpkru/wrpkru are no-prefix instructions
+Date: Sun, 12 May 2024 12:49:21 +0200
+Message-ID: <20240512104945.130198-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
@@ -101,66 +101,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the manual, 32-bit vs 64-bit is governed by REX.W
-and REX ignores the 0x66 prefix.  This can be confirmed with this
-program:
-
-    #include <stdio.h>
-    int main()
-    {
-       int x = 0x12340000;
-       int y;
-       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-    }
-
-which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
-on QEMU.
+Reject 0x66/0xf3/0xf2 in front of them.
 
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+ target/i386/tcg/translate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 7d9f6b5c55b..5366dc32dd3 100644
+index 5366dc32dd3..3da4fdf64cc 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -411,16 +411,6 @@ static inline MemOp mo_stacksize(DisasContext *s)
-     return CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
- }
- 
--/* Select only size 64 else 32.  Used for SSE operand sizes.  */
--static inline MemOp mo_64_32(MemOp ot)
--{
--#ifdef TARGET_X86_64
--    return ot == MO_64 ? MO_64 : MO_32;
--#else
--    return MO_32;
--#endif
--}
--
- /* Select size 8 if lsb of B is clear, else OT.  Used for decoding
-    byte vs word opcodes.  */
- static inline MemOp mo_b_d(int b, MemOp ot)
-@@ -4545,12 +4535,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         modrm = x86_ldub_code(env, s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
- 
--        if (s->prefix & PREFIX_DATA) {
--            ot = MO_16;
--        } else {
--            ot = mo_64_32(dflag);
--        }
--
-+        ot = dflag;
-         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
-         gen_extu(ot, s->T0);
-         tcg_gen_mov_tl(cpu_cc_src, s->T0);
+@@ -3907,7 +3907,8 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
+             break;
+         case 0xee: /* rdpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -3915,7 +3916,8 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
+             break;
+         case 0xef: /* wrpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
 -- 
 2.45.0
 
