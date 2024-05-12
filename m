@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0EA8C3600
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5E88C3601
 	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:51:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66mP-0003AU-9r; Sun, 12 May 2024 06:50:10 -0400
+	id 1s66mU-0003C9-P8; Sun, 12 May 2024 06:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mM-00039o-E2
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:06 -0400
+ id 1s66mO-0003An-Ig
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66mK-0005jg-EM
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:06 -0400
+ id 1s66mN-0005kj-4N
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511003;
+ s=mimecast20190719; t=1715511006;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gdRXHsu0FF7fOctnYehBfR47nJOAuljyxAb/XJ3j/HU=;
- b=h8or4EG3ROMtpNk+59x+YauaAPV4ktiKmiDTPN35ia36VPzwdqofYM0RVVZvusqQ4Mv6y7
- 7kc1ZFlX0VG+Nhk9gUUItqIh8E2aWxkPyT3ogZIBDC1zekGo63qtRabEfLwFKIT27HnlUl
- xPYvUtA0A+vnxUXk4Evs6lbkkXQJL9Y=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iwo7BsnwcP82yreks1wX75A1VxKsNz9996vExb/jyP0=;
+ b=h7YMH5VJIGogZa0YJg8O6PTIN1gQSQ5A3JAc8DODLU+Hlyjy/qWK/fNBOO2bPSS8M+/qVE
+ X0IvdFQ/6lQSZIqV3hxvcExeYrofeu5wt25rV84nEZd9iIXRv0VI4zcjMquVahEQ47whbH
+ N9WdUH7j14wO0M77uwBvcnERNHxn1mo=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-161-cenwCdebOLC12qR1E0uMPA-1; Sun, 12 May 2024 06:50:01 -0400
-X-MC-Unique: cenwCdebOLC12qR1E0uMPA-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-574b5ae605dso312102a12.3
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:01 -0700 (PDT)
+ us-mta-163-oIEXNUg_N1SpidCCTfw9Hg-1; Sun, 12 May 2024 06:50:05 -0400
+X-MC-Unique: oIEXNUg_N1SpidCCTfw9Hg-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-5222a0800f0so1691175e87.2
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:50:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715510999; x=1716115799;
+ d=1e100.net; s=20230601; t=1715511002; x=1716115802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gdRXHsu0FF7fOctnYehBfR47nJOAuljyxAb/XJ3j/HU=;
- b=h2bI/08r2Lmr8pTvNvMP0iFfuKLb75SR7nVBIw3RIzEQwjk3qHXx8ODEIsDXaqMkl3
- q4FXxxBs0WgrVQxGF2yzSsd+sjYBlkaUGfTvyH7lMQzFoRBvcMCo5XP4PP2QuA9otRM2
- eyz1DrFd+ltSmmzV0BIxHsNWJOmCbnZgzPnrJocstH+JQgPuiMu1MzVSX3wEhhcmZGS3
- 5lBhsnBFxfNxYeX7LpVanet6CVVL/HYCi8Kgn5aqxSW5GxagO1lBlh9TJLKkKWkBfP7B
- XGxEMn7Sv/4Y2kf1OwPGfdvVijwla9dbQdZ+m/MyPCIAors7Dx07MMt+dPmGWMlcyn9D
- lKrQ==
-X-Gm-Message-State: AOJu0Yy4ifozijxbwlyn8wBbeCngh/2dlDYdz7MXejx/HqlX4XwAcGjd
- OLqPrAxuUESO4PuLrQRyyGOXBDVfFVxF6a4VyHPihlpKxfkrgKOzmPYMP9qHpA7qc2vYImJ2xKD
- LH4vANDGn8BpvHA29jKUMIlEvJ74MHZfakH4cOGhvadmXV8PvCm/Tkixfcq48a1dzAPeXWpcHZO
- wAtoBCECa/wP1bnUGX+FFN9wbF+KY5LP0M9i0R
-X-Received: by 2002:a50:cddc:0:b0:572:67ee:d3d9 with SMTP id
- 4fb4d7f45d1cf-5734d5ce8e7mr4684154a12.17.1715510999323; 
- Sun, 12 May 2024 03:49:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHe2WFQmTHzjjdiVTY9LcU4Ok9ocsLJhLClhTZ56T2bxE7M7KkE6mShXTd+7W/BtbfQOmRrUg==
-X-Received: by 2002:a50:cddc:0:b0:572:67ee:d3d9 with SMTP id
- 4fb4d7f45d1cf-5734d5ce8e7mr4684143a12.17.1715510998959; 
- Sun, 12 May 2024 03:49:58 -0700 (PDT)
+ bh=iwo7BsnwcP82yreks1wX75A1VxKsNz9996vExb/jyP0=;
+ b=sXt/hI4sUwKhOd2Am7H7y3Mj3cdiYKTBtN0r5iuBxjBSjwIftP8BCYrCX5sW/+GSm5
+ mxkrY0YnRl9VYlEmIx116iL646+DV+6/UaTWHjsOE99P6cnkCykSugYsp7iJfgiGrycW
+ Vtf8acCZqnAa0M8TN0zSUhRIwtzYeTGAcXclyz73sNX02B54i6fpqC6fY4fKOmxat+MG
+ BoxIbPAlpBIL5e+TMMYRn2HWVdHj1+N4rwjnzptWCnBe9MByBWgueE8Tk2kyVGYbfOs1
+ eRiIn9xHPj/XqwHHvpgG1D9Vj0EPSiPp2i/9RrJ0DkyGoQLmocxDrlTg2KjbKqbnJqS9
+ aLAw==
+X-Gm-Message-State: AOJu0YyA/qf/17dXbEKdv5JtoMJYnS2SaXCZ5f8jddNxL7shziIR4xVr
+ LU2bGjn2zWrdBzHxrvmJx1IGIfonXnJoGTsmTljvQifEk7/UCf4nuJIwQpIOHk/OE0tf7hULtvb
+ li54HzRouTrb+AaveWhNteXbp1JADcwMv+T4qhlqJ3cJoTDRkpX9A3duczxWT6hUagXG5CHE9yt
+ QPplngl2T9++hUDuYG6B5Jy/zgiTdu/V3oq501
+X-Received: by 2002:ac2:43a8:0:b0:51f:488d:274b with SMTP id
+ 2adb3069b0e04-5220fc7c51emr5565816e87.9.1715511002525; 
+ Sun, 12 May 2024 03:50:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErL2eFXDAdNljIaOx0awTzYibrCMd0B1P0uKGzoAzIeHuYYVMM/f79pH+uf6GEwN3bFURi9A==
+X-Received: by 2002:ac2:43a8:0:b0:51f:488d:274b with SMTP id
+ 2adb3069b0e04-5220fc7c51emr5565806e87.9.1715511002042; 
+ Sun, 12 May 2024 03:50:02 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733bea65edsm4630802a12.7.2024.05.12.03.49.56
+ a640c23a62f3a-a5a1781cd85sm450869066b.15.2024.05.12.03.49.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:49:56 -0700 (PDT)
+ Sun, 12 May 2024 03:50:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/27] target/i386: move prefetch and multi-byte UD/NOP to new
- decoder
-Date: Sun, 12 May 2024 12:49:22 +0200
-Message-ID: <20240512104945.130198-5-pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 05/27] target/i386: fix feature dependency for WAITPKG
+Date: Sun, 12 May 2024 12:49:23 +0200
+Message-ID: <20240512104945.130198-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
@@ -102,174 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are trivial to add, and moving them to the new decoder fixes some
-corner cases: raising #UD instead of an instruction fetch page fault for
-the undefined opcodes, and incorrectly rejecting 0F 18 prefetches with
-register operands (which are treated as reserved NOPs).
+The VMX feature bit depends on general availability of WAITPKG,
+not the other way round.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: 33cc88261c3 ("target/i386: add support for VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE", 2023-08-28)
+Cc: qemu-stable@nongnu.org
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/decode-new.h     |  1 +
- target/i386/tcg/translate.c      | 30 ------------------------------
- target/i386/tcg/decode-new.c.inc | 24 +++++++++++++++++++++---
- target/i386/tcg/emit.c.inc       |  5 +++++
- 4 files changed, 27 insertions(+), 33 deletions(-)
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index 2ea06b44787..51ef0e621b9 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -50,6 +50,7 @@ typedef enum X86OpType {
-     X86_TYPE_EM, /* modrm byte selects an ALU memory operand */
-     X86_TYPE_WM, /* modrm byte selects an XMM/YMM memory operand */
-     X86_TYPE_I_unsigned, /* Immediate, zero-extended */
-+    X86_TYPE_nop, /* modrm operand decoded but not loaded into s->T{0,1} */
-     X86_TYPE_2op, /* 2-operand RMW instruction */
-     X86_TYPE_LoBits, /* encoded in bits 0-2 of the operand + REX.B */
-     X86_TYPE_0, /* Hard-coded GPRs (RAX..RDI) */
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 3da4fdf64cc..de87775016b 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -4019,25 +4019,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             set_cc_op(s, CC_OP_EFLAGS);
-         }
-         break;
--    case 0x118:
--        modrm = x86_ldub_code(env, s);
--        mod = (modrm >> 6) & 3;
--        op = (modrm >> 3) & 7;
--        switch(op) {
--        case 0: /* prefetchnta */
--        case 1: /* prefetchnt0 */
--        case 2: /* prefetchnt0 */
--        case 3: /* prefetchnt0 */
--            if (mod == 3)
--                goto illegal_op;
--            gen_nop_modrm(env, s, modrm);
--            /* nothing more to do */
--            break;
--        default: /* nop (multi byte) */
--            gen_nop_modrm(env, s, modrm);
--            break;
--        }
--        break;
-     case 0x11a:
-         modrm = x86_ldub_code(env, s);
-         if (s->flags & HF_MPX_EN_MASK) {
-@@ -4229,10 +4210,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         }
-         gen_nop_modrm(env, s, modrm);
-         break;
--    case 0x119: case 0x11c ... 0x11f: /* nop (multi byte) */
--        modrm = x86_ldub_code(env, s);
--        gen_nop_modrm(env, s, modrm);
--        break;
- 
-     case 0x120: /* mov reg, crN */
-     case 0x122: /* mov crN, reg */
-@@ -4506,13 +4483,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         }
-         break;
- 
--    case 0x10d: /* 3DNow! prefetch(w) */
--        modrm = x86_ldub_code(env, s);
--        mod = (modrm >> 6) & 3;
--        if (mod == 3)
--            goto illegal_op;
--        gen_nop_modrm(env, s, modrm);
--        break;
-     case 0x1aa: /* rsm */
-         gen_svm_check_intercept(s, SVM_EXIT_RSM);
-         if (!(s->flags & HF_SMM_MASK))
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 0e1811399f8..141ab2bc560 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -55,6 +55,10 @@
-  * mask could be applied (and the original sign-extended value would be
-  * optimized away by TCG) in the emitter function.
-  *
-+ * Finally, a "nop" operand type is used for multi-byte NOPs.  It accepts
-+ * any value of mod including 11b (unlike M) but it does not try to
-+ * interpret the operand (like M).
-+ *
-  * Vector operands
-  * ---------------
-  *
-@@ -1056,6 +1060,16 @@ static const X86OpEntry opcodes_0F[256] = {
-     [0xa0] = X86_OP_ENTRYr(PUSH, FS, w),
-     [0xa1] = X86_OP_ENTRYw(POP, FS, w),
- 
-+    [0x0b] = X86_OP_ENTRY0(UD),           /* UD2 */
-+    [0x0d] = X86_OP_ENTRY1(NOP,  M,v),    /* 3DNow! prefetch */
-+
-+    [0x18] = X86_OP_ENTRY1(NOP,  nop,v),  /* prefetch/reserved NOP */
-+    [0x19] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
-+    [0x1c] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
-+    [0x1d] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
-+    [0x1e] = X86_OP_ENTRY1(NOP,  nop,v),  /* reserved NOP */
-+    [0x1f] = X86_OP_ENTRY1(NOP,  nop,v),  /* NOP/reserved NOP */
-+
-     [0x28] = X86_OP_ENTRY3(MOVDQ,      V,x,  None,None, W,x, vex1 p_00_66), /* MOVAPS */
-     [0x29] = X86_OP_ENTRY3(MOVDQ,      W,x,  None,None, V,x, vex1 p_00_66), /* MOVAPS */
-     [0x2A] = X86_OP_GROUP0(0F2A),
-@@ -1135,6 +1149,8 @@ static const X86OpEntry opcodes_0F[256] = {
-     [0xb6] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, zextT0), /* MOVZX */
-     [0xb7] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, zextT0), /* MOVZX */
- 
-+    /* decoded as modrm, which is visible as a difference between page fault and #UD */
-+    [0xb9] = X86_OP_ENTRYr(UD,     nop,v),                        /* UD1 */
-     [0xbe] = X86_OP_ENTRY3(MOV,    G,v, E,b, None, None, sextT0), /* MOVSX */
-     [0xbf] = X86_OP_ENTRY3(MOV,    G,v, E,w, None, None, sextT0), /* MOVSX */
- 
-@@ -1206,7 +1222,7 @@ static const X86OpEntry opcodes_0F[256] = {
-     [0xfc] = X86_OP_ENTRY3(PADDB,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
-     [0xfd] = X86_OP_ENTRY3(PADDW,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
-     [0xfe] = X86_OP_ENTRY3(PADDD,  V,x, H,x, W,x,  vex4 mmx avx2_256 p_00_66),
--    /* 0xff = UD0 */
-+    [0xff] = X86_OP_ENTRYr(UD,     nop,v),                        /* UD0 */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 79372de8c5a..cfe7c92d6bc 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1551,8 +1551,8 @@ static FeatureDep feature_dependencies[] = {
+         .to = { FEAT_SVM,                   ~0ull },
+     },
+     {
+-        .from = { FEAT_VMX_SECONDARY_CTLS,  VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
+-        .to = { FEAT_7_0_ECX,               CPUID_7_0_ECX_WAITPKG },
++        .from = { FEAT_7_0_ECX,             CPUID_7_0_ECX_WAITPKG },
++        .to = { FEAT_VMX_SECONDARY_CTLS,    VMX_SECONDARY_EXEC_ENABLE_USER_WAIT_PAUSE },
+     },
  };
  
- static void do_decode_0F(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-@@ -1852,6 +1868,8 @@ static bool decode_op(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode,
-         if ((modrm >> 6) == 3) {
-             return false;
-         }
-+        /* fall through */
-+    case X86_TYPE_nop:  /* modrm operand decoded but not fetched */
-     get_modrm:
-         decode_modrm(s, env, decode, op, type);
-         break;
-@@ -2397,8 +2415,8 @@ static void disas_insn(DisasContext *s, CPUState *cpu)
-             switch (b) {
-             case 0x00 ... 0x03: /* mostly privileged instructions */
-             case 0x05 ... 0x09:
--            case 0x0d:          /* 3DNow! prefetch */
--            case 0x18 ... 0x23: /* prefetch, MPX, mov from/to CR and DR */
-+            case 0x1a ... 0x1b: /* MPX */
-+            case 0x20 ... 0x23: /* mov from/to CR and DR */
-             case 0x30 ... 0x35: /* more privileged instructions */
-             case 0xa2 ... 0xa5: /* CPUID, BT, SHLD */
-             case 0xaa ... 0xae: /* RSM, SHRD, grp15 */
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 58f255873ff..2dee33dd487 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -3517,6 +3517,11 @@ static void gen_SUB(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     prepare_update2_cc(decode, s, CC_OP_SUBB + ot);
- }
- 
-+static void gen_UD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-+{
-+    gen_illegal_opcode(s);
-+}
-+
- static void gen_VAESIMC(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     assert(!s->vex_l);
 -- 
 2.45.0
 
