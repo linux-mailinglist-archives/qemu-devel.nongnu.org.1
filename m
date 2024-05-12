@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BA48C394D
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1ABC8C396B
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 01:37:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Ibh-00016K-NX; Sun, 12 May 2024 19:27:53 -0400
+	id 1s6Ibl-0001BH-Cd; Sun, 12 May 2024 19:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Ibf-00014H-0b; Sun, 12 May 2024 19:27:51 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1s6Ibg-00015v-Qa; Sun, 12 May 2024 19:27:52 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1s6Ibd-0000I4-Ac; Sun, 12 May 2024 19:27:50 -0400
+ id 1s6Ibe-0000Ia-Uu; Sun, 12 May 2024 19:27:52 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id DD3C44E676F;
- Mon, 13 May 2024 01:27:47 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id ED1184E677A;
+ Mon, 13 May 2024 01:27:48 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id cByFVxBNWFdA; Mon, 13 May 2024 01:27:45 +0200 (CEST)
+ with ESMTP id 8AniOqQiQGyR; Mon, 13 May 2024 01:27:47 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id EEB864E677B; Mon, 13 May 2024 01:27:45 +0200 (CEST)
-Message-Id: <b10fd9ac35318a384623f0f258465265f01897e5.1715555763.git.balaton@eik.bme.hu>
+ id 036314E6775; Mon, 13 May 2024 01:27:47 +0200 (CEST)
+Message-Id: <a7c274c54b7a34a1214d6049bb189805c8eb0a28.1715555763.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1715555763.git.balaton@eik.bme.hu>
 References: <cover.1715555763.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v7 13/61] target/ppc/mmu_common.c: Inline and remove
- check_physical()
+Subject: [PATCH v7 14/61] target/ppc/mmu_common.c: Fix misindented
+ qemu_log_mask() calls
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,9 +38,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 13 May 2024 01:27:45 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Mon, 13 May 2024 01:27:47 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -61,59 +61,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function just does two assignments and and unnecessary check that
-is always true so inline it in the only caller left and remove it.
+Fix several qemu_log_mask() calls that are misindented.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 26 +++-----------------------
- 1 file changed, 3 insertions(+), 23 deletions(-)
+ target/ppc/mmu_common.c | 42 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index b13150ce23..2f412dd7c5 100644
+index 2f412dd7c5..124148b3da 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1145,28 +1145,6 @@ void dump_mmu(CPUPPCState *env)
+@@ -315,8 +315,8 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     int ret = -1;
+     bool ifetch = access_type == MMU_INST_FETCH;
+ 
+-     qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT v " TARGET_FMT_lx "\n", __func__,
+-             ifetch ? 'I' : 'D', virtual);
++    qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT v " TARGET_FMT_lx "\n", __func__,
++                  ifetch ? 'I' : 'D', virtual);
+     if (ifetch) {
+         BATlt = env->IBAT[1];
+         BATut = env->IBAT[0];
+@@ -330,9 +330,9 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+         BEPIu = *BATu & 0xF0000000;
+         BEPIl = *BATu & 0x0FFE0000;
+         bat_size_prot(env, &bl, &valid, &prot, BATu, BATl);
+-         qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx " BATu "
+-                       TARGET_FMT_lx " BATl " TARGET_FMT_lx "\n", __func__,
+-                       ifetch ? 'I' : 'D', i, virtual, *BATu, *BATl);
++        qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx " BATu "
++                      TARGET_FMT_lx " BATl " TARGET_FMT_lx "\n", __func__,
++                      ifetch ? 'I' : 'D', i, virtual, *BATu, *BATl);
+         if ((virtual & 0xF0000000) == BEPIu &&
+             ((virtual & 0x0FFE0000) & ~bl) == BEPIl) {
+             /* BAT matches */
+@@ -364,12 +364,11 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+                 BEPIu = *BATu & 0xF0000000;
+                 BEPIl = *BATu & 0x0FFE0000;
+                 bl = (*BATu & 0x00001FFC) << 15;
+-                 qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v "
+-                               TARGET_FMT_lx " BATu " TARGET_FMT_lx
+-                               " BATl " TARGET_FMT_lx "\n\t" TARGET_FMT_lx " "
+-                               TARGET_FMT_lx " " TARGET_FMT_lx "\n",
+-                               __func__, ifetch ? 'I' : 'D', i, virtual,
+-                               *BATu, *BATl, BEPIu, BEPIl, bl);
++                qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx
++                              " BATu " TARGET_FMT_lx " BATl " TARGET_FMT_lx
++                              "\n\t" TARGET_FMT_lx " " TARGET_FMT_lx " "
++                              TARGET_FMT_lx "\n", __func__, ifetch ? 'I' : 'D',
++                              i, virtual, *BATu, *BATl, BEPIu, BEPIl, bl);
+             }
+         }
      }
+@@ -415,9 +414,8 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     hash = vsid ^ pgidx;
+     ctx->ptem = (vsid << 7) | (pgidx >> 10);
+ 
+-    qemu_log_mask(CPU_LOG_MMU,
+-            "pte segment: key=%d ds %d nx %d vsid " TARGET_FMT_lx "\n",
+-            ctx->key, ds, ctx->nx, vsid);
++    qemu_log_mask(CPU_LOG_MMU, "pte segment: key=%d ds %d nx %d vsid "
++                  TARGET_FMT_lx "\n", ctx->key, ds, ctx->nx, vsid);
+     if (!ds) {
+         /* Check if instruction fetch is allowed, if needed */
+         if (type == ACCESS_CODE && ctx->nx) {
+@@ -583,9 +581,9 @@ static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+             return 0;
+         }
+     }
+-     qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
+-                   " => " HWADDR_FMT_plx
+-                   " %d %d\n", __func__, address, raddr, ctx->prot, ret);
++    qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
++                  " => " HWADDR_FMT_plx " %d %d\n",
++                  __func__, address, raddr, ctx->prot, ret);
+ 
+     return ret;
  }
- 
--static int check_physical(CPUPPCState *env, mmu_ctx_t *ctx, target_ulong eaddr,
--                          MMUAccessType access_type)
--{
--    ctx->raddr = eaddr;
--    ctx->prot = PAGE_READ | PAGE_EXEC;
--
--    switch (env->mmu_model) {
--    case POWERPC_MMU_SOFT_6xx:
--    case POWERPC_MMU_SOFT_4xx:
--    case POWERPC_MMU_REAL:
--    case POWERPC_MMU_BOOKE:
--        ctx->prot |= PAGE_WRITE;
--        break;
--
--    default:
--        /* Caller's checks mean we should never get here for other models */
--        g_assert_not_reached();
--    }
--
--    return 0;
--}
--
- int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-                                      target_ulong eaddr,
-                                      MMUAccessType access_type, int type,
-@@ -1186,7 +1164,9 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-     if (real_mode && (env->mmu_model == POWERPC_MMU_SOFT_6xx ||
-                       env->mmu_model == POWERPC_MMU_SOFT_4xx ||
-                       env->mmu_model == POWERPC_MMU_REAL)) {
--        return check_physical(env, ctx, eaddr, access_type);
-+        ctx->raddr = eaddr;
-+        ctx->prot = PAGE_RWX;
-+        return 0;
+@@ -704,11 +702,11 @@ int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
      }
  
-     switch (env->mmu_model) {
+     mask = ~(booke206_tlb_to_page_size(env, tlb) - 1);
+-     qemu_log_mask(CPU_LOG_MMU, "%s: TLB ADDR=0x" TARGET_FMT_lx
+-                   " PID=0x%x MAS1=0x%x MAS2=0x%" PRIx64 " mask=0x%"
+-                   HWADDR_PRIx " MAS7_3=0x%" PRIx64 " MAS8=0x%" PRIx32 "\n",
+-                   __func__, address, pid, tlb->mas1, tlb->mas2, mask,
+-                   tlb->mas7_3, tlb->mas8);
++    qemu_log_mask(CPU_LOG_MMU, "%s: TLB ADDR=0x" TARGET_FMT_lx
++                  " PID=0x%x MAS1=0x%x MAS2=0x%" PRIx64 " mask=0x%"
++                  HWADDR_PRIx " MAS7_3=0x%" PRIx64 " MAS8=0x%" PRIx32 "\n",
++                  __func__, address, pid, tlb->mas1, tlb->mas2, mask,
++                  tlb->mas7_3, tlb->mas8);
+ 
+     /* Check PID */
+     tlb_pid = (tlb->mas1 & MAS1_TID_MASK) >> MAS1_TID_SHIFT;
 -- 
 2.30.9
 
