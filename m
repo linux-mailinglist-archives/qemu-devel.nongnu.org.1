@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E888C361C
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AB2A8C3617
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 12:53:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s66sC-0002fC-4M; Sun, 12 May 2024 06:56:08 -0400
+	id 1s66mM-00039Y-LX; Sun, 12 May 2024 06:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66s9-0002cw-N2
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:56:05 -0400
+ id 1s66mK-00037p-Fx
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1s66s5-0007cq-VC
- for qemu-devel@nongnu.org; Sun, 12 May 2024 06:56:05 -0400
+ id 1s66mI-0005iu-UI
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 06:50:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715511361;
+ s=mimecast20190719; t=1715511002;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3iPjNiodnUMNgUQHLmagCZjQBGNrAf3agZR9eKXmAcQ=;
- b=aTdKr+FO5AsjpeOJ1wI0ZiBWh54vziZbe49vV6bcJLuW6SMlWZczogv0C4FwKedY2l7wAI
- WgkMSWfKJosQs/AD7L+50x/Y7OHWLq12qPzCWZToHKlzFArWLsuBJOLj4co2JKaPE86G4j
- ehDns3XgU6OZ4/U2FpFtIAdiMFFDOKM=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=S4SP0e59ZeDX5lkN+/W5vKvtoIw2mXuzTdWnwNY+pAw=;
+ b=LYy0UQffsRJneHfjiyzARjMqK2FKM6SHEx9LMtCg11px+T98sCTWqdvIv4dBWzs1LmeDRa
+ J++eCH8ZMr67AfSzMsFz4g4y9zS8yJCOYMvukksJjoM69oMpLJI8c8r+BgIfXnF0S7TI1P
+ TytN9QpR3ybUKp5t7pUDLhHs0vkToxw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-8-8OoC-kMZahcGpoPhhPEg-1; Sun, 12 May 2024 06:49:52 -0400
-X-MC-Unique: 8-8OoC-kMZahcGpoPhhPEg-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-572d0cb1ffbso2497103a12.0
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:49:51 -0700 (PDT)
+ us-mta-683-smMwzhx7PnqaBouQ-KdQHQ-1; Sun, 12 May 2024 06:49:55 -0400
+X-MC-Unique: smMwzhx7PnqaBouQ-KdQHQ-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-51f98fc5a80so3031426e87.1
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 03:49:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715510989; x=1716115789;
+ d=1e100.net; s=20230601; t=1715510993; x=1716115793;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3iPjNiodnUMNgUQHLmagCZjQBGNrAf3agZR9eKXmAcQ=;
- b=iIyVMteL/LT/XWuovlsHl5seuZ8FXuwmoyrXyPzSKhK9KBh0Zbp1eiPatH7+UReE7n
- y/Wj0mmLINwIzSJj0xSJbNSMLetEW+WmRbH2M/xtXHgQkySQHct7HLEUABpb3Ds6s/yV
- QFN9HxuCslltJx4TZTcTWNbo4XNP4LPXjrU2PXgKSxsiIWjVGaUgEcbz7xoyuwk/I8uL
- m5CSnfCu8toibom/8thXT1p4a85kXl7mdvDbBWM6CyqzhfuZens9aMTHe7cdFLMTt6FK
- /LZvqprhnzoX+sfQI4OujCWKDTiISMp9kTvhh4lO3QIzaozM8jAAyHXOkxUO4gijPjyY
- by/A==
-X-Gm-Message-State: AOJu0YzYerxpRgb070rSsOo2teO2grfOpLy3TOR4NC1YqTRbtMyqncCO
- LYnH5vxb9FFGyDBenHzY4k4dGpkxC+LmJdngxz1WUm30R00ZZ7eNJ5ZussFoO8rTLYFXafpy4zo
- A71Wzeg89DwXDTp3sBFLgZMEJz+/kIuEfHW9cuwlEr/0+SmzyOrSBItBQu1Fo0Fo11yJvTpKwy0
- QkC3flav3o9U7Rx9dysRtKxBx3kFooKDxLDklD
-X-Received: by 2002:a50:aada:0:b0:572:7b08:d497 with SMTP id
- 4fb4d7f45d1cf-5734d5c17acmr4802869a12.17.1715510989632; 
- Sun, 12 May 2024 03:49:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuwvDh/Sq5K1Qn/XdhGwvGLVLO1RAFIh4CD59qZpJbhJdt1VMNgxEyHKx3VluhBCZBsXUglg==
-X-Received: by 2002:a50:aada:0:b0:572:7b08:d497 with SMTP id
- 4fb4d7f45d1cf-5734d5c17acmr4802858a12.17.1715510989146; 
- Sun, 12 May 2024 03:49:49 -0700 (PDT)
+ bh=S4SP0e59ZeDX5lkN+/W5vKvtoIw2mXuzTdWnwNY+pAw=;
+ b=OmjNdiGPm9aRr5ju+I7VlWtk12bioUhsuG/GJ7zwlLz62TadtbAQzzuDRKPLuFSHFu
+ BUmdEkSZpNLq2xy8wUTf+XDzSqz/XmHCWypttAmj69I6rgqhhvUfPxQhJNoxu2st4wdQ
+ p5A8cRjlZgArC2DrNEKXjPP2w6nwLvla9VkTakj9ydrxCYrn2AAc4TM4ZutFiWK2RXUX
+ IE1i1stI7a4wihWs5xDk5s5FiPSc6H19HMFcRTJJ1cJ04kldNrB6yzKyrxqUQTImc/Hk
+ R+hQyszt0unWdT9QxZhGq0fWRGECt0zUK34vwl5h74SGo21UgS4PtJ2Dd0Ve4uU1KEv4
+ lfCw==
+X-Gm-Message-State: AOJu0YwQkxt6g/jZsk3e9ukFtmXj7Vy45MdHwxTaSHnJe+dDt0bmDM2V
+ cp767jbxW+Mx3ubXlqQ14pIJwAjB8SXDHp5KIGnNG9ppX2CP1zehbiCn+dceyIsRrDsGKGQgz+h
+ 5TpjZgvAScsjjMhHtnyAJcjTWhG+yzWjshoTBkxTfSuSx+UY84HqXOt7mCxfuGkndzaWcVt2FA+
+ PTULf3fYaWrH4eC0+fQVV33s+XEDXhCAgapsJJ
+X-Received: by 2002:a05:6512:2386:b0:51b:bb0f:b43f with SMTP id
+ 2adb3069b0e04-5221057b55dmr6309704e87.43.1715510993014; 
+ Sun, 12 May 2024 03:49:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEo2iCmaI5g55zTfvBegiMZRV4L9hqyc4C1m5ZrO2BJsxuCZ7j+bY7Q7tJtp3w7adS8SVQgMg==
+X-Received: by 2002:a05:6512:2386:b0:51b:bb0f:b43f with SMTP id
+ 2adb3069b0e04-5221057b55dmr6309688e87.43.1715510992387; 
+ Sun, 12 May 2024 03:49:52 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733bebb57asm4533919a12.26.2024.05.12.03.49.48
+ 4fb4d7f45d1cf-574c122827bsm764151a12.78.2024.05.12.03.49.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 03:49:48 -0700 (PDT)
+ Sun, 12 May 2024 03:49:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/27] target/i386: remove PCOMMIT from TCG, deprecate property
-Date: Sun, 12 May 2024 12:49:19 +0200
-Message-ID: <20240512104945.130198-2-pbonzini@redhat.com>
+Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/27] target/i386: fix operand size for DATA16 REX.W POPCNT
+Date: Sun, 12 May 2024 12:49:20 +0200
+Message-ID: <20240512104945.130198-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512104945.130198-1-pbonzini@redhat.com>
 References: <20240512104945.130198-1-pbonzini@redhat.com>
@@ -78,13 +79,13 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.587,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,90 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The PCOMMIT instruction was never included in any physical processor.
-TCG implements it as a no-op instruction, but its utility is debatable
-to say the least.  Drop it from the decoder since it is only available
-with "-cpu max", which does not guarantee migration compatibility
-across versions, and deprecate the property just in case someone is
-using it as "pcommit=off".
+According to the manual, 32-bit vs 64-bit is governed by REX.W
+and REX ignores the 0x66 prefix.  This can be confirmed with this
+program:
 
+    #include <stdio.h>
+    int main()
+    {
+       int x = 0x12340000;
+       int y;
+       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+    }
+
+which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
+on QEMU.
+
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/about/deprecated.rst   |  8 ++++++++
- target/i386/cpu.h           |  2 --
- target/i386/cpu.c           |  2 +-
- target/i386/tcg/translate.c | 12 +-----------
- 4 files changed, 10 insertions(+), 14 deletions(-)
+ target/i386/tcg/translate.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 5c3ca47801f..40585ca7d55 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -432,6 +432,14 @@ Backend ``memory`` (since 9.0)
- CPU device properties
- '''''''''''''''''''''
- 
-+``pcommit`` on x86 (since 9.1)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The PCOMMIT instruction was never included in any physical processor.
-+It was implemented as a no-op instruction in TCG up to QEMU 9.0, but
-+only with ``-cpu max`` (which does not guarantee migration compatibility
-+across versions).
-+
- ``pmu-num=n`` on RISC-V CPUs (since 8.2)
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 1e0d2c915f5..ccccb62fc35 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -816,8 +816,6 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_7_0_EBX_SMAP              (1U << 20)
- /* AVX-512 Integer Fused Multiply Add */
- #define CPUID_7_0_EBX_AVX512IFMA        (1U << 21)
--/* Persistent Commit */
--#define CPUID_7_0_EBX_PCOMMIT           (1U << 22)
- /* Flush a Cache Line Optimized */
- #define CPUID_7_0_EBX_CLFLUSHOPT        (1U << 23)
- /* Cache Line Write Back */
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 1058b6803fd..79372de8c5a 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -713,7 +713,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
- #endif
- #define TCG_7_0_EBX_FEATURES (CPUID_7_0_EBX_SMEP | CPUID_7_0_EBX_SMAP | \
-           CPUID_7_0_EBX_BMI1 | CPUID_7_0_EBX_BMI2 | CPUID_7_0_EBX_ADX | \
--          CPUID_7_0_EBX_PCOMMIT | CPUID_7_0_EBX_CLFLUSHOPT |            \
-+          CPUID_7_0_EBX_CLFLUSHOPT |            \
-           CPUID_7_0_EBX_CLWB | CPUID_7_0_EBX_MPX | CPUID_7_0_EBX_FSGSBASE | \
-           CPUID_7_0_EBX_ERMS | CPUID_7_0_EBX_AVX2 | CPUID_7_0_EBX_RDSEED | \
-           CPUID_7_0_EBX_SHA_NI | CPUID_7_0_EBX_KERNEL_FEATURES)
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 3842b294842..7d9f6b5c55b 100644
+index 7d9f6b5c55b..5366dc32dd3 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -4487,17 +4487,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             }
-             goto unknown_op;
+@@ -411,16 +411,6 @@ static inline MemOp mo_stacksize(DisasContext *s)
+     return CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
+ }
  
--        case 0xf8: /* sfence / pcommit */
--            if (prefixes & PREFIX_DATA) {
--                /* pcommit */
--                if (!(s->cpuid_7_0_ebx_features & CPUID_7_0_EBX_PCOMMIT)
--                    || (prefixes & PREFIX_LOCK)) {
--                    goto illegal_op;
--                }
--                break;
--            }
--            /* fallthru */
--        case 0xf9 ... 0xff: /* sfence */
-+        case 0xf8 ... 0xff: /* sfence */
-             if (!(s->cpuid_features & CPUID_SSE)
-                 || (prefixes & PREFIX_LOCK)) {
-                 goto illegal_op;
+-/* Select only size 64 else 32.  Used for SSE operand sizes.  */
+-static inline MemOp mo_64_32(MemOp ot)
+-{
+-#ifdef TARGET_X86_64
+-    return ot == MO_64 ? MO_64 : MO_32;
+-#else
+-    return MO_32;
+-#endif
+-}
+-
+ /* Select size 8 if lsb of B is clear, else OT.  Used for decoding
+    byte vs word opcodes.  */
+ static inline MemOp mo_b_d(int b, MemOp ot)
+@@ -4545,12 +4535,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         modrm = x86_ldub_code(env, s);
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+ 
+-        if (s->prefix & PREFIX_DATA) {
+-            ot = MO_16;
+-        } else {
+-            ot = mo_64_32(dflag);
+-        }
+-
++        ot = dflag;
+         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
+         gen_extu(ot, s->T0);
+         tcg_gen_mov_tl(cpu_cc_src, s->T0);
 -- 
 2.45.0
 
