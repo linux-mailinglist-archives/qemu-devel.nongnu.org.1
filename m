@@ -2,79 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B428C35C8
-	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 11:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E591A8C35E0
+	for <lists+qemu-devel@lfdr.de>; Sun, 12 May 2024 11:40:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6549-0004cp-Fm; Sun, 12 May 2024 05:00:21 -0400
+	id 1s65fv-0004xC-3t; Sun, 12 May 2024 05:39:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1s6546-0004cF-Sh; Sun, 12 May 2024 05:00:18 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rayhan.faizel@gmail.com>)
- id 1s6545-0000pz-AW; Sun, 12 May 2024 05:00:18 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a5a5cce2ce6so69198966b.3; 
- Sun, 12 May 2024 02:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715504414; x=1716109214; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=s2HUUSV/R8kHZKSr121aPfLsWX8/+1NKAhwK3cedQig=;
- b=CnSae8VyhVRHxPbnvqPS6aYSGk5WL8H9EQMiX7YhegCcAvk7crL/JmfjLxmWXUsuQW
- zEp+i5/N8Mq4CsSO0dKt9oGIOq5SE7xgl1HaKYixaDqIfobMMjo0y9HZ1pXg6t50MD3x
- ryFB3Dx4lKjYyahOAYE7nfqY/5SrzntY5ibfCxqHIfry2OZ9R1seTKBCDFjvsR0V6XoU
- 0cKE1gu3paasdceMA4Y15td+kB+4LLi1Wua8uv81OdZcd58Qhrj5lXOmu/zf35mxZ63H
- 4FBZMqIZYkuuxUmdoYZZ2+uyeteqk7J0YMGzmscXvYP50eUPTwth4RIE2liNtFmQAx0A
- DDfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715504414; x=1716109214;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s2HUUSV/R8kHZKSr121aPfLsWX8/+1NKAhwK3cedQig=;
- b=ZQIn9J80SgWPwSzv8NSOY0pqeHGKdiz8ZPh83Zce/6PZtTAC3VkIRxluw8el2jOTr2
- TUX73tBiCwmCPqDE6LfSugKKQjWzqb1Eply820B8Gjy+WKu6XVZJKY8KkHxrSULuADUg
- gP0qzfY53Mhi6y9I0fVJSGX8GtKrqcZ3nQ+YdTldIXswGq1BnS7S6RZveFufQH5N1unT
- 44DjWmldNirn/54MpWFWVcR8qSDIL43yUSlHSCEIwpwE6EQyc9TKOS4GcunQnYUX63xP
- LAYFXv0NjLbNp55WravYH2R6EM3YkEqTu56GPu+E4MAEDb34FfJjNfUPxvgM3QYz49uB
- apDA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWuPx01AfotSquAmMuIJXr8wnARAD6/2SJFI/L09AeA7kEXYUEOh0z/zIiIaYpo0hsDPhX8BSa0t7NWT0gDUOFqvsO6
-X-Gm-Message-State: AOJu0YwPEenOnNTt/IeUlqmPFi5bETdFX4uFMq0o9cWQ90ekPqRlVdx7
- SsVflGG8Q8L30vpV8CX71Qc74YJ1u4Gx03B7zb9CIFsNzwfmsIJc+9spGw==
-X-Google-Smtp-Source: AGHT+IF0TbT2N6rFBEBx9taO0of0xFoGS8TLGmiKYBj3TU6h0qZ8S8KIq2QNQQlclcsJ8lwvb4BdBQ==
-X-Received: by 2002:a17:906:17c5:b0:a59:c9ad:bd26 with SMTP id
- a640c23a62f3a-a5a2d54c601mr431144566b.12.1715504413771; 
- Sun, 12 May 2024 02:00:13 -0700 (PDT)
-Received: from localhost.localdomain ([212.70.119.223])
- by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781cf9csm432214366b.7.2024.05.12.02.00.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 02:00:13 -0700 (PDT)
-From: Rayhan Faizel <rayhan.faizel@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Rayhan Faizel <rayhan.faizel@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org (open list:Raspberry Pi)
-Subject: [PATCH] docs/system: Remove ADC from raspi documentation
-Date: Sun, 12 May 2024 14:27:16 +0530
-Message-Id: <20240512085716.222326-1-rayhan.faizel@gmail.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1s65fs-0004wz-Kv; Sun, 12 May 2024 05:39:20 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
+ id 1s65fq-0000LS-Ej; Sun, 12 May 2024 05:39:20 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44C8vo6Y000932; Sun, 12 May 2024 09:39:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=cVJ7yvPe4l6dKdQJOqlpPAwMabyPMDRDnsoYy4wARYA=;
+ b=k7Kb6Woplzgpt83tAfqkA6hWFdv1T5Nh/PY9BLBjxamMkxmmuAWAzOu0+QUE+B9/7AH3
+ YLJW/VFrHSRsKwQRbHV/SuNL7qARt58vY4Z83oa1N/cl074fLkgRvecbuzjUiydYyEeG
+ +Kg+F6n8qsbeMsfgVhObsrZcfvL/9whV1slrbLCo3TnxiLIhAqDWuW9bFqo8joO5Iz1H
+ 9EYqDxkQjmmCikNwn3Eh3VtZoQHwV7a2U7HjW8glJEMhWssaUw0YmBDZUA0Blek3r/vL
+ LTNzs/PX3N5xhfFFCRPMXAQv4VrhLZVdC2rqr6ExZPNduesW/YN3jQckGYtIZOQr/epe Pw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y2tq301ew-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 12 May 2024 09:39:11 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44C9dBre024690;
+ Sun, 12 May 2024 09:39:11 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y2tq301et-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 12 May 2024 09:39:11 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44C5XTCZ002339; Sun, 12 May 2024 09:39:09 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2m0nsq51-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 12 May 2024 09:39:09 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44C9d5jM20513276
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 12 May 2024 09:39:07 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A81EF2004F;
+ Sun, 12 May 2024 09:39:05 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60DB32004D;
+ Sun, 12 May 2024 09:39:03 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.171.34.11])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Sun, 12 May 2024 09:39:03 +0000 (GMT)
+From: Chinmay Rath <rathc@linux.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ richard.henderson@linaro.org, harshpb@linux.ibm.com,
+ lucas.araujo@eldorado.org.br
+Subject: target/ppc: Move VMX int add/sub saturate insns to decodetree. 
+Date: Sun, 12 May 2024 15:08:46 +0530
+Message-Id: <20240512093847.18099-1-rathc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: H1UKoqi_x04yuZICy7iGchFGkipBnM7h
+X-Proofpoint-ORIG-GUID: _inGbfGKv8sypvh5TkwVIAzXafne9AVm
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=rayhan.faizel@gmail.com; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-12_06,2024-05-10_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ clxscore=1011 spamscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=770 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405120072
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,27 +110,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-None of the RPi boards have ADC on-board. In real life, an external ADC chip
-is required to operate on analog signals.
+Moving the following instructions to decodetree :
+  v{add,sub}{u,s}{b,h,w}s   : VX-form
 
-Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
----
- docs/system/arm/raspi.rst | 1 -
- 1 file changed, 1 deletion(-)
+However, the following instructions were paired using the
+GEN_VXFORM_DUAL macros in the vmx-impl and vmx-ops files :
 
-diff --git a/docs/system/arm/raspi.rst b/docs/system/arm/raspi.rst
-index fbec1da6a1..44eec3f1c3 100644
---- a/docs/system/arm/raspi.rst
-+++ b/docs/system/arm/raspi.rst
-@@ -40,7 +40,6 @@ Implemented devices
- Missing devices
- ---------------
- 
-- * Analog to Digital Converter (ADC)
-  * Pulse Width Modulation (PWM)
-  * PCIE Root Port (raspi4b)
-  * GENET Ethernet Controller (raspi4b)
+  vaddubs and vmul10uq
+  vadduhs and vmul10euq
+  vaddshs and bcdcpsgn
+  vsububs and bcdadd
+  vsubuhs and bcdsub
+  vsubsbs and bcdtrunc
+  vsubsws and xpnd04_2
+
+Out of those 7 above mentioned pairs, I have moved the first one of
+each pair and added respective entry of the 2nd one in the vmx-ops file.
+However, I lack some clarity on those flag checks added for those insns
+in the ops file. It would be great if someone sheds some light at this.
+
+The issue; let's take the following example :
+
+1. vsubsbs and bcdtrunc :
+
+In this pair, bcdtrunc has the insn flag check PPC2_ISA300 in the
+vmx-impl file, within the GEN_VXFORM_DUAL macro, which does this flag
+check.
+However it also has this flag check in the vmx-ops file.
+Hence I have retained the same in the new entry in the vmx-ops file.
+This is consistent with the behaviour in done in the following commit :
+https://github.com/qemu/qemu/commit/b132be53a4ba6a0a40d5643d791822f958a36e53
+So even though the flag check is removed from the vmx-impl file, it is
+retained in the vmx-ops file. All good here.
+
+2. vadduhs and vmul10euq :
+
+In this pair, vmul10euq has the insn flag check PPC2_ISA300 in the
+vmx-impl file, check done within the GEN_VXFORM_DUAL macro. 
+However the same flag was NOT originally present in the
+vmx-ops file, so I have NOT included in its new entry in the vmx-ops
+file. I have done this, following the behaviour done in the following
+commit : 
+https://github.com/qemu/qemu/commit/c85929b2ddf6bbad737635c9b85213007ec043af
+So this flag check for vmul10euq is excluded now. Is this not a problem ?
+I feel that this leads to the flag check being skipped now, however this
+behaviour was followed in the above mentioned commit.
+
+Requesting anyone to please let me know why this behaviour was followed and
+how the flag checks are retained here, or if they are really skipped,
+why is it okay to skip them here ? 
+
+Regards,
+Chinmay
+
+Chinmay Rath (1):
+  target/ppc: Move VMX integer add/sub saturate insns to decodetree.
+
+ target/ppc/helper.h                 |  24 +--
+ target/ppc/insn32.decode            |  16 ++
+ target/ppc/int_helper.c             |  22 +--
+ target/ppc/translate/vmx-impl.c.inc | 242 ++++++++++++++++++++--------
+ target/ppc/translate/vmx-ops.c.inc  |  19 +--
+ 5 files changed, 224 insertions(+), 99 deletions(-)
+
 -- 
-2.34.1
+2.39.3
 
 
