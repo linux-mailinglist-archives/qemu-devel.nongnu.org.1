@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A8F8C3C94
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A938C3C5A
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QRD-0006Ri-VE; Mon, 13 May 2024 03:49:35 -0400
+	id 1s6QPd-0002wq-0K; Mon, 13 May 2024 03:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPR-0002uU-Iw
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:45 -0400
+ id 1s6QPJ-0002qj-Rm
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:37 -0400
 Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPH-0001Nf-Ku
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:45 -0400
+ id 1s6QPI-0001No-BU
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:37 -0400
 Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-420180b59b7so2956305e9.0
+ 5b1f17b1804b1-4200ee78f34so13124005e9.3
  for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586454; x=1716191254; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715586455; x=1716191255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hthpAUDZCE7MsS8KK7tEgLctoSvSemW+A0a2D7pgGUw=;
- b=OR3wn0BRMhmpVe8Uajcned/Y2FWjYVOPCwkhZf+XSdzJkNz4gfCM9gQo8mOIlwWWMO
- KXjo5Gbd2QRo11btCU8e+6qotrc8n2Qdjhk6r0/MNJ86yKmQaYAGTXiUkT5XSJ7UHRUe
- wsNH0AtEk+mXackoax8Pdp2KOikRv7q55b2aFeBBJo65TC9U1PzEClgihW+cDbEBb62F
- HCRmQwtlJuX455xIm/IQWZd1XJRKbKsVI0fFeKDZ5KNkSsMmP9ZZchdCYD5thfbiLKKh
- XPMSU/wDUOe22p0/zAlNgPfNjGwP5q0uXaCMC0i5OyxRSmpSnj1fC88Zh5NQglYJDTlF
- Scsw==
+ bh=OH/TFNVOaT2AXYWTY9lqS1dHX1CKyczy6W2/79bycMU=;
+ b=GFfBhUOYkHTy6oWD3E4FDZY4oWUHb6ixsCIC1Z3nhSVYMjctYej3f+q3P0ByA0m6/B
+ n+3cplE6eEY/IfcKh/gdghQk8JNCXUvEsbzCh2Zj5Qr0n12mTufbTrGUNyNrvLHSLhFB
+ kXCEdxmo3UB9Fz6nbdljDVq5vV7hi96SVg1pvWp58k8r3lrYELCjKGpIM7322F4FfKSp
+ 9shAi2EhRjtZuptQdIsNVcDkxfiBgb7j5LjAwKbWYOChUzpNCNP2rMAPStsixAKrzuZf
+ dNtGdZbHmtC1eOkcAYZd5EqYykpbX0FMg4x890mSlI6Fb7zOCPM6mg9Hemtd/XsP08mZ
+ cXzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586454; x=1716191254;
+ d=1e100.net; s=20230601; t=1715586455; x=1716191255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hthpAUDZCE7MsS8KK7tEgLctoSvSemW+A0a2D7pgGUw=;
- b=d7ct5tc/Ljk6ns8IE4mlO+MwMHnCRMmI8LBNXDEsV1V1c7F++spLJ4Wgy6EdAmcMNw
- Qv1urtMxekzls9K8sJDRJ/yxh5EhMwAoVItcitlFntzk9ydKN7C/L8WUP1o8jiYd9+TB
- XBF//3BqUHn0AMDdTAkEb3+3BbiU96/FOa+KJsjd4PL0lmJrBHE7qgdaI+fFmtAnNeAv
- hXOU9M+JC3SHthu4BLcmP+gCKKFx5AXhvvmH7f1TiA8r7jlMFK6jzvC9APicyn8SahxW
- Smf8pwwwchhbJ7oL8AJkY22lhkbLhLUyhwoz13Fgl6meTOFjvZe9UVUHk/SIvLRwx1sZ
- KDwQ==
-X-Gm-Message-State: AOJu0YzOirNms7ZsqMN6e2gWSb/R3PokDMG9rammA63AajGLCnkL3zVR
- ux7DhKHKtPbpRz+clrW6WGT3RPEMvTQgcqKybjsFO8ObfxdciFgcZpwR3eVS9WDaxZeanWCc1BV
- LB7Q=
-X-Google-Smtp-Source: AGHT+IGEGOuoK8fKBF7O+5EUlYt/cEpwYk3x3JBil3MjSZqr9mfk5PcG6nIzjzYkTBzqgFxMJ9JRGg==
-X-Received: by 2002:a05:600c:450e:b0:41e:c9ad:c729 with SMTP id
- 5b1f17b1804b1-41feac59d29mr66574075e9.28.1715586454192; 
+ bh=OH/TFNVOaT2AXYWTY9lqS1dHX1CKyczy6W2/79bycMU=;
+ b=J4Vu/865qbCmRcn8Mn9XJzUBER7TufVqZAdAbZ/jQg/FAL3+G2w+aUaUYoG3kIwWpa
+ vQGCsKb3e98bBNK6idzQ0XL9c8BE/RL8jh9FHCrIj3VQPaluoxA5pLJFVKtr5vNXv3XR
+ YcNxScwySVJyBD1kNJ0XAnX3+VxcYLwlpDcSW31rzkjjr3g1QDVUuQJBXaZGFD0Si/3e
+ o2OKY1moK8N/Lp7cTHfclhtgVZDjec3Afq/26YKualBepvIgCJmmSYQOee++IDAR139G
+ zbNsCMU2qTEjEP39yxfaKuQImd7dH/iDxg8p5d6mYaLg9Q9WD4zyQ8gfiLEYX6jnv3+z
+ jjKw==
+X-Gm-Message-State: AOJu0Yxl/nSAuN82wHqqUeZ63MPf6IBgazCwqAHZ98Xw0z39c6RgF75O
+ ALkk0+kp8wfUblrUwV6+0wu80Fr8aeGntZ/tj1kNBZhVz8tM/UhTBofcr/dfrDLhhZ6yir25jyJ
+ /wrI=
+X-Google-Smtp-Source: AGHT+IFaZt1KSKGcjUSfVwFMqTHXF6S2Gan9SuoMvYJj359V6nVeuYC/rdQ+XscfjrkGb3y4psJtew==
+X-Received: by 2002:a05:600c:1f93:b0:41e:dc7f:e2c with SMTP id
+ 5b1f17b1804b1-41feac59cddmr61732345e9.30.1715586454870; 
  Mon, 13 May 2024 00:47:34 -0700 (PDT)
 Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.33
+ 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 May 2024 00:47:33 -0700 (PDT)
+ Mon, 13 May 2024 00:47:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 21/45] target/hppa: Use TCG_COND_TST* in do_log_cond
-Date: Mon, 13 May 2024 09:46:53 +0200
-Message-Id: <20240513074717.130949-22-richard.henderson@linaro.org>
+Subject: [PATCH v2 22/45] target/hppa: Use TCG_COND_TST* in do_unit_zero_cond
+Date: Mon, 13 May 2024 09:46:54 +0200
+Message-Id: <20240513074717.130949-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
@@ -92,112 +92,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can directly test bits of a 32-bit comparison without
-zero or sign-extending an intermediate result.
-We can directly test bit 0 for odd/even.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 78 ++++++++++++++---------------------------
- 1 file changed, 27 insertions(+), 51 deletions(-)
+ target/hppa/translate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 421b0df9d4..e4e8034c5f 100644
+index e4e8034c5f..50cc6decd8 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -914,65 +914,41 @@ static DisasCond do_log_cond(DisasContext *ctx, unsigned cf, bool d,
-                              TCGv_i64 res)
- {
-     TCGCond tc;
--    bool ext_uns;
-+    uint64_t imm;
+@@ -1005,9 +1005,8 @@ static DisasCond do_unit_zero_cond(unsigned cf, bool d, TCGv_i64 res)
+     tmp = tcg_temp_new_i64();
+     tcg_gen_subi_i64(tmp, res, ones);
+     tcg_gen_andc_i64(tmp, tmp, res);
+-    tcg_gen_andi_i64(tmp, tmp, sgns);
  
--    switch (cf) {
--    case 0:  /* never */
--    case 9:  /* undef, C */
--    case 11: /* undef, C & !Z */
--    case 12: /* undef, V */
--        return cond_make_f();
--
--    case 1:  /* true */
--    case 8:  /* undef, !C */
--    case 10: /* undef, !C | Z */
--    case 13: /* undef, !V */
--        return cond_make_t();
--
--    case 2:  /* == */
--        tc = TCG_COND_EQ;
--        ext_uns = true;
-+    switch (cf >> 1) {
-+    case 0:  /* never / always */
-+    case 4:  /* undef, C */
-+    case 5:  /* undef, C & !Z */
-+    case 6:  /* undef, V */
-+        return cf & 1 ? cond_make_t() : cond_make_f();
-+    case 1:  /* == / <> */
-+        tc = d ? TCG_COND_EQ : TCG_COND_TSTEQ;
-+        imm = d ? 0 : UINT32_MAX;
-         break;
--    case 3:  /* <> */
--        tc = TCG_COND_NE;
--        ext_uns = true;
-+    case 2:  /* < / >= */
-+        tc = d ? TCG_COND_LT : TCG_COND_TSTNE;
-+        imm = d ? 0 : 1ull << 31;
-         break;
--    case 4:  /* < */
--        tc = TCG_COND_LT;
--        ext_uns = false;
-+    case 3:  /* <= / > */
-+        tc = cf & 1 ? TCG_COND_GT : TCG_COND_LE;
-+        if (!d) {
-+            TCGv_i64 tmp = tcg_temp_new_i64();
-+            tcg_gen_ext32s_i64(tmp, res);
-+            return cond_make_ti(tc, tmp, 0);
-+        }
-+        return cond_make_vi(tc, res, 0);
-+    case 7: /* OD / EV */
-+        tc = TCG_COND_TSTNE;
-+        imm = 1;
-         break;
--    case 5:  /* >= */
--        tc = TCG_COND_GE;
--        ext_uns = false;
--        break;
--    case 6:  /* <= */
--        tc = TCG_COND_LE;
--        ext_uns = false;
--        break;
--    case 7:  /* > */
--        tc = TCG_COND_GT;
--        ext_uns = false;
--        break;
--
--    case 14: /* OD */
--    case 15: /* EV */
--        return do_cond(ctx, cf, d, res, NULL, NULL);
--
-     default:
-         g_assert_not_reached();
-     }
--
--    if (!d) {
--        TCGv_i64 tmp = tcg_temp_new_i64();
--
--        if (ext_uns) {
--            tcg_gen_ext32u_i64(tmp, res);
--        } else {
--            tcg_gen_ext32s_i64(tmp, res);
--        }
--        return cond_make_ti(tc, tmp, 0);
-+    if (cf & 1) {
-+        tc = tcg_invert_cond(tc);
-     }
--    return cond_make_vi(tc, res, 0);
-+    return cond_make_vi(tc, res, imm);
+-    return cond_make_ti(cf & 1 ? TCG_COND_EQ : TCG_COND_NE, tmp, 0);
++    return cond_make_ti(cf & 1 ? TCG_COND_TSTEQ : TCG_COND_TSTNE, tmp, sgns);
  }
  
- /* Similar, but for shift/extract/deposit conditions.  */
+ static TCGv_i64 get_carry(DisasContext *ctx, bool d,
 -- 
 2.34.1
 
