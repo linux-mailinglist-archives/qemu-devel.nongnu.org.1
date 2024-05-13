@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243C48C3CAD
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBEE8C3D09
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 10:19:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QSd-0005Oh-RL; Mon, 13 May 2024 03:51:04 -0400
+	id 1s6Qsh-00010Q-CP; Mon, 13 May 2024 04:17:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QSX-0005FC-Tt
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:57 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1s6Qsa-0000zT-Uj
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 04:17:54 -0400
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QSU-0001zD-W3
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:57 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-34e28e32ea4so2520456f8f.2
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:50:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1s6QsN-0007oa-Bl
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 04:17:48 -0400
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-43de92e228aso24323661cf.1
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 01:17:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586653; x=1716191453; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1715588256; x=1716193056; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
- b=wqDvvEL66jQSH8KvL0FPFNSZOR4vRc16C+dKHkpq/5/arxF54cNdxDRwlh2sBrfjWU
- oUuq5eKmdVfxO7NSc+vICJiy5Zq3K7L9m/vXZAKu55q7TwR96nzpuRNv4q3WNfVX3OMX
- 0xHV4JrgvVjBTT7QU4C3mNsQIA2vSIdNS+3rj54terTxzYbdRPrqZISZ1aw1PfdjeG/K
- r1cE99I4ZXvGYR38RsaEaaMbcyz/ebCuq0rmATR9BLwuqfiWC1Rmi6TgZ7EczesQuh8M
- nWmIvxzkQARztLaD9R8QqW74fZ3q9ndKFfKU6hXsXZK0TWiRmklgCKQznGgutWrbI5XB
- i++A==
+ bh=ZfmUkZlvcPWWCOF3Qillim9EQLuG1zAlNWBzIIzY+J0=;
+ b=UvOZ+Y4N8Ro7FEhF2LnPcvCMz9vmgxL0MglCzJ6ItErOxoJODgegH/Ih7uHW+1GPov
+ 8TjLojDF5fqR6Oq74RFKvEPX9oSueLz2+/1noypcVKTdoZdMMdb/Wqe+FpOwWKTkbUZb
+ WETQ3xGtpEORO6hUDvCKjTswquZehlS/SvIuu8TyPZACJOV+Lwe9H4JU7C5244WWDgk+
+ iGxvN3BIsVFf7Gt6pCzB2eKiOacNEW2k58CprPgfWHDOnWemZKiDCM10Fcb2Ardt4GZU
+ H2frd1lCtim4v8MkhgxUCp8pTRB89MgPZrrNS4hmYCvJp7U1rHgCEy/NzceBc41WTAFt
+ Pm4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586653; x=1716191453;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1715588256; x=1716193056;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
- b=PcWsWzJFcL1l5LdRWYmpNPEYC4yXZB0SvNBEYLnq2w29FT13Jjv2eU/R8k+baU45TZ
- SVJS3dUKC8bazCPZsx8DJUUPywoQdgZKS5pzV8Vy1xt3867+M9hJJA4ZiPXnWK6A4R4b
- ifJdIh0OihwByPROXI89tL5M24kChWtaJWLjHH5f8DcjFiJoXwaR1zNA+sp59J2bdn2/
- K723IDg/29ny2u2mSoQX3YRqE8IJoE8fSta2gk9mzIQ6VGUyn77PbYdk8HyLGiwy/2Bm
- vAblgiQMf6NpXHqvw2ny7pjeDiFqZk30Q3IeXFxL8eyTyo+lZ6JULhM8vC53e9ldqDJ6
- JGwg==
-X-Gm-Message-State: AOJu0Yw/Nh7P1vblfXgaldauBqAI32p/VQAK2Udhoh2qIiAzA9nLKLOg
- 8TX3EKRZCXbqgQxlWLCL0hGRfUWc1TmCPiNhOGu8AKKt465KW1CCm6dXYShnKyIgRfH+Ud6ANyQ
- O744=
-X-Google-Smtp-Source: AGHT+IFXCNQkKT6F9xFmWb1yRl1jHxWjLWM7fQQV+7dDAx1w6JBgoZ+GYV7fdAVXMW7KAklDxJCWcQ==
-X-Received: by 2002:adf:e649:0:b0:34b:81b3:2c62 with SMTP id
- ffacd0b85a97d-3504a73e850mr5604558f8f.35.1715586653713; 
- Mon, 13 May 2024 00:50:53 -0700 (PDT)
-Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502b896a50sm10374262f8f.30.2024.05.13.00.50.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 May 2024 00:50:53 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH v2 45/45] target/hppa: Log cpu state on return-from-interrupt
-Date: Mon, 13 May 2024 09:47:17 +0200
-Message-Id: <20240513074717.130949-46-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
-References: <20240513074717.130949-1-richard.henderson@linaro.org>
+ bh=ZfmUkZlvcPWWCOF3Qillim9EQLuG1zAlNWBzIIzY+J0=;
+ b=VgmsG6XECS88hza84KUS+AG4wLUqmJ3z513mXCG1rVPvWJYVeodSX5O0fUwCmXgM7C
+ 4fW2ORBYz8GT6dd0cMKegNFlF3UTecuq0eYCDqhECUDWmcHVWojoF9PbwVlajGBIJEco
+ ztHv2RFqcPBBEIvMQvM3e3rTJ9R67o1GkrgFf2a6ZMwCZxwJjJgcMlXos3YcOAE4p7ez
+ lZcAcAQSoOdPo79uxaLjFnY11fOJOCFdypvXaspWT2620O0Ix685QXdYw0AHUrVt1C6g
+ Sk6ayOgdVbi38rRQ5Swsri+RM1gXELV9P7AIElnXw/dGTzcOqpCrJ5teUODHLrnJ9qV3
+ qrPw==
+X-Gm-Message-State: AOJu0Yw1CWC1lJgEptAhvh9qaMdpep7LwMOQ/mVJS6WOalvs55Xq+bDS
+ DLQVUe9cwg8Zclqrwwl06grGpX8c/71eLAw9FiWCGvAQntlRh/pp8IuLAB3RNEpZO7Xjcc/v6ii
+ ePgn4riBfMCfQbU2QXa7U9i/z0o0=
+X-Google-Smtp-Source: AGHT+IE++uvlbPoiSHQwRINO6/wFtCtCyOdnhL6t8ctKu0xIpaIAllW5Z5hOH0yu5h2fNkDWzQARRcENk5REinhAk2w=
+X-Received: by 2002:a05:622a:1193:b0:43a:f218:a63f with SMTP id
+ d75a77b69052e-43dfdcc7e28mr116378431cf.66.1715588256198; Mon, 13 May 2024
+ 01:17:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42f.google.com
+References: <20240512090429.29123-1-hikalium@hikalium.com>
+ <20240512111435.30121-1-hikalium@hikalium.com>
+ <20240512111435.30121-2-hikalium@hikalium.com>
+In-Reply-To: <20240512111435.30121-2-hikalium@hikalium.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 13 May 2024 12:17:24 +0400
+Message-ID: <CAJ+F1CKyk7jahoZ4FTpGdVyDPq0FsURpMBFhFcD7dBi4CpCjnw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ui/gtk: Add gd_motion_event trace event
+To: hikalium <hikalium@hikalium.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,44 +88,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inverse of the logging on taking an interrupt.
+On Sun, May 12, 2024 at 3:16=E2=80=AFPM hikalium <hikalium@hikalium.com> wr=
+ote:
+>
+> Add gd_motion_event trace event for making it easy to debug
+> gd_motion_event related issues.
+>
+> Signed-off-by: hikalium <hikalium@hikalium.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/hppa/sys_helper.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
-index 22d6c89964..9b43b556fd 100644
---- a/target/hppa/sys_helper.c
-+++ b/target/hppa/sys_helper.c
-@@ -18,6 +18,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/log.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
-@@ -93,6 +94,17 @@ void HELPER(rfi)(CPUHPPAState *env)
-     env->iaoq_b = env->cr_back[1];
-     env->iasq_f = (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
-     env->iasq_b = (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
-+
-+    if (qemu_loglevel_mask(CPU_LOG_INT)) {
-+        FILE *logfile = qemu_log_trylock();
-+        if (logfile) {
-+            CPUState *cs = env_cpu(env);
-+
-+            fprintf(logfile, "RFI: cpu %d\n", cs->cpu_index);
-+            hppa_cpu_dump_state(cs, logfile, 0);
-+            qemu_log_unlock(logfile);
-+        }
-+    }
- }
- 
- static void getshadowregs(CPUHPPAState *env)
--- 
-2.34.1
+> ---
+>  ui/gtk.c        | 2 ++
+>  ui/trace-events | 1 +
+>  2 files changed, 3 insertions(+)
+>
+> diff --git a/ui/gtk.c b/ui/gtk.c
+> index 810d7fc796..ebae888d4f 100644
+> --- a/ui/gtk.c
+> +++ b/ui/gtk.c
+> @@ -911,6 +911,8 @@ static gboolean gd_motion_event(GtkWidget *widget, Gd=
+kEventMotion *motion,
+>      x =3D (motion->x - mx) / vc->gfx.scale_x * ws;
+>      y =3D (motion->y - my) / vc->gfx.scale_y * ws;
+>
+> +    trace_gd_motion_event(ww, wh, gtk_widget_get_scale_factor(widget), x=
+, y);
+> +
+>      if (qemu_input_is_absolute(vc->gfx.dcl.con)) {
+>          if (x < 0 || y < 0 ||
+>              x >=3D surface_width(vc->gfx.ds) ||
+> diff --git a/ui/trace-events b/ui/trace-events
+> index e6a2894303..69ff22955d 100644
+> --- a/ui/trace-events
+> +++ b/ui/trace-events
+> @@ -28,6 +28,7 @@ gd_ungrab(const char *tab, const char *device) "tab=3D%=
+s, dev=3D%s"
+>  gd_keymap_windowing(const char *name) "backend=3D%s"
+>  gd_gl_area_create_context(void *ctx, int major, int minor) "ctx=3D%p, ma=
+jor=3D%d, minor=3D%d"
+>  gd_gl_area_destroy_context(void *ctx, void *current_ctx) "ctx=3D%p, curr=
+ent_ctx=3D%p"
+> +gd_motion_event(int ww, int wh, int ws, int x, int y) "ww=3D%d, wh=3D%d,=
+ ws=3D%d, x=3D%d, y=3D%d"
+>
+>  # vnc-auth-sasl.c
+>  # vnc-auth-vencrypt.c
+> --
+> 2.39.2
+>
+>
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
