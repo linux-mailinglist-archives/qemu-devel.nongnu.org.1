@@ -2,102 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AFA8C40EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 14:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C88CF8C4075
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 14:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6V1y-0003YL-QQ; Mon, 13 May 2024 08:43:50 -0400
+	id 1s6URT-00033D-8F; Mon, 13 May 2024 08:06:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=8567b36a1=roypat@amazon.co.uk>)
- id 1s6SyP-0004aN-Tx
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:32:05 -0400
-Received: from smtp-fw-52005.amazon.com ([52.119.213.156])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6UR4-00032h-KQ
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 08:05:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=8567b36a1=roypat@amazon.co.uk>)
- id 1s6SyL-0002Jd-Eq
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:32:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
- s=amazon201209; t=1715596318; x=1747132318;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=uQIw9i/g+I3Ll0Kcnj1kLLWW5A3sw6sKhdQsGDX0E88=;
- b=JjWla/uwjMwRUNXOhkxG+7f+zVreNbnoe5sBuOdub0f6Zt1qw8wRd55G
- tqfkyW4C2DPojB7aRv9EJTK+rCSFL+IWmlEdcpSeAxSUgB4tHc8z6HowI
- eF+B6lOi3AKBrksiJSwLcpLpS3/1w0z0Rta8R63gD7ajQAEdvoybcfhMI g=;
-X-IronPort-AV: E=Sophos;i="6.08,158,1712620800"; d="scan'208";a="653737330"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
- smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
- by smtp-border-fw-52005.iad7.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 10:31:53 +0000
-Received: from EX19MTAUEB001.ant.amazon.com [10.0.44.209:28793]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.82.155:2525]
- with esmtp (Farcaster)
- id 24678bc8-ee46-4086-b40e-d21a7295c070; Mon, 13 May 2024 10:31:51 +0000 (UTC)
-X-Farcaster-Flow-ID: 24678bc8-ee46-4086-b40e-d21a7295c070
-Received: from EX19D008UEA003.ant.amazon.com (10.252.134.116) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 13 May 2024 10:31:51 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
- EX19D008UEA003.ant.amazon.com (10.252.134.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 13 May 2024 10:31:51 +0000
-Received: from [127.0.0.1] (172.19.88.180) by mail-relay.amazon.com
- (10.252.135.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28 via Frontend
- Transport; Mon, 13 May 2024 10:31:49 +0000
-Message-ID: <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
-Date: Mon, 13 May 2024 11:31:47 +0100
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6UQx-0007kX-0G
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 08:05:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715601933;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=Zt4pUncfQI8CRjeU549wQpPikKsch8qUCJDQB2iYStQ=;
+ b=APyCatCvtD+X4uQ9GDDTx4/T11wRb/g9OhShsrL7TqD/GD1fLuAqiyjxMqvkPEvmnSSoXl
+ 3gDiA3Wa3BQqI9+YdmwWKAkJW6X24ODk7wPAlBc1lC/UJjEg4mzr6BLWEHcudg8ji0oRkY
+ XJyeTyp+fEFTU5QZs+hS/gphGQYiIIY=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56-h0uRzTQBMZSnk2ocyMswtA-1; Mon, 13 May 2024 08:05:21 -0400
+X-MC-Unique: h0uRzTQBMZSnk2ocyMswtA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6a0e10bddd6so54341456d6.3
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 05:05:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715601921; x=1716206721;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Zt4pUncfQI8CRjeU549wQpPikKsch8qUCJDQB2iYStQ=;
+ b=QKN9E009d75wEBQQ+GhZkajblPROjg66Z0b3g8RriDWaCdokcQWHVavb6602c3eGUo
+ ZuQuBCobrNdhFv43uy3Q7pQ0lziZgjPCvJA4tIZcmtAOGDEnRSS0aXa2X4TFGZmxwMHs
+ Is53MNOIrnJKBlz6uOSTK7Lz7V1jKchQjkSQsB2jyARs7SIFMLPAHii1e869PcVjNxp2
+ Fbrz/4wtmBFZViuE4axfzCKvENY0bU/JCROGdb9T8hmjMaL8fpxkGm0rQGeGjOBRqK6m
+ 2ff8LDY5PM4ieJtWsBCIneHtGEeLpows9gxJSvt3xm+J3ZDSzgl12iLd+IaWiaOLAE6P
+ YCNg==
+X-Gm-Message-State: AOJu0YwVUf1tbWzgM7d646W/Nb1vTLEDw6rIbXJ1QhGS3ey5rROOXJtv
+ zS1SOplHsYiMJbTpHG8GW6V0Vy8n4a/Bcxby06/HUmRWi1gJF65trQPcQOjPTEHB/llHzz/sr9n
+ CS1ptJ74imN0UeStLZuqDVgEZYNVJjkzAKwJLSC/BFgf6Ct6U8+g5
+X-Received: by 2002:a05:6214:4401:b0:6a0:6843:b52c with SMTP id
+ 6a1803df08f44-6a16819f15cmr125051116d6.7.1715601920645; 
+ Mon, 13 May 2024 05:05:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHwBjBbT+SmtROaqAkC9xfhFzcqbGg9PLjyavT28VRsqk7ISbjyccYh8ry50gpK3rAfscN/Ew==
+X-Received: by 2002:a05:6214:4401:b0:6a0:6843:b52c with SMTP id
+ 6a1803df08f44-6a16819f15cmr125050786d6.7.1715601920308; 
+ Mon, 13 May 2024 05:05:20 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-40-241-109.web.vodafone.de.
+ [109.40.241.109]) by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6a15f1870e3sm42796406d6.54.2024.05.13.05.05.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 May 2024 05:05:19 -0700 (PDT)
+Message-ID: <41974e51-cee5-4a62-bcab-db9b78f76aee@redhat.com>
+Date: Mon, 13 May 2024 14:05:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Unmapping KVM Guest Memory from Host Kernel
-To: Mike Rapoport <rppt@kernel.org>, Sean Christopherson <seanjc@google.com>
-CC: James Gowans <jgowans@amazon.com>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "chao.p.peng@linux.intel.com"
- <chao.p.peng@linux.intel.com>, Derek Manwaring <derekmn@amazon.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, David Woodhouse
- <dwmw@amazon.co.uk>, Nikita Kalyazin <kalyazin@amazon.co.uk>,
- "lstoakes@gmail.com" <lstoakes@gmail.com>, "Liam.Howlett@oracle.com"
- <Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "mst@redhat.com" <mst@redhat.com>,
- "somlo@cmu.edu" <somlo@cmu.edu>, Alexander Graf <graf@amazon.de>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
- <linux-coco@lists.linux.dev>
-References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
- <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org>
+Subject: Re: [PATCH 2/4] tests/lcitool: Remove g++ from the containers (except
+ for the MinGW one)
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20240513102252.48884-1-thuth@redhat.com>
+ <20240513102252.48884-3-thuth@redhat.com> <ZkHrXOR05UkkMn2X@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Patrick Roy <roypat@amazon.co.uk>
-Autocrypt: addr=roypat@amazon.co.uk; keydata=
- xjMEY0UgYhYJKwYBBAHaRw8BAQdA7lj+ADr5b96qBcdINFVJSOg8RGtKthL5x77F2ABMh4PN
- NVBhdHJpY2sgUm95IChHaXRodWIga2V5IGFtYXpvbikgPHJveXBhdEBhbWF6b24uY28udWs+
- wpMEExYKADsWIQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbAwULCQgHAgIiAgYVCgkI
- CwIEFgIDAQIeBwIXgAAKCRBVg4tqeAbEAmQKAQC1jMl/KT9pQHEdALF7SA1iJ9tpA5ppl1J9
- AOIP7Nr9SwD/fvIWkq0QDnq69eK7HqW14CA7AToCF6NBqZ8r7ksi+QLOOARjRSBiEgorBgEE
- AZdVAQUBAQdAqoMhGmiXJ3DMGeXrlaDA+v/aF/ah7ARbFV4ukHyz+CkDAQgHwngEGBYKACAW
- IQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbDAAKCRBVg4tqeAbEAtjHAQDkh5jZRIsZ
- 7JMNkPMSCd5PuSy0/Gdx8LGgsxxPMZwePgEAn5Tnh4fVbf00esnoK588bYQgJBioXtuXhtom
- 8hlxFQM=
-In-Reply-To: <ZexEkGkNe_7UY7w6@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <ZkHrXOR05UkkMn2X@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=52.119.213.156;
- envelope-from=prvs=8567b36a1=roypat@amazon.co.uk;
- helo=smtp-fw-52005.amazon.com
-X-Spam_score_int: -122
-X-Spam_score: -12.3
-X-Spam_bar: ------------
-X-Spam_report: (-12.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 3
+X-Spam_score: 0.3
+X-Spam_bar: /
+X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 13 May 2024 08:43:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,113 +146,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
+On 13/05/2024 12.28, Daniel P. Berrangé wrote:
+> On Mon, May 13, 2024 at 12:22:50PM +0200, Thomas Huth wrote:
+>> We don't need C++ for the normal QEMU builds anymore, so installing
+>> g++ in each and every container seems to be a waste of time and disk
+>> space. The only container that still needs it is the Fedora MinGW
+>> container that builds the only remaining C++ code in ./qga/vss-win32/
+>> and we can install it here with an extra RUN statement instead.
+>>
+>> This way we can also add the mingw-w64-tools package quite easily
+>> which contains the x86_64-w64-mingw32-widl program that is required
+>> for compiling the vss code of the guest agent (it was missing before
+>> this change, so the VSS code was actually never compiled in the CI).
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   tests/lcitool/projects/qemu.yml |  1 -
+>>   tests/lcitool/refresh           | 10 ++++++++--
+>>   2 files changed, 8 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+>> index 9173d1e36e..b63b6bd850 100644
+>> --- a/tests/lcitool/projects/qemu.yml
+>> +++ b/tests/lcitool/projects/qemu.yml
+>> @@ -22,7 +22,6 @@ packages:
+>>    - findutils
+>>    - flex
+>>    - fuse3
+>> - - g++
+>>    - gcc
+>>    - gcc-native
+>>    - gcovr
+>> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+>> index 24a735a3f2..dda07ddcd1 100755
+>> --- a/tests/lcitool/refresh
+>> +++ b/tests/lcitool/refresh
+>> @@ -109,6 +109,11 @@ debian12_extras = [
+>>       "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
+>>   ]
+>>   
+>> +fedora_mingw_extras = [ "\n"
+>> +    "RUN nosync dnf install -y mingw64-gcc-c++ mingw-w64-tools && \\\n"
+>> +    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-c++ && \\\n"
+>> +    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-g++\n\n"
+>> +]
+>>   
+>>   def cross_build(prefix, targets):
+>>       conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
+>> @@ -193,8 +198,9 @@ try:
+>>   
+>>       generate_dockerfile("fedora-win64-cross", "fedora-38",
+>>                           cross="mingw64",
+>> -                        trailer=cross_build("x86_64-w64-mingw32-",
+>> -                                            "x86_64-softmmu"))
+>> +                        trailer="".join(fedora_mingw_extras)
+>> +                                + cross_build("x86_64-w64-mingw32-",
+>> +                                              "x86_64-softmmu"))
+>>   
+>>       #
+>>       # Cirrus packages lists for GitLab
+> 
+> A better way to handle this would be to define a separate project
+> 
+>    'tests/lcitool/projects/qemu-win-installer.yml'
+> 
+> With
+> 
+>     packages
+>       - g++
+> 
+> Then enable the extra project for win64
+> 
+>      generate_dockerfile("fedora-win64-cross", "fedora-38",
+>                          project='qemu,qemu-win-installer',
+>                          cross="mingw64",
+>                          trailer=cross_build("x86_64-w64-mingw32-",
+>                                              "x86_64-softmmu"))
+> 
+> which should result in an identical container to what we have today
+> for win64, while letting us slim the other containers.
 
-On 3/9/24 11:14, Mike Rapoport wrote:
+Ok, good idea! ... but then we need to teach lcitool about mingw-w64-tools 
+first, otherwise that vss code won't get built due to the missing "widl" tool.
 
->>> >>> With this in mind, what’s the best way to solve getting guest RAM out of
->>> >>> the direct map? Is memfd_secret integration with KVM the way to go, or
->>> >>> should we build a solution on top of guest_memfd, for example via some
->>> >>> flag that causes it to leave memory in the host userspace’s page tables,
->>> >>> but removes it from the direct map?
->> >> memfd_secret obviously gets you a PoC much faster, but in the long term I'm quite
->> >> sure you'll be fighting memfd_secret all the way.  E.g. it's not dumpable, it
->> >> deliberately allocates at 4KiB granularity (though I suspect the bug you found
->> >> means that it can be inadvertantly mapped with 2MiB hugepages), it has no line
->> >> of sight to taking userspace out of the equation, etc.
->> >>
->> >> With guest_memfd on the other hand, everyone contributing to and maintaining it
->> >> has goals that are *very* closely aligned with what you want to do.
-> > I agree with Sean, guest_memfd seems a better interface to use. It's
-> > integrated by design with KVM and removing guest memory from the direct map
-> > looks like a natural enhancement to guest_memfd.
-> >
-> > Unless I'm missing something, for fast-and-dirty POC it'll be a oneliner
-> > that adds set_memory_np() to kvm_gmem_get_folio() and then figuring out
-> > what to do with virtio :)
-
-We’ve been playing around with extending guest_memfd to remove guest memory
-from the direct map. Removal from direct map aspect is indeed fairly
-straight-forward; since we cannot map guest_memfd, we don’t need to worry about
-folios without direct map entries getting to places where they will cause
-kernel panics.
-
-However, we ran into problems running non-CoCo VMs with guest_memfd for guest
-memory, independent of direct map entries being available or not. There’s a
-handful of places where a traditional KVM / Userspace setup currently touches
-guest memory:
-
-* Loading the Guest Kernel into guest-owned memory
-* Instruction fetch from arbitrary guest addresses and guest page table walks  
-  for MMIO emulation (for example for IOAPIC accesses)
-* kvm-clock
-* I/O devices
-
-With guest_memfd, if the guest is running from guest-private memory, these need
-to be rethought, since now the memory is unavailable to userspace, and KVM is
-not enlightened about guest_memfd’s existance everywhere (when I was
-experimenting with this, it generally read garbage data from the shared VMA,
-but I think I’ve since seen some patches floating around that would make it
-return -EFAULT instead).
-
-CoCo VMs have various methods for working around these: You load a guest kernel
-using some “populate on first access” mechanism [1], kvm-clock and I/O is
-solved by having the guest mark the relevant address ranges as “shared” ahead
-of time [2] and bounce buffering via swiotlb [4], and Intel TDX solves the
-instruction emulation problem for MMIO by injecting a #VE and having the guest
-do the emulation itself [3].
-
-For non-CoCo VMs, where memory is not encrypted, and the threat model assumes a
-trusted host userspace, we would like to avoid changing the VM model so
-completely. If we adopt CoCo’s approaches where KVM / Userspace touches guest
-memory we would get all the complexity, yet none of the encryption.
-Particularly the complexity on the MMIO path seems nasty, but x86 does not
-pre-decode instructions on MMIO exits (which are just EPT_VIOLATIONs) like it
-does for PIO exits, so I also don’t really see a way around it in the
-guest_memfd model.
-
-We’ve played around a lot with allowing userspace mappings of guest_memfd, and
-then having KVM internally access guest_memfd via userspace page tables (and
-came up with multiple hacky ways to boot simple Linux initrds from
-guest_memfd), but this is fairly awkward for two reasons:
-
-1. Now lots of codepaths in KVM end up accessing guest_memfd, which from my
-understanding goes against the guest_memfd goal of making machine checks
-because of incorrect accesses to TDX memory impossible, and
-2. We need to somehow get a userspace mapping of guest_memfd into KVM (a hacky
-way I could make this work was setting up kvm_user_memory_region2 with
-userspace_addr set to a mmap of guest_memory, which actually "works" for
-everything but kvm-clock, but I also realized later that this is just
-memfd_secret with extra steps).
-
-We also played around with having KVM access guest_memfd through the direct map
-(by temporarily reinserting pages into it when needed), but this again means
-lots of KVM code learns about how to access guest RAM via guest_memfd.
-
-There are a few other features we need to support, such as serving page faults
-using UFFD, which we are not too sure how to realize with guest_memfd since
-UFFD is VMA based (although to me some sort of “UFFD-for-FD” sounds like
-something that’d be useful even outside of our guest_memfd usecase).
-
-With these challenges in mind, some variant of memfd_secret continues to look
-attractive for the non-CoCo case. Perhaps a variant that supports in-kernel
-faults and provides some way for gfn_to_pfn_cache users like kvm-clock to
-restore the direct map entries.
-
-Sean, you mentioned that you envision guest_memfd also supporting non-CoCo VMs.
-Do you have some thoughts about how to make the above cases work in the
-guest_memfd context?
-
-> > --
-> > Sincerely yours,
-> > Mike.
-
-Best,
-Patrick
-
-[1]: https://lore.kernel.org/kvm/20240404185034.3184582-1-pbonzini@redhat.com/T/#m4cc08ce3142a313d96951c2b1286eb290c7d1dac
-[2]: https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/kvmclock.c#L227
-[3]: https://www.kernel.org/doc/html/next/x86/tdx.html#mmio-handling
-[4]: https://www.kernel.org/doc/html/next/x86/tdx.html#shared-memory-conversions
+  Thomas
 
 
