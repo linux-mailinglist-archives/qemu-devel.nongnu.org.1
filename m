@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98138C42DE
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0928C4335
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:23:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6WLo-0005VD-90; Mon, 13 May 2024 10:08:24 -0400
+	id 1s6WZy-00004r-Tf; Mon, 13 May 2024 10:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s6WLl-0005V5-N2
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:08:21 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s6WLf-0006IQ-Md
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:08:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715609296; x=1747145296;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=WsU0YTZZ6yJOQ7T5hG4osWxzTIYWzDTn0bE+/jzR/ss=;
- b=iB7TXu2lRKhOW4vmPZAktn9z0S9CrJ4X5hjUq/WJPzvTvehKrTWtIg6T
- eZN7WLFNhwVK53ytUTCy+66PSkNlYuoinpEykFgMCrA//Zk6/4SE4nEmT
- 1fb3vvnRdKwe9GiCV3cUoWvHAc+bIJypTpHylZlly9K8O4RV0NVQawMwf
- dCCsfzQk17GbfrFgg9ZMFl/HnXZV/789Sbx11LmyW3s6sxsDWabmB7MMR
- 6ES2XXgouUqxU4C+eV6n5ervkR9c7cz3oPlJNadej0/k7YMQTopw4JkpF
- Yvddc5lplGcePdGytQA4skdzGJHKTQjj/6UAyHCpGWtNu6fTOztfZ8s8T w==;
-X-CSE-ConnectionGUID: dIQF/j2kSP2dDPtPyZ/A2g==
-X-CSE-MsgGUID: zraL+047SYK1EPk2vApp4A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="22949772"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22949772"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2024 07:08:10 -0700
-X-CSE-ConnectionGUID: m2XnHfnKSPm6rrgaPm9rew==
-X-CSE-MsgGUID: 5kSCVEiiRraP6rafsZNWog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30299320"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 13 May 2024 07:08:07 -0700
-Date: Mon, 13 May 2024 22:22:22 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- devel@lists.libvirt.org,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Krempa <pkrempa@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 1/2] hw/core: allow parameter=1 for SMP topology on any
- machine
-Message-ID: <ZkIiHgw9rQActD2i@intel.com>
-References: <20240513123358.612355-1-berrange@redhat.com>
- <20240513123358.612355-2-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6WZw-0008V7-PI
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:23:00 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6WZv-0000tB-5N
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:23:00 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-420104e5336so11140235e9.1
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715610176; x=1716214976; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IF5EX2w6IJp3IFaYRXbmEvcj/KiQdQ1YS32o2itDv7Y=;
+ b=rr4EYV5nMAQGXWzVKD9dhzMWb27WcZ2Qc1PiYsgc30Ul4Zm4Jo6PXPc+rzBmn5gxeX
+ 8SYJH1oMWCT+jK16to3Z32A+1e8asSCrRtzsJtmi4v9SmZpLGv/y5LIrUM/gKm/AOy3K
+ zAYGcdWSN7RH6zuNeIuNEi37y1ZDn6wpGKoBZ0sIVNmkleMmu5XJwq+o53GYx2VoKc+s
+ PlkX1DSwPeaa2UN2rkAqT+wLHvy9U4Q18eqjenKywPQoNwOgLgTLlm7TeeG7W1qd+5Dp
+ rtp8I3UKUOchjoRVdLf7Tc0I/sZoo0z9EmYeicDlIQc18EBOcw3AxfltSVCcEnwxpZWl
+ 6FbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715610176; x=1716214976;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IF5EX2w6IJp3IFaYRXbmEvcj/KiQdQ1YS32o2itDv7Y=;
+ b=cMv7U8sPZ6bFIODCqqC9c5Ga9yuLirsgM4vHhIlOjoVlZPbEqExsby4lQzocVeOhM0
+ BTb8ppJa/BZ4C4JbbWpTaFnXsjY5q8IEfmN83zP/At9MF9w22Giza7/2J1eMqgN0cvom
+ /K4s4FuDxNIMaWJcR3jvKc2Ya23XoAhqodAl/z8hsErNqnneLK/ABE33MKyg9Jps1eSp
+ MUfSRVP+ZaNEk3LHjtp3FBzC+F6SISflCy/DZCmJijTUxjLOaobd/T4nUaTDth1aC3nT
+ XsvVQAWA7EJmqJjWFHHnR3wpMiWK6SYDpyQKdKqyAO3pnYVJvrjFyzOWEwhw93IWO6J9
+ SKHQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXho0EDNB1L/57oiUW/2JFhqXIsRx7zor3vPB2K/5yclvXwTfdZHAPidDwyzsxEVOK8yOoXSJO+z+1FYp71I5DtJSXE7X8=
+X-Gm-Message-State: AOJu0YxobwZoJI76ksdkAbzVEuSGTtB4AYXrl+Hkq6fJrQy6jgmBXmQS
+ lQTix3oJgPlX/x/iVbOqMAVt+7uk9PZ7oif5PFMi4BzfsIuuSDu+K7OS3U11SNs=
+X-Google-Smtp-Source: AGHT+IGv/mXr8/g0KkA4UL7SOurpqe+yYNwm8+6Upni1k49hsZUetpn9AfDFfaL5fDPLHKngAlYTxQ==
+X-Received: by 2002:a05:600c:3112:b0:41b:e55c:8dc1 with SMTP id
+ 5b1f17b1804b1-41fbd1b2e40mr101981455e9.20.1715610176592; 
+ Mon, 13 May 2024 07:22:56 -0700 (PDT)
+Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42016b88f99sm33327485e9.10.2024.05.13.07.22.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 May 2024 07:22:56 -0700 (PDT)
+Message-ID: <5a74f1af-6068-41b1-b875-6be060369abe@linaro.org>
+Date: Mon, 13 May 2024 16:22:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240513123358.612355-2-berrange@redhat.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] dump/win_dump: Improve error messages on write error
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: fam@euphon.net, kwolf@redhat.com, hreitz@redhat.com,
+ marcandre.lureau@redhat.com, peterx@redhat.com, farosas@suse.de,
+ pbonzini@redhat.com, richard.henderson@linaro.org, qemu-block@nongnu.org
+References: <20240513141703.549874-1-armbru@redhat.com>
+ <20240513141703.549874-3-armbru@redhat.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240513141703.549874-3-armbru@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,95 +95,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc Paolo for x86 topology part
-
-Hi Daniel,
-
-On Mon, May 13, 2024 at 01:33:57PM +0100, Daniel P. Berrangé wrote:
-> Date: Mon, 13 May 2024 13:33:57 +0100
-> From: "Daniel P. Berrangé" <berrange@redhat.com>
-> Subject: [PATCH 1/2] hw/core: allow parameter=1 for SMP topology on any
->  machine
+On 13/5/24 16:16, Markus Armbruster wrote:
+> create_win_dump() and write_run report qemu_write_full() failure to
+> their callers as
 > 
-> This effectively reverts
+>      An IO error has occurred
 > 
->   commit 54c4ea8f3ae614054079395842128a856a73dbf9
->   Author: Zhao Liu <zhao1.liu@intel.com>
->   Date:   Sat Mar 9 00:01:37 2024 +0800
+> The errno set by qemu_write_full() is lost.
 > 
->     hw/core/machine-smp: Deprecate unsupported "parameter=1" SMP configurations
+> Improve this to
 > 
-> but is not done as a 'git revert' since the part of the changes to the
-> file hw/core/machine-smp.c which add 'has_XXX' checks remain desirable.
-> Furthermore, we have to tweak the subsequently added unit test to
-> account for differing warning message.
+>      win-dump: failed to write header: <description of errno>
 > 
-> The rationale for the original deprecation was:
+> and
 > 
->   "Currently, it was allowed for users to specify the unsupported
->    topology parameter as "1". For example, x86 PC machine doesn't
->    support drawer/book/cluster topology levels, but user could specify
->    "-smp drawers=1,books=1,clusters=1".
+>      win-dump: failed to save memory: <description of errno>
 > 
->    This is meaningless and confusing, so that the support for this kind
->    of configurations is marked deprecated since 9.0."
+> This matches how dump.c reports similar errors.
 > 
-> There are varying POVs on the topic of 'unsupported' topology levels.
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> ---
+>   dump/win_dump.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
 > 
-> It is common to say that on a system without hyperthreading, that there
-> is always 1 thread. Likewise when new CPUs introduced a concept of
-> multiple "dies', it was reasonable to say that all historical CPUs
-> before that implicitly had 1 'die'. Likewise for the more recently
-> introduced 'modules' and 'clusters' parameter'. From this POV, it is
-> valid to set 'parameter=1' on the -smp command line for any machine,
-> only a value > 1 is strictly an error condition.
+> diff --git a/dump/win_dump.c b/dump/win_dump.c
+> index b7bfaff379..0e4fe692ce 100644
+> --- a/dump/win_dump.c
+> +++ b/dump/win_dump.c
+> @@ -12,7 +12,6 @@
+>   #include "sysemu/dump.h"
+>   #include "qapi/error.h"
+>   #include "qemu/error-report.h"
+> -#include "qapi/qmp/qerror.h"
+>   #include "exec/cpu-defs.h"
+>   #include "hw/core/cpu.h"
+>   #include "qemu/win_dump_defs.h"
+> @@ -52,6 +51,7 @@ static size_t write_run(uint64_t base_page, uint64_t page_count,
+>       uint64_t addr = base_page << TARGET_PAGE_BITS;
+>       uint64_t size = page_count << TARGET_PAGE_BITS;
+>       uint64_t len, l;
+> +    int eno;
+>       size_t total = 0;
+>   
+>       while (size) {
+> @@ -65,9 +65,10 @@ static size_t write_run(uint64_t base_page, uint64_t page_count,
+>           }
+>   
+>           l = qemu_write_full(fd, buf, len);
+> +        eno = errno;
 
-Currently QEMU has become more and more difficult to maintain a general
-topology hierarchy, there are two recent examples:
+Hmm this show the qemu_write_full() API isn't ideal.
+Maybe we could pass &l as argument and return errno.
+There are only 20 calls.
 
-1. as you mentioned "module" v.s. "cluster", one reason for introducing
-"module" is because it is difficult to define what "cluster" is for x86,
-the cluster in the device tree can be nested, then it can correspond to
-an x86 die, or it can correspond to an x86 module. Therefore, specifying
-"clusters=1" for x86 is ambiguous.
-
-2. s390 introduces book and drawer, which are above socket/package
-level, but for x86, the level above the package names "cluster" (yeah,
-"cluster" again :-(). So if user sets "books=1" or "drawers=1" for x86,
-then it's meaningless. Similarly, "clusters=1" is also very confusing for
-x86 machine.
-
-I think that only thread/core/socket are architecturally general, the
-other topology levels are hard to define across architectures, then
-allowing unsupported topology=1 is always confusing...
-
-Moreover, QEMU currently requires a clear topology containment
-relationship when defining a topology, after which it will become
-increasingly difficult to define a generic topology containment
-relationship when new topology levels are introduced in the future...
-
-> It doesn't cause any functional difficulty for QEMU, because internally
-> the QEMU code is itself assuming that all "unsupported" parameters
-> implicitly have a value of '1'.
-> 
-> At the libvirt level, we've allowed applications to set 'parameter=1'
-> when configuring a guest, and pass that through to QEMU.
-> 
-> Deprecating this creates extra difficulty for because there's no info
-> exposed from QEMU about which machine types "support" which parameters.
-> Thus, libvirt can't know whether it is valid to pass 'parameter=1' for
-> a given machine type, or whether it will trigger deprecation messages.
-
-I understand that libvirt is having trouble because there is no interface
-to expose which topology levels the current machine supports. As a
-workaround to eliminate the difficulties at the libvirt level, it's
-ok for me.
-
-But I believe deprecating the unsupported topology is necessary, so do
-you think it's acceptable to include an interface to expose the supported
-topology if it's going to be deprecated again later?
-
-Regards,
-Zhao
+>           cpu_physical_memory_unmap(buf, addr, false, len);
+>           if (l != len) {
+> -            error_setg(errp, QERR_IO_ERROR);
+> +            error_setg_errno(errp, eno, "win-dump: failed to save memory");
+>               return 0;
+>           }
+>   
+> @@ -459,7 +460,7 @@ void create_win_dump(DumpState *s, Error **errp)
+>   
+>       s->written_size = qemu_write_full(s->fd, h, hdr_size);
+>       if (s->written_size != hdr_size) {
+> -        error_setg(errp, QERR_IO_ERROR);
+> +        error_setg_errno(errp, errno, "win-dump: failed to write header");
+>           goto out_restore;
+>       }
+>   
 
 
