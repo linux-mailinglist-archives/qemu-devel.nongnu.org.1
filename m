@@ -2,79 +2,165 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02AB8C434C
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599018C4347
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Wi7-0006iu-Fa; Mon, 13 May 2024 10:31:27 -0400
+	id 1s6Wdm-0003sK-Dq; Mon, 13 May 2024 10:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s6Wi5-0006iN-4Q
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:31:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s6Wdh-0003s4-HU
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:26:53 -0400
+Received: from mail-bn7nam10on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2009::600]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s6Wi2-0002BF-Rh
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:31:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715610681;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4js0GywERsc8aXXdPlgEI13IPolZmURJ6aQxvtqNJcI=;
- b=h79pmvugO4zYwbjaVkJ8NhlcOPgvsU5kD+T6ywAqG41UAX84PgNMwP7WYSR1cfT214LNpt
- iLhZOAJDMS82fxs+MsZCntYFBABmkXuQb6ClyvFb8xV5Bx5b1j7OlYpwrbM5l6Fq22TBtc
- WHH3qCvzVHVMSk+85/NRtI8ohgPILWY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-zNrWLvSwOme_kfU-B66brQ-1; Mon, 13 May 2024 10:26:20 -0400
-X-MC-Unique: zNrWLvSwOme_kfU-B66brQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E2861818680;
- Mon, 13 May 2024 14:26:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 301E247B;
- Mon, 13 May 2024 14:26:19 +0000 (UTC)
-Date: Mon, 13 May 2024 15:26:17 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 2/4] tests/lcitool: Remove g++ from the containers
- (except for the MinGW one)
-Message-ID: <ZkIjCWlQyUws3y2P@redhat.com>
-References: <20240513102252.48884-1-thuth@redhat.com>
- <20240513102252.48884-3-thuth@redhat.com>
- <ZkHrXOR05UkkMn2X@redhat.com>
- <41974e51-cee5-4a62-bcab-db9b78f76aee@redhat.com>
- <ZkIDYTTtMlX20-xW@redhat.com>
- <22d84c81-7c7b-4656-8606-cf919b26d0a1@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s6WdY-0001cN-33
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:26:53 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=clKG/IKtDHJd0C+CJLQH+QcBwDl9Ire3QqmsGLKFZlhnZB3Eq2d4SVXz1TVFEynwLkIBwgxxjjySEkrk4JZJSfcmFyXDwyNovMEGN8pdZfgtJ+XB4QH8JLRVZ5n2NAaC62DHAfeUv2vDJck9/TbPOQ23qk7+LAeBL9xgCdls6AiymFOlaVz2j11S/96vKBAvuQSYqkGHoLSaWS3i0ZQTGFWBJQ7UF2KIg4xzgzl14xOQ2HaGR7OOu4qlJuibxk5LVCKip68Hx4ZXGpJTeFj5A76FoFcgDsyFOWgIlFvKkHGRd/YiA/ReKnxYjc82K7d3ehkLZxujUz5N+40tevTirQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7B3b8XoKVbt/ULgIYoFqV++8wEAShakZ7dOrRWJL92E=;
+ b=WZFB+04XMb6PxrpkRKh5RreVocxpu35f2cSsFbwLbZDZurlT5aBrDzyeqGFmcJ+n2SvsjrelkbO2z4wFJqyD1D7CQAA4mB4CKukDql3pnl9B0HjGUxliIWcC/sfznBz7P435GUh+6J5s+BNj9XSuarbzlEJB6Oy+75fm5Hf2Jyr0zAhjwhUnQ3g6tzAtkM1pCIlIuxL2a8FM9/XHYfCeztcwd+R6RzQ+VBUjMInbDrXIgmA2EGWx2CTSsXWrDKLb5NTkzLjilrYmQl/QEKOxFAs8zpSN6JGv+T8DY/j9nphbPouuuRcDNvD/u33k1SnIlyodu62cgdr8qDQ7Uwnzog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7B3b8XoKVbt/ULgIYoFqV++8wEAShakZ7dOrRWJL92E=;
+ b=ZIA0G/GR6erp5Rxtkkf8mbWy37Vo9DBHJWTdIK4hPhaiQPapUAv23hSXe4F9Mreo/yeoEI4rcBYvZfXmLelxaUE7UIlWQmeYRotb2CQbitCxoXV0Qv/o2ecG1BrFCTVxZNhgDKRouhPLn4MH3zEeUtS0G+oISfDIQyh+x8ZRY+oMc5AHi8HBISGDlQDlMfnh6XVRhRFjkPeHwTXBiZ6gGkcsKzMOmXBA+QONoDZ57NmHUEr2tFIqDfq2MALZBY8XWVbgwwgI+lDYDU4Vuwsg9UtzX4f9xAPY1zw4vrtatg98nPbxHP4C+7IUmyJ7BVa36rznSpzQiOMRd/baDEnGew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by DS0PR12MB8562.namprd12.prod.outlook.com (2603:10b6:8:164::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Mon, 13 May
+ 2024 14:26:38 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::d830:10ba:ec9e:7b80]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::d830:10ba:ec9e:7b80%5]) with mapi id 15.20.7544.052; Mon, 13 May 2024
+ 14:26:38 +0000
+Message-ID: <c06e8de4-a3ad-4044-a4ca-f45d404314fb@nvidia.com>
+Date: Mon, 13 May 2024 17:26:33 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/10] vfio: Extend vfio_set_migration_error() with
+ Error* argument
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240506092053.388578-1-clg@redhat.com>
+ <20240506092053.388578-11-clg@redhat.com>
+Content-Language: en-US
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20240506092053.388578-11-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <22d84c81-7c7b-4656-8606-cf919b26d0a1@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-ClientProxiedBy: LO4P123CA0619.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:294::19) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DS0PR12MB8562:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1173c6ac-bc7b-4343-feb1-08dc7358b341
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RWpuRjVwSTRwUmRyTFQ2QmphQXE4S3lTZXF6MGhiU2UreXZsbG92VTA4WnFo?=
+ =?utf-8?B?OXZIUjROaC9yVHBJZXpCSWRHYjExU283V25tOFJoV0NIaUNLdlhwM00zL2hS?=
+ =?utf-8?B?dmRsQTJkdWdPZnpySlJPRlVMRyt1aTBMZnZaZ2wzeHpMRHZkcUFzTEFlTDR1?=
+ =?utf-8?B?ZDRvaTdvNUY2K1J6Wk52QkgxRU9JVzMya1BrN3ZTWVBzUE8wYXdnNk8yY09R?=
+ =?utf-8?B?WGVYckcrcE9WbFJBSy90YTI1THdVckhvK1pSZ01zSkVwU000YmwyZ0VMQ1NM?=
+ =?utf-8?B?UW9tc1IxWk14RTVYOWhYaDhsaHRZWG92RjRIR2JsS1gvYzFUanpUNEtGaTJD?=
+ =?utf-8?B?SGpuT2tCZC9rdkYwL21EYUdiTWFlRUNOc2lrd0lFaURZSFVMMW8ycWZoT3FS?=
+ =?utf-8?B?Szg5Zi9vR3JicEZ3RjFwMmlvZ0JRTWtwanFDWHZlcjFqdGEvYWxFOE1iOTFt?=
+ =?utf-8?B?dFVyeGF5WGVNSHBGYkZQOHQwaFIrL1dsbFZaWksyWlFpN3c3SmhZSGhlS25N?=
+ =?utf-8?B?YUZpM0VSUHV4QitUTFZMVmt6WkhlM2U0QUVxa3dlMkV0clhUZVhKQ1NHL2Iv?=
+ =?utf-8?B?SVBhcnhzbndtNC9VR3pLMGxZYUhsdEloMlVWNVR5NGtKV2NqOURmamdva09L?=
+ =?utf-8?B?bU5Pa2pST3B1eVNTUTEzd0VXbVdkV1FKME5TcERyNlRQa3F2Z0hoZFRWZlVH?=
+ =?utf-8?B?WTNWYlEvUlB6ckpxY0lZdnhwZjJHVWt4VXFEcDUvMGFzUG9qZXI3bWZPQWJ2?=
+ =?utf-8?B?UWw3S3Bid0EwNDNDT093UWEwaXpadHgyM3Jna3BGRnhBQUppcHlZemgxbHpB?=
+ =?utf-8?B?NGt4ZE1FR2N3Z2NTM0VNbUhwbmlHQXZJTmtOWDFZeENETXVidTFMRWdMQTdK?=
+ =?utf-8?B?MitrdEt5aForY3BlNHJTdUVVNmpyNHBhcUFoelpHR3dleDJUNmo4U3JoUlpR?=
+ =?utf-8?B?K3V4QXJvVXJjU0FraTBOQnFCdEMrWHlVcW5hM1pvQ0RDVmNlY1VrWWFSV2hm?=
+ =?utf-8?B?TFU4ejlwWVkvMTJYM2xYRjJVTWpIOGYyalNhYlp1NHZVWG9ZQmZySWJzMUx2?=
+ =?utf-8?B?dXJrZDF3cWY4a01wdFRtNXEzRnFSNGo0UktRVnBpYisvOXJZV3VTSXdQaStX?=
+ =?utf-8?B?VkxadzNBeFdPei95Q1RXR3llZmFGZkFUOEVRQmQ4cmV0NHNqa3d5cnRERVdE?=
+ =?utf-8?B?VzdBdCtsSkQ0dWo3VEFUMlBiNWN2NXY0bHBjWVlUYTIwTXFpY3Ric2FERGsv?=
+ =?utf-8?B?ZVM2bU1aRk9qN2ZTVzhqNWUvRXJOM3ExeFJBNEdUL293UzBBdU1Ea3VrSmEx?=
+ =?utf-8?B?RmowbWtKcDV5aVVQQldDS0M0c1ZQSUNaRFlRQXRzNE5lTVhLTjllcjFWWnZC?=
+ =?utf-8?B?U25KSjFKQUs4cHN3NUdmZVFuaWdhMUpHMm5EMmJ2cDhCSnNXYm9BNVJ6ZzhU?=
+ =?utf-8?B?cE93QmZIUzhhZUlCQk83S1RpZDdxWEw1SGV0VTdDMXdTUkRPeENZVDlveHQz?=
+ =?utf-8?B?M1NPZDFPNklGb05OTDRzaWpPZk1kNUVvSHBpRjBPV1B2WGRpdEFMZG9PYzJM?=
+ =?utf-8?B?NTh2QURialBNb0N4aTVXVnIxU1oza1Y3RDROU2RBSnZjUHI5RDNwTGZ0c2NI?=
+ =?utf-8?B?Vk9obURCaFZBYWhQeW4rVCt5cUtXY3dOYXVWeWthd2tXUnk5dkp5dXE1N3Q2?=
+ =?utf-8?B?QU1xM2F1RStST3ZDWXQ4b2o5c1h4ZmZTQ1FtYjRyaDhuOU9Lc005WWdRPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MkNLSVhxTWU5TXFaYXRuNVp1VWhKSmRsTnI2eDNnSGQ1ZGpBb01wL3d2c3Q3?=
+ =?utf-8?B?TFlrSGlJRlVGNXhxMFdFRXVRUGNNdzNjSGpKVmRJSzVPR3BmdG9kUCtmWHJq?=
+ =?utf-8?B?cVpLMkE4WHFnMDhMakZSTjhuUm5xUEpKQWJ2UjRjdnVteVBXenVPOW80cjkv?=
+ =?utf-8?B?SVdpZXpMMkt4aUlXbGdaWU9sZjJncHNQVEtHNUZIeVAxUEVkTWE0V2ZUUTlO?=
+ =?utf-8?B?N1Y4V1dWQWYxcURJUkZ2QzRBYkZZYWprNlRHUlB4dUtWUU5tMVJrS1JkWHpl?=
+ =?utf-8?B?NE1lWXp1OEs5QTVEaDZLSlFKZm9oNFZYRU5kSVRYTDliaEhqem9uNGVhMVF2?=
+ =?utf-8?B?ekxWa3VEd0hDU3dBdFRrNnZrUnlyVUNTVWY5ZVpscDdSSHIrUTBoUTJuMEFa?=
+ =?utf-8?B?YVVlV2w2Y0V0R3hORlRCZGhESUNlZktKNU1HdTU4Z3ZUTzA3UFdZYzMxQjN0?=
+ =?utf-8?B?VFZYMjNmWVhzcDU1eERRV3VSK1dkRURUdEZydDkwRFMvcklSTVNYRUhkdzZi?=
+ =?utf-8?B?TUtRaVBvMFArTWJ3elk1dWVud1ZBV1FFbDlCR2xKRTBVMkJJL2JIcENHWEl6?=
+ =?utf-8?B?ODVqQnpFbE9kajBlRC91SzYwUnlYcys3Y1dsb2lBUTVMVm9PRUsyYVdkWUFY?=
+ =?utf-8?B?S3RwSG9xQXJZbS9BVGJCT0YrdFc4dEJCaDZDeWplbURVdm90U2MzbENBaVgz?=
+ =?utf-8?B?RkRZVnZScS93QVVHSno2cWNTcUNUK2RIeHE1VjlUeUk5cVp2UzIzaUhERkd4?=
+ =?utf-8?B?dTUyVWQ2OUxTR1hFZ0FDRDMyWmlNeDdmcUNtVUFFZkc1WHkwbERSdlBJTTZ3?=
+ =?utf-8?B?a1dHR2IvQ2J0dmJJNkhCV05PSXRhUXNXQjlVSWtHZWpUWEVZSytZMzVkVlg3?=
+ =?utf-8?B?VWNMNFNBSjlMK1Z5M1pBbHhFOU81MDAwUjhMYlFlcXQ3VUFtNFRWcWFkR2FX?=
+ =?utf-8?B?VHNjQVRISHdsOWNzdk8vZ2VRcWxuai9jdVE3c09TTCtPN1VmOHNlYktVd0pq?=
+ =?utf-8?B?T2h2MDYwTFJ6SUsza2J3Qy9OcmV0N2xvWmVKZUovdVlxdE5CYy9xeHRhblhO?=
+ =?utf-8?B?K2prWkdHVnF4MlQ1THRQc1hORWhmeG83am5NeFBWV0E3MWI5VmVFcmF1Ym1F?=
+ =?utf-8?B?Z3gzN0hacmxwdEdNaEFYTjBtcjk4SnRiSE00a2VzNTRCa29qUVNma1g5MVdD?=
+ =?utf-8?B?eGVnQXVVTkFGZHFVckFRVC94UldpVlJGOEJpaXNVem1SVWxSK0xkVFVqcndL?=
+ =?utf-8?B?Y0JBc012ZDdFQlpuT3hqYmZaRklnSUZ4V2dXTHZBV3BPNUhZK3NPM29IWnVL?=
+ =?utf-8?B?cjU2bHdHMHdnamlvclg0V0RsQjN5VFhXOGxZQkNXSjFXckxxaFpqWGZzTXNq?=
+ =?utf-8?B?ZytXMVdPaTdnWFFmTkRSbnZNTFh5V1ZXUEhqRCtiK29YMlBVT1lBckZMRXk4?=
+ =?utf-8?B?aGtIZHJVK1VMOERRcEpEZk1NT0w3ZjZ3a3VJNlhsLzY2bXJjY0p3NmVPYVZs?=
+ =?utf-8?B?ODU1Z2gxOFhRS29adXd3d3VycFM5WjlwZHNyanZHRG9Xa2NTOUwyeDN2TzVt?=
+ =?utf-8?B?M2pBQUxSMGsvcXI5eSs0VHJsczlVQ09FQ3pNMUord20wN3VEWkV0S2wyeFNs?=
+ =?utf-8?B?T0RQTXdnSXRrV2xiMlJ4SGhnTWlTaHFuTUdZd2tGWExVQUozeXVETkg2RW9P?=
+ =?utf-8?B?TmVYcnVDbnpRejVEd1VFYU4vNFRwQURNbmZ5QWRIMDVuTmszdUJsZWlvalJW?=
+ =?utf-8?B?dTIvNTVDRFUzZURra0xlcWw1dllLdzdtMi8xZW1LNDM0MXB2eVNaUmZrZ211?=
+ =?utf-8?B?ZXBoLzhlM0pLL08yYW0yS1BUb2pvWlZBQlVsY0x6L0JTTlU3ZUxDY2xMcnlG?=
+ =?utf-8?B?K2RiL0pEUXQxWm5saFZLQjA3bC9iYWhKV3hacXRWYkZub2h3NDZJdElUelR2?=
+ =?utf-8?B?Q3BtcExSc0FaMkpFUHM2dExNdE11dlBnUmV3SDRWRFhCNmV6Z0FUYkx6N3JW?=
+ =?utf-8?B?Q1FjYXc3QUlhOGZZa3BLUU9CV1RIYUZMUkVIbmZ3TzJmWDFDbEo2NlhRRXNh?=
+ =?utf-8?B?THVvbEFydjQ2V3J1SkdiazVwa3hxUGFGZ3drTE5XMGNLbkFsTlhXLzd1UGJ3?=
+ =?utf-8?Q?U3efsxjoefzFUup3PUTyVKJba?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1173c6ac-bc7b-4343-feb1-08dc7358b341
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2024 14:26:38.3669 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sG1G/JKV5NolssHVP9+qwk3eUrQe7x9btDM8N8fdorSGrmBfJbBv0+6DQwYORjuiP5hTbghAIcLKiMMghAxdYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8562
+Received-SPF: softfail client-ip=2a01:111:f403:2009::600;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,55 +173,146 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 13, 2024 at 04:22:00PM +0200, Thomas Huth wrote:
-> On 13/05/2024 14.11, Daniel P. Berrangé wrote:
-> > On Mon, May 13, 2024 at 02:05:16PM +0200, Thomas Huth wrote:
-> > > On 13/05/2024 12.28, Daniel P. Berrangé wrote:
-> > > > A better way to handle this would be to define a separate project
-> > > > 
-> > > >     'tests/lcitool/projects/qemu-win-installer.yml'
-> > > > 
-> > > > With
-> > > > 
-> > > >      packages
-> > > >        - g++
-> > > > 
-> > > > Then enable the extra project for win64
-> > > > 
-> > > >       generate_dockerfile("fedora-win64-cross", "fedora-38",
-> > > >                           project='qemu,qemu-win-installer',
-> > > >                           cross="mingw64",
-> > > >                           trailer=cross_build("x86_64-w64-mingw32-",
-> > > >                                               "x86_64-softmmu"))
-> > > > 
-> > > > which should result in an identical container to what we have today
-> > > > for win64, while letting us slim the other containers.
-> > > 
-> > > Ok, good idea! ... but then we need to teach lcitool about mingw-w64-tools
-> > > first, otherwise that vss code won't get built due to the missing "widl"
-> > > tool.
-> > 
-> > Why is that a pre-requisite ?   What i've suggested will result in a
-> > Dockerfile for win64 that is 100% identical to what we already have
-> > in git today. So surely that will already succeed to the same extent
-> > that CI succeeds today ?
-> 
-> If you want to have the same result, we can also simply remove g++
-> everywhere, also for the mingw cross containers, since the vss code is
-> currently not built at all due to the missing widl program.
 
-Oh, I'm getting mixed up between the qemu-setup.exe and the qga installer
-exe.
+On 06/05/2024 12:20, Cédric Le Goater wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> vfio_set_migration_error() sets the 'return' error on the migration
+> stream if a migration is in progress. To improve error reporting, add
+> a new Error* argument to also set the Error object on the migration
+> stream, if a migration is progress.
+>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>
+>   Changes in v5:
+>
+>   - Rebased on 20c64c8a51a4 ("migration: migration_file_set_error")
+>
+>   hw/vfio/common.c | 37 ++++++++++++++++++-------------------
+>   1 file changed, 18 insertions(+), 19 deletions(-)
+>
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index c3d82a9d6e434e33f361e4b96157bf912d5c3a2f..4cf3e13a8439bd1b9a032e9d4e75df676eba457b 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -147,10 +147,10 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
+>       return vbasedev->bcontainer->space->as != &address_space_memory;
+>   }
+>
+> -static void vfio_set_migration_error(int err)
+> +static void vfio_set_migration_error(int ret, Error *err)
+>   {
+>       if (migration_is_setup_or_active()) {
+> -        migration_file_set_error(err, NULL);
+> +        migration_file_set_error(ret, err);
+>       }
+>   }
+>
+> @@ -295,9 +295,10 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>                                   iova, iova + iotlb->addr_mask);
+>
+>       if (iotlb->target_as != &address_space_memory) {
+> -        error_report("Wrong target AS \"%s\", only system memory is allowed",
+> -                     iotlb->target_as->name ? iotlb->target_as->name : "none");
+> -        vfio_set_migration_error(-EINVAL);
+> +        error_setg(&local_err,
+> +                   "Wrong target AS \"%s\", only system memory is allowed",
+> +                   iotlb->target_as->name ? iotlb->target_as->name : "none");
+> +        vfio_set_migration_error(-EINVAL, local_err);
+>           return;
+>       }
+>
+> @@ -330,11 +331,12 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>           ret = vfio_container_dma_unmap(bcontainer, iova,
+>                                          iotlb->addr_mask + 1, iotlb);
+>           if (ret) {
+> -            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+> -                         "0x%"HWADDR_PRIx") = %d (%s)",
+> -                         bcontainer, iova,
+> -                         iotlb->addr_mask + 1, ret, strerror(-ret));
+> -            vfio_set_migration_error(ret);
+> +            error_setg(&local_err,
+> +                       "vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+> +                       "0x%"HWADDR_PRIx") = %d (%s)",
+> +                       bcontainer, iova,
+> +                       iotlb->addr_mask + 1, ret, strerror(-ret));
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Use error_setg_errno()?
 
+> +            vfio_set_migration_error(ret, local_err);
+
+Now dma unmap errors (and also the error before it) are not reported if 
+they happen not during migration.
+
+This makes me think, maybe vfio_set_migration_error() is redundant and 
+can be replaced by migration_file_set_error()?
+
+Thanks.
+
+>           }
+>       }
+>   out:
+> @@ -1108,8 +1110,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
+>       if (ret) {
+>           error_prepend(&local_err,
+>                         "vfio: Could not stop dirty page tracking - ");
+> -        error_report_err(local_err);
+> -        vfio_set_migration_error(ret);
+> +        vfio_set_migration_error(ret, local_err);
+>       }
+>   }
+>
+> @@ -1226,14 +1227,14 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       trace_vfio_iommu_map_dirty_notify(iova, iova + iotlb->addr_mask);
+>
+>       if (iotlb->target_as != &address_space_memory) {
+> -        error_report("Wrong target AS \"%s\", only system memory is allowed",
+> -                     iotlb->target_as->name ? iotlb->target_as->name : "none");
+> +        error_setg(&local_err,
+> +                   "Wrong target AS \"%s\", only system memory is allowed",
+> +                   iotlb->target_as->name ? iotlb->target_as->name : "none");
+>           goto out;
+>       }
+>
+>       rcu_read_lock();
+>       if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
+> -        error_report_err(local_err);
+>           goto out_lock;
+>       }
+>
+> @@ -1244,7 +1245,6 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>                         "vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+>                         "0x%"HWADDR_PRIx") failed - ", bcontainer, iova,
+>                         iotlb->addr_mask + 1);
+> -        error_report_err(local_err);
+>       }
+>
+>   out_lock:
+> @@ -1252,7 +1252,7 @@ out_lock:
+>
+>   out:
+>       if (ret) {
+> -        vfio_set_migration_error(ret);
+> +        vfio_set_migration_error(ret, local_err);
+>       }
+>   }
+>
+> @@ -1372,8 +1372,7 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+>       if (vfio_devices_all_dirty_tracking(bcontainer)) {
+>           ret = vfio_sync_dirty_bitmap(bcontainer, section, &local_err);
+>           if (ret) {
+> -            error_report_err(local_err);
+> -            vfio_set_migration_error(ret);
+> +            vfio_set_migration_error(ret, local_err);
+>           }
+>       }
+>   }
+> --
+> 2.45.0
+>
 
