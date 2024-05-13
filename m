@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D93E8C432B
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB238C4306
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6WYh-0006jA-DJ; Mon, 13 May 2024 10:21:43 -0400
+	id 1s6WSl-0007EI-Fr; Mon, 13 May 2024 10:15:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6WYe-0006is-43
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:21:40 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6WSg-0007BT-KA
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:15:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6WYb-0000k5-Dy
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:21:38 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6WSe-00082L-4T
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:15:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715610096;
+ s=mimecast20190719; t=1715609726;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ROnJEd+NY5tmbirGFDuGuh4vgsUPwZ69j5GRcKzJOjM=;
- b=J7y0uGDHJiQLM+0i7AsF4xB2HVybg878oUOuFRW4ndgSzkX3PJHAXAus7m/fpm11SFp5Pv
- KoiEQnsgPybZOMuQr7Aj1ZlcV6gaMz+ZEe1u6YyXH75rvESOBmos+W6IsMtR08V+hVkFO1
- NcSCPweBRk0v/jGM8R288LatXdRgkuw=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CA3KJvC+9raWEm5iCsMQxMRscl7E+EFVpiYgjeQqgTU=;
+ b=RmhI6q5/fbciDuzRcNixQim48Nf0d77ohKVa0SVX5gcdBDirpIz/vOmhOZ0EC4TRedkCgF
+ hKaHSZeXmfV49DBbbaMejuWV6mN73j5m9qdBJqLbsYViS1HOHZBs6QDlSpjVF4KLjVro07
+ 2J082DSTa0ooOBWLYu+bUB56LMpK1o0=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-ceRE5oaVPamEzixXU5En4g-1; Mon, 13 May 2024 10:13:51 -0400
-X-MC-Unique: ceRE5oaVPamEzixXU5En4g-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-43e0e0dab52so33858611cf.1
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:13:51 -0700 (PDT)
+ us-mta-156-mBlmXD9YNVSZVNzCTFFPQQ-1; Mon, 13 May 2024 10:15:24 -0400
+X-MC-Unique: mBlmXD9YNVSZVNzCTFFPQQ-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5aa350b43ecso6599891eaf.0
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:15:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715609631; x=1716214431;
+ d=1e100.net; s=20230601; t=1715609724; x=1716214524;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ROnJEd+NY5tmbirGFDuGuh4vgsUPwZ69j5GRcKzJOjM=;
- b=WWP0BbMQG1H3BL1uzBOcah/VkISEw9gLG96Qc/IcJ7tgDuKvxoDcu7QtFUz69kUWdW
- eAU2BP6E+MCFqN/Ar6QCCfoo4fv2OgdI4yI6aBNcPHbC3dwGurgflmZykxATYwufc5ds
- sdIYp0ZrMYfrRoFpfwpXCd7++PYsLYkPypesvK7D/4PpceldKecefV5GWi0TXRoN4FJU
- 6Ems0OCei2Y5h2j7dz2MnhntLQ3nBuIGRtoTR6MG77lmErGJ674akC34ki2hEOAY6/oq
- 2i78oYS7pDKKXQ0MyJccK+1RQywzmtyTmHb9KmjGgQ59H7ZVRuJeP1Pw4+8x6T2voB64
- n+bg==
+ bh=CA3KJvC+9raWEm5iCsMQxMRscl7E+EFVpiYgjeQqgTU=;
+ b=eZyGypBrBAlzHw5THhmo8YFGHR3i4ji/QsbDeWU4+lC3zVuCvKmnEWm6F+BVPNehTx
+ 0n2pawaqVMubwpNMthTFnRnwTgNbi/vt8qxNDpi/kMpqB1xMqtzkU5cqlbO7KCZhDpeX
+ ZLE6ZSrx7s5Sf1NR25+UYaUCv5LUoTSS8skU5ml0dJCwplzpazynPGmm1iYkbG3M4q4q
+ 7J7UjF1gemT34YvV6rPhOmzh1Zw+akVkn5KINv8Z61VwCDacFA5R1AqGXUyF1NPEOzTq
+ IoGPPF/3rcNYQ2CLv73J3IEDUB1GcNYuUMp1hCaHbRaM5Gkx/66SgBUiqyGj2j3j9T7x
+ RH6w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVlWoY7WFoR/jGDQUNqP9J1Q1vJllJxdjwlIEwzm30RIjxhN367dOnaODoCaXq9B+kVIlsTzGvXXdXGGywgt9/QLRZK1ho=
-X-Gm-Message-State: AOJu0YzpPAHTMu0qLuYAZyr9Gaw5xT5kGe9UojyPnYV0mWplWbnvSatv
- 8cPucjgatXEbP+hhTTZa3VXU8502Le0/06Ry6LiK77y62twjuoQxbuBrW61yGOtk3XZVQq0n3II
- lkMHkHqqWj0UIA98manpPFGeBpjgL/UdpB7iBA0DugmKT7Y38jkKs
-X-Received: by 2002:a05:622a:199f:b0:43a:c1a3:e283 with SMTP id
- d75a77b69052e-43dfce3ca89mr178842501cf.28.1715609631001; 
- Mon, 13 May 2024 07:13:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1tfnNogDsfkwQPBjqupGzT816+bPlrOisbOwsObDBRbD/UiA1RAPRYMb1jIh5VTmfd7pvIQ==
-X-Received: by 2002:a05:622a:199f:b0:43a:c1a3:e283 with SMTP id
- d75a77b69052e-43dfce3ca89mr178842131cf.28.1715609630605; 
- Mon, 13 May 2024 07:13:50 -0700 (PDT)
+ AJvYcCUEfUaEDCCxkZ/DKE8f2lyN08TRZOxnoVroYVmwBjSsLNjCIzasUct+wDROlfQqOeZ6U1fuheAHmWyqO3fRJD0SJAyn10c=
+X-Gm-Message-State: AOJu0Yw9boeslwA8mb2tLzOZ9yBMAxxaZLtV1uEoSa2l00xqX+YZ2heW
+ JupznhdvMSSmnPbLWSy4Jk7RmG5lMCqkUTgtyAhXvAYH1nmpSr+pcZeKqjRVpvOJX0R0/vtku9D
+ ma7LqUlGRuaRVB7w3Fs5KAr1ErqeklxlwoWM1c0njqmAdDSZclyHa
+X-Received: by 2002:a05:6358:339f:b0:192:c556:5552 with SMTP id
+ e5c5f4694b2df-193bb3fc5fcmr957897755d.6.1715609724043; 
+ Mon, 13 May 2024 07:15:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbr5PPxeSqsVvPQ9awj9ZHMSW/gv0PW1AU7NhaYsrixtMYDsecAFb6zHjclGIjos1G4gGm4A==
+X-Received: by 2002:a05:6358:339f:b0:192:c556:5552 with SMTP id
+ e5c5f4694b2df-193bb3fc5fcmr957894355d.6.1715609723675; 
+ Mon, 13 May 2024 07:15:23 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
  ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43e137a737asm19096401cf.4.2024.05.13.07.13.48
+ d75a77b69052e-43e24483cbasm1388621cf.60.2024.05.13.07.15.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 May 2024 07:13:50 -0700 (PDT)
-Message-ID: <8bc6d519-5132-4061-92f1-64012fc06e04@redhat.com>
-Date: Mon, 13 May 2024 16:13:47 +0200
+ Mon, 13 May 2024 07:15:23 -0700 (PDT)
+Message-ID: <e34a7c4f-2c6c-404a-a721-4838fe0edeb2@redhat.com>
+Date: Mon, 13 May 2024 16:15:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] vfio/migration: Don't emit STOP_COPY VFIO
- migration QAPI event twice
+Subject: Re: [PATCH v2 1/3] qapi/vfio: Add VFIO migration QAPI event
 To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
@@ -77,10 +76,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Joao Martins <joao.m.martins@oracle.com>,
  Maor Gottlieb <maorg@nvidia.com>
 References: <20240509090954.16447-1-avihaih@nvidia.com>
- <20240509090954.16447-4-avihaih@nvidia.com>
+ <20240509090954.16447-2-avihaih@nvidia.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240509090954.16447-4-avihaih@nvidia.com>
+In-Reply-To: <20240509090954.16447-2-avihaih@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -108,42 +107,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 5/9/24 11:09, Avihai Horon wrote:
-> When migrating a VFIO device that supports pre-copy, it is transitioned
-> to STOP_COPY twice: once in vfio_vmstate_change() and second time in
-> vfio_save_complete_precopy().
+> Add a new QAPI event for VFIO migration. This event will be emitted when
+> a VFIO device changes its migration state, for example, during migration
+> or when stopping/starting the guest.
 > 
-> The second transition is harmless, as it's a STOP_COPY->STOP_COPY no-op
-> transition. However, with the newly added VFIO migration QAPI event, the
-> STOP_COPY event is undesirably emitted twice.
+> This event can be used by management applications to get updates on the
+> current state of the VFIO device for their own purposes.
 > 
-> Prevent this by returning early in vfio_migration_set_state() if
-> new_state is the same as current device state.
-> 
-> Note that the STOP_COPY transition in vfio_save_complete_precopy() is
-> essential for VFIO devices that don't support pre-copy, for migrating an
-> already stopped guest and for snapshots.
+> Note that this new event is introduced since VFIO devices have a unique
+> set of migration states which cannot be described as accurately by other
+> existing events such as run state or migration status.
 > 
 > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-> ---
->   hw/vfio/migration.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-> index 5a359c4c78..14ef9c924e 100644
-> --- a/hw/vfio/migration.c
-> +++ b/hw/vfio/migration.c
-> @@ -143,6 +143,10 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
->           (struct vfio_device_feature_mig_state *)feature->data;
->       int ret;
->   
 
-I wonder if we should improve the trace events a little to track better
-the state transitions. May be move trace_vfio_migration_set_state()
-at the beginning of vfio_migration_set_state() and introduce a new
-event for the currently named routine set_state() ?
-
-This can come with followups.
-
+LGTM,
 
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 
@@ -152,12 +129,121 @@ Thanks,
 C.
 
 
-> +    if (new_state == migration->device_state) {
-> +        return 0;
-> +    }
+> ---
+>   MAINTAINERS           |  1 +
+>   qapi/qapi-schema.json |  1 +
+>   qapi/vfio.json        | 67 +++++++++++++++++++++++++++++++++++++++++++
+>   qapi/meson.build      |  1 +
+>   4 files changed, 70 insertions(+)
+>   create mode 100644 qapi/vfio.json
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 84391777db..b5f1de459e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2160,6 +2160,7 @@ F: hw/vfio/*
+>   F: include/hw/vfio/
+>   F: docs/igd-assign.txt
+>   F: docs/devel/migration/vfio.rst
+> +F: qapi/vfio.json
+>   
+>   vfio-ccw
+>   M: Eric Farman <farman@linux.ibm.com>
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index 5e33da7228..b1581988e4 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -78,5 +78,6 @@
+>   { 'include': 'pci.json' }
+>   { 'include': 'stats.json' }
+>   { 'include': 'virtio.json' }
+> +{ 'include': 'vfio.json' }
+>   { 'include': 'cryptodev.json' }
+>   { 'include': 'cxl.json' }
+> diff --git a/qapi/vfio.json b/qapi/vfio.json
+> new file mode 100644
+> index 0000000000..a0e5013188
+> --- /dev/null
+> +++ b/qapi/vfio.json
+> @@ -0,0 +1,67 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
 > +
->       feature->argsz = sizeof(buf);
->       feature->flags =
->           VFIO_DEVICE_FEATURE_SET | VFIO_DEVICE_FEATURE_MIG_DEVICE_STATE;
+> +##
+> +# = VFIO devices
+> +##
+> +
+> +##
+> +# @VfioMigrationState:
+> +#
+> +# An enumeration of the VFIO device migration states.
+> +#
+> +# @stop: The device is stopped.
+> +#
+> +# @running: The device is running.
+> +#
+> +# @stop-copy: The device is stopped and its internal state is available
+> +#     for reading.
+> +#
+> +# @resuming: The device is stopped and its internal state is available
+> +#     for writing.
+> +#
+> +# @running-p2p: The device is running in the P2P quiescent state.
+> +#
+> +# @pre-copy: The device is running, tracking its internal state and its
+> +#     internal state is available for reading.
+> +#
+> +# @pre-copy-p2p: The device is running in the P2P quiescent state,
+> +#     tracking its internal state and its internal state is available
+> +#     for reading.
+> +#
+> +# Since: 9.1
+> +##
+> +{ 'enum': 'VfioMigrationState',
+> +  'data': [ 'stop', 'running', 'stop-copy', 'resuming', 'running-p2p',
+> +            'pre-copy', 'pre-copy-p2p' ],
+> +  'prefix': 'QAPI_VFIO_MIGRATION_STATE' }
+> +
+> +##
+> +# @VFIO_MIGRATION:
+> +#
+> +# This event is emitted when a VFIO device migration state is changed.
+> +#
+> +# @device-id: The device's id, if it has one.
+> +#
+> +# @qom-path: The device's QOM path.
+> +#
+> +# @device-state: The new changed device migration state.
+> +#
+> +# Since: 9.1
+> +#
+> +# Example:
+> +#
+> +#     <- { "timestamp": { "seconds": 1713771323, "microseconds": 212268 },
+> +#          "event": "VFIO_MIGRATION",
+> +#          "data": {
+> +#              "device-id": "vfio_dev1",
+> +#              "qom-path": "/machine/peripheral/vfio_dev1",
+> +#              "device-state": "stop" } }
+> +##
+> +{ 'event': 'VFIO_MIGRATION',
+> +  'data': {
+> +      'device-id': 'str',
+> +      'qom-path': 'str',
+> +      'device-state': 'VfioMigrationState'
+> +  } }
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index c92af6e063..e7bc54e5d0 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -52,6 +52,7 @@ qapi_all_modules = [
+>     'stats',
+>     'trace',
+>     'transaction',
+> +  'vfio',
+>     'virtio',
+>     'yank',
+>   ]
 
 
