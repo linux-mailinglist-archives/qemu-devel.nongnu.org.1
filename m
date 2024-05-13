@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1FC8C3B5B
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD7D8C3B64
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:34:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PEb-0007HC-Vp; Mon, 13 May 2024 02:32:30 -0400
+	id 1s6PEo-0007eO-ON; Mon, 13 May 2024 02:32:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEN-00077m-0o; Mon, 13 May 2024 02:32:15 -0400
+ id 1s6PEO-00079J-HG; Mon, 13 May 2024 02:32:16 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEI-0003wa-MO; Mon, 13 May 2024 02:32:14 -0400
+ id 1s6PEJ-0003wW-15; Mon, 13 May 2024 02:32:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=EhlDRRck+FVgxMfW1jaod9Ue0Scw5Pjg0RWeaeVQrXE=; b=YlCn9OMQ9HHy
- NH+fhz/HwaG6thwJjb89H5aPX8KCQGCxFMgvSqMOa1+44ynXCN5F/cQ4l0nOdLW/bjlwoE44phTRG
- FAke/9fs95MfdHQSPn5yJdjXvgr65x86OYv8j7V7sH39g01btUbOTnnp9XPSmTiJTtoxV3M1SE6YJ
- dRMWAf0oTtTpgxuhoDU+uxh26AMJb6kF3GzP6Es8k7kryaRFnYZQEGDMhkwinAlF1VdmKm+n/uMyV
- IlGecQZ4RaiL+WK+MtoiS7roWQXFAv4hru+ktAcUYqgL6DGIBwrGu75G6ElZxPOgEY0HC7A7bnM9Z
- 5GQixxXm9p6IAfu43btZ5Q==;
+ Content-Type; bh=gdfSxwNzgYgkXJ/2oFsiwToopSDkXtcrJyFLx6fnw7Q=; b=oCb3ZlgtVVZ9
+ WFg5xKlJLIaE/ss9f9VX2m29x802DZzPYK+XPL/TvROO1l2ExLh7c9DltZI0yCM4wYMGhVm/48yNH
+ weVI1ClBN8KDzdeB+SRs/CKMrHokOjQ6f89TBftisSu+sMCFrcUFEEv7lPGZLY7bj5jJHawAnxjAB
+ 6BQBA+tVDDb2rcS0mR2AhO7zWR4L2Sx3pIUfs5eLJ8qjnaCYpNTZq5113uy3xjniis/K+HdscoqoP
+ 6E2iNOEm5uAErD+518kz9+763EEFjrUDnftSvQoZ+EXhIe+lp4UclvetM6BJhwqzYzowts58d0ESF
+ gKqnDo845vWzHU4xRifczg==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2N;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2Q;
  Mon, 13 May 2024 08:31:56 +0200
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, berto@igalia.com, jean-louis@dupond.be,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 04/11] block/file-posix: add trace event for fallocate()
- calls
-Date: Mon, 13 May 2024 09:31:56 +0300
-Message-Id: <20240513063203.113911-5-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 05/11] iotests/common.rc: add disk_usage function
+Date: Mon, 13 May 2024 09:31:57 +0300
+Message-Id: <20240513063203.113911-6-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
 References: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
@@ -66,38 +65,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This would ease debugging of write zeroes and discard operations.
+Move the definition from iotests/250 to common.rc.  This is used to
+detect real disk usage of sparse files.  In particular, we want to use
+it for checking subclusters-based discards.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- block/file-posix.c | 1 +
- block/trace-events | 1 +
- 2 files changed, 2 insertions(+)
+ tests/qemu-iotests/250       | 5 -----
+ tests/qemu-iotests/common.rc | 6 ++++++
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..45134f0eef 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -1859,6 +1859,7 @@ static int translate_err(int err)
- static int do_fallocate(int fd, int mode, off_t offset, off_t len)
- {
-     do {
-+        trace_file_do_fallocate(fd, mode, offset, len);
-         if (fallocate(fd, mode, offset, len) == 0) {
-             return 0;
-         }
-diff --git a/block/trace-events b/block/trace-events
-index 8e789e1f12..2f7ad28996 100644
---- a/block/trace-events
-+++ b/block/trace-events
-@@ -203,6 +203,7 @@ curl_setup_preadv(uint64_t bytes, uint64_t start, const char *range) "reading %"
- curl_close(void) "close"
+diff --git a/tests/qemu-iotests/250 b/tests/qemu-iotests/250
+index af48f83aba..c0a0dbc0ff 100755
+--- a/tests/qemu-iotests/250
++++ b/tests/qemu-iotests/250
+@@ -52,11 +52,6 @@ _unsupported_imgopts data_file
+ # bdrv_co_truncate(bs->file) call in qcow2_co_truncate(), which might succeed
+ # anyway.
  
- # file-posix.c
-+file_do_fallocate(int fd, int mode, int64_t offset, int64_t len) "fd=%d mode=0x%02x offset=%" PRIi64 " len=%" PRIi64
- file_copy_file_range(void *bs, int src, int64_t src_off, int dst, int64_t dst_off, int64_t bytes, int flags, int64_t ret) "bs %p src_fd %d offset %"PRIu64" dst_fd %d offset %"PRIu64" bytes %"PRIu64" flags %d ret %"PRId64
- file_FindEjectableOpticalMedia(const char *media) "Matching using %s"
- file_setup_cdrom(const char *partition) "Using %s as optical disc"
+-disk_usage()
+-{
+-    du --block-size=1 $1 | awk '{print $1}'
+-}
+-
+ size=2100M
+ 
+ _make_test_img -o "cluster_size=1M,preallocation=metadata" $size
+diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+index 95c12577dd..237f746af8 100644
+--- a/tests/qemu-iotests/common.rc
++++ b/tests/qemu-iotests/common.rc
+@@ -140,6 +140,12 @@ _optstr_add()
+     fi
+ }
+ 
++# report real disk usage for sparse files
++disk_usage()
++{
++    du --block-size=1 "$1" | awk '{print $1}'
++}
++
+ # Set the variables to the empty string to turn Valgrind off
+ # for specific processes, e.g.
+ # $ VALGRIND_QEMU_IO= ./check -qcow2 -valgrind 015
 -- 
 2.39.3
 
