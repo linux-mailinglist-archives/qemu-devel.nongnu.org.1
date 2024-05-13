@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D17D8C3BD5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E378C3BD6
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PyO-0000p7-Kl; Mon, 13 May 2024 03:19:48 -0400
+	id 1s6Pyr-0001Ny-P2; Mon, 13 May 2024 03:20:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6Py1-0000oZ-KZ
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:19:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1s6PyQ-00015X-8S
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:19:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6Pxy-0004LO-5p
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:19:25 -0400
+ id 1s6PyO-0004P2-Os
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:19:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715584761;
+ s=mimecast20190719; t=1715584788;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p3/MmczGxyTXcugQUY7v5Ea0HYsjt7KFh3KUmk21BK4=;
- b=Y3LIanulryz+tOwrsiotfU0RbqmTql0A+BBXBfylkymDkPW+eysb8NGEcaFLe6DtbVbpa/
- KRP7vYdJjplur0qoMUaWL4envCtCTYzXof7Q8atVJiVwC6WnxVpNPJVv/F6Is53KU14v+w
- YHshr/nKZce1twv8Npc9Oit+wypUYbU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-hkGrhxcgNKSJeTpcJeo6FA-1; Mon,
- 13 May 2024 03:19:15 -0400
-X-MC-Unique: hkGrhxcgNKSJeTpcJeo6FA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=eSe463ng3EiCj3u8loPXIUXTnqiY16n1zASZR5YvrIs=;
+ b=P9YanNDP0FQZIhPtJJ5oYKzvv29kiR06QxYjUs5ZEHjf7LU5vfgkzgK3TlWjNyL/GIfwrY
+ b3AoScBo6LDm+zVUhtYJsvjBaALgQKsW8Zw4+WPPmuFH/hLxu+HeM8TiK98SyHxqzMSvlb
+ LV7LLAsGwjiqDETVKfbeGhetyq6qjy4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-349-v1KWfXUTPXCf_x8LomXMZA-1; Mon, 13 May 2024 03:19:20 -0400
+X-MC-Unique: v1KWfXUTPXCf_x8LomXMZA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 206A429AA2D4;
- Mon, 13 May 2024 07:19:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CDEED10193A5;
+ Mon, 13 May 2024 07:19:19 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3FB78200A08E;
- Mon, 13 May 2024 07:19:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2AE6D499B83;
+ Mon, 13 May 2024 07:19:17 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -52,16 +52,16 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 1/4] migration: add "exists" info to load-state-field trace
-Date: Mon, 13 May 2024 11:19:02 +0400
-Message-ID: <20240513071905.499143-2-marcandre.lureau@redhat.com>
+Subject: [PATCH v2 2/4] migration: fix a typo
+Date: Mon, 13 May 2024 11:19:03 +0400
+Message-ID: <20240513071905.499143-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20240513071905.499143-1-marcandre.lureau@redhat.com>
 References: <20240513071905.499143-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -89,41 +89,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
 ---
- migration/vmstate.c    | 5 +++--
- migration/trace-events | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ migration/vmstate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/migration/vmstate.c b/migration/vmstate.c
-index ef26f26ccd..b51212a75b 100644
+index b51212a75b..ff5d589a6d 100644
 --- a/migration/vmstate.c
 +++ b/migration/vmstate.c
-@@ -128,8 +128,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+@@ -479,7 +479,7 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+ 
+         len = qemu_peek_byte(f, 1);
+         if (len < strlen(vmsd->name) + 1) {
+-            /* subsection name has be be "section_name/a" */
++            /* subsection name has to be "section_name/a" */
+             trace_vmstate_subsection_load_bad(vmsd->name, "(short)", "");
+             return 0;
          }
-     }
-     while (field->name) {
--        trace_vmstate_load_state_field(vmsd->name, field->name);
--        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
-+        bool exists = vmstate_field_exists(vmsd, field, opaque, version_id);
-+        trace_vmstate_load_state_field(vmsd->name, field->name, exists);
-+        if (exists) {
-             void *first_elem = opaque + field->offset;
-             int i, n_elems = vmstate_n_elems(opaque, field);
-             int size = vmstate_size(opaque, field);
-diff --git a/migration/trace-events b/migration/trace-events
-index d0c44c3853..0b7c3324fb 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -58,7 +58,7 @@ postcopy_page_req_sync(void *host_addr) "sync page req %p"
- vmstate_load_field_error(const char *field, int ret) "field \"%s\" load failed, ret = %d"
- vmstate_load_state(const char *name, int version_id) "%s v%d"
- vmstate_load_state_end(const char *name, const char *reason, int val) "%s %s/%d"
--vmstate_load_state_field(const char *name, const char *field) "%s:%s"
-+vmstate_load_state_field(const char *name, const char *field, bool exists) "%s:%s exists=%d"
- vmstate_n_elems(const char *name, int n_elems) "%s: %d"
- vmstate_subsection_load(const char *parent) "%s"
- vmstate_subsection_load_bad(const char *parent,  const char *sub, const char *sub2) "%s: %s/%s"
 -- 
 2.41.0.28.gd7d8841f67
 
