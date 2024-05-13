@@ -2,137 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DED8C432F
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C98138C42DE
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:09:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6WZD-00079M-W2; Mon, 13 May 2024 10:22:16 -0400
+	id 1s6WLo-0005VD-90; Mon, 13 May 2024 10:08:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6WZ6-0006xn-6v
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:22:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s6WLl-0005V5-N2
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:08:21 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6WZ4-0000my-Ia
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:22:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715610126;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=i3CMXmDyPeNlWJgC3Plu4yRBWS4XEv/QRCpW8mAP3YI=;
- b=XZZDMfd44nxmFohJyOdpYjIgA3fwZ8TRFKjVqAO17iXOBSKlkCInOZbS96/9YZhOdIxpZC
- LetixqkVjSRq+gNv+DHQxzisndpuvfrr76MFSqbXL5anoG2YxWKnzodMY4QkuW6Zl+c/Kc
- 9MsX9E9808pm9VvdJuS3WBAEwpkzGx4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-502-6YtnYSpTP4mzVw-SzCE-sQ-1; Mon, 13 May 2024 10:22:04 -0400
-X-MC-Unique: 6YtnYSpTP4mzVw-SzCE-sQ-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-792c10a363bso634618385a.3
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:22:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715610124; x=1716214924;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=i3CMXmDyPeNlWJgC3Plu4yRBWS4XEv/QRCpW8mAP3YI=;
- b=BPIhZ019op5V3N8PKL4WNQUnnjR6Vlcrl7dsaecNLeaA/L5fTo+Wg1M59Dh6V9iTDT
- A54D/J9c3YwB9ho3AEeC5UmiygvbeCENQP9v7qSpP8dKLJBe54Rg2OchEw3MlYVCFTuP
- Bz77OW423FDbdi6N1nToN6KvCIz1huuimxyYid4LyvPPqPmE93kOsq4zlF917sZvl8Vg
- tF4BP2RfUfTx95rCP7HX1eTW/xqIEjUMTb/rUDb/VGkrMLl6RxS97WsbSXPROuHbhhtj
- 0cc/WGw68YKTdP5C+eVyKcfMmaNAosnI4T+BlmQxpv+H1AcT7FNXatiAiSuyMWcXN2bi
- 4zdA==
-X-Gm-Message-State: AOJu0Yz2zFeN7iy7+L4TNCpE1/X9Fb07n8LDtHtNq5Om3pAhWfEBxl3R
- d9i0TnlsuIT4+APIJ8gVN61zXvIHTSZ+wDYc3dEDBW+ayEAyK87wiKdvRo6itDiUvIEPrvUU3aV
- 6ezhDiI8xVUjvWVWN38pxfDEcYwpm86YZAR+0eGpsVPoBFsvKyqCx
-X-Received: by 2002:a05:6214:5347:b0:6a0:b1a2:7540 with SMTP id
- 6a1803df08f44-6a16824c289mr127998636d6.61.1715610123923; 
- Mon, 13 May 2024 07:22:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH7o8u5WnXQice15td9OrJjSK46EJ+sjGN+AJNr0bS0zEVCezQw0Z9Pjz7Y+HJrYcLcRhorYw==
-X-Received: by 2002:a05:6214:5347:b0:6a0:b1a2:7540 with SMTP id
- 6a1803df08f44-6a16824c289mr127998336d6.61.1715610123552; 
- Mon, 13 May 2024 07:22:03 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-40-241-109.web.vodafone.de.
- [109.40.241.109]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6a15f1857e3sm43668446d6.52.2024.05.13.07.22.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 May 2024 07:22:03 -0700 (PDT)
-Message-ID: <22d84c81-7c7b-4656-8606-cf919b26d0a1@redhat.com>
-Date: Mon, 13 May 2024 16:22:00 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s6WLf-0006IQ-Md
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:08:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715609296; x=1747145296;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=WsU0YTZZ6yJOQ7T5hG4osWxzTIYWzDTn0bE+/jzR/ss=;
+ b=iB7TXu2lRKhOW4vmPZAktn9z0S9CrJ4X5hjUq/WJPzvTvehKrTWtIg6T
+ eZN7WLFNhwVK53ytUTCy+66PSkNlYuoinpEykFgMCrA//Zk6/4SE4nEmT
+ 1fb3vvnRdKwe9GiCV3cUoWvHAc+bIJypTpHylZlly9K8O4RV0NVQawMwf
+ dCCsfzQk17GbfrFgg9ZMFl/HnXZV/789Sbx11LmyW3s6sxsDWabmB7MMR
+ 6ES2XXgouUqxU4C+eV6n5ervkR9c7cz3oPlJNadej0/k7YMQTopw4JkpF
+ Yvddc5lplGcePdGytQA4skdzGJHKTQjj/6UAyHCpGWtNu6fTOztfZ8s8T w==;
+X-CSE-ConnectionGUID: dIQF/j2kSP2dDPtPyZ/A2g==
+X-CSE-MsgGUID: zraL+047SYK1EPk2vApp4A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11072"; a="22949772"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="22949772"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 May 2024 07:08:10 -0700
+X-CSE-ConnectionGUID: m2XnHfnKSPm6rrgaPm9rew==
+X-CSE-MsgGUID: 5kSCVEiiRraP6rafsZNWog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; d="scan'208";a="30299320"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 13 May 2024 07:08:07 -0700
+Date: Mon, 13 May 2024 22:22:22 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ devel@lists.libvirt.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Krempa <pkrempa@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 1/2] hw/core: allow parameter=1 for SMP topology on any
+ machine
+Message-ID: <ZkIiHgw9rQActD2i@intel.com>
+References: <20240513123358.612355-1-berrange@redhat.com>
+ <20240513123358.612355-2-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] tests/lcitool: Remove g++ from the containers (except
- for the MinGW one)
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20240513102252.48884-1-thuth@redhat.com>
- <20240513102252.48884-3-thuth@redhat.com> <ZkHrXOR05UkkMn2X@redhat.com>
- <41974e51-cee5-4a62-bcab-db9b78f76aee@redhat.com>
- <ZkIDYTTtMlX20-xW@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzR5UaG9tYXMgSHV0
- aCA8dGh1dGhAcmVkaGF0LmNvbT7CwXgEEwECACIFAlVgX6oCGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAAoJEC7Z13T+cC21EbIP/ii9cvT2HHGbFRl8HqGT6+7Wkb+XLMqJBMAIGiQK
- QIP3xk1HPTsLfVG0ao4hy/oYkGNOP8+ubLnZen6Yq3zAFiMhQ44lvgigDYJo3Ve59gfe99KX
- EbtB+X95ODARkq0McR6OAsPNJ7gpEUzfkQUUJTXRDQXfG/FX303Gvk+YU0spm2tsIKPl6AmV
- 1CegDljzjycyfJbk418MQmMu2T82kjrkEofUO2a24ed3VGC0/Uz//XCR2ZTo+vBoBUQl41BD
- eFFtoCSrzo3yPFS+w5fkH9NT8ChdpSlbNS32NhYQhJtr9zjWyFRf0Zk+T/1P7ECn6gTEkp5k
- ofFIA4MFBc/fXbaDRtBmPB0N9pqTFApIUI4vuFPPO0JDrII9dLwZ6lO9EKiwuVlvr1wwzsgq
- zJTPBU3qHaUO4d/8G+gD7AL/6T4zi8Jo/GmjBsnYaTzbm94lf0CjXjsOX3seMhaE6WAZOQQG
- tZHAO1kAPWpaxne+wtgMKthyPLNwelLf+xzGvrIKvLX6QuLoWMnWldu22z2ICVnLQChlR9d6
- WW8QFEpo/FK7omuS8KvvopFcOOdlbFMM8Y/8vBgVMSsK6fsYUhruny/PahprPbYGiNIhKqz7
- UvgyZVl4pBFjTaz/SbimTk210vIlkDyy1WuS8Zsn0htv4+jQPgo9rqFE4mipJjy/iboDzsFN
- BFH7eUwBEAC2nzfUeeI8dv0C4qrfCPze6NkryUflEut9WwHhfXCLjtvCjnoGqFelH/PE9NF4
- 4VPSCdvD1SSmFVzu6T9qWdcwMSaC+e7G/z0/AhBfqTeosAF5XvKQlAb9ZPkdDr7YN0a1XDfa
- +NgA+JZB4ROyBZFFAwNHT+HCnyzy0v9Sh3BgJJwfpXHH2l3LfncvV8rgFv0bvdr70U+On2XH
- 5bApOyW1WpIG5KPJlDdzcQTyptOJ1dnEHfwnABEfzI3dNf63rlxsGouX/NFRRRNqkdClQR3K
- gCwciaXfZ7ir7fF0u1N2UuLsWA8Ei1JrNypk+MRxhbvdQC4tyZCZ8mVDk+QOK6pyK2f4rMf/
- WmqxNTtAVmNuZIwnJdjRMMSs4W4w6N/bRvpqtykSqx7VXcgqtv6eqoDZrNuhGbekQA0sAnCJ
- VPArerAZGArm63o39me/bRUQeQVSxEBmg66yshF9HkcUPGVeC4B0TPwz+HFcVhheo6hoJjLq
- knFOPLRj+0h+ZL+D0GenyqD3CyuyeTT5dGcNU9qT74bdSr20k/CklvI7S9yoQje8BeQAHtdV
- cvO8XCLrpGuw9SgOS7OP5oI26a0548M4KldAY+kqX6XVphEw3/6U1KTf7WxW5zYLTtadjISB
- X9xsRWSU+Yqs3C7oN5TIPSoj9tXMoxZkCIHWvnqGwZ7JhwARAQABwsFfBBgBAgAJBQJR+3lM
- AhsMAAoJEC7Z13T+cC21hPAQAIsBL9MdGpdEpvXs9CYrBkd6tS9mbaSWj6XBDfA1AEdQkBOn
- ZH1Qt7HJesk+qNSnLv6+jP4VwqK5AFMrKJ6IjE7jqgzGxtcZnvSjeDGPF1h2CKZQPpTw890k
- fy18AvgFHkVk2Oylyexw3aOBsXg6ukN44vIFqPoc+YSU0+0QIdYJp/XFsgWxnFIMYwDpxSHS
- 5fdDxUjsk3UBHZx+IhFjs2siVZi5wnHIqM7eK9abr2cK2weInTBwXwqVWjsXZ4tq5+jQrwDK
- cvxIcwXdUTLGxc4/Z/VRH1PZSvfQxdxMGmNTGaXVNfdFZjm4fz0mz+OUi6AHC4CZpwnsliGV
- ODqwX8Y1zic9viSTbKS01ZNp175POyWViUk9qisPZB7ypfSIVSEULrL347qY/hm9ahhqmn17
- Ng255syASv3ehvX7iwWDfzXbA0/TVaqwa1YIkec+/8miicV0zMP9siRcYQkyTqSzaTFBBmqD
- oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
- IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
- yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <ZkIDYTTtMlX20-xW@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 3
-X-Spam_score: 0.3
-X-Spam_bar: /
-X-Spam_report: (0.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20240513123358.612355-2-berrange@redhat.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,98 +88,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/05/2024 14.11, Daniel P. BerrangÃ© wrote:
-> On Mon, May 13, 2024 at 02:05:16PM +0200, Thomas Huth wrote:
->> On 13/05/2024 12.28, Daniel P. BerrangÃ© wrote:
->>> On Mon, May 13, 2024 at 12:22:50PM +0200, Thomas Huth wrote:
->>>> We don't need C++ for the normal QEMU builds anymore, so installing
->>>> g++ in each and every container seems to be a waste of time and disk
->>>> space. The only container that still needs it is the Fedora MinGW
->>>> container that builds the only remaining C++ code in ./qga/vss-win32/
->>>> and we can install it here with an extra RUN statement instead.
->>>>
->>>> This way we can also add the mingw-w64-tools package quite easily
->>>> which contains the x86_64-w64-mingw32-widl program that is required
->>>> for compiling the vss code of the guest agent (it was missing before
->>>> this change, so the VSS code was actually never compiled in the CI).
->>>>
->>>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>>> ---
->>>>    tests/lcitool/projects/qemu.yml |  1 -
->>>>    tests/lcitool/refresh           | 10 ++++++++--
->>>>    2 files changed, 8 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
->>>> index 9173d1e36e..b63b6bd850 100644
->>>> --- a/tests/lcitool/projects/qemu.yml
->>>> +++ b/tests/lcitool/projects/qemu.yml
->>>> @@ -22,7 +22,6 @@ packages:
->>>>     - findutils
->>>>     - flex
->>>>     - fuse3
->>>> - - g++
->>>>     - gcc
->>>>     - gcc-native
->>>>     - gcovr
->>>> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
->>>> index 24a735a3f2..dda07ddcd1 100755
->>>> --- a/tests/lcitool/refresh
->>>> +++ b/tests/lcitool/refresh
->>>> @@ -109,6 +109,11 @@ debian12_extras = [
->>>>        "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
->>>>    ]
->>>> +fedora_mingw_extras = [ "\n"
->>>> +    "RUN nosync dnf install -y mingw64-gcc-c++ mingw-w64-tools && \\\n"
->>>> +    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-c++ && \\\n"
->>>> +    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-g++\n\n"
->>>> +]
->>>>    def cross_build(prefix, targets):
->>>>        conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
->>>> @@ -193,8 +198,9 @@ try:
->>>>        generate_dockerfile("fedora-win64-cross", "fedora-38",
->>>>                            cross="mingw64",
->>>> -                        trailer=cross_build("x86_64-w64-mingw32-",
->>>> -                                            "x86_64-softmmu"))
->>>> +                        trailer="".join(fedora_mingw_extras)
->>>> +                                + cross_build("x86_64-w64-mingw32-",
->>>> +                                              "x86_64-softmmu"))
->>>>        #
->>>>        # Cirrus packages lists for GitLab
->>>
->>> A better way to handle this would be to define a separate project
->>>
->>>     'tests/lcitool/projects/qemu-win-installer.yml'
->>>
->>> With
->>>
->>>      packages
->>>        - g++
->>>
->>> Then enable the extra project for win64
->>>
->>>       generate_dockerfile("fedora-win64-cross", "fedora-38",
->>>                           project='qemu,qemu-win-installer',
->>>                           cross="mingw64",
->>>                           trailer=cross_build("x86_64-w64-mingw32-",
->>>                                               "x86_64-softmmu"))
->>>
->>> which should result in an identical container to what we have today
->>> for win64, while letting us slim the other containers.
->>
->> Ok, good idea! ... but then we need to teach lcitool about mingw-w64-tools
->> first, otherwise that vss code won't get built due to the missing "widl"
->> tool.
+Cc Paolo for x86 topology part
+
+Hi Daniel,
+
+On Mon, May 13, 2024 at 01:33:57PM +0100, Daniel P. Berrangé wrote:
+> Date: Mon, 13 May 2024 13:33:57 +0100
+> From: "Daniel P. Berrangé" <berrange@redhat.com>
+> Subject: [PATCH 1/2] hw/core: allow parameter=1 for SMP topology on any
+>  machine
 > 
-> Why is that a pre-requisite ?   What i've suggested will result in a
-> Dockerfile for win64 that is 100% identical to what we already have
-> in git today. So surely that will already succeed to the same extent
-> that CI succeeds today ?
+> This effectively reverts
+> 
+>   commit 54c4ea8f3ae614054079395842128a856a73dbf9
+>   Author: Zhao Liu <zhao1.liu@intel.com>
+>   Date:   Sat Mar 9 00:01:37 2024 +0800
+> 
+>     hw/core/machine-smp: Deprecate unsupported "parameter=1" SMP configurations
+> 
+> but is not done as a 'git revert' since the part of the changes to the
+> file hw/core/machine-smp.c which add 'has_XXX' checks remain desirable.
+> Furthermore, we have to tweak the subsequently added unit test to
+> account for differing warning message.
+> 
+> The rationale for the original deprecation was:
+> 
+>   "Currently, it was allowed for users to specify the unsupported
+>    topology parameter as "1". For example, x86 PC machine doesn't
+>    support drawer/book/cluster topology levels, but user could specify
+>    "-smp drawers=1,books=1,clusters=1".
+> 
+>    This is meaningless and confusing, so that the support for this kind
+>    of configurations is marked deprecated since 9.0."
+> 
+> There are varying POVs on the topic of 'unsupported' topology levels.
+> 
+> It is common to say that on a system without hyperthreading, that there
+> is always 1 thread. Likewise when new CPUs introduced a concept of
+> multiple "dies', it was reasonable to say that all historical CPUs
+> before that implicitly had 1 'die'. Likewise for the more recently
+> introduced 'modules' and 'clusters' parameter'. From this POV, it is
+> valid to set 'parameter=1' on the -smp command line for any machine,
+> only a value > 1 is strictly an error condition.
 
-If you want to have the same result, we can also simply remove g++ 
-everywhere, also for the mingw cross containers, since the vss code is 
-currently not built at all due to the missing widl program.
+Currently QEMU has become more and more difficult to maintain a general
+topology hierarchy, there are two recent examples:
 
-  Thomas
+1. as you mentioned "module" v.s. "cluster", one reason for introducing
+"module" is because it is difficult to define what "cluster" is for x86,
+the cluster in the device tree can be nested, then it can correspond to
+an x86 die, or it can correspond to an x86 module. Therefore, specifying
+"clusters=1" for x86 is ambiguous.
 
+2. s390 introduces book and drawer, which are above socket/package
+level, but for x86, the level above the package names "cluster" (yeah,
+"cluster" again :-(). So if user sets "books=1" or "drawers=1" for x86,
+then it's meaningless. Similarly, "clusters=1" is also very confusing for
+x86 machine.
+
+I think that only thread/core/socket are architecturally general, the
+other topology levels are hard to define across architectures, then
+allowing unsupported topology=1 is always confusing...
+
+Moreover, QEMU currently requires a clear topology containment
+relationship when defining a topology, after which it will become
+increasingly difficult to define a generic topology containment
+relationship when new topology levels are introduced in the future...
+
+> It doesn't cause any functional difficulty for QEMU, because internally
+> the QEMU code is itself assuming that all "unsupported" parameters
+> implicitly have a value of '1'.
+> 
+> At the libvirt level, we've allowed applications to set 'parameter=1'
+> when configuring a guest, and pass that through to QEMU.
+> 
+> Deprecating this creates extra difficulty for because there's no info
+> exposed from QEMU about which machine types "support" which parameters.
+> Thus, libvirt can't know whether it is valid to pass 'parameter=1' for
+> a given machine type, or whether it will trigger deprecation messages.
+
+I understand that libvirt is having trouble because there is no interface
+to expose which topology levels the current machine supports. As a
+workaround to eliminate the difficulties at the libvirt level, it's
+ok for me.
+
+But I believe deprecating the unsupported topology is necessary, so do
+you think it's acceptable to include an interface to expose the supported
+topology if it's going to be deprecated again later?
+
+Regards,
+Zhao
 
 
