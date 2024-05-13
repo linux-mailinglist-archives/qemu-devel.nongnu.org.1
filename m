@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DFF8C4337
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08008C4339
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 16:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Wak-0000ek-Vw; Mon, 13 May 2024 10:23:51 -0400
+	id 1s6WbJ-00022Y-JH; Mon, 13 May 2024 10:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6Wad-0000WZ-QU
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:23:43 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6Wab-00012N-0W
- for qemu-devel@nongnu.org; Mon, 13 May 2024 10:23:43 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-420180b5897so5921065e9.3
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715610219; x=1716215019; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=guvFxqIkn4FGmGdZCrgQ8fts+jBa7izHC5JcMHzr+cw=;
- b=EhZK33ds79nmgFI4EXwrrh7eFqibWQ7mkWnRYCPnfVVYYRliV2d9q8RRQ6cTneAdYK
- +/epnpx6axd2dy6pl55VsKFposcje9fDakH3TZUEnzxMoDYPKZgyvl8nj6um31L4s49l
- 1zkBuOJvsTLb9a3QoHQHHiVoU7UUQ0Qt7o0RDMVqj3kcolrLpclfWBmx44PH1ayYSrRc
- mjh4Hvxd3YY+LZPNFrqdCt3E/1FAG4FSDPTggf2qQkRJzS2jCPPL56dgROxMtQ3DsvTZ
- 2b0a698Ps6IfM4es+x0PWFUsL8BKf6T8IePNEXs4JGQTsuecHhn6lng5J9HedtkVXCJt
- 5+/g==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1s6WbF-0001wF-E4
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:24:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1s6WbD-0001FX-La
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 10:24:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715610259;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fly/DQ4jQRVsjWcafPVaXrMwiqZtcTcNxfO/l4xbgwQ=;
+ b=Fdo+AkxKI344QIjyB/M7Wj37V6aFqLyIOSRaOJ3e9OOIkW4KSRZImcIqR8VhPw8flxPSMt
+ 2xe4nag/woWoDeChN7OQfqJVp++bDwb1B65g5nP6J/EB7OhkXDHXtQt9bDq9VNAfcsqc/4
+ 1TgOwC37Wi3TAtblO5huqrpKTNMncTU=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-468-QJAAYZLMNYOGtVQelFjUFQ-1; Mon, 13 May 2024 10:24:17 -0400
+X-MC-Unique: QJAAYZLMNYOGtVQelFjUFQ-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-622ccd54587so39608707b3.0
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 07:24:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715610219; x=1716215019;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=guvFxqIkn4FGmGdZCrgQ8fts+jBa7izHC5JcMHzr+cw=;
- b=s4aMrKOlJPei9HotMZT9jtULcRlzndUfoe12VSwsbBl7clzVPMISDt92lrBhO0PlMf
- GyNa69mjavQv5wKhrZvG98xJ4sjtO8ZmJk0wb/Bgs9BYxBurqHX/5qOqQKEtLxiqDI8E
- fOmz8IsibdAi9L/UVeJ/t0E5nnPl2s9bn1LUQfAQNNl1cVXtYyX5Diup1EZRjqRKeE7X
- dvd+REYoC2kKKvdzy7wX2SPE+qn0xbtLGPmgHy7iBNlPMvVDipXk+7UCB1VrmxflsvPH
- AQ5BeM7Bb7jYT2hQHd1PzVig6inbOVvbuEw/9D1eJgDOaWfa8a55G+m//wOnNLPsgpfh
- b/9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWc2tJEi3NMwhKrYI0kmJmh1GzChi2w6leKYe5MhW9RknNexp+04J1U/K4q/8yk2X9ak6FDEhjcqfsjNOxZfqNGKV2eG9k=
-X-Gm-Message-State: AOJu0Yz0eQDWriY7gK6TPC5OFrDvpvV09B5d1XIq/Y9K97yne1+IUwGJ
- 6gkpoHdzHQ7HWYM7ga5hhzsH0/ElgFFIzYGAOzrrtOjEYFI2FqosJ3JuZS5hJH7mEwkAU6X1PGd
- 9tPI=
-X-Google-Smtp-Source: AGHT+IFJD8JDmOB5rguwK4Pip0IcyA+cA3m6RvQNOU39A2L654z7nuwn/OdRRGJrm0Zek2gUOszS0A==
-X-Received: by 2002:a05:600c:3595:b0:41a:e995:b924 with SMTP id
- 5b1f17b1804b1-41fead6504emr67643895e9.33.1715610219329; 
- Mon, 13 May 2024 07:23:39 -0700 (PDT)
-Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbca98sm11252711f8f.112.2024.05.13.07.23.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 May 2024 07:23:38 -0700 (PDT)
-Message-ID: <236fa43a-bb2a-4d10-89a8-bc70bb9f406b@linaro.org>
-Date: Mon, 13 May 2024 16:23:37 +0200
+ d=1e100.net; s=20230601; t=1715610257; x=1716215057;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fly/DQ4jQRVsjWcafPVaXrMwiqZtcTcNxfO/l4xbgwQ=;
+ b=F3VLo/BucuFpu6KP1/BkuWg4HACU/pHHswZFrtl6H3iCr1BWV9KhHnGvoV7guYdn8V
+ 6+mtbyEUDA+SXqBOQxDko9y/9drDUFXnSrx6cAp5b3klhI980H1ZQKsJQN3MhPYohT2G
+ EY1W35s7fWE26BIhWqLPwzpXiIMcKFCFsNoItaIcSC+P/XM1Y9VK5h/VL/QAgfSR7l/D
+ +UXYzofdwN5r2nNzuDwn8CP+/TfzDIrawiJGsgf8IgNPPRL89QMYU+4yqO6Sy+p1HYe0
+ d3RXLNsmhWo7p+qbWt7I6RtQr2v9ZClGrkQ1wsyUl/Q5aWGeh5OqYkqThjDRpJzdeDzB
+ 77KQ==
+X-Gm-Message-State: AOJu0YzLUotLZzB1cVCDM8u5YPt7Rm6WXmVXJn6UQStwHZKQ5zqkwQKB
+ u8aDEItP2ZgfY1MVajmioJailxgJhwLeNQ5MLcksRSIXcph7b9seVY8z4xPFP3uyFPJgEv63J1L
+ LBCRIEqtt1cznJV8+tqHcC21XwjRQMg+mveA6QGz77wg3Xjjzdz5xd11YbX6n0H3F7Ko1A+lOg2
+ Am1Oq8w7+XguD9fYlSEZndnq5+VS4=
+X-Received: by 2002:a05:6902:2205:b0:de5:5bd1:7ae6 with SMTP id
+ 3f1490d57ef6-dee4f512832mr13668570276.64.1715610257240; 
+ Mon, 13 May 2024 07:24:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUN7J9RXxTZpxNNSGIbWq+BaSw/bRjNMsPLKq6eWMroy0AJkXCx8K1gaZ8jbe+WG3S+SRARVYJTVbaB6Wi2aM=
+X-Received: by 2002:a05:6902:2205:b0:de5:5bd1:7ae6 with SMTP id
+ 3f1490d57ef6-dee4f512832mr13668550276.64.1715610256879; Mon, 13 May 2024
+ 07:24:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] block/vmdk: Improve error messages on extent write
- error
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: fam@euphon.net, kwolf@redhat.com, hreitz@redhat.com,
- marcandre.lureau@redhat.com, peterx@redhat.com, farosas@suse.de,
- pbonzini@redhat.com, richard.henderson@linaro.org, qemu-block@nongnu.org
-References: <20240513141703.549874-1-armbru@redhat.com>
- <20240513141703.549874-4-armbru@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240513141703.549874-4-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <13625712.uLZWGnKmhe@valdaarhun>
+ <CAJaqyWeYtyfGav9Ppx=FgRg_Gzucaoz4T3kVi9EbzrDwwEBsyQ@mail.gmail.com>
+ <12430761.O9o76ZdvQC@valdaarhun> <2282965.iZASKD2KPV@valdaarhun>
+In-Reply-To: <2282965.iZASKD2KPV@valdaarhun>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 13 May 2024 16:23:40 +0200
+Message-ID: <CAJaqyWfbHgVA7f81C6phouSUEb7bVwXFRDWTHeie7Vax13zWZw@mail.gmail.com>
+Subject: Re: Intention to work on GSoC project
+To: Sahil <icegambit91@gmail.com>
+Cc: qemu-level <qemu-devel@nongnu.org>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +97,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/5/24 16:17, Markus Armbruster wrote:
-> vmdk_init_extent() reports blk_co_pwrite() failure to its caller as
-> 
->      An IO error has occurred
-> 
-> The errno code returned by blk_co_pwrite() is lost.
-> 
-> Improve this to
-> 
->      failed to write VMDK <what>: <description of errno>
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   block/vmdk.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+On Mon, May 13, 2024 at 3:49=E2=80=AFPM Sahil <icegambit91@gmail.com> wrote=
+:
+>
+> Hi,
+>
+> On Wednesday, May 8, 2024 8:53:12=E2=80=AFAM GMT+5:30 Sahil wrote:
+> > Hi,
+> >
+> > On Tuesday, May 7, 2024 12:44:33=E2=80=AFPM IST Eugenio Perez Martin wr=
+ote:
+> > > [...]
+> > >
+> > > > Shall I start by implementing a mechanism to check if the feature b=
+it
+> > > > "VIRTIO_F_RING_PACKED" is set (using "virtio_vdev_has_feature")? An=
+d
+> > > > if it's supported, "vhost_svq_add" should call "vhost_svq_add_packe=
+d".
+> > > > Following this, I can then start implementing "vhost_svq_add_packed=
+"
+> > > > and progress from there.
+> > > >
+> > > > What are your thoughts on this?
+> > >
+> > > Yes, that's totally right.
+> > >
+> > > I recommend you to also disable _F_EVENT_IDX to start, so the first
+> > > version is easier.
+> > >
+> > > Also, you can send as many incomplete RFCs as you want. For example,
+> > > you can send a first version that only implements reading of the gues=
+t
+> > > avail ring, so we know we're aligned on that. Then, we can send
+> > > subsequents RFCs adding features on top.
+> >
+>
+> I have started working on implementing packed virtqueue support in
+> vhost-shadow-virtqueue.c. The changes I have made so far are very
+> minimal. I have one confusion as well.
+>
+> In "vhost_svq_add()" [1], a structure of type "VhostShadowVirtqueue"
+> is being used. My initial idea was to create a whole new structure (eg:
+> VhostShadowVirtqueuePacked). But I realized that "VhostShadowVirtqueue"
+> is being used in a lot of other places such as in "struct vhost_vdpa" [2]
+> (in "vhost-vdpa.h"). So maybe this isn't a good idea.
+>
+> The problem is that "VhostShadowVirtqueue" has a member of type "struct
+> vring" [3] which represents a split virtqueue [4]. My idea now is to inst=
+ead
+> wrap this member in a union so that the struct would look something like
+> this.
+>
+> struct VhostShadowVirtqueue {
+>         union {
+>                 struct vring vring;
+>                 struct packed_vring vring;
+>         }
+>         ...
+> }
+>
+> I am not entirely sure if this is a good idea. It is similar to what's be=
+en done
+> in linux's "drivers/virtio/virtio_ring.c" ("struct vring_virtqueue" [5]).
+>
+> I thought I would ask this first before continuing further.
+>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+That's right, this second option makes perfect sense.
+
+VhostShadowVirtqueue should abstract both split and packed. You'll see
+that some members are reused, while others are only used in one
+version so they are placed after a union. They should follow the same
+pattern, although it is not a problem if we need to divert a little
+bit from the kernel's code.
+
+Thanks!
+
+> Thanks,
+> Sahil
+>
+> [1] https://gitlab.com/qemu-project/qemu/-/blob/master/hw/virtio/vhost-sh=
+adow-virtqueue.c#L249
+> [2] https://gitlab.com/qemu-project/qemu/-/blob/master/include/hw/virtio/=
+vhost-vdpa.h#L69
+> [3] https://gitlab.com/qemu-project/qemu/-/blob/master/hw/virtio/vhost-sh=
+adow-virtqueue.h#L52
+> [4] https://gitlab.com/qemu-project/qemu/-/blob/master/include/standard-h=
+eaders/linux/virtio_ring.h#L156
+> [5] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/drivers/virtio/virtio_ring.c#n199
+>
+>
 
 
