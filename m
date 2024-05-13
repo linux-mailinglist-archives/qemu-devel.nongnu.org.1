@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF618C3FE7
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 13:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21188C3FE4
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 13:35:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Ty4-0005SO-5I; Mon, 13 May 2024 07:35:44 -0400
+	id 1s6Ty1-0005KD-Vp; Mon, 13 May 2024 07:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6Txh-0005AL-82
+ id 1s6Txh-0005AP-Ax
  for qemu-devel@nongnu.org; Mon, 13 May 2024 07:35:21 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6Txf-0001QZ-N5
- for qemu-devel@nongnu.org; Mon, 13 May 2024 07:35:20 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-420104e5390so16567505e9.1
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 04:35:17 -0700 (PDT)
+ id 1s6Txe-0001QT-EP
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 07:35:21 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2df83058d48so55161941fa.1
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 04:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715600116; x=1716204916; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=X9jZxcJ5ik0WjtOOJEXtKwHbeCe/bdGG2ZPreWMpmg4=;
- b=L3jvxBepr2retLRMDTPxXIsAg4s9Cfu6GJs4XF7rHiIVAGPsM+AezIGW4ASOwRvKmX
- 9wuWpi5m4Sy/XdupCGRp98z6+qMAtC0FLsVMFLtN78yMLxdmWO3L845WtPYOZ7n6vdWd
- /YaQxbA9/i+UW7vwF8uhPwZlLsB2UCOHrW+/GDdpAktFIcfp0xkbRUbpafpVoluWK/hY
- Ms4UfupsNs7TwJ3Cit9QRrtYZLUuHRUv8HquS7lwNdlTcus+FBXx5kphEWKVfWgskxkX
- tNHOlrk3oVGF4yyoinV132iz/0dHaGxTDEQmVfXHnBvSynOqwfQ9/p8DS1sD6S2TcidP
- PX/A==
+ d=linaro.org; s=google; t=1715600115; x=1716204915; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+bpzsiTQ+FU6Gt5FKC4227ayMzpXN9CSi3lSLOCpI+I=;
+ b=BlQE/N0VyiXgchighd1VEj4pNlJCjPTxjzpEsifPRLEYEuV4CB7upwIIV5KIc/VSWp
+ Fd58T0HjiGuO2/GaZUYgpnxUDUUwIgiYKfWq5ouHXOMj1Q68+aaN0HRyRJ3WaJqwxC+1
+ U5osT1KrzOhb0W62tsqiL25nAi723P70PA0hE3amTbiz66T1uU2R5j7hhwvUGzeUmfd0
+ bu/DbWrfwcV8EbKky2rJrpYyD6nHImzDp5pCrEtvnWnMGFfW9TPGdD/k9FBW6Um9jmQb
+ deJlqKPR3bB7glb7Tj7L6sHI31DzFuY2rumUnclaORXtrYfwV7SmymLbnMnzUeGHNXQk
+ 7lWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715600116; x=1716204916;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=X9jZxcJ5ik0WjtOOJEXtKwHbeCe/bdGG2ZPreWMpmg4=;
- b=Rhq0pJ6DeYy7raLs+nEogmtFnHCw7okWf0XwtFx9NoKz9ImgFlSZmm8SQmgL6jByAZ
- 7KLAkV3fRw4hmy13zg22033bJ1WAk9TA37bmWNHwWkzB6mR1bzeTiOAAEAXwDSeWv8x4
- jBlPvzR4s5kO0WPCU+IxJbnDNRhmkzSJZ5Tb3uGzVXk+HDyD7sbVw5is/VZOu756feqv
- Bc6PQNqY7WEqB05HH8NpREEZtl9rWgZjWzF1UuCREcWZKylBnKw20eNwq8KnXrEGIYvy
- mVQ88W5w3++OCY3AbhSc1ZUDZSEAMM/SkqFzdWr+Ht48Dg48FQ2+d6PvyNW4ae67V+LR
- 6lbA==
-X-Gm-Message-State: AOJu0YzlMIctK88u0GtDuL9MbL2ew1INhdwmeqVcVgDkzhVoCAm8hfkc
- urIp2QplZfD9ysQupX808OaqJuZLlcuKRQRTO6r/xZ1f3de5t6Zy/1xZlXQLk2Y=
-X-Google-Smtp-Source: AGHT+IHfoPd1wkEKzEiMszs6hcP8/nsMcoYZjpV3KEkUXA4ALIjpu0e7qhV63swvCoWgcmIjf/q7Ag==
-X-Received: by 2002:a05:600c:3548:b0:41a:6edd:6c1d with SMTP id
- 5b1f17b1804b1-41feac55e10mr83254315e9.32.1715600116338; 
- Mon, 13 May 2024 04:35:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1715600115; x=1716204915;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+bpzsiTQ+FU6Gt5FKC4227ayMzpXN9CSi3lSLOCpI+I=;
+ b=gs/KvdWnNGPlr5rEbJm/ECQNomm/2JTQNZRt/i6/QnYt8Rawv7hBTudTvRPGItbWZb
+ nLZjlxrADcf1eflINQ2NuJwy8aL/XZzvAlt183GeoFCvlFWLtoJiQDyoXfNbkmhXOxWc
+ zuEEYTp0ADHdRi/ZQiNaqoqhKXSlCJUenTEVGz5aQTzrhFmnWbuYiSYZTaZFWcRcNC4u
+ eVc5+x4sZ5/1IVIrzCGZmQrVeHXU2UrP/NAM3Vtbkog2nS0A/o1+kkK3eHoMkcb00c00
+ XPIiZMYlOiEt3E71XvnMvW0sgfOeMd0X6OJ7HdmAfe0uIgUinQXCM5f9n+ZWzv6ywj4r
+ b4xw==
+X-Gm-Message-State: AOJu0YwHORrzsCzq1awK4Oq6UbIyZUkkMB4ZSusJwBxo8gchf5boRdQ3
+ ndMrdSOXSPZXO/TYGZSGWqts4nq4/EmEPmqsE6ZS1kwVmJZAWkQ3wVlyatBc9wY=
+X-Google-Smtp-Source: AGHT+IFdAn8dx0/lO56uhdqPRiNBNSVEH3OBExGim20uiVBDDj6n5I2PjMUyRDqLMBx6vt3NQkdc6Q==
+X-Received: by 2002:a2e:97d0:0:b0:2e3:6ef5:d567 with SMTP id
+ 38308e7fff4ca-2e51ff4d239mr57211281fa.30.1715600115329; 
+ Mon, 13 May 2024 04:35:15 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41ff5e3dcfbsm116015205e9.22.2024.05.13.04.35.14
+ ffacd0b85a97d-35045583669sm9317707f8f.106.2024.05.13.04.35.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 13 May 2024 04:35:14 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 5038E5F8B5;
+ by draig.lan (Postfix) with ESMTP id 5DC5C5F8C8;
  Mon, 13 May 2024 12:35:13 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [Semihosting Tests PATCH 0/3] add SYS_GET_CMDLINE test
-Date: Mon, 13 May 2024 12:35:10 +0100
-Message-Id: <20240513113513.640007-1-alex.bennee@linaro.org>
+Subject: [Semihosting Tests PATCH 1/3] .editorconfig: add code conventions for
+ tooling
+Date: Mon, 13 May 2024 12:35:11 +0100
+Message-Id: <20240513113513.640007-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240513113513.640007-1-alex.bennee@linaro.org>
+References: <20240513113513.640007-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,28 +96,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+It's a pain when you come back to a code base you haven't touched in a
+while and realise whatever indent settings you were using having
+carried over. Add an editorconfig and be done with it.
 
-Looking at bug #2322 I wanted to make sure SYS_GET_CMDLINE works as I
-expected. While at it I needed to fix a compile error with headers
-which I guess we got away with on earlier compilers.
-
-I've added an editorconfig for good measure.
-
-Alex Bennée (3):
-  .editorconfig: add code conventions for tooling
-  update includes for bare metal compiling
-  add SYS_GET_CMDLINE test
-
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
  .editorconfig | 28 ++++++++++++++++++++++++++++
- Makefile      | 22 +++++++++++-----------
- semihosting.c |  4 ++--
- semihosting.h |  2 +-
- string.c      |  2 +-
- usertest.c    | 26 +++++++++++++++++++++++++-
- 6 files changed, 68 insertions(+), 16 deletions(-)
+ 1 file changed, 28 insertions(+)
  create mode 100644 .editorconfig
 
+diff --git a/.editorconfig b/.editorconfig
+new file mode 100644
+index 0000000..e1540ae
+--- /dev/null
++++ b/.editorconfig
+@@ -0,0 +1,28 @@
++# EditorConfig is a file format and collection of text editor plugins
++# for maintaining consistent coding styles between different editors
++# and IDEs. Most popular editors support this either natively or via
++# plugin.
++#
++# Check https://editorconfig.org for details.
++#
++# Emacs: you need https://github.com/10sr/editorconfig-custom-majormode-el
++# to automatically enable the appropriate major-mode for your files
++# that aren't already caught by your existing config.
++#
++
++root = true
++
++[*]
++end_of_line = lf
++insert_final_newline = true
++charset = utf-8
++
++[Makefile*]
++indent_style = tab
++indent_size = 8
++emacs_mode = makefile
++
++[*.{c,h}]
++indent_style = space
++indent_size = 4
++emacs_mode = c
 -- 
 2.39.2
 
