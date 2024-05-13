@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74E48C3A9A
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 05:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D31E38C3A9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 05:55:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Mko-0001Oe-2E; Sun, 12 May 2024 23:53:34 -0400
+	id 1s6Mko-0001Of-2h; Sun, 12 May 2024 23:53:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1s6MkX-0001Jj-0x
- for qemu-devel@nongnu.org; Sun, 12 May 2024 23:53:17 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1s6MkZ-0001MG-W3
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 23:53:23 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <luchangqi.123@bytedance.com>)
- id 1s6MkT-0008Lk-Sm
- for qemu-devel@nongnu.org; Sun, 12 May 2024 23:53:15 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f472d550cbso3144910b3a.1
- for <qemu-devel@nongnu.org>; Sun, 12 May 2024 20:53:13 -0700 (PDT)
+ id 1s6MkY-0008M0-Ay
+ for qemu-devel@nongnu.org; Sun, 12 May 2024 23:53:19 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6f4603237e0so2637613b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 12 May 2024 20:53:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1715572391; x=1716177191; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1715572395; x=1716177195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=T+J5rbIfUpvehIGmWcPG1zjcR1aPta5xb+LZyWF/KhY=;
- b=U/AFihFqjz0mxS2uWdaoQYnur6EU6ikH/W2qV39ZiQgsYS3bzEyydcVw+A2B2AfWMB
- xmUWaMQamEV+79Bqnt+gAnZn/LmhGoW4vLO+c61r6RSryUEWKAD4mVtRP1llmp2XJpwI
- 1RpV4UkFDj+y1F1G8ZC59bUgwLwlUNvb4LEDyju9R9Ogw9ODJJqcP+mrciBJFpeyMMap
- V1YwYUkGMIoku5YTzePV3uS14Q7pOPxlRd8dGFNz+DFPgOU1Jg84y3mxlLLwPTibAOKg
- IQOqzvrUrx6ejMkvTBWHRYLRugHynllMTOiffdzgVEpZpXYcn/dMRjgwXLZov5qNUujZ
- cc+A==
+ bh=6HqjfLbdxMaAm2Kc6kgGY9B3YsreiqnlUzVf4xDnoFw=;
+ b=GQwZumdB8NLl9aIU0/UHh/UgUnBfbgO6z6JqPWHWkX0uYkYK/4EYjparhBcYhb1AeY
+ 14hGya2cPHEeFLq0C36/ynPxFM4SJqWUd43YUouWNn2ThX2jteMI64jCAt3tK5IR727f
+ G9jzDZn3sxyaUea1rfLBuoQjiM6z9i76X0CwfetB2Jj5mtHNEAcBF0w2rziyX/pdiI9I
+ VSO7nnBcmqc+y/UWPN5Wn+cRa+k0ueQcSlCggVjtoWvX1hUrSS0udrqJfkrJHhVGEamK
+ +OLbt6GY/yonki7z4MvVN68h87uFaaYWBhbbd2wEIa8TjSr74k7K5SyUBYD9UzNC8gAg
+ i8zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715572391; x=1716177191;
+ d=1e100.net; s=20230601; t=1715572395; x=1716177195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=T+J5rbIfUpvehIGmWcPG1zjcR1aPta5xb+LZyWF/KhY=;
- b=GSMMeZfFL1VmOj0vQNgpmFRtTvrIIzyV7dLhcHnLwYfYJhohoepyaRV5U3tlDuuHGH
- bMP8p5LMnBnabittzYsgXtrg/yKpwdBjQ2Ypu9bkq6VgmzOn4XUF13dynZLdPCS1/Fh1
- /D/zU08104tNcgO6Frj7TGAyIp+TriYIMcniyG+r9SbTMG47zE2XnUgd5RhYl5zzuUQB
- I42p1RUYsAK3ZvYPm4fv2LjfdYuqfu//2rPdxub20LHdnpIygZvHY4tmb3VRyLJ2XnKy
- FDUPvqWzxpJeJKecxj9aiA5VNqS+BQ9sXOaVVJEEzQQ89EHubp/ebjuNxCvXMFWRAH6R
- gmyA==
+ bh=6HqjfLbdxMaAm2Kc6kgGY9B3YsreiqnlUzVf4xDnoFw=;
+ b=tL9CpTTf09u5r7YMWKdHsogA6ba/k9JIyVTkk757GCnK20ey94e4u2gzjU8wPlOcSf
+ NEYknHX8NgvLjI2uhoGLDgqPceTNpLOYnK3xVUDd06driXNGwmogxJpSEYRBCZ07JM/9
+ ep+UgxLexrPY9/9+k36mIBjTsWGG3DPUoHOBt8uyAQn+Ppc9R/JXpWypYw34AtX3fkJ0
+ 2zbWfvh8fPH0//lqgtRSsZrAPj1erG20d89rshjQCBjxsAt9vSJ9RCXIY0zZNyj/ft44
+ jl3PS9ZukKQhKWyL8k24y9OzPnX+peCgKVDkxZj1RVJa2t1CyeFcbAg+nrCFw2eGS35G
+ G3Jw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXKpGD1k0r0m1cWjJVX5OZ69/OgpzcjmQr9KzGQOrC5z5sEZllCAxmeqs0GNdbgz5/beHczDkl9qcZvuWPdQe2HXpd8aWM=
-X-Gm-Message-State: AOJu0YxVXyXQboxauXSqPgYLRVBLl7ocHCqgfjzQBPtpFsNUdwxGL8p/
- tXLXIeeOE02d7zb49RvZVTkTB+WvZkmz9p9lwLy6M/4ARaZ3S4cpGihKSwJi0So=
-X-Google-Smtp-Source: AGHT+IEb7YcESQVycOnJJGFN5KAkU52Zg4YkDArryJlm1dUVePR5yJf0hOPDtfrIZHqX9wXiWCTFqg==
-X-Received: by 2002:a05:6a20:7faa:b0:1ad:1168:a417 with SMTP id
- adf61e73a8af0-1afde0e6b67mr13703910637.28.1715572391490; 
- Sun, 12 May 2024 20:53:11 -0700 (PDT)
+ AJvYcCUOiaqS/lKYgu7BtpuUtWiEFSvJtFAyjKq+5YF0/3NsF/RtzQM70sqldP8n5d0kDwaPXQNLDnz2FXrjYTWrVYAFDhr/Zog=
+X-Gm-Message-State: AOJu0YximUfdiUtOuVwAqpso+KMbKFNwT5kTmXjCda+YZyQC21+IazYY
+ O+wcbLCnRENaJmZ4wFVniVmSCw+kzCVAEFhKiwpSCHu/V+qvsi8PdNSwf8Hq5rs=
+X-Google-Smtp-Source: AGHT+IF+6QK2UMCytKPLngLJySnjzawj1JAR3X7rQAdzPrhyH33AyUpyaf4ms23gdoyW95hfqwtEvA==
+X-Received: by 2002:a05:6a00:3d15:b0:6f3:eb71:af90 with SMTP id
+ d2e1a72fcca58-6f4df3ba92amr14867225b3a.4.1715572395246; 
+ Sun, 12 May 2024 20:53:15 -0700 (PDT)
 Received: from n37-006-243.byted.org ([180.184.51.40])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2a8137asm6407947b3a.45.2024.05.12.20.53.08
+ d2e1a72fcca58-6f4d2a8137asm6407947b3a.45.2024.05.12.20.53.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 12 May 2024 20:53:11 -0700 (PDT)
+ Sun, 12 May 2024 20:53:14 -0700 (PDT)
 From: Changqi Lu <luchangqi.123@bytedance.com>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
@@ -65,16 +65,16 @@ Cc: kwolf@redhat.com, hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
  ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
  kbusch@kernel.org, its@irrelevant.dk, foss@defmacro.it, philmd@linaro.org,
  pizhenwei@bytedance.com, Changqi Lu <luchangqi.123@bytedance.com>
-Subject: [PATCH v2 08/11] hw/nvme: enable ONCS reservations
-Date: Mon, 13 May 2024 11:52:27 +0800
-Message-Id: <20240513035230.60162-9-luchangqi.123@bytedance.com>
+Subject: [PATCH v2 09/11] hw/nvme: enable namespace rescap function
+Date: Mon, 13 May 2024 11:52:28 +0800
+Message-Id: <20240513035230.60162-10-luchangqi.123@bytedance.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20240513035230.60162-1-luchangqi.123@bytedance.com>
 References: <20240513035230.60162-1-luchangqi.123@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=luchangqi.123@bytedance.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=luchangqi.123@bytedance.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit enables ONCS to support the reservation
-function at the controller level. It also lays the
-groundwork for detecting and enabling the reservation
-function on a per-namespace basis in RESCAP.
+This commit enables the rescap function in the
+namespace by detecting the supported reservation
+function in the backend driver.
 
 Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- hw/nvme/ctrl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/nvme/ns.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 127c3d2383..182307a48b 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8248,7 +8248,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
-     id->nn = cpu_to_le32(NVME_MAX_NAMESPACES);
-     id->oncs = cpu_to_le16(NVME_ONCS_WRITE_ZEROES | NVME_ONCS_TIMESTAMP |
-                            NVME_ONCS_FEATURES | NVME_ONCS_DSM |
--                           NVME_ONCS_COMPARE | NVME_ONCS_COPY);
-+                           NVME_ONCS_COMPARE | NVME_ONCS_COPY |
-+                           NVME_ONCS_RESRVATIONS);
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index ea8db175db..68a18636fb 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -20,6 +20,7 @@
+ #include "qemu/bitops.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/block-backend.h"
++#include "block/block_int.h"
  
-     /*
-      * NOTE: If this device ever supports a command set that does NOT use 0x0
+ #include "nvme.h"
+ #include "trace.h"
+@@ -55,6 +56,12 @@ void nvme_ns_init_format(NvmeNamespace *ns)
+     }
+ 
+     id_ns->npda = id_ns->npdg = npdg - 1;
++
++    /* The persistent reservation capacities of block
++     * and nvme are currently defined the same.
++     * If there are subsequent changes, this part needs to be changed.
++     */
++    id_ns->rescap = blk_bs(ns->blkconf.blk)->file->bs->bl.pr_cap;
+ }
+ 
+ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
 -- 
 2.20.1
 
