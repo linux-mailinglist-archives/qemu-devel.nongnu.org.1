@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E7DC8C3B5D
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D68B8C3B66
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:34:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PEO-00077p-L5; Mon, 13 May 2024 02:32:16 -0400
+	id 1s6PEp-0007hS-E6; Mon, 13 May 2024 02:32:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEL-00075K-6t; Mon, 13 May 2024 02:32:13 -0400
+ id 1s6PEO-00079o-Qr; Mon, 13 May 2024 02:32:16 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEI-0003wc-KH; Mon, 13 May 2024 02:32:12 -0400
+ id 1s6PEI-0003wZ-Io; Mon, 13 May 2024 02:32:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=3Lsg3g/T/JlEU8eVLXTpK52A6kh8sanvnvIut/yMsmU=; b=jAwPseqyInF/
- +9s5tJdadL8K3aTiZc8HsFkUt86gYLmqm0Ge2y2rfspi5tAwxV6WIFYdm5pbeDiteOL0SQdRB5e0I
- O2e/SIEuq1JTJ3SGPIaXtO31O6XHw6Rst2HYbhLG1juAGhgMfhUvVRwB0ULJjwUxARG9HqzVWy6mo
- idvVk7Ccp6EVgRCFLw54L+AMen6Rf1/wk+4kw8q618pHOp6JlH3dyZcyP5NYYH8KdSRTykEduqeAK
- IIQ5uWwMjYnISFOy7V+SstLbpwkDCbniDfN9AIgvoWTxJMEDVjtEsh7Si4v7loN9JDyly0BHoKFlE
- Loqe8subvE0Nkc+iU4WBEA==;
+ Content-Type; bh=0Jf2jPALHceBe2IkfT271nf146NNRsQrOmP4HbZZosc=; b=H10hXW+1w7od
+ zHJNvbwjlHzulgjSaOy8cxWq6n9dU0FHkQCjhGRQnhs1ruT/9fxPibHfgIftbwyUkhbNPr399fB+A
+ eqJBRNRjds6PLZEpaS7HN1v1REzXK/LeiH7OmmdO105WQmn3hHOD4v9u82yHT0tvUkvZO/Tfe12/a
+ TaI8g7D/2J/kiNQ0GY51qxuUq+SuLWsiaF4vv9vSRc/v7/nsrwgBxzfRpDNVDXL9D5EW7aj93u1/8
+ /VCFr+e4g4X4m91dnv/GyjzMM3yzbUSryWso687XZXfXS2xNF/jnT/UjHVSbE9+2mMQzFaSEeOcOL
+ fwIfHH549HYp4WWQk3mSmw==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-21;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2C;
  Mon, 13 May 2024 08:31:56 +0200
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, berto@igalia.com, jean-louis@dupond.be,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 02/11] qcow2: simplify L2 entries accounting for
- discard-no-unref
-Date: Mon, 13 May 2024 09:31:54 +0300
-Message-Id: <20240513063203.113911-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 03/11] qcow2: put discard requests in the common queue when
+ discard-no-unref enabled
+Date: Mon, 13 May 2024 09:31:55 +0300
+Message-Id: <20240513063203.113911-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
 References: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
@@ -66,85 +66,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commits 42a2890a and b2b10904 introduce handling of discard-no-unref
-option in discard_in_l2_slice() and zero_in_l2_slice().  They add even
-more if's when chosing the right l2 entry.  What we really need for this
-option is the new entry simply to contain the same host cluster offset,
-no matter whether we unmap or zeroize the cluster.  For that OR'ing with
-the old entry is enough.
+Normally discard requests are stored in the queue attached to BDRVQcow2State
+to be processed later at once.  Currently discard-no-unref option handling
+causes these requests to be processed straight away.  Let's fix that.
 
-This patch doesn't change the logic and is pure refactoring.
+Note that when doing regular discards qcow2_free_any_cluster() would check
+for the presence of external data files for us and redirect request to
+underlying data_file.  Here we want to do the same but avoid refcount updates,
+thus we perform the same checks.
 
+Suggested-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- block/qcow2-cluster.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ block/qcow2-cluster.c | 39 +++++++++++++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
 diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-index ce8c0076b3..5f057ba2fd 100644
+index 5f057ba2fd..7dff0bd5a1 100644
 --- a/block/qcow2-cluster.c
 +++ b/block/qcow2-cluster.c
-@@ -1946,25 +1946,21 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
-             new_l2_entry = new_l2_bitmap = 0;
-         } else if (bs->backing || qcow2_cluster_is_allocated(cluster_type)) {
-             if (has_subclusters(s)) {
--                if (keep_reference) {
--                    new_l2_entry = old_l2_entry;
--                } else {
--                    new_l2_entry = 0;
--                }
-+                new_l2_entry = 0;
-                 new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
-             } else {
--                if (s->qcow_version >= 3) {
--                    if (keep_reference) {
--                        new_l2_entry |= QCOW_OFLAG_ZERO;
--                    } else {
--                        new_l2_entry = QCOW_OFLAG_ZERO;
--                    }
--                } else {
--                    new_l2_entry = 0;
--                }
-+                new_l2_entry = s->qcow_version >= 3 ? QCOW_OFLAG_ZERO : 0;
+@@ -1893,6 +1893,28 @@ again:
+     return 0;
+ }
+ 
++/*
++ * Helper for adding a discard request to the queue without any refcount
++ * modifications.  If external data file is used redirects the request to
++ * the corresponding BdrvChild.
++ */
++static inline void
++discard_no_unref_any_file(BlockDriverState *bs, uint64_t offset,
++                          uint64_t length, QCow2ClusterType ctype,
++                          enum qcow2_discard_type dtype)
++{
++    BDRVQcow2State *s = bs->opaque;
++
++    if (s->discard_passthrough[dtype] &&
++        (ctype == QCOW2_CLUSTER_NORMAL || ctype == QCOW2_CLUSTER_ZERO_ALLOC)) {
++        if (has_data_file(bs)) {
++            bdrv_pdiscard(s->data_file, offset, length);
++        } else {
++            qcow2_queue_discard(bs, offset, length);
++        }
++    }
++}
++
+ /*
+  * This discards as many clusters of nb_clusters as possible at once (i.e.
+  * all clusters in the same L2 slice) and returns the number of discarded
+@@ -1974,12 +1996,10 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
+         if (!keep_reference) {
+             /* Then decrease the refcount */
+             qcow2_free_any_cluster(bs, old_l2_entry, type);
+-        } else if (s->discard_passthrough[type] &&
+-                   (cluster_type == QCOW2_CLUSTER_NORMAL ||
+-                    cluster_type == QCOW2_CLUSTER_ZERO_ALLOC)) {
++        } else {
+             /* If we keep the reference, pass on the discard still */
+-            bdrv_pdiscard(s->data_file, old_l2_entry & L2E_OFFSET_MASK,
+-                          s->cluster_size);
++            discard_no_unref_any_file(bs, old_l2_entry & L2E_OFFSET_MASK,
++                                      s->cluster_size, cluster_type, type);
+         }
+     }
+ 
+@@ -2088,12 +2108,11 @@ zero_in_l2_slice(BlockDriverState *bs, uint64_t offset,
+             if (!keep_reference) {
+                 /* Then decrease the refcount */
+                 qcow2_free_any_cluster(bs, old_l2_entry, QCOW2_DISCARD_REQUEST);
+-            } else if (s->discard_passthrough[QCOW2_DISCARD_REQUEST] &&
+-                       (type == QCOW2_CLUSTER_NORMAL ||
+-                        type == QCOW2_CLUSTER_ZERO_ALLOC)) {
++            } else {
+                 /* If we keep the reference, pass on the discard still */
+-                bdrv_pdiscard(s->data_file, old_l2_entry & L2E_OFFSET_MASK,
+-                            s->cluster_size);
++                discard_no_unref_any_file(bs, old_l2_entry & L2E_OFFSET_MASK,
++                                          s->cluster_size, type,
++                                          QCOW2_DISCARD_REQUEST);
              }
          }
- 
-+        /*
-+         * No need to check for the QCOW version since discard-no-unref is
-+         * only allowed since version 3.
-+         */
-+        if (keep_reference) {
-+            new_l2_entry |= old_l2_entry;
-+        }
-+
-         if (old_l2_entry == new_l2_entry && old_l2_bitmap == new_l2_bitmap) {
-             continue;
-         }
-@@ -2064,19 +2060,19 @@ zero_in_l2_slice(BlockDriverState *bs, uint64_t offset,
-             ((flags & BDRV_REQ_MAY_UNMAP) && qcow2_cluster_is_allocated(type));
-         bool keep_reference =
-             (s->discard_no_unref && type != QCOW2_CLUSTER_COMPRESSED);
--        uint64_t new_l2_entry = old_l2_entry;
-+        uint64_t new_l2_entry = unmap ? 0 : old_l2_entry;
-         uint64_t new_l2_bitmap = old_l2_bitmap;
- 
--        if (unmap && !keep_reference) {
--            new_l2_entry = 0;
--        }
--
-         if (has_subclusters(s)) {
-             new_l2_bitmap = QCOW_L2_BITMAP_ALL_ZEROES;
-         } else {
-             new_l2_entry |= QCOW_OFLAG_ZERO;
-         }
- 
-+        if (keep_reference) {
-+            new_l2_entry |= old_l2_entry;
-+        }
-+
-         if (old_l2_entry == new_l2_entry && old_l2_bitmap == new_l2_bitmap) {
-             continue;
-         }
+     }
 -- 
 2.39.3
 
