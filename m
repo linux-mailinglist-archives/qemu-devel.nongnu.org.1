@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46478C3CAA
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A3F8C3C8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:52:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QSU-0005Cu-LP; Mon, 13 May 2024 03:50:54 -0400
+	id 1s6QSc-0005Lg-Ec; Mon, 13 May 2024 03:51:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QST-0005Aw-F6
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:53 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1s6QSW-0005EQ-Sv
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:56 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QSR-0001ya-BH
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:53 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-34de61b7ca4so2857893f8f.2
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:50:50 -0700 (PDT)
+ id 1s6QST-0001yh-7L
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:50:56 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-420180b59b7so2975725e9.0
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586650; x=1716191450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715586651; x=1716191451; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3FDffdEHv+AM3yGjV7Jyc3t/YLBxETSVfvDP/Ffczzk=;
- b=QK8wlainYEBfWb94E8K2EcqA15o4rSCLRpdYfKhN8BMUs3jbFeAO4nIq0DuW4cPFF/
- joGtLxezWWwfFFTLVUp/LuLHQIaJYiI6ksdHK7bctQMv+ds/bwhxIvVyVUIypYbjWXKo
- CTrBZJl8mBObI+cBBwl0bqlLi1utsxMHGQXbB5JCIRZ2u96IiB+Eh0nIZ7r76OkkrrRh
- P0FqNPBNF4jamXQ9EdI9crIf0lfEvIOPunr+VTIOrI6e+HKBV/YF6zuyCR+Y2OGafyk8
- MLF3JFYLr7/FZsQSDu0yBLlv3IiJf5qpFqM3dkiiz7zYUaXkN0G2pn6H5wAEbqdGxJyw
- t7Kg==
+ bh=w3ESvr/sXOwA84Rcs+9ochyQsL6MRRZXhrIHKSJ7IWU=;
+ b=eRnIUeTJRIXHINGtD3BQ3TLv+GcWjmMnzpjOg2hPuFk3eAZA3FmwieLEl1hk/RUZjT
+ mMc1PdEhn+UAJwMM6jtvBfG7niYx2ldHusfCn2I4iLFiiuYwtlxCYDX94vHqKErYnF5q
+ +pQz85GQvZraJzHIJwZQt7sEOp1pa/s2X7/ZLWURWTwouUv3WgYQTICt77C9/HHt/To8
+ nDXVArQFR7pcL14BobjDOTGZqjc5Q9rJk08eNnxU81DsUgjc7wUyPlGMl8Xmn057g/Ly
+ NegiU7RJSDzecSqkIkniVEtWOq8zwbtzWQKdzGMVGZ26Pm3fsGzypfQ9jHsD+6miur0d
+ h5Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586650; x=1716191450;
+ d=1e100.net; s=20230601; t=1715586651; x=1716191451;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3FDffdEHv+AM3yGjV7Jyc3t/YLBxETSVfvDP/Ffczzk=;
- b=qBRQC8hhgLCXaeg0kKsAoJQQG/9T5pqk+cYsBTByz3V8HjViVc/JIuupiHcvZfW3NM
- USAkLOvFdd+HEzJQR3zuipUjq/ab5gb0UxNZ2eYEDD4U3Nwp75kwEubmBfKBMpPOvWCn
- HchsTXteAAjevEiLGjXD8szk0gHjzxQKgzDDTa035Yl6KDRSa6VQRm6r+nrkvaTj6Sip
- 09sdaFmMvgsG0PjpNZ+Y1g2QqgRwDpwZNQ9gU1sGV8rEs2k7ft4AAe02HtruF19L8lq4
- iIKXW5Afc1Ogtq/hOk1+8z7/Z2+CtlTDnFScDt5f7Ut5b5o2UZghdSK6TFj8suFaZoNS
- zyoA==
-X-Gm-Message-State: AOJu0Ywo+4H0SbCXD8dZTNpHB7yf0mBRVIUXoKmMbPofLxLrxdKOzlHS
- WAVlPxo5PtfaxWvHIf1LaQ/fU89/LIz9Lqm00Z4mTAx2FtFDQDnahytqXZwILJ+Qt6NR8iqiwYr
- FIs8=
-X-Google-Smtp-Source: AGHT+IFSpi1oUbMaarMqa0G37CQ3pqSvONTrQjI3qkb5jRPr0Mb1MP3f7Z4OjyPCbOtbsjZjOcVR6g==
-X-Received: by 2002:adf:f145:0:b0:34d:7def:a2 with SMTP id
- ffacd0b85a97d-3504a96b873mr8814018f8f.68.1715586649602; 
- Mon, 13 May 2024 00:50:49 -0700 (PDT)
+ bh=w3ESvr/sXOwA84Rcs+9ochyQsL6MRRZXhrIHKSJ7IWU=;
+ b=QrfSYmorcSEQDmdA27JUzkKJ2sW1DvckylO/UOYquXhDRFzsF/yxvz/EBTrG3KoXI2
+ 2hbe9hojwSnBQDD38bYlNSJocsK2bxYornWkZhIz9Q+mXEDtH2gTwU3ln1aRu/+sPzdI
+ 0CzOQe7yxyCqrT+ArIjEp8JBsAN/6bhdMyrKLqogpjKlyZ94H/KtY6XtM1CHX2a6sj4Y
+ QWypd4SkN22fi9Y51pOz/hgL/91sqJoVgD2XWTLAayO0LqzI/SIzH2l4SeaWbE9BlMpY
+ YvCjKJDiu/3UCRxnvqKLkiMKxgjprXqgD9D9JhkcQjpLRQYAxYsjpxdOL+Gb6evk2rTL
+ Depw==
+X-Gm-Message-State: AOJu0YyfMoMzzKJLU6ShVqpXpkeXuqCDOIHLrzQoOgGUtUg4sRfF7f3y
+ +fBMul/IA5jm0Vg15iTcS4Qu6vTXPPwObSekQ8ZTUleiGRbocKw0Ds5sgdQGl3rWtk4HrsYueEp
+ MdJ0=
+X-Google-Smtp-Source: AGHT+IFNHR1Kq/yOU7MLs1NLfzGPwUPRDpxlgtRk76CKfac3Y4a9XXygLoMSqy/p9Vz6ATfSw2dvwA==
+X-Received: by 2002:a5d:4801:0:b0:34d:2343:b881 with SMTP id
+ ffacd0b85a97d-3504a96a343mr6214968f8f.43.1715586650579; 
+ Mon, 13 May 2024 00:50:50 -0700 (PDT)
 Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502b896a50sm10374262f8f.30.2024.05.13.00.50.49
+ ffacd0b85a97d-3502b896a50sm10374262f8f.30.2024.05.13.00.50.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 May 2024 00:50:49 -0700 (PDT)
+ Mon, 13 May 2024 00:50:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 40/45] target/hppa: Adjust priv for B,GATE at runtime
-Date: Mon, 13 May 2024 09:47:12 +0200
-Message-Id: <20240513074717.130949-41-richard.henderson@linaro.org>
+Subject: [PATCH v2 41/45] target/hppa: Implement CF_PCREL
+Date: Mon, 13 May 2024 09:47:13 +0200
+Message-Id: <20240513074717.130949-42-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,150 +92,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not compile in the priv change based on the first
-translation; look up the PTE at execution time.
+Now that the groundwork has been laid, enabling CF_PCREL within the
+translator proper is a simple matter of updating copy_iaoq_entry
+and install_iaq_entries.
+
+We also need to modify the unwind info, since we no longer have
+absolute addresses to install.
+
+As expected, this reduces the runtime overhead of compilation when
+running a Linux kernel with address space randomization enabled.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  1 -
- target/hppa/helper.h     |  1 +
- target/hppa/mem_helper.c | 34 +++++++++++++++++++++++++++-------
- target/hppa/translate.c  | 36 +++++++++++++++++++-----------------
- 4 files changed, 47 insertions(+), 25 deletions(-)
+ target/hppa/cpu.c       | 19 ++++++------
+ target/hppa/translate.c | 68 ++++++++++++++++++++++++++++-------------
+ 2 files changed, 55 insertions(+), 32 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 78ab0adcd0..2bcb3b602b 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -380,7 +380,6 @@ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
- extern const MemoryRegionOps hppa_io_eir_ops;
- extern const VMStateDescription vmstate_hppa_cpu;
- void hppa_cpu_alarm_timer(void *);
--int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr);
- #endif
- G_NORETURN void hppa_dynamic_excp(CPUHPPAState *env, int excp, uintptr_t ra);
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 5f0df0697a..f0507874ce 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -62,10 +62,6 @@ void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
+     *pc = hppa_cpu_get_pc(env_cpu(env));
+     flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
  
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index c12b48a04a..de411923d9 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -86,6 +86,7 @@ DEF_HELPER_1(halt, noreturn, env)
- DEF_HELPER_1(reset, noreturn, env)
- DEF_HELPER_1(rfi, void, env)
- DEF_HELPER_1(rfi_r, void, env)
-+DEF_HELPER_FLAGS_2(b_gate_priv, TCG_CALL_NO_WG, i64, env, i64)
- DEF_HELPER_FLAGS_2(write_interval_timer, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_2(write_eirr, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_2(swap_system_mask, TCG_CALL_NO_RWG, tl, env, tl)
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 2929226874..b984f730aa 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -691,13 +691,6 @@ target_ulong HELPER(lpa)(CPUHPPAState *env, target_ulong addr)
-     return phys;
- }
- 
--/* Return the ar_type of the TLB at VADDR, or -1.  */
--int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr)
--{
--    HPPATLBEntry *ent = hppa_find_tlb(env, vaddr);
--    return ent ? ent->ar_type : -1;
--}
+-    if (hppa_is_pa20(env)) {
+-        cs_base = env->iaoq_f & MAKE_64BIT_MASK(32, 32);
+-    }
 -
- /*
-  * diag_btlb() emulates the PDC PDC_BLOCK_TLB firmware call to
-  * allow operating systems to modify the Block TLB (BTLB) entries.
-@@ -793,3 +786,30 @@ void HELPER(diag_btlb)(CPUHPPAState *env)
-         break;
+     /*
+      * The only really interesting case is if IAQ_Back is on the same page
+      * as IAQ_Front, so that we can use goto_tb between the blocks.  In all
+@@ -113,19 +109,19 @@ static void hppa_restore_state_to_opc(CPUState *cs,
+                                       const TranslationBlock *tb,
+                                       const uint64_t *data)
+ {
+-    HPPACPU *cpu = HPPA_CPU(cs);
++    CPUHPPAState *env = cpu_env(cs);
+ 
+-    cpu->env.iaoq_f = data[0];
+-    if (data[1] != (target_ulong)-1) {
+-        cpu->env.iaoq_b = data[1];
++    env->iaoq_f = (env->iaoq_f & TARGET_PAGE_MASK) | data[0];
++    if (data[1] != INT32_MIN) {
++        env->iaoq_b = env->iaoq_f + data[1];
      }
+-    cpu->env.unwind_breg = data[2];
++    env->unwind_breg = data[2];
+     /*
+      * Since we were executing the instruction at IAOQ_F, and took some
+      * sort of action that provoked the cpu_restore_state, we can infer
+      * that the instruction was not nullified.
+      */
+-    cpu->env.psw_n = 0;
++    env->psw_n = 0;
  }
+ 
+ static bool hppa_cpu_has_work(CPUState *cs)
+@@ -191,6 +187,9 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
+         hppa_ptlbe(&cpu->env);
+     }
+ #endif
 +
-+uint64_t HELPER(b_gate_priv)(CPUHPPAState *env, uint64_t iaoq_f)
-+{
-+    uint64_t gva = hppa_form_gva(env, env->iasq_f, iaoq_f);
-+    HPPATLBEntry *ent = hppa_find_tlb(env, gva);
-+
-+    if (ent == NULL) {
-+        raise_exception_with_ior(env, EXCP_ITLB_MISS, GETPC(), gva, false);
-+    }
-+
-+    /*
-+     * There should be no need to check page permissions, as that will
-+     * already have been done by tb_lookup via get_page_addr_code.
-+     * All we need at this point is to check the ar_type.
-+     *
-+     * No change for non-gateway pages or for priv decrease.
-+     */
-+    if (ent->ar_type & 4) {
-+        int old_priv = iaoq_f & 3;
-+        int new_priv = ent->ar_type & 3;
-+
-+        if (new_priv < old_priv) {
-+            iaoq_f = (iaoq_f & -4) | new_priv;
-+        }
-+    }
-+    return iaoq_f;
-+}
++    /* Use pc-relative instructions always to simplify the translator. */
++    tcg_cflags_set(cs, CF_PCREL);
+ }
+ 
+ static void hppa_cpu_initfn(Object *obj)
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 2d8410b8ea..fa79116d5b 100644
+index fa79116d5b..79e29d722f 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3960,6 +3960,7 @@ static bool trans_bl(DisasContext *ctx, arg_bl *a)
- static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+@@ -47,7 +47,7 @@ typedef struct DisasIAQE {
+     TCGv_i64 space;
+     /* IAOQ base; may be null for relative address. */
+     TCGv_i64 base;
+-    /* IAOQ addend; if base is null, relative to ctx->iaoq_first. */
++    /* IAOQ addend; if base is null, relative to cpu_iaoq_f. */
+     int64_t disp;
+ } DisasIAQE;
+ 
+@@ -664,11 +664,7 @@ static DisasIAQE iaqe_next_absv(DisasContext *ctx, TCGv_i64 var)
+ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
+                             const DisasIAQE *src)
  {
-     int64_t disp = a->disp;
-+    bool indirect = false;
+-    if (src->base == NULL) {
+-        tcg_gen_movi_i64(dest, ctx->iaoq_first + src->disp);
+-    } else {
+-        tcg_gen_addi_i64(dest, src->base, src->disp);
+-    }
++    tcg_gen_addi_i64(dest, src->base ? : cpu_iaoq_f, src->disp);
+ }
  
-     /* Trap if PSW[B] is set. */
-     if (ctx->psw_xb & PSW_B) {
-@@ -3969,24 +3970,22 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
-     nullify_over(ctx);
- 
- #ifndef CONFIG_USER_ONLY
--    if (ctx->tb_flags & PSW_C) {
--        int type = hppa_artype_for_page(cpu_env(ctx->cs), ctx->base.pc_next);
--        /* If we could not find a TLB entry, then we need to generate an
--           ITLB miss exception so the kernel will provide it.
--           The resulting TLB fill operation will invalidate this TB and
--           we will re-translate, at which point we *will* be able to find
--           the TLB entry and determine if this is in fact a gateway page.  */
--        if (type < 0) {
--            gen_excp(ctx, EXCP_ITLB_MISS);
--            return true;
--        }
--        /* No change for non-gateway pages or for priv decrease.  */
--        if (type >= 4 && type - 4 < ctx->privilege) {
--            disp -= ctx->privilege;
--            disp += type - 4;
--        }
-+    if (ctx->privilege == 0) {
-+        /* Privilege cannot decrease. */
-+    } else if (!(ctx->tb_flags & PSW_C)) {
-+        /* With paging disabled, priv becomes 0. */
-+        disp -= ctx->privilege;
-     } else {
--        disp -= ctx->privilege;  /* priv = 0 */
-+        /* Adjust the dest offset for the privilege change from the PTE. */
-+        TCGv_i64 off = tcg_temp_new_i64();
-+
-+        gen_helper_b_gate_priv(off, tcg_env,
-+                               tcg_constant_i64(ctx->iaoq_first
-+                                                + ctx->iaq_f.disp));
-+
-+        ctx->iaq_j.base = off;
-+        ctx->iaq_j.disp = disp + 8;
-+        indirect = true;
+ static void install_iaq_entries(DisasContext *ctx, const DisasIAQE *f,
+@@ -680,8 +676,28 @@ static void install_iaq_entries(DisasContext *ctx, const DisasIAQE *f,
+         b_next = iaqe_incr(f, 4);
+         b = &b_next;
      }
+-    copy_iaoq_entry(ctx, cpu_iaoq_f, f);
+-    copy_iaoq_entry(ctx, cpu_iaoq_b, b);
++
++    /*
++     * There is an edge case
++     *    bv   r0(rN)
++     *    b,l  disp,r0
++     * for which F will use cpu_iaoq_b (from the indirect branch),
++     * and B will use cpu_iaoq_f (from the direct branch).
++     * In this case we need an extra temporary.
++     */
++    if (f->base != cpu_iaoq_b) {
++        copy_iaoq_entry(ctx, cpu_iaoq_b, b);
++        copy_iaoq_entry(ctx, cpu_iaoq_f, f);
++    } else if (f->base == b->base) {
++        copy_iaoq_entry(ctx, cpu_iaoq_f, f);
++        tcg_gen_addi_i64(cpu_iaoq_b, cpu_iaoq_f, b->disp - f->disp);
++    } else {
++        TCGv_i64 tmp = tcg_temp_new_i64();
++        copy_iaoq_entry(ctx, tmp, b);
++        copy_iaoq_entry(ctx, cpu_iaoq_f, f);
++        tcg_gen_mov_i64(cpu_iaoq_b, tmp);
++    }
++
+     if (f->space) {
+         tcg_gen_mov_i64(cpu_iasq_f, f->space);
+     }
+@@ -3979,9 +3995,8 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+         /* Adjust the dest offset for the privilege change from the PTE. */
+         TCGv_i64 off = tcg_temp_new_i64();
+ 
+-        gen_helper_b_gate_priv(off, tcg_env,
+-                               tcg_constant_i64(ctx->iaoq_first
+-                                                + ctx->iaq_f.disp));
++        copy_iaoq_entry(ctx, off, &ctx->iaq_f);
++        gen_helper_b_gate_priv(off, tcg_env, off);
+ 
+         ctx->iaq_j.base = off;
+         ctx->iaq_j.disp = disp + 8;
+@@ -4602,7 +4617,7 @@ static bool trans_diag_unimp(DisasContext *ctx, arg_diag_unimp *a)
+ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+-    uint64_t cs_base, iaoq_f, iaoq_b;
++    uint64_t cs_base;
+     int bound;
+ 
+     ctx->cs = cs;
+@@ -4621,12 +4636,8 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+                     : ctx->tb_flags & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
  #endif
  
-@@ -3999,6 +3998,9 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
-         save_gpr(ctx, a->l, tmp);
+-    /* Recover the IAOQ values from the GVA + PRIV.  */
+     cs_base = ctx->base.tb->cs_base;
+-    iaoq_f = cs_base & MAKE_64BIT_MASK(32, 32);
+-    iaoq_f |= ctx->base.pc_first & MAKE_64BIT_MASK(2, 30);
+-    iaoq_f |= ctx->privilege;
+-    ctx->iaoq_first = iaoq_f;
++    ctx->iaoq_first = ctx->base.pc_first + ctx->privilege;
+ 
+     if (unlikely(cs_base & CS_BASE_DIFFSPACE)) {
+         ctx->iaq_b.space = cpu_iasq_b;
+@@ -4634,8 +4645,9 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     } else if (unlikely(cs_base & CS_BASE_DIFFPAGE)) {
+         ctx->iaq_b.base = cpu_iaoq_b;
+     } else {
+-        iaoq_b = (iaoq_f & TARGET_PAGE_MASK) | (cs_base & ~TARGET_PAGE_MASK);
+-        ctx->iaq_b.disp = iaoq_b - iaoq_f;
++        uint64_t iaoq_f_pgofs = ctx->iaoq_first & ~TARGET_PAGE_MASK;
++        uint64_t iaoq_b_pgofs = cs_base & ~TARGET_PAGE_MASK;
++        ctx->iaq_b.disp = iaoq_b_pgofs - iaoq_f_pgofs;
      }
  
-+    if (indirect) {
-+        return do_ibranch(ctx, 0, false, a->n);
+     ctx->zero = tcg_constant_i64(0);
+@@ -4662,11 +4674,23 @@ static void hppa_tr_tb_start(DisasContextBase *dcbase, CPUState *cs)
+ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
++    uint64_t iaoq_f, iaoq_b;
++    int64_t diff;
+ 
+     tcg_debug_assert(!iaqe_variable(&ctx->iaq_f));
+-    tcg_gen_insn_start(ctx->iaoq_first + ctx->iaq_f.disp,
+-                       (iaqe_variable(&ctx->iaq_b) ? -1 :
+-                        ctx->iaoq_first + ctx->iaq_b.disp), 0);
++
++    iaoq_f = ctx->iaoq_first + ctx->iaq_f.disp;
++    if (iaqe_variable(&ctx->iaq_b)) {
++        diff = INT32_MIN;
++    } else {
++        iaoq_b = ctx->iaoq_first + ctx->iaq_b.disp;
++        diff = iaoq_b - iaoq_f;
++        /* Direct branches can only produce a 24-bit displacement. */
++        tcg_debug_assert(diff == (int32_t)diff);
++        tcg_debug_assert(diff != INT32_MIN);
 +    }
-     return do_dbranch(ctx, disp, 0, a->n);
++
++    tcg_gen_insn_start(iaoq_f & ~TARGET_PAGE_MASK, diff, 0);
+     ctx->insn_start_updated = false;
  }
  
 -- 
