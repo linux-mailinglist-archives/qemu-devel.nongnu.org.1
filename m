@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E278C3CA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676FF8C3C8B
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QPX-0002v5-1B; Mon, 13 May 2024 03:47:51 -0400
+	id 1s6QPL-0002r5-9i; Mon, 13 May 2024 03:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPG-0002pT-ME
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:34 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1s6QPE-0002nF-Ah
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:33 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPB-0001LQ-Uh
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:34 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-51ef64d051bso4515284e87.1
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:28 -0700 (PDT)
+ id 1s6QPC-0001Le-B6
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:32 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-41ffad2426eso24944285e9.3
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586447; x=1716191247; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715586448; x=1716191248; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GJWeNRY/eXd8vSY+AX7pwEwfAqiZIocZhPOl7aCY6u0=;
- b=dPxZpqDZ6Eu02Fi0z+c2vsO3Q5uiVE/CYd9r4M/cWI6Ayg/tFAmpe8nvBvW9HCLMU3
- DepWpJqkyVFWMvLPaSJSN//MswOe5X13zBf4U/LdcEm6Zf7qkv2SyHPKt0NPgpT6e7er
- qkIoVCfQD+wBvRu3dQaYdhYDwyOkmsxHKhRKGH2k4hFKQSGxUhdSY+/Lhzptl4JO/DGk
- 8OsF8iInKW5fqr7VZ0185gLTsDQA7583SgCylj5GpwJCLzOY4EjgB8PgZ3W/Y2ROX1OG
- VLgOLod/LUQoHhEzC2ySFq/LHY4xH5BGyf3J+gTR7J453cVoH4hmJjfNQ/jBCVHl7p99
- Hvbg==
+ bh=98Yc6UutVteeKcS1a+PabWfW1CAzoS9/dEERHMGPons=;
+ b=W1PBNajLVwNPn71qeLt7CEtp795sEK27gYcLra4tr8g2+9NyNWxulh1XdOy3074aji
+ V9k4b8tdG5bUW2Rkohu9NfyJknJ/ECm2jJcm3vZY4h/UuRwBLlAIspdnHgBZsE4tLawG
+ WoSbwevitQh5HmY5PY75AqaskZ8fBJkj+IcM36Y/stMEDOpEniA9ndLBFAkPGW9fL1Kp
+ SkOD0ldDWRRkDBwMxY914ejo3iJOAxcD7azsCIi6r/08U93qV6tNW6JAWXvaPuPBZcGh
+ pzra5I6sixiJu/+3Nijw0X+/ePV636KCzRR0FLPDK6wHwLyKZG9jjKdtoJZ0gYsIzvgv
+ LA4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586447; x=1716191247;
+ d=1e100.net; s=20230601; t=1715586448; x=1716191248;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GJWeNRY/eXd8vSY+AX7pwEwfAqiZIocZhPOl7aCY6u0=;
- b=Ey9IQON242ExngT/Ec9qx60eUurEwQz4A5STXdekxwHzeWdO/05qIz49GdOX00N210
- ZHaF0TbqYYkP8mVPS+CG4taSFqRNu8rtS8aw5h4BPGH2b10boNfvaCLys6wFpOmpRqqq
- 68o6I05Usvd8NRIM4GDOyrSJQFWjXtLpkOdOobU80ZplCQTYfgC09lEIApVCHvBJlNPq
- W8MmEDIXclo2Yi0moDU6zVm5MxfOqbv2mUjZs7b/XFTc6/SAVvl/nHGsvMdqisI0ZtcD
- esPO9Ly3zhRISw5bptvYSUk//LMLV6n0FwUDK3Xm1vQpXSBEbnP9TC1w0EknX1zwVHao
- 4T+g==
-X-Gm-Message-State: AOJu0YwryvQ2rL+Rm+SHFyMbvTzA5kttw1BkKo/zQNishdt8F9bKIjXD
- NA7oMBYZFP49hjPYZ6CXUsvzM2CqfBN6072RKG0b1IvFi/bNV6FN5p6oG2HPbgb/W3hBDAFolhC
- AxGw=
-X-Google-Smtp-Source: AGHT+IEwpgRqihyaPAfvfqsKbcV/+hQa1/ZYjCHacHylDNbNgfRxECP3PG+pBFI7YJ8Zp2tDoxUPmg==
-X-Received: by 2002:a05:6512:707:b0:520:b0fe:653f with SMTP id
- 2adb3069b0e04-5220ff72ef3mr5313104e87.67.1715586447225; 
- Mon, 13 May 2024 00:47:27 -0700 (PDT)
+ bh=98Yc6UutVteeKcS1a+PabWfW1CAzoS9/dEERHMGPons=;
+ b=KE9OJSxhPwope7Dzb4+4UTKsZxfJ4Xp/dP8X2kIFgKb0AjM6vWfGbe8vzVUB64jzWb
+ VfvugqN7aiqxiLeDmWHZlhHeHsjjtTzOYJcVGsQJWcuZbe0brkG7tQD5yWf3/j6p1+da
+ 8pO9GydSkG77xwqenI2xt3d4pbye/6I9Y8uMvtYYHkx4yNxB8cQPB6KHRBH8MD9suOs8
+ RFhL8BIhb1XTQCURBis3Sa9SGWbzglm/JWtJb4LY4Q86Jve5AVWKgNlWEol+ao4f1ZUE
+ 3rirF6ZcSM0zzsgFIZCCjD02Y2kxs6aKHTKV86FfqxugDPha6PGROjoaASkOExK4ocj9
+ cWnA==
+X-Gm-Message-State: AOJu0YwXiDMdjMW9RiDQgNmvyXCwf5kLeFTs9ZSQN6uFvlqx5JX6lqcX
+ qFpBIUe+X6a2crf9Uq+58gMVDa8uiGxhrCyRDmzfXV3Q2ZU0rOjYLOgyB3uE6esu5rac9rTckwd
+ 5I2Q=
+X-Google-Smtp-Source: AGHT+IG79evf9QkuKhB4yw4XVQ1r7EE8KjYsIDMSe0FcS155y4CFsAtSPlF41LOXSW8IL/T3vIo4cw==
+X-Received: by 2002:a05:600c:2042:b0:41c:8754:8793 with SMTP id
+ 5b1f17b1804b1-41fead790ecmr72257155e9.41.1715586448030; 
+ Mon, 13 May 2024 00:47:28 -0700 (PDT)
 Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.26
+ 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 May 2024 00:47:26 -0700 (PDT)
+ Mon, 13 May 2024 00:47:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 11/45] target/hppa: Simplify TB end
-Date: Mon, 13 May 2024 09:46:43 +0200
-Message-Id: <20240513074717.130949-12-richard.henderson@linaro.org>
+Subject: [PATCH v2 12/45] target/hppa: Add IASQ entries to DisasContext
+Date: Mon, 13 May 2024 09:46:44 +0200
+Message-Id: <20240513074717.130949-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,154 +92,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Minimize the amount of code in hppa_tr_translate_insn advancing the
-insn queue for the next insn.  Move the goto_tb path to hppa_tr_tb_stop.
+Add variable to track space changes to IAQ.  So far, no such changes
+are introduced, but the new checks vs ctx->iasq_b may eliminate an
+unnecessary copy to cpu_iasq_f with e.g. BLR.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 109 +++++++++++++++++++++-------------------
- 1 file changed, 57 insertions(+), 52 deletions(-)
+ target/hppa/translate.c | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index ca979f4137..13a48d1b6c 100644
+index 13a48d1b6c..d24220c60f 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -4699,54 +4699,31 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-         }
-     }
- 
--    /* Advance the insn queue.  Note that this check also detects
--       a priority change within the instruction queue.  */
--    if (ret == DISAS_NEXT && ctx->iaoq_b != ctx->iaoq_f + 4) {
--        if (use_goto_tb(ctx, ctx->iaoq_b, ctx->iaoq_n)
--            && (ctx->null_cond.c == TCG_COND_NEVER
--                || ctx->null_cond.c == TCG_COND_ALWAYS)) {
--            nullify_set(ctx, ctx->null_cond.c == TCG_COND_ALWAYS);
--            gen_goto_tb(ctx, 0, ctx->iaoq_b, ctx->iaoq_n);
--            ctx->base.is_jmp = ret = DISAS_NORETURN;
--        } else {
--            ctx->base.is_jmp = ret = DISAS_IAQ_N_STALE;
--        }
-+    /* If the TranslationBlock must end, do so. */
-+    ctx->base.pc_next += 4;
-+    if (ret != DISAS_NEXT) {
-+        return;
-     }
-+    /* Note this also detects a priority change. */
-+    if (ctx->iaoq_b != ctx->iaoq_f + 4) {
-+        ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-+        return;
-+    }
-+
+@@ -50,6 +50,13 @@ typedef struct DisasContext {
+     uint64_t iaoq_b;
+     uint64_t iaoq_n;
+     TCGv_i64 iaoq_n_var;
 +    /*
-+     * Advance the insn queue.
-+     * The only exit now is DISAS_TOO_MANY from the translator loop.
++     * Null when IASQ_Back unchanged from IASQ_Front,
++     * or cpu_iasq_b, when IASQ_Back has been changed.
 +     */
-     ctx->iaoq_f = ctx->iaoq_b;
-     ctx->iaoq_b = ctx->iaoq_n;
--    ctx->base.pc_next += 4;
--
--    switch (ret) {
--    case DISAS_NORETURN:
--    case DISAS_IAQ_N_UPDATED:
--        break;
--
--    case DISAS_NEXT:
--    case DISAS_IAQ_N_STALE:
--    case DISAS_IAQ_N_STALE_EXIT:
--        if (ctx->iaoq_f == -1) {
--            install_iaq_entries(ctx, -1, cpu_iaoq_b,
--                                ctx->iaoq_n, ctx->iaoq_n_var);
--#ifndef CONFIG_USER_ONLY
++    TCGv_i64 iasq_b;
++    /* Null when IASQ_Next unchanged from IASQ_Back, or set by branch. */
++    TCGv_i64 iasq_n;
+ 
+     DisasCond null_cond;
+     TCGLabel *null_lab;
+@@ -3916,12 +3923,12 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+     if (a->n && use_nullify_skip(ctx)) {
+         install_iaq_entries(ctx, -1, tmp, -1, NULL);
+         tcg_gen_mov_i64(cpu_iasq_f, new_spc);
+-        tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
++        tcg_gen_mov_i64(cpu_iasq_b, new_spc);
+         nullify_set(ctx, 0);
+     } else {
+         install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b, -1, tmp);
+-        if (ctx->iaoq_b == -1) {
 -            tcg_gen_mov_i64(cpu_iasq_f, cpu_iasq_b);
--#endif
--            nullify_save(ctx);
--            ctx->base.is_jmp = (ret == DISAS_IAQ_N_STALE_EXIT
--                                ? DISAS_EXIT
--                                : DISAS_IAQ_N_UPDATED);
--        } else if (ctx->iaoq_b == -1) {
--            if (ctx->iaoq_n_var) {
--                copy_iaoq_entry(ctx, cpu_iaoq_b, -1, ctx->iaoq_n_var);
--            } else {
--                tcg_gen_addi_i64(cpu_iaoq_b, cpu_iaoq_b, 4);
--                tcg_gen_andi_i64(cpu_iaoq_b, cpu_iaoq_b,
--                                 gva_offset_mask(ctx->tb_flags));
--            }
-+    if (ctx->iaoq_b == -1) {
-+        if (ctx->iaoq_n_var) {
-+            copy_iaoq_entry(ctx, cpu_iaoq_b, -1, ctx->iaoq_n_var);
-+        } else {
-+            tcg_gen_addi_i64(cpu_iaoq_b, cpu_iaoq_b, 4);
-+            tcg_gen_andi_i64(cpu_iaoq_b, cpu_iaoq_b,
-+                             gva_offset_mask(ctx->tb_flags));
++        if (ctx->iasq_b) {
++            tcg_gen_mov_i64(cpu_iasq_f, ctx->iasq_b);
          }
--        break;
--
--    default:
--        g_assert_not_reached();
+         tcg_gen_mov_i64(cpu_iasq_b, new_spc);
+         nullify_set(ctx, a->n);
+@@ -4035,8 +4042,8 @@ static bool trans_bve(DisasContext *ctx, arg_bve *a)
+ 
+     install_link(ctx, a->l, false);
+     install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b, -1, dest);
+-    if (ctx->iaoq_b == -1) {
+-        tcg_gen_mov_i64(cpu_iasq_f, cpu_iasq_b);
++    if (ctx->iasq_b) {
++        tcg_gen_mov_i64(cpu_iasq_f, ctx->iasq_b);
      }
+     tcg_gen_mov_i64(cpu_iasq_b, space_select(ctx, 0, dest));
+     nullify_set(ctx, a->n);
+@@ -4617,6 +4624,7 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->mmu_idx = MMU_USER_IDX;
+     ctx->iaoq_f = ctx->base.pc_first | ctx->privilege;
+     ctx->iaoq_b = ctx->base.tb->cs_base | ctx->privilege;
++    ctx->iasq_b = NULL;
+     ctx->unalign = (ctx->tb_flags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN);
+ #else
+     ctx->privilege = (ctx->tb_flags >> TB_FLAG_PRIV_SHIFT) & 3;
+@@ -4631,6 +4639,7 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ 
+     ctx->iaoq_f = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
+     ctx->iaoq_b = (diff ? ctx->iaoq_f + diff : -1);
++    ctx->iasq_b = (diff ? NULL : cpu_iasq_b);
+ #endif
+ 
+     ctx->zero = tcg_constant_i64(0);
+@@ -4683,6 +4692,7 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+ 
+         /* Set up the IA queue for the next insn.
+            This will be overwritten by a branch.  */
++        ctx->iasq_n = NULL;
+         ctx->iaoq_n_var = NULL;
+         ctx->iaoq_n = ctx->iaoq_b == -1 ? -1 : ctx->iaoq_b + 4;
+ 
+@@ -4705,7 +4715,7 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+         return;
+     }
+     /* Note this also detects a priority change. */
+-    if (ctx->iaoq_b != ctx->iaoq_f + 4) {
++    if (ctx->iaoq_b != ctx->iaoq_f + 4 || ctx->iasq_b) {
+         ctx->base.is_jmp = DISAS_IAQ_N_STALE;
+         return;
+     }
+@@ -4725,6 +4735,10 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+                              gva_offset_mask(ctx->tb_flags));
+         }
+     }
++    if (ctx->iasq_n) {
++        tcg_gen_mov_i64(cpu_iasq_b, ctx->iasq_n);
++        ctx->iasq_b = cpu_iasq_b;
++    }
  }
  
-@@ -4754,23 +4731,51 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+@@ -4733,14 +4747,15 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
      DisasJumpType is_jmp = ctx->base.is_jmp;
-+    uint64_t fi, bi;
-+    TCGv_i64 fv, bv;
-+    TCGv_i64 fs;
-+
-+    /* Assume the insn queue has not been advanced. */
-+    fi = ctx->iaoq_b;
-+    fv = cpu_iaoq_b;
-+    fs = fi == -1 ? cpu_iasq_b : NULL;
-+    bi = ctx->iaoq_n;
-+    bv = ctx->iaoq_n_var;
+     uint64_t fi, bi;
+     TCGv_i64 fv, bv;
+-    TCGv_i64 fs;
++    TCGv_i64 fs, bs;
+ 
+     /* Assume the insn queue has not been advanced. */
+     fi = ctx->iaoq_b;
+     fv = cpu_iaoq_b;
+-    fs = fi == -1 ? cpu_iasq_b : NULL;
++    fs = ctx->iasq_b;
+     bi = ctx->iaoq_n;
+     bv = ctx->iaoq_n_var;
++    bs = ctx->iasq_n;
  
      switch (is_jmp) {
      case DISAS_NORETURN:
-         break;
-     case DISAS_TOO_MANY:
--    case DISAS_IAQ_N_STALE:
--    case DISAS_IAQ_N_STALE_EXIT:
--        install_iaq_entries(ctx, ctx->iaoq_f, cpu_iaoq_f,
--                            ctx->iaoq_b, cpu_iaoq_b);
--        nullify_save(ctx);
-+        /* The insn queue has not been advanced. */
-+        bi = fi;
-+        bv = fv;
-+        fi = ctx->iaoq_f;
-+        fv = NULL;
-+        fs = NULL;
+@@ -4749,12 +4764,15 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         /* The insn queue has not been advanced. */
+         bi = fi;
+         bv = fv;
++        bs = fs;
+         fi = ctx->iaoq_f;
+         fv = NULL;
+         fs = NULL;
          /* FALLTHRU */
--    case DISAS_IAQ_N_UPDATED:
--        if (is_jmp != DISAS_IAQ_N_STALE_EXIT) {
--            tcg_gen_lookup_and_goto_ptr();
-+    case DISAS_IAQ_N_STALE:
-+        if (use_goto_tb(ctx, fi, bi)
-+            && (ctx->null_cond.c == TCG_COND_NEVER
-+                || ctx->null_cond.c == TCG_COND_ALWAYS)) {
-+            nullify_set(ctx, ctx->null_cond.c == TCG_COND_ALWAYS);
-+            gen_goto_tb(ctx, 0, fi, bi);
-             break;
+     case DISAS_IAQ_N_STALE:
+-        if (use_goto_tb(ctx, fi, bi)
++        if (fs == NULL
++            && bs == NULL
++            && use_goto_tb(ctx, fi, bi)
+             && (ctx->null_cond.c == TCG_COND_NEVER
+                 || ctx->null_cond.c == TCG_COND_ALWAYS)) {
+             nullify_set(ctx, ctx->null_cond.c == TCG_COND_ALWAYS);
+@@ -4767,6 +4785,9 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         if (fs) {
+             tcg_gen_mov_i64(cpu_iasq_f, fs);
          }
-         /* FALLTHRU */
-+    case DISAS_IAQ_N_STALE_EXIT:
-+        install_iaq_entries(ctx, fi, fv, bi, bv);
-+        if (fs) {
-+            tcg_gen_mov_i64(cpu_iasq_f, fs);
++        if (bs) {
++            tcg_gen_mov_i64(cpu_iasq_b, bs);
 +        }
-+        nullify_save(ctx);
-+        if (is_jmp == DISAS_IAQ_N_STALE_EXIT) {
-+            tcg_gen_exit_tb(NULL, 0);
-+            break;
-+        }
-+        /* FALLTHRU */
-+    case DISAS_IAQ_N_UPDATED:
-+        tcg_gen_lookup_and_goto_ptr();
-+        break;
-     case DISAS_EXIT:
-         tcg_gen_exit_tb(NULL, 0);
-         break;
+         nullify_save(ctx);
+         if (is_jmp == DISAS_IAQ_N_STALE_EXIT) {
+             tcg_gen_exit_tb(NULL, 0);
 -- 
 2.34.1
 
