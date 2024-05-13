@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F6C8C41DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 15:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 945BA8C41AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 15:19:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6VgH-0004KJ-CE; Mon, 13 May 2024 09:25:29 -0400
+	id 1s6VZM-00071N-Jc; Mon, 13 May 2024 09:18:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1s6VgF-0004Jn-0A
- for qemu-devel@nongnu.org; Mon, 13 May 2024 09:25:27 -0400
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1s6VgC-0005Du-E4
- for qemu-devel@nongnu.org; Mon, 13 May 2024 09:25:26 -0400
-Received: from scripts.lp.internal (scripts.lp.internal [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id 92B2B4ADED
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 13:25:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1715606721;
- bh=MZlAKF0oJU4PD9nUXxqK72KRnjrxNhyszq3mK/P4w9I=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=e/F/G4MxbOo+YxgMplxojzJC558He9LZV0NUB7Jy+4mgGrtqnqFCU+wcpA3K/Xnls
- aJmdTIXDks7PR2WbfXP9nP1ENeWy2fzIf0+WsoDpR7UNt/OJ5D5R9AmpVOI6eajfe2
- cKInwQ/R7XnMkoZgEB/4yPRTjZQ2NjA4XOCb5bctUI0sSl9etMQzoyS5FlYtxA27W8
- 27WEwmSyjloHWgOg8NLZ6wsacRBYquyuevz7a1lPpCm0pI8zGYEYgpBbr1KvdPHzX6
- PEeRnHQPY+bAKZr182JUsL+WIBmNN8ykMbzTAR+tmpWm1wJry3Ab+3Xb5fV5s8hnLS
- cREMhw7RXGE9g==
-Received: from scripts.lp.internal (localhost [127.0.0.1])
- by scripts.lp.internal (Postfix) with ESMTP id 804D27E00F
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 13:25:21 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6VZI-0006yu-0t
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 09:18:16 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6VZF-0003oj-J1
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 09:18:15 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-51f4d2676d1so4680896e87.3
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 06:18:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715606289; x=1716211089; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kPjgYgq2OJKi2+MpSVcM8/6vIKwKmBz6OcIcuKES9D4=;
+ b=ZJHkzp4RF/3RUGXTNrZBTFfexpMK16s0T/VD3RYtRXNdyp9XRzxpHacE19+sdRRYpO
+ 3TF250/OyJ/EOM3ecMSwRujqZJoE6915o7mVgVgMtI1LgKSMeR8M32D0c7fydWKdMw8P
+ LFHgaVXTMpfurqAubeynrLX4Ng2K+64lAzbXhCyK4P97DQiZxOVnBd5aJY0lBATQj8eW
+ p9Jw0ZVLrWcPFrNem2A/P3Nalxcl4wiaGtctU0mfHIjnEVabk6MAhXe2Cmyv3Zyag071
+ Y90TLTgAPa/Ji+mNsyMJ+y8FaWByM5QUAS86BrBgukuZF+rLWKQ39i9niM3apHXoF6YT
+ tKqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715606289; x=1716211089;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kPjgYgq2OJKi2+MpSVcM8/6vIKwKmBz6OcIcuKES9D4=;
+ b=K6+aSpDyZ7bM6gVKGM7ImkAkG5VJXIufmqwS+X9KlMCh1r8BESt3VjF3gFs1eyZ6zv
+ qCdFD/uk7IBiJJSermNjtsmwJjFPjgRnA2SAxhcKEyT79WWopM5dWj/4kdAqyDWH+CUM
+ jhRt1TboIrrnOC1C0C2o0BbX3xsvCAZl4oe4kiQiTLIxYbaTD7G5sCPvZLiDTpx+WOGM
+ y/nyqQIFFzj04eAU5OWjeRpyCd7VXM/6hqs3PIbbQm/IAxA5yv+rnvOXvNjiD4UIYCiI
+ Q/y3yy+R4eRYjGTSMkhSNesg+kXMFXALJjI6GhMYQLw/TVJIKjrWTcMenaQR1x5HMeb/
+ civA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWe+l6tf+TAluOK8GHX0xZyRA12XxDuboF7nMUfeZ3Bn8r/0dN/QRhtwi6IWJs6xN9iDhLs6sPsyOXTMRylaotG6bNRlJE=
+X-Gm-Message-State: AOJu0YzCl4vlEYuOhohp5US00mbR/jKWFh9PE0aGjBfGGZlEA2dI8VtA
+ BOrW2GIvZSs9sU0MujlMg4CmNTluW3Rfu7pMb4c8ZShuDQpE05pDtL1AS8u1cfY=
+X-Google-Smtp-Source: AGHT+IEmbQJ/GCAcDR+7HrtDxBpzEwKlvqLnJY7pc3yj/c4s2dlJM/qy/szuRs/tWG/axCagE+LYLQ==
+X-Received: by 2002:ac2:4309:0:b0:518:bc7c:413a with SMTP id
+ 2adb3069b0e04-52210276505mr5149644e87.69.1715606289265; 
+ Mon, 13 May 2024 06:18:09 -0700 (PDT)
+Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-522403ed95asm937750e87.57.2024.05.13.06.18.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 13 May 2024 06:18:08 -0700 (PDT)
+Message-ID: <96c088de-8144-4f37-81e5-f3b51d6c29be@linaro.org>
+Date: Mon, 13 May 2024 15:18:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 13 May 2024 13:18:04 -0000
-From: Sergio Durigan Junior <2065579@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=ubuntu-z-systems; status=New; importance=Undecided;
- assignee=skipper-screen-team; 
-X-Launchpad-Bug: distribution=ubuntu; sourcepackage=qemu; component=main;
- status=New; importance=Undecided; assignee=sergio.durigan@canonical.com; 
-X-Launchpad-Bug-Tags: architecture-s39064 bugnameltc-206380 severity-critical
- targetmilestone-inin---
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: bugproxy sergiodj
-X-Launchpad-Bug-Reporter: bugproxy (bugproxy)
-X-Launchpad-Bug-Modifier: Sergio Durigan Junior (sergiodj)
-References: <171559617548.234481.1609401859991330301.malonedeb@juju-98d295-prod-launchpad-7>
-Message-Id: <171560628417.1908563.9111532389196118447.malone@juju-98d295-prod-launchpad-2>
-Subject: [Bug 2065579] Re: [UBUNTU 22.04] OS guest boot issues on 9p filesystem
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="0e1f616671af724398db43b36ddfb3ed1f2682ec";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 9b59f7adf07a058ba86a778cb0070e7581af3bf5
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/22] hw/i386: Remove deprecated pc-i440fx-2.0 -> 2.3
+ machines
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, kvm@vger.kernel.org,
+ qemu-ppc@nongnu.org, qemu-arm@nongnu.org
+References: <20240416185939.37984-1-philmd@linaro.org>
+ <6de106f2-1061-483e-97db-96b09e5b40ad@linaro.org>
+Content-Language: en-US
+In-Reply-To: <6de106f2-1061-483e-97db-96b09e5b40ad@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -86,123 +94,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 2065579 <2065579@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thank you for the report.
+ping^2
 
-Given that this is an upstream regression and there is a related
-upstream bug about it, I believe it's best to wait for their
-input/feedback before moving forward.
-
-** Also affects: qemu
-   Importance: Undecided
-       Status: New
-
-** No longer affects: qemu
-
-** Changed in: qemu (Ubuntu)
-     Assignee: (unassigned) =3D> Sergio Durigan Junior (sergiodj)
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/2065579
-
-Title:
-  [UBUNTU 22.04] OS guest boot issues on 9p filesystem
-
-Status in Ubuntu on IBM z Systems:
-  New
-Status in qemu package in Ubuntu:
-  New
-
-Bug description:
-  =3D=3D=3D Reported by <d.herrendoerfer@de.ibm.com> - 2024-05-13 03:53:01 =
-=3D=3D=3D
-
-  ---Problem Description---
-  OS guest boot issues on 9p filesystem due to unix domain sockets open fai=
-lure
-  =20
-  Contact Information =3D d.herrendoerfer@de.ibm.com=20
-  =20
-  Machine Type =3D 3931-7G4=20
-  =20
-  ---uname output---
-  5.15.0-92-generic #102-Ubuntu SMP Wed Jan 10 09:35:24 UTC 2024 s390x s390=
-x s390x GNU/Linux
-  =20
-  ---Steps to Reproduce---
-   #!/bin/bash
-
-  # Cleanup target dir
-  [ -d ./target ] && rm -rf target
-  mkdir target
-
-  # Add configuration updates
-  mkdir -p ./target/etc/initramfs-tools/
-  echo 9p >> ./target/etc/initramfs-tools/modules
-  echo 9pnet_virtio >> ./target/etc/initramfs-tools/modules
-
-  # Add the test script
-  cat > ./target/test_init << EOF
-  #!/bin/bash
-
-  echo "Test for unix domain sockets"
-
-  nc -Ul /socket &
-  sleep 1
-  echo "Sockets work" | nc -UN /socket || echo "Sockets fail"
-
-  echo o > /proc/sysrq-trigger
-  sleep 999
-  EOF
-  chmod 700 ./target/test_init
-
-  # Create an Ubuntu 23.10 around it
-  echo "Creating Ubuntu target OS"
-  debootstrap --variant=3Dminbase\
-              --include=3Dudev,kmod,initramfs-tools,systemd,netcat-openbsd,=
-linux-image-generic \
-              --exclude=3Dman,bash-completion \
-              mantic ./target > /dev/null || exit 1
-
-  # Run the test in 9p forwarded filesystem
-  echo "Running OS in qemu"
-  qemu-system-s390x \
-    -m 8192 \
-    -smp 4 \
-    -nodefaults -nographic -no-reboot -no-user-config \
-    -kernel ./target/boot/vmlinuz \
-    -initrd ./target/boot/initrd.img \
-    -append 'root=3DfsRoot rw rootfstype=3D9p rootflags=3Dtrans=3Dvirtio,ve=
-rsion=3D9p2000.L,msize=3D512000,cache=3Dmmap,posixacl console=3Dttysclp0 in=
-it=3D/test_init quiet' \
-    -fsdev local,security_model=3Dpassthrough,multidevs=3Dremap,id=3Dfsdev-=
-fsRoot,path=3D./target \
-    -device virtio-9p-pci,id=3DfsRoot,fsdev=3Dfsdev-fsRoot,mount_tag=3DfsRo=
-ot \
-    -device virtio-serial-ccw -device sclpconsole,chardev=3Dconsole \
-    -chardev stdio,id=3Dconsole,signal=3Doff=20
-
-  =20
-  ---Debugger---
-  A debugger is not configured
-
-  Userspace rpm: qemu-(current).deb=20
-  =20
-  Userspace tool common name: qemu=20
-
-  Userspace tool obtained from project website:  na=20
-  =20
-  The userspace tool has the following bit modes: both=20
-  =20
-  *Additional Instructions for d.herrendoerfer@de.ibm.com:
-  -Attach ltrace and strace of userspace application.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/ubuntu-z-systems/+bug/2065579/+subscriptions
+On 6/5/24 16:29, Philippe Mathieu-Daudé wrote:
+> On 16/4/24 20:59, Philippe Mathieu-Daudé wrote:
+>> Series fully reviewed.
+> 
+> Ping, is there some issue holding this series?
+> 
+>> Philippe Mathieu-Daudé (22):
+>>    hw/i386/pc: Deprecate 2.4 to 2.12 pc-i440fx machines
+>>    hw/i386/pc: Remove deprecated pc-i440fx-2.0 machine
+>>    hw/usb/hcd-xhci: Remove XHCI_FLAG_FORCE_PCIE_ENDCAP flag
+>>    hw/usb/hcd-xhci: Remove XHCI_FLAG_SS_FIRST flag
+>>    hw/i386/acpi: Remove PCMachineClass::legacy_acpi_table_size
+>>    hw/acpi/ich9: Remove 'memory-hotplug-support' property
+>>    hw/acpi/ich9: Remove dead code related to 'acpi_memory_hotplug'
+>>    hw/i386/pc: Remove deprecated pc-i440fx-2.1 machine
+>>    target/i386/kvm: Remove x86_cpu_change_kvm_default() and 'kvm-cpu.h'
+>>    hw/i386/pc: Remove PCMachineClass::smbios_uuid_encoded
+>>    hw/smbios: Remove 'uuid_encoded' argument from smbios_set_defaults()
+>>    hw/smbios: Remove 'smbios_uuid_encoded', simplify smbios_encode_uuid()
+>>    hw/i386/pc: Remove PCMachineClass::enforce_aligned_dimm
+>>    hw/mem/pc-dimm: Remove legacy_align argument from pc_dimm_pre_plug()
+>>    hw/mem/memory-device: Remove legacy_align from
+>>      memory_device_pre_plug()
+>>    hw/i386/pc: Remove deprecated pc-i440fx-2.2 machine
+>>    hw/i386/pc: Remove PCMachineClass::resizable_acpi_blob
+>>    hw/i386/pc: Remove PCMachineClass::rsdp_in_ram
+>>    hw/i386/acpi: Remove AcpiBuildState::rsdp field
+>>    hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine
+>>    target/i386: Remove X86CPU::kvm_no_smi_migration field
+>>    hw/i386/pc: Replace PCMachineClass::acpi_data_size by
+>>      PC_ACPI_DATA_SIZE
 
 
