@@ -2,87 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA718C4023
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 13:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AFA8C40EF
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 14:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6UCH-0006Zw-5g; Mon, 13 May 2024 07:50:25 -0400
+	id 1s6V1y-0003YL-QQ; Mon, 13 May 2024 08:43:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6UCD-0006ZR-Do
- for qemu-devel@nongnu.org; Mon, 13 May 2024 07:50:21 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6UCB-0004uR-Bt
- for qemu-devel@nongnu.org; Mon, 13 May 2024 07:50:20 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a59a609dd3fso729122566b.0
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 04:50:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <prvs=8567b36a1=roypat@amazon.co.uk>)
+ id 1s6SyP-0004aN-Tx
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 06:32:05 -0400
+Received: from smtp-fw-52005.amazon.com ([52.119.213.156])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=8567b36a1=roypat@amazon.co.uk>)
+ id 1s6SyL-0002Jd-Eq
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 06:32:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715601018; x=1716205818; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6hcvksixmUasNz+CeVA12QiFeszh0CoPYpHWqqrjNrE=;
- b=oabpGawHlbF/IlA6xIic018andxHVQFK2voNM+FGdNAYFT+xtqFMm+I5akT0xaoawq
- l9biQwHvsxfH4z93JwP/tiEyuQ1T2G3ZCKaNXvyLasHrx5r0FWoiETuTaTBfr8V/mD0U
- ihZFgBW1YOJnavfi82YmzsknBPJxFScjBt76C15DtqhMEPnJ0+clhVU/dSi55UH6kNSY
- Acq7psr74Vxfm9lmEV5QuPfB1yr5Utol3+CpSOYS9/b/qJcVKYVVroLEcBvpbBB3ZaAD
- 3CJHLDPxJx05Tg8nTc9d3mjDnNFbd6g5UwD44F5uQni4QHBZ9CfQXa3lFqXTlXGMLzNS
- 4xxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715601018; x=1716205818;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6hcvksixmUasNz+CeVA12QiFeszh0CoPYpHWqqrjNrE=;
- b=xRrVJ8F2c7IwuVVadYSUJFOCRhbDDR+5r470dImViUCqFI1j1yuDgLI1jdV8LIyN1D
- TK/X4HD5fGZOS1BpPt/rv74bYQE1Z5Srcw5QpeERQrvtgTc4rzEUE4oJUI52caBBxZ+X
- 0zpKdb1LEvpX4UrrjvplCbae3Hc5G/CplIXkMAA+iZOv4J6/WY7Gr7YIuAx3Xgsj0h/b
- DTzUw1456fP03KPYbMgZeSWYmcpCJpACFzdFxi8ccND8wx8rTz6LWJoirTTZoCjB7bz5
- rKZy81BGjJ7nyLbBM+ZC8NRgpHYGTp62VlTW9XIYf5YXEX7SQ8zcaeiRKeumqzaOvaPl
- qAew==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUeEQltl9eE4D0Wrjf8qe1tr+D9KFb5QPVjldxUbsVF0QD9JvqrQbX225I3/4Efq0wPcWkOxHlogiCf6IjTQVmE0r+ukLk=
-X-Gm-Message-State: AOJu0YyVE/dxKduEUDHhI8UhNaKrFwokbhOETU15rEtCujLY6CcSsvMg
- frnffhItE1UdpRdmPN7WuZWjBi7GCXzJVHa4p6qpliseX7ln9YGrQeWMRbvmjyA=
-X-Google-Smtp-Source: AGHT+IEr6Ul2azA0WwBiVUb149mpLPmwfP8FHl2LPhaoWe8z0ZTEwrglcDjoe2XcCxoJCmzadz6TrA==
-X-Received: by 2002:a17:906:b098:b0:a59:cf0d:d7c8 with SMTP id
- a640c23a62f3a-a5a11601484mr1095578066b.15.1715601017861; 
- Mon, 13 May 2024 04:50:17 -0700 (PDT)
-Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a179c7f49sm586242666b.101.2024.05.13.04.50.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 May 2024 04:50:17 -0700 (PDT)
-Message-ID: <4b340144-87d3-484b-84e4-cbad0f54ecc9@linaro.org>
-Date: Mon, 13 May 2024 13:50:16 +0200
+ d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+ s=amazon201209; t=1715596318; x=1747132318;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=uQIw9i/g+I3Ll0Kcnj1kLLWW5A3sw6sKhdQsGDX0E88=;
+ b=JjWla/uwjMwRUNXOhkxG+7f+zVreNbnoe5sBuOdub0f6Zt1qw8wRd55G
+ tqfkyW4C2DPojB7aRv9EJTK+rCSFL+IWmlEdcpSeAxSUgB4tHc8z6HowI
+ eF+B6lOi3AKBrksiJSwLcpLpS3/1w0z0Rta8R63gD7ajQAEdvoybcfhMI g=;
+X-IronPort-AV: E=Sophos;i="6.08,158,1712620800"; d="scan'208";a="653737330"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO
+ smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+ by smtp-border-fw-52005.iad7.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 10:31:53 +0000
+Received: from EX19MTAUEB001.ant.amazon.com [10.0.44.209:28793]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.82.155:2525]
+ with esmtp (Farcaster)
+ id 24678bc8-ee46-4086-b40e-d21a7295c070; Mon, 13 May 2024 10:31:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 24678bc8-ee46-4086-b40e-d21a7295c070
+Received: from EX19D008UEA003.ant.amazon.com (10.252.134.116) by
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 10:31:51 +0000
+Received: from EX19MTAUEB001.ant.amazon.com (10.252.135.35) by
+ EX19D008UEA003.ant.amazon.com (10.252.134.116) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 13 May 2024 10:31:51 +0000
+Received: from [127.0.0.1] (172.19.88.180) by mail-relay.amazon.com
+ (10.252.135.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28 via Frontend
+ Transport; Mon, 13 May 2024 10:31:49 +0000
+Message-ID: <58f39f23-0314-4e34-a8c7-30c3a1ae4777@amazon.co.uk>
+Date: Mon, 13 May 2024 11:31:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] gitlab: use $MAKE instead of 'make'
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <20240513111551.488088-1-berrange@redhat.com>
- <20240513111551.488088-3-berrange@redhat.com>
+Subject: Re: Unmapping KVM Guest Memory from Host Kernel
+To: Mike Rapoport <rppt@kernel.org>, Sean Christopherson <seanjc@google.com>
+CC: James Gowans <jgowans@amazon.com>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "chao.p.peng@linux.intel.com"
+ <chao.p.peng@linux.intel.com>, Derek Manwaring <derekmn@amazon.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, David Woodhouse
+ <dwmw@amazon.co.uk>, Nikita Kalyazin <kalyazin@amazon.co.uk>,
+ "lstoakes@gmail.com" <lstoakes@gmail.com>, "Liam.Howlett@oracle.com"
+ <Liam.Howlett@oracle.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+ "vbabka@suse.cz" <vbabka@suse.cz>, "mst@redhat.com" <mst@redhat.com>,
+ "somlo@cmu.edu" <somlo@cmu.edu>, Alexander Graf <graf@amazon.de>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>
+References: <cc1bb8e9bc3e1ab637700a4d3defeec95b55060a.camel@amazon.com>
+ <ZeudRmZz7M6fWPVM@google.com> <ZexEkGkNe_7UY7w6@kernel.org>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240513111551.488088-3-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Patrick Roy <roypat@amazon.co.uk>
+Autocrypt: addr=roypat@amazon.co.uk; keydata=
+ xjMEY0UgYhYJKwYBBAHaRw8BAQdA7lj+ADr5b96qBcdINFVJSOg8RGtKthL5x77F2ABMh4PN
+ NVBhdHJpY2sgUm95IChHaXRodWIga2V5IGFtYXpvbikgPHJveXBhdEBhbWF6b24uY28udWs+
+ wpMEExYKADsWIQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbAwULCQgHAgIiAgYVCgkI
+ CwIEFgIDAQIeBwIXgAAKCRBVg4tqeAbEAmQKAQC1jMl/KT9pQHEdALF7SA1iJ9tpA5ppl1J9
+ AOIP7Nr9SwD/fvIWkq0QDnq69eK7HqW14CA7AToCF6NBqZ8r7ksi+QLOOARjRSBiEgorBgEE
+ AZdVAQUBAQdAqoMhGmiXJ3DMGeXrlaDA+v/aF/ah7ARbFV4ukHyz+CkDAQgHwngEGBYKACAW
+ IQQ5DAcjaM+IvmZPLohVg4tqeAbEAgUCY0UgYgIbDAAKCRBVg4tqeAbEAtjHAQDkh5jZRIsZ
+ 7JMNkPMSCd5PuSy0/Gdx8LGgsxxPMZwePgEAn5Tnh4fVbf00esnoK588bYQgJBioXtuXhtom
+ 8hlxFQM=
+In-Reply-To: <ZexEkGkNe_7UY7w6@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=52.119.213.156;
+ envelope-from=prvs=8567b36a1=roypat@amazon.co.uk;
+ helo=smtp-fw-52005.amazon.com
+X-Spam_score_int: -122
+X-Spam_score: -12.3
+X-Spam_bar: ------------
+X-Spam_report: (-12.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 13 May 2024 08:43:48 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,16 +112,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/5/24 13:15, Daniel P. Berrangé wrote:
-> The lcitool generated containers have '$MAKE' set to the path
-> of the right 'make' binary. Using the env variable makes it
-> possible to override the choice per job.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   .gitlab-ci.d/buildtest-template.yml | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+Hi all,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 3/9/24 11:14, Mike Rapoport wrote:
+
+>>> >>> With this in mind, what’s the best way to solve getting guest RAM out of
+>>> >>> the direct map? Is memfd_secret integration with KVM the way to go, or
+>>> >>> should we build a solution on top of guest_memfd, for example via some
+>>> >>> flag that causes it to leave memory in the host userspace’s page tables,
+>>> >>> but removes it from the direct map?
+>> >> memfd_secret obviously gets you a PoC much faster, but in the long term I'm quite
+>> >> sure you'll be fighting memfd_secret all the way.  E.g. it's not dumpable, it
+>> >> deliberately allocates at 4KiB granularity (though I suspect the bug you found
+>> >> means that it can be inadvertantly mapped with 2MiB hugepages), it has no line
+>> >> of sight to taking userspace out of the equation, etc.
+>> >>
+>> >> With guest_memfd on the other hand, everyone contributing to and maintaining it
+>> >> has goals that are *very* closely aligned with what you want to do.
+> > I agree with Sean, guest_memfd seems a better interface to use. It's
+> > integrated by design with KVM and removing guest memory from the direct map
+> > looks like a natural enhancement to guest_memfd.
+> >
+> > Unless I'm missing something, for fast-and-dirty POC it'll be a oneliner
+> > that adds set_memory_np() to kvm_gmem_get_folio() and then figuring out
+> > what to do with virtio :)
+
+We’ve been playing around with extending guest_memfd to remove guest memory
+from the direct map. Removal from direct map aspect is indeed fairly
+straight-forward; since we cannot map guest_memfd, we don’t need to worry about
+folios without direct map entries getting to places where they will cause
+kernel panics.
+
+However, we ran into problems running non-CoCo VMs with guest_memfd for guest
+memory, independent of direct map entries being available or not. There’s a
+handful of places where a traditional KVM / Userspace setup currently touches
+guest memory:
+
+* Loading the Guest Kernel into guest-owned memory
+* Instruction fetch from arbitrary guest addresses and guest page table walks  
+  for MMIO emulation (for example for IOAPIC accesses)
+* kvm-clock
+* I/O devices
+
+With guest_memfd, if the guest is running from guest-private memory, these need
+to be rethought, since now the memory is unavailable to userspace, and KVM is
+not enlightened about guest_memfd’s existance everywhere (when I was
+experimenting with this, it generally read garbage data from the shared VMA,
+but I think I’ve since seen some patches floating around that would make it
+return -EFAULT instead).
+
+CoCo VMs have various methods for working around these: You load a guest kernel
+using some “populate on first access” mechanism [1], kvm-clock and I/O is
+solved by having the guest mark the relevant address ranges as “shared” ahead
+of time [2] and bounce buffering via swiotlb [4], and Intel TDX solves the
+instruction emulation problem for MMIO by injecting a #VE and having the guest
+do the emulation itself [3].
+
+For non-CoCo VMs, where memory is not encrypted, and the threat model assumes a
+trusted host userspace, we would like to avoid changing the VM model so
+completely. If we adopt CoCo’s approaches where KVM / Userspace touches guest
+memory we would get all the complexity, yet none of the encryption.
+Particularly the complexity on the MMIO path seems nasty, but x86 does not
+pre-decode instructions on MMIO exits (which are just EPT_VIOLATIONs) like it
+does for PIO exits, so I also don’t really see a way around it in the
+guest_memfd model.
+
+We’ve played around a lot with allowing userspace mappings of guest_memfd, and
+then having KVM internally access guest_memfd via userspace page tables (and
+came up with multiple hacky ways to boot simple Linux initrds from
+guest_memfd), but this is fairly awkward for two reasons:
+
+1. Now lots of codepaths in KVM end up accessing guest_memfd, which from my
+understanding goes against the guest_memfd goal of making machine checks
+because of incorrect accesses to TDX memory impossible, and
+2. We need to somehow get a userspace mapping of guest_memfd into KVM (a hacky
+way I could make this work was setting up kvm_user_memory_region2 with
+userspace_addr set to a mmap of guest_memory, which actually "works" for
+everything but kvm-clock, but I also realized later that this is just
+memfd_secret with extra steps).
+
+We also played around with having KVM access guest_memfd through the direct map
+(by temporarily reinserting pages into it when needed), but this again means
+lots of KVM code learns about how to access guest RAM via guest_memfd.
+
+There are a few other features we need to support, such as serving page faults
+using UFFD, which we are not too sure how to realize with guest_memfd since
+UFFD is VMA based (although to me some sort of “UFFD-for-FD” sounds like
+something that’d be useful even outside of our guest_memfd usecase).
+
+With these challenges in mind, some variant of memfd_secret continues to look
+attractive for the non-CoCo case. Perhaps a variant that supports in-kernel
+faults and provides some way for gfn_to_pfn_cache users like kvm-clock to
+restore the direct map entries.
+
+Sean, you mentioned that you envision guest_memfd also supporting non-CoCo VMs.
+Do you have some thoughts about how to make the above cases work in the
+guest_memfd context?
+
+> > --
+> > Sincerely yours,
+> > Mike.
+
+Best,
+Patrick
+
+[1]: https://lore.kernel.org/kvm/20240404185034.3184582-1-pbonzini@redhat.com/T/#m4cc08ce3142a313d96951c2b1286eb290c7d1dac
+[2]: https://elixir.bootlin.com/linux/latest/source/arch/x86/kernel/kvmclock.c#L227
+[3]: https://www.kernel.org/doc/html/next/x86/tdx.html#mmio-handling
+[4]: https://www.kernel.org/doc/html/next/x86/tdx.html#shared-memory-conversions
 
 
