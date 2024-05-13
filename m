@@ -2,74 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633438C40CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 14:35:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B76D8C40D5
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 14:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Usy-0004ON-Ao; Mon, 13 May 2024 08:34:32 -0400
+	id 1s6UvA-00076x-N1; Mon, 13 May 2024 08:36:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s6Usn-0004ND-2W
- for qemu-devel@nongnu.org; Mon, 13 May 2024 08:34:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1s6Uv6-00074X-0P; Mon, 13 May 2024 08:36:44 -0400
+Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s6Usk-0004Vc-Tz
- for qemu-devel@nongnu.org; Mon, 13 May 2024 08:34:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715603657;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mZ785zT+qMcpYwxB8fMfufyghsbSHwxj2i1XQxD081o=;
- b=h4tbAhAqYXjW8UbY5StFBGkSVIJ+qKqmRaWEkG7JeR9wF3FbEvHjuWW//tUkhhWTnAJ/bG
- dgqtwtfGSMdS0vXVXtKSIoz4kthTnGJkWIvZziAtQhPTQ6ylc3mEG+jvwDMm05cUaCnSYL
- t7fipbGhTWG5btfP1IRlIGAH+9r00wQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-k8ZYeKBjO5KdnJZGFwLxSg-1; Mon, 13 May 2024 08:34:04 -0400
-X-MC-Unique: k8ZYeKBjO5KdnJZGFwLxSg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A3F7809F64;
- Mon, 13 May 2024 12:34:03 +0000 (UTC)
-Received: from toolbox.default.com (unknown [10.42.28.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4EDEB7414;
- Mon, 13 May 2024 12:34:02 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Peter Krempa <pkrempa@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/2] tests: add testing of parameter=1 for SMP topology
-Date: Mon, 13 May 2024 13:33:58 +0100
-Message-ID: <20240513123358.612355-3-berrange@redhat.com>
-In-Reply-To: <20240513123358.612355-1-berrange@redhat.com>
-References: <20240513123358.612355-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1s6Uv0-00055X-CG; Mon, 13 May 2024 08:36:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1715603786; h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From;
+ bh=2QQ2fNmmv6JvHJczTVLxsBOIzDXJdhvrb4eu1nq9fEw=;
+ b=v+DVntBnshueOJYfP1OluTlh2mGopi8D/pbV+8SdPBYaQUOn7BJXadaU1mR6dir8h1JnLiwevkr7Ev4xwJMX4gNl5m7TTdfXAvET6f3psdnbGM1QmfmseCrpYXmreVz+E87TXP1ScW3RtSdctwFL4gb8zReHtZQR3leXJMAF9Zc=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R141e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033068173054;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0W6QUXRp_1715603783; 
+Received: from 30.198.0.184(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0W6QUXRp_1715603783) by smtp.aliyun-inc.com;
+ Mon, 13 May 2024 20:36:24 +0800
+Content-Type: multipart/alternative;
+ boundary="------------kvDv8Xha1E9KcNpvyJ4BjWZp"
+Message-ID: <58fe0789-4f1b-4c13-bab9-977c18787095@linux.alibaba.com>
+Date: Mon, 13 May 2024 20:35:37 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 3/6] target/riscv: Add helper functions to calculate
+ current number of masked bits for pointer masking
+To: Alexey Baturo <baturo.alexey@gmail.com>
+Cc: richard.henderson@linaro.org, space.monkey.delivers@gmail.com,
+ palmer@dabbelt.com, Alistair.Francis@wdc.com, sagark@eecs.berkeley.edu,
+ kbastian@mail.uni-paderborn.de, qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+References: <20240511101053.1875596-1-me@deliversmonkey.space>
+ <20240511101053.1875596-4-me@deliversmonkey.space>
+Content-Language: en-US
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20240511101053.1875596-4-me@deliversmonkey.space>
+Received-SPF: pass client-ip=115.124.30.111;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-111.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,35 +71,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate that it is possible to pass 'parameter=1' for any SMP topology
-parameter, since unsupported parameters are implicitly considered to
-always have a value of 1.
+This is a multi-part message in MIME format.
+--------------kvDv8Xha1E9KcNpvyJ4BjWZp
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+
+On 2024/5/11 18:10, Alexey Baturo wrote:
+> From: Alexey Baturo<baturo.alexey@gmail.com>
+>
+> Signed-off-by: Alexey Baturo<baturo.alexey@gmail.com>
+>
+> Reviewed-by: Alistair Francis<alistair.francis@wdc.com>
+> ---
+>   target/riscv/cpu.h        |  5 ++++
+>   target/riscv/cpu_helper.c | 58 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 63 insertions(+)
+>
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 52b6ba73c8..9cac723b19 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -698,8 +698,13 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>   
+>   bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+>   
+> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env);
+> +RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env);
+> +int riscv_pm_get_pmlen(RISCVPmPmm pmm);
+> +
+>   RISCVException riscv_csrr(CPURISCVState *env, int csrno,
+>                             target_ulong *ret_value);
+> +
+>   RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+>                              target_ulong *ret_value,
+>                              target_ulong new_value, target_ulong write_mask);
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index bf58350669..e4a127ca84 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -142,6 +142,64 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>       *pflags = flags;
+>   }
+>   
+> +RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)
+
+I think we should process XLEN here.
+
+Pack *XL32 into PMM_FIELD_DISABLED
+
+Zhiwei
+> +{
+> +    int pmm = 0;
+> +#ifndef CONFIG_USER_ONLY
+> +    int priv_mode = cpu_address_mode(env);
+> +    /* Get current PMM field */
+> +    switch (priv_mode) {
+> +    case PRV_M:
+> +        pmm = riscv_cpu_cfg(env)->ext_smmpm ?
+> +                  get_field(env->mseccfg, MSECCFG_PMM) : PMM_FIELD_DISABLED;
+> +        break;
+> +    case PRV_S:
+> +        pmm = riscv_cpu_cfg(env)->ext_smnpm ?
+> +                  get_field(env->menvcfg, MENVCFG_PMM) : PMM_FIELD_DISABLED;
+> +        break;
+> +    case PRV_U:
+> +        pmm = riscv_cpu_cfg(env)->ext_ssnpm ?
+> +                  get_field(env->senvcfg, SENVCFG_PMM) : PMM_FIELD_DISABLED;
+> +        break;
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +#endif
+> +    return pmm;
+> +}
+> +
+> +bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
+> +{
+> +    bool virt_mem_en = false;
+> +#ifndef CONFIG_USER_ONLY
+> +    int satp_mode = 0;
+> +    int priv_mode = cpu_address_mode(env);
+> +    /* Get current PMM field */
+> +    if (riscv_cpu_mxl(env) == MXL_RV32) {
+> +        satp_mode = get_field(env->satp, SATP32_MODE);
+> +    } else {
+> +        satp_mode = get_field(env->satp, SATP64_MODE);
+> +    }
+> +    virt_mem_en = ((satp_mode != VM_1_10_MBARE) && (priv_mode != PRV_M));
+> +#endif
+> +    return virt_mem_en;
+> +}
+> +
+> +int riscv_pm_get_pmlen(RISCVPmPmm pmm)
+> +{
+> +    switch (pmm) {
+> +    case PMM_FIELD_DISABLED:
+> +        return 0;
+> +    case PMM_FIELD_PMLEN7:
+> +        return 7;
+> +    case PMM_FIELD_PMLEN16:
+> +        return 16;
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +    return -1;
+> +}
+> +
+>   #ifndef CONFIG_USER_ONLY
+>   
+>   /*
+--------------kvDv8Xha1E9KcNpvyJ4BjWZp
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2024/5/11 18:10, Alexey Baturo
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20240511101053.1875596-4-me@deliversmonkey.space">
+      <pre class="moz-quote-pre" wrap="">From: Alexey Baturo <a class="moz-txt-link-rfc2396E" href="mailto:baturo.alexey@gmail.com">&lt;baturo.alexey@gmail.com&gt;</a>
+
+Signed-off-by: Alexey Baturo <a class="moz-txt-link-rfc2396E" href="mailto:baturo.alexey@gmail.com">&lt;baturo.alexey@gmail.com&gt;</a>
+
+Reviewed-by: Alistair Francis <a class="moz-txt-link-rfc2396E" href="mailto:alistair.francis@wdc.com">&lt;alistair.francis@wdc.com&gt;</a>
 ---
- tests/unit/test-smp-parse.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ target/riscv/cpu.h        |  5 ++++
+ target/riscv/cpu_helper.c | 58 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 56165e6644..56ce5128f1 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -330,6 +330,14 @@ static const struct SMPTestData data_generic_valid[] = {
-         .config = SMP_CONFIG_GENERIC(T, 8, T, 2, T, 4, T, 2, T, 16),
-         .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 4, 2, 16),
-         .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 4, 2, 16),
-+    }, {
-+        /*
-+         * Unsupported parameters are always allowed to be set to '1'
-+         * config: -smp 8,books=1,drawers=1,sockets=2,modules=1,dies=1,cores=4,threads=2,maxcpus=8
-+         * expect: cpus=8,sockets=2,cores=2,threads=2,maxcpus=8 */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 2, 2, 8),
-+        .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-+        .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-     },
- };
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 52b6ba73c8..9cac723b19 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -698,8 +698,13 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
  
--- 
-2.43.0
+ bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+ 
++bool riscv_cpu_virt_mem_enabled(CPURISCVState *env);
++RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env);
++int riscv_pm_get_pmlen(RISCVPmPmm pmm);
++
+ RISCVException riscv_csrr(CPURISCVState *env, int csrno,
+                           target_ulong *ret_value);
++
+ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+                            target_ulong *ret_value,
+                            target_ulong new_value, target_ulong write_mask);
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index bf58350669..e4a127ca84 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -142,6 +142,64 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+     *pflags = flags;
+ }
+ 
++RISCVPmPmm riscv_pm_get_pmm(CPURISCVState *env)</pre>
+    </blockquote>
+    <p>I think we should process XLEN here.</p>
+    <p>Pack *XL32 into <span style="white-space: pre-wrap">PMM_FIELD_DISABLED</span></p>
+    Zhiwei<br>
+    <blockquote type="cite"
+      cite="mid:20240511101053.1875596-4-me@deliversmonkey.space">
+      <pre class="moz-quote-pre" wrap="">
++{
++    int pmm = 0;
++#ifndef CONFIG_USER_ONLY
++    int priv_mode = cpu_address_mode(env);
++    /* Get current PMM field */
++    switch (priv_mode) {
++    case PRV_M:
++        pmm = riscv_cpu_cfg(env)-&gt;ext_smmpm ?
++                  get_field(env-&gt;mseccfg, MSECCFG_PMM) : PMM_FIELD_DISABLED;
++        break;
++    case PRV_S:
++        pmm = riscv_cpu_cfg(env)-&gt;ext_smnpm ?
++                  get_field(env-&gt;menvcfg, MENVCFG_PMM) : PMM_FIELD_DISABLED;
++        break;
++    case PRV_U:
++        pmm = riscv_cpu_cfg(env)-&gt;ext_ssnpm ?
++                  get_field(env-&gt;senvcfg, SENVCFG_PMM) : PMM_FIELD_DISABLED;
++        break;
++    default:
++        g_assert_not_reached();
++    }
++#endif
++    return pmm;
++}
++
++bool riscv_cpu_virt_mem_enabled(CPURISCVState *env)
++{
++    bool virt_mem_en = false;
++#ifndef CONFIG_USER_ONLY
++    int satp_mode = 0;
++    int priv_mode = cpu_address_mode(env);
++    /* Get current PMM field */
++    if (riscv_cpu_mxl(env) == MXL_RV32) {
++        satp_mode = get_field(env-&gt;satp, SATP32_MODE);
++    } else {
++        satp_mode = get_field(env-&gt;satp, SATP64_MODE);
++    }
++    virt_mem_en = ((satp_mode != VM_1_10_MBARE) &amp;&amp; (priv_mode != PRV_M));
++#endif
++    return virt_mem_en;
++}
++
++int riscv_pm_get_pmlen(RISCVPmPmm pmm)
++{
++    switch (pmm) {
++    case PMM_FIELD_DISABLED:
++        return 0;
++    case PMM_FIELD_PMLEN7:
++        return 7;
++    case PMM_FIELD_PMLEN16:
++        return 16;
++    default:
++        g_assert_not_reached();
++    }
++    return -1;
++}
++
+ #ifndef CONFIG_USER_ONLY
+ 
+ /*
+</pre>
+    </blockquote>
+  </body>
+</html>
 
+--------------kvDv8Xha1E9KcNpvyJ4BjWZp--
 
