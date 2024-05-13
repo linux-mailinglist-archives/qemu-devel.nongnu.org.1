@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CF18C428B
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 15:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DE68C429B
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 15:56:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6W5i-000687-Q0; Mon, 13 May 2024 09:51:46 -0400
+	id 1s6W9y-0000LK-5G; Mon, 13 May 2024 09:56:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6W5X-00062T-Sp
- for qemu-devel@nongnu.org; Mon, 13 May 2024 09:51:37 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6W5O-0002Fe-8s
- for qemu-devel@nongnu.org; Mon, 13 May 2024 09:51:34 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a59ce1e8609so934774466b.0
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 06:51:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715608284; x=1716213084; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=82LYSb9QtxmGOJ7FKKd622y2hJxOOUzTKXszhiub2EM=;
- b=KSgOrCjYZp8zKirL0r9VLvAgExPX9xXyALT5/IFCIqU8BquZlI4iuzEaOntNd7b9cK
- 1L+bSLrWeHxXcNI/vNFpyS20UgOUcAHcLfdpiqxOXbuTPfDj32HhQ8AHZKo8f7gTv0u/
- bVgSNHxn2VCvJn6Moj+xExlQgBozxmnJsckeyBPDnHvPgjdTNb5598gLHUYytIj6g3FP
- joiJPQdNZjAgbPUPpZegA3fJ/oBtz+ZMSJVbW89eS2kWCDNpiqLBsra4cUhELgd2Vq3v
- /3aiOnnbGoYcewWa4bwWXhZg/+w1i8btuYS/ATF/Rb74r+hrbjWwrzJzNzj6BD9n5vTw
- 2MwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715608284; x=1716213084;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=82LYSb9QtxmGOJ7FKKd622y2hJxOOUzTKXszhiub2EM=;
- b=CpFAojtV5XhfwvQzXoOeurn7Dc3ocCbnrUWUx6HL5MV++/z34u6fejs5ryMGhW/OuW
- A+VYT3iCOqi5q4RoJyNXQ2eZHVzrofdX9JRDq2XuNgkAz4vySvdWppL745VY8pZ7cZg8
- MwQQVAOfJ0TdCmwsWkxIyguJSA6Q3m9pvVbc/fDpwq7W0xMrl0oE4+HZEPH5zZ+wYu0y
- j2VD1Q2F0FynG/tJzimdqxD5WQRtqmuv4XA2+mnvm3GELi57EAGJmjUsDDX4g20GNTQH
- G3tYMzw6urkVLKH68qHjMwwvJqusvhUa8F7kTK5tnp/ND3S2/J42ZxP65ePP13NAb79b
- DYQQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXZmCSslZUonwTOpmwm5/awPoQP1YGEtgnyO8j/ZUztEHq3iGzm/bbWm3/vZiW+0n5HTCReIHgC3pNkIPhY1Jm5KxNGDFU=
-X-Gm-Message-State: AOJu0YzeDlUPjn1sr6M7pOByYQ5MEOZzSyPKpxDn9GHuW71cZuQjHiGg
- u9uMKISBzOyIKa8xNm/NHtuuiLCWunCzGJ3KHJAO/7sVEWvbBo/6OyRar5uehLl3N/l8xLMgeeg
- a5Rs=
-X-Google-Smtp-Source: AGHT+IEDgABWEFDaag/aW7NZIsFSIwSePj/ddxdguGSyVAxw6n4EDz7l9aH05WDqMe1Qi1Sp1p4AnA==
-X-Received: by 2002:a17:906:17d9:b0:a5a:177b:d8d2 with SMTP id
- a640c23a62f3a-a5a177bd952mr1009852466b.22.1715608284482; 
- Mon, 13 May 2024 06:51:24 -0700 (PDT)
-Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781ce4esm612859466b.13.2024.05.13.06.51.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 May 2024 06:51:24 -0700 (PDT)
-Message-ID: <fd6de35c-dc98-4900-b542-946a132ca0f1@linaro.org>
-Date: Mon, 13 May 2024 15:51:23 +0200
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1s6W9v-0000Ke-I0
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 09:56:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jtomko@redhat.com>) id 1s6W9t-0003MZ-Pw
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 09:56:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715608562;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=i+nhtBC5YZ3baXbA9zDxbgVzhViy97TsucEvvvZhL/I=;
+ b=KGcVteFbdYxA0DetOYZEw5Cr4By4LoUnkLoW9QAIfvucdpR5BZGEyiC7zSYTnoPKFgU2W6
+ eUcqmFx3ujN0kQPqF6v5oHw2c+o2AwuglmAQCNLtZwQEr+FrJkgh612UM6f/SsZs8WAQMF
+ pX+7wBOXdte5lCnOAVap+bUyezlDLuM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-349-nmsk0Y1VPbGX-o0PRyH8mA-1; Mon, 13 May 2024 09:54:05 -0400
+X-MC-Unique: nmsk0Y1VPbGX-o0PRyH8mA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F33881227E;
+ Mon, 13 May 2024 13:54:04 +0000 (UTC)
+Received: from fedora (unknown [10.45.224.110])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EECB32026D68;
+ Mon, 13 May 2024 13:54:01 +0000 (UTC)
+Date: Mon, 13 May 2024 15:53:59 +0200
+From: =?iso-8859-1?B?SuFu?= Tomko <jtomko@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ devel@lists.libvirt.org,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Krempa <pkrempa@redhat.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH 0/2] hw/core: revert deprecation of 'parameter=1' for SMP
+ topology
+Message-ID: <ZkIbd1B9PQOi60gP@fedora>
+References: <20240513123358.612355-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] hw/misc: Implement mailbox properties for customer
- OTP and device specific private keys
-To: Rayhan Faizel <rayhan.faizel@gmail.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, qemu-arm@nongnu.org
-References: <20240510141010.656561-1-rayhan.faizel@gmail.com>
- <20240510141010.656561-4-rayhan.faizel@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240510141010.656561-4-rayhan.faizel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="KMBx+CMLht41t/qf"
+Content-Disposition: inline
+In-Reply-To: <20240513123358.612355-1-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jtomko@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,60 +84,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/5/24 16:10, Rayhan Faizel wrote:
-> Four mailbox properties are implemented as follows:
-> 1. Customer OTP: GET_CUSTOMER_OTP and SET_CUSTOMER_OTP
-> 2. Device-specific private key: GET_PRIVATE_KEY and
-> SET_PRIVATE_KEY.
-> 
-> The customer OTP is located in the rows 36-43. The device-specific private key
-> is located in the rows 56-63.
 
-Better to define these instead of using magic values in the code,
-i.e.:
+--KMBx+CMLht41t/qf
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   #define OTP_PRIVATE_KEY_OFFSET 56
-   #define OTP_PRIVATE_KEY_LENGTH 8
+On a Monday in 2024, Daniel P. Berrang=E9 wrote:
+>Since QEMU 9.0, users are complaining that depecation messages are shown
+>for every VM libvirt starts. This is due to the newly introduced
+>deprecation of 'parameter=3D1' for -smp. This proposes reverting that, see
+>the 1st patch for further commentary.
+>
+>Daniel P. Berrang=E9 (2):
+>  hw/core: allow parameter=3D1 for CPU topology on any machine
+>  tests: add testing of parameter=3D1 for SMP topology
+>
+> docs/about/deprecated.rst   | 14 -------
+> hw/core/machine-smp.c       | 82 ++++++++++++-------------------------
+> tests/unit/test-smp-parse.c | 16 ++++++--
+> 3 files changed, 38 insertions(+), 74 deletions(-)
+>
 
-> The customer OTP can be locked with the magic numbers 0xffffffff 0xaffe0000
-> when running the SET_CUSTOMER_OTP mailbox command.
-> 
-> P.S I am not sure if the magic lock combo applies to the private key as well.
-> 
-> Signed-off-by: Rayhan Faizel <rayhan.faizel@gmail.com>
-> ---
->   hw/arm/bcm2835_peripherals.c         |  2 +
->   hw/misc/bcm2835_property.c           | 71 ++++++++++++++++++++++++++++
->   include/hw/arm/raspberrypi-fw-defs.h |  2 +
->   include/hw/misc/bcm2835_property.h   |  2 +
->   4 files changed, 77 insertions(+)
+Reviewed-by: J=E1n Tomko <jtomko@redhat.com>
 
+Jano
 
-> +        /* Device-specific private key */
-> +
-> +        case RPI_FWREQ_GET_PRIVATE_KEY:
-> +            start_num = ldl_le_phys(&s->dma_as, value + 12);
-> +            number = ldl_le_phys(&s->dma_as, value + 16);
-> +
-> +            resplen = 8 + 4 * number;
-> +
-> +            for (n = start_num; n < start_num + number && n < 8; n++) {
-> +                stl_le_phys(&s->dma_as,
-> +                            value + 20 + ((n - start_num) << 2),
-> +                            bcm2835_otp_read_row(s->otp, 56 + n));
-> +            }
-> +            break;
-> +        case RPI_FWREQ_SET_PRIVATE_KEY:
-> +            start_num = ldl_le_phys(&s->dma_as, value + 12);
-> +            number = ldl_le_phys(&s->dma_as, value + 16);
-> +
-> +            resplen = 4;
-> +
-> +            for (n = start_num; n < start_num + number && n < 8; n++) {
-> +                otp_row = ldl_le_phys(&s->dma_as,
-> +                                      value + 20 + ((n - start_num) << 2));
-> +                bcm2835_otp_write_row(s->otp, 56 + n, otp_row);
-> +            }
-> +            break;
+--KMBx+CMLht41t/qf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQT+Rn5j0qdK2hQgnuAU0rOr/y4PvAUCZkIbcgAKCRAU0rOr/y4P
+vNNTAQDEXAR5xP+hgnHjTy1A+KL/YZ7coXyQ8QyRtcdMjtXByAEAz6VhIeKcdYo1
+1rIGbVwCIxqwMpHXzjG8+HIOr9avnAk=
+=57D5
+-----END PGP SIGNATURE-----
+
+--KMBx+CMLht41t/qf--
 
 
