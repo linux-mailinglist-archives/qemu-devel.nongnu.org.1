@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777D68C3ED4
+	by mail.lfdr.de (Postfix) with ESMTPS id 084868C3ED2
 	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 12:24:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Sq5-0004Us-Vc; Mon, 13 May 2024 06:23:27 -0400
+	id 1s6Spy-0004Tj-Mv; Mon, 13 May 2024 06:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Sq3-0004UU-2G
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Spw-0004Ta-Jk
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Sq1-0008Rt-Kf
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Spu-0008PB-Tw
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715595801;
+ s=mimecast20190719; t=1715595793;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xZzxxedEbfJGb19n2QRpwGsMhnAuycLrE0tba6VagJc=;
- b=cCI4BE7HQ/muLXiG5l1ix3Ex2zuooELjyUDMAQ041IJx7rlESgFk6ox/7xPZYNcP8+7aY5
- SgjxGdawd+1pywRiFqigbRyXWSX/P3v1UnRrZY0SSPnya/SdweI6yWXpboowuTXEH3Nj3C
- gayD2LAh0kLzJv7ER3GrDLqO0qojtPM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-GkAzbH9VNS2hQo7mlAeTxQ-1; Mon,
- 13 May 2024 06:23:07 -0400
-X-MC-Unique: GkAzbH9VNS2hQo7mlAeTxQ-1
+ bh=utHiwLh5oAXIe3YFqA9WJIV3CNnvHE2fsUepRznam10=;
+ b=J+g1rRYhMK+T5jdDuokg0k1443u6SO5HPVxtud77rAjwCD6DCSjwOhDVj/6GJtcq9tZqrb
+ 3BsI8Z1rwIC83M0lJyTWbvCV+oIZW3zHj6AT6ujcfmuXispdmMG1HeOo7hHwUdRde7SoNf
+ QV/HFki6nz/lcZkpAKlU7BtLzIjFHV8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-571-U4s_37TPOiaGvMWmtuOQgQ-1; Mon, 13 May 2024 06:23:09 -0400
+X-MC-Unique: U4s_37TPOiaGvMWmtuOQgQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DC8D3813BC8;
- Mon, 13 May 2024 10:23:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6459680021D;
+ Mon, 13 May 2024 10:23:09 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8142740C6CB6;
- Mon, 13 May 2024 10:23:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E51E540C6CB6;
+ Mon, 13 May 2024 10:23:07 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 1/4] tests/lcitool: Remove 'xfsprogs' from QEMU
-Date: Mon, 13 May 2024 12:22:49 +0200
-Message-ID: <20240513102252.48884-2-thuth@redhat.com>
+Subject: [PATCH 2/4] tests/lcitool: Remove g++ from the containers (except for
+ the MinGW one)
+Date: Mon, 13 May 2024 12:22:50 +0200
+Message-ID: <20240513102252.48884-3-thuth@redhat.com>
 In-Reply-To: <20240513102252.48884-1-thuth@redhat.com>
 References: <20240513102252.48884-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -80,31 +80,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+We don't need C++ for the normal QEMU builds anymore, so installing
+g++ in each and every container seems to be a waste of time and disk
+space. The only container that still needs it is the Fedora MinGW
+container that builds the only remaining C++ code in ./qga/vss-win32/
+and we can install it here with an extra RUN statement instead.
 
-QEMU's commit a5730b8bd3 ("block/file-posix: Simplify the
-XFS_IOC_DIOINFO handling") removed the need for the 'xfsprogs'
-package.
+This way we can also add the mingw-w64-tools package quite easily
+which contains the x86_64-w64-mingw32-widl program that is required
+for compiling the vss code of the guest agent (it was missing before
+this change, so the VSS code was actually never compiled in the CI).
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[thuth: Adjusted the patch from the lcitools repo to QEMU's repo]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/lcitool/projects/qemu.yml | 1 -
- 1 file changed, 1 deletion(-)
+ tests/lcitool/projects/qemu.yml |  1 -
+ tests/lcitool/refresh           | 10 ++++++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 149b15de57..9173d1e36e 100644
+index 9173d1e36e..b63b6bd850 100644
 --- a/tests/lcitool/projects/qemu.yml
 +++ b/tests/lcitool/projects/qemu.yml
-@@ -121,7 +121,6 @@ packages:
-  - vte
-  - which
-  - xen
-- - xfsprogs
-  - xorriso
-  - zstdtools
-  - zlib
+@@ -22,7 +22,6 @@ packages:
+  - findutils
+  - flex
+  - fuse3
+- - g++
+  - gcc
+  - gcc-native
+  - gcovr
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index 24a735a3f2..dda07ddcd1 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -109,6 +109,11 @@ debian12_extras = [
+     "ENV QEMU_CONFIGURE_OPTS --enable-netmap\n"
+ ]
+ 
++fedora_mingw_extras = [ "\n"
++    "RUN nosync dnf install -y mingw64-gcc-c++ mingw-w64-tools && \\\n"
++    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-c++ && \\\n"
++    "  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-g++\n\n"
++]
+ 
+ def cross_build(prefix, targets):
+     conf = "ENV QEMU_CONFIGURE_OPTS --cross-prefix=%s\n" % (prefix)
+@@ -193,8 +198,9 @@ try:
+ 
+     generate_dockerfile("fedora-win64-cross", "fedora-38",
+                         cross="mingw64",
+-                        trailer=cross_build("x86_64-w64-mingw32-",
+-                                            "x86_64-softmmu"))
++                        trailer="".join(fedora_mingw_extras)
++                                + cross_build("x86_64-w64-mingw32-",
++                                              "x86_64-softmmu"))
+ 
+     #
+     # Cirrus packages lists for GitLab
 -- 
 2.45.0
 
