@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509148C3C5F
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A2D8C3C8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:52:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QPL-0002rE-GM; Mon, 13 May 2024 03:47:39 -0400
+	id 1s6QQ1-0003Sq-J5; Mon, 13 May 2024 03:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QP8-0002kQ-Dp
+ id 1s6QP8-0002kO-E9
  for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:27 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QP6-0001K7-8y
+ id 1s6QP6-0001KB-Eh
  for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:26 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-41fe54cb0e3so24585415e9.2
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:23 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-420160f8f52so3882665e9.0
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586442; x=1716191242; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715586443; x=1716191243; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EF71oCEKPx9KffJ0nhQbR+6fCow0EB4c3hkf8VxLkbs=;
- b=MYpWRI/2Xf8UQ8dnUCdBm2fjM/mLe4wUep1V/aFN0zp4gUTbzwkAarDNM+FwO+muYJ
- IWvPZeRHWF/MnbtwHIRuQLb4C7MamnWBF3lij6I8PB+jr50E9T2GyUuyvnmSbxn5tYUR
- N3ZN6DDnEx2AwxLi1AEQpRkw03BfKXUgLjpIU4WMgikyN/HpPfNww/EtWaRzaUpQEvpR
- DZ35dFWkpErLR3CLTleC2jM6nLVVdHLf2q3lL4PtYYwO2HBffY0KsAVphWKzK6HcWUxh
- viQnhOqwkylmMRfRtoztUuhHzmZnIIENj75fULmKi2xkgdr32KHBHiVdSPhUjiPfjYHT
- +17g==
+ bh=CAJ+Dwjcdmii7teUjtvDvc6ZzqaDM6m0amLzUomnego=;
+ b=v3lzTkxuSxj7vj1xcB9qRN/RLzA4eDXgY/MbIHo3Rzg8xd3Q1XhpKJYi8tEWQFUdof
+ e0rAdrsG/i5Df/OdTOy3cvyQWsECXCVgL8sEnYkj992Zc0JzH+hpZdnGnVFCkQNK9dKt
+ oRXQFmFt05upuafNPasdDqhAF4dkhiokO+bptDB7dI5X6xXdSGLjP3175triHPLDLgMO
+ WYvPufoVHNcCRiXwakQE/7DOYU6gTIirh+VG6BcLQyyi/NStu3wGLPvnkUQ+WBHguSqm
+ GJ/BUADrcwHOXwx1yCTwPWpyzMlQ4Ms2+xBrWah2BgSNoaKY03YUm3dfoF5X/T+vUqlc
+ svuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586442; x=1716191242;
+ d=1e100.net; s=20230601; t=1715586443; x=1716191243;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EF71oCEKPx9KffJ0nhQbR+6fCow0EB4c3hkf8VxLkbs=;
- b=Nq+JNAb2ePynh+BO3Zg9kEQ2FK7i8Mx7Vx5rNKemMLnAzvctqiLcmv1TvzBh1GeBr0
- 2h6m9pC+fhTXeQRaK0NMsnrUeXay+X26JCgebMheE7Qj0BloAFAbVUX5Huzz4AuHFf+a
- 840DxGFAFFJUM2hUChpZf3ma2fzJfvl3l/WVxnovuLkky4yotPORAdu6Dfw4qVQPSMGI
- j1fFLW83QiKIPqMa23IUJozGM1pOMSruNHLdQvjGHaYBcGWLDZmFPG7c0GWvtoM6CYnG
- OEbyrs4YDfh39LV4n28V4Rxa7aG2UWB3ija9h7qObiE4Mv2PV5M6UVsxYxoNh0kNmo2K
- 9ajQ==
-X-Gm-Message-State: AOJu0YyLsx2fr+VW/0nJJAgVacJthxsQQLx7Mx4qYihGBJbUiTzyr9kj
- 7CGtRU2N41kLIzd+kQw3NToaDfhngzWnIxu80fzLH3bAp++h14eZQ7L74IztQCvBGjNnFtWL7wk
- XNGs=
-X-Google-Smtp-Source: AGHT+IH0MP3m7Lw4XERojhlCysB49zTKxNdd4hpNuj2kz3lKHqAdjeLRkhzZhMCXeJ5D67E+jJpaZA==
-X-Received: by 2002:a05:600c:1f93:b0:41e:dc7f:e2c with SMTP id
- 5b1f17b1804b1-41feac59cddmr61728755e9.30.1715586442305; 
- Mon, 13 May 2024 00:47:22 -0700 (PDT)
+ bh=CAJ+Dwjcdmii7teUjtvDvc6ZzqaDM6m0amLzUomnego=;
+ b=mSVw0VrIoSUWCBfOms6rSOho5Y4Loskmcfo+GJZNYDVzeuvlD3DQt7I0FyWyXXKY1F
+ Ha4UHadQFFUCleBm9+GYpxUDX7qd6K0tD8y0cSLe0RsutSr9bN0wf3ghVUMFnvCcN8hr
+ ibtJbB6F2OdWKDcfU5TRzl7KIKricyAXIlM9iI9YrjbhAYy7ujzrO8yVVj9epskDPdKL
+ neuSlDH0DE2iIm9RkP/c5nrUPKmlpWwRug80ff5dg9JfpDkLNrpdewzF/OSYiFknFGmw
+ DkW/E3/Ufm5nGUL/ya4Ck2WEAyz+wWaUhEu2HvgVqBHWUd1J04GB1fzUFNI/KG88oJVt
+ cv8w==
+X-Gm-Message-State: AOJu0YwmLlPijLl75fqwFk9Vgw8lMfImw/rU57ho6ooNMTx8LuCMSS8I
+ cThbdsBU8usP27vTgF4qix36c01KGxUR+mr8rT4TPAgpRh6a4KDVKVuYMQC7SUdMmy6fvGvdIBX
+ oaq0=
+X-Google-Smtp-Source: AGHT+IHeXAtTzo5lqc0WugFUw/YdgYFXrwUftOL0hjE1SeD/MAfMz8dAIynCQkw0gRtGoAL3PNjPBw==
+X-Received: by 2002:a05:600c:4ed0:b0:41c:14a4:7b05 with SMTP id
+ 5b1f17b1804b1-41fea93af8cmr57956215e9.8.1715586443027; 
+ Mon, 13 May 2024 00:47:23 -0700 (PDT)
 Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.21
+ 5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 13 May 2024 00:47:22 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 04/45] target/hppa: Pass displacement to do_dbranch
-Date: Mon, 13 May 2024 09:46:36 +0200
-Message-Id: <20240513074717.130949-5-richard.henderson@linaro.org>
+Subject: [PATCH v2 05/45] target/hppa: Allow prior nullification in do_ibranch
+Date: Mon, 13 May 2024 09:46:37 +0200
+Message-Id: <20240513074717.130949-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,107 +92,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass a displacement instead of an absolute value.
-
-In trans_be, remove the user-only do_dbranch case.  The branch we are
-attempting to optimize is to the zero page, which is perforce on a
-different page than the code currently executing, which means that
-we will *not* use a goto_tb.  Use a plain indirect branch instead,
-which is what we got out of the attempted direct branch anyway.
+Simplify the function by not attempting a conditional move
+on the branch destination -- just use nullify_over normally.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 33 +++++++++------------------------
- 1 file changed, 9 insertions(+), 24 deletions(-)
+ target/hppa/translate.c | 73 +++++++++++------------------------------
+ 1 file changed, 20 insertions(+), 53 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 398803981c..4c42b518c5 100644
+index 4c42b518c5..140dfb747a 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1766,9 +1766,11 @@ static bool do_fop_dedd(DisasContext *ctx, unsigned rt,
- 
- /* Emit an unconditional branch to a direct target, which may or may not
-    have already had nullification handled.  */
--static bool do_dbranch(DisasContext *ctx, uint64_t dest,
-+static bool do_dbranch(DisasContext *ctx, int64_t disp,
+@@ -1871,17 +1871,15 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
+ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
                         unsigned link, bool is_n)
  {
-+    uint64_t dest = iaoq_dest(ctx, disp);
-+
-     if (ctx->null_cond.c == TCG_COND_NEVER && ctx->null_lab == NULL) {
+-    TCGv_i64 a0, a1, next, tmp;
+-    TCGCond c;
++    TCGv_i64 next;
+ 
+-    assert(ctx->null_lab == NULL);
++    if (ctx->null_cond.c == TCG_COND_NEVER && ctx->null_lab == NULL) {
++        next = tcg_temp_new_i64();
++        tcg_gen_mov_i64(next, dest);
+ 
+-    if (ctx->null_cond.c == TCG_COND_NEVER) {
          if (link != 0) {
              copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
-@@ -1815,10 +1817,7 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
+         }
+-        next = tcg_temp_new_i64();
+-        tcg_gen_mov_i64(next, dest);
+         if (is_n) {
+             if (use_nullify_skip(ctx)) {
+                 copy_iaoq_entry(ctx, cpu_iaoq_f, -1, next);
+@@ -1895,60 +1893,29 @@ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
+         }
+         ctx->iaoq_n = -1;
+         ctx->iaoq_n_var = next;
+-    } else if (is_n && use_nullify_skip(ctx)) {
+-        /* The (conditional) branch, B, nullifies the next insn, N,
+-           and we're allowed to skip execution N (no single-step or
+-           tracepoint in effect).  Since the goto_ptr that we must use
+-           for the indirect branch consumes no special resources, we
+-           can (conditionally) skip B and continue execution.  */
+-        /* The use_nullify_skip test implies we have a known control path.  */
+-        tcg_debug_assert(ctx->iaoq_b != -1);
+-        tcg_debug_assert(ctx->iaoq_n != -1);
++        return true;
++    }
  
-     /* Handle TRUE and NEVER as direct branches.  */
-     if (c == TCG_COND_ALWAYS) {
--        return do_dbranch(ctx, dest, 0, is_n && disp >= 0);
--    }
--    if (c == TCG_COND_NEVER) {
--        return do_dbranch(ctx, ctx->iaoq_n, 0, is_n && disp < 0);
-+        return do_dbranch(ctx, disp, 0, is_n && disp >= 0);
-     }
- 
-     taken = gen_new_label();
-@@ -3914,22 +3913,6 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
- {
-     TCGv_i64 tmp;
- 
--#ifdef CONFIG_USER_ONLY
--    /* ??? It seems like there should be a good way of using
--       "be disp(sr2, r0)", the canonical gateway entry mechanism
--       to our advantage.  But that appears to be inconvenient to
--       manage along side branch delay slots.  Therefore we handle
--       entry into the gateway page via absolute address.  */
--    /* Since we don't implement spaces, just branch.  Do notice the special
--       case of "be disp(*,r0)" using a direct branch to disp, so that we can
--       goto_tb to the TB containing the syscall.  */
--    if (a->b == 0) {
--        return do_dbranch(ctx, a->disp, a->l, a->n);
--    }
--#else
--    nullify_over(ctx);
--#endif
--
-     tmp = tcg_temp_new_i64();
-     tcg_gen_addi_i64(tmp, load_gpr(ctx, a->b), a->disp);
-     tmp = do_ibranch_priv(ctx, tmp);
-@@ -3939,6 +3922,8 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
- #else
-     TCGv_i64 new_spc = tcg_temp_new_i64();
- 
+-        /* We do have to handle the non-local temporary, DEST, before
+-           branching.  Since IOAQ_F is not really live at this point, we
+-           can simply store DEST optimistically.  Similarly with IAOQ_B.  */
 +    nullify_over(ctx);
 +
-     load_spr(ctx, new_spc, a->sp);
-     if (a->l) {
-         copy_iaoq_entry(ctx, cpu_gr[31], ctx->iaoq_n, ctx->iaoq_n_var);
-@@ -3968,7 +3953,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
- 
- static bool trans_bl(DisasContext *ctx, arg_bl *a)
- {
--    return do_dbranch(ctx, iaoq_dest(ctx, a->disp), a->l, a->n);
-+    return do_dbranch(ctx, a->disp, a->l, a->n);
- }
- 
- static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
-@@ -4022,7 +4007,7 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
-         save_gpr(ctx, a->l, tmp);
-     }
- 
--    return do_dbranch(ctx, dest, 0, a->n);
-+    return do_dbranch(ctx, dest - iaoq_dest(ctx, 0), 0, a->n);
- }
- 
- static bool trans_blr(DisasContext *ctx, arg_blr *a)
-@@ -4035,7 +4020,7 @@ static bool trans_blr(DisasContext *ctx, arg_blr *a)
-         return do_ibranch(ctx, tmp, a->l, a->n);
++    if (is_n && use_nullify_skip(ctx)) {
+         copy_iaoq_entry(ctx, cpu_iaoq_f, -1, dest);
+         next = tcg_temp_new_i64();
+         tcg_gen_addi_i64(next, dest, 4);
+         copy_iaoq_entry(ctx, cpu_iaoq_b, -1, next);
+-
+-        nullify_over(ctx);
+-        if (link != 0) {
+-            copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
+-        }
+-        tcg_gen_lookup_and_goto_ptr();
+-        return nullify_end(ctx);
++        nullify_set(ctx, 0);
      } else {
-         /* BLR R0,RX is a good way to load PC+8 into RX.  */
--        return do_dbranch(ctx, ctx->iaoq_f + 8, a->l, a->n);
-+        return do_dbranch(ctx, 0, a->l, a->n);
+-        c = ctx->null_cond.c;
+-        a0 = ctx->null_cond.a0;
+-        a1 = ctx->null_cond.a1;
+-
+-        tmp = tcg_temp_new_i64();
+-        next = tcg_temp_new_i64();
+-
+-        copy_iaoq_entry(ctx, tmp, ctx->iaoq_n, ctx->iaoq_n_var);
+-        tcg_gen_movcond_i64(c, next, a0, a1, tmp, dest);
+-        ctx->iaoq_n = -1;
+-        ctx->iaoq_n_var = next;
+-
+-        if (link != 0) {
+-            tcg_gen_movcond_i64(c, cpu_gr[link], a0, a1, cpu_gr[link], tmp);
+-        }
+-
+-        if (is_n) {
+-            /* The branch nullifies the next insn, which means the state of N
+-               after the branch is the inverse of the state of N that applied
+-               to the branch.  */
+-            tcg_gen_setcond_i64(tcg_invert_cond(c), cpu_psw_n, a0, a1);
+-            cond_free(&ctx->null_cond);
+-            ctx->null_cond = cond_make_n();
+-            ctx->psw_n_nonzero = true;
+-        } else {
+-            cond_free(&ctx->null_cond);
+-        }
++        copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
++        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, dest);
++        nullify_set(ctx, is_n);
      }
+-    return true;
++    if (link != 0) {
++        copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
++    }
++
++    tcg_gen_lookup_and_goto_ptr();
++    ctx->base.is_jmp = DISAS_NORETURN;
++    return nullify_end(ctx);
  }
  
+ /* Implement
 -- 
 2.34.1
 
