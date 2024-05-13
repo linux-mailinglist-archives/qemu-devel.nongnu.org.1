@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044998C3B5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 566298C3B60
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:33:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PEP-00079y-Tl; Mon, 13 May 2024 02:32:17 -0400
+	id 1s6PEl-0007TN-QG; Mon, 13 May 2024 02:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEL-00075N-8H; Mon, 13 May 2024 02:32:13 -0400
+ id 1s6PEN-00078I-Eu; Mon, 13 May 2024 02:32:15 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEI-0003wb-M9; Mon, 13 May 2024 02:32:12 -0400
+ id 1s6PEI-0003wd-Mt; Mon, 13 May 2024 02:32:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=oPxzXi4hUhHjLonu4tB66NolHJvGgEnJxgj0ggWpcq0=; b=wZpFCyTuSl4s
- piCBdLSmbwied4LZymhUgnA/ulB/Zei/28KtJjMwjXXyzhTl//JhWMowgAHJlnsBP1JiQwh/N1984
- V5gUhm6GNXllvcqwgMa4WqEtyfyFxss1sp19PKyYngI6xzH1lQ5smof6ns0tlXLMHnDkryLE+vWOP
- NPVwxDg/bM3whsUOp0pKaW3j5RWEEtA43bU8+ZSj9sW5+iSX+OAugy2SZ/sjLHz1wBxfCNC10IUrP
- XoQHuV9wj4CmFEwvBgIsE5qL895u/2oWTyOTfZn3/VOC+QtuGb9l55FSPKRng3xPlwGCQAidOB3Iq
- cf1kMAJuM6bhrd+6NK5Bjw==;
+ Content-Type; bh=r7Er1IMZmmLdiZ4Ai0KkGiQQquT7czJmB9BLklPI+r0=; b=Cpbbo3a91D6w
+ 33tsk+lLqeSW1dT+wPX8KPj8B3wCRbKTkZ7VATH2AlxULCwQEAxECgz4qbSPW5Kv7mNMEMi6lkDbx
+ SPM+V1eLg+SJV+BUpiG1m8X5SL5yyrSMjlXcu2i5bpUEn2qfsNa922LuKPUUOEt+z/HQ9yH812qgn
+ zGkFV8uGCPYp79BepCkkxpfvo1BXivtlhw21EQHGkJ5zXwS+XQfNe41fJXiIMEoI/qCNfrylAQB4m
+ B0HgfOxylWKew3iZQnB1DIkiYeD63ILL5mybZRYsQd/YOd1gWzaIJX8ZivV14zu7V7XaxvoNofW2i
+ AKnohCVaefy2QDoUpnij0w==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2r;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-32;
  Mon, 13 May 2024 08:31:57 +0200
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, berto@igalia.com, jean-louis@dupond.be,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 08/11] qcow2: zeroize the entire cluster when there're no
- non-zero subclusters
-Date: Mon, 13 May 2024 09:32:00 +0300
-Message-Id: <20240513063203.113911-9-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 09/11] qcow2: make subclusters discardable
+Date: Mon, 13 May 2024 09:32:01 +0300
+Message-Id: <20240513063203.113911-10-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
 References: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
@@ -66,66 +65,284 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When zeroizing the last non-zero subclusters within single cluster, it
-makes sense to go zeroize the entire cluster and go down zero_in_l2_slice()
-path right away.  That way we'd also update the corresponding refcount
-table.
+This commit makes the discard operation work on the subcluster level
+rather than cluster level.  It introduces discard_l2_subclusters()
+function and makes use of it in qcow2 discard implementation, much like
+it's done with zero_in_l2_slice() / zero_l2_subclusters().  It also
+changes the qcow2 driver pdiscard_alignment to subcluster_size.  That
+way subcluster-aligned discards lead to actual fallocate(PUNCH_HOLE)
+operation and free host disk space.
+
+This feature will let us gain additional disk space on guest
+TRIM/discard requests, especially when using large enough clusters
+(1M, 2M) with subclusters enabled.
+
+Also rename qcow2_cluster_discard() -> qcow2_subcluster_discard() to
+reflect the change.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- block/qcow2-cluster.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ block/qcow2-cluster.c  | 106 +++++++++++++++++++++++++++++++++++++----
+ block/qcow2-snapshot.c |   6 +--
+ block/qcow2.c          |  25 +++++-----
+ block/qcow2.h          |   4 +-
+ tests/qemu-iotests/271 |   2 +-
+ 5 files changed, 117 insertions(+), 26 deletions(-)
 
 diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-index 475f167035..8d39e2f960 100644
+index 8d39e2f960..3c134a7e80 100644
 --- a/block/qcow2-cluster.c
 +++ b/block/qcow2-cluster.c
-@@ -2221,7 +2221,7 @@ zero_in_l2_slice(BlockDriverState *bs, uint64_t offset,
+@@ -2105,25 +2105,106 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
+     return nb_clusters;
+ }
  
- static int coroutine_fn GRAPH_RDLOCK
- zero_l2_subclusters(BlockDriverState *bs, uint64_t offset,
--                    unsigned nb_subclusters)
-+                    unsigned nb_subclusters, int flags)
- {
-     BDRVQcow2State *s = bs->opaque;
-     uint64_t new_l2_bitmap;
-@@ -2237,6 +2237,16 @@ zero_l2_subclusters(BlockDriverState *bs, uint64_t offset,
-     new_l2_bitmap |=  QCOW_OFLAG_SUB_ZERO_RANGE(sc, sc + nb_subclusters);
-     new_l2_bitmap &= ~QCOW_OFLAG_SUB_ALLOC_RANGE(sc, sc + nb_subclusters);
- 
-+    /*
-+     * If there're no non-zero subclusters left, we might as well zeroize
-+     * the entire cluster.  That way we'd also update the refcount table.
-+     */
-+    if ((new_l2_bitmap & QCOW_L2_BITMAP_ALL_ZEROES) ==
-+        QCOW_L2_BITMAP_ALL_ZEROES) {
-+        return zero_in_l2_slice(bs, QEMU_ALIGN_DOWN(offset, s->cluster_size),
-+                                1, flags);
+-int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
+-                          uint64_t bytes, enum qcow2_discard_type type,
+-                          bool full_discard)
++static int coroutine_fn GRAPH_RDLOCK
++discard_l2_subclusters(BlockDriverState *bs, uint64_t offset,
++                       uint64_t nb_subclusters,
++                       enum qcow2_discard_type type,
++                       bool full_discard)
++{
++    BDRVQcow2State *s = bs->opaque;
++    uint64_t new_l2_bitmap, bitmap_alloc_mask, bitmap_zero_mask;
++    int ret, sc = offset_to_sc_index(s, offset);
++    g_auto(SubClusterRangeInfo) scri = { 0 };
++
++    ret = get_sc_range_info(bs, offset, nb_subclusters, &scri);
++    if (ret < 0) {
++        return ret;
 +    }
 +
-     if (new_l2_bitmap != scri.l2_bitmap) {
-         set_l2_bitmap(s, scri.l2_slice, scri.l2_index, new_l2_bitmap);
-         qcow2_cache_entry_mark_dirty(s->l2_table_cache, scri.l2_slice);
-@@ -2293,7 +2303,7 @@ int coroutine_fn qcow2_subcluster_zeroize(BlockDriverState *bs, uint64_t offset,
++    new_l2_bitmap = scri.l2_bitmap;
++    bitmap_alloc_mask = QCOW_OFLAG_SUB_ALLOC_RANGE(sc, sc + nb_subclusters);
++    bitmap_zero_mask = QCOW_OFLAG_SUB_ZERO_RANGE(sc, sc + nb_subclusters);
++
++    new_l2_bitmap &= ~bitmap_alloc_mask;
++
++    /*
++     * Full discard means we fall through to the backing file, thus we need
++     * to mark the subclusters as deallocated and clear the corresponding
++     * zero bits.
++     *
++     * Non-full discard means subclusters should be explicitly marked as
++     * zeroes.  In this case QCOW2 specification requires the corresponding
++     * allocation status bits to be unset as well.  If the subclusters are
++     * deallocated in the first place and there's no backing, the operation
++     * can be skipped.
++     */
++    if (full_discard) {
++        new_l2_bitmap &= ~bitmap_zero_mask;
++    } else if (bs->backing || scri.l2_bitmap & bitmap_alloc_mask) {
++        new_l2_bitmap |= bitmap_zero_mask;
++    }
++
++    /*
++     * If after discarding this range there won't be any allocated subclusters
++     * left, and new bitmap becomes the same as it'd be after discarding the
++     * whole cluster, we better discard it entirely.  That way we'd also
++     * update the refcount table.
++     */
++    if ((full_discard && new_l2_bitmap == 0) ||
++            (!full_discard && new_l2_bitmap == QCOW_L2_BITMAP_ALL_ZEROES)) {
++        return discard_in_l2_slice(
++            bs, QEMU_ALIGN_DOWN(offset, s->cluster_size),
++            1, type, full_discard);
++    }
++
++    if (scri.l2_bitmap != new_l2_bitmap) {
++        set_l2_bitmap(s, scri.l2_slice, scri.l2_index, new_l2_bitmap);
++        qcow2_cache_entry_mark_dirty(s->l2_table_cache, scri.l2_slice);
++    }
++
++    discard_no_unref_any_file(
++        bs, (scri.l2_entry & L2E_OFFSET_MASK) + offset_into_cluster(s, offset),
++        nb_subclusters * s->subcluster_size, scri.ctype, type);
++
++    return 0;
++}
++
++int qcow2_subcluster_discard(BlockDriverState *bs, uint64_t offset,
++                             uint64_t bytes, enum qcow2_discard_type type,
++                             bool full_discard)
+ {
+     BDRVQcow2State *s = bs->opaque;
+     uint64_t end_offset = offset + bytes;
+     uint64_t nb_clusters;
++    unsigned head, tail;
+     int64_t cleared;
+     int ret;
  
-     if (head) {
-         ret = zero_l2_subclusters(bs, offset - head,
--                                  size_to_subclusters(s, head));
-+                                  size_to_subclusters(s, head), flags);
-         if (ret < 0) {
-             goto fail;
-         }
-@@ -2314,7 +2324,8 @@ int coroutine_fn qcow2_subcluster_zeroize(BlockDriverState *bs, uint64_t offset,
+     /* Caller must pass aligned values, except at image end */
+-    assert(QEMU_IS_ALIGNED(offset, s->cluster_size));
+-    assert(QEMU_IS_ALIGNED(end_offset, s->cluster_size) ||
++    assert(QEMU_IS_ALIGNED(offset, s->subcluster_size));
++    assert(QEMU_IS_ALIGNED(end_offset, s->subcluster_size) ||
+            end_offset == bs->total_sectors << BDRV_SECTOR_BITS);
+ 
+-    nb_clusters = size_to_clusters(s, bytes);
++    head = MIN(end_offset, ROUND_UP(offset, s->cluster_size)) - offset;
++    offset += head;
++
++    tail = (end_offset >= bs->total_sectors << BDRV_SECTOR_BITS) ? 0 :
++           end_offset - MAX(offset, start_of_cluster(s, end_offset));
++    end_offset -= tail;
+ 
+     s->cache_discards = true;
+ 
++    if (head) {
++        ret = discard_l2_subclusters(bs, offset - head,
++                                     size_to_subclusters(s, head), type,
++                                     full_discard);
++        if (ret < 0) {
++            goto fail;
++        }
++    }
++
++    nb_clusters = size_to_clusters(s, end_offset - offset);
++
+     /* Each L2 slice is handled by its own loop iteration */
+     while (nb_clusters > 0) {
+         cleared = discard_in_l2_slice(bs, offset, nb_clusters, type,
+@@ -2137,6 +2218,15 @@ int qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset,
+         offset += (cleared * s->cluster_size);
      }
  
-     if (tail) {
--        ret = zero_l2_subclusters(bs, end_offset, size_to_subclusters(s, tail));
-+        ret = zero_l2_subclusters(bs, end_offset,
-+                                  size_to_subclusters(s, tail), flags);
-         if (ret < 0) {
++    if (tail) {
++        ret = discard_l2_subclusters(bs, end_offset,
++                                     size_to_subclusters(s, tail), type,
++                                     full_discard);
++        if (ret < 0) {
++            goto fail;
++        }
++    }
++
+     ret = 0;
+ fail:
+     s->cache_discards = false;
+@@ -2286,8 +2376,8 @@ int coroutine_fn qcow2_subcluster_zeroize(BlockDriverState *bs, uint64_t offset,
+      */
+     if (s->qcow_version < 3) {
+         if (!bs->backing) {
+-            return qcow2_cluster_discard(bs, offset, bytes,
+-                                         QCOW2_DISCARD_REQUEST, false);
++            return qcow2_subcluster_discard(bs, offset, bytes,
++                                            QCOW2_DISCARD_REQUEST, false);
+         }
+         return -ENOTSUP;
+     }
+diff --git a/block/qcow2-snapshot.c b/block/qcow2-snapshot.c
+index 92e47978bf..4e39354d02 100644
+--- a/block/qcow2-snapshot.c
++++ b/block/qcow2-snapshot.c
+@@ -736,9 +736,9 @@ int qcow2_snapshot_create(BlockDriverState *bs, QEMUSnapshotInfo *sn_info)
+ 
+     /* The VM state isn't needed any more in the active L1 table; in fact, it
+      * hurts by causing expensive COW for the next snapshot. */
+-    qcow2_cluster_discard(bs, qcow2_vm_state_offset(s),
+-                          ROUND_UP(sn->vm_state_size, s->cluster_size),
+-                          QCOW2_DISCARD_NEVER, false);
++    qcow2_subcluster_discard(bs, qcow2_vm_state_offset(s),
++                             ROUND_UP(sn->vm_state_size, s->cluster_size),
++                             QCOW2_DISCARD_NEVER, false);
+ 
+ #ifdef DEBUG_ALLOC
+     {
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 956128b409..792b106eb6 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -1967,7 +1967,7 @@ static void qcow2_refresh_limits(BlockDriverState *bs, Error **errp)
+         bs->bl.request_alignment = qcrypto_block_get_sector_size(s->crypto);
+     }
+     bs->bl.pwrite_zeroes_alignment = s->subcluster_size;
+-    bs->bl.pdiscard_alignment = s->cluster_size;
++    bs->bl.pdiscard_alignment = s->subcluster_size;
+ }
+ 
+ static int GRAPH_UNLOCKED
+@@ -4112,19 +4112,19 @@ qcow2_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
+         return -ENOTSUP;
+     }
+ 
+-    if (!QEMU_IS_ALIGNED(offset | bytes, s->cluster_size)) {
+-        assert(bytes < s->cluster_size);
++    if (!QEMU_IS_ALIGNED(offset | bytes, bs->bl.pdiscard_alignment)) {
++        assert(bytes < bs->bl.pdiscard_alignment);
+         /* Ignore partial clusters, except for the special case of the
+          * complete partial cluster at the end of an unaligned file */
+-        if (!QEMU_IS_ALIGNED(offset, s->cluster_size) ||
++        if (!QEMU_IS_ALIGNED(offset, bs->bl.pdiscard_alignment) ||
+             offset + bytes != bs->total_sectors * BDRV_SECTOR_SIZE) {
+             return -ENOTSUP;
+         }
+     }
+ 
+     qemu_co_mutex_lock(&s->lock);
+-    ret = qcow2_cluster_discard(bs, offset, bytes, QCOW2_DISCARD_REQUEST,
+-                                false);
++    ret = qcow2_subcluster_discard(bs, offset, bytes, QCOW2_DISCARD_REQUEST,
++                                   false);
+     qemu_co_mutex_unlock(&s->lock);
+     return ret;
+ }
+@@ -4335,10 +4335,10 @@ qcow2_co_truncate(BlockDriverState *bs, int64_t offset, bool exact,
              goto fail;
          }
+ 
+-        ret = qcow2_cluster_discard(bs, ROUND_UP(offset, s->cluster_size),
+-                                    old_length - ROUND_UP(offset,
+-                                                          s->cluster_size),
+-                                    QCOW2_DISCARD_ALWAYS, true);
++        ret = qcow2_subcluster_discard(bs, ROUND_UP(offset, s->cluster_size),
++                                       old_length - ROUND_UP(offset,
++                                                             s->cluster_size),
++                                       QCOW2_DISCARD_ALWAYS, true);
+         if (ret < 0) {
+             error_setg_errno(errp, -ret, "Failed to discard cropped clusters");
+             goto fail;
+@@ -5032,8 +5032,9 @@ static int GRAPH_RDLOCK qcow2_make_empty(BlockDriverState *bs)
+          * default action for this kind of discard is to pass the discard,
+          * which will ideally result in an actually smaller image file, as
+          * is probably desired. */
+-        ret = qcow2_cluster_discard(bs, offset, MIN(step, end_offset - offset),
+-                                    QCOW2_DISCARD_SNAPSHOT, true);
++        ret = qcow2_subcluster_discard(bs, offset,
++                                       MIN(step, end_offset - offset),
++                                       QCOW2_DISCARD_SNAPSHOT, true);
+         if (ret < 0) {
+             break;
+         }
+diff --git a/block/qcow2.h b/block/qcow2.h
+index 197bdcdf53..a65c185b51 100644
+--- a/block/qcow2.h
++++ b/block/qcow2.h
+@@ -953,8 +953,8 @@ void coroutine_fn GRAPH_RDLOCK
+ qcow2_alloc_cluster_abort(BlockDriverState *bs, QCowL2Meta *m);
+ 
+ int GRAPH_RDLOCK
+-qcow2_cluster_discard(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
+-                      enum qcow2_discard_type type, bool full_discard);
++qcow2_subcluster_discard(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
++                         enum qcow2_discard_type type, bool full_discard);
+ 
+ int coroutine_fn GRAPH_RDLOCK
+ qcow2_subcluster_zeroize(BlockDriverState *bs, uint64_t offset, uint64_t bytes,
+diff --git a/tests/qemu-iotests/271 b/tests/qemu-iotests/271
+index 59a6fafa2f..04c57813c2 100755
+--- a/tests/qemu-iotests/271
++++ b/tests/qemu-iotests/271
+@@ -518,7 +518,7 @@ done
+ ############################################################
+ ############################################################
+ 
+-# Test qcow2_cluster_discard() with full and normal discards
++# Test qcow2_subcluster_discard() with full and normal discards
+ for use_backing_file in yes no; do
+     echo
+     echo "### Discarding clusters with non-zero bitmaps (backing file: $use_backing_file) ###"
 -- 
 2.39.3
 
