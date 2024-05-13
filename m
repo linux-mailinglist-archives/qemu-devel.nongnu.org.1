@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D68B8C3B66
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1FC8C3B5B
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PEp-0007hS-E6; Mon, 13 May 2024 02:32:43 -0400
+	id 1s6PEb-0007HC-Vp; Mon, 13 May 2024 02:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEO-00079o-Qr; Mon, 13 May 2024 02:32:16 -0400
+ id 1s6PEN-00077m-0o; Mon, 13 May 2024 02:32:15 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1s6PEI-0003wZ-Io; Mon, 13 May 2024 02:32:16 -0400
+ id 1s6PEI-0003wa-MO; Mon, 13 May 2024 02:32:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=0Jf2jPALHceBe2IkfT271nf146NNRsQrOmP4HbZZosc=; b=H10hXW+1w7od
- zHJNvbwjlHzulgjSaOy8cxWq6n9dU0FHkQCjhGRQnhs1ruT/9fxPibHfgIftbwyUkhbNPr399fB+A
- eqJBRNRjds6PLZEpaS7HN1v1REzXK/LeiH7OmmdO105WQmn3hHOD4v9u82yHT0tvUkvZO/Tfe12/a
- TaI8g7D/2J/kiNQ0GY51qxuUq+SuLWsiaF4vv9vSRc/v7/nsrwgBxzfRpDNVDXL9D5EW7aj93u1/8
- /VCFr+e4g4X4m91dnv/GyjzMM3yzbUSryWso687XZXfXS2xNF/jnT/UjHVSbE9+2mMQzFaSEeOcOL
- fwIfHH549HYp4WWQk3mSmw==;
+ Content-Type; bh=EhlDRRck+FVgxMfW1jaod9Ue0Scw5Pjg0RWeaeVQrXE=; b=YlCn9OMQ9HHy
+ NH+fhz/HwaG6thwJjb89H5aPX8KCQGCxFMgvSqMOa1+44ynXCN5F/cQ4l0nOdLW/bjlwoE44phTRG
+ FAke/9fs95MfdHQSPn5yJdjXvgr65x86OYv8j7V7sH39g01btUbOTnnp9XPSmTiJTtoxV3M1SE6YJ
+ dRMWAf0oTtTpgxuhoDU+uxh26AMJb6kF3GzP6Es8k7kryaRFnYZQEGDMhkwinAlF1VdmKm+n/uMyV
+ IlGecQZ4RaiL+WK+MtoiS7roWQXFAv4hru+ktAcUYqgL6DGIBwrGu75G6ElZxPOgEY0HC7A7bnM9Z
+ 5GQixxXm9p6IAfu43btZ5Q==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2C;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1s6PAR-000qpR-2N;
  Mon, 13 May 2024 08:31:56 +0200
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, berto@igalia.com, jean-louis@dupond.be,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 03/11] qcow2: put discard requests in the common queue when
- discard-no-unref enabled
-Date: Mon, 13 May 2024 09:31:55 +0300
-Message-Id: <20240513063203.113911-4-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 04/11] block/file-posix: add trace event for fallocate()
+ calls
+Date: Mon, 13 May 2024 09:31:56 +0300
+Message-Id: <20240513063203.113911-5-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
 References: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
@@ -66,87 +66,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Normally discard requests are stored in the queue attached to BDRVQcow2State
-to be processed later at once.  Currently discard-no-unref option handling
-causes these requests to be processed straight away.  Let's fix that.
+This would ease debugging of write zeroes and discard operations.
 
-Note that when doing regular discards qcow2_free_any_cluster() would check
-for the presence of external data files for us and redirect request to
-underlying data_file.  Here we want to do the same but avoid refcount updates,
-thus we perform the same checks.
-
-Suggested-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- block/qcow2-cluster.c | 39 +++++++++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 10 deletions(-)
+ block/file-posix.c | 1 +
+ block/trace-events | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/block/qcow2-cluster.c b/block/qcow2-cluster.c
-index 5f057ba2fd..7dff0bd5a1 100644
---- a/block/qcow2-cluster.c
-+++ b/block/qcow2-cluster.c
-@@ -1893,6 +1893,28 @@ again:
-     return 0;
- }
- 
-+/*
-+ * Helper for adding a discard request to the queue without any refcount
-+ * modifications.  If external data file is used redirects the request to
-+ * the corresponding BdrvChild.
-+ */
-+static inline void
-+discard_no_unref_any_file(BlockDriverState *bs, uint64_t offset,
-+                          uint64_t length, QCow2ClusterType ctype,
-+                          enum qcow2_discard_type dtype)
-+{
-+    BDRVQcow2State *s = bs->opaque;
-+
-+    if (s->discard_passthrough[dtype] &&
-+        (ctype == QCOW2_CLUSTER_NORMAL || ctype == QCOW2_CLUSTER_ZERO_ALLOC)) {
-+        if (has_data_file(bs)) {
-+            bdrv_pdiscard(s->data_file, offset, length);
-+        } else {
-+            qcow2_queue_discard(bs, offset, length);
-+        }
-+    }
-+}
-+
- /*
-  * This discards as many clusters of nb_clusters as possible at once (i.e.
-  * all clusters in the same L2 slice) and returns the number of discarded
-@@ -1974,12 +1996,10 @@ discard_in_l2_slice(BlockDriverState *bs, uint64_t offset, uint64_t nb_clusters,
-         if (!keep_reference) {
-             /* Then decrease the refcount */
-             qcow2_free_any_cluster(bs, old_l2_entry, type);
--        } else if (s->discard_passthrough[type] &&
--                   (cluster_type == QCOW2_CLUSTER_NORMAL ||
--                    cluster_type == QCOW2_CLUSTER_ZERO_ALLOC)) {
-+        } else {
-             /* If we keep the reference, pass on the discard still */
--            bdrv_pdiscard(s->data_file, old_l2_entry & L2E_OFFSET_MASK,
--                          s->cluster_size);
-+            discard_no_unref_any_file(bs, old_l2_entry & L2E_OFFSET_MASK,
-+                                      s->cluster_size, cluster_type, type);
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 35684f7e21..45134f0eef 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1859,6 +1859,7 @@ static int translate_err(int err)
+ static int do_fallocate(int fd, int mode, off_t offset, off_t len)
+ {
+     do {
++        trace_file_do_fallocate(fd, mode, offset, len);
+         if (fallocate(fd, mode, offset, len) == 0) {
+             return 0;
          }
-     }
+diff --git a/block/trace-events b/block/trace-events
+index 8e789e1f12..2f7ad28996 100644
+--- a/block/trace-events
++++ b/block/trace-events
+@@ -203,6 +203,7 @@ curl_setup_preadv(uint64_t bytes, uint64_t start, const char *range) "reading %"
+ curl_close(void) "close"
  
-@@ -2088,12 +2108,11 @@ zero_in_l2_slice(BlockDriverState *bs, uint64_t offset,
-             if (!keep_reference) {
-                 /* Then decrease the refcount */
-                 qcow2_free_any_cluster(bs, old_l2_entry, QCOW2_DISCARD_REQUEST);
--            } else if (s->discard_passthrough[QCOW2_DISCARD_REQUEST] &&
--                       (type == QCOW2_CLUSTER_NORMAL ||
--                        type == QCOW2_CLUSTER_ZERO_ALLOC)) {
-+            } else {
-                 /* If we keep the reference, pass on the discard still */
--                bdrv_pdiscard(s->data_file, old_l2_entry & L2E_OFFSET_MASK,
--                            s->cluster_size);
-+                discard_no_unref_any_file(bs, old_l2_entry & L2E_OFFSET_MASK,
-+                                          s->cluster_size, type,
-+                                          QCOW2_DISCARD_REQUEST);
-             }
-         }
-     }
+ # file-posix.c
++file_do_fallocate(int fd, int mode, int64_t offset, int64_t len) "fd=%d mode=0x%02x offset=%" PRIi64 " len=%" PRIi64
+ file_copy_file_range(void *bs, int src, int64_t src_off, int dst, int64_t dst_off, int64_t bytes, int flags, int64_t ret) "bs %p src_fd %d offset %"PRIu64" dst_fd %d offset %"PRIu64" bytes %"PRIu64" flags %d ret %"PRId64
+ file_FindEjectableOpticalMedia(const char *media) "Matching using %s"
+ file_setup_cdrom(const char *partition) "Using %s as optical disc"
 -- 
 2.39.3
 
