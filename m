@@ -2,72 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1658C3B71
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BB28C3BA9
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 08:55:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6PK9-0007uA-1s; Mon, 13 May 2024 02:38:13 -0400
+	id 1s6PZv-000365-2T; Mon, 13 May 2024 02:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s6PK6-0007tk-Cv; Mon, 13 May 2024 02:38:10 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1s6PZp-00035l-CW
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 02:54:25 -0400
+Received: from mr85p00im-zteg06022001.me.com ([17.58.23.193])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s6PK3-0005LC-Fg; Mon, 13 May 2024 02:38:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715582288; x=1747118288;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=zNTZwvBDmX+sT3qmwN7yy8aF9Vt4yfZqmuSijXDvB14=;
- b=Pvqac4UeM+QG86uY9yOJ4VWyVb1yYh7noYKDjoDJjLHLsjE+Xs/+Vqju
- IVh/alMg1Ksu5lBPFOuMdmuE+cdjdUAkcp2i8/0FOuKPugJPm1xpilERP
- iw0t2+VF7G4ADw2cNHLBcGrEC9+jpRxv1z8mUI3Vci81PDDvnSFQgGleO
- GzB9Yz0xyqNF3MSdmq3tJuP6o5iAzF5ZY2Qz1o8NoaNrs+aHUN8lBE0kv
- Jt7xxsZvgDfPPqv8/cLwF9f6M+vx+4tF6WilCmz0/kBQuPqAK9iWgXnW0
- aDJcLXG5fhSHuCZKDGCZTdNe4TeE35a46u0/0MWPCi73KCFpJ0aEn0fac w==;
-X-CSE-ConnectionGUID: fWk09ZRhQ1OwWTnjASbW5Q==
-X-CSE-MsgGUID: fFFAUQ54SQ25iWexnaZpIA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="11625817"
-X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="11625817"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2024 23:38:03 -0700
-X-CSE-ConnectionGUID: LHlwyNm/SG6aO/vBA/VsJA==
-X-CSE-MsgGUID: hNjwTF5uRYeX7W54AvK6cg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,157,1712646000"; d="scan'208";a="30269659"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 12 May 2024 23:37:59 -0700
-Date: Mon, 13 May 2024 14:52:14 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Shaoqin Huang <shahuang@redhat.com>, qemu-arm@nongnu.org,
- Eric Auger <eauger@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@intel.com>
-Subject: Re: [PATCH v9] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-Message-ID: <ZkG4nlwRnvz9oUXX@intel.com>
-References: <20240409024940.180107-1-shahuang@redhat.com>
- <Zh1j9b92UGPzr1-a@redhat.com> <Zjyb43JqMZA+bO4r@intel.com>
- <ZjyZ1ZV7BGME_bY9@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZjyZ1ZV7BGME_bY9@redhat.com>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1s6PZn-0007Qh-RG
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 02:54:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ t=1715583259; bh=IGEG1PX849vfVhmV5U/p4vBL4bQgjAWlgXBgNhaiqhQ=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+ b=hmBOGbP+mOs8+GY0QW2EiBdjDWAMMIYlLogFCQc56PoakS926ele14vjVs7G3jooG
+ VVDxZA2PAN4INkAcxTYol4KJ101bPRZXqRHrDySAlFg0I9j6jWaqrRCYNpguaS2M+i
+ LpIZmYr1j9JIBIWy4ch7lVCth1Z+KpCf+KWJFgQj7IMM5RSZ/z41r1OaKbR0oQ5Ad5
+ fNmVBqa4O81fAhLAjgnb1MXMR0APxfl+HlUvmUT3NEgBLKjcFOjuxtLYyWLMCNOxrt
+ 2ou6q7QjftKs7+bRtq7LsVHFVlmg4iiUWFPGQ25jSOfOYo+AGcltzUeH2sxgro3oHB
+ dqjtDLd5+8Utw==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.152.18])
+ by mr85p00im-zteg06022001.me.com (Postfix) with ESMTPSA id 8665C800189;
+ Mon, 13 May 2024 06:54:17 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH] scripts/simpletrace: Mark output with unstable timestamp
+ as WARN
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <CAJSP0QX0y_J1pu+hgUNhXn7bFJfoAMm9Ux9vq3u+k_UDjwK8Ww@mail.gmail.com>
+Date: Mon, 13 May 2024 08:54:04 +0200
+Cc: Zhao Liu <zhao1.liu@intel.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <E9F457F8-455F-4D7F-B51F-406887E0FBBB@ynddal.dk>
+References: <20240508043229.3433128-1-zhao1.liu@intel.com>
+ <CAJSP0QX0y_J1pu+hgUNhXn7bFJfoAMm9Ux9vq3u+k_UDjwK8Ww@mail.gmail.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+X-Proofpoint-GUID: aBTtMjleQcNWYGJw-fpwgqaEvV6l3cX3
+X-Proofpoint-ORIG-GUID: aBTtMjleQcNWYGJw-fpwgqaEvV6l3cX3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-13_04,2024-05-10_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ phishscore=0 mlxscore=0
+ suspectscore=0 clxscore=1030 spamscore=0 malwarescore=0 bulkscore=0
+ mlxlogscore=880 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2405130044
+Received-SPF: pass client-ip=17.58.23.193; envelope-from=mads@ynddal.dk;
+ helo=mr85p00im-zteg06022001.me.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,131 +80,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
 
-> Please describe it in terms of a QAPI definition, as that's what we're
-> striving for with all QEMU public interfaces. Once the QAPI design is
-> agreed, then the -object mapping is trivial, as -object's JSON format
-> supports arbitrary QAPI structures.
+> Why are the timestamps non-monotonic?
+> 
+> In a situation like that maybe not only the negative timestamps are
+> useless but even some positive timestamps are incorrect. I think it's
+> worth understanding the nature of the instability before merging a
+> fix.
 
-Thank you for your guidance!
-
-I rethought and and modified my previous proposal:
-
-Let me show the command examples firstly:
-  * Add a single event:
-    (x86) -object kvm-pmu-event,id=e0,action=allow,format=x86-default,\
-                  select=0x3c,umask=0x00
-    (arm or general) -object kvm-pmu-event,id=e1,action=deny,\
-                             format=raw,code=0x01
- 
-  * Add a counter bitmap:
-    (x86) -object kvm-pmu-counter,id=cnt,action=allow,type=x86-fixed,\
-                  bitmap=0xffff0000
- 
-  * Add an event list (must use Json syntax format):
-   (x86) -object '{"qom-type":"kvm-pmu-event-list","id"="filter0","action"="allow","format"="x86-default","events=[{"select"=0x3c,"umask"=0x00},{"select"=0x2e,"umask"=0x4f}]'
-   (arm) -object '{"qom-type":"kvm-pmu-event-list","id"="filter1","action"="allow","format"="raw","events"=[{"code"=0x01},{"code"=0x02}]'
-
-
-The specific JSON definitions are as follows (IIUC, this is "in terms of
-a QAPI definition", right? ;-)): 
-* Define PMU event and counter bitmap with JSON format:
-  - basic filter action:
-
-  { 'enum': 'KVMPMUFilterAction',
-    'prefix': 'KVM_PMU_FILTER_ACTION',
-    'data': ['deny', 'allow' ] }
-
-  - PMU counter:
-
-  { 'enum': 'KVMPMUCounterType',
-    'prefix': 'KVM_PMU_COUNTER_TYPE',
-    'data': [ 'x86-fixed' ] }
-
-  { 'struct': 'KVMPMUX86FixedCounter',
-    'data': { 'bitmap': 'uint32' } }
-
-  - PMU events (total 3 formats):
-
-  # 3 encoding formats: "raw" is compatible with shaoqin's ARM format as
-  # well as the x86 raw format, and could support other architectures in
-  # the future.
-  { 'enum': 'KVMPMUEventEncodeFmt',
-    'prefix': 'KVM_PMU_EVENT_ENCODE_FMT',
-    'data': ['raw', 'x86-default', 'x86-masked-entry' ] }
-
-  # A general format.
-  { 'struct': 'KVMPMURawEvent',
-    'data': { 'code': 'uint64' } }
-
-  # x86-specific
-  { 'struct': 'KVMPMUX86DefalutEvent',
-    'data': { 'select': 'uint16',
-              'umask': 'uint16' } }
-
-  # another x86 specific
-  { 'struct': 'KVMPMUX86MaskedEntry',
-    'data': { 'select': 'uint16',
-              'match': 'uint8',
-              'mask': 'uint8',
-              'exclude': 'bool' } }
-
-  # And their list wrappers:
-  { 'struct': 'KVMPMURawEventList',
-    'data': { 'events': ['KVMPMURawEvent'] } }
-
-  { 'struct': 'KVMPMUX86DefalutEventList',
-    'data': { 'events': ['KVMPMUX86DefalutEvent'] } }
-
-  { 'struct': 'KVMPMUX86MaskedEntryList',
-    'data': { 'events': ['KVMPMUX86MaskedEntryList'] } }
-
-
-Based on the above basic structs, we could provide 3 new more qom-types:
-  - 'kvm-pmu-counter': 'KVMPMUFilterCounter'
-
-  # This is a single object option to configure PMU counter
-  # bitmap filter.
-  { 'union': 'KVMPMUFilterCounter',
-    'base': { 'action': 'KVMPMUFilterAction',
-              'type': 'KVMPMUCounterType' },
-    'discriminator': 'type',
-    'data': { 'x86-fixed': 'KVMPMUX86FixedCounter' } }
-
-
-  - 'kvm-pmu-counter': 'KVMPMUFilterCounter'
-
-  # This option is used to configure a single PMU event for
-  # PMU filter.
-  { 'union': 'KVMPMUFilterEvent',
-    'base': { 'action': 'KVMPMUFilterAction',
-              'format': 'KVMPMUEventEncodeFmt' },
-    'discriminator': 'format',
-    'data': { 'raw': 'KVMPMURawEvent',
-              'x86-default': 'KVMPMUX86DefalutEvent',
-              'x86-masked-entry': 'KVMPMUX86MaskedEntry' } }
-
-
-  - 'kvm-pmu-event-list': 'KVMPMUFilterEventList'
-
-  # Used to configure multiple events.
-  { 'union': 'KVMPMUFilterEventList',
-    'base': { 'action': 'KVMPMUFilterAction',
-              'format': 'KVMPMUEventEncodeFmt' },
-    'discriminator': 'format',
-    'data': { 'raw': 'KVMPMURawEventList',
-              'x86-default': 'KVMPMUX86DefalutEventList',
-              'x86-masked-entry': 'KVMPMUX86MaskedEntryList' } }
-
-
-Compared to Shaoqin's original format, kvm-pmu-event-list is not able to
-enumerate events continuously (similar to 0x00-0x30 before), and now
-user must enumerate events one by one individually.
-
-What do you think about the above 3 new commands?
-
-Thanks and Best Regards,
-Zhao
+I agree with Stefan on this. We'll need to find the underlying cause first.
 
 
