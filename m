@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5068C3C9A
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B598C3C92
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 09:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6QR5-0005LP-Sk; Mon, 13 May 2024 03:49:28 -0400
+	id 1s6QRC-0006Lj-An; Mon, 13 May 2024 03:49:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPV-0002wm-IT
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:49 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ id 1s6QPX-0002zA-FJ
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:53 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s6QPR-0001QF-C7
- for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:49 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2e0933d3b5fso58355281fa.2
- for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:44 -0700 (PDT)
+ id 1s6QPS-0001QJ-Og
+ for qemu-devel@nongnu.org; Mon, 13 May 2024 03:47:51 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-42011507a57so9658565e9.1
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 00:47:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715586463; x=1716191263; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715586464; x=1716191264; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5fHOltBHJMUYAs0ifImrgAbY5phtILtBQ88LfAq6uw0=;
- b=MjY8TUWcjoJEqiO9gLNWvlWrV5vlRZJ7xitLPjdqzHLosGqOF1n1/6CCeGDmiZVRto
- pQxMJyi4B+cPwUUgVp2hsmKl9DdeJJNHQ3FipSY0Du2KH4WTeAIb10HSqWfyx58p89A4
- s2133UcrTtE0jBTiWiYPuMcNok4XpXJ6aWA84Am9hunKFkfbaMzA0PWO+fOpQcXSr+HB
- 44pOADLhg5E3UtB4fYwq2CEKWsEPTsTysc8hTJi7j+LxYDQ335azaruywyr5eio+XGll
- gsuW8VmkTeYaqnGVwgkVsgtqrYhN57av8RkHQujWnxw/F/kROO1Du/j7w819PwtimBJZ
- DdzA==
+ bh=E8/1fo4XxPxuANS4fw7f9IOfFNtGCwACN8n5KfI7MiY=;
+ b=ZLnZ4lTS6WPgJzNZ04u8Okzcerm99/WU+3DtuV+fxy/BBGTArVdAN2x9zy5gIYnQBg
+ Av6tB8W4Ca/n7f92SLqLYvJGRoCQ+jfIBkahCEdGGKovR55KzflU/1HVKHPO+chGrd/h
+ UQsd02wsFCXAK0yGctUGccJ62kzbZrpTyJH4lqjzhGbriJpfnof1Qkg21bQwuQ7X70gA
+ LE2TYx0ueQpb4Ldc835lh8HP5Zky92m4MdQ73Nb0opsn9I/Zv/maoGhb8SNOj6W2s+Lv
+ 2eaaH3YsdTJLk0WpsCngOq9dk7vwH9m7dexBmWzYNQLQ7kxcvcY0jrAer1/7vZVpZQs7
+ y33w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715586463; x=1716191263;
+ d=1e100.net; s=20230601; t=1715586464; x=1716191264;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5fHOltBHJMUYAs0ifImrgAbY5phtILtBQ88LfAq6uw0=;
- b=XohluoPHr3Dv2R9P2rLclkOxODhcNbHQAYSakSFQamtud9sOQMLZYwRhaQS91BlJ7J
- /+u0Vc0pb57RqPfqI3rPVBkFjVLCcIKgOrM4N6WwyDXdBjL9Kr3x9l+blW/G5WJ31TfF
- A4EaDzaR6WSlkfOSKBg+wdDjpn7dW0Ezrj3/CQJ+TKEZ/HQT5GL+spZab5jjqleBjc67
- Ryzc34JNJWBnrggIXkO8zvMv46adyUzbhs6xr6sgLVokzZUnPFxP+hlsPGiKeeJ8M7Uy
- T0YT6Pl9C5x4OVO2HzOkJc5tA9Dqe0LHSJbcROp8w3J4XHl4/zhLuLJUq52Q9GEnp/BR
- Ql+w==
-X-Gm-Message-State: AOJu0YyeVuRig0j/OCvVbmA9LMnrz5fsvttCiApnZCiqhAlzrpfUW3Wk
- xQLVby/7oG9DcwK2kTYTVhPFovn+aH6N3ZjlClJoPwt0QCAsGp025kAKe9dzsz9Ih7bJ3/m02+S
- e8Ac=
-X-Google-Smtp-Source: AGHT+IHpiw0rxSNxvecMQU54mMr37rH2BS2K5CUI5K6OBOGcwGnFb5IiggF1T3r1BFIhbUOp4PkLMg==
-X-Received: by 2002:a05:6512:39d3:b0:51c:5087:909f with SMTP id
- 2adb3069b0e04-5220fa71af9mr7684054e87.10.1715586463712; 
- Mon, 13 May 2024 00:47:43 -0700 (PDT)
+ bh=E8/1fo4XxPxuANS4fw7f9IOfFNtGCwACN8n5KfI7MiY=;
+ b=lvQYAkQ59PQqs7CbOVMXkA4zVVavKSi67XbotnNFcDXnLS9igOpetiIUSt1y6Qq1by
+ tqUgh6ba/hFGb67i7WVrseydjkg+PS7rlALXJOqhW/r8SWO4sKNwRPJuIJ2bES6jv0o8
+ G4zR6KV4eQFDTUHK3rQIT9zgQymJNZ3ZWYZ099hiUXSLRP07+yGn39kS30o0iM8mAwlv
+ BylF6ylGF2yZLutA5dnM++qo+OCV+x7eVok+QBaf0FjPc34/TGZTnjsn9sPfYzri8dJ2
+ X4uxIxL69+zaSmnk7cHIs6307BzjnfVWbgi/2XP2dMM4nF+lecGa69YWDioZK3WfmZo4
+ FzYQ==
+X-Gm-Message-State: AOJu0YzY6QPheld/QbVdYFJQWovERIHyjhdcF3kHzhrUiWN9gjQ6bsOs
+ 2QCV35Q44RiosCMleaPgFyPklE98XrdUXPcYG84NYVC434H3kRgWFloeB0mOj18AamuvqsZsNxr
+ 1K9M=
+X-Google-Smtp-Source: AGHT+IEhseMmHyfHtOgN0lOBClYyPXYRIjh1i7uZPys6LpxqhsGtiHQEuoCOtMP7arc9XIzHMO8zqA==
+X-Received: by 2002:a05:600c:1d1c:b0:420:98d:e101 with SMTP id
+ 5b1f17b1804b1-420098de3c7mr49278315e9.15.1715586464420; 
+ Mon, 13 May 2024 00:47:44 -0700 (PDT)
 Received: from stoup.. (12.red-213-97-13.staticip.rima-tde.net. [213.97.13.12])
  by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-41fccee9318sm148204765e9.30.2024.05.13.00.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 May 2024 00:47:43 -0700 (PDT)
+ Mon, 13 May 2024 00:47:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH v2 34/45] target/hppa: Improve hppa_cpu_dump_state
-Date: Mon, 13 May 2024 09:47:06 +0200
-Message-Id: <20240513074717.130949-35-richard.henderson@linaro.org>
+Subject: [PATCH v2 35/45] target/hppa: Split PSW X and B into their own field
+Date: Mon, 13 May 2024 09:47:07 +0200
+Message-Id: <20240513074717.130949-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513074717.130949-1-richard.henderson@linaro.org>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x230.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,105 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Print both raw IAQ_Front and IAQ_Back as well as the GVAs.
-Print control registers in system mode.
-Print floating point register if CPU_DUMP_FPU.
+Generally, both of these bits are cleared at the end of each
+instruction.  By separating these, we will be able to clear
+both with a single insn, instead of 2 or 3.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/helper.c | 60 +++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 54 insertions(+), 6 deletions(-)
+ target/hppa/cpu.h    | 3 ++-
+ target/hppa/helper.c | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 1232a4cef2..f247ad56d7 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -208,7 +208,8 @@ typedef struct CPUArchState {
+     uint64_t fr[32];
+     uint64_t sr[8];          /* stored shifted into place for gva */
+ 
+-    target_ulong psw;        /* All psw bits except the following:  */
++    uint32_t psw;            /* All psw bits except the following:  */
++    uint32_t psw_xb;         /* X and B, in their normal positions */
+     target_ulong psw_n;      /* boolean */
+     target_long psw_v;       /* in most significant bit */
+ 
 diff --git a/target/hppa/helper.c b/target/hppa/helper.c
-index 9d217d051c..7d22c248fb 100644
+index 7d22c248fb..b79ddd8184 100644
 --- a/target/hppa/helper.c
 +++ b/target/hppa/helper.c
-@@ -102,6 +102,19 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+@@ -54,7 +54,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
  
- void hppa_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-+#ifndef CONFIG_USER_ONLY
-+    static const char cr_name[32][5] = {
-+        "RC",    "CR1",   "CR2",   "CR3",
-+        "CR4",   "CR5",   "CR6",   "CR7",
-+        "PID1",  "PID2",  "CCR",   "SAR",
-+        "PID3",  "PID4",  "IVA",   "EIEM",
-+        "ITMR",  "ISQF",  "IOQF",  "IIR",
-+        "ISR",   "IOR",   "IPSW",  "EIRR",
-+        "TR0",   "TR1",   "TR2",   "TR3",
-+        "TR4",   "TR5",   "TR6",   "TR7",
-+    };
-+#endif
-+
-     CPUHPPAState *env = cpu_env(cs);
-     target_ulong psw = cpu_hppa_get_psw(env);
-     target_ulong psw_cb;
-@@ -117,11 +130,12 @@ void hppa_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-         m = UINT32_MAX;
-     }
+     psw |= env->psw_n * PSW_N;
+     psw |= (env->psw_v < 0) * PSW_V;
+-    psw |= env->psw;
++    psw |= env->psw | env->psw_xb;
  
--    qemu_fprintf(f, "IA_F " TARGET_FMT_lx " IA_B " TARGET_FMT_lx
--                 " IIR %0*" PRIx64 "\n",
-+    qemu_fprintf(f, "IA_F %08" PRIx64 ":%0*" PRIx64 " (" TARGET_FMT_lx ")\n"
-+                    "IA_B %08" PRIx64 ":%0*" PRIx64 " (" TARGET_FMT_lx ")\n",
-+                 env->iasq_f >> 32, w, m & env->iaoq_f,
-                  hppa_form_gva_psw(psw, env->iasq_f, env->iaoq_f),
--                 hppa_form_gva_psw(psw, env->iasq_b, env->iaoq_b),
--                 w, m & env->cr[CR_IIR]);
-+                 env->iasq_b >> 32, w, m & env->iaoq_b,
-+                 hppa_form_gva_psw(psw, env->iasq_b, env->iaoq_b));
- 
-     psw_c[0]  = (psw & PSW_W ? 'W' : '-');
-     psw_c[1]  = (psw & PSW_E ? 'E' : '-');
-@@ -154,12 +168,46 @@ void hppa_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-                      (i & 3) == 3 ? '\n' : ' ');
-     }
- #ifndef CONFIG_USER_ONLY
-+    for (i = 0; i < 32; i++) {
-+        qemu_fprintf(f, "%-4s %0*" PRIx64 "%c",
-+                     cr_name[i], w, m & env->cr[i],
-+                     (i & 3) == 3 ? '\n' : ' ');
-+    }
-+    qemu_fprintf(f, "ISQB %0*" PRIx64 " IOQB %0*" PRIx64 "\n",
-+                 w, m & env->cr_back[0], w, m & env->cr_back[1]);
-     for (i = 0; i < 8; i++) {
-         qemu_fprintf(f, "SR%02d %08x%c", i, (uint32_t)(env->sr[i] >> 32),
-                      (i & 3) == 3 ? '\n' : ' ');
-     }
- #endif
--     qemu_fprintf(f, "\n");
- 
--    /* ??? FR */
-+    if (flags & CPU_DUMP_FPU) {
-+        static const char rm[4][4] = { "RN", "RZ", "R+", "R-" };
-+        char flg[6], ena[6];
-+        uint32_t fpsr = env->fr0_shadow;
-+
-+        flg[0] = (fpsr & R_FPSR_FLG_V_MASK ? 'V' : '-');
-+        flg[1] = (fpsr & R_FPSR_FLG_Z_MASK ? 'Z' : '-');
-+        flg[2] = (fpsr & R_FPSR_FLG_O_MASK ? 'O' : '-');
-+        flg[3] = (fpsr & R_FPSR_FLG_U_MASK ? 'U' : '-');
-+        flg[4] = (fpsr & R_FPSR_FLG_I_MASK ? 'I' : '-');
-+        flg[5] = '\0';
-+
-+        ena[0] = (fpsr & R_FPSR_ENA_V_MASK ? 'V' : '-');
-+        ena[1] = (fpsr & R_FPSR_ENA_Z_MASK ? 'Z' : '-');
-+        ena[2] = (fpsr & R_FPSR_ENA_O_MASK ? 'O' : '-');
-+        ena[3] = (fpsr & R_FPSR_ENA_U_MASK ? 'U' : '-');
-+        ena[4] = (fpsr & R_FPSR_ENA_I_MASK ? 'I' : '-');
-+        ena[5] = '\0';
-+
-+        qemu_fprintf(f, "FPSR %08x flag    %s enable  %s %s\n",
-+                     fpsr, flg, ena, rm[FIELD_EX32(fpsr, FPSR, RM)]);
-+
-+        for (i = 0; i < 32; i++) {
-+            qemu_fprintf(f, "FR%02d %016" PRIx64 "%c",
-+                     i, env->fr[i], (i & 3) == 3 ? '\n' : ' ');
-+        }
-+    }
-+
-+    qemu_fprintf(f, "\n");
+     return psw;
  }
+@@ -76,8 +76,8 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+     }
+     psw &= ~reserved;
+ 
+-    env->psw = psw & (uint32_t)~(PSW_N | PSW_V | PSW_CB);
+-
++    env->psw = psw & (uint32_t)~(PSW_B | PSW_N | PSW_V | PSW_X | PSW_CB);
++    env->psw_xb = psw & (PSW_X | PSW_B);
+     env->psw_n = (psw / PSW_N) & 1;
+     env->psw_v = -((psw / PSW_V) & 1);
+ 
 -- 
 2.34.1
 
