@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27BA8C3ED5
-	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 12:24:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758138C3ED9
+	for <lists+qemu-devel@lfdr.de>; Mon, 13 May 2024 12:26:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6Sq3-0004UP-6D; Mon, 13 May 2024 06:23:23 -0400
+	id 1s6Ssd-0007T7-Ht; Mon, 13 May 2024 06:26:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Sq1-0004UE-DU
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6Spy-0008QZ-Ie
- for qemu-devel@nongnu.org; Mon, 13 May 2024 06:23:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715595798;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wZwH2tmVLbaNtLMnFMHFmUduvsdLt700PaM3fGnm138=;
- b=DnylZgxWWcjwW4Lm++viSLlMz5mWXCAieEYDB0V188Ed9JIMuF+2tYNJTJSBHgkvNyBcgo
- 1IRkfP/UKiE4iJqefQATYecgKLH+l1GYemWIp8H7buTAKexKPHmyAnZ5lIiVAgnCV49yHY
- /Lm2DZ8HxW3Sx/erR6WX6HhwxxRGPrY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-357-4JzJAqZ1N7Wi9K5BInOMLw-1; Mon, 13 May 2024 06:23:13 -0400
-X-MC-Unique: 4JzJAqZ1N7Wi9K5BInOMLw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58D1D800656;
- Mon, 13 May 2024 10:23:13 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0CB1340C6CB6;
- Mon, 13 May 2024 10:23:11 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 4/4] tests/docker/dockerfiles: Update container files with
- "lcitool-refresh"
-Date: Mon, 13 May 2024 12:22:52 +0200
-Message-ID: <20240513102252.48884-5-thuth@redhat.com>
-In-Reply-To: <20240513102252.48884-1-thuth@redhat.com>
-References: <20240513102252.48884-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1s6SsE-0007PO-Lb; Mon, 13 May 2024 06:25:41 -0400
+Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1s6Srv-0000d8-HS; Mon, 13 May 2024 06:25:31 -0400
+Received: by mail-vk1-xa2a.google.com with SMTP id
+ 71dfb90a1353d-4df8ea40b2bso1047441e0c.2; 
+ Mon, 13 May 2024 03:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1715595907; x=1716200707; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KI7c3nUCG8tvoPRR10lKSKPUTDE22S/poCKkROQ/+Tk=;
+ b=OhEFAr5e83aJQ8tfGoPtB5fuRLog4b694hLjgz40U1o/fskX/f3c/jZjhIJCAOwpcV
+ bedUajCsXP36/uS83Y9uUdW43LLgFMyt3cJrHQqX6x0L4xS2u9Wf3foau6TO6AT+4/G0
+ N/S8V9yg6grxohDGRbZKTel+PCnx69HZffQ2Rd4AOLmesWrctHF4kn/BT30VgLoUhQw3
+ V1ie6wHa46ewOLk470seGkmyIulUQA2cGugins4lGTcbOC60D5eJHORYwMcOKIWiI2WS
+ b+Gty/UNP5oszUs2GUy7FtZg7j5GfTvx18yVXXwrSDKDrdT2/a7eV3aMnY1V6jSGVshB
+ BUog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715595907; x=1716200707;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KI7c3nUCG8tvoPRR10lKSKPUTDE22S/poCKkROQ/+Tk=;
+ b=nmo+yKMmH2CX4pbWsbPskCQ8TguqIGfCrwzFv6BeJiigBB5nN8r5QaX8s6RsLNla7k
+ FATXLorRqHrkDq14L/ZbsNxf0ULZT1cQMitSDTAqzWwf+MYq3dZOLoprXmAxnJBUpTPg
+ Y2jkmbp9K5SJiIcrL6Jjyjbe1idVUFDTmsgwvi3cmEsX5jPgMzINlfCxUnPjkDo3N3G/
+ dverlemjasloDyfr9ozqoU9U9qbcskRtFmKzWi2zlNCdo6gJzCWMM0a1Hh89ExczoxU3
+ rqcHjheTjAWRxBJRxyd7x1/xlxIm72laJyOFfgwokGF5anRkh1I04TwGL6gvdFWTc/17
+ oR4w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXrGTUEMPn33QhgENIZdYtb54EA0TLytAW8jWo2OQya0YtOJhB24NZOahcOGp/Od6l7N85yisq3CPQ5vYe6vkpIFrzttuoGMw+nVGjVouCvDBr2Y8TWzxpQgjoYqg==
+X-Gm-Message-State: AOJu0Ywvey8j8sQ1aDRinCxWWAXfG77avjSlFaXgcv1uNl7a5KBeYJiB
+ CUrPlvywPt/PZ09IeJl4F/bEwXQeED2p0hSTb8vUfZ/JdxdxQrQ+U+oPrYKciafxOPaiYL7rRi5
+ y1Y+f+jcWXA4JM9bklIw7Htqusfw=
+X-Google-Smtp-Source: AGHT+IGLKWcRFUpeRNSuOaY9LssOa5WcisBI32RiZpPjWNA+QLlTcheTKl1bGxloTuxgjXMcQpaqLzsLcu1WpmwJLUc=
+X-Received: by 2002:a05:6122:2a49:b0:4df:19c0:8702 with SMTP id
+ 71dfb90a1353d-4df88285831mr7345367e0c.1.1715595907409; Mon, 13 May 2024
+ 03:25:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.332,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240511101053.1875596-1-me@deliversmonkey.space>
+ <b732f7bd-53d2-4c66-9821-a5bd589f6c56@gmail.com>
+In-Reply-To: <b732f7bd-53d2-4c66-9821-a5bd589f6c56@gmail.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 13 May 2024 20:24:41 +1000
+Message-ID: <CAKmqyKM+2jhFdAL=3Z0De03hBFR6cn2xtVm3FrkPvn=U8tJLpg@mail.gmail.com>
+Subject: Re: [PATCH v9 0/6] Pointer Masking update for Zjpm v1.0
+To: liwei <liwei1518@gmail.com>
+Cc: Alexey Baturo <baturo.alexey@gmail.com>, richard.henderson@linaro.org, 
+ space.monkey.delivers@gmail.com, palmer@dabbelt.com, Alistair.Francis@wdc.com, 
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,517 +92,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Run "make lcitool-refresh" after the previous changes to the lcitool
-files. This removes the g++ and xfslibs-dev packages from the dockerfiles.
+On Sun, May 12, 2024 at 12:44=E2=80=AFAM liwei <liwei1518@gmail.com> wrote:
+>
+>
+> On 2024/5/11 18:10, Alexey Baturo wrote:
+> > From: Alexey Baturo <baturo.alexey@gmail.com>
+> >
+> > Hi,
+> >
+> > It looks like Pointer Masking spec has reached v1.0 and been frozen,
+> > rebasing on riscv-to-apply.next branch and resubmitting patches.
+>
+> Hi, any change from v0.8 to v1.0?
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/docker/dockerfiles/alpine.docker                | 4 ----
- tests/docker/dockerfiles/centos9.docker               | 4 ----
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-armel-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-i686-cross.docker     | 4 ----
- tests/docker/dockerfiles/debian-mips64el-cross.docker | 4 ----
- tests/docker/dockerfiles/debian-mipsel-cross.docker   | 4 ----
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 4 ----
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian.docker                | 4 ----
- tests/docker/dockerfiles/fedora-win64-cross.docker    | 8 +++++---
- tests/docker/dockerfiles/fedora.docker                | 4 ----
- tests/docker/dockerfiles/opensuse-leap.docker         | 4 ----
- tests/docker/dockerfiles/ubuntu2204.docker            | 4 ----
- 16 files changed, 5 insertions(+), 63 deletions(-)
+Good question.
 
-diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
-index cd9d7af1ce..554464f31e 100644
---- a/tests/docker/dockerfiles/alpine.docker
-+++ b/tests/docker/dockerfiles/alpine.docker
-@@ -32,7 +32,6 @@ RUN apk update && \
-         findutils \
-         flex \
-         fuse3-dev \
--        g++ \
-         gcc \
-         gcovr \
-         gettext \
-@@ -110,7 +109,6 @@ RUN apk update && \
-         vte3-dev \
-         which \
-         xen-dev \
--        xfsprogs-dev \
-         xorriso \
-         zlib-dev \
-         zlib-static \
-@@ -119,10 +117,8 @@ RUN apk update && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     apk list --installed | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/centos9.docker b/tests/docker/dockerfiles/centos9.docker
-index 6cf47ce786..0256865b9e 100644
---- a/tests/docker/dockerfiles/centos9.docker
-+++ b/tests/docker/dockerfiles/centos9.docker
-@@ -34,7 +34,6 @@ RUN dnf distro-sync -y && \
-         flex \
-         fuse3-devel \
-         gcc \
--        gcc-c++ \
-         gettext \
-         git \
-         glib2-devel \
-@@ -115,7 +114,6 @@ RUN dnf distro-sync -y && \
-         util-linux \
-         vte291-devel \
-         which \
--        xfsprogs-devel \
-         xorriso \
-         zlib-devel \
-         zlib-static \
-@@ -125,10 +123,8 @@ RUN dnf distro-sync -y && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index d0b0e9778e..f8c61d1191 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-x86-64-linux-gnu \
-                       gcc-x86-64-linux-gnu \
-                       libaio-dev:amd64 \
-                       libasan6:amd64 \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:amd64 \
-                       nettle-dev:amd64 \
-                       systemtap-sdt-dev:amd64 \
--                      xfslibs-dev:amd64 \
-                       zlib1g-dev:amd64 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'x86_64'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/x86_64-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-gcc
- 
- ENV ABI "x86_64-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 8cb225740e..6510872279 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-aarch64-linux-gnu \
-                       gcc-aarch64-linux-gnu \
-                       libaio-dev:arm64 \
-                       libasan6:arm64 \
-@@ -148,7 +147,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:arm64 \
-                       nettle-dev:arm64 \
-                       systemtap-sdt-dev:arm64 \
--                      xfslibs-dev:arm64 \
-                       zlib1g-dev:arm64 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -166,9 +164,7 @@ cpu = 'aarch64'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/aarch64-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-gcc
- 
- ENV ABI "aarch64-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
-index e6f37418ed..f227d42987 100644
---- a/tests/docker/dockerfiles/debian-armel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armel-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-arm-linux-gnueabi \
-                       gcc-arm-linux-gnueabi \
-                       libaio-dev:armel \
-                       libasan6:armel \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:armel \
-                       nettle-dev:armel \
-                       systemtap-sdt-dev:armel \
--                      xfslibs-dev:armel \
-                       zlib1g-dev:armel && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'arm'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabi && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-gcc
- 
- ENV ABI "arm-linux-gnueabi"
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index 407a014f57..58bdf07223 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-arm-linux-gnueabihf \
-                       gcc-arm-linux-gnueabihf \
-                       libaio-dev:armhf \
-                       libasan6:armhf \
-@@ -148,7 +147,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:armhf \
-                       nettle-dev:armhf \
-                       systemtap-sdt-dev:armhf \
--                      xfslibs-dev:armhf \
-                       zlib1g-dev:armhf && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -166,9 +164,7 @@ cpu = 'armhf'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabihf && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-gcc
- 
- ENV ABI "arm-linux-gnueabihf"
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index bdc9566b67..9f4102be8f 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-i686-linux-gnu \
-                       gcc-i686-linux-gnu \
-                       libaio-dev:i386 \
-                       libasan6:i386 \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:i386 \
-                       nettle-dev:i386 \
-                       systemtap-sdt-dev:i386 \
--                      xfslibs-dev:i386 \
-                       zlib1g-dev:i386 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'i686'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/i686-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-gcc
- 
- ENV ABI "i686-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index 4d995d0b12..c861c3bd5b 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-mips64el-linux-gnuabi64 \
-                       gcc-mips64el-linux-gnuabi64 \
-                       libaio-dev:mips64el \
-                       libasound2-dev:mips64el \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:mips64el \
-                       nettle-dev:mips64el \
-                       systemtap-sdt-dev:mips64el \
--                      xfslibs-dev:mips64el \
-                       zlib1g-dev:mips64el && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'mips64el'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/mips64el-linux-gnuabi64 && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-gcc
- 
- ENV ABI "mips64el-linux-gnuabi64"
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 0cf803bda5..fe9415395e 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-mipsel-linux-gnu \
-                       gcc-mipsel-linux-gnu \
-                       libaio-dev:mipsel \
-                       libasound2-dev:mipsel \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:mipsel \
-                       nettle-dev:mipsel \
-                       systemtap-sdt-dev:mipsel \
--                      xfslibs-dev:mipsel \
-                       zlib1g-dev:mipsel && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'mipsel'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/mipsel-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-gcc
- 
- ENV ABI "mipsel-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 6180ec08c3..35c8ff0864 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-powerpc64le-linux-gnu \
-                       gcc-powerpc64le-linux-gnu \
-                       libaio-dev:ppc64el \
-                       libasan6:ppc64el \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:ppc64el \
-                       nettle-dev:ppc64el \
-                       systemtap-sdt-dev:ppc64el \
--                      xfslibs-dev:ppc64el \
-                       zlib1g-dev:ppc64el && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'powerpc64le'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/powerpc64le-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-gcc
- 
- ENV ABI "powerpc64le-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 90c8d3c7b8..bef9dff17a 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-s390x-linux-gnu \
-                       gcc-s390x-linux-gnu \
-                       libaio-dev:s390x \
-                       libasan6:s390x \
-@@ -146,7 +145,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:s390x \
-                       nettle-dev:s390x \
-                       systemtap-sdt-dev:s390x \
--                      xfslibs-dev:s390x \
-                       zlib1g-dev:s390x && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -164,9 +162,7 @@ cpu = 's390x'\n\
- endian = 'big'\n" > /usr/local/share/meson/cross/s390x-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-gcc
- 
- ENV ABI "s390x-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
-index 5722482e4c..63d7aac616 100644
---- a/tests/docker/dockerfiles/debian.docker
-+++ b/tests/docker/dockerfiles/debian.docker
-@@ -25,7 +25,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
--                      g++ \
-                       gcc \
-                       gcovr \
-                       gettext \
-@@ -129,7 +128,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
--                      xfslibs-dev \
-                       xorriso \
-                       zlib1g-dev \
-                       zstd && \
-@@ -140,10 +138,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index d1a480fa71..a5644de57a 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -80,7 +80,6 @@ RUN nosync dnf install -y \
-                mingw64-bzip2 \
-                mingw64-curl \
-                mingw64-gcc \
--               mingw64-gcc-c++ \
-                mingw64-gettext \
-                mingw64-glib2 \
-                mingw64-gnutls \
-@@ -96,13 +95,16 @@ RUN nosync dnf install -y \
-     nosync dnf clean all -y && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-gcc
- 
- ENV ABI "x86_64-w64-mingw32"
- ENV MESON_OPTS "--cross-file=/usr/share/mingw/toolchain-mingw64.meson"
-+
-+RUN nosync dnf install -y mingw64-gcc-c++ mingw-w64-tools && \
-+  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-c++ && \
-+  ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-w64-mingw32-g++
-+
- ENV QEMU_CONFIGURE_OPTS --cross-prefix=x86_64-w64-mingw32-
- ENV DEF_TARGET_LIST x86_64-softmmu
- # As a final step configure the user (if env is defined)
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index 7e6ab0308a..098c894d10 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -41,7 +41,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                flex \
-                fuse3-devel \
-                gcc \
--               gcc-c++ \
-                gcovr \
-                gettext \
-                git \
-@@ -130,7 +129,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                vte291-devel \
-                which \
-                xen-devel \
--               xfsprogs-devel \
-                xorriso \
-                zlib-devel \
-                zlib-static \
-@@ -140,10 +138,8 @@ exec "$@"\n' > /usr/bin/nosync && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
-index c4055bdd10..836f531ac1 100644
---- a/tests/docker/dockerfiles/opensuse-leap.docker
-+++ b/tests/docker/dockerfiles/opensuse-leap.docker
-@@ -26,7 +26,6 @@ RUN zypper update -y && \
-            flex \
-            fuse3-devel \
-            gcc \
--           gcc-c++ \
-            gcovr \
-            gettext-runtime \
-            git \
-@@ -113,7 +112,6 @@ RUN zypper update -y && \
-            vte-devel \
-            which \
-            xen-devel \
--           xfsprogs-devel \
-            xorriso \
-            zlib-devel \
-            zlib-devel-static \
-@@ -122,10 +120,8 @@ RUN zypper update -y && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- RUN /usr/bin/pip3.11 install \
-diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
-index b8e78331db..febd25b320 100644
---- a/tests/docker/dockerfiles/ubuntu2204.docker
-+++ b/tests/docker/dockerfiles/ubuntu2204.docker
-@@ -25,7 +25,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
--                      g++ \
-                       gcc \
-                       gcovr \
-                       gettext \
-@@ -129,7 +128,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
--                      xfslibs-dev \
-                       xorriso \
-                       zlib1g-dev \
-                       zstd && \
-@@ -140,10 +138,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
--- 
-2.45.0
+Also, this needs another rebase. Sorry, it seems to always have
+conflicts. If you re-send I'll apply it right away
 
+Alistair
+
+>
+> Regards,
+>
+> Weiwei Li
+>
+> >
+> > Thanks.
+> >
+> > [v8]:
+> > Rebasing patches on current qemu branch and resubmitting them.
+> >
+> >
+> > [v7]:
+> > I'm terribly sorry, but previous rebase went wrong and somehow I missed=
+ it.
+> > This time I double-checked rebased version.
+> > This patch series is properly rebased on https://github.com/alistair23/=
+qemu/tree/riscv-to-apply.next
+> >
+> > [v6]:
+> > This patch series is rebased on https://github.com/alistair23/qemu/tree=
+/riscv-to-apply.next
+> >
+> > [v5]:
+> > This patch series targets Zjpm v0.8 extension.
+> > The spec itself could be found here: https://github.com/riscv/riscv-j-e=
+xtension/blob/8088461d8d66a7676872b61c908cbeb7cf5c5d1d/zjpm-spec.pdf
+> > This patch series is updated after the suggested comments:
+> > - add "x-" to the extension names to indicate experimental
+> >
+> > [v4]:
+> > Patch series updated after the suggested comments:
+> > - removed J-letter extension as it's unused
+> > - renamed and fixed function to detect if address should be sign-extend=
+ed
+> > - zeroed unused context variables and moved computation logic to anothe=
+r patch
+> > - bumped pointer masking version_id and minimum_version_id by 1
+> >
+> > [v3]:
+> > There patches are updated after Richard's comments:
+> > - moved new tb flags to the end
+> > - used tcg_gen_(s)extract to get the final address
+> > - properly handle CONFIG_USER_ONLY
+> >
+> > [v2]:
+> > As per Richard's suggestion I made pmm field part of tb_flags.
+> > It allowed to get rid of global variable to store pmlen.
+> > Also it allowed to simplify all the machinery around it.
+> >
+> > [v1]:
+> > It looks like Zjpm v0.8 is almost frozen and we don't expect it change =
+drastically anymore.
+> > Compared to the original implementation with explicit base and mask CSR=
+s, we now only have
+> > several fixed options for number of masked bits which are set using exi=
+sting CSRs.
+> > The changes have been tested with handwritten assembly tests and LLVM H=
+WASAN
+> > test suite.
+> >
+> > Alexey Baturo (6):
+> >    target/riscv: Remove obsolete pointer masking  extension code.
+> >    target/riscv: Add new CSR fields for S{sn,mn,m}pm extensions as part
+> >      of Zjpm v0.8
+> >    target/riscv: Add helper functions to calculate current number of
+> >      masked bits for pointer masking
+> >    target/riscv: Add pointer masking tb flags
+> >    target/riscv: Update address modify functions to take into account
+> >      pointer masking
+> >    target/riscv: Enable updates for pointer masking variables and thus
+> >      enable pointer masking extension
+> >
+> >   target/riscv/cpu.c           |  21 +--
+> >   target/riscv/cpu.h           |  46 +++--
+> >   target/riscv/cpu_bits.h      |  90 +---------
+> >   target/riscv/cpu_cfg.h       |   3 +
+> >   target/riscv/cpu_helper.c    |  97 +++++-----
+> >   target/riscv/csr.c           | 337 ++--------------------------------=
+-
+> >   target/riscv/machine.c       |  20 +--
+> >   target/riscv/pmp.c           |  13 +-
+> >   target/riscv/pmp.h           |  11 +-
+> >   target/riscv/tcg/tcg-cpu.c   |   5 +-
+> >   target/riscv/translate.c     |  46 ++---
+> >   target/riscv/vector_helper.c |  15 +-
+> >   12 files changed, 158 insertions(+), 546 deletions(-)
+> >
+>
 
