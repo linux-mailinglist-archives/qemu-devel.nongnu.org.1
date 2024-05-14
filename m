@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFD28C563E
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B7B8C5639
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6rd8-0005B4-68; Tue, 14 May 2024 08:51:42 -0400
+	id 1s6rdB-0005Ca-Db; Tue, 14 May 2024 08:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcx-00059n-On
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcz-0005AJ-GI
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcw-0005Di-4l
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcx-0005Dx-St
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715691089;
+ s=mimecast20190719; t=1715691091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Oi/0Xlf++23SurP55CdDrUDRneAXLHwD2RVCw34AvJw=;
- b=ZVkbUPZp4WT9Pwrm2se8A2DCjcLWfWH7fTU4CCjyyMmPEAmqe8cZpK9PKH92SmTy6TXhiV
- 9gdEwUDNp4ufjWVZgp533omgZUgZ0MTTA8jAlth5QUYySDRow3tSwrlreJkCy1Bs0qok2p
- WIM2YjVWGU1RjR00SKhMN3AauYD7nWg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-7nZwqIh-PQu3gVpDaN_KBQ-1; Tue,
- 14 May 2024 08:51:28 -0400
-X-MC-Unique: 7nZwqIh-PQu3gVpDaN_KBQ-1
+ bh=MHS61uEHiJWOSV9T9AGgCqJCHnwiKNHXqdTx6hcnOtg=;
+ b=SHRbL9D7RiGy8rbI6MQb2aTHgqpCEj3EZz/0JPfoXXbXqU75qOXIxEDVF9L9bqNL2sNaWv
+ Z5yDlkIb82MRHi0tlh2tBJ6wOcbQ/2+3txfbX54pF78yOC/sc0CjjRM95YA3iE5tpp568z
+ adrX7QOE0e9ZbPshHbfsJ9uLUz2iTKY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-493-YNR1eoliM3isD6ZAxZXGYg-1; Tue, 14 May 2024 08:51:28 -0400
+X-MC-Unique: YNR1eoliM3isD6ZAxZXGYg-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C44E129AA2CD;
- Tue, 14 May 2024 12:51:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2605101A52C;
+ Tue, 14 May 2024 12:51:28 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 367D1400059;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 107A3400EAC;
  Tue, 14 May 2024 12:51:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/11] Bump minimum glib version to v2.66
-Date: Tue, 14 May 2024 14:51:13 +0200
-Message-ID: <20240514125119.284638-6-thuth@redhat.com>
+Subject: [PULL 06/11] Remove glib compatibility code that is not required
+ anymore
+Date: Tue, 14 May 2024 14:51:14 +0200
+Message-ID: <20240514125119.284638-7-thuth@redhat.com>
 In-Reply-To: <20240514125119.284638-1-thuth@redhat.com>
 References: <20240514125119.284638-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -77,138 +78,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we dropped support for CentOS 8 and Ubuntu 20.04, we can
-look into bumping the glib version to a new minimum for further
-clean-ups. According to repology.org, available versions are:
+Now that we bumped the minimum glib version to 2.66, we can drop
+the old code.
 
- CentOS Stream 9:       2.66.7
- Debian 11:             2.66.8
- Fedora 38:             2.74.1
- Freebsd:               2.78.4
- Homebrew:              2.80.0
- Openbsd:               2.78.4
- OpenSuse leap 15.5:    2.70.5
- pkgsrc_current:        2.78.4
- Ubuntu 22.04:          2.72.1
-
-Thus it should be safe to bump the minimum glib version to 2.66 now.
-Version 2.66 comes with new functions for URI parsing which will
-allow further clean-ups in the following patches.
-
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240418101056.302103-8-thuth@redhat.com>
+Message-ID: <20240418101056.302103-9-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- meson.build              | 16 +---------------
- include/glib-compat.h    | 27 ++-------------------------
- qga/commands-posix-ssh.c |  4 ++--
- 3 files changed, 5 insertions(+), 42 deletions(-)
+ qga/commands-posix-ssh.c |  8 --------
+ util/error-report.c      | 10 ----------
+ 2 files changed, 18 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 9c14192514..a9de71d450 100644
---- a/meson.build
-+++ b/meson.build
-@@ -869,7 +869,7 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
- 
- # When bumping glib minimum version, please check also whether to increase
- # the _WIN32_WINNT setting in osdep.h according to the value from glib
--glib_req_ver = '>=2.56.0'
-+glib_req_ver = '>=2.66.0'
- glib_pc = dependency('glib-2.0', version: glib_req_ver, required: true,
-                     method: 'pkg-config')
- glib_cflags = []
-@@ -910,20 +910,6 @@ if not cc.compiles('''
-         to the right pkg-config files for your build target.''')
- endif
- 
--# Silence clang warnings triggered by glib < 2.57.2
--if not cc.compiles('''
--  #include <glib.h>
--  typedef struct Foo {
--    int i;
--  } Foo;
--  static void foo_free(Foo *f)
--  {
--    g_free(f);
--  }
--  G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
--  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Wunused-function', '-Werror'])
--  glib_cflags += cc.get_supported_arguments('-Wno-unused-function')
--endif
- glib = declare_dependency(dependencies: [glib_pc, gmodule],
-                           compile_args: glib_cflags,
-                           version: glib_pc.version())
-diff --git a/include/glib-compat.h b/include/glib-compat.h
-index 43a562974d..86be439ba0 100644
---- a/include/glib-compat.h
-+++ b/include/glib-compat.h
-@@ -19,12 +19,12 @@
- /* Ask for warnings for anything that was marked deprecated in
-  * the defined version, or before. It is a candidate for rewrite.
-  */
--#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_56
-+#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_66
- 
- /* Ask for warnings if code tries to use function that did not
-  * exist in the defined version. These risk breaking builds
-  */
--#define GLIB_VERSION_MAX_ALLOWED GLIB_VERSION_2_56
-+#define GLIB_VERSION_MAX_ALLOWED GLIB_VERSION_2_66
- 
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-@@ -105,29 +105,6 @@ static inline gpointer g_memdup2_qemu(gconstpointer mem, gsize byte_size)
- }
- #define g_memdup2(m, s) g_memdup2_qemu(m, s)
- 
--#if defined(G_OS_UNIX)
--/*
-- * Note: The fallback implementation is not MT-safe, and it returns a copy of
-- * the libc passwd (must be g_free() after use) but not the content. Because of
-- * these important differences the caller must be aware of, it's not #define for
-- * GLib API substitution.
-- */
--static inline struct passwd *
--g_unix_get_passwd_entry_qemu(const gchar *user_name, GError **error)
--{
--#if GLIB_CHECK_VERSION(2, 64, 0)
--    return g_unix_get_passwd_entry(user_name, error);
--#else
--    struct passwd *p = getpwnam(user_name);
--    if (!p) {
--        g_set_error_literal(error, G_UNIX_ERROR, 0, g_strerror(errno));
--        return NULL;
--    }
--    return (struct passwd *)g_memdup(p, sizeof(*p));
--#endif
--}
--#endif /* G_OS_UNIX */
--
- static inline bool
- qemu_g_test_slow(void)
- {
 diff --git a/qga/commands-posix-ssh.c b/qga/commands-posix-ssh.c
-index dd2ecb453a..866afe6741 100644
+index 866afe6741..246171d323 100644
 --- a/qga/commands-posix-ssh.c
 +++ b/qga/commands-posix-ssh.c
-@@ -36,7 +36,7 @@ test_get_passwd_entry(const gchar *user_name, GError **error)
-     return p;
+@@ -243,7 +243,6 @@ qmp_guest_ssh_get_authorized_keys(const char *username, Error **errp)
  }
  
--#define g_unix_get_passwd_entry_qemu(username, err) \
-+#define g_unix_get_passwd_entry(username, err) \
-    test_get_passwd_entry(username, err)
- #endif
+ #ifdef QGA_BUILD_UNIT_TEST
+-#if GLIB_CHECK_VERSION(2, 60, 0)
+ static const strList test_key2 = {
+     .value = (char *)"algo key2 comments"
+ };
+@@ -439,11 +438,4 @@ int main(int argc, char *argv[])
  
-@@ -46,7 +46,7 @@ get_passwd_entry(const char *username, Error **errp)
-     g_autoptr(GError) err = NULL;
-     struct passwd *p;
+     return g_test_run();
+ }
+-#else
+-int main(int argc, char *argv[])
+-{
+-    g_test_message("test skipped, needs glib >= 2.60");
+-    return 0;
+-}
+-#endif /* GLIB_2_60 */
+ #endif /* BUILD_UNIT_TEST */
+diff --git a/util/error-report.c b/util/error-report.c
+index 6e44a55732..1b17c11de1 100644
+--- a/util/error-report.c
++++ b/util/error-report.c
+@@ -172,18 +172,8 @@ static void print_loc(void)
+ static char *
+ real_time_iso8601(void)
+ {
+-#if GLIB_CHECK_VERSION(2,62,0)
+     g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
+-    /* ignore deprecation warning, since GLIB_VERSION_MAX_ALLOWED is 2.56 */
+-#pragma GCC diagnostic push
+-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+     return g_date_time_format_iso8601(dt);
+-#pragma GCC diagnostic pop
+-#else
+-    GTimeVal tv;
+-    g_get_current_time(&tv);
+-    return g_time_val_to_iso8601(&tv);
+-#endif
+ }
  
--    p = g_unix_get_passwd_entry_qemu(username, &err);
-+    p = g_unix_get_passwd_entry(username, &err);
-     if (p == NULL) {
-         error_setg(errp, "failed to lookup user '%s': %s",
-                    username, err->message);
+ /*
 -- 
 2.45.0
 
