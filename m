@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C6A8C5637
+	by mail.lfdr.de (Postfix) with ESMTPS id 0982D8C5634
 	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6rd7-0005Aq-SO; Tue, 14 May 2024 08:51:41 -0400
+	id 1s6rdF-0005DG-0R; Tue, 14 May 2024 08:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcw-00059V-9D
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd3-0005AX-8Q
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcu-0005DQ-ED
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:29 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd0-0005EO-GS
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715691087;
+ s=mimecast20190719; t=1715691093;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ncJJ3xd2BNJLl+BzqIrKJkIzSdX95M3LGYLpcjA5q3I=;
- b=VWsmiPUxtY6PnqN0jvOCDspWf+ijz2NooZrNCJkMsYhwDT8c/YbYZ7eU95g0sxxYU/6H6n
- p1lzn7PA8TlXKANHQbiIA4e43/SnrD0AnYCliheGE8XD2Sw2IsyKFOpzGud1/ppDPpdzQb
- B01m666Svsn+MEI6IatCOPGVbyjrOyQ=
+ bh=J/WhLX/kEh+IzBqgpufTuWT7PY5qdV7NJzxrD19lyZY=;
+ b=JcI3W9O5cL5d/S8kGJNRj+8wMP9BTpabfkh/SJhcue0++xenAvav8UMqBNxogXaVgbWTZ7
+ XwlJ9EjPXk1JfHohpE+EoueP/KNTVYvk354oK6uSE1e+TMZ9HeiNINKjZPUTVG1miOQfeJ
+ ggahdlNgjN04blyCojIcE0wesMZNHWo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-VxPZLsLVMHOwQ6xyTiUKcA-1; Tue, 14 May 2024 08:51:23 -0400
-X-MC-Unique: VxPZLsLVMHOwQ6xyTiUKcA-1
+ us-mta-518-REOM8Z3QMK-ip7RjJOwJeQ-1; Tue, 14 May 2024 08:51:24 -0400
+X-MC-Unique: REOM8Z3QMK-ip7RjJOwJeQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24EA285A58C;
- Tue, 14 May 2024 12:51:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A59908025FC;
+ Tue, 14 May 2024 12:51:24 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1B037400057;
- Tue, 14 May 2024 12:51:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9D0DF400057;
+ Tue, 14 May 2024 12:51:23 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/11] configure: Fix error message when C compiler is not
- working
-Date: Tue, 14 May 2024 14:51:09 +0200
-Message-ID: <20240514125119.284638-2-thuth@redhat.com>
+Subject: [PULL 02/11] dockerfiles: add 'MAKE' env variable to remaining
+ containers
+Date: Tue, 14 May 2024 14:51:10 +0200
+Message-ID: <20240514125119.284638-3-thuth@redhat.com>
 In-Reply-To: <20240514125119.284638-1-thuth@redhat.com>
 References: <20240514125119.284638-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -78,60 +78,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you try to run the configure script on a system without a working
-C compiler, you get a very misleading error message:
+From: Daniel P. Berrangé <berrange@redhat.com>
 
- ERROR: Unrecognized host OS (uname -s reports 'Linux')
+All the lcitool generated containers define a "MAKE" env. It will be
+convenient for later patches if all containers do this.
 
-Some people already opened bug tickets because of this problem:
-
- https://gitlab.com/qemu-project/qemu/-/issues/2057
- https://gitlab.com/qemu-project/qemu/-/issues/2288
-
-We should rather tell the user that we were not able to use the C
-compiler instead, otherwise they will have a hard time to figure
-out what was going wrong.
-
-While we're at it, let's also suppress the "unrecognized host CPU"
-message in this case since it is rather misleading than helpful.
-
-Fixes: 264b803721 ("configure: remove compiler sanity check")
-Message-ID: <20240513114010.51608-1-thuth@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240513111551.488088-2-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- configure | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tests/docker/dockerfiles/debian-all-test-cross.docker    | 1 +
+ tests/docker/dockerfiles/debian-hexagon-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-legacy-test-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-loongarch-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-tricore-cross.docker     | 1 +
+ tests/docker/dockerfiles/debian-xtensa-cross.docker      | 1 +
+ tests/docker/dockerfiles/fedora-cris-cross.docker        | 1 +
+ 7 files changed, 7 insertions(+)
 
-diff --git a/configure b/configure
-index 330664786d..38ee257701 100755
---- a/configure
-+++ b/configure
-@@ -411,7 +411,9 @@ else
-   # Using uname is really broken, but it is just a fallback for architectures
-   # that are going to use TCI anyway
-   cpu=$(uname -m)
--  echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
-+  if test "$host_os" != "bogus"; then
-+    echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
-+  fi
- fi
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index 2cc7a24d4d..6cc38a3633 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -68,6 +68,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sparc64-linux-user
+ # As a final step configure the user (if env is defined)
++ENV MAKE /usr/bin/make
+ ARG USER
+ ARG UID
+ RUN if [ "${USER}" ]; then \
+diff --git a/tests/docker/dockerfiles/debian-hexagon-cross.docker b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+index 60bd8faa20..f2d40f2dee 100644
+--- a/tests/docker/dockerfiles/debian-hexagon-cross.docker
++++ b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+@@ -45,6 +45,7 @@ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
  
- # Normalise host CPU name to the values used by Meson cross files and in source
-@@ -894,6 +896,13 @@ EOF
- exit 0
- fi
+ RUN curl -#SL "$TOOLCHAIN_URL" | tar -xJC "$TOOLCHAIN_INSTALL"
+ ENV PATH $PATH:${TOOLCHAIN_INSTALL}/${TOOLCHAIN_BASENAME}/x86_64-linux-gnu/bin
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+index 8cc68bc912..d75e0b85e2 100644
+--- a/tests/docker/dockerfiles/debian-legacy-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+@@ -42,6 +42,7 @@ RUN /usr/bin/pip3 install tomli
  
-+# Now that we are sure that the user did not only want to print the --help
-+# information, we should double-check that the C compiler really works:
-+write_c_skeleton
-+if ! compile_object ; then
-+    error_exit "C compiler \"$cc\" either does not exist or does not work."
-+fi
-+
- # Remove old dependency files to make sure that they get properly regenerated
- rm -f ./*/config-devices.mak.d
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST alpha-linux-user,sh4-linux-user
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+index b25e779a2c..6a9197528b 100644
+--- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
++++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+@@ -44,6 +44,7 @@ ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-li
  
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
++ENV MAKE /usr/bin/make
+ 
+ # As a final step configure the user (if env is defined)
+ ARG USER
+diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
+index c597f8e16b..16276aa21d 100644
+--- a/tests/docker/dockerfiles/debian-tricore-cross.docker
++++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
+@@ -44,6 +44,7 @@ RUN curl -#SL https://github.com/bkoppelmann/package_940/releases/download/trico
+ # This image can only build a very minimal QEMU as well as the tests
+ ENV DEF_TARGET_LIST tricore-softmmu
+ ENV QEMU_CONFIGURE_OPTS --disable-user --disable-tools --disable-fdt
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-xtensa-cross.docker b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+index 72c25d63d9..413881899b 100644
+--- a/tests/docker/dockerfiles/debian-xtensa-cross.docker
++++ b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+@@ -27,6 +27,7 @@ RUN for cpu in $CPU_LIST; do \
+     done
+ 
+ ENV PATH $PATH:/opt/$TOOLCHAIN_RELEASE/xtensa-dc232b-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dc233c-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-de233_fpu-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dsp3400-elf/bin
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/fedora-cris-cross.docker b/tests/docker/dockerfiles/fedora-cris-cross.docker
+index f2899af410..97c9d37ede 100644
+--- a/tests/docker/dockerfiles/fedora-cris-cross.docker
++++ b/tests/docker/dockerfiles/fedora-cris-cross.docker
+@@ -4,6 +4,7 @@
+ 
+ FROM registry.fedoraproject.org/fedora:33
+ ENV PACKAGES gcc-cris-linux-gnu
++ENV MAKE /usr/bin/make
+ RUN dnf install -y $PACKAGES
+ RUN rpm -q $PACKAGES | sort > /packages.txt
+ # As a final step configure the user (if env is defined)
 -- 
 2.45.0
 
