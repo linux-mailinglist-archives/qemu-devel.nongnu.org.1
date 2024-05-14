@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0982D8C5634
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4958C563B
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:53:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6rdF-0005DG-0R; Tue, 14 May 2024 08:51:49 -0400
+	id 1s6rdD-0005Cj-9j; Tue, 14 May 2024 08:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd3-0005AX-8Q
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd7-0005C1-DN
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd0-0005EO-GS
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:36 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd5-0005F1-Vk
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715691093;
+ s=mimecast20190719; t=1715691099;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J/WhLX/kEh+IzBqgpufTuWT7PY5qdV7NJzxrD19lyZY=;
- b=JcI3W9O5cL5d/S8kGJNRj+8wMP9BTpabfkh/SJhcue0++xenAvav8UMqBNxogXaVgbWTZ7
- XwlJ9EjPXk1JfHohpE+EoueP/KNTVYvk354oK6uSE1e+TMZ9HeiNINKjZPUTVG1miOQfeJ
- ggahdlNgjN04blyCojIcE0wesMZNHWo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-REOM8Z3QMK-ip7RjJOwJeQ-1; Tue, 14 May 2024 08:51:24 -0400
-X-MC-Unique: REOM8Z3QMK-ip7RjJOwJeQ-1
+ bh=ee7Fi+mEF3maNlhA+rKnGHb7FzAkAvKF9dzv3XNijog=;
+ b=eP3paY4ly7OU+4fH9q2mqGyHKBv0nwsUUwMX4eYRlXUuTnOyObt4cjNIJe1NrmF0dz9bEP
+ kS/JwFq80vF97jAnKBATrFcsb5bi8s07aR8WxCnTnOB//LRJUBvlMyCgnNa6kU2HlhmQPW
+ gbcdeieT8mpuId9X3xmPmRagVTbvyPc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-SFuHlLvNMs2EgmbfLsWnoQ-1; Tue,
+ 14 May 2024 08:51:26 -0400
+X-MC-Unique: SFuHlLvNMs2EgmbfLsWnoQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A59908025FC;
- Tue, 14 May 2024 12:51:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E98F2380009D;
+ Tue, 14 May 2024 12:51:25 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9D0DF400057;
- Tue, 14 May 2024 12:51:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 129A3400057;
+ Tue, 14 May 2024 12:51:24 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/11] dockerfiles: add 'MAKE' env variable to remaining
- containers
-Date: Tue, 14 May 2024 14:51:10 +0200
-Message-ID: <20240514125119.284638-3-thuth@redhat.com>
+Subject: [PULL 03/11] gitlab: use $MAKE instead of 'make'
+Date: Tue, 14 May 2024 14:51:11 +0200
+Message-ID: <20240514125119.284638-4-thuth@redhat.com>
 In-Reply-To: <20240514125119.284638-1-thuth@redhat.com>
 References: <20240514125119.284638-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -80,108 +79,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-All the lcitool generated containers define a "MAKE" env. It will be
-convenient for later patches if all containers do this.
+The lcitool generated containers have '$MAKE' set to the path
+of the right 'make' binary. Using the env variable makes it
+possible to override the choice per job.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240513111551.488088-2-berrange@redhat.com>
+Message-ID: <20240513111551.488088-3-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/docker/dockerfiles/debian-all-test-cross.docker    | 1 +
- tests/docker/dockerfiles/debian-hexagon-cross.docker     | 1 +
- tests/docker/dockerfiles/debian-legacy-test-cross.docker | 1 +
- tests/docker/dockerfiles/debian-loongarch-cross.docker   | 1 +
- tests/docker/dockerfiles/debian-tricore-cross.docker     | 1 +
- tests/docker/dockerfiles/debian-xtensa-cross.docker      | 1 +
- tests/docker/dockerfiles/fedora-cris-cross.docker        | 1 +
- 7 files changed, 7 insertions(+)
+ .gitlab-ci.d/buildtest-template.yml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
-index 2cc7a24d4d..6cc38a3633 100644
---- a/tests/docker/dockerfiles/debian-all-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
-@@ -68,6 +68,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
- ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sparc64-linux-user
- # As a final step configure the user (if env is defined)
-+ENV MAKE /usr/bin/make
- ARG USER
- ARG UID
- RUN if [ "${USER}" ]; then \
-diff --git a/tests/docker/dockerfiles/debian-hexagon-cross.docker b/tests/docker/dockerfiles/debian-hexagon-cross.docker
-index 60bd8faa20..f2d40f2dee 100644
---- a/tests/docker/dockerfiles/debian-hexagon-cross.docker
-+++ b/tests/docker/dockerfiles/debian-hexagon-cross.docker
-@@ -45,6 +45,7 @@ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
+diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
+index 22045add80..278a5ea966 100644
+--- a/.gitlab-ci.d/buildtest-template.yml
++++ b/.gitlab-ci.d/buildtest-template.yml
+@@ -26,10 +26,10 @@
+       then
+         pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
+       fi || exit 1;
+-    - make -j"$JOBS"
++    - $MAKE -j"$JOBS"
+     - if test -n "$MAKE_CHECK_ARGS";
+       then
+-        make -j"$JOBS" $MAKE_CHECK_ARGS ;
++        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
+       fi
+     - ccache --show-stats
  
- RUN curl -#SL "$TOOLCHAIN_URL" | tar -xJC "$TOOLCHAIN_INSTALL"
- ENV PATH $PATH:${TOOLCHAIN_INSTALL}/${TOOLCHAIN_BASENAME}/x86_64-linux-gnu/bin
-+ENV MAKE /usr/bin/make
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-index 8cc68bc912..d75e0b85e2 100644
---- a/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-+++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
-@@ -42,6 +42,7 @@ RUN /usr/bin/pip3 install tomli
+@@ -60,7 +60,7 @@
+     - cd build
+     - find . -type f -exec touch {} +
+     # Avoid recompiling by hiding ninja with NINJA=":"
+-    - make NINJA=":" $MAKE_CHECK_ARGS
++    - $MAKE NINJA=":" $MAKE_CHECK_ARGS
  
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
- ENV DEF_TARGET_LIST alpha-linux-user,sh4-linux-user
-+ENV MAKE /usr/bin/make
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-index b25e779a2c..6a9197528b 100644
---- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
-+++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
-@@ -44,6 +44,7 @@ ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-li
- 
- ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
- ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
-+ENV MAKE /usr/bin/make
- 
- # As a final step configure the user (if env is defined)
- ARG USER
-diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
-index c597f8e16b..16276aa21d 100644
---- a/tests/docker/dockerfiles/debian-tricore-cross.docker
-+++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
-@@ -44,6 +44,7 @@ RUN curl -#SL https://github.com/bkoppelmann/package_940/releases/download/trico
- # This image can only build a very minimal QEMU as well as the tests
- ENV DEF_TARGET_LIST tricore-softmmu
- ENV QEMU_CONFIGURE_OPTS --disable-user --disable-tools --disable-fdt
-+ENV MAKE /usr/bin/make
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/docker/dockerfiles/debian-xtensa-cross.docker b/tests/docker/dockerfiles/debian-xtensa-cross.docker
-index 72c25d63d9..413881899b 100644
---- a/tests/docker/dockerfiles/debian-xtensa-cross.docker
-+++ b/tests/docker/dockerfiles/debian-xtensa-cross.docker
-@@ -27,6 +27,7 @@ RUN for cpu in $CPU_LIST; do \
-     done
- 
- ENV PATH $PATH:/opt/$TOOLCHAIN_RELEASE/xtensa-dc232b-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dc233c-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-de233_fpu-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dsp3400-elf/bin
-+ENV MAKE /usr/bin/make
- # As a final step configure the user (if env is defined)
- ARG USER
- ARG UID
-diff --git a/tests/docker/dockerfiles/fedora-cris-cross.docker b/tests/docker/dockerfiles/fedora-cris-cross.docker
-index f2899af410..97c9d37ede 100644
---- a/tests/docker/dockerfiles/fedora-cris-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-cris-cross.docker
-@@ -4,6 +4,7 @@
- 
- FROM registry.fedoraproject.org/fedora:33
- ENV PACKAGES gcc-cris-linux-gnu
-+ENV MAKE /usr/bin/make
- RUN dnf install -y $PACKAGES
- RUN rpm -q $PACKAGES | sort > /packages.txt
- # As a final step configure the user (if env is defined)
+ .native_test_job_template:
+   extends: .common_test_job_template
 -- 
 2.45.0
 
