@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF2B8C5946
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 18:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B14D8C5973
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 18:10:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6udc-0004dT-RV; Tue, 14 May 2024 12:04:25 -0400
+	id 1s6uhq-0000ic-D1; Tue, 14 May 2024 12:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6ucv-0004Ze-CS
- for qemu-devel@nongnu.org; Tue, 14 May 2024 12:03:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6uch-0007O9-QB
- for qemu-devel@nongnu.org; Tue, 14 May 2024 12:03:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715702598;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fwFR7NV6qLsnSeTRAy74jRuV54b6YaLd5jJZC826/as=;
- b=GVxjUjBevZSf/Dtnjlq9SzSW2842xdLRsNnQV6Wrog6MaFtjQqAE2UNuxZQqB02LHfuEk1
- /UKJ+DDqFgiHMu/sQ5N0dBOLk9yvLFYHv6grgVtg9royfC/3dcoU9wU35BjKflwrnfaD/b
- W61Qoo4jmw0g3KhZTY5JTX9i9sk+R5k=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-iIYMGIIIOoiqvZrmF48GTg-1; Tue, 14 May 2024 12:03:16 -0400
-X-MC-Unique: iIYMGIIIOoiqvZrmF48GTg-1
-Received: by mail-vk1-f197.google.com with SMTP id
- 71dfb90a1353d-4df94adb21fso2799224e0c.2
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 09:03:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1s6uha-0000i2-Fz; Tue, 14 May 2024 12:08:30 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <baturo.alexey@gmail.com>)
+ id 1s6uhY-0008IO-Hh; Tue, 14 May 2024 12:08:30 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-56e1f3462caso413044a12.3; 
+ Tue, 14 May 2024 09:08:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1715702905; x=1716307705; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5k+/i3+2q0m+c/EnilIbx/pYX31595rahMkFAgHWYBE=;
+ b=GAjzHQh5o1lC6wtPZ7U4UGRYMPd3euBoVrBlztNInlb3i6GGNDmzHOZMs9Gd51eZC9
+ RVSI5HTjaSY045EBn62lMtJ5BFbt3XvT1FRVdr7RhbtUfbgcyHpmMPbH4Nl6lV18Nnzo
+ gRNiuYPIpIiKKMd02p3NyuAGcm2p3yRvSzND6xfEgUHUtSxIvF1ll7JPydUbSEJUN3K3
+ UeWMCAHNuOiA8WW1B8vF65C63Q9vthchTSt76Mstg3cE12SPXV73TlRLBrBkb7tPHByX
+ Bl19S3ryiThXOyzmcSEFtOBpc6O4KjdkHQCPUvkUGQTn1tyF9ciMNq/TPgwbbPCH2X2f
+ A8pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715702595; x=1716307395;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fwFR7NV6qLsnSeTRAy74jRuV54b6YaLd5jJZC826/as=;
- b=q7QT7K70f/IIyUYDPA9v66+ot0sZiKwTffIV+KDFGUy1R29iml9c9hvWESVCP9x0gF
- TW5EhVTgRqMcvNaAmr5Eg2mZhnNv6LHKByYtuTPUHuYuYdMHHKZ+AWzr8vZPnG3+yAue
- QvAknY5x7o3HciuPg5h3c+TlJhHV/kKWUdGkM2QksJ+XltBIQNLcuLi+CqdwueyqN3e2
- z+Xh82/yeysbJ5epxDLfh7Asb82QyNUxt+v0QobHBvmyr/b/ihuXCwoTcYgPEVGDHrs7
- xjjryXa0+9OP0Gw/vsoVp/xP1ICZa1PpboC6jF3q5M2TV1zUS7M7M5lOC9Z1d5QAezO9
- MrkA==
+ d=1e100.net; s=20230601; t=1715702905; x=1716307705;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5k+/i3+2q0m+c/EnilIbx/pYX31595rahMkFAgHWYBE=;
+ b=FVhcvf/6M40xE/PIII6Jqgiu5qD8rMLq1UWsS81WehBBViyAEmt6c0k7Q1r3SU5Da6
+ MrkfNbKjNz3Xyxx3oPOzsWmuvoqhPKreIc+mz7SvC/HIjuAMqxSwa/+8/+db6PJ6tKFJ
+ PzPnqbSxWDNHDTC5vE5CT3uPZT71sWnV5xgN1FCoAl2OiWTng1Cqn7qP5Nw/FnK4ahPT
+ POhNWh2ycwfA9h8x8nj6EatB/4pWk2glGmJhNcJs7/CJH7/r0cTo9Us6wm5lqsUjj5qd
+ SZ+k+xQlCu2FMEEw8W8wVZrxuOwf5EhaayRZBaWnHr8yyeTjee5edFPN8YgZcJWPp2Ti
+ wodQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9qfFYqbhYeRigd7fwZsGL5eXU/Kwu25bqPcqUMGueQD/JFe+qN1sxlbSpZmBnl4DUzIfDO3Qzb+1McJArfhOV7Q42dlY=
-X-Gm-Message-State: AOJu0YxPaSZzI6++px9iwnzEb421S7WkCaf3Y1CHKaDxensKBrtAAb04
- fvyoKqbP9mh9y/gqKTW48L+l5DHd2Oq+LAZVWWAbrP63LYCSlQKEaE4wU9p5nFmPq+VChkdCOwt
- Yo04p5lAXGW3QpYl8nRiAGVlQwW14DlHnpg0f1KypooxTX8lRvSEs
-X-Received: by 2002:a05:6122:914:b0:4d3:3f2b:dc63 with SMTP id
- 71dfb90a1353d-4df882a16cdmr10838436e0c.5.1715702595337; 
- Tue, 14 May 2024 09:03:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG4YDUmJens/PgK+4rVkPBGK/2gzBbnV+XjhZZ7YvV8ecJNz1o9hum57Im+kxmTrI1gDz53lQ==
-X-Received: by 2002:a05:6122:914:b0:4d3:3f2b:dc63 with SMTP id
- 71dfb90a1353d-4df882a16cdmr10838401e0c.5.1715702594921; 
- Tue, 14 May 2024 09:03:14 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- 71dfb90a1353d-4df7bf44cf5sm1478719e0c.10.2024.05.14.09.03.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 May 2024 09:03:14 -0700 (PDT)
-Message-ID: <b9c1483b-7ac8-4e2e-8519-862154a632cb@redhat.com>
-Date: Tue, 14 May 2024 18:03:11 +0200
+ AJvYcCXo/EaUpTOOfwLmWKAx17Tm9e6bveLNH3nSZogdBc8lVCaoaR7uevc5/UZJ5GyWc5MgMVzfwUaEv4dSFrLwzcwkSaSJ1MvvmP+ECrqjNrhF2k1e4OISN8LnUp4C5w==
+X-Gm-Message-State: AOJu0YxYczoPJl8a5sP7f8+vwtUswZhNmElKZNmLA4bvFjD7CdNWXjKk
+ pC4OMUH8ENiOPmAV+r/YQQ+lQpqDiEWRaw0TEaxiEa5UrhPTcJEGzU/Twy12iVm2SAPtSlRaYrz
+ gULpnirnt2+88pQlcNZrHcREpCkA=
+X-Google-Smtp-Source: AGHT+IEE74u4yD+0sV+LoWW5oEkFMd6H3rYgOiMv3a259R6NgZWNG6OXFzJet9J8eLb3z/hoZoPRkOMLBzmxHPdaA4g=
+X-Received: by 2002:a50:9f8f:0:b0:572:a23d:7912 with SMTP id
+ 4fb4d7f45d1cf-5734d5c2584mr8753612a12.13.1715702904608; Tue, 14 May 2024
+ 09:08:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/11] backends/iommufd: Make iommufd_backend_*()
- return bool
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com, 
- Yi Liu <yi.l.liu@intel.com>
-References: <20240507064252.457884-1-zhenzhong.duan@intel.com>
- <20240507064252.457884-12-zhenzhong.duan@intel.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240507064252.457884-12-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20240511101053.1875596-1-me@deliversmonkey.space>
+ <b732f7bd-53d2-4c66-9821-a5bd589f6c56@gmail.com>
+ <CAKmqyKM+2jhFdAL=3Z0De03hBFR6cn2xtVm3FrkPvn=U8tJLpg@mail.gmail.com>
+ <CAFukJ-CfsChuYbpdUP9EOPEEn0s=jdBmp9aV691U8By68HV6Aw@mail.gmail.com>
+ <CAKmqyKOQLTYm7F8NBeoSmL1B6icfPzuH-ZHPXhz+wJLrjJyd6w@mail.gmail.com>
+ <CAKmqyKMtJPGXs+rXFzfN7jqYTMbKBQ2SYVYoQ5kONT-FKkp=9g@mail.gmail.com>
+In-Reply-To: <CAKmqyKMtJPGXs+rXFzfN7jqYTMbKBQ2SYVYoQ5kONT-FKkp=9g@mail.gmail.com>
+From: Alexey Baturo <baturo.alexey@gmail.com>
+Date: Tue, 14 May 2024 19:08:13 +0300
+Message-ID: <CAFukJ-D9SMJUoSDOf5us5QXY2VM79Xbi=siy7obOo42B3fLxXg@mail.gmail.com>
+Subject: Re: [PATCH v9 0/6] Pointer Masking update for Zjpm v1.0
+To: Alistair Francis <alistair23@gmail.com>
+Cc: liwei <liwei1518@gmail.com>, richard.henderson@linaro.org, 
+ space.monkey.delivers@gmail.com, palmer@dabbelt.com, Alistair.Francis@wdc.com, 
+ sagark@eecs.berkeley.edu, kbastian@mail.uni-paderborn.de, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000002b5da006186c3637"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=baturo.alexey@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,164 +93,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/24 08:42, Zhenzhong Duan wrote:
-> This is to follow the coding standand to return bool if 'Error **'
-> is used to pass error.
-> 
-> The changed functions include:
-> 
-> iommufd_backend_connect
-> iommufd_backend_alloc_ioas
-> 
-> By this chance, simplify the functions a bit by avoiding duplicate
-> recordings, e.g., log through either error interface or trace, not
-> both.
-> 
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+--0000000000002b5da006186c3637
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+>The cover letter says that this implements version 1.0 of the spec, this
+sounds like it doesn't.
+Yeah, sorry about the confusion. Yes, the patch is actually for v0.8 but as
+you've correctly mentioned v0.8 has not so much differences to v1.0.
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Instead of constantly removing and re-adding the code
+I was talking about only one removing the existing code and replacing it
+with current patches and then making updates on top of them.
 
-Thanks,
+>Do you mind fixing that and addressing the other comments/concerns
+Sure
 
-C.
+=D0=BF=D0=BD, 13 =D0=BC=D0=B0=D1=8F 2024=E2=80=AF=D0=B3. =D0=B2 14:32, Alis=
+tair Francis <alistair23@gmail.com>:
 
+> On Mon, May 13, 2024 at 9:14=E2=80=AFPM Alistair Francis <alistair23@gmai=
+l.com>
+> wrote:
+> >
+> > On Mon, May 13, 2024 at 9:05=E2=80=AFPM Alexey Baturo <baturo.alexey@gm=
+ail.com>
+> wrote:
+> > >
+> > > Hi,
+> > >
+> > > > Hi, any change from v0.8 to v1.0?
+> > > Not in the patches that were sent. I'd still suggest applying a
+> step-by-step approach with cleaning up old code and establishing the new
+> mechanisms first and then updating the code to match the spec 100%. Also =
+I
+> heard Martin has some arch compliance tests for J-ext somewhere.
+> >
+> > The cover letter says that this implements version 1.0 of the spec,
+> > this sounds like it doesn't.
+> >
+> > Also, it's better to make the changes on top of the current code.
+> > Instead of constantly removing and re-adding the code. Which is then
+> > hard to review. Especially as I'm guessing there isn't a huge
+> > difference between v0.8 and v1.0.
+> >
+> > > @Alistair Francis @liwei does this approach sound reasonable to you?
+> > >
+> > > >Also, this needs another rebase
+> > > Sure, no problem at all. I'll rebase and re-send them later today.
+>
+> Sorry, it did apply correctly! That was my mistake.
+>
+> But this series generates a warning. Do you mind fixing that and
+> addressing the other comments/concerns
+>
+> Alistair
+>
+> >
+> > Thanks. Can you be very clear which version of the spec you have
+> > developed and tested against as well.
+> >
+> > Alistair
+>
 
-> ---
->   include/sysemu/iommufd.h |  6 +++---
->   backends/iommufd.c       | 29 +++++++++++++----------------
->   hw/vfio/iommufd.c        |  5 ++---
->   backends/trace-events    |  4 ++--
->   4 files changed, 20 insertions(+), 24 deletions(-)
-> 
-> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-> index 9af27ebd6c..293bfbe967 100644
-> --- a/include/sysemu/iommufd.h
-> +++ b/include/sysemu/iommufd.h
-> @@ -23,11 +23,11 @@ struct IOMMUFDBackend {
->       /*< public >*/
->   };
->   
-> -int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
-> +bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
->   void iommufd_backend_disconnect(IOMMUFDBackend *be);
->   
-> -int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> -                               Error **errp);
-> +bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> +                                Error **errp);
->   void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
->   int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
->                               ram_addr_t size, void *vaddr, bool readonly);
-> diff --git a/backends/iommufd.c b/backends/iommufd.c
-> index 76a0204852..c506afbdac 100644
-> --- a/backends/iommufd.c
-> +++ b/backends/iommufd.c
-> @@ -72,24 +72,22 @@ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
->       object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
->   }
->   
-> -int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
-> +bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
->   {
-> -    int fd, ret = 0;
-> +    int fd;
->   
->       if (be->owned && !be->users) {
->           fd = qemu_open_old("/dev/iommu", O_RDWR);
->           if (fd < 0) {
->               error_setg_errno(errp, errno, "/dev/iommu opening failed");
-> -            ret = fd;
-> -            goto out;
-> +            return false;
->           }
->           be->fd = fd;
->       }
->       be->users++;
-> -out:
-> -    trace_iommufd_backend_connect(be->fd, be->owned,
-> -                                  be->users, ret);
-> -    return ret;
-> +
-> +    trace_iommufd_backend_connect(be->fd, be->owned, be->users);
-> +    return true;
->   }
->   
->   void iommufd_backend_disconnect(IOMMUFDBackend *be)
-> @@ -106,25 +104,24 @@ out:
->       trace_iommufd_backend_disconnect(be->fd, be->users);
->   }
->   
-> -int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> -                               Error **errp)
-> +bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
-> +                                Error **errp)
->   {
-> -    int ret, fd = be->fd;
-> +    int fd = be->fd;
->       struct iommu_ioas_alloc alloc_data  = {
->           .size = sizeof(alloc_data),
->           .flags = 0,
->       };
->   
-> -    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
-> -    if (ret) {
-> +    if (ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data)) {
->           error_setg_errno(errp, errno, "Failed to allocate ioas");
-> -        return ret;
-> +        return false;
->       }
->   
->       *ioas_id = alloc_data.out_ioas_id;
-> -    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
-> +    trace_iommufd_backend_alloc_ioas(fd, *ioas_id);
->   
-> -    return ret;
-> +    return true;
->   }
->   
->   void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id)
-> diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-> index 6a446b16dc..554f9a6292 100644
-> --- a/hw/vfio/iommufd.c
-> +++ b/hw/vfio/iommufd.c
-> @@ -71,7 +71,7 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
->           .flags = 0,
->       };
->   
-> -    if (iommufd_backend_connect(iommufd, errp)) {
-> +    if (!iommufd_backend_connect(iommufd, errp)) {
->           return false;
->       }
->   
-> @@ -346,8 +346,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
->       }
->   
->       /* Need to allocate a new dedicated container */
-> -    ret = iommufd_backend_alloc_ioas(vbasedev->iommufd, &ioas_id, errp);
-> -    if (ret < 0) {
-> +    if (!iommufd_backend_alloc_ioas(vbasedev->iommufd, &ioas_id, errp)) {
->           goto err_alloc_ioas;
->       }
->   
-> diff --git a/backends/trace-events b/backends/trace-events
-> index d45c6e31a6..211e6f374a 100644
-> --- a/backends/trace-events
-> +++ b/backends/trace-events
-> @@ -7,11 +7,11 @@ dbus_vmstate_loading(const char *id) "id: %s"
->   dbus_vmstate_saving(const char *id) "id: %s"
->   
->   # iommufd.c
-> -iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
-> +iommufd_backend_connect(int fd, bool owned, uint32_t users) "fd=%d owned=%d users=%d"
->   iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
->   iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
->   iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
->   iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
->   iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
-> -iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
-> +iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
->   iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
+--0000000000002b5da006186c3637
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">&gt;The cover letter says that this implements version 1.0=
+ of the spec, this sounds like it doesn&#39;t.<div>Yeah, sorry about the co=
+nfusion. Yes, the patch is actually for v0.8 but as you&#39;ve correctly me=
+ntioned v0.8 has not so much differences to v1.0.</div><div><br></div>&gt; =
+Instead of constantly removing and re-adding the code<div>I was talking abo=
+ut only one removing=C2=A0the existing code and replacing it with current p=
+atches and then making updates on top of them.</div><div><br></div>&gt;Do y=
+ou mind fixing that and addressing the other comments/concerns<div>Sure<br>=
+<br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">=D0=BF=
+=D0=BD, 13 =D0=BC=D0=B0=D1=8F 2024=E2=80=AF=D0=B3. =D0=B2 14:32, Alistair F=
+rancis &lt;<a href=3D"mailto:alistair23@gmail.com" target=3D"_blank">alista=
+ir23@gmail.com</a>&gt;:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex">On Mon, May 13, 2024 at 9:14=E2=80=AFPM Alistair Francis &lt;<a hre=
+f=3D"mailto:alistair23@gmail.com" target=3D"_blank">alistair23@gmail.com</a=
+>&gt; wrote:<br>
+&gt;<br>
+&gt; On Mon, May 13, 2024 at 9:05=E2=80=AFPM Alexey Baturo &lt;<a href=3D"m=
+ailto:baturo.alexey@gmail.com" target=3D"_blank">baturo.alexey@gmail.com</a=
+>&gt; wrote:<br>
+&gt; &gt;<br>
+&gt; &gt; Hi,<br>
+&gt; &gt;<br>
+&gt; &gt; &gt; Hi, any change from v0.8 to v1.0?<br>
+&gt; &gt; Not in the patches that were sent. I&#39;d still suggest applying=
+ a step-by-step approach with cleaning up old code and establishing the new=
+ mechanisms first and then updating the code to match the spec 100%. Also I=
+ heard Martin has some arch compliance tests for J-ext somewhere.<br>
+&gt;<br>
+&gt; The cover letter says that this implements version 1.0 of the spec,<br=
+>
+&gt; this sounds like it doesn&#39;t.<br>
+&gt;<br>
+&gt; Also, it&#39;s better to make the changes on top of the current code.<=
+br>
+&gt; Instead of constantly removing and re-adding the code. Which is then<b=
+r>
+&gt; hard to review. Especially as I&#39;m guessing there isn&#39;t a huge<=
+br>
+&gt; difference between v0.8 and v1.0.<br>
+&gt;<br>
+&gt; &gt; @Alistair Francis @liwei does this approach sound reasonable to y=
+ou?<br>
+&gt; &gt;<br>
+&gt; &gt; &gt;Also, this needs another rebase<br>
+&gt; &gt; Sure, no problem at all. I&#39;ll rebase and re-send them later t=
+oday.<br>
+<br>
+Sorry, it did apply correctly! That was my mistake.<br>
+<br>
+But this series generates a warning. Do you mind fixing that and<br>
+addressing the other comments/concerns<br>
+<br>
+Alistair<br>
+<br>
+&gt;<br>
+&gt; Thanks. Can you be very clear which version of the spec you have<br>
+&gt; developed and tested against as well.<br>
+&gt;<br>
+&gt; Alistair<br>
+</blockquote></div></div></div>
+
+--0000000000002b5da006186c3637--
 
