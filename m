@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD318C5D71
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 00:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1770E8C5D11
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 23:59:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s70AV-0005oA-VE; Tue, 14 May 2024 17:58:44 -0400
+	id 1s70AS-0005lP-KL; Tue, 14 May 2024 17:58:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AP-0005jj-9q
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:37 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AN-0005iH-UP
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AN-00008D-3o
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:37 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AJ-00006l-Co
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715723914;
+ s=mimecast20190719; t=1715723910;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ncArWPcCIbytAbF/odN9+d1qLIA0sIT1UcBoo/l5JNg=;
- b=WKBchEFCJwxd8XclGLEY9KJ+B+Rsd03PzvcLEpuUi8RQwfK1gbfrBMcSGWuGcneR7rsARN
- CyTrQpDvFfJP4zhCPBLhOD1Dec8AKj4wkI4PfQzQbLxSlLH6TlOPpvUEwTp+uuVXAzcW1V
- vXoR0yeeYzFI5ALaVL9dGMuA5gi2IrQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-0i3DYVDuNmaO7CNRSuwpjg-1; Tue, 14 May 2024 17:58:24 -0400
-X-MC-Unique: 0i3DYVDuNmaO7CNRSuwpjg-1
+ bh=+2kDCXDoldCk9Iu0s+DkhAlixvACFVCHN/kg8zLipPY=;
+ b=MjNTGumbjZbQ6mj3x0xq/IaWLx1uR6Rz+GNid8Gw5jPsRFk7vmM/h4uvfF0gKYyvGeGsNu
+ psRB7tOg3/PbL/WvwNtVPDU6gT8fFPTodDaTR6evSY0JZFask0mXQymjEcSFDPnIfZ8S8U
+ r7shnsXw4oeIYOHr5df7E71+N4gu3tI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-591-OyDoAmiNP52l-g4uPCLcbQ-1; Tue,
+ 14 May 2024 17:58:27 -0400
+X-MC-Unique: OyDoAmiNP52l-g4uPCLcbQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AC5C18188A1;
- Tue, 14 May 2024 21:58:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B24703806704;
+ Tue, 14 May 2024 21:58:26 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.17.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 708843C27;
- Tue, 14 May 2024 21:58:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7AC176BC5;
+ Tue, 14 May 2024 21:58:23 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -64,9 +64,9 @@ Cc: Peter Xu <peterx@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Yanan Wang <wangyanan55@huawei.com>,
  Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 12/20] qapi/source: allow multi-line QAPISourceInfo advancing
-Date: Tue, 14 May 2024 17:57:31 -0400
-Message-ID: <20240514215740.940155-13-jsnow@redhat.com>
+Subject: [PATCH 13/20] docs/qapidoc: fix nested parsing under untagged sections
+Date: Tue, 14 May 2024 17:57:32 -0400
+Message-ID: <20240514215740.940155-14-jsnow@redhat.com>
 In-Reply-To: <20240514215740.940155-1-jsnow@redhat.com>
 References: <20240514215740.940155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -96,34 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is for the sake of the new rST generator (the "transmogrifier") so
-we can advance multiple lines on occasion while keeping the
-generated<-->source mappings accurate.
+Sphinx does not like sections without titles, because it wants to
+convert every section into a reference. When there is no title, it
+struggles to do this and transforms the tree inproperly.
 
-next_line now simply takes an optional n parameter which chooses the
-number of lines to advance.
+Depending on the rST used, this may result in an assertion error deep in
+the docutils HTMLWriter.
+
+When parsing an untagged section (free paragraphs), skip making a hollow
+section and instead append the parse results to the prior section.
+
+Many Bothans died to bring us this information.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/source.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/sphinx/qapidoc.py | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
-index 7b379fdc925..ffdc3f482ac 100644
---- a/scripts/qapi/source.py
-+++ b/scripts/qapi/source.py
-@@ -47,9 +47,9 @@ def set_defn(self, meta: str, name: str) -> None:
-         self.defn_meta = meta
-         self.defn_name = name
+diff --git a/docs/sphinx/qapidoc.py b/docs/sphinx/qapidoc.py
+index 34e95bd168d..cfc0cf169ef 100644
+--- a/docs/sphinx/qapidoc.py
++++ b/docs/sphinx/qapidoc.py
+@@ -286,14 +286,20 @@ def _nodes_for_sections(self, doc):
+             if section.tag and section.tag == 'TODO':
+                 # Hide TODO: sections
+                 continue
++
++            if not section.tag:
++                # Sphinx cannot handle sectionless titles;
++                # Instead, just append the results to the prior section.
++                container = nodes.container()
++                self._parse_text_into_node(section.text, container)
++                nodelist += container.children
++                continue
++
+             snode = self._make_section(section.tag)
+-            if section.tag and section.tag.startswith('Example'):
++            if section.tag.startswith('Example'):
+                 snode += self._nodes_for_example(dedent(section.text))
+             else:
+-                self._parse_text_into_node(
+-                    dedent(section.text) if section.tag else section.text,
+-                    snode,
+-                )
++                self._parse_text_into_node(dedent(section.text), snode)
+             nodelist.append(snode)
+         return nodelist
  
--    def next_line(self: T) -> T:
-+    def next_line(self: T, n: int = 1) -> T:
-         info = copy.copy(self)
--        info.line += 1
-+        info.line += n
-         return info
- 
-     def loc(self) -> str:
 -- 
 2.44.0
 
