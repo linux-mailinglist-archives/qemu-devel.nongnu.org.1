@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840F88C5D6F
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 00:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FDF8C5D10
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 23:59:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s70AX-0005qn-A3; Tue, 14 May 2024 17:58:45 -0400
+	id 1s70Ad-0005wx-FX; Tue, 14 May 2024 17:58:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AV-0005nt-00
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70Aa-0005sC-Gx
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AT-0000Aw-JT
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:42 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AY-0000CO-Ty
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715723921;
+ s=mimecast20190719; t=1715723926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j3+82aPY5MN5L73YVE9yUVjV8BWu/aOCzfXUbGS1N4o=;
- b=P9qiNAaPYW5ZyEtuByFUs0ZVcDFlaBBTQaq1hyUC0usUYwQjTyDmYtgA8GuzeUfc5WpX2V
- g0c7Pm7wDeM+/3BULEjgEDyRqSDA//i0eEUsFuONDaXjF05eZilWhoY1L253R/EnOQp/Ip
- +GGzyzoigZHOKIXtGJtlGolzW/WA7BE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-PaDRCbY_P8qO5yc1RkFzhw-1; Tue, 14 May 2024 17:58:36 -0400
-X-MC-Unique: PaDRCbY_P8qO5yc1RkFzhw-1
+ bh=8REDNf33ucIzZ95MV/W0jx8cBWgx1MGIREXz05bgb1c=;
+ b=TDLCWFEVlMZx4MGKswaWdBm2iLmbpEzJCo+wuzRv4IrZqHLpQA4rEjJjcoXKvv4Qghzys6
+ bqvck6thbmGEtly1KnhWePrvqyugp68UUY+JtCkZFJFrp6UV2Pdet3cyFC83kKVv9lI3SK
+ 0pItudRDfTM9vNSAt3sfNRd9z9fNC8o=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-_UIezUIdOXSdS_UKC8ZRRA-1; Tue,
+ 14 May 2024 17:58:42 -0400
+X-MC-Unique: _UIezUIdOXSdS_UKC8ZRRA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5454801211;
- Tue, 14 May 2024 21:58:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D07FB3801ECE;
+ Tue, 14 May 2024 21:58:38 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.17.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D83DD3C27;
- Tue, 14 May 2024 21:58:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C4B196BC5;
+ Tue, 14 May 2024 21:58:35 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -64,9 +64,9 @@ Cc: Peter Xu <peterx@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Yanan Wang <wangyanan55@huawei.com>,
  Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 16/20] qapi: rewrite StatsFilter comment
-Date: Tue, 14 May 2024 17:57:35 -0400
-Message-ID: <20240514215740.940155-17-jsnow@redhat.com>
+Subject: [PATCH 17/20] qapi: rewrite BlockExportOptions doc block
+Date: Tue, 14 May 2024 17:57:36 -0400
+Message-ID: <20240514215740.940155-18-jsnow@redhat.com>
 In-Reply-To: <20240514215740.940155-1-jsnow@redhat.com>
 References: <20240514215740.940155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -96,40 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rewrite the StatsFilter intro paragraph to be more meaningful to
-end-users when it is inlined in generated documentation.
+Rephrase this paragraph so that it can apply to any commands that
+inherit from this object.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/stats.json | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ qapi/block-export.json | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/qapi/stats.json b/qapi/stats.json
-index 578b52c7ef7..c4a9f3ff70e 100644
---- a/qapi/stats.json
-+++ b/qapi/stats.json
-@@ -112,10 +112,6 @@
+diff --git a/qapi/block-export.json b/qapi/block-export.json
+index dc328097a94..550763a9f6a 100644
+--- a/qapi/block-export.json
++++ b/qapi/block-export.json
+@@ -342,9 +342,6 @@
  ##
- # @StatsFilter:
+ # @BlockExportOptions:
  #
--# The arguments to the query-stats command; specifies a target for
--# which to request statistics and optionally the required subset of
--# information for that target.
+-# Describes a block export, i.e. how single node should be exported on
+-# an external interface.
 -#
- # @target: the kind of objects to query.  Note that each possible
- #          target may enable additional filtering options
+ # @type: Block export type
  #
-@@ -183,8 +179,8 @@
- # Return runtime-collected statistics for objects such as the VM or
- # its vCPUs.
+ # @id: A unique identifier for the block export (across all export
+@@ -396,6 +393,9 @@
  #
--# The arguments are a StatsFilter and specify the provider and objects
--# to return statistics about.
-+# The arguments specify a target for which to request statistics and
-+# optionally the required subset of information for that target.
+ # Creates a new block export.
  #
- # Returns: a list of StatsResult, one for each provider and object
- #     (e.g., for each vCPU).
++# Arguments describe a block export, i.e. how single node should be
++# exported on an external interface.
++#
+ # Since: 5.2
+ ##
+ { 'command': 'block-export-add',
 -- 
 2.44.0
 
