@@ -2,63 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4E98C56CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7545E8C56D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s2W-00040q-5N; Tue, 14 May 2024 09:17:56 -0400
+	id 1s6s32-0004xv-Sr; Tue, 14 May 2024 09:18:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2M-0003xT-VK
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s6s2n-0004eC-Fo
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2I-0002HL-9x
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:45 -0400
+ id 1s6s2X-0002JC-JJ
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715692660;
+ s=mimecast20190719; t=1715692676;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R8xIyUPJCOieyxDi6e+X59ZLz85p098EYkYUJDdnScc=;
- b=UvItQg+h6AnaTxDkt5PAdOPUbGYq41XywTeRDUWCG0qEQR3ME2MSVnlmIxZBuNf7334H8C
- OAY3dCm4fklLuoJnEPn3and29FR4ZMbIeHEEKCVX1yWVnIXGRk26Vwm9W0gLa/c3Ev7qts
- aO6A4pKAuBxWO7hDVM6d4WaaRFhT44U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-g0w31oNMMNe_6aMdtXqJxA-1; Tue, 14 May 2024 09:17:38 -0400
-X-MC-Unique: g0w31oNMMNe_6aMdtXqJxA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=ymFm6mua1IFhsKa6YetFA3/XFItU0IdYTHMBQ8b5Is0=;
+ b=UCEqYeT3B41pbcZL8dXQ7qH6LK2SnVs8KcPrRIXj7Cs3xmJnsvLB/YnGBUcPauMUOd+Tyi
+ zXZN5h6SCCasit0iJKAvR4bzuHJB58/6V2qeoxQjrDVrh6nA5LRcz47bCLYMRElx+zukJ4
+ TfUuPYbqiDS+0XU6XQUdSxKcFqrm32Q=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-6H9nVR8NOGqiE5HU3bpv4A-1; Tue,
+ 14 May 2024 09:17:42 -0400
+X-MC-Unique: 6H9nVR8NOGqiE5HU3bpv4A-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EBC548001F7;
- Tue, 14 May 2024 13:17:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21A541C01505;
+ Tue, 14 May 2024 13:17:42 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7A262C15BC3;
- Tue, 14 May 2024 13:17:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F20482026D68;
+ Tue, 14 May 2024 13:17:40 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Dongwon Kim <dongwon.kim@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 02/11] ui/gtk: Draw guest frame at refresh cycle
-Date: Tue, 14 May 2024 17:17:16 +0400
-Message-ID: <20240514131725.931234-3-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 03/11] ui/gtk: Check if fence_fd is equal to or greater than 0
+Date: Tue, 14 May 2024 17:17:17 +0400
+Message-ID: <20240514131725.931234-4-marcandre.lureau@redhat.com>
 In-Reply-To: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 References: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
@@ -66,7 +68,6 @@ X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,52 +86,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-Draw routine needs to be manually invoked in the next refresh
-if there is a scanout blob from the guest. This is to prevent
-a situation where there is a scheduled draw event but it won't
-happen bacause the window is currently in inactive state
-(minimized or tabified). If draw is not done for a long time,
-gl_block timeout and/or fence timeout (on the guest) will happen
-eventually.
+'fence_fd' needs to be validated always before being referenced
+And the passing condition should include '== 0' as 0 is a valid
+value for the file descriptor.
 
-v2: Use gd_gl_area_draw(vc) in gtk-gl-area.c
-
-Suggested-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
 Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20240426225059.3871283-1-dongwon.kim@intel.com>
+Message-Id: <20240508175403.3399895-2-dongwon.kim@intel.com>
 ---
- ui/gtk-egl.c     | 1 +
- ui/gtk-gl-area.c | 1 +
- 2 files changed, 2 insertions(+)
+ ui/gtk-egl.c     |  2 +-
+ ui/gtk-gl-area.c |  2 +-
+ ui/gtk.c         | 10 ++++++----
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 3af5ac5bcf..75f6b9011a 100644
+index 75f6b9011a..bceeeb0352 100644
 --- a/ui/gtk-egl.c
 +++ b/ui/gtk-egl.c
-@@ -150,6 +150,7 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
-             vc, vc->window ? vc->window : vc->gfx.drawing_area);
- 
-     if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+        gd_egl_draw(vc);
-         return;
-     }
- 
+@@ -99,7 +99,7 @@ void gd_egl_draw(VirtualConsole *vc)
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd > 0) {
++            if (dmabuf->fence_fd >= 0) {
+                 qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
 diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 52dcac161e..4fff957c3f 100644
+index 4fff957c3f..b490727402 100644
 --- a/ui/gtk-gl-area.c
 +++ b/ui/gtk-gl-area.c
-@@ -126,6 +126,7 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
-     gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx.drawing_area);
+@@ -86,7 +86,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd > 0) {
++            if (dmabuf->fence_fd >= 0) {
+                 qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 810d7fc796..7819a86321 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -597,10 +597,12 @@ void gd_hw_gl_flushed(void *vcon)
+     VirtualConsole *vc = vcon;
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
  
-     if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+        gd_gl_area_draw(vc);
-         return;
-     }
+-    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+-    close(dmabuf->fence_fd);
+-    dmabuf->fence_fd = -1;
+-    graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    if (dmabuf->fence_fd >= 0) {
++        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
++        close(dmabuf->fence_fd);
++        dmabuf->fence_fd = -1;
++        graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    }
+ }
  
+ /** DisplayState Callbacks (opengl version) **/
 -- 
 2.41.0.28.gd7d8841f67
 
