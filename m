@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09248C56BD
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF928C56CA
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s0z-00034P-FI; Tue, 14 May 2024 09:16:21 -0400
+	id 1s6s2Z-00047B-Sl; Tue, 14 May 2024 09:17:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s0r-00033R-KJ
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:16:16 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s0o-0001rf-Pt
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:16:12 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-34dc129accaso4164487f8f.0
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 06:16:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715692566; x=1716297366; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WeXEwRUjiS6plqhWQPVpjW5hZZRYujgYnfUDqCZ/zj4=;
- b=SrLO2sF0Y182f7kpzoi9JBzycP61rBvVQ0rfTwkgz71hTZKbP4o+kLYwPfEDh9oLns
- K2y906hvUiXt5/Iu1rjTAHcAqB2ed9iEF8OxznQdnaRtl4Ed6q33FMTIa6zCImc2jgGt
- dkX6+aKE3DO4ZDOcaE6sQt64869aRtXPbdJ27XuAc6Oruh9MSbbOVd2toW0oZjj6OHUA
- eyC8MjU57A2E1pK/DRy6Akqjsk0u1gcItWo/z2P93QUK78P3DsBzXSf8hsjedj3G1twF
- iZpBwQXGq6WCaa9x1CSlpx+xckl5GgPNaPmAKzImr7vnVNH3DP4mHZyuJvkb0mpNbGrZ
- w+1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715692566; x=1716297366;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WeXEwRUjiS6plqhWQPVpjW5hZZRYujgYnfUDqCZ/zj4=;
- b=PHmWOxwq+HqvP9C2sCktgbfRwlnKFkIC4mI3peNcfPKXIwJSRl7KHuuorMuWPPDQJS
- AxTdnuNTJ8dY9I/curKQBx+MAEPTUhUjFnMRznOQRQ2PXVl44SXSoZ+M5AUle6nV/76v
- jKMnBm1L/FKKiDiER23q92kTa5FI4x4ZNn9O+glMV5/PY0gFUnuKKwALVZ36dGt30hNQ
- LqKPI/pc/ekuk6klNF4lQNLhZ/rP9uvp9jBg3pXQSUOcrymJm99+B0KUlIGtqlpvAgGF
- w94gZMHFOJh9qEIaswtNwJzgPlxGUgFjC8rEHxw2hsShYXDEm3ejRp0qOrWGbB7HJjaz
- jylg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXgtZ5nkPD+HxvhYkpcrMCNIHSRLGLFNu0nQP0SSFSnNzjVIvAuvd7P/ZWlYzoHRvLoYSEg2wBGe5AFMgWI3X18gPATRxg=
-X-Gm-Message-State: AOJu0YzUKX2zd8U7Y8kfFXivnawkWzc80BhxMitiWP3oUQCeEuHqMG9G
- hoxYE9Wzdtm0kFUsLaPmrVfyluIDopYI0g3Pqd7s6s4oX7s2Xy/qjQlUb0qW5tg=
-X-Google-Smtp-Source: AGHT+IHKoHygPOYIqV0/EAUFeg9C6390hm0Qx3phOQ1WML92gbqwRCpUQ5MKEmpHJUi2aF9sJQvfnA==
-X-Received: by 2002:a5d:526b:0:b0:34f:5d07:ebd1 with SMTP id
- ffacd0b85a97d-3504a96a716mr8604968f8f.56.1715692566215; 
- Tue, 14 May 2024 06:16:06 -0700 (PDT)
-Received: from [10.91.1.102] ([149.14.240.163])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502b8969fbsm13611472f8f.37.2024.05.14.06.16.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 May 2024 06:16:05 -0700 (PDT)
-Message-ID: <1bd87f96-6f92-4552-8be2-2a3a6f6e6a4c@linaro.org>
-Date: Tue, 14 May 2024 15:16:04 +0200
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s6s2S-00044U-KX
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s6s2Q-0002I9-Hx
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715692668;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4NGfDYR19txb4ZUJo2PMdaa5/SuSMw5/eYLlZoVwbxw=;
+ b=NLCjCpgNzFgkpWtFTCAEOEaSFmnb8rFS5cD2GQsW8y1swXLcbDBInbnaw22eTADnrf+x0o
+ dpKWKVgjL+c6pFKfGtpZVuIaOOh7MryHzHtzDYNruhEf/3/uLevEWED5n8DG6XAIgQF8yd
+ 6DxpvAm6h8YxahEWrZ9zJ5US3Nd0YOQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-ru63u0hFP1u-c39I10GBSw-1; Tue, 14 May 2024 09:17:29 -0400
+X-MC-Unique: ru63u0hFP1u-c39I10GBSw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F975800CA5;
+ Tue, 14 May 2024 13:17:29 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 450CB400059;
+ Tue, 14 May 2024 13:17:28 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+ =?unknown-8bit?q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: [PULL 00/11] Ui patches
+Date: Tue, 14 May 2024 17:17:14 +0400
+Message-ID: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] qga-win32: Improve guest-set-user-password,
- guest-file-open errors
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: kkostiuk@redhat.com, michael.roth@amd.com
-References: <20240514105829.729342-1-armbru@redhat.com>
- <20240514105829.729342-2-armbru@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240514105829.729342-2-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,25 +78,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/5/24 12:58, Markus Armbruster wrote:
-> When guest-set-user-password's argument @password can't be converted
-> from UTF-8 to UTF-16, we report something like
-> 
->      Guest agent command failed, error was 'Invalid sequence in conversion input'
-> 
-> Improve this to
-> 
->      can't convert 'password' to UTF-16: Invalid sequence in conversion input
-> 
-> Likewise for argument @username, and guest-file-open argument @path,
-> even though I'm not sure you can actually get invalid input past the
-> QMP core there.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   qga/commands-win32.c | 17 +++++++++--------
->   1 file changed, 9 insertions(+), 8 deletions(-)
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The following changes since commit 9360070196789cc8b9404b2efaf319384e64b107:
+
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-05-12 13:41:26 +0200)
+
+are available in the Git repository at:
+
+  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
+
+for you to fetch changes up to 2e701e6785cd8cc048c608751c6e4f6253c67ab6:
+
+  ui/sdl2: Allow host to power down screen (2024-05-14 17:14:13 +0400)
+
+----------------------------------------------------------------
+UI: small fixes and improvements
+
+----------------------------------------------------------------
+
+Bernhard Beschow (1):
+  ui/sdl2: Allow host to power down screen
+
+Dongwon Kim (7):
+  ui/gtk: Draw guest frame at refresh cycle
+  ui/gtk: Check if fence_fd is equal to or greater than 0
+  ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf struct and
+    helpers
+  ui/console: Use qemu_dmabuf_get_..() helpers instead
+  ui/console: Use qemu_dmabuf_set_..() helpers instead
+  ui/console: Use qemu_dmabuf_new() and free() helpers instead
+  ui/console: move QemuDmaBuf struct def to dmabuf.c
+
+Sergii Zasenko (1):
+  Allow UNIX socket option for VNC websocket
+
+hikalium (2):
+  ui/gtk: Add gd_motion_event trace event
+  ui/gtk: Fix mouse/motion event scaling issue with GTK display backend
+
+ include/hw/vfio/vfio-common.h   |   2 +-
+ include/hw/virtio/virtio-gpu.h  |   4 +-
+ include/ui/console.h            |  20 +--
+ include/ui/dmabuf.h             |  49 +++++++
+ hw/display/vhost-user-gpu.c     |  32 +++--
+ hw/display/virtio-gpu-udmabuf.c |  27 ++--
+ hw/vfio/display.c               |  32 ++---
+ ui/console.c                    |   4 +-
+ ui/dbus-console.c               |   9 +-
+ ui/dbus-listener.c              |  71 +++++-----
+ ui/dmabuf.c                     | 229 ++++++++++++++++++++++++++++++++
+ ui/egl-headless.c               |  23 +++-
+ ui/egl-helpers.c                |  59 ++++----
+ ui/gtk-egl.c                    |  53 +++++---
+ ui/gtk-gl-area.c                |  42 ++++--
+ ui/gtk.c                        |  32 +++--
+ ui/sdl2.c                       |   1 +
+ ui/spice-display.c              |  50 ++++---
+ ui/vnc.c                        |   5 -
+ qemu-options.hx                 |   4 +
+ ui/meson.build                  |   1 +
+ ui/trace-events                 |   1 +
+ 22 files changed, 547 insertions(+), 203 deletions(-)
+ create mode 100644 include/ui/dmabuf.h
+ create mode 100644 ui/dmabuf.c
+
+-- 
+2.41.0.28.gd7d8841f67
 
 
