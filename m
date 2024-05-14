@@ -2,83 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E558C56C6
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884868C56DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s2H-0003Zl-7B; Tue, 14 May 2024 09:17:41 -0400
+	id 1s6s38-0005m5-GQ; Tue, 14 May 2024 09:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s24-0003UW-K8
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:29 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s22-0002Fq-Li
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:28 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-51f72a29f13so7433940e87.3
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 06:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715692644; x=1716297444; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5TG9OOFRsD0samoPNFZIB3nd8nEq6R6PHHjOmvYM5vs=;
- b=tYyfxm2HSJr7h/7h67RfCRxapC87tpGLUTeiY6xhaN6H+9IryHNE8UhWMYgv9vui+G
- mdqgxB2VUTZSrhe7Ox8VkxM7EWUHGDTyKECk4Pp8R/3CKff6hOlSCyXuunrXTDebxpuO
- MTBUdIOpaSFMkxluVzaqYPa5Bu1AZ2KYMgg7THK9xiKZuGVI8/uPEgYFuCTG9M4h4GiL
- B1dco3NYbVAvMP2bPRU4v7MBX7vBjUzlZEWkwPGd8qsSSp2T2r3tteOUX0AfnEL5qAsL
- Lfwk81mc4PDiqGvwahaHEvIk8hPbqbkWU5cbQWRWJc1QBLQkA/wHgHPp1yfplFBpQv7e
- vDRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715692644; x=1716297444;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5TG9OOFRsD0samoPNFZIB3nd8nEq6R6PHHjOmvYM5vs=;
- b=AtUhsZ1wD4lTVm7DsLwsSd2AphSvaVYOtP1Yxddv7hoKhR0KHe9Aix/FgqOdmpncKR
- 3tKpLJoewLAB5pbMFwdcugrkw2rNQFr4LsykxUGgfQ9HLBviCSbjNjH77L62+osIYp+E
- mOLwRhMjLV1ivZIJ/nqLxWxHOuL12aixxcqC+f1wc03sr6FSYYfBQFi9m1kntkdxp1lA
- QCLWdNU5gaYbc3VUYbWMXOwC0scOb7ocTdC/r6I4K1RCIewplkM5RhjePH9IBu9FXnZ1
- iVbluyXYHWdI4uhMysfHAtLITyn2n4CcWxcduJIR7wNNIDUUSg5MSnnA8lLs19sjPvvH
- 0maQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVopO4DIf5EdClaSg1hem3AXX/rjNBmXvL0Pucqf2gEXpBtQPkWhVOVk0WlXmdS62l/0jgWUYFbvMBYBsg5EEAGXWrFN3M=
-X-Gm-Message-State: AOJu0YzTxrI+UfpJ9B51Jvmu/nnPt2fIJt0vv4YMnM2hcYMIlquCmI+s
- H8KEN/o2dA/vWI4GRow0EgtqACFsnD6b4t1ey6eQC/BPJ9SLEHdiexYD1XlAhp8=
-X-Google-Smtp-Source: AGHT+IE+f981Z0aSNmCb82dLJ9iTZgVL6sMRjsB2EVYkim3sI74sHkXwSk22DCcaPPeWZuKJGAHi5w==
-X-Received: by 2002:a05:6512:32b5:b0:520:76d0:b054 with SMTP id
- 2adb3069b0e04-522105845ecmr8525580e87.57.1715692644555; 
- Tue, 14 May 2024 06:17:24 -0700 (PDT)
-Received: from [10.91.1.102] ([149.14.240.163])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502b895887sm13655282f8f.40.2024.05.14.06.17.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 14 May 2024 06:17:24 -0700 (PDT)
-Message-ID: <382f3435-d7a8-4cbd-a537-b7ca82d6df4a@linaro.org>
-Date: Tue, 14 May 2024 15:17:23 +0200
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s6s2y-00056h-N8
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s6s2v-0002Ns-WD
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715692700;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HLYSs2WpyTSi501CbyWQYRqmMlfLgx76s3MXUm3MEeU=;
+ b=Q92K41lFPCCcIauF0a3zd+T32zBIP2OE6sdCTCYobk6v9SiTHB/DXCbLr60FNpcp8tF/hx
+ j/AU3lCuGxLSBggIcB4MeSG+QsdgDdoVkUz9PAa2we3jLf6ffH2A0kkfrfzye4KW5jPvRX
+ A+sGhWCVMNrnA/zXQvKQCkgWASH0E+c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-494-zseJFXjxMmWi1GrkItR90Q-1; Tue, 14 May 2024 09:18:16 -0400
+X-MC-Unique: zseJFXjxMmWi1GrkItR90Q-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D5A88030A6;
+ Tue, 14 May 2024 13:18:16 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 45BF0909;
+ Tue, 14 May 2024 13:18:15 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, hikalium <hikalium@hikalium.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 10/11] ui/gtk: Fix mouse/motion event scaling issue with GTK
+ display backend
+Date: Tue, 14 May 2024 17:17:24 +0400
+Message-ID: <20240514131725.931234-11-marcandre.lureau@redhat.com>
+In-Reply-To: <20240514131725.931234-1-marcandre.lureau@redhat.com>
+References: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] qga: Shorten several error messages
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: kkostiuk@redhat.com, michael.roth@amd.com
-References: <20240514105829.729342-1-armbru@redhat.com>
- <20240514105829.729342-3-armbru@redhat.com> <874jb03bbw.fsf@pond.sub.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <874jb03bbw.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,42 +83,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/5/24 13:02, Markus Armbruster wrote:
-> Markus Armbruster <armbru@redhat.com> writes:
-> 
->> Some, but not all error messages are of the form
->>
->>      Guest agent command failed, error was '<actual error message>'
->>
->> For instance, command guest-exec can fail with an error message like
->>
->>      Guest agent command failed, error was 'Failed to execute child process “/bin/invalid-cmd42” (No such file or directory)'
->>
->> Shorten this to just just the actual error message.  The guest-exec
->> example becomes
->>
->>      Failed to execute child process “/bin/invalid-cmd42” (No such file or directory)
->>
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> 
-> [...]
-> 
-> To be squashed into the patch:
-> 
-> diff --git a/qga/commands.c b/qga/commands.c
-> index 27b16313ea..5a5fad31f8 100644
-> --- a/qga/commands.c
-> +++ b/qga/commands.c
-> @@ -15,7 +15,6 @@
->   #include "guest-agent-core.h"
->   #include "qga-qapi-commands.h"
->   #include "qapi/error.h"
-> -#include "qapi/qmp/qerror.h"
->   #include "qemu/base64.h"
->   #include "qemu/cutils.h"
->   #include "commands-common.h"
-> 
+From: hikalium <hikalium@hikalium.com>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Remove gtk_widget_get_scale_factor() usage from the calculation of
+the motion events in the GTK backend to make it work correctly on
+environments that have `gtk_widget_get_scale_factor() != 1`.
+
+This scale factor usage had been introduced in the commit f14aab420c and
+at that time the window size was used for calculating the things and it
+was working correctly. However, in the commit 2f31663ed4 the logic
+switched to use the widget size instead of window size and because of
+the change the usage of scale factor becomes invalid (since widgets use
+`vc->gfx.scale_{x, y}` for scaling).
+
+Tested on Crostini on ChromeOS (15823.51.0) with an external display.
+
+Fixes: 2f31663ed4 ("ui/gtk: use widget size for cursor motion event")
+Fixes: f14aab420c ("ui: fix incorrect pointer position on highdpi with
+gtk")
+
+Signed-off-by: hikalium <hikalium@hikalium.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20240512111435.30121-3-hikalium@hikalium.com>
+---
+ ui/gtk.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 7ce73b0798..93b13b7a30 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -891,7 +891,7 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
+     int x, y;
+     int mx, my;
+     int fbh, fbw;
+-    int ww, wh, ws;
++    int ww, wh;
+ 
+     if (!vc->gfx.ds) {
+         return TRUE;
+@@ -899,11 +899,15 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
+ 
+     fbw = surface_width(vc->gfx.ds) * vc->gfx.scale_x;
+     fbh = surface_height(vc->gfx.ds) * vc->gfx.scale_y;
+-
+     ww = gtk_widget_get_allocated_width(widget);
+     wh = gtk_widget_get_allocated_height(widget);
+-    ws = gtk_widget_get_scale_factor(widget);
+ 
++    /*
++     * `widget` may not have the same size with the frame buffer.
++     * In such cases, some paddings are needed around the `vc`.
++     * To achieve that, `vc` will be displayed at (mx, my)
++     * so that it is displayed at the center of the widget.
++     */
+     mx = my = 0;
+     if (ww > fbw) {
+         mx = (ww - fbw) / 2;
+@@ -912,8 +916,12 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
+         my = (wh - fbh) / 2;
+     }
+ 
+-    x = (motion->x - mx) / vc->gfx.scale_x * ws;
+-    y = (motion->y - my) / vc->gfx.scale_y * ws;
++    /*
++     * `motion` is reported in `widget` coordinates
++     * so translating it to the coordinates in `vc`.
++     */
++    x = (motion->x - mx) / vc->gfx.scale_x;
++    y = (motion->y - my) / vc->gfx.scale_y;
+ 
+     trace_gd_motion_event(ww, wh, gtk_widget_get_scale_factor(widget), x, y);
+ 
+-- 
+2.41.0.28.gd7d8841f67
 
 
