@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FDF8C5D10
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 23:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EBE8C5D6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 00:02:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s70Ad-0005wx-FX; Tue, 14 May 2024 17:58:51 -0400
+	id 1s70Ai-0005xO-91; Tue, 14 May 2024 17:58:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70Aa-0005sC-Gx
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70Ab-0005vk-Oh
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AY-0000CO-Ty
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:48 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70Aa-0000Cs-7s
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715723926;
+ s=mimecast20190719; t=1715723927;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8REDNf33ucIzZ95MV/W0jx8cBWgx1MGIREXz05bgb1c=;
- b=TDLCWFEVlMZx4MGKswaWdBm2iLmbpEzJCo+wuzRv4IrZqHLpQA4rEjJjcoXKvv4Qghzys6
- bqvck6thbmGEtly1KnhWePrvqyugp68UUY+JtCkZFJFrp6UV2Pdet3cyFC83kKVv9lI3SK
- 0pItudRDfTM9vNSAt3sfNRd9z9fNC8o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-_UIezUIdOXSdS_UKC8ZRRA-1; Tue,
- 14 May 2024 17:58:42 -0400
-X-MC-Unique: _UIezUIdOXSdS_UKC8ZRRA-1
+ bh=3KJiwvwaCL+uNTf3ugR6KDZIQWXd/a4kqUtwiQfGVU0=;
+ b=g0cUI0M3ReOCmfhw/WvU1ZtJ9+RoL5T7+Qn+7wAk4mb+T4oaLtI+oc4Ad0bgFD4NJ9o/zQ
+ 6h252lxBM+kuKArx2my/jVi8cKOZi7o6+cS0G00XmakwpleAeuvCja855l6IdbVNboiox2
+ qnXlCctL1SrqNaoqLnqh7nOG0qTmHNk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-319-szDP95GjMkSmHdsHl0lvFQ-1; Tue, 14 May 2024 17:58:42 -0400
+X-MC-Unique: szDP95GjMkSmHdsHl0lvFQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D07FB3801ECE;
- Tue, 14 May 2024 21:58:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAF6D81227E;
+ Tue, 14 May 2024 21:58:41 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.17.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C4B196BC5;
- Tue, 14 May 2024 21:58:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E470E3C27;
+ Tue, 14 May 2024 21:58:38 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -64,15 +64,15 @@ Cc: Peter Xu <peterx@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Yanan Wang <wangyanan55@huawei.com>,
  Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 17/20] qapi: rewrite BlockExportOptions doc block
-Date: Tue, 14 May 2024 17:57:36 -0400
-Message-ID: <20240514215740.940155-18-jsnow@redhat.com>
+Subject: [PATCH 18/20] qapi: ensure all errors sections are uniformly typset
+Date: Tue, 14 May 2024 17:57:37 -0400
+Message-ID: <20240514215740.940155-19-jsnow@redhat.com>
 In-Reply-To: <20240514215740.940155-1-jsnow@redhat.com>
 References: <20240514215740.940155-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -96,38 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rephrase this paragraph so that it can apply to any commands that
-inherit from this object.
+Transactions have the only instance of an Errors section that isn't a
+rST list; turn it into one.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- qapi/block-export.json | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ qapi/transaction.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/block-export.json b/qapi/block-export.json
-index dc328097a94..550763a9f6a 100644
---- a/qapi/block-export.json
-+++ b/qapi/block-export.json
-@@ -342,9 +342,6 @@
- ##
- # @BlockExportOptions:
+diff --git a/qapi/transaction.json b/qapi/transaction.json
+index 5749c133d4a..07afc269d54 100644
+--- a/qapi/transaction.json
++++ b/qapi/transaction.json
+@@ -235,7 +235,7 @@
+ #     additional detail.
  #
--# Describes a block export, i.e. how single node should be exported on
--# an external interface.
--#
- # @type: Block export type
+ # Errors:
+-#     Any errors from commands in the transaction
++#     - Any errors from commands in the transaction
  #
- # @id: A unique identifier for the block export (across all export
-@@ -396,6 +393,9 @@
- #
- # Creates a new block export.
- #
-+# Arguments describe a block export, i.e. how single node should be
-+# exported on an external interface.
-+#
- # Since: 5.2
- ##
- { 'command': 'block-export-add',
+ # Note: The transaction aborts on the first failure.  Therefore, there
+ #     will be information on only one failed operation returned in an
 -- 
 2.44.0
 
