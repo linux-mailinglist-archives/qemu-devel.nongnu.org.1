@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85C48C4CB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 09:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C828C4D44
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 09:48:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6mNd-0000Rz-DF; Tue, 14 May 2024 03:15:21 -0400
+	id 1s6msB-0007Uw-BM; Tue, 14 May 2024 03:46:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1s6mNZ-0000OD-H4
- for qemu-devel@nongnu.org; Tue, 14 May 2024 03:15:17 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1s6mNX-0004ts-1J
- for qemu-devel@nongnu.org; Tue, 14 May 2024 03:15:17 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2e3fa13f018so65705111fa.3
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 00:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1715670912; x=1716275712;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RxksW1mGxFAaBNyYAzwQCnvb9fUXy05bkGDgBkqV794=;
- b=0jeB6zkRQ8Z1PlZbT9IMp7HAv1aLSPbZLZfFAqodcn7ZzxKto30paa6F0Is8xTTb65
- f/vIxjPLpIIacKfNScTu4CPFniWFYMTESEr0WXTyNSGOYUQcR7leeEvcEaW8/zlPRfRh
- UFjmP8uOnZBynG4WH6gmZD3UsmyDanYYmpzBXbgm/3H/FTfQrmToG/RVyKl+wOLI3/Jh
- Ru21KU6vtysjaZ2Tgubx82sjD9nIShPRrLBT4Ixs9OD5LsqMZvnRaNNQTWVHRzP6Seki
- yKt53SNpyqAsu+S959fsPIK796NNGutGEkP4z6c8YJyaE6QvVa8aQ5pK0efp3PskMUye
- Ha7Q==
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1s6ms5-0007Ud-7M
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 03:46:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1s6ms3-0002HW-Fi
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 03:46:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715672805;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Y+YE8u8G1oyYQZ+CgE8cW5NHWOb2fWMOZm+PPxv0so0=;
+ b=UAqpzBQv6oyKY9k6XQfB1SmmeudKo33+ZzGbA0PoIlJ/dfVUpFlYBTdT0u60/88OMAFYsr
+ TnR1RrgR3FbF7zeMcvEjQtKwCGmTuOgskHCA1j31XQEjxDs242ghFovhr5XDwHarjW7bJp
+ gwm8tVROjIcNpQRTbKmu+qhaga5TLH4=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-jkS1fihHNX2erbIn21hnKA-1; Tue, 14 May 2024 03:25:39 -0400
+X-MC-Unique: jkS1fihHNX2erbIn21hnKA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-5725f45da8eso326550a12.0
+ for <qemu-devel@nongnu.org>; Tue, 14 May 2024 00:25:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715670912; x=1716275712;
+ d=1e100.net; s=20230601; t=1715671538; x=1716276338;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RxksW1mGxFAaBNyYAzwQCnvb9fUXy05bkGDgBkqV794=;
- b=qlNwZPUas+ND5C+8JOTNe1rMYsqR54fP96LNYL9PBNAe3ZEyeLt1oKPJF+5sSBliir
- UT0zsSnxKDDl3zIQpWfc5zwtAmj02f5zdywftPg/rVfdhef7/o6vpz9bCgqsijtAfiWK
- d2DjhbRReBO3EbSS/oFyABvI7a13E3rrmeTMug2a/ak2LR+h08E7C0MHz/FNTP/3IB99
- 2ztdF+xR8Z5/3XhPw+wjTucYkR4fCra3ZAijrOokJF2jGaG2E8Co4/Y01alIX6r9RLS3
- ErPx7gHHEEac6SggdgOtdZuIt2B0TfuDZuhJBpaSgw6jrN5+Ei9dPTGyCP9DmEioTutb
- G2Pw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXXR/8QLg0Ldn8cwTZupW1B2PFLL2pwlLnOG+bWRcA96qz5jjr9V35xs2PIOLl4c64/oDLM6md/GeJYNzCo/LzY47fUwOE=
-X-Gm-Message-State: AOJu0Ywwca1KjmftaHnX903jXOWYSzM4Mwrs8cCEn+Mof/i6uvwr4Fu4
- t8YciYirXU/RWdyYCMcoMJGhKwu50DU+QVlxnj+fx1syU9UoSoN0yfvItoNkxWnzeOo9mTeiK4t
- Y5A/fHfBDq/SXGZRaQMIz2bqXoE767j0nzWDiwg==
-X-Google-Smtp-Source: AGHT+IHmE8C3tcKvNyFQQxm+Gi5twiCOHgYCtbxmWUtfsUVXzs1ryIiCd6VntOVn+mj5J7ASiONeZpLaRhnBqdlQKK4=
-X-Received: by 2002:a2e:bc06:0:b0:2dc:e69a:fdbc with SMTP id
- 38308e7fff4ca-2e51fd2dcd8mr94054481fa.1.1715670912122; Tue, 14 May 2024
- 00:15:12 -0700 (PDT)
+ bh=Y+YE8u8G1oyYQZ+CgE8cW5NHWOb2fWMOZm+PPxv0so0=;
+ b=Yz4UdYwCzIAtY1XQOW9s4E501A02ChVp8ta66/OYBv5Kb3HX/HIwdSNk9BhGMvCs57
+ ZDBYXXelEvYXYsmn/eguGq+e0Djqy7Xt6Dn8THfo2Kk0RC6tIg2DMO/TTxQzSNQgz5Zf
+ 2RO7z53GDH3vN/xdrqiaRzbALEaudOOcac542yBiaRTgvNqqwC2wBIa/k+XoRJwEQCxx
+ yWwwFG4kY+AUD6jkzbtJtEraZokhIKpVfeUp97ALZ5NcwTOcJ40yroWmzNMaWcnHtrel
+ 9KrQWxOu0CBJOJ1QD4hWG7B7nSUaZo4bZDT6Er52NsqZk3Vdf61G/QfoRggoR0/p/MiB
+ wgqw==
+X-Gm-Message-State: AOJu0YyW03NaGigz1tr15yvM235oygWvwcgRERTt+MH8BWRnsNu7bh8h
+ MtNU6kYJ9T+rU0vvhOJweeae6qX6E3W6t7I6MbBJCwHidyYg4eL9bKy4wmw+Jb+Oer44SGhh0j+
+ WRpLNL5I9FgdNCwowDWYTRRuH81C2E9DD2UNHE+j0pVsphVVyhzx55lLnTHc+Ge517OAPZHSh1N
+ XlgvSRTEZuqg39QY/TlYPgyzpATrg=
+X-Received: by 2002:a50:d793:0:b0:572:3fe4:18b5 with SMTP id
+ 4fb4d7f45d1cf-5734d67aa8fmr7295492a12.32.1715671538692; 
+ Tue, 14 May 2024 00:25:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVpYfaGylMsxilQQuu96KhUsJ6Ngxt8tclDlSa21gh1frfyuPe0Zx8CHPQpXXB1EWJwe2IcpQfq/mpvC7bl10=
+X-Received: by 2002:a50:d793:0:b0:572:3fe4:18b5 with SMTP id
+ 4fb4d7f45d1cf-5734d67aa8fmr7295474a12.32.1715671538251; Tue, 14 May 2024
+ 00:25:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240429-countinhibit_fix-v1-0-802ec1e99133@rivosinc.com>
- <CAKmqyKN9W+xY-gBZD=6T-iOzrX0MAMcTE4Zd74hmgTtP8hnObQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKN9W+xY-gBZD=6T-iOzrX0MAMcTE4Zd74hmgTtP8hnObQ@mail.gmail.com>
-From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Tue, 14 May 2024 00:15:01 -0700
-Message-ID: <CAHBxVyED-ji_pr=XfeDjxUht=9qvcizK3RniijpzX6xC26oshg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Assorted fixes for PMU
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, bin.meng@windriver.com, 
- dbarboza@ventanamicro.com, alistair.francis@wdc.com, 
- Rajnesh Kanwal <rkanwal@rivosinc.com>
+References: <20240513071905.499143-1-marcandre.lureau@redhat.com>
+ <20240513071905.499143-4-marcandre.lureau@redhat.com> <ZkLojVI4ZAKANIBr@x1n>
+In-Reply-To: <ZkLojVI4ZAKANIBr@x1n>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Tue, 14 May 2024 11:25:26 +0400
+Message-ID: <CAMxuvayd5X04dOSRMHYQr-NbHrwNeZLTD6wvNb2bq6c+-qU-9w@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] virtio-gpu: add x-vmstate-version
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Fabiano Rosas <farosas@suse.de>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=atishp@rivosinc.com; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,53 +100,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 13, 2024 at 11:29=E2=80=AFPM Alistair Francis <alistair23@gmail=
-.com> wrote:
+Hi
+
+On Tue, May 14, 2024 at 8:35=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
 >
-> On Tue, Apr 30, 2024 at 5:29=E2=80=AFAM Atish Patra <atishp@rivosinc.com>=
- wrote:
+> Hey, Marc-Andre,
+>
+> On Mon, May 13, 2024 at 11:19:04AM +0400, marcandre.lureau@redhat.com wro=
+te:
+> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> > index ae831b6b3e..7f9fb5eacc 100644
+> > --- a/hw/display/virtio-gpu.c
+> > +++ b/hw/display/virtio-gpu.c
+> > @@ -1234,7 +1234,8 @@ static int virtio_gpu_save(QEMUFile *f, void *opa=
+que, size_t size,
+> >      }
+> >      qemu_put_be32(f, 0); /* end of list */
 > >
-> > This series contains few miscallenous fixes related to hpmcounters
-> > and related code. The first patch fixes an issue with cycle/instret
-> > counters overcouting while the remaining two are more for specification
-> > compliance.
+> > -    return vmstate_save_state(f, &vmstate_virtio_gpu_scanouts, g, NULL=
+);
+> > +    return vmstate_save_state_v(f, &vmstate_virtio_gpu_scanouts, g,
+> > +                                NULL, g->vmstate_version, NULL);
+> >  }
 > >
-> > Signed-off-by: Atish Patra <atishp@rivosinc.com>
-> > ---
-> > Atish Patra (3):
-> >       target/riscv: Save counter values during countinhibit update
-> >       target/riscv: Enforce WARL behavior for scounteren/hcounteren
-> >       target/riscv: Fix the predicate functions for mhpmeventhX CSRs
+> >  static bool virtio_gpu_load_restore_mapping(VirtIOGPU *g,
+> > @@ -1339,7 +1340,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opa=
+que, size_t size,
+> >      }
+> >
+> >      /* load & apply scanout state */
+> > -    vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, 1);
+> > +    vmstate_load_state(f, &vmstate_virtio_gpu_scanouts, g, g->vmstate_=
+version);
 >
-> Thanks!
+> [sorry for a late response; attending a conf, and will reply to the v1
+>  thread later for the other discussions..]
 >
-> Applied to riscv-to-apply.next
+> These two changes shouldn't be needed if we go with the .field_exists()
+> approach, am I right?  IIUC in that case we can keep the version 1 here a=
+nd
+> don't boost anything, because we relied on the machine versions.
+>
+> IIUC this might be the reason why we found 9.0 mahines are broken on
+> migration.  E.g, IIUC my original patch should work for 9.0<->9.0 too.
 >
 
-Hi Alistair,
-Thanks for your review. But the patch 1 had some comments about
-vmstate which needs updating.
-We also found a few more fixes that I was planning to include in v2.
+Indeed, but for consistency, shouldn't it use the x-vmstate-version
+value for the top-level VMSD save/load ?
 
-I can send a separate fixes series on top riscv-to-apply.next or this
-series can be dropped for the time being.
-You can queue it v2 later. Let me know what you prefer.
+Otherwise, it feels a bit odd that this x-vmstate-version is only used
+for the nested "virtio-gpu-one-scanout" version.
+
+Or perhaps we should rename it to x-scanout-vmstate-version ? wdyt
 
 
-> Alistair
+> Thanks,
 >
 > >
-> >  target/riscv/cpu.h     |   1 -
-> >  target/riscv/csr.c     | 111 ++++++++++++++++++++++++++++++-----------=
---------
-> >  target/riscv/machine.c |   1 -
-> >  3 files changed, 68 insertions(+), 45 deletions(-)
-> > ---
-> > base-commit: 1642f979a71a5667a05070be2df82f48bd43ad7a
-> > change-id: 20240428-countinhibit_fix-c6a1c11f4375
+> >      return 0;
+> >  }
+> > @@ -1659,6 +1660,7 @@ static Property virtio_gpu_properties[] =3D {
+> >      DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+> >                      VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+> >      DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0)=
+,
+> > +    DEFINE_PROP_UINT8("x-vmstate-version", VirtIOGPU, vmstate_version,=
+ 1),
+> >      DEFINE_PROP_END_OF_LIST(),
+> >  };
+> >
 > > --
-> > Regards,
-> > Atish patra
+> > 2.41.0.28.gd7d8841f67
 > >
-> >
+>
+> --
+> Peter Xu
+>
+
 
