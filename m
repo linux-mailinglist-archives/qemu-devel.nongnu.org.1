@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3598C58C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 17:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3758C58C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 17:33:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6u8f-0001NS-Dv; Tue, 14 May 2024 11:32:25 -0400
+	id 1s6u8F-0001KZ-2X; Tue, 14 May 2024 11:31:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6u81-0001Cn-2i
- for qemu-devel@nongnu.org; Tue, 14 May 2024 11:31:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6u83-0001FO-U4
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 11:31:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6u7x-0000Vr-SR
- for qemu-devel@nongnu.org; Tue, 14 May 2024 11:31:44 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6u82-0000Wv-5S
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 11:31:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715700700;
+ s=mimecast20190719; t=1715700704;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=skSkJAZzco+gEh+aakE4hP8APfXoDw0JW8wFT7bOv/c=;
- b=XMa/5rWQpML3VU8TtlRyCmnWc0NXoavyvGNmnMyO0jbaEW7ANB7NsVGS0SGzezwjM8wmSC
- NBjhr4KuPwy9Ka8fLNoNVrP5gR5LAQzEOa/qeqI7GGs6+lYGfkg/hgHr45cGEKIwJMtBov
- N/VJC1V7E6KaicnnohVRxRfUzOm9ELg=
+ bh=FzcOFvM5eOI4Tz2O6INEtGmcZVpBGOn4j7Ks5j78BvE=;
+ b=UAvZptDuTqAq5T9wYwXH64FqDCOz13PgCCZYCc7EqkWBryTNDhUaDCQsCCCHOABUE9cg/o
+ IKqCnNqVfNea3XVJpWDC7RWwmvl3zNfgA9naGSpo4B1Dlvlt5X6N3LJL2x7r3yCQW3TP61
+ TXN6YB4BuTkV0/jEFqevBEWkYJcatZA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-ST3SuB_qMaa39lkfLmDhRQ-1; Tue, 14 May 2024 11:31:38 -0400
-X-MC-Unique: ST3SuB_qMaa39lkfLmDhRQ-1
+ us-mta-638-TaS7c8fxOeaFiFE3SmQ4jw-1; Tue, 14 May 2024 11:31:40 -0400
+X-MC-Unique: TaS7c8fxOeaFiFE3SmQ4jw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24A0D801152;
- Tue, 14 May 2024 15:31:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2EA0218172C4;
+ Tue, 14 May 2024 15:31:40 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F136C21EE56B;
- Tue, 14 May 2024 15:31:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 593E5200BD73;
+ Tue, 14 May 2024 15:31:38 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
@@ -49,10 +49,10 @@ Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH v6 2/9] vfio: Add Error** argument to
- vfio_devices_dma_logging_start()
-Date: Tue, 14 May 2024 17:31:23 +0200
-Message-ID: <20240514153130.394307-3-clg@redhat.com>
+Subject: [PATCH v6 3/9] migration: Extend migration_file_set_error() with
+ Error* argument
+Date: Tue, 14 May 2024 17:31:24 +0200
+Message-ID: <20240514153130.394307-4-clg@redhat.com>
 In-Reply-To: <20240514153130.394307-1-clg@redhat.com>
 References: <20240514153130.394307-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -83,15 +83,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This allows to update the Error argument of the VFIO log_global_start()
-handler. Errors for container based logging will also be propagated to
-qemu_savevm_state_setup() when the ram save_setup() handler is executed.
+Use it to update the current error of the migration stream if
+available and if not, simply print out the error. Next changes will
+update with an error to report.
 
-The vfio_set_migration_error() call becomes redundant in
-vfio_listener_log_global_start(). Remove it.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+Acked-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
 
@@ -99,93 +96,80 @@ Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
  - Commit log improvements (Avihai)
  
- Changes in v5:
+ include/migration/misc.h | 2 +-
+ hw/vfio/common.c         | 2 +-
+ hw/vfio/migration.c      | 4 ++--
+ migration/migration.c    | 6 ++++--
+ 4 files changed, 8 insertions(+), 6 deletions(-)
 
- - Used error_setg_errno() in vfio_devices_dma_logging_start()
+diff --git a/include/migration/misc.h b/include/migration/misc.h
+index bf7339cc1e6430226127fb6a878d06b458170858..bfadc5613bac614a316e5aed7da95d8c7845cf42 100644
+--- a/include/migration/misc.h
++++ b/include/migration/misc.h
+@@ -97,7 +97,7 @@ void migration_add_notifier_mode(NotifierWithReturn *notify,
  
- hw/vfio/common.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
-
+ void migration_remove_notifier(NotifierWithReturn *notify);
+ bool migration_is_running(void);
+-void migration_file_set_error(int err);
++void migration_file_set_error(int ret, Error *err);
+ 
+ /* True if incoming migration entered POSTCOPY_INCOMING_DISCARD */
+ bool migration_in_incoming_postcopy(void);
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 485e53916491f1164d29e739fb7106c0c77df737..b5102f54a6474a50c6366e8fbce23812d55e384e 100644
+index b5102f54a6474a50c6366e8fbce23812d55e384e..ed5ee6349ced78b3bde68d2ee506f78ba1a9dd9c 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -1027,7 +1027,8 @@ static void vfio_device_feature_dma_logging_start_destroy(
-     g_free(feature);
+@@ -150,7 +150,7 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
+ static void vfio_set_migration_error(int err)
+ {
+     if (migration_is_setup_or_active()) {
+-        migration_file_set_error(err);
++        migration_file_set_error(err, NULL);
+     }
  }
  
--static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer)
-+static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer,
-+                                          Error **errp)
- {
-     struct vfio_device_feature *feature;
-     VFIODirtyRanges ranges;
-@@ -1038,6 +1039,7 @@ static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer)
-     feature = vfio_device_feature_dma_logging_start_create(bcontainer,
-                                                            &ranges);
-     if (!feature) {
-+        error_setg_errno(errp, errno, "Failed to prepare DMA logging");
-         return -errno;
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 06ae40969b6c19037e190008e14f28be646278cd..bf2fd0759ba6e4fb103cc5c1a43edb180a3d0de4 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -726,7 +726,7 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
+          * Migration should be aborted in this case, but vm_state_notify()
+          * currently does not support reporting failures.
+          */
+-        migration_file_set_error(ret);
++        migration_file_set_error(ret, NULL);
      }
  
-@@ -1049,8 +1051,8 @@ static int vfio_devices_dma_logging_start(VFIOContainerBase *bcontainer)
-         ret = ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
-         if (ret) {
-             ret = -errno;
--            error_report("%s: Failed to start DMA logging, err %d (%s)",
--                         vbasedev->name, ret, strerror(errno));
-+            error_setg_errno(errp, errno, "%s: Failed to start DMA logging",
-+                             vbasedev->name);
-             goto out;
+     trace_vfio_vmstate_change_prepare(vbasedev->name, running,
+@@ -756,7 +756,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+          * Migration should be aborted in this case, but vm_state_notify()
+          * currently does not support reporting failures.
+          */
+-        migration_file_set_error(ret);
++        migration_file_set_error(ret, NULL);
+     }
+ 
+     trace_vfio_vmstate_change(vbasedev->name, running, RunState_str(state),
+diff --git a/migration/migration.c b/migration/migration.c
+index e88b24f1e6cbe82dad3f890c00e264d2ab6ad355..70d66a441bf04761decf91dbe57ce52c57fde58f 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2994,13 +2994,15 @@ static MigThrError postcopy_pause(MigrationState *s)
+     }
+ }
+ 
+-void migration_file_set_error(int err)
++void migration_file_set_error(int ret, Error *err)
+ {
+     MigrationState *s = current_migration;
+ 
+     WITH_QEMU_LOCK_GUARD(&s->qemu_file_lock) {
+         if (s->to_dst_file) {
+-            qemu_file_set_error(s->to_dst_file, err);
++            qemu_file_set_error_obj(s->to_dst_file, ret, err);
++        } else if (err) {
++            error_report_err(err);
          }
-         vbasedev->dirty_tracking = true;
-@@ -1069,20 +1071,19 @@ out:
- static bool vfio_listener_log_global_start(MemoryListener *listener,
-                                            Error **errp)
- {
-+    ERRP_GUARD();
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
-     int ret;
- 
-     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
--        ret = vfio_devices_dma_logging_start(bcontainer);
-+        ret = vfio_devices_dma_logging_start(bcontainer, errp);
-     } else {
--        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
-+        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, errp);
-     }
- 
-     if (ret) {
--        error_report("vfio: Could not start dirty page tracking, err: %d (%s)",
--                     ret, strerror(-ret));
--        vfio_set_migration_error(ret);
-+        error_prepend(errp, "vfio: Could not start dirty page tracking - ");
-     }
-     return !ret;
- }
-@@ -1091,17 +1092,20 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
- {
-     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
-                                                  listener);
-+    Error *local_err = NULL;
-     int ret = 0;
- 
-     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
-         vfio_devices_dma_logging_stop(bcontainer);
-     } else {
--        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
-+        ret = vfio_container_set_dirty_page_tracking(bcontainer, false,
-+                                                     &local_err);
-     }
- 
-     if (ret) {
--        error_report("vfio: Could not stop dirty page tracking, err: %d (%s)",
--                     ret, strerror(-ret));
-+        error_prepend(&local_err,
-+                      "vfio: Could not stop dirty page tracking - ");
-+        error_report_err(local_err);
-         vfio_set_migration_error(ret);
      }
  }
 -- 
