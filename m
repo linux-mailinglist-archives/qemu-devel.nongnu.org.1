@@ -2,56 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EC18C57DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 16:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9428C581B
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 16:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6t4N-0005cM-PA; Tue, 14 May 2024 10:23:55 -0400
+	id 1s6tFm-00016J-M5; Tue, 14 May 2024 10:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6t4L-0005bb-AQ
- for qemu-devel@nongnu.org; Tue, 14 May 2024 10:23:53 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6tFk-00015v-JF
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 10:35:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6t4J-000186-9J
- for qemu-devel@nongnu.org; Tue, 14 May 2024 10:23:53 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id E67796126A;
- Tue, 14 May 2024 14:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD88C4AF0A;
- Tue, 14 May 2024 14:23:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1715696628;
- bh=zL17vCeCvWbun8VPutiQYP0L73hN/oGFOlym9kuT8Fg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=O3Ba8ppy0dYAQceK+AevqECN6jthKxoFDfeaFi7JuXV6RAtTtOWfloinxq7ockuL1
- dJ0eeW6ZqLAWFnxH+pVE1z4P9gtYUS6weQOBlfPIAMmET87Ja5SggJ3OicAbRgFilk
- Aw07EGo4Nqq1TQwZgC8MBExNiJoaR9kDaQcepY2A+VgM3kd7hT4an8XohEiizTbKEK
- 7rTooOXToDWNpagfPKjLNYcwEPIH68iL8NhC5d8CecmS4hqIhMMfiHbl48lMcxw706
- YI4zVEi09oX/qOld7hAO0MwJb/Wjd7YMUclBzappyy+MZZ2m2abYsvasciCUw7CNBT
- 5KNZPMtsiHRdw==
-Date: Tue, 14 May 2024 16:23:44 +0200
-From: Helge Deller <deller@kernel.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, deller@gmx.de
-Subject: Re: [PATCH v2 07/45] target/hppa: Add install_iaq_entries
-Message-ID: <ZkNz8PDdBBV77kB7@carbonx1>
-References: <20240513074717.130949-1-richard.henderson@linaro.org>
- <20240513074717.130949-8-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s6tFh-0003IX-Ga
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 10:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715697336;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8bULT45aZSr/KkQ2bLnKSVVpO03bkmZP3x1KKEQgVmY=;
+ b=aN5BCK4RZJdaB4sPh64Z3pJuor9VBxXUDwNAFQVVaXJ5MBjawmQ3L1YRVsKa7QYxYvXyLJ
+ c64odIxYooEpkNuUrxf66UDeXE9/gk4qzfNN51Z6lvPse4TUgjlBdyz9wLCL9T+cU0AhFO
+ o3HO72i0FNISj2CeJ0F9JNhyNvgxP4g=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-T1kEfHs1MwevsKiStEdyfw-1; Tue, 14 May 2024 10:35:30 -0400
+X-MC-Unique: T1kEfHs1MwevsKiStEdyfw-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-43e1af4fbc4so24919401cf.3
+ for <qemu-devel@nongnu.org>; Tue, 14 May 2024 07:35:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715697330; x=1716302130;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8bULT45aZSr/KkQ2bLnKSVVpO03bkmZP3x1KKEQgVmY=;
+ b=kTmdh7QkNKyEkHp4Z2Jh8/wAldE3R0fcr9BugxnTeC0s02dMZt3xa3mEfgiDyF5SOu
+ HWfeHMvuBw8u8kFk8Ap1XlLKt2aTREw60lm3iG8akFHiPHSPbXrJZOJh9BqfzOhGZwOP
+ yWBSO8EL0jm/vth1sNRgJgU9T39ygZYXcHGYYAudwdk+ZfRA47likPwOVB42zEyR/nYu
+ dQJfog+ifAwSCrjFR7YKemKDTF5V8+wX/guMA2BkycGvcs4E+IiHdKveb5JP2SfwmiVO
+ 9occn59aUyf7mPV7/p76pH6Xrv3YZ53OU7TnnQaC07/+ChORUWgQ45l3mHvuZWr9ZNly
+ 2N/g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWJjUQPgZTlLHXUCt0vxGlPT0UHUDxV10/vgnrhfXI5Kbzc4pGHRC4sL1LKs9OVOoe9lMCamWs7829At3bpIATz7iso8qM=
+X-Gm-Message-State: AOJu0YwhAJpUpi9K1WfHcgIpBYkx0Wklz9E/u9bicdKMhAq49dqsRzek
+ PX9qEBsHcoclDV8uYfTQuANBjtpClNsT6D/7ZNYfxkkCCiIPi7Q4YL6IQbYG3KFKzaJO/s8Fc+t
+ oM8V5nExrhEma+Lj1DekMWbhps2wz7t8JsfP7BtT6+7SNzQCsygyX
+X-Received: by 2002:ac8:5a49:0:b0:43a:d5b4:e169 with SMTP id
+ d75a77b69052e-43dfdd0dc46mr152975981cf.61.1715697329724; 
+ Tue, 14 May 2024 07:35:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2dt9DuY8qBKVDHuerjcKRrpMJNphfceh5HEXxFiBe6PD8KMNWZFGNci2ye0UDmW4qLo4j/g==
+X-Received: by 2002:ac8:5a49:0:b0:43a:d5b4:e169 with SMTP id
+ d75a77b69052e-43dfdd0dc46mr152975791cf.61.1715697329382; 
+ Tue, 14 May 2024 07:35:29 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43df54dda3dsm69148201cf.29.2024.05.14.07.35.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 May 2024 07:35:28 -0700 (PDT)
+Message-ID: <28bc9d97-b937-469e-9b04-0487cf1ba1bf@redhat.com>
+Date: Tue, 14 May 2024 16:35:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240513074717.130949-8-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 10/10] vfio: Extend vfio_set_migration_error() with
+ Error* argument
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240506092053.388578-1-clg@redhat.com>
+ <20240506092053.388578-11-clg@redhat.com>
+ <c06e8de4-a3ad-4044-a4ca-f45d404314fb@nvidia.com>
+ <d7122cae-8e84-4ea3-987b-107f44bee937@redhat.com>
+Content-Language: en-US, fr
+In-Reply-To: <d7122cae-8e84-4ea3-987b-107f44bee937@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,179 +108,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Richard Henderson <richard.henderson@linaro.org>:
-> Instead of two separate cpu_iaoq_entry calls, use one call to update
-> both IAQ_Front and IAQ_Back.  Simplify with an argument combination
-> that automatically handles a simple increment from Front to Back.
+On 5/14/24 13:20, Cédric Le Goater wrote:
+> On 5/13/24 16:26, Avihai Horon wrote:
+>>
+>> On 06/05/2024 12:20, Cédric Le Goater wrote:
+>>> External email: Use caution opening links or attachments
+>>>
+>>>
+>>> vfio_set_migration_error() sets the 'return' error on the migration
+>>> stream if a migration is in progress. To improve error reporting, add
+>>> a new Error* argument to also set the Error object on the migration
+>>> stream, if a migration is progress.
+>>>
+>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>>> ---
+>>>
+>>>   Changes in v5:
+>>>
+>>>   - Rebased on 20c64c8a51a4 ("migration: migration_file_set_error")
+>>>
+>>>   hw/vfio/common.c | 37 ++++++++++++++++++-------------------
+>>>   1 file changed, 18 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>>> index c3d82a9d6e434e33f361e4b96157bf912d5c3a2f..4cf3e13a8439bd1b9a032e9d4e75df676eba457b 100644
+>>> --- a/hw/vfio/common.c
+>>> +++ b/hw/vfio/common.c
+>>> @@ -147,10 +147,10 @@ bool vfio_viommu_preset(VFIODevice *vbasedev)
+>>>       return vbasedev->bcontainer->space->as != &address_space_memory;
+>>>   }
+>>>
+>>> -static void vfio_set_migration_error(int err)
+>>> +static void vfio_set_migration_error(int ret, Error *err)
+>>>   {
+>>>       if (migration_is_setup_or_active()) {
+>>> -        migration_file_set_error(err, NULL);
+>>> +        migration_file_set_error(ret, err);
+>>>       }
+>>>   }
+>>>
+>>> @@ -295,9 +295,10 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>>>                                   iova, iova + iotlb->addr_mask);
+>>>
+>>>       if (iotlb->target_as != &address_space_memory) {
+>>> -        error_report("Wrong target AS \"%s\", only system memory is allowed",
+>>> -                     iotlb->target_as->name ? iotlb->target_as->name : "none");
+>>> -        vfio_set_migration_error(-EINVAL);
+>>> +        error_setg(&local_err,
+>>> +                   "Wrong target AS \"%s\", only system memory is allowed",
+>>> +                   iotlb->target_as->name ? iotlb->target_as->name : "none");
+>>> +        vfio_set_migration_error(-EINVAL, local_err);
+>>>           return;
+>>>       }
+>>>
+>>> @@ -330,11 +331,12 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>>>           ret = vfio_container_dma_unmap(bcontainer, iova,
+>>>                                          iotlb->addr_mask + 1, iotlb);
+>>>           if (ret) {
+>>> -            error_report("vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+>>> -                         "0x%"HWADDR_PRIx") = %d (%s)",
+>>> -                         bcontainer, iova,
+>>> -                         iotlb->addr_mask + 1, ret, strerror(-ret));
+>>> -            vfio_set_migration_error(ret);
+>>> +            error_setg(&local_err,
+>>> +                       "vfio_container_dma_unmap(%p, 0x%"HWADDR_PRIx", "
+>>> +                       "0x%"HWADDR_PRIx") = %d (%s)",
+>>> +                       bcontainer, iova,
+>>> +                       iotlb->addr_mask + 1, ret, strerror(-ret));
+>>
+>> Use error_setg_errno()?
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> sure.
+> 
+>>
+>>> +            vfio_set_migration_error(ret, local_err);
+>>
+>> Now dma unmap errors (and also the error before it) are not reported if they happen not during migration.
+>>
+>> This makes me think, maybe vfio_set_migration_error() is redundant and can be replaced by migration_file_set_error()?
+> 
+> 
+> yes. Good suggestion. I would like to get rid of vfio_set_migration_error(),
+> so that's a good start.
 
-Reviewed-by: Helge Deller <deller@gmx.de>
+After taking a closer look, I will drop this patch from v6 because
+it needs further splitting and some rework.
 
-> ---
->  target/hppa/translate.c | 64 +++++++++++++++++++++--------------------
->  1 file changed, 33 insertions(+), 31 deletions(-)
-> 
-> diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-> index d272be0e6e..08d5e2a4bc 100644
-> --- a/target/hppa/translate.c
-> +++ b/target/hppa/translate.c
-> @@ -617,6 +617,23 @@ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
->      }
->  }
->  
-> +static void install_iaq_entries(DisasContext *ctx, uint64_t bi, TCGv_i64 bv,
-> +                                uint64_t ni, TCGv_i64 nv)
-> +{
-> +    copy_iaoq_entry(ctx, cpu_iaoq_f, bi, bv);
-> +
-> +    /* Allow ni variable, with nv null, to indicate a trivial advance. */
-> +    if (ni != -1 || nv) {
-> +        copy_iaoq_entry(ctx, cpu_iaoq_b, ni, nv);
-> +    } else if (bi != -1) {
-> +        copy_iaoq_entry(ctx, cpu_iaoq_b, bi + 4, NULL);
-> +    } else {
-> +        tcg_gen_addi_i64(cpu_iaoq_b, cpu_iaoq_f, 4);
-> +        tcg_gen_andi_i64(cpu_iaoq_b, cpu_iaoq_b,
-> +                         gva_offset_mask(ctx->tb_flags));
-> +    }
-> +}
-> +
->  static inline uint64_t iaoq_dest(DisasContext *ctx, int64_t disp)
->  {
->      return ctx->iaoq_f + disp + 8;
-> @@ -629,8 +646,7 @@ static void gen_excp_1(int exception)
->  
->  static void gen_excp(DisasContext *ctx, int exception)
->  {
-> -    copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_f, cpu_iaoq_f);
-> -    copy_iaoq_entry(ctx, cpu_iaoq_b, ctx->iaoq_b, cpu_iaoq_b);
-> +    install_iaq_entries(ctx, ctx->iaoq_f, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
->      nullify_save(ctx);
->      gen_excp_1(exception);
->      ctx->base.is_jmp = DISAS_NORETURN;
-> @@ -684,12 +700,10 @@ static void gen_goto_tb(DisasContext *ctx, int which,
->  {
->      if (use_goto_tb(ctx, b, n)) {
->          tcg_gen_goto_tb(which);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, b, NULL);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, n, NULL);
-> +        install_iaq_entries(ctx, b, NULL, n, NULL);
->          tcg_gen_exit_tb(ctx->base.tb, which);
->      } else {
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, b, cpu_iaoq_b);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, n, ctx->iaoq_n_var);
-> +        install_iaq_entries(ctx, b, cpu_iaoq_b, n, ctx->iaoq_n_var);
->          tcg_gen_lookup_and_goto_ptr();
->      }
->  }
-> @@ -1883,9 +1897,7 @@ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
->          }
->          if (is_n) {
->              if (use_nullify_skip(ctx)) {
-> -                copy_iaoq_entry(ctx, cpu_iaoq_f, -1, next);
-> -                tcg_gen_addi_i64(next, next, 4);
-> -                copy_iaoq_entry(ctx, cpu_iaoq_b, -1, next);
-> +                install_iaq_entries(ctx, -1, next, -1, NULL);
->                  nullify_set(ctx, 0);
->                  ctx->base.is_jmp = DISAS_IAQ_N_UPDATED;
->                  return true;
-> @@ -1900,14 +1912,10 @@ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
->      nullify_over(ctx);
->  
->      if (is_n && use_nullify_skip(ctx)) {
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, -1, dest);
-> -        next = tcg_temp_new_i64();
-> -        tcg_gen_addi_i64(next, dest, 4);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, next);
-> +        install_iaq_entries(ctx, -1, dest, -1, NULL);
->          nullify_set(ctx, 0);
->      } else {
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, dest);
-> +        install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b, -1, dest);
->          nullify_set(ctx, is_n);
->      }
->      if (link != 0) {
-> @@ -1998,9 +2006,7 @@ static void do_page_zero(DisasContext *ctx)
->          tcg_gen_st_i64(cpu_gr[26], tcg_env, offsetof(CPUHPPAState, cr[27]));
->          tmp = tcg_temp_new_i64();
->          tcg_gen_ori_i64(tmp, cpu_gr[31], 3);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, -1, tmp);
-> -        tcg_gen_addi_i64(tmp, tmp, 4);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
-> +        install_iaq_entries(ctx, -1, tmp, -1, NULL);
->          ctx->base.is_jmp = DISAS_IAQ_N_UPDATED;
->          break;
->  
-> @@ -2744,8 +2750,8 @@ static bool trans_or(DisasContext *ctx, arg_rrr_cf_d *a)
->              nullify_over(ctx);
->  
->              /* Advance the instruction queue.  */
-> -            copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-> -            copy_iaoq_entry(ctx, cpu_iaoq_b, ctx->iaoq_n, ctx->iaoq_n_var);
-> +            install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b,
-> +                                ctx->iaoq_n, ctx->iaoq_n_var);
->              nullify_set(ctx, 0);
->  
->              /* Tell the qemu main loop to halt until this cpu has work.  */
-> @@ -3898,18 +3904,15 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
->          tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_b);
->      }
->      if (a->n && use_nullify_skip(ctx)) {
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, -1, tmp);
-> -        tcg_gen_addi_i64(tmp, tmp, 4);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
-> +        install_iaq_entries(ctx, -1, tmp, -1, NULL);
->          tcg_gen_mov_i64(cpu_iasq_f, new_spc);
->          tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
->          nullify_set(ctx, 0);
->      } else {
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-> +        install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b, -1, tmp);
->          if (ctx->iaoq_b == -1) {
->              tcg_gen_mov_i64(cpu_iasq_f, cpu_iasq_b);
->          }
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
->          tcg_gen_mov_i64(cpu_iasq_b, new_spc);
->          nullify_set(ctx, a->n);
->      }
-> @@ -4018,11 +4021,10 @@ static bool trans_bve(DisasContext *ctx, arg_bve *a)
->      nullify_over(ctx);
->      dest = do_ibranch_priv(ctx, load_gpr(ctx, a->b));
->  
-> -    copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-> +    install_iaq_entries(ctx, ctx->iaoq_b, cpu_iaoq_b, -1, dest);
->      if (ctx->iaoq_b == -1) {
->          tcg_gen_mov_i64(cpu_iasq_f, cpu_iasq_b);
->      }
-> -    copy_iaoq_entry(ctx, cpu_iaoq_b, -1, dest);
->      tcg_gen_mov_i64(cpu_iasq_b, space_select(ctx, 0, dest));
->      if (a->l) {
->          copy_iaoq_entry(ctx, cpu_gr[a->l], ctx->iaoq_n, ctx->iaoq_n_var);
-> @@ -4721,8 +4723,8 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
->      case DISAS_IAQ_N_STALE:
->      case DISAS_IAQ_N_STALE_EXIT:
->          if (ctx->iaoq_f == -1) {
-> -            copy_iaoq_entry(ctx, cpu_iaoq_f, -1, cpu_iaoq_b);
-> -            copy_iaoq_entry(ctx, cpu_iaoq_b, ctx->iaoq_n, ctx->iaoq_n_var);
-> +            install_iaq_entries(ctx, -1, cpu_iaoq_b,
-> +                                ctx->iaoq_n, ctx->iaoq_n_var);
->  #ifndef CONFIG_USER_ONLY
->              tcg_gen_mov_i64(cpu_iasq_f, cpu_iasq_b);
->  #endif
-> @@ -4751,8 +4753,8 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
->      case DISAS_TOO_MANY:
->      case DISAS_IAQ_N_STALE:
->      case DISAS_IAQ_N_STALE_EXIT:
-> -        copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_f, cpu_iaoq_f);
-> -        copy_iaoq_entry(ctx, cpu_iaoq_b, ctx->iaoq_b, cpu_iaoq_b);
-> +        install_iaq_entries(ctx, ctx->iaoq_f, cpu_iaoq_f,
-> +                            ctx->iaoq_b, cpu_iaoq_b);
->          nullify_save(ctx);
->          /* FALLTHRU */
->      case DISAS_IAQ_N_UPDATED:
-> -- 
-> 2.34.1
-> 
+Thanks,
+
+C.
+
+
+
 
