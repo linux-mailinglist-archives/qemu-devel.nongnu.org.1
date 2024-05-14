@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE7E8C4C23
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 08:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE128C4C34
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 08:16:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6lDL-0008GQ-F9; Tue, 14 May 2024 02:00:39 -0400
+	id 1s6lRI-0005in-UD; Tue, 14 May 2024 02:15:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s6lCR-0008Az-Vk; Tue, 14 May 2024 01:59:46 -0400
-Received: from mail-vk1-xa2e.google.com ([2607:f8b0:4864:20::a2e])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1s6lRF-0005gs-6L
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 02:15:02 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s6lCP-0007EE-MA; Tue, 14 May 2024 01:59:43 -0400
-Received: by mail-vk1-xa2e.google.com with SMTP id
- 71dfb90a1353d-4df214fdc37so2661201e0c.0; 
- Mon, 13 May 2024 22:59:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1s6lRC-0001vj-EM
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 02:15:00 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f4ed9dc7beso1887260b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 13 May 2024 23:12:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715666380; x=1716271180; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1715667174; x=1716271974;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CzQTeadMyBSlV0uZ4/V8qE9bHEUA1dtv/ZVwMkGdFGo=;
- b=SabxXDbdRvK1z77hZJ++EhQawcc9HZCEe3aaqYdbWGHkrBc4J3V+iwW2H/CgvIjMDu
- 26oP7hAj5XIm5Ds/W2+ZmZMIoKlvFEqNkvnRxOBNk5Bwa0nGmUsm5bnF8u4wIGztRu/i
- aH5E89Caizp5X9be2Zm91EbfPM1WdBxYJIWiIJQ+UFog8+0dnfMZC/w6P8jCYB2LyomK
- ivFU8iQYg9p2+wPEpM5bqLCBwW8WXdM2qNxj3m11h9szHr7RtEx70V75zSLiZdh7Zpcm
- V0Kf8MBbmSlG8zvIdA4HlkavPNr9db7gGVB21zRzHzs2ZQxupckAa8pg2XEeHN9HO+qw
- DArw==
+ bh=5U88MQ1EYnI1xEBI7BtZA3bCgLHI2CS0/Ml/sSklTY0=;
+ b=HEumDjibxNzDDectm4FX5oTUDcRn9fEK04ZaiuhNnTm5DTHWLl6INVPaNqhEdMkyah
+ Jr6/8qff6shuTw3rx6o8K/fsFPrQR/CvCtXr3IFR41+4cg8tA2LGNauI81TlqAANQZWw
+ n9XOAszKOsykXL/CLSm7Apyr2syscFhLcmTM3PoJV3Dk3josq74IKVZhQKRYkVlZhmYd
+ DInB61OaYZKzKn2Glo9NUYyUF2Uembs8tgWbSs7pHLHOleJBvRazmqB0SBrooK0Fn++d
+ U0zD51GA9HnZf/op95imOPSkvSjyH2qaS8oLDrA+RG7dxQFMqs7GZiXXr/4JD+9ydYjw
+ PmBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715666380; x=1716271180;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1715667174; x=1716271974;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CzQTeadMyBSlV0uZ4/V8qE9bHEUA1dtv/ZVwMkGdFGo=;
- b=lM3TkawXGBx9zUvvY0KCiicoVbvNbyApK3atbZhQs3N1Jnz9iM7wKkZmUGneKslFDD
- QBKlODFlXS5jNKs0vrYxRlZ2NzDyAf9D4h6f7bK8SvQkvq9uMwEKOTDVDaJaFwJatB/U
- SXEWPTlllUWROUE4edosabc9YKavuDXWEizC2zwDbRZeOdWPpnpzLfonAwJ5rUs6ZYzL
- yWr2gHqO6+iH04bIfkGAVeSou8AzDJZsyNY+3N1PfHMlA/oKRY/JucAE60t8pUXw/3uf
- 5lpPC0pZQ32+h1CtYH0aoNOjtUVku99ZqLXqfE6zCRcXiiGjf0u7cEqakgeIyhKQPWl5
- GXiQ==
+ bh=5U88MQ1EYnI1xEBI7BtZA3bCgLHI2CS0/Ml/sSklTY0=;
+ b=k52Jt/66smPLVF02Jrwv3ghmjZEoMRnKkOn1R2f8TRV94F5/eRZE6UFpYhl46+pzDO
+ +v1PRU/V9fgmEyl8G2drIStlXBGbuLmNT/lKwm9oQXLrl59XRE8TNQgqQUHPtalMUhZI
+ xNrszElmyIvIzI4pSeeCVxWmuDiEPyWFq5R2R1tpEpDQbSCcPw6h5L+bGW9Jc+2efU4w
+ KVLl0B4YMXxc6jHOVSXq1mGf650QueQubKtdVOluNNsYN6iZyF17Mr3XbfenkIdRvOlA
+ vCQPEDwbrBIoA0xdAnxOgtIiplKJ3QSsQB8nt6f1NXcnZuTzSGGdc3jrSeaTXOSOMY3d
+ 8wDg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXSpNOS632L7+UeaBu5pjCN1Ru25aGLmL2OGf6dfjia9bbANfbek4KfFgxZt9THDp9MB8aAjpNuP6qF3GU/wLoRNtQgcVss6L1tWInv9UX/SBXDBXgte36Qbx1kug==
-X-Gm-Message-State: AOJu0Yw5C/UJ+A4g5v7iT9HgydLFKpfjZpWnMtzkY9oPTHtHrwwjOAT/
- i7fHUmZybIKumJ80gooatzsD8SjSiMMGXqhVh424Ow6Q4ioiRN0GXd14KWyQ9KS6JIMTLShUolV
- MMId40Krc/w8Ne/9OxWf7AbRDs2E=
-X-Google-Smtp-Source: AGHT+IFQfoRoJRS5JFURn7TQhTUYlZAgvw3/apQvES9WOKkGsT+W/WnRDx5eEMCVDJ0yclKSJTc/4c57ZcWcsKbs7zE=
-X-Received: by 2002:a05:6122:368e:b0:4d4:34b2:9a89 with SMTP id
- 71dfb90a1353d-4df8838f6a5mr9800622e0c.8.1715666380402; Mon, 13 May 2024
- 22:59:40 -0700 (PDT)
+ AJvYcCWyhjFIDwJGZ18wMkyp0c8IR2iAzN2zljWKizVYpA4IbZscv1d9vvkhE8aITBvTgtcFMzEvD2onwlozNqQg+jpn6Az49yQ=
+X-Gm-Message-State: AOJu0Yys/ikR4q2W7bvtF1qQXZpjWCtHehTCFsmSNMXd/jyBVvPyAxpW
+ FXudVfNFEUZ/CXJvL6z6kxUILcs+jdThIKZZdh58H6YHrPlxXFyE3E4zwaxAFh0=
+X-Google-Smtp-Source: AGHT+IGrTLNxS5eKWBTmHGQSnqKYSEFm/x50FhLJq+kLIZ1WBh3tr9l9iEBHTyKmWMW5JPbWQRlhBQ==
+X-Received: by 2002:a05:6a00:2d05:b0:6f3:8468:8bb with SMTP id
+ d2e1a72fcca58-6f4df44e1c1mr17875618b3a.17.1715667174060; 
+ Mon, 13 May 2024 23:12:54 -0700 (PDT)
+Received: from localhost.localdomain.cc (vps-bd302c4a.vps.ovh.ca.
+ [15.235.142.94]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f4d2a9d94csm8624098b3a.95.2024.05.13.23.12.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 May 2024 23:12:53 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael@enfabrica.net>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-block@nongnu.org (open list:Block layer core),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: Yajun Wu <yajunw@nvidia.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v3 1/2] Revert "vhost-user: fix lost reconnect"
+Date: Tue, 14 May 2024 14:12:27 +0800
+Message-ID: <20240514061239.86461-2-fengli@smartx.com>
+X-Mailer: git-send-email 2.45.0
+In-Reply-To: <20240514061239.86461-1-fengli@smartx.com>
+References: <20240514061239.86461-1-fengli@smartx.com>
 MIME-Version: 1.0
-References: <ca275792-36c9-4ccd-b7b2-24d9fd837b24@ventanamicro.com>
- <20240503103052.6819-1-alexei.filippov@syntacore.com>
-In-Reply-To: <20240503103052.6819-1-alexei.filippov@syntacore.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 14 May 2024 15:59:14 +1000
-Message-ID: <CAKmqyKMhSUJForn4eNN2surqjdvJQ9+kXomv+BYTX0G8FXCRVw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] target/riscv: do not set mtval2 for non guest-page
- faults
-To: Alexei Filippov <alexei.filippov@syntacore.com>
-Cc: dbarboza@ventanamicro.com, alistair.francis@wdc.com, 
- bin.meng@windriver.com, liwei1518@gmail.com, palmer@dabbelt.com, 
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2e;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::436;
+ envelope-from=fengli@smartx.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: 14
+X-Spam_score: 1.4
+X-Spam_bar: +
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,76 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 3, 2024 at 8:32=E2=80=AFPM Alexei Filippov
-<alexei.filippov@syntacore.com> wrote:
->
-> Previous patch fixed the PMP priority in raise_mmu_exception() but we're =
-still
-> setting mtval2 incorrectly. In riscv_cpu_tlb_fill(), after pmp check in 2=
- stage
-> translation part, mtval2 will be set in case of successes 2 stage transla=
-tion but
-> failed pmp check.
->
-> In this case we gonna set mtval2 via env->guest_phys_fault_addr in contex=
-t of
-> riscv_cpu_tlb_fill(), as this was a guest-page-fault, but it didn't and m=
-tval2
-> should be zero, according to RISCV privileged spec sect. 9.4.4: When a gu=
-est
-> page-fault is taken into M-mode, mtval2 is written with either zero or gu=
-est
-> physical address that faulted, shifted by 2 bits. *For other traps, mtval=
-2
-> is set to zero...*
->
-> Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This reverts commit f02a4b8e6431598612466f76aac64ab492849abf.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Since the current patch cannot completely fix the lost reconnect
+problem, there is a scenario that is not considered:
+- When the virtio-blk driver is removed from the guest os,
+  s->connected has no chance to be set to false, resulting in
+  subsequent reconnection not being executed.
 
-Alistair
+The next patch will completely fix this issue with a better approach.
 
-> ---
-> Changes since v1:
->                 -Added Reviewed-by tag.
->  target/riscv/cpu_helper.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index e3a7797d00..484edad900 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1375,17 +1375,17 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr addre=
-ss, int size,
->                                __func__, pa, ret, prot_pmp, tlb_size);
->
->                  prot &=3D prot_pmp;
-> -            }
-> -
-> -            if (ret !=3D TRANSLATE_SUCCESS) {
-> +            } else {
->                  /*
->                   * Guest physical address translation failed, this is a =
-HS
->                   * level exception
->                   */
->                  first_stage_error =3D false;
-> -                env->guest_phys_fault_addr =3D (im_address |
-> -                                              (address &
-> -                                               (TARGET_PAGE_SIZE - 1))) =
->> 2;
-> +                if (ret !=3D TRANSLATE_PMP_FAIL) {
-> +                    env->guest_phys_fault_addr =3D (im_address |
-> +                                                  (address &
-> +                                                   (TARGET_PAGE_SIZE - 1=
-))) >> 2;
-> +                }
->              }
->          }
->      } else {
-> --
-> 2.34.1
->
->
+Signed-off-by: Li Feng <fengli@smartx.com>
+---
+ hw/block/vhost-user-blk.c      |  2 +-
+ hw/scsi/vhost-user-scsi.c      |  3 +--
+ hw/virtio/vhost-user-base.c    |  2 +-
+ hw/virtio/vhost-user.c         | 10 ++--------
+ include/hw/virtio/vhost-user.h |  3 +--
+ 5 files changed, 6 insertions(+), 14 deletions(-)
+
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 9e6bbc6950..41d1ac3a5a 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -384,7 +384,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &s->chardev, &s->dev,
+-                               vhost_user_blk_disconnect, vhost_user_blk_event);
++                               vhost_user_blk_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index a63b1f4948..48a59e020e 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -214,8 +214,7 @@ static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
+-                               vhost_user_scsi_disconnect,
+-                               vhost_user_scsi_event);
++                               vhost_user_scsi_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/virtio/vhost-user-base.c b/hw/virtio/vhost-user-base.c
+index a83167191e..4b54255682 100644
+--- a/hw/virtio/vhost-user-base.c
++++ b/hw/virtio/vhost-user-base.c
+@@ -254,7 +254,7 @@ static void vub_event(void *opaque, QEMUChrEvent event)
+     case CHR_EVENT_CLOSED:
+         /* defer close until later to avoid circular close */
+         vhost_user_async_close(dev, &vub->chardev, &vub->vhost_dev,
+-                               vub_disconnect, vub_event);
++                               vub_disconnect);
+         break;
+     case CHR_EVENT_BREAK:
+     case CHR_EVENT_MUX_IN:
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index cdf9af4a4b..c929097e87 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -2776,7 +2776,6 @@ typedef struct {
+     DeviceState *dev;
+     CharBackend *cd;
+     struct vhost_dev *vhost;
+-    IOEventHandler *event_cb;
+ } VhostAsyncCallback;
+ 
+ static void vhost_user_async_close_bh(void *opaque)
+@@ -2791,10 +2790,7 @@ static void vhost_user_async_close_bh(void *opaque)
+      */
+     if (vhost->vdev) {
+         data->cb(data->dev);
+-    } else if (data->event_cb) {
+-        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, data->event_cb,
+-                                 NULL, data->dev, NULL, true);
+-   }
++    }
+ 
+     g_free(data);
+ }
+@@ -2806,8 +2802,7 @@ static void vhost_user_async_close_bh(void *opaque)
+  */
+ void vhost_user_async_close(DeviceState *d,
+                             CharBackend *chardev, struct vhost_dev *vhost,
+-                            vu_async_close_fn cb,
+-                            IOEventHandler *event_cb)
++                            vu_async_close_fn cb)
+ {
+     if (!runstate_check(RUN_STATE_SHUTDOWN)) {
+         /*
+@@ -2823,7 +2818,6 @@ void vhost_user_async_close(DeviceState *d,
+         data->dev = d;
+         data->cd = chardev;
+         data->vhost = vhost;
+-        data->event_cb = event_cb;
+ 
+         /* Disable any further notifications on the chardev */
+         qemu_chr_fe_set_handlers(chardev,
+diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
+index d7c09ffd34..324cd8663a 100644
+--- a/include/hw/virtio/vhost-user.h
++++ b/include/hw/virtio/vhost-user.h
+@@ -108,7 +108,6 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
+ 
+ void vhost_user_async_close(DeviceState *d,
+                             CharBackend *chardev, struct vhost_dev *vhost,
+-                            vu_async_close_fn cb,
+-                            IOEventHandler *event_cb);
++                            vu_async_close_fn cb);
+ 
+ #endif
+-- 
+2.45.0
+
 
