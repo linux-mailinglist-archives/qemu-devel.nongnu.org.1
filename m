@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34328C5ACB
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 20:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1CB8C5AD0
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 20:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6wV6-00033F-PR; Tue, 14 May 2024 14:03:44 -0400
+	id 1s6wXR-0003nS-OB; Tue, 14 May 2024 14:06:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6wV4-00032q-4V
- for qemu-devel@nongnu.org; Tue, 14 May 2024 14:03:42 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6wXK-0003mv-Ie
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 14:06:03 -0400
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6wV1-0000iX-25
- for qemu-devel@nongnu.org; Tue, 14 May 2024 14:03:40 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1s6wXG-0001AQ-9D
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 14:06:01 -0400
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 6A38561227;
- Tue, 14 May 2024 18:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7097C2BD10;
- Tue, 14 May 2024 18:03:35 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTP id D14B5CE1267;
+ Tue, 14 May 2024 18:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43450C2BD10;
+ Tue, 14 May 2024 18:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1715709817;
- bh=8wl4fHSAhPVNLvUHbxl3UdHkfY5RyZ+IvWGGsY0jm+o=;
+ s=k20201202; t=1715709953;
+ bh=bvaaibBBVzbeQPqHnT5CuzCYGE7fqB/tFCQpVFfVMbc=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=CZxRgQ0liQ12V6kGP5ICKBBISSfVwvXe1Od5FJt2ThyBVRT4OebeyK83QBEWlGTHU
- wmdeR4O+4U/rnrWlYqfsMdrCwVq/6IZjQ/Q6GSF40Kp24+K/B3w7Sg4Gxbda9YWgBT
- HjkSaDVBVlY/m7zB810JjoKvVz+WweeHa6IfsbU59KKmi8HDtlGTb6589fnAsgV3Ru
- Bv4egFNcScYLpfOiRTIqhd3Kjwfp5UtQn5taF07/Z4441dUyj94VdVSo6ou+QhtkGv
- P4E5izOermnR1OsR3aq9a/Ftrny3lv/zNTqOHYZOR6sVnLpUaZVxnYyTGKWv37DY5C
- hBokQHzjYQsRA==
-Date: Tue, 14 May 2024 20:03:32 +0200
+ b=UHgQUhJkfB5p8O9Njezmm8OPgiYEQwpngSlGdBS1f7k4wuINBEqCojNMkwEVjy2Cu
+ 8VCiaYZkTe5CYNUTmP5LXXH1ObojToZdownZBVMWcKyTwtcjWgNpwabDFxTKgzuz8m
+ 3blD2FFkt9qTBWT3bywTWrYQ4D7YA206IvXOsdCkDf/kEC58BA6zewX2kZYW/BThm/
+ jhhlTlfG0aPu/zOccKqh5T8eyTG82PfB/OvoQUnXH87iw80uXJkztHG5Ox8/5Q2U3j
+ Ru1in9LSrqwwdTpFS9D0aN3EBDiGt3kCkxoUSqIXvvsCuuiwH4s67L5A6Kp65HUEQY
+ u7E4HtMuXqmeQ==
+Date: Tue, 14 May 2024 20:05:48 +0200
 From: Helge Deller <deller@kernel.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@gmx.de
-Subject: Re: [PATCH v2 25/45] target/hppa: Use registerfields.h for FPSR
-Message-ID: <ZkOndPm3PbDKqofg@carbonx1>
+Subject: Re: [PATCH v2 26/45] target/hppa: Use TCG_COND_TST* in trans_ftest
+Message-ID: <ZkOn_B2MRfctlood@carbonx1>
 References: <20240513074717.130949-1-richard.henderson@linaro.org>
- <20240513074717.130949-26-richard.henderson@linaro.org>
+ <20240513074717.130949-27-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240513074717.130949-26-richard.henderson@linaro.org>
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+In-Reply-To: <20240513074717.130949-27-richard.henderson@linaro.org>
+Received-SPF: pass client-ip=145.40.73.55; envelope-from=deller@kernel.org;
+ helo=sin.source.kernel.org
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -68,17 +68,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 * Richard Henderson <richard.henderson@linaro.org>:
-> Define all of the context dependent field definitions.
-> Use FIELD_EX32 and FIELD_DP32 with named fields instead
-> of extract32 and deposit32 with raw constants.
-> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/hppa/translate.c | 22 ++++++----------------
+>  1 file changed, 6 insertions(+), 16 deletions(-)
 
 Reviewed-by: Helge Deller <deller@gmx.de>
-
-> ---
->  target/hppa/cpu.h        | 25 +++++++++++++++++++++++++
->  target/hppa/fpu_helper.c | 26 +++++++++++++-------------
->  target/hppa/translate.c  | 18 ++++++++----------
->  3 files changed, 46 insertions(+), 23 deletions(-)
 
