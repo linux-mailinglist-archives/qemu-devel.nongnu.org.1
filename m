@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4958C563B
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A598C5641
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:54:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6rdD-0005Cj-9j; Tue, 14 May 2024 08:51:47 -0400
+	id 1s6rdA-0005CN-OU; Tue, 14 May 2024 08:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd7-0005C1-DN
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcy-0005A6-Mg
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rd5-0005F1-Vk
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcx-0005Dt-5m
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715691099;
+ s=mimecast20190719; t=1715691090;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ee7Fi+mEF3maNlhA+rKnGHb7FzAkAvKF9dzv3XNijog=;
- b=eP3paY4ly7OU+4fH9q2mqGyHKBv0nwsUUwMX4eYRlXUuTnOyObt4cjNIJe1NrmF0dz9bEP
- kS/JwFq80vF97jAnKBATrFcsb5bi8s07aR8WxCnTnOB//LRJUBvlMyCgnNa6kU2HlhmQPW
- gbcdeieT8mpuId9X3xmPmRagVTbvyPc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-339-SFuHlLvNMs2EgmbfLsWnoQ-1; Tue,
- 14 May 2024 08:51:26 -0400
-X-MC-Unique: SFuHlLvNMs2EgmbfLsWnoQ-1
+ bh=iGa2GMfNx9IQJHjyTVppxyc5VABFYxYurqixi5XhZbU=;
+ b=dTeJnbBIb7mDA/i6AEuBDBp2BobhTHnlDqkQ91754J54esQnkl7UOcl2JgeULx7osnd/Pc
+ UwwhqZqmNno+XpfVhoH4OXV27GSSXyXjC/e0iTOBwPQEKLcOP+hNc3KHIFQ0AzHhS9MZy1
+ KKwMvSfRLHGkbNRAfwh+XMuZyrG0Ug0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-349-dVRWC6RJOv-KjfODaeRxyA-1; Tue, 14 May 2024 08:51:27 -0400
+X-MC-Unique: dVRWC6RJOv-KjfODaeRxyA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E98F2380009D;
- Tue, 14 May 2024 12:51:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA2C48025FC;
+ Tue, 14 May 2024 12:51:26 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 129A3400057;
- Tue, 14 May 2024 12:51:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 35F20400057;
+ Tue, 14 May 2024 12:51:26 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/11] gitlab: use $MAKE instead of 'make'
-Date: Tue, 14 May 2024 14:51:11 +0200
-Message-ID: <20240514125119.284638-4-thuth@redhat.com>
+Subject: [PULL 04/11] gitlab: use 'setarch -R' to workaround tsan bug
+Date: Tue, 14 May 2024 14:51:12 +0200
+Message-ID: <20240514125119.284638-5-thuth@redhat.com>
 In-Reply-To: <20240514125119.284638-1-thuth@redhat.com>
 References: <20240514125119.284638-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,45 +79,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-The lcitool generated containers have '$MAKE' set to the path
-of the right 'make' binary. Using the env variable makes it
-possible to override the choice per job.
+The TSAN job started failing when gitlab rolled out their latest
+release. The root cause is a change in the Google COS version used
+on shared runners. This brings a kernel running with
+
+ vm.mmap_rnd_bits = 31
+
+which is incompatible with TSAN in LLVM < 18, which only supports
+upto '28'. LLVM 18 can support upto '30', and failing that will
+re-exec itself to turn off VA randomization.
+
+Our LLVM is too old for now, but we can run with 'setarch -R make ..'
+to turn off VA randomization ourselves.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240513111551.488088-3-berrange@redhat.com>
+Message-ID: <20240513111551.488088-4-berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .gitlab-ci.d/buildtest-template.yml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .gitlab-ci.d/buildtest.yml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 22045add80..278a5ea966 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -26,10 +26,10 @@
-       then
-         pyvenv/bin/meson configure . -Dbackend_max_links="$LD_JOBS" ;
-       fi || exit 1;
--    - make -j"$JOBS"
-+    - $MAKE -j"$JOBS"
-     - if test -n "$MAKE_CHECK_ARGS";
-       then
--        make -j"$JOBS" $MAKE_CHECK_ARGS ;
-+        $MAKE -j"$JOBS" $MAKE_CHECK_ARGS ;
-       fi
-     - ccache --show-stats
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index 372404fc85..91c57efded 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -575,6 +575,9 @@ tsan-build:
+     CONFIGURE_ARGS: --enable-tsan --cc=clang --cxx=clang++
+           --enable-trace-backends=ust --disable-slirp
+     TARGETS: x86_64-softmmu ppc64-softmmu riscv64-softmmu x86_64-linux-user
++    # Remove when we switch to a distro with clang >= 18
++    # https://github.com/google/sanitizers/issues/1716
++    MAKE: setarch -R make
  
-@@ -60,7 +60,7 @@
-     - cd build
-     - find . -type f -exec touch {} +
-     # Avoid recompiling by hiding ninja with NINJA=":"
--    - make NINJA=":" $MAKE_CHECK_ARGS
-+    - $MAKE NINJA=":" $MAKE_CHECK_ARGS
- 
- .native_test_job_template:
-   extends: .common_test_job_template
+ # gcov is a GCC features
+ gcov:
 -- 
 2.45.0
 
