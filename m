@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17D58C5A8A
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 867CE8C5A82
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:46:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6wBm-0004wU-NR; Tue, 14 May 2024 13:43:46 -0400
+	id 1s6wBq-0004zd-2g; Tue, 14 May 2024 13:43:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6wBP-0004pw-I6
- for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:29 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1s6wBP-0004pz-J2
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:32 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6wB2-0004tC-Kc
- for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:16 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a59a352bbd9so77038466b.1
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 10:42:58 -0700 (PDT)
+ id 1s6wB0-0004sy-2R
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:01 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a59a609dd3fso68255166b.0
+ for <qemu-devel@nongnu.org>; Tue, 14 May 2024 10:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715708576; x=1716313376; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715708575; x=1716313375; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3SGXtYjHPhRPb+FEejg3JUt/LMp+FdVDAbFVCCpIL84=;
- b=CTMoFzUGl3qUcgomgI4RcY/lMFCmBEPf64YUQ6ofsWr7HxL4KssHzhgi6OmX2++3ZJ
- 18RyrAl3hXT/qhJ9VufcmgcA8x9bdGujyIqc3BX+17Ba2fKFeqx6xhCpWbniO6mkv//z
- ly42mW/AW8NxK9cEjFP0lNTBNx8C4l/Mf2Oi/MZDrGpYpnvnVv1UzZVhEmsPNabnvyKx
- Jwp5j3gHf8NUGEe/2VBuy9u0juRCARddpoGtCnlus420O0FGgnDVDLe2Lh8FC+MBzs5y
- FGHUbTs3NjEHvvoMwhfpI3zIndF2kzb3r27GMmoQyBOLLoKTqK0rZP/wzxuUsOEAKwwb
- ipoQ==
+ bh=XPxY0E7yxbX5pVQ4/Szl3Q5MOqxhGDVnE0r/P4HexYI=;
+ b=pswhmI1uyauhZKJvJDi23y4NcHuYpU4yG1KpHHRrdEBjXh/gzzioBJPEMkNUJRpxNc
+ SbiWGKToGpgfmKY0bfdSXtLa5Rarp3IXF5XJQOPpStUdnu2kS1hJtyNxYc9NMV/0eLZi
+ VaBdmiCxrmZeUV+ExCyAReLMNn2Ts3dUKwAESZPtSiYZKvNg2da7a93uzgPQpnIWnCaF
+ rcmZKw/TPbNsm/W8Ck4NyXiGDzIfiGkVbiTtSxxmay5uLk3vVrq5ypnAIbjmlHj1buhl
+ 4indqUJEZlqBnTynUaTNoOvmeNqu8ZA6cGeS+NpkXVbmqSC7kooG+L4HK8sy/vuWdxQq
+ 6P6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715708576; x=1716313376;
+ d=1e100.net; s=20230601; t=1715708575; x=1716313375;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3SGXtYjHPhRPb+FEejg3JUt/LMp+FdVDAbFVCCpIL84=;
- b=n9c/JzKUYLoUuluZ/oHno/ZYtH3Lxn13p2nIomy6+i1QK0lHzrA8pTzcbgG4w0jy8G
- WQkn5KeUXLgEkBQjgQrIUTgW0NyE6RjxG4Si6ty+ntq6WCfltV5dHl85iRuD1q6S3uCJ
- oEv1xb6hh5gRsHx0aJUPVhuU7B+qO1RvsNKqDtDQHJJN32jYMoqEN03s7Oj1c8GXDywX
- CC4TTuL8TkdO7bDJ9QRvE3L94MadM8tb4UXF96VsjQwZggpv291eNVMXGlRlXHHhZoab
- lAZ0pvJmCZSM3d0D3L03y3RtteJcwIp9izpuOUeaDsWu2TS/gsoG2vPa/2uFJp2GNxLQ
- yxpw==
-X-Gm-Message-State: AOJu0YwsoJ9iDokMWj9VwvXOakWa15U4F0CweBWVbgTDFI3a4N0XU4zA
- XS/jpFMNh22G4/HVUBJXGF293vWrbHsxKsL+sI2btGr/+XJA1ozuY9b7QSvdN4g=
-X-Google-Smtp-Source: AGHT+IEMGc3kE9kaM8kXebO19zguiwMTIrcSMiT70XOCHnLFGxatL+wliQ1oj+I8sk4HZtDje3TAiA==
-X-Received: by 2002:a17:906:2b9a:b0:a58:b479:8fdc with SMTP id
- a640c23a62f3a-a5a1155b441mr1298791266b.1.1715708576496; 
- Tue, 14 May 2024 10:42:56 -0700 (PDT)
+ bh=XPxY0E7yxbX5pVQ4/Szl3Q5MOqxhGDVnE0r/P4HexYI=;
+ b=csMy+DeYpDu5KZ7PdOzLFo9I0xFiYVZqvOe0W7/WGDAtnMH+jbM4LpHkMsdXmMK0jC
+ TcvwHKUW7htjHi3sGGjWGNumL2FWie/hAU9Dd5vW3cR84deDFxAJVsW5v1Qj2yBb2yQf
+ x2cIFBcqhiCGZ6V4qy7tPiQFjY/un6rsBawPpjmvUuIu082LGjsBiIzAAQeHsQjj+2B6
+ +27cJfcClt+YPIb+cL8k88gQyNqz8zSjlY+4Lbb7OWWgl0UDQJYYZD+FXW+hCFvdvrPe
+ 6/tjU4ZDfEn55hePIu4aBiGyASTUryR0nkAtXWWDhOZEqJLu6Ibz7c/LlMqtiChwCWzV
+ BbGg==
+X-Gm-Message-State: AOJu0YxyoxkQfqFnG5DnGHSnczUpBLuwRQ/nWrVHeh6fc2Mcml1svc4k
+ qZZh+1T/CbCNYRiz7sjxLC9PWBmSSdhHo6guZ2FnZCx+BfruhEdE/SwVG+CTt2M=
+X-Google-Smtp-Source: AGHT+IHW8/2pSHteaIrQI9CuSbOuoVQfbUULwX7TH0x1Tt0WTVyfGG8JhpH5vBhs0f5DIyGF/VqXdA==
+X-Received: by 2002:a17:906:3815:b0:a58:7172:1ab0 with SMTP id
+ a640c23a62f3a-a5a2d1b0fe2mr1268419166b.16.1715708574915; 
+ Tue, 14 May 2024 10:42:54 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781cf70sm743626566b.30.2024.05.14.10.42.54
+ a640c23a62f3a-a5a17b17865sm737840166b.204.2024.05.14.10.42.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 May 2024 10:42:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 072245FA18;
+ by draig.lan (Postfix) with ESMTP id 1E3A05FA19;
  Tue, 14 May 2024 18:42:54 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -69,17 +69,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 01/11] tests/tcg: don't append QEMU_OPTS for armv6m-undef test
-Date: Tue, 14 May 2024 18:42:43 +0100
-Message-Id: <20240514174253.694591-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/11] scripts/update-linux-header.sh: be more src tree
+ friendly
+Date: Tue, 14 May 2024 18:42:44 +0100
+Message-Id: <20240514174253.694591-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240514174253.694591-1-alex.bennee@linaro.org>
 References: <20240514174253.694591-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,27 +103,168 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't want to build on the default machine setup here but define a
-custom one for the microbit.
+Running "install_headers" in the Linux source tree is fairly
+unfriendly as out-of-tree builds will start complaining about the
+kernel source being non-pristine. As we have a temporary directory for
+the install we should also do the build step here. So now we have:
+
+  $tmpdir/
+    $blddir/
+    $hdrdir/
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240510111802.241284-1-alex.bennee@linaro.org>
 ---
- tests/tcg/arm/Makefile.softmmu-target | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/update-linux-headers.sh | 80 +++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 39 deletions(-)
 
-diff --git a/tests/tcg/arm/Makefile.softmmu-target b/tests/tcg/arm/Makefile.softmmu-target
-index 4c9264057f..39e01ce49d 100644
---- a/tests/tcg/arm/Makefile.softmmu-target
-+++ b/tests/tcg/arm/Makefile.softmmu-target
-@@ -16,7 +16,7 @@ test-armv6m-undef: test-armv6m-undef.S
- 		$< -o $@ -nostdlib -N -static \
- 		-T $(ARM_SRC)/$@.ld
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 36f3e91fe4..8963c39189 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -27,6 +27,8 @@
+ #   types like "__u64".  This work is done in the cp_portable function.
  
--run-test-armv6m-undef: QEMU_OPTS+=-semihosting -M microbit -kernel
-+run-test-armv6m-undef: QEMU_OPTS=-semihosting-config enable=on,target=native,chardev=output -M microbit -kernel
+ tmpdir=$(mktemp -d)
++hdrdir="$tmpdir/headers"
++blddir="$tmpdir/build"
+ linux="$1"
+ output="$2"
  
- ARM_TESTS+=test-armv6m-undef
+@@ -110,56 +112,56 @@ for arch in $ARCHLIST; do
+         arch_var=ARCH
+     fi
  
+-    make -C "$linux" INSTALL_HDR_PATH="$tmpdir" $arch_var=$arch headers_install
++    make -C "$linux" O="$blddir" INSTALL_HDR_PATH="$hdrdir" $arch_var=$arch headers_install
+ 
+     rm -rf "$output/linux-headers/asm-$arch"
+     mkdir -p "$output/linux-headers/asm-$arch"
+     for header in kvm.h unistd.h bitsperlong.h mman.h; do
+-        cp "$tmpdir/include/asm/$header" "$output/linux-headers/asm-$arch"
++        cp "$hdrdir/include/asm/$header" "$output/linux-headers/asm-$arch"
+     done
+ 
+     if [ $arch = mips ]; then
+-        cp "$tmpdir/include/asm/sgidefs.h" "$output/linux-headers/asm-mips/"
+-        cp "$tmpdir/include/asm/unistd_o32.h" "$output/linux-headers/asm-mips/"
+-        cp "$tmpdir/include/asm/unistd_n32.h" "$output/linux-headers/asm-mips/"
+-        cp "$tmpdir/include/asm/unistd_n64.h" "$output/linux-headers/asm-mips/"
++        cp "$hdrdir/include/asm/sgidefs.h" "$output/linux-headers/asm-mips/"
++        cp "$hdrdir/include/asm/unistd_o32.h" "$output/linux-headers/asm-mips/"
++        cp "$hdrdir/include/asm/unistd_n32.h" "$output/linux-headers/asm-mips/"
++        cp "$hdrdir/include/asm/unistd_n64.h" "$output/linux-headers/asm-mips/"
+     fi
+     if [ $arch = powerpc ]; then
+-        cp "$tmpdir/include/asm/unistd_32.h" "$output/linux-headers/asm-powerpc/"
+-        cp "$tmpdir/include/asm/unistd_64.h" "$output/linux-headers/asm-powerpc/"
++        cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-powerpc/"
++        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-powerpc/"
+     fi
+ 
+     rm -rf "$output/include/standard-headers/asm-$arch"
+     mkdir -p "$output/include/standard-headers/asm-$arch"
+     if [ $arch = s390 ]; then
+-        cp_portable "$tmpdir/include/asm/virtio-ccw.h" "$output/include/standard-headers/asm-s390/"
+-        cp "$tmpdir/include/asm/unistd_32.h" "$output/linux-headers/asm-s390/"
+-        cp "$tmpdir/include/asm/unistd_64.h" "$output/linux-headers/asm-s390/"
++        cp_portable "$hdrdir/include/asm/virtio-ccw.h" "$output/include/standard-headers/asm-s390/"
++        cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-s390/"
++        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-s390/"
+     fi
+     if [ $arch = arm ]; then
+-        cp "$tmpdir/include/asm/unistd-eabi.h" "$output/linux-headers/asm-arm/"
+-        cp "$tmpdir/include/asm/unistd-oabi.h" "$output/linux-headers/asm-arm/"
+-        cp "$tmpdir/include/asm/unistd-common.h" "$output/linux-headers/asm-arm/"
++        cp "$hdrdir/include/asm/unistd-eabi.h" "$output/linux-headers/asm-arm/"
++        cp "$hdrdir/include/asm/unistd-oabi.h" "$output/linux-headers/asm-arm/"
++        cp "$hdrdir/include/asm/unistd-common.h" "$output/linux-headers/asm-arm/"
+     fi
+     if [ $arch = arm64 ]; then
+-        cp "$tmpdir/include/asm/sve_context.h" "$output/linux-headers/asm-arm64/"
++        cp "$hdrdir/include/asm/sve_context.h" "$output/linux-headers/asm-arm64/"
+     fi
+     if [ $arch = x86 ]; then
+-        cp "$tmpdir/include/asm/unistd_32.h" "$output/linux-headers/asm-x86/"
+-        cp "$tmpdir/include/asm/unistd_x32.h" "$output/linux-headers/asm-x86/"
+-        cp "$tmpdir/include/asm/unistd_64.h" "$output/linux-headers/asm-x86/"
+-        cp_portable "$tmpdir/include/asm/kvm_para.h" "$output/include/standard-headers/asm-$arch"
++        cp "$hdrdir/include/asm/unistd_32.h" "$output/linux-headers/asm-x86/"
++        cp "$hdrdir/include/asm/unistd_x32.h" "$output/linux-headers/asm-x86/"
++        cp "$hdrdir/include/asm/unistd_64.h" "$output/linux-headers/asm-x86/"
++        cp_portable "$hdrdir/include/asm/kvm_para.h" "$output/include/standard-headers/asm-$arch"
+         # Remove everything except the macros from bootparam.h avoiding the
+         # unnecessary import of several video/ist/etc headers
+         sed -e '/__ASSEMBLY__/,/__ASSEMBLY__/d' \
+-               "$tmpdir/include/asm/bootparam.h" > "$tmpdir/bootparam.h"
+-        cp_portable "$tmpdir/bootparam.h" \
++               "$hdrdir/include/asm/bootparam.h" > "$hdrdir/bootparam.h"
++        cp_portable "$hdrdir/bootparam.h" \
+                     "$output/include/standard-headers/asm-$arch"
+-        cp_portable "$tmpdir/include/asm/setup_data.h" \
++        cp_portable "$hdrdir/include/asm/setup_data.h" \
+                     "$output/standard-headers/asm-x86"
+     fi
+     if [ $arch = riscv ]; then
+-        cp "$tmpdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
++        cp "$hdrdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
+     fi
+ done
+ arch=
+@@ -169,13 +171,13 @@ mkdir -p "$output/linux-headers/linux"
+ for header in const.h stddef.h kvm.h vfio.h vfio_ccw.h vfio_zdev.h vhost.h \
+               psci.h psp-sev.h userfaultfd.h memfd.h mman.h nvme_ioctl.h \
+               vduse.h iommufd.h bits.h; do
+-    cp "$tmpdir/include/linux/$header" "$output/linux-headers/linux"
++    cp "$hdrdir/include/linux/$header" "$output/linux-headers/linux"
+ done
+ 
+ rm -rf "$output/linux-headers/asm-generic"
+ mkdir -p "$output/linux-headers/asm-generic"
+ for header in unistd.h bitsperlong.h mman-common.h mman.h hugetlb_encode.h; do
+-    cp "$tmpdir/include/asm-generic/$header" "$output/linux-headers/asm-generic"
++    cp "$hdrdir/include/asm-generic/$header" "$output/linux-headers/asm-generic"
+ done
+ 
+ if [ -L "$linux/source" ]; then
+@@ -210,23 +212,23 @@ EOF
+ 
+ rm -rf "$output/include/standard-headers/linux"
+ mkdir -p "$output/include/standard-headers/linux"
+-for i in "$tmpdir"/include/linux/*virtio*.h \
+-         "$tmpdir/include/linux/qemu_fw_cfg.h" \
+-         "$tmpdir/include/linux/fuse.h" \
+-         "$tmpdir/include/linux/input.h" \
+-         "$tmpdir/include/linux/input-event-codes.h" \
+-         "$tmpdir/include/linux/udmabuf.h" \
+-         "$tmpdir/include/linux/pci_regs.h" \
+-         "$tmpdir/include/linux/ethtool.h" \
+-         "$tmpdir/include/linux/const.h" \
+-         "$tmpdir/include/linux/kernel.h" \
+-         "$tmpdir/include/linux/vhost_types.h" \
+-         "$tmpdir/include/linux/sysinfo.h" \
+-         "$tmpdir/include/misc/pvpanic.h"; do
++for i in "$hdrdir"/include/linux/*virtio*.h \
++         "$hdrdir/include/linux/qemu_fw_cfg.h" \
++         "$hdrdir/include/linux/fuse.h" \
++         "$hdrdir/include/linux/input.h" \
++         "$hdrdir/include/linux/input-event-codes.h" \
++         "$hdrdir/include/linux/udmabuf.h" \
++         "$hdrdir/include/linux/pci_regs.h" \
++         "$hdrdir/include/linux/ethtool.h" \
++         "$hdrdir/include/linux/const.h" \
++         "$hdrdir/include/linux/kernel.h" \
++         "$hdrdir/include/linux/vhost_types.h" \
++         "$hdrdir/include/linux/sysinfo.h" \
++         "$hdrdir/include/misc/pvpanic.h"; do
+     cp_portable "$i" "$output/include/standard-headers/linux"
+ done
+ mkdir -p "$output/include/standard-headers/drm"
+-cp_portable "$tmpdir/include/drm/drm_fourcc.h" \
++cp_portable "$hdrdir/include/drm/drm_fourcc.h" \
+             "$output/include/standard-headers/drm"
+ 
+ cat <<EOF >$output/include/standard-headers/linux/types.h
 -- 
 2.39.2
 
