@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF928C56CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00758C56C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s2Z-00047B-Sl; Tue, 14 May 2024 09:17:59 -0400
+	id 1s6s2Y-00046T-7H; Tue, 14 May 2024 09:17:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2S-00044U-KX
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1s6s2M-0003xa-VM
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2Q-0002I9-Hx
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:52 -0400
+ id 1s6s2J-0002HT-Df
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715692668;
+ s=mimecast20190719; t=1715692662;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4NGfDYR19txb4ZUJo2PMdaa5/SuSMw5/eYLlZoVwbxw=;
- b=NLCjCpgNzFgkpWtFTCAEOEaSFmnb8rFS5cD2GQsW8y1swXLcbDBInbnaw22eTADnrf+x0o
- dpKWKVgjL+c6pFKfGtpZVuIaOOh7MryHzHtzDYNruhEf/3/uLevEWED5n8DG6XAIgQF8yd
- 6DxpvAm6h8YxahEWrZ9zJ5US3Nd0YOQ=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=V6QkAB8f3D8Lwd7g7W+ovSdSL9dB5FytpcbJQS6xt/A=;
+ b=ClKbXNI9hAg+52Suv9TF9fusraFKGeJQ22hONFXzospPcR1/XmCYdiUmc5OLn0OlasZWQV
+ NOVXDJL/qnDrpXtoyZYOCqTuuk8VkTrVMHVWiMYyo6bb20ZXNTCB9wz2e7I298LxQc6St9
+ ZKAhAVEaa6lAYr7rmm1fPUF+JZzi8aM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-ru63u0hFP1u-c39I10GBSw-1; Tue, 14 May 2024 09:17:29 -0400
-X-MC-Unique: ru63u0hFP1u-c39I10GBSw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-568-13f8JdwiPpaNGOKEiY6BDQ-1; Tue, 14 May 2024 09:17:33 -0400
+X-MC-Unique: 13f8JdwiPpaNGOKEiY6BDQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F975800CA5;
- Tue, 14 May 2024 13:17:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CCD58016E9;
+ Tue, 14 May 2024 13:17:33 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 450CB400059;
- Tue, 14 May 2024 13:17:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1407421EE56B;
+ Tue, 14 May 2024 13:17:31 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
- =?unknown-8bit?q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: [PULL 00/11] Ui patches
-Date: Tue, 14 May 2024 17:17:14 +0400
-Message-ID: <20240514131725.931234-1-marcandre.lureau@redhat.com>
+Cc: richard.henderson@linaro.org, Sergii Zasenko <sergii@zasenko.name>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 01/11] Allow UNIX socket option for VNC websocket
+Date: Tue, 14 May 2024 17:17:15 +0400
+Message-ID: <20240514131725.931234-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20240514131725.931234-1-marcandre.lureau@redhat.com>
+References: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
@@ -78,71 +82,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+From: Sergii Zasenko <sergii@zasenko.name>
 
-The following changes since commit 9360070196789cc8b9404b2efaf319384e64b107:
+- Remove unix socket option limitation for VNC websocket
+- Reflect websocket option changes in documentation
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-05-12 13:41:26 +0200)
+Signed-off-by: Sergii Zasenko <sergii@zasenko.name>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230724100353.16628-1-sergii@zasenko.name>
+---
+ ui/vnc.c        | 5 -----
+ qemu-options.hx | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/marcandre.lureau/qemu.git tags/ui-pull-request
-
-for you to fetch changes up to 2e701e6785cd8cc048c608751c6e4f6253c67ab6:
-
-  ui/sdl2: Allow host to power down screen (2024-05-14 17:14:13 +0400)
-
-----------------------------------------------------------------
-UI: small fixes and improvements
-
-----------------------------------------------------------------
-
-Bernhard Beschow (1):
-  ui/sdl2: Allow host to power down screen
-
-Dongwon Kim (7):
-  ui/gtk: Draw guest frame at refresh cycle
-  ui/gtk: Check if fence_fd is equal to or greater than 0
-  ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf struct and
-    helpers
-  ui/console: Use qemu_dmabuf_get_..() helpers instead
-  ui/console: Use qemu_dmabuf_set_..() helpers instead
-  ui/console: Use qemu_dmabuf_new() and free() helpers instead
-  ui/console: move QemuDmaBuf struct def to dmabuf.c
-
-Sergii Zasenko (1):
-  Allow UNIX socket option for VNC websocket
-
-hikalium (2):
-  ui/gtk: Add gd_motion_event trace event
-  ui/gtk: Fix mouse/motion event scaling issue with GTK display backend
-
- include/hw/vfio/vfio-common.h   |   2 +-
- include/hw/virtio/virtio-gpu.h  |   4 +-
- include/ui/console.h            |  20 +--
- include/ui/dmabuf.h             |  49 +++++++
- hw/display/vhost-user-gpu.c     |  32 +++--
- hw/display/virtio-gpu-udmabuf.c |  27 ++--
- hw/vfio/display.c               |  32 ++---
- ui/console.c                    |   4 +-
- ui/dbus-console.c               |   9 +-
- ui/dbus-listener.c              |  71 +++++-----
- ui/dmabuf.c                     | 229 ++++++++++++++++++++++++++++++++
- ui/egl-headless.c               |  23 +++-
- ui/egl-helpers.c                |  59 ++++----
- ui/gtk-egl.c                    |  53 +++++---
- ui/gtk-gl-area.c                |  42 ++++--
- ui/gtk.c                        |  32 +++--
- ui/sdl2.c                       |   1 +
- ui/spice-display.c              |  50 ++++---
- ui/vnc.c                        |   5 -
- qemu-options.hx                 |   4 +
- ui/meson.build                  |   1 +
- ui/trace-events                 |   1 +
- 22 files changed, 547 insertions(+), 203 deletions(-)
- create mode 100644 include/ui/dmabuf.h
- create mode 100644 ui/dmabuf.c
-
+diff --git a/ui/vnc.c b/ui/vnc.c
+index b3fd78022b..dd530f04e5 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3734,11 +3734,6 @@ static int vnc_display_get_address(const char *addrstr,
+         addr->type = SOCKET_ADDRESS_TYPE_UNIX;
+         addr->u.q_unix.path = g_strdup(addrstr + 5);
+ 
+-        if (websocket) {
+-            error_setg(errp, "UNIX sockets not supported with websock");
+-            goto cleanup;
+-        }
+-
+         if (to) {
+             error_setg(errp, "Port range not support with UNIX socket");
+             goto cleanup;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index f5c01eeeb4..4d19660336 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2516,6 +2516,10 @@ SRST
+         host. It is possible to control the websocket listen address
+         independently, using the syntax ``websocket``\ =host:port.
+ 
++        Websocket could be allowed over UNIX domain socket, using the syntax
++        ``websocket``\ =unix:path, where path is the location of a unix socket
++        to listen for connections on.
++
+         If no TLS credentials are provided, the websocket connection
+         runs in unencrypted mode. If TLS credentials are provided, the
+         websocket connection requires encrypted client connections.
 -- 
 2.41.0.28.gd7d8841f67
 
