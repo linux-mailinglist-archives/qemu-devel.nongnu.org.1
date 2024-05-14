@@ -2,50 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECD768C5638
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C6A8C5637
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 14:52:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6rd3-0005A5-TE; Tue, 14 May 2024 08:51:37 -0400
+	id 1s6rd7-0005Aq-SO; Tue, 14 May 2024 08:51:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcv-00059J-7k
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:29 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcw-00059V-9D
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rct-0005DA-2Q
- for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:28 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s6rcu-0005DQ-ED
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 08:51:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715691085;
+ s=mimecast20190719; t=1715691087;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=BhZviWR8swUyZh1VWtzS6YVsWR3o/hYYrBgfLNRvAqY=;
- b=DDkSPk041DVtM004SYyGVBRa2hfu6/uzMqTQE2Puda/pxrEPCFSZzTd1/nmfv/Y8/O/BFz
- e4u1A6iU+lQ8WLhJiTrL0oCs5wVnu36JpU9TmCymuRCExyUOCssNkkGThi/eyABY1SQDkI
- olsk6MoBcSdhG53YLD6/6/XvGeE2avo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-186-vCxYF4SJPUqwvmCMRUSNhw-1; Tue,
- 14 May 2024 08:51:21 -0400
-X-MC-Unique: vCxYF4SJPUqwvmCMRUSNhw-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ncJJ3xd2BNJLl+BzqIrKJkIzSdX95M3LGYLpcjA5q3I=;
+ b=VWsmiPUxtY6PnqN0jvOCDspWf+ijz2NooZrNCJkMsYhwDT8c/YbYZ7eU95g0sxxYU/6H6n
+ p1lzn7PA8TlXKANHQbiIA4e43/SnrD0AnYCliheGE8XD2Sw2IsyKFOpzGud1/ppDPpdzQb
+ B01m666Svsn+MEI6IatCOPGVbyjrOyQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-246-VxPZLsLVMHOwQ6xyTiUKcA-1; Tue, 14 May 2024 08:51:23 -0400
+X-MC-Unique: VxPZLsLVMHOwQ6xyTiUKcA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94817380009F;
- Tue, 14 May 2024 12:51:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24EA285A58C;
+ Tue, 14 May 2024 12:51:23 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.26])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D216F400057;
- Tue, 14 May 2024 12:51:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1B037400057;
+ Tue, 14 May 2024 12:51:21 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 00/11] gitlab CI fix and glib update
-Date: Tue, 14 May 2024 14:51:08 +0200
-Message-ID: <20240514125119.284638-1-thuth@redhat.com>
+Subject: [PULL 01/11] configure: Fix error message when C compiler is not
+ working
+Date: Tue, 14 May 2024 14:51:09 +0200
+Message-ID: <20240514125119.284638-2-thuth@redhat.com>
+In-Reply-To: <20240514125119.284638-1-thuth@redhat.com>
+References: <20240514125119.284638-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,62 +78,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 9360070196789cc8b9404b2efaf319384e64b107:
+If you try to run the configure script on a system without a working
+C compiler, you get a very misleading error message:
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-05-12 13:41:26 +0200)
+ ERROR: Unrecognized host OS (uname -s reports 'Linux')
 
-are available in the Git repository at:
+Some people already opened bug tickets because of this problem:
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-05-14
+ https://gitlab.com/qemu-project/qemu/-/issues/2057
+ https://gitlab.com/qemu-project/qemu/-/issues/2288
 
-for you to fetch changes up to da79537e0c8cef007d30298343d05acb0ba8b427:
+We should rather tell the user that we were not able to use the C
+compiler instead, otherwise they will have a hard time to figure
+out what was going wrong.
 
-  util/uri: Remove the old URI parsing code (2024-05-14 12:46:46 +0200)
+While we're at it, let's also suppress the "unrecognized host CPU"
+message in this case since it is rather misleading than helpful.
 
-----------------------------------------------------------------
-* Fix the "tsan-build" CI job on the shared gitlab CI runners
-* Bump minimum glib version and use URI code from the newer glib
-* Fix error message from "configure" when C compiler is not working
+Fixes: 264b803721 ("configure: remove compiler sanity check")
+Message-ID: <20240513114010.51608-1-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ configure | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Daniel P. Berrangé (3):
-      dockerfiles: add 'MAKE' env variable to remaining containers
-      gitlab: use $MAKE instead of 'make'
-      gitlab: use 'setarch -R' to workaround tsan bug
-
-Thomas Huth (8):
-      configure: Fix error message when C compiler is not working
-      Bump minimum glib version to v2.66
-      Remove glib compatibility code that is not required anymore
-      block/gluster: Use URI parsing code from glib
-      block/nbd: Use URI parsing code from glib
-      block/nfs: Use URI parsing code from glib
-      block/ssh: Use URI parsing code from glib
-      util/uri: Remove the old URI parsing code
-
- configure                                          |   11 +-
- meson.build                                        |   16 +-
- include/glib-compat.h                              |   27 +-
- include/qemu/uri.h                                 |   99 --
- block/gluster.c                                    |   69 +-
- block/nbd.c                                        |   76 +-
- block/nfs.c                                        |  110 +-
- block/ssh.c                                        |   75 +-
- qga/commands-posix-ssh.c                           |   12 +-
- util/error-report.c                                |   10 -
- util/uri.c                                         | 1466 --------------------
- .gitlab-ci.d/buildtest-template.yml                |    6 +-
- .gitlab-ci.d/buildtest.yml                         |    3 +
- .../dockerfiles/debian-all-test-cross.docker       |    1 +
- .../docker/dockerfiles/debian-hexagon-cross.docker |    1 +
- .../dockerfiles/debian-legacy-test-cross.docker    |    1 +
- .../dockerfiles/debian-loongarch-cross.docker      |    1 +
- .../docker/dockerfiles/debian-tricore-cross.docker |    1 +
- .../docker/dockerfiles/debian-xtensa-cross.docker  |    1 +
- tests/docker/dockerfiles/fedora-cris-cross.docker  |    1 +
- util/meson.build                                   |    2 +-
- 21 files changed, 194 insertions(+), 1795 deletions(-)
- delete mode 100644 include/qemu/uri.h
- delete mode 100644 util/uri.c
+diff --git a/configure b/configure
+index 330664786d..38ee257701 100755
+--- a/configure
++++ b/configure
+@@ -411,7 +411,9 @@ else
+   # Using uname is really broken, but it is just a fallback for architectures
+   # that are going to use TCI anyway
+   cpu=$(uname -m)
+-  echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
++  if test "$host_os" != "bogus"; then
++    echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
++  fi
+ fi
+ 
+ # Normalise host CPU name to the values used by Meson cross files and in source
+@@ -894,6 +896,13 @@ EOF
+ exit 0
+ fi
+ 
++# Now that we are sure that the user did not only want to print the --help
++# information, we should double-check that the C compiler really works:
++write_c_skeleton
++if ! compile_object ; then
++    error_exit "C compiler \"$cc\" either does not exist or does not work."
++fi
++
+ # Remove old dependency files to make sure that they get properly regenerated
+ rm -f ./*/config-devices.mak.d
+ 
+-- 
+2.45.0
 
 
