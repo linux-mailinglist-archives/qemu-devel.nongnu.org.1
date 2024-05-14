@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957AF8C5A79
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A17D58C5A8A
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:48:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6wBo-0004yH-AA; Tue, 14 May 2024 13:43:48 -0400
+	id 1s6wBm-0004wU-NR; Tue, 14 May 2024 13:43:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6wBP-0004pu-IJ
+ id 1s6wBP-0004pw-I6
  for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:29 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s6wB0-0004tG-J4
- for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:01 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-56e69888a36so545743a12.3
+ id 1s6wB2-0004tC-Kc
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:16 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a59a352bbd9so77038466b.1
  for <qemu-devel@nongnu.org>; Tue, 14 May 2024 10:42:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715708577; x=1716313377; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GjZ7KifFglh+uMfDPAeKXZwHERo568uFc2foxLMBJ4U=;
- b=n3iwcMJmq5DYm4cA5LDU1ID8U2BBjky0IN+kP9VD0w6cmMrMGwxTmZQ4n5c5Sgv57h
- CnwaHdRJ4oCI/xDeVM59Igx87HNWbT1WK3uzgH2c5A2Nk4MGJWwyGs60nKj4Fayk+NqE
- T2uUnumKK2UDf0BnNI76ztBTrPhKD6Cecywq8u+ErYbeHQ0XFCUIm2I+aCJMs1owCzLp
- GzI3DxH/sG7ar3intLNmX4qlSKg7fsK5BHZNMfWt9ID6RbJTH9kZbZAa01l3w2t4ECXN
- Gp62YDwf0lGoMImsbuT2lfukIDpC173k9tEDHbw+JCc9BfgssbJOM/5Puij8dV9/FI1s
- S8ww==
+ d=linaro.org; s=google; t=1715708576; x=1716313376; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3SGXtYjHPhRPb+FEejg3JUt/LMp+FdVDAbFVCCpIL84=;
+ b=CTMoFzUGl3qUcgomgI4RcY/lMFCmBEPf64YUQ6ofsWr7HxL4KssHzhgi6OmX2++3ZJ
+ 18RyrAl3hXT/qhJ9VufcmgcA8x9bdGujyIqc3BX+17Ba2fKFeqx6xhCpWbniO6mkv//z
+ ly42mW/AW8NxK9cEjFP0lNTBNx8C4l/Mf2Oi/MZDrGpYpnvnVv1UzZVhEmsPNabnvyKx
+ Jwp5j3gHf8NUGEe/2VBuy9u0juRCARddpoGtCnlus420O0FGgnDVDLe2Lh8FC+MBzs5y
+ FGHUbTs3NjEHvvoMwhfpI3zIndF2kzb3r27GMmoQyBOLLoKTqK0rZP/wzxuUsOEAKwwb
+ ipoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715708577; x=1716313377;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GjZ7KifFglh+uMfDPAeKXZwHERo568uFc2foxLMBJ4U=;
- b=lhSjIcV012aDKIdIWE+4iv/w2+UJszOaXW6GaNlVvZ6gbKxO+TKzxtG+txCK84dOPi
- xyCAP1dYPW2sJ4sNC/TtU5VzU2DTiM3b01suMKQrgg3QwsTGkZmqNgrbA6mJo+REEJsv
- Yjs+pYlxQFLe3B9FUxvrgNt6Ey0YI/8pH/WHDKloViP3BF8M01iN9Ouqbj0bQwXp+PTU
- 8qU4VQjm+hxBl9s3AQshu40pbykLQW1c6+xJTiCenA/si2KUmmtVO42Tfsat0QU3+/HN
- 1x0WVCJeMoeMzPS5rvxvQnoJEjZLDWnJY3VivcY5ERwKQA/NwOuzxh+pG7iUelSQGFmT
- cWGQ==
-X-Gm-Message-State: AOJu0Yw483jdHoxrhrvLdsOd0GW323lf+29GXpZfji4B103irOtIawAR
- if/DIQ42i6neOk2ukcwNb77kJlYC2tdFMULv/GX0MTJUYb5MzniONu3LwMojvtI=
-X-Google-Smtp-Source: AGHT+IGUkbCf+0zBMAQvgnOBLMuzZVclFPF48yEE6fAKTRy5TpALV/kVJR7gighWSgVy7njI4ULqcA==
-X-Received: by 2002:a50:c30b:0:b0:574:eb80:3305 with SMTP id
- 4fb4d7f45d1cf-574eb80345fmr1172325a12.11.1715708576906; 
+ d=1e100.net; s=20230601; t=1715708576; x=1716313376;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=3SGXtYjHPhRPb+FEejg3JUt/LMp+FdVDAbFVCCpIL84=;
+ b=n9c/JzKUYLoUuluZ/oHno/ZYtH3Lxn13p2nIomy6+i1QK0lHzrA8pTzcbgG4w0jy8G
+ WQkn5KeUXLgEkBQjgQrIUTgW0NyE6RjxG4Si6ty+ntq6WCfltV5dHl85iRuD1q6S3uCJ
+ oEv1xb6hh5gRsHx0aJUPVhuU7B+qO1RvsNKqDtDQHJJN32jYMoqEN03s7Oj1c8GXDywX
+ CC4TTuL8TkdO7bDJ9QRvE3L94MadM8tb4UXF96VsjQwZggpv291eNVMXGlRlXHHhZoab
+ lAZ0pvJmCZSM3d0D3L03y3RtteJcwIp9izpuOUeaDsWu2TS/gsoG2vPa/2uFJp2GNxLQ
+ yxpw==
+X-Gm-Message-State: AOJu0YwsoJ9iDokMWj9VwvXOakWa15U4F0CweBWVbgTDFI3a4N0XU4zA
+ XS/jpFMNh22G4/HVUBJXGF293vWrbHsxKsL+sI2btGr/+XJA1ozuY9b7QSvdN4g=
+X-Google-Smtp-Source: AGHT+IEMGc3kE9kaM8kXebO19zguiwMTIrcSMiT70XOCHnLFGxatL+wliQ1oj+I8sk4HZtDje3TAiA==
+X-Received: by 2002:a17:906:2b9a:b0:a58:b479:8fdc with SMTP id
+ a640c23a62f3a-a5a1155b441mr1298791266b.1.1715708576496; 
  Tue, 14 May 2024 10:42:56 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733c322c85sm7790031a12.84.2024.05.14.10.42.54
+ a640c23a62f3a-a5a1781cf70sm743626566b.30.2024.05.14.10.42.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 14 May 2024 10:42:54 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id E552D5F8B0;
- Tue, 14 May 2024 18:42:53 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 072245FA18;
+ Tue, 14 May 2024 18:42:54 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -68,22 +69,24 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH 00/11] maintainer updates (plugins, testing) pre-PR
-Date: Tue, 14 May 2024 18:42:42 +0100
-Message-Id: <20240514174253.694591-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/11] tests/tcg: don't append QEMU_OPTS for armv6m-undef test
+Date: Tue, 14 May 2024 18:42:43 +0100
+Message-Id: <20240514174253.694591-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240514174253.694591-1-alex.bennee@linaro.org>
+References: <20240514174253.694591-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,39 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is mostly plugin related stuff which is all ready to go however
-I have a few miscellaneous testing updates which would appreciate the
-review.
+We don't want to build on the default machine setup here but define a
+custom one for the microbit.
 
-Thanks.
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/tcg/arm/Makefile.softmmu-target | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Alex Bennée (2):
-  tests/tcg: don't append QEMU_OPTS for armv6m-undef test
-  scripts/update-linux-header.sh: be more src tree friendly
-
-Pierrick Bouvier (9):
-  plugins: prepare introduction of new inline ops
-  plugins: extract generate ptr for qemu_plugin_u64
-  plugins: add new inline op STORE_U64
-  tests/plugin/inline: add test for STORE_U64 inline op
-  plugins: conditional callbacks
-  tests/plugin/inline: add test for conditional callback
-  plugins: distinct types for callbacks
-  plugins: extract cpu_index generate
-  plugins: remove op from qemu_plugin_inline_cb
-
- include/qemu/plugin.h                 |  42 +++++---
- include/qemu/qemu-plugin.h            |  80 ++++++++++++++-
- plugins/plugin.h                      |  12 ++-
- accel/tcg/plugin-gen.c                | 136 ++++++++++++++++++++------
- plugins/api.c                         |  39 ++++++++
- plugins/core.c                        | 109 +++++++++++++++------
- tests/plugin/inline.c                 | 130 ++++++++++++++++++++++--
- plugins/qemu-plugins.symbols          |   2 +
- scripts/update-linux-headers.sh       |  80 +++++++--------
- tests/tcg/arm/Makefile.softmmu-target |   2 +-
- 10 files changed, 508 insertions(+), 124 deletions(-)
-
+diff --git a/tests/tcg/arm/Makefile.softmmu-target b/tests/tcg/arm/Makefile.softmmu-target
+index 4c9264057f..39e01ce49d 100644
+--- a/tests/tcg/arm/Makefile.softmmu-target
++++ b/tests/tcg/arm/Makefile.softmmu-target
+@@ -16,7 +16,7 @@ test-armv6m-undef: test-armv6m-undef.S
+ 		$< -o $@ -nostdlib -N -static \
+ 		-T $(ARM_SRC)/$@.ld
+ 
+-run-test-armv6m-undef: QEMU_OPTS+=-semihosting -M microbit -kernel
++run-test-armv6m-undef: QEMU_OPTS=-semihosting-config enable=on,target=native,chardev=output -M microbit -kernel
+ 
+ ARM_TESTS+=test-armv6m-undef
+ 
 -- 
 2.39.2
 
