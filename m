@@ -2,71 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137BF8C56DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E558C56C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s36-0005SL-3F; Tue, 14 May 2024 09:18:32 -0400
+	id 1s6s2H-0003Zl-7B; Tue, 14 May 2024 09:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2t-0004pf-7y
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2r-0002Mu-Jw
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715692694;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PFogub3OVYdJX3l7+D7iwhDxOA51U84fg5/9lya0u8k=;
- b=HianDDVhsB4P/L+iaSEKoMxqeIGFTESAIF3bMOITLF9iO7ENms8ANyfpxa67dPv+lFNF3b
- RoExOd8S8AShLjT0/9JoZ3nSkLH3Inw9faFsgOXfveT0/uhf6WlXSEb6RrHI1OAtks2dzE
- QFXHdWpkVR/LQjIH/2czEerJnVTBZe4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-pu04bBQfOeCmmJgmxgO-ug-1; Tue,
- 14 May 2024 09:18:12 -0400
-X-MC-Unique: pu04bBQfOeCmmJgmxgO-ug-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0EA143C0009B;
- Tue, 14 May 2024 13:18:12 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4A0E640105A;
- Tue, 14 May 2024 13:18:09 +0000 (UTC)
-From: marcandre.lureau@redhat.com
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, hikalium <hikalium@hikalium.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 09/11] ui/gtk: Add gd_motion_event trace event
-Date: Tue, 14 May 2024 17:17:23 +0400
-Message-ID: <20240514131725.931234-10-marcandre.lureau@redhat.com>
-In-Reply-To: <20240514131725.931234-1-marcandre.lureau@redhat.com>
-References: <20240514131725.931234-1-marcandre.lureau@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s24-0003UW-K8
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:29 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s6s22-0002Fq-Li
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:17:28 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-51f72a29f13so7433940e87.3
+ for <qemu-devel@nongnu.org>; Tue, 14 May 2024 06:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715692644; x=1716297444; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5TG9OOFRsD0samoPNFZIB3nd8nEq6R6PHHjOmvYM5vs=;
+ b=tYyfxm2HSJr7h/7h67RfCRxapC87tpGLUTeiY6xhaN6H+9IryHNE8UhWMYgv9vui+G
+ mdqgxB2VUTZSrhe7Ox8VkxM7EWUHGDTyKECk4Pp8R/3CKff6hOlSCyXuunrXTDebxpuO
+ MTBUdIOpaSFMkxluVzaqYPa5Bu1AZ2KYMgg7THK9xiKZuGVI8/uPEgYFuCTG9M4h4GiL
+ B1dco3NYbVAvMP2bPRU4v7MBX7vBjUzlZEWkwPGd8qsSSp2T2r3tteOUX0AfnEL5qAsL
+ Lfwk81mc4PDiqGvwahaHEvIk8hPbqbkWU5cbQWRWJc1QBLQkA/wHgHPp1yfplFBpQv7e
+ vDRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715692644; x=1716297444;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5TG9OOFRsD0samoPNFZIB3nd8nEq6R6PHHjOmvYM5vs=;
+ b=AtUhsZ1wD4lTVm7DsLwsSd2AphSvaVYOtP1Yxddv7hoKhR0KHe9Aix/FgqOdmpncKR
+ 3tKpLJoewLAB5pbMFwdcugrkw2rNQFr4LsykxUGgfQ9HLBviCSbjNjH77L62+osIYp+E
+ mOLwRhMjLV1ivZIJ/nqLxWxHOuL12aixxcqC+f1wc03sr6FSYYfBQFi9m1kntkdxp1lA
+ QCLWdNU5gaYbc3VUYbWMXOwC0scOb7ocTdC/r6I4K1RCIewplkM5RhjePH9IBu9FXnZ1
+ iVbluyXYHWdI4uhMysfHAtLITyn2n4CcWxcduJIR7wNNIDUUSg5MSnnA8lLs19sjPvvH
+ 0maQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVopO4DIf5EdClaSg1hem3AXX/rjNBmXvL0Pucqf2gEXpBtQPkWhVOVk0WlXmdS62l/0jgWUYFbvMBYBsg5EEAGXWrFN3M=
+X-Gm-Message-State: AOJu0YzTxrI+UfpJ9B51Jvmu/nnPt2fIJt0vv4YMnM2hcYMIlquCmI+s
+ H8KEN/o2dA/vWI4GRow0EgtqACFsnD6b4t1ey6eQC/BPJ9SLEHdiexYD1XlAhp8=
+X-Google-Smtp-Source: AGHT+IE+f981Z0aSNmCb82dLJ9iTZgVL6sMRjsB2EVYkim3sI74sHkXwSk22DCcaPPeWZuKJGAHi5w==
+X-Received: by 2002:a05:6512:32b5:b0:520:76d0:b054 with SMTP id
+ 2adb3069b0e04-522105845ecmr8525580e87.57.1715692644555; 
+ Tue, 14 May 2024 06:17:24 -0700 (PDT)
+Received: from [10.91.1.102] ([149.14.240.163])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3502b895887sm13655282f8f.40.2024.05.14.06.17.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 14 May 2024 06:17:24 -0700 (PDT)
+Message-ID: <382f3435-d7a8-4cbd-a537-b7ca82d6df4a@linaro.org>
+Date: Tue, 14 May 2024 15:17:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] qga: Shorten several error messages
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: kkostiuk@redhat.com, michael.roth@amd.com
+References: <20240514105829.729342-1-armbru@redhat.com>
+ <20240514105829.729342-3-armbru@redhat.com> <874jb03bbw.fsf@pond.sub.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <874jb03bbw.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,45 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: hikalium <hikalium@hikalium.com>
+On 14/5/24 13:02, Markus Armbruster wrote:
+> Markus Armbruster <armbru@redhat.com> writes:
+> 
+>> Some, but not all error messages are of the form
+>>
+>>      Guest agent command failed, error was '<actual error message>'
+>>
+>> For instance, command guest-exec can fail with an error message like
+>>
+>>      Guest agent command failed, error was 'Failed to execute child process “/bin/invalid-cmd42” (No such file or directory)'
+>>
+>> Shorten this to just just the actual error message.  The guest-exec
+>> example becomes
+>>
+>>      Failed to execute child process “/bin/invalid-cmd42” (No such file or directory)
+>>
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> 
+> [...]
+> 
+> To be squashed into the patch:
+> 
+> diff --git a/qga/commands.c b/qga/commands.c
+> index 27b16313ea..5a5fad31f8 100644
+> --- a/qga/commands.c
+> +++ b/qga/commands.c
+> @@ -15,7 +15,6 @@
+>   #include "guest-agent-core.h"
+>   #include "qga-qapi-commands.h"
+>   #include "qapi/error.h"
+> -#include "qapi/qmp/qerror.h"
+>   #include "qemu/base64.h"
+>   #include "qemu/cutils.h"
+>   #include "commands-common.h"
+> 
 
-Add gd_motion_event trace event for making it easy to debug
-gd_motion_event related issues.
-
-Signed-off-by: hikalium <hikalium@hikalium.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20240512111435.30121-2-hikalium@hikalium.com>
----
- ui/gtk.c        | 2 ++
- ui/trace-events | 1 +
- 2 files changed, 3 insertions(+)
-
-diff --git a/ui/gtk.c b/ui/gtk.c
-index 3a6832eb1b..7ce73b0798 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -915,6 +915,8 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
-     x = (motion->x - mx) / vc->gfx.scale_x * ws;
-     y = (motion->y - my) / vc->gfx.scale_y * ws;
- 
-+    trace_gd_motion_event(ww, wh, gtk_widget_get_scale_factor(widget), x, y);
-+
-     if (qemu_input_is_absolute(vc->gfx.dcl.con)) {
-         if (x < 0 || y < 0 ||
-             x >= surface_width(vc->gfx.ds) ||
-diff --git a/ui/trace-events b/ui/trace-events
-index e6a2894303..69ff22955d 100644
---- a/ui/trace-events
-+++ b/ui/trace-events
-@@ -28,6 +28,7 @@ gd_ungrab(const char *tab, const char *device) "tab=%s, dev=%s"
- gd_keymap_windowing(const char *name) "backend=%s"
- gd_gl_area_create_context(void *ctx, int major, int minor) "ctx=%p, major=%d, minor=%d"
- gd_gl_area_destroy_context(void *ctx, void *current_ctx) "ctx=%p, current_ctx=%p"
-+gd_motion_event(int ww, int wh, int ws, int x, int y) "ww=%d, wh=%d, ws=%d, x=%d, y=%d"
- 
- # vnc-auth-sasl.c
- # vnc-auth-vencrypt.c
--- 
-2.41.0.28.gd7d8841f67
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
