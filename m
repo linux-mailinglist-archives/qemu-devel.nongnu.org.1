@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E961F8C56DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B8F8C56CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 15:18:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6s2c-0004Cq-Uh; Tue, 14 May 2024 09:18:02 -0400
+	id 1s6s33-00057T-NB; Tue, 14 May 2024 09:18:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2b-000480-Ci
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:01 -0400
+ id 1s6s2r-0004mH-RW
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1s6s2Z-0002JP-FC
- for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:01 -0400
+ id 1s6s2m-0002Kr-LA
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 09:18:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715692678;
+ s=mimecast20190719; t=1715692691;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LJ/XfE369Dtu2s+FlUhtbEsUIXm5785Bdr8tO/dWyIg=;
- b=WWinbXrSxHi3jJeB2pQJmxe4ikSZ3YG2D5zS7JmK3EBzCltkwVlvtp2lMlf5wUWGBsDdbY
- NbrCV7ULTbBViCelO4rJvgRppvZ2mDF1x8cf4i61p68IS6eb2pZAOexhG5Jr1yFkuR5qTi
- moc1fy11gOV/MXlw0mK8aUhDgSdKy1Q=
+ bh=0X62RmDEE1jEtcNEzorClN6K7hJALSh5kIBlPmB4QcA=;
+ b=ST9A55SQGZoEjmz72zAvCXaQIi/5tAV68vadPAIPlYAzwuynY1sdsYUehSxpdqPPKorFA/
+ 4lQs+6FqyDqM3rbAcAmSuUCnPCiNvAXINV5yf13a/v187zfr+JRo7Py7/204PmDRWW8FTo
+ ZXKlYPmGwPFdHTEzJFpZMQJ58kqs7zI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-fHoPcTEKPxy4YBFNEU-cuw-1; Tue,
- 14 May 2024 09:17:47 -0400
-X-MC-Unique: fHoPcTEKPxy4YBFNEU-cuw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-426-Sux8wRg8NPal1sT3skSIcg-1; Tue,
+ 14 May 2024 09:17:53 -0400
+X-MC-Unique: Sux8wRg8NPal1sT3skSIcg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 087FD3C000AE;
- Tue, 14 May 2024 13:17:47 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD7861C0150C;
+ Tue, 14 May 2024 13:17:52 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2CFBE40C6EB7;
- Tue, 14 May 2024 13:17:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A86BE400059;
+ Tue, 14 May 2024 13:17:49 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org, Dongwon Kim <dongwon.kim@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 04/11] ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf
- struct and helpers
-Date: Tue, 14 May 2024 17:17:18 +0400
-Message-ID: <20240514131725.931234-5-marcandre.lureau@redhat.com>
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 05/11] ui/console: Use qemu_dmabuf_get_..() helpers instead
+Date: Tue, 14 May 2024 17:17:19 +0400
+Message-ID: <20240514131725.931234-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 References: <20240514131725.931234-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -88,24 +90,21 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-New header and source files are added for containing QemuDmaBuf struct
-definition and newly introduced helpers for creating/freeing the struct
-and accessing its data.
+This commit updates all instances where fields within the QemuDmaBuf
+struct are directly accessed, replacing them with calls to these new
+helper functions.
 
-v10: Change the license type for both dmabuf.h and dmabuf.c from MIT to
-     GPL to be in line with QEMU's default license
+v6: fix typos in helper names in ui/spice-display.c
 
-v11: -- Added new helpers, qemu_dmabuf_close for closing dmabuf->fd,
-        qemu_dmabuf_dup_fd for duplicating dmabuf->fd
+v7: removed prefix, "dpy_gl_" from all helpers
+
+v8: Introduction of helpers was removed as those were already added
+    by the previous commit
+
+v11: -- Use new qemu_dmabuf_close() instead of close(qemu_dmabuf_get_fd()).
         (Daniel P. Berrangé <berrange@redhat.com>)
-
-     -- Let qemu_dmabuf_fee to call qemu_dmabuf_close before freeing
-        the struct to make sure fd is closed.
+     -- Use new qemu_dmabuf_dup_fd() instead of dup(qemu_dmabuf_get_fd()).
         (Daniel P. Berrangé <berrange@redhat.com>)
-
-v12: Not closing fd in qemu_dmabuf_free because there are cases fd
-     should still be available even after the struct is destroyed
-     (e.g. virtio-gpu: res->dmabuf_fd).
 
 Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
@@ -113,354 +112,709 @@ Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
 Cc: Daniel P. Berrangé <berrange@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Message-Id: <20240508175403.3399895-3-dongwon.kim@intel.com>
+Message-Id: <20240508175403.3399895-4-dongwon.kim@intel.com>
 ---
- include/ui/console.h |  20 +----
- include/ui/dmabuf.h  |  66 ++++++++++++++
- ui/dmabuf.c          | 210 +++++++++++++++++++++++++++++++++++++++++++
- ui/meson.build       |   1 +
- 4 files changed, 278 insertions(+), 19 deletions(-)
- create mode 100644 include/ui/dmabuf.h
- create mode 100644 ui/dmabuf.c
+ hw/display/vhost-user-gpu.c     |  5 +---
+ hw/display/virtio-gpu-udmabuf.c |  7 +++--
+ hw/vfio/display.c               | 12 +++++---
+ ui/console.c                    |  4 +--
+ ui/dbus-console.c               |  9 ++++--
+ ui/dbus-listener.c              | 43 +++++++++++++++++-----------
+ ui/egl-headless.c               | 23 ++++++++++-----
+ ui/egl-helpers.c                | 47 ++++++++++++++++++-------------
+ ui/gtk-egl.c                    | 48 ++++++++++++++++++++-----------
+ ui/gtk-gl-area.c                | 37 ++++++++++++++++--------
+ ui/gtk.c                        |  6 ++--
+ ui/spice-display.c              | 50 +++++++++++++++++++--------------
+ 12 files changed, 181 insertions(+), 110 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 0bc7a00ac0..a208a68b88 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -7,6 +7,7 @@
- #include "qapi/qapi-types-ui.h"
- #include "ui/input.h"
- #include "ui/surface.h"
-+#include "ui/dmabuf.h"
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 709c8a02a1..454e5afcff 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -262,10 +262,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
+         g->parent_obj.enable = 1;
+         con = g->parent_obj.scanout[m->scanout_id].con;
+         dmabuf = &g->dmabuf[m->scanout_id];
+-        if (dmabuf->fd >= 0) {
+-            close(dmabuf->fd);
+-            dmabuf->fd = -1;
+-        }
++        qemu_dmabuf_close(dmabuf);
+         dpy_gl_release_dmabuf(con, dmabuf);
+         if (fd == -1) {
+             dpy_gl_scanout_disable(con);
+diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
+index d51184d658..c90eba281e 100644
+--- a/hw/display/virtio-gpu-udmabuf.c
++++ b/hw/display/virtio-gpu-udmabuf.c
+@@ -206,6 +206,7 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
+ {
+     struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
+     VGPUDMABuf *new_primary, *old_primary = NULL;
++    uint32_t width, height;
  
- #define TYPE_QEMU_CONSOLE "qemu-console"
- OBJECT_DECLARE_TYPE(QemuConsole, QemuConsoleClass, QEMU_CONSOLE)
-@@ -185,25 +186,6 @@ struct QEMUGLParams {
-     int minor_ver;
- };
+     new_primary = virtio_gpu_create_dmabuf(g, scanout_id, res, fb, r);
+     if (!new_primary) {
+@@ -216,10 +217,10 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
+         old_primary = g->dmabuf.primary[scanout_id];
+     }
  
--typedef struct QemuDmaBuf {
--    int       fd;
--    uint32_t  width;
--    uint32_t  height;
--    uint32_t  stride;
--    uint32_t  fourcc;
--    uint64_t  modifier;
--    uint32_t  texture;
--    uint32_t  x;
--    uint32_t  y;
--    uint32_t  backing_width;
--    uint32_t  backing_height;
--    bool      y0_top;
--    void      *sync;
--    int       fence_fd;
--    bool      allow_fences;
--    bool      draw_submitted;
--} QemuDmaBuf;
--
- enum display_scanout {
-     SCANOUT_NONE,
-     SCANOUT_SURFACE,
-diff --git a/include/ui/dmabuf.h b/include/ui/dmabuf.h
-new file mode 100644
-index 0000000000..4198cdf85a
---- /dev/null
-+++ b/include/ui/dmabuf.h
-@@ -0,0 +1,66 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * QemuDmaBuf struct and helpers used for accessing its data
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
++    width = qemu_dmabuf_get_width(&new_primary->buf);
++    height = qemu_dmabuf_get_height(&new_primary->buf);
+     g->dmabuf.primary[scanout_id] = new_primary;
+-    qemu_console_resize(scanout->con,
+-                        new_primary->buf.width,
+-                        new_primary->buf.height);
++    qemu_console_resize(scanout->con, width, height);
+     dpy_gl_scanout_dmabuf(scanout->con, &new_primary->buf);
+ 
+     if (old_primary) {
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index 1aa440c663..7784502b53 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -260,8 +260,9 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
+ static void vfio_display_free_one_dmabuf(VFIODisplay *dpy, VFIODMABuf *dmabuf)
+ {
+     QTAILQ_REMOVE(&dpy->dmabuf.bufs, dmabuf, next);
 +
-+#ifndef DMABUF_H
-+#define DMABUF_H
++    qemu_dmabuf_close(&dmabuf->buf);
+     dpy_gl_release_dmabuf(dpy->con, &dmabuf->buf);
+-    close(dmabuf->buf.fd);
+     g_free(dmabuf);
+ }
+ 
+@@ -286,6 +287,7 @@ static void vfio_display_dmabuf_update(void *opaque)
+     VFIOPCIDevice *vdev = opaque;
+     VFIODisplay *dpy = vdev->dpy;
+     VFIODMABuf *primary, *cursor;
++    uint32_t width, height;
+     bool free_bufs = false, new_cursor = false;
+ 
+     primary = vfio_display_get_dmabuf(vdev, DRM_PLANE_TYPE_PRIMARY);
+@@ -296,10 +298,12 @@ static void vfio_display_dmabuf_update(void *opaque)
+         return;
+     }
+ 
++    width = qemu_dmabuf_get_width(&primary->buf);
++    height = qemu_dmabuf_get_height(&primary->buf);
 +
-+typedef struct QemuDmaBuf {
-+    int       fd;
-+    uint32_t  width;
-+    uint32_t  height;
-+    uint32_t  stride;
-+    uint32_t  fourcc;
-+    uint64_t  modifier;
-+    uint32_t  texture;
-+    uint32_t  x;
-+    uint32_t  y;
-+    uint32_t  backing_width;
-+    uint32_t  backing_height;
-+    bool      y0_top;
-+    void      *sync;
-+    int       fence_fd;
-+    bool      allow_fences;
-+    bool      draw_submitted;
-+} QemuDmaBuf;
+     if (dpy->dmabuf.primary != primary) {
+         dpy->dmabuf.primary = primary;
+-        qemu_console_resize(dpy->con,
+-                            primary->buf.width, primary->buf.height);
++        qemu_console_resize(dpy->con, width, height);
+         dpy_gl_scanout_dmabuf(dpy->con, &primary->buf);
+         free_bufs = true;
+     }
+@@ -328,7 +332,7 @@ static void vfio_display_dmabuf_update(void *opaque)
+         cursor->pos_updates = 0;
+     }
+ 
+-    dpy_gl_update(dpy->con, 0, 0, primary->buf.width, primary->buf.height);
++    dpy_gl_update(dpy->con, 0, 0, width, height);
+ 
+     if (free_bufs) {
+         vfio_display_free_dmabufs(vdev);
+diff --git a/ui/console.c b/ui/console.c
+index 43226c5c14..1b2cd0c736 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1459,7 +1459,7 @@ int qemu_console_get_width(QemuConsole *con, int fallback)
+     }
+     switch (con->scanout.kind) {
+     case SCANOUT_DMABUF:
+-        return con->scanout.dmabuf->width;
++        return qemu_dmabuf_get_width(con->scanout.dmabuf);
+     case SCANOUT_TEXTURE:
+         return con->scanout.texture.width;
+     case SCANOUT_SURFACE:
+@@ -1476,7 +1476,7 @@ int qemu_console_get_height(QemuConsole *con, int fallback)
+     }
+     switch (con->scanout.kind) {
+     case SCANOUT_DMABUF:
+-        return con->scanout.dmabuf->height;
++        return qemu_dmabuf_get_height(con->scanout.dmabuf);
+     case SCANOUT_TEXTURE:
+         return con->scanout.texture.height;
+     case SCANOUT_SURFACE:
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index 49da9ccc83..578b67f62b 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -110,11 +110,14 @@ static void
+ dbus_gl_scanout_dmabuf(DisplayChangeListener *dcl,
+                        QemuDmaBuf *dmabuf)
+ {
++    uint32_t width, height;
 +
-+QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
-+                            uint32_t stride, uint32_t x,
-+                            uint32_t y, uint32_t backing_width,
-+                            uint32_t backing_height, uint32_t fourcc,
-+                            uint64_t modifier, int dmabuf_fd,
-+                            bool allow_fences, bool y0_top);
-+void qemu_dmabuf_free(QemuDmaBuf *dmabuf);
+     DBusDisplayConsole *ddc = container_of(dcl, DBusDisplayConsole, dcl);
+ 
+-    dbus_display_console_set_size(ddc,
+-                                  dmabuf->width,
+-                                  dmabuf->height);
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
 +
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(QemuDmaBuf, qemu_dmabuf_free);
++    dbus_display_console_set_size(ddc, width, height);
+ }
+ 
+ static void
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 4a0a5d78f9..62d1e2d3f9 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -278,29 +278,33 @@ static void dbus_scanout_dmabuf(DisplayChangeListener *dcl,
+     DBusDisplayListener *ddl = container_of(dcl, DBusDisplayListener, dcl);
+     g_autoptr(GError) err = NULL;
+     g_autoptr(GUnixFDList) fd_list = NULL;
++    int fd;
++    uint32_t width, height, stride, fourcc;
++    uint64_t modifier;
++    bool y0_top;
+ 
++    fd = qemu_dmabuf_get_fd(dmabuf);
+     fd_list = g_unix_fd_list_new();
+-    if (g_unix_fd_list_append(fd_list, dmabuf->fd, &err) != 0) {
++    if (g_unix_fd_list_append(fd_list, fd, &err) != 0) {
+         error_report("Failed to setup dmabuf fdlist: %s", err->message);
+         return;
+     }
+ 
+     ddl_discard_pending_messages(ddl);
+ 
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
++    stride = qemu_dmabuf_get_stride(dmabuf);
++    fourcc = qemu_dmabuf_get_fourcc(dmabuf);
++    modifier = qemu_dmabuf_get_modifier(dmabuf);
++    y0_top = qemu_dmabuf_get_y0_top(dmabuf);
 +
-+int qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf);
-+int qemu_dmabuf_dup_fd(QemuDmaBuf *dmabuf);
-+void qemu_dmabuf_close(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_width(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_height(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_stride(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_fourcc(QemuDmaBuf *dmabuf);
-+uint64_t qemu_dmabuf_get_modifier(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_texture(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_x(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_y(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_backing_width(QemuDmaBuf *dmabuf);
-+uint32_t qemu_dmabuf_get_backing_height(QemuDmaBuf *dmabuf);
-+bool qemu_dmabuf_get_y0_top(QemuDmaBuf *dmabuf);
-+void *qemu_dmabuf_get_sync(QemuDmaBuf *dmabuf);
-+int32_t qemu_dmabuf_get_fence_fd(QemuDmaBuf *dmabuf);
-+bool qemu_dmabuf_get_allow_fences(QemuDmaBuf *dmabuf);
-+bool qemu_dmabuf_get_draw_submitted(QemuDmaBuf *dmabuf);
-+void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture);
-+void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd);
-+void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync);
-+void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted);
-+void qemu_dmabuf_set_fd(QemuDmaBuf *dmabuf, int32_t fd);
+     /* FIXME: add missing x/y/w/h support */
+     qemu_dbus_display1_listener_call_scanout_dmabuf(
+-        ddl->proxy,
+-        g_variant_new_handle(0),
+-        dmabuf->width,
+-        dmabuf->height,
+-        dmabuf->stride,
+-        dmabuf->fourcc,
+-        dmabuf->modifier,
+-        dmabuf->y0_top,
+-        G_DBUS_CALL_FLAGS_NONE,
+-        -1,
+-        fd_list,
+-        NULL, NULL, NULL);
++        ddl->proxy, g_variant_new_handle(0),
++        width, height, stride, fourcc, modifier,
++        y0_top, G_DBUS_CALL_FLAGS_NONE,
++        -1, fd_list, NULL, NULL, NULL);
+ }
+ #endif /* GBM */
+ #endif /* OPENGL */
+@@ -488,6 +492,7 @@ static void dbus_cursor_dmabuf(DisplayChangeListener *dcl,
+     DisplaySurface *ds;
+     GVariant *v_data = NULL;
+     egl_fb cursor_fb = EGL_FB_INIT;
++    uint32_t width, height, texture;
+ 
+     if (!dmabuf) {
+         qemu_dbus_display1_listener_call_mouse_set(
+@@ -497,12 +502,16 @@ static void dbus_cursor_dmabuf(DisplayChangeListener *dcl,
+     }
+ 
+     egl_dmabuf_import_texture(dmabuf);
+-    if (!dmabuf->texture) {
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    if (!texture) {
+         return;
+     }
+-    egl_fb_setup_for_tex(&cursor_fb, dmabuf->width, dmabuf->height,
+-                         dmabuf->texture, false);
+-    ds = qemu_create_displaysurface(dmabuf->width, dmabuf->height);
 +
-+#endif
-diff --git a/ui/dmabuf.c b/ui/dmabuf.c
-new file mode 100644
-index 0000000000..e047d5ca26
---- /dev/null
-+++ b/ui/dmabuf.c
-@@ -0,0 +1,210 @@
-+/*
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * QemuDmaBuf struct and helpers used for accessing its data
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
 +
-+#include "qemu/osdep.h"
-+#include "ui/dmabuf.h"
++    egl_fb_setup_for_tex(&cursor_fb, width, height, texture, false);
++    ds = qemu_create_displaysurface(width, height);
+     egl_fb_read(ds, &cursor_fb);
+ 
+     v_data = g_variant_new_from_data(
+diff --git a/ui/egl-headless.c b/ui/egl-headless.c
+index d5637dadb2..6187249c73 100644
+--- a/ui/egl-headless.c
++++ b/ui/egl-headless.c
+@@ -85,29 +85,38 @@ static void egl_scanout_texture(DisplayChangeListener *dcl,
+ static void egl_scanout_dmabuf(DisplayChangeListener *dcl,
+                                QemuDmaBuf *dmabuf)
+ {
++    uint32_t width, height, texture;
 +
-+QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
-+                            uint32_t stride, uint32_t x,
-+                            uint32_t y, uint32_t backing_width,
-+                            uint32_t backing_height, uint32_t fourcc,
-+                            uint64_t modifier, int32_t dmabuf_fd,
-+                            bool allow_fences, bool y0_top) {
-+    QemuDmaBuf *dmabuf;
+     egl_dmabuf_import_texture(dmabuf);
+-    if (!dmabuf->texture) {
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    if (!texture) {
+         return;
+     }
+ 
+-    egl_scanout_texture(dcl, dmabuf->texture,
+-                        false, dmabuf->width, dmabuf->height,
+-                        0, 0, dmabuf->width, dmabuf->height, NULL);
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
 +
-+    dmabuf = g_new0(QemuDmaBuf, 1);
++    egl_scanout_texture(dcl, texture, false, width, height, 0, 0,
++                        width, height, NULL);
+ }
+ 
+ static void egl_cursor_dmabuf(DisplayChangeListener *dcl,
+                               QemuDmaBuf *dmabuf, bool have_hot,
+                               uint32_t hot_x, uint32_t hot_y)
+ {
++    uint32_t width, height, texture;
+     egl_dpy *edpy = container_of(dcl, egl_dpy, dcl);
+ 
+     if (dmabuf) {
+         egl_dmabuf_import_texture(dmabuf);
+-        if (!dmabuf->texture) {
++        texture = qemu_dmabuf_get_texture(dmabuf);
++        if (!texture) {
+             return;
+         }
+-        egl_fb_setup_for_tex(&edpy->cursor_fb, dmabuf->width, dmabuf->height,
+-                             dmabuf->texture, false);
 +
-+    dmabuf->width = width;
-+    dmabuf->height = height;
-+    dmabuf->stride = stride;
-+    dmabuf->x = x;
-+    dmabuf->y = y;
-+    dmabuf->backing_width = backing_width;
-+    dmabuf->backing_height = backing_height;
-+    dmabuf->fourcc = fourcc;
-+    dmabuf->modifier = modifier;
-+    dmabuf->fd = dmabuf_fd;
-+    dmabuf->allow_fences = allow_fences;
-+    dmabuf->y0_top = y0_top;
-+    dmabuf->fence_fd = -1;
++        width = qemu_dmabuf_get_width(dmabuf);
++        height = qemu_dmabuf_get_height(dmabuf);
++        egl_fb_setup_for_tex(&edpy->cursor_fb, width, height, texture, false);
+     } else {
+         egl_fb_destroy(&edpy->cursor_fb);
+     }
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 3d19dbe382..3f96e63d25 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -146,10 +146,10 @@ void egl_fb_blit(egl_fb *dst, egl_fb *src, bool flip)
+     glViewport(0, 0, dst->width, dst->height);
+ 
+     if (src->dmabuf) {
+-        x1 = src->dmabuf->x;
+-        y1 = src->dmabuf->y;
+-        w = src->dmabuf->width;
+-        h = src->dmabuf->height;
++        x1 = qemu_dmabuf_get_x(src->dmabuf);
++        y1 = qemu_dmabuf_get_y(src->dmabuf);
++        w = qemu_dmabuf_get_width(src->dmabuf);
++        h = qemu_dmabuf_get_height(src->dmabuf);
+     }
+ 
+     w = (x1 + w) > src->width ? src->width - x1 : w;
+@@ -308,30 +308,33 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     EGLImageKHR image = EGL_NO_IMAGE_KHR;
+     EGLint attrs[64];
+     int i = 0;
++    uint64_t modifier;
++    uint32_t texture = qemu_dmabuf_get_texture(dmabuf);
+ 
+-    if (dmabuf->texture != 0) {
++    if (texture != 0) {
+         return;
+     }
+ 
+     attrs[i++] = EGL_WIDTH;
+-    attrs[i++] = dmabuf->backing_width;
++    attrs[i++] = qemu_dmabuf_get_backing_width(dmabuf);
+     attrs[i++] = EGL_HEIGHT;
+-    attrs[i++] = dmabuf->backing_height;
++    attrs[i++] = qemu_dmabuf_get_backing_height(dmabuf);
+     attrs[i++] = EGL_LINUX_DRM_FOURCC_EXT;
+-    attrs[i++] = dmabuf->fourcc;
++    attrs[i++] = qemu_dmabuf_get_fourcc(dmabuf);
+ 
+     attrs[i++] = EGL_DMA_BUF_PLANE0_FD_EXT;
+-    attrs[i++] = dmabuf->fd;
++    attrs[i++] = qemu_dmabuf_get_fd(dmabuf);
+     attrs[i++] = EGL_DMA_BUF_PLANE0_PITCH_EXT;
+-    attrs[i++] = dmabuf->stride;
++    attrs[i++] = qemu_dmabuf_get_stride(dmabuf);
+     attrs[i++] = EGL_DMA_BUF_PLANE0_OFFSET_EXT;
+     attrs[i++] = 0;
+ #ifdef EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT
+-    if (dmabuf->modifier) {
++    modifier = qemu_dmabuf_get_modifier(dmabuf);
++    if (modifier) {
+         attrs[i++] = EGL_DMA_BUF_PLANE0_MODIFIER_LO_EXT;
+-        attrs[i++] = (dmabuf->modifier >>  0) & 0xffffffff;
++        attrs[i++] = (modifier >>  0) & 0xffffffff;
+         attrs[i++] = EGL_DMA_BUF_PLANE0_MODIFIER_HI_EXT;
+-        attrs[i++] = (dmabuf->modifier >> 32) & 0xffffffff;
++        attrs[i++] = (modifier >> 32) & 0xffffffff;
+     }
+ #endif
+     attrs[i++] = EGL_NONE;
+@@ -346,7 +349,8 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     }
+ 
+     glGenTextures(1, &dmabuf->texture);
+-    glBindTexture(GL_TEXTURE_2D, dmabuf->texture);
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    glBindTexture(GL_TEXTURE_2D, texture);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+ 
+@@ -356,11 +360,14 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+ 
+ void egl_dmabuf_release_texture(QemuDmaBuf *dmabuf)
+ {
+-    if (dmabuf->texture == 0) {
++    uint32_t texture;
 +
-+    return dmabuf;
-+}
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    if (texture == 0) {
+         return;
+     }
+ 
+-    glDeleteTextures(1, &dmabuf->texture);
++    glDeleteTextures(1, &texture);
+     dmabuf->texture = 0;
+ }
+ 
+@@ -382,10 +389,12 @@ void egl_dmabuf_create_sync(QemuDmaBuf *dmabuf)
+ 
+ void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf)
+ {
+-    if (dmabuf->sync) {
++    void *sync = qemu_dmabuf_get_sync(dmabuf);
 +
-+void qemu_dmabuf_free(QemuDmaBuf *dmabuf)
-+{
-+    if (dmabuf == NULL) {
-+        return;
-+    }
++    if (sync) {
+         dmabuf->fence_fd = eglDupNativeFenceFDANDROID(qemu_egl_display,
+-                                                      dmabuf->sync);
+-        eglDestroySyncKHR(qemu_egl_display, dmabuf->sync);
++                                                      sync);
++        eglDestroySyncKHR(qemu_egl_display, sync);
+         dmabuf->sync = NULL;
+     }
+ }
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index bceeeb0352..5d7744ae4d 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -70,6 +70,7 @@ void gd_egl_draw(VirtualConsole *vc)
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
+ #endif
+     int ww, wh, ws;
++    int fence_fd;
+ 
+     if (!vc->gfx.gls) {
+         return;
+@@ -83,7 +84,7 @@ void gd_egl_draw(VirtualConsole *vc)
+     if (vc->gfx.scanout_mode) {
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+-            if (!dmabuf->draw_submitted) {
++            if (!qemu_dmabuf_get_draw_submitted(dmabuf)) {
+                 return;
+             } else {
+                 dmabuf->draw_submitted = false;
+@@ -99,8 +100,9 @@ void gd_egl_draw(VirtualConsole *vc)
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd >= 0) {
+-                qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
++            fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
++            if (fence_fd >= 0) {
++                qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
+             graphic_hw_gl_block(vc->gfx.dcl.con, false);
+@@ -149,7 +151,8 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
+     gd_update_monitor_refresh_rate(
+             vc, vc->window ? vc->window : vc->gfx.drawing_area);
+ 
+-    if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
++    if (vc->gfx.guest_fb.dmabuf &&
++        qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+         gd_egl_draw(vc);
+         return;
+     }
+@@ -265,22 +268,30 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+ {
+ #ifdef CONFIG_GBM
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
++    uint32_t x, y, width, height, backing_width, backing_height, texture;
++    bool y0_top;
+ 
+     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+                    vc->gfx.esurface, vc->gfx.ectx);
+ 
+     egl_dmabuf_import_texture(dmabuf);
+-    if (!dmabuf->texture) {
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    if (!texture) {
+         return;
+     }
+ 
+-    gd_egl_scanout_texture(dcl, dmabuf->texture,
+-                           dmabuf->y0_top,
+-                           dmabuf->backing_width, dmabuf->backing_height,
+-                           dmabuf->x, dmabuf->y, dmabuf->width,
+-                           dmabuf->height, NULL);
++    x = qemu_dmabuf_get_x(dmabuf);
++    y = qemu_dmabuf_get_y(dmabuf);
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
++    backing_width = qemu_dmabuf_get_backing_width(dmabuf);
++    backing_height = qemu_dmabuf_get_backing_height(dmabuf);
++    y0_top = qemu_dmabuf_get_y0_top(dmabuf);
+ 
+-    if (dmabuf->allow_fences) {
++    gd_egl_scanout_texture(dcl, texture, y0_top, backing_width, backing_height,
++                           x, y, width, height, NULL);
 +
-+    g_free(dmabuf);
-+}
++    if (qemu_dmabuf_get_allow_fences(dmabuf)) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
+     }
+ #endif
+@@ -292,15 +303,19 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener *dcl,
+ {
+ #ifdef CONFIG_GBM
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
++    uint32_t backing_width, backing_height, texture;
+ 
+     if (dmabuf) {
+         egl_dmabuf_import_texture(dmabuf);
+-        if (!dmabuf->texture) {
++        texture = qemu_dmabuf_get_texture(dmabuf);
++        if (!texture) {
+             return;
+         }
+-        egl_fb_setup_for_tex(&vc->gfx.cursor_fb,
+-                             dmabuf->backing_width, dmabuf->backing_height,
+-                             dmabuf->texture, false);
 +
-+int qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
++        backing_width = qemu_dmabuf_get_backing_width(dmabuf);
++        backing_height = qemu_dmabuf_get_backing_height(dmabuf);
++        egl_fb_setup_for_tex(&vc->gfx.cursor_fb, backing_width, backing_height,
++                             texture, false);
+     } else {
+         egl_fb_destroy(&vc->gfx.cursor_fb);
+     }
+@@ -364,7 +379,8 @@ void gd_egl_flush(DisplayChangeListener *dcl,
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
+     GtkWidget *area = vc->gfx.drawing_area;
+ 
+-    if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
++    if (vc->gfx.guest_fb.dmabuf &&
++        !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
+         gtk_egl_set_scanout_mode(vc, true);
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index b490727402..86360fe79b 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -60,7 +60,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
+ 
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+-            if (!dmabuf->draw_submitted) {
++            if (!qemu_dmabuf_get_draw_submitted(dmabuf)) {
+                 return;
+             } else {
+                 dmabuf->draw_submitted = false;
+@@ -85,9 +85,11 @@ void gd_gl_area_draw(VirtualConsole *vc)
+         glFlush();
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
++            int fence_fd;
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd >= 0) {
+-                qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
++            fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
++            if (fence_fd >= 0) {
++                qemu_set_fd_handler(fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
+             graphic_hw_gl_block(vc->gfx.dcl.con, false);
+@@ -125,7 +127,8 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
+ 
+     gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx.drawing_area);
+ 
+-    if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
++    if (vc->gfx.guest_fb.dmabuf &&
++        qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+         gd_gl_area_draw(vc);
+         return;
+     }
+@@ -286,7 +289,8 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
+ {
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
+ 
+-    if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
++    if (vc->gfx.guest_fb.dmabuf &&
++        !qemu_dmabuf_get_draw_submitted(vc->gfx.guest_fb.dmabuf)) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
+         gtk_gl_area_set_scanout_mode(vc, true);
+@@ -299,20 +303,29 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+ {
+ #ifdef CONFIG_GBM
+     VirtualConsole *vc = container_of(dcl, VirtualConsole, gfx.dcl);
++    uint32_t x, y, width, height, backing_width, backing_height, texture;
++    bool y0_top;
+ 
+     gtk_gl_area_make_current(GTK_GL_AREA(vc->gfx.drawing_area));
+     egl_dmabuf_import_texture(dmabuf);
+-    if (!dmabuf->texture) {
++    texture = qemu_dmabuf_get_texture(dmabuf);
++    if (!texture) {
+         return;
+     }
+ 
+-    gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+-                               dmabuf->y0_top,
+-                               dmabuf->backing_width, dmabuf->backing_height,
+-                               dmabuf->x, dmabuf->y, dmabuf->width,
+-                               dmabuf->height, NULL);
++    x = qemu_dmabuf_get_x(dmabuf);
++    y = qemu_dmabuf_get_y(dmabuf);
++    width = qemu_dmabuf_get_width(dmabuf);
++    height = qemu_dmabuf_get_height(dmabuf);
++    backing_width = qemu_dmabuf_get_backing_width(dmabuf);
++    backing_height = qemu_dmabuf_get_backing_height(dmabuf);
++    y0_top = qemu_dmabuf_get_y0_top(dmabuf);
+ 
+-    if (dmabuf->allow_fences) {
++    gd_gl_area_scanout_texture(dcl, texture, y0_top,
++                               backing_width, backing_height,
++                               x, y, width, height, NULL);
 +
-+    return dmabuf->fd;
-+}
++    if (qemu_dmabuf_get_allow_fences(dmabuf)) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
+     }
+ #endif
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 7819a86321..237c913b26 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -596,10 +596,12 @@ void gd_hw_gl_flushed(void *vcon)
+ {
+     VirtualConsole *vc = vcon;
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
++    int fence_fd;
+ 
+     if (dmabuf->fence_fd >= 0) {
+-        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+-        close(dmabuf->fence_fd);
++        fence_fd = qemu_dmabuf_get_fence_fd(dmabuf);
++        qemu_set_fd_handler(fence_fd, NULL, NULL, NULL);
++        close(fence_fd);
+         dmabuf->fence_fd = -1;
+         graphic_hw_gl_block(vc->gfx.dcl.con, false);
+     }
+diff --git a/ui/spice-display.c b/ui/spice-display.c
+index 6eb98a5a5c..8a8472d029 100644
+--- a/ui/spice-display.c
++++ b/ui/spice-display.c
+@@ -976,6 +976,7 @@ static void qemu_spice_gl_cursor_dmabuf(DisplayChangeListener *dcl,
+                                         uint32_t hot_x, uint32_t hot_y)
+ {
+     SimpleSpiceDisplay *ssd = container_of(dcl, SimpleSpiceDisplay, dcl);
++    uint32_t width, height, texture;
+ 
+     ssd->have_hot = have_hot;
+     ssd->hot_x = hot_x;
+@@ -984,11 +985,13 @@ static void qemu_spice_gl_cursor_dmabuf(DisplayChangeListener *dcl,
+     trace_qemu_spice_gl_cursor(ssd->qxl.id, dmabuf != NULL, have_hot);
+     if (dmabuf) {
+         egl_dmabuf_import_texture(dmabuf);
+-        if (!dmabuf->texture) {
++        texture = qemu_dmabuf_get_texture(dmabuf);
++        if (!texture) {
+             return;
+         }
+-        egl_fb_setup_for_tex(&ssd->cursor_fb, dmabuf->width, dmabuf->height,
+-                             dmabuf->texture, false);
++        width = qemu_dmabuf_get_width(dmabuf);
++        height = qemu_dmabuf_get_height(dmabuf);
++        egl_fb_setup_for_tex(&ssd->cursor_fb, width, height, texture, false);
+     } else {
+         egl_fb_destroy(&ssd->cursor_fb);
+     }
+@@ -1026,6 +1029,7 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
+     bool y_0_top = false; /* FIXME */
+     uint64_t cookie;
+     int fd;
++    uint32_t width, height, texture;
+ 
+     if (!ssd->have_scanout) {
+         return;
+@@ -1042,41 +1046,45 @@ static void qemu_spice_gl_update(DisplayChangeListener *dcl,
+ 
+     if (ssd->guest_dmabuf_refresh) {
+         QemuDmaBuf *dmabuf = ssd->guest_dmabuf;
++        width = qemu_dmabuf_get_width(dmabuf);
++        height = qemu_dmabuf_get_height(dmabuf);
 +
-+int qemu_dmabuf_dup_fd(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
+         if (render_cursor) {
+             egl_dmabuf_import_texture(dmabuf);
+-            if (!dmabuf->texture) {
++            texture = qemu_dmabuf_get_texture(dmabuf);
++            if (!texture) {
+                 return;
+             }
+ 
+             /* source framebuffer */
+-            egl_fb_setup_for_tex(&ssd->guest_fb,
+-                                 dmabuf->width, dmabuf->height,
+-                                 dmabuf->texture, false);
++            egl_fb_setup_for_tex(&ssd->guest_fb, width, height,
++                                 texture, false);
+ 
+             /* dest framebuffer */
+-            if (ssd->blit_fb.width  != dmabuf->width ||
+-                ssd->blit_fb.height != dmabuf->height) {
+-                trace_qemu_spice_gl_render_dmabuf(ssd->qxl.id, dmabuf->width,
+-                                                  dmabuf->height);
++            if (ssd->blit_fb.width  != width ||
++                ssd->blit_fb.height != height) {
++                trace_qemu_spice_gl_render_dmabuf(ssd->qxl.id, width,
++                                                  height);
+                 egl_fb_destroy(&ssd->blit_fb);
+                 egl_fb_setup_new_tex(&ssd->blit_fb,
+-                                     dmabuf->width, dmabuf->height);
++                                     width, height);
+                 fd = egl_get_fd_for_texture(ssd->blit_fb.texture,
+                                             &stride, &fourcc, NULL);
+-                spice_qxl_gl_scanout(&ssd->qxl, fd,
+-                                     dmabuf->width, dmabuf->height,
++                spice_qxl_gl_scanout(&ssd->qxl, fd, width, height,
+                                      stride, fourcc, false);
+             }
+         } else {
+-            trace_qemu_spice_gl_forward_dmabuf(ssd->qxl.id,
+-                                               dmabuf->width, dmabuf->height);
++            stride = qemu_dmabuf_get_stride(dmabuf);
++            fourcc = qemu_dmabuf_get_fourcc(dmabuf);
++            y_0_top = qemu_dmabuf_get_y0_top(dmabuf);
++            fd = qemu_dmabuf_dup_fd(dmabuf);
 +
-+    if (dmabuf->fd >= 0) {
-+        return dup(dmabuf->fd);
-+    } else {
-+        return -1;
-+    }
-+}
-+
-+void qemu_dmabuf_close(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    if (dmabuf->fd >= 0) {
-+        close(dmabuf->fd);
-+        dmabuf->fd = -1;
-+    }
-+}
-+
-+uint32_t qemu_dmabuf_get_width(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->width;
-+}
-+
-+uint32_t qemu_dmabuf_get_height(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->height;
-+}
-+
-+uint32_t qemu_dmabuf_get_stride(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->stride;
-+}
-+
-+uint32_t qemu_dmabuf_get_fourcc(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->fourcc;
-+}
-+
-+uint64_t qemu_dmabuf_get_modifier(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->modifier;
-+}
-+
-+uint32_t qemu_dmabuf_get_texture(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->texture;
-+}
-+
-+uint32_t qemu_dmabuf_get_x(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->x;
-+}
-+
-+uint32_t qemu_dmabuf_get_y(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->y;
-+}
-+
-+uint32_t qemu_dmabuf_get_backing_width(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->backing_width;
-+}
-+
-+uint32_t qemu_dmabuf_get_backing_height(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->backing_height;
-+}
-+
-+bool qemu_dmabuf_get_y0_top(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->y0_top;
-+}
-+
-+void *qemu_dmabuf_get_sync(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->sync;
-+}
-+
-+int32_t qemu_dmabuf_get_fence_fd(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->fence_fd;
-+}
-+
-+bool qemu_dmabuf_get_allow_fences(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->allow_fences;
-+}
-+
-+bool qemu_dmabuf_get_draw_submitted(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    return dmabuf->draw_submitted;
-+}
-+
-+void qemu_dmabuf_set_texture(QemuDmaBuf *dmabuf, uint32_t texture)
-+{
-+    assert(dmabuf != NULL);
-+    dmabuf->texture = texture;
-+}
-+
-+void qemu_dmabuf_set_fence_fd(QemuDmaBuf *dmabuf, int32_t fence_fd)
-+{
-+    assert(dmabuf != NULL);
-+    dmabuf->fence_fd = fence_fd;
-+}
-+
-+void qemu_dmabuf_set_sync(QemuDmaBuf *dmabuf, void *sync)
-+{
-+    assert(dmabuf != NULL);
-+    dmabuf->sync = sync;
-+}
-+
-+void qemu_dmabuf_set_draw_submitted(QemuDmaBuf *dmabuf, bool draw_submitted)
-+{
-+    assert(dmabuf != NULL);
-+    dmabuf->draw_submitted = draw_submitted;
-+}
-+
-+void qemu_dmabuf_set_fd(QemuDmaBuf *dmabuf, int32_t fd)
-+{
-+    assert(dmabuf != NULL);
-+    dmabuf->fd = fd;
-+}
-diff --git a/ui/meson.build b/ui/meson.build
-index a5ce22a678..5d89986b0e 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -7,6 +7,7 @@ system_ss.add(files(
-   'clipboard.c',
-   'console.c',
-   'cursor.c',
-+  'dmabuf.c',
-   'input-keymap.c',
-   'input-legacy.c',
-   'input-barrier.c',
++            trace_qemu_spice_gl_forward_dmabuf(ssd->qxl.id, width, height);
+             /* note: spice server will close the fd, so hand over a dup */
+-            spice_qxl_gl_scanout(&ssd->qxl, dup(dmabuf->fd),
+-                                 dmabuf->width, dmabuf->height,
+-                                 dmabuf->stride, dmabuf->fourcc,
+-                                 dmabuf->y0_top);
++            spice_qxl_gl_scanout(&ssd->qxl, fd, width, height,
++                                 stride, fourcc, y_0_top);
+         }
+-        qemu_spice_gl_monitor_config(ssd, 0, 0, dmabuf->width, dmabuf->height);
++        qemu_spice_gl_monitor_config(ssd, 0, 0, width, height);
+         ssd->guest_dmabuf_refresh = false;
+     }
+ 
 -- 
 2.41.0.28.gd7d8841f67
 
