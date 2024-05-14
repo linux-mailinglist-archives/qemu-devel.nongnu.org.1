@@ -2,83 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA46E8C5A70
-	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957AF8C5A79
+	for <lists+qemu-devel@lfdr.de>; Tue, 14 May 2024 19:44:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s6w8r-00039I-0A; Tue, 14 May 2024 13:40:45 -0400
+	id 1s6wBo-0004yH-AA; Tue, 14 May 2024 13:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s6w8E-0002ze-Eh
- for qemu-devel@nongnu.org; Tue, 14 May 2024 13:40:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1s6w8C-0004AI-9y
- for qemu-devel@nongnu.org; Tue, 14 May 2024 13:40:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715708402;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=NNWU/nuW8PRM7pBaZDIwCzldDRVEBVkqHR5gRPpLoVA=;
- b=MzJYmc3Kfj/yk87ML5N1VptpW3BfxmziJudrmuiG+oUe4/cjSyplTakf5fbAwxbDTtTg3b
- uwon/AKr2ThF5360BojLDmNNqz4Jp+JRAaVKxkxDKoxYqP84j0+VOi5zq9IRNYcJMrFeDH
- BZEi6JAgAVyvAeRrrcVc0d97Tpe4tDY=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-8gvyT4SuPx2p0L89UPAqgQ-1; Tue, 14 May 2024 13:39:50 -0400
-X-MC-Unique: 8gvyT4SuPx2p0L89UPAqgQ-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-de59ff8af0bso8825518276.2
- for <qemu-devel@nongnu.org>; Tue, 14 May 2024 10:39:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1s6wBP-0004pu-IJ
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:29 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1s6wB0-0004tG-J4
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 13:43:01 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-56e69888a36so545743a12.3
+ for <qemu-devel@nongnu.org>; Tue, 14 May 2024 10:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715708577; x=1716313377; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GjZ7KifFglh+uMfDPAeKXZwHERo568uFc2foxLMBJ4U=;
+ b=n3iwcMJmq5DYm4cA5LDU1ID8U2BBjky0IN+kP9VD0w6cmMrMGwxTmZQ4n5c5Sgv57h
+ CnwaHdRJ4oCI/xDeVM59Igx87HNWbT1WK3uzgH2c5A2Nk4MGJWwyGs60nKj4Fayk+NqE
+ T2uUnumKK2UDf0BnNI76ztBTrPhKD6Cecywq8u+ErYbeHQ0XFCUIm2I+aCJMs1owCzLp
+ GzI3DxH/sG7ar3intLNmX4qlSKg7fsK5BHZNMfWt9ID6RbJTH9kZbZAa01l3w2t4ECXN
+ Gp62YDwf0lGoMImsbuT2lfukIDpC173k9tEDHbw+JCc9BfgssbJOM/5Puij8dV9/FI1s
+ S8ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715708390; x=1716313190;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1715708577; x=1716313377;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NNWU/nuW8PRM7pBaZDIwCzldDRVEBVkqHR5gRPpLoVA=;
- b=cXPRy70oPdJ0i7SV04s07ZciWiLoheORZITBJLH/6pxsV1QzqJbCmHH1zL0fbz+pRL
- ROhPJQemUtQmEapqmVEpSHjhtvvUTmr3be//setLvJBd7ZfVnRhMiHdDPClSnf6Ev9Dc
- aiZ2iUhlmIJEc0jpsFL3Oht71sIAiwF9s/QbNY24p+i/9vdy+sv28l23Tomfv6CfaLiP
- VJzIazaDvEVDUcoW4f4Onk8kykqvhu0pgzg+BivLQl+zyFlr0Q5XQ8LxOeh6QXhka1Qd
- kyyShz3xHE0z7+yDYCAXpmpKM/KNc9SNag82npfBSPuCACMICuXRpCxbwwotNyyJBnH9
- 6Keg==
-X-Gm-Message-State: AOJu0YylUqifcU4o7FTfxYYfuSQ4NePSujS+Gu+lfJdPkDof8ST2+3zo
- wxlUtSiwn6xBKIayWCunUYZN1UPAHtpvRZphr6l2pBhdetUyqITUkamhjSKlqsSOLw00XIhJpuP
- cXIhTNtmGIxfL3wp1QFNnYycKGlNAHIhBm8cXj+r70Z8mCJ7JSduGYzuVNuD6kIxA+YnLOV36Go
- Aa9afEaGacWCZrHJ5J101BhMGWTlk=
-X-Received: by 2002:a25:adda:0:b0:dda:e401:df8c with SMTP id
- 3f1490d57ef6-dee4f314501mr12229259276.48.1715708390294; 
- Tue, 14 May 2024 10:39:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7n6O+bru8rcq2kHo/Md1Kv3m5Sm4Z0MG7WqLGV8Thrbhgsd6amrUZGRQHuZVl8FdMUzSmImPjQh+2uWLzk1c=
-X-Received: by 2002:a25:adda:0:b0:dda:e401:df8c with SMTP id
- 3f1490d57ef6-dee4f314501mr12229247276.48.1715708390019; Tue, 14 May 2024
- 10:39:50 -0700 (PDT)
+ bh=GjZ7KifFglh+uMfDPAeKXZwHERo568uFc2foxLMBJ4U=;
+ b=lhSjIcV012aDKIdIWE+4iv/w2+UJszOaXW6GaNlVvZ6gbKxO+TKzxtG+txCK84dOPi
+ xyCAP1dYPW2sJ4sNC/TtU5VzU2DTiM3b01suMKQrgg3QwsTGkZmqNgrbA6mJo+REEJsv
+ Yjs+pYlxQFLe3B9FUxvrgNt6Ey0YI/8pH/WHDKloViP3BF8M01iN9Ouqbj0bQwXp+PTU
+ 8qU4VQjm+hxBl9s3AQshu40pbykLQW1c6+xJTiCenA/si2KUmmtVO42Tfsat0QU3+/HN
+ 1x0WVCJeMoeMzPS5rvxvQnoJEjZLDWnJY3VivcY5ERwKQA/NwOuzxh+pG7iUelSQGFmT
+ cWGQ==
+X-Gm-Message-State: AOJu0Yw483jdHoxrhrvLdsOd0GW323lf+29GXpZfji4B103irOtIawAR
+ if/DIQ42i6neOk2ukcwNb77kJlYC2tdFMULv/GX0MTJUYb5MzniONu3LwMojvtI=
+X-Google-Smtp-Source: AGHT+IGUkbCf+0zBMAQvgnOBLMuzZVclFPF48yEE6fAKTRy5TpALV/kVJR7gighWSgVy7njI4ULqcA==
+X-Received: by 2002:a50:c30b:0:b0:574:eb80:3305 with SMTP id
+ 4fb4d7f45d1cf-574eb80345fmr1172325a12.11.1715708576906; 
+ Tue, 14 May 2024 10:42:56 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5733c322c85sm7790031a12.84.2024.05.14.10.42.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 14 May 2024 10:42:54 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id E552D5F8B0;
+ Tue, 14 May 2024 18:42:53 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PATCH 00/11] maintainer updates (plugins, testing) pre-PR
+Date: Tue, 14 May 2024 18:42:42 +0100
+Message-Id: <20240514174253.694591-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20240514105829.729342-1-armbru@redhat.com>
- <20240514105829.729342-4-armbru@redhat.com>
-In-Reply-To: <20240514105829.729342-4-armbru@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Tue, 14 May 2024 20:39:39 +0300
-Message-ID: <CAPMcbCoaK=YwWFTzvw3Ao99SA54csAr7w+iSaC-_Xx6ExKBnBA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] qerror: QERR_QGA_COMMAND_FAILED is no longer used,
- drop
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, philmd@linaro.org, michael.roth@amd.com
-Content-Type: multipart/alternative; boundary="0000000000002031bc06186d7dd4"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,80 +99,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002031bc06186d7dd4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is mostly plugin related stuff which is all ready to go however
+I have a few miscellaneous testing updates which would appreciate the
+review.
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Thanks.
 
-On Tue, May 14, 2024 at 1:58=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
+Alex Bennée (2):
+  tests/tcg: don't append QEMU_OPTS for armv6m-undef test
+  scripts/update-linux-header.sh: be more src tree friendly
 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  include/qapi/qmp/qerror.h | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-> index 00b18e9082..390590bb81 100644
-> --- a/include/qapi/qmp/qerror.h
-> +++ b/include/qapi/qmp/qerror.h
-> @@ -29,9 +29,6 @@
->  #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
->      "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 "=
-,
-> maximum: %" PRId64 ")"
->
-> -#define QERR_QGA_COMMAND_FAILED \
-> -    "Guest agent command failed, error was '%s'"
-> -
->  #define QERR_UNSUPPORTED \
->      "this feature or command is not currently supported"
->
-> --
-> 2.45.0
->
->
+Pierrick Bouvier (9):
+  plugins: prepare introduction of new inline ops
+  plugins: extract generate ptr for qemu_plugin_u64
+  plugins: add new inline op STORE_U64
+  tests/plugin/inline: add test for STORE_U64 inline op
+  plugins: conditional callbacks
+  tests/plugin/inline: add test for conditional callback
+  plugins: distinct types for callbacks
+  plugins: extract cpu_index generate
+  plugins: remove op from qemu_plugin_inline_cb
 
---0000000000002031bc06186d7dd4
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ include/qemu/plugin.h                 |  42 +++++---
+ include/qemu/qemu-plugin.h            |  80 ++++++++++++++-
+ plugins/plugin.h                      |  12 ++-
+ accel/tcg/plugin-gen.c                | 136 ++++++++++++++++++++------
+ plugins/api.c                         |  39 ++++++++
+ plugins/core.c                        | 109 +++++++++++++++------
+ tests/plugin/inline.c                 | 130 ++++++++++++++++++++++--
+ plugins/qemu-plugins.symbols          |   2 +
+ scripts/update-linux-headers.sh       |  80 +++++++--------
+ tests/tcg/arm/Makefile.softmmu-target |   2 +-
+ 10 files changed, 508 insertions(+), 124 deletions(-)
 
-<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
-tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
-v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 1=
-4, 2024 at 1:58=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@r=
-edhat.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">Signed-off-by: Markus Armbruster &lt;<a href=3D=
-"mailto:armbru@redhat.com" target=3D"_blank">armbru@redhat.com</a>&gt;<br>
----<br>
-=C2=A0include/qapi/qmp/qerror.h | 3 ---<br>
-=C2=A01 file changed, 3 deletions(-)<br>
-<br>
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h<br>
-index 00b18e9082..390590bb81 100644<br>
---- a/include/qapi/qmp/qerror.h<br>
-+++ b/include/qapi/qmp/qerror.h<br>
-@@ -29,9 +29,6 @@<br>
-=C2=A0#define QERR_PROPERTY_VALUE_OUT_OF_RANGE \<br>
-=C2=A0 =C2=A0 =C2=A0&quot;Property %s.%s doesn&#39;t take value %&quot; PRI=
-d64 &quot; (minimum: %&quot; PRId64 &quot;, maximum: %&quot; PRId64 &quot;)=
-&quot;<br>
-<br>
--#define QERR_QGA_COMMAND_FAILED \<br>
--=C2=A0 =C2=A0 &quot;Guest agent command failed, error was &#39;%s&#39;&quo=
-t;<br>
--<br>
-=C2=A0#define QERR_UNSUPPORTED \<br>
-=C2=A0 =C2=A0 =C2=A0&quot;this feature or command is not currently supporte=
-d&quot;<br>
-<br>
--- <br>
-2.45.0<br>
-<br>
-</blockquote></div>
-
---0000000000002031bc06186d7dd4--
+-- 
+2.39.2
 
 
