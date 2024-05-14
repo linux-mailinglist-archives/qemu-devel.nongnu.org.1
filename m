@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA538C5D76
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 00:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD318C5D71
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 00:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s70AR-0005kN-D8; Tue, 14 May 2024 17:58:39 -0400
+	id 1s70AV-0005oA-VE; Tue, 14 May 2024 17:58:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AO-0005iK-0C
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:36 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AP-0005jj-9q
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AG-0008W3-1l
- for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:35 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1s70AN-00008D-3o
+ for qemu-devel@nongnu.org; Tue, 14 May 2024 17:58:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715723907;
+ s=mimecast20190719; t=1715723914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jfg570U3FRLJ35JfLCL81gkmcp7TkhTnNgfcr0FLQCE=;
- b=Hvei26IP+pVxs6ZPE1LKMSujskT5Ft9ygDcAPMwSkNGIQPwYor/ERUB0N+AgYfCcqe2Xcn
- yIQHX8qYNm2f6qb/QRMNqYqA7UL9KX3wrIi1SCLsZC0IW+YX1bTVrFO7P8A7f5umpy/0YR
- vfoUtczpNIa2H8g/hnrSXCoAPk/7nfE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-571-8cdUitqFMY-lQQ2HJ4yOaw-1; Tue,
- 14 May 2024 17:58:21 -0400
-X-MC-Unique: 8cdUitqFMY-lQQ2HJ4yOaw-1
+ bh=ncArWPcCIbytAbF/odN9+d1qLIA0sIT1UcBoo/l5JNg=;
+ b=WKBchEFCJwxd8XclGLEY9KJ+B+Rsd03PzvcLEpuUi8RQwfK1gbfrBMcSGWuGcneR7rsARN
+ CyTrQpDvFfJP4zhCPBLhOD1Dec8AKj4wkI4PfQzQbLxSlLH6TlOPpvUEwTp+uuVXAzcW1V
+ vXoR0yeeYzFI5ALaVL9dGMuA5gi2IrQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-0i3DYVDuNmaO7CNRSuwpjg-1; Tue, 14 May 2024 17:58:24 -0400
+X-MC-Unique: 0i3DYVDuNmaO7CNRSuwpjg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5AAB01C031AC;
- Tue, 14 May 2024 21:58:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AC5C18188A1;
+ Tue, 14 May 2024 21:58:23 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.17.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7179C6BC0;
- Tue, 14 May 2024 21:58:17 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 708843C27;
+ Tue, 14 May 2024 21:58:20 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
@@ -64,10 +64,9 @@ Cc: Peter Xu <peterx@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Yanan Wang <wangyanan55@huawei.com>,
  Hanna Reitz <hreitz@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 11/20] qapi/schema: add doc_visible property to
- QAPISchemaDefinition
-Date: Tue, 14 May 2024 17:57:30 -0400
-Message-ID: <20240514215740.940155-12-jsnow@redhat.com>
+Subject: [PATCH 12/20] qapi/source: allow multi-line QAPISourceInfo advancing
+Date: Tue, 14 May 2024 17:57:31 -0400
+Message-ID: <20240514215740.940155-13-jsnow@redhat.com>
 In-Reply-To: <20240514215740.940155-1-jsnow@redhat.com>
 References: <20240514215740.940155-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -97,138 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The intent here is to mark only certain definitions as visible in the
-end-user docs.
+This is for the sake of the new rST generator (the "transmogrifier") so
+we can advance multiple lines on occasion while keeping the
+generated<-->source mappings accurate.
 
-All commands and events are inherently visible. Everything else is
-visible only if it is a member (or a branch member) of a type that is
-visible, or if it is named as a return type for a command.
-
-Notably, this excludes arg_type for commands and events, and any
-base_types specified for structures/unions. Those objects may still be
-marked visible if they are named as members from a visible type.
-
-This does not necessarily match the data revealed by introspection: in
-this case, we want anything that we are cross-referencing in generated
-documentation to be available to target.
-
-Some internal and built-in types may be marked visible with this
-approach, but if they do not have a documentation block, they'll be
-skipped by the generator anyway. This includes array types and built-in
-primitives which do not get their own documentation objects.
-
-This information is not yet used by qapidoc, which continues to render
-documentation exactly as it has. This information will be used by the
-new qapidoc (the "transmogrifier"), to be introduced later. The new
-generator verifies that all of the objects that should be rendered *are*
-by failing if any cross-references are missing, verifying everything is
-in place.
+next_line now simply takes an optional n parameter which chooses the
+number of lines to advance.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ scripts/qapi/source.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index e15e64ea8cb..6025b4e9354 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -131,6 +131,7 @@ def __init__(
-         self.doc = doc
-         self._ifcond = ifcond or QAPISchemaIfCond()
-         self.features = features or []
-+        self.doc_visible = False
+diff --git a/scripts/qapi/source.py b/scripts/qapi/source.py
+index 7b379fdc925..ffdc3f482ac 100644
+--- a/scripts/qapi/source.py
++++ b/scripts/qapi/source.py
+@@ -47,9 +47,9 @@ def set_defn(self, meta: str, name: str) -> None:
+         self.defn_meta = meta
+         self.defn_name = name
  
-     def __repr__(self) -> str:
-         return "<%s:%s at 0x%x>" % (type(self).__name__, self.name,
-@@ -146,6 +147,10 @@ def check(self, schema: QAPISchema) -> None:
-         for f in self.features:
-             f.check_clash(self.info, seen)
+-    def next_line(self: T) -> T:
++    def next_line(self: T, n: int = 1) -> T:
+         info = copy.copy(self)
+-        info.line += 1
++        info.line += n
+         return info
  
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        if mark_self:
-+            self.doc_visible = True
-+
-     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         super().connect_doc(doc)
-         doc = doc or self.doc
-@@ -483,6 +488,10 @@ def check(self, schema: QAPISchema) -> None:
-             self.info.defn_meta if self.info else None)
-         assert not isinstance(self.element_type, QAPISchemaArrayType)
- 
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        super().mark_visible(mark_self)
-+        self.element_type.mark_visible()
-+
-     def set_module(self, schema: QAPISchema) -> None:
-         self._set_module(schema, self.element_type.info)
- 
-@@ -607,6 +616,17 @@ def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         for m in self.local_members:
-             m.connect_doc(doc)
- 
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        # Mark this object and its members as visible in the user-facing docs.
-+        if self.doc_visible:
-+            return
-+
-+        super().mark_visible(mark_self)
-+        for m in self.members:
-+            m.type.mark_visible()
-+        for var in self.branches or []:
-+            var.type.mark_visible(False)
-+
-     def is_implicit(self) -> bool:
-         # See QAPISchema._make_implicit_object_type(), as well as
-         # _def_predefineds()
-@@ -698,6 +718,11 @@ def check(self, schema: QAPISchema) -> None:
-                         % (v.describe(self.info), types_seen[qt]))
-                 types_seen[qt] = v.name
- 
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        super().mark_visible(mark_self)
-+        for var in self.alternatives:
-+            var.type.mark_visible()
-+
-     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         super().connect_doc(doc)
-         doc = doc or self.doc
-@@ -1056,6 +1081,13 @@ def check(self, schema: QAPISchema) -> None:
-                         "command's 'returns' cannot take %s"
-                         % self.ret_type.describe())
- 
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        super().mark_visible(mark_self)
-+        if self.arg_type:
-+            self.arg_type.mark_visible(False)
-+        if self.ret_type:
-+            self.ret_type.mark_visible()
-+
-     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         super().connect_doc(doc)
-         doc = doc or self.doc
-@@ -1112,6 +1144,11 @@ def check(self, schema: QAPISchema) -> None:
-                     self.info,
-                     "conditional event arguments require 'boxed': true")
- 
-+    def mark_visible(self, mark_self: bool = True) -> None:
-+        super().mark_visible(mark_self)
-+        if self.arg_type:
-+            self.arg_type.mark_visible(False)
-+
-     def connect_doc(self, doc: Optional[QAPIDoc] = None) -> None:
-         super().connect_doc(doc)
-         doc = doc or self.doc
-@@ -1488,6 +1525,9 @@ def check(self) -> None:
-             ent.set_module(self)
-         for doc in self.docs:
-             doc.check()
-+        for ent in self._entity_list:
-+            if isinstance(ent, (QAPISchemaCommand, QAPISchemaEvent)):
-+                ent.mark_visible()
- 
-     def visit(self, visitor: QAPISchemaVisitor) -> None:
-         visitor.visit_begin(self)
+     def loc(self) -> str:
 -- 
 2.44.0
 
