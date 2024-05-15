@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FE68C62C0
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD58C8C62C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79vn-00027P-LK; Wed, 15 May 2024 04:24:11 -0400
+	id 1s79vq-00028e-LA; Wed, 15 May 2024 04:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vb-00026P-Ld; Wed, 15 May 2024 04:23:59 -0400
+ id 1s79vd-00026Z-11
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:01 -0400
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vZ-00076W-Kn; Wed, 15 May 2024 04:23:59 -0400
+ id 1s79va-00074Z-MZ
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715761437; x=1747297437;
+ t=1715761438; x=1747297438;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Lntkgw5PKO06tI9Qq8U0Gkr91xV1qgI/qTGyCh5HD30=;
- b=Om5BBTBTET6OwwcjxI7/txH7KiLXfcFYrcSWP+gI7d/MhIIgQxRjlOs2
- 2kAmxu/loaGh4F/LZ2K8C4+lizVHel6qFv9eARpGMHhXNl3GxBKjSAx5O
- ziZGSrvaluW7tYH4X6UR0nfkPYEEMavjRj0sgQhV+9iTISje7CTY6E/zG
- vIHtptyZu1O2hgPIcbxi1IIw+jrkOxS9RXKp9bcSp0dpgtFxGeg9PJxkY
- h+PFWRWOR2SElbuRLyi2/NAkZIri7x1O4VVTxKThBHpA4FjzQ3baYkh7L
- chD/pxU9N0Q27U5Ajv7sPD7C4ezGfv8uA8wkcIV7oCKvxC77gXO9oX4Ly w==;
-X-CSE-ConnectionGUID: S3/7PRLMR6KDBSx6JJUkvw==
-X-CSE-MsgGUID: t25HXJIQTLGe9UjFR8oOSw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961541"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961541"
+ bh=RS2o5MSumh7P4PM1sc4bKQuA+A9psNU/xRJ8H8A86Q0=;
+ b=nWcCbMVxo7yC4inr1PFjEzQuYjb4hugbQv5fFl20xkWdOO9qrhoWpOtf
+ QlQboHCoh0dgnuQbs1tQjH8n6pdHIxoKVIWoNA0DRIHUghlQfJqYWmVFj
+ XXcwVAj+LBusEevjYXcwipKFBEizQEgfM5hbdcpHrkaj3iX+tWVswIfEZ
+ /r6BtybuDVyHhOpapmvpNHm19Dp8VGmT9p31ATUvJts7IqSAwRB42zHNI
+ e0Q0yHsqS7wjY0gypYgijGer7iveVFeTVQsRMFczOgbr1JkLSnuFAC0NU
+ rSNp0xeEhEiFRXO5i4lAPWA6BrM8U3sKrTyV2rmd3BWcAbd+ycxgZx+dq w==;
+X-CSE-ConnectionGUID: pUQzI9S5QVaIl6RSkmDFYw==
+X-CSE-MsgGUID: lVjarqjbTfWJyuKbYYauRA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961546"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961546"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:23:56 -0700
-X-CSE-ConnectionGUID: XaIfAKVJSsWywiMZP16a9g==
-X-CSE-MsgGUID: KN9xB6OJTkWUYGetvuMpxg==
+ 15 May 2024 01:23:58 -0700
+X-CSE-ConnectionGUID: s0TqyAyBQWGrcOb0d05lNg==
+X-CSE-MsgGUID: js/AocQdSbuxZwzFgP1q3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396286"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396295"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:23:52 -0700
+ 15 May 2024 01:23:56 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Thomas Huth <thuth@redhat.com>, Tony Krowiak <akrowiak@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- qemu-s390x@nongnu.org (open list:S390 general arch...)
-Subject: [PATCH 05/16] vfio/helpers: Make vfio_device_get_name() return bool
-Date: Wed, 15 May 2024 16:20:30 +0800
-Message-Id: <20240515082041.556571-6-zhenzhong.duan@intel.com>
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 06/16] vfio/platform: Make vfio_populate_device() and
+ vfio_base_device_init() return bool
+Date: Wed, 15 May 2024 16:20:31 +0800
+Message-Id: <20240515082041.556571-7-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
@@ -90,122 +88,137 @@ for bool-valued functions.
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- include/hw/vfio/vfio-common.h | 2 +-
- hw/vfio/ap.c                  | 2 +-
- hw/vfio/ccw.c                 | 2 +-
- hw/vfio/helpers.c             | 8 ++++----
- hw/vfio/pci.c                 | 2 +-
- hw/vfio/platform.c            | 5 ++---
- 6 files changed, 10 insertions(+), 11 deletions(-)
+ hw/vfio/platform.c | 40 +++++++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 23 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index fdce13f0f2..d9891c796f 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -280,7 +280,7 @@ int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
-                           uint64_t size, ram_addr_t ram_addr, Error **errp);
+diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
+index e1a32863d9..a85c199c76 100644
+--- a/hw/vfio/platform.c
++++ b/hw/vfio/platform.c
+@@ -441,7 +441,7 @@ static int vfio_platform_hot_reset_multi(VFIODevice *vbasedev)
+  * @errp: error object
+  *
+  */
+-static int vfio_populate_device(VFIODevice *vbasedev, Error **errp)
++static bool vfio_populate_device(VFIODevice *vbasedev, Error **errp)
+ {
+     VFIOINTp *intp, *tmp;
+     int i, ret = -1;
+@@ -450,7 +450,7 @@ static int vfio_populate_device(VFIODevice *vbasedev, Error **errp)
  
- /* Returns 0 on success, or a negative errno. */
--int vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
-+bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
- void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp);
- void vfio_device_init(VFIODevice *vbasedev, int type, VFIODeviceOps *ops,
-                       DeviceState *dev, bool ram_discard);
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index d8a9615fee..c12531a788 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -158,7 +158,7 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(dev);
-     VFIODevice *vbasedev = &vapdev->vdev;
- 
--    if (vfio_device_get_name(vbasedev, errp) < 0) {
-+    if (!vfio_device_get_name(vbasedev, errp)) {
-         return;
+     if (!(vbasedev->flags & VFIO_DEVICE_FLAGS_PLATFORM)) {
+         error_setg(errp, "this isn't a platform device");
+-        return ret;
++        return false;
      }
  
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 1f578a3c75..8850ca17c8 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -588,7 +588,7 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+     vdev->regions = g_new0(VFIORegion *, vbasedev->num_regions);
+@@ -487,12 +487,11 @@ static int vfio_populate_device(VFIODevice *vbasedev, Error **errp)
+                                                     irq.flags);
+             intp = vfio_init_intp(vbasedev, irq, errp);
+             if (!intp) {
+-                ret = -1;
+                 goto irq_err;
+             }
          }
      }
- 
--    if (vfio_device_get_name(vbasedev, errp) < 0) {
-+    if (!vfio_device_get_name(vbasedev, errp)) {
-         return;
+-    return 0;
++    return true;
+ irq_err:
+     timer_del(vdev->mmap_timer);
+     QLIST_FOREACH_SAFE(intp, &vdev->intp_list, next, tmp) {
+@@ -507,7 +506,7 @@ reg_error:
+         g_free(vdev->regions[i]);
      }
- 
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 93e6fef6de..a69b4411e5 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -605,7 +605,7 @@ bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
-     return ret;
+     g_free(vdev->regions);
+-    return ret;
++    return false;
  }
  
--int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-+bool vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
+ /* specialized functions for VFIO Platform devices */
+@@ -527,10 +526,8 @@ static VFIODeviceOps vfio_platform_ops = {
+  * fd retrieval, resource query.
+  * Precondition: the device name must be initialized
+  */
+-static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
++static bool vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
  {
-     ERRP_GUARD();
-     struct stat st;
-@@ -614,7 +614,7 @@ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-         if (stat(vbasedev->sysfsdev, &st) < 0) {
-             error_setg_errno(errp, errno, "no such host device");
-             error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->sysfsdev);
--            return -errno;
-+            return false;
-         }
-         /* User may specify a name, e.g: VFIO platform device */
-         if (!vbasedev->name) {
-@@ -623,7 +623,7 @@ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-     } else {
-         if (!vbasedev->iommufd) {
-             error_setg(errp, "Use FD passing only with iommufd backend");
+-    int ret;
+-
+     /* @fd takes precedence over @sysfsdev which takes precedence over @host */
+     if (vbasedev->fd < 0 && vbasedev->sysfsdev) {
+         g_free(vbasedev->name);
+@@ -538,7 +535,7 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
+     } else if (vbasedev->fd < 0) {
+         if (!vbasedev->name || strchr(vbasedev->name, '/')) {
+             error_setg(errp, "wrong host device name");
 -            return -EINVAL;
 +            return false;
          }
-         /*
-          * Give a name with fd so any function printing out vbasedev->name
-@@ -634,7 +634,7 @@ int vfio_device_get_name(VFIODevice *vbasedev, Error **errp)
-         }
+ 
+         vbasedev->sysfsdev = g_strdup_printf("/sys/bus/platform/devices/%s",
+@@ -546,20 +543,20 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
      }
  
--    return 0;
-+    return true;
- }
- 
- void vfio_device_set_fd(VFIODevice *vbasedev, const char *str, Error **errp)
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 358da4497b..aad012c348 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2999,7 +2999,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-                             vdev->host.slot, vdev->host.function);
-     }
- 
--    if (vfio_device_get_name(vbasedev, errp) < 0) {
-+    if (!vfio_device_get_name(vbasedev, errp)) {
-         return;
-     }
- 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 3233ca8691..e1a32863d9 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -545,9 +545,8 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
-                                              vbasedev->name);
-     }
- 
--    ret = vfio_device_get_name(vbasedev, errp);
--    if (ret) {
--        return ret;
-+    if (!vfio_device_get_name(vbasedev, errp)) {
-+        return -EINVAL;
+     if (!vfio_device_get_name(vbasedev, errp)) {
+-        return -EINVAL;
++        return false;
      }
  
      if (!vfio_attach_device(vbasedev->name, vbasedev,
+                             &address_space_memory, errp)) {
+-        return -EINVAL;
++        return false;
+     }
+ 
+-    ret = vfio_populate_device(vbasedev, errp);
+-    if (ret) {
+-        vfio_detach_device(vbasedev);
++    if (vfio_populate_device(vbasedev, errp)) {
++        return true;
+     }
+ 
+-    return ret;
++    vfio_detach_device(vbasedev);
++    return false;
+ }
+ 
+ /**
+@@ -576,7 +573,7 @@ static void vfio_platform_realize(DeviceState *dev, Error **errp)
+     VFIOPlatformDevice *vdev = VFIO_PLATFORM_DEVICE(dev);
+     SysBusDevice *sbdev = SYS_BUS_DEVICE(dev);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+-    int i, ret;
++    int i;
+ 
+     qemu_mutex_init(&vdev->intp_mutex);
+ 
+@@ -584,9 +581,8 @@ static void vfio_platform_realize(DeviceState *dev, Error **errp)
+                                 vbasedev->sysfsdev : vbasedev->name,
+                                 vdev->compat);
+ 
+-    ret = vfio_base_device_init(vbasedev, errp);
+-    if (ret) {
+-        goto out;
++    if (!vfio_base_device_init(vbasedev, errp)) {
++        goto init_err;
+     }
+ 
+     if (!vdev->compat) {
+@@ -618,11 +614,9 @@ static void vfio_platform_realize(DeviceState *dev, Error **errp)
+         }
+         sysbus_init_mmio(sbdev, vdev->regions[i]->mem);
+     }
+-out:
+-    if (!ret) {
+-        return;
+-    }
++    return;
+ 
++init_err:
+     if (vdev->vbasedev.name) {
+         error_prepend(errp, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+     } else {
 -- 
 2.34.1
 
