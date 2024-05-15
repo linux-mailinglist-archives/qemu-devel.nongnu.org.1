@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906068C6A75
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 18:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCBE8C6A81
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 18:23:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7HOL-0004CL-I3; Wed, 15 May 2024 12:22:09 -0400
+	id 1s7HPP-00052J-Aw; Wed, 15 May 2024 12:23:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7HOJ-0004Bv-O1
- for qemu-devel@nongnu.org; Wed, 15 May 2024 12:22:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7HOG-0007jd-De
- for qemu-devel@nongnu.org; Wed, 15 May 2024 12:22:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715790123;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nmkTWaisy4R2Mu7NUhC46zzhrGGene3P5HaV6fxWV04=;
- b=Iow/CFwiw26ZwFYGM7AUYv+EzfTmDHtu2sRU3CUNZ7PppQ+U6BufPu/hGh8ZsyQDz7OBDG
- RNdVfV02eYmG8p80vv32ZjiCUuwg38RPTOa/d8f3UG8/C/ExRWMiLPAbxAL8BhALilQ9cu
- WdZ6ZLl4SqSjCVUWv5HwvjimX5WQDYY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-303-2Khz-HrLOcK4JNNGKh6JCg-1; Wed,
- 15 May 2024 12:22:00 -0400
-X-MC-Unique: 2Khz-HrLOcK4JNNGKh6JCg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 574FD3803908;
- Wed, 15 May 2024 16:21:59 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0A0D3491032;
- Wed, 15 May 2024 16:21:55 +0000 (UTC)
-Date: Wed, 15 May 2024 17:21:53 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- qemu-arm@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v3 0/5] Fix "virtio-gpu: fix scanout migration post-load"
-Message-ID: <ZkThIRggOlig2tv0@redhat.com>
-References: <20240515141557.1277999-1-marcandre.lureau@redhat.com>
- <ZkTdwyxWcTTMwtAp@x1n>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1s7HPN-000521-2F
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 12:23:13 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1s7HPB-0007qD-Go
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 12:23:12 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1ecd9a81966so56471375ad.0
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 09:23:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1715790179; x=1716394979;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nZ6fjgZWxIJniltxkTBgUya3s2olJxgAhkL4nA4Ykco=;
+ b=HqZRHS33zVf50V9KGKPShQ4ys9/m446kH+vcRcUX8b+MdibtPRmuDWLpLlIpT0SAEF
+ yiumCTqT5mnctPhoSeJBcsgMBafVClHjUoydOwfJh6elLiXqtpz2PGLXWIcOR0L6q7km
+ D8a1ROZed99HHEiLOPtnjF4cYOsYZSXS0ar8lfLBnHIKG9YIeQLp8aw4we16pn/WFh2/
+ 7FXe/QWF2qQq+msRMOSx1dqXRihEWMq7d9dVyLhGxzjSERWwmP/h1zvs3kKysjLQzEYO
+ h91K4oTgQhatf1YmGooj65z7eXt0cvkuycomjnLet48JHENtXaAM/U+4yonu+zY7UdNB
+ NsTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715790179; x=1716394979;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nZ6fjgZWxIJniltxkTBgUya3s2olJxgAhkL4nA4Ykco=;
+ b=RYmjq92/tIk9qq2lwMBvPwNO13AAxet4Tll+CrXJq8Wd0nb10lBR7QkCSlq7o3yRbO
+ csyxCNerJyQWWFAOCqjFkPPad42q5X10SqJ1xU493Aj06kM2+/dk1OXPxnXAnkfVL63i
+ aHWWqAxSBoe6HY686E2nuvrGoMCS2L9eGBSlHp/nmqY/4eN2SdKQFLBV/I5yb92ZGmwX
+ G7TLkt5XGR1LdWw7DaI+hYAJpLT7XG3BDoG/AUxVtsaLn7DPH8jTchh1ei9bhaQpd0UZ
+ NVGM73i6h/dw1oauaz06r8dzAwsFzQ/MhLQR1th8IyLHwJRNsChb/ltXEfiQuxv9Bdyi
+ 915w==
+X-Gm-Message-State: AOJu0YwTjagIBiGXvbZOYOHg7kDtLCmO1chPuU8wWLhx/1+6q3xQQ8ld
+ hTh1aW5HSnM3CN/j9KouwUDKH67MHvUACzno6LTd7tJfI5IN/RUsY5j+Rzcf8vA=
+X-Google-Smtp-Source: AGHT+IHwMbtEaLIKQ62sZOYmLx3IWerz/igCWsS3yfGvnShROWMwb/rDIYCLZR8WPTZPlLqa9h77Cw==
+X-Received: by 2002:a17:903:1109:b0:1eb:101d:bf53 with SMTP id
+ d9443c01a7336-1eef9f346demr286477885ad.1.1715790179051; 
+ Wed, 15 May 2024 09:22:59 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1ef0bf30b0csm120796265ad.176.2024.05.15.09.22.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 May 2024 09:22:58 -0700 (PDT)
+Message-ID: <dd81b552-8f81-4bdd-9c9d-45fec6b6a526@daynix.com>
+Date: Thu, 16 May 2024 01:22:52 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 01/10] virtio-gpu: Unrealize GL device
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Huang Rui <ray.huang@amd.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
+ <marcandre.lureau@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
+ ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
+References: <20240511182251.1442078-1-dmitry.osipenko@collabora.com>
+ <20240511182251.1442078-2-dmitry.osipenko@collabora.com>
+ <f8d3f2d8-6759-4a74-8792-1091a47e1e43@daynix.com>
+ <ec463ed4-de2b-434d-a1ee-e8b5d4a843b6@collabora.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <ec463ed4-de2b-434d-a1ee-e8b5d4a843b6@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZkTdwyxWcTTMwtAp@x1n>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.935,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::629;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +114,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 15, 2024 at 10:07:31AM -0600, Peter Xu wrote:
-> On Wed, May 15, 2024 at 06:15:51PM +0400, marcandre.lureau@redhat.com wrote:
-> > From: Marc-André Lureau <marcandre.lureau@redhat.com>
-> > 
-> > Hi,
-> > 
-> > The aforementioned patch breaks virtio-gpu device migrations for versions
-> > pre-9.0/9.0, both forwards and backwards. Versioning of `VMS_STRUCT` is more
-> > complex than it may initially appear, as evidenced in the problematic commit
-> > dfcf74fa68c ("virtio-gpu: fix scanout migration post-load").
-> > 
-> > v2:
-> >  - use a manual version field test (instead of the more complex struct variant)
-> > 
-> > v3:
-> >  - introduce machine_check_version()
-> >  - drop the VMSD version, and use machine version field test
+On 2024/05/16 1:18, Dmitry Osipenko wrote:
+> On 5/13/24 11:44, Akihiko Odaki wrote:
+>> On 2024/05/12 3:22, Dmitry Osipenko wrote:
+>>> Even though GL GPU doesn't support hotplugging today, free virgl
+>>> resources when GL device is unrealized. For consistency.
+>>>
+>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>>> ---
+>>>    hw/display/virtio-gpu-gl.c     | 11 +++++++++++
+>>>    hw/display/virtio-gpu-virgl.c  |  9 +++++++++
+>>>    include/hw/virtio/virtio-gpu.h |  1 +
+>>>    3 files changed, 21 insertions(+)
+>>>
+>>> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+>>> index e06be60dfbfc..0c0a8d136954 100644
+>>> --- a/hw/display/virtio-gpu-gl.c
+>>> +++ b/hw/display/virtio-gpu-gl.c
+>>> @@ -136,6 +136,16 @@ static Property virtio_gpu_gl_properties[] = {
+>>>        DEFINE_PROP_END_OF_LIST(),
+>>>    };
+>>>    +static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
+>>> +{
+>>> +    VirtIOGPU *g = VIRTIO_GPU(qdev);
+>>> +    VirtIOGPUGL *gl = VIRTIO_GPU_GL(qdev);
+>>> +
+>>> +    if (gl->renderer_inited) {
+>>> +        virtio_gpu_virgl_deinit(g);
+>>> +    }
+>>> +}
+>>> +
+>>>    static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
+>>>    {
+>>>        DeviceClass *dc = DEVICE_CLASS(klass);
+>>> @@ -149,6 +159,7 @@ static void virtio_gpu_gl_class_init(ObjectClass
+>>> *klass, void *data)
+>>>        vgc->update_cursor_data = virtio_gpu_gl_update_cursor_data;
+>>>          vdc->realize = virtio_gpu_gl_device_realize;
+>>> +    vdc->unrealize = virtio_gpu_gl_device_unrealize;
+>>>        vdc->reset = virtio_gpu_gl_reset;
+>>>        device_class_set_props(dc, virtio_gpu_gl_properties);
+>>>    }
+>>> diff --git a/hw/display/virtio-gpu-virgl.c
+>>> b/hw/display/virtio-gpu-virgl.c
+>>> index 9f34d0e6619c..b0500eccf8e0 100644
+>>> --- a/hw/display/virtio-gpu-virgl.c
+>>> +++ b/hw/display/virtio-gpu-virgl.c
+>>> @@ -665,3 +665,12 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
+>>>          return capset2_max_ver ? 2 : 1;
+>>>    }
+>>> +
+>>> +void virtio_gpu_virgl_deinit(VirtIOGPU *g)
+>>> +{
+>>> +    if (g->fence_poll) {
+>>
+>> Isn't g->fence_poll always non-NULL when this function is called?
 > 
-> Thanks for trying this out already.
+> virtio_gpu_virgl_init() is invoked when first cmd is executed, please
+> see virtio_gpu_gl_handle_ctrl() that invokes it. Hence g->fence_poll can
+> be NULL.
 > 
-> Last time I mentioned this may for the long term because I remember Dan and
-> Thomas were trying to work on some machine deprecation work, and maybe such
-> things may collapse with that work (and perhaps easier with that work
-> landed, too?).  Just to copy them both here so we know where we are now, as
-> I didn't follow that discussion.  IOW, patch 3/4 may need separate review
-> from outside migration..
 
-You'll be refering to my series here:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2024-05/msg00084.html
-
-Note that series very delibrately did *not* expose the version numbers
-as accessible fields to code. The version number info is only accessible
-within the machine type macros, and once the macros are expanded, the
-version digits remains hidden within the opaque machine type name strings,
-and/or method names.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+But it already checks renderer_inited, doesn't it? And I think it's 
+better to utilize one single flag to represent that virgl is enabled 
+instead of checking several variables (fence_poll and cmdq_resume_bh in 
+the future).
 
