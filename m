@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD6F8C62C2
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B3E8C62C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79vt-00029X-Th; Wed, 15 May 2024 04:24:17 -0400
+	id 1s79vq-00028h-LO; Wed, 15 May 2024 04:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vh-00027N-0t; Wed, 15 May 2024 04:24:05 -0400
+ id 1s79vj-00027U-PC
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:08 -0400
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vf-00077F-75; Wed, 15 May 2024 04:24:04 -0400
+ id 1s79vg-00077f-HH
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715761443; x=1747297443;
+ t=1715761444; x=1747297444;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pVxkfsRntqgELQhLG2u4uTRx0dfHIDo1WV5Xy3ttNnE=;
- b=KkEITxhSucd32jtTMVhVVUps9/jpUSRj7IHCpJmFQzkENKMvBThjsWkX
- zoWjTE8qjz92XLm59vXxKCrWoEnh3urxnCJOW1AZLjPV0kFFg/3cnbUE9
- ZKydOq7TUhwPJRANqdNcLVIRiDWa+ucAX4tG7rl/7j/VT9AFCRkwSbbBp
- LlZStWzrsAAOTXAxhF2xw4qSWcN+YLzpXVarpCaoiSur/5pVQbDhm3Vpx
- BQZ2VpZpXyakJMnNPz7+EQ5VAWz/HQ3E8j495aS+yedX+/Rex9hvqtDwE
- IHTZRqD4s09Th+CHzSLy3S8rmsaW2G8WfjWqWkaeV1wpNnykWPzik5O39 A==;
-X-CSE-ConnectionGUID: 6PAsQVAPS/qtOcoZLDM3oA==
-X-CSE-MsgGUID: zu9qQNe8Twu1XTI9YzVYEw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961549"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961549"
+ bh=cBfce4notNHYUMmAQiEeB90TnixUBjEhqnkhKjUAII4=;
+ b=IC3UMrdtmLQcCaot0OBhJEqB9Yf31ruunNrlQy3sDGKiJ512gsaJG9HH
+ WKPlMVwPrgtRSi2ObeZPyzCWzYG7oJ/3//nAVvBSxGdMtbCs9pq/6oy83
+ Hf2qsxiq2sA9wnGky9uQWXBTgvoevNHbK3vyL2fsyWrWcR3UjTkJQsx9+
+ EZMXqCn9i44mIVf1i/7/M5bGIfQTB7dDFS9TflqTrlcCOe2IDGqISpzBA
+ bRnBwIgHP3Gm1uGiqvJxPBuFl9P7RHZMkD21RqFZMymyzZccNmlZH8skY
+ 0RbpgBb91I51ibY5zAEByFr4oujmOMNOAWgn0SnYcp8/kTFRI314mP3TE w==;
+X-CSE-ConnectionGUID: j2u8Q1KrRU6zkkztCE7SqA==
+X-CSE-MsgGUID: UOuX/IsdTTukapVzJbzFTw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961552"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961552"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:24:01 -0700
-X-CSE-ConnectionGUID: 3LlnXr7tRraG1w9Q1YFgew==
-X-CSE-MsgGUID: KoCGEP9vSEWvncZ0IO+Ruw==
+ 15 May 2024 01:24:03 -0700
+X-CSE-ConnectionGUID: u4GGzq+WSnad5naacd16Lw==
+X-CSE-MsgGUID: M5SzkOMKSsyOe9LK+3xjrw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396304"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396322"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:23:58 -0700
+ 15 May 2024 01:24:01 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- qemu-s390x@nongnu.org (open list:S390 general arch...)
-Subject: [PATCH 07/16] vfio/ccw: Make vfio_ccw_get_region() return a bool
-Date: Wed, 15 May 2024 16:20:32 +0800
-Message-Id: <20240515082041.556571-8-zhenzhong.duan@intel.com>
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 08/16] vfio/pci: Make vfio_intx_enable_kvm() return a bool
+Date: Wed, 15 May 2024 16:20:33 +0800
+Message-Id: <20240515082041.556571-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
@@ -81,79 +80,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since vfio_populate_device() takes an 'Error **' argument,
+Since vfio_intx_enable_kvm() takes an 'Error **' argument,
 best practices suggest to return a bool. See the qapi/error.h
 Rules section.
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/ccw.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ hw/vfio/pci.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 8850ca17c8..2600e62e37 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -474,7 +474,7 @@ static void vfio_ccw_unregister_irq_notifier(VFIOCCWDevice *vcdev,
-     event_notifier_cleanup(notifier);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index aad012c348..12fb534d79 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -116,7 +116,7 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
+     vfio_unmask_single_irqindex(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
  }
  
--static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-+static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+-static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
  {
-     VFIODevice *vdev = &vcdev->vdev;
-     struct vfio_region_info *info;
-@@ -483,7 +483,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-     /* Sanity check device */
-     if (!(vdev->flags & VFIO_DEVICE_FLAGS_CCW)) {
-         error_setg(errp, "vfio: Um, this isn't a vfio-ccw device");
+ #ifdef CONFIG_KVM
+     int irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
+@@ -124,7 +124,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     if (vdev->no_kvm_intx || !kvm_irqfds_enabled() ||
+         vdev->intx.route.mode != PCI_INTX_ENABLED ||
+         !kvm_resamplefds_enabled()) {
 -        return;
-+        return false;
++        return true;
      }
  
-     /*
-@@ -493,13 +493,13 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-     if (vdev->num_regions < VFIO_CCW_CONFIG_REGION_INDEX + 1) {
-         error_setg(errp, "vfio: too few regions (%u), expected at least %u",
-                    vdev->num_regions, VFIO_CCW_CONFIG_REGION_INDEX + 1);
--        return;
-+        return false;
-     }
+     /* Get to a known interrupt state */
+@@ -161,7 +161,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
  
-     ret = vfio_get_region_info(vdev, VFIO_CCW_CONFIG_REGION_INDEX, &info);
-     if (ret) {
-         error_setg_errno(errp, -ret, "vfio: Error getting config info");
--        return;
-+        return false;
-     }
- 
-     vcdev->io_region_size = info->size;
-@@ -553,7 +553,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         g_free(info);
-     }
+     trace_vfio_intx_enable_kvm(vdev->vbasedev.name);
  
 -    return;
 +    return true;
  
- out_err:
-     g_free(vcdev->crw_region);
-@@ -561,7 +561,7 @@ out_err:
-     g_free(vcdev->async_cmd_region);
-     g_free(vcdev->io_region);
-     g_free(info);
--    return;
+ fail_vfio:
+     kvm_irqchip_remove_irqfd_notifier_gsi(kvm_state, &vdev->intx.interrupt,
+@@ -171,6 +171,9 @@ fail_irqfd:
+ fail:
+     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
+     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
 +    return false;
++#else
++    return true;
+ #endif
  }
  
- static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
-@@ -597,8 +597,7 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
-         goto out_attach_dev_err;
+@@ -226,8 +229,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
+         return;
      }
  
--    vfio_ccw_get_region(vcdev, &err);
+-    vfio_intx_enable_kvm(vdev, &err);
 -    if (err) {
-+    if (!vfio_ccw_get_region(vcdev, &err)) {
-         goto out_region_err;
++    if (!vfio_intx_enable_kvm(vdev, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+     }
+ 
+@@ -302,8 +304,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+         return -errno;
+     }
+ 
+-    vfio_intx_enable_kvm(vdev, &err);
+-    if (err) {
++    if (!vfio_intx_enable_kvm(vdev, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
      }
  
 -- 
