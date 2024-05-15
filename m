@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DD38C6426
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4C28C6428
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:49:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7BBO-0000zI-Gb; Wed, 15 May 2024 05:44:22 -0400
+	id 1s7BBR-0001Gk-FE; Wed, 15 May 2024 05:44:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7BBK-0000Pl-3U
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:44:18 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1s7BBN-0000vi-6S
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:44:21 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7BBI-0002U7-7A
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:44:17 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-420104e5390so39438005e9.1
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:44:15 -0700 (PDT)
+ id 1s7BBL-0002W0-3R
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:44:20 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5210684cee6so7748627e87.0
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:44:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766255; x=1716371055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715766257; x=1716371057; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=420RbZAGJjbzrfJsdBQyYhnJyXLQSLvrDO7PgYHuwLQ=;
- b=BVDME0AIzTJ+dFcZe3yobr4g4v7+PFrZrwGMHFSJVwNwKu6uW9TEFKPUI39cqKlWVa
- 5igAYy85rmMIgNLT1PDVz9m9VftW82U0FxdeeXD23uzaz4PH6CT8iHIDr1Wmk2I3zJc7
- rPyjESBQrHxmY13qhGUdvCgU6jth6v+/rxYXwFEOt6gcMG5N61FIyQf4Xzw1wzizqIdK
- kxBseh/3VNMjhu0MyINKULX4Eare1FW1lMeitS6wW7eEYm765VLdaTRGq00AlJZzlBiM
- yNXb+80IibAWYBw3IsF0gOiDlNkD6MAskRmbsF/jQjePM6qX5nWbx/7H+k61BU0kQ0pB
- gxaA==
+ :reply-to; bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
+ b=WtiV8xHQPSrHAjxzzNI1ARs/tHqyEorPwAROEtYxzdkryV54HQgjEcJF6Oax7T2qsO
+ gapB0DSN9DM4wV7ns0QHPu2GISpmHd5DkI7xXJO/041abYJfc/O97Dy6ZT4vH7oFd9NB
+ QXmYA3JkqHrrsQNLff1Abx2JHvUqcUmSIcUzEEuYCfFkFJjxB2BJeZy2R11yI+gpFDGe
+ 2zmbUPTVQCDfo40OKACisQLL/8RngcFgVKSh4FO4Yr2A2CxI0ssU4d+lZcM2ddSBHAIN
+ N60dKu3EgUnKLJsDz1LtknXQ20ZtnWQyHqfRnALK/GptlQDVBNVzQDL+LwYRJ23ahMcl
+ 5Rlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766255; x=1716371055;
+ d=1e100.net; s=20230601; t=1715766257; x=1716371057;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=420RbZAGJjbzrfJsdBQyYhnJyXLQSLvrDO7PgYHuwLQ=;
- b=wULmcE9CX90Sg2w65BQzocp68NCW2SuDSyvMTcgLtY5YAvznGFsCTR2iZbwoDVsKSW
- Nkc1vxneTrE8uA8lnMASRJGvRqyll5Zib97/eaxKEHSPoz4g17/cEnQAkXSBmdpEkfn8
- uh36W2VKwQxHcpvOQZryrLT4Z/qtCIFYCSmNR4OgKja0p5inGJcxFJUX2xjsA4kmsH0w
- fBBGDKNr1QM/C6EfaG1tH+EuSvw23OVWBHRSz+3DXtSI7weTuKxHx7cXRk6jexkRqbyD
- Lxu9IZ7cQW0x8Cci6l78D5KSGeeyfFeoprwDobFjZRAcLA0SibE9jZ1GP/9NgmgDrq4I
- J2iw==
-X-Gm-Message-State: AOJu0YwEr1LjjlTX4UIxCggkY4TM8HqivFsv/ose2JNrS/GldKliZaH0
- Icwq/EKEzSAtVs1Jp24PzBDJg6nR6WP7grLJmhHSr0/Iij6CKPSFP5kh9X5Rwm64zb9+lZWKwud
- aWaw=
-X-Google-Smtp-Source: AGHT+IE4avzGlyLs5At4OYoGiMVVjbnVp3dKhHTV1RYOuhT1yl7VD42uu71Y4j9hRKlh6fybrxkN/A==
-X-Received: by 2002:a05:6000:1042:b0:34c:54c8:3f2d with SMTP id
- ffacd0b85a97d-3504aa63858mr11925117f8f.69.1715766254904; 
- Wed, 15 May 2024 02:44:14 -0700 (PDT)
+ bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
+ b=gbRPqBDDciWdnxU81/iM6CRyJ4hmZK7K8GblK+4YvmLXaN+4/8W2mF+N6ndzbZlwZO
+ v/qdBYjT63mgbmd9zr+rkSsUL7Q2G4ZPTGOpJjR1nA/u75Aq1qoBabHul1IRFFk4rjbr
+ RaRatfpxHnWgOzZ85LeJS6HIQzxKXfnchsgFdMK/Yqi0AzyzGGucTowix2o522sGfdxV
+ HkXLSWP4QGXBrZDlzYxm/TQIybRPK/gzo31a5Aok5ZfI4L3lxr053R+gaevGiO7rQzRE
+ NCRYF/gt5Gf8X4/zUAA4dR/UoJLlMqSSJHHJOrmkQaQGzmo91Db4IJ5ROu2OiN01u7+J
+ eHTw==
+X-Gm-Message-State: AOJu0YzIGTVpYHV6y/SPZdWwej2t5neyjaWQSo77NtGQapNUDLJdGrk8
+ AvFRsIks+OtGUc/ALj+JzTJe0AePWG4umcGxljWhy/vuiI1mjJdFvRnVRueJAAX+d5NJSWD74pV
+ Ihvk=
+X-Google-Smtp-Source: AGHT+IHimFPxr7Bkua+qHxR+pjYGoB6BMafEwq2LuO0Ds9UxBKomq7HRoFiaYNqi8L3uC5de+ez0jw==
+X-Received: by 2002:a19:770b:0:b0:51e:f8ae:db35 with SMTP id
+ 2adb3069b0e04-5220fe798b9mr9813528e87.43.1715766255434; 
+ Wed, 15 May 2024 02:44:15 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbc334sm15926239f8f.103.2024.05.15.02.44.14
+ ffacd0b85a97d-3502bbbc334sm15926239f8f.103.2024.05.15.02.44.15
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 02:44:14 -0700 (PDT)
+ Wed, 15 May 2024 02:44:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/43] target/hppa: Log cpu state at interrupt
-Date: Wed, 15 May 2024 11:40:42 +0200
-Message-Id: <20240515094043.82850-43-richard.henderson@linaro.org>
+Subject: [PULL 43/43] target/hppa: Log cpu state on return-from-interrupt
+Date: Wed, 15 May 2024 11:40:43 +0200
+Message-Id: <20240515094043.82850-44-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515094043.82850-1-richard.henderson@linaro.org>
 References: <20240515094043.82850-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,53 +90,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This contains all of the information logged before, plus more.
+Inverse of the logging on taking an interrupt.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/int_helper.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ target/hppa/sys_helper.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index b82f32fd12..391f32f27d 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -241,21 +241,22 @@ void hppa_cpu_do_interrupt(CPUState *cs)
-             [EXCP_SYSCALL_LWS]   = "syscall-lws",
-             [EXCP_TOC]           = "TOC (transfer of control)",
-         };
--        static int count;
--        const char *name = NULL;
--        char unknown[16];
+diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
+index 22d6c89964..9b43b556fd 100644
+--- a/target/hppa/sys_helper.c
++++ b/target/hppa/sys_helper.c
+@@ -18,6 +18,7 @@
+  */
  
--        if (i >= 0 && i < ARRAY_SIZE(names)) {
--            name = names[i];
+ #include "qemu/osdep.h"
++#include "qemu/log.h"
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
+@@ -93,6 +94,17 @@ void HELPER(rfi)(CPUHPPAState *env)
+     env->iaoq_b = env->cr_back[1];
+     env->iasq_f = (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
+     env->iasq_b = (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
++
++    if (qemu_loglevel_mask(CPU_LOG_INT)) {
 +        FILE *logfile = qemu_log_trylock();
 +        if (logfile) {
-+            const char *name = NULL;
++            CPUState *cs = env_cpu(env);
 +
-+            if (i >= 0 && i < ARRAY_SIZE(names)) {
-+                name = names[i];
-+            }
-+            if (name) {
-+                fprintf(logfile, "INT: cpu %d %s\n", cs->cpu_index, name);
-+            } else {
-+                fprintf(logfile, "INT: cpu %d unknown %d\n", cs->cpu_index, i);
-+            }
++            fprintf(logfile, "RFI: cpu %d\n", cs->cpu_index);
 +            hppa_cpu_dump_state(cs, logfile, 0);
 +            qemu_log_unlock(logfile);
-         }
--        if (!name) {
--            snprintf(unknown, sizeof(unknown), "unknown %d", i);
--            name = unknown;
--        }
--        qemu_log("INT %6d: %s @ " TARGET_FMT_lx ":" TARGET_FMT_lx
--                 " for " TARGET_FMT_lx ":" TARGET_FMT_lx "\n",
--                 ++count, name, env->cr[CR_IIASQ], env->cr[CR_IIAOQ],
--                 env->cr[CR_ISR], env->cr[CR_IOR]);
-     }
-     cs->exception_index = -1;
++        }
++    }
  }
+ 
+ static void getshadowregs(CPUHPPAState *env)
 -- 
 2.34.1
 
