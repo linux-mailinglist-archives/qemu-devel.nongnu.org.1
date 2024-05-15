@@ -2,50 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDEFA8C6A25
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 18:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD4A8C6A2F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 18:08:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7H6y-0002cF-Tt; Wed, 15 May 2024 12:04:12 -0400
+	id 1s7HAq-0005rx-CE; Wed, 15 May 2024 12:08:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7H6j-0002DD-4q
- for qemu-devel@nongnu.org; Wed, 15 May 2024 12:03:58 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s7HAX-0005rI-HH
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 12:07:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7H6g-0000Wi-Va
- for qemu-devel@nongnu.org; Wed, 15 May 2024 12:03:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s7HAT-0001J3-BD
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 12:07:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715789033;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1715789267;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yul14Iba9gQ06KAp3BAHzUcXKv21bZcrm8jPtqpFSvE=;
- b=Ij63PwpMgBEEKG4hP/Wx6G6/a7caV+9WuRgHFzImzXx01vIW57IA7a7KzjEMr80LXyvVgP
- Do/hQ08KLwt6VBUTS47+5mQC5NXVH3CE1MenW+wjRYZQM1Rg/Oy+cZJwufWOSJfbZBSqci
- kfL/to3w37nwFzh8tLuLC1+my1a/l9A=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-128-rY8yE26YPZ2OePFvyWsgeA-1; Wed,
- 15 May 2024 12:03:50 -0400
-X-MC-Unique: rY8yE26YPZ2OePFvyWsgeA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97AB53C00096;
- Wed, 15 May 2024 16:03:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.55])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9960B2026D68;
- Wed, 15 May 2024 16:03:46 +0000 (UTC)
-Date: Wed, 15 May 2024 17:03:44 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+ bh=y00VFhqWJNQF+pmKiW1gnxYds4bcdl47ZbEAmoE4lHU=;
+ b=MWAAKTBUbgvTtxonaYNM9DPnLD1WMPBJHzbrRz18HsM1hluiJ1a+YHDh4B4TkVTPCgsy5H
+ RFY4eAJEb7wuPTB8r1l6R2KNpbXdpd+yeXLxoOdob7Vko2X3ZrgWghg08MUbF77B75gq6z
+ s70bEwDep908CJORftxrIRqdr6hdT/I=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-250-HNAfiC9BOaeEC1Qo51i67Q-1; Wed, 15 May 2024 12:07:46 -0400
+X-MC-Unique: HNAfiC9BOaeEC1Qo51i67Q-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-2b9de4a4757so260658a91.1
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 09:07:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715789265; x=1716394065;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=y00VFhqWJNQF+pmKiW1gnxYds4bcdl47ZbEAmoE4lHU=;
+ b=l7BD3wNyv8OmGEBHtlQilJ4YlFD4TboAdHhHl+/BKOGZ6yJ9s8q8VueL7048gOtYGf
+ 97hmMiqVa4IRfongThZpq85b1nmRDhPwrWYAS2CGke3wpETHK+7s7B8gLjQRIPZs5/OI
+ zSA8w80Xx7AOLxXssW0qRgnkjtIbULDAEE8LGftof+G8ocYpBj/VHkGNRT387A6wG86N
+ HmflmAGjCfi3Xql+qIQg0bIhiyUNkz2AFd/KonYMInjLB6zH0lwheSdoImdwVDKzWwdF
+ djHs/U1uHFha6NIZGTzPBziy2iZ+jFJtw1N3lZRFYbeqYrfNKsbchF+za/hUKpTw9snW
+ +u9w==
+X-Gm-Message-State: AOJu0YyDXmFZTxTGU9Zk/K1ubyIuW/729DMkyRa9jemoGXLzkjoEY335
+ garLLkkYlFLBkUfFQg8GWPTaVZ0xYIxnLKZPGmA7eQKblHlxFhgVbCxny1eW+ujGP0QbZ4Z7zOC
+ j8ukK+0G2YxYhiGbWGuOZz1LKgZ65oZndIggWNvRCJnk4vXFqnBRG
+X-Received: by 2002:a17:90a:f10d:b0:2b2:916d:d89b with SMTP id
+ 98e67ed59e1d1-2b6cb7c7dc7mr15200412a91.0.1715789265091; 
+ Wed, 15 May 2024 09:07:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfGl7QBuhQwPQN/ErKvyCDFU401M0tFCAmNQZ67P6BdiEBFW+NZOMbBW0qyGLJXffXYB5R9Q==
+X-Received: by 2002:a17:90a:f10d:b0:2b2:916d:d89b with SMTP id
+ 98e67ed59e1d1-2b6cb7c7dc7mr15200355a91.0.1715789264389; 
+ Wed, 15 May 2024 09:07:44 -0700 (PDT)
+Received: from x1n ([50.204.89.32]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-2b67126ad51sm11931271a91.25.2024.05.15.09.07.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 May 2024 09:07:43 -0700 (PDT)
+Date: Wed, 15 May 2024 10:07:31 -0600
+From: Peter Xu <peterx@redhat.com>
 To: marcandre.lureau@redhat.com
 Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  "Michael S. Tsirkin" <mst@redhat.com>,
@@ -56,19 +72,17 @@ Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  Fabiano Rosas <farosas@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v3 5/5] virtio-gpu: fix v2 migration
-Message-ID: <ZkTc4Ott5M15k55R@redhat.com>
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v3 0/5] Fix "virtio-gpu: fix scanout migration post-load"
+Message-ID: <ZkTdwyxWcTTMwtAp@x1n>
 References: <20240515141557.1277999-1-marcandre.lureau@redhat.com>
- <20240515141557.1277999-6-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240515141557.1277999-6-marcandre.lureau@redhat.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <20240515141557.1277999-1-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -89,121 +103,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 15, 2024 at 06:15:56PM +0400, marcandre.lureau@redhat.com wrote:
+On Wed, May 15, 2024 at 06:15:51PM +0400, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> Commit dfcf74fa ("virtio-gpu: fix scanout migration post-load") broke
-> forward/backward version migration. Versioning of nested VMSD structures
-> is not straightforward, as the wire format doesn't have nested
-> structures versions.
+> Hi,
 > 
-> Use the previously introduced check_machine_version() function as a
-> field test to ensure proper saving/loading based on the machine version.
-> The VMSD.version is irrelevant now.
+> The aforementioned patch breaks virtio-gpu device migrations for versions
+> pre-9.0/9.0, both forwards and backwards. Versioning of `VMS_STRUCT` is more
+> complex than it may initially appear, as evidenced in the problematic commit
+> dfcf74fa68c ("virtio-gpu: fix scanout migration post-load").
 > 
-> Fixes: dfcf74fa ("virtio-gpu: fix scanout migration post-load")
-> Suggested-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
->  hw/display/virtio-gpu.c | 21 +++++++++++++--------
->  1 file changed, 13 insertions(+), 8 deletions(-)
+> v2:
+>  - use a manual version field test (instead of the more complex struct variant)
 > 
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index ae831b6b3e..b2d8e5faeb 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -20,6 +20,7 @@
->  #include "trace.h"
->  #include "sysemu/dma.h"
->  #include "sysemu/sysemu.h"
-> +#include "hw/boards.h"
->  #include "hw/virtio/virtio.h"
->  #include "migration/qemu-file-types.h"
->  #include "hw/virtio/virtio-gpu.h"
-> @@ -1166,10 +1167,14 @@ static void virtio_gpu_cursor_bh(void *opaque)
->      virtio_gpu_handle_cursor(&g->parent_obj.parent_obj, g->cursor_vq);
->  }
->  
-> +static bool machine_check_9_0(void *opaque, int version)
-> +{
-> +    return machine_check_version(9, 0);
-> +}
+> v3:
+>  - introduce machine_check_version()
+>  - drop the VMSD version, and use machine version field test
 
-I think applying version number checks to decide machine type
-compatibility is a highly undesirable direction for QEMU to
-take.
+Thanks for trying this out already.
 
-Machine type compatibility is a difficult problem, but one of
-the good aspects about our current solution is that it is
-clear what the differences are for each version. We can see
-all the compatibility properties/flags/values being set in
-one place, in the declaration of each machine's class.
+Last time I mentioned this may for the long term because I remember Dan and
+Thomas were trying to work on some machine deprecation work, and maybe such
+things may collapse with that work (and perhaps easier with that work
+landed, too?).  Just to copy them both here so we know where we are now, as
+I didn't follow that discussion.  IOW, patch 3/4 may need separate review
+from outside migration..
 
-Sprinkling version number checks around the codebase in
-arbitrary files will harm visibility of what ABI is expressd
-by each machine, and thus is liable to increase the liklihood
-of mistakes.
+The simpler solution is we stick with the customized field and simple fix
+to the issue first, then whenever we have that new helper later we simply
+use the new helper to replace the old, alongside we can drop the new field
+/ property too as long as it is declared with "x-".  Might be easier to
+backport too in this case.  Marc-Andre, what do you think?
 
-This will negatively impact downstream vendors cherry-picking
-patches to their stable branches, as the version number logic
-may have incorrect semantics. 
+Thanks,
 
-It will also create trouble for downstream vendors who define
-their own machines with distinct versioning from upstream, as
-there will be confusion over whether a version check is for
-the base QEMU version, or the downstream version, and such
-code added to the tree is less visible than the machine type
-definitions.
-
-Above all, I'm failing to see why there's a compelling reason
-for virtio_gpu to diverge from our long standing practice of
-adding a named property flag "virtio_scanout_vmstate_fix"
-on the machine class, and then setting it in machine types
-which need it.
-
-
-> +
->  static const VMStateDescription vmstate_virtio_gpu_scanout = {
->      .name = "virtio-gpu-one-scanout",
-> -    .version_id = 2,
-> -    .minimum_version_id = 1,
-> +    .version_id = 1,
->      .fields = (const VMStateField[]) {
->          VMSTATE_UINT32(resource_id, struct virtio_gpu_scanout),
->          VMSTATE_UINT32(width, struct virtio_gpu_scanout),
-> @@ -1181,12 +1186,12 @@ static const VMStateDescription vmstate_virtio_gpu_scanout = {
->          VMSTATE_UINT32(cursor.hot_y, struct virtio_gpu_scanout),
->          VMSTATE_UINT32(cursor.pos.x, struct virtio_gpu_scanout),
->          VMSTATE_UINT32(cursor.pos.y, struct virtio_gpu_scanout),
-> -        VMSTATE_UINT32_V(fb.format, struct virtio_gpu_scanout, 2),
-> -        VMSTATE_UINT32_V(fb.bytes_pp, struct virtio_gpu_scanout, 2),
-> -        VMSTATE_UINT32_V(fb.width, struct virtio_gpu_scanout, 2),
-> -        VMSTATE_UINT32_V(fb.height, struct virtio_gpu_scanout, 2),
-> -        VMSTATE_UINT32_V(fb.stride, struct virtio_gpu_scanout, 2),
-> -        VMSTATE_UINT32_V(fb.offset, struct virtio_gpu_scanout, 2),
-> +        VMSTATE_UINT32_TEST(fb.format, struct virtio_gpu_scanout, machine_check_9_0),
-> +        VMSTATE_UINT32_TEST(fb.bytes_pp, struct virtio_gpu_scanout, machine_check_9_0),
-> +        VMSTATE_UINT32_TEST(fb.width, struct virtio_gpu_scanout, machine_check_9_0),
-> +        VMSTATE_UINT32_TEST(fb.height, struct virtio_gpu_scanout, machine_check_9_0),
-> +        VMSTATE_UINT32_TEST(fb.stride, struct virtio_gpu_scanout, machine_check_9_0),
-> +        VMSTATE_UINT32_TEST(fb.offset, struct virtio_gpu_scanout, machine_check_9_0),
->          VMSTATE_END_OF_LIST()
->      },
->  };
-> -- 
-> 2.41.0.28.gd7d8841f67
-> 
-> 
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Peter Xu
 
 
