@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9353F8C6D32
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 22:25:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1B58C6D37
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 22:25:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7LAE-00012y-2g; Wed, 15 May 2024 16:23:50 -0400
+	id 1s7LAI-0001CJ-Lh; Wed, 15 May 2024 16:23:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s7LA6-00012G-AA
- for qemu-devel@nongnu.org; Wed, 15 May 2024 16:23:42 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1s7LA8-00013Q-NG
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 16:23:45 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s7LA3-0004Es-V5
- for qemu-devel@nongnu.org; Wed, 15 May 2024 16:23:41 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-51fdc9af005so11908678e87.3
+ id 1s7LA4-0004Ey-0E
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 16:23:43 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-51f12ccff5eso10104825e87.1
  for <qemu-devel@nongnu.org>; Wed, 15 May 2024 13:23:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715804617; x=1716409417; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=C7NdSt3+Gmz6B1W4WCW5L+nUF60PKb5NJ8EPqSfb0KY=;
- b=LKD7GkOR6R8FzRPMBasbfHbAjSzV9Jvj6LrRxJ49HIjMzVNjIgkMT6Mg0o8ph2vFcw
- 8SwUNVwKihW7vLFa9yjKrNsHekuw2nUBZ81OCIK8s+lChYwzCCvpLNUh5Sz/TO6JD1rS
- UJwCUydqZUfsblbexBi6vfPs/Mg5BSrFjBG7Ph/UHU8irmBOdEkL8DQukvgnNLDJZpC7
- kiWPvU7hoRAmJLVRj5a5p22HjSGtfxdbbqP+mN2DkidF9MhKzaAYRsR64EzqFxv9AKMm
- 1s+gre71PTR9OPj+Gq8mFckE0SugtDGi1/cDNSNF/2wN2g/ZX4eg0B9WGKhPeNumgvHq
- umkg==
+ d=linaro.org; s=google; t=1715804618; x=1716409418; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EbcgIcqXtk7G1PsTV4EtZsTodpxwHHHpdRJmOVPcreo=;
+ b=vvZ8+zPbaKqUTBUezqYfgZNYEEw4lCGRn//NcUSqqRC8FSY3VWhqm+9+bTHXMHeS4c
+ N49QLDtAhf7CvWzreH8NS3JJdeuCfXEU0gOunYb31SlG9k6Bdq/SzC0lUDaqcmybLkL2
+ bExhzdclEuMlkqvJy/JRpLGrtEmPUvWGaP+t0A0tTPrfIFGVC35j4D5H0OgG8H39HuEW
+ 8chD73/zA/oC20YPlLPz/MewZ1Jmo173BZZnTl+WpyBMt1PHPlUzeBsatBnaf/f2z9nP
+ fLUdDK93MagI6MmstPjlbr0SrZcTxibfIktdb5nyYMm4nSFukTY7ZkZdN9Jup2mAyA92
+ w4mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715804617; x=1716409417;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=C7NdSt3+Gmz6B1W4WCW5L+nUF60PKb5NJ8EPqSfb0KY=;
- b=ebKFAnFYzJ1CwSHTu2QYWlw1bfR3xdmjLwgAFcZ7U2vfLNh3oU8jIfADCxcBWn+0nD
- zG/kMKX4GWPHAzM3qZQrJ/qM2P8N1UsWRYTwHChueou5gDa6bndNyD7MavReh6PBE/Nx
- MCrzAPXe6fQ9UBEFIJPU7LdGl7neWdYHY2Fz+wiG/YuLefNY72wQ7HQIvujA7BJx1XmV
- o1aiGE+RgZMJn2aGhaBctktonvqoECkM/xVEHbQioButWXRy7vqxLijGqejFlVSolxwb
- rFMiX5amH79ULX1fS/coMcUimhG73PuRLOv4DKhyQgZbXpz72mgJxzDakzyfzGE4SuB8
- VYCw==
-X-Gm-Message-State: AOJu0YzH0Ej6za8Y9e2bb45q/W+C4mlWnjDzWrV1LFdgqZzhNHT/hLSx
- Lhip+zs1W2HS2NAar7HYtScExXm3K0jZOTO0u/h/+ftXYqayEWyjuGFCk7HXkTHfxjr9y+8EP2H
- a71A=
-X-Google-Smtp-Source: AGHT+IG8tRQh3Epf+CqSKVNOBWy1SeCCzoNw8SmWC0PwYj7seArxQ2392LuSqL6+A8UasdCc9Lz7cg==
-X-Received: by 2002:ac2:4e11:0:b0:516:d232:2516 with SMTP id
- 2adb3069b0e04-5220fc7c59amr15799724e87.6.1715804617423; 
+ d=1e100.net; s=20230601; t=1715804618; x=1716409418;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EbcgIcqXtk7G1PsTV4EtZsTodpxwHHHpdRJmOVPcreo=;
+ b=OnuNU6YhfnbyWo3vRUdhA8VinZ2mssaJqdKCx6z4zOw6u5sNWERWKufWduNMqp18Jb
+ 5KCkjDswgKWyqDHB0J2P8NXmcTaCL7VIpx18yLvVpBK8+82Ux/3wOHuCMR3BvjrwkUfn
+ QB5lGs5AnHSfePD7H+J33u6Cb32NxWE2EaAhhhy+2pY0xm9HqAc38UVxaFoBArGVQ20i
+ k1jubDIHbKGnlSs28ad91g0NLph7viPZGqI7OgvgeMQnX3p/IRWstz6nHEp8WSs1VK3t
+ NxY+WJqUAScG0SzgW9oGFhs/ozuy3k/FPhUQzGQqcbnlPgx3GyHcI8aqVSCwhTOqk8I4
+ QVCA==
+X-Gm-Message-State: AOJu0YwDNZcfT5oBy5GHr6gdSpwgAmt9jj4yWqYe/Vaju9+CrouYshF+
+ iMxl8b/GVPl2XzkzFpprjRu+xSdppFjP3dbVMnT4jF0vN2IKE7uC93j5lPKm44Y=
+X-Google-Smtp-Source: AGHT+IFsK21lx6y4aJrzQdx1fF0tGccxUFaIYERjO/yQOT5l8iAyUdXuLQ4SgC7JgqUQxH/1833lqg==
+X-Received: by 2002:a05:6512:3117:b0:51e:1bed:13b3 with SMTP id
+ 2adb3069b0e04-52210174834mr11563924e87.32.1715804617184; 
  Wed, 15 May 2024 13:23:37 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a60eabd3csm507888466b.108.2024.05.15.13.23.35
+ a640c23a62f3a-a5a1781cf91sm900672366b.1.2024.05.15.13.23.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 15 May 2024 13:23:35 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 999895F78B;
+ by draig.lan (Postfix) with ESMTP id AFA105F8D3;
  Wed, 15 May 2024 21:23:34 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 00/11] testing and plugin updates
-Date: Wed, 15 May 2024 21:23:23 +0100
-Message-Id: <20240515202334.710324-1-alex.bennee@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org (open list:ARM TCG CPUs)
+Subject: [PULL 01/11] tests/tcg: don't append QEMU_OPTS for armv6m-undef test
+Date: Wed, 15 May 2024 21:23:24 +0100
+Message-Id: <20240515202334.710324-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240515202334.710324-1-alex.bennee@linaro.org>
+References: <20240515202334.710324-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,54 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 265aad58e9cab31d0e69c374ec2efcede7fa8881:
+We don't want to build on the default machine setup here but define a
+custom one for the microbit.
 
-  Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2024-05-15 08:52:27 +0200)
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20240514174253.694591-2-alex.bennee@linaro.org>
 
-are available in the Git repository at:
-
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-may24-150524-1
-
-for you to fetch changes up to 8f9df78afac40d60a0f8162aae80c90a9c58972d:
-
-  plugins: remove op from qemu_plugin_inline_cb (2024-05-15 13:59:13 +0100)
-
-----------------------------------------------------------------
-plugin and testing updates
-
- - don't duplicate options for microbit test
- - don't spam the linux source tree when importing headers
- - add STORE_U64 inline op to TCG plugins
- - add conditional callback op to TCG plugins
-
-----------------------------------------------------------------
-Alex Bennée (2):
-      tests/tcg: don't append QEMU_OPTS for armv6m-undef test
-      scripts/update-linux-header.sh: be more src tree friendly
-
-Pierrick Bouvier (9):
-      plugins: prepare introduction of new inline ops
-      plugins: extract generate ptr for qemu_plugin_u64
-      plugins: add new inline op STORE_U64
-      tests/plugin/inline: add test for STORE_U64 inline op
-      plugins: conditional callbacks
-      tests/plugin/inline: add test for conditional callback
-      plugins: distinct types for callbacks
-      plugins: extract cpu_index generate
-      plugins: remove op from qemu_plugin_inline_cb
-
- include/qemu/plugin.h                 |  42 +++++++----
- include/qemu/qemu-plugin.h            |  80 +++++++++++++++++++-
- plugins/plugin.h                      |  12 ++-
- accel/tcg/plugin-gen.c                | 136 ++++++++++++++++++++++++++--------
- plugins/api.c                         |  39 ++++++++++
- plugins/core.c                        | 109 +++++++++++++++++++--------
- tests/plugin/inline.c                 | 130 ++++++++++++++++++++++++++++++--
- plugins/qemu-plugins.symbols          |   2 +
- scripts/update-linux-headers.sh       |  80 ++++++++++----------
- tests/tcg/arm/Makefile.softmmu-target |   2 +-
- 10 files changed, 508 insertions(+), 124 deletions(-)
-
+diff --git a/tests/tcg/arm/Makefile.softmmu-target b/tests/tcg/arm/Makefile.softmmu-target
+index 4c9264057f..39e01ce49d 100644
+--- a/tests/tcg/arm/Makefile.softmmu-target
++++ b/tests/tcg/arm/Makefile.softmmu-target
+@@ -16,7 +16,7 @@ test-armv6m-undef: test-armv6m-undef.S
+ 		$< -o $@ -nostdlib -N -static \
+ 		-T $(ARM_SRC)/$@.ld
+ 
+-run-test-armv6m-undef: QEMU_OPTS+=-semihosting -M microbit -kernel
++run-test-armv6m-undef: QEMU_OPTS=-semihosting-config enable=on,target=native,chardev=output -M microbit -kernel
+ 
+ ARM_TESTS+=test-armv6m-undef
+ 
 -- 
 2.39.2
 
