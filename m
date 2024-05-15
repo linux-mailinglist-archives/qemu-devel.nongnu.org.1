@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87A78C6950
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC26D8C6968
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:12:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7GFV-0003un-9n; Wed, 15 May 2024 11:08:57 -0400
+	id 1s7GFd-0003wC-A9; Wed, 15 May 2024 11:09:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFT-0003tj-IG
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:55 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ id 1s7GFW-0003vO-5f
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:58 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFQ-0002sk-Gk
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:55 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2e564cad1f6so64578881fa.1
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 08:08:51 -0700 (PDT)
+ id 1s7GFR-0002yN-7v
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:57 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-41dc9c83e57so45367405e9.0
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 08:08:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715785730; x=1716390530; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715785731; x=1716390531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FHnvCE4341fC3oXgYRXMWSd0dFv09lREaQY4UssVvek=;
- b=iwHhNd3m5H55qU+OscEesgNzaB213f05a1EWr+PmiVjr13jI1VP4uH8Xp4QMAS53Vx
- VXmllyGzg09dTZVHraOleZuSLQNU8n/uqyjf/KKsJUC2cBUhu8NLCVTWTZtZtIKaOPj3
- eHmzMA3d83Ezmu71rVd6rqTawKfKwSNvC4KqLYq6YWpfJefBnY5arR2yyG1WO9wqqxb3
- f8wOGHHHkPe1yPcOZOl3AvJD0TbK8kglaRujQF2A8Aut6b+APeA5rfGyLpwZNxBB8aPZ
- XiqsshbjECy2jyCDSvHTJUsoX/beqm9Chz8oX11tpwrz1sjUvGpMHrt9sjrb/3mJHsFx
- PW2Q==
+ bh=fPObxy+AqeYTMv2Kbr9Ww6bj1NBgeP7IU5K30XX9RPI=;
+ b=R6PsLwr5Ju68k2JlZhp0rF6quFh5pemGmBiKLcbEUGbUeW0FxXc2ROv39KryPO6oyy
+ nWhCXIepX2Xm80vuPUI/FpkxYpcgyAUwdotU6qy9DUV07WTyoez42NTADKz76gC9ABle
+ GJViRtivKnlaN5UIRsZ16Gd2yeL/qCqPgvfZQbPKJd4iX2bbDHngg6JMkf1oNCFX5MT6
+ N2ZcMMiv8uXelYjyUubqZTKJOkY87QATtgnwEuHfxECg3kjUqLxwiuo8y2ualNI7F+CR
+ 6OAUxoG721FiuHnsMZbWhCbf8AeE4m8noEdFyoP33Pg3vkSAK4f81E3AVOVA4ETJT3GJ
+ fgTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715785730; x=1716390530;
+ d=1e100.net; s=20230601; t=1715785731; x=1716390531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FHnvCE4341fC3oXgYRXMWSd0dFv09lREaQY4UssVvek=;
- b=lN2W+oXRFFlmj17bj9deM21/a2vVsdylLNcj/kFymWG4vFp3+biVxYtl2NGN9ydhU+
- ynFKw2QXUBxyVOdQCg9PJZytDl0F764lPFEL8mB1xJJlW+h5vYter/u/Td+PMEOFZyTC
- tL4u0CZoYuoaa+TltjOFBJsxwQWy6/5hHOsgNyg2axklz0UIGpumErLPcpf+uVTUwrfx
- fRj1P6mdHAXONY/RJvNdZSdkI+KApYL+QgACLloOwpqTtL6wn9xbbmiEcJMpZLeWHWxj
- AL+X21+VB8hhTuR5d4iYCdzbQMeURO0mVElwDLlhVMPylA/VGOQP/+Me3MwSHJ809tdU
- eICg==
-X-Gm-Message-State: AOJu0Yyuq5DnUc70gKBsaKyC3ZtnC8MPgXnzJcuumVBjj1lk1W0Mn9Y+
- T0sS2SZT0n2dbO1gPXEoPCTmamXn6X3mSp+QIIy1M2QrZY3PUjhp1sQuCZpqhCM+wFmtZwoKgVc
- j/FM=
-X-Google-Smtp-Source: AGHT+IFILKOxJekJvgcvh1tZ9BIMxFXSVFw2XkL7CKtbL6/BDsmusOwjwWIQN7mSYiMk/1NoJQ6ADA==
-X-Received: by 2002:a2e:602:0:b0:2e5:3ea9:8d26 with SMTP id
- 38308e7fff4ca-2e53ea98d95mr83109231fa.45.1715785729966; 
- Wed, 15 May 2024 08:08:49 -0700 (PDT)
+ bh=fPObxy+AqeYTMv2Kbr9Ww6bj1NBgeP7IU5K30XX9RPI=;
+ b=cYlVG902/aLykIhi87MwVMtxvAUZy7PaoUgNfG0Kc0YediKWW/Iv/VWiAHq2wMrdPf
+ sSwQzMX80Gu/cUOLU5XQ3VyMCbKWkQdn6z14YUQqD6UcA+j/Y59Jtwy03x1aUE7svQ6P
+ /nHof6eeNa2iiCASnYl1d2T6khDkTrvk9tuvicjfAWFAg6K9rQUifpwsq1uz44FthM0w
+ z3D5Z16+/ORKuwkuBsLFW6MdfRRqVJ9vaKq3Mob8L0n/yoiRsSjWmvTgazmAa4wKq+PM
+ ohPL6tsziOXhRlKk6CwCBtwwDqrGZ+7bqdQhe2GkNwlLlHzPeLOJF+UVw7Ond8SQarcZ
+ IUlg==
+X-Gm-Message-State: AOJu0Yx/l0vt4XKu0ALtA1Qfe0Fx73vMegagYQeMMrVOSupqYSrnsXCt
+ YclH5JpzKDOBctZ7a08IuQ3OLdGomThRK6VCGxEC9k8WkD98K/9flqjFN8kfYf2l6SGQBDMtzfb
+ HBbg=
+X-Google-Smtp-Source: AGHT+IHl851t8hCe1EM8du5hIf3IYEMaNSW9VBq5MsNWpqmB1NqsSSQrW07tTSxVIySVY5YiEl3Khg==
+X-Received: by 2002:a05:600c:354a:b0:41b:f24a:b590 with SMTP id
+ 5b1f17b1804b1-41fbc91f3e4mr173123515e9.3.1715785730819; 
+ Wed, 15 May 2024 08:08:50 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42013c5fa61sm132080825e9.40.2024.05.15.08.08.49
+ 5b1f17b1804b1-42013c5fa61sm132080825e9.40.2024.05.15.08.08.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 08:08:49 -0700 (PDT)
+ Wed, 15 May 2024 08:08:50 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	laurent@vivier.eu
-Subject: [PATCH v3 13/28] target/i386: Add rbfm argument to cpu_x86_{xsave,
- xrstor}
-Date: Wed, 15 May 2024 17:08:22 +0200
-Message-Id: <20240515150837.259747-14-richard.henderson@linaro.org>
+Subject: [PATCH v3 14/28] target/i386: Add {hw,
+ sw}_reserved to X86LegacyXSaveArea
+Date: Wed, 15 May 2024 17:08:23 +0200
+Message-Id: <20240515150837.259747-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515150837.259747-1-richard.henderson@linaro.org>
 References: <20240515150837.259747-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,76 +93,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now, continue to pass all 1's from signal.c.
+This completes the 512 byte structure, allowing the union to
+be removed.  Assert that the structure layout is as expected.
 
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/cpu.h            | 4 ++--
- linux-user/i386/signal.c     | 4 ++--
- target/i386/tcg/fpu_helper.c | 8 ++++----
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ target/i386/cpu.h | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ccccb62fc3..97014b14ce 100644
+index 97014b14ce..4b3bffeb9c 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -2232,8 +2232,8 @@ void cpu_x86_fsave(CPUX86State *s, target_ulong ptr, int data32);
- void cpu_x86_frstor(CPUX86State *s, target_ulong ptr, int data32);
- void cpu_x86_fxsave(CPUX86State *s, target_ulong ptr);
- void cpu_x86_fxrstor(CPUX86State *s, target_ulong ptr);
--void cpu_x86_xsave(CPUX86State *s, target_ulong ptr);
--void cpu_x86_xrstor(CPUX86State *s, target_ulong ptr);
-+void cpu_x86_xsave(CPUX86State *s, target_ulong ptr, uint64_t rbfm);
-+void cpu_x86_xrstor(CPUX86State *s, target_ulong ptr, uint64_t rbfm);
+@@ -1414,23 +1414,34 @@ typedef struct {
+  */
+ #define UNASSIGNED_APIC_ID 0xFFFFFFFF
  
- /* cpu.c */
- void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index 990048f42a..824375d42a 100644
---- a/linux-user/i386/signal.c
-+++ b/linux-user/i386/signal.c
-@@ -268,7 +268,7 @@ static void xsave_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
+-typedef union X86LegacyXSaveArea {
+-    struct {
+-        uint16_t fcw;
+-        uint16_t fsw;
+-        uint8_t ftw;
+-        uint8_t reserved;
+-        uint16_t fpop;
+-        uint64_t fpip;
+-        uint64_t fpdp;
+-        uint32_t mxcsr;
+-        uint32_t mxcsr_mask;
+-        FPReg fpregs[8];
+-        uint8_t xmm_regs[16][16];
++typedef struct X86LegacyXSaveArea {
++    uint16_t fcw;
++    uint16_t fsw;
++    uint8_t ftw;
++    uint8_t reserved;
++    uint16_t fpop;
++    union {
++        struct {
++            uint64_t fpip;
++            uint64_t fpdp;
++        };
++        struct {
++            uint32_t fip;
++            uint32_t fcs;
++            uint32_t foo;
++            uint32_t fos;
++        };
+     };
+-    uint8_t data[512];
++    uint32_t mxcsr;
++    uint32_t mxcsr_mask;
++    FPReg fpregs[8];
++    uint8_t xmm_regs[16][16];
++    uint32_t hw_reserved[12];
++    uint32_t sw_reserved[12];
+ } X86LegacyXSaveArea;
  
-         /* Zero the header, XSAVE *adds* features to an existing save state.  */
-         memset(fxsave->xfeatures, 0, 64);
--        cpu_x86_xsave(env, fxsave_addr);
-+        cpu_x86_xsave(env, fxsave_addr, -1);
-         __put_user(TARGET_FP_XSTATE_MAGIC1, &fxsave->sw_reserved.magic1);
-         __put_user(extended_size, &fxsave->sw_reserved.extended_size);
-         __put_user(env->xcr0, &fxsave->sw_reserved.xfeatures);
-@@ -569,7 +569,7 @@ static int xrstor_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
-                 return 1;
-             }
-             if (tswapl(*(uint32_t *) &fxsave->xfeatures[xfeatures_size]) == TARGET_FP_XSTATE_MAGIC2) {
--                cpu_x86_xrstor(env, fxsave_addr);
-+                cpu_x86_xrstor(env, fxsave_addr, -1);
-                 return 0;
-             }
-         }
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 6a319dadf2..a09d6aaf07 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -3047,14 +3047,14 @@ void cpu_x86_fxrstor(CPUX86State *env, target_ulong ptr)
-     do_fxrstor(&ac, ptr);
- }
- 
--void cpu_x86_xsave(CPUX86State *env, target_ulong ptr)
-+void cpu_x86_xsave(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
- {
--    do_xsave(env, ptr, -1, get_xinuse(env), -1, 0);
-+    do_xsave(env, ptr, rfbm, get_xinuse(env), -1, 0);
- }
- 
--void cpu_x86_xrstor(CPUX86State *env, target_ulong ptr)
-+void cpu_x86_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
- {
--    do_xrstor(env, ptr, -1, 0);
-+    do_xrstor(env, ptr, rfbm, 0);
- }
- #endif
- 
++QEMU_BUILD_BUG_ON(sizeof(X86LegacyXSaveArea) != 512);
++
+ typedef struct X86XSaveHeader {
+     uint64_t xstate_bv;
+     uint64_t xcomp_bv;
 -- 
 2.34.1
 
