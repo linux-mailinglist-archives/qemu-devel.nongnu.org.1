@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FD78C6407
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4B48C63EB
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:41:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7B8P-0006vH-6t; Wed, 15 May 2024 05:41:17 -0400
+	id 1s7B8L-0006Uo-7U; Wed, 15 May 2024 05:41:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B85-0005pG-DO
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:03 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1s7B84-0005p5-9c
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:01 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B80-0001dE-Kc
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:57 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-34de61b7ca4so4613999f8f.2
+ id 1s7B81-0001dK-7Q
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:55 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-34db9a38755so6306798f8f.1
  for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766051; x=1716370851; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715766052; x=1716370852; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7VevRD2WCCARN2+zS8+VlIzPJ5JnBZBdwZruWq63OXg=;
- b=AVmeuSbgxZTgFy4hyW8mrjn4goMb3lR0/l8Z7KU5r7Lsw8JlJDH9dz+r5VkqyVOfLS
- WtxLpUHP/dLIRDIH9i+8z9zxqGgz3FW/t6h5CwFhJm/Xg+fRvJcUXPTEtVjg/ckYzqzj
- LPFDZM0FjStEYrfQMHSui9rAkL0UlpgePgi+kuDYntIw/7dLFDeEwlWk0DVbSDOuXi9w
- UJg9yHkAJyb66At7G4s+Ld4WxYIpB/HoNeb5Ug3vmzREpM3qdUcC1gditTMzkbf28Qjg
- 6R2lfPIMhPFbwQ9bzOOh8PGM9fltMw0mriyEBwckTB5oL7OcT8Vdl+JU75vXe/PpSrJn
- MMrw==
+ bh=8D/PMBczQIsrFLsR1lIqXJyOFdBm71SwgovD3vevRX4=;
+ b=O6yVTTZhIKHeJClrYDBDe1MU29NX+rNdgBI9iq1mCNhFzLpOfWh/Rk0n/ehDZWA3R3
+ 7slAXb2GAz96GbGI5efxl24gyPJDJDLFxEHeoW4CciGra9DOr13HTXDKfFYeRZO5i72q
+ KYOwVTxz/soAQ4ttakpqwaBzhaAwmy4/Hi2WVg514uDqVJClVRGZidRlxR95ht/MZHgy
+ YhIkHg81Y87WihM+OKXYX0g4LHOa2/lL9tbCSqnL0HPR+w60BB7J5cl/ZrrvfnGIHKjm
+ Omv91owO5qfE5cIjfFhfV2Cb+nrJfsodKMqBHeJgR258iutg+zGXR8owKCPzBgAMb5PG
+ /N7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766051; x=1716370851;
+ d=1e100.net; s=20230601; t=1715766052; x=1716370852;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7VevRD2WCCARN2+zS8+VlIzPJ5JnBZBdwZruWq63OXg=;
- b=qLTwW/8WBcZXZrMYQod1z9hHkkSnQR7sdMHjnqINezuKrEjguN85VJvkB59zFUCCQO
- i5+UhMNqQYE0ZnduudL+DxYlulc0Vb9N7J0ILUX62M+Rc6kHmAjOYt6fxw2TD7oM+DQ9
- JSqHHiwUv0XlsCv3KeggqZPryx/KkvicOANO5QHNO5A7Ct/q7ua5hiAqS+v1WiA4oL4P
- ztpYYSDy6CbAuMPWeSGI2b+kn3UVvZMXJkLkn3Tm04IGwzCHOCcTijzVEL//MN0YkhDM
- 7hCimRyERcurnXjU7wV9ZnrBG4c5QuQpQzTt6tDCzCEv0zUkoz9Q974Xj+kkF3x7VEHJ
- 9ydg==
-X-Gm-Message-State: AOJu0Yx7b0GQFXNmSRrbR7qejoTh6nV7NKlRpyI/Te1ztQiFamaXF4Zt
- dIT0TVdgBUA+0PDk3ofCYmxxVQFhQn0ui9DMRdd860ecfPAn5j7FmqgXdYCBUj3aXR6T2s6hnCQ
- rTp4=
-X-Google-Smtp-Source: AGHT+IH64dnBF/TTWZG8acwspkapYdoea3I3dfNDQxgq6VHCOz1Y3Y/AMG4mp3bUflqklhNjl/ek1A==
-X-Received: by 2002:a5d:488a:0:b0:34c:f30f:d7a1 with SMTP id
- ffacd0b85a97d-3504a96ab69mr17431137f8f.61.1715766050979; 
- Wed, 15 May 2024 02:40:50 -0700 (PDT)
+ bh=8D/PMBczQIsrFLsR1lIqXJyOFdBm71SwgovD3vevRX4=;
+ b=hNrQ1gdoeX+yObfPtaDRhT407yUDDDysuoL4BilCgo6LDDKGVx8z5h8ve56WCpq7qj
+ 4H1ftVW+NJ4yNu1111Ij+PYajJv9dSvfuXXjcdbRuTOQh+NHzF2310AQiZVOAKm2u/Eg
+ IciDcrHmxex8Y1MibGIIxjOR2q5Jvg8q8X1mRpJC/99uCUKB6z4FvR+tYggxLsmeC0zi
+ V5UQwzqEcegRSn4NIpGCPEn6FqHeNNWksq/xm+I+7TdrVdotmHiHgq1CW/MzSLTZLYs4
+ md+AbrffoXr3K8/X7E6c+GoSOzVb5e/ksh+5Zfvb5XJAwlv09e/U+OMhC7XD8cNtfreW
+ aQPQ==
+X-Gm-Message-State: AOJu0YwgDp5LX2xtQtq3vu9MtlwBcqwUFRVPNYlE3H55vfJlNGRF8ifi
+ 05IqRasCCFDqSORqC9Y1HFBWuuEEvbzHw6evDvx7DjCu4Tjjx20oDBvc+aWCWeJ/ho0pjAOKnx5
+ PxNI=
+X-Google-Smtp-Source: AGHT+IEapX76CzQe0ceiirm58cDc7KgF2KF7+gFhHXaguNB3pcppwaUVPT4sjgFxJV/XPD2tH/ZQug==
+X-Received: by 2002:a5d:6190:0:b0:34a:35c7:22a3 with SMTP id
+ ffacd0b85a97d-3504a737286mr14514773f8f.20.1715766051964; 
+ Wed, 15 May 2024 02:40:51 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.50
+ ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 02:40:50 -0700 (PDT)
+ Wed, 15 May 2024 02:40:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 09/43] target/hppa: Delay computation of IAQ_Next
-Date: Wed, 15 May 2024 11:40:09 +0200
-Message-Id: <20240515094043.82850-10-richard.henderson@linaro.org>
+Subject: [PULL 10/43] target/hppa: Skip nullified insns in unconditional
+ dbranch path
+Date: Wed, 15 May 2024 11:40:10 +0200
+Message-Id: <20240515094043.82850-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515094043.82850-1-richard.henderson@linaro.org>
 References: <20240515094043.82850-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,79 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We no longer have to allocate a temp and perform an
-addition before translation of the rest of the insn.
-
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ target/hppa/translate.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 220665d98e..9189e0350b 100644
+index 9189e0350b..6c5efb0023 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1807,6 +1807,7 @@ static bool do_dbranch(DisasContext *ctx, int64_t disp,
+@@ -1806,11 +1806,17 @@ static bool do_dbranch(DisasContext *ctx, int64_t disp,
+ 
      if (ctx->null_cond.c == TCG_COND_NEVER && ctx->null_lab == NULL) {
          install_link(ctx, link, false);
-         ctx->iaoq_n = dest;
-+        ctx->iaoq_n_var = NULL;
+-        ctx->iaoq_n = dest;
+-        ctx->iaoq_n_var = NULL;
          if (is_n) {
++            if (use_nullify_skip(ctx)) {
++                nullify_set(ctx, 0);
++                gen_goto_tb(ctx, 0, dest, dest + 4);
++                ctx->base.is_jmp = DISAS_NORETURN;
++                return true;
++            }
              ctx->null_cond.c = TCG_COND_ALWAYS;
          }
-@@ -1863,11 +1864,6 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
-             ctx->null_lab = NULL;
-         }
-         nullify_set(ctx, n);
--        if (ctx->iaoq_n == -1) {
--            /* The temporary iaoq_n_var died at the branch above.
--               Regenerate it here instead of saving it.  */
--            tcg_gen_addi_i64(ctx->iaoq_n_var, cpu_iaoq_b, 4);
--        }
-         gen_goto_tb(ctx, 0, ctx->iaoq_b, ctx->iaoq_n);
-     }
- 
-@@ -4631,8 +4627,6 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     ctx->iaoq_f = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
-     ctx->iaoq_b = (diff ? ctx->iaoq_f + diff : -1);
- #endif
--    ctx->iaoq_n = -1;
--    ctx->iaoq_n_var = NULL;
- 
-     ctx->zero = tcg_constant_i64(0);
- 
-@@ -4684,14 +4678,8 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- 
-         /* Set up the IA queue for the next insn.
-            This will be overwritten by a branch.  */
--        if (ctx->iaoq_b == -1) {
--            ctx->iaoq_n = -1;
--            ctx->iaoq_n_var = tcg_temp_new_i64();
--            tcg_gen_addi_i64(ctx->iaoq_n_var, cpu_iaoq_b, 4);
--        } else {
--            ctx->iaoq_n = ctx->iaoq_b + 4;
--            ctx->iaoq_n_var = NULL;
--        }
++        ctx->iaoq_n = dest;
 +        ctx->iaoq_n_var = NULL;
-+        ctx->iaoq_n = ctx->iaoq_b == -1 ? -1 : ctx->iaoq_b + 4;
- 
-         if (unlikely(ctx->null_cond.c == TCG_COND_ALWAYS)) {
-             ctx->null_cond.c = TCG_COND_NEVER;
-@@ -4742,7 +4730,13 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-                                 ? DISAS_EXIT
-                                 : DISAS_IAQ_N_UPDATED);
-         } else if (ctx->iaoq_b == -1) {
--            copy_iaoq_entry(ctx, cpu_iaoq_b, -1, ctx->iaoq_n_var);
-+            if (ctx->iaoq_n_var) {
-+                copy_iaoq_entry(ctx, cpu_iaoq_b, -1, ctx->iaoq_n_var);
-+            } else {
-+                tcg_gen_addi_i64(cpu_iaoq_b, cpu_iaoq_b, 4);
-+                tcg_gen_andi_i64(cpu_iaoq_b, cpu_iaoq_b,
-+                                 gva_offset_mask(ctx->tb_flags));
-+            }
-         }
-         break;
+     } else {
+         nullify_over(ctx);
  
 -- 
 2.34.1
