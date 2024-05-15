@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC26D8C6968
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0A678C694D
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:09:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7GFd-0003wC-A9; Wed, 15 May 2024 11:09:05 -0400
+	id 1s7GFc-0003vT-39; Wed, 15 May 2024 11:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFW-0003vO-5f
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:58 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1s7GFU-0003uu-Qy
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:56 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFR-0002yN-7v
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:57 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41dc9c83e57so45367405e9.0
+ id 1s7GFQ-0002x3-Ug
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:56 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-420180b58c3so24013275e9.2
  for <qemu-devel@nongnu.org>; Wed, 15 May 2024 08:08:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1715785731; x=1716390531; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fPObxy+AqeYTMv2Kbr9Ww6bj1NBgeP7IU5K30XX9RPI=;
- b=R6PsLwr5Ju68k2JlZhp0rF6quFh5pemGmBiKLcbEUGbUeW0FxXc2ROv39KryPO6oyy
- nWhCXIepX2Xm80vuPUI/FpkxYpcgyAUwdotU6qy9DUV07WTyoez42NTADKz76gC9ABle
- GJViRtivKnlaN5UIRsZ16Gd2yeL/qCqPgvfZQbPKJd4iX2bbDHngg6JMkf1oNCFX5MT6
- N2ZcMMiv8uXelYjyUubqZTKJOkY87QATtgnwEuHfxECg3kjUqLxwiuo8y2ualNI7F+CR
- 6OAUxoG721FiuHnsMZbWhCbf8AeE4m8noEdFyoP33Pg3vkSAK4f81E3AVOVA4ETJT3GJ
- fgTQ==
+ bh=8E9ppc4CUToY/h7916Bi0wG7cWa/ImlZUPMW1khZFpk=;
+ b=jPRg41Ye0GTS8oRQNmoA9gjxBKVITCjyOIFnUejiK2Ll/k1PUchiPo7rqC8j5zj4/i
+ 6pBgIb8Bnyl8Qe3pa/VMRA4N85RuCI/x2blFDbKKoZNbb5NM7a4Z9b2TiA3iuN5n7xK4
+ IJYM7/32a1Btk9jQkQbohyIHFASp5BupNlCUOzHzcw9tAtsBjUef53qqWHy9t21HpAMl
+ fb5twZmxgeSJ+jw1mQAD1HhJIdRBHGXBbhmDBOb084ik6I6wWQbQfmL3Rxz9uKFK8b3G
+ FkjpiZAYa31JELBwFZK8STvH/JGhftoVWSILMFxTOeoRUSP2N1lJCwO/gy8SUL7ddae7
+ eC1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1715785731; x=1716390531;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fPObxy+AqeYTMv2Kbr9Ww6bj1NBgeP7IU5K30XX9RPI=;
- b=cYlVG902/aLykIhi87MwVMtxvAUZy7PaoUgNfG0Kc0YediKWW/Iv/VWiAHq2wMrdPf
- sSwQzMX80Gu/cUOLU5XQ3VyMCbKWkQdn6z14YUQqD6UcA+j/Y59Jtwy03x1aUE7svQ6P
- /nHof6eeNa2iiCASnYl1d2T6khDkTrvk9tuvicjfAWFAg6K9rQUifpwsq1uz44FthM0w
- z3D5Z16+/ORKuwkuBsLFW6MdfRRqVJ9vaKq3Mob8L0n/yoiRsSjWmvTgazmAa4wKq+PM
- ohPL6tsziOXhRlKk6CwCBtwwDqrGZ+7bqdQhe2GkNwlLlHzPeLOJF+UVw7Ond8SQarcZ
- IUlg==
-X-Gm-Message-State: AOJu0Yx/l0vt4XKu0ALtA1Qfe0Fx73vMegagYQeMMrVOSupqYSrnsXCt
- YclH5JpzKDOBctZ7a08IuQ3OLdGomThRK6VCGxEC9k8WkD98K/9flqjFN8kfYf2l6SGQBDMtzfb
- HBbg=
-X-Google-Smtp-Source: AGHT+IHl851t8hCe1EM8du5hIf3IYEMaNSW9VBq5MsNWpqmB1NqsSSQrW07tTSxVIySVY5YiEl3Khg==
-X-Received: by 2002:a05:600c:354a:b0:41b:f24a:b590 with SMTP id
- 5b1f17b1804b1-41fbc91f3e4mr173123515e9.3.1715785730819; 
- Wed, 15 May 2024 08:08:50 -0700 (PDT)
+ bh=8E9ppc4CUToY/h7916Bi0wG7cWa/ImlZUPMW1khZFpk=;
+ b=F1drADk93vIv2Ix/qNbrpTe4bgOKIM8YccXSRCnKY3He0UezVl0SQmsMcM3IlZSniT
+ iirc6bn+Sh0g7IrtkmzLADPtCnzKLalHTlnAQBnsYFLPhrIh9oAzVMgfRgxGo6UbFp0Y
+ xSxIFPX//if5YZTe5u+4USzSTX5EZi5vZvGn72Gyr1gKwI8ABv4ALkkdagz4Ot91DthS
+ P5q8MFTIc/FMc1bDuLSDX0gkoKhU/MP97IcvZM4UPZMY5Dag4GvF89CI9ks2AfaSB0zh
+ 7UQr4tyVI7vt3N+hlqmpsHvxRYS/Eyh8i/pAwQ5moOiNzWzKfS9Aq3h/XpOs65VmsUGX
+ hwzQ==
+X-Gm-Message-State: AOJu0YweHjeH3xZzcJoe7x9mc3KyDq7pR+rtnHkK/42g3XGEuqemvz3g
+ smjn8eYBoUT8jBeXyD6isAel+0kH8uRPq9a1y75XiWXCSWv50uxc1ck3rJvNH94R3oFA/jX5JdU
+ YkOs=
+X-Google-Smtp-Source: AGHT+IGD9eih2imN3ghIC5d4YPyESSWR1V85KAODBDmqb98vnKksL/uNJC4gB0gKDY5rFxk0fhJ9pw==
+X-Received: by 2002:a05:600c:4f42:b0:419:f241:632f with SMTP id
+ 5b1f17b1804b1-41feac49273mr132397645e9.31.1715785731570; 
+ Wed, 15 May 2024 08:08:51 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-42013c5fa61sm132080825e9.40.2024.05.15.08.08.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 08:08:50 -0700 (PDT)
+ Wed, 15 May 2024 08:08:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	laurent@vivier.eu
-Subject: [PATCH v3 14/28] target/i386: Add {hw,
- sw}_reserved to X86LegacyXSaveArea
-Date: Wed, 15 May 2024 17:08:23 +0200
-Message-Id: <20240515150837.259747-15-richard.henderson@linaro.org>
+Subject: [PATCH v3 15/28] linux-user/i386: Drop xfeatures_size from sigcontext
+ arithmetic
+Date: Wed, 15 May 2024 17:08:24 +0200
+Message-Id: <20240515150837.259747-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515150837.259747-1-richard.henderson@linaro.org>
 References: <20240515150837.259747-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,68 +93,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This completes the 512 byte structure, allowing the union to
-be removed.  Assert that the structure layout is as expected.
+This is subtracting sizeof(target_fpstate_fxsave) in
+TARGET_FXSAVE_SIZE, then adding it again via &fxsave->xfeatures.
+Perform the same computation using xstate_size alone.
 
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/cpu.h | 39 +++++++++++++++++++++++++--------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ linux-user/i386/signal.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 97014b14ce..4b3bffeb9c 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1414,23 +1414,34 @@ typedef struct {
-  */
- #define UNASSIGNED_APIC_ID 0xFFFFFFFF
+diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
+index 824375d42a..89048ed069 100644
+--- a/linux-user/i386/signal.c
++++ b/linux-user/i386/signal.c
+@@ -253,7 +253,6 @@ static void xsave_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
+         __put_user(0, &fxsave->sw_reserved.magic1);
+     } else {
+         uint32_t xstate_size = xsave_area_size(env->xcr0, false);
+-        uint32_t xfeatures_size = xstate_size - TARGET_FXSAVE_SIZE;
  
--typedef union X86LegacyXSaveArea {
--    struct {
--        uint16_t fcw;
--        uint16_t fsw;
--        uint8_t ftw;
--        uint8_t reserved;
--        uint16_t fpop;
--        uint64_t fpip;
--        uint64_t fpdp;
--        uint32_t mxcsr;
--        uint32_t mxcsr_mask;
--        FPReg fpregs[8];
--        uint8_t xmm_regs[16][16];
-+typedef struct X86LegacyXSaveArea {
-+    uint16_t fcw;
-+    uint16_t fsw;
-+    uint8_t ftw;
-+    uint8_t reserved;
-+    uint16_t fpop;
-+    union {
-+        struct {
-+            uint64_t fpip;
-+            uint64_t fpdp;
-+        };
-+        struct {
-+            uint32_t fip;
-+            uint32_t fcs;
-+            uint32_t foo;
-+            uint32_t fos;
-+        };
-     };
--    uint8_t data[512];
-+    uint32_t mxcsr;
-+    uint32_t mxcsr_mask;
-+    FPReg fpregs[8];
-+    uint8_t xmm_regs[16][16];
-+    uint32_t hw_reserved[12];
-+    uint32_t sw_reserved[12];
- } X86LegacyXSaveArea;
+         /*
+          * extended_size is the offset from fpstate_addr to right after the end
+@@ -273,7 +272,8 @@ static void xsave_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
+         __put_user(extended_size, &fxsave->sw_reserved.extended_size);
+         __put_user(env->xcr0, &fxsave->sw_reserved.xfeatures);
+         __put_user(xstate_size, &fxsave->sw_reserved.xstate_size);
+-        __put_user(TARGET_FP_XSTATE_MAGIC2, (uint32_t *) &fxsave->xfeatures[xfeatures_size]);
++        __put_user(TARGET_FP_XSTATE_MAGIC2,
++                   (uint32_t *)((void *)fxsave + xstate_size));
+     }
+ }
  
-+QEMU_BUILD_BUG_ON(sizeof(X86LegacyXSaveArea) != 512);
-+
- typedef struct X86XSaveHeader {
-     uint64_t xstate_bv;
-     uint64_t xcomp_bv;
+@@ -559,7 +559,6 @@ static int xrstor_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
+     if (env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE) {
+         uint32_t extended_size = tswapl(fxsave->sw_reserved.extended_size);
+         uint32_t xstate_size = tswapl(fxsave->sw_reserved.xstate_size);
+-        uint32_t xfeatures_size = xstate_size - TARGET_FXSAVE_SIZE;
+ 
+         /* Linux checks MAGIC2 using xstate_size, not extended_size.  */
+         if (tswapl(fxsave->sw_reserved.magic1) == TARGET_FP_XSTATE_MAGIC1 &&
+@@ -568,7 +567,7 @@ static int xrstor_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
+                            extended_size - TARGET_FPSTATE_FXSAVE_OFFSET)) {
+                 return 1;
+             }
+-            if (tswapl(*(uint32_t *) &fxsave->xfeatures[xfeatures_size]) == TARGET_FP_XSTATE_MAGIC2) {
++            if (tswapl(*(uint32_t *)((void *)fxsave + xstate_size)) == TARGET_FP_XSTATE_MAGIC2) {
+                 cpu_x86_xrstor(env, fxsave_addr, -1);
+                 return 0;
+             }
 -- 
 2.34.1
 
