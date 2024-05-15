@@ -2,108 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00E38C6B45
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 19:04:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0BE8C6B4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 19:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7I3S-0005Gg-Ei; Wed, 15 May 2024 13:04:38 -0400
+	id 1s7I66-0007LX-Bo; Wed, 15 May 2024 13:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s7I3K-00059t-II
- for qemu-devel@nongnu.org; Wed, 15 May 2024 13:04:32 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s7I3F-0008Dg-HG
- for qemu-devel@nongnu.org; Wed, 15 May 2024 13:04:30 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1ec92e355bfso67281935ad.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 10:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1715792663; x=1716397463;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=t0ro/6LWr3ZV8epNtwDUpaFr6Q0Xy6fB+kD/1HnVOR4=;
- b=zGZRiCo4DZaT3Yv0SBL/jUD4pBShVAf3hEC66ZmDWMTs3ivZ2A3OPTKkxvqkgeoFYo
- 9KI22F26Y7fSaodY5Kh+vDKMTgCl60/F1+NXWhIlcgdEArG7rS9SWjrVBdi3I2L2zrHF
- vq7DXCqNEI90sTvIigQU+yq91hekgmhIO1dFlb5WNU7JzTD5/bOfzscjtt+iSnnjrohk
- eLsuEZjcBCNTgfA+OpuZsF25kIhncQBkyD/vAKApLcx2AQGImor9QH8oOusqWK0gqkrN
- iLMSFu6IXlc2oZGY4ljnWuGkNfFaLsd5u5GLE+84nWn0C44wzHNc9JC3fVa8ngqraMyi
- dCkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715792663; x=1716397463;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t0ro/6LWr3ZV8epNtwDUpaFr6Q0Xy6fB+kD/1HnVOR4=;
- b=Z0V0ME28nbsrzFVr45xBLQDiNdmjDgBXn7nc7AWYDRhGeiMGgdPIrLBFvCGYqZ56or
- R8TKhphajY+fyAbf1vR2kLjZeD2Y37DJ7qoc1aTU3hm3WKQc2Sw7Fy+Wv0/QBs/j/Tb2
- ns1nZCBfTLdE4mYR78IKJHzBwr8Wo84G7+hIOLhGwYJqWbjkpBdAtNdNZRhLaKdr5Wpb
- yOk9FMdfiOenY1qRu7QhzFLDsld3719WgDwNo7USZnl8RIBTyQ9hIqMedYF7Ipd3vsxN
- IILoibWozoyVfv7R5/qrdTxJxEZt1mjikcskEsVoNPcsznxeySS0aBSa2me9SeKUYkzq
- iQ7A==
-X-Gm-Message-State: AOJu0YzInVlK60F71eWoKQ6+7NcIVmxmH6GeuRYtQZdk8qDC9J5ndO2y
- dsSMPR/NFoMN+WsNfRpno/PPSjxCqrOmhrUfvLMnhFTYA41Hj+ZdmxVY90+kDHU=
-X-Google-Smtp-Source: AGHT+IFRLBX8LHV68F1X/Q0Yxhum0IuDYjpNNg7lnW3mUx8hh2pv8lssFGfJG4P37hGSYlELiWlUEg==
-X-Received: by 2002:a17:90a:f98e:b0:2b4:33cd:173c with SMTP id
- 98e67ed59e1d1-2b6ccd8612emr15404681a91.42.1715792663573; 
- Wed, 15 May 2024 10:04:23 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
- ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2b62863a1besm14021589a91.9.2024.05.15.10.04.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 10:04:23 -0700 (PDT)
-Message-ID: <5b20d3dd-1749-45ba-baa7-a8c21d79f839@daynix.com>
-Date: Thu, 16 May 2024 02:04:17 +0900
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s7I63-0007L0-Ds
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 13:07:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s7I60-0000Oh-W0
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 13:07:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715792836;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vPdORdygyTpTWXX7cp1qjSAHF7j2hu4q9NSVKpuJ2QY=;
+ b=Lb5uph4fl4ITi3rplss3nq0/kANj6D+Z3vCBv+7Z5g9vP+i26OOaeR5hqOb7Dd69P0fIQX
+ 50e9r2uD4LqPtqFN09jaU11zwoLxFkZ4I5LmKgHRKS2sl3bfTpysbhEwOCFugARIAZSjt/
+ 7+D71NT9N+5NzTQpvFXtiAa/VrsyDK4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-523-9elnMeoXN86jsJ_6_lzfGg-1; Wed, 15 May 2024 13:07:12 -0400
+X-MC-Unique: 9elnMeoXN86jsJ_6_lzfGg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C555D800074;
+ Wed, 15 May 2024 17:07:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.55])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E25D11C00A8F;
+ Wed, 15 May 2024 17:07:09 +0000 (UTC)
+Date: Wed, 15 May 2024 18:06:56 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ devel@lists.libvirt.org,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Krempa <pkrempa@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 1/2] hw/core: allow parameter=1 for SMP topology on any
+ machine
+Message-ID: <ZkTrsDdyGRFzVULG@redhat.com>
+References: <20240513123358.612355-1-berrange@redhat.com>
+ <20240513123358.612355-2-berrange@redhat.com>
+ <ZkIiHgw9rQActD2i@intel.com> <ZkImOkl-HtsFMaAz@redhat.com>
+ <ZkLfVB/1arSlAptC@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 08/10] virtio-gpu: Handle resource blob commands
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Huang Rui <ray.huang@amd.com>, =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?=
- <marcandre.lureau@gmail.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-References: <20240511182251.1442078-1-dmitry.osipenko@collabora.com>
- <20240511182251.1442078-9-dmitry.osipenko@collabora.com>
- <727b125a-530e-4881-bde0-2215f62e155d@daynix.com>
- <4b30a810-211a-4ef6-ac28-c144615b402c@collabora.com>
- <58dfa1ce-320c-468e-9aed-fe1b092b92f8@daynix.com>
- <9c9e174d-079c-4186-8b01-95549167852c@collabora.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <9c9e174d-079c-4186-8b01-95549167852c@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::634;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_NONE=0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZkLfVB/1arSlAptC@intel.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.935,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,43 +86,102 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/05/16 2:01, Dmitry Osipenko wrote:
-> On 5/15/24 19:42, Akihiko Odaki wrote:
->>>> It may be better to actually implement unmapping instead of returning an
->>>> error for consistency with the iov operation. Apparently crosvm also
->>>> unmaps blobs with VIRTIO_GPU_CMD_RESOURCE_UNREF.
->>>
->>> Then I'll add back `async_unmap_in_progress` because resource can be
->>> both mapped/unmapped on unref, and we'll need flag to know whether async
->>> unmapping has been finished to do the final unmapping of the resource.
->>
->> Such a situation should be already handled since unmapping in progress
->> blocks all commands (not just VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB but
->> literally all, including VIRTIO_GPU_CMD_RESOURCE_UNREF).
+On Tue, May 14, 2024 at 11:49:40AM +0800, Zhao Liu wrote:
+> > I'm failing to see what real world technical problems QEMU faces
+> > with a parameter being set to '1' by a mgmt app, when QEMU itself
+> > treats all omitted values as being '1' anyway.
+> > 
+> > If we're trying to faithfully model the real world, then restricting
+> > the topology against machine types though still looks inherantly wrong.
+> > The valid topology ought to be constrained based on the named CPU model.
+> > eg it doesn't make sense to allow 'dies=4' with a Skylake CPU model,
+> > only an EPYC CPU model, especially if we want to model cache info in
+> > a way that matches the real world silicon better.
 > 
-> The async unmapping consists of 3 parts:
+> Thanks for figuring out this. This issue is related with Intel CPU
+> cache model: currently Intel code defaults L3 shared at die level.
+> This could be resolved by defining the accurate default cache topology
+> level for CPU model and make Intel CPU models share L3 at package level
+> except only Cascadelake.
 > 
-> 1. begin async unmapping with memory_region_del_subregion() and suspend
-> 2. wait for res->mr to be freed and resume
-> 3. finish the unmapping with final virgl_renderer_resource_unmap()
-> 
-> Parts 1 and 3 are handled by  virtio_gpu_virgl_async_unmap_resource_blob()
-> 
-> 
-> The VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB is different because we know that
-> blob is mapped in the first place. Hence we can safely perform the part
-> 3, assuming that parts 1/2 has been completed.
-> 
-> In case of VIRTIO_GPU_CMD_RESOURCE_UNREF, blob can be unmapped in the
-> first place and we can't do the part 3 because it will error out for
-> unmapped resource since parts 1/2 were not performed.
-> 
+> Then user could define any other topology levels (die/module) for
+> Icelake and this won't change the cache topology, unless the user adds
+> more sockets or further customizes the cache topology in another way [1].
+> Do you agree with this solution?
 
-VIRTIO_GPU_CMD_RESOURCE_UNREF should also call 
-virtio_gpu_virgl_async_unmap_resource_blob(). I guess that's the 
-original intention of having a function for this instead of inlining the 
-content of this function to virgl_cmd_resource_unmap_blob().
+Broadly speaking yes. Historically we have created trouble for
+ourselves (and or our users) by allowing creation of "wierd"
+guest CPU models, which don't resemble those which can be found
+in real world silicon. Problems specifically have been around
+unsual combinations of CPUID features eg user enabled X, but not Y,
+where real silicon always has X + Y enabled, and guest OS assumed
+this is always the case.
+
+So if our named CPU models can more faithfully match what you might
+see in terms of cache topology in the real world, that's likely to
+be a good thing.
+
+> > As above, I think that restrictions based on machine type, while nice and
+> > simple, are incorrect long term. If we did impose restrictions based on
+> > CPU model, then we could trivially expose this info to mgmt apps via the
+> > existing mechanism for querying supported CPU models. Limiting based on
+> > CPU model, however, has potentially greater back compat issues, though
+> > it would be strictly more faithful to hardware.
+> 
+> I think as long as the default cache topology model is clearly defined,
+> users can further customize the CPU topology and adjust the cache
+> topology based on it. After all, topology is architectural, not CPU
+> model-specific (linux support for topology does not take into account
+> specific CPU models).
+> 
+> For example, x86, for simplicity, can we assume that all x86 CPU models
+> support all x86 topology levels (thread/core/module/die/package) without
+> making distinctions based on specific CPU models?
+
+Hmm, true, if we have direct control over cache topology, the
+CPU topology is less critical. I'd still be wary of suggesting
+it is a good idea to use CPU topology configs that don't reflect
+something the CPU vendor has concievably used in real silicon.
+
+> That way as long as the user doesn't change the default topology, then
+> Guest's cache and other topology information won't be "corrupted".
+
+> And there's one more question, does this rollback mean that smp's
+> parameters must have compatible default values for all architectures?
+
+Historically we preferred "sockets", when filling missing topology,
+then more recently we switched to prefer "cores", since high core
+counts are generally more common in real world than high socket
+counts.
+
+In theory at some point, one might want to fill in 'dies > 0' for
+EPYC, or 'modules > 0' for appropriate Intel CPU models, but doing
+the reverse while theoretically valid, would be wierd as no such
+topology would exist in real silicon.
+
+Ultimately if you're allowing QEMU guest vCPUs threads to float
+freely across host CPUs, there is little point in setting dies/
+modules/threads to a value other than 1, because the guest OS
+won't benefit from understanding cache differences for dies/
+modules/threads/etc, if the vCPU can be moved between host CPUs
+at any time by the host OS scheduler.
+
+Fine grained control over dies/modules/threads only makes more
+sense if you have strictly pinning vCPU threads 1:1 to host CPUs
+
+IOW, simply preferring "cores" for everything is a reasonable
+default long term plan for everything, unless the specific
+architecture target has no concept of "cores".
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
