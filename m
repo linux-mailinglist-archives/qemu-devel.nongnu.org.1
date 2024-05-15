@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73EF8C63F9
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134598C6406
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:46:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7B8M-0006aR-2z; Wed, 15 May 2024 05:41:14 -0400
+	id 1s7B8b-00081R-Qs; Wed, 15 May 2024 05:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B8C-0005u5-5g
+ id 1s7B8C-0005wP-Pr
  for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:04 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B88-0001fD-An
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:03 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-34f0e55787aso5222119f8f.2
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:59 -0700 (PDT)
+ id 1s7B89-0001fT-EF
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:04 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-420180b5838so20498605e9.2
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766058; x=1716370858; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715766059; x=1716370859; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=P9OhN2bhF+NQyxnmoOaMAjar9BfNJg7nc8s21aZCk7Q=;
- b=IXUmDMZy8yak8CfHQWD1A1DKB11m9GK0aOwOtvj318nya/+vBeX90f5XHJ1mQwoe67
- vsRAta/dZqtZfJUsCcEvsZZJRPLUqe5zYG3YNRg9lntKZn5D5qoArLSY+/WIBvx2pqLZ
- GGju/RSgkipgK7RbQO5sHpzLCneb0l2JCEOcO7I1J+Vlbw6NpyaY84Nw+77lNMVPSSG8
- 7IDeFGk3XGbkE5tgbF3h4gN9AcX0yvFO06r5DCK1VZGpS03wW6RrYeHfDWTYKtwYJutC
- zfMRnNhM7W6CNiYl6c/wHKIKExTJlsrpevjKiV0tokdCKLJXvRmQgEUQpfH2xUhHQ1y0
- PomA==
+ bh=l70NVTnTNxZE1g+5+378o7Svk1vAno2NTsB+Y4jn2m0=;
+ b=rSMw25bDeGuFoGRCquHMpMdk8uy/LJbK78NNRRuYGWCSzvamxHtLD3Q6bHwy70ASsA
+ QMCfsCTj9xw1TNL6gw7N5KE8cQLxgfS4ral122vtJfFl9+vTZXeyQH2jef6YC7WLX6xo
+ o7N51Ydqo6WqZTMtZ4qEs44Nx99lnYHNh12dsgTlz2AhnTJr0jHCMf6B3CS6z+T1GHLm
+ L0o1LwSxVkI7PzmOfTxzGFuG2e0TIxcaJcK6IpgbvcB5Gyskw/Ae3O5AxBMWAyrf1HH0
+ nu5mOREvO4dF0TtGf560/lmTML7x4QvVbTRHGcSS8RqqbwebCGwz0TXXpb2SdaPEnUZc
+ 43KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766058; x=1716370858;
+ d=1e100.net; s=20230601; t=1715766059; x=1716370859;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=P9OhN2bhF+NQyxnmoOaMAjar9BfNJg7nc8s21aZCk7Q=;
- b=Hk77BHEjvE33YSn1e7eeOl5CrJyqckri9cZtAHTPEjvnM29xB1u4PZ1hkSga8UZkqC
- axFAKG9TqevnSk1ha+uPxTlJqxr/ia5XAyJ11aw7XcakEQrj2UVx49wETGxHdo8n7biX
- R77WbdyG9Kh7l4tq7jmlNWAzm2dx++sH/A/vgA6AEATCtsStCNH+oUCnLV+mHRZ3+Krj
- 6odyHKGHddd9xZhhtwxiowfXimhLk/GXV1Ymf8SXVLIiYReZ64kb+uz8ucYPz/lJ+u8T
- W10yE0kWHEHLD4+K0Dzr9cZDX1H49n2BhJ1IZFZWMpgQPhTtVwUPhLMIipOqts+LBlsG
- sbTQ==
-X-Gm-Message-State: AOJu0Yyo/BGjImhEmmJECLfRBzBdmYSccpQN7+vCtYLU3pb6/t9LiRsw
- wymctRw1PHrc9htK/jnelJxALzsEPGYqrybj2XNSz+QQ6p77vw1fpMG+557yltza4726Saet6nm
- DZHY=
-X-Google-Smtp-Source: AGHT+IGV3KE4YwS7eZquBaXQdmAMPkk5Sb53gZIwcs3Xs9vhs/4sxXVzVBJ42GVRLip3KWPW2hgb4A==
-X-Received: by 2002:a5d:598c:0:b0:351:b0cf:99b4 with SMTP id
- ffacd0b85a97d-351b0cf9b16mr9474738f8f.4.1715766058713; 
- Wed, 15 May 2024 02:40:58 -0700 (PDT)
+ bh=l70NVTnTNxZE1g+5+378o7Svk1vAno2NTsB+Y4jn2m0=;
+ b=i3vigatOys2Lu4L+f+w7C/AHMDQqNfWhJ7sl4jgM4CqNNAtjaaTDqQ18j4gjmriizm
+ Y+0+uX9Jw/hmjSjuhk/sU6JYXc796C92t/cP+WgmrhxuFs6/71z9Ng6wlZW11gBuh9jM
+ GSx5KqTjJl0BWk0kZD62HsDdvAKl/K/FJkT87pB8mIv0U9Fu74Xp6Qc//6FuRK6hJ/ej
+ 5G0hOwg9KYpWCxRsFn4ZoNlYevRNyqCsOIRLdZVzQmJLE87ELWN+iZtZ4R3dcUe2N2gL
+ Pxav8zqMboAv6OEMNWfCvLqxKt9nV/5LAhqfy3zPE+fX80J8RNArJH4LYyuPzuNS+cRj
+ A/Qg==
+X-Gm-Message-State: AOJu0YxYPlYTchWp2kXHhKhuDqtoBZJ2l75eGniUlW0k8R+//H+RRyl3
+ 1Fge63qXH6BPzzrSdBrNvK08nMmaILxsZ2ey6JFAy9jMaXr8y+UTWsyJYiRVgvG4nV6ysTX1Tbg
+ 7r2U=
+X-Google-Smtp-Source: AGHT+IH3rws0etYB40miAasglYFV/2thiFdCz02yKZ9pZMiR+vBM2zKq06XWhz3NFI2284bfMvSx1A==
+X-Received: by 2002:a05:6000:1d9b:b0:351:b7c8:3efe with SMTP id
+ ffacd0b85a97d-351b7c83f88mr13829365f8f.3.1715766059438; 
+ Wed, 15 May 2024 02:40:59 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 02:40:58 -0700 (PDT)
+ Wed, 15 May 2024 02:40:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 18/43] target/hppa: Use displacements in DisasIAQE
-Date: Wed, 15 May 2024 11:40:18 +0200
-Message-Id: <20240515094043.82850-19-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 19/43] target/hppa: Rename cond_make_* helpers
+Date: Wed, 15 May 2024 11:40:19 +0200
+Message-Id: <20240515094043.82850-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515094043.82850-1-richard.henderson@linaro.org>
 References: <20240515094043.82850-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,144 +93,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a first step in enabling CF_PCREL, but for now
-we regenerate the absolute address before writeback.
+Use 'v' for a variable that needs copying, 't' for a temp that
+doesn't need copying, and 'i' for an immediate, and use this
+naming for both arguments of the comparison.  So:
+
+   cond_make_tmp -> cond_make_tt
+   cond_make_0_tmp -> cond_make_ti
+   cond_make_0 -> cond_make_vi
+   cond_make -> cond_make_vv
+
+Pass 0 explictly, rather than implicitly in the function name.
 
 Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 43 ++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 20 deletions(-)
+ target/hppa/translate.c | 52 ++++++++++++++++++++---------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index e0e4db75ee..de077e7a57 100644
+index de077e7a57..07ba35001b 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -45,9 +45,9 @@ typedef struct DisasCond {
- typedef struct DisasIAQE {
-     /* IASQ; may be null for no change from TB. */
-     TCGv_i64 space;
--    /* IAOQ base; may be null for immediate absolute address. */
-+    /* IAOQ base; may be null for relative address. */
-     TCGv_i64 base;
--    /* IAOQ addend; absolute immedate address if base is null. */
-+    /* IAOQ addend; if base is null, relative to ctx->iaoq_first. */
-     int64_t disp;
- } DisasIAQE;
+@@ -345,32 +345,32 @@ static DisasCond cond_make_n(void)
+     };
+ }
  
-@@ -60,6 +60,9 @@ typedef struct DisasContext {
-     /* IAQ_Next, for jumps, otherwise null for simple advance. */
-     DisasIAQE iaq_j, *iaq_n;
+-static DisasCond cond_make_tmp(TCGCond c, TCGv_i64 a0, TCGv_i64 a1)
++static DisasCond cond_make_tt(TCGCond c, TCGv_i64 a0, TCGv_i64 a1)
+ {
+     assert (c != TCG_COND_NEVER && c != TCG_COND_ALWAYS);
+     return (DisasCond){ .c = c, .a0 = a0, .a1 = a1 };
+ }
  
-+    /* IAOQ_Front at entry to TB. */
-+    uint64_t iaoq_first;
-+
-     DisasCond null_cond;
-     TCGLabel *null_lab;
+-static DisasCond cond_make_0_tmp(TCGCond c, TCGv_i64 a0)
++static DisasCond cond_make_ti(TCGCond c, TCGv_i64 a0, uint64_t imm)
+ {
+-    return cond_make_tmp(c, a0, tcg_constant_i64(0));
++    return cond_make_tt(c, a0, tcg_constant_i64(imm));
+ }
  
-@@ -640,7 +643,7 @@ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
-     uint64_t mask = gva_offset_mask(ctx->tb_flags);
+-static DisasCond cond_make_0(TCGCond c, TCGv_i64 a0)
++static DisasCond cond_make_vi(TCGCond c, TCGv_i64 a0, uint64_t imm)
+ {
+     TCGv_i64 tmp = tcg_temp_new_i64();
+     tcg_gen_mov_i64(tmp, a0);
+-    return cond_make_0_tmp(c, tmp);
++    return cond_make_ti(c, tmp, imm);
+ }
  
-     if (src->base == NULL) {
--        tcg_gen_movi_i64(dest, src->disp & mask);
-+        tcg_gen_movi_i64(dest, (ctx->iaoq_first + src->disp) & mask);
-     } else if (src->disp == 0) {
-         tcg_gen_andi_i64(dest, src->base, mask);
-     } else {
-@@ -674,12 +677,8 @@ static void install_link(DisasContext *ctx, unsigned link, bool with_sr0)
-     if (!link) {
-         return;
+-static DisasCond cond_make(TCGCond c, TCGv_i64 a0, TCGv_i64 a1)
++static DisasCond cond_make_vv(TCGCond c, TCGv_i64 a0, TCGv_i64 a1)
+ {
+     TCGv_i64 t0 = tcg_temp_new_i64();
+     TCGv_i64 t1 = tcg_temp_new_i64();
+ 
+     tcg_gen_mov_i64(t0, a0);
+     tcg_gen_mov_i64(t1, a1);
+-    return cond_make_tmp(c, t0, t1);
++    return cond_make_tt(c, t0, t1);
+ }
+ 
+ static void cond_free(DisasCond *cond)
+@@ -789,7 +789,7 @@ static DisasCond do_cond(DisasContext *ctx, unsigned cf, bool d,
+             tcg_gen_ext32u_i64(tmp, res);
+             res = tmp;
+         }
+-        cond = cond_make_0(TCG_COND_EQ, res);
++        cond = cond_make_vi(TCG_COND_EQ, res, 0);
+         break;
+     case 2: /* < / >=        (N ^ V / !(N ^ V) */
+         tmp = tcg_temp_new_i64();
+@@ -797,7 +797,7 @@ static DisasCond do_cond(DisasContext *ctx, unsigned cf, bool d,
+         if (!d) {
+             tcg_gen_ext32s_i64(tmp, tmp);
+         }
+-        cond = cond_make_0_tmp(TCG_COND_LT, tmp);
++        cond = cond_make_ti(TCG_COND_LT, tmp, 0);
+         break;
+     case 3: /* <= / >        (N ^ V) | Z / !((N ^ V) | Z) */
+         /*
+@@ -819,10 +819,10 @@ static DisasCond do_cond(DisasContext *ctx, unsigned cf, bool d,
+             tcg_gen_sari_i64(tmp, tmp, 63);
+             tcg_gen_and_i64(tmp, tmp, res);
+         }
+-        cond = cond_make_0_tmp(TCG_COND_EQ, tmp);
++        cond = cond_make_ti(TCG_COND_EQ, tmp, 0);
+         break;
+     case 4: /* NUV / UV      (!UV / UV) */
+-        cond = cond_make_0(TCG_COND_EQ, uv);
++        cond = cond_make_vi(TCG_COND_EQ, uv, 0);
+         break;
+     case 5: /* ZNV / VNZ     (!UV | Z / UV & !Z) */
+         tmp = tcg_temp_new_i64();
+@@ -830,7 +830,7 @@ static DisasCond do_cond(DisasContext *ctx, unsigned cf, bool d,
+         if (!d) {
+             tcg_gen_ext32u_i64(tmp, tmp);
+         }
+-        cond = cond_make_0_tmp(TCG_COND_EQ, tmp);
++        cond = cond_make_ti(TCG_COND_EQ, tmp, 0);
+         break;
+     case 6: /* SV / NSV      (V / !V) */
+         if (!d) {
+@@ -838,12 +838,12 @@ static DisasCond do_cond(DisasContext *ctx, unsigned cf, bool d,
+             tcg_gen_ext32s_i64(tmp, sv);
+             sv = tmp;
+         }
+-        cond = cond_make_0(TCG_COND_LT, sv);
++        cond = cond_make_ti(TCG_COND_LT, sv, 0);
+         break;
+     case 7: /* OD / EV */
+         tmp = tcg_temp_new_i64();
+         tcg_gen_andi_i64(tmp, res, 1);
+-        cond = cond_make_0_tmp(TCG_COND_NE, tmp);
++        cond = cond_make_ti(TCG_COND_NE, tmp, 0);
+         break;
+     default:
+         g_assert_not_reached();
+@@ -905,9 +905,9 @@ static DisasCond do_sub_cond(DisasContext *ctx, unsigned cf, bool d,
+             tcg_gen_ext32s_i64(t1, in1);
+             tcg_gen_ext32s_i64(t2, in2);
+         }
+-        return cond_make_tmp(tc, t1, t2);
++        return cond_make_tt(tc, t1, t2);
      }
--    if (ctx->iaq_b.base) {
--        tcg_gen_addi_i64(cpu_gr[link], ctx->iaq_b.base,
--                         ctx->iaq_b.disp + 4);
--    } else {
--        tcg_gen_movi_i64(cpu_gr[link], ctx->iaq_b.disp + 4);
--    }
-+    DisasIAQE next = iaqe_incr(&ctx->iaq_b, 4);
-+    copy_iaoq_entry(ctx, cpu_gr[link], &next);
- #ifndef CONFIG_USER_ONLY
-     if (with_sr0) {
-         tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_b);
-@@ -731,7 +730,7 @@ static bool use_goto_tb(DisasContext *ctx, const DisasIAQE *f,
- {
-     return (!iaqe_variable(f) &&
-             (b == NULL || !iaqe_variable(b)) &&
--            translator_use_goto_tb(&ctx->base, f->disp));
-+            translator_use_goto_tb(&ctx->base, ctx->iaoq_first + f->disp));
+-    return cond_make(tc, in1, in2);
++    return cond_make_vv(tc, in1, in2);
  }
  
- /* If the next insn is to be nullified, and it's on the same page,
-@@ -742,7 +741,8 @@ static bool use_nullify_skip(DisasContext *ctx)
- {
-     return (!(tb_cflags(ctx->base.tb) & CF_BP_PAGE)
-             && !iaqe_variable(&ctx->iaq_b)
--            && is_same_page(&ctx->base, ctx->iaq_b.disp));
-+            && (((ctx->iaoq_first + ctx->iaq_b.disp) ^ ctx->iaoq_first)
-+                & TARGET_PAGE_MASK) == 0);
+ /*
+@@ -979,9 +979,9 @@ static DisasCond do_log_cond(DisasContext *ctx, unsigned cf, bool d,
+         } else {
+             tcg_gen_ext32s_i64(tmp, res);
+         }
+-        return cond_make_0_tmp(tc, tmp);
++        return cond_make_ti(tc, tmp, 0);
+     }
+-    return cond_make_0(tc, res);
++    return cond_make_vi(tc, res, 0);
  }
  
- static void gen_goto_tb(DisasContext *ctx, int which,
-@@ -2005,6 +2005,8 @@ static TCGv_i64 do_ibranch_priv(DisasContext *ctx, TCGv_i64 offset)
-    aforementioned BE.  */
- static void do_page_zero(DisasContext *ctx)
- {
-+    assert(ctx->iaq_f.disp == 0);
-+
-     /* If by some means we get here with PSW[N]=1, that implies that
-        the B,GATE instruction would be skipped, and we'd fault on the
-        next insn within the privileged page.  */
-@@ -2024,11 +2026,11 @@ static void do_page_zero(DisasContext *ctx)
-        non-sequential instruction execution.  Normally the PSW[B] bit
-        detects this by disallowing the B,GATE instruction to execute
-        under such conditions.  */
--    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != ctx->iaq_f.disp + 4) {
-+    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != 4) {
-         goto do_sigill;
+ /* Similar, but for shift/extract/deposit conditions.  */
+@@ -1040,7 +1040,7 @@ static DisasCond do_unit_zero_cond(unsigned cf, bool d, TCGv_i64 res)
+     tcg_gen_andc_i64(tmp, tmp, res);
+     tcg_gen_andi_i64(tmp, tmp, sgns);
+ 
+-    return cond_make_0_tmp(cf & 1 ? TCG_COND_EQ : TCG_COND_NE, tmp);
++    return cond_make_ti(cf & 1 ? TCG_COND_EQ : TCG_COND_NE, tmp, 0);
+ }
+ 
+ static TCGv_i64 get_carry(DisasContext *ctx, bool d,
+@@ -1454,7 +1454,7 @@ static void do_unit_addsub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+         }
+ 
+         tcg_gen_andi_i64(cb, cb, test_cb);
+-        cond = cond_make_0_tmp(cf & 1 ? TCG_COND_EQ : TCG_COND_NE, cb);
++        cond = cond_make_ti(cf & 1 ? TCG_COND_EQ : TCG_COND_NE, cb, 0);
      }
  
--    switch (ctx->iaq_f.disp & -4) {
-+    switch (ctx->base.pc_first) {
-     case 0x00: /* Null pointer call */
-         gen_excp_1(EXCP_IMP);
-         ctx->base.is_jmp = DISAS_NORETURN;
-@@ -4619,8 +4621,8 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- #ifdef CONFIG_USER_ONLY
-     ctx->privilege = MMU_IDX_TO_PRIV(MMU_USER_IDX);
-     ctx->mmu_idx = MMU_USER_IDX;
--    ctx->iaq_f.disp = ctx->base.pc_first | ctx->privilege;
--    ctx->iaq_b.disp = ctx->base.tb->cs_base | ctx->privilege;
-+    ctx->iaoq_first = ctx->base.pc_first | ctx->privilege;
-+    ctx->iaq_b.disp = ctx->base.tb->cs_base - ctx->base.pc_first;
-     ctx->unalign = (ctx->tb_flags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN);
- #else
-     ctx->privilege = (ctx->tb_flags >> TB_FLAG_PRIV_SHIFT) & 3;
-@@ -4633,9 +4635,10 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
-     uint64_t iasq_f = cs_base & ~0xffffffffull;
-     int32_t diff = cs_base;
+     if (is_tc) {
+@@ -3543,7 +3543,7 @@ static bool trans_bb_sar(DisasContext *ctx, arg_bb_sar *a)
+         tcg_gen_shl_i64(tmp, tcg_r, tmp);
+     }
  
--    ctx->iaq_f.disp = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
-+    ctx->iaoq_first = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
-+
-     if (diff) {
--        ctx->iaq_b.disp = ctx->iaq_f.disp + diff;
-+        ctx->iaq_b.disp = diff;
-     } else {
-         ctx->iaq_b.base = cpu_iaoq_b;
-         ctx->iaq_b.space = cpu_iasq_b;
-@@ -4668,9 +4671,9 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
-     tcg_debug_assert(!iaqe_variable(&ctx->iaq_f));
--    tcg_gen_insn_start(ctx->iaq_f.disp,
--                       iaqe_variable(&ctx->iaq_b) ? -1 : ctx->iaq_b.disp,
--                       0);
-+    tcg_gen_insn_start(ctx->iaoq_first + ctx->iaq_f.disp,
-+                       (iaqe_variable(&ctx->iaq_b) ? -1 :
-+                        ctx->iaoq_first + ctx->iaq_b.disp), 0);
-     ctx->insn_start_updated = false;
+-    cond = cond_make_0_tmp(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
++    cond = cond_make_ti(a->c ? TCG_COND_GE : TCG_COND_LT, tmp, 0);
+     return do_cbranch(ctx, a->disp, a->n, &cond);
  }
  
+@@ -3560,7 +3560,7 @@ static bool trans_bb_imm(DisasContext *ctx, arg_bb_imm *a)
+     p = a->p | (a->d ? 0 : 32);
+     tcg_gen_shli_i64(tmp, tcg_r, p);
+ 
+-    cond = cond_make_0(a->c ? TCG_COND_GE : TCG_COND_LT, tmp);
++    cond = cond_make_ti(a->c ? TCG_COND_GE : TCG_COND_LT, tmp, 0);
+     return do_cbranch(ctx, a->disp, a->n, &cond);
+ }
+ 
+@@ -4364,7 +4364,7 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
+         switch (a->c) {
+         case 0: /* simple */
+             tcg_gen_andi_i64(t, t, 0x4000000);
+-            ctx->null_cond = cond_make_0(TCG_COND_NE, t);
++            ctx->null_cond = cond_make_ti(TCG_COND_NE, t, 0);
+             goto done;
+         case 2: /* rej */
+             inv = true;
+@@ -4394,16 +4394,16 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
+         if (inv) {
+             TCGv_i64 c = tcg_constant_i64(mask);
+             tcg_gen_or_i64(t, t, c);
+-            ctx->null_cond = cond_make(TCG_COND_EQ, t, c);
++            ctx->null_cond = cond_make_tt(TCG_COND_EQ, t, c);
+         } else {
+             tcg_gen_andi_i64(t, t, mask);
+-            ctx->null_cond = cond_make_0(TCG_COND_EQ, t);
++            ctx->null_cond = cond_make_ti(TCG_COND_EQ, t, 0);
+         }
+     } else {
+         unsigned cbit = (a->y ^ 1) - 1;
+ 
+         tcg_gen_extract_i64(t, t, 21 - cbit, 1);
+-        ctx->null_cond = cond_make_0(TCG_COND_NE, t);
++        ctx->null_cond = cond_make_ti(TCG_COND_NE, t, 0);
+     }
+ 
+  done:
 -- 
 2.34.1
 
