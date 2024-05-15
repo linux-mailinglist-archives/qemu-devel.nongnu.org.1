@@ -2,51 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047C38C642B
+	by mail.lfdr.de (Postfix) with ESMTPS id D61908C642D
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:49:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7B6s-0003Rw-0w; Wed, 15 May 2024 05:39:42 -0400
+	id 1s7B8E-0005nT-GM; Wed, 15 May 2024 05:41:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1s7B6p-0003RD-3D
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:39:39 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1s7B6j-0001Gj-Sv
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:39:38 -0400
-Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8AxJ+nTgkRmlAQNAA--.18827S3;
- Wed, 15 May 2024 17:39:31 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
- by localhost.localdomain (Coremail) with SMTP id AQAAf8Cx57nPgkRmVLEgAA--.5S8; 
- Wed, 15 May 2024 17:39:31 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Song Gao <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 6/6] tests/qtest: Add numa test for loongarch system
-Date: Wed, 15 May 2024 17:39:27 +0800
-Message-Id: <20240515093927.3453674-7-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240515093927.3453674-1-maobibo@loongson.cn>
-References: <20240515093927.3453674-1-maobibo@loongson.cn>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7B7w-0005fA-BA
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:48 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7B7u-0001bW-8c
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:48 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-41ffad242c8so35179385e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715766044; x=1716370844; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=SyuoXfYsAb9M8fKmTegh01pw/QCKaCr2mxTEZx1QJ6M=;
+ b=IMmHab5UR5kMwy21IWTvrEpmmHWDncOsZHzSIs7KYgoDz1wdeidRrBnHiLH2rJlvJc
+ ZfWk7+2XdQfeiEXgQBHPrwDAOrGRabUjB/H038AuC/E85NGpEFAYS5v+xk9vIboBKPOe
+ rqQC3OmfVcyP74yrdtRWenEB430nVtmM9TDlwcBvAfzySOZ9Vrjj9lR/8Apv1XxpOx7F
+ tF2eIHw/Whc/glune6AtyZaRbCfUM0uclJNV26Lxmgu3QZOln3LzD2KHJvIUGQG1ku+h
+ gSKqr6PAKYH593FmcBxbzJ93uLxCiKr6ALg1oDN2CI/wtm656QVjMjDmJl7P8y70mTQV
+ kBAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715766044; x=1716370844;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=SyuoXfYsAb9M8fKmTegh01pw/QCKaCr2mxTEZx1QJ6M=;
+ b=FBhTppMzYaoE26AWeGQXxuZan0PoqCqKd3CFhfv+DsT/TLTr+aNo2y7mtphlYi1E33
+ 6ZBvnKfgRl6wEtN47mMmd2G14a4SxISAEyGk0d+pJULZT5zfoMnsd43qoJktBi4suA82
+ Wroj8Q5rjeueKdpbAUuODgxA+Glt1KSwEmBMJyihkUirSSxD/23KWXp34qRE6FLtJfg3
+ HfDrHDsI1qx4iyf29KkiTzcCwzpoxBO7ufXDkkb19YAoBMpCO0huQJMS4zPbvY4stv4e
+ 5lUSLdJiWCJ/2jCb7hfLe5nN/qPl+v3pBfaO2Hszk4shsaixujzYIZeHKFLsiMpRNWT9
+ wxVA==
+X-Gm-Message-State: AOJu0Yx9ZGiZly0vE10WCASCRGMVmQfyXsd1AqzCfoPg7aveSz6A009H
+ 9aEgCIqOOJP5DBX+p/UyKz8YN/PcruDpB7aaHk9/OxpMFQRgClgVBcvsiy+CN6TOzzbW7/e2hmI
+ gJqk=
+X-Google-Smtp-Source: AGHT+IEr8fEMDrr4qxUeVLbF5MtVj3zn7Q7SQuhNgSSjKlbrttv7dJIaSiebqGHgbEz/g4tT4pcrsg==
+X-Received: by 2002:adf:e8cc:0:b0:34d:b03c:9a97 with SMTP id
+ ffacd0b85a97d-3504a95606cmr16945079f8f.48.1715766044449; 
+ Wed, 15 May 2024 02:40:44 -0700 (PDT)
+Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.44
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 May 2024 02:40:44 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/43] target/hppa: Misc improvements
+Date: Wed, 15 May 2024 11:40:00 +0200
+Message-Id: <20240515094043.82850-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx57nPgkRmVLEgAA--.5S8
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,99 +88,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add numa test case for loongarch system, it passes to run
-with command "make check-qtest".
+The following changes since commit 3d48b6b687c558a042d91370633b91c6e29e0e05:
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- tests/qtest/meson.build |  2 +-
- tests/qtest/numa-test.c | 53 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+), 1 deletion(-)
+  Merge tag 'pull-request-2024-05-14' of https://gitlab.com/thuth/qemu into staging (2024-05-14 17:24:04 +0200)
 
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 86293051dc..8df7b85d72 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -140,7 +140,7 @@ qtests_hppa = ['boot-serial-test'] + \
-   (config_all_devices.has_key('CONFIG_VGA') ? ['display-vga-test'] : [])
- 
- qtests_loongarch64 = qtests_filter + \
--  ['boot-serial-test']
-+  ['boot-serial-test', 'numa-test']
- 
- qtests_m68k = ['boot-serial-test'] + \
-   qtests_filter
-diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-index 4f4404a4b1..2f71d57a8d 100644
---- a/tests/qtest/numa-test.c
-+++ b/tests/qtest/numa-test.c
-@@ -265,6 +265,54 @@ static void aarch64_numa_cpu(const void *data)
-     qtest_quit(qts);
- }
- 
-+static void loongarch64_numa_cpu(const void *data)
-+{
-+    QDict *resp;
-+    QList *cpus;
-+    QObject *e;
-+    QTestState *qts;
-+    g_autofree char *cli = NULL;
-+
-+    cli = make_cli(data, "-machine "
-+        "smp.cpus=2,smp.sockets=2,smp.cores=1,smp.threads=1 "
-+        "-numa node,nodeid=0,memdev=ram -numa node,nodeid=1 "
-+        "-numa cpu,node-id=0,socket-id=1,core-id=0,thread-id=0 "
-+        "-numa cpu,node-id=1,socket-id=0,core-id=0,thread-id=0");
-+    qts = qtest_init(cli);
-+    cpus = get_cpus(qts, &resp);
-+    g_assert(cpus);
-+
-+    while ((e = qlist_pop(cpus))) {
-+        QDict *cpu, *props;
-+        int64_t socket, core, thread, node;
-+
-+        cpu = qobject_to(QDict, e);
-+        g_assert(qdict_haskey(cpu, "props"));
-+        props = qdict_get_qdict(cpu, "props");
-+
-+        g_assert(qdict_haskey(props, "node-id"));
-+        node = qdict_get_int(props, "node-id");
-+        g_assert(qdict_haskey(props, "socket-id"));
-+        socket = qdict_get_int(props, "socket-id");
-+        g_assert(qdict_haskey(props, "core-id"));
-+        core = qdict_get_int(props, "core-id");
-+        g_assert(qdict_haskey(props, "thread-id"));
-+        thread = qdict_get_int(props, "thread-id");
-+
-+        if (socket == 0 && core == 0 && thread == 0) {
-+            g_assert_cmpint(node, ==, 1);
-+        } else if (socket == 1 && core == 0 && thread == 0) {
-+            g_assert_cmpint(node, ==, 0);
-+        } else {
-+            g_assert(false);
-+        }
-+        qobject_unref(e);
-+    }
-+
-+    qobject_unref(resp);
-+    qtest_quit(qts);
-+}
-+
- static void pc_dynamic_cpu_cfg(const void *data)
- {
-     QObject *e;
-@@ -590,5 +638,10 @@ int main(int argc, char **argv)
-                             aarch64_numa_cpu);
-     }
- 
-+    if (!strcmp(arch, "loongarch64")) {
-+        qtest_add_data_func("/numa/loongarch64/cpu/explicit", args,
-+                            loongarch64_numa_cpu);
-+    }
-+
-     return g_test_run();
- }
--- 
-2.39.3
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-hppa-20240515
+
+for you to fetch changes up to 9e035f00788c52a6f51529c54371a611d9f8b089:
+
+  target/hppa: Log cpu state on return-from-interrupt (2024-05-15 10:03:45 +0200)
+
+----------------------------------------------------------------
+target/hppa:
+  - Use TCG_COND_TST where applicable.
+  - Use CF_BP_PAGE instead of a local breakpoint search.
+  - Clean up IAOQ handling during translation.
+  - Implement CF_PCREL.
+  - Implement PSW.B.
+  - Implement PSW.X.
+  - Log cpu state on interrupt and rfi.
+
+----------------------------------------------------------------
+Richard Henderson (43):
+      target/hppa: Move cpu_get_tb_cpu_state out of line
+      target/hppa: Use hppa_form_gva_psw in hppa_cpu_get_pc
+      target/hppa: Move constant destination check into use_goto_tb
+      target/hppa: Pass displacement to do_dbranch
+      target/hppa: Allow prior nullification in do_ibranch
+      target/hppa: Use CF_BP_PAGE instead of cpu_breakpoint_test
+      target/hppa: Add install_iaq_entries
+      target/hppa: Add install_link
+      target/hppa: Delay computation of IAQ_Next
+      target/hppa: Skip nullified insns in unconditional dbranch path
+      target/hppa: Simplify TB end
+      target/hppa: Add IASQ entries to DisasContext
+      target/hppa: Add space arguments to install_iaq_entries
+      target/hppa: Add space argument to do_ibranch
+      target/hppa: Use umax in do_ibranch_priv
+      target/hppa: Always make a copy in do_ibranch_priv
+      target/hppa: Introduce and use DisasIAQE for branch management
+      target/hppa: Use displacements in DisasIAQE
+      target/hppa: Rename cond_make_* helpers
+      target/hppa: Use TCG_COND_TST* in do_cond
+      target/hppa: Use TCG_COND_TST* in do_log_cond
+      target/hppa: Use TCG_COND_TST* in do_unit_zero_cond
+      target/hppa: Use TCG_COND_TST* in do_unit_addsub
+      target/hppa: Use TCG_COND_TST* in trans_bb_imm
+      target/hppa: Use registerfields.h for FPSR
+      target/hppa: Use TCG_COND_TST* in trans_ftest
+      target/hppa: Remove cond_free
+      target/hppa: Introduce DisasDelayException
+      target/hppa: Use delay_excp for conditional traps
+      target/hppa: Use delay_excp for conditional trap on overflow
+      linux-user/hppa: Force all code addresses to PRIV_USER
+      target/hppa: Store full iaoq_f and page offset of iaoq_b in TB
+      target/hppa: Do not mask in copy_iaoq_entry
+      target/hppa: Improve hppa_cpu_dump_state
+      target/hppa: Split PSW X and B into their own field
+      target/hppa: Manage PSW_X and PSW_B in translator
+      target/hppa: Implement PSW_B
+      target/hppa: Implement PSW_X
+      target/hppa: Drop tlb_entry return from hppa_get_physical_address
+      target/hppa: Adjust priv for B,GATE at runtime
+      target/hppa: Implement CF_PCREL
+      target/hppa: Log cpu state at interrupt
+      target/hppa: Log cpu state on return-from-interrupt
+
+ linux-user/hppa/target_cpu.h |    4 +-
+ target/hppa/cpu.h            |   80 ++-
+ target/hppa/helper.h         |    3 +-
+ linux-user/elfload.c         |    4 +-
+ linux-user/hppa/cpu_loop.c   |   14 +-
+ linux-user/hppa/signal.c     |    6 +-
+ target/hppa/cpu.c            |   92 +++-
+ target/hppa/fpu_helper.c     |   26 +-
+ target/hppa/gdbstub.c        |    6 +
+ target/hppa/helper.c         |   66 ++-
+ target/hppa/int_helper.c     |   33 +-
+ target/hppa/mem_helper.c     |   99 ++--
+ target/hppa/op_helper.c      |   17 +-
+ target/hppa/sys_helper.c     |   12 +
+ target/hppa/translate.c      | 1158 +++++++++++++++++++++---------------------
+ 15 files changed, 868 insertions(+), 752 deletions(-)
 
