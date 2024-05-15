@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D61D8C6209
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF268C6226
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:53:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79Mi-0006LL-A0; Wed, 15 May 2024 03:47:56 -0400
+	id 1s79RZ-00042Q-7b; Wed, 15 May 2024 03:52:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1s79MW-0006DB-5O
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:47:44 -0400
-Received: from mail-vk1-xa2a.google.com ([2607:f8b0:4864:20::a2a])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s79RU-00040c-Su
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:52:52 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fea.wang@sifive.com>)
- id 1s79ML-00088x-DX
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:47:39 -0400
-Received: by mail-vk1-xa2a.google.com with SMTP id
- 71dfb90a1353d-4df3f7b93a7so1754774e0c.1
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:47:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s79RS-0001XM-Vu
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:52:52 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2e1fa824504so85251001fa.0
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:52:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1715759251; x=1716364051; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vNNK7jPhjciFYCXoIXi/Y4d0IMpqc5AGmZTEQEP+ATA=;
- b=ZYV0ngcpKbMoMVDL5HYzsEga1R8DTesFRgvyltGR4pwH60QbbOfV/ZX6+V0zjZxzpz
- abatZcEgIYh5URdcniepMeZ9Roqjn1fLOlSXs9LmtBewzussKTwFQVQPbXH6NhKAfW8+
- +6xqBC+RujIc76TQKTj2qsFR1pySbGRDKl8UGx7cPhADqw4UfV6EUSw3PkBwjkDVhTvp
- UnQ0WRcdFqdwUP437nKllqDaqU+9YPQkd2ccePugr4VCKhTgrPXhjDRfk9lk2R8qfHVu
- 7LEFaWl8uhZJZoEyNOOr3tPr2pouHHIVr1bsH30rGSYoY/oi5Lf8cujVNSrIV+uYgWmg
- AAXw==
+ d=linaro.org; s=google; t=1715759568; x=1716364368; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mnb/F7Iac+A7LQwaCdPGuqUXebHDd+Yk07U5+puyxPE=;
+ b=Z5aesG8MhtkDIMVr7NlEApx2fcWHVkWmfzvL1C+EQKWkX4/vzVOXtnyKqc051AcGbI
+ z5oEvux227eWCtrrwXMP6nfzUeFicqcIXXuoS2lAJ+o8YqfzRLsJq44UqmznZqqYJXn6
+ smpa377N9zSvfhcSEOKm6UypQzUgXPcKE4489NznkKJszrd4ehc27xemW8Ut5vaZFdX9
+ yHZ81JVCaC2KD/yYAL22k7GnwTrC5MS+U63uhtfAedox4p/hKGFcMzqHvymbo+agiCMi
+ p5RpgRCasQAXs5AS59esYuWsQlmFAtt7ZAdk8g8X82Icv9PYaF6doAkvmklo68kYdCQY
+ daEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715759251; x=1716364051;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vNNK7jPhjciFYCXoIXi/Y4d0IMpqc5AGmZTEQEP+ATA=;
- b=Q5Da/M43ROP2MypCBLmpMfUbSvmbhlqhMwwrcTIJJnJNgJPovwUptxIxB1ZXl0ETRb
- yA5n7CmOHcAb/JSIdzj1hq7gA1LW13RgQJ2Xa1wHYS7yFpxaxPXn4OlhmOROZple6I7W
- e0OHIEUT8fAt/Hh0ujThdidt8cNpFhe+uIg1lO/P/Iap8qmhI1H3nJOUk7w4ERoqX1Vg
- g4yaj4CZ2koKEKKzO8Dp4y+fxo9ysbqOBCrqFbHnAdx/k/71JCC1Dbjm+0jS99OH9LMr
- D0FTQkWj7zoe1tc4aGu87v1l7ky5m7tD0oVpGsxgCCqIwhZ2BFJvOyyZ/mkZoogjJkN5
- 31tw==
-X-Gm-Message-State: AOJu0YykWONWkK40c533oYk5P6niOvJb+LHu3KK8k9V+AcNt+CRWHqmJ
- UxGlxN8ImADiBy8qz6kEpXmztdQAmErCnfWk02it60RijEJXmz3lrzn5nkzPVg2CYbr6/QKI80A
- 6TidO1Ei2m38ZO+djwUce9lW53QiNLRC8osGSlQ==
-X-Google-Smtp-Source: AGHT+IHrVYZJq5ayRDUYUwqMuhbLr0bm/GtdVKD9/VYnrcYv4wcIyzn7LHBOXm3kgiybugYz41ffBYQ9JqiCSIDV+oI=
-X-Received: by 2002:a05:6122:2215:b0:4d3:cff6:79f0 with SMTP id
- 71dfb90a1353d-4df882c0c5emr12148880e0c.4.1715759251424; Wed, 15 May 2024
- 00:47:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1715759568; x=1716364368;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Mnb/F7Iac+A7LQwaCdPGuqUXebHDd+Yk07U5+puyxPE=;
+ b=f8pX69gheebgwIr/tRVnA2MsF9qb5tvyO4reaoqzP7YK3BnXUJSpsfNPyVKl2TIDJw
+ UYfINlCBapSv961KRkXYNAePmXfX+91RlwhojA6s2SuyAwMct8CzSXEntRork9TIXGPi
+ ywMZ+nlXLQ5/nJwa7iVLSyCeoU93/madvBkBIh8Zr70vGYz5iSJW8LxYBiUtzkIMPzA1
+ tFsOWPk5i4gUmXGqdHbnekS2aOp40PL1aX2PMBfo1jGRK3u6v93Sa2MLvS3xU8HC0JJo
+ 6ClqZnoYFRxUssgRQjLBTgVuff3Yqbx3DKaIr8LV1vP7EYz+z9EJWwEwoRM/NwsKSXRW
+ zGBA==
+X-Gm-Message-State: AOJu0Yyzr+vPuAftNXZ8tXaZKhHiVyiDC4WcFLDsv4PCvLE7lIeNvzev
+ tLegchKAO1H0G10zKnip0WyluPBiw9A7TNSj4DcwuOTNpCkcmyuFwI43RXK363wPhyx44eO4k0V
+ ksho=
+X-Google-Smtp-Source: AGHT+IErGi0LeDZsq+mQUo7SOZ3YhM0Po+qxm5uvxVEaGdr27y2MFZbhO2F1D3wG3HiZBSMhejtwgA==
+X-Received: by 2002:a2e:8ec4:0:b0:2e0:b713:6ba9 with SMTP id
+ 38308e7fff4ca-2e51ff4d5e1mr89133911fa.13.1715759568636; 
+ Wed, 15 May 2024 00:52:48 -0700 (PDT)
+Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-41fccee9292sm222611855e9.37.2024.05.15.00.52.48
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 May 2024 00:52:48 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/34] tcg patch queue
+Date: Wed, 15 May 2024 09:52:13 +0200
+Message-Id: <20240515075247.68024-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240510065856.2436870-1-fea.wang@sifive.com>
- <20240510065856.2436870-5-fea.wang@sifive.com>
- <c9969b2a-db87-4694-9fe9-bad7aa6bf749@linux.alibaba.com>
-In-Reply-To: <c9969b2a-db87-4694-9fe9-bad7aa6bf749@linux.alibaba.com>
-From: Fea Wang <fea.wang@sifive.com>
-Date: Wed, 15 May 2024 15:47:20 +0800
-Message-ID: <CAKhCfse6As75Zd6nTxQ+Q54NVxuF-G8PzLv2qDQ-_y4pWqVYvw@mail.gmail.com>
-Subject: Re: [PATCH 4/5] target/riscv: Add MEDELEGH, HEDELEGH csrs for RV32
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Frank Chang <frank.chang@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Content-Type: multipart/alternative; boundary="000000000000b3a95c0618795445"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2a;
- envelope-from=fea.wang@sifive.com; helo=mail-vk1-xa2a.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,245 +88,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b3a95c0618795445
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit 3d48b6b687c558a042d91370633b91c6e29e0e05:
 
-OK, I will correct it in the patch v2. Thank you.
+  Merge tag 'pull-request-2024-05-14' of https://gitlab.com/thuth/qemu into staging (2024-05-14 17:24:04 +0200)
 
-Sincerely,
-Fea
+are available in the Git repository at:
 
-LIU Zhiwei <zhiwei_liu@linux.alibaba.com> =E6=96=BC 2024=E5=B9=B45=E6=9C=88=
-13=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8A=E5=8D=8810:49=E5=AF=AB=E9=81=93=EF=
-=BC=9A
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240515
 
->
-> On 2024/5/10 14:58, Fea.Wang wrote:
-> > Based on privileged spec 1.13, the RV32 needs to implement MEDELEGH
-> > and HEDELEGH for exception codes 32-47 for reserving and exception code=
-s
-> > 48-63 for custom use. Add the CSR number though the implementation is
-> > just reading zero and writing ignore. Besides, for accessing HEDELEGH, =
-it
-> > should be controlled by mstateen0 'P1P13' bit.
-> >
-> > Signed-off-by: Fea.Wang <fea.wang@sifive.com>
-> > Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> > ---
-> >   target/riscv/cpu_bits.h |  2 ++
-> >   target/riscv/csr.c      | 31 +++++++++++++++++++++++++++++++
-> >   2 files changed, 33 insertions(+)
-> >
-> > diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-> > index 28bd3fb0b4..f888025c59 100644
-> > --- a/target/riscv/cpu_bits.h
-> > +++ b/target/riscv/cpu_bits.h
-> > @@ -156,6 +156,8 @@
-> >
-> >   /* 32-bit only */
-> >   #define CSR_MSTATUSH        0x310
-> > +#define CSR_MEDELEGH        0x312
-> > +#define CSR_HEDELEGH        0x612
-> >
-> >   /* Machine Trap Handling */
-> >   #define CSR_MSCRATCH        0x340
-> > diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> > index d844ce770e..4d7313f456 100644
-> > --- a/target/riscv/csr.c
-> > +++ b/target/riscv/csr.c
-> > @@ -3227,6 +3227,33 @@ static RISCVException write_hedeleg(CPURISCVStat=
-e
-> *env, int csrno,
-> >       return RISCV_EXCP_NONE;
-> >   }
-> >
-> > +static RISCVException read_hedelegh(CPURISCVState *env, int csrno,
-> > +                                   target_ulong *val)
-> > +{
-> > +    RISCVException ret;
-> > +    ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);
-> > +    if (ret !=3D RISCV_EXCP_NONE) {
-> > +        return ret;
-> > +    }
-> > +
-> > +    /* Reserved, now read zero */
-> > +    *val =3D 0;
-> > +    return RISCV_EXCP_NONE;
-> > +}
-> > +
-> > +static RISCVException write_hedelegh(CPURISCVState *env, int csrno,
-> > +                                    target_ulong val)
-> > +{
-> > +    RISCVException ret;
-> > +    ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);
-> > +    if (ret !=3D RISCV_EXCP_NONE) {
-> > +        return ret;
-> > +    }
-> > +
-> > +    /* Reserved, now write ignore */
-> > +    return RISCV_EXCP_NONE;
-> > +}
-> > +
-> >   static RISCVException rmw_hvien64(CPURISCVState *env, int csrno,
-> >                                       uint64_t *ret_val,
-> >                                       uint64_t new_val, uint64_t wr_mas=
-k)
-> > @@ -4674,6 +4701,10 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =3D=
- {
-> >
-> >       [CSR_MSTATUSH]    =3D { "mstatush",   any32, read_mstatush,
-> >                             write_mstatush
->      },
-> > +    [CSR_MEDELEGH]    =3D { "medelegh",   any32, read_zero, write_igno=
-re,
-> > +                          .min_priv_ver =3D PRIV_VERSION_1_13_0
->     },
-> > +    [CSR_HEDELEGH]    =3D { "hedelegh",   any32, read_hedelegh,
-> write_hedelegh,
->
-> Using hmode32 instead of any32.
->
-> Otherwise,
->
-> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
->
-> > +                          .min_priv_ver =3D PRIV_VERSION_1_13_0
->     },
-> >
-> >       /* Machine Trap Handling */
-> >       [CSR_MSCRATCH] =3D { "mscratch", any,  read_mscratch, write_mscra=
-tch,
->
+for you to fetch changes up to c9290dfebfdba5c13baa5e1f10e13a1c876b0643:
 
---000000000000b3a95c0618795445
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  tcg/loongarch64: Fill out tcg_out_{ld,st} for vector regs (2024-05-15 08:57:39 +0200)
 
-<div dir=3D"ltr">OK, I will correct it in the patch v2. Thank you.<br><div>=
-<br></div><div>Sincerely,<br>Fea</div></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">LIU Zhiwei &lt;<a href=3D"mailto:zhiw=
-ei_liu@linux.alibaba.com">zhiwei_liu@linux.alibaba.com</a>&gt; =E6=96=BC 20=
-24=E5=B9=B45=E6=9C=8813=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8A=E5=8D=8810:49=
-=E5=AF=AB=E9=81=93=EF=BC=9A<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex"><br>
-On 2024/5/10 14:58, Fea.Wang wrote:<br>
-&gt; Based on privileged spec 1.13, the RV32 needs to implement MEDELEGH<br=
->
-&gt; and HEDELEGH for exception codes 32-47 for reserving and exception cod=
-es<br>
-&gt; 48-63 for custom use. Add the CSR number though the implementation is<=
-br>
-&gt; just reading zero and writing ignore. Besides, for accessing HEDELEGH,=
- it<br>
-&gt; should be controlled by mstateen0 &#39;P1P13&#39; bit.<br>
-&gt;<br>
-&gt; Signed-off-by: Fea.Wang &lt;<a href=3D"mailto:fea.wang@sifive.com" tar=
-get=3D"_blank">fea.wang@sifive.com</a>&gt;<br>
-&gt; Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com"=
- target=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0target/riscv/cpu_bits.h |=C2=A0 2 ++<br>
-&gt;=C2=A0 =C2=A0target/riscv/csr.c=C2=A0 =C2=A0 =C2=A0 | 31 ++++++++++++++=
-+++++++++++++++++<br>
-&gt;=C2=A0 =C2=A02 files changed, 33 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h<br>
-&gt; index 28bd3fb0b4..f888025c59 100644<br>
-&gt; --- a/target/riscv/cpu_bits.h<br>
-&gt; +++ b/target/riscv/cpu_bits.h<br>
-&gt; @@ -156,6 +156,8 @@<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0/* 32-bit only */<br>
-&gt;=C2=A0 =C2=A0#define CSR_MSTATUSH=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x310<br>
-&gt; +#define CSR_MEDELEGH=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x312<br>
-&gt; +#define CSR_HEDELEGH=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x612<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0/* Machine Trap Handling */<br>
-&gt;=C2=A0 =C2=A0#define CSR_MSCRATCH=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x340<br>
-&gt; diff --git a/target/riscv/csr.c b/target/riscv/csr.c<br>
-&gt; index d844ce770e..4d7313f456 100644<br>
-&gt; --- a/target/riscv/csr.c<br>
-&gt; +++ b/target/riscv/csr.c<br>
-&gt; @@ -3227,6 +3227,33 @@ static RISCVException write_hedeleg(CPURISCVSta=
-te *env, int csrno,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0return RISCV_EXCP_NONE;<br>
-&gt;=C2=A0 =C2=A0}<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; +static RISCVException read_hedelegh(CPURISCVState *env, int csrno,<br=
->
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0target_ulong *val)<=
-br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 RISCVException ret;<br>
-&gt; +=C2=A0 =C2=A0 ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);<br>
-&gt; +=C2=A0 =C2=A0 if (ret !=3D RISCV_EXCP_NONE) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 /* Reserved, now read zero */<br>
-&gt; +=C2=A0 =C2=A0 *val =3D 0;<br>
-&gt; +=C2=A0 =C2=A0 return RISCV_EXCP_NONE;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static RISCVException write_hedelegh(CPURISCVState *env, int csrno,<b=
-r>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 target_ulong val)<=
-br>
-&gt; +{<br>
-&gt; +=C2=A0 =C2=A0 RISCVException ret;<br>
-&gt; +=C2=A0 =C2=A0 ret =3D smstateen_acc_ok(env, 0, SMSTATEEN0_P1P13);<br>
-&gt; +=C2=A0 =C2=A0 if (ret !=3D RISCV_EXCP_NONE) {<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
-&gt; +=C2=A0 =C2=A0 }<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0 /* Reserved, now write ignore */<br>
-&gt; +=C2=A0 =C2=A0 return RISCV_EXCP_NONE;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt;=C2=A0 =C2=A0static RISCVException rmw_hvien64(CPURISCVState *env, int =
-csrno,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint64=
-_t *ret_val,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint64=
-_t new_val, uint64_t wr_mask)<br>
-&gt; @@ -4674,6 +4701,10 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] =
-=3D {<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[CSR_MSTATUSH]=C2=A0 =C2=A0 =3D { &quot;msta=
-tush&quot;,=C2=A0 =C2=A0any32, read_mstatush,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0write_mstatush=C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0},<br>
-&gt; +=C2=A0 =C2=A0 [CSR_MEDELEGH]=C2=A0 =C2=A0 =3D { &quot;medelegh&quot;,=
-=C2=A0 =C2=A0any32, read_zero, write_ignore,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 .min_priv_ver =3D PRIV_VERSION_1_13_0=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
-&gt; +=C2=A0 =C2=A0 [CSR_HEDELEGH]=C2=A0 =C2=A0 =3D { &quot;hedelegh&quot;,=
-=C2=A0 =C2=A0any32, read_hedelegh, write_hedelegh,<br>
-<br>
-Using hmode32 instead of any32.<br>
-<br>
-Otherwise,<br>
-<br>
-Reviewed-by: LIU Zhiwei &lt;<a href=3D"mailto:zhiwei_liu@linux.alibaba.com"=
- target=3D"_blank">zhiwei_liu@linux.alibaba.com</a>&gt;<br>
-<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 .min_priv_ver =3D PRIV_VERSION_1_13_0=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0/* Machine Trap Handling */<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0[CSR_MSCRATCH] =3D { &quot;mscratch&quot;, a=
-ny,=C2=A0 read_mscratch, write_mscratch,<br>
-</blockquote></div>
+----------------------------------------------------------------
+tcg/loongarch64: Fill out tcg_out_{ld,st} for vector regs
+accel/tcg: Improve disassembly for target and plugin
 
---000000000000b3a95c0618795445--
+----------------------------------------------------------------
+Philippe Mathieu-Daudé (1):
+      accel/tcg: Remove cpu_ldsb_code / cpu_ldsw_code
+
+Richard Henderson (33):
+      accel/tcg: Use vaddr in translator_ld*
+      accel/tcg: Hide in_same_page outside of a target-specific context
+      accel/tcg: Pass DisasContextBase to translator_fake_ldb
+      accel/tcg: Reorg translator_ld*
+      accel/tcg: Cap the translation block when we encounter mmio
+      accel/tcg: Record mmio bytes during translation
+      accel/tcg: Record when translator_fake_ldb is used
+      accel/tcg: Record DisasContextBase in tcg_ctx for plugins
+      plugins: Copy memory in qemu_plugin_insn_data
+      accel/tcg: Implement translator_st
+      plugins: Use translator_st for qemu_plugin_insn_data
+      plugins: Read mem_only directly from TB cflags
+      plugins: Use DisasContextBase for qemu_plugin_insn_haddr
+      plugins: Use DisasContextBase for qemu_plugin_tb_vaddr
+      plugins: Merge  alloc_tcg_plugin_context into plugin_gen_tb_start
+      accel/tcg: Provide default implementation of disas_log
+      accel/tcg: Return bool from TranslatorOps.disas_log
+      disas: Split disas.c
+      disas: Use translator_st to get disassembly data
+      accel/tcg: Introduce translator_fake_ld
+      target/s390x: Fix translator_fake_ld length
+      target/s390x: Disassemble EXECUTEd instructions
+      target/hexagon: Use translator_ldl in pkt_crosses_page
+      target/microblaze: Use translator_ldl
+      target/i386: Use translator_ldub for everything
+      target/avr: Use translator_lduw
+      target/cris: Use translator_ld* in cris_fetch
+      target/cris: Use cris_fetch in translate_v10.c.inc
+      target/riscv: Use translator_ld* for everything
+      target/rx: Use translator_ld*
+      target/xtensa: Use translator_ldub in xtensa_insn_len
+      target/s390x: Use translator_lduw in get_next_pc
+      tcg/loongarch64: Fill out tcg_out_{ld,st} for vector regs
+
+ disas/disas-internal.h           |   4 +
+ include/disas/disas.h            |   9 +-
+ include/exec/cpu_ldst.h          |  10 --
+ include/exec/plugin-gen.h        |   7 +-
+ include/exec/translator.h        |  74 ++++++---
+ include/qemu/plugin.h            |  22 +--
+ include/qemu/qemu-plugin.h       |  15 +-
+ include/qemu/typedefs.h          |   1 +
+ include/tcg/tcg.h                |   1 +
+ accel/tcg/plugin-gen.c           |  63 +++-----
+ accel/tcg/translator.c           | 331 ++++++++++++++++++++++++--------------
+ contrib/plugins/execlog.c        |   5 +-
+ contrib/plugins/howvec.c         |   4 +-
+ disas/disas-common.c             | 104 ++++++++++++
+ disas/disas-host.c               | 129 +++++++++++++++
+ disas/disas-mon.c                |  15 ++
+ disas/disas-target.c             |  99 ++++++++++++
+ disas/disas.c                    | 338 ---------------------------------------
+ disas/objdump.c                  |  37 +++++
+ plugins/api.c                    |  57 +++++--
+ target/alpha/translate.c         |   9 --
+ target/arm/tcg/translate-a64.c   |  11 --
+ target/arm/tcg/translate.c       |  12 --
+ target/avr/translate.c           |  11 +-
+ target/cris/translate.c          |  37 +----
+ target/hexagon/translate.c       |  11 +-
+ target/hppa/translate.c          |  21 ++-
+ target/i386/tcg/translate.c      |  19 +--
+ target/loongarch/tcg/translate.c |   8 -
+ target/m68k/translate.c          |   9 --
+ target/microblaze/translate.c    |  11 +-
+ target/mips/tcg/translate.c      |   9 --
+ target/openrisc/translate.c      |  11 --
+ target/ppc/translate.c           |   9 --
+ target/riscv/translate.c         |  24 +--
+ target/rx/translate.c            |  35 ++--
+ target/s390x/tcg/translate.c     |  26 ++-
+ target/sh4/translate.c           |   9 --
+ target/sparc/translate.c         |   9 --
+ target/tricore/translate.c       |   9 --
+ target/xtensa/translate.c        |  12 +-
+ tcg/tcg.c                        |  12 --
+ target/cris/translate_v10.c.inc  |  30 ++--
+ tcg/loongarch64/tcg-target.c.inc | 103 +++++++++---
+ disas/meson.build                |   8 +-
+ 45 files changed, 899 insertions(+), 891 deletions(-)
+ create mode 100644 disas/disas-common.c
+ create mode 100644 disas/disas-host.c
+ create mode 100644 disas/disas-target.c
+ delete mode 100644 disas/disas.c
+ create mode 100644 disas/objdump.c
 
