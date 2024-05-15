@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDEF8C62BE
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D478C62BF
 	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:25:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79vT-00022o-FI; Wed, 15 May 2024 04:23:51 -0400
+	id 1s79vd-00025H-NK; Wed, 15 May 2024 04:24:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vP-000219-Db
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:23:47 -0400
+ id 1s79vQ-00022h-Gl
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:23:48 -0400
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79vN-00074Z-Rg
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:23:47 -0400
+ id 1s79vO-00074o-Gt
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:23:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715761425; x=1747297425;
+ t=1715761426; x=1747297426;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WKdlfZRZ+uV5fBUr0kfvuBkrXP/k7AsBL/srbsncrLI=;
- b=dGn4CQCFVUdON0nAsjD900tf9ef/Cg7b3wThU2ipitGNBrJTCbF8otGk
- ANN5eY636n+TsyTGjrij5NW3IkThhRIG+8KTylQd+m8aCZB39IRBo6h43
- JeXJVd3OCjl8nIipT9fxQBzmA3gVqbJsuLuKTZGD9BnOlYdN2J1nn99pD
- WIDgYZVkEFvZF5nGyOPo96lJAyumZAMvKzsWLBnFQ/sfOW0j1HAGxcNu0
- 8gKkFCL4cnPfS5NkL12GTWqiCe0GbPh+XlA6Ar2XR6rIEsb7NWvtgYGte
- SgDDv1XQ5QZ2pj6XSDogLiQI11bWxzmLlL5ADCTwDnknopVMakhdYHqly A==;
-X-CSE-ConnectionGUID: d220hxoLTbWMmgwWK6Escg==
-X-CSE-MsgGUID: yppCUdcZQEG+fS5FFOgcXA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961508"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961508"
+ bh=JOzScZJ2jsxihaHCSeW8J3dqNSmB6ca86sov/7puN0I=;
+ b=SSsoQeGsUFahbveYGtyvAEqbJaix9DxwDx1wlvlpAoXqCWaE4xU4ctm0
+ ZoJdKFxmO5ZyJHJHafjrE3JG8QI5OV8UHRUqWAl+D9xWMrtHlJtlZawVg
+ xl+CktI6iIHM/xhFBKxBdqWLwGpp/+Ed5193IAYSPGHfZ0J76mJgPU4iM
+ FXbky+uJ+XyDxl9SQNzP2/5yeYlM7PQaotLsUHGQOOQfOH0B8UbumXgoK
+ n1PCCS3LP3zNE4g17DKbG+k/MKpX56CHle+Nioxy/BNUQ4yNu/q4VA46h
+ zGI1Tdu8ZeF83sRe7uE+/Hza8Iqhrnq7mGiCuMyO0CJ8uQGWOiPDVcLrz A==;
+X-CSE-ConnectionGUID: MVAgABJGRDGVTWh5BAao2Q==
+X-CSE-MsgGUID: Gku6g596SvOyAzLlOR1nKA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961514"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961514"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:23:43 -0700
-X-CSE-ConnectionGUID: Xhh9an+xQBSm7sNINrg3CQ==
-X-CSE-MsgGUID: xIw4OxI1RbiAOXJyVJxXig==
+ 15 May 2024 01:23:45 -0700
+X-CSE-ConnectionGUID: V5bVsuC6SnGjI7R2cvku0Q==
+X-CSE-MsgGUID: 4svTlRkWQoW0cmuYjeUhzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396225"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396243"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:23:41 -0700
+ 15 May 2024 01:23:43 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 01/16] vfio/display: Fix error path in call site of
- ramfb_setup()
-Date: Wed, 15 May 2024 16:20:26 +0800
-Message-Id: <20240515082041.556571-2-zhenzhong.duan@intel.com>
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH 02/16] vfio/display: Make vfio_display_*() return bool
+Date: Wed, 15 May 2024 16:20:27 +0800
+Message-Id: <20240515082041.556571-3-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.18;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -82,44 +81,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_display_dmabuf_init() and vfio_display_region_init() calls
-ramfb_setup() without checking its return value.
+This is to follow the coding standand in qapi/error.h to return bool
+for bool-valued functions.
 
-So we may run into a situation that vfio_display_probe() succeed
-but errp is set. This is risky and may lead to assert failure in
-error_setv().
-
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Fixes: b290659fc3d ("hw/vfio/display: add ramfb support")
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/display.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/vfio/pci.h     |  2 +-
+ hw/vfio/display.c | 20 ++++++++++----------
+ hw/vfio/pci.c     |  3 +--
+ 3 files changed, 12 insertions(+), 13 deletions(-)
 
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 92cd62d115..a5ac9efd4b 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -232,7 +232,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+                                Error **errp);
+ 
+ void vfio_display_reset(VFIOPCIDevice *vdev);
+-int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
++bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_display_finalize(VFIOPCIDevice *vdev);
+ 
+ extern const VMStateDescription vfio_display_vmstate;
 diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index 1aa440c663..57c5ae0b2a 100644
+index 57c5ae0b2a..b562f4be74 100644
 --- a/hw/vfio/display.c
 +++ b/hw/vfio/display.c
-@@ -359,6 +359,9 @@ static int vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
-                                           vdev);
+@@ -346,11 +346,11 @@ static const GraphicHwOps vfio_display_dmabuf_ops = {
+     .ui_info    = vfio_display_edid_ui_info,
+ };
+ 
+-static int vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+ {
+     if (!display_opengl) {
+         error_setg(errp, "vfio-display-dmabuf: opengl not available");
+-        return -1;
++        return false;
+     }
+ 
+     vdev->dpy = g_new0(VFIODisplay, 1);
+@@ -360,11 +360,11 @@ static int vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
      if (vdev->enable_ramfb) {
          vdev->dpy->ramfb = ramfb_setup(errp);
-+        if (!vdev->dpy->ramfb) {
-+            return -EINVAL;
-+        }
+         if (!vdev->dpy->ramfb) {
+-            return -EINVAL;
++            return false;
+         }
      }
      vfio_display_edid_init(vdev);
-     return 0;
-@@ -486,6 +489,9 @@ static int vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
-                                           vdev);
+-    return 0;
++    return true;
+ }
+ 
+ static void vfio_display_dmabuf_exit(VFIODisplay *dpy)
+@@ -481,7 +481,7 @@ static const GraphicHwOps vfio_display_region_ops = {
+     .gfx_update = vfio_display_region_update,
+ };
+ 
+-static int vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
+ {
+     vdev->dpy = g_new0(VFIODisplay, 1);
+     vdev->dpy->con = graphic_console_init(DEVICE(vdev), 0,
+@@ -490,10 +490,10 @@ static int vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
      if (vdev->enable_ramfb) {
          vdev->dpy->ramfb = ramfb_setup(errp);
-+        if (!vdev->dpy->ramfb) {
-+            return -EINVAL;
-+        }
+         if (!vdev->dpy->ramfb) {
+-            return -EINVAL;
++            return false;
+         }
      }
-     return 0;
+-    return 0;
++    return true;
  }
+ 
+ static void vfio_display_region_exit(VFIODisplay *dpy)
+@@ -508,7 +508,7 @@ static void vfio_display_region_exit(VFIODisplay *dpy)
+ 
+ /* ---------------------------------------------------------------------- */
+ 
+-int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
++bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
+ {
+     struct vfio_device_gfx_plane_info probe;
+     int ret;
+@@ -531,11 +531,11 @@ int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
+ 
+     if (vdev->display == ON_OFF_AUTO_AUTO) {
+         /* not an error in automatic mode */
+-        return 0;
++        return true;
+     }
+ 
+     error_setg(errp, "vfio: device doesn't support any (known) display method");
+-    return -1;
++    return false;
+ }
+ 
+ void vfio_display_finalize(VFIOPCIDevice *vdev)
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index c1adef5cf8..a447013a1d 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3200,8 +3200,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     }
+ 
+     if (vdev->display != ON_OFF_AUTO_OFF) {
+-        ret = vfio_display_probe(vdev, errp);
+-        if (ret) {
++        if (!vfio_display_probe(vdev, errp)) {
+             goto out_deregister;
+         }
+     }
 -- 
 2.34.1
 
