@@ -2,65 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFE38C616D
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0988C617E
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:21:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s78tR-0005bW-1Q; Wed, 15 May 2024 03:17:41 -0400
+	id 1s78wR-0005I5-Jo; Wed, 15 May 2024 03:20:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s78tL-0005Si-TS
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:17:35 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1s78wM-0005Hw-9B
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:20:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1s78tJ-0001Yu-Iu
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:17:35 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1s78wJ-0003TJ-UE
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:20:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715757452;
+ s=mimecast20190719; t=1715757638;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rja/s2o4BCOM59xN3wUhacTssKrQuC4NwxTq8DdyXU8=;
- b=FRvSjoPkFoQczfXtWIgmBljRzmMF17fQAF1RASEM1odldsCVmnaCu6Aryrcjp+oPC64Hb8
- qvSN3alpxd/FfI24gJ8m3xBCEIWtHAYL8v66sWZV4dAeVhkeVEawB3dTihgbBddff7u7JF
- 46HJS4yfOHsOhkUpFyCQJj7ndree7Fo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cxXu2nNdON7xWXQ0M2T24SqNN1Ff9/wcyAlNRPdtPFk=;
+ b=EoMxwudqnIzwXc2Hxrg2yBycU83j2ex45S93H1vba9Qve3a8hwEDfNMT4tlGws9WEwGgkO
+ vi6lnoUa/WTtmsOhH4JE6JrIU1FZGzTknOJ/ob7WtQ+GRk5mB38BcqQtYxYzERg3+MrwHV
+ sNJ8P8GEfZJ+xh2iSiMGkT8qG93J8aQ=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-WkVnw3FVNLSP1x0KhliSeQ-1; Wed, 15 May 2024 03:17:23 -0400
-X-MC-Unique: WkVnw3FVNLSP1x0KhliSeQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84C69101A525;
- Wed, 15 May 2024 07:17:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2AB2C200A08E;
- Wed, 15 May 2024 07:17:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3304221E66E5; Wed, 15 May 2024 09:17:22 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: Peter Xu <peterx@redhat.com>,  qemu-devel@nongnu.org,
- berrange@redhat.com,  Claudio Fontana <cfontana@suse.de>,  Jim Fehlig
- <jfehlig@suse.com>,  Eric Blake <eblake@redhat.com>
-Subject: Re: [PATCH 4/9] migration: Add direct-io parameter
-In-Reply-To: <87r0e4e0ox.fsf@suse.de> (Fabiano Rosas's message of "Tue, 14 May
- 2024 14:57:18 -0300")
-References: <20240426142042.14573-1-farosas@suse.de>
- <20240426142042.14573-5-farosas@suse.de> <ZjUnghSvdy-wWtnN@x1n>
- <871q6ioc2r.fsf@suse.de> <ZjVUKCafjreLtLmm@x1n>
- <87ttj0zdp0.fsf@pond.sub.org> <87r0e4e0ox.fsf@suse.de>
-Date: Wed, 15 May 2024 09:17:22 +0200
-Message-ID: <87v83fwnlp.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ us-mta-643-K7CAs85sMwGIf4pXvxFzPw-1; Wed, 15 May 2024 03:20:36 -0400
+X-MC-Unique: K7CAs85sMwGIf4pXvxFzPw-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-69649f1894dso111520616d6.0
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:20:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715757635; x=1716362435;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cxXu2nNdON7xWXQ0M2T24SqNN1Ff9/wcyAlNRPdtPFk=;
+ b=EdHWDf5+wPoR3mJt+aJyUHRkJ4pICgZqM4QIPkA5JVweXoOccFlal1lnjdEem/UXGR
+ DSkWmQxlXOpcAjtuR9N3PsPMJoEjxGEVvOlPZj2+wHr3/FXIwXQ0kxKVAzcDVnTwYJNY
+ 5XXEJYKXtE+ZuYUh/m8YOfvNmTZfCrhegyMbFdlgikpMDTI2pT4xNFBwkuVcO9/8sSAE
+ iFZfPtQgGNvCKV7vzjSFJM/MFuJqwLJI6Q0FotNhVGrA4KM1F5pH/QE4q6KREHDutSiW
+ AI6nRey0nN4l0q+qoZ+qyBBYxs5B9beLpXAHLLPX8Owt73lXGBlQSl4TgRQPFaRgd/d0
+ 7o6w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX7ltf+6ptpaE2r6jbCLzHUGFzpDioMY/7WXRjzMBvUGJO7chiXVtMMw5xcHHdGg8uJBoE/qhKQzuID3ZzAF2xPXlDYRd4=
+X-Gm-Message-State: AOJu0YxRMbDUGOEAhRIQ0KzByC44LprpTc2iXSK6xxIkuay7s2XpUjuy
+ bcUizebZ8/QP2ZQ+6lae9eTBpQHBPlDNza5Uh53IV103Jsvga92/HXQKue/JfuuslxMieoxpUQU
+ cNdJ75F6voCBcx4nNz003QnWMTNugKzlC33q7ZagbkBVATBuzBUyD
+X-Received: by 2002:a05:6214:320c:b0:6a0:4255:b727 with SMTP id
+ 6a1803df08f44-6a16815228bmr157765396d6.9.1715757635527; 
+ Wed, 15 May 2024 00:20:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnsrIStBKMO8C1cDJ3wr96fo39BtPKAKhvO7p4RFJqMukYWGO5RxfK1rjWlw03nKi8hwFXUA==
+X-Received: by 2002:a05:6214:320c:b0:6a0:4255:b727 with SMTP id
+ 6a1803df08f44-6a16815228bmr157765226d6.9.1715757635117; 
+ Wed, 15 May 2024 00:20:35 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 6a1803df08f44-6a15f1cd3b5sm61715016d6.82.2024.05.15.00.20.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 15 May 2024 00:20:34 -0700 (PDT)
+Message-ID: <396a3c36-45a3-4749-88b3-439af8819965@redhat.com>
+Date: Wed, 15 May 2024 09:20:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 4/9] vfio/migration: Add an Error** argument to
+ vfio_migration_set_state()
+Content-Language: en-US
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>
+References: <20240514153130.394307-1-clg@redhat.com>
+ <20240514153130.394307-5-clg@redhat.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <20240514153130.394307-5-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -84,140 +106,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Hi Cédric,
 
-> Markus Armbruster <armbru@redhat.com> writes:
->
->> Peter Xu <peterx@redhat.com> writes:
->>
->>> On Fri, May 03, 2024 at 05:49:32PM -0300, Fabiano Rosas wrote:
->>>> Peter Xu <peterx@redhat.com> writes:
->>>> 
->>>> > On Fri, Apr 26, 2024 at 11:20:37AM -0300, Fabiano Rosas wrote:
->>>> >> Add the direct-io migration parameter that tells the migration code to
->>>> >> use O_DIRECT when opening the migration stream file whenever possible.
->>>> >> 
->>>> >> This is currently only used with the mapped-ram migration that has a
->>>> >> clear window guaranteed to perform aligned writes.
->>>> >> 
->>>> >> Acked-by: Markus Armbruster <armbru@redhat.com>
->>>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>>> >> ---
->>>> >>  include/qemu/osdep.h           |  2 ++
->>>> >>  migration/migration-hmp-cmds.c | 11 +++++++++++
->>>> >>  migration/options.c            | 30 ++++++++++++++++++++++++++++++
->>>> >>  migration/options.h            |  1 +
->>>> >>  qapi/migration.json            | 18 +++++++++++++++---
->>>> >>  util/osdep.c                   |  9 +++++++++
->>>> >>  6 files changed, 68 insertions(+), 3 deletions(-)
->>>> >> 
->>>> >> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
->>>> >> index c7053cdc2b..645c14a65d 100644
->>>> >> --- a/include/qemu/osdep.h
->>>> >> +++ b/include/qemu/osdep.h
->>>> >> @@ -612,6 +612,8 @@ int qemu_lock_fd_test(int fd, int64_t start, int64_t len, bool exclusive);
->>>> >>  bool qemu_has_ofd_lock(void);
->>>> >>  #endif
->>>> >>  
->>>> >> +bool qemu_has_direct_io(void);
->>>> >> +
->>>> >>  #if defined(__HAIKU__) && defined(__i386__)
->>>> >>  #define FMT_pid "%ld"
->>>> >>  #elif defined(WIN64)
->>>> >> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
->>>> >> index 7e96ae6ffd..8496a2b34e 100644
->>>> >> --- a/migration/migration-hmp-cmds.c
->>>> >> +++ b/migration/migration-hmp-cmds.c
->>>> >> @@ -397,6 +397,13 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
->>>> >>          monitor_printf(mon, "%s: %s\n",
->>>> >>              MigrationParameter_str(MIGRATION_PARAMETER_MODE),
->>>> >>              qapi_enum_lookup(&MigMode_lookup, params->mode));
->>>> >> +
->>>> >> +        if (params->has_direct_io) {
->>>> >> +            monitor_printf(mon, "%s: %s\n",
->>>> >> +                           MigrationParameter_str(
->>>> >> +                               MIGRATION_PARAMETER_DIRECT_IO),
->>>> >> +                           params->direct_io ? "on" : "off");
->>>> >> +        }
->>>> >
->>>> > This will be the first parameter to optionally display here.  I think it's
->>>> > a sign of misuse of has_direct_io field..
->>
->> Yes.  For similar existing parameters, we do
->>
->>                assert(params->has_FOO);
->>                monitor_printf(mon, "%s: '%s'\n",
->>                               MigrationParameter_str(MIGRATION_PARAMETER_FOO),
->>                               ... params->FOO as string ...)
->>
->>>> > IMHO has_direct_io should be best to be kept as "whether direct_io field is
->>>> > valid" and that's all of it.  It hopefully shouldn't contain more
->>>> > information than that, or otherwise it'll be another small challenge we
->>>> > need to overcome when we can remove all these has_* fields, and can also be
->>>> > easily overlooked.
->>>> 
->>>> I don't think I understand why we have those has_* fields. I thought my
->>>> usage of 'params->has_direct_io = qemu_has_direct_io()' was the correct
->>>> one, i.e. checking whether QEMU has any support for that parameter. Can
->>>> you help me out here?
->>>
->>> Here params is the pointer to "struct MigrationParameters", which is
->>> defined in qapi/migration.json.  And we have had "has_*" only because we
->>> allow optional fields with asterisks:
->>>
->>>   { 'struct': 'MigrationParameters',
->>>     'data': { '*announce-initial': 'size',
->>>               ...
->>>               } }
->>>
->>> So that's why it better only means "whether this field existed", because
->>> it's how it is defined.
->>>
->>> IIRC we (or say, Markus) used to have some attempts deduplicates those
->>> *MigrationParameter* things, and if success we have chance to drop has_*
->>> fields (in which case we simply always have them; that "has_" makes more
->>> sense only if in a QMP session to allow user only specify one or more
->>> things if not all).
->>
->> qapi/migration.json:
->>
->>     ##
->>     # @MigrationParameters:
->>     #
->> --> # The optional members aren't actually optional.
->>     #
->>
->> In other words, the has_FOO generated for the members of
->> MigrationParameters must all be true.
->>
->> These members became optional when we attempted to de-duplicate
->> MigrationParameters and MigrateSetParameters, but failed (see commit
->> de63ab61241 "migrate: Share common MigrationParameters struct" and
->> commit 1bda8b3c695 "migration: Unshare MigrationParameters struct for
->> now").
->
-> So what's the blocker for merging MigrationSetParameters and
-> MigrationParameters? Just the tls_* options?
+On 5/14/24 17:31, Cédric Le Goater wrote:
+> Add an Error** argument to vfio_migration_set_state() and adjust
+> callers, including vfio_save_setup(). The error will be propagated up
+> to qemu_savevm_state_setup() where the save_setup() handler is
+> executed.
+> 
+> Modify vfio_vmstate_change_prepare() and vfio_vmstate_change() to
+> store a reported error under the migration stream if a migration is in
+> progress.
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+> 
+>  Changes in v6:
+> 
+>  - Commit log improvements (Avihai) 
+>  - vfio_migration_set_state() : Dropped the error_setg_errno() change
+>    when setting device in recover state fails (Avihai)   
+>  - vfio_migration_state_notifier() : report local error (Avihai) 
+>    
+>  Changes in v5:
+> 
+>  - Replaced error_setg() by error_setg_errno() in vfio_migration_set_state()
+>  - Rebased on 20c64c8a51a4 ("migration: migration_file_set_error")
+>  
+>  hw/vfio/migration.c | 77 ++++++++++++++++++++++++++++-----------------
+>  1 file changed, 48 insertions(+), 29 deletions(-)
+> 
+> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+> index bf2fd0759ba6e4fb103cc5c1a43edb180a3d0de4..bf11135167ebb162dd41415656bdacfa0e1ca550 100644
+> --- a/hw/vfio/migration.c
+> +++ b/hw/vfio/migration.c
+> @@ -82,7 +82,8 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
+>  
+>  static int vfio_migration_set_state(VFIODevice *vbasedev,
+>                                      enum vfio_device_mig_state new_state,
+> -                                    enum vfio_device_mig_state recover_state)
+> +                                    enum vfio_device_mig_state recover_state,
+> +                                    Error **errp)
+>  {
+>      VFIOMigration *migration = vbasedev->migration;
+>      uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
+> @@ -102,18 +103,19 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
+>          ret = -errno;
+>  
+>          if (recover_state == VFIO_DEVICE_STATE_ERROR) {
+> -            error_report("%s: Failed setting device state to %s, err: %s. "
+> -                         "Recover state is ERROR. Resetting device",
+> -                         vbasedev->name, mig_state_to_str(new_state),
+> -                         strerror(errno));
+> +            error_setg_errno(errp, errno,
+> +                             "%s: Failed setting device state to %s. "
+> +                             "Recover state is ERROR. Resetting device",
+> +                             vbasedev->name, mig_state_to_str(new_state));
+nit: this may be simplified
+with a first unconditional msg saying Failed setting device state to %s.
+Recover state is %s.
+and not duplicating the msg.
 
-I believe the latest attempt was Peter's "[PATCH v3 0/4] qapi/migration:
-Dedup migration parameter objects and fix tls-authz crash" last
-September.
+In the reset label you can prepend "resetting the device ..."
+>  
+>              goto reset_device;
+>          }
+>  
+> -        error_report(
+> -            "%s: Failed setting device state to %s, err: %s. Setting device in recover state %s",
+> -                     vbasedev->name, mig_state_to_str(new_state),
+> -                     strerror(errno), mig_state_to_str(recover_state));
+> +        error_setg_errno(errp, errno,
+> +                         "%s: Failed setting device state to %s. "
+> +                         "Setting device in recover state %s",
+> +                         vbasedev->name, mig_state_to_str(new_state),
+> +                         mig_state_to_str(recover_state));>
+>          mig_state->device_state = recover_state;
+>          if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
+in case you fail setting the device in recover state, your simply
+error_report() and do not prepend any other msg in the error handle. Is
+it what you want? In the positive, maybe worth a comment.
+> @@ -137,7 +139,7 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
+>               * This can happen if the device is asynchronously reset and
+>               * terminates a data transfer.
+>               */
+> -            error_report("%s: data_fd out of sync", vbasedev->name);
+> +            error_setg(errp, "%s: data_fd out of sync", vbasedev->name);
+>              close(mig_state->data_fd);
+>  
+>              return -EBADF;
+> @@ -168,10 +170,11 @@ reset_device:
+>   */
+>  static int
+>  vfio_migration_set_state_or_reset(VFIODevice *vbasedev,
+> -                                  enum vfio_device_mig_state new_state)
+> +                                  enum vfio_device_mig_state new_state,
+> +                                  Error **errp)
+>  {
+>      return vfio_migration_set_state(vbasedev, new_state,
+> -                                    VFIO_DEVICE_STATE_ERROR);
+> +                                    VFIO_DEVICE_STATE_ERROR, errp);
+>  }
+>  
+>  static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
+> @@ -399,10 +402,8 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
+>          switch (migration->device_state) {
+>          case VFIO_DEVICE_STATE_RUNNING:
+>              ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
+> -                                           VFIO_DEVICE_STATE_RUNNING);
+> +                                           VFIO_DEVICE_STATE_RUNNING, errp);
+>              if (ret) {
+> -                error_setg(errp, "%s: Failed to set new PRE_COPY state",
+> -                           vbasedev->name);
+>                  return ret;
+>              }
+>  
+> @@ -435,13 +436,20 @@ static void vfio_save_cleanup(void *opaque)
+>  {
+>      VFIODevice *vbasedev = opaque;
+>      VFIOMigration *migration = vbasedev->migration;
+> +    Error *local_err = NULL;
+> +    int ret;
+>  
+>      /*
+>       * Changing device state from STOP_COPY to STOP can take time. Do it here,
+>       * after migration has completed, so it won't increase downtime.
+>       */
+>      if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
+> -        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_STOP);
+> +        ret = vfio_migration_set_state_or_reset(vbasedev,
+> +                                                VFIO_DEVICE_STATE_STOP,
+> +                                                &local_err);
+> +        if (ret) {
+> +            error_report_err(local_err);
+> +        }
+>      }
+>  
+>      g_free(migration->data_buffer);
+> @@ -549,11 +557,13 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+>      VFIODevice *vbasedev = opaque;
+>      ssize_t data_size;
+>      int ret;
+> +    Error *local_err = NULL;
+>  
+>      /* We reach here with device state STOP or STOP_COPY only */
+>      ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
+> -                                   VFIO_DEVICE_STATE_STOP);
+> +                                   VFIO_DEVICE_STATE_STOP, &local_err);
+>      if (ret) {
+> +        error_report_err(local_err);
+>          return ret;
+>      }
+>  
+> @@ -591,14 +601,9 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
+>  static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
+>  {
+>      VFIODevice *vbasedev = opaque;
+> -    int ret;
+>  
+> -    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
+> -                                   vbasedev->migration->device_state);
+> -    if (ret) {
+> -        error_setg(errp, "%s: Failed to set RESUMING state", vbasedev->name);
+> -    }
+> -    return ret;
+> +    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
+> +                                    vbasedev->migration->device_state, errp);
+>  }
+>  
+>  static int vfio_load_cleanup(void *opaque)
+> @@ -714,19 +719,20 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
+>      VFIODevice *vbasedev = opaque;
+>      VFIOMigration *migration = vbasedev->migration;
+>      enum vfio_device_mig_state new_state;
+> +    Error *local_err = NULL;
+>      int ret;
+>  
+>      new_state = migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ?
+>                      VFIO_DEVICE_STATE_PRE_COPY_P2P :
+>                      VFIO_DEVICE_STATE_RUNNING_P2P;
+>  
+> -    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
+> +    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
+>      if (ret) {
+>          /*
+>           * Migration should be aborted in this case, but vm_state_notify()
+>           * currently does not support reporting failures.
+>           */
+> -        migration_file_set_error(ret, NULL);
+> +        migration_file_set_error(ret, local_err);
+>      }
+>  
+>      trace_vfio_vmstate_change_prepare(vbasedev->name, running,
+> @@ -738,6 +744,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+>  {
+>      VFIODevice *vbasedev = opaque;
+>      enum vfio_device_mig_state new_state;
+> +    Error *local_err = NULL;
+>      int ret;
+>  
+>      if (running) {
+> @@ -750,13 +757,13 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
+>                  VFIO_DEVICE_STATE_STOP;
+>      }
+>  
+> -    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
+> +    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
+>      if (ret) {
+>          /*
+>           * Migration should be aborted in this case, but vm_state_notify()
+>           * currently does not support reporting failures.
+>           */
+> -        migration_file_set_error(ret, NULL);
+> +        migration_file_set_error(ret, local_err);
+>      }
+>  
+>      trace_vfio_vmstate_change(vbasedev->name, running, RunState_str(state),
+> @@ -769,11 +776,23 @@ static int vfio_migration_state_notifier(NotifierWithReturn *notifier,
+>      VFIOMigration *migration = container_of(notifier, VFIOMigration,
+>                                              migration_state);
+>      VFIODevice *vbasedev = migration->vbasedev;
+> +    Error *local_err = NULL;
+> +    int ret = 0;
+>  
+>      trace_vfio_migration_state_notifier(vbasedev->name, e->type);
+>  
+>      if (e->type == MIG_EVENT_PRECOPY_FAILED) {
+> -        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_RUNNING);
+> +        /*
+> +         * MigrationNotifyFunc may return an error code and an Error
+> +         * object only for MIG_EVENT_PRECOPY_SETUP. Hence, report the
+> +         * error locally and ignore the errp argument.
+> +         */
+> +        ret = vfio_migration_set_state_or_reset(vbasedev,
+> +                                                VFIO_DEVICE_STATE_RUNNING,
+> +                                                &local_err);
+> +        if (ret) {
+> +            error_report_err(local_err);
+> +        }
+>      }
+>      return 0;
+>  }
+Thanks
 
-I can't recall offhand what exactly blocked its merge.  Suggest you read
-the review thread[*], and if that leads to questions, ask them either in
-replies to the old thread, or right here.
-
-One additional issue hasn't been discussed much so far, I think: merging
-the two copies of the doc comments.  They are big and quite similar
-(that's why we want to deduplicate), but they're not identical.  In
-particular, MigrationSetParameters' doc comment talks more about
-defaults.  That's because talking about defaults makes no sense
-whatsoever for MigrationParameters (we do it anyway, of course, just
-less).  Merging the two will require some careful word-smithing, and
-perhaps some compromises on doc quality.
-
-
-
-[*] https://lore.kernel.org/qemu-devel/20230905162335.235619-1-peterx@redhat.com/
+Eric
 
 
