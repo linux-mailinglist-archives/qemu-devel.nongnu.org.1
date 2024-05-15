@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2098C6416
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73EF8C63F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:44:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7B7Z-0004TN-QW; Wed, 15 May 2024 05:40:25 -0400
+	id 1s7B8M-0006aR-2z; Wed, 15 May 2024 05:41:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7B7X-0004Rn-Rg
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:23 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7B8C-0005u5-5g
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:04 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7B7W-0001Os-6a
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:23 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-51fc01b6fe7so7192025e87.0
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7B88-0001fD-An
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 05:41:03 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-34f0e55787aso5222119f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766019; x=1716370819; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YM3ewHa7Fo4NePz33KHws2CHBa5FWfTq47qMZgR+Yug=;
- b=jPJRbXQpIRX81j2I3j2kwF+1dO4X9nda6tvmZtmb4z4Y/dciA4si8hdgP6qFH7d66I
- NCC8QvQ2uGnNnyq8ZuN6PsGrg5J4rUBtKmrA3aOaywWFnTtf8DWkssIFITIkGn2GrGfA
- k0cUxDtID8sXIhujc7pBE3+zrSmykdbgBu+tsjNrhLIKNFRNobG1lMzVFEISfUCd/e6J
- WKFX8VXXE0ik05/BrQb9pXobUYpZ9dJ9t4v6qmmqxqW9wbc4Y1rMFIvnF+nexJLIIPw2
- 63yriXwv3DwxpXi8ZZ7OIccaW0Hkvczj6TxM9Wz6eckqCfgWYfIys7RuMPVaLv1tHonl
- YFgg==
+ d=linaro.org; s=google; t=1715766058; x=1716370858; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=P9OhN2bhF+NQyxnmoOaMAjar9BfNJg7nc8s21aZCk7Q=;
+ b=IXUmDMZy8yak8CfHQWD1A1DKB11m9GK0aOwOtvj318nya/+vBeX90f5XHJ1mQwoe67
+ vsRAta/dZqtZfJUsCcEvsZZJRPLUqe5zYG3YNRg9lntKZn5D5qoArLSY+/WIBvx2pqLZ
+ GGju/RSgkipgK7RbQO5sHpzLCneb0l2JCEOcO7I1J+Vlbw6NpyaY84Nw+77lNMVPSSG8
+ 7IDeFGk3XGbkE5tgbF3h4gN9AcX0yvFO06r5DCK1VZGpS03wW6RrYeHfDWTYKtwYJutC
+ zfMRnNhM7W6CNiYl6c/wHKIKExTJlsrpevjKiV0tokdCKLJXvRmQgEUQpfH2xUhHQ1y0
+ PomA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766020; x=1716370820;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YM3ewHa7Fo4NePz33KHws2CHBa5FWfTq47qMZgR+Yug=;
- b=u5SkQRZtEbSgTrhUTKvw7VVBUWtOcouI6jGKPznbI8njr9T5R5iBOycJpbMprWaq9X
- Cx+buGbG49a3Q+A7e/ym6YsK6/5ToNZoB+9b4yd2n8ejAoQhhyLfi7r6639ck0tsOIco
- VjzGVevFXHE3cKYhr1o60JQPOASE0+n4ZLKEJdKPpnIWCooAp7oXpcqIKRMmeDleV7W4
- e279xzTT4mhivbeIwr2txJ9Ai/dZS65wChfZUKQXa7ahlmnltCEffO3dw4DxmHa5zXw5
- u2sIJod9fVstD/kvFQJ0+kwzEOxXY2zoQs3UP+5ObDeWR9Oz0LcFRUjk9t+MiBxuNe9S
- LOIg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXTRyYm1Iomg1bchLTdgL6DnEWNhWQWiuIZf7e13z5o48cF6WN08QnFFHEGNSJ4x1/RDUFQJcLG8dmfcBdvcCn3aPbe2hM=
-X-Gm-Message-State: AOJu0YxONz7ScklXhxprqdIHeMsC4V+gRSS5nuLnCzGr8OTDeAGqm8PH
- 6hWanbNEgB1RtjECQU9ix7HW8s7zZLL5QSaAzlB5StL6TYH1CNtxgk90HLsOS0o=
-X-Google-Smtp-Source: AGHT+IHWkyOL39owYG20oFHEXII8PUN4InS1607VsRC8tUg7SuODybrpn6C8L82nYpUm2TBmNyagqQ==
-X-Received: by 2002:a05:6512:3d0c:b0:523:8e17:444f with SMTP id
- 2adb3069b0e04-5238e17451emr1513515e87.29.1715766019636; 
- Wed, 15 May 2024 02:40:19 -0700 (PDT)
-Received: from [10.91.1.102] ([149.14.240.163])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502baad0a0sm16152410f8f.74.2024.05.15.02.40.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 02:40:19 -0700 (PDT)
-Message-ID: <25c2a681-1705-46f6-9dcb-cf2d1b15881d@linaro.org>
-Date: Wed, 15 May 2024 11:40:17 +0200
+ d=1e100.net; s=20230601; t=1715766058; x=1716370858;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=P9OhN2bhF+NQyxnmoOaMAjar9BfNJg7nc8s21aZCk7Q=;
+ b=Hk77BHEjvE33YSn1e7eeOl5CrJyqckri9cZtAHTPEjvnM29xB1u4PZ1hkSga8UZkqC
+ axFAKG9TqevnSk1ha+uPxTlJqxr/ia5XAyJ11aw7XcakEQrj2UVx49wETGxHdo8n7biX
+ R77WbdyG9Kh7l4tq7jmlNWAzm2dx++sH/A/vgA6AEATCtsStCNH+oUCnLV+mHRZ3+Krj
+ 6odyHKGHddd9xZhhtwxiowfXimhLk/GXV1Ymf8SXVLIiYReZ64kb+uz8ucYPz/lJ+u8T
+ W10yE0kWHEHLD4+K0Dzr9cZDX1H49n2BhJ1IZFZWMpgQPhTtVwUPhLMIipOqts+LBlsG
+ sbTQ==
+X-Gm-Message-State: AOJu0Yyo/BGjImhEmmJECLfRBzBdmYSccpQN7+vCtYLU3pb6/t9LiRsw
+ wymctRw1PHrc9htK/jnelJxALzsEPGYqrybj2XNSz+QQ6p77vw1fpMG+557yltza4726Saet6nm
+ DZHY=
+X-Google-Smtp-Source: AGHT+IGV3KE4YwS7eZquBaXQdmAMPkk5Sb53gZIwcs3Xs9vhs/4sxXVzVBJ42GVRLip3KWPW2hgb4A==
+X-Received: by 2002:a5d:598c:0:b0:351:b0cf:99b4 with SMTP id
+ ffacd0b85a97d-351b0cf9b16mr9474738f8f.4.1715766058713; 
+ Wed, 15 May 2024 02:40:58 -0700 (PDT)
+Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 May 2024 02:40:58 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 18/43] target/hppa: Use displacements in DisasIAQE
+Date: Wed, 15 May 2024 11:40:18 +0200
+Message-Id: <20240515094043.82850-19-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240515094043.82850-1-richard.henderson@linaro.org>
+References: <20240515094043.82850-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/11] plugins: prepare introduction of new inline ops
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20240514174253.694591-1-alex.bennee@linaro.org>
- <20240514174253.694591-4-alex.bennee@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240514174253.694591-4-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,22 +91,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/5/24 19:42, Alex Bennée wrote:
-> From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> 
-> Until now, only add_u64 was available, and all functions assumed this or
-> were named uniquely.
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Message-Id: <20240502211522.346467-2-pierrick.bouvier@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   include/qemu/plugin.h  |  2 +-
->   accel/tcg/plugin-gen.c |  6 +++---
->   plugins/core.c         | 14 ++++++++++++--
->   3 files changed, 16 insertions(+), 6 deletions(-)
+This is a first step in enabling CF_PCREL, but for now
+we regenerate the absolute address before writeback.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/hppa/translate.c | 43 ++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 20 deletions(-)
+
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index e0e4db75ee..de077e7a57 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -45,9 +45,9 @@ typedef struct DisasCond {
+ typedef struct DisasIAQE {
+     /* IASQ; may be null for no change from TB. */
+     TCGv_i64 space;
+-    /* IAOQ base; may be null for immediate absolute address. */
++    /* IAOQ base; may be null for relative address. */
+     TCGv_i64 base;
+-    /* IAOQ addend; absolute immedate address if base is null. */
++    /* IAOQ addend; if base is null, relative to ctx->iaoq_first. */
+     int64_t disp;
+ } DisasIAQE;
+ 
+@@ -60,6 +60,9 @@ typedef struct DisasContext {
+     /* IAQ_Next, for jumps, otherwise null for simple advance. */
+     DisasIAQE iaq_j, *iaq_n;
+ 
++    /* IAOQ_Front at entry to TB. */
++    uint64_t iaoq_first;
++
+     DisasCond null_cond;
+     TCGLabel *null_lab;
+ 
+@@ -640,7 +643,7 @@ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
+     uint64_t mask = gva_offset_mask(ctx->tb_flags);
+ 
+     if (src->base == NULL) {
+-        tcg_gen_movi_i64(dest, src->disp & mask);
++        tcg_gen_movi_i64(dest, (ctx->iaoq_first + src->disp) & mask);
+     } else if (src->disp == 0) {
+         tcg_gen_andi_i64(dest, src->base, mask);
+     } else {
+@@ -674,12 +677,8 @@ static void install_link(DisasContext *ctx, unsigned link, bool with_sr0)
+     if (!link) {
+         return;
+     }
+-    if (ctx->iaq_b.base) {
+-        tcg_gen_addi_i64(cpu_gr[link], ctx->iaq_b.base,
+-                         ctx->iaq_b.disp + 4);
+-    } else {
+-        tcg_gen_movi_i64(cpu_gr[link], ctx->iaq_b.disp + 4);
+-    }
++    DisasIAQE next = iaqe_incr(&ctx->iaq_b, 4);
++    copy_iaoq_entry(ctx, cpu_gr[link], &next);
+ #ifndef CONFIG_USER_ONLY
+     if (with_sr0) {
+         tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_b);
+@@ -731,7 +730,7 @@ static bool use_goto_tb(DisasContext *ctx, const DisasIAQE *f,
+ {
+     return (!iaqe_variable(f) &&
+             (b == NULL || !iaqe_variable(b)) &&
+-            translator_use_goto_tb(&ctx->base, f->disp));
++            translator_use_goto_tb(&ctx->base, ctx->iaoq_first + f->disp));
+ }
+ 
+ /* If the next insn is to be nullified, and it's on the same page,
+@@ -742,7 +741,8 @@ static bool use_nullify_skip(DisasContext *ctx)
+ {
+     return (!(tb_cflags(ctx->base.tb) & CF_BP_PAGE)
+             && !iaqe_variable(&ctx->iaq_b)
+-            && is_same_page(&ctx->base, ctx->iaq_b.disp));
++            && (((ctx->iaoq_first + ctx->iaq_b.disp) ^ ctx->iaoq_first)
++                & TARGET_PAGE_MASK) == 0);
+ }
+ 
+ static void gen_goto_tb(DisasContext *ctx, int which,
+@@ -2005,6 +2005,8 @@ static TCGv_i64 do_ibranch_priv(DisasContext *ctx, TCGv_i64 offset)
+    aforementioned BE.  */
+ static void do_page_zero(DisasContext *ctx)
+ {
++    assert(ctx->iaq_f.disp == 0);
++
+     /* If by some means we get here with PSW[N]=1, that implies that
+        the B,GATE instruction would be skipped, and we'd fault on the
+        next insn within the privileged page.  */
+@@ -2024,11 +2026,11 @@ static void do_page_zero(DisasContext *ctx)
+        non-sequential instruction execution.  Normally the PSW[B] bit
+        detects this by disallowing the B,GATE instruction to execute
+        under such conditions.  */
+-    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != ctx->iaq_f.disp + 4) {
++    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != 4) {
+         goto do_sigill;
+     }
+ 
+-    switch (ctx->iaq_f.disp & -4) {
++    switch (ctx->base.pc_first) {
+     case 0x00: /* Null pointer call */
+         gen_excp_1(EXCP_IMP);
+         ctx->base.is_jmp = DISAS_NORETURN;
+@@ -4619,8 +4621,8 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ #ifdef CONFIG_USER_ONLY
+     ctx->privilege = MMU_IDX_TO_PRIV(MMU_USER_IDX);
+     ctx->mmu_idx = MMU_USER_IDX;
+-    ctx->iaq_f.disp = ctx->base.pc_first | ctx->privilege;
+-    ctx->iaq_b.disp = ctx->base.tb->cs_base | ctx->privilege;
++    ctx->iaoq_first = ctx->base.pc_first | ctx->privilege;
++    ctx->iaq_b.disp = ctx->base.tb->cs_base - ctx->base.pc_first;
+     ctx->unalign = (ctx->tb_flags & TB_FLAG_UNALIGN ? MO_UNALN : MO_ALIGN);
+ #else
+     ctx->privilege = (ctx->tb_flags >> TB_FLAG_PRIV_SHIFT) & 3;
+@@ -4633,9 +4635,10 @@ static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     uint64_t iasq_f = cs_base & ~0xffffffffull;
+     int32_t diff = cs_base;
+ 
+-    ctx->iaq_f.disp = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
++    ctx->iaoq_first = (ctx->base.pc_first & ~iasq_f) + ctx->privilege;
++
+     if (diff) {
+-        ctx->iaq_b.disp = ctx->iaq_f.disp + diff;
++        ctx->iaq_b.disp = diff;
+     } else {
+         ctx->iaq_b.base = cpu_iaoq_b;
+         ctx->iaq_b.space = cpu_iasq_b;
+@@ -4668,9 +4671,9 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+ 
+     tcg_debug_assert(!iaqe_variable(&ctx->iaq_f));
+-    tcg_gen_insn_start(ctx->iaq_f.disp,
+-                       iaqe_variable(&ctx->iaq_b) ? -1 : ctx->iaq_b.disp,
+-                       0);
++    tcg_gen_insn_start(ctx->iaoq_first + ctx->iaq_f.disp,
++                       (iaqe_variable(&ctx->iaq_b) ? -1 :
++                        ctx->iaoq_first + ctx->iaq_b.disp), 0);
+     ctx->insn_start_updated = false;
+ }
+ 
+-- 
+2.34.1
 
 
