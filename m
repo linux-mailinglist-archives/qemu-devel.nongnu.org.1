@@ -2,20 +2,20 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2C08C6EA5
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 00:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151438C6EA7
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 00:28:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7N5c-0004Z6-8N; Wed, 15 May 2024 18:27:12 -0400
+	id 1s7N6n-00057h-2i; Wed, 15 May 2024 18:28:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1s7N5Y-0004YX-PY; Wed, 15 May 2024 18:27:08 -0400
+ id 1s7N6X-0004yn-RZ; Wed, 15 May 2024 18:28:13 -0400
 Received: from fanzine.igalia.com ([178.60.130.6] helo=fanzine2.igalia.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berto@igalia.com>)
- id 1s7N5W-0007dI-NJ; Wed, 15 May 2024 18:27:08 -0400
+ id 1s7N6W-0007tv-CQ; Wed, 15 May 2024 18:28:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Type:MIME-Version:Message-ID:Date:References:
@@ -23,34 +23,34 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=VNq7NmHc8z6z4XKncIch8+mXuO58c0tDtrBSdpILhlY=; b=d8ANdbrjIx8O+lBp9YSbw0yOgd
- iNz1aW1Qf9QolyoqyKyJXM15FmCZE67ld5W15KCXRzlvj+kXjmDdT+R2P8IRraozamEYeEsUDrSCV
- xFSwyNqoMM4Hw2xJecQ+RdawOm7OjMroQKGXqTxv9jfUqD+8b8NFlmnogYp7v44BbADtx6Y5PtGgi
- jii6LXPZsXDVZ6c2Y7K2xvWKMjrmttM2AMj8zUr+bJF/kc3L9urIae7s2vWKR1zosalNL+d4zyyan
- D1hmvB65CTmpSAP404LprgucBp3JQ1md7+GTzmWLy+v3aGSZDlxOdj0caVUYUvJrbcCPXDCc2ARYc
- ElFdZ+Bg==;
+ bh=aZ3o8qQlfWmbnju0Q0BCDBOLwmSIXUVYScAe2v92aZ8=; b=iNvV4TZON1jQvHjqrHI4VeWU1J
+ 9PWcWy3W4GwtUAJW12C5guYXrt+cwkBWy5LWjy8sF580XoqrPPlvBxCtLsSiiTDcRSqFcFpMSgN6F
+ ZQ8/p8mAoh6K25qRVW5MQv4qdTWA8c1JqNwZ/jN8BCu4LorJydAeZYdYo05uatdLxRyVosr7BVng7
+ MPYOfu/BDTK/YHXLlwEImJmVfkyBcPiOOaRqLKU2Z+eietK2bz56Y9LRLp2aJFAMKuq/ULSZg279b
+ MDyjQWNU17r0eAJLnSPCgbzc+tLFVfWNFJZgX+RGZhlD+/2djLCYps3Rv2mctWzYEJY8JUBEs6jMH
+ gT9wPpJw==;
 Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
  by fanzine2.igalia.com with esmtps 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1s7N5J-008alm-DA; Thu, 16 May 2024 00:26:53 +0200
+ id 1s7N6U-008an2-4P; Thu, 16 May 2024 00:28:06 +0200
 Received: from gate.service.igalia.com ([192.168.21.52])
  by mail.igalia.com with esmtp (Exim)
- id 1s7N5G-002PtN-Ps; Thu, 16 May 2024 00:26:53 +0200
+ id 1s7N6R-002PwJ-VX; Thu, 16 May 2024 00:28:06 +0200
 Received: from berto by gate.service.igalia.com with local (Exim 4.96)
- (envelope-from <berto@igalia.com>) id 1s7N5G-005Gs6-24;
- Wed, 15 May 2024 22:26:50 +0000
+ (envelope-from <berto@igalia.com>) id 1s7N6R-005Gsm-2d;
+ Wed, 15 May 2024 22:28:03 +0000
 From: Alberto Garcia <berto@igalia.com>
 To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, jean-louis@dupond.be, andrey.drobyshev@virtuozzo.com,
  den@virtuozzo.com
-Subject: Re: [PATCH v2 01/11] qcow2: make function update_refcount_discard()
- global
-In-Reply-To: <20240513063203.113911-2-andrey.drobyshev@virtuozzo.com>
+Subject: Re: [PATCH v2 02/11] qcow2: simplify L2 entries accounting for
+ discard-no-unref
+In-Reply-To: <20240513063203.113911-3-andrey.drobyshev@virtuozzo.com>
 References: <20240513063203.113911-1-andrey.drobyshev@virtuozzo.com>
- <20240513063203.113911-2-andrey.drobyshev@virtuozzo.com>
-Date: Thu, 16 May 2024 00:26:50 +0200
-Message-ID: <w5134qibtjp.fsf@igalia.com>
+ <20240513063203.113911-3-andrey.drobyshev@virtuozzo.com>
+Date: Thu, 16 May 2024 00:28:03 +0200
+Message-ID: <w51zfsqaex8.fsf@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Score: 0
@@ -78,13 +78,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon 13 May 2024 09:31:53 AM +03, Andrey Drobyshev wrote:
-> We are going to need it for discarding separate subclusters.  The
-> function itself doesn't do anything with the refcount tables, it simply
-> adds a discard request to the queue, so rename it to qcow2_queue_discard().
+On Mon 13 May 2024 09:31:54 AM +03, Andrey Drobyshev wrote:
+> Commits 42a2890a and b2b10904 introduce handling of discard-no-unref
+> option in discard_in_l2_slice() and zero_in_l2_slice().  They add even
+> more if's when chosing the right l2 entry.  What we really need for this
+> option is the new entry simply to contain the same host cluster offset,
+> no matter whether we unmap or zeroize the cluster.  For that OR'ing with
+> the old entry is enough.
+>
+> This patch doesn't change the logic and is pure refactoring.
 >
 > Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
 Reviewed-by: Alberto Garcia <berto@igalia.com>
 
