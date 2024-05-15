@@ -2,88 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD148C68B4
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 16:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C058C68D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 16:35:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7Fd0-0004PK-S4; Wed, 15 May 2024 10:29:10 -0400
+	id 1s7Fi4-0005zO-Pv; Wed, 15 May 2024 10:34:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1s7Fcw-0004PC-Hh
- for qemu-devel@nongnu.org; Wed, 15 May 2024 10:29:06 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1s7Fi2-0005x4-5a
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 10:34:22 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1s7Fct-0002WQ-R1
- for qemu-devel@nongnu.org; Wed, 15 May 2024 10:29:06 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f4551f2725so5990143b3a.1
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 07:29:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1s7Fhx-0003xb-2F
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 10:34:21 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-51f0f6b613dso8787658e87.1
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 07:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1715783342; x=1716388142; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=j2FphmbtgviWL+zG3JkC2VAaBk1Ef1R0FdqlMN2GJKQ=;
- b=blixabO4FZ7hBN+l2nl/eJyohbC+k2BnV13yxKH2gFrLqOA8XaGO2L9ox+6kPhUofR
- 6alnibNo0Ie6DLfoYUP/iAr1uioQSRCcElw5g1JUOeW3YXIzkjo5aDizphnP8zeg9hFX
- uHFEzz6oSwAcuzpLDXqS2epBE8cwWPSj7sWRJsUZACMYijzT0ie1GbSjGndkqDgY7gsJ
- +gpXYSIa2pwu+ZB2ng9uooxyd/cRvaj3pKwCY20YtTyMn9dop9P6ngPrRksBqQdXVaAy
- inYiLlrPxUxrC020U0eR31y5NKhcApnltFssffrBxa90WUQMJMjVtR5khPW7EFYPa9gD
- kh5Q==
+ d=ventanamicro.com; s=google; t=1715783655; x=1716388455; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=2KdtZ1u+WQ4YTJUTFSc8fW+OHiQwxQk4DxsVoRWF2GY=;
+ b=EnWexb6HwWJ5SHzwp7FsY9aFQMRD4GqdKzhnKSQR1JHdo3V0JuUGg8wRySS4d7choq
+ rqhdPW8wxKbpaQjqCffaKnL6RzfRKonIDAhXKB2m7Ho8qnKBZ+k8rz66WKJXglicGCEF
+ 05MjJv6Tj5qzQG8J00Kgm3xI5FVxZKzpB/ilPtQ050zePHI++SoxLlXJaBx2UQIM6ctJ
+ pwpQyyiocszSrUQNCcRYyzUlfCR8amwUvHUI+cR3TMhiyIS+HtzavmgVkMJfBXq0E4YH
+ iP5PGld2mQt5vQd2d6HlVmfmZGIdGKMS6UgcyiYmVzwoHnEd1EhqRh/LOO2XbzwXxlVa
+ hW7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715783342; x=1716388142;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j2FphmbtgviWL+zG3JkC2VAaBk1Ef1R0FdqlMN2GJKQ=;
- b=p+gt42b9mQnrtM8I0HTXExXSNDyCi56P+xdgGaK8agA03DivxZAFMdvZ2jxCgrPc9i
- PvtZGzstIh1duvRxsGFuZeVqn/5YYM+Fk8MbvZtwOzdsu+eogWucD9nucYE9LGQgaC9c
- SqX9eknMF6zhK8E4K1lnG8/KBfBaax9cTFOOnRYjB+8VtZaUCNpvPWF1NfkL3C1+15tB
- zOxy+dcncBRo2bvCuBgwActeWPUioMiFG0SebyXAzxNCkJi0qAXe4nEmTbNekbi6vELA
- yYfcCFIsPZIQd/xBsbfinRJKrSGv/YwwjuWBxygAarKRe+DCbj4j8Tk+aTKm/gc/RSsX
- AxZA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVHi5h9gthR6A3UCiZUoTN2VlahiDtVVgWh9kMTIch4V9si09Q9slyS40UsGnAgL8W12a7q0ITv7pik9c9Yrsw/m4RJ6Fo=
-X-Gm-Message-State: AOJu0YzSmXQYIHYl2keAfDVlKGbFA5k0qPhQnPqA51Qt6mV/UJqZoCKa
- rsDo47xkM+IfcknDvRqD2sn4CFLqHAehf3scmurDchlhV7X9T/Tw3aX5/7sFJLw=
-X-Google-Smtp-Source: AGHT+IGsKUPdr1wVs9itcXXYv/aKQXkBep50Mv2QAS6KGuOpUlREidDS5WffWYOfTLU8kGn5U+MyAQ==
-X-Received: by 2002:a05:6a21:9181:b0:1af:dba9:2ff8 with SMTP id
- adf61e73a8af0-1afde130cd6mr21490661637.37.1715783341632; 
- Wed, 15 May 2024 07:29:01 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.42.57])
+ d=1e100.net; s=20230601; t=1715783655; x=1716388455;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2KdtZ1u+WQ4YTJUTFSc8fW+OHiQwxQk4DxsVoRWF2GY=;
+ b=oz6q1xE4JGUml50iY9TW4XdzL6fFkysvRm+9I1chbnNVZUyP6yI2fchK0534GLRUhU
+ 1K8UHci3pxgwagEgGCCOlbAcxyqu1Es96grfB/XgT5S8QqkLg/FdzGbbbWRm2AOA4bzY
+ NTklqVrEaS7lRVKDH5wNAyryAHEGi4lWwhtqjd9ggfzPwGrB9oyNn0ppwHs4gMCSXiTd
+ Rx4v/gnUdM+iDtbXnHDagE2sEQ478sn7WiL55193MBIGzMxMSs2pdcuqs4QJxyt2QDXK
+ CP5YZSj2kgGJdupLfTiP3ij7pfbGjjFnAqgdEGfyV7ONxc18IWAW5bWZQfI7PHuorBVH
+ 5l1g==
+X-Gm-Message-State: AOJu0YzVcFGUsCBpQxrFMs2aFBhfh0WXRptAy0ZUu+IbvnW8kKzBz0Mu
+ DXugUsYu4xzlKr2rwVyUNWUZZuSRBlnBaaXy7NUmqxyO//mXaJhU40VWzg/l3ew=
+X-Google-Smtp-Source: AGHT+IFPadRYhM/E3bwZqDqB3Dx5YOzzJeTA1TKJRuQqo2WA7PSnwdlDG7VkNnQXlgv/ND82GnjA+g==
+X-Received: by 2002:ac2:4c8c:0:b0:51d:a87e:27ec with SMTP id
+ 2adb3069b0e04-5220fc735f1mr10383753e87.9.1715783654919; 
+ Wed, 15 May 2024 07:34:14 -0700 (PDT)
+Received: from localhost (cst2-173-78.cust.vodafone.cz. [31.30.173.78])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4deb49d4csm9796610b3a.54.2024.05.15.07.28.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 07:29:01 -0700 (PDT)
-Message-ID: <0d9ebd11-3eae-4612-ae02-790c2f382942@ventanamicro.com>
-Date: Wed, 15 May 2024 11:28:56 -0300
+ ffacd0b85a97d-3502b895731sm16763633f8f.42.2024.05.15.07.34.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 May 2024 07:34:14 -0700 (PDT)
+Date: Wed, 15 May 2024 16:34:13 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
+ vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 1/1] target/riscv/kvm.c: Fix the hart bit setting of AIA
+Message-ID: <20240515-aad670c0d802abedcd4a240d@orel>
+References: <20240515091129.28116-1-yongxuan.wang@sifive.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] hw/riscv: add riscv-iommu-bits.h
-To: Eric Cheng <eric.cheng.linux@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com, tjeznach@rivosinc.com
-References: <20240307160319.675044-1-dbarboza@ventanamicro.com>
- <20240307160319.675044-3-dbarboza@ventanamicro.com>
- <637ee935-6753-468e-b003-e0f544d468fc@gmail.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <637ee935-6753-468e-b003-e0f544d468fc@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240515091129.28116-1-yongxuan.wang@sifive.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,57 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 5/15/24 07:02, Eric Cheng wrote:
-> On 3/8/2024 12:03 AM, Daniel Henrique Barboza wrote:
->> From: Tomasz Jeznach <tjeznach@rivosinc.com>
->>
->> This header will be used by the RISC-V IOMMU emulation to be added
->> in the next patch. Due to its size it's being sent in separate for
->> an easier review.
->>
->> One thing to notice is that this header can be replaced by the future
->> Linux RISC-V IOMMU driver header, which would become a linux-header we
->> would import instead of keeping our own. The Linux implementation isn't
->> upstream yet so for now we'll have to manage riscv-iommu-bits.h.
->>
->> Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   hw/riscv/riscv-iommu-bits.h | 335 ++++++++++++++++++++++++++++++++++++
->>   1 file changed, 335 insertions(+)
->>   create mode 100644 hw/riscv/riscv-iommu-bits.h
->>
->> diff --git a/hw/riscv/riscv-iommu-bits.h b/hw/riscv/riscv-iommu-bits.h
->> new file mode 100644
->> index 0000000000..8e80b1e52a
->> --- /dev/null
->> +++ b/hw/riscv/riscv-iommu-bits.h
->> @@ -0,0 +1,335 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright © 2022-2023 Rivos Inc.
->> + * Copyright © 2023 FORTH-ICS/CARV
->> + * Copyright © 2023 RISC-V IOMMU Task Group
->> + *
->> + * RISC-V Ziommu - Register Layout and Data Structures.
+On Wed, May 15, 2024 at 05:11:28PM GMT, Yong-Xuan Wang wrote:
+> In AIA spec, each hart (or each hart within a group) has a unique hart
+> number to locate the memory pages of interrupt files in the address
+> space. The number of bits required to represent any hart number is equal
+> to ceil(log2(hmax + 1)), where hmax is the largest hart number among
+> groups.
 > 
-> Is there still the term Ziommu today? cannot be googled. May be just a transient term during spec development? it puzzles new comers.
-
-Fair point. I'll remove any 'ziommu' references in all patches.
-
-
-Thanks,
-
-Daniel
-
-
->> + *
->> + * Based on the IOMMU spec version 1.0, 3/2023
->> + * https://github.com/riscv-non-isa/riscv-iommu
->> + */
->> +
+> However, if the largest hart number among groups is a power of 2, QEMU
+> will pass an inaccurate hart-index-bit setting to Linux. For example, when
+> the guest OS has 4 harts, only ceil(log2(3 + 1)) = 2 bits are sufficient
+> to represent 4 harts, but we passes 3 to Linux. The code needs to be
+> updated to ensure accurate hart-index-bit settings.
 > 
+> Additionally, a Linux patch[1] is necessary to correctly recover the hart
+> index when the guest OS has only 1 hart, where the hart-index-bit is 0.
 > 
+> [1] https://lore.kernel.org/lkml/20240415064905.25184-1-yongxuan.wang@sifive.com/t/
+> 
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> ---
+> Changelog
+> v2:
+> - update commit message
+> ---
+>  target/riscv/kvm/kvm-cpu.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 473416649fda..235e2cdaca1a 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -1777,7 +1777,14 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+>          }
+>      }
+>  
+> -    hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
+> +
+> +    if (max_hart_per_socket > 1) {
+> +        max_hart_per_socket--;
+> +        hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
+> +    } else {
+> +        hart_bits = 0;
+> +    }
+> +
+>      ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
+>                              KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
+>                              &hart_bits, true, NULL);
+> -- 
+> 2.17.1
+>
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
