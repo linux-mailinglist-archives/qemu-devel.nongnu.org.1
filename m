@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902428C66E5
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 15:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E84668C66EA
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 15:12:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7ENT-0002Mo-8f; Wed, 15 May 2024 09:09:03 -0400
+	id 1s7EPY-0003vb-Er; Wed, 15 May 2024 09:11:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7ENR-0002Me-J5
- for qemu-devel@nongnu.org; Wed, 15 May 2024 09:09:01 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7EPT-0003vQ-3z
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 09:11:07 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7ENM-0003jC-Mz
- for qemu-devel@nongnu.org; Wed, 15 May 2024 09:09:01 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-420180b59b7so20848425e9.0
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 06:08:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7EPP-0004IO-N2
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 09:11:06 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-351d309bbcfso6349f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 06:11:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715778535; x=1716383335; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715778661; x=1716383461; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0wY6hjhf+TFAn+0X38/5PEmm473bMEKUDftovXcX3Ek=;
- b=KB8DPYgQ/m1LyEldx7o4NQiTzHhBdLQ5ZZg2wpNkTbI1OaFEaKS1LL+H9jAHmVi6ph
- M2RwijFvdG9FzBK/TIp4M0IftbQ7Ih0OpcpC5uxKBnLAbdrtxhV5ZClDxquJGoDucV9q
- g6OKeZAsit28w/87EKdc+5qM6zIzP+vQvPY8RgGX5oWUbhLnDrW/1vJcv8sS3Z1c8Wx1
- wDWk7DLRgb/hVMPFkj9VFRRdrg+SV/TJ5RHOr7GKsR4ftYIBoIhGAHziiG5Jx5G7RXWg
- lMags0T7vw/1SBGx6pUgrU0RZFVFLlSzYdmgGAtbbu++FguakXc+rpHKVqfldQBnNPEA
- Ht2w==
+ bh=hprVYPKSryl4br0vLlVetJH0M/s8NVjlZ+TLSYmktCI=;
+ b=K96HYmuITiqqI1OWD9cW1gS2+gKcp092QiaDkPYYizfcF5E55Qh94/7uuMdtDaFajw
+ /2bZgepxCYlndcyyjKpY0SOWZuI3+zY3Nq6uHinjV7A171SEG/W68faYiGe8LRVHDzAE
+ Fp94S54VzaJwnZH1xTW/qFuXqVMsvUFCK/N+GMFo1Dh2MfIYkdSkR+YKpyx2DQc+ypup
+ MpLYkGi0dBxDTqK8XOyrNeXFxCBYKIXiOLV7u+DGDIfTYVUwJsCu+21d1LEOpp6m0TGt
+ cxAT//wvKseBUj+hcH1t3juQN1wFyrnH2vXiNXzZehQJTW4FBhwfuTplx2txm7lIIBLf
+ 6z9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715778535; x=1716383335;
+ d=1e100.net; s=20230601; t=1715778661; x=1716383461;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0wY6hjhf+TFAn+0X38/5PEmm473bMEKUDftovXcX3Ek=;
- b=hmqJzN8yOi1EdSXiYRDdN5M29CUaUWviBPrOk6XQ9APJiMlGddrpRdk8K+8ch0khms
- rkzQYzHxsVtskOwFwylCEi402dZMamcFt817A37tt4U0p0fRVs5MruTPWNGQB2pLUP0P
- KcGi6btkcY60nHVehZ5J3B4Cgo7oTc5SNReQCFzPAhpNUq9zgig0fwbjlpn5G9lxlBTV
- YXs2CJz5SAAAccBcsijNrW0x3zJ0bmE8K1jgZgZDjZMIPMmnCYp/Z/+vqWTD4s5ArZvF
- +iYZSe/aQhMaZP6disNHl6xhJjn1cxtXmQLi2MGHrBZ9a9VT5uJprooaUpaeQbI62VDy
- vNwA==
+ bh=hprVYPKSryl4br0vLlVetJH0M/s8NVjlZ+TLSYmktCI=;
+ b=kvTuTFQBU3eBy0Om+yy2vmS2wyEWQ7VkFcNzNfA6xYJuNEF0m1powbSdUvnQ0lPZ+P
+ g7sUdnhEPzWf/+StSSbDKpq/QgAvRGMpjPtjfTCWMRt80mHBtdeyr7OQL5DOB/OSaEyX
+ tpZ8w5rLv9z9e2eVhu5uWkFM+znwPNbzgD1ZVUcIDRoV3gk1DrZgSZvWyDhlGjiane7V
+ hqb+r7vIcv+TzOJ603o/wblLsXvbvPCrVPuZ4ASicW2Rz9s+70aU+U7c8V4f9+46MYjj
+ 4kEMktP1+ly5yWnKcRThlPZB4Nm42Ap04P1JdUTkMRakmgW3JzZQSD/AGUGRjHMihMY9
+ IhhA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV24t2p3cjVbIxNn5GFyzt/I1blhZLKheNFnhIhjmjROnYBdImSccrUc/GGfzMMHL3a+HJvUerUlRRhiLPIEHV4dEXSs0g=
-X-Gm-Message-State: AOJu0YxnReY8TEYdiNj0soz1igQGABmqgBRIIJKqHQ7+rrl0eLPhBjyU
- 8w9g0JPgoTxBiVcXtR/nhM4g5NQFZzPvEeAi3QOK+0u2UOYUS8A2mI6bg08yq8o=
-X-Google-Smtp-Source: AGHT+IGlsmgbQz3SUf/ygcRD12yXj9IdYGjCFFvPyIx56+rzPPUqF4myJG87zEJPcvcXKPB+TgSqKA==
-X-Received: by 2002:a05:600c:46d3:b0:41b:da7b:9b94 with SMTP id
- 5b1f17b1804b1-41fea93a341mr114384165e9.2.1715778534775; 
- Wed, 15 May 2024 06:08:54 -0700 (PDT)
+ AJvYcCWUv3Eaj1aLxoit3dPU8aa6h9+kmNDeSXWOXvgEO7p5Zdyg9cvnkGRCmW11FekRvyUthZhQ4Fe/3Eg19yfAaQsXDJTs+2Y=
+X-Gm-Message-State: AOJu0YxLg2umedOJEXMD5/H0MjGFmcUzDzhiIuwSBU3Hr4PJLx3dTCoy
+ X7lEOtNs9GD8Z3rr6bYFscLZpVM+zraAxHy+4JtTqhrLv59HGYRCEcN3U61gRZA=
+X-Google-Smtp-Source: AGHT+IHFS72dIu312xqFehrMUh9Mt3NFM9Q39M//fO8NSBMVc61UEOdAv00puVJsxHl9zxtR/QpglA==
+X-Received: by 2002:adf:c7cf:0:b0:34d:b03c:9a99 with SMTP id
+ ffacd0b85a97d-351c87e7862mr4652504f8f.2.1715778661484; 
+ Wed, 15 May 2024 06:11:01 -0700 (PDT)
 Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-420193b0903sm95015265e9.47.2024.05.15.06.08.53
+ ffacd0b85a97d-3502baad02csm16320379f8f.67.2024.05.15.06.11.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 06:08:54 -0700 (PDT)
-Message-ID: <74974fe2-3955-4962-9359-a4b40b8a0dd4@linaro.org>
-Date: Wed, 15 May 2024 15:08:53 +0200
+ Wed, 15 May 2024 06:11:01 -0700 (PDT)
+Message-ID: <e24b2563-b2cf-407e-a4b3-e0c5ef847ef4@linaro.org>
+Date: Wed, 15 May 2024 15:11:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 16/17] configure: Enable loongarch64
+Subject: Re: [PATCH 01/17] ppc64: Fix <sys/user.h> include order
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Song Gao <gaosong@loongson.cn>
+Cc: peter.maydell@linaro.org
 References: <20240511115400.7587-1-richard.henderson@linaro.org>
- <20240511115400.7587-17-richard.henderson@linaro.org>
+ <20240511115400.7587-2-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240511115400.7587-17-richard.henderson@linaro.org>
+In-Reply-To: <20240511115400.7587-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,35 +93,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Richard,
+
 On 11/5/24 13:53, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   configure | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>   risu_ppc64.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/configure b/configure
-> index 2f7c580..39275a2 100755
-> --- a/configure
-> +++ b/configure
-> @@ -54,6 +54,8 @@ guess_arch() {
->           ARCH="arm"
->       elif check_define __i386__ || check_define __x86_64__ ; then
->           ARCH="i386"
-> +    elif check_define __loongarch__ ; then
-> +        ARCH="loongarch64"
->       elif check_define __m68k__ ; then
->           ARCH="m68k"
->       elif check_define __powerpc64__ ; then
-> @@ -141,7 +143,7 @@ Some influential environment variables:
->                  prefixed with the given string.
+> diff --git a/risu_ppc64.c b/risu_ppc64.c
+> index 9df8d58..62cf6aa 100644
+> --- a/risu_ppc64.c
+> +++ b/risu_ppc64.c
+> @@ -11,9 +11,8 @@
+>    *     based on Peter Maydell's risu_arm.c
+>    *****************************************************************************/
 >   
->     ARCH         force target architecture instead of trying to detect it.
-> -               Valid values=[arm|aarch64|m68k|ppc64|ppc64le|s390x]
-> +               Valid values=[arm|aarch64|loongarch64|m68k|ppc64|ppc64le|s390x]
->   
->     CC           C compiler command
->     CFLAGS       C compiler flags
+> -#include <sys/user.h>
+> -
+>   #include "risu.h"
+> +#include <sys/user.h>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+What is fixed exactly?
 
