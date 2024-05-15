@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51BD8C6951
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD928C6959
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:11:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7GFe-0003y7-KS; Wed, 15 May 2024 11:09:06 -0400
+	id 1s7GFU-0003tw-Gw; Wed, 15 May 2024 11:08:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFb-0003wD-QE
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:09:04 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1s7GFR-0003sm-1L
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:53 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7GFN-0002qw-SI
- for qemu-devel@nongnu.org; Wed, 15 May 2024 11:09:02 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41ffad2426eso53208795e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 08:08:49 -0700 (PDT)
+ id 1s7GFO-0002r6-NR
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 11:08:52 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4200ee78f35so32760365e9.1
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 08:08:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715785728; x=1716390528; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715785729; x=1716390529; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C6S9A0jxcxnkPHJaqWqoqo+edkANvVkLpXEGqNBGzxw=;
- b=k2yITbFI/7OwAtb68bTKRPHLiL7JWqxO1U3JbAxEwpeoj2cMARUmsiy9Iixv2weu+C
- dyXyQd3lbx9OUbF8JaaVcY1ay/AMY6lO5djZiQbhjWkn6LS4LObiR6QUIRwT5kW5u051
- x1wSvIzk2I43VIK9QHT/O9U/0wdcQJd18gqv1aGIUdq7OQTJ3lwPka2RyCL0LlVZwb+X
- YTlPGIKJ0+YEX69eNhL683fT8ZaQEgL7lm2H2fxXnROa9iD0cqDStDn+qM/ekWtslG7I
- O7QikZflh9mYY7aq/aca2m0tT/GtfSFtZjP/c5+egoiPiUP9SsMUXIyQNFp1k4KWTRN6
- bJmw==
+ bh=3VUA0H1FqSwLKp/HJjCgFsX8ntjk+Qvs0JjKKwjJR0Q=;
+ b=L8Ilm2h49TQ6ZdSlbGTEWjoeBaJR32Ny+tQ+M2jpgbzXU5XLCSJtincGC2NdFRoCFk
+ HRD7Vnx3BNoveIlRQP94sktI/JRV5hxCLHYWd185nYNfqmbRjbJlmuOfnkSkIZSfPUc4
+ MH9l+oz4UcLyhSAo7iIVjdUoLxJq+4vELbuS4gDXL3H5Il+X+TLOHH/D6N4gM65dIyzQ
+ 2B87PxgSE1EoOLjUSgeldlrjVIvJQwkUiRHcp9qNIzfCbiQb66U7f7BxIxl88TkFxalt
+ rTDEQn6VZLTkqHHgk8wgd2OiqCZld45LIhWKvgIt0oScmNfI78MIaa7Ahr3MV1WJFzdx
+ v3yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715785728; x=1716390528;
+ d=1e100.net; s=20230601; t=1715785729; x=1716390529;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C6S9A0jxcxnkPHJaqWqoqo+edkANvVkLpXEGqNBGzxw=;
- b=ZHAvUZicJRL7MC0dZR98THO2mWuNGEgh2A15BCkeA8HjtXpmBQsrKuFq+ULjuhwy4Y
- 4rpvBY3FkZJQ+Gjx706/RBwSrnzYRKyy2M4j+FeCmPGblD20cKOUrZQ/xWi7DtWNu6JN
- rJxTQT1CcwjR2D9VBVcJY3de2H9yWYMsZchZWAFXgf2pEHv7DsGxNWTJ9aiMjby/yHaL
- 6vWNgNTm4OOFo1wAvLwHUG8cWDlz3r0lOF9D9MOJgvDJm2CClN5RrMFZ4Df9vTTyVIL4
- OYJx0DSrREobG2XZb4i5+cStahk7s1Lp+lg/Ize5XPfDwX4tB9doW/L8Zw2GdJZCmPWO
- CKDw==
-X-Gm-Message-State: AOJu0YxLEvrvOrGarqmHw/0HyBTHF0nRUKYpJDJMRIvL7HPIt3DfXabx
- a2e89wCFAG1m8U0Ry/QsLGJSg1QjYNzUwye9OaimrwbQOWZJ08wVKKnYdKzskz6rcnrzY0h+aXb
- s+2o=
-X-Google-Smtp-Source: AGHT+IGBq1xr6u8sWyjD48+VKzXlefPCthXcEzG7qhD17gpkRTsCAkh5VmKwovzUYZC5ie4azTnPwg==
-X-Received: by 2002:a05:600c:26cc:b0:418:4aac:a576 with SMTP id
- 5b1f17b1804b1-41fead64fdemr151824865e9.39.1715785728563; 
- Wed, 15 May 2024 08:08:48 -0700 (PDT)
+ bh=3VUA0H1FqSwLKp/HJjCgFsX8ntjk+Qvs0JjKKwjJR0Q=;
+ b=DwaHWK8SR0cA3n5bWUT1Ng7S1HRA/gcZe1Kk1uQTFu0BGur5arXMMgDCfRm7wnPJLE
+ LxUsmdwz5UznVoLAlFe/XlxgTf4ZQLHihpKdHuciPl8tU754K+sjQ2XHY+7BWpzqO5Pq
+ iYasEmzppUGd/tj3Rd43BCnyUkq7x6QB5ErM4jL78AWbgXYD1Bnzgb5Xc6OSZpZxA3xQ
+ m164TKbzkA9FFcWs3hmRmgMWGDrjQkTnk0aHn277Dq6SKXD21xZL/uj4tBTQT3iWivLT
+ 3aqypYu/oMwAVzP8Rkw4OVIAMbEJh9TC/5TjP/OLxqKx38QVVdIoAIOypx+MRvSR+bPJ
+ zVpg==
+X-Gm-Message-State: AOJu0YxWZzhFOhXAs3UPalvTKDk1u2uqGGteRu6Iy5/yMrWwJE4oeioP
+ aFbCwOQeqNhXk0+maCZDmECyL6c0U5HWiEdTr848jnDGDSiOiWZ5JmN8dl4GZcOvhiWsqWNwWd7
+ NC50=
+X-Google-Smtp-Source: AGHT+IF9H8UyJNMafQ5TkDJbT8ZAG8j/6I6+egukiNyanao0Sp2ZAX0ym31ihnymhC2jnAuFehCBvw==
+X-Received: by 2002:a05:600c:4f93:b0:416:7b2c:df0f with SMTP id
+ 5b1f17b1804b1-41fea931f13mr153183665e9.7.1715785729255; 
+ Wed, 15 May 2024 08:08:49 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42013c5fa61sm132080825e9.40.2024.05.15.08.08.47
+ 5b1f17b1804b1-42013c5fa61sm132080825e9.40.2024.05.15.08.08.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 15 May 2024 08:08:48 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com,
 	laurent@vivier.eu
-Subject: [PATCH v3 11/28] target/i386: Convert do_xrstor_* to X86Access
-Date: Wed, 15 May 2024 17:08:20 +0200
-Message-Id: <20240515150837.259747-12-richard.henderson@linaro.org>
+Subject: [PATCH v3 12/28] target/i386: Split out do_xsave_chk
+Date: Wed, 15 May 2024 17:08:21 +0200
+Message-Id: <20240515150837.259747-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515150837.259747-1-richard.henderson@linaro.org>
 References: <20240515150837.259747-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,158 +92,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The body of do_xrstor is now fully converted.
+This path is not required by user-only, and can in fact
+be shared between xsave and xrstor.
 
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/fpu_helper.c | 51 ++++++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 20 deletions(-)
+ target/i386/tcg/fpu_helper.c | 51 +++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
 diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 356397a4ab..7796688514 100644
+index 7796688514..6a319dadf2 100644
 --- a/target/i386/tcg/fpu_helper.c
 +++ b/target/i386/tcg/fpu_helper.c
-@@ -2800,8 +2800,9 @@ static void do_clear_sse(CPUX86State *env)
-     }
- }
- 
--static void do_xrstor_ymmh(CPUX86State *env, target_ulong ptr, uintptr_t ra)
-+static void do_xrstor_ymmh(X86Access *ac, target_ulong ptr)
- {
-+    CPUX86State *env = ac->env;
-     int i, nb_xmm_regs;
- 
-     if (env->hflags & HF_CS64_MASK) {
-@@ -2811,8 +2812,8 @@ static void do_xrstor_ymmh(CPUX86State *env, target_ulong ptr, uintptr_t ra)
-     }
- 
-     for (i = 0; i < nb_xmm_regs; i++, ptr += 16) {
--        env->xmm_regs[i].ZMM_Q(2) = cpu_ldq_data_ra(env, ptr, ra);
--        env->xmm_regs[i].ZMM_Q(3) = cpu_ldq_data_ra(env, ptr + 8, ra);
-+        env->xmm_regs[i].ZMM_Q(2) = access_ldq(ac, ptr);
-+        env->xmm_regs[i].ZMM_Q(3) = access_ldq(ac, ptr + 8);
-     }
- }
- 
-@@ -2832,29 +2833,32 @@ static void do_clear_ymmh(CPUX86State *env)
-     }
- }
- 
--static void do_xrstor_bndregs(CPUX86State *env, target_ulong ptr, uintptr_t ra)
-+static void do_xrstor_bndregs(X86Access *ac, target_ulong ptr)
- {
-+    CPUX86State *env = ac->env;
-     target_ulong addr = ptr + offsetof(XSaveBNDREG, bnd_regs);
-     int i;
- 
-     for (i = 0; i < 4; i++, addr += 16) {
--        env->bnd_regs[i].lb = cpu_ldq_data_ra(env, addr, ra);
--        env->bnd_regs[i].ub = cpu_ldq_data_ra(env, addr + 8, ra);
-+        env->bnd_regs[i].lb = access_ldq(ac, addr);
-+        env->bnd_regs[i].ub = access_ldq(ac, addr + 8);
-     }
- }
- 
--static void do_xrstor_bndcsr(CPUX86State *env, target_ulong ptr, uintptr_t ra)
-+static void do_xrstor_bndcsr(X86Access *ac, target_ulong ptr)
- {
-+    CPUX86State *env = ac->env;
-+
-     /* FIXME: Extend highest implemented bit of linear address.  */
-     env->bndcs_regs.cfgu
--        = cpu_ldq_data_ra(env, ptr + offsetof(XSaveBNDCSR, bndcsr.cfgu), ra);
-+        = access_ldq(ac, ptr + offsetof(XSaveBNDCSR, bndcsr.cfgu));
-     env->bndcs_regs.sts
--        = cpu_ldq_data_ra(env, ptr + offsetof(XSaveBNDCSR, bndcsr.sts), ra);
-+        = access_ldq(ac, ptr + offsetof(XSaveBNDCSR, bndcsr.sts));
- }
- 
--static void do_xrstor_pkru(CPUX86State *env, target_ulong ptr, uintptr_t ra)
-+static void do_xrstor_pkru(X86Access *ac, target_ulong ptr)
- {
--    env->pkru = cpu_ldq_data_ra(env, ptr, ra);
-+    ac->env->pkru = access_ldq(ac, ptr);
- }
- 
- static void do_fxrstor(X86Access *ac, target_ulong ptr)
-@@ -2892,6 +2896,7 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
- {
-     uint64_t xstate_bv, xcomp_bv, reserve0;
+@@ -2675,16 +2675,6 @@ static void do_xsave(CPUX86State *env, target_ulong ptr, uint64_t rfbm,
      X86Access ac;
-+    unsigned size, size_ext;
+     unsigned size;
+ 
+-    /* The OS must have enabled XSAVE.  */
+-    if (!(env->cr[4] & CR4_OSXSAVE_MASK)) {
+-        raise_exception_ra(env, EXCP06_ILLOP, ra);
+-    }
+-
+-    /* The operand must be 64 byte aligned.  */
+-    if (ptr & 63) {
+-        raise_exception_ra(env, EXCP0D_GPF, ra);
+-    }
+-
+     /* Never save anything not enabled by XCR0.  */
+     rfbm &= env->xcr0;
+     opt &= rfbm;
+@@ -2721,15 +2711,35 @@ static void do_xsave(CPUX86State *env, target_ulong ptr, uint64_t rfbm,
+     access_stq(&ac, ptr + XO(header.xstate_bv), new_bv);
+ }
+ 
++static void do_xsave_chk(CPUX86State *env, target_ulong ptr, uintptr_t ra)
++{
++    /* The OS must have enabled XSAVE.  */
++    if (!(env->cr[4] & CR4_OSXSAVE_MASK)) {
++        raise_exception_ra(env, EXCP06_ILLOP, ra);
++    }
++
++    /* The operand must be 64 byte aligned.  */
++    if (ptr & 63) {
++        raise_exception_ra(env, EXCP0D_GPF, ra);
++    }
++}
++
+ void helper_xsave(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
+ {
+-    do_xsave(env, ptr, rfbm, get_xinuse(env), -1, GETPC());
++    uintptr_t ra = GETPC();
++
++    do_xsave_chk(env, ptr, ra);
++    do_xsave(env, ptr, rfbm, get_xinuse(env), -1, ra);
+ }
+ 
+ void helper_xsaveopt(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
+ {
+-    uint64_t inuse = get_xinuse(env);
+-    do_xsave(env, ptr, rfbm, inuse, inuse, GETPC());
++    uintptr_t ra = GETPC();
++    uint64_t inuse;
++
++    do_xsave_chk(env, ptr, ra);
++    inuse = get_xinuse(env);
++    do_xsave(env, ptr, rfbm, inuse, inuse, ra);
+ }
+ 
+ static void do_xrstor_fpu(X86Access *ac, target_ulong ptr)
+@@ -2900,16 +2910,6 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
  
      rfbm &= env->xcr0;
  
-@@ -2905,7 +2910,10 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
-         raise_exception_ra(env, EXCP0D_GPF, ra);
-     }
+-    /* The OS must have enabled XSAVE.  */
+-    if (!(env->cr[4] & CR4_OSXSAVE_MASK)) {
+-        raise_exception_ra(env, EXCP06_ILLOP, ra);
+-    }
+-
+-    /* The operand must be 64 byte aligned.  */
+-    if (ptr & 63) {
+-        raise_exception_ra(env, EXCP0D_GPF, ra);
+-    }
+-
+     size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader);
+     access_prepare(&ac, env, ptr, size, MMU_DATA_LOAD, ra);
  
--    xstate_bv = cpu_ldq_data_ra(env, ptr + XO(header.xstate_bv), ra);
-+    size = sizeof(X86LegacyXSaveArea) + sizeof(X86XSaveHeader);
-+    access_prepare(&ac, env, ptr, size, MMU_DATA_LOAD, ra);
+@@ -3004,7 +3004,10 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
+ 
+ void helper_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
+ {
+-    do_xrstor(env, ptr, rfbm, GETPC());
++    uintptr_t ra = GETPC();
 +
-+    xstate_bv = access_ldq(&ac, ptr + XO(header.xstate_bv));
++    do_xsave_chk(env, ptr, ra);
++    do_xrstor(env, ptr, rfbm, ra);
+ }
  
-     if ((int64_t)xstate_bv < 0) {
-         /* FIXME: Compact form.  */
-@@ -2924,14 +2932,17 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
-        describes only XCOMP_BV, but the description of the standard form
-        of XRSTOR (Vol 1, Sec 13.8.1) checks bytes 23:8 for zero, which
-        includes the next 64-bit field.  */
--    xcomp_bv = cpu_ldq_data_ra(env, ptr + XO(header.xcomp_bv), ra);
--    reserve0 = cpu_ldq_data_ra(env, ptr + XO(header.reserve0), ra);
-+    xcomp_bv = access_ldq(&ac, ptr + XO(header.xcomp_bv));
-+    reserve0 = access_ldq(&ac, ptr + XO(header.reserve0));
-     if (xcomp_bv || reserve0) {
-         raise_exception_ra(env, EXCP0D_GPF, ra);
-     }
- 
--    access_prepare(&ac, env, ptr, sizeof(X86LegacyXSaveArea),
--                   MMU_DATA_LOAD, ra);
-+    size_ext = xsave_area_size(rfbm & xstate_bv, false);
-+    if (size < size_ext) {
-+        /* TODO: See if existing page probe has covered extra size. */
-+        access_prepare(&ac, env, ptr, size_ext, MMU_DATA_LOAD, ra);
-+    }
- 
-     if (rfbm & XSTATE_FP_MASK) {
-         if (xstate_bv & XSTATE_FP_MASK) {
-@@ -2953,14 +2964,14 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
-     }
-     if (rfbm & XSTATE_YMM_MASK) {
-         if (xstate_bv & XSTATE_YMM_MASK) {
--            do_xrstor_ymmh(env, ptr + XO(avx_state), ra);
-+            do_xrstor_ymmh(&ac, ptr + XO(avx_state));
-         } else {
-             do_clear_ymmh(env);
-         }
-     }
-     if (rfbm & XSTATE_BNDREGS_MASK) {
-         if (xstate_bv & XSTATE_BNDREGS_MASK) {
--            do_xrstor_bndregs(env, ptr + XO(bndreg_state), ra);
-+            do_xrstor_bndregs(&ac, ptr + XO(bndreg_state));
-             env->hflags |= HF_MPX_IU_MASK;
-         } else {
-             memset(env->bnd_regs, 0, sizeof(env->bnd_regs));
-@@ -2969,7 +2980,7 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
-     }
-     if (rfbm & XSTATE_BNDCSR_MASK) {
-         if (xstate_bv & XSTATE_BNDCSR_MASK) {
--            do_xrstor_bndcsr(env, ptr + XO(bndcsr_state), ra);
-+            do_xrstor_bndcsr(&ac, ptr + XO(bndcsr_state));
-         } else {
-             memset(&env->bndcs_regs, 0, sizeof(env->bndcs_regs));
-         }
-@@ -2978,7 +2989,7 @@ static void do_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm, uintptr
-     if (rfbm & XSTATE_PKRU_MASK) {
-         uint64_t old_pkru = env->pkru;
-         if (xstate_bv & XSTATE_PKRU_MASK) {
--            do_xrstor_pkru(env, ptr + XO(pkru_state), ra);
-+            do_xrstor_pkru(&ac, ptr + XO(pkru_state));
-         } else {
-             env->pkru = 0;
-         }
+ #if defined(CONFIG_USER_ONLY)
 -- 
 2.34.1
 
