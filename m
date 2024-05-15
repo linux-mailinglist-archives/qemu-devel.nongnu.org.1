@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3FE8C63E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD2D8C63EC
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:42:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7B8D-0005pB-OG; Wed, 15 May 2024 05:41:05 -0400
+	id 1s7B8F-0006B7-Sp; Wed, 15 May 2024 05:41:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B7y-0005hE-5C
+ id 1s7B7y-0005hD-5E
  for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:50 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7B7v-0001bo-Al
+ id 1s7B7v-0001br-HL
  for qemu-devel@nongnu.org; Wed, 15 May 2024 05:40:49 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-34dc129accaso4880164f8f.0
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:46 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-420104e5336so24071995e9.1
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766045; x=1716370845; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715766046; x=1716370846; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZG3aV8qfAUE4eaqYaKoPcSH0wJlV80ibYaxpI2XwiLk=;
- b=W8qSh/zoMd4lsT+ZTc5miOjwkabELlAkn+E8MBG0qa0rirqGh2vTrFv60ucPEhI4cw
- gNMBMPASONZM6waNdwwqW8xCSi8fu2gfKIg6cZymPySFzm78vaEzVYFL5cWwpad3VamU
- E69HcrJH97VRICh3w1TG9fjuWPt5OxYp+o4ubCLPPhf61FJbOamdKuTSoqOWf2O4z2JR
- lT+VMvDC9jck4FdpYy63pP4YVVRh424aSh8hezTv/E8Dbyf2ps4RPhbwIMuiRoULQfyf
- m/KR3plxxexe/GZ1i0DkUg8Ng41O1Qdq4D8c9FIwZsl/sWp4wupOVGJg51KyZvZZocZM
- m7WQ==
+ bh=uUppVIcVxulNFKmt5JKoE50UNp9B197FkQ2pGAAJJ2A=;
+ b=fR4FSPp2f+ol/8e7kkuPN+H1dBW5u6acizNnvHV8U8usHHX1RuboGu0uW2ND+djVhC
+ WZN83JR8mhAIAoKLgBcAD85D2zx3uFlt8BnBETE+QZI/BIlqWxaZMP56Vi5IEkP6kxkN
+ aBrPVDmhe9pCfPk+DD31R+4qJsUR48nspycCQkQcBSnmh53y2f4q6AIPQ9br8uR89faO
+ Z99jXQx5WtB2HFAqnWlj6GTlGlyk0qydLQob/W2eedEjjKtlHJ7Xmi7trBX3Slk5XbRp
+ uJWRjiB4JLsfiOR3zvAlvI6ktk/sVlHbNbmwNeDrxiuZ7aGoK3NcEdIjaf4KBfVaUnJf
+ 0h+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766045; x=1716370845;
+ d=1e100.net; s=20230601; t=1715766046; x=1716370846;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZG3aV8qfAUE4eaqYaKoPcSH0wJlV80ibYaxpI2XwiLk=;
- b=JoQZPayJvglujJmcMcHQ0S8ypLt7VWfp/jNF2JtdGikmmTPzXS0yFwmqtPI/+thw3k
- sn7wS75xpEXw7EmgSmYMwSrB/CWCKzLUX2xmD3qwBvIs1rkJLH+yjhLzFYEDwbMzszOo
- 9TLn2qJQ5s0gVbUyTgXbGmjGZkuOjwGZskiAH5D3NWxnWQp3162eQwuOak//7sb+/+X/
- 1dE3LpvSWcBDGqEUcLk5kNDjN+g+Bi91mrJWd8M3o9J44LlkJt2TS3hxfKvymkJMxLni
- FG7gXdDo7ei8XmKotk17Q55jLs/RBjaD7EX1DXv/7OOnG31hFbzUE/kphkiOD1MVQhmC
- Mq5Q==
-X-Gm-Message-State: AOJu0YyBIOWZs014pHnW3HdAN9vycXAx8I2y9aCx/yM205hUmaLk+L8q
- pqCVzr/KXTap3kcySu40U0xxrW6CiKp41drvG8TV4oxqmPvvNbVQHQbHiZsQTTv4b9VHLoobc0E
- ORCA=
-X-Google-Smtp-Source: AGHT+IHsh3wxOpLs5Cszls7IJC1hWqDk3+04rXRkbquEwiYNzejXPq+VyiAiAj48iSsts4jDYQer9A==
-X-Received: by 2002:adf:f287:0:b0:34d:87bc:e79c with SMTP id
- ffacd0b85a97d-3504a633178mr13432596f8f.6.1715766045295; 
- Wed, 15 May 2024 02:40:45 -0700 (PDT)
+ bh=uUppVIcVxulNFKmt5JKoE50UNp9B197FkQ2pGAAJJ2A=;
+ b=wlBADTiWTyYgBRIAQyAT9w7W6O6G1CqE8aU/nEn0GpQgL/IDo69Ohli+YGJ2xzcRrK
+ HGYRVXIMWEf1O1X6wIfUF/TTASWEp7guHBTwjrSSzkZOR/yn/HwdH2iep5jhFwVgSoz3
+ 8W31IAL6yG2X2d52sUDSSnaq6+Px/gNG+j96lP+MJCPYZT65uIWeEO9Dw+P7U9iizG+5
+ 9A8heV18mOBbkTPklH43m2uOfPByU9vkAndjnErpGfh6iztS/7VRBtWAb6En+8H2pDxR
+ KKsOvLFMsKpRHGiyXBtaqVVA5Yj4lc+KU2Z7AUt3qQbwnij+cMu0siJvlc/WRWj4XdkY
+ R2jQ==
+X-Gm-Message-State: AOJu0Yxn6fdM6k8k6mF0NDScyQTuovY8ei7v0a0gU4IVQavq/4yVGdby
+ TB1XN0ZPblxxiE0iRK43QvW4TKjDFm/VWVc97DfjLXRR4TWZEOZegfizkAPePJn1UtSAPoot0BG
+ cAUg=
+X-Google-Smtp-Source: AGHT+IFdLBhTozCeoe3kKdg/a1c9BKDfXkjCf+5AZwo8jsArxFYGiNyQYhBWz2up75Q1sqRNuw5qJw==
+X-Received: by 2002:a05:600c:458f:b0:418:3d59:c13a with SMTP id
+ 5b1f17b1804b1-41fbcb4fe53mr166209065e9.9.1715766046001; 
+ Wed, 15 May 2024 02:40:46 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.44
+ ffacd0b85a97d-3502bbbbefdsm15897058f8f.94.2024.05.15.02.40.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 May 2024 02:40:44 -0700 (PDT)
+ Wed, 15 May 2024 02:40:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 01/43] target/hppa: Move cpu_get_tb_cpu_state out of line
-Date: Wed, 15 May 2024 11:40:01 +0200
-Message-Id: <20240515094043.82850-2-richard.henderson@linaro.org>
+Subject: [PULL 02/43] target/hppa: Use hppa_form_gva_psw in hppa_cpu_get_pc
+Date: Wed, 15 May 2024 11:40:02 +0200
+Message-Id: <20240515094043.82850-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515094043.82850-1-richard.henderson@linaro.org>
 References: <20240515094043.82850-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,120 +91,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This function is for log_pc(), which needs to produce a
+similar result to cpu_get_tb_cpu_state().
+
 Reviewed-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h | 43 ++-----------------------------------------
- target/hppa/cpu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+), 41 deletions(-)
+ target/hppa/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index fb2e4c4a98..61f1353133 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -314,47 +314,8 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr);
- #define TB_FLAG_PRIV_SHIFT  8
- #define TB_FLAG_UNALIGN     0x400
- 
--static inline void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
--                                        uint64_t *cs_base, uint32_t *pflags)
--{
--    uint32_t flags = env->psw_n * PSW_N;
--
--    /* TB lookup assumes that PC contains the complete virtual address.
--       If we leave space+offset separate, we'll get ITLB misses to an
--       incomplete virtual address.  This also means that we must separate
--       out current cpu privilege from the low bits of IAOQ_F.  */
--#ifdef CONFIG_USER_ONLY
--    *pc = env->iaoq_f & -4;
--    *cs_base = env->iaoq_b & -4;
--    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
--#else
--    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
--    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
--    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
--
--    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
--                            env->iaoq_f & -4);
--    *cs_base = env->iasq_f;
--
--    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
--       low 32-bits of CS_BASE.  This will succeed for all direct branches,
--       which is the primary case we care about -- using goto_tb within a page.
--       Failure is indicated by a zero difference.  */
--    if (env->iasq_f == env->iasq_b) {
--        target_long diff = env->iaoq_b - env->iaoq_f;
--        if (diff == (int32_t)diff) {
--            *cs_base |= (uint32_t)diff;
--        }
--    }
--    if ((env->sr[4] == env->sr[5])
--        & (env->sr[4] == env->sr[6])
--        & (env->sr[4] == env->sr[7])) {
--        flags |= TB_FLAG_SR_SAME;
--    }
--#endif
--
--    *pflags = flags;
--}
-+void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-+                          uint64_t *cs_base, uint32_t *pflags);
- 
- target_ulong cpu_hppa_get_psw(CPUHPPAState *env);
- void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong);
 diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 393a81988d..582036b31e 100644
+index 582036b31e..be8c558014 100644
 --- a/target/hppa/cpu.c
 +++ b/target/hppa/cpu.c
-@@ -43,6 +43,48 @@ static vaddr hppa_cpu_get_pc(CPUState *cs)
-     return cpu->env.iaoq_f;
+@@ -38,9 +38,10 @@ static void hppa_cpu_set_pc(CPUState *cs, vaddr value)
+ 
+ static vaddr hppa_cpu_get_pc(CPUState *cs)
+ {
+-    HPPACPU *cpu = HPPA_CPU(cs);
++    CPUHPPAState *env = cpu_env(cs);
+ 
+-    return cpu->env.iaoq_f;
++    return hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
++                             env->iaoq_f & -4);
  }
  
-+void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-+                          uint64_t *cs_base, uint32_t *pflags)
-+{
-+    uint32_t flags = env->psw_n * PSW_N;
-+
-+    /* TB lookup assumes that PC contains the complete virtual address.
-+       If we leave space+offset separate, we'll get ITLB misses to an
-+       incomplete virtual address.  This also means that we must separate
-+       out current cpu privilege from the low bits of IAOQ_F.  */
-+#ifdef CONFIG_USER_ONLY
-+    *pc = env->iaoq_f & -4;
-+    *cs_base = env->iaoq_b & -4;
-+    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
-+#else
-+    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
-+    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
-+    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
-+
-+    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
-+                            env->iaoq_f & -4);
-+    *cs_base = env->iasq_f;
-+
-+    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
-+       low 32-bits of CS_BASE.  This will succeed for all direct branches,
-+       which is the primary case we care about -- using goto_tb within a page.
-+       Failure is indicated by a zero difference.  */
-+    if (env->iasq_f == env->iasq_b) {
-+        target_long diff = env->iaoq_b - env->iaoq_f;
-+        if (diff == (int32_t)diff) {
-+            *cs_base |= (uint32_t)diff;
-+        }
-+    }
-+    if ((env->sr[4] == env->sr[5])
-+        & (env->sr[4] == env->sr[6])
-+        & (env->sr[4] == env->sr[7])) {
-+        flags |= TB_FLAG_SR_SAME;
-+    }
-+#endif
-+
-+    *pflags = flags;
-+}
-+
- static void hppa_cpu_synchronize_from_tb(CPUState *cs,
-                                          const TranslationBlock *tb)
- {
+ void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
+@@ -61,8 +62,7 @@ void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
+     flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
+     flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
+ 
+-    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
+-                            env->iaoq_f & -4);
++    *pc = hppa_cpu_get_pc(env_cpu(env));
+     *cs_base = env->iasq_f;
+ 
+     /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
 -- 
 2.34.1
 
