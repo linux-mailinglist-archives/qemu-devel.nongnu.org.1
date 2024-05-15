@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B566B8C6266
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D09728C6259
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79Rs-0004Ho-DT; Wed, 15 May 2024 03:53:16 -0400
+	id 1s79Rt-0004Hs-8P; Wed, 15 May 2024 03:53:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s79Ri-00048y-8y
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:06 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1s79Ro-0004FT-1f
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:12 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s79Rf-0001bh-ST
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:05 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41ffad242c8so34399915e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:53:03 -0700 (PDT)
+ id 1s79Rh-0001bv-J3
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:09 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-41ffad2426eso48854755e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:53:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715759582; x=1716364382; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715759583; x=1716364383; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1nWXlcFf/ukN+q7QhzDqXIa8CiZT41OLDlcvMAkUxKU=;
- b=Owl7Idi+7wiWepcHO2p4+lD4wKLgH8tIeQ4gksJZbpHh8r59nvIrA84op+sF3e16pr
- 8uas5g+eyJnqsaarKUOnhtiM7KLOxOKcjwmDMqx6Ln9W0RWLWeC9WvKiJU7tyqEpNe7w
- 9bMdzTVQKTXzClyfcaF1InqzaThND0DIgXFdMNPPuUmCz2nqRkdYIgUyIchHNZHrjgIn
- 0/u1NW2ksn1CVpht7NjT5IquQFak4JJXrQylhuNgLgJAMkjkuOHu5/+VEsjjaeChYGUu
- kCzmaWeJL6B24W1X+3/6oZ6fSRhmVgbJMzoO583N/Ss+xX1OgOw43bpccC+1IVp8FlMI
- TtxA==
+ bh=zosCwfAqzS9tNL9GWtQRdlVeW1LGv2S9SgE5WNHpqQg=;
+ b=I10h4EwdQtkrAtlww39UGGILScnSdxPxpMTK3U0WNrwwxc3Q0IDUpB13m+uwUVQGs2
+ ypXgsnbzrVtDEw6WrMWQUYPlkSj85z4yTd/Sh/wOtvyjUZ2dcRupxdek8B6xJLAghMjC
+ tKnN1CMY67IT8OwrLGkgKHBOIN6VyhU5m6muMW/6+AtrMDMGgw+H7oLPPni8pGqQuM44
+ P5TjuCroEa510xXiZUsKcQ24Jx2lJJ5GOongi4vkYjbZmlU1+AwEiZl6NNirV5IKzpw/
+ JynfIKIz7mx7etl8/k1dQlgtfR1Uj5DcGGZYhQEWKZveayJa2OFO3h82Stlm4gqmWtrI
+ lA4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715759582; x=1716364382;
+ d=1e100.net; s=20230601; t=1715759583; x=1716364383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1nWXlcFf/ukN+q7QhzDqXIa8CiZT41OLDlcvMAkUxKU=;
- b=ThClyNEZuwTkMGPtFn8nJGykICS0kQ8wTZzx9mQo/WkoJrtsa+L1yiGzwN4yjrDyXh
- C7PJ/o5k0Am0NWQcIbxVSQdlynNDy4PnBWVxaxWW+nbQ6fUohV5po4+2IYudWngrtNJU
- fZ8B3prtiTBNfUh4RzU0badon7Hh+egh3qYz9NEaobWeaELG6NCJL1qhkve4/Kbhx7/b
- 21PgiEGYSayxHRdXtXDF1k8ADizFH/OXxPpMVjcZV3d1iB1JlAo/OaeIoiNsRJZaBkUc
- /eQe8jvzfAfZfpdt3bVjUDE80KtleQ6D6oM4j9K8PRPrKDlmtcoPv3bWSJL8gz5a6TkE
- LgrQ==
-X-Gm-Message-State: AOJu0YyScalGK9EkbLYGaVAvcukXSYRs4D2+HzLsaVErIPJ+hg48yGMv
- DunhvEEzPZ2+LHcQpVcEYUk3D0wPz9XD8MujKGctdmgawYZ53thlPtfTgEF0KDx7B3DQX5szaqp
- jyng=
-X-Google-Smtp-Source: AGHT+IEBXBsdsOVUurlJskDFvZfci4VJNr7GGfOAVHe/3jNky1+oL3FfYoyhpOFZpydqSSrRIyGkPw==
-X-Received: by 2002:a05:600c:3ca3:b0:41a:908c:b841 with SMTP id
- 5b1f17b1804b1-41feac55671mr146826585e9.32.1715759582400; 
- Wed, 15 May 2024 00:53:02 -0700 (PDT)
+ bh=zosCwfAqzS9tNL9GWtQRdlVeW1LGv2S9SgE5WNHpqQg=;
+ b=UMCFfJU6Ue7hJjRDFBMTJRNyq05RhyRWqu5LbhFvJldfciXSG3oRvR7/BYuilvwtsi
+ PnV8UHfoTMdOFoWahIm7vY+dzA3bGGRBxex6eNGS9VVr9Lr/yZIEuIvkZGIOPrv9lKzr
+ tyi62AEfh18t8mU1x0z5YMaho5TY8Qpf2XSDZbIv6RdAdxdBYNVB++Zd9zgz2wzSdsIm
+ 7AAumqci4ch98Dn4LKa+cdqTogex0zi+3Yxr35bxEmFMHWnxvmpZK0Ct/M7LmvDD5TWc
+ 4NoW8Ua8x39jfKR+bOFGXujiWr5TuBvjHUhGn+f9Ov+JzojbdjymIJnvnO/59Qw/bay+
+ zklA==
+X-Gm-Message-State: AOJu0YzTStEriDYlDjqZTEF9SQiNknH4hSL5KV5KETD2xoPtdp8cmP+P
+ 75S/IZsIrH1P936Doda6l/fdtW723Ov9y9Oskbk3gXOjV7U3dCF/FYcgOTUNOnoVQhbmJ1BOnxB
+ XS5M=
+X-Google-Smtp-Source: AGHT+IHeLsv6C9/Qldl9aXehZqLCiAVt2bXcitpSvM514HuFJ+EdhmMl2MWhO9XSmpURBYqb2Wvwsg==
+X-Received: by 2002:a05:600c:5601:b0:41a:adc3:f777 with SMTP id
+ 5b1f17b1804b1-41feaa38ec7mr144269005e9.16.1715759583014; 
+ Wed, 15 May 2024 00:53:03 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
  5b1f17b1804b1-41fccee9292sm222611855e9.37.2024.05.15.00.53.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
@@ -59,17 +59,17 @@ Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 20/34] accel/tcg: Introduce translator_fake_ld
-Date: Wed, 15 May 2024 09:52:33 +0200
-Message-Id: <20240515075247.68024-21-richard.henderson@linaro.org>
+Subject: [PULL 21/34] target/s390x: Fix translator_fake_ld length
+Date: Wed, 15 May 2024 09:52:34 +0200
+Message-Id: <20240515075247.68024-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515075247.68024-1-richard.henderson@linaro.org>
 References: <20240515075247.68024-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,85 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace translator_fake_ldb, which required multiple calls,
-with translator_fake_ld, which can take all data at once.
+The ilen value extracted from ex_value is the length of the
+EXECUTE instruction itself, and so is the increment to the pc.
+However, the length of the synthetic insn is located in the
+opcode like all other instructions.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h    | 8 ++++----
- accel/tcg/translator.c       | 5 ++---
- target/s390x/tcg/translate.c | 8 ++++----
- 3 files changed, 10 insertions(+), 11 deletions(-)
+ target/s390x/tcg/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 411ce2b47e..25004dfb76 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -234,17 +234,17 @@ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
- }
- 
- /**
-- * translator_fake_ldb - fake instruction load
-+ * translator_fake_ld - fake instruction load
-  * @db: Disassembly context
-- * @pc: program counter of instruction
-- * @insn8: byte of instruction
-+ * @data: bytes of instruction
-+ * @len: number of bytes
-  *
-  * This is a special case helper used where the instruction we are
-  * about to translate comes from somewhere else (e.g. being
-  * re-synthesised for s390x "ex"). It ensures we update other areas of
-  * the translator with details of the executed instruction.
-  */
--void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8);
-+void translator_fake_ld(DisasContextBase *db, const void *data, size_t len);
- 
- /**
-  * translator_st
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 00322c6fd9..c56967eecd 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -468,9 +468,8 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
-     return tgt;
- }
- 
--void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8)
-+void translator_fake_ld(DisasContextBase *db, const void *data, size_t len)
- {
--    assert(pc >= db->pc_first);
-     db->fake_insn = true;
--    record_save(db, pc, &insn8, sizeof(insn8));
-+    record_save(db, db->pc_first, data, len);
- }
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index d74939389a..2eb787e401 100644
+index 2eb787e401..95d4d6ebc3 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -6191,6 +6191,8 @@ static const DisasInsn *extract_insn(CPUS390XState *env, DisasContext *s)
-     const DisasInsn *info;
- 
-     if (unlikely(s->ex_value)) {
-+        uint64_t be_insn;
-+
-         /* Drop the EX data now, so that it's clear on exception paths.  */
-         tcg_gen_st_i64(tcg_constant_i64(0), tcg_env,
-                        offsetof(CPUS390XState, ex_value));
-@@ -6200,10 +6202,8 @@ static const DisasInsn *extract_insn(CPUS390XState *env, DisasContext *s)
+@@ -6200,11 +6200,11 @@ static const DisasInsn *extract_insn(CPUS390XState *env, DisasContext *s)
+         /* Extract the values saved by EXECUTE.  */
+         insn = s->ex_value & 0xffffffffffff0000ull;
          ilen = s->ex_value & 0xf;
++        op = insn >> 56;
  
          /* Register insn bytes with translator so plugins work. */
--        for (int i = 0; i < ilen; i++) {
--            uint8_t byte = extract64(insn, 56 - (i * 8), 8);
--            translator_fake_ldb(&s->base, pc + i, byte);
--        }
-+        be_insn = cpu_to_be64(insn);
-+        translator_fake_ld(&s->base, &be_insn, ilen);
-         op = insn >> 56;
+         be_insn = cpu_to_be64(insn);
+-        translator_fake_ld(&s->base, &be_insn, ilen);
+-        op = insn >> 56;
++        translator_fake_ld(&s->base, &be_insn, get_ilen(op));
      } else {
          insn = ld_code2(env, s, pc);
+         op = (insn >> 8) & 0xff;
 -- 
 2.34.1
 
