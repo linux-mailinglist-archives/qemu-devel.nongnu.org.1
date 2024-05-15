@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EAE98C62BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 788038C62DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:28:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79wN-00038Y-EH; Wed, 15 May 2024 04:24:47 -0400
+	id 1s7A01-0003lK-Ai; Wed, 15 May 2024 04:28:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79wF-0002jX-Vz
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:40 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79wD-00078x-CF
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715761477; x=1747297477;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=BdHAZyQKJuGjQWqZcdFKJFkJUkIYl5OLSP3d97qMKJE=;
- b=DFgZxu/5MTH2QYqJ/BTuoCMlc0xJKGhzXfNFkFqHDOKr1gp7JKUU88Z5
- z/RXujOa4koxATXVEeekj4NUo/miNdH4W5DfiQZP/ZLRs//uHSMC/a8xQ
- KG/Xug5zHPothK1aur1/DXuSBXFm3D9xq2vaVT03u7sbO32IVT1urgOUf
- 0O65WsSI6NidegWZ151MTqQTJXy/lyFxI1pxNzQerP3s0DiyHXF+wx9E4
- UetQWnH51hwlDDo08Ge8CHAxnZnW37ClQHWKzDG7JS1y5sMcWOefLaEKJ
- fWNY0IV84f0FoTt1aS0XB/ZCcPC4GggiG85gx9Xhlkq80qnWJGFSHlr7i g==;
-X-CSE-ConnectionGUID: 0QC4/gXtSJO9iqRyQ3iBMg==
-X-CSE-MsgGUID: L6YtgqXnROqIKkQCQyjzRQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961579"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961579"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:24:21 -0700
-X-CSE-ConnectionGUID: Y4kqdQc5Sg2Sm8czTXt5yg==
-X-CSE-MsgGUID: Nan8b20KT2KU0oBwkNA+aA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396385"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:24:19 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 16/16] vfio/pci-quirks: Make vfio_add_*_cap() return bool
-Date: Wed, 15 May 2024 16:20:41 +0800
-Message-Id: <20240515082041.556571-17-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240515082041.556571-1-zhenzhong.duan@intel.com>
-References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1s79zy-0003kw-7N
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:28:30 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1s79zu-0000d0-VG
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:28:30 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxN+kLckRmUf4MAA--.19317S3;
+ Wed, 15 May 2024 16:27:56 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id AQAAf8DxsFUIckRmREMgAA--.8S3; 
+ Wed, 15 May 2024 16:27:54 +0800 (CST)
+Subject: Re: [PATCH v2 0/6] hw/loongarch: Refine numa memory map
+To: Bibo Mao <maobibo@loongson.cn>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240507034904.2391129-1-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <5b38ce4d-7eed-d4e3-80f6-98e5ca2c41e0@loongson.cn>
+Date: Wed, 15 May 2024 16:27:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20240507034904.2391129-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.18;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8DxsFUIckRmREMgAA--.8S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7ZrWUWFWxXr1fCr4UXrWkuFX_yoW8Xr45p3
+ ySvF15Kr48tF9xAr1fA3s7WF13tr1xK3ZrXFy2vFykCr43Ary8ur1IqF90yF97J34rJr10
+ 9F18KwnrWa1UJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.127,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,184 +79,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is to follow the coding standand in qapi/error.h to return bool
-for bool-valued functions.
+在 2024/5/7 上午11:48, Bibo Mao 写道:
+> One LoongArch virt machine platform, there is limitation for memory
+> map information. The minimum memory size is 256M and minimum memory
+> size for numa node0 is 256M also. With qemu numa qtest, it is possible
+> that memory size of numa node0 is 128M.
+>
+> Limitations for minimum memory size for both total memory and numa
+> node0 is removed here, including acpi srat table, fadt memory map table
+> and fw_cfg memory map table.
+>
+> Also remove numa node about memory region, there is only low memory
+> region and how memory region.
+>
+Hi,  This series need rebase.
 
-Include below functions:
-vfio_add_virt_caps()
-vfio_add_nv_gpudirect_cap()
-vfio_add_vmd_shadow_cap()
+And  for this series.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/vfio/pci.h        |  2 +-
- hw/vfio/pci-quirks.c | 42 +++++++++++++++++++-----------------------
- hw/vfio/pci.c        |  3 +--
- 3 files changed, 21 insertions(+), 26 deletions(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index f158681072..bf67df2fbc 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -212,7 +212,7 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr);
- void vfio_bar_quirk_exit(VFIOPCIDevice *vdev, int nr);
- void vfio_bar_quirk_finalize(VFIOPCIDevice *vdev, int nr);
- void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev);
--int vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
-+bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
- void vfio_quirk_reset(VFIOPCIDevice *vdev);
- VFIOQuirk *vfio_quirk_alloc(int nr_mem);
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index ca27917159..39dae72497 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1536,7 +1536,7 @@ static bool is_valid_std_cap_offset(uint8_t pos)
-             pos <= (PCI_CFG_SPACE_SIZE - PCI_CAP_SIZEOF));
- }
- 
--static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
- {
-     ERRP_GUARD();
-     PCIDevice *pdev = &vdev->pdev;
-@@ -1545,18 +1545,18 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-     uint8_t tmp;
- 
-     if (vdev->nv_gpudirect_clique == 0xFF) {
--        return 0;
-+        return true;
-     }
- 
-     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID)) {
-         error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid device vendor");
--        return -EINVAL;
-+        return false;
-     }
- 
-     if (pci_get_byte(pdev->config + PCI_CLASS_DEVICE + 1) !=
-         PCI_BASE_CLASS_DISPLAY) {
-         error_setg(errp, "NVIDIA GPUDirect Clique ID: unsupported PCI class");
--        return -EINVAL;
-+        return false;
-     }
- 
-     /*
-@@ -1572,7 +1572,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-                 vdev->config_offset + PCI_CAPABILITY_LIST);
-     if (ret != 1 || !is_valid_std_cap_offset(tmp)) {
-         error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
--        return -EINVAL;
-+        return false;
-     }
- 
-     do {
-@@ -1590,13 +1590,13 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-         pos = 0xD4;
-     } else {
-         error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid config space");
--        return -EINVAL;
-+        return false;
-     }
- 
-     ret = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, 8, errp);
-     if (ret < 0) {
-         error_prepend(errp, "Failed to add NVIDIA GPUDirect cap: ");
--        return ret;
-+        return false;
-     }
- 
-     memset(vdev->emulated_config_bits + pos, 0xFF, 8);
-@@ -1608,7 +1608,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-     pci_set_byte(pdev->config + pos++, vdev->nv_gpudirect_clique << 3);
-     pci_set_byte(pdev->config + pos, 0);
- 
--    return 0;
-+    return true;
- }
- 
- /*
-@@ -1629,7 +1629,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-  */
- #define VMD_SHADOW_CAP_VER 1
- #define VMD_SHADOW_CAP_LEN 24
--static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
- {
-     ERRP_GUARD();
-     uint8_t membar_phys[16];
-@@ -1639,7 +1639,7 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
-           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x467F) ||
-           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x4C3D) ||
-           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x9A0B))) {
--        return 0;
-+        return true;
-     }
- 
-     ret = pread(vdev->vbasedev.fd, membar_phys, 16,
-@@ -1647,14 +1647,14 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
-     if (ret != 16) {
-         error_report("VMD %s cannot read MEMBARs (%d)",
-                      vdev->vbasedev.name, ret);
--        return -EFAULT;
-+        return false;
-     }
- 
-     ret = pci_add_capability(&vdev->pdev, PCI_CAP_ID_VNDR, pos,
-                              VMD_SHADOW_CAP_LEN, errp);
-     if (ret < 0) {
-         error_prepend(errp, "Failed to add VMD MEMBAR Shadow cap: ");
--        return ret;
-+        return false;
-     }
- 
-     memset(vdev->emulated_config_bits + pos, 0xFF, VMD_SHADOW_CAP_LEN);
-@@ -1664,22 +1664,18 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
-     pci_set_long(vdev->pdev.config + pos, 0x53484457); /* SHDW */
-     memcpy(vdev->pdev.config + pos + 4, membar_phys, 16);
- 
--    return 0;
-+    return true;
- }
- 
--int vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp)
- {
--    int ret;
--
--    ret = vfio_add_nv_gpudirect_cap(vdev, errp);
--    if (ret) {
--        return ret;
-+    if (!vfio_add_nv_gpudirect_cap(vdev, errp)) {
-+        return false;
-     }
- 
--    ret = vfio_add_vmd_shadow_cap(vdev, errp);
--    if (ret) {
--        return ret;
-+    if (!vfio_add_vmd_shadow_cap(vdev, errp)) {
-+        return false;
-     }
- 
--    return 0;
-+    return true;
- }
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 15823c359a..1254650d4a 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2194,8 +2194,7 @@ static bool vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
-         vdev->emulated_config_bits[PCI_CAPABILITY_LIST] = 0xff;
-         vdev->emulated_config_bits[PCI_STATUS] |= PCI_STATUS_CAP_LIST;
- 
--        ret = vfio_add_virt_caps(vdev, errp);
--        if (ret) {
-+        if (!vfio_add_virt_caps(vdev, errp)) {
-             return false;
-         }
-     }
--- 
-2.34.1
+Thanks.
+Song Gao
+> ---
+> v1 ... v2:
+>    1. Refresh the patch based on the latest qemu version, solve the
+> confliction issue.
+>    2. Add numa test case for loongarch system.
+> ---
+> Bibo Mao (6):
+>    hw/loongarch: Refine acpi srat table for numa memory
+>    hw/loongarch: Refine fadt memory table for numa memory
+>    hw/loongarch: Refine fwcfg memory map
+>    hw/loongarch: Refine system dram memory region
+>    hw/loongarch: Remove minimum and default memory size
+>    tests/qtest: Add numa test for loongarch system
+>
+>   hw/loongarch/acpi-build.c |  58 +++++++------
+>   hw/loongarch/virt.c       | 167 +++++++++++++++++++++++++++-----------
+>   tests/qtest/meson.build   |   2 +
+>   3 files changed, 154 insertions(+), 73 deletions(-)
+>
+>
+> base-commit: 248f6f62df073a3b4158fd0093863ab885feabb5
 
 
