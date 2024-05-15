@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9265A8C667B
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 14:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 325598C6681
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 14:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7E50-0005f1-6j; Wed, 15 May 2024 08:49:58 -0400
+	id 1s7E6k-0008En-LL; Wed, 15 May 2024 08:51:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7E4t-0005e3-Fc
- for qemu-devel@nongnu.org; Wed, 15 May 2024 08:49:51 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s7E6d-0008C5-Gn
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 08:51:40 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7E4r-0008G5-Ma
- for qemu-devel@nongnu.org; Wed, 15 May 2024 08:49:51 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4201986d60aso19733965e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 05:49:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715777386; x=1716382186; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bxkJWXn4UifvuoUJNGrrUHorxs2wb6wm5taOuXtthuc=;
- b=CkugSKsAG8gI6nwXE7oFXUC9Zm5j3CeQKvwtq8R2cX8UlpKsRpGQdIlo3H0EfmSaup
- ErUTm8npSQGgsFRPtgQi08YalsfTe7Ig3H4aqakzSR5zr1/BLCOClgDnQQ466ZF98Abo
- Mn7U8fD4JeWAbBJ016rvLEHtnrgpStJp5nBiZZEfIq1vKGNct9YHwO60N6NnDWzFNAKT
- UkVmYwt6KZJkTeJRVZxKziF8/v41Y/8cl991HO1kWeRr6YOUF2GLCStrDuAvSwO8UjhE
- Og6yGz59P49V+oRHL8QHGLxzwmr66gmlOyr2VRnNxTZXrdIpNMCLEqO023nvM66RBT6o
- gssQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715777386; x=1716382186;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bxkJWXn4UifvuoUJNGrrUHorxs2wb6wm5taOuXtthuc=;
- b=FZ8OKrHMag6HTkykDgdEFBjPt+ITlOqnv9PML3rrJXnNZUKEJwkw+6JWyCFs8xtLiC
- +zf5mD7zzEgkTTSemwDbWY2x200h7OLMtjsA6rDkOpqoIEibS1kJWxEF3gMx8ktMkDj5
- V19ptS6hVce60woqHSFbbg+mXTNVyV5dcDz2N5QFGjWcUZGZ+qDVkmHwp4WTbAwWLiEC
- 6rRsjXZQFMLqyeX5VsxrCEoEDfADXghBtt77Q4L02uu34yRg+m5710ZVea2EH8z6nbZ0
- 7djDjWSBgJDh+7ySFd938I6EA+q0bQSpIcjIIL2EIUeZuBXiJW4p7oNacXOlCVsfWw6v
- CcRg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVXx7evQR8uh33JuXlXKOK5k/H+/L5IllCOqtFASXMUooNHKTjl6MR/wQXrcwfKSQERjiTuEuQSOaqqOAC25N4qrmy9VEY=
-X-Gm-Message-State: AOJu0YzDlksm1IxR1ttNc42+ka9//ytsJ8gTFwP9Ny62eJzbSGvM6775
- RNWlaNGysRwt4nm4luja97bWUSvuwZGxlpUcO9cxOAGckQifjmh74KyZMliLi2k=
-X-Google-Smtp-Source: AGHT+IFZUoB1vJbBw1ksuXhHminYzEplzFhyS8CQB1/camkRP9URUNwYBxfJZA3Ig/avZz/n9/HU9w==
-X-Received: by 2002:a05:600c:45c5:b0:41b:a301:f2f9 with SMTP id
- 5b1f17b1804b1-41fead6d069mr112009335e9.39.1715777386194; 
- Wed, 15 May 2024 05:49:46 -0700 (PDT)
-Received: from [10.1.2.72] ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbf08sm16397191f8f.96.2024.05.15.05.49.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 05:49:45 -0700 (PDT)
-Message-ID: <42e47d17-1d49-43e8-abd6-76abdcb159dc@linaro.org>
-Date: Wed, 15 May 2024 14:49:44 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s7E6a-0000P2-NM
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 08:51:39 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 46A3F33B66;
+ Wed, 15 May 2024 12:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1715777495; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TRH6Sy3SrzzmsahQIZ9irQOyDIkKnhQ4q45eVCgcnAw=;
+ b=svJzNdxSjjHnoVsP0sbIguyGz3oNtF+mNR8d1rT+JSptFpLzkW7qndw0bhsiNDLhjo/WHF
+ mZNPkV97tZBq0Ke5H2liUAuL+Qu93WCCmEXAis/FWDa2KT6HqhOpydFflBi/coHMsSKiaw
+ l2e/2/MBTix5OFCUEhfr0OHXCmRBaY0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1715777495;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TRH6Sy3SrzzmsahQIZ9irQOyDIkKnhQ4q45eVCgcnAw=;
+ b=fI6Q/frPEVXPR2TfP95WHRl1aKRTyAY0gz6BvOJJNGcgMxb1Ueu4frXn4+8vjycaSkbenE
+ J90VdrMpxcv6c8AQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1715777495; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TRH6Sy3SrzzmsahQIZ9irQOyDIkKnhQ4q45eVCgcnAw=;
+ b=svJzNdxSjjHnoVsP0sbIguyGz3oNtF+mNR8d1rT+JSptFpLzkW7qndw0bhsiNDLhjo/WHF
+ mZNPkV97tZBq0Ke5H2liUAuL+Qu93WCCmEXAis/FWDa2KT6HqhOpydFflBi/coHMsSKiaw
+ l2e/2/MBTix5OFCUEhfr0OHXCmRBaY0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1715777495;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TRH6Sy3SrzzmsahQIZ9irQOyDIkKnhQ4q45eVCgcnAw=;
+ b=fI6Q/frPEVXPR2TfP95WHRl1aKRTyAY0gz6BvOJJNGcgMxb1Ueu4frXn4+8vjycaSkbenE
+ J90VdrMpxcv6c8AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4666136A8;
+ Wed, 15 May 2024 12:51:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id pPCwItavRGYWeQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 15 May 2024 12:51:34 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
+ berrange@redhat.com, Claudio Fontana <cfontana@suse.de>, Jim Fehlig
+ <jfehlig@suse.com>, Eric Blake <eblake@redhat.com>
+Subject: Re: [PATCH 4/9] migration: Add direct-io parameter
+In-Reply-To: <87v83fwnlp.fsf@pond.sub.org>
+References: <20240426142042.14573-1-farosas@suse.de>
+ <20240426142042.14573-5-farosas@suse.de> <ZjUnghSvdy-wWtnN@x1n>
+ <871q6ioc2r.fsf@suse.de> <ZjVUKCafjreLtLmm@x1n>
+ <87ttj0zdp0.fsf@pond.sub.org> <87r0e4e0ox.fsf@suse.de>
+ <87v83fwnlp.fsf@pond.sub.org>
+Date: Wed, 15 May 2024 09:51:32 -0300
+Message-ID: <87o797dyqz.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] physmem: allow debug writes to MMIO regions
-To: Perry Hung <perry@mosi.io>, qemu-devel@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: pbonzini@redhat.com, peterx@redhat.com, david@redhat.com,
- Andreas Rasmusson <andreas.rasmusson@gmail.com>
-References: <20240513233305.2975295-1-perry@mosi.io>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240513233305.2975295-1-perry@mosi.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MIME_TRACE(0.00)[0:+]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCVD_TLS_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
+ MISSING_XM_UA(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FROM_EQ_ENVFROM(0.00)[]; TO_DN_SOME(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,55 +118,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Perry,
+Markus Armbruster <armbru@redhat.com> writes:
 
-On 14/5/24 01:33, Perry Hung wrote:
-> Writes from GDB to memory-mapped IO regions are currently silently
-> dropped. cpu_memory_rw_debug() calls address_space_write_rom(), which
-> calls address_space_write_rom_internal(), which ignores all non-ram/rom
-> regions.
-> 
-> Add a check for MMIO regions and direct those to address_space_rw()
-> instead.
-> 
+> Fabiano Rosas <farosas@suse.de> writes:
+>
+>> Markus Armbruster <armbru@redhat.com> writes:
+>>
+>>> Peter Xu <peterx@redhat.com> writes:
+>>>
+>>>> On Fri, May 03, 2024 at 05:49:32PM -0300, Fabiano Rosas wrote:
+>>>>> Peter Xu <peterx@redhat.com> writes:
+>>>>> 
+>>>>> > On Fri, Apr 26, 2024 at 11:20:37AM -0300, Fabiano Rosas wrote:
+>>>>> >> Add the direct-io migration parameter that tells the migration code to
+>>>>> >> use O_DIRECT when opening the migration stream file whenever possible.
+>>>>> >> 
+>>>>> >> This is currently only used with the mapped-ram migration that has a
+>>>>> >> clear window guaranteed to perform aligned writes.
+>>>>> >> 
+>>>>> >> Acked-by: Markus Armbruster <armbru@redhat.com>
+>>>>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>>>>> >> ---
+>>>>> >>  include/qemu/osdep.h           |  2 ++
+>>>>> >>  migration/migration-hmp-cmds.c | 11 +++++++++++
+>>>>> >>  migration/options.c            | 30 ++++++++++++++++++++++++++++++
+>>>>> >>  migration/options.h            |  1 +
+>>>>> >>  qapi/migration.json            | 18 +++++++++++++++---
+>>>>> >>  util/osdep.c                   |  9 +++++++++
+>>>>> >>  6 files changed, 68 insertions(+), 3 deletions(-)
+>>>>> >> 
+>>>>> >> diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+>>>>> >> index c7053cdc2b..645c14a65d 100644
+>>>>> >> --- a/include/qemu/osdep.h
+>>>>> >> +++ b/include/qemu/osdep.h
+>>>>> >> @@ -612,6 +612,8 @@ int qemu_lock_fd_test(int fd, int64_t start, int64_t len, bool exclusive);
+>>>>> >>  bool qemu_has_ofd_lock(void);
+>>>>> >>  #endif
+>>>>> >>  
+>>>>> >> +bool qemu_has_direct_io(void);
+>>>>> >> +
+>>>>> >>  #if defined(__HAIKU__) && defined(__i386__)
+>>>>> >>  #define FMT_pid "%ld"
+>>>>> >>  #elif defined(WIN64)
+>>>>> >> diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+>>>>> >> index 7e96ae6ffd..8496a2b34e 100644
+>>>>> >> --- a/migration/migration-hmp-cmds.c
+>>>>> >> +++ b/migration/migration-hmp-cmds.c
+>>>>> >> @@ -397,6 +397,13 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+>>>>> >>          monitor_printf(mon, "%s: %s\n",
+>>>>> >>              MigrationParameter_str(MIGRATION_PARAMETER_MODE),
+>>>>> >>              qapi_enum_lookup(&MigMode_lookup, params->mode));
+>>>>> >> +
+>>>>> >> +        if (params->has_direct_io) {
+>>>>> >> +            monitor_printf(mon, "%s: %s\n",
+>>>>> >> +                           MigrationParameter_str(
+>>>>> >> +                               MIGRATION_PARAMETER_DIRECT_IO),
+>>>>> >> +                           params->direct_io ? "on" : "off");
+>>>>> >> +        }
+>>>>> >
+>>>>> > This will be the first parameter to optionally display here.  I think it's
+>>>>> > a sign of misuse of has_direct_io field..
+>>>
+>>> Yes.  For similar existing parameters, we do
+>>>
+>>>                assert(params->has_FOO);
+>>>                monitor_printf(mon, "%s: '%s'\n",
+>>>                               MigrationParameter_str(MIGRATION_PARAMETER_FOO),
+>>>                               ... params->FOO as string ...)
+>>>
+>>>>> > IMHO has_direct_io should be best to be kept as "whether direct_io field is
+>>>>> > valid" and that's all of it.  It hopefully shouldn't contain more
+>>>>> > information than that, or otherwise it'll be another small challenge we
+>>>>> > need to overcome when we can remove all these has_* fields, and can also be
+>>>>> > easily overlooked.
+>>>>> 
+>>>>> I don't think I understand why we have those has_* fields. I thought my
+>>>>> usage of 'params->has_direct_io = qemu_has_direct_io()' was the correct
+>>>>> one, i.e. checking whether QEMU has any support for that parameter. Can
+>>>>> you help me out here?
+>>>>
+>>>> Here params is the pointer to "struct MigrationParameters", which is
+>>>> defined in qapi/migration.json.  And we have had "has_*" only because we
+>>>> allow optional fields with asterisks:
+>>>>
+>>>>   { 'struct': 'MigrationParameters',
+>>>>     'data': { '*announce-initial': 'size',
+>>>>               ...
+>>>>               } }
+>>>>
+>>>> So that's why it better only means "whether this field existed", because
+>>>> it's how it is defined.
+>>>>
+>>>> IIRC we (or say, Markus) used to have some attempts deduplicates those
+>>>> *MigrationParameter* things, and if success we have chance to drop has_*
+>>>> fields (in which case we simply always have them; that "has_" makes more
+>>>> sense only if in a QMP session to allow user only specify one or more
+>>>> things if not all).
+>>>
+>>> qapi/migration.json:
+>>>
+>>>     ##
+>>>     # @MigrationParameters:
+>>>     #
+>>> --> # The optional members aren't actually optional.
+>>>     #
+>>>
+>>> In other words, the has_FOO generated for the members of
+>>> MigrationParameters must all be true.
+>>>
+>>> These members became optional when we attempted to de-duplicate
+>>> MigrationParameters and MigrateSetParameters, but failed (see commit
+>>> de63ab61241 "migrate: Share common MigrationParameters struct" and
+>>> commit 1bda8b3c695 "migration: Unshare MigrationParameters struct for
+>>> now").
+>>
+>> So what's the blocker for merging MigrationSetParameters and
+>> MigrationParameters? Just the tls_* options?
+>
+> I believe the latest attempt was Peter's "[PATCH v3 0/4] qapi/migration:
+> Dedup migration parameter objects and fix tls-authz crash" last
+> September.
 
-Reported-by: Andreas Rasmusson <andreas.rasmusson@gmail.com>
-BugLink: https://bugs.launchpad.net/qemu/+bug/1625216
+I had a vague memory of this, thanks for bringing it up. I'll go over
+that series and see what can be done.
 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/213
-> Signed-off-by: Perry Hung <perry@mosi.io>
-> ---
->   system/physmem.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 342b7a8fd4..013cdd2ab1 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -3508,7 +3508,10 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
->           if (l > len)
->               l = len;
->           phys_addr += (addr & ~TARGET_PAGE_MASK);
-> -        if (is_write) {
-> +        if (cpu_physical_memory_is_io(phys_addr)) {
-> +            res = address_space_rw(cpu->cpu_ases[asidx].as, phys_addr, attrs,
-> +                                   buf, l, is_write);
-> +        } else if (is_write) {
->               res = address_space_write_rom(cpu->cpu_ases[asidx].as, phys_addr,
->                                             attrs, buf, l);
->           } else {
+>
+> I can't recall offhand what exactly blocked its merge.  Suggest you read
+> the review thread[*], and if that leads to questions, ask them either in
+> replies to the old thread, or right here.
+>
+> One additional issue hasn't been discussed much so far, I think: merging
+> the two copies of the doc comments.  They are big and quite similar
+> (that's why we want to deduplicate), but they're not identical.  In
+> particular, MigrationSetParameters' doc comment talks more about
+> defaults.  That's because talking about defaults makes no sense
+> whatsoever for MigrationParameters (we do it anyway, of course, just
+> less).  Merging the two will require some careful word-smithing, and
+> perhaps some compromises on doc quality.
+>
 
-I wonder if we shouldn't be safer with a preliminary patch
-adding a 'can_do_io' boolean argument to cpu_memory_rw_debug()
-(updating the call sites), then this patch would become:
+I was playing with this yesterday and it occurred to me as well that the
+docs are not quite the same. Maybe we can have a general description
+common for both use-cases and a few extra words for what happens
+differently when writing vs. reading.
 
-     if (can_do_io && cpu_physical_memory_is_io(phys_addr)) {
-
-One of my worries for example is if someone accidently insert
-a breakpoint at a I/O address, the device might change its
-state and return MEMTX_OK which is confusing.
-
-Regards,
-
-Phil.
+>
+>
+> [*] https://lore.kernel.org/qemu-devel/20230905162335.235619-1-peterx@redhat.com/
 
