@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0F48C623B
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 714878C622A
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 09:54:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79SI-0005EV-9h; Wed, 15 May 2024 03:53:42 -0400
+	id 1s79S3-0004eg-5v; Wed, 15 May 2024 03:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s79S9-0004zk-02
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:33 -0400
+ id 1s79Rv-0004Ty-HM
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:19 -0400
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s79Rq-0001dX-3N
- for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:29 -0400
+ id 1s79Rq-0001de-4Q
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 03:53:16 -0400
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-41ffad2426eso48855545e9.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:53:09 -0700 (PDT)
+ 5b1f17b1804b1-41fd5dc04e2so39976405e9.3
+ for <qemu-devel@nongnu.org>; Wed, 15 May 2024 00:53:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715759587; x=1716364387; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715759588; x=1716364388; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eL11UZGpeVEq4VOMmX63mOyK3p1fvPoFDCh9Izq0OCE=;
- b=YqW1ne0wbfEmTAQ6YGipyOh40h3jYChNGgRhu+GhMQRvEpTVQDW2mxy/8hxYmmZNKf
- 11ysBKHCwSLo3rkiuEN1/gh8jhOZSlCUM+OLtbck4Fpasoi2d+OqQlLwUPB2PPmyU6fK
- 1jWrr8G5WtIuyWiZ3GvaLZq+e1BUOnfyOIF8+dAlqgOTLgBrYFRn4D4KUM7HSu3I1t1t
- p7isAXYXhtU2rpULsw1hhoi5bRWZQnjkN01OUwKOeiMifqZZqM/xSuQk44kXpH7DlfI6
- aW1KDhpnbDNVtf560UXXl+ivVuNLOIXaf1Tw1i1I9i86MgdN220dlSvGR7ZCgUCiLTk6
- AATA==
+ bh=+OfPp6+r7Zf3NKTXpMRuMvIJCtMgZRIBNwDS9FcnyZQ=;
+ b=WMqI9hQGNOVFL0sLwB/CM+TcgedPegvmOgyjvW/8qhuYztSmSuLSSC79zMPbxf1Qmn
+ 7TOOrl7uUOFEMVOQpOpJEq0YHqd3cTppBi+CGu0IjDtrk9R26hkYO1PDAyc9Dp6lVlMf
+ VvN3gT4bQ5TzMr8M4QH1gNnBltFNkacVELe6gQVUuEBb4SL1s3mKLMVKVA1lj7cKEtbX
+ F6pSM2dP1YA10eMaPUE3IN7brdjwBTDomMwsXV7ZKfROnDohbRSI0QlSlkbgzR2mIU5S
+ R0FK1m0Ae4u30e44CfnKAsGKBtJbewHuar5FBheCNqtcvr/xXN39WtnEitFfp7sxLk7+
+ XxRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715759587; x=1716364387;
+ d=1e100.net; s=20230601; t=1715759588; x=1716364388;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eL11UZGpeVEq4VOMmX63mOyK3p1fvPoFDCh9Izq0OCE=;
- b=D02rpOmMD86Pp6pnvmlil87dWm/9tNVFRFeSAYwbDArYdx/8R1VSVcOVBUiahQnQG6
- N6zoOVdhNx5+3b+JiKC/a3gL0uFd/UVfzgr2atH/8rIjbx2F30vHi98LILBbOVfq3TLP
- SZhooZYwLK9yMrtagByO8glmPnaJBAIID8e3QYJoQPaClc2oWKzRwZ/U5V6HHN6gb0UO
- D/NXGePrI6b4gFZXI+foHRarwFxKcJs0ScVsgkorpJE/2t1IEsV7kg4MlBph/aNV1bo5
- 7gRlKZqkDI1qW2WAucUaomFCA0DuIX9bfqJ0UaPTidtt6tvH6K3gieof4ig55hfnagth
- L1rQ==
-X-Gm-Message-State: AOJu0Yzh8QEPJNxrli1+F+J7OyDXWwQvKiKZAZwK3GKRdVqL2vznRAMJ
- tniluRRKtP1gNkW+XJ7MJXHp23mwsmk1Pvk6i3Ic990u/pAc1+StYTpj88fvj5EPJWwmRAnaaeg
- 3abI=
-X-Google-Smtp-Source: AGHT+IFWfjLXa9LYDR5qQr8r+P6kEXiByx6F3yXEGMlFhXPunmGheVa47iBiiQ8Xmr+FcQDvAyd7yA==
-X-Received: by 2002:a7b:cbc2:0:b0:41a:225f:becc with SMTP id
- 5b1f17b1804b1-41feaa44406mr139063775e9.21.1715759587325; 
+ bh=+OfPp6+r7Zf3NKTXpMRuMvIJCtMgZRIBNwDS9FcnyZQ=;
+ b=f/Rz2o+e7z2eoAAbVFFb55D7b0cSY89YRGI3va45JXYoHF5l8EZ6jSnn9mUF0zyEMj
+ K2LG9az3yZ1SoKdFBTtoKXLMe7Byeug0QJ+sUyBDwBnvkAm0hgD3iJOM/yUptIgXNUDZ
+ nDIY60HvnjCWOp0U/UvEUej8pBXHcDQspum2JEO2m2R/nWjblB72N2JXGxefB9IVWWJf
+ /dS3Yj7Xd2q/vMRx8kRB8mW5nA9l2zsJiq0R+7C2hBkqhG1LWLo0JDrhE2kVB6fvBJuu
+ qQ9rWVXE5dy+JwUKTU2kVaotNee1qgdnZa494/9e52rqb5Y9/NKizdg1c9BajqY/e6KI
+ FilQ==
+X-Gm-Message-State: AOJu0Ywq8SV8/3RHOvhbsCHYP1pEOjP6hw8fuAcCLau4Idua7Y/KH1WN
+ cb9dyfAgUV/osSxcnNbVLsnQ7P6LAxMKzy3OvQr+PIvgT2KuSoJ9WHFE91M5/GEotlJ2MHp/G/M
+ luzc=
+X-Google-Smtp-Source: AGHT+IEQlDkr5WuAu1lurJV8ROi5DlydtsypbGiyYlSDnqLyo52JUi9WmuPvuwcqZPD0Q2Z3sdWiHA==
+X-Received: by 2002:a05:600c:5718:b0:41b:3c4c:211b with SMTP id
+ 5b1f17b1804b1-41feab42a67mr102889535e9.22.1715759587870; 
  Wed, 15 May 2024 00:53:07 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41fccee9292sm222611855e9.37.2024.05.15.00.53.06
+ 5b1f17b1804b1-41fccee9292sm222611855e9.37.2024.05.15.00.53.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 15 May 2024 00:53:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: "Edgar E . Iglesias" <edgar.iglesias@amd.com>,
+Cc: Alistair Francis <alistair.francis@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 28/34] target/cris: Use cris_fetch in translate_v10.c.inc
-Date: Wed, 15 May 2024 09:52:41 +0200
-Message-Id: <20240515075247.68024-29-richard.henderson@linaro.org>
+Subject: [PULL 29/34] target/riscv: Use translator_ld* for everything
+Date: Wed, 15 May 2024 09:52:42 +0200
+Message-Id: <20240515075247.68024-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515075247.68024-1-richard.henderson@linaro.org>
 References: <20240515075247.68024-1-richard.henderson@linaro.org>
@@ -75,7 +75,8 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,98 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/cris/translate.c         |  1 -
- target/cris/translate_v10.c.inc | 30 +++++++++---------------------
- 2 files changed, 9 insertions(+), 22 deletions(-)
+ target/riscv/translate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index bb2d6612ba..a30c67eb07 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -29,7 +29,6 @@
+diff --git a/target/riscv/translate.c b/target/riscv/translate.c
+index c999e942e1..2c27fd4ce1 100644
+--- a/target/riscv/translate.c
++++ b/target/riscv/translate.c
+@@ -20,7 +20,6 @@
+ #include "qemu/log.h"
+ #include "cpu.h"
  #include "tcg/tcg-op.h"
- #include "exec/helper-proto.h"
- #include "mmu.h"
 -#include "exec/cpu_ldst.h"
- #include "exec/translator.h"
- #include "crisv32-decode.h"
- #include "qemu/qemu-print.h"
-diff --git a/target/cris/translate_v10.c.inc b/target/cris/translate_v10.c.inc
-index 73fc27c15d..c15ff47505 100644
---- a/target/cris/translate_v10.c.inc
-+++ b/target/cris/translate_v10.c.inc
-@@ -165,20 +165,7 @@ static int dec10_prep_move_m(CPUCRISState *env, DisasContext *dc,
+ #include "exec/exec-all.h"
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+@@ -1082,7 +1081,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
+     CPUState *cpu = ctx->cs;
+     CPURISCVState *env = cpu_env(cpu);
  
-     /* Load [$rs] onto T1.  */
-     if (is_imm) {
--        if (memsize != 4) {
--            if (s_ext) {
--                if (memsize == 1)
--                    imm = cpu_ldsb_code(env, dc->pc + 2);
--                else
--                    imm = cpu_ldsw_code(env, dc->pc + 2);
--            } else {
--                if (memsize == 1)
--                    imm = cpu_ldub_code(env, dc->pc + 2);
--                else
--                    imm = cpu_lduw_code(env, dc->pc + 2);
--            }
--        } else
--            imm = cpu_ldl_code(env, dc->pc + 2);
-+        imm = cris_fetch(env, dc, dc->pc + 2, memsize, s_ext);
+-    return cpu_ldl_code(env, pc);
++    return translator_ldl(env, &ctx->base, pc);
+ }
  
-         tcg_gen_movi_tl(dst, imm);
+ /* Include insn module translation function */
+@@ -1243,7 +1242,8 @@ static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+             unsigned page_ofs = ctx->base.pc_next & ~TARGET_PAGE_MASK;
  
-@@ -929,10 +916,11 @@ static int dec10_dip(CPUCRISState *env, DisasContext *dc)
-     LOG_DIS("dip pc=%x opcode=%d r%d r%d\n",
-               dc->pc, dc->opcode, dc->src, dc->dst);
-     if (dc->src == 15) {
--        imm = cpu_ldl_code(env, dc->pc + 2);
-+        imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
-         tcg_gen_movi_tl(cpu_PR[PR_PREFIX], imm);
--        if (dc->postinc)
-+        if (dc->postinc) {
-             insn_len += 4;
-+        }
-         tcg_gen_addi_tl(cpu_R[15], cpu_R[15], insn_len - 2);
-     } else {
-         gen_load(dc, cpu_PR[PR_PREFIX], cpu_R[dc->src], 4, 0);
-@@ -1095,10 +1083,10 @@ static unsigned int dec10_ind(CPUCRISState *env, DisasContext *dc)
-             if (dc->src == 15) {
-                 LOG_DIS("jump.%d %d r%d r%d direct\n", size,
-                          dc->opcode, dc->src, dc->dst);
--                imm = cpu_ldl_code(env, dc->pc + 2);
--                if (dc->mode == CRISV10_MODE_AUTOINC)
-+                imm = cris_fetch(env, dc, dc->pc + 2, size, 0);
-+                if (dc->mode == CRISV10_MODE_AUTOINC) {
-                     insn_len += size;
--
-+                }
-                 c = tcg_constant_tl(dc->pc + insn_len);
-                 t_gen_mov_preg_TN(dc, dc->dst, c);
-                 dc->jmp_pc = imm;
-@@ -1164,7 +1152,7 @@ static unsigned int dec10_ind(CPUCRISState *env, DisasContext *dc)
-         case CRISV10_IND_BCC_M:
+             if (page_ofs > TARGET_PAGE_SIZE - MAX_INSN_LEN) {
+-                uint16_t next_insn = cpu_lduw_code(env, ctx->base.pc_next);
++                uint16_t next_insn =
++                    translator_lduw(env, &ctx->base, ctx->base.pc_next);
+                 int len = insn_len(next_insn);
  
-             cris_cc_mask(dc, 0);
--            simm = cpu_ldsw_code(env, dc->pc + 2);
-+            simm = cris_fetch(env, dc, dc->pc + 2, 2, 1);
-             simm += 4;
- 
-             LOG_DIS("bcc_m: b%s %x\n", cc_name(dc->cond), dc->pc + simm);
-@@ -1185,7 +1173,7 @@ static unsigned int crisv10_decoder(CPUCRISState *env, DisasContext *dc)
-     unsigned int insn_len = 2;
- 
-     /* Load a halfword onto the instruction register.  */
--    dc->ir = cpu_lduw_code(env, dc->pc);
-+    dc->ir = cris_fetch(env, dc, dc->pc, 2, 0);
- 
-     /* Now decode it.  */
-     dc->opcode   = EXTRACT_FIELD(dc->ir, 6, 9);
+                 if (!is_same_page(&ctx->base, ctx->base.pc_next + len - 1)) {
 -- 
 2.34.1
 
