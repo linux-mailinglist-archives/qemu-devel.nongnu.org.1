@@ -2,90 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895F68C6429
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 11:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5848C64C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 12:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7BFg-00047f-20; Wed, 15 May 2024 05:48:48 -0400
+	id 1s7BWI-0002yF-Sg; Wed, 15 May 2024 06:05:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7BFa-0003l8-30
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:48:42 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7BFY-0003ad-Fd
- for qemu-devel@nongnu.org; Wed, 15 May 2024 05:48:41 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-34ddc9fe497so4138106f8f.3
- for <qemu-devel@nongnu.org>; Wed, 15 May 2024 02:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715766519; x=1716371319; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bwDmf06pcSMv31kgM5n8pjeZgLxFisSiDJ6rGX6CzQo=;
- b=qnQb58ylWe9OsTizUFOLZOmdmNWtY8ZlAN1DTiP3WJ/mmfj1oTI5jZsOem7JXGNJYs
- UVahguyYnyvXnMIefsWVP0KzTZmR4g5KAJSQ7Fhp7ly1qrJbsgx+tHg8XhvTkGFEEctc
- E/zgEZYmepQvhmqtt5Y8CUgb1lY4LPRD0tFWAtX/K0oqEMwqKIIpsYrzI6iAll5WV4MJ
- gVN9MUM37FblAY98JJbiOqWW0nYm/HCnHkbf4Uee8DnmIcOWgkN+WZJ60BE+x8j19/Kk
- XONKy7FRK34gjXYyD56OW4ApkfYPNa3XpGs7yaLSGFC5s4J2JtvpCeeyR73RS6SBbi46
- sefw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715766519; x=1716371319;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bwDmf06pcSMv31kgM5n8pjeZgLxFisSiDJ6rGX6CzQo=;
- b=LrNqA9Qe6RpRaga7dS0e3U37+JgcglT7iVcqiEP+4Dav4J/MP8oUPhyzGgjNzJjS4e
- wzcAF7Q4xUpK6Nct+ZPbUyjXXDlbBMxBWVD8e9cDSq+ohzkxkbXtpzZAcOtjfBNm1CBM
- srDEP1l8i6MBY1GtcYZ2kninZxOM4A1UxVW47PBG6ql+SUozlGTPP+S2HKA8PWj4Z+jZ
- ViSY5fZoO9QL+EazttTOEIcj/CF2C1LIPNlpqhsZd5jJZNTVkHQZwRdA5taHTV9flth0
- vZi/oX+uv3Yx+n83ScLFK5wAYpL+rGSEnDDpXf7yk9mRczK7BXzLqGoD2+JlT+6YQxXS
- xQDg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZvC8ZMS6JMvWoRtCPNvHPjVVUzTNwE9xQMANx/ZzQcmkuP2gD0KPt81rWmQ4GE13PHNxTszaO1klf08Pu1JOZnX0WOss=
-X-Gm-Message-State: AOJu0Yzu9j3/bsClgeFI06wcAkRXeBF0X2XSzBbkGqoc3OKLmEQGiRzW
- 3yZKmfvsdqAWM0I01YNp5zXVZ+Ll2lDpxCOFMIvMdDtRGna5e3B+1ccRRKWq28E=
-X-Google-Smtp-Source: AGHT+IHUFiRL2zN9WIajlZRibYWfE+iDbmrGCNyaJ8tAJxvMeXjlh6cpqSxFreT20ELYQG+1tMHy+A==
-X-Received: by 2002:a5d:6952:0:b0:34d:b40e:e65d with SMTP id
- ffacd0b85a97d-3504a739495mr14907190f8f.42.1715766519081; 
- Wed, 15 May 2024 02:48:39 -0700 (PDT)
-Received: from [10.91.1.102] ([149.14.240.163])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3502bbbbff7sm15966916f8f.101.2024.05.15.02.48.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 May 2024 02:48:38 -0700 (PDT)
-Message-ID: <e7b9ebdd-cdc4-4d5f-b7f7-2c6e6073e0ff@linaro.org>
-Date: Wed, 15 May 2024 11:48:37 +0200
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7BWG-0002vq-7L
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 06:05:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7BWE-0001kJ-4w
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 06:05:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715767553;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LlgPJlx0hNx/4u3ZBlyUxKUvU9bvckSVjUz4/zc6ZqM=;
+ b=bAMnOABRbO34XUu6qWPY1lCEN3oOiYC3gRRCGiyCBxREZco8MgeGORqlwgMQ/sA0LwLofl
+ WlYqPwjPBwfkqwAca8N2ZZozbeIE0KXQagJpEXfF5iEV3x4ojdgebflB4+D41VKv4hGvLv
+ c4Kkbh96AoXgKsBZYlZof5wLk1F0gIk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-Oc47N2dyMDSTLsb3coDC0Q-1; Wed, 15 May 2024 06:05:24 -0400
+X-MC-Unique: Oc47N2dyMDSTLsb3coDC0Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C49E5800CB1;
+ Wed, 15 May 2024 10:05:23 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2DAEC51BF;
+ Wed, 15 May 2024 10:05:22 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Dongwon Kim <dongwon.kim@intel.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH] ui/console: Only declare variable fence_fd when CONFIG_GBM is
+ defined
+Date: Wed, 15 May 2024 12:05:20 +0200
+Message-ID: <20240515100520.574383-1-clg@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/11] plugins: add new inline op STORE_U64
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20240514174253.694591-1-alex.bennee@linaro.org>
- <20240514174253.694591-6-alex.bennee@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240514174253.694591-6-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.974,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,23 +78,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/5/24 19:42, Alex Bennée wrote:
-> From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> 
-> This new operation can store an immediate u64 value to a given
-> scoreboard.
-> 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-> Message-Id: <20240502211522.346467-4-pierrick.bouvier@linaro.org>
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   include/qemu/plugin.h      |  1 +
->   include/qemu/qemu-plugin.h |  4 ++--
->   accel/tcg/plugin-gen.c     | 13 +++++++++++++
->   plugins/core.c             |  6 ++++++
->   4 files changed, 22 insertions(+), 2 deletions(-)
+This to avoid a build breakage :
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+../ui/gtk-egl.c: In function ‘gd_egl_draw’:
+../ui/gtk-egl.c:73:9: error: unused variable ‘fence_fd’ [-Werror=unused-variable]
+   73 |     int fence_fd;
+      |         ^~~~~~~~
+
+Fixes: fa6426805b12 ("ui/console: Use qemu_dmabuf_set_..() helpers instead")
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ ui/gtk-egl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 0473f689c915f8b2303cd9d11bc7d8336c2a85ba..9831c10e1bd58f76d8f803ad0a72d983adc3f490 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -68,9 +68,9 @@ void gd_egl_draw(VirtualConsole *vc)
+     GdkWindow *window;
+ #ifdef CONFIG_GBM
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
++    int fence_fd;
+ #endif
+     int ww, wh, ws;
+-    int fence_fd;
+ 
+     if (!vc->gfx.gls) {
+         return;
+-- 
+2.45.0
 
 
