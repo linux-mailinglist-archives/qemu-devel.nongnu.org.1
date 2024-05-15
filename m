@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D0E8C62C4
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA4D8C62BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 10:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s79w7-0002Gd-Dn; Wed, 15 May 2024 04:24:31 -0400
+	id 1s79wK-0002yB-W6; Wed, 15 May 2024 04:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79w5-0002F6-Er
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:29 -0400
+ id 1s79wF-0002jY-W0
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:40 -0400
 Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s79w3-0007B1-SG
- for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:29 -0400
+ id 1s79wB-00078z-UN
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 04:24:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715761467; x=1747297467;
+ t=1715761476; x=1747297476;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DTf3l3gNL+/MEzKemJXwdZjfqVeaFHkkSy2ozo0sBso=;
- b=EjSrBYibYu2+Z5kwUxMJahvutqIt3BQ5umI6qzk0i1v0/ZjA0w8pQTq7
- DpgdrEtT3OMyLGutSuFEc5LScJVGUcbodaoRv+90kWS/4loXgtwlHBQFT
- LMRlSIFIPDTrE9nP6/x4/sHjkaNTXiB1Ud9g2s6RDPI4hVMXQetY0OH6g
- YRcl5hqOfDxiMFemRvc/ajOeRvOo49crMe666LJbxrLLMwwwbFHHsZoyV
- PxwTiHNR7tSxNWDWS48DEZXgr7IbjMYSxkV0UuwNRdj/fJ4YDS+5dr0av
- vkgqrm5QYsjsMIzfbQG8QFde62iocxYq/EfbSuhBGcRcDS2VRj77TkVis Q==;
-X-CSE-ConnectionGUID: AFsgf+UEQbGM3J2xhpHW+A==
-X-CSE-MsgGUID: jR9IM7AcQ0G3cHK4FQ9LFw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961569"
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961569"
+ bh=mDjA7DC0v0StCa3vgu8vJHYyYIkvKHnGv9rk64Ck0mc=;
+ b=kwU1xkKqFyL6ZKNBNeBxP/HJFsbf2s6MtHNtqBhkHi4EX/YmKk/7ea+p
+ Bs1inh6TE1L636BhplwpboSuRY+4sqQYcr54BYss8aEdMtekcCKLCswE+
+ mp3yPCk+gnBijs5srepghsYXAin3sqc7Wpe9DgkjDImjE+ASi0WFl/eV9
+ xFRvZuhrWjcMWWPG4npDBo7PTtyTWxlYnaV8Nasj74Hng2fHGh0xp4ZmB
+ fFKx2wazoIr+OS4s+zOvb/jnnzpUQb/X28PsntaMTxhDU30MfbSQZrqJe
+ BmUngaN6zn34At8kfD4//UWT8Op8s/JbNUEruS9rjtS1GQ8IGxrzqZVyW Q==;
+X-CSE-ConnectionGUID: zBYzy5uxS7aoNm3498E7RQ==
+X-CSE-MsgGUID: Z6F+Y+0QRJmiFtYNqN1RbQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11961574"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="11961574"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:24:16 -0700
-X-CSE-ConnectionGUID: UCGlrDnUSgmk7QB8BHZCRg==
-X-CSE-MsgGUID: uxRQkFMZS/2N97n2PuWkTg==
+ 15 May 2024 01:24:18 -0700
+X-CSE-ConnectionGUID: 6nKQ7Co8R3OQyNioNyNVbQ==
+X-CSE-MsgGUID: 6XfXVEKeRyuVaGDRfYxeUA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396374"
+X-IronPort-AV: E=Sophos;i="6.08,161,1712646000"; d="scan'208";a="31396379"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 May 2024 01:24:15 -0700
+ 15 May 2024 01:24:17 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH 14/16] vfio/pci: Use g_autofree for vfio_region_info pointer
-Date: Wed, 15 May 2024 16:20:39 +0800
-Message-Id: <20240515082041.556571-15-zhenzhong.duan@intel.com>
+Subject: [PATCH 15/16] vfio/pci-quirks: Make vfio_pci_igd_opregion_init()
+ return bool
+Date: Wed, 15 May 2024 16:20:40 +0800
+Message-Id: <20240515082041.556571-16-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=198.175.65.18;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -80,35 +82,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pointer opregion is freed after vfio_pci_igd_opregion_init().
-Use 'g_autofree' to avoid the g_free() calls.
+This is to follow the coding standand in qapi/error.h to return bool
+for bool-valued functions.
 
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/pci.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/vfio/pci.h        | 6 +++---
+ hw/vfio/igd.c        | 3 +--
+ hw/vfio/pci-quirks.c | 8 ++++----
+ hw/vfio/pci.c        | 3 +--
+ 4 files changed, 9 insertions(+), 11 deletions(-)
 
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 7914f019d5..f158681072 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -227,9 +227,9 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+ 
+ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
+ 
+-int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+-                               struct vfio_region_info *info,
+-                               Error **errp);
++bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
++                                struct vfio_region_info *info,
++                                Error **errp);
+ 
+ void vfio_display_reset(VFIOPCIDevice *vdev);
+ bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index ffe57c5954..402fc5ce1d 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -502,8 +502,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     }
+ 
+     /* Setup OpRegion access */
+-    ret = vfio_pci_igd_opregion_init(vdev, opregion, &err);
+-    if (ret) {
++    if (!vfio_pci_igd_opregion_init(vdev, opregion, &err)) {
+         error_append_hint(&err, "IGD legacy mode disabled\n");
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         goto out;
+diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
+index 496fd1ee86..ca27917159 100644
+--- a/hw/vfio/pci-quirks.c
++++ b/hw/vfio/pci-quirks.c
+@@ -1169,8 +1169,8 @@ static void vfio_probe_rtl8168_bar2_quirk(VFIOPCIDevice *vdev, int nr)
+  * the table and to write the base address of that memory to the ASLS register
+  * of the IGD device.
+  */
+-int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+-                               struct vfio_region_info *info, Error **errp)
++bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
++                                struct vfio_region_info *info, Error **errp)
+ {
+     int ret;
+ 
+@@ -1181,7 +1181,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+         error_setg(errp, "failed to read IGD OpRegion");
+         g_free(vdev->igd_opregion);
+         vdev->igd_opregion = NULL;
+-        return -EINVAL;
++        return false;
+     }
+ 
+     /*
+@@ -1206,7 +1206,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+     pci_set_long(vdev->pdev.wmask + IGD_ASLS, ~0);
+     pci_set_long(vdev->emulated_config_bits + IGD_ASLS, ~0);
+ 
+-    return 0;
++    return true;
+ }
+ 
+ /*
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index ecfbb9619f..be87478716 100644
+index be87478716..15823c359a 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3146,7 +3146,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
-     if (!vdev->igd_opregion &&
-         vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) {
--        struct vfio_region_info *opregion;
-+        g_autofree struct vfio_region_info *opregion = NULL;
- 
-         if (vdev->pdev.qdev.hotplugged) {
-             error_setg(errp,
-@@ -3165,7 +3165,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         }
- 
-         ret = vfio_pci_igd_opregion_init(vdev, opregion, errp);
--        g_free(opregion);
-         if (ret) {
+@@ -3164,8 +3164,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
              goto out_teardown;
          }
+ 
+-        ret = vfio_pci_igd_opregion_init(vdev, opregion, errp);
+-        if (ret) {
++        if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
+             goto out_teardown;
+         }
+     }
 -- 
 2.34.1
 
