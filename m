@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A028C6920
-	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0358C691B
+	for <lists+qemu-devel@lfdr.de>; Wed, 15 May 2024 17:00:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7G6A-0005EE-2B; Wed, 15 May 2024 10:59:18 -0400
+	id 1s7G6F-0005H0-Qp; Wed, 15 May 2024 10:59:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7G64-0005DU-Oi
- for qemu-devel@nongnu.org; Wed, 15 May 2024 10:59:13 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ id 1s7G68-0005EH-KH
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 10:59:17 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s7G5x-000799-Ve
- for qemu-devel@nongnu.org; Wed, 15 May 2024 10:59:12 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2e4939c5323so84872751fa.2
+ id 1s7G5x-00079t-Iq
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 10:59:16 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-420180b58c3so23928165e9.2
  for <qemu-devel@nongnu.org>; Wed, 15 May 2024 07:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715785143; x=1716389943; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715785144; x=1716389944; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+UEAzmz2yf/FXZrHjq+7bspL7xDnH65PbwwSYmcMRBs=;
- b=XgfbktcLWc1hDT51tXfzByvy9mfXUHz0MNUc3oP/4M83EDwmGJhRDPHyB7lDnVYPtU
- RmCCRvpG1h0jKUsVb/VL5eSP7v0K6Ma80gcyRn9vGSdJbErEXOqe+cLs4Cjg1m2KFf5C
- Pw7J/NU467lMh8pEfU8I6QXJCHrsqaXgtL7rs9XDWGlDfRxVZO8rjKpacK675SL6tPnh
- b2FXIaYeO0TpBYc4VVCUTv8Ya2t6m4yqXu55sNVTw7yd08TqzXluPRwmYqJjy8kG5W47
- Aw8qkzC3Ju850fhB5Q6p/lJZxadilbUPnBMTvRxZS/p2TETwQrE13tFGx1sCbO/zEE5f
- jSrg==
+ bh=WpiThysDuX7JPl+AhNyZ7t+FQuyygOMAjCR+jn6zrYU=;
+ b=VAj7sfll52bIq08uflTWutQGWAiqZlQkktxno/BnZ8fC1s7YkFZdxhFFn1JtEnvMJj
+ EMxcARCwNI0cWeRFm9HBLHAMaJJp6M4vxuaBTvB3RhybZ83WdyJJ9vGATafXryutSf2W
+ vSDTGeRQMtlmbtiFPKlloCzvSI6vd+9VqE+qCodl5DLnBdvLsnYATl4cjOO0xbEVLwda
+ wdZQ1ofUSVOFDVL6jQEDtlinYc3mefsmg4BT9pwXYAEs3fQ1znG5KRkHSf1f+VtiL+Q6
+ v3XMNzL25XAgot88huNi6L2SljvBcgapf6qRhAfOxhnP4kL3YfN5hrixjGJvZx6sxE4g
+ B1jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715785143; x=1716389943;
+ d=1e100.net; s=20230601; t=1715785144; x=1716389944;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+UEAzmz2yf/FXZrHjq+7bspL7xDnH65PbwwSYmcMRBs=;
- b=aU1/4uWKP26IsgoPto6wqMsCzIIZBCrLMui82cDOAYmFlXbDYGarJzEZdigtbErjne
- VL17ZNmvieicDMDDdFJJo7yJEHxSkP0aWlBkLxXza14mf4nynVMdFpdF4309GEHilz53
- LdIxSf3t53v9WITQB/BtgvIRjM1/DA9N0s7aVx4S8heOHuu9UmVNOy0zestNeOMtp4ZJ
- nqF3sTkNo2ITjdjCuoOorUNTLK7LeIw2hSFWx2aSg31sJ0HZsM0OLJdL8/Oicd0qghy9
- eq8psUT3ijcP4vAIEcnP5407WnQAGEX/cxeu6seGvcjNHMozr0CXslkAcST/EIpYczbZ
- CXyA==
-X-Gm-Message-State: AOJu0Ywn3YIoqUcKeenPwBzsG4QHHGtu0kjt73oZn40Ub/EzxWE5WKc4
- amzU55kSgq1Wd9WKk4gKn86opWQkoEyXsi6DjhYof02b2gtoeo8p9bP4kX5inxrA5wDbZsBe+wK
- b9go=
-X-Google-Smtp-Source: AGHT+IHBAqmShW7+x0erZY7qrVPYmX9/Sj/x3k0Czp3fcp+nLRsdz0z8vY6o+cHpBJxSWC5aaRGvYw==
-X-Received: by 2002:a05:6512:3294:b0:51b:6366:3459 with SMTP id
- 2adb3069b0e04-5221027800cmr13784999e87.67.1715785143330; 
+ bh=WpiThysDuX7JPl+AhNyZ7t+FQuyygOMAjCR+jn6zrYU=;
+ b=ecOxnlQJgaLklF1C896yzADJEYfivOrayR5fMl/XtK7BmFg98DFTcH8c1TgP6BAi3Y
+ vrE6jMtVAuRXVKySdlcrckYM/xurYNTNV3XZf5e1dl9GHQDHxYQj4TBhfCKfJYkdtSVh
+ yNOYZIoB7lO8U3u/8YqU9WAo7Eibtk0iecM8iKYA7pgZeqbSngv113gT4lLDeYSmsV0j
+ usMt91OZQFC3fgzz6bXTkRO+CEC9JvFC0BTgV2nmtU+KskqaQrwV4nayizv4njWgN0oO
+ iuvb1y8pFXXRcSBJY6ePiQ9+v0HvQ3rU9ORf2UooVsSIDqcbDTvoZROXmGN0N4Wei/Wa
+ kb4g==
+X-Gm-Message-State: AOJu0Yy5TMg+TJ5UYQM2VpYbrF9bQ0YYNsx/CJ5opUaZD4mYg+hkTz1x
+ IwKnVDiKr2qHqfoMm/zKRFz8vqgY92oUyzSrgJXVfufScII5NaXcRxa7rZDL1lR/XZSufq9DcBX
+ VGM0=
+X-Google-Smtp-Source: AGHT+IGqvmUqit2qg62rJGEPd1ZMWeFQqcenH6/C5+cB/ac3SfnVAkbzaf19auUuuujpwwdWzHA6Yg==
+X-Received: by 2002:a05:600c:3544:b0:41a:b54a:9ad8 with SMTP id
+ 5b1f17b1804b1-41fea52e620mr118768115e9.0.1715785143901; 
  Wed, 15 May 2024 07:59:03 -0700 (PDT)
 Received: from stoup.. ([149.14.240.163]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41f88111033sm272134645e9.34.2024.05.15.07.59.02
+ 5b1f17b1804b1-41f88111033sm272134645e9.34.2024.05.15.07.59.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 15 May 2024 07:59:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH 3/5] tcg/aarch64: Support TCG_TARGET_HAS_tst_vec
-Date: Wed, 15 May 2024 16:58:58 +0200
-Message-Id: <20240515145900.252870-4-richard.henderson@linaro.org>
+Subject: [PATCH 4/5] tcg/arm: Support TCG_TARGET_HAS_tst_vec
+Date: Wed, 15 May 2024 16:58:59 +0200
+Message-Id: <20240515145900.252870-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240515145900.252870-1-richard.henderson@linaro.org>
 References: <20240515145900.252870-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,15 +93,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/aarch64/tcg-target.h     |  2 +-
- tcg/aarch64/tcg-target.c.inc | 26 ++++++++++++++++++++++++--
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ tcg/arm/tcg-target.h     |  2 +-
+ tcg/arm/tcg-target.c.inc | 23 ++++++++++++++++++++---
+ 2 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index 138bafb9da..8bd9e6a5eb 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -167,7 +167,7 @@ typedef enum {
+diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
+index 434a892e07..fb7261499b 100644
+--- a/tcg/arm/tcg-target.h
++++ b/tcg/arm/tcg-target.h
+@@ -150,7 +150,7 @@ extern bool use_neon_instructions;
  #define TCG_TARGET_HAS_minmax_vec       1
  #define TCG_TARGET_HAS_bitsel_vec       1
  #define TCG_TARGET_HAS_cmpsel_vec       0
@@ -110,27 +110,29 @@ index 138bafb9da..8bd9e6a5eb 100644
  
  #define TCG_TARGET_DEFAULT_MO (0)
  #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 56fc9cb9e0..ffa8a3e519 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -2737,7 +2737,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
+index 6a04c73c76..3de5f50b62 100644
+--- a/tcg/arm/tcg-target.c.inc
++++ b/tcg/arm/tcg-target.c.inc
+@@ -2740,17 +2740,33 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_cmp_vec:
+         {
              TCGCond cond = args[3];
-             AArch64Insn insn;
++            ARMInsn insn;
  
 -            if (cond == TCG_COND_NE) {
 +            switch (cond) {
 +            case TCG_COND_NE:
                  if (const_args[2]) {
-                     if (is_scalar) {
-                         tcg_out_insn(s, 3611, CMTST, vece, a0, a1, a1);
-@@ -2752,7 +2753,27 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-                     }
-                     tcg_out_insn(s, 3617, NOT, is_q, 0, a0, a0);
+                     tcg_out_vreg3(s, INSN_VTST, q, vece, a0, a1, a1);
+                 } else {
+                     tcg_out_vreg3(s, INSN_VCEQ, q, vece, a0, a1, a2);
+                     tcg_out_vreg2(s, INSN_VMVN, q, 0, a0, a0);
                  }
 -            } else {
+-                ARMInsn insn;
 +                break;
-+
+ 
 +            case TCG_COND_TSTNE:
 +            case TCG_COND_TSTEQ:
 +                if (const_args[2]) {
@@ -139,28 +141,24 @@ index 56fc9cb9e0..ffa8a3e519 100644
 +                                     -(cond == TCG_COND_TSTEQ));
 +                    break;
 +                }
-+                if (is_scalar) {
-+                    tcg_out_insn(s, 3611, CMTST, vece, a0, a1, a2);
-+                } else {
-+                    tcg_out_insn(s, 3616, CMTST, is_q, vece, a0, a1, a2);
-+                }
++                tcg_out_vreg3(s, INSN_VTST, q, vece, a0, a1, a2);
 +                if (cond == TCG_COND_TSTEQ) {
-+                    tcg_out_insn(s, 3617, NOT, is_q, 0, a0, a0);
++                    tcg_out_vreg2(s, INSN_VMVN, q, 0, a0, a0);
 +                }
 +                break;
 +
 +            default:
                  if (const_args[2]) {
-                     if (is_scalar) {
-                         insn = cmp0_scalar_insn[cond];
-@@ -2791,6 +2812,7 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-                     }
-                     tcg_out_insn_3616(s, insn, is_q, vece, a0, a1, a2);
+                     insn = vec_cmp0_insn[cond];
+                     if (insn) {
+@@ -2769,6 +2785,7 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+                     tcg_debug_assert(insn != 0);
                  }
+                 tcg_out_vreg3(s, insn, q, vece, a0, a1, a2);
 +                break;
              }
          }
-         break;
+         return;
 -- 
 2.34.1
 
