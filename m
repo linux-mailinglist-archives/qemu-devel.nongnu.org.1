@@ -2,112 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5B78C7E72
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 00:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9268C7E84
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 00:22:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7j9A-0004UU-PX; Thu, 16 May 2024 18:00:20 -0400
+	id 1s7jTS-0006g6-L5; Thu, 16 May 2024 18:21:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s7j99-0004UL-4h
- for qemu-devel@nongnu.org; Thu, 16 May 2024 18:00:19 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1s7jTH-0006ZR-TS
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:09 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s7j97-0006eJ-3n
- for qemu-devel@nongnu.org; Thu, 16 May 2024 18:00:18 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BC8155CBA0;
- Thu, 16 May 2024 22:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715896815; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ePVHGu/nf+YQwFA2Cqn3a4qco95oycTtPTJKyllVi3Y=;
- b=FzI3/btujeyXXQJGxVVm/68iZY7Rt6lrpuUe9NVzylKUym7WSGXE8k/Mb9QnyfwOPBQsWm
- PEp7tHnSTcExZUeenK99HrmNhvbHrvEAKoaLIJoMsKxjtMsjCWIcRQcR0UxFeSsvwSSAOF
- Nhyo91rajP8DzCauWWSeXQqS1jxCM4A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715896815;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ePVHGu/nf+YQwFA2Cqn3a4qco95oycTtPTJKyllVi3Y=;
- b=XNDH3pn9BMTMcqpm91jn29LtqhJhwbi22ztvhmtxHZ3/1MJyF2K6VpRcgf86L4erByDIJj
- bPdSjoNoUm7aRKDQ==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b="KN/GwaZO";
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=klvS5W5r
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1715896814; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ePVHGu/nf+YQwFA2Cqn3a4qco95oycTtPTJKyllVi3Y=;
- b=KN/GwaZO9dbjNVjk916aj7McahLT4byhVPwTeOFCxYAc4B2fbztTVTmK6AoZLxLcWdya+k
- /yWsGK7ki073UHZI1pTlJ2AZrEAjNvGnX25pNNdzgmnEqks7dW16tRB0YJ3a2uWPr+/vz1
- l5FghCnSPuDWm3OSDPJM8r7vCeUewEY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1715896814;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ePVHGu/nf+YQwFA2Cqn3a4qco95oycTtPTJKyllVi3Y=;
- b=klvS5W5riH6HD2oX/MKuKUrXMcHddD+T0aN1GnrmJry0sA/hiSDvtkgau/MheHGXYqlMYj
- U91nP+rsLnCGP/CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 43666137C3;
- Thu, 16 May 2024 22:00:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id /vbSAu6BRmYVewAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 16 May 2024 22:00:14 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
-Subject: Re: [PATCH 1/9] monitor: Honor QMP request for fd removal immediately
-In-Reply-To: <ZjsnJj0mxW-rdAg_@redhat.com>
-References: <20240426142042.14573-1-farosas@suse.de>
- <20240426142042.14573-2-farosas@suse.de> <ZjsnJj0mxW-rdAg_@redhat.com>
-Date: Thu, 16 May 2024 19:00:11 -0300
-Message-ID: <87ttixto2c.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1s7jTF-0003BL-Ba
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:07 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f4f2b1c997so767293b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 15:21:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715898062; x=1716502862; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+t61NbUjxKfzRZ5sJjz14N/rj3jqOYZUILd+pfu8YsI=;
+ b=YNCLekCp7LCdQiUlAp/lGfc8fsv6EgfDFGmc0hfwmH3bGTjz1NY5MgL5ZT4jyL3olf
+ 9+TcYAYgx3SAa6v8PBKslcjBs3yF0BgQOJBrxqPBx/jgb6M+EEEdrdeoRnccUtKAuo1+
+ Ys/naJRKAIAy5aLxnvH/0nILXIqGJpqRC3RlSgBI8Y6SIc1jGUkZ51UknWVv8xFU6ISu
+ mUkJPO3OFaC8CZIDgnW7pZZ8llrgJHAP8dMLUkuXNFDjfkamrgO4l7uMFs7FKcZHHUzr
+ Q9jTSjuDbgdqTlIeD+FYrrY+MTiPjBZkZGBUpaq99PRSS04VTqrdH24nQTAWG/zXyZgq
+ v2aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715898062; x=1716502862;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+t61NbUjxKfzRZ5sJjz14N/rj3jqOYZUILd+pfu8YsI=;
+ b=gd2aWO46dPcw3aItg6Ax+Jj3AcGFokvwzI8YGQO6mryyio4pFj9isdr0UUJl0gKDJG
+ l3Q2eci9VJVTsFeLqHN4KpkwVo1D/3wdbjYmrBI6D1C9biTMIaJ/9rRoZc7JkTwbe/7w
+ rd8xw/cMwOFGzsHyyyL2ObGE9SZswGkF5JeIXiILK5XRaGC9tzZU/4hEC/jzBeKihs4+
+ 8vVXBHFV4xtFcE4qVumvf4m5ROalEo8emD27sjB4p91B9VEu2MmUxX4xdxJ3YH1L9RCl
+ syZKPmleBLYA/Ev/irpfwEBYXa4fZk0RikuBu38S0lnXrYNUE5ap26gDnFLQQhnzOX6V
+ Z5VA==
+X-Gm-Message-State: AOJu0Yx2Qm+bIpIxQfAppV1qjK1MnOFDOV89mOFsxoPX0nFsnvDeCF15
+ bLTyI0gUnWcjfQDMdu0WKeNmWy7cHD/1syLuTDKn9mDfsXlvI3Pm0PjiNA/xiLuBxTsQTLHbcrw
+ q82w=
+X-Google-Smtp-Source: AGHT+IG06uyTk5lYQkaz/WNIBK2Am4G9SQAJqNmg6i4dW2htQkadOsvxS0s9YyuV8SkoJSFxetUI0A==
+X-Received: by 2002:a05:6a21:32a7:b0:1a7:186:f976 with SMTP id
+ adf61e73a8af0-1afde1b7285mr22559923637.40.1715898062088; 
+ Thu, 16 May 2024 15:21:02 -0700 (PDT)
+Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::e697])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f4d2a66476sm13589219b3a.28.2024.05.16.15.21.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 May 2024 15:21:01 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 0/5] Implement icount=auto using TCG Plugins
+Date: Thu, 16 May 2024 15:20:42 -0700
+Message-Id: <20240516222047.1853459-1-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[];
- MISSING_XM_UA(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: BC8155CBA0
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -4.51
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,107 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+The goal here is to be able to scale temporally execution of qemu-user/system,
+using a given number of instructions per second.
 
-> On Fri, Apr 26, 2024 at 11:20:34AM -0300, Fabiano Rosas wrote:
->> We're enabling using the fdset interface to pass file descriptors for
->> use in the migration code. Since migrations can happen more than once
->> during the VMs lifetime, we need a way to remove an fd from the fdset
->> at the end of migration.
->>=20
->> The current code only removes an fd from the fdset if the VM is
->> running. This causes a QMP call to "remove-fd" to not actually remove
->> the fd if the VM happens to be stopped.
->>=20
->> While the fd would eventually be removed when monitor_fdset_cleanup()
->> is called again, the user request should be honored and the fd
->> actually removed. Calling remove-fd + query-fdset shows a recently
->> removed fd still present.
->>=20
->> The runstate_is_running() check was introduced by commit ebe52b592d
->> ("monitor: Prevent removing fd from set during init"), which by the
->> shortlog indicates that they were trying to avoid removing an
->> yet-unduplicated fd too early.
->
-> IMHO that should be reverted. The justification says
->
->   "If an fd is added to an fd set via the command line, and it is not
->    referenced by another command line option (ie. -drive), then clean
->    it up after QEMU initialization is complete"
->
-> which I think is pretty weak. Why should QEMU forceably stop an app
-> from passing in an FD to be used by a QMP command issued just after
-> the VM starts running ?  While it could just use QMP to pass in the
-> FD set, the mgmt app might have its own reason for wanting QEMU to
-> own the passed FD from the very start of the process execve().
+We define a virtual clock, that can be late or in advance compared to real time.
+When we are in advance, we slow execution (by sleeping) until catching real
+time.
 
-I don't think that's what that patch does. That description is
-misleading. I read it as:
+Finally, we should be able to cleanup icount=auto mode completely, and keep
+icount usage for determistic purposes only.
 
-   "If an fd is added to an fd set via the command line, and it is not
-    referenced by another command line option (ie. -drive), then clean
-    it up ONLY after QEMU initialization is complete"
-          ^
+It is built upon new TCG Plugins inline ops (store + conditional callbacks), now
+merged on master.
 
-By the subject ("monitor: Prevent removing fd from set during init") and
-the fact that this function is only called when the monitor connection
-closes, I believe the idea was to *save* the fds until after the VM
-starts running, i.e. some fd was being lost because
-monitor_fdset_cleanup() was being called before the dup().
+Example in user-mode:
 
-See my reply to Peter in this same patch (PATCH 1/9).
+- Retrieve number of instructions to execute /bin/true
+$ ./build/qemu-x86_64 -plugin ./build/tests/plugin/libinsn.so -d plugin /bin/true
+cpu 0 insns: 120546
+total insns: 120546
+- Slow execution to match 5 seconds
+$ time ./build/qemu-x86_64 -plugin ./build/contrib/plugins/libips,ips=$((120546/5)) /bin/true
+real    0m4.985s
 
->
-> Implicitly this cleanup is attempting to "fix" a bug where the mgmt
-> app passes in an FD that it never needed. If any such bug were ever
-> found, then the mgmt app should just be fixed to not pass it in. I
-> don't think QEMU needs to be trying to fix mgmt app bugs.
->
-> IOW, this commit is imposing an arbitrary & unecessary usage policy
-> on passed in FD sets, and as your commit explains has further
-> unhelpful (& undocumented) side effects on the 'remove-fd' QMP command.
->
-> Just revert it IMHO.
->
->>=20
->> I don't see why an fd explicitly removed with qmp_remove_fd() should
->> be under runstate_is_running(). I'm assuming this was a mistake when
->> adding the parenthesis around the expression.
->>=20
->> Move the runstate_is_running() check to apply only to the
->> QLIST_EMPTY(dup_fds) side of the expression and ignore it when
->> mon_fdset_fd->removed has been explicitly set.
->>=20
->> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> ---
->>  monitor/fds.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/monitor/fds.c b/monitor/fds.c
->> index d86c2c674c..4ec3b7eea9 100644
->> --- a/monitor/fds.c
->> +++ b/monitor/fds.c
->> @@ -173,9 +173,9 @@ static void monitor_fdset_cleanup(MonFdset *mon_fdse=
-t)
->>      MonFdsetFd *mon_fdset_fd_next;
->>=20=20
->>      QLIST_FOREACH_SAFE(mon_fdset_fd, &mon_fdset->fds, next, mon_fdset_f=
-d_next) {
->> -        if ((mon_fdset_fd->removed ||
->> -                (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount =3D=
-=3D 0)) &&
->> -                runstate_is_running()) {
->> +        if (mon_fdset_fd->removed ||
->> +            (QLIST_EMPTY(&mon_fdset->dup_fds) && mon_refcount =3D=3D 0 =
-&&
->> +             runstate_is_running())) {
->>              close(mon_fdset_fd->fd);
->>              g_free(mon_fdset_fd->opaque);
->>              QLIST_REMOVE(mon_fdset_fd, next);
->> --=20
->> 2.35.3
->>=20
->
-> With regards,
-> Daniel
+Alex Bennée (4):
+  sysemu: add set_virtual_time to accel ops
+  qtest: use cpu interface in qtest_clock_warp
+  sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
+  plugins: add time control API
+
+Pierrick Bouvier (1):
+  contrib/plugins: add ips plugin example for cost modeling
+
+ include/qemu/qemu-plugin.h                    |  23 ++
+ include/qemu/timer.h                          |  15 ++
+ include/sysemu/accel-ops.h                    |  18 +-
+ include/sysemu/cpu-timers.h                   |   3 +-
+ include/sysemu/qtest.h                        |   1 +
+ accel/qtest/qtest.c                           |   1 +
+ contrib/plugins/ips.c                         | 239 ++++++++++++++++++
+ plugins/api.c                                 |  31 +++
+ ...t-virtual-clock.c => cpus-virtual-clock.c} |   5 +
+ system/cpus.c                                 |  11 +
+ system/qtest.c                                |  27 +-
+ util/qemu-timer.c                             |  26 ++
+ contrib/plugins/Makefile                      |   1 +
+ plugins/qemu-plugins.symbols                  |   2 +
+ stubs/meson.build                             |   6 +-
+ 15 files changed, 383 insertions(+), 26 deletions(-)
+ create mode 100644 contrib/plugins/ips.c
+ rename stubs/{cpus-get-virtual-clock.c => cpus-virtual-clock.c} (68%)
+
+-- 
+2.39.2
+
 
