@@ -2,97 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE568C75A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 14:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 192998C75BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 14:14:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7ZtT-0000RD-Eh; Thu, 16 May 2024 08:07:31 -0400
+	id 1s7Zyk-0002lV-7R; Thu, 16 May 2024 08:12:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7ZtP-0000R2-1J
- for qemu-devel@nongnu.org; Thu, 16 May 2024 08:07:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1s7Zyi-0002kp-5j; Thu, 16 May 2024 08:12:56 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7ZtL-0003bp-PU
- for qemu-devel@nongnu.org; Thu, 16 May 2024 08:07:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715861243;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qWafOIC4yDODJ5us2+j7/jV7p2VMw+3tB/qovutmlwA=;
- b=Llnlb3HeUVIuRJg46Z4Xug3mjeSj3RkScLWPuHx3smZPkRk12UhIwqii1woqighH+0D4R9
- NGt5ZSl2UILbUQzWEcFBhm+er8XCtkFIgpYJXNHjMbk+BYk3RvCpDCjJcewqNUso6zXQeE
- Iamsz0gGyn6XWXF20L3TXB8OmFI/c7k=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-zHhoxrohOxaMpXncb9eAyw-1; Thu, 16 May 2024 08:07:21 -0400
-X-MC-Unique: zHhoxrohOxaMpXncb9eAyw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-792ff352462so182583785a.1
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 05:07:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715861241; x=1716466041;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qWafOIC4yDODJ5us2+j7/jV7p2VMw+3tB/qovutmlwA=;
- b=hfZy9E5Q71LuaJGegDI9flUJFa8r+Xqm/edmZg8J5fSRIr1MeraZ2Q1wf7PY3yu3+0
- LNtfMq79oIZYIhjs6UwwFWdaxa2HzC9UNt63b88UYzxxaEhBCUmdSjziAr7P/yPW+GhJ
- 7BzFI1CeelZUsbfb1e1V/FIMLhofGaGaNhDbvn+8WAclPSh6z5bzaQ9pJGovBeeZyGId
- wSBVSUYtXb8Sq4xi85+ADP6YQfGYtfKkQivp1rSCCCxd+olxrkzUPgKYVxFSI+rcJPYX
- YVkSkcBTeA5PAEsc17UmFJtjIwNNghUW0aT4cwwRUJGPdtq5myFzjIvIKTKR7NgGkcfi
- 7KKA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVjxQyidb/HXqk0lNZaeJWhlrMYVtw76KsnhSxA1sHcAFcWpxlyGlQRis8AeSXuk5K9dUIAXTN0cCukmI+j1fjjyQSlrPQ=
-X-Gm-Message-State: AOJu0YyhpLq5BqJBDLXzHc1AHdT30AEFVza+qtFpwrPT53DZFF4eOkTy
- lz9bfCyvo5Q/iYfxIYKY+MEW0yZB34MZkMi4Sy8Bq8I9o1tPGbWAtgYJoxcI3sz+Z/T8IKPQl0s
- 1BxLxOsT3Mp9deBhQ2FqSn6RE4XmBmOOopzSsYflr+3R0dQCzO+jB
-X-Received: by 2002:a05:620a:5e0b:b0:792:bbdb:2520 with SMTP id
- af79cd13be357-792c75749e9mr2140169185a.9.1715861240863; 
- Thu, 16 May 2024 05:07:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtdQPT48i1firRJCUl60pGNvOyQ5isq05m5q9TAtkXXGbVB+DDT85HWnlo2JPuC9lwf6nF7A==
-X-Received: by 2002:a05:620a:5e0b:b0:792:bbdb:2520 with SMTP id
- af79cd13be357-792c75749e9mr2140145685a.9.1715861236475; 
- Thu, 16 May 2024 05:07:16 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- af79cd13be357-792bf27779fsm792017285a.21.2024.05.16.05.07.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 May 2024 05:07:15 -0700 (PDT)
-Message-ID: <8b35e770-2beb-4db8-b23f-7c322e0e8881@redhat.com>
-Date: Thu, 16 May 2024 14:07:13 +0200
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1s7Zyd-0006EM-EO; Thu, 16 May 2024 08:12:55 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vg85l3HXcz6J6x0;
+ Thu, 16 May 2024 20:09:15 +0800 (CST)
+Received: from lhrpeml500003.china.huawei.com (unknown [7.191.162.67])
+ by mail.maildlp.com (Postfix) with ESMTPS id 16F29140AB8;
+ Thu, 16 May 2024 20:12:47 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 16 May 2024 13:12:29 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.039; 
+ Thu, 16 May 2024 13:12:29 +0100
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, "npiggin@gmail.com"
+ <npiggin@gmail.com>, "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "danielhb413@gmail.com" <danielhb413@gmail.com>, "vaibhav@linux.ibm.com"
+ <vaibhav@linux.ibm.com>, "sbhat@linux.ibm.com" <sbhat@linux.ibm.com>
+Subject: RE: [PATCH v2 1/4] accel/kvm: Extract common KVM vCPU {creation,
+ parking} code
+Thread-Topic: [PATCH v2 1/4] accel/kvm: Extract common KVM vCPU {creation,
+ parking} code
+Thread-Index: AQHap1J3XuFeE+ZUnUegULMwM5sk3bGZg7UwgAAQyoCAAC+4UA==
+Date: Thu, 16 May 2024 12:12:29 +0000
+Message-ID: <2e290791a92949d79fe0fdfcb972a029@huawei.com>
+References: <20240516053211.145504-1-harshpb@linux.ibm.com>
+ <20240516053211.145504-2-harshpb@linux.ibm.com>
+ <fc08e87c979a4916aaff649724df9c6b@huawei.com>
+ <bfb5888c-c66c-4000-ba12-5af202b0fe17@linux.ibm.com>
+In-Reply-To: <bfb5888c-c66c-4000-ba12-5af202b0fe17@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.158.29]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/9] vfio/migration: Add an Error** argument to
- vfio_migration_set_state()
-To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-References: <20240514153130.394307-1-clg@redhat.com>
- <20240514153130.394307-5-clg@redhat.com>
- <dc729ce1-275e-4889-a7a7-7d945ee310bd@nvidia.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <dc729ce1-275e-4889-a7a7-7d945ee310bd@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,274 +74,209 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/16/24 10:18, Avihai Horon wrote:
-> 
-> On 14/05/2024 18:31, Cédric Le Goater wrote:
->> External email: Use caution opening links or attachments
->>
->>
->> Add an Error** argument to vfio_migration_set_state() and adjust
->> callers, including vfio_save_setup(). The error will be propagated up
->> to qemu_savevm_state_setup() where the save_setup() handler is
->> executed.
->>
->> Modify vfio_vmstate_change_prepare() and vfio_vmstate_change() to
->> store a reported error under the migration stream if a migration is in
->> progress.
->>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> 
-> With/without Eric's suggestion:
-> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
-> 
-> Two nits below though (if you respin or want to amend inline).
-> 
->> ---
->>
->>   Changes in v6:
->>
->>   - Commit log improvements (Avihai)
->>   - vfio_migration_set_state() : Dropped the error_setg_errno() change
->>     when setting device in recover state fails (Avihai)
->>   - vfio_migration_state_notifier() : report local error (Avihai)
->>
->>   Changes in v5:
->>
->>   - Replaced error_setg() by error_setg_errno() in vfio_migration_set_state()
->>   - Rebased on 20c64c8a51a4 ("migration: migration_file_set_error")
->>
->>   hw/vfio/migration.c | 77 ++++++++++++++++++++++++++++-----------------
->>   1 file changed, 48 insertions(+), 29 deletions(-)
->>
->> diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
->> index bf2fd0759ba6e4fb103cc5c1a43edb180a3d0de4..bf11135167ebb162dd41415656bdacfa0e1ca550 100644
->> --- a/hw/vfio/migration.c
->> +++ b/hw/vfio/migration.c
->> @@ -82,7 +82,8 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
->>
->>   static int vfio_migration_set_state(VFIODevice *vbasedev,
->>                                       enum vfio_device_mig_state new_state,
->> -                                    enum vfio_device_mig_state recover_state)
->> +                                    enum vfio_device_mig_state recover_state,
->> +                                    Error **errp)
->>   {
->>       VFIOMigration *migration = vbasedev->migration;
->>       uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature) +
->> @@ -102,18 +103,19 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
->>           ret = -errno;
->>
->>           if (recover_state == VFIO_DEVICE_STATE_ERROR) {
->> -            error_report("%s: Failed setting device state to %s, err: %s. "
->> -                         "Recover state is ERROR. Resetting device",
->> -                         vbasedev->name, mig_state_to_str(new_state),
->> -                         strerror(errno));
->> +            error_setg_errno(errp, errno,
->> +                             "%s: Failed setting device state to %s. "
->> +                             "Recover state is ERROR. Resetting device",
->> +                             vbasedev->name, mig_state_to_str(new_state));
->>
->>               goto reset_device;
->>           }
->>
->> -        error_report(
->> -            "%s: Failed setting device state to %s, err: %s. Setting device in recover state %s",
->> -                     vbasedev->name, mig_state_to_str(new_state),
->> -                     strerror(errno), mig_state_to_str(recover_state));
->> +        error_setg_errno(errp, errno,
->> +                         "%s: Failed setting device state to %s. "
->> +                         "Setting device in recover state %s",
->> +                         vbasedev->name, mig_state_to_str(new_state),
->> +                         mig_state_to_str(recover_state));
->>
->>           mig_state->device_state = recover_state;
->>           if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
->> @@ -137,7 +139,7 @@ static int vfio_migration_set_state(VFIODevice *vbasedev,
->>                * This can happen if the device is asynchronously reset and
->>                * terminates a data transfer.
->>                */
->> -            error_report("%s: data_fd out of sync", vbasedev->name);
->> +            error_setg(errp, "%s: data_fd out of sync", vbasedev->name);
->>               close(mig_state->data_fd);
->>
->>               return -EBADF;
->> @@ -168,10 +170,11 @@ reset_device:
->>    */
->>   static int
->>   vfio_migration_set_state_or_reset(VFIODevice *vbasedev,
->> -                                  enum vfio_device_mig_state new_state)
->> +                                  enum vfio_device_mig_state new_state,
->> +                                  Error **errp)
->>   {
->>       return vfio_migration_set_state(vbasedev, new_state,
->> -                                    VFIO_DEVICE_STATE_ERROR);
->> +                                    VFIO_DEVICE_STATE_ERROR, errp);
->>   }
->>
->>   static int vfio_load_buffer(QEMUFile *f, VFIODevice *vbasedev,
->> @@ -399,10 +402,8 @@ static int vfio_save_setup(QEMUFile *f, void *opaque, Error **errp)
->>           switch (migration->device_state) {
->>           case VFIO_DEVICE_STATE_RUNNING:
->>               ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
->> -                                           VFIO_DEVICE_STATE_RUNNING);
->> +                                           VFIO_DEVICE_STATE_RUNNING, errp);
->>               if (ret) {
->> -                error_setg(errp, "%s: Failed to set new PRE_COPY state",
->> -                           vbasedev->name);
->>                   return ret;
->>               }
->>
->> @@ -435,13 +436,20 @@ static void vfio_save_cleanup(void *opaque)
->>   {
->>       VFIODevice *vbasedev = opaque;
->>       VFIOMigration *migration = vbasedev->migration;
->> +    Error *local_err = NULL;
->> +    int ret;
->>
->>       /*
->>        * Changing device state from STOP_COPY to STOP can take time. Do it here,
->>        * after migration has completed, so it won't increase downtime.
->>        */
->>       if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
->> -        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_STOP);
->> +        ret = vfio_migration_set_state_or_reset(vbasedev,
->> +                                                VFIO_DEVICE_STATE_STOP,
->> +                                                &local_err);
->> +        if (ret) {
->> +            error_report_err(local_err);
->> +        }
->>       }
->>
->>       g_free(migration->data_buffer);
->> @@ -549,11 +557,13 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
->>       VFIODevice *vbasedev = opaque;
->>       ssize_t data_size;
->>       int ret;
->> +    Error *local_err = NULL;
->>
->>       /* We reach here with device state STOP or STOP_COPY only */
->>       ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
->> -                                   VFIO_DEVICE_STATE_STOP);
->> +                                   VFIO_DEVICE_STATE_STOP, &local_err);
->>       if (ret) {
->> +        error_report_err(local_err);
->>           return ret;
->>       }
->>
->> @@ -591,14 +601,9 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
->>   static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
->>   {
->>       VFIODevice *vbasedev = opaque;
->> -    int ret;
->>
->> -    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
->> -                                   vbasedev->migration->device_state);
->> -    if (ret) {
->> -        error_setg(errp, "%s: Failed to set RESUMING state", vbasedev->name);
->> -    }
->> -    return ret;
->> +    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
->> +                                    vbasedev->migration->device_state, errp);
->>   }
->>
->>   static int vfio_load_cleanup(void *opaque)
->> @@ -714,19 +719,20 @@ static void vfio_vmstate_change_prepare(void *opaque, bool running,
->>       VFIODevice *vbasedev = opaque;
->>       VFIOMigration *migration = vbasedev->migration;
->>       enum vfio_device_mig_state new_state;
->> +    Error *local_err = NULL;
->>       int ret;
->>
->>       new_state = migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ?
->>                       VFIO_DEVICE_STATE_PRE_COPY_P2P :
->>                       VFIO_DEVICE_STATE_RUNNING_P2P;
->>
->> -    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
->> +    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
->>       if (ret) {
->>           /*
->>            * Migration should be aborted in this case, but vm_state_notify()
->>            * currently does not support reporting failures.
->>            */
->> -        migration_file_set_error(ret, NULL);
->> +        migration_file_set_error(ret, local_err);
->>       }
->>
->>       trace_vfio_vmstate_change_prepare(vbasedev->name, running,
->> @@ -738,6 +744,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
->>   {
->>       VFIODevice *vbasedev = opaque;
->>       enum vfio_device_mig_state new_state;
->> +    Error *local_err = NULL;
->>       int ret;
->>
->>       if (running) {
->> @@ -750,13 +757,13 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
->>                   VFIO_DEVICE_STATE_STOP;
->>       }
->>
->> -    ret = vfio_migration_set_state_or_reset(vbasedev, new_state);
->> +    ret = vfio_migration_set_state_or_reset(vbasedev, new_state, &local_err);
->>       if (ret) {
->>           /*
->>            * Migration should be aborted in this case, but vm_state_notify()
->>            * currently does not support reporting failures.
->>            */
->> -        migration_file_set_error(ret, NULL);
->> +        migration_file_set_error(ret, local_err);
->>       }
->>
->>       trace_vfio_vmstate_change(vbasedev->name, running, RunState_str(state),
->> @@ -769,11 +776,23 @@ static int vfio_migration_state_notifier(NotifierWithReturn *notifier,
->>       VFIOMigration *migration = container_of(notifier, VFIOMigration,
->>                                               migration_state);
->>       VFIODevice *vbasedev = migration->vbasedev;
->> +    Error *local_err = NULL;
->> +    int ret = 0;
-> 
-> Nit: No need to set ret to 0.
-> 
->>
->>       trace_vfio_migration_state_notifier(vbasedev->name, e->type);
->>
->>       if (e->type == MIG_EVENT_PRECOPY_FAILED) {
->> -        vfio_migration_set_state_or_reset(vbasedev, VFIO_DEVICE_STATE_RUNNING);
->> +        /*
->> +         * MigrationNotifyFunc may return an error code and an Error
->> +         * object only for MIG_EVENT_PRECOPY_SETUP. Hence, report the
->> +         * error locally and ignore the errp argument.
->> +         */
-> 
-> Nit: maybe rephrase to the following:
-> 
-> "MigrationNotifyFunc may not return an error code and an Error object for MIG_EVENT_PRECOPY_FAILED. Hence ..."
-> 
-> (This way, this comment will not become stale if new MIG_EVENTs that are allowed to return error are added)
-
-
-ok. done. There will be a (final) v7.
-
-Thanks,
-
-C.
-
-
-> Thanks.
-> 
->> +        ret = vfio_migration_set_state_or_reset(vbasedev,
->> +                                                VFIO_DEVICE_STATE_RUNNING,
->> +                                                &local_err);
->> +        if (ret) {
->> +            error_report_err(local_err);
->> +        }
->>       }
->>       return 0;
->>   }
->> -- 
->> 2.45.0
->>
-> 
-
+SGkgSGFyc2gsDQoNCj4gIEZyb206IEhhcnNoIFByYXRlZWsgQm9yYSA8aGFyc2hwYkBsaW51eC5p
+Ym0uY29tPg0KPiAgU2VudDogVGh1cnNkYXksIE1heSAxNiwgMjAyNCAxMToxNSBBTQ0KPiAgDQo+
+ICBIaSBTYWxpbCwNCj4gIA0KPiAgVGhhbmtzIGZvciB5b3VyIGVtYWlsLg0KPiAgWW91ciBwYXRj
+aCAxLzggaXMgaW5jbHVkZWQgaGVyZSBiYXNlZCBvbiByZXZpZXcgY29tbWVudHMgb24gbXkgcHJl
+dmlvdXMNCj4gIHBhdGNoIGZyb20gb25lIG9mIHRoZSBtYWludGFpbmVycyBpbiB0aGUgY29tbXVu
+aXR5IGFuZCB0aGVyZWZvcmUgSSBoYWQNCj4gIGtlcHQgeW91IGluIENDIHRvIGJlIGF3YXJlIG9m
+IHRoZSBkZXNpcmUgb2YgaGF2aW5nIHRoaXMgaW5kZXBlbmRlbnQgcGF0Y2ggdG8NCj4gIGdldCBt
+ZXJnZWQgZWFybGllciBldmVuIGlmIHlvdXIgb3RoZXIgcGF0Y2hlcyBpbiB0aGUgc2VyaWVzIG1h
+eSBnbyB0aHJvdWdoDQo+ICBmdXJ0aGVyIHJldmlld3MuDQoNCkkgcmVhbGx5IGRvbuKAmXQga25v
+dyB3aGljaCBkaXNjdXNzaW9uIGFyZSAgeW91IHBvaW50aW5nIGF0PyBQbGVhc2UgdW5kZXJzdGFu
+ZA0KeW91IGFyZSBmaXhpbmcgYSBidWcgYW5kIHdlIGFyZSBwdXNoaW5nIGEgZmVhdHVyZSB3aGlj
+aCBoYXMgZ290IGxhcmdlIHNlcmllcy4NCkl0IHdpbGwgYnJlYWsgdGhlIHBhdGNoLXNldCAgd2hp
+Y2ggaXMgYWJvdXQgdCBiZSBtZXJnZWQuDQoNClRoZXJlIHdpbGwgYmUgc2lnbmlmaWNhbnQgb3Zl
+cmhlYWQgb2YgdGVzdGluZyBvbiB1cyBmb3IgdGhlIHdvcmsgd2UgaGF2ZSBiZWVuDQpjYXJyeWlu
+ZyBmb3J3YXJkIGZvciBsYXJnZSB0aW1lLiBUaGlzIHdpbGwgYmUgZGlzcnVwdGl2ZS4gUGxlYXNl
+IGRvbnQhDQoNCg0KPiAgDQo+ICBJIGFtIGhvcGluZyB0byBzZWUgeW91ciB2OSBzb29uIGFuZCB0
+aGVyZWFmdGVyIG1haW50YWluZXIocykgbWF5IGNob29zZSB0bw0KPiAgcGljayB0aGUgbGF0ZXN0
+IGluZGVwZW5kZW50IHBhdGNoIGlmIG5lZWRzIHRvIGJlIG1lcmdlZCBlYXJsaWVyLg0KDQoNCkkg
+ZG9u4oCZdCB0aGluayB5b3UgYXJlIHVuZGVyc3RhbmRpbmcgd2hhdCBwcm9ibGVtIGl0IGlzIGNh
+dXNpbmcuIEZvciB5b3VyDQpzbWFsbCBidWcgZml4IHlvdSBhcmUgY2F1c2luZyBzaWduaWZpY2Fu
+dCBkZWxheXMgYXQgb3VyIGVuZC4NCg0KDQpUaGFua3MNClNhbGlsLg0KPiAgDQo+ICBUaGFua3Mg
+Zm9yIHlvdXIgd29yayBhbmQgbGV0J3MgYmUgaG9wZWZ1bCBpdCBnZXRzIG1lcmdlZCBzb29uLg0K
+PiAgDQo+ICByZWdhcmRzLA0KPiAgSGFyc2gNCj4gIA0KPiAgT24gNS8xNi8yNCAxNDowMCwgU2Fs
+aWwgTWVodGEgd3JvdGU6DQo+ICA+IEhpIEhhcnNoLA0KPiAgPg0KPiAgPiBUaGFua3MgZm9yIHlv
+dXIgaW50ZXJlc3QgaW4gdGhlIHBhdGNoLXNldCBidXQgdGFraW5nIGF3YXkgcGF0Y2hlcyBsaWtl
+DQo+ICA+IHRoaXMgZnJvbSBvdGhlciBzZXJpZXMgd2l0aG91dCBhbnkgZGlzY3Vzc2lvbiBjYW4g
+ZGlzcnVwdCBvdGhlcnMgd29yaw0KPiAgPiBhbmQgaXRzIGFjY2VwdGFuY2Ugb24gdGltZS4gVGhp
+cyBpcyBiZWNhdXNlIHdlIHdpbGwgaGF2ZSB0byBwdXQgbG90IG9mDQo+ICA+IGVmZm9ydCBpbiBy
+ZWJhc2luZyBiaWdnZXIgc2VyaWVzIGFuZCB0aGVuIHRlc3Rpbmcgb3ZlcmhlYWQgY29tZXMgYWxv
+bmcNCj4gID4gd2l0aCBpdC4NCj4gID4NCj4gID4gVGhlIHBhdGNoLXNldCAoZnJvbSB3aGVyZSB0
+aGlzICBwYXRjaCBoYXMgYmVlbiB0YWtlbikgaXMgcGFydCBvZiBldmVuDQo+ICA+IGJpZ2dlciBz
+ZXJpZXMgYW5kIHRoZXJlIGhhdmUgYmVlbiBtYW55IHBlb3BsZSBhbmQgY29tcGFuaWVzIHRvaWxp
+bmcgdG8NCj4gID4gZml4IHRoZSBidWdzIGNvbGxlY3RpdmVseSBpbiB0aGF0IHNlcmllcyBhbmQg
+Zm9yIHllYXJzLg0KPiAgPg0KPiAgPiBJJ20gYWJvdXQgZmxvYXQgdGhlIFY5IHZlcnNpb24gb2Yg
+dGhlIEFyY2ggYWdub3N0aWMgc2VyaWVzIHdoaWNoIHRoaXMNCj4gID4gcGF0Y2ggaXMgcGFydCBv
+ZiBhbmQgeW91IGNhbiByZWJhc2UgeW91ciBwYXRjaC1zZXQgZnJvbSB0aGVyZS4gSSdtDQo+ICA+
+IGhvcGVmdWwgdGhhdCBpdCB3aWxsIGdldCBhY2NlcHRlZCBpbiB0aGlzIGN5Y2xlLg0KPiAgPg0K
+PiAgPg0KPiAgPiBNYW55IHRoYW5rcw0KPiAgPiBTYWxpbC4NCj4gID4NCj4gID4+ICAgRnJvbTog
+SGFyc2ggUHJhdGVlayBCb3JhIDxoYXJzaHBiQGxpbnV4LmlibS5jb20+DQo+ICA+PiAgIFNlbnQ6
+IFRodXJzZGF5LCBNYXkgMTYsIDIwMjQgNjozMiBBTQ0KPiAgPj4NCj4gID4+ICAgRnJvbTogU2Fs
+aWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ICA+Pg0KPiAgPj4gICBLVk0gdkNQ
+VSBjcmVhdGlvbiBpcyBkb25lIG9uY2UgZHVyaW5nIHRoZSB2Q1BVIHJlYWxpemF0aW9uIHdoZW4N
+Cj4gIFFlbXUNCj4gID4+ICAgdkNQVSB0aHJlYWQgaXMgc3Bhd25lZC4gVGhpcyBpcyBjb21tb24g
+dG8gYWxsIHRoZSBhcmNoaXRlY3R1cmVzIGFzIG9mDQo+ICBub3cuDQo+ICA+Pg0KPiAgPj4gICBI
+b3QtdW5wbHVnIG9mIHZDUFUgcmVzdWx0cyBpbiBkZXN0cnVjdGlvbiBvZiB0aGUgdkNQVSBvYmpl
+Y3QgaW4gUU9NDQo+ICBidXQNCj4gID4+ICAgdGhlIGNvcnJlc3BvbmRpbmcgS1ZNIHZDUFUgb2Jq
+ZWN0IGluIHRoZSBIb3N0IEtWTSBpcyBub3QgZGVzdHJveWVkDQo+ICBhcw0KPiAgPj4gICBLVk0g
+ZG9lc24ndCBzdXBwb3J0IHZDUFUgcmVtb3ZhbC4gVGhlcmVmb3JlLCBpdHMgcmVwcmVzZW50YXRp
+dmUgS1ZNDQo+ICA+PiAgIHZDUFUgb2JqZWN0L2NvbnRleHQgaW4gUWVtdSBpcyBwYXJrZWQuDQo+
+ICA+Pg0KPiAgPj4gICBSZWZhY3RvciBhcmNoaXRlY3R1cmUgY29tbW9uIGxvZ2ljIHNvIHRoYXQg
+c29tZSBBUElzIGNvdWxkIGJlIHJldXNlZA0KPiAgYnkNCj4gID4+ICAgdkNQVSBIb3RwbHVnIGNv
+ZGUgb2Ygc29tZSBhcmNoaXRlY3R1cmVzIGxpa2VzIEFSTSwgTG9vbmdzb24gZXRjLg0KPiAgVXBk
+YXRlDQo+ICA+PiAgIG5ldy9vbGQgQVBJcyB3aXRoIHRyYWNlIGV2ZW50cyBpbnN0ZWFkIG9mIERQ
+UklOVEYuIE5vIGZ1bmN0aW9uYWwNCj4gIGNoYW5nZSBpcw0KPiAgPj4gICBpbnRlbmRlZCBoZXJl
+Lg0KPiAgPj4NCj4gID4+ICAgU2lnbmVkLW9mZi1ieTogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRh
+QGh1YXdlaS5jb20+DQo+ICA+PiAgIFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkByZWRo
+YXQuY29tPg0KPiAgPj4gICBUZXN0ZWQtYnk6IFZpc2hudSBQYWpqdXJpIDx2aXNobnVAb3MuYW1w
+ZXJlY29tcHV0aW5nLmNvbT4NCj4gID4+ICAgUmV2aWV3ZWQtYnk6IEpvbmF0aGFuIENhbWVyb24g
+PEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gID4+ICAgVGVzdGVkLWJ5OiBYaWFuZ2xh
+aSBMaSA8bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbj4NCj4gID4+ICAgVGVzdGVkLWJ5OiBNaWd1ZWwg
+THVpcyA8bWlndWVsLmx1aXNAb3JhY2xlLmNvbT4NCj4gID4+ICAgUmV2aWV3ZWQtYnk6IFNoYW9x
+aW4gSHVhbmcgPHNoYWh1YW5nQHJlZGhhdC5jb20+DQo+ICA+PiAgIFtoYXJzaHBiOiBmaXhlZCBy
+ZWJhc2UgZmFpbHVyZXMgaW4gaW5jbHVkZS9zeXNlbXUva3ZtLmhdDQo+ICA+PiAgIFNpZ25lZC1v
+ZmYtYnk6IEhhcnNoIFByYXRlZWsgQm9yYSA8aGFyc2hwYkBsaW51eC5pYm0uY29tPg0KPiAgPj4g
+ICAtLS0NCj4gID4+ICAgIGluY2x1ZGUvc3lzZW11L2t2bS5oICAgfCAxNSArKysrKysrKysrDQo+
+ICA+PiAgICBhY2NlbC9rdm0va3ZtLWFsbC5jICAgIHwgNjQgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKystLS0NCj4gIC0tLS0tDQo+ICA+PiAgIC0tDQo+ICA+PiAgICBhY2NlbC9rdm0v
+dHJhY2UtZXZlbnRzIHwgIDUgKysrLQ0KPiAgPj4gICAgMyBmaWxlcyBjaGFuZ2VkLCA2OCBpbnNl
+cnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkNCj4gID4+DQo+ICA+PiAgIGRpZmYgLS1naXQgYS9p
+bmNsdWRlL3N5c2VtdS9rdm0uaCBiL2luY2x1ZGUvc3lzZW11L2t2bS5oIGluZGV4DQo+ICA+PiAg
+IGVhZjgwMWJjOTMuLmZhM2VjNzQ0NDIgMTAwNjQ0DQo+ICA+PiAgIC0tLSBhL2luY2x1ZGUvc3lz
+ZW11L2t2bS5oDQo+ICA+PiAgICsrKyBiL2luY2x1ZGUvc3lzZW11L2t2bS5oDQo+ICA+PiAgIEBA
+IC00MzQsNiArNDM0LDIxIEBAIHZvaWQga3ZtX3NldF9zaWdtYXNrX2xlbihLVk1TdGF0ZSAqcywN
+Cj4gIHVuc2lnbmVkDQo+ICA+PiAgIGludCBzaWdtYXNrX2xlbik7DQo+ICA+Pg0KPiAgPj4gICAg
+aW50IGt2bV9waHlzaWNhbF9tZW1vcnlfYWRkcl9mcm9tX2hvc3QoS1ZNU3RhdGUgKnMsIHZvaWQN
+Cj4gID4+ICAgKnJhbV9hZGRyLA0KPiAgPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgaHdhZGRyICpwaHlzX2FkZHIpOw0KPiAgPj4gICArLyoqDQo+ICA+PiAgICsg
+KiBrdm1fY3JlYXRlX3ZjcHUgLSBHZXRzIGEgcGFya2VkIEtWTSB2Q1BVIG9yIGNyZWF0ZXMgYSBL
+Vk0NCj4gIHZDUFUNCj4gID4+ICAgKyAqIEBjcHU6IFFPTSBDUFVTdGF0ZSBvYmplY3QgZm9yIHdo
+aWNoIEtWTSB2Q1BVIGhhcyB0byBiZQ0KPiAgPj4gICBmZXRjaGVkL2NyZWF0ZWQuDQo+ICA+PiAg
+ICsgKg0KPiAgPj4gICArICogQHJldHVybnM6IDAgd2hlbiBzdWNjZXNzLCBlcnJubyAoPDApIHdo
+ZW4gZmFpbGVkLg0KPiAgPj4gICArICovDQo+ICA+PiAgICtpbnQga3ZtX2NyZWF0ZV92Y3B1KENQ
+VVN0YXRlICpjcHUpOw0KPiAgPj4gICArDQo+ICA+PiAgICsvKioNCj4gID4+ICAgKyAqIGt2bV9w
+YXJrX3ZjcHUgLSBQYXJrIFFFTVUgS1ZNIHZDUFUgY29udGV4dA0KPiAgPj4gICArICogQGNwdTog
+UU9NIENQVVN0YXRlIG9iamVjdCBmb3Igd2hpY2ggUUVNVSBLVk0gdkNQVSBjb250ZXh0DQo+ICBo
+YXMgdG8NCj4gID4+ICAgYmUgcGFya2VkLg0KPiAgPj4gICArICoNCj4gID4+ICAgKyAqIEByZXR1
+cm5zOiBub25lDQo+ICA+PiAgICsgKi8NCj4gID4+ICAgK3ZvaWQga3ZtX3BhcmtfdmNwdShDUFVT
+dGF0ZSAqY3B1KTsNCj4gID4+DQo+ICA+PiAgICAjZW5kaWYgLyogQ09NUElMSU5HX1BFUl9UQVJH
+RVQgKi8NCj4gID4+DQo+ICA+PiAgIGRpZmYgLS1naXQgYS9hY2NlbC9rdm0va3ZtLWFsbC5jIGIv
+YWNjZWwva3ZtL2t2bS1hbGwuYyBpbmRleA0KPiAgPj4gICBkNzI4MWI5M2YzLi4zMGQ0Mjg0N2Rl
+IDEwMDY0NA0KPiAgPj4gICAtLS0gYS9hY2NlbC9rdm0va3ZtLWFsbC5jDQo+ICA+PiAgICsrKyBi
+L2FjY2VsL2t2bS9rdm0tYWxsLmMNCj4gID4+ICAgQEAgLTEyOCw2ICsxMjgsNyBAQCBzdGF0aWMg
+UWVtdU11dGV4IGttbF9zbG90c19sb2NrOyAgI2RlZmluZQ0KPiAgPj4gICBrdm1fc2xvdHNfdW5s
+b2NrKCkgIHFlbXVfbXV0ZXhfdW5sb2NrKCZrbWxfc2xvdHNfbG9jaykNCj4gID4+DQo+ICA+PiAg
+ICBzdGF0aWMgdm9pZCBrdm1fc2xvdF9pbml0X2RpcnR5X2JpdG1hcChLVk1TbG90ICptZW0pOw0K
+PiAgPj4gICArc3RhdGljIGludCBrdm1fZ2V0X3ZjcHUoS1ZNU3RhdGUgKnMsIHVuc2lnbmVkIGxv
+bmcgdmNwdV9pZCk7DQo+ICA+Pg0KPiAgPj4gICAgc3RhdGljIGlubGluZSB2b2lkIGt2bV9yZXNh
+bXBsZV9mZF9yZW1vdmUoaW50IGdzaSkgIHsgQEAgLTM0MCwxNA0KPiAgKzM0MSw1Mw0KPiAgPj4g
+ICBAQCBlcnI6DQo+ICA+PiAgICAgICAgcmV0dXJuIHJldDsNCj4gID4+ICAgIH0NCj4gID4+DQo+
+ICA+PiAgICt2b2lkIGt2bV9wYXJrX3ZjcHUoQ1BVU3RhdGUgKmNwdSkNCj4gID4+ICAgK3sNCj4g
+ID4+ICAgKyAgICBzdHJ1Y3QgS1ZNUGFya2VkVmNwdSAqdmNwdTsNCj4gID4+ICAgKw0KPiAgPj4g
+ICArICAgIHRyYWNlX2t2bV9wYXJrX3ZjcHUoY3B1LT5jcHVfaW5kZXgsIGt2bV9hcmNoX3ZjcHVf
+aWQoY3B1KSk7DQo+ICA+PiAgICsNCj4gID4+ICAgKyAgICB2Y3B1ID0gZ19tYWxsb2MwKHNpemVv
+ZigqdmNwdSkpOw0KPiAgPj4gICArICAgIHZjcHUtPnZjcHVfaWQgPSBrdm1fYXJjaF92Y3B1X2lk
+KGNwdSk7DQo+ICA+PiAgICsgICAgdmNwdS0+a3ZtX2ZkID0gY3B1LT5rdm1fZmQ7DQo+ICA+PiAg
+ICsgICAgUUxJU1RfSU5TRVJUX0hFQUQoJmt2bV9zdGF0ZS0+a3ZtX3BhcmtlZF92Y3B1cywgdmNw
+dSwNCj4gIG5vZGUpOyB9DQo+ICA+PiAgICsNCj4gID4+ICAgK2ludCBrdm1fY3JlYXRlX3ZjcHUo
+Q1BVU3RhdGUgKmNwdSkNCj4gID4+ICAgK3sNCj4gID4+ICAgKyAgICB1bnNpZ25lZCBsb25nIHZj
+cHVfaWQgPSBrdm1fYXJjaF92Y3B1X2lkKGNwdSk7DQo+ICA+PiAgICsgICAgS1ZNU3RhdGUgKnMg
+PSBrdm1fc3RhdGU7DQo+ICA+PiAgICsgICAgaW50IGt2bV9mZDsNCj4gID4+ICAgKw0KPiAgPj4g
+ICArICAgIHRyYWNlX2t2bV9jcmVhdGVfdmNwdShjcHUtPmNwdV9pbmRleCwga3ZtX2FyY2hfdmNw
+dV9pZChjcHUpKTsNCj4gID4+ICAgKw0KPiAgPj4gICArICAgIC8qIGNoZWNrIGlmIHRoZSBLVk0g
+dkNQVSBhbHJlYWR5IGV4aXN0IGJ1dCBpcyBwYXJrZWQgKi8NCj4gID4+ICAgKyAgICBrdm1fZmQg
+PSBrdm1fZ2V0X3ZjcHUocywgdmNwdV9pZCk7DQo+ICA+PiAgICsgICAgaWYgKGt2bV9mZCA8IDAp
+IHsNCj4gID4+ICAgKyAgICAgICAgLyogdkNQVSBub3QgcGFya2VkOiBjcmVhdGUgYSBuZXcgS1ZN
+IHZDUFUgKi8NCj4gID4+ICAgKyAgICAgICAga3ZtX2ZkID0ga3ZtX3ZtX2lvY3RsKHMsIEtWTV9D
+UkVBVEVfVkNQVSwgdmNwdV9pZCk7DQo+ICA+PiAgICsgICAgICAgIGlmIChrdm1fZmQgPCAwKSB7
+DQo+ICA+PiAgICsgICAgICAgICAgICBlcnJvcl9yZXBvcnQoIktWTV9DUkVBVEVfVkNQVSBJT0NU
+TCBmYWlsZWQgZm9yIHZDUFUgJWx1IiwNCj4gID4+ICAgdmNwdV9pZCk7DQo+ICA+PiAgICsgICAg
+ICAgICAgICByZXR1cm4ga3ZtX2ZkOw0KPiAgPj4gICArICAgICAgICB9DQo+ICA+PiAgICsgICAg
+fQ0KPiAgPj4gICArDQo+ICA+PiAgICsgICAgY3B1LT5rdm1fZmQgPSBrdm1fZmQ7DQo+ICA+PiAg
+ICsgICAgY3B1LT5rdm1fc3RhdGUgPSBzOw0KPiAgPj4gICArICAgIGNwdS0+dmNwdV9kaXJ0eSA9
+IHRydWU7DQo+ICA+PiAgICsgICAgY3B1LT5kaXJ0eV9wYWdlcyA9IDA7DQo+ICA+PiAgICsgICAg
+Y3B1LT50aHJvdHRsZV91c19wZXJfZnVsbCA9IDA7DQo+ICA+PiAgICsNCj4gID4+ICAgKyAgICBy
+ZXR1cm4gMDsNCj4gID4+ICAgK30NCj4gID4+ICAgKw0KPiAgPj4gICAgc3RhdGljIGludCBkb19r
+dm1fZGVzdHJveV92Y3B1KENQVVN0YXRlICpjcHUpICB7DQo+ICA+PiAgICAgICAgS1ZNU3RhdGUg
+KnMgPSBrdm1fc3RhdGU7DQo+ICA+PiAgICAgICAgbG9uZyBtbWFwX3NpemU7DQo+ICA+PiAgIC0g
+ICAgc3RydWN0IEtWTVBhcmtlZFZjcHUgKnZjcHUgPSBOVUxMOw0KPiAgPj4gICAgICAgIGludCBy
+ZXQgPSAwOw0KPiAgPj4NCj4gID4+ICAgLSAgICB0cmFjZV9rdm1fZGVzdHJveV92Y3B1KCk7DQo+
+ICA+PiAgICsgICAgdHJhY2Vfa3ZtX2Rlc3Ryb3lfdmNwdShjcHUtPmNwdV9pbmRleCwNCj4gIGt2
+bV9hcmNoX3ZjcHVfaWQoY3B1KSk7DQo+ICA+Pg0KPiAgPj4gICAgICAgIHJldCA9IGt2bV9hcmNo
+X2Rlc3Ryb3lfdmNwdShjcHUpOw0KPiAgPj4gICAgICAgIGlmIChyZXQgPCAwKSB7DQo+ICA+PiAg
+IEBAIC0zNzMsMTAgKzQxMyw3IEBAIHN0YXRpYyBpbnQgZG9fa3ZtX2Rlc3Ryb3lfdmNwdShDUFVT
+dGF0ZQ0KPiAgKmNwdSkNCj4gID4+ICAgICAgICAgICAgfQ0KPiAgPj4gICAgICAgIH0NCj4gID4+
+DQo+ICA+PiAgIC0gICAgdmNwdSA9IGdfbWFsbG9jMChzaXplb2YoKnZjcHUpKTsNCj4gID4+ICAg
+LSAgICB2Y3B1LT52Y3B1X2lkID0ga3ZtX2FyY2hfdmNwdV9pZChjcHUpOw0KPiAgPj4gICAtICAg
+IHZjcHUtPmt2bV9mZCA9IGNwdS0+a3ZtX2ZkOw0KPiAgPj4gICAtICAgIFFMSVNUX0lOU0VSVF9I
+RUFEKCZrdm1fc3RhdGUtPmt2bV9wYXJrZWRfdmNwdXMsIHZjcHUsDQo+ICBub2RlKTsNCj4gID4+
+ICAgKyAgICBrdm1fcGFya192Y3B1KGNwdSk7DQo+ICA+PiAgICBlcnI6DQo+ICA+PiAgICAgICAg
+cmV0dXJuIHJldDsNCj4gID4+ICAgIH0NCj4gID4+ICAgQEAgLTM5Nyw2ICs0MzQsOCBAQCBzdGF0
+aWMgaW50IGt2bV9nZXRfdmNwdShLVk1TdGF0ZSAqcywgdW5zaWduZWQNCj4gIGxvbmcNCj4gID4+
+ICAgdmNwdV9pZCkNCj4gID4+ICAgICAgICAgICAgaWYgKGNwdS0+dmNwdV9pZCA9PSB2Y3B1X2lk
+KSB7DQo+ICA+PiAgICAgICAgICAgICAgICBpbnQga3ZtX2ZkOw0KPiAgPj4NCj4gID4+ICAgKyAg
+ICAgICAgICAgIHRyYWNlX2t2bV9nZXRfdmNwdSh2Y3B1X2lkKTsNCj4gID4+ICAgKw0KPiAgPj4g
+ICAgICAgICAgICAgICAgUUxJU1RfUkVNT1ZFKGNwdSwgbm9kZSk7DQo+ICA+PiAgICAgICAgICAg
+ICAgICBrdm1fZmQgPSBjcHUtPmt2bV9mZDsNCj4gID4+ICAgICAgICAgICAgICAgIGdfZnJlZShj
+cHUpOw0KPiAgPj4gICBAQCAtNDA0LDcgKzQ0Myw3IEBAIHN0YXRpYyBpbnQga3ZtX2dldF92Y3B1
+KEtWTVN0YXRlICpzLCB1bnNpZ25lZA0KPiAgbG9uZw0KPiAgPj4gICB2Y3B1X2lkKQ0KPiAgPj4g
+ICAgICAgICAgICB9DQo+ICA+PiAgICAgICAgfQ0KPiAgPj4NCj4gID4+ICAgLSAgICByZXR1cm4g
+a3ZtX3ZtX2lvY3RsKHMsIEtWTV9DUkVBVEVfVkNQVSwgKHZvaWQgKil2Y3B1X2lkKTsNCj4gID4+
+ICAgKyAgICByZXR1cm4gLUVOT0VOVDsNCj4gID4+ICAgIH0NCj4gID4+DQo+ICA+PiAgICBpbnQg
+a3ZtX2luaXRfdmNwdShDUFVTdGF0ZSAqY3B1LCBFcnJvciAqKmVycnApIEBAIC00MTUsMTkgKzQ1
+NCwxNA0KPiAgQEANCj4gID4+ICAgaW50IGt2bV9pbml0X3ZjcHUoQ1BVU3RhdGUgKmNwdSwgRXJy
+b3IgKiplcnJwKQ0KPiAgPj4NCj4gID4+ICAgICAgICB0cmFjZV9rdm1faW5pdF92Y3B1KGNwdS0+
+Y3B1X2luZGV4LCBrdm1fYXJjaF92Y3B1X2lkKGNwdSkpOw0KPiAgPj4NCj4gID4+ICAgLSAgICBy
+ZXQgPSBrdm1fZ2V0X3ZjcHUocywga3ZtX2FyY2hfdmNwdV9pZChjcHUpKTsNCj4gID4+ICAgKyAg
+ICByZXQgPSBrdm1fY3JlYXRlX3ZjcHUoY3B1KTsNCj4gID4+ICAgICAgICBpZiAocmV0IDwgMCkg
+ew0KPiAgPj4gICAtICAgICAgICBlcnJvcl9zZXRnX2Vycm5vKGVycnAsIC1yZXQsICJrdm1faW5p
+dF92Y3B1OiBrdm1fZ2V0X3ZjcHUgZmFpbGVkDQo+ICA+PiAgICglbHUpIiwNCj4gID4+ICAgKyAg
+ICAgICAgZXJyb3Jfc2V0Z19lcnJubyhlcnJwLCAtcmV0LA0KPiAgPj4gICArICAgICAgICAgICAg
+ICAgICAgICAgICAgICJrdm1faW5pdF92Y3B1OiBrdm1fY3JlYXRlX3ZjcHUgZmFpbGVkICglbHUp
+IiwNCj4gID4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBrdm1fYXJjaF92Y3B1X2lkKGNw
+dSkpOw0KPiAgPj4gICAgICAgICAgICBnb3RvIGVycjsNCj4gID4+ICAgICAgICB9DQo+ICA+Pg0K
+PiAgPj4gICAtICAgIGNwdS0+a3ZtX2ZkID0gcmV0Ow0KPiAgPj4gICAtICAgIGNwdS0+a3ZtX3N0
+YXRlID0gczsNCj4gID4+ICAgLSAgICBjcHUtPnZjcHVfZGlydHkgPSB0cnVlOw0KPiAgPj4gICAt
+ICAgIGNwdS0+ZGlydHlfcGFnZXMgPSAwOw0KPiAgPj4gICAtICAgIGNwdS0+dGhyb3R0bGVfdXNf
+cGVyX2Z1bGwgPSAwOw0KPiAgPj4gICAtDQo+ICA+PiAgICAgICAgbW1hcF9zaXplID0ga3ZtX2lv
+Y3RsKHMsIEtWTV9HRVRfVkNQVV9NTUFQX1NJWkUsIDApOw0KPiAgPj4gICAgICAgIGlmIChtbWFw
+X3NpemUgPCAwKSB7DQo+ICA+PiAgICAgICAgICAgIHJldCA9IG1tYXBfc2l6ZTsNCj4gID4+ICAg
+ZGlmZiAtLWdpdCBhL2FjY2VsL2t2bS90cmFjZS1ldmVudHMgYi9hY2NlbC9rdm0vdHJhY2UtZXZl
+bnRzIGluZGV4DQo+ICA+PiAgIDY4MWNjYjY2N2QuLjc1YzE3MjRlNzggMTAwNjQ0DQo+ICA+PiAg
+IC0tLSBhL2FjY2VsL2t2bS90cmFjZS1ldmVudHMNCj4gID4+ICAgKysrIGIvYWNjZWwva3ZtL3Ry
+YWNlLWV2ZW50cw0KPiAgPj4gICBAQCAtOSw2ICs5LDEwIEBAIGt2bV9kZXZpY2VfaW9jdGwoaW50
+IGZkLCBpbnQgdHlwZSwgdm9pZCAqYXJnKSAiZGV2IGZkDQo+ICAlZCwNCj4gID4+ICAgdHlwZSAw
+eCV4LCBhcmcgJXAiDQo+ICA+PiAgICBrdm1fZmFpbGVkX3JlZ19nZXQodWludDY0X3QgaWQsIGNv
+bnN0IGNoYXIgKm1zZykgIldhcm5pbmc6IFVuYWJsZSB0bw0KPiAgPj4gICByZXRyaWV2ZSBPTkVS
+RUcgJSIgUFJJdTY0ICIgZnJvbSBLVk06ICVzIg0KPiAgPj4gICAga3ZtX2ZhaWxlZF9yZWdfc2V0
+KHVpbnQ2NF90IGlkLCBjb25zdCBjaGFyICptc2cpICJXYXJuaW5nOiBVbmFibGUgdG8NCj4gIHNl
+dA0KPiAgPj4gICBPTkVSRUcgJSIgUFJJdTY0ICIgdG8gS1ZNOiAlcyINCj4gID4+ICAgIGt2bV9p
+bml0X3ZjcHUoaW50IGNwdV9pbmRleCwgdW5zaWduZWQgbG9uZyBhcmNoX2NwdV9pZCkgImluZGV4
+OiAlZA0KPiAgaWQ6DQo+ICA+PiAgICVsdSINCj4gID4+ICAgK2t2bV9jcmVhdGVfdmNwdShpbnQg
+Y3B1X2luZGV4LCB1bnNpZ25lZCBsb25nIGFyY2hfY3B1X2lkKSAiaW5kZXg6DQo+ICAlZA0KPiAg
+Pj4gICBpZDogJWx1Ig0KPiAgPj4gICAra3ZtX2dldF92Y3B1KHVuc2lnbmVkIGxvbmcgYXJjaF9j
+cHVfaWQpICJpZDogJWx1Ig0KPiAgPj4gICAra3ZtX2Rlc3Ryb3lfdmNwdShpbnQgY3B1X2luZGV4
+LCB1bnNpZ25lZCBsb25nIGFyY2hfY3B1X2lkKSAiaW5kZXg6DQo+ICAlZA0KPiAgPj4gICBpZDog
+JWx1Ig0KPiAgPj4gICAra3ZtX3BhcmtfdmNwdShpbnQgY3B1X2luZGV4LCB1bnNpZ25lZCBsb25n
+IGFyY2hfY3B1X2lkKSAiaW5kZXg6ICVkDQo+ICBpZDoNCj4gID4+ICAgJWx1Ig0KPiAgPj4gICAg
+a3ZtX2lycWNoaXBfY29tbWl0X3JvdXRlcyh2b2lkKSAiIg0KPiAgPj4gICAga3ZtX2lycWNoaXBf
+YWRkX21zaV9yb3V0ZShjaGFyICpuYW1lLCBpbnQgdmVjdG9yLCBpbnQgdmlycSkgImRldiAlcw0K
+PiAgPj4gICB2ZWN0b3IgJWQgdmlycSAlZCINCj4gID4+ICAgIGt2bV9pcnFjaGlwX3VwZGF0ZV9t
+c2lfcm91dGUoaW50IHZpcnEpICJVcGRhdGluZyBNU0kgcm91dGUNCj4gIHZpcnE9JWQiDQo+ICA+
+PiAgIEBAIC0yNSw3ICsyOSw2IEBAIGt2bV9kaXJ0eV9yaW5nX3JlYXBlcihjb25zdCBjaGFyICpz
+KSAiJXMiDQo+ICA+PiAgICBrdm1fZGlydHlfcmluZ19yZWFwKHVpbnQ2NF90IGNvdW50LCBpbnQ2
+NF90IHQpICJyZWFwZWQgJSJQUkl1NjQiDQo+ICBwYWdlcw0KPiAgPj4gICAodG9vayAlIlBSSWk2
+NCIgdXMpIg0KPiAgPj4gICAga3ZtX2RpcnR5X3JpbmdfcmVhcGVyX2tpY2soY29uc3QgY2hhciAq
+cmVhc29uKSAiJXMiDQo+ICA+PiAgICBrdm1fZGlydHlfcmluZ19mbHVzaChpbnQgZmluaXNoZWQp
+ICIlZCINCj4gID4+ICAgLWt2bV9kZXN0cm95X3ZjcHUodm9pZCkgIiINCj4gID4+ICAgIGt2bV9m
+YWlsZWRfZ2V0X3ZjcHVfbW1hcF9zaXplKHZvaWQpICIiDQo+ICA+PiAgICBrdm1fY3B1X2V4ZWMo
+dm9pZCkgIiINCj4gID4+ICAgIGt2bV9pbnRlcnJ1cHRfZXhpdF9yZXF1ZXN0KHZvaWQpICIiDQo+
+ICA+PiAgIC0tDQo+ICA+PiAgIDIuMzkuMw0KPiAgPg0K
 
