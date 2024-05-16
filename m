@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062948C79BF
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 17:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB668C79BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 17:49:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7dLR-0008CY-C4; Thu, 16 May 2024 11:48:37 -0400
+	id 1s7dLL-0007w1-Iy; Thu, 16 May 2024 11:48:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1s7dLL-000882-Mo
- for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:32 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ id 1s7dL8-0007l7-V0
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:20 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1s7dL6-0002uH-FZ
- for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:30 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2e538a264e0so12460501fa.1
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 08:48:16 -0700 (PDT)
+ id 1s7dL7-0002uV-J8
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:18 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-420104e5336so34421545e9.1
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 08:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715874494; x=1716479294; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1715874496; x=1716479296; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YP28Iks2aCd2MOvUAbQc4yYuz/leCz2VtuKFu0fMfns=;
- b=gJqWS2ZFjgmXD3ZgYKzCSNmw4fE2OX77q+aesy8oP5hI4GFL1+7Vgw+Y/ZLfFZmGZj
- sZx63PL2DFH284wyO0MPZ//A0vIWesOYD93wPhQKsyXjBDe6LdpisBW3Fi0/aAzOnyBV
- tAKCSt3l36lWJ4CQurSaKjSG+dVml6sF0vQunB+8/KTGO0ZIB8lRVIarggjtU313wLJm
- hdYgEY1YfWP9c1JAFBG+mzBIOwazms3iLur6s9m6i6yO1Leac5IoeCxEvWGZD0WhEplT
- AoJButML/zc2/GaGXzk89e8JIHntVnqeqWN1F2HDBIvQuRiZp4k576idzcQDCxsDgbdP
- nSPg==
+ bh=teD8rnn0f6FYCrAuK2rQnLlILPjJ9Dq4/0s1mpzug5c=;
+ b=jOhWqoONDsmmeFKPYrYIWPVredBjzE3GXwPan5W5NxywdbRQimk/X4NSY8MBR7MYqN
+ Ln0uAOihiQaCqBFyvdBeCwWfWW0s9m+W6jmFEz701LOvRR8X/v4udXMnZXnf7qATul5L
+ hcDFibnmhc6VkcFn7z3rfTXt4cgp1vLiLNQ5hbSWEBvR7p4wFF4h+FueMR8BmWaPAtug
+ gDr8LOvTMy8VuSRXQ0EuF6HXKrnUrKO6ykNH0mU90lbU+hz3Jvn5hNpu7hzpRNdaOIFe
+ W9RhvE6p1d60VqjPEjGj0Sf40Rul++3zRxBnNVKCj9rKTNcMYLVw2tvy3CDRnr5nRMFT
+ vfGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715874494; x=1716479294;
+ d=1e100.net; s=20230601; t=1715874496; x=1716479296;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YP28Iks2aCd2MOvUAbQc4yYuz/leCz2VtuKFu0fMfns=;
- b=qnJOwDGCr2lIm8bFaZyf1CyKu1b7WUVCr9E7MaS949X9X/l/ZhMQrBKCK+3qrj1AR8
- RwNZJxCOI0dHm42nZundC6HrWCtxfRrVNtMR29h3T+r8JwequRSJPRRn0VIzwMORNihq
- 5WVscLeaas3F3WOHI0m1yYqV29aERN69tmfpeXkZQBJmBppj/6O+RW0+xB1kigVO8JDi
- JOuuQtBst5UiI1Z6lQftGwaJnV6qQX4fhEdU6yTkFVZ96WhjD+wE0TmF6Lx0VrrwuJbf
- ltVY52ZIrObxnNf4wIQiGYOLShF0wJ77SnE4Y2bWo/fij9SJDWGjYVPOhSzelJpSgOS4
- SzBA==
-X-Gm-Message-State: AOJu0YwS7gqAdLl6D4mwGQV/nWsiDQ4y6L9jrhFJQVwxsMdIJ46z8Sr6
- pgpRTikScUZaVKiEx8V/09Yl6WBea5Ou+FYh59S3BNnxLtbS7N9PaIyAjxRo6hw=
-X-Google-Smtp-Source: AGHT+IEaN/+VHmkJjv/znpWgW3h0+GqXzWUJj0uCRLf2DykoyCNb/asHTon7nVels7WBBHQIR1MU9A==
-X-Received: by 2002:a2e:be9f:0:b0:2e3:ba0e:de12 with SMTP id
- 38308e7fff4ca-2e51ff5cf48mr209958761fa.22.1715874494287; 
- Thu, 16 May 2024 08:48:14 -0700 (PDT)
+ bh=teD8rnn0f6FYCrAuK2rQnLlILPjJ9Dq4/0s1mpzug5c=;
+ b=d4L7e5OKiSyjRqbddxK4PnsI45PDcFadBSHZ3Cw7LirhGHb29H9kizFtG+lJzVFp6P
+ lsjR5teaNLY09OZVidegDlYNHxTr4CRrPX/x0liB8CBvXwMTwh5527x0RLxFu4Z9yHiw
+ fHZcx8l/wZJ9i5tLp6kVUoG91dQUcM2LPsVXWPgYBvi0GFTzznBTFv27L7a9Lqy0CJ/U
+ En4hMgmmpxlEZ/cT4fADWPJGKcSXrizCUGjPp7kbjwsbs2Zkkg9Am2z9e70rXbmsuiFN
+ cYSOrmYSJMIsj4fG1LuHAHT1BV1ZI18NY0zvvI9iH/bzrX+s5nexmJNtu50VNyqstcPB
+ 7QKg==
+X-Gm-Message-State: AOJu0YzjYK9hToXVZc+zEvNyaFbkxTZ5quBqa9EO0hBAK1un6UFuAxvF
+ XFIQlIly9XJ9HO2n2z5SVqKClIv92RPwCS1Ai/OKW3XGUhY/Kq29hfh3IpJ7z18=
+X-Google-Smtp-Source: AGHT+IHnY2m1gSOif+roTBqJK4laENH333C+wETM9OTAiDP4pjCTiyhjqNlxDwHwPAW5xLvSHvjXng==
+X-Received: by 2002:a05:600c:444e:b0:41b:4caa:554c with SMTP id
+ 5b1f17b1804b1-41fea930c57mr180374385e9.2.1715874495533; 
+ Thu, 16 May 2024 08:48:15 -0700 (PDT)
 Received: from gmail.com ([213.0.35.158]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42016b88f99sm146828625e9.10.2024.05.16.08.48.13
+ 5b1f17b1804b1-42016b88f99sm146829475e9.10.2024.05.16.08.48.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 May 2024 08:48:13 -0700 (PDT)
+ Thu, 16 May 2024 08:48:15 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
  "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  David Hildenbrand <david@redhat.com>,
- Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org
-Subject: [PATCH v6 3/8] xen: Add xen_mr_is_memory()
-Date: Thu, 16 May 2024 17:47:59 +0200
-Message-Id: <20240516154804.1114245-4-edgar.iglesias@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 4/8] softmmu: xen: Always pass offset + addr to
+ xen_map_cache
+Date: Thu, 16 May 2024 17:48:00 +0200
+Message-Id: <20240516154804.1114245-5-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240516154804.1114245-1-edgar.iglesias@gmail.com>
 References: <20240516154804.1114245-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x232.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,80 +97,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-Add xen_mr_is_memory() to abstract away tests for the
-xen_memory MR.
+Always pass address with offset to xen_map_cache().
+This is in preparation for support for grant mappings.
 
-No functional changes.
+Since this is within a block that checks for offset == 0,
+this has no functional changes.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
 ---
- hw/xen/xen-hvm-common.c | 10 ++++++++--
- include/sysemu/xen.h    |  8 ++++++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ system/physmem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
-index 2d1b032121..a0a0252da0 100644
---- a/hw/xen/xen-hvm-common.c
-+++ b/hw/xen/xen-hvm-common.c
-@@ -12,6 +12,12 @@
+diff --git a/system/physmem.c b/system/physmem.c
+index 342b7a8fd4..5e6257ef65 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -2230,7 +2230,8 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
+          * In that case just map the requested area.
+          */
+         if (block->offset == 0) {
+-            return xen_map_cache(block->mr, addr, len, lock, lock,
++            return xen_map_cache(block->mr, block->offset + addr,
++                                 len, lock, lock,
+                                  is_write);
+         }
  
- MemoryRegion xen_memory;
- 
-+/* Check for xen memory.  */
-+bool xen_mr_is_memory(MemoryRegion *mr)
-+{
-+    return mr == &xen_memory;
-+}
-+
- void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-                    Error **errp)
- {
-@@ -28,7 +34,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
-         return;
-     }
- 
--    if (mr == &xen_memory) {
-+    if (xen_mr_is_memory(mr)) {
-         return;
-     }
- 
-@@ -55,7 +61,7 @@ static void xen_set_memory(struct MemoryListener *listener,
- {
-     XenIOState *state = container_of(listener, XenIOState, memory_listener);
- 
--    if (section->mr == &xen_memory) {
-+    if (xen_mr_is_memory(section->mr)) {
-         return;
-     } else {
-         if (add) {
-diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
-index 754ec2e6cb..dc72f83bcb 100644
---- a/include/sysemu/xen.h
-+++ b/include/sysemu/xen.h
-@@ -34,6 +34,8 @@ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length);
- void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
-                    struct MemoryRegion *mr, Error **errp);
- 
-+bool xen_mr_is_memory(MemoryRegion *mr);
-+
- #else /* !CONFIG_XEN_IS_POSSIBLE */
- 
- #define xen_enabled() 0
-@@ -47,6 +49,12 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
-     g_assert_not_reached();
- }
- 
-+static inline bool xen_mr_is_memory(MemoryRegion *mr)
-+{
-+    g_assert_not_reached();
-+    return false;
-+}
-+
- #endif /* CONFIG_XEN_IS_POSSIBLE */
- 
- #endif
 -- 
 2.40.1
 
