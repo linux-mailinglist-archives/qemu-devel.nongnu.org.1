@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C50F8C7986
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 17:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6D58C79BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 17:49:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7d3l-0008UK-EP; Thu, 16 May 2024 11:30:21 -0400
+	id 1s7dL5-0007e7-Kv; Thu, 16 May 2024 11:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <smostafa@google.com>)
- id 1s7d3f-0008SO-7E
- for qemu-devel@nongnu.org; Thu, 16 May 2024 11:30:19 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1s7dL3-0007bC-M8
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:13 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <smostafa@google.com>)
- id 1s7d3Z-000677-02
- for qemu-devel@nongnu.org; Thu, 16 May 2024 11:30:14 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-42012c85e61so392915e9.0
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 08:30:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1s7dL1-0002tj-Sb
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 11:48:13 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-51f60817e34so1264768e87.2
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 08:48:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1715873406; x=1716478206; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=jinLSx1Bi957v0doVAhmp1h/kFD3OvDhTl6ISPr3gNU=;
- b=YRVvo/9o13CpFo314jX3S73dnGK4iE1wpamurgJsqS45/b77m3LWS7PQo0yISA3W5J
- MAKzpF5u4TrW9qW5nO2RXp7jUOdv74p90lQKGgby7w7lmwNOTXCze+UqqXomqt/IC25H
- UFx3sg7g8gw8HW49xQlZ7ubeFQ4vlSNr2+yJmrLnRho46Fw5KeO2dvfzyszitST4L8iX
- kJXRQY72SBH15OLy5Ko1uaMfMFAHAUtz74V9xSN2sMcAREpU1OdvU4vn+WZCAX7GtKnc
- /ZA/MtSm8KbvKcDMmbe7UiWqRk4wz/8m51izjvV/LcF9xu47QxevKTIBY9i7cJJRxK+P
- FG8g==
+ d=gmail.com; s=20230601; t=1715874488; x=1716479288; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9P70DJ3Qlxb99JMgMDeD/bhw90eqeQUZf9UbR05GyHs=;
+ b=FbSHrO+94ez/DO3+2WFzNUmFoDqTs9vyPvdNNT7m4z/GPMVBz3v3IhjHF/yT87NxVc
+ PIxTpif7NY2ulnqPTjtgmOZKUT3DUJYfXPGwifBhosqAd6qdplHnV3VY8lfDrbsBQAVS
+ XezxXuAHrHDV1joGcxyzad/iFLnfsDvCZwocS8OZvCOzczwe6VcuY0OCQ6pGiPZvY65p
+ D/M/aA0w+Tb23TcZ6M9agK/yzUo9sS0DgdbCYkCCfeJGXQYhOrJnQX8yfAr24j+PHjec
+ HHXcKj264inTNgkidtHbfJnJz7zYB2aoDN6d1UFn1rc9XQjYAv1jgPaxHiVmQxh+VGtN
+ /ssA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715873406; x=1716478206;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jinLSx1Bi957v0doVAhmp1h/kFD3OvDhTl6ISPr3gNU=;
- b=KLUyZqonldS/RvSNyrjMKDHKkhWGEMXB/BzgnuzpW1CmSFXqdU5VxuqTouT/k5YDU4
- pr1rbo3MnH5JFBvjOCetxOlSmWA8G704iw4j01M31x6Z0LvvuVa+y/YwG+LqpaYmJ3o3
- tp8JU7Tf+dcGxPd0dc+oRWP36QqrNno/ApqiOMs3rKQrzsrxHVOjekq3PJN5XHWXxFKk
- ErsfMSfO7OEz475xs3QkkfX9YyUnwhrV89q71aLjsaknfQg6jQM0iwwj54SVwYZVBGLN
- rEceqIEGdu+iJVWzqtnkfNoDqr60tndPA8xy9MxLzfffkeWoI9MRtVq19/xoxAiNANtv
- IgjQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGSon5bHImKphbIj41szi1CKFBhaXLM9RKQHdmLvcrv6vKeqM3uWgpBHbZoWQwiHzfvffew6UvrnVnmb3JF075NV0M1ng=
-X-Gm-Message-State: AOJu0YxaSNvpLwb0eqmjeRtfWCSGs3LAB4CEMf+IZeFEDP14dqDhw6mm
- QbDggqz01YKRS3yif1Nv6+tT3NF3TOgvuez+IG3TTvggsiaEEuGg44hAGPVaAg==
-X-Google-Smtp-Source: AGHT+IEQn1WPGq1X/VJV81JrV7ibIaep5s4Zt2ExJV4yXQect/QS33902BWt98J9Hmu6k510FE2fiA==
-X-Received: by 2002:a05:600c:1e12:b0:419:b16:9c14 with SMTP id
- 5b1f17b1804b1-4200f8697eemr11861635e9.1.1715873405853; 
- Thu, 16 May 2024 08:30:05 -0700 (PDT)
-Received: from google.com (180.232.140.34.bc.googleusercontent.com.
- [34.140.232.180]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-41ff063d8cesm239609605e9.46.2024.05.16.08.30.05
+ d=1e100.net; s=20230601; t=1715874488; x=1716479288;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9P70DJ3Qlxb99JMgMDeD/bhw90eqeQUZf9UbR05GyHs=;
+ b=gtjBZesqPSVuiQm0/ckPyeKvSOWuT++l3AgXgXxLhCsiixnXJteU1w6gtghfWpRiZK
+ tO0TjqGj6XUFk7pKDqZW/anIuWlINFFAUCLIfJZ9hc8o/k6A6yA3GwFd7Ks399JGVeH1
+ WMi4Ng5KQObEw2AUif11JzE4SToe2FLBdHuxiX21XIntFqxI8H/0WNac64RrrA+pjjFB
+ g1Fmkuu/PGssaUOOJlS80wYtloemP+Dcsz8RbyyRFW5rcMpsUMV0n4l57Xzk1HErmbCA
+ KKq06LFFLZ1v+rDrGm1OjIiBhCPf1LwLCjKe/l/IkKCH8NY/kSqq8JyphIVbK/PzjmoC
+ AwnA==
+X-Gm-Message-State: AOJu0YwPmL6OtvTm+lC8M2NLk/IsB3TvFwJvWw5eTRp+OQlABu6cdsPW
+ yPGHlGtEgTqrKH1IEXOTcM+ichen/wjbQyMaSMiaFn64Satm85q4eiLk2IbKmcA=
+X-Google-Smtp-Source: AGHT+IG0ESk3l8eW73wVBEK0qUdV+certcNCqSMRRYtqlBZIJthFtoHDK0VxEywLzqn/7pLFG1r1aA==
+X-Received: by 2002:ac2:43af:0:b0:521:9207:189d with SMTP id
+ 2adb3069b0e04-5220ff72f4emr11331683e87.65.1715874487712; 
+ Thu, 16 May 2024 08:48:07 -0700 (PDT)
+Received: from gmail.com ([213.0.35.158]) by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-42014c21260sm160833465e9.3.2024.05.16.08.48.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 May 2024 08:30:05 -0700 (PDT)
-Date: Thu, 16 May 2024 15:30:01 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: qemu-arm@nongnu.org, peter.maydell@linaro.org, qemu-devel@nongnu.org,
- jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org,
- nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org,
- marcin.juszkiewicz@linaro.org
-Subject: Re: [RFC PATCH v3 09/18] hw/arm/smmu-common: Rework TLB lookup for
- nesting
-Message-ID: <ZkYmedM5uHf3DM2O@google.com>
-References: <20240429032403.74910-1-smostafa@google.com>
- <20240429032403.74910-10-smostafa@google.com>
- <6afc41f6-7127-46f2-833f-6eb4abb2730d@redhat.com>
+ Thu, 16 May 2024 08:48:07 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Subject: [PATCH v6 0/8] xen: Support grant mappings
+Date: Thu, 16 May 2024 17:47:56 +0200
+Message-Id: <20240516154804.1114245-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6afc41f6-7127-46f2-833f-6eb4abb2730d@redhat.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=smostafa@google.com; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,87 +88,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-On Wed, May 15, 2024 at 03:54:36PM +0200, Eric Auger wrote:
-> 
-> 
-> On 4/29/24 05:23, Mostafa Saleh wrote:
-> > In the previous patch, comine_tlb() was added which combines 2 TLB
-> combine
-Will do.
+Hi,
 
-> > entries into one, which chooses the granule and level from the
-> > smallest entry.
-> >
-> > This means that a nested translation, an entry can be cached with the
-> that with nested translation
-Will do.
+Grant mappings are a mechanism in Xen for guests to grant each other
+permissions to map and share pages. These grants can be temporary
+so both map and unmaps must be respected. See here for more info:
+https://github.com/xen-project/xen/blob/master/docs/misc/grant-tables.txt
 
-> > granule of stage-2 and not stage-1.
-> >
-> > However, the lookup for an IOVA in nested configuration is done with
-> > stage-1 granule, this patch reworks lookup in that case, so it falls
-> > back to stage-2 granule if no entry is found using stage-1 granule.
-> I should have read that before commenting previous patch ;-)
-> Anyway this shows that something is missing in previous patch, at least
-> the above explanation ;-)
+Currently, the primary use-case for grants in QEMU, is with VirtIO backends.
+Grant mappings will only work with models that use the address_space_map/unmap
+interfaces, any other access will fail with appropriate error messages.
 
-Yup, I can add a comment in the previous patch or reorder them, let me
-know what you prefer.
+In response to feedback we got on v3, later version switch approach
+from adding new MemoryRegion types and map/unmap hooks to instead reusing
+the existing xen_map_cache() hooks (with extensions). Almost all of the
+changes are now contained to the Xen modules.
 
-Thanks,
-Mostafa
+This approach also refactors the mapcache to support multiple instances
+(one for existing foreign mappings and another for grant mappings).
 
-> 
-> Eric
-> >
-> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > ---
-> >  hw/arm/smmu-common.c | 24 ++++++++++++++++++++++--
-> >  1 file changed, 22 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-> > index 0d6945fa54..c67af3bc6d 100644
-> > --- a/hw/arm/smmu-common.c
-> > +++ b/hw/arm/smmu-common.c
-> > @@ -66,8 +66,10 @@ SMMUIOTLBKey smmu_get_iotlb_key(int asid, int vmid, uint64_t iova,
-> >      return key;
-> >  }
-> >  
-> > -SMMUTLBEntry *smmu_iotlb_lookup(SMMUState *bs, SMMUTransCfg *cfg,
-> > -                                SMMUTransTableInfo *tt, hwaddr iova)
-> > +static SMMUTLBEntry *smmu_iotlb_lookup_all_levels(SMMUState *bs,
-> > +                                                  SMMUTransCfg *cfg,
-> > +                                                  SMMUTransTableInfo *tt,
-> > +                                                  hwaddr iova)
-> >  {
-> >      uint8_t tg = (tt->granule_sz - 10) / 2;
-> >      uint8_t inputsize = 64 - tt->tsz;
-> > @@ -88,6 +90,24 @@ SMMUTLBEntry *smmu_iotlb_lookup(SMMUState *bs, SMMUTransCfg *cfg,
-> >          }
-> >          level++;
-> >      }
-> > +    return entry;
-> > +}
-> > +
-> > +SMMUTLBEntry *smmu_iotlb_lookup(SMMUState *bs, SMMUTransCfg *cfg,
-> > +                                SMMUTransTableInfo *tt, hwaddr iova)
-> > +{
-> > +    SMMUTLBEntry *entry = NULL;
-> > +
-> > +    entry = smmu_iotlb_lookup_all_levels(bs, cfg, tt, iova);
-> > +    /*
-> > +     * For nested translation also try the s2 granule, as the TLB will insert
-> > +     * it if the size of s2 tlb entry was smaller.
-> > +     */
-> > +    if (!entry && (cfg->stage == SMMU_NESTED) &&
-> > +        (cfg->s2cfg.granule_sz != tt->granule_sz)) {
-> > +        tt->granule_sz = cfg->s2cfg.granule_sz;
-> > +        entry = smmu_iotlb_lookup_all_levels(bs, cfg, tt, iova);
-> > +    }
-> >  
-> >      if (entry) {
-> >          cfg->iotlb_hits++;
-> 
+I've only enabled grants for the ARM PVH machine since that is what
+I can currently test on.
+
+Cheers,
+Edgar
+
+ChangeLog:
+
+v5 -> v6:
+* Correct passing of ram_addr_offset in xen_replace_cache_entry_unlocked.
+
+v4 -> v5:
+* Compute grant_ref from address_index to xen_remap_bucket().
+* Rename grant_is_write to is_write.
+* Remove unnecessary + mc->bucket_size - 1 in
+  xen_invalidate_map_cache_entry_unlocked().
+* Remove use of global mapcache in refactor of
+  xen_replace_cache_entry_unlocked().
+* Add error checking for xengnttab_unmap().
+* Add assert in xen_replace_cache_entry_unlocked() against grant mappings.
+* Fix memory leak when freeing first entry in mapcache buckets.
+* Assert that bucket_shift is >= XC_PAGE_SHIFT when creating mapcache.
+* Add missing use of xen_mr_is_memory() in hw/xen/xen-hvm-common.c.
+* Rebase with master.
+
+v3 -> v4:
+* Reuse existing xen_map_cache hooks.
+* Reuse existing map-cache for both foreign and grant mappings.
+* Only enable grants for the ARM PVH machine (removed i386).
+
+v2 -> v3:
+* Drop patch 1/7. This was done because device unplug is an x86-only case.
+* Add missing qemu_mutex_unlock() before return.
+
+v1 -> v2:
+* Split patch 2/7 to keep phymem.c changes in a separate.
+* In patch "xen: add map and unmap callbacks for grant" add check for total
+  allowed grant < XEN_MAX_VIRTIO_GRANTS.
+* Fix formatting issues and re-based with master latest.
+
+
+Edgar E. Iglesias (8):
+  xen: mapcache: Make MCACHE_BUCKET_SHIFT runtime configurable
+  xen: mapcache: Unmap first entries in buckets
+  xen: Add xen_mr_is_memory()
+  softmmu: xen: Always pass offset + addr to xen_map_cache
+  softmmu: Replace check for RAMBlock offset 0 with xen_mr_is_memory
+  xen: mapcache: Pass the ram_addr offset to xen_map_cache()
+  xen: mapcache: Add support for grant mappings
+  hw/arm: xen: Enable use of grant mappings
+
+ hw/arm/xen_arm.c                |   5 +
+ hw/xen/xen-hvm-common.c         |  18 ++-
+ hw/xen/xen-mapcache.c           | 232 ++++++++++++++++++++++++--------
+ include/hw/xen/xen-hvm-common.h |   3 +
+ include/sysemu/xen-mapcache.h   |   2 +
+ include/sysemu/xen.h            |  15 +++
+ system/physmem.c                |  12 +-
+ 7 files changed, 226 insertions(+), 61 deletions(-)
+
+-- 
+2.40.1
+
 
