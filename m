@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C770B8C7B81
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 19:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37C128C7BB2
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 19:58:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7f9K-0002jr-RA; Thu, 16 May 2024 13:44:14 -0400
+	id 1s7fLH-0002Od-Ri; Thu, 16 May 2024 13:56:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s7f9I-0002ja-C7
- for qemu-devel@nongnu.org; Thu, 16 May 2024 13:44:12 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s7f9G-00065s-8w
- for qemu-devel@nongnu.org; Thu, 16 May 2024 13:44:12 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-574ea5184abso4228217a12.3
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 10:44:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715881447; x=1716486247; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hUpsOZ/1QNpVHJ0C5Fa/G9tv88yej+ZWqDxCxXHd4RM=;
- b=U8EXiS+dknDs3YZaMFdgMYLzmCMcZa9CndKLFDOlm3TzLdjjNPkBrEgZShqGBvgII4
- xgezAZya1A/IO6CkOtCDkhQaDo+gTHxF1ptdCYW1YgbWz+e+zJn/fdCOjQybv/KkkRR+
- yxr50vCqRhCJjmolPBnDwxo7KcKnlhwKd+tfPbU/HPm+XZks3gBEjaGx5fVWkEKkb3ZF
- //vxUsnCYLy4p7cDgOSIVaVxuCOeC5wCPTLwN4t+AlFAfzvFEzkD+GsjWVcprdaO+/9B
- bEDBg0LoL1n9KcJu86ZJKMahRLLz+sx2vtl0dYOhrSkisvfuN08CIa9U3hn3VAQptTGN
- RmCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715881447; x=1716486247;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=hUpsOZ/1QNpVHJ0C5Fa/G9tv88yej+ZWqDxCxXHd4RM=;
- b=FjaK4zqVQy9VZNSASKnrdACaTsuzNTO4/7FkWbYVcPfAQhiBQHQShBkcdmx2TE0L0W
- DXeeJ8T7G7hF1dx+zimgtc0F7l2VV2pcB7EZeZKEH+9j3ORcdONPPNNl6DsjR5kl63wP
- 8/xmeCOgEaBbCiFXyki5opJp/iDUQqlE+eTYsJ7VXXDQ4nIynVr0n+vwlGxUQCAtlVTp
- 7JikOp4cmBc3u21S7ODY4/DiDVx0m2hFtFYDYD6l0RoVm7ZcJHpVmxDLKpy4tGUpeFk1
- KUzHXSuoZGtiK+kDvZ3GNpm0O8cHwUT0KPjEkNgu301Q82bxFz2UVNJrlsMWJns6POjB
- MunA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWT9KjkiUS+b1BWlOskqn5LzavsD37YhEjELC5VSJwGtsy2UVDxjJTU09Bio3lWvoREUMw5S17eSOQsrESC2tU/KmBsFtw=
-X-Gm-Message-State: AOJu0Yyw4X5OTz3aQEAK8dBtjlYY5t140AFAMwuM4hF6dd7OZUV6yza9
- PsuDsxYL3A0q2kjpt0MMoK5v9XTrhqRmQEI1/TI9zcoXyno0PFxts6JX1oRrrlVcw1a8ekMIAG1
- FiL4JmDBdZUooYWWDTbODBXKuMOyrSjxyP8LTpA==
-X-Google-Smtp-Source: AGHT+IErmLpc5b3KsIys1ao2CcTGQgXdHj4GcvpYQ//rJcNsJyIkrs912LX5BRKpKwGW32JpPkHx4VzGApTu3CJJHvw=
-X-Received: by 2002:a50:f69b:0:b0:56d:fdb3:bcc5 with SMTP id
- 4fb4d7f45d1cf-5734d5bfbe3mr13905080a12.12.1715881447413; Thu, 16 May 2024
- 10:44:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1s7fLF-0002O4-Ii
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 13:56:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1s7fLD-0000gx-LK
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 13:56:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715882190;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=MVgiqESZcKGBKuw33HSBJzmLdLodY8wgN5X2qrMrxRs=;
+ b=I+yr978Xbls3X6qQhRp6M03xuvP+U2bIZFeEhQoJ+RSQyxH8/F+3AjawcjdBm48n2wIhti
+ EQFW6Hy+su3/7a2QYH3ToCbVDC0SKaG161tAvRaURbyD6cXMZ+5ky6fitrtxSm4ZQibScz
+ NwcoA4Fpq75pAI4a2od8nEWooYKNUlE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-9B-PGCdKPLy5JI01roMang-1; Thu,
+ 16 May 2024 13:56:26 -0400
+X-MC-Unique: 9B-PGCdKPLy5JI01roMang-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A7881C031B9;
+ Thu, 16 May 2024 17:56:25 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.200])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 337DAC15BF0;
+ Thu, 16 May 2024 17:56:20 +0000 (UTC)
+Date: Thu, 16 May 2024 13:56:19 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Markus Armbruster <armbru@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Kevin Wolf <kwolf@redhat.com>,
+ Jiri Pirko <jiri@resnulli.us>, Mads Ynddal <mads@ynddal.dk>,
+ Jason Wang <jasowang@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Victor Toso de Carvalho <victortoso@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Lukas Straub <lukasstraub2@web.de>, Yanan Wang <wangyanan55@huawei.com>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: Re: [PATCH 00/20] qapi: new sphinx qapi domain pre-requisites
+Message-ID: <20240516175619.GA1176412@fedora.redhat.com>
+References: <20240514215740.940155-1-jsnow@redhat.com>
 MIME-Version: 1.0
-References: <20240516162230.937047-1-berrange@redhat.com>
- <20240516162230.937047-2-berrange@redhat.com>
- <CAFEAcA9ocOiZ5E0WSCKoR3nL+qf4LF-AQ6_4HpF9xfipAJhbog@mail.gmail.com>
- <20240516133334-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20240516133334-mutt-send-email-mst@kernel.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 16 May 2024 18:43:53 +0100
-Message-ID: <CAFEAcA8bYowZnE8B5JivSecSRyZLwo0i3cx1tywOMLNd190Kow@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] docs: introduce dedicated page about code
- provenance / sign-off
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Alexander Graf <agraf@csgraf.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="ddtIcneASRVMGzP2"
+Content-Disposition: inline
+In-Reply-To: <20240514215740.940155-1-jsnow@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,47 +98,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 16 May 2024 at 18:34, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> On Thu, May 16, 2024 at 06:29:39PM +0100, Peter Maydell wrote:
-> > On Thu, 16 May 2024 at 17:22, Daniel P. Berrang=C3=A9 <berrange@redhat.=
-com> wrote:
-> > >
-> > > Currently we have a short paragraph saying that patches must include
-> > > a Signed-off-by line, and merely link to the kernel documentation.
-> > > The linked kernel docs have a lot of content beyond the part about
-> > > sign-off an thus are misleading/distracting to QEMU contributors.
-> >
-> > Thanks for this -- I've felt for ages that it was a bit awkward
-> > that we didn't have a good place to link people to for the fuller
-> > explanation of this.
-> >
-> > > This introduces a dedicated 'code-provenance' page in QEMU talking
-> > > about why we require sign-off, explaining the other tags we commonly
-> > > use, and what to do in some edge cases.
-> >
-> > The version of the kernel SubmittingPatches we used to link to
-> > includes the text "sorry, no pseudonyms or anonymous contributions".
-> > This new documentation doesn't say anything either way about
-> > our approach to pseudonyms. I think we should probably say
-> > something, but I don't know if we have an in-practice consensus
-> > there, so maybe we should approach that as a separate change on
-> > top of this patch.
->
->
-> Well given we referred to kernel previously then I guess that's
-> the concensus, no?
 
-AIUI the kernel devs have changed their point of view on the
-pseudonym question, so it's a question of whether we were
-deliberately referring to that specific revision of the kernel's
-practice because we agreed with it or just by chance...
+--ddtIcneASRVMGzP2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/=
-?id=3Dd4563201f33a022fc0353033d9dfeb1606a88330
+On Tue, May 14, 2024 at 05:57:19PM -0400, John Snow wrote:
+> Howdy - this patch series is the first batch of patches meant to prepare
+> the QAPI documentation for a new Sphinx module that adds
+> cross-references, an index, improved inlining, elision of types unseen
+> on the wire, and other goodies.
+>=20
+> This series addresses just existing code and documentation that needs to
+> be changed and doesn't introduce anything new just yet - except the rST
+> conversion of Notes and Examples sections, which DOES impact the
+> existing QAPI documentation generation.
+>=20
+> If you're CC'd on this series, it's *probably* because I've adjusted
+> some QAPI documentation that you're the maintainer of - In most cases,
+> these changes are purely mechanical (converting QAPI sections into pure
+> rST) and probably nothing too interesting. In a small handful of cases
+> (patches 15-17), I've been a bit more invasive and you may want to take
+> a quick peek.
+>=20
+> Overview:
+>=20
+> Patches 1-3: linter/typing cleanup
+> Patches 4-12: QAPI generator fixes/miscellany
+> Patch 13: qapidoc.py fix (to prepare for rST conversion)
+> Patches 14-20: QAPI documentation modifications, rST conversion
+>=20
+> Sorry,
+> --js
+>=20
+> John Snow (20):
+>   [DO-NOT-MERGE]: Add some ad-hoc linting helpers.
+>   qapi: linter fixups
+>   docs/qapidoc: delint a tiny portion of the module
+>   qapi/parser: preserve indentation in QAPIDoc sections
+>   qapi/parser: adjust info location for doc body section
+>   qapi/parser: fix comment parsing immediately following a doc block
+>   qapi/parser: add semantic 'kind' parameter to QAPIDoc.Section
+>   qapi/parser: differentiate intro and outro paragraphs
+>   qapi/parser: add undocumented stub members to all_sections
+>   qapi/schema: add __iter__ method to QAPISchemaVariants
+>   qapi/schema: add doc_visible property to QAPISchemaDefinition
+>   qapi/source: allow multi-line QAPISourceInfo advancing
+>   docs/qapidoc: fix nested parsing under untagged sections
+>   qapi: fix non-compliant JSON examples
+>   qapi: remove developer factoring comments from QAPI doc blocks
+>   qapi: rewrite StatsFilter comment
+>   qapi: rewrite BlockExportOptions doc block
+>   qapi: ensure all errors sections are uniformly typset
+>   qapi: convert "Note" sections to plain rST
+>   qapi: convert "Example" sections to rST
+>=20
+>  docs/sphinx/qapidoc.py                        |  62 ++++--
+>  qapi/acpi.json                                |   6 +-
+>  qapi/audio.json                               |   5 +-
+>  qapi/block-core.json                          | 195 ++++++++++--------
+>  qapi/block-export.json                        |  16 +-
+>  qapi/block.json                               |  62 +++---
+>  qapi/char.json                                |  53 +++--
+>  qapi/control.json                             |  32 +--
+>  qapi/crypto.json                              |  33 ++-
+>  qapi/dump.json                                |  14 +-
+>  qapi/introspect.json                          |   6 +-
+>  qapi/machine-target.json                      |  29 +--
+>  qapi/machine.json                             | 138 +++++++------
+>  qapi/migration.json                           | 159 +++++++++-----
+>  qapi/misc-target.json                         |  33 ++-
+>  qapi/misc.json                                | 139 +++++++------
+>  qapi/net.json                                 |  49 +++--
+>  qapi/pci.json                                 |  11 +-
+>  qapi/qapi-schema.json                         |   6 +-
+>  qapi/qdev.json                                |  45 ++--
+>  qapi/qom.json                                 |  69 +++----
+>  qapi/replay.json                              |  12 +-
+>  qapi/rocker.json                              |  30 +--
+>  qapi/run-state.json                           |  63 +++---
+>  qapi/sockets.json                             |  10 +-
+>  qapi/stats.json                               |  30 ++-
+>  qapi/tpm.json                                 |   9 +-
+>  qapi/trace.json                               |   6 +-
+>  qapi/transaction.json                         |  13 +-
+>  qapi/ui.json                                  | 107 +++++-----
+>  qapi/virtio.json                              |  50 ++---
+>  qapi/yank.json                                |   6 +-
+>  qga/qapi-schema.json                          |  48 ++---
+>  scripts/qapi-lint.sh                          |  51 +++++
+>  scripts/qapi/Makefile                         |   5 +
+>  scripts/qapi/introspect.py                    |  12 +-
+>  scripts/qapi/parser.py                        | 104 ++++++++--
+>  scripts/qapi/schema.py                        |  54 ++++-
+>  scripts/qapi/source.py                        |   4 +-
+>  scripts/qapi/types.py                         |   4 +-
+>  scripts/qapi/visit.py                         |   9 +-
+>  tests/qapi-schema/doc-empty-section.err       |   2 +-
+>  tests/qapi-schema/doc-empty-section.json      |   2 +-
+>  tests/qapi-schema/doc-good.json               |  18 +-
+>  tests/qapi-schema/doc-good.out                |  61 +++---
+>  tests/qapi-schema/doc-good.txt                |  31 +--
+>  .../qapi-schema/doc-interleaved-section.json  |   2 +-
+>  47 files changed, 1152 insertions(+), 753 deletions(-)
+>  create mode 100755 scripts/qapi-lint.sh
+>  create mode 100644 scripts/qapi/Makefile
+>=20
+> --=20
+> 2.44.0
+>=20
+>=20
 
-is where the kernel changed to saying merely "no anonymous
-contributions", dropping the 'pseudonyms' part.
+For block-core.json/block-export.json/block.json:
 
--- PMM
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--ddtIcneASRVMGzP2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmZGSMMACgkQnKSrs4Gr
+c8jcDwf9G1inq8BCxQ9PZvSALwQDONR5qIuIxmjr+LVl5Xoz9oDkEhUrjuoYwHfq
+KWM3LKCzxvdT0XWGyR2skkkB0mckAsJIiSR0K2xdEzjJgi9Ea3IQsIwKNFLS74zA
+TzBp0OQlBE3C5MYxvNOekUSZ3zDWcaDl6t6/RdhtYMHVMDGmTusfKVEXh4N5TS0e
+3WDaV0/p3pZer/UHRgXxB17uTaEgQtpDsBH7P4cJQzrS0WXILUSoipvXrBgLmPsl
++qEOCG0YCmPoeKDRS9Hc0aCNus6OR+C5HMIEKLWtCCTJgdQj1FE3AsFnMVnxetVW
+ovJ+lRbQcOF6V/p2Gh57C2vsZs7txQ==
+=clEV
+-----END PGP SIGNATURE-----
+
+--ddtIcneASRVMGzP2--
+
 
