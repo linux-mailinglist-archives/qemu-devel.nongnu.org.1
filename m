@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC378C73C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 11:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A12658C73C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 11:29:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7XOw-0001ug-Hz; Thu, 16 May 2024 05:27:50 -0400
+	id 1s7XQ2-000303-Kt; Thu, 16 May 2024 05:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s7XOk-0001uD-Og
- for qemu-devel@nongnu.org; Thu, 16 May 2024 05:27:38 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1s7XPi-0002vh-UN
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 05:28:39 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s7XOj-0002kl-5P
- for qemu-devel@nongnu.org; Thu, 16 May 2024 05:27:38 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-572669fd9f9so3204440a12.0
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 02:27:35 -0700 (PDT)
+ id 1s7XPh-0002xS-3E
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 05:28:38 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-572d83e3c7eso3256961a12.3
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 02:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715851655; x=1716456455; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715851713; x=1716456513; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=n9JpdsCIy6Zjhi1N48wQD00rN34fzG7HE4fp9skXsY4=;
- b=gO3i0WZ1CZ5wlJzHsXb3J9217zLi3JIvp6wyhiMXSFlTWD91NoZu6hIPA2fsVuCr95
- +0ARCuouPwEf0r1TUCa2kvBasSCy3YXfkpzCowAh7vUWEzz7dKv6ds61bjWHfkz2guCG
- HSPkgWlMv2h76gJiUe4Tch8pO/VEUzdrQxBmCc8NIS+qB1TbJNciJ1jsN2O9jWVn40mf
- RC9xcHFQxutKXMYquatajk9s+c2RAE0OHP1RKfJkjf8OoObT+lkX3uhmdN83GJ34Fflg
- H8xcDzxQIxzopmdsmmok9DwKE4Ynrd7Behg48YurszXZC7uyjaohlaTmqCkUauDg4vX8
- D48g==
+ bh=xse0HV+IBwKpm7CLpAWSoVjV12ya/IxrzHtwGn09Ovg=;
+ b=AsuVSV4TiMONiLLyg/auPwZeTvQ0DwKVxZn3mmogZzuJQrr978fWPaerOCcf2Owpv4
+ Ws/5BebsnDzYsjKXg/WFIuSQw59kUUVEwFR/Ewd8G6JI+acpD/XEtTHn0DHgWQUne2px
+ Xa3H2CJ61wct0sXuxXgKl0hFRZ/HusPZ8/fbzHnbkbmEW5p/JUWAsRTXBiM8Niqq1qwh
+ fJMbR19sPO0t971+vSFFZPAr+Lx1GCGhi+Bw4l0PmTlrnJvt6ZUiq3EGzwrMbUlxVzhn
+ begOxaPTTLGiHjqVXHuAYfyIGngX0dN1JayVz/Q8w9FwMDCIxGscQ8QUpCqm6tNuC4Ue
+ Q5Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715851655; x=1716456455;
+ d=1e100.net; s=20230601; t=1715851713; x=1716456513;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=n9JpdsCIy6Zjhi1N48wQD00rN34fzG7HE4fp9skXsY4=;
- b=k8vc96ZoMa5hvHRQ9JT0U9boVJvRE9LzlNFeD+QLHsXrMlLH+7nvLxGqofsI9jfxKs
- qUCRpGuMainOBJR9VM0AGFb7MNItJnrCPGPu95PMzYuGt002w/CSQBTHx6bb7Be/KD1I
- L1S7YZEu+JyLj+Hksb4/RQCJzJxctbX4Lzw6hjYLy4nkX3L/Yu+uLN/oaO+td15CwS4T
- DVVRIg66+UerCHvwTsKjkXTIf1rxYE0t3pXKvYl7yu4Z/6bBQDa5azJV7ogYNojjop1t
- WLoTAp18zh9yBlvhF0cW83usJalHRLwbvjO7yIoADXoX+HY8539WvIsAi3eWNL81SUKa
- c6iQ==
-X-Gm-Message-State: AOJu0Yzgse9xJLCBjy/2v7UKlJIYXZGEFJpDprbtJ15XlrzNGJ7/QVD1
- fbfebJAtpbParvqFfbCUm0qSjTJTfUQcSg5/n3utEkX+i9lZKn77CE4azZ/QJFu3XhjjJDyv1em
- 5EfMrdxVxjrUQVIXmLQHA7dZymhvpBI1uZImKyQ==
-X-Google-Smtp-Source: AGHT+IGuWyfp7K6z9uHnAdfxpC7O0qBRXgWk0Y1sCb1eoSUBm/chQx1YrvKaf8096LLd+PjJ/IcFS4rYqW2boLTO5Ik=
-X-Received: by 2002:a50:b410:0:b0:574:f657:e0e with SMTP id
- 4fb4d7f45d1cf-574f657198bmr2969266a12.25.1715851654741; Thu, 16 May 2024
- 02:27:34 -0700 (PDT)
+ bh=xse0HV+IBwKpm7CLpAWSoVjV12ya/IxrzHtwGn09Ovg=;
+ b=Rw8IPigY4yRZmMO1TbhuPfwLMXIJjnQYYOFpFI3ZZVPOn6MMWUNuRQ5f9JO0UiIrD0
+ uukQ4krurBNWMfEHLXhQasEUn2UXhMjdICnygReRx8omc8AFZZvoO7OT3yRpR9k/DAYa
+ MsjBeJNu87HD94yYTYb8ubmccPsxnrd0IX3zxXhqBwv5+xQ+JPvuoDzFvo9jjzvvFyxv
+ h4YpCe45avtWv6JepwDlxBou7cG+imSmSQ9CIJL+Wdg4QiIJw+818qToyjq50zlyNRsf
+ TDGJuXzuaylmq5wDDOLzB5FJE5FWbbLOqp7TcH8BI+09hxG7y9gV73D62aRdDZZiwFM2
+ 37Cg==
+X-Gm-Message-State: AOJu0YzHBGC1UPg1H0W2YS4k2r9A7M4iKhelek+2vVzkDjuehLyk7sF6
+ nCXGR+hxXBz/Nv7NnJocCAV1GE5CmQXPzZciu8VOxSwrVlc1HwLnY25Q0YnV/4iD3+kbKy0ZTdV
+ qJrB5W01y5y7fUVQLL/WzHkgiHXxGAACR2Xw60uXhK5ahVlyh0Ao=
+X-Google-Smtp-Source: AGHT+IHBfu3Yg+1Cz+V1AItSx0CwYtQo+ClL3J9KmJLazdDtDd3UiaxubhIuRBE7j3G7ykkWGoIyyfXHFTwiq487kbs=
+X-Received: by 2002:a50:8e12:0:b0:572:67d9:3400 with SMTP id
+ 4fb4d7f45d1cf-5734d6b286fmr10622903a12.39.1715851713132; Thu, 16 May 2024
+ 02:28:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240516091120.1021435-1-gaosong@loongson.cn>
- <20240516091120.1021435-2-gaosong@loongson.cn>
-In-Reply-To: <20240516091120.1021435-2-gaosong@loongson.cn>
+In-Reply-To: <20240516091120.1021435-1-gaosong@loongson.cn>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 16 May 2024 10:27:20 +0100
-Message-ID: <CAFEAcA-JULLebQ+FddRUKNhsA=UBS9DWjn_01+K4r9FBf+7wdQ@mail.gmail.com>
-Subject: Re: [PULL 1/5] hw/loongarch: Add compat machine for 9.1
+Date: Thu, 16 May 2024 10:28:20 +0100
+Message-ID: <CAFEAcA_UHCYEbpk+V4qS7NpPP_-2kL2XEHM9M_SywfkPZrpsjA@mail.gmail.com>
+Subject: Re: [PULL 0/5] loongarch-to-apply queue
 To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, 
- Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,26 +87,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Thu, 16 May 2024 at 10:12, Song Gao <gaosong@loongson.cn> wrote:
 >
-> From: Bibo Mao <maobibo@loongson.cn>
+> The following changes since commit 922582ace2df59572a671f5c0c5c6c5c706995e5:
 >
-> Since migration test case requires compat machine type support,
-> compat machine is added for qemu 9.1 here.
+>   Merge tag 'pull-hppa-20240515' of https://gitlab.com/rth7680/qemu into staging (2024-05-15 11:46:58 +0200)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240516
+>
+> for you to fetch changes up to d55d16700a2e2b36c7e34724d4d77f4a75c5243a:
+>
+>   target/loongarch/kvm: fpu save the vreg registers high 192bit (2024-05-16 16:32:35 +0800)
+>
+> ----------------------------------------------------------------
+> pull-loongarch-20240516
+>
+> ----------------------------------------------------------------
+> Bibo Mao (3):
+>       hw/loongarch: Add compat machine for 9.1
+>       hw/loongarch: Remove minimum and default memory size
+>       tests: Add migration test for loongarch64
 
-This is not a good justification for adding versioned machine types.
-Adding versioned machine types is putting a massive maintenance
-burden on yourself from now onward:
- * every release needs a new machine type adding
- * every change to the board model or to any devices it uses needs
-   to be assessed for cross-version compatibility issues, and
-   if necessary extra properties must be added so old versions
-   of the board model keep the legacy backwards-compatible behaviour
- * migration compatibility must be maintained
-
-You really do not want to do this until you decide that your
-architecture and machine type are at a level where this is a
-support guarantee you want to provide to users. "It lets us
-run a test case" is not a good reason to do it, and I strongly
-recommend you do not add versioned machine types just for that.
+RTH: I had a comment about adding the versioned machine type, so we
+should hold off on applying this until that is resolved, I think.
 
 thanks
 -- PMM
