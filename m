@@ -2,83 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3818C714B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 07:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6608C715B
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 07:33:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7TO1-0003vh-V1; Thu, 16 May 2024 01:10:37 -0400
+	id 1s7TjJ-00030W-8a; Thu, 16 May 2024 01:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s7TNr-0003uz-NQ; Thu, 16 May 2024 01:10:28 -0400
-Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1s7TNp-0006AK-DW; Thu, 16 May 2024 01:10:27 -0400
-Received: by mail-vk1-xa35.google.com with SMTP id
- 71dfb90a1353d-4e1513b8829so369544e0c.3; 
- Wed, 15 May 2024 22:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715836224; x=1716441024; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=mWiglJg0pVMLpd6q+xzywXY5WHRF0H5vl6FEj4Kvizc=;
- b=AY/4X1kiozXDM91+NC0AEZfL9nzydvW5xUKCUZ/3WdAtTY0lsFcAJ2HOBiDkhSTq9y
- 0toCh2eBFcuCOI5T90DRNGUTymJ2qaKIdgGJ1CKlWkgPhe9gtyfKnwAzUvlz41yteBgk
- x8UUG3qFmfMPEMob6vTiXwd+iGM2Nym9gnW5MYy5cJ2IA9JIBfZAtgITq6ApzPq1dPVt
- Zw3QH3A3kceWZV+3E5uQszNDfihdyHetSrFS4sWv2g1G+5uI0vONDldmqST1rq6Thd99
- vV6OqLXEhUplOQmpjL8oTQYHHLKu0AJXUVBi1ixrMBJDqW0TJMVgQZ0rYGzaTriYAlkY
- 1fGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715836224; x=1716441024;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mWiglJg0pVMLpd6q+xzywXY5WHRF0H5vl6FEj4Kvizc=;
- b=TZLHT0vZBX6C7ZZcz4OX575Tbu4+r6ebg5fgcMUbvs6OiTmEcMtcFH0Niu1+A/Wm0b
- RsKPl9IeYOR9rxsUM3SqSeUTLUfDzah8hec7oCO/sGaFQgKZCNIyLvTsN7O0993il5o2
- f0sR2zhQ3n8oDUYpVGZm4iAdxUKcZpKCTpWbF7YzjzHQrz3Egg8vOXRKFaul+RL9/xxt
- sB8DMb2IbE4kalAMYcoKs60Dy1cBq+9Ysf36UO66GQUQTKRfmYzBpF5Hml3bzaSl3KFb
- SGOFTYw0jgXXqTa+yet4u8BEQCZxk63BWyadjz4e0RK6k9ohEZMTjBAb+YaU8QF9LPr2
- 6hHg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXE13KFNRUdcg7fMbxr+zcrdfg17S83eoQ1c2mcFLE1xW+dsh8wBhE0sOdPdvH9Zkfm45qCzXcuI0WXDSh3TVzS1fKWLrk=
-X-Gm-Message-State: AOJu0Yww7mDBX1nzWV4OmXxtcAr1E298bK+Ir8rckfk2pryHiXf5hTca
- jZ8ySQrI3yF735fzAdXhnuFJB0CmjU7ZS9hwHOrO3cDyzQ4ZYHcN5qzR1QighGyEp7NGjLPhg+K
- 7fF/rkrjDnufq8cQ5kUZnFRyjx2A=
-X-Google-Smtp-Source: AGHT+IFMAWzRprTfVJoZWJFJrJQpRTRy2OHM1ehKdpGdzXImib9kJ3yH5Q2eV7Ox6WYEroEXitmn1xWiKwIy+TT4vNE=
-X-Received: by 2002:a05:6122:2018:b0:4d3:3846:73bb with SMTP id
- 71dfb90a1353d-4df882c5cd8mr16886290e0c.7.1715836223738; Wed, 15 May 2024
- 22:10:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1s7TjG-0002zo-8C; Thu, 16 May 2024 01:32:34 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1s7TjD-0005LL-Uh; Thu, 16 May 2024 01:32:33 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44G4tFAf032689; Thu, 16 May 2024 05:32:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=FoXInmx9YXA1bG+U1sBH9z1eKOiDxFPF4okLpsVFWcw=;
+ b=ZK14/f11Ng7QMk6N8Is//9BYsqA8/7xQ6ZskclGycC/qvr04tEQk8qQd+zPp7335sT0Q
+ TAXMryKbeA5cI49nic+h1uA8glntkJEqUB4eSxRgGQGFc9WZ24QCbo3+M8zVTGtzwoce
+ Z/0BDkE2dkKNXzP34imkLAQe3AcWKKt4jLpHP4boHRHhluF9VCU7bGeB+YVI+N7G5YDX
+ ifPh+yHHkTRDUL7geRLA+WQgoG0wW9cvBuvhx9sXWUKittop0RNZ7jPPwJE4CwkT1hS3
+ 8b09wxmCTUtBj7vglvyZ5QK3tiklHKfPNmcv8tp2Jhp90QBuzLLUFZrr1U71fqDd8AoM HQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y59ca0ay0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 May 2024 05:32:24 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44G5WOVT001821;
+ Thu, 16 May 2024 05:32:24 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y59ca0axw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 May 2024 05:32:24 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44G3odPs020165; Thu, 16 May 2024 05:32:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y2kd08arq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 May 2024 05:32:22 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44G5WHue47841646
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 May 2024 05:32:19 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0055A2005A;
+ Thu, 16 May 2024 05:32:16 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EFF3D2004E;
+ Thu, 16 May 2024 05:32:14 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com (unknown
+ [9.79.188.146]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 16 May 2024 05:32:14 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: npiggin@gmail.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: danielhb413@gmail.com, vaibhav@linux.ibm.com, sbhat@linux.ibm.com,
+ salil.mehta@huawei.com
+Subject: [PATCH v2 0/4] target/ppc: vcpu hotplug failure handling fixes
+Date: Thu, 16 May 2024 11:02:07 +0530
+Message-Id: <20240516053211.145504-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1OJVgBynNNH93hd4__TsFmRdWng7hmYk
+X-Proofpoint-ORIG-GUID: -44zPHQv-liFW-8cM5KlittzGnb1Lp_D
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20240514023910.301766-1-alistair.francis@wdc.com>
- <14e88990-963c-45ef-bf51-662d54857c6e@ventanamicro.com>
-In-Reply-To: <14e88990-963c-45ef-bf51-662d54857c6e@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 16 May 2024 15:09:57 +1000
-Message-ID: <CAKmqyKP5dwLnvuXDbJkDV=CCGAsoVuyES7m+NB=7KceFEHoKzQ@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: rvzicbo: Fixup CBO extension register
- calculation
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-riscv@nongnu.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@dabbelt.com, bin.meng@windriver.com, qemu-devel@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>, fabian.thomas@cispa.de, 
- Bin Meng <bmeng.cn@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-16_02,2024-05-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ mlxlogscore=754 phishscore=0 clxscore=1015 spamscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405160037
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,114 +109,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 14, 2024 at 7:11=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
->
->
-> On 5/13/24 23:39, Alistair Francis wrote:
-> > When running the instruction
-> >
-> > ```
-> >      cbo.flush 0(x0)
-> > ```
-> >
-> > QEMU would segfault.
-> >
-> > The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
-> > allocated.
-> >
-> > In order to fix this let's use the existing get_address()
-> > helper. This also has the benefit of performing pointer mask
-> > calculations on the address specified in rs1.
-> >
-> > The pointer masking specificiation specifically states:
-> >
-> > """
-> > Cache Management Operations: All instructions in Zicbom, Zicbop and Zic=
-boz
-> > """
-> >
-> > So this is the correct behaviour and we previously have been incorrectl=
-y
-> > not masking the address.
-> >
-> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> > Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
-> > Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
-> > ---
->
-> LGTM but I wonder if this is the same fix as this one sent by Phil a mont=
-h
-> ago or so:
->
-> https://lore.kernel.org/qemu-riscv/20240419110514.69697-1-philmd@linaro.o=
-rg/
-> ("[PATCH] target/riscv: Use get_address() to get address with Zicbom exte=
-nsions")
+On ppc64, the PowerVM hypervisor runs with limited memory and a VCPU
+creation during hotplug may fail during kvm_ioctl for KVM_CREATE_VCPU,
+leading to termination of guest since errp is set to &error_fatal while
+calling kvm_init_vcpu. This unexpected behaviour can be avoided by
+pre-creating and parking vcpu on success or return error otherwise.
+This enables graceful error delivery for any vcpu hotplug failures while
+the guest can keep running.
 
-It is the same fix!
+This series adds another helper to create and park vcpu (based on below
+patch by Salil), exports cpu_get_free_index to be reused later and adds
+ppc arch specfic handling for vcpu hotplug failure.
 
-I somehow missed that patch at the time. Sorry Philippe!
+Based on api refactoring to create/park vcpus introduced in 1/8 of patch series:
+https://lore.kernel.org/qemu-devel/20240312020000.12992-2-salil.mehta@huawei.com/
 
-I'm going to merge this one as it includes the details about pointer
-masking, which I think is useful as that's why we are using
-get_address() instead of get_gpr()
+PS: I have just included patch 1 of above series after fixing a rebase
+failure along with this series for better review purpose only.
 
-Alistair
+Changelog:
 
->
->
-> Thanks,
->
-> Daniel
->
-> >   target/riscv/insn_trans/trans_rvzicbo.c.inc | 16 ++++++++++++----
-> >   1 file changed, 12 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv=
-/insn_trans/trans_rvzicbo.c.inc
-> > index d5d7095903..15711c3140 100644
-> > --- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
-> > +++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
-> > @@ -31,27 +31,35 @@
-> >   static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
-> >   {
-> >       REQUIRE_ZICBOM(ctx);
-> > -    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-> > +    TCGv src =3D get_address(ctx, a->rs1, 0);
-> > +
-> > +    gen_helper_cbo_clean_flush(tcg_env, src);
-> >       return true;
-> >   }
-> >
-> >   static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
-> >   {
-> >       REQUIRE_ZICBOM(ctx);
-> > -    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
-> > +    TCGv src =3D get_address(ctx, a->rs1, 0);
-> > +
-> > +    gen_helper_cbo_clean_flush(tcg_env, src);
-> >       return true;
-> >   }
-> >
-> >   static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
-> >   {
-> >       REQUIRE_ZICBOM(ctx);
-> > -    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
-> > +    TCGv src =3D get_address(ctx, a->rs1, 0);
-> > +
-> > +    gen_helper_cbo_inval(tcg_env, src);
-> >       return true;
-> >   }
-> >
-> >   static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
-> >   {
-> >       REQUIRE_ZICBOZ(ctx);
-> > -    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
-> > +    TCGv src =3D get_address(ctx, a->rs1, 0);
-> > +
-> > +    gen_helper_cbo_zero(tcg_env, src);
-> >       return true;
-> >   }
+v2: Addressed review comments from Nick
+v1: Initial patch
+
+Harsh Prateek Bora (3):
+  accel/kvm: Introduce kvm_create_and_park_vcpu() helper
+  cpu-common.c: export cpu_get_free_index to be reused later
+  target/ppc: handle vcpu hotplug failure gracefully
+
+Salil Mehta (1):
+  accel/kvm: Extract common KVM vCPU {creation, parking} code
+
+ include/exec/cpu-common.h |  2 ++
+ include/sysemu/kvm.h      | 23 ++++++++++++
+ accel/kvm/kvm-all.c       | 76 +++++++++++++++++++++++++++++++--------
+ cpu-common.c              |  7 ++--
+ target/ppc/kvm.c          | 24 +++++++++++++
+ accel/kvm/trace-events    |  5 ++-
+ 6 files changed, 118 insertions(+), 19 deletions(-)
+
+-- 
+2.39.3
+
 
