@@ -2,70 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744348C7776
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 15:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDFB8C77C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 15:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7b0M-0002gP-Kz; Thu, 16 May 2024 09:18:42 -0400
+	id 1s7bEH-0001IT-N7; Thu, 16 May 2024 09:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7b0K-0002fL-FT
- for qemu-devel@nongnu.org; Thu, 16 May 2024 09:18:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7b0I-0002c3-KY
- for qemu-devel@nongnu.org; Thu, 16 May 2024 09:18:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715865516;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=CwnIktJqlVWwGt+8SOtEAZjWeBK9rpXjyxzcpwPZwls=;
- b=LCkeOg6oR4cMiZbUBBb3gO7sIPvbwtxO4T1MI3nViXW5sChnCBmW+/D0Kc7AoEqotHvAWy
- V7lr4XYZ3mx+D0iyooXv2TqxBL0rDRBr+7wVCt5CFYFKgLh9HPYteR4Z9TT+wXs3ix3a7S
- 3W/P5gFXgOQz0rUXOLLfeE4H2KbvKKU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-0kVeP3dhMZqDk4aYj46aag-1; Thu, 16 May 2024 09:18:32 -0400
-X-MC-Unique: 0kVeP3dhMZqDk4aYj46aag-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A3D081227E;
- Thu, 16 May 2024 13:18:32 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B235BC15BB1;
- Thu, 16 May 2024 13:18:31 +0000 (UTC)
-Date: Thu, 16 May 2024 14:18:29 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH 2/4] MAINTAINERS: drop usb maintainership
-Message-ID: <ZkYHpdwOJnHoX3KL@redhat.com>
-References: <20240516120344.531521-1-kraxel@redhat.com>
- <20240516120344.531521-3-kraxel@redhat.com>
- <CAFEAcA8MenWrKkKUHY7Sair5iEqNz3VKqP=C7+cc1EW+jOdbnQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7bEF-0001IJ-CK
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 09:33:03 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1s7bEA-0007rJ-HC
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 09:33:03 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5708d8beec6so3367058a12.0
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 06:32:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1715866376; x=1716471176; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VHCSeImx75FWyBGS+IfbAKi6W9tbuEelFzVtn7xHxCA=;
+ b=mKYmqGyTZEwBqLHYP5lqeTmIWao69sKoCIJUKuJPDELwqX0KJJsNJPYo9UVNn3ncyN
+ GLe7whTfWSrmcfS/iuiGyM9ZNk8Y/weTZAHrT4fjM1hnbI/HV3uwBo1jIkYCCKk7BW+v
+ LvsnoEH3tXqIMNy86oPy9pxxNV0+nBQqo5+Yk2gI78D1FYKc5XCYnzmdvMr24dmC2MSb
+ iwKekIfYeT2pM2+9zBIa4au3FKJIGL5+sofYpV2tIP8Zh+sUpppBgrfuCoVT30oaKiGA
+ g2/A6/li6DES9xp/UHkVDvQI59T24WZpRemACA5MBT58e1gRDaKHLmjuS7AwBxia546X
+ P8QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715866376; x=1716471176;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VHCSeImx75FWyBGS+IfbAKi6W9tbuEelFzVtn7xHxCA=;
+ b=d2GoNkbyGuGzXjc5UWI0Pqgu5OPCG7VcBhIgRVEHO6G1F6M19xnEN8BmuRI5VF0S2v
+ QNZa54cvwEYg7HNR/y1AjspP6AqAIkQiY70nQJOBb0I3PXF0H5geV14grTFyPr0lrg2i
+ zSt2HyL9ZqWURROQPowU++guwLzX+ikiILP1moc1epfzZjaISruREBTH7eoblTDJseu7
+ MYjM3jq075LZIB2L4A7pQFrDlBLrD5UeEgLz1UxSy75V55ijKNhyTrM4CKPWfSqeMJE3
+ nDcTbTBWZ0e+BTbO8imcBeQdY6EMN+3MJkcYpJ100WaB72JpmT4wqqosDnIa1wP+GY2L
+ Mvig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmiBO9U7AtFMA8TaaxXM52AW85UXGLPXUY7NKCUadiiYwQAoLssKaVYv68W03CvN0aXNEKWkFM2FXY/xkpEGhtX7xBMRk=
+X-Gm-Message-State: AOJu0YzuQKnelV3jGnXel5bQ/yqTqCRLIKHF0+X8CKXzcjo0vtYbdX53
+ yFp7HwomWDQwHFa3etOlOWVxaEPmgUvAPyImftP2rqlAwdN/EYTjk7oPgLUxeLaccZYYPSAqMX+
+ t
+X-Google-Smtp-Source: AGHT+IEjXC0VlP9HgbVBbgzdJFFnrqp36WDR5N2c/d01YG041Gu7dr5yzVuT9pNQ8v1uyD2JmFK1cA==
+X-Received: by 2002:a50:9993:0:b0:571:bed1:3a36 with SMTP id
+ 4fb4d7f45d1cf-5734d707663mr19265792a12.38.1715866376483; 
+ Thu, 16 May 2024 06:32:56 -0700 (PDT)
+Received: from [10.91.1.91] ([149.14.240.163])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5733bea651asm10414493a12.11.2024.05.16.06.32.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 May 2024 06:32:56 -0700 (PDT)
+Message-ID: <beacd542-9f82-4470-9bbb-75d5773e4820@linaro.org>
+Date: Thu, 16 May 2024 15:32:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA8MenWrKkKUHY7Sair5iEqNz3VKqP=C7+cc1EW+jOdbnQ@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/17] ppc64: Fix <sys/user.h> include order
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+References: <20240511115400.7587-1-richard.henderson@linaro.org>
+ <20240511115400.7587-2-richard.henderson@linaro.org>
+ <e24b2563-b2cf-407e-a4b3-e0c5ef847ef4@linaro.org>
+ <7af9d602-8252-4e94-b34b-a194f1f5e9ae@linaro.org>
+ <cd4fff5b-809a-46dd-85b5-5b4d6b5b7573@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <cd4fff5b-809a-46dd-85b5-5b4d6b5b7573@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,49 +98,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 16, 2024 at 02:11:52PM +0100, Peter Maydell wrote:
-> On Thu, 16 May 2024 at 13:04, Gerd Hoffmann <kraxel@redhat.com> wrote:
-> >
-> > Remove myself from usb entries.
-> > Flip status to "Orphan" for entries which have nobody else listed.
+On 5/15/24 18:55, Philippe Mathieu-Daudé wrote:
+> On 15/5/24 15:53, Richard Henderson wrote:
+>> On 5/15/24 15:11, Philippe Mathieu-Daudé wrote:
+>>> Hi Richard,
+>>>
+>>> On 11/5/24 13:53, Richard Henderson wrote:
+>>>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>> ---
+>>>>   risu_ppc64.c | 3 +--
+>>>>   1 file changed, 1 insertion(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/risu_ppc64.c b/risu_ppc64.c
+>>>> index 9df8d58..62cf6aa 100644
+>>>> --- a/risu_ppc64.c
+>>>> +++ b/risu_ppc64.c
+>>>> @@ -11,9 +11,8 @@
+>>>>    *     based on Peter Maydell's risu_arm.c
+>>>> *****************************************************************************/
+>>>> -#include <sys/user.h>
+>>>> -
+>>>>   #include "risu.h"
+>>>> +#include <sys/user.h>
+>>>
+>>> What is fixed exactly?
+>>
+>> I don't remember (patch dated in 2022).
+>> It is probably a #define namespace issue with cfarm hosts running Centos 7.9?
+>> I suppose I should investigate, and drop it if irrelevant.
 > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 7f52e2912fc3..d81376f84746 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> 
-> Thanks for your time and efforts in looking after these
-> components in the past.
-> 
-> > @@ -2140,8 +2140,7 @@ F: tests/qtest/fuzz-sdcard-test.c
-> >  F: tests/qtest/sdhci-test.c
-> >
-> >  USB
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> > -S: Odd Fixes
-> > +S: Orphan
-> >  F: hw/usb/*
-> >  F: stubs/usb-dev-stub.c
-> >  F: tests/qtest/usb-*-test.c
-> 
-> Does RedHat have any corporate interest in finding somebody
-> else to look after the USB components in future ?
+> It was just out of curiosity (I had a quick look at the headers
+> and couldn't see anything obvious, and other headers also include
+> system headers before "risu.h").
 
-It is a possibilty. We're still shipping USB stuff in RHEL, so we'll need
-someone to keep an eye on things at least, which might conceivably turn
-into a volunteer for maintainership. There's no one lined up right now
-though, so consider it open season for any interested community member
-to step forward.
+Root cause: <sys/user.h> is not self-contained on centos 7.7:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+In file included from risu_ppc64.c:14:
+/usr/include/sys/user.h:27:9: error: unknown type name ‘size_t’
+    27 |         size_t          u_tsize;                /* text size (pages) */
+       |         ^~~~~~
+
+I'll update the commit message.
+
+
+r~
 
 
