@@ -2,83 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0198C7302
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 10:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758E18C730A
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 10:41:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7Wed-0002Rq-H8; Thu, 16 May 2024 04:39:59 -0400
+	id 1s7WfF-0002tx-WF; Thu, 16 May 2024 04:40:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1s7Web-0002Rd-3r
- for qemu-devel@nongnu.org; Thu, 16 May 2024 04:39:57 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s7WfC-0002t9-C8
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 04:40:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1s7WeZ-0003Qc-6f
- for qemu-devel@nongnu.org; Thu, 16 May 2024 04:39:56 -0400
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1s7WfB-0003UX-0b
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 04:40:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715848793;
+ s=mimecast20190719; t=1715848831;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SMTHGr/euSTgO5iAJxhkflTxXrFCHDUczHZ7F4Fcy3Y=;
- b=VgBqw6My9/maZiRnGAa3HD3nVfGKogfW5btj3kwhvTBiWSuyuNsFMnJsj+zYHIOohnQqsA
- dtXwCj9LNdx5KAchRid+ACBf9saQ6MEfnbbtHV3T7iOv3tgtZ6TPxzucaxo5YuimqvFK/J
- DB9K3G98BbHnnMFKD1qeib5u5ILA7N4=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=It9Ng292lFpN2CUkE/WxM/OeFyGmuXIykM+ElTLFdbY=;
+ b=AghbCPt+mXnQil+xmh8+PA2l1muH3vGCEqCMn8Mr1tK7h0IIxOAD9J7/o4sF8fkkJ/Zaj8
+ inkN09OyECSlFhNv9l8QmoU8V3VFnd8PeVdeR6uVifKcVZgF8E1l09CwvIr4s6Z1ArRq4t
+ ssHeQLC1Us4oIthYrcKiibI3LwMtADA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-oICw74qPO9as1GOKCrcvlQ-1; Thu, 16 May 2024 04:39:52 -0400
-X-MC-Unique: oICw74qPO9as1GOKCrcvlQ-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-5236c5cec7dso2719222e87.2
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 01:39:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715848789; x=1716453589;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SMTHGr/euSTgO5iAJxhkflTxXrFCHDUczHZ7F4Fcy3Y=;
- b=KUnHVvAv/VdicX1Jwymt8PB8OKyhaqAKFtZsCLX2ZYNT7ctygZJkUhfLPRq4rfe3j/
- HKme6hqFWc6XE3F8r2K9XKB/elbpxfu8A6Faz+p1i7yZuUO1AkcVYNqraPbe5DcPPLCm
- XmIpumYRb1dyIHbFXiQEnSSpopQK7LDIcwDoi/IKBY7dCsxABDeHZZYy+d6v54tdibz/
- rJdo6YJ1P4/eIKCZWYMcfOBAd7wETAYvIOxp8PR9UPsIzeDCddzXhgkI2QjnEHfbmRiB
- N44OUp/IdxO4HisTM0idmzLW40VWlr1Yew9aWKHahvP0M5Z22N+k0+Dtlg0VAr+HWwof
- DySw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWHeQvEI3UkZQP6NyDfKpWR/AfF1Z1+M9MjBBAhevDY/2IgavJGe9zz7xQnFXByhH9WTj8mezXqq9EaETFA/ZpCv87l0E8=
-X-Gm-Message-State: AOJu0Yy8fB1qIRZFpBuMXLFY0X1L4/KX9WP3pZyTtKniBZqk5Q/M30Kd
- q5e9VZWlZxqjDPUS3Xxz0JuVsuc+vUL8Z8H/ZwastKasF/V/WB2BY6sGvZw8trYw/mIvrzPIQbh
- xxq+Szdw2PUT4VGFNGREYl49QjZIu4DXHmn+Al6n3r8sCqmfRQqdf
-X-Received: by 2002:a05:6512:1321:b0:523:93e8:1cf3 with SMTP id
- 2adb3069b0e04-52393e820a7mr5068753e87.51.1715848789455; 
- Thu, 16 May 2024 01:39:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfEx0RHxifTwVNr4ZkIs/fNfoNN8Dy5gCNSgTbekrn221TCIvvvUKtKDj+UMqiAUp+JGl+6A==
-X-Received: by 2002:a05:6512:1321:b0:523:93e8:1cf3 with SMTP id
- 2adb3069b0e04-52393e820a7mr5068658e87.51.1715848786996; 
- Thu, 16 May 2024 01:39:46 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-12-25-77.business.telecomitalia.it.
- [87.12.25.77]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-574ea5d755bsm3179016a12.51.2024.05.16.01.39.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 May 2024 01:39:46 -0700 (PDT)
-Date: Thu, 16 May 2024 10:39:42 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Halil Pasic <pasic@linux.ibm.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org, 
- Marc Hartmayer <mhartmay@linux.ibm.com>, Jason Wang <jasowang@redhat.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Boris Fiuczynski <fiuczy@linux.ibm.com>
-Subject: Re: [PATCH 1/1] vhost-vsock: add VIRTIO_F_RING_PACKED to feaure_bits
-Message-ID: <ps5dukcjk6yh3an3hlkynr227r7kcln7b5dxgwope62avz5ceo@decy6vkuu56j>
-References: <20240429113334.2454197-1-pasic@linux.ibm.com>
+ us-mta-59-4HdyzAiPNGWgmQcMszcpMw-1; Thu, 16 May 2024 04:40:27 -0400
+X-MC-Unique: 4HdyzAiPNGWgmQcMszcpMw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED178857A83;
+ Thu, 16 May 2024 08:40:26 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.9])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D9D93740F;
+ Thu, 16 May 2024 08:40:24 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, Fabiano Rosas <farosas@suse.de>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ =?unknown-8bit?q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: [PATCH v4 0/3] Fix "virtio-gpu: fix scanout migration post-load"
+Date: Thu, 16 May 2024 12:40:19 +0400
+Message-ID: <20240516084022.1398919-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20240429113334.2454197-1-pasic@linux.ibm.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -102,149 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 29, 2024 at 01:33:34PM GMT, Halil Pasic wrote:
->Not having VIRTIO_F_RING_PACKED in feature_bits[] is a problem when the
->vhost-vsock device does not offer the feature bit VIRTIO_F_RING_PACKED
->but the in QEMU device is configured to try to use the packed layout
->(the virtio property "packed" is on).
->
->As of today, the  Linux kernel vhost-vsock device does not support the
->packed queue layout (as vhost does not support packed), and does not
->offer VIRTIO_F_RING_PACKED. Thus when for example a vhost-vsock-ccw is
->used with packed=on, VIRTIO_F_RING_PACKED ends up being negotiated,
->despite the fact that the device does not actually support it, and
->one gets to keep the pieces.
->
->Fixes: 74b3e46630 ("virtio: add property to enable packed virtqueue")
->Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
->Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
->---
->
->This is a minimal fix, that follows the current patterns in the
->codebase, and not necessarily the best one.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Yeah, I did something similar with commit 562a7d23bf ("vhost: mask 
-VIRTIO_F_RING_RESET for vhost and vhost-user devices") so I think for 
-now is the right approach.
+Hi,
 
-I suggest to check also other devices like we did in that commit (e.g.  
-hw/scsi/vhost-scsi.c, hw/scsi/vhost-user-scsi.c, etc. )
+The aforementioned patch breaks virtio-gpu device migrations for versions
+pre-9.0/9.0, both forwards and backwards. Versioning of `VMS_STRUCT` is more
+complex than it may initially appear, as evidenced in the problematic commit
+dfcf74fa68c ("virtio-gpu: fix scanout migration post-load").
 
->
->I don't quite understand why vhost_get_features() works the way
->it works. Fortunately it is documented, so let me quote the
->documentation.
->
->"""
->/**
-> * vhost_get_features() - return a sanitised set of feature bits
-> * @hdev: common vhost_dev structure
-> * @feature_bits: pointer to terminated table of feature bits
-> * @features: original feature set
-> *
-> * This returns a set of features bits that is an intersection of what
-> * is supported by the vhost backend (hdev->features), the supported
-> * feature_bits and the requested feature set.
-> */
->uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
->                            uint64_t features);
->"""
->
->Based on this I would expect the following statement to be true: if a
->feature bit is not in feature_bits then the corresponding bit in the
->return value is guaranteed to be not set (regardless of the values of
->the 3rd arguments and hdev->features).
->
->The implementation however does the following: if the feature bit is not
->listed in feature_bits (2nd argument) then the corresponding bit in the
->return value is set iff the corresponding bit in the 3rd argument
->(features) is set (i.e. it does not matter what hdev->features and thus
->the vhost backend says).
->
->The documentation however does kind of state, that feature_bits is
->supposed to contain the supported features. And under the assumption
->that feature bit not in feature_bits implies that the corresponding bit
->must not be set in the 3rd argument (features), then even with the
->current implementation we do end up with the intersection of the three
->as stated. And then vsock would be at fault for violating that
->assumption, and my fix would be the best thing to do -- I guess.
->
->Is the implementation the way it is for a good reason, I can't judge
->that with certainty for myself.
+v2:
+ - use a manual version field test (instead of the more complex struct variant)
 
-Yes, I think we should fix the documentation, and after a few years of 
-not looking at it I'm confused again about what it does.
+v3:
+ - introduce machine_check_version()
+ - drop the VMSD version, and use machine version field test
 
-But re-reading my commit for VIRTIO_F_RING_RESET, it seems that I had 
-interpreted `feature_bits` (2nd argument) as a list of features that 
-QEMU doesn't know how to emulate and therefore are required by the 
-backend (vhost/vhost-user/vdpa). Because the problem is that `features` 
-(3rd argument) is a set of features required by the driver that can be 
-provided by both QEMU and the backend.
+v4:
+ - drop machine_check_version() approach
+ - property renamed to x-scanout-vmstate-version
 
->
->But I'm pretty convinced that the current approach is fragile,
->especially for the feature bits form the range 24 to 40, as those are
->not specific to a device.
->
->BTW vsock also lacks VIRTIO_F_ACCESS_PLATFORM, and VIRTIO_F_RING_RESET
->as well while vhost-net has both.
+Marc-André Lureau (3):
+  migration: add "exists" info to load-state-field trace
+  migration: fix a typo
+  virtio-gpu: fix v2 migration
 
-VIRTIO_F_RING_RESET is just above the line added by this patch.
+ include/hw/virtio/virtio-gpu.h |  1 +
+ hw/core/machine.c              |  1 +
+ hw/display/virtio-gpu.c        | 24 ++++++++++++++++--------
+ migration/vmstate.c            |  7 ++++---
+ migration/trace-events         |  2 +-
+ 5 files changed, 23 insertions(+), 12 deletions(-)
 
->
->If our design is indeed to make the individual devices responsible for
->having a complete list of possible features in feature_bits, then at
->least having a common macro for the non-device specific features would
->make sense to me.
-
-Yeah, I agree on this!
-
->
->On the other hand, I'm also very happy to send a patch which changes the
->behavior of vhost_get_features(), should the community decide that the
->current behavior does not make all that much sense -- I lean towards:
->probably it does not make much sense, but things like
->VIRTIO_F_ACCESS_PLATFORM, which are mandatory feature bits, need careful
->consideration, because there vhost can't do so we just won't offer it
->and proceed on our merry way is not the right behavior.
->
->Please comment!
-
-Maybe we should discuss it in another thread, but I agree that we should 
-fix it in someway. Thank you for raising this discussion!
-
->
->Regards,
->Halil
->---
-> hw/virtio/vhost-vsock-common.c | 1 +
-> 1 file changed, 1 insertion(+)
-
-This patch LGTM, but as I mention we should fix other devices as well,
-but maybe we can do with the common macro you suggested in another 
-patch.
-
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-
->
->diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
->index 12ea87d7a7..fd88df2560 100644
->--- a/hw/virtio/vhost-vsock-common.c
->+++ b/hw/virtio/vhost-vsock-common.c
->@@ -22,6 +22,7 @@
-> const int feature_bits[] = {
->     VIRTIO_VSOCK_F_SEQPACKET,
->     VIRTIO_F_RING_RESET,
->+    VIRTIO_F_RING_PACKED,
->     VHOST_INVALID_FEATURE_BIT
-> };
->
->
->base-commit: fd87be1dada5672f877e03c2ca8504458292c479
->-- 
->2.40.1
->
->
+-- 
+2.41.0.28.gd7d8841f67
 
 
