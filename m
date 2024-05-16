@@ -2,38 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277288C7387
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3728C7388
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 11:13:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7X9K-0007mN-1M; Thu, 16 May 2024 05:11:42 -0400
+	id 1s7X9H-0007lN-1D; Thu, 16 May 2024 05:11:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s7X9E-0007lB-PL
- for qemu-devel@nongnu.org; Thu, 16 May 2024 05:11:37 -0400
+ id 1s7X9D-0007jQ-8n
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 05:11:35 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s7X9B-0006Nm-Fe
- for qemu-devel@nongnu.org; Thu, 16 May 2024 05:11:36 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1s7X9A-0006Nt-Rs
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 05:11:34 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxXeu6zUVmI3QNAA--.25604S3;
- Thu, 16 May 2024 17:11:22 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cxyem8zUVmJHQNAA--.20194S3;
+ Thu, 16 May 2024 17:11:24 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Cx71u4zUVm+8ciAA--.2860S2; 
- Thu, 16 May 2024 17:11:20 +0800 (CST)
+ AQAAf8Cx71u4zUVm+8ciAA--.2860S3; 
+ Thu, 16 May 2024 17:11:23 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 0/5] loongarch-to-apply queue
-Date: Thu, 16 May 2024 17:11:15 +0800
-Message-Id: <20240516091120.1021435-1-gaosong@loongson.cn>
+Cc: richard.henderson@linaro.org,
+	Bibo Mao <maobibo@loongson.cn>
+Subject: [PULL 1/5] hw/loongarch: Add compat machine for 9.1
+Date: Thu, 16 May 2024 17:11:16 +0800
+Message-Id: <20240516091120.1021435-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240516091120.1021435-1-gaosong@loongson.cn>
+References: <20240516091120.1021435-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cx71u4zUVm+8ciAA--.2860S2
+X-CM-TRANSID: AQAAf8Cx71u4zUVm+8ciAA--.2860S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,44 +63,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 922582ace2df59572a671f5c0c5c6c5c706995e5:
+From: Bibo Mao <maobibo@loongson.cn>
 
-  Merge tag 'pull-hppa-20240515' of https://gitlab.com/rth7680/qemu into staging (2024-05-15 11:46:58 +0200)
+Since migration test case requires compat machine type support,
+compat machine is added for qemu 9.1 here.
 
-are available in the Git repository at:
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20240511034220.3030560-2-maobibo@loongson.cn>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+---
+ hw/loongarch/virt.c | 61 +++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 48 insertions(+), 13 deletions(-)
 
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240516
-
-for you to fetch changes up to d55d16700a2e2b36c7e34724d4d77f4a75c5243a:
-
-  target/loongarch/kvm: fpu save the vreg registers high 192bit (2024-05-16 16:32:35 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240516
-
-----------------------------------------------------------------
-Bibo Mao (3):
-      hw/loongarch: Add compat machine for 9.1
-      hw/loongarch: Remove minimum and default memory size
-      tests: Add migration test for loongarch64
-
-Song Gao (2):
-      target/loongarch/kvm: Fix VM recovery from disk failures
-      target/loongarch/kvm: fpu save the vreg registers high 192bit
-
- hw/loongarch/virt.c                      | 66 +++++++++++++++++++++++---------
- target/loongarch/kvm/kvm.c               |  6 +++
- target/loongarch/machine.c               |  6 ++-
- tests/migration/Makefile                 |  2 +-
- tests/migration/loongarch64/Makefile     | 18 +++++++++
- tests/migration/loongarch64/a-b-kernel.S | 49 ++++++++++++++++++++++++
- tests/migration/loongarch64/a-b-kernel.h | 16 ++++++++
- tests/migration/migration-test.h         |  3 ++
- tests/qtest/meson.build                  |  2 +-
- tests/qtest/migration-test.c             | 10 +++++
- 10 files changed, 156 insertions(+), 22 deletions(-)
- create mode 100644 tests/migration/loongarch64/Makefile
- create mode 100644 tests/migration/loongarch64/a-b-kernel.S
- create mode 100644 tests/migration/loongarch64/a-b-kernel.h
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index f0640d2d80..f24ff5fcf4 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -1231,18 +1231,53 @@ static void virt_class_init(ObjectClass *oc, void *data)
+ #endif
+ }
+ 
+-static const TypeInfo virt_machine_types[] = {
+-    {
+-        .name           = TYPE_LOONGARCH_VIRT_MACHINE,
+-        .parent         = TYPE_MACHINE,
+-        .instance_size  = sizeof(LoongArchVirtMachineState),
+-        .class_init     = virt_class_init,
+-        .instance_init  = virt_initfn,
+-        .interfaces = (InterfaceInfo[]) {
+-         { TYPE_HOTPLUG_HANDLER },
+-         { }
+-        },
+-    }
++#define DEFINE_VIRT_MACHINE_LATEST(major, minor, latest) \
++    static void virt_##major##_##minor##_class_init(ObjectClass *oc, \
++                                                    void *data) \
++    { \
++        MachineClass *mc = MACHINE_CLASS(oc); \
++        virt_machine_##major##_##minor##_options(mc); \
++        mc->desc = "QEMU " # major "." # minor " LoongArch Virtual Machine"; \
++        if (latest) { \
++            mc->alias = "virt"; \
++        } \
++    } \
++    static const TypeInfo machvirt_##major##_##minor##_info = { \
++        .name = MACHINE_TYPE_NAME("virt-" # major "." # minor), \
++        .parent = TYPE_LOONGARCH_VIRT_MACHINE, \
++        .class_init = virt_##major##_##minor##_class_init, \
++    }; \
++    static void machvirt_machine_##major##_##minor##_init(void) \
++    { \
++        type_register_static(&machvirt_##major##_##minor##_info); \
++    } \
++    type_init(machvirt_machine_##major##_##minor##_init);
++
++#define DEFINE_VIRT_MACHINE_AS_LATEST(major, minor) \
++    DEFINE_VIRT_MACHINE_LATEST(major, minor, true)
++#define DEFINE_VIRT_MACHINE(major, minor) \
++    DEFINE_VIRT_MACHINE_LATEST(major, minor, false)
++
++static const TypeInfo virt_machine_info = {
++    .name           = TYPE_LOONGARCH_VIRT_MACHINE,
++    .parent         = TYPE_MACHINE,
++    .abstract       = true,
++    .instance_size  = sizeof(LoongArchVirtMachineState),
++    .class_init     = virt_class_init,
++    .instance_init  = virt_initfn,
++    .interfaces = (InterfaceInfo[]) {
++    { TYPE_HOTPLUG_HANDLER },
++    { }
++    },
+ };
+ 
+-DEFINE_TYPES(virt_machine_types)
++static void machvirt_machine_init(void)
++{
++    type_register_static(&virt_machine_info);
++}
++type_init(machvirt_machine_init);
++
++static void virt_machine_9_1_options(MachineClass *mc)
++{
++}
++DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
+-- 
+2.34.1
 
 
