@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2618C7A3B
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 18:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598AF8C7A3D
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 18:23:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7dsb-0006lk-3a; Thu, 16 May 2024 12:22:53 -0400
+	id 1s7dsY-0006jM-Ta; Thu, 16 May 2024 12:22:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7dsW-0006hs-OK
- for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:48 -0400
+ id 1s7dsX-0006hv-2I
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7dsU-0003Ss-S6
+ id 1s7dsV-0003Sw-3x
  for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1715876566;
@@ -24,25 +24,25 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qh06DFXCeLIvMOyUWAAmxvL83QXwl+9anU8PWPSYszQ=;
- b=CRo5HixeV1K0FEtPZqieNAJvrm8iLq5c2fnkKitcb8LQ6496kzMogg0Y9CVFZgJnIk8cGy
- XLW0luwkkNJxfr8h/5JtZ5bOh1Y0HOPt3ukmBNDUNbrxzkiu/V9XSkOYVnZ5kSTSpscFX7
- BqQMY2x6OWGw9kdbEK/9DXQ/oO05Hpc=
+ bh=f1C+gYHY5xRdM1uOHBiUTpGYQJD1JzjbNMz0faHcDRw=;
+ b=hvDjeGiDZVpzv3h/0l81frKULnFVNuOyGC0UjGZTHoZxDE5u69LoRDwb2K4adq5+hgP9Ii
+ z7eQNC6Q76TPBP7a9wJ16+kF+paolPeYm2AG44gdc5LGQ5dFwe3QbVK4t/UGRvzKlWGkvj
+ PeQUmA2LfL78qLAKlCKy7dnUW3Eg3qg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-rqhx-kmsPO-WzquU-A6W1A-1; Thu, 16 May 2024 12:22:41 -0400
-X-MC-Unique: rqhx-kmsPO-WzquU-A6W1A-1
+ us-mta-86-bqbi--ZkM2e9rxpcFGKAnw-1; Thu, 16 May 2024 12:22:44 -0400
+X-MC-Unique: bqbi--ZkM2e9rxpcFGKAnw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 20379800281;
- Thu, 16 May 2024 16:22:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C40AA8025F9;
+ Thu, 16 May 2024 16:22:43 +0000 (UTC)
 Received: from toolbox.default.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BC083C15BB1;
- Thu, 16 May 2024 16:22:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4EBC7C15BB9;
+ Thu, 16 May 2024 16:22:41 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
@@ -57,10 +57,10 @@ Cc: Thomas Huth <thuth@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
  Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 2/3] docs: define policy limiting the inclusion of
- generated files
-Date: Thu, 16 May 2024 17:22:29 +0100
-Message-ID: <20240516162230.937047-3-berrange@redhat.com>
+Subject: [PATCH v2 3/3] docs: define policy forbidding use of AI code
+ generators
+Date: Thu, 16 May 2024 17:22:30 +0100
+Message-ID: <20240516162230.937047-4-berrange@redhat.com>
 In-Reply-To: <20240516162230.937047-1-berrange@redhat.com>
 References: <20240516162230.937047-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -91,96 +91,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Files contributed to QEMU are generally expected to be provided in the
-preferred format for manipulation. IOW, we generally don't expect to
-have generated / compiled code included in the tree, rather, we expect
-to run the code generator / compiler as part of the build process.
+There has been an explosion of interest in so called AI code generators
+in the past year or two. Thus far though, this is has not been matched
+by a broadly accepted legal interpretation of the licensing implications
+for code generator outputs. While the vendors may claim there is no
+problem and a free choice of license is possible, they have an inherent
+conflict of interest in promoting this interpretation. More broadly
+there is, as yet, no broad consensus on the licensing implications of
+code generators trained on inputs under a wide variety of licenses
 
-There are some obvious exceptions to this seen in our existing tree, the
-biggest one being the inclusion of many binary firmware ROMs. A more
-niche example is the inclusion of a generated eBPF program. Or the CI
-dockerfiles which are mostly auto-generated. In these cases, however,
-the preferred format source code is still required to be included,
-alongside the generated output.
+The DCO requires contributors to assert they have the right to
+contribute under the designated project license. Given the lack of
+consensus on the licensing of AI code generator output, it is not
+considered credible to assert compliance with the DCO clause (b) or (c)
+where a patch includes such generated code.
 
-Tools which perform user defined algorithmic transformations on code are
-not considered to be "code generators". ie, we permit use of coccinelle,
-spell checkers, and sed/awk/etc to manipulate code. Such use of automated
-manipulation should still be declared in the commit message.
+This patch thus defines a policy that the QEMU project will currently
+not accept contributions where use of AI code generators is either
+known, or suspected.
 
-One off generators which create a boilerplate file which the author then
-fills in, are acceptable if their output has clear copyright and license
-status. This could be where a contributor writes a throwaway python
-script to automate creation of some mundane piece of code for example.
+This merely reflects the current uncertainty of the field, and should
+this situation change, the policy is of course subject to future
+relaxation. Meanwhile requests for exceptions can also be considered on
+a case by case basis.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- docs/devel/code-provenance.rst | 55 ++++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ docs/devel/code-provenance.rst | 50 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
 
 diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-index 7c42fae571..eabb3e7c08 100644
+index eabb3e7c08..846dda9a35 100644
 --- a/docs/devel/code-provenance.rst
 +++ b/docs/devel/code-provenance.rst
-@@ -210,3 +210,58 @@ mailing list.
- It is also recommended to attempt to contact the original author to let them
- know you are interested in taking over their work, in case they still intended
- to return to the work, or had any suggestions about the best way to continue.
+@@ -264,4 +264,52 @@ boilerplate code template which is then filled in to produce the final patch.
+ The output of such a tool would still be considered the "preferred format",
+ since it is intended to be a foundation for further human authored changes.
+ Such tools are acceptable to use, provided they follow a deterministic process
+-and there is clearly defined copyright and licensing for their output.
++and there is clearly defined copyright and licensing for their output. Note
++in particular the caveats applying to AI code generators below.
 +
-+Inclusion of generated files
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Use of AI code generators
++~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Files in patches contributed to QEMU are generally expected to be provided
-+only in the preferred format for making modifications. The implication of
-+this is that the output of code generators or compilers is usually not
-+appropriate to contribute to QEMU.
++TL;DR:
 +
-+For reasons of practicality there are some exceptions to this rule, where
-+generated code is permitted, provided it is also accompanied by the
-+corresponding preferred source format. This is done where it is impractical
-+to expect those building QEMU to run the code generation or compilation
-+process. A non-exhustive list of examples is:
++  **Current QEMU project policy is to DECLINE any contributions which are
++  believed to include or derive from AI generated code. This includes ChatGPT,
++  CoPilot, Llama and similar tools**
 +
-+ * Images: where an bitmap image is created from a vector file it is common
-+   to include the rendered bitmaps at desired resolution(s), since subtle
-+   changes in the rasterization process / tools may affect quality. The
-+   original vector file is expected to accompany any generated bitmaps.
++The increasing prevalence of AI code generators, most notably but not limited
++to, `Large Language Models <https://en.wikipedia.org/wiki/Large_language_model>`__
++(LLMs) results in a number of difficult legal questions and risks for software
++projects, including QEMU.
 +
-+ * Firmware: QEMU includes pre-compiled binary ROMs for a variety of guest
-+   firmwares. When such binary ROMs are contributed, the corresponding source
-+   must also be provided, either directly, or through a git submodule link.
++The QEMU community requires that contributors certify their patch submissions
++are made in accordance with the rules of the :ref:`dco` (DCO).
 +
-+ * Dockerfiles: the majority of the dockerfiles are automatically generated
-+   from a canonical list of build dependencies maintained in tree, together
-+   with the libvirt-ci git submodule link. The generated dockerfiles are
-+   included in tree because it is desirable to be able to directly build
-+   container images from a clean git checkout.
++To satisfy the DCO, the patch contributor has to fully understand the
++copyright and license status of code they are contributing to QEMU. With AI
++code generators, the copyright and license status of the output is ill-defined
++with no generally accepted, settled legal foundation.
 +
-+ * EBPF: QEMU includes some generated EBPF machine code, since the required
-+   eBPF compilation tools are not broadly available on all targetted OS
-+   distributions. The corresponding eBPF C code for the binary is also
-+   provided. This is a time limited exception until the eBPF toolchain is
-+   sufficiently broadly available in distros.
++Where the training material is known, it is common for it to include large
++volumes of material under restrictive licensing/copyright terms. Even where
++the training material is all known to be under open source licenses, it is
++likely to be under a variety of terms, not all of which will be compatible
++with QEMU's licensing requirements.
 +
-+In all cases above, the existence of generated files must be acknowledged
-+and justified in the commit that introduces them.
++With this in mind, the QEMU project does not consider it is currently possible
++for contributors to comply with DCO terms (b) or (c) for the output of commonly
++available AI code generators.
 +
-+Tools which perform changes to existing code with deterministic algorithmic
-+manipulation, driven by user specified inputs, are not generally considered
-+to be "generators".
++The QEMU maintainers thus require that contributors refrain from using AI code
++generators on patches intended to be submitted to the project, and will
++decline any contribution if use of AI is either known or suspected.
 +
-+IOW, using coccinelle to convert code from one pattern to another pattern, or
-+fixing docs typos with a spell checker, or transforming code using sed / awk /
-+etc, are not considered to be acts of code generation. Where an automated
-+manipulation is performed on code, however, this should be declared in the
-+commit message.
++Examples of tools impacted by this policy includes both GitHub's CoPilot,
++OpenAI's ChatGPT, and Meta's Code Llama, amongst many others which are less
++well known.
 +
-+At times contributors may use or create scripts/tools to generate an initial
-+boilerplate code template which is then filled in to produce the final patch.
-+The output of such a tool would still be considered the "preferred format",
-+since it is intended to be a foundation for further human authored changes.
-+Such tools are acceptable to use, provided they follow a deterministic process
-+and there is clearly defined copyright and licensing for their output.
++This policy may evolve as the legal situation is clarifed. In the meanwhile,
++requests for exceptions to this policy will be evaluated by the QEMU project
++on a case by case basis. To be granted an exception, a contributor will need
++to demonstrate clarity of the license and copyright status for the tool's
++output in relation to its training model and code, to the satisfaction of the
++project maintainers.
 -- 
 2.43.0
 
