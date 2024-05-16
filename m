@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598AF8C7A3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 18:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7573A8C7A39
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 18:23:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7dsY-0006jM-Ta; Thu, 16 May 2024 12:22:50 -0400
+	id 1s7dsb-0006ls-3k; Thu, 16 May 2024 12:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7dsX-0006hv-2I
- for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7dsY-0006jn-AU
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1s7dsV-0003Sw-3x
- for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:48 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s7dsW-0003T8-Bc
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 12:22:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715876566;
+ s=mimecast20190719; t=1715876567;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f1C+gYHY5xRdM1uOHBiUTpGYQJD1JzjbNMz0faHcDRw=;
- b=hvDjeGiDZVpzv3h/0l81frKULnFVNuOyGC0UjGZTHoZxDE5u69LoRDwb2K4adq5+hgP9Ii
- z7eQNC6Q76TPBP7a9wJ16+kF+paolPeYm2AG44gdc5LGQ5dFwe3QbVK4t/UGRvzKlWGkvj
- PeQUmA2LfL78qLAKlCKy7dnUW3Eg3qg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+mCAZ8OaVc+WJ3tJ2YIXz/UNCD9ySRcbIg/PJUqv7JI=;
+ b=JknGX8Zd/+YjOdVQkyF+P7+myTSw11rmlvq398oyJXKhgGfBqsH/8zaM3tkSVLOl6K/g1f
+ uFzpzpFssAuPzjl4Qz0HMR9HQv5B52JJXe4Li5+uefksR0JSeUv4CQtJIr7TXghOwSjFyr
+ m/iTMFCwlLVAOB7xk9Mq7VZwkZPjs3s=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-bqbi--ZkM2e9rxpcFGKAnw-1; Thu, 16 May 2024 12:22:44 -0400
-X-MC-Unique: bqbi--ZkM2e9rxpcFGKAnw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C40AA8025F9;
- Thu, 16 May 2024 16:22:43 +0000 (UTC)
-Received: from toolbox.default.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4EBC7C15BB9;
- Thu, 16 May 2024 16:22:41 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Alexander Graf <agraf@csgraf.de>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 3/3] docs: define policy forbidding use of AI code
- generators
-Date: Thu, 16 May 2024 17:22:30 +0100
-Message-ID: <20240516162230.937047-4-berrange@redhat.com>
-In-Reply-To: <20240516162230.937047-1-berrange@redhat.com>
-References: <20240516162230.937047-1-berrange@redhat.com>
+ us-mta-319-DgD0ADqbPVeRk_Y8RK61sg-1; Thu, 16 May 2024 12:22:45 -0400
+X-MC-Unique: DgD0ADqbPVeRk_Y8RK61sg-1
+Received: by mail-yw1-f200.google.com with SMTP id
+ 00721157ae682-622ccd54631so93677817b3.0
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 09:22:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1715876564; x=1716481364;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+mCAZ8OaVc+WJ3tJ2YIXz/UNCD9ySRcbIg/PJUqv7JI=;
+ b=ptbfFf+j1Vnd+WOCXDIGtVrRrjVHXbt3aEAJdzNTs6kttwK6IWGhX/KVTjW4MvlGfm
+ hq0MKzrNkphAnF39b5R9UITs8Mgmp8yOwtFKi9YTX0HMYNF7QT+mAHxJL4dmIMyedLbf
+ BBlsQphvn6YE8wvDHMpsMeRNqp6+e7YiaC00oP5UzxnMV8ick2Pg4K1Z2hxpVUCc7H0G
+ TPixC+VJ1C3I/n7Z1TbS5fFsor8EJuf0bkfEqYLnYZ/dU6CbPjx39SwZRrC1SNzVGEwU
+ Anjac1iSjxaJ+3Ii5mTnLQ9ujJpWEf625fg3zuzKzsUH/vxYImL4NFSqVQpUSBVCr7TR
+ shuw==
+X-Gm-Message-State: AOJu0YycZ8SkY/eBHEoYSpTtOl9WeiQ0ts9guFZMqFbRe8zwjJd8HuXa
+ JBrVFoiTHJvxeisB28sbHAPkbUcVRQFucPz82gl5JCyBtZz04gS5KnBsUcZSQdOPYSBabb7DpWj
+ XtrZVTJp5adnb9Gju4kJ2lrXqaBBIeR37LdvHKYJrkfOAqw6Y7R1gmlZzKBGx8ej5oVZeqei/LU
+ cthci+Yw+HK6JnCRAHmtSAQ2JYMzTk7A==
+X-Received: by 2002:a05:690c:7092:b0:617:cfb8:4e50 with SMTP id
+ 00721157ae682-622aff5b3d8mr233428267b3.17.1715876563965; 
+ Thu, 16 May 2024 09:22:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGSi1qgny8O0ZlE18ahEtGLdOFmgcIPadtexttqWEFL9TNKKPFaZ38ioGQRUJahFE1aA9vAw==
+X-Received: by 2002:a05:690c:7092:b0:617:cfb8:4e50 with SMTP id
+ 00721157ae682-622aff5b3d8mr233427887b3.17.1715876563482; 
+ Thu, 16 May 2024 09:22:43 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43df54f216esm100098461cf.31.2024.05.16.09.22.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 May 2024 09:22:42 -0700 (PDT)
+Message-ID: <9b81c30f-badb-49ea-a18f-e248ed0bfbda@redhat.com>
+Date: Thu, 16 May 2024 18:22:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/9] vfio: Improve error reporting (part 2)
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240516124658.850504-1-clg@redhat.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240516124658.850504-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -91,94 +104,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There has been an explosion of interest in so called AI code generators
-in the past year or two. Thus far though, this is has not been matched
-by a broadly accepted legal interpretation of the licensing implications
-for code generator outputs. While the vendors may claim there is no
-problem and a free choice of license is possible, they have an inherent
-conflict of interest in promoting this interpretation. More broadly
-there is, as yet, no broad consensus on the licensing implications of
-code generators trained on inputs under a wide variety of licenses
+On 5/16/24 14:46, Cédric Le Goater wrote:
+> Hello,
+> 
+> The motivation behind these changes is to improve error reporting to
+> the upper management layer (libvirt) with a more detailed error, this
+> to let it decide, depending on the reported error, whether to try
+> migration again later. It would be useful in cases where migration
+> fails due to lack of HW resources on the host. For instance, some
+> adapters can only initiate a limited number of simultaneous dirty
+> tracking requests and this imposes a limit on the the number of VMs
+> that can be migrated simultaneously.
+> 
+> We are not quite ready for such a mechanism but what we can do first is
+> to cleanup the error reporting in the early save_setup sequence. This
+> is what the following changes propose, by adding an Error** argument to
+> various handlers and propagating it to the core migration subsystem.
+> 
+> The first part [1] of this series modifying the core migration
+> subsystem is now merged. This is the second part changing VFIO which
+> was already proposed in March. See [2].
+> 
+> Thanks,
+> 
+> C.
+> 
+> [1] [PATCH for-9.1 v5 00/14] migration: Improve error reporting
+>      https://lore.kernel.org/qemu-devel/20240320064911.545001-1-clg@redhat.com/
+> 
+> [2] [PATCH v4 00/25] migration: Improve error reporting
+>      https://lore.kernel.org/qemu-devel/20240306133441.2351700-1-clg@redhat.com/
+> 
+> Changes in v7:
+> 
+>   - Commit log improvements (Eric)
+>   - vfio_set_migration_error() : err -> ret rename (Eric)
+>   - vfio_migration_set_state() :
+>     Introduced an error prefix to remove redundancy in error messages (Eric)
+>     Commented error_report when setting the device in recover state fails (Eric)
+>   - vfio_migration_state_notifier() :
+>     Remove useless assignment of local ret variable (Avihai)
+>     Rephrased comment regarding MigrationNotifyFunc API (Avihai)
+>   - Fixed even more line wrapping of *dirty_bitmap() routines (Avihai)
+>   - vfio_sync_dirty_bitmap()
+>     Fixed return when vfio_sync_ram_discard_listener_dirty_bitmap() is called (Avihai)
 
-The DCO requires contributors to assert they have the right to
-contribute under the designated project license. Given the lack of
-consensus on the licensing of AI code generator output, it is not
-considered credible to assert compliance with the DCO clause (b) or (c)
-where a patch includes such generated code.
+I fixed this last issue as commented in patch 8. Let's address other
+issues, if minor, with followup patches.
 
-This patch thus defines a policy that the QEMU project will currently
-not accept contributions where use of AI code generators is either
-known, or suspected.
+Applied to vfio-next.
 
-This merely reflects the current uncertainty of the field, and should
-this situation change, the policy is of course subject to future
-relaxation. Meanwhile requests for exceptions can also be considered on
-a case by case basis.
+Thanks,
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/devel/code-provenance.rst | 50 +++++++++++++++++++++++++++++++++-
- 1 file changed, 49 insertions(+), 1 deletion(-)
+C.
 
-diff --git a/docs/devel/code-provenance.rst b/docs/devel/code-provenance.rst
-index eabb3e7c08..846dda9a35 100644
---- a/docs/devel/code-provenance.rst
-+++ b/docs/devel/code-provenance.rst
-@@ -264,4 +264,52 @@ boilerplate code template which is then filled in to produce the final patch.
- The output of such a tool would still be considered the "preferred format",
- since it is intended to be a foundation for further human authored changes.
- Such tools are acceptable to use, provided they follow a deterministic process
--and there is clearly defined copyright and licensing for their output.
-+and there is clearly defined copyright and licensing for their output. Note
-+in particular the caveats applying to AI code generators below.
-+
-+Use of AI code generators
-+~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+TL;DR:
-+
-+  **Current QEMU project policy is to DECLINE any contributions which are
-+  believed to include or derive from AI generated code. This includes ChatGPT,
-+  CoPilot, Llama and similar tools**
-+
-+The increasing prevalence of AI code generators, most notably but not limited
-+to, `Large Language Models <https://en.wikipedia.org/wiki/Large_language_model>`__
-+(LLMs) results in a number of difficult legal questions and risks for software
-+projects, including QEMU.
-+
-+The QEMU community requires that contributors certify their patch submissions
-+are made in accordance with the rules of the :ref:`dco` (DCO).
-+
-+To satisfy the DCO, the patch contributor has to fully understand the
-+copyright and license status of code they are contributing to QEMU. With AI
-+code generators, the copyright and license status of the output is ill-defined
-+with no generally accepted, settled legal foundation.
-+
-+Where the training material is known, it is common for it to include large
-+volumes of material under restrictive licensing/copyright terms. Even where
-+the training material is all known to be under open source licenses, it is
-+likely to be under a variety of terms, not all of which will be compatible
-+with QEMU's licensing requirements.
-+
-+With this in mind, the QEMU project does not consider it is currently possible
-+for contributors to comply with DCO terms (b) or (c) for the output of commonly
-+available AI code generators.
-+
-+The QEMU maintainers thus require that contributors refrain from using AI code
-+generators on patches intended to be submitted to the project, and will
-+decline any contribution if use of AI is either known or suspected.
-+
-+Examples of tools impacted by this policy includes both GitHub's CoPilot,
-+OpenAI's ChatGPT, and Meta's Code Llama, amongst many others which are less
-+well known.
-+
-+This policy may evolve as the legal situation is clarifed. In the meanwhile,
-+requests for exceptions to this policy will be evaluated by the QEMU project
-+on a case by case basis. To be granted an exception, a contributor will need
-+to demonstrate clarity of the license and copyright status for the tool's
-+output in relation to its training model and code, to the satisfaction of the
-+project maintainers.
--- 
-2.43.0
+
+> 
+> Changes in v6:
+> 
+>   - Commit log improvements (Avihai)
+>   - Modified some titles (Avihai)
+>   - vfio_migration_set_state() : Dropped the error_setg_errno()
+>     change when setting device in recover state fails  (Avihai)
+>   - vfio_migration_state_notifier() : report local error (Avihai)
+>   - vfio_save_device_config_state() : Set errp if the migration
+>     stream is in error (Avihai)
+>   - vfio_save_state() : Changed error prefix  (Avihai)
+>   - vfio_iommu_map_dirty_notify() : Modified goto label  (Avihai)
+>   - Fixed memory_get_xlat_addr documentation (Avihai)
+>   - Fixed line wrapping (Avihai)
+>   - Fixed query_dirty_bitmap documentation (Avihai)
+>   - Dropped last patch from v5 :
+>     vfio: Extend vfio_set_migration_error() with Error* argument
+> 
+> Changes in v5:
+> 
+>   - Rebased on 20c64c8a51a4 ("migration: migration_file_set_error")
+>   - Fixed typo in set_dirty_page_tracking documentation
+>   - Used error_setg_errno() in vfio_devices_dma_logging_start()
+>   - Replaced error_setg() by error_setg_errno() in vfio_migration_set_state()
+>   - Replaced error_setg() by error_setg_errno() in
+>     vfio_devices_query_dirty_bitmap() and vfio_legacy_query_dirty_bitmap()
+>   - ':' -> '-' in vfio_iommu_map_dirty_notify()
+> 
+> Cédric Le Goater (9):
+>    vfio: Add Error** argument to .set_dirty_page_tracking() handler
+>    vfio: Add Error** argument to vfio_devices_dma_logging_start()
+>    migration: Extend migration_file_set_error() with Error* argument
+>    vfio/migration: Add an Error** argument to vfio_migration_set_state()
+>    vfio/migration: Add Error** argument to .vfio_save_config() handler
+>    vfio: Reverse test on vfio_get_xlat_addr()
+>    memory: Add Error** argument to memory_get_xlat_addr()
+>    vfio: Add Error** argument to .get_dirty_bitmap() handler
+>    vfio: Also trace event failures in vfio_save_complete_precopy()
+> 
+>   include/exec/memory.h                 |  15 +++-
+>   include/hw/vfio/vfio-common.h         |  30 ++++++-
+>   include/hw/vfio/vfio-container-base.h |  37 +++++++--
+>   include/migration/misc.h              |   2 +-
+>   hw/vfio/common.c                      | 113 ++++++++++++++++----------
+>   hw/vfio/container-base.c              |  10 +--
+>   hw/vfio/container.c                   |  20 +++--
+>   hw/vfio/migration.c                   | 109 ++++++++++++++++---------
+>   hw/vfio/pci.c                         |   5 +-
+>   hw/virtio/vhost-vdpa.c                |   5 +-
+>   migration/migration.c                 |   6 +-
+>   system/memory.c                       |  10 +--
+>   12 files changed, 246 insertions(+), 116 deletions(-)
+> 
 
 
