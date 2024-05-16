@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17EE8C70BB
+	by mail.lfdr.de (Postfix) with ESMTPS id D44308C70BC
 	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 05:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7S4Z-0001n2-Qn; Wed, 15 May 2024 23:46:27 -0400
+	id 1s7S4Z-0001oE-RJ; Wed, 15 May 2024 23:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1s7S4M-0001G5-NO
- for qemu-devel@nongnu.org; Wed, 15 May 2024 23:46:14 -0400
+ id 1s7S4S-0001Wh-CH
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 23:46:23 -0400
 Received: from esa12.hc1455-7.c3s2.iphmx.com ([139.138.37.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1s7S4H-0003Ih-AT
- for qemu-devel@nongnu.org; Wed, 15 May 2024 23:46:12 -0400
+ id 1s7S4O-0003Ih-C4
+ for qemu-devel@nongnu.org; Wed, 15 May 2024 23:46:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1715831169; x=1747367169;
+ t=1715831176; x=1747367176;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7MOyPOW+68JPQBCRIdeLsyQh+oVQxyzXLW3yvf2y1Qs=;
- b=OxHFkdyNJMTroWtZmkN7J2BtArBeC+1+RowalMsP1uytGcOutITMmrIk
- WBS0mdR/LBzia8d4xNYl4rt8rE+akDlUmREqzxFTkJinoiJGSsTffnjKa
- o61QwTjgH4/oVyQ4sJah8u2bEqj4HIpicY5PekhZUsw/PkxsDgzj4ylX1
- KPe2ig+QMKZo0Z+YqZLSQrgADSq35N+vj3SCBUGjR7CdFyX4Ws2AxBTlY
- PtVPgrxJNeCmznCnhpjrKmoBQ7Ul+7HIQ9IIcvZwMKbfZU0+DHQkiPWf3
- BwobwG2DvAEKN1TiUvG7E4gg5V9D/jVLbR1TlkeMiglINyNyAKG+Pnq3D g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="137733512"
-X-IronPort-AV: E=Sophos;i="6.08,163,1712588400"; d="scan'208";a="137733512"
-Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
+ bh=U9YYjJMtyPUoxkp85p3yIZTMu8Bf1O1cCDyTXHtYi2E=;
+ b=d/rjpF5nqZ/vh3C2Ocxn66mTCSeKtrfPXamq3cjn6lsivKyJZVaATr+p
+ 2oG6J3kl50DhNyWOdsOq3ZRZKAStNF46IHd/2DzrmKtwufhvCHMQtX0zY
+ 3JOqy0OLYIwJ9b6oINE8reXCpnpyCqau+pJw4mOXR06CG0Q6V1RrOMynS
+ phjy6AEHjNqRIWYIwlnj74DzO7JQAhnppBq6HREYr2f8WBxQk5xPswXtV
+ PF/8gyOh8+CTtfmA7qlSeyig2PS+V7j9C01abmaGoVhY+9amYKiafGPNm
+ 6zahXw4I6LLTgYv23ctPuEMxlJTOhJO2yewycV9ln/RsNg5c6/bJaOMLj w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="137733514"
+X-IronPort-AV: E=Sophos;i="6.08,163,1712588400"; d="scan'208";a="137733514"
+Received: from unknown (HELO yto-r3.gw.nic.fujitsu.com) ([218.44.52.219])
  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 May 2024 12:46:05 +0900
-Received: from oym-m1.gw.nic.fujitsu.com (oym-nat-oym-m1.gw.nic.fujitsu.com
- [192.168.87.58])
- by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 04959D9DC8
+Received: from yto-m1.gw.nic.fujitsu.com (yto-nat-yto-m1.gw.nic.fujitsu.com
+ [192.168.83.64])
+ by yto-r3.gw.nic.fujitsu.com (Postfix) with ESMTP id 701D7C2ABD
  for <qemu-devel@nongnu.org>; Thu, 16 May 2024 12:46:03 +0900 (JST)
 Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
  [192.51.206.21])
- by oym-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 2CBDEFD62D
+ by yto-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id A54F0D1714
  for <qemu-devel@nongnu.org>; Thu, 16 May 2024 12:46:02 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id BF83B20094ACB
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 12:46:01 +0900 (JST)
+ by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 32C5F20094AC3
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 12:46:02 +0900 (JST)
 Received: from localhost.localdomain (unknown [10.167.226.45])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 4DD7E1A000C;
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 95AFF1A000D;
  Thu, 16 May 2024 11:46:01 +0800 (CST)
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
 Cc: Hailiang Zhang <zhanghailiang@xfusion.com>, qemu-devel@nongnu.org,
- Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2 2/3] migration/colo: make colo_incoming_co() return void
-Date: Thu, 16 May 2024 11:45:16 +0800
-Message-Id: <20240516034517.1353664-2-lizhijian@fujitsu.com>
+ Zhang Chen <chen.zhang@intel.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH v2 3/3] migration/colo: Tidy up bql_unlock() around
+ bdrv_activate_all()
+Date: Thu, 16 May 2024 11:45:17 +0800
+Message-Id: <20240516034517.1353664-3-lizhijian@fujitsu.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20240516034517.1353664-1-lizhijian@fujitsu.com>
 References: <20240516034517.1353664-1-lizhijian@fujitsu.com>
@@ -65,13 +67,12 @@ X-TM-AS-GCONF: 00
 X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28390.004
 X-TM-AS-User-Approved-Sender: Yes
 X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28390.004
-X-TMASE-Result: 10-4.820000-10.000000
-X-TMASE-MatchedRID: Q+hQf2RULEHxTNB2h2oY6UhwlOfYeSqx+f2tDgd++7AgUEQTkIWiYgGU
- wLdEyRc2zg1WcxCRWO3BfxgMG/6GqGrs+r6+nS7OTbFVCYPBTqYJlr1xKkE5ucC5DTEMxpeQfiq
- 1gj2xET+CpWo1JYSZWg9neHJxPRoybHw3hiEs7YQp1j2WdPxkF7KyARzLntncBy7BPw6XwfeYpu
- G7kpoKR3oFeyJkMWJDl4qUL05WUbinHiZUnbcPRJ4CIKY/Hg3AGdQnQSTrKGPEQdG7H66TyHEqm
- 8QYBtMON6DcrJoh7syJChTSexa+DeBjtbUA6T/A7yGfhMw23lvQCCbBr9T2X4Bocw86CYooSqTt
- +or/8Ux+W1nz9EQ8V5nVT+Oed1s6W4wbpXTb5DJKKve1kh3RY37qSWrndbmQn0bOriG5BVc=
+X-TMASE-Result: 10--4.358700-10.000000
+X-TMASE-MatchedRID: I1wtkSt6/wJTorztX3wKRDBgCmbnj9JmwTlc9CcHMZerwqxtE531VNnf
+ JrUSEbFDNYCBzzxsUnthuO+F4DLKpT+7nvNv6fe6ngIgpj8eDcBpkajQR5gb3mn0m688Eo38Kra
+ uXd3MZDXfhHcYdCBpjrxlGH8RZ8oGWC6H7V7TWa/romzRDvR5XHuCIRNxgi+MRUwpR/yl+NVeku
+ 7gWn86oV76bnOAkrpj+mA1sGeD9pUYigD+WO05IRXFEH92Kf64nTtPxlIuIBW9Hzj86YHXBCnif
+ x5AGfCL
 X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 Received-SPF: pass client-ip=139.138.37.100;
  envelope-from=lizhijian@fujitsu.com; helo=esa12.hc1455-7.c3s2.iphmx.com
@@ -99,101 +100,39 @@ From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, it always returns 0, no need to check the return value at all.
-In addition, enter colo coroutine only if migration_incoming_colo_enabled()
-is true.
-Once the destination side enters the COLO* state, the COLO process will
-take over the remaining processes until COLO exits.
+Make the code more tight.
 
-Cc: Fabiano Rosas <farosas@suse.de>
+Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Zhang Chen <chen.zhang@intel.com>
 Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
-V2: Fix compilation failed, reported by Fabiano Rosas <farosas@suse.de>
-    Collected reviewed-by tags
+V2: Collected reviewed-by tags
+This change/comment suggested by "Michael Tokarev <mjt@tls.msk.ru>" came
+a bit late at that time, let's update it together in these minor set
+this time.
 ---
- include/migration/colo.h | 2 +-
- migration/colo-stubs.c   | 3 +--
- migration/colo.c         | 9 ++-------
- migration/migration.c    | 6 +++---
- 4 files changed, 7 insertions(+), 13 deletions(-)
+ migration/colo.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/migration/colo.h b/include/migration/colo.h
-index eaac07f26d..43222ef5ae 100644
---- a/include/migration/colo.h
-+++ b/include/migration/colo.h
-@@ -49,7 +49,7 @@ void colo_checkpoint_delay_set(void);
-  *
-  * Called with BQL locked, may temporary release BQL.
-  */
--int coroutine_fn colo_incoming_co(void);
-+void coroutine_fn colo_incoming_co(void);
- 
- void colo_shutdown(void);
- #endif
-diff --git a/migration/colo-stubs.c b/migration/colo-stubs.c
-index f8c069b739..e22ce65234 100644
---- a/migration/colo-stubs.c
-+++ b/migration/colo-stubs.c
-@@ -9,9 +9,8 @@ void colo_shutdown(void)
- {
- }
- 
--int coroutine_fn colo_incoming_co(void)
-+void coroutine_fn colo_incoming_co(void)
- {
--    return 0;
- }
- 
- void colo_checkpoint_delay_set(void)
 diff --git a/migration/colo.c b/migration/colo.c
-index 5600a43d78..991806c06a 100644
+index 991806c06a..1b6d9da1c8 100644
 --- a/migration/colo.c
 +++ b/migration/colo.c
-@@ -929,16 +929,13 @@ out:
-     return NULL;
- }
- 
--int coroutine_fn colo_incoming_co(void)
-+void coroutine_fn colo_incoming_co(void)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     QemuThread th;
- 
-     assert(bql_locked());
--
--    if (!migration_incoming_colo_enabled()) {
--        return 0;
--    }
-+    assert(migration_incoming_colo_enabled());
- 
-     qemu_thread_create(&th, "COLO incoming", colo_process_incoming_thread,
-                        mis, QEMU_THREAD_JOINABLE);
-@@ -954,6 +951,4 @@ int coroutine_fn colo_incoming_co(void)
- 
-     /* We hold the global BQL, so it is safe here */
-     colo_release_ram_cache();
--
--    return 0;
- }
-diff --git a/migration/migration.c b/migration/migration.c
-index 0feb354e47..607fb44842 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -789,9 +789,9 @@ process_incoming_migration_co(void *opaque)
-         goto fail;
+@@ -838,12 +838,11 @@ static void *colo_process_incoming_thread(void *opaque)
+     /* Make sure all file formats throw away their mutable metadata */
+     bql_lock();
+     bdrv_activate_all(&local_err);
++    bql_unlock();
+     if (local_err) {
+-        bql_unlock();
+         error_report_err(local_err);
+         return NULL;
      }
+-    bql_unlock();
  
--    if (colo_incoming_co() < 0) {
--        error_setg(&local_err, "colo incoming failed");
--        goto fail;
-+    if (migration_incoming_colo_enabled()) {
-+        /* yield until COLO exit */
-+        colo_incoming_co();
-     }
+     failover_init_state();
  
-     migration_bh_schedule(process_incoming_migration_bh, mis);
 -- 
 2.31.1
 
