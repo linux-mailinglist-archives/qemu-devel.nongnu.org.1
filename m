@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6348C7E83
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 00:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E188C7E85
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 00:22:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7jTU-0006ij-6K; Thu, 16 May 2024 18:21:20 -0400
+	id 1s7jTV-0006m4-Qn; Thu, 16 May 2024 18:21:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s7jTL-0006dM-Lv
- for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:13 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1s7jTN-0006f1-GG
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:14 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1s7jTI-0003Bk-KE
- for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:11 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-6f44b5e7f07so654318b3a.2
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 15:21:08 -0700 (PDT)
+ id 1s7jTK-0003Bv-1R
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 18:21:12 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6f447260f9dso693821b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 16 May 2024 15:21:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715898067; x=1716502867; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715898068; x=1716502868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i4r8M+Ho2ethkxiN2yuJrvpiAjkoen/RLNiEY1Q1RNE=;
- b=yllkz4Z3t/5N/UvDrAdPY03ObjGaXzGszBhGqxguy3F8cctC9fZnvuYrpC9/VfYX7A
- 8zuzYSapUEGzN66ctyo7QEuC1xCiftxXmfoRqBuX36qCA5c//dpLOSIRLq3EQkWN9cE1
- b3k4IRBesAURKIYYf6uXxcXWfEBJ0siQWOdw50wmZU1oN1CQWKXP1jCNnkOhKJrBgvwh
- 6vWpwLPBfbGIX1uhTZ05oXNbwz8FhfMQIKsB7rxiKMsctrk+UC/dpxfr20+utxc+MXTz
- FIDe9peYLo0LVD5MDhEL79fb4FfR7HcTVxubzz7mEQQnLpc3+25pNMaiYppzGSfOx/Z7
- 3cMA==
+ bh=wCrQq/arpKfIJalWxUJZGuwFUrWxkEQgahovvZswQxw=;
+ b=fKdBHwAtYslUzBxgFKDJlGt7y/j2X69XpYqipFOJ2oZC4SnPOOZ58rcb5TxTq7I5AK
+ YiAtyNjNRKX/omkZgXpTzWvzg5xteOdkYQeu1SpqAOKUBOPprv3YGB9BXuCaeLgK5a0Q
+ mupTrltfeUUvQFFGf7y0ZztVqR/nXizFgqpnCxP5b88GweuZSD0kkWE9bVvt/NJH284I
+ QT9FVl60DfzVf1CwOpx3xcgilHlLqwpzdvU3uoddsF3zwIOivYYxkOE6DO208j1k5q1T
+ KVPVOu22tWLY3aMNsvaFxZSdCk+xh/LErgZ0s7UnrXhFDXpAZuaNmz4jLYSXorsaBDgd
+ eXLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715898067; x=1716502867;
+ d=1e100.net; s=20230601; t=1715898068; x=1716502868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i4r8M+Ho2ethkxiN2yuJrvpiAjkoen/RLNiEY1Q1RNE=;
- b=DqkMuq6/hSTFLjpKb41CWyJ4F1eqbD7KvwVMayBTnNR6ScsHUfvtYRMCQOnvCR4Jkf
- NZO/g54B0MXkEbcv401TxcY2/XjHL6ug80gDeW/Zz+Giw2c7bLS16/InlsrNyakGQvLw
- sMrMOmRZ9yw4K9Sp9LHMqZJSCZNTK5wX0u62ZQWiUMmFtZjo8AhxD8mn0G0qOKOIfQun
- VZ2H1XFIJsscWA10/7JrEXAFUXlanlAtqeDe80LTDRKJ//9ukHvG/h0rGhgUqSNo31Ms
- KMOodb29+H/X1C5p5lXKgYub1TI63J1/izB3FCXkBBi/0NStCEgtWXRUGECGVPejgu+c
- krcg==
-X-Gm-Message-State: AOJu0Yz2raHN3WWWT9LDac2tEhUFXEgy2a8evQXV6/pxZ1fN1HewOVyf
- 3QF9292DdMd4X1tytZjp3b4eK4uueh9xeZP0BE3czcKpIyJcUtdGoy91WXlZXBqQ8Ru+DLBjEsL
- Nkzc=
-X-Google-Smtp-Source: AGHT+IFExEtugXKM2HJ10zCxYL1Tbk3wMCc6nhFReI3PFCdVBfz1QgkfFJ8nfD9vQpWcKjeKiCVXTA==
-X-Received: by 2002:a05:6a00:1a8f:b0:6f0:be31:8577 with SMTP id
- d2e1a72fcca58-6f4e036b56dmr21338731b3a.22.1715898066762; 
- Thu, 16 May 2024 15:21:06 -0700 (PDT)
+ bh=wCrQq/arpKfIJalWxUJZGuwFUrWxkEQgahovvZswQxw=;
+ b=xA0FuEvrKwVkn3QkK2dLAuLCsVlftrMVYJGpMdwnFpIVzABSW+2b0pfvCrzWi5JA8U
+ RsCcYPKgfRGXH51xnybDqhnAWFzytwH9BgG/HrS3Rj9irDUXVHzgV+k/lYYwLs1Jlhqi
+ mlG8fNydioROchQbfk0fx5decmUbv2jga89HgQd5MkYW66Yo5lJqotfXSEKuCZyoj3Xu
+ 3nRqSixvg3S57fQ5PJp9/s+HqqikZD8rVciasxJO9+1sNjkJdhROeccFevDsGMefpnTV
+ TyHdcVodWPpK1DrJV069Mbg2T5yWvp0zHe9rthJxeQ84iQWAZlMqCo8uKdYwjGarzFHa
+ zcDw==
+X-Gm-Message-State: AOJu0Yz0Ym8terK7se9btU7zNYPUMV15oiGuzqxqyPG2APcEpYH0OmHz
+ wP1PDmOnskEZUVXbHTN+olXRLTh7cBYx/e/IKgkKZQe7BB3nDM7SLlrZTAPuYq8psjFvNCcz5M8
+ TInM=
+X-Google-Smtp-Source: AGHT+IFrqwcazicrsGKIWuRpG2kSqoaOztyMuRlD6PortBT+5Xun9z98xvNbjBD35SXv+3+MEXNYyA==
+X-Received: by 2002:a05:6a20:d70b:b0:1af:d9a3:f38d with SMTP id
+ adf61e73a8af0-1afde202083mr19482104637.62.1715898067830; 
+ Thu, 16 May 2024 15:21:07 -0700 (PDT)
 Received: from linaro.vn.shawcable.net ([2604:3d08:9384:1d00::e697])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2a66476sm13589219b3a.28.2024.05.16.15.21.05
+ d2e1a72fcca58-6f4d2a66476sm13589219b3a.28.2024.05.16.15.21.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 May 2024 15:21:05 -0700 (PDT)
+ Thu, 16 May 2024 15:21:07 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -66,18 +66,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 3/5] sysemu: generalise qtest_warp_clock as
- qemu_clock_advance_virtual_time
-Date: Thu, 16 May 2024 15:20:45 -0700
-Message-Id: <20240516222047.1853459-4-pierrick.bouvier@linaro.org>
+Subject: [PATCH 4/5] plugins: add time control API
+Date: Thu, 16 May 2024 15:20:46 -0700
+Message-Id: <20240516222047.1853459-5-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240516222047.1853459-1-pierrick.bouvier@linaro.org>
 References: <20240516222047.1853459-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,135 +101,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Bennée <alex.bennee@linaro.org>
 
-Move the key functionality of moving time forward into the clock
-sub-system itself. This will allow us to plumb in time control into
-plugins.
+Expose the ability to control time through the plugin API. Only one
+plugin can control time so it has to request control when loaded.
+There are probably more corner cases to catch here.
 
 From: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/qemu/timer.h | 15 +++++++++++++++
- system/qtest.c       | 25 +++----------------------
- util/qemu-timer.c    | 26 ++++++++++++++++++++++++++
- 3 files changed, 44 insertions(+), 22 deletions(-)
+ include/qemu/qemu-plugin.h   | 23 +++++++++++++++++++++++
+ plugins/api.c                | 31 +++++++++++++++++++++++++++++++
+ plugins/qemu-plugins.symbols |  2 ++
+ 3 files changed, 56 insertions(+)
 
-diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-index 9a366e551fb..910587d8293 100644
---- a/include/qemu/timer.h
-+++ b/include/qemu/timer.h
-@@ -245,6 +245,21 @@ bool qemu_clock_run_timers(QEMUClockType type);
-  */
- bool qemu_clock_run_all_timers(void);
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 95703d8fec1..80b1637cede 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -661,6 +661,29 @@ void qemu_plugin_register_vcpu_mem_inline_per_vcpu(
+     qemu_plugin_u64 entry,
+     uint64_t imm);
  
 +/**
-+ * qemu_clock_advance_virtual_time(): advance the virtual time tick
-+ * @target: target time in nanoseconds
++ * qemu_plugin_request_time_control() - request the ability to control time
 + *
-+ * This function is used where the control of the flow of time has
-+ * been delegated to outside the clock subsystem (be it qtest, icount
-+ * or some other external source). You can ask the clock system to
-+ * return @early at the first expired timer.
++ * This grants the plugin the ability to control system time. Only one
++ * plugin can control time so if multiple plugins request the ability
++ * all but the first will fail.
 + *
-+ * Time can only move forward, attempts to reverse time would lead to
-+ * an error.
-+ *
-+ * Returns: new virtual time.
++ * Returns an opaque handle or NULL if fails
 + */
-+int64_t qemu_clock_advance_virtual_time(int64_t dest);
- 
- /*
-  * QEMUTimerList
-diff --git a/system/qtest.c b/system/qtest.c
-index ee8b139e982..e6f6b4e62d5 100644
---- a/system/qtest.c
-+++ b/system/qtest.c
-@@ -337,26 +337,6 @@ void qtest_set_virtual_clock(int64_t count)
-     qatomic_set_i64(&qtest_clock_counter, count);
- }
- 
--static void qtest_clock_warp(int64_t dest)
--{
--    int64_t clock = cpus_get_virtual_clock();
--    AioContext *aio_context;
--    assert(qtest_enabled());
--    aio_context = qemu_get_aio_context();
--    while (clock < dest) {
--        int64_t deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
--                                                      QEMU_TIMER_ATTR_ALL);
--        int64_t warp = qemu_soonest_timeout(dest - clock, deadline);
--
--        cpus_set_virtual_clock(cpus_get_virtual_clock() + warp);
--
--        qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
--        timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
--        clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    }
--    qemu_clock_notify(QEMU_CLOCK_VIRTUAL);
--}
--
- static bool (*process_command_cb)(CharBackend *chr, gchar **words);
- 
- void qtest_set_command_cb(bool (*pc_cb)(CharBackend *chr, gchar **words))
-@@ -755,7 +735,8 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
-             ns = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-                                             QEMU_TIMER_ATTR_ALL);
-         }
--        qtest_clock_warp(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ns);
-+        qemu_clock_advance_virtual_time(
-+            qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + ns);
-         qtest_send_prefix(chr);
-         qtest_sendf(chr, "OK %"PRIi64"\n",
-                     (int64_t)qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
-@@ -781,7 +762,7 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
-         g_assert(words[1]);
-         ret = qemu_strtoi64(words[1], NULL, 0, &ns);
-         g_assert(ret == 0);
--        qtest_clock_warp(ns);
-+        qemu_clock_advance_virtual_time(ns);
-         qtest_send_prefix(chr);
-         qtest_sendf(chr, "OK %"PRIi64"\n",
-                     (int64_t)qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL));
-diff --git a/util/qemu-timer.c b/util/qemu-timer.c
-index 6a0de33dd2b..213114be68c 100644
---- a/util/qemu-timer.c
-+++ b/util/qemu-timer.c
-@@ -645,6 +645,11 @@ int64_t qemu_clock_get_ns(QEMUClockType type)
++const void *qemu_plugin_request_time_control(void);
++
++/**
++ * qemu_plugin_update_ns() - update system emulation time
++ * @handle: opaque handle returned by qemu_plugin_request_time_control()
++ * @time: time in nanoseconds
++ *
++ * This allows an appropriately authorised plugin (i.e. holding the
++ * time control handle) to move system time forward to @time.
++ *
++ * Start time is 0.
++ */
++void qemu_plugin_update_ns(const void *handle, int64_t time);
++
+ typedef void
+ (*qemu_plugin_vcpu_syscall_cb_t)(qemu_plugin_id_t id, unsigned int vcpu_index,
+                                  int64_t num, uint64_t a1, uint64_t a2,
+diff --git a/plugins/api.c b/plugins/api.c
+index 5a0a7f8c712..26822b69ea2 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -39,6 +39,7 @@
+ #include "qemu/main-loop.h"
+ #include "qemu/plugin.h"
+ #include "qemu/log.h"
++#include "qemu/timer.h"
+ #include "tcg/tcg.h"
+ #include "exec/exec-all.h"
+ #include "exec/gdbstub.h"
+@@ -583,3 +584,33 @@ uint64_t qemu_plugin_u64_sum(qemu_plugin_u64 entry)
      }
- }
- 
-+static void qemu_virtual_clock_set_ns(int64_t time)
-+{
-+    return cpus_set_virtual_clock(time);
-+}
-+
- void init_clocks(QEMUTimerListNotifyCB *notify_cb)
- {
-     QEMUClockType type;
-@@ -675,3 +680,24 @@ bool qemu_clock_run_all_timers(void)
- 
-     return progress;
+     return total;
  }
 +
-+int64_t qemu_clock_advance_virtual_time(int64_t dest)
++/*
++ * Time control
++ */
++static bool has_control;
++
++const void *qemu_plugin_request_time_control(void)
 +{
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    AioContext *aio_context;
-+    aio_context = qemu_get_aio_context();
-+    while (clock < dest) {
-+        int64_t deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-+                                                      QEMU_TIMER_ATTR_ALL);
-+        int64_t warp = qemu_soonest_timeout(dest - clock, deadline);
-+
-+        qemu_virtual_clock_set_ns(qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + warp);
-+
-+        qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
-+        timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
-+        clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    if (!has_control) {
++        has_control = true;
++        return &has_control;
 +    }
-+    qemu_clock_notify(QEMU_CLOCK_VIRTUAL);
-+
-+    return clock;
++    return NULL;
 +}
++
++static void advance_virtual_time__async(CPUState *cpu, run_on_cpu_data data)
++{
++    int64_t new_time = data.host_ulong;
++    qemu_clock_advance_virtual_time(new_time);
++}
++
++void qemu_plugin_update_ns(const void *handle, int64_t new_time)
++{
++    if (handle == &has_control) {
++        /* Need to execute out of cpu_exec, so bql can be locked. */
++        async_run_on_cpu(current_cpu,
++                         advance_virtual_time__async,
++                         RUN_ON_CPU_HOST_ULONG(new_time));
++    }
++}
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index aa0a77a319f..ca773d8d9fe 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -38,6 +38,7 @@
+   qemu_plugin_register_vcpu_tb_exec_cond_cb;
+   qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu;
+   qemu_plugin_register_vcpu_tb_trans_cb;
++  qemu_plugin_request_time_control;
+   qemu_plugin_reset;
+   qemu_plugin_scoreboard_free;
+   qemu_plugin_scoreboard_find;
+@@ -51,5 +52,6 @@
+   qemu_plugin_u64_set;
+   qemu_plugin_u64_sum;
+   qemu_plugin_uninstall;
++  qemu_plugin_update_ns;
+   qemu_plugin_vcpu_for_each;
+ };
 -- 
 2.39.2
 
