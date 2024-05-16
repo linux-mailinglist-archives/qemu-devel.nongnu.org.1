@@ -2,108 +2,117 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC258C7B16
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 19:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 529628C7B2A
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 19:31:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7eqt-0003ju-QC; Thu, 16 May 2024 13:25:11 -0400
+	id 1s7evk-0005az-B4; Thu, 16 May 2024 13:30:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mgalaxy@akamai.com>)
- id 1s7eqo-0003hb-1g
- for qemu-devel@nongnu.org; Thu, 16 May 2024 13:25:07 -0400
+ id 1s7evd-0005Zp-2y; Thu, 16 May 2024 13:30:06 -0400
 Received: from mx0a-00190b01.pphosted.com ([2620:100:9001:583::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mgalaxy@akamai.com>)
- id 1s7eqj-0000zZ-Vc
- for qemu-devel@nongnu.org; Thu, 16 May 2024 13:25:03 -0400
-Received: from pps.filterd (m0050093.ppops.net [127.0.0.1])
- by m0050093.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id
- 44GEwkm7022542; Thu, 16 May 2024 18:24:43 +0100
+ id 1s7evZ-0001oW-4Y; Thu, 16 May 2024 13:30:04 -0400
+Received: from pps.filterd (m0122333.ppops.net [127.0.0.1])
+ by mx0a-00190b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44GExpQx017821;
+ Thu, 16 May 2024 18:29:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=
  message-id:date:mime-version:subject:to:cc:references:from
  :in-reply-to:content-type:content-transfer-encoding; s=
- jan2016.eng; bh=/ed58JGR9Tf8NVh/Y6fHeeAdLphSJ/BqQAtd2ytUsuM=; b=
- YArams4AWh7UxXz2qY0/OWPZxJWkM5VeLCXomCE4rSK+gvh5cgAAtvXkQm2yR5Wt
- Al/A+MIpUd1zWt/4drBhSZIiw4jtglYuMl1mDj0zWcxUFh6CgU0rot86Nyq6nzsH
- Ba3GXDmdg2k4Mg5PAtp6exQp5FtWoSA4+8eeckBUx5WziAnWi8o3wdGS94MNaWsZ
- N8kKFoM7A6Q+N9iyFvuDRgmR8QE/R/orXStaYLO3uHqXS+Nt4fs6b6LlTUFVZocR
- 8Ou3vSwoTn6+SnCUz2CQk2bBmew+Vo+5Trx0hzg3Su2y0l+gGH6x/8RtUFcHt18W
- 0dS8oMwARhF3mftxYzl61w==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60]
+ jan2016.eng; bh=zVJ46asrz6a+R2H0/Ty31SYq7ESChLhYfCkGpV8bJuo=; b=
+ lQM0dOodAF9Ydw6mNTEtKNJUsSgEVL9Ja+MooVSfaVTmOOUyu22I1VliAcJoT3Lv
+ IPtPjLRngpGlOSZPl5ATia4unNMvutcMapAZEm9Voh4d2EeVbE3kjFReaFEJ2LGj
+ nf+VNIdEixRGCYcr3mFnk7CfenqhKcssBDkeDq1aUDOsDOrNzu7Kx8xsmqcd+mve
+ SPCKGaykBpsFmDmBUW+Nc1q0K1kggyPAQqzJfCI9n2lxOd2r0eU0GP4DhLcAi62E
+ zw16q4cGaGfNYb9arqJ4eNSTYpnBH4WDc6auV2YNsv4r9F/vAfw1m0q1zhDD5ux6
+ ZQ9xCx4PpR/X2QLmx4AN8w==
+Received: from prod-mail-ppoint2 (prod-mail-ppoint2.akamai.com [184.51.33.19]
  (may be forged))
- by m0050093.ppops.net-00190b01. (PPS) with ESMTPS id 3y1yxysnj5-1
+ by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 3y1yxggee6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 May 2024 18:24:43 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
- by prod-mail-ppoint5.akamai.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44GFY5j5000906; Thu, 16 May 2024 10:24:41 -0700
-Received: from prod-mail-relay11.akamai.com ([172.27.118.250])
- by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 3y26nb7x5k-1;
- Thu, 16 May 2024 10:24:41 -0700
+ Thu, 16 May 2024 18:29:25 +0100 (BST)
+Received: from pps.filterd (prod-mail-ppoint2.akamai.com [127.0.0.1])
+ by prod-mail-ppoint2.akamai.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44GFWUmN013723; Thu, 16 May 2024 13:29:23 -0400
+Received: from prod-mail-relay10.akamai.com ([172.27.118.251])
+ by prod-mail-ppoint2.akamai.com (PPS) with ESMTP id 3y3s6y1x0e-1;
+ Thu, 16 May 2024 13:29:23 -0400
 Received: from [100.64.0.1] (prod-aoa-csiteclt14.bos01.corp.akamai.com
  [172.27.97.51])
- by prod-mail-relay11.akamai.com (Postfix) with ESMTP id 49400333B5;
- Thu, 16 May 2024 17:24:39 +0000 (GMT)
-Message-ID: <916bca57-6bf9-48ea-82b7-c528660c6c4c@akamai.com>
-Date: Thu, 16 May 2024 12:24:38 -0500
+ by prod-mail-relay10.akamai.com (Postfix) with ESMTP id 3E9A164F17;
+ Thu, 16 May 2024 17:29:20 +0000 (GMT)
+Message-ID: <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
+Date: Thu, 16 May 2024 12:29:19 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: CPR/liveupdate: test results using prior bug fix
-To: Michael Tokarev <mjt@tls.msk.ru>,
- Steven Sistare <steven.sistare@oracle.com>, peterx@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Eric Blake <eblake@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+To: Yu Zhang <yu.zhang@ionos.com>, Peter Xu <peterx@redhat.com>,
+ Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>
+Cc: Zheng Chuan <zhengchuan@huawei.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ "integration@gluster.org" <integration@gluster.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
  =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- "Hunt, Joshua" <johunt@akamai.com>
-References: <20240228051315.400759-1-peterx@redhat.com>
- <20240228051315.400759-21-peterx@redhat.com>
- <f855963e-b7dd-4ce8-89dc-dfaa87e896c4@akamai.com>
- <82c69792-061d-460f-9db6-88fc8f9df5af@oracle.com>
- <d6176480-d87c-492b-8a0c-04bf81a4f59a@akamai.com>
- <59ad1f18-682b-46fc-a902-884ca6150c7d@akamai.com>
- <fadc022e-7cfd-4201-90e5-0193ce6220bc@tls.msk.ru>
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pannengyuan <pannengyuan@huawei.com>,
+ Xiexiangyou <xiexiangyou@huawei.com>
+References: <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ <Zi-1OvxA5MIHjklU@x1n> <877cgfe2yw.fsf@pond.sub.org>
+ <ZjClMb-6MddpvHqQ@redhat.com> <ZjJgQcPQ29HJsTpY@x1n>
+ <7e902e4e576a4e199e36d28f99bd55e5@huawei.com> <Zjj0xa-3KrFHTK0S@x1n>
+ <addaa8d094904315a466533763689ead@huawei.com> <ZjpWmG2aUJLkYxJm@x1n>
+ <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com> <ZjzaIAMgUHV8zdNz@x1n>
+ <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
 Content-Language: en-US
 From: Michael Galaxy <mgalaxy@akamai.com>
-In-Reply-To: <fadc022e-7cfd-4201-90e5-0193ce6220bc@tls.msk.ru>
+In-Reply-To: <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 adultscore=0
- phishscore=0 suspectscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405160124
-X-Proofpoint-ORIG-GUID: Ki3Bs1D8wt8nhBQZ7gEKQvI7gXr6O8o_
-X-Proofpoint-GUID: Ki3Bs1D8wt8nhBQZ7gEKQvI7gXr6O8o_
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405160124
+X-Proofpoint-GUID: zWz8T2n34b6woGeWeYF5Ed1y28k47pN2
+X-Proofpoint-ORIG-GUID: zWz8T2n34b6woGeWeYF5Ed1y28k47pN2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 impostorscore=0
- mlxlogscore=872
- priorityscore=1501 suspectscore=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1011 spamscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405160125
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ mlxlogscore=999 adultscore=0
+ spamscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
+ definitions=main-2405160125
 Received-SPF: pass client-ip=2620:100:9001:583::1;
  envelope-from=mgalaxy@akamai.com; helo=mx0a-00190b01.pphosted.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,39 +128,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These are very compelling results, no?
 
-On 5/14/24 08:54, Michael Tokarev wrote:
-> On 5/14/24 16:39, Michael Galaxy wrote:
->> Steve,
->>
->> OK, so it does not look like this bugfix you wrote was included in 
->> 8.2.4 (which was released yesterday). Unfortunately, that means that 
->> anyone using CPR in that release will still (eventually) encounter 
->> the bug like I did.
->
-> 8.2.4 is basically a "bugfix" release for 8.2.3 which I somewhat
-> screwed up (in a minor way), plus a few currently (at the time)
-> queued up changes.   8.2.3 was a big release though.
->
->> I would recommend that y'all consider cherry-picking, perhaps, the 
->> relevant commits for a possible 8.2.5 ?
->
-> Please Cc changes which are relevant for -stable to, well,
-> qemu-stable@nongnu.org :)
->
-> Which changes needs to be picked up?
->
-Steve, can you comment here, please? At a minimum, we have this one: 
-[PULL 20/25] migration: stop vm for cpr
-
-But that pull came with a handful of other changes that are also not in 
-QEMU v8, so I suspect I'm missing some other important changes that 
-might be important for a stable release?
+(40gbps cards, right? Are the cards active/active? or active/standby?)
 
 - Michael
 
-
-> Thanks,
+On 5/14/24 10:19, Yu Zhang wrote:
+> Hello Peter and all,
 >
-> /mjt
+> I did a comparison of the VM live-migration speeds between RDMA and
+> TCP/IP on our servers
+> and plotted the results to get an initial impression. Unfortunately,
+> the Ethernet NICs are not the
+> recent ones, therefore, it may not make much sense. I can do it on
+> servers with more recent Ethernet
+> NICs and keep you updated.
+>
+> It seems that the benefits of RDMA becomes obviously when the VM has
+> large memory and is
+> running memory-intensive workload.
+>
+> Best regards,
+> Yu Zhang @ IONOS Cloud
+>
+> On Thu, May 9, 2024 at 4:14 PM Peter Xu <peterx@redhat.com> wrote:
+>> On Thu, May 09, 2024 at 04:58:34PM +0800, Zheng Chuan via wrote:
+>>> That's a good news to see the socket abstraction for RDMA!
+>>> When I was developed the series above, the most pain is the RDMA migration has no QIOChannel abstraction and i need to take a 'fake channel'
+>>> for it which is awkward in code implementation.
+>>> So, as far as I know, we can do this by
+>>> i. the first thing is that we need to evaluate the rsocket is good enough to satisfy our QIOChannel fundamental abstraction
+>>> ii. if it works right, then we will continue to see if it can give us opportunity to hide the detail of rdma protocol
+>>>      into rsocket by remove most of code in rdma.c and also some hack in migration main process.
+>>> iii. implement the advanced features like multi-fd and multi-uri for rdma migration.
+>>>
+>>> Since I am not familiar with rsocket, I need some times to look at it and do some quick verify with rdma migration based on rsocket.
+>>> But, yes, I am willing to involved in this refactor work and to see if we can make this migration feature more better:）
+>> Based on what we have now, it looks like we'd better halt the deprecation
+>> process a bit, so I think we shouldn't need to rush it at least in 9.1
+>> then, and we'll need to see how it goes on the refactoring.
+>>
+>> It'll be perfect if rsocket works, otherwise supporting multifd with little
+>> overhead / exported APIs would also be a good thing in general with
+>> whatever approach.  And obviously all based on the facts that we can get
+>> resources from companies to support this feature first.
+>>
+>> Note that so far nobody yet compared with rdma v.s. nic perf, so I hope if
+>> any of us can provide some test results please do so.  Many people are
+>> saying RDMA is better, but I yet didn't see any numbers comparing it with
+>> modern TCP networks.  I don't want to have old impressions floating around
+>> even if things might have changed..  When we have consolidated results, we
+>> should share them out and also reflect that in QEMU's migration docs when a
+>> rdma document page is ready.
+>>
+>> Chuan, please check the whole thread discussion, it may help to understand
+>> what we are looking for on rdma migrations [1].  Meanwhile please feel free
+>> to sync with Jinpu's team and see how to move forward with such a project.
+>>
+>> [1] https://urldefense.com/v3/__https://lore.kernel.org/qemu-devel/87frwatp7n.fsf@suse.de/__;!!GjvTz_vk!QnXDo1zSlYecz7JvJky4SOQ9I8V5MoGHbINdAQAzMJQ_yYg_8_BSUXz9kjvbSgFefhG0wi1j38KaC3g$
+>>
+>> Thanks,
+>>
+>> --
+>> Peter Xu
+>>
 
