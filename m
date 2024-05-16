@@ -2,68 +2,165 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094418C7311
-	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 10:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E3D8C7316
+	for <lists+qemu-devel@lfdr.de>; Thu, 16 May 2024 10:43:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7Wg5-0004lF-T0; Thu, 16 May 2024 04:41:29 -0400
+	id 1s7Whb-0001aj-Cc; Thu, 16 May 2024 04:43:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7Wg3-0004XX-Cf
- for qemu-devel@nongnu.org; Thu, 16 May 2024 04:41:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s7WhS-0001VQ-N0
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 04:42:54 -0400
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7Wfq-0003h7-Gq
- for qemu-devel@nongnu.org; Thu, 16 May 2024 04:41:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715848873;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/tYaRrawHBh6mtdSbVkmnWnWAKuIs9yxB6ftGc0U5a8=;
- b=TEji02TMc/PTbL9ZbE7BELZknju2O+3f3gGqMH0naEQBPZlKVIWwKlPM9kc4MoTGs23rJ9
- 8URCCrXP3Mqp/kE9sPqgo/MJFjS3NOE4kJutXsMFeje1pjE00xegzp/WoCsPNa7kpWUl6B
- jjxZiyOJeI1OtKTRiM3lOgzvuvw5kN4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-AtT_jQDBPQSRDAIMlRrajg-1; Thu, 16 May 2024 04:41:09 -0400
-X-MC-Unique: AtT_jQDBPQSRDAIMlRrajg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3132800169;
- Thu, 16 May 2024 08:41:09 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 354372026D68;
- Thu, 16 May 2024 08:41:07 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 5/5] tests/docker/dockerfiles: Update container files with
- "lcitool-refresh"
-Date: Thu, 16 May 2024 10:40:59 +0200
-Message-ID: <20240516084059.511463-6-thuth@redhat.com>
-In-Reply-To: <20240516084059.511463-1-thuth@redhat.com>
-References: <20240516084059.511463-1-thuth@redhat.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1s7WhP-0004Kp-GV
+ for qemu-devel@nongnu.org; Thu, 16 May 2024 04:42:54 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hS1lFMN2C+NNr4yl6r21OfFNCaKxZbwsZNcl3GAC8DjYTiD5P+5f5mhah9Tcrib45cMUON4DcLivuj41k9/Rp89+r2YFnJZ4PoZ9j6rjvv+unNOEak5J5lFq+EtAVTSE3bl8Z6xtx0ZbDV5hIKq7YdfStKFkJI5fT6/O12kSVvzxKb2Ji4eD2fzPbqm/f4cz00T2AHQkIdAw7rFx+DSZ2a+X8dM7JZumFyqbkG6rXATComM0bHh5vuzy1G84gG0gaDl1XjTc8/bhfhhbzeKccSwSboi0S85IKSYV7Hf56E35bA0gejsC+0S0WGbSqml0AUm0VEfRHJrIJ6epUNIFmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EIjOlxtzFbicP2TE1YSXo+CBaDKR4Zm6ibPtY6d2zzc=;
+ b=arQlr71U/rr8c3XdQj7zJLYXht8fb5VXYS5PMz9F0J8AVHdSOGOXH7qdAZV8u8m8xCnqU0uMmtzZwP+QETpA+XwTXnRTtORMPkG9iNDEuiaRndwc4UQcPEaUq6AzXAMYPnXOpW2biM5RIsjA+nJ3GaXdb48l4465ubGqAOVsMc8zLud4ad3SRjBb6Ne5hJASqbZaswrp8dqr6cuBnNmJOAzlTuv+0IorQZcCkF/1UUiB+ZL792U73RgGSppq+UENr7ZlJ1EHnZJm3kMZQ0n9pjJmSLiKHGJQFyjqDkPOJ8kFwFfHG/Z64+ghbU8cADNtNWvsZZ2oUZR+oSbKuZjRtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EIjOlxtzFbicP2TE1YSXo+CBaDKR4Zm6ibPtY6d2zzc=;
+ b=PlHLTD44tV97vlaHzRBGuBFMheMvfajcc/atgvI3WMjM010NRvI8ai9ybepS4zf3w3EkrX7MUyYSBn0+Nu87wxDT62+CKE4rgL+NqYRWCe13LmI5jblerqX95NFtqyzgMhbiT1w+K5SzuLofEMqw/qFFSWyFYycj7phDUiKmyVI+RGWvvQk2hWrPUJAWYF0L7rT5TtXTo5bICgyXq74QayoJku2SJV/+VW7sCuj2AlsXEUA46shYQEwWtMGAA1JPoPJejXLRJqfrSdZzQ9qCARZdchwVz7aJ0NuK+E2IqotQ6T7a9hM7Q4gWSLjiLyiAb1X6um6FLzmBYg61XYln7w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by IA0PR12MB7723.namprd12.prod.outlook.com (2603:10b6:208:431::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.26; Thu, 16 May
+ 2024 08:42:46 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::e2a0:b00b:806b:dc91]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::e2a0:b00b:806b:dc91%5]) with mapi id 15.20.7587.028; Thu, 16 May 2024
+ 08:42:46 +0000
+Message-ID: <ea701c4d-9cae-4c56-bbcf-c143c25c6799@nvidia.com>
+Date: Thu, 16 May 2024 11:42:39 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 8/9] vfio: Add Error** argument to .get_dirty_bitmap()
+ handler
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20240514153130.394307-1-clg@redhat.com>
+ <20240514153130.394307-9-clg@redhat.com>
+Content-Language: en-US
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20240514153130.394307-9-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-ClientProxiedBy: LO4P123CA0271.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:195::6) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|IA0PR12MB7723:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0276623e-e4a6-43e0-e1bb-08dc758428a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NEkzQ1pGMHFyVTJUeTdWQkVMLzVrUHVzQldpSDh4Y0FVajJXRGxXbHNDazM1?=
+ =?utf-8?B?TUFmQ1ZwR1V4SmcwN2g3K0NZNWpUemE4aUVya3ZXSUlWRTJOdEtCV01ZLzgx?=
+ =?utf-8?B?YVl1aHdqZit3VHlVV3RtL2V0eWdhUFNXUExIZWhHeGhwaGVxYzFtbXArN0NI?=
+ =?utf-8?B?U09rU3M4UW5SZHZXbWlRTU9Nd3VTZGpkWDJydDZiYzdIWmxPT2E4THpRdzlo?=
+ =?utf-8?B?TUhDUUtkb0sycGJKU2VkeG53YnZvUGd6THhSNzlEdERZVFJNRitMQmd3MkMz?=
+ =?utf-8?B?cjZnY0J2RzZNbEtPd0RwaFllZXB1eDVPMEY5QjVQUWFxTjM4TjZ5VTBlREcy?=
+ =?utf-8?B?QjI2UmJhMDRveVFvWWdjd2lvV2RzL2JpN3VnY0NkR0paVGhtbDZyNkVtOE9Y?=
+ =?utf-8?B?MysybnhHQVdndC9IbmRoblBvNlozdHUrUWdjK2wxaThJWUtzVVJka1VIOGRK?=
+ =?utf-8?B?SHEyU092TlZkUjEwQml6WU5oVWJpeWZjNEkwYmhCd1FYNEdZd2M3b3BkalA0?=
+ =?utf-8?B?eEszUERMTVlYbklReWNGODB2aGY5TmpvV2lsbytzVDRsOFlwR0RCYVhWc0E0?=
+ =?utf-8?B?Ums3ckNoTHY2cWU2Z01iR2Q4bWI3WEFXbWt1dDJRajBhdmoyMmVxTVgxMkJQ?=
+ =?utf-8?B?cHBkYUtLT0lzZUZLcDIvdzhmUzVXUmo2WlViSXAxRWthaU1VTmREZ3hxVnhB?=
+ =?utf-8?B?ck5wZ1FxVjdNYmRIVVhKNm1KRU53YW1sbEtpR2N2SUJRVEYwOW9PTmE5b1VU?=
+ =?utf-8?B?cE9XOTh5djNzdVZ4NmVvalFlQmI0cmdVRktreU1oNlE5TldCWUdFc1pPaENk?=
+ =?utf-8?B?SlY5eXByTTlHcWEwRHI5OVpxZjF6amNzL1NHZGlkQXgrSlBOaVVNanJrZkd6?=
+ =?utf-8?B?TWVrbnVlbjVVSzh4eDJPdU04dm9MdEFsRVVtT3lZVkcwWjBLV2w5dW8vVWZN?=
+ =?utf-8?B?RzZGT29kWWJOUGVFaXg3bnBXTkJ4K21FZUIyallGZ05Rd1N4VTFhS0FzZUEr?=
+ =?utf-8?B?d2VsQUZuYmxqRlJFd2RCRnFoS0RMTWgyRUFKNEVqdEpNaVZrbkY5bE9jZEt3?=
+ =?utf-8?B?MHZPNjY3a2FNUlZHWFg5aUZqblRZZnRpNjNiM3ppVFgzNXRIdWduZjBzVWF5?=
+ =?utf-8?B?a0xabTVJQ1VTQmhyenZVbTRNbWxCSkVGc1ZBQnJrYlVVWnpPbnRGcTBxeURk?=
+ =?utf-8?B?NWhwcVFOaUZmSHdUN3pzZG13eDJ6TVI2bHFzT3JMQmgrMjFxTGY5ak9XSmhr?=
+ =?utf-8?B?NTl3THFveFFQVDFaWExsSzR6NkNQODREK0w2WTRQYXd2Snp5cHZHNHo4Tith?=
+ =?utf-8?B?eTJhZzZMbmFSQ2t0REliT1A0LzRIbmRsdmxKTFdVUFQ2a05sQkE5Zm9wVTAv?=
+ =?utf-8?B?cjdHcVF6RHBUbm9LMlJWMlpKYmVUTGh4K0NqL0YyYlBzOGhNWUZkNFdad01X?=
+ =?utf-8?B?RmJkUGNYeWZwM1Vld2syVC9FY2ZIQmpyZ3RxSW5MYUVNclBBUlNGVE9lbEVh?=
+ =?utf-8?B?ZDQ0b1h5ZEdxcTgzQWlFOU5VRXAvVFY4RUlVbTZHYVJ5SStTcU8vczMzQ1hN?=
+ =?utf-8?B?UEMwL3hJTnJKKzhVSHZ0aU5hMzE2ZCtUQnBRNDFVWDl0SkFIeU9ab0xwK3hL?=
+ =?utf-8?B?bnFzTlJ4NHRVeEQraWNFdlEvY2xyVjhiMExMb3V3eW9UYkJGSVEvaTdETHZC?=
+ =?utf-8?B?dGF5Mk9tZmdMQ21Wa2s2MGNmMFpxdXA3YWFhTi9Nc2ZRcGF5bW1RblhBPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?enNGN0FLRUtIcm9SbzBDS2hYOFNjaGx1blpKK3ZWcFhXZ2VMU0xvNzhxM1Mw?=
+ =?utf-8?B?YytVdG9uSGhma1IyK1VSak5UTyszSTl5azcxM1VNR2VLdklQaWtJbEhEK0Zz?=
+ =?utf-8?B?SXZWck5CRVJuUDUzQ1FEb1dVazJsNTVKM1o1VHFmTU1veGVXdmwxUnkvTmVM?=
+ =?utf-8?B?YVgzSE9TQVZWQU1TYTRoSXk4U1UxYWN4Ri9iTEtyTXVoYXk3c1JHUmNNcWdN?=
+ =?utf-8?B?bjZzUzRlcHAvOTV1ZEFZa2NFTDRMUnJMRE9FZ0lNQm9rdk1PS0MwbDI0SXBV?=
+ =?utf-8?B?QisyaWtQVCtDcFFWb0U0OEJEZG1mUEVrbEhXYkNpYStmZ0dQaEZFMWhRL1JQ?=
+ =?utf-8?B?SU5oZGFidlBSNTR1Vk5KVmpLS1JDRVVFUGszL2RyZ215MWRsV1AxTmlrVEJZ?=
+ =?utf-8?B?V25pY0VMTGFLL3c1V3Ayb1pmYmwxNkZObURqUnlDQUhhN1lod2lOMWJFUjZw?=
+ =?utf-8?B?YU1WdExURU5zZkgvelNWcUt2d1RJdGxiNnFpcHB3bTJndEtFN2VkUitXYjRm?=
+ =?utf-8?B?WlhBK3Z6NGJoa094RnhKeWY1ZXNnQmw2SDF2RXRYZjlZRzMzSkd3S1dYVVY3?=
+ =?utf-8?B?S0xKQ3JjVlIzYTBYYlJkdENOeEh3cUxNS3BmMFR2UGZvWXVidDQvQU1aNXdD?=
+ =?utf-8?B?M0V2SWpGMThkcXZGajBvY25CbkZVc2xqMmFITE5JOWhEbU5FYjZ2anlVSHJI?=
+ =?utf-8?B?dkJiWG5NR2RVNFRPN3BoQ3lMeGtVWXYrMmgzRDVzY1BNTTlPR0hud2VpMXlD?=
+ =?utf-8?B?em1rT09Zb1RpZGtSSnJJT1JXL3Y2czE4QkpmdzZPMzZHZ2tOVVpua2Zmd3dy?=
+ =?utf-8?B?NkZ6czlFYWlaZE8wTWV2c2pYZVEvME14bnlMMThwUVh4K2Q3dGlFb1c2ZXNr?=
+ =?utf-8?B?eEJYcmNkOWg2VXg1RmlmTGFaQ0M2VTFaV0RWb1YvcmNMUjY4MzlKSHV0WXp4?=
+ =?utf-8?B?WE5vY1dGSEtsdUw2ZHBVMUV3QngrZDdZS2tKOGRiaEZCMHdTRzRJN1ZiM2Q0?=
+ =?utf-8?B?N2RzS3gyaXJFVXV4U1dKc0ZaWVd6L0VFVlE3UWhoWXZCN1N5MGN1WmRndDlo?=
+ =?utf-8?B?aUxldVhVU3R3MmQ2NGxKZ2xIL0kxbE9yTmtGblB1UmVRMTBVWFFkUmliZTR1?=
+ =?utf-8?B?R2lJWGZ5S2drelZDUlZ4SHdUYVNwNEtoM2MyczlJaThIZHJERjVOWjBmb3JG?=
+ =?utf-8?B?d1dHMmpIamtaQnhOV0trRmJnVUpjVjBuZTFYV0Y0eWo5MmZxc3BuaTFsZWpU?=
+ =?utf-8?B?ZTBiL243RVdVU2E4ZnhoRG9XNXRnTGJLb3lNNFBaM09DUlpBaC9NTytmQVlT?=
+ =?utf-8?B?U0dpSGRKdTNMUUwrV3NjcE5FZHNIWWsyeUxLUlQzRHRrZ2ZIUXFHMHZrU0J5?=
+ =?utf-8?B?WlBFT2thN3IzSEVaZjI4cUF4QXNLekF4ZnVHL2pTVnYzckIwQ3kvZGd6U1Bz?=
+ =?utf-8?B?ZURWempGVzI2aVlsdDRaUFhFU1cwOVB1eUpRbWxjdVV2ZHVKeFlkMTQyQjhh?=
+ =?utf-8?B?a0xWcFZyUERFWEJESnhEajBGcjRMMGxGSTF0ZDBCbUxRTzJIdWswSFZ4QWVa?=
+ =?utf-8?B?REVBdVRma2NXVWU3bElhb2FZRkJkR2R3NkNBWnFsa2R4TktlZzF1bE9hSFZa?=
+ =?utf-8?B?bWoyKzNBRUJUM2NhWi9CUFIycFpVa0VOVVVUZHNpOVJBbTFUTElXdDJRV1dx?=
+ =?utf-8?B?Y1J1YXd6bEx6WkJTd0NyOXVSS2RacHI1TVE5Mjk2TDNQZWF3K0E4bG03a29H?=
+ =?utf-8?B?Y2F1eFdMVFRYVmRjNmg0Q2FNb0d6Mm40cEZ4Q2JKNFF0RlVYS3FqbnU5Sy9L?=
+ =?utf-8?B?dWJRSklOa0N5TGorVFJ4Zlk2bXlnWG0wZGlNU3B3d0h6UHRnZlVhMU45amZP?=
+ =?utf-8?B?VldpVWRSZUp0VzVMQTJzeGgzTW5iM3l4OHlDVU82cUpEdm1qMWN6QWppMzZG?=
+ =?utf-8?B?WnRJdGhVdm1FSS9vL2pNWkpreGd4RzlaUFdIbk03NGQ2ei9KV21PUlZGUmJQ?=
+ =?utf-8?B?RkVuVnUrSHdwdHUrcGRkZmdUS0MyVDJEK0xIN1Nsam1FT0tQejA4YzByQ3gy?=
+ =?utf-8?B?aEd2aHlyNHdKWHlrKzhQampNdDVsUmtiUnBuWnNEd0hESFFCNk5JeWxMWDJq?=
+ =?utf-8?Q?k1CCX1BWzTOaFMU2Lnyup7MJX?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0276623e-e4a6-43e0-e1bb-08dc758428a7
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2024 08:42:46.0000 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iga7iu9Cwu2DHUc1iGBtQ6TLdPRAolwdoa/uQNRu9EwIfZ1dsO+njHNLeHB0vN1Co1qLVPI0G6wb6QUYxQOIVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7723
+Received-SPF: softfail client-ip=2a01:111:f403:2412::601;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
 X-Spam_bar: ---
 X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.935,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,523 +176,338 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Run "make lcitool-refresh" after the previous changes to the
-lcitool files. This removes the g++ and xfslibs-dev packages
-from the dockerfiles (except for the fedora-win64-cross dockerfile
-where we keep the C++ compiler).
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/docker/dockerfiles/alpine.docker                | 4 ----
- tests/docker/dockerfiles/centos9.docker               | 4 ----
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-armel-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian-i686-cross.docker     | 4 ----
- tests/docker/dockerfiles/debian-mips64el-cross.docker | 4 ----
- tests/docker/dockerfiles/debian-mipsel-cross.docker   | 4 ----
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 4 ----
- tests/docker/dockerfiles/debian-riscv64-cross.docker  | 3 ---
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 4 ----
- tests/docker/dockerfiles/debian.docker                | 4 ----
- tests/docker/dockerfiles/fedora-win64-cross.docker    | 2 +-
- tests/docker/dockerfiles/fedora.docker                | 4 ----
- tests/docker/dockerfiles/opensuse-leap.docker         | 4 ----
- tests/docker/dockerfiles/ubuntu2204.docker            | 4 ----
- 17 files changed, 1 insertion(+), 64 deletions(-)
+On 14/05/2024 18:31, Cédric Le Goater wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> Let the callers do the error reporting. Add documentation while at it.
+>
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>
+>   Changes in v6:
+>
+>   - Fixed the line wrapping (Avihai)
+>   - Fixed query_dirty_bitmap documentation (Avihai)
+>
+>   Changes in v5:
+>
+>   - Replaced error_setg() by error_setg_errno() in
+>     vfio_devices_query_dirty_bitmap() and vfio_legacy_query_dirty_bitmap()
+>   - ':' -> '-' in vfio_iommu_map_dirty_notify()
+>
+>   include/hw/vfio/vfio-common.h         |  4 +-
+>   include/hw/vfio/vfio-container-base.h | 21 +++++++--
+>   hw/vfio/common.c                      | 61 ++++++++++++++++++---------
+>   hw/vfio/container-base.c              |  7 +--
+>   hw/vfio/container.c                   | 14 +++---
+>   5 files changed, 72 insertions(+), 35 deletions(-)
+>
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 46f88493634b5634a9c14a5caa33a463fbf2c50d..68911d36676667352e94a97895828aff4b194b57 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -274,9 +274,9 @@ bool
+>   vfio_devices_all_device_dirty_tracking(const VFIOContainerBase *bcontainer);
+>   int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>                                       VFIOBitmap *vbmap, hwaddr iova,
+> -                                    hwaddr size);
+> +                                    hwaddr size, Error **errp);
 
-diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
-index cd9d7af1ce..554464f31e 100644
---- a/tests/docker/dockerfiles/alpine.docker
-+++ b/tests/docker/dockerfiles/alpine.docker
-@@ -32,7 +32,6 @@ RUN apk update && \
-         findutils \
-         flex \
-         fuse3-dev \
--        g++ \
-         gcc \
-         gcovr \
-         gettext \
-@@ -110,7 +109,6 @@ RUN apk update && \
-         vte3-dev \
-         which \
-         xen-dev \
--        xfsprogs-dev \
-         xorriso \
-         zlib-dev \
-         zlib-static \
-@@ -119,10 +117,8 @@ RUN apk update && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     apk list --installed | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/centos9.docker b/tests/docker/dockerfiles/centos9.docker
-index 6cf47ce786..0256865b9e 100644
---- a/tests/docker/dockerfiles/centos9.docker
-+++ b/tests/docker/dockerfiles/centos9.docker
-@@ -34,7 +34,6 @@ RUN dnf distro-sync -y && \
-         flex \
-         fuse3-devel \
-         gcc \
--        gcc-c++ \
-         gettext \
-         git \
-         glib2-devel \
-@@ -115,7 +114,6 @@ RUN dnf distro-sync -y && \
-         util-linux \
-         vte291-devel \
-         which \
--        xfsprogs-devel \
-         xorriso \
-         zlib-devel \
-         zlib-static \
-@@ -125,10 +123,8 @@ RUN dnf distro-sync -y && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index d0b0e9778e..f8c61d1191 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-x86-64-linux-gnu \
-                       gcc-x86-64-linux-gnu \
-                       libaio-dev:amd64 \
-                       libasan6:amd64 \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:amd64 \
-                       nettle-dev:amd64 \
-                       systemtap-sdt-dev:amd64 \
--                      xfslibs-dev:amd64 \
-                       zlib1g-dev:amd64 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'x86_64'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/x86_64-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/x86_64-linux-gnu-gcc
- 
- ENV ABI "x86_64-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 8cb225740e..6510872279 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-aarch64-linux-gnu \
-                       gcc-aarch64-linux-gnu \
-                       libaio-dev:arm64 \
-                       libasan6:arm64 \
-@@ -148,7 +147,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:arm64 \
-                       nettle-dev:arm64 \
-                       systemtap-sdt-dev:arm64 \
--                      xfslibs-dev:arm64 \
-                       zlib1g-dev:arm64 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -166,9 +164,7 @@ cpu = 'aarch64'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/aarch64-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/aarch64-linux-gnu-gcc
- 
- ENV ABI "aarch64-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
-index e6f37418ed..f227d42987 100644
---- a/tests/docker/dockerfiles/debian-armel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armel-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-arm-linux-gnueabi \
-                       gcc-arm-linux-gnueabi \
-                       libaio-dev:armel \
-                       libasan6:armel \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:armel \
-                       nettle-dev:armel \
-                       systemtap-sdt-dev:armel \
--                      xfslibs-dev:armel \
-                       zlib1g-dev:armel && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'arm'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabi && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabi-gcc
- 
- ENV ABI "arm-linux-gnueabi"
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index 407a014f57..58bdf07223 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-arm-linux-gnueabihf \
-                       gcc-arm-linux-gnueabihf \
-                       libaio-dev:armhf \
-                       libasan6:armhf \
-@@ -148,7 +147,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:armhf \
-                       nettle-dev:armhf \
-                       systemtap-sdt-dev:armhf \
--                      xfslibs-dev:armhf \
-                       zlib1g-dev:armhf && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -166,9 +164,7 @@ cpu = 'armhf'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/arm-linux-gnueabihf && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/arm-linux-gnueabihf-gcc
- 
- ENV ABI "arm-linux-gnueabihf"
-diff --git a/tests/docker/dockerfiles/debian-i686-cross.docker b/tests/docker/dockerfiles/debian-i686-cross.docker
-index bdc9566b67..9f4102be8f 100644
---- a/tests/docker/dockerfiles/debian-i686-cross.docker
-+++ b/tests/docker/dockerfiles/debian-i686-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-i686-linux-gnu \
-                       gcc-i686-linux-gnu \
-                       libaio-dev:i386 \
-                       libasan6:i386 \
-@@ -149,7 +148,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:i386 \
-                       nettle-dev:i386 \
-                       systemtap-sdt-dev:i386 \
--                      xfslibs-dev:i386 \
-                       zlib1g-dev:i386 && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -167,9 +165,7 @@ cpu = 'i686'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/i686-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/i686-linux-gnu-gcc
- 
- ENV ABI "i686-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-mips64el-cross.docker b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-index 4d995d0b12..c861c3bd5b 100644
---- a/tests/docker/dockerfiles/debian-mips64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mips64el-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-mips64el-linux-gnuabi64 \
-                       gcc-mips64el-linux-gnuabi64 \
-                       libaio-dev:mips64el \
-                       libasound2-dev:mips64el \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:mips64el \
-                       nettle-dev:mips64el \
-                       systemtap-sdt-dev:mips64el \
--                      xfslibs-dev:mips64el \
-                       zlib1g-dev:mips64el && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'mips64el'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/mips64el-linux-gnuabi64 && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mips64el-linux-gnuabi64-gcc
- 
- ENV ABI "mips64el-linux-gnuabi64"
-diff --git a/tests/docker/dockerfiles/debian-mipsel-cross.docker b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-index 0cf803bda5..fe9415395e 100644
---- a/tests/docker/dockerfiles/debian-mipsel-cross.docker
-+++ b/tests/docker/dockerfiles/debian-mipsel-cross.docker
-@@ -82,7 +82,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-mipsel-linux-gnu \
-                       gcc-mipsel-linux-gnu \
-                       libaio-dev:mipsel \
-                       libasound2-dev:mipsel \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:mipsel \
-                       nettle-dev:mipsel \
-                       systemtap-sdt-dev:mipsel \
--                      xfslibs-dev:mipsel \
-                       zlib1g-dev:mipsel && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'mipsel'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/mipsel-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/mipsel-linux-gnu-gcc
- 
- ENV ABI "mipsel-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 6180ec08c3..35c8ff0864 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-powerpc64le-linux-gnu \
-                       gcc-powerpc64le-linux-gnu \
-                       libaio-dev:ppc64el \
-                       libasan6:ppc64el \
-@@ -147,7 +146,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:ppc64el \
-                       nettle-dev:ppc64el \
-                       systemtap-sdt-dev:ppc64el \
--                      xfslibs-dev:ppc64el \
-                       zlib1g-dev:ppc64el && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -165,9 +163,7 @@ cpu = 'powerpc64le'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/powerpc64le-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/powerpc64le-linux-gnu-gcc
- 
- ENV ABI "powerpc64le-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-riscv64-cross.docker b/tests/docker/dockerfiles/debian-riscv64-cross.docker
-index 591572ae94..4d8ca83cb3 100644
---- a/tests/docker/dockerfiles/debian-riscv64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-riscv64-cross.docker
-@@ -51,7 +51,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-riscv64-linux-gnu \
-                       gcc-riscv64-linux-gnu \
-                       libc6-dev:riscv64 \
-                       libfdt-dev:riscv64 \
-@@ -74,9 +73,7 @@ cpu = 'riscv64'\n\
- endian = 'little'\n" > /usr/local/share/meson/cross/riscv64-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/riscv64-linux-gnu-gcc
- 
- ENV ABI "riscv64-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 90c8d3c7b8..bef9dff17a 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -79,7 +79,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     eatmydata apt-get dist-upgrade -y && \
-     eatmydata apt-get install --no-install-recommends -y dpkg-dev && \
-     eatmydata apt-get install --no-install-recommends -y \
--                      g++-s390x-linux-gnu \
-                       gcc-s390x-linux-gnu \
-                       libaio-dev:s390x \
-                       libasan6:s390x \
-@@ -146,7 +145,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       libzstd-dev:s390x \
-                       nettle-dev:s390x \
-                       systemtap-sdt-dev:s390x \
--                      xfslibs-dev:s390x \
-                       zlib1g-dev:s390x && \
-     eatmydata apt-get autoremove -y && \
-     eatmydata apt-get autoclean -y && \
-@@ -164,9 +162,7 @@ cpu = 's390x'\n\
- endian = 'big'\n" > /usr/local/share/meson/cross/s390x-linux-gnu && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-cc && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/s390x-linux-gnu-gcc
- 
- ENV ABI "s390x-linux-gnu"
-diff --git a/tests/docker/dockerfiles/debian.docker b/tests/docker/dockerfiles/debian.docker
-index 5722482e4c..63d7aac616 100644
---- a/tests/docker/dockerfiles/debian.docker
-+++ b/tests/docker/dockerfiles/debian.docker
-@@ -25,7 +25,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
--                      g++ \
-                       gcc \
-                       gcovr \
-                       gettext \
-@@ -129,7 +128,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
--                      xfslibs-dev \
-                       xorriso \
-                       zlib1g-dev \
-                       zstd && \
-@@ -140,10 +138,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index d1a480fa71..0f78711876 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -1,6 +1,6 @@
- # THIS FILE WAS AUTO-GENERATED
- #
--#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-38 qemu
-+#  $ lcitool dockerfile --layers all --cross-arch mingw64 fedora-38 qemu,qemu-win-installer
- #
- # https://gitlab.com/libvirt/libvirt-ci
- 
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index 7e6ab0308a..098c894d10 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -41,7 +41,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                flex \
-                fuse3-devel \
-                gcc \
--               gcc-c++ \
-                gcovr \
-                gettext \
-                git \
-@@ -130,7 +129,6 @@ exec "$@"\n' > /usr/bin/nosync && \
-                vte291-devel \
-                which \
-                xen-devel \
--               xfsprogs-devel \
-                xorriso \
-                zlib-devel \
-                zlib-static \
-@@ -140,10 +138,8 @@ exec "$@"\n' > /usr/bin/nosync && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
-diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
-index c4055bdd10..836f531ac1 100644
---- a/tests/docker/dockerfiles/opensuse-leap.docker
-+++ b/tests/docker/dockerfiles/opensuse-leap.docker
-@@ -26,7 +26,6 @@ RUN zypper update -y && \
-            flex \
-            fuse3-devel \
-            gcc \
--           gcc-c++ \
-            gcovr \
-            gettext-runtime \
-            git \
-@@ -113,7 +112,6 @@ RUN zypper update -y && \
-            vte-devel \
-            which \
-            xen-devel \
--           xfsprogs-devel \
-            xorriso \
-            zlib-devel \
-            zlib-devel-static \
-@@ -122,10 +120,8 @@ RUN zypper update -y && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     rpm -qa | sort > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- RUN /usr/bin/pip3.11 install \
-diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
-index b8e78331db..febd25b320 100644
---- a/tests/docker/dockerfiles/ubuntu2204.docker
-+++ b/tests/docker/dockerfiles/ubuntu2204.docker
-@@ -25,7 +25,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       exuberant-ctags \
-                       findutils \
-                       flex \
--                      g++ \
-                       gcc \
-                       gcovr \
-                       gettext \
-@@ -129,7 +128,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
--                      xfslibs-dev \
-                       xorriso \
-                       zlib1g-dev \
-                       zstd && \
-@@ -140,10 +138,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-     rm -f /usr/lib*/python3*/EXTERNALLY-MANAGED && \
-     dpkg-query --showformat '${Package}_${Version}_${Architecture}\n' --show > /packages.txt && \
-     mkdir -p /usr/libexec/ccache-wrappers && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/c++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/clang && \
--    ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/g++ && \
-     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
- 
- ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
--- 
-2.45.0
+[*] Can be wrapped like:
 
+int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+      VFIOBitmap *vbmap, hwaddr iova, hwaddr size,
+              Error **errp);
+
+>   int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
+> -                          uint64_t size, ram_addr_t ram_addr);
+> +                          uint64_t size, ram_addr_t ram_addr, Error **errp);
+>
+>   /* Returns 0 on success, or a negative errno. */
+>   int vfio_device_get_name(VFIODevice *vbasedev, Error **errp);
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+> index 326ceea52a2030eec9dad289a9845866c4a8c090..42cfbf32dc737606c3f620d126f35d85d4833534 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -84,8 +84,8 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+>                                              bool start, Error **errp);
+>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+> -                                      VFIOBitmap *vbmap,
+> -                                      hwaddr iova, hwaddr size);
+> +                                      VFIOBitmap *vbmap, hwaddr iova,
+> +                                      hwaddr size, Error **errp);
+>
+>   void vfio_container_init(VFIOContainerBase *bcontainer,
+>                            VFIOAddressSpace *space,
+> @@ -138,9 +138,22 @@ struct VFIOIOMMUClass {
+>        */
+>       int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
+>                                      bool start, Error **errp);
+> +    /**
+> +     * @query_dirty_bitmap
+> +     *
+> +     * Get bitmap of dirty pages from container
+> +     *
+> +     * @bcontainer: #VFIOContainerBase from which to get dirty pages
+> +     * @vbmap: #VFIOBitmap internal bitmap structure
+> +     * @iova: iova base address
+> +     * @size: size of iova range
+> +     * @errp: pointer to Error*, to store an error if it happens.
+> +     *
+> +     * Returns zero to indicate success and negative for error
+> +     */
+>       int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
+> -                              VFIOBitmap *vbmap,
+> -                              hwaddr iova, hwaddr size);
+> +                              VFIOBitmap *vbmap, hwaddr iova, hwaddr size,
+> +                              Error **errp);
+>       /* PCI specific */
+>       int (*pci_hot_reset)(VFIODevice *vbasedev, bool single);
+>
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 919c4c52bc1590fd6c0bda37ba5881f58ff2ffff..9b5123d45fc1f9d5be4bbbf92898f89cd11e1363 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1140,8 +1140,8 @@ static int vfio_device_dma_logging_report(VFIODevice *vbasedev, hwaddr iova,
+>   }
+>
+>   int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+> -                                    VFIOBitmap *vbmap, hwaddr iova,
+> -                                    hwaddr size)
+> +                                    VFIOBitmap *vbmap, hwaddr iova, hwaddr size,
+> +                                    Error **errp)
+>   {
+>       VFIODevice *vbasedev;
+>       int ret;
+> @@ -1150,10 +1150,10 @@ int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>           ret = vfio_device_dma_logging_report(vbasedev, iova, size,
+>                                                vbmap->bitmap);
+>           if (ret) {
+> -            error_report("%s: Failed to get DMA logging report, iova: "
+> -                         "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx
+> -                         ", err: %d (%s)",
+> -                         vbasedev->name, iova, size, ret, strerror(-ret));
+> +            error_setg_errno(errp, -ret,
+> +                             "%s: Failed to get DMA logging report, iova: "
+> +                             "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx,
+> +                             vbasedev->name, iova, size);
+>
+>               return ret;
+>           }
+> @@ -1163,7 +1163,7 @@ int vfio_devices_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>   }
+>
+>   int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
+> -                          uint64_t size, ram_addr_t ram_addr)
+> +                          uint64_t size, ram_addr_t ram_addr, Error **errp)
+>   {
+>       bool all_device_dirty_tracking =
+>           vfio_devices_all_device_dirty_tracking(bcontainer);
+> @@ -1180,13 +1180,17 @@ int vfio_get_dirty_bitmap(const VFIOContainerBase *bcontainer, uint64_t iova,
+>
+>       ret = vfio_bitmap_alloc(&vbmap, size);
+>       if (ret) {
+> +        error_setg_errno(errp, -ret,
+> +                         "Failed to allocate dirty tracking bitmap");
+>           return ret;
+>       }
+>
+>       if (all_device_dirty_tracking) {
+> -        ret = vfio_devices_query_dirty_bitmap(bcontainer, &vbmap, iova, size);
+> +        ret = vfio_devices_query_dirty_bitmap(bcontainer, &vbmap, iova, size,
+> +                                              errp);
+>       } else {
+> -        ret = vfio_container_query_dirty_bitmap(bcontainer, &vbmap, iova, size);
+> +        ret = vfio_container_query_dirty_bitmap(bcontainer, &vbmap, iova, size,
+> +                                                errp);
+>       }
+>
+>       if (ret) {
+> @@ -1234,12 +1238,13 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+>       }
+>
+>       ret = vfio_get_dirty_bitmap(bcontainer, iova, iotlb->addr_mask + 1,
+> -                                translated_addr);
+> +                                translated_addr, &local_err);
+>       if (ret) {
+> -        error_report("vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+> -                     "0x%"HWADDR_PRIx") = %d (%s)",
+> -                     bcontainer, iova, iotlb->addr_mask + 1, ret,
+> -                     strerror(-ret));
+> +        error_prepend(&local_err,
+> +                      "vfio_iommu_map_dirty_notify(%p, 0x%"HWADDR_PRIx", "
+> +                      "0x%"HWADDR_PRIx") failed - ", bcontainer, iova,
+> +                      iotlb->addr_mask + 1);
+> +        error_report_err(local_err);
+>       }
+>
+>   out_unlock:
+> @@ -1259,12 +1264,19 @@ static int vfio_ram_discard_get_dirty_bitmap(MemoryRegionSection *section,
+>       const ram_addr_t ram_addr = memory_region_get_ram_addr(section->mr) +
+>                                   section->offset_within_region;
+>       VFIORamDiscardListener *vrdl = opaque;
+> +    Error *local_err = NULL;
+> +    int ret;
+>
+>       /*
+>        * Sync the whole mapped region (spanning multiple individual mappings)
+>        * in one go.
+>        */
+> -    return vfio_get_dirty_bitmap(vrdl->bcontainer, iova, size, ram_addr);
+> +    ret = vfio_get_dirty_bitmap(vrdl->bcontainer, iova, size, ram_addr,
+> +                                &local_err);
+> +    if (ret) {
+> +        error_report_err(local_err);
+> +    }
+> +    return ret;
+>   }
+>
+>   static int
+> @@ -1296,7 +1308,7 @@ vfio_sync_ram_discard_listener_dirty_bitmap(VFIOContainerBase *bcontainer,
+>   }
+>
+>   static int vfio_sync_dirty_bitmap(VFIOContainerBase *bcontainer,
+> -                                  MemoryRegionSection *section)
+> +                                  MemoryRegionSection *section, Error **errp)
+>   {
+>       ram_addr_t ram_addr;
+>
+> @@ -1327,7 +1339,14 @@ static int vfio_sync_dirty_bitmap(VFIOContainerBase *bcontainer,
+>           }
+>           return 0;
+>       } else if (memory_region_has_ram_discard_manager(section->mr)) {
+> -        return vfio_sync_ram_discard_listener_dirty_bitmap(bcontainer, section);
+> +        int ret;
+> +
+> +        ret = vfio_sync_ram_discard_listener_dirty_bitmap(bcontainer, section);
+> +        if (ret) {
+> +            error_setg(errp,
+> +                       "Failed to sync dirty bitmap with RAM discard listener");
+> +            return ret;
+> +        }
+
+Need to move "return ret" out of the "if (ret)" branch -- we need to 
+immediately return from the else if branch also on success.
+
+With that,
+Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+
+(Nit: there are 2 more places where line wrapping can be improved, if 
+you want. Marked them with [*])
+
+>       }
+>
+>       ram_addr = memory_region_get_ram_addr(section->mr) +
+> @@ -1335,7 +1354,7 @@ static int vfio_sync_dirty_bitmap(VFIOContainerBase *bcontainer,
+>
+>       return vfio_get_dirty_bitmap(bcontainer,
+>                      REAL_HOST_PAGE_ALIGN(section->offset_within_address_space),
+> -                   int128_get64(section->size), ram_addr);
+> +                                 int128_get64(section->size), ram_addr, errp);
+>   }
+>
+>   static void vfio_listener_log_sync(MemoryListener *listener,
+> @@ -1344,16 +1363,16 @@ static void vfio_listener_log_sync(MemoryListener *listener,
+>       VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+>                                                    listener);
+>       int ret;
+> +    Error *local_err = NULL;
+>
+>       if (vfio_listener_skipped_section(section)) {
+>           return;
+>       }
+>
+>       if (vfio_devices_all_dirty_tracking(bcontainer)) {
+> -        ret = vfio_sync_dirty_bitmap(bcontainer, section);
+> +        ret = vfio_sync_dirty_bitmap(bcontainer, section, &local_err);
+>           if (ret) {
+> -            error_report("vfio: Failed to sync dirty bitmap, err: %d (%s)", ret,
+> -                         strerror(-ret));
+> +            error_report_err(local_err);
+>               vfio_set_migration_error(ret);
+>           }
+>       }
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index 7c0764121d24b02b6c4e66e368d7dff78a6d65aa..4fa250c46fd16333d2e2358ede8b0a0afdb185b3 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -64,11 +64,12 @@ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+>   }
+>
+>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+> -                                      VFIOBitmap *vbmap,
+> -                                      hwaddr iova, hwaddr size)
+> +                                      VFIOBitmap *vbmap, hwaddr iova,
+> +                                      hwaddr size, Error **errp)
+>   {
+>       g_assert(bcontainer->ops->query_dirty_bitmap);
+> -    return bcontainer->ops->query_dirty_bitmap(bcontainer, vbmap, iova, size);
+> +    return bcontainer->ops->query_dirty_bitmap(bcontainer, vbmap, iova, size,
+> +                                               errp);
+>   }
+>
+>   void vfio_container_init(VFIOContainerBase *bcontainer, VFIOAddressSpace *space,
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index c35221fbe7dc5453050f97cd186fc958e24f28f7..e00db6546c652c61a352f8e4cd65b212ecfb65bc 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -130,6 +130,7 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
+>       };
+>       bool need_dirty_sync = false;
+>       int ret;
+> +    Error *local_err = NULL;
+>
+>       if (iotlb && vfio_devices_all_running_and_mig_active(bcontainer)) {
+>           if (!vfio_devices_all_device_dirty_tracking(bcontainer) &&
+> @@ -165,8 +166,9 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
+>
+>       if (need_dirty_sync) {
+>           ret = vfio_get_dirty_bitmap(bcontainer, iova, size,
+> -                                    iotlb->translated_addr);
+> +                                    iotlb->translated_addr, &local_err);
+>           if (ret) {
+> +            error_report_err(local_err);
+>               return ret;
+>           }
+>       }
+> @@ -236,7 +238,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+>
+>   static int vfio_legacy_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>                                             VFIOBitmap *vbmap,
+> -                                          hwaddr iova, hwaddr size)
+> +                                          hwaddr iova, hwaddr size,
+> +                                          Error **errp)
+
+[*] Can be wrapped like:
+
+static int vfio_legacy_query_dirty_bitmap(const VFIOContainerBase 
+*bcontainer,
+           VFIOBitmap *vbmap, hwaddr iova,
+           hwaddr size, Error **errp)
+
+Thanks.
+
+>   {
+>       const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+>                                                     bcontainer);
+> @@ -264,9 +267,10 @@ static int vfio_legacy_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+>       ret = ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, dbitmap);
+>       if (ret) {
+>           ret = -errno;
+> -        error_report("Failed to get dirty bitmap for iova: 0x%"PRIx64
+> -                " size: 0x%"PRIx64" err: %d", (uint64_t)range->iova,
+> -                (uint64_t)range->size, errno);
+> +        error_setg_errno(errp, errno,
+> +                         "Failed to get dirty bitmap for iova: 0x%"PRIx64
+> +                         " size: 0x%"PRIx64, (uint64_t)range->iova,
+> +                         (uint64_t)range->size);
+>       }
+>
+>       g_free(dbitmap);
+> --
+> 2.45.0
+>
 
