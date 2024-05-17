@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8047F8C80D2
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 08:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A668C8185
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 09:35:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7qpm-0004BS-QT; Fri, 17 May 2024 02:12:50 -0400
+	id 1s7s6S-00038R-W6; Fri, 17 May 2024 03:34:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s7qpj-00048Z-80
- for qemu-devel@nongnu.org; Fri, 17 May 2024 02:12:47 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s7s6O-00038D-RJ
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 03:34:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s7qpb-0002om-IP
- for qemu-devel@nongnu.org; Fri, 17 May 2024 02:12:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715926359; x=1747462359;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/D5KL9gsn1w1Kjzhi/6jGBTDPW6/izNdWX+gtGUBd3E=;
- b=nLR0xVBwPDOPyzpKvTDGcCU3Z7knHMxsbNlvn8cgAsPo+QZF8kRqRt73
- U20kQmUL1BbypsGJs7b2s4YW33ceYNvJAV4e22UxtoaE0t9ZPWsEW/k74
- QgS76Jjo6WD9z3Zj6exjvBGJVXYY75+RmssFjlih6oUL0yzP/FhHelMva
- /6dQ9BVNd9o6FVjlDwMdJdqhJKCicinN1rld3Fur+FCmtK2RFjSYiJ/Gn
- YFB8m8gbbF4eOfj4LR5zNQWATVJKMsMgs3hBrHIRuuL+yfIkt+1q3ukK7
- mVY9dvqxMv3OG+QntyNz0CHatLpCfH9KGBDJxHaeMLzW/5nuQI6MHBOKs A==;
-X-CSE-ConnectionGUID: 8lT/i5YSRBaYFMNeDmLw3g==
-X-CSE-MsgGUID: NA+Cg3ShQs6Kz2FWU0WMIg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="15869080"
-X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; d="scan'208";a="15869080"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2024 23:12:36 -0700
-X-CSE-ConnectionGUID: WS8vR0YrSlGCvXLgZcR1jg==
-X-CSE-MsgGUID: vBOD7RywSmyWxyEzBtw9ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; d="scan'208";a="31620653"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 16 May 2024 23:12:35 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Eric Blake <eblake@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/2] qapi: List block-core.json in qapi-schema.json
-Date: Fri, 17 May 2024 14:27:48 +0800
-Message-Id: <20240517062748.782366-3-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240517062748.782366-1-zhao1.liu@intel.com>
-References: <20240517062748.782366-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1s7s6M-00015X-I9
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 03:34:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1715931241;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oXZDRTCvrl/7GFLi+5mIeiLHLrEDKtRg+dCy7zABPF8=;
+ b=glJWKL+EXRr8+w3jiLAtKtfmZNhNomLWXSMtXwtpgu746rm5Ub/zaljz36g+vEaxh4cIHm
+ Iei5kvABhVjtgYVJx7eV1khOSx5vbHi2KYzcYLuBTqBw6axxOSGWIZK+fBzztT9Hk1KgXj
+ qVCViZpVjEE02szvzKGh7pZzGt+av9o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-2WhhvqRGMt2AzWX2dZHMbQ-1; Fri, 17 May 2024 03:33:58 -0400
+X-MC-Unique: 2WhhvqRGMt2AzWX2dZHMbQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90E5F101A525;
+ Fri, 17 May 2024 07:33:57 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 470F740C6EB7;
+ Fri, 17 May 2024 07:33:56 +0000 (UTC)
+Date: Fri, 17 May 2024 08:33:54 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
+Subject: Re: [PATCH 1/9] monitor: Honor QMP request for fd removal immediately
+Message-ID: <ZkcIYjSXYI4MGfN4@redhat.com>
+References: <20240426142042.14573-1-farosas@suse.de>
+ <20240426142042.14573-2-farosas@suse.de>
+ <ZjsnJj0mxW-rdAg_@redhat.com> <87ttixto2c.fsf@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
+In-Reply-To: <87ttixto2c.fsf@suse.de>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,59 +82,77 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, block-core.json is not explicitly listed in the
-qapi-schema.json.
+On Thu, May 16, 2024 at 07:00:11PM -0300, Fabiano Rosas wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> 
+> > On Fri, Apr 26, 2024 at 11:20:34AM -0300, Fabiano Rosas wrote:
+> >> We're enabling using the fdset interface to pass file descriptors for
+> >> use in the migration code. Since migrations can happen more than once
+> >> during the VMs lifetime, we need a way to remove an fd from the fdset
+> >> at the end of migration.
+> >> 
+> >> The current code only removes an fd from the fdset if the VM is
+> >> running. This causes a QMP call to "remove-fd" to not actually remove
+> >> the fd if the VM happens to be stopped.
+> >> 
+> >> While the fd would eventually be removed when monitor_fdset_cleanup()
+> >> is called again, the user request should be honored and the fd
+> >> actually removed. Calling remove-fd + query-fdset shows a recently
+> >> removed fd still present.
+> >> 
+> >> The runstate_is_running() check was introduced by commit ebe52b592d
+> >> ("monitor: Prevent removing fd from set during init"), which by the
+> >> shortlog indicates that they were trying to avoid removing an
+> >> yet-unduplicated fd too early.
+> >
+> > IMHO that should be reverted. The justification says
+> >
+> >   "If an fd is added to an fd set via the command line, and it is not
+> >    referenced by another command line option (ie. -drive), then clean
+> >    it up after QEMU initialization is complete"
+> >
+> > which I think is pretty weak. Why should QEMU forceably stop an app
+> > from passing in an FD to be used by a QMP command issued just after
+> > the VM starts running ?  While it could just use QMP to pass in the
+> > FD set, the mgmt app might have its own reason for wanting QEMU to
+> > own the passed FD from the very start of the process execve().
+> 
+> I don't think that's what that patch does. That description is
+> misleading. I read it as:
+> 
+>    "If an fd is added to an fd set via the command line, and it is not
+>     referenced by another command line option (ie. -drive), then clean
+>     it up ONLY after QEMU initialization is complete"
+>           ^
+> 
+> By the subject ("monitor: Prevent removing fd from set during init") and
+> the fact that this function is only called when the monitor connection
+> closes, I believe the idea was to *save* the fds until after the VM
+> starts running, i.e. some fd was being lost because
+> monitor_fdset_cleanup() was being called before the dup().
 
-To make the dependencies clearer, list block-core.json in section 2.
+I know that, but I'm saying QEMU should not be doing *any* generic cleanup
+of passed in FDs at any point. 
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- qapi/qapi-schema.json | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+A passed in FD should be taken by whatever part of the QEMU configuration
+is told to use it when needed, and this takes responsibility for closing
+it. If nothing is told to use the fdset /yet/, then it should stay in the
+fdset untouched for later use.
 
-diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-index 57ea6bcb33e9..14196128c44e 100644
---- a/qapi/qapi-schema.json
-+++ b/qapi/qapi-schema.json
-@@ -77,6 +77,8 @@
- #
- # All their dependencies are listed in the section 1.
- 
-+# include common.json, crypto.json, job.json, sockets.json
-+{ 'include': 'block-core.json' }
- # include sockets.json
- { 'include': 'char.json' }
- # include machine-common.json
-@@ -96,19 +98,17 @@
- 
- # Section 3. Files with 2-level dependencies.
- #
--# Their dependencies are either listed in the previous sections, or are
--# not listed but include files from the previous section. At least one
--# dependency is a 1-level dependency file.
-+# All their dependencies are listed in the previous sections. At least one
-+# dependency is from section 2.
- 
--# include sockets.json (section 1), block-core.json (not listed, 1-level
--# dependencies)
-+# include sockets.json (section 1), block-core.json (section 2)
- { 'include': 'block-export.json' }
--# include block-core.json (not listed, 1-level dependencies)
-+# include block-core.json (section 2)
- { 'include': 'block.json' }
- # include authz.json (section 1), common.json (section 1), crypto.json
--# (section 1), block-core.json (not listed, 1-level dependencies)
-+# (section 1), block-core.json (section 2)
- { 'include': 'qom.json' }
--# include block-core.json (not listed, 1-level dependencies)
-+# include block-core.json (section 2)
- { 'include': 'transaction.json' }
- 
- # Section 4. Files with 3-level dependencies.
+If an application accidentally passes in a FD that it doesn't reference
+in any configuration, that's simply a application bug to fix. QEMU does
+not need to secondguess the app's intent and decide to arbitrarily close
+it.
+
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
