@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E718C88FF
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 17:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222DF8C88FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 17:04:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7z6y-0005AY-Pv; Fri, 17 May 2024 11:03:08 -0400
+	id 1s7z6q-00051a-MT; Fri, 17 May 2024 11:03:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7z6u-00057i-CZ
- for qemu-devel@nongnu.org; Fri, 17 May 2024 11:03:04 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7z6o-0004zq-RV
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 11:02:58 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7z6i-0005Pp-AS
- for qemu-devel@nongnu.org; Fri, 17 May 2024 11:03:03 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a5a8cd78701so491995166b.2
- for <qemu-devel@nongnu.org>; Fri, 17 May 2024 08:02:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1s7z6n-0005QV-8n
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 11:02:58 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-a59e4136010so514879566b.3
+ for <qemu-devel@nongnu.org>; Fri, 17 May 2024 08:02:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1715958170; x=1716562970; darn=nongnu.org;
+ d=linaro.org; s=google; t=1715958175; x=1716562975; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RFJQ8eXrLcyhgXUkRkABC/U14von2QfsgkjKz+WC79c=;
- b=gc2u0LsB9ul/DHWRO66ULOf7EZmlomg+FoaGtZ/jClqsnh28N8tGgG6XogugqCB1Y0
- iIK9SevZDGiWz3fdfW7WodfHl5pMa1LofoxFddt7Gh9oFX5+8Xduhs9vPIJUVGmvXrDp
- oNc09P8Vn21Y1m6AuFzGX9YT9rdlkLxIqM4RMMIInNNAC3VPEZE7GZWtnuyCOqWTUxwZ
- OghH9utl2D5y1DH/NQTBZZ7si6Ijk0VdX4ydOxfx5O9nv+JmWoNuONvCGr2QJ7nfEWCR
- h798O2S7ZljGkEGNkRRu1pW7oz5dyxHbJOPm4s6IRCCbGxGBtu3EU6Rzwat95OsXABWg
- KEkQ==
+ bh=CZ4R0GpwuiTGFZYxz5B+fpMVNyC6MJRh/IKnd5gDIFo=;
+ b=fEqAGDOJK1oItUQ4vhKuDvBvDFXISaGMwkUtHoUqXBih+NB0f56QPJqjcJbnXfXqf8
+ iENDaUdQX5HmbT0dJVc+tDvELlCWyQWfdl6YM/TlC6Vcuf8FmrnhPR6sfaZNl7tuQMWR
+ PZnu6jDnnWnd34Qzdt0Efrljz3eqCqNmCXqLKBxJsAtJoN53+GSx4FMAiXryxYtQEOEl
+ ZymReNmfbuKfpQQuFWeL2d00zm9lCaJ6qOph0AkbRyojd3x+wKAaoxsV/ljFU09HSp8v
+ xlkeVP/FrqXVO3mgQcelste2cYC2q4+/PjvfQznHOUoUz8+Bvt4GhYawXQ+BBBSGMFGR
+ F+Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715958170; x=1716562970;
+ d=1e100.net; s=20230601; t=1715958175; x=1716562975;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RFJQ8eXrLcyhgXUkRkABC/U14von2QfsgkjKz+WC79c=;
- b=HEeJ3Pcp6fknE7SJoRKrUhI0ahY9SgXWTbaOGqixvZIvrplntuKFBQ55KGHnO15UEV
- j2Rj3EMqWyfdzgr20/Nmzr7S6Lsl3dGqg2vQFgviYKe44nyh/hkM3DTIDb8gGG+hUdGe
- T0q2d9S8BSsmWRBYMOO8znLThzeexakppXCRkOmdry+LjVdQsHu3KeSD4EjSgCAJPWXM
- 1nuyu9tLpA00TcmiP2QuaY/WjKWCo5vhCwcbd/KI3f9KrTAwWcaDheKttRZDsufEimIu
- tZxJJCu8mI9Q9I+pqZpKePeB+M9xWJq0sFcTxMM0/d0WqjI6nF4z7oxU1/TslCPVOuvS
- WTzA==
-X-Gm-Message-State: AOJu0YwdJjeRZTDQzlJCQLJH+zq2kjKzSoFbZo852SjsapmtuWkdyzg2
- Lnk7s1pTqcyKAZVriLOjlBFdS6TdyZVFvDw+rmSqy8Je5fa/8sawTvhFFSs1HqQPcniM6z3Pezw
- 4
-X-Google-Smtp-Source: AGHT+IFKrBMiYG7qlmBVaN5Hd2LIoLCh4V9QNWcZaoNDQcJfBWAU2doIOGLPdYHpQiynO6lK7trE/g==
-X-Received: by 2002:a17:906:3a8d:b0:a59:be8a:bd6f with SMTP id
- a640c23a62f3a-a5a2d65f272mr1374782466b.61.1715958170359; 
- Fri, 17 May 2024 08:02:50 -0700 (PDT)
+ bh=CZ4R0GpwuiTGFZYxz5B+fpMVNyC6MJRh/IKnd5gDIFo=;
+ b=vNcIFvSlwneF2mU9YBwRhdRmaipNivuPL2W9o6vyqqw+TwOvvsrh8/t7aUnAky2Kxw
+ wOU6AxNcbLShQgoqDL8zJRbCDVgvWewL6tEq049C8NX9u7XR7NkbJQ2KKJpuftGk9L3o
+ QB2afaGmQfB9MBGw7g5nUsrKboJP1VNB0M7mek7wtIASGuzWNbwxM6DDIUVyCymh04jh
+ ABz03fUp+pJQjN9k066jNZ81jEYaTWF/9tFZhbdPzUy2AhFu+Risp8A8iWoV2cygmi6K
+ VOonY9IyRDVe+lxMzaGsqyNdcx9xKpob84msSYPOI85Vf65vvHTxZNva+DJcNoxb2Vj6
+ 1JsA==
+X-Gm-Message-State: AOJu0YzED+PuuuscOy3UAGUEP2B3GSmez5cMLzbuHxRZXuJqEDPXcDwt
+ fZYS9DTc0eEtZvx3TkJuwJbx8Sm7INv2IK4H4KsAub/MKjMZbIpv5u6kZ3GhkJAzOLEvNrxKnyf
+ z
+X-Google-Smtp-Source: AGHT+IEz6WJMxkjCXNa6qWDT45T1aglS3vG7MFpY3J0WFh4yiwBDHHaNg0UcXhG14MRFBX4EASYSGQ==
+X-Received: by 2002:a17:906:15cd:b0:a59:c9ce:3386 with SMTP id
+ a640c23a62f3a-a5a2d5cb0c1mr1344291466b.33.1715958175249; 
+ Fri, 17 May 2024 08:02:55 -0700 (PDT)
 Received: from localhost.localdomain ([149.14.240.163])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b17886sm1130572866b.210.2024.05.17.08.02.49
+ a640c23a62f3a-a5a17b17555sm1120578666b.189.2024.05.17.08.02.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 17 May 2024 08:02:49 -0700 (PDT)
+ Fri, 17 May 2024 08:02:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?J=C3=A1n=20Tomko?= <jtomko@redhat.com>,
+Cc: Gustavo Romero <gustavo.romero@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/5] tests: add testing of parameter=1 for SMP topology
-Date: Fri, 17 May 2024 17:02:26 +0200
-Message-ID: <20240517150227.32205-5-philmd@linaro.org>
+Subject: [PULL 5/5] tests: Gently exit from GDB when tests complete
+Date: Fri, 17 May 2024 17:02:27 +0200
+Message-ID: <20240517150227.32205-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240517150227.32205-1-philmd@linaro.org>
 References: <20240517150227.32205-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,40 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Gustavo Romero <gustavo.romero@linaro.org>
 
-Validate that it is possible to pass 'parameter=1' for any SMP topology
-parameter, since unsupported parameters are implicitly considered to
-always have a value of 1.
+GDB commit a207f6b3a38 ('Rewrite "python" command exception handling')
+changed how exit() called from Python scripts loaded by GDB behave,
+turning it into an exception instead of a generic error code that is
+returned. This change caused several QEMU tests to crash with the
+following exception:
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Ján Tomko <jtomko@redhat.com>
-Message-ID: <20240513123358.612355-3-berrange@redhat.com>
+Python Exception <class 'SystemExit'>: 0
+Error occurred in Python: 0
+
+This happens because in tests/guest-debug/test_gdbstub.py exit is
+called after the tests have completed.
+
+This commit fixes it by politely asking GDB to exit via gdb.execute,
+passing the proper fail_count to be reported to 'make', instead of
+abruptly calling exit() from the Python script.
+
+Signed-off-by: Gustavo Romero <gustavo.romero@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240515173132.2462201-4-gustavo.romero@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/unit/test-smp-parse.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/guest-debug/test_gdbstub.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 56165e6644..9fdba24fce 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -330,6 +330,14 @@ static const struct SMPTestData data_generic_valid[] = {
-         .config = SMP_CONFIG_GENERIC(T, 8, T, 2, T, 4, T, 2, T, 16),
-         .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 4, 2, 16),
-         .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 4, 2, 16),
-+    }, {
-+        /*
-+         * Unsupported parameters are always allowed to be set to '1'
-+         * config: -smp 8,books=1,drawers=1,sockets=2,modules=1,dies=1,cores=2,threads=2,maxcpus=8
-+         * expect: cpus=8,sockets=2,cores=2,threads=2,maxcpus=8 */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 2, 2, 8),
-+        .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-+        .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-     },
- };
+diff --git a/tests/guest-debug/test_gdbstub.py b/tests/guest-debug/test_gdbstub.py
+index 7f71d34da1..46fbf98f0c 100644
+--- a/tests/guest-debug/test_gdbstub.py
++++ b/tests/guest-debug/test_gdbstub.py
+@@ -57,4 +57,4 @@ def main(test, expected_arch=None):
+         pass
  
+     print("All tests complete: {} failures".format(fail_count))
+-    exit(fail_count)
++    gdb.execute(f"exit {fail_count}")
 -- 
 2.41.0
 
