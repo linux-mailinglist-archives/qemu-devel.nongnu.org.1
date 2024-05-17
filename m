@@ -2,133 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB1C8C80EC
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 08:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC408C80D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 08:13:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7r1c-0007ld-6f; Fri, 17 May 2024 02:25:04 -0400
+	id 1s7qpm-000497-Rw; Fri, 17 May 2024 02:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7r1U-0007k4-OV
- for qemu-devel@nongnu.org; Fri, 17 May 2024 02:24:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s7qpg-00046c-8M
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 02:12:44 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7r1P-0005b5-Qp
- for qemu-devel@nongnu.org; Fri, 17 May 2024 02:24:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715927090;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=CR5Eyj9JHDkIBUmmK7eennNJp3mbQepG66yU5ek0wnE=;
- b=Qri1dRpslQFlVEwu0ax2c+duUgkDCLbzodgzGxZnrxOeedHEJBwK4jxsK7SoKj0PABKTxR
- xFfR2VYozOhsURuBIL202BTO8nBFz/Ijk6E8MmEVF4EensbikjZFymkQmWadgAgdpbSK7a
- Sb+yf4JVEVwStzhBCZVAo3XpCyKup8c=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-wYy5aURyNCqZ1G41fZxq1A-1; Fri, 17 May 2024 02:24:49 -0400
-X-MC-Unique: wYy5aURyNCqZ1G41fZxq1A-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6a0e7d77b41so118320506d6.0
- for <qemu-devel@nongnu.org>; Thu, 16 May 2024 23:24:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715927089; x=1716531889;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CR5Eyj9JHDkIBUmmK7eennNJp3mbQepG66yU5ek0wnE=;
- b=raiNDl7oAsmWMAmZULJdPfqt87WutSS83yXDcrVpA4gZP0tujfUibLrzA68ROiy21z
- u5fLWQpWjpxHYpe7Hn1JOrCSRuIb7UWys8F8GpDAra13YegDQtKRDWNemXFGEd+uwab3
- f504ASmjUrQOOuUC+nEsuuFt/L1DBfGH+ykj2kq997D+0ZHV9uWimDnHrxM53MmlaqwR
- 9/xZdU1VUmIngoXb1EJOZhfau782CeGGW2fJDyTTZVsQzem5h9dH/8nMzLPf7AgbFb0I
- UrDIAB5yTTKnwEM5js2L+Qjaq4/h9aZcYg0heNihObl4WTBotx2qIlCBGyOX5L9+Ua47
- ST5g==
-X-Gm-Message-State: AOJu0YyKybUn2HCIkPE71tOLX3a0+Y6phK05DNG19GiRH0tOURrzZRsH
- d9YxtOxafadwu9cqVwp8NLv3dGo+HZKRad9QnPaBKSjWPp1/iEsy8otrde94p1odavKmCN5R1K2
- VGuJ+Rg2a90X0fvYjjSeBk9nNctBV46CaDFX9gI7ZSBx155U3KiAC
-X-Received: by 2002:a05:6214:2e46:b0:6a0:c8c3:7e2e with SMTP id
- 6a1803df08f44-6a168179c08mr263793966d6.1.1715927088933; 
- Thu, 16 May 2024 23:24:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhiUVtR9oT3xCK9ijFG4xkiYsmoDiVHIOAAEe3v0QhtCJbMtRJcEcftPXup0isQV+ch1h/rQ==
-X-Received: by 2002:a05:6214:2e46:b0:6a0:c8c3:7e2e with SMTP id
- 6a1803df08f44-6a168179c08mr263793836d6.1.1715927088648; 
- Thu, 16 May 2024 23:24:48 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-176-52.web.vodafone.de.
- [109.43.176.52]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6a15f194945sm81967446d6.61.2024.05.16.23.24.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 May 2024 23:24:48 -0700 (PDT)
-Message-ID: <771ff437-9bb2-4d4b-9397-f675d227191c@redhat.com>
-Date: Fri, 17 May 2024 08:24:44 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s7qpb-0002mo-38
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 02:12:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1715926359; x=1747462359;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5/ckqKt4nIuHpY/q7Lv+weUL8OZn9S8U9YTXztI/HLk=;
+ b=C0hvbkM0FS5cmQ5R6O0TsvEufLiC1Oy+htARGOmIy2c7sY12K/IQpvm4
+ QyYYwDFF/jvAwcMNcjzt8bgjWbkW5pKXR3wyG2OOwmcnSwavl2t9SUF6F
+ PPNyNRjoOJPr+w+rRUtMj9VX4DEaUPQeh5yaNp8k6VGqxb5iSAJh6Jow1
+ CpNsUayPFU5HzhLrv2yek/H4VxCc49fxzb9cPDIMJSipBL/ZT4xBOViJ7
+ UZvyLgCevfdBQna5zYTDKvE8xxn4m5lIrWxhh2B1cFjs3FhWxjgl3r+90
+ yhRbdptMpZIYrKwXS3VZ1IZAvvcWVnJad9hRlUNDqjCqKvjCQQn3PNCq+ w==;
+X-CSE-ConnectionGUID: angyMfWlRWyCzYaUh+I25w==
+X-CSE-MsgGUID: K9NT6nskRqaZUGfB2G4saA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="15869069"
+X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; d="scan'208";a="15869069"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 May 2024 23:12:33 -0700
+X-CSE-ConnectionGUID: oyEA/f9uTiWVAd46BezOaw==
+X-CSE-MsgGUID: XE5+ZXrHQt6wd0Hq7KNapA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,166,1712646000"; d="scan'208";a="31620640"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa007.fm.intel.com with ESMTP; 16 May 2024 23:12:32 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Eric Blake <eblake@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH 0/2] qapi/qapi-schema: Clarify the dependency relationship
+Date: Fri, 17 May 2024 14:27:46 +0800
+Message-Id: <20240517062748.782366-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gitlab-ci: Replace Docker with Kaniko
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Camilla Conte <cconte@redhat.com>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org,
- alex.bennee@linaro.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20240516165410.28800-3-cconte@redhat.com>
- <ZkZPRILIqoyGbdEk@redhat.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <ZkZPRILIqoyGbdEk@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.022,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -144,22 +78,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/05/2024 20.24, Daniel P. Berrangé wrote:
-> On Thu, May 16, 2024 at 05:52:43PM +0100, Camilla Conte wrote:
->> Enables caching from the qemu-project repository.
->>
->> Uses a dedicated "$NAME-cache" tag for caching, to address limitations.
->> See issue "when using --cache=true, kaniko fail to push cache layer [...]":
->> https://github.com/GoogleContainerTools/kaniko/issues/1459
-...
-> TL;DR: functionally this patch is capable of working. The key downside
-> is that it doubles our storage usage. I'm not convinced Kaniko offers
-> a compelling enough benefit to justify this penalty.
+Hi,
 
-Will this patch fix the issues that we are currently seeing with the k8s 
-runners not working in the upstream CI? If so, I think that would be enough 
-benefit, wouldn't it?
+At present, the correctness of the dependencies of JSON files is ensured
+by the order in which they are listed, but in general, the mixing of
+multiple files and the lack of clear guidelines for ordering them is not
+friendly to extending and maintaining.
 
-  Thomas
+Therefore, I have a proposal to manually categorize and sort JSON files
+generation order by dependencies/dependency hierarchy, to improve the
+readability and maintainability of qapi-schema.json.
+
+Welcome your feedback!
+
+Thanks and Best Regards,
+Zhao
+---
+Zhao Liu (2):
+  qapi: Reorder and categorize json files in qapi-schema.json
+  qapi: List block-core.json in qapi-schema.json
+
+ qapi/qapi-schema.json | 100 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 69 insertions(+), 31 deletions(-)
+
+-- 
+2.34.1
 
 
