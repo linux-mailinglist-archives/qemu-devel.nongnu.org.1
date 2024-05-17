@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308488C863A
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 14:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1552A8C8639
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 14:27:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7wez-0004qA-RV; Fri, 17 May 2024 08:26:05 -0400
+	id 1s7wf4-0004xl-BN; Fri, 17 May 2024 08:26:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7wew-0004om-FU
- for qemu-devel@nongnu.org; Fri, 17 May 2024 08:26:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7wez-0004rc-8u
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 08:26:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7weu-0006GQ-Ta
- for qemu-devel@nongnu.org; Fri, 17 May 2024 08:26:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s7wex-0006Gu-Sw
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 08:26:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1715948758;
+ s=mimecast20190719; t=1715948763;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zZ2tfYZTfmYrTRdPDDBMx41AUVQyGSLeTEG9/lN7XKY=;
- b=Ynrv5VkEkWvnKynekzhmiMlned9Uyuk2Pk6nx6cdzvxQsRJqyKOxWXO+ysOPX9E2fYL0dF
- +PyhIouvB5tkOTa2F9s2N/Rnvpk0h/bO+Qdx1Gm4YSCroCyu8wSgnLVLxWSb+wFD4whipW
- Hko9EsQtS6W4GA6tTtCtKyDK3wWA6lw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-xSkbXg-6Pnujs2qwkbK3cg-1; Fri, 17 May 2024 08:25:56 -0400
-X-MC-Unique: xSkbXg-6Pnujs2qwkbK3cg-1
+ bh=9fqBm4xPOtPk/y269nox0D6RplzlnU3rP1d08/jfSQE=;
+ b=KYnFVcOvnUkLQngsTqapXkvyO5exQgzq5a3CPchmQhurHhklsKBXP9QNgUYKjDDLuCZKzG
+ yC+EFD3hO2cJwhUPK4rN63uS4I0FOBoESWU8ZM3Ec2tRq9AoHi8lriL2zkb/QkY/2jk/Ta
+ 3WUDTRPx+NM7rj8UNqXNE98FWjxp/bo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-640-SdGc5MUGOUKtttxp3dCQAg-1; Fri,
+ 17 May 2024 08:25:57 -0400
+X-MC-Unique: SdGc5MUGOUKtttxp3dCQAg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03B22812296;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCE6B1C0513D;
  Fri, 17 May 2024 12:25:56 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.132])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 205E91050174;
- Fri, 17 May 2024 12:25:54 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 459AE1050173;
+ Fri, 17 May 2024 12:25:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 1/6] tests/lcitool/refresh: Treat the output of lcitool as text,
- not as bytes
-Date: Fri, 17 May 2024 14:25:47 +0200
-Message-ID: <20240517122552.584215-2-thuth@redhat.com>
+Subject: [PULL 2/6] tests/lcitool: Remove 'xfsprogs' from QEMU
+Date: Fri, 17 May 2024 14:25:48 +0200
+Message-ID: <20240517122552.584215-3-thuth@redhat.com>
 In-Reply-To: <20240517122552.584215-1-thuth@redhat.com>
 References: <20240517122552.584215-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -78,36 +77,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In case lcitool fails (e.g. with a python backtrace), this makes
-the output  of lcitool much more readable.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240516084059.511463-2-thuth@redhat.com>
+QEMU's commit a5730b8bd3 ("block/file-posix: Simplify the
+XFS_IOC_DIOINFO handling") removed the need for the 'xfsprogs'
+package.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[thuth: Adjusted the patch from the lcitools repo to QEMU's repo]
+Message-ID: <20240516084059.511463-3-thuth@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/lcitool/refresh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/lcitool/projects/qemu.yml | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index 24a735a3f2..174818d9c9 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -43,12 +43,12 @@ def atomic_write(filename, content):
- 
- def generate(filename, cmd, trailer):
-     print("Generate %s" % filename)
--    lcitool = subprocess.run(cmd, capture_output=True)
-+    lcitool = subprocess.run(cmd, capture_output=True, encoding='utf8')
- 
-     if lcitool.returncode != 0:
-         raise Exception("Failed to generate %s: %s" % (filename, lcitool.stderr))
- 
--    content = lcitool.stdout.decode("utf8")
-+    content = lcitool.stdout
-     if trailer is not None:
-         content += trailer
-     atomic_write(filename, content)
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 149b15de57..9173d1e36e 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -121,7 +121,6 @@ packages:
+  - vte
+  - which
+  - xen
+- - xfsprogs
+  - xorriso
+  - zstdtools
+  - zlib
 -- 
 2.45.0
 
