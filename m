@@ -2,84 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E338C8683
-	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 14:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC23A8C86EA
+	for <lists+qemu-devel@lfdr.de>; Fri, 17 May 2024 15:04:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s7x18-00018q-PL; Fri, 17 May 2024 08:48:58 -0400
+	id 1s7xE8-0006U9-Cw; Fri, 17 May 2024 09:02:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s7x16-000186-R5; Fri, 17 May 2024 08:48:56 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
+ id 1s7xE2-0006TY-02
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 09:02:18 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s7x15-0003Xz-0L; Fri, 17 May 2024 08:48:56 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f4603237e0so96559b3a.0; 
- Fri, 17 May 2024 05:48:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yu.zhang@ionos.com>)
+ id 1s7xDy-000656-TB
+ for qemu-devel@nongnu.org; Fri, 17 May 2024 09:02:17 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5727dc6d3edso4960604a12.0
+ for <qemu-devel@nongnu.org>; Fri, 17 May 2024 06:02:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1715950133; x=1716554933; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=ionos.com; s=google; t=1715950931; x=1716555731; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5CNBNZX/SgRSkN7l/MauqmJkBJZves/aeONYzBOiBwA=;
- b=O2xIIrnzO/0pIk7XdDfNEq/SkQxxky+h9uhAafUCiWWNXEmCJVimd/HSN/e733zcSD
- V2I8CzWtXbuL60UswiOqTR/CaHUaK+4Rc7fHfIXV5iJKk4smOF13YzEqi1hp/RckY6Hn
- +Z6C6EcTM5VnWcuck2fsBzWGO8H6e4jEhTecUbPILjCUdUztjIiJejpY6TH49Rajwt8g
- QSBqAXcrqT+Y07B/JczMnL1hnbi9APrR7V8JjQJuSGxD3zxVDJP/ZyKKDeUon4s9TH+S
- qkGzpaRRA3z2rUWTTXl4sTyQ0XoFe0RNSfoNuS9aB//TIyKIJ62SAtgko6xcms3pTq9d
- QZlg==
+ bh=CJDAl6y4Mz2BrWojAWtbkQd2mqHcv0DtypsvPHRPH0M=;
+ b=GfSWPaTcvWP0+UpObEyvQbKNlV4b3e+BfEM1DzYS747Dn6JmDZKmhxRwXSrk1I2bKd
+ xWSjXOHKUIxEu+CgVJStQgB8F2Tjeduf17SbCKiQJX0nVfq8fBs2xzdZp/71qPq4EtpD
+ wGO39P+2wkBNoS1p7rFGG4blX9E3hj2UtjeBnUAzTRMWjIGTCsnga7tpq4wo4qKqNBGP
+ 7pN+OmnnpfvMdbDu47U/6hjMQ8CXwqDejiYGRoXfFbpZ0eDDERu4ohV4cztgKlnjzqGR
+ POwArQ1AsscZi0zKXJSfR9t4megLuiAm0gWd0b3IrmOqF8/ZLykyOh+UZNq/DBfXbKVU
+ KS5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1715950133; x=1716554933;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=5CNBNZX/SgRSkN7l/MauqmJkBJZves/aeONYzBOiBwA=;
- b=SO45/YnghS23vSQMYotnhVyZm0r03tCC5fJb7mMOUoFgf+tdiBmp3avAez2ZVP6Pow
- Z9qORaP/5/w6BNuQDUBp/AF1zrv8yaZYOydDf6Cs2IahaqzbooeLSZMCyQ5z+3118xSZ
- HSLq7w0lbNYrSFl0Js6Mx9mLZiNi4cMWtBv+tHADcSxOjhGsRpVcz+a78By/Z2z1b728
- kR89rOzSlDVD0QSb3UedQQFxUAiNMcknaQVGsYcIasFDYG2npwO4Rdhpvk6Qi9WxL/SZ
- nPNGOaU4096Z7LQsQLZF3/LEO8dowjCGSA7UVC1Qntw7QqRga6vje37Ax5RVvcaRkRfW
- T5AQ==
+ d=1e100.net; s=20230601; t=1715950931; x=1716555731;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CJDAl6y4Mz2BrWojAWtbkQd2mqHcv0DtypsvPHRPH0M=;
+ b=DMmb2CeEy0rSeCVk046yPBRsyXlMjk7t3zMFubMMgVG/C6T09SGSbKEL5M0o+/HdvW
+ rOhxqwd0sPbdNI4OaPe7sUzETUH0rAP7ZMCF9UceWnZMV8I5tUU1snH7+aqXt79OKhH9
+ o65gI6JKaKuFCZI7XcMvtmUzz3VYGm5PxwTnORDc5fplzhrg9iYv6IlOPU+XL4W5yS3o
+ l3yAUyKIKnhdxCYk6lRUTtmo4JCI0Clbuq2A9FbJzmAolp1xWQBSMP8Mj9xX6yidfhnV
+ TRGm3UvzLGdfn99xrPTyZ7YZg3yzDPecTnKcA0fWknavsgY2pwE+06ftAcBcX5vU5myT
+ yBEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXkwx6La7C5c/CSQ4svfb5X5XqY9Igcy7J/CQ1nk6KaDInX3kED9EjV6BSm64rabnAVuCJeeBlt7TIz7ldTkey2qvju
-X-Gm-Message-State: AOJu0YyiLLwEU01tg8WIHL1Kl118eVIq/SgrgJ3IWUIb39rNLUXw8xVC
- V68X7bnFwn8DrC2fEgxrufoizDKA+rlE1lS5eKQXadTjrGSPg5oZ
-X-Google-Smtp-Source: AGHT+IEwGEywMwDKLOLoxPGzzXZljuEaoUZSbLocY+k9pnlwe8PDGA6rZLL/WXd9mDZcJETqGJZztw==
-X-Received: by 2002:a05:6a00:4f82:b0:6ed:4a97:26c1 with SMTP id
- d2e1a72fcca58-6f4df3eb5f7mr27579166b3a.10.1715950133001; 
- Fri, 17 May 2024 05:48:53 -0700 (PDT)
-Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-656f38b855esm3642153a12.8.2024.05.17.05.48.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 17 May 2024 05:48:52 -0700 (PDT)
-Mime-Version: 1.0
+ AJvYcCVNHZOE0UcJRTHtpNgf1hCAK/ToWZennbkJ+m3gggkuD49kIQwTUL9tAMqiMdA9WsKCj7RP7p+vS4QS11KIQ18Vs9lK8o4=
+X-Gm-Message-State: AOJu0YyH0KsP8DiLL3YTkk5mBQCTl8RHW+W/PqB+iQylxzaT4lk5kQ1e
+ 2DPALbgz+eqYFr5BKsMLv4eH337iDhMmYCXRVnFlijY1Qa0abDvfVru8ho7owzdh3dMJ90W4nOc
+ SBh7jtKskUZSz7uI98JOLPBAYFOOpZTd5fmyFSQ==
+X-Google-Smtp-Source: AGHT+IFhF0DpY79JBU572zGFB63YpHeRuDCMQssyM6yGYYvhPnGtkZc7p/mrg7pb5QP9mzu38lBSX5DHO1t79O4ZqJ4=
+X-Received: by 2002:a17:907:20a2:b0:a59:efea:caba with SMTP id
+ a640c23a62f3a-a5a2d65ed0bmr1453547766b.51.1715950931112; Fri, 17 May 2024
+ 06:02:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <46f5e323-632d-7bda-f2c5-3cfa7b1c6b68@akamai.com>
+ <Zi-1OvxA5MIHjklU@x1n> <877cgfe2yw.fsf@pond.sub.org>
+ <ZjClMb-6MddpvHqQ@redhat.com>
+ <ZjJgQcPQ29HJsTpY@x1n> <7e902e4e576a4e199e36d28f99bd55e5@huawei.com>
+ <Zjj0xa-3KrFHTK0S@x1n> <addaa8d094904315a466533763689ead@huawei.com>
+ <ZjpWmG2aUJLkYxJm@x1n> <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com>
+ <ZjzaIAMgUHV8zdNz@x1n>
+ <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
+ <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
+In-Reply-To: <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
+From: Yu Zhang <yu.zhang@ionos.com>
+Date: Fri, 17 May 2024 15:01:59 +0200
+Message-ID: <CAHEcVy4d7uJENZ1hRx2FBzbw22qN4Qm0TwtxvM5DLw3s81Zp_g@mail.gmail.com>
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+To: Michael Galaxy <mgalaxy@akamai.com>, Peter Xu <peterx@redhat.com>, 
+ Jinpu Wang <jinpu.wang@ionos.com>, Elmar Gerdes <elmar.gerdes@ionos.com>
+Cc: Zheng Chuan <zhengchuan@huawei.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Markus Armbruster <armbru@redhat.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>, 
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Song Gao <gaosong@loongson.cn>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ Pannengyuan <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 May 2024 22:48:47 +1000
-Message-Id: <D1BXJXYYCCJF.1KUFFHK83W8CV@gmail.com>
-Cc: <qemu-devel@nongnu.org>, <danielhb413@gmail.com>,
- <richard.henderson@linaro.org>, <harshpb@linux.ibm.com>
-Subject: Re: [PATCH v2 6/8] target/ppc: Move div/mod fixed-point insns (64
- bits operands) to decodetree.
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Chinmay Rath" <rathc@linux.ibm.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.17.0
-References: <20240423063234.76282-1-rathc@linux.ibm.com>
- <20240423063234.76282-7-rathc@linux.ibm.com>
-In-Reply-To: <20240423063234.76282-7-rathc@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: permerror client-ip=2a00:1450:4864:20::536;
+ envelope-from=yu.zhang@ionos.com; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,66 +118,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Apr 23, 2024 at 4:32 PM AEST, Chinmay Rath wrote:
-> Moving the below instructions to decodetree specification :
+Hello Michael and Peter,
+
+Exactly, not so compelling, as I did it first only on servers widely
+used for production in our data center. The network adapters are
+
+Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720
+2-port Gigabit Ethernet PCIe
+InfiniBand controller: Mellanox Technologies MT27800 Family [ConnectX-5]
+
+which doesn't meet our purpose. I can choose RDMA or TCP for VM
+migration. RDMA traffic is through InfiniBand and TCP through Ethernet
+on these two hosts. One is standby while the other is active.
+
+Now I'll try on a server with more recent Ethernet and InfiniBand
+network adapters. One of them has:
+BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller (rev 01)
+
+The comparison between RDMA and TCP on the same NIC could make more sense.
+
+Best regards,
+Yu Zhang @ IONOS Cloud
+
+
+
+
+
+
+
+On Thu, May 16, 2024 at 7:30=E2=80=AFPM Michael Galaxy <mgalaxy@akamai.com>=
+ wrote:
 >
-> 	divd[u, e, eu][o][.]	: XO-form
-> 	mod{sd, ud}		: X-form
+> These are very compelling results, no?
 >
-> With this patch, all the fixed-point arithmetic instructions have been
-> moved to decodetree.
-> The changes were verified by validating that the tcg ops generated by tho=
-se
-> instructions remain the same, which were captured using the '-d in_asm,op=
-' flag.
-> Also, remaned do_divwe method in fixedpoint-impl.c.inc to do_dive because=
- it is
-> now used to divide doubleword operands as well, and not just words.
+> (40gbps cards, right? Are the cards active/active? or active/standby?)
 >
-> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-[...]
-
-> +static bool do_divd(DisasContext *ctx, arg_XO *a, bool sign)
-> +{
-> +    gen_op_arith_divd(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], cpu_gpr[a->rb=
-],
-> +                      sign, a->oe, a->rc);
-> +    return true;
-> +}
-> +
-> +static bool do_modd(DisasContext *ctx, arg_X *a, bool sign)
-> +{
-> +    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
-> +    gen_op_arith_modd(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], cpu_gpr[a->rb=
-],
-> +                      sign);
-> +    return true;
-> +}
-> +
-> +TRANS64(DIVD, do_divd, true);
-> +TRANS64(DIVDU, do_divd, false);
-> +TRANS64(DIVDE, do_dive, gen_helper_DIVDE);
-> +TRANS64(DIVDEU, do_dive, gen_helper_DIVDEU);
-> +
-> +TRANS64(MODSD, do_modd, true);
-> +TRANS64(MODUD, do_modd, false);
-
-Sigh. I'm having to fix a bunch of these for 32-bit builds. Just
-doing the #ifdef TARGET_PPC64 ... #else qemu_build_not_reached();
-thing.
-
-Which is quite ugly and actually prevents using some of these
-macros and requires open coding (e.g., because DIVDE helper is
-not declared for 32-bit in this case).
-
-Maybe we should move 64-bit only instructions into their own
-.decode file and not build them for 32-bit, so we don't have
-to add all these dummy translate functions for them.
-
-For now I'll try to squash in the fixes.
-
-Thanks,
-Nick
+> - Michael
+>
+> On 5/14/24 10:19, Yu Zhang wrote:
+> > Hello Peter and all,
+> >
+> > I did a comparison of the VM live-migration speeds between RDMA and
+> > TCP/IP on our servers
+> > and plotted the results to get an initial impression. Unfortunately,
+> > the Ethernet NICs are not the
+> > recent ones, therefore, it may not make much sense. I can do it on
+> > servers with more recent Ethernet
+> > NICs and keep you updated.
+> >
+> > It seems that the benefits of RDMA becomes obviously when the VM has
+> > large memory and is
+> > running memory-intensive workload.
+> >
+> > Best regards,
+> > Yu Zhang @ IONOS Cloud
+> >
+> > On Thu, May 9, 2024 at 4:14=E2=80=AFPM Peter Xu <peterx@redhat.com> wro=
+te:
+> >> On Thu, May 09, 2024 at 04:58:34PM +0800, Zheng Chuan via wrote:
+> >>> That's a good news to see the socket abstraction for RDMA!
+> >>> When I was developed the series above, the most pain is the RDMA migr=
+ation has no QIOChannel abstraction and i need to take a 'fake channel'
+> >>> for it which is awkward in code implementation.
+> >>> So, as far as I know, we can do this by
+> >>> i. the first thing is that we need to evaluate the rsocket is good en=
+ough to satisfy our QIOChannel fundamental abstraction
+> >>> ii. if it works right, then we will continue to see if it can give us=
+ opportunity to hide the detail of rdma protocol
+> >>>      into rsocket by remove most of code in rdma.c and also some hack=
+ in migration main process.
+> >>> iii. implement the advanced features like multi-fd and multi-uri for =
+rdma migration.
+> >>>
+> >>> Since I am not familiar with rsocket, I need some times to look at it=
+ and do some quick verify with rdma migration based on rsocket.
+> >>> But, yes, I am willing to involved in this refactor work and to see i=
+f we can make this migration feature more better:=EF=BC=89
+> >> Based on what we have now, it looks like we'd better halt the deprecat=
+ion
+> >> process a bit, so I think we shouldn't need to rush it at least in 9.1
+> >> then, and we'll need to see how it goes on the refactoring.
+> >>
+> >> It'll be perfect if rsocket works, otherwise supporting multifd with l=
+ittle
+> >> overhead / exported APIs would also be a good thing in general with
+> >> whatever approach.  And obviously all based on the facts that we can g=
+et
+> >> resources from companies to support this feature first.
+> >>
+> >> Note that so far nobody yet compared with rdma v.s. nic perf, so I hop=
+e if
+> >> any of us can provide some test results please do so.  Many people are
+> >> saying RDMA is better, but I yet didn't see any numbers comparing it w=
+ith
+> >> modern TCP networks.  I don't want to have old impressions floating ar=
+ound
+> >> even if things might have changed..  When we have consolidated results=
+, we
+> >> should share them out and also reflect that in QEMU's migration docs w=
+hen a
+> >> rdma document page is ready.
+> >>
+> >> Chuan, please check the whole thread discussion, it may help to unders=
+tand
+> >> what we are looking for on rdma migrations [1].  Meanwhile please feel=
+ free
+> >> to sync with Jinpu's team and see how to move forward with such a proj=
+ect.
+> >>
+> >> [1] https://urldefense.com/v3/__https://lore.kernel.org/qemu-devel/87f=
+rwatp7n.fsf@suse.de/__;!!GjvTz_vk!QnXDo1zSlYecz7JvJky4SOQ9I8V5MoGHbINdAQAzM=
+JQ_yYg_8_BSUXz9kjvbSgFefhG0wi1j38KaC3g$
+> >>
+> >> Thanks,
+> >>
+> >> --
+> >> Peter Xu
+> >>
 
