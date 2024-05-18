@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFADC8C902A
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2A78C9031
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:34:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8GQQ-0006Lo-10; Sat, 18 May 2024 05:32:22 -0400
+	id 1s8GQc-0006Q1-LJ; Sat, 18 May 2024 05:32:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQN-0006KU-22; Sat, 18 May 2024 05:32:20 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1s8GQU-0006Mb-1l; Sat, 18 May 2024 05:32:26 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQL-0005kP-Ez; Sat, 18 May 2024 05:32:18 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1edf506b216so31078635ad.2; 
- Sat, 18 May 2024 02:32:16 -0700 (PDT)
+ id 1s8GQO-0005nO-3O; Sat, 18 May 2024 05:32:24 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1ee42b97b32so32110515ad.2; 
+ Sat, 18 May 2024 02:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716024735; x=1716629535; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716024738; x=1716629538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/DkuaTx6S9bv21jsAgT9nwS8XQdb1YTrH6xUMOIF84w=;
- b=ReNrKZwT9djcc02Pr6o5bbGL2IDE8OZdgpIeqwvZoXlktE1kbHDqxoj7BHEa6qq+ad
- PrpOwWQWws0SB0PP9CEV24A+thv4PsE9coVZV3ZvMs6nNTG5z+a9uN9q43s29F3iIQLx
- 9o5/hKfw9hc7Nhy0ZibM2zj+wDdPX0LSe0HyJI5aLShufSTeY9icRIfNApel3tCFljRs
- 3prQsNcYpD91sj0NojM7HeADGI/rhcBXU7X5bQV+GcOGZN++yMU8xUgm4wFgQMpRyahz
- tp9C6TVp0sgti5t7josonXYdTnNWUsZgig4YlNq179Gw3gJXTH2XGYCXAPj2e4JeyyO+
- 9FGA==
+ bh=usId0Lc202jfAnfSqLrsahzDXKSkcKXOT0TjzknQTYs=;
+ b=R+gYyilghIYJlyrxpsa+GtBSuAPsZslTDvI/kqDqn1O4cubpF6yU25o3EL/gTmegUu
+ FJXr8TB0NhMXU3/pfnzaBe0v6oQJSR0CFpBA22ZHHgy+gmFWJVt7yfwpfQ6AN92nDd1V
+ JiDRZ2iVvmPNRyxuZ2MIa7FqiHxOYvq2OSSL6RPNK2qmVAsxa/oBgIPoe1JAFP4SrghJ
+ t3f2EDtoP3tOI+0IhV/bfp0Gf0+ja/f5A0dbt0IA4YV/lz1T4XhUIVtCmWtLJFpvdn2X
+ HCK0HjogjS12KiVab1Fqg65+BBCYyu2B+zL+qmD2rlvO+LQTsLkwoBXrlYDwdmKjdNRE
+ YacA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716024735; x=1716629535;
+ d=1e100.net; s=20230601; t=1716024738; x=1716629538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/DkuaTx6S9bv21jsAgT9nwS8XQdb1YTrH6xUMOIF84w=;
- b=YIRS3w81Cdu+8EFyA6b00cPo7vkwdw+6eUyVF4w+ybyVfIL2fPpV3dOV0QzIEr1q7F
- e6OilV9BUBj5zaZ5sfC2+jOlBa6kQXrCb25xu0Wh26ux9+tN0oLXw0f3wX0rQ2J7bYVl
- yMR8TIo2Bqha7yraQFCJiTXJ1cHaLRSausAeQ+2DbDRmd9pfrGSmzN75iiFC5mqP2wES
- 36Bk1MTx9wR864hFhvCAVxQum3ldOPQ+cYItSO2BzYZXIZtOK2S4QYje4H2XWMHbGRXJ
- 4USnR7u3g3J1sC5exXbjdF14SI267KwGhCrQ+bS3W48jsvTQjHsEEYVhDglIgtepg7IV
- XzLw==
+ bh=usId0Lc202jfAnfSqLrsahzDXKSkcKXOT0TjzknQTYs=;
+ b=FtvKH3GbdQhHTx+hQj3YYjvcasphIbGSJz+nZHJgA24noxJHfuSFmZ4blHVAZN1cGk
+ cFvo4iTJkrcaHc7BsDVaNJEeb3bA6g80z6IFNrc3+wiB1jSM6sHMz1mPjW0TYJ0djCJi
+ Ljtp20gSJhmwnL9fx1G/XEPf0LYrcUbq8NdlLxIc7IeaYHhMms1cn0K/skVAVE+rp1q7
+ MgZ8i81JwTFI10BRdYtQuIsgliR1/4o48PVyrrEGW+glie3aeAENFuJILycKvI9DKlkm
+ G6Rr4qRtj4X4GUTiT4RVJkYvdsJyMCYSt4FlkO2gv4vodONO+XsVkkIY1crtu7tmC7xw
+ 4KzA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV+SYZZkKd4/oJSZau/4uPQePW+hYhOQiBGMUGCYCxEqtILAZYOdsxefkG6CU6TXnfEe43mQphKDd8dRWgSKpsXjSuy2pY=
-X-Gm-Message-State: AOJu0YwLNwpsvd0SUXJha732vBEWUIIZm8oxjBgcEwq/ashtMliwb6PO
- FB358BFfK8q0SOOqiHuFIA5QKnUjUcNdcFOnCAfslyltuVP6HDr1wOYMmg==
-X-Google-Smtp-Source: AGHT+IElv1wAahrvZxYGUKpEQsiAvx8JKDwHaPbxJ3oq1Uqmyi5zG7HI4+todDG+rDhZWw45Wfp35g==
-X-Received: by 2002:a05:6a20:7fa6:b0:1ad:7ff5:cb38 with SMTP id
- adf61e73a8af0-1afde238da3mr26284409637.60.1716024735166; 
- Sat, 18 May 2024 02:32:15 -0700 (PDT)
+ AJvYcCXSY/M237tffIO+ZX3ZPeu08VOy87Nl9UshNZQibO1ABJbGknjBJcOwUds8pQNyEJFexYxSJP0Y+QJ46iH4Oyc+JNBehqU=
+X-Gm-Message-State: AOJu0YyjJWlJlX1he9QC9HgFOWwazrJb6UFPctYjV4bizpLm/uaqNQU7
+ LjXF/FgaxHSe1VVLLdgueLR0QrivZyooTV+5Yr9+GP30KDM9oD9zR2DhDA==
+X-Google-Smtp-Source: AGHT+IG4gBQf3huoEGmX0EjI343YhBArR7mukcvm6haRtMGnZnQ9FFmjLMe+XZnF2SH5GrP9HDp81g==
+X-Received: by 2002:a17:90b:696:b0:29b:b5a4:c040 with SMTP id
+ 98e67ed59e1d1-2b6cd1f0510mr20912068a91.46.1716024738149; 
+ Sat, 18 May 2024 02:32:18 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.12
+ 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 May 2024 02:32:14 -0700 (PDT)
+ Sat, 18 May 2024 02:32:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PATCH 02/14] target/ppc: Remove redundant MEMOP_GET_SIZE macro
-Date: Sat, 18 May 2024 19:31:44 +1000
-Message-ID: <20240518093157.407144-3-npiggin@gmail.com>
+Subject: [PATCH 03/14] target/ppc: Make checkstop actually stop the system
+Date: Sat, 18 May 2024 19:31:45 +1000
+Message-ID: <20240518093157.407144-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240518093157.407144-1-npiggin@gmail.com>
 References: <20240518093157.407144-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,53 +93,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a memop_size() function for this.
+checkstop state does not halt the system, interrupts continue to be
+serviced, and other CPUs run. Make it stop the machine with
+qemu_system_guest_panicked.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ target/ppc/excp_helper.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 0882fe2fd2..cf2404330b 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -2904,8 +2904,6 @@ static void gen_isync(DisasContext *ctx)
-     ctx->base.is_jmp = DISAS_EXIT_UPDATE;
- }
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 2e3f36a3ef..fd00c044b5 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -19,6 +19,8 @@
+ #include "qemu/osdep.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/log.h"
++#include "sysemu/sysemu.h"
++#include "sysemu/runstate.h"
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "internal.h"
+@@ -425,6 +427,8 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
  
--#define MEMOP_GET_SIZE(x)  (1 << ((x) & MO_SIZE))
--
- static void gen_load_locked(DisasContext *ctx, MemOp memop)
+ static void powerpc_mcheck_checkstop(CPUPPCState *env)
  {
-     TCGv gpr = cpu_gpr[rD(ctx->opcode)];
-@@ -2938,7 +2936,7 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
-     TCGv u = tcg_temp_new();
++    /* KVM guests always have MSR[ME] enabled */
++#ifdef CONFIG_TCG
+     CPUState *cs = env_cpu(env);
  
-     tcg_gen_qemu_ld_tl(t, EA, ctx->mem_idx, memop);
--    tcg_gen_addi_tl(t2, EA, MEMOP_GET_SIZE(memop));
-+    tcg_gen_addi_tl(t2, EA, memop_size(memop));
-     tcg_gen_qemu_ld_tl(t2, t2, ctx->mem_idx, memop);
-     tcg_gen_addi_tl(u, t, addend);
- 
-@@ -2948,7 +2946,7 @@ static void gen_fetch_inc_conditional(DisasContext *ctx, MemOp memop,
-     tcg_gen_qemu_st_tl(u, EA, ctx->mem_idx, memop);
- 
-     /* RT = (t != t2 ? t : u = 1<<(s*8-1)) */
--    tcg_gen_movi_tl(u, 1 << (MEMOP_GET_SIZE(memop) * 8 - 1));
-+    tcg_gen_movi_tl(u, 1 << (memop_size(memop) * 8 - 1));
-     tcg_gen_movcond_tl(cond, cpu_gpr[rD(ctx->opcode)], t, t2, t, u);
+     if (FIELD_EX64(env->msr, MSR, ME)) {
+@@ -437,9 +441,15 @@ static void powerpc_mcheck_checkstop(CPUPPCState *env)
+     if (qemu_log_separate()) {
+         qemu_log("Machine check while not allowed. "
+                  "Entering checkstop state\n");
+-    }
+-    cs->halted = 1;
+-    cpu_interrupt_exittb(cs);
++
++    /*
++     * This stops the machine and logs CPU state without killing QEMU
++     * (like cpu_abort()) so the machine can still be debugged (because
++     * it is often a guest error).
++     */
++    qemu_system_guest_panicked(NULL);
++    cpu_loop_exit_noexc(cs);
++#endif
  }
  
-@@ -3110,7 +3108,7 @@ static void gen_st_atomic(DisasContext *ctx, MemOp memop)
-             TCGv ea_plus_s = tcg_temp_new();
- 
-             tcg_gen_qemu_ld_tl(t, EA, ctx->mem_idx, memop);
--            tcg_gen_addi_tl(ea_plus_s, EA, MEMOP_GET_SIZE(memop));
-+            tcg_gen_addi_tl(ea_plus_s, EA, memop_size(memop));
-             tcg_gen_qemu_ld_tl(t2, ea_plus_s, ctx->mem_idx, memop);
-             tcg_gen_movcond_tl(TCG_COND_EQ, s, t, t2, src, t);
-             tcg_gen_movcond_tl(TCG_COND_EQ, s2, t, t2, src, t2);
+ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
 -- 
 2.43.0
 
