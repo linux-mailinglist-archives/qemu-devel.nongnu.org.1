@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FCF8C9034
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:34:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D8B8C902C
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:33:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8GQi-0006T9-Jg; Sat, 18 May 2024 05:32:40 -0400
+	id 1s8GQt-0006bY-D0; Sat, 18 May 2024 05:32:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQe-0006RW-F3; Sat, 18 May 2024 05:32:36 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1s8GQp-0006X6-H3; Sat, 18 May 2024 05:32:47 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQb-0005tK-Tw; Sat, 18 May 2024 05:32:36 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1eca195a7c8so31830755ad.2; 
- Sat, 18 May 2024 02:32:32 -0700 (PDT)
+ id 1s8GQg-0005vW-Oq; Sat, 18 May 2024 05:32:47 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1ecddf96313so6221335ad.2; 
+ Sat, 18 May 2024 02:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716024751; x=1716629551; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716024754; x=1716629554; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sYAW5npmFCrDzEP1Z4gIDF6q78kLtYXXiWAxpccYBJI=;
- b=E7mNFO/esd3GybA3nUGL0svf9R97LyspGma3BpfBOlb1+TUi59P/NA+pXFcZSEYk3M
- 29v/D5QbPOay86UZjal9wLpT52CCLi0D0SY4oj4VGfdGQoo5cyWB8EaGjzT7kpjpRmrb
- Xv4qdVwIoQG/WdQs1pkvRNp+qJ5ad8O82U1zSywHhdmxKwpbOG4Rmi505reb8SV0WPNr
- joxZTfz6obhrU3pQzBSZpkswSlnsn1QZMzpVQ71MuJqU8CJXf0kcq2buK9wU6pU9jCXw
- v7Zw+VXS5iSp9B/n1hWvwyrOyxizF/rqZAK60kFpii57rorZWCqn8McwOknJX65iNVdV
- 7jTg==
+ bh=C05xE7UClbFjpcfnp/5y2S2aVeK97g5iKYmeDJkYN6Q=;
+ b=glkkTkk/JHi1D7ITUNfiGvTeUYTwB5nOEu3NU35td3QxsBE7eY9d2leWKdRvjyhEYj
+ ksD2Lu+ifOSvp4Bw1Kt6rqzx+8IbkAyyWcbkd/Or2JuyMt7uBr2dBimK3lKl8uYNxbD9
+ O0JkD8cAaXohKIxzUPUcQvDqL+41JtFjc2mgmTBMZMTrN3nMHO9E5XLkKhON22hp7p0E
+ H5aMcOISVK/ZOqQxJ7rRpe95Y2tXIJYRGjlIpse+IZQU3WlpE/Obkby6o2jOfz73yTDL
+ Ihenr8Bw0gYBXsr64z37L2BCLD71cziBYgQ1yoNFhpmBI6tZl8T7dx3p1S6mndDVcNs0
+ kJrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716024751; x=1716629551;
+ d=1e100.net; s=20230601; t=1716024754; x=1716629554;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sYAW5npmFCrDzEP1Z4gIDF6q78kLtYXXiWAxpccYBJI=;
- b=mjtj4e4lqztecNSxdibNGLEkkhhwJse8k2L3rzcqCWZeAK9HqUIPBJ3Su9YEpENaK4
- nCHElQbNq+nqZtdB2atUIKE1Zpvj+TvLh6FGX66y4eBbRk1VTNmUXV7DlUTo6psQvWKQ
- 5olLV/MfdY0YXFY8YUKJ3veT2HXwG9g3rC//DVm78mTYKXwubhR6X6sChr41KWhUBdAm
- ywrTU00HvZVh/V2O6cahm4pWw6on5nV2dnRHYOrVZrPhLO69jpu1Yfu439GuR/yiZDsq
- vD9139FMrAr1KQCYIK0eycVWdYfRoxVL84IULNzyr48Ub2mgELPlsLWXuplxS9PlfqMb
- XRfw==
+ bh=C05xE7UClbFjpcfnp/5y2S2aVeK97g5iKYmeDJkYN6Q=;
+ b=EC0sct3915GFCLc0k2gqVWhq3BD0e4m74leI+0ZnM3fR/EKHPMepVmraORQdXEmp8F
+ wTz2IGsy8lc/+NQaJcpN7kz4IHqpVKIAB3mwwiaaetMPQ6OU0MN/IawJrKl2xvZOSJU5
+ vFgqPOzunAl5gyDkvGBWCoYqDvTC70RQ8EQC6w6BbX21aR88L2Fck0BMeFtk+WsscDfC
+ B8PqaxASMdpC2/1P0sv53ovjjxx1IWROaDImVaP1N048Qw3paTp1oM6o+YnFxxhwuOCx
+ QdNHd5bNulzDHAdKQbCCMi90cvJ2uAvHYhEMbMipfVC7y0MMG8QxXLmY/5xtlzhQa4pQ
+ Zuww==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXjjPJmIN8ZVuuCd3uR6/PPpqTfJVkXccUOwkOVNhcc5rGwuExeePGIThJRWdolYW2nqR0AAXPCQ7RhZCEmDYxJVr+RRtE=
-X-Gm-Message-State: AOJu0YzMPXuIGq02QgVTzWtL/WKL8HhzSSNdejnvR0KynFhns+3qX7EP
- jlhjonJxLPcO/XEpJEG+HFHjemujg1RamOdT3tarj/QAgO8aUDV7QtIejA==
-X-Google-Smtp-Source: AGHT+IGgr64vNd0lmI6OTtLP84D8Lsd/hb5YeyxaGHkR+5NhcYGLMR2dqQyuIhhF+6J1NIyiswj/aA==
-X-Received: by 2002:a17:90a:1282:b0:2bd:68a4:cc88 with SMTP id
- 98e67ed59e1d1-2bd68a4cec1mr238843a91.47.1716024751133; 
- Sat, 18 May 2024 02:32:31 -0700 (PDT)
+ AJvYcCV5x5UsxwEZoMT9Mh2VqsoCWFrxjc0/0RupQd3OiYJ7oCB6G9F2gP9nmMtr0dLVShMlLK+89TNlrnEp0wQu0J9oeIwJ6TI=
+X-Gm-Message-State: AOJu0YwQeiNnD7bQFcNuHZMtpxsscvMh2XNEOCc14/r6zyfXvV/8ZiH7
+ X9ZUxJbzJHj4hhqx2ddiyUXVmwC8ffXClAY/BgPVO+1A2SMSP78MKCYqdg==
+X-Google-Smtp-Source: AGHT+IFcgKIqMUKc5FdDCOqCaKhZQ12l/eMPtTOJiGGfk0t7d9hwfRSJpq3Fii69oKZEmWppU/nBmQ==
+X-Received: by 2002:a05:6a21:2d05:b0:1b0:278e:34bc with SMTP id
+ adf61e73a8af0-1b0278e36e4mr8833723637.62.1716024754374; 
+ Sat, 18 May 2024 02:32:34 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.28
+ 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 May 2024 02:32:30 -0700 (PDT)
+ Sat, 18 May 2024 02:32:34 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PATCH 07/14] target/ppc: Wire up BookE ATB registers for e500 family
-Date: Sat, 18 May 2024 19:31:49 +1000
-Message-ID: <20240518093157.407144-8-npiggin@gmail.com>
+Subject: [PATCH 08/14] target/ppc: Add PPR32 SPR
+Date: Sat, 18 May 2024 19:31:50 +1000
+Message-ID: <20240518093157.407144-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240518093157.407144-1-npiggin@gmail.com>
 References: <20240518093157.407144-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,60 +92,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From the Freescale PowerPC Architecture Primer:
-
-  Alternate time base APU. This APU, implemented on the e500v2, defines
-  a 64-bit time base counter that differs from the PowerPC defined time
-  base in that it is not writable and counts at a different, and
-  typically much higher, frequency. The alternate time base always
-  counts up, wrapping when the 64-bit count overflows.
-
-This implementation of ATB uses the same frequency as the TB. The
-existing spr_read_atbu/l functions are unused without this patch
-to wire them into the SPR.
-
-RTEMS uses this SPR on the e6500, though this hasn't been tested.
+PPR32 provides access to the upper half of PPR.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ target/ppc/cpu.h        |  1 +
+ target/ppc/spr_common.h |  2 ++
+ target/ppc/cpu_init.c   | 12 ++++++++++++
+ target/ppc/translate.c  | 16 ++++++++++++++++
+ 4 files changed, 31 insertions(+)
 
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 2f7fab22ba..9a51e54c1c 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -2120,6 +2120,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_POWER_MMCRS       (0x37E)
+ #define SPR_WORT              (0x37F)
+ #define SPR_PPR               (0x380)
++#define SPR_PPR32             (0x382)
+ #define SPR_750_GQR0          (0x390)
+ #define SPR_440_DNV0          (0x390)
+ #define SPR_750_GQR1          (0x391)
+diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
+index eb2561f593..9e40b3b608 100644
+--- a/target/ppc/spr_common.h
++++ b/target/ppc/spr_common.h
+@@ -203,6 +203,8 @@ void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn);
+ void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
+ void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
++void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn);
++void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn);
+ #endif
+ 
+ void register_low_BATs(CPUPPCState *env);
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 462246cb7d..e186da5ef1 100644
+index e186da5ef1..dd45251d7a 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -920,6 +920,18 @@ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
- #endif
+@@ -5623,6 +5623,14 @@ static void register_HEIR64_spr(CPUPPCState *env)
+                  0x00000000);
  }
  
-+static void register_atb_sprs(CPUPPCState *env)
++static void register_power7_common_sprs(CPUPPCState *env)
 +{
-+    spr_register(env, SPR_ATBL, "ATBL",
-+                 &spr_read_atbl, SPR_NOACCESS,
-+                 &spr_read_atbl, SPR_NOACCESS,
-+                 0x00000000);
-+    spr_register(env, SPR_ATBU, "ATBU",
-+                 &spr_read_atbu, SPR_NOACCESS,
-+                 &spr_read_atbu, SPR_NOACCESS,
++    spr_register(env, SPR_PPR32, "PPR32",
++                 &spr_read_ppr32, &spr_write_ppr32,
++                 &spr_read_ppr32, &spr_write_ppr32,
 +                 0x00000000);
 +}
 +
- /* SPR specific to PowerPC 440 implementation */
- static void register_440_sprs(CPUPPCState *env)
+ static void register_power8_tce_address_control_sprs(CPUPPCState *env)
  {
-@@ -2927,6 +2939,11 @@ static void init_proc_e500(CPUPPCState *env, int version)
-     register_BookE206_sprs(env, 0x000000DF, tlbncfg, mmucfg);
-     register_usprgh_sprs(env);
+     spr_register_kvm(env, SPR_TAR, "TAR",
+@@ -6118,6 +6126,7 @@ static void init_proc_POWER7(CPUPPCState *env)
+     register_power6_common_sprs(env);
+     register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
++    register_power7_common_sprs(env);
+     register_power7_book4_sprs(env);
  
-+    if (version != fsl_e500v1) {
-+        /* e500v1 has no support for alternate timebase */
-+        register_atb_sprs(env);
-+    }
+     /* env variables */
+@@ -6265,6 +6274,7 @@ static void init_proc_POWER8(CPUPPCState *env)
+     register_power6_common_sprs(env);
+     register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
++    register_power7_common_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+     register_power8_ebb_sprs(env);
+@@ -6432,6 +6442,7 @@ static void init_proc_POWER9(CPUPPCState *env)
+     register_power6_common_sprs(env);
+     register_HEIR32_spr(env);
+     register_power6_dbg_sprs(env);
++    register_power7_common_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+     register_power8_ebb_sprs(env);
+@@ -6626,6 +6637,7 @@ static void init_proc_POWER10(CPUPPCState *env)
+     register_power6_common_sprs(env);
+     register_HEIR64_spr(env);
+     register_power6_dbg_sprs(env);
++    register_power7_common_sprs(env);
+     register_power8_tce_address_control_sprs(env);
+     register_power8_ids_sprs(env);
+     register_power8_ebb_sprs(env);
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index ee7f3ee5a2..c4b4f7ea62 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1416,6 +1416,22 @@ void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn)
+     gen_load_spr(t0, sprn + 16);
+     tcg_gen_ext32u_tl(cpu_gpr[gprn], t0);
+ }
 +
-     spr_register(env, SPR_HID0, "HID0",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
++/* The PPR32 SPR accesses the upper 32-bits of PPR */
++void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn)
++{
++    gen_load_spr(cpu_gpr[gprn], SPR_PPR);
++    tcg_gen_shri_tl(cpu_gpr[gprn], cpu_gpr[gprn], 32);
++}
++
++void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn)
++{
++    TCGv t0 = tcg_temp_new();
++
++    tcg_gen_shli_tl(t0, cpu_gpr[gprn], 32);
++    gen_store_spr(SPR_PPR, t0);
++    spr_store_dump_spr(SPR_PPR);
++}
+ #endif
+ 
+ #define GEN_HANDLER(name, opc1, opc2, opc3, inval, type)                      \
 -- 
 2.43.0
 
