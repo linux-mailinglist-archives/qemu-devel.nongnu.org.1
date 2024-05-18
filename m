@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2A78C9031
-	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:34:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92728C9036
+	for <lists+qemu-devel@lfdr.de>; Sat, 18 May 2024 11:34:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8GQc-0006Q1-LJ; Sat, 18 May 2024 05:32:34 -0400
+	id 1s8GQd-0006R4-Tg; Sat, 18 May 2024 05:32:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQU-0006Mb-1l; Sat, 18 May 2024 05:32:26 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1s8GQb-0006PB-Q8; Sat, 18 May 2024 05:32:33 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8GQO-0005nO-3O; Sat, 18 May 2024 05:32:24 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1ee42b97b32so32110515ad.2; 
- Sat, 18 May 2024 02:32:19 -0700 (PDT)
+ id 1s8GQR-0005oa-Cc; Sat, 18 May 2024 05:32:26 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1eca195a7c8so31828615ad.2; 
+ Sat, 18 May 2024 02:32:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716024738; x=1716629538; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716024741; x=1716629541; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=usId0Lc202jfAnfSqLrsahzDXKSkcKXOT0TjzknQTYs=;
- b=R+gYyilghIYJlyrxpsa+GtBSuAPsZslTDvI/kqDqn1O4cubpF6yU25o3EL/gTmegUu
- FJXr8TB0NhMXU3/pfnzaBe0v6oQJSR0CFpBA22ZHHgy+gmFWJVt7yfwpfQ6AN92nDd1V
- JiDRZ2iVvmPNRyxuZ2MIa7FqiHxOYvq2OSSL6RPNK2qmVAsxa/oBgIPoe1JAFP4SrghJ
- t3f2EDtoP3tOI+0IhV/bfp0Gf0+ja/f5A0dbt0IA4YV/lz1T4XhUIVtCmWtLJFpvdn2X
- HCK0HjogjS12KiVab1Fqg65+BBCYyu2B+zL+qmD2rlvO+LQTsLkwoBXrlYDwdmKjdNRE
- YacA==
+ bh=VgJrCCZZWo/VI2Gs8h/qaG/qmQuOyLSxM5HbB7cUtW8=;
+ b=YYshcTmyM1K7FI+nP7w5Ok6Q5/29XNGrWsgqwgc4SogdW5kLE/v9sj581zXAIYXGM6
+ smnqoFLMJ66JuerKuMxZs5RpttSlmNWcEspgdFf0wDMz3qnOiY6rOkcH735MEwc4h+Rj
+ Ffv62uHiww23dlxw4u3TqulF3YXIoSbbsD8DEkQf+mWkBYxzg5AKv0sPgQzXjyXFLSKx
+ BAq7PwU20bzisoA00yfPzB2CV1YkA/jzNrLiycc/LGNRAIbCdwLecxIvZSW1WVlact9V
+ wRDry09w/zyt3wFVuN/UGXsz/oUDZEtr+oTeNeQfjsPBUY8TzPi3sfBC9Z69J4nTeVNG
+ J8TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716024738; x=1716629538;
+ d=1e100.net; s=20230601; t=1716024741; x=1716629541;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=usId0Lc202jfAnfSqLrsahzDXKSkcKXOT0TjzknQTYs=;
- b=FtvKH3GbdQhHTx+hQj3YYjvcasphIbGSJz+nZHJgA24noxJHfuSFmZ4blHVAZN1cGk
- cFvo4iTJkrcaHc7BsDVaNJEeb3bA6g80z6IFNrc3+wiB1jSM6sHMz1mPjW0TYJ0djCJi
- Ljtp20gSJhmwnL9fx1G/XEPf0LYrcUbq8NdlLxIc7IeaYHhMms1cn0K/skVAVE+rp1q7
- MgZ8i81JwTFI10BRdYtQuIsgliR1/4o48PVyrrEGW+glie3aeAENFuJILycKvI9DKlkm
- G6Rr4qRtj4X4GUTiT4RVJkYvdsJyMCYSt4FlkO2gv4vodONO+XsVkkIY1crtu7tmC7xw
- 4KzA==
+ bh=VgJrCCZZWo/VI2Gs8h/qaG/qmQuOyLSxM5HbB7cUtW8=;
+ b=UdMC9sgWxuwSDBtrs4Oj5lod4K+16a99ey/CPvSujNiu2Q3Kb+m7XgeOK+U1W8BnAp
+ j01dwYGLFyYOk3TgxgTTilf0Q5Sn1yf0vS0rVk9SaNqmrPsGfSss5HMyArDdrQGVkkaS
+ bzrBspVDrCQD3Yml/nNCxL5kEY5gkjiKKGmm7RJwGovGtzDcrNoSXOJpUw+n6mDY+i5H
+ /+n11A/FjcCPm43or4f2d2UfD32zas+nR7RBp60CxZAtV15oSxKpuOQ8CeUF3KL1NYfL
+ mcJccUIcl/QJkxNo5HeFzyqm5tlAXLOTuYSRwNbxbrkIOhglVmxXJ5TCDuJ31SkShN04
+ rbzQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXSY/M237tffIO+ZX3ZPeu08VOy87Nl9UshNZQibO1ABJbGknjBJcOwUds8pQNyEJFexYxSJP0Y+QJ46iH4Oyc+JNBehqU=
-X-Gm-Message-State: AOJu0YyjJWlJlX1he9QC9HgFOWwazrJb6UFPctYjV4bizpLm/uaqNQU7
- LjXF/FgaxHSe1VVLLdgueLR0QrivZyooTV+5Yr9+GP30KDM9oD9zR2DhDA==
-X-Google-Smtp-Source: AGHT+IG4gBQf3huoEGmX0EjI343YhBArR7mukcvm6haRtMGnZnQ9FFmjLMe+XZnF2SH5GrP9HDp81g==
-X-Received: by 2002:a17:90b:696:b0:29b:b5a4:c040 with SMTP id
- 98e67ed59e1d1-2b6cd1f0510mr20912068a91.46.1716024738149; 
- Sat, 18 May 2024 02:32:18 -0700 (PDT)
+ AJvYcCU0y1GlGCZ9hpcf376VLWylb0l92sbQS5TK7THddLsh48chWLUvm6zZO5GE4GHPXSC9Z+M0tRFQoqiuWXhCc20/AE+jr7E=
+X-Gm-Message-State: AOJu0YxojF+iYTeIUbX/6U6ak+rfPA8Jp5q86dazkYszOR1jpn9Qzkn3
+ 5egNS9uVutPiecbiIdpYIKYfiZSpYVIODIsRX/zVtNp/Zf/zER+gJ3b/Hg==
+X-Google-Smtp-Source: AGHT+IFOxM7n74TgMVUm3YbbzQFZO7XzCT2I4T8O56HkzNPPiBGp0F4OE65IyWuaagmMHzMr4qAXwg==
+X-Received: by 2002:a05:6a20:9190:b0:1a9:852f:6acf with SMTP id
+ adf61e73a8af0-1afde0a8e5dmr25261146637.11.1716024741426; 
+ Sat, 18 May 2024 02:32:21 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.15
+ 98e67ed59e1d1-2b628ea6a05sm18518901a91.52.2024.05.18.02.32.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 May 2024 02:32:17 -0700 (PDT)
+ Sat, 18 May 2024 02:32:21 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
  Glenn Miles <milesg@linux.vnet.ibm.com>
-Subject: [PATCH 03/14] target/ppc: Make checkstop actually stop the system
-Date: Sat, 18 May 2024 19:31:45 +1000
-Message-ID: <20240518093157.407144-4-npiggin@gmail.com>
+Subject: [PATCH 04/14] target/ppc: improve checkstop logging
+Date: Sat, 18 May 2024 19:31:46 +1000
+Message-ID: <20240518093157.407144-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240518093157.407144-1-npiggin@gmail.com>
 References: <20240518093157.407144-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,56 +93,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-checkstop state does not halt the system, interrupts continue to be
-serviced, and other CPUs run. Make it stop the machine with
-qemu_system_guest_panicked.
+Change the logging not to print to stderr as well, because a
+checkstop is a guest error (or perhaps a simulated machine error)
+rather than a QEMU error, so send it to the log.
+
+Update the checkstop message, and log CPU registers too.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ target/ppc/excp_helper.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 2e3f36a3ef..fd00c044b5 100644
+index fd00c044b5..a283c97717 100644
 --- a/target/ppc/excp_helper.c
 +++ b/target/ppc/excp_helper.c
-@@ -19,6 +19,8 @@
- #include "qemu/osdep.h"
- #include "qemu/main-loop.h"
- #include "qemu/log.h"
-+#include "sysemu/sysemu.h"
-+#include "sysemu/runstate.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "internal.h"
-@@ -425,6 +427,8 @@ static void powerpc_set_excp_state(PowerPCCPU *cpu, target_ulong vector,
- 
- static void powerpc_mcheck_checkstop(CPUPPCState *env)
- {
-+    /* KVM guests always have MSR[ME] enabled */
-+#ifdef CONFIG_TCG
+@@ -430,17 +430,19 @@ static void powerpc_mcheck_checkstop(CPUPPCState *env)
+     /* KVM guests always have MSR[ME] enabled */
+ #ifdef CONFIG_TCG
      CPUState *cs = env_cpu(env);
++    FILE *f;
  
      if (FIELD_EX64(env->msr, MSR, ME)) {
-@@ -437,9 +441,15 @@ static void powerpc_mcheck_checkstop(CPUPPCState *env)
-     if (qemu_log_separate()) {
-         qemu_log("Machine check while not allowed. "
-                  "Entering checkstop state\n");
--    }
--    cs->halted = 1;
--    cpu_interrupt_exittb(cs);
-+
-+    /*
-+     * This stops the machine and logs CPU state without killing QEMU
-+     * (like cpu_abort()) so the machine can still be debugged (because
-+     * it is often a guest error).
-+     */
-+    qemu_system_guest_panicked(NULL);
-+    cpu_loop_exit_noexc(cs);
-+#endif
- }
+         return;
+     }
  
- static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+-    /* Machine check exception is not enabled. Enter checkstop state. */
+-    fprintf(stderr, "Machine check while not allowed. "
+-            "Entering checkstop state\n");
+-    if (qemu_log_separate()) {
+-        qemu_log("Machine check while not allowed. "
+-                 "Entering checkstop state\n");
++    f = qemu_log_trylock();
++    if (f) {
++        fprintf(f, "Entering checkstop state: "
++                   "machine check with MSR[ME]=0\n");
++        cpu_dump_state(cs, f, CPU_DUMP_FPU | CPU_DUMP_CCOP);
++        qemu_log_unlock(f);
++    }
+ 
+     /*
+      * This stops the machine and logs CPU state without killing QEMU
 -- 
 2.43.0
 
