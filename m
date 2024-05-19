@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7F78C96CF
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 May 2024 23:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FAA8C96CD
+	for <lists+qemu-devel@lfdr.de>; Sun, 19 May 2024 23:30:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8o4h-0005Cj-Mf; Sun, 19 May 2024 17:28:11 -0400
+	id 1s8o4W-0005A9-UJ; Sun, 19 May 2024 17:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s8o4g-0005CR-4K
- for qemu-devel@nongnu.org; Sun, 19 May 2024 17:28:10 -0400
+ id 1s8o4V-0005A1-Kv
+ for qemu-devel@nongnu.org; Sun, 19 May 2024 17:27:59 -0400
 Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s8o4Q-0003LH-Vc
- for qemu-devel@nongnu.org; Sun, 19 May 2024 17:28:09 -0400
+ id 1s8o4T-0003Lg-4j
+ for qemu-devel@nongnu.org; Sun, 19 May 2024 17:27:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1716154073;
- bh=Zf5ybH3+E5oExY18KzbIc13eEyNu7tcqVtUjJohdoXU=;
+ s=mail; t=1716154076;
+ bh=gVKCEQLi+TWXZcAb4Mhl2GRHVpQkATdINPWD7gwOEQc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=gzskLD2DGi7GRcLRC80YQmwpAbC/46/++Eoo6EKY53k4hYy2S2qdVsc+9fY3RSuh2
- Sedwdm7HEFHPoEJoSw+n0eZ9AfT07jOw6YIgqnhzkG9eHPMF+F2Sd2faHPEel4nDCC
- Cgq9pCxJEl5ydqfq5mQeGbolFC5fdh3gttCiLH2zVOlREjGKPOyvpi67go8Rhkb7+I
- x1ziCBkTCshY56Uw9u0hZG4CgmojcR/yti1/ggY44nJ5dfRmgBpLDjxIPh19EGDEgx
- yj3akknOIU1GM2PwXLBLZFDyub6SKA0JB7rAJgqrL7PMDRe2CQOenGmjFq6xnpAYmj
- gWvtsCZcaEAkQ==
+ b=CDsi56il/Yi6Ol2wymQ+8UOGcgYVVwqMVxv6REHCIgVFeECgE6S/LKBIZ4twTVpG+
+ Sgeqe0HopCbabDAEjTes5/MtivN/imJGeLX/dKrpwxFrgtdbFUgFXQLuakrztcfl7z
+ ne59Jr1jXLQe9pIMMvCKx8ZC/9EMI2D5T+WnpquJDLza315y0i1IguAujCKCyRboaj
+ SY+OIuRGuySPqNHce/rtojUeUvvq+7ZFZqcaGo9QYh8YPk+6xidKOd1Twg35ISTekD
+ tgt36SYNMMjPALgqBmpalEPqIoLSxuAP0F2YnfaJM/puzAinik+0rX6kG6GS7xbvsj
+ ox0pPu8klMTkQ==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 69AEE37820AB;
- Sun, 19 May 2024 21:27:51 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id D5E8437820E1;
+ Sun, 19 May 2024 21:27:53 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -56,9 +56,10 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v12 02/13] virtio-gpu: Handle virtio_gpu_virgl_init() failure
-Date: Mon, 20 May 2024 00:27:01 +0300
-Message-ID: <20240519212712.2605419-3-dmitry.osipenko@collabora.com>
+Subject: [PATCH v12 03/13] virtio-gpu: Use pkgconfig version to decide which
+ virgl features are available
+Date: Mon, 20 May 2024 00:27:02 +0300
+Message-ID: <20240519212712.2605419-4-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240519212712.2605419-1-dmitry.osipenko@collabora.com>
 References: <20240519212712.2605419-1-dmitry.osipenko@collabora.com>
@@ -87,93 +88,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio_gpu_virgl_init() may fail, leading to a further Qemu crash
-because Qemu assumes it never fails. Check virtio_gpu_virgl_init()
-return code and don't execute virtio commands on error. Failed
-virtio_gpu_virgl_init() will result in a timed out virtio commands
-for a guest OS.
+New virglrerenderer features were stabilized with release of v1.0.0.
+Presence of symbols in virglrenderer.h doesn't guarantee ABI compatibility
+with pre-release development versions of libvirglerender. Use virglrenderer
+version to decide reliably which virgl features are available.
 
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-gl.c     | 15 +++++++++++++--
- hw/display/virtio-gpu-virgl.c  |  3 +++
- include/hw/virtio/virtio-gpu.h |  1 +
- 3 files changed, 17 insertions(+), 2 deletions(-)
+ meson.build | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 0c0a8d136954..b353c3193afa 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -29,9 +29,14 @@ static void virtio_gpu_gl_update_cursor_data(VirtIOGPU *g,
-                                              struct virtio_gpu_scanout *s,
-                                              uint32_t resource_id)
- {
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-     uint32_t width, height;
-     uint32_t pixels, *data;
- 
-+    if (!gl->renderer_inited) {
-+        return;
-+    }
-+
-     data = virgl_renderer_get_cursor_data(resource_id, &width, &height);
-     if (!data) {
-         return;
-@@ -60,13 +65,18 @@ static void virtio_gpu_gl_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
-     VirtIOGPU *g = VIRTIO_GPU(vdev);
-     VirtIOGPUGL *gl = VIRTIO_GPU_GL(vdev);
-     struct virtio_gpu_ctrl_command *cmd;
-+    int ret;
- 
--    if (!virtio_queue_ready(vq)) {
-+    if (!virtio_queue_ready(vq) || gl->renderer_init_failed) {
-         return;
-     }
- 
-     if (!gl->renderer_inited) {
--        virtio_gpu_virgl_init(g);
-+        ret = virtio_gpu_virgl_init(g);
-+        if (ret) {
-+            gl->renderer_init_failed = true;
-+            return;
-+        }
-         gl->renderer_inited = true;
-     }
-     if (gl->renderer_reset) {
-@@ -101,6 +111,7 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
-     if (gl->renderer_inited && !gl->renderer_reset) {
-         virtio_gpu_virgl_reset_scanout(g);
-         gl->renderer_reset = true;
-+        gl->renderer_init_failed = false;
-     }
- }
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 6ba4c24fda1d..bfbc6553e879 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -668,6 +668,9 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
- 
- void virtio_gpu_virgl_deinit(VirtIOGPU *g)
- {
-+    if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
-+        timer_free(g->print_stats);
-+    }
-     timer_free(g->fence_poll);
-     virgl_renderer_cleanup(NULL);
- }
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 8ece1ec2e98b..236daba24dd2 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -230,6 +230,7 @@ struct VirtIOGPUGL {
- 
-     bool renderer_inited;
-     bool renderer_reset;
-+    bool renderer_init_failed;
- };
- 
- struct VhostUserGPU {
+diff --git a/meson.build b/meson.build
+index a9de71d45064..413ec5179145 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2301,11 +2301,8 @@ config_host_data.set('CONFIG_PNG', png.found())
+ config_host_data.set('CONFIG_VNC', vnc.found())
+ config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
+ config_host_data.set('CONFIG_VNC_SASL', sasl.found())
+-if virgl.found()
+-  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT',
+-                       cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
+-                                     prefix: '#include <virglrenderer.h>',
+-                                     dependencies: virgl))
++if virgl.version().version_compare('>=1.0.0')
++  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
+ endif
+ config_host_data.set('CONFIG_VIRTFS', have_virtfs)
+ config_host_data.set('CONFIG_VTE', vte.found())
 -- 
 2.44.0
 
