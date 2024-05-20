@@ -2,80 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4988CA4FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 01:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D758CA511
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 01:35:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9CPB-0002bY-9T; Mon, 20 May 2024 19:26:57 -0400
+	id 1s9CVm-0004vc-UG; Mon, 20 May 2024 19:33:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
- id 1s9CP9-0002bJ-Jh
- for qemu-devel@nongnu.org; Mon, 20 May 2024 19:26:55 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
- id 1s9COu-0008O2-KF
- for qemu-devel@nongnu.org; Mon, 20 May 2024 19:26:55 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-5b2733389f9so2252231eaf.1
- for <qemu-devel@nongnu.org>; Mon, 20 May 2024 16:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716247598; x=1716852398; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=PSiPUdifB3HR/HcpTVEuaqGmgMDrnI8WAlHCqj4VVyo=;
- b=B9e90eeyfpxkHzrhcSkiy1AsxGTs7zKCpI3C8Pia9HThDCgPKsz6FzRIEHcb/ctBcH
- kLPfCW2t6OPfgIuN6snxBA0RU5aH0uKvZ0LpLY1qrkN7301dQ1O73PFDfQj45TkYr+sK
- KRONWvqOp6Jsz0mjFPEOFJcD8SaWIHRR5UjfVf6A5tVvttQGLkCIFI0dcc07jFvJ+RlO
- NtCGNJ26BzU6U+UG1xSRX97utGdVsECnzj9SOOWQfVTl4mLXPSUHy+rsHYSa59JxOn7I
- 6HHIxUmHeYIoivumBLdbs1LGfe+0xVPk/Ef9RG58jKTfySpC+tuMoIvuJpmEctPiCESb
- sN3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716247598; x=1716852398;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PSiPUdifB3HR/HcpTVEuaqGmgMDrnI8WAlHCqj4VVyo=;
- b=GgCo7RGZJWKIdGA8laXXQmLpp2xA2AnrKCxTtikDvUYT2mNisCcYZ7TULkhI5mkWoU
- af9ExGSTn+ngueZW+54XdBkAjdbihEzq2ic8ZsA0hItJsGgMuE+gHScP7f2Q/xIbgR3Q
- TeeS7Twk0VNNbtSa76ejtU831cg1C278adiqmeTkLwIqHcUITwQBKdShmNjn+Orb5rEV
- s/lCRxax0mYk05O2S6QwOyAYVXa5DEpmt4z8F9skGfRthq1igklGINKaJNjw6cO0wvg0
- O1IJudVN2jPOoQGPlNBz6mBrVhSJMXoUMkwDqgo++OkOeaLzuO1RIw7RRifN2ONscKkL
- 9AEA==
-X-Gm-Message-State: AOJu0Yz/Aytu5fQl/DxtjD3G2s/DyTigZX/2Gx8T7CvyB5BUYF+9iEl/
- nO03wpVjFOufLgI/0xRnf5Nbv+TspxWG7FGcpMsX1GS2eAgN/V400amF1Q==
-X-Google-Smtp-Source: AGHT+IGm0mEMuqGNdqtCjWQX6qP6VJmuFhvQUDd8WRGPcCq+RvwY37ovIHoteIp5uAHmih7N843/qA==
-X-Received: by 2002:a4a:8c0b:0:b0:5aa:538a:ed60 with SMTP id
- 006d021491bc7-5b2818a1565mr28499484eaf.3.1716247597612; 
- Mon, 20 May 2024 16:26:37 -0700 (PDT)
-Received: from mintleaf.lan ([136.49.150.227])
- by smtp.gmail.com with ESMTPSA id
- 006d021491bc7-5b53ae21914sm310553eaf.22.2024.05.20.16.26.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 May 2024 16:26:37 -0700 (PDT)
-From: David Hubbard <dmamfmgm@gmail.com>
-To: qemu-devel@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Cc: Philippe Mathieu-Daude <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, Gerd Hoffmann <kraxel@redhat.com>,
- Cord Amfmgm <dmamfmgm@gmail.com>
-Subject: [PATCH] hw/usb/hcd-ohci: Fix ohci_service_td: accept valid TDs
-Date: Mon, 20 May 2024 18:26:34 -0500
-Message-Id: <20240520232634.317988-1-dmamfmgm@gmail.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1s9CVj-0004v1-GK; Mon, 20 May 2024 19:33:44 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1s9CVf-0001ZZ-FR; Mon, 20 May 2024 19:33:42 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vjv4S5kTSz6J79X;
+ Tue, 21 May 2024 07:32:40 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
+ by mail.maildlp.com (Postfix) with ESMTPS id 6D274140B35;
+ Tue, 21 May 2024 07:33:28 +0800 (CST)
+Received: from 00293818-MRGF.china.huawei.com (10.126.174.235) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 21 May 2024 00:33:06 +0100
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
+ <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
+ <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
+ <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
+ <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
+ <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
+ <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
+ <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
+ <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
+ <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
+ <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
+ <npiggin@gmail.com>, <harshpb@linux.ibm.com>, <linuxarm@huawei.com>
+Subject: [PATCH V10 0/8] Add architecture agnostic code to support vCPU Hotplug
+Date: Tue, 21 May 2024 00:32:33 +0100
+Message-ID: <20240520233241.229675-1-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=dmamfmgm@gmail.com; helo=mail-oo1-xc2f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.126.174.235]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ lhrpeml500001.china.huawei.com (7.191.163.213)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,130 +70,152 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cord Amfmgm <dmamfmgm@gmail.com>
+Virtual CPU hotplug support is being added across various architectures[1][3].
+This series adds various code bits common across all architectures:
 
-This changes the way the ohci emulation handles a Transfer Descriptor with
-"Current Buffer Pointer" set to "Buffer End" + 1.
+1. vCPU creation and Parking code refactor [Patch 1]
+2. Update ACPI GED framework to support vCPU Hotplug [Patch 2,3]
+3. ACPI CPUs AML code change [Patch 4,5]
+4. Helper functions to support unrealization of CPU objects [Patch 6,7]
+5. Docs [Patch 8]
 
-The OHCI spec 4.3.1.2 Table 4-2 allows td.cbp to be one byte more than td.be
-to signal the buffer has zero length. Currently qemu only accepts zero-length
-Transfer Descriptors if the td.cbp is equal to 0, while actual OHCI hardware
-accepts both cases.
 
-The qemu ohci emulation has a regression in ohci_service_td. Version 4.2
-and earlier matched the spec. (I haven't taken the time to bisect exactly
-where the logic was changed.)
+Repository:
 
-With a tiny OS[1] that boots and executes a test, the issue can be seen:
+[*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v3.arch.agnostic.v10
 
-* OS that sends USB requests to a USB mass storage device
-  but sends td.cbp = td.be + 1
-* qemu 4.2
-* qemu HEAD (4e66a0854)
-* Actual OHCI controller (hardware)
+NOTE: For ARM, above will work in combination of the architecture specific part based on
+RFC V2 [1]. This architecture specific patch-set RFC V3 shall be floated soon and is present
+at below location
 
-Command line:
-qemu-system-x86_64 -m 20 \
- -device pci-ohci,id=ohci \
- -drive if=none,format=raw,id=d,file=testmbr.raw \
- -device usb-storage,bus=ohci.0,drive=d \
- --trace "usb_*" --trace "ohci_*" -D qemu.log
+[*] https://github.com/salil-mehta/qemu/tree/virt-cpuhp-armv8/rfc-v3-rc1
 
-Results are:
 
- qemu 4.2   | qemu HEAD  | actual HW
-------------+------------+------------
- works fine | ohci_die() | works fine
+Revision History:
 
-Tip: if the flags "-serial pty -serial stdio" are added to the command line
-the test will output USB requests like this:
+Patch-set  V9 -> V10
+1. Addressed Nicholas Piggin's (IBM) & Philippe Mathieu-Daudé (Linaro) comments
+   - carved out kvm_unpark_vcpu and added its trace
+   - Widened the scope of the kvm_unpark_vcpu so that it can be used by generic framework
+     being thought out
+Link: https://lore.kernel.org/qemu-devel/20240519210620.228342-1-salil.mehta@huawei.com/
+Link: https://lore.kernel.org/qemu-devel/e94b0e14-efee-4050-9c9f-08382a36b63a@linaro.org/
 
-Testing qemu HEAD:
+Patch-set  V8 -> V9
+1. Addressed Vishnu Pajjuri's (Ampere) comments
+   - Added kvm_fd to trace in kvm_create_vcpu
+   - Some clean ups: arch vcpu-id and sbd variable
+   - Added the missed initialization of cpu->gdb_num_regs
+2. Addressed the commnet from Zhao Liu (Intel)
+   - Make initialization of CPU Hotplug state conditional (possible_cpu_arch_ids!=NULL)
+Link: https://lore.kernel.org/qemu-devel/20240312020000.12992-1-salil.mehta@huawei.com/
 
-> Free mem 2M ohci port2 conn FS
-> setup { 80 6 0 1 0 0 8 0 }
-> ED info=80000 { mps=8 en=0 d=0 } tail=c20920
->   td0 c20880 nxt=c20960 f2000000 setup cbp=c20900 be=c20907
->   td1 c20960 nxt=c20980 f3140000    in cbp=c20908 be=c2090f
->   td2 c20980 nxt=c20920 f3080000   out cbp=c20910 be=c2090f ohci20 host err
-> usb stopped
+Patch-set V7 -> V8
+1. Rebased and Fixed the conflicts
 
-And in qemu.log:
+Patch-set  V6 -> V7
+1. Addressed Alex Bennée's comments
+   - Updated the docs
+2. Addressed Igor Mammedov's comments
+   - Merged patches [Patch V6 3/9] & [Patch V6 7/9] with [Patch V6 4/9]
+   - Updated commit-log of [Patch V6 1/9] and [Patch V6 5/9]     
+3. Added Shaoqin Huang's Reviewed-by tags for whole series.
+Link: https://lore.kernel.org/qemu-devel/20231013105129.25648-1-salil.mehta@huawei.com/
 
-usb_ohci_iso_td_bad_cc_overrun ISO_TD start_offset=0x00c20910 > next_offset=0x00c2090f
+Patch-set  V5 -> V6
+1. Addressed Gavin Shan's comments
+   - Fixed the assert() ranges of address spaces
+   - Rebased the patch-set to latest changes in the qemu.git
+   - Added Reviewed-by tags for patches {8,9}
+2. Addressed Jonathan Cameron's comments
+   - Updated commit-log for [Patch V5 1/9] with mention of trace events
+   - Added Reviewed-by tags for patches {1,5}
+3. Added Tested-by tags from Xianglai Li
+4. Fixed checkpatch.pl error "Qemu -> QEMU" in [Patch V5 1/9] 
+Link: https://lore.kernel.org/qemu-devel/20231011194355.15628-1-salil.mehta@huawei.com/
 
-Testing qemu 4.2:
+Patch-set  V4 -> V5
+1. Addressed Gavin Shan's comments
+   - Fixed the trace events print string for kvm_{create,get,park,destroy}_vcpu
+   - Added Reviewed-by tag for patch {1}
+2. Added Shaoqin Huang's Reviewed-by tags for Patches {2,3}
+3. Added Tested-by Tag from Vishnu Pajjuri to the patch-set
+4. Dropped the ARM specific [Patch V4 10/10]
+Link: https://lore.kernel.org/qemu-devel/20231009203601.17584-1-salil.mehta@huawei.com/
 
-> Free mem 2M ohci port2 conn FS
-> setup { 80 6 0 1 0 0 8 0 }
-> ED info=80000 { mps=8 en=0 d=0 } tail=620920
->   td0 620880 nxt=620960 f2000000 setup cbp=620900 be=620907       cbp=0 be=620907
->   td1 620960 nxt=620980 f3140000    in cbp=620908 be=62090f       cbp=0 be=62090f
->   td2 620980 nxt=620920 f3080000   out cbp=620910 be=62090f       cbp=0 be=62090f
->    rx { 12 1 0 2 0 0 0 8 }
-> setup { 0 5 1 0 0 0 0 0 } tx {}
-> ED info=80000 { mps=8 en=0 d=0 } tail=620880
->   td0 620920 nxt=620960 f2000000 setup cbp=620900 be=620907       cbp=0 be=620907
->   td1 620960 nxt=620880 f3100000    in cbp=620908 be=620907       cbp=0 be=620907
-> setup { 80 6 0 1 0 0 12 0 }
-> ED info=80001 { mps=8 en=0 d=1 } tail=620960
->   td0 620880 nxt=6209c0 f2000000 setup cbp=620920 be=620927       cbp=0 be=620927
->   td1 6209c0 nxt=6209e0 f3140000    in cbp=620928 be=620939       cbp=0 be=620939
->   td2 6209e0 nxt=620960 f3080000   out cbp=62093a be=620939       cbp=0 be=620939
->    rx { 12 1 0 2 0 0 0 8 f4 46 1 0 0 0 1 2 3 1 }
-> setup { 80 6 0 2 0 0 0 1 }
-> ED info=80001 { mps=8 en=0 d=1 } tail=620880
->   td0 620960 nxt=6209a0 f2000000 setup cbp=620a20 be=620a27       cbp=0 be=620a27
->   td1 6209a0 nxt=6209c0 f3140004    in cbp=620a28 be=620b27       cbp=620a48 be=620b27
->   td2 6209c0 nxt=620880 f3080000   out cbp=620b28 be=620b27       cbp=0 be=620b27
->    rx { 9 2 20 0 1 1 4 c0 0 9 4 0 0 2 8 6 50 0 7 5 81 2 40 0 0 7 5 2 2 40 0 0 }
-> setup { 0 9 1 0 0 0 0 0 } tx {}
-> ED info=80001 { mps=8 en=0 d=1 } tail=620900
->   td0 620880 nxt=620940 f2000000 setup cbp=620a00 be=620a07       cbp=0 be=620a07
->   td1 620940 nxt=620900 f3100000    in cbp=620a08 be=620a07       cbp=0 be=620a07
+Patch-set  V3 -> V4
+1. Addressed David Hilderbrand's comments
+   - Fixed the wrong doc comment of kvm_park_vcpu API prototype
+   - Added Reviewed-by tags for patches {2,4}
+Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.mehta@huawei.com/
 
-[1] The OS disk image has been emailed to philmd@linaro.org, mjt@tls.msk.ru,
-and kraxel@redhat.com:
+Patch-set  V2 -> V3
+1. Addressed Jonathan Cameron's comments
+   - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'integer'
+   - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
+   - Updated [Patch V2 3/10] commit-log with details of ACPI_CPU_SCAN_METHOD macro
+   - Updated [Patch V2 5/10] commit-log with details of conditional event handler method
+   - Added Reviewed-by tags for patches {2,3,4,6,7}
+2. Addressed Gavin Shan's comments
+   - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
+   - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
+   - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
+   - Fixed the kvm_{create,park}_vcpu prototypes docs
+   - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
+3. Addressed one earlier missed comment by Alex Bennée in RFC V1
+   - Added traces instead of DPRINTF in the newly added and some existing functions
+Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.mehta@huawei.com/
 
-* testCbpOffBy1.img.xz
-* sha256: f87baddcb86de845de12f002c698670a426affb40946025cc32694f9daa3abed
+Patch-set V1 -> V2
+1. Addressed Alex Bennée's comments
+   - Refactored the kvm_create_vcpu logic to get rid of goto
+   - Added the docs for kvm_{create,park}_vcpu prototypes
+   - Splitted the gdbstub and AddressSpace destruction change into separate patches
+   - Added Reviewed-by tags for patches {2,10}
+Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.mehta@huawei.com/
 
-Signed-off-by: Cord Amfmgm <dmamfmgm@gmail.com>
----
- hw/usb/hcd-ohci.c   | 4 ++--
- hw/usb/trace-events | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+References:
 
-diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
-index acd6016980..71b54914d3 100644
---- a/hw/usb/hcd-ohci.c
-+++ b/hw/usb/hcd-ohci.c
-@@ -941,8 +941,8 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
-         if ((td.cbp & 0xfffff000) != (td.be & 0xfffff000)) {
-             len = (td.be & 0xfff) + 0x1001 - (td.cbp & 0xfff);
-         } else {
--            if (td.cbp > td.be) {
--                trace_usb_ohci_iso_td_bad_cc_overrun(td.cbp, td.be);
-+            if (td.cbp - 1 > td.be) {  /* rely on td.cbp != 0 */
-+                trace_usb_ohci_td_bad_buf(td.cbp, td.be);
-                 ohci_die(ohci);
-                 return 1;
-             }
-diff --git a/hw/usb/trace-events b/hw/usb/trace-events
-index fd7b90d70c..fe282e7876 100644
---- a/hw/usb/trace-events
-+++ b/hw/usb/trace-events
-@@ -29,6 +29,7 @@ usb_ohci_iso_td_data_underrun(int ret) "DataUnderrun %d"
- usb_ohci_iso_td_nak(int ret) "got NAK/STALL %d"
- usb_ohci_iso_td_bad_response(int ret) "Bad device response %d"
- usb_ohci_td_bad_pid(const char *s, uint32_t edf, uint32_t tdf) "Bad pid %s: ed.flags 0x%x td.flags 0x%x"
-+usb_ohci_td_bad_buf(uint32_t cbp, uint32_t be) "Bad cbp = 0x%x > be = 0x%x"
- usb_ohci_port_attach(int index) "port #%d"
- usb_ohci_port_detach(int index) "port #%d"
- usb_ohci_port_wakeup(int index) "port #%d"
+[1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
+[2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
+[3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
+
+
+
+Salil Mehta (8):
+  accel/kvm: Extract common KVM vCPU {creation,parking} code
+  hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
+  hw/acpi: Update ACPI GED framework to support vCPU Hotplug
+  hw/acpi: Update GED _EVT method AML with CPU scan
+  hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+  physmem: Add helper function to destroy CPU AddressSpace
+  gdbstub: Add helper function to unregister GDB register space
+  docs/specs/acpi_hw_reduced_hotplug: Add the CPU Hotplug Event Bit
+
+ accel/kvm/kvm-all.c                    | 97 +++++++++++++++++---------
+ accel/kvm/kvm-cpus.h                   | 23 ++++++
+ accel/kvm/trace-events                 |  5 +-
+ docs/specs/acpi_hw_reduced_hotplug.rst |  3 +-
+ gdbstub/gdbstub.c                      | 13 ++++
+ hw/acpi/acpi-cpu-hotplug-stub.c        |  6 ++
+ hw/acpi/cpu.c                          | 33 ++++++---
+ hw/acpi/generic_event_device.c         | 21 ++++++
+ hw/core/cpu-common.c                   |  1 -
+ hw/i386/acpi-build.c                   |  3 +-
+ include/exec/cpu-common.h              |  8 +++
+ include/exec/gdbstub.h                 |  6 ++
+ include/hw/acpi/cpu.h                  |  5 +-
+ include/hw/acpi/cpu_hotplug.h          |  4 ++
+ include/hw/acpi/generic_event_device.h |  4 ++
+ include/hw/core/cpu.h                  |  1 +
+ system/physmem.c                       | 29 ++++++++
+ 17 files changed, 214 insertions(+), 48 deletions(-)
+
 -- 
 2.34.1
 
