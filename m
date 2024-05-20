@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330E78C9DB2
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 14:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE61D8C9DC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 15:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s92V0-0005lN-Tf; Mon, 20 May 2024 08:52:18 -0400
+	id 1s92di-0000II-Ak; Mon, 20 May 2024 09:01:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1s92Uz-0005it-4S
- for qemu-devel@nongnu.org; Mon, 20 May 2024 08:52:17 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
- id 1s92Ux-0004QY-Aq
- for qemu-devel@nongnu.org; Mon, 20 May 2024 08:52:16 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1ee0132a6f3so74386585ad.0
- for <qemu-devel@nongnu.org>; Mon, 20 May 2024 05:52:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1716209533; x=1716814333;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FiZ5stYG6iGySkoeWNLfji4K0JlTVUfLI4xMNadIqkY=;
- b=Lyzvd+hW8Qfln2fAkLbrYXZH/jM1Og+NDKpkEGBKcsc+Ld55xWzWtAVe3z0lbKUlMt
- eYqN8BS1spf+gVJgMduBxBnADAp35SoDMBB25llL5y58LwXPxUvHlRl0+qImqZKNdfmG
- SMkhX/BfUFigQ+KybcVkRo9VHcSSh4rsgyekmAYVm6dV4qFIBofPlOkBNZzoODIzlT7h
- hIF0tDI/hYLoJk4cgLw5niwNyoQVFYBWWaqvYJ7Fc/TFTnx9l546BDBzHuMSsN/vuqJF
- lSKgJedszOEMwQ3GGgKmcGtLjEp+svO5rMZzCmFzYrUK770CYjC/YZqIAzYNzb8Kgqzq
- dO0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716209533; x=1716814333;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FiZ5stYG6iGySkoeWNLfji4K0JlTVUfLI4xMNadIqkY=;
- b=w0cOKoamUHek3Na4pURl0123ttouN1xlN9V8e6PDHUyfeghxu53819r15ao7lIZJWV
- a4uCZWS3lOTOghCHqOxeRlTQ5I87KD+3EpYW5UAQFEUF9IS4ZMuwX6EGuPuxL9DiOnQ1
- hizfLJcKXpOOjlgIT0nl86shb4y6icCigKyWsuBoIO8+PFBzvaxV4IaoZshjDKBDFJtp
- oAiDnRxJYz4LpgqDK+5n2io0MZNRXFoaSCZEmGAA7KtGcUECJYF/QWgGz92MTxdFkNXG
- qWjtNl2hDFL9BF2msSVXqQcF+bwyxwE450jYpeddVm3WFuTaO8wXsoqITPddYCt31VNz
- xn7A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXulCqTHlsOVc7MsHROls5TrjThTY4CXyRH+GHKkDeqSPD7NLcydTZ60hWl6zZIb42j5hNzaAKLFmOT64jXtPK1YvSpMVI=
-X-Gm-Message-State: AOJu0Yyha4aVvz3Z3kwJKMQUbClT8OYSDa3Dv4gukfTPpxtCB4Ya6zxS
- NI0rXmZQ8dK61q73DIKapBi/yZkyNH7D+Y4t09uOjDTdIghltxkU6s1I1xV5PsU=
-X-Google-Smtp-Source: AGHT+IFREQisSBL91nPMNGPydFiB36qjyifHbBtkqg6Hfv7+stWUljN2Tn3cYpDhZLp8SPFagEk4Xg==
-X-Received: by 2002:a17:902:f545:b0:1f3:453:2ca0 with SMTP id
- d9443c01a7336-1f304533970mr19272785ad.42.1716209532786; 
- Mon, 20 May 2024 05:52:12 -0700 (PDT)
-Received: from localhost.localdomain ([51.52.155.79])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ef0c139465sm202905145ad.269.2024.05.20.05.52.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 May 2024 05:52:12 -0700 (PDT)
-From: Rajnesh Kanwal <rkanwal@rivosinc.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- atishp@rivosinc.com, apatel@ventanamicro.com, rkanwal@rivosinc.com
-Subject: [PATCH v2 2/2] target/riscv: Move Guest irqs out of the core local
- irqs range.
-Date: Mon, 20 May 2024 13:51:57 +0100
-Message-Id: <20240520125157.311503-3-rkanwal@rivosinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240520125157.311503-1-rkanwal@rivosinc.com>
-References: <20240520125157.311503-1-rkanwal@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1s92dg-0000Gt-1g; Mon, 20 May 2024 09:01:16 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1s92dd-0006EG-H9; Mon, 20 May 2024 09:01:15 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44KAJv0T032226; Mon, 20 May 2024 13:00:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=QOzuxqjBuDWFh6NoQFgL4R4Za7AVQFlpxkOWW4Qp0oI=;
+ b=ffir1H8fYgXn8U+cE5stG7dkk3u+fanXV91hP0UHc+y/Hv/nSivK5d+YNleNRq6ORhWJ
+ 5UuaXRbB3+jbUbyp+BJ1XULOa+G5jZhNzatLC5fZgppGQ0Jzbs5HBAnPirqThswZYfBH
+ FNDki9TyPoWCZztasl6pai0SuBKLROhcQ00jk3qWJNhgsYsnbQR22r5YUQkfxbeILNEh
+ RX1rtJly5i8wgvOkx+QffTfvevtQ0FAx3W4fjaD0Uk+Hm3LvaZXpLO1etufg+1VQEXN1
+ nxpQkoNpWyDDTAJ+n+zQVEAElxGJfN4BYvN//TQhkeuSbIb37RkysdKTq6Mj8LISYmRl HA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y6jx2am83-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 May 2024 13:00:53 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 44KB5m61004963; Mon, 20 May 2024 13:00:52 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3y6js6brs4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 May 2024 13:00:52 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44KD0qPX028778;
+ Mon, 20 May 2024 13:00:52 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-65-165-95.vpn.oracle.com
+ [10.65.165.95])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3y6js6brp8-1; Mon, 20 May 2024 13:00:52 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [PATCH v2 0/6] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Mon, 20 May 2024 09:00:42 -0400
+Message-Id: <20240520130048.1483177-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=rkanwal@rivosinc.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-20_05,2024-05-17_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ phishscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405200108
+X-Proofpoint-GUID: PglEekM8m7Iep5oe24RNW_zqHWyX89am
+X-Proofpoint-ORIG-GUID: PglEekM8m7Iep5oe24RNW_zqHWyX89am
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,61 +99,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Qemu maps IRQs 0:15 for core interrupts and 16 onward for
-guest interrupts which are later translated to hgiep in
-`riscv_cpu_set_irq()` function.
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-With virtual IRQ support added, software now can fully
-use the whole local interrupt range without any actual
-hardware attached.
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-This change moves the guest interrupt range after the
-core local interrupt range to avoid clash.
+The core feature behind this solution is a buffer mechanism in the form
+of a VirtQueue's used_elems VirtQueueElement array. This allows devices
+who always use buffers in-order by default to have a minimal overhead
+impact. Devices that may not always use buffers in-order likely will
+experience a performance hit. How large that performance hit is will
+depend on how frequently elements are completed out-of-order.
 
-Fixes: 1697837ed9 ("target/riscv: Add M-mode virtual interrupt and IRQ filtering support.")
-Fixes: 40336d5b1d ("target/riscv: Add HS-mode virtual interrupt and IRQ filtering support.")
+A VirtQueue whose device uses this feature will use its used_elems
+VirtQueueElement array to hold used VirtQueueElements. The index that
+used elements are placed in used_elems is the same index on the
+used/descriptor ring that would satisfy the in-order requirement. In
+other words, used elements are placed in their in-order locations on
+used_elems and are only written to the used/descriptor ring once the
+elements on used_elems are able to continue their expected order.
 
-Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+To differentiate between a "used" and "unused" element on the used_elems
+array (a "used" element being an element that has returned from
+processing and an "unused" element being an element that has not yet
+been processed), we added a boolean 'in_order_filled' member to the
+VirtQueueElement struct. This flag is set to true when the element comes
+back from processing (virtqueue_ordered_fill) and then set back to false
+once it's been written to the used/descriptor ring
+(virtqueue_ordered_flush).
+
 ---
- target/riscv/cpu_bits.h | 3 ++-
- target/riscv/csr.c      | 9 ++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+v2: Make 'in_order_filled' more descriptive.
+    Change 'j' to more descriptive var name in virtqueue_split_pop.
+    Use more definitive search conditional in virtqueue_ordered_fill.
+    Avoid code duplication in virtqueue_ordered_flush.
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 74318a925c..a470fda9be 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -695,7 +695,8 @@ typedef enum RISCVException {
- #define IRQ_M_EXT                          11
- #define IRQ_S_GEXT                         12
- #define IRQ_PMU_OVF                        13
--#define IRQ_LOCAL_MAX                      16
-+#define IRQ_LOCAL_MAX                      64
-+/* -1 is due to bit zero of hgeip and hgeie being ROZ. */
- #define IRQ_LOCAL_GUEST_MAX                (TARGET_LONG_BITS - 1)
- 
- /* mip masks */
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 152796ebc0..464e0e57a3 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1148,7 +1148,14 @@ static RISCVException write_stimecmph(CPURISCVState *env, int csrno,
- 
- #define VSTOPI_NUM_SRCS 5
- 
--#define LOCAL_INTERRUPTS (~0x1FFF)
-+/*
-+ * All core local interrupts except the fixed ones 0:12. This macro is for
-+ * virtual interrupts logic so please don't change this to avoid messing up
-+ * the whole support, For reference see AIA spec: `5.3 Interrupt filtering and
-+ * virtual interrupts for supervisor level` and `6.3.2 Virtual interrupts for
-+ * VS level`.
-+ */
-+#define LOCAL_INTERRUPTS   (~0x1FFFULL)
- 
- static const uint64_t delegable_ints =
-     S_MODE_INTERRUPTS | VS_MODE_INTERRUPTS | MIP_LCOFIP;
+v1: Move series from RFC to PATCH for submission.
+
+Jonah Palmer (6):
+  virtio: Add bool to VirtQueueElement
+  virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER support
+  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c    |   1 +
+ hw/net/vhost_net.c           |   2 +
+ hw/scsi/vhost-scsi.c         |   1 +
+ hw/scsi/vhost-user-scsi.c    |   1 +
+ hw/virtio/vhost-user-fs.c    |   1 +
+ hw/virtio/vhost-user-vsock.c |   1 +
+ hw/virtio/virtio.c           | 119 ++++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio.h   |   6 +-
+ net/vhost-vdpa.c             |   1 +
+ 9 files changed, 129 insertions(+), 4 deletions(-)
+
 -- 
-2.34.1
+2.39.3
 
 
