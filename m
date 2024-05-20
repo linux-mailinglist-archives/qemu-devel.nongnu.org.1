@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE61D8C9DC8
+	by mail.lfdr.de (Postfix) with ESMTPS id D65048C9DC7
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 15:02:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s92di-0000II-Ak; Mon, 20 May 2024 09:01:18 -0400
+	id 1s92e0-0000QV-I9; Mon, 20 May 2024 09:01:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1s92dg-0000Gt-1g; Mon, 20 May 2024 09:01:16 -0400
+ id 1s92dh-0000IM-Fw; Mon, 20 May 2024 09:01:17 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1s92dd-0006EG-H9; Mon, 20 May 2024 09:01:15 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ id 1s92de-0006EJ-N5; Mon, 20 May 2024 09:01:17 -0400
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44KAJv0T032226; Mon, 20 May 2024 13:00:54 GMT
+ 44KAcL80017650; Mon, 20 May 2024 13:00:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : mime-version : content-type :
+ subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=QOzuxqjBuDWFh6NoQFgL4R4Za7AVQFlpxkOWW4Qp0oI=;
- b=ffir1H8fYgXn8U+cE5stG7dkk3u+fanXV91hP0UHc+y/Hv/nSivK5d+YNleNRq6ORhWJ
- 5UuaXRbB3+jbUbyp+BJ1XULOa+G5jZhNzatLC5fZgppGQ0Jzbs5HBAnPirqThswZYfBH
- FNDki9TyPoWCZztasl6pai0SuBKLROhcQ00jk3qWJNhgsYsnbQR22r5YUQkfxbeILNEh
- RX1rtJly5i8wgvOkx+QffTfvevtQ0FAx3W4fjaD0Uk+Hm3LvaZXpLO1etufg+1VQEXN1
- nxpQkoNpWyDDTAJ+n+zQVEAElxGJfN4BYvN//TQhkeuSbIb37RkysdKTq6Mj8LISYmRl HA== 
+ bh=htxtr7UJu39xd0+/H2o5SGOgICpJ+C/4TbtakjZK5VI=;
+ b=Plt7dA0+SHiP3V2FtcDSTb04/w11jGJpe6Ki+N7aqvriI4/f7Hrb/63FdIwKiH+Dcy7j
+ 6llWsm6own1bwr8J3POBkzy2ZrwbuOJxZDxbqAzR3hqd9Wbm3vGoK0DXAWv6JI7QgtfQ
+ rK648W0jFFkXKs8Xqns4es8LV/xNfNXMgHDrr7xqUxG9tRFesBZ0VxigNrsls/BElXIW
+ Y4L3x6AWxKPmew0FiJ52CdyimkHYQ9kXis0zvfIBMXhkdf+b+KmyBWU7+w+n0r7aqSD2
+ butoyK9jl43kJ2kjRPLdop9W2GAXPNbU72EHAddG2ATOadIsWKIAxOm4MD6al3VDRY1x FA== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y6jx2am83-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y6mvv2j84-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 May 2024 13:00:53 +0000
+ Mon, 20 May 2024 13:00:56 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 44KB5m61004963; Mon, 20 May 2024 13:00:52 GMT
+ with ESMTP id 44KBXtVi004961; Mon, 20 May 2024 13:00:55 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3y6js6brs4-1
+ 3y6js6brv5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 May 2024 13:00:52 +0000
+ Mon, 20 May 2024 13:00:55 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44KD0qPX028778;
- Mon, 20 May 2024 13:00:52 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44KD0qPZ028778;
+ Mon, 20 May 2024 13:00:55 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-65-165-95.vpn.oracle.com
  [10.65.165.95])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3y6js6brp8-1; Mon, 20 May 2024 13:00:52 +0000
+ 3y6js6brp8-2; Mon, 20 May 2024 13:00:55 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
@@ -58,12 +58,13 @@ Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
  eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
  schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [PATCH v2 0/6] virtio,vhost: Add VIRTIO_F_IN_ORDER support
-Date: Mon, 20 May 2024 09:00:42 -0400
-Message-Id: <20240520130048.1483177-1-jonah.palmer@oracle.com>
+Subject: [PATCH v2 1/6] virtio: Add bool to VirtQueueElement
+Date: Mon, 20 May 2024 09:00:43 -0400
+Message-Id: <20240520130048.1483177-2-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240520130048.1483177-1-jonah.palmer@oracle.com>
+References: <20240520130048.1483177-1-jonah.palmer@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
@@ -73,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  suspectscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 spamscore=0
  bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405200108
-X-Proofpoint-GUID: PglEekM8m7Iep5oe24RNW_zqHWyX89am
-X-Proofpoint-ORIG-GUID: PglEekM8m7Iep5oe24RNW_zqHWyX89am
+X-Proofpoint-ORIG-GUID: 8anU9-aXMoqz74QXHvZvnyaOWSzALUB6
+X-Proofpoint-GUID: 8anU9-aXMoqz74QXHvZvnyaOWSzALUB6
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -20
@@ -99,65 +100,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The goal of these patches is to add support to a variety of virtio and
-vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
-indicates that all buffers are used by the device in the same order in
-which they were made available by the driver.
+Add the boolean 'in_order_filled' member to the VirtQueueElement structure.
+The use of this boolean will signify whether the element has been processed
+and is ready to be flushed (so long as the element is in-order). This
+boolean is used to support the VIRTIO_F_IN_ORDER feature.
 
-These patches attempt to implement a generalized, non-device-specific
-solution to support this feature.
-
-The core feature behind this solution is a buffer mechanism in the form
-of a VirtQueue's used_elems VirtQueueElement array. This allows devices
-who always use buffers in-order by default to have a minimal overhead
-impact. Devices that may not always use buffers in-order likely will
-experience a performance hit. How large that performance hit is will
-depend on how frequently elements are completed out-of-order.
-
-A VirtQueue whose device uses this feature will use its used_elems
-VirtQueueElement array to hold used VirtQueueElements. The index that
-used elements are placed in used_elems is the same index on the
-used/descriptor ring that would satisfy the in-order requirement. In
-other words, used elements are placed in their in-order locations on
-used_elems and are only written to the used/descriptor ring once the
-elements on used_elems are able to continue their expected order.
-
-To differentiate between a "used" and "unused" element on the used_elems
-array (a "used" element being an element that has returned from
-processing and an "unused" element being an element that has not yet
-been processed), we added a boolean 'in_order_filled' member to the
-VirtQueueElement struct. This flag is set to true when the element comes
-back from processing (virtqueue_ordered_fill) and then set back to false
-once it's been written to the used/descriptor ring
-(virtqueue_ordered_flush).
-
+Tested-by: Lei Yang <leiyang@redhat.com>
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
-v2: Make 'in_order_filled' more descriptive.
-    Change 'j' to more descriptive var name in virtqueue_split_pop.
-    Use more definitive search conditional in virtqueue_ordered_fill.
-    Avoid code duplication in virtqueue_ordered_flush.
+ include/hw/virtio/virtio.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v1: Move series from RFC to PATCH for submission.
-
-Jonah Palmer (6):
-  virtio: Add bool to VirtQueueElement
-  virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
-  virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support
-  virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER support
-  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
-  virtio: Add VIRTIO_F_IN_ORDER property definition
-
- hw/block/vhost-user-blk.c    |   1 +
- hw/net/vhost_net.c           |   2 +
- hw/scsi/vhost-scsi.c         |   1 +
- hw/scsi/vhost-user-scsi.c    |   1 +
- hw/virtio/vhost-user-fs.c    |   1 +
- hw/virtio/vhost-user-vsock.c |   1 +
- hw/virtio/virtio.c           | 119 ++++++++++++++++++++++++++++++++++-
- include/hw/virtio/virtio.h   |   6 +-
- net/vhost-vdpa.c             |   1 +
- 9 files changed, 129 insertions(+), 4 deletions(-)
-
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 7d5ffdc145..88e70c1ae1 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -69,6 +69,8 @@ typedef struct VirtQueueElement
+     unsigned int ndescs;
+     unsigned int out_num;
+     unsigned int in_num;
++    /* Element has been processed (VIRTIO_F_IN_ORDER) */
++    bool in_order_filled;
+     hwaddr *in_addr;
+     hwaddr *out_addr;
+     struct iovec *in_sg;
 -- 
 2.39.3
 
