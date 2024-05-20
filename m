@@ -2,82 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5088C993B
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 09:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C8D28C9991
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 09:50:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8xN3-0003Gc-U6; Mon, 20 May 2024 03:23:45 -0400
+	id 1s8xlB-0007i2-9P; Mon, 20 May 2024 03:48:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8xMj-0003Dj-3u; Mon, 20 May 2024 03:23:25 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s8xMg-0005dZ-Vr; Mon, 20 May 2024 03:23:24 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1ee12baa01cso71116425ad.0; 
- Mon, 20 May 2024 00:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716189801; x=1716794601; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aZcQ+s8xLlRETDW2xdAkOxokBoEWt3B+/PKVTwotr4o=;
- b=dggu7R2HX9ZWNetwSb3JJ245ZirRHYAZBnFojZ0MlBmdeoqbSTZ7emvpwIh93OO5wL
- lQ9mIvm2dbg2sOF3A8sqynW+Q3IRrf8Be1vEzKfqsjoo6AhwW/ynHaqIQ+88FPWgqPgJ
- ETjxbX2qlPbAPy2X0JNBIw8+siRZCdGA4Nk3zVOYdkUghLu0joAHxCIxZFeScEPo2wCL
- lilwoIEy0/KykZlrxWmJsprStX6S0/Gtk6yOL61ujJUAl2sL8uBxG+7Bda8VxB5tRzR8
- GYGgS5iOYYpdxRvdNwLWyY7L6hJ5KDQ/9RzSME8Z+TgAhQeTG3XlFI66LBAV9DL11sEM
- AirQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716189801; x=1716794601;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=aZcQ+s8xLlRETDW2xdAkOxokBoEWt3B+/PKVTwotr4o=;
- b=O0wqtPY/tN2xqEIZpHlo9obAwe4GSgYWrUzRyKWSOe+LzjdQKgYQ9cktFUP+okG98P
- aqqKUnzUoz5Q/hIP+jMlVR8+8kOytXLcaLoYl5DquPe9JTEHTvwGKCjljkGV7UApjN7A
- lZdyr08VjR2hbqPBO/rAgL/IzWRrwmsOJa8kzv3mVy+ujWV7g3gpaf1/Bf+tQfo3on7V
- aSBoG0V4gcUlPACPSNWy0RaPaT9y6PcB5PatxL/Y6IR4gRJgM+WNeytmSz1/kmlhkKtG
- eUvB3t66IS90Ok2VsPRZkWZ3B6UO7UmcXXdvoh7WOsOnANo5TDJGS8dlXGfqmwRKZ99s
- cvtQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVUsFmhB6hVcAPUEuqX6eDcGg57lO+wqBYpAIzFWNxjDFt6Wcbbl2H4XhGDc/7Yd8ADvDzIWeQXRHH0IeG13Gw19bQ/
-X-Gm-Message-State: AOJu0Yxy/93/fMiMPE0S39+tP90pitA8fiJBAhk3Xc/eYp2HXd/+SSyg
- GP+CtuUJd1vFRBeQh0FmPBuorRbYxBcDbn389Q1Sbx3eG4LYcD65
-X-Google-Smtp-Source: AGHT+IF1U/lLCBmiMMClaq4QXqIoRNh5Y8k8Ly6c/LstXYPkfZMq5lCQMWOa8CkGsrLp6f07N2mfMQ==
-X-Received: by 2002:a05:6a00:1ad0:b0:6f4:d1aa:bbe7 with SMTP id
- d2e1a72fcca58-6f4e03bf5f8mr31731165b3a.34.1716189800801; 
- Mon, 20 May 2024 00:23:20 -0700 (PDT)
-Received: from localhost ([1.146.114.227]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-665eaa5108fsm3149589a12.7.2024.05.20.00.23.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 May 2024 00:23:20 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 May 2024 17:23:14 +1000
-Message-Id: <D1EAIBNXFORP.201F1G7B0M67B@gmail.com>
-Cc: <qemu-devel@nongnu.org>, "Daniel Henrique Barboza"
- <danielhb413@gmail.com>, "Glenn Miles" <milesg@linux.vnet.ibm.com>
-Subject: Re: [PATCH 09/14] target/ppc: add helper to write per-LPAR SPRs
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.17.0
-References: <20240518093157.407144-1-npiggin@gmail.com>
- <20240518093157.407144-10-npiggin@gmail.com>
- <95b4f2bb-3eb2-477a-b2af-19cc4ac5849d@linaro.org>
-In-Reply-To: <95b4f2bb-3eb2-477a-b2af-19cc4ac5849d@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1s8xin-0007Zf-EE; Mon, 20 May 2024 03:46:17 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1s8xiR-0001MX-Pt; Mon, 20 May 2024 03:45:54 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44K684BO008783; Mon, 20 May 2024 07:45:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wBIvWsaepa1p2+9tCxUutohzmFRMvefe5SF1brLdbks=;
+ b=YaifVjXm2X5IbqWDUAwLzdsZL4B0JresNGNWnk7THBBtkazqvLHPSl4SzfDwxIxVLH0J
+ 5+dKbAo52+w+NDudDDsW+fDDQRfS/uBzg0D3A1xz15Tj61gShD8iMPwn5P0DTTwvkMhf
+ yD6zBNjZlnJ53FmIggUwJc+MT4oibqrtCC37KASCXIWFb+ID3LNkQaGIrdc9OrY29Wll
+ MnUatV/t1Xtekw38cl5wAGi87THxbLuFlz6qHIG3va4c98rZtyDG7eZLohQbEueRP0eI
+ vctJ3sVExiVGsg2J1uduM2AhEPQK9K+jpP95jDs0j3vvn+MZQ7UwHUjzXGojEBLRbvvY jg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y80ypg68s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 May 2024 07:45:40 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44K7jeWF025395;
+ Mon, 20 May 2024 07:45:40 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y80ypg68q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 May 2024 07:45:40 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44K7Oh9u008216; Mon, 20 May 2024 07:45:39 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y78vkp85a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 May 2024 07:45:39 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44K7jaCI24969826
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 May 2024 07:45:38 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6107858069;
+ Mon, 20 May 2024 07:45:34 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A73B15805D;
+ Mon, 20 May 2024 07:45:30 +0000 (GMT)
+Received: from [9.124.209.219] (unknown [9.124.209.219])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 20 May 2024 07:45:30 +0000 (GMT)
+Message-ID: <f0ad2844-eccd-4bb2-9aa9-42bd2f08e1c2@linux.ibm.com>
+Date: Mon, 20 May 2024 13:15:29 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ppc/spapr: Add ibm,pi-features
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-devel@nongnu.org
+References: <20240518095641.408598-1-npiggin@gmail.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20240518095641.408598-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kLTfGdLuXi1Iusw_puDH5wdgyWrdaWab
+X-Proofpoint-ORIG-GUID: vioNq-4lTWanEwayck5fcfjID6jcwRH_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-20_04,2024-05-17_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=960 clxscore=1015 bulkscore=0 suspectscore=0 adultscore=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2405010000 definitions=main-2405200063
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,28 +113,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat May 18, 2024 at 9:26 PM AEST, Richard Henderson wrote:
-> On 5/18/24 11:31, Nicholas Piggin wrote:
-> > +void spr_core_write_generic32(DisasContext *ctx, int sprn, int gprn)
-> > +{
-> > +    TCGv t0 =3D tcg_temp_new();
-> > +    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-> > +        spr_write_generic32(ctx, sprn, gprn);
-> > +        return;
-> > +    }
-> > +
-> > +    if (!gen_serialize(ctx)) {
-> > +        return;
-> > +    }
-> > +
-> > +    tcg_gen_ext32u_tl(t0, cpu_gpr[gprn]);
->
-> Better to delay allocating the temp until needed, so that you don't alloc=
-ate one along the=20
-> return paths.
 
-Will fix.
 
-Thanks,
-Nick
+On 5/18/24 15:26, Nicholas Piggin wrote:
+> The ibm,pi-features property has a bit to say whether or not
+> msgsndp should be used. Linux checks if it is being run under
+> KVM and avoids msgsndp anyway, but it would be preferable to
+> rely on this bit.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> ---
+>   hw/ppc/spapr.c | 27 +++++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 611a9e5184..6891d91e6e 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -353,6 +353,31 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+>       _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
+>   }
+>   
+> +static void spapr_dt_pi_features(SpaprMachineState *spapr,
+> +                                 PowerPCCPU *cpu,
+> +                                 void *fdt, int offset)
+> +{
+> +    uint8_t pi_features[] = { 1, 0,
+> +        0x00 };
+> +
+> +    if (kvm_enabled() && ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00,
+> +                                          0, cpu->compat_pvr)) {
+> +        /*
+> +         * POWER9 and later CPUs with KVM run in LPAR-per-thread mode where
+> +         * all threads are essentially independent CPUs, and msgsndp does not
+> +         * work (because it is physically-addressed) and therefore is
+> +         * emulated by KVM, so disable it here to ensure XIVE will be used.
+> +         * This is both KVM and CPU implementation-specific behaviour so a KVM
+> +         * cap would be cleanest, but for now this works. If KVM ever permits
+> +         * native msgsndp execution by guests, a cap could be added at that
+> +         * time.
+> +         */
+> +        pi_features[2] |= 0x08; /* 4: No msgsndp */
+> +    }
+> +
+> +    _FDT((fdt_setprop(fdt, offset, "ibm,pi-features", pi_features, sizeof(pi_features))));
+> +}
+> +
+>   static hwaddr spapr_node0_size(MachineState *machine)
+>   {
+>       if (machine->numa_state->num_nodes) {
+> @@ -815,6 +840,8 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
+>   
+>       spapr_dt_pa_features(spapr, cpu, fdt, offset);
+>   
+> +    spapr_dt_pi_features(spapr, cpu, fdt, offset);
+> +
+>       _FDT((fdt_setprop_cell(fdt, offset, "ibm,chip-id",
+>                              cs->cpu_index / vcpus_per_socket)));
+>   
 
