@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FD78C9E50
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 15:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC908C9E81
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 16:00:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s93Ir-00015i-0x; Mon, 20 May 2024 09:43:49 -0400
+	id 1s93XV-0005ln-M4; Mon, 20 May 2024 09:58:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s93Io-000151-C8
- for qemu-devel@nongnu.org; Mon, 20 May 2024 09:43:46 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1s93XT-0005kr-Fh
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 09:58:55 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1s93Im-00068v-L8
- for qemu-devel@nongnu.org; Mon, 20 May 2024 09:43:46 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-572c65cea55so12137753a12.0
- for <qemu-devel@nongnu.org>; Mon, 20 May 2024 06:43:44 -0700 (PDT)
+ id 1s93XO-0000zS-2c
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 09:58:55 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-51f72a29f13so3917292e87.3
+ for <qemu-devel@nongnu.org>; Mon, 20 May 2024 06:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716212623; x=1716817423; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716213528; x=1716818328; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CQJ0dr6xj2U9L7Z89lH1uYRqxyd/Zt8Blr5zZkqfx7A=;
- b=DmiFjN39I9ymgLgxq7C/6/mh63LBLInO5SG6pHg0lQb8sQckOFFs5m2HihI8E6PG17
- t0575TPpOunxwCeVl0235UuHPPTsSEsUnuxFs8DLvUscd9fgtOvvoCnrgoXuVtzHnvas
- FT8KE1WBnLaj2PQiT1mY2ZlZZEPTyMLr8rO83w9Q2Bfalw52MbBSIpq6IVhiZmSWeGwp
- Pp4RO9WAdnktYYzYZfi/KX7Kd9NenTqVKRNR0Zz//g0rFs8eIv803FMd8Vhc5fJkVGxD
- Hy+mzXtN2PS9x0fZJuVRcgOAjA7juxOxCjnjfu1Crg5vvAxH7kSEMKAf/ulDrH9Qlw3X
- V6Nw==
+ bh=XUNEEf6o0vIvlGoVCkOBNOApbEzu6uUelzCwIt8oTZw=;
+ b=RRxTfyucRxDOJnsc0adxc7pkvSG0SKWyQ0oS0ZITKJn2D0aZzhqE6VNP2mba9dWP18
+ +B8m2to+PYgsPWHWnXTA763CdeBLmMhDue6fiB8V5jAnhn5+BWBK/EbJzxgqPqbcWbxo
+ dNgaIOPHylEilcFpVrWc93dNKGjeqvLQIXF5M3gcGIzlPIryZiS3Z4CvbAYL0917YMWU
+ kwlPuGzFhfqm87AQXiRrm5ECwkxZ4mpZD4Evzb45Y9/0BOT+T2l++coFwyfTNDrH2Dvk
+ nnnl995RdSQ9jRe7DCjwlZaeNGuk8nyDG3eFXCLGc73iPVE4CyTJYg04lzXvbBmG+lis
+ PDCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716212623; x=1716817423;
+ d=1e100.net; s=20230601; t=1716213528; x=1716818328;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=CQJ0dr6xj2U9L7Z89lH1uYRqxyd/Zt8Blr5zZkqfx7A=;
- b=xG6E7L4yH/Tc8MIZh8Z7vCPTmclwDuaJQF50Et0DP6pW6sq+yZe30d+uomjkvFmYjy
- ZfNEYQkmaLEbLQAyZT8fkuTY7NW0JWxVEsUt6VqxREILmCfk41ARy+dUY4zqcT3g+u21
- y3hu9DwNRttZjXIE/PbV4JF19fVX/exWbR5lGdjD4QISX7MgFlJUnMi6hW6DafjeeKmW
- eG4bWCNvcJ2bcWqi8TBumflAMKHn4UuVCzNbMXVW86xYg7F8RbtmKRqlMCzTHw0a1MJb
- OE7spJYYBEja0mUfdTAcIXxyHUPC46Abj6h6Pg6uo8NWM+uImOzkKM/Y7vh9g9kADLpp
- 61qw==
-X-Gm-Message-State: AOJu0Yy6nV2tNwbaAOFx/FDEJHa5qlWFztWyOZ7ZC+M2hoxGSzUtJHtP
- lVt/hJPNxTEfGmakiM7+y6Ei7FbPdcBzA8sUxslCEC64EzRMx5VWFgSoDeGJmeVTK4N/naV9R6C
- llZ2gA3PPGdzZ74vSswDOgh2EmnCkgWpzAJyduA==
-X-Google-Smtp-Source: AGHT+IEelUSH+L5UIOfA8cqvIiSsgFhFMGqv12aG+YnINtklmJfeFsUy1u5A/LpwNyd+Lm3tV139IdXrEDpE1orZr/Y=
-X-Received: by 2002:aa7:c3c5:0:b0:574:ea61:3b00 with SMTP id
- 4fb4d7f45d1cf-5752b4554a9mr6086427a12.8.1716212622776; Mon, 20 May 2024
- 06:43:42 -0700 (PDT)
+ bh=XUNEEf6o0vIvlGoVCkOBNOApbEzu6uUelzCwIt8oTZw=;
+ b=CI055FAEwiQBo2VMW1tZ34qIMoqP9bbDgSIkqwvKau6u4gaUAgL7q7itOYLuphqsqb
+ 5FAoMD2cCKNyulewV0yU9OYB3o2YRdKeKHKsIvsR8wjfH+TEtfzkBLuNYkVZtckoRKmm
+ P+92ZyCw5Df2XMQJrKwmXC973UxlPgrdMOhSr6oXmFSxb0ek4szx+SG46SV0/91Tk+lA
+ Smr/GRZXVhW2tJdol+jgQyYIDFj3VOP1CnHWZZ9XiIcpr46XPTGaMgE3fUCj+kxbXSks
+ 9/8eioFfBTzFYzObY0SZuujnFM/bge82d0ihi1WS+4KfneaqsD5aNiEJTebW4Jy61pLW
+ lQBg==
+X-Gm-Message-State: AOJu0YxaQdGFqoDijKXGeirbbzM2kYZtl5G3i0rXhR4Sk5kZICTzd+Cn
+ ScBd8Y8SAT9x+NIVb3FeeAh7bupXkX9vFmmaia7H2HnH3LZ2wT6Fqpc/538VXru7nj1nNHH5NXa
+ VyoJ1iFy5KjEWV+WYGpU+kOWJYVrtZ7MLrxeon9ZmUMeAfolw
+X-Google-Smtp-Source: AGHT+IFYrPWwRxlbRR5BkspD7WQ1euUprVd+rzz2LeZOw3meysRtxVKfVamxdcUPvYwzL0yZKiKTiBr+Bo5+M0TpRgE=
+X-Received: by 2002:a05:6512:15a8:b0:51d:9ea3:5649 with SMTP id
+ 2adb3069b0e04-5220ff71d30mr24451019e87.10.1716213527923; Mon, 20 May 2024
+ 06:58:47 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240507130349.86851-1-sebastian.huber@embedded-brains.de>
- <20240507130349.86851-2-sebastian.huber@embedded-brains.de>
-In-Reply-To: <20240507130349.86851-2-sebastian.huber@embedded-brains.de>
+ <20240507130349.86851-3-sebastian.huber@embedded-brains.de>
+In-Reply-To: <20240507130349.86851-3-sebastian.huber@embedded-brains.de>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 20 May 2024 14:43:30 +0100
-Message-ID: <CAFEAcA9VQZ-EinEiaTp1_tu4Xb7E4tN4rprJu40uumVUfTiLpQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] hw/arm/xilinx_zynq: Add cache controller
+Date: Mon, 20 May 2024 14:58:36 +0100
+Message-ID: <CAFEAcA_KBcL9UsqpOMk7GhWwokdEmC3fKZg_q7tdyt9LM7RFpA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] hw/arm/xilinx_zynq: Support up to two CPU cores
 To: Sebastian Huber <sebastian.huber@embedded-brains.de>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,31 +89,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Tue, 7 May 2024 at 14:04, Sebastian Huber
 <sebastian.huber@embedded-brains.de> wrote:
 >
-> The Zynq 7000 SoCs contain a CoreLink L2C-310 cache controller.  Add the
-> corresponding Qemu device to the xilinx-zynq-a9 machine.
+> The Zynq 7000 SoCs contain two Arm Cortex-A9 MPCore (the Zynq 7000S have only
+> one core).  Add support for up to two simulated cores.
 >
 > Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
 > ---
->  hw/arm/xilinx_zynq.c | 1 +
->  1 file changed, 1 insertion(+)
+>  hw/arm/xilinx_zynq.c | 42 +++++++++++++++++++++++++++---------------
+>  1 file changed, 27 insertions(+), 15 deletions(-)
 >
 > diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-> index 3190cc0b8d..078abd77bd 100644
+> index 078abd77bd..3b858e3e9a 100644
 > --- a/hw/arm/xilinx_zynq.c
 > +++ b/hw/arm/xilinx_zynq.c
-> @@ -242,6 +242,7 @@ static void zynq_init(MachineState *machine)
+> @@ -184,6 +184,8 @@ static void zynq_init(MachineState *machine)
+>      SysBusDevice *busdev;
+>      qemu_irq pic[64];
+>      int n;
+> +    unsigned int smp_cpus = machine->smp.cpus;
+> +    qemu_irq cpu_irq[2];
+
+We prefer not to have arrays of qemu_irq like this that are
+just passing qemu_irqs from one place to another. Instead
+at the point where you want the ARM_CPU_IRQ of a particular
+CPU, call qdev_get_gpio_in() on the CPU object there.
+
+I suggest dropping the "ARMCPU *cpu" local from this function
+and instead adding an "ARMCPU *cpu[ZYNQ_MAX_CPUS]" array to
+the ZynqMachineState struct.
+
+>      /* max 2GB ram */
+>      if (machine->ram_size > 2 * GiB) {
+> @@ -191,21 +193,27 @@ static void zynq_init(MachineState *machine)
+>          exit(EXIT_FAILURE);
+>      }
+>
+> -    cpu = ARM_CPU(object_new(machine->cpu_type));
+> +    for (n = 0; n < smp_cpus; n++) {
+> +        Object *cpuobj = object_new(machine->cpu_type);
+>
+> -    /* By default A9 CPUs have EL3 enabled.  This board does not
+> -     * currently support EL3 so the CPU EL3 property is disabled before
+> -     * realization.
+> -     */
+> -    if (object_property_find(OBJECT(cpu), "has_el3")) {
+> -        object_property_set_bool(OBJECT(cpu), "has_el3", false, &error_fatal);
+> -    }
+> +        /* By default A9 CPUs have EL3 enabled.  This board does not
+> +         * currently support EL3 so the CPU EL3 property is disabled before
+> +         * realization.
+> +         */
+
+If you're moving comment text around checkpatch will suggest that
+you fix it up to our current coding standard, which is that
+a multiline comment has the "/*" on a line of its own.
+
+> +        if (object_property_find(cpuobj, "has_el3")) {
+> +            object_property_set_bool(cpuobj, "has_el3", false, &error_fatal);
+> +        }
+> +
+> +        object_property_set_int(cpuobj, "midr", ZYNQ_BOARD_MIDR,
+> +                                &error_fatal);
+> +        object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
+> +                                &error_fatal);
+>
+> -    object_property_set_int(OBJECT(cpu), "midr", ZYNQ_BOARD_MIDR,
+> -                            &error_fatal);
+> -    object_property_set_int(OBJECT(cpu), "reset-cbar", MPCORE_PERIPHBASE,
+> -                            &error_fatal);
+> -    qdev_realize(DEVICE(cpu), NULL, &error_fatal);
+> +        qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+> +
+> +        cpu_irq[n] = qdev_get_gpio_in(DEVICE(cpuobj), ARM_CPU_IRQ);
+> +    }
+> +    cpu = ARM_CPU(first_cpu);
+>
+>      /* DDR remapped to address zero.  */
+>      memory_region_add_subregion(address_space_mem, 0, machine->ram);
+> @@ -238,10 +246,14 @@ static void zynq_init(MachineState *machine)
+>      sysbus_mmio_map(SYS_BUS_DEVICE(slcr), 0, 0xF8000000);
+>
+>      dev = qdev_new(TYPE_A9MPCORE_PRIV);
+> -    qdev_prop_set_uint32(dev, "num-cpu", 1);
+> +    qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
 >      busdev = SYS_BUS_DEVICE(dev);
 >      sysbus_realize_and_unref(busdev, &error_fatal);
 >      sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
-> +    sysbus_create_varargs("l2x0", MPCORE_PERIPHBASE + 0x2000, NULL);
+> +    for (n = 0; n < smp_cpus; n++) {
+> +        sysbus_connect_irq(busdev, n, cpu_irq[n]);
+> +    }
+
+Looks like you have based this on a version of QEMU which doesn't
+have commit 68a5827b80117973 which wires up the FIQ line of the
+A9MPCORE_PRIV device to the CPUs.
+
+> +    zynq_binfo.gic_cpu_if_addr = MPCORE_PERIPHBASE + 0x100;
+>      sysbus_create_varargs("l2x0", MPCORE_PERIPHBASE + 0x2000, NULL);
 >      sysbus_connect_irq(busdev, 0,
 >                         qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_IRQ));
+> @@ -357,7 +369,7 @@ static void zynq_machine_class_init(ObjectClass *oc, void *data)
+>      MachineClass *mc = MACHINE_CLASS(oc);
+>      mc->desc = "Xilinx Zynq Platform Baseboard for Cortex-A9";
+>      mc->init = zynq_init;
+> -    mc->max_cpus = 1;
+> +    mc->max_cpus = 2;
+>      mc->no_sdcard = 1;
+>      mc->ignore_memory_transaction_failures = true;
+>      mc->default_cpu_type = ARM_CPU_TYPE_NAME("cortex-a9");
+> --
 
-If we add the cache controller to this board we also need to
-update the board's entry in hw/arm/Kconfig to add a
-"select PL310" line. This ensures that if the user asks
-to build the zynq board type then we will also compile in
-the PL310 device.
+I'm not making this a condition for accepting this patch, but
+since you're working on this board model would you consider
+writing up some documentation for it? It's one of the boards
+we do not currently have documented at all. This doesn't have to
+be very extensive: a few paragraphs describing what the board
+type is, maybe linking to a reference to the hardware, listing
+what is and isn't implemented, and (if there are some convenient
+examples available) perhaps listing some examples of use.
+docs/system/arm/xlnx-versal-virt.rst is the docs for the
+Xilinx Versal board; the rendered version of that is:
+https://www.qemu.org/docs/master/system/arm/xlnx-versal-virt.html
+or https://www.qemu.org/docs/master/system/arm/realview.html
+is an example of a more minimal board documentation page.
 
 thanks
 -- PMM
