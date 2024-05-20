@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1FB8CA18A
+	by mail.lfdr.de (Postfix) with ESMTPS id E627C8CA18C
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 19:49:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s977W-0002Cx-D8; Mon, 20 May 2024 13:48:22 -0400
+	id 1s977V-0002CM-SC; Mon, 20 May 2024 13:48:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1s977O-0002Ax-AO
- for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:15 -0400
+ id 1s977R-0002Bm-Vt
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:18 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1s977L-0003k1-JF
- for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:14 -0400
+ id 1s977O-0003k1-Ko
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716227292; x=1747763292;
+ t=1716227295; x=1747763295;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9arJsPQyD5NpWwBsxe3zjoYW9m+vFMY49U8AYvXT+dc=;
- b=CTHAKAAfwKUJy2ZxtBUWi7ajeSrhqw30mrTBXDZwNzpOW2+7zdXdwTVu
- hzv5giPZKmnQ3M1qHFuCwQhY7E72g7zer0fghtF/TnzlIGE/YPcnDLipT
- P9vM80S5v2/fk4Pd0i83QLQpArKA4qK8YikKQ8T/fs0unIPIcp/+oWxQj
- 8J3LAu48T11bB6JhMtfkmsZvC926titsG/X58GhDngZoCcRC5+di1xPin
- oGLdvMg6jQL8D0j2hZvQSntJ9ZQXeMP6vFbuouAdBN3y+wgNFXrqhSdJh
- fxO+uxWGfbT2K1Mfmn2JsAs+lu6VP6sSCnNs7OtOb0oUh5PYHMphGTOMY w==;
-X-CSE-ConnectionGUID: 1JyTe7b8QaC5z99Aj9Oe1g==
-X-CSE-MsgGUID: QLAk5d8YQdeesDsLZQ9x+g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12222093"
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="12222093"
+ bh=CfBulfqouTJD2KFyY/RsB2TzLeKk14JepRumF3y0b/o=;
+ b=HhZzu8Sotl014qdC5FiqMS3S2jvbPU5viutRyXX3ebvu6AsEyqk+TQg7
+ C6zSKnv64bA4fgPeNEzSk//5bbe4rMTkt+UT9zbZ696/J2J/6l1/EQoM+
+ sZ2aRqCyKYtQgEAd5GDqmtZOQxaUMv1PnSPTVDgOxxs2IwVn0TGP6SFf4
+ b4iaW09vlDPrkh6m8WuFODI8mPOaZKoHQh2uyIkJVWVHI1JJ/VZkXyP8I
+ PhAs9XGQ4Wh1duNAbFrEGjXlhQMUxvnrDPkndHRH0Y6qRuGjlHhQzCvaj
+ tWQW9a3xBhSmVEpa36xGXqqGK7ylZmkCeY6t6PcUubQ/RAO8PlLyTyQ1u w==;
+X-CSE-ConnectionGUID: GeIXK0HsShuKmzYJX0W76A==
+X-CSE-MsgGUID: m1ckPSbsT2+Lri7MqS7osw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12222100"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="12222100"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 10:47:57 -0700
-X-CSE-ConnectionGUID: +6aKCblvSJ+XatYyxNsoNg==
-X-CSE-MsgGUID: 0iP9h6z9TWywfSzECeLmBA==
+ 20 May 2024 10:47:58 -0700
+X-CSE-ConnectionGUID: oQ9wEy1SRO6iM5NDUC4qoA==
+X-CSE-MsgGUID: UAKUAeTuSK6HfBecV+NT2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="32746634"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="32746638"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.100])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 10:47:57 -0700
+ 20 May 2024 10:47:58 -0700
 From: Zide Chen <zide.chen@intel.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mst@redhat.com, thuth@redhat.com, cfontana@suse.de,
  xiaoyao.li@intel.com, Zide Chen <zide.chen@intel.com>
-Subject: [PATCH 2/3] target/i386: call cpu_exec_realizefn before
- x86_cpu_filter_features
-Date: Mon, 20 May 2024 10:47:32 -0700
-Message-Id: <20240520174733.32979-3-zide.chen@intel.com>
+Subject: [PATCH 3/3] target/i386: Move host_cpu_enable_cpu_pm into
+ kvm_cpu_realizefn()
+Date: Mon, 20 May 2024 10:47:33 -0700
+Message-Id: <20240520174733.32979-4-zide.chen@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240520174733.32979-1-zide.chen@intel.com>
 References: <20240520174733.32979-1-zide.chen@intel.com>
@@ -81,78 +81,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_exec_realizefn which calls the accel-specific realizefn may expand
-features.  e.g., some accel-specific options may require extra features
-to be enabled, and it's appropriate to expand these features in accel-
-specific realizefn.
+It seems not a good idea to expand features in host_cpu_realizefn,
+which is for host CPU only.  Additionally, cpu-pm option is KVM
+specific, and it's cleaner to put it in kvm_cpu_realizefn(), together
+with the WAITPKG code.
 
-One such example is the cpu-pm option, which may add CPUID_EXT_MONITOR.
-
-Thus, call cpu_exec_realizefn before x86_cpu_filter_features to ensure
-that it won't expose features not supported by the host.
-
-Fixes: 662175b91ff2 ("i386: reorder call to cpu_exec_realizefn")
-Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Fixes: f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
- target/i386/cpu.c         | 24 ++++++++++++------------
- target/i386/kvm/kvm-cpu.c |  1 -
- 2 files changed, 12 insertions(+), 13 deletions(-)
+ target/i386/host-cpu.c    | 12 ------------
+ target/i386/kvm/kvm-cpu.c | 11 +++++++++--
+ 2 files changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index cfe7c92d6bc6..da1ab7892d26 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7438,6 +7438,18 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         }
-     }
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 280e427c017c..8b8bf5afeccf 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -42,15 +42,6 @@ static uint32_t host_cpu_phys_bits(void)
+     return host_phys_bits;
+ }
  
-+    /*
-+     * note: the call to the framework needs to happen after feature expansion,
-+     * but before the checks/modifications to ucode_rev, mwait, phys_bits.
-+     * These may be set by the accel-specific code,
-+     * and the results are subsequently checked / assumed in this function.
-+     */
-+    cpu_exec_realizefn(cs, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
-+
-     x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid);
- 
-     if (cpu->enforce_cpuid && x86_cpu_have_filtered_features(cpu)) {
-@@ -7459,18 +7471,6 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
- 
-     x86_cpu_set_sgxlepubkeyhash(env);
- 
--    /*
--     * note: the call to the framework needs to happen after feature expansion,
--     * but before the checks/modifications to ucode_rev, mwait, phys_bits.
--     * These may be set by the accel-specific code,
--     * and the results are subsequently checked / assumed in this function.
--     */
--    cpu_exec_realizefn(cs, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
+-static void host_cpu_enable_cpu_pm(X86CPU *cpu)
+-{
+-    CPUX86State *env = &cpu->env;
 -
-     if (xcc->host_cpuid_required && !accel_uses_host_cpuid()) {
-         g_autofree char *name = x86_cpu_class_get_model_name(xcc);
-         error_setg(&local_err, "CPU model '%s' requires KVM or HVF", name);
+-    host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
+-               &cpu->mwait.ecx, &cpu->mwait.edx);
+-    env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
+-}
+-
+ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
+@@ -83,9 +74,6 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
+ 
+-    if (cpu->max_features && enable_cpu_pm) {
+-        host_cpu_enable_cpu_pm(cpu);
+-    }
+     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+         uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
+ 
 diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index f76972e47e61..3adcedf0dbc3 100644
+index 3adcedf0dbc3..197c892da89a 100644
 --- a/target/i386/kvm/kvm-cpu.c
 +++ b/target/i386/kvm/kvm-cpu.c
-@@ -50,7 +50,6 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-      * nothing else has been set by the user (or by accelerators) in
-      * cpu->ucode_rev and cpu->phys_bits, and updates the CPUID results in
-      * mwait.ecx.
--     * This accel realization code also assumes cpu features are already expanded.
-      *
-      * realize order:
-      *
+@@ -64,9 +64,16 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      *   cpu_common_realizefn() (via xcc->parent_realize)
+      */
+     if (cpu->max_features) {
+-        if (enable_cpu_pm && kvm_has_waitpkg()) {
+-            env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
++        if (enable_cpu_pm) {
++            if (kvm_has_waitpkg()) {
++                env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
++            }
++
++            host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
++                       &cpu->mwait.ecx, &cpu->mwait.edx);
++            env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
+         }
++
+         if (cpu->ucode_rev == 0) {
+             cpu->ucode_rev =
+                 kvm_arch_get_supported_msr_feature(kvm_state,
 -- 
 2.34.1
 
