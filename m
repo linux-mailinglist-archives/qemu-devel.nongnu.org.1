@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E627C8CA18C
-	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 19:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EB68CA199
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 19:57:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s977V-0002CM-SC; Mon, 20 May 2024 13:48:21 -0400
+	id 1s97Ex-000838-9A; Mon, 20 May 2024 13:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1s977R-0002Bm-Vt
- for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:18 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1s977O-0003k1-Ko
- for qemu-devel@nongnu.org; Mon, 20 May 2024 13:48:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716227295; x=1747763295;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CfBulfqouTJD2KFyY/RsB2TzLeKk14JepRumF3y0b/o=;
- b=HhZzu8Sotl014qdC5FiqMS3S2jvbPU5viutRyXX3ebvu6AsEyqk+TQg7
- C6zSKnv64bA4fgPeNEzSk//5bbe4rMTkt+UT9zbZ696/J2J/6l1/EQoM+
- sZ2aRqCyKYtQgEAd5GDqmtZOQxaUMv1PnSPTVDgOxxs2IwVn0TGP6SFf4
- b4iaW09vlDPrkh6m8WuFODI8mPOaZKoHQh2uyIkJVWVHI1JJ/VZkXyP8I
- PhAs9XGQ4Wh1duNAbFrEGjXlhQMUxvnrDPkndHRH0Y6qRuGjlHhQzCvaj
- tWQW9a3xBhSmVEpa36xGXqqGK7ylZmkCeY6t6PcUubQ/RAO8PlLyTyQ1u w==;
-X-CSE-ConnectionGUID: GeIXK0HsShuKmzYJX0W76A==
-X-CSE-MsgGUID: m1ckPSbsT2+Lri7MqS7osw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12222100"
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="12222100"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 10:47:58 -0700
-X-CSE-ConnectionGUID: oQ9wEy1SRO6iM5NDUC4qoA==
-X-CSE-MsgGUID: UAKUAeTuSK6HfBecV+NT2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="32746638"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.100])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 10:47:58 -0700
-From: Zide Chen <zide.chen@intel.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mst@redhat.com, thuth@redhat.com, cfontana@suse.de,
- xiaoyao.li@intel.com, Zide Chen <zide.chen@intel.com>
-Subject: [PATCH 3/3] target/i386: Move host_cpu_enable_cpu_pm into
- kvm_cpu_realizefn()
-Date: Mon, 20 May 2024 10:47:33 -0700
-Message-Id: <20240520174733.32979-4-zide.chen@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240520174733.32979-1-zide.chen@intel.com>
-References: <20240520174733.32979-1-zide.chen@intel.com>
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1s97Eu-00082m-Rt
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 13:56:00 -0400
+Received: from mail-yb1-xb32.google.com ([2607:f8b0:4864:20::b32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1s97Es-00056z-W3
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 13:56:00 -0400
+Received: by mail-yb1-xb32.google.com with SMTP id
+ 3f1490d57ef6-de604ca3cfcso2494036276.3
+ for <qemu-devel@nongnu.org>; Mon, 20 May 2024 10:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716227757; x=1716832557; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BtjAIyJLEqd+Ar6/hpaY1HvZ1kKP7FiX4lHjiKrcUkM=;
+ b=NcOUjFq90EDqS+TOZ2+b/xBtsDVO1pBfpem/ALy4qYnNwQuxtiDwkuLpy8dYQGSdzn
+ Z9xKv2b3IsEM8pJycpoOqKK/PV99UWkneJsxOLYPyPENwqCJmN6E69fzHmrVJwPrFVt/
+ pbTGjGbvppxxw0vqakMtpUwWRfaeQ/IOp2Zvvvv7bFnDckyFlLIq4j2dBBvSmbP2xqH4
+ K4qjBB2FOSt+yk+gnWUO4g5INByGhwCSkNkOt86g8ws/mqJ+I1z9z7h2BXMfE4le6YXE
+ 8lmWALgYu4ORdefzsaccCHTFnCLqtCaaJFQua0RtdU0TCXSAUGPS3zA6tUw99Zf+ZDQY
+ rsQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716227757; x=1716832557;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BtjAIyJLEqd+Ar6/hpaY1HvZ1kKP7FiX4lHjiKrcUkM=;
+ b=PXgbjeRWjkBWKATg8YSwQP5eL9Xnaoo7AxIZjlOdTFOt+LEmhB6E013HQOd4NnWIw6
+ Ecwc4hTr2SMbfObCkqhytKbssDs6jFfxlMdTrMfYfcoSUeOBJXNwdYhMCTefuz790djA
+ NeU47ntFpIHjUVPybJEEppwHXO/Q/Kkgs7MdOmFsZV7o3J36pvO6wKQ1d7E8j8xOJphr
+ nA8ro1/Ah5R2SkK6frnjUqRr03D4XjWrdBTNashntpg+U2AQ4V/8xvnZlO2GSLyV89b5
+ wnOo7XMR8QsVeZ2qZUyHwLJdvS/7mzjGa2PV50htF0KlYqVDWM8YFl4ksy3ovzPub5F8
+ L4rw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU11PQRinIuq05tgQpCTAWMS35Gdpq+m+7tDLKEbickj2K0ZFzPkF5mpKY4HEttiXp8htVecaAXKELlK/NRwsy2EXZnd5o=
+X-Gm-Message-State: AOJu0YwBb/BTp3WQ+6sG1IjudlkdRUBLIcHZTfnr4R0/+4TRoX3Sjkoq
+ kujZEoa9QK+rE80tE/hThHI8z/rxXazzz1LqVjFFkFT6qS3Imq+q
+X-Google-Smtp-Source: AGHT+IEYrKDe5exF08nsZpdAWuKzkvTmM4QcyPcyPsDamE95yqUGPNA5y6MRzoSCzaUkwj/egK3DRw==
+X-Received: by 2002:a5b:d4b:0:b0:df4:4345:260b with SMTP id
+ 3f1490d57ef6-df4434527d3mr14529116276.36.1716227757112; 
+ Mon, 20 May 2024 10:55:57 -0700 (PDT)
+Received: from debian ([50.205.20.42]) by smtp.gmail.com with ESMTPSA id
+ 3f1490d57ef6-dee6073d62esm4377992276.1.2024.05.20.10.55.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 20 May 2024 10:55:56 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Mon, 20 May 2024 10:55:41 -0700
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: fan <nifan.cxl@gmail.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
+ gregory.price@memverge.com, ira.weiny@intel.com,
+ dan.j.williams@intel.com, a.manzanares@samsung.com,
+ dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
+ Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v7 09/12] hw/cxl/events: Add qmp interfaces to
+ add/release dynamic capacity extents
+Message-ID: <ZkuOnZCxyo896ocv@debian>
+References: <20240418232902.583744-1-fan.ni@samsung.com>
+ <20240418232902.583744-10-fan.ni@samsung.com>
+ <877cgkxzal.fsf@pond.sub.org> <Zivk37xBGPsL_yo5@debian>
+ <87h6fkob0t.fsf@pond.sub.org> <ZjLCS8yJC-OvPsUS@debian>
+ <20240520175012.000045fe@Huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zide.chen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240520175012.000045fe@Huawei.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b32;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-yb1-xb32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,72 +103,217 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It seems not a good idea to expand features in host_cpu_realizefn,
-which is for host CPU only.  Additionally, cpu-pm option is KVM
-specific, and it's cleaner to put it in kvm_cpu_realizefn(), together
-with the WAITPKG code.
+On Mon, May 20, 2024 at 05:50:12PM +0100, Jonathan Cameron wrote:
+> On Wed, 1 May 2024 15:29:31 -0700
+> fan <nifan.cxl@gmail.com> wrote:
+> 
+> > From 873f59ec06c38645768ada452d9b18920a34723e Mon Sep 17 00:00:00 2001
+> > From: Fan Ni <fan.ni@samsung.com>
+> > Date: Tue, 20 Feb 2024 09:48:31 -0800
+> > Subject: [PATCH] hw/cxl/events: Add qmp interfaces to add/release dynamic
+> >  capacity extents
+> > Status: RO
+> > Content-Length: 25172
+> > Lines: 731
+> > 
+> > To simulate FM functionalities for initiating Dynamic Capacity Add
+> > (Opcode 5604h) and Dynamic Capacity Release (Opcode 5605h) as in CXL spec
+> > r3.1 7.6.7.6.5 and 7.6.7.6.6, we implemented two QMP interfaces to issue
+> > add/release dynamic capacity extents requests.
+> > 
+> > With the change, we allow to release an extent only when its DPA range
+> > is contained by a single accepted extent in the device. That is to say,
+> > extent superset release is not supported yet.
+> > 
+> > 1. Add dynamic capacity extents:
+> > 
+> > For example, the command to add two continuous extents (each 128MiB long)
+> > to region 0 (starting at DPA offset 0) looks like below:
+> > 
+> > { "execute": "qmp_capabilities" }
+> > 
+> > { "execute": "cxl-add-dynamic-capacity",
+> >   "arguments": {
+> >       "path": "/machine/peripheral/cxl-dcd0",
+> >       "host-id": 0,
+> >       "selection-policy": 2,
+> >       "region": 0,
+> >       "tag": "",
+> >       "extents": [
+> >       {
+> >           "offset": 0,
+> >           "len": 134217728
+> >       },
+> >       {
+> >           "offset": 134217728,
+> >           "len": 134217728
+> >       }
+> >       ]
+> >   }
+> > }
+> > 
+> > 2. Release dynamic capacity extents:
+> > 
+> > For example, the command to release an extent of size 128MiB from region 0
+> > (DPA offset 128MiB) looks like below:
+> > 
+> > { "execute": "cxl-release-dynamic-capacity",
+> >   "arguments": {
+> >       "path": "/machine/peripheral/cxl-dcd0",
+> >       "host-id": 0,
+> >       "flags": 1,
+> >       "region": 0,
+> >       "tag": "",
+> >       "extents": [
+> >       {
+> >           "offset": 134217728,
+> >           "len": 134217728
+> >       }
+> >       ]
+> >   }
+> > }
+> > 
+> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
+> 
+> Hi Fan,
+> 
+> A few trivial questions inline.  I don't feel particularly strongly
+> about breaking up the flags fields, but I'd like to understand your
+> reasoning for keeping them as single fields?
+> 
+> Is it mainly to keep aligned with the specification or something else?
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> 
+> >  #endif /* CXL_EVENTS_H */
+> > diff --git a/qapi/cxl.json b/qapi/cxl.json
+> > index 4281726dec..27cf39f448 100644
+> > --- a/qapi/cxl.json
+> > +++ b/qapi/cxl.json
+> > @@ -361,3 +361,93 @@
+> >  ##
+> >  {'command': 'cxl-inject-correctable-error',
+> >   'data': {'path': 'str', 'type': 'CxlCorErrorType'}}
+> > +
+> > +##
+> > +# @CXLDynamicCapacityExtent:
+> > +#
+> > +# A single dynamic capacity extent
+> > +#
+> > +# @offset: The offset (in bytes) to the start of the region
+> > +#     where the extent belongs to
+> > +#
+> > +# @len: The length of the extent in bytes
+> > +#
+> > +# Since: 9.1
+> > +##
+> > +{ 'struct': 'CXLDynamicCapacityExtent',
+> > +  'data': {
+> > +      'offset':'uint64',
+> > +      'len': 'uint64'
+> > +  }
+> > +}
+> > +
+> > +##
+> > +# @cxl-add-dynamic-capacity:
+> > +#
+> > +# Command to initiate to add dynamic capacity extents to a host.  It
+> > +# simulates operations defined in cxl spec r3.1 7.6.7.6.5.
+> > +#
+> > +# @path: CXL DCD canonical QOM path
+> > +#
+> > +# @host-id: The "Host ID" field as defined in cxl spec r3.1
+> > +#     Table 7-70.
+> > +#
+> > +# @selection-policy: The "Selection Policy" bits as defined in
+> > +#     cxl spec r3.1 Table 7-70.  It specifies the policy to use for
+> > +#     selecting which extents comprise the added capacity.
+> 
+> Hmm. This one is defined as a selection of nameable choices.  Perhaps
+> worth an enum?  If we did do that, we'd also need to break the flags
+> on in the release flags below.
 
-Fixes: f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
-Signed-off-by: Zide Chen <zide.chen@intel.com>
----
- target/i386/host-cpu.c    | 12 ------------
- target/i386/kvm/kvm-cpu.c | 11 +++++++++--
- 2 files changed, 9 insertions(+), 14 deletions(-)
+Initially, I defined a enum for selection policy. But for users who are
+not familiar with CXL spec, I think the enum definition is not very clear to
+to them without reading the spec, so I removed it. Also, there are some
+reserved bits there, let it as uint8 may help keep the interface unchanged
+if some of the bits are used in the future?
 
-diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
-index 280e427c017c..8b8bf5afeccf 100644
---- a/target/i386/host-cpu.c
-+++ b/target/i386/host-cpu.c
-@@ -42,15 +42,6 @@ static uint32_t host_cpu_phys_bits(void)
-     return host_phys_bits;
- }
- 
--static void host_cpu_enable_cpu_pm(X86CPU *cpu)
--{
--    CPUX86State *env = &cpu->env;
--
--    host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
--               &cpu->mwait.ecx, &cpu->mwait.edx);
--    env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
--}
--
- static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
- {
-     uint32_t host_phys_bits = host_cpu_phys_bits();
-@@ -83,9 +74,6 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
-     X86CPU *cpu = X86_CPU(cs);
-     CPUX86State *env = &cpu->env;
- 
--    if (cpu->max_features && enable_cpu_pm) {
--        host_cpu_enable_cpu_pm(cpu);
--    }
-     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-         uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
- 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 3adcedf0dbc3..197c892da89a 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -64,9 +64,16 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-      *   cpu_common_realizefn() (via xcc->parent_realize)
-      */
-     if (cpu->max_features) {
--        if (enable_cpu_pm && kvm_has_waitpkg()) {
--            env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
-+        if (enable_cpu_pm) {
-+            if (kvm_has_waitpkg()) {
-+                env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
-+            }
-+
-+            host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
-+                       &cpu->mwait.ecx, &cpu->mwait.edx);
-+            env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
-         }
-+
-         if (cpu->ucode_rev == 0) {
-             cpu->ucode_rev =
-                 kvm_arch_get_supported_msr_feature(kvm_state,
--- 
-2.34.1
+> 
+> 
+> > +#
+> > +# @region: The "Region Number" field as defined in cxl spec r3.1
+> > +#     Table 7-70.  The dynamic capacity region where the capacity
+> > +#     is being added.  Valid range is from 0-7.
+> > +#
+> > +# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-70.
+> > +#
+> > +# @extents: The "Extent List" field as defined in cxl spec r3.1
+> > +#     Table 7-70.
+> > +#
+> > +# Since : 9.1
+> > +##
+> > +{ 'command': 'cxl-add-dynamic-capacity',
+> > +  'data': { 'path': 'str',
+> > +            'host-id': 'uint16',
+> > +            'selection-policy': 'uint8',
+> > +            'region': 'uint8',
+> > +            'tag': 'str',
+> > +            'extents': [ 'CXLDynamicCapacityExtent' ]
+> > +           }
+> > +}
+> > +
+> > +##
+> > +# @cxl-release-dynamic-capacity:
+> > +#
+> > +# Command to initiate to release dynamic capacity extents from a
+> > +# host.  It simulates operations defined in cxl spec r3.1 7.6.7.6.6.
+> > +#
+> > +# @path: CXL DCD canonical QOM path
+> > +#
+> > +# @host-id: The "Host ID" field as defined in cxl spec r3.1
+> > +#     Table 7-71.
+> > +#
+> > +# @flags: The "Flags" field as defined in cxl spec r3.1 Table 7-71,
+> > +#     with bit[3:0] for removal policy, bit[4] for forced removal,
+> > +#     bit[5] for sanitize on release, bit[7:6] reserved.
+> 
+> This can be nicely broken up into removal policy enum plus two flags.
+> It might be worth doing so to give a nicer interface?
 
+So if we choose to do it this way, maybe we use enum for the above add
+command also?
+
+> 
+> > +#
+> > +# @region: The dynamic capacity region where the extents will be
+> > +#     released.
+> 
+> This has a better definition in the add dynamic capacity entry above.
+
+Yeah, will fix. 
+
+Fan
+> 
+> > +#
+> > +# @tag: The "Tag" field as defined in cxl spec r3.1 Table 7-71.
+> > +#
+> > +# @extents: The "Extent List" field as defined in cxl spec r3.1
+> > +#     Table 7-71.
+> > +#
+> > +# Since : 9.1
+> > +##
+> > +{ 'command': 'cxl-release-dynamic-capacity',
+> > +  'data': { 'path': 'str',
+> > +            'host-id': 'uint16',
+> > +            'flags': 'uint8',
+> > +            'region': 'uint8',
+> > +            'tag': 'str',
+> > +            'extents': [ 'CXLDynamicCapacityExtent' ]
+> > +           }
+> > +}
+> 
 
