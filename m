@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CE18C96CE
-	for <lists+qemu-devel@lfdr.de>; Sun, 19 May 2024 23:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19A98C9792
+	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 02:45:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s8o4t-0005FL-08; Sun, 19 May 2024 17:28:23 -0400
+	id 1s8r8Q-0004PB-GU; Sun, 19 May 2024 20:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s8o4r-0005FC-Mp
- for qemu-devel@nongnu.org; Sun, 19 May 2024 17:28:21 -0400
-Received: from madrid.collaboradmins.com ([46.235.227.194])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s8r8N-0004Ox-Sz
+ for qemu-devel@nongnu.org; Sun, 19 May 2024 20:44:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1s8o4p-0003OF-W8
- for qemu-devel@nongnu.org; Sun, 19 May 2024 17:28:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1716154099;
- bh=OtHJTL5FEETIkdVw32ceoKBwDVxppy6kVgOtP6gX3rs=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=m9KQd2dPreL2Jtcq+qgCH8fPt9cwHa0J8zHfY6tCC+EcKmcdlaOHvg7nEJcP0ZrfZ
- S5l3Yh/AZsuFLfefagM3Bsw0N/YuRipA9uHonM9g65AJiH0XHhph/096MKFNsDcdvU
- O/XjQr2EbfsX3iKHPPG5wgowzY8geHdOVov0ClAS1Y5eqjWKMi92snCqeQkUkK7/hm
- MGPDCKsRuy6cIHoKqtykQzcwLyor+YGFgCj/YhpYIaZ6Nc9wDl4U5YWVKwZ4buXFOL
- XYd7UQ/QGoUAqkOpjKtE7b2HHwFleY1g8ugWSvbYIGmDzXdeHbsa1jp5eXpZwpcleh
- tX4BEejrLTwww==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id C842B37820E1;
- Sun, 19 May 2024 21:28:16 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v12 13/13] virtio-gpu: Support Venus context
-Date: Mon, 20 May 2024 00:27:12 +0300
-Message-ID: <20240519212712.2605419-14-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240519212712.2605419-1-dmitry.osipenko@collabora.com>
-References: <20240519212712.2605419-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s8r8M-00041t-Ao
+ for qemu-devel@nongnu.org; Sun, 19 May 2024 20:44:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716165847;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ybYRfWZi4IvVoo/hMqXGrx+tcnnZzqO4RQd7mCyyFbk=;
+ b=VsUlNrzCm2CkYwJviCAt/8rle2trdWbsNGbxso4IFomHOQBWw/0dd0TM7rXIzTDkWgKfcV
+ snJ+FOYsKe8vhU01yhPvDuAsTZrBNmixlUZAABHklZ557mjE2NPdmCNmyMFk8fpPKJT53v
+ Xm7eM/3tModWSKpx1Cw5zyNDMVKcr70=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-300-qByscSswPl62nhRn1eGszQ-1; Sun, 19 May 2024 20:44:05 -0400
+X-MC-Unique: qByscSswPl62nhRn1eGszQ-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-2ba1dd99b05so3619527a91.3
+ for <qemu-devel@nongnu.org>; Sun, 19 May 2024 17:44:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716165844; x=1716770644;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ybYRfWZi4IvVoo/hMqXGrx+tcnnZzqO4RQd7mCyyFbk=;
+ b=aJ6k7OsbEvtB1fUYLsZytSVwR208TtBNI2/13rtgmtr+JkXolvSXmx6ZBcmxRvliBh
+ s622OSb9TeaHlReukuwQaLywx2wVcRwOxoAU2uTn/cGKjlDZVgXCqLn187oZzZyZ59vw
+ 7xSwyzAHHT79UD8BuZ5xWoJCKFYNpmq38F87yzuCRj7WLRIZPfCxLrYzEvIMZfUGTH00
+ i9Qw8naWzI3hMOzX57s3haw9JSJ4HodOQ0IqCylswIQG5zE+cmhNOe3awAKg8SRG9WV0
+ OSE1mU0A++ARkfqRL0tqRlSQU3inE6WdHEEWoMbl5q74AMzpWihhbUOomDO1v4bKdBRk
+ yTXA==
+X-Gm-Message-State: AOJu0Yx7T0UFtrvZa2FaCEcySbcjekPgYHybCkCQYYLqf4JKv/KeY0+K
+ 4BKA4p4s0uZbXYz75p4dIqed+UHxEohzz95b5cr1OTqyKjCZ5vZBGU81p/bmH3bnDEhfvoMilgz
+ DWvOyO46ipvSpfMA3BxtyxlMTM/4Dmar6iX2TQCwrE0GvW4n4zVcIho25szsEdqjrpijaBih1D3
+ XpC04iAnzEkF29o6btRsm5IroUXUA=
+X-Received: by 2002:a17:90b:100d:b0:2b6:2ef4:e2aa with SMTP id
+ 98e67ed59e1d1-2b6cc780466mr21638719a91.25.1716165843976; 
+ Sun, 19 May 2024 17:44:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkMHNaA4qxDba1q+xZoXL7A1gYtYvqtqVkJ8Cq4w5bVhnrz8jJDpmBlZBzCTeIF67zP8BsciqTJ/IK56cGN1k=
+X-Received: by 2002:a17:90b:100d:b0:2b6:2ef4:e2aa with SMTP id
+ 98e67ed59e1d1-2b6cc780466mr21638707a91.25.1716165843645; Sun, 19 May 2024
+ 17:44:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240517102334.81943-1-zhenzhong.duan@intel.com>
+In-Reply-To: <20240517102334.81943-1-zhenzhong.duan@intel.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 20 May 2024 08:43:52 +0800
+Message-ID: <CACGkMEvTomFeC1bM3SfY1zGhQ_5i15r6CY6M3jVzau6niNUf_w@mail.gmail.com>
+Subject: Re: [PATCH] intel_iommu: Use the latest fault reasons defined by spec
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: qemu-devel@nongnu.org, yi.l.liu@intel.com, chao.p.peng@intel.com, 
+ Yu Zhang <yu.c.zhang@linux.intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.383,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,143 +99,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+On Fri, May 17, 2024 at 6:26=E2=80=AFPM Zhenzhong Duan <zhenzhong.duan@inte=
+l.com> wrote:
+>
+> From: Yu Zhang <yu.c.zhang@linux.intel.com>
+>
+> Currently we use only VTD_FR_PASID_TABLE_INV as fault reason.
+> Update with more detailed fault reasons listed in VT-d spec 7.2.3.
+>
+> Signed-off-by: Yu Zhang <yu.c.zhang@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
 
-Request Venus when initializing VirGL and if venus=true flag is set for
-virtio-gpu-gl device.
+I wonder if this could be noticed by the guest or not. If yes should
+we consider starting to add thing like version to vtd emulation code?
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu-gl.c     |  2 ++
- hw/display/virtio-gpu-virgl.c  | 22 ++++++++++++++++++----
- hw/display/virtio-gpu.c        | 13 +++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- meson.build                    |  1 +
- 5 files changed, 37 insertions(+), 4 deletions(-)
-
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index b8f395be8d2d..2078e74050bb 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -148,6 +148,8 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-+    DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 70e2d28ba966..2e9862dd186a 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1130,6 +1130,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#ifdef VIRGL_RENDERER_VENUS
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1161,7 +1166,7 @@ static void virtio_gpu_virgl_add_capset(GArray *capset_ids, uint32_t capset_id)
- 
- GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset_max_ver, capset_max_size;
-     GArray *capset_ids;
- 
-     capset_ids = g_array_new(false, false, sizeof(uint32_t));
-@@ -1170,12 +1175,21 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-     virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL);
- 
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
--    if (capset2_max_ver) {
-+                               &capset_max_ver,
-+                               &capset_max_size);
-+    if (capset_max_ver) {
-         virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
-+
-     return capset_ids;
- }
- 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 052ab493a00b..0518bb858e88 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1491,6 +1491,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef HAVE_VIRGL_VENUS
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+#else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 7e1fee836802..ec5d7517f141 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -117,6 +118,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/meson.build b/meson.build
-index 503a7736eda0..5a2b7b660c67 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2305,6 +2305,7 @@ if virgl.version().version_compare('>=1.0.0')
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
-   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
-   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
-+  config_host_data.set('HAVE_VIRGL_VENUS', 1)
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
--- 
-2.44.0
+Thanks
 
 
