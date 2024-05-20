@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5368C9B62
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EF98C9B66
 	for <lists+qemu-devel@lfdr.de>; Mon, 20 May 2024 12:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s90Kx-0000gt-GL; Mon, 20 May 2024 06:33:47 -0400
+	id 1s90Ky-0000i7-W7; Mon, 20 May 2024 06:33:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1s90Kv-0000gX-MU; Mon, 20 May 2024 06:33:45 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1s90Kx-0000hO-9V; Mon, 20 May 2024 06:33:47 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1s90Kt-0008V2-S5; Mon, 20 May 2024 06:33:45 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1s90Kv-0008VA-HG; Mon, 20 May 2024 06:33:46 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44K9KkJt031201; Mon, 20 May 2024 10:33:42 GMT
+ 44KAUx6U001291; Mon, 20 May 2024 10:33:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=kiUm3CTdqcX7ZE+siiqzqIMJQ6QJt8w5BNVfDuzRtQ0=;
- b=EbJVXN1BHHSrp+LcyWocFyuUXzZ3QQC5R+oXF6ZOaGXAS90zUK1WRJWnjZwUQk1M3+7K
- dBE2S/cHNtViidXfpiKKZQgw166OVJIZduHFiTn8X3SF8g/z8AcfTJ8zC46WQHLqkv2g
- QCMmdgqRxUI5IIOCYfURuC0M3Eo39BzxEYVzXNWn8GUIeu9RVNxZc2XW3K0hWZYAbIgg
- Bx0MjJ+elBegLasWqCVGRUIXVxIfSazQ1Me9Qwh1mcYajPW3a937iYe4XL6noFfgeGrI
- U5Bahoo/f65V+GBlGFKr3YG1/izrz29KlzzfyTnIsJ6qE3AoJrnsUlkub9VZK24BQGGP gg== 
+ bh=HjqK2NAGi9XWKEgUhbZl8ayDln1Jdj+CNjARTqU5kCo=;
+ b=Dmqn1+FFJgW9eAsCroQLVDdJhg5Qhb2eaXiL3aqGwZASX8bRExZTYAcYSC6PL7DCL4Bc
+ hKRSntQ7O24OL/RYKb6KYMwrQcxL8Z5ar6fm21TDfSvHYycK8+7f7kVK4wPAu9SG9FF5
+ OlFHq43XrnEcelhv7tFkl0p6zTAupCAyjjAjIl/gfU4Z3b5pRaP90GTEC2BJuzBwpRYv
+ vpBElog4tF8pflTEHO1cuJAtnU6KsZU+smYfcV2flcDVJ3DaLyllgXZUW/8/1a6o8Pn4
+ F4FkG1fdMuZIp6wJ/tQKxUhHtvATqFCtK3kFfJeXMP78zPvqiMJO/3EXeeGVrPNgeddX sg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y83p485qp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y82k58a8r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 May 2024 10:33:41 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44KAXf52022322;
- Mon, 20 May 2024 10:33:41 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y83p485qm-1
+ Mon, 20 May 2024 10:33:43 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44KAXh76006717;
+ Mon, 20 May 2024 10:33:43 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y82k58a8m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 May 2024 10:33:41 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44K8gB4k022086; Mon, 20 May 2024 10:33:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y76ntfg1e-1
+ Mon, 20 May 2024 10:33:43 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44K9cnXx023485; Mon, 20 May 2024 10:33:42 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y77nny83q-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 20 May 2024 10:33:40 +0000
+ Mon, 20 May 2024 10:33:42 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
  [10.20.54.102])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44KAXaVW51249480
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44KAXcTT52167142
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 May 2024 10:33:39 GMT
+ Mon, 20 May 2024 10:33:40 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA7B820067;
- Mon, 20 May 2024 10:33:36 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 87BBC20076;
+ Mon, 20 May 2024 10:33:38 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C79A2004B;
- Mon, 20 May 2024 10:33:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4760120040;
+ Mon, 20 May 2024 10:33:37 +0000 (GMT)
 Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.ibm.com (unknown
  [9.195.33.101]) by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 20 May 2024 10:33:35 +0000 (GMT)
+ Mon, 20 May 2024 10:33:37 +0000 (GMT)
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 To: npiggin@gmail.com, qemu-ppc@nongnu.org
 Cc: danielhb413@gmail.com, qemu-devel@nongnu.org
-Subject: [PATCH 1/6] target/ppc: use locally stored msr and avoid indirect
- access
-Date: Mon, 20 May 2024 16:03:24 +0530
-Message-Id: <20240520103329.381158-2-harshpb@linux.ibm.com>
+Subject: [PATCH 2/6] target/ppc: optimize hreg_compute_pmu_hflags_value
+Date: Mon, 20 May 2024 16:03:25 +0530
+Message-Id: <20240520103329.381158-3-harshpb@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240520103329.381158-1-harshpb@linux.ibm.com>
 References: <20240520103329.381158-1-harshpb@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 4GWajSrecyuy0dVinF_MHVh-_eA5vCge
-X-Proofpoint-ORIG-GUID: PW77nY7Q8-cPFOmg0t_gk4O_cp4Cck3D
+X-Proofpoint-GUID: IAHv8jm-KbRJ07_Pez8VygllLfOgoPg6
+X-Proofpoint-ORIG-GUID: 6NvQfNilhiwHnRn1DuVUm5pb2LsYDEbn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-20_05,2024-05-17_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 mlxlogscore=717 adultscore=0 phishscore=0 clxscore=1015
- mlxscore=0 spamscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405200087
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0 mlxscore=0
+ mlxlogscore=399 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405200087
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -111,32 +110,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hreg_compute_hflags_value already stores msr locally to be used in most
-of the logic in the routine however some instances are still using
-env->msr which is unnecessary. Use locally stored value as available.
+Cache env->spr[SPR_POWER_MMCR0] in a local variable as used in multiple
+conditions to avoid multiple indirect accesses.
 
 Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- target/ppc/helper_regs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/ppc/helper_regs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
-index 25258986e3..945fa1a596 100644
+index 945fa1a596..5de0df5795 100644
 --- a/target/ppc/helper_regs.c
 +++ b/target/ppc/helper_regs.c
-@@ -106,10 +106,10 @@ static uint32_t hreg_compute_hflags_value(CPUPPCState *env)
+@@ -50,15 +50,16 @@ void hreg_swap_gpr_tgpr(CPUPPCState *env)
+ static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
+ {
+     uint32_t hflags = 0;
+-
+ #if defined(TARGET_PPC64)
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC0) {
++    target_ulong spr_power_mmcr0 = env->spr[SPR_POWER_MMCR0];
++
++    if (spr_power_mmcr0 & MMCR0_PMCC0) {
+         hflags |= 1 << HFLAGS_PMCC0;
+     }
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCC1) {
++    if (spr_power_mmcr0 & MMCR0_PMCC1) {
+         hflags |= 1 << HFLAGS_PMCC1;
+     }
+-    if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
++    if (spr_power_mmcr0 & MMCR0_PMCjCE) {
+         hflags |= 1 << HFLAGS_PMCJCE;
+     }
  
-     if (ppc_flags & POWERPC_FLAG_DE) {
-         target_ulong dbcr0 = env->spr[SPR_BOOKE_DBCR0];
--        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(env->msr, MSR, DE)) {
-+        if ((dbcr0 & DBCR0_ICMP) && FIELD_EX64(msr, MSR, DE)) {
-             hflags |= 1 << HFLAGS_SE;
-         }
--        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(env->msr, MSR, DE)) {
-+        if ((dbcr0 & DBCR0_BRT) && FIELD_EX64(msr, MSR, DE)) {
-             hflags |= 1 << HFLAGS_BE;
-         }
-     } else {
 -- 
 2.39.3
 
