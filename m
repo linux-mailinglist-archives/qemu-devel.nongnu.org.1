@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A57F8CA9A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 10:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC468CA9A2
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 10:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9KVd-00019S-7y; Tue, 21 May 2024 04:06:09 -0400
+	id 1s9KVc-000196-Eq; Tue, 21 May 2024 04:06:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
- id 1s9KVZ-00017s-JW
+ id 1s9KVZ-000180-UZ
  for qemu-devel@nongnu.org; Tue, 21 May 2024 04:06:05 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <maobibo@loongson.cn>) id 1s9KVU-0001W8-I4
+ (envelope-from <maobibo@loongson.cn>) id 1s9KVW-0001hG-Kl
  for qemu-devel@nongnu.org; Tue, 21 May 2024 04:06:05 -0400
 Received: from loongson.cn (unknown [10.2.5.213])
- by gateway (Coremail) with SMTP id _____8DxOOrhVUxm7DECAA--.1342S3;
- Tue, 21 May 2024 16:05:53 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxeeriVUxm7jECAA--.1765S3;
+ Tue, 21 May 2024 16:05:54 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxRcXdVUxm6O8DAA--.1310S3; 
- Tue, 21 May 2024 16:05:51 +0800 (CST)
+ AQAAf8AxRcXdVUxm6O8DAA--.1310S4; 
+ Tue, 21 May 2024 16:05:53 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Song Gao <gaosong@loongson.cn>
 Cc: qemu-devel@nongnu.org
-Subject: [PATCH 1/2] target/loongarch: Add loongarch vector property
- unconditionally
-Date: Tue, 21 May 2024 16:05:48 +0800
-Message-Id: <20240521080549.434197-2-maobibo@loongson.cn>
+Subject: [PATCH 2/2] target/loongarch: Add loongson binary translation feature
+Date: Tue, 21 May 2024 16:05:49 +0800
+Message-Id: <20240521080549.434197-3-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240521080549.434197-1-maobibo@loongson.cn>
 References: <20240521080549.434197-1-maobibo@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxRcXdVUxm6O8DAA--.1310S3
+X-CM-TRANSID: AQAAf8AxRcXdVUxm6O8DAA--.1310S4
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,41 +62,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently LSX/LASX vector property is decided by the default value.
-Instead vector property should be added unconditionally, and it is
-irrelative with its default value. If vector is disabled by default,
-vector also can be enabled from command line.
+Loongson Binary Translation (LBT) is used to accelerate binary
+translation, which contains 4 scratch registers (scr0 to scr3), x86/ARM
+eflags (eflags) and x87 fpu stack pointer (ftop).
+
+Now LBT feature is added in kvm mode, not supported in TCG mode since
+it is not emulated. And only LBT feature is added here, LBT register
+saving and restoring is not supported since it depeeds on LBT feautre
+implemented in KVM kernel.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- target/loongarch/cpu.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ target/loongarch/cpu.c                | 32 +++++++++++++++++++++++++++
+ target/loongarch/cpu.h                |  1 +
+ target/loongarch/loongarch-qmp-cmds.c |  2 +-
+ 3 files changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index a0cad53676..b5c1ec94af 100644
+index b5c1ec94af..84254c0f42 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -645,16 +645,10 @@ static void loongarch_set_lasx(Object *obj, bool value, Error **errp)
+@@ -412,6 +412,9 @@ static void loongarch_la464_initfn(Object *obj)
+     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
+     data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
+     data = FIELD_DP32(data, CPUCFG2, LAM, 1);
++    if (kvm_enabled()) {
++        data = FIELD_DP32(data, CPUCFG2, LBT_ALL, 7);
++    }
+     env->cpucfg[2] = data;
  
+     env->cpucfg[4] = 100 * 1000 * 1000; /* Crystal frequency */
+@@ -643,12 +646,41 @@ static void loongarch_set_lasx(Object *obj, bool value, Error **errp)
+     }
+ }
+ 
++static bool loongarch_get_lbt(Object *obj, Error **errp)
++ {
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    bool ret;
++
++    ret = false;
++    /* lbt is enabled only in kvm mode, not supported in tcg mode */
++    if (kvm_enabled() &&
++        (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LBT_ALL) == 7)) {
++        ret = true;
++     }
++    return ret;
++}
++
++static void loongarch_set_lbt(Object *obj, bool value, Error **errp)
++{
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
++    int lbt;
++
++    lbt = 0;
++    if (kvm_enabled() && value) {
++        /* Enable binary translation for all architectures */
++        lbt = 7;
++    }
++    cpu->env.cpucfg[2] = FIELD_DP32(cpu->env.cpucfg[2], CPUCFG2, LBT_ALL, lbt);
++}
++
  void loongarch_cpu_post_init(Object *obj)
  {
--    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
--
--    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
--        object_property_add_bool(obj, "lsx", loongarch_get_lsx,
--                                 loongarch_set_lsx);
--    }
--    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LASX)) {
--        object_property_add_bool(obj, "lasx", loongarch_get_lasx,
--                                 loongarch_set_lasx);
--    }
-+    object_property_add_bool(obj, "lsx", loongarch_get_lsx,
-+                             loongarch_set_lsx);
-+    object_property_add_bool(obj, "lasx", loongarch_get_lasx,
-+                             loongarch_set_lasx);
+     object_property_add_bool(obj, "lsx", loongarch_get_lsx,
+                              loongarch_set_lsx);
+     object_property_add_bool(obj, "lasx", loongarch_get_lasx,
+                              loongarch_set_lasx);
++    object_property_add_bool(obj, "lbt", loongarch_get_lbt,
++                             loongarch_set_lbt);
  }
  
  static void loongarch_cpu_init(Object *obj)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 41b8e6d96d..2021e85303 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -152,6 +152,7 @@ FIELD(CPUCFG2, LLFTP_VER, 15, 3)
+ FIELD(CPUCFG2, LBT_X86, 18, 1)
+ FIELD(CPUCFG2, LBT_ARM, 19, 1)
+ FIELD(CPUCFG2, LBT_MIPS, 20, 1)
++FIELD(CPUCFG2, LBT_ALL, 18, 3)
+ FIELD(CPUCFG2, LSPW, 21, 1)
+ FIELD(CPUCFG2, LAM, 22, 1)
+ 
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index 8721a5eb13..c6f6e1ef85 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -40,7 +40,7 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+ }
+ 
+ static const char *cpu_model_advertised_features[] = {
+-    "lsx", "lasx", NULL
++    "lsx", "lasx", "lbt", NULL
+ };
+ 
+ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
 -- 
 2.39.3
 
