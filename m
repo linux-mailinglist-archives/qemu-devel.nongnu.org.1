@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DFF8CA5CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 03:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93288CA5D1
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 03:32:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ELO-0007m4-ED; Mon, 20 May 2024 21:31:10 -0400
+	id 1s9ELQ-0007nl-4d; Mon, 20 May 2024 21:31:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9ELJ-0007jg-G7; Mon, 20 May 2024 21:31:06 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1s9ELO-0007mY-24; Mon, 20 May 2024 21:31:10 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9ELH-0005Kf-RS; Mon, 20 May 2024 21:31:05 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1eeabda8590so87921545ad.0; 
- Mon, 20 May 2024 18:31:02 -0700 (PDT)
+ id 1s9ELL-0005L7-Hu; Mon, 20 May 2024 21:31:09 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-66986f58b43so1335905a12.0; 
+ Mon, 20 May 2024 18:31:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716255061; x=1716859861; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716255065; x=1716859865; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xELS6oYgKZZUA8AMO1krYjCwP0RoNjeqV7WiJZCCiK8=;
- b=RlRBzjBQ44bZN03jO8PdFTr8jUYAfs8/2jroz7az9gcmdNNo4Nb7MmjTIjcVB99aUK
- E2jCHFKZonGyUp5vUQdDPqaT50J7/AjhVXgs4d11you0p1thFJGrpbMLOo+6hl/zoYIC
- jy/J6jbC3lejO5oqHcheGSw4wKLFaq1yYg4RmfoSmfNIGSmBXokEsdUeO7wO2R6dlnOe
- fv/wt0/L3S+ScKPefL1LHBctWfIQMLz40ePVDVBzAkhb+Sz3rzLw76ORZcLYTJYQNPfo
- lOSM/AMcZGYwjSqAcEI9XgGmhH8kXXJ+SKGTm5Whd1B1Wbj2tAoxxogRxybBjz/4FqRa
- mB8A==
+ bh=IjlPsYtB8Kd+0Ny4SiPL3hIvcQ0jYiMqPq1SDRuz4OE=;
+ b=kHOb56SdVvuHXo7M3VmSIWflImIwDmtaIjPs+ZD5bqU1TKQuhadTxmEfUJYQhyvKxu
+ kssgDGTBIziRJ2vkn96S696OfFstT+o4b6cTypJt4dY7T6YVIT6/7zrgOY6pNCCHK9GG
+ iqwHExMOW0fsnj7Rq26RuFJTZE3RdLDBg8CXlRR/5aOztX1cRZ1fZqHQywObUmeL0lNK
+ ja2sKHfL3xJ/QrTr0cBOkj/4Jy786AkGhkSEgbSVxF4I3m6MLzOQTfqrqC6i77MPjMoQ
+ R5nr9QLfKWl2C7uX3bwZn+zINuMs9UVM5O6SqqsThbpouoMOzf208P6ot8WeLQAcczJ+
+ SkLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716255061; x=1716859861;
+ d=1e100.net; s=20230601; t=1716255065; x=1716859865;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xELS6oYgKZZUA8AMO1krYjCwP0RoNjeqV7WiJZCCiK8=;
- b=ZmAi8nkkWBecpaxm3qfCA2zV+TaKFA9fNZXEATbtiXRDMFOZP4aGvh3ml7D9vyWogn
- wj5gv870bOeHOrWPXFHKKlHe2dkeg296G034MR+YNnaDutNdH7jYLKUcFcEOWXP/jRDG
- uCJt+ujXQoinrCxzlBCizSmbfhjtCKYbV1Dh/VfJpAG/Lnkz/yYv3YaQ8OEh3MtwJoVX
- eOBGp9X+4RZyT0p0xeNFUnMl7Tgpeas6dIxYSYjk9hZeXITqORxv7Cfl6xg6ChwhGMkR
- /GJJNdhNO4Vnft6UVMIoYRJ5aA+Kcw8eenwdloB6Ttw8Hsu4bo4Y9gtBIqgAaV7G47A9
- xJMg==
+ bh=IjlPsYtB8Kd+0Ny4SiPL3hIvcQ0jYiMqPq1SDRuz4OE=;
+ b=D40yUuayt0yOUICyhT0eOT7BkOwAyqQTCFSgyns7ofNiDeRzpcl9SoKwzH26+TY7L/
+ 2cIX2wGSefiMaj7Zy7IsuQ/3fwgQtlqjRwiDL4gISNhl1MjqTiwqYYnO3z7yGuwek2XE
+ iZ6N5wbfb+ulsDjdndkbYJBfmIrxtw46OzpaQgxuags9dE4NT71Ot4IUmAbZs89UWyQV
+ gUHH47MjEyuY29M4BK1mBjo44EqcwYNUKv3MZNEBNRw36nTPCny9oiVEe/4awqe9KQNS
+ awaKRF6rl899POLfWhtwgth4IbGCXZZYoFHQdWbChyiePaq/vLUe3FTZlsbO4O5Nmk0S
+ PlvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWhKWEogRz5T27yEgGU06s1Z/2LlR5ZvFD/2BtufUn1DdAkwK8yysPic3taIOiGGg8aczJP7Bc6JRiGI7dBTmBuEPDy19s=
-X-Gm-Message-State: AOJu0YxxuUeTptRVKiU/4Wy2R/I6phhT6ATKCn6TzGZ1/pdjS6qgNGH0
- +mcMYbEggmJY/Zgga4D144L17le87dPAxp4G8QUNCDOxwniRE+mBQrH74Q==
-X-Google-Smtp-Source: AGHT+IG908KthP33QWrdcsoeqRSjsXhA5tcUx2Jl5Q6MW61VWboIkEJjvBLo/AxYLMvFhLM3Px30rw==
-X-Received: by 2002:a17:90a:eb07:b0:2b4:3659:b3f5 with SMTP id
- 98e67ed59e1d1-2b6ccd886efmr21839507a91.47.1716255061450; 
- Mon, 20 May 2024 18:31:01 -0700 (PDT)
+ AJvYcCW9mxXTX6j4/dVSPFb4N1my/J/iOczmJpl8AkYtYSPmMysFbAx8ZgFR1weJ01/XO3VnPSJAstUuKuEXsSSr0wdd4CZZvxE=
+X-Gm-Message-State: AOJu0YxuUVLurTyO3GCMeQWX+oYTM05GKS8rIg7LVmhksoJpRDOpnjqj
+ tiQ/hcaCDDK/P03YsGcgWVYPXETIfJe9HunUJL8uTQergGZ5mQKulZcjYg==
+X-Google-Smtp-Source: AGHT+IF5KzDGdGUVIjp7ZnJAXcX+JuBJBSiOWFuaBb0D9cKRNZuE4kKPRenquYdP9NJBqE5NalOSww==
+X-Received: by 2002:a17:90a:520b:b0:2bd:9255:91b6 with SMTP id
+ 98e67ed59e1d1-2bd9255b060mr918209a91.4.1716255065349; 
+ Mon, 20 May 2024 18:31:05 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2bd7f0cd400sm2514953a91.31.2024.05.20.18.30.57
+ 98e67ed59e1d1-2bd7f0cd400sm2514953a91.31.2024.05.20.18.31.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 May 2024 18:31:01 -0700 (PDT)
+ Mon, 20 May 2024 18:31:05 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -63,16 +63,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Glenn Miles <milesg@linux.vnet.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH v2 06/12] target/ppc: Add PPR32 SPR
-Date: Tue, 21 May 2024 11:30:22 +1000
-Message-ID: <20240521013029.30082-7-npiggin@gmail.com>
+Subject: [PATCH v2 07/12] target/ppc: add helper to write per-LPAR SPRs
+Date: Tue, 21 May 2024 11:30:23 +1000
+Message-ID: <20240521013029.30082-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240521013029.30082-1-npiggin@gmail.com>
 References: <20240521013029.30082-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,119 +95,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PPR32 provides access to the upper half of PPR.
+An SPR can be either per-thread, per-core, or per-LPAR. Per-LPAR means
+per-thread or per-core, depending on 1LPAR mode.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h        |  1 +
  target/ppc/spr_common.h |  2 ++
- target/ppc/cpu_init.c   | 12 ++++++++++++
- target/ppc/translate.c  | 16 ++++++++++++++++
- 4 files changed, 31 insertions(+)
+ target/ppc/translate.c  | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 2532408be0..141cbefb4c 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -2120,6 +2120,7 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_POWER_MMCRS       (0x37E)
- #define SPR_WORT              (0x37F)
- #define SPR_PPR               (0x380)
-+#define SPR_PPR32             (0x382)
- #define SPR_750_GQR0          (0x390)
- #define SPR_440_DNV0          (0x390)
- #define SPR_750_GQR1          (0x391)
 diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index eb2561f593..9e40b3b608 100644
+index 9e40b3b608..85f73b860b 100644
 --- a/target/ppc/spr_common.h
 +++ b/target/ppc/spr_common.h
-@@ -203,6 +203,8 @@ void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn);
- void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
-+void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn);
-+void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn);
- #endif
- 
- void register_low_BATs(CPUPPCState *env);
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 892fb6ce02..7684a59d75 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5623,6 +5623,14 @@ static void register_HEIR64_spr(CPUPPCState *env)
-                  0x00000000);
- }
- 
-+static void register_power7_common_sprs(CPUPPCState *env)
-+{
-+    spr_register(env, SPR_PPR32, "PPR32",
-+                 &spr_read_ppr32, &spr_write_ppr32,
-+                 &spr_read_ppr32, &spr_write_ppr32,
-+                 0x00000000);
-+}
-+
- static void register_power8_tce_address_control_sprs(CPUPPCState *env)
- {
-     spr_register_kvm(env, SPR_TAR, "TAR",
-@@ -6118,6 +6126,7 @@ static void init_proc_POWER7(CPUPPCState *env)
-     register_power6_common_sprs(env);
-     register_HEIR32_spr(env);
-     register_power6_dbg_sprs(env);
-+    register_power7_common_sprs(env);
-     register_power7_book4_sprs(env);
- 
-     /* env variables */
-@@ -6264,6 +6273,7 @@ static void init_proc_POWER8(CPUPPCState *env)
-     register_power6_common_sprs(env);
-     register_HEIR32_spr(env);
-     register_power6_dbg_sprs(env);
-+    register_power7_common_sprs(env);
-     register_power8_tce_address_control_sprs(env);
-     register_power8_ids_sprs(env);
-     register_power8_ebb_sprs(env);
-@@ -6431,6 +6441,7 @@ static void init_proc_POWER9(CPUPPCState *env)
-     register_power6_common_sprs(env);
-     register_HEIR32_spr(env);
-     register_power6_dbg_sprs(env);
-+    register_power7_common_sprs(env);
-     register_power8_tce_address_control_sprs(env);
-     register_power8_ids_sprs(env);
-     register_power8_ebb_sprs(env);
-@@ -6625,6 +6636,7 @@ static void init_proc_POWER10(CPUPPCState *env)
-     register_power6_common_sprs(env);
-     register_HEIR64_spr(env);
-     register_power6_dbg_sprs(env);
-+    register_power7_common_sprs(env);
-     register_power8_tce_address_control_sprs(env);
-     register_power8_ids_sprs(env);
-     register_power8_ebb_sprs(env);
+@@ -83,6 +83,8 @@ void spr_read_generic(DisasContext *ctx, int gprn, int sprn);
+ void spr_write_generic(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn);
+ void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn);
++void spr_core_write_generic32(DisasContext *ctx, int sprn, int gprn);
++void spr_core_lpar_write_generic(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCRA(DisasContext *ctx, int sprn, int gprn);
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index ca4f4c9371..137370b649 100644
+index 137370b649..c688551434 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -1414,6 +1414,22 @@ void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn)
-     gen_load_spr(t0, sprn + 16);
-     tcg_gen_ext32u_tl(cpu_gpr[gprn], t0);
+@@ -535,6 +535,34 @@ void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn)
+     spr_store_dump_spr(sprn);
  }
-+
-+/* The PPR32 SPR accesses the upper 32-bits of PPR */
-+void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn)
-+{
-+    gen_load_spr(cpu_gpr[gprn], SPR_PPR);
-+    tcg_gen_shri_tl(cpu_gpr[gprn], cpu_gpr[gprn], 32);
-+}
-+
-+void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn)
-+{
-+    TCGv t0 = tcg_temp_new();
-+
-+    tcg_gen_shli_tl(t0, cpu_gpr[gprn], 32);
-+    gen_store_spr(SPR_PPR, t0);
-+    spr_store_dump_spr(SPR_PPR);
-+}
- #endif
  
- #define GEN_HANDLER(name, opc1, opc2, opc3, inval, type)                      \
++void spr_core_write_generic32(DisasContext *ctx, int sprn, int gprn)
++{
++    TCGv t0;
++
++    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
++        spr_write_generic32(ctx, sprn, gprn);
++        return;
++    }
++
++    if (!gen_serialize(ctx)) {
++        return;
++    }
++
++    t0 = tcg_temp_new();
++    tcg_gen_ext32u_tl(t0, cpu_gpr[gprn]);
++    gen_helper_spr_core_write_generic(tcg_env, tcg_constant_i32(sprn), t0);
++    spr_store_dump_spr(sprn);
++}
++
++void spr_core_lpar_write_generic(DisasContext *ctx, int sprn, int gprn)
++{
++    if (ctx->flags & POWERPC_FLAG_SMT_1LPAR) {
++        spr_core_write_generic(ctx, sprn, gprn);
++    } else {
++        spr_write_generic(ctx, sprn, gprn);
++    }
++}
++
+ static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
+ {
+     /* This does not implement >1 thread */
 -- 
 2.43.0
 
