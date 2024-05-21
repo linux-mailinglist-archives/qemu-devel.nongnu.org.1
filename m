@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09C08CB19C
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 17:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB638CB1CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 17:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9RfW-000407-P0; Tue, 21 May 2024 11:44:50 -0400
+	id 1s9Rqg-0001Ux-3L; Tue, 21 May 2024 11:56:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1s9RfU-0003zc-Vd; Tue, 21 May 2024 11:44:48 -0400
+ id 1s9RqX-0001U9-3b; Tue, 21 May 2024 11:56:13 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.ibm.com>)
- id 1s9RfS-0006Yi-UE; Tue, 21 May 2024 11:44:48 -0400
+ id 1s9RqL-0000Ry-25; Tue, 21 May 2024 11:56:11 -0400
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44LFG7uC011776; Tue, 21 May 2024 15:44:44 GMT
+ 44LFsseS007152; Tue, 21 May 2024 15:55:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : subject :
  from : reply-to : to : cc : date : in-reply-to : references : content-type
  : mime-version : content-transfer-encoding; s=pp1;
- bh=tJdnZyv1sdxjR0CN65RhQnwMtrxdMUPcf8MK5dVzL7Q=;
- b=PopEWbxeB2tuNju6GBAWrZO6RRPzGqwjv5ZwRAI5BfR2JOpT7gVFVUTCYmOLeAonRAHA
- Yu2gPp0dxTVrmjXGOXE6e1PU1hDGbseTsWm6HF1rWPoE6XDoauYh3cmQRY/5+BrewKod
- zYT3ria1FK7v9V4oonwt37jqEHcOTg/wDK53+s+IpUWy1X46DCb4kWMaUOgfnV0FoFtz
- cA2O/MCmVxpoqYA4EXs22Xdqr1wI82NVnJ9ho5Tc88x+wLWGqBUOVi9fSz9wJ6eQip3V
- +oRZvz84igO1g+5Nh6b6anz4swBh1RxS3/d4kXDZUno4m7wODLJ2kVj+BycTsHXoYbet rA== 
+ bh=X1JQtfmL8zJtbRtbg4mfQ7NNJCGC67zaJkMx9Cun9Ns=;
+ b=DVKlGFKVUPt83SnkDIqE8HdYYyqj/lBZBLJiTIdeRGHak1HIvZjxsjG9dUI0VIOAbEcN
+ u8NDrT2d9QOQhJlIhAMizmxZbDRInhJYCmh844I+2OXvZYZEKVn6dS5ohHy64P53YPIR
+ iKT4c2ug9T4xExEByhlehXB7mIb12TBZszNt/TwpBZ8syLSPctsavljFT+oDcnoHH8nd
+ ZTO/aXIq98wa9j5w1nI+t15LA095RNEgI1AWpLZJQRK6aSRIR/QOX3TeH5dEfSvZY/9c
+ E9eHvfUT64PSsTW33kO3l8OlEWrabFk16ibApi3RFdbDAcorKD/M2Ib9HSKa1WH501Fm vw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y8x3t02gq-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y8x3t03gn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2024 15:44:44 +0000
+ Tue, 21 May 2024 15:55:58 +0000
 Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44LFihZb023844;
- Tue, 21 May 2024 15:44:43 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44LFtv3g008953;
+ Tue, 21 May 2024 15:55:57 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y8x3t02gj-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y8x3t03gf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2024 15:44:43 +0000
+ Tue, 21 May 2024 15:55:57 +0000
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
  by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44LCfvHQ007818; Tue, 21 May 2024 15:44:42 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y79c2x2e0-1
+ 44LD0voK007412; Tue, 21 May 2024 15:52:25 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y79c2x3h5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2024 15:44:42 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44LFiej346531210
+ Tue, 21 May 2024 15:52:25 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44LFqMWj25887052
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2024 15:44:42 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4344B5803F;
- Tue, 21 May 2024 15:44:40 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DC19F5804E;
- Tue, 21 May 2024 15:44:39 +0000 (GMT)
+ Tue, 21 May 2024 15:52:24 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0D4A858060;
+ Tue, 21 May 2024 15:52:22 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D4F7158043;
+ Tue, 21 May 2024 15:52:21 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 21 May 2024 15:44:39 +0000 (GMT)
-Message-ID: <55ea46977ffce8b363394c00392052cc46280d6d.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 04/12] target/ppc: BookE DECAR SPR is 32-bit
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 21 May 2024 15:52:21 +0000 (GMT)
+Message-ID: <99aea881add8e8e720bf89743d13162b4da95477.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 06/12] target/ppc: Add PPR32 SPR
 From: Miles Glenn <milesg@linux.ibm.com>
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>, Chinmay Rath
- <rathc@linux.ibm.com>
-Date: Tue, 21 May 2024 10:44:39 -0500
-In-Reply-To: <20240521013029.30082-5-npiggin@gmail.com>
+ Glenn Miles <milesg@linux.vnet.ibm.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Chinmay Rath <rathc@linux.ibm.com>
+Date: Tue, 21 May 2024 10:52:21 -0500
+In-Reply-To: <20240521013029.30082-7-npiggin@gmail.com>
 References: <20240521013029.30082-1-npiggin@gmail.com>
- <20240521013029.30082-5-npiggin@gmail.com>
+ <20240521013029.30082-7-npiggin@gmail.com>
 Organization: IBM
 Content-Type: text/plain; charset="UTF-8"
 X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
 Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: J6UmOWyvTzit0SBH_AZAlKR8aYhx4RU7
-X-Proofpoint-ORIG-GUID: yth60_P_qXXOWJRpS-PutuRk7aTo480j
+X-Proofpoint-GUID: uUiOlX_q4b_pByVXLLIGBMRXQoYlWo7E
+X-Proofpoint-ORIG-GUID: 3P8_eusABJdxTa-hsgENkLH73KyBax_G
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-21_09,2024-05-21_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  adultscore=0 mlxscore=0
- mlxlogscore=973 phishscore=0 clxscore=1015 suspectscore=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 clxscore=1015 suspectscore=0 malwarescore=0
  priorityscore=1501 spamscore=0 bulkscore=0 lowpriorityscore=0
  impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405210119
@@ -99,7 +99,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,26 +123,124 @@ Thanks,
 Glenn
 
 On Tue, 2024-05-21 at 11:30 +1000, Nicholas Piggin wrote:
-> The DECAR SPR is 32-bits width.
+> PPR32 provides access to the upper half of PPR.
 > 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->  target/ppc/cpu_init.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  target/ppc/cpu.h        |  1 +
+>  target/ppc/spr_common.h |  2 ++
+>  target/ppc/cpu_init.c   | 12 ++++++++++++
+>  target/ppc/translate.c  | 16 ++++++++++++++++
+>  4 files changed, 31 insertions(+)
 > 
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index 2532408be0..141cbefb4c 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -2120,6 +2120,7 @@ void ppc_compat_add_property(Object *obj, const
+> char *name,
+>  #define SPR_POWER_MMCRS       (0x37E)
+>  #define SPR_WORT              (0x37F)
+>  #define SPR_PPR               (0x380)
+> +#define SPR_PPR32             (0x382)
+>  #define SPR_750_GQR0          (0x390)
+>  #define SPR_440_DNV0          (0x390)
+>  #define SPR_750_GQR1          (0x391)
+> diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
+> index eb2561f593..9e40b3b608 100644
+> --- a/target/ppc/spr_common.h
+> +++ b/target/ppc/spr_common.h
+> @@ -203,6 +203,8 @@ void spr_read_tfmr(DisasContext *ctx, int gprn,
+> int sprn);
+>  void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
+>  void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
+>  void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
+> +void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn);
+> +void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn);
+>  #endif
+>  
+>  void register_low_BATs(CPUPPCState *env);
 > diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index ee01415c32..927721d49a 100644
+> index 892fb6ce02..7684a59d75 100644
 > --- a/target/ppc/cpu_init.c
 > +++ b/target/ppc/cpu_init.c
-> @@ -792,7 +792,7 @@ static void register_BookE_sprs(CPUPPCState *env,
-> uint64_t ivor_mask)
+> @@ -5623,6 +5623,14 @@ static void register_HEIR64_spr(CPUPPCState
+> *env)
 >                   0x00000000);
->      spr_register(env, SPR_BOOKE_DECAR, "DECAR",
->                   SPR_NOACCESS, SPR_NOACCESS,
-> -                 SPR_NOACCESS, &spr_write_generic,
-> +                 SPR_NOACCESS, &spr_write_generic32,
->                   0x00000000);
->      /* SPRGs */
->      spr_register(env, SPR_USPRG0, "USPRG0",
+>  }
+>  
+> +static void register_power7_common_sprs(CPUPPCState *env)
+> +{
+> +    spr_register(env, SPR_PPR32, "PPR32",
+> +                 &spr_read_ppr32, &spr_write_ppr32,
+> +                 &spr_read_ppr32, &spr_write_ppr32,
+> +                 0x00000000);
+> +}
+> +
+>  static void register_power8_tce_address_control_sprs(CPUPPCState
+> *env)
+>  {
+>      spr_register_kvm(env, SPR_TAR, "TAR",
+> @@ -6118,6 +6126,7 @@ static void init_proc_POWER7(CPUPPCState *env)
+>      register_power6_common_sprs(env);
+>      register_HEIR32_spr(env);
+>      register_power6_dbg_sprs(env);
+> +    register_power7_common_sprs(env);
+>      register_power7_book4_sprs(env);
+>  
+>      /* env variables */
+> @@ -6264,6 +6273,7 @@ static void init_proc_POWER8(CPUPPCState *env)
+>      register_power6_common_sprs(env);
+>      register_HEIR32_spr(env);
+>      register_power6_dbg_sprs(env);
+> +    register_power7_common_sprs(env);
+>      register_power8_tce_address_control_sprs(env);
+>      register_power8_ids_sprs(env);
+>      register_power8_ebb_sprs(env);
+> @@ -6431,6 +6441,7 @@ static void init_proc_POWER9(CPUPPCState *env)
+>      register_power6_common_sprs(env);
+>      register_HEIR32_spr(env);
+>      register_power6_dbg_sprs(env);
+> +    register_power7_common_sprs(env);
+>      register_power8_tce_address_control_sprs(env);
+>      register_power8_ids_sprs(env);
+>      register_power8_ebb_sprs(env);
+> @@ -6625,6 +6636,7 @@ static void init_proc_POWER10(CPUPPCState *env)
+>      register_power6_common_sprs(env);
+>      register_HEIR64_spr(env);
+>      register_power6_dbg_sprs(env);
+> +    register_power7_common_sprs(env);
+>      register_power8_tce_address_control_sprs(env);
+>      register_power8_ids_sprs(env);
+>      register_power8_ebb_sprs(env);
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index ca4f4c9371..137370b649 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -1414,6 +1414,22 @@ void spr_read_dexcr_ureg(DisasContext *ctx,
+> int gprn, int sprn)
+>      gen_load_spr(t0, sprn + 16);
+>      tcg_gen_ext32u_tl(cpu_gpr[gprn], t0);
+>  }
+> +
+> +/* The PPR32 SPR accesses the upper 32-bits of PPR */
+> +void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn)
+> +{
+> +    gen_load_spr(cpu_gpr[gprn], SPR_PPR);
+> +    tcg_gen_shri_tl(cpu_gpr[gprn], cpu_gpr[gprn], 32);
+> +}
+> +
+> +void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn)
+> +{
+> +    TCGv t0 = tcg_temp_new();
+> +
+> +    tcg_gen_shli_tl(t0, cpu_gpr[gprn], 32);
+> +    gen_store_spr(SPR_PPR, t0);
+> +    spr_store_dump_spr(SPR_PPR);
+> +}
+>  #endif
+>  
+>  #define GEN_HANDLER(name, opc1, opc2, opc3, inval,
+> type)                      \
 
 
