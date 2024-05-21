@@ -2,52 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A24F8CAE8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E7A8CAE63
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:35:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9OwD-00073l-7D; Tue, 21 May 2024 08:49:53 -0400
+	id 1s9OhP-0004Wg-0D; Tue, 21 May 2024 08:34:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s9Ow4-0006n2-3Z
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:49:44 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s9Ovy-00055n-UO
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:49:43 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxSepfmExmcEkCAA--.1543S3;
- Tue, 21 May 2024 20:49:35 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxusZdmExmqDkEAA--.12666S5; 
- Tue, 21 May 2024 20:49:35 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v3 3/3] hw/loongarch/virt: Use MemTxAttrs interface for misc
- ops
-Date: Tue, 21 May 2024 20:32:25 +0800
-Message-Id: <20240521123225.231072-4-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240521123225.231072-1-gaosong@loongson.cn>
-References: <20240521123225.231072-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9OhN-0004W7-0x
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 08:34:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9OhL-0002QV-D7
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 08:34:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716294869;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KqEgk8QqmZ+q7JmB8eGQYtQ5+b7mzW/nYhfZjJtYSyw=;
+ b=ZT4iSy8KJX2Lg5L8wncxa6Xku27I/rIjY0Nec8bBkrOFovL/8J6NhzepJXcnGxLiV/0I4Y
+ rNc6qxZUwE4+cPxgr0URJRkgPesL409+wWwU0JHVsdv4XAXs9TPXZlvk23tAUzYUsKpsn5
+ djCx0jEInpH4yWsNhyKj1gZIUT/A/6c=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-57-kFdrYHBxONGXgM588CITOA-1; Tue, 21 May 2024 08:34:26 -0400
+X-MC-Unique: kFdrYHBxONGXgM588CITOA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-792badf6670so1706630985a.2
+ for <qemu-devel@nongnu.org>; Tue, 21 May 2024 05:34:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716294866; x=1716899666;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KqEgk8QqmZ+q7JmB8eGQYtQ5+b7mzW/nYhfZjJtYSyw=;
+ b=lXJo7EBR0+UWdxV+sIw19bHZ/lR8FJE8YUl1pwo8XmtMeim+yU+Jzuv3tuP4T8MdBw
+ nBjzdYjmDCtS0SfAI2wcFq3sAfPfwqhFZa+8Wk+6X2llZ9tMqqKozeMe+qHA/ISKQPMD
+ Z5ZoXwPmA8B29NSu5FMq12aa1juzEHEt4uDlY8Og+hCjS6PqjvNtuRrkuKiBBdhUatB/
+ XdjYa03ruJyhnBdPsCw4bHFgnTbfpSxjwprAW1KZJvGaoV8FzpGLGLsySXXBIHRF0WiX
+ C4zwMUZKkS9EKDZAPJIUfNs2ywmdlWgQJkJGiUTJ7zQEvR7JiOdtipM++4YqlqYQT1BJ
+ jzjg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW4Jw1to2O9d21/oIMuXLXZjzTP8QkuoeHlvpm/B1Kg7VKcOi1IuwZSo9vXjaLsEbNOmsAeb3qyhBseoVHGpK6/5pwTTxg=
+X-Gm-Message-State: AOJu0Yy0gLwcdM0ME5dB6ctsEu2XI80F6OkazuRVM+yliI8SK4TE+ZSb
+ jicRL8gK0BJb4byUbjgez2mYSYi7PixRQuIjRQEthrDkuQLF5dZhfCjWkwWHk468hfLuFykuqnk
+ DGXv7+UEsnKTVnIjDUBXdzDCqZCPc4GmfFZZc508C/AT/tPE4DoZw
+X-Received: by 2002:a05:620a:28ca:b0:792:f406:6db6 with SMTP id
+ af79cd13be357-792f4066e58mr2396782185a.39.1716294865768; 
+ Tue, 21 May 2024 05:34:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnA9NtXiyVNKAUAZuegr3EuVr/4mS6drHf051C957Ix7myplA9Dx1t2///afpl3TzSd2E96A==
+X-Received: by 2002:a05:620a:28ca:b0:792:f406:6db6 with SMTP id
+ af79cd13be357-792f4066e58mr2396779985a.39.1716294865378; 
+ Tue, 21 May 2024 05:34:25 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ af79cd13be357-792bf27f83csm1282378785a.32.2024.05.21.05.34.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 May 2024 05:34:24 -0700 (PDT)
+Message-ID: <05e016a1-0ae7-4d0f-ad77-d02a540096d9@redhat.com>
+Date: Tue, 21 May 2024 14:34:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/16] vfio/ccw: Make vfio_ccw_get_region() return a bool
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com, 
+ Thomas Huth <thuth@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ "open list:S390 general arch..." <qemu-s390x@nongnu.org>
+References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
+ <20240515082041.556571-8-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240515082041.556571-8-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxusZdmExmqDkEAA--.12666S5
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,90 +105,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use MemTxAttrs interface read_with_attrs/write_with_attrs
-for virt_iocsr_misc_ops.
+On 5/15/24 10:20, Zhenzhong Duan wrote:
+> Since vfio_populate_device() takes an 'Error **' argument,
+> best practices suggest to return a bool. See the qapi/error.h
+> Rules section.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- hw/loongarch/virt.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index e7edc6c9f9..0ab2b6860a 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -866,8 +866,9 @@ static void virt_firmware_init(LoongArchVirtMachineState *lvms)
-     }
- }
- 
--static void virt_iocsr_misc_write(void *opaque, hwaddr addr,
--                                  uint64_t val, unsigned size)
-+static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
-+                                         uint64_t val, unsigned size,
-+                                         MemTxAttrs attrs)
- {
-     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(opaque);
-     uint64_t features;
-@@ -875,12 +876,12 @@ static void virt_iocsr_misc_write(void *opaque, hwaddr addr,
-     switch (addr) {
-     case MISC_FUNC_REG:
-         if (!virt_is_veiointc_enabled(lvms)) {
--            return;
-+            return MEMTX_OK;
-         }
- 
-         features = address_space_ldl(&lvms->as_iocsr,
-                                      EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
--                                     MEMTXATTRS_UNSPECIFIED, NULL);
-+                                     attrs, NULL);
-         if (val & BIT_ULL(IOCSRM_EXTIOI_EN)) {
-             features |= BIT(EXTIOI_ENABLE);
-         }
-@@ -890,11 +891,15 @@ static void virt_iocsr_misc_write(void *opaque, hwaddr addr,
- 
-         address_space_stl(&lvms->as_iocsr,
-                           EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
--                          features, MEMTXATTRS_UNSPECIFIED, NULL);
-+                          features, attrs, NULL);
-     }
-+
-+    return MEMTX_OK;
- }
- 
--static uint64_t virt_iocsr_misc_read(void *opaque, hwaddr addr, unsigned size)
-+static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
-+                                        uint64_t *data,
-+                                        unsigned size, MemTxAttrs attrs)
- {
-     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(opaque);
-     uint64_t ret = 0;
-@@ -924,7 +929,7 @@ static uint64_t virt_iocsr_misc_read(void *opaque, hwaddr addr, unsigned size)
- 
-         features = address_space_ldl(&lvms->as_iocsr,
-                                      EXTIOI_VIRT_BASE + EXTIOI_VIRT_CONFIG,
--                                     MEMTXATTRS_UNSPECIFIED, NULL);
-+                                     attrs, NULL);
-         if (features & BIT(EXTIOI_ENABLE)) {
-             ret |= BIT_ULL(IOCSRM_EXTIOI_EN);
-         }
-@@ -933,12 +938,13 @@ static uint64_t virt_iocsr_misc_read(void *opaque, hwaddr addr, unsigned size)
-         }
-     }
- 
--    return ret;
-+    *data = ret;
-+    return MEMTX_OK;
- }
- 
- static const MemoryRegionOps virt_iocsr_misc_ops = {
--    .read  = virt_iocsr_misc_read,
--    .write = virt_iocsr_misc_write,
-+    .read_with_attrs  = virt_iocsr_misc_read,
-+    .write_with_attrs = virt_iocsr_misc_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
--- 
-2.34.1
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+One comment below
+
+> ---
+>   hw/vfio/ccw.c | 15 +++++++--------
+>   1 file changed, 7 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+> index 8850ca17c8..2600e62e37 100644
+> --- a/hw/vfio/ccw.c
+> +++ b/hw/vfio/ccw.c
+> @@ -474,7 +474,7 @@ static void vfio_ccw_unregister_irq_notifier(VFIOCCWDevice *vcdev,
+>       event_notifier_cleanup(notifier);
+>   }
+>   
+> -static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+> +static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+>   {
+>       VFIODevice *vdev = &vcdev->vdev;
+>       struct vfio_region_info *info;
+> @@ -483,7 +483,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+>       /* Sanity check device */
+>       if (!(vdev->flags & VFIO_DEVICE_FLAGS_CCW)) {
+>           error_setg(errp, "vfio: Um, this isn't a vfio-ccw device");
+> -        return;
+> +        return false;
+>       }
+>   
+>       /*
+> @@ -493,13 +493,13 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+>       if (vdev->num_regions < VFIO_CCW_CONFIG_REGION_INDEX + 1) {
+>           error_setg(errp, "vfio: too few regions (%u), expected at least %u",
+>                      vdev->num_regions, VFIO_CCW_CONFIG_REGION_INDEX + 1);
+> -        return;
+> +        return false;
+>       }
+>   
+>       ret = vfio_get_region_info(vdev, VFIO_CCW_CONFIG_REGION_INDEX, &info);
+>       if (ret) {
+>           error_setg_errno(errp, -ret, "vfio: Error getting config info");
+> -        return;
+> +        return false;
+>       }
+>   
+>       vcdev->io_region_size = info->size;
+> @@ -553,7 +553,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+>           g_free(info);
+>       }
+>   
+> -    return;
+> +    return true;
+>   
+>   out_err:
+>       g_free(vcdev->crw_region);
+> @@ -561,7 +561,7 @@ out_err:
+>       g_free(vcdev->async_cmd_region);
+>       g_free(vcdev->io_region);
+>       g_free(info);
+> -    return;
+> +    return false;
+>   }
+>   
+>   static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
+> @@ -597,8 +597,7 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+
+vfio_ccw_realize() needs a little cleanup to avoid using the local
+'Error *err' variable and the error_propagate() call at the end.
+
+Thanks,
+
+C.
+
+
+>           goto out_attach_dev_err;
+>       }
+>   
+> -    vfio_ccw_get_region(vcdev, &err);
+> -    if (err) {
+> +    if (!vfio_ccw_get_region(vcdev, &err)) {
+>           goto out_region_err;
+>       }
+>   
 
 
