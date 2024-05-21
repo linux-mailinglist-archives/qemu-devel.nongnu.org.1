@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69D98CB49A
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 22:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871B58CB49B
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 22:16:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9Vtc-0000nd-Ba; Tue, 21 May 2024 16:15:40 -0400
+	id 1s9Vto-0000xN-At; Tue, 21 May 2024 16:15:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s9Vta-0000lS-KZ
- for qemu-devel@nongnu.org; Tue, 21 May 2024 16:15:38 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s9Vtl-0000wG-Rn
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 16:15:49 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s9VtY-0007Do-Sc
- for qemu-devel@nongnu.org; Tue, 21 May 2024 16:15:38 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1s9Vtc-0007GO-1S
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 16:15:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=WegbjKM20g3bMrQJiNtxmQQ3PxiDPpCuvM0S8BdYwSU=; b=hxSZAYoQUF5MDp6
- Jpbwcwo0RnDQb1lArTar5zDWc7yYFpw6sC76OAdUnQ/DZRgeRItTkFgM76iQa7sN6Fui+JfGC3NSt
- El7N0CsES04lFS2nduTcjSMcyGAUT1BklWXFanSqfh/n4mjjsHgQMD+Y0imaihOyGbiLKp2Nb22wq
- hc=;
+ List-Help; bh=rtNFdpJhNV8vl9H8X+58sqRVVdyQGF0AcgLnuM7WTNA=; b=KjQ0Y74nCzTS+g0
+ zjqdhgvYp0hpY6iUKeqzx1OcloFQljNs9RTwDJ9Ur9ycGq1YOfDORKNmiZ0Hnkqy3zpAkerOOV/pw
+ ow62J/5XglA/rFQkTuLluMXq8dj19WkJO8D5Ohq2aNSX4aH41XUduxyIu9nsqZ9ZEemlPTeL8/sdL
+ RY=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng,
 	ltaylorsimpson@gmail.com,
 	bcain@quicinc.com
-Subject: [PATCH v3 3/4] target/hexagon: idef-parser fix leak of init_list
-Date: Tue, 21 May 2024 22:16:53 +0200
-Message-ID: <20240521201654.25851-4-anjo@rev.ng>
+Subject: [PATCH v3 4/4] target/hexagon: idef-parser simplify predicate init
+Date: Tue, 21 May 2024 22:16:54 +0200
+Message-ID: <20240521201654.25851-5-anjo@rev.ng>
 In-Reply-To: <20240521201654.25851-1-anjo@rev.ng>
 References: <20240521201654.25851-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -61,43 +61,75 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gen_inst_init_args() is called for instructions using a predicate as an
-rvalue. Upon first call, the list of arguments which might need
-initialization init_list is freed to indicate that they have been
-processed. For instructions without an rvalue predicate,
-gen_inst_init_args() isn't called and init_list will never be freed.
-
-Free init_list from free_instruction() if it hasn't already been freed.
-A comment in free_instruction is also updated.
+Only predicate instruction arguments need to be initialized by
+idef-parser. This commit removes registers from the init_list and
+simplifies gen_inst_init_args() slightly.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
- target/hexagon/idef-parser/parser-helpers.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/hexagon/idef-parser/idef-parser.y    |  2 --
+ target/hexagon/idef-parser/parser-helpers.c | 26 +++++++++++----------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
+diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
+index cd2612eb8c..9ffb9f9699 100644
+--- a/target/hexagon/idef-parser/idef-parser.y
++++ b/target/hexagon/idef-parser/idef-parser.y
+@@ -233,8 +233,6 @@ code : '{' statements '}'
+ argument_decl : REG
+                 {
+                     emit_arg(c, &@1, &$1);
+-                    /* Enqueue register into initialization list */
+-                    g_array_append_val(c->inst.init_list, $1);
+                 }
+               | PRED
+                 {
 diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
-index 95f2b43076..c150c308be 100644
+index c150c308be..a7dcd85fe4 100644
 --- a/target/hexagon/idef-parser/parser-helpers.c
 +++ b/target/hexagon/idef-parser/parser-helpers.c
-@@ -2121,9 +2121,16 @@ void free_instruction(Context *c)
-         g_string_free(g_array_index(c->inst.strings, GString*, i), TRUE);
+@@ -1652,26 +1652,28 @@ void gen_inst(Context *c, GString *iname)
+ 
+ 
+ /*
+- * Initialize declared but uninitialized registers, but only for
+- * non-conditional instructions
++ * Initialize declared but uninitialized instruction arguments. Only needed for
++ * predicate arguments, initialization of registers is handled by the Hexagon
++ * frontend.
+  */
+ void gen_inst_init_args(Context *c, YYLTYPE *locp)
+ {
++    HexValue *val = NULL;
++    char suffix;
++
++    /* If init_list is NULL arguments have already been initialized */
+     if (!c->inst.init_list) {
+         return;
      }
-     g_array_free(c->inst.strings, TRUE);
-+    /*
-+     * Free list of arguments that might need initialization, if they haven't
-+     * already been freed.
-+     */
-+    if (c->inst.init_list) {
-+        g_array_free(c->inst.init_list, TRUE);
-+    }
-     /* Free INAME token value */
-     g_string_free(c->inst.name, TRUE);
--    /* Free variables and registers */
-+    /* Free declared TCGv variables */
-     g_array_free(c->inst.allocated, TRUE);
-     /* Initialize instruction-specific portion of the context */
-     memset(&(c->inst), 0, sizeof(Inst));
+ 
+     for (unsigned i = 0; i < c->inst.init_list->len; i++) {
+-        HexValue *val = &g_array_index(c->inst.init_list, HexValue, i);
+-        if (val->type == REGISTER_ARG) {
+-            /* Nothing to do here */
+-        } else if (val->type == PREDICATE) {
+-            char suffix = val->is_dotnew ? 'N' : 'V';
+-            EMIT_HEAD(c, "tcg_gen_movi_i%u(P%c%c, 0);\n", val->bit_width,
+-                      val->pred.id, suffix);
+-        } else {
+-            yyassert(c, locp, false, "Invalid arg type!");
+-        }
++        val = &g_array_index(c->inst.init_list, HexValue, i);
++        suffix = val->is_dotnew ? 'N' : 'V';
++        yyassert(c, locp, val->type == PREDICATE,
++                 "Only predicates need to be initialized!");
++        yyassert(c, locp, val->bit_width == 32,
++                 "Predicates should always be 32 bits");
++        EMIT_HEAD(c, "tcg_gen_movi_i32(P%c%c, 0);\n", val->pred.id, suffix);
+     }
+ 
+     /* Free argument init list once we have initialized everything */
 -- 
 2.45.0
 
