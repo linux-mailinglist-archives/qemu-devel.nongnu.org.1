@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC3C8CA5D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 03:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8488CA5CC
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 03:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ELK-0007jh-Ru; Mon, 20 May 2024 21:31:06 -0400
+	id 1s9ELL-0007kj-Cm; Mon, 20 May 2024 21:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9ELC-0007hM-2H; Mon, 20 May 2024 21:31:01 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1s9ELE-0007hd-Qp; Mon, 20 May 2024 21:31:01 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9EL9-0005Jp-LA; Mon, 20 May 2024 21:30:57 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1eca195a7c8so91608135ad.2; 
- Mon, 20 May 2024 18:30:54 -0700 (PDT)
+ id 1s9ELD-0005KN-8D; Mon, 20 May 2024 21:31:00 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1ee12baa01cso100637155ad.0; 
+ Mon, 20 May 2024 18:30:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716255053; x=1716859853; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716255057; x=1716859857; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DM7C9zYU/JYPQc+IpanR0zGx9fNeS+QDv9SFSyE3708=;
- b=k8g/0rQ+f9TAbI60bfRQW8+zIqivev2Dv/LnzVJJNDfYA2IwobbyfVaw7DR0nZenRF
- MVTMVXx9x3SYhpx6wbB6y0kbhmtngeF5lpBteGi8T29vpmidy+NL592xBNOm3YXuH9H+
- lexWkG+zX6YYkYRHH+m1r3MiUF4oYFdUB7hkm1PqKIKuK3caaDswVkTzgEYVR/wl9Ii7
- +QdWpEorGAq4NddNAgsuz9eL0VO0KFhIjUhqZNaoNBtyswutmwdez1VvjSkVtTNtNSYn
- JkYC0GrhvuyN174Q+yWq/m4IRxkwC+A7dyth+1WpaV48ylAf8mcBoUdFTkhnonCjXR04
- GAnw==
+ bh=yt1vYtOLZ3aoBsS6/LYMaUEQfiphsblSQKxcObVD0IY=;
+ b=fcHSZl/uZ7q6NjuVtbmjmXsEZ529t+zlmQolzVB7x0ZkWPktpz/gOpqN9r14lTt3ui
+ 04zNca0onHxDDACHyEU0vSLGmoylipnxyk9FdHX4LpBJoVJ4jgrNXvO9GZW3el9OnzJd
+ ns75q8WcAI/9k4HN9R6IryvMxJmrTXXLTdk5KH/848v3eeZOgGsErtaLnELg5TBlnG3H
+ 3cLAu8aDC8S1ASqMe1oTgUCqPGT8p/62wlfoV9+2/3lxMo4+TAu2AYrCI8kdBeKW8Fp5
+ rQesQpYrQpZyY+bQ1/8z78KKdmFfeqacQ7547NT+DkyXyU5Eb87oMPjQiU4JEMyioUlt
+ hO6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716255053; x=1716859853;
+ d=1e100.net; s=20230601; t=1716255057; x=1716859857;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DM7C9zYU/JYPQc+IpanR0zGx9fNeS+QDv9SFSyE3708=;
- b=nJ6p63aNekbfmK71KjpY69CH+JYSahFuEEpYVe7zjMEAGTlrpZxHd7zbWtOeAKu7R+
- rJU5HjAsbVKj4M5Ryph/XlBXUGnQDBwKfDtJQbAbg3dZ3/zM5ShGaetrZVvpJ2VV+PXg
- J72aXT0NNbvpOJlg9ecT9HJ+3iV5jmQs1EMFaRzdNJ8neycYEbINi83w+CS7FKjW8MdZ
- DNSAb2abMI3y4mTpYCW0WPkGq7SAJwAXc0dh4BfPL/Rf3BpXlY3CqXR5HjJQDylFfQgi
- ebzXVMp+AVzYH0vMvsOo4l/3ou+XIu+BLMU6bPjKA97RoTb22YZpzqQcN+kpYVgIPXPP
- aTAA==
+ bh=yt1vYtOLZ3aoBsS6/LYMaUEQfiphsblSQKxcObVD0IY=;
+ b=VSINcvZ9X36TOdyhnxMAKgz0CeuUJGRMCQuIoOuMnPnLvrULqsYjq3ThkLgC2j39Rc
+ sVxkdjlOIcGZ088b2bxvXH7fm9ETalU9YNmfM/sqG1Oo24ETcFg/U7b05vvrfsezoKFz
+ K3nhoTtHRCPf0mxvzOfaXOEEmBIRmlfl/65A4GeJGk8hYNxzuHSEZctTUEWpFEDLZxWM
+ 2wRbi5ZU6tMGSoxaY61QgoKcQlgtt8zFZTUFLoGgiYV++pYHCchwBrnrbTxmLgNE/xjf
+ nkCBYPjFITHBXtR6ShQeivBxDKowAWBdM9cL2RDsoZX8/JZ6exelCMRCF4pXgfGcfXGz
+ eHcQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUJbImd13S0A+mBsFWlAfDRV75UmXgP76tqGd9nAYkjh37Rk2cyng1s7QbUT6WnlgWgjQ6E+coy9Ht+OWO6UjAsBi0gEb8=
-X-Gm-Message-State: AOJu0YyyrkViJS2SM6YqkbHQKwJC7w+I7lWeAGjz8NmfSnFjEEMMhXBX
- dUlshX6DNe2Flop41bV9EB5+MmZ3AfWjw8w9qKNth+aaSJetukoVyNeqJQ==
-X-Google-Smtp-Source: AGHT+IFdqgktDuzumxetQ6n515AaYMkRNijVtks8f5C9Yfhn3THLuqM4j1WUb6waCPz/9ngoCiHrkA==
-X-Received: by 2002:a17:90a:ad86:b0:2b6:22bd:f4b2 with SMTP id
- 98e67ed59e1d1-2b6cc03f435mr25384106a91.4.1716255053583; 
- Mon, 20 May 2024 18:30:53 -0700 (PDT)
+ AJvYcCWII0cuzS+nNI8YvPptZFSRIYJFYD088h6MdrL3t9+YU0Ar4AOcKYLi5csK/qegLm9847Ws4av4J2S8jlWQvgC5pYBKW28=
+X-Gm-Message-State: AOJu0Yz6EU/37Tt5nTnxyFHa7xhmybiaslSdJ6hV7aysMBhrzaLeDgpj
+ HPru8IqlxFrbz1+pe346+htYZN5CxWds0ml+En2aqaoe8fjfzM6oB86akA==
+X-Google-Smtp-Source: AGHT+IHuusVkxnovyOtIhawZ0Wno0E2ysFn2y61lGOMKr4PgqyIpMftCq5nZWPSlEtFA4McKH7xSiQ==
+X-Received: by 2002:a17:90b:4a43:b0:2bd:839f:7f36 with SMTP id
+ 98e67ed59e1d1-2bd839f7ff7mr3103481a91.10.1716255057358; 
+ Mon, 20 May 2024 18:30:57 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2bd7f0cd400sm2514953a91.31.2024.05.20.18.30.50
+ 98e67ed59e1d1-2bd7f0cd400sm2514953a91.31.2024.05.20.18.30.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 May 2024 18:30:53 -0700 (PDT)
+ Mon, 20 May 2024 18:30:57 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
@@ -63,16 +63,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
  Glenn Miles <milesg@linux.vnet.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH v2 04/12] target/ppc: BookE DECAR SPR is 32-bit
-Date: Tue, 21 May 2024 11:30:20 +1000
-Message-ID: <20240521013029.30082-5-npiggin@gmail.com>
+Subject: [PATCH v2 05/12] target/ppc: Wire up BookE ATB registers for e500
+ family
+Date: Tue, 21 May 2024 11:30:21 +1000
+Message-ID: <20240521013029.30082-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240521013029.30082-1-npiggin@gmail.com>
 References: <20240521013029.30082-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,26 +96,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The DECAR SPR is 32-bits width.
+From the Freescale PowerPC Architecture Primer:
+
+  Alternate time base APU. This APU, implemented on the e500v2, defines
+  a 64-bit time base counter that differs from the PowerPC defined time
+  base in that it is not writable and counts at a different, and
+  typically much higher, frequency. The alternate time base always
+  counts up, wrapping when the 64-bit count overflows.
+
+This implementation of ATB uses the same frequency as the TB. The
+existing spr_read_atbu/l functions are unused without this patch
+to wire them into the SPR.
+
+RTEMS uses this SPR on the e6500, though this hasn't been tested.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/cpu_init.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index ee01415c32..927721d49a 100644
+index 927721d49a..892fb6ce02 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -792,7 +792,7 @@ static void register_BookE_sprs(CPUPPCState *env, uint64_t ivor_mask)
-                  0x00000000);
-     spr_register(env, SPR_BOOKE_DECAR, "DECAR",
+@@ -920,6 +920,18 @@ static void register_BookE206_sprs(CPUPPCState *env, uint32_t mas_mask,
+ #endif
+ }
+ 
++static void register_atb_sprs(CPUPPCState *env)
++{
++    spr_register(env, SPR_ATBL, "ATBL",
++                 &spr_read_atbl, SPR_NOACCESS,
++                 &spr_read_atbl, SPR_NOACCESS,
++                 0x00000000);
++    spr_register(env, SPR_ATBU, "ATBU",
++                 &spr_read_atbu, SPR_NOACCESS,
++                 &spr_read_atbu, SPR_NOACCESS,
++                 0x00000000);
++}
++
+ /* SPR specific to PowerPC 440 implementation */
+ static void register_440_sprs(CPUPPCState *env)
+ {
+@@ -2927,6 +2939,11 @@ static void init_proc_e500(CPUPPCState *env, int version)
+     register_BookE206_sprs(env, 0x000000DF, tlbncfg, mmucfg);
+     register_usprgh_sprs(env);
+ 
++    if (version != fsl_e500v1) {
++        /* e500v1 has no support for alternate timebase */
++        register_atb_sprs(env);
++    }
++
+     spr_register(env, SPR_HID0, "HID0",
                   SPR_NOACCESS, SPR_NOACCESS,
--                 SPR_NOACCESS, &spr_write_generic,
-+                 SPR_NOACCESS, &spr_write_generic32,
-                  0x00000000);
-     /* SPRGs */
-     spr_register(env, SPR_USPRG0, "USPRG0",
+                  &spr_read_generic, &spr_write_generic,
 -- 
 2.43.0
 
