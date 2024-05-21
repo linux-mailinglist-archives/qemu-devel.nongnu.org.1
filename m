@@ -2,91 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB518CAE0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8998CAE12
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:21:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9OT9-00080G-T9; Tue, 21 May 2024 08:19:51 -0400
+	id 1s9OTy-0008Mr-Ty; Tue, 21 May 2024 08:20:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9OT7-0007zZ-S1
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:19:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1s9OTp-0008DS-Pv; Tue, 21 May 2024 08:20:34 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9OT6-0007nd-7l
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:19:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716293987;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PJPIczjkY8bxxbJbkXFg65hUKYa9Enu365H0LCbZElE=;
- b=UzG2MTIuNJE8FgUSQOwio4LLtaAud/xX4vboEvq7WARmVzDyZMpauyUKSHvBUi/Mp8CpKB
- FhmBmbIVKlBD3hOvE7K/P2tJZD6y7X43YAiTxLO0YMDto1A0+RQEzTX0UsOWfxuFkwhs+9
- hzha6PT5qe/+wBcr4Dp5oikFMSbWfAY=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-Y3dLXSWhPByUTKhAKLKIzQ-1; Tue, 21 May 2024 08:19:45 -0400
-X-MC-Unique: Y3dLXSWhPByUTKhAKLKIzQ-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6f0e6fb64bcso12754623a34.0
- for <qemu-devel@nongnu.org>; Tue, 21 May 2024 05:19:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716293984; x=1716898784;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PJPIczjkY8bxxbJbkXFg65hUKYa9Enu365H0LCbZElE=;
- b=vMDgftF9FXVBcbf79rAuG5EPSwR1NAqBJttiyNpbguwWnIbS82uwiqdlztZufA3OIm
- ADY+jI1ay06G2J4DVTKok52/vvtmQiPIuw5QwoiA3Ehr20Wr0ddjrVtZGYlr32nBsTOQ
- eyPwGJGjNa0flr2MoTH9EadAqRivjl7QzsnolED8Av7msC8nQ2Aq3i4/oEugOUEsoNol
- TpOaTiV0jF/v3BjDCMcXchspyJSg8F4AR/gv9DnwhMvgxlUE5y+TWIBCXQrRCF45Cqdi
- mjUijps/nrdTVoPk78HvJucwP3wj0zTEtdjhCijTHC9vwxQabqHA295FtVLaA8gSaP8F
- bbWw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVR96rhMTSUKw+C+ZVcNghYScAgL9wSp4TCkxyeca5KuFqtKh4w34WEGoXHI8uXXPe9uc2oCxNr+JeQNhSZxgNSAnXeZxk=
-X-Gm-Message-State: AOJu0YzSt9illa0pbltIeLc1D5KsnweizO01N/JbPSdMEzYUwCDc/jqv
- clQ1zZhtJ7J1+IjDDPgrrA656dFgubLOmWs1LPyLoEfeYWhpf5JwH2H8mD7wlt716iCzufzPfir
- MdXefymQjRzek6j/Qvrut+cPmVQpTY2qaA+10anSCIW1I+4Fox8qz7mtWsX7W
-X-Received: by 2002:a05:6870:9624:b0:23d:a4ce:b82e with SMTP id
- 586e51a60fabf-24172bcd4demr34577666fac.30.1716293984041; 
- Tue, 21 May 2024 05:19:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHughFGbtjaHryfjY0kSQvA0uz67RkPQ8wCPMqxfygUkkjxgmfjMA5NblWuq5OSJjDvS29zMw==
-X-Received: by 2002:a05:6870:9624:b0:23d:a4ce:b82e with SMTP id
- 586e51a60fabf-24172bcd4demr34577653fac.30.1716293983671; 
- Tue, 21 May 2024 05:19:43 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43df553ff3fsm160241721cf.54.2024.05.21.05.19.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 May 2024 05:19:43 -0700 (PDT)
-Message-ID: <f6ebb051-1a42-4776-989d-97542ecea0b3@redhat.com>
-Date: Tue, 21 May 2024 14:19:41 +0200
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1s9OTl-0007u8-Kr; Tue, 21 May 2024 08:20:33 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id DC505434A0;
+ Tue, 21 May 2024 14:20:20 +0200 (CEST)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
+ jsnow@redhat.com, f.gruenbichler@proxmox.com, t.lamprecht@proxmox.com,
+ mahaocong@didichuxing.com, xiechanglong.d@gmail.com,
+ wencongyang2@huawei.com
+Subject: [PATCH v4 0/5] mirror: allow specifying working bitmap
+Date: Tue, 21 May 2024 14:20:09 +0200
+Message-Id: <20240521122014.333221-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/16] vfio/helpers: Use g_autofree in hw/vfio/helpers.c
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com
-References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
- <20240515082041.556571-4-zhenzhong.duan@intel.com>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20240515082041.556571-4-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,65 +55,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/15/24 10:20, Zhenzhong Duan wrote:
-> Changed functions include vfio_set_irq_signaling() 
+Changes from v3 (discussion here [3]):
+* Improve/fix QAPI documentation.
 
-this change looks fine
+Changes from v2 (discussion here [2]):
+* Cluster size caveats only apply to non-COW diff image, adapt the
+  cluster size check and documentation accordingly.
+* In the IO test, use backing files (rather than stand-alone diff
+  images) in combination with copy-mode=write-blocking and larger
+  cluster size for target images, to have a more realistic use-case
+  and show that COW prevents ending up with cluster with partial data
+  upon unaligned writes.
+* Create a separate patch for replacing is_none_mode with sync_mode in
+  MirrorBlockJobx struct.
+* Disallow using read-only bitmap (cannot be used as working bitmap).
+* Require that bitmap is enabled at the start of the job.
+* Avoid IO test script potentially waiting on non-existent job when
+  blockdev-mirror QMP command fails.
+* Fix pylint issues in IO test.
+* Rename IO test from sync-bitmap-mirror to mirror-bitmap.
 
-> and vfio_region_setup().
+Changes from RFC/v1 (discussion here [0]):
+* Add patch to split BackupSyncMode and MirrorSyncMode.
+* Drop bitmap-mode parameter and use passed-in bitmap as the working
+  bitmap instead. Users can get the desired behaviors by
+  using the block-dirty-bitmap-clear and block-dirty-bitmap-merge
+  calls (see commit message in patch 2/4 for how exactly).
+* Add patch to check whether target image's cluster size is at most
+  mirror job's granularity. Optional, it's an extra safety check
+  that's useful when the target is a "diff" image that does not have
+  previously synced data.
 
-I would prefer all users of vfio_get_region_info() to be changed.
+Use cases:
+* Possibility to resume a failed mirror later.
+* Possibility to only mirror deltas to a previously mirrored volume.
+* Possibility to (efficiently) mirror an drive that was previously
+  mirrored via some external mechanism (e.g. ZFS replication).
 
-Thanks,
+We are using the last one in production without any issues since about
+4 years now. In particular, like mentioned in [1]:
 
-C.
+> - create bitmap(s)
+> - (incrementally) replicate storage volume(s) out of band (using ZFS)
+> - incrementally drive mirror as part of a live migration of VM
+> - drop bitmap(s)
 
 
+Now, the IO test added in patch 4/5 actually contains yet another use
+case, namely doing incremental mirrors to qcow2 "diff" images, that
+only contain the delta and can be rebased later. I had to adapt the IO
+test, because its output expected the mirror bitmap to still be dirty,
+but nowadays the mirror is apparently already done when the bitmaps
+are queried. So I thought, I'll just use 'write-blocking' mode to
+avoid any potential timing issues.
 
-> 
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   hw/vfio/helpers.c | 7 ++-----
->   1 file changed, 2 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-> index 47b4096c05..0bb7b40a6a 100644
-> --- a/hw/vfio/helpers.c
-> +++ b/hw/vfio/helpers.c
-> @@ -111,7 +111,7 @@ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
->                              int action, int fd, Error **errp)
->   {
->       ERRP_GUARD();
-> -    struct vfio_irq_set *irq_set;
-> +    g_autofree struct vfio_irq_set *irq_set = NULL;
->       int argsz, ret = 0;
->       const char *name;
->       int32_t *pfd;
-> @@ -130,7 +130,6 @@ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
->       if (ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, irq_set)) {
->           ret = -errno;
->       }
-> -    g_free(irq_set);
->   
->       if (!ret) {
->           return 0;
-> @@ -348,7 +347,7 @@ static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
->   int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
->                         int index, const char *name)
->   {
-> -    struct vfio_region_info *info;
-> +    g_autofree struct vfio_region_info *info = NULL;
->       int ret;
->   
->       ret = vfio_get_region_info(vbasedev, index, &info);
-> @@ -381,8 +380,6 @@ int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
->           }
->       }
->   
-> -    g_free(info);
-> -
->       trace_vfio_region_setup(vbasedev->name, index, name,
->                               region->flags, region->fd_offset, region->size);
->       return 0;
+Initially, the qcow2 diff image targets were stand-alone and that
+suffers from an issue when 'write-blocking' mode is used. If a write
+is not aligned to the granularity of the mirror target, then rebasing
+the diff image onto a backing image will not yield the desired result,
+because the full cluster is considered to be allocated and will "hide"
+some part of the base/backing image. The failure can be seen by either
+using 'write-blocking' mode in the IO test or setting the (bitmap)
+granularity to 32 KiB rather than the current 64 KiB.
+
+The test thus uses a more realistic approach where the qcow2 targets
+have backing images and a check is added in patch 5/5 for the cluster
+size for non-COW targets. However, with e.g. NBD, the cluster size
+cannot be queried and prohibiting all bitmap mirrors to NBD targets
+just to prevent the highly specific edge case seems not worth it, so
+the limitation is rather documented and the check ignores cases where
+querying the target image's cluster size returns -ENOTSUP.
+
+
+[0]: https://lore.kernel.org/qemu-devel/b91dba34-7969-4d51-ba40-96a91038cc54@yandex-team.ru/T/#m4ae27dc8ca1fb053e0a32cc4ffa2cfab6646805c
+[1]: https://lore.kernel.org/qemu-devel/1599127031.9uxdp5h9o2.astroid@nora.none/
+[2]: https://lore.kernel.org/qemu-devel/20240307134711.709816-1-f.ebner@proxmox.com/
+[3]: https://lore.kernel.org/qemu-devel/20240510131647.1256467-1-f.ebner@proxmox.com/
+
+
+Fabian Grünbichler (1):
+  iotests: add test for bitmap mirror
+
+Fiona Ebner (3):
+  qapi/block-core: avoid the re-use of MirrorSyncMode for backup
+  block/mirror: replace is_none_mode with sync_mode in MirrorBlockJob
+    struct
+  blockdev: mirror: check for target's cluster size when using bitmap
+
+John Snow (1):
+  mirror: allow specifying working bitmap
+
+ block/backup.c                             |   18 +-
+ block/mirror.c                             |  101 +-
+ block/monitor/block-hmp-cmds.c             |    2 +-
+ block/replication.c                        |    2 +-
+ blockdev.c                                 |  127 +-
+ include/block/block_int-global-state.h     |    7 +-
+ qapi/block-core.json                       |   62 +-
+ tests/qemu-iotests/tests/mirror-bitmap     |  603 ++++
+ tests/qemu-iotests/tests/mirror-bitmap.out | 3198 ++++++++++++++++++++
+ tests/unit/test-block-iothread.c           |    2 +-
+ 10 files changed, 4053 insertions(+), 69 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/mirror-bitmap
+ create mode 100644 tests/qemu-iotests/tests/mirror-bitmap.out
+
+-- 
+2.39.2
+
 
 
