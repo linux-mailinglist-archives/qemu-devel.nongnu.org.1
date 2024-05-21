@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779D68CB60A
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 00:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F8E8CB609
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 00:36:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9Y4q-0003N1-4t; Tue, 21 May 2024 18:35:24 -0400
+	id 1s9Y5C-0003Qh-QW; Tue, 21 May 2024 18:35:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1s9Y4o-0003Mk-E1
- for qemu-devel@nongnu.org; Tue, 21 May 2024 18:35:22 -0400
+ id 1s9Y5B-0003QT-8N
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 18:35:45 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quic_bcain@quicinc.com>)
- id 1s9Y4m-0007TG-Jy
- for qemu-devel@nongnu.org; Tue, 21 May 2024 18:35:22 -0400
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44LBP2EU008895;
- Tue, 21 May 2024 22:35:18 GMT
+ id 1s9Y56-0007ZZ-RB
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 18:35:45 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44LAoGJ0008814;
+ Tue, 21 May 2024 22:35:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
  message-id:date:mime-version:subject:to:cc:references:from
  :in-reply-to:content-type:content-transfer-encoding; s=
- qcppdkim1; bh=xkOuxE2xyPw64t582Wbomo4fl0O4oF52uOKsogFabkc=; b=Xl
- m33tepGXMXhsLreD+69hiQjMA9hFTk7qnZdchWYrvwwFPpWM+2vQXfPSGRxMrIym
- SDrCoeD615XC4M5S6DyQm41QOsQStedsYZymHq7i9bcBvCtk4yA1bG3gZNTDmhjZ
- 7035jSJycRUsYUsPjmSDuIU6w0mH0nXgv/H4shfzYh5qRFDRiMlLorC+rbzEChi3
- VJCePBu2yRdgegkI7bCs6SpdiRdld1bIaaRJxVEjWjf3bn05BkJESG5dcYt7oncL
- +6GeSPBf6RE83S9JnazWMD0YcirGWCK9xGyBgai3z3yqb2a4ZVl47V5HVZKdtFkB
- 9ug5fYju5RxfSR+oxT3w==
+ qcppdkim1; bh=+PlZCmbeWr20wmK46lkHW/av5wNapOOz1s1kOZ0vaII=; b=j+
+ qDd/e2zUo6KPT1G7aPJCPTNCm6zz7djNemHls4CLHwbXjPxfY2QbdHextF3eAewK
+ WYXEj/iAXeHGsn76r4MRFrENTCHZ9NtsyPm3jfm5PkPMAFudLoeeNCBPxwiYX78K
+ k64jauvKb8Jb6nNnhFCTOnRIPaKmO6ArLVf7aMquVcGowBMxf9jMpI84F7XFLk+C
+ dQ9CEuNZbMMfh6DO1Cno0MttbG7qdEy3nR6zzfC/YxJfm3qHaDde6v8/StjSFOxW
+ fBsLURw8t38mRS8+oh1Vzis2nbp58DflfiaRQm1R1VYgx4FYfW7VUEigpkvh3AIV
+ fFNIFHp30k0rvDblToFg==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6pqc7dsv-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6n4gf67p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2024 22:35:18 +0000 (GMT)
+ Tue, 21 May 2024 22:35:38 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
  [10.47.97.35])
- by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44LMZHhi019010
+ by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44LMZb5Z019740
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2024 22:35:17 GMT
+ Tue, 21 May 2024 22:35:37 GMT
 Received: from [10.110.25.190] (10.80.80.8) by nalasex01c.na.qualcomm.com
  (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 21 May
- 2024 15:35:16 -0700
-Message-ID: <7e8fb128-edfb-4dda-b71a-15ebba86153f@quicinc.com>
-Date: Tue, 21 May 2024 17:35:15 -0500
+ 2024 15:35:36 -0700
+Message-ID: <f63275f8-fdca-4ee2-9923-04f451a73ad6@quicinc.com>
+Date: Tue, 21 May 2024 17:35:35 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] target/hexagon: idef-parser remove unused defines
+Subject: Re: [PATCH v3 3/4] target/hexagon: idef-parser fix leak of init_list
 To: Anton Johansson <anjo@rev.ng>, <qemu-devel@nongnu.org>
 CC: <ale@rev.ng>, <ltaylorsimpson@gmail.com>, <bcain@quicinc.com>
 References: <20240521201654.25851-1-anjo@rev.ng>
- <20240521201654.25851-2-anjo@rev.ng>
+ <20240521201654.25851-4-anjo@rev.ng>
 Content-Language: en-US
 From: Brian Cain <quic_bcain@quicinc.com>
-In-Reply-To: <20240521201654.25851-2-anjo@rev.ng>
+In-Reply-To: <20240521201654.25851-4-anjo@rev.ng>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-ORIG-GUID: C14X_dCp4CNkrUrI0kZRgd21Kc772Noz
-X-Proofpoint-GUID: C14X_dCp4CNkrUrI0kZRgd21Kc772Noz
+X-Proofpoint-GUID: uKaFVqDwxPlVZLn9yybS1yF2SZZHKoSN
+X-Proofpoint-ORIG-GUID: uKaFVqDwxPlVZLn9yybS1yF2SZZHKoSN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-21_13,2024-05-21_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=905 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2405010000 definitions=main-2405210171
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=quic_bcain@quicinc.com; helo=mx0b-0031df01.pphosted.com
@@ -102,11 +102,14 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 5/21/2024 3:16 PM, Anton Johansson via wrote:
-> Before switching to GArray/g_string_printf we used fixed size arrays for
-> output buffers and instructions arguments among other things.
+> gen_inst_init_args() is called for instructions using a predicate as an
+> rvalue. Upon first call, the list of arguments which might need
+> initialization init_list is freed to indicate that they have been
+> processed. For instructions without an rvalue predicate,
+> gen_inst_init_args() isn't called and init_list will never be freed.
 >
-> Macros defining the sizes of these buffers were left behind, remove
-> them.
+> Free init_list from free_instruction() if it hasn't already been freed.
+> A comment in free_instruction is also updated.
 >
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
@@ -114,29 +117,29 @@ On 5/21/2024 3:16 PM, Anton Johansson via wrote:
 
 Reviewed-by: Brian Cain <bcain@quicinc.com>
 
-
->   target/hexagon/idef-parser/idef-parser.h | 10 ----------
->   1 file changed, 10 deletions(-)
+>   target/hexagon/idef-parser/parser-helpers.c | 9 ++++++++-
+>   1 file changed, 8 insertions(+), 1 deletion(-)
 >
-> diff --git a/target/hexagon/idef-parser/idef-parser.h b/target/hexagon/idef-parser/idef-parser.h
-> index 3faa1deecd..8594cbe3a2 100644
-> --- a/target/hexagon/idef-parser/idef-parser.h
-> +++ b/target/hexagon/idef-parser/idef-parser.h
-> @@ -23,16 +23,6 @@
->   #include <stdbool.h>
->   #include <glib.h>
->   
-> -#define TCGV_NAME_SIZE 7
-> -#define MAX_WRITTEN_REGS 32
-> -#define OFFSET_STR_LEN 32
-> -#define ALLOC_LIST_LEN 32
-> -#define ALLOC_NAME_SIZE 32
-> -#define INIT_LIST_LEN 32
-> -#define OUT_BUF_LEN (1024 * 1024)
-> -#define SIGNATURE_BUF_LEN (128 * 1024)
-> -#define HEADER_BUF_LEN (128 * 1024)
-> -
->   /* Variadic macros to wrap the buffer printing functions */
->   #define EMIT(c, ...)                                                           \
->       do {                                                                       \
+> diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
+> index 95f2b43076..c150c308be 100644
+> --- a/target/hexagon/idef-parser/parser-helpers.c
+> +++ b/target/hexagon/idef-parser/parser-helpers.c
+> @@ -2121,9 +2121,16 @@ void free_instruction(Context *c)
+>           g_string_free(g_array_index(c->inst.strings, GString*, i), TRUE);
+>       }
+>       g_array_free(c->inst.strings, TRUE);
+> +    /*
+> +     * Free list of arguments that might need initialization, if they haven't
+> +     * already been freed.
+> +     */
+> +    if (c->inst.init_list) {
+> +        g_array_free(c->inst.init_list, TRUE);
+> +    }
+>       /* Free INAME token value */
+>       g_string_free(c->inst.name, TRUE);
+> -    /* Free variables and registers */
+> +    /* Free declared TCGv variables */
+>       g_array_free(c->inst.allocated, TRUE);
+>       /* Initialize instruction-specific portion of the context */
+>       memset(&(c->inst), 0, sizeof(Inst));
 
