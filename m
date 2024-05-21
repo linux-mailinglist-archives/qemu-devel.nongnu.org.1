@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536AD8CA5CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 03:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111058CA617
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 04:14:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ELk-0007zi-1e; Mon, 20 May 2024 21:31:32 -0400
+	id 1s9EzY-0001nh-42; Mon, 20 May 2024 22:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9ELh-0007yS-Vj; Mon, 20 May 2024 21:31:29 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1s9ELf-0005ON-UN; Mon, 20 May 2024 21:31:29 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1f0537e39b3so90452225ad.3; 
- Mon, 20 May 2024 18:31:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716255086; x=1716859886; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jkT0FWB24KQBqdJ8LIoXwTuEUugVA4P7cz61QMqZCII=;
- b=grROf15uNbyQ+pUpfpx90evdswIkOBMy1Ldbsxgno4s3uL/T/IOkXrkpEpuP7KJLdh
- wlhNiQmcWYw86y8o62pqSVPiyDqo1dqJ8Mbi4cI2cQlab3xfwschxy3orMZ6dLyFRnA7
- HnOD13alEoNB/SrmDIjPKDv9TtvzvIif+APjKZLqbtr3RoNaeOdXAEcmIevmwSqXHkSa
- 3+Cd9RMR3o9tA/G3uNvOCDlbTAUIQEh+C/LMBSSnzKMUxteDDmfo/AB8WSJAzT69cYmp
- UuWBT6gc9O7b970id7WeJtWWqPCXW0sDzoFFzvaZkBKnvO23mi8FhMMaFdSAVIds4Y8X
- OFOw==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s9EzO-0001ms-DG
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 22:12:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1s9EzM-0004VH-9Y
+ for qemu-devel@nongnu.org; Mon, 20 May 2024 22:12:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716257547;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9wYTlOwIsCc4kNL0DH2yK+vO7f7tihGv3LLR9BQNUsU=;
+ b=HKJ3KvXEOKsdbhj1eLHItzHjoTMqsRJpWzTjF1c27RRJLgomaXEZzIV19bEPD2qWAJPHzA
+ qoBlae5vIJThQGBtDwvYi7OVJok7QKNoHKhIaRo9Qe9yPOW9s5U3f/EkDJ4VNJrn64Q/Oi
+ UYhFHF5BTTgCBVUI8Oa6TfPSKO+b/2s=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-8qZaVjcPO8aqJOsHG4afaw-1; Mon, 20 May 2024 22:12:23 -0400
+X-MC-Unique: 8qZaVjcPO8aqJOsHG4afaw-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2a49440f7b5so10815939a91.1
+ for <qemu-devel@nongnu.org>; Mon, 20 May 2024 19:12:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716255086; x=1716859886;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1716257542; x=1716862342;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jkT0FWB24KQBqdJ8LIoXwTuEUugVA4P7cz61QMqZCII=;
- b=FE/v54g2vcIpPhySyIKRrgD+vbG1xCngs9kZ2T42flEnT1tWFM0sQIVd+kyQpYPC3n
- kUWiU1LUo4l7wyGcbj2YN44CQoI7xdinECdHxgFCA+tweoaBbrt0DeBbVl+zWKmQwhJ0
- AMB+vcMomzI8UiGyQy2JpbusEuz0ZrF+zHiAekrMTW9ZryqBU53kWOHPDR/FLQDweTIw
- zQzjvnzBs7Syj/cJOPXSvdb+1/bKNFuAQFyptiBUKGpoc/dJui2adT7mrBdQlPgy3SGs
- XS8YHigFcCLgS8n+1sjjQ1CwBJJ0qLbNH/BC4cgNkhsHS7wnDXs3jqqC10zKyCact9zv
- EQLA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVYvT1j/8nm/xeBVo/DjyxMuCYaNNPyQoOAeiWaiAdLkDwHyB/gkMrseUkfXBEzX1Cu5fo3mrprktHEFBXewRZ+zX4a0n0=
-X-Gm-Message-State: AOJu0YyzmdDaFRkoNpNryJdkeK7nhFreBK+sUkWooyX4BSau+kky6rKD
- 2n63sm1cwHS+hkRtGsZ3/ZQlyJ34lUqIRz95x5nKZubl92kqxTDvuefR0g==
-X-Google-Smtp-Source: AGHT+IF5QKp04E5MXYkw7XZOLh61QQ03MEhxOpI15f+MRhI9g7q32x5wrUaSrl+Ti/lII9XeH5sz/A==
-X-Received: by 2002:a17:90a:5502:b0:2ac:40c8:1ed3 with SMTP id
- 98e67ed59e1d1-2b6cc342957mr28346504a91.5.1716255086033; 
- Mon, 20 May 2024 18:31:26 -0700 (PDT)
-Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2bd7f0cd400sm2514953a91.31.2024.05.20.18.31.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 20 May 2024 18:31:25 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Glenn Miles <milesg@linux.vnet.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PATCH v2 12/12] target/ppc: add SMT support to msgsnd broadcast
-Date: Tue, 21 May 2024 11:30:28 +1000
-Message-ID: <20240521013029.30082-13-npiggin@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240521013029.30082-1-npiggin@gmail.com>
-References: <20240521013029.30082-1-npiggin@gmail.com>
+ bh=9wYTlOwIsCc4kNL0DH2yK+vO7f7tihGv3LLR9BQNUsU=;
+ b=Af7MVY/lM72HTyU1wiXykhwWH5eciKK7jcyIxzJ4OMfxlIpVsED+RpprfzzLCkULxj
+ KcavRqZ/m5sq6b5IDW3BW8T3GZkYQqsarAszaFk4BluwlyDotXvkv87H1aHn0l8X59zI
+ C5OZtAHMWYdp2ucLReOg4g4SbBmzoWV/3OO2y5jvg3fTfnvYfenC3NLUEXEcAznIGisK
+ Wre0jiSasjSDwL91Y1R4ruvmb9g+XVS3Pa/Grj3DMYOYdODripxT5nrylZeTO8zUCW52
+ qmmOB3dbMl7ECEkuX2s/oZIDM6pNO6HenyqN3mAxPurIzZXJk2K2W61duLbKRnM7b2cp
+ mV7w==
+X-Gm-Message-State: AOJu0Yys9+TaIyZE8nJ5i9VX1QBUICechpwp5PN6UdhOkGEN/cBAPQDO
+ CzeAtdVqdF4f3dh+12bHW6bZUGnEU19M8aLT/3NtU1wGNclEEEYyVXbfJPgpweM8c5io72hi1Cu
+ dIeullf2n+3REFMombUZM7KfVAuSSgRQ2NDxMOkWCK/mG2E00YAUKxncAPTF1GfjwJErHkOvGrB
+ o9QryRWOz1olwkVO/Y3zFkhTyROew=
+X-Received: by 2002:a17:90b:894:b0:2b4:32ae:8569 with SMTP id
+ 98e67ed59e1d1-2b6ccfed280mr28833064a91.40.1716257542012; 
+ Mon, 20 May 2024 19:12:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7s3zBwXyvgxArq9kFNC7+95MZR5EYlpY1xYis3xOpmK5ZcGVIIT0pPOBCsLxUa+fvFwtlbdvqjYGlRGLTZg8=
+X-Received: by 2002:a17:90b:894:b0:2b4:32ae:8569 with SMTP id
+ 98e67ed59e1d1-2b6ccfed280mr28833047a91.40.1716257541619; Mon, 20 May 2024
+ 19:12:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62a.google.com
+References: <20240517075336.104091-1-f.ebner@proxmox.com>
+In-Reply-To: <20240517075336.104091-1-f.ebner@proxmox.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 21 May 2024 10:12:10 +0800
+Message-ID: <CACGkMEsn+vtjX90OcfH+ntJfoNXEEp94PzOX2FL80KtitL9Zaw@mail.gmail.com>
+Subject: Re: [PATCH] hw/core/machine: move compatibility flags for VirtIO-net
+ USO to machine 8.1
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, wangyanan55@huawei.com, 
+ philmd@linaro.org, marcel.apfelbaum@gmail.com, eduardo@habkost.net, 
+ yuri.benditovich@daynix.com, andrew@daynix.com, peterx@redhat.com, 
+ farosas@suse.de, t.lamprecht@proxmox.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,153 +98,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-msgsnd has a broadcast mode that sends hypervisor doorbells to all
-threads belonging to the same core as the target. A "subcore" mode
-sends to all or one thread depending on 1LPAR mode.
+On Fri, May 17, 2024 at 3:54=E2=80=AFPM Fiona Ebner <f.ebner@proxmox.com> w=
+rote:
+>
+> Migration from an 8.2 or 9.0 binary to an 8.1 binary with machine
+> version 8.1 can fail with:
+>
+> > kvm: Features 0x1c0010130afffa7 unsupported. Allowed features: 0x10179b=
+fffe7
+> > kvm: Failed to load virtio-net:virtio
+> > kvm: error while loading state for instance 0x0 of device '0000:00:12.0=
+/virtio-net'
+> > kvm: load of migration failed: Operation not permitted
+>
+> The series
+>
+> 53da8b5a99 virtio-net: Add support for USO features
+> 9da1684954 virtio-net: Add USO flags to vhost support.
+> f03e0cf63b tap: Add check for USO features
+> 2ab0ec3121 tap: Add USO support to tap device.
+>
+> only landed in QEMU 8.2, so the compatibility flags should be part of
+> machine version 8.1.
+>
+> Moving the flags unfortunately breaks forward migration with machine
+> version 8.1 from a binary without this patch to a binary with this
+> patch.
+>
+> Fixes: 53da8b5a99 ("virtio-net: Add support for USO features")
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/cpu.h                              |  6 +-
- target/ppc/helper.h                           |  2 +-
- target/ppc/excp_helper.c                      | 57 +++++++++++++------
- .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
- 4 files changed, 46 insertions(+), 21 deletions(-)
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index e4c342b17d..e201b7f6c2 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1163,7 +1163,11 @@ FIELD(FPSCR, FI, FPSCR_FI, 1)
- 
- #define DBELL_TYPE_DBELL_SERVER        (0x05 << DBELL_TYPE_SHIFT)
- 
--#define DBELL_BRDCAST                  PPC_BIT(37)
-+#define DBELL_BRDCAST_MASK             PPC_BITMASK(37, 38)
-+#define DBELL_BRDCAST_SHIFT            25
-+#define DBELL_BRDCAST_SUBPROC          (0x1 << DBELL_BRDCAST_SHIFT)
-+#define DBELL_BRDCAST_CORE             (0x2 << DBELL_BRDCAST_SHIFT)
-+
- #define DBELL_LPIDTAG_SHIFT            14
- #define DBELL_LPIDTAG_MASK             (0xfff << DBELL_LPIDTAG_SHIFT)
- #define DBELL_PIRTAG_MASK              0x3fff
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 57bf8354e7..dd92c6a937 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -695,7 +695,7 @@ DEF_HELPER_FLAGS_3(store_sr, TCG_CALL_NO_RWG, void, env, tl, tl)
- 
- DEF_HELPER_1(msgsnd, void, tl)
- DEF_HELPER_2(msgclr, void, env, tl)
--DEF_HELPER_1(book3s_msgsnd, void, tl)
-+DEF_HELPER_2(book3s_msgsnd, void, env, tl)
- DEF_HELPER_2(book3s_msgclr, void, env, tl)
- #endif
- 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index e786a9044b..0a9e8539a4 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2978,7 +2978,7 @@ void helper_msgsnd(target_ulong rb)
-         PowerPCCPU *cpu = POWERPC_CPU(cs);
-         CPUPPCState *cenv = &cpu->env;
- 
--        if ((rb & DBELL_BRDCAST) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
-+        if ((rb & DBELL_BRDCAST_MASK) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
-             ppc_set_irq(cpu, irq, 1);
-         }
-     }
-@@ -2997,6 +2997,16 @@ static bool dbell_type_server(target_ulong rb)
-     return (rb & DBELL_TYPE_MASK) == DBELL_TYPE_DBELL_SERVER;
- }
- 
-+static inline bool dbell_bcast_core(target_ulong rb)
-+{
-+    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_CORE;
-+}
-+
-+static inline bool dbell_bcast_subproc(target_ulong rb)
-+{
-+    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
-+}
-+
- void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
- {
-     if (!dbell_type_server(rb)) {
-@@ -3006,32 +3016,43 @@ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
-     ppc_set_irq(env_archcpu(env), PPC_INTERRUPT_HDOORBELL, 0);
- }
- 
--static void book3s_msgsnd_common(int pir, int irq)
-+void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
- {
--    CPUState *cs;
-+    int pir = rb & DBELL_PROCIDTAG_MASK;
-+    bool brdcast = false;
-+    CPUState *cs, *ccs;
-+    PowerPCCPU *cpu;
- 
--    bql_lock();
--    CPU_FOREACH(cs) {
--        PowerPCCPU *cpu = POWERPC_CPU(cs);
--        CPUPPCState *cenv = &cpu->env;
-+    if (!dbell_type_server(rb)) {
-+        return;
-+    }
- 
--        /* TODO: broadcast message to all threads of the same  processor */
--        if (cenv->spr_cb[SPR_PIR].default_value == pir) {
--            ppc_set_irq(cpu, irq, 1);
--        }
-+    cpu = ppc_get_vcpu_by_pir(pir);
-+    if (!cpu) {
-+        return;
-     }
--    bql_unlock();
--}
-+    cs = CPU(cpu);
- 
--void helper_book3s_msgsnd(target_ulong rb)
--{
--    int pir = rb & DBELL_PROCIDTAG_MASK;
-+    if (dbell_bcast_core(rb) || (dbell_bcast_subproc(rb) &&
-+                                 (env->flags & POWERPC_FLAG_SMT_1LPAR))) {
-+        brdcast = true;
-+    }
- 
--    if (!dbell_type_server(rb)) {
-+    if (cs->nr_threads == 1 || !brdcast) {
-+        ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
-         return;
-     }
- 
--    book3s_msgsnd_common(pir, PPC_INTERRUPT_HDOORBELL);
-+    /*
-+     * Why is bql needed for walking CPU list? Answer seems to be because ppc
-+     * irq handling needs it, but ppc_set_irq takes the lock itself if needed,
-+     * so could this be removed?
-+     */
-+    bql_lock();
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        ppc_set_irq(POWERPC_CPU(ccs), PPC_INTERRUPT_HDOORBELL, 1);
-+    }
-+    bql_unlock();
- }
- 
- #ifdef TARGET_PPC64
-diff --git a/target/ppc/translate/processor-ctrl-impl.c.inc b/target/ppc/translate/processor-ctrl-impl.c.inc
-index 0142801985..8abbb89630 100644
---- a/target/ppc/translate/processor-ctrl-impl.c.inc
-+++ b/target/ppc/translate/processor-ctrl-impl.c.inc
-@@ -59,7 +59,7 @@ static bool trans_MSGSND(DisasContext *ctx, arg_X_rb *a)
- 
- #if !defined(CONFIG_USER_ONLY)
-     if (is_book3s_arch2x(ctx)) {
--        gen_helper_book3s_msgsnd(cpu_gpr[a->rb]);
-+        gen_helper_book3s_msgsnd(tcg_env, cpu_gpr[a->rb]);
-     } else {
-         gen_helper_msgsnd(cpu_gpr[a->rb]);
-     }
--- 
-2.43.0
+Thanks
 
 
