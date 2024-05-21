@@ -2,98 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE588CAEB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E958CAEAD
+	for <lists+qemu-devel@lfdr.de>; Tue, 21 May 2024 14:54:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9Ozg-0003Aq-FA; Tue, 21 May 2024 08:53:28 -0400
+	id 1s9P0f-0004jG-TA; Tue, 21 May 2024 08:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s9Oza-000345-QG
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:53:24 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1s9OzY-0005gl-Mh
- for qemu-devel@nongnu.org; Tue, 21 May 2024 08:53:22 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a59cf8140d0so698156366b.3
- for <qemu-devel@nongnu.org>; Tue, 21 May 2024 05:53:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716295998; x=1716900798; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=64oTeEEknftWnlD1tjCfqHLFzBsR/ZQm2nBN/sHWoTM=;
- b=F5wDs+9fr7+H+FH0u5HrxWwwpurmSUpjdzIiIS+kt/ohu34vGBJhnExqFZFgPD3YWB
- 68hM1g2dagHH3lgIk7+GU6hco+M6/kcfX++33tlTEF3dzBL2ZUePHYz+kFt+6RqzW/Wk
- FaDeM/xSgGG9n8AWi1LzRIEVdiIBwlo9GT3CbmRFXwYAVmqrV3bpBw9Tl6wwyq5xGUKx
- 0Gggp1Bn81JiL2JkFXUQ/2EM9DuUhCObTs8Sy2X6i4g9eRVyiKH6fSmtqKVh9j9oKrIe
- wRmm9oEm6JftSedWk1yoUqMxyLcNta0ko13dL3SW8GCPLNeb11+arSgkEsmfY9H0qmbS
- u1ZA==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9P0Y-0004SM-4g
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 08:54:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9P0U-0005ns-Ar
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 08:54:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716296056;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=M5bFhftGrkOaKS5dqV0ZL9P5jw4L5e6ejLPVbeeiXho=;
+ b=NMWwWcncKt66S5s+nbDC4RmUMTXp6WW+nj3FzmWhFBAfXG3AsDxAc7l170/zvDMoRhsLWW
+ icu8PZ0Husx6h0WdRVMeEnGPs0do540afo4AtakW+LJzKN/MXCzLskdMVmQglVTjOysH79
+ h/xkxosf5FGIvMni1ZQMBmRrJfbj6Gg=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-116-ggJFs5DUPGya_3St21ijCQ-1; Tue, 21 May 2024 08:54:15 -0400
+X-MC-Unique: ggJFs5DUPGya_3St21ijCQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5729fd97df9so29989a12.1
+ for <qemu-devel@nongnu.org>; Tue, 21 May 2024 05:54:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716295998; x=1716900798;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=64oTeEEknftWnlD1tjCfqHLFzBsR/ZQm2nBN/sHWoTM=;
- b=fLTwpAxL4qPdbhJ5vHDq7WZO2ic7nvDo+LUxcpRzT/nJU8fv+SdJkA/Qkeik4cWro6
- kqznPBR3i7S/iEfa9L+g2XTTCNNcbXC6/QENp8b3tnOOwtZMkj9GjTaZyDsxfcozjkzy
- 0X4I3sxbhdfDjqVXH2TSB8rZKqJcMdAciyofrfXrYMjaD8Mhr0/12dOA8hNBLqpll+pk
- kozU5qOPIGqlMYccUtPam/jJJNfL6TdZJATY2WLD3nn6/nrqQ873FmGFmbmEYWa9hq3q
- k7iu3ko3Q3VMxOErB+quJ0FVgeqoOJUrndZy29cHgiCvwA36m9bqePW+6m+3TowECWNs
- EnCg==
-X-Gm-Message-State: AOJu0Yx1U56NRP3k5NA6+ghd2UqerRmkOyZgs0yEXQRukzK5pEFiQhMW
- O4o+UtbN7rSKBRoXlsF5alqNvYQMzXYgt6O8q3genKv3MEk5To9Qt+KJpw+90hk=
-X-Google-Smtp-Source: AGHT+IE/4w7eaFuB7C2sUWzss8e87GvGr/iC90wD/58AfkP6K/r4jRwA7Fz/2kkkWaLpERebGgM3hw==
-X-Received: by 2002:a17:906:fa1b:b0:a5a:8b8c:6203 with SMTP id
- a640c23a62f3a-a5a8b8c6341mr1332386766b.45.1716295998202; 
- Tue, 21 May 2024 05:53:18 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5d10b3ef82sm539034466b.158.2024.05.21.05.53.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 May 2024 05:53:16 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 256335FA1C;
- Tue, 21 May 2024 13:53:15 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Beraldo Leal <bleal@redhat.com>, qemu-s390x@nongnu.org,
- John Snow <jsnow@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Joel Stanley <joel@jms.id.au>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Aurelien Jarno <aurelien@aurel32.net>, Thomas Huth <thuth@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 4/4] tests/vm: remove plain centos image
-Date: Tue, 21 May 2024 13:53:14 +0100
-Message-Id: <20240521125314.1255403-5-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240521125314.1255403-1-alex.bennee@linaro.org>
-References: <20240521125314.1255403-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1716296054; x=1716900854;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=M5bFhftGrkOaKS5dqV0ZL9P5jw4L5e6ejLPVbeeiXho=;
+ b=uCiPOUYXlfV3Vn+m2fd1NpYZj1pyM69Y/swsGh10Kb7P3UegbkVwflEISzoHeFVxSj
+ g44je4Pl+5r8pz16SKEP9Cvc97b9S+dm0tVFhvLnOYjGzhELCGgzZalpiR4S9WlTpwf4
+ GyfRZhsrveUkh2p3xuTmS00EtGQPQv4B00QnyCiJFmE7rTf/Ccyf+AWRNeQc7tpFEG6v
+ j8Zho6wo/UPwOCyquADfe00y5AtwyAu9wcPhXA6NPq2RKf97BNafJaz0PataVao/DFfX
+ ZpKRXo/MzIBTNclvoWssbgIPF1zzELSSUiwwGa9SJxZvp3E996hrEvz+TrDVfGAjxZTv
+ yhsQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW5GJO2GVi24tswo+vJdnKlEwaJme80GLQSYf3JJgI6fbrNo3w3AoXx3dqqQkm3rjds+2DCLB0dxD+XzWDrhKbWYQ+mLf8=
+X-Gm-Message-State: AOJu0YxuJ0q7nhSQgRPBRxWaEuxpf0GaHUZGNG+6J1/oo++vIuqSQIFH
+ 7JKDvrBONhEAzkMZH/kTtPMuOeN3A58rArVtKJYQZgD9lDdxzqdLQuV2BGr8QbTjgUHTt29f+4h
+ Hzseimu7wW1gW4L4t6xIK3jK5fcYgSIYOqaKVDZVBbXCjwHoV6mMd
+X-Received: by 2002:aa7:d294:0:b0:574:eb43:3865 with SMTP id
+ 4fb4d7f45d1cf-574eb433921mr12518091a12.32.1716296053813; 
+ Tue, 21 May 2024 05:54:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEa7kyt6dumS+csJJkSpt9F7yxjv8TDts5Xuv61EcmBFXEXByVc7tmqF6DA8uUf51KSzLrWtA==
+X-Received: by 2002:aa7:d294:0:b0:574:eb43:3865 with SMTP id
+ 4fb4d7f45d1cf-574eb433921mr12518075a12.32.1716296053414; 
+ Tue, 21 May 2024 05:54:13 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-5750b47411csm6820829a12.75.2024.05.21.05.54.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 May 2024 05:54:12 -0700 (PDT)
+Message-ID: <acd14e4b-bf3a-437d-a0a1-aa8618750d17@redhat.com>
+Date: Tue, 21 May 2024 14:54:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/16] vfio/pci: Make capability related functions return
+ bool
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, eric.auger@redhat.com, chao.p.peng@intel.com
+References: <20240515082041.556571-1-zhenzhong.duan@intel.com>
+ <20240515082041.556571-14-zhenzhong.duan@intel.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20240515082041.556571-14-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,86 +103,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This isn't really used and we have lighter weight docker containers
-for testing this stuff directly.
+On 5/15/24 10:20, Zhenzhong Duan wrote:
+> The functions operating on capability don't have a consistent return style.
+> 
+> Below functions are in bool-valued functions style:
+> vfio_msi_setup()
+> vfio_msix_setup()
+> vfio_add_std_cap()
+> vfio_add_capabilities()
+> 
+> Below two are integer-valued functions:
+> vfio_add_vendor_specific_cap()
+> vfio_setup_pcie_cap()
+> 
+> But the returned integer is only used for check succeed/failure.
+> Change them all to return bool so now all capability related
+> functions follow the coding standand in qapi/error.h to return
+> bool.
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/vm/Makefile.include |  1 -
- tests/vm/centos           | 51 ---------------------------------------
- 2 files changed, 52 deletions(-)
- delete mode 100755 tests/vm/centos
 
-diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
-index ac56824a87..13ed80f72d 100644
---- a/tests/vm/Makefile.include
-+++ b/tests/vm/Makefile.include
-@@ -45,7 +45,6 @@ vm-help vm-test:
- 	@echo "  vm-build-netbsd                 - Build QEMU in NetBSD VM"
- 	@echo "  vm-build-openbsd                - Build QEMU in OpenBSD VM"
- ifneq ($(GENISOIMAGE),)
--	@echo "  vm-build-centos                 - Build QEMU in CentOS VM, with Docker"
- ifneq ($(EFI_AARCH64),)
- 	@echo "  vm-build-ubuntu.aarch64         - Build QEMU in ubuntu aarch64 VM"
- 	@echo "  vm-build-centos.aarch64         - Build QEMU in CentOS aarch64 VM"
-diff --git a/tests/vm/centos b/tests/vm/centos
-deleted file mode 100755
-index d25c8f8b5b..0000000000
---- a/tests/vm/centos
-+++ /dev/null
-@@ -1,51 +0,0 @@
--#!/usr/bin/env python3
--#
--# CentOS 8 Stream image
--#
--# Copyright 2018, 2022 Red Hat Inc.
--#
--# Authors:
--#  Fam Zheng <famz@redhat.com>
--#
--# This code is licensed under the GPL version 2 or later.  See
--# the COPYING file in the top-level directory.
--#
--
--import os
--import sys
--import subprocess
--import basevm
--import time
--
--class CentosVM(basevm.BaseVM):
--    name = "centos"
--    arch = "x86_64"
--    BUILD_SCRIPT = """
--        set -e;
--        cd $(mktemp -d);
--        export SRC_ARCHIVE=/dev/vdb;
--        sudo chmod a+r $SRC_ARCHIVE;
--        tar -xf $SRC_ARCHIVE;
--        make docker-test-block@centos9 {verbose} J={jobs} NETWORK=1;
--        make docker-test-quick@centos9 {verbose} J={jobs} NETWORK=1;
--    """
--
--    def build_image(self, img):
--        cimg = self._download_with_cache("https://cloud.centos.org/centos/8-stream/x86_64/images/CentOS-Stream-GenericCloud-8-20220125.1.x86_64.qcow2")
--        img_tmp = img + ".tmp"
--        subprocess.check_call(['cp', '-f', cimg, img_tmp])
--        self.exec_qemu_img("resize", img_tmp, "50G")
--        self.boot(img_tmp, extra_args = ["-cdrom", self.gen_cloud_init_iso()])
--        self.wait_ssh()
--        self.ssh_root_check("touch /etc/cloud/cloud-init.disabled")
--        self.ssh_root_check("dnf update -y")
--        self.ssh_root_check("dnf install -y dnf-plugins-core")
--        self.ssh_root_check("dnf config-manager --set-enabled powertools")
--        self.ssh_root_check("dnf install -y podman make ninja-build git python3")
--        self.ssh_root("poweroff")
--        self.wait()
--        os.rename(img_tmp, img)
--        return 0
--
--if __name__ == "__main__":
--    sys.exit(basevm.main(CentosVM))
--- 
-2.39.2
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
+
+> ---
+>   hw/vfio/pci.c | 77 ++++++++++++++++++++++++---------------------------
+>   1 file changed, 36 insertions(+), 41 deletions(-)
+> 
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 1922593253..ecfbb9619f 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -1339,7 +1339,7 @@ static void vfio_disable_interrupts(VFIOPCIDevice *vdev)
+>       }
+>   }
+>   
+> -static int vfio_msi_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+> +static bool vfio_msi_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>   {
+>       uint16_t ctrl;
+>       bool msi_64bit, msi_maskbit;
+> @@ -1349,7 +1349,7 @@ static int vfio_msi_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>       if (pread(vdev->vbasedev.fd, &ctrl, sizeof(ctrl),
+>                 vdev->config_offset + pos + PCI_CAP_FLAGS) != sizeof(ctrl)) {
+>           error_setg_errno(errp, errno, "failed reading MSI PCI_CAP_FLAGS");
+> -        return -errno;
+> +        return false;
+>       }
+>       ctrl = le16_to_cpu(ctrl);
+>   
+> @@ -1362,14 +1362,14 @@ static int vfio_msi_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>       ret = msi_init(&vdev->pdev, pos, entries, msi_64bit, msi_maskbit, &err);
+>       if (ret < 0) {
+>           if (ret == -ENOTSUP) {
+> -            return 0;
+> +            return true;
+>           }
+>           error_propagate_prepend(errp, err, "msi_init failed: ");
+> -        return ret;
+> +        return false;
+>       }
+>       vdev->msi_cap_size = 0xa + (msi_maskbit ? 0xa : 0) + (msi_64bit ? 0x4 : 0);
+>   
+> -    return 0;
+> +    return true;
+>   }
+>   
+>   static void vfio_pci_fixup_msix_region(VFIOPCIDevice *vdev)
+> @@ -1644,7 +1644,7 @@ static bool vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+>       return vfio_pci_relocate_msix(vdev, errp);
+>   }
+>   
+> -static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+> +static bool vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>   {
+>       int ret;
+>       Error *err = NULL;
+> @@ -1660,11 +1660,11 @@ static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>       if (ret < 0) {
+>           if (ret == -ENOTSUP) {
+>               warn_report_err(err);
+> -            return 0;
+> +            return true;
+>           }
+>   
+>           error_propagate(errp, err);
+> -        return ret;
+> +        return false;
+>       }
+>   
+>       /*
+> @@ -1698,7 +1698,7 @@ static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+>           memory_region_set_enabled(&vdev->pdev.msix_table_mmio, false);
+>       }
+>   
+> -    return 0;
+> +    return true;
+>   }
+>   
+>   static void vfio_teardown_msi(VFIOPCIDevice *vdev)
+> @@ -1977,8 +1977,8 @@ static void vfio_pci_disable_rp_atomics(VFIOPCIDevice *vdev)
+>       }
+>   }
+>   
+> -static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+> -                               Error **errp)
+> +static bool vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+> +                                Error **errp)
+>   {
+>       uint16_t flags;
+>       uint8_t type;
+> @@ -1992,7 +1992,7 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>   
+>           error_setg(errp, "assignment of PCIe type 0x%x "
+>                      "devices is not currently supported", type);
+> -        return -EINVAL;
+> +        return false;
+>       }
+>   
+>       if (!pci_bus_is_express(pci_get_bus(&vdev->pdev))) {
+> @@ -2025,7 +2025,7 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>           }
+>   
+>           if (pci_bus_is_express(bus)) {
+> -            return 0;
+> +            return true;
+>           }
+>   
+>       } else if (pci_bus_is_root(pci_get_bus(&vdev->pdev))) {
+> @@ -2063,7 +2063,7 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>                * Legacy endpoints don't belong on the root complex.  Windows
+>                * seems to be happier with devices if we skip the capability.
+>                */
+> -            return 0;
+> +            return true;
+>           }
+>   
+>       } else {
+> @@ -2099,12 +2099,12 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
+>       pos = pci_add_capability(&vdev->pdev, PCI_CAP_ID_EXP, pos, size,
+>                                errp);
+>       if (pos < 0) {
+> -        return pos;
+> +        return false;
+>       }
+>   
+>       vdev->pdev.exp.exp_cap = pos;
+>   
+> -    return pos;
+> +    return true;
+>   }
+>   
+>   static void vfio_check_pcie_flr(VFIOPCIDevice *vdev, uint8_t pos)
+> @@ -2137,14 +2137,14 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
+>       }
+>   }
+>   
+> -static int vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
+> -                                        uint8_t size, Error **errp)
+> +static bool vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
+> +                                         uint8_t size, Error **errp)
+>   {
+>       PCIDevice *pdev = &vdev->pdev;
+>   
+>       pos = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, size, errp);
+>       if (pos < 0) {
+> -        return pos;
+> +        return false;
+>       }
+>   
+>       /*
+> @@ -2156,15 +2156,15 @@ static int vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
+>           memset(pdev->cmask + pos + 3, 0, size - 3);
+>       }
+>   
+> -    return pos;
+> +    return true;
+>   }
+>   
+> -static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+> +static bool vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+>   {
+>       ERRP_GUARD();
+>       PCIDevice *pdev = &vdev->pdev;
+>       uint8_t cap_id, next, size;
+> -    int ret;
+> +    bool ret;
+>   
+>       cap_id = pdev->config[pos];
+>       next = pdev->config[pos + PCI_CAP_LIST_NEXT];
+> @@ -2185,9 +2185,8 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+>        * will be changed as we unwind the stack.
+>        */
+>       if (next) {
+> -        ret = vfio_add_std_cap(vdev, next, errp);
+> -        if (ret) {
+> -            return ret;
+> +        if (!vfio_add_std_cap(vdev, next, errp)) {
+> +            return false;
+>           }
+>       } else {
+>           /* Begin the rebuild, use QEMU emulated list bits */
+> @@ -2197,7 +2196,7 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+>   
+>           ret = vfio_add_virt_caps(vdev, errp);
+>           if (ret) {
+> -            return ret;
+> +            return false;
+>           }
+>       }
+>   
+> @@ -2221,28 +2220,27 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+>       case PCI_CAP_ID_PM:
+>           vfio_check_pm_reset(vdev, pos);
+>           vdev->pm_cap = pos;
+> -        ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+> +        ret = pci_add_capability(pdev, cap_id, pos, size, errp) >= 0;
+>           break;
+>       case PCI_CAP_ID_AF:
+>           vfio_check_af_flr(vdev, pos);
+> -        ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+> +        ret = pci_add_capability(pdev, cap_id, pos, size, errp) >= 0;
+>           break;
+>       case PCI_CAP_ID_VNDR:
+>           ret = vfio_add_vendor_specific_cap(vdev, pos, size, errp);
+>           break;
+>       default:
+> -        ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+> +        ret = pci_add_capability(pdev, cap_id, pos, size, errp) >= 0;
+>           break;
+>       }
+>   
+> -    if (ret < 0) {
+> +    if (!ret) {
+>           error_prepend(errp,
+>                         "failed to add PCI capability 0x%x[0x%x]@0x%x: ",
+>                         cap_id, size, pos);
+> -        return ret;
+>       }
+>   
+> -    return 0;
+> +    return ret;
+>   }
+>   
+>   static int vfio_setup_rebar_ecap(VFIOPCIDevice *vdev, uint16_t pos)
+> @@ -2388,23 +2386,21 @@ static void vfio_add_ext_cap(VFIOPCIDevice *vdev)
+>       return;
+>   }
+>   
+> -static int vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
+> +static bool vfio_add_capabilities(VFIOPCIDevice *vdev, Error **errp)
+>   {
+>       PCIDevice *pdev = &vdev->pdev;
+> -    int ret;
+>   
+>       if (!(pdev->config[PCI_STATUS] & PCI_STATUS_CAP_LIST) ||
+>           !pdev->config[PCI_CAPABILITY_LIST]) {
+> -        return 0; /* Nothing to add */
+> +        return true; /* Nothing to add */
+>       }
+>   
+> -    ret = vfio_add_std_cap(vdev, pdev->config[PCI_CAPABILITY_LIST], errp);
+> -    if (ret) {
+> -        return ret;
+> +    if (!vfio_add_std_cap(vdev, pdev->config[PCI_CAPABILITY_LIST], errp)) {
+> +        return false;
+>       }
+>   
+>       vfio_add_ext_cap(vdev);
+> -    return 0;
+> +    return true;
+>   }
+>   
+>   void vfio_pci_pre_reset(VFIOPCIDevice *vdev)
+> @@ -3136,8 +3132,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>   
+>       vfio_bars_register(vdev);
+>   
+> -    ret = vfio_add_capabilities(vdev, errp);
+> -    if (ret) {
+> +    if (!vfio_add_capabilities(vdev, errp)) {
+>           goto out_teardown;
+>       }
+>   
 
 
