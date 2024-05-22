@@ -2,80 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825888CC827
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 23:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B31B8CC82D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 23:34:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9tV6-0004iP-Hg; Wed, 22 May 2024 17:27:56 -0400
+	id 1s9tai-0008O7-HI; Wed, 22 May 2024 17:33:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9tV1-0004gX-GQ
- for qemu-devel@nongnu.org; Wed, 22 May 2024 17:27:51 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9tUx-0002eF-SC
- for qemu-devel@nongnu.org; Wed, 22 May 2024 17:27:51 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1f338ebe621so1958335ad.0
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 14:27:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716413266; x=1717018066; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xp2tqJpP1VGOVmvGLLfhZ7JUgsbCC6mxTTS1hPt+7hc=;
- b=TSaxndple381iskLluOsd3ZTGK/UdTxBp1Yt3kFxQf4vFSKebDBxnHYE5fFDU0mebU
- mv4w7Iz9qp2swhz5zGl6/p1imRcwxrmxml9cDA8X8NGYFtDfxAGPci+6MqO6irFDp+c3
- rc5yHhLmPsCOz95PPxt3zy+XpeAqIend9imZ4gLpbSvxLu+J+ua98WADRW4+exWjBXXf
- 4POWZwWWTcXnCE6AjNPluTsuERO0YbjaclZn6P2LhJ/YkEGmMH5ky5dwt4HLR2SZO453
- 8W2RJTUMP22bcjmt9IK0LOYR3QWTXk72CP8tCG9F3wx/K0Ho7NasY+V21DGsLgo7egpa
- uXmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716413266; x=1717018066;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xp2tqJpP1VGOVmvGLLfhZ7JUgsbCC6mxTTS1hPt+7hc=;
- b=ATQF7LAS9ivSCeF+DFTP9gsMNk3pzyj6GssMqOzGw7/5rbtsxyr55mxu6kLj1NXT+2
- EV4LvWeclzNVVNjK5NTDBkRNmeu0h+XE5n8XBySwz4izi12voj4Vj6bsDLXOeSEdUEcB
- sYC6ps3xo0xAKB0GLQKpP9zggOLzwhMcLYLF6dFJZFy77fq0bVscBV7befZVgPPDxt5W
- gPVtu4bfMFkMD84fvcOh1bvTt6kSgTsien2KsVG2DLgcXJNTCsiGP0yHBwIRf5I70Uaq
- 7owC4oqoc6PWTWKV3lNkFq36Mvev/zztpXXlf/WgMjc8xV1fkaM7oXW3lMFuVwWb3rtZ
- MbYA==
-X-Gm-Message-State: AOJu0Yw5yev2faSgjMtFMuez4IrEu7Dv2sY+N4Kqos7ONHTZh99gdUu9
- xtDDq94KqwdsmkrM9VcGDLzIMcb+UqePpS89eYZYkFYxcdrNpTNRfcME3vRDy/qqe3aN2sK1RBe
- B
-X-Google-Smtp-Source: AGHT+IFy7XHOcEm2JZKYS3ftECiw18Kh1iLak+it3jBmxrblY+0UFrDAljo6rx8HuapUAFc26dklxA==
-X-Received: by 2002:a17:902:e5c2:b0:1e2:45f3:2d57 with SMTP id
- d9443c01a7336-1f339edde45mr7289185ad.6.1716413266531; 
- Wed, 22 May 2024 14:27:46 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f2fc06586asm64621705ad.201.2024.05.22.14.27.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 May 2024 14:27:46 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PATCH RISU 4/4] contrib/generate_all: Do not rely on ag
-Date: Wed, 22 May 2024 14:27:41 -0700
-Message-Id: <20240522212741.297734-5-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240522212741.297734-1-richard.henderson@linaro.org>
-References: <20240522212741.297734-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1s9taf-0008Nu-ER; Wed, 22 May 2024 17:33:41 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1s9tad-0003bO-4M; Wed, 22 May 2024 17:33:41 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44MJYPvQ010805; Wed, 22 May 2024 21:33:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=IMqElwi0abLxaAl74iWOXoz/Aekb4pZ+hcxSRFDLf3A=;
+ b=IIwAFG7IsFLZQqGe9Oa1TyIbZeHQBaIjCjCEtD0/X6muZ0eVnOFhKhoQaJcDTPSavMt2
+ CRCGuzLG+A9B5m5uUEyz5CSbDw/qqslGW/pKE6BGc2RZ+4+Q/dTfCjND4bii6esC6w3u
+ ojQ1ochvQhsa2l4VIn8pArFLjtsA7ERZeno1nq06/svFDm7ouZGDxE/BMDGJu/bZgkbB
+ rhghF7HEEKfhghNhXkUrm8K9lizJFrCV0B/kf9/3rb7Wc4KW0IeI7vxOfRFui3zuctEq
+ 9hrMKolMaOSCkOS8KClqeSU4W/SFO9xNORLYtwR6Js1yHZEGMzSAOpEe4C92iVcgVNWL HQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9pyer7sc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 21:33:36 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44MLXZIV021756;
+ Wed, 22 May 2024 21:33:35 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9pyer7sa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 21:33:35 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44MJGj07007818; Wed, 22 May 2024 21:33:35 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y79c35tke-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 21:33:34 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44MLXV6u34800334
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 May 2024 21:33:33 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 56F3220043;
+ Wed, 22 May 2024 21:33:31 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB8F520040;
+ Wed, 22 May 2024 21:33:30 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 22 May 2024 21:33:30 +0000 (GMT)
+Message-ID: <ada367dd66c9376b7ed8ca357f5e33ccd9fdfa29.camel@linux.ibm.com>
+Subject: Re: [PATCH 04/14] target/s390x: Record separate PER bits in TB flags
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, david@redhat.com, thuth@redhat.com
+Date: Wed, 22 May 2024 23:33:30 +0200
+In-Reply-To: <20240502054417.234340-5-richard.henderson@linaro.org>
+References: <20240502054417.234340-1-richard.henderson@linaro.org>
+ <20240502054417.234340-5-richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 36VoRUfj37iwpKQST2CJsTUEAKsbRNlv
+X-Proofpoint-GUID: -x2O82dtmrlFu6EuovN3kT2M0uZcXZBw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-22_12,2024-05-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 malwarescore=0 mlxscore=0 bulkscore=0 impostorscore=0
+ adultscore=0 spamscore=0 mlxlogscore=709 suspectscore=0 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405220150
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,29 +112,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use plain grep instead.
+On Wed, 2024-05-01 at 22:44 -0700, Richard Henderson wrote:
+> Record successful-branching, instruction-fetching, and
+> store-using-real-address.=C2=A0 The other PER bits are not used
+> during translation.=C2=A0 Having checked these at translation time,
+> we can remove runtime tests from the helpers.
+>=20
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> =C2=A0target/s390x/cpu.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 42 ++++++++++++++++++++++++--------
+> --
+> =C2=A0target/s390x/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 22 ++++++++++++++----
+> =C2=A0target/s390x/tcg/misc_helper.c | 21 +++++++----------
+> =C2=A0target/s390x/tcg/translate.c=C2=A0=C2=A0 | 10 ++++----
+> =C2=A04 files changed, 61 insertions(+), 34 deletions(-)
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- contrib/generate_all.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/contrib/generate_all.sh b/contrib/generate_all.sh
-index 651cb23..5ff0b3e 100755
---- a/contrib/generate_all.sh
-+++ b/contrib/generate_all.sh
-@@ -78,8 +78,8 @@ fi
- 
- mkdir -p ${TARGET_DIR}
- 
--ALL_INSNS=$(cat ${RISU_FILE} | ag "^\w" | cut -f 1 -d " " | sort)
--COUNT=$(cat ${RISU_FILE=} | ag "^\w" | cut -f 1 -d " " | wc -l)
-+ALL_INSNS=$(cat ${RISU_FILE} | grep "^[A-Za-z]" | cut -f 1 -d " " | sort)
-+COUNT=$(cat ${RISU_FILE=} | grep "^[A-Za-z]" | cut -f 1 -d " " | wc -l)
- set -- $ALL_INSNS
- 
- GROUP=$((COUNT / ${SPLIT}))
--- 
-2.34.1
-
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
 
