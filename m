@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71718CBECB
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8AA8CBEC2
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihK-00043J-56; Wed, 22 May 2024 05:55:50 -0400
+	id 1s9ihO-0004Vs-RJ; Wed, 22 May 2024 05:55:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihG-0003qG-So
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihI-000400-EQ
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihE-0001lw-RS
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihG-0001m5-IV
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371744;
+ s=mimecast20190719; t=1716371745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Wmo6MS5izlXdTvxEwKEvXFrvfXH3rJrzKQLemJ1NuoU=;
- b=gtUHy2r5uyUHqD1YddyYgTh+uoIY7Sr79U8B+xk+EZWUqHG8+2P12B06sImqhWbjCR+q6i
- 4CrE8KY5rRiOoBxocWvoB9ewvvk98dj9IFJSAL1GODeNtk29tzE3Y/rKr9MtNXqvGLdMPb
- AKcbRMzwrQD+GDSPqsVc2+lmfo5ESgg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-104-JKcF0W5BO4qku0ERx_uc-A-1; Wed, 22 May 2024 05:55:42 -0400
-X-MC-Unique: JKcF0W5BO4qku0ERx_uc-A-1
+ bh=jiXazmRRX1pWr+z+tk9NOgQnGvpDX8eXjR2eT/8ADoM=;
+ b=RXaw5olRa0pfXgyykDQSQRLdSWKHid6p3lpOIbtRTY9Vo9BtkBdTCUwF8GzMAfJsYY9siI
+ Qyr10twE/1O8rs0cBT79rZVOXhw2QmlwwOgLE0AbF6n2iJAJe7uLhEtmJEBr/TPDzHrVJa
+ uRrZ6paLJSTae+fQOMAQBj/U/Bj34I4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-kLtksRauPqaz_tuYysGRVA-1; Wed,
+ 22 May 2024 05:55:44 -0400
+X-MC-Unique: kLtksRauPqaz_tuYysGRVA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DE0F81227E;
- Wed, 22 May 2024 09:55:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B58AA29AA3B2;
+ Wed, 22 May 2024 09:55:43 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3CB3451BF;
- Wed, 22 May 2024 09:55:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 935DD2818;
+ Wed, 22 May 2024 09:55:42 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 37/47] vfio/pci: Make vfio_intx_enable_kvm() return a bool
-Date: Wed, 22 May 2024 11:54:32 +0200
-Message-ID: <20240522095442.195243-38-clg@redhat.com>
+Subject: [PULL 38/47] vfio/pci: Make vfio_pci_relocate_msix() and
+ vfio_msix_early_setup() return a bool
+Date: Wed, 22 May 2024 11:54:33 +0200
+Message-ID: <20240522095442.195243-39-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,76 +82,159 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Since vfio_intx_enable_kvm() takes an 'Error **' argument,
-best practices suggest to return a bool. See the qapi/error.h
-Rules section.
+Since vfio_pci_relocate_msix() and vfio_msix_early_setup() takes
+an 'Error **' argument, best practices suggest to return a bool.
+See the qapi/error.h Rules section.
+
+By this chance, pass errp directly to vfio_msix_early_setup() to avoid
+calling error_propagate().
 
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ hw/vfio/pci.c | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index aad012c34885ff2a5a39039777dddd962236b41b..12fb534d796f52724f365746c9c8c2491265f03d 100644
+index 12fb534d796f52724f365746c9c8c2491265f03d..4fb5fd0c9f61627c402164fc4bed1868540350e0 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -116,7 +116,7 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
-     vfio_unmask_single_irqindex(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
+@@ -1450,13 +1450,13 @@ static void vfio_pci_fixup_msix_region(VFIOPCIDevice *vdev)
+     }
  }
  
--static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+-static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
  {
- #ifdef CONFIG_KVM
-     int irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
-@@ -124,7 +124,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
-     if (vdev->no_kvm_intx || !kvm_irqfds_enabled() ||
-         vdev->intx.route.mode != PCI_INTX_ENABLED ||
-         !kvm_resamplefds_enabled()) {
+     int target_bar = -1;
+     size_t msix_sz;
+ 
+     if (!vdev->msix || vdev->msix_relo == OFF_AUTOPCIBAR_OFF) {
 -        return;
 +        return true;
      }
  
-     /* Get to a known interrupt state */
-@@ -161,7 +161,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     /* The actual minimum size of MSI-X structures */
+@@ -1479,7 +1479,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+         if (target_bar < 0) {
+             error_setg(errp, "No automatic MSI-X relocation available for "
+                        "device %04x:%04x", vdev->vendor_id, vdev->device_id);
+-            return;
++            return false;
+         }
+     } else {
+         target_bar = (int)(vdev->msix_relo - OFF_AUTOPCIBAR_BAR0);
+@@ -1489,7 +1489,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+     if (vdev->bars[target_bar].ioport) {
+         error_setg(errp, "Invalid MSI-X relocation BAR %d, "
+                    "I/O port BAR", target_bar);
+-        return;
++        return false;
+     }
  
-     trace_vfio_intx_enable_kvm(vdev->vbasedev.name);
+     /* Cannot use a BAR in the "shadow" of a 64-bit BAR */
+@@ -1497,7 +1497,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+          target_bar > 0 && vdev->bars[target_bar - 1].mem64) {
+         error_setg(errp, "Invalid MSI-X relocation BAR %d, "
+                    "consumed by 64-bit BAR %d", target_bar, target_bar - 1);
+-        return;
++        return false;
+     }
  
--    return;
+     /* 2GB max size for 32-bit BARs, cannot double if already > 1G */
+@@ -1505,7 +1505,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+         !vdev->bars[target_bar].mem64) {
+         error_setg(errp, "Invalid MSI-X relocation BAR %d, "
+                    "no space to extend 32-bit BAR", target_bar);
+-        return;
++        return false;
+     }
+ 
+     /*
+@@ -1540,6 +1540,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+ 
+     trace_vfio_msix_relo(vdev->vbasedev.name,
+                          vdev->msix->table_bar, vdev->msix->table_offset);
 +    return true;
- 
- fail_vfio:
-     kvm_irqchip_remove_irqfd_notifier_gsi(kvm_state, &vdev->intx.interrupt,
-@@ -171,6 +171,9 @@ fail_irqfd:
- fail:
-     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
-     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
-+    return false;
-+#else
-+    return true;
- #endif
  }
  
-@@ -226,8 +229,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
-         return;
+ /*
+@@ -1550,7 +1551,7 @@ static void vfio_pci_relocate_msix(VFIOPCIDevice *vdev, Error **errp)
+  * need to first look for where the MSI-X table lives.  So we
+  * unfortunately split MSI-X setup across two functions.
+  */
+-static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+ {
+     uint8_t pos;
+     uint16_t ctrl;
+@@ -1562,25 +1563,25 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+ 
+     pos = pci_find_capability(&vdev->pdev, PCI_CAP_ID_MSIX);
+     if (!pos) {
+-        return;
++        return true;
      }
  
--    vfio_intx_enable_kvm(vdev, &err);
+     if (pread(fd, &ctrl, sizeof(ctrl),
+               vdev->config_offset + pos + PCI_MSIX_FLAGS) != sizeof(ctrl)) {
+         error_setg_errno(errp, errno, "failed to read PCI MSIX FLAGS");
+-        return;
++        return false;
+     }
+ 
+     if (pread(fd, &table, sizeof(table),
+               vdev->config_offset + pos + PCI_MSIX_TABLE) != sizeof(table)) {
+         error_setg_errno(errp, errno, "failed to read PCI MSIX TABLE");
+-        return;
++        return false;
+     }
+ 
+     if (pread(fd, &pba, sizeof(pba),
+               vdev->config_offset + pos + PCI_MSIX_PBA) != sizeof(pba)) {
+         error_setg_errno(errp, errno, "failed to read PCI MSIX PBA");
+-        return;
++        return false;
+     }
+ 
+     ctrl = le16_to_cpu(ctrl);
+@@ -1598,7 +1599,7 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+     if (ret < 0) {
+         error_setg_errno(errp, -ret, "failed to get MSI-X irq info");
+         g_free(msix);
+-        return;
++        return false;
+     }
+ 
+     msix->noresize = !!(irq_info.flags & VFIO_IRQ_INFO_NORESIZE);
+@@ -1630,7 +1631,7 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+             error_setg(errp, "hardware reports invalid configuration, "
+                        "MSIX PBA outside of specified BAR");
+             g_free(msix);
+-            return;
++            return false;
+         }
+     }
+ 
+@@ -1641,7 +1642,7 @@ static void vfio_msix_early_setup(VFIOPCIDevice *vdev, Error **errp)
+ 
+     vfio_pci_fixup_msix_region(vdev);
+ 
+-    vfio_pci_relocate_msix(vdev, errp);
++    return vfio_pci_relocate_msix(vdev, errp);
+ }
+ 
+ static int vfio_msix_setup(VFIOPCIDevice *vdev, int pos, Error **errp)
+@@ -3130,9 +3131,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ 
+     vfio_bars_prepare(vdev);
+ 
+-    vfio_msix_early_setup(vdev, &err);
 -    if (err) {
-+    if (!vfio_intx_enable_kvm(vdev, &err)) {
-         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-     }
- 
-@@ -302,8 +304,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-         return -errno;
-     }
- 
--    vfio_intx_enable_kvm(vdev, &err);
--    if (err) {
-+    if (!vfio_intx_enable_kvm(vdev, &err)) {
-         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+-        error_propagate(errp, err);
++    if (!vfio_msix_early_setup(vdev, errp)) {
+         goto error;
      }
  
 -- 
