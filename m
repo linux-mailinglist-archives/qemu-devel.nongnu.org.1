@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10C28CBEAA
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FA18CBEA6
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihH-0003i9-OP; Wed, 22 May 2024 05:55:47 -0400
+	id 1s9ihF-0003hb-2q; Wed, 22 May 2024 05:55:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih9-0003cc-R7
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihB-0003dY-6a
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih8-0001kr-8h
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:39 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih9-0001l6-OS
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371737;
+ s=mimecast20190719; t=1716371739;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MK7K8BRp1eb4ATPYy85ppbWOHv6VwOzA0avlScVc0/4=;
- b=QkomxB7k7nEFs/lS2Sy+gq7L/ifc2rfh8tbemmj2re1/lBiSgwHqHSXe1U8dHLEmFi1fl6
- S3lGz5AbEVRwZdY8Q+PPBwRxbboioAnTLnQAUrt0c6dCE5zenxsACUrRpRPMfRezqk51pD
- X1tUoMf06EKh26AkQ4ekYw/J6xaOvTs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-mrdypOdFOduDmMsgojTCGw-1; Wed, 22 May 2024 05:55:34 -0400
-X-MC-Unique: mrdypOdFOduDmMsgojTCGw-1
+ bh=nZUMeKTzot/OLM2x334vR7f5WKqELIyvA+NQUVE+Wis=;
+ b=YD0TcuqNm5DLY1yhX8Abf+C3pQRL4z7Wmy9IH0fW1mkaYDtV1MdpPpkp3K1+3vo7Xva6nK
+ 7yofZBVCtdkcjDl7rxK85Q6w2Wd3SKCfQpeYzTE0+NF3YwtncwhJ3ntzorCVgUXXnBEq1a
+ 7BvVDBJbS+MxhSqX5N9V9J7fo154kTk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-592-ZzG78P_4MTOh9VH53JdZsQ-1; Wed,
+ 22 May 2024 05:55:35 -0400
+X-MC-Unique: ZzG78P_4MTOh9VH53JdZsQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 343AB185AD2D;
- Wed, 22 May 2024 09:55:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8895D3800089;
+ Wed, 22 May 2024 09:55:35 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 07D9228E2;
- Wed, 22 May 2024 09:55:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 654367412;
+ Wed, 22 May 2024 09:55:34 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 31/47] vfio/display: Make vfio_display_*() return bool
-Date: Wed, 22 May 2024 11:54:26 +0200
-Message-ID: <20240522095442.195243-32-clg@redhat.com>
+Subject: [PULL 32/47] vfio/helpers: Use g_autofree in vfio_set_irq_signaling()
+Date: Wed, 22 May 2024 11:54:27 +0200
+Message-ID: <20240522095442.195243-33-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,123 +81,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-This is to follow the coding standand in qapi/error.h to return bool
-for bool-valued functions.
+Local pointer irq_set is freed before return from
+vfio_set_irq_signaling().
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
+Use 'g_autofree' to avoid the g_free() calls.
+
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.h     |  2 +-
- hw/vfio/display.c | 20 ++++++++++----------
- hw/vfio/pci.c     |  3 +--
- 3 files changed, 12 insertions(+), 13 deletions(-)
+ hw/vfio/helpers.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 92cd62d1159dbd47d878454f201f9c18112a7692..a5ac9efd4bb6d4070cac02f3eeb156d1018cd20f 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -232,7 +232,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-                                Error **errp);
- 
- void vfio_display_reset(VFIOPCIDevice *vdev);
--int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
-+bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
- void vfio_display_finalize(VFIOPCIDevice *vdev);
- 
- extern const VMStateDescription vfio_display_vmstate;
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index d28b724102d5970cb2b9dc7464dc7575b6f441d9..661e921616f4b85613d5f6053c30348a4ee6cbd2 100644
---- a/hw/vfio/display.c
-+++ b/hw/vfio/display.c
-@@ -348,11 +348,11 @@ static const GraphicHwOps vfio_display_dmabuf_ops = {
-     .ui_info    = vfio_display_edid_ui_info,
- };
- 
--static int vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index 47b4096c05ee8915c42b763fa18754c425aa00f6..1f3bdd9bf059beec186d87ba4772f2f6e34bc7d4 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -111,7 +111,7 @@ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+                            int action, int fd, Error **errp)
  {
-     if (!display_opengl) {
-         error_setg(errp, "vfio-display-dmabuf: opengl not available");
--        return -1;
-+        return false;
+     ERRP_GUARD();
+-    struct vfio_irq_set *irq_set;
++    g_autofree struct vfio_irq_set *irq_set = NULL;
+     int argsz, ret = 0;
+     const char *name;
+     int32_t *pfd;
+@@ -130,7 +130,6 @@ int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+     if (ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, irq_set)) {
+         ret = -errno;
      }
+-    g_free(irq_set);
  
-     vdev->dpy = g_new0(VFIODisplay, 1);
-@@ -362,11 +362,11 @@ static int vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
-     if (vdev->enable_ramfb) {
-         vdev->dpy->ramfb = ramfb_setup(errp);
-         if (!vdev->dpy->ramfb) {
--            return -EINVAL;
-+            return false;
-         }
-     }
-     vfio_display_edid_init(vdev);
--    return 0;
-+    return true;
- }
- 
- static void vfio_display_dmabuf_exit(VFIODisplay *dpy)
-@@ -483,7 +483,7 @@ static const GraphicHwOps vfio_display_region_ops = {
-     .gfx_update = vfio_display_region_update,
- };
- 
--static int vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
- {
-     vdev->dpy = g_new0(VFIODisplay, 1);
-     vdev->dpy->con = graphic_console_init(DEVICE(vdev), 0,
-@@ -492,10 +492,10 @@ static int vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
-     if (vdev->enable_ramfb) {
-         vdev->dpy->ramfb = ramfb_setup(errp);
-         if (!vdev->dpy->ramfb) {
--            return -EINVAL;
-+            return false;
-         }
-     }
--    return 0;
-+    return true;
- }
- 
- static void vfio_display_region_exit(VFIODisplay *dpy)
-@@ -510,7 +510,7 @@ static void vfio_display_region_exit(VFIODisplay *dpy)
- 
- /* ---------------------------------------------------------------------- */
- 
--int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
-+bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
- {
-     struct vfio_device_gfx_plane_info probe;
-     int ret;
-@@ -533,11 +533,11 @@ int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp)
- 
-     if (vdev->display == ON_OFF_AUTO_AUTO) {
-         /* not an error in automatic mode */
--        return 0;
-+        return true;
-     }
- 
-     error_setg(errp, "vfio: device doesn't support any (known) display method");
--    return -1;
-+    return false;
- }
- 
- void vfio_display_finalize(VFIOPCIDevice *vdev)
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index c1adef5cf8fb241df510514610f05c8a0d51a9f9..a447013a1da90f534ab07409c6ca39263f7f6f88 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3200,8 +3200,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-     }
- 
-     if (vdev->display != ON_OFF_AUTO_OFF) {
--        ret = vfio_display_probe(vdev, errp);
--        if (ret) {
-+        if (!vfio_display_probe(vdev, errp)) {
-             goto out_deregister;
-         }
-     }
+     if (!ret) {
+         return 0;
 -- 
 2.45.1
 
