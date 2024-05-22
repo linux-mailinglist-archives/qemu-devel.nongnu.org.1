@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFEDB8CBEC5
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5ECF8CBECE
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:00:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihC-0003d6-Ky; Wed, 22 May 2024 05:55:42 -0400
+	id 1s9ihL-0004BB-TM; Wed, 22 May 2024 05:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih2-0003Z0-JQ
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih4-0003a3-2k
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih0-0001jM-K7
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:31 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih2-0001jq-CB
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371729;
+ s=mimecast20190719; t=1716371731;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vw2zTHzLsIJf+NLe+QWmmQ2AB9G2JtY38zOEeTbtoxo=;
- b=SLt61pwnsPD+446DSmkxoGq35WSYHBrgborbKleqFvl/2XA8FxVCdRNfJLcfYMXahxHlDs
- i4HIrIX7iqOcejc3JGX9o2MMGZOvNfvcNbUws1NQbQ3ykHWqPM7O/a0ySUebMgDFWMS/s8
- g3NdYvYb0jhyqk/yZg6aLgd1qBLkQuY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-GnqohcBzNDuxLVkhRGEqog-1; Wed,
- 22 May 2024 05:55:25 -0400
-X-MC-Unique: GnqohcBzNDuxLVkhRGEqog-1
+ bh=tasUQp7d0Yx+T4QoQ921x6/KbPxPVRWp4GsazcxRjlU=;
+ b=D4m5GbQrwxSnu1g8qQ2EucUZy0/D22FvO2YOb1g4Z5ypc/uHvba/CSxSNo4iaM3Hy0qS+S
+ fDnDx4p4mc6TylnMgzk6h5w+xAHr6m2DfCrWhL/kMXpCDHC1iaJBmpYXOBG9ic8R7rk+kG
+ /1l+HP8HO1f1XJW4M4LjdxCyoZ7Fmhc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-oiiYnyzQMJK6y-MrmgZ1pg-1; Wed, 22 May 2024 05:55:27 -0400
+X-MC-Unique: oiiYnyzQMJK6y-MrmgZ1pg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB5F8380008D;
- Wed, 22 May 2024 09:55:25 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C55A101A525;
+ Wed, 22 May 2024 09:55:27 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8B07E28E5;
- Wed, 22 May 2024 09:55:24 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DFE0F51BF;
+ Wed, 22 May 2024 09:55:25 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 25/47] vfio/container: Make vfio_set_iommu() return bool
-Date: Wed, 22 May 2024 11:54:20 +0200
-Message-ID: <20240522095442.195243-26-clg@redhat.com>
+Subject: [PULL 26/47] vfio/container: Make vfio_get_device() return bool
+Date: Wed, 22 May 2024 11:54:21 +0200
+Message-ID: <20240522095442.195243-27-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,74 +89,77 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/container.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ hw/vfio/container.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 802828ddff061fef25b8e4c997a68348d4be9892..e330b2897423b97fee467884f4237669ceff4756 100644
+index e330b2897423b97fee467884f4237669ceff4756..53649e397cab94f8a2b61e6d66f21d635556e04e 100644
 --- a/hw/vfio/container.c
 +++ b/hw/vfio/container.c
-@@ -393,21 +393,20 @@ static const VFIOIOMMUClass *vfio_get_iommu_class(int iommu_type, Error **errp)
-     return VFIO_IOMMU_CLASS(klass);
+@@ -802,8 +802,8 @@ static void vfio_put_group(VFIOGroup *group)
+     g_free(group);
  }
  
--static int vfio_set_iommu(VFIOContainer *container, int group_fd,
--                          VFIOAddressSpace *space, Error **errp)
-+static bool vfio_set_iommu(VFIOContainer *container, int group_fd,
-+                           VFIOAddressSpace *space, Error **errp)
+-static int vfio_get_device(VFIOGroup *group, const char *name,
+-                           VFIODevice *vbasedev, Error **errp)
++static bool vfio_get_device(VFIOGroup *group, const char *name,
++                            VFIODevice *vbasedev, Error **errp)
  {
--    int iommu_type, ret;
-+    int iommu_type;
-     const VFIOIOMMUClass *vioc;
- 
-     iommu_type = vfio_get_iommu_type(container, errp);
-     if (iommu_type < 0) {
--        return iommu_type;
+     g_autofree struct vfio_device_info *info = NULL;
+     int fd;
+@@ -815,14 +815,14 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
+         error_append_hint(errp,
+                       "Verify all devices in group %d are bound to vfio-<bus> "
+                       "or pci-stub and not already in use\n", group->groupid);
+-        return fd;
 +        return false;
      }
  
--    ret = ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container->fd);
--    if (ret) {
-+    if (ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container->fd)) {
-         error_setg_errno(errp, errno, "Failed to set group container");
--        return -errno;
+     info = vfio_get_device_info(fd);
+     if (!info) {
+         error_setg_errno(errp, errno, "error getting device info");
+         close(fd);
+-        return -1;
 +        return false;
      }
  
-     while (ioctl(container->fd, VFIO_SET_IOMMU, iommu_type)) {
-@@ -422,7 +421,7 @@ static int vfio_set_iommu(VFIOContainer *container, int group_fd,
-             continue;
+     /*
+@@ -837,7 +837,7 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
+             error_setg(errp, "Inconsistent setting of support for discarding "
+                        "RAM (e.g., balloon) within group");
+             close(fd);
+-            return -1;
++            return false;
          }
-         error_setg_errno(errp, errno, "Failed to set iommu for container");
--        return -errno;
-+        return false;
-     }
  
-     container->iommu_type = iommu_type;
-@@ -430,11 +429,11 @@ static int vfio_set_iommu(VFIOContainer *container, int group_fd,
-     vioc = vfio_get_iommu_class(iommu_type, errp);
-     if (!vioc) {
-         error_setg(errp, "No available IOMMU models");
--        return -EINVAL;
-+        return false;
-     }
+         if (!group->ram_block_discard_allowed) {
+@@ -858,7 +858,7 @@ static int vfio_get_device(VFIOGroup *group, const char *name,
  
-     vfio_container_init(&container->bcontainer, space, vioc);
+     vbasedev->reset_works = !!(info->flags & VFIO_DEVICE_FLAGS_RESET);
+ 
 -    return 0;
 +    return true;
  }
  
- static int vfio_get_iommu_info(VFIOContainer *container,
-@@ -615,8 +614,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-     container->fd = fd;
-     bcontainer = &container->bcontainer;
+ static void vfio_put_base_device(VFIODevice *vbasedev)
+@@ -911,7 +911,6 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+     VFIODevice *vbasedev_iter;
+     VFIOGroup *group;
+     VFIOContainerBase *bcontainer;
+-    int ret;
  
--    ret = vfio_set_iommu(container, group->fd, space, errp);
--    if (ret) {
-+    if (!vfio_set_iommu(container, group->fd, space, errp)) {
-         goto free_container_exit;
+     if (groupid < 0) {
+         return false;
+@@ -931,8 +930,7 @@ static bool vfio_legacy_attach_device(const char *name, VFIODevice *vbasedev,
+             return false;
+         }
      }
- 
+-    ret = vfio_get_device(group, name, vbasedev, errp);
+-    if (ret) {
++    if (!vfio_get_device(group, name, vbasedev, errp)) {
+         vfio_put_group(group);
+         return false;
+     }
 -- 
 2.45.1
 
