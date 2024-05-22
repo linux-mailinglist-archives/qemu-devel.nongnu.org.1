@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E34B8CBEC4
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 421328CBEA9
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihU-00057H-Le; Wed, 22 May 2024 05:56:00 -0400
+	id 1s9ihR-0004rJ-S6; Wed, 22 May 2024 05:55:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihM-0004Oy-Pk
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihM-0004OD-NU
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihK-0001nz-VE
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihK-0001nu-PR
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1716371750;
@@ -22,33 +22,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1nFoqPth8EfyKaLxOsrot/mOUmVot+IilUwyOPA6FkM=;
- b=DrZaUMXSw4eENe63at7rTP1L2xyHmK1bZcYKBTnnmmVxvQQOFc8Z8Q3iZLQHbcs1nxaDOC
- bzkkK7zJFEUxPbRhgdzMXOB3leh8n3cTXXfejVzKiaIKX1iqNghd+2y0aAZYmnEbdBwaTy
- Z+rw8x9eJMDUtnpN9NnNGl5L6eMRTQM=
+ bh=q2GVlx4T78UrS5NSTaGqL+rb9an85n4nQ6EqCCzH1hk=;
+ b=QOOj2prgNKO1DkJBLy1M+QLxK3tTxDKMr5Z36Q0vA2XtJ7JMgNdQrjcpfDEBbP++sbWGAS
+ LIs6ebUhAm4ebA1z/UbVkwUBk9wVW50BluSA43BCvRq2DkWRMTy8Grj1u7oGd15xM7aCvH
+ sP47RT3TWTLctWdFQqr8OZK+SfcG7zs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-LqsT3Ye7OHq0mCIS4C2VJw-1; Wed, 22 May 2024 05:55:46 -0400
-X-MC-Unique: LqsT3Ye7OHq0mCIS4C2VJw-1
+ us-mta-35-7GoPZ7bANgaC_vW9ap0ePg-1; Wed, 22 May 2024 05:55:48 -0400
+X-MC-Unique: 7GoPZ7bANgaC_vW9ap0ePg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6CB86800994;
- Wed, 22 May 2024 09:55:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C31018029EB;
+ Wed, 22 May 2024 09:55:47 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4AE822818;
- Wed, 22 May 2024 09:55:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A19BB28E3;
+ Wed, 22 May 2024 09:55:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 40/47] vfio/pci: Make vfio_intx_enable() return bool
-Date: Wed, 22 May 2024 11:54:35 +0200
-Message-ID: <20240522095442.195243-41-clg@redhat.com>
+Subject: [PULL 41/47] vfio/pci: Make vfio_populate_vga() return bool
+Date: Wed, 22 May 2024 11:54:36 +0200
+Message-ID: <20240522095442.195243-42-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -89,88 +89,87 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ hw/vfio/pci.h |  2 +-
+ hw/vfio/igd.c |  2 +-
+ hw/vfio/pci.c | 11 +++++------
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index a5ac9efd4bb6d4070cac02f3eeb156d1018cd20f..7914f019d5ed563ae7b60be17033aedacaaa00ff 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -225,7 +225,7 @@ bool vfio_pci_host_match(PCIHostDeviceAddress *addr, const char *name);
+ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
+                                     struct vfio_pci_hot_reset_info **info_p);
+ 
+-int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
++bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
+ 
+ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
+                                struct vfio_region_info *info,
+diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
+index b31ee79c60b5e567f84f561cfb63849960648340..ffe57c5954e5d05a57a66b2a3f0cc44fef508126 100644
+--- a/hw/vfio/igd.c
++++ b/hw/vfio/igd.c
+@@ -478,7 +478,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+      * try to enable it.  Probably shouldn't be using legacy mode without VGA,
+      * but also no point in us enabling VGA if disabled in hardware.
+      */
+-    if (!(gmch & 0x2) && !vdev->vga && vfio_populate_vga(vdev, &err)) {
++    if (!(gmch & 0x2) && !vdev->vga && !vfio_populate_vga(vdev, &err)) {
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         error_report("IGD device %s failed to enable VGA access, "
+                      "legacy mode disabled", vdev->vbasedev.name);
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 46d3c618596d95266543e9a0ebc65c04d9a7cc5d..7f35cb8a29176840412652afe5ab31cd52a1bf06 100644
+index 7f35cb8a29176840412652afe5ab31cd52a1bf06..ab8f74299eab85e224a02f45d4b506e860b514f9 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -261,7 +261,7 @@ static void vfio_irqchip_change(Notifier *notify, void *data)
-     vfio_intx_update(vdev, &vdev->intx.route);
- }
+@@ -2670,7 +2670,7 @@ static VFIODeviceOps vfio_pci_ops = {
+     .vfio_load_config = vfio_pci_load_config,
+ };
  
--static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-+static bool vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+-int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
++bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
  {
-     uint8_t pin = vfio_pci_read_config(&vdev->pdev, PCI_INTERRUPT_PIN, 1);
-     Error *err = NULL;
-@@ -270,7 +270,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
- 
- 
-     if (!pin) {
--        return 0;
-+        return true;
-     }
- 
-     vfio_disable_interrupts(vdev);
-@@ -292,7 +292,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-     ret = event_notifier_init(&vdev->intx.interrupt, 0);
-     if (ret) {
-         error_setg_errno(errp, -ret, "event_notifier_init failed");
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     struct vfio_region_info *reg_info;
+@@ -2681,7 +2681,7 @@ int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+         error_setg_errno(errp, -ret,
+                          "failed getting region info for VGA region index %d",
+                          VFIO_PCI_VGA_REGION_INDEX);
 -        return ret;
 +        return false;
      }
-     fd = event_notifier_get_fd(&vdev->intx.interrupt);
-     qemu_set_fd_handler(fd, vfio_intx_interrupt, NULL, vdev);
-@@ -301,7 +301,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-                                 VFIO_IRQ_SET_ACTION_TRIGGER, fd, errp)) {
-         qemu_set_fd_handler(fd, NULL, NULL, vdev);
-         event_notifier_cleanup(&vdev->intx.interrupt);
--        return -errno;
+ 
+     if (!(reg_info->flags & VFIO_REGION_INFO_FLAG_READ) ||
+@@ -2691,7 +2691,7 @@ int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+                    (unsigned long)reg_info->flags,
+                    (unsigned long)reg_info->size);
+         g_free(reg_info);
+-        return -EINVAL;
 +        return false;
      }
  
-     if (!vfio_intx_enable_kvm(vdev, &err)) {
-@@ -311,7 +311,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
-     vdev->interrupt = VFIO_INT_INTx;
+     vdev->vga = g_new0(VFIOVGA, 1);
+@@ -2735,7 +2735,7 @@ int vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+                      &vdev->vga->region[QEMU_PCI_VGA_IO_LO].mem,
+                      &vdev->vga->region[QEMU_PCI_VGA_IO_HI].mem);
  
-     trace_vfio_intx_enable(vdev->vbasedev.name);
 -    return 0;
 +    return true;
  }
  
- static void vfio_intx_disable(VFIOPCIDevice *vdev)
-@@ -836,8 +836,7 @@ static void vfio_msix_disable(VFIOPCIDevice *vdev)
-     vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+@@ -2798,8 +2798,7 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+     g_free(reg_info);
  
-     vfio_msi_disable_common(vdev);
--    vfio_intx_enable(vdev, &err);
--    if (err) {
-+    if (!vfio_intx_enable(vdev, &err)) {
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-     }
- 
-@@ -2450,8 +2449,7 @@ void vfio_pci_post_reset(VFIOPCIDevice *vdev)
-     Error *err = NULL;
-     int nr;
- 
--    vfio_intx_enable(vdev, &err);
--    if (err) {
-+    if (!vfio_intx_enable(vdev, &err)) {
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-     }
- 
-@@ -3194,8 +3192,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-                                              vfio_intx_routing_notifier);
-         vdev->irqchip_change_notifier.notify = vfio_irqchip_change;
-         kvm_irqchip_add_change_notifier(&vdev->irqchip_change_notifier);
--        ret = vfio_intx_enable(vdev, errp);
+     if (vdev->features & VFIO_FEATURE_ENABLE_VGA) {
+-        ret = vfio_populate_vga(vdev, errp);
 -        if (ret) {
-+        if (!vfio_intx_enable(vdev, errp)) {
-             goto out_deregister;
-         }
-     }
++        if (!vfio_populate_vga(vdev, errp)) {
+             error_append_hint(errp, "device does not support "
+                               "requested feature x-vga\n");
+             return false;
 -- 
 2.45.1
 
