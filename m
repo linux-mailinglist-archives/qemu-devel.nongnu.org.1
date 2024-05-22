@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B4C8CBEA8
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5598CBEBB
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9igk-0003PN-Kx; Wed, 22 May 2024 05:55:15 -0400
+	id 1s9ih0-0003Uf-NQ; Wed, 22 May 2024 05:55:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igd-0003Mn-93
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:08 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igg-0003P5-5X
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igb-0001Mw-Lf
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:07 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igd-0001NM-LN
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371704;
+ s=mimecast20190719; t=1716371706;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MHlpOzAERKwUXaVdd7c30VjfAwVvtvu8O3LwHu87a58=;
- b=fPogpRqhZFtGGWtL9/SfTrgHHZBRc52m/tKjloR+NPTzEbUg3ksJbRlTeAvnxSWfbnGxYN
- QUh9pldkQsQH3jyEkWJVDG9VWWMehf84MKYsuupOwV7Xp05IqTWDcyroSvaGYL4oAM9Wsk
- mtZ8QYpO6LJrWvY8aolgqLevfmGeOSw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-KOigH0FqPu6KLkhEFezQTQ-1; Wed, 22 May 2024 05:55:03 -0400
-X-MC-Unique: KOigH0FqPu6KLkhEFezQTQ-1
+ bh=zz+fwUrHlDOtbBCoqeAzkshOeTlKuN2gnxbfLw7Fe10=;
+ b=DY2tJD9x0xjF8XR3c0r/caAQlVx33BVLxwVc7CJsBkJ3IhrCQo7g7C35Rk6kHRBXTx2V88
+ UVYVN0Y/JuJkO2PIlXxB5gmnFAfYXaxnKr+x7t5+P2IyklDJ1SrQxLAavKqp+rKL5Y2mzi
+ 9kZdTiQGZoeYvmoqjVYbYBq0KYMu8v0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-FIv4vUI9NZ2KAj2HET7G2Q-1; Wed,
+ 22 May 2024 05:55:04 -0400
+X-MC-Unique: FIv4vUI9NZ2KAj2HET7G2Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9EBB8058D8;
- Wed, 22 May 2024 09:55:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C6593C000AD;
+ Wed, 22 May 2024 09:55:04 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2429E28E2;
- Wed, 22 May 2024 09:55:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DF30E28E3;
+ Wed, 22 May 2024 09:55:02 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>
-Subject: [PULL 09/47] vfio: Also trace event failures in
- vfio_save_complete_precopy()
-Date: Wed, 22 May 2024 11:54:04 +0200
-Message-ID: <20240522095442.195243-10-clg@redhat.com>
+ Markus Armbruster <armbru@redhat.com>,
+ Anthony Krowiak <akrowiak@linux.ibm.com>
+Subject: [PULL 10/47] vfio/ap: Use g_autofree variable in
+ vfio_ap_register_irq_notifier()
+Date: Wed, 22 May 2024 11:54:05 +0200
+Message-ID: <20240522095442.195243-11-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -80,30 +81,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vfio_save_complete_precopy() currently returns before doing the trace
-event. Change that.
-
-Reviewed-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration.c | 3 ---
- 1 file changed, 3 deletions(-)
+ hw/vfio/ap.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 5d91364f3bbc34060d84b4b4b1823eadbc7b12bf..c4403a38ddb5e7e09fbcde0ad4132653ecaf0d24 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -589,9 +589,6 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 7c4caa5938636937680fec87e999249ac84a4498..03f8ffaa5e2bf13cf8daa2f44aa4cf17809abd94 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -77,7 +77,7 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+     size_t argsz;
+     IOHandler *fd_read;
+     EventNotifier *notifier;
+-    struct vfio_irq_info *irq_info;
++    g_autofree struct vfio_irq_info *irq_info = NULL;
+     VFIODevice *vdev = &vapdev->vdev;
  
-     qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
-     ret = qemu_file_get_error(f);
--    if (ret) {
--        return ret;
--    }
+     switch (irq) {
+@@ -104,14 +104,14 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+     if (ioctl(vdev->fd, VFIO_DEVICE_GET_IRQ_INFO,
+               irq_info) < 0 || irq_info->count < 1) {
+         error_setg_errno(errp, errno, "vfio: Error getting irq info");
+-        goto out_free_info;
++        return;
+     }
  
-     trace_vfio_save_complete_precopy(vbasedev->name, ret);
+     if (event_notifier_init(notifier, 0)) {
+         error_setg_errno(errp, errno,
+                          "vfio: Unable to init event notifier for irq (%d)",
+                          irq);
+-        goto out_free_info;
++        return;
+     }
  
+     fd = event_notifier_get_fd(notifier);
+@@ -122,10 +122,6 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+         qemu_set_fd_handler(fd, NULL, NULL, vapdev);
+         event_notifier_cleanup(notifier);
+     }
+-
+-out_free_info:
+-    g_free(irq_info);
+-
+ }
+ 
+ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
 -- 
 2.45.1
 
