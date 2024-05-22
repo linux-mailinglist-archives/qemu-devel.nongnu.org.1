@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCED8CBB41
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2928CBB5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:30:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9fQj-0004gO-TC; Wed, 22 May 2024 02:26:29 -0400
+	id 1s9fQo-0004kf-58; Wed, 22 May 2024 02:26:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fQN-0004ds-G7
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:07 -0400
+ id 1s9fQR-0004fS-RD
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:13 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fQL-0006eK-Hi
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:07 -0400
+ id 1s9fQP-0006eK-Sj
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716359165; x=1747895165;
+ t=1716359170; x=1747895170;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+nja1FsyQjlZ15iCQFoLofuev/SaDnUyHRaMOK5gZk0=;
- b=jKusiLQg+Lm964LHjVe2J+I1qd2GCeKxLXqNI+mVoH5bleS5zL6GfujS
- 7zBcX3nBph61ydK8O/czziVzXoJIbrguIApNwrvxNfQ9tCGO2sZ0bYcJp
- czEmUwB6X+TCYqKQQ5wB77iyICAbAjdpwi6Ivx9cbCb8t/nTJcUSc4sGU
- 732oPVu1XTVXzUzAHvwSvOYqc3uqTu/8RE9LV/6u2edFobdBP5w/p/x0T
- aAxATWKkdGE2JckHRwUxVriR8AsshwafIxXAKX+kusz3j/2Hr46T0/JwP
- BJa27BG9urExnc17jZju0ipcWDFjSKxpatPxCzVUD8La8z5PNU3HFc6NE A==;
-X-CSE-ConnectionGUID: 5kQrgRn/RhSv6S4nWB9+bQ==
-X-CSE-MsgGUID: BS9m9c9CQw+83uVhIQGEbw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="37972460"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="37972460"
+ bh=cD5cVdgSzb6ZO3BTQ0aYaHnDKOU7WL/AhIvLCiXf+9g=;
+ b=LDA/aTzopXtaEqXZ1XijBO7aDgSBB5U0NSMWHYbdibfXlmCwPA1sToUM
+ /3a2AJPDUHEltPTbfMdpGknRONnYlZBBoUSLqT/U+DvuHeTuRY0EWFNJf
+ QV8TY9pZ1+eo4gv8KUaeNyhZ9vwITAlZCJbi3wqXW0gUNoAfVxMxnv4aU
+ dDo8IjYjFvGU9eD6qtLxhmcgQ2EDpkm2jXTMpgd8emaL5a9l2cM0bj1kj
+ kVYglVqYaITgW8uqnkLLvS2zGlp46/5dBh+obLmNWim8c2Vxz96knHsoL
+ bP+kHpq60iK6h3B1RveQqCJqFgLkItah0Z2edENsd84rrFgWtSLNtUELW g==;
+X-CSE-ConnectionGUID: T9Vt+ZOZT5yxYmABi0xYEA==
+X-CSE-MsgGUID: 7DEoL3EXR62y6KZx0iomvA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="37972470"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="37972470"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:26:04 -0700
-X-CSE-ConnectionGUID: 6eSDi8hkTyadN/WjyGPM2Q==
-X-CSE-MsgGUID: yoOIUQCKTu6Ybuv/RxoEMA==
+ 21 May 2024 23:26:09 -0700
+X-CSE-ConnectionGUID: M6H+BaCBSiSyd46fqhuK7A==
+X-CSE-MsgGUID: dYpEbwUfTmyUKXO66Z3L7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33597634"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33597666"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:25:59 -0700
+ 21 May 2024 23:26:05 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,14 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH rfcv2 03/17] intel_iommu: Add a placeholder variable for
- scalable modern mode
-Date: Wed, 22 May 2024 14:22:59 +0800
-Message-Id: <20240522062313.453317-4-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH rfcv2 04/17] intel_iommu: Flush stage-2 cache in
+ PADID-selective PASID-based iotlb invalidation
+Date: Wed, 22 May 2024 14:23:00 +0800
+Message-Id: <20240522062313.453317-5-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240522062313.453317-1-zhenzhong.duan@intel.com>
 References: <20240522062313.453317-1-zhenzhong.duan@intel.com>
@@ -88,144 +88,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an new element scalable_mode in IntelIOMMUState to mark scalable
-modern mode, this element will be exposed as an intel_iommu property
-finally.
+Per spec 6.5.2.4, PADID-selective PASID-based iotlb invalidation will
+flush stage-2 iotlb entries with matching domain id and pasid.
 
-For now, it's only a placehholder and used for cap/ecap initialization,
-compatibility check and block host device passthrough until nesting
-is supported.
+With scalable modern mdoe introduced, guest could send PADID-selective
+PASID-based iotlb invalidation to flush both stage-1 and stage-2 entries.
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  2 ++
- include/hw/i386/intel_iommu.h  |  1 +
- hw/i386/intel_iommu.c          | 37 ++++++++++++++++++++++++----------
- 3 files changed, 29 insertions(+), 11 deletions(-)
+ hw/i386/intel_iommu_internal.h | 10 +++++
+ hw/i386/intel_iommu.c          | 78 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 88 insertions(+)
 
 diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index 955bc24787..75aea80942 100644
+index 75aea80942..b0d9b1f986 100644
 --- a/hw/i386/intel_iommu_internal.h
 +++ b/hw/i386/intel_iommu_internal.h
-@@ -196,6 +196,7 @@
- #define VTD_ECAP_PASID              (1ULL << 40)
- #define VTD_ECAP_SMTS               (1ULL << 43)
- #define VTD_ECAP_SLTS               (1ULL << 46)
-+#define VTD_ECAP_FLTS               (1ULL << 47)
+@@ -441,6 +441,16 @@ typedef union VTDInvDesc VTDInvDesc;
+         (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM | VTD_SL_TM)) : \
+         (0x3ffff800ULL | ~(VTD_HAW_MASK(aw) | VTD_SL_IGN_COM))
  
- /* CAP_REG */
- /* (offset >> 4) << 24 */
-@@ -212,6 +213,7 @@
- #define VTD_CAP_SLLPS               ((1ULL << 34) | (1ULL << 35))
- #define VTD_CAP_DRAIN_WRITE         (1ULL << 54)
- #define VTD_CAP_DRAIN_READ          (1ULL << 55)
-+#define VTD_CAP_FS1GP               (1ULL << 56)
- #define VTD_CAP_DRAIN               (VTD_CAP_DRAIN_READ | VTD_CAP_DRAIN_WRITE)
- #define VTD_CAP_CM                  (1ULL << 7)
- #define VTD_PASID_ID_SHIFT          20
-diff --git a/include/hw/i386/intel_iommu.h b/include/hw/i386/intel_iommu.h
-index 2bbde41e45..9ba9c45015 100644
---- a/include/hw/i386/intel_iommu.h
-+++ b/include/hw/i386/intel_iommu.h
-@@ -263,6 +263,7 @@ struct IntelIOMMUState {
- 
-     bool caching_mode;              /* RO - is cap CM enabled? */
-     bool scalable_mode;             /* RO - is Scalable Mode supported? */
-+    bool scalable_modern;           /* RO - is modern SM supported? */
-     bool snoop_control;             /* RO - is SNP filed supported? */
- 
-     dma_addr_t root;                /* Current root table pointer */
++#define VTD_INV_DESC_PIOTLB_ALL_IN_PASID  (2ULL << 4)
++#define VTD_INV_DESC_PIOTLB_PSI_IN_PASID  (3ULL << 4)
++
++#define VTD_INV_DESC_PIOTLB_RSVD_VAL0     0xfff000000000ffc0ULL
++#define VTD_INV_DESC_PIOTLB_RSVD_VAL1     0xf80ULL
++
++#define VTD_INV_DESC_PIOTLB_PASID(val)    (((val) >> 32) & 0xfffffULL)
++#define VTD_INV_DESC_PIOTLB_DID(val)      (((val) >> 16) & \
++                                             VTD_DOMAIN_ID_MASK)
++
+ /* Information about page-selective IOTLB invalidate */
+ struct VTDIOTLBPageInvInfo {
+     uint16_t domain_id;
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index 348e3a441e..6d1d94ada3 100644
+index 6d1d94ada3..ed95b5ba2e 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -738,16 +738,20 @@ static inline bool vtd_is_level_supported(IntelIOMMUState *s, uint32_t level)
+@@ -2642,6 +2642,80 @@ static bool vtd_process_iotlb_desc(IntelIOMMUState *s, VTDInvDesc *inv_desc)
+     return true;
  }
  
- /* Return true if check passed, otherwise false */
--static inline bool vtd_pe_type_check(X86IOMMUState *x86_iommu,
--                                     VTDPASIDEntry *pe)
-+static inline bool vtd_pe_type_check(IntelIOMMUState *s, VTDPASIDEntry *pe)
- {
-+    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
++static gboolean vtd_hash_remove_by_pasid(gpointer key, gpointer value,
++                                         gpointer user_data)
++{
++    VTDIOTLBEntry *entry = (VTDIOTLBEntry *)value;
++    VTDIOTLBPageInvInfo *info = (VTDIOTLBPageInvInfo *)user_data;
 +
-     switch (VTD_PE_GET_TYPE(pe)) {
-+    case VTD_SM_PASID_ENTRY_FLT:
-+        return s->scalable_modern;
-     case VTD_SM_PASID_ENTRY_SLT:
--        return true;
-+        return !s->scalable_modern;
-+    case VTD_SM_PASID_ENTRY_NESTED:
-+        /* Not support NESTED page table type yet */
++    return ((entry->domain_id == info->domain_id) &&
++            (entry->pasid == info->pasid));
++}
++
++static void vtd_piotlb_pasid_invalidate(IntelIOMMUState *s,
++                                        uint16_t domain_id, uint32_t pasid)
++{
++    VTDIOTLBPageInvInfo info;
++    VTDAddressSpace *vtd_as;
++    VTDContextEntry ce;
++
++    info.domain_id = domain_id;
++    info.pasid = pasid;
++
++    vtd_iommu_lock(s);
++    g_hash_table_foreach_remove(s->iotlb, vtd_hash_remove_by_pasid,
++                                &info);
++    vtd_iommu_unlock(s);
++
++    QLIST_FOREACH(vtd_as, &s->vtd_as_with_notifiers, next) {
++        if (!vtd_dev_to_context_entry(s, pci_bus_num(vtd_as->bus),
++                                      vtd_as->devfn, &ce) &&
++            domain_id == vtd_get_domain_id(s, &ce, vtd_as->pasid)) {
++            uint32_t rid2pasid = VTD_CE_GET_RID2PASID(&ce);
++
++            if ((vtd_as->pasid != PCI_NO_PASID || pasid != rid2pasid) &&
++                vtd_as->pasid != pasid) {
++                continue;
++            }
++
++            if (!s->scalable_modern) {
++                vtd_address_space_sync(vtd_as);
++            }
++        }
++    }
++}
++
++static bool vtd_process_piotlb_desc(IntelIOMMUState *s,
++                                    VTDInvDesc *inv_desc)
++{
++    uint16_t domain_id;
++    uint32_t pasid;
++
++    if ((inv_desc->val[0] & VTD_INV_DESC_PIOTLB_RSVD_VAL0) ||
++        (inv_desc->val[1] & VTD_INV_DESC_PIOTLB_RSVD_VAL1)) {
++        error_report_once("non-zero-field-in-piotlb_inv_desc hi: 0x%" PRIx64
++                  " lo: 0x%" PRIx64, inv_desc->val[1], inv_desc->val[0]);
 +        return false;
-     case VTD_SM_PASID_ENTRY_PT:
-         return x86_iommu->pt_supported;
--    case VTD_SM_PASID_ENTRY_FLT:
--    case VTD_SM_PASID_ENTRY_NESTED:
-     default:
-         /* Unknown type */
-         return false;
-@@ -796,7 +800,6 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     uint8_t pgtt;
-     uint32_t index;
-     dma_addr_t entry_size;
--    X86IOMMUState *x86_iommu = X86_IOMMU_DEVICE(s);
- 
-     index = VTD_PASID_TABLE_INDEX(pasid);
-     entry_size = VTD_PASID_ENTRY_SIZE;
-@@ -810,7 +813,7 @@ static int vtd_get_pe_in_pasid_leaf_table(IntelIOMMUState *s,
-     }
- 
-     /* Do translation type check */
--    if (!vtd_pe_type_check(x86_iommu, pe)) {
-+    if (!vtd_pe_type_check(s, pe)) {
-         return -VTD_FR_PASID_TABLE_ENTRY_INV;
-     }
- 
-@@ -3839,8 +3842,17 @@ static bool vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice *vtd_hdev,
-         error_setg(errp, "aw-bits %d > host aw-bits %d", s->aw_bits, ret);
-         return false;
-     }
--#endif
-+
-+    if (!s->scalable_modern) {
-+        /* All checks requested by VTD non-modern mode pass */
-+        return true;
 +    }
 +
-+    error_setg(errp, "host device is unsupported in scalable modern mode yet");
-+    return false;
-+#else
-     return true;
-+#endif
- }
++    domain_id = VTD_INV_DESC_PIOTLB_DID(inv_desc->val[0]);
++    pasid = VTD_INV_DESC_PIOTLB_PASID(inv_desc->val[0]);
++    switch (inv_desc->val[0] & VTD_INV_DESC_IOTLB_G) {
++    case VTD_INV_DESC_PIOTLB_ALL_IN_PASID:
++        vtd_piotlb_pasid_invalidate(s, domain_id, pasid);
++        break;
++
++    case VTD_INV_DESC_PIOTLB_PSI_IN_PASID:
++        break;
++
++    default:
++        error_report_once("Invalid granularity in P-IOTLB desc hi: 0x%" PRIx64
++                  " lo: 0x%" PRIx64, inv_desc->val[1], inv_desc->val[0]);
++        return false;
++    }
++    return true;
++}
++
+ static bool vtd_process_inv_iec_desc(IntelIOMMUState *s,
+                                      VTDInvDesc *inv_desc)
+ {
+@@ -2752,6 +2826,10 @@ static bool vtd_process_inv_desc(IntelIOMMUState *s)
+         break;
  
- static bool vtd_dev_set_iommu_device(PCIBus *bus, void *opaque, int devfn,
-@@ -4076,7 +4088,10 @@ static void vtd_cap_init(IntelIOMMUState *s)
-     }
+     case VTD_INV_DESC_PIOTLB:
++        trace_vtd_inv_desc("p-iotlb", inv_desc.val[1], inv_desc.val[0]);
++        if (!vtd_process_piotlb_desc(s, &inv_desc)) {
++            return false;
++        }
+         break;
  
-     /* TODO: read cap/ecap from host to decide which cap to be exposed. */
--    if (s->scalable_mode) {
-+    if (s->scalable_modern) {
-+        s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_FLTS;
-+        s->cap |= VTD_CAP_FS1GP;
-+    } else if (s->scalable_mode) {
-         s->ecap |= VTD_ECAP_SMTS | VTD_ECAP_SRS | VTD_ECAP_SLTS;
-     }
- 
-@@ -4243,9 +4258,9 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
-         }
-     }
- 
--    /* Currently only address widths supported are 39 and 48 bits */
-     if ((s->aw_bits != VTD_HOST_AW_39BIT) &&
--        (s->aw_bits != VTD_HOST_AW_48BIT)) {
-+        (s->aw_bits != VTD_HOST_AW_48BIT) &&
-+        !s->scalable_modern) {
-         error_setg(errp, "Supported values for aw-bits are: %d, %d",
-                    VTD_HOST_AW_39BIT, VTD_HOST_AW_48BIT);
-         return false;
+     case VTD_INV_DESC_WAIT:
 -- 
 2.34.1
 
