@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A5598CBEBB
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046A48CBED9
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:01:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ih0-0003Uf-NQ; Wed, 22 May 2024 05:55:30 -0400
+	id 1s9igv-0003S0-AV; Wed, 22 May 2024 05:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igg-0003P5-5X
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igg-0003P7-DE
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igd-0001NM-LN
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igd-0001NZ-UN
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371706;
+ s=mimecast20190719; t=1716371707;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zz+fwUrHlDOtbBCoqeAzkshOeTlKuN2gnxbfLw7Fe10=;
- b=DY2tJD9x0xjF8XR3c0r/caAQlVx33BVLxwVc7CJsBkJ3IhrCQo7g7C35Rk6kHRBXTx2V88
- UVYVN0Y/JuJkO2PIlXxB5gmnFAfYXaxnKr+x7t5+P2IyklDJ1SrQxLAavKqp+rKL5Y2mzi
- 9kZdTiQGZoeYvmoqjVYbYBq0KYMu8v0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-FIv4vUI9NZ2KAj2HET7G2Q-1; Wed,
- 22 May 2024 05:55:04 -0400
-X-MC-Unique: FIv4vUI9NZ2KAj2HET7G2Q-1
+ bh=XpbNH3QG7hQ6uA4cNyBiYCTL+aMLHBgPlTwqzjzOh+s=;
+ b=ZogyVAmTMUejIDjSAMt2cTtQeHdVQpfcfjnPo6S81gIcbwLJomEWshb7N/cNEHDljcrfqe
+ 3FJb0bsDo1ThISn4CHsyghh5fd85udte0IamaFcKt2jxYC1AT9EHGslQuUub4aw53PIBWW
+ JCnkNnNlpKYi/dK0FnboLJDXcnVsdSs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-669-_EsZpI3SPx2Q2wJKO6zo7Q-1; Wed, 22 May 2024 05:55:05 -0400
+X-MC-Unique: _EsZpI3SPx2Q2wJKO6zo7Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C6593C000AD;
- Wed, 22 May 2024 09:55:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8405E101A54F
+ for <qemu-devel@nongnu.org>; Wed, 22 May 2024 09:55:05 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DF30E28E3;
- Wed, 22 May 2024 09:55:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 61E6728E6;
+ Wed, 22 May 2024 09:55:04 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Anthony Krowiak <akrowiak@linux.ibm.com>
-Subject: [PULL 10/47] vfio/ap: Use g_autofree variable in
- vfio_ap_register_irq_notifier()
-Date: Wed, 22 May 2024 11:54:05 +0200
-Message-ID: <20240522095442.195243-11-clg@redhat.com>
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 11/47] vfio/ap: Make vfio_ap_register_irq_notifier() return a
+ bool
+Date: Wed, 22 May 2024 11:54:06 +0200
+Message-ID: <20240522095442.195243-12-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -81,54 +80,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Since vfio_ap_register_irq_notifier() takes and 'Error **' argument,
+best practices suggest to return a bool. See the qapi/error.h Rules
+section.
+
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ap.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ hw/vfio/ap.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 7c4caa5938636937680fec87e999249ac84a4498..03f8ffaa5e2bf13cf8daa2f44aa4cf17809abd94 100644
+index 03f8ffaa5e2bf13cf8daa2f44aa4cf17809abd94..8bb024e2fde4a1d72346dee4b662d762374326b9 100644
 --- a/hw/vfio/ap.c
 +++ b/hw/vfio/ap.c
-@@ -77,7 +77,7 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
-     size_t argsz;
-     IOHandler *fd_read;
-     EventNotifier *notifier;
--    struct vfio_irq_info *irq_info;
-+    g_autofree struct vfio_irq_info *irq_info = NULL;
-     VFIODevice *vdev = &vapdev->vdev;
+@@ -70,7 +70,7 @@ static void vfio_ap_req_notifier_handler(void *opaque)
+     }
+ }
  
-     switch (irq) {
+-static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
++static bool vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+                                           unsigned int irq, Error **errp)
+ {
+     int fd;
+@@ -87,13 +87,13 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+         break;
+     default:
+         error_setg(errp, "vfio: Unsupported device irq(%d)", irq);
+-        return;
++        return false;
+     }
+ 
+     if (vdev->num_irqs < irq + 1) {
+         error_setg(errp, "vfio: IRQ %u not available (number of irqs %u)",
+                    irq, vdev->num_irqs);
+-        return;
++        return false;
+     }
+ 
+     argsz = sizeof(*irq_info);
 @@ -104,14 +104,14 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
      if (ioctl(vdev->fd, VFIO_DEVICE_GET_IRQ_INFO,
                irq_info) < 0 || irq_info->count < 1) {
          error_setg_errno(errp, errno, "vfio: Error getting irq info");
--        goto out_free_info;
-+        return;
+-        return;
++        return false;
      }
  
      if (event_notifier_init(notifier, 0)) {
          error_setg_errno(errp, errno,
                           "vfio: Unable to init event notifier for irq (%d)",
                           irq);
--        goto out_free_info;
-+        return;
+-        return;
++        return false;
      }
  
      fd = event_notifier_get_fd(notifier);
-@@ -122,10 +122,6 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
+@@ -122,6 +122,8 @@ static void vfio_ap_register_irq_notifier(VFIOAPDevice *vapdev,
          qemu_set_fd_handler(fd, NULL, NULL, vapdev);
          event_notifier_cleanup(notifier);
      }
--
--out_free_info:
--    g_free(irq_info);
--
++
++    return true;
  }
  
  static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
+@@ -167,8 +169,7 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+         goto error;
+     }
+ 
+-    vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err);
+-    if (err) {
++    if (!vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err)) {
+         /*
+          * Report this error, but do not make it a failing condition.
+          * Lack of this IRQ in the host does not prevent normal operation.
 -- 
 2.45.1
 
