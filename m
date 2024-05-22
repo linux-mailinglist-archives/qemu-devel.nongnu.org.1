@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA738CB9EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 05:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441E18CB9ED
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 05:46:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9cuI-0003RE-S7; Tue, 21 May 2024 23:44:50 -0400
+	id 1s9cuL-0003S8-39; Tue, 21 May 2024 23:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9cuH-0003R1-Da
- for qemu-devel@nongnu.org; Tue, 21 May 2024 23:44:49 -0400
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+ id 1s9cuJ-0003RQ-1P
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 23:44:51 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9cuE-00049z-Or
- for qemu-devel@nongnu.org; Tue, 21 May 2024 23:44:49 -0400
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-6f1242f1dcdso2651313a34.3
- for <qemu-devel@nongnu.org>; Tue, 21 May 2024 20:44:45 -0700 (PDT)
+ id 1s9cuF-0004A4-PR
+ for qemu-devel@nongnu.org; Tue, 21 May 2024 23:44:50 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-244bdd730dcso2063728fac.0
+ for <qemu-devel@nongnu.org>; Tue, 21 May 2024 20:44:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716349484; x=1716954284; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716349485; x=1716954285; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ClmjZOy3QQNiKciKtrEnKHv+DzIwPzBDEJYBBNDBr+E=;
- b=EaseiIvlNAgFLx9w/lZSWwTK7QD1NDoEm43To1yrYMKdOf4Pm0heydnuY8FABHz3XZ
- PnR+o7PlSX1F/XFdPhMnAHoSeQpu21xeStYmVWrR4XOHvJ0+wrqE963S3S3k7bnLUTny
- ppd5GAGw613gQ/AvG9g5x4fzKH3OqffIvovgKGmRWhUU1UekBBG9UtlUZYVON+zqQNRl
- rUfR+NsDVmOpEBd8c0uu66+HzwJa1ulrV4fllxvoPxb0NHlnkL813fKvKm59XSd4v53n
- fvNXfy2k9qqiJ3gvjgkz+UTgbcwhALF/8BzgDZvvBVSZBziagO1YeJpYA500mo+IcjF2
- 1hjQ==
+ bh=lJ/MHrlbj4C0ri8M58dDIQBRERSolyRdsK7MrfghSiM=;
+ b=EnSpFhiycxi0N+874U70eKBtYzm40R7Q0zr7Rcre1+PSkFNpAYpJXpjBJKffWNrqp+
+ PeSEFmGfAw4i+0ww0vDy/B4VDuOoVdc3Ntwfvxq7fqNhnZdoOAEkUS7wxSgNUaimwemh
+ 8S/zl9YQKJiptT3In5Rub/DWme3p9NZzabj4SD/q2J4rwh0wRdkXf9YdxVMFse/PiIyt
+ 13zp3N9VKx723UUP/ooqasg3Y02nVFNDmYb6/QThuqkKhc2cGu9vnXNRptPdbUud7usu
+ iyEWQv/CQqaBqn1mT1584Pnn3zpKFulZ/Z5vPzDYftDn5BqjgJ8aEF7e0LbZs/p8oqPH
+ KrDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716349484; x=1716954284;
+ d=1e100.net; s=20230601; t=1716349485; x=1716954285;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ClmjZOy3QQNiKciKtrEnKHv+DzIwPzBDEJYBBNDBr+E=;
- b=uYR+VFMCGFAWmxCV0ZMHC6ZzMp/lpkutKxATGc3oxZK27wwp684HaRbs6qv0MQYvjY
- Cb6mZLgkTdgBhnAgY3gJSdL3ot2R3lHkVDmbURz74i/HkCe/8Ks48/Kdt2dHMZaaUf3d
- G25Af8yhc+HrJS/QzYq6A55FDNzcaUIQMQ0GCvtCJ4l5iILh0oJnXG5oyO6ugUzGKmiR
- +zxBfDq4HoMFQU8KWm2ipQBQ5WyDnp1UEGTHbD4Rqb+g8LMwS0dPw+NwwY5hI9Nyystu
- Vj8EdnSvDDQXTPrxOKdOHCVT+wkSI26FWvPw9kbiuwmTIOAerL5tlsplyvoFJrmv0kA5
- XOIg==
-X-Gm-Message-State: AOJu0YxHDYAinTDS27Q0DZft1V2Fh90u5J0LxTBibMFaFdS/DtXxiOX+
- P1fShcOIq4e+aEERSfZW3cvRhjdBFPB7CYpHBQUEQoXAGwRlj/kHFp9l4Q0p8AnfSALU/D86l8U
- t
-X-Google-Smtp-Source: AGHT+IEvfh3LfDGQx1RVE09ovmRHUf4g5MePJitgJP2E6RyGEPEY80LLbo4/XosJdxTRzicwiTWgFA==
-X-Received: by 2002:a05:6870:59d:b0:221:1c2f:23ee with SMTP id
- 586e51a60fabf-24c68b5de72mr976548fac.22.1716349484414; 
- Tue, 21 May 2024 20:44:44 -0700 (PDT)
+ bh=lJ/MHrlbj4C0ri8M58dDIQBRERSolyRdsK7MrfghSiM=;
+ b=D73uISaU1/rvsMqXEU5pcf7oBx7RsIXgrdP+Ism4Ia30JSreGMUVCKk9Uro8mbr6cg
+ bLORyYij1nslc8D3gk1tFsva9ZG3BOzu2iA/cILB07d6TcBEHmt1aFg9u4VWizsQ40Q7
+ 5pSicFpBY8Rhq05UoN/S6hlVm2+2W+08P0lbMaP0poV6tUVBlUfhoV1IPfpQO4wZvoCa
+ CPv5s7RodMD5mLPqEjthUiZR0l2CaESL2r/aa3yuCsoXDVd8TdBToIccsjYIxWX97xiA
+ dQTI0nSj/9DY1ZEMiF/psvIz9qrOZhRG9L3PgMvxpYDa+zG5WlbbuMAxn4mixbfTZTQt
+ AUag==
+X-Gm-Message-State: AOJu0YzL5oPg/TCXuOrmFqxOyUnMp6Mcg0X+BPgbvuq6FAr9fI86KPIC
+ WUY5FKYBHgwolQRPtv1jgYEFqP3doUG3moW7yUZNtC2IwrKAQNtYSYZKLHG5CSDhoQhn8MSxhvw
+ B
+X-Google-Smtp-Source: AGHT+IEP84YjNuFzJ2jlnUC619ISe+1FyRbbsGV/U6TTDaD1raTrmKSZ2c5LOI+CfKCw+kQkqQHkDA==
+X-Received: by 2002:a05:6870:9627:b0:23c:1f34:730 with SMTP id
+ 586e51a60fabf-24c690dcbeamr1066614fac.49.1716349485353; 
+ Tue, 21 May 2024 20:44:45 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2af2bafsm21416617b3a.162.2024.05.21.20.44.43
+ d2e1a72fcca58-6f4d2af2bafsm21416617b3a.162.2024.05.21.20.44.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 May 2024 20:44:43 -0700 (PDT)
+ Tue, 21 May 2024 20:44:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	mark.cave-ayland@ilande.co.uk
-Subject: [PATCH RISU v2 1/8] risu: Allow use of ELF test files
-Date: Tue, 21 May 2024 20:44:35 -0700
-Message-Id: <20240522034442.140293-2-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, mark.cave-ayland@ilande.co.uk,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH RISU v2 2/8] Build elf test cases instead of raw binaries
+Date: Tue, 21 May 2024 20:44:36 -0700
+Message-Id: <20240522034442.140293-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240522034442.140293-1-richard.henderson@linaro.org>
 References: <20240522034442.140293-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,107 +94,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By using elf files, we make it easier to disassemble
-the test file, to match comparison failures to code.
+For test_arch64.s and test_arm.s, use '.inst' so that the risu
+control insns are marked as instructions for disassembly.
 
+For test_i386.S, split the data to be loaded into the data section;
+fix an error aligning the data: 16 not 2**16.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 5 deletions(-)
+ Makefile       | 19 ++++++++++---------
+ test.ld        | 12 ++++++++++++
+ test_aarch64.s |  4 ++--
+ test_arm.s     | 16 +++++++++++-----
+ test_i386.S    |  4 +++-
+ 5 files changed, 38 insertions(+), 17 deletions(-)
+ create mode 100644 test.ld
 
-diff --git a/risu.c b/risu.c
-index c28b4a5..c9c3a38 100644
---- a/risu.c
-+++ b/risu.c
-@@ -24,6 +24,15 @@
- #include <sys/mman.h>
- #include <fcntl.h>
- #include <string.h>
-+#include <elf.h>
-+
-+/* TODO: Improve configure. */
-+#ifdef __linux__
-+#include <endian.h>
-+#define HOST_BIG_ENDIAN  (__BYTE_ORDER == __BIG_ENDIAN)
-+#else
-+#error Need HOST_BIG_ENDIAN
-+#endif
+diff --git a/Makefile b/Makefile
+index ad7f879..2bd08aa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -22,7 +22,8 @@ ALL_CFLAGS = -Wall -D_GNU_SOURCE -DARCH=$(ARCH) -U$(ARCH) $(BUILD_INC) $(CFLAGS)
+ PROG=risu
+ SRCS=risu.c comms.c risu_$(ARCH).c risu_reginfo_$(ARCH).c
+ HDRS=risu.h risu_reginfo_$(ARCH).h
+-BINS=test_$(ARCH).bin
++BINO=test_$(ARCH).o
++BINE=test_$(ARCH).elf
  
- #include "config.h"
- #include "risu.h"
-@@ -346,8 +355,11 @@ static void load_image(const char *imgfile)
- {
-     /* Load image file into memory as executable */
-     struct stat st;
-+    void *addr;
-+    int fd;
-+
-     fprintf(stderr, "loading test image %s...\n", imgfile);
--    int fd = open(imgfile, O_RDONLY);
-+    fd = open(imgfile, O_RDONLY);
-     if (fd < 0) {
-         fprintf(stderr, "failed to open image file %s\n", imgfile);
-         exit(EXIT_FAILURE);
-@@ -356,20 +368,55 @@ static void load_image(const char *imgfile)
-         perror("fstat");
-         exit(EXIT_FAILURE);
-     }
--    size_t len = st.st_size;
--    void *addr;
+ # For dumping test patterns
+ RISU_BINS=$(wildcard *.risu.bin)
+@@ -30,7 +31,7 @@ RISU_ASMS=$(patsubst %.bin,%.asm,$(RISU_BINS))
  
-     /* Map writable because we include the memory area for store
-      * testing in the image.
-      */
--    addr = mmap(0, len, PROT_READ | PROT_WRITE | PROT_EXEC,
-+    addr = mmap(0, st.st_size, PROT_READ | PROT_WRITE | PROT_EXEC,
-                 MAP_PRIVATE, fd, 0);
-     if (addr == MAP_FAILED) {
-         perror("mmap");
-         exit(EXIT_FAILURE);
-     }
-     close(fd);
--    image_start = addr;
-+
-+    if (memcmp(addr, ELFMAG, SELFMAG) == 0) {
-+        union {
-+            unsigned char ident[EI_NIDENT];
-+            Elf32_Ehdr h32;
-+            Elf64_Ehdr h64;
-+        } *e = addr;
-+        size_t entry;
-+
-+        /*
-+         * TODO: More complete parsing of ELF file, verify assumtion, namely:
-+         * Single PT_LOAD covering the ELF header, code and data.
-+         * For now, simply update image_start from the elf header.
-+         */
-+        if (e->ident[EI_DATA] !=
-+            (HOST_BIG_ENDIAN ? ELFDATA2MSB : ELFDATA2LSB)) {
-+            fprintf(stderr, "%s: Endian mismatch: EI_DATA = %x\n",
-+                    imgfile, e->ident[EI_DATA]);
-+            exit(1);
-+        }
-+
-+        switch (e->ident[EI_CLASS]) {
-+        case ELFCLASS32:
-+            entry = e->h32.e_entry;
-+            break;
-+        case ELFCLASS64:
-+            entry = e->h64.e_entry;
-+            break;
-+        default:
-+            fprintf(stderr, "%s: Bad elf header: EI_CLASS = %x\n",
-+                    imgfile, e->ident[EI_CLASS]);
-+            exit(1);
-+        }
-+        image_start = addr + entry;
-+    } else {
-+        /* Raw binary image. */
-+        image_start = addr;
-+    }
-     image_start_address = (uintptr_t) addr;
- }
+ OBJS=$(SRCS:.c=.o)
  
+-all: $(PROG) $(BINS)
++all: $(PROG) $(BINE)
+ 
+ dump: $(RISU_ASMS)
+ 
+@@ -43,17 +44,17 @@ $(PROG): $(OBJS)
+ %.o: %.c $(HDRS)
+ 	$(CC) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ -c $<
+ 
+-%_$(ARCH).bin: %_$(ARCH).elf
+-	$(OBJCOPY) -O binary $< $@
++%_$(ARCH).o: %_$(ARCH).s
++	$(CC) -o $@ -c $<
+ 
+-%_$(ARCH).elf: %_$(ARCH).s
+-	$(AS) -o $@ $<
+-
+-%_$(ARCH).elf: %_$(ARCH).S
++%_$(ARCH).o: %_$(ARCH).S
+ 	$(CC) $(CPPFLAGS) -o $@ -c $<
+ 
++%_$(ARCH).elf: test.ld %_$(ARCH).o
++	$(LD) -o $@ -T $^
++
+ clean:
+-	rm -f $(PROG) $(OBJS) $(BINS)
++	rm -f $(PROG) $(OBJS) $(BINO) $(BINE)
+ 
+ distclean: clean
+ 	rm -f config.h Makefile.in
+diff --git a/test.ld b/test.ld
+new file mode 100644
+index 0000000..eb0a76a
+--- /dev/null
++++ b/test.ld
+@@ -0,0 +1,12 @@
++ENTRY(start)
++
++PHDRS {
++    text PT_LOAD FILEHDR PHDRS;
++}
++
++SECTIONS {
++    . = SIZEOF_HEADERS;
++    PROVIDE(start = .);
++    .text : { *(.text) } :text
++    .data : { *(.data) } :text
++}
+diff --git a/test_aarch64.s b/test_aarch64.s
+index f75d588..88902c6 100644
+--- a/test_aarch64.s
++++ b/test_aarch64.s
+@@ -80,6 +80,6 @@ fmov d31, #31.0
+ /* do compare.
+  * The manual says instr with bits (28,27) == 0 0 are UNALLOCATED
+  */
+-.int 0x00005af0
++.inst 0x00005af0
+ /* exit test */
+-.int 0x00005af1
++.inst 0x00005af1
+diff --git a/test_arm.s b/test_arm.s
+index 49552f2..62582e7 100644
+--- a/test_arm.s
++++ b/test_arm.s
+@@ -9,20 +9,26 @@
+  *     Peter Maydell (Linaro) - initial implementation
+  *******************************************************************************/
+ 
++.text
++
+ /* magic instruction to force ARM mode whether we were in ARM or Thumb before */
+-.int 0xe0004778
++.inst 0xe0004778
++
+ /* Initialise the gp regs */
+ add r0, pc, #4
+ ldmia r0, {r0,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12,r14}
+-b next
++b 1f
++
+ .int 0,1,2,3,4,5,6,7,8,9,10,11,12,14
+-next:
++
++1:
+ msr CPSR_fs, #0
++
+ /* do compare.
+  * The space 0xE7F___F_ is guaranteed to always UNDEF
+  * and not to be allocated for insns in future architecture
+  * revisions.
+  */
+-.int 0xe7fe5af0
++.inst 0xe7fe5af0
+ /* exit test */
+-.int 0xe7fe5af1
++.inst 0xe7fe5af1
+diff --git a/test_i386.S b/test_i386.S
+index 05344d7..2e2b090 100644
+--- a/test_i386.S
++++ b/test_i386.S
+@@ -13,6 +13,7 @@
+ 
+ /* Initialise the registers to avoid spurious mismatches */
+ 
++.text
+ #ifdef __x86_64__
+ #define BASE	%rax
+ 	lea	2f(%rip), BASE
+@@ -71,7 +72,8 @@
+ /* exit test */
+ 	ud1	%ecx, %eax
+ 
+-	.p2align 16
++.data
++	.balign 16
+ 2:
+ 	.set	i, 0
+ 	.rept	256
 -- 
 2.34.1
 
