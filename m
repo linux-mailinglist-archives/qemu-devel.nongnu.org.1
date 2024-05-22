@@ -2,120 +2,119 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02858CC8FE
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D43A8CC8FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:22:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9uKN-0005VA-3z; Wed, 22 May 2024 18:20:55 -0400
+	id 1s9uKO-0005Xi-U8; Wed, 22 May 2024 18:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKI-0005Ul-PH
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:50 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKK-0005VB-EG
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:53 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKE-0003kR-17
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:50 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKF-0003kb-Td
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:52 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
  [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 900D81F8B9;
- Wed, 22 May 2024 22:20:44 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id A43B61F8BA;
+ Wed, 22 May 2024 22:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716416444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1716416446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJ4OczsCtc4NtIM/xZr3gCkmZSK1dp9Nvgp0JXMSeA0=;
- b=mhwq3A3EU7ixhHMhfWTysOYwLSoowqq2ns5FArGnKI059GcXBFh91S/k3pHcXA8UTJW9/B
- OSbbk8S3283HWkXQsZmIiJ1iVMdU/iPH98kQ3TJ5V0tVWIcMQKt9HgdmEaXWJ8vAi8+L9l
- EUbX0MfNTL+pY9ix0tAdFbTklNeYSlk=
+ bh=KsUD1GeNmcZw5+Wpgn8pet7lnx8FfXKpKqeRHlDOv0w=;
+ b=DKJPeUbDIuaXKhT2MbfBPXiCQLmJzE08JNAJgIDrxrIzzlNqpqjf1Sh9f1gzAjJS9RNhIp
+ psevU1fy+Hq0YDvz02OyveyA5ci6rKzT97bMce7eS0OWuqr3nDLoDWT4E+dP9rOfobRi7t
+ 42xHDA0ooMXAoPM3wnCqP6m9cuZxUxk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716416444;
+ s=susede2_ed25519; t=1716416446;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJ4OczsCtc4NtIM/xZr3gCkmZSK1dp9Nvgp0JXMSeA0=;
- b=kTwJ/gotYiW2pF5ZEeNMW8l1bEjIynyJ5PbJ4bCbn/2vN/w944fgamvc7wRsPMfDcmnsn9
- 8XyDmfCVrqFjddCA==
+ bh=KsUD1GeNmcZw5+Wpgn8pet7lnx8FfXKpKqeRHlDOv0w=;
+ b=Sd+YCGWprsPMsXON64lekEbpvSYVV7HX1XWlNXtmtbtGctfm9Ta0IRY+F7zxdvvaozcOU3
+ q6Wyh3pZDfR1U/Ag==
 Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mhwq3A3E;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="kTwJ/got"
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DKJPeUbD;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Sd+YCGWp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716416444; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1716416446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJ4OczsCtc4NtIM/xZr3gCkmZSK1dp9Nvgp0JXMSeA0=;
- b=mhwq3A3EU7ixhHMhfWTysOYwLSoowqq2ns5FArGnKI059GcXBFh91S/k3pHcXA8UTJW9/B
- OSbbk8S3283HWkXQsZmIiJ1iVMdU/iPH98kQ3TJ5V0tVWIcMQKt9HgdmEaXWJ8vAi8+L9l
- EUbX0MfNTL+pY9ix0tAdFbTklNeYSlk=
+ bh=KsUD1GeNmcZw5+Wpgn8pet7lnx8FfXKpKqeRHlDOv0w=;
+ b=DKJPeUbDIuaXKhT2MbfBPXiCQLmJzE08JNAJgIDrxrIzzlNqpqjf1Sh9f1gzAjJS9RNhIp
+ psevU1fy+Hq0YDvz02OyveyA5ci6rKzT97bMce7eS0OWuqr3nDLoDWT4E+dP9rOfobRi7t
+ 42xHDA0ooMXAoPM3wnCqP6m9cuZxUxk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716416444;
+ s=susede2_ed25519; t=1716416446;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KJ4OczsCtc4NtIM/xZr3gCkmZSK1dp9Nvgp0JXMSeA0=;
- b=kTwJ/gotYiW2pF5ZEeNMW8l1bEjIynyJ5PbJ4bCbn/2vN/w944fgamvc7wRsPMfDcmnsn9
- 8XyDmfCVrqFjddCA==
+ bh=KsUD1GeNmcZw5+Wpgn8pet7lnx8FfXKpKqeRHlDOv0w=;
+ b=Sd+YCGWprsPMsXON64lekEbpvSYVV7HX1XWlNXtmtbtGctfm9Ta0IRY+F7zxdvvaozcOU3
+ q6Wyh3pZDfR1U/Ag==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BAF8E13A6B;
- Wed, 22 May 2024 22:20:42 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0506613A6B;
+ Wed, 22 May 2024 22:20:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id EAoqILpvTmaABAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:20:42 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id oE98L7xvTmaABAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:20:44 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Li Zhijian <lizhijian@fujitsu.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Zhang Chen <chen.zhang@intel.com>
-Subject: [PULL 3/9] migration/colo: Tidy up bql_unlock() around
- bdrv_activate_all()
-Date: Wed, 22 May 2024 19:20:28 -0300
-Message-Id: <20240522222034.4001-4-farosas@suse.de>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PULL 4/9] migration: add "exists" info to load-state-field trace
+Date: Wed, 22 May 2024 19:20:29 -0300
+Message-Id: <20240522222034.4001-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240522222034.4001-1-farosas@suse.de>
 References: <20240522222034.4001-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.99
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 900D81F8B9
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.99 / 50.00]; BAYES_HAM(-2.98)[99.91%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-3.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; MIME_TRACE(0.00)[0:+];
+ MX_GOOD(-0.01)[];
  RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[]; TO_DN_SOME(0.00)[];
+ MIME_TRACE(0.00)[0:+];
  SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- TO_DN_SOME(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_TLS_ALL(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[5]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[];
  RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  DKIM_TRACE(0.00)[suse.de:+]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: A43B61F8BA
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -3.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -132,39 +131,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Make the code more tight.
-
-Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Zhang Chen <chen.zhang@intel.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-[fixed mangled author email address]
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/colo.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ migration/trace-events | 2 +-
+ migration/vmstate.c    | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/migration/colo.c b/migration/colo.c
-index ca37b932ac..f96c2ee069 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -837,12 +837,11 @@ static void *colo_process_incoming_thread(void *opaque)
-     /* Make sure all file formats throw away their mutable metadata */
-     bql_lock();
-     bdrv_activate_all(&local_err);
-+    bql_unlock();
-     if (local_err) {
--        bql_unlock();
-         error_report_err(local_err);
-         return NULL;
+diff --git a/migration/trace-events b/migration/trace-events
+index d0c44c3853..0b7c3324fb 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -58,7 +58,7 @@ postcopy_page_req_sync(void *host_addr) "sync page req %p"
+ vmstate_load_field_error(const char *field, int ret) "field \"%s\" load failed, ret = %d"
+ vmstate_load_state(const char *name, int version_id) "%s v%d"
+ vmstate_load_state_end(const char *name, const char *reason, int val) "%s %s/%d"
+-vmstate_load_state_field(const char *name, const char *field) "%s:%s"
++vmstate_load_state_field(const char *name, const char *field, bool exists) "%s:%s exists=%d"
+ vmstate_n_elems(const char *name, int n_elems) "%s: %d"
+ vmstate_subsection_load(const char *parent) "%s"
+ vmstate_subsection_load_bad(const char *parent,  const char *sub, const char *sub2) "%s: %s/%s"
+diff --git a/migration/vmstate.c b/migration/vmstate.c
+index ef26f26ccd..b51212a75b 100644
+--- a/migration/vmstate.c
++++ b/migration/vmstate.c
+@@ -128,8 +128,9 @@ int vmstate_load_state(QEMUFile *f, const VMStateDescription *vmsd,
+         }
      }
--    bql_unlock();
- 
-     failover_init_state();
- 
+     while (field->name) {
+-        trace_vmstate_load_state_field(vmsd->name, field->name);
+-        if (vmstate_field_exists(vmsd, field, opaque, version_id)) {
++        bool exists = vmstate_field_exists(vmsd, field, opaque, version_id);
++        trace_vmstate_load_state_field(vmsd->name, field->name, exists);
++        if (exists) {
+             void *first_elem = opaque + field->offset;
+             int i, n_elems = vmstate_n_elems(opaque, field);
+             int size = vmstate_size(opaque, field);
 -- 
 2.35.3
 
