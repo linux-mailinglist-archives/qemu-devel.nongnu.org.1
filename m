@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD68CBA7D
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 06:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC9C8CBA71
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 06:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9dpL-0002Ug-Gy; Wed, 22 May 2024 00:43:47 -0400
+	id 1s9dpf-0003DH-Q1; Wed, 22 May 2024 00:44:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9dpH-0002OT-7a
- for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:43 -0400
+ id 1s9dpU-0002z9-FR; Wed, 22 May 2024 00:43:56 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9dpF-0005wI-Gw
- for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:42 -0400
+ id 1s9dpS-0005wM-Q4; Wed, 22 May 2024 00:43:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716353021; x=1747889021;
+ t=1716353034; x=1747889034;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0mVsJycZ0+yemdLDwZw/Xcikr0NANe2J64lu6LFt2V0=;
- b=fjIYF4AIRuQWsBJaCHP4M/KKGgKDx0lKEmLslCije84IdJYdyP2H9d/U
- adSZJcBquEZdr61nQ4fdIgaN+1QPUcbJ2x0gEffSRgYj7uIt8Aa7Yj/hu
- UewuTdQbgaSxlvl1zqhhI0z300g9mJPF767uwIWqpVsGSCPHAHt0gNAfV
- 1WyQYckC94hkJYAaGJ14y6vf4s7zJawVq6el70z/Zwga4Y07+YEx0kAG/
- m8HC8rbY4a4HFRQx/AFLQnOftvGWlPUXhUQ2kd1Ka0vMMLMBCjmMJEL0i
- TwcnN8w67XTkHv7DfKf0km1NKfFxEy4GgdVsXEmh04EqocYF1e7Ua+GsL A==;
-X-CSE-ConnectionGUID: hyWJHSw0SPemiSYeJly3Sw==
-X-CSE-MsgGUID: GPPuHPhSQniYpj948HNlVQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="23994214"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="23994214"
+ bh=xmbGRIz1xb4wMoX4jBHY9Ji8BqoSSIVbjok4WXnrOz4=;
+ b=MyToYGtWa8/o0S0rMvKje+vly4Y2VZUPGQ5TBp68S1ZNEfJZCEFLASLJ
+ KM7pXPPMxONR8+zJh2F1p0vnp6BfFHz5rnvnCg1W/rkk45GFU/Vtlg/52
+ /x25kFX0uE8uFMOxDzNxO3Nne8exfK+UKjGjDdSxjsxBiU2Pd5nkCmy6C
+ /umb8QjD8QBODxRNbXVdsk1zQqwuG+hF80E+VBBVRjg7rg4uP9Nr/g46Z
+ /3iGsDJD9KiigkJeba8Kd0PKNwg7LekRtFqPV3ZB6ubqgt1jtBXWukL5b
+ E1FXERzJ5v59AHNyvp2oCKteQpE7HLMh0Spv0zYZamz9wC6B+THSFNFq6 Q==;
+X-CSE-ConnectionGUID: cMH0IS8WSx6DWuBlv47T5w==
+X-CSE-MsgGUID: NcP09iLKTtuYd76ifCqHMg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="23994218"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="23994218"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 21:43:20 -0700
-X-CSE-ConnectionGUID: JyiFn6yCQAmC2Otk6+JDKQ==
-X-CSE-MsgGUID: DUQHQf+fTsuOqtrTz5AEgw==
+ 21 May 2024 21:43:23 -0700
+X-CSE-ConnectionGUID: B4s/Lw4VRnivmw6/JJC7WA==
+X-CSE-MsgGUID: 33i6URHjRBu+rVmJ3Qwk6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33683803"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33683809"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 21:43:17 -0700
+ 21 May 2024 21:43:20 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 18/20] vfio/igd: Use g_autofree in
- vfio_probe_igd_bar4_quirk()
-Date: Wed, 22 May 2024 12:40:13 +0800
-Message-Id: <20240522044015.412951-19-zhenzhong.duan@intel.com>
+ chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-s390x@nongnu.org (open list:vfio-ccw)
+Subject: [PATCH v2 19/20] vfio/ccw: Drop local @err in vfio_ccw_realize()
+Date: Wed, 22 May 2024 12:40:14 +0800
+Message-Id: <20240522044015.412951-20-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240522044015.412951-1-zhenzhong.duan@intel.com>
 References: <20240522044015.412951-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.10;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -81,120 +82,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pointer opregion, host and lpc are allocated and freed in
-vfio_probe_igd_bar4_quirk(). Use g_autofree to automatically
-free them.
+Use @errp to fetch error information directly and drop the local
+variable @err.
 
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/igd.c | 27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ hw/vfio/ccw.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 1e79202f2b..d320d032a7 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -368,7 +368,9 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index 2600e62e37..168c9e5973 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -574,17 +574,17 @@ static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
+ 
+ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
  {
-     g_autofree struct vfio_region_info *rom = NULL;
--    struct vfio_region_info *opregion = NULL, *host = NULL, *lpc = NULL;
-+    g_autofree struct vfio_region_info *opregion = NULL;
-+    g_autofree struct vfio_region_info *host = NULL;
-+    g_autofree struct vfio_region_info *lpc = NULL;
-     VFIOQuirk *quirk;
-     VFIOIGDQuirk *igd;
-     PCIDevice *lpc_bridge;
-@@ -426,7 +428,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if ((ret || !rom->size) && !vdev->pdev.romfile) {
-         error_report("IGD device %s has no ROM, legacy mode disabled",
-                      vdev->vbasedev.name);
--        goto out;
-+        return;
++    ERRP_GUARD();
+     S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
+     VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
+     VFIODevice *vbasedev = &vcdev->vdev;
+-    Error *err = NULL;
+ 
+     /* Call the class init function for subchannel. */
+     if (cdc->realize) {
+-        cdc->realize(cdev, vcdev->vdev.sysfsdev, &err);
+-        if (err) {
+-            goto out_err_propagate;
++        cdc->realize(cdev, vcdev->vdev.sysfsdev, errp);
++        if (*errp) {
++            return;
+         }
      }
  
-     /*
-@@ -437,7 +439,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         error_report("IGD device %s hotplugged, ROM disabled, "
-                      "legacy mode disabled", vdev->vbasedev.name);
-         vdev->rom_read_failed = true;
--        goto out;
-+        return;
+@@ -597,27 +597,28 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         goto out_attach_dev_err;
      }
  
-     /*
-@@ -450,7 +452,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if (ret) {
-         error_report("IGD device %s does not support OpRegion access,"
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
+-    if (!vfio_ccw_get_region(vcdev, &err)) {
++    if (!vfio_ccw_get_region(vcdev, errp)) {
+         goto out_region_err;
      }
  
-     ret = vfio_get_dev_region_info(&vdev->vbasedev,
-@@ -459,7 +461,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if (ret) {
-         error_report("IGD device %s does not support host bridge access,"
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
+-    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX, &err)) {
++    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX, errp)) {
+         goto out_io_notifier_err;
      }
  
-     ret = vfio_get_dev_region_info(&vdev->vbasedev,
-@@ -468,7 +470,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if (ret) {
-         error_report("IGD device %s does not support LPC bridge access,"
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
+     if (vcdev->crw_region) {
+         if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX,
+-                                            &err)) {
++                                            errp)) {
+             goto out_irq_notifier_err;
+         }
      }
  
-     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
-@@ -482,7 +484,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-         error_report("IGD device %s failed to enable VGA access, "
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
+-    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX, &err)) {
++    if (!vfio_ccw_register_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX, errp)) {
+         /*
+          * Report this error, but do not make it a failing condition.
+          * Lack of this IRQ in the host does not prevent normal operation.
+          */
+-        error_report_err(err);
++        error_report_err(*errp);
++        *errp = NULL;
      }
  
-     /* Create our LPC/ISA bridge */
-@@ -490,7 +492,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if (ret) {
-         error_report("IGD device %s failed to create LPC bridge, "
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
+     return;
+@@ -635,8 +636,6 @@ out_attach_dev_err:
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
      }
- 
-     /* Stuff some host values into the VM PCI host bridge */
-@@ -498,14 +500,14 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     if (ret) {
-         error_report("IGD device %s failed to modify host bridge, "
-                      "legacy mode disabled", vdev->vbasedev.name);
--        goto out;
-+        return;
-     }
- 
-     /* Setup OpRegion access */
-     if (!vfio_pci_igd_opregion_init(vdev, opregion, &err)) {
-         error_append_hint(&err, "IGD legacy mode disabled\n");
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
--        goto out;
-+        return;
-     }
- 
-     /* Setup our quirk to munge GTT addresses to the VM allocated buffer */
-@@ -607,9 +609,4 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     }
- 
-     trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name, ggms_mb + gms_mb);
--
--out:
--    g_free(opregion);
--    g_free(host);
--    g_free(lpc);
+-out_err_propagate:
+-    error_propagate(errp, err);
  }
+ 
+ static void vfio_ccw_unrealize(DeviceState *dev)
 -- 
 2.34.1
 
