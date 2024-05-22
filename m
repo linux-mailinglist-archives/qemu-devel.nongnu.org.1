@@ -2,108 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274198CC8B8
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFFA8CC8E8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:15:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9u2Z-0005uo-VV; Wed, 22 May 2024 18:02:31 -0400
+	id 1s9uEF-0002V8-RR; Wed, 22 May 2024 18:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1s9u2X-0005uR-L2; Wed, 22 May 2024 18:02:29 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1s9uEC-0002Ul-UE
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:14:32 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1s9u2W-0000gI-3B; Wed, 22 May 2024 18:02:29 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 854ED1F890;
- Wed, 22 May 2024 22:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716415343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cNI8NstOpoXGQnSvfm4ZgKol35tBxj9SrbRkhKOOFE0=;
- b=tyOt4JM+qMhV9ABpDwrICBKggYY1qgtV6izT4V5motavDQXOVVK4zo5A3+r8f2BGu5zJ2W
- i1nDGbdIofvxeggpyAEKTt2oj+qopDD6EhbpqIjTwBUwVMO2wiQN/vyB47exIl5gzJBjx8
- F3MREtVCq6yg7BlK6pGipCnXG2KJX7k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716415343;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cNI8NstOpoXGQnSvfm4ZgKol35tBxj9SrbRkhKOOFE0=;
- b=FA97JBvCnIGjVJPl9gkm/+h+jhIBbPkGA4tUc9XIUnX2aNsq5CmTrpt7ieseE0jCICNytM
- ywrn67LaOtgNkTCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716415343; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cNI8NstOpoXGQnSvfm4ZgKol35tBxj9SrbRkhKOOFE0=;
- b=tyOt4JM+qMhV9ABpDwrICBKggYY1qgtV6izT4V5motavDQXOVVK4zo5A3+r8f2BGu5zJ2W
- i1nDGbdIofvxeggpyAEKTt2oj+qopDD6EhbpqIjTwBUwVMO2wiQN/vyB47exIl5gzJBjx8
- F3MREtVCq6yg7BlK6pGipCnXG2KJX7k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716415343;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=cNI8NstOpoXGQnSvfm4ZgKol35tBxj9SrbRkhKOOFE0=;
- b=FA97JBvCnIGjVJPl9gkm/+h+jhIBbPkGA4tUc9XIUnX2aNsq5CmTrpt7ieseE0jCICNytM
- ywrn67LaOtgNkTCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A403D13A1E;
- Wed, 22 May 2024 22:02:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id CD6LGm1rTmbwKwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:02:21 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org
-Subject: Re: [PATCH] tests/qtest/migration-test: Run some basic tests on s390x
- and ppc64 with TCG, too
-Date: Wed, 22 May 2024 19:02:09 -0300
-Message-Id: <171641446561.2133.7144970086256827850.b4-ty@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240522091255.417263-1-thuth@redhat.com>
-References: <20240522091255.417263-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1s9uDy-0002aQ-Rd
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:14:32 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2e428242a38so102476801fa.2
+ for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:14:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716416055; x=1717020855; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xbuJJfPfkTRs7CGDQKwHKalBzntdU/4JsaQpMQKjOHU=;
+ b=JiyJvAp/Ld/7em+MeEq508FA7rDr9EIsbUqlLKtgQGlLCrVTOUveuSPnjNpnF447CN
+ iVmmL2ogEBMZnzEk4CGlbMIfw44dPY5nSra9EhZcvL1wkAeMl3QOxDeCuKID8HPms5oR
+ TX/+H8Rt8OJlsBbLRslyvUdwXey9feNCxdFMAP5LItHDj5L/8hCEcVMVB7QWEeAw4zmu
+ YOv3VXDhzeSELWOdlsw1filmXjvl8/yYwtHz65vit7xDSkR0V70LZwMx9ZIJq6dPg3b9
+ Q7itR+nwnXjEAJEowO8TWCsg6RSZNM7zIyU5ywINx2cEeDmH3ixpZ5yZGUdZI5P/AXTK
+ niqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716416055; x=1717020855;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xbuJJfPfkTRs7CGDQKwHKalBzntdU/4JsaQpMQKjOHU=;
+ b=OXTbY3BmOwKfbyUjriJg21iGCazAdCN28D2SNtpHXJxWX/d4HvDsoLVYDImbnObk1E
+ DZi3q4Alu87qCeh2HFvL3WP9NbEYfSZLXeQ1hb8h/qneQbbAuyvRVrdm/JBT/knIEDmD
+ FR/V8163fwgURPEV4Jl4abG9pyFWsWhSEaRfX5dGtQTgdAUEVu71HeMx75YIF/PqDtwO
+ rt1VqrynLqw28ddBPxjg5skcsVHjclWm9IMvhjTwBqHJqxmB9NgHuQRasF1tdF71s/Hi
+ ItovUrTelRBOShquzDNk7xdrX4I/INhMdswv2Bh+KFvbFXADZzI9rmm2TQqmrGfUCXWG
+ 7mlw==
+X-Gm-Message-State: AOJu0YzF2H5dPh+yBLkXgVZnAvQY4GPTwR0NHnv3o4Yo68AQ7ilZYJ8p
+ iTEFLZaEwfWvS2rbs2XwPff79mEQNX3E0soazs+xF7AK69GCPBwR7cgOnJzNvQIbOVDETIlgs2l
+ oZO9aVGVp4lG05GzCypkzSj36VSUFVYb4dFBPF9sxjy5cIBs/
+X-Google-Smtp-Source: AGHT+IH3d0VlZfDtgDZOgp3GYtVcwXRUio91d6JHDYQaCunFhQTT0eCiUfi8nm9ASFD7K9d7dG91/oijw1QCeoQNs9U=
+X-Received: by 2002:a2e:3618:0:b0:2e1:a747:532d with SMTP id
+ 38308e7fff4ca-2e949430476mr25688611fa.8.1716416054977; Wed, 22 May 2024
+ 15:14:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.05 / 50.00]; BAYES_HAM(-2.75)[98.90%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
- MIME_TRACE(0.00)[0:+]; MID_RHS_MATCH_FROM(0.00)[];
- RCVD_TLS_ALL(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_HAS_DN(0.00)[];
- TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
- RCPT_COUNT_FIVE(0.00)[6]
-X-Spam-Score: -4.05
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <20240516120344.531521-1-kraxel@redhat.com>
+ <20240516120344.531521-2-kraxel@redhat.com>
+ <6c9a0d95-edc9-445f-8063-23a30dd74443@redhat.com>
+In-Reply-To: <6c9a0d95-edc9-445f-8063-23a30dd74443@redhat.com>
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Date: Thu, 23 May 2024 01:13:58 +0300
+Message-ID: <CAAjaMXYpzbLh58y0z=FBeOxa5k2D8o1r6dsD9wuai+6iBawCQQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] MAINTAINERS: drop audio maintainership
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+ Christian Schoenebeck <qemu_oss@crudebyte.com>,
+ Alexandre Ratchov <alex@caoua.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -120,21 +88,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 22 May 2024 11:12:55 +0200, Thomas Huth wrote:
-> On s390x, we recently had a regression that broke migration / savevm
-> (see commit bebe9603fc ("hw/intc/s390_flic: Fix crash that occurs when
-> saving the machine state"). The problem was merged without being noticed
-> since we currently do not run any migration / savevm related tests on
-> x86 hosts.
-> While we currently cannot run all migration tests for the s390x target
-> on x86 hosts yet (due to some unresolved issues with TCG), we can at
-> least run some of the non-live tests to avoid such problems in the future.
-> Thus enable the "analyze-script" and the "bad_dest" tests before checking
-> for KVM on s390x or ppc64 (this also fixes the problem that the
-> "analyze-script" test was not run on s390x at all anymore since it got
-> disabled again by accident in a previous refactoring of the code).
-> 
-> [...]
+On Wed, 22 May 2024 at 15:54, Thomas Huth <thuth@redhat.com> wrote:
+>
+> On 16/05/2024 14.03, Gerd Hoffmann wrote:
+> > Remove myself from audio (both devices and backend) entries.
+> > Flip status to "Orphan" for entries which have nobody else listed.
+> >
+> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> > ---
+> >   MAINTAINERS | 19 ++++---------------
+> >   1 file changed, 4 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 1b79767d6196..7f52e2912fc3 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> ...
+> > @@ -2388,7 +2387,6 @@ F: hw/virtio/virtio-mem-pci.c
+> >   F: include/hw/virtio/virtio-mem.h
+> >
+> >   virtio-snd
+> > -M: Gerd Hoffmann <kraxel@redhat.com>
+> >   R: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+> >   S: Supported
+>
+> I think the status should be downgraded to Orphan or at least Odd-fixes,
+> unless Manos wants to upgrade from "R:" to "M:" ?
 
-Queued, thanks!
+That's fine with me.
+
+> >   ALSA Audio backend
+> > -M: Gerd Hoffmann <kraxel@redhat.com>
+> >   R: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> >   S: Odd Fixes
+> >   F: audio/alsaaudio.c
+>
+> I'd also suggest that Christian either upgrade from R: to M: or that we
+> change the status to Orphan
+
+If Christian is not available I volunteer to be a Reviewer (but not
+M:) since I have some familiarity with alsaaudio.c
+This way even if Orphan it will have more reviewers available.
+
+>
+> >   JACK Audio Connection Kit backend
+> > -M: Gerd Hoffmann <kraxel@redhat.com>
+> >   R: Christian Schoenebeck <qemu_oss@crudebyte.com>
+> >   S: Odd Fixes
+> >   F: audio/jackaudio.c
+>
+> dito
+>
+> >   SDL Audio backend
+> > -M: Gerd Hoffmann <kraxel@redhat.com>
+> >   R: Thomas Huth <huth@tuxfamily.org>
+>
+> I'm fine if you update my entry from R: to M: here.
+>
+> >   S: Odd Fixes
+> >   F: audio/sdlaudio.c
+> >
+> >   Sndio Audio backend
+> > -M: Gerd Hoffmann <kraxel@redhat.com>
+> >   R: Alexandre Ratchov <alex@caoua.org>
+> >   S: Odd Fixes
+> >   F: audio/sndioaudio.c
+>
+> Same again, I'd suggest to either set to Orphan or upgrade the R: entry?
+>
+>   Thomas
+>
 
