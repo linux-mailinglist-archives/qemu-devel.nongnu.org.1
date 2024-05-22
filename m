@@ -2,81 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305DD8CC4F1
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 18:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676198CC542
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 19:02:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ovC-00069d-GK; Wed, 22 May 2024 12:34:34 -0400
+	id 1s9pLE-0000Mo-0J; Wed, 22 May 2024 13:01:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s9ovA-00069H-Ul
- for qemu-devel@nongnu.org; Wed, 22 May 2024 12:34:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9pL7-0000LV-AU
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 13:01:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1s9ov7-0000v8-EF
- for qemu-devel@nongnu.org; Wed, 22 May 2024 12:34:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9pL2-0006Fe-Ua
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 13:01:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716395661;
+ s=mimecast20190719; t=1716397275;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+6SZwgxkVKI8HZe1WQLRNYhgjJNn8fIqeZYy03JvixQ=;
- b=e0gqdQTgB7sDBtiInww2RUtUpTRyHx+nFXX0olpE6QmzcXE+qMF9IQDq6508Dyy0WQHG3X
- xqwVeE5SRsuZFYsZzGGeb2aM0cnMaU7uTVlC8hrSo8gBQjm2apNStujs4AIKFoF5QA2e++
- ikwUGw9dWR1XBX/tB3CSjlFOHOtgA9c=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-LngbyqNlPOyG_YcNJQLvdg-1; Wed, 22 May 2024 12:34:19 -0400
-X-MC-Unique: LngbyqNlPOyG_YcNJQLvdg-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-792ba913db8so2468585a.2
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 09:34:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716395659; x=1717000459;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+6SZwgxkVKI8HZe1WQLRNYhgjJNn8fIqeZYy03JvixQ=;
- b=hHPbTPMoMNWI4mhJ6TIlfdETyPlzxj9fGljBUdkB6+dlN3fT3m6LN7rbgRp/+DpxRc
- myYJb8SUObmTzVAKtQ+lwk8bHGLICvyOn3hu0sVQ0z4SuUaNzcKHyzj5jk3gkFHKA+X3
- BzYkOFjiuBHiq8BI3D3f+KKrMc1wYuJPQ8IMnaQTvUZOUH6BWF4jW7By3fYDLcnq4MY5
- UpbR7NDU4ExmnT9CU2z9h0loRubpX3fO9Q/i6P6Cw5KP16NpORIWzRe4hvpg7RVm157i
- pX6XcWKQKdJN7+7Wo+VbUergRlKLZrCtYO3V4ylQ3zUsKv9ptVgMx8YNxOheCOOECIj6
- Lm4A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW2TQGb33CVyEp8mRBrBG9aGa02Tg3ZNmj0jySjI3jrwaUIXQvdJ6AqUPeBGMPBEQSS/2BlkiIX43ip6cmfLxNOxrDY7/Q=
-X-Gm-Message-State: AOJu0YzIgvk1ZizPabnJmglpEtEuq4RX4FZo0X5eswUBaQF4hvU3Dbfw
- Llbar03/0YGB7enRNabXd+afUlRM66Li9msgPhZv4Ja+f4xHjwliap/tvJDAmSrRc/HZanQobK3
- 7wkdZOdEUHTWbOwAdId2n8Inwxov3u6LLcz+HpYP2SQIrVbLtxKxP
-X-Received: by 2002:a05:622a:1887:b0:439:9377:3aed with SMTP id
- d75a77b69052e-43f9e19e7f8mr24564321cf.3.1716395658531; 
- Wed, 22 May 2024 09:34:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHO2PvcQZ0MTZ+wH9K1+uKnzTNSNW+UnkwsZJ+jFJpJPadNgb/TexupxotzRIYlkEF+S3+dzA==
-X-Received: by 2002:a05:622a:1887:b0:439:9377:3aed with SMTP id
- d75a77b69052e-43f9e19e7f8mr24563841cf.3.1716395657833; 
- Wed, 22 May 2024 09:34:17 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43f99073d12sm16611231cf.15.2024.05.22.09.34.17
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 22 May 2024 09:34:17 -0700 (PDT)
-Date: Wed, 22 May 2024 12:34:15 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
- qemu-ppc@nongnu.org
-Subject: Re: [PATCH] tests/qtest/migration-test: Run some basic tests on
- s390x and ppc64 with TCG, too
-Message-ID: <Zk4ehyEUV_JlKYQb@x1n>
-References: <20240522091255.417263-1-thuth@redhat.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=91VsFKMjs7kbThzPW6ISkk3AMayVD+ZM3jz2qHaTQnE=;
+ b=irw9TneOFnkenJvo+PDtaRdHpcHW1DM1ck5hAP4AkNILYvLu26NYUJRL9BViN45WxbBRPC
+ X/sRX/GEDfaz10+Gf52WLDlZDTTwJsdy+OJEqh0JUzJ1WUcJ93AjB/1jbmWoAjZ/Sdn+z9
+ AZxjKfKB6CZ54Qi5oPbhYdeSH8Mdxgc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-lQ18FfgAM-SRNaS_zjjpvA-1; Wed,
+ 22 May 2024 13:01:11 -0400
+X-MC-Unique: lQ18FfgAM-SRNaS_zjjpvA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B6C13800083;
+ Wed, 22 May 2024 17:01:11 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.133])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B28143C27;
+ Wed, 22 May 2024 17:01:09 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH 0/7] s390x/ccw: Error reporting cleanups
+Date: Wed, 22 May 2024 19:01:00 +0200
+Message-ID: <20240522170107.289532-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240522091255.417263-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,33 +78,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 22, 2024 at 11:12:55AM +0200, Thomas Huth wrote:
-> On s390x, we recently had a regression that broke migration / savevm
-> (see commit bebe9603fc ("hw/intc/s390_flic: Fix crash that occurs when
-> saving the machine state"). The problem was merged without being noticed
-> since we currently do not run any migration / savevm related tests on
-> x86 hosts.
-> While we currently cannot run all migration tests for the s390x target
-> on x86 hosts yet (due to some unresolved issues with TCG), we can at
-> least run some of the non-live tests to avoid such problems in the future.
-> Thus enable the "analyze-script" and the "bad_dest" tests before checking
-> for KVM on s390x or ppc64 (this also fixes the problem that the
-> "analyze-script" test was not run on s390x at all anymore since it got
-> disabled again by accident in a previous refactoring of the code).
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+Hello,
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+The first patches of this series simply apply the practices described
+in the Rules section of the qapi/error.h file for routines taking an
+'Error **' argument. The remaining patches are a fixup in the error
+path of vfio_ccw_realize() and some error reporting adjustements.
 
-Irrelevant of this patch, when I was looking at cleaning of bootfile it
-looks to me that we're leaking bootpath in the test loops.. maybe we need a
-bootfile_delete() at the entry of bootfile_create()?
+Applies on top of this vfio PR :
 
-Or even better, prepare bootfile once only and use it in all tests.  The
-only trick arch is x86 who needs to support suspend_me=true, but maybe we
-can provide two bootfiles.
+  https://lore.kernel.org/qemu-devel/20240522095442.195243-1-clg@redhat.com
+
+Thanks,
+
+C.
+
+Cédric Le Goater (6):
+  hw/s390x/ccw: Make s390_ccw_get_dev_info() return a bool
+  s390x/css: Make CCWDeviceClass::realize return bool
+  hw/s390x/ccw: Remove local Error variable from s390_ccw_realize()
+  s390x/css: Make S390CCWDeviceClass::realize return bool
+  vfio/ccw: Use the 'Error **errp' argument of vfio_ccw_realize()
+  vfio/{ap,ccw}: Use warn_report_err() for IRQ notifier registration
+    errors
+
+Zhenzhong Duan (1):
+  vfio/ccw: Fix the missed unrealize() call in error path
+
+ hw/s390x/ccw-device.h       |  2 +-
+ include/hw/s390x/s390-ccw.h |  2 +-
+ hw/s390x/ccw-device.c       |  3 ++-
+ hw/s390x/s390-ccw.c         | 29 +++++++++++++----------------
+ hw/vfio/ap.c                |  2 +-
+ hw/vfio/ccw.c               | 18 ++++++++----------
+ 6 files changed, 26 insertions(+), 30 deletions(-)
 
 -- 
-Peter Xu
+2.45.1
 
 
