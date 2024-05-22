@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0505B8CBA6D
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 06:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBD68CBA7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 06:49:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9dpC-0001zs-KN; Wed, 22 May 2024 00:43:38 -0400
+	id 1s9dpL-0002Ug-Gy; Wed, 22 May 2024 00:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9dp9-0001p8-L8
- for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:35 -0400
+ id 1s9dpH-0002OT-7a
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:43 -0400
 Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9dp7-0005wQ-Go
- for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:35 -0400
+ id 1s9dpF-0005wI-Gw
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 00:43:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716353013; x=1747889013;
+ t=1716353021; x=1747889021;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=r1ujOT9wnmzL4Jy0xbnj8LOr9Q4ivRZVm5w7T144XKg=;
- b=Bs+enfOPnGSJArIRggqiEGdLxeKLcmeMdvv49wWMd2v4/n+2dBjyKyn2
- nVBEXM8o4bOdcQnbu4oIY91XMaCN8x6TxnKsBTF8TyrNq7AJpzB3YyUYE
- szx0MCe1dyouOq1FxS4yQaP8MO2tO2oLBMad92ZHedSAA38yvgjlR+/Je
- ZjRPnJMw+bUXKzWxMmQ8bYWgxIAVHBNDVL0LdVA1mywVgJKqx79K2KdWX
- gCdx417OYbE2tx4SIpH4zT3TPD0kmrHi3RIyzciy9P3u6NAU5pA1SC9ou
- paClis4h67tj/x+bnx2/kKfVGQBgI7UxQYzOJMwhMM1BdfkQxT6lG8fUl Q==;
-X-CSE-ConnectionGUID: nO8fOkpuRfy7b24YXrGWSA==
-X-CSE-MsgGUID: 5CWtU9nmSFqeaVFyT1I+4w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="23994210"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="23994210"
+ bh=0mVsJycZ0+yemdLDwZw/Xcikr0NANe2J64lu6LFt2V0=;
+ b=fjIYF4AIRuQWsBJaCHP4M/KKGgKDx0lKEmLslCije84IdJYdyP2H9d/U
+ adSZJcBquEZdr61nQ4fdIgaN+1QPUcbJ2x0gEffSRgYj7uIt8Aa7Yj/hu
+ UewuTdQbgaSxlvl1zqhhI0z300g9mJPF767uwIWqpVsGSCPHAHt0gNAfV
+ 1WyQYckC94hkJYAaGJ14y6vf4s7zJawVq6el70z/Zwga4Y07+YEx0kAG/
+ m8HC8rbY4a4HFRQx/AFLQnOftvGWlPUXhUQ2kd1Ka0vMMLMBCjmMJEL0i
+ TwcnN8w67XTkHv7DfKf0km1NKfFxEy4GgdVsXEmh04EqocYF1e7Ua+GsL A==;
+X-CSE-ConnectionGUID: hyWJHSw0SPemiSYeJly3Sw==
+X-CSE-MsgGUID: GPPuHPhSQniYpj948HNlVQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="23994214"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="23994214"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 21:43:17 -0700
-X-CSE-ConnectionGUID: 1Tf3vL9JQ4Kc2Y4/nZIUog==
-X-CSE-MsgGUID: 8IjPgqwIQ8mvZp6ikIf7IQ==
+ 21 May 2024 21:43:20 -0700
+X-CSE-ConnectionGUID: JyiFn6yCQAmC2Otk6+JDKQ==
+X-CSE-MsgGUID: DUQHQf+fTsuOqtrTz5AEgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33683795"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33683803"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 21:43:15 -0700
+ 21 May 2024 21:43:17 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v2 17/20] vfio: Use g_autofree in all call site of
- vfio_get_region_info()
-Date: Wed, 22 May 2024 12:40:12 +0800
-Message-Id: <20240522044015.412951-18-zhenzhong.duan@intel.com>
+Subject: [PATCH v2 18/20] vfio/igd: Use g_autofree in
+ vfio_probe_igd_bar4_quirk()
+Date: Wed, 22 May 2024 12:40:13 +0800
+Message-Id: <20240522044015.412951-19-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240522044015.412951-1-zhenzhong.duan@intel.com>
 References: <20240522044015.412951-1-zhenzhong.duan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.10;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
@@ -82,144 +81,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are some exceptions when pointer to vfio_region_info is reused.
-In that case, the pointed memory is freed manually.
+Pointer opregion, host and lpc are allocated and freed in
+vfio_probe_igd_bar4_quirk(). Use g_autofree to automatically
+free them.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/helpers.c |  7 ++-----
- hw/vfio/igd.c     |  5 ++---
- hw/vfio/pci.c     | 13 +++----------
- 3 files changed, 7 insertions(+), 18 deletions(-)
+ hw/vfio/igd.c | 27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 4b079dc383..27ea26aa48 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -343,7 +343,7 @@ static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
- int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
-                       int index, const char *name)
- {
--    struct vfio_region_info *info;
-+    g_autofree struct vfio_region_info *info = NULL;
-     int ret;
- 
-     ret = vfio_get_region_info(vbasedev, index, &info);
-@@ -376,8 +376,6 @@ int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
-         }
-     }
- 
--    g_free(info);
--
-     trace_vfio_region_setup(vbasedev->name, index, name,
-                             region->flags, region->fd_offset, region->size);
-     return 0;
-@@ -594,14 +592,13 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
- 
- bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
- {
--    struct vfio_region_info *info = NULL;
-+    g_autofree struct vfio_region_info *info = NULL;
-     bool ret = false;
- 
-     if (!vfio_get_region_info(vbasedev, region, &info)) {
-         if (vfio_get_region_info_cap(info, cap_type)) {
-             ret = true;
-         }
--        g_free(info);
-     }
- 
-     return ret;
 diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index 402fc5ce1d..1e79202f2b 100644
+index 1e79202f2b..d320d032a7 100644
 --- a/hw/vfio/igd.c
 +++ b/hw/vfio/igd.c
-@@ -367,8 +367,8 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
- 
+@@ -368,7 +368,9 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
  void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
  {
--    struct vfio_region_info *rom = NULL, *opregion = NULL,
--                            *host = NULL, *lpc = NULL;
-+    g_autofree struct vfio_region_info *rom = NULL;
-+    struct vfio_region_info *opregion = NULL, *host = NULL, *lpc = NULL;
+     g_autofree struct vfio_region_info *rom = NULL;
+-    struct vfio_region_info *opregion = NULL, *host = NULL, *lpc = NULL;
++    g_autofree struct vfio_region_info *opregion = NULL;
++    g_autofree struct vfio_region_info *host = NULL;
++    g_autofree struct vfio_region_info *lpc = NULL;
      VFIOQuirk *quirk;
      VFIOIGDQuirk *igd;
      PCIDevice *lpc_bridge;
-@@ -609,7 +609,6 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name, ggms_mb + gms_mb);
+@@ -426,7 +428,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if ((ret || !rom->size) && !vdev->pdev.romfile) {
+         error_report("IGD device %s has no ROM, legacy mode disabled",
+                      vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
  
- out:
--    g_free(rom);
-     g_free(opregion);
-     g_free(host);
-     g_free(lpc);
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 35ad9b582f..74a79bdf61 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -879,7 +879,7 @@ static void vfio_update_msi(VFIOPCIDevice *vdev)
- 
- static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
- {
--    struct vfio_region_info *reg_info;
-+    g_autofree struct vfio_region_info *reg_info = NULL;
-     uint64_t size;
-     off_t off = 0;
-     ssize_t bytes;
-@@ -897,8 +897,6 @@ static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
-     vdev->rom_size = size = reg_info->size;
-     vdev->rom_offset = reg_info->offset;
- 
--    g_free(reg_info);
--
-     if (!vdev->rom_size) {
+     /*
+@@ -437,7 +439,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+         error_report("IGD device %s hotplugged, ROM disabled, "
+                      "legacy mode disabled", vdev->vbasedev.name);
          vdev->rom_read_failed = true;
-         error_report("vfio-pci: Cannot read device rom at "
-@@ -2668,7 +2666,7 @@ static VFIODeviceOps vfio_pci_ops = {
- bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
- {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    struct vfio_region_info *reg_info;
-+    g_autofree struct vfio_region_info *reg_info = NULL;
-     int ret;
- 
-     ret = vfio_get_region_info(vbasedev, VFIO_PCI_VGA_REGION_INDEX, &reg_info);
-@@ -2685,7 +2683,6 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
-         error_setg(errp, "unexpected VGA info, flags 0x%lx, size 0x%lx",
-                    (unsigned long)reg_info->flags,
-                    (unsigned long)reg_info->size);
--        g_free(reg_info);
-         return false;
+-        goto out;
++        return;
      }
  
-@@ -2694,8 +2691,6 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
-     vdev->vga->fd_offset = reg_info->offset;
-     vdev->vga->fd = vdev->vbasedev.fd;
- 
--    g_free(reg_info);
--
-     vdev->vga->region[QEMU_PCI_VGA_MEM].offset = QEMU_PCI_VGA_MEM_BASE;
-     vdev->vga->region[QEMU_PCI_VGA_MEM].nr = QEMU_PCI_VGA_MEM;
-     QLIST_INIT(&vdev->vga->region[QEMU_PCI_VGA_MEM].quirks);
-@@ -2736,7 +2731,7 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
- static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
- {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    struct vfio_region_info *reg_info;
-+    g_autofree struct vfio_region_info *reg_info = NULL;
-     struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info) };
-     int i, ret = -1;
- 
-@@ -2790,8 +2785,6 @@ static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+     /*
+@@ -450,7 +452,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if (ret) {
+         error_report("IGD device %s does not support OpRegion access,"
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
      }
-     vdev->config_offset = reg_info->offset;
  
--    g_free(reg_info);
+     ret = vfio_get_dev_region_info(&vdev->vbasedev,
+@@ -459,7 +461,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if (ret) {
+         error_report("IGD device %s does not support host bridge access,"
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     ret = vfio_get_dev_region_info(&vdev->vbasedev,
+@@ -468,7 +470,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if (ret) {
+         error_report("IGD device %s does not support LPC bridge access,"
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     gmch = vfio_pci_read_config(&vdev->pdev, IGD_GMCH, 4);
+@@ -482,7 +484,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+         error_report("IGD device %s failed to enable VGA access, "
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     /* Create our LPC/ISA bridge */
+@@ -490,7 +492,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if (ret) {
+         error_report("IGD device %s failed to create LPC bridge, "
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     /* Stuff some host values into the VM PCI host bridge */
+@@ -498,14 +500,14 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     if (ret) {
+         error_report("IGD device %s failed to modify host bridge, "
+                      "legacy mode disabled", vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     /* Setup OpRegion access */
+     if (!vfio_pci_igd_opregion_init(vdev, opregion, &err)) {
+         error_append_hint(&err, "IGD legacy mode disabled\n");
+         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+-        goto out;
++        return;
+     }
+ 
+     /* Setup our quirk to munge GTT addresses to the VM allocated buffer */
+@@ -607,9 +609,4 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
+     }
+ 
+     trace_vfio_pci_igd_bdsm_enabled(vdev->vbasedev.name, ggms_mb + gms_mb);
 -
-     if (vdev->features & VFIO_FEATURE_ENABLE_VGA) {
-         if (!vfio_populate_vga(vdev, errp)) {
-             error_append_hint(errp, "device does not support "
+-out:
+-    g_free(opregion);
+-    g_free(host);
+-    g_free(lpc);
+ }
 -- 
 2.34.1
 
