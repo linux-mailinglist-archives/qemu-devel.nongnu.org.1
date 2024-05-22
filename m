@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F75C8CBEAE
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8C28CBEDD
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihY-0005aU-G6; Wed, 22 May 2024 05:56:04 -0400
+	id 1s9ihV-0005Eg-Rz; Wed, 22 May 2024 05:56:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihR-0004xl-Vj
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihS-000524-Ps
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihQ-0001tl-BB
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:57 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihQ-0001uG-Sm
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371755;
+ s=mimecast20190719; t=1716371756;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N3A+EghA+9cMUObGB+bwhp8bYWIKjsA69gpm6h6H9oo=;
- b=WtpaiktO3gHyK+vzTSeMhWlWMcFIsJmTIJpD5/TwTdTUlqRzVJ/bW8MH93Ox2IuOO9dOYC
- Gc9YIikWQVBFtwgpiee4PiIkanfIutig8/EfDAVYgf2m47tEp6Lw8MyBbRm2+ue5y6q2aH
- SY7OlOBUqNLrzJ93XIMTBwWhtCvIRag=
+ bh=yanOxKaS7eId/4S/INjcbQanK+cHyaJV4bzSFLnJpok=;
+ b=GoYUXaKgplB3yVXGYHr/Mo+GiFCe9PbHIWyA1Ue749nkSO6Tv+UR5MtVxBKX0JRCIPretF
+ SyJW4yM0f+9dMUgi8xx4twpw2X0hd3zTyW+63HzZIL2jqwJilOv0J6EI1HRzCFglhfLA2s
+ DTdKRv/sxp2Ffve1i7XwwvxkxjGQq9g=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-eocvhGdLPLCt9UWwp_iT5Q-1; Wed, 22 May 2024 05:55:52 -0400
-X-MC-Unique: eocvhGdLPLCt9UWwp_iT5Q-1
+ us-mta-395-tXeuvYV7Mh21350McE-9EA-1; Wed, 22 May 2024 05:55:53 -0400
+X-MC-Unique: tXeuvYV7Mh21350McE-9EA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCFAC81227E;
- Wed, 22 May 2024 09:55:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FC02800CA2;
+ Wed, 22 May 2024 09:55:53 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B95417412;
- Wed, 22 May 2024 09:55:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1E83D28E2;
+ Wed, 22 May 2024 09:55:52 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 44/47] vfio/pci-quirks: Make vfio_pci_igd_opregion_init()
- return bool
-Date: Wed, 22 May 2024 11:54:39 +0200
-Message-ID: <20240522095442.195243-45-clg@redhat.com>
+Subject: [PULL 45/47] vfio/pci-quirks: Make vfio_add_*_cap() return bool
+Date: Wed, 22 May 2024 11:54:40 +0200
+Message-ID: <20240522095442.195243-46-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -85,93 +84,180 @@ From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 This is to follow the coding standand in qapi/error.h to return bool
 for bool-valued functions.
 
+Include below functions:
+vfio_add_virt_caps()
+vfio_add_nv_gpudirect_cap()
+vfio_add_vmd_shadow_cap()
+
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.h        | 6 +++---
- hw/vfio/igd.c        | 3 +--
- hw/vfio/pci-quirks.c | 8 ++++----
- hw/vfio/pci.c        | 3 +--
- 4 files changed, 9 insertions(+), 11 deletions(-)
+ hw/vfio/pci.h        |  2 +-
+ hw/vfio/pci-quirks.c | 42 +++++++++++++++++++-----------------------
+ hw/vfio/pci.c        |  3 +--
+ 3 files changed, 21 insertions(+), 26 deletions(-)
 
 diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 7914f019d5ed563ae7b60be17033aedacaaa00ff..f1586810726584ecfc35ef685646faacabefbec0 100644
+index f1586810726584ecfc35ef685646faacabefbec0..bf67df2fbc09b3d0fd97d25dfaa5290ab33b03ea 100644
 --- a/hw/vfio/pci.h
 +++ b/hw/vfio/pci.h
-@@ -227,9 +227,9 @@ int vfio_pci_get_pci_hot_reset_info(VFIOPCIDevice *vdev,
- 
- bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp);
- 
--int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
--                               struct vfio_region_info *info,
--                               Error **errp);
-+bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-+                                struct vfio_region_info *info,
-+                                Error **errp);
- 
- void vfio_display_reset(VFIOPCIDevice *vdev);
- bool vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index ffe57c5954e5d05a57a66b2a3f0cc44fef508126..402fc5ce1da966fda1340f328e0611cb1a2a0635 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -502,8 +502,7 @@ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
-     }
- 
-     /* Setup OpRegion access */
--    ret = vfio_pci_igd_opregion_init(vdev, opregion, &err);
--    if (ret) {
-+    if (!vfio_pci_igd_opregion_init(vdev, opregion, &err)) {
-         error_append_hint(&err, "IGD legacy mode disabled\n");
-         error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-         goto out;
+@@ -212,7 +212,7 @@ void vfio_bar_quirk_setup(VFIOPCIDevice *vdev, int nr);
+ void vfio_bar_quirk_exit(VFIOPCIDevice *vdev, int nr);
+ void vfio_bar_quirk_finalize(VFIOPCIDevice *vdev, int nr);
+ void vfio_setup_resetfn_quirk(VFIOPCIDevice *vdev);
+-int vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
++bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp);
+ void vfio_quirk_reset(VFIOPCIDevice *vdev);
+ VFIOQuirk *vfio_quirk_alloc(int nr_mem);
+ void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr);
 diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index 496fd1ee86bd2d53bf094860e330f4f0a5081365..ca27917159785f760f688c8db0a9ac492080d74b 100644
+index ca27917159785f760f688c8db0a9ac492080d74b..39dae72497e0315eeb580dbcd5255c58bc38c8ed 100644
 --- a/hw/vfio/pci-quirks.c
 +++ b/hw/vfio/pci-quirks.c
-@@ -1169,8 +1169,8 @@ static void vfio_probe_rtl8168_bar2_quirk(VFIOPCIDevice *vdev, int nr)
-  * the table and to write the base address of that memory to the ASLS register
-  * of the IGD device.
-  */
--int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
--                               struct vfio_region_info *info, Error **errp)
-+bool vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-+                                struct vfio_region_info *info, Error **errp)
- {
-     int ret;
+@@ -1536,7 +1536,7 @@ static bool is_valid_std_cap_offset(uint8_t pos)
+             pos <= (PCI_CFG_SPACE_SIZE - PCI_CAP_SIZEOF));
+ }
  
-@@ -1181,7 +1181,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-         error_setg(errp, "failed to read IGD OpRegion");
-         g_free(vdev->igd_opregion);
-         vdev->igd_opregion = NULL;
+-static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+ {
+     ERRP_GUARD();
+     PCIDevice *pdev = &vdev->pdev;
+@@ -1545,18 +1545,18 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+     uint8_t tmp;
+ 
+     if (vdev->nv_gpudirect_clique == 0xFF) {
+-        return 0;
++        return true;
+     }
+ 
+     if (!vfio_pci_is(vdev, PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID)) {
+         error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid device vendor");
+-        return -EINVAL;
++        return false;
+     }
+ 
+     if (pci_get_byte(pdev->config + PCI_CLASS_DEVICE + 1) !=
+         PCI_BASE_CLASS_DISPLAY) {
+         error_setg(errp, "NVIDIA GPUDirect Clique ID: unsupported PCI class");
 -        return -EINVAL;
 +        return false;
      }
  
      /*
-@@ -1206,7 +1206,7 @@ int vfio_pci_igd_opregion_init(VFIOPCIDevice *vdev,
-     pci_set_long(vdev->pdev.wmask + IGD_ASLS, ~0);
-     pci_set_long(vdev->emulated_config_bits + IGD_ASLS, ~0);
+@@ -1572,7 +1572,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+                 vdev->config_offset + PCI_CAPABILITY_LIST);
+     if (ret != 1 || !is_valid_std_cap_offset(tmp)) {
+         error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
+-        return -EINVAL;
++        return false;
+     }
+ 
+     do {
+@@ -1590,13 +1590,13 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+         pos = 0xD4;
+     } else {
+         error_setg(errp, "NVIDIA GPUDirect Clique ID: invalid config space");
+-        return -EINVAL;
++        return false;
+     }
+ 
+     ret = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, 8, errp);
+     if (ret < 0) {
+         error_prepend(errp, "Failed to add NVIDIA GPUDirect cap: ");
+-        return ret;
++        return false;
+     }
+ 
+     memset(vdev->emulated_config_bits + pos, 0xFF, 8);
+@@ -1608,7 +1608,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+     pci_set_byte(pdev->config + pos++, vdev->nv_gpudirect_clique << 3);
+     pci_set_byte(pdev->config + pos, 0);
  
 -    return 0;
 +    return true;
  }
  
  /*
+@@ -1629,7 +1629,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
+  */
+ #define VMD_SHADOW_CAP_VER 1
+ #define VMD_SHADOW_CAP_LEN 24
+-static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+ {
+     ERRP_GUARD();
+     uint8_t membar_phys[16];
+@@ -1639,7 +1639,7 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x467F) ||
+           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x4C3D) ||
+           vfio_pci_is(vdev, PCI_VENDOR_ID_INTEL, 0x9A0B))) {
+-        return 0;
++        return true;
+     }
+ 
+     ret = pread(vdev->vbasedev.fd, membar_phys, 16,
+@@ -1647,14 +1647,14 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+     if (ret != 16) {
+         error_report("VMD %s cannot read MEMBARs (%d)",
+                      vdev->vbasedev.name, ret);
+-        return -EFAULT;
++        return false;
+     }
+ 
+     ret = pci_add_capability(&vdev->pdev, PCI_CAP_ID_VNDR, pos,
+                              VMD_SHADOW_CAP_LEN, errp);
+     if (ret < 0) {
+         error_prepend(errp, "Failed to add VMD MEMBAR Shadow cap: ");
+-        return ret;
++        return false;
+     }
+ 
+     memset(vdev->emulated_config_bits + pos, 0xFF, VMD_SHADOW_CAP_LEN);
+@@ -1664,22 +1664,18 @@ static int vfio_add_vmd_shadow_cap(VFIOPCIDevice *vdev, Error **errp)
+     pci_set_long(vdev->pdev.config + pos, 0x53484457); /* SHDW */
+     memcpy(vdev->pdev.config + pos + 4, membar_phys, 16);
+ 
+-    return 0;
++    return true;
+ }
+ 
+-int vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp)
++bool vfio_add_virt_caps(VFIOPCIDevice *vdev, Error **errp)
+ {
+-    int ret;
+-
+-    ret = vfio_add_nv_gpudirect_cap(vdev, errp);
+-    if (ret) {
+-        return ret;
++    if (!vfio_add_nv_gpudirect_cap(vdev, errp)) {
++        return false;
+     }
+ 
+-    ret = vfio_add_vmd_shadow_cap(vdev, errp);
+-    if (ret) {
+-        return ret;
++    if (!vfio_add_vmd_shadow_cap(vdev, errp)) {
++        return false;
+     }
+ 
+-    return 0;
++    return true;
+ }
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 8379d2284a20bed0c0bd24e46bbb39e321dc9767..76a3931dba1da1a638ae574825fe9dfe1390b21f 100644
+index 76a3931dba1da1a638ae574825fe9dfe1390b21f..35ad9b582f6b99510a812edab5c2855c697a1da2 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3161,8 +3161,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-             goto out_teardown;
-         }
+@@ -2194,8 +2194,7 @@ static bool vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+         vdev->emulated_config_bits[PCI_CAPABILITY_LIST] = 0xff;
+         vdev->emulated_config_bits[PCI_STATUS] |= PCI_STATUS_CAP_LIST;
  
--        ret = vfio_pci_igd_opregion_init(vdev, opregion, errp);
+-        ret = vfio_add_virt_caps(vdev, errp);
 -        if (ret) {
-+        if (!vfio_pci_igd_opregion_init(vdev, opregion, errp)) {
-             goto out_teardown;
++        if (!vfio_add_virt_caps(vdev, errp)) {
+             return false;
          }
      }
 -- 
