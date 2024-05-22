@@ -2,64 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362EC8CBEA3
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624B18CBEC0
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9igT-0003FI-Hd; Wed, 22 May 2024 05:54:57 -0400
+	id 1s9igZ-0003Jp-JO; Wed, 22 May 2024 05:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igP-0003Ev-Qr
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:54:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igX-0003Iq-Cb
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igM-0001Kd-WB
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:54:52 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igP-0001Kn-Ke
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371689;
+ s=mimecast20190719; t=1716371692;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=SOpwB5ym3LvkjAI8UWd5w1+qL9K/vqjUDgnStmXtsqc=;
- b=WERjA2uoWuyxgLiGB8WsquRxg/87tvjAH9SeBRm+oCkITwvWxfNGDSxcdylBV9SCfIWkGb
- l78O4BNDvSQsumV/4MGHESOaz4XbfmzWY7EYBk7YZMDbe0fW0Lz/zt35dUIdo7uQFwGau4
- kKBd56dBvrylVrCvhNE3BGGT0mwLGag=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/MB4km9OgFQtXTFi96ON/NSe91r3XXzTqkR+UJNq5fo=;
+ b=AwZyIcx/WjgyHyTDG8Bnt2LV+MY+81VA+iaJzyo1VauYxIh1uV5hFUlq8C3ucO2g7stkFg
+ SaJy/8ZQssE4eFCHc5/cW6aYkBnoVoiXP+x5KbkJeSx5hFAn+rek1Bk0LQ4Bu8+m91dIdF
+ IOSktYZnliUIyD3t2jaHPeRbk7zbq1w=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-Rrn2BiZIMe6Ua4_ramXw2w-1; Wed,
- 22 May 2024 05:54:46 -0400
-X-MC-Unique: Rrn2BiZIMe6Ua4_ramXw2w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-7ZBH115FMYGApdHZES-4_w-1; Wed,
+ 22 May 2024 05:54:48 -0400
+X-MC-Unique: 7ZBH115FMYGApdHZES-4_w-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 158543C025C2
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 09:54:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E23541C29EA4;
+ Wed, 22 May 2024 09:54:47 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 053FC7414;
- Wed, 22 May 2024 09:54:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4AE9228E3;
+ Wed, 22 May 2024 09:54:46 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/47] vfio queue
-Date: Wed, 22 May 2024 11:53:55 +0200
-Message-ID: <20240522095442.195243-1-clg@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Avihai Horon <avihaih@nvidia.com>, Eric Auger <eric.auger@redhat.com>
+Subject: [PULL 01/47] vfio: Add Error** argument to .set_dirty_page_tracking()
+ handler
+Date: Wed, 22 May 2024 11:53:56 +0200
+Message-ID: <20240522095442.195243-2-clg@redhat.com>
+In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
+References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,116 +81,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 85ef20f1673feaa083f4acab8cf054df77b0dbed:
+We will use the Error object to improve error reporting in the
+.log_global*() handlers of VFIO. Add documentation while at it.
 
-  Merge tag 'pull-maintainer-may24-160524-2' of https://gitlab.com/stsquad/qemu into staging (2024-05-16 10:02:56 +0200)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++++--
+ hw/vfio/common.c                      |  4 ++--
+ hw/vfio/container-base.c              |  4 ++--
+ hw/vfio/container.c                   |  6 +++---
+ 4 files changed, 23 insertions(+), 9 deletions(-)
 
-are available in the Git repository at:
-
-  https://github.com/legoater/qemu/ tags/pull-vfio-20240522
-
-for you to fetch changes up to b4e1670c494165d4186930d56f692857f4fec89b:
-
-  vfio/igd: Use g_autofree in vfio_probe_igd_bar4_quirk() (2024-05-22 10:04:22 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Improvement of error reporting during migration
-* Removed Vendor Specific Capability check on newer machine
-* Addition of a VFIO migration QAPI event
-* Changed prototype of routines using an error parameter to return bool
-* Several cleanups regarding autofree variables
-
-----------------------------------------------------------------
-Avihai Horon (4):
-      qapi/vfio: Add VFIO migration QAPI event
-      vfio/migration: Emit VFIO migration QAPI event
-      vfio/migration: Don't emit STOP_COPY VFIO migration QAPI event twice
-      vfio/migration: Enhance VFIO migration state tracing
-
-Cédric Le Goater (13):
-      vfio: Add Error** argument to .set_dirty_page_tracking() handler
-      vfio: Add Error** argument to vfio_devices_dma_logging_start()
-      migration: Extend migration_file_set_error() with Error* argument
-      vfio/migration: Add an Error** argument to vfio_migration_set_state()
-      vfio/migration: Add Error** argument to .vfio_save_config() handler
-      vfio: Reverse test on vfio_get_xlat_addr()
-      memory: Add Error** argument to memory_get_xlat_addr()
-      vfio: Add Error** argument to .get_dirty_bitmap() handler
-      vfio: Also trace event failures in vfio_save_complete_precopy()
-      vfio/ap: Use g_autofree variable in vfio_ap_register_irq_notifier()
-      vfio/ap: Make vfio_ap_register_irq_notifier() return a bool
-      vfio/ccw: Use g_autofree variable in vfio_ccw_register_irq_notifier()
-      vfio/ccw: Make vfio_ccw_register_irq_notifier() return a bool
-
-Vinayak Kale (1):
-      vfio/pci: migration: Skip config space check for Vendor Specific Information in VSC during restore/load
-
-Zhenzhong Duan (29):
-      vfio/pci: Use g_autofree in vfio_realize
-      vfio/pci: Use g_autofree in iommufd_cdev_get_info_iova_range()
-      vfio: Make VFIOIOMMUClass::attach_device() and its wrapper return bool
-      vfio: Make VFIOIOMMUClass::setup() return bool
-      vfio: Make VFIOIOMMUClass::add_window() and its wrapper return bool
-      vfio/container: Make vfio_connect_container() return bool
-      vfio/container: Make vfio_set_iommu() return bool
-      vfio/container: Make vfio_get_device() return bool
-      vfio/iommufd: Make iommufd_cdev_*() return bool
-      vfio/cpr: Make vfio_cpr_register_container() return bool
-      backends/iommufd: Make iommufd_backend_*() return bool
-      vfio/display: Fix error path in call site of ramfb_setup()
-      vfio/display: Make vfio_display_*() return bool
-      vfio/helpers: Use g_autofree in vfio_set_irq_signaling()
-      vfio/helpers: Make vfio_set_irq_signaling() return bool
-      vfio/helpers: Make vfio_device_get_name() return bool
-      vfio/platform: Make vfio_populate_device() and vfio_base_device_init() return bool
-      vfio/ccw: Make vfio_ccw_get_region() return a bool
-      vfio/pci: Make vfio_intx_enable_kvm() return a bool
-      vfio/pci: Make vfio_pci_relocate_msix() and vfio_msix_early_setup() return a bool
-      vfio/pci: Make vfio_populate_device() return a bool
-      vfio/pci: Make vfio_intx_enable() return bool
-      vfio/pci: Make vfio_populate_vga() return bool
-      vfio/pci: Make capability related functions return bool
-      vfio/pci: Use g_autofree for vfio_region_info pointer
-      vfio/pci-quirks: Make vfio_pci_igd_opregion_init() return bool
-      vfio/pci-quirks: Make vfio_add_*_cap() return bool
-      vfio: Use g_autofree in all call site of vfio_get_region_info()
-      vfio/igd: Use g_autofree in vfio_probe_igd_bar4_quirk()
-
- MAINTAINERS                           |   1 +
- qapi/qapi-schema.json                 |   1 +
- qapi/vfio.json                        |  67 ++++++++
- hw/vfio/pci.h                         |  13 +-
- include/exec/memory.h                 |  15 +-
- include/hw/vfio/vfio-common.h         |  43 ++++--
- include/hw/vfio/vfio-container-base.h |  55 +++++--
- include/migration/misc.h              |   2 +-
- include/sysemu/iommufd.h              |   6 +-
- backends/iommufd.c                    |  29 ++--
- hw/core/machine.c                     |   1 +
- hw/vfio/ap.c                          |  35 ++---
- hw/vfio/ccw.c                         |  56 +++----
- hw/vfio/common.c                      | 119 +++++++++------
- hw/vfio/container-base.c              |  18 +--
- hw/vfio/container.c                   | 101 ++++++------
- hw/vfio/cpr.c                         |   4 +-
- hw/vfio/display.c                     |  22 ++-
- hw/vfio/helpers.c                     |  36 ++---
- hw/vfio/igd.c                         |  35 ++---
- hw/vfio/iommufd.c                     | 109 ++++++-------
- hw/vfio/migration.c                   | 180 ++++++++++++++++------
- hw/vfio/pci-quirks.c                  |  50 +++---
- hw/vfio/pci.c                         | 280 +++++++++++++++++-----------------
- hw/vfio/platform.c                    |  66 ++++----
- hw/vfio/spapr.c                       |  28 ++--
- hw/virtio/vhost-vdpa.c                |   5 +-
- migration/migration.c                 |   6 +-
- system/memory.c                       |  10 +-
- backends/trace-events                 |   4 +-
- hw/vfio/trace-events                  |   3 +-
- qapi/meson.build                      |   1 +
- 32 files changed, 806 insertions(+), 595 deletions(-)
- create mode 100644 qapi/vfio.json
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 3582d5f97a37877b2adfc0d0b06996c82403f8b7..326ceea52a2030eec9dad289a9845866c4a8c090 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -82,7 +82,7 @@ int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
+ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+                                        MemoryRegionSection *section);
+ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+-                                           bool start);
++                                           bool start, Error **errp);
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+                                       VFIOBitmap *vbmap,
+                                       hwaddr iova, hwaddr size);
+@@ -121,9 +121,23 @@ struct VFIOIOMMUClass {
+     int (*attach_device)(const char *name, VFIODevice *vbasedev,
+                          AddressSpace *as, Error **errp);
+     void (*detach_device)(VFIODevice *vbasedev);
++
+     /* migration feature */
++
++    /**
++     * @set_dirty_page_tracking
++     *
++     * Start or stop dirty pages tracking on VFIO container
++     *
++     * @bcontainer: #VFIOContainerBase on which to de/activate dirty
++     *              page tracking
++     * @start: indicates whether to start or stop dirty pages tracking
++     * @errp: pointer to Error*, to store an error if it happens.
++     *
++     * Returns zero to indicate success and negative for error
++     */
+     int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
+-                                   bool start);
++                                   bool start, Error **errp);
+     int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
+                               VFIOBitmap *vbmap,
+                               hwaddr iova, hwaddr size);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 8f9cbdc0264044ce587877a7d19d14b28527291b..485e53916491f1164d29e739fb7106c0c77df737 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1076,7 +1076,7 @@ static bool vfio_listener_log_global_start(MemoryListener *listener,
+     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+         ret = vfio_devices_dma_logging_start(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(bcontainer, true);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
+     }
+ 
+     if (ret) {
+@@ -1096,7 +1096,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
+     if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+         vfio_devices_dma_logging_stop(bcontainer);
+     } else {
+-        ret = vfio_container_set_dirty_page_tracking(bcontainer, false);
++        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
+     }
+ 
+     if (ret) {
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 913ae49077c4f09b7b27517c1231cfbe4befb7fb..7c0764121d24b02b6c4e66e368d7dff78a6d65aa 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -53,14 +53,14 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+ }
+ 
+ int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+-                                           bool start)
++                                           bool start, Error **errp)
+ {
+     if (!bcontainer->dirty_pages_supported) {
+         return 0;
+     }
+ 
+     g_assert(bcontainer->ops->set_dirty_page_tracking);
+-    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
++    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start, errp);
+ }
+ 
+ int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 77bdec276ec49cb9cd767c0de42ec801b4421572..c35221fbe7dc5453050f97cd186fc958e24f28f7 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -209,7 +209,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+ 
+ static int
+ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+-                                    bool start)
++                                    bool start, Error **errp)
+ {
+     const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+                                                   bcontainer);
+@@ -227,8 +227,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+     ret = ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, &dirty);
+     if (ret) {
+         ret = -errno;
+-        error_report("Failed to set dirty tracking flag 0x%x errno: %d",
+-                     dirty.flags, errno);
++        error_setg_errno(errp, errno, "Failed to set dirty tracking flag 0x%x",
++                         dirty.flags);
+     }
+ 
+     return ret;
+-- 
+2.45.1
 
 
