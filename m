@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE5D8CBEC1
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C428CBEAF
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihH-0003nJ-Q0; Wed, 22 May 2024 05:55:47 -0400
+	id 1s9ihJ-0003xw-6o; Wed, 22 May 2024 05:55:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih4-0003a4-31
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:34 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih8-0003bW-1s
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih2-0001jt-Bx
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:33 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ih6-0001kT-98
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371731;
+ s=mimecast20190719; t=1716371734;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cRuuNZBzxypv/pnih3IuYyo3ywdxPulrg4+T5lQo/rM=;
- b=P6I9Q31DQlR1Ax57NapmT7HGqxSG8V9oTceFJHDLkxqO24BB2UNg0rzfbUt9kvBOuPaMW/
- yf+96w+YwUV2JoJEZK8xXL8+zx9IFL8CISBBf3kQdEIovSPWvbh3ZWR/ZKfipa7fbv6oQR
- HZvfmL8e4IyB9q/fe+kJ5HfVkmI7NWk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-588-nJjsmpVfPEmlL6Kyq9Euxw-1; Wed, 22 May 2024 05:55:30 -0400
-X-MC-Unique: nJjsmpVfPEmlL6Kyq9Euxw-1
+ bh=3IyGXEIi8Lck1UpUIn2/C+Qvo2TjwD4ZA/zkD428RJ8=;
+ b=Wm1d81BJnhfF8ksgl36SJ5zvbJV2HC4djeNjxWf5Yhv6xjmfpAqD0Kf1c3qQV9AdNyoX2w
+ SxQd4t/uNago5SfAhEtzEGUnJ4xYaje2o5wzfyYGak1dCZ6k+Vwb82CAvfYBklwkRFYDwU
+ vljVgiHti6pZa8WuW7c+/pIrN19kBAk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-SIxyxu6NONiFXsB1UtYdzA-1; Wed,
+ 22 May 2024 05:55:31 -0400
+X-MC-Unique: SIxyxu6NONiFXsB1UtYdzA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B65F5101A551;
- Wed, 22 May 2024 09:55:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A1111C29EA4;
+ Wed, 22 May 2024 09:55:31 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 95A257412;
- Wed, 22 May 2024 09:55:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EB17C28E2;
+ Wed, 22 May 2024 09:55:29 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 28/47] vfio/cpr: Make vfio_cpr_register_container() return bool
-Date: Wed, 22 May 2024 11:54:23 +0200
-Message-ID: <20240522095442.195243-29-clg@redhat.com>
+Subject: [PULL 29/47] backends/iommufd: Make iommufd_backend_*() return bool
+Date: Wed, 22 May 2024 11:54:24 +0200
+Message-ID: <20240522095442.195243-30-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -84,77 +84,154 @@ From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 This is to follow the coding standand to return bool if 'Error **'
 is used to pass error.
 
+The changed functions include:
+
+iommufd_backend_connect
+iommufd_backend_alloc_ioas
+
+By this chance, simplify the functions a bit by avoiding duplicate
+recordings, e.g., log through either error interface or trace, not
+both.
+
 Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 2 +-
- hw/vfio/container.c           | 3 +--
- hw/vfio/cpr.c                 | 4 ++--
- hw/vfio/iommufd.c             | 3 +--
- 4 files changed, 5 insertions(+), 7 deletions(-)
+ include/sysemu/iommufd.h |  6 +++---
+ backends/iommufd.c       | 29 +++++++++++++----------------
+ hw/vfio/iommufd.c        |  5 ++---
+ backends/trace-events    |  4 ++--
+ 4 files changed, 20 insertions(+), 24 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index e85817e65e65317d08bc2b17b738449198784796..b7bb4f5304addcdb03c971f27f99e5350ad0940a 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -229,7 +229,7 @@ void vfio_detach_device(VFIODevice *vbasedev);
- int vfio_kvm_device_add_fd(int fd, Error **errp);
- int vfio_kvm_device_del_fd(int fd, Error **errp);
+diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
+index 9af27ebd6ccb78ca8e16aa3c62629aab9f7f31e4..293bfbe967215381532b8267227dde61fa9157b7 100644
+--- a/include/sysemu/iommufd.h
++++ b/include/sysemu/iommufd.h
+@@ -23,11 +23,11 @@ struct IOMMUFDBackend {
+     /*< public >*/
+ };
  
--int vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
-+bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp);
- void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer);
+-int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
++bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp);
+ void iommufd_backend_disconnect(IOMMUFDBackend *be);
  
- extern const MemoryRegionOps vfio_region_ops;
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 53649e397cab94f8a2b61e6d66f21d635556e04e..096cc972586df14a4a68074b7038a9661b1558e2 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -618,8 +618,7 @@ static bool vfio_connect_container(VFIOGroup *group, AddressSpace *as,
-         goto free_container_exit;
-     }
- 
--    ret = vfio_cpr_register_container(bcontainer, errp);
--    if (ret) {
-+    if (!vfio_cpr_register_container(bcontainer, errp)) {
-         goto free_container_exit;
-     }
- 
-diff --git a/hw/vfio/cpr.c b/hw/vfio/cpr.c
-index 392c2dd95d14664bade0ae74655e91bc839504c0..87e51fcee176fe1fa93349f08e9f9ca84b474729 100644
---- a/hw/vfio/cpr.c
-+++ b/hw/vfio/cpr.c
-@@ -25,12 +25,12 @@ static int vfio_cpr_reboot_notifier(NotifierWithReturn *notifier,
-     return 0;
+-int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+-                               Error **errp);
++bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
++                                Error **errp);
+ void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id);
+ int iommufd_backend_map_dma(IOMMUFDBackend *be, uint32_t ioas_id, hwaddr iova,
+                             ram_addr_t size, void *vaddr, bool readonly);
+diff --git a/backends/iommufd.c b/backends/iommufd.c
+index 76a0204852f73466a9f31492a08d89d468bff7c0..c506afbdac4beddb7dac88f74f10544f7a083e58 100644
+--- a/backends/iommufd.c
++++ b/backends/iommufd.c
+@@ -72,24 +72,22 @@ static void iommufd_backend_class_init(ObjectClass *oc, void *data)
+     object_class_property_add_str(oc, "fd", NULL, iommufd_backend_set_fd);
  }
  
--int vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
-+bool vfio_cpr_register_container(VFIOContainerBase *bcontainer, Error **errp)
+-int iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
++bool iommufd_backend_connect(IOMMUFDBackend *be, Error **errp)
  {
-     migration_add_notifier_mode(&bcontainer->cpr_reboot_notifier,
-                                 vfio_cpr_reboot_notifier,
-                                 MIG_MODE_CPR_REBOOT);
--    return 0;
+-    int fd, ret = 0;
++    int fd;
+ 
+     if (be->owned && !be->users) {
+         fd = qemu_open_old("/dev/iommu", O_RDWR);
+         if (fd < 0) {
+             error_setg_errno(errp, errno, "/dev/iommu opening failed");
+-            ret = fd;
+-            goto out;
++            return false;
+         }
+         be->fd = fd;
+     }
+     be->users++;
+-out:
+-    trace_iommufd_backend_connect(be->fd, be->owned,
+-                                  be->users, ret);
+-    return ret;
++
++    trace_iommufd_backend_connect(be->fd, be->owned, be->users);
 +    return true;
  }
  
- void vfio_cpr_unregister_container(VFIOContainerBase *bcontainer)
+ void iommufd_backend_disconnect(IOMMUFDBackend *be)
+@@ -106,25 +104,24 @@ out:
+     trace_iommufd_backend_disconnect(be->fd, be->users);
+ }
+ 
+-int iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
+-                               Error **errp)
++bool iommufd_backend_alloc_ioas(IOMMUFDBackend *be, uint32_t *ioas_id,
++                                Error **errp)
+ {
+-    int ret, fd = be->fd;
++    int fd = be->fd;
+     struct iommu_ioas_alloc alloc_data  = {
+         .size = sizeof(alloc_data),
+         .flags = 0,
+     };
+ 
+-    ret = ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data);
+-    if (ret) {
++    if (ioctl(fd, IOMMU_IOAS_ALLOC, &alloc_data)) {
+         error_setg_errno(errp, errno, "Failed to allocate ioas");
+-        return ret;
++        return false;
+     }
+ 
+     *ioas_id = alloc_data.out_ioas_id;
+-    trace_iommufd_backend_alloc_ioas(fd, *ioas_id, ret);
++    trace_iommufd_backend_alloc_ioas(fd, *ioas_id);
+ 
+-    return ret;
++    return true;
+ }
+ 
+ void iommufd_backend_free_id(IOMMUFDBackend *be, uint32_t id)
 diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index 84c86b970e756d34b202d5b18ae51c30c730e092..6a446b16dcd64838dc9ebb6150cd5ed85ec6fef3 100644
+index 6a446b16dcd64838dc9ebb6150cd5ed85ec6fef3..554f9a6292454f51015ab3a56df3fab6a482ccb7 100644
 --- a/hw/vfio/iommufd.c
 +++ b/hw/vfio/iommufd.c
-@@ -396,8 +396,7 @@ found_container:
-         goto err_listener_register;
+@@ -71,7 +71,7 @@ static bool iommufd_cdev_connect_and_bind(VFIODevice *vbasedev, Error **errp)
+         .flags = 0,
+     };
+ 
+-    if (iommufd_backend_connect(iommufd, errp)) {
++    if (!iommufd_backend_connect(iommufd, errp)) {
+         return false;
      }
  
--    ret = vfio_cpr_register_container(bcontainer, errp);
--    if (ret) {
-+    if (!vfio_cpr_register_container(bcontainer, errp)) {
-         goto err_listener_register;
+@@ -346,8 +346,7 @@ static bool iommufd_cdev_attach(const char *name, VFIODevice *vbasedev,
      }
  
+     /* Need to allocate a new dedicated container */
+-    ret = iommufd_backend_alloc_ioas(vbasedev->iommufd, &ioas_id, errp);
+-    if (ret < 0) {
++    if (!iommufd_backend_alloc_ioas(vbasedev->iommufd, &ioas_id, errp)) {
+         goto err_alloc_ioas;
+     }
+ 
+diff --git a/backends/trace-events b/backends/trace-events
+index d45c6e31a67ed66d94787f60eb08a525cf6ff68b..211e6f374adcef25be0409ce3e42cbed6f31b744 100644
+--- a/backends/trace-events
++++ b/backends/trace-events
+@@ -7,11 +7,11 @@ dbus_vmstate_loading(const char *id) "id: %s"
+ dbus_vmstate_saving(const char *id) "id: %s"
+ 
+ # iommufd.c
+-iommufd_backend_connect(int fd, bool owned, uint32_t users, int ret) "fd=%d owned=%d users=%d (%d)"
++iommufd_backend_connect(int fd, bool owned, uint32_t users) "fd=%d owned=%d users=%d"
+ iommufd_backend_disconnect(int fd, uint32_t users) "fd=%d users=%d"
+ iommu_backend_set_fd(int fd) "pre-opened /dev/iommu fd=%d"
+ iommufd_backend_map_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, void *vaddr, bool readonly, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" addr=%p readonly=%d (%d)"
+ iommufd_backend_unmap_dma_non_exist(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " Unmap nonexistent mapping: iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+ iommufd_backend_unmap_dma(int iommufd, uint32_t ioas, uint64_t iova, uint64_t size, int ret) " iommufd=%d ioas=%d iova=0x%"PRIx64" size=0x%"PRIx64" (%d)"
+-iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas, int ret) " iommufd=%d ioas=%d (%d)"
++iommufd_backend_alloc_ioas(int iommufd, uint32_t ioas) " iommufd=%d ioas=%d"
+ iommufd_backend_free_id(int iommufd, uint32_t id, int ret) " iommufd=%d id=%d (%d)"
 -- 
 2.45.1
 
