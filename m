@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5109F8CC92C
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06158CC93D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ujV-0005oE-75; Wed, 22 May 2024 18:46:53 -0400
+	id 1s9uqi-00016V-Gg; Wed, 22 May 2024 18:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9ujT-0005lI-0d
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:46:51 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1s9uqa-00015c-HL
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:54:13 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9ujQ-0008MH-TR
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:46:50 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f4521ad6c0so1831115b3a.0
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:46:48 -0700 (PDT)
+ id 1s9uqY-0000ns-Du
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:54:12 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1eb0e08bfd2so120049665ad.1
+ for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:54:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716418007; x=1717022807; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716418449; x=1717023249; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oFHaUHex8RsqiMd5terS4Iu1CJQzQl4U0XFNlHN6pJ0=;
- b=LDyvVmqF/qHC7Hk6OolJYR54JHVbeCRRyZFdrsnVY7LWEqYVVz0G+KEkepwEqe+FA+
- AsnET6mIXHwGAfPoXF+3aUPjCz06TfplVxrpGOMbB92jyojSEMtRT+fvhIJJEJgEHYLz
- fF/7fCaU63crYcRHkR4IEuXPiKKPXAIY62pz8PEdNuMTptyXnbc90EeME1oRgdg8jPGa
- TJXP+/u4N9EOXk4BrRgYg+WvLjkuiPjVNqPDKHqOtgoB5p8XIRhKvgdZ4B8E2+65B/QB
- mdp4tfUVIWcarzvm9sVD3/RPqnRmzuVeU5Vd67IjA13PQwRaTJWOPDIXLzt6XafzUcn8
- m4ZA==
+ bh=boHNVoYjZiVALj0BdZzuvEpmzb6F+mybkq4QTpmHcFQ=;
+ b=sTi/P3grMNI8Wcp769EgfA9THaoaf7Qzqe+GgXZlxQLuHHPXW/5PymlKmLfFTdN8Rk
+ ZZYdeFimWeMDeKGnbEsKGbF5juqTBCkLUCswYO0T3q4+iwtWz9ztQDphGUHplauztr4F
+ NtVtxFG1LSWNKxX4+B+4F/9EkRrS+16WVe+OSkoJBZ3/mMAJDv3oUbbgHDkSS97g23lZ
+ Tu470WznX7gXIhoLJCkgOTW2wqRSr1yX4W2pz5TfdfboRXX9u/X0Gqvz9UtDxIgq+YR7
+ /TTOVFJULZN4Ffolc5eV/MEVit2A4Wct2jo4xGkryAyRZ6bcDmzcbH0QnBJlMyQzCeBS
+ oe5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716418007; x=1717022807;
+ d=1e100.net; s=20230601; t=1716418449; x=1717023249;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oFHaUHex8RsqiMd5terS4Iu1CJQzQl4U0XFNlHN6pJ0=;
- b=M0aWYett38yrcHBcdBtPe1tq8swKXU7XqRyy99JuUeQr7SWBgWU1hfNV3ayz9dup7s
- 3mD0ko3ykLs9/FbxwtWgr5TIP+815kdOWWwHJeTapeG93MGqJRN+DrW2PhQFUR0gveCz
- 9fMVm0MZ37+8f41a72UMgwCJNJUlbpnzEMiFnmAv2bJxQlGiUM30zf0sbs13mLUomu7d
- CXbBa/xOvJq3i/orSDCw6mjsFbIHQfMmBZDku+RUAvVxxJOEmoiWqxvJlWlCuqcYXvTx
- 68h+jChWUDKknGgBR0SUnEjzESovGGHqxZYIWRRagn9Sb55bsbmgUfumex76SACI4Rz6
- SLrg==
+ bh=boHNVoYjZiVALj0BdZzuvEpmzb6F+mybkq4QTpmHcFQ=;
+ b=ls9jd1uIFOILzdcXFBCrC6KrWNoXvwTVFo3PCbFygzGB/FJTGRuST23Dv0D9I2edRr
+ L2IQvT8cVeFWug5ase12WjP8qnzeom+fwWN1qpFqBLeYa0VlS4X/9gDvOnSibyiHVSlr
+ ZD8j64aZRPVygJbpIRiYY9tBenBIyKL7bm/9drnew+QscTDZ0szShxsBInzYHInfne2U
+ NPMZ30p+ZGvDKXZ+sM7nDKWDcXIwil5wjCFv8GSjzPk2MCsGBPJ/7pnu8rF9vNSZGOUQ
+ 6AtGoH5yYz4oQDawtAzWHQEP4LxP0yvA5oj7d7xuMa/tTPSlYORJvcMB5mPig+Xl0YeK
+ reMQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXaN3S87rK20wnwuOPCuFlfb35y6XpoYMmURntOOUmI3XebK4nkjm/CeGthI3d30H0aEdErR74PI7nj4iIqyow96IuUsCs=
-X-Gm-Message-State: AOJu0Yz2vztyq2Nu9mKaosdOhwlI39etkSlenP9hMNY1xC+NdF/tTaR/
- ozvM8YSsbR/9To2Yowb5ULwsnm3SWcbz/L5dvv0I6r4615JeVeygaUmApzYNhro=
-X-Google-Smtp-Source: AGHT+IHwnYI6aQUN5niq+p3GV22og99nps2TIrvcZsJ9RQS4EcweaFT20v9shYv84TmFYHBVbpQNgA==
-X-Received: by 2002:a05:6a00:130b:b0:6f3:f963:505f with SMTP id
- d2e1a72fcca58-6f6d6041560mr3666544b3a.5.1716418007004; 
- Wed, 22 May 2024 15:46:47 -0700 (PDT)
+ AJvYcCUTOIAwSSaE6qugp0scKu6j9AvYREL3+RJqZ1I2BKEgomhXLChWYzgiC3XSTTgZ5mh7EH+lBxA/vXZ0nsI654Z8g+Eo7r0=
+X-Gm-Message-State: AOJu0YwwwTWL5jW8dubJypwt+5WNI129haPlGFVaPZ0q0kV4LLUNBqKc
+ 2C3QT7nqUfrzIgi7SFQBoM4MHCnWNbwpaEpSyMyiHtkrmE3yJ2APgO9IB6UjDtU=
+X-Google-Smtp-Source: AGHT+IEocV1rh6RBRIo/SyjD1CPs6V0TqcCmNhpXNfuWjJtwVoCHaMWmehCqDJUbPB7/LWItT6lmmw==
+X-Received: by 2002:a17:903:40ca:b0:1f2:f50d:b4e0 with SMTP id
+ d9443c01a7336-1f31c97e8a8mr40472375ad.25.1716418448862; 
+ Wed, 22 May 2024 15:54:08 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f67a1b1c17sm12386129b3a.138.2024.05.22.15.46.46
+ d9443c01a7336-1f31eab519asm18735445ad.272.2024.05.22.15.54.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 May 2024 15:46:46 -0700 (PDT)
-Message-ID: <39f33a5d-a9fd-4469-ad6d-ca0fe844f571@linaro.org>
-Date: Wed, 22 May 2024 15:46:44 -0700
+ Wed, 22 May 2024 15:54:08 -0700 (PDT)
+Message-ID: <84a38790-0cf5-4854-b8fa-c525023d3b05@linaro.org>
+Date: Wed, 22 May 2024 15:54:06 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] target/ppc: Fix PMU instruction counting
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-References: <20240522040411.90655-1-npiggin@gmail.com>
+Subject: Re: [PATCH 09/14] target/s390x: Raise exception from helper_per_branch
+To: Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, david@redhat.com, thuth@redhat.com
+References: <20240502054417.234340-1-richard.henderson@linaro.org>
+ <20240502054417.234340-10-richard.henderson@linaro.org>
+ <b1d64ce0bce9241f62a3db44b92b74d47c833979.camel@linux.ibm.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240522040411.90655-1-npiggin@gmail.com>
+In-Reply-To: <b1d64ce0bce9241f62a3db44b92b74d47c833979.camel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,31 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/21/24 21:04, Nicholas Piggin wrote:
-> The crux of the problem being that dynamic exits from a TB would
-> not count instructions previously executed in the TB. I don't
-> know how important it is for PMU to count instructions exactly,
-> however for instruction replay this can lead to different counts
-> for the same execution (e.g., because TBs can be different sized)
-> and that blows up reverse debugging.
+On 5/22/24 15:45, Ilya Leoshkevich wrote:
+> On Wed, 2024-05-01 at 22:44 -0700, Richard Henderson wrote:
+>> Drop from argument, since gbea has always been updated with
+>> this address.  Add ilen argument for setting int_pgm_ilen.
+>> Use update_cc_op before calling per_branch.
+>>
+>> By raising the exception here, we need not call
+>> per_check_exception later, which means we can clean up the
+>> normal non-exception branch path.
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   target/s390x/helper.h          |  2 +-
+>>   target/s390x/tcg/misc_helper.c | 15 +++++++----
+>>   target/s390x/tcg/translate.c   | 48 ++++++++++++--------------------
+>> --
+>>   3 files changed, 27 insertions(+), 38 deletions(-)
 > 
-> I posted something on this out before, but missed a few things
-> (most notably faulting memory access). And found that forcing 1
-> insn per TB seems to be the only feasible way to do this.
+> [...]
 > 
-> Sorry to ping you on this again Richard, it's not urgent but
-> you're the guru with this stuff and I'm hesitant to change it
-> without a better opinion ... Simple band aid for the meanwhile
-> could be leave it as is but just disable counting if
-> record/replay is in use.
+>>   static bool use_goto_tb(DisasContext *s, uint64_t dest)
+>>   {
+>> -    if (unlikely(s->base.tb->flags & FLAG_MASK_PER_BRANCH)) {
+>> -        return false;
+>> -    }
+> 
+> Why was this required in the first place and why can we remove it now?
+> 
 
-When we unwind, we know how many insns remain in the tb.
-With icount, we adjust cpu->neg.icount_decr.u16.low.
+This was required because of the structure of the code: the PER exception was only raised 
+from translate_one, and therefore we could not allow the TB to end beforehand with goto_tb.
 
-My suggestion is to change restore_state_to_opc to pass in either the raw insns_left, or 
-the inverse: tb->icount - insns_left.
-
-That'll be a trivial mechanical change for the signature of the hook, first.
+We can eliminate this now because we're raising the PER branch exception before attempting 
+goto_tb.
 
 
 r~
