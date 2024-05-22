@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF99A8CC902
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D2A8CC901
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:22:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9uKO-0005W4-5x; Wed, 22 May 2024 18:20:56 -0400
+	id 1s9uKO-0005Xo-U5; Wed, 22 May 2024 18:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKJ-0005V1-Vw
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:53 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKL-0005VC-GQ
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:54 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKH-0003ki-Vc
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:51 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKJ-0003mM-RH
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:53 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id AB17C21C22;
- Wed, 22 May 2024 22:20:48 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id AEA5121C23;
+ Wed, 22 May 2024 22:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716416448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716416450; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SIh5OYmcUeFW+3uvEXt5iN0/4XFNfXVWDVk4MuLzvBg=;
- b=by3f+LwaLnT0IOTZo9meqr+HCCZIRp/wuW6pfor0xp0b8K8bwHw8FjRd6iXcmz7Jp6vgBK
- c/P5TU2Ym4pJMGoGwZtEnCl1oVPXVt5kjqkOppLAVrIQaoeqlS7yNIA8X8Gm9JOC+CyeDB
- 0SfViS78vKUEGJELAv8Ph5Di83Wdb/Y=
+ bh=gNNt8j2mHsytQe9ZOOd8CIPHY6lGnlx8mCYp+SHpjU0=;
+ b=XpNf9Yya2Q6rk5AcO3+bJV05CRSirArGTZFKhNHbkBxn/RLneIw8uA4OQPU3f1S13nZJHB
+ PdXr4NLNw5dX3dMNnFnYGM1/U/oJhWS5MATAmFuZrWY/YSyhyFUJbU55/E+9VryBLPNgU0
+ IGoFDzelP7vL61lwC/SUA8TJ3dX0QuQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716416448;
+ s=susede2_ed25519; t=1716416450;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SIh5OYmcUeFW+3uvEXt5iN0/4XFNfXVWDVk4MuLzvBg=;
- b=8FS+lCdZWcwPAXwM6545MRs4eeRxTv5BnmQIc/ThT/anV4uE1uuMWcQi9od2Qb2EFkOfMy
- Nr59RKSuGwggM6AQ==
+ bh=gNNt8j2mHsytQe9ZOOd8CIPHY6lGnlx8mCYp+SHpjU0=;
+ b=edEbtV0fRor/QlNnN7UiA/moctS9sHa5E9bfXGGI51bPXGeAcOtDM0VeUYKfYJsK/xjxlC
+ fGTT+vkihTPuZuDg==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716416448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716416450; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SIh5OYmcUeFW+3uvEXt5iN0/4XFNfXVWDVk4MuLzvBg=;
- b=by3f+LwaLnT0IOTZo9meqr+HCCZIRp/wuW6pfor0xp0b8K8bwHw8FjRd6iXcmz7Jp6vgBK
- c/P5TU2Ym4pJMGoGwZtEnCl1oVPXVt5kjqkOppLAVrIQaoeqlS7yNIA8X8Gm9JOC+CyeDB
- 0SfViS78vKUEGJELAv8Ph5Di83Wdb/Y=
+ bh=gNNt8j2mHsytQe9ZOOd8CIPHY6lGnlx8mCYp+SHpjU0=;
+ b=XpNf9Yya2Q6rk5AcO3+bJV05CRSirArGTZFKhNHbkBxn/RLneIw8uA4OQPU3f1S13nZJHB
+ PdXr4NLNw5dX3dMNnFnYGM1/U/oJhWS5MATAmFuZrWY/YSyhyFUJbU55/E+9VryBLPNgU0
+ IGoFDzelP7vL61lwC/SUA8TJ3dX0QuQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716416448;
+ s=susede2_ed25519; t=1716416450;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SIh5OYmcUeFW+3uvEXt5iN0/4XFNfXVWDVk4MuLzvBg=;
- b=8FS+lCdZWcwPAXwM6545MRs4eeRxTv5BnmQIc/ThT/anV4uE1uuMWcQi9od2Qb2EFkOfMy
- Nr59RKSuGwggM6AQ==
+ bh=gNNt8j2mHsytQe9ZOOd8CIPHY6lGnlx8mCYp+SHpjU0=;
+ b=edEbtV0fRor/QlNnN7UiA/moctS9sHa5E9bfXGGI51bPXGeAcOtDM0VeUYKfYJsK/xjxlC
+ fGTT+vkihTPuZuDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0EFD613A6B;
- Wed, 22 May 2024 22:20:46 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 165FE13A6B;
+ Wed, 22 May 2024 22:20:48 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id kFPRMb5vTmaABAAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:20:46 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id KDW/M8BvTmaABAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:20:48 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PULL 5/9] migration: fix a typo
-Date: Wed, 22 May 2024 19:20:30 -0300
-Message-Id: <20240522222034.4001-6-farosas@suse.de>
+Subject: [PULL 6/9] virtio-gpu: fix v2 migration
+Date: Wed, 22 May 2024 19:20:31 -0300
+Message-Id: <20240522222034.4001-7-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240522222034.4001-1-farosas@suse.de>
 References: <20240522222034.4001-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.30
 X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
@@ -96,8 +95,9 @@ X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  RCVD_COUNT_TWO(0.00)[2];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+X-Spam-Score: -3.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -122,29 +122,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Commit dfcf74fa ("virtio-gpu: fix scanout migration post-load") broke
+forward/backward version migration. Versioning of nested VMSD structures
+is not straightforward, as the wire format doesn't have nested
+structures versions. Introduce x-scanout-vmstate-version and a field
+test to save/load appropriately according to the machine version.
+
+Fixes: dfcf74fa ("virtio-gpu: fix scanout migration post-load")
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+[fixed long lines]
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/vmstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/core/machine.c              |  1 +
+ hw/display/virtio-gpu.c        | 30 ++++++++++++++++++++++--------
+ include/hw/virtio/virtio-gpu.h |  1 +
+ 3 files changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/migration/vmstate.c b/migration/vmstate.c
-index b51212a75b..ff5d589a6d 100644
---- a/migration/vmstate.c
-+++ b/migration/vmstate.c
-@@ -479,7 +479,7 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index c7ceb11501..8d6dc69f0e 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -42,6 +42,7 @@ GlobalProperty hw_compat_8_2[] = {
+     { "migration", "zero-page-detection", "legacy"},
+     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
+     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
++    { "virtio-gpu-device", "x-scanout-vmstate-version", "1" },
+ };
+ const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
  
-         len = qemu_peek_byte(f, 1);
-         if (len < strlen(vmsd->name) + 1) {
--            /* subsection name has be be "section_name/a" */
-+            /* subsection name has to be "section_name/a" */
-             trace_vmstate_subsection_load_bad(vmsd->name, "(short)", "");
-             return 0;
-         }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index ae831b6b3e..d60b1b2973 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1166,10 +1166,17 @@ static void virtio_gpu_cursor_bh(void *opaque)
+     virtio_gpu_handle_cursor(&g->parent_obj.parent_obj, g->cursor_vq);
+ }
+ 
++static bool scanout_vmstate_after_v2(void *opaque, int version)
++{
++    struct VirtIOGPUBase *base = container_of(opaque, VirtIOGPUBase, scanout);
++    struct VirtIOGPU *gpu = container_of(base, VirtIOGPU, parent_obj);
++
++    return gpu->scanout_vmstate_version >= 2;
++}
++
+ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+     .name = "virtio-gpu-one-scanout",
+-    .version_id = 2,
+-    .minimum_version_id = 1,
++    .version_id = 1,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(resource_id, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(width, struct virtio_gpu_scanout),
+@@ -1181,12 +1188,18 @@ static const VMStateDescription vmstate_virtio_gpu_scanout = {
+         VMSTATE_UINT32(cursor.hot_y, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.x, struct virtio_gpu_scanout),
+         VMSTATE_UINT32(cursor.pos.y, struct virtio_gpu_scanout),
+-        VMSTATE_UINT32_V(fb.format, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.bytes_pp, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.width, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.height, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.stride, struct virtio_gpu_scanout, 2),
+-        VMSTATE_UINT32_V(fb.offset, struct virtio_gpu_scanout, 2),
++        VMSTATE_UINT32_TEST(fb.format, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.bytes_pp, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.width, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.height, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.stride, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
++        VMSTATE_UINT32_TEST(fb.offset, struct virtio_gpu_scanout,
++                            scanout_vmstate_after_v2),
+         VMSTATE_END_OF_LIST()
+     },
+ };
+@@ -1659,6 +1672,7 @@ static Property virtio_gpu_properties[] = {
+     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
++    DEFINE_PROP_UINT8("x-scanout-vmstate-version", VirtIOGPU, scanout_vmstate_version, 2),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 56d6e821bf..7a59379f5a 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -177,6 +177,7 @@ typedef struct VGPUDMABuf {
+ struct VirtIOGPU {
+     VirtIOGPUBase parent_obj;
+ 
++    uint8_t scanout_vmstate_version;
+     uint64_t conf_max_hostmem;
+ 
+     VirtQueue *ctrl_vq;
 -- 
 2.35.3
 
