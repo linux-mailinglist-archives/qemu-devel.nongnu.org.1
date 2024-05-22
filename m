@@ -2,82 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635888CC916
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF9B8CC937
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9uVC-0008Bt-Qu; Wed, 22 May 2024 18:32:06 -0400
+	id 1s9unL-0007vf-Id; Wed, 22 May 2024 18:50:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9uV0-0008Ao-9D
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:31:59 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9uUw-0005ac-A4
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:31:53 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f4dcc3eeb3so1451446b3a.0
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:31:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716417102; x=1717021902; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=pVY2vkTW2T8JT02nqLWPdhiqo2HS5RWtXHIhakyE1H8=;
- b=fHAI6lRu1pxLCoBLLPE273L/neLl8tEj0HpDnfeBe3zF9yfV/qs1J8XJ0ve+EDKL2T
- xpvzucs0dYLncZHFeqbCAdN+4hEz3Cwv48DltNVHwYjeII00o1z84+NZcrgk3k3yJiEO
- n3aBOLpQkBL0Z375M0ks0hqP6mAmHrWHwFVI30YNb6cb0fFxKXeCJAv/M+JXivtYqHbb
- nYRYpRFutBdvRkNniAsjY5LXEZQvpNxa6JJ6di6juhgaa4f96umbCxsDLFnxr73gOnsg
- k4CtLjoVPVvk+O6RTsdk7rbd9lPLrzazUOvXmrBMqJwvQKC6SfvqYomMm86lQfHfKosN
- LdEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716417102; x=1717021902;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pVY2vkTW2T8JT02nqLWPdhiqo2HS5RWtXHIhakyE1H8=;
- b=qucIADkXdbINNiWsMlu9epLbzrlcO1KkC23iAm2B1M+OKc2UFnpsR4FSws9Q12sYQI
- Ca+14m7zeRkW1Hym5+zP6DcQ5MaDzK5jpnUOJH81wbzn1j8noxfuiI5gs+FHNoIoJWll
- MoWi2z5UFU5jmZ5/bYOScLzKW15nEKsjdVZo+rdd09SZSBbxPk8/MkWDAYF1Mhe/MMF2
- J9LREvFR6G+Byk31Mz99XMiwEdDh5K1+Bb+tUAY5/ly1dAfTdQnDNCbJT6FOWSosqbIH
- tK01w1p4VZOlLR88SP3HBNca0gGsZiCjo275/pw4D/QsDL43Dr5jA1bA/uikhCvoeTPv
- k5NQ==
-X-Gm-Message-State: AOJu0YzLHtFIx6+ObWZiyfLkbOS44ztMUDahgB6zrMfjCemOdbw5MPwB
- wEf3WrL4wZ7ljhZHQMa/vv6G1YyHzWX76+5XL6HwGmBaTKPr5PI3YATF8lGQEhKTM9HovvMTs31
- y
-X-Google-Smtp-Source: AGHT+IHqb0fInknD+eoAtqA3/lJylK37ZH7QVFusugJltGmOOs4X6V4e8fP6GsgKfWrbgHyQnZEYAA==
-X-Received: by 2002:a05:6a20:9188:b0:1af:8fa8:3126 with SMTP id
- adf61e73a8af0-1b1f881fc93mr4204883637.6.1716417102180; 
- Wed, 22 May 2024 15:31:42 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-6340a632725sm20019095a12.12.2024.05.22.15.31.41
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 May 2024 15:31:41 -0700 (PDT)
-Message-ID: <fb886e9c-0d8f-4771-858a-070b27a443bc@linaro.org>
-Date: Wed, 22 May 2024 15:31:40 -0700
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1s9unI-0007ta-Oz; Wed, 22 May 2024 18:50:48 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1s9unF-0000Q2-IP; Wed, 22 May 2024 18:50:48 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44MMP4Oe032015; Wed, 22 May 2024 22:50:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=RmYTwyVjJ9084/4w+5d9o+YB2EYeWRZMhWJLAHeJAFU=;
+ b=b+Zvr+dpPyDhLc3stuOVrqa1l+whRt9b6/yUrre14A+l5gdelo+kjY9R3vVQPpj+Bvmi
+ GQkoY78aKDjn5YOJY4qWoIidxl1RL9X7GMLAlf5e5+V6ZLTFf9rh5OrZUnwsQHyIbesS
+ 2uNQsrrTjNMN9dhvFa/Nrme3+2opgexspKJ9yhE/LHnj0eCmmlhveA/wUs/+0EMekVet
+ oDrf6hBjh5CtZuVSWcyBsehwaAS27L6Q2CobH7eUNJpxIW9saLYWN9HWDS2+5FYvO9wY
+ Ao5v/bKYtJaVkR81HM+xxhFJ/cBA9e9tR+iz3ar+0d/gzAPGZi+Kw2I2T9yKsHA+Rgnb JQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9qwn87yt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 22:50:42 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44MMogaw003319;
+ Wed, 22 May 2024 22:50:42 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y9qwn87yr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 22:50:42 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44MJjT4W022112; Wed, 22 May 2024 22:45:41 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y76ntxsww-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 May 2024 22:45:41 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44MMjch751905004
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 May 2024 22:45:40 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E9ED72004B;
+ Wed, 22 May 2024 22:45:37 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D70E20040;
+ Wed, 22 May 2024 22:45:37 +0000 (GMT)
+Received: from [127.0.0.1] (unknown [9.152.108.100])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 22 May 2024 22:45:37 +0000 (GMT)
+Message-ID: <b1d64ce0bce9241f62a3db44b92b74d47c833979.camel@linux.ibm.com>
+Subject: Re: [PATCH 09/14] target/s390x: Raise exception from helper_per_branch
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, david@redhat.com, thuth@redhat.com
+Date: Thu, 23 May 2024 00:45:37 +0200
+In-Reply-To: <20240502054417.234340-10-richard.henderson@linaro.org>
+References: <20240502054417.234340-1-richard.henderson@linaro.org>
+ <20240502054417.234340-10-richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/47] vfio queue
-To: qemu-devel@nongnu.org
-References: <20240522095442.195243-1-clg@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: TJOz9MVoY9b-k4JExNVyWbENJMG6Jawj
+X-Proofpoint-ORIG-GUID: 2UurbKJKyR-zWo7T5iBcUuqTd-a9oH-A
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-22_12,2024-05-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 mlxlogscore=909
+ suspectscore=0 malwarescore=0 clxscore=1015 adultscore=0 bulkscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405220159
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,31 +112,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/24 02:53, Cédric Le Goater wrote:
-> The following changes since commit 85ef20f1673feaa083f4acab8cf054df77b0dbed:
-> 
->    Merge tag 'pull-maintainer-may24-160524-2' ofhttps://gitlab.com/stsquad/qemu  into staging (2024-05-16 10:02:56 +0200)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/legoater/qemu/  tags/pull-vfio-20240522
-> 
-> for you to fetch changes up to b4e1670c494165d4186930d56f692857f4fec89b:
-> 
->    vfio/igd: Use g_autofree in vfio_probe_igd_bar4_quirk() (2024-05-22 10:04:22 +0200)
-> 
-> ----------------------------------------------------------------
-> vfio queue:
-> 
-> * Improvement of error reporting during migration
-> * Removed Vendor Specific Capability check on newer machine
-> * Addition of a VFIO migration QAPI event
-> * Changed prototype of routines using an error parameter to return bool
-> * Several cleanups regarding autofree variables
+On Wed, 2024-05-01 at 22:44 -0700, Richard Henderson wrote:
+> Drop from argument, since gbea has always been updated with
+> this address.=C2=A0 Add ilen argument for setting int_pgm_ilen.
+> Use update_cc_op before calling per_branch.
+>=20
+> By raising the exception here, we need not call
+> per_check_exception later, which means we can clean up the
+> normal non-exception branch path.
+>=20
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> =C2=A0target/s390x/helper.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0target/s390x/tcg/misc_helper.c | 15 +++++++----
+> =C2=A0target/s390x/tcg/translate.c=C2=A0=C2=A0 | 48 ++++++++++++---------=
+-----------
+> --
+> =C2=A03 files changed, 27 insertions(+), 38 deletions(-)
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+[...]
 
+> =C2=A0static bool use_goto_tb(DisasContext *s, uint64_t dest)
+> =C2=A0{
+> -=C2=A0=C2=A0=C2=A0 if (unlikely(s->base.tb->flags & FLAG_MASK_PER_BRANCH=
+)) {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
+> -=C2=A0=C2=A0=C2=A0 }
 
-r~
+Why was this required in the first place and why can we remove it now?
 
 
