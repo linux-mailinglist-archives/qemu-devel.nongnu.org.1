@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA9D8CBB3E
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 894778CBB43
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:27:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9fQq-0004mR-Jb; Wed, 22 May 2024 02:26:37 -0400
+	id 1s9fR9-0004yI-BG; Wed, 22 May 2024 02:26:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fQh-0004iR-Fw
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:29 -0400
+ id 1s9fQm-0004li-Vs
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:33 -0400
 Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fQf-0006eK-P9
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:27 -0400
+ id 1s9fQk-0006eK-Oq
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 02:26:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716359186; x=1747895186;
+ t=1716359191; x=1747895191;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=goZvInl61uVRC5qKvio5oLdRwdDHhcN/OMVw305hMug=;
- b=a9TJ5Qlkr/voEC+gePR92P4GbNgWXnpElFhRAkUqMiYrbXCac2eLIJuE
- aPaH0Q1fLdTeHJ9QBz34lurtcA36xzwV+idzNFdSMge/pJz4lyUHpJuSh
- YTkJdK7y5aB/RyxxxFGzM6Fossa5ajlUsvGKpP/Ka0XcgR+Zq9NmF9h0O
- UmLtLBHHHHuKhItWpfpw5isNJb7Fgc9dxm36Qr5eAj/8evWHiiEXv/8X2
- aNvXQvaKtPm33y/ftQUHh/eVQFT3AoCbuswKEP7xBZcuF8NtFHYOb1l6v
- x/7K/Z/KGk9F96V5BL3BKQqi3Q7Nm4+gfhpUsocSDOTyeyfdmT1NDUSob Q==;
-X-CSE-ConnectionGUID: sHxjPf7QRcyliJKCu5I5Iw==
-X-CSE-MsgGUID: A1z4N+euSeGh0k73ruxJNg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="37972523"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="37972523"
+ bh=PTpYwvhKNL/GkXgHdnrW7sO+QlTIBmFpWaRFq585gVQ=;
+ b=flyFsdkpc3A+7tQFsMkx1qeSgESuGayuN7C8V/k7J+xd2qtXEuS59R+f
+ LDe3jsraOvNxbEv1ZN/0NFIdWSE6yial35fhENRKx34VK8zdTk69qVDrr
+ +byJMM50+8ehAzY4tW7NAnZVaURl+ev4ewtEGzTazC05s3DKpjhksPD5N
+ vVabE1uLzpNOFSnAe+Gpia8C3NM1pdmJX1PWbOCCUWpc+/IeLL0tCXwdk
+ FM3NEtFzbFQjF+j4AzCpKuz35b2mjZgtjwa7FQ+G+5kQboedxNhmijPqK
+ iotcfyDIzMK9yxLIvW7A0A8FXuCK9+f1Y1dolztk1H+mhrApBVCgZVRmr w==;
+X-CSE-ConnectionGUID: b8u4kNWzQjeDUg9u0x8hvg==
+X-CSE-MsgGUID: 6Dyzkp1WTy62Ft//n+/Bww==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="37972538"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="37972538"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:26:25 -0700
-X-CSE-ConnectionGUID: xjgoX4U7T9ifzGtiKMVNwQ==
-X-CSE-MsgGUID: JK3yOzy5SLy5PmdbPFcSDQ==
+ 21 May 2024 23:26:30 -0700
+X-CSE-ConnectionGUID: 5VI/SIFPQvGQpuYmbxISpg==
+X-CSE-MsgGUID: /ur7f/pLTb6RQJvfpe5BPQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33597772"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33597791"
 Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:26:20 -0700
+ 21 May 2024 23:26:25 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
@@ -51,14 +51,14 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com,
  clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH rfcv2 07/17] intel_iommu: check if the input address is
- canonical
-Date: Wed, 22 May 2024 14:23:03 +0800
-Message-Id: <20240522062313.453317-8-zhenzhong.duan@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH rfcv2 08/17] intel_iommu: set accessed and dirty bits during
+ first stage translation
+Date: Wed, 22 May 2024 14:23:04 +0800
+Message-Id: <20240522062313.453317-9-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240522062313.453317-1-zhenzhong.duan@intel.com>
 References: <20240522062313.453317-1-zhenzhong.duan@intel.com>
@@ -91,75 +91,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 
-First stage translation must fail if the address to translate is
-not canonical.
-
 Signed-off-by: Clément Mathieu--Drif <clement.mathieu--drif@eviden.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/i386/intel_iommu_internal.h |  2 ++
- hw/i386/intel_iommu.c          | 21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ hw/i386/intel_iommu_internal.h |  3 +++
+ hw/i386/intel_iommu.c          | 25 +++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
 diff --git a/hw/i386/intel_iommu_internal.h b/hw/i386/intel_iommu_internal.h
-index abfdbd5f65..b6820dbca3 100644
+index b6820dbca3..c0a94af820 100644
 --- a/hw/i386/intel_iommu_internal.h
 +++ b/hw/i386/intel_iommu_internal.h
-@@ -323,6 +323,8 @@ typedef enum VTDFaultReason {
-     VTD_FR_PASID_ENTRY_P = 0x59,
-     VTD_FR_PASID_TABLE_ENTRY_INV = 0x5b,  /*Invalid PASID table entry */
+@@ -327,6 +327,7 @@ typedef enum VTDFaultReason {
  
-+    VTD_FR_FS_NON_CANONICAL = 0x80, /* SNG.1 : Address for FS not canonical.*/
-+
      /* Output address in the interrupt address range for scalable mode */
      VTD_FR_SM_INTERRUPT_ADDR = 0x87,
++    VTD_FR_FS_BIT_UPDATE_FAILED = 0x91, /* SFS.10 */
      VTD_FR_MAX,                 /* Guard */
+ } VTDFaultReason;
+ 
+@@ -547,6 +548,8 @@ typedef struct VTDRootEntry VTDRootEntry;
+ /* First Level Paging Structure */
+ #define VTD_FL_PT_LEVEL             1
+ #define VTD_FL_PT_ENTRY_NR          512
++#define VTD_FL_PTE_A                0x20
++#define VTD_FL_PTE_D                0x40
+ 
+ /* Masks for First Level Paging Entry */
+ #define VTD_FL_RW_MASK              (1ULL << 1)
 diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index cf29809bc1..1ea030bfbe 100644
+index 1ea030bfbe..0801112e2e 100644
 --- a/hw/i386/intel_iommu.c
 +++ b/hw/i386/intel_iommu.c
-@@ -1801,6 +1801,7 @@ static const bool vtd_qualified_faults[] = {
-     [VTD_FR_PASID_ENTRY_P] = true,
+@@ -1802,6 +1802,7 @@ static const bool vtd_qualified_faults[] = {
      [VTD_FR_PASID_TABLE_ENTRY_INV] = true,
      [VTD_FR_SM_INTERRUPT_ADDR] = true,
-+    [VTD_FR_FS_NON_CANONICAL] = true,
+     [VTD_FR_FS_NON_CANONICAL] = true,
++    [VTD_FR_FS_BIT_UPDATE_FAILED] = true,
      [VTD_FR_MAX] = false,
  };
  
-@@ -1912,6 +1913,20 @@ static inline uint64_t vtd_get_flpte_addr(uint64_t flpte, uint8_t aw)
-     return flpte & VTD_FL_PT_BASE_ADDR_MASK(aw);
+@@ -1927,6 +1928,20 @@ static bool vtd_iova_fl_check_canonical(IntelIOMMUState *s, uint64_t iova,
+             );
  }
  
-+/* Return true if IOVA is canonical, otherwise false. */
-+static bool vtd_iova_fl_check_canonical(IntelIOMMUState *s, uint64_t iova,
-+                                        VTDContextEntry *ce, uint32_t pasid)
++static MemTxResult vtd_set_flag_in_pte(dma_addr_t base_addr, uint32_t index,
++                                       uint64_t pte, uint64_t flag)
 +{
-+    uint64_t iova_limit = vtd_iova_limit(s, ce, s->aw_bits, pasid);
-+    uint64_t upper_bits_mask = ~(iova_limit - 1);
-+    uint64_t upper_bits = iova & upper_bits_mask;
-+    bool msb = ((iova & (iova_limit >> 1)) != 0);
-+    return !(
-+             (!msb && (upper_bits != 0)) ||
-+             (msb && (upper_bits != upper_bits_mask))
-+            );
++    if (pte & flag) {
++        return MEMTX_OK;
++    }
++    pte |= flag;
++    pte = cpu_to_le64(pte);
++    return dma_memory_write(&address_space_memory,
++                            base_addr + index * sizeof(pte),
++                            &pte, sizeof(pte),
++                            MEMTXATTRS_UNSPECIFIED);
 +}
 +
  /*
   * Given the @iova, get relevant @flptep. @flpte_level will be the last level
   * of the translation, can be used for deciding the size of large page.
-@@ -1927,6 +1942,12 @@ static int vtd_iova_to_flpte(IntelIOMMUState *s, VTDContextEntry *ce,
-     uint32_t offset;
-     uint64_t flpte;
+@@ -1972,7 +1987,17 @@ static int vtd_iova_to_flpte(IntelIOMMUState *s, VTDContextEntry *ce,
+             return -VTD_FR_WRITE;
+         }
  
-+    if (!vtd_iova_fl_check_canonical(s, iova, ce, pasid)) {
-+        error_report_once("%s: detected non canonical IOVA (iova=0x%" PRIx64 ","
-+                          "pasid=0x%" PRIx32 ")", __func__, iova, pasid);
-+        return -VTD_FR_FS_NON_CANONICAL;
-+    }
++        if (vtd_set_flag_in_pte(addr, offset, flpte, VTD_FL_PTE_A)
++                                                                != MEMTX_OK) {
++            return -VTD_FR_FS_BIT_UPDATE_FAILED;
++        }
 +
-     while (true) {
-         offset = vtd_iova_fl_level_offset(iova, level);
-         flpte = vtd_get_flpte(addr, offset);
+         if (vtd_is_last_flpte(flpte, level)) {
++            if (is_write &&
++                (vtd_set_flag_in_pte(addr, offset, flpte, VTD_FL_PTE_D) !=
++                                                                    MEMTX_OK)) {
++                    return -VTD_FR_FS_BIT_UPDATE_FAILED;
++            }
+             *flptep = flpte;
+             *flpte_level = level;
+             return 0;
 -- 
 2.34.1
 
