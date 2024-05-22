@@ -2,74 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552448CBB4B
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F868CBB6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 08:31:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9fSd-0006lT-LL; Wed, 22 May 2024 02:28:27 -0400
+	id 1s9fUW-0002Eb-M7; Wed, 22 May 2024 02:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fRY-0006B9-Mk
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:27:24 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1s9fUO-0002B8-BL; Wed, 22 May 2024 02:30:16 -0400
+Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1s9fRV-0006jy-Cm
- for qemu-devel@nongnu.org; Wed, 22 May 2024 02:27:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716359237; x=1747895237;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XbvGY/yne5qZRRsCJ3DXqnpyiiOKvycEPODgYdQNGng=;
- b=KGlFWB9OXKiT36X85rfIaEwagZVNEpANZuo9g6bs82od/RBion+fWBdF
- Gj+O9jr3+H4l1wB1nsNQqg98V6jzAAT+GUHJaVnXHPOSeC1Xp9nmRiFmn
- eSilgzzOlftm/px1eu0O9eTDfdwpFneiZUq8My+CkwmX6kOMxRJfnLQKY
- H0EPn3SzleM64QZRX3NHYrE0D99qsOWT/Z3QbB59NVI97xvlT7ZHzfyaV
- AE+EUbewYn88511qcKIoUUdAf6urWnjVdY6Qmm1c5kWoLv+2dbAAZx4Rp
- cF1VwaPXndAr4Y+SEj2psRhgVKDYBCArZrfb2c7pOV0wTsAvTS1xWC66L A==;
-X-CSE-ConnectionGUID: puCGhZElRbew4Qux4MF3OA==
-X-CSE-MsgGUID: AVsgMcb/Sum/LAEx0rYrbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="37972807"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="37972807"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:27:16 -0700
-X-CSE-ConnectionGUID: 7Tb3TMLsTbW7HlXetnm/mw==
-X-CSE-MsgGUID: YUO8KYBgQyumG4tl7z/J8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33598064"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.124])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 23:27:12 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1s9fUJ-0006uD-U3; Wed, 22 May 2024 02:30:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1716359404; h=From:To:Subject:Date:Message-Id:MIME-Version;
+ bh=Grw3syHdHwI6aiEkZHx+zTjb9YtWEVK1Xq5i+3pa9ec=;
+ b=VqWcgh91CvpgxbP5M8xSGLrZRx/eBqZnRdg3trsNyOrec1vP04lEd7Dmw/b/2WM7tQqYaHKE3BwqQX+BxUD08UnWzhv+A8/UHOA2/MK6IK93Iofdi364Dd/KsJVHS7MDWyKu0FGNmedpNy2X4ylzViwOnpSqFqQoSKLtJuqYOYY=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R551e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=maildocker-contentspam033037067113;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0W7-6sHZ_1716359401; 
+Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0W7-6sHZ_1716359401) by smtp.aliyun-inc.com;
+ Wed, 22 May 2024 14:30:03 +0800
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- mst@redhat.com, peterx@redhat.com, jasowang@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com,
- clement.mathieu--drif@eviden.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH rfcv2 17/17] tests/qtest: Add intel-iommu test
-Date: Wed, 22 May 2024 14:23:13 +0800
-Message-Id: <20240522062313.453317-18-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240522062313.453317-1-zhenzhong.duan@intel.com>
-References: <20240522062313.453317-1-zhenzhong.duan@intel.com>
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, Alistair.Francis@wdc.com,
+ dbarboza@ventanamicro.com, bmeng.cn@gmail.com, iwei1518@gmail.com,
+ zhiwei_liu@linux.alibaba.com
+Subject: [PATCH 0/4] target/riscv: Implement May-Be-Operations(zimop)
+ extension 
+Date: Wed, 22 May 2024 14:29:01 +0800
+Message-Id: <20240522062905.1799-1-zhiwei_liu@linux.alibaba.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.7;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.101;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-101.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,114 +66,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the framework to test the intel-iommu device.
+The may be operation means that it has an initial behavior which can be redefined
+by later extensions to perform some other action.
 
-Currently only tested cap/ecap bits correctness in scalable
-modern mode. Also tested cap/ecap bits consistency before
-and after system reset.
+The May-Be-Operations includes two extension: zimop and zcmop. Zimop has 40
+instructions, whose initial behavior is writing zero to the destination register.
+Zcmop, which requires the Zca extension, has 8 instructions whose initial
+behavior is reading the source register.
 
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- MAINTAINERS                    |  1 +
- tests/qtest/intel-iommu-test.c | 63 ++++++++++++++++++++++++++++++++++
- tests/qtest/meson.build        |  1 +
- 3 files changed, 65 insertions(+)
- create mode 100644 tests/qtest/intel-iommu-test.c
+The more details on this specifcation is here:
+https://github.com/riscv/riscv-isa-manual/blob/main/src/zimop.adoc
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5dab60bd04..f1ef6128c8 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3656,6 +3656,7 @@ S: Supported
- F: hw/i386/intel_iommu.c
- F: hw/i386/intel_iommu_internal.h
- F: include/hw/i386/intel_iommu.h
-+F: tests/qtest/intel-iommu-test.c
- 
- AMD-Vi Emulation
- S: Orphan
-diff --git a/tests/qtest/intel-iommu-test.c b/tests/qtest/intel-iommu-test.c
-new file mode 100644
-index 0000000000..e1273bce14
---- /dev/null
-+++ b/tests/qtest/intel-iommu-test.c
-@@ -0,0 +1,63 @@
-+/*
-+ * QTest testcase for intel-iommu
-+ *
-+ * Copyright (c) 2024 Intel, Inc.
-+ *
-+ * Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "libqtest-single.h"
-+#include "hw/i386/intel_iommu_internal.h"
-+
-+#define vtd_reg_readl(offset)    (readq(Q35_HOST_BRIDGE_IOMMU_ADDR + offset))
-+#define CAP_MODERN_FIXED1    (VTD_CAP_FRO | VTD_CAP_NFR | VTD_CAP_ND | \
-+                              VTD_CAP_MAMV | VTD_CAP_PSI | VTD_CAP_SLLPS)
-+#define ECAP_MODERN_FIXED1   (VTD_ECAP_QI |  VTD_ECAP_IRO | VTD_ECAP_MHMV | \
-+                              VTD_ECAP_SMTS | VTD_ECAP_FLTS)
-+
-+static void test_intel_iommu_modern(void)
-+{
-+    uint8_t init_csr[DMAR_REG_SIZE];     /* register values */
-+    uint8_t post_reset_csr[DMAR_REG_SIZE];     /* register values */
-+    uint64_t cap, ecap, tmp;
-+
-+    qtest_start("-M q35 -device intel-iommu,x-scalable-mode=modern");
-+
-+    g_assert(vtd_reg_readl(DMAR_VER_REG) == 0x30);
-+
-+    cap = vtd_reg_readl(DMAR_CAP_REG);
-+    g_assert((cap & CAP_MODERN_FIXED1) == CAP_MODERN_FIXED1);
-+
-+    tmp = cap & VTD_CAP_SAGAW_MASK;
-+    g_assert(tmp == (VTD_CAP_SAGAW_39bit | VTD_CAP_SAGAW_48bit));
-+
-+    tmp = VTD_MGAW_FROM_CAP(cap);
-+    g_assert(tmp == VTD_HOST_AW_48BIT - 1);
-+
-+    ecap = vtd_reg_readl(DMAR_ECAP_REG);
-+    g_assert((ecap & ECAP_MODERN_FIXED1) == ECAP_MODERN_FIXED1);
-+    g_assert(ecap & VTD_ECAP_IR);
-+
-+    memread(Q35_HOST_BRIDGE_IOMMU_ADDR, init_csr, DMAR_REG_SIZE);
-+
-+    qobject_unref(qmp("{ 'execute': 'system_reset' }"));
-+    qmp_eventwait("RESET");
-+
-+    memread(Q35_HOST_BRIDGE_IOMMU_ADDR, post_reset_csr, DMAR_REG_SIZE);
-+    /* Ensure registers are consistent after hard reset */
-+    g_assert(!memcmp(init_csr, post_reset_csr, DMAR_REG_SIZE));
-+
-+    qtest_end();
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("/q35/intel-iommu/modern", test_intel_iommu_modern);
-+
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 6f2f594ace..09106739d2 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -79,6 +79,7 @@ qtests_i386 = \
-   (config_all_devices.has_key('CONFIG_SB16') ? ['fuzz-sb16-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_SDHCI_PCI') ? ['fuzz-sdcard-test'] : []) +            \
-   (config_all_devices.has_key('CONFIG_ESP_PCI') ? ['am53c974-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_VTD') ? ['intel-iommu-test'] : []) +                 \
-   (host_os != 'windows' and                                                                \
-    config_all_devices.has_key('CONFIG_ACPI_ERST') ? ['erst-test'] : []) +                   \
-   (config_all_devices.has_key('CONFIG_PCIE_PORT') and                                       \
+LIU Zhiwei (4):
+  target/riscv: Add zimop extension
+  disas/riscv: Support zimop disassemble
+  target/riscv: Add zcmop extension
+  disas/riscv: Support zcmop disassemble
+
+ disas/riscv.c                               | 123 ++++++++++++++++++++
+ target/riscv/cpu.c                          |   4 +
+ target/riscv/cpu_cfg.h                      |   2 +
+ target/riscv/insn16.decode                  |   1 +
+ target/riscv/insn32.decode                  |  11 ++
+ target/riscv/insn_trans/trans_rvzcmop.c.inc |  29 +++++
+ target/riscv/insn_trans/trans_rvzimop.c.inc |  37 ++++++
+ target/riscv/tcg/tcg-cpu.c                  |   5 +
+ target/riscv/translate.c                    |   2 +
+ 9 files changed, 214 insertions(+)
+ create mode 100644 target/riscv/insn_trans/trans_rvzcmop.c.inc
+ create mode 100644 target/riscv/insn_trans/trans_rvzimop.c.inc
+
 -- 
-2.34.1
+2.25.1
 
 
