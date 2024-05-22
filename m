@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC3A8CBEAD
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A71718CBECB
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 11:59:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ihK-000437-4w; Wed, 22 May 2024 05:55:50 -0400
+	id 1s9ihK-00043J-56; Wed, 22 May 2024 05:55:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihG-0003pz-R8
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihG-0003qG-So
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihD-0001ll-L4
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ihE-0001lw-RS
  for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371743;
+ s=mimecast20190719; t=1716371744;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vOI4wBHXF1so/a94L2k2ZhYao0kW/v+zFhWWTorCMZE=;
- b=WYhr/OxLQJs/GDvUZ+vjvj2DYLIDPW1CC2rbiyUX/Rx5eLgveB+PZO+i409+0MZHhLPRG+
- NXiZ4jBy6CR6A4CZOdnaH16epoHTo9LZj7AHEyg0hr4RoAG5Asoct70roGpyfnDyvUYpOm
- bBuRFofyrBm4O02SGYDkieocMla7Aas=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-Kcr5uj7nMKeYRYWO1sE8eQ-1; Wed,
- 22 May 2024 05:55:41 -0400
-X-MC-Unique: Kcr5uj7nMKeYRYWO1sE8eQ-1
+ bh=Wmo6MS5izlXdTvxEwKEvXFrvfXH3rJrzKQLemJ1NuoU=;
+ b=gtUHy2r5uyUHqD1YddyYgTh+uoIY7Sr79U8B+xk+EZWUqHG8+2P12B06sImqhWbjCR+q6i
+ 4CrE8KY5rRiOoBxocWvoB9ewvvk98dj9IFJSAL1GODeNtk29tzE3Y/rKr9MtNXqvGLdMPb
+ AKcbRMzwrQD+GDSPqsVc2+lmfo5ESgg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-104-JKcF0W5BO4qku0ERx_uc-A-1; Wed, 22 May 2024 05:55:42 -0400
+X-MC-Unique: JKcF0W5BO4qku0ERx_uc-A-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0D223C025D2;
- Wed, 22 May 2024 09:55:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DE0F81227E;
+ Wed, 22 May 2024 09:55:42 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CE46228E2;
- Wed, 22 May 2024 09:55:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3CB3451BF;
+ Wed, 22 May 2024 09:55:41 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 36/47] vfio/ccw: Make vfio_ccw_get_region() return a bool
-Date: Wed, 22 May 2024 11:54:31 +0200
-Message-ID: <20240522095442.195243-37-clg@redhat.com>
+Subject: [PULL 37/47] vfio/pci: Make vfio_intx_enable_kvm() return a bool
+Date: Wed, 22 May 2024 11:54:32 +0200
+Message-ID: <20240522095442.195243-38-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -81,7 +81,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Since vfio_populate_device() takes an 'Error **' argument,
+Since vfio_intx_enable_kvm() takes an 'Error **' argument,
 best practices suggest to return a bool. See the qapi/error.h
 Rules section.
 
@@ -89,73 +89,68 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ccw.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ hw/vfio/pci.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 8850ca17c84632d278e27819cd52e104ed436d6c..2600e62e37238779800dc2b3a0bd315d7633017b 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -474,7 +474,7 @@ static void vfio_ccw_unregister_irq_notifier(VFIOCCWDevice *vcdev,
-     event_notifier_cleanup(notifier);
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index aad012c34885ff2a5a39039777dddd962236b41b..12fb534d796f52724f365746c9c8c2491265f03d 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -116,7 +116,7 @@ static void vfio_intx_eoi(VFIODevice *vbasedev)
+     vfio_unmask_single_irqindex(vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
  }
  
--static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-+static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
+-static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
++static bool vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
  {
-     VFIODevice *vdev = &vcdev->vdev;
-     struct vfio_region_info *info;
-@@ -483,7 +483,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-     /* Sanity check device */
-     if (!(vdev->flags & VFIO_DEVICE_FLAGS_CCW)) {
-         error_setg(errp, "vfio: Um, this isn't a vfio-ccw device");
+ #ifdef CONFIG_KVM
+     int irq_fd = event_notifier_get_fd(&vdev->intx.interrupt);
+@@ -124,7 +124,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
+     if (vdev->no_kvm_intx || !kvm_irqfds_enabled() ||
+         vdev->intx.route.mode != PCI_INTX_ENABLED ||
+         !kvm_resamplefds_enabled()) {
 -        return;
-+        return false;
++        return true;
      }
  
-     /*
-@@ -493,13 +493,13 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-     if (vdev->num_regions < VFIO_CCW_CONFIG_REGION_INDEX + 1) {
-         error_setg(errp, "vfio: too few regions (%u), expected at least %u",
-                    vdev->num_regions, VFIO_CCW_CONFIG_REGION_INDEX + 1);
--        return;
-+        return false;
-     }
+     /* Get to a known interrupt state */
+@@ -161,7 +161,7 @@ static void vfio_intx_enable_kvm(VFIOPCIDevice *vdev, Error **errp)
  
-     ret = vfio_get_region_info(vdev, VFIO_CCW_CONFIG_REGION_INDEX, &info);
-     if (ret) {
-         error_setg_errno(errp, -ret, "vfio: Error getting config info");
--        return;
-+        return false;
-     }
- 
-     vcdev->io_region_size = info->size;
-@@ -553,7 +553,7 @@ static void vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         g_free(info);
-     }
+     trace_vfio_intx_enable_kvm(vdev->vbasedev.name);
  
 -    return;
 +    return true;
  
- out_err:
-     g_free(vcdev->crw_region);
-@@ -561,7 +561,7 @@ out_err:
-     g_free(vcdev->async_cmd_region);
-     g_free(vcdev->io_region);
-     g_free(info);
--    return;
+ fail_vfio:
+     kvm_irqchip_remove_irqfd_notifier_gsi(kvm_state, &vdev->intx.interrupt,
+@@ -171,6 +171,9 @@ fail_irqfd:
+ fail:
+     qemu_set_fd_handler(irq_fd, vfio_intx_interrupt, NULL, vdev);
+     vfio_unmask_single_irqindex(&vdev->vbasedev, VFIO_PCI_INTX_IRQ_INDEX);
 +    return false;
++#else
++    return true;
+ #endif
  }
  
- static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
-@@ -597,8 +597,7 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
-         goto out_attach_dev_err;
+@@ -226,8 +229,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
+         return;
      }
  
--    vfio_ccw_get_region(vcdev, &err);
+-    vfio_intx_enable_kvm(vdev, &err);
 -    if (err) {
-+    if (!vfio_ccw_get_region(vcdev, &err)) {
-         goto out_region_err;
++    if (!vfio_intx_enable_kvm(vdev, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+     }
+ 
+@@ -302,8 +304,7 @@ static int vfio_intx_enable(VFIOPCIDevice *vdev, Error **errp)
+         return -errno;
+     }
+ 
+-    vfio_intx_enable_kvm(vdev, &err);
+-    if (err) {
++    if (!vfio_intx_enable_kvm(vdev, &err)) {
+         warn_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
      }
  
 -- 
