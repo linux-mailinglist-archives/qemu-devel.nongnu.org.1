@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680538CBF64
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E818CBF63
 	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:44:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9jRJ-0003Ig-EI; Wed, 22 May 2024 06:43:21 -0400
+	id 1s9jRF-0003ID-OL; Wed, 22 May 2024 06:43:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s9jRH-0003IH-DT
- for qemu-devel@nongnu.org; Wed, 22 May 2024 06:43:19 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1s9jRD-0003Hi-IE
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 06:43:15 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1s9jR6-0001e1-V3
- for qemu-devel@nongnu.org; Wed, 22 May 2024 06:43:19 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f6bddf57f6so1441125b3a.0
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 03:43:08 -0700 (PDT)
+ id 1s9jRB-0001fk-V2
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 06:43:15 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1f304533064so5361295ad.0
+ for <qemu-devel@nongnu.org>; Wed, 22 May 2024 03:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716374587; x=1716979387;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716374592; x=1716979392;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=CHHlxuDeaTModWA+eV9vkqH/aedHv0c3Sc+uYxssJlM=;
- b=3BmtPga6HKrXVZl8pHWAL2m1WE+pZUgtF8JBiDX3HvyGag6fWv3UZsnbfljwYpWRRi
- ydKZbJWN9LDlbBb5sH3oeo21QG4xXmDm1D+54QczzdkUnU5sR35PF7GMbQDHj/9LJUr0
- 1CwxbMcS78zCk0iQvgEAoXaZ9nDGpLuPc6/a1U0vY0tW/3Dg+GrCK214ukXk31M0+PEC
- qhQEKWyu2Ys4iDKBJ0Wv0yOVJBgfGhnbSPZ0maHGvt9H7hfKGq3ZbR12EdKwEIm1KZbw
- /Lc6yszCH7HFAjU45hDqj9rVMKuQG5AmgxQZDiDxf+kii5Jip1212/OJbvsuPKKqTFjN
- /STg==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=CwpNU0IOG2gR/Zc+cT2zm9xVHtaU1yJX2qDLOGZQyH4=;
+ b=WgZyBhfz/DoemXZCh1bHl6/ywXEeZsMJRHdF4k20Tv2Jk8HldJJ52yu+YmG7DDv5rF
+ 6YARuGmfrOTHT7h6dXt8YyG9IX9fonp7+W96gJ3g5sldcL9SOnDnJ0r/4IdGFgDg9VQy
+ RnzFblfYw49CxMHGLa8w3fCyqRGLpr6FB8/qabkryqEe3rmMWDC5KbbkKa0CA/w3xXSa
+ l4xtK9sxTEp3ZHsmn69hSHRloSTTkJjPPclNmCPvc9uJyvLt+WSJrYhzEU5ySs8kDvhp
+ LM/qQl+ilGj4ezJMPBHfh8y0M6yYyKhUaJv9AqpqRjTymfghnSOqAJC3ZsCZSZvg6dBW
+ LT/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716374587; x=1716979387;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CHHlxuDeaTModWA+eV9vkqH/aedHv0c3Sc+uYxssJlM=;
- b=WldnRqVlYjepICiLvJJfTG13g7lvghY73qAb3YDviV+8sHmyIy44k2xjepJXeDlsSs
- G+n7rJC2NoCfns/Zpa7mk+41E2P01F5475EGo/wG0ju0cbk6nlw5pb0gKfXb/Axy4Zan
- L9prSrfq+LCvXafye0txKi/Ax4pbiBGIVf5mqVJ9FO2F+MFj2ratPXAKc5xn1zCm0jD2
- gJyTikDzhClQ2kOqgnXNn71ovyYKmwhzZBpSAgQlXELJbGwgihYdanCDlgT5WrwNeovu
- DNwnNwwTxp907oNxKxKWhtthFZZ5HOn+PdI4iCDs8UThPnXsssQc2AuDEIA1yx6rVEER
- l30g==
-X-Gm-Message-State: AOJu0YxDorvgw8jng0jjAVILOkqws4z5ocERTOny77EFlhB4Qb0wbu8j
- ohUK3DUSorrCSx3gppElBPAzdquwoUcefaBbuIHA3QtsfXv9OShk1qznKFZSqOI=
-X-Google-Smtp-Source: AGHT+IF8qkDUfaDXOvfFE4AmV0rivo4tqvylDsfQtCNeapksjwzhUZ8PEI/y9wyoDYSPx+r2Hey99g==
-X-Received: by 2002:a05:6a00:4fd1:b0:6ea:afdb:6d03 with SMTP id
- d2e1a72fcca58-6f6d61b787cmr1557306b3a.19.1716374587191; 
- Wed, 22 May 2024 03:43:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716374592; x=1716979392;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=CwpNU0IOG2gR/Zc+cT2zm9xVHtaU1yJX2qDLOGZQyH4=;
+ b=GPEGuu0OHKMzmUSfwgku4nMio2DAcc+3qqVTO5Oh5BrAwXc2/JFXg+i+De3HLl2yGx
+ ytbYpqKD2JHebpDkQUSVon3/MWbVBEhC74LItdtsQZkjEVHKzqJN0x3MI88dI3OGYZWH
+ HqHtv1w71c4EtIGMl3ROc9pCoXLbauSUMGSuczXoxIHcazLcgf0kSo+5nhXzMR7si+ML
+ /gHMA16G3DgVWPrRBqjSE5OYHPcuKEonvcU5uq5J9JgVgvBZ2hw5GV6iHq6SxBfoE0BV
+ fWZduloj7yu98WmjpDSGBQLMJviM00dLKROAhGS/BUqweYD5q/xL1kVfbq7NPlJiqehF
+ ncsg==
+X-Gm-Message-State: AOJu0YwX6kUbcXE5PTfj6FmbAi5xYUqbzzE2defrEEczVwKAPDNnHIJY
+ d8sMYpPa9GiqM2U8u8TnrC2ptV2rRQoFKtU36cfDXK6urBGz9ymDiSTlddzBFC8=
+X-Google-Smtp-Source: AGHT+IEsqkWo7HnC/L30/fddVqzLgSu+dGeNbKSy6TrvEAgPtcGanF99HwgQD5KZXN/mAT1tMSQRcA==
+X-Received: by 2002:a17:902:cec8:b0:1ec:8206:626f with SMTP id
+ d9443c01a7336-1f31aceb165mr25082255ad.9.1716374592134; 
+ Wed, 22 May 2024 03:43:12 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- d2e1a72fcca58-6f4d2afa7b5sm22111688b3a.163.2024.05.22.03.43.04
+ d9443c01a7336-1f3033d8e1csm48952925ad.56.2024.05.22.03.43.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 May 2024 03:43:06 -0700 (PDT)
+ Wed, 22 May 2024 03:43:11 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/3] Fix sanitizer errors with clang 18.1.1
-Date: Wed, 22 May 2024 19:43:01 +0900
-Message-Id: <20240522-xkb-v2-0-67b54fa7c98f@daynix.com>
+Date: Wed, 22 May 2024 19:43:02 +0900
+Subject: [PATCH v2 1/3] qemu-keymap: Free xkb allocations
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIADXMTWYC/1WMwQ7CIBAFf6XZsxgWwRBP/kfTAwVqN0YwYAhNw
- 7+LvXmclzezQ/aJfIbbsEPyhTLF0EGcBrCrCQ/PyHUGwYXkiiOrz5kJpaW+WGuV09Cf7+QXqkd
- lnDqvlD8xbUe04G/99wsyZAuXV6c9ohHz3ZktUD3b+IKptfYFDfSsw5cAAAA=
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240522-xkb-v2-1-67b54fa7c98f@daynix.com>
+References: <20240522-xkb-v2-0-67b54fa7c98f@daynix.com>
+In-Reply-To: <20240522-xkb-v2-0-67b54fa7c98f@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
  =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
@@ -79,13 +78,13 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Laurent Vivier <laurent@vivier.eu>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-01a33
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,54 +101,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I upgraded my Fedora Asahi Remix from 39 to 40 and found new sanitizer
-errors with clang it ships so here are fixes.
+This fixes LeakSanitizer complaints with xkbcommon 1.6.0.
 
-The patch "meson: Drop the .fa library prefix" may have a broad impact
-to the build system so please tell me if you have a concern with it.
-
-To: Michael Tokarev <mjt@tls.msk.ru>
-To: Laurent Vivier <laurent@vivier.eu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-To: Marc-André Lureau <marcandre.lureau@redhat.com>
-To: Daniel P. Berrangé <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-To: Philippe Mathieu-Daudé <philmd@linaro.org>
-To: Alex Bennée <alex.bennee@linaro.org>
-To: Wainer dos Santos Moschetta <wainersm@redhat.com>
-To: Beraldo Leal <bleal@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-Changes in v2:
-- Added more patches and converted them to a series.
-- Link to v1: https://lore.kernel.org/r/20240501-xkb-v1-1-f046d8e11a2b@daynix.com
-
 ---
-Akihiko Odaki (3):
-      qemu-keymap: Free xkb allocations
-      meson: Add -fno-sanitize=function
-      meson: Drop the .fa library prefix
+ qemu-keymap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- docs/devel/build-system.rst         |  5 -----
- meson.build                         | 19 +++----------------
- qemu-keymap.c                       |  3 +++
- stubs/blk-exp-close-all.c           |  2 +-
- .gitlab-ci.d/buildtest-template.yml |  2 --
- .gitlab-ci.d/buildtest.yml          |  2 --
- gdbstub/meson.build                 |  2 --
- tcg/meson.build                     |  2 --
- tests/Makefile.include              |  2 +-
- tests/qtest/libqos/meson.build      |  1 -
- 10 files changed, 8 insertions(+), 32 deletions(-)
----
-base-commit: c25df57ae8f9fe1c72eee2dab37d76d904ac382e
-change-id: 20240501-xkb-258483ccc5d8
+diff --git a/qemu-keymap.c b/qemu-keymap.c
+index 8c80f7a4ed65..7a9f38cf9863 100644
+--- a/qemu-keymap.c
++++ b/qemu-keymap.c
+@@ -237,6 +237,9 @@ int main(int argc, char *argv[])
+     xkb_state_unref(state);
+     state = NULL;
+ 
++    xkb_keymap_unref(map);
++    xkb_context_unref(ctx);
++
+     /* add quirks */
+     fprintf(outfile,
+             "\n"
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.1
 
 
