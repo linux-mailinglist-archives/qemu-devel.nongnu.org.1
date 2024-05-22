@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CC08CBED6
-	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E678CBEDA
+	for <lists+qemu-devel@lfdr.de>; Wed, 22 May 2024 12:02:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9ih4-0003Yu-Bl; Wed, 22 May 2024 05:55:34 -0400
+	id 1s9ih1-0003Vu-5e; Wed, 22 May 2024 05:55:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9ign-0003RM-4u
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:18 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igo-0003Ru-JV
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igk-0001Q3-N5
- for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:16 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1s9igm-0001QY-FZ
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 05:55:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716371714;
+ s=mimecast20190719; t=1716371715;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FbYDvgZ3A8fXGUyykwgKl2IroA+m5TOvdcZPY3ucw2s=;
- b=QuluR2mC4UNjv5dpiha5/bJUjaNuMiNplpNC+tt7ulVSddmsBGMFPG9bXdGAXnRGZ+1DdR
- 7YsWxdOqyXYcdiWgTLG70EKv5HaaFNANfuu/UNrpily6+GTU+Chk5rRlsvuDxZFHj8QNnH
- 1nV5TbHrSkUsEoFvKkLUHNtltKyJq60=
+ bh=0VQ9NVIxSHCsEaByjV2CBIUySE2+PXzk48re8ExyFxo=;
+ b=dkNjqezOrvKS6ljF359JAChoNQmvspXjqhIgUIFnYBtYWP8NkcxvNtxlbwUD205hsOedVU
+ PlTM05hsnuzJvmM6/2epKl/BWWAfYBL/VQz2iihqevPSGui3mCVkC9NSV+htBGe4/uVvTG
+ hkFksD60IoEPnoPbcHpr+lUK+LzR8zM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-175-V2N0Rg6uP-2KXOGCFsHy_w-1; Wed,
- 22 May 2024 05:55:10 -0400
-X-MC-Unique: V2N0Rg6uP-2KXOGCFsHy_w-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-179-7kB82LrMOQO0fKBWph7wUA-1; Wed,
+ 22 May 2024 05:55:12 -0400
+X-MC-Unique: 7kB82LrMOQO0fKBWph7wUA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74087380673C;
- Wed, 22 May 2024 09:55:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAC2B3C025C2;
+ Wed, 22 May 2024 09:55:11 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A79F27414;
- Wed, 22 May 2024 09:55:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A942E28E2;
+ Wed, 22 May 2024 09:55:10 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Vinayak Kale <vkale@nvidia.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 14/47] vfio/pci: migration: Skip config space check for Vendor
- Specific Information in VSC during restore/load
-Date: Wed, 22 May 2024 11:54:09 +0200
-Message-ID: <20240522095442.195243-15-clg@redhat.com>
+Subject: [PULL 15/47] qapi/vfio: Add VFIO migration QAPI event
+Date: Wed, 22 May 2024 11:54:10 +0200
+Message-ID: <20240522095442.195243-16-clg@redhat.com>
 In-Reply-To: <20240522095442.195243-1-clg@redhat.com>
 References: <20240522095442.195243-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -80,123 +79,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vinayak Kale <vkale@nvidia.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-In case of migration, during restore operation, qemu checks config space of the
-pci device with the config space in the migration stream captured during save
-operation. In case of config space data mismatch, restore operation is failed.
+Add a new QAPI event for VFIO migration. This event will be emitted when
+a VFIO device changes its migration state, for example, during migration
+or when stopping/starting the guest.
 
-config space check is done in function get_pci_config_device(). By default VSC
-(vendor-specific-capability) in config space is checked.
+This event can be used by management applications to get updates on the
+current state of the VFIO device for their own purposes.
 
-Due to qemu's config space check for VSC, live migration is broken across NVIDIA
-vGPU devices in situation where source and destination host driver is different.
-In this situation, Vendor Specific Information in VSC varies on the destination
-to ensure vGPU feature capabilities exposed to the guest driver are compatible
-with destination host.
+Note that this new event is introduced since VFIO devices have a unique
+set of migration states which cannot be described as accurately by other
+existing events such as run state or migration status.
 
-If a vfio-pci device is migration capable and vfio-pci vendor driver is OK with
-volatile Vendor Specific Info in VSC then qemu should exempt config space check
-for Vendor Specific Info. It is vendor driver's responsibility to ensure that
-VSC is consistent across migration. Here consistency could mean that VSC format
-should be same on source and destination, however actual Vendor Specific Info
-may not be byte-to-byte identical.
-
-This patch skips the check for Vendor Specific Information in VSC for VFIO-PCI
-device by clearing pdev->cmask[] offsets. Config space check is still enforced
-for 3 byte VSC header. If cmask[] is not set for an offset, then qemu skips
-config space check for that offset.
-
-VSC check is skipped for machine types >= 9.1. The check would be enforced on
-older machine types (<= 9.0).
-
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Cédric Le Goater <clg@redhat.com>
-Signed-off-by: Vinayak Kale <vkale@nvidia.com>
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci.h     |  1 +
- hw/core/machine.c |  1 +
- hw/vfio/pci.c     | 26 ++++++++++++++++++++++++++
- 3 files changed, 28 insertions(+)
+ MAINTAINERS           |  1 +
+ qapi/qapi-schema.json |  1 +
+ qapi/vfio.json        | 67 +++++++++++++++++++++++++++++++++++++++++++
+ qapi/meson.build      |  1 +
+ 4 files changed, 70 insertions(+)
+ create mode 100644 qapi/vfio.json
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 6e64a2654e690af11b72710530a41135b726e96f..92cd62d1159dbd47d878454f201f9c18112a7692 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -177,6 +177,7 @@ struct VFIOPCIDevice {
-     OnOffAuto ramfb_migrate;
-     bool defer_kvm_irq_routing;
-     bool clear_parent_atomics_on_exit;
-+    bool skip_vsc_check;
-     VFIODisplay *dpy;
-     Notifier irqchip_change_notifier;
- };
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index c7ceb1150147eb2bdd5f7ef583d00cee88f306cd..3442f31f9458c4e1bdde366aa40bfe3ad8b321a8 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -35,6 +35,7 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1b79767d61960189eaa9d3d736e77722b8d5d9f0..448dc951c50913e7111d3bb6833a00acea7f50f1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2164,6 +2164,7 @@ F: hw/vfio/*
+ F: include/hw/vfio/
+ F: docs/igd-assign.txt
+ F: docs/devel/migration/vfio.rst
++F: qapi/vfio.json
  
- GlobalProperty hw_compat_9_0[] = {
-     {"arm-cpu", "backcompat-cntfrq", "true" },
-+    {"vfio-pci", "skip-vsc-check", "false" },
- };
- const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
- 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index fc6e54e871508bb0e2a3ac9079a195c086531f21..4789d43c0f9cc7ef94b73adc815377f7222d8c57 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2134,6 +2134,28 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
-     }
- }
- 
-+static int vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
-+                                        uint8_t size, Error **errp)
-+{
-+    PCIDevice *pdev = &vdev->pdev;
+ vfio-ccw
+ M: Eric Farman <farman@linux.ibm.com>
+diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+index 5e33da7228f22abd20fa49f32c95e6a381ababd1..b1581988e4eba99cbe9ca53501918dd2d9bcfe44 100644
+--- a/qapi/qapi-schema.json
++++ b/qapi/qapi-schema.json
+@@ -78,5 +78,6 @@
+ { 'include': 'pci.json' }
+ { 'include': 'stats.json' }
+ { 'include': 'virtio.json' }
++{ 'include': 'vfio.json' }
+ { 'include': 'cryptodev.json' }
+ { 'include': 'cxl.json' }
+diff --git a/qapi/vfio.json b/qapi/vfio.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a0e5013188a4d16d842c8463d6e4c33742e06a97
+--- /dev/null
++++ b/qapi/vfio.json
+@@ -0,0 +1,67 @@
++# -*- Mode: Python -*-
++# vim: filetype=python
++#
 +
-+    pos = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, size, errp);
-+    if (pos < 0) {
-+        return pos;
-+    }
++##
++# = VFIO devices
++##
 +
-+    /*
-+     * Exempt config space check for Vendor Specific Information during
-+     * restore/load.
-+     * Config space check is still enforced for 3 byte VSC header.
-+     */
-+    if (vdev->skip_vsc_check && size > 3) {
-+        memset(pdev->cmask + pos + 3, 0, size - 3);
-+    }
++##
++# @VfioMigrationState:
++#
++# An enumeration of the VFIO device migration states.
++#
++# @stop: The device is stopped.
++#
++# @running: The device is running.
++#
++# @stop-copy: The device is stopped and its internal state is available
++#     for reading.
++#
++# @resuming: The device is stopped and its internal state is available
++#     for writing.
++#
++# @running-p2p: The device is running in the P2P quiescent state.
++#
++# @pre-copy: The device is running, tracking its internal state and its
++#     internal state is available for reading.
++#
++# @pre-copy-p2p: The device is running in the P2P quiescent state,
++#     tracking its internal state and its internal state is available
++#     for reading.
++#
++# Since: 9.1
++##
++{ 'enum': 'VfioMigrationState',
++  'data': [ 'stop', 'running', 'stop-copy', 'resuming', 'running-p2p',
++            'pre-copy', 'pre-copy-p2p' ],
++  'prefix': 'QAPI_VFIO_MIGRATION_STATE' }
 +
-+    return pos;
-+}
-+
- static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
- {
-     ERRP_GUARD();
-@@ -2202,6 +2224,9 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
-         vfio_check_af_flr(vdev, pos);
-         ret = pci_add_capability(pdev, cap_id, pos, size, errp);
-         break;
-+    case PCI_CAP_ID_VNDR:
-+        ret = vfio_add_vendor_specific_cap(vdev, pos, size, errp);
-+        break;
-     default:
-         ret = pci_add_capability(pdev, cap_id, pos, size, errp);
-         break;
-@@ -3391,6 +3416,7 @@ static Property vfio_pci_dev_properties[] = {
-     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
-                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
- #endif
-+    DEFINE_PROP_BOOL("skip-vsc-check", VFIOPCIDevice, skip_vsc_check, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
++##
++# @VFIO_MIGRATION:
++#
++# This event is emitted when a VFIO device migration state is changed.
++#
++# @device-id: The device's id, if it has one.
++#
++# @qom-path: The device's QOM path.
++#
++# @device-state: The new changed device migration state.
++#
++# Since: 9.1
++#
++# Example:
++#
++#     <- { "timestamp": { "seconds": 1713771323, "microseconds": 212268 },
++#          "event": "VFIO_MIGRATION",
++#          "data": {
++#              "device-id": "vfio_dev1",
++#              "qom-path": "/machine/peripheral/vfio_dev1",
++#              "device-state": "stop" } }
++##
++{ 'event': 'VFIO_MIGRATION',
++  'data': {
++      'device-id': 'str',
++      'qom-path': 'str',
++      'device-state': 'VfioMigrationState'
++  } }
+diff --git a/qapi/meson.build b/qapi/meson.build
+index c92af6e063a1b13ec3cce18e0572a859779b2ce4..e7bc54e5d047090aa2cdb823ef9ff4b892adb614 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -52,6 +52,7 @@ qapi_all_modules = [
+   'stats',
+   'trace',
+   'transaction',
++  'vfio',
+   'virtio',
+   'yank',
+ ]
 -- 
 2.45.1
 
