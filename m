@@ -2,76 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFFA8CC8E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8A98CC8F8
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:21:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9uEF-0002V8-RR; Wed, 22 May 2024 18:14:35 -0400
+	id 1s9uKG-0005R6-Kl; Wed, 22 May 2024 18:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1s9uEC-0002Ul-UE
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:14:32 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uKB-0005QX-Qr
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:44 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
- id 1s9uDy-0002aQ-Rd
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:14:32 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2e428242a38so102476801fa.2
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:14:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716416055; x=1717020855; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xbuJJfPfkTRs7CGDQKwHKalBzntdU/4JsaQpMQKjOHU=;
- b=JiyJvAp/Ld/7em+MeEq508FA7rDr9EIsbUqlLKtgQGlLCrVTOUveuSPnjNpnF447CN
- iVmmL2ogEBMZnzEk4CGlbMIfw44dPY5nSra9EhZcvL1wkAeMl3QOxDeCuKID8HPms5oR
- TX/+H8Rt8OJlsBbLRslyvUdwXey9feNCxdFMAP5LItHDj5L/8hCEcVMVB7QWEeAw4zmu
- YOv3VXDhzeSELWOdlsw1filmXjvl8/yYwtHz65vit7xDSkR0V70LZwMx9ZIJq6dPg3b9
- Q7itR+nwnXjEAJEowO8TWCsg6RSZNM7zIyU5ywINx2cEeDmH3ixpZ5yZGUdZI5P/AXTK
- niqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716416055; x=1717020855;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xbuJJfPfkTRs7CGDQKwHKalBzntdU/4JsaQpMQKjOHU=;
- b=OXTbY3BmOwKfbyUjriJg21iGCazAdCN28D2SNtpHXJxWX/d4HvDsoLVYDImbnObk1E
- DZi3q4Alu87qCeh2HFvL3WP9NbEYfSZLXeQ1hb8h/qneQbbAuyvRVrdm/JBT/knIEDmD
- FR/V8163fwgURPEV4Jl4abG9pyFWsWhSEaRfX5dGtQTgdAUEVu71HeMx75YIF/PqDtwO
- rt1VqrynLqw28ddBPxjg5skcsVHjclWm9IMvhjTwBqHJqxmB9NgHuQRasF1tdF71s/Hi
- ItovUrTelRBOShquzDNk7xdrX4I/INhMdswv2Bh+KFvbFXADZzI9rmm2TQqmrGfUCXWG
- 7mlw==
-X-Gm-Message-State: AOJu0YzF2H5dPh+yBLkXgVZnAvQY4GPTwR0NHnv3o4Yo68AQ7ilZYJ8p
- iTEFLZaEwfWvS2rbs2XwPff79mEQNX3E0soazs+xF7AK69GCPBwR7cgOnJzNvQIbOVDETIlgs2l
- oZO9aVGVp4lG05GzCypkzSj36VSUFVYb4dFBPF9sxjy5cIBs/
-X-Google-Smtp-Source: AGHT+IH3d0VlZfDtgDZOgp3GYtVcwXRUio91d6JHDYQaCunFhQTT0eCiUfi8nm9ASFD7K9d7dG91/oijw1QCeoQNs9U=
-X-Received: by 2002:a2e:3618:0:b0:2e1:a747:532d with SMTP id
- 38308e7fff4ca-2e949430476mr25688611fa.8.1716416054977; Wed, 22 May 2024
- 15:14:14 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240516120344.531521-1-kraxel@redhat.com>
- <20240516120344.531521-2-kraxel@redhat.com>
- <6c9a0d95-edc9-445f-8063-23a30dd74443@redhat.com>
-In-Reply-To: <6c9a0d95-edc9-445f-8063-23a30dd74443@redhat.com>
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Date: Thu, 23 May 2024 01:13:58 +0300
-Message-ID: <CAAjaMXYpzbLh58y0z=FBeOxa5k2D8o1r6dsD9wuai+6iBawCQQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] MAINTAINERS: drop audio maintainership
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s9uK8-0003fZ-8o
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 18:20:42 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 0863021C21;
+ Wed, 22 May 2024 22:20:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716416438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=is/RpDpHv5lZV2dWY2IophhyTb//P1hJoNYZQO5ncvc=;
+ b=YCmPzBGYT0P7HoZFdeB5+HNUL0ByQaj6Rcw1sP1B+2myRcDd0PI4Q4iqdANcTRbGWN8IuK
+ vO9W2S47W3fdJTHlU3awPaFFOM+Sk0exDmenk6Z5LKqczY0Y5TI5ffIF4Ib0pzVZbrdzDs
+ 0p6WHP29SXMlDip9JXfBDsZyzIZ/nmY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716416438;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=is/RpDpHv5lZV2dWY2IophhyTb//P1hJoNYZQO5ncvc=;
+ b=Tlpan0QTDqOff3r4eAb/0M2cRCBlKnlkjrxjumdDV428je6nG1jAffA3kDg5wjgpxihuRN
+ NuDRYg5wEKmYG9CA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716416438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=is/RpDpHv5lZV2dWY2IophhyTb//P1hJoNYZQO5ncvc=;
+ b=YCmPzBGYT0P7HoZFdeB5+HNUL0ByQaj6Rcw1sP1B+2myRcDd0PI4Q4iqdANcTRbGWN8IuK
+ vO9W2S47W3fdJTHlU3awPaFFOM+Sk0exDmenk6Z5LKqczY0Y5TI5ffIF4Ib0pzVZbrdzDs
+ 0p6WHP29SXMlDip9JXfBDsZyzIZ/nmY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716416438;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=is/RpDpHv5lZV2dWY2IophhyTb//P1hJoNYZQO5ncvc=;
+ b=Tlpan0QTDqOff3r4eAb/0M2cRCBlKnlkjrxjumdDV428je6nG1jAffA3kDg5wjgpxihuRN
+ NuDRYg5wEKmYG9CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D231F13A6B;
+ Wed, 22 May 2024 22:20:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id WDxUJbRvTmaABAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 22 May 2024 22:20:36 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Alexandre Ratchov <alex@caoua.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=manos.pitsidianakis@linaro.org; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Cc: Peter Xu <peterx@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 0/9] Migration patches for 2024-05-22
+Date: Wed, 22 May 2024 19:20:25 -0300
+Message-Id: <20240522222034.4001-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_TLS_ALL(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ RCPT_COUNT_THREE(0.00)[3]
+X-Spam-Score: -3.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,74 +111,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 22 May 2024 at 15:54, Thomas Huth <thuth@redhat.com> wrote:
->
-> On 16/05/2024 14.03, Gerd Hoffmann wrote:
-> > Remove myself from audio (both devices and backend) entries.
-> > Flip status to "Orphan" for entries which have nobody else listed.
-> >
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > ---
-> >   MAINTAINERS | 19 ++++---------------
-> >   1 file changed, 4 insertions(+), 15 deletions(-)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 1b79767d6196..7f52e2912fc3 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> ...
-> > @@ -2388,7 +2387,6 @@ F: hw/virtio/virtio-mem-pci.c
-> >   F: include/hw/virtio/virtio-mem.h
-> >
-> >   virtio-snd
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> >   R: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> >   S: Supported
->
-> I think the status should be downgraded to Orphan or at least Odd-fixes,
-> unless Manos wants to upgrade from "R:" to "M:" ?
+The following changes since commit 01782d6b294f95bcde334386f0aaac593cd28c0d:
 
-That's fine with me.
+  Merge tag 'hw-misc-20240517' of https://github.com/philmd/qemu into staging (2024-05-18 11:49:01 +0200)
 
-> >   ALSA Audio backend
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> >   R: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> >   S: Odd Fixes
-> >   F: audio/alsaaudio.c
->
-> I'd also suggest that Christian either upgrade from R: to M: or that we
-> change the status to Orphan
+are available in the Git repository at:
 
-If Christian is not available I volunteer to be a Reviewer (but not
-M:) since I have some familiarity with alsaaudio.c
-This way even if Orphan it will have more reviewers available.
+  https://gitlab.com/farosas/qemu.git tags/migration-20240522-pull-request
 
->
-> >   JACK Audio Connection Kit backend
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> >   R: Christian Schoenebeck <qemu_oss@crudebyte.com>
-> >   S: Odd Fixes
-> >   F: audio/jackaudio.c
->
-> dito
->
-> >   SDL Audio backend
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> >   R: Thomas Huth <huth@tuxfamily.org>
->
-> I'm fine if you update my entry from R: to M: here.
->
-> >   S: Odd Fixes
-> >   F: audio/sdlaudio.c
-> >
-> >   Sndio Audio backend
-> > -M: Gerd Hoffmann <kraxel@redhat.com>
-> >   R: Alexandre Ratchov <alex@caoua.org>
-> >   S: Odd Fixes
-> >   F: audio/sndioaudio.c
->
-> Same again, I'd suggest to either set to Orphan or upgrade the R: entry?
->
->   Thomas
->
+for you to fetch changes up to 8f023a0bd946bb0c122543c64fe2b34bad0dd048:
+
+  tests/qtest/migration-test: Fix the check for a successful run of analyze-migration.py (2024-05-22 17:34:41 -0300)
+
+----------------------------------------------------------------
+Migration pull request
+
+- Li Zhijian's COLO minor fixes
+- Marc-André's virtio-gpu fix
+- Fiona's virtio-net USO fix
+- A couple of migration-test fixes from Thomas
+
+----------------------------------------------------------------
+
+Fiona Ebner (1):
+  hw/core/machine: move compatibility flags for VirtIO-net USO to
+    machine 8.1
+
+Li Zhijian (3):
+  migration/colo: Minor fix for colo error message
+  migration/colo: make colo_incoming_co() return void
+  migration/colo: Tidy up bql_unlock() around bdrv_activate_all()
+
+Marc-André Lureau (3):
+  migration: add "exists" info to load-state-field trace
+  migration: fix a typo
+  virtio-gpu: fix v2 migration
+
+Thomas Huth (2):
+  tests/qtest/migration-test: Run some basic tests on s390x and ppc64
+    with TCG, too
+  tests/qtest/migration-test: Fix the check for a successful run of
+    analyze-migration.py
+
+ hw/core/machine.c              |  7 +++---
+ hw/display/virtio-gpu.c        | 30 ++++++++++++++++++-------
+ include/hw/virtio/virtio-gpu.h |  1 +
+ include/migration/colo.h       |  2 +-
+ migration/colo-stubs.c         |  3 +--
+ migration/colo.c               | 12 +++-------
+ migration/migration.c          | 12 +++++-----
+ migration/trace-events         |  2 +-
+ migration/vmstate.c            |  7 +++---
+ tests/qtest/migration-test.c   | 41 +++++++++++++++++-----------------
+ 10 files changed, 64 insertions(+), 53 deletions(-)
+
+-- 
+2.35.3
+
 
