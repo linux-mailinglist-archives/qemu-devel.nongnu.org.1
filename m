@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B438CDD9E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B6C8CDDB7
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:28:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHbj-0003TB-Vo; Thu, 23 May 2024 19:12:24 -0400
+	id 1sAHqZ-0001ZZ-Ti; Thu, 23 May 2024 19:27:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHb5-0000Wx-Sj; Thu, 23 May 2024 19:11:43 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sAHqW-0001YC-CN; Thu, 23 May 2024 19:27:40 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHb3-0006R2-VF; Thu, 23 May 2024 19:11:43 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f8e98760fcso294942b3a.1; 
- Thu, 23 May 2024 16:11:40 -0700 (PDT)
+ id 1sAHqU-0001cd-GG; Thu, 23 May 2024 19:27:40 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-681919f89f2so252465a12.1; 
+ Thu, 23 May 2024 16:27:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505899; x=1717110699; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1716506856; x=1717111656; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nuLmmK0ZiA7UO80ik8S5jqOuyqVZgLfQb9PxXw9R3PU=;
- b=hRSo4Q9az8IQWPHKC4DRsbi8VFxUVPxu4Fszc2r4Abjd4ZR+4GXXcdX5HCwifG5W4t
- JCfU2D/qBQs7lLVu42yUMH1rVORH2yDl0Gxkq6hh5wA/TPUFun3uDjNTPkDLZLNK78Tq
- IQqFwibUhNU8nUkrA6et9uRnWZfM55hHb4Q5+BaeFq4Yhd/yqIdl+VNi8IjTufB3P9QQ
- CDR/sxe0s9JwKXAgMXlx3Pl1nmS9vQEAPOlJtcNxij2xMuir3ENkrdG5/fUClgEMeU49
- o1UERbMgqVjLw6wH/A0cE+8ubC+DwUJMmRHsYQEC4BVUwYEIIryJBB/TVr8yl3wHKz6f
- 10ow==
+ bh=5OYbhwqjz8pW1dz54VSOIdlLzXg2gMVeFGgIy78z4wc=;
+ b=d28YYiUQR0t7NQZ9eegITtTPQAEhgz9Y/tNPFZL1tR/0o9NSqjHD7H/ZZLyXiVOP25
+ Ahxf7b6OsNjQNKHgVqEWLzWOWcMCQ+LgTAjltnp33EUAyBsVnRw3/ibcxdD5A+B4mKun
+ ovi9tMgQ6uNvmvnczdgeLkMPrAlUYStHiGLwqX6Ktg3gaF+49ernoG2B7zvuUMd0ZT5S
+ 5EmbO/60ksbVxFBftyRBxO8HMxVCUftbO5o8pa5Ho34sw31H31iPRQqDIntlNTXUTzCx
+ 8ipLxgEBPx8S2Z5hVTOvkr2Rl2ddfB1DvwbCGsBDarTfAk4APAMiLqYJ5E9U4DQ9/mod
+ V+Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505899; x=1717110699;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nuLmmK0ZiA7UO80ik8S5jqOuyqVZgLfQb9PxXw9R3PU=;
- b=jUSb9fV4UHi9294xr1L8O6sVzRgh3lOPxbiB8R8IHVg0Ewx19M049BuG3R7vzkvC+L
- CJTkJIMrF8V1y6NyHsf5iC7FeyKhAEx3nPFZx6riyAqtjjxTmIwofq5uGurPVG6gBMKn
- fsB3msLncSvSgyiTjPUg/MCxM7/uPqzT7/v6k0WQoKYY+XkgGYIwKbYAIWW/ZbldlWAi
- jcD/pQTYLHObPpeRh+q/wdL0dDpcOYHr2HcMLw864PuQqDqPFFJ1EoDToSvh0uFPeOpG
- q15OnjJS6TfNZ9JyhMBEu27c0NZqV8TbJ94NHQJLsKqb3N0oTColVq89SDNyZ7HzNIQK
- a+1g==
+ d=1e100.net; s=20230601; t=1716506856; x=1717111656;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=5OYbhwqjz8pW1dz54VSOIdlLzXg2gMVeFGgIy78z4wc=;
+ b=XQJ8GUijtj/umNRvV9avx/Mahhi8NNtJ8jvKeuKdN7sXAWgFC7KhkOTnRU4xqkaGed
+ r/QQBi6jazNSRBXAslX17xfBqWZ5TYRaSiQ4NY9mMDK9JOMf5MyZOnsCt42A3P2gdvlg
+ LRMp33p/whKkWRgz1fMrNo8Q/r4OI1q3L2Lt7p7D3DKKWJGL2NkpJ2aDe2N6KnHUjHnC
+ vI3paMfiQc4O7XLFhUIXAWKPd9rbgibIWI2TF9k572vyBkBihtMSGyAkgiD1tM1cNSSK
+ 8ZreUF2OX73CSoBDiDaY9z0I5dLoZwqUEf0gEEvqP5RMiVFGutjfEFRGjvgesNr1Ttp0
+ QWwA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVFumY+YbLavUWXzWtUMb2N78o64Atw63VqQU9jcn5Y3nqbDfpXk6k2w4Gj5HUkCIOeABxPKE76DatpVO8gOKZcYfOB
-X-Gm-Message-State: AOJu0YwGa+e+VTGrLlnB1Bc3Yf8mTpmJpGwb18RgPdQ8kT101LF7rFI/
- ujJYZ4u2icJBRCq96ULdllD5h3q/jVuo3sNtk2L1DoEU+V8ZJWnXA180gg==
-X-Google-Smtp-Source: AGHT+IF/tOqlJYqc5SUBVJjFLJJbwAPodyw2on0eyUbvbqCFKwUMg200md2+uXCtmHvvutbEhadJ0A==
-X-Received: by 2002:a05:6a21:920b:b0:1b1:ebf2:d767 with SMTP id
- adf61e73a8af0-1b212df0c74mr1165922637.43.1716505899361; 
- Thu, 23 May 2024 16:11:39 -0700 (PDT)
-Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
+ AJvYcCWd2NYWmeDGHpTa8Wf8/YWIHaloJTk84bbWmmGLv6F8Mm9Sb7HVMoLT9C+wt859Tf9wfzdR0Pf0qvoyjB/Z2rNIHenQr14+JyE/BfMEcM40j/U9GhF5PIJ64BQ=
+X-Gm-Message-State: AOJu0Yx9HVr1N/L7SA8SD1xxscPJL/6ICTMCcpqqJdzOxuYsCtCm38ga
+ ccPqG4v2BBAVUnENP+AFk/NQY0KXa2Hx/ZFi7cZsRt9Qe7oAZtkb
+X-Google-Smtp-Source: AGHT+IHrgDHgru9tLDSGF0iSxFhUwsBmjQuR5X/bcbhYfVn41MJaYFRwRiiekY4gJ2dKTIJADceO5w==
+X-Received: by 2002:a17:90a:a00b:b0:2b1:50:cad4 with SMTP id
+ 98e67ed59e1d1-2bf5e84a5d6mr691462a91.1.1716506856207; 
+ Thu, 23 May 2024 16:27:36 -0700 (PDT)
+Received: from localhost (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:11:38 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 72/72] target/ppc: Remove pp_check() and reuse
- ppc_hash32_pp_prot()
-Date: Fri, 24 May 2024 09:07:45 +1000
-Message-ID: <20240523230747.45703-73-npiggin@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
-References: <20240523230747.45703-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
+ 98e67ed59e1d1-2bf699abed8sm37358a91.1.2024.05.23.16.27.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 May 2024 16:27:35 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 May 2024 09:27:29 +1000
+Message-Id: <D1HEW8JJFC0I.3CUC58PW2DTFB@gmail.com>
+Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 0/2] target/ppc: Fix PMU instruction counting
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Richard Henderson" <richard.henderson@linaro.org>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <20240522040411.90655-1-npiggin@gmail.com>
+ <39f33a5d-a9fd-4469-ad6d-ca0fe844f571@linaro.org>
+In-Reply-To: <39f33a5d-a9fd-4469-ad6d-ca0fe844f571@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,208 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+On Thu May 23, 2024 at 8:46 AM AEST, Richard Henderson wrote:
+> On 5/21/24 21:04, Nicholas Piggin wrote:
+> > The crux of the problem being that dynamic exits from a TB would
+> > not count instructions previously executed in the TB. I don't
+> > know how important it is for PMU to count instructions exactly,
+> > however for instruction replay this can lead to different counts
+> > for the same execution (e.g., because TBs can be different sized)
+> > and that blows up reverse debugging.
+> >=20
+> > I posted something on this out before, but missed a few things
+> > (most notably faulting memory access). And found that forcing 1
+> > insn per TB seems to be the only feasible way to do this.
+> >=20
+> > Sorry to ping you on this again Richard, it's not urgent but
+> > you're the guru with this stuff and I'm hesitant to change it
+> > without a better opinion ... Simple band aid for the meanwhile
+> > could be leave it as is but just disable counting if
+> > record/replay is in use.
+>
+> When we unwind, we know how many insns remain in the tb.
+> With icount, we adjust cpu->neg.icount_decr.u16.low.
+>
+> My suggestion is to change restore_state_to_opc to pass in either the raw=
+ insns_left, or=20
+> the inverse: tb->icount - insns_left.
+>
+> That'll be a trivial mechanical change for the signature of the hook, fir=
+st.
 
-The ppc_hash32_pp_prot() function in mmu-hash32.c is the same as
-pp_check() in mmu_common.c, merge these to remove duplicated code.
-Define the common function as static lnline otherwise exporting the
-function from mmu-hash32.c would stop the compiler inlining it which
-results in slightly lower performance.
+That gives me a better place to start looking.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-[np: move ppc_hash32_pp_prot inline without changing it]
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/mmu-hash32.c | 45 -----------------------------------------
- target/ppc/mmu-hash32.h | 45 +++++++++++++++++++++++++++++++++++++++++
- target/ppc/mmu_common.c | 44 ++--------------------------------------
- 3 files changed, 47 insertions(+), 87 deletions(-)
-
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 1e8f1df0f0..d5f2057eb1 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -37,51 +37,6 @@
- #  define LOG_BATS(...) do { } while (0)
- #endif
- 
--static int ppc_hash32_pp_prot(int key, int pp, int nx)
--{
--    int prot;
--
--    if (key == 0) {
--        switch (pp) {
--        case 0x0:
--        case 0x1:
--        case 0x2:
--            prot = PAGE_READ | PAGE_WRITE;
--            break;
--
--        case 0x3:
--            prot = PAGE_READ;
--            break;
--
--        default:
--            abort();
--        }
--    } else {
--        switch (pp) {
--        case 0x0:
--            prot = 0;
--            break;
--
--        case 0x1:
--        case 0x3:
--            prot = PAGE_READ;
--            break;
--
--        case 0x2:
--            prot = PAGE_READ | PAGE_WRITE;
--            break;
--
--        default:
--            abort();
--        }
--    }
--    if (nx == 0) {
--        prot |= PAGE_EXEC;
--    }
--
--    return prot;
--}
--
- static int ppc_hash32_pte_prot(int mmu_idx,
-                                target_ulong sr, ppc_hash_pte32_t pte)
- {
-diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
-index 7119a63d97..f0ce6951b4 100644
---- a/target/ppc/mmu-hash32.h
-+++ b/target/ppc/mmu-hash32.h
-@@ -102,6 +102,51 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
-     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
- }
- 
-+static inline int ppc_hash32_pp_prot(bool key, int pp, bool nx)
-+{
-+    int prot;
-+
-+    if (key == 0) {
-+        switch (pp) {
-+        case 0x0:
-+        case 0x1:
-+        case 0x2:
-+            prot = PAGE_READ | PAGE_WRITE;
-+            break;
-+
-+        case 0x3:
-+            prot = PAGE_READ;
-+            break;
-+
-+        default:
-+            abort();
-+        }
-+    } else {
-+        switch (pp) {
-+        case 0x0:
-+            prot = 0;
-+            break;
-+
-+        case 0x1:
-+        case 0x3:
-+            prot = PAGE_READ;
-+            break;
-+
-+        case 0x2:
-+            prot = PAGE_READ | PAGE_WRITE;
-+            break;
-+
-+        default:
-+            abort();
-+        }
-+    }
-+    if (nx == 0) {
-+        prot |= PAGE_EXEC;
-+    }
-+
-+    return prot;
-+}
-+
- typedef struct {
-     uint32_t pte0, pte1;
- } ppc_hash_pte32_t;
-diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 2c75e53250..e2542694f0 100644
---- a/target/ppc/mmu_common.c
-+++ b/target/ppc/mmu_common.c
-@@ -77,44 +77,6 @@ void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
- /*****************************************************************************/
- /* PowerPC MMU emulation */
- 
--static int pp_check(int key, int pp, int nx)
--{
--    int access;
--
--    /* Compute access rights */
--    access = 0;
--    if (key == 0) {
--        switch (pp) {
--        case 0x0:
--        case 0x1:
--        case 0x2:
--            access |= PAGE_WRITE;
--            /* fall through */
--        case 0x3:
--            access |= PAGE_READ;
--            break;
--        }
--    } else {
--        switch (pp) {
--        case 0x0:
--            access = 0;
--            break;
--        case 0x1:
--        case 0x3:
--            access = PAGE_READ;
--            break;
--        case 0x2:
--            access = PAGE_READ | PAGE_WRITE;
--            break;
--        }
--    }
--    if (nx == 0) {
--        access |= PAGE_EXEC;
--    }
--
--    return access;
--}
--
- int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-                                     int way, int is_code)
- {
-@@ -137,7 +99,7 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-                                 MMUAccessType access_type)
- {
-     target_ulong ptem, mmask;
--    int access, ret, pteh, ptev, pp;
-+    int ret, pteh, ptev, pp;
- 
-     ret = -1;
-     /* Check validity and table match */
-@@ -156,11 +118,9 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-                     return -3;
-                 }
-             }
--            /* Compute access rights */
--            access = pp_check(ctx->key, pp, ctx->nx);
-             /* Keep the matching PTE information */
-             ctx->raddr = pte1;
--            ctx->prot = access;
-+            ctx->prot = ppc_hash32_pp_prot(ctx->key, pp, ctx->nx);
-             if (check_prot_access_type(ctx->prot, access_type)) {
-                 /* Access granted */
-                 qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
--- 
-2.43.0
-
+Thanks,
+Nick
 
