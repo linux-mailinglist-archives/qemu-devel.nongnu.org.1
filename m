@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9608CDD2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF998CDD28
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHXe-0007Ac-DW; Thu, 23 May 2024 19:08:10 -0400
+	id 1sAHXh-0007BU-2z; Thu, 23 May 2024 19:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHXc-00079l-Dy; Thu, 23 May 2024 19:08:08 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sAHXe-0007Az-PS; Thu, 23 May 2024 19:08:10 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHXa-0005dB-B7; Thu, 23 May 2024 19:08:08 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f8e819cf60so313015b3a.0; 
- Thu, 23 May 2024 16:08:05 -0700 (PDT)
+ id 1sAHXd-0005dz-2d; Thu, 23 May 2024 19:08:10 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6f6765226d0so2763207b3a.3; 
+ Thu, 23 May 2024 16:08:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505684; x=1717110484; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505687; x=1717110487; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+Iiv0WKgx04uztzz7B3EzvVCbuWZVO8Ce/oy/GyixCc=;
- b=RXC3v0+qMygikzZJChYr9e1oqP2ewwmIud1FVGUVJbTKp/Fv2jiFMaaQgSgu/w3Iam
- ilf4zDOizd7pQW8tJiKrUz+9JPDHdJuBleuJh1wv3GZCDtvURnbTtAXu8+JCu6J9RFwJ
- QU5ooHnsLjI5tYA0n9rCnqgzqc5QWGJqcqM84fNWZgR1RZTrgXXXxlyOGqv1m/32ALcD
- fFS9ViqiZorligcjcI0MzKKCvMHxOqwMEP6GEpPYG/QF2eNq6U2avSlG3/PJSDK/lcdw
- 0gzeQf+HKxF0RcSd1cicXgy/VAZ9IIuaTjDGuaTayG7dCbz2mgxHGbJKAbGNRSctisKt
- zMyg==
+ bh=hRTmiW2cASA3rhl7leKTOZhlCbikObGe8oO9U2Jgdu0=;
+ b=BQoMg4JN0EcXCFiIYWSnBXd6cGO94XB+VKHK9GBhfMTeUxplExDmUiF+ZyW/6SzDoo
+ B3sFwnjyQ9omsITzsOLhGK9+t8IbsOSDtSH8qT8itEwYODs+wSsYtAn3Qg4+PXLnewc7
+ vXAgxpp3X6v+Y1g3Q0RnsSq5Yk4FZjpofaXv4G7VUV+VeqmvTHSilZjKDx9NFepw0nhk
+ fiwsqwvaR4Ae0G5w7BuMuqeUzQnOCe1DUp3She3zdNCdbPAWNETThKkcNPngbw4fRjle
+ i8ulst8etbpLsOXw8PGYmDif/3zEH6HPb/I5FGiLowAMhjfR+65YplSa21bJjTaYu4XS
+ OmUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505684; x=1717110484;
+ d=1e100.net; s=20230601; t=1716505687; x=1717110487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+Iiv0WKgx04uztzz7B3EzvVCbuWZVO8Ce/oy/GyixCc=;
- b=dTQLj14/y4ZlOhFcQEXpSGELUUEIMqKz1o0aTqBhurrC7nMDVWbhQhZ7i9oD6EMMKz
- iHtV3uLeZ9pnFD4uMxRtgtMRqN4xbM4Of9frPffH3Zd9bheCkp5WYVj8DrZma7GMjcyv
- TnnlXb40AMBlnV7xbghF5fDTAh/nViusa8eTO9g5ONQA4hgJYFzaJvc7MBzAY3pbRu1S
- e1BVg5et2xxIv8dI/9WM/TSfjWYaTwQZIuHvnDEWrEDWF0W4q5p6CMDHUHRPgVp71euo
- 2sdLA+8aWvSTp0Bny7VrkmSNdsfy1dZBdIT2iq8usrKVhSPvh81aJtBlhtZaRaIXLYaf
- GmwQ==
+ bh=hRTmiW2cASA3rhl7leKTOZhlCbikObGe8oO9U2Jgdu0=;
+ b=eBgmUtZZ1dwN/NKtl3AhYg76SyqiYAwJ6hSKU2iDZSopxBJi/Nzl9CRSf+Hz6kPkth
+ 2O/p0CU4BC6BOaYZnQC+MXllwhiIkJBF1eDoI3/oHwtF7qHtmRIA5WxDWJE0vi5yA+It
+ rqa+BOxboVebQCnCCzb387dNNH05pmh2MgT15JhxkOq8txX2GhRq0iinauYd1yq5Fufp
+ fJ4X67XWHhdiDieaEqshRfDrme773k1guK4ji2yb/QmTtA0DrkxtlYmrRDXKM+qtX2Gx
+ ZZYfcSytApNCSIt6faAWY07ericxr2Zbzdn+qaU1Kh1I+8Qn6ndKRGhmHnyXTwVzAJBu
+ 7AbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXUN0Hpe5HJIVkfrzjVaWPl4m1oT3f6Revzm/CLWkik6rlAS96sELI0PMuQ5iqeyrNrsCxbNBl0fkKATm0FK9Wr8Cwb
-X-Gm-Message-State: AOJu0YyWzBZCHGkelZdkoPwXrOd45Vp5M0f+IXCvS74qcmaV6k6VvIlk
- Co6+K/Jgqtiq5TMVu+hHdNmOIV/2TcinYgxwoY8Y4l77IFNobzVWHw8i8g==
-X-Google-Smtp-Source: AGHT+IEaGvlmM/9MQb+fWAYgV4W+mnEP7lbN6+/1haO2rm7QbEla5s5hqORRiraK434H/e7e4YcTCw==
-X-Received: by 2002:a05:6a21:4887:b0:1af:f89d:8320 with SMTP id
- adf61e73a8af0-1b212d4bde4mr1308587637.37.1716505683934; 
- Thu, 23 May 2024 16:08:03 -0700 (PDT)
+ AJvYcCX+fTwJCIyYqDiPusFpOis1RLl3ss4TdN6LxFAKtMA11OjVNKg2DKQA12ClaX3LtdsNj06q4bzCXBpxsjrkXyHI1XIn
+X-Gm-Message-State: AOJu0YxOBuQVuFcPMupuJ9BqJiJpSzQ0zOlocaX8YpwCea4OkUoAhQph
+ W/QsDC6RsawezqMVbRdHhpBQEg2KucY/mbq3PL0y3an6ram6SH6oMasatA==
+X-Google-Smtp-Source: AGHT+IH0bejOIu18l+bF/y/C0RBJdiEVo2fPMxaPP1vnBNEH3JdUkDvs6xf5NhwmUndut4XlLERYAg==
+X-Received: by 2002:aa7:9a84:0:b0:6ec:e726:b6f5 with SMTP id
+ d2e1a72fcca58-6f8f3d6bfcbmr517650b3a.26.1716505687067; 
+ Thu, 23 May 2024 16:08:07 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.01
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:08:03 -0700 (PDT)
+ Thu, 23 May 2024 16:08:06 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 02/72] ppc/spapr: Add ibm,pi-features
-Date: Fri, 24 May 2024 09:06:35 +1000
-Message-ID: <20240523230747.45703-3-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 03/72] target/ppc: Fix broadcast tlbie synchronisation
+Date: Fri, 24 May 2024 09:06:36 +1000
+Message-ID: <20240523230747.45703-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,62 +93,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ibm,pi-features property has a bit to say whether or not
-msgsndp should be used. Linux checks if it is being run under
-KVM and avoids msgsndp anyway, but it would be preferable to
-rely on this bit.
+With mttcg, broadcast tlbie instructions do not wait until other vCPUs
+have been kicked out of TCG execution before they complete (including
+necessary subsequent tlbsync, etc., instructions). This is contrary to
+the ISA, and it permits other vCPUs to use translations after the TLB
+flush. For example:
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+   CPU0
+   // *memP is initially 0, memV maps to memP with *pte
+   *pte = 0;
+   ptesync ; tlbie ; eieio ; tlbsync ; ptesync
+   *memP = 1;
+
+   CPU1
+   assert(*memV == 0);
+
+It is possible for the assertion to fail because CPU1 translates memV
+using the TLB after CPU0 has stored 1 to the underlying memory. This
+race was observed with a careful test case where CPU1 checks run in a
+very large expensive TB so it can run for the entire CPU0 period between
+clearing the pte and storing the memory, but host vCPU thread preemption
+could cause the race to hit anywhere.
+
+As explained in commit 4ddc104689b ("target/ppc: Fix tlbie"), it is not
+enough to just use tlb_flush_all_cpus_synced(), because that does not
+execute until the calling CPU has finished its TB. It is also required
+that the TB is ended at the point where the TLB flush must subsequently
+take effect.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ target/ppc/helper_regs.c                     | 2 +-
+ target/ppc/mmu_helper.c                      | 2 +-
+ target/ppc/translate.c                       | 7 +++++++
+ target/ppc/translate/storage-ctrl-impl.c.inc | 7 +++++++
+ 4 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index d2d1e310a3..4345764bce 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -353,6 +353,32 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-     _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
- }
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index 25258986e3..9094ae5004 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -334,7 +334,7 @@ void check_tlb_flush(CPUPPCState *env, bool global)
+     if (global && (env->tlb_need_flush & TLB_NEED_GLOBAL_FLUSH)) {
+         env->tlb_need_flush &= ~TLB_NEED_GLOBAL_FLUSH;
+         env->tlb_need_flush &= ~TLB_NEED_LOCAL_FLUSH;
+-        tlb_flush_all_cpus(cs);
++        tlb_flush_all_cpus_synced(cs);
+         return;
+     }
  
-+static void spapr_dt_pi_features(SpaprMachineState *spapr,
-+                                 PowerPCCPU *cpu,
-+                                 void *fdt, int offset)
-+{
-+    uint8_t pi_features[] = { 1, 0,
-+        0x00 };
-+
-+    if (kvm_enabled() && ppc_check_compat(cpu, CPU_POWERPC_LOGICAL_3_00,
-+                                          0, cpu->compat_pvr)) {
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index b35a93c198..d9d950e220 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -534,7 +534,7 @@ void helper_tlbie_isa300(CPUPPCState *env, target_ulong rb, target_ulong rs,
+     if (local) {
+         tlb_flush_page(env_cpu(env), addr);
+     } else {
+-        tlb_flush_page_all_cpus(env_cpu(env), addr);
++        tlb_flush_page_all_cpus_synced(env_cpu(env), addr);
+     }
+     return;
+ 
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 49dee6cab0..24461c2d1b 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -3494,6 +3494,13 @@ static inline void gen_check_tlb_flush(DisasContext *ctx, bool global)
+         gen_helper_check_tlb_flush_local(tcg_env);
+     }
+     gen_set_label(l);
++    if (global) {
 +        /*
-+         * POWER9 and later CPUs with KVM run in LPAR-per-thread mode where
-+         * all threads are essentially independent CPUs, and msgsndp does not
-+         * work (because it is physically-addressed) and therefore is
-+         * emulated by KVM, so disable it here to ensure XIVE will be used.
-+         * This is both KVM and CPU implementation-specific behaviour so a KVM
-+         * cap would be cleanest, but for now this works. If KVM ever permits
-+         * native msgsndp execution by guests, a cap could be added at that
-+         * time.
++         * Global TLB flush uses async-work which must run before the
++         * next instruction, so this must be the last in the TB.
 +         */
-+        pi_features[2] |= 0x08; /* 4: No msgsndp */
++        ctx->base.is_jmp = DISAS_EXIT_UPDATE;
 +    }
-+
-+    _FDT((fdt_setprop(fdt, offset, "ibm,pi-features", pi_features,
-+                      sizeof(pi_features))));
-+}
-+
- static hwaddr spapr_node0_size(MachineState *machine)
- {
-     if (machine->numa_state->num_nodes) {
-@@ -815,6 +841,8 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
- 
-     spapr_dt_pa_features(spapr, cpu, fdt, offset);
- 
-+    spapr_dt_pi_features(spapr, cpu, fdt, offset);
-+
-     _FDT((fdt_setprop_cell(fdt, offset, "ibm,chip-id",
-                            cs->cpu_index / vcpus_per_socket)));
+ }
+ #else
+ static inline void gen_check_tlb_flush(DisasContext *ctx, bool global) { }
+diff --git a/target/ppc/translate/storage-ctrl-impl.c.inc b/target/ppc/translate/storage-ctrl-impl.c.inc
+index 74c23a4191..b8b4454663 100644
+--- a/target/ppc/translate/storage-ctrl-impl.c.inc
++++ b/target/ppc/translate/storage-ctrl-impl.c.inc
+@@ -224,6 +224,13 @@ static bool do_tlbie(DisasContext *ctx, arg_X_tlbie *a, bool local)
+                                  a->prs << TLBIE_F_PRS_SHIFT |
+                                  a->r << TLBIE_F_R_SHIFT |
+                                  local << TLBIE_F_LOCAL_SHIFT));
++        if (!local) {
++            /*
++             * Global TLB flush uses async-work which must run before the
++             * next instruction, so this must be the last in the TB.
++             */
++            ctx->base.is_jmp = DISAS_EXIT_UPDATE;
++        }
+         return true;
+ #endif
  
 -- 
 2.43.0
