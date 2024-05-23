@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718668CD675
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B31C8CD68E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9w8-0005MJ-CF; Thu, 23 May 2024 11:00:56 -0400
+	id 1sA9wA-0005eS-M2; Thu, 23 May 2024 11:00:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9w5-00058S-0q
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:53 -0400
+ id 1sA9w8-0005QM-56
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9w3-0004os-7y
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:52 -0400
+ id 1sA9w6-0004pM-9n
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476450;
+ s=mimecast20190719; t=1716476453;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y96DI6nZ+NHIDncZ5Rw2Ykq6OgSXiyKtoBN+mvhdLas=;
- b=QXEt+KEY7du9cX5cgI6OXhvjGOKihTQ5nasWBQ6cPSCbLasjVwxtILKm6mnbg+STWx2+1j
- aznVGRXnvOICXZIGMVKiT5dMD8J0YNm15L+OPslCgidNBwxnN0ynEWjZKQu6BSg1dfrKyz
- eDYw+HBHcfzLHrvuv9QmFVPYR76x9y4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VjC9jCKLkNDsyMvB5gIqtNiqr/gW7pKk6sCvaBJmOQo=;
+ b=FijmG45uHnipUJ+jYa2pSFgJjxBV0Yt8GCIKNzleg8VuYGfgSeXD0mNvOZkfvV/5K/34z+
+ 2uXQA8RcygO9Awaa4yIFcg3TGc2TS8DHr+Q2hiQ5LvJHn6Se5CcbxXcF4FO1FtIJTMsBu3
+ Bmgm7WUQKh8f059AFti9tzTpekaTHA4=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-6daK_Ew2P7SvtkGnypgoow-1; Thu, 23 May 2024 11:00:49 -0400
-X-MC-Unique: 6daK_Ew2P7SvtkGnypgoow-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a5a180153aeso135196966b.3
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:49 -0700 (PDT)
+ us-mta-166-RCDOEWv5OQyN3xQzqLPrpw-1; Thu, 23 May 2024 11:00:52 -0400
+X-MC-Unique: RCDOEWv5OQyN3xQzqLPrpw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2e952e85d80so7063411fa.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476448; x=1717081248;
+ d=1e100.net; s=20230601; t=1716476450; x=1717081250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y96DI6nZ+NHIDncZ5Rw2Ykq6OgSXiyKtoBN+mvhdLas=;
- b=UaoR16buPWbxIrlkvFi/9c/CnHSku+ILFkUdmntdjtF7Iwaby2DIonYgFeVgax8z+v
- UXAJYNF+SllgI94PY2PoCl4P9dF3BiBVfK/ezyhfjuWDSdeOJ/v8G/wJBQWEbZsUqY+I
- n3j3yqKHFRtitGJTXDwtHLupYRRjHElq840NddtcJ6ojj4l8NkMeWnJ53hoW+UigRYxK
- +mO6z+dMHxOMRm932iU6pzR01GD0qUhlCTAvmqMvoX0yrMxv07TJ1y22kvmgK8UlMxNH
- N4+Y2dYUBpRQXhvlym6aJheFxo1X8DsWWV+RhFpvq0eQDBuFRJbwcCBw7WjY8+0pXsEJ
- zz+w==
-X-Gm-Message-State: AOJu0YwBIsqhIiEnStdlKgwNR0bCgm4qgpzn8tlsUR74e4+pt0y40c10
- FveTYr+fkda6Egq1RVUkupVvWmti3rZ35ce7zTXP7wF/eLhdqp/z2qw+fkwJX4xWhGSh+IrSNPp
- mPsmmKC83hxRdqfU3gQUKZ0K5Novr+53qF6LIqr9aeby7xU1lrikp39QSr0C5EimJsNMzJZel3/
- JjAf4+dKMYMP5ttFEnC5UF74NMis5QdcXc5VF6
-X-Received: by 2002:a17:906:749:b0:a5a:5496:3c76 with SMTP id
- a640c23a62f3a-a622806c243mr410631766b.6.1716476447749; 
- Thu, 23 May 2024 08:00:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtAyeJnE9twfRIyB5xIl0CB00jkA8pSanx9ALQdaztBFwwBF/qaAj3YrjC6fhJyTA3AY39Sw==
-X-Received: by 2002:a17:906:749:b0:a5a:5496:3c76 with SMTP id
- a640c23a62f3a-a622806c243mr410629166b.6.1716476447348; 
- Thu, 23 May 2024 08:00:47 -0700 (PDT)
+ bh=VjC9jCKLkNDsyMvB5gIqtNiqr/gW7pKk6sCvaBJmOQo=;
+ b=g1UA+1qKmdp9t9jIk9RwDJVVMXosKoAYPWy0/4s1hc819Rncd3ZE4E8uM8BHmIqelj
+ tepiL3ZL/fUg42qlQ6RX1DgeHwFct8IhAEGXAnpuo6BTPPWOdhaS+jOmqBbUL76G7IMA
+ woZ2eLtoRCiKy4Yuvy+Xw8F8dHsX0jvSxhxpyCSgsiENRH1EhHRgsz3k9jkZLc1KQsoA
+ BUFZM5l62dHE1x0Ubuoy2DxAFxWmSZkwIFbTpo1tjIqiQsEdVN4vwILBc62DdMw39Ytl
+ CbOXXvO55l/MuAyEGfycUotXBmv9ILTUw0ZmgZppJCGCUw9sQ6Yz7R5pSeHY5pWJ043i
+ v2fw==
+X-Gm-Message-State: AOJu0YzqGcZGAQQZ0YQ2VewolrTgP5LP1hmtv1VPk3CAujrHWazXf56m
+ AJgOBF2lsp8jxjYQvG0U26csl5GCRbBzifrfSofBbnEjY1uieYt39i/hNYr9Lfruj1zBh0ROzGm
+ 5iEqTLLmn2IzhViHOhHiDJedQshUrlMc4dwq39k7cRFlofAR1GW58JjjVREbS/DWfDNZZJTaLAV
+ gxyIIb4PhCyXZ8T0GKQGy6ACUzGyQnlLlLvLil
+X-Received: by 2002:ac2:4154:0:b0:523:97ee:c1f4 with SMTP id
+ 2adb3069b0e04-526bf545f4dmr3424933e87.56.1716476450172; 
+ Thu, 23 May 2024 08:00:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFm1M09VvNVArFCumNveWJtkXO3dKW0qJg/6a/ry97/O/Nziuf/a/Shg89WXuDgWHcOGfykiQ==
+X-Received: by 2002:ac2:4154:0:b0:523:97ee:c1f4 with SMTP id
+ 2adb3069b0e04-526bf545f4dmr3424907e87.56.1716476449667; 
+ Thu, 23 May 2024 08:00:49 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781d4b2sm1930314166b.27.2024.05.23.08.00.45
+ a640c23a62f3a-a5a8a55f2e8sm1262018866b.126.2024.05.23.08.00.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:00:45 -0700 (PDT)
+ Thu, 23 May 2024 08:00:48 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Robert Hoo <robert.hu@linux.intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Xuelian Guo <xuelian.guo@intel.com>,
+Cc: Binbin Wu <binbin.wu@linux.intel.com>, Xuelian Guo <xuelian.guo@intel.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 04/23] target/i386: add support for LAM in CPUID enumeration
-Date: Thu, 23 May 2024 17:00:17 +0200
-Message-ID: <20240523150036.1050011-5-pbonzini@redhat.com>
+Subject: [PULL 05/23] target/i386: add control bits support for LAM
+Date: Thu, 23 May 2024 17:00:18 +0200
+Message-ID: <20240523150036.1050011-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
@@ -102,61 +101,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Robert Hoo <robert.hu@linux.intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
 
-Linear Address Masking (LAM) is a new Intel CPU feature, which allows
-software to use of the untranslated address bits for metadata.
+LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
+LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
 
-The bit definition:
-CPUID.(EAX=7,ECX=1):EAX[26]
+For CR3 LAM bits, no additional handling needed:
+- TCG
+  LAM is not supported for TCG of target-i386.  helper_write_crN() and
+  helper_vmrun() check max physical address bits before calling
+  cpu_x86_update_cr3(), no change needed, i.e. CR3 LAM bits are not allowed
+  to be set in TCG.
+- gdbstub
+  x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to update cr3.
+  Allow gdb to set the LAM bit(s) to CR3, if vcpu doesn't support LAM,
+  KVM_SET_SREGS will fail as other reserved bits.
 
-Add CPUID definition for LAM.
+For CR4 LAM bit, its reservation depends on vcpu supporting LAM feature or
+not.
+- TCG
+  LAM is not supported for TCG of target-i386.  helper_write_crN() and
+  helper_vmrun() check CR4 reserved bit before calling cpu_x86_update_cr4(),
+  i.e. CR4 LAM bit is not allowed to be set in TCG.
+- gdbstub
+  x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to update cr4.
+  Mask out LAM bit on CR4 if vcpu doesn't support LAM.
+- x86_cpu_reset_hold() doesn't need special handling.
 
-Note LAM feature is not supported for TCG of target-i386, LAM CPIUD bit
-will not be added to TCG_7_1_EAX_FEATURES.
-
-More info can be found in Intel ISE Chapter "LINEAR ADDRESS MASKING(LAM)"
-https://cdrdv2.intel.com/v1/dl/getContent/671368
-
-Signed-off-by: Robert Hoo <robert.hu@linux.intel.com>
-Co-developed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 Tested-by: Xuelian Guo <xuelian.guo@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240112060042.19925-2-binbin.wu@linux.intel.com>
+Message-ID: <20240112060042.19925-3-binbin.wu@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h | 2 ++
- target/i386/cpu.c | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ target/i386/cpu.h    | 7 ++++++-
+ target/i386/helper.c | 4 ++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index ccccb62fc35..107f263429a 100644
+index 107f263429a..ccf6811794e 100644
 --- a/target/i386/cpu.h
 +++ b/target/i386/cpu.h
-@@ -927,6 +927,8 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_7_1_EAX_AMX_FP16          (1U << 21)
- /* Support for VPMADD52[H,L]UQ */
- #define CPUID_7_1_EAX_AVX_IFMA          (1U << 23)
-+/* Linear Address Masking */
-+#define CPUID_7_1_EAX_LAM               (1U << 26)
+@@ -258,6 +258,7 @@ typedef enum X86Seg {
+ #define CR4_SMAP_MASK   (1U << 21)
+ #define CR4_PKE_MASK   (1U << 22)
+ #define CR4_PKS_MASK   (1U << 24)
++#define CR4_LAM_SUP_MASK (1U << 28)
  
- /* Support for VPDPB[SU,UU,SS]D[,S] */
- #define CPUID_7_1_EDX_AVX_VNNI_INT8     (1U << 4)
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index cfe7c92d6bc..de1ad7270cf 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -969,7 +969,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             "fsrc", NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, "amx-fp16", NULL, "avx-ifma",
--            NULL, NULL, NULL, NULL,
-+            NULL, NULL, "lam", NULL,
-             NULL, NULL, NULL, NULL,
-         },
-         .cpuid = {
+ #define CR4_RESERVED_MASK \
+ (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
+@@ -266,7 +267,8 @@ typedef enum X86Seg {
+                 | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
+                 | CR4_LA57_MASK \
+                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
+-                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
++                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
++                | CR4_LAM_SUP_MASK))
+ 
+ #define DR6_BD          (1 << 13)
+ #define DR6_BS          (1 << 14)
+@@ -2563,6 +2565,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
+     if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
+         reserved_bits |= CR4_PKS_MASK;
+     }
++    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
++        reserved_bits |= CR4_LAM_SUP_MASK;
++    }
+     return reserved_bits;
+ }
+ 
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 48d1513a35a..f9d1381f90b 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -219,6 +219,10 @@ void cpu_x86_update_cr4(CPUX86State *env, uint32_t new_cr4)
+         new_cr4 &= ~CR4_PKS_MASK;
+     }
+ 
++    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
++        new_cr4 &= ~CR4_LAM_SUP_MASK;
++    }
++
+     env->cr[4] = new_cr4;
+     env->hflags = hflags;
+ 
 -- 
 2.45.1
 
