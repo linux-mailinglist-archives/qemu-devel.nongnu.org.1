@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33ABB8CDD94
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE738CDDA0
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHa5-0004pf-Vg; Thu, 23 May 2024 19:10:45 -0400
+	id 1sAHa2-0004S7-DQ; Thu, 23 May 2024 19:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZt-0003on-CN; Thu, 23 May 2024 19:10:29 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sAHZw-00049O-E1; Thu, 23 May 2024 19:10:32 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZr-0006CO-4p; Thu, 23 May 2024 19:10:28 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f6911d16b4so3371973b3a.3; 
- Thu, 23 May 2024 16:10:26 -0700 (PDT)
+ id 1sAHZu-0006Du-N6; Thu, 23 May 2024 19:10:32 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6f69422c090so3470543b3a.2; 
+ Thu, 23 May 2024 16:10:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505825; x=1717110625; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505828; x=1717110628; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lbuMqArijPah/JHN3K7DT5Fm7sQv+gbrEinFPcFcrTg=;
- b=f3dMw4QUmL4oot11Uz6L5iz6n6zUtRf0hDMpaknjt4lUh7FjtJ2dtIdBFjCPoqG84B
- /UJX/Dqx6JlY4KiIcSH8DGY7iH/JG9+F9B4rRTj8AOVc4RgngbsrcYG5it61BSqPX313
- eBoI0n/JJLG/Jp8Phg7w5PRll/fp0gt/RGHh2VUGk/mlD76MysRyYE8PmPRe8Xl+ch7m
- 189YPPwEVSX6IjGyy/lmbq4OTDnwyJqk0CtC01nKSKOrl22gDjrSNVmJxNHo6KhgFo5c
- QN2/ckT2rvv6ZxQEt21s7DUfkPah0Zxct51Dv1AejOQnekB/xyVqHOMYfsjlh7juVEIW
- tcNA==
+ bh=bFPaaQ719ZGm4ALc/N+temkOdUx18gmGqxDG5JRZ0UE=;
+ b=aj3L/1KzbJRQNL82NCK0CzxG2orRYLF5lJQZi5fQlKqRj8LPKblkymP4Du9ipSFz84
+ V8lugIk7h4KE3wmYQowbqw60Xu7TEd0Fyv/Ni3+x9L5Tu/+itLZdtFs4JqqNnWMJxU0B
+ SYIH1dC+iD/l8e00hyfUENXUGUII3sKw2JFm+k7bhGcQ+Qk82WIt8k2GAA8l28axVgSG
+ 8odGu/930OI1hcNqFnnCbhkZrmosZfvMHnLR2UrV0YW+ejBdXV2KnPcmfkF4It6xn/QS
+ MK82SPf/41xDCkHho+4zzo0IgHIbIIsUALnErGk6mhYD/J/HScASkAp09cvH3iy/Hiuc
+ usmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505825; x=1717110625;
+ d=1e100.net; s=20230601; t=1716505828; x=1717110628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lbuMqArijPah/JHN3K7DT5Fm7sQv+gbrEinFPcFcrTg=;
- b=MZq1WgG5goDwVP341oistfNbWxWPyteos0XPcWVLDczdL1pWKUzgo1Ab/b2bZeIfaO
- 7YPoQfqOXrgExUX8/YlC6YPQ3COtlaJ7Cp2crewRoNRGuhwqYr/omDBhR8Ydizk4U2+J
- pakJ+xnStG9BLqfnac7W6z0IaGJ2OZKKp1vbhdopixB24HDyr8WXIdVHFlxMVyuobPk2
- 6heTQWw1tEG/gNtCC0lx/H5FlPz5kZNG6cvxVAvRLlRm9P0P6n8mG66YGS/uaJ++9dYH
- BkeHeQgH4nFQD8YXb3w/0x2ceAE5G8tkdxj3Sw6ZbVwjacWNnA84zDLfHRCjeprD/y93
- MD+g==
+ bh=bFPaaQ719ZGm4ALc/N+temkOdUx18gmGqxDG5JRZ0UE=;
+ b=kcmcjRvdRhdgZoOl62jbGkEFmhqkfjfKxrZ1jsL2Da+EAyPrCtkbu+uwdyYo7W1qSR
+ 9AWUd9Ork9zZals1saY7d1jkZUrd7KAg/+q2WHVhMjLRDcEwrHxR+A0KBkq1XsgRYbAB
+ xswLSL2GZghLTOIl0X7S2Fx9cH6/GOooePhK4q6W0Ly2DxEMeZDZr8POLfXMpTBC7Og5
+ IV4VOSzmEGIPJZbHTDOWmGSy88RCUO0ErWNY/DBY9kVD3NCTB5aoAF16CB7OUCfrQZvi
+ 3KAaqRDE4jaImTjaeG3y2xBFKdS+F/HQYrDMXnguYBZpjKyE1wW8X2kL6ejKYNR9WoSI
+ Z+ag==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/CbQa9LzJkJcBILqWkQVrOtDTTw0uEB/cFV4iPeOCFQdWHKwEmY1oavH0qrPVEI8kchFEgEI/+KswLDOlz+dG/PGI
-X-Gm-Message-State: AOJu0YzFW0HbVq04kg7UUWTz+xoQmv4SZ4+ZPlrfm5wtY29rwAbvVvUW
- /jJ34Qdf9RfZGY4/ixPo8TFuUnknLXhvHuWXczjU5eC2pFySyGaZCj9n7w==
-X-Google-Smtp-Source: AGHT+IGXPrzpQwu9nsObc2dhfPnwNv9pH0aPi6dFQHGwpXlIXB5GMBwQVAAMnmtWh4CpKboZvWFxBw==
-X-Received: by 2002:a05:6a20:7f93:b0:1b1:ed9d:f92e with SMTP id
- adf61e73a8af0-1b212e144d2mr1133483637.38.1716505824920; 
- Thu, 23 May 2024 16:10:24 -0700 (PDT)
+ AJvYcCVooeSpJQlo2OjM7mzDrAdpvNEXIAVV3+cOX4YqpQumk/vM4Y/CnzsAJ2pxnUSiFnY9fwUXfavHX4yIuwXUeDK9CCjP
+X-Gm-Message-State: AOJu0YwFMQfyh+YycMFl4R9ZEw5r5K40DNUy9pFnlA29p+zZMQRMX3NX
+ kzhjz+UY3DrCfAH+RlfOQRSl0/tN00VQIXeIoquH0SCd6CIOBNaSUbi4rA==
+X-Google-Smtp-Source: AGHT+IFbkUa4EIpqV8anYcpmgUI2GmsPqq6A0kYRL6F6GGXZUWGF0dC/GVqwlB46qQdJgaeVBb3k7Q==
+X-Received: by 2002:a05:6a00:2a0f:b0:6ea:c43c:a650 with SMTP id
+ d2e1a72fcca58-6f8f41a95a0mr528602b3a.32.1716505827889; 
+ Thu, 23 May 2024 16:10:27 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.22
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:10:24 -0700 (PDT)
+ Thu, 23 May 2024 16:10:27 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 48/72] target/ppc/mmu_common.c: Eliminate ret from
- mmu6xx_get_physical_address()
-Date: Fri, 24 May 2024 09:07:21 +1000
-Message-ID: <20240523230747.45703-49-npiggin@gmail.com>
+Subject: [PULL 49/72] target/ppc/mmu_common.c: Split out BookE cases before
+ checking real mode
+Date: Fri, 24 May 2024 09:07:22 +1000
+Message-ID: <20240523230747.45703-50-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,127 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Return directly, which is simpler than dragging a return value through
-multpile if and else blocks.
+BookE does not have real mode so split off and handle it first in
+get_physical_address_wtlb() before checking for real mode for other
+MMU models.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 84 +++++++++++++++++++----------------------
- 1 file changed, 39 insertions(+), 45 deletions(-)
+ target/ppc/mmu_common.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 89bfd9aa45..03d9e6bfda 100644
+index 03d9e6bfda..9f177b6976 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -386,7 +386,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     target_ulong vsid, sr, pgidx;
-     int ds, target_page_bits;
-     bool pr;
--    int ret;
+@@ -1175,6 +1175,13 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     int ret = -1;
+     bool real_mode;
  
-     /* First try to find a BAT entry if there are any */
-     if (env->nb_BATs && get_bat_6xx_tlb(env, ctx, eaddr, access_type) == 0) {
-@@ -419,7 +418,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     qemu_log_mask(CPU_LOG_MMU,
-             "pte segment: key=%d ds %d nx %d vsid " TARGET_FMT_lx "\n",
-             ctx->key, ds, ctx->nx, vsid);
--    ret = -1;
-     if (!ds) {
-         /* Check if instruction fetch is allowed, if needed */
-         if (type == ACCESS_CODE && ctx->nx) {
-@@ -436,51 +434,47 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-         /* Initialize real address with an invalid value */
-         ctx->raddr = (hwaddr)-1ULL;
-         /* Software TLB search */
--        ret = ppc6xx_tlb_check(env, ctx, eaddr, access_type);
--    } else {
--        qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
--        /* Direct-store segment : absolutely *BUGGY* for now */
--
--        switch (type) {
--        case ACCESS_INT:
--            /* Integer load/store : only access allowed */
--            break;
--        case ACCESS_CODE:
--            /* No code fetch is allowed in direct-store areas */
--            return -4;
--        case ACCESS_FLOAT:
--            /* Floating point load/store */
--            return -4;
--        case ACCESS_RES:
--            /* lwarx, ldarx or srwcx. */
--            return -4;
--        case ACCESS_CACHE:
--            /*
--             * dcba, dcbt, dcbtst, dcbf, dcbi, dcbst, dcbz, or icbi
--             *
--             * Should make the instruction do no-op.  As it already do
--             * no-op, it's quite easy :-)
--             */
--            ctx->raddr = eaddr;
--            return 0;
--        case ACCESS_EXT:
--            /* eciwx or ecowx */
--            return -4;
--        default:
--            qemu_log_mask(CPU_LOG_MMU, "ERROR: instruction should not need "
--                          "address translation\n");
--            return -4;
--        }
--        if ((access_type == MMU_DATA_STORE || ctx->key != 1) &&
--            (access_type == MMU_DATA_LOAD || ctx->key != 0)) {
--            ctx->raddr = eaddr;
--            ret = 2;
--        } else {
--            ret = -2;
--        }
-+        return ppc6xx_tlb_check(env, ctx, eaddr, access_type);
-     }
- 
--    return ret;
-+    /* Direct-store segment : absolutely *BUGGY* for now */
-+    qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
-+    switch (type) {
-+    case ACCESS_INT:
-+        /* Integer load/store : only access allowed */
-+        break;
-+    case ACCESS_CODE:
-+        /* No code fetch is allowed in direct-store areas */
-+        return -4;
-+    case ACCESS_FLOAT:
-+        /* Floating point load/store */
-+        return -4;
-+    case ACCESS_RES:
-+        /* lwarx, ldarx or srwcx. */
-+        return -4;
-+    case ACCESS_CACHE:
-+        /*
-+         * dcba, dcbt, dcbtst, dcbf, dcbi, dcbst, dcbz, or icbi
-+         *
-+         * Should make the instruction do no-op.  As it already do
-+         * no-op, it's quite easy :-)
-+         */
-+        ctx->raddr = eaddr;
-+        return 0;
-+    case ACCESS_EXT:
-+        /* eciwx or ecowx */
-+        return -4;
-+    default:
-+        qemu_log_mask(CPU_LOG_MMU, "ERROR: instruction should not need address"
-+                                   " translation\n");
-+        return -4;
++    if (env->mmu_model == POWERPC_MMU_BOOKE) {
++        return mmubooke_get_physical_address(env, ctx, eaddr, access_type);
++    } else if (env->mmu_model == POWERPC_MMU_BOOKE206) {
++        return mmubooke206_get_physical_address(env, ctx, eaddr, access_type,
++                                                mmu_idx);
 +    }
-+    if ((access_type == MMU_DATA_STORE || ctx->key != 1) &&
-+        (access_type == MMU_DATA_LOAD || ctx->key != 0)) {
-+        ctx->raddr = eaddr;
-+        return 2;
-+    }
-+    return -2;
- }
++
+     real_mode = (type == ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR, IR)
+                                       : !FIELD_EX64(env->msr, MSR, DR);
  
- /* Generic TLB check function for embedded PowerPC implementations */
+@@ -1195,13 +1202,6 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+             ret = mmu40x_get_physical_address(env, ctx, eaddr, access_type);
+         }
+         break;
+-    case POWERPC_MMU_BOOKE:
+-        ret = mmubooke_get_physical_address(env, ctx, eaddr, access_type);
+-        break;
+-    case POWERPC_MMU_BOOKE206:
+-        ret = mmubooke206_get_physical_address(env, ctx, eaddr, access_type,
+-                                               mmu_idx);
+-        break;
+     case POWERPC_MMU_REAL:
+         if (real_mode) {
+             ret = check_physical(env, ctx, eaddr, access_type);
 -- 
 2.43.0
 
