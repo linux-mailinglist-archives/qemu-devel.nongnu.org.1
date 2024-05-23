@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C61CB8CDD2E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:10:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FEE8CDD79
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:17:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHYG-0007Tm-0X; Thu, 23 May 2024 19:08:48 -0400
+	id 1sAHYH-0007UK-Gz; Thu, 23 May 2024 19:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHY7-0007Np-P8; Thu, 23 May 2024 19:08:40 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1sAHYC-0007Qp-2c; Thu, 23 May 2024 19:08:44 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHY6-0005iN-2n; Thu, 23 May 2024 19:08:39 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6f4d6b7168eso3008381b3a.2; 
- Thu, 23 May 2024 16:08:36 -0700 (PDT)
+ id 1sAHYA-0005ii-7P; Thu, 23 May 2024 19:08:43 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6f8e85a0a5bso304672b3a.0; 
+ Thu, 23 May 2024 16:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505715; x=1717110515; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505719; x=1717110519; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I4d7XUcJzCAh2lNbuPfDveI1FIlIsOOzA/QEZslDQGY=;
- b=Nuw/LqW5O+kzjF2yQnDhA5Fz74Ged37hGB7RcfhKDCsQGbVgRWZfuEonfcLQiTmO/3
- 1K3C+uMgnZPJmmp2h5KE89U9Fw+g5slHdxtidud/CYx1BgrmNtdLXUNna5xndr6Aptgm
- Lci3jjdx3q71rypjMa7Ad4ZgFbCwPKKxGqQICOHsfSJ1CWKZC289PjUINegrLyYJgUIe
- L4Da8Wyj+iyScufHdglXl2dkShqjEx+yu9KuiR0FXLuyID6PUyqNbcpmHdSWH6KcxKcp
- 0/3Hs9hmiUVIkhTZitqdrdzj42cY+YQtc4adJBx5svN+WHRzvctTF6Wk56nqtmf6iLl9
- MB1A==
+ bh=N3LwtzSBzdHobHFPRfQ4MfzZA8hpZ0NTB1Y59BEwcgg=;
+ b=eRlA9VpEmYwwbGTZ3Dhji99IhoPzJ1+LLatUMI95i27UBJ5nF9JDvcGg5qpw62a5N/
+ lOC2PFusp7pVDXNqJeuRz+Pf51/aU5CzyXLtZEBKwjb9e6SOaXjxaYG1tSk5KwiCdjnO
+ nLccssueV9ZL1nGQjuLzrHZ6PxXQQsTsH/auyfDRtpxU2/I7UfZLU160C0Mrs+RCENw0
+ rqYQ/xhzP7JIzoh16Hlg0GrGw35Rhn5aoLCFaUWDFibxYWOp8zEAcrFU7TMQ9bisfWoO
+ QokXH+mGW1jNU+RPrtyCKzBeUMV8INZMztDfpv1Wa9bgxutnd37fpi0ePX+FD+oJm1Lg
+ NH8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505715; x=1717110515;
+ d=1e100.net; s=20230601; t=1716505719; x=1717110519;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I4d7XUcJzCAh2lNbuPfDveI1FIlIsOOzA/QEZslDQGY=;
- b=lggjHPM3PsBvk/6jCbG6PTcdIst6iENgxQl8ThwxspEdoQHHa5zrzaDD1FcFrdTRiQ
- U9fy5alGORovQdN67TMR2DvUpeUWJ2uLMJteqAzRJh2e6V9gb8Z/D5Vym5ML+9oeh/vr
- O6fqqx6ThOWt+twUnSFWLZMAZIn8KsR3yB4QdriWsGNy5nUAnJ9Qbfi8yqzuKvH3WXR2
- t3JeNOgyHYACD8A745siGuAP9oA1dSWk40hEDcAlSiUtVNzPtQQNbBnnJpK4/Msf48Lo
- JMHBEbYYfuwht4tBqnu2s6RlsqF0Dk6I3QN/6LE+6eQdtBuo0V3fXhqdQSWCVklj1HZg
- k0Bw==
+ bh=N3LwtzSBzdHobHFPRfQ4MfzZA8hpZ0NTB1Y59BEwcgg=;
+ b=q2YJd380yei++NRO/QVze0CaiZF8QmojLbiOltR+oMeYZ8Hbf/yzJmEscJT77Yhygg
+ cHvMEU0dpIL0CUn+oSpDceGarFU/q2SggeLW4vV8eDSsg/G35vSoipsF6oY37NEx1ueG
+ w86jF783hIuCF26TY4y1J/JB8DiTSpJkDjBr89AbuANENJsja3BvDUqjiYWtQhgY0Vtd
+ tdqmnP7rSQjpNQ5f3M3U9wiB81cOV8R++wRVFPrVXSwU0zRBRE8ANFJ2GIjcfgDwyMRR
+ 9UWqYZSo/6BHt8edAVMBBTPzjjMdXyMHnAQ2hroXSU9Wj5N/3FId9sA3PqktJYV/jgjx
+ mClw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXo/fLyWMWd4XOkNKU6OBMOy3q0R54IyufQ/zktidSdqrSsrn5yrNuJ+XxeoxuhHoiwnsXBbMM/yhc5mcYy5kOkJrIN
-X-Gm-Message-State: AOJu0YxiNLNy2vSU9rSZp43wCvJiLFyJnomung4V2pbicPydJzcbDKyP
- PtKJkppZLmUr6obAW8AuqM0kat6fSMyrqn5Kwi7DRN+LXoIYJhpXM6UHrg==
-X-Google-Smtp-Source: AGHT+IE98Yc0aXhnbr/CUOsgUawmZN3GwmXreQ9lvFTiSuRkWkcufmpc8ESqD5XqC4vT3UqZvQ8tGQ==
-X-Received: by 2002:a05:6a20:96ce:b0:1af:a617:86ac with SMTP id
- adf61e73a8af0-1b212e57227mr751939637.53.1716505715572; 
- Thu, 23 May 2024 16:08:35 -0700 (PDT)
+ AJvYcCWLZZ+WugTXf7yN20xKqiMpUfN/Iu23BEttI7AMg5VdkaDwxM6865CsGv2oTpeFRfjf/qJbpUoJ2jDg0RdqTfYfqIFw
+X-Gm-Message-State: AOJu0YwkEBTvihbuRFpgZMTBqpMdLSJ6vt+gixQo7+TCqhYrXnJM6KRF
+ QJ+RfVTecL/ZwddAacu3Iv6ROPI3jLZM8DtcfvjG4hV6Rmc+7btwHycx+w==
+X-Google-Smtp-Source: AGHT+IHR/y40WvoTsVH3OFmt3BhIkBRCzPFuhRONQ535EU1ynlrYMgHxxueuwOCJv/LPiPT8IuKqqg==
+X-Received: by 2002:a05:6a00:8013:b0:6f3:854c:d2d with SMTP id
+ d2e1a72fcca58-6f8f3086504mr692896b3a.9.1716505718731; 
+ Thu, 23 May 2024 16:08:38 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.32
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:08:35 -0700 (PDT)
+ Thu, 23 May 2024 16:08:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Chinmay Rath <rathc@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 12/72] target/ppc: Make divw[u] handler method decodetree
- compatible.
-Date: Fri, 24 May 2024 09:06:45 +1000
-Message-ID: <20240523230747.45703-13-npiggin@gmail.com>
+Subject: [PULL 13/72] target/ppc: Move divw[u, e,
+ eu] instructions to decodetree.
+Date: Fri, 24 May 2024 09:06:46 +1000
+Message-ID: <20240523230747.45703-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,53 +96,167 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chinmay Rath <rathc@linux.ibm.com>
 
-The handler methods for divw[u] instructions internally use Rc(ctx->opcode),
-for extraction of Rc field of instructions, which poses a problem if we move
-the above said instructions to decodetree, as the ctx->opcode field is not
-popluated in decodetree. Hence, making it decodetree compatible, so that the
-mentioned insns can be safely move to decodetree specs.
+Moving the following instructions to decodetree specification :
+	 divw[u, e, eu][o][.] 	: XO-form
+
+The changes were verified by validating that the tcg ops generated by those
+instructions remain the same, which were captured with the '-d in_asm,op' flag.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/translate.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ target/ppc/helper.h                        |  4 +--
+ target/ppc/insn32.decode                   |  5 ++++
+ target/ppc/int_helper.c                    |  4 +--
+ target/ppc/translate.c                     | 31 ----------------------
+ target/ppc/translate/fixedpoint-impl.c.inc | 24 +++++++++++++++++
+ 5 files changed, 33 insertions(+), 35 deletions(-)
 
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index cb10e33ceb..277d96aa94 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1737,8 +1737,9 @@ static inline void gen_op_arith_add(DisasContext *ctx, TCGv ret, TCGv arg1,
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index f177d5b906..6f5c0c20eb 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -55,8 +55,8 @@ DEF_HELPER_5(lscbx, tl, env, tl, i32, i32, i32)
+ DEF_HELPER_4(divdeu, i64, env, i64, i64, i32)
+ DEF_HELPER_4(divde, i64, env, i64, i64, i32)
+ #endif
+-DEF_HELPER_4(divweu, tl, env, tl, tl, i32)
+-DEF_HELPER_4(divwe, tl, env, tl, tl, i32)
++DEF_HELPER_4(DIVWEU, tl, env, tl, tl, i32)
++DEF_HELPER_4(DIVWE, tl, env, tl, tl, i32)
+ 
+ DEF_HELPER_FLAGS_1(popcntb, TCG_CALL_NO_RWG_SE, tl, tl)
+ DEF_HELPER_FLAGS_2(cmpb, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
+index bb0f1dbd75..c5291504dd 100644
+--- a/target/ppc/insn32.decode
++++ b/target/ppc/insn32.decode
+@@ -371,6 +371,11 @@ MULLWO          011111 ..... ..... ..... 1 011101011 .  @XO_tab_rc
+ MULHW           011111 ..... ..... ..... - 001001011 .  @XO_tab_rc
+ MULHWU          011111 ..... ..... ..... - 000001011 .  @XO_tab_rc
+ 
++DIVW            011111 ..... ..... ..... . 111101011 .  @XO
++DIVWU           011111 ..... ..... ..... . 111001011 .  @XO
++DIVWE           011111 ..... ..... ..... . 110101011 .  @XO
++DIVWEU          011111 ..... ..... ..... . 110001011 .  @XO
++
+ ## Fixed-Point Logical Instructions
+ 
+ CFUGED          011111 ..... ..... ..... 0011011100 -   @X
+diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
+index 0a5c3e78a4..dc1f72ff38 100644
+--- a/target/ppc/int_helper.c
++++ b/target/ppc/int_helper.c
+@@ -44,7 +44,7 @@ static inline void helper_update_ov_legacy(CPUPPCState *env, int ov)
      }
  }
  
--static inline void gen_op_arith_divw(DisasContext *ctx, TCGv ret, TCGv arg1,
--                                     TCGv arg2, int sign, int compute_ov)
-+static inline void gen_op_arith_divw(DisasContext *ctx, TCGv ret,
-+                                     TCGv arg1, TCGv arg2, bool sign,
-+                                     bool compute_ov, bool compute_rc0)
+-target_ulong helper_divweu(CPUPPCState *env, target_ulong ra, target_ulong rb,
++target_ulong helper_DIVWEU(CPUPPCState *env, target_ulong ra, target_ulong rb,
+                            uint32_t oe)
  {
-     TCGv_i32 t0 = tcg_temp_new_i32();
-     TCGv_i32 t1 = tcg_temp_new_i32();
-@@ -1772,7 +1773,7 @@ static inline void gen_op_arith_divw(DisasContext *ctx, TCGv ret, TCGv arg1,
-         tcg_gen_or_tl(cpu_so, cpu_so, cpu_ov);
-     }
+     uint64_t rt = 0;
+@@ -71,7 +71,7 @@ target_ulong helper_divweu(CPUPPCState *env, target_ulong ra, target_ulong rb,
+     return (target_ulong)rt;
+ }
  
--    if (unlikely(Rc(ctx->opcode) != 0)) {
-+    if (unlikely(compute_rc0)) {
+-target_ulong helper_divwe(CPUPPCState *env, target_ulong ra, target_ulong rb,
++target_ulong helper_DIVWE(CPUPPCState *env, target_ulong ra, target_ulong rb,
+                           uint32_t oe)
+ {
+     int64_t rt = 0;
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 277d96aa94..59248ae3fb 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1777,21 +1777,6 @@ static inline void gen_op_arith_divw(DisasContext *ctx, TCGv ret,
          gen_set_Rc0(ctx, ret);
      }
  }
-@@ -1782,7 +1783,7 @@ static void glue(gen_, name)(DisasContext *ctx)                               \
- {                                                                             \
-     gen_op_arith_divw(ctx, cpu_gpr[rD(ctx->opcode)],                          \
-                      cpu_gpr[rA(ctx->opcode)], cpu_gpr[rB(ctx->opcode)],      \
--                     sign, compute_ov);                                       \
-+                     sign, compute_ov, Rc(ctx->opcode));                      \
+-/* Div functions */
+-#define GEN_INT_ARITH_DIVW(name, opc3, sign, compute_ov)                      \
+-static void glue(gen_, name)(DisasContext *ctx)                               \
+-{                                                                             \
+-    gen_op_arith_divw(ctx, cpu_gpr[rD(ctx->opcode)],                          \
+-                     cpu_gpr[rA(ctx->opcode)], cpu_gpr[rB(ctx->opcode)],      \
+-                     sign, compute_ov, Rc(ctx->opcode));                      \
+-}
+-/* divwu  divwu.  divwuo  divwuo.   */
+-GEN_INT_ARITH_DIVW(divwu, 0x0E, 0, 0);
+-GEN_INT_ARITH_DIVW(divwuo, 0x1E, 0, 1);
+-/* divw  divw.  divwo  divwo.   */
+-GEN_INT_ARITH_DIVW(divw, 0x0F, 1, 0);
+-GEN_INT_ARITH_DIVW(divwo, 0x1F, 1, 1);
+-
+ /* div[wd]eu[o][.] */
+ #define GEN_DIVE(name, hlpr, compute_ov)                                      \
+ static void gen_##name(DisasContext *ctx)                                     \
+@@ -1804,11 +1789,6 @@ static void gen_##name(DisasContext *ctx)                                     \
+     }                                                                         \
  }
- /* divwu  divwu.  divwuo  divwuo.   */
- GEN_INT_ARITH_DIVW(divwu, 0x0E, 0, 0);
+ 
+-GEN_DIVE(divweu, divweu, 0);
+-GEN_DIVE(divweuo, divweu, 1);
+-GEN_DIVE(divwe, divwe, 0);
+-GEN_DIVE(divweo, divwe, 1);
+-
+ #if defined(TARGET_PPC64)
+ static inline void gen_op_arith_divd(DisasContext *ctx, TCGv ret, TCGv arg1,
+                                      TCGv arg2, int sign, int compute_ov)
+@@ -6470,17 +6450,6 @@ GEN_HANDLER_E(maddhd_maddhdu, 0x04, 0x18, 0xFF, 0x00000000, PPC_NONE,
+ GEN_HANDLER_E(maddld, 0x04, 0x19, 0xFF, 0x00000000, PPC_NONE, PPC2_ISA300),
+ #endif
+ 
+-#undef GEN_INT_ARITH_DIVW
+-#define GEN_INT_ARITH_DIVW(name, opc3, sign, compute_ov)                      \
+-GEN_HANDLER(name, 0x1F, 0x0B, opc3, 0x00000000, PPC_INTEGER)
+-GEN_INT_ARITH_DIVW(divwu, 0x0E, 0, 0),
+-GEN_INT_ARITH_DIVW(divwuo, 0x1E, 0, 1),
+-GEN_INT_ARITH_DIVW(divw, 0x0F, 1, 0),
+-GEN_INT_ARITH_DIVW(divwo, 0x1F, 1, 1),
+-GEN_HANDLER_E(divwe, 0x1F, 0x0B, 0x0D, 0, PPC_NONE, PPC2_DIVE_ISA206),
+-GEN_HANDLER_E(divweo, 0x1F, 0x0B, 0x1D, 0, PPC_NONE, PPC2_DIVE_ISA206),
+-GEN_HANDLER_E(divweu, 0x1F, 0x0B, 0x0C, 0, PPC_NONE, PPC2_DIVE_ISA206),
+-GEN_HANDLER_E(divweuo, 0x1F, 0x0B, 0x1C, 0, PPC_NONE, PPC2_DIVE_ISA206),
+ GEN_HANDLER_E(modsw, 0x1F, 0x0B, 0x18, 0x00000001, PPC_NONE, PPC2_ISA300),
+ GEN_HANDLER_E(moduw, 0x1F, 0x0B, 0x08, 0x00000001, PPC_NONE, PPC2_ISA300),
+ 
+diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
+index 1a2ad58929..3265c77aa6 100644
+--- a/target/ppc/translate/fixedpoint-impl.c.inc
++++ b/target/ppc/translate/fixedpoint-impl.c.inc
+@@ -461,6 +461,30 @@ static bool do_mulhw(DisasContext *ctx, arg_XO_tab_rc *a,
+ TRANS(MULHW, do_mulhw, tcg_gen_muls2_i32)
+ TRANS(MULHWU, do_mulhw, tcg_gen_mulu2_i32)
+ 
++static bool do_divw(DisasContext *ctx, arg_XO *a, int sign)
++{
++    gen_op_arith_divw(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], cpu_gpr[a->rb],
++                      sign, a->oe, a->rc);
++    return true;
++}
++
++static bool do_divwe(DisasContext *ctx, arg_XO *a,
++                     void (*helper)(TCGv, TCGv_ptr, TCGv, TCGv, TCGv_i32))
++{
++    REQUIRE_INSNS_FLAGS2(ctx, DIVE_ISA206);
++    helper(cpu_gpr[a->rt], tcg_env, cpu_gpr[a->ra], cpu_gpr[a->rb],
++           tcg_constant_i32(a->oe));
++    if (unlikely(a->rc)) {
++        gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++    }
++    return true;
++}
++
++TRANS(DIVW, do_divw, 1);
++TRANS(DIVWU, do_divw, 0);
++TRANS(DIVWE, do_divwe, gen_helper_DIVWE);
++TRANS(DIVWEU, do_divwe, gen_helper_DIVWEU);
++
+ static bool trans_INVALID(DisasContext *ctx, arg_INVALID *a)
+ {
+     gen_invalid(ctx);
 -- 
 2.43.0
 
