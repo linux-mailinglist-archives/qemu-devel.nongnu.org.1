@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E168D8CDA79
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D42E8CDA7E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sADmM-0002hn-Ca; Thu, 23 May 2024 15:07:06 -0400
+	id 1sADmP-00035o-9r; Thu, 23 May 2024 15:07:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlv-0002Gb-GI
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:39 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlz-0002IT-NU
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:45 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlt-0004LD-2Q
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:38 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlw-0004Lj-Hq
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:42 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D368220412;
- Thu, 23 May 2024 19:06:35 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id DC0782040D;
+ Thu, 23 May 2024 19:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OjnxH7khDXmrflJOrKVMiCdjvXgeY6BwXBZDPxXoGaw=;
- b=g/9ZYB2QtEraUnqA+pfGWx0n5HhZMWF0ebivw5RKRWS3ZdrBRCqTP55e/xnuZExUo9Xmdk
- iZrS16H44a2SU5DMy3oMl9gmyh0mO3LQPhNkyZjFbe0f2veqRxwWJs5xpfiQhbGxFvc+Pz
- 2IqKTWHn8AK1lpY8/ZOIGZKhQq3aPo8=
+ bh=qcAnGN7Dn8Hx+2ymPsQ94bgP0wRUUi69NxEcC3s4Wwk=;
+ b=ToCIBhb/Cm11PcvUFoUcWxAJgSCWw2/BiuDynvZK4sXWXXR/ccQzfkNakbKDS4SLHjm5Pz
+ p+3cLr4rstwy3QNYXiTqDildILB1yN46QalpygzP6lzWF8b//aCYZobSTpPc5ZJdGLe9Ht
+ il0+6UjCkgW+XHJYwxk6k5p98P9fRr8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491195;
+ s=susede2_ed25519; t=1716491198;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OjnxH7khDXmrflJOrKVMiCdjvXgeY6BwXBZDPxXoGaw=;
- b=gaYFYbhX1BLt/DTndEKFkFGnJ0+YZQKdt0OKC9y0OcczkiKEmapjhWxiti6/nU58KCP1Lm
- gSgBRzD/c+R1xRBA==
+ bh=qcAnGN7Dn8Hx+2ymPsQ94bgP0wRUUi69NxEcC3s4Wwk=;
+ b=TobcceVeDKKeSygCTyPqV0TCtDkVvcQblVLzuf5tNY95HUpkpfUlHPi9Gpjg1+6g93Tmcd
+ 6kmEz0YxhAs0QsDA==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OjnxH7khDXmrflJOrKVMiCdjvXgeY6BwXBZDPxXoGaw=;
- b=g/9ZYB2QtEraUnqA+pfGWx0n5HhZMWF0ebivw5RKRWS3ZdrBRCqTP55e/xnuZExUo9Xmdk
- iZrS16H44a2SU5DMy3oMl9gmyh0mO3LQPhNkyZjFbe0f2veqRxwWJs5xpfiQhbGxFvc+Pz
- 2IqKTWHn8AK1lpY8/ZOIGZKhQq3aPo8=
+ bh=qcAnGN7Dn8Hx+2ymPsQ94bgP0wRUUi69NxEcC3s4Wwk=;
+ b=ToCIBhb/Cm11PcvUFoUcWxAJgSCWw2/BiuDynvZK4sXWXXR/ccQzfkNakbKDS4SLHjm5Pz
+ p+3cLr4rstwy3QNYXiTqDildILB1yN46QalpygzP6lzWF8b//aCYZobSTpPc5ZJdGLe9Ht
+ il0+6UjCkgW+XHJYwxk6k5p98P9fRr8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491195;
+ s=susede2_ed25519; t=1716491198;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OjnxH7khDXmrflJOrKVMiCdjvXgeY6BwXBZDPxXoGaw=;
- b=gaYFYbhX1BLt/DTndEKFkFGnJ0+YZQKdt0OKC9y0OcczkiKEmapjhWxiti6/nU58KCP1Lm
- gSgBRzD/c+R1xRBA==
+ bh=qcAnGN7Dn8Hx+2ymPsQ94bgP0wRUUi69NxEcC3s4Wwk=;
+ b=TobcceVeDKKeSygCTyPqV0TCtDkVvcQblVLzuf5tNY95HUpkpfUlHPi9Gpjg1+6g93Tmcd
+ 6kmEz0YxhAs0QsDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A65813A6B;
- Thu, 23 May 2024 19:06:33 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5214C13A6B;
+ Thu, 23 May 2024 19:06:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id APrUMLmTT2bUEQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:06:33 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id uHObBryTT2bUEQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:06:36 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
-Subject: [PATCH v2 17/18] migration: Add direct-io helpers
-Date: Thu, 23 May 2024 16:05:47 -0300
-Message-Id: <20240523190548.23977-18-farosas@suse.de>
+ Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 18/18] migration/ram: Add direct-io support to precopy file
+ migration
+Date: Thu, 23 May 2024 16:05:48 -0300
+Message-Id: <20240523190548.23977-19-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240523190548.23977-1-farosas@suse.de>
 References: <20240523190548.23977-1-farosas@suse.de>
@@ -83,13 +86,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Score: -2.80
 X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
  R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; MIME_TRACE(0.00)[0:+];
- TO_DN_SOME(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_SEVEN(0.00)[9];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; RCPT_COUNT_FIVE(0.00)[6];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
  RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
  DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo];
  RCVD_TLS_ALL(0.00)[]
@@ -117,157 +121,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We support using O_DIRECT with multifd by isolating the main migration
-channel which does unaligned IO from the multifd channels that do
-aligned IO. When multifd is not enabled, we can still use O_DIRECT, if
-we judiciously enable/disable the flag to avoid the unaligned IO.
+We've recently added support for direct-io with multifd, which brings
+performance benefits, but creates a non-uniform user interface by
+coupling direct-io with the multifd capability. This means that users
+cannot keep the direct-io flag enabled while disabling multifd.
 
-Add helpers to enable/disable direct-io around the aligned parts.
+Libvirt in particular already has support for direct-io and parallel
+migration separately from each other, so it would be a regression to
+now require both options together. It's relatively simple for QEMU to
+add support for direct-io migration without multifd, so let's do this
+in order to keep both options decoupled.
+
+We cannot simply enable the O_DIRECT flag, however, because not all IO
+performed by the migration thread satisfies the alignment requirements
+of O_DIRECT. There are many small read & writes that add headers and
+synchronization flags to the stream, which at the moment are required
+to always be present.
+
+Fortunately, due to fixed-ram migration there is a discernible moment
+where only RAM pages are written to the migration file. Enable
+direct-io during that moment.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 31 +++++++++++++++++++++++++++++++
- migration/migration.h |  2 ++
- migration/qemu-file.c | 29 +++++++++++++++++++++++++++++
- migration/qemu-file.h |  2 +-
- 4 files changed, 63 insertions(+), 1 deletion(-)
+ migration/ram.c              | 40 ++++++++++++++++++++++++++++--------
+ tests/qtest/migration-test.c | 30 +++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+), 9 deletions(-)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index e03c80b3aa..be128f95da 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -420,6 +420,37 @@ static void migrate_generate_event(int new_state)
-     }
- }
+diff --git a/migration/ram.c b/migration/ram.c
+index ceea586b06..5183d1f97c 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3131,6 +3131,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+     int i;
+     int64_t t0;
+     int done = 0;
++    Error **errp = NULL;
  
-+bool migration_direct_io_start(QEMUFile *file, Error **errp)
-+{
-+    if (!migrate_direct_io() || migrate_multifd()) {
-+        return true;
-+    }
-+
-+    /* flush any potentially unaligned IO before setting O_DIRECT */
-+    qemu_fflush(file);
-+
-+    if (!qemu_file_set_direct_io(file, true)) {
-+        error_setg(errp, "Failed to enable direct-io");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+bool migration_direct_io_finish(QEMUFile *file, Error **errp)
-+{
-+    if (!migrate_direct_io() || migrate_multifd()) {
-+        return true;
-+    }
-+
-+    if (!qemu_file_set_direct_io(file, false)) {
-+        error_setg(errp, "Failed to disable direct-io");
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
- /*
-  * Send a message on the return channel back to the source
-  * of the migration.
-diff --git a/migration/migration.h b/migration/migration.h
-index 6af01362d4..4d808563b5 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -536,4 +536,6 @@ int migration_rp_wait(MigrationState *s);
-  */
- void migration_rp_kick(MigrationState *s);
+     /*
+      * We'll take this lock a little bit long, but it's okay for two reasons.
+@@ -3154,6 +3155,10 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+                 goto out;
+             }
  
-+bool migration_direct_io_start(QEMUFile *file, Error **errp);
-+bool migration_direct_io_finish(QEMUFile *file, Error **errp);
- #endif
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 9ccbbb0099..4796be918f 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -52,6 +52,11 @@ struct QEMUFile {
- 
-     int last_error;
-     Error *last_error_obj;
-+    /*
-+     * Whether O_DIRECT is in effect. Used to catch code attempting
-+     * unaligned IO.
-+     */
-+    bool dio;
- };
- 
- /*
-@@ -281,6 +286,9 @@ int qemu_fflush(QEMUFile *f)
-     }
-     if (f->iovcnt > 0) {
-         Error *local_error = NULL;
++            if (!migration_direct_io_start(f, errp)) {
++                return -errno;
++            }
 +
-+        assert(!f->dio);
-+
-         if (qio_channel_writev_all(f->ioc,
-                                    f->iov, f->iovcnt,
-                                    &local_error) < 0) {
-@@ -429,6 +437,8 @@ void qemu_put_buffer_async(QEMUFile *f, const uint8_t *buf, size_t size,
-         return;
+             t0 = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
+             i = 0;
+             while ((ret = migration_rate_exceeded(f)) == 0 ||
+@@ -3194,6 +3199,9 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+                 }
+                 i++;
+             }
++            if (!migration_direct_io_finish(f, errp)) {
++                return -errno;
++            }
+         }
      }
  
-+    assert(!f->dio);
-+
-     add_to_iovec(f, buf, size, may_free);
- }
- 
-@@ -440,6 +450,8 @@ void qemu_put_buffer(QEMUFile *f, const uint8_t *buf, size_t size)
-         return;
-     }
- 
-+    assert(!f->dio);
-+
-     while (size > 0) {
-         l = IO_BUF_SIZE - f->buf_index;
-         if (l > size) {
-@@ -558,6 +570,8 @@ off_t qemu_get_offset(QEMUFile *f)
- 
- void qemu_put_byte(QEMUFile *f, int v)
+@@ -3242,7 +3250,8 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
  {
-+    assert(!f->dio);
-+
-     if (f->last_error) {
-         return;
-     }
-@@ -865,3 +879,18 @@ int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size)
+     RAMState **temp = opaque;
+     RAMState *rs = *temp;
+-    int ret = 0;
++    int ret = 0, pages;
++    Error **errp = NULL;
  
-     return 0;
- }
+     rs->last_stage = !migration_in_colo_state();
+ 
+@@ -3257,25 +3266,30 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+             return ret;
+         }
+ 
++        if (!migration_direct_io_start(f, errp)) {
++            return -errno;
++        }
 +
-+bool qemu_file_set_direct_io(QEMUFile *f, bool enabled)
-+{
-+    Error *local_err = NULL;
+         /* try transferring iterative blocks of memory */
+ 
+         /* flush all remaining blocks regardless of rate limiting */
+         qemu_mutex_lock(&rs->bitmap_mutex);
+         while (true) {
+-            int pages;
+-
+             pages = ram_find_and_save_block(rs);
+-            /* no more blocks to sent */
+-            if (pages == 0) {
++            if (pages <= 0) {
+                 break;
+             }
+-            if (pages < 0) {
+-                qemu_mutex_unlock(&rs->bitmap_mutex);
+-                return pages;
+-            }
+         }
+         qemu_mutex_unlock(&rs->bitmap_mutex);
+ 
++        if (!migration_direct_io_finish(f, errp)) {
++            return -errno;
++        }
 +
-+    qio_channel_file_set_direct_io(f->ioc, enabled, &local_err);
-+    if (local_err) {
-+        qemu_file_set_error_obj(f, -EINVAL, local_err);
++        if (pages < 0) {
++            return pages;
++        }
++
+         ret = rdma_registration_stop(f, RAM_CONTROL_FINISH);
+         if (ret < 0) {
+             qemu_file_set_error(f, ret);
+@@ -3920,6 +3934,10 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
+     void *host;
+     size_t read, unread, size;
+ 
++    if (!migration_direct_io_start(f, errp)) {
 +        return false;
 +    }
 +
-+    f->dio = enabled;
-+
-+    return true;
-+}
-diff --git a/migration/qemu-file.h b/migration/qemu-file.h
-index 11c2120edd..118853b21c 100644
---- a/migration/qemu-file.h
-+++ b/migration/qemu-file.h
-@@ -79,5 +79,5 @@ size_t qemu_get_buffer_at(QEMUFile *f, const uint8_t *buf, size_t buflen,
-                           off_t pos);
+     for (set_bit_idx = find_first_bit(bitmap, num_pages);
+          set_bit_idx < num_pages;
+          set_bit_idx = find_next_bit(bitmap, num_pages, clear_bit_idx + 1)) {
+@@ -3955,6 +3973,10 @@ static bool read_ramblock_mapped_ram(QEMUFile *f, RAMBlock *block,
+         }
+     }
  
- QIOChannel *qemu_file_get_ioc(QEMUFile *file);
--
-+bool qemu_file_set_direct_io(QEMUFile *f, bool enabled);
- #endif
++    if (!migration_direct_io_finish(f, errp)) {
++        return false;
++    }
++
+     return true;
+ 
+ err:
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 5ced3b90c9..8c6a122c20 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -2245,6 +2245,34 @@ static void test_multifd_file_mapped_ram_dio(void)
+     test_file_common(&args, true);
+ }
+ 
++static void *mapped_ram_dio_start(QTestState *from, QTestState *to)
++{
++    migrate_mapped_ram_start(from, to);
++
++    migrate_set_parameter_bool(from, "direct-io", true);
++    migrate_set_parameter_bool(to, "direct-io", true);
++
++    return NULL;
++}
++
++static void test_precopy_file_mapped_ram_dio(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:%s/%s", tmpfs,
++                                           FILE_TEST_FILENAME);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = mapped_ram_dio_start,
++    };
++
++    if (!probe_o_direct_support(tmpfs)) {
++        g_test_skip("Filesystem does not support O_DIRECT");
++        return;
++    }
++
++    test_file_common(&args, true);
++}
++
+ #ifndef _WIN32
+ static void multifd_mapped_ram_fdset_end(QTestState *from, QTestState *to,
+                                          void *opaque)
+@@ -3735,6 +3763,8 @@ int main(int argc, char **argv)
+ 
+     migration_test_add("/migration/multifd/file/mapped-ram/dio",
+                        test_multifd_file_mapped_ram_dio);
++    migration_test_add("/migration/precopy/file/mapped-ram/dio",
++                       test_precopy_file_mapped_ram_dio);
+ 
+ #ifndef _WIN32
+     qtest_add_func("/migration/multifd/file/mapped-ram/fdset",
 -- 
 2.35.3
 
