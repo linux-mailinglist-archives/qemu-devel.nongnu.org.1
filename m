@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288888CDD68
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0588CDD86
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:17:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHbV-0001tz-OE; Thu, 23 May 2024 19:12:10 -0400
+	id 1sAHbf-0002qt-CJ; Thu, 23 May 2024 19:12:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaq-0007Ne-JK; Thu, 23 May 2024 19:11:29 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1sAHat-0007WB-9L; Thu, 23 May 2024 19:11:31 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHan-0006Kx-JB; Thu, 23 May 2024 19:11:28 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2bf5e09d500so156394a91.0; 
- Thu, 23 May 2024 16:11:24 -0700 (PDT)
+ id 1sAHaq-0006LN-EV; Thu, 23 May 2024 19:11:30 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1f449ed4b89so1659235ad.0; 
+ Thu, 23 May 2024 16:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505883; x=1717110683; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505886; x=1717110686; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4l5Oxtb4scXFPf0XSK90JMLVp8alCDCHcJpkV2cqisA=;
- b=cKVITXnrUvMpUXP1IBLWvChr8MmSBnbhwNcLMSsHw5Jk+1SyFtJp69PfmmahYmFEqG
- e8RLb/UhUv9ykG3W3fQ9STVBmJo5g0lrfu0FHddQ4FcX+/Doe+gR12Pfc7Om7AEtQXO8
- ctshYZ2i66UKgIdGnlJnceBTaYKBQn6A+ln+E5xxpbqD/9z5RVDHDqasqI2Pcr+ECwWT
- ygnuiFLwIh0qBMsHoyifCx+VeihQW3K3URQA9Waz12AA0GeVkHM3dSyhvw4uu+7ZtGIo
- 3DsOJHsQBi02TvyVwFYqepNghNJW3e8o7nVe55N5VoPdR/GKjllew1xP8ysMllPuLdfh
- nz2Q==
+ bh=08TbmnttJvCBv7zA0rr0Giq11RqrNeScp4MIXBnQF2Y=;
+ b=fBOVe0lrzO39BUibEBFJ4leD/vAGOFweh0FBEWaRjcwNbIiiLzawShHMqHKxADJsVj
+ i0dopo6KSk8d25n27DfhoSnlAJK4LlStwRDC6cdHYMZ7q4MsUfw+ftyqtd7w1Y73EXH5
+ mjhDemaAV0kOi6V0zkXNzHtyy+0P9a47l4E/kLB5eTPridTVKen9I/vRhiZgaklHYEOc
+ wxiMKFNeS9xxFxSpoqDSJkLqQ82b9kvdLcQDrCzS1+pSB/tEqzN80RAgv8E0SecY90vD
+ pMTu4/b6xIQnZhxSAsFHGRRhunYCqjFOnwafqVZx/lE7PpJOXbsKTqazDzlUXQaJSkYP
+ hIHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505883; x=1717110683;
+ d=1e100.net; s=20230601; t=1716505886; x=1717110686;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4l5Oxtb4scXFPf0XSK90JMLVp8alCDCHcJpkV2cqisA=;
- b=cIr+A2Lrpdq1/1vMKlIzka5AUyIUtBjfZoGuMPyfkDaKeFL7dI8lIcPxCWC/hsPa4G
- qEN3VdjWY3E/HxMHkKfLxKv/xJ5dA3waf+CZn/jIPg1Nq28E42U1ctdzu0ukTU/ib0//
- 7kBQ8z8iCa/I7JTfo2It1fdfmi3C6BZyTSSveE+u+p1wSVfaQoh3uYIZOco9g+LA6Ktz
- z5zC8/hRKDRDwV9rezv/6HSYhDkt6RPNEnOEOS7lMmYqmr4sJrZjbFhS8K5U96HLulKI
- iXgJuI6Ut3ekHv1tHko5N5u9/D5kyocrcorP4XDXVapa+q9+lVz9KKwWwjLj4VOn8YxK
- 5Ohw==
+ bh=08TbmnttJvCBv7zA0rr0Giq11RqrNeScp4MIXBnQF2Y=;
+ b=Yyo9me+AymHcGx3HqtLOnolLUrQ373+gOrBrS3cVMEshxpPASqzDLLWpgSLOvTEuhc
+ jbPYgsY6EDsMcRrI66RK6Qc2dr2wE5ad9ixyCBDAol+omXBhqb1ZM0zxfo96fYwmCEwR
+ pqD/TpmXJ/A7iOaOGerJ6xsJQROQKw2bQWnGCAILywMch5yfSaIT2V/0ZQr6kSavcXtM
+ uqxijl1Ggsn+zZegQefwoO8zs0bI4zaz4225ReLrB3KtPxr0bN4mmtQxkK0GcxJ/NL73
+ bdQklxf3UhSr9heZ9erewy86vfyf0d/FTxqWFvO1NdAPFTDISfUYQP3tIEp3DJxGaJNe
+ aiJA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUiwRSyRdef6F0uNcYIdMLtlpBCgACxMQcyeg0JNVe0iPbo5mQs/c5ZT4JsrmHSWZRsa2ICLrSdvgtXWy8HaTirrsBW
-X-Gm-Message-State: AOJu0Yw31KoAMU6iWk0reuu7CteuzfyUnjROhR20FOdANaVDYMCW/hRA
- iF9B4F2aLiqgYp7fsPKGDNAN7tOxk/cYtYODoB45xu495QMCnfQFoi1ZzQ==
-X-Google-Smtp-Source: AGHT+IHvJoJItppkRm2BA620MX8wCWz+h4z77XZAE34qqrcqBTTqPUYELKIChgLKeiwGYDi+rI3HiA==
-X-Received: by 2002:a17:90a:cb90:b0:2bd:ef6b:c336 with SMTP id
- 98e67ed59e1d1-2bf5bb0cbaemr1105903a91.11.1716505882965; 
- Thu, 23 May 2024 16:11:22 -0700 (PDT)
+ AJvYcCXcE1b8lnbbaSaE0pyo3Zb2qu1RR0SQhHacg1Qz8uW7TsnaVb6otVm/PGkQY1ZWTJyxk5vupFHXsG9Xuc6TCkMZnXFZ
+X-Gm-Message-State: AOJu0YwYhckWfpb9M/ucsk2wsLK5RxIGTrtrAqU3xnTaGJn8c806NXjS
+ gesGzSI6vWPCEyqdVmbB/G9EMxaKtn5BNJsGZWMGzPEJQpHH9Orkgtjc8g==
+X-Google-Smtp-Source: AGHT+IEYNTIqrnsLJk2vJEoaKDZ0mfD+ftpvsTWuWxQtaQG8ytUk6aLJSm/kLg31+zNys0/WSjyb5w==
+X-Received: by 2002:a17:902:db07:b0:1f1:8fd9:b99d with SMTP id
+ d9443c01a7336-1f339f51959mr49079035ad.23.1716505886007; 
+ Thu, 23 May 2024 16:11:26 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.20
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:11:22 -0700 (PDT)
+ Thu, 23 May 2024 16:11:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 67/72] target/ppc: Split off common embedded TLB init
-Date: Fri, 24 May 2024 09:07:40 +1000
-Message-ID: <20240523230747.45703-68-npiggin@gmail.com>
+Subject: [PULL 68/72] target/ppc/mmu-hash32.c: Drop a local variable
+Date: Fri, 24 May 2024 09:07:41 +1000
+Message-ID: <20240523230747.45703-69-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,108 +94,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Several 4xx CPUs and e200 share the same TLB settings enclosed in an
-ifdef. Split it off in a common function to reduce code duplication
-and the number of ifdefs.
+In ppc_hash32_xlate() the value of need_prop is checked in two places
+but precalculating it does not help because when we reach the first
+check we always return and not reach the second place so the value
+will only be used once. We can drop the local variable and calculate
+it when needed, which makes these checks using it similar to other
+places with such checks.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu_init.c | 46 ++++++++++++++++---------------------------
- 1 file changed, 17 insertions(+), 29 deletions(-)
+ target/ppc/mmu-hash32.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 9401eb28c3..b1ea301e22 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -2127,18 +2127,22 @@ static int check_attn_hid0_power9(CPUPPCState *env)
- }
- #endif
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index da6e8b293c..3abaf16e78 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -386,7 +386,6 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+     hwaddr pte_offset;
+     ppc_hash_pte32_t pte;
+     int prot;
+-    int need_prot;
+     hwaddr raddr;
  
-+static void init_tlbs_emb(CPUPPCState *env)
-+{
-+#ifndef CONFIG_USER_ONLY
-+    env->nb_tlb = 64;
-+    env->nb_ways = 1;
-+    env->tlb_type = TLB_EMB;
-+#endif
-+}
-+
- static void init_proc_405(CPUPPCState *env)
- {
-     register_40x_sprs(env);
-     register_405_sprs(env);
-     register_usprgh_sprs(env);
+     /* There are no hash32 large pages. */
+@@ -400,13 +399,11 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+         return true;
+     }
  
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+    init_tlbs_emb(env);
-     init_excp_4xx(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2206,12 +2210,8 @@ static void init_proc_440EP(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_emb(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2305,12 +2305,7 @@ static void init_proc_440GP(CPUPPCState *env)
-     register_440_sprs(env);
-     register_usprgh_sprs(env);
+-    need_prot = prot_for_access_type(access_type);
+-
+     /* 2. Check Block Address Translation entries (BATs) */
+     if (env->nb_BATs != 0) {
+         raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
+         if (raddr != -1) {
+-            if (need_prot & ~*protp) {
++            if (prot_for_access_type(access_type) & ~*protp) {
+                 if (guest_visible) {
+                     if (access_type == MMU_INST_FETCH) {
+                         cs->exception_index = POWERPC_EXCP_ISI;
+@@ -474,7 +471,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
  
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+    init_tlbs_emb(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2379,12 +2374,8 @@ static void init_proc_440x5(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--    /* Memory management */
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_emb(env);
-     init_excp_BookE(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-@@ -2747,11 +2738,8 @@ static void init_proc_e200(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_write_generic,
-                  0x00000000);
--#if !defined(CONFIG_USER_ONLY)
--    env->nb_tlb = 64;
--    env->nb_ways = 1;
--    env->tlb_type = TLB_EMB;
--#endif
-+
-+    init_tlbs_emb(env);
-     init_excp_e200(env, 0xFFFF0000UL);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
+     prot = ppc_hash32_pte_prot(mmu_idx, sr, pte);
+ 
+-    if (need_prot & ~prot) {
++    if (prot_for_access_type(access_type) & ~prot) {
+         /* Access right violation */
+         qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
+         if (guest_visible) {
 -- 
 2.43.0
 
