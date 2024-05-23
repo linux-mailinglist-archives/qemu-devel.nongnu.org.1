@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A5D8CDD99
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8148CDD4B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:13:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHb6-0000J9-KQ; Thu, 23 May 2024 19:11:44 -0400
+	id 1sAHaz-0007pd-IH; Thu, 23 May 2024 19:11:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaC-0005XS-2s; Thu, 23 May 2024 19:10:51 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1sAHaD-0005Xe-FT; Thu, 23 May 2024 19:10:52 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaA-0006FB-7r; Thu, 23 May 2024 19:10:47 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2bd9284dd31so2326809a91.3; 
- Thu, 23 May 2024 16:10:44 -0700 (PDT)
+ id 1sAHaB-0006FN-N5; Thu, 23 May 2024 19:10:49 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6f8edde1013so258920b3a.2; 
+ Thu, 23 May 2024 16:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505843; x=1717110643; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505846; x=1717110646; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gGzek4BgVUiOZX20Ziz09caCuLwvQXep/6WVLrtOBek=;
- b=CZkiJomJsdF0ZZta8eCGWFH1aXY9xFGV6UOL9luXIqK9Jw40XUytwyRysXHzF+xNE7
- G9qyLBoaoVgnkHy39s3WvJIkxKg9QG5M7fpSni1f27Vy3O5u7dNXCW1hy05NvO7JRK+8
- DLbG9FM+aEnrgKfyEiCtRjVuDGssfDaUe6ZJAJG4JfHHIQez7tOZIHTiXQqVqiOX8XCJ
- 3EWOT9fL3pIs8laN3NJ2ZhqBVzlYfA7mozKaJDmma1NAD2i55JapaGlga9htD+WTja9l
- 6TSFpKhinfGKrh4XXeCQrkuPMlR5CFBK/BSsyDSINlNpwPCpXd31HQJOSI4kJ4xI2atM
- l91Q==
+ bh=XAxrxjwyYY9D2jjF7FQG/jdYTTdYZ36wPx1zu+CIhCw=;
+ b=l1vtOpBzngotU2XZ3sHIFqhoZKSLHeIlpOAghdBgNmtGFhKOXtwrjY+x/odvu739Fe
+ U6qRYG9+l6RtyIcdPyNQd1xa9x7rMP7Ay4CMm1urrSisZ0rYjKE7Bol5zRZAeEhCaqdZ
+ c8r5MfoELh/pAyhOxWotZbteZPPB8TcYZy0xFhJ88WH/J12g88lzQwNSGcDSSpf3osw7
+ oO6qrP1turhbwL6qd0WX26wEQfpz1O/X0Qljzz3nBE2nh49BxkVUZwumEhofT1cb74F1
+ OiAt5Dp8iZbNy+xncDsKhXUdg3blhjnsCHbxSjqxmTmzdq3ylESuBAIv46kEVMVDmioc
+ e1BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505843; x=1717110643;
+ d=1e100.net; s=20230601; t=1716505846; x=1717110646;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gGzek4BgVUiOZX20Ziz09caCuLwvQXep/6WVLrtOBek=;
- b=pqBJqr7GBPmN/EFVwUuOYS1dpUb4eoOrl1Kj56OxwnYMmEkBBtoZbKB1UB5YCNSNGw
- sZ5HVXxswUfoOSa0HoXkiIbtBvQzLS2pi9WoAwBgsSKly8fpTHRd1Wm5ltuR56YmiK7p
- rOxMaZK+M3SgJQQK9LdeGDc69I1m1RyZn+c0UJN7Kq2oQU4wXouLJk8azeV27WgdoYgw
- b3WrWSF5+r1SSKrUm3P9DjoUEzQbxsROdPs9mC3c3MKoKdZ1bl1pO6XcS+3Yc6CvXBLN
- lLuXnmScxgNUg44qrcJyf+OdqcYmbSy/Oz6cxyxcxtFXqxfsVUMEQKEju7orIsuHZwrR
- YfYg==
+ bh=XAxrxjwyYY9D2jjF7FQG/jdYTTdYZ36wPx1zu+CIhCw=;
+ b=L5IEwB1shL5CWVzUk3+fPfq3HD9D2207ab61hL/Qz5Ijr4Fv7ODg2VxGPAYv86xaiU
+ W30PYTGU05chA2B3X6VBtONPOL5XgPoBMmD+dmB+atEG3o+WruslXnZuF+W64zTut3PP
+ MhPCOoAmH0yIBD6v1fJ/8zMzVjv8Lbelm6mDtDvktnD+4Bnj8FUklP0X8bJqL8udLAGX
+ MDrC24E/iBhRNR9jPztEW43F+cfkR9z3AGCg1w8Qr177lEloAHnLpAZ4DiumfYcSbS5X
+ 0vYQhrW3aJIQZMl6sx/V/nBO3oCdRO5KdqFQb0Ayca0UP5pPxjJawjLfQpE5Cr0+Idcg
+ uhAA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUjPjuM063jIZ1HAHuRUYxYtPSnJJDrTeuRlVGfch7vq22G4o4pAw/Wlm6idXqagnPpm0BiG+oPBVgT3liyShsQMIF2
-X-Gm-Message-State: AOJu0YwfL8t0VwcgNSz6UPdREi1QPgu91/DG4hftlZlfPNdUzErwSxu6
- byJyec8RabTGmJLfiDdcBLISho1TkSDtnriPn/EYRDGq9HopNQ5l8ErAQw==
-X-Google-Smtp-Source: AGHT+IHrziDOOcmeGIKLary+h1JFMJtkTcg8owOng+fhX7UbPoBhn9R3k91x4qxUBkav/lL+V87iWQ==
-X-Received: by 2002:a17:90a:17cf:b0:2bd:9dab:a7b0 with SMTP id
- 98e67ed59e1d1-2bf5ee1981bmr611035a91.13.1716505842998; 
- Thu, 23 May 2024 16:10:42 -0700 (PDT)
+ AJvYcCWubuPcnnCPi0BwsnOmyYBkZrs7Rpfi6CBi/50UsQrfXFF9YtXm9L6nzzjLX7dXdHrQxmNbHhdnyJd8FGaqFxLwgqQS
+X-Gm-Message-State: AOJu0Ywqlyw0BdLv7SmjYl9Ws8hatGuJiUCU2ExGqN3VGe9a20Ywf8oC
+ ufFeQNlwDbJ/uosDaEPPclHDbtim/1VFXVnl13RybmY22dd7lhl5na7CKQ==
+X-Google-Smtp-Source: AGHT+IFQvjWFTm9xKZ1N5glGkhWXnNoCUq07jlT3l+RqsR1K8tzQ6VAakJL05fMcf8cqYr3Ce0bSvQ==
+X-Received: by 2002:a05:6a20:9751:b0:1af:41d1:732e with SMTP id
+ adf61e73a8af0-1b212dfe669mr819073637.46.1716505845839; 
+ Thu, 23 May 2024 16:10:45 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.40
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:10:42 -0700 (PDT)
+ Thu, 23 May 2024 16:10:45 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 54/72] target/ppc/mmu_common.c: Replace hard coded constants in
- ppc_jumbo_xlate()
-Date: Fri, 24 May 2024 09:07:27 +1000
-Message-ID: <20240523230747.45703-55-npiggin@gmail.com>
+Subject: [PULL 55/72] target/ppc/mmu_common.c: Don't use mmu_ctx_t for
+ mmu40x_get_physical_address()
+Date: Fri, 24 May 2024 09:07:28 +1000
+Message-ID: <20240523230747.45703-56-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,40 +95,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The "2" in booke206_update_mas_tlb_miss() call corresponds to
-MMU_INST_FETCH which is the value of access_type in this branch;
-mmubooke206_esr() only checks for MMU_DATA_STORE and it's called from
-code access so using MMU_DATA_LOAD here seems wrong so replace it with
-access_type here as well that yields the same result. This also makes
-these calls the same as the data access branch further down.
+mmu40x_get_physical_address() only uses the raddr and prot fields from
+mmu_ctx_t. Pass these directly instead of using a ctx struct.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/ppc/mmu_common.c | 37 +++++++++++++++----------------------
+ 1 file changed, 15 insertions(+), 22 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index f40481b4b1..6570b280ca 100644
+index 6570b280ca..adce6cceb8 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1287,13 +1287,13 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-                 env->spr[SPR_40x_ESR] = 0x00000000;
+@@ -519,20 +519,18 @@ int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid)
+     return -1;
+ }
+ 
+-static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+-                                       target_ulong address,
++static int mmu40x_get_physical_address(CPUPPCState *env, hwaddr *raddr,
++                                       int *prot, target_ulong address,
+                                        MMUAccessType access_type)
+ {
+     ppcemb_tlb_t *tlb;
+-    hwaddr raddr;
+     int i, ret, zsel, zpr, pr;
+ 
+     ret = -1;
+-    raddr = (hwaddr)-1ULL;
+     pr = FIELD_EX64(env->msr, MSR, PR);
+     for (i = 0; i < env->nb_tlb; i++) {
+         tlb = &env->tlb.tlbe[i];
+-        if (!ppcemb_tlb_check(env, tlb, &raddr, address,
++        if (!ppcemb_tlb_check(env, tlb, raddr, address,
+                               env->spr[SPR_40x_PID], i)) {
+             continue;
+         }
+@@ -550,40 +548,34 @@ static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+             /* fall through */
+         case 0x3:
+             /* All accesses granted */
+-            ctx->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
++            *prot = PAGE_RWX;
+             ret = 0;
+             break;
++
+         case 0x0:
+             if (pr != 0) {
+                 /* Raise Zone protection fault.  */
+                 env->spr[SPR_40x_ESR] = 1 << 22;
+-                ctx->prot = 0;
++                *prot = 0;
+                 ret = -2;
                  break;
-             case POWERPC_MMU_BOOKE206:
--                booke206_update_mas_tlb_miss(env, eaddr, 2, mmu_idx);
-+                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
-                 /* fall through */
-             case POWERPC_MMU_BOOKE:
-                 cs->exception_index = POWERPC_EXCP_ITLB;
-                 env->error_code = 0;
-                 env->spr[SPR_BOOKE_DEAR] = eaddr;
--                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, MMU_DATA_LOAD);
-+                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
-                 break;
-             case POWERPC_MMU_REAL:
-                 cpu_abort(cs, "PowerPC in real mode should never raise "
+             }
+             /* fall through */
+         case 0x1:
+-        check_perms:
++check_perms:
+             /* Check from TLB entry */
+-            ctx->prot = tlb->prot;
+-            ret = check_prot(ctx->prot, access_type);
++            *prot = tlb->prot;
++            ret = check_prot(*prot, access_type);
+             if (ret == -2) {
+                 env->spr[SPR_40x_ESR] = 0;
+             }
+             break;
+         }
+-        if (ret >= 0) {
+-            ctx->raddr = raddr;
+-            qemu_log_mask(CPU_LOG_MMU, "%s: access granted " TARGET_FMT_lx
+-                          " => " HWADDR_FMT_plx
+-                          " %d %d\n", __func__, address, ctx->raddr, ctx->prot,
+-                          ret);
+-            return 0;
+-        }
+     }
+-    qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
+-                  " => " HWADDR_FMT_plx " %d %d\n",
+-                  __func__, address, raddr, ctx->prot, ret);
++    qemu_log_mask(CPU_LOG_MMU, "%s: access %s " TARGET_FMT_lx " => "
++                  HWADDR_FMT_plx " %d %d\n",  __func__,
++                  ret < 0 ? "refused" : "granted", address,
++                  ret < 0 ? 0 : *raddr, *prot, ret);
+ 
+     return ret;
+ }
+@@ -1171,7 +1163,8 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     case POWERPC_MMU_SOFT_6xx:
+         return mmu6xx_get_physical_address(env, ctx, eaddr, access_type, type);
+     case POWERPC_MMU_SOFT_4xx:
+-        return mmu40x_get_physical_address(env, ctx, eaddr, access_type);
++        return mmu40x_get_physical_address(env, &ctx->raddr, &ctx->prot, eaddr,
++                                           access_type);
+     case POWERPC_MMU_REAL:
+         cpu_abort(env_cpu(env),
+                   "PowerPC in real mode do not do any translation\n");
 -- 
 2.43.0
 
