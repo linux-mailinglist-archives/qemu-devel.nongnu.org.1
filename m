@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3BF8CDD49
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C59CE8CDD57
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:14:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHaU-0005qt-Im; Thu, 23 May 2024 19:11:06 -0400
+	id 1sAHae-0006ow-OC; Thu, 23 May 2024 19:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZv-0003v1-4U; Thu, 23 May 2024 19:10:31 -0400
-Received: from mail-io1-xd35.google.com ([2607:f8b0:4864:20::d35])
+ id 1sAHZl-00037z-33; Thu, 23 May 2024 19:10:21 -0400
+Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZh-00065n-Fp; Thu, 23 May 2024 19:10:29 -0400
-Received: by mail-io1-xd35.google.com with SMTP id
- ca18e2360f4ac-7e2188592c2so318341139f.0; 
- Thu, 23 May 2024 16:10:15 -0700 (PDT)
+ id 1sAHZi-000666-VZ; Thu, 23 May 2024 19:10:20 -0400
+Received: by mail-il1-x133.google.com with SMTP id
+ e9e14a558f8ab-3737bc62884so870415ab.1; 
+ Thu, 23 May 2024 16:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505813; x=1717110613; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505816; x=1717110616; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4X63trXzm2Cwz8JysN9U2EZLCXiSRFKXHL3fvD7Vw2k=;
- b=RqkkBZZAunT5Abe8NiLeSAObdu5dPkWLFkLqIRglJFcsmjI+GDzXG12To3Tpo2HBhh
- IjEbwPaV70mlLuCwhPNxDpbkiDUmTpDp+/1TkKJlWzgnY/HDzVyS5y5HCb9j407SvWyk
- r84GGSCLvstVTK7Pzo9vE8WWAhMnVLKTO+MGXCxLzTKXwMIkYrxT9TiGPI4Xk4dtm4Ma
- 1Sqly4CD3oWKSjkWnwGA+FDhk0x/CGTx3/S0bZmAt1bM65OgdVdFkkK6x4VruM3m4wbd
- 8r1uK/0th3JvoakrrQyHgX4KC/cwxJmYACROsZvNjc4RLQJvhKEkBqhIzjRNvq/K6WQG
- fljA==
+ bh=6BpHgmg8vkBNPqt3TbYQHWcRZAKjdhW0RXAY1aIvRew=;
+ b=Zw2HyuU8kReepyiFD/AIEYw3Hsc3x0iP8tv1j9kU+4pOM/J7A+xH7zWv1xqIcExSjv
+ FlnQrl3ID7B4AbOmtPZBYexomB186h7T0MY6RAuB2GBQeVOxlDpcMnyd+UmbjE/Gcoey
+ cuQdWp4/4u8Trn5CEt28ut76caNACfmmk0FGc9S3k1U52Or+uTb4+X2jxZ9+qQBsO/wl
+ PCQMcELsDAQj9fP7vPeCwoXLbP4DXjQHb5T14ACWmAKgnEbV5/LR82N2sekAzRe1KMqb
+ tJDEF91Xu3GsXLEh7adIRiKcbChrzjAIO0piIII+bNiVoBeHquMw0GrhvVsRuIb+MT08
+ pipg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505813; x=1717110613;
+ d=1e100.net; s=20230601; t=1716505816; x=1717110616;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4X63trXzm2Cwz8JysN9U2EZLCXiSRFKXHL3fvD7Vw2k=;
- b=s4QQrqHDtx62gKunCKEBHLW3Z35HFyuk1DeQ1QYSrB42hprBut2l93bGH6ImqXvQsQ
- oWxfX9bhruJGJA7mroskaaioORO5HSIws1WOnJZx4ggoYY+E35yzvMRl/1TP9UhClZdJ
- WpBVH5YzGfP6q+/BPRzi55qRSsEJ9mydFEMHmYT/e7GuZYx15cp77kc8+dpYTsNpjNGY
- SqTSDajBHvgHf+et9hn6UDcWIvvDvi8Z3BL/C4S8E+aiajTk2w/id3hPS19zOgfP4FH5
- KJ2enjPFswoiyynk6PLNMU10+E9mdYcKABLDSdD0gSHBKzx1g7wLzOW1Iv85hIOM9vCH
- Ne6w==
+ bh=6BpHgmg8vkBNPqt3TbYQHWcRZAKjdhW0RXAY1aIvRew=;
+ b=Odi3C895n7ZiRZW7ccy6Ir9+m9lZZvGesYXJJ8ilWt4i0bHJuW5fVp3ZDUYsXu0Npi
+ MTzxTSWcBjqh4dKUP/GARH61FJVQ6E/kYBXVt19w0XqnxgH491R7xnRzqSuVfcaxcYod
+ f5lbx3emOX9xBgGxMV4N+MtXcK9ZnOiWNNszoAzMobRkLtamzBk/QhwgACmUCsP0rfnu
+ GVznK5PNLiNDLBLwV+E1DnydxqW66lG13IeVSMzj27yXXVqqlwVUf+ihAEjMnvTggh/m
+ Wq262eZJAOuDAxL8l5w9afQwi44A/7kSOSI6PY3dc1h7S4hx3Ekd4nWTuhNwr6aox6IS
+ pHlw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVzoNwMHjeXPPLt+Q2jHVENQa4adE0Yl9Ad2jsqc5cZw3ccIY/sD8DjYo2crDUO2TfYprapo6S9kITpcvv36Pzvwxvd
-X-Gm-Message-State: AOJu0Yx/Zkq9qmgbjaTvrgdXZJ+zHmuiBXKSn0N5By6NqCMB/o30eVq+
- dXlGilkg2Hs6Ncaxi9rV/Zf7XjLC3tXbM8/jF8oPIvwZLNKATbW0pP206g==
-X-Google-Smtp-Source: AGHT+IGxrPy+Bj/fLXByaz1IdUpYRgvkxjkoinYwliPcvMScdJHxOlg3qi50WGfjSxlVTutVVASgBg==
-X-Received: by 2002:a5e:d60b:0:b0:7da:cbc2:7caa with SMTP id
- ca18e2360f4ac-7e8c54c78fdmr87884539f.9.1716505813218; 
- Thu, 23 May 2024 16:10:13 -0700 (PDT)
+ AJvYcCVODZHrIrkFA0kixJTPfWQ8/kQTtj9y2W5pdQkYewDfuZxsWjKJzi6mQbD+32tAl+K9o6f3RvSdQzT7++480YMo7F7G
+X-Gm-Message-State: AOJu0YwF7gHQrGHU2Q3cxWbtZZPk2DDfRaz+TuHQphWvY3aFzVSZ2orT
+ t/ZxJT3aamZrFDwpD722fbM3D+OaEq4VQ6UJZFrX4sGO8/Sbpqc7lyed9A==
+X-Google-Smtp-Source: AGHT+IF+b3FP70wHEjHg0E2ENeXiX1S++VrIS9/RW7tUA2H1sChjbVAFyhcW/c9Cw7Imz35oyPrNIw==
+X-Received: by 2002:a05:6e02:1b02:b0:36d:bbf7:2fd7 with SMTP id
+ e9e14a558f8ab-3737b2953cfmr9191175ab.12.1716505816049; 
+ Thu, 23 May 2024 16:10:16 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.10
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:10:12 -0700 (PDT)
+ Thu, 23 May 2024 16:10:15 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 44/72] target/ppc/mmu_common.c: Drop cases for unimplemented
- MPC8xx MMU
-Date: Fri, 24 May 2024 09:07:17 +1000
-Message-ID: <20240523230747.45703-45-npiggin@gmail.com>
+Subject: [PULL 45/72] target/ppc/mmu_common.c: Introduce
+ mmu6xx_get_physical_address()
+Date: Fri, 24 May 2024 09:07:18 +1000
+Message-ID: <20240523230747.45703-46-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d35;
- envelope-from=npiggin@gmail.com; helo=mail-io1-xd35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
+ envelope-from=npiggin@gmail.com; helo=mail-il1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,63 +95,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Drop MPC8xx cases from get_physical_address_wtlb() and ppc_jumbo_xlate().
-The default case would still catch this and abort the same way and
-there is still a warning about it in ppc_tlb_invalidate_all() which is
-called in ppc_cpu_reset_hold() so likely we never get here but to make
-sure add a case to ppc_xlate() to the same effect.
+Repurpose get_segment_6xx_tlb() to do the whole address translation
+for POWERPC_MMU_SOFT_6xx MMU model by moving the BAT check there and
+renaming it to match other similar functions. These are only called
+once together so no need to keep these separate functions and
+combining them simplifies the caller allowing further restructuring.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ target/ppc/mmu_common.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 886fb6a657..3391df61cb 100644
+index 3391df61cb..b7c07cf515 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1219,10 +1219,6 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-         ret = mmubooke206_get_physical_address(env, ctx, eaddr, access_type,
-                                                mmu_idx);
-         break;
--    case POWERPC_MMU_MPC8xx:
--        /* XXX: TODO */
--        cpu_abort(env_cpu(env), "MPC8xx MMU model is not implemented\n");
--        break;
-     case POWERPC_MMU_REAL:
+@@ -360,19 +360,23 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     return ret;
+ }
+ 
+-/* Perform segment based translation */
+-static int get_segment_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+-                               target_ulong eaddr, MMUAccessType access_type,
+-                               int type)
++static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
++                                       target_ulong eaddr,
++                                       MMUAccessType access_type, int type)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+     hwaddr hash;
+-    target_ulong vsid;
++    target_ulong vsid, sr, pgidx;
+     int ds, target_page_bits;
+     bool pr;
+     int ret;
+-    target_ulong sr, pgidx;
+ 
++    /* First try to find a BAT entry if there are any */
++    if (env->nb_BATs && get_bat_6xx_tlb(env, ctx, eaddr, access_type) == 0) {
++        return 0;
++    }
++
++    /* Perform segment based translation when no BATs matched */
+     pr = FIELD_EX64(env->msr, MSR, PR);
+     ctx->eaddr = eaddr;
+ 
+@@ -1194,14 +1198,8 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
          if (real_mode) {
              ret = check_physical(env, ctx, eaddr, access_type);
-@@ -1353,8 +1349,6 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-                     env->spr[SPR_BOOKE_DEAR] = eaddr;
-                     env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, MMU_DATA_LOAD);
-                     break;
--                case POWERPC_MMU_MPC8xx:
--                    cpu_abort(cs, "MPC8xx MMU model is not implemented\n");
-                 case POWERPC_MMU_REAL:
-                     cpu_abort(cs, "PowerPC in real mode should never raise "
-                               "any MMU exceptions\n");
-@@ -1427,9 +1421,6 @@ static bool ppc_jumbo_xlate(PowerPCCPU *cpu, vaddr eaddr,
-                         env->spr[SPR_40x_ESR] = 0x00000000;
-                     }
-                     break;
--                case POWERPC_MMU_MPC8xx:
--                    /* XXX: TODO */
--                    cpu_abort(cs, "MPC8xx MMU model is not implemented\n");
-                 case POWERPC_MMU_BOOKE206:
-                     booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
-                     /* fall through */
-@@ -1539,7 +1530,8 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     case POWERPC_MMU_32B:
-         return ppc_hash32_xlate(cpu, eaddr, access_type, raddrp,
-                                psizep, protp, mmu_idx, guest_visible);
--
-+    case POWERPC_MMU_MPC8xx:
-+        cpu_abort(env_cpu(&cpu->env), "MPC8xx MMU model is not implemented\n");
-     default:
-         return ppc_jumbo_xlate(cpu, eaddr, access_type, raddrp,
-                                psizep, protp, mmu_idx, guest_visible);
+         } else {
+-            /* Try to find a BAT */
+-            if (env->nb_BATs != 0) {
+-                ret = get_bat_6xx_tlb(env, ctx, eaddr, access_type);
+-            }
+-            if (ret < 0) {
+-                /* We didn't match any BAT entry or don't have BATs */
+-                ret = get_segment_6xx_tlb(env, ctx, eaddr, access_type, type);
+-            }
++            ret = mmu6xx_get_physical_address(env, ctx, eaddr, access_type,
++                                              type);
+         }
+         break;
+ 
 -- 
 2.43.0
 
