@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E268CD656
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 16:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D028CD659
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 16:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9sQ-0003Xy-Pe; Thu, 23 May 2024 10:57:07 -0400
+	id 1sA9sq-00045u-MF; Thu, 23 May 2024 10:57:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sA9sB-0003CG-4W
- for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:51 -0400
+ id 1sA9sN-0003oJ-Mb
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 10:57:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sA9s9-00043u-5V
- for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:50 -0400
+ id 1sA9sK-00045p-Ng
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 10:57:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476208;
+ s=mimecast20190719; t=1716476219;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=edUAbB6FYQtNYztKJ8aeeDlCGuti83HdzsdflmaIRq4=;
- b=cOEm6KoQjGyWc1HcwWbM5I+kuP+ZZ+3L6yn5HtuDPaTjy3YOeMvT8hqcAvZzHxLj2Qv/9I
- LASCk2p8WhS2nW5RR18fEZ66ul/DqfXPYCfaRckIMuP8uvHkcCKyweggc3fWdJKzwdAPC4
- JNObbiDDHXBOkYIxmvDt2+CUX0y/aJ8=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zZczhXGl9TGqY4DRFWizTO3f/10y7CBxCovWDPv4GOo=;
+ b=BPn0yU0LiPF6sQwwCC1WOYBzF8PCpRwxFLndPrTQ2yUaSedGQyj0DOBTGat9UYorQgAkWu
+ JgGi9byFuHpyy+1diVEOplWo3PghBqbT0t9+KU6n2MUFQ1L89jz9MQAy897sN/JLDf1Gh1
+ O8TXucjR5lz6Oaebj+Elzku22pxg+N8=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-CiM65WmPNMWilqxtYX_PVw-1; Thu, 23 May 2024 10:56:47 -0400
-X-MC-Unique: CiM65WmPNMWilqxtYX_PVw-1
-Received: by mail-ua1-f69.google.com with SMTP id
- a1e0cc1a2514c-803178218b3so106604241.2
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 07:56:47 -0700 (PDT)
+ us-mta-319-LRgyzyCJNeabMvak--grIg-1; Thu, 23 May 2024 10:56:58 -0400
+X-MC-Unique: LRgyzyCJNeabMvak--grIg-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3c9ac6d3bf6so1217006b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 07:56:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476206; x=1717081006;
+ d=1e100.net; s=20230601; t=1716476216; x=1717081016;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=edUAbB6FYQtNYztKJ8aeeDlCGuti83HdzsdflmaIRq4=;
- b=goDSgezTk2xvvMftC7W/3Slk2WLCI3sM5HG3JhfOm1xgORySyokTniYc19n6Fc8X7M
- 0nZW1jtknxBgKviU2yPWWkylzpfuRFJkqlkFY14xhiNhdIThx4+K1pUPta8ek+EzPKNU
- wBT0EcxIXjz7lXsQGzMO6Y3N38l6+yFJ4haNbrAHiCuWUk1SEs5YRVWZ19A2FR4IwJIk
- Bn9AivEPhEzIgwizzqpL5QAwLcDekMDyuzQChpewl1DvjljR+mjm4skBkcDYhslmkcvB
- eivoFf1NRBp6cNXZYhRLN6rd1tF7ixGE6F/1Fj8RZwz7h7ZEPSqBqH6/FkfpkJti1Dgq
- /lKA==
-X-Gm-Message-State: AOJu0YyMRZLrHI8xPPC7oEykHvLqKjlp7fhBNDW4yBrZuj9mD6BUxhfn
- ZkuyUOjcF3WHmoSXy8akjdFKGV07xq/QPeXeMiuzkqMhB/xAHZqsiYlT6Rztq1l2g9jDmZrSizH
- pAHKoGPZNGxDQNERtU0Mrar6538ImPp08fvbgrLekztVggaow2xZLx3dlEEHhtiv9prNiyZq0Ow
- ojkmOnJchmMCSptGKZBvuammKtbUJrHmL5qOMu
-X-Received: by 2002:a05:6122:1829:b0:4dc:b486:e4a5 with SMTP id
- 71dfb90a1353d-4e212f1b787mr5172789e0c.0.1716476205928; 
- Thu, 23 May 2024 07:56:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmySploH/h2W6a6HnRYeB4E6EpdvHnDW61lCXGKV1+O0F44Qy1IHPHfbppgWanotLDjKsH6w==
-X-Received: by 2002:a05:6122:1829:b0:4dc:b486:e4a5 with SMTP id
- 71dfb90a1353d-4e212f1b787mr5172737e0c.0.1716476205360; 
- Thu, 23 May 2024 07:56:45 -0700 (PDT)
+ bh=zZczhXGl9TGqY4DRFWizTO3f/10y7CBxCovWDPv4GOo=;
+ b=NFFspqzUY4NAl5oTq6ajIs0Ot5d6BSCwKHrSrdg1YGj9WS5lHqkLp+MwI60d7ssZB4
+ zDMppeU3MD3ZA+h6u37+7OnVseZ2cXDerMG2d7l7frIDtl3zdKdItinffgcNW5DtEBY3
+ 2y5KUWES4LLSgD+i6fClLfpq9jCUm3FYlSSjDQ8MpZTMTIXbZddH9X1IIbVkKq4LFR4W
+ o86Vp3fCXXfoCmRkyjPEiky1rfiSYEvERAYTkGMuv97oQNGaApgo8PxEyvBzC2FaTGaW
+ dmOlDD3hqrfqWZ+CqrlmDjdvBZC5nc61EQmDvyzZWYPq90MF8L+bGAFET4R0gGJKHfLO
+ SRpg==
+X-Gm-Message-State: AOJu0Yx6esA4SbiWEdsfvvqXgr9dC7Kq5CbAPKEQx5WGWU31OZzqI59k
+ n04c8WINRLpC4Y2o3M359kyZTdWjHHBMkLQubtioBCo5ll5g+a6QTdI36kRk3gUVfeVyRsMeZnp
+ bhKV3GqBXL865/mEGWtCR98Ug0KUM9L6EYlcbKukGvvfBDFfuqM+zvmxk1ZGHzFQk0KHbl1Lh+m
+ sgFNEJJ+mSW/bilbKOae00gb6wkNU62mXdJJ68
+X-Received: by 2002:a05:6359:5f06:b0:186:131e:822 with SMTP id
+ e5c5f4694b2df-19791dded6cmr581440755d.3.1716476216058; 
+ Thu, 23 May 2024 07:56:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExActTSjAj/wN/d05Xe/g/oADokunszHmJ6OxbWJtgD5bbKHoaoMylS4WESHfNPf1t0lqpZQ==
+X-Received: by 2002:a05:6359:5f06:b0:186:131e:822 with SMTP id
+ e5c5f4694b2df-19791dded6cmr581435255d.3.1716476215441; 
+ Thu, 23 May 2024 07:56:55 -0700 (PDT)
 Received: from step1.redhat.com (host-79-53-30-109.retail.telecomitalia.it.
  [79.53.30.109]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6a15f1d704dsm143641646d6.116.2024.05.23.07.56.39
+ d75a77b69052e-43e3a57b396sm101182851cf.24.2024.05.23.07.56.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 07:56:43 -0700 (PDT)
+ Thu, 23 May 2024 07:56:53 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
@@ -81,10 +81,9 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
  Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v5 09/13] osdep: move O_DSYNC and O_DIRECT defines from
- file-posix
-Date: Thu, 23 May 2024 16:55:18 +0200
-Message-ID: <20240523145522.313012-10-sgarzare@redhat.com>
+Subject: [PATCH v5 10/13] contrib/vhost-user-blk: enable it on any POSIX system
+Date: Thu, 23 May 2024 16:55:19 +0200
+Message-ID: <20240523145522.313012-11-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523145522.313012-1-sgarzare@redhat.com>
 References: <20240523145522.313012-1-sgarzare@redhat.com>
@@ -115,66 +114,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These defines are also useful for vhost-user-blk when it is compiled
-in some POSIX systems that do not define them, so let's move them to
-“qemu/osdep.h”.
+Previous patches made the vhost-user-blk application and the
+vhost-user-server.c dependency buildable for any POSIX system.
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- include/qemu/osdep.h | 14 ++++++++++++++
- block/file-posix.c   | 14 --------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+v5:
+- O_DSYNC and O_DIRECT definition are now in osdep [Phil]
+- commit updated since we moved out all code changes
+v4:
+- moved using of "qemu/bswap.h" API in a separate patch [Phil]
+---
+ meson.build      | 2 --
+ util/meson.build | 4 +++-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index f61edcfdc2..e165b5cb1b 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -325,6 +325,20 @@ void QEMU_ERROR("code path is reachable")
- #define ESHUTDOWN 4099
- #endif
+diff --git a/meson.build b/meson.build
+index 543105af2a..06a1835a09 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1974,8 +1974,6 @@ has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_
+ has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
  
-+/* OS X does not have O_DSYNC */
-+#ifndef O_DSYNC
-+#ifdef O_SYNC
-+#define O_DSYNC O_SYNC
-+#elif defined(O_FSYNC)
-+#define O_DSYNC O_FSYNC
-+#endif
-+#endif
-+
-+/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
-+#ifndef O_DIRECT
-+#define O_DIRECT O_DSYNC
-+#endif
-+
- #define RETRY_ON_EINTR(expr) \
-     (__extension__                                          \
-         ({ typeof(expr) __result;                               \
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 35684f7e21..7a196a2abf 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -110,20 +110,6 @@
- #include <sys/diskslice.h>
- #endif
- 
--/* OS X does not have O_DSYNC */
--#ifndef O_DSYNC
--#ifdef O_SYNC
--#define O_DSYNC O_SYNC
--#elif defined(O_FSYNC)
--#define O_DSYNC O_FSYNC
--#endif
--#endif
--
--/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
--#ifndef O_DIRECT
--#define O_DIRECT O_DSYNC
--#endif
--
- #define FTYPE_FILE   0
- #define FTYPE_CD     1
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+-  .require(host_os == 'linux',
+-           error_message: 'vhost_user_blk_server requires linux') \
+   .require(have_vhost_user,
+            error_message: 'vhost_user_blk_server requires vhost-user support') \
+   .disable_auto_if(not have_tools and not have_system) \
+diff --git a/util/meson.build b/util/meson.build
+index 72b505df11..c414178ace 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -112,10 +112,12 @@ if have_block
+     util_ss.add(files('filemonitor-stub.c'))
+   endif
+   if host_os == 'linux'
+-    util_ss.add(files('vhost-user-server.c'), vhost_user)
+     util_ss.add(files('vfio-helpers.c'))
+     util_ss.add(files('chardev_open.c'))
+   endif
++  if host_os != 'windows'
++    util_ss.add(files('vhost-user-server.c'), vhost_user)
++  endif
+   util_ss.add(files('yank.c'))
+ endif
  
 -- 
 2.45.1
