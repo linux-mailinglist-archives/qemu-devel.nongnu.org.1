@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777808CD68B
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26E238CD684
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:02:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9x0-00083k-Cl; Thu, 23 May 2024 11:01:53 -0400
+	id 1sA9wt-0007yH-C7; Thu, 23 May 2024 11:01:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9wh-00073B-Db
+ id 1sA9wj-00076K-RV
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9wf-0004tg-CR
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:31 -0400
+ id 1sA9wi-0004u6-1h
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476487;
+ s=mimecast20190719; t=1716476491;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iN659yH09n/hdzOY/L+ozt0Io3bES4P00+IzSZFQwVs=;
- b=Ui8FY+rZQDHunnbxVJAX6txfbz4S0KL1tp4bQ7M4F+MYk/BTjSUXgCFGQi6U85sgkYds9b
- K+rETibc91dZhDCHSzNcOUB4EsjDt2gw1ClADSfcef/a7axPmzbRWbSRq7Y5xDHs6003W4
- k4c4MKApoSc2IzPiOYj6f5UA5mgCP1k=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CHCUPvn1Si9c0g9Vgq43/WNne2Jx2ZEuJMMlB1q2KHs=;
+ b=M87NlbDLhYRvlTiqed2SFVlWjQAWHOm3+PCpFgFlk14KO0x4g4e3MYi3+Mp77zyW+fhD+y
+ YvIgFANmMp2xXWO6m4hMiHR5YDdTI+iU7E3eNdiJhTyLuliHUeCy2BKPs2EzuRAPVJN/dS
+ 8hYepua2aB3z3jwbYgdS4rC5Gf+wHss=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-252-ITCodQUfMRmEklpA3Qygbg-1; Thu, 23 May 2024 11:01:26 -0400
-X-MC-Unique: ITCodQUfMRmEklpA3Qygbg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a592c35ac06so236264666b.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:26 -0700 (PDT)
+ us-mta-402-4XcV9T0VNG25jdnWPLM0ag-1; Thu, 23 May 2024 11:01:29 -0400
+X-MC-Unique: 4XcV9T0VNG25jdnWPLM0ag-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-578282c81bcso1284510a12.2
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476484; x=1717081284;
+ d=1e100.net; s=20230601; t=1716476488; x=1717081288;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iN659yH09n/hdzOY/L+ozt0Io3bES4P00+IzSZFQwVs=;
- b=qApHr08acf2dXq84KDY17D9m1mnk4hgKzUp+rN3Gut+2H6wjnAhrxNBMHw1rIx/GkB
- deLD7ppu2OBKSWRcI9aM2521UK7dPdlUZoneqvocZcLAr5w0NtYmc++XtHKqKzGMTB/l
- EWt2333qpTF7iJW2mNTwcfLo1taBqlkiVUPeRbs9RNUcQAAs1ypRIQkW7afpOZuJcL3T
- iAWwbdqk42DUYADKxOwhAJKAyXe0QjDx5IoM+Ge1b8KhVtpkjqvq+zAKk3LjJ3Eq1OJ/
- maejZ8rMUfZQcyTR9/YxRCGbdmOF2inZKP0ply0U1S3vTN8MkN/SX40QRRF2+M49AYDy
- H0hw==
-X-Gm-Message-State: AOJu0YySXFbuuIkFtLg45bF16TiGFAp8yYVW65r8SexpSnxe5rUksgZq
- M/uMbu8nRWW2zSA8MJlODFy6kowNDA11gFoAupVsNPJpy/JpTgGcpGpXYCBoS/TTApXg9UjSGwM
- TJwI2a+ROZqS2DDkU3sjR9t/QesjrTLJ4Hc4VmCoe/y83j8Ijhr9kgW4kKaE6QIZaODwRhr20Nw
- mbEbHOmN27LhVeqUc2iK/AV1r27/0j2iY2wFPx
-X-Received: by 2002:a17:906:3893:b0:a59:c345:17fb with SMTP id
- a640c23a62f3a-a623e6d52f1mr207773566b.5.1716476484726; 
- Thu, 23 May 2024 08:01:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfSB4TvWhr7kjL24Jog1Ht8TnS7hwBpxo9qw35Rx5Kd12/dhjfyQJw2D4Nj3qoOhHlZi6bYQ==
-X-Received: by 2002:a17:906:3893:b0:a59:c345:17fb with SMTP id
- a640c23a62f3a-a623e6d52f1mr207771066b.5.1716476484356; 
- Thu, 23 May 2024 08:01:24 -0700 (PDT)
+ bh=CHCUPvn1Si9c0g9Vgq43/WNne2Jx2ZEuJMMlB1q2KHs=;
+ b=nSiickyxU8mffXu+8QbTpI9XeZugwGOI+/H2cFbAz40DHy7fUkXKRKapUff43DG55d
+ 0mIvmsYY0TXbjEc+HxBFOpYcX7q6L4wb0GDap1xeOFPycKQC2CYfGjV2J9T5JwC0/F3O
+ Je0cpVEakSo1e5/HTdw2FtIHcJuNnP/av7Pq3RJhgYAN6KEtB32SDfpAoGWfvv1zzaa/
+ vnXuF2WWj5oNG6g1E/bVSNSiP7RQyNresBncB0vzdpzV7c3u54yfLzYqi4GNR2uLvke0
+ bti3RYcUws+uDjJZrcQFw88NzNUjePilKt2BERrTbnjTdIEmVQ/RcusuIdBy+MGRpqUH
+ q7Vw==
+X-Gm-Message-State: AOJu0YwOtrqbQw7iou8Rs/hZkHwMa93+3PvVKM3vXG9xNOS5zn4SIisN
+ xc2PBinVhZxxo7Yz3BHdPDlqFp48Oo5i7bOSJ2pdJwl3ZPoP0C+LrqNJExMm4DFz+uqpWhFHey5
+ BBaABQwKVcY93vw0s7IUcYCSb09nI+K9b6wHLlKT4cDhkLyKdZSeAPHJe7sCBma3v4067/ODDI4
+ etLYZ3qDJEUi9fT7pyJPk3hGohqPgwhBcJJ0Vy
+X-Received: by 2002:a50:d789:0:b0:578:25c9:b990 with SMTP id
+ 4fb4d7f45d1cf-57832a3a1b2mr5199791a12.20.1716476487262; 
+ Thu, 23 May 2024 08:01:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbcF3+fXwCypRxfjpnpXkUjfvuUquXjGrPBlxFwUFEA1MK2JR/HBw1JlM9goij8dgyS1SoMQ==
+X-Received: by 2002:a50:d789:0:b0:578:25c9:b990 with SMTP id
+ 4fb4d7f45d1cf-57832a3a1b2mr5199756a12.20.1716476486788; 
+ Thu, 23 May 2024 08:01:26 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a17b17814sm1935303966b.206.2024.05.23.08.01.21
+ 4fb4d7f45d1cf-5733c34fed1sm19885745a12.96.2024.05.23.08.01.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:01:23 -0700 (PDT)
+ Thu, 23 May 2024 08:01:25 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhuocheng Ding <zhuocheng.ding@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Yanan Wang <wangyanan55@huawei.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PULL 18/23] tests: Add test case of APIC ID for module level parsing
-Date: Thu, 23 May 2024 17:00:31 +0200
-Message-ID: <20240523150036.1050011-19-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>
+Subject: [PULL 19/23] hw/i386/pc: Support smp.modules for x86 PC machine
+Date: Thu, 23 May 2024 17:00:32 +0200
+Message-ID: <20240523150036.1050011-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
@@ -102,71 +101,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhuocheng Ding <zhuocheng.ding@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-After i386 supports module level, it's time to add the test for module
-level's parsing.
+As module-level topology support is added to X86CPU, now we can enable
+the support for the modules parameter on PC machines. With this support,
+we can define a 5-level x86 CPU topology with "-smp":
 
-Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
-Co-developed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Yanan Wang <wangyanan55@huawei.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
+-smp cpus=*,maxcpus=*,sockets=*,dies=*,modules=*,cores=*,threads=*.
+
+So, add the 5-level topology example in description of "-smp".
+
+Additionally, add the missed drawers and books options in previous
+example.
+
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240424154929.1487382-18-zhao1.liu@intel.com>
+Co-developed-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+Signed-off-by: Zhuocheng Ding <zhuocheng.ding@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Reviewed-by: Babu Moger <babu.moger@amd.com>
+Message-ID: <20240424154929.1487382-19-zhao1.liu@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/unit/test-x86-topo.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ hw/i386/pc.c    |  1 +
+ qemu-options.hx | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/tests/unit/test-x86-topo.c b/tests/unit/test-x86-topo.c
-index f21b8a5d95c..55b731ccae5 100644
---- a/tests/unit/test-x86-topo.c
-+++ b/tests/unit/test-x86-topo.c
-@@ -37,6 +37,7 @@ static void test_topo_bits(void)
-     topo_info = (X86CPUTopoInfo) {1, 1, 1, 1};
-     g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 0);
-     g_assert_cmpuint(apicid_core_width(&topo_info), ==, 0);
-+    g_assert_cmpuint(apicid_module_width(&topo_info), ==, 0);
-     g_assert_cmpuint(apicid_die_width(&topo_info), ==, 0);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 6126bfdd2a7..7b638da7aaa 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1843,6 +1843,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     mc->default_cpu_type = TARGET_DEFAULT_CPU_TYPE;
+     mc->nvdimm_supported = true;
+     mc->smp_props.dies_supported = true;
++    mc->smp_props.modules_supported = true;
+     mc->default_ram_id = "pc.ram";
+     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
  
-     topo_info = (X86CPUTopoInfo) {1, 1, 1, 1};
-@@ -74,13 +75,22 @@ static void test_topo_bits(void)
-     topo_info = (X86CPUTopoInfo) {1, 1, 33, 2};
-     g_assert_cmpuint(apicid_core_width(&topo_info), ==, 6);
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 4d196603368..8ca7f34ef0c 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -281,7 +281,8 @@ ERST
  
--    topo_info = (X86CPUTopoInfo) {1, 1, 30, 2};
-+    topo_info = (X86CPUTopoInfo) {1, 6, 30, 2};
-+    g_assert_cmpuint(apicid_module_width(&topo_info), ==, 3);
-+    topo_info = (X86CPUTopoInfo) {1, 7, 30, 2};
-+    g_assert_cmpuint(apicid_module_width(&topo_info), ==, 3);
-+    topo_info = (X86CPUTopoInfo) {1, 8, 30, 2};
-+    g_assert_cmpuint(apicid_module_width(&topo_info), ==, 3);
-+    topo_info = (X86CPUTopoInfo) {1, 9, 30, 2};
-+    g_assert_cmpuint(apicid_module_width(&topo_info), ==, 4);
-+
-+    topo_info = (X86CPUTopoInfo) {1, 6, 30, 2};
-     g_assert_cmpuint(apicid_die_width(&topo_info), ==, 0);
--    topo_info = (X86CPUTopoInfo) {2, 1, 30, 2};
-+    topo_info = (X86CPUTopoInfo) {2, 6, 30, 2};
-     g_assert_cmpuint(apicid_die_width(&topo_info), ==, 1);
--    topo_info = (X86CPUTopoInfo) {3, 1, 30, 2};
-+    topo_info = (X86CPUTopoInfo) {3, 6, 30, 2};
-     g_assert_cmpuint(apicid_die_width(&topo_info), ==, 2);
--    topo_info = (X86CPUTopoInfo) {4, 1, 30, 2};
-+    topo_info = (X86CPUTopoInfo) {4, 6, 30, 2};
-     g_assert_cmpuint(apicid_die_width(&topo_info), ==, 2);
+ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
+-    "               [,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]\n"
++    "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
++    "               [,threads=threads]\n"
+     "                set the number of initial CPUs to 'n' [default=1]\n"
+     "                maxcpus= maximum number of total CPUs, including\n"
+     "                offline CPUs for hotplug, etc\n"
+@@ -290,7 +291,8 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "                sockets= number of sockets in one book\n"
+     "                dies= number of dies in one socket\n"
+     "                clusters= number of clusters in one die\n"
+-    "                cores= number of cores in one cluster\n"
++    "                modules= number of modules in one cluster\n"
++    "                cores= number of cores in one module\n"
+     "                threads= number of threads in one core\n"
+     "Note: Different machines may have different subsets of the CPU topology\n"
+     "      parameters supported, so the actual meaning of the supported parameters\n"
+@@ -306,7 +308,7 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "      must be set as 1 in the purpose of correct parsing.\n",
+     QEMU_ARCH_ALL)
+ SRST
+-``-smp [[cpus=]n][,maxcpus=maxcpus][,sockets=sockets][,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]``
++``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
+     Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
+     the machine type board. On boards supporting CPU hotplug, the optional
+     '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
+@@ -345,14 +347,14 @@ SRST
+         -smp 8,sockets=2,cores=2,threads=2,maxcpus=8
  
-     /* build a weird topology and see if IDs are calculated correctly
-@@ -91,6 +101,7 @@ static void test_topo_bits(void)
-     topo_info = (X86CPUTopoInfo) {1, 1, 6, 3};
-     g_assert_cmpuint(apicid_smt_width(&topo_info), ==, 2);
-     g_assert_cmpuint(apicid_core_offset(&topo_info), ==, 2);
-+    g_assert_cmpuint(apicid_module_offset(&topo_info), ==, 5);
-     g_assert_cmpuint(apicid_die_offset(&topo_info), ==, 5);
-     g_assert_cmpuint(apicid_pkg_offset(&topo_info), ==, 5);
+     The following sub-option defines a CPU topology hierarchy (2 sockets
+-    totally on the machine, 2 dies per socket, 2 cores per die, 2 threads
+-    per core) for PC machines which support sockets/dies/cores/threads.
+-    Some members of the option can be omitted but their values will be
+-    automatically computed:
++    totally on the machine, 2 dies per socket, 2 modules per die, 2 cores per
++    module, 2 threads per core) for PC machines which support sockets/dies
++    /modules/cores/threads. Some members of the option can be omitted but
++    their values will be automatically computed:
  
+     ::
+ 
+-        -smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16
++        -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32
+ 
+     The following sub-option defines a CPU topology hierarchy (2 sockets
+     totally on the machine, 2 clusters per socket, 2 cores per cluster,
 -- 
 2.45.1
 
