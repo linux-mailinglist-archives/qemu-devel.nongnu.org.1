@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06E08CD731
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A8D8CD753
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:38:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAATU-0007kn-Ny; Thu, 23 May 2024 11:35:24 -0400
+	id 1sAATZ-0007u2-ON; Thu, 23 May 2024 11:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATJ-0007jq-Cm
+ id 1sAATJ-0007js-Dr
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:13 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATF-0002Rx-RH
+ id 1sAATG-0002S2-5p
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:12 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-354fb2d9026so683574f8f.1
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-351d309bbcfso1458892f8f.3
  for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716478508; x=1717083308; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=8YxNpQoelVW24RPVvumPTEVnZuR0kkw8zkh8/F6BNsc=;
- b=gBKZ+hDtZ3t3mzwWLzleDn08dWRRVNMtr5atBqjm/fM4mWyMXApR4AQssfq3mjwokK
- qcmaQxa35rtR7MxXl3NVKQB8W6rEYfUKM9vpT1UySF4FS5tYNDbITjPV8cc3DLK+0xNm
- CrEYexac0uZuAgq+Bm8PYoEN9Et7nd+VBUooQHWbAMzFR2nJts+SYNgSmVGl5VLMknIn
- EOWSQPwyU3cbR79boATUhWK0dM9iSl/Yz/WbndI4iJUPPKoJvBDoNoqeUJJHaJPUB4On
- bmZX+o1xx97lpBZH0q7gDK1lN+RmIm3l2nMDLEGeA7rZTk3aWfcbwYs9tpvqk/vFgnb/
- JJvQ==
+ :reply-to; bh=EAAlRYMlBTnMK71N/Zu05HtnM34HblCxoLd1v+E1rkk=;
+ b=Lym/sY6fU+htODwWF/IHYLuOjZFhkzCle+VAjC7O2txt140VESktQ9fJ4EPVM8tOpa
+ OFez1U7IrqYJ0R9r1OAILn8r27iK7G4Ls/27nj24cLwFT1mfjWU+AwTnDqOk8AjZSLQS
+ bXxylHUG+eJNtnQjQ1x5eiuTf3qNqJ5nORLPm2koyTBnsYiWPOM63yDg/MXfM7gz5TQr
+ Sm0YOrOQeVEv126Csbw/rEJRxGxr8p3DMU396oRUZ0h2Oh0DNZoAmAcFJOrtSiiahM7H
+ 1gM0V2Q4h4gTS+lpNbXXb9nvGYgAp/IAAcN2kLouDMoIfR+Dz6bcbi6kkJ1xh9e2USEN
+ VJpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716478508; x=1717083308;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8YxNpQoelVW24RPVvumPTEVnZuR0kkw8zkh8/F6BNsc=;
- b=hdA+78B0v9aDNCMmdlEWUyQlgDenpB22lDKT1+N/FBnmiIOFb8kyJVGXEMbKe3Ni8U
- Y9oPYy+0KadyHQoKZfiKJ3f/Af8dHv5GckZX+n+lo8U/S2oS+grXBuLpbTstes6EgLG3
- ajUT02ID8erBXsavNo0izfK2VqX1cmFvzqIau8PvlYETbi3XW4HR9jJg6teDanlwl9Px
- LTJdiMC03I93/ld8SKNI0oXYGAyLjMs/ZNn/R5N5AFhF+zQtuuEHzU9gpFj5VqfdldMs
- Jc3/+/uT889TCkxr00Siv+/jCXmWVsg+v0+A8ltjkfWpqynzFwv9RW7kkPGGHbhAnfts
- mpPA==
-X-Gm-Message-State: AOJu0YyOVs2pn7L1bt3dZmjnAouWcZ4igDIg5/KsEIjOI2ya4OUjKTKd
- SLvlUr9aGKa0niMMwThbLM4K2xJIJhKHXh1VzG7t9ufaW0C8GMZyRkTcnNoXmbBSWKQydCFuH+J
- +
-X-Google-Smtp-Source: AGHT+IH/ePDjJ1XWHG8psoaWUsox/TA6KXgqO9YgMrqKSjjZVWC54j8LRCwJoVi+ax5Jxq9PgQQbIA==
-X-Received: by 2002:adf:f2c6:0:b0:354:cc58:7af9 with SMTP id
- ffacd0b85a97d-354d8d957a6mr4105573f8f.50.1716478508245; 
+ bh=EAAlRYMlBTnMK71N/Zu05HtnM34HblCxoLd1v+E1rkk=;
+ b=ACvsDNM6Rax+Gqo5evL6hr0Q7wTGrWRwHi972/w7Qf2nCRZxamWbmMgaeD83A3ViHf
+ QefZJhUBSIZGhC9eo0604y9PlGXGDFNOac0yXlr+RTFirglvlKoESga91mTBMJRdpApH
+ N8HFu5XUlPIsWXtKWx+no3jSLmOPxB8iWnnh1O8rxw2tWU/q0FjMMmrnf+phTsFhBrim
+ dEWxJIrFYgU7e0BoExxXoBP4jLha1ZNnk81GwpFDYQKn4+X3tWAm/oN6qDFhaLilAKmN
+ mDb+A+FaukU8I9jI6MAVkG+lMclV5pbgAeeIUfJopBi0FbUoc7PCFN/bJIuB0klWuiFX
+ 9S5A==
+X-Gm-Message-State: AOJu0YwpjrRc+pihQ2c/fPcb0ImZDBOXY6KNbVakNT89cGm3IeFh04jb
+ Q0TmJiCq4ISWv/C03Suzd2RS+sOjU8o/rir3Pqmem4XKsZKgTRtl65GVFfqy+7VUnO9OKd2Tbyz
+ F
+X-Google-Smtp-Source: AGHT+IFOWp+NOTyErO+VBqBNdPwU9y6AfwH0ZVxVG8LWy5s7lbbXP4FOg172RlBfWRj1eIvkOVbIdg==
+X-Received: by 2002:a5d:4650:0:b0:354:f2b0:ebdb with SMTP id
+ ffacd0b85a97d-354f2b0ec33mr2876330f8f.12.1716478508646; 
  Thu, 23 May 2024 08:35:08 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.07
+ ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 23 May 2024 08:35:08 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/37] hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug
- System registers
-Date: Thu, 23 May 2024 16:34:30 +0100
-Message-Id: <20240523153505.2900433-3-peter.maydell@linaro.org>
+Subject: [PULL 03/37] hw/arm/npcm7xx: remove setting of mp-affinity
+Date: Thu, 23 May 2024 16:34:31 +0100
+Message-Id: <20240523153505.2900433-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240523153505.2900433-1-peter.maydell@linaro.org>
 References: <20240523153505.2900433-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,193 +92,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zenghui Yu <zenghui.yu@linux.dev>
+From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
 
-We wrongly encoded ID_AA64PFR1_EL1 using {3,0,0,4,2} in hvf_sreg_match[] so
-we fail to get the expected ARMCPRegInfo from cp_regs hash table with the
-wrong key.
+The value of the mp-affinity property being set in npcm7xx_realize is
+always the same as the default value it would have when arm_cpu_realizefn
+is called if the property is not set here. So there is no need to set
+the property value in npcm7xx_realize function.
 
-Fix it with the correct encoding {3,0,0,4,1}. With that fixed, the Linux
-guest can properly detect FEAT_SSBS2 on my M1 HW.
-
-All DBG{B,W}{V,C}R_EL1 registers are also wrongly encoded with op0 == 14.
-It happens to work because HVF_SYSREG(CRn, CRm, 14, op1, op2) equals to
-HVF_SYSREG(CRn, CRm, 2, op1, op2), by definition. But we shouldn't rely on
-it.
-
-Cc: qemu-stable@nongnu.org
-Fixes: a1477da3ddeb ("hvf: Add Apple Silicon support")
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-Reviewed-by: Alexander Graf <agraf@csgraf.de>
-Message-id: 20240503153453.54389-1-zenghui.yu@linux.dev
+Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240504141733.14813-1-dorjoychy111@gmail.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/hvf/hvf.c | 130 +++++++++++++++++++++----------------------
- 1 file changed, 65 insertions(+), 65 deletions(-)
+ hw/arm/npcm7xx.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 08d0757438c..45e2218be58 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -396,85 +396,85 @@ struct hvf_sreg_match {
- };
+diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
+index 9f2d96c733a..cb7791301b4 100644
+--- a/hw/arm/npcm7xx.c
++++ b/hw/arm/npcm7xx.c
+@@ -487,9 +487,6 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
  
- static struct hvf_sreg_match hvf_sreg_match[] = {
--    { HV_SYS_REG_DBGBVR0_EL1, HVF_SYSREG(0, 0, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR0_EL1, HVF_SYSREG(0, 0, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR0_EL1, HVF_SYSREG(0, 0, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR0_EL1, HVF_SYSREG(0, 0, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR1_EL1, HVF_SYSREG(0, 1, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR1_EL1, HVF_SYSREG(0, 1, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR1_EL1, HVF_SYSREG(0, 1, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR1_EL1, HVF_SYSREG(0, 1, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR2_EL1, HVF_SYSREG(0, 2, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR2_EL1, HVF_SYSREG(0, 2, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR2_EL1, HVF_SYSREG(0, 2, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR2_EL1, HVF_SYSREG(0, 2, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR3_EL1, HVF_SYSREG(0, 3, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR3_EL1, HVF_SYSREG(0, 3, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR3_EL1, HVF_SYSREG(0, 3, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR3_EL1, HVF_SYSREG(0, 3, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR4_EL1, HVF_SYSREG(0, 4, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR4_EL1, HVF_SYSREG(0, 4, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR4_EL1, HVF_SYSREG(0, 4, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR4_EL1, HVF_SYSREG(0, 4, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR5_EL1, HVF_SYSREG(0, 5, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR5_EL1, HVF_SYSREG(0, 5, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR5_EL1, HVF_SYSREG(0, 5, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR5_EL1, HVF_SYSREG(0, 5, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR6_EL1, HVF_SYSREG(0, 6, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR6_EL1, HVF_SYSREG(0, 6, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR6_EL1, HVF_SYSREG(0, 6, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR6_EL1, HVF_SYSREG(0, 6, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR7_EL1, HVF_SYSREG(0, 7, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR7_EL1, HVF_SYSREG(0, 7, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR7_EL1, HVF_SYSREG(0, 7, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR7_EL1, HVF_SYSREG(0, 7, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR8_EL1, HVF_SYSREG(0, 8, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR8_EL1, HVF_SYSREG(0, 8, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR8_EL1, HVF_SYSREG(0, 8, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR8_EL1, HVF_SYSREG(0, 8, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR9_EL1, HVF_SYSREG(0, 9, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR9_EL1, HVF_SYSREG(0, 9, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR9_EL1, HVF_SYSREG(0, 9, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR9_EL1, HVF_SYSREG(0, 9, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR10_EL1, HVF_SYSREG(0, 10, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR10_EL1, HVF_SYSREG(0, 10, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR10_EL1, HVF_SYSREG(0, 10, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR10_EL1, HVF_SYSREG(0, 10, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR11_EL1, HVF_SYSREG(0, 11, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR11_EL1, HVF_SYSREG(0, 11, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR11_EL1, HVF_SYSREG(0, 11, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR11_EL1, HVF_SYSREG(0, 11, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR12_EL1, HVF_SYSREG(0, 12, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR12_EL1, HVF_SYSREG(0, 12, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR12_EL1, HVF_SYSREG(0, 12, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR12_EL1, HVF_SYSREG(0, 12, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR13_EL1, HVF_SYSREG(0, 13, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR13_EL1, HVF_SYSREG(0, 13, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR13_EL1, HVF_SYSREG(0, 13, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR13_EL1, HVF_SYSREG(0, 13, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR14_EL1, HVF_SYSREG(0, 14, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR14_EL1, HVF_SYSREG(0, 14, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR14_EL1, HVF_SYSREG(0, 14, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR14_EL1, HVF_SYSREG(0, 14, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 7) },
- 
--    { HV_SYS_REG_DBGBVR15_EL1, HVF_SYSREG(0, 15, 14, 0, 4) },
--    { HV_SYS_REG_DBGBCR15_EL1, HVF_SYSREG(0, 15, 14, 0, 5) },
--    { HV_SYS_REG_DBGWVR15_EL1, HVF_SYSREG(0, 15, 14, 0, 6) },
--    { HV_SYS_REG_DBGWCR15_EL1, HVF_SYSREG(0, 15, 14, 0, 7) },
-+    { HV_SYS_REG_DBGBVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 4) },
-+    { HV_SYS_REG_DBGBCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 5) },
-+    { HV_SYS_REG_DBGWVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 6) },
-+    { HV_SYS_REG_DBGWCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 7) },
- 
- #ifdef SYNC_NO_RAW_REGS
-     /*
-@@ -486,7 +486,7 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
-     { HV_SYS_REG_MPIDR_EL1, HVF_SYSREG(0, 0, 3, 0, 5) },
-     { HV_SYS_REG_ID_AA64PFR0_EL1, HVF_SYSREG(0, 4, 3, 0, 0) },
- #endif
--    { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 2) },
-+    { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 1) },
-     { HV_SYS_REG_ID_AA64DFR0_EL1, HVF_SYSREG(0, 5, 3, 0, 0) },
-     { HV_SYS_REG_ID_AA64DFR1_EL1, HVF_SYSREG(0, 5, 3, 0, 1) },
-     { HV_SYS_REG_ID_AA64ISAR0_EL1, HVF_SYSREG(0, 6, 3, 0, 0) },
+     /* CPUs */
+     for (i = 0; i < nc->num_cpus; i++) {
+-        object_property_set_int(OBJECT(&s->cpu[i]), "mp-affinity",
+-                                arm_build_mp_affinity(i, NPCM7XX_MAX_NUM_CPUS),
+-                                &error_abort);
+         object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
+                                 NPCM7XX_GIC_CPU_IF_ADDR, &error_abort);
+         object_property_set_bool(OBJECT(&s->cpu[i]), "reset-hivecs", true,
 -- 
 2.34.1
 
