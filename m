@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7877E8CD685
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5F78CD67A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:01:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9w1-0004v0-LM; Thu, 23 May 2024 11:00:49 -0400
+	id 1sA9w7-0005DK-Cm; Thu, 23 May 2024 11:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vz-0004r3-OJ
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sA9w4-00052H-3O
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vx-0004mu-VK
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:47 -0400
+ id 1sA9w2-0004nl-7A
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476445;
+ s=mimecast20190719; t=1716476448;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PA8Yx9dDcVAjLfl4bPdHEZllpwb4CCTSG4hRdz+6q9M=;
- b=BLHx8wFK5TIeZogYYjx+3FWhmDKK/JP0b1taatHMDA3Yn22p6vSwox+blyPAK5c01UfPE+
- /8tUn2sGj7L4RrQhc40QHiU5Urdb8rSVlcCDgOJZ/xShK3VbrbbNhfsV3+6QDYtLY1WI9S
- bulp1i/k8hFFjpxBXIiVMepTL0HhqQs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=njYSO7HTB+sDeOmmffYU6ooE+v8Mi/U08DiKKYNjzGE=;
+ b=LDIxoY9y/Byi0M5ErTlkeSrHUaGAa2z5ds4ubXEoqQYKiSPQGv3iEwEpeRFJE8xIaYdQQv
+ YnzC2Q82JU0hGY0NmvdmpQLoK+GsKNWjat/eyYU+uxeZPwjNnCT+WLS5dyyHgjvy2HzBCO
+ gfSc2fYnQhEe7Rky3gAxkaBoq/KGwZE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-b6g3wj06MqmtCOwIjYYCpg-1; Thu, 23 May 2024 11:00:43 -0400
-X-MC-Unique: b6g3wj06MqmtCOwIjYYCpg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a621c9a65f4so82658066b.2
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:43 -0700 (PDT)
+ us-mta-689-P7rGI563PRS9X---cgDlkQ-1; Thu, 23 May 2024 11:00:46 -0400
+X-MC-Unique: P7rGI563PRS9X---cgDlkQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a59aedbd9a9so131181966b.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476442; x=1717081242;
+ d=1e100.net; s=20230601; t=1716476445; x=1717081245;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PA8Yx9dDcVAjLfl4bPdHEZllpwb4CCTSG4hRdz+6q9M=;
- b=jseq/oRqSgfFKHAFpoZV0HBY0UpOS6I1MmAWoUvBTx+PqDzqo9mlpfZi18q28ATc5W
- dNyLqLKaXw8dZppCFmnojunI9Jdt9vpGmZphs9cmYciMNMfKIkUjOZoPMkZ6VFsLYTfJ
- 9mmB5N6jebIqXDAZJ5YEIV4D/znQfkjeUnZR4yZVNw30qR+yRfX7JDxQkawSIo7pdry3
- wufjU+B7CzkSCklvN5tLqlZ2WCMDbF4r+BFAcFZrPFEc+V/9m4VdOT4EdowqYWkotXyW
- xVMqUe2tfFAuqYwDMghf4EHaAm90rlnNGE4K3kPGzyip/KCyb6/fKc4axlpeM36E7/SW
- SvuQ==
-X-Gm-Message-State: AOJu0YyB8VOsdOAD2pQTJ8HEcFsQkT22UAridZxUCopCggxC7r/Xt9ID
- OZwq9FkRTHsFbOMM23Mph+ewzOBIX/nFYHZsONKVry17w/DRvJsKrLSL7aWx3FmiOUjh9o5veb5
- 867N2o6fQ7M+BXSHWiHODZEID/TkqNW2uLAHhUh5qRlk5eY24uJy6IlxwvIhRwPtNQj6kHk3pMX
- QIz+JdBw/Lnan/goW68FkckkTjshJWGmaUrdJK
-X-Received: by 2002:a17:906:a0c9:b0:a59:9d4c:eb09 with SMTP id
- a640c23a62f3a-a6228069286mr362107366b.27.1716476442051; 
- Thu, 23 May 2024 08:00:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWQ0oj7QicNW+oP0A0wU0SLQE9fa7b8SN+jww+F0zv6DF6SPaCOrJu9nVkoPq/UmiASPKLsA==
-X-Received: by 2002:a17:906:a0c9:b0:a59:9d4c:eb09 with SMTP id
- a640c23a62f3a-a6228069286mr362105866b.27.1716476441660; 
- Thu, 23 May 2024 08:00:41 -0700 (PDT)
+ bh=njYSO7HTB+sDeOmmffYU6ooE+v8Mi/U08DiKKYNjzGE=;
+ b=rVIiFdRTV0q7lpNcwFgWFw6QSa7Sd30T+7PquyO45mk0gIWckfT57LC1sASgNFjME7
+ jS+q9s+NuFozLYzNUtJ1E3VE+ZRzhJB96RQZ0aF1OTTDLDT6lrcuFixwFxJGHaQI+tbg
+ oksPSsMoZ4RTo9+MUVI8Wq5rnqmFA3zU8BjrL7+20CsoEnGoBLDqSY+505xQcI2zZokl
+ FHvbk28f1VWMnAsyqXRDE3+e3uXY5CmqDxtwTEOftpwhB/AyndK7Pc9wf9BbnOEwwMgU
+ P357AwE0Sou9g/2ARQhQFTvjldyOnF6blgg9TMgDPP1vCGqXMV31q8YV4Oofg1oe/JLh
+ Kf9w==
+X-Gm-Message-State: AOJu0Yxc6EeW/GV+OnYF5GS6Bpj6UxILLIXkh0L9QKOGn0sQkBApmWxW
+ tnG8lG84cmC59bTfnoa7EK+YgO/BRuqu9w8cPjrJfjNZAkvsHHZ/jej3OADWXDODhxAYcBL5eok
+ qvKKuSb0h7ZITJvzffOwW5kd2HyPMT5TPOUsoMhBxBDCeiq++ATTVZ3GecDy7M84L4Kjz/ZAPZR
+ PnBkb0VzwmxVANEXmwLDWTcEFjESVMZcZ7C8IX
+X-Received: by 2002:a17:906:7158:b0:a59:cd18:92f5 with SMTP id
+ a640c23a62f3a-a62280556d2mr355745866b.11.1716476445069; 
+ Thu, 23 May 2024 08:00:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFlWqwt6lkTcobGw3vOKvo57EmJ1TPORZQNO3mGjzdXQtQQ/rU3+v2oUuUlxw3gTnUg4YZ5DA==
+X-Received: by 2002:a17:906:7158:b0:a59:cd18:92f5 with SMTP id
+ a640c23a62f3a-a62280556d2mr355744166b.11.1716476444545; 
+ Thu, 23 May 2024 08:00:44 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a179c823dsm1942307666b.100.2024.05.23.08.00.39
+ a640c23a62f3a-a5a55afdea7sm1681003666b.141.2024.05.23.08.00.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:00:39 -0700 (PDT)
+ Thu, 23 May 2024 08:00:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 02/23] target/i386: clean up AAM/AAD
-Date: Thu, 23 May 2024 17:00:15 +0200
-Message-ID: <20240523150036.1050011-3-pbonzini@redhat.com>
+Cc: Bernhard Beschow <shentey@gmail.com>
+Subject: [PULL 03/23] hw/i386/pc_sysfw: Alias rather than copy isa-bios region
+Date: Thu, 23 May 2024 17:00:16 +0200
+Message-ID: <20240523150036.1050011-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,121 +100,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 32-bit AAM/AAD opcodes are using helpers that read and write flags and
-env->regs[R_EAX].  Clean them up so that the table correctly includes AX
-as a 16-bit input and output.
+From: Bernhard Beschow <shentey@gmail.com>
 
-No real reason to do it to be honest, but they are nice one-output helpers
-and it removes the masking of env->regs[R_EAX] that generic load/writeback
-code already does.
+In the -bios case the "isa-bios" memory region is an alias to the BIOS mapped
+to the top of the 4G memory boundary. Do the same in the -pflash case, but only
+for new machine versions for migration compatibility. This establishes common
+behavior and makes pflash commands work in the "isa-bios" region which some
+real-world legacy bioses rely on.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240522123912.608497-1-pbonzini@redhat.com>
+Note that in the sev_enabled() case, the "isa-bios" memory region in the -pflash
+case will now also point to encrypted memory, just like it already does in the
+-bios case.
+
+When running `info mtree` before and after this commit with
+`qemu-system-x86_64 -S -drive \
+if=pflash,format=raw,readonly=on,file=/usr/share/qemu/bios-256k.bin` and running
+`diff -u before.mtree after.mtree` results in the following changes in the
+memory tree:
+
+   --- before.mtree
+   +++ after.mtree
+   @@ -71,7 +71,7 @@
+        0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+        00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+        00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
+   -      00000000000e0000-00000000000fffff (prio 1, rom): isa-bios
+   +      00000000000e0000-00000000000fffff (prio 1, romd): alias isa-bios @system.flash0 0000000000020000-000000000003ffff
+        00000000000a0000-00000000000bffff (prio 1, i/o): alias smram-region @pci 00000000000a0000-00000000000bffff
+        00000000000c0000-00000000000c3fff (prio 1, i/o): alias pam-pci @pci 00000000000c0000-00000000000c3fff
+        00000000000c4000-00000000000c7fff (prio 1, i/o): alias pam-pci @pci 00000000000c4000-00000000000c7fff
+   @@ -108,7 +108,7 @@
+        0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+        00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+        00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
+   -      00000000000e0000-00000000000fffff (prio 1, rom): isa-bios
+   +      00000000000e0000-00000000000fffff (prio 1, romd): alias isa-bios @system.flash0 0000000000020000-000000000003ffff
+        00000000000a0000-00000000000bffff (prio 1, i/o): alias smram-region @pci 00000000000a0000-00000000000bffff
+        00000000000c0000-00000000000c3fff (prio 1, i/o): alias pam-pci @pci 00000000000c0000-00000000000c3fff
+        00000000000c4000-00000000000c7fff (prio 1, i/o): alias pam-pci @pci 00000000000c4000-00000000000c7fff
+   @@ -131,11 +131,14 @@
+   memory-region: pc.ram
+   0000000000000000-0000000007ffffff (prio 0, ram): pc.ram
+
+   +memory-region: system.flash0
+   +  00000000fffc0000-00000000ffffffff (prio 0, romd): system.flash0
+   +
+   memory-region: pci
+   0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+        00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+        00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
+   -    00000000000e0000-00000000000fffff (prio 1, rom): isa-bios
+   +    00000000000e0000-00000000000fffff (prio 1, romd): alias isa-bios @system.flash0 0000000000020000-000000000003ffff
+
+   memory-region: smram
+        00000000000a0000-00000000000bffff (prio 0, ram): alias smram-low @pc.ram 00000000000a0000-00000000000bffff
+
+Note that in both cases the "system" memory region contains the entry
+
+  00000000fffc0000-00000000ffffffff (prio 0, romd): system.flash0
+
+but the "system.flash0" memory region only appears standalone when "isa-bios" is
+an alias.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Message-ID: <20240508175507.22270-7-shentey@gmail.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/helper.h             |  4 ++--
- target/i386/tcg/int_helper.c     | 19 ++++++++-----------
- target/i386/tcg/decode-new.c.inc |  4 ++--
- target/i386/tcg/emit.c.inc       |  8 ++++----
- 4 files changed, 16 insertions(+), 19 deletions(-)
+ include/hw/i386/pc.h | 1 +
+ hw/i386/pc.c         | 1 +
+ hw/i386/pc_piix.c    | 3 +++
+ hw/i386/pc_q35.c     | 2 ++
+ hw/i386/pc_sysfw.c   | 8 +++++++-
+ 5 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/target/i386/helper.h b/target/i386/helper.h
-index 3c207ac62d6..a52a1bf0f21 100644
---- a/target/i386/helper.h
-+++ b/target/i386/helper.h
-@@ -22,8 +22,8 @@ DEF_HELPER_FLAGS_5(bndstx32, TCG_CALL_NO_WG, void, env, tl, tl, i64, i64)
- DEF_HELPER_FLAGS_5(bndstx64, TCG_CALL_NO_WG, void, env, tl, tl, i64, i64)
- DEF_HELPER_1(bnd_jmp, void, env)
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index e52290916cb..ad9c3d9ba84 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -119,6 +119,7 @@ struct PCMachineClass {
+     bool enforce_aligned_dimm;
+     bool broken_reserved_end;
+     bool enforce_amd_1tb_hole;
++    bool isa_bios_alias;
  
--DEF_HELPER_2(aam, void, env, int)
--DEF_HELPER_2(aad, void, env, int)
-+DEF_HELPER_FLAGS_2(aam, TCG_CALL_NO_RWG_SE, tl, tl, tl)
-+DEF_HELPER_FLAGS_2(aad, TCG_CALL_NO_RWG_SE, tl, tl, tl)
- DEF_HELPER_1(aaa, void, env)
- DEF_HELPER_1(aas, void, env)
- DEF_HELPER_1(daa, void, env)
-diff --git a/target/i386/tcg/int_helper.c b/target/i386/tcg/int_helper.c
-index df16130f5df..4cc59f15203 100644
---- a/target/i386/tcg/int_helper.c
-+++ b/target/i386/tcg/int_helper.c
-@@ -145,27 +145,24 @@ void helper_idivl_EAX(CPUX86State *env, target_ulong t0)
+     /* generate legacy CPU hotplug AML */
+     bool legacy_cpu_hotplug;
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index bfb46e9b548..4a2d6f5a97f 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1816,6 +1816,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     pcmc->has_reserved_memory = true;
+     pcmc->enforce_aligned_dimm = true;
+     pcmc->enforce_amd_1tb_hole = true;
++    pcmc->isa_bios_alias = true;
+     /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
+      * to be used at the moment, 32K should be enough for a while.  */
+     pcmc->acpi_data_size = 0x20000 + 0x8000;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 99efb3c45cb..ebb51de3809 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -526,12 +526,15 @@ DEFINE_I440FX_MACHINE(v9_1, "pc-i440fx-9.1", NULL,
  
- /* bcd */
- 
--/* XXX: exception */
--void helper_aam(CPUX86State *env, int base)
-+target_ulong helper_aam(target_ulong al, target_ulong base)
+ static void pc_i440fx_9_0_machine_options(MachineClass *m)
  {
--    int al, ah;
-+    int ah;
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_i440fx_9_1_machine_options(m);
+     m->alias = NULL;
+     m->is_default = false;
  
--    al = env->regs[R_EAX] & 0xff;
-+    al &= 0xff;
-     ah = al / base;
-     al = al % base;
--    env->regs[R_EAX] = (env->regs[R_EAX] & ~0xffff) | al | (ah << 8);
--    CC_DST = al;
-+    return al | (ah << 8);
+     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
++    pcmc->isa_bios_alias = false;
  }
  
--void helper_aad(CPUX86State *env, int base)
-+target_ulong helper_aad(target_ulong ax, target_ulong base)
+ DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index bb53a51ac18..bd7db4abacf 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -378,10 +378,12 @@ DEFINE_Q35_MACHINE(v9_1, "pc-q35-9.1", NULL,
+ 
+ static void pc_q35_9_0_machine_options(MachineClass *m)
  {
-     int al, ah;
- 
--    al = env->regs[R_EAX] & 0xff;
--    ah = (env->regs[R_EAX] >> 8) & 0xff;
-+    al = ax & 0xff;
-+    ah = (ax >> 8) & 0xff;
-     al = ((ah * base) + al) & 0xff;
--    env->regs[R_EAX] = (env->regs[R_EAX] & ~0xffff) | al;
--    CC_DST = al;
-+    return al;
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_9_1_machine_options(m);
+     m->alias = NULL;
+     compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+     compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
++    pcmc->isa_bios_alias = false;
  }
  
- void helper_aaa(CPUX86State *env)
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 141ab2bc560..27dc1bb146b 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1480,8 +1480,8 @@ static const X86OpEntry opcodes_root[256] = {
-     [0xD1] = X86_OP_GROUP1(group2, E,v),
-     [0xD2] = X86_OP_GROUP2(group2, E,b, 1,b), /* CL */
-     [0xD3] = X86_OP_GROUP2(group2, E,v, 1,b), /* CL */
--    [0xD4] = X86_OP_ENTRYr(AAM, I,b),
--    [0xD5] = X86_OP_ENTRYr(AAD, I,b),
-+    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b),
-+    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b),
-     [0xD6] = X86_OP_ENTRYw(SALC, 0,b),
-     [0xD7] = X86_OP_ENTRY1(XLAT, 0,b, zextT0), /* AL read/written */
- 
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 33cb59e54b8..c78e35b1e28 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -1084,8 +1084,8 @@ static void gen_AAA(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- 
- static void gen_AAD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index 82d37cb376b..ac88ad4eb91 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -135,6 +135,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
+                                 MemoryRegion *rom_memory)
  {
--    gen_helper_aad(tcg_env, tcg_constant_i32(decode->immediate));
--    set_cc_op(s, CC_OP_LOGICB);
-+    gen_helper_aad(s->T0, s->T0, s->T1);
-+    prepare_update1_cc(decode, s, CC_OP_LOGICB);
- }
+     X86MachineState *x86ms = X86_MACHINE(pcms);
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     hwaddr total_size = 0;
+     int i;
+     BlockBackend *blk;
+@@ -184,7 +185,12 @@ static void pc_system_flash_map(PCMachineState *pcms,
  
- static void gen_AAM(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-@@ -1093,8 +1093,8 @@ static void gen_AAM(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     if (decode->immediate == 0) {
-         gen_exception(s, EXCP00_DIVZ);
-     } else {
--        gen_helper_aam(tcg_env, tcg_constant_i32(decode->immediate));
--        set_cc_op(s, CC_OP_LOGICB);
-+        gen_helper_aam(s->T0, s->T0, s->T1);
-+        prepare_update1_cc(decode, s, CC_OP_LOGICB);
-     }
- }
+         if (i == 0) {
+             flash_mem = pflash_cfi01_get_memory(system_flash);
+-            pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
++            if (pcmc->isa_bios_alias) {
++                x86_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem,
++                                  true);
++            } else {
++                pc_isa_bios_init(&x86ms->isa_bios, rom_memory, flash_mem);
++            }
  
+             /* Encrypt the pflash boot ROM */
+             if (sev_enabled()) {
 -- 
 2.45.1
 
