@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466E58CDD9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F208D8CDDA9
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:23:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHbA-0000x1-Vt; Thu, 23 May 2024 19:11:49 -0400
+	id 1sAHbA-0000wL-5C; Thu, 23 May 2024 19:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaS-0006R5-TY; Thu, 23 May 2024 19:11:06 -0400
+ id 1sAHaV-0006Wk-1s; Thu, 23 May 2024 19:11:07 -0400
 Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaR-0006Gn-3X; Thu, 23 May 2024 19:11:04 -0400
+ id 1sAHaT-0006H3-9z; Thu, 23 May 2024 19:11:06 -0400
 Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6f8e85a0a5bso306083b3a.0; 
- Thu, 23 May 2024 16:11:01 -0700 (PDT)
+ d2e1a72fcca58-6f8e98784b3so292176b3a.1; 
+ Thu, 23 May 2024 16:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505860; x=1717110660; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505863; x=1717110663; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5zj10GwnBLigCFCzZD/qELEhtkACYTZ//+7hgLyk56U=;
- b=gUwrsFuDl0StJQxqNljq6RqGbHOcyb3plhQ0giipMXLtTA3FBDOHIzxWpKyalQWUUg
- c70eqgwow2WuTzxmoDMbRiNS//L4WVKCpsV907HHWTDxKuE38sLXn907I6TDNDW3gm3l
- STw7shAOLpBEGrfPPMAQNkpvJxPFM22LaaOsNS1T0fDPkr7TNy+KyfR4tiuYH60DymT4
- 0h3ml5FUpvp+jyvukubuYNhP2AP4NRa9Lt6B1d9EPr0TZORFKWcUANk4/XxwIjPZPNuF
- OKu+LrwOOmvKyo8clFRiZzkw0SiI9os5sdwiQvM7xj67/bPWSHNoO6vfV9v5p7R8r23v
- eV5Q==
+ bh=qOatW7IaCqqTgrGWM91a7KrO89P7sTCCoM/uAB8TuFA=;
+ b=PSz+51tWle16d7M4fUUglLauV1UOsgbVo0gi7p6juxBDwS5TJsUlZXZI0GJ2Sl3dC2
+ MGxq8YkE6PfOy80SCrnGg6xk4PnyWSXx9/G34stZRgAXDF5O2W7KkeEd/79EOgJrOI8H
+ 4VpdhRN0b9FzEf8DER+8D4+31NsIGmr0dWxg2cCirusNbjAvm7CX+NhfqzRh/CYYEZi/
+ 2KtS/iSBc81x1xs6Js5w8U2+X4D6P/CrdLhaMr/8FrFlFuoY4buajjqxNKUaKpo0BY/N
+ 0avJ7mC4ZNfUyR6GDeVKITvlZ3ixwbJhoKYbde4EgHSUB5qwzyjHEmgHSn7gpzX/T/jK
+ Pzig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505860; x=1717110660;
+ d=1e100.net; s=20230601; t=1716505863; x=1717110663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5zj10GwnBLigCFCzZD/qELEhtkACYTZ//+7hgLyk56U=;
- b=QOIPoi6+doFkRNuFBQJN8Tr20tKYASyG0gIrLWhSz+J6h5gkL/r5y3vTLSDbRYiR/e
- OCUfwV62iFGeFHMLMp7fjL8+7zyDIsJ1k4NzbzQ5oXPYGfmxrRCetklFyxrd41Vfhc0c
- Wdh9d5dIk4R4oeHzH1bskZOX+gDdz6yoeTA0NJ7SnkgtPjqfSGn7tWhqPI9dukKWrNHH
- Eu/t3ysH2lFoaKL2DhsO6165SwKdhRGAyp8Iqkx9VRv9AuXLwv/B3unU7BwTHsvl7tR3
- 6xDqhhyToTmp3UdnrUTUdKDuAK6YcJXBpK5NB3td8IWn0/ZhB3XQ+V8Jzj91Dakx3hgY
- cIuw==
+ bh=qOatW7IaCqqTgrGWM91a7KrO89P7sTCCoM/uAB8TuFA=;
+ b=GjthHW6jZbWDUykBBIWvb2ubRxFEHAA4tHbcx9uk7ueIllR0pl8M0H4K1lg9LUTLuN
+ bPxC+ZUJRmCI/In9aDTfTfEMkoBFBgwVcywkiSUwLvO2aRjAp9cHYoGlzJpgMVMlyMxK
+ UnP0BgSp1iEI5u+Eh7TGnW9ouYDkyUuOufmAc/jVPbFzSyGA5BYYn1R0q5r3lThDbrpP
+ qwEigOA7DJaActd4BcMjJStnsXzOMZbAFynSpRWCyNagGJE24nNTVco+2gmvEc2KhB4B
+ NvlNEIKz3XGchh4Hivsj7B9t01Hc28ptU+db8fXqQTZrypzGkWfyX8JD57AG7DoaFTQE
+ euvQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU8G+5VLHpduB/iuQmCQpgIweel0DEhi3DF0BDqiJKau0yT6HA6xwDIOEFiQdv6mniMtTa/2/XVZKS+Dxb3sPTd29ke
-X-Gm-Message-State: AOJu0Yx9C7hFyK/4CzreEOvBHDbu3iQCR4EzMvyPSLEAs9ner1e70p4b
- TrV1P2p3Pl7patFXK9E4FCt5NEt3WooxceesF48l1M51lAmpwHPgoAtWUQ==
-X-Google-Smtp-Source: AGHT+IGBezOBLre4tU9zouvWfAT8CIGe38jigDyWcibo21Q0COfpyVqpQ1XHVtGFlA2AXqDXXo1Uyg==
-X-Received: by 2002:a05:6a20:5506:b0:1ad:999b:de47 with SMTP id
- adf61e73a8af0-1b212e5b906mr748782637.51.1716505860542; 
- Thu, 23 May 2024 16:11:00 -0700 (PDT)
+ AJvYcCV+6vGono6sW9tnUxBcjikG9kUSVi0f8NzkMNFZRogIZ7cSOsj4UT/DtdQudoTWg05YM6tfh12hto8az9nxQD78NM4u
+X-Gm-Message-State: AOJu0YwNMcJPUm26x3OkcElIp9DcsBUpI/qaausMewQYZB/Cc2+do6Kz
+ 9s9xHa2rKqc2MxRMPr7302zM++ICS15TkFrIRN5ekPW61cnn6crs/MmSUg==
+X-Google-Smtp-Source: AGHT+IEIWlBTGJNJm1YAKPHEB95s7qNwLPvYbFxd/sl9kKShkDH8WeDnOUXFUYDPzVGdKmbX+VKmkA==
+X-Received: by 2002:a05:6a21:3417:b0:1af:d1f0:b350 with SMTP id
+ adf61e73a8af0-1b212dc14d2mr828882637.22.1716505863302; 
+ Thu, 23 May 2024 16:11:03 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.58
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:11:00 -0700 (PDT)
+ Thu, 23 May 2024 16:11:03 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 60/72] target/ppc/mmu_common.c: Simplify ppc_booke_xlate() part
- 1
-Date: Fri, 24 May 2024 09:07:33 +1000
-Message-ID: <20240523230747.45703-61-npiggin@gmail.com>
+Subject: [PULL 61/72] target/ppc/mmu_common.c: Simplify ppc_booke_xlate() part
+ 2
+Date: Fri, 24 May 2024 09:07:34 +1000
+Message-ID: <20240523230747.45703-62-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
@@ -95,92 +95,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Move setting error_code that appears in every case out in front and
-hoist the common fall through case for BOOKE206 as well which allows
-removing the nested switches.
+Merge the code fetch and data access cases in a common switch.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 41 ++++++++++++-----------------------------
- 1 file changed, 12 insertions(+), 29 deletions(-)
+ target/ppc/mmu_common.c | 52 ++++++++++++++++-------------------------
+ 1 file changed, 20 insertions(+), 32 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 09a780bb7a..611092966b 100644
+index 611092966b..8599106f75 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1220,58 +1220,41 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
-     }
+@@ -1221,45 +1221,33 @@ static bool ppc_booke_xlate(PowerPCCPU *cpu, vaddr eaddr,
  
      log_cpu_state_mask(CPU_LOG_MMU, cs, 0);
-+    env->error_code = 0;
-+    if (ret == -1) {
-+        if (env->mmu_model == POWERPC_MMU_BOOKE206) {
-+            booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
-+        }
-+    }
-     if (access_type == MMU_INST_FETCH) {
-         switch (ret) {
-         case -1:
-             /* No matches in page tables or TLB */
--            switch (env->mmu_model) {
--            case POWERPC_MMU_BOOKE206:
--                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
--                /* fall through */
--            case POWERPC_MMU_BOOKE:
--                cs->exception_index = POWERPC_EXCP_ITLB;
--                env->error_code = 0;
--                env->spr[SPR_BOOKE_DEAR] = eaddr;
--                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
--                break;
--            default:
--                g_assert_not_reached();
--            }
-+            cs->exception_index = POWERPC_EXCP_ITLB;
-+            env->spr[SPR_BOOKE_DEAR] = eaddr;
-+            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
-             break;
-         case -2:
-             /* Access rights violation */
-             cs->exception_index = POWERPC_EXCP_ISI;
--            env->error_code = 0;
-             break;
-         case -3:
-             /* No execute protection violation */
-             cs->exception_index = POWERPC_EXCP_ISI;
-             env->spr[SPR_BOOKE_ESR] = 0;
--            env->error_code = 0;
-             break;
+     env->error_code = 0;
+-    if (ret == -1) {
++    switch (ret) {
++    case -1:
++        /* No matches in page tables or TLB */
+         if (env->mmu_model == POWERPC_MMU_BOOKE206) {
+             booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
          }
-     } else {
-         switch (ret) {
-         case -1:
-             /* No matches in page tables or TLB */
--            switch (env->mmu_model) {
--            case POWERPC_MMU_BOOKE206:
--                booke206_update_mas_tlb_miss(env, eaddr, access_type, mmu_idx);
--                /* fall through */
--            case POWERPC_MMU_BOOKE:
--                cs->exception_index = POWERPC_EXCP_DTLB;
--                env->error_code = 0;
--                env->spr[SPR_BOOKE_DEAR] = eaddr;
--                env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
--                break;
--            default:
--                g_assert_not_reached();
--            }
-+            cs->exception_index = POWERPC_EXCP_DTLB;
-+            env->spr[SPR_BOOKE_DEAR] = eaddr;
-+            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
-             break;
-         case -2:
-             /* Access rights violation */
-             cs->exception_index = POWERPC_EXCP_DSI;
--            env->error_code = 0;
+-    }
+-    if (access_type == MMU_INST_FETCH) {
+-        switch (ret) {
+-        case -1:
+-            /* No matches in page tables or TLB */
+-            cs->exception_index = POWERPC_EXCP_ITLB;
+-            env->spr[SPR_BOOKE_DEAR] = eaddr;
+-            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+-            break;
+-        case -2:
+-            /* Access rights violation */
+-            cs->exception_index = POWERPC_EXCP_ISI;
+-            break;
+-        case -3:
+-            /* No execute protection violation */
+-            cs->exception_index = POWERPC_EXCP_ISI;
+-            env->spr[SPR_BOOKE_ESR] = 0;
+-            break;
+-        }
+-    } else {
+-        switch (ret) {
+-        case -1:
+-            /* No matches in page tables or TLB */
+-            cs->exception_index = POWERPC_EXCP_DTLB;
+-            env->spr[SPR_BOOKE_DEAR] = eaddr;
+-            env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
+-            break;
+-        case -2:
+-            /* Access rights violation */
+-            cs->exception_index = POWERPC_EXCP_DSI;
++        cs->exception_index = (access_type == MMU_INST_FETCH) ?
++                              POWERPC_EXCP_ITLB : POWERPC_EXCP_DTLB;
++        env->spr[SPR_BOOKE_DEAR] = eaddr;
++        env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
++        break;
++    case -2:
++        /* Access rights violation */
++        cs->exception_index = (access_type == MMU_INST_FETCH) ?
++                              POWERPC_EXCP_ISI : POWERPC_EXCP_DSI;
++        if (access_type != MMU_INST_FETCH) {
              env->spr[SPR_BOOKE_DEAR] = eaddr;
              env->spr[SPR_BOOKE_ESR] = mmubooke206_esr(mmu_idx, access_type);
-             break;
+-            break;
+         }
++        break;
++    case -3:
++        /* No execute protection violation */
++        cs->exception_index = POWERPC_EXCP_ISI;
++        env->spr[SPR_BOOKE_ESR] = 0;
++        break;
+     }
++
+     return false;
+ }
+ 
 -- 
 2.43.0
 
