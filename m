@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE3F8CDD9A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B75808CDD67
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:16:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHaq-0006yy-Aq; Thu, 23 May 2024 19:11:29 -0400
+	id 1sAHav-0007Pg-16; Thu, 23 May 2024 19:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHa2-0004oX-Fa; Thu, 23 May 2024 19:10:38 -0400
-Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
+ id 1sAHa5-0005DM-Iu; Thu, 23 May 2024 19:10:41 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHa0-0006EW-M9; Thu, 23 May 2024 19:10:38 -0400
-Received: by mail-il1-x130.google.com with SMTP id
- e9e14a558f8ab-36db3304053so35722235ab.2; 
- Thu, 23 May 2024 16:10:35 -0700 (PDT)
+ id 1sAHa3-0006El-M9; Thu, 23 May 2024 19:10:41 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6f8ea5e3812so296629b3a.2; 
+ Thu, 23 May 2024 16:10:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505834; x=1717110634; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505837; x=1717110637; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cSy1rTzhnBd69DOyzNO/phkY+jMKCnUg19aFikdmjao=;
- b=cUkxjSCUIXATiSi2Rf3xR42IgLDeVXdP9IKVVirTLeMucwHHVkV7DsNRC0bPE1yp0D
- bpjb90azFCNXkgLS24GdAj88mozuEsBq+wNzjNb3opKQEGgEUkVwwxrMaeop4SyfewJi
- 0Pr7+x9S+mnodmw7ukyjmpfCdMHepjV1ZXK9GKfJVvIhNUMUV8hs1J2q81qiKW7+VZqw
- I8MOu7ZuaOXvEaIHV28xoRSs8xGxMPn8gOmtWEEMBUDmXpxAp/wu4tQJNTOt4AoM7kHA
- KdNQGWoTYzJLfH2ckOHoK0BFON6HulUxQhoHw4TNymiTf51cxKzM123njRoUQARVA9wR
- ZY9g==
+ bh=7ykLYRaAUuZPqjPv/nLn0tlp5QJYWGIXICGEIpmjRgg=;
+ b=eB5zW1oKHftLivc+z4viSo09Wa22eEgbux9xeWmlHgX2L8yUfgH9B4O1822HZK9MaZ
+ /Os9GcFg5t588v4xgBrqD3Y4pZJIFuUBkSof7HOsOucESLI8Zf75SpbXyT3mHWbLezOj
+ v7AJgvG3b2vZyyYg364GAA2FqNwvII/x18hZ2phd1YxYnm338WLedJw9d0KNGEBSJ8Og
+ j1N7HNkLw+UEBZs0zCS3Q2AGDRPdsrMv1yWz4ugmj2tBEt8SNo3ulLCNGfsBaQ/hHtAg
+ E9voR4jB7CxBaZv+3bI+MKZgg34jY3VyJmIrgQ3JEptaOsufhgmjTZXrw/GPZWxMmJWz
+ YzBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505834; x=1717110634;
+ d=1e100.net; s=20230601; t=1716505837; x=1717110637;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cSy1rTzhnBd69DOyzNO/phkY+jMKCnUg19aFikdmjao=;
- b=Xairt6ILb60e8/AN/3Ouv3MxL5PE7o2r5RymFoiD79cG7M52BMcAWHP+UBInutWHYE
- 74A5nYLqpsU98yc51CUZ6zu1LJ7qYRivHPpwUAHLfodATqtIN8lp4kUf7b2EWdZmlTS4
- UFozMAZtc0aAws2Nm/PtUyrAz2Klxp+kJIcd8jJzcm1aZursr0dhl74xjhf4PbdweUHl
- +9mDED6F7cgt9blWqtzHaj1Ze0Sx//Oj3+feSC8gSVbrAbsRA+hiNpKuxoYuMssID34x
- 8Un6ildlpwLEtvZMLV4rOAMHUh8Sw4nfGKqfBRB9CyCFJxF/VWuleNWLh98zCrZ8Azv2
- vw1Q==
+ bh=7ykLYRaAUuZPqjPv/nLn0tlp5QJYWGIXICGEIpmjRgg=;
+ b=g3Dyou0Z2xra/+CQhDm8oPjgD/+D0X9YZ3Du2nFZmu4/Q1NauLYdR9IK13gAg+Ssje
+ wO5MlMzUeLJhXbuPIW8EcOugHnR6mWw14m5Zvqn/aNEo28Agd0eAUlqpDa1zAOjWXmXy
+ WHNXzxW0KId4Cd0DZZ34UfBcZQ6GmhqDBYl1masCYymX2aAjq+/ediKoAqycqnk07LIO
+ AhliYYGhN6h0+t+9PgO1w8KHuL4BV37TRbahyqyg9viOg0RbjMkXOv4/hZo4pT/ZkrdZ
+ tYvtyOEe9LeKitVS/ZEF2KgvXyZjuTvOs81bT2ZmAwoYlY3xgKt/55I7r4ZA3CNVFvo9
+ UdKw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXLx0jEUoskYLkRgx2kB8b00uJd8kMaKyRNAhGCFEk7STp1FvEbiqbc/r5yDjSbdTIx492nMkg+mGDnm8KCm7CIY95v
-X-Gm-Message-State: AOJu0YxN1HInhK481BqyDpTZHvZbY7Pp2z6YAIExTiOp13jCEXsRVeC+
- 7MNTqZMwX/ed1hxaHCWVAj7pV5hrMsoNZg8wmO0d66Q7vb2MfrfU0GCrJA==
-X-Google-Smtp-Source: AGHT+IEuMvTa9pN/5dsDFQEm32F/msXuT8jtHdfGK4BXWvm+TmQuRbp8aDt7F/4GFjcPHYGCGvc04A==
-X-Received: by 2002:a05:6e02:1fec:b0:36a:1725:e123 with SMTP id
- e9e14a558f8ab-3737b301dcdmr8237845ab.14.1716505833740; 
- Thu, 23 May 2024 16:10:33 -0700 (PDT)
+ AJvYcCWs+O4Aaq1mO8ScEIS8017tlFit3At7+gG5Jz2Yy2rifIj5qh7u608359XfFieXssH/hUudMHqTqLJ9OFY4pgvlnXVr
+X-Gm-Message-State: AOJu0YwYkw462MIjlsavhgviBxDjtAsuhqNwaevHxQjn7CiPYckL4A0t
+ vyrBGXnBJ0/wAhmf3HGN9pEOxcaU3LjwG+Eokleu623RM/QnkL3FCYMOHA==
+X-Google-Smtp-Source: AGHT+IEtfw16KTPbpsafNshYTpmhc5DnMtFKazPo8sE0apXN/2DtB/7zFl2MpxgfnwkibSH9ua+nEQ==
+X-Received: by 2002:a05:6a21:9997:b0:1af:ccfd:529d with SMTP id
+ adf61e73a8af0-1b212d36314mr973114637.27.1716505836880; 
+ Thu, 23 May 2024 16:10:36 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.31
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.10.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:10:33 -0700 (PDT)
+ Thu, 23 May 2024 16:10:36 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 51/72] target/ppc/mmu_common.c: Inline and remove
- check_physical()
-Date: Fri, 24 May 2024 09:07:24 +1000
-Message-ID: <20240523230747.45703-52-npiggin@gmail.com>
+Subject: [PULL 52/72] target/ppc/mmu_common.c: Fix misindented qemu_log_mask()
+ calls
+Date: Fri, 24 May 2024 09:07:25 +1000
+Message-ID: <20240523230747.45703-53-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
- envelope-from=npiggin@gmail.com; helo=mail-il1-x130.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,60 +95,103 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This function just does two assignments and and unnecessary check that
-is always true so inline it in the only caller left and remove it.
+Fix several qemu_log_mask() calls that are misindented.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu_common.c | 26 +++-----------------------
- 1 file changed, 3 insertions(+), 23 deletions(-)
+ target/ppc/mmu_common.c | 42 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 22 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index b13150ce23..2f412dd7c5 100644
+index 2f412dd7c5..124148b3da 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1145,28 +1145,6 @@ void dump_mmu(CPUPPCState *env)
+@@ -315,8 +315,8 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+     int ret = -1;
+     bool ifetch = access_type == MMU_INST_FETCH;
+ 
+-     qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT v " TARGET_FMT_lx "\n", __func__,
+-             ifetch ? 'I' : 'D', virtual);
++    qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT v " TARGET_FMT_lx "\n", __func__,
++                  ifetch ? 'I' : 'D', virtual);
+     if (ifetch) {
+         BATlt = env->IBAT[1];
+         BATut = env->IBAT[0];
+@@ -330,9 +330,9 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+         BEPIu = *BATu & 0xF0000000;
+         BEPIl = *BATu & 0x0FFE0000;
+         bat_size_prot(env, &bl, &valid, &prot, BATu, BATl);
+-         qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx " BATu "
+-                       TARGET_FMT_lx " BATl " TARGET_FMT_lx "\n", __func__,
+-                       ifetch ? 'I' : 'D', i, virtual, *BATu, *BATl);
++        qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx " BATu "
++                      TARGET_FMT_lx " BATl " TARGET_FMT_lx "\n", __func__,
++                      ifetch ? 'I' : 'D', i, virtual, *BATu, *BATl);
+         if ((virtual & 0xF0000000) == BEPIu &&
+             ((virtual & 0x0FFE0000) & ~bl) == BEPIl) {
+             /* BAT matches */
+@@ -364,12 +364,11 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+                 BEPIu = *BATu & 0xF0000000;
+                 BEPIl = *BATu & 0x0FFE0000;
+                 bl = (*BATu & 0x00001FFC) << 15;
+-                 qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v "
+-                               TARGET_FMT_lx " BATu " TARGET_FMT_lx
+-                               " BATl " TARGET_FMT_lx "\n\t" TARGET_FMT_lx " "
+-                               TARGET_FMT_lx " " TARGET_FMT_lx "\n",
+-                               __func__, ifetch ? 'I' : 'D', i, virtual,
+-                               *BATu, *BATl, BEPIu, BEPIl, bl);
++                qemu_log_mask(CPU_LOG_MMU, "%s: %cBAT%d v " TARGET_FMT_lx
++                              " BATu " TARGET_FMT_lx " BATl " TARGET_FMT_lx
++                              "\n\t" TARGET_FMT_lx " " TARGET_FMT_lx " "
++                              TARGET_FMT_lx "\n", __func__, ifetch ? 'I' : 'D',
++                              i, virtual, *BATu, *BATl, BEPIu, BEPIl, bl);
+             }
+         }
      }
+@@ -415,9 +414,8 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     hash = vsid ^ pgidx;
+     ctx->ptem = (vsid << 7) | (pgidx >> 10);
+ 
+-    qemu_log_mask(CPU_LOG_MMU,
+-            "pte segment: key=%d ds %d nx %d vsid " TARGET_FMT_lx "\n",
+-            ctx->key, ds, ctx->nx, vsid);
++    qemu_log_mask(CPU_LOG_MMU, "pte segment: key=%d ds %d nx %d vsid "
++                  TARGET_FMT_lx "\n", ctx->key, ds, ctx->nx, vsid);
+     if (!ds) {
+         /* Check if instruction fetch is allowed, if needed */
+         if (type == ACCESS_CODE && ctx->nx) {
+@@ -583,9 +581,9 @@ static int mmu40x_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+             return 0;
+         }
+     }
+-     qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
+-                   " => " HWADDR_FMT_plx
+-                   " %d %d\n", __func__, address, raddr, ctx->prot, ret);
++    qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
++                  " => " HWADDR_FMT_plx " %d %d\n",
++                  __func__, address, raddr, ctx->prot, ret);
+ 
+     return ret;
  }
- 
--static int check_physical(CPUPPCState *env, mmu_ctx_t *ctx, target_ulong eaddr,
--                          MMUAccessType access_type)
--{
--    ctx->raddr = eaddr;
--    ctx->prot = PAGE_READ | PAGE_EXEC;
--
--    switch (env->mmu_model) {
--    case POWERPC_MMU_SOFT_6xx:
--    case POWERPC_MMU_SOFT_4xx:
--    case POWERPC_MMU_REAL:
--    case POWERPC_MMU_BOOKE:
--        ctx->prot |= PAGE_WRITE;
--        break;
--
--    default:
--        /* Caller's checks mean we should never get here for other models */
--        g_assert_not_reached();
--    }
--
--    return 0;
--}
--
- int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-                                      target_ulong eaddr,
-                                      MMUAccessType access_type, int type,
-@@ -1186,7 +1164,9 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-     if (real_mode && (env->mmu_model == POWERPC_MMU_SOFT_6xx ||
-                       env->mmu_model == POWERPC_MMU_SOFT_4xx ||
-                       env->mmu_model == POWERPC_MMU_REAL)) {
--        return check_physical(env, ctx, eaddr, access_type);
-+        ctx->raddr = eaddr;
-+        ctx->prot = PAGE_RWX;
-+        return 0;
+@@ -704,11 +702,11 @@ int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
      }
  
-     switch (env->mmu_model) {
+     mask = ~(booke206_tlb_to_page_size(env, tlb) - 1);
+-     qemu_log_mask(CPU_LOG_MMU, "%s: TLB ADDR=0x" TARGET_FMT_lx
+-                   " PID=0x%x MAS1=0x%x MAS2=0x%" PRIx64 " mask=0x%"
+-                   HWADDR_PRIx " MAS7_3=0x%" PRIx64 " MAS8=0x%" PRIx32 "\n",
+-                   __func__, address, pid, tlb->mas1, tlb->mas2, mask,
+-                   tlb->mas7_3, tlb->mas8);
++    qemu_log_mask(CPU_LOG_MMU, "%s: TLB ADDR=0x" TARGET_FMT_lx
++                  " PID=0x%x MAS1=0x%x MAS2=0x%" PRIx64 " mask=0x%"
++                  HWADDR_PRIx " MAS7_3=0x%" PRIx64 " MAS8=0x%" PRIx32 "\n",
++                  __func__, address, pid, tlb->mas1, tlb->mas2, mask,
++                  tlb->mas7_3, tlb->mas8);
+ 
+     /* Check PID */
+     tlb_pid = (tlb->mas1 & MAS1_TID_MASK) >> MAS1_TID_SHIFT;
 -- 
 2.43.0
 
