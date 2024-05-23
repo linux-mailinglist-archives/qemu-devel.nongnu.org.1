@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F648CDD3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FE38CDD64
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:16:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHZu-0003ln-AZ; Thu, 23 May 2024 19:10:30 -0400
+	id 1sAHa3-0004eC-LH; Thu, 23 May 2024 19:10:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZM-0001my-PY; Thu, 23 May 2024 19:09:57 -0400
+ id 1sAHZP-000228-UL; Thu, 23 May 2024 19:10:01 -0400
 Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZK-0005r5-If; Thu, 23 May 2024 19:09:56 -0400
+ id 1sAHZN-0005rd-RS; Thu, 23 May 2024 19:09:59 -0400
 Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f8e98784b3so291536b3a.1; 
- Thu, 23 May 2024 16:09:53 -0700 (PDT)
+ d2e1a72fcca58-6f5053dc057so4049416b3a.2; 
+ Thu, 23 May 2024 16:09:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505792; x=1717110592; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505795; x=1717110595; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2ZqJmFX2phFPC3IYzJbSwWIl3Jmbu25XCOtZEiDmVQY=;
- b=PrcXWdtg35L1CYdY3ieMbGQ3+kWeQwJ0wELdm1hY2mnzo3SKxxWUAUGXgBi+Mhqj2j
- wuzp9bUgE63iZWzcyrKT4MY8oo2gzVh1syPUGzg6zgjT4ZhyiTVKJWqVfcQDWkrlFLmj
- TzJ0lpGb/DB6JE2rwXdaofWcNuo2hPoKqyUy95N1ixqj/Rofd0ISzNS4a4WJdiVYM8uy
- vvx2KpLcNY/Ssza+u9aMQF2iJKQul7LJVBHhSnBPaG6Kk/oJeOiEAJLvnNqRZ/9u2b1q
- WYnKHna3p2CcoP1IRHQLEnUSlxeDA7PaIpmUFj7VzmSBPaxcpS0S8E4d5SxqeiY2VJLk
- cXSA==
+ bh=1Gn8mYqupsKQ/pBe/wMJEus3gEH8ANhWgPrzZvjVBR0=;
+ b=ZGdOsT7XPHJ8Pb8WNNbOVQT9a/GgTptR9xXI8NvU9u6641gUR6Bn+Orf4QZUVn1FUW
+ W1yDrm1nIjgW+opy10CkIQbyvhFWKl1R2X1pNVM3N9Zfvqc88mofeoGyZBzuBTG+EUN7
+ mwcTIMeaOis/6854BDzDnv08kx8OofgA9P4f8U53GjJK3Wq9qYTq7kZhxSGWfonfBIph
+ 2Zwkm6fFeuE7SD3QnPnFOsCP6lX9VqI1dYdp1wy/hywJUj1mifKZTk/OQNGqryKN7jF/
+ 7fVcD+8xwqOSsTYRX++EMaf/Sw8Y/GxF9GpWRYIhesXrUk90IBBjR9fvcgkKge5I9YsC
+ swNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505792; x=1717110592;
+ d=1e100.net; s=20230601; t=1716505795; x=1717110595;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2ZqJmFX2phFPC3IYzJbSwWIl3Jmbu25XCOtZEiDmVQY=;
- b=p4OdoMxES3WrybmJ8BnjD2Qe5wvOuyDlTQC11gC5e4i0S8EiJcTYNORxWGXlF7TSIf
- 6+xyMxI6HolBXVgE28WJZEhwJ6neXPJM8ssNnbgvPPPkF0GQr6O5VUKauBq3N1lKSgOe
- oPFmieGA+RYs01MU2EOq3hEdhaissEHUy13S9ChsrZ+lFadEMjZoMTXFgV20IvhgUyW7
- /S1P7eEJVOkmPyaN27Wnk54yh77/vcoBZuFk0YhJJs5rJWJwhCa19q0VgqwmkLiHHc21
- b7BAdJwBIj9i7d21MKANtQu8TifNi2NBetft/HaDv8+O7GtmnoJlyXlQ5WY3jCgi1SZz
- TuOg==
+ bh=1Gn8mYqupsKQ/pBe/wMJEus3gEH8ANhWgPrzZvjVBR0=;
+ b=Gr+TAk/wRxdST/tG1rko7Q5GBje7MKeBm2n4bhE1IrTeVjvvFvk+tjHMDlindDr+Df
+ a303UkInIMlnhVsWt1nnpWykDm55lyOi8KUOFgQwT7QJsqbpB5nRKSLq566ZVjyk6O5D
+ HowGIHavRM3anVsauqvgTglHvcF6ZN3ew0Mevp0yvhNID1famqOV1/Hz3VW97y1zsRTf
+ e2oD3Wfk3qPCT1Vr3H+wz4d2ZND0dZFZpIn9Ii5vGZAk848nCvt1WYLcJqEwOMP6Xq/L
+ D+3MTILZOmFVRvDRlwwt7DghFSkzJeaDpOxfYmhT4+yq77sGuwZJikz34xlTwLSVorfq
+ a7bw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXiXTv36Mg9yQQX5+6WrTiIGg8nZoNMPjYyFK+9Ub4R7oZOkZbH6Ds0ZnSgDClstpoJXJa102sEfpzhSZP3gTOnUHil
-X-Gm-Message-State: AOJu0Yz5F9474vHUo9u8fDpnjl3IqZugN3iL92I4D/sJ8Zgo8O/lrXLX
- aCgMDvbZUfAj0v4NZgAk6gEsFUGgyJ3srWeGiadZ9V3hcBWlu2CTHSZsSg==
-X-Google-Smtp-Source: AGHT+IFa+EQ0f9cfXhjAMxWosQ+rgDDGfzMKW+xLSVk/Q7NkBdZuyZzEN8PCZzkldNmG7mUPRvMjmA==
-X-Received: by 2002:a05:6a20:de95:b0:1ad:878:5006 with SMTP id
- adf61e73a8af0-1b212daceb6mr717819637.14.1716505792502; 
- Thu, 23 May 2024 16:09:52 -0700 (PDT)
+ AJvYcCXwe65ZOFYNCBmMzpXsu5O1Ei4HAIsmmPY4NPgd90r4oXKbEzqIjRK/km+xMbHEJdI8bwbI6WFqY7PCfsPfT6nJTXlX
+X-Gm-Message-State: AOJu0YwXqNTTRwLlSey0jzX5SVzc/CSuf4X5BUQljEG3ikXS4LEKDf8D
+ XngLkBaSJWq1sOJBqmx2fmBEJ7ac6Hq4oylKlVRnSuyetPBjpvZfQUtH/w==
+X-Google-Smtp-Source: AGHT+IGu9oxH4+enlS6onB28Spk/BvQVJ6jU6D0FH1fUDSASxo/09I3sJtw9ICU0k2iVVMiq8Ocp4A==
+X-Received: by 2002:a05:6a20:9718:b0:1af:ccd9:4b1d with SMTP id
+ adf61e73a8af0-1b212d1beb4mr825163637.22.1716505795430; 
+ Thu, 23 May 2024 16:09:55 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.50
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:09:52 -0700 (PDT)
+ Thu, 23 May 2024 16:09:55 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Glenn Miles <milesg@linux.ibm.com>
-Subject: [PULL 37/72] target/ppc: Implement SPRC/SPRD SPRs
-Date: Fri, 24 May 2024 09:07:10 +1000
-Message-ID: <20240523230747.45703-38-npiggin@gmail.com>
+Subject: [PULL 38/72] target/ppc: add SMT support to msgsnd broadcast
+Date: Fri, 24 May 2024 09:07:11 +1000
+Message-ID: <20240523230747.45703-39-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
@@ -92,205 +92,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the POWER SPRC/SPRD SPRs, and SCRATCH0-7 registers that
-can be accessed via these indirect SPRs.
-
-SCRATCH registers only provide storage, but they are used by firmware
-for low level crash and progress data, so this implementation logs
-writes to the registers to help with analysis.
+msgsnd has a broadcast mode that sends hypervisor doorbells to all
+threads belonging to the same core as the target. A "subcore" mode
+sends to all or one thread depending on 1LPAR mode.
 
 Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h         |  7 +++--
- target/ppc/cpu_init.c    | 10 ++++++
- target/ppc/helper.h      |  3 ++
- target/ppc/misc_helper.c | 66 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/spr_common.h  |  3 ++
- target/ppc/translate.c   | 18 +++++++++++
- 6 files changed, 105 insertions(+), 2 deletions(-)
+ target/ppc/cpu.h                              |  6 +-
+ target/ppc/excp_helper.c                      | 57 +++++++++++++------
+ target/ppc/helper.h                           |  2 +-
+ .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
+ 4 files changed, 46 insertions(+), 21 deletions(-)
 
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 823be85d03..e4c342b17d 100644
+index e4c342b17d..e201b7f6c2 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -1264,6 +1264,9 @@ struct CPUArchState {
-     ppc_slb_t slb[MAX_SLB_ENTRIES]; /* PowerPC 64 SLB area */
-     struct CPUBreakpoint *ciabr_breakpoint;
-     struct CPUWatchpoint *dawr0_watchpoint;
+@@ -1163,7 +1163,11 @@ FIELD(FPSCR, FI, FPSCR_FI, 1)
+ 
+ #define DBELL_TYPE_DBELL_SERVER        (0x05 << DBELL_TYPE_SHIFT)
+ 
+-#define DBELL_BRDCAST                  PPC_BIT(37)
++#define DBELL_BRDCAST_MASK             PPC_BITMASK(37, 38)
++#define DBELL_BRDCAST_SHIFT            25
++#define DBELL_BRDCAST_SUBPROC          (0x1 << DBELL_BRDCAST_SHIFT)
++#define DBELL_BRDCAST_CORE             (0x2 << DBELL_BRDCAST_SHIFT)
 +
-+    /* POWER CPU regs/state */
-+    target_ulong scratch[8]; /* SCRATCH registers (shared across core) */
- #endif
-     target_ulong sr[32];   /* segment registers */
-     uint32_t nb_BATs;      /* number of BATs */
-@@ -1806,9 +1809,9 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_SPRG2             (0x112)
- #define SPR_SPRG3             (0x113)
- #define SPR_SPRG4             (0x114)
--#define SPR_SCOMC             (0x114)
-+#define SPR_POWER_SPRC        (0x114)
- #define SPR_SPRG5             (0x115)
--#define SPR_SCOMD             (0x115)
-+#define SPR_POWER_SPRD        (0x115)
- #define SPR_SPRG6             (0x116)
- #define SPR_SPRG7             (0x117)
- #define SPR_ASR               (0x118)
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index d181adc5f1..8cfaee61d9 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5777,6 +5777,16 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  &spr_read_generic, &spr_core_write_generic,
-                  0x00000000);
-+    spr_register_hv(env, SPR_POWER_SPRC, "SPRC",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_generic, &spr_write_sprc,
-+                 0x00000000);
-+    spr_register_hv(env, SPR_POWER_SPRD, "SPRD",
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 SPR_NOACCESS, SPR_NOACCESS,
-+                 &spr_read_sprd, &spr_write_sprd,
-+                 0x00000000);
- #endif
+ #define DBELL_LPIDTAG_SHIFT            14
+ #define DBELL_LPIDTAG_MASK             (0xfff << DBELL_LPIDTAG_SHIFT)
+ #define DBELL_PIRTAG_MASK              0x3fff
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index f48eb2eac8..0cd542675f 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -2969,7 +2969,7 @@ void helper_msgsnd(target_ulong rb)
+         PowerPCCPU *cpu = POWERPC_CPU(cs);
+         CPUPPCState *cenv = &cpu->env;
+ 
+-        if ((rb & DBELL_BRDCAST) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
++        if ((rb & DBELL_BRDCAST_MASK) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
+             ppc_set_irq(cpu, irq, 1);
+         }
+     }
+@@ -2988,6 +2988,16 @@ static bool dbell_type_server(target_ulong rb)
+     return (rb & DBELL_TYPE_MASK) == DBELL_TYPE_DBELL_SERVER;
  }
  
++static inline bool dbell_bcast_core(target_ulong rb)
++{
++    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_CORE;
++}
++
++static inline bool dbell_bcast_subproc(target_ulong rb)
++{
++    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
++}
++
+ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+ {
+     if (!dbell_type_server(rb)) {
+@@ -2997,32 +3007,43 @@ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
+     ppc_set_irq(env_archcpu(env), PPC_INTERRUPT_HDOORBELL, 0);
+ }
+ 
+-static void book3s_msgsnd_common(int pir, int irq)
++void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+ {
+-    CPUState *cs;
++    int pir = rb & DBELL_PROCIDTAG_MASK;
++    bool brdcast = false;
++    CPUState *cs, *ccs;
++    PowerPCCPU *cpu;
+ 
+-    bql_lock();
+-    CPU_FOREACH(cs) {
+-        PowerPCCPU *cpu = POWERPC_CPU(cs);
+-        CPUPPCState *cenv = &cpu->env;
++    if (!dbell_type_server(rb)) {
++        return;
++    }
+ 
+-        /* TODO: broadcast message to all threads of the same  processor */
+-        if (cenv->spr_cb[SPR_PIR].default_value == pir) {
+-            ppc_set_irq(cpu, irq, 1);
+-        }
++    cpu = ppc_get_vcpu_by_pir(pir);
++    if (!cpu) {
++        return;
+     }
+-    bql_unlock();
+-}
++    cs = CPU(cpu);
+ 
+-void helper_book3s_msgsnd(target_ulong rb)
+-{
+-    int pir = rb & DBELL_PROCIDTAG_MASK;
++    if (dbell_bcast_core(rb) || (dbell_bcast_subproc(rb) &&
++                                 (env->flags & POWERPC_FLAG_SMT_1LPAR))) {
++        brdcast = true;
++    }
+ 
+-    if (!dbell_type_server(rb)) {
++    if (cs->nr_threads == 1 || !brdcast) {
++        ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
+         return;
+     }
+ 
+-    book3s_msgsnd_common(pir, PPC_INTERRUPT_HDOORBELL);
++    /*
++     * Why is bql needed for walking CPU list? Answer seems to be because ppc
++     * irq handling needs it, but ppc_set_irq takes the lock itself if needed,
++     * so could this be removed?
++     */
++    bql_lock();
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        ppc_set_irq(POWERPC_CPU(ccs), PPC_INTERRUPT_HDOORBELL, 1);
++    }
++    bql_unlock();
+ }
+ 
+ #ifdef TARGET_PPC64
 diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 09d50f9b76..57bf8354e7 100644
+index 57bf8354e7..dd92c6a937 100644
 --- a/target/ppc/helper.h
 +++ b/target/ppc/helper.h
-@@ -730,6 +730,9 @@ DEF_HELPER_2(book3s_msgsndp, void, env, tl)
- DEF_HELPER_2(book3s_msgclrp, void, env, tl)
- DEF_HELPER_1(load_tfmr, tl, env)
- DEF_HELPER_2(store_tfmr, void, env, tl)
-+DEF_HELPER_FLAGS_2(store_sprc, TCG_CALL_NO_RWG, void, env, tl)
-+DEF_HELPER_FLAGS_1(load_sprd, TCG_CALL_NO_RWG_SE, tl, env)
-+DEF_HELPER_FLAGS_2(store_sprd, TCG_CALL_NO_RWG, void, env, tl)
+@@ -695,7 +695,7 @@ DEF_HELPER_FLAGS_3(store_sr, TCG_CALL_NO_RWG, void, env, tl, tl)
+ 
+ DEF_HELPER_1(msgsnd, void, tl)
+ DEF_HELPER_2(msgclr, void, env, tl)
+-DEF_HELPER_1(book3s_msgsnd, void, tl)
++DEF_HELPER_2(book3s_msgsnd, void, env, tl)
+ DEF_HELPER_2(book3s_msgclr, void, env, tl)
  #endif
- DEF_HELPER_2(store_sdr1, void, env, tl)
- DEF_HELPER_2(store_pidr, void, env, tl)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index a67930d031..fa47be2298 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -307,6 +307,72 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+ 
+diff --git a/target/ppc/translate/processor-ctrl-impl.c.inc b/target/ppc/translate/processor-ctrl-impl.c.inc
+index 0142801985..8abbb89630 100644
+--- a/target/ppc/translate/processor-ctrl-impl.c.inc
++++ b/target/ppc/translate/processor-ctrl-impl.c.inc
+@@ -59,7 +59,7 @@ static bool trans_MSGSND(DisasContext *ctx, arg_X_rb *a)
+ 
+ #if !defined(CONFIG_USER_ONLY)
+     if (is_book3s_arch2x(ctx)) {
+-        gen_helper_book3s_msgsnd(cpu_gpr[a->rb]);
++        gen_helper_book3s_msgsnd(tcg_env, cpu_gpr[a->rb]);
+     } else {
+         gen_helper_msgsnd(cpu_gpr[a->rb]);
      }
-     bql_unlock();
- }
-+
-+/* Indirect SCOM (SPRC/SPRD) access to SCRATCH0-7 are implemented. */
-+void helper_store_sprc(CPUPPCState *env, target_ulong val)
-+{
-+    if (val & ~0x3f8ULL) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "Invalid SPRC register value "
-+                      TARGET_FMT_lx"\n", val);
-+        return;
-+    }
-+    env->spr[SPR_POWER_SPRC] = val;
-+}
-+
-+target_ulong helper_load_sprd(CPUPPCState *env)
-+{
-+    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-+
-+    switch (sprc & 0x3c0) {
-+    case 0: /* SCRATCH0-7 */
-+        return env->scratch[(sprc >> 3) & 0x7];
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+    return 0;
-+}
-+
-+static void do_store_scratch(CPUPPCState *env, int nr, target_ulong val)
-+{
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+
-+    /*
-+     * Log stores to SCRATCH, because some firmware uses these for debugging
-+     * and logging, but they would normally be read by the BMC, which is
-+     * not implemented in QEMU yet. This gives a way to get at the information.
-+     * Could also dump these upon checkstop.
-+     */
-+    qemu_log("SPRD write 0x" TARGET_FMT_lx " to SCRATCH%d\n", val, nr);
-+
-+    if (nr_threads == 1) {
-+        env->scratch[nr] = val;
-+        return;
-+    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cenv->scratch[nr] = val;
-+    }
-+}
-+
-+void helper_store_sprd(CPUPPCState *env, target_ulong val)
-+{
-+    target_ulong sprc = env->spr[SPR_POWER_SPRC];
-+
-+    switch (sprc & 0x3c0) {
-+    case 0: /* SCRATCH0-7 */
-+        do_store_scratch(env, (sprc >> 3) & 0x7, val);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "mfSPRD: Unimplemented SPRC:0x"
-+                                  TARGET_FMT_lx"\n", sprc);
-+        break;
-+    }
-+}
- #endif /* defined(TARGET_PPC64) */
- 
- void helper_store_pidr(CPUPPCState *env, target_ulong val)
-diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index 85f73b860b..01aff449bc 100644
---- a/target/ppc/spr_common.h
-+++ b/target/ppc/spr_common.h
-@@ -207,6 +207,9 @@ void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
- void spr_read_ppr32(DisasContext *ctx, int sprn, int gprn);
- void spr_write_ppr32(DisasContext *ctx, int sprn, int gprn);
-+void spr_write_sprc(DisasContext *ctx, int sprn, int gprn);
-+void spr_read_sprd(DisasContext *ctx, int sprn, int gprn);
-+void spr_write_sprd(DisasContext *ctx, int sprn, int gprn);
- #endif
- 
- void register_low_BATs(CPUPPCState *env);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 64131bf15c..0bc16d7251 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1301,6 +1301,24 @@ void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
-     gen_helper_store_tfmr(tcg_env, cpu_gpr[gprn]);
- }
- 
-+void spr_write_sprc(DisasContext *ctx, int sprn, int gprn)
-+{
-+    gen_helper_store_sprc(tcg_env, cpu_gpr[gprn]);
-+}
-+
-+void spr_read_sprd(DisasContext *ctx, int gprn, int sprn)
-+{
-+    gen_helper_load_sprd(cpu_gpr[gprn], tcg_env);
-+}
-+
-+void spr_write_sprd(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!gen_serialize_core(ctx)) {
-+        return;
-+    }
-+    gen_helper_store_sprd(tcg_env, cpu_gpr[gprn]);
-+}
-+
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
- {
-     translator_io_start(&ctx->base);
 -- 
 2.43.0
 
