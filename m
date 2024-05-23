@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D0F8CD972
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 19:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A70238CD965
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 19:50:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sACZW-0006fA-7x; Thu, 23 May 2024 13:49:46 -0400
+	id 1sACZJ-0006Qc-Cl; Thu, 23 May 2024 13:49:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1sACYh-0005wW-G1
- for qemu-devel@nongnu.org; Thu, 23 May 2024 13:49:02 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sACYk-0005yP-KI
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 13:49:03 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1sACYX-0003eD-Jb
- for qemu-devel@nongnu.org; Thu, 23 May 2024 13:48:46 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1f332511457so6149485ad.2
+ id 1sACYX-0003eT-Lk
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 13:48:49 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1ee5235f5c9so122444335ad.2
  for <qemu-devel@nongnu.org>; Thu, 23 May 2024 10:48:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716486521; x=1717091321; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716486522; x=1717091322; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OwLDZR/KWKZ72BeL4YQ5O0fvqFWZ5B2YkSZHDV4y31s=;
- b=fHyD3oq9KCLKeOoulFDLaWa5FKUJupCINkJvj4qugOdy+GEIDjIU/sC8c6KfVe1JLd
- rCm6FDKtL3h5pStULNofsKAiLxL3G8dCqJF+X7SnRRpDT4OIKo9ycuIdgwb3lyP5hBpT
- SU36y1GOsT/CNFArh00+eDYdjpu7AuWlZE+h8TvRdwF9U9/C76w34hR6S4wToECIs47i
- M2xIZsilJf1bMP7wGYwXnx6640p2NVswgc/C9EaPYQOXEAkgwI7M/cZAueJY5UeRZVSu
- G2YuLyM62Uue/IKMZc2l1QpT0a/1I9DXJKkgxS2emrx/iQg6mr75bsQ0L0kntdT6podO
- xDJw==
+ bh=clywKlwl+RTvBV7mwlXItxpVpcuULIu2xU0NldTj1A8=;
+ b=YOvwPqYaUAAKjGixJR9mhgkDRw4xrGsc28h97GsfExuCN4szIikkzkRLeHGpOA4irx
+ GQqMtpQw5gZhXCX/tpCQs00BqXrlzFoWu/ViMiPrwo5VatPs7mFYRiHLLL8Q5umL8WLn
+ YeEMqnVtCymD8Rhx9RGorMsNIiVp+ttoAMIvdMARmN4Zmm51l1Ysbb1dXVhEx3VzrKoS
+ Xhptysq2Yd+fY0dKTJIwnLFZcDk4uaRDgQjkXVS4pTHL15xI/4ftQTAYlq/2byzFzDTh
+ 2zAm5M8S7N5VmsqdBTSUY0VRAkkDPBajGQZCyoPYl2NXjJNRyl0Pz6bcUytOrkhH8ha3
+ oF7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716486521; x=1717091321;
+ d=1e100.net; s=20230601; t=1716486522; x=1717091322;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OwLDZR/KWKZ72BeL4YQ5O0fvqFWZ5B2YkSZHDV4y31s=;
- b=j2sd6N9yLWQv7yd2wbzHsa3PYxzsOBXmK3E8qGBt035KELQ1TVLu1pe4tKlq+leroz
- NDy/fWxSKwbr1a5pUeaE/QdPEWlLoGK/Xy0tP8q3tr79PO5IICM34vQYsHXe8yJw5+9n
- cFKCECbZ63iXdm40F0RcrOdHRB/NawkviLDkR0UEQyA+eVbOvMK/hmvUq8YnRgBfwoJq
- l1VwrNMFe89UHcJPDfX3mCaHhEAPFSLTqxbeiB2YyUwgjlAxI/a8vtRkKoTO4g7xiWC5
- UQPHCFGYwR3dfX3H2ygjb5gW168imvOL81f6BB4qnfS9ZlDl9v7nN5OxFuRbIODWbDvc
- udwA==
-X-Gm-Message-State: AOJu0YwaXsQD0wOMl7/FnRA4OGkhjsqgJ/uWn+59QAwDgKEhE45ffuhi
- V/QMNZQhksfkDllWKZuhlHwF8G1ee8jxtn2zH4Q6a+UfLuySMPWn/VEfcg==
-X-Google-Smtp-Source: AGHT+IGMzDozcFp7jk5pIqT2r+oB433amL8mIwl7y+Q6sXnIRKqq4W15tY3TetnNKZWNSELBHrLsYQ==
-X-Received: by 2002:a17:903:1c8:b0:1f3:61c:30a2 with SMTP id
- d9443c01a7336-1f4486d4ffamr418345ad.2.1716486520814; 
- Thu, 23 May 2024 10:48:40 -0700 (PDT)
+ bh=clywKlwl+RTvBV7mwlXItxpVpcuULIu2xU0NldTj1A8=;
+ b=fHSV03XWiMYMI3JIlzREgTIyefzF5UNXBobr+NsKgOnur/qtOw1aGBLIivfyOqCeNF
+ IlTEAQ2380JZkhYUdS7jcGB0D/h+Lu2nrEqHCJuHiqlluGgulR7j8O/kOvhqV9xUGlQO
+ IB5juMYNGtZDg1iSiENu/hn6/7ack6Z4pH3PfIXla05pkEHKsyAG8JFsDO1FkvdudbNS
+ dEtsyWbiwn25J/MgrRwfHNVQTUNBJQQBrBc5HS8urI5oyp7VlUJgY//RuI6qORVuLKzb
+ 1/y0i9hAvvjcDCZuwEhw7HZU9FNTesDOVU8rEo9w9kqZ9B215djNXlXb7EyDx40G36rY
+ yx0w==
+X-Gm-Message-State: AOJu0YxKeP9ZAJTxFfu6qer1Xax3EFKldL41whK6sCvFihuFO8QQZgBx
+ ENHWetgg3cfFWWqbWjLQZdnJzkeiX3YwvklEF8eUwllkfhXftIocnWZUZw==
+X-Google-Smtp-Source: AGHT+IF1+uz93o85wiyhvEHCSjso2zhI95Lq8pWaJRgvaUUckzRdrRduv7BscqUJRGL8LOFeTTZY6w==
+X-Received: by 2002:a17:902:e80f:b0:1f3:3102:1609 with SMTP id
+ d9443c01a7336-1f4497e588amr367845ad.50.1716486522306; 
+ Thu, 23 May 2024 10:48:42 -0700 (PDT)
 Received: from localhost.localdomain ([2601:646:8f03:9fee:4f9e:216e:ed5a:642d])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1ef0c137e7esm253436265ad.257.2024.05.23.10.48.39
+ d9443c01a7336-1ef0c137e7esm253436265ad.257.2024.05.23.10.48.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 10:48:40 -0700 (PDT)
+ Thu, 23 May 2024 10:48:42 -0700 (PDT)
 From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
@@ -63,19 +63,18 @@ Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
  nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
  wj28.lee@gmail.com, armbru@redhat.com, mst@redhat.com,
- Gregory Price <gourry.memverge@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v8 02/14] hw/cxl/mailbox: interface to add CCI commands to an
- existing CCI
-Date: Thu, 23 May 2024 10:44:42 -0700
-Message-ID: <20240523174651.1089554-3-nifan.cxl@gmail.com>
+ Fan Ni <fan.ni@samsung.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v8 03/14] hw/cxl/cxl-mailbox-utils: Add dc_event_log_size
+ field to output payload of identify memory device command
+Date: Thu, 23 May 2024 10:44:43 -0700
+Message-ID: <20240523174651.1089554-4-nifan.cxl@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523174651.1089554-1-nifan.cxl@gmail.com>
 References: <20240523174651.1089554-1-nifan.cxl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,84 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Fan Ni <fan.ni@samsung.com>
 
-This enables wrapper devices to customize the base device's CCI
-(for example, with custom commands outside the specification)
-without the need to change the base device.
+Based on CXL spec r3.1 Table 8-127 (Identify Memory Device Output
+Payload), dynamic capacity event log size should be part of
+output of the Identify command.
+Add dc_event_log_size to the output payload for the host to get the info.
 
-The also enabled the base device to dispatch those commands without
-requiring additional driver support.
-
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Gregory Price <gregory.price@memverge.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
-
---
-Heavily edited by Jonathan Cameron to increase code reuse
 ---
- hw/cxl/cxl-mailbox-utils.c  | 19 +++++++++++++++++--
- include/hw/cxl/cxl_device.h |  2 ++
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 2c9f50f0f9..4bcd727f4c 100644
+index 4bcd727f4c..ba1d9901df 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1424,9 +1424,9 @@ static void bg_timercb(void *opaque)
-     }
- }
+@@ -21,6 +21,7 @@
+ #include "sysemu/hostmem.h"
  
--void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-+static void cxl_rebuild_cel(CXLCCI *cci)
- {
--    cci->payload_max = payload_max;
-+    cci->cel_size = 0; /* Reset for a fresh build */
-     for (int set = 0; set < 256; set++) {
-         for (int cmd = 0; cmd < 256; cmd++) {
-             if (cci->cxl_cmd_set[set][cmd].handler) {
-@@ -1440,6 +1440,13 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-             }
-         }
-     }
-+}
-+
-+void cxl_init_cci(CXLCCI *cci, size_t payload_max)
-+{
-+    cci->payload_max = payload_max;
-+    cxl_rebuild_cel(cci);
-+
-     cci->bg.complete_pct = 0;
-     cci->bg.starttime = 0;
-     cci->bg.runtime = 0;
-@@ -1458,6 +1465,14 @@ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[
-     }
- }
+ #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
++#define CXL_DC_EVENT_LOG_SIZE 8
  
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-+                                 size_t payload_max)
-+{
-+    cci->payload_max = payload_max > cci->payload_max ? payload_max : cci->payload_max;
-+    cxl_copy_cci_commands(cci, cxl_cmd_set);
-+    cxl_rebuild_cel(cci);
-+}
-+
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-                                   DeviceState *d, size_t payload_max)
- {
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index ccc4611875..a5f8e25020 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -301,6 +301,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max);
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-                                   DeviceState *d, size_t payload_max);
- void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-+                          size_t payload_max);
- int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-                             size_t len_in, uint8_t *pl_in,
-                             size_t *len_out, uint8_t *pl_out,
+ /*
+  * How to add a new command, example. The command set FOO, with cmd BAR.
+@@ -780,8 +781,9 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+         uint16_t inject_poison_limit;
+         uint8_t poison_caps;
+         uint8_t qos_telemetry_caps;
++        uint16_t dc_event_log_size;
+     } QEMU_PACKED *id;
+-    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x43);
++    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x45);
+     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+     CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+     CXLDeviceState *cxl_dstate = &ct3d->cxl_dstate;
+@@ -807,6 +809,7 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+     st24_le_p(id->poison_list_max_mer, 256);
+     /* No limit - so limited by main poison record limit */
+     stw_le_p(&id->inject_poison_limit, 0);
++    stw_le_p(&id->dc_event_log_size, CXL_DC_EVENT_LOG_SIZE);
+ 
+     *len_out = sizeof(*id);
+     return CXL_MBOX_SUCCESS;
 -- 
 2.43.0
 
