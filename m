@@ -2,85 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06158CC93D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 00:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFF18CCA71
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:47:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9uqi-00016V-Gg; Wed, 22 May 2024 18:54:20 -0400
+	id 1s9xXc-0001f1-Th; Wed, 22 May 2024 21:46:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9uqa-00015c-HL
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:54:13 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s9uqY-0000ns-Du
- for qemu-devel@nongnu.org; Wed, 22 May 2024 18:54:12 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1eb0e08bfd2so120049665ad.1
- for <qemu-devel@nongnu.org>; Wed, 22 May 2024 15:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716418449; x=1717023249; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=boHNVoYjZiVALj0BdZzuvEpmzb6F+mybkq4QTpmHcFQ=;
- b=sTi/P3grMNI8Wcp769EgfA9THaoaf7Qzqe+GgXZlxQLuHHPXW/5PymlKmLfFTdN8Rk
- ZZYdeFimWeMDeKGnbEsKGbF5juqTBCkLUCswYO0T3q4+iwtWz9ztQDphGUHplauztr4F
- NtVtxFG1LSWNKxX4+B+4F/9EkRrS+16WVe+OSkoJBZ3/mMAJDv3oUbbgHDkSS97g23lZ
- Tu470WznX7gXIhoLJCkgOTW2wqRSr1yX4W2pz5TfdfboRXX9u/X0Gqvz9UtDxIgq+YR7
- /TTOVFJULZN4Ffolc5eV/MEVit2A4Wct2jo4xGkryAyRZ6bcDmzcbH0QnBJlMyQzCeBS
- oe5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716418449; x=1717023249;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=boHNVoYjZiVALj0BdZzuvEpmzb6F+mybkq4QTpmHcFQ=;
- b=ls9jd1uIFOILzdcXFBCrC6KrWNoXvwTVFo3PCbFygzGB/FJTGRuST23Dv0D9I2edRr
- L2IQvT8cVeFWug5ase12WjP8qnzeom+fwWN1qpFqBLeYa0VlS4X/9gDvOnSibyiHVSlr
- ZD8j64aZRPVygJbpIRiYY9tBenBIyKL7bm/9drnew+QscTDZ0szShxsBInzYHInfne2U
- NPMZ30p+ZGvDKXZ+sM7nDKWDcXIwil5wjCFv8GSjzPk2MCsGBPJ/7pnu8rF9vNSZGOUQ
- 6AtGoH5yYz4oQDawtAzWHQEP4LxP0yvA5oj7d7xuMa/tTPSlYORJvcMB5mPig+Xl0YeK
- reMQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTOIAwSSaE6qugp0scKu6j9AvYREL3+RJqZ1I2BKEgomhXLChWYzgiC3XSTTgZ5mh7EH+lBxA/vXZ0nsI654Z8g+Eo7r0=
-X-Gm-Message-State: AOJu0YwwwTWL5jW8dubJypwt+5WNI129haPlGFVaPZ0q0kV4LLUNBqKc
- 2C3QT7nqUfrzIgi7SFQBoM4MHCnWNbwpaEpSyMyiHtkrmE3yJ2APgO9IB6UjDtU=
-X-Google-Smtp-Source: AGHT+IEocV1rh6RBRIo/SyjD1CPs6V0TqcCmNhpXNfuWjJtwVoCHaMWmehCqDJUbPB7/LWItT6lmmw==
-X-Received: by 2002:a17:903:40ca:b0:1f2:f50d:b4e0 with SMTP id
- d9443c01a7336-1f31c97e8a8mr40472375ad.25.1716418448862; 
- Wed, 22 May 2024 15:54:08 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f31eab519asm18735445ad.272.2024.05.22.15.54.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 May 2024 15:54:08 -0700 (PDT)
-Message-ID: <84a38790-0cf5-4854-b8fa-c525023d3b05@linaro.org>
-Date: Wed, 22 May 2024 15:54:06 -0700
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1s9xXa-0001eQ-Tv
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:46 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1s9xXY-00012q-0J
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:46 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxDOv9n05mm98CAA--.6049S3;
+ Thu, 23 May 2024 09:46:37 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxDMf9n05mSDMGAA--.17472S2; 
+ Thu, 23 May 2024 09:46:37 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org
+Subject: [PULL 00/10] loongarch-to-apply queue
+Date: Thu, 23 May 2024 09:46:27 +0800
+Message-Id: <20240523014637.614872-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/14] target/s390x: Raise exception from helper_per_branch
-To: Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, david@redhat.com, thuth@redhat.com
-References: <20240502054417.234340-1-richard.henderson@linaro.org>
- <20240502054417.234340-10-richard.henderson@linaro.org>
- <b1d64ce0bce9241f62a3db44b92b74d47c833979.camel@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b1d64ce0bce9241f62a3db44b92b74d47c833979.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,41 +60,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/22/24 15:45, Ilya Leoshkevich wrote:
-> On Wed, 2024-05-01 at 22:44 -0700, Richard Henderson wrote:
->> Drop from argument, since gbea has always been updated with
->> this address.  Add ilen argument for setting int_pgm_ilen.
->> Use update_cc_op before calling per_branch.
->>
->> By raising the exception here, we need not call
->> per_check_exception later, which means we can clean up the
->> normal non-exception branch path.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   target/s390x/helper.h          |  2 +-
->>   target/s390x/tcg/misc_helper.c | 15 +++++++----
->>   target/s390x/tcg/translate.c   | 48 ++++++++++++--------------------
->> --
->>   3 files changed, 27 insertions(+), 38 deletions(-)
-> 
-> [...]
-> 
->>   static bool use_goto_tb(DisasContext *s, uint64_t dest)
->>   {
->> -    if (unlikely(s->base.tb->flags & FLAG_MASK_PER_BRANCH)) {
->> -        return false;
->> -    }
-> 
-> Why was this required in the first place and why can we remove it now?
-> 
+The following changes since commit 6af8037c42fdc3d20d5aa2686799ab356a9ee1a9:
 
-This was required because of the structure of the code: the PER exception was only raised 
-from translate_one, and therefore we could not allow the TB to end beforehand with goto_tb.
+  Merge tag 'pull-vfio-20240522' of https://github.com/legoater/qemu into staging (2024-05-22 06:02:06 -0700)
 
-We can eliminate this now because we're raising the PER branch exception before attempting 
-goto_tb.
+are available in the Git repository at:
 
+  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240523
 
-r~
+for you to fetch changes up to 6204af704a071ea68d3af55c0502b112a7af9546:
+
+  hw/loongarch/virt: Fix FDT memory node address width (2024-05-23 09:30:41 +0800)
+
+----------------------------------------------------------------
+pull-loongarch-20240523
+
+----------------------------------------------------------------
+Bibo Mao (7):
+      hw/loongarch: Add VM mode in IOCSR feature register in kvm mode
+      hw/loongarch: Refine acpi srat table for numa memory
+      hw/loongarch: Refine fadt memory table for numa memory
+      hw/loongarch: Refine fwcfg memory map
+      hw/loongarch: Refine system dram memory region
+      hw/loongarch: Remove minimum and default memory size
+      target/loongarch: Add loongarch vector property unconditionally
+
+Jiaxun Yang (1):
+      hw/loongarch/virt: Fix FDT memory node address width
+
+Song Gao (2):
+      target/loongarch/kvm: Fix VM recovery from disk failures
+      target/loongarch/kvm: fpu save the vreg registers high 192bit
+
+ hw/loongarch/acpi-build.c  |  58 +++++++++------
+ hw/loongarch/virt.c        | 179 ++++++++++++++++++++++++++++++++-------------
+ target/loongarch/cpu.c     |  14 +---
+ target/loongarch/kvm/kvm.c |   6 ++
+ target/loongarch/machine.c |   6 +-
+ 5 files changed, 176 insertions(+), 87 deletions(-)
+
 
