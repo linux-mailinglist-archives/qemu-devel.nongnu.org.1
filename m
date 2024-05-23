@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA8B8CD6AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E953F8CD6AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:06:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9zG-00008z-Id; Thu, 23 May 2024 11:04:10 -0400
+	id 1sAA1h-0002pL-3Y; Thu, 23 May 2024 11:06:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9z7-0008N6-5a
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:04:05 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sAA1F-0002M4-MB
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:06:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9z4-00057Z-9u
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:04:00 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sAA1C-0005sd-8S
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:06:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476637;
+ s=mimecast20190719; t=1716476768;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=B8sp+ftTU62M+N335i+jcRKJLgyYiuL1qyEkERUEZ+M=;
- b=S5Ua+EX1vmSPe35Dg63oUpi8W2y1PwJ/HcadB0r/g040N2tnuIX9zjEI9FSkkTNW8f88pq
- hbodO7MEgeqJ+EXCPHJKISpbjY6GLqnIPTBOL4ab1NCLbOM5gns4sDQ7kJxc+fjUE23jy+
- MNSu+3oN0vmjEnkVbCm0GRP2CEL0/bM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=T2uH6QblJk0YxinNAfunSzu+j2xmZUEGZdJLYoBoEH0=;
+ b=iiDmL+CfLvCH99ISUqP32YlhhKdNJqn28sliSojpv2MBXhwY/AxzLa/1h0wkXiC+Fny4wx
+ 3KvHyZ5fFSp1F95P6oHY1oygTPWt+fGb0pWY0ENQ1wnxXA4hrO1Rmplaqn8L408iu/6vkC
+ MvPn3W34tIVoQrbaBHhvO4GQsARNHlk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-Z7GMyRw4OT62nsiqp-50gg-1; Thu, 23 May 2024 11:03:54 -0400
-X-MC-Unique: Z7GMyRw4OT62nsiqp-50gg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-42015260835so62261165e9.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:03:54 -0700 (PDT)
+ us-mta-657-IixkmqQLOeGvZ6I0KHpKzg-1; Thu, 23 May 2024 11:06:05 -0400
+X-MC-Unique: IixkmqQLOeGvZ6I0KHpKzg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-354f34e0ab0so1121708f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:06:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476634; x=1717081434;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B8sp+ftTU62M+N335i+jcRKJLgyYiuL1qyEkERUEZ+M=;
- b=KX4WGzHp8HCRvFnxbs/eBO+FzSmQGLoKgMmldbpPmNLuJbRGeJnqHfGpui0ZdDbPqx
- Vw1GSCQ3I7GxVuTCrBSd4Hw86FB016QdSIr3YvzKNzERs+Vd4RsHlhMWEAJcwyP2iQuc
- H/f5HaUG2Ob7KHeAhj/SdlpCAQywB7rBIkG6+tJsv9vdJ3DUyGgq7c8w4yiHFaRfYSAo
- K3TbcAmFFQ5r/1RVpgVTbOFRf50dDydxGSz/LTN3ZMIx7mUdT3a9h6+Mfs1q9VhLfnBp
- /mnR6zEdQkmxmuWq+KUIDr+VM87hIGE6XQpBb7iza7+zhbOwGuPl50dFqYoqt4y/v0az
- nqCw==
+ d=1e100.net; s=20230601; t=1716476764; x=1717081564;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=T2uH6QblJk0YxinNAfunSzu+j2xmZUEGZdJLYoBoEH0=;
+ b=KMQBISljqNT0fkeJVMm1FsriOYYPSfgx0FmDaas5DX2IyAcGojEf6oDtGVtQTkgxHy
+ gEw7rNuIN7RABxtit5D0gbIlJLbmYkNAn8n3Cuiy755cDW2Tjhezlw+Rtv+qjtldfIGy
+ qKYiewc4SQ4Ij8XKVs2ftL0PgtCBFdtbcBaKE8sgZhht5X5rCZffVSbE74kp+pKw7sJS
+ f5nwegh1ipULozxNAhwq424bFpaHuIvKO6AZG1PMOb/LWMJFeVtddq4qIvqd0DcbYj9Q
+ C4Lh+V/dooLjAVvdjmltHS5dRxpVgm+yIxRP8cpzMBLW2q3Sqcp0ja6wmNHX4zg1IDOh
+ EWJA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUrqIAoZOWo2LqhNphsRjzCqo9D0BUcXCJ71sazUjPEOliSl21nyOvM5KA2iZQiT0WN9y3YOJyerpFvDpmMAz5Y/kqX270=
-X-Gm-Message-State: AOJu0YzcIT6xTFLPpcSlS2fK4+X8hNGRtTbmtV08vqdzjT634gMltMRW
- 5FY5FfB30FRhXTSNt9LDVGb6zqdPM+YxERBamwHte14Kz0onyW1Fw4/M5JPIiptMPaIvb8GxI7b
- Cb2nTOiBusqYuIBghOvQlftsBtrUrjMI4WI/A3MZ07V6lDkQMfL56
-X-Received: by 2002:a7b:cb44:0:b0:41b:ab72:3f4d with SMTP id
- 5b1f17b1804b1-420fd2d6eb5mr37497425e9.1.1716476633647; 
- Thu, 23 May 2024 08:03:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHv+nm/wzJjNMhhH0Rl4fJHidTbSbmKZteOvcPqQWibxzJpBB2pLSC4LRCpfYerj2UGxtyv3g==
-X-Received: by 2002:a7b:cb44:0:b0:41b:ab72:3f4d with SMTP id
- 5b1f17b1804b1-420fd2d6eb5mr37496975e9.1.1716476633172; 
- Thu, 23 May 2024 08:03:53 -0700 (PDT)
+ AJvYcCWF4dxUBYbESP8l/xgrhS+OUcVK9zNMfDSed8ou+uc548KtuggWBvRRavkj81dMpm7peJmggnR7y881aaz+2Weo6EreXmo=
+X-Gm-Message-State: AOJu0YyacdnzP7AH646q6kEqHfMMIK7inuS1WiZlEOgQn6ejMCk+rD49
+ /XP6GAWcI27Kw6XID+4uXYCqzYnZs2UkMCcUitASo4OltV19vxYrKc18ylUmsNmoyjSDZB7644v
+ RhslDcvWwUddUkpWZk+8eTo3hd+JLVHKLm2EWaxXjBxIGkcssPCmw
+X-Received: by 2002:a5d:4576:0:b0:34d:99ac:dcd0 with SMTP id
+ ffacd0b85a97d-354d8d85b4bmr3839401f8f.49.1716476764445; 
+ Thu, 23 May 2024 08:06:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtqY13Xrrtjc9cin6tpcrdbTsWFNSITGq/LhPmmOLVBY3N01+7Cj67WI3cRQ/OQYsoPEW1Ww==
+X-Received: by 2002:a5d:4576:0:b0:34d:99ac:dcd0 with SMTP id
+ ffacd0b85a97d-354d8d85b4bmr3839373f8f.49.1716476764024; 
+ Thu, 23 May 2024 08:06:04 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c717:5f00:c949:6700:cce1:e60b?
  (p200300cbc7175f00c9496700cce1e60b.dip0.t-ipconnect.de.
  [2003:cb:c717:5f00:c949:6700:cce1:e60b])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100fad6ccsm27519325e9.32.2024.05.23.08.03.51
+ ffacd0b85a97d-354de2d1ae0sm3934806f8f.44.2024.05.23.08.06.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 08:03:52 -0700 (PDT)
-Message-ID: <e939b421-c3ad-4eea-97f9-0a56eb400a44@redhat.com>
-Date: Thu, 23 May 2024 17:03:50 +0200
+ Thu, 23 May 2024 08:06:02 -0700 (PDT)
+Message-ID: <06b7fd67-27d7-4afb-9fa3-2948d032efbd@redhat.com>
+Date: Thu, 23 May 2024 17:06:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 07/13] vhost-user: enable frontends on any POSIX system
+Subject: Re: [PATCH v5 12/13] tests/qtest/vhost-user-blk-test: use
+ memory-backend-shm
 To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -86,9 +87,9 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
  Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
 References: <20240523145522.313012-1-sgarzare@redhat.com>
- <20240523145522.313012-8-sgarzare@redhat.com>
-Content-Language: en-US
+ <20240523145522.313012-13-sgarzare@redhat.com>
 From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -134,7 +135,7 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240523145522.313012-8-sgarzare@redhat.com>
+In-Reply-To: <20240523145522.313012-13-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -162,16 +163,31 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23.05.24 16:55, Stefano Garzarella wrote:
-> The vhost-user protocol is not really Linux-specific so let's enable
-> vhost-user frontends for any POSIX system.
+> `memory-backend-memfd` is available only on Linux while the new
+> `memory-backend-shm` can be used on any POSIX-compliant operating
+> system. Let's use it so we can run the test in multiple environments.
 > 
-> In vhost_net.c we use VHOST_FILE_UNBIND which is defined in a Linux
-> specific header, let's define it for other systems as well.
-> 
+> Acked-by: Thomas Huth <thuth@redhat.com>
+> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>   tests/qtest/vhost-user-blk-test.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/vhost-user-blk-test.c b/tests/qtest/vhost-user-blk-test.c
+> index 117b9acd10..e945f6abf2 100644
+> --- a/tests/qtest/vhost-user-blk-test.c
+> +++ b/tests/qtest/vhost-user-blk-test.c
+> @@ -906,7 +906,7 @@ static void start_vhost_user_blk(GString *cmd_line, int vus_instances,
+>                              vhost_user_blk_bin);
+>   
+>       g_string_append_printf(cmd_line,
+> -            " -object memory-backend-memfd,id=mem,size=256M,share=on "
+> +            " -object memory-backend-shm,id=mem,size=256M,share=on "
+
+Can we simplifya nd drop the share=on?
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
