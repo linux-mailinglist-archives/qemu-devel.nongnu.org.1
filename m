@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC388CD94A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 19:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 665948CD96C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 19:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sACRj-0001D9-5F; Thu, 23 May 2024 13:41:43 -0400
+	id 1sACZb-0006tS-BK; Thu, 23 May 2024 13:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sACRD-0000tR-M4
- for qemu-devel@nongnu.org; Thu, 23 May 2024 13:41:16 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1sACYk-0005yT-Ki
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 13:49:03 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sACR3-0001iB-9L
- for qemu-devel@nongnu.org; Thu, 23 May 2024 13:41:10 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1ecc23e6c9dso121677255ad.2
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 10:40:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1sACYT-0003du-NB
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 13:48:57 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1ee954e0aa6so22520895ad.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 10:48:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1716486056; x=1717090856; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KJhbWYau4WstOwn4EIxb6YBMeRvDTbUyxW++LUcXVIo=;
- b=UycpzrR9xDjMcNAVXW+Gg5ysBWQTs5/fPMdwcZO45wVce7fxz1brkwgexXoVvTtUYZ
- 38xMrl1vxeCgEEXYXcNzSs+5JFCS2fuzrsCubYgtL1Tm+D/VUh2wCw/PshYxhWgY4dAa
- OL6NzG5RZR13UuBQA5Cs7dBKrfWDqIAgW2ph2I3xqPnP20S6/O/MriTM/MvUXjo+7jFI
- rZzXak8Kt0bEF6t4J2CxKwKstJizPNNP4WpCw4GxcinPaiWE15xMUsJDaDildo9ynkKc
- HMxYD+YoPDmKN4zozDTBMPQRhGoFD4Bk2UsWUmIxLk1AHwJ7XsHS9lk5J49sk5rRSnh8
- j9tQ==
+ d=gmail.com; s=20230601; t=1716486518; x=1717091318; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4r6TCjebwmoal19hsNaIlox9kjy5GL6IczrHH4aqNj4=;
+ b=Kk5G+RLz5edwvv2gsaWDHCOz3OVPNhoRcTEKMW4pqAH8QDHSrP0jbNIiTrfaKpvest
+ FGCQ1S/+7yLbxGle+uBfle2bJy+yLHJgiO1vnZeK40ssUe4z6iVo+aL47iFqIg1dSh2p
+ JYCDw3JYVZ3Bw3snX2oM/rVqj/CeojVFZn4hA46TyFLDwgoOfU+0DqVeYoJbviLDNeuY
+ LLPD/w8HK5tW9vHbNWOQ+3bg2LyvW3j6NBi7cQtan07gVXedEZ1+HV8c2NB8xvJkzzjO
+ d6xaKz2unk/wBJv1ZxEBOjcvE6OSkYn0HLuF8CPzqOisqYWKal4UDY8wADUQjo6QKFMC
+ cPBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716486056; x=1717090856;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KJhbWYau4WstOwn4EIxb6YBMeRvDTbUyxW++LUcXVIo=;
- b=NaC7DDFHE/LTQKLMXZ0FAeQsW+b52lnmYUYI2aOss6VMnCQ57LvoNOcQeAv2PhkMeh
- 4jzVmakfLhVsYibPcwWTWTSzRuCB9KJMTZBu9VZhrBaTFNc4nA0pmrARjDM+Ld6siYWs
- PIdtd11+BPt3sXxkXHFUgN6O9nNwzrA6wGhNUkMIwMXqEW/1UyvK1QsLKZkDblP9tifn
- QZ2DBBRNIAtaDg59Kb2TrF8mcBh7j+NyM9nZKgUcjJ6pPuSRS7ViF+QeNU9XuNk/SgQG
- j5fw3D3a+wr4T/umcwYbd/7zP5V94m56XizBYjWY39TesLuQN5Xop3C9ZzgVkZ4xMWpO
- g9Vw==
-X-Gm-Message-State: AOJu0Yxw2zKRhJbFQQDsU3bszfXxubYAvDzOUI/jDWYQe2rqw3nL7MPg
- vwMgF6l1IX4oN+KGHEnRClVtAmnUwZ40CmmCWeOXsozb4zRUj3tCGOHHY9Pg8Us59Hxl59Tr06H
- q
-X-Google-Smtp-Source: AGHT+IG6JpwGB+bAb8hKgCbbilTO23QmICWNUATOiCsWsUcJG6dlN5KcetRQ63/R2WCVDzago99pNA==
-X-Received: by 2002:a17:902:e54d:b0:1e3:cfc5:589e with SMTP id
- d9443c01a7336-1f4498e1c90mr115795ad.64.1716486056545; 
- Thu, 23 May 2024 10:40:56 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com ([177.94.42.4])
+ d=1e100.net; s=20230601; t=1716486518; x=1717091318;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4r6TCjebwmoal19hsNaIlox9kjy5GL6IczrHH4aqNj4=;
+ b=Xr8Zr4tCrlI53nI9YQSQ4bBN/Dlot9LsK+yvvC5wq7wRwCU2Bg+NIHvzIBsPVyS5gh
+ U4+QTLalbb737O432xD7F8sa03OeZsoOzCO6K9TtcwtlUome9S8LlT8n1ppIulgKeubA
+ aJP+0/jpn+mVa71GInXQZAbplsDSMimdbY3pXM33MUpTgfoBk/RIy2lBr90xBlTxwatQ
+ ZuQlGtuaXi9ac/55lg7CHMJj43QzKmmLCQXWXuAAt2xhSQC1EH9KaInM3HiFfcq+r7Im
+ UDg35+wDhlqzHEDm/xccOUun1RKCEv/M4rI6wMEnejeTEAwWJpGNNvS867q9VtxIBFd4
+ h9+A==
+X-Gm-Message-State: AOJu0YxUxAJNDb/vDJgmkBYSzb/+a0X9cuSM7KHOmqiNalpMjt6Vzfgy
+ rDDZh7y1Y+cDPa0W3lM+Hno4aKHP7G5ufee/mpHbcYtVbi20YL1NXuyUtA==
+X-Google-Smtp-Source: AGHT+IHWVrXQSnx82ntFoZX/SGrXTrSTjtR9HqgzEtaI+q3GNixRc445TQcUUiX1AHlXQqhKfb070g==
+X-Received: by 2002:a17:903:244b:b0:1e4:436e:801b with SMTP id
+ d9443c01a7336-1f4498f404bmr295475ad.67.1716486517545; 
+ Thu, 23 May 2024 10:48:37 -0700 (PDT)
+Received: from localhost.localdomain ([2601:646:8f03:9fee:4f9e:216e:ed5a:642d])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f2fb4ca0ebsm81246535ad.119.2024.05.23.10.40.53
+ d9443c01a7336-1ef0c137e7esm253436265ad.257.2024.05.23.10.48.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 10:40:56 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ Thu, 23 May 2024 10:48:37 -0700 (PDT)
+From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- tjeznach@rivosinc.com, ajones@ventanamicro.com, frank.chang@sifive.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 13/13] qtest/riscv-iommu-test: add init queues test
-Date: Thu, 23 May 2024 14:39:54 -0300
-Message-ID: <20240523173955.1940072-14-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240523173955.1940072-1-dbarboza@ventanamicro.com>
-References: <20240523173955.1940072-1-dbarboza@ventanamicro.com>
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
+ wj28.lee@gmail.com, armbru@redhat.com, mst@redhat.com
+Subject: [PATCH v8 00/14] Enabling DCD emulation support in Qemu
+Date: Thu, 23 May 2024 10:44:40 -0700
+Message-ID: <20240523174651.1089554-1-nifan.cxl@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,224 +91,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an additional test to further exercise the IOMMU where we attempt to
-initialize the command, fault and page-request queues.
+From: Fan Ni <nifan.cxl@gmail.com>
 
-These steps are taken from chapter 6.2 of the RISC-V IOMMU spec,
-"Guidelines for initialization". It emulates what we expect from the
-software/OS when initializing the IOMMU.
+A git tree of this series can be found here (with one extra commit on top
+for printing out accepted/pending extent list for testing): 
+https://github.com/moking/qemu/tree/dcd-v8-qapi
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
----
- tests/qtest/libqos/riscv-iommu.h |  29 +++++++
- tests/qtest/riscv-iommu-test.c   | 141 +++++++++++++++++++++++++++++++
- 2 files changed, 170 insertions(+)
+v7->v8:
 
-diff --git a/tests/qtest/libqos/riscv-iommu.h b/tests/qtest/libqos/riscv-iommu.h
-index d123efb41f..c62ddedbac 100644
---- a/tests/qtest/libqos/riscv-iommu.h
-+++ b/tests/qtest/libqos/riscv-iommu.h
-@@ -62,6 +62,35 @@
- 
- #define RISCV_IOMMU_REG_IPSR            0x0054
- 
-+#define RISCV_IOMMU_REG_IVEC            0x02F8
-+#define RISCV_IOMMU_REG_IVEC_CIV        GENMASK_ULL(3, 0)
-+#define RISCV_IOMMU_REG_IVEC_FIV        GENMASK_ULL(7, 4)
-+#define RISCV_IOMMU_REG_IVEC_PIV        GENMASK_ULL(15, 12)
-+
-+#define RISCV_IOMMU_REG_CQB             0x0018
-+#define RISCV_IOMMU_CQB_PPN_START       10
-+#define RISCV_IOMMU_CQB_PPN_LEN         44
-+#define RISCV_IOMMU_CQB_LOG2SZ_START    0
-+#define RISCV_IOMMU_CQB_LOG2SZ_LEN      5
-+
-+#define RISCV_IOMMU_REG_CQT             0x0024
-+
-+#define RISCV_IOMMU_REG_FQB             0x0028
-+#define RISCV_IOMMU_FQB_PPN_START       10
-+#define RISCV_IOMMU_FQB_PPN_LEN         44
-+#define RISCV_IOMMU_FQB_LOG2SZ_START    0
-+#define RISCV_IOMMU_FQB_LOG2SZ_LEN      5
-+
-+#define RISCV_IOMMU_REG_FQT             0x0034
-+
-+#define RISCV_IOMMU_REG_PQB             0x0038
-+#define RISCV_IOMMU_PQB_PPN_START       10
-+#define RISCV_IOMMU_PQB_PPN_LEN         44
-+#define RISCV_IOMMU_PQB_LOG2SZ_START    0
-+#define RISCV_IOMMU_PQB_LOG2SZ_LEN      5
-+
-+#define RISCV_IOMMU_REG_PQT             0x0044
-+
- typedef struct QRISCVIOMMU {
-     QOSGraphObject obj;
-     QPCIDevice dev;
-diff --git a/tests/qtest/riscv-iommu-test.c b/tests/qtest/riscv-iommu-test.c
-index 7f0dbd0211..9e2afcb4b9 100644
---- a/tests/qtest/riscv-iommu-test.c
-+++ b/tests/qtest/riscv-iommu-test.c
-@@ -33,6 +33,20 @@ static uint64_t riscv_iommu_read_reg64(QRISCVIOMMU *r_iommu, int reg_offset)
-     return reg;
- }
- 
-+static void riscv_iommu_write_reg32(QRISCVIOMMU *r_iommu, int reg_offset,
-+                                    uint32_t val)
-+{
-+    qpci_memwrite(&r_iommu->dev, r_iommu->reg_bar, reg_offset,
-+                  &val, sizeof(val));
-+}
-+
-+static void riscv_iommu_write_reg64(QRISCVIOMMU *r_iommu, int reg_offset,
-+                                    uint64_t val)
-+{
-+    qpci_memwrite(&r_iommu->dev, r_iommu->reg_bar, reg_offset,
-+                  &val, sizeof(val));
-+}
-+
- static void test_pci_config(void *obj, void *data, QGuestAllocator *t_alloc)
- {
-     QRISCVIOMMU *r_iommu = obj;
-@@ -84,10 +98,137 @@ static void test_reg_reset(void *obj, void *data, QGuestAllocator *t_alloc)
-     g_assert_cmpuint(reg, ==, 0);
- }
- 
-+/*
-+ * Common timeout-based poll for CQCSR, FQCSR and PQCSR. All
-+ * their ON bits are mapped as RISCV_IOMMU_QUEUE_ACTIVE (16),
-+ */
-+static void qtest_wait_for_queue_active(QRISCVIOMMU *r_iommu,
-+                                        uint32_t queue_csr)
-+{
-+    QTestState *qts = global_qtest;
-+    guint64 timeout_us = 2 * 1000 * 1000;
-+    gint64 start_time = g_get_monotonic_time();
-+    uint32_t reg;
-+
-+    for (;;) {
-+        qtest_clock_step(qts, 100);
-+
-+        reg = riscv_iommu_read_reg32(r_iommu, queue_csr);
-+        if (reg & RISCV_IOMMU_QUEUE_ACTIVE) {
-+            break;
-+        }
-+        g_assert(g_get_monotonic_time() - start_time <= timeout_us);
-+    }
-+}
-+
-+/*
-+ * Goes through the queue activation procedures of chapter 6.2,
-+ * "Guidelines for initialization", of the RISCV-IOMMU spec.
-+ */
-+static void test_iommu_init_queues(void *obj, void *data,
-+                                   QGuestAllocator *t_alloc)
-+{
-+    QRISCVIOMMU *r_iommu = obj;
-+    uint64_t reg64, q_addr;
-+    uint32_t reg;
-+    int k;
-+
-+    reg64 = riscv_iommu_read_reg64(r_iommu, RISCV_IOMMU_REG_CAP);
-+    g_assert_cmpuint(reg64 & RISCV_IOMMU_CAP_VERSION, ==, 0x10);
-+
-+    /*
-+     * Program the command queue. Write 0xF to civ, assert that
-+     * we have 4 writable bits (k = 4). The amount of entries N in the
-+     * command queue is 2^4 = 16. We need to alloc a N*16 bytes
-+     * buffer and use it to set cqb.
-+     */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_IVEC,
-+                            0xFFFF & RISCV_IOMMU_REG_IVEC_CIV);
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_IVEC);
-+    g_assert_cmpuint(reg & RISCV_IOMMU_REG_IVEC_CIV, ==, 0xF);
-+
-+    q_addr = guest_alloc(t_alloc, 16 * 16);
-+    reg64 = 0;
-+    k = 4;
-+    deposit64(reg64, RISCV_IOMMU_CQB_PPN_START,
-+              RISCV_IOMMU_CQB_PPN_LEN, q_addr);
-+    deposit64(reg64, RISCV_IOMMU_CQB_LOG2SZ_START,
-+              RISCV_IOMMU_CQB_LOG2SZ_LEN, k - 1);
-+    riscv_iommu_write_reg64(r_iommu, RISCV_IOMMU_REG_CQB, reg64);
-+
-+    /* cqt = 0, cqcsr.cqen = 1, poll cqcsr.cqon until it reads 1 */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_CQT, 0);
-+
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_CQCSR);
-+    reg |= RISCV_IOMMU_CQCSR_CQEN;
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_CQCSR, reg);
-+
-+    qtest_wait_for_queue_active(r_iommu, RISCV_IOMMU_REG_CQCSR);
-+
-+    /*
-+     * Program the fault queue. Similar to the above:
-+     * - Write 0xF to fiv, assert that we have 4 writable bits (k = 4)
-+     * - Alloc a 16*32 bytes (instead of 16*16) buffer and use it to set
-+     * fqb
-+     */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_IVEC,
-+                            0xFFFF & RISCV_IOMMU_REG_IVEC_FIV);
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_IVEC);
-+    g_assert_cmpuint(reg & RISCV_IOMMU_REG_IVEC_FIV, ==, 0xF0);
-+
-+    q_addr = guest_alloc(t_alloc, 16 * 32);
-+    reg64 = 0;
-+    k = 4;
-+    deposit64(reg64, RISCV_IOMMU_FQB_PPN_START,
-+              RISCV_IOMMU_FQB_PPN_LEN, q_addr);
-+    deposit64(reg64, RISCV_IOMMU_FQB_LOG2SZ_START,
-+              RISCV_IOMMU_FQB_LOG2SZ_LEN, k - 1);
-+    riscv_iommu_write_reg64(r_iommu, RISCV_IOMMU_REG_FQB, reg64);
-+
-+    /* fqt = 0, fqcsr.fqen = 1, poll fqcsr.fqon until it reads 1 */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_FQT, 0);
-+
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_FQCSR);
-+    reg |= RISCV_IOMMU_FQCSR_FQEN;
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_FQCSR, reg);
-+
-+    qtest_wait_for_queue_active(r_iommu, RISCV_IOMMU_REG_FQCSR);
-+
-+    /*
-+     * Program the page-request queue:
-+     - Write 0xF to piv, assert that we have 4 writable bits (k = 4)
-+     - Alloc a 16*16 bytes buffer and use it to set pqb.
-+     */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_IVEC,
-+                            0xFFFF & RISCV_IOMMU_REG_IVEC_PIV);
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_IVEC);
-+    g_assert_cmpuint(reg & RISCV_IOMMU_REG_IVEC_PIV, ==, 0xF000);
-+
-+    q_addr = guest_alloc(t_alloc, 16 * 16);
-+    reg64 = 0;
-+    k = 4;
-+    deposit64(reg64, RISCV_IOMMU_PQB_PPN_START,
-+              RISCV_IOMMU_PQB_PPN_LEN, q_addr);
-+    deposit64(reg64, RISCV_IOMMU_PQB_LOG2SZ_START,
-+              RISCV_IOMMU_PQB_LOG2SZ_LEN, k - 1);
-+    riscv_iommu_write_reg64(r_iommu, RISCV_IOMMU_REG_PQB, reg64);
-+
-+    /* pqt = 0, pqcsr.pqen = 1, poll pqcsr.pqon until it reads 1 */
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_PQT, 0);
-+
-+    reg = riscv_iommu_read_reg32(r_iommu, RISCV_IOMMU_REG_PQCSR);
-+    reg |= RISCV_IOMMU_PQCSR_PQEN;
-+    riscv_iommu_write_reg32(r_iommu, RISCV_IOMMU_REG_PQCSR, reg);
-+
-+    qtest_wait_for_queue_active(r_iommu, RISCV_IOMMU_REG_PQCSR);
-+}
-+
- static void register_riscv_iommu_test(void)
- {
-     qos_add_test("pci_config", "riscv-iommu-pci", test_pci_config, NULL);
-     qos_add_test("reg_reset", "riscv-iommu-pci", test_reg_reset, NULL);
-+    qos_add_test("iommu_init_queues", "riscv-iommu-pci",
-+                 test_iommu_init_queues, NULL);
- }
- 
- libqos_init(register_riscv_iommu_test);
+This version carries over the following two patches from Gregory.
+1. hw/cxl/mailbox: change CCI cmd set structure to be a member, not a reference
+https://gitlab.com/jic23/qemu/-/commit/f44ebc5a455ccdd6535879b0c5824e0d76b04da5
+2. hw/cxl/mailbox: interface to add CCI commands to an existing CCI
+https://gitlab.com/jic23/qemu/-/commit/00a4dd8b388add03c588298f665ee918626296a5
+
+Note, the above two patches are not directly related to DCD emulation.
+
+All the following patches in this series are built on top of mainstream QEMU
+and the above two patches.
+
+The most significant changes of v8 is in Patch 11 (Patch 9 in v7). Based on
+feedback from Markus and Jonathan, the QMP interfaces for adding and releasing
+DC extents have been redesigned and now they look like below,
+
+# add a 128MB extent at offset 0 to region 0
+	{ "execute": "cxl-add-dynamic-capacity",
+	  "arguments": {
+		  "path": "/machine/peripheral/cxl-memdev0",
+          "host-id":0,
+          "selection-policy": 'prescriptive',
+		  "region": 0,
+          "tag": "",
+		  "extents": [
+		  {
+			  "offset": 0,
+			  "len": 134217728
+		  }
+		  ]
+	  }
+	}
+
+Note: tag is optional.
+
+# Release a 128MB extent at offset 0 from region 0
+ { "execute": "cxl-release-dynamic-capacity",
+	  "arguments": {
+		  "path": "/machine/peripheral/cxl-memdev0",
+          "host-id":0,
+          "removal-policy":"prescriptive",
+          "forced-removal": false,
+          "sanitize-on-release": false,
+          "region": 0,
+          "tag": "",
+		  "extents": [
+		  {
+			  "offset": 0,
+			  "len": 134217728
+		  }
+		  ]
+	  }
+	}
+    
+Note: removal-policy, sanitize-on-release and tag are optional.
+    
+Other changes include,
+1. Applied tags to patches. 
+2. Replaced error_setq with error_append_hint for cxl_create_dc_region error
+   case in Patch 6 (Patch 4 in v7); (Zhijian Li)
+3. Updated the error message to include region size information in
+    cxl_create_dc_region.
+4. set range1_size_hi to 0 for DCD in build_dvsec. (Jonathan)
+5. Several minor format fixes.
+
+Thanks Markus, Jonathan, Gregory, and Zhijian for reviewing v7 and
+svetly Todorov for testing v7.
+
+This series pass the same tests as v7 check the cover letter of v7 for
+more details. Additionally, we tested the QAPI interface for
+adding/releasing DC extents with optional input parameters.
+  
+
+v7: https://lore.kernel.org/linux-cxl/5856b7a4-4082-465f-9f61-b1ec6c35ef0f@fujitsu.com/T/#mec4c85022ce28c80b241aaf2d5431cadaa45f097
+
+
+Fan Ni (12):
+  hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
+    payload of identify memory device command
+  hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
+    and mailbox command support
+  include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
+    type3 memory devices
+  hw/mem/cxl_type3: Add support to create DC regions to type3 memory
+    devices
+  hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr
+    size instead of mr as argument
+  hw/mem/cxl_type3: Add host backend and address space handling for DC
+    regions
+  hw/mem/cxl_type3: Add DC extent list representative and get DC extent
+    list mailbox support
+  hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
+    dynamic capacity response
+  hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
+    extents
+  hw/mem/cxl_type3: Add DPA range validation for accesses to DC regions
+  hw/cxl/cxl-mailbox-utils: Add superset extent release mailbox support
+  hw/mem/cxl_type3: Allow to release extent superset in QMP interface
+
+Gregory Price (2):
+  hw/cxl/mailbox: change CCI cmd set structure to be a member, not a
+    reference
+  hw/cxl/mailbox: interface to add CCI commands to an existing CCI
+
+ hw/cxl/cxl-mailbox-utils.c  | 658 +++++++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 634 ++++++++++++++++++++++++++++++++--
+ hw/mem/cxl_type3_stubs.c    |  25 ++
+ include/hw/cxl/cxl_device.h |  85 ++++-
+ include/hw/cxl/cxl_events.h |  18 +
+ qapi/cxl.json               | 143 ++++++++
+ 6 files changed, 1511 insertions(+), 52 deletions(-)
+
 -- 
-2.44.0
+2.43.0
 
 
