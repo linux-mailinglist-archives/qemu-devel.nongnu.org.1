@@ -2,143 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885208CD6AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD45D8CD6BC
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAA1s-0004nY-TC; Thu, 23 May 2024 11:06:52 -0400
+	id 1sAA4N-0000X2-QG; Thu, 23 May 2024 11:09:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sAA1q-0004a5-3F
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:06:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sAA4G-0000VL-4h
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:09:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sAA1f-0005tY-OI
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:06:49 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1sAA4E-0006Ge-BN
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:09:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476799;
+ s=mimecast20190719; t=1716476957;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=H9Art5trhd6yshWSft25Lj2aPwLBsGbOvOG3+xIs5L4=;
- b=VyC01B3s8l9NeLTqrm+/WIrhL4TcHKiVnFpa3IT8iUZ8AHxzHsfuZLYJE94MCqadpq6Lzj
- mxG83UYOF9phXrkJ9DLbHde1Q4UR+JPSyL/ba/qfsiOjY5iJ+G8Ddmwnq3lzhTUmlcW6BS
- iK8C96s1QEmsmJolYJ7fvv9mTKoshpg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=rASbrkUVSZOgJ0tWM/L93PYfpfW9HNkvr0zb5XPp4x4=;
+ b=TJoUkXGMa/N6uyU3tMQ6g0jvJWtGFoN3Cw01iyr017gdfqIakFtYcQXm43hLB+0yKQgCqn
+ shkggeas3G/Cdy0VfgA/FElk1R+y7JMvKHPEBzbUKi7i/v8G8vQ/Ht6gJTB1r38e4jAfE7
+ ECSjLwaxs4aWZ/RToFea/cOe13epBAs=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-322-VMoW-JkwMyWWq-Q-fIkdwg-1; Thu, 23 May 2024 11:06:37 -0400
-X-MC-Unique: VMoW-JkwMyWWq-Q-fIkdwg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-354fa62abd7so540429f8f.3
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:06:37 -0700 (PDT)
+ us-mta-695-j-D13zK7N0Gz_hEGR6IWiQ-1; Thu, 23 May 2024 11:09:16 -0400
+X-MC-Unique: j-D13zK7N0Gz_hEGR6IWiQ-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-43f7dba5d72so2295621cf.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:09:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476797; x=1717081597;
- h=content-transfer-encoding:in-reply-to:organization:autocrypt
- :content-language:from:references:cc:to:subject:user-agent
- :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
- :date:message-id:reply-to;
- bh=H9Art5trhd6yshWSft25Lj2aPwLBsGbOvOG3+xIs5L4=;
- b=BY0PzMOmPxb6n4uP1uWFnWnA5cc8fprdmZrrA1Zlo53npge/5LnRZGPC5xR/LsD6cl
- vafW99zXQRrZOeIcJ4lvBFZyQD3ommJk4j/EzZd8Xx9y0Y6RqMFaOWXwoX15lmPv+V2d
- y6mBLnaTlllC5rQE0DJIAuu8nRzAcLSVxQtKVepWyCyMm8TAJesY67hv7lCjgJetYLGb
- GBLPdZwoqrZxdpoR1A9+yaUE4/4Q5vYCFZk7AkgMq2LKGlMDr1GAKiCrp96Q+6wsZMz5
- rqOuNOToZ3BdEHjJFchtcwfCpcE4R8RRlsLadwojNndylAd0TAsHJDaUookAVfrAe7Si
- y37Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWHM+4sz+qQzEAQWIP3EJVXuJSWkDOKirJaesLNxvumhd7UExI2VuCNrn1wl25xrdxi4vBCpEME1TtRqMrnMF4y11hflRI=
-X-Gm-Message-State: AOJu0YykmnbzTqJe/ydPSY3HqzssgfthhsezGsVQPACC3L+87pTYGnfh
- laUJ7CZtJQNEl96rRgd+uJS2+xfOY5gfu9mgRXAHZ1Aghuz5w4lI0DComZwcNNxCjtefh8Rbfzz
- yNHGmJCQk1zn9xpDAQn9bLwLRS4bZ/6lDTQTr/zD+HtMR2AsQqvKg
-X-Received: by 2002:a5d:6991:0:b0:355:31a:65e0 with SMTP id
- ffacd0b85a97d-355031a699emr510762f8f.16.1716476796673; 
- Thu, 23 May 2024 08:06:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG79TaeLyfBLoCv9ftlCW5ISTHw3bYWzv6c7z9TDqlLY/8MDCm6+bwnNV5NUGx/m95HC00JVw==
-X-Received: by 2002:a5d:6991:0:b0:355:31a:65e0 with SMTP id
- ffacd0b85a97d-355031a699emr510725f8f.16.1716476796227; 
- Thu, 23 May 2024 08:06:36 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c717:5f00:c949:6700:cce1:e60b?
- (p200300cbc7175f00c9496700cce1e60b.dip0.t-ipconnect.de.
- [2003:cb:c717:5f00:c949:6700:cce1:e60b])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-354f44d6790sm2593919f8f.52.2024.05.23.08.06.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 08:06:35 -0700 (PDT)
-Message-ID: <5100425f-9c7d-4e43-ac7c-bc7022c6fa74@redhat.com>
-Date: Thu, 23 May 2024 17:06:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 13/13] tests/qtest/vhost-user-test: add a test case for
- memory-backend-shm
-To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ d=1e100.net; s=20230601; t=1716476955; x=1717081755;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rASbrkUVSZOgJ0tWM/L93PYfpfW9HNkvr0zb5XPp4x4=;
+ b=hPXhX+P3omBnILlK87IB04XOOfK5+q1GGvJ8TSye0V0CL8DBw/j5q7d6BvuCRWkbt+
+ Q8z6Uj8PWfkSW0bjjD0er9u/1NW964tFHvdVOwEbybl9vrXoqwkua2+VKdpykG1f3eTH
+ hXZ6Y2aTzy18ZavLIYp+jVCZuTRXNtA7HtFxTcoreths58BbODxm1H+cBfH06gr9T6GZ
+ 5JaaD3+voXN6ErDURnKaJYdbvvDJt3JtO1dqEFtHmutOjnwCFuj5pus+zUuWnc/Nwc+W
+ pgH2/vDd1ZxZGpH5o9DjWwfvxMI6sHKWB3fgotx0gvQyJVY7e2Lsa1J+WGFn3b7KNRz+
+ S0pw==
+X-Gm-Message-State: AOJu0YygOrpQ0+RQNEcaM7OkuPoEAyc9dGfop5Vm3atMIdNXjIiovefc
+ vSEWSHHr2qMSSOq8BYdQG5znu2V2xHJdA1efPKhxaorhLIKk2HNlGUq/VLnOqLWIeOUz1M7rS4f
+ 3DOURuqnE81GVDiK8ErxsLDDWVpNIvgUg77iiwU6gSHiP83EV5tmGdC/OBbepbl0qor7+cFY45G
+ o1KjT85vktuupEkkapvLwqNzseMKwmpd5ZBvGp
+X-Received: by 2002:ac8:5fd3:0:b0:43a:c27b:df34 with SMTP id
+ d75a77b69052e-43f9e0af0c9mr58705501cf.31.1716476955346; 
+ Thu, 23 May 2024 08:09:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPCYBBh07rlOBvWIjBRnr/4ChHgaf26GMRz32Wc1c/nGpDIZnDAGusZg1C7nxdMrpJ9bR0xg==
+X-Received: by 2002:ac8:5fd3:0:b0:43a:c27b:df34 with SMTP id
+ d75a77b69052e-43f9e0af0c9mr58704731cf.31.1716476954563; 
+ Thu, 23 May 2024 08:09:14 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-109.retail.telecomitalia.it.
+ [79.53.30.109]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43df54f216esm186581251cf.31.2024.05.23.08.09.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 May 2024 08:09:13 -0700 (PDT)
+Date: Thu, 23 May 2024 17:09:06 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
  Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Brad Smith <brad@comstyle.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Coiby Xu <Coiby.Xu@gmail.com>, Markus Armbruster <armbru@redhat.com>,
- slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>, stefanha@redhat.com,
- Hanna Reitz <hreitz@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Brad Smith <brad@comstyle.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, 
+ Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>,
+ slp@redhat.com, 
+ Eduardo Habkost <eduardo@habkost.net>, stefanha@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Raphael Norwitz <raphael@enfabrica.net>, Jason Wang <jasowang@redhat.com>, 
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com, 
  Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
+Subject: Re: [PATCH v5 09/13] osdep: move O_DSYNC and O_DIRECT defines from
+ file-posix
+Message-ID: <s2la2k2uplacblbxyywyxbhixrb7flpup3cp5zqdrvsbbrll5n@bajukzj7lamt>
 References: <20240523145522.313012-1-sgarzare@redhat.com>
- <20240523145522.313012-14-sgarzare@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240523145522.313012-14-sgarzare@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ <20240523145522.313012-10-sgarzare@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240523145522.313012-10-sgarzare@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -146,7 +100,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -162,20 +116,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23.05.24 16:55, Stefano Garzarella wrote:
-> `memory-backend-shm` can be used with vhost-user devices, so let's
-> add a new test case for it.
-> 
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
+On Thu, May 23, 2024 at 04:55:18PM GMT, Stefano Garzarella wrote:
+>These defines are also useful for vhost-user-blk when it is compiled
+>in some POSIX systems that do not define them, so let's move them to
+>“qemu/osdep.h”.
+>
+>Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>---
+> include/qemu/osdep.h | 14 ++++++++++++++
+> block/file-posix.c   | 14 --------------
+> 2 files changed, 14 insertions(+), 14 deletions(-)
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+This seems to break the compilation on win64: 
+https://gitlab.com/sgarzarella/qemu/-/jobs/6923403322
 
--- 
-Cheers,
+     In file included from ../util/osdep.c:24:
+     ../util/osdep.c: In function 'qemu_open_internal':
+     ../include/qemu/osdep.h:339:18: error: 'O_DSYNC' undeclared (first use in this function)
+       339 | #define O_DIRECT O_DSYNC
+           |                  ^~~~~~~
+     ../util/osdep.c:334:41: note: in expansion of macro 'O_DIRECT'
+       334 |         if (errno == EINVAL && (flags & O_DIRECT)) {
+           |                                         ^~~~~~~~
+     ../include/qemu/osdep.h:339:18: note: each undeclared identifier is reported only once for each function it appears in
+       339 | #define O_DIRECT O_DSYNC
+           |                  ^~~~~~~
+     ../util/osdep.c:334:41: note: in expansion of macro 'O_DIRECT'
+       334 |         if (errno == EINVAL && (flags & O_DIRECT)) {
+           |                                         ^~~~~~~~
+     ../util/osdep.c: In function 'qemu_open_old':
+     ../include/qemu/osdep.h:339:18: error: 'O_DSYNC' undeclared (first use in this function)
+       339 | #define O_DIRECT O_DSYNC
+           |                  ^~~~~~~
+     ../util/osdep.c:385:50: note: in expansion of macro 'O_DIRECT'
+       385 |     if (ret == -1 && errno == EINVAL && (flags & O_DIRECT)) {
+           |
 
-David / dhildenb
+Indeed file-posix.c was not compiled on windows. Oops, I didn't think of 
+that :-(
+
+I'm thinking on putting a guard on CONFIG_POSIX, or just checking that 
+O_DSYNC is defined. Any suggestion?
+
+Thanks,
+Stefano
+
+>
+>diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+>index f61edcfdc2..e165b5cb1b 100644
+>--- a/include/qemu/osdep.h
+>+++ b/include/qemu/osdep.h
+>@@ -325,6 +325,20 @@ void QEMU_ERROR("code path is reachable")
+> #define ESHUTDOWN 4099
+> #endif
+>
+>+/* OS X does not have O_DSYNC */
+>+#ifndef O_DSYNC
+>+#ifdef O_SYNC
+>+#define O_DSYNC O_SYNC
+>+#elif defined(O_FSYNC)
+>+#define O_DSYNC O_FSYNC
+>+#endif
+>+#endif
+>+
+>+/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
+>+#ifndef O_DIRECT
+>+#define O_DIRECT O_DSYNC
+>+#endif
+>+
+> #define RETRY_ON_EINTR(expr) \
+>     (__extension__                                          \
+>         ({ typeof(expr) __result;                               \
+>diff --git a/block/file-posix.c b/block/file-posix.c
+>index 35684f7e21..7a196a2abf 100644
+>--- a/block/file-posix.c
+>+++ b/block/file-posix.c
+>@@ -110,20 +110,6 @@
+> #include <sys/diskslice.h>
+> #endif
+>
+>-/* OS X does not have O_DSYNC */
+>-#ifndef O_DSYNC
+>-#ifdef O_SYNC
+>-#define O_DSYNC O_SYNC
+>-#elif defined(O_FSYNC)
+>-#define O_DSYNC O_FSYNC
+>-#endif
+>-#endif
+>-
+>-/* Approximate O_DIRECT with O_DSYNC if O_DIRECT isn't available */
+>-#ifndef O_DIRECT
+>-#define O_DIRECT O_DSYNC
+>-#endif
+>-
+> #define FTYPE_FILE   0
+> #define FTYPE_CD     1
+>
+>-- 
+>2.45.1
+>
 
 
