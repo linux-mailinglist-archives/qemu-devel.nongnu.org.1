@@ -2,201 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F237B8CCE77
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 10:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4899B8CCEFF
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 11:22:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA44L-0000VA-2h; Thu, 23 May 2024 04:45:01 -0400
+	id 1sA4dA-0003EA-RU; Thu, 23 May 2024 05:21:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sA44H-0000UW-P0; Thu, 23 May 2024 04:44:57 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1sA44F-0006M0-7U; Thu, 23 May 2024 04:44:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716453896; x=1747989896;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=WtUh277q00n+gLbZTe50cRYhBzn+ebIu7yOqw2c6a8o=;
- b=Itv/H0IWpl7uXJRL0ojUqY5XGNaTAncTw0IFRaWX2Knt8FtQrPvX58ad
- PRZsJAvOW7F42zqGaGkqLNg24DmeJN9hC5TXCDwfIn5ODs6Ho+ubKeTMV
- HCVVg4QTIZBcnnfV2kWUt8GhzgJYngyMHqBnAtb+Ghy9i5sLSfr8mrOYw
- razJ5vnMqi+AcissvhEaEgm0zb50EvEPlgIA70fCKcC50o+0uCbK5sRKm
- 6VgjCpplAR3U/JxUl5qk2GdKmICdbGyUrWQcXWmPTYU1kTLxTOkpJf5SL
- rroy5wG9NH/NEMjy/kxZi+JiC/S1GRADmJaS8YapIPeXPI7m78suN9Fhk A==;
-X-CSE-ConnectionGUID: 8+BNrIj4TSW4LmHxyM0/aQ==
-X-CSE-MsgGUID: Pbffj2L8TFm9w2fYLq3tkQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="23889612"
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="23889612"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2024 01:44:51 -0700
-X-CSE-ConnectionGUID: kmzJl1nnQ2usWY/z4JL8eQ==
-X-CSE-MsgGUID: YVEHWd09R2yZf7jgRPAMUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="33698426"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 23 May 2024 01:44:50 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 23 May 2024 01:44:49 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 23 May 2024 01:44:49 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 23 May 2024 01:44:49 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 23 May 2024 01:44:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WC2JPfCTv/MREqVDTX19fGbGFqKodq+KYQEKjeBxJSmWvHbY5PJc0xGx+fKKIKqMMWT6uWHFF/ZyLEp/4HpvcAejODj1tQiyl1XvoVtkjQXOPqS6KZZKthf1ayQiEtYvPwsPL7EMUCkFWPmBzL9ztrw6s8jVHIEpo2Pmk3eLbB9qNqvFhLWeW2FSP1ouAOS/ywi4b+Rqon0meSeyJeHd3hKcx8RYqE4fLoMW60BHM8+3R6Dvw1Fni+j6vLmF1aEA9rEF8xx0jKOdYB5d5SuCNJATAXXEwQChUSL5Z7CM+ZErFBRtoZcl7yedj/vzlILmlIMQI/uTUct6IWo3VNlLmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WtUh277q00n+gLbZTe50cRYhBzn+ebIu7yOqw2c6a8o=;
- b=KZX+jsaNTnrvPOEjALkeziVXuNolw2QgnTbPkYFGtyOd7XqKykgQRs9IJWdrbFfSU7A94F5ytdLabTCdmjbCIQUotB4yELYt/YY3Nx00U+fZpvQ4HgumN2T0j2lLvIiBGF6bdh8YPV+uy80bm+70If/gExnkxChBveLsRTxipq91voM4ZXKmoA7Z2JU/9kjzndpD7csLQSfss9RqZpQ0F1ZdDIcFGYbiozHpzoRbDHUtyRMAB4NESJxfCRmHo+FRWLSfiZandQB9vmo/nEoVSoMP8Hq5C3WWsOQCkMbEk5GnnZPUiP35gXtQGHq7Wg0fjxE2qa0LUm+0v0ActvANIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CO1PR11MB4849.namprd11.prod.outlook.com (2603:10b6:303:90::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Thu, 23 May
- 2024 08:44:46 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091%7]) with mapi id 15.20.7611.016; Thu, 23 May 2024
- 08:44:46 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: "qemu-s390x@nongnu.org" <qemu-s390x@nongnu.org>, Thomas Huth
- <thuth@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman
- <farman@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>
-Subject: RE: [PATCH 3/7] hw/s390x/ccw: Remove local Error variable from
- s390_ccw_realize()
-Thread-Topic: [PATCH 3/7] hw/s390x/ccw: Remove local Error variable from
- s390_ccw_realize()
-Thread-Index: AQHarGnPFPaQwSu9j02SNIpmc3sbxbGkgc8g
-Date: Thu, 23 May 2024 08:44:46 +0000
-Message-ID: <SJ0PR11MB674477976C64BBC80440901F92F42@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240522170107.289532-1-clg@redhat.com>
- <20240522170107.289532-4-clg@redhat.com>
-In-Reply-To: <20240522170107.289532-4-clg@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CO1PR11MB4849:EE_
-x-ms-office365-filtering-correlation-id: a298e2ae-9ece-4d8e-bca8-08dc7b049956
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230031|1800799015|366007|376005|38070700009;
-x-microsoft-antispam-message-info: =?utf-8?B?dXdxN0ppQkZUUS80M0dSYzhXQmxyTjZSYTBzTGhmYTZrMlpyT0tjSzJya0dw?=
- =?utf-8?B?TFNnN3UxSE0wd3JVMU1tS0xaSGNydEkxNm5Vd0VuY1hEK0IzMFFHQTdrS1Rk?=
- =?utf-8?B?WDFpMEZxR3dGWHNaZVIza3lmTWtRZngzQWVoMHo1M1psSjQvR0JtSEdNM1Vt?=
- =?utf-8?B?TXhjVDcyMXVCaVRiTEZrSzNydDM0VlprSmEyeG1oang4dEFSc0NWYTNORHo2?=
- =?utf-8?B?S0xTNk9QWW52b1ZTTEJMdlNId2NuYmFTMjZnbkFacFU4cXBnVUNOa2FyR0U0?=
- =?utf-8?B?SjZhNEg4a3F5SVUrT3pqZFBKRzhZalJFbEFJQWpaSi9UVjEvbk92bTd3Z21m?=
- =?utf-8?B?VFRXREtqdjdTZnhuaHpZMkZ6QlRWbi9NRVpqZDJnaVZNTk1tSEI0MWFtclZx?=
- =?utf-8?B?VG1rYklaUUc1Rk50VzltZnBBZVpGNUNZY0dtZGc2VUxzRUt0dVprL2l1dzVq?=
- =?utf-8?B?MzVIT0lPQm9hYXBJaWtSWjFCSDlHQzFVZ2lxdVAvRFkwMk8rK2c5RkFwTXlh?=
- =?utf-8?B?cFhYM3Vnb1Z2R1dBZXhjTXRlWXl5VGVoZHhIWUxrdjR0U3hMeE1FcEtTL0VT?=
- =?utf-8?B?MllEV2tWdDdSS2l0MFNjV1VBbTM4QlJ1UFRQZzFwRTFKOG5zYWVRV1RrY3hH?=
- =?utf-8?B?VFIvNGJIWWpYdEhEaDVocFVNdmF0T0xPMVBXRWIxVmdlQXRSbnFOYXg5V3o2?=
- =?utf-8?B?VUVnZTc2aWpGcVpyR2RwTmVwcmUrWG5laW1hZ2lLdGFLVGx0dFdRcHNjNWlJ?=
- =?utf-8?B?RGxDdHZ5S1gya25ycnZQZW9ReXhZUW51RjNNdTFCSVZFRmpvWHBJRjNDRG1u?=
- =?utf-8?B?cEJiZ21BYUpUeGFJdU4rS0s0SlZvRmZwV3BhVzd5NWl1M3ptOFNRYWtLUzlH?=
- =?utf-8?B?ckJicktiVWFNdDdubkNoMk5BSmpsT0hESXN1cDBxSDhlMlUyV2ZCZzBnbGVV?=
- =?utf-8?B?NEttcTRXaDhHMG1IamtlTXpRb2RPWHpvSE5rYitvRFdYWFdleE1qbSs3N0Rn?=
- =?utf-8?B?TjJCQVZHU25yUnNVMDRxSjRuTUhEM3ZKMnV6RFdPdFNRQjZyZE1RMlBZMWo4?=
- =?utf-8?B?SnJrTmxvdS8xb1p5OXZQV0dNdkxUZk9CWW8xbkxGcDJCNVFIUmVOMmhLaTR1?=
- =?utf-8?B?dFViYkxIQzh2VVdkSmRNYS8wTHZXMWdTaUdXZmdESVNsWmFUZnZRVnAyTkZk?=
- =?utf-8?B?aFR1LzM3WHAzeERwK2g1cFhiSE96ajV3WG0rckZ1WmNXK3JOeVphdE1SZFpB?=
- =?utf-8?B?V2lPRE5DTk13TWlJMFRqQjlMU1VYbFhSZDN2NUNuUGdKZGFKZWk4d09MMTFt?=
- =?utf-8?B?WUZrOXN1YytISmcrU0UyNmhHcXpXdUtlcXFRR3pNMjJqYktXaERNL1BxUjZF?=
- =?utf-8?B?S2RlU0VpV2FDUDV3eSt2R1NWWDI5R0lsa0FRQnFhWWdwNFMzUUpPUzVnT21H?=
- =?utf-8?B?ajRwc3IxVVowOXh3SUxoZ0RTL0RCOFFqVGFLb3lSVTBHQWdEQlVNdnQ1QUZK?=
- =?utf-8?B?NzlVdDRVSU0rQ1lRZmM1dEd6d2ZHb2N5eDhoa3R1MEwveEFzQkk5cGlYWmpQ?=
- =?utf-8?B?WDBjSkhZWEdGWFJmWGY5eHhNWlRPMFg5a2RRd0lERVNGREY1c1ZxeTdvS1Uw?=
- =?utf-8?B?aTlkZE50QlBIYUFYK2YraE11Y2V3TDJjU0pFL0pyci9PUytUaFcyQ1liTFZ1?=
- =?utf-8?B?eUxvQ09hSG9NdmxIOGdkVU03VVRJQU5HcC9VZW9DdzFILytNcHNaVUxHbzI2?=
- =?utf-8?B?YUJKVVVNVndDeElPZVZObmEyQ2FCOUg4T0hKWkFQaVpVMW5rbyt3SVR4NlpY?=
- =?utf-8?B?Z1hwSkVqTG5TcVkwdHZRQT09?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(366007)(376005)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZVZYNkhjQlNRdDlPYW5jczF3T0g0TGJ1UVJsNmkyWi9KbExIYzhvWURjd005?=
- =?utf-8?B?QmFKWnYyaDFFSXVaQWh1aWlZUHEwUXVyakhSbkNFbTlIQU9ZSXd6ZmtuNlhS?=
- =?utf-8?B?amZRWmMzVHE3SUloZzc5cC92RmEzZzRRRTlGdDFTM2FmN3k4Tk94Vmk4ZURl?=
- =?utf-8?B?SU5tc1Izc2szRGptcGxud0J0L0ZjdEkraHhQMUxPR2x5MHZ5amU1WnJKLzJ2?=
- =?utf-8?B?NW9yTit0Sm81Y3lYdFJHK0FCQVNCNGl5bTJQdTdqSy9JaHlpemEyRitTWUl5?=
- =?utf-8?B?ZVozZ21iV05rSm05aksxckZRTVplVkxCK0RmYnVMVlNMSFVKZW41NG43dUd5?=
- =?utf-8?B?bWl0WTRYOTd0NkFSY3pZbkNnM1hIMXY1am9jVnBFSWdWV0RQV0tUMm5PT0Mx?=
- =?utf-8?B?UGJYYjgwSUhJWU1ma2I1b3FjUXJlcFZFQ0pPaFErSVF1Q25pa0lBZkVrWVpz?=
- =?utf-8?B?aEdGamlCUmZGSTN4elo3Qm10U3cyUlIxV0haR3h3bE94OXBZaXRkYW5PWE5P?=
- =?utf-8?B?TjkvRTlaODREeVpHckNDMEd0YTZ6RXQwbk5PNi9BMUV2d1VTNFFQYmtPQkJs?=
- =?utf-8?B?SmhmMWE5NC9FSURqK2hlOUVkd0ovZEI3clZ1cm5YbGJLL0F3NmFTVy9kRXFC?=
- =?utf-8?B?UU5YM2krNmpsNzEvaTAwL3lETjIvb29SL3B2UTRrYlpMUklxSFN4aXFCYTJM?=
- =?utf-8?B?b1FZRW44NXF1NmVDeUU1K05qaDdHeG1xdmNoQUo3Y3ZpT00rSVRzWjNJYVpp?=
- =?utf-8?B?QjRRNEt6N3hJakhkWnZFaUtYKzBlSmlLeXNQZkk5T3laWGhnVEs5Mmk4V3Ry?=
- =?utf-8?B?N2tMYUZlUVNnVGltRHpkbjA2YkpGU1hnbzE0UjJUYXJYN3V3ZmM2TG9nWVhL?=
- =?utf-8?B?RUlBVWhkNE9MRmIxKy9NbmFkNmkwektIWjN1MnlzdTBVcXhRNXZGbHBBRGNU?=
- =?utf-8?B?YWlmTXd6bzFHSXlDUVhybk1mSnZLdW91QXRsalJzbjRsYkw0S1B6VlhKb3cv?=
- =?utf-8?B?WmVmUWNBVXd6bW1NUVpHMXVmNjEwQTB2aW9jRHY0RlhiYXZQUnN2Z092cXU3?=
- =?utf-8?B?UGk5a2o1cU1DWldHblNGYjY5dTMzbm55K1pHY1lsaDhHczgxQ2FPUUFhTXp5?=
- =?utf-8?B?VkVxakFiQ3N6TnR2ZTBiWGpCUEhhTGdHQy9ySVREbjlMT3FkZGhGZnRUSmhz?=
- =?utf-8?B?emRleXFJNTNHUlZRWE4vOFYwNjV1aXFlK2ZKa0ZBa0NxTTQySFg3eXdwV0VF?=
- =?utf-8?B?Tmk1djcwRmEwT0xkbzhQRWYzZHE0MWwyKzc5Wk94SktBMW80d0hsSERVQkdH?=
- =?utf-8?B?b0VBK09LMTBmYzZ2S1d5SlRXQWVwdkJjcmwzOFVtazFSMC9WY1ZEU3JvdEhP?=
- =?utf-8?B?NzI1UWhrZkMzYUZJc2FmaEZBSGJMTTBmaEhNRks1djlNNjZHVnlRZlhaUHd1?=
- =?utf-8?B?Ry9SK0pmaWlKeURSTkVyMDhBSUpEaDBROG8yTnJKbEZMTk9PWk9iU2x1RXhn?=
- =?utf-8?B?Y1lsVjdiK011aEFZaUUvRzFRdzIvZnp1QklpRTRwWm5tdUFnbGcxaStSWHl4?=
- =?utf-8?B?cElsVzRtd3NxemVidDJ4ZjBZRTFwK3FrTDQ3Q1lNUXlQMUt4R3k1b3orQzZa?=
- =?utf-8?B?bGczOTdYZnpreURXb3daRHkvemkzOXREb2dJc09PSzIreXp1aVV4M213MlBR?=
- =?utf-8?B?K1dpZFBUcFV5K0J3VkJRTDVCLyt2dStEQ1hpWHhsN3BLRHMvblVuQU1OOU5a?=
- =?utf-8?B?WHlVcGtYNkpYNUJubmFacVBHZWMrNDhucm1DNjl0T0dCNVB1RU10UjFYT3N6?=
- =?utf-8?B?Q096SHJaZy9WNVE1b3JvRUpadmtaOVRCZ1dRci9aMXpSZzhPMnBOSUY3SHJt?=
- =?utf-8?B?WHNXWXNiTFQ2SCtNTnZPOTdLU0VUWnRSQWVWQnZKRk1PdmRibGZhcGpudXk4?=
- =?utf-8?B?WDM4TzJYdjdOcm1vUUhSNHhIdEZtSFYwb2pBSm9JKzJoYVdDbmR6czBLV3pJ?=
- =?utf-8?B?QnN3SkFRMnVZNmpESWN1TS9yZEZVd1NBclg2STltaTFLRmNoYlNWUk9SRkdB?=
- =?utf-8?B?amVhbmkvMEFrcGdmUzV4NTVaZmFSZXhPRWFnZ29iaHZ2V2dzSHZyL1lJdFJv?=
- =?utf-8?Q?g5UImKMPr0jJzf3Tqo5UWddDK?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sA4d9-0003Cx-9T
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 05:20:59 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sA4d0-0004V9-1q
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 05:20:59 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-572669fd9f9so11223021a12.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 02:20:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716456047; x=1717060847; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
+ :reply-to; bh=EcZ+0me2F/K1mHM/s3g9751tvdNYFctFe1UFp8CvXdU=;
+ b=RyS48uzKQxH9MWq/WpLAKCRyLXKMDk/lYKP/lWy7tcW3y5ZMyclj1Z82IFNVqu1L7q
+ MZyYcHBBCnvRegD4n9zmypOuf7nWF+BibWBU21iZ1NTYWIwVJpnAe1/VJOmHx+toayYZ
+ yJAv/hT02NpOMjzQzM8ZoNqV8QiOsIoGFdt0MPg7f1t06Ud5L5xTClLO524zeK+aEUyE
+ /nG+WinUHEUUY5AHr6244rBltcvYA7+ujlfAVh/iHjw44LtKFFlIPJCxq9nt3syCmOnn
+ OCQy2zk10X64xqZfiWMkqH0+l+ODF8x8hkT9WiCdy2wxA7qLAnjBO2hW9z3Vb+/NSrVj
+ q6wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716456047; x=1717060847;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EcZ+0me2F/K1mHM/s3g9751tvdNYFctFe1UFp8CvXdU=;
+ b=Ch5Bclrgfs5QYbU1vJoisIEccLNKw5Prz+x6USu7uzsvh5YDQ+W0aaOVTag1/WBBr5
+ 7s4hduis8V8uS46BE1s0Amu8M8LKi4Z1o05ya9dhlBiNY+YMqGjHDDuZ8G88nnk+zBsU
+ g7z2mZuohfM65Y+J/xTAGpkAx9bPi4zvD9VJtA1aU/oKbYOAM+aW0u685VCEYYzObtxP
+ 46vc/Srbh17d147ibwTroInLhl73Ik2U8IRRVRKObx7P9y+SlmJ4S5y39MVvNjEl0g/k
+ 3krkIJc+CXpB67vFUzWdjFVzM3XK1ZN3HZWsfePr13uo/CuTaK2bnr7wugXk1IN3uieI
+ OF2w==
+X-Gm-Message-State: AOJu0YzH691qvTQiN6ro7ZKdc2DjL1LSVZge1kyOSbhZrsLO67QdKxs8
+ xc7txF6dC+9FvXJMGbH5U6vEo3FLn859Oo/CWO3owSBE3vDo4w221xC3zA==
+X-Google-Smtp-Source: AGHT+IER4+KGNb7jyOf2/LNUZccE/GlZDhkE/PbYEJtpEiFOg7WYDR1uLBOMLsrGmLmgsr0kp4eY5A==
+X-Received: by 2002:a17:906:f6d8:b0:a59:a431:f951 with SMTP id
+ a640c23a62f3a-a622816909amr262555166b.48.1716456046343; 
+ Thu, 23 May 2024 02:20:46 -0700 (PDT)
+Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a5a1781d1fcsm1901226666b.35.2024.05.23.02.20.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 May 2024 02:20:45 -0700 (PDT)
+Date: Thu, 23 May 2024 08:44:57 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: Re: [PATCH v2 3/3] meson: Drop the .fa library prefix
+In-Reply-To: <20240522-xkb-v2-3-67b54fa7c98f@daynix.com>
+References: <20240522-xkb-v2-0-67b54fa7c98f@daynix.com>
+ <20240522-xkb-v2-3-67b54fa7c98f@daynix.com>
+Message-ID: <0F153196-AA69-4407-A161-C2565B48C5FE@gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a298e2ae-9ece-4d8e-bca8-08dc7b049956
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 May 2024 08:44:46.1945 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: PlLx74ghFuZtZglmAIrurNe2nYZEal0fhJozs1P9ng2DEE3z3lt4lX13clXPcURX/1pB+0k1445uZW2Z6fxATTaz/ZmzHonTF+YyLtzk8uk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4849
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=198.175.65.13;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -213,41 +99,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
-IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBbUEFUQ0ggMy83XSBody9zMzkweC9jY3c6IFJl
-bW92ZSBsb2NhbCBFcnJvciB2YXJpYWJsZSBmcm9tDQo+czM5MF9jY3dfcmVhbGl6ZSgpDQo+DQo+
-VXNlIHRoZSAnRXJyb3IgKiplcnJwJyBhcmd1bWVudCBvZiBzMzkwX2Njd19yZWFsaXplKCkgaW5z
-dGVhZCBhbmQNCj5yZW1vdmUgdGhlIGVycm9yX3Byb3BhZ2F0ZSgpIGNhbGwuDQo+DQo+U2lnbmVk
-LW9mZi1ieTogQ8OpZHJpYyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KDQpSZXZpZXdlZC1i
-eTogWmhlbnpob25nIER1YW4gPHpoZW56aG9uZy5kdWFuQGludGVsLmNvbT4NCg0KVGhhbmtzDQpa
-aGVuemhvbmcNCg0KPi0tLQ0KPiBody9zMzkweC9zMzkwLWNjdy5jIHwgMTMgKysrKystLS0tLS0t
-LQ0KPiAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQ0KPg0K
-PmRpZmYgLS1naXQgYS9ody9zMzkweC9zMzkwLWNjdy5jIGIvaHcvczM5MHgvczM5MC1jY3cuYw0K
-PmluZGV4DQo+NGI4ZWRlNzAxZGY5MDk0OTcyMDI2MmI2ZmMxYjY1ZjRlNTA1ZTM0ZC4uYjNkMTRj
-NjFkNzMyODgwYTY1MWVkDQo+Y2YyOGEwNDBjYTcyM2NiOWY1YiAxMDA2NDQNCj4tLS0gYS9ody9z
-MzkweC9zMzkwLWNjdy5jDQo+KysrIGIvaHcvczM5MHgvczM5MC1jY3cuYw0KPkBAIC0xMTUsMTMg
-KzExNSwxMiBAQCBzdGF0aWMgdm9pZCBzMzkwX2Njd19yZWFsaXplKFMzOTBDQ1dEZXZpY2UNCj4q
-Y2RldiwgY2hhciAqc3lzZnNkZXYsIEVycm9yICoqZXJycCkNCj4gICAgIERldmljZVN0YXRlICpw
-YXJlbnQgPSBERVZJQ0UoY2N3X2Rldik7DQo+ICAgICBTdWJjaERldiAqc2NoOw0KPiAgICAgaW50
-IHJldDsNCj4tICAgIEVycm9yICplcnIgPSBOVUxMOw0KPg0KPi0gICAgaWYgKCFzMzkwX2Njd19n
-ZXRfZGV2X2luZm8oY2Rldiwgc3lzZnNkZXYsICZlcnIpKSB7DQo+LSAgICAgICAgZ290byBvdXRf
-ZXJyX3Byb3BhZ2F0ZTsNCj4rICAgIGlmICghczM5MF9jY3dfZ2V0X2Rldl9pbmZvKGNkZXYsIHN5
-c2ZzZGV2LCBlcnJwKSkgew0KPisgICAgICAgIHJldHVybjsNCj4gICAgIH0NCj4NCj4tICAgIHNj
-aCA9IGNzc19jcmVhdGVfc2NoKGNjd19kZXYtPmRldm5vLCAmZXJyKTsNCj4rICAgIHNjaCA9IGNz
-c19jcmVhdGVfc2NoKGNjd19kZXYtPmRldm5vLCBlcnJwKTsNCj4gICAgIGlmICghc2NoKSB7DQo+
-ICAgICAgICAgZ290byBvdXRfbWRldmlkX2ZyZWU7DQo+ICAgICB9DQo+QEAgLTEzMiwxMiArMTMx
-LDEyIEBAIHN0YXRpYyB2b2lkIHMzOTBfY2N3X3JlYWxpemUoUzM5MENDV0RldmljZQ0KPipjZGV2
-LCBjaGFyICpzeXNmc2RldiwgRXJyb3IgKiplcnJwKQ0KPiAgICAgY2N3X2Rldi0+c2NoID0gc2No
-Ow0KPiAgICAgcmV0ID0gY3NzX3NjaF9idWlsZF9zY2hpYihzY2gsICZjZGV2LT5ob3N0aWQpOw0K
-PiAgICAgaWYgKHJldCkgew0KPi0gICAgICAgIGVycm9yX3NldGdfZXJybm8oJmVyciwgLXJldCwg
-IiVzOiBGYWlsZWQgdG8gYnVpbGQgaW5pdGlhbCBzY2hpYiIsDQo+KyAgICAgICAgZXJyb3Jfc2V0
-Z19lcnJubyhlcnJwLCAtcmV0LCAiJXM6IEZhaWxlZCB0byBidWlsZCBpbml0aWFsIHNjaGliIiwN
-Cj4gICAgICAgICAgICAgICAgICAgICAgICAgIF9fZnVuY19fKTsNCj4gICAgICAgICBnb3RvIG91
-dF9lcnI7DQo+ICAgICB9DQo+DQo+LSAgICBpZiAoIWNrLT5yZWFsaXplKGNjd19kZXYsICZlcnIp
-KSB7DQo+KyAgICBpZiAoIWNrLT5yZWFsaXplKGNjd19kZXYsIGVycnApKSB7DQo+ICAgICAgICAg
-Z290byBvdXRfZXJyOw0KPiAgICAgfQ0KPg0KPkBAIC0xNTEsOCArMTUwLDYgQEAgb3V0X2VycjoN
-Cj4gICAgIGdfZnJlZShzY2gpOw0KPiBvdXRfbWRldmlkX2ZyZWU6DQo+ICAgICBnX2ZyZWUoY2Rl
-di0+bWRldmlkKTsNCj4tb3V0X2Vycl9wcm9wYWdhdGU6DQo+LSAgICBlcnJvcl9wcm9wYWdhdGUo
-ZXJycCwgZXJyKTsNCj4gfQ0KPg0KPiBzdGF0aWMgdm9pZCBzMzkwX2Njd191bnJlYWxpemUoUzM5
-MENDV0RldmljZSAqY2RldikNCj4tLQ0KPjIuNDUuMQ0KDQo=
+
+
+Am 22=2E Mai 2024 10:43:04 UTC schrieb Akihiko Odaki <akihiko=2Eodaki@dayn=
+ix=2Ecom>:
+>The non-standard =2Efa library prefix breaks the link source
+
+s/prefix/suffix/ in the commit message and subject=2E
+
+Best regards,
+Bernhard
+
+>de-duplication done by Meson so drop it=2E
+>
+>The lack of link source de-duplication causes AddressSanitizer to
+>complain ODR violations, and makes GNU ld abort when combined with
+>clang's LTO=2E
+>
+>Previously, the non-standard prefix was necessary for fork-fuzzing=2E
+>Meson wraps all standard-prefixed libraries with --start-group and
+>--end-group=2E This made a fork-fuzz=2Eld linker script wrapped as well a=
+nd
+>broke builds=2E Commit d2e6f9272d33 ("fuzz: remove fork-fuzzing
+>scaffolding") dropped fork-fuzzing so we can now restore the standard
+>prefix=2E
+>
+>The occurances of the prefix was detected and removed by performing
+>a tree-wide search with 'fa' and =2Efa (note the quotes and dot)=2E
+>
+>Signed-off-by: Akihiko Odaki <akihiko=2Eodaki@daynix=2Ecom>
+>---
+> docs/devel/build-system=2Erst         | 5 -----
+> stubs/blk-exp-close-all=2Ec           | 2 +-
+> =2Egitlab-ci=2Ed/buildtest-template=2Eyml | 2 --
+> =2Egitlab-ci=2Ed/buildtest=2Eyml          | 2 --
+> gdbstub/meson=2Ebuild                 | 2 --
+> tcg/meson=2Ebuild                     | 2 --
+> tests/Makefile=2Einclude              | 2 +-
+> tests/qtest/libqos/meson=2Ebuild      | 1 -
+> 8 files changed, 2 insertions(+), 16 deletions(-)
+>
+>diff --git a/docs/devel/build-system=2Erst b/docs/devel/build-system=2Ers=
+t
+>index 09caf2f8e199=2E=2E5baf027b7614 100644
+>--- a/docs/devel/build-system=2Erst
+>+++ b/docs/devel/build-system=2Erst
+>@@ -236,15 +236,10 @@ Subsystem sourcesets:
+>   are then turned into static libraries as follows::
+>=20
+>     libchardev =3D static_library('chardev', chardev_ss=2Esources(),
+>-                                name_suffix: 'fa',
+>                                 build_by_default: false)
+>=20
+>     chardev =3D declare_dependency(link_whole: libchardev)
+>=20
+>-  As of Meson 0=2E55=2E1, the special ``=2Efa`` suffix should be used fo=
+r everything
+>-  that is used with ``link_whole``, to ensure that the link flags are pl=
+aced
+>-  correctly in the command line=2E
+>-
+> Target-independent emulator sourcesets:
+>   Various general purpose helper code is compiled only once and
+>   the =2Eo files are linked into all output binaries that need it=2E
+>diff --git a/stubs/blk-exp-close-all=2Ec b/stubs/blk-exp-close-all=2Ec
+>index 1c7131676392=2E=2E2f68e06d7d05 100644
+>--- a/stubs/blk-exp-close-all=2Ec
+>+++ b/stubs/blk-exp-close-all=2Ec
+>@@ -1,7 +1,7 @@
+> #include "qemu/osdep=2Eh"
+> #include "block/export=2Eh"
+>=20
+>-/* Only used in programs that support block exports (libblockdev=2Efa) *=
+/
+>+/* Only used in programs that support block exports (libblockdev=2Ea) */
+> void blk_exp_close_all(void)
+> {
+> }
+>diff --git a/=2Egitlab-ci=2Ed/buildtest-template=2Eyml b/=2Egitlab-ci=2Ed=
+/buildtest-template=2Eyml
+>index 22045add8064=2E=2E69e468a576ba 100644
+>--- a/=2Egitlab-ci=2Ed/buildtest-template=2Eyml
+>+++ b/=2Egitlab-ci=2Ed/buildtest-template=2Eyml
+>@@ -45,10 +45,8 @@
+>     exclude:
+>       - build/**/*=2Ep
+>       - build/**/*=2Ea=2Ep
+>-      - build/**/*=2Efa=2Ep
+>       - build/**/*=2Ec=2Eo
+>       - build/**/*=2Ec=2Eo=2Ed
+>-      - build/**/*=2Efa
+>=20
+> =2Ecommon_test_job_template:
+>   extends: =2Ebase_job_template
+>diff --git a/=2Egitlab-ci=2Ed/buildtest=2Eyml b/=2Egitlab-ci=2Ed/buildtes=
+t=2Eyml
+>index cfdff175c389=2E=2Ec156e6f1d90e 100644
+>--- a/=2Egitlab-ci=2Ed/buildtest=2Eyml
+>+++ b/=2Egitlab-ci=2Ed/buildtest=2Eyml
+>@@ -178,10 +178,8 @@ build-previous-qemu:
+>     exclude:
+>       - build-previous/**/*=2Ep
+>       - build-previous/**/*=2Ea=2Ep
+>-      - build-previous/**/*=2Efa=2Ep
+>       - build-previous/**/*=2Ec=2Eo
+>       - build-previous/**/*=2Ec=2Eo=2Ed
+>-      - build-previous/**/*=2Efa
+>   needs:
+>     job: amd64-opensuse-leap-container
+>   variables:
+>diff --git a/gdbstub/meson=2Ebuild b/gdbstub/meson=2Ebuild
+>index da5721d8452b=2E=2Ec91e398ae726 100644
+>--- a/gdbstub/meson=2Ebuild
+>+++ b/gdbstub/meson=2Ebuild
+>@@ -19,13 +19,11 @@ gdb_system_ss =3D gdb_system_ss=2Eapply({})
+>=20
+> libgdb_user =3D static_library('gdb_user',
+>                              gdb_user_ss=2Esources() + genh,
+>-                             name_suffix: 'fa',
+>                              c_args: '-DCONFIG_USER_ONLY',
+>                              build_by_default: false)
+>=20
+> libgdb_system =3D static_library('gdb_system',
+>                                 gdb_system_ss=2Esources() + genh,
+>-                                name_suffix: 'fa',
+>                                 build_by_default: false)
+>=20
+> gdb_user =3D declare_dependency(link_whole: libgdb_user)
+>diff --git a/tcg/meson=2Ebuild b/tcg/meson=2Ebuild
+>index 8251589fd4e9=2E=2Ef941413d5801 100644
+>--- a/tcg/meson=2Ebuild
+>+++ b/tcg/meson=2Ebuild
+>@@ -31,7 +31,6 @@ tcg_ss =3D tcg_ss=2Eapply({})
+>=20
+> libtcg_user =3D static_library('tcg_user',
+>                              tcg_ss=2Esources() + genh,
+>-                             name_suffix: 'fa',
+>                              c_args: '-DCONFIG_USER_ONLY',
+>                              build_by_default: false)
+>=20
+>@@ -41,7 +40,6 @@ user_ss=2Eadd(tcg_user)
+>=20
+> libtcg_system =3D static_library('tcg_system',
+>                                 tcg_ss=2Esources() + genh,
+>-                                name_suffix: 'fa',
+>                                 c_args: '-DCONFIG_SOFTMMU',
+>                                 build_by_default: false)
+>=20
+>diff --git a/tests/Makefile=2Einclude b/tests/Makefile=2Einclude
+>index c9d1674bd070=2E=2Ed39d5dd6a43e 100644
+>--- a/tests/Makefile=2Einclude
+>+++ b/tests/Makefile=2Einclude
+>@@ -87,7 +87,7 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
+> =2EPHONY: check-venv check-avocado check-acceptance check-acceptance-dep=
+recated-warning
+>=20
+> # Build up our target list from the filtered list of ninja targets
+>-TARGETS=3D$(patsubst libqemu-%=2Efa, %, $(filter libqemu-%=2Efa, $(ninja=
+-targets)))
+>+TARGETS=3D$(patsubst libqemu-%=2Ea, %, $(filter libqemu-%=2Ea, $(ninja-t=
+argets)))
+>=20
+> TESTS_VENV_TOKEN=3D$(BUILD_DIR)/pyvenv/tests=2Egroup
+> TESTS_RESULTS_DIR=3D$(BUILD_DIR)/tests/results
+>diff --git a/tests/qtest/libqos/meson=2Ebuild b/tests/qtest/libqos/meson=
+=2Ebuild
+>index 3aed6efcb8d1=2E=2E45b81c83ade3 100644
+>--- a/tests/qtest/libqos/meson=2Ebuild
+>+++ b/tests/qtest/libqos/meson=2Ebuild
+>@@ -68,7 +68,6 @@ if have_virtfs
+> endif
+>=20
+> libqos =3D static_library('qos', libqos_srcs + genh,
+>-                        name_suffix: 'fa',
+>                         build_by_default: false)
+>=20
+> qos =3D declare_dependency(link_whole: libqos)
+>
 
