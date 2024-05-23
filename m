@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FE38CDD64
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A04F88CDD97
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:21:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHa3-0004eC-LH; Thu, 23 May 2024 19:10:39 -0400
+	id 1sAHa5-00050f-RD; Thu, 23 May 2024 19:10:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZP-000228-UL; Thu, 23 May 2024 19:10:01 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1sAHZU-0002Bn-Fi; Thu, 23 May 2024 19:10:05 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZN-0005rd-RS; Thu, 23 May 2024 19:09:59 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f5053dc057so4049416b3a.2; 
- Thu, 23 May 2024 16:09:56 -0700 (PDT)
+ id 1sAHZS-0005s1-PL; Thu, 23 May 2024 19:10:04 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1f44b5d0c50so1607385ad.2; 
+ Thu, 23 May 2024 16:10:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505795; x=1717110595; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505799; x=1717110599; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1Gn8mYqupsKQ/pBe/wMJEus3gEH8ANhWgPrzZvjVBR0=;
- b=ZGdOsT7XPHJ8Pb8WNNbOVQT9a/GgTptR9xXI8NvU9u6641gUR6Bn+Orf4QZUVn1FUW
- W1yDrm1nIjgW+opy10CkIQbyvhFWKl1R2X1pNVM3N9Zfvqc88mofeoGyZBzuBTG+EUN7
- mwcTIMeaOis/6854BDzDnv08kx8OofgA9P4f8U53GjJK3Wq9qYTq7kZhxSGWfonfBIph
- 2Zwkm6fFeuE7SD3QnPnFOsCP6lX9VqI1dYdp1wy/hywJUj1mifKZTk/OQNGqryKN7jF/
- 7fVcD+8xwqOSsTYRX++EMaf/Sw8Y/GxF9GpWRYIhesXrUk90IBBjR9fvcgkKge5I9YsC
- swNg==
+ bh=4xWtYFgPKmZvzoUo1p/mj26aITEKQ3OxBcn5RDEMeAE=;
+ b=nZDJyl4629u5TcOB/FFYp/TOEW+AyrMCUeBzyYLTX8x9n/I4/OotJIwjSpZZ4MPdxs
+ UTcFipkab9dWeUBucjNgnH/cD+EGzUKkHbOKDJfzDd2G124iJQoYqSDYkuo6R+mJkZ/B
+ w01ZWlbpm0DXbJkExij3VdYbTn1XERcxSBywLTytW8vZ6mgjaFbQfni/Ts7c7yO/dL/A
+ ywL22JsHTF0FDK2L/ANFCsBN4fFIp7hS/Z9sEJGCwDKWLRzedwOIJ5qBm0IWEYTi4+WA
+ BWKjK+o5DtRUXt9/q6Q2/TWxhtb7AauXgaFHMosp199vZOZESutgPXa1kAek3uCG5DDt
+ Xo1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505795; x=1717110595;
+ d=1e100.net; s=20230601; t=1716505799; x=1717110599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1Gn8mYqupsKQ/pBe/wMJEus3gEH8ANhWgPrzZvjVBR0=;
- b=Gr+TAk/wRxdST/tG1rko7Q5GBje7MKeBm2n4bhE1IrTeVjvvFvk+tjHMDlindDr+Df
- a303UkInIMlnhVsWt1nnpWykDm55lyOi8KUOFgQwT7QJsqbpB5nRKSLq566ZVjyk6O5D
- HowGIHavRM3anVsauqvgTglHvcF6ZN3ew0Mevp0yvhNID1famqOV1/Hz3VW97y1zsRTf
- e2oD3Wfk3qPCT1Vr3H+wz4d2ZND0dZFZpIn9Ii5vGZAk848nCvt1WYLcJqEwOMP6Xq/L
- D+3MTILZOmFVRvDRlwwt7DghFSkzJeaDpOxfYmhT4+yq77sGuwZJikz34xlTwLSVorfq
- a7bw==
+ bh=4xWtYFgPKmZvzoUo1p/mj26aITEKQ3OxBcn5RDEMeAE=;
+ b=J7s7Bqx8loLlXRvmr4WPqVIhy6W+hT4u/+6I5y9ByI9DiQ0hDeXoL3Z3sPt3eZy/pC
+ RpzyhBYUmSLNMDm9T9cvdwBWZv3yRVxPAKwYYk75D6Zv+9xjcG7X1ZuCZfRI0I/OJEtg
+ 7wd1GyvG4Awsg5F5FQmQp4xumgFb1TxSw00IjHhl6lvUix13J82o6hdGp5s6qbscUp5X
+ LwJFwGAO4BjsB6WKLJhe3Zuf1JebJ1iX07ZPxKYWAdR4UiJF3uvLOTuDDbVCJpldt42a
+ xdmtPhD29iuBb/FFYHqtodRH78WV9MOLnWhlx3hKco2XYqfVKJ+qJZ/xJ/B3UiVMr2Ma
+ O94w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwe65ZOFYNCBmMzpXsu5O1Ei4HAIsmmPY4NPgd90r4oXKbEzqIjRK/km+xMbHEJdI8bwbI6WFqY7PCfsPfT6nJTXlX
-X-Gm-Message-State: AOJu0YwXqNTTRwLlSey0jzX5SVzc/CSuf4X5BUQljEG3ikXS4LEKDf8D
- XngLkBaSJWq1sOJBqmx2fmBEJ7ac6Hq4oylKlVRnSuyetPBjpvZfQUtH/w==
-X-Google-Smtp-Source: AGHT+IGu9oxH4+enlS6onB28Spk/BvQVJ6jU6D0FH1fUDSASxo/09I3sJtw9ICU0k2iVVMiq8Ocp4A==
-X-Received: by 2002:a05:6a20:9718:b0:1af:ccd9:4b1d with SMTP id
- adf61e73a8af0-1b212d1beb4mr825163637.22.1716505795430; 
- Thu, 23 May 2024 16:09:55 -0700 (PDT)
+ AJvYcCW3SikWC44O+vHvTmLsYm3SJEp3zL9MyEjmQ9NRy1Df6aEhNSc5ttl0ukTkceabxQoe96PRhJjo4SWvPeKxz6drQmM8
+X-Gm-Message-State: AOJu0Yw1eO0XKKhmnqfd6OImUTvEww5XyI2BKxQoDTuf7RquvWXnvMvH
+ T/zOgInp/RlZJGqxaTtcM0idk3OxWAcoEED6P8QuPq/hrYAvgUcCCSv22w==
+X-Google-Smtp-Source: AGHT+IG4zaS0j4WzWY2a7KG7/BeYTBe0VJ7CMttqmMyNn8+/dHxqXTmHadvpNEpKge2hDiTZwr0mAg==
+X-Received: by 2002:a17:902:c60c:b0:1f2:ffcc:8a0b with SMTP id
+ d9443c01a7336-1f4487186d1mr6534515ad.24.1716505798718; 
+ Thu, 23 May 2024 16:09:58 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.53
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:09:55 -0700 (PDT)
+ Thu, 23 May 2024 16:09:58 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Glenn Miles <milesg@linux.ibm.com>
-Subject: [PULL 38/72] target/ppc: add SMT support to msgsnd broadcast
-Date: Fri, 24 May 2024 09:07:11 +1000
-Message-ID: <20240523230747.45703-39-npiggin@gmail.com>
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 39/72] target/ppc: Remove unused struct 'mmu_ctx_hash32'
+Date: Fri, 24 May 2024 09:07:12 +1000
+Message-ID: <20240523230747.45703-40-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,153 +93,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-msgsnd has a broadcast mode that sends hypervisor doorbells to all
-threads belonging to the same core as the target. A "subcore" mode
-sends to all or one thread depending on 1LPAR mode.
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
 
-Reviewed-by: Glenn Miles <milesg@linux.ibm.com>
+I think it's use was removed by
+Commit 5883d8b296 ("mmu-hash*: Don't use full ppc_hash{32,
+64}_translate() path for get_phys_page_debug()")
+
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/cpu.h                              |  6 +-
- target/ppc/excp_helper.c                      | 57 +++++++++++++------
- target/ppc/helper.h                           |  2 +-
- .../ppc/translate/processor-ctrl-impl.c.inc   |  2 +-
- 4 files changed, 46 insertions(+), 21 deletions(-)
+ target/ppc/mmu-hash32.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index e4c342b17d..e201b7f6c2 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1163,7 +1163,11 @@ FIELD(FPSCR, FI, FPSCR_FI, 1)
- 
- #define DBELL_TYPE_DBELL_SERVER        (0x05 << DBELL_TYPE_SHIFT)
- 
--#define DBELL_BRDCAST                  PPC_BIT(37)
-+#define DBELL_BRDCAST_MASK             PPC_BITMASK(37, 38)
-+#define DBELL_BRDCAST_SHIFT            25
-+#define DBELL_BRDCAST_SUBPROC          (0x1 << DBELL_BRDCAST_SHIFT)
-+#define DBELL_BRDCAST_CORE             (0x2 << DBELL_BRDCAST_SHIFT)
-+
- #define DBELL_LPIDTAG_SHIFT            14
- #define DBELL_LPIDTAG_MASK             (0xfff << DBELL_LPIDTAG_SHIFT)
- #define DBELL_PIRTAG_MASK              0x3fff
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index f48eb2eac8..0cd542675f 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2969,7 +2969,7 @@ void helper_msgsnd(target_ulong rb)
-         PowerPCCPU *cpu = POWERPC_CPU(cs);
-         CPUPPCState *cenv = &cpu->env;
- 
--        if ((rb & DBELL_BRDCAST) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
-+        if ((rb & DBELL_BRDCAST_MASK) || (cenv->spr[SPR_BOOKE_PIR] == pir)) {
-             ppc_set_irq(cpu, irq, 1);
-         }
-     }
-@@ -2988,6 +2988,16 @@ static bool dbell_type_server(target_ulong rb)
-     return (rb & DBELL_TYPE_MASK) == DBELL_TYPE_DBELL_SERVER;
- }
- 
-+static inline bool dbell_bcast_core(target_ulong rb)
-+{
-+    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_CORE;
-+}
-+
-+static inline bool dbell_bcast_subproc(target_ulong rb)
-+{
-+    return (rb & DBELL_BRDCAST_MASK) == DBELL_BRDCAST_SUBPROC;
-+}
-+
- void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
- {
-     if (!dbell_type_server(rb)) {
-@@ -2997,32 +3007,43 @@ void helper_book3s_msgclr(CPUPPCState *env, target_ulong rb)
-     ppc_set_irq(env_archcpu(env), PPC_INTERRUPT_HDOORBELL, 0);
- }
- 
--static void book3s_msgsnd_common(int pir, int irq)
-+void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
- {
--    CPUState *cs;
-+    int pir = rb & DBELL_PROCIDTAG_MASK;
-+    bool brdcast = false;
-+    CPUState *cs, *ccs;
-+    PowerPCCPU *cpu;
- 
--    bql_lock();
--    CPU_FOREACH(cs) {
--        PowerPCCPU *cpu = POWERPC_CPU(cs);
--        CPUPPCState *cenv = &cpu->env;
-+    if (!dbell_type_server(rb)) {
-+        return;
-+    }
- 
--        /* TODO: broadcast message to all threads of the same  processor */
--        if (cenv->spr_cb[SPR_PIR].default_value == pir) {
--            ppc_set_irq(cpu, irq, 1);
--        }
-+    cpu = ppc_get_vcpu_by_pir(pir);
-+    if (!cpu) {
-+        return;
-     }
--    bql_unlock();
--}
-+    cs = CPU(cpu);
- 
--void helper_book3s_msgsnd(target_ulong rb)
--{
--    int pir = rb & DBELL_PROCIDTAG_MASK;
-+    if (dbell_bcast_core(rb) || (dbell_bcast_subproc(rb) &&
-+                                 (env->flags & POWERPC_FLAG_SMT_1LPAR))) {
-+        brdcast = true;
-+    }
- 
--    if (!dbell_type_server(rb)) {
-+    if (cs->nr_threads == 1 || !brdcast) {
-+        ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
-         return;
-     }
- 
--    book3s_msgsnd_common(pir, PPC_INTERRUPT_HDOORBELL);
-+    /*
-+     * Why is bql needed for walking CPU list? Answer seems to be because ppc
-+     * irq handling needs it, but ppc_set_irq takes the lock itself if needed,
-+     * so could this be removed?
-+     */
-+    bql_lock();
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        ppc_set_irq(POWERPC_CPU(ccs), PPC_INTERRUPT_HDOORBELL, 1);
-+    }
-+    bql_unlock();
- }
- 
- #ifdef TARGET_PPC64
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 57bf8354e7..dd92c6a937 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -695,7 +695,7 @@ DEF_HELPER_FLAGS_3(store_sr, TCG_CALL_NO_RWG, void, env, tl, tl)
- 
- DEF_HELPER_1(msgsnd, void, tl)
- DEF_HELPER_2(msgclr, void, env, tl)
--DEF_HELPER_1(book3s_msgsnd, void, tl)
-+DEF_HELPER_2(book3s_msgsnd, void, env, tl)
- DEF_HELPER_2(book3s_msgclr, void, env, tl)
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 6dfedab11d..da6e8b293c 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -37,12 +37,6 @@
+ #  define LOG_BATS(...) do { } while (0)
  #endif
  
-diff --git a/target/ppc/translate/processor-ctrl-impl.c.inc b/target/ppc/translate/processor-ctrl-impl.c.inc
-index 0142801985..8abbb89630 100644
---- a/target/ppc/translate/processor-ctrl-impl.c.inc
-+++ b/target/ppc/translate/processor-ctrl-impl.c.inc
-@@ -59,7 +59,7 @@ static bool trans_MSGSND(DisasContext *ctx, arg_X_rb *a)
- 
- #if !defined(CONFIG_USER_ONLY)
-     if (is_book3s_arch2x(ctx)) {
--        gen_helper_book3s_msgsnd(cpu_gpr[a->rb]);
-+        gen_helper_book3s_msgsnd(tcg_env, cpu_gpr[a->rb]);
-     } else {
-         gen_helper_msgsnd(cpu_gpr[a->rb]);
-     }
+-struct mmu_ctx_hash32 {
+-    hwaddr raddr;      /* Real address              */
+-    int prot;                      /* Protection bits           */
+-    int key;                       /* Access key                */
+-};
+-
+ static int ppc_hash32_pp_prot(int key, int pp, int nx)
+ {
+     int prot;
 -- 
 2.43.0
 
