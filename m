@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA1A8CD83D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 18:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE29E8CD838
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 18:17:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAB7J-0005D6-55; Thu, 23 May 2024 12:16:33 -0400
+	id 1sAB7B-000595-Fn; Thu, 23 May 2024 12:16:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAB6q-000519-OJ
+ id 1sAB6p-000515-Lu
  for qemu-devel@nongnu.org; Thu, 23 May 2024 12:16:12 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAB6m-0002Ya-17
- for qemu-devel@nongnu.org; Thu, 23 May 2024 12:16:04 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f44a2d1e3dso2609750b3a.3
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 09:15:58 -0700 (PDT)
+ id 1sAB6m-0002Yo-0H
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 12:16:03 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f44ed6e82fso2649190b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 09:15:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716480956; x=1717085756; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716480958; x=1717085758; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XFTOPbft/bN6xCHi2Bkanbe02vp6jJNJx4gYp69CKLg=;
- b=AkwPplFpKjPkli1pbEyYxf9G4VH7CliMvQwUv91ENFosjo3mB5nliDnXrNkFNgkGNA
- /A0r9KoI158FeP0Y4OXLobL1xi20W6LpPIoryUULB8KbnoTSDLWG4y3TueQL/4hOh1Pt
- 7JD6ZqYPeYQZB1KE5ICy3RITAGftM/ru2fSLD0gQVLWxD3Am5BPHGHovZAJNosWFv20m
- /6gdUWK0eA6iVObvK8yumFFvr8wC9Fdkarl+eF2Fr75RtT2ZY04OoLEJrDOzwfKFSs6r
- kJlczEyz4EVrRI+cw7ujl/kLzAyKc63FoQWIMGrqrEKTFMhgITIVT++W89Frmf8BgU6v
- Y3Jg==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=UWacmcJvifrn2h1svRsx1ekY33Etna0YPOTwfPRLIos=;
+ b=V1qSH/PNG+eD/VMYQLwL5fvJGKIW9eDZ9sKUrCQTnFpWaYsvIz1oUo7k7PF+ubL34e
+ P862B426wMrhCHrBd/FkLZgEcC3/PrSWRofVhQm3/9sAI1VfiVQ4LuadhS0G1FUqNcgW
+ G8OMZXm4O6UMnWfaqUrbivqkINYetE0tZfPWA7g56VeJBezmK9mmNodbUrKWQJrdw7K0
+ RwwwlFh4v0dQmC5mfC0VFz8Ss7hI3VPdTAre+gJQ4G4nm7WNtRAuJY3InOfCKtq7StGr
+ m9FL/JX8sTu1BzmBhnerKeeuyVgJA9l+GTakg+co3r5iBbg7uS8jz4Z3/OKFJ2Ex56zk
+ HRvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716480956; x=1717085756;
+ d=1e100.net; s=20230601; t=1716480958; x=1717085758;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XFTOPbft/bN6xCHi2Bkanbe02vp6jJNJx4gYp69CKLg=;
- b=QYvWfYha6bG/h8nBmPe41aW+KT+6LLJAeHtMHZ0pAfVDzxhZa+BTYrdse/me3jpzzG
- l76ddl2uqCw9NQrjmD4arnLDasd6Q8e1TAMcOwwJ4YZxpHDgDo2X7oE/aLyNkHZN4rox
- xBw8/NVECACbkMV3AvL59/+AjvxMWy5ApHSYrxX7brdby52Ihrq8DyBT7jsOvwhFiyE2
- x5dZY/qxmSaA9Y1mw68yU36hxcxATsxrcTYv1oSq9J9ZzHpl8shZPY8rbo11mo3MRBSs
- Uy67A+lDk02Q4bouFQdWQuGR5cvYmdfPWmKgLh/sgDzVvaUJZ4bF3b3Rqr7mh8GECdZS
- InEw==
-X-Gm-Message-State: AOJu0YxPJSinv32UAQSy4Y9QAkt9EjzuC1/dtoxqq8F4GXRXB8hU66S2
- 3HDA0ta+S5FwMRANPj1C8sRinHzWoOivoEI47+iVdI9QKRy2jAsOnR4drJxpxqaoCN7rMTSSqcs
- b
-X-Google-Smtp-Source: AGHT+IFN/WtFEd3t9uvdQkfa9vxO6YJoT3Z9VlkZOwOp314IRHmkDJ9CHUcRivqFaI1tAH1d1ZL/AQ==
-X-Received: by 2002:a05:6a00:929b:b0:6e6:98bf:7b62 with SMTP id
- d2e1a72fcca58-6f6d60dfae6mr6467087b3a.8.1716480955890; 
- Thu, 23 May 2024 09:15:55 -0700 (PDT)
+ bh=UWacmcJvifrn2h1svRsx1ekY33Etna0YPOTwfPRLIos=;
+ b=USr0KsmmVT36XgxVRdoCtF7XX3FGlfI9W63qqicHLtfhVeuSQzBZkixR54qMbTfYO/
+ FlD/ibn4v1swpl55JoYBnuHhv7e1mS6kyaXyTM3U8XSw0jfMIgSwcTABT+TWId9cXcJF
+ MhR2JSqmA3IAoajgy0SCVFwujPJjsi1aej8yytd/jTf3MpANLyfviuSbkUlCQzqhsrsk
+ OiKkFekruWweq5U/Tc+Mf/8oUqPt2c90p/GXgRf0pAn89MKcYBxRK14LFkza+p6UvMeC
+ 7/xoZSjo4UPEkxUa0X37e3ng5KLD42tdEqTyERGgkQrVNbxdNf986KFr5AqNximiBcqO
+ zBpw==
+X-Gm-Message-State: AOJu0YwJhas6FYN8CpRQgSC8Y0S/g3hLQ1vhVWMRI9gC1T8Z7w0yxYuJ
+ 7nUuHw5/Ima7J664tPuqIsYZmsw/t+iZSIuHKZX0rI+7slDcAmWNwqrT2RuW0GIkd09rwwkWVLQ
+ A
+X-Google-Smtp-Source: AGHT+IGUj0Rw+wOKGQHjSrslOtYl9f3xBS2Ldgre/SQv14JybQbcgeNDLCk3G490S86MHU0ilyNT+A==
+X-Received: by 2002:a05:6a21:2792:b0:1b1:ea57:d6ac with SMTP id
+ adf61e73a8af0-1b1f8a749c2mr5167051637.51.1716480957009; 
+ Thu, 23 May 2024 09:15:57 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2a9d9acsm24890255b3a.90.2024.05.23.09.15.55
+ d2e1a72fcca58-6f4d2a9d9acsm24890255b3a.90.2024.05.23.09.15.56
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 09:15:55 -0700 (PDT)
+ Thu, 23 May 2024 09:15:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/5] tcg: Introduce TCG_TARGET_HAS_tst_vec
-Date: Thu, 23 May 2024 09:15:49 -0700
-Message-Id: <20240523161553.774673-2-richard.henderson@linaro.org>
+Subject: [PULL 2/5] tcg: Expand TCG_COND_TST* if not TCG_TARGET_HAS_tst_vec
+Date: Thu, 23 May 2024 09:15:50 -0700
+Message-Id: <20240523161553.774673-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240523161553.774673-1-richard.henderson@linaro.org>
 References: <20240523161553.774673-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,104 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prelude to supporting TCG_COND_TST* in vector comparisons.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h            | 1 +
- tcg/aarch64/tcg-target.h     | 1 +
- tcg/arm/tcg-target.h         | 1 +
- tcg/i386/tcg-target.h        | 1 +
- tcg/loongarch64/tcg-target.h | 1 +
- tcg/ppc/tcg-target.h         | 1 +
- tcg/s390x/tcg-target.h       | 1 +
- 7 files changed, 7 insertions(+)
+ tcg/tcg-op-vec.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 2a1c080bab..21d5884741 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -155,6 +155,7 @@ typedef uint64_t TCGRegSet;
- #define TCG_TARGET_HAS_minmax_vec       0
- #define TCG_TARGET_HAS_bitsel_vec       0
- #define TCG_TARGET_HAS_cmpsel_vec       0
-+#define TCG_TARGET_HAS_tst_vec          0
- #else
- #define TCG_TARGET_MAYBE_vec            1
- #endif
-diff --git a/tcg/aarch64/tcg-target.h b/tcg/aarch64/tcg-target.h
-index 85d5746e47..138bafb9da 100644
---- a/tcg/aarch64/tcg-target.h
-+++ b/tcg/aarch64/tcg-target.h
-@@ -167,6 +167,7 @@ typedef enum {
- #define TCG_TARGET_HAS_minmax_vec       1
- #define TCG_TARGET_HAS_bitsel_vec       1
- #define TCG_TARGET_HAS_cmpsel_vec       0
-+#define TCG_TARGET_HAS_tst_vec          0
+diff --git a/tcg/tcg-op-vec.c b/tcg/tcg-op-vec.c
+index 094298bb27..84af210bc0 100644
+--- a/tcg/tcg-op-vec.c
++++ b/tcg/tcg-op-vec.c
+@@ -508,9 +508,11 @@ void tcg_gen_cmp_vec(TCGCond cond, unsigned vece,
+     TCGTemp *rt = tcgv_vec_temp(r);
+     TCGTemp *at = tcgv_vec_temp(a);
+     TCGTemp *bt = tcgv_vec_temp(b);
++    TCGTemp *tt = NULL;
+     TCGArg ri = temp_arg(rt);
+     TCGArg ai = temp_arg(at);
+     TCGArg bi = temp_arg(bt);
++    TCGArg ti;
+     TCGType type = rt->base_type;
+     int can;
  
- #define TCG_TARGET_DEFAULT_MO (0)
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/arm/tcg-target.h b/tcg/arm/tcg-target.h
-index a43875cb09..434a892e07 100644
---- a/tcg/arm/tcg-target.h
-+++ b/tcg/arm/tcg-target.h
-@@ -150,6 +150,7 @@ extern bool use_neon_instructions;
- #define TCG_TARGET_HAS_minmax_vec       1
- #define TCG_TARGET_HAS_bitsel_vec       1
- #define TCG_TARGET_HAS_cmpsel_vec       0
-+#define TCG_TARGET_HAS_tst_vec          0
+@@ -518,6 +520,18 @@ void tcg_gen_cmp_vec(TCGCond cond, unsigned vece,
+     tcg_debug_assert(bt->base_type >= type);
+     tcg_assert_listed_vecop(INDEX_op_cmp_vec);
+     can = tcg_can_emit_vec_op(INDEX_op_cmp_vec, type, vece);
++
++    if (!TCG_TARGET_HAS_tst_vec && is_tst_cond(cond)) {
++        tt = tcg_temp_new_internal(type, TEMP_EBB);
++        ti = temp_arg(tt);
++        vec_gen_3(INDEX_op_and_vec, type, 0, ti, ai, bi);
++        at = tt;
++        ai = ti;
++        bt = tcg_constant_internal(type, 0);
++        bi = temp_arg(bt);
++        cond = tcg_tst_eqne_cond(cond);
++    }
++
+     if (can > 0) {
+         vec_gen_4(INDEX_op_cmp_vec, type, vece, ri, ai, bi, cond);
+     } else {
+@@ -526,6 +540,10 @@ void tcg_gen_cmp_vec(TCGCond cond, unsigned vece,
+         tcg_expand_vec_op(INDEX_op_cmp_vec, type, vece, ri, ai, bi, cond);
+         tcg_swap_vecop_list(hold_list);
+     }
++
++    if (tt) {
++        tcg_temp_free_internal(tt);
++    }
+ }
  
- #define TCG_TARGET_DEFAULT_MO (0)
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/i386/tcg-target.h b/tcg/i386/tcg-target.h
-index a10d4e1fce..2f67a97e05 100644
---- a/tcg/i386/tcg-target.h
-+++ b/tcg/i386/tcg-target.h
-@@ -224,6 +224,7 @@ typedef enum {
- #define TCG_TARGET_HAS_minmax_vec       1
- #define TCG_TARGET_HAS_bitsel_vec       have_avx512vl
- #define TCG_TARGET_HAS_cmpsel_vec       -1
-+#define TCG_TARGET_HAS_tst_vec          0
- 
- #define TCG_TARGET_deposit_i32_valid(ofs, len) \
-     (((ofs) == 0 && ((len) == 8 || (len) == 16)) || \
-diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index fede627bf7..29e4860d20 100644
---- a/tcg/loongarch64/tcg-target.h
-+++ b/tcg/loongarch64/tcg-target.h
-@@ -194,6 +194,7 @@ typedef enum {
- #define TCG_TARGET_HAS_minmax_vec       1
- #define TCG_TARGET_HAS_bitsel_vec       1
- #define TCG_TARGET_HAS_cmpsel_vec       0
-+#define TCG_TARGET_HAS_tst_vec          0
- 
- #define TCG_TARGET_DEFAULT_MO (0)
- 
-diff --git a/tcg/ppc/tcg-target.h b/tcg/ppc/tcg-target.h
-index 04a7aba4d3..e154fb14df 100644
---- a/tcg/ppc/tcg-target.h
-+++ b/tcg/ppc/tcg-target.h
-@@ -173,6 +173,7 @@ typedef enum {
- #define TCG_TARGET_HAS_minmax_vec       1
- #define TCG_TARGET_HAS_bitsel_vec       have_vsx
- #define TCG_TARGET_HAS_cmpsel_vec       0
-+#define TCG_TARGET_HAS_tst_vec          0
- 
- #define TCG_TARGET_DEFAULT_MO (0)
- #define TCG_TARGET_NEED_LDST_LABELS
-diff --git a/tcg/s390x/tcg-target.h b/tcg/s390x/tcg-target.h
-index ae448c3a3a..62ce9d792a 100644
---- a/tcg/s390x/tcg-target.h
-+++ b/tcg/s390x/tcg-target.h
-@@ -163,6 +163,7 @@ extern uint64_t s390_facilities[3];
- #define TCG_TARGET_HAS_minmax_vec     1
- #define TCG_TARGET_HAS_bitsel_vec     1
- #define TCG_TARGET_HAS_cmpsel_vec     0
-+#define TCG_TARGET_HAS_tst_vec        0
- 
- /* used for function call generation */
- #define TCG_TARGET_STACK_ALIGN		8
+ static bool do_op3(unsigned vece, TCGv_vec r, TCGv_vec a,
 -- 
 2.34.1
 
