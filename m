@@ -2,111 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9461B8CDA67
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B1C8CDA6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:07:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sADlL-00020h-Sb; Thu, 23 May 2024 15:06:03 -0400
+	id 1sADlO-00022K-1q; Thu, 23 May 2024 15:06:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlJ-0001xv-93
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:01 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlM-00021Y-6w
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:04 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlH-0004Fl-CH
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:01 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlK-0004GA-Ei
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:03 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id CF08B22B73;
- Thu, 23 May 2024 19:05:57 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D0AD52040D;
+ Thu, 23 May 2024 19:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491158; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fmpEEye7ycGf1aJ3oDklUvl3X7zM1pah4teZ4b0oRJc=;
- b=MZ+soJFuM7c3j5XrZba9z7IU5eUADY08N3XtPQaES7tfkoGXTlPKuowtBMMbnfouXXCgxf
- FavwHlKwfBrnfYs/eStN7mlzTc4VW3CjVBRbKRHBLhIzAA/bBSEEQKRcCM/CTFKPt01XB1
- 0WIVxhKvR7Gdu6lwk1z99b2G5RaS2Fw=
+ bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
+ b=1VMJu6e1iveSpV6QYuluTlc9Q/Nyty9M9X33/s/qVrr/IlM6rdvqJJFCQFnfBaKcRPPXc1
+ getx6Y7fU4kK1KGK4GP1BmTkjrUx/ln4wiPAkvolg88xR6YM8MLtXlVmIzseYYD11VVJU0
+ VoENooGvbryvQ8GlcwdhO3IaDirySUQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491158;
+ s=susede2_ed25519; t=1716491160;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fmpEEye7ycGf1aJ3oDklUvl3X7zM1pah4teZ4b0oRJc=;
- b=gcsHvmaDU9HySVd456A3VwIzHyDZWroloQTy/JutGFIAapSTR+bWztm9LLLatNKjh4Cx7Q
- Xtnwa5NZA4ll+pCA==
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=OlEPem0r;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RPVpaMpQ
+ bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
+ b=tCORUTJvo1nPfEALMVo84uUvYWoRtlBg/s8U8MVC8okaTSz0nqw+k/cz4rYQrWIODDA5a6
+ /PRGcjCK+iZsaAAg==
+Authentication-Results: smtp-out2.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491157; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fmpEEye7ycGf1aJ3oDklUvl3X7zM1pah4teZ4b0oRJc=;
- b=OlEPem0r2UOVAodlgajALjtwDrfgVXPm/mdVWyARZtJUmQ1e8xgCEPBFrW6GeR1n5IHjo4
- SpKXa6nmKlG8tpJAZcg+Tr8ymnqu+I2XD4/jJdNVPUE3FiFxBGjKs6fNmLUaCrfNakjxtp
- GKEgEW6jJh1WBFQ178609F3BYQFAgHI=
+ bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
+ b=1VMJu6e1iveSpV6QYuluTlc9Q/Nyty9M9X33/s/qVrr/IlM6rdvqJJFCQFnfBaKcRPPXc1
+ getx6Y7fU4kK1KGK4GP1BmTkjrUx/ln4wiPAkvolg88xR6YM8MLtXlVmIzseYYD11VVJU0
+ VoENooGvbryvQ8GlcwdhO3IaDirySUQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491157;
+ s=susede2_ed25519; t=1716491160;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fmpEEye7ycGf1aJ3oDklUvl3X7zM1pah4teZ4b0oRJc=;
- b=RPVpaMpQpuom+LTLSsEgID1JKFS56fPAqqqluEE5Kx42AkfYN8EHFuhPYkwh+VFKx1fkib
- 5R9mPQDFYysKCyDA==
+ bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
+ b=tCORUTJvo1nPfEALMVo84uUvYWoRtlBg/s8U8MVC8okaTSz0nqw+k/cz4rYQrWIODDA5a6
+ /PRGcjCK+iZsaAAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 500F513A6B;
- Thu, 23 May 2024 19:05:55 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4BEA713A6B;
+ Thu, 23 May 2024 19:05:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id SDc5BpOTT2bUEQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:05:55 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0Fn+BJaTT2bUEQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:05:58 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 02/18] tests/qtest/migration: Fix file migration offset
- check
-Date: Thu, 23 May 2024 16:05:32 -0300
-Message-Id: <20240523190548.23977-3-farosas@suse.de>
+Subject: [PATCH v2 03/18] tests/qtest/migration: Add a precopy file test with
+ fdset
+Date: Thu, 23 May 2024 16:05:33 -0300
+Message-Id: <20240523190548.23977-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240523190548.23977-1-farosas@suse.de>
 References: <20240523190548.23977-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: CF08B22B73
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email];
- RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_TLS_ALL(0.00)[];
- RCPT_COUNT_SEVEN(0.00)[9];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_SEVEN(0.00)[9];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
+ ARC_NA(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim]; TO_DN_SOME(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]
-Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email];
+ RCVD_TLS_ALL(0.00)[]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -129,156 +121,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When doing file migration, QEMU accepts an offset that should be
-skipped when writing the migration stream to the file. The purpose of
-the offset is to allow the management layer to put its own metadata at
-the start of the file.
+Add a test for file migration using fdset. The passing of fds is more
+complex than using a file path. This is also the scenario where it's
+most important we ensure that the initial migration stream offset is
+respected because the fdset interface is the one used by the
+management layer when providing a non empty migration file.
 
-We have tests for this in migration-test, but only testing that the
-migration stream starts at the correct offset and not that it actually
-leaves the data intact. Unsurprisingly, there's been a bug in that
-area that the tests didn't catch.
-
-Fix the tests to write some data to the offset region and check that
-it's actually there after the migration.
-
-While here, switch to using g_get_file_contents() which is more
-portable than mmap().
+Note that fd passing is not available on Windows, so anything that
+uses add-fd needs to exclude that platform.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 79 ++++++++++++++++++++++--------------
- 1 file changed, 48 insertions(+), 31 deletions(-)
+ tests/qtest/migration-test.c | 44 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
 diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b7e3406471..ec905543cf 100644
+index ec905543cf..5bb53f4839 100644
 --- a/tests/qtest/migration-test.c
 +++ b/tests/qtest/migration-test.c
-@@ -67,6 +67,7 @@ static QTestMigrationState dst_state;
- #define QEMU_VM_FILE_MAGIC 0x5145564d
- #define FILE_TEST_FILENAME "migfile"
- #define FILE_TEST_OFFSET 0x1000
-+#define FILE_TEST_MARKER 'X'
- #define QEMU_ENV_SRC "QTEST_QEMU_BINARY_SRC"
- #define QEMU_ENV_DST "QTEST_QEMU_BINARY_DST"
- 
-@@ -1716,10 +1717,43 @@ finish:
-     test_migrate_end(from, to, args->result == MIG_TEST_SUCCEED);
- }
- 
-+static void file_dirty_offset_region(void)
-+{
-+    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+    size_t size = FILE_TEST_OFFSET;
-+    g_autofree char *data = g_new0(char, size);
-+
-+    memset(data, FILE_TEST_MARKER, size);
-+    g_assert(g_file_set_contents(path, data, size, NULL));
-+}
-+
-+static void file_check_offset_region(void)
-+{
-+    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+    size_t size = FILE_TEST_OFFSET;
-+    g_autofree char *expected = g_new0(char, size);
-+    g_autofree char *actual = NULL;
-+    uint64_t *stream_start;
-+
-+    /*
-+     * Ensure the skipped offset region's data has not been touched
-+     * and the migration stream starts at the right place.
-+     */
-+
-+    memset(expected, FILE_TEST_MARKER, size);
-+
-+    g_assert(g_file_get_contents(path, &actual, NULL, NULL));
-+    g_assert(!memcmp(actual, expected, size));
-+
-+    stream_start = (uint64_t *)(actual + size);
-+    g_assert_cmpint(cpu_to_be64(*stream_start) >> 32, ==, QEMU_VM_FILE_MAGIC);
-+}
-+
- static void test_file_common(MigrateCommon *args, bool stop_src)
- {
-     QTestState *from, *to;
-     void *data_hook = NULL;
-+    bool check_offset = false;
- 
-     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-@@ -1732,6 +1766,16 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
-      */
-     g_assert_false(args->live);
- 
-+    if (g_strrstr(args->connect_uri, "offset=")) {
-+        check_offset = true;
-+        /*
-+         * This comes before the start_hook because it's equivalent to
-+         * a management application creating the file and writing to
-+         * it so hooks should expect the file to be already present.
-+         */
-+        file_dirty_offset_region();
-+    }
-+
-     if (args->start_hook) {
-         data_hook = args->start_hook(from, to);
-     }
-@@ -1766,6 +1810,10 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
- 
-     wait_for_serial("dest_serial");
- 
-+    if (check_offset) {
-+        file_check_offset_region();
-+    }
-+
- finish:
-     if (args->finish_hook) {
-         args->finish_hook(from, to, data_hook);
-@@ -1965,36 +2013,6 @@ static void test_precopy_file(void)
+@@ -2013,6 +2013,46 @@ static void test_precopy_file(void)
      test_file_common(&args, true);
  }
  
--static void file_offset_finish_hook(QTestState *from, QTestState *to,
--                                    void *opaque)
--{
--#if defined(__linux__)
--    g_autofree char *path = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
--    size_t size = FILE_TEST_OFFSET + sizeof(QEMU_VM_FILE_MAGIC);
--    uintptr_t *addr, *p;
--    int fd;
--
--    fd = open(path, O_RDONLY);
--    g_assert(fd != -1);
--    addr = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
--    g_assert(addr != MAP_FAILED);
--
--    /*
--     * Ensure the skipped offset contains zeros and the migration
--     * stream starts at the right place.
--     */
--    p = addr;
--    while (p < addr + FILE_TEST_OFFSET / sizeof(uintptr_t)) {
--        g_assert(*p == 0);
--        p++;
--    }
--    g_assert_cmpint(cpu_to_be64(*p) >> 32, ==, QEMU_VM_FILE_MAGIC);
--
--    munmap(addr, size);
--    close(fd);
--#endif
--}
--
++#ifndef _WIN32
++static void fdset_add_fds(QTestState *qts, const char *file, int flags,
++                          int num_fds)
++{
++    for (int i = 0; i < num_fds; i++) {
++        int fd;
++
++        fd = open(file, flags, 0660);
++        assert(fd != -1);
++
++        qtest_qmp_fds_assert_success(qts, &fd, 1, "{'execute': 'add-fd', "
++                                     "'arguments': {'fdset-id': 1}}");
++        close(fd);
++    }
++}
++
++static void *file_offset_fdset_start_hook(QTestState *from, QTestState *to)
++{
++    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
++
++    fdset_add_fds(from, file, O_WRONLY, 1);
++    fdset_add_fds(to, file, O_RDONLY, 1);
++
++    return NULL;
++}
++
++static void test_precopy_file_offset_fdset(void)
++{
++    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
++                                           FILE_TEST_OFFSET);
++    MigrateCommon args = {
++        .connect_uri = uri,
++        .listen_uri = "defer",
++        .start_hook = file_offset_fdset_start_hook,
++    };
++
++    test_file_common(&args, false);
++}
++#endif
++
  static void test_precopy_file_offset(void)
  {
      g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=%d", tmpfs,
-@@ -2003,7 +2021,6 @@ static void test_precopy_file_offset(void)
-     MigrateCommon args = {
-         .connect_uri = uri,
-         .listen_uri = "defer",
--        .finish_hook = file_offset_finish_hook,
-     };
+@@ -3521,6 +3561,10 @@ int main(int argc, char **argv)
+                        test_precopy_file);
+     migration_test_add("/migration/precopy/file/offset",
+                        test_precopy_file_offset);
++#ifndef _WIN32
++    migration_test_add("/migration/precopy/file/offset/fdset",
++                       test_precopy_file_offset_fdset);
++#endif
+     migration_test_add("/migration/precopy/file/offset/bad",
+                        test_precopy_file_offset_bad);
  
-     test_file_common(&args, false);
 -- 
 2.35.3
 
