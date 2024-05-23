@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451E78CD766
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C022C8CD732
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:36:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAATq-0008Pr-9Y; Thu, 23 May 2024 11:35:46 -0400
+	id 1sAATk-00089j-TY; Thu, 23 May 2024 11:35:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATm-0008IO-VQ
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:42 -0400
+ id 1sAATg-00084j-Gg
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:36 -0400
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATZ-0002Uc-KH
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:42 -0400
+ id 1sAATY-0002Ug-DT
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:36 -0400
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3550224b745so337684f8f.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:17 -0700 (PDT)
+ ffacd0b85a97d-354fb2d8f51so616156f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716478517; x=1717083317; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1XMI59nPzlP+SRd+JC40NcyrsB46YqZBa+Lckxh5kTE=;
- b=s7M8YnYOdZLn7cYOYBmeiVAqlhGi5xr+jzf0dvQ4FB6GssxydSnIQ+nruo8O1efj7b
- 0fJd2MaglejMmpdv+4vYXXqLM3nDWqSnzE+BNm2QvlxVkVPGwPw/eCfxLS1+XdSUdgpc
- PEgy86TtF/ovX9UZwUJ1vmwumrY5zSF3L6Uhey7pUC38s2dmcb+FoBVdIIcjBzRbz8Zw
- SkTppvqCS0Y8vLGKvibPKqjg6KJYcnhPWTxbB1ZshFEGfW984XMZ6+6TFLfrqnqeZAHp
- BYcoffWLIjRmELu7LkeWNhR0AzB27Ok+P/0D8MQVebJdTyGKDF3tX8g++yGgx5XvxCJ7
- R87g==
+ :reply-to; bh=K3kd+HwyLVj9mTGsLXyjTKU6ibzJ/5FNS7UuAEEKJ9U=;
+ b=ugMBuhGsId57t8/s0oj4ZvsFw8X4n1CoeTy3UEc6AjIYIP5gftXvm3Hnr7DazR4zN4
+ oYl6C0ykNTvWitaM4Efkp2smP4NBnXrb49NlT0ndyAoJefold7ZRSpS3OLjigaJDwIKQ
+ ghnmWTK2r7rSgas+FUHWgcFWezbBQsi8Rg0BD+HEAMX4zDd+4A0axwWSfwETawRG4B+O
+ c3yYbd3kT3gDVDlhuLkrNFz7IRHcgMvNxpysx0WCykelRa082fUv8JQGe12eC1UiCm3w
+ waYJ9L4SETtcQ73NlV9nTv88FUaE1dNEf5p4PP1fgpMpNBDl9pVMt5nddRlzzEt5QDaE
+ o7Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716478517; x=1717083317;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1XMI59nPzlP+SRd+JC40NcyrsB46YqZBa+Lckxh5kTE=;
- b=re96nET+bQbkYE7Q7GQYlpCCpzQgEUjGSRgQWS7RqiqbcT6/drn/bmYEfpU5zEC7x+
- D7JkYxzo2Is44/SFlJeshDzUB8s1vQKw4LnSlddr04QK51j16WiEymwDf6DsUkH0Tx4t
- ThY4rwf+zXU1csRkujj8Vzx9I1AZZ0mRYqvPAAHJEzSw+poLoNd7KfQebup1wy1AkqzU
- Xbc9LVplShzthwtP4YvKjViUOTFJLC9NuGHHNo8dRAiljyhnx+Ldc0c7HYtTAoTlCceK
- Z/GF7uH+UuWAERWaImaL6JyzO/CzXDU0FEswo9lOCYidfoLiqYcg2f1HQT6V+s6eh3XF
- ohYA==
-X-Gm-Message-State: AOJu0YwkHRoKlytoJm5oElNjK8wNHbQp5a/Gd62/+8V1BBY3M9VwGe/0
- Me6IxV1qaBKk1wJfW0VkLDCcw5vzaaG4Nc07zPG31sZwPhW7x7EWPNQ4U/D/YfJAXfOQuXsSeFa
- L
-X-Google-Smtp-Source: AGHT+IHITGWLDYMuMpG0PSmFoQpuMgSsbzBSBwK8FGCvaOniiiZ7FybcAeZtTSpjs910U53lEndjdQ==
-X-Received: by 2002:a5d:62c9:0:b0:34d:369a:5add with SMTP id
- ffacd0b85a97d-354d8db72e2mr3662576f8f.71.1716478516719; 
- Thu, 23 May 2024 08:35:16 -0700 (PDT)
+ bh=K3kd+HwyLVj9mTGsLXyjTKU6ibzJ/5FNS7UuAEEKJ9U=;
+ b=hKI5B5rkBLLRr/KBqj+gjuoXJxn3E7LjOghdOkQZL2lc1r8bVMuzJ6lZg3KXreWNFi
+ 5Y2Ohd84eZ9tdcAWAeKeV3kB9F/xTgzoPFcKoP3mghxehxFoAGepbYBsYfrKS4+eFTJ7
+ 6y6SbGeWcuWF5caH9DCzpB7W3nhYvG2MS7ihRju2uVfXSQn9KRbUXZdF1KYPWpJsGIG7
+ dWn644V79DREBp/v9wbMR5i6AP1Wj453M0184xVcacAg3aRpLL9//PN7gzZ7sCEdyR5D
+ /uwmhJdyQnd8w7chyId18qIqYUGqLXmpe+9X2O41be/MoYhlUkNv3jBimKuMAyra1qPv
+ wWVw==
+X-Gm-Message-State: AOJu0YwtQlqdFQwZIkxtj5z2G7E5bodUelAe5c6a/TQGUp7CvcMJBmBd
+ a8yPJ30HzwmXUzSnELx6LLGz1AFscUh4zcCBG0X2T1nle2/Tk6a3yrPN6C9c2jYlHnS49MWv/3Y
+ a
+X-Google-Smtp-Source: AGHT+IHQ78aYMHN2yXzDbBgcHlLB77vZqNJOVJxFkSUC1ErS6aAEKA0cUwvBT4tQ7krXxbKWevyegg==
+X-Received: by 2002:adf:e4cb:0:b0:355:21f:be29 with SMTP id
+ ffacd0b85a97d-355021fc545mr1022240f8f.9.1716478517211; 
+ Thu, 23 May 2024 08:35:17 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.16
@@ -59,9 +59,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 23 May 2024 08:35:16 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/37] target/arm: Convert Advanced SIMD copy to decodetree
-Date: Thu, 23 May 2024 16:34:47 +0100
-Message-Id: <20240523153505.2900433-20-peter.maydell@linaro.org>
+Subject: [PULL 20/37] target/arm: Convert FMULX to decodetree
+Date: Thu, 23 May 2024 16:34:48 +0100
+Message-Id: <20240523153505.2900433-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240523153505.2900433-1-peter.maydell@linaro.org>
 References: <20240523153505.2900433-1-peter.maydell@linaro.org>
@@ -93,501 +93,568 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
+Convert all forms (scalar, vector, scalar indexed, vector indexed),
+which allows us to remove switch table entries elsewhere.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240506010403.6204-12-richard.henderson@linaro.org
+Message-id: 20240506010403.6204-13-richard.henderson@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: fixed decode line error for FMULX_v]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/a64.decode      |  13 +
- target/arm/tcg/translate-a64.c | 426 +++++++++++----------------------
- 2 files changed, 152 insertions(+), 287 deletions(-)
+ target/arm/tcg/helper-a64.h    |   8 ++
+ target/arm/tcg/a64.decode      |  45 +++++++
+ target/arm/tcg/translate-a64.c | 221 +++++++++++++++++++++++++++------
+ target/arm/tcg/vec_helper.c    |  39 +++---
+ 4 files changed, 259 insertions(+), 54 deletions(-)
 
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index 05181653999..b79751a7170 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -132,3 +132,11 @@ DEF_HELPER_4(cpye, void, env, i32, i32, i32)
+ DEF_HELPER_4(cpyfp, void, env, i32, i32, i32)
+ DEF_HELPER_4(cpyfm, void, env, i32, i32, i32)
+ DEF_HELPER_4(cpyfe, void, env, i32, i32, i32)
++
++DEF_HELPER_FLAGS_5(gvec_fmulx_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_5(gvec_fmulx_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_5(gvec_fmulx_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_5(gvec_fmulx_idx_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_5(gvec_fmulx_idx_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++DEF_HELPER_FLAGS_5(gvec_fmulx_idx_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 7f354af25d3..d5bfeae7a82 100644
+index d5bfeae7a82..2e0e01be017 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -658,3 +658,16 @@ SM3TT2B         11001110 010 ..... 10 .. 11 ..... ..... @crypto3i
- ### Cryptographic XAR
+@@ -20,21 +20,44 @@
+ #
  
- XAR             1100 1110 100 rm:5 imm:6 rn:5 rd:5
+ %rd             0:5
++%esz_sd         22:1 !function=plus_2
++%hl             11:1 21:1
++%hlm            11:1 20:2
+ 
+ &r              rn
+ &ri             rd imm
+ &rri_sf         rd rn imm sf
+ &i              imm
++&rrr_e          rd rn rm esz
++&rrx_e          rd rn rm idx esz
+ &qrr_e          q rd rn esz
+ &qrrr_e         q rd rn rm esz
++&qrrx_e         q rd rn rm idx esz
+ &qrrrr_e        q rd rn rm ra esz
+ 
++@rrr_h          ........ ... rm:5 ...... rn:5 rd:5      &rrr_e esz=1
++@rrr_sd         ........ ... rm:5 ...... rn:5 rd:5      &rrr_e esz=%esz_sd
 +
-+### Advanced SIMD scalar copy
++@rrx_h          ........ .. .. rm:4 .... . . rn:5 rd:5  &rrx_e esz=1 idx=%hlm
++@rrx_s          ........ .. . rm:5  .... . . rn:5 rd:5  &rrx_e esz=2 idx=%hl
++@rrx_d          ........ .. . rm:5  .... idx:1 . rn:5 rd:5  &rrx_e esz=3
 +
-+DUP_element_s   0101 1110 000 imm:5 0 0000 1 rn:5 rd:5
+ @rr_q1e0        ........ ........ ...... rn:5 rd:5      &qrr_e q=1 esz=0
+ @r2r_q1e0       ........ ........ ...... rm:5 rd:5      &qrrr_e rn=%rd q=1 esz=0
+ @rrr_q1e0       ........ ... rm:5 ...... rn:5 rd:5      &qrrr_e q=1 esz=0
+ @rrr_q1e3       ........ ... rm:5 ...... rn:5 rd:5      &qrrr_e q=1 esz=3
+ @rrrr_q1e3      ........ ... rm:5 . ra:5 rn:5 rd:5      &qrrrr_e q=1 esz=3
+ 
++@qrrr_h         . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=1
++@qrrr_sd        . q:1 ...... ... rm:5 ...... rn:5 rd:5  &qrrr_e esz=%esz_sd
 +
-+### Advanced SIMD copy
++@qrrx_h         . q:1 .. .... .. .. rm:4 .... . . rn:5 rd:5 \
++                &qrrx_e esz=1 idx=%hlm
++@qrrx_s         . q:1 .. .... .. . rm:5  .... . . rn:5 rd:5 \
++                &qrrx_e esz=2 idx=%hl
++@qrrx_d         . q:1 .. .... .. . rm:5  .... idx:1 . rn:5 rd:5 \
++                &qrrx_e esz=3
 +
-+DUP_element_v   0 q:1 00 1110 000 imm:5 0 0000 1 rn:5 rd:5
-+DUP_general     0 q:1 00 1110 000 imm:5 0 0001 1 rn:5 rd:5
-+INS_general     0 1   00 1110 000 imm:5 0 0011 1 rn:5 rd:5
-+SMOV            0 q:1 00 1110 000 imm:5 0 0101 1 rn:5 rd:5
-+UMOV            0 q:1 00 1110 000 imm:5 0 0111 1 rn:5 rd:5
-+INS_element     0 1   10 1110 000 di:5  0 si:4 1 rn:5 rd:5
+ ### Data Processing - Immediate
+ 
+ # PC-rel addressing
+@@ -671,3 +694,25 @@ INS_general     0 1   00 1110 000 imm:5 0 0011 1 rn:5 rd:5
+ SMOV            0 q:1 00 1110 000 imm:5 0 0101 1 rn:5 rd:5
+ UMOV            0 q:1 00 1110 000 imm:5 0 0111 1 rn:5 rd:5
+ INS_element     0 1   10 1110 000 di:5  0 si:4 1 rn:5 rd:5
++
++### Advanced SIMD scalar three same
++
++FMULX_s         0101 1110 010 ..... 00011 1 ..... ..... @rrr_h
++FMULX_s         0101 1110 0.1 ..... 11011 1 ..... ..... @rrr_sd
++
++### Advanced SIMD three same
++
++FMULX_v         0.00 1110 010 ..... 00011 1 ..... ..... @qrrr_h
++FMULX_v         0.00 1110 0.1 ..... 11011 1 ..... ..... @qrrr_sd
++
++### Advanced SIMD scalar x indexed element
++
++FMULX_si        0111 1111 00 .. .... 1001 . 0 ..... .....   @rrx_h
++FMULX_si        0111 1111 10 . ..... 1001 . 0 ..... .....   @rrx_s
++FMULX_si        0111 1111 11 0 ..... 1001 . 0 ..... .....   @rrx_d
++
++### Advanced SIMD vector x indexed element
++
++FMULX_vi        0.10 1111 00 .. .... 1001 . 0 ..... .....   @qrrx_h
++FMULX_vi        0.10 1111 10 . ..... 1001 . 0 ..... .....   @qrrx_s
++FMULX_vi        0.10 1111 11 0 ..... 1001 . 0 ..... .....   @qrrx_d
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3d56e85b767..187fc2e8f4c 100644
+index 187fc2e8f4c..04da374e86d 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -4702,6 +4702,145 @@ static bool trans_XAR(DisasContext *s, arg_XAR *a)
+@@ -4841,6 +4841,178 @@ static bool trans_INS_element(DisasContext *s, arg_INS_element *a)
      return true;
  }
  
 +/*
-+ * Advanced SIMD copy
++ * Advanced SIMD three same
 + */
 +
-+static bool decode_esz_idx(int imm, MemOp *pesz, unsigned *pidx)
++typedef struct FPScalar {
++    void (*gen_h)(TCGv_i32, TCGv_i32, TCGv_i32, TCGv_ptr);
++    void (*gen_s)(TCGv_i32, TCGv_i32, TCGv_i32, TCGv_ptr);
++    void (*gen_d)(TCGv_i64, TCGv_i64, TCGv_i64, TCGv_ptr);
++} FPScalar;
++
++static bool do_fp3_scalar(DisasContext *s, arg_rrr_e *a, const FPScalar *f)
 +{
-+    unsigned esz = ctz32(imm);
-+    if (esz <= MO_64) {
-+        *pesz = esz;
-+        *pidx = imm >> (esz + 1);
-+        return true;
-+    }
-+    return false;
-+}
-+
-+static bool trans_DUP_element_s(DisasContext *s, arg_DUP_element_s *a)
-+{
-+    MemOp esz;
-+    unsigned idx;
-+
-+    if (!decode_esz_idx(a->imm, &esz, &idx)) {
-+        return false;
-+    }
-+    if (fp_access_check(s)) {
-+        /*
-+         * This instruction just extracts the specified element and
-+         * zero-extends it into the bottom of the destination register.
-+         */
-+        TCGv_i64 tmp = tcg_temp_new_i64();
-+        read_vec_element(s, tmp, a->rn, idx, esz);
-+        write_fp_dreg(s, a->rd, tmp);
-+    }
-+    return true;
-+}
-+
-+static bool trans_DUP_element_v(DisasContext *s, arg_DUP_element_v *a)
-+{
-+    MemOp esz;
-+    unsigned idx;
-+
-+    if (!decode_esz_idx(a->imm, &esz, &idx)) {
-+        return false;
-+    }
-+    if (esz == MO_64 && !a->q) {
-+        return false;
-+    }
-+    if (fp_access_check(s)) {
-+        tcg_gen_gvec_dup_mem(esz, vec_full_reg_offset(s, a->rd),
-+                             vec_reg_offset(s, a->rn, idx, esz),
-+                             a->q ? 16 : 8, vec_full_reg_size(s));
-+    }
-+    return true;
-+}
-+
-+static bool trans_DUP_general(DisasContext *s, arg_DUP_general *a)
-+{
-+    MemOp esz;
-+    unsigned idx;
-+
-+    if (!decode_esz_idx(a->imm, &esz, &idx)) {
-+        return false;
-+    }
-+    if (esz == MO_64 && !a->q) {
-+        return false;
-+    }
-+    if (fp_access_check(s)) {
-+        tcg_gen_gvec_dup_i64(esz, vec_full_reg_offset(s, a->rd),
-+                             a->q ? 16 : 8, vec_full_reg_size(s),
-+                             cpu_reg(s, a->rn));
-+    }
-+    return true;
-+}
-+
-+static bool do_smov_umov(DisasContext *s, arg_SMOV *a, MemOp is_signed)
-+{
-+    MemOp esz;
-+    unsigned idx;
-+
-+    if (!decode_esz_idx(a->imm, &esz, &idx)) {
-+        return false;
-+    }
-+    if (is_signed) {
-+        if (esz == MO_64 || (esz == MO_32 && !a->q)) {
++    switch (a->esz) {
++    case MO_64:
++        if (fp_access_check(s)) {
++            TCGv_i64 t0 = read_fp_dreg(s, a->rn);
++            TCGv_i64 t1 = read_fp_dreg(s, a->rm);
++            f->gen_d(t0, t0, t1, fpstatus_ptr(FPST_FPCR));
++            write_fp_dreg(s, a->rd, t0);
++        }
++        break;
++    case MO_32:
++        if (fp_access_check(s)) {
++            TCGv_i32 t0 = read_fp_sreg(s, a->rn);
++            TCGv_i32 t1 = read_fp_sreg(s, a->rm);
++            f->gen_s(t0, t0, t1, fpstatus_ptr(FPST_FPCR));
++            write_fp_sreg(s, a->rd, t0);
++        }
++        break;
++    case MO_16:
++        if (!dc_isar_feature(aa64_fp16, s)) {
 +            return false;
 +        }
-+    } else {
-+        if (esz == MO_64 ? !a->q : a->q) {
++        if (fp_access_check(s)) {
++            TCGv_i32 t0 = read_fp_hreg(s, a->rn);
++            TCGv_i32 t1 = read_fp_hreg(s, a->rm);
++            f->gen_h(t0, t0, t1, fpstatus_ptr(FPST_FPCR_F16));
++            write_fp_sreg(s, a->rd, t0);
++        }
++        break;
++    default:
++        return false;
++    }
++    return true;
++}
++
++static const FPScalar f_scalar_fmulx = {
++    gen_helper_advsimd_mulxh,
++    gen_helper_vfp_mulxs,
++    gen_helper_vfp_mulxd,
++};
++TRANS(FMULX_s, do_fp3_scalar, a, &f_scalar_fmulx)
++
++static bool do_fp3_vector(DisasContext *s, arg_qrrr_e *a,
++                          gen_helper_gvec_3_ptr * const fns[3])
++{
++    MemOp esz = a->esz;
++
++    switch (esz) {
++    case MO_64:
++        if (!a->q) {
 +            return false;
 +        }
-+    }
-+    if (fp_access_check(s)) {
-+        TCGv_i64 tcg_rd = cpu_reg(s, a->rd);
-+        read_vec_element(s, tcg_rd, a->rn, idx, esz | is_signed);
-+        if (is_signed && !a->q) {
-+            tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
++        break;
++    case MO_32:
++        break;
++    case MO_16:
++        if (!dc_isar_feature(aa64_fp16, s)) {
++            return false;
 +        }
-+    }
-+    return true;
-+}
-+
-+TRANS(SMOV, do_smov_umov, a, MO_SIGN)
-+TRANS(UMOV, do_smov_umov, a, 0)
-+
-+static bool trans_INS_general(DisasContext *s, arg_INS_general *a)
-+{
-+    MemOp esz;
-+    unsigned idx;
-+
-+    if (!decode_esz_idx(a->imm, &esz, &idx)) {
++        break;
++    default:
 +        return false;
 +    }
 +    if (fp_access_check(s)) {
-+        write_vec_element(s, cpu_reg(s, a->rn), a->rd, idx, esz);
-+        clear_vec_high(s, true, a->rd);
++        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                          esz == MO_16, 0, fns[esz - 1]);
 +    }
 +    return true;
 +}
 +
-+static bool trans_INS_element(DisasContext *s, arg_INS_element *a)
++static gen_helper_gvec_3_ptr * const f_vector_fmulx[3] = {
++    gen_helper_gvec_fmulx_h,
++    gen_helper_gvec_fmulx_s,
++    gen_helper_gvec_fmulx_d,
++};
++TRANS(FMULX_v, do_fp3_vector, a, f_vector_fmulx)
++
++/*
++ * Advanced SIMD scalar/vector x indexed element
++ */
++
++static bool do_fp3_scalar_idx(DisasContext *s, arg_rrx_e *a, const FPScalar *f)
 +{
-+    MemOp esz;
-+    unsigned didx, sidx;
++    switch (a->esz) {
++    case MO_64:
++        if (fp_access_check(s)) {
++            TCGv_i64 t0 = read_fp_dreg(s, a->rn);
++            TCGv_i64 t1 = tcg_temp_new_i64();
 +
-+    if (!decode_esz_idx(a->di, &esz, &didx)) {
-+        return false;
-+    }
-+    sidx = a->si >> esz;
-+    if (fp_access_check(s)) {
-+        TCGv_i64 tmp = tcg_temp_new_i64();
++            read_vec_element(s, t1, a->rm, a->idx, MO_64);
++            f->gen_d(t0, t0, t1, fpstatus_ptr(FPST_FPCR));
++            write_fp_dreg(s, a->rd, t0);
++        }
++        break;
++    case MO_32:
++        if (fp_access_check(s)) {
++            TCGv_i32 t0 = read_fp_sreg(s, a->rn);
++            TCGv_i32 t1 = tcg_temp_new_i32();
 +
-+        read_vec_element(s, tmp, a->rn, sidx, esz);
-+        write_vec_element(s, tmp, a->rd, didx, esz);
++            read_vec_element_i32(s, t1, a->rm, a->idx, MO_32);
++            f->gen_s(t0, t0, t1, fpstatus_ptr(FPST_FPCR));
++            write_fp_sreg(s, a->rd, t0);
++        }
++        break;
++    case MO_16:
++        if (!dc_isar_feature(aa64_fp16, s)) {
++            return false;
++        }
++        if (fp_access_check(s)) {
++            TCGv_i32 t0 = read_fp_hreg(s, a->rn);
++            TCGv_i32 t1 = tcg_temp_new_i32();
 +
-+        /* INS is considered a 128-bit write for SVE. */
-+        clear_vec_high(s, true, a->rd);
++            read_vec_element_i32(s, t1, a->rm, a->idx, MO_16);
++            f->gen_h(t0, t0, t1, fpstatus_ptr(FPST_FPCR_F16));
++            write_fp_sreg(s, a->rd, t0);
++        }
++        break;
++    default:
++        g_assert_not_reached();
 +    }
 +    return true;
 +}
++
++TRANS(FMULX_si, do_fp3_scalar_idx, a, &f_scalar_fmulx)
++
++static bool do_fp3_vector_idx(DisasContext *s, arg_qrrx_e *a,
++                              gen_helper_gvec_3_ptr * const fns[3])
++{
++    MemOp esz = a->esz;
++
++    switch (esz) {
++    case MO_64:
++        if (!a->q) {
++            return false;
++        }
++        break;
++    case MO_32:
++        break;
++    case MO_16:
++        if (!dc_isar_feature(aa64_fp16, s)) {
++            return false;
++        }
++        break;
++    default:
++        g_assert_not_reached();
++    }
++    if (fp_access_check(s)) {
++        gen_gvec_op3_fpst(s, a->q, a->rd, a->rn, a->rm,
++                          esz == MO_16, a->idx, fns[esz - 1]);
++    }
++    return true;
++}
++
++static gen_helper_gvec_3_ptr * const f_vector_idx_fmulx[3] = {
++    gen_helper_gvec_fmulx_idx_h,
++    gen_helper_gvec_fmulx_idx_s,
++    gen_helper_gvec_fmulx_idx_d,
++};
++TRANS(FMULX_vi, do_fp3_vector_idx, a, f_vector_idx_fmulx)
++
 +
  /* Shift a TCGv src by TCGv shift_amount, put result in dst.
   * Note that it is the caller's responsibility to ensure that the
   * shift amount is in range (ie 0..31 or 0..63) and provide the ARM
-@@ -7760,268 +7899,6 @@ static void disas_simd_across_lanes(DisasContext *s, uint32_t insn)
-     write_fp_dreg(s, rd, tcg_res);
- }
+@@ -9004,9 +9176,6 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
+             case 0x1a: /* FADD */
+                 gen_helper_vfp_addd(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+-            case 0x1b: /* FMULX */
+-                gen_helper_vfp_mulxd(tcg_res, tcg_op1, tcg_op2, fpst);
+-                break;
+             case 0x1c: /* FCMEQ */
+                 gen_helper_neon_ceq_f64(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+@@ -9051,6 +9220,7 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
+                 gen_helper_neon_acgt_f64(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+             default:
++            case 0x1b: /* FMULX */
+                 g_assert_not_reached();
+             }
  
--/* DUP (Element, Vector)
-- *
-- *  31  30   29              21 20    16 15        10  9    5 4    0
-- * +---+---+-------------------+--------+-------------+------+------+
-- * | 0 | Q | 0 0 1 1 1 0 0 0 0 |  imm5  | 0 0 0 0 0 1 |  Rn  |  Rd  |
-- * +---+---+-------------------+--------+-------------+------+------+
-- *
-- * size: encoded in imm5 (see ARM ARM LowestSetBit())
-- */
--static void handle_simd_dupe(DisasContext *s, int is_q, int rd, int rn,
--                             int imm5)
--{
--    int size = ctz32(imm5);
--    int index;
--
--    if (size > 3 || (size == 3 && !is_q)) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    index = imm5 >> (size + 1);
--    tcg_gen_gvec_dup_mem(size, vec_full_reg_offset(s, rd),
--                         vec_reg_offset(s, rn, index, size),
--                         is_q ? 16 : 8, vec_full_reg_size(s));
--}
--
--/* DUP (element, scalar)
-- *  31                   21 20    16 15        10  9    5 4    0
-- * +-----------------------+--------+-------------+------+------+
-- * | 0 1 0 1 1 1 1 0 0 0 0 |  imm5  | 0 0 0 0 0 1 |  Rn  |  Rd  |
-- * +-----------------------+--------+-------------+------+------+
-- */
--static void handle_simd_dupes(DisasContext *s, int rd, int rn,
--                              int imm5)
--{
--    int size = ctz32(imm5);
--    int index;
--    TCGv_i64 tmp;
--
--    if (size > 3) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    index = imm5 >> (size + 1);
--
--    /* This instruction just extracts the specified element and
--     * zero-extends it into the bottom of the destination register.
--     */
--    tmp = tcg_temp_new_i64();
--    read_vec_element(s, tmp, rn, index, size);
--    write_fp_dreg(s, rd, tmp);
--}
--
--/* DUP (General)
-- *
-- *  31  30   29              21 20    16 15        10  9    5 4    0
-- * +---+---+-------------------+--------+-------------+------+------+
-- * | 0 | Q | 0 0 1 1 1 0 0 0 0 |  imm5  | 0 0 0 0 1 1 |  Rn  |  Rd  |
-- * +---+---+-------------------+--------+-------------+------+------+
-- *
-- * size: encoded in imm5 (see ARM ARM LowestSetBit())
-- */
--static void handle_simd_dupg(DisasContext *s, int is_q, int rd, int rn,
--                             int imm5)
--{
--    int size = ctz32(imm5);
--    uint32_t dofs, oprsz, maxsz;
--
--    if (size > 3 || ((size == 3) && !is_q)) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    dofs = vec_full_reg_offset(s, rd);
--    oprsz = is_q ? 16 : 8;
--    maxsz = vec_full_reg_size(s);
--
--    tcg_gen_gvec_dup_i64(size, dofs, oprsz, maxsz, cpu_reg(s, rn));
--}
--
--/* INS (Element)
-- *
-- *  31                   21 20    16 15  14    11  10 9    5 4    0
-- * +-----------------------+--------+------------+---+------+------+
-- * | 0 1 1 0 1 1 1 0 0 0 0 |  imm5  | 0 |  imm4  | 1 |  Rn  |  Rd  |
-- * +-----------------------+--------+------------+---+------+------+
-- *
-- * size: encoded in imm5 (see ARM ARM LowestSetBit())
-- * index: encoded in imm5<4:size+1>
-- */
--static void handle_simd_inse(DisasContext *s, int rd, int rn,
--                             int imm4, int imm5)
--{
--    int size = ctz32(imm5);
--    int src_index, dst_index;
--    TCGv_i64 tmp;
--
--    if (size > 3) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    dst_index = extract32(imm5, 1+size, 5);
--    src_index = extract32(imm4, size, 4);
--
--    tmp = tcg_temp_new_i64();
--
--    read_vec_element(s, tmp, rn, src_index, size);
--    write_vec_element(s, tmp, rd, dst_index, size);
--
--    /* INS is considered a 128-bit write for SVE. */
--    clear_vec_high(s, true, rd);
--}
--
--
--/* INS (General)
-- *
-- *  31                   21 20    16 15        10  9    5 4    0
-- * +-----------------------+--------+-------------+------+------+
-- * | 0 1 0 0 1 1 1 0 0 0 0 |  imm5  | 0 0 0 1 1 1 |  Rn  |  Rd  |
-- * +-----------------------+--------+-------------+------+------+
-- *
-- * size: encoded in imm5 (see ARM ARM LowestSetBit())
-- * index: encoded in imm5<4:size+1>
-- */
--static void handle_simd_insg(DisasContext *s, int rd, int rn, int imm5)
--{
--    int size = ctz32(imm5);
--    int idx;
--
--    if (size > 3) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    idx = extract32(imm5, 1 + size, 4 - size);
--    write_vec_element(s, cpu_reg(s, rn), rd, idx, size);
--
--    /* INS is considered a 128-bit write for SVE. */
--    clear_vec_high(s, true, rd);
--}
--
--/*
-- * UMOV (General)
-- * SMOV (General)
-- *
-- *  31  30   29              21 20    16 15    12   10 9    5 4    0
-- * +---+---+-------------------+--------+-------------+------+------+
-- * | 0 | Q | 0 0 1 1 1 0 0 0 0 |  imm5  | 0 0 1 U 1 1 |  Rn  |  Rd  |
-- * +---+---+-------------------+--------+-------------+------+------+
-- *
-- * U: unsigned when set
-- * size: encoded in imm5 (see ARM ARM LowestSetBit())
-- */
--static void handle_simd_umov_smov(DisasContext *s, int is_q, int is_signed,
--                                  int rn, int rd, int imm5)
--{
--    int size = ctz32(imm5);
--    int element;
--    TCGv_i64 tcg_rd;
--
--    /* Check for UnallocatedEncodings */
--    if (is_signed) {
--        if (size > 2 || (size == 2 && !is_q)) {
--            unallocated_encoding(s);
--            return;
--        }
--    } else {
--        if (size > 3
--            || (size < 3 && is_q)
--            || (size == 3 && !is_q)) {
--            unallocated_encoding(s);
--            return;
--        }
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    element = extract32(imm5, 1+size, 4);
--
--    tcg_rd = cpu_reg(s, rd);
--    read_vec_element(s, tcg_rd, rn, element, size | (is_signed ? MO_SIGN : 0));
--    if (is_signed && !is_q) {
--        tcg_gen_ext32u_i64(tcg_rd, tcg_rd);
--    }
--}
--
--/* AdvSIMD copy
-- *   31  30  29  28             21 20  16 15  14  11 10  9    5 4    0
-- * +---+---+----+-----------------+------+---+------+---+------+------+
-- * | 0 | Q | op | 0 1 1 1 0 0 0 0 | imm5 | 0 | imm4 | 1 |  Rn  |  Rd  |
-- * +---+---+----+-----------------+------+---+------+---+------+------+
-- */
--static void disas_simd_copy(DisasContext *s, uint32_t insn)
--{
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int imm4 = extract32(insn, 11, 4);
--    int op = extract32(insn, 29, 1);
--    int is_q = extract32(insn, 30, 1);
--    int imm5 = extract32(insn, 16, 5);
--
--    if (op) {
--        if (is_q) {
--            /* INS (element) */
--            handle_simd_inse(s, rd, rn, imm4, imm5);
--        } else {
--            unallocated_encoding(s);
--        }
--    } else {
--        switch (imm4) {
--        case 0:
--            /* DUP (element - vector) */
--            handle_simd_dupe(s, is_q, rd, rn, imm5);
--            break;
--        case 1:
--            /* DUP (general) */
--            handle_simd_dupg(s, is_q, rd, rn, imm5);
--            break;
--        case 3:
--            if (is_q) {
--                /* INS (general) */
--                handle_simd_insg(s, rd, rn, imm5);
--            } else {
--                unallocated_encoding(s);
--            }
--            break;
--        case 5:
--        case 7:
--            /* UMOV/SMOV (is_q indicates 32/64; imm4 indicates signedness) */
--            handle_simd_umov_smov(s, is_q, (imm4 == 5), rn, rd, imm5);
--            break;
--        default:
--            unallocated_encoding(s);
--            break;
--        }
--    }
--}
--
- /* AdvSIMD modified immediate
-  *  31  30   29  28                 19 18 16 15   12  11  10  9     5 4    0
-  * +---+---+----+---------------------+-----+-------+----+---+-------+------+
-@@ -8081,29 +7958,6 @@ static void disas_simd_mod_imm(DisasContext *s, uint32_t insn)
+@@ -9077,9 +9247,6 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
+             case 0x1a: /* FADD */
+                 gen_helper_vfp_adds(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+-            case 0x1b: /* FMULX */
+-                gen_helper_vfp_mulxs(tcg_res, tcg_op1, tcg_op2, fpst);
+-                break;
+             case 0x1c: /* FCMEQ */
+                 gen_helper_neon_ceq_f32(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+@@ -9127,6 +9294,7 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
+                 gen_helper_neon_acgt_f32(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+             default:
++            case 0x1b: /* FMULX */
+                 g_assert_not_reached();
+             }
+ 
+@@ -9165,7 +9333,6 @@ static void disas_simd_scalar_three_reg_same(DisasContext *s, uint32_t insn)
+         /* Floating point: U, size[1] and opcode indicate operation */
+         int fpopcode = opcode | (extract32(size, 1, 1) << 5) | (u << 6);
+         switch (fpopcode) {
+-        case 0x1b: /* FMULX */
+         case 0x1f: /* FRECPS */
+         case 0x3f: /* FRSQRTS */
+         case 0x5d: /* FACGE */
+@@ -9176,6 +9343,7 @@ static void disas_simd_scalar_three_reg_same(DisasContext *s, uint32_t insn)
+         case 0x7a: /* FABD */
+             break;
+         default:
++        case 0x1b: /* FMULX */
+             unallocated_encoding(s);
+             return;
+         }
+@@ -9328,7 +9496,6 @@ static void disas_simd_scalar_three_reg_same_fp16(DisasContext *s,
+     TCGv_i32 tcg_res;
+ 
+     switch (fpopcode) {
+-    case 0x03: /* FMULX */
+     case 0x04: /* FCMEQ (reg) */
+     case 0x07: /* FRECPS */
+     case 0x0f: /* FRSQRTS */
+@@ -9339,6 +9506,7 @@ static void disas_simd_scalar_three_reg_same_fp16(DisasContext *s,
+     case 0x1d: /* FACGT */
+         break;
+     default:
++    case 0x03: /* FMULX */
+         unallocated_encoding(s);
+         return;
      }
+@@ -9358,9 +9526,6 @@ static void disas_simd_scalar_three_reg_same_fp16(DisasContext *s,
+     tcg_res = tcg_temp_new_i32();
+ 
+     switch (fpopcode) {
+-    case 0x03: /* FMULX */
+-        gen_helper_advsimd_mulxh(tcg_res, tcg_op1, tcg_op2, fpst);
+-        break;
+     case 0x04: /* FCMEQ (reg) */
+         gen_helper_advsimd_ceq_f16(tcg_res, tcg_op1, tcg_op2, fpst);
+         break;
+@@ -9387,6 +9552,7 @@ static void disas_simd_scalar_three_reg_same_fp16(DisasContext *s,
+         gen_helper_advsimd_acgt_f16(tcg_res, tcg_op1, tcg_op2, fpst);
+         break;
+     default:
++    case 0x03: /* FMULX */
+         g_assert_not_reached();
+     }
+ 
+@@ -11044,7 +11210,6 @@ static void disas_simd_3same_float(DisasContext *s, uint32_t insn)
+         handle_simd_3same_pair(s, is_q, 0, fpopcode, size ? MO_64 : MO_32,
+                                rn, rm, rd);
+         return;
+-    case 0x1b: /* FMULX */
+     case 0x1f: /* FRECPS */
+     case 0x3f: /* FRSQRTS */
+     case 0x5d: /* FACGE */
+@@ -11090,6 +11255,7 @@ static void disas_simd_3same_float(DisasContext *s, uint32_t insn)
+         return;
+ 
+     default:
++    case 0x1b: /* FMULX */
+         unallocated_encoding(s);
+         return;
+     }
+@@ -11434,7 +11600,6 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
+     case 0x0: /* FMAXNM */
+     case 0x1: /* FMLA */
+     case 0x2: /* FADD */
+-    case 0x3: /* FMULX */
+     case 0x4: /* FCMEQ */
+     case 0x6: /* FMAX */
+     case 0x7: /* FRECPS */
+@@ -11460,6 +11625,7 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
+         pairwise = true;
+         break;
+     default:
++    case 0x3: /* FMULX */
+         unallocated_encoding(s);
+         return;
+     }
+@@ -11536,9 +11702,6 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
+             case 0x2: /* FADD */
+                 gen_helper_advsimd_addh(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+-            case 0x3: /* FMULX */
+-                gen_helper_advsimd_mulxh(tcg_res, tcg_op1, tcg_op2, fpst);
+-                break;
+             case 0x4: /* FCMEQ */
+                 gen_helper_advsimd_ceq_f16(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+@@ -11590,6 +11753,7 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
+                 gen_helper_advsimd_acgt_f16(tcg_res, tcg_op1, tcg_op2, fpst);
+                 break;
+             default:
++            case 0x3: /* FMULX */
+                 g_assert_not_reached();
+             }
+ 
+@@ -12809,7 +12973,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+     case 0x01: /* FMLA */
+     case 0x05: /* FMLS */
+     case 0x09: /* FMUL */
+-    case 0x19: /* FMULX */
+         is_fp = 1;
+         break;
+     case 0x1d: /* SQRDMLAH */
+@@ -12878,6 +13041,7 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+         /* is_fp, but we pass tcg_env not fp_status.  */
+         break;
+     default:
++    case 0x19: /* FMULX */
+         unallocated_encoding(s);
+         return;
+     }
+@@ -13101,10 +13265,8 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+             case 0x09: /* FMUL */
+                 gen_helper_vfp_muld(tcg_res, tcg_op, tcg_idx, fpst);
+                 break;
+-            case 0x19: /* FMULX */
+-                gen_helper_vfp_mulxd(tcg_res, tcg_op, tcg_idx, fpst);
+-                break;
+             default:
++            case 0x19: /* FMULX */
+                 g_assert_not_reached();
+             }
+ 
+@@ -13217,24 +13379,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+                     g_assert_not_reached();
+                 }
+                 break;
+-            case 0x19: /* FMULX */
+-                switch (size) {
+-                case 1:
+-                    if (is_scalar) {
+-                        gen_helper_advsimd_mulxh(tcg_res, tcg_op,
+-                                                 tcg_idx, fpst);
+-                    } else {
+-                        gen_helper_advsimd_mulx2h(tcg_res, tcg_op,
+-                                                  tcg_idx, fpst);
+-                    }
+-                    break;
+-                case 2:
+-                    gen_helper_vfp_mulxs(tcg_res, tcg_op, tcg_idx, fpst);
+-                    break;
+-                default:
+-                    g_assert_not_reached();
+-                }
+-                break;
+             case 0x0c: /* SQDMULH */
+                 if (size == 1) {
+                     gen_helper_neon_qdmulh_s16(tcg_res, tcg_env,
+@@ -13276,6 +13420,7 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+                 }
+                 break;
+             default:
++            case 0x19: /* FMULX */
+                 g_assert_not_reached();
+             }
+ 
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 1f93510b85c..86845819236 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -1248,6 +1248,9 @@ DO_3OP(gvec_rsqrts_nf_h, float16_rsqrts_nf, float16)
+ DO_3OP(gvec_rsqrts_nf_s, float32_rsqrts_nf, float32)
+ 
+ #ifdef TARGET_AARCH64
++DO_3OP(gvec_fmulx_h, helper_advsimd_mulxh, float16)
++DO_3OP(gvec_fmulx_s, helper_vfp_mulxs, float32)
++DO_3OP(gvec_fmulx_d, helper_vfp_mulxd, float64)
+ 
+ DO_3OP(gvec_recps_h, helper_recpsf_f16, float16)
+ DO_3OP(gvec_recps_s, helper_recpsf_f32, float32)
+@@ -1385,7 +1388,7 @@ DO_MLA_IDX(gvec_mls_idx_d, uint64_t, -, H8)
+ 
+ #undef DO_MLA_IDX
+ 
+-#define DO_FMUL_IDX(NAME, ADD, TYPE, H)                                    \
++#define DO_FMUL_IDX(NAME, ADD, MUL, TYPE, H)                               \
+ void HELPER(NAME)(void *vd, void *vn, void *vm, void *stat, uint32_t desc) \
+ {                                                                          \
+     intptr_t i, j, oprsz = simd_oprsz(desc);                               \
+@@ -1395,33 +1398,37 @@ void HELPER(NAME)(void *vd, void *vn, void *vm, void *stat, uint32_t desc) \
+     for (i = 0; i < oprsz / sizeof(TYPE); i += segment) {                  \
+         TYPE mm = m[H(i + idx)];                                           \
+         for (j = 0; j < segment; j++) {                                    \
+-            d[i + j] = TYPE##_##ADD(d[i + j],                              \
+-                                    TYPE##_mul(n[i + j], mm, stat), stat); \
++            d[i + j] = ADD(d[i + j], MUL(n[i + j], mm, stat), stat);       \
+         }                                                                  \
+     }                                                                      \
+     clear_tail(d, oprsz, simd_maxsz(desc));                                \
  }
  
--/* AdvSIMD scalar copy
-- *  31 30  29  28             21 20  16 15  14  11 10  9    5 4    0
-- * +-----+----+-----------------+------+---+------+---+------+------+
-- * | 0 1 | op | 1 1 1 1 0 0 0 0 | imm5 | 0 | imm4 | 1 |  Rn  |  Rd  |
-- * +-----+----+-----------------+------+---+------+---+------+------+
-- */
--static void disas_simd_scalar_copy(DisasContext *s, uint32_t insn)
--{
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int imm4 = extract32(insn, 11, 4);
--    int imm5 = extract32(insn, 16, 5);
--    int op = extract32(insn, 29, 1);
--
--    if (op != 0 || imm4 != 0) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    /* DUP (element, scalar) */
--    handle_simd_dupes(s, rd, rn, imm5);
--}
--
- /* AdvSIMD scalar pairwise
-  *  31 30  29 28       24 23  22 21       17 16    12 11 10 9    5 4    0
-  * +-----+---+-----------+------+-----------+--------+-----+------+------+
-@@ -13607,7 +13461,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
-     { 0x0e200000, 0x9f200c00, disas_simd_three_reg_diff },
-     { 0x0e200800, 0x9f3e0c00, disas_simd_two_reg_misc },
-     { 0x0e300800, 0x9f3e0c00, disas_simd_across_lanes },
--    { 0x0e000400, 0x9fe08400, disas_simd_copy },
-     { 0x0f000000, 0x9f000400, disas_simd_indexed }, /* vector indexed */
-     /* simd_mod_imm decode is a subset of simd_shift_imm, so must precede it */
-     { 0x0f000400, 0x9ff80400, disas_simd_mod_imm },
-@@ -13620,7 +13473,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
-     { 0x5e200000, 0xdf200c00, disas_simd_scalar_three_reg_diff },
-     { 0x5e200800, 0xdf3e0c00, disas_simd_scalar_two_reg_misc },
-     { 0x5e300800, 0xdf3e0c00, disas_simd_scalar_pairwise },
--    { 0x5e000400, 0xdfe08400, disas_simd_scalar_copy },
-     { 0x5f000000, 0xdf000400, disas_simd_indexed }, /* scalar indexed */
-     { 0x5f000400, 0xdf800400, disas_simd_scalar_shift_imm },
-     { 0x0e400400, 0x9f60c400, disas_simd_three_reg_same_fp16 },
+-#define float16_nop(N, M, S) (M)
+-#define float32_nop(N, M, S) (M)
+-#define float64_nop(N, M, S) (M)
++#define nop(N, M, S) (M)
+ 
+-DO_FMUL_IDX(gvec_fmul_idx_h, nop, float16, H2)
+-DO_FMUL_IDX(gvec_fmul_idx_s, nop, float32, H4)
+-DO_FMUL_IDX(gvec_fmul_idx_d, nop, float64, H8)
++DO_FMUL_IDX(gvec_fmul_idx_h, nop, float16_mul, float16, H2)
++DO_FMUL_IDX(gvec_fmul_idx_s, nop, float32_mul, float32, H4)
++DO_FMUL_IDX(gvec_fmul_idx_d, nop, float64_mul, float64, H8)
++
++#ifdef TARGET_AARCH64
++
++DO_FMUL_IDX(gvec_fmulx_idx_h, nop, helper_advsimd_mulxh, float16, H2)
++DO_FMUL_IDX(gvec_fmulx_idx_s, nop, helper_vfp_mulxs, float32, H4)
++DO_FMUL_IDX(gvec_fmulx_idx_d, nop, helper_vfp_mulxd, float64, H8)
++
++#endif
++
++#undef nop
+ 
+ /*
+  * Non-fused multiply-accumulate operations, for Neon. NB that unlike
+  * the fused ops below they assume accumulate both from and into Vd.
+  */
+-DO_FMUL_IDX(gvec_fmla_nf_idx_h, add, float16, H2)
+-DO_FMUL_IDX(gvec_fmla_nf_idx_s, add, float32, H4)
+-DO_FMUL_IDX(gvec_fmls_nf_idx_h, sub, float16, H2)
+-DO_FMUL_IDX(gvec_fmls_nf_idx_s, sub, float32, H4)
++DO_FMUL_IDX(gvec_fmla_nf_idx_h, float16_add, float16_mul, float16, H2)
++DO_FMUL_IDX(gvec_fmla_nf_idx_s, float32_add, float32_mul, float32, H4)
++DO_FMUL_IDX(gvec_fmls_nf_idx_h, float16_sub, float16_mul, float16, H2)
++DO_FMUL_IDX(gvec_fmls_nf_idx_s, float32_sub, float32_mul, float32, H4)
+ 
+-#undef float16_nop
+-#undef float32_nop
+-#undef float64_nop
+ #undef DO_FMUL_IDX
+ 
+ #define DO_FMLA_IDX(NAME, TYPE, H)                                         \
 -- 
 2.34.1
 
