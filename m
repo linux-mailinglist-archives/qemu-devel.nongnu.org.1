@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C046C8CDD51
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7818CDD3D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:12:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHYD-0007Ry-P9; Thu, 23 May 2024 19:08:45 -0400
+	id 1sAHYC-0007OY-0Y; Thu, 23 May 2024 19:08:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHXu-0007I0-Mt; Thu, 23 May 2024 19:08:27 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1sAHXy-0007J9-BC; Thu, 23 May 2024 19:08:33 -0400
+Received: from mail-il1-x12e.google.com ([2607:f8b0:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHXs-0005h7-UW; Thu, 23 May 2024 19:08:26 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2bd816ecaf5so2392775a91.2; 
- Thu, 23 May 2024 16:08:24 -0700 (PDT)
+ id 1sAHXw-0005hY-7U; Thu, 23 May 2024 19:08:30 -0400
+Received: by mail-il1-x12e.google.com with SMTP id
+ e9e14a558f8ab-36ddf683ad7so21767375ab.2; 
+ Thu, 23 May 2024 16:08:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505703; x=1717110503; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505706; x=1717110506; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nV6w1AjQDLWDB3Npch3KGBEPSiv+4sXlghjNuPVyMEM=;
- b=bjhin0lYhhaKn78bb+lqf57T8BNYMPIMDBqGbTVcqxlr6doE+oYYKAjIXRezp+JvbN
- w4HNwaMrboJoDVIZUO4VNJWgQ48SRYALqPCUzKxDDTehBGkG0I7GqIlF/hAynoiXWzjB
- 1eegN1idd8kjVej4XO2S30QSJGm816lxgChk14kdby4aOyzLoUi0NliEXOXoq2Ale2dx
- Z9gHVCCcwWxe5OwGg86UvYr4sgARDzd519bMysPyYQanDNAmJ3Otr7iCkm+zlSmNiN9v
- obJZBql2D44P5F8I6etD7zes8upQnbqP54ZVa2kunfnFBearxzKKRdEAUHuAMJEIkXtI
- dTug==
+ bh=RSCEzO7J34nTWA53rTvjSjhvpcnEIboLFhAR9zzIBDk=;
+ b=emlynGHAIswTjyiUte/yfa45t6mAMWMNJYLln4Wh+uLTKZSAfthDlzBfC9ZR95GmGm
+ wc2i0gswUd2EpPNiWmp5CdjAKEH5A2pPJfbXu99SZuuUNhuVu0PHRs+EkS7CvNo8KwJI
+ l6yd5YI+EgegQW6WkMlFMbfquZFne7wnWNztVXvW/i0r4bb50n7mw/IDvwwVzngfPfdt
+ p7Mux7qHUTcZFkK/2CU4+aPp1Itp0Hfr6SC6uebT+756AdrpBek0pT8caE73TZWewWE6
+ jrxbcUemRgKJapNvfUta07SIe0gkbkbh5UNq/stbfQ1CjgDY2p0CURkAo18vru2i9DN1
+ 8eyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505703; x=1717110503;
+ d=1e100.net; s=20230601; t=1716505706; x=1717110506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nV6w1AjQDLWDB3Npch3KGBEPSiv+4sXlghjNuPVyMEM=;
- b=dxiQPx/FVd62ALAHxhEU7Nv9xtIq2AfPhqV1g1/a12utHWu5QIKzjxfTpxMi1Xyb9q
- V/kL/Cf26yx/si6r7I/Vb8Vs+rfkxHCROgPenxUfcYBDDmMix+vLFSAvPSGmLFUWjXio
- aKTSCFELot8r+oyxslcUH9Rh0Zbj6y/MUsdDgKOV27dEoHZWzd0i01J+WeWstUwzTgio
- dStCGOyjSN8rYz2oNHr+hPRrKYkyKlprD+dfp3pw0030mxEbf4E2ANFLcg8L6DB41Uyw
- p1Tm/DZGBKi9k5DO8nDzYNSM+UDPPNXdKV7izKzS+VPom+n64Rxj4bRzA/b3mk8mf+LE
- W2jA==
+ bh=RSCEzO7J34nTWA53rTvjSjhvpcnEIboLFhAR9zzIBDk=;
+ b=GVgnKKWcQbu3XoLb6Xtt0ca/aRQVvXf29DKdo5I9ae++uxpq3TC3/DWM1uG58j9s3p
+ RKD74mU8SGuT+6CnKn8FnY+SyEM8jeYuAgdjT26GV/tKt/8eB0GZoBXGcqvfQ4jEJRXL
+ 1gySvmVrTO8lPBIuEVgj8/9J9CQZ77qMCWCYpa4jhpdqKqftNHAYLhePWArzOMR10WXc
+ 3Yn3xXgcfPbZsZ7KYWKdGEp4mbUjQzko++kuUxvkD6HuoSh/5t1+vT1aoOlgTT519EkD
+ wgCp5xiUyfRcR1bFPrACOeI1pI1D8IHFDPEAHPaGAM+YetjsumYt0lCkxPT8NGULJtgw
+ S8KA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXls2BJ77URuEMDj71/2dhfJkKejsMXFRZ20R5+E1iqvi1PEjkvbSZ4tUmIYswOpX3XMBSMfVi9oLM4M9zij87pbhfe
-X-Gm-Message-State: AOJu0Yyy91YalgwWY7JNh/qg4PPkYFI/blvGVK14JTNrIJusDpnCzxnX
- xvwBtrAcTiJFLN1pw5M3wZTB/mwX4jms246zYh4ca1eUSFLZee2jpT32EA==
-X-Google-Smtp-Source: AGHT+IFo3ln8e9W/4R6ElV65NgjAEj7rFathR3JjZtSEmcbPI5h874VnNAz7cYvZDVREzgpJfcV7TQ==
-X-Received: by 2002:a17:90b:1093:b0:2bd:8aed:740a with SMTP id
- 98e67ed59e1d1-2bf5e569480mr615167a91.23.1716505702735; 
- Thu, 23 May 2024 16:08:22 -0700 (PDT)
+ AJvYcCWpd4hZBmhzyvBWgm09fK4a7XaXyCqKugyYyZmP1AkqrUhm4nmxkQGdYQxpHPZ+oQRdCuU3pVt/O3SodjXnqOutcyE/
+X-Gm-Message-State: AOJu0Yy2XCTmM9uaww5opO9SbYCgFunAw6LFDCcrBcuoGaplH3/H5n51
+ sqJ+01wb93rPiF7t29I4WkOubqvyNYCb5mOCbWdzcoMN2kinxBQ5BeDOzQ==
+X-Google-Smtp-Source: AGHT+IE4qTMMM6uXqF6H2HUbSMBY+POz3kwpoupkUr4tXTB4mdn5FtvvHEjdRF32Y57yceVMLI6W+Q==
+X-Received: by 2002:a05:6e02:20c9:b0:36b:3ac1:5853 with SMTP id
+ e9e14a558f8ab-3737b34e2aamr7631225ab.27.1716505705575; 
+ Thu, 23 May 2024 16:08:25 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.20
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:08:22 -0700 (PDT)
+ Thu, 23 May 2024 16:08:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PULL 08/72] target/ppc: Add ISA v3.1 variants of sync instruction
-Date: Fri, 24 May 2024 09:06:41 +1000
-Message-ID: <20240523230747.45703-9-npiggin@gmail.com>
+Subject: [PULL 09/72] target/ppc: Merge various fpu helpers
+Date: Fri, 24 May 2024 09:06:42 +1000
+Message-ID: <20240523230747.45703-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12e;
+ envelope-from=npiggin@gmail.com; helo=mail-il1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,94 +92,292 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER10 adds a new field to sync for store-store syncs, and some
-new variants of the existing syncs that include persistent memory.
+From: Chinmay Rath <rathc@linux.ibm.com>
 
-Implement the store-store syncs and plwsync/phwsync.
+This patch merges the definitions of the following set of fpu helper methods,
+which are similar, using macros :
 
-Reviewed-by: Chinmay Rath <rathc@linux.ibm.com>
+1. f{add, sub, mul, div}(s)
+2. fre(s)
+3. frsqrte(s)
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/insn32.decode             |  6 ++--
- target/ppc/translate/misc-impl.c.inc | 41 ++++++++++++++++++++--------
- 2 files changed, 32 insertions(+), 15 deletions(-)
+ target/ppc/fpu_helper.c | 221 +++++++++++-----------------------------
+ 1 file changed, 62 insertions(+), 159 deletions(-)
 
-diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index 6b89804b15..a180380750 100644
---- a/target/ppc/insn32.decode
-+++ b/target/ppc/insn32.decode
-@@ -1001,7 +1001,7 @@ MSGSYNC         011111 ----- ----- ----- 1101110110 -
- 
- # Memory Barrier Instructions
- 
--&X_sync         l
--@X_sync         ...... ... l:2 ..... ..... .......... .           &X_sync
--SYNC            011111 --- ..  ----- ----- 1001010110 -           @X_sync
-+&X_sync         l sc
-+@X_sync         ...... .. l:3 ... sc:2 ..... .......... .           &X_sync
-+SYNC            011111 -- ... --- ..   ----- 1001010110 -           @X_sync
- EIEIO           011111 ----- ----- ----- 1101010110 -
-diff --git a/target/ppc/translate/misc-impl.c.inc b/target/ppc/translate/misc-impl.c.inc
-index 7574317600..c1661d2f43 100644
---- a/target/ppc/translate/misc-impl.c.inc
-+++ b/target/ppc/translate/misc-impl.c.inc
-@@ -25,6 +25,7 @@ static bool trans_SYNC(DisasContext *ctx, arg_X_sync *a)
- {
-     TCGBar bar = TCG_MO_ALL;
-     uint32_t l = a->l;
-+    uint32_t sc = a->sc;
- 
-     /*
-      * BookE uses the msync mnemonic. This means hwsync, except in the
-@@ -41,20 +42,36 @@ static bool trans_SYNC(DisasContext *ctx, arg_X_sync *a)
-         return false;
+diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
+index 4b3dcad5d1..8d0cbe27e7 100644
+--- a/target/ppc/fpu_helper.c
++++ b/target/ppc/fpu_helper.c
+@@ -490,54 +490,12 @@ static void float_invalid_op_addsub(CPUPPCState *env, int flags,
      }
+ }
  
--    if ((l == 1) && (ctx->insns_flags2 & PPC2_MEM_LWSYNC)) {
--        bar = TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST;
+-/* fadd - fadd. */
+-float64 helper_fadd(CPUPPCState *env, float64 arg1, float64 arg2)
++static inline void addsub_flags_handler(CPUPPCState *env, int flags,
++                                        uintptr_t ra)
+ {
+-    float64 ret = float64_add(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_addsub(env, flags, 1, GETPC());
 -    }
 -
-     /*
--     * We may need to check for a pending TLB flush.
--     *
--     * We do this on ptesync (l == 2) on ppc64 and any sync on ppc32.
--     *
--     * Additionally, this can only happen in kernel mode however so
--     * check MSR_PR as well.
-+     * In ISA v3.1, the L field grew one bit. Mask that out to ignore it in
-+     * older processors. It also added the SC field, zero this to ignore
-+     * it too.
-      */
--    if (((l == 2) || !(ctx->insns_flags & PPC_64B)) && !ctx->pr) {
--        gen_check_tlb_flush(ctx, true);
-+    if (!(ctx->insns_flags2 & PPC2_ISA310)) {
-+        l &= 0x3;
-+        sc = 0;
-+    }
-+
-+    if (sc) {
-+        /* Store syncs [stsync, stcisync, stncisync]. These ignore L. */
-+        bar = TCG_MO_ST_ST;
-+    } else {
-+        if (((l == 1) && (ctx->insns_flags2 & PPC2_MEM_LWSYNC)) || (l == 5)) {
-+            /* lwsync, or plwsync on POWER10 and later */
-+            bar = TCG_MO_LD_LD | TCG_MO_LD_ST | TCG_MO_ST_ST;
-+        }
-+
-+        /*
-+         * We may need to check for a pending TLB flush.
-+         *
-+         * We do this on ptesync (l == 2) on ppc64 and any sync on ppc32.
-+         *
-+         * Additionally, this can only happen in kernel mode however so
-+         * check MSR_PR as well.
-+         */
-+        if (((l == 2) || !(ctx->insns_flags & PPC_64B)) && !ctx->pr) {
-+            gen_check_tlb_flush(ctx, true);
-+        }
+-    return ret;
+-}
+-
+-/* fadds - fadds. */
+-float64 helper_fadds(CPUPPCState *env, float64 arg1, float64 arg2)
+-{
+-    float64 ret = float64r32_add(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_addsub(env, flags, 1, GETPC());
+-    }
+-    return ret;
+-}
+-
+-/* fsub - fsub. */
+-float64 helper_fsub(CPUPPCState *env, float64 arg1, float64 arg2)
+-{
+-    float64 ret = float64_sub(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+     if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_addsub(env, flags, 1, GETPC());
++        float_invalid_op_addsub(env, flags, 1, ra);
      }
+-
+-    return ret;
+-}
+-
+-/* fsubs - fsubs. */
+-float64 helper_fsubs(CPUPPCState *env, float64 arg1, float64 arg2)
+-{
+-    float64 ret = float64r32_sub(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_addsub(env, flags, 1, GETPC());
+-    }
+-    return ret;
+ }
  
-     tcg_gen_mb(bar | TCG_BAR_SC);
+ static void float_invalid_op_mul(CPUPPCState *env, int flags,
+@@ -550,29 +508,11 @@ static void float_invalid_op_mul(CPUPPCState *env, int flags,
+     }
+ }
+ 
+-/* fmul - fmul. */
+-float64 helper_fmul(CPUPPCState *env, float64 arg1, float64 arg2)
+-{
+-    float64 ret = float64_mul(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_mul(env, flags, 1, GETPC());
+-    }
+-
+-    return ret;
+-}
+-
+-/* fmuls - fmuls. */
+-float64 helper_fmuls(CPUPPCState *env, float64 arg1, float64 arg2)
++static inline void mul_flags_handler(CPUPPCState *env, int flags, uintptr_t ra)
+ {
+-    float64 ret = float64r32_mul(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+     if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_mul(env, flags, 1, GETPC());
++        float_invalid_op_mul(env, flags, 1, ra);
+     }
+-    return ret;
+ }
+ 
+ static void float_invalid_op_div(CPUPPCState *env, int flags,
+@@ -587,36 +527,14 @@ static void float_invalid_op_div(CPUPPCState *env, int flags,
+     }
+ }
+ 
+-/* fdiv - fdiv. */
+-float64 helper_fdiv(CPUPPCState *env, float64 arg1, float64 arg2)
+-{
+-    float64 ret = float64_div(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_div(env, flags, 1, GETPC());
+-    }
+-    if (unlikely(flags & float_flag_divbyzero)) {
+-        float_zero_divide_excp(env, GETPC());
+-    }
+-
+-    return ret;
+-}
+-
+-/* fdivs - fdivs. */
+-float64 helper_fdivs(CPUPPCState *env, float64 arg1, float64 arg2)
++static inline void div_flags_handler(CPUPPCState *env, int flags, uintptr_t ra)
+ {
+-    float64 ret = float64r32_div(arg1, arg2, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+     if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_div(env, flags, 1, GETPC());
++        float_invalid_op_div(env, flags, 1, ra);
+     }
+     if (unlikely(flags & float_flag_divbyzero)) {
+-        float_zero_divide_excp(env, GETPC());
++        float_zero_divide_excp(env, ra);
+     }
+-
+-    return ret;
+ }
+ 
+ static uint64_t float_invalid_cvt(CPUPPCState *env, int flags,
+@@ -812,81 +730,66 @@ float64 helper_##name(CPUPPCState *env, float64 arg)                          \
+ FPU_FSQRT(FSQRT, float64_sqrt)
+ FPU_FSQRT(FSQRTS, float64r32_sqrt)
+ 
+-/* fre - fre. */
+-float64 helper_fre(CPUPPCState *env, float64 arg)
+-{
+-    /* "Estimate" the reciprocal with actual division.  */
+-    float64 ret = float64_div(float64_one, arg, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid_snan)) {
+-        float_invalid_op_vxsnan(env, GETPC());
+-    }
+-    if (unlikely(flags & float_flag_divbyzero)) {
+-        float_zero_divide_excp(env, GETPC());
+-        /* For FPSCR.ZE == 0, the result is 1/2.  */
+-        ret = float64_set_sign(float64_half, float64_is_neg(arg));
+-    }
+-
+-    return ret;
++#define FPU_FRE(name, op)                                                     \
++float64 helper_##name(CPUPPCState *env, float64 arg)                          \
++{                                                                             \
++    /* "Estimate" the reciprocal with actual division.  */                    \
++    float64 ret = op(float64_one, arg, &env->fp_status);                      \
++    int flags = get_float_exception_flags(&env->fp_status);                   \
++                                                                              \
++    if (unlikely(flags & float_flag_invalid_snan)) {                          \
++        float_invalid_op_vxsnan(env, GETPC());                                \
++    }                                                                         \
++    if (unlikely(flags & float_flag_divbyzero)) {                             \
++        float_zero_divide_excp(env, GETPC());                                 \
++        /* For FPSCR.ZE == 0, the result is 1/2.  */                          \
++        ret = float64_set_sign(float64_half, float64_is_neg(arg));            \
++    }                                                                         \
++                                                                              \
++    return ret;                                                               \
+ }
+ 
+-/* fres - fres. */
+-uint64_t helper_fres(CPUPPCState *env, uint64_t arg)
+-{
+-    /* "Estimate" the reciprocal with actual division.  */
+-    float64 ret = float64r32_div(float64_one, arg, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid_snan)) {
+-        float_invalid_op_vxsnan(env, GETPC());
+-    }
+-    if (unlikely(flags & float_flag_divbyzero)) {
+-        float_zero_divide_excp(env, GETPC());
+-        /* For FPSCR.ZE == 0, the result is 1/2.  */
+-        ret = float64_set_sign(float64_half, float64_is_neg(arg));
+-    }
+-
+-    return ret;
++#define FPU_FRSQRTE(name, op)                                                 \
++float64 helper_##name(CPUPPCState *env, float64 arg)                          \
++{                                                                             \
++    /* "Estimate" the reciprocal with actual division.  */                    \
++    float64 rets = float64_sqrt(arg, &env->fp_status);                        \
++    float64 retd = op(float64_one, rets, &env->fp_status);                    \
++    int flags = get_float_exception_flags(&env->fp_status);                   \
++                                                                              \
++    if (unlikely(flags & float_flag_invalid)) {                               \
++        float_invalid_op_sqrt(env, flags, 1, GETPC());                        \
++    }                                                                         \
++    if (unlikely(flags & float_flag_divbyzero)) {                             \
++        /* Reciprocal of (square root of) zero.  */                           \
++        float_zero_divide_excp(env, GETPC());                                 \
++    }                                                                         \
++                                                                              \
++    return retd;                                                              \
+ }
+ 
+-/* frsqrte  - frsqrte. */
+-float64 helper_frsqrte(CPUPPCState *env, float64 arg)
+-{
+-    /* "Estimate" the reciprocal with actual division.  */
+-    float64 rets = float64_sqrt(arg, &env->fp_status);
+-    float64 retd = float64_div(float64_one, rets, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_sqrt(env, flags, 1, GETPC());
+-    }
+-    if (unlikely(flags & float_flag_divbyzero)) {
+-        /* Reciprocal of (square root of) zero.  */
+-        float_zero_divide_excp(env, GETPC());
+-    }
+-
+-    return retd;
++#define FPU_HELPER(name, op, flags_handler)                                   \
++float64 helper_##name(CPUPPCState *env, float64 arg1, float64 arg2)           \
++{                                                                             \
++    float64 ret = op(arg1, arg2, &env->fp_status);                            \
++    int flags = get_float_exception_flags(&env->fp_status);                   \
++    uintptr_t ra = GETPC();                                                   \
++    flags_handler(env, flags, ra);                                            \
++    return ret;                                                               \
+ }
+ 
+-/* frsqrtes  - frsqrtes. */
+-float64 helper_frsqrtes(CPUPPCState *env, float64 arg)
+-{
+-    /* "Estimate" the reciprocal with actual division.  */
+-    float64 rets = float64_sqrt(arg, &env->fp_status);
+-    float64 retd = float64r32_div(float64_one, rets, &env->fp_status);
+-    int flags = get_float_exception_flags(&env->fp_status);
+-
+-    if (unlikely(flags & float_flag_invalid)) {
+-        float_invalid_op_sqrt(env, flags, 1, GETPC());
+-    }
+-    if (unlikely(flags & float_flag_divbyzero)) {
+-        /* Reciprocal of (square root of) zero.  */
+-        float_zero_divide_excp(env, GETPC());
+-    }
+-
+-    return retd;
+-}
++FPU_FRE(fre, float64_div)
++FPU_FRE(fres, float64r32_div)
++FPU_FRSQRTE(frsqrte, float64_div)
++FPU_FRSQRTE(frsqrtes, float64r32_div)
++FPU_HELPER(fadd, float64_add, addsub_flags_handler)
++FPU_HELPER(fadds, float64r32_add, addsub_flags_handler)
++FPU_HELPER(fsub, float64_sub, addsub_flags_handler)
++FPU_HELPER(fsubs, float64r32_sub, addsub_flags_handler)
++FPU_HELPER(fmul, float64_mul, mul_flags_handler)
++FPU_HELPER(fmuls, float64r32_mul, mul_flags_handler)
++FPU_HELPER(fdiv, float64_div, div_flags_handler)
++FPU_HELPER(fdivs, float64r32_div, div_flags_handler)
+ 
+ /* fsel - fsel. */
+ uint64_t helper_FSEL(uint64_t a, uint64_t b, uint64_t c)
 -- 
 2.43.0
 
