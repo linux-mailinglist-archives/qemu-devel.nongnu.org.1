@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A868CD673
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB82F8CD67E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9w0-0004sJ-QV; Thu, 23 May 2024 11:00:48 -0400
+	id 1sA9w2-0004y2-FE; Thu, 23 May 2024 11:00:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vx-0004iJ-JD
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:45 -0400
+ id 1sA9vy-0004lB-3p
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vv-0004me-Ng
+ id 1sA9vw-0004mg-BC
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1716476443;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=+cz7/A2Vd7WnBcData+m1wJymCreFQbA7KiqEEru/k8=;
- b=hZtOARx/91xuFcNmGnNr3JYS7ZSaewLwtobl2BSxBD2NUna4MQWowQF0hzD9KdPEBmupuD
- AS5wK04TMeOZbE2xzfNPBR6SV50JbfJhrEBL6xjv0VLwy+o3/lm3vUiUmN7NvUxHWUggPv
- jXBTpHarEH6rS0e1BFV5D1Sa7lyyq/E=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=q8r8fuXfNS1frrmgB4ao1Xxrb7dvTzd90fOiUxzWjNQ=;
+ b=Z9H4KFgOlY/m0Of+pg8g+4RD681+wcqP2Ik6HvUOJ+JtH3NBtapI4VDA8ggjVmL7cjeMGQ
+ 1Lk16Lo3LJVlbTXisDXJ9dN0XDQ+SYS3QalCqw69V7QvEe4cNU1vOBqxKR3FnOAvRf8kuR
+ neAV2nD3Uv2/A+q1h2L8VqdmKlDfsjM=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-AJN56AajOtWgsKTs7Ft6fQ-1; Thu, 23 May 2024 11:00:40 -0400
-X-MC-Unique: AJN56AajOtWgsKTs7Ft6fQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59eea00cafso147553166b.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:40 -0700 (PDT)
+ us-mta-639-MDXRjKNbNwqnHOI1iR8wnw-1; Thu, 23 May 2024 11:00:41 -0400
+X-MC-Unique: MDXRjKNbNwqnHOI1iR8wnw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52236a56aa1so1304008e87.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476438; x=1717081238;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+cz7/A2Vd7WnBcData+m1wJymCreFQbA7KiqEEru/k8=;
- b=VsHNxuggvlRrFsydiMu+i7guZqHO1RgtkUnJMPd8HlWTWaV8ZcCt8BdXOm0lUdnAHf
- Oc7e+CDVOc666bE+CDdYU/05t6jAQcnFz6ew8EDsZ88AP2GWnyMrUoctSrwWyXGt+XS3
- lpYK8f1L0vzYO4RZn2EomjqsaQM2/Gvn5UGpAMRvT/SL24rUjpfyHeFFY3+AkQYqzIqs
- yye3rnvqVIRrrN2kX9Stn2IUUMo03c0btySMTQD7qJf8H3Rpw2Hn0FSsVqMk/asgfiOR
- U/2vbf1lSWttVOMyEYJYBoFvKHymDM4j0nb2pT1ecaq/UqJv/MvEuSrhJwRDx5SZsegr
- qP+A==
-X-Gm-Message-State: AOJu0YypboClEcFr+ra1L6S8JrFXViupYeMMfauAYYxPGBUVCZfe4h7A
- 7ROdnMEEogDJgWZQCtTPkFHTbh/4u1xqffmjJCTihmHPtoShEe5ujDK2iypVAxUGn0ecA2PT9ML
- u3YuyW5TkGlyl1ZO2V9WVpS3ZV7R8TncQo9lPw0g8U0tBPn9HrnPZ9I3blyC9hXb7rHnPRT9cxe
- KNwGECXpQS4JY//WPDphhT4sJQ43n4EKcToa5G
-X-Received: by 2002:a17:906:b887:b0:a5a:1a:b0e6 with SMTP id
- a640c23a62f3a-a62280b2e16mr478656366b.9.1716476438633; 
- Thu, 23 May 2024 08:00:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWVLHd61+4NF3uxgdUWkhnHgiVbR2XGKGNk1v2h6XY72LHzeKOHAH3QvHx9SN17DU88AIC8Q==
-X-Received: by 2002:a17:906:b887:b0:a5a:1a:b0e6 with SMTP id
- a640c23a62f3a-a62280b2e16mr478653766b.9.1716476437959; 
- Thu, 23 May 2024 08:00:37 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716476439; x=1717081239;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=q8r8fuXfNS1frrmgB4ao1Xxrb7dvTzd90fOiUxzWjNQ=;
+ b=FE7wOylChET5qK/2O9mALgdh7NpgO/OLC4M47QxGoa0tWBxZDhzrkTWMJNkx7do/fq
+ VCgH3X5puSc4i6qmIwOhr3s8Vtdy4APBWUJB2U9WJsLlcDYpZpJt9rDi9W2Yt5rVJTdV
+ BfkO9sPbJltBIRwxIT0WEcuC0yw9CuupCYzOgJ1rLN/gaynhHXB4UpA01vSbcEzwcwtH
+ apR4JC8rrf4NhfWHgyFYJk/xQJzsfiJBfMViCiFIRc/1RSv5/Im3nESm9WICacQoIFJM
+ S9pv0k3XJlUnjkC02/paMNEg+EdHgYiwdGoJXX/fpRGzObp+PO0I3+KNjNoYX1Fr5iDO
+ ladg==
+X-Gm-Message-State: AOJu0Yx91yw4RfS0kyG3Z3kVnPYMFWlCIiG8pdFNhnjtwuucDLepzAaV
+ 7FfJ+tfS5HEnWGQwUywiJ5tKejg9GVU6NaoRJMDKYKmhySzUQtKeAmWTEAtn233IbSbtwLTVq6g
+ v/1zBkIFnYUFOXpvfexIaJx4Iu6Lpho+AQXoy90xOHQeFCC3RRlZnpbwyZ6U5zfuuV5vKK5RTW5
+ rfCoBeaDx+vmidjMdHC2dWxOCozr2s6yokwRfv
+X-Received: by 2002:a19:385c:0:b0:51e:25d2:453f with SMTP id
+ 2adb3069b0e04-526c15eb8admr2943940e87.68.1716476439637; 
+ Thu, 23 May 2024 08:00:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH4rX1SNUxqi/sea3OI+oD5NvncjNQHTmyAwiOyekA4TG0W6l9HONHCp7am9z4InagSjIuKeg==
+X-Received: by 2002:a19:385c:0:b0:51e:25d2:453f with SMTP id
+ 2adb3069b0e04-526c15eb8admr2943898e87.68.1716476439095; 
+ Thu, 23 May 2024 08:00:39 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1787c6b1sm1951952666b.57.2024.05.23.08.00.37
- for <qemu-devel@nongnu.org>
+ a640c23a62f3a-a5ce94e51basm1039266366b.103.2024.05.23.08.00.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:00:37 -0700 (PDT)
+ Thu, 23 May 2024 08:00:38 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/23] i386 changes for 2024-05-23
-Date: Thu, 23 May 2024 17:00:13 +0200
-Message-ID: <20240523150036.1050011-1-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 01/23] target/i386: generate simpler code for ROL/ROR with
+ immediate count
+Date: Thu, 23 May 2024 17:00:14 +0200
+Message-ID: <20240523150036.1050011-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
+References: <20240523150036.1050011-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -97,84 +101,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 01782d6b294f95bcde334386f0aaac593cd28c0d:
+gen_rot_carry and gen_rot_overflow are meant to be called with count == NULL
+if the count cannot be zero.  However this is not done in gen_ROL and gen_ROR,
+and writing everywhere "can_be_zero ? count : NULL" is burdensome and less
+readable.  Just pass can_be_zero as a separate argument.
 
-  Merge tag 'hw-misc-20240517' of https://github.com/philmd/qemu into staging (2024-05-18 11:49:01 +0200)
+gen_RCL and gen_RCR use a conditional branch to skip the computation
+if count is zero, so they can pass false unconditionally to gen_rot_overflow.
 
-are available in the Git repository at:
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240522123914.608516-1-pbonzini@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/tcg/emit.c.inc | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
-
-for you to fetch changes up to 84d4b72854869821eb89813c195927fdd3078c12:
-
-  target-i386: hyper-v: Correct kvm_hv_handle_exit return value (2024-05-22 19:56:28 +0200)
-
-----------------------------------------------------------------
-* hw/i386/pc_sysfw: Alias rather than copy isa-bios region
-* target/i386: add control bits support for LAM
-* target/i386: tweaks to new translator
-* target/i386: add support for LAM in CPUID enumeration
-* hw/i386/pc: Support smp.modules for x86 PC machine
-* target-i386: hyper-v: Correct kvm_hv_handle_exit return value
-
-----------------------------------------------------------------
-Bernhard Beschow (1):
-      hw/i386/pc_sysfw: Alias rather than copy isa-bios region
-
-Binbin Wu (1):
-      target/i386: add control bits support for LAM
-
-Paolo Bonzini (2):
-      target/i386: generate simpler code for ROL/ROR with immediate count
-      target/i386: clean up AAM/AAD
-
-Robert Hoo (1):
-      target/i386: add support for LAM in CPUID enumeration
-
-Zhao Liu (16):
-      i386/cpu: Fix i/d-cache topology to core level for Intel CPU
-      i386/cpu: Use APIC ID info to encode cache topo in CPUID[4]
-      i386/cpu: Use APIC ID info get NumSharingCache for CPUID[0x8000001D].EAX[bits 25:14]
-      i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
-      i386/cpu: Introduce bitmap to cache available CPU topology levels
-      i386: Split topology types of CPUID[0x1F] from the definitions of CPUID[0xB]
-      i386/cpu: Decouple CPUID[0x1F] subleaf with specific topology level
-      i386: Introduce module level cpu topology to CPUX86State
-      i386: Support modules_per_die in X86CPUTopoInfo
-      i386: Expose module level in CPUID[0x1F]
-      i386: Support module_id in X86CPUTopoIDs
-      i386/cpu: Introduce module-id to X86CPU
-      hw/i386/pc: Support smp.modules for x86 PC machine
-      i386: Add cache topology info in CPUCacheInfo
-      i386/cpu: Use CPUCacheInfo.share_level to encode CPUID[4]
-      i386/cpu: Use CPUCacheInfo.share_level to encode CPUID[0x8000001D].EAX[bits 25:14]
-
-Zhuocheng Ding (1):
-      tests: Add test case of APIC ID for module level parsing
-
-donsheng (1):
-      target-i386: hyper-v: Correct kvm_hv_handle_exit return value
-
- include/hw/i386/pc.h             |   1 +
- include/hw/i386/topology.h       |  60 +++++++-
- target/i386/cpu.h                |  43 +++++-
- target/i386/helper.h             |   4 +-
- hw/i386/pc.c                     |   3 +
- hw/i386/pc_piix.c                |   3 +
- hw/i386/pc_q35.c                 |   2 +
- hw/i386/pc_sysfw.c               |   8 +-
- hw/i386/x86-common.c             |  54 +++++--
- hw/i386/x86.c                    |  13 +-
- target/i386/cpu.c                | 310 +++++++++++++++++++++++++++++++--------
- target/i386/helper.c             |   4 +
- target/i386/kvm/hyperv.c         |   2 +-
- target/i386/kvm/kvm.c            |   3 +-
- target/i386/tcg/int_helper.c     |  19 +--
- tests/unit/test-x86-topo.c       |  56 ++++---
- target/i386/tcg/decode-new.c.inc |   4 +-
- target/i386/tcg/emit.c.inc       |  34 +++--
- qemu-options.hx                  |  18 ++-
- 19 files changed, 491 insertions(+), 150 deletions(-)
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 2dee33dd487..33cb59e54b8 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -2901,14 +2901,15 @@ static bool gen_eflags_adcox(DisasContext *s, X86DecodedInsn *decode, bool want_
+     return got_cf;
+ }
+ 
+-static void gen_rot_overflow(X86DecodedInsn *decode, TCGv result, TCGv old, TCGv count)
++static void gen_rot_overflow(X86DecodedInsn *decode, TCGv result, TCGv old,
++                             bool can_be_zero, TCGv count)
+ {
+     MemOp ot = decode->op[0].ot;
+-    TCGv temp = count ? tcg_temp_new() : decode->cc_src2;
++    TCGv temp = can_be_zero ? tcg_temp_new() : decode->cc_src2;
+ 
+     tcg_gen_xor_tl(temp, old, result);
+     tcg_gen_extract_tl(temp, temp, (8 << ot) - 1, 1);
+-    if (count) {
++    if (can_be_zero) {
+         tcg_gen_movcond_tl(TCG_COND_EQ, decode->cc_src2, count, tcg_constant_tl(0),
+                            decode->cc_src2, temp);
+     }
+@@ -3000,7 +3001,7 @@ static void gen_RCL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     /* Compute result and outgoing overflow */
+     tcg_gen_mov_tl(decode->cc_src2, s->T0);
+     tcg_gen_or_tl(s->T0, low, high);
+-    gen_rot_overflow(decode, s->T0, decode->cc_src2, NULL);
++    gen_rot_overflow(decode, s->T0, decode->cc_src2, false, NULL);
+ 
+     if (zero_label) {
+         gen_set_label(zero_label);
+@@ -3053,7 +3054,7 @@ static void gen_RCR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     /* Compute result and outgoing overflow */
+     tcg_gen_mov_tl(decode->cc_src2, s->T0);
+     tcg_gen_or_tl(s->T0, low, high);
+-    gen_rot_overflow(decode, s->T0, decode->cc_src2, NULL);
++    gen_rot_overflow(decode, s->T0, decode->cc_src2, false, NULL);
+ 
+     if (zero_label) {
+         gen_set_label(zero_label);
+@@ -3129,9 +3130,10 @@ static TCGv_i32 gen_rot_replicate(MemOp ot, TCGv in)
+     }
+ }
+ 
+-static void gen_rot_carry(X86DecodedInsn *decode, TCGv result, TCGv count, int bit)
++static void gen_rot_carry(X86DecodedInsn *decode, TCGv result,
++                          bool can_be_zero, TCGv count, int bit)
+ {
+-    if (count == NULL) {
++    if (!can_be_zero) {
+         tcg_gen_extract_tl(decode->cc_dst, result, bit, 1);
+     } else {
+         TCGv temp = tcg_temp_new();
+@@ -3165,8 +3167,8 @@ static void gen_ROL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     } else {
+         tcg_gen_rotl_tl(s->T0, s->T0, count);
+     }
+-    gen_rot_carry(decode, s->T0, count, 0);
+-    gen_rot_overflow(decode, s->T0, old, count);
++    gen_rot_carry(decode, s->T0, can_be_zero, count, 0);
++    gen_rot_overflow(decode, s->T0, old, can_be_zero, count);
+ }
+ 
+ static void gen_ROR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+@@ -3190,12 +3192,12 @@ static void gen_ROR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+         tcg_gen_rotr_i32(temp32, temp32, count32);
+         /* Zero extend to facilitate later optimization.  */
+         tcg_gen_extu_i32_tl(s->T0, temp32);
+-        gen_rot_carry(decode, s->T0, count, 31);
++        gen_rot_carry(decode, s->T0, can_be_zero, count, 31);
+     } else {
+         tcg_gen_rotr_tl(s->T0, s->T0, count);
+-        gen_rot_carry(decode, s->T0, count, TARGET_LONG_BITS - 1);
++        gen_rot_carry(decode, s->T0, can_be_zero, count, TARGET_LONG_BITS - 1);
+     }
+-    gen_rot_overflow(decode, s->T0, old, count);
++    gen_rot_overflow(decode, s->T0, old, can_be_zero, count);
+ }
+ 
+ static void gen_RORX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
 -- 
 2.45.1
 
