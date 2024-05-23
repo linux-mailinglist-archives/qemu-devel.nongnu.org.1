@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A988CD76E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E078CD739
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:36:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAATe-0007y4-8v; Thu, 23 May 2024 11:35:34 -0400
+	id 1sAATZ-0007u6-TC; Thu, 23 May 2024 11:35:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATJ-0007jr-DU
+ id 1sAATJ-0007jt-F1
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:13 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATF-0002Ri-D7
+ id 1sAATF-0002Rq-8V
  for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:11 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41fc5645bb1so51084685e9.1
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-34d7d04808bso1863875f8f.0
  for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716478507; x=1717083307; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Bf0hQsGVSqS++3HNrIAL2Y7P8r1tW6aT95KUaTxIu7k=;
- b=saIJ7hqA2DzYo5r8+KJFVfqzTn0khuRoZiBQsaByKX0xQO34870OrEJVijPmCiBzLb
- ieDAbo4ItLD53JkdxNHs0tNZeeutkTVbNHmHEru2Uk9vCOHVNVOP4Ni/pepzPmFc03Ba
- mVgXmo+JQaOLkN/8W17uEgCZ4IktaGQH1992LGKISOYOG/Pw6iZjZZvnxii7qgJpufIf
- Y6AicJ5bQiYMkihXdHrRWT3faThvYGK0+/gtn3OXwZ9xGO3yrD8O1WLDHFYMiCPrqZ6u
- BXyZTqkKIOu8DCj5pTCyFxbXxvPEfmE3YmUGlvR50GYVDTejKcqfkOWYhHDneW+nkPCn
- 9WFg==
+ d=linaro.org; s=google; t=1716478508; x=1717083308; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=AsQRQeKjgMaSSmYepAKdEFvTM+lwKQ9eFt3DVA5Soas=;
+ b=SjLKODFYQYmLX5gAjukmOPLRTaarP3KDX/Qpodw/FhCxMTZVrtxc5qo8Oia4oR0UP6
+ 1JbxqDhJJNu3qeRyqu2deBIAXXoukCC46XZYVvDLwmH8aXlaU64+udbUItRDBTBzU7m5
+ psrWQaLSd/g5vmMd5U5GFqVyeljnxLCit4YcrVcAVvJDiUsy3p0uBttSpl7kh7ea9OWE
+ wjb31mq9P1u6LJl7MEKswwqkkVmHpPPRA2isAvR0H+e8P8NeQhmxV/G3QcE39tx7DveG
+ F2GIJ9IguvmObICQFy6p49XBUjSL240pL3+aDs9QQpJMR+oql4BR+Fz5DNpeG0EuyVi9
+ VzeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716478507; x=1717083307;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Bf0hQsGVSqS++3HNrIAL2Y7P8r1tW6aT95KUaTxIu7k=;
- b=srJQk6UVyMYNqHiEXe/Yb4FEu5OBw3Cz5MaYNSbqBTWA7znqw8LTAP6vbg7mVweRsz
- 8EaGvO/r7Hz9Y0ILIS9mPwk7w0prNKdiTYTNz2sWu2DYm6+GyCqMtPirI3IVOjunihqu
- Cs6gX0w/zbTNX3b8cFHVjMuDSINv26wdOjEp/u1sVQRd/HE/hRu0q7zSzhRBfDxx3AW3
- /ymnzGzhSxACJlQIhqYhsL2XRaS6VW/A+H+W8c2qAkyfOdpW6TA0pHoAWq2U9SeEqTGC
- XyXYvUAVT/ov23vmr3PXbnl6oRsFiousAMfaqststxvKdzm9SI/S6201lWKFJc2bSk6N
- M4DA==
-X-Gm-Message-State: AOJu0YzXHRK5LcMPE2gkneLFuWGJJB7mh9mqyCLoWJjjZ7NQ5ulU0Pa3
- 6cveR4hySzxnr0Lsd9SHdNYZm+GR5lX1cjybZiBnWKDm8DPnaXLrCaY5/BHzlo3hPyRTybn2fvg
- v
-X-Google-Smtp-Source: AGHT+IGujDTwUvH4wY+/0j7160WVmcr2UQ0Pa+YG/kzoAR916AatUVMwsElS90hEs7Z3IU9LepXfAg==
-X-Received: by 2002:a05:6000:36d:b0:34a:1a7a:9d60 with SMTP id
- ffacd0b85a97d-354da7b4b64mr4453915f8f.62.1716478507274; 
+ d=1e100.net; s=20230601; t=1716478508; x=1717083308;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AsQRQeKjgMaSSmYepAKdEFvTM+lwKQ9eFt3DVA5Soas=;
+ b=SEEZ6pT5WAuaWGgUXCwPcEnuxO9xKzz1JWbtaPP09lzRwG2nEmhNzK78TOrCP6TPBQ
+ IV42FGm2LuYCgBvpra1HCCBhr6Kn1/H8iJkNEj1BiegJ9rOCNoqgYfzDRNBTESTHh1W2
+ oRrB4O7fR0Gnx46uDdGac/gljxxdaEsoikGZMfGPRq9HYu0UDqNMGFgOBMM51q+5oTKt
+ sA8iP6NJDrL+EizBDlRAhFLCkI1vwnq+Irx/47T+dAGhUJzgwgSDVXYzlie8mr28Jrf6
+ k/+gtgcnI9ppHe3PAc4As4VH0bezX0sAsLqmfzen5cQMNjxVEI9l5zLRq6w+vCcEEIVE
+ MvMg==
+X-Gm-Message-State: AOJu0Yya5VvwqKfUCq0yUk95R4FegSMluXxMpStNrZrGOpBkrigzBpu8
+ B5Y1liOztqqrLYpjPoPoWkJX0ELND8rWtKoyTh0r85FoKsZo0XfmMpM7MwqdB1r1BBYa5igna6F
+ p
+X-Google-Smtp-Source: AGHT+IFanNf8OnIUa9l1xyzRALNjThc8b9bckvxwdS3gnB3ZQYxxmKeZIJOFr8VRRpT8w+SCsAAoBw==
+X-Received: by 2002:a05:6000:e8f:b0:354:fbb6:1b16 with SMTP id
+ ffacd0b85a97d-354fbb61b58mr1444189f8f.52.1716478507829; 
  Thu, 23 May 2024 08:35:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.06
+ ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:35:06 -0700 (PDT)
+ Thu, 23 May 2024 08:35:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/37] target-arm queue
-Date: Thu, 23 May 2024 16:34:28 +0100
-Message-Id: <20240523153505.2900433-1-peter.maydell@linaro.org>
+Subject: [PULL 01/37] xlnx_dpdma: fix descriptor endianness bug
+Date: Thu, 23 May 2024 16:34:29 +0100
+Message-Id: <20240523153505.2900433-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240523153505.2900433-1-peter.maydell@linaro.org>
+References: <20240523153505.2900433-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,119 +91,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; most of this is the first half of RTH's decodetree conversion;
-the rest is a mix of fixes from the last couple of weeks.
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-thanks
--- PMM
+Add xlnx_dpdma_read_descriptor() and
+xlnx_dpdma_write_descriptor() functions.
+xlnx_dpdma_read_descriptor() combines reading a
+descriptor from desc_addr by calling dma_memory_read()
+and swapping the desc fields from guest memory order
+to host memory order. xlnx_dpdma_write_descriptor()
+performs similar actions when writing a descriptor.
 
-The following changes since commit 7e1c0047015ffbd408e1aa4a5ec1abe4751dbf7e:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  Merge tag 'migration-20240522-pull-request' of https://gitlab.com/farosas/qemu into staging (2024-05-22 15:32:25 -0700)
+Fixes: d3c6369a96 ("introduce xlnx-dpdma")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+[PMM: tweaked indent, dropped behaviour change for write-failure case]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/dma/xlnx_dpdma.c | 68 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 64 insertions(+), 4 deletions(-)
 
-are available in the Git repository at:
+diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+index 530717d1885..dde4aeca401 100644
+--- a/hw/dma/xlnx_dpdma.c
++++ b/hw/dma/xlnx_dpdma.c
+@@ -614,6 +614,65 @@ static void xlnx_dpdma_register_types(void)
+     type_register_static(&xlnx_dpdma_info);
+ }
+ 
++static MemTxResult xlnx_dpdma_read_descriptor(XlnxDPDMAState *s,
++                                              uint64_t desc_addr,
++                                              DPDMADescriptor *desc)
++{
++    MemTxResult res = dma_memory_read(&address_space_memory, desc_addr,
++                                      &desc, sizeof(DPDMADescriptor),
++                                      MEMTXATTRS_UNSPECIFIED);
++    if (res) {
++        return res;
++    }
++
++    /* Convert from LE into host endianness.  */
++    desc->control = le32_to_cpu(desc->control);
++    desc->descriptor_id = le32_to_cpu(desc->descriptor_id);
++    desc->xfer_size = le32_to_cpu(desc->xfer_size);
++    desc->line_size_stride = le32_to_cpu(desc->line_size_stride);
++    desc->timestamp_lsb = le32_to_cpu(desc->timestamp_lsb);
++    desc->timestamp_msb = le32_to_cpu(desc->timestamp_msb);
++    desc->address_extension = le32_to_cpu(desc->address_extension);
++    desc->next_descriptor = le32_to_cpu(desc->next_descriptor);
++    desc->source_address = le32_to_cpu(desc->source_address);
++    desc->address_extension_23 = le32_to_cpu(desc->address_extension_23);
++    desc->address_extension_45 = le32_to_cpu(desc->address_extension_45);
++    desc->source_address2 = le32_to_cpu(desc->source_address2);
++    desc->source_address3 = le32_to_cpu(desc->source_address3);
++    desc->source_address4 = le32_to_cpu(desc->source_address4);
++    desc->source_address5 = le32_to_cpu(desc->source_address5);
++    desc->crc = le32_to_cpu(desc->crc);
++
++    return res;
++}
++
++static MemTxResult xlnx_dpdma_write_descriptor(uint64_t desc_addr,
++                                               DPDMADescriptor *desc)
++{
++    DPDMADescriptor tmp_desc = *desc;
++
++    /* Convert from host endianness into LE.  */
++    tmp_desc.control = cpu_to_le32(tmp_desc.control);
++    tmp_desc.descriptor_id = cpu_to_le32(tmp_desc.descriptor_id);
++    tmp_desc.xfer_size = cpu_to_le32(tmp_desc.xfer_size);
++    tmp_desc.line_size_stride = cpu_to_le32(tmp_desc.line_size_stride);
++    tmp_desc.timestamp_lsb = cpu_to_le32(tmp_desc.timestamp_lsb);
++    tmp_desc.timestamp_msb = cpu_to_le32(tmp_desc.timestamp_msb);
++    tmp_desc.address_extension = cpu_to_le32(tmp_desc.address_extension);
++    tmp_desc.next_descriptor = cpu_to_le32(tmp_desc.next_descriptor);
++    tmp_desc.source_address = cpu_to_le32(tmp_desc.source_address);
++    tmp_desc.address_extension_23 = cpu_to_le32(tmp_desc.address_extension_23);
++    tmp_desc.address_extension_45 = cpu_to_le32(tmp_desc.address_extension_45);
++    tmp_desc.source_address2 = cpu_to_le32(tmp_desc.source_address2);
++    tmp_desc.source_address3 = cpu_to_le32(tmp_desc.source_address3);
++    tmp_desc.source_address4 = cpu_to_le32(tmp_desc.source_address4);
++    tmp_desc.source_address5 = cpu_to_le32(tmp_desc.source_address5);
++    tmp_desc.crc = cpu_to_le32(tmp_desc.crc);
++
++    return dma_memory_write(&address_space_memory, desc_addr, &tmp_desc,
++                            sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED);
++}
++
+ size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
+                                     bool one_desc)
+ {
+@@ -651,8 +710,7 @@ size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
+             desc_addr = xlnx_dpdma_descriptor_next_address(s, channel);
+         }
+ 
+-        if (dma_memory_read(&address_space_memory, desc_addr, &desc,
+-                            sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED)) {
++        if (xlnx_dpdma_read_descriptor(s, desc_addr, &desc)) {
+             s->registers[DPDMA_EISR] |= ((1 << 1) << channel);
+             xlnx_dpdma_update_irq(s);
+             s->operation_finished[channel] = true;
+@@ -755,8 +813,10 @@ size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
+             /* The descriptor need to be updated when it's completed. */
+             DPRINTF("update the descriptor with the done flag set.\n");
+             xlnx_dpdma_desc_set_done(&desc);
+-            dma_memory_write(&address_space_memory, desc_addr, &desc,
+-                             sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED);
++            if (xlnx_dpdma_write_descriptor(desc_addr, &desc)) {
++                DPRINTF("Can't write the descriptor.\n");
++                /* TODO: check hardware behaviour for memory write failure */
++            }
+         }
+ 
+         if (xlnx_dpdma_desc_completion_interrupt(&desc)) {
+-- 
+2.34.1
 
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240523
-
-for you to fetch changes up to 051aca523db178ad4c49d5ed736ad26308d1df7b:
-
-  target/arm: Convert disas_simd_3same_logic to decodetree (2024-05-23 16:06:29 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * xlnx_dpdma: fix descriptor endianness bug
- * hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
- * hw/arm/npcm7xx: remove setting of mp-affinity
- * hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
- * hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
- * hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
- * hw: arm: Remove use of tabs in some source files
- * docs/system: Remove ADC from raspi documentation
- * target/arm: Start of the conversion of A64 SIMD to decodetree
-
-----------------------------------------------------------------
-Alexandra Diupina (1):
-      xlnx_dpdma: fix descriptor endianness bug
-
-Andrey Shumilin (1):
-      hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
-
-Dorjoy Chowdhury (1):
-      hw/arm/npcm7xx: remove setting of mp-affinity
-
-Inès Varhol (1):
-      hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
-
-Philippe Mathieu-Daudé (1):
-      hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
-
-Rayhan Faizel (1):
-      docs/system: Remove ADC from raspi documentation
-
-Richard Henderson (29):
-      target/arm: Split out gengvec.c
-      target/arm: Split out gengvec64.c
-      target/arm: Convert Cryptographic AES to decodetree
-      target/arm: Convert Cryptographic 3-register SHA to decodetree
-      target/arm: Convert Cryptographic 2-register SHA to decodetree
-      target/arm: Convert Cryptographic 3-register SHA512 to decodetree
-      target/arm: Convert Cryptographic 2-register SHA512 to decodetree
-      target/arm: Convert Cryptographic 4-register to decodetree
-      target/arm: Convert Cryptographic 3-register, imm2 to decodetree
-      target/arm: Convert XAR to decodetree
-      target/arm: Convert Advanced SIMD copy to decodetree
-      target/arm: Convert FMULX to decodetree
-      target/arm: Convert FADD, FSUB, FDIV, FMUL to decodetree
-      target/arm: Convert FMAX, FMIN, FMAXNM, FMINNM to decodetree
-      target/arm: Expand vfp neg and abs inline
-      target/arm: Convert FNMUL to decodetree
-      target/arm: Convert FMLA, FMLS to decodetree
-      target/arm: Convert FCMEQ, FCMGE, FCMGT, FACGE, FACGT to decodetree
-      target/arm: Convert FABD to decodetree
-      target/arm: Convert FRECPS, FRSQRTS to decodetree
-      target/arm: Convert FADDP to decodetree
-      target/arm: Convert FMAXP, FMINP, FMAXNMP, FMINNMP to decodetree
-      target/arm: Use gvec for neon faddp, fmaxp, fminp
-      target/arm: Convert ADDP to decodetree
-      target/arm: Use gvec for neon padd
-      target/arm: Convert SMAXP, SMINP, UMAXP, UMINP to decodetree
-      target/arm: Use gvec for neon pmax, pmin
-      target/arm: Convert FMLAL, FMLSL to decodetree
-      target/arm: Convert disas_simd_3same_logic to decodetree
-
-Tanmay Patil (1):
-      hw: arm: Remove use of tabs in some source files
-
-Zenghui Yu (1):
-      hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
-
- docs/system/arm/raspi.rst       |    1 -
- target/arm/helper.h             |   68 +-
- target/arm/tcg/helper-a64.h     |   12 +
- target/arm/tcg/translate-a64.h  |    4 +
- target/arm/tcg/translate.h      |   51 +
- target/arm/tcg/a64.decode       |  315 +++-
- hw/arm/boot.c                   |    8 +-
- hw/arm/npcm7xx.c                |    3 -
- hw/char/omap_uart.c             |   49 +-
- hw/char/stm32l4x5_usart.c       |    2 +-
- hw/dma/xlnx_dpdma.c             |   68 +-
- hw/gpio/zaurus.c                |   59 +-
- hw/input/tsc2005.c              |  135 +-
- hw/intc/arm_gic.c               |    4 +-
- target/arm/hvf/hvf.c            |  130 +-
- target/arm/tcg/gengvec.c        | 1672 +++++++++++++++++++++
- target/arm/tcg/gengvec64.c      |  190 +++
- target/arm/tcg/neon_helper.c    |    5 -
- target/arm/tcg/translate-a64.c  | 3110 +++++++++++++--------------------------
- target/arm/tcg/translate-neon.c |  136 +-
- target/arm/tcg/translate-sve.c  |  145 +-
- target/arm/tcg/translate-vfp.c  |   54 +-
- target/arm/tcg/translate.c      | 1588 --------------------
- target/arm/tcg/vec_helper.c     |  221 ++-
- target/arm/vfp_helper.c         |   30 -
- target/arm/tcg/meson.build      |    2 +
- 26 files changed, 3807 insertions(+), 4255 deletions(-)
- create mode 100644 target/arm/tcg/gengvec.c
- create mode 100644 target/arm/tcg/gengvec64.c
 
