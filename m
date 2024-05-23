@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5C08CCA73
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8668CCA75
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:48:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9xXd-0001fy-G9; Wed, 22 May 2024 21:46:49 -0400
+	id 1s9xXe-0001gj-CM; Wed, 22 May 2024 21:46:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s9xXb-0001f2-N9
- for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:47 -0400
+ id 1s9xXc-0001fH-7C
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:48 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s9xXY-000133-0K
+ (envelope-from <gaosong@loongson.cn>) id 1s9xXY-000135-3J
  for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:47 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxGOoBoE5mpN8CAA--.2513S3;
+ by gateway (Coremail) with SMTP id _____8BxWeoBoE5mp98CAA--.2708S3;
  Thu, 23 May 2024 09:46:41 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxDMf9n05mSDMGAA--.17472S6; 
+ AQAAf8AxDMf9n05mSDMGAA--.17472S7; 
  Thu, 23 May 2024 09:46:41 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 04/10] hw/loongarch: Refine acpi srat table for numa memory
-Date: Thu, 23 May 2024 09:46:31 +0800
-Message-Id: <20240523014637.614872-5-gaosong@loongson.cn>
+Subject: [PULL 05/10] hw/loongarch: Refine fadt memory table for numa memory
+Date: Thu, 23 May 2024 09:46:32 +0800
+Message-Id: <20240523014637.614872-6-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240523014637.614872-1-gaosong@loongson.cn>
 References: <20240523014637.614872-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S6
+X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S7
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -71,70 +71,44 @@ size for numa node0 is 256M also. With qemu numa qtest, it is possible
 that memory size of numa node0 is 128M.
 
 Limitations for minimum memory size for both total memory and numa
-node0 is removed for acpi srat table creation.
+node0 is removed for fadt numa memory table creation.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240515093927.3453674-2-maobibo@loongson.cn>
+Message-Id: <20240515093927.3453674-3-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/acpi-build.c | 58 +++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 24 deletions(-)
+ hw/loongarch/virt.c | 46 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index 5ef010d4da..af45ce526d 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -166,8 +166,9 @@ static void
- build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
- {
-     int i, arch_id, node_id;
--    uint64_t mem_len, mem_base;
--    int nb_numa_nodes = machine->numa_state->num_nodes;
-+    hwaddr len, base, gap;
-+    NodeInfo *numa_info;
-+    int nodes, nb_numa_nodes = machine->numa_state->num_nodes;
-     LoongArchVirtMachineState *lvms = LOONGARCH_VIRT_MACHINE(machine);
-     MachineClass *mc = MACHINE_GET_CLASS(lvms);
-     const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(machine);
-@@ -196,35 +197,44 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
-         build_append_int_noprefix(table_data, 0, 4); /* Reserved */
-     }
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 95f9ed5cae..850729202f 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -474,6 +474,48 @@ static void fdt_add_memory_node(MachineState *ms,
+     g_free(nodename);
+ }
  
--    /* Node0 */
--    build_srat_memory(table_data, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE,
--                      0, MEM_AFFINITY_ENABLED);
--    mem_base = VIRT_HIGHMEM_BASE;
--    if (!nb_numa_nodes) {
--        mem_len = machine->ram_size - VIRT_LOWMEM_SIZE;
--    } else {
--        mem_len = machine->numa_state->nodes[0].node_mem - VIRT_LOWMEM_SIZE;
++static void fdt_add_memory_nodes(MachineState *ms)
++{
++    hwaddr base, size, ram_size, gap;
++    int i, nb_numa_nodes, nodes;
++    NodeInfo *numa_info;
++
++    ram_size = ms->ram_size;
 +    base = VIRT_LOWMEM_BASE;
 +    gap = VIRT_LOWMEM_SIZE;
-+    numa_info = machine->numa_state->nodes;
-+    nodes = nb_numa_nodes;
++    nodes = nb_numa_nodes = ms->numa_state->num_nodes;
++    numa_info = ms->numa_state->nodes;
 +    if (!nodes) {
 +        nodes = 1;
-     }
--    if (mem_len)
--        build_srat_memory(table_data, mem_base, mem_len, 0, MEM_AFFINITY_ENABLED);
--
--    /* Node1 - Nodemax */
--    if (nb_numa_nodes) {
--        mem_base += mem_len;
--        for (i = 1; i < nb_numa_nodes; ++i) {
--            if (machine->numa_state->nodes[i].node_mem > 0) {
--                build_srat_memory(table_data, mem_base,
--                                  machine->numa_state->nodes[i].node_mem, i,
--                                  MEM_AFFINITY_ENABLED);
--                mem_base += machine->numa_state->nodes[i].node_mem;
--            }
++    }
 +
 +    for (i = 0; i < nodes; i++) {
 +        if (nb_numa_nodes) {
-+            len = numa_info[i].node_mem;
++            size = numa_info[i].node_mem;
 +        } else {
-+            len = machine->ram_size;
++            size = ram_size;
 +        }
 +
 +        /*
@@ -142,28 +116,52 @@ index 5ef010d4da..af45ce526d 100644
 +         *   lowram:  [base, +gap)
 +         *   highram: [VIRT_HIGHMEM_BASE, +(len - gap))
 +         */
-+        if (len >= gap) {
-+            build_srat_memory(table_data, base, len, i, MEM_AFFINITY_ENABLED);
-+            len -= gap;
++        if (size >= gap) {
++            fdt_add_memory_node(ms, base, gap, i);
++            size -= gap;
 +            base = VIRT_HIGHMEM_BASE;
-+            gap = machine->ram_size - VIRT_LOWMEM_SIZE;
++            gap = ram_size - VIRT_LOWMEM_SIZE;
 +        }
 +
-+        if (len) {
-+            build_srat_memory(table_data, base, len, i, MEM_AFFINITY_ENABLED);
-+            base += len;
-+            gap  -= len;
-         }
++        if (size) {
++            fdt_add_memory_node(ms, base, size, i);
++            base += size;
++            gap -= size;
++        }
++    }
++}
++
+ static void virt_build_smbios(LoongArchVirtMachineState *lvms)
+ {
+     MachineState *ms = MACHINE(lvms);
+@@ -921,10 +963,10 @@ static void virt_init(MachineState *machine)
+         lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
      }
+     fdt_add_cpu_nodes(lvms);
++    fdt_add_memory_nodes(machine);
  
-     if (machine->device_memory) {
-         build_srat_memory(table_data, machine->device_memory->base,
-                           memory_region_size(&machine->device_memory->mr),
--                          nb_numa_nodes - 1,
-+                          nodes - 1,
-                           MEM_AFFINITY_HOTPLUGGABLE | MEM_AFFINITY_ENABLED);
+     /* Node0 memory */
+     memmap_add_entry(VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 1);
+-    fdt_add_memory_node(machine, VIRT_LOWMEM_BASE, VIRT_LOWMEM_SIZE, 0);
+     memory_region_init_alias(&lvms->lowmem, NULL, "loongarch.node0.lowram",
+                              machine->ram, offset, VIRT_LOWMEM_SIZE);
+     memory_region_add_subregion(address_space_mem, phyAddr, &lvms->lowmem);
+@@ -938,7 +980,6 @@ static void virt_init(MachineState *machine)
      }
- 
+     phyAddr = VIRT_HIGHMEM_BASE;
+     memmap_add_entry(phyAddr, highram_size, 1);
+-    fdt_add_memory_node(machine, phyAddr, highram_size, 0);
+     memory_region_init_alias(&lvms->highmem, NULL, "loongarch.node0.highram",
+                               machine->ram, offset, highram_size);
+     memory_region_add_subregion(address_space_mem, phyAddr, &lvms->highmem);
+@@ -954,7 +995,6 @@ static void virt_init(MachineState *machine)
+                                  offset,  numa_info[i].node_mem);
+         memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
+         memmap_add_entry(phyAddr, numa_info[i].node_mem, 1);
+-        fdt_add_memory_node(machine, phyAddr, numa_info[i].node_mem, i);
+         offset += numa_info[i].node_mem;
+         phyAddr += numa_info[i].node_mem;
+     }
 -- 
 2.34.1
 
