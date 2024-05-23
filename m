@@ -2,87 +2,201 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4899B8CCEFF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 11:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A50E38CCE79
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 10:45:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA4dA-0003EA-RU; Thu, 23 May 2024 05:21:00 -0400
+	id 1sA44t-00012O-79; Thu, 23 May 2024 04:45:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sA4d9-0003Cx-9T
- for qemu-devel@nongnu.org; Thu, 23 May 2024 05:20:59 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sA4d0-0004V9-1q
- for qemu-devel@nongnu.org; Thu, 23 May 2024 05:20:59 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-572669fd9f9so11223021a12.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 02:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716456047; x=1717060847; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:from:to:cc:subject:date:message-id
- :reply-to; bh=EcZ+0me2F/K1mHM/s3g9751tvdNYFctFe1UFp8CvXdU=;
- b=RyS48uzKQxH9MWq/WpLAKCRyLXKMDk/lYKP/lWy7tcW3y5ZMyclj1Z82IFNVqu1L7q
- MZyYcHBBCnvRegD4n9zmypOuf7nWF+BibWBU21iZ1NTYWIwVJpnAe1/VJOmHx+toayYZ
- yJAv/hT02NpOMjzQzM8ZoNqV8QiOsIoGFdt0MPg7f1t06Ud5L5xTClLO524zeK+aEUyE
- /nG+WinUHEUUY5AHr6244rBltcvYA7+ujlfAVh/iHjw44LtKFFlIPJCxq9nt3syCmOnn
- OCQy2zk10X64xqZfiWMkqH0+l+ODF8x8hkT9WiCdy2wxA7qLAnjBO2hW9z3Vb+/NSrVj
- q6wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716456047; x=1717060847;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EcZ+0me2F/K1mHM/s3g9751tvdNYFctFe1UFp8CvXdU=;
- b=Ch5Bclrgfs5QYbU1vJoisIEccLNKw5Prz+x6USu7uzsvh5YDQ+W0aaOVTag1/WBBr5
- 7s4hduis8V8uS46BE1s0Amu8M8LKi4Z1o05ya9dhlBiNY+YMqGjHDDuZ8G88nnk+zBsU
- g7z2mZuohfM65Y+J/xTAGpkAx9bPi4zvD9VJtA1aU/oKbYOAM+aW0u685VCEYYzObtxP
- 46vc/Srbh17d147ibwTroInLhl73Ik2U8IRRVRKObx7P9y+SlmJ4S5y39MVvNjEl0g/k
- 3krkIJc+CXpB67vFUzWdjFVzM3XK1ZN3HZWsfePr13uo/CuTaK2bnr7wugXk1IN3uieI
- OF2w==
-X-Gm-Message-State: AOJu0YzH691qvTQiN6ro7ZKdc2DjL1LSVZge1kyOSbhZrsLO67QdKxs8
- xc7txF6dC+9FvXJMGbH5U6vEo3FLn859Oo/CWO3owSBE3vDo4w221xC3zA==
-X-Google-Smtp-Source: AGHT+IER4+KGNb7jyOf2/LNUZccE/GlZDhkE/PbYEJtpEiFOg7WYDR1uLBOMLsrGmLmgsr0kp4eY5A==
-X-Received: by 2002:a17:906:f6d8:b0:a59:a431:f951 with SMTP id
- a640c23a62f3a-a622816909amr262555166b.48.1716456046343; 
- Thu, 23 May 2024 02:20:46 -0700 (PDT)
-Received: from [127.0.0.1] ([90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a1781d1fcsm1901226666b.35.2024.05.23.02.20.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 02:20:45 -0700 (PDT)
-Date: Thu, 23 May 2024 08:44:57 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?ISO-8859-1?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>,
- =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- =?ISO-8859-1?Q?Alex_Benn=E9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH v2 3/3] meson: Drop the .fa library prefix
-In-Reply-To: <20240522-xkb-v2-3-67b54fa7c98f@daynix.com>
-References: <20240522-xkb-v2-0-67b54fa7c98f@daynix.com>
- <20240522-xkb-v2-3-67b54fa7c98f@daynix.com>
-Message-ID: <0F153196-AA69-4407-A161-C2565B48C5FE@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sA44e-0000xt-Cn; Thu, 23 May 2024 04:45:22 -0400
+Received: from mgamail.intel.com ([198.175.65.13])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1sA44c-0006P4-6Z; Thu, 23 May 2024 04:45:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716453919; x=1747989919;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Obu6wYNkzytqJGYt78GqKWEd/TsY5aIHtoNJGtW/OCc=;
+ b=gCPhSY0fwA63Thg9L+hOndiS0FQN+a7qrxLYA6VE3a3SS8dDmGTrB1ab
+ E0ihBwdiNiH6bbmQ9cLrXdq7fpHq5xhAJu62no9sFWkZNSemo/Q0lT1b/
+ 5sL8PdU0sVFp3W2gXLQ9eT2dhwnNjDGAUWbLbTSfx2OvWiFEMfDgq8ARe
+ CkR1v9g+Q7GrWiwABngtWmxGZU5eKvFK7yigZm5DWs1tqslXPm+2uz5w6
+ 4h2/R/phts+MsW+J5f0H2XB1KvTgHiJeJNMWXou+78zggZIW1x3ZFYrvO
+ t+gIOYP0zCGsG1ctqQ3V8drMFt7HmcEDwCttySL9tcrIrXGX5ddDTPtIK Q==;
+X-CSE-ConnectionGUID: XGUdT0ZkRrWgDb10uKvSaw==
+X-CSE-MsgGUID: vntTvlnMQqS9hMN6PKGO8g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="23889670"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="23889670"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 01:45:15 -0700
+X-CSE-ConnectionGUID: PYU1D9OLRbK6Xgs9iNvNxw==
+X-CSE-MsgGUID: aFJJ6jq9QRquVZwOw69UYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="33698572"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 May 2024 01:45:11 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 23 May 2024 01:45:11 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 23 May 2024 01:45:11 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 23 May 2024 01:45:11 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 23 May 2024 01:45:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SSVC0STwynUIe4T6/8a9ZuCjb041VAUT6bZls1XJn78wvMDd4SXUZt3OfXXh688V30M1ZSWIwxXUlBEF0M85QDPUYzGa6p9buVivdEYfkMw2l2NRWVWWq2nmTIonv68fCGudK4egdyQ7l8X8UsgmepVukrobjf1IS9+h4l4xiagZUKfjXLkZvVRdXUcc/00O3udqe55GSWGAU73eJ00JBL3leBy/kJJbKSHbOuNwlHDJcvKG+YkSKW7A8wslxavEYCGHE/AMaA0gOIQ5E90MdC4SnwjJRrYAmj6oS5b9IKbQ1oCvS7DwUm2MjzZwE2n+aQEvn1yAhvberL102A4PYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Obu6wYNkzytqJGYt78GqKWEd/TsY5aIHtoNJGtW/OCc=;
+ b=ACcug8dhVj8BfNkChk1Dg1YsXp/VUjRJZDwFOZmi0ZtA0u3VNmspM4Ym6V8BpyhNlJd9CiaLy2AqfNtBlEBlT4VjXv9SE9MqJee/4lpTuzRcJUmSJ6r1u6RRNVUtw0eUr4DWbrIz6Q+dCk6NZCy9SpqO32MAr7x1ndclh34Aa7jCv9OMQJlBLtPAEKXjbXIzeY0vrOhfmbTvcVNAvnL9o1SY2njFb28qBdwg0n4JS3G92A982d0o/xAViXR+me+w9QYx4cRXNrJoD8ajtaJWUQB5SFkbm83XgG7nKwnZWyWXM6Hq+aAK+3gWtck6VgaySW1ULv2S9Blyea7W0Kk93g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by CO1PR11MB4849.namprd11.prod.outlook.com (2603:10b6:303:90::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Thu, 23 May
+ 2024 08:45:04 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::fe49:d628:48b1:6091%7]) with mapi id 15.20.7611.016; Thu, 23 May 2024
+ 08:45:04 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "qemu-s390x@nongnu.org" <qemu-s390x@nongnu.org>, Thomas Huth
+ <thuth@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman
+ <farman@linux.ibm.com>, Tony Krowiak <akrowiak@linux.ibm.com>
+Subject: RE: [PATCH 4/7] s390x/css: Make S390CCWDeviceClass::realize return
+ bool
+Thread-Topic: [PATCH 4/7] s390x/css: Make S390CCWDeviceClass::realize return
+ bool
+Thread-Index: AQHarGnRi7R+VX/EhEql5v+QcABCUbGkghyA
+Date: Thu, 23 May 2024 08:45:03 +0000
+Message-ID: <SJ0PR11MB67445BDFBAC766FB2A41B25B92F42@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240522170107.289532-1-clg@redhat.com>
+ <20240522170107.289532-5-clg@redhat.com>
+In-Reply-To: <20240522170107.289532-5-clg@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CO1PR11MB4849:EE_
+x-ms-office365-filtering-correlation-id: 9075b595-d3ae-45a6-3133-08dc7b04a3eb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230031|1800799015|366007|376005|38070700009;
+x-microsoft-antispam-message-info: =?utf-8?B?ZnhRYXFaeW5nQ1lEdTVwWUdLRXlDOHlldS9WTXU0SmFDMzF6VUJYZzUxejVM?=
+ =?utf-8?B?WkNIendtNFhkeHN2SmJKV1VQWVhrRkRnbGpzSnlrRy9FYmdvMEoza3V0RlpC?=
+ =?utf-8?B?eUEvUjRRajZrcFN6R2xmUW4waDM3eTB0a1llNlJISGtJak1iMG1UZ1lUZE1a?=
+ =?utf-8?B?TElpRXN5VEJOcmJMUlVBMzZGREhHQnpVY0xCVUo1VW15Y2drU2ROVkE2eEF3?=
+ =?utf-8?B?N3dKaVBQT1pMeWM4T2Y1V0J0d2FmOGFkUnE4dDU5R1dYSVFVTERpVXJlc09X?=
+ =?utf-8?B?YnFpRHczUC8vTjZpN0tON1FoZEFZbk1SbjhGNE9qTWx6amM0NlF0d1RmdEZp?=
+ =?utf-8?B?Z2VXYWJMUFc2aU1pUC9RUWxNUzJTZkdaWGt6ZTNhc3lEYXVVTFRLSUhobmVy?=
+ =?utf-8?B?ZHIyandJaGhMeGgxbFBBRU8rbDZVOWFDMlFOb3RCN1FjRWhUNUJIM3hXeWhM?=
+ =?utf-8?B?dFY0RkdvM2lSdVZmWGhXU0tPKzF3R2NJcEliUWZRKzR4WDM4YVhOQkl6aXYw?=
+ =?utf-8?B?SlpPYitWSDBVVUNDNlN1c0Y2MjRYbjVvdlhvSUtQUjhoRGdJWWovTUwxQk9E?=
+ =?utf-8?B?RzBGRlV6QkxGZldQWFFqYThzVWxheFllRmJSNkNsVGtxUFJVUUZHWXlLY3Y1?=
+ =?utf-8?B?WWNyUnFRV295bHR0bUJCcFRNTSt3dW1MZFA5eUpyRlpnZUhSU0pySW1pelBD?=
+ =?utf-8?B?V01VVDk4cGplL0NCRUJuV3B5WmExRElKYjZ5ZVV2bUFyUHRJL2JRWkZvRC84?=
+ =?utf-8?B?aGhLQTIyUC9WNWs0MFVxSVk3dTFjRmNVTlBIOThmVXpiMGt5eG50OEFtOHZN?=
+ =?utf-8?B?VVR0VEt3TUdhSE0zL3N6YmlUVGRqelZGZTZraENYZWtSdG5HN2taNFY2amZ4?=
+ =?utf-8?B?VTd6OCtkanJnUDlNNHNuUXVSR3ZuQ2JjV1RPZkVNSE4yYXh2UDYrVndCYnN6?=
+ =?utf-8?B?dXVqSFcrUjBBa0VPY0tUZ3UyWnZOb3l3eUo4ZjgraUxLb0xiM2xWYVRoRGRT?=
+ =?utf-8?B?NUJIaTNwV3JtYjJIdTVjdkVVYzhOUGdYUUlIcjIvYndZdUEyWllsOTM3S2Iv?=
+ =?utf-8?B?Tk9pWHhDMWp2Vlc3Nlc1Q3FlRVV5MnhNWXNZVStnVzVPRVpJMFcwUXh4TDVp?=
+ =?utf-8?B?ZjJqMjJXS1RmQ2pJSko2OFMwQ1RxTGFjZUY4dHVocVVFNWdEUzlOL1Q0cWc3?=
+ =?utf-8?B?bGVPamMyRGtqdnNaYXZPVWpEYmk1dldFem95WXJOeTNYNHY2dFNWdGpwMmRL?=
+ =?utf-8?B?bnlDT25mdVlyeFdxY2NrOTZnbDJPOGZhanlRb25ZVWx1d1VpcHVWTWpBYkp5?=
+ =?utf-8?B?eGVGMkkvWDRvckREWTdYaG8rL0IxMnBjaEFMNUMvNXhnUXBtQ3NLL2dObDh0?=
+ =?utf-8?B?akJYanVTWWNHSVR4VklESzVwSXYwOGFESVZ3TFViV1lqTGFnSnRzRWNUL2FR?=
+ =?utf-8?B?b3JQNk1DUk05TlpzVERFNUZ0QzdqTm11SUpZUXFGM0Z4cW1MdmpDZGlzRUdv?=
+ =?utf-8?B?TFY0NUtPVWVSZm9YWk9JMGVFQXdwMVo5MDZEd044ZUEvYzh1ekphNGQ5OUlU?=
+ =?utf-8?B?eHpsWDhETER4WkZobldiT041R01vMGx1cFhJak1QRm1tL281eXpvTDhYUytv?=
+ =?utf-8?B?K284a3BRU0R6Rnh4TjNydEs0SStDUmZ6dytWUStyVm5CWDdPS3orQlp3bjJa?=
+ =?utf-8?B?QzAydHM3MllRdnI2YkRNdEJGZU9Vb3NiRWIyZXc0SEZZNXdOQ1MyeWJyMlFZ?=
+ =?utf-8?B?WXAvNFh3M2dXM0dyVS9vb1RzS0F0NDQyWG1DOUNaYlB2Q1oydWthOVdNNzdP?=
+ =?utf-8?B?L2hCcVI4ek1GZGROcWxLQT09?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(366007)(376005)(38070700009); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bkJ3SFZwaXh0QVMvdWdVR3g2Um5CeVNRbkJOL0xGbjVRUlA4eU5HblZpL3Qr?=
+ =?utf-8?B?UXNPay82NVhRQW9OU2VXOCthalQ0Ym5BZDRaMEJRUjFZODJaVkZJTWhxWkFz?=
+ =?utf-8?B?YlZnNFovcHlMQ3N5aEU1TzY1SnArTUdHendFVElBang2cGxaR3ZiL1lsYWVD?=
+ =?utf-8?B?bVpTdjQxVFJDSGRMRVBzVFVMZ3lOM2hTSjRnNHEvck9jN3U2ZXdBZ0JrWm9V?=
+ =?utf-8?B?cWUzdEhRUzdiT2NlTW9naVh3aEN1USs0bkEyL0NqQ1RXbHQ1bVZpdlBNcGRJ?=
+ =?utf-8?B?TE83aVBBcW5yb3hJOVh2TjJEMEFES2F3Mzg0K3N2aEpaMEU4aVV3cjYxSExu?=
+ =?utf-8?B?V2N5RWVtZzRCWEVoNS96MThhVXJYMGsrVUt0K2RxWFlDN2N1MjlDWU5MS2ls?=
+ =?utf-8?B?YXMyeU00MTE4SHJETmZXaStNc243dUhtNVFQY0NDaDdya0luOXpwT2YzUjVa?=
+ =?utf-8?B?aGxJVnp6MlVTenNzSFVCQ0s3QWRCZTYyL0kvQmJteWtRekhvVXl4OGszN25s?=
+ =?utf-8?B?YmNUcytyWkdwaG9sUExFRUswamtJZHhpdi8yY1JpM1pIK1hDanJldDZYRE5m?=
+ =?utf-8?B?YytVQVcwT2tORkpTRC9SSmFJZDRwSENPMkxZazhHUldRalEzWFFRM3VnVGli?=
+ =?utf-8?B?Y2QvMWdzalBvZ2xpUEdhOTZxdFpTdzhnKy9Rby8zd2lpT0VzUUx3Q2JVRUlF?=
+ =?utf-8?B?WlMvOUM3aDNZUFpuTUJjTWdRRW4wMU1LRHJpR1hrRmxwSWVqVFlDc1pmYXZV?=
+ =?utf-8?B?SEtZUzlzYlRUN1VRTjJSTEdIUkVqVm8vRGR0V0p4aW84bWlEamQweitZS0xE?=
+ =?utf-8?B?YkMxeUZkVmlPczhlN1JTa2JjQ01yNkRsVkppK2tYSEVGcE5pZWRacWxJMmF3?=
+ =?utf-8?B?SVZkekFOcWEwU0lTbzg3S25DTmU3U2h1V3g2YVI1dCtxVDNDOG01dEdkN1Q4?=
+ =?utf-8?B?WEdVYjFyRDF4TDh5YjZIdE80RVZVNitISDVuaW10eU9uUytiOVdOc0ZzNytI?=
+ =?utf-8?B?OXNDNTQ2QjgrVExVWXFIZmlBNllDRE5Gbmh3V3FIRjk0OVFUNkxGd1NiKy9h?=
+ =?utf-8?B?UXB4elJpNjBFZFNhUlBkTVVsUlFjb2xCcy8zaDJ6am5VdEtrQ05xZlBlK0Ni?=
+ =?utf-8?B?NlhVL3ZzOW5MYkp4MUFKQUNRQTRPL29Ja0tYSERBVkplZENnTk90Rmh0VjZi?=
+ =?utf-8?B?VEJUdzZyWlBoZjVzK2JMazV5MmdSRndVNFNreDdkbFRCalRsaDBzRStiWUpM?=
+ =?utf-8?B?K1BNVHRQQ2Nad2lkZldhQ2o5QVZqdTZPeTRDTE4zRll4enpHS3ViOUVxaVBM?=
+ =?utf-8?B?R3hnblhYYWR0c3Izdm5MZVRLRUpUVmdHZm5QQ2d1N2oyWmRUMktOY0kvWVh1?=
+ =?utf-8?B?N3Zpd0VhdTVFUXZtSkRaWXV4U3FsTzFEZ0c5Y00wZ0gzTFdXYWpaYm1rN2w0?=
+ =?utf-8?B?RGZMRmdSdXFLanVQbjIzbXpRaG1iMS9jTTVRaVk1WHVTMDUzSTUvakJ1c3o0?=
+ =?utf-8?B?czRTM2JTMU9OUHdnZURlZXNRY2Z2VjU5SzdiWnJaU0x3WkIrYkEvZEtHdnB1?=
+ =?utf-8?B?cHNxOFFwRml2VlEwS0ZsL3h5S1hqMnpmSG5zWG82Vi9tMFpHMWc5ZU40MFpX?=
+ =?utf-8?B?ZVNzb2pEL3pkRFE3UTk3K0ZKRks5NmJjKytrMkNzSFZMNmlhdmh5dzFRMnhs?=
+ =?utf-8?B?cGQrVm9vSUtidHpTRVNEQkF3UzhMK3hFMzNtRkkxVXpIVWl5a2FOYW5WVW9F?=
+ =?utf-8?B?NElUQlRiN25QVmhsMTgvQVRiVWlJYTd5bXFXK01kd1hxbUY2Wk1PaEtZWTRC?=
+ =?utf-8?B?TXJscGk2RGc5SjJzZFYxTFZETE5Bbm9yOERGOGQwNUVzOVhTT0E5dy9zWnRa?=
+ =?utf-8?B?d0VGMHZPdmdxR2wyKzFxWGlydDlLWUgrVkxmUlVTTDlQOXVGYW5naHhNdjdG?=
+ =?utf-8?B?a3ZlRHlnWEJ4V3doN2NjemliVDc3RzhaSWcxNVgwR0ozU3psRkxkcEhmTnN1?=
+ =?utf-8?B?S2tBUXNiSGhkUnZWOE5FdnVpYXlKeXQ2Y2F0RGd4L1hxbjBGK05ZZG5CbmFx?=
+ =?utf-8?B?RU1pNFF2WW9NbHRPeDNiWC8zemEzRGxlM1pTWFliUjVMWUdLY2ZhV2o3NUdV?=
+ =?utf-8?Q?K5H6eszrBvx5MXIQ5VmlJv3uy?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9075b595-d3ae-45a6-3133-08dc7b04a3eb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 May 2024 08:45:03.9476 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SBa7h23QHnaMTrsVBM2sIp9GZqm64kNoHbFNKZ6mPo5TfJPx/V1m98xot2rLnnn2SCPK6raSRbuNud28h549sG2yZsIquL1TRXhsANuApn4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4849
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=198.175.65.13;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,181 +213,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 22=2E Mai 2024 10:43:04 UTC schrieb Akihiko Odaki <akihiko=2Eodaki@dayn=
-ix=2Ecom>:
->The non-standard =2Efa library prefix breaks the link source
-
-s/prefix/suffix/ in the commit message and subject=2E
-
-Best regards,
-Bernhard
-
->de-duplication done by Meson so drop it=2E
->
->The lack of link source de-duplication causes AddressSanitizer to
->complain ODR violations, and makes GNU ld abort when combined with
->clang's LTO=2E
->
->Previously, the non-standard prefix was necessary for fork-fuzzing=2E
->Meson wraps all standard-prefixed libraries with --start-group and
->--end-group=2E This made a fork-fuzz=2Eld linker script wrapped as well a=
-nd
->broke builds=2E Commit d2e6f9272d33 ("fuzz: remove fork-fuzzing
->scaffolding") dropped fork-fuzzing so we can now restore the standard
->prefix=2E
->
->The occurances of the prefix was detected and removed by performing
->a tree-wide search with 'fa' and =2Efa (note the quotes and dot)=2E
->
->Signed-off-by: Akihiko Odaki <akihiko=2Eodaki@daynix=2Ecom>
->---
-> docs/devel/build-system=2Erst         | 5 -----
-> stubs/blk-exp-close-all=2Ec           | 2 +-
-> =2Egitlab-ci=2Ed/buildtest-template=2Eyml | 2 --
-> =2Egitlab-ci=2Ed/buildtest=2Eyml          | 2 --
-> gdbstub/meson=2Ebuild                 | 2 --
-> tcg/meson=2Ebuild                     | 2 --
-> tests/Makefile=2Einclude              | 2 +-
-> tests/qtest/libqos/meson=2Ebuild      | 1 -
-> 8 files changed, 2 insertions(+), 16 deletions(-)
->
->diff --git a/docs/devel/build-system=2Erst b/docs/devel/build-system=2Ers=
-t
->index 09caf2f8e199=2E=2E5baf027b7614 100644
->--- a/docs/devel/build-system=2Erst
->+++ b/docs/devel/build-system=2Erst
->@@ -236,15 +236,10 @@ Subsystem sourcesets:
->   are then turned into static libraries as follows::
->=20
->     libchardev =3D static_library('chardev', chardev_ss=2Esources(),
->-                                name_suffix: 'fa',
->                                 build_by_default: false)
->=20
->     chardev =3D declare_dependency(link_whole: libchardev)
->=20
->-  As of Meson 0=2E55=2E1, the special ``=2Efa`` suffix should be used fo=
-r everything
->-  that is used with ``link_whole``, to ensure that the link flags are pl=
-aced
->-  correctly in the command line=2E
->-
-> Target-independent emulator sourcesets:
->   Various general purpose helper code is compiled only once and
->   the =2Eo files are linked into all output binaries that need it=2E
->diff --git a/stubs/blk-exp-close-all=2Ec b/stubs/blk-exp-close-all=2Ec
->index 1c7131676392=2E=2E2f68e06d7d05 100644
->--- a/stubs/blk-exp-close-all=2Ec
->+++ b/stubs/blk-exp-close-all=2Ec
->@@ -1,7 +1,7 @@
-> #include "qemu/osdep=2Eh"
-> #include "block/export=2Eh"
->=20
->-/* Only used in programs that support block exports (libblockdev=2Efa) *=
-/
->+/* Only used in programs that support block exports (libblockdev=2Ea) */
-> void blk_exp_close_all(void)
-> {
-> }
->diff --git a/=2Egitlab-ci=2Ed/buildtest-template=2Eyml b/=2Egitlab-ci=2Ed=
-/buildtest-template=2Eyml
->index 22045add8064=2E=2E69e468a576ba 100644
->--- a/=2Egitlab-ci=2Ed/buildtest-template=2Eyml
->+++ b/=2Egitlab-ci=2Ed/buildtest-template=2Eyml
->@@ -45,10 +45,8 @@
->     exclude:
->       - build/**/*=2Ep
->       - build/**/*=2Ea=2Ep
->-      - build/**/*=2Efa=2Ep
->       - build/**/*=2Ec=2Eo
->       - build/**/*=2Ec=2Eo=2Ed
->-      - build/**/*=2Efa
->=20
-> =2Ecommon_test_job_template:
->   extends: =2Ebase_job_template
->diff --git a/=2Egitlab-ci=2Ed/buildtest=2Eyml b/=2Egitlab-ci=2Ed/buildtes=
-t=2Eyml
->index cfdff175c389=2E=2Ec156e6f1d90e 100644
->--- a/=2Egitlab-ci=2Ed/buildtest=2Eyml
->+++ b/=2Egitlab-ci=2Ed/buildtest=2Eyml
->@@ -178,10 +178,8 @@ build-previous-qemu:
->     exclude:
->       - build-previous/**/*=2Ep
->       - build-previous/**/*=2Ea=2Ep
->-      - build-previous/**/*=2Efa=2Ep
->       - build-previous/**/*=2Ec=2Eo
->       - build-previous/**/*=2Ec=2Eo=2Ed
->-      - build-previous/**/*=2Efa
->   needs:
->     job: amd64-opensuse-leap-container
->   variables:
->diff --git a/gdbstub/meson=2Ebuild b/gdbstub/meson=2Ebuild
->index da5721d8452b=2E=2Ec91e398ae726 100644
->--- a/gdbstub/meson=2Ebuild
->+++ b/gdbstub/meson=2Ebuild
->@@ -19,13 +19,11 @@ gdb_system_ss =3D gdb_system_ss=2Eapply({})
->=20
-> libgdb_user =3D static_library('gdb_user',
->                              gdb_user_ss=2Esources() + genh,
->-                             name_suffix: 'fa',
->                              c_args: '-DCONFIG_USER_ONLY',
->                              build_by_default: false)
->=20
-> libgdb_system =3D static_library('gdb_system',
->                                 gdb_system_ss=2Esources() + genh,
->-                                name_suffix: 'fa',
->                                 build_by_default: false)
->=20
-> gdb_user =3D declare_dependency(link_whole: libgdb_user)
->diff --git a/tcg/meson=2Ebuild b/tcg/meson=2Ebuild
->index 8251589fd4e9=2E=2Ef941413d5801 100644
->--- a/tcg/meson=2Ebuild
->+++ b/tcg/meson=2Ebuild
->@@ -31,7 +31,6 @@ tcg_ss =3D tcg_ss=2Eapply({})
->=20
-> libtcg_user =3D static_library('tcg_user',
->                              tcg_ss=2Esources() + genh,
->-                             name_suffix: 'fa',
->                              c_args: '-DCONFIG_USER_ONLY',
->                              build_by_default: false)
->=20
->@@ -41,7 +40,6 @@ user_ss=2Eadd(tcg_user)
->=20
-> libtcg_system =3D static_library('tcg_system',
->                                 tcg_ss=2Esources() + genh,
->-                                name_suffix: 'fa',
->                                 c_args: '-DCONFIG_SOFTMMU',
->                                 build_by_default: false)
->=20
->diff --git a/tests/Makefile=2Einclude b/tests/Makefile=2Einclude
->index c9d1674bd070=2E=2Ed39d5dd6a43e 100644
->--- a/tests/Makefile=2Einclude
->+++ b/tests/Makefile=2Einclude
->@@ -87,7 +87,7 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
-> =2EPHONY: check-venv check-avocado check-acceptance check-acceptance-dep=
-recated-warning
->=20
-> # Build up our target list from the filtered list of ninja targets
->-TARGETS=3D$(patsubst libqemu-%=2Efa, %, $(filter libqemu-%=2Efa, $(ninja=
--targets)))
->+TARGETS=3D$(patsubst libqemu-%=2Ea, %, $(filter libqemu-%=2Ea, $(ninja-t=
-argets)))
->=20
-> TESTS_VENV_TOKEN=3D$(BUILD_DIR)/pyvenv/tests=2Egroup
-> TESTS_RESULTS_DIR=3D$(BUILD_DIR)/tests/results
->diff --git a/tests/qtest/libqos/meson=2Ebuild b/tests/qtest/libqos/meson=
-=2Ebuild
->index 3aed6efcb8d1=2E=2E45b81c83ade3 100644
->--- a/tests/qtest/libqos/meson=2Ebuild
->+++ b/tests/qtest/libqos/meson=2Ebuild
->@@ -68,7 +68,6 @@ if have_virtfs
-> endif
->=20
-> libqos =3D static_library('qos', libqos_srcs + genh,
->-                        name_suffix: 'fa',
->                         build_by_default: false)
->=20
-> qos =3D declare_dependency(link_whole: libqos)
->
+DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEPDqWRyaWMgTGUgR29hdGVy
+IDxjbGdAcmVkaGF0LmNvbT4NCj5TdWJqZWN0OiBbUEFUQ0ggNC83XSBzMzkweC9jc3M6IE1ha2Ug
+UzM5MENDV0RldmljZUNsYXNzOjpyZWFsaXplIHJldHVybg0KPmJvb2wNCj4NCj5TaW5jZSB0aGUg
+cmVhbGl6ZSgpIGhhbmRsZXIgb2YgUzM5MENDV0RldmljZUNsYXNzIHRha2VzIGFuICdFcnJvciAq
+KicNCj5hcmd1bWVudCwgYmVzdCBwcmFjdGljZXMgc3VnZ2VzdCB0byByZXR1cm4gYSBib29sLiBT
+ZWUgdGhlIGFwaS9lcnJvci5oDQo+UnVsZXMgc2VjdGlvbi4gV2hpbGUgYXQgaXQsIG1vZGlmeSB0
+aGUgY2FsbCBpbiB2ZmlvX2Njd19yZWFsaXplKCkuDQo+DQo+U2lnbmVkLW9mZi1ieTogQ8OpZHJp
+YyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KDQpSZXZpZXdlZC1ieTogWmhlbnpob25nIER1
+YW4gPHpoZW56aG9uZy5kdWFuQGludGVsLmNvbT4NCg0KVGhhbmtzDQpaaGVuemhvbmcNCg0KPi0t
+LQ0KPiBpbmNsdWRlL2h3L3MzOTB4L3MzOTAtY2N3LmggfCAyICstDQo+IGh3L3MzOTB4L3MzOTAt
+Y2N3LmMgICAgICAgICB8IDcgKysrKy0tLQ0KPiBody92ZmlvL2Njdy5jICAgICAgICAgICAgICAg
+fCAzICstLQ0KPiAzIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMo
+LSkNCj4NCj5kaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody9zMzkweC9zMzkwLWNjdy5oIGIvaW5jbHVk
+ZS9ody9zMzkweC9zMzkwLWNjdy5oDQo+aW5kZXgNCj4yYzgwN2VlM2ExYWU4ZDg1NDYwZmU2NWJl
+OGE2MmM2NGYyMTJmZTRiLi4yZTBhNzA5OTgxMzIwNzA5OTZkNmINCj4wZDA4M2I4ZGRiYTViOWI4
+N2RjIDEwMDY0NA0KPi0tLSBhL2luY2x1ZGUvaHcvczM5MHgvczM5MC1jY3cuaA0KPisrKyBiL2lu
+Y2x1ZGUvaHcvczM5MHgvczM5MC1jY3cuaA0KPkBAIC0zMSw3ICszMSw3IEBAIHN0cnVjdCBTMzkw
+Q0NXRGV2aWNlIHsNCj4NCj4gc3RydWN0IFMzOTBDQ1dEZXZpY2VDbGFzcyB7DQo+ICAgICBDQ1dE
+ZXZpY2VDbGFzcyBwYXJlbnRfY2xhc3M7DQo+LSAgICB2b2lkICgqcmVhbGl6ZSkoUzM5MENDV0Rl
+dmljZSAqZGV2LCBjaGFyICpzeXNmc2RldiwgRXJyb3IgKiplcnJwKTsNCj4rICAgIGJvb2wgKCpy
+ZWFsaXplKShTMzkwQ0NXRGV2aWNlICpkZXYsIGNoYXIgKnN5c2ZzZGV2LCBFcnJvciAqKmVycnAp
+Ow0KPiAgICAgdm9pZCAoKnVucmVhbGl6ZSkoUzM5MENDV0RldmljZSAqZGV2KTsNCj4gICAgIElP
+SW5zdEVuZGluZyAoKmhhbmRsZV9yZXF1ZXN0KSAoU3ViY2hEZXYgKnNjaCk7DQo+ICAgICBpbnQg
+KCpoYW5kbGVfaGFsdCkgKFN1YmNoRGV2ICpzY2gpOw0KPmRpZmYgLS1naXQgYS9ody9zMzkweC9z
+MzkwLWNjdy5jIGIvaHcvczM5MHgvczM5MC1jY3cuYw0KPmluZGV4DQo+YjNkMTRjNjFkNzMyODgw
+YTY1MWVkY2YyOGEwNDBjYTcyM2NiOWY1Yi4uM2MwOTc1MDU1MDg5YzM2MjlkZDc2DQo+Y2UyZTE0
+ODRhNGVmNjZkOGQ0MSAxMDA2NDQNCj4tLS0gYS9ody9zMzkweC9zMzkwLWNjdy5jDQo+KysrIGIv
+aHcvczM5MHgvczM5MC1jY3cuYw0KPkBAIC0xMDgsNyArMTA4LDcgQEAgc3RhdGljIGJvb2wgczM5
+MF9jY3dfZ2V0X2Rldl9pbmZvKFMzOTBDQ1dEZXZpY2UNCj4qY2RldiwNCj4gICAgIHJldHVybiB0
+cnVlOw0KPiB9DQo+DQo+LXN0YXRpYyB2b2lkIHMzOTBfY2N3X3JlYWxpemUoUzM5MENDV0Rldmlj
+ZSAqY2RldiwgY2hhciAqc3lzZnNkZXYsIEVycm9yDQo+KiplcnJwKQ0KPitzdGF0aWMgYm9vbCBz
+MzkwX2Njd19yZWFsaXplKFMzOTBDQ1dEZXZpY2UgKmNkZXYsIGNoYXIgKnN5c2ZzZGV2LCBFcnJv
+cg0KPioqZXJycCkNCj4gew0KPiAgICAgQ2N3RGV2aWNlICpjY3dfZGV2ID0gQ0NXX0RFVklDRShj
+ZGV2KTsNCj4gICAgIENDV0RldmljZUNsYXNzICpjayA9IENDV19ERVZJQ0VfR0VUX0NMQVNTKGNj
+d19kZXYpOw0KPkBAIC0xMTcsNyArMTE3LDcgQEAgc3RhdGljIHZvaWQgczM5MF9jY3dfcmVhbGl6
+ZShTMzkwQ0NXRGV2aWNlICpjZGV2LA0KPmNoYXIgKnN5c2ZzZGV2LCBFcnJvciAqKmVycnApDQo+
+ICAgICBpbnQgcmV0Ow0KPg0KPiAgICAgaWYgKCFzMzkwX2Njd19nZXRfZGV2X2luZm8oY2Rldiwg
+c3lzZnNkZXYsIGVycnApKSB7DQo+LSAgICAgICAgcmV0dXJuOw0KPisgICAgICAgIHJldHVybiBm
+YWxzZTsNCj4gICAgIH0NCj4NCj4gICAgIHNjaCA9IGNzc19jcmVhdGVfc2NoKGNjd19kZXYtPmRl
+dm5vLCBlcnJwKTsNCj5AQCAtMTQyLDcgKzE0Miw3IEBAIHN0YXRpYyB2b2lkIHMzOTBfY2N3X3Jl
+YWxpemUoUzM5MENDV0RldmljZSAqY2RldiwNCj5jaGFyICpzeXNmc2RldiwgRXJyb3IgKiplcnJw
+KQ0KPg0KPiAgICAgY3NzX2dlbmVyYXRlX3NjaF9jcndzKHNjaC0+Y3NzaWQsIHNjaC0+c3NpZCwg
+c2NoLT5zY2hpZCwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICBwYXJlbnQtPmhvdHBsdWdn
+ZWQsIDEpOw0KPi0gICAgcmV0dXJuOw0KPisgICAgcmV0dXJuIHRydWU7DQo+DQo+IG91dF9lcnI6
+DQo+ICAgICBjc3Nfc3ViY2hfYXNzaWduKHNjaC0+Y3NzaWQsIHNjaC0+c3NpZCwgc2NoLT5zY2hp
+ZCwgc2NoLT5kZXZubywgTlVMTCk7DQo+QEAgLTE1MCw2ICsxNTAsNyBAQCBvdXRfZXJyOg0KPiAg
+ICAgZ19mcmVlKHNjaCk7DQo+IG91dF9tZGV2aWRfZnJlZToNCj4gICAgIGdfZnJlZShjZGV2LT5t
+ZGV2aWQpOw0KPisgICAgcmV0dXJuIGZhbHNlOw0KPiB9DQo+DQo+IHN0YXRpYyB2b2lkIHMzOTBf
+Y2N3X3VucmVhbGl6ZShTMzkwQ0NXRGV2aWNlICpjZGV2KQ0KPmRpZmYgLS1naXQgYS9ody92Zmlv
+L2Njdy5jIGIvaHcvdmZpby9jY3cuYw0KPmluZGV4DQo+MjYwMGU2MmUzNzIzODc3OTgwMGRjMmIz
+YTBiZDMxNWQ3NjMzMDE3Yi4uOWE4ZTA1MjcxMWZlMmY3YzA2N2MNCj41MjgwOGIyYWYzMGQwZWJm
+ZWUwYyAxMDA2NDQNCj4tLS0gYS9ody92ZmlvL2Njdy5jDQo+KysrIGIvaHcvdmZpby9jY3cuYw0K
+PkBAIC01ODIsOCArNTgyLDcgQEAgc3RhdGljIHZvaWQgdmZpb19jY3dfcmVhbGl6ZShEZXZpY2VT
+dGF0ZSAqZGV2LCBFcnJvcg0KPioqZXJycCkNCj4NCj4gICAgIC8qIENhbGwgdGhlIGNsYXNzIGlu
+aXQgZnVuY3Rpb24gZm9yIHN1YmNoYW5uZWwuICovDQo+ICAgICBpZiAoY2RjLT5yZWFsaXplKSB7
+DQo+LSAgICAgICAgY2RjLT5yZWFsaXplKGNkZXYsIHZjZGV2LT52ZGV2LnN5c2ZzZGV2LCAmZXJy
+KTsNCj4tICAgICAgICBpZiAoZXJyKSB7DQo+KyAgICAgICAgaWYgKCFjZGMtPnJlYWxpemUoY2Rl
+diwgdmNkZXYtPnZkZXYuc3lzZnNkZXYsICZlcnIpKSB7DQo+ICAgICAgICAgICAgIGdvdG8gb3V0
+X2Vycl9wcm9wYWdhdGU7DQo+ICAgICAgICAgfQ0KPiAgICAgfQ0KPi0tDQo+Mi40NS4xDQoNCg==
 
