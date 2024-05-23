@@ -2,90 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F3F8CCFA4
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C33B8CCFA5
 	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 11:49:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA54E-0001uX-Ip; Thu, 23 May 2024 05:48:58 -0400
+	id 1sA54G-0001vs-C7; Thu, 23 May 2024 05:49:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1sA54A-0001t9-NB; Thu, 23 May 2024 05:48:54 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1sA54E-0001vK-Eo; Thu, 23 May 2024 05:48:58 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1sA549-0001Qd-1r; Thu, 23 May 2024 05:48:54 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ id 1sA54B-0001U6-QH; Thu, 23 May 2024 05:48:58 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44N9Rpsh012366; Thu, 23 May 2024 09:48:49 GMT
+ 44N9Eudh001877; Thu, 23 May 2024 09:48:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=4G7FRWAoEORrY9ujekMVht1DBbKHRvaL6LI5J8Qg+Sk=;
- b=tBEmAhvOA05YdYzef1AkEFVN7mEUywXxTBIaxSZ5y1sWGo1pOlUP6n8XaF2MOlzU2s6a
- QGEkil6K27NrFZf5UeQ1A4ybkUVDa/CCitEOR4S/26bT3r4/DtNcwuIByw7AsfMcwrdY
- O3LHncITtZl2TIi5XrbV+GBS3y3MjSF2xUQ5qbGrRLkUiY07AFm44BF9Rry3b3L3Lkea
- SZV61YddCgB8Bfphifc1anjysdBLc4uXJScvAHRZYO36Ytr7/ia+HbuaY2Lzh9OPLc71
- iczJfXwL5ti5P5Cv/OmVXynY+853kPVZv0OPuimWiOvZjmYlNYC3xVcvPq17wzAMOt03 zw== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=eQVqRXZgJVcKhKPlhr/pWRtuHrXO3gFWwVNiyBSXKIc=;
+ b=GaZCgySd938EWeKQwdUYEAkBIjl0t984+LfiHlG14S8CIc2qFfiLS4DxWEq9xmKPdeYh
+ hyNCJ3CCXsjl2BhpsbCUYimgOXAiZffGwZ2Nni3mdcSQJWspYQ3GVfZ0CvIKITcH9NaV
+ tdeSwWwloHa3MkWh0TeqkvgRLX9yob9acOnY5rEtOoZ3uCjNjnojpLax8OuHzb8IRHD/
+ QrDu87sp8mhSnHQeudoDycIDqeZasrktSUQS4Z7xoWRp0uM99XV7zrtlvSgD37F3fr1Q
+ w37NPAGKaXC08vFv0pRcGtD6gKDH00FCE/PdLsEK/IeOBvqQe21EpgjKeXOSOUg9FML8 1w== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ya366828f-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ya2tsr3tb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 May 2024 09:48:48 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44N9mm3a013973;
- Thu, 23 May 2024 09:48:48 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ya3668283-1
+ Thu, 23 May 2024 09:48:53 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44N9mrL9024316;
+ Thu, 23 May 2024 09:48:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ya2tsr3t6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 May 2024 09:48:48 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44N7klUr023565; Thu, 23 May 2024 09:48:47 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3y77nphapt-1
+ Thu, 23 May 2024 09:48:53 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44N9Fj2q007412; Thu, 23 May 2024 09:48:52 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y79c38v86-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 23 May 2024 09:48:47 +0000
+ Thu, 23 May 2024 09:48:52 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44N9mh5x34734768
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44N9mmcu33423788
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 May 2024 09:48:45 GMT
+ Thu, 23 May 2024 09:48:51 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4863020043;
- Thu, 23 May 2024 09:48:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id D9E2420040;
+ Thu, 23 May 2024 09:48:48 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0CE0920040;
- Thu, 23 May 2024 09:48:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A7AEE20043;
+ Thu, 23 May 2024 09:48:47 +0000 (GMT)
 Received: from localhost.in.ibm.com (unknown [9.199.192.140])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 23 May 2024 09:48:41 +0000 (GMT)
+ Thu, 23 May 2024 09:48:47 +0000 (GMT)
 From: Chinmay Rath <rathc@linux.ibm.com>
 To: qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
  richard.henderson@linaro.org, harshpb@linux.ibm.com
-Subject: [PATCH 0/3] target/ppc: Moving VSX insns to decodetree.
-Date: Thu, 23 May 2024 15:18:18 +0530
-Message-Id: <20240523094821.124014-1-rathc@linux.ibm.com>
+Subject: [PATCH 1/3] target/ppc: Move ISA300 flag check out of do_helper_XX3.
+Date: Thu, 23 May 2024 15:18:19 +0530
+Message-Id: <20240523094821.124014-2-rathc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20240523094821.124014-1-rathc@linux.ibm.com>
+References: <20240523094821.124014-1-rathc@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o1zG0jozXErMCpdXiF8geaUhbYUyK-O8
-X-Proofpoint-ORIG-GUID: c7YTfRYhKZbFRcbAWyctDoitwj2szZzt
+X-Proofpoint-GUID: AFHJqmMp6dFopJhAHifo7zdOFq3eKIzk
+X-Proofpoint-ORIG-GUID: 7sx5DwFY3XHe1UYDyZldOHQfPYY-1jO2
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-23_04,2024-05-23_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- phishscore=0 mlxlogscore=325 impostorscore=0 mlxscore=0 suspectscore=0
- adultscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0
+ adultscore=0 mlxlogscore=855 impostorscore=0 priorityscore=1501
+ bulkscore=0 phishscore=0 malwarescore=0 mlxscore=0 spamscore=0
  lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405230065
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rathc@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -108,24 +111,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Moving a number of  VSX arithmetic, max/min and logical instructions to
-decodetree specification.
-Also moving ISA300 flag check in the do_helper_XX3 methods in
-vsx-impl.c.inc file; out of it, to make it usable for a larger num of
-instructions.
+Moving PPC2_ISA300 flag check out of do_helper_XX3 method in vmx-impl.c.inc
+so that the helper can be used with other instructions as well.
 
-Chinmay Rath (3):
-  target/ppc: Move ISA300 flag check out of do_helper_XX3.
-  target/ppc: Move VSX arithmetic and max/min insns to decodetree.
-  target/ppc: Move VSX logical instructions to decodetree.
+Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+---
+ target/ppc/translate/vsx-impl.c.inc | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
- target/ppc/helper.h                 |  44 +++++------
- target/ppc/insn32.decode            |  41 ++++++++++
- target/ppc/fpu_helper.c             |  44 +++++------
- target/ppc/translate/vsx-impl.c.inc | 116 ++++++++++++----------------
- target/ppc/translate/vsx-ops.c.inc  |  33 --------
- 5 files changed, 136 insertions(+), 142 deletions(-)
-
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 0266f09119..6025119e5b 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -2712,8 +2712,6 @@ static bool do_helper_XX3(DisasContext *ctx, arg_XX3 *a,
+     void (*helper)(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
+ {
+     TCGv_ptr xt, xa, xb;
+-
+-    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
+     REQUIRE_VSX(ctx);
+ 
+     xt = gen_vsr_ptr(a->xt);
+@@ -2724,13 +2722,13 @@ static bool do_helper_XX3(DisasContext *ctx, arg_XX3 *a,
+     return true;
+ }
+ 
+-TRANS(XSCMPEQDP, do_helper_XX3, gen_helper_XSCMPEQDP)
+-TRANS(XSCMPGEDP, do_helper_XX3, gen_helper_XSCMPGEDP)
+-TRANS(XSCMPGTDP, do_helper_XX3, gen_helper_XSCMPGTDP)
+-TRANS(XSMAXCDP, do_helper_XX3, gen_helper_XSMAXCDP)
+-TRANS(XSMINCDP, do_helper_XX3, gen_helper_XSMINCDP)
+-TRANS(XSMAXJDP, do_helper_XX3, gen_helper_XSMAXJDP)
+-TRANS(XSMINJDP, do_helper_XX3, gen_helper_XSMINJDP)
++TRANS_FLAGS2(ISA300, XSCMPEQDP, do_helper_XX3, gen_helper_XSCMPEQDP)
++TRANS_FLAGS2(ISA300, XSCMPGEDP, do_helper_XX3, gen_helper_XSCMPGEDP)
++TRANS_FLAGS2(ISA300, XSCMPGTDP, do_helper_XX3, gen_helper_XSCMPGTDP)
++TRANS_FLAGS2(ISA300, XSMAXCDP, do_helper_XX3, gen_helper_XSMAXCDP)
++TRANS_FLAGS2(ISA300, XSMINCDP, do_helper_XX3, gen_helper_XSMINCDP)
++TRANS_FLAGS2(ISA300, XSMAXJDP, do_helper_XX3, gen_helper_XSMAXJDP)
++TRANS_FLAGS2(ISA300, XSMINJDP, do_helper_XX3, gen_helper_XSMINJDP)
+ 
+ static bool do_helper_X(arg_X *a,
+     void (*helper)(TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_ptr))
 -- 
 2.39.3
 
