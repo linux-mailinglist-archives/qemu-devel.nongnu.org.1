@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C768CD752
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:38:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72BB8CD769
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:41:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAATj-00087Z-TJ; Thu, 23 May 2024 11:35:39 -0400
+	id 1sAATj-00085b-5q; Thu, 23 May 2024 11:35:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATe-00080K-4a
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:34 -0400
+ id 1sAATc-0007yt-H1
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:32 -0400
 Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sAATW-0002W4-Nf
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:33 -0400
+ id 1sAATW-0002W8-NK
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:32 -0400
 Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-354fb2d8f51so616247f8f.3
+ ffacd0b85a97d-354cd8da8b9so2227702f8f.0
  for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716478524; x=1717083324; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=g+kv59Evo55SsQSAOvw7PEtl8IUQkTpKSc4QiTMEypA=;
- b=c6CeigFHYNRtBMY0kS3H4luDgeQs/sIyB6/EUTZhfhN3fiD4DSGqF5PvvA+wA93YjP
- MlQkxbk/UJ/pTokF5SIimUrNp1tGBFXAksQ1gCKTa6idHeC2/aWUOe9E1NDbOcV2ODmY
- eiASEZMU7NXaRRuwwvFPnGejwyUwYf/mnGHmhGW7epgImmliE2B08FzKI4UdsUBIfEoF
- 9a5xtesduS149Adpn540S5tmqfExspQd5EokoM8R5EEcCO0w0RmQQUFnmx0+uM2qegZL
- rbswUFE2WJEwngEUUuwLo/78k30y6RUgshRB1x1E0+Lgq1KGcIofaAkujSn3qgiCeUG+
- vGVg==
+ :reply-to; bh=e4xhRCGewRvJUjp3kHhBSR4Ttel36Rf/dBM9XAKs3Eo=;
+ b=x5bFvNY2pgl/iKp3j2IpR/EB2f/h43RmBaaoI09DkBzg42muzjj6PUQpEGu/8KFPke
+ b6oL9Qyg4uw0bWx/S2KBniL2gbW8bWvPxc6hgawJIZa3eDwdWSb/czBl31Qo/FtIvd2B
+ DntpOBt2KE6FVPXuTROTIQVyQlJytJz/ntMXUcEheFCOoU+wsSLrH++sWwDQF3nU9TWf
+ aWv4gYvWLwSc2eP8Xi8K5I0EC3szHgHbtkdvqKo3ea5QRRCmKTimCrAX45k2LTl2Ezll
+ RxLgY4CeHex/6/PFU4/dtwr+q+uljnyNPL/+BPRAt/CkY4n1NF6rQUC1sEYAyMD48i1c
+ CNUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716478524; x=1717083324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=g+kv59Evo55SsQSAOvw7PEtl8IUQkTpKSc4QiTMEypA=;
- b=NpIMUnhkUZOwmJZlrX+yndafgwDnmlcQNOydnSOTfc891lk0Xyw3VI2uXV4BvFk0Gz
- SFTrnITz8ydmIcIswTmsyQOHV4lrcIaj3z2fi2256N9O6CeHuSpnwmlRtQiJoguzMM0E
- 4IDXmF2a57NdDeWqNv7FrXAqtl5Ga3pe0ApePn3zmDhTTiop0kqFWRZjJOsGi/W7VPhJ
- Ycl8s2MiUbKtmFVh4lhC7bvAS3qkdwadLkBFcH4JTVK2y47gpVqQQhDaix8lPLuOw5U2
- dpn1pJsOOyCEI/YSHsbWb/qNxCMh6vSNu49MdWRCRxOXVhYrslHI8G6ZCR3xNwj1hBds
- MTBw==
-X-Gm-Message-State: AOJu0YzQ14M1ymY66hEMUsmUbAh+ylyBUUdiIxrTmIz508xiNlMVWxqf
- bgplN2Hk25JSPT+g9UNJ18wHwiX3R/1clnIJFg36auSl6UxxXjNhBy+mmHmnvo4Cfqc7e6UKV6P
- G
-X-Google-Smtp-Source: AGHT+IF49wdhhQkTrMKi2pBg1YG7bGxrczS4TrDj4a3oUxIHP6B0GDcEIKm4cBi2KL4Y4OV3ShLd/g==
-X-Received: by 2002:a5d:6943:0:b0:355:2ae:d893 with SMTP id
- ffacd0b85a97d-35502aedc91mr792532f8f.58.1716478524161; 
+ bh=e4xhRCGewRvJUjp3kHhBSR4Ttel36Rf/dBM9XAKs3Eo=;
+ b=S0V+crRE0xBHTlG543rp8yOrvs3emAN0b1AsDg3tW6r/jvArjkmGOTy8pcr3Rt8PkU
+ 55NMT9NFny3WaACMmCdmYmwEL3qT4VCeTKjqg82Fozqv4yb0aEhylBHp3H5QBNEwrY3e
+ r3CWqGTGtXZxAmdmwpm87w4MTTvVb/aB8VungdZxRmxiQRWS72ibb9xOmbve+QZXqUom
+ VQ5oBLKArToeUapOQy/9yh68DwWMf68WvoEq2qHCFeoYqRqLn/XCIsLt/uikyDbQa9Es
+ 0Ypt+pt51uZ1PiEqjorUWAo9wAi4jcTd5ZNxQ4oi+8ylZ1ejGeCgnd1QC5sDaGAuXzhu
+ xRug==
+X-Gm-Message-State: AOJu0YxjrOAKqe8aod53NYi2avc/DY152NSxZSIzcnRUlY7CTFO5kvOh
+ s559Wq2lownZe+2ECbF3hz/uNyU/UVqAb1RMMqlJ3zV3SCT090BKjQmRM0M3QWVfIxxshM7lzFh
+ 1
+X-Google-Smtp-Source: AGHT+IFuRrxkdKRrxUw9AFDaO3H49VjlRyuT+WHvy4kaIlK/p1jXqy9JjqKIJ39f+wTqGQT9xt4ehQ==
+X-Received: by 2002:a5d:45d1:0:b0:352:5f74:6998 with SMTP id
+ ffacd0b85a97d-354d8cf8f82mr4735923f8f.18.1716478524737; 
  Thu, 23 May 2024 08:35:24 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.23
+ ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.24
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:35:23 -0700 (PDT)
+ Thu, 23 May 2024 08:35:24 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 34/37] target/arm: Convert SMAXP, SMINP, UMAXP,
- UMINP to decodetree
-Date: Thu, 23 May 2024 16:35:02 +0100
-Message-Id: <20240523153505.2900433-35-peter.maydell@linaro.org>
+Subject: [PULL 35/37] target/arm: Use gvec for neon pmax, pmin
+Date: Thu, 23 May 2024 16:35:03 +0100
+Message-Id: <20240523153505.2900433-36-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240523153505.2900433-1-peter.maydell@linaro.org>
 References: <20240523153505.2900433-1-peter.maydell@linaro.org>
@@ -94,324 +93,110 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-These are the last instructions within handle_simd_3same_pair
-so remove it.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240506010403.6204-27-richard.henderson@linaro.org
+Message-id: 20240506010403.6204-28-richard.henderson@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.h            |  16 +++++
- target/arm/tcg/translate.h     |   8 +++
- target/arm/tcg/a64.decode      |   4 ++
- target/arm/tcg/gengvec.c       |  48 +++++++++++++
- target/arm/tcg/translate-a64.c | 119 +++++----------------------------
- target/arm/tcg/vec_helper.c    |  16 +++++
- 6 files changed, 109 insertions(+), 102 deletions(-)
+ target/arm/tcg/translate-neon.c | 78 ++-------------------------------
+ 1 file changed, 4 insertions(+), 74 deletions(-)
 
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 51ed49aa50c..f830531dd3d 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -1064,6 +1064,22 @@ DEF_HELPER_FLAGS_4(gvec_addp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(gvec_addp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(gvec_addp_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/translate-neon.c b/target/arm/tcg/translate-neon.c
+index 6c5a7a98e1b..18b048611b3 100644
+--- a/target/arm/tcg/translate-neon.c
++++ b/target/arm/tcg/translate-neon.c
+@@ -831,6 +831,10 @@ DO_3SAME_NO_SZ_3(VABA_S, gen_gvec_saba)
+ DO_3SAME_NO_SZ_3(VABD_U, gen_gvec_uabd)
+ DO_3SAME_NO_SZ_3(VABA_U, gen_gvec_uaba)
+ DO_3SAME_NO_SZ_3(VPADD, gen_gvec_addp)
++DO_3SAME_NO_SZ_3(VPMAX_S, gen_gvec_smaxp)
++DO_3SAME_NO_SZ_3(VPMIN_S, gen_gvec_sminp)
++DO_3SAME_NO_SZ_3(VPMAX_U, gen_gvec_umaxp)
++DO_3SAME_NO_SZ_3(VPMIN_U, gen_gvec_uminp)
  
-+DEF_HELPER_FLAGS_4(gvec_smaxp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_smaxp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_smaxp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(gvec_sminp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_sminp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_sminp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(gvec_umaxp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_umaxp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_umaxp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
-+DEF_HELPER_FLAGS_4(gvec_uminp_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_uminp_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_4(gvec_uminp_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
-+
- #ifdef TARGET_AARCH64
- #include "tcg/helper-a64.h"
- #include "tcg/helper-sve.h"
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 04771f483b6..3abdbedfe5c 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -516,6 +516,14 @@ void gen_gvec_uaba(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+ #define DO_3SAME_CMP(INSN, COND)                                        \
+     static void gen_##INSN##_3s(unsigned vece, uint32_t rd_ofs,         \
+@@ -1003,80 +1007,6 @@ DO_3SAME_32_ENV(VQSHL_U, qshl_u)
+ DO_3SAME_32_ENV(VQRSHL_S, qrshl_s)
+ DO_3SAME_32_ENV(VQRSHL_U, qrshl_u)
  
- void gen_gvec_addp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
-+void gen_gvec_smaxp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
-+void gen_gvec_sminp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
-+void gen_gvec_umaxp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
-+void gen_gvec_uminp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz);
- 
- /*
-  * Forward to the isar_feature_* tests given a DisasContext pointer.
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 84f5bcc0e08..22dfe8568d6 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -837,6 +837,10 @@ FMINNMP_v       0.10 1110 110 ..... 00000 1 ..... ..... @qrrr_h
- FMINNMP_v       0.10 1110 1.1 ..... 11000 1 ..... ..... @qrrr_sd
- 
- ADDP_v          0.00 1110 ..1 ..... 10111 1 ..... ..... @qrrr_e
-+SMAXP_v         0.00 1110 ..1 ..... 10100 1 ..... ..... @qrrr_e
-+SMINP_v         0.00 1110 ..1 ..... 10101 1 ..... ..... @qrrr_e
-+UMAXP_v         0.10 1110 ..1 ..... 10100 1 ..... ..... @qrrr_e
-+UMINP_v         0.10 1110 ..1 ..... 10101 1 ..... ..... @qrrr_e
- 
- ### Advanced SIMD scalar x indexed element
- 
-diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
-index f010dd5a0e8..22c9d17dce4 100644
---- a/target/arm/tcg/gengvec.c
-+++ b/target/arm/tcg/gengvec.c
-@@ -1622,3 +1622,51 @@ void gen_gvec_addp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-     };
-     tcg_gen_gvec_3_ool(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, 0, fns[vece]);
- }
-+
-+void gen_gvec_smaxp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    static gen_helper_gvec_3 * const fns[4] = {
-+        gen_helper_gvec_smaxp_b,
-+        gen_helper_gvec_smaxp_h,
-+        gen_helper_gvec_smaxp_s,
-+    };
-+    tcg_debug_assert(vece <= MO_32);
-+    tcg_gen_gvec_3_ool(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, 0, fns[vece]);
-+}
-+
-+void gen_gvec_sminp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    static gen_helper_gvec_3 * const fns[4] = {
-+        gen_helper_gvec_sminp_b,
-+        gen_helper_gvec_sminp_h,
-+        gen_helper_gvec_sminp_s,
-+    };
-+    tcg_debug_assert(vece <= MO_32);
-+    tcg_gen_gvec_3_ool(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, 0, fns[vece]);
-+}
-+
-+void gen_gvec_umaxp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    static gen_helper_gvec_3 * const fns[4] = {
-+        gen_helper_gvec_umaxp_b,
-+        gen_helper_gvec_umaxp_h,
-+        gen_helper_gvec_umaxp_s,
-+    };
-+    tcg_debug_assert(vece <= MO_32);
-+    tcg_gen_gvec_3_ool(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, 0, fns[vece]);
-+}
-+
-+void gen_gvec_uminp(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-+                    uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
-+{
-+    static gen_helper_gvec_3 * const fns[4] = {
-+        gen_helper_gvec_uminp_b,
-+        gen_helper_gvec_uminp_h,
-+        gen_helper_gvec_uminp_s,
-+    };
-+    tcg_debug_assert(vece <= MO_32);
-+    tcg_gen_gvec_3_ool(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, 0, fns[vece]);
-+}
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 7467fdf560c..3fa36566b19 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1352,6 +1352,17 @@ static bool do_gvec_fn3(DisasContext *s, arg_qrrr_e *a, GVecGen3Fn *fn)
-     return true;
- }
- 
-+static bool do_gvec_fn3_no64(DisasContext *s, arg_qrrr_e *a, GVecGen3Fn *fn)
-+{
-+    if (a->esz == MO_64) {
-+        return false;
-+    }
-+    if (fp_access_check(s)) {
-+        gen_gvec_fn3(s, a->q, a->rd, a->rn, a->rm, fn, a->esz);
-+    }
-+    return true;
-+}
-+
- static bool do_gvec_fn4(DisasContext *s, arg_qrrrr_e *a, GVecGen4Fn *fn)
- {
-     if (!a->q && a->esz == MO_64) {
-@@ -5246,6 +5257,10 @@ static gen_helper_gvec_3_ptr * const f_vector_fminnmp[3] = {
- TRANS(FMINNMP_v, do_fp3_vector, a, f_vector_fminnmp)
- 
- TRANS(ADDP_v, do_gvec_fn3, a, gen_gvec_addp)
-+TRANS(SMAXP_v, do_gvec_fn3_no64, a, gen_gvec_smaxp)
-+TRANS(SMINP_v, do_gvec_fn3_no64, a, gen_gvec_sminp)
-+TRANS(UMAXP_v, do_gvec_fn3_no64, a, gen_gvec_umaxp)
-+TRANS(UMINP_v, do_gvec_fn3_no64, a, gen_gvec_uminp)
- 
- /*
-  * Advanced SIMD scalar/vector x indexed element
-@@ -10889,84 +10904,6 @@ static void disas_simd_3same_logic(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* Pairwise op subgroup of C3.6.16.
-- *
-- * This is called directly for float pairwise
-- * operations where the opcode and size are calculated differently.
-- */
--static void handle_simd_3same_pair(DisasContext *s, int is_q, int u, int opcode,
--                                   int size, int rn, int rm, int rd)
+-static bool do_3same_pair(DisasContext *s, arg_3same *a, NeonGenTwoOpFn *fn)
 -{
--    int pass;
+-    /* Operations handled pairwise 32 bits at a time */
+-    TCGv_i32 tmp, tmp2, tmp3;
 -
--    if (!fp_access_check(s)) {
--        return;
+-    if (!arm_dc_feature(s, ARM_FEATURE_NEON)) {
+-        return false;
 -    }
 -
--    /* These operations work on the concatenated rm:rn, with each pair of
--     * adjacent elements being operated on to produce an element in the result.
+-    /* UNDEF accesses to D16-D31 if they don't exist. */
+-    if (!dc_isar_feature(aa32_simd_r32, s) &&
+-        ((a->vd | a->vn | a->vm) & 0x10)) {
+-        return false;
+-    }
+-
+-    if (a->size == 3) {
+-        return false;
+-    }
+-
+-    if (!vfp_access_check(s)) {
+-        return true;
+-    }
+-
+-    assert(a->q == 0); /* enforced by decode patterns */
+-
+-    /*
+-     * Note that we have to be careful not to clobber the source operands
+-     * in the "vm == vd" case by storing the result of the first pass too
+-     * early. Since Q is 0 there are always just two passes, so instead
+-     * of a complicated loop over each pass we just unroll.
 -     */
--    if (size == 3) {
--        g_assert_not_reached();
--    } else {
--        int maxpass = is_q ? 4 : 2;
--        TCGv_i32 tcg_res[4];
+-    tmp = tcg_temp_new_i32();
+-    tmp2 = tcg_temp_new_i32();
+-    tmp3 = tcg_temp_new_i32();
 -
--        for (pass = 0; pass < maxpass; pass++) {
--            TCGv_i32 tcg_op1 = tcg_temp_new_i32();
--            TCGv_i32 tcg_op2 = tcg_temp_new_i32();
--            NeonGenTwoOpFn *genfn = NULL;
--            int passreg = pass < (maxpass / 2) ? rn : rm;
--            int passelt = (is_q && (pass & 1)) ? 2 : 0;
+-    read_neon_element32(tmp, a->vn, 0, MO_32);
+-    read_neon_element32(tmp2, a->vn, 1, MO_32);
+-    fn(tmp, tmp, tmp2);
 -
--            read_vec_element_i32(s, tcg_op1, passreg, passelt, MO_32);
--            read_vec_element_i32(s, tcg_op2, passreg, passelt + 1, MO_32);
--            tcg_res[pass] = tcg_temp_new_i32();
+-    read_neon_element32(tmp3, a->vm, 0, MO_32);
+-    read_neon_element32(tmp2, a->vm, 1, MO_32);
+-    fn(tmp3, tmp3, tmp2);
 -
--            switch (opcode) {
--            case 0x14: /* SMAXP, UMAXP */
--            {
--                static NeonGenTwoOpFn * const fns[3][2] = {
--                    { gen_helper_neon_pmax_s8, gen_helper_neon_pmax_u8 },
--                    { gen_helper_neon_pmax_s16, gen_helper_neon_pmax_u16 },
--                    { tcg_gen_smax_i32, tcg_gen_umax_i32 },
--                };
--                genfn = fns[size][u];
--                break;
--            }
--            case 0x15: /* SMINP, UMINP */
--            {
--                static NeonGenTwoOpFn * const fns[3][2] = {
--                    { gen_helper_neon_pmin_s8, gen_helper_neon_pmin_u8 },
--                    { gen_helper_neon_pmin_s16, gen_helper_neon_pmin_u16 },
--                    { tcg_gen_smin_i32, tcg_gen_umin_i32 },
--                };
--                genfn = fns[size][u];
--                break;
--            }
--            default:
--            case 0x17: /* ADDP */
--            case 0x58: /* FMAXNMP */
--            case 0x5a: /* FADDP */
--            case 0x5e: /* FMAXP */
--            case 0x78: /* FMINNMP */
--            case 0x7e: /* FMINP */
--                g_assert_not_reached();
--            }
+-    write_neon_element32(tmp, a->vd, 0, MO_32);
+-    write_neon_element32(tmp3, a->vd, 1, MO_32);
 -
--            /* FP ops called directly, otherwise call now */
--            if (genfn) {
--                genfn(tcg_res[pass], tcg_op1, tcg_op2);
--            }
--        }
--
--        for (pass = 0; pass < maxpass; pass++) {
--            write_vec_element_i32(s, tcg_res[pass], rd, pass, MO_32);
--        }
--        clear_vec_high(s, is_q, rd);
--    }
+-    return true;
 -}
 -
- /* Floating point op subgroup of C3.6.16. */
- static void disas_simd_3same_float(DisasContext *s, uint32_t insn)
- {
-@@ -11307,30 +11244,6 @@ static void disas_simd_three_reg_same(DisasContext *s, uint32_t insn)
-     case 0x3: /* logic ops */
-         disas_simd_3same_logic(s, insn);
-         break;
--    case 0x14: /* SMAXP, UMAXP */
--    case 0x15: /* SMINP, UMINP */
--    {
--        /* Pairwise operations */
--        int is_q = extract32(insn, 30, 1);
--        int u = extract32(insn, 29, 1);
--        int size = extract32(insn, 22, 2);
--        int rm = extract32(insn, 16, 5);
--        int rn = extract32(insn, 5, 5);
--        int rd = extract32(insn, 0, 5);
--        if (opcode == 0x17) {
--            if (u || (size == 3 && !is_q)) {
--                unallocated_encoding(s);
--                return;
--            }
--        } else {
--            if (size == 3) {
--                unallocated_encoding(s);
--                return;
--            }
--        }
--        handle_simd_3same_pair(s, is_q, u, opcode, size, rn, rm, rd);
--        break;
+-#define DO_3SAME_PAIR(INSN, func)                                       \
+-    static bool trans_##INSN##_3s(DisasContext *s, arg_3same *a)        \
+-    {                                                                   \
+-        static NeonGenTwoOpFn * const fns[] = {                         \
+-            gen_helper_neon_##func##8,                                  \
+-            gen_helper_neon_##func##16,                                 \
+-            gen_helper_neon_##func##32,                                 \
+-        };                                                              \
+-        if (a->size > 2) {                                              \
+-            return false;                                               \
+-        }                                                               \
+-        return do_3same_pair(s, a, fns[a->size]);                       \
 -    }
-     case 0x18 ... 0x31:
-         /* floating point ops, sz[1] and U are part of opcode */
-         disas_simd_3same_float(s, insn);
-@@ -11338,6 +11251,8 @@ static void disas_simd_three_reg_same(DisasContext *s, uint32_t insn)
-     default:
-         disas_simd_3same_int(s, insn);
-         break;
-+    case 0x14: /* SMAXP, UMAXP */
-+    case 0x15: /* SMINP, UMINP */
-     case 0x17: /* ADDP */
-         unallocated_encoding(s);
-         break;
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 5069899415c..56fea14edb9 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -2259,6 +2259,22 @@ DO_3OP_PAIR(gvec_addp_s, ADD, uint32_t, H4)
- DO_3OP_PAIR(gvec_addp_d, ADD, uint64_t, )
- #undef  ADD
- 
-+DO_3OP_PAIR(gvec_smaxp_b, MAX, int8_t, H1)
-+DO_3OP_PAIR(gvec_smaxp_h, MAX, int16_t, H2)
-+DO_3OP_PAIR(gvec_smaxp_s, MAX, int32_t, H4)
-+
-+DO_3OP_PAIR(gvec_umaxp_b, MAX, uint8_t, H1)
-+DO_3OP_PAIR(gvec_umaxp_h, MAX, uint16_t, H2)
-+DO_3OP_PAIR(gvec_umaxp_s, MAX, uint32_t, H4)
-+
-+DO_3OP_PAIR(gvec_sminp_b, MIN, int8_t, H1)
-+DO_3OP_PAIR(gvec_sminp_h, MIN, int16_t, H2)
-+DO_3OP_PAIR(gvec_sminp_s, MIN, int32_t, H4)
-+
-+DO_3OP_PAIR(gvec_uminp_b, MIN, uint8_t, H1)
-+DO_3OP_PAIR(gvec_uminp_h, MIN, uint16_t, H2)
-+DO_3OP_PAIR(gvec_uminp_s, MIN, uint32_t, H4)
-+
- #undef DO_3OP_PAIR
- 
- #define DO_VCVT_FIXED(NAME, FUNC, TYPE)                                 \
+-
+-/* 32-bit pairwise ops end up the same as the elementwise versions.  */
+-#define gen_helper_neon_pmax_s32  tcg_gen_smax_i32
+-#define gen_helper_neon_pmax_u32  tcg_gen_umax_i32
+-#define gen_helper_neon_pmin_s32  tcg_gen_smin_i32
+-#define gen_helper_neon_pmin_u32  tcg_gen_umin_i32
+-
+-DO_3SAME_PAIR(VPMAX_S, pmax_s)
+-DO_3SAME_PAIR(VPMIN_S, pmin_s)
+-DO_3SAME_PAIR(VPMAX_U, pmax_u)
+-DO_3SAME_PAIR(VPMIN_U, pmin_u)
+-
+ #define DO_3SAME_VQDMULH(INSN, FUNC)                                    \
+     WRAP_ENV_FN(gen_##INSN##_tramp16, gen_helper_neon_##FUNC##_s16);    \
+     WRAP_ENV_FN(gen_##INSN##_tramp32, gen_helper_neon_##FUNC##_s32);    \
 -- 
 2.34.1
 
