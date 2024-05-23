@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0D38CDD31
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6108CDDA6
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHYd-00083a-3f; Thu, 23 May 2024 19:09:11 -0400
+	id 1sAHZA-0000To-Ky; Thu, 23 May 2024 19:09:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHYX-0007pl-SC; Thu, 23 May 2024 19:09:05 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1sAHYc-0008CI-7k; Thu, 23 May 2024 19:09:10 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHYW-0005kx-4y; Thu, 23 May 2024 19:09:05 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f6bddf57f6so3423261b3a.0; 
- Thu, 23 May 2024 16:09:03 -0700 (PDT)
+ id 1sAHYa-0005ld-7Y; Thu, 23 May 2024 19:09:09 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f4d6b7168eso3008563b3a.2; 
+ Thu, 23 May 2024 16:09:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505742; x=1717110542; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505745; x=1717110545; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zTBsxieFnP6H1LC24Dq0DwZTt7yPI0ZXaUq+86G8NVQ=;
- b=K6FMdeIbz+2hMaG7G8S9gRV9wkwEIAL9Nm2YBdb4Sj0HC8OtLCDgZDJFpsfLW3qbKB
- 4dnLE2l4PTtTwWVT1HjptEa6ByMsE+HAXpzhmd5MZXN1FISdLn1nlcjKsgMtG71BSpYN
- clsbId+GlV7a9aR44wiNpFBi+KQiAbfncRqCKSU7JT1qx3HRy5OobhPp7UQTLSZ7Zoby
- 9eXNTLne1LbxrAI5vs9IDdSz2dXcD2r7uvfsFQzP/xiyNiKHsYpapGxVoUnOY9jXEo9D
- ewfvffc6H6C7u8zRU5rxPq7vOhv5/my//k/tvKxqqKXtAUcSPgNy85BM2FsG9Lkovwje
- mfsA==
+ bh=YMC3KrR26fFXaE3oY4A3sqPo0Tq3GFjMOngHn9knGcw=;
+ b=MCRHNjmt3vvxLn8jQmRsHmyshN1M4noumih/UJL6sTamUtV4smh/20SjhmktuHj8jQ
+ GkjbTd3oe+Z5gYHACn7GejZcJjkDG4/CjoC1VEB5rxkBD88vh2N1vmKJ9ryDn0/NcnGt
+ V7QbNeSO67TmpsFDQOipkubxuSUTwoI+yUBC/CtyUWu9JUSYbozwsj30tbYIXIT3lIST
+ mwzpTbr+fqQtBN3u/qoB7aN4Os/ekhmcEYFeqM+TNlvNVYbU4z1l3QLB+shsl6JQdjgz
+ 2I4XUhRUqqP2V5Pw5TfPlwDxNfIl4nXfFg0t7m9Mz/jF+T5VKYATZTuF20gldAXTHIKR
+ A4JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505742; x=1717110542;
+ d=1e100.net; s=20230601; t=1716505745; x=1717110545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zTBsxieFnP6H1LC24Dq0DwZTt7yPI0ZXaUq+86G8NVQ=;
- b=qpqdRw8MQEmnTVjh3K3kA0RMoVNlg7RDY+enNn2u0G7TXipmcRYUcF48x8VfHv7FxE
- JJa1jMe8Tnw305bX98cIlUwf5MfZTuABZMu/sHUA88FEtzqRc+7IX4JcaocOBD9VbWrE
- +xbF6sbVBIwJiC+6r0cKOKh+2g1wZ8e3zgjPpjUZOq3nR81ZGYJn4nARao9GKXB/8Mj1
- 44wo7oc6vuP6s+ATPA+RVIjQ/QEjvLhRbNI+5o5hA0nfnNPmb13IFMNyDPynOYmfLLAz
- rcHCDmb46BcLl2ZnHfShQi5y/SmeKj8QOd8S4Hw3w+ly2utOPr8l5alhkYoGpo2d4xoM
- 37cA==
+ bh=YMC3KrR26fFXaE3oY4A3sqPo0Tq3GFjMOngHn9knGcw=;
+ b=W0icS5BlNW1lzhEG3MOxXGB/IH9p0f+1FaWDHerNdlc1D6tTtxV1waPW5r9WoRhD34
+ 0v7bTinHRVyMexUO63hj/hNdtLTuGK6RYEVUOw5Xg0egZ4XZiowEnLQsxGbExNXbffic
+ krpUKVA/ibH4QDa1OfHpzhxEP/DJsM/wYO1K1Hr1BeEwGF0qR24ka9EnudzN/UnMbkwC
+ a1NUexTDKFZTIqcjD7NYOd/ovJt62uJBaZmnfzf1HFeTLSIco1xP+LT7xpvHz2s4H9Ps
+ ivrxerIfplS3ihctxSzPBPp3VDbsxDZIPy+VFIGoBwrGEc4itvEbtzO8o6mJKeKCL1Vm
+ Dv0A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWX9nv0oVGfPliLxSSjpmasvhlUMsclRtjnRGJnJ/EeaBaRJNAyjcniAtSGuk49MTlu9/ODhl2qYkP8vsf+nMhoMJWL
-X-Gm-Message-State: AOJu0Yw7RuDFf5EWJKKYmwe0r4CtR1eOvISXLDUG+EpaWxYYEbsStPYc
- 8Ou2swL7d2p4nJvaK81RUMi5+Ciiw429DJO3LZy4LSvl1PCv5cBeDEllbw==
-X-Google-Smtp-Source: AGHT+IHnLNMTuNwmVNKb3zPvpLunQaM7/NIlCUPEz2XkKK5y2QtSH9+fVYf3otKfzMvSxYA/zKX7Qg==
-X-Received: by 2002:a05:6a00:2786:b0:6ed:cbe2:3bc8 with SMTP id
- d2e1a72fcca58-6f8f3f9082emr694025b3a.22.1716505742018; 
- Thu, 23 May 2024 16:09:02 -0700 (PDT)
+ AJvYcCWYuuHigYpKrOkSXCpy8aHbSvMdDlWKBzQmIhv19VTWo8CXTAkfsUjVBeLKhhjkWMEHiNmxLVQ+eAWgEmuP07JpQcCp
+X-Gm-Message-State: AOJu0YxK8kIYuP+3wpKvSPW+cogW+wOcIdtOm1H+1wtTewJorBk4+lak
+ guiRi7aFrNiZsk1Z6x4ogiUZNYWcGg22dhxdDfaiIlcGOzV6YQWBhxZrhg==
+X-Google-Smtp-Source: AGHT+IE2Zwv5J8Nd5XaQdRS7WqosG7C8swhgHcjcOGVLXv/GW49/bYp5e/UdkxbJENKyWVd3LVtq1A==
+X-Received: by 2002:a05:6a21:789c:b0:1af:86da:3f7 with SMTP id
+ adf61e73a8af0-1b212ced305mr1110645637.4.1716505745252; 
+ Thu, 23 May 2024 16:09:05 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.59
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:09:01 -0700 (PDT)
+ Thu, 23 May 2024 16:09:05 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Chinmay Rath <rathc@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 20/72] target/ppc: Move VMX integer logical instructions to
+Subject: [PULL 21/72] target/ppc: Move VMX integer max/min instructions to
  decodetree.
-Date: Fri, 24 May 2024 09:06:53 +1000
-Message-ID: <20240523230747.45703-21-npiggin@gmail.com>
+Date: Fri, 24 May 2024 09:06:54 +1000
+Message-ID: <20240523230747.45703-22-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,114 +96,137 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chinmay Rath <rathc@linux.ibm.com>
 
-Moving the following instructions to decodetree specification:
+Moving the following instructions to decodetree specification :
 
-	v{and, andc, nand, or, orc, nor, xor, eqv}	: VX-form
+	v{max, min}{u, s}{b, h, w, d}	: VX-form
 
-The changes were verified by validating that the tcp ops generated by those
+The changes were verified by validating that the tcg ops generated by those
 instructions remain the same, which were captured with the '-d in_asm,op' flag.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/insn32.decode            | 11 +++++++++++
- target/ppc/translate/vmx-impl.c.inc | 22 ++++++++++------------
- target/ppc/translate/vmx-ops.c.inc  | 15 ---------------
- 3 files changed, 21 insertions(+), 27 deletions(-)
+ target/ppc/insn32.decode            | 22 +++++++++++++++++
+ target/ppc/translate/vmx-impl.c.inc | 37 ++++++++++++++++-------------
+ target/ppc/translate/vmx-ops.c.inc  | 16 -------------
+ 3 files changed, 43 insertions(+), 32 deletions(-)
 
 diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index 11be21d230..16f3711073 100644
+index 16f3711073..05c1d8c12d 100644
 --- a/target/ppc/insn32.decode
 +++ b/target/ppc/insn32.decode
-@@ -709,6 +709,17 @@ VCMPNEZW        000100 ..... ..... ..... . 0110000111   @VC
- VCMPSQ          000100 ... -- ..... ..... 00101000001   @VX_bf
- VCMPUQ          000100 ... -- ..... ..... 00100000001   @VX_bf
+@@ -852,6 +852,28 @@ VEXTSD2Q        000100 ..... 11011 ..... 11000000010    @VX_tb
+ VNEGD           000100 ..... 00111 ..... 11000000010    @VX_tb
+ VNEGW           000100 ..... 00110 ..... 11000000010    @VX_tb
  
-+## Vector Integer Logical Instructions
++## Vector Integer Maximum/Minimum Instructions
 +
-+VAND            000100 ..... ..... ..... 10000000100    @VX
-+VANDC           000100 ..... ..... ..... 10001000100    @VX
-+VNAND           000100 ..... ..... ..... 10110000100    @VX
-+VOR             000100 ..... ..... ..... 10010000100    @VX
-+VORC            000100 ..... ..... ..... 10101000100    @VX
-+VNOR            000100 ..... ..... ..... 10100000100    @VX
-+VXOR            000100 ..... ..... ..... 10011000100    @VX
-+VEQV            000100 ..... ..... ..... 11010000100    @VX
++VMAXUB          000100 ..... ..... ..... 00000000010    @VX
++VMAXUH          000100 ..... ..... ..... 00001000010    @VX
++VMAXUW          000100 ..... ..... ..... 00010000010    @VX
++VMAXUD          000100 ..... ..... ..... 00011000010    @VX
 +
- ## Vector Integer Average Instructions
++VMAXSB          000100 ..... ..... ..... 00100000010    @VX
++VMAXSH          000100 ..... ..... ..... 00101000010    @VX
++VMAXSW          000100 ..... ..... ..... 00110000010    @VX
++VMAXSD          000100 ..... ..... ..... 00111000010    @VX
++
++VMINUB          000100 ..... ..... ..... 01000000010    @VX
++VMINUH          000100 ..... ..... ..... 01001000010    @VX
++VMINUW          000100 ..... ..... ..... 01010000010    @VX
++VMINUD          000100 ..... ..... ..... 01011000010    @VX
++
++VMINSB          000100 ..... ..... ..... 01100000010    @VX
++VMINSH          000100 ..... ..... ..... 01101000010    @VX
++VMINSW          000100 ..... ..... ..... 01110000010    @VX
++VMINSD          000100 ..... ..... ..... 01111000010    @VX
++
+ ## Vector Mask Manipulation Instructions
  
- VAVGSB          000100 ..... ..... ..... 10100000010    @VX
+ MTVSRBM         000100 ..... 10000 ..... 11001000010    @VX_tb
 diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
-index 4d5e743cfe..cefe04127c 100644
+index cefe04127c..8084af75cc 100644
 --- a/target/ppc/translate/vmx-impl.c.inc
 +++ b/target/ppc/translate/vmx-impl.c.inc
-@@ -205,16 +205,6 @@ static void glue(gen_, name)(DisasContext *ctx)                         \
-            16, 16);                                                     \
- }
+@@ -342,22 +342,6 @@ GEN_VXFORM_V(vsububm, MO_8, tcg_gen_gvec_sub, 0, 16);
+ GEN_VXFORM_V(vsubuhm, MO_16, tcg_gen_gvec_sub, 0, 17);
+ GEN_VXFORM_V(vsubuwm, MO_32, tcg_gen_gvec_sub, 0, 18);
+ GEN_VXFORM_V(vsubudm, MO_64, tcg_gen_gvec_sub, 0, 19);
+-GEN_VXFORM_V(vmaxub, MO_8, tcg_gen_gvec_umax, 1, 0);
+-GEN_VXFORM_V(vmaxuh, MO_16, tcg_gen_gvec_umax, 1, 1);
+-GEN_VXFORM_V(vmaxuw, MO_32, tcg_gen_gvec_umax, 1, 2);
+-GEN_VXFORM_V(vmaxud, MO_64, tcg_gen_gvec_umax, 1, 3);
+-GEN_VXFORM_V(vmaxsb, MO_8, tcg_gen_gvec_smax, 1, 4);
+-GEN_VXFORM_V(vmaxsh, MO_16, tcg_gen_gvec_smax, 1, 5);
+-GEN_VXFORM_V(vmaxsw, MO_32, tcg_gen_gvec_smax, 1, 6);
+-GEN_VXFORM_V(vmaxsd, MO_64, tcg_gen_gvec_smax, 1, 7);
+-GEN_VXFORM_V(vminub, MO_8, tcg_gen_gvec_umin, 1, 8);
+-GEN_VXFORM_V(vminuh, MO_16, tcg_gen_gvec_umin, 1, 9);
+-GEN_VXFORM_V(vminuw, MO_32, tcg_gen_gvec_umin, 1, 10);
+-GEN_VXFORM_V(vminud, MO_64, tcg_gen_gvec_umin, 1, 11);
+-GEN_VXFORM_V(vminsb, MO_8, tcg_gen_gvec_smin, 1, 12);
+-GEN_VXFORM_V(vminsh, MO_16, tcg_gen_gvec_smin, 1, 13);
+-GEN_VXFORM_V(vminsw, MO_32, tcg_gen_gvec_smin, 1, 14);
+-GEN_VXFORM_V(vminsd, MO_64, tcg_gen_gvec_smin, 1, 15);
+ GEN_VXFORM(vmrghb, 6, 0);
+ GEN_VXFORM(vmrghh, 6, 1);
+ GEN_VXFORM(vmrghw, 6, 2);
+@@ -727,6 +711,27 @@ TRANS_FLAGS2(ALTIVEC_207, VEQV, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_eqv);
+ TRANS_FLAGS2(ALTIVEC_207, VNAND, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_nand);
+ TRANS_FLAGS2(ALTIVEC_207, VORC, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_orc);
  
--/* Logical operations */
--GEN_VXFORM_V(vand, MO_64, tcg_gen_gvec_and, 2, 16);
--GEN_VXFORM_V(vandc, MO_64, tcg_gen_gvec_andc, 2, 17);
--GEN_VXFORM_V(vor, MO_64, tcg_gen_gvec_or, 2, 18);
--GEN_VXFORM_V(vxor, MO_64, tcg_gen_gvec_xor, 2, 19);
--GEN_VXFORM_V(vnor, MO_64, tcg_gen_gvec_nor, 2, 20);
--GEN_VXFORM_V(veqv, MO_64, tcg_gen_gvec_eqv, 2, 26);
--GEN_VXFORM_V(vnand, MO_64, tcg_gen_gvec_nand, 2, 22);
--GEN_VXFORM_V(vorc, MO_64, tcg_gen_gvec_orc, 2, 21);
--
- #define GEN_VXFORM(name, opc2, opc3)                                    \
- static void glue(gen_, name)(DisasContext *ctx)                         \
- {                                                                       \
-@@ -727,6 +717,16 @@ TRANS_FLAGS(ALTIVEC, VRLH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_rotlv)
- TRANS_FLAGS(ALTIVEC, VRLW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_rotlv)
- TRANS_FLAGS2(ALTIVEC_207, VRLD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_rotlv)
- 
-+/* Logical operations */
-+TRANS_FLAGS(ALTIVEC, VAND, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_and);
-+TRANS_FLAGS(ALTIVEC, VANDC, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_andc);
-+TRANS_FLAGS(ALTIVEC, VOR, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_or);
-+TRANS_FLAGS(ALTIVEC, VXOR, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_xor);
-+TRANS_FLAGS(ALTIVEC, VNOR, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_nor);
-+TRANS_FLAGS2(ALTIVEC_207, VEQV, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_eqv);
-+TRANS_FLAGS2(ALTIVEC_207, VNAND, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_nand);
-+TRANS_FLAGS2(ALTIVEC_207, VORC, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_orc);
++/* Integer Max/Min operations */
++TRANS_FLAGS(ALTIVEC, VMAXUB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_umax);
++TRANS_FLAGS(ALTIVEC, VMAXUH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_umax);
++TRANS_FLAGS(ALTIVEC, VMAXUW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_umax);
++TRANS_FLAGS2(ALTIVEC_207, VMAXUD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_umax);
++
++TRANS_FLAGS(ALTIVEC, VMAXSB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_smax);
++TRANS_FLAGS(ALTIVEC, VMAXSH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_smax);
++TRANS_FLAGS(ALTIVEC, VMAXSW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_smax);
++TRANS_FLAGS2(ALTIVEC_207, VMAXSD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_smax);
++
++TRANS_FLAGS(ALTIVEC, VMINUB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_umin);
++TRANS_FLAGS(ALTIVEC, VMINUH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_umin);
++TRANS_FLAGS(ALTIVEC, VMINUW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_umin);
++TRANS_FLAGS2(ALTIVEC_207, VMINUD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_umin);
++
++TRANS_FLAGS(ALTIVEC, VMINSB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_smin);
++TRANS_FLAGS(ALTIVEC, VMINSH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_smin);
++TRANS_FLAGS(ALTIVEC, VMINSW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_smin);
++TRANS_FLAGS2(ALTIVEC_207, VMINSD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_smin);
 +
  static TCGv_vec do_vrl_mask_vec(unsigned vece, TCGv_vec vrb)
  {
      TCGv_vec t0 = tcg_temp_new_vec_matching(vrb),
-@@ -3331,8 +3331,6 @@ TRANS_FLAGS2(ISA310, VMODUQ, do_vx_helper, gen_helper_VMODUQ)
- #undef DIVS64
- #undef DIVU64
- 
--#undef GEN_VX_LOGICAL
--#undef GEN_VX_LOGICAL_207
- #undef GEN_VXFORM
- #undef GEN_VXFORM_207
- #undef GEN_VXFORM_DUAL
 diff --git a/target/ppc/translate/vmx-ops.c.inc b/target/ppc/translate/vmx-ops.c.inc
-index 672fba3796..80c5217749 100644
+index 80c5217749..7bb11b0549 100644
 --- a/target/ppc/translate/vmx-ops.c.inc
 +++ b/target/ppc/translate/vmx-ops.c.inc
-@@ -1,18 +1,3 @@
--#define GEN_VX_LOGICAL(name, tcg_op, opc2, opc3)                        \
--GEN_HANDLER(name, 0x04, opc2, opc3, 0x00000000, PPC_ALTIVEC)
--
--#define GEN_VX_LOGICAL_207(name, tcg_op, opc2, opc3) \
--GEN_HANDLER_E(name, 0x04, opc2, opc3, 0x00000000, PPC_NONE, PPC2_ALTIVEC_207)
--
--GEN_VX_LOGICAL(vand, tcg_gen_and_i64, 2, 16),
--GEN_VX_LOGICAL(vandc, tcg_gen_andc_i64, 2, 17),
--GEN_VX_LOGICAL(vor, tcg_gen_or_i64, 2, 18),
--GEN_VX_LOGICAL(vxor, tcg_gen_xor_i64, 2, 19),
--GEN_VX_LOGICAL(vnor, tcg_gen_nor_i64, 2, 20),
--GEN_VX_LOGICAL_207(veqv, tcg_gen_eqv_i64, 2, 26),
--GEN_VX_LOGICAL_207(vnand, tcg_gen_nand_i64, 2, 22),
--GEN_VX_LOGICAL_207(vorc, tcg_gen_orc_i64, 2, 21),
--
- #define GEN_VXFORM(name, opc2, opc3)                                    \
- GEN_HANDLER(name, 0x04, opc2, opc3, 0x00000000, PPC_ALTIVEC)
- 
+@@ -33,22 +33,6 @@ GEN_VXFORM_DUAL(vsubuhm, bcdsub, 0, 17, PPC_ALTIVEC, PPC_NONE),
+ GEN_VXFORM_DUAL(vsubuwm, bcdus, 0, 18, PPC_ALTIVEC, PPC2_ISA300),
+ GEN_VXFORM_DUAL(vsubudm, bcds, 0, 19, PPC2_ALTIVEC_207, PPC2_ISA300),
+ GEN_VXFORM_300(bcds, 0, 27),
+-GEN_VXFORM(vmaxub, 1, 0),
+-GEN_VXFORM(vmaxuh, 1, 1),
+-GEN_VXFORM(vmaxuw, 1, 2),
+-GEN_VXFORM_207(vmaxud, 1, 3),
+-GEN_VXFORM(vmaxsb, 1, 4),
+-GEN_VXFORM(vmaxsh, 1, 5),
+-GEN_VXFORM(vmaxsw, 1, 6),
+-GEN_VXFORM_207(vmaxsd, 1, 7),
+-GEN_VXFORM(vminub, 1, 8),
+-GEN_VXFORM(vminuh, 1, 9),
+-GEN_VXFORM(vminuw, 1, 10),
+-GEN_VXFORM_207(vminud, 1, 11),
+-GEN_VXFORM(vminsb, 1, 12),
+-GEN_VXFORM(vminsh, 1, 13),
+-GEN_VXFORM(vminsw, 1, 14),
+-GEN_VXFORM_207(vminsd, 1, 15),
+ GEN_VXFORM(vmrghb, 6, 0),
+ GEN_VXFORM(vmrghh, 6, 1),
+ GEN_VXFORM(vmrghw, 6, 2),
 -- 
 2.43.0
 
