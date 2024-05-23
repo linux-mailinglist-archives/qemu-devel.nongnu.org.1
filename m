@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6108CDDA6
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAA28CDD60
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:14:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHZA-0000To-Ky; Thu, 23 May 2024 19:09:44 -0400
+	id 1sAHZD-0000ZN-FW; Thu, 23 May 2024 19:09:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHYc-0008CI-7k; Thu, 23 May 2024 19:09:10 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sAHYe-0008LV-Eu; Thu, 23 May 2024 19:09:14 -0400
+Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHYa-0005ld-7Y; Thu, 23 May 2024 19:09:09 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f4d6b7168eso3008563b3a.2; 
- Thu, 23 May 2024 16:09:06 -0700 (PDT)
+ id 1sAHYc-0005lq-6k; Thu, 23 May 2024 19:09:12 -0400
+Received: by mail-io1-xd30.google.com with SMTP id
+ ca18e2360f4ac-7e1d924b0b0so365770839f.1; 
+ Thu, 23 May 2024 16:09:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505745; x=1717110545; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505748; x=1717110548; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YMC3KrR26fFXaE3oY4A3sqPo0Tq3GFjMOngHn9knGcw=;
- b=MCRHNjmt3vvxLn8jQmRsHmyshN1M4noumih/UJL6sTamUtV4smh/20SjhmktuHj8jQ
- GkjbTd3oe+Z5gYHACn7GejZcJjkDG4/CjoC1VEB5rxkBD88vh2N1vmKJ9ryDn0/NcnGt
- V7QbNeSO67TmpsFDQOipkubxuSUTwoI+yUBC/CtyUWu9JUSYbozwsj30tbYIXIT3lIST
- mwzpTbr+fqQtBN3u/qoB7aN4Os/ekhmcEYFeqM+TNlvNVYbU4z1l3QLB+shsl6JQdjgz
- 2I4XUhRUqqP2V5Pw5TfPlwDxNfIl4nXfFg0t7m9Mz/jF+T5VKYATZTuF20gldAXTHIKR
- A4JA==
+ bh=CQBOJmwAafvlKzztCpEU/6DVh7h2qJ0yINxobE56wQw=;
+ b=JvgdvK3Cs1IlAInNXlxWGrmDoxDogCJfOBAG3Xw+5seIvE4HNJUMZeNNJ913tXO9Yx
+ pquN6WOQ1eW67oz4+5/Kui1IRclFQnKcNI5Ceag9xA532neKbEM9rxBmsb80tXi2Fbzt
+ eQ3BCQrN6/GNStOBDlmtQOPUHe0SYfR6KsNfxabvQByyUWi410S9h4HgH+K05LTdWtDv
+ Wisl304KSTvm3ntjBj2fz08bZj0C8kKQC6Pa8vM8+M0pH0IVzUtjlhg5+XR+bL4OEUHO
+ YNtYTxhAotRX5bc9Lj3g/KswMRE5+2XILdNvDh0guFJWUZvTMXMtp0yIBvsIQaJga1kt
+ 1szQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505745; x=1717110545;
+ d=1e100.net; s=20230601; t=1716505748; x=1717110548;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YMC3KrR26fFXaE3oY4A3sqPo0Tq3GFjMOngHn9knGcw=;
- b=W0icS5BlNW1lzhEG3MOxXGB/IH9p0f+1FaWDHerNdlc1D6tTtxV1waPW5r9WoRhD34
- 0v7bTinHRVyMexUO63hj/hNdtLTuGK6RYEVUOw5Xg0egZ4XZiowEnLQsxGbExNXbffic
- krpUKVA/ibH4QDa1OfHpzhxEP/DJsM/wYO1K1Hr1BeEwGF0qR24ka9EnudzN/UnMbkwC
- a1NUexTDKFZTIqcjD7NYOd/ovJt62uJBaZmnfzf1HFeTLSIco1xP+LT7xpvHz2s4H9Ps
- ivrxerIfplS3ihctxSzPBPp3VDbsxDZIPy+VFIGoBwrGEc4itvEbtzO8o6mJKeKCL1Vm
- Dv0A==
+ bh=CQBOJmwAafvlKzztCpEU/6DVh7h2qJ0yINxobE56wQw=;
+ b=u2is3dLybjLizuOnOOc0q1ECGaCO1iGgAB2g0SFp26t8hS1TaaA1o3G2zFY1OCjymc
+ Cu7cfJbHuHCEgAbA53bYxsoPk7E1+cPOW1Tps6kI7xjxWYiAXlPFBBaW4NpeJGJfxaPv
+ I7951EMR+S992L57nbgHTGFsTewCmeDvfQwrCoq71EqsdkiPEyymaY12Z7qSX1SrjZCW
+ cKC4yeBk+icWPH0FmnwNR5VOLxbxAd/KQqckw9rpO8rdaYSLh6iBHwmRgZYKho+JItFK
+ MSBys0OvJhEo7rTf7xTw9hXNj9JmNZZnR5WcCNzGDQP80xCkgETW0g31LxeMHwqRcoZv
+ v8nw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWYuuHigYpKrOkSXCpy8aHbSvMdDlWKBzQmIhv19VTWo8CXTAkfsUjVBeLKhhjkWMEHiNmxLVQ+eAWgEmuP07JpQcCp
-X-Gm-Message-State: AOJu0YxK8kIYuP+3wpKvSPW+cogW+wOcIdtOm1H+1wtTewJorBk4+lak
- guiRi7aFrNiZsk1Z6x4ogiUZNYWcGg22dhxdDfaiIlcGOzV6YQWBhxZrhg==
-X-Google-Smtp-Source: AGHT+IE2Zwv5J8Nd5XaQdRS7WqosG7C8swhgHcjcOGVLXv/GW49/bYp5e/UdkxbJENKyWVd3LVtq1A==
-X-Received: by 2002:a05:6a21:789c:b0:1af:86da:3f7 with SMTP id
- adf61e73a8af0-1b212ced305mr1110645637.4.1716505745252; 
- Thu, 23 May 2024 16:09:05 -0700 (PDT)
+ AJvYcCWT76Q6j2B7UdUsJMqNXVNWUuZ8Gj+W3uwG//NpXKAl3yxxb2GYmZBdALTcTm9+U5YBFfb3w7FZxp6sw2JwN3tRxHru
+X-Gm-Message-State: AOJu0Yx6YUIZqvI/8D3w2CXnkon+BOfuEYdPOhyIRKmBRT41Us0XdjpW
+ bLgSCYUr36xrCED2Od1b2rGc+ouk7kRFTmoRIP2bN3p4+pLABjSCP5liyg==
+X-Google-Smtp-Source: AGHT+IGIof6dwznpG943dnQlaz7Y2dyV41/la02WB7MBxD3yutISig4u9HeMDQSbNNs4pWSz/Ue5Rg==
+X-Received: by 2002:a6b:f108:0:b0:7de:9c28:3119 with SMTP id
+ ca18e2360f4ac-7e8c54c2329mr100083439f.12.1716505748068; 
+ Thu, 23 May 2024 16:09:08 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.02
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:09:05 -0700 (PDT)
+ Thu, 23 May 2024 16:09:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Chinmay Rath <rathc@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/72] target/ppc: Move VMX integer max/min instructions to
- decodetree.
-Date: Fri, 24 May 2024 09:06:54 +1000
-Message-ID: <20240523230747.45703-22-npiggin@gmail.com>
+ Glenn Miles <milesg@linux.vnet.ibm.com>
+Subject: [PULL 22/72] This commit is preparatory to the addition of Branch
+ History Rolling Buffer (BHRB) functionality,
+ which is being provided today starting with the P8 processor.
+Date: Fri, 24 May 2024 09:06:55 +1000
+Message-ID: <20240523230747.45703-23-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d30;
+ envelope-from=npiggin@gmail.com; helo=mail-io1-xd30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,139 +94,296 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Chinmay Rath <rathc@linux.ibm.com>
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 
-Moving the following instructions to decodetree specification :
+BHRB uses several SPR register fields to control whether or not
+a branch instruction's address (and sometimes target address)
+should be recorded.  Checking each of these fields with each
+branch instruction using jitted code would lead to a significant
+decrease in performance.
 
-	v{max, min}{u, s}{b, h, w, d}	: VX-form
+Therefore, it was decided that BHRB configuration bits that are
+not expected to change frequently should have their state summarized
+in an hflag so that the amount of checking done by jitted code can
+be reduced.
 
-The changes were verified by validating that the tcg ops generated by those
-instructions remain the same, which were captured with the '-d in_asm,op' flag.
+This commit contains the changes for summarizing the state of the
+following register fields in the HFLAGS_BHRB_ENABLE hflag:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
+	MMCR0[FCP] - Determines if BHRB recording is frozen in the
+                     problem state
+
+	MMCR0[FCPC] - A modifier for MMCR0[FCP]
+
+	MMCRA[BHRBRD] - Disables all BHRB recording for a thread
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/insn32.decode            | 22 +++++++++++++++++
- target/ppc/translate/vmx-impl.c.inc | 37 ++++++++++++++++-------------
- target/ppc/translate/vmx-ops.c.inc  | 16 -------------
- 3 files changed, 43 insertions(+), 32 deletions(-)
+ target/ppc/cpu.h                 |  5 +++++
+ target/ppc/cpu_init.c            |  4 ++--
+ target/ppc/helper.h              |  1 +
+ target/ppc/helper_regs.c         | 37 ++++++++++++++++++++++++++++++++
+ target/ppc/machine.c             |  2 +-
+ target/ppc/power8-pmu-regs.c.inc |  5 +++++
+ target/ppc/power8-pmu.c          | 15 +++++++++----
+ target/ppc/power8-pmu.h          |  4 ++--
+ target/ppc/spr_common.h          |  1 +
+ target/ppc/translate.c           |  2 ++
+ 10 files changed, 67 insertions(+), 9 deletions(-)
 
-diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index 16f3711073..05c1d8c12d 100644
---- a/target/ppc/insn32.decode
-+++ b/target/ppc/insn32.decode
-@@ -852,6 +852,28 @@ VEXTSD2Q        000100 ..... 11011 ..... 11000000010    @VX_tb
- VNEGD           000100 ..... 00111 ..... 11000000010    @VX_tb
- VNEGW           000100 ..... 00110 ..... 11000000010    @VX_tb
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index a5f46d0b10..195d4be2b7 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -533,6 +533,8 @@ FIELD(MSR, LE, MSR_LE, 1)
+ #define MMCR0_FC56   PPC_BIT(59)         /* PMC Freeze Counters 5-6 bit */
+ #define MMCR0_PMC1CE PPC_BIT(48)         /* MMCR0 PMC1 Condition Enabled */
+ #define MMCR0_PMCjCE PPC_BIT(49)         /* MMCR0 PMCj Condition Enabled */
++#define MMCR0_FCP    PPC_BIT(34)         /* Freeze Counters/BHRB if PR=1 */
++#define MMCR0_FCPC   PPC_BIT(51)         /* Condition for FCP bit */
+ /* MMCR0 userspace r/w mask */
+ #define MMCR0_UREG_MASK (MMCR0_FC | MMCR0_PMAO | MMCR0_PMAE)
+ /* MMCR2 userspace r/w mask */
+@@ -545,6 +547,8 @@ FIELD(MSR, LE, MSR_LE, 1)
+ #define MMCR2_UREG_MASK (MMCR2_FC1P0 | MMCR2_FC2P0 | MMCR2_FC3P0 | \
+                          MMCR2_FC4P0 | MMCR2_FC5P0 | MMCR2_FC6P0)
  
-+## Vector Integer Maximum/Minimum Instructions
++#define MMCRA_BHRBRD    PPC_BIT(26)         /* BHRB Recording Disable */
 +
-+VMAXUB          000100 ..... ..... ..... 00000000010    @VX
-+VMAXUH          000100 ..... ..... ..... 00001000010    @VX
-+VMAXUW          000100 ..... ..... ..... 00010000010    @VX
-+VMAXUD          000100 ..... ..... ..... 00011000010    @VX
-+
-+VMAXSB          000100 ..... ..... ..... 00100000010    @VX
-+VMAXSH          000100 ..... ..... ..... 00101000010    @VX
-+VMAXSW          000100 ..... ..... ..... 00110000010    @VX
-+VMAXSD          000100 ..... ..... ..... 00111000010    @VX
-+
-+VMINUB          000100 ..... ..... ..... 01000000010    @VX
-+VMINUH          000100 ..... ..... ..... 01001000010    @VX
-+VMINUW          000100 ..... ..... ..... 01010000010    @VX
-+VMINUD          000100 ..... ..... ..... 01011000010    @VX
-+
-+VMINSB          000100 ..... ..... ..... 01100000010    @VX
-+VMINSH          000100 ..... ..... ..... 01101000010    @VX
-+VMINSW          000100 ..... ..... ..... 01110000010    @VX
-+VMINSD          000100 ..... ..... ..... 01111000010    @VX
-+
- ## Vector Mask Manipulation Instructions
+ #define MMCR1_EVT_SIZE 8
+ /* extract64() does a right shift before extracting */
+ #define MMCR1_PMC1SEL_START 32
+@@ -797,6 +801,7 @@ enum {
+     HFLAGS_PMCJCE = 17, /* MMCR0 PMCjCE bit */
+     HFLAGS_PMC_OTHER = 18, /* PMC other than PMC5-6 is enabled */
+     HFLAGS_INSN_CNT = 19, /* PMU instruction count enabled */
++    HFLAGS_BHRB_ENABLE = 20, /* Summary flag for enabling BHRB */
+     HFLAGS_VSX = 23, /* MSR_VSX if cpu has VSX */
+     HFLAGS_VR = 25,  /* MSR_VR if cpu has VRE */
  
- MTVSRBM         000100 ..... 10000 ..... 11001000010    @VX_tb
-diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
-index cefe04127c..8084af75cc 100644
---- a/target/ppc/translate/vmx-impl.c.inc
-+++ b/target/ppc/translate/vmx-impl.c.inc
-@@ -342,22 +342,6 @@ GEN_VXFORM_V(vsububm, MO_8, tcg_gen_gvec_sub, 0, 16);
- GEN_VXFORM_V(vsubuhm, MO_16, tcg_gen_gvec_sub, 0, 17);
- GEN_VXFORM_V(vsubuwm, MO_32, tcg_gen_gvec_sub, 0, 18);
- GEN_VXFORM_V(vsubudm, MO_64, tcg_gen_gvec_sub, 0, 19);
--GEN_VXFORM_V(vmaxub, MO_8, tcg_gen_gvec_umax, 1, 0);
--GEN_VXFORM_V(vmaxuh, MO_16, tcg_gen_gvec_umax, 1, 1);
--GEN_VXFORM_V(vmaxuw, MO_32, tcg_gen_gvec_umax, 1, 2);
--GEN_VXFORM_V(vmaxud, MO_64, tcg_gen_gvec_umax, 1, 3);
--GEN_VXFORM_V(vmaxsb, MO_8, tcg_gen_gvec_smax, 1, 4);
--GEN_VXFORM_V(vmaxsh, MO_16, tcg_gen_gvec_smax, 1, 5);
--GEN_VXFORM_V(vmaxsw, MO_32, tcg_gen_gvec_smax, 1, 6);
--GEN_VXFORM_V(vmaxsd, MO_64, tcg_gen_gvec_smax, 1, 7);
--GEN_VXFORM_V(vminub, MO_8, tcg_gen_gvec_umin, 1, 8);
--GEN_VXFORM_V(vminuh, MO_16, tcg_gen_gvec_umin, 1, 9);
--GEN_VXFORM_V(vminuw, MO_32, tcg_gen_gvec_umin, 1, 10);
--GEN_VXFORM_V(vminud, MO_64, tcg_gen_gvec_umin, 1, 11);
--GEN_VXFORM_V(vminsb, MO_8, tcg_gen_gvec_smin, 1, 12);
--GEN_VXFORM_V(vminsh, MO_16, tcg_gen_gvec_smin, 1, 13);
--GEN_VXFORM_V(vminsw, MO_32, tcg_gen_gvec_smin, 1, 14);
--GEN_VXFORM_V(vminsd, MO_64, tcg_gen_gvec_smin, 1, 15);
- GEN_VXFORM(vmrghb, 6, 0);
- GEN_VXFORM(vmrghh, 6, 1);
- GEN_VXFORM(vmrghw, 6, 2);
-@@ -727,6 +711,27 @@ TRANS_FLAGS2(ALTIVEC_207, VEQV, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_eqv);
- TRANS_FLAGS2(ALTIVEC_207, VNAND, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_nand);
- TRANS_FLAGS2(ALTIVEC_207, VORC, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_orc);
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 914c6e0f18..366ea8568b 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5152,7 +5152,7 @@ static void register_book3s_pmu_sup_sprs(CPUPPCState *env)
+                      KVM_REG_PPC_MMCR1, 0x00000000);
+     spr_register_kvm(env, SPR_POWER_MMCRA, "MMCRA",
+                      SPR_NOACCESS, SPR_NOACCESS,
+-                     &spr_read_generic, &spr_write_generic,
++                     &spr_read_generic, &spr_write_MMCRA,
+                      KVM_REG_PPC_MMCRA, 0x00000000);
+     spr_register_kvm(env, SPR_POWER_PMC1, "PMC1",
+                      SPR_NOACCESS, SPR_NOACCESS,
+@@ -7196,7 +7196,7 @@ static void ppc_cpu_reset_hold(Object *obj, ResetType type)
+         if (env->mmu_model != POWERPC_MMU_REAL) {
+             ppc_tlb_invalidate_all(env);
+         }
+-        pmu_mmcr01_updated(env);
++        pmu_mmcr01a_updated(env);
+     }
  
-+/* Integer Max/Min operations */
-+TRANS_FLAGS(ALTIVEC, VMAXUB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_umax);
-+TRANS_FLAGS(ALTIVEC, VMAXUH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_umax);
-+TRANS_FLAGS(ALTIVEC, VMAXUW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_umax);
-+TRANS_FLAGS2(ALTIVEC_207, VMAXUD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_umax);
+     /* clean any pending stop state */
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 6d6f31366c..7b07cd1a49 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -30,6 +30,7 @@ DEF_HELPER_2(store_dawr0, void, env, tl)
+ DEF_HELPER_2(store_dawrx0, void, env, tl)
+ DEF_HELPER_2(store_mmcr0, void, env, tl)
+ DEF_HELPER_2(store_mmcr1, void, env, tl)
++DEF_HELPER_2(store_mmcrA, void, env, tl)
+ DEF_HELPER_3(store_pmc, void, env, i32, i64)
+ DEF_HELPER_2(read_pmc, tl, env, i32)
+ DEF_HELPER_2(insns_inc, void, env, i32)
+diff --git a/target/ppc/helper_regs.c b/target/ppc/helper_regs.c
+index 9094ae5004..16b43702d5 100644
+--- a/target/ppc/helper_regs.c
++++ b/target/ppc/helper_regs.c
+@@ -47,6 +47,39 @@ void hreg_swap_gpr_tgpr(CPUPPCState *env)
+     env->tgpr[3] = tmp;
+ }
+ 
++#if defined(TARGET_PPC64)
++static bool hreg_check_bhrb_enable(CPUPPCState *env)
++{
++    bool pr = !!(env->msr & (1 << MSR_PR));
++    target_long mmcr0;
++    bool fcp;
++    bool hv;
 +
-+TRANS_FLAGS(ALTIVEC, VMAXSB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_smax);
-+TRANS_FLAGS(ALTIVEC, VMAXSH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_smax);
-+TRANS_FLAGS(ALTIVEC, VMAXSW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_smax);
-+TRANS_FLAGS2(ALTIVEC_207, VMAXSD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_smax);
++    /* ISA 3.1 adds the PMCRA[BRHBRD] and problem state checks */
++    if ((env->insns_flags2 & PPC2_ISA310) &&
++        ((env->spr[SPR_POWER_MMCRA] & MMCRA_BHRBRD) || !pr)) {
++        return false;
++    }
 +
-+TRANS_FLAGS(ALTIVEC, VMINUB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_umin);
-+TRANS_FLAGS(ALTIVEC, VMINUH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_umin);
-+TRANS_FLAGS(ALTIVEC, VMINUW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_umin);
-+TRANS_FLAGS2(ALTIVEC_207, VMINUD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_umin);
++    /* Check for BHRB "frozen" conditions */
++    mmcr0 = env->spr[SPR_POWER_MMCR0];
++    fcp = !!(mmcr0 & MMCR0_FCP);
++    if (mmcr0 & MMCR0_FCPC) {
++        hv = !!(env->msr & (1ull << MSR_HV));
++        if (fcp) {
++            if (hv && pr) {
++                return false;
++            }
++        } else if (!hv && pr) {
++            return false;
++        }
++    } else if (fcp && pr) {
++        return false;
++    }
++    return true;
++}
++#endif
 +
-+TRANS_FLAGS(ALTIVEC, VMINSB, do_vector_gvec3_VX, MO_8, tcg_gen_gvec_smin);
-+TRANS_FLAGS(ALTIVEC, VMINSH, do_vector_gvec3_VX, MO_16, tcg_gen_gvec_smin);
-+TRANS_FLAGS(ALTIVEC, VMINSW, do_vector_gvec3_VX, MO_32, tcg_gen_gvec_smin);
-+TRANS_FLAGS2(ALTIVEC_207, VMINSD, do_vector_gvec3_VX, MO_64, tcg_gen_gvec_smin);
-+
- static TCGv_vec do_vrl_mask_vec(unsigned vece, TCGv_vec vrb)
+ static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
  {
-     TCGv_vec t0 = tcg_temp_new_vec_matching(vrb),
-diff --git a/target/ppc/translate/vmx-ops.c.inc b/target/ppc/translate/vmx-ops.c.inc
-index 80c5217749..7bb11b0549 100644
---- a/target/ppc/translate/vmx-ops.c.inc
-+++ b/target/ppc/translate/vmx-ops.c.inc
-@@ -33,22 +33,6 @@ GEN_VXFORM_DUAL(vsubuhm, bcdsub, 0, 17, PPC_ALTIVEC, PPC_NONE),
- GEN_VXFORM_DUAL(vsubuwm, bcdus, 0, 18, PPC_ALTIVEC, PPC2_ISA300),
- GEN_VXFORM_DUAL(vsubudm, bcds, 0, 19, PPC2_ALTIVEC_207, PPC2_ISA300),
- GEN_VXFORM_300(bcds, 0, 27),
--GEN_VXFORM(vmaxub, 1, 0),
--GEN_VXFORM(vmaxuh, 1, 1),
--GEN_VXFORM(vmaxuw, 1, 2),
--GEN_VXFORM_207(vmaxud, 1, 3),
--GEN_VXFORM(vmaxsb, 1, 4),
--GEN_VXFORM(vmaxsh, 1, 5),
--GEN_VXFORM(vmaxsw, 1, 6),
--GEN_VXFORM_207(vmaxsd, 1, 7),
--GEN_VXFORM(vminub, 1, 8),
--GEN_VXFORM(vminuh, 1, 9),
--GEN_VXFORM(vminuw, 1, 10),
--GEN_VXFORM_207(vminud, 1, 11),
--GEN_VXFORM(vminsb, 1, 12),
--GEN_VXFORM(vminsh, 1, 13),
--GEN_VXFORM(vminsw, 1, 14),
--GEN_VXFORM_207(vminsd, 1, 15),
- GEN_VXFORM(vmrghb, 6, 0),
- GEN_VXFORM(vmrghh, 6, 1),
- GEN_VXFORM(vmrghw, 6, 2),
+     uint32_t hflags = 0;
+@@ -61,6 +94,9 @@ static uint32_t hreg_compute_pmu_hflags_value(CPUPPCState *env)
+     if (env->spr[SPR_POWER_MMCR0] & MMCR0_PMCjCE) {
+         hflags |= 1 << HFLAGS_PMCJCE;
+     }
++    if (hreg_check_bhrb_enable(env)) {
++        hflags |= 1 << HFLAGS_BHRB_ENABLE;
++    }
+ 
+ #ifndef CONFIG_USER_ONLY
+     if (env->pmc_ins_cnt) {
+@@ -85,6 +121,7 @@ static uint32_t hreg_compute_pmu_hflags_mask(CPUPPCState *env)
+     hflags_mask |= 1 << HFLAGS_PMCJCE;
+     hflags_mask |= 1 << HFLAGS_INSN_CNT;
+     hflags_mask |= 1 << HFLAGS_PMC_OTHER;
++    hflags_mask |= 1 << HFLAGS_BHRB_ENABLE;
+ #endif
+     return hflags_mask;
+ }
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index 203fe28e01..6b6c31d903 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -333,7 +333,7 @@ static int cpu_post_load(void *opaque, int version_id)
+          * triggered types (including HDEC) would need to carry more state.
+          */
+         cpu_ppc_store_decr(env, env->spr[SPR_DECR]);
+-        pmu_mmcr01_updated(env);
++        pmu_mmcr01a_updated(env);
+     }
+ 
+     return 0;
+diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
+index 4956a8b350..652cf20704 100644
+--- a/target/ppc/power8-pmu-regs.c.inc
++++ b/target/ppc/power8-pmu-regs.c.inc
+@@ -175,6 +175,11 @@ void spr_write_MMCR2_ureg(DisasContext *ctx, int sprn, int gprn)
+     gen_store_spr(SPR_POWER_MMCR2, masked_gprn);
+ }
+ 
++void spr_write_MMCRA(DisasContext *ctx, int sprn, int gprn)
++{
++    gen_helper_store_mmcrA(tcg_env, cpu_gpr[gprn]);
++}
++
+ void spr_read_PMC(DisasContext *ctx, int gprn, int sprn)
+ {
+     TCGv_i32 t_sprn = tcg_constant_i32(sprn);
+diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
+index cbc5889d91..6f5d4e1256 100644
+--- a/target/ppc/power8-pmu.c
++++ b/target/ppc/power8-pmu.c
+@@ -82,7 +82,7 @@ static void pmu_update_summaries(CPUPPCState *env)
+     env->pmc_cyc_cnt = cyc_cnt;
+ }
+ 
+-void pmu_mmcr01_updated(CPUPPCState *env)
++void pmu_mmcr01a_updated(CPUPPCState *env)
+ {
+     PowerPCCPU *cpu = env_archcpu(env);
+ 
+@@ -260,7 +260,7 @@ void helper_store_mmcr0(CPUPPCState *env, target_ulong value)
+ 
+     env->spr[SPR_POWER_MMCR0] = value;
+ 
+-    pmu_mmcr01_updated(env);
++    pmu_mmcr01a_updated(env);
+ 
+     /* Update cycle overflow timers with the current MMCR0 state */
+     pmu_update_overflow_timers(env);
+@@ -272,7 +272,14 @@ void helper_store_mmcr1(CPUPPCState *env, uint64_t value)
+ 
+     env->spr[SPR_POWER_MMCR1] = value;
+ 
+-    pmu_mmcr01_updated(env);
++    pmu_mmcr01a_updated(env);
++}
++
++void helper_store_mmcrA(CPUPPCState *env, uint64_t value)
++{
++    env->spr[SPR_POWER_MMCRA] = value;
++
++    pmu_mmcr01a_updated(env);
+ }
+ 
+ target_ulong helper_read_pmc(CPUPPCState *env, uint32_t sprn)
+@@ -301,7 +308,7 @@ static void perfm_alert(PowerPCCPU *cpu)
+         env->spr[SPR_POWER_MMCR0] |= MMCR0_FC;
+ 
+         /* Changing MMCR0_FC requires summaries and hflags update */
+-        pmu_mmcr01_updated(env);
++        pmu_mmcr01a_updated(env);
+ 
+         /*
+          * Delete all pending timers if we need to freeze
+diff --git a/target/ppc/power8-pmu.h b/target/ppc/power8-pmu.h
+index 775e640053..87fa8c9334 100644
+--- a/target/ppc/power8-pmu.h
++++ b/target/ppc/power8-pmu.h
+@@ -18,10 +18,10 @@
+ #define PMC_COUNTER_NEGATIVE_VAL 0x80000000UL
+ 
+ void cpu_ppc_pmu_init(CPUPPCState *env);
+-void pmu_mmcr01_updated(CPUPPCState *env);
++void pmu_mmcr01a_updated(CPUPPCState *env);
+ #else
+ static inline void cpu_ppc_pmu_init(CPUPPCState *env) { }
+-static inline void pmu_mmcr01_updated(CPUPPCState *env) { }
++static inline void pmu_mmcr01a_updated(CPUPPCState *env) { }
+ #endif
+ 
+ #endif
+diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
+index 8a9d6cd994..eb2561f593 100644
+--- a/target/ppc/spr_common.h
++++ b/target/ppc/spr_common.h
+@@ -85,6 +85,7 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn);
+ void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn);
++void spr_write_MMCRA(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_PMC(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn);
+ void spr_read_xer(DisasContext *ctx, int gprn, int sprn);
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 2c39605273..a85f596d65 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -193,6 +193,7 @@ struct DisasContext {
+     bool mmcr0_pmcjce;
+     bool pmc_other;
+     bool pmu_insn_cnt;
++    bool bhrb_enable;
+     ppc_spr_t *spr_cb; /* Needed to check rights for mfspr/mtspr */
+     int singlestep_enabled;
+     uint32_t flags;
+@@ -6345,6 +6346,7 @@ static void ppc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     ctx->mmcr0_pmcjce = (hflags >> HFLAGS_PMCJCE) & 1;
+     ctx->pmc_other = (hflags >> HFLAGS_PMC_OTHER) & 1;
+     ctx->pmu_insn_cnt = (hflags >> HFLAGS_INSN_CNT) & 1;
++    ctx->bhrb_enable = (hflags >> HFLAGS_BHRB_ENABLE) & 1;
+ 
+     ctx->singlestep_enabled = 0;
+     if ((hflags >> HFLAGS_SE) & 1) {
 -- 
 2.43.0
 
