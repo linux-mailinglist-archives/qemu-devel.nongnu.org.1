@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3FD8CD65A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 16:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C578CD64A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 16:57:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9rt-0002jT-Bi; Thu, 23 May 2024 10:56:33 -0400
+	id 1sA9ry-0002nM-6m; Thu, 23 May 2024 10:56:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sA9ro-0002bY-BF
- for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sA9rw-0002mh-Ae
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1sA9rj-00041A-Fy
- for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:25 -0400
+ id 1sA9rt-00042J-Qs
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 10:56:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476182;
+ s=mimecast20190719; t=1716476192;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aZ6f2Wy9JZAIyu5wRg6z9P9zvSbVeUQdfiHCy8ESziQ=;
- b=Gzxbb3LOnsRpbxN0D+sfTJ/FP7Swzcdv17IUwHXGZTsv3CqqJeBSHnnO3Q8OgdTR4ICn4p
- P4jj/og3jn2HeENP1kZUvdI3+QSdwlEKfWzR0tJQnvPb0qBjlGMh4T+d0MtI6iGiS3VahD
- wKbAX8z4GduXHi6TTrM47+xXeF/MO30=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8Qg0j+YK7VRBZmAY9zpmey1/lx7IRhJZZvR9stxcVsk=;
+ b=fWt8z2YcMxRFV1BrAVeXMLRsm42tq1UxU19t5R5/wRfg5gaQa9kp/EK1UwPdUsfiNztRPq
+ 71iqFLslRx8SGwMdUsqqOwg0wq/skrTakfHqrNap9fArXgLW6u2AcE5rQQz0qAb3RXKMQn
+ RztEp7R4+jqy4wUOI679LMzDvsg+fns=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-Z2MGVX3CN9CGjLg5sWTOXQ-1; Thu, 23 May 2024 10:56:21 -0400
-X-MC-Unique: Z2MGVX3CN9CGjLg5sWTOXQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-43df9a3fc0fso2383831cf.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 07:56:21 -0700 (PDT)
+ us-mta-587-o5hEtvDgNWKAzxev31ZE9Q-1; Thu, 23 May 2024 10:56:31 -0400
+X-MC-Unique: o5hEtvDgNWKAzxev31ZE9Q-1
+Received: by mail-oa1-f69.google.com with SMTP id
+ 586e51a60fabf-24540b99e23so1682882fac.2
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 07:56:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476177; x=1717080977;
+ d=1e100.net; s=20230601; t=1716476189; x=1717080989;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aZ6f2Wy9JZAIyu5wRg6z9P9zvSbVeUQdfiHCy8ESziQ=;
- b=UGU9U8J/zZieXBk74OP4QwyxcgMaYN/MRkWrEW19fLcThOtIf69ZnYBmNUztZdN9mp
- jdvOIcmYf5nE1XxKQOzJ2TIFUZpXr/q5DWVIQmu9+56J0LqTOZacv5JB+UbtZPOYKO3t
- oEDtVrHTZH+E5VPvyOypGrobf3a5085ZSJausGfgrU3+viMQBPwt86qGD4fNFRMRGX+C
- xER4/j1pNr/HPEWfI48ni9gnTm9ZAeQ9j0s6SFy028LydY6B8IN7pR+X9LEGJLujXhyC
- c90pbxDK+8v25zyIUUg8cnk2+MoartGX7ONAWNedDRp1tSMBLxYLPoHyEOs/1dzLwD7y
- Yw2w==
-X-Gm-Message-State: AOJu0YxZym20arxOgjnvCm/0wdSPxMGSrTzzwp/OrtaywEz225D/2X6O
- i7+sXoOsQprJDeG/nl0Bvwv5+1Y6KvZ2uBIJDV9MhM55jvrQq4Zph4+zq9ZhcU57YLHfKP8zP2W
- 1Wc36xlMkX9iOQUYGLXOL7RCtALhRjuHjbmjP26YwWUqrMLVibpVZwOp3343c8vCEh/7OA+/sS7
- 2nltz//WJlIUrP5fKtUbELF06eA4Jhya3QTb1m
-X-Received: by 2002:a05:622a:1a1e:b0:43a:ed8b:75b1 with SMTP id
- d75a77b69052e-43f9e0f3220mr60046981cf.43.1716476176884; 
- Thu, 23 May 2024 07:56:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGBOgeLvfyvxxo1WQ91OSaQxysuTauL71eZuvZYFDk4b9lBg6eKujg38dT6UQ4V+k2bfI7hQg==
-X-Received: by 2002:a05:622a:1a1e:b0:43a:ed8b:75b1 with SMTP id
- d75a77b69052e-43f9e0f3220mr60046581cf.43.1716476176298; 
- Thu, 23 May 2024 07:56:16 -0700 (PDT)
+ bh=8Qg0j+YK7VRBZmAY9zpmey1/lx7IRhJZZvR9stxcVsk=;
+ b=FeAfdfkcjwV1ceBifnlZM4vOFDkpwAEFif9ybTUsMlYC+PB5TM8N2vDRDXfwJMr7EL
+ dcBtBtblgDnJeBiGWekOsqm7j2FW4K5N4EcAHKrcewsjfEcORlyOcjd0PFPIvyWsAI+B
+ MZ/tphfVP2Kk0fSZg4flcjPgIL/KcMs1yVLiWH07cG6U0yUHlyMzYFBPN0GlAnzMSwcW
+ DPXmbTFPpP4+E4hjfrnOtESIROe3c3swOpp8gHRqEyzlvPQM90CPoFlf3ydQXapn2yY2
+ 9y76C/q8lBAeZOOjRJyahWWStEGvsA/BJqiqnaj7Hwz7ubC7BvKv0EDt2bizFlpbIRKq
+ KsYQ==
+X-Gm-Message-State: AOJu0Yy4tEtB/lstU0zDg9HfBHmHlJ1oxHeTq6sbhth9Z7UM0CKnekt5
+ y/UtNacifaY5aw6Ost1ZGZN82AQ9T5JAjUmSHB+6ARVd4rC2UqR7L4cyVdTuPFX9vP4lka/X4rv
+ I2BZ4yCe5TPXigmzb8KFrKb+CNUmM4AEXuC9GD+ZLQ3XjUsiq34anIzfPDYjCj62k4zzh4j9RZL
+ 9lYtZYT4uVv58axbbPp9CywIevszZgGdsQPFps
+X-Received: by 2002:a05:6871:5214:b0:245:4477:e9ed with SMTP id
+ 586e51a60fabf-24c68aa76d1mr7798614fac.17.1716476189022; 
+ Thu, 23 May 2024 07:56:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEb6trD4nmHXJcjOEZGki5/Pkw4kzLac+sW4oiUM9BobY12st8spR+5ei897Gtpqi+R2K2DYA==
+X-Received: by 2002:a05:6871:5214:b0:245:4477:e9ed with SMTP id
+ 586e51a60fabf-24c68aa76d1mr7798483fac.17.1716476187003; 
+ Thu, 23 May 2024 07:56:27 -0700 (PDT)
 Received: from step1.redhat.com (host-79-53-30-109.retail.telecomitalia.it.
  [79.53.30.109]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43e0a4bdce8sm159322281cf.18.2024.05.23.07.56.12
+ d75a77b69052e-43e046467a4sm168864281cf.83.2024.05.23.07.56.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 07:56:15 -0700 (PDT)
+ Thu, 23 May 2024 07:56:23 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
@@ -81,16 +81,16 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
  Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org,
  Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH v5 06/13] contrib/vhost-user-*: use QEMU bswap helper functions
-Date: Thu, 23 May 2024 16:55:15 +0200
-Message-ID: <20240523145522.313012-7-sgarzare@redhat.com>
+Subject: [PATCH v5 07/13] vhost-user: enable frontends on any POSIX system
+Date: Thu, 23 May 2024 16:55:16 +0200
+Message-ID: <20240523145522.313012-8-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523145522.313012-1-sgarzare@redhat.com>
 References: <20240523145522.313012-1-sgarzare@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -5
 X-Spam_score: -0.6
@@ -115,99 +115,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's replace the calls to le*toh() and htole*() with qemu/bswap.h
-helpers to make the code more portable.
+The vhost-user protocol is not really Linux-specific so let's enable
+vhost-user frontends for any POSIX system.
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+In vhost_net.c we use VHOST_FILE_UNBIND which is defined in a Linux
+specific header, let's define it for other systems as well.
+
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- contrib/vhost-user-blk/vhost-user-blk.c |  9 +++++----
- contrib/vhost-user-input/main.c         | 16 ++++++++--------
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ meson.build        | 1 -
+ hw/net/vhost_net.c | 5 +++++
+ hw/block/Kconfig   | 2 +-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/vhost-user-blk/vhost-user-blk.c b/contrib/vhost-user-blk/vhost-user-blk.c
-index a8ab9269a2..9492146855 100644
---- a/contrib/vhost-user-blk/vhost-user-blk.c
-+++ b/contrib/vhost-user-blk/vhost-user-blk.c
-@@ -16,6 +16,7 @@
-  */
+diff --git a/meson.build b/meson.build
+index a9de71d450..5a6f7a36eb 100644
+--- a/meson.build
++++ b/meson.build
+@@ -151,7 +151,6 @@ have_tpm = get_option('tpm') \
  
- #include "qemu/osdep.h"
-+#include "qemu/bswap.h"
- #include "standard-headers/linux/virtio_blk.h"
- #include "libvhost-user-glib.h"
+ # vhost
+ have_vhost_user = get_option('vhost_user') \
+-  .disable_auto_if(host_os != 'linux') \
+   .require(host_os != 'windows',
+            error_message: 'vhost-user is not available on Windows').allowed()
+ have_vhost_vdpa = get_option('vhost_vdpa') \
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index fd1a93701a..fced429813 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -34,8 +34,13 @@
+ #include "standard-headers/linux/virtio_ring.h"
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/virtio-bus.h"
++#if defined(__linux__)
+ #include "linux-headers/linux/vhost.h"
++#endif
  
-@@ -194,8 +195,8 @@ vub_discard_write_zeroes(VubReq *req, struct iovec *iov, uint32_t iovcnt,
-     #if defined(__linux__) && defined(BLKDISCARD) && defined(BLKZEROOUT)
-     VubDev *vdev_blk = req->vdev_blk;
-     desc = buf;
--    uint64_t range[2] = { le64toh(desc->sector) << 9,
--                          le32toh(desc->num_sectors) << 9 };
-+    uint64_t range[2] = { le64_to_cpu(desc->sector) << 9,
-+                          le32_to_cpu(desc->num_sectors) << 9 };
-     if (type == VIRTIO_BLK_T_DISCARD) {
-         if (ioctl(vdev_blk->blk_fd, BLKDISCARD, range) == 0) {
-             g_free(buf);
-@@ -267,13 +268,13 @@ static int vub_virtio_process_req(VubDev *vdev_blk,
-     req->in = (struct virtio_blk_inhdr *)elem->in_sg[in_num - 1].iov_base;
-     in_num--;
++#ifndef VHOST_FILE_UNBIND
++#define VHOST_FILE_UNBIND -1
++#endif
  
--    type = le32toh(req->out->type);
-+    type = le32_to_cpu(req->out->type);
-     switch (type & ~VIRTIO_BLK_T_BARRIER) {
-     case VIRTIO_BLK_T_IN:
-     case VIRTIO_BLK_T_OUT: {
-         ssize_t ret = 0;
-         bool is_write = type & VIRTIO_BLK_T_OUT;
--        req->sector_num = le64toh(req->out->sector);
-+        req->sector_num = le64_to_cpu(req->out->sector);
-         if (is_write) {
-             ret  = vub_writev(req, &elem->out_sg[1], out_num);
-         } else {
-diff --git a/contrib/vhost-user-input/main.c b/contrib/vhost-user-input/main.c
-index 081230da54..f3362d41ac 100644
---- a/contrib/vhost-user-input/main.c
-+++ b/contrib/vhost-user-input/main.c
-@@ -51,8 +51,8 @@ static void vi_input_send(VuInput *vi, struct virtio_input_event *event)
-     vi->queue[vi->qindex++].event = *event;
+ /* Features supported by host kernel. */
+ static const int kernel_feature_bits[] = {
+diff --git a/hw/block/Kconfig b/hw/block/Kconfig
+index 9e8f28f982..29ee09e434 100644
+--- a/hw/block/Kconfig
++++ b/hw/block/Kconfig
+@@ -40,7 +40,7 @@ config VHOST_USER_BLK
+     bool
+     # Only PCI devices are provided for now
+     default y if VIRTIO_PCI
+-    depends on VIRTIO && VHOST_USER && LINUX
++    depends on VIRTIO && VHOST_USER
  
-     /* ... until we see a report sync ... */
--    if (event->type != htole16(EV_SYN) ||
--        event->code != htole16(SYN_REPORT)) {
-+    if (event->type != cpu_to_le16(EV_SYN) ||
-+        event->code != cpu_to_le16(SYN_REPORT)) {
-         return;
-     }
- 
-@@ -103,9 +103,9 @@ vi_evdev_watch(VuDev *dev, int condition, void *data)
- 
-         g_debug("input %d %d %d", evdev.type, evdev.code, evdev.value);
- 
--        virtio.type  = htole16(evdev.type);
--        virtio.code  = htole16(evdev.code);
--        virtio.value = htole32(evdev.value);
-+        virtio.type  = cpu_to_le16(evdev.type);
-+        virtio.code  = cpu_to_le16(evdev.code);
-+        virtio.value = cpu_to_le32(evdev.value);
-         vi_input_send(vi, &virtio);
-     }
- }
-@@ -124,9 +124,9 @@ static void vi_handle_status(VuInput *vi, virtio_input_event *event)
- 
-     evdev.input_event_sec = tval.tv_sec;
-     evdev.input_event_usec = tval.tv_usec;
--    evdev.type = le16toh(event->type);
--    evdev.code = le16toh(event->code);
--    evdev.value = le32toh(event->value);
-+    evdev.type = le16_to_cpu(event->type);
-+    evdev.code = le16_to_cpu(event->code);
-+    evdev.value = le32_to_cpu(event->value);
- 
-     rc = write(vi->evdevfd, &evdev, sizeof(evdev));
-     if (rc == -1) {
+ config SWIM
+     bool
 -- 
 2.45.1
 
