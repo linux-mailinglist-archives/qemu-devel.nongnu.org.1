@@ -2,103 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B1C8CDA6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4596A8CDA78
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:08:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sADlO-00022K-1q; Thu, 23 May 2024 15:06:06 -0400
+	id 1sADlT-00025F-GG; Thu, 23 May 2024 15:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlM-00021Y-6w
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:04 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlO-00023p-V7
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:06 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlK-0004GA-Ei
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:03 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlN-0004GT-8J
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:06:06 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D0AD52040D;
- Thu, 23 May 2024 19:06:00 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D14BE22B73;
+ Thu, 23 May 2024 19:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1716491164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
- b=1VMJu6e1iveSpV6QYuluTlc9Q/Nyty9M9X33/s/qVrr/IlM6rdvqJJFCQFnfBaKcRPPXc1
- getx6Y7fU4kK1KGK4GP1BmTkjrUx/ln4wiPAkvolg88xR6YM8MLtXlVmIzseYYD11VVJU0
- VoENooGvbryvQ8GlcwdhO3IaDirySUQ=
+ bh=JHN+EgKe2ZmfVVqlpa/J85xjZ9uaHa7RSXl4aXKQzw0=;
+ b=SG0YyFYY7dFSGX9mjIcSrycgRi/QGXIT4kP8VWTx4bekMH3nCFxELK3ijxkMolN7LmdVGW
+ 83otzAadOodyWSkolFk4orv4SuPlBWkDzmjdt21YTCc2jaxKtsbjSlLcojl/EBJw9D4oWu
+ BiGSZzyvDlDTiTCbpFVcE+j8jJ4kStQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491160;
+ s=susede2_ed25519; t=1716491164;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
- b=tCORUTJvo1nPfEALMVo84uUvYWoRtlBg/s8U8MVC8okaTSz0nqw+k/cz4rYQrWIODDA5a6
- /PRGcjCK+iZsaAAg==
-Authentication-Results: smtp-out2.suse.de;
+ bh=JHN+EgKe2ZmfVVqlpa/J85xjZ9uaHa7RSXl4aXKQzw0=;
+ b=/U36flAp6HWTV1BkmFgFX7Hyoh/vZdp0amFZYFjKoKOu5/wE96Sk95yJvKzeKm2KsJDuic
+ NHoIneetTes0RqBw==
+Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491160; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ t=1716491163; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
- b=1VMJu6e1iveSpV6QYuluTlc9Q/Nyty9M9X33/s/qVrr/IlM6rdvqJJFCQFnfBaKcRPPXc1
- getx6Y7fU4kK1KGK4GP1BmTkjrUx/ln4wiPAkvolg88xR6YM8MLtXlVmIzseYYD11VVJU0
- VoENooGvbryvQ8GlcwdhO3IaDirySUQ=
+ bh=JHN+EgKe2ZmfVVqlpa/J85xjZ9uaHa7RSXl4aXKQzw0=;
+ b=RQ6HTyDpatvmR7GI6EZREr6OCjNKb8tp0Flj6E7EN7kilVcRlKjNbFE3uzD8xDzn73MJ2O
+ kImLrsoijjmM7Jtz81NfIUHKuhuS6lnmg+n+5Wxs+ZwVns/M4zQAQ+pHmq8bvc3amBQH6F
+ JaWzl2Wyv5dvaLlPJgiTAY60vSAig7A=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491160;
+ s=susede2_ed25519; t=1716491163;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ER5Peeluxy6JHmSRH7zQ8d3YDDvk/6q9I4V6pgtQEYE=;
- b=tCORUTJvo1nPfEALMVo84uUvYWoRtlBg/s8U8MVC8okaTSz0nqw+k/cz4rYQrWIODDA5a6
- /PRGcjCK+iZsaAAg==
+ bh=JHN+EgKe2ZmfVVqlpa/J85xjZ9uaHa7RSXl4aXKQzw0=;
+ b=Rex4bWw+3bwFzlgJjReAztETL9VaMoDotDiQxjy4Fz98egWT5SHtU6HGx5frDhgcPw0INs
+ EhFHM5X3D7/3uFCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4BEA713A6B;
- Thu, 23 May 2024 19:05:58 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 519C813A6B;
+ Thu, 23 May 2024 19:06:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 0Fn+BJaTT2bUEQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:05:58 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id oMuNBpmTT2bUEQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:06:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ "Dr . David Alan Gilbert" <dave@treblig.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 03/18] tests/qtest/migration: Add a precopy file test with
- fdset
-Date: Thu, 23 May 2024 16:05:33 -0300
-Message-Id: <20240523190548.23977-4-farosas@suse.de>
+Subject: [PATCH v2 04/18] monitor: Drop monitor_fdset_dup_fd_add()
+Date: Thu, 23 May 2024 16:05:34 -0300
+Message-Id: <20240523190548.23977-5-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240523190548.23977-1-farosas@suse.de>
 References: <20240523190548.23977-1-farosas@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
  MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_SEVEN(0.00)[9];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCPT_COUNT_SEVEN(0.00)[9];
+ RCVD_TLS_ALL(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ TO_DN_SOME(0.00)[]; FROM_HAS_DN(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Spam-Score: -3.30
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -121,81 +121,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test for file migration using fdset. The passing of fds is more
-complex than using a file path. This is also the scenario where it's
-most important we ensure that the initial migration stream offset is
-respected because the fdset interface is the one used by the
-management layer when providing a non empty migration file.
+From: Peter Xu <peterx@redhat.com>
 
-Note that fd passing is not available on Windows, so anything that
-uses add-fd needs to exclude that platform.
+This function is not needed, one remove function should already work.
+Clean it up.
 
+Here the code doesn't really care about whether we need to keep that dupfd
+around if close() failed: when that happens something got very wrong,
+keeping the dup_fd around the fdsets may not help that situation so far.
+
+Cc: Dr. David Alan Gilbert <dave@treblig.org>
+Cc: Markus Armbruster <armbru@redhat.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+[add missing return statement, removal during traversal is not safe]
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/migration-test.c | 44 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ include/monitor/monitor.h |  1 -
+ monitor/fds.c             | 28 ++++++----------------------
+ stubs/fdset.c             |  5 -----
+ util/osdep.c              | 15 +--------------
+ 4 files changed, 7 insertions(+), 42 deletions(-)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index ec905543cf..5bb53f4839 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2013,6 +2013,46 @@ static void test_precopy_file(void)
-     test_file_common(&args, true);
+diff --git a/include/monitor/monitor.h b/include/monitor/monitor.h
+index 965f5d5450..fd9b3f538c 100644
+--- a/include/monitor/monitor.h
++++ b/include/monitor/monitor.h
+@@ -53,7 +53,6 @@ AddfdInfo *monitor_fdset_add_fd(int fd, bool has_fdset_id, int64_t fdset_id,
+                                 const char *opaque, Error **errp);
+ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags);
+ void monitor_fdset_dup_fd_remove(int dup_fd);
+-int64_t monitor_fdset_dup_fd_find(int dup_fd);
+ 
+ void monitor_register_hmp(const char *name, bool info,
+                           void (*cmd)(Monitor *mon, const QDict *qdict));
+diff --git a/monitor/fds.c b/monitor/fds.c
+index d86c2c674c..fb9f58c056 100644
+--- a/monitor/fds.c
++++ b/monitor/fds.c
+@@ -458,7 +458,7 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
+ #endif
  }
  
-+#ifndef _WIN32
-+static void fdset_add_fds(QTestState *qts, const char *file, int flags,
-+                          int num_fds)
-+{
-+    for (int i = 0; i < num_fds; i++) {
-+        int fd;
-+
-+        fd = open(file, flags, 0660);
-+        assert(fd != -1);
-+
-+        qtest_qmp_fds_assert_success(qts, &fd, 1, "{'execute': 'add-fd', "
-+                                     "'arguments': {'fdset-id': 1}}");
-+        close(fd);
-+    }
-+}
-+
-+static void *file_offset_fdset_start_hook(QTestState *from, QTestState *to)
-+{
-+    g_autofree char *file = g_strdup_printf("%s/%s", tmpfs, FILE_TEST_FILENAME);
-+
-+    fdset_add_fds(from, file, O_WRONLY, 1);
-+    fdset_add_fds(to, file, O_RDONLY, 1);
-+
-+    return NULL;
-+}
-+
-+static void test_precopy_file_offset_fdset(void)
-+{
-+    g_autofree char *uri = g_strdup_printf("file:/dev/fdset/1,offset=%d",
-+                                           FILE_TEST_OFFSET);
-+    MigrateCommon args = {
-+        .connect_uri = uri,
-+        .listen_uri = "defer",
-+        .start_hook = file_offset_fdset_start_hook,
-+    };
-+
-+    test_file_common(&args, false);
-+}
-+#endif
-+
- static void test_precopy_file_offset(void)
+-static int64_t monitor_fdset_dup_fd_find_remove(int dup_fd, bool remove)
++void monitor_fdset_dup_fd_remove(int dup_fd)
  {
-     g_autofree char *uri = g_strdup_printf("file:%s/%s,offset=%d", tmpfs,
-@@ -3521,6 +3561,10 @@ int main(int argc, char **argv)
-                        test_precopy_file);
-     migration_test_add("/migration/precopy/file/offset",
-                        test_precopy_file_offset);
-+#ifndef _WIN32
-+    migration_test_add("/migration/precopy/file/offset/fdset",
-+                       test_precopy_file_offset_fdset);
-+#endif
-     migration_test_add("/migration/precopy/file/offset/bad",
-                        test_precopy_file_offset_bad);
+     MonFdset *mon_fdset;
+     MonFdsetFd *mon_fdset_fd_dup;
+@@ -467,31 +467,15 @@ static int64_t monitor_fdset_dup_fd_find_remove(int dup_fd, bool remove)
+     QLIST_FOREACH(mon_fdset, &mon_fdsets, next) {
+         QLIST_FOREACH(mon_fdset_fd_dup, &mon_fdset->dup_fds, next) {
+             if (mon_fdset_fd_dup->fd == dup_fd) {
+-                if (remove) {
+-                    QLIST_REMOVE(mon_fdset_fd_dup, next);
+-                    g_free(mon_fdset_fd_dup);
+-                    if (QLIST_EMPTY(&mon_fdset->dup_fds)) {
+-                        monitor_fdset_cleanup(mon_fdset);
+-                    }
+-                    return -1;
+-                } else {
+-                    return mon_fdset->id;
++                QLIST_REMOVE(mon_fdset_fd_dup, next);
++                g_free(mon_fdset_fd_dup);
++                if (QLIST_EMPTY(&mon_fdset->dup_fds)) {
++                    monitor_fdset_cleanup(mon_fdset);
+                 }
++                return;
+             }
+         }
+     }
+-
+-    return -1;
+-}
+-
+-int64_t monitor_fdset_dup_fd_find(int dup_fd)
+-{
+-    return monitor_fdset_dup_fd_find_remove(dup_fd, false);
+-}
+-
+-void monitor_fdset_dup_fd_remove(int dup_fd)
+-{
+-    monitor_fdset_dup_fd_find_remove(dup_fd, true);
+ }
+ 
+ int monitor_fd_param(Monitor *mon, const char *fdname, Error **errp)
+diff --git a/stubs/fdset.c b/stubs/fdset.c
+index d7c39a28ac..389e368a29 100644
+--- a/stubs/fdset.c
++++ b/stubs/fdset.c
+@@ -9,11 +9,6 @@ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
+     return -1;
+ }
+ 
+-int64_t monitor_fdset_dup_fd_find(int dup_fd)
+-{
+-    return -1;
+-}
+-
+ void monitor_fdset_dup_fd_remove(int dupfd)
+ {
+ }
+diff --git a/util/osdep.c b/util/osdep.c
+index e996c4744a..2d9749d060 100644
+--- a/util/osdep.c
++++ b/util/osdep.c
+@@ -393,21 +393,8 @@ int qemu_open_old(const char *name, int flags, ...)
+ 
+ int qemu_close(int fd)
+ {
+-    int64_t fdset_id;
+-
+     /* Close fd that was dup'd from an fdset */
+-    fdset_id = monitor_fdset_dup_fd_find(fd);
+-    if (fdset_id != -1) {
+-        int ret;
+-
+-        ret = close(fd);
+-        if (ret == 0) {
+-            monitor_fdset_dup_fd_remove(fd);
+-        }
+-
+-        return ret;
+-    }
+-
++    monitor_fdset_dup_fd_remove(fd);
+     return close(fd);
+ }
  
 -- 
 2.35.3
