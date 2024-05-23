@@ -2,92 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104188CDA6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F00C8CDA68
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 21:07:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sADlK-0001xw-AM; Thu, 23 May 2024 15:06:02 -0400
+	id 1sADlI-0001wj-6P; Thu, 23 May 2024 15:06:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlH-0001wT-58
- for qemu-devel@nongnu.org; Thu, 23 May 2024 15:05:59 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlG-0001wK-QP
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 15:05:58 -0400
 Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlF-0004FP-5H
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sADlF-0004FX-3y
  for qemu-devel@nongnu.org; Thu, 23 May 2024 15:05:58 -0400
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 90E912040D;
- Thu, 23 May 2024 19:05:52 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id D3ADC20410;
+ Thu, 23 May 2024 19:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491152; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ij8cOSfI+xRa2ui7lPl75KDmRN5/OwylkhB0r/ed2+c=;
- b=a69GpudusntB8GuB+cwkZ86TzIAe1kXX5+EPxbTOQbUVE9eEBucS2MaGFagS/Y8pSCqpjs
- 8hX/xTCfadoC0A7mL6ZuHeaM1m4i9/2dwz15qybmj5C1zk9inJL8C+mPjL1m32W4vd+i6H
- PLnwRM/qjNVVupiftxSjVM7nzHghoKM=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Vv1wgOdsadIPSi81PyTrC26xDTPAu/UHUd/1ECzKYOI=;
+ b=2BtgqYXHwIRylVWWMeTQL1QWfmc1Rw2h/Is6PjLtWhdn0urwkE/FanQietQySEuo05jlS7
+ RqQ/W+sHboQ7QXT8m936fam+xEvN24Nmu/buDzcm8Ifxn4f/CRJh6EHTaxe7ZDnmbzuVTR
+ Bwef9LVaKstW6+IpS8qJ38D/8uVE6Ac=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491152;
+ s=susede2_ed25519; t=1716491155;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ij8cOSfI+xRa2ui7lPl75KDmRN5/OwylkhB0r/ed2+c=;
- b=Pj/0XjkYXpCOm/ZRc1Nq3iX8NGtAnDNmAXzzSgZAmYtZquD9YJX1t/OYxBFHcFJfu8gBy5
- /d08HEnQLTGdn6AA==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Vv1wgOdsadIPSi81PyTrC26xDTPAu/UHUd/1ECzKYOI=;
+ b=IJElDfq7adCD8OKxz6lPa5r7tTUDV/igAdZTi2yfuszk4ufTtgL9Vp79T3ki2FHwbDYzF4
+ FAWjIKFNH1zjv8AA==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716491152; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1716491154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ij8cOSfI+xRa2ui7lPl75KDmRN5/OwylkhB0r/ed2+c=;
- b=a69GpudusntB8GuB+cwkZ86TzIAe1kXX5+EPxbTOQbUVE9eEBucS2MaGFagS/Y8pSCqpjs
- 8hX/xTCfadoC0A7mL6ZuHeaM1m4i9/2dwz15qybmj5C1zk9inJL8C+mPjL1m32W4vd+i6H
- PLnwRM/qjNVVupiftxSjVM7nzHghoKM=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Vv1wgOdsadIPSi81PyTrC26xDTPAu/UHUd/1ECzKYOI=;
+ b=XHcCOSB2uhwBubnR4AhTiSYsk/MrQsn4bdxohJ7iE+CwOt9szf8bnIrN7hlZEaazlEeljH
+ lAFXU1tQfX6GPhOuIj+gzBOVmxYnUT0jDLhLTLw+TfizOQMMGjJQcO0FHlF8RVr2n+zPsm
+ 1/8UgjDIvxTBR/DOq0RNh445SiwDnV4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716491152;
+ s=susede2_ed25519; t=1716491154;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ij8cOSfI+xRa2ui7lPl75KDmRN5/OwylkhB0r/ed2+c=;
- b=Pj/0XjkYXpCOm/ZRc1Nq3iX8NGtAnDNmAXzzSgZAmYtZquD9YJX1t/OYxBFHcFJfu8gBy5
- /d08HEnQLTGdn6AA==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Vv1wgOdsadIPSi81PyTrC26xDTPAu/UHUd/1ECzKYOI=;
+ b=zvLOFcV69KYKLktytdAFhZxW1FlPZC3pKBlFf4khhvqFpkXpRDsnccJynOVRpZf2HsI/fF
+ cscaQRyUVB9+d4DA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B3ED113A6B;
- Thu, 23 May 2024 19:05:50 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0846013A6B;
+ Thu, 23 May 2024 19:05:52 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id 2fbyHY6TT2bUEQAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:05:50 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 2JY4MJCTT2bUEQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 23 May 2024 19:05:52 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, armbru@redhat.com, Peter Xu <peterx@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Jim Fehlig <jfehlig@suse.com>
-Subject: [PATCH v2 00/18] migration/mapped-ram: Add direct-io support
-Date: Thu, 23 May 2024 16:05:30 -0300
-Message-Id: <20240523190548.23977-1-farosas@suse.de>
+Subject: [PATCH v2 01/18] migration: Fix file migration with fdset
+Date: Thu, 23 May 2024 16:05:31 -0300
+Message-Id: <20240523190548.23977-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240523190548.23977-1-farosas@suse.de>
+References: <20240523190548.23977-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.30
 X-Spamd-Result: default: False [-3.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
  NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FUZZY_BLOCKED(0.00)[rspamd.com];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; ARC_NA(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; RCPT_COUNT_FIVE(0.00)[6];
+ FROM_HAS_DN(0.00)[];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- ARC_NA(0.00)[]; TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; FROM_HAS_DN(0.00)[];
- RCVD_TLS_ALL(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+ FROM_EQ_ENVFROM(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
+X-Spam-Score: -3.30
 Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
  envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
@@ -112,116 +118,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thank you all for the comments in the previous version. I believe we
-managed to remove much of the complexity of the fdset handling.
+When the "file:" migration support was added we missed the special
+case in the qemu_open_old implementation that allows for a particular
+file name format to be used to refer to a set of file descriptors that
+have been previously provided to QEMU via the add-fd QMP command.
 
-Major changes in this v2 are:
+When using this fdset feature, we should not truncate the migration
+file because being given an fd means that the management layer is in
+control of the file and will likely already have some data written to
+it. This is further indicated by the presence of the 'offset'
+argument, which indicates the start of the region where QEMU is
+allowed to write.
 
-- The rework of fdset to be less weird when removing fds. Now we
-  always remove after qmp_remove_fd() and never remove after the
-  monitor closes. Also removed the ->removed flag.
+Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
+call, which will take the offset into consideration.
 
-- Properly check for direct-io during params_check. I'm not going with
-  the meson.build approach because that's kind of novel for migration
-  paramters and I don't want to make direct-io a special case. I also
-  couldn't figure out a way of selecting on CONFIG_O_DIRECT that would
-  not end up removing the direct_io fields from everywhere, forcing us
-  to check the CONFIG all over the place.
+Fixes: 385f510df5 ("migration: file URI offset")
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/file.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-New in this v2 are two options to make the usage of the feature more
-uniform and require less special cases in the management layer:
-
-- Precopy direct-io. When not using multifd, enable and disable
-  O_DIRECT around the parts of the code known to be aligned.
-
-- Implemented direct-io for the incoming side.
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1302882857
-
-v1:
-https://lore.kernel.org/r/20240426142042.14573-1-farosas@suse.de
-
-Hi everyone, here's the rest of the migration "mapped-ram" feature
-that didn't get merged for 9.0. This series adds support for direct
-I/O, the missing piece to get the desired performance improvements.
-
-There's 3 parts to this:
-
-1- The plumbing for the new "direct-io" migration parameter. With this
-   we can already use direct-io with the file transport + multifd +
-   mapped-ram. Patches 1-3.
-
-Due to the alignment requirements of O_DIRECT and the fact that
-multifd runs the channels in parallel with the migration thread, we
-must open the migration file two times, one with O_DIRECT set and
-another with it clear.
-
-If the user is not passing in a file name which QEMU can open at will,
-we must then require that the user pass the two file descriptors with
-the flags already properly set. We'll use the already existing fdset +
-QMP add-fd infrastructure for this.
-
-2- Changes to the fdset infrastructure to support O_DIRECT. We need
-   those to be able to select from the user-provided fdset the file
-   descriptor that contains the O_DIRECT flag. Patches 4-5.
-
-3- Some fdset validation to make sure the two-fds requirement is being
-   met. Patches 6-7.
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1269352083
-
-Fabiano Rosas (17):
-  migration: Fix file migration with fdset
-  tests/qtest/migration: Fix file migration offset check
-  tests/qtest/migration: Add a precopy file test with fdset
-  monitor: Introduce monitor_fdset_*free
-  monitor: Stop removing non-duplicated fds
-  monitor: Simplify fdset and fd removal
-  monitor: Report errors from monitor_fdset_dup_fd_add
-  io: Stop using qemu_open_old in channel-file
-  migration: Add direct-io parameter
-  migration/multifd: Add direct-io support
-  tests/qtest/migration: Add tests for file migration with direct-io
-  monitor: fdset: Match against O_DIRECT
-  migration: Add documentation for fdset with multifd + file
-  tests/qtest/migration: Add a test for mapped-ram with passing of fds
-  io/channel-file: Add direct-io support
-  migration: Add direct-io helpers
-  migration/ram: Add direct-io support to precopy file migration
-
-Peter Xu (1):
-  monitor: Drop monitor_fdset_dup_fd_add()
-
- docs/devel/migration/main.rst       |  24 ++-
- docs/devel/migration/mapped-ram.rst |   6 +-
- include/io/channel-file.h           |   8 +
- include/monitor/monitor.h           |   3 +-
- include/qemu/osdep.h                |   2 +
- io/channel-file.c                   |  33 +++-
- migration/file.c                    |  42 +++-
- migration/file.h                    |   1 -
- migration/migration-hmp-cmds.c      |  11 ++
- migration/migration.c               |  54 +++++
- migration/migration.h               |   2 +
- migration/options.c                 |  28 +++
- migration/options.h                 |   1 +
- migration/qemu-file.c               |  29 +++
- migration/qemu-file.h               |   2 +-
- migration/ram.c                     |  40 +++-
- monitor/fds.c                       |  89 ++++-----
- monitor/hmp.c                       |   2 -
- monitor/monitor-internal.h          |   1 -
- monitor/qmp.c                       |   2 -
- qapi/migration.json                 |  21 +-
- stubs/fdset.c                       |   7 +-
- tests/qtest/migration-helpers.c     |  44 +++++
- tests/qtest/migration-helpers.h     |   8 +
- tests/qtest/migration-test.c        | 296 +++++++++++++++++++++++++---
- util/osdep.c                        |  34 ++--
- 26 files changed, 652 insertions(+), 138 deletions(-)
-
-
-base-commit: 7e1c0047015ffbd408e1aa4a5ec1abe4751dbf7e
+diff --git a/migration/file.c b/migration/file.c
+index ab18ba505a..ba5b5c44ff 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -84,12 +84,19 @@ void file_start_outgoing_migration(MigrationState *s,
+ 
+     trace_migration_file_outgoing(filename);
+ 
+-    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
+-                                     0600, errp);
++    fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY, 0600, errp);
+     if (!fioc) {
+         return;
+     }
+ 
++    if (ftruncate(fioc->fd, offset)) {
++        error_setg_errno(errp, errno,
++                         "failed to truncate migration file to offset %" PRIx64,
++                         offset);
++        object_unref(OBJECT(fioc));
++        return;
++    }
++
+     outgoing_args.fname = g_strdup(filename);
+ 
+     ioc = QIO_CHANNEL(fioc);
 -- 
 2.35.3
 
