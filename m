@@ -2,47 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6238A8CD2EF
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 14:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEED58CD317
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 15:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA815-0005iS-KA; Thu, 23 May 2024 08:57:55 -0400
+	id 1sA84G-0000mq-CD; Thu, 23 May 2024 09:01:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1sA80x-0005fu-BD
- for qemu-devel@nongnu.org; Thu, 23 May 2024 08:57:48 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1sA80t-0004L1-Sw
- for qemu-devel@nongnu.org; Thu, 23 May 2024 08:57:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=BhGdJdl/2jounm6xKaCif8D5yPM70uCPtDdYjdncQog=; b=r1cdX4IUJ0FmUrN
- 088shzs0rHE56VUy6lJjswg6HFbg2K1Uh4YEtvN3mE2Lv7qFlW3LYrsc0HfOvHw8/gxYSQf3STcIA
- mfTxNgEOjnivLhyjiZDeeWGy56Do/Jt5NUKkDne53EYgyjx8K2GhyYlpvx9qemu2kDN+ztDUdGDvL
- Ag=;
-To: qemu-devel@nongnu.org
-Cc: ale@rev.ng,
-	ltaylorsimpson@gmail.com,
-	bcain@quicinc.com
-Subject: [PATCH v4 4/4] target/hexagon: idef-parser simplify predicate init
-Date: Thu, 23 May 2024 14:59:01 +0200
-Message-ID: <20240523125901.27797-5-anjo@rev.ng>
-In-Reply-To: <20240523125901.27797-1-anjo@rev.ng>
-References: <20240523125901.27797-1-anjo@rev.ng>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sA84E-0000mG-43
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 09:01:10 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sA84B-00059I-Cp
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 09:01:09 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-571c2055cb1so3119540a12.1
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 06:01:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716469265; x=1717074065; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CKPv8dnLEr6PEgjxUX69HV4d3UOqhjAtYN3QlN+i9BA=;
+ b=T79XGtn5xhqLwkvvQOupeaB+6vlEdDZZr5OfOxXNkSRfKCJy61CGs+ikkHelDr7Wzs
+ SWkQTrHFCkLh1lL0zSyz3Ct5UqMLqIUqjGaRoFsasMuBnVIvek3KRahO2iTFC7cjvyOx
+ jBW8OiDDEATb1SnuBWs/DBa6yS2A2uwpWMIlVL0G3iO7Zr3aSEOUm9lVhbEfKipdzqtN
+ r2WXjAghHm/P9UumotJQsQEEi/yMw1N5VckA8ZPy3O7Yn9WVrPe/BpPrpr5pmnttFaN4
+ xm77oSeWQ/niiUVF0BqRxvc993JCoq/QllQmL3yAF/pnuRTU9gwGlWt3B9GZ6toFp6TV
+ CfJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716469265; x=1717074065;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CKPv8dnLEr6PEgjxUX69HV4d3UOqhjAtYN3QlN+i9BA=;
+ b=DIiqvTXm0mpPtDwtJ2YyV2NWqZ+2dpwUGYzNQGea5YsvTilZqbb0nvO6yYWI6KyUH2
+ t+XJ+6Ep9ATfS3kfUg9JaLqyC0UrjD1aT7ZIsAzSvE1yqfRvFjo/lle0N+mPQpBGutSa
+ P29+iAt24eQdfcXUrdN3frfCXEmTG/LD2VHxvI01fgwjd8675y4qaplL+f1R2j9hPoXX
+ WG9jvhGLi6aKBie85/ZveHyuBuOZfV4dbCCPmpg1JU58O59dF5bXGiPrrajbZ7LPRBtA
+ /oRwvrFdAA6F+0kuJEYU+qxqvQjvc5cQuAmcQXrCk7RswGgRvHyKAOmgOJKrNAN1Lh3r
+ T/SA==
+X-Gm-Message-State: AOJu0Yzf+ilZsvkbqLAsp3QWHMldYDXroWvnSCxDQeWRD13QCvDrv/pn
+ FvQoZU49ypztUSisTa5gaMxqcSGyIEEhzw0Tiv/QFo7SG4Zriw6HR3ljSClLGTnCX+iGeCB3Qge
+ QFspCaMynYEf2xqjPtdyV76E/SnP8GMC+aSGBdg==
+X-Google-Smtp-Source: AGHT+IEJfUb5+H/CK4G2FsnYT/l8TWZo4frXxK7Ti+WPo3fBRotuw70PDJrbGFCHtMAFaJKkLpRJT/mBeTZD3hnIMs4=
+X-Received: by 2002:a50:9557:0:b0:572:3f41:25aa with SMTP id
+ 4fb4d7f45d1cf-57832a4b1abmr4054635a12.11.1716469265676; Thu, 23 May 2024
+ 06:01:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+References: <20240506010403.6204-1-richard.henderson@linaro.org>
+ <20240506010403.6204-13-richard.henderson@linaro.org>
+In-Reply-To: <20240506010403.6204-13-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 23 May 2024 14:00:53 +0100
+Message-ID: <CAFEAcA_j-iV_r5WA35ULULeqFN99iPJZwrFkYUH7pwCSNsG1fA@mail.gmail.com>
+Subject: Re: [PATCH 12/57] target/arm: Convert FMULX to decodetree
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -56,82 +83,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only predicate instruction arguments need to be initialized by
-idef-parser. This commit removes registers from the init_list and
-simplifies gen_inst_init_args() slightly.
+On Mon, 6 May 2024 at 02:05, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Convert all forms (scalar, vector, scalar indexed, vector indexed),
+> which allows us to remove switch table entries elsewhere.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-Reviewed-by: Brian Cain <bcain@quicinc.com>
----
- target/hexagon/idef-parser/idef-parser.y    |  2 --
- target/hexagon/idef-parser/parser-helpers.c | 26 +++++++++++----------
- 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/target/hexagon/idef-parser/idef-parser.y b/target/hexagon/idef-parser/idef-parser.y
-index cd2612eb8c..9ffb9f9699 100644
---- a/target/hexagon/idef-parser/idef-parser.y
-+++ b/target/hexagon/idef-parser/idef-parser.y
-@@ -233,8 +233,6 @@ code : '{' statements '}'
- argument_decl : REG
-                 {
-                     emit_arg(c, &@1, &$1);
--                    /* Enqueue register into initialization list */
--                    g_array_append_val(c->inst.init_list, $1);
-                 }
-               | PRED
-                 {
-diff --git a/target/hexagon/idef-parser/parser-helpers.c b/target/hexagon/idef-parser/parser-helpers.c
-index c150c308be..a7dcd85fe4 100644
---- a/target/hexagon/idef-parser/parser-helpers.c
-+++ b/target/hexagon/idef-parser/parser-helpers.c
-@@ -1652,26 +1652,28 @@ void gen_inst(Context *c, GString *iname)
- 
- 
- /*
-- * Initialize declared but uninitialized registers, but only for
-- * non-conditional instructions
-+ * Initialize declared but uninitialized instruction arguments. Only needed for
-+ * predicate arguments, initialization of registers is handled by the Hexagon
-+ * frontend.
-  */
- void gen_inst_init_args(Context *c, YYLTYPE *locp)
- {
-+    HexValue *val = NULL;
-+    char suffix;
-+
-+    /* If init_list is NULL arguments have already been initialized */
-     if (!c->inst.init_list) {
-         return;
-     }
- 
-     for (unsigned i = 0; i < c->inst.init_list->len; i++) {
--        HexValue *val = &g_array_index(c->inst.init_list, HexValue, i);
--        if (val->type == REGISTER_ARG) {
--            /* Nothing to do here */
--        } else if (val->type == PREDICATE) {
--            char suffix = val->is_dotnew ? 'N' : 'V';
--            EMIT_HEAD(c, "tcg_gen_movi_i%u(P%c%c, 0);\n", val->bit_width,
--                      val->pred.id, suffix);
--        } else {
--            yyassert(c, locp, false, "Invalid arg type!");
--        }
-+        val = &g_array_index(c->inst.init_list, HexValue, i);
-+        suffix = val->is_dotnew ? 'N' : 'V';
-+        yyassert(c, locp, val->type == PREDICATE,
-+                 "Only predicates need to be initialized!");
-+        yyassert(c, locp, val->bit_width == 32,
-+                 "Predicates should always be 32 bits");
-+        EMIT_HEAD(c, "tcg_gen_movi_i32(P%c%c, 0);\n", val->pred.id, suffix);
-     }
- 
-     /* Free argument init list once we have initialized everything */
--- 
-2.45.0
+> @@ -671,3 +694,25 @@ INS_general     0 1   00 1110 000 imm:5 0 0011 1 rn:5 rd:5
+>  SMOV            0 q:1 00 1110 000 imm:5 0 0101 1 rn:5 rd:5
+>  UMOV            0 q:1 00 1110 000 imm:5 0 0111 1 rn:5 rd:5
+>  INS_element     0 1   10 1110 000 di:5  0 si:4 1 rn:5 rd:5
+> +
+> +### Advanced SIMD scalar three same
+> +
+> +FMULX_s         0101 1110 010 ..... 00011 1 ..... ..... @rrr_h
+> +FMULX_s         0101 1110 0.1 ..... 11011 1 ..... ..... @rrr_sd
+> +
+> +### Advanced SIMD three same
+> +
+> +FMULX_v         0.00 0111 010 ..... 00011 1 ..... ..... @qrrr_h
 
+
+Looking more closely, shouldn't this be 1110 in the second nibble, not 0111 ?
+
+> +FMULX_v         0.00 1110 0.1 ..... 11011 1 ..... ..... @qrrr_sd
+
+-- PMM
 
