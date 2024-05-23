@@ -2,64 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B169B8CD71D
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A988CD76E
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:41:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAAQh-0006IS-7J; Thu, 23 May 2024 11:32:31 -0400
+	id 1sAATe-0007y4-8v; Thu, 23 May 2024 11:35:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sAAQc-00069b-13
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:32:27 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1sAAQW-0001po-UQ
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:32:25 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VlXBX0KKbz6JBJc;
- Thu, 23 May 2024 23:28:36 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 7416A140A1B;
- Thu, 23 May 2024 23:32:18 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 23 May
- 2024 16:32:17 +0100
-Date: Thu, 23 May 2024 16:32:15 +0100
-To: fan <nifan.cxl@gmail.com>
-CC: Markus Armbruster <armbru@redhat.com>, <qemu-devel@nongnu.org>,
- <linux-cxl@vger.kernel.org>, <gregory.price@memverge.com>,
- <ira.weiny@intel.com>, <dan.j.williams@intel.com>,
- <a.manzanares@samsung.com>, <dave@stgolabs.net>, <nmtadam.samsung@gmail.com>, 
- <jim.harris@samsung.com>, <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>, Fan
- Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v7 09/12] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <20240523163215.0000146b@Huawei.com>
-In-Reply-To: <Zk0wjWL2cbwdF69r@debian>
-References: <20240418232902.583744-1-fan.ni@samsung.com>
- <20240418232902.583744-10-fan.ni@samsung.com>
- <877cgkxzal.fsf@pond.sub.org> <Zivk37xBGPsL_yo5@debian>
- <87h6fkob0t.fsf@pond.sub.org> <ZjLCS8yJC-OvPsUS@debian>
- <20240520175012.000045fe@Huawei.com> <Zk0wjWL2cbwdF69r@debian>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sAATJ-0007jr-DU
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:13 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sAATF-0002Ri-D7
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:35:11 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-41fc5645bb1so51084685e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:35:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716478507; x=1717083307; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bf0hQsGVSqS++3HNrIAL2Y7P8r1tW6aT95KUaTxIu7k=;
+ b=saIJ7hqA2DzYo5r8+KJFVfqzTn0khuRoZiBQsaByKX0xQO34870OrEJVijPmCiBzLb
+ ieDAbo4ItLD53JkdxNHs0tNZeeutkTVbNHmHEru2Uk9vCOHVNVOP4Ni/pepzPmFc03Ba
+ mVgXmo+JQaOLkN/8W17uEgCZ4IktaGQH1992LGKISOYOG/Pw6iZjZZvnxii7qgJpufIf
+ Y6AicJ5bQiYMkihXdHrRWT3faThvYGK0+/gtn3OXwZ9xGO3yrD8O1WLDHFYMiCPrqZ6u
+ BXyZTqkKIOu8DCj5pTCyFxbXxvPEfmE3YmUGlvR50GYVDTejKcqfkOWYhHDneW+nkPCn
+ 9WFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716478507; x=1717083307;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bf0hQsGVSqS++3HNrIAL2Y7P8r1tW6aT95KUaTxIu7k=;
+ b=srJQk6UVyMYNqHiEXe/Yb4FEu5OBw3Cz5MaYNSbqBTWA7znqw8LTAP6vbg7mVweRsz
+ 8EaGvO/r7Hz9Y0ILIS9mPwk7w0prNKdiTYTNz2sWu2DYm6+GyCqMtPirI3IVOjunihqu
+ Cs6gX0w/zbTNX3b8cFHVjMuDSINv26wdOjEp/u1sVQRd/HE/hRu0q7zSzhRBfDxx3AW3
+ /ymnzGzhSxACJlQIhqYhsL2XRaS6VW/A+H+W8c2qAkyfOdpW6TA0pHoAWq2U9SeEqTGC
+ XyXYvUAVT/ov23vmr3PXbnl6oRsFiousAMfaqststxvKdzm9SI/S6201lWKFJc2bSk6N
+ M4DA==
+X-Gm-Message-State: AOJu0YzXHRK5LcMPE2gkneLFuWGJJB7mh9mqyCLoWJjjZ7NQ5ulU0Pa3
+ 6cveR4hySzxnr0Lsd9SHdNYZm+GR5lX1cjybZiBnWKDm8DPnaXLrCaY5/BHzlo3hPyRTybn2fvg
+ v
+X-Google-Smtp-Source: AGHT+IGujDTwUvH4wY+/0j7160WVmcr2UQ0Pa+YG/kzoAR916AatUVMwsElS90hEs7Z3IU9LepXfAg==
+X-Received: by 2002:a05:6000:36d:b0:34a:1a7a:9d60 with SMTP id
+ ffacd0b85a97d-354da7b4b64mr4453915f8f.62.1716478507274; 
+ Thu, 23 May 2024 08:35:07 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-354df9b51f7sm3888255f8f.59.2024.05.23.08.35.06
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 May 2024 08:35:06 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/37] target-arm queue
+Date: Thu, 23 May 2024 16:34:28 +0100
+Message-Id: <20240523153505.2900433-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,114 +86,122 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 21 May 2024 16:38:53 -0700
-fan <nifan.cxl@gmail.com> wrote:
+Hi; most of this is the first half of RTH's decodetree conversion;
+the rest is a mix of fixes from the last couple of weeks.
 
-> On Mon, May 20, 2024 at 05:50:12PM +0100, Jonathan Cameron wrote:
-> > On Wed, 1 May 2024 15:29:31 -0700
-> > fan <nifan.cxl@gmail.com> wrote:
-> >   
-> > > From 873f59ec06c38645768ada452d9b18920a34723e Mon Sep 17 00:00:00 2001
-> > > From: Fan Ni <fan.ni@samsung.com>
-> > > Date: Tue, 20 Feb 2024 09:48:31 -0800
-> > > Subject: [PATCH] hw/cxl/events: Add qmp interfaces to add/release dynamic
-> > >  capacity extents
-> > > Status: RO
-> > > Content-Length: 25172
-> > > Lines: 731
-> > > 
-> > > To simulate FM functionalities for initiating Dynamic Capacity Add
-> > > (Opcode 5604h) and Dynamic Capacity Release (Opcode 5605h) as in CXL spec
-> > > r3.1 7.6.7.6.5 and 7.6.7.6.6, we implemented two QMP interfaces to issue
-> > > add/release dynamic capacity extents requests.
-> > > 
-> > > With the change, we allow to release an extent only when its DPA range
-> > > is contained by a single accepted extent in the device. That is to say,
-> > > extent superset release is not supported yet.
-> > > 
-> > > 1. Add dynamic capacity extents:
-> > > 
-> > > For example, the command to add two continuous extents (each 128MiB long)
-> > > to region 0 (starting at DPA offset 0) looks like below:
-> > > 
-> > > { "execute": "qmp_capabilities" }
-> > > 
-> > > { "execute": "cxl-add-dynamic-capacity",
-> > >   "arguments": {
-> > >       "path": "/machine/peripheral/cxl-dcd0",
-> > >       "host-id": 0,
-> > >       "selection-policy": 2,
-> > >       "region": 0,
-> > >       "tag": "",
-> > >       "extents": [
-> > >       {
-> > >           "offset": 0,
-> > >           "len": 134217728
-> > >       },
-> > >       {
-> > >           "offset": 134217728,
-> > >           "len": 134217728
-> > >       }
-> > >       ]
-> > >   }
-> > > }
-> > > 
-> > > 2. Release dynamic capacity extents:
-> > > 
-> > > For example, the command to release an extent of size 128MiB from region 0
-> > > (DPA offset 128MiB) looks like below:
-> > > 
-> > > { "execute": "cxl-release-dynamic-capacity",
-> > >   "arguments": {
-> > >       "path": "/machine/peripheral/cxl-dcd0",
-> > >       "host-id": 0,
-> > >       "flags": 1,
-> > >       "region": 0,
-> > >       "tag": "",
-> > >       "extents": [
-> > >       {
-> > >           "offset": 134217728,
-> > >           "len": 134217728
-> > >       }
-> > >       ]
-> > >   }
-> > > }
-> > > 
-> > > Signed-off-by: Fan Ni <fan.ni@samsung.com>  
-> > 
-> > Hi Fan,
-> > 
-> > A few trivial questions inline.  I don't feel particularly strongly
-> > about breaking up the flags fields, but I'd like to understand your
-> > reasoning for keeping them as single fields?
-> > 
-> > Is it mainly to keep aligned with the specification or something else?
-> > 
-> > Thanks,
-> > 
-> > Jonathan  
-> 
-> Hi Jonathan,
-> FYI.
-> I just sent out the updated QAPI patch with selection policy defined as
-> enum and removal policy split out in this thread,
-> https://lore.kernel.org/linux-cxl/5856b7a4-4082-465f-9f61-b1ec6c35ef0f@fujitsu.com/T/#m9838d6afda49fb26eb90526eae5550256f5d0f56
-Looks good in general, but I have more questions :(
-Now we have separate fields, some of them have natural defaults. Maybe
-we should provide those and reduce what needs to be passed in?
+thanks
+-- PMM
 
-We will need to do that anyway for any future editions so perhaps
-makes sense to do so now?
+The following changes since commit 7e1c0047015ffbd408e1aa4a5ec1abe4751dbf7e:
 
-> 
-> Planning to send out v8 on Thursday.
-Great.
+  Merge tag 'migration-20240522-pull-request' of https://gitlab.com/farosas/qemu into staging (2024-05-22 15:32:25 -0700)
 
-Jonathan
+are available in the Git repository at:
 
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240523
+
+for you to fetch changes up to 051aca523db178ad4c49d5ed736ad26308d1df7b:
+
+  target/arm: Convert disas_simd_3same_logic to decodetree (2024-05-23 16:06:29 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * xlnx_dpdma: fix descriptor endianness bug
+ * hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
+ * hw/arm/npcm7xx: remove setting of mp-affinity
+ * hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
+ * hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
+ * hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
+ * hw: arm: Remove use of tabs in some source files
+ * docs/system: Remove ADC from raspi documentation
+ * target/arm: Start of the conversion of A64 SIMD to decodetree
+
+----------------------------------------------------------------
+Alexandra Diupina (1):
+      xlnx_dpdma: fix descriptor endianness bug
+
+Andrey Shumilin (1):
+      hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
+
+Dorjoy Chowdhury (1):
+      hw/arm/npcm7xx: remove setting of mp-affinity
+
+Inès Varhol (1):
+      hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
+
+Philippe Mathieu-Daudé (1):
+      hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
+
+Rayhan Faizel (1):
+      docs/system: Remove ADC from raspi documentation
+
+Richard Henderson (29):
+      target/arm: Split out gengvec.c
+      target/arm: Split out gengvec64.c
+      target/arm: Convert Cryptographic AES to decodetree
+      target/arm: Convert Cryptographic 3-register SHA to decodetree
+      target/arm: Convert Cryptographic 2-register SHA to decodetree
+      target/arm: Convert Cryptographic 3-register SHA512 to decodetree
+      target/arm: Convert Cryptographic 2-register SHA512 to decodetree
+      target/arm: Convert Cryptographic 4-register to decodetree
+      target/arm: Convert Cryptographic 3-register, imm2 to decodetree
+      target/arm: Convert XAR to decodetree
+      target/arm: Convert Advanced SIMD copy to decodetree
+      target/arm: Convert FMULX to decodetree
+      target/arm: Convert FADD, FSUB, FDIV, FMUL to decodetree
+      target/arm: Convert FMAX, FMIN, FMAXNM, FMINNM to decodetree
+      target/arm: Expand vfp neg and abs inline
+      target/arm: Convert FNMUL to decodetree
+      target/arm: Convert FMLA, FMLS to decodetree
+      target/arm: Convert FCMEQ, FCMGE, FCMGT, FACGE, FACGT to decodetree
+      target/arm: Convert FABD to decodetree
+      target/arm: Convert FRECPS, FRSQRTS to decodetree
+      target/arm: Convert FADDP to decodetree
+      target/arm: Convert FMAXP, FMINP, FMAXNMP, FMINNMP to decodetree
+      target/arm: Use gvec for neon faddp, fmaxp, fminp
+      target/arm: Convert ADDP to decodetree
+      target/arm: Use gvec for neon padd
+      target/arm: Convert SMAXP, SMINP, UMAXP, UMINP to decodetree
+      target/arm: Use gvec for neon pmax, pmin
+      target/arm: Convert FMLAL, FMLSL to decodetree
+      target/arm: Convert disas_simd_3same_logic to decodetree
+
+Tanmay Patil (1):
+      hw: arm: Remove use of tabs in some source files
+
+Zenghui Yu (1):
+      hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
+
+ docs/system/arm/raspi.rst       |    1 -
+ target/arm/helper.h             |   68 +-
+ target/arm/tcg/helper-a64.h     |   12 +
+ target/arm/tcg/translate-a64.h  |    4 +
+ target/arm/tcg/translate.h      |   51 +
+ target/arm/tcg/a64.decode       |  315 +++-
+ hw/arm/boot.c                   |    8 +-
+ hw/arm/npcm7xx.c                |    3 -
+ hw/char/omap_uart.c             |   49 +-
+ hw/char/stm32l4x5_usart.c       |    2 +-
+ hw/dma/xlnx_dpdma.c             |   68 +-
+ hw/gpio/zaurus.c                |   59 +-
+ hw/input/tsc2005.c              |  135 +-
+ hw/intc/arm_gic.c               |    4 +-
+ target/arm/hvf/hvf.c            |  130 +-
+ target/arm/tcg/gengvec.c        | 1672 +++++++++++++++++++++
+ target/arm/tcg/gengvec64.c      |  190 +++
+ target/arm/tcg/neon_helper.c    |    5 -
+ target/arm/tcg/translate-a64.c  | 3110 +++++++++++++--------------------------
+ target/arm/tcg/translate-neon.c |  136 +-
+ target/arm/tcg/translate-sve.c  |  145 +-
+ target/arm/tcg/translate-vfp.c  |   54 +-
+ target/arm/tcg/translate.c      | 1588 --------------------
+ target/arm/tcg/vec_helper.c     |  221 ++-
+ target/arm/vfp_helper.c         |   30 -
+ target/arm/tcg/meson.build      |    2 +
+ 26 files changed, 3807 insertions(+), 4255 deletions(-)
+ create mode 100644 target/arm/tcg/gengvec.c
+ create mode 100644 target/arm/tcg/gengvec64.c
 
