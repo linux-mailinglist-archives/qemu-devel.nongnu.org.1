@@ -2,84 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BAFB8CD68C
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B978CD6AD
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:06:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9xQ-0000qb-UH; Thu, 23 May 2024 11:02:17 -0400
+	id 1sA9wp-0007Pw-4V; Thu, 23 May 2024 11:01:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9wt-00089n-I0
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:43 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9wZ-0006u5-4w
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9wr-0004vd-Sa
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:43 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9wQ-0004rm-AS
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476501;
+ s=mimecast20190719; t=1716476473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xtNMjeo30umZmHsb3OdqLgoNlGtwryuHoombtfhUSBM=;
- b=Q+sDLC8WOt0k7eyWu+jR1OxA0qdKwGWCXW6u94gpEQF1CDDUt1REAKub/waxYZ7Qax0bxe
- vw3u3ybM+CIzwwgEDdlZerHt4gM1YsO4P0LnyuapTj3q7ecYQvcls0PqTlxgNDRWDYFO7k
- dsYB0iYMF5Q/ywX7Znzhr+7jZK9BfeA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=cLelhI9r617cToD99Kpa7HMWkhNDLISrFZNoaAxBSkQ=;
+ b=Dl5PdhRadlm8BSQeR/JMnxvTEmY+IEBIbscMezD/0TXozCLv4PnDj3OU6NNbZBGtIyxuAq
+ by8zw3Z1iStJoN6xuKQQS3A3PNF6WhrJvPoP3j98JnItJj+bqjofqk6h8BUJyu8gwcINrp
+ 5gfEyppj8/548t2CjIAMbYyHa0i2/n0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-fV-aEknhNyKV7vAPPq3UGg-1; Thu, 23 May 2024 11:01:39 -0400
-X-MC-Unique: fV-aEknhNyKV7vAPPq3UGg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a59eea00cafso147623166b.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:38 -0700 (PDT)
+ us-mta-271-pJHWJaH8Nym7pqtU_YtcFg-1; Thu, 23 May 2024 11:01:11 -0400
+X-MC-Unique: pJHWJaH8Nym7pqtU_YtcFg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-420061cf1b1so67318425e9.1
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476497; x=1717081297;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xtNMjeo30umZmHsb3OdqLgoNlGtwryuHoombtfhUSBM=;
- b=fEkCrNTldjiVkGvMNIzzqSdWcWWi2kyop+0rW0ECqJfi7PwmgZzzzOnr3csiWq5eGX
- RdGpWgD/mJs8Iwp7jV2juMcHmTHY4UKwsyU2UewLhOp17LLh3ljtMpZl/rgcsVUdLSbZ
- Crs30sxJnG1Rx8PB8PDpznzrOkh/LbC93Im/dHQ89RnAktn0NV2UEbrLyPDCYa0k+lQK
- MInZershq7n7VjiAlANL/wLby4EDentzKN7jMDyV1ALMnlJPhrDTiVf8czmxDz0jNVJq
- P29aFyUX17CZfArRG7PyltHsDd+wUhtxkW+HdqHrVUe3LSMvvrzcNO3kwh++Rbw697Pa
- 2Plw==
-X-Gm-Message-State: AOJu0YzOV09vpEz4dsgsbicdiEs9ZzenZD7D4u5nxDqPMIyYGzk6g0Lo
- YU0FYVgj+caWJJax8sl7wSor2whwEPj5bx9ghF+kGT/Us8YwZ68mg3VFBG9D5Iaflu3Ajstz00F
- JkOhNEnXQ59KRfpfaFbPr+/YqmpPkBv07gfsCvlJXGaZfqKm2wGFziPIGUR//VpFFkPwdRnyb1Y
- 4SHP/IuW+wjN9uNMGlHGZXzOwmv+xCOZxJRVCS
-X-Received: by 2002:a17:906:71da:b0:a62:2ef9:141 with SMTP id
- a640c23a62f3a-a622ef902a2mr411232966b.8.1716476496941; 
- Thu, 23 May 2024 08:01:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQ1x7xnI163X9uaPg6C1hBgi1X7gfiWcXEUJxWmMCqrUCjI8TvjxfA6Xezwdub5LyZ8/D5TQ==
-X-Received: by 2002:a17:906:71da:b0:a62:2ef9:141 with SMTP id
- a640c23a62f3a-a622ef902a2mr411228166b.8.1716476495839; 
- Thu, 23 May 2024 08:01:35 -0700 (PDT)
-Received: from avogadro.local ([151.95.155.52])
+ d=1e100.net; s=20230601; t=1716476470; x=1717081270;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt
+ :content-language:from:references:cc:to:subject:user-agent
+ :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=cLelhI9r617cToD99Kpa7HMWkhNDLISrFZNoaAxBSkQ=;
+ b=KrZ6RH3rCUGkJESnlCv32AxTod7TKevg+MrlZtfOTvecXmNCbbEN9miy0iZYZJCoON
+ u6qHJaGvjGM/9B4RB9rM/HGmD5JEnepqeASKRHOlOTOf2ls1qkV9hul0MjR85WRCVs3P
+ jWAJP0o0WxlWSxHoiy7tz6Aii1eVzwnikJSf2r+R2ekzIBK3u+vCJcUzTDvqeQS64kt4
+ 5Q51Ox5JHaY71xnl2xW62sb1iFuNmyIiXu1bVJvwjoJZzlMdK18+hMQ3W7lQWsG7ZIj8
+ u/LSpaR72RVVSWRmc0rNUMzMmivRj0EnKMNZF91j7iiCuVso6HVk4+jypGPFQJwoBVrB
+ VcGw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX9UAwzps2Nli/BIN+ggoOMelSj1wwRlYEMNGNE40N5NtNVFZkLpsw3yio8YFjpjOopsWEJukUf+rI8u8eL2DMYDSt1aYI=
+X-Gm-Message-State: AOJu0YyzOn5WCnCTqCn+2Q0DqeJUL14YuEA+g4QLJ5skIYukljbL9GU3
+ gHykKgRCbhHQC3+jq1wUfHjfh94OTpNG0GaGo1Y4hXOUUyhfxNey/uwiD8Q6MsWCvyflM5eceCe
+ VwutUouDNvRECDCTDzbvLwQPv9QuP1PXbyUGqdN+uygfGaxHC1zBX
+X-Received: by 2002:a05:600c:2907:b0:41e:1f78:314d with SMTP id
+ 5b1f17b1804b1-420fd319c41mr36353735e9.24.1716476469878; 
+ Thu, 23 May 2024 08:01:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIDpQRKbf4i0bF5hjZBsxbOW8XqVTN8GpRFPeI+GlZmAuYq/QmhV+UeUi/8dF22EvxrbSw9w==
+X-Received: by 2002:a05:600c:2907:b0:41e:1f78:314d with SMTP id
+ 5b1f17b1804b1-420fd319c41mr36353305e9.24.1716476469425; 
+ Thu, 23 May 2024 08:01:09 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c717:5f00:c949:6700:cce1:e60b?
+ (p200300cbc7175f00c9496700cce1e60b.dip0.t-ipconnect.de.
+ [2003:cb:c717:5f00:c949:6700:cce1:e60b])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a6214655b23sm422810366b.165.2024.05.23.08.01.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:01:33 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: donsheng <dongsheng.x.zhang@intel.com>, Chao Gao <chao.gao@intel.com>,
- qemu-stable@nongnu.org
-Subject: [PULL 23/23] target-i386: hyper-v: Correct kvm_hv_handle_exit return
- value
-Date: Thu, 23 May 2024 17:00:36 +0200
-Message-ID: <20240523150036.1050011-24-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
-References: <20240523150036.1050011-1-pbonzini@redhat.com>
+ 5b1f17b1804b1-42100fb7fe1sm27268405e9.45.2024.05.23.08.01.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 May 2024 08:01:08 -0700 (PDT)
+Message-ID: <4f0829e9-c0b2-48e9-9235-e4b626b61769@redhat.com>
+Date: Thu, 23 May 2024 17:01:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/13] vhost-user-server: do not set memory fd
+ non-blocking
+To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Brad Smith <brad@comstyle.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Coiby Xu <Coiby.Xu@gmail.com>, Markus Armbruster <armbru@redhat.com>,
+ slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>, stefanha@redhat.com,
+ Hanna Reitz <hreitz@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>,
+ Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
+ Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
+References: <20240523145522.313012-1-sgarzare@redhat.com>
+ <20240523145522.313012-5-sgarzare@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240523145522.313012-5-sgarzare@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,59 +162,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: donsheng <dongsheng.x.zhang@intel.com>
+On 23.05.24 16:55, Stefano Garzarella wrote:
+> In vhost-user-server we set all fd received from the other peer
+> in non-blocking mode. For some of them (e.g. memfd, shm_open, etc.)
+> it's not really needed, because we don't use these fd with blocking
+> operations, but only to map memory.
+> 
+> In addition, in some systems this operation can fail (e.g. in macOS
+> setting an fd returned by shm_open() non-blocking fails with errno
+> = ENOTTY).
+> 
+> So, let's avoid setting fd non-blocking for those messages that we
+> know carry memory fd (e.g. VHOST_USER_ADD_MEM_REG,
+> VHOST_USER_SET_MEM_TABLE).
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
 
-This bug fix addresses the incorrect return value of kvm_hv_handle_exit for
-KVM_EXIT_HYPERV_SYNIC, which should be EXCP_INTERRUPT.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Handling of KVM_EXIT_HYPERV_SYNIC in QEMU needs to be synchronous.
-This means that async_synic_update should run in the current QEMU vCPU
-thread before returning to KVM, returning EXCP_INTERRUPT to guarantee this.
-Returning 0 can cause async_synic_update to run asynchronously.
-
-One problem (kvm-unit-tests's hyperv_synic test fails with timeout error)
-caused by this bug:
-
-When a guest VM writes to the HV_X64_MSR_SCONTROL MSR to enable Hyper-V SynIC,
-a VM exit is triggered and processed by the kvm_hv_handle_exit function of the
-QEMU vCPU. This function then calls the async_synic_update function to set
-synic->sctl_enabled to true. A true value of synic->sctl_enabled is required
-before creating SINT routes using the hyperv_sint_route_new() function.
-
-If kvm_hv_handle_exit returns 0 for KVM_EXIT_HYPERV_SYNIC, the current QEMU
-vCPU thread may return to KVM and enter the guest VM before running
-async_synic_update. In such case, the hyperv_synic test’s subsequent call to
-synic_ctl(HV_TEST_DEV_SINT_ROUTE_CREATE, ...) immediately after writing to
-HV_X64_MSR_SCONTROL can cause QEMU’s hyperv_sint_route_new() function to return
-prematurely (because synic->sctl_enabled is false).
-
-If the SINT route is not created successfully, the SINT interrupt will not be
-fired, resulting in a timeout error in the hyperv_synic test.
-
-Fixes: 267e071bd6d6 (“hyperv: make overlay pages for SynIC”)
-Suggested-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Dongsheng Zhang <dongsheng.x.zhang@intel.com>
-Message-ID: <20240521200114.11588-1-dongsheng.x.zhang@intel.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/kvm/hyperv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
-index f2a3fe650a1..b94f12acc2c 100644
---- a/target/i386/kvm/hyperv.c
-+++ b/target/i386/kvm/hyperv.c
-@@ -81,7 +81,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
-          */
-         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
- 
--        return 0;
-+        return EXCP_INTERRUPT;
-     case KVM_EXIT_HYPERV_HCALL: {
-         uint16_t code = exit->u.hcall.input & 0xffff;
-         bool fast = exit->u.hcall.input & HV_HYPERCALL_FAST;
 -- 
-2.45.1
+Cheers,
+
+David / dhildenb
 
 
