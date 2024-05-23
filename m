@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A04F88CDD97
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 481BE8CDD43
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:12:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHa5-00050f-RD; Thu, 23 May 2024 19:10:41 -0400
+	id 1sAHaO-0005f6-KI; Thu, 23 May 2024 19:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZU-0002Bn-Fi; Thu, 23 May 2024 19:10:05 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1sAHZb-0002Tr-5n; Thu, 23 May 2024 19:10:11 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHZS-0005s1-PL; Thu, 23 May 2024 19:10:04 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1f44b5d0c50so1607385ad.2; 
- Thu, 23 May 2024 16:10:00 -0700 (PDT)
+ id 1sAHZV-0005sQ-HW; Thu, 23 May 2024 19:10:10 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6f4ed9dc7beso1994092b3a.1; 
+ Thu, 23 May 2024 16:10:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505799; x=1717110599; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505801; x=1717110601; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4xWtYFgPKmZvzoUo1p/mj26aITEKQ3OxBcn5RDEMeAE=;
- b=nZDJyl4629u5TcOB/FFYp/TOEW+AyrMCUeBzyYLTX8x9n/I4/OotJIwjSpZZ4MPdxs
- UTcFipkab9dWeUBucjNgnH/cD+EGzUKkHbOKDJfzDd2G124iJQoYqSDYkuo6R+mJkZ/B
- w01ZWlbpm0DXbJkExij3VdYbTn1XERcxSBywLTytW8vZ6mgjaFbQfni/Ts7c7yO/dL/A
- ywL22JsHTF0FDK2L/ANFCsBN4fFIp7hS/Z9sEJGCwDKWLRzedwOIJ5qBm0IWEYTi4+WA
- BWKjK+o5DtRUXt9/q6Q2/TWxhtb7AauXgaFHMosp199vZOZESutgPXa1kAek3uCG5DDt
- Xo1A==
+ bh=gYRG8Z61ePU1sJn12EJuSOfM6DkBZ12r+JDVk0W/peM=;
+ b=dA2SXOnd1ELdh2FB1MyiDJYvvaFEw5H09lNHLQVEf1iv3gM4fe4yUf5M6ODzJ9ktAP
+ Dc5iZ5Dp1SU/HwgfvvKRrLUx+/ehL6RV8/R8o6yxv+DNDd/ZsK3OTZOTCZurK1U+fvEY
+ QoGXb2IomI77dfDRdnG0N8SWl3bABf9hGrbAbwhxAgOaMnEyr4vfy7tN2qxQo+BWF5eP
+ FPKmcHm9JthNnKg2T+Yk6U7W/OA4UHHBbUy15zAZySp+L18mkMuvaQdb2yhFAEA85zLp
+ IB8Ma5SBDHgb3sZivUVrdYXoyVpIf1bofXCjlfrfs2f5/aLkzJTDnS9oIPFcn/Y7zoOG
+ nO4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505799; x=1717110599;
+ d=1e100.net; s=20230601; t=1716505801; x=1717110601;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4xWtYFgPKmZvzoUo1p/mj26aITEKQ3OxBcn5RDEMeAE=;
- b=J7s7Bqx8loLlXRvmr4WPqVIhy6W+hT4u/+6I5y9ByI9DiQ0hDeXoL3Z3sPt3eZy/pC
- RpzyhBYUmSLNMDm9T9cvdwBWZv3yRVxPAKwYYk75D6Zv+9xjcG7X1ZuCZfRI0I/OJEtg
- 7wd1GyvG4Awsg5F5FQmQp4xumgFb1TxSw00IjHhl6lvUix13J82o6hdGp5s6qbscUp5X
- LwJFwGAO4BjsB6WKLJhe3Zuf1JebJ1iX07ZPxKYWAdR4UiJF3uvLOTuDDbVCJpldt42a
- xdmtPhD29iuBb/FFYHqtodRH78WV9MOLnWhlx3hKco2XYqfVKJ+qJZ/xJ/B3UiVMr2Ma
- O94w==
+ bh=gYRG8Z61ePU1sJn12EJuSOfM6DkBZ12r+JDVk0W/peM=;
+ b=DM4Dbq3mMyTqDAZPvg2aSvF70t9q5S4l+bSz5VOSM7k2ewRi1zKHCPVCqfIpTBeV4g
+ vvFkVHIaQgD7/Xuovpgdo7ubtWLaPkJ/HXT1DQxPFBiY8EwJdU43X9HU7VE0HL/K2UXy
+ tfi/V+LOlcEaZCp/CC9g/9UjOWFq7q3Xgv6QyG50zpY/uspecfvybotMdLo4YNFhxZa2
+ zAX48xJWCQyLVODI4pAGSjcKtASjZjN6l5AOy4dqkCTFjwoLSj5YdMDP6GDVC/XOdsvS
+ P/6NjLSvJJrdm70OFZCW/q0YTSmVo+7z+rSwMg7MLceJmhBLuAOZo40tElFWoOxYGFD/
+ f/uA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW3SikWC44O+vHvTmLsYm3SJEp3zL9MyEjmQ9NRy1Df6aEhNSc5ttl0ukTkceabxQoe96PRhJjo4SWvPeKxz6drQmM8
-X-Gm-Message-State: AOJu0Yw1eO0XKKhmnqfd6OImUTvEww5XyI2BKxQoDTuf7RquvWXnvMvH
- T/zOgInp/RlZJGqxaTtcM0idk3OxWAcoEED6P8QuPq/hrYAvgUcCCSv22w==
-X-Google-Smtp-Source: AGHT+IG4zaS0j4WzWY2a7KG7/BeYTBe0VJ7CMttqmMyNn8+/dHxqXTmHadvpNEpKge2hDiTZwr0mAg==
-X-Received: by 2002:a17:902:c60c:b0:1f2:ffcc:8a0b with SMTP id
- d9443c01a7336-1f4487186d1mr6534515ad.24.1716505798718; 
- Thu, 23 May 2024 16:09:58 -0700 (PDT)
+ AJvYcCVi5dxtVWu2OI1BFzzWNjTASxZuGRldSpWew33cl/m2RvQ5OjmBdQcNlylHpyNyfAV7iqrwbdy3j0pDqkPY20yB9u4r
+X-Gm-Message-State: AOJu0YwpfRO5rcLoGnazswulOVZ3X1H2WzApDDhuTUbMTh8B7y5trPzn
+ 5iVEKgKSnOEQWfrcSrew9hTFgfMnCPlDnX9XA5zv6mZ+8TuYRD9dC25qMw==
+X-Google-Smtp-Source: AGHT+IEZlhSNLRp9ntx3ik3LGgiSoVfOHd+yLVqIntWj+hTepdSr+qCBxgN9hpC71kH663vq7VVuyw==
+X-Received: by 2002:a05:6a00:2911:b0:6ea:ed87:1348 with SMTP id
+ d2e1a72fcca58-6f8e9fc03a7mr969939b3a.13.1716505801627; 
+ Thu, 23 May 2024 16:10:01 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.56
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.09.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:09:58 -0700 (PDT)
+ Thu, 23 May 2024 16:10:01 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 39/72] target/ppc: Remove unused struct 'mmu_ctx_hash32'
-Date: Fri, 24 May 2024 09:07:12 +1000
-Message-ID: <20240523230747.45703-40-npiggin@gmail.com>
+Subject: [PULL 40/72] target/ppc: Remove unused helper
+Date: Fri, 24 May 2024 09:07:13 +1000
+Message-ID: <20240523230747.45703-41-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,37 +91,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-I think it's use was removed by
-Commit 5883d8b296 ("mmu-hash*: Don't use full ppc_hash{32,
-64}_translate() path for get_phys_page_debug()")
+The helper_rac function is defined but not used, remove it.
 
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Signed-off-by: Dr. David Alan Gilbert <dave@treblig.org>
+Fixes: 005b69fdcc (target/ppc: Remove PowerPC 601 CPUs)
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-hash32.c | 6 ------
- 1 file changed, 6 deletions(-)
+ target/ppc/helper.h     |  2 --
+ target/ppc/mmu_helper.c | 24 ------------------------
+ 2 files changed, 26 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 6dfedab11d..da6e8b293c 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -37,12 +37,6 @@
- #  define LOG_BATS(...) do { } while (0)
- #endif
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index dd92c6a937..76b8f25c77 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -701,8 +701,6 @@ DEF_HELPER_2(book3s_msgclr, void, env, tl)
  
--struct mmu_ctx_hash32 {
--    hwaddr raddr;      /* Real address              */
--    int prot;                      /* Protection bits           */
--    int key;                       /* Access key                */
--};
+ DEF_HELPER_4(dlmzb, tl, env, tl, tl, i32)
+ #if !defined(CONFIG_USER_ONLY)
+-DEF_HELPER_2(rac, tl, env, tl)
 -
- static int ppc_hash32_pp_prot(int key, int pp, int nx)
+ DEF_HELPER_2(load_dcr, tl, env, tl)
+ DEF_HELPER_3(store_dcr, void, env, tl, tl)
+ #endif
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index d9d950e220..d4388e66be 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -596,30 +596,6 @@ void helper_6xx_tlbi(CPUPPCState *env, target_ulong EPN)
+     do_6xx_tlb(env, EPN, 1);
+ }
+ 
+-/*****************************************************************************/
+-/* PowerPC 601 specific instructions (POWER bridge) */
+-
+-target_ulong helper_rac(CPUPPCState *env, target_ulong addr)
+-{
+-    mmu_ctx_t ctx;
+-    int nb_BATs;
+-    target_ulong ret = 0;
+-
+-    /*
+-     * We don't have to generate many instances of this instruction,
+-     * as rac is supervisor only.
+-     *
+-     * XXX: FIX THIS: Pretend we have no BAT
+-     */
+-    nb_BATs = env->nb_BATs;
+-    env->nb_BATs = 0;
+-    if (get_physical_address_wtlb(env, &ctx, addr, 0, ACCESS_INT, 0) == 0) {
+-        ret = ctx.raddr;
+-    }
+-    env->nb_BATs = nb_BATs;
+-    return ret;
+-}
+-
+ static inline target_ulong booke_tlb_to_page_size(int size)
  {
-     int prot;
+     return 1024 << (2 * size);
 -- 
 2.43.0
 
