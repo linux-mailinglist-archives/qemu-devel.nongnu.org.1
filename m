@@ -2,75 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A38B8CD83F
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 18:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C8D8CD866
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 18:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAB7J-0005D7-42; Thu, 23 May 2024 12:16:33 -0400
+	id 1sABJv-0007gL-F1; Thu, 23 May 2024 12:29:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAB6t-00051i-7f
- for qemu-devel@nongnu.org; Thu, 23 May 2024 12:16:12 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sABJr-0007ek-Og
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 12:29:32 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAB6n-0002Yz-DT
- for qemu-devel@nongnu.org; Thu, 23 May 2024 12:16:06 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6f472d550cbso3351670b3a.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 09:16:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sABJp-0004sn-OK
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 12:29:31 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-572e48f91e9so13010617a12.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 09:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716480959; x=1717085759; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/mQMS7XHQY6TkE4rdOTcxfDvk4JYb50U7z9A8FwVzKY=;
- b=zYKQvNWm/QzWXYRaFtgvS7MEYRGCDkLhNzVPNazCFMZ+iD5CIeZeo8sP7mdnZa6/FG
- +ogwUeoVeO2fpFoPCEd7nN08bJfCdiNwVtkp2r+Vf35VtZWdil6ulYHkJntWrIWEUvI2
- JpWlW7NuoFtLLb/o3dAYHXQn++j6XiweOHLOBmOe85G+4fd/Iv/8Xdi/E4n+txy4xC+b
- +L98KKdCp4ORGC/TwDvB0nwxrFvRc6OGbVh+pQjFndK51q8h7FiC1z37Tg9XfmAqPh9U
- z+tJsapP4EQWqDYSehMK4xq6lh//SiyOsbh7k37FwG9G09cbi7nPmqzUO1aOpNCxuV7u
- 8PZw==
+ d=linaro.org; s=google; t=1716481766; x=1717086566; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=WjETyjrfThdWJ6XZACIryPyXtUeRjsjpNxtdDIp7xkA=;
+ b=NG+p/QP+pE2KT8AUeP2S0I3G0lnpbMosPzd47qKiYI0AMrhBsHBmYOPfVf6ymSxI5X
+ HHYmQX77AnLCjt2fgCHxz4rKe/dKKJbsIzjXd14ZsAr6gNxNoNa3aZcgPovg/XPUIlWP
+ 28o91Cccg9ZGkKsJ7L+5UUTicGQl2cLmm0+1JBN88np7pGsPEIxOp7C/qMM3SdD6r2FF
+ weFhvVE51K9jnbm21Zt7agdJWNDrF74bEmZk5bGtDNIuctc6Z+wfTqv6gbJf9UiqM8vY
+ +8zGw8FK1rdQrEw5ptmN8OcKLLEDbhTpMGqMc6KgsAk7dPvZpuVT67NCVgkviYJlRaRL
+ HRUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716480959; x=1717085759;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/mQMS7XHQY6TkE4rdOTcxfDvk4JYb50U7z9A8FwVzKY=;
- b=a466tvrYAXf7pBnmhGDG5RnV0MtBPRb9/dm+xCv8+OkTS0QCTfYW+uDVBpu0A+0pBm
- 8OFCkCtoVtzacm16rl+WS/96nsD6op9h8X9cAPcdou2KMWXxbjdmh8wLqisIsLuZZRMt
- oIAm9LHweQ/NLQN/jt3OoM0BW2+vbdhCdYK+bAKKLPCZMNYSqVZIBIpLGUBpA1qr4nvU
- JUutckbuAGm2Lj+6JlwjzKD/0b7obbA3+pIQhbiIahCcpSsLBPkNocD7osrhv+Fgu1Gm
- PtXbsA8E8t9jQdGlaqLODEA+ZztUto322JC0ksFuH4bIIvjptxGfQplFdSLlUe5U0E33
- h5SQ==
-X-Gm-Message-State: AOJu0Yx4KU+PTpbNkS9VPHhgzQed+tlkWMVLgAlcnEIIgVC4O1hKrp2Q
- 7yPyGIBCJ37Dl/QjCsfRitUoO3xd/cAxepvinhADob2e89vYTCfBx5iwfMqxh10mn5YGWP7QGNs
- e
-X-Google-Smtp-Source: AGHT+IEANUO/RWrdXFS9mu/zO2w9sUzRUQcRYEQR/kd46eFJEB+PJq6eoKMadBKppeEVh47srn3SAQ==
-X-Received: by 2002:a05:6a00:1382:b0:6ed:cd4c:cc1a with SMTP id
- d2e1a72fcca58-6f6d60300b2mr7251615b3a.8.1716480959466; 
- Thu, 23 May 2024 09:15:59 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f4d2a9d9acsm24890255b3a.90.2024.05.23.09.15.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 09:15:59 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Bernhard Beschow <shentey@gmail.com>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PULL 5/5] accel/tcg: Init tb size and icount before plugin_gen_tb_end
-Date: Thu, 23 May 2024 09:15:53 -0700
-Message-Id: <20240523161553.774673-6-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240523161553.774673-1-richard.henderson@linaro.org>
-References: <20240523161553.774673-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1716481766; x=1717086566;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WjETyjrfThdWJ6XZACIryPyXtUeRjsjpNxtdDIp7xkA=;
+ b=FibVUQOSnolhHgYGDCpWB/URA8LfXklevNWxrZ/bhtcVLNC6elGl4aoxLv/kOIhc5/
+ aa5bIjsivRqDBYH/grC9PImJ5NnxoFYjQJLDUpBhepyUWnG51vXcw1kYEVXA4xK/WvxY
+ dlS8grZl7Ymnqlkdh+YCjp9JNEkkt5eKOflzgvA9P3ps7xlfZpnYRqtr6I9DloVTkAcX
+ rc672NkgtQOtwPR3C40Kuk4rgm47PaGbtcuzN5wIMYPzImjlZTKLCxP8N0jB2L6j1jz3
+ f8wem5r7TqIuOctIVqM/y0tSAO5WTaizIX4NChj1sdLks6UqPBRf04f+Q3Bt02EdeoO+
+ sPzA==
+X-Gm-Message-State: AOJu0Yy3FHDVD9VtRbXb6RD1Aly5HIQ24VaAE5+A64xZiy5mmFpDXM+K
+ GQMORPOBgXrTl2qtp1hcUxNdGnBSO0VEbyGf1LjD58BvT19sSSkEJYVjFBzMa7YFkJhJOnn5zEl
+ qxXydabwkz+Q60+0Iq6VRO63loenPx701JT6/wA==
+X-Google-Smtp-Source: AGHT+IH6pND1CUUau5OrmQ4TWPzyW54E+8UXfn4dhSO7jl3r0m9Nju8rcnN65UpaQPWr90pgDyYkxoRpPKhJYGhxmew=
+X-Received: by 2002:a50:d5dc:0:b0:572:a167:65c6 with SMTP id
+ 4fb4d7f45d1cf-57832ac45abmr3140183a12.25.1716481766073; Thu, 23 May 2024
+ 09:29:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+References: <20240506010403.6204-1-richard.henderson@linaro.org>
+ <20240506010403.6204-16-richard.henderson@linaro.org>
+In-Reply-To: <20240506010403.6204-16-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 23 May 2024 17:29:14 +0100
+Message-ID: <CAFEAcA-cc0NhU728ysdsq9QSaF7D487onvG1cbcKH4wvQG+nAg@mail.gmail.com>
+Subject: Re: [PATCH 15/57] target/arm: Expand vfp neg and abs inline
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,42 +86,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When passing disassembly data to plugin callbacks,
-translator_st_len relies on db->tb->size having been set.
+On Mon, 6 May 2024 at 02:06, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/helper.h            |  6 ----
+>  target/arm/tcg/translate.h     | 30 +++++++++++++++++++
+>  target/arm/tcg/translate-a64.c | 44 +++++++++++++--------------
+>  target/arm/tcg/translate-vfp.c | 54 +++++++++++++++++-----------------
+>  target/arm/vfp_helper.c        | 30 -------------------
+>  5 files changed, 79 insertions(+), 85 deletions(-)
 
-Fixes: 4c833c60e047 ("disas: Use translator_st to get disassembly data")
-Reported-by: Bernhard Beschow <shentey@gmail.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- accel/tcg/translator.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index c56967eecd..113edcffe3 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -214,14 +214,14 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     set_can_do_io(db, true);
-     tcg_ctx->emit_before_op = NULL;
- 
-+    /* May be used by disas_log or plugin callbacks. */
-+    tb->size = db->pc_next - db->pc_first;
-+    tb->icount = db->num_insns;
-+
-     if (plugin_enabled) {
-         plugin_gen_tb_end(cpu, db->num_insns);
-     }
- 
--    /* The disas_log hook may use these values rather than recompute.  */
--    tb->size = db->pc_next - db->pc_first;
--    tb->icount = db->num_insns;
--
-     if (qemu_loglevel_mask(CPU_LOG_TB_IN_ASM)
-         && qemu_log_in_addr_range(db->pc_first)) {
-         FILE *logfile = qemu_log_trylock();
--- 
-2.34.1
+> +static inline void gen_vfp_absh(TCGv_i32 d, TCGv_i32 s)
+> +{
+> +    tcg_gen_andi_i32(d, s, INT16_MAX);
+> +}
+> +
+> +static inline void gen_vfp_abss(TCGv_i32 d, TCGv_i32 s)
+> +{
+> +    tcg_gen_andi_i32(d, s, INT32_MAX);
+> +}
+> +
+> +static inline void gen_vfp_absd(TCGv_i64 d, TCGv_i64 s)
+> +{
+> +    tcg_gen_andi_i64(d, s, INT64_MAX);
+> +}
+> +
+> +static inline void gen_vfp_negh(TCGv_i32 d, TCGv_i32 s)
+> +{
+> +    tcg_gen_xori_i32(d, s, 1u << 15);
 
+Just noticed something here -- we take a 32-bit input,
+so if there is junk in the top half, we will leave it.
+In contrast the old helper function:
+
+> -dh_ctype_f16 VFP_HELPER(neg, h)(dh_ctype_f16 a)
+> -{
+> -    return float16_chs(a);
+> -}
+
+passed the value through the float16 type which the
+float16_chs() function passes and returns, which is
+a uint16_t. So it will zero out the top half, which
+I think is the semantics we want for halfprec ops.
+
+Maybe
+
+static inline void gen_vfp_negh(TCGv_i32 d, TCGv_i32 s)
+{
+    tcg_gen_xori_i32(d, s, 1u << 15);
+    tcg_gen_ext16u_i32(d, d);
+}
+
+?
+
+There are probably places where the zero-extend
+is redundant, but there are definitely places where
+it is not, eg A32 VFP vneg.f16, because do_vfp_2op_hp()
+doesn't do a "load a 16 bit float value", it does
+vfp_load_reg32(), which is just a ld_i32.
+
+Or we could change the VFP codegen to work like the A64
+codegen, which has a read_fp_hreg() that does a
+ld16u to read the input value.
+
+gen_vfp_absh() doesn't have this problem because the
+AND operation clears out the top half anyway.
+
+thanks
+-- PMM
 
