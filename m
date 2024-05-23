@@ -2,111 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CDB8CDB4A
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 22:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC378CDB5D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 22:28:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAEud-0000dr-Pu; Thu, 23 May 2024 16:19:43 -0400
+	id 1sAF2B-00084L-L5; Thu, 23 May 2024 16:27:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAEuc-0000dZ-I7
- for qemu-devel@nongnu.org; Thu, 23 May 2024 16:19:42 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAEua-0002HL-AB
- for qemu-devel@nongnu.org; Thu, 23 May 2024 16:19:42 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 239D022CA1;
- Thu, 23 May 2024 20:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716495578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9a+i01ypPUBXQqxb3ZkvWdnNpmAXA9MsaEaz7vDZC8k=;
- b=TdftmnAvWA3gTBxu9JPZByiNJAVPpmSECqFwyl+/WdzQeJxppL3HxDjPZ/W8SHXiVK53xA
- UYG8ERBqJdg/wvKSgUXlBNI2bAWHSPdS9sxYm/tF67U/KXxbq4ELrbdYUGykx9FYTWm6Zu
- 2PGd5vmzULseVhrGLsNc8i4D4IbA6y0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716495578;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9a+i01ypPUBXQqxb3ZkvWdnNpmAXA9MsaEaz7vDZC8k=;
- b=U7GTMSPgYeEcHQI2QnWXLFL3E1PsA1bkN1fE4Er8UhpVZfiw8KbamLWBir/KIcVolRz/71
- MeGpm3nUHQwRdDDw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716495578; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9a+i01ypPUBXQqxb3ZkvWdnNpmAXA9MsaEaz7vDZC8k=;
- b=TdftmnAvWA3gTBxu9JPZByiNJAVPpmSECqFwyl+/WdzQeJxppL3HxDjPZ/W8SHXiVK53xA
- UYG8ERBqJdg/wvKSgUXlBNI2bAWHSPdS9sxYm/tF67U/KXxbq4ELrbdYUGykx9FYTWm6Zu
- 2PGd5vmzULseVhrGLsNc8i4D4IbA6y0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716495578;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9a+i01ypPUBXQqxb3ZkvWdnNpmAXA9MsaEaz7vDZC8k=;
- b=U7GTMSPgYeEcHQI2QnWXLFL3E1PsA1bkN1fE4Er8UhpVZfiw8KbamLWBir/KIcVolRz/71
- MeGpm3nUHQwRdDDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6761A13A6C;
- Thu, 23 May 2024 20:19:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id uHC8C9ekT2ZqcgAAD6G6ig
- (envelope-from <farosas@suse.de>); Thu, 23 May 2024 20:19:35 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Het Gala <het.gala@nutanix.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH 4/4] ci: Add the new migration device tests
-Date: Thu, 23 May 2024 17:19:22 -0300
-Message-Id: <20240523201922.28007-5-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240523201922.28007-1-farosas@suse.de>
-References: <20240523201922.28007-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1sAF27-00083w-FY; Thu, 23 May 2024 16:27:27 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
+ id 1sAF25-0004Nc-8I; Thu, 23 May 2024 16:27:27 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44NJWOS4031842; Thu, 23 May 2024 20:27:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=/Q8Nh63N/IYGPOKYt8JILleTYmS1pjj/9hzhLTNjT5w=;
+ b=hYV98WSRcCqu7RrBrk5QMHyOpAmQdDdjR8boP2Epxkt3eg4avPMdoyI+loGinybYHlL+
+ YocbUoMR6xQZyiWs5UVc5osMMsoMNwdeqHMAaVYO/Jc/lhgQjrhvfKPBv0G+ibTCaDcy
+ moMmivnykMiL8GZ85LiWTlJOsUBAadOo4fYgvIgX317N1wPv6ZmDkzlOQ+EFqcHblp4o
+ l/cAre40tZVgN9JeK37rJMwh+b1wfvJoygDSeCM8ATWUiNcZCe6LFSU4mMj/qWuMsVvQ
+ eyBMXpTG41xC5NfZdNwlBjTKRyKrnjiG61MzL8ABLM0+l6sRthMUvGXsiNyPX6lh1FnV wQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yac1t84uh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 May 2024 20:27:19 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44NKRJQR019703;
+ Thu, 23 May 2024 20:27:19 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yac1t84ud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 May 2024 20:27:19 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44NJ8MvW008123; Thu, 23 May 2024 20:27:18 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y78vmbsne-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 23 May 2024 20:27:18 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44NKREkh38142622
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 May 2024 20:27:16 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ACC2D58058;
+ Thu, 23 May 2024 20:27:14 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE5B85806C;
+ Thu, 23 May 2024 20:27:13 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
+ [9.61.136.97]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 23 May 2024 20:27:13 +0000 (GMT)
+Message-ID: <3fee9207627da81707bc8feecc9c611c545ce690.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/7] s390x/ccw: Error reporting cleanups
+From: Eric Farman <farman@linux.ibm.com>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Tony
+ Krowiak <akrowiak@linux.ibm.com>
+Date: Thu, 23 May 2024 16:27:13 -0400
+In-Reply-To: <20240522170107.289532-1-clg@redhat.com>
+References: <20240522170107.289532-1-clg@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wnaSmWAViqQTrmpgcVOgH03e_oVlJmiC
+X-Proofpoint-ORIG-GUID: 89TDCLtSZHYbKX4CRBqDAGi-fgwMZvWF
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- MIME_GOOD(-0.10)[text/plain]; RCPT_COUNT_SEVEN(0.00)[10];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email];
- RCVD_TLS_ALL(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-23_11,2024-05-23_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 mlxscore=0 clxscore=1011 priorityscore=1501 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 mlxlogscore=788
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405230141
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,79 +114,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have two new migration tests that check cross version
-compatibility. One uses the vmstate-static-checker.py script to
-compare the vmstate structures from two different QEMU versions. The
-other runs a simple migration with a few devices present in the VM, to
-catch obvious breakages.
+On Wed, 2024-05-22 at 19:01 +0200, C=C3=A9dric Le Goater wrote:
+> Hello,
+>=20
+> The first patches of this series simply apply the practices described
+> in the Rules section of the qapi/error.h file for routines taking an
+> 'Error **' argument. The remaining patches are a fixup in the error
+> path of vfio_ccw_realize() and some error reporting adjustements.
+>=20
+> Applies on top of this vfio PR :
+>=20
+> =C2=A0
+> https://lore.kernel.org/qemu-devel/20240522095442.195243-1-clg@redhat.com
+>=20
+> Thanks,
+>=20
+> C.
+>=20
+> C=C3=A9dric Le Goater (6):
+> =C2=A0 hw/s390x/ccw: Make s390_ccw_get_dev_info() return a bool
+> =C2=A0 s390x/css: Make CCWDeviceClass::realize return bool
+> =C2=A0 hw/s390x/ccw: Remove local Error variable from s390_ccw_realize()
+> =C2=A0 s390x/css: Make S390CCWDeviceClass::realize return bool
+> =C2=A0 vfio/ccw: Use the 'Error **errp' argument of vfio_ccw_realize()
+> =C2=A0 vfio/{ap,ccw}: Use warn_report_err() for IRQ notifier registration
+> =C2=A0=C2=A0=C2=A0 errors
+>=20
+> Zhenzhong Duan (1):
+> =C2=A0 vfio/ccw: Fix the missed unrealize() call in error path
+>=20
+> =C2=A0hw/s390x/ccw-device.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2=
+ +-
+> =C2=A0include/hw/s390x/s390-ccw.h |=C2=A0 2 +-
+> =C2=A0hw/s390x/ccw-device.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3=
+ ++-
+> =C2=A0hw/s390x/s390-ccw.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 29 +++++++++++++----------------
+> =C2=A0hw/vfio/ap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0hw/vfio/ccw.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 ++++++++----------
+> =C2=A06 files changed, 26 insertions(+), 30 deletions(-)
+>=20
 
-Add both tests to the migration-compat-common job.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- .gitlab-ci.d/buildtest.yml | 43 +++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
-
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index 91c57efded..bc7ac35983 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -202,18 +202,47 @@ build-previous-qemu:
-   needs:
-     - job: build-previous-qemu
-     - job: build-system-opensuse
--  # The old QEMU could have bugs unrelated to migration that are
--  # already fixed in the current development branch, so this test
--  # might fail.
-+  # This test is allowed to fail because:
-+  #
-+  # - The old QEMU could have bugs unrelated to migration that are
-+  #   already fixed in the current development branch.
-+  #
-+  # - The vmstate-static-checker script trips on renames and other
-+  #   backward-compatible changes to the vmstate structs.
-   allow_failure: true
-   variables:
-     IMAGE: opensuse-leap
-     MAKE_CHECK_ARGS: check-build
-   script:
--    # Use the migration-tests from the older QEMU tree. This avoids
--    # testing an old QEMU against new features/tests that it is not
--    # compatible with.
--    - cd build-previous
-+    - cd build
-+    # device state static test: Tests the vmstate structures for
-+    # compatibility across QEMU versions. Uses the latest version of
-+    # the tests.
-+    # old to new
-+    - PYTHON=pyvenv/bin/python3
-+          QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=./qemu-system-${TARGET}
-+          ./tests/qtest/migration-test -p /${TARGET}/migration/vmstate-checker-script
-+    # new to old skipped because vmstate version bumps are always
-+    # backward incompatible.
-+
-+    # device state runtime test: Performs a cross-version migration
-+    # with a select list of devices (see DEFAULT_DEVICES in
-+    # migration-test.c). Using the multifd tcp test here, but any will
-+    # do.
-+    # old to new
-+    - QTEST_DEVICE_OPTS=all QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-+          -p /${TARGET}/migration/multifd/tcp/channels/plain/none
-+    # new to old
-+    - QTEST_DEVICE_OPTS=all QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-${TARGET}
-+          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-+          -p /${TARGET}/migration/multifd/tcp/channels/plain/none
-+
-+    # migration core tests: Use the migration-tests from the older
-+    # QEMU tree. This avoids testing an old QEMU against new
-+    # features/tests that it is not compatible with.
-+    - cd ../build-previous
-     # old to new
-     - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
-           QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
--- 
-2.35.3
-
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
 
