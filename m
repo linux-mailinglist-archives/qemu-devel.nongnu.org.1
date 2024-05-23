@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB82F8CD67E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7877E8CD685
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:02:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9w2-0004y2-FE; Thu, 23 May 2024 11:00:50 -0400
+	id 1sA9w1-0004v0-LM; Thu, 23 May 2024 11:00:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vy-0004lB-3p
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sA9vz-0004r3-OJ
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9vw-0004mg-BC
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:45 -0400
+ id 1sA9vx-0004mu-VK
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476443;
+ s=mimecast20190719; t=1716476445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q8r8fuXfNS1frrmgB4ao1Xxrb7dvTzd90fOiUxzWjNQ=;
- b=Z9H4KFgOlY/m0Of+pg8g+4RD681+wcqP2Ik6HvUOJ+JtH3NBtapI4VDA8ggjVmL7cjeMGQ
- 1Lk16Lo3LJVlbTXisDXJ9dN0XDQ+SYS3QalCqw69V7QvEe4cNU1vOBqxKR3FnOAvRf8kuR
- neAV2nD3Uv2/A+q1h2L8VqdmKlDfsjM=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PA8Yx9dDcVAjLfl4bPdHEZllpwb4CCTSG4hRdz+6q9M=;
+ b=BLHx8wFK5TIeZogYYjx+3FWhmDKK/JP0b1taatHMDA3Yn22p6vSwox+blyPAK5c01UfPE+
+ /8tUn2sGj7L4RrQhc40QHiU5Urdb8rSVlcCDgOJZ/xShK3VbrbbNhfsV3+6QDYtLY1WI9S
+ bulp1i/k8hFFjpxBXIiVMepTL0HhqQs=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-MDXRjKNbNwqnHOI1iR8wnw-1; Thu, 23 May 2024 11:00:41 -0400
-X-MC-Unique: MDXRjKNbNwqnHOI1iR8wnw-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-52236a56aa1so1304008e87.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:41 -0700 (PDT)
+ us-mta-628-b6g3wj06MqmtCOwIjYYCpg-1; Thu, 23 May 2024 11:00:43 -0400
+X-MC-Unique: b6g3wj06MqmtCOwIjYYCpg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a621c9a65f4so82658066b.2
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476439; x=1717081239;
+ d=1e100.net; s=20230601; t=1716476442; x=1717081242;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q8r8fuXfNS1frrmgB4ao1Xxrb7dvTzd90fOiUxzWjNQ=;
- b=FE7wOylChET5qK/2O9mALgdh7NpgO/OLC4M47QxGoa0tWBxZDhzrkTWMJNkx7do/fq
- VCgH3X5puSc4i6qmIwOhr3s8Vtdy4APBWUJB2U9WJsLlcDYpZpJt9rDi9W2Yt5rVJTdV
- BfkO9sPbJltBIRwxIT0WEcuC0yw9CuupCYzOgJ1rLN/gaynhHXB4UpA01vSbcEzwcwtH
- apR4JC8rrf4NhfWHgyFYJk/xQJzsfiJBfMViCiFIRc/1RSv5/Im3nESm9WICacQoIFJM
- S9pv0k3XJlUnjkC02/paMNEg+EdHgYiwdGoJXX/fpRGzObp+PO0I3+KNjNoYX1Fr5iDO
- ladg==
-X-Gm-Message-State: AOJu0Yx91yw4RfS0kyG3Z3kVnPYMFWlCIiG8pdFNhnjtwuucDLepzAaV
- 7FfJ+tfS5HEnWGQwUywiJ5tKejg9GVU6NaoRJMDKYKmhySzUQtKeAmWTEAtn233IbSbtwLTVq6g
- v/1zBkIFnYUFOXpvfexIaJx4Iu6Lpho+AQXoy90xOHQeFCC3RRlZnpbwyZ6U5zfuuV5vKK5RTW5
- rfCoBeaDx+vmidjMdHC2dWxOCozr2s6yokwRfv
-X-Received: by 2002:a19:385c:0:b0:51e:25d2:453f with SMTP id
- 2adb3069b0e04-526c15eb8admr2943940e87.68.1716476439637; 
- Thu, 23 May 2024 08:00:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4rX1SNUxqi/sea3OI+oD5NvncjNQHTmyAwiOyekA4TG0W6l9HONHCp7am9z4InagSjIuKeg==
-X-Received: by 2002:a19:385c:0:b0:51e:25d2:453f with SMTP id
- 2adb3069b0e04-526c15eb8admr2943898e87.68.1716476439095; 
- Thu, 23 May 2024 08:00:39 -0700 (PDT)
+ bh=PA8Yx9dDcVAjLfl4bPdHEZllpwb4CCTSG4hRdz+6q9M=;
+ b=jseq/oRqSgfFKHAFpoZV0HBY0UpOS6I1MmAWoUvBTx+PqDzqo9mlpfZi18q28ATc5W
+ dNyLqLKaXw8dZppCFmnojunI9Jdt9vpGmZphs9cmYciMNMfKIkUjOZoPMkZ6VFsLYTfJ
+ 9mmB5N6jebIqXDAZJ5YEIV4D/znQfkjeUnZR4yZVNw30qR+yRfX7JDxQkawSIo7pdry3
+ wufjU+B7CzkSCklvN5tLqlZ2WCMDbF4r+BFAcFZrPFEc+V/9m4VdOT4EdowqYWkotXyW
+ xVMqUe2tfFAuqYwDMghf4EHaAm90rlnNGE4K3kPGzyip/KCyb6/fKc4axlpeM36E7/SW
+ SvuQ==
+X-Gm-Message-State: AOJu0YyB8VOsdOAD2pQTJ8HEcFsQkT22UAridZxUCopCggxC7r/Xt9ID
+ OZwq9FkRTHsFbOMM23Mph+ewzOBIX/nFYHZsONKVry17w/DRvJsKrLSL7aWx3FmiOUjh9o5veb5
+ 867N2o6fQ7M+BXSHWiHODZEID/TkqNW2uLAHhUh5qRlk5eY24uJy6IlxwvIhRwPtNQj6kHk3pMX
+ QIz+JdBw/Lnan/goW68FkckkTjshJWGmaUrdJK
+X-Received: by 2002:a17:906:a0c9:b0:a59:9d4c:eb09 with SMTP id
+ a640c23a62f3a-a6228069286mr362107366b.27.1716476442051; 
+ Thu, 23 May 2024 08:00:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHWQ0oj7QicNW+oP0A0wU0SLQE9fa7b8SN+jww+F0zv6DF6SPaCOrJu9nVkoPq/UmiASPKLsA==
+X-Received: by 2002:a17:906:a0c9:b0:a59:9d4c:eb09 with SMTP id
+ a640c23a62f3a-a6228069286mr362105866b.27.1716476441660; 
+ Thu, 23 May 2024 08:00:41 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5ce94e51basm1039266366b.103.2024.05.23.08.00.38
+ a640c23a62f3a-a5a179c823dsm1942307666b.100.2024.05.23.08.00.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:00:38 -0700 (PDT)
+ Thu, 23 May 2024 08:00:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/23] target/i386: generate simpler code for ROL/ROR with
- immediate count
-Date: Thu, 23 May 2024 17:00:14 +0200
-Message-ID: <20240523150036.1050011-2-pbonzini@redhat.com>
+Subject: [PULL 02/23] target/i386: clean up AAM/AAD
+Date: Thu, 23 May 2024 17:00:15 +0200
+Message-ID: <20240523150036.1050011-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,103 +100,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gen_rot_carry and gen_rot_overflow are meant to be called with count == NULL
-if the count cannot be zero.  However this is not done in gen_ROL and gen_ROR,
-and writing everywhere "can_be_zero ? count : NULL" is burdensome and less
-readable.  Just pass can_be_zero as a separate argument.
+The 32-bit AAM/AAD opcodes are using helpers that read and write flags and
+env->regs[R_EAX].  Clean them up so that the table correctly includes AX
+as a 16-bit input and output.
 
-gen_RCL and gen_RCR use a conditional branch to skip the computation
-if count is zero, so they can pass false unconditionally to gen_rot_overflow.
+No real reason to do it to be honest, but they are nice one-output helpers
+and it removes the masking of env->regs[R_EAX] that generic load/writeback
+code already does.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240522123914.608516-1-pbonzini@redhat.com>
+Message-ID: <20240522123912.608497-1-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/emit.c.inc | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ target/i386/helper.h             |  4 ++--
+ target/i386/tcg/int_helper.c     | 19 ++++++++-----------
+ target/i386/tcg/decode-new.c.inc |  4 ++--
+ target/i386/tcg/emit.c.inc       |  8 ++++----
+ 4 files changed, 16 insertions(+), 19 deletions(-)
 
+diff --git a/target/i386/helper.h b/target/i386/helper.h
+index 3c207ac62d6..a52a1bf0f21 100644
+--- a/target/i386/helper.h
++++ b/target/i386/helper.h
+@@ -22,8 +22,8 @@ DEF_HELPER_FLAGS_5(bndstx32, TCG_CALL_NO_WG, void, env, tl, tl, i64, i64)
+ DEF_HELPER_FLAGS_5(bndstx64, TCG_CALL_NO_WG, void, env, tl, tl, i64, i64)
+ DEF_HELPER_1(bnd_jmp, void, env)
+ 
+-DEF_HELPER_2(aam, void, env, int)
+-DEF_HELPER_2(aad, void, env, int)
++DEF_HELPER_FLAGS_2(aam, TCG_CALL_NO_RWG_SE, tl, tl, tl)
++DEF_HELPER_FLAGS_2(aad, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+ DEF_HELPER_1(aaa, void, env)
+ DEF_HELPER_1(aas, void, env)
+ DEF_HELPER_1(daa, void, env)
+diff --git a/target/i386/tcg/int_helper.c b/target/i386/tcg/int_helper.c
+index df16130f5df..4cc59f15203 100644
+--- a/target/i386/tcg/int_helper.c
++++ b/target/i386/tcg/int_helper.c
+@@ -145,27 +145,24 @@ void helper_idivl_EAX(CPUX86State *env, target_ulong t0)
+ 
+ /* bcd */
+ 
+-/* XXX: exception */
+-void helper_aam(CPUX86State *env, int base)
++target_ulong helper_aam(target_ulong al, target_ulong base)
+ {
+-    int al, ah;
++    int ah;
+ 
+-    al = env->regs[R_EAX] & 0xff;
++    al &= 0xff;
+     ah = al / base;
+     al = al % base;
+-    env->regs[R_EAX] = (env->regs[R_EAX] & ~0xffff) | al | (ah << 8);
+-    CC_DST = al;
++    return al | (ah << 8);
+ }
+ 
+-void helper_aad(CPUX86State *env, int base)
++target_ulong helper_aad(target_ulong ax, target_ulong base)
+ {
+     int al, ah;
+ 
+-    al = env->regs[R_EAX] & 0xff;
+-    ah = (env->regs[R_EAX] >> 8) & 0xff;
++    al = ax & 0xff;
++    ah = (ax >> 8) & 0xff;
+     al = ((ah * base) + al) & 0xff;
+-    env->regs[R_EAX] = (env->regs[R_EAX] & ~0xffff) | al;
+-    CC_DST = al;
++    return al;
+ }
+ 
+ void helper_aaa(CPUX86State *env)
+diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+index 141ab2bc560..27dc1bb146b 100644
+--- a/target/i386/tcg/decode-new.c.inc
++++ b/target/i386/tcg/decode-new.c.inc
+@@ -1480,8 +1480,8 @@ static const X86OpEntry opcodes_root[256] = {
+     [0xD1] = X86_OP_GROUP1(group2, E,v),
+     [0xD2] = X86_OP_GROUP2(group2, E,b, 1,b), /* CL */
+     [0xD3] = X86_OP_GROUP2(group2, E,v, 1,b), /* CL */
+-    [0xD4] = X86_OP_ENTRYr(AAM, I,b),
+-    [0xD5] = X86_OP_ENTRYr(AAD, I,b),
++    [0xD4] = X86_OP_ENTRY2(AAM, 0,w, I,b),
++    [0xD5] = X86_OP_ENTRY2(AAD, 0,w, I,b),
+     [0xD6] = X86_OP_ENTRYw(SALC, 0,b),
+     [0xD7] = X86_OP_ENTRY1(XLAT, 0,b, zextT0), /* AL read/written */
+ 
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 2dee33dd487..33cb59e54b8 100644
+index 33cb59e54b8..c78e35b1e28 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -2901,14 +2901,15 @@ static bool gen_eflags_adcox(DisasContext *s, X86DecodedInsn *decode, bool want_
-     return got_cf;
- }
+@@ -1084,8 +1084,8 @@ static void gen_AAA(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
  
--static void gen_rot_overflow(X86DecodedInsn *decode, TCGv result, TCGv old, TCGv count)
-+static void gen_rot_overflow(X86DecodedInsn *decode, TCGv result, TCGv old,
-+                             bool can_be_zero, TCGv count)
+ static void gen_AAD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
  {
-     MemOp ot = decode->op[0].ot;
--    TCGv temp = count ? tcg_temp_new() : decode->cc_src2;
-+    TCGv temp = can_be_zero ? tcg_temp_new() : decode->cc_src2;
+-    gen_helper_aad(tcg_env, tcg_constant_i32(decode->immediate));
+-    set_cc_op(s, CC_OP_LOGICB);
++    gen_helper_aad(s->T0, s->T0, s->T1);
++    prepare_update1_cc(decode, s, CC_OP_LOGICB);
+ }
  
-     tcg_gen_xor_tl(temp, old, result);
-     tcg_gen_extract_tl(temp, temp, (8 << ot) - 1, 1);
--    if (count) {
-+    if (can_be_zero) {
-         tcg_gen_movcond_tl(TCG_COND_EQ, decode->cc_src2, count, tcg_constant_tl(0),
-                            decode->cc_src2, temp);
-     }
-@@ -3000,7 +3001,7 @@ static void gen_RCL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     /* Compute result and outgoing overflow */
-     tcg_gen_mov_tl(decode->cc_src2, s->T0);
-     tcg_gen_or_tl(s->T0, low, high);
--    gen_rot_overflow(decode, s->T0, decode->cc_src2, NULL);
-+    gen_rot_overflow(decode, s->T0, decode->cc_src2, false, NULL);
- 
-     if (zero_label) {
-         gen_set_label(zero_label);
-@@ -3053,7 +3054,7 @@ static void gen_RCR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     /* Compute result and outgoing overflow */
-     tcg_gen_mov_tl(decode->cc_src2, s->T0);
-     tcg_gen_or_tl(s->T0, low, high);
--    gen_rot_overflow(decode, s->T0, decode->cc_src2, NULL);
-+    gen_rot_overflow(decode, s->T0, decode->cc_src2, false, NULL);
- 
-     if (zero_label) {
-         gen_set_label(zero_label);
-@@ -3129,9 +3130,10 @@ static TCGv_i32 gen_rot_replicate(MemOp ot, TCGv in)
+ static void gen_AAM(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+@@ -1093,8 +1093,8 @@ static void gen_AAM(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     if (decode->immediate == 0) {
+         gen_exception(s, EXCP00_DIVZ);
+     } else {
+-        gen_helper_aam(tcg_env, tcg_constant_i32(decode->immediate));
+-        set_cc_op(s, CC_OP_LOGICB);
++        gen_helper_aam(s->T0, s->T0, s->T1);
++        prepare_update1_cc(decode, s, CC_OP_LOGICB);
      }
  }
  
--static void gen_rot_carry(X86DecodedInsn *decode, TCGv result, TCGv count, int bit)
-+static void gen_rot_carry(X86DecodedInsn *decode, TCGv result,
-+                          bool can_be_zero, TCGv count, int bit)
- {
--    if (count == NULL) {
-+    if (!can_be_zero) {
-         tcg_gen_extract_tl(decode->cc_dst, result, bit, 1);
-     } else {
-         TCGv temp = tcg_temp_new();
-@@ -3165,8 +3167,8 @@ static void gen_ROL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-     } else {
-         tcg_gen_rotl_tl(s->T0, s->T0, count);
-     }
--    gen_rot_carry(decode, s->T0, count, 0);
--    gen_rot_overflow(decode, s->T0, old, count);
-+    gen_rot_carry(decode, s->T0, can_be_zero, count, 0);
-+    gen_rot_overflow(decode, s->T0, old, can_be_zero, count);
- }
- 
- static void gen_ROR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-@@ -3190,12 +3192,12 @@ static void gen_ROR(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-         tcg_gen_rotr_i32(temp32, temp32, count32);
-         /* Zero extend to facilitate later optimization.  */
-         tcg_gen_extu_i32_tl(s->T0, temp32);
--        gen_rot_carry(decode, s->T0, count, 31);
-+        gen_rot_carry(decode, s->T0, can_be_zero, count, 31);
-     } else {
-         tcg_gen_rotr_tl(s->T0, s->T0, count);
--        gen_rot_carry(decode, s->T0, count, TARGET_LONG_BITS - 1);
-+        gen_rot_carry(decode, s->T0, can_be_zero, count, TARGET_LONG_BITS - 1);
-     }
--    gen_rot_overflow(decode, s->T0, old, count);
-+    gen_rot_overflow(decode, s->T0, old, can_be_zero, count);
- }
- 
- static void gen_RORX(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
 -- 
 2.45.1
 
