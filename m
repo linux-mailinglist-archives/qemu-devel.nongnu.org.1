@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4F38CDD53
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2468CDD52
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHYE-0007TJ-PK; Thu, 23 May 2024 19:08:46 -0400
+	id 1sAHYD-0007Rw-Or; Thu, 23 May 2024 19:08:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHY2-0007KB-Oe; Thu, 23 May 2024 19:08:34 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1sAHY6-0007NK-TI; Thu, 23 May 2024 19:08:39 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHXz-0005hp-A8; Thu, 23 May 2024 19:08:34 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-6818811ef2dso210316a12.0; 
- Thu, 23 May 2024 16:08:30 -0700 (PDT)
+ id 1sAHY2-0005i1-M7; Thu, 23 May 2024 19:08:38 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6f8eba8f25eso276492b3a.3; 
+ Thu, 23 May 2024 16:08:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505709; x=1717110509; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505712; x=1717110512; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=laAxPKfCyYBe5powXbpp9jaYAUtIy0jy0u28wEPozhU=;
- b=JpRQzw3+MB6cT19HAxVB3GxI5KETrVdA0eZp6pVRNqr+FJ0eTbA4d6/gmIWMH9vrZH
- Ii4Ek+9k5Webl8F/PmE7XQldm/V6f5r2qBX4uVUfjEAA16/ORBeD+iXPgThRLiVsFfsL
- 5V46NgIP5LtSxXF9VpwRYOHIIW6MopA8Ryfbx8kHSN/4zEEr7svoljr9CCxfH00wJ3DW
- Nv4CmIHltk3cSoQWHDVisbIe+xXuEBXuorJudZE9uXjoQYgldpDuPDD9nCeJL1jM+VC7
- xx7w07iy4zUZzj0ToaBGM8R30Bxp/60ZrFngAMhzJShIxLdUVGV+zZLh6BRsBl9BbRqX
- Wdzg==
+ bh=0BH9YWkRxhEEGsqmoRtfdIuuCD8+vTnkhBYOiiETUc8=;
+ b=dUDFxe9GtAZcHt+rOnGDNkQXqaDeLMu4V1l7jgxKDOQ2MMJdRj1pKik2ZSHBOo6QFy
+ lWx7FfJPZq7K5uVU0A4efQSwJ9uEa54wiRMlMFb+mneBuE0lX7MMc9exo2ArVtGYkHgz
+ YIVHXDQhXCxNe0LD3OK8YBSKrcAKJNq6z9yHIqlxOfRSX2kpvtS2BO4rgRCykqduKqj9
+ H/oJzSp/FaR9v+eBsdtGXYrznssi+oB6JLUrmNzxW+xrHdFR4r9k3gfwJpO8N79Xq+iY
+ ia2DB6d1hsfj/yEUs+ilIFbofnwjX5ln/mJPo3tqy4YUwjnW2qvXKjjU6PR7XdZ0QijU
+ wn8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505709; x=1717110509;
+ d=1e100.net; s=20230601; t=1716505712; x=1717110512;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=laAxPKfCyYBe5powXbpp9jaYAUtIy0jy0u28wEPozhU=;
- b=uHDYzh/LKLxZ9gLdcGM7HG5jEuD+0MYTacgzuKscRqa+XZSwI5N12x+F22Nx8t2nkP
- imlUPbZlH4k3X71xM1TS49KTfRxx7urjHQ4342feYnMhWBVPmbeTK0cAgq8C2Xdfbu7K
- vF/lsYZd5Hgh4g2V1raYmLlB/Vylxmf1TN+hkw3F36BoBBNwbbSJ40L5mCj6Aud/fLAr
- DYkjv4QGs2e8O+fStw8E4Yqfmj/qqU37HaVRMp6FBDhgn1a0aqUU0juEckh5XrmwpNGr
- 5evOIzpPfsiafyJVyMA4WzUot4lN+atPLscHPX4XIM6JxFA0Y50AbjfP4TRwDksOrjG+
- khBg==
+ bh=0BH9YWkRxhEEGsqmoRtfdIuuCD8+vTnkhBYOiiETUc8=;
+ b=tYl7pEe009rtMCYQmGZEKn0MM9xzuH4gMxgWXzMRJM4CGUQT+pLL7DcoscxgvVBrVa
+ CQq/ncYeA7Rf1X8qUwtDcPQHYm5jxpctnFATZwb8NzsnJQVA+t9X2nq6IYCma0TsVSK2
+ dhPwAi3bJzrrF7sazz9rwlJC4RG+5IQ95yTyDpF8edwtF3nxbMIZHsTR47CpUuFDmnZ3
+ mHZmEBImHwPNqUnpNGxGfco7mNJ0sH4LrTEzMSJ/DJBGgU8ZfoO2+YPC4DGce/z1VMU7
+ efpY95oisVGNgm1lwVGdD+j3WREmZM+xxqA6ESUfKFtj7HF032mCUCuSq1RpZCIEoaN5
+ rVbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWM+emhn04lNGBdDV3AsL5PdpGyqzRdmJhn9SGrH7TDmh9VPRXykK21zWASOBshyAb7N0UYosLfDGcGXgQBJ2TknvFt
-X-Gm-Message-State: AOJu0YzWOnBFtlyc6g7Zf5vLxg3cMbNOIB5g6FXbtK5n1vtpgVx0mLzS
- 2pyToPDhVgaSXZeg+VQjhCjytZTpqzEEsix5bUmA8xrHmKLThXNTx9B6eA==
-X-Google-Smtp-Source: AGHT+IH1t0Z5oE6IGCsLUtJjc//fY1CzjbAYG13o5gE5cVg2Fx9oM38cK2WLq3c+JJUPUIfryKTjWw==
-X-Received: by 2002:a17:90a:a012:b0:2bf:6b68:5219 with SMTP id
- 98e67ed59e1d1-2bf6b6853b7mr21092a91.41.1716505709027; 
- Thu, 23 May 2024 16:08:29 -0700 (PDT)
+ AJvYcCV0VYrtZXDs0SW/3pFmqDpJRIqzmkJSf4lar4ocNRJukVp8NAKf2ooYo87EynEDKG1k9TbBh/zk95AsIVHu3ESCixPW
+X-Gm-Message-State: AOJu0Yx1PQ/UjGWKR1nO5Ls2Qs9Ji0Qy4LAHPIhm41FRWvC6qOv6Ve9I
+ qG+stU0iriw8076rX7sn8mmvUEkr4zZhMJ93zyix/jxEfq9EQpGjTf+stw==
+X-Google-Smtp-Source: AGHT+IEEf7BivAllKeUpCSt+I6gyuiZZ6V764hD5VQxs2hkm8jPgeUphwUd6VeCn9dg/zECwa4jttg==
+X-Received: by 2002:a05:6a21:3417:b0:1af:fcbf:df28 with SMTP id
+ adf61e73a8af0-1b212f0e9cfmr1000608637.41.1716505712313; 
+ Thu, 23 May 2024 16:08:32 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.26
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.08.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:08:28 -0700 (PDT)
+ Thu, 23 May 2024 16:08:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Chinmay Rath <rathc@linux.ibm.com>
-Subject: [PULL 10/72] target/ppc: Move floating-point arithmetic instructions
- to decodetree.
-Date: Fri, 24 May 2024 09:06:43 +1000
-Message-ID: <20240523230747.45703-11-npiggin@gmail.com>
+ Chinmay Rath <rathc@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 11/72] target/ppc: Move mul{li, lw, lwo, hw,
+ hwu} instructions to decodetree.
+Date: Fri, 24 May 2024 09:06:44 +1000
+Message-ID: <20240523230747.45703-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,639 +96,235 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Chinmay Rath <rathc@linux.ibm.com>
 
-This patch moves the below instructions to decodetree specification :
+Moving the following instructions to decodetree specification :
+	mulli                   	: D-form
+	mul{lw, lwo, hw, hwu}[.]	: XO-form
 
-    f{add, sub, mul, div, re, rsqrte, madd, msub, nmadd, nmsub}[s][.] : A-form
-    ft{div, sqrt}                                                     : X-form
-
-With this patch, all the floating-point arithmetic instructions have been
-moved to decodetree.
 The changes were verified by validating that the tcg ops generated by those
 instructions remain the same, which were captured with the '-d in_asm,op' flag.
+Also cleaned up code for mullw[o][.] as per review comments while
+keeping the logic of the tcg ops generated semantically same.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/fpu_helper.c            |  38 ++--
- target/ppc/helper.h                |  44 ++---
- target/ppc/insn32.decode           |  42 +++++
- target/ppc/translate/fp-impl.c.inc | 285 +++++++++++------------------
- target/ppc/translate/fp-ops.c.inc  |  31 ----
- 5 files changed, 192 insertions(+), 248 deletions(-)
+ target/ppc/insn32.decode                   |  9 +++
+ target/ppc/translate.c                     | 89 ----------------------
+ target/ppc/translate/fixedpoint-impl.c.inc | 66 ++++++++++++++++
+ 3 files changed, 75 insertions(+), 89 deletions(-)
 
-diff --git a/target/ppc/fpu_helper.c b/target/ppc/fpu_helper.c
-index 8d0cbe27e7..51bce99fd5 100644
---- a/target/ppc/fpu_helper.c
-+++ b/target/ppc/fpu_helper.c
-@@ -673,7 +673,7 @@ static uint64_t do_fmadds(CPUPPCState *env, float64 a, float64 b,
-     uint64_t helper_##op(CPUPPCState *env, uint64_t arg1,            \
-                          uint64_t arg2, uint64_t arg3)               \
-     { return do_fmadd(env, arg1, arg2, arg3, madd_flags, GETPC()); } \
--    uint64_t helper_##op##s(CPUPPCState *env, uint64_t arg1,         \
-+    uint64_t helper_##op##S(CPUPPCState *env, uint64_t arg1,         \
-                          uint64_t arg2, uint64_t arg3)               \
-     { return do_fmadds(env, arg1, arg2, arg3, madd_flags, GETPC()); }
- 
-@@ -682,10 +682,10 @@ static uint64_t do_fmadds(CPUPPCState *env, float64 a, float64 b,
- #define NMADD_FLGS float_muladd_negate_result
- #define NMSUB_FLGS (float_muladd_negate_c | float_muladd_negate_result)
- 
--FPU_FMADD(fmadd, MADD_FLGS)
--FPU_FMADD(fnmadd, NMADD_FLGS)
--FPU_FMADD(fmsub, MSUB_FLGS)
--FPU_FMADD(fnmsub, NMSUB_FLGS)
-+FPU_FMADD(FMADD, MADD_FLGS)
-+FPU_FMADD(FNMADD, NMADD_FLGS)
-+FPU_FMADD(FMSUB, MSUB_FLGS)
-+FPU_FMADD(FNMSUB, NMSUB_FLGS)
- 
- /* frsp - frsp. */
- static uint64_t do_frsp(CPUPPCState *env, uint64_t arg, uintptr_t retaddr)
-@@ -778,18 +778,18 @@ float64 helper_##name(CPUPPCState *env, float64 arg1, float64 arg2)           \
-     return ret;                                                               \
- }
- 
--FPU_FRE(fre, float64_div)
--FPU_FRE(fres, float64r32_div)
--FPU_FRSQRTE(frsqrte, float64_div)
--FPU_FRSQRTE(frsqrtes, float64r32_div)
--FPU_HELPER(fadd, float64_add, addsub_flags_handler)
--FPU_HELPER(fadds, float64r32_add, addsub_flags_handler)
--FPU_HELPER(fsub, float64_sub, addsub_flags_handler)
--FPU_HELPER(fsubs, float64r32_sub, addsub_flags_handler)
--FPU_HELPER(fmul, float64_mul, mul_flags_handler)
--FPU_HELPER(fmuls, float64r32_mul, mul_flags_handler)
--FPU_HELPER(fdiv, float64_div, div_flags_handler)
--FPU_HELPER(fdivs, float64r32_div, div_flags_handler)
-+FPU_FRE(FRE, float64_div)
-+FPU_FRE(FRES, float64r32_div)
-+FPU_FRSQRTE(FRSQRTE, float64_div)
-+FPU_FRSQRTE(FRSQRTES, float64r32_div)
-+FPU_HELPER(FADD, float64_add, addsub_flags_handler)
-+FPU_HELPER(FADDS, float64r32_add, addsub_flags_handler)
-+FPU_HELPER(FSUB, float64_sub, addsub_flags_handler)
-+FPU_HELPER(FSUBS, float64r32_sub, addsub_flags_handler)
-+FPU_HELPER(FMUL, float64_mul, mul_flags_handler)
-+FPU_HELPER(FMULS, float64r32_mul, mul_flags_handler)
-+FPU_HELPER(FDIV, float64_div, div_flags_handler)
-+FPU_HELPER(FDIVS, float64r32_div, div_flags_handler)
- 
- /* fsel - fsel. */
- uint64_t helper_FSEL(uint64_t a, uint64_t b, uint64_t c)
-@@ -806,7 +806,7 @@ uint64_t helper_FSEL(uint64_t a, uint64_t b, uint64_t c)
-     }
- }
- 
--uint32_t helper_ftdiv(uint64_t fra, uint64_t frb)
-+uint32_t helper_FTDIV(uint64_t fra, uint64_t frb)
- {
-     int fe_flag = 0;
-     int fg_flag = 0;
-@@ -842,7 +842,7 @@ uint32_t helper_ftdiv(uint64_t fra, uint64_t frb)
-     return 0x8 | (fg_flag ? 4 : 0) | (fe_flag ? 2 : 0);
- }
- 
--uint32_t helper_ftsqrt(uint64_t frb)
-+uint32_t helper_FTSQRT(uint64_t frb)
- {
-     int fe_flag = 0;
-     int fg_flag = 0;
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 86f97ee1e7..f177d5b906 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -110,32 +110,32 @@ DEF_HELPER_2(friz, i64, env, i64)
- DEF_HELPER_2(frip, i64, env, i64)
- DEF_HELPER_2(frim, i64, env, i64)
- 
--DEF_HELPER_3(fadd, f64, env, f64, f64)
--DEF_HELPER_3(fadds, f64, env, f64, f64)
--DEF_HELPER_3(fsub, f64, env, f64, f64)
--DEF_HELPER_3(fsubs, f64, env, f64, f64)
--DEF_HELPER_3(fmul, f64, env, f64, f64)
--DEF_HELPER_3(fmuls, f64, env, f64, f64)
--DEF_HELPER_3(fdiv, f64, env, f64, f64)
--DEF_HELPER_3(fdivs, f64, env, f64, f64)
--DEF_HELPER_4(fmadd, i64, env, i64, i64, i64)
--DEF_HELPER_4(fmsub, i64, env, i64, i64, i64)
--DEF_HELPER_4(fnmadd, i64, env, i64, i64, i64)
--DEF_HELPER_4(fnmsub, i64, env, i64, i64, i64)
--DEF_HELPER_4(fmadds, i64, env, i64, i64, i64)
--DEF_HELPER_4(fmsubs, i64, env, i64, i64, i64)
--DEF_HELPER_4(fnmadds, i64, env, i64, i64, i64)
--DEF_HELPER_4(fnmsubs, i64, env, i64, i64, i64)
-+DEF_HELPER_3(FADD, f64, env, f64, f64)
-+DEF_HELPER_3(FADDS, f64, env, f64, f64)
-+DEF_HELPER_3(FSUB, f64, env, f64, f64)
-+DEF_HELPER_3(FSUBS, f64, env, f64, f64)
-+DEF_HELPER_3(FMUL, f64, env, f64, f64)
-+DEF_HELPER_3(FMULS, f64, env, f64, f64)
-+DEF_HELPER_3(FDIV, f64, env, f64, f64)
-+DEF_HELPER_3(FDIVS, f64, env, f64, f64)
-+DEF_HELPER_4(FMADD, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FMSUB, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FNMADD, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FNMSUB, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FMADDS, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FMSUBS, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FNMADDS, i64, env, i64, i64, i64)
-+DEF_HELPER_4(FNMSUBS, i64, env, i64, i64, i64)
- DEF_HELPER_2(FSQRT, f64, env, f64)
- DEF_HELPER_2(FSQRTS, f64, env, f64)
--DEF_HELPER_2(fre, i64, env, i64)
--DEF_HELPER_2(fres, i64, env, i64)
--DEF_HELPER_2(frsqrte, i64, env, i64)
--DEF_HELPER_2(frsqrtes, i64, env, i64)
-+DEF_HELPER_2(FRE, i64, env, i64)
-+DEF_HELPER_2(FRES, i64, env, i64)
-+DEF_HELPER_2(FRSQRTE, i64, env, i64)
-+DEF_HELPER_2(FRSQRTES, i64, env, i64)
- DEF_HELPER_FLAGS_3(FSEL, TCG_CALL_NO_RWG_SE, i64, i64, i64, i64)
- 
--DEF_HELPER_FLAGS_2(ftdiv, TCG_CALL_NO_RWG_SE, i32, i64, i64)
--DEF_HELPER_FLAGS_1(ftsqrt, TCG_CALL_NO_RWG_SE, i32, i64)
-+DEF_HELPER_FLAGS_2(FTDIV, TCG_CALL_NO_RWG_SE, i32, i64, i64)
-+DEF_HELPER_FLAGS_1(FTSQRT, TCG_CALL_NO_RWG_SE, i32, i64)
- 
- #define dh_alias_avr ptr
- #define dh_ctype_avr ppc_avr_t *
 diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index a180380750..e9d6595168 100644
+index e9d6595168..bb0f1dbd75 100644
 --- a/target/ppc/insn32.decode
 +++ b/target/ppc/insn32.decode
-@@ -20,6 +20,12 @@
- &A              frt fra frb frc rc:bool
- @A              ...... frt:5 fra:5 frb:5 frc:5 ..... rc:1       &A
+@@ -202,6 +202,9 @@
+ &XO_ta          rt ra oe:bool rc:bool
+ @XO_ta          ...... rt:5 ra:5 ..... oe:1 ......... rc:1      &XO_ta
  
-+&A_tab          frt fra frb rc:bool
-+@A_tab          ...... frt:5 fra:5 frb:5 ..... ..... rc:1       &A_tab
++&XO_tab_rc      rt ra rb rc:bool
++@XO_tab_rc      ...... rt:5 ra:5 rb:5 . ......... rc:1          &XO_tab_rc
 +
-+&A_tac          frt fra frc rc:bool
-+@A_tac          ...... frt:5 fra:5 ..... frc:5 ..... rc:1       &A_tac
-+
- &A_tb           frt frb rc:bool
- @A_tb           ...... frt:5 ..... frb:5 ..... ..... rc:1       &A_tb
+ %xx_xt          0:1 21:5
+ %xx_xb          1:1 11:5
+ %xx_xa          2:1 16:5
+@@ -362,6 +365,12 @@ SUBFE           011111 ..... ..... ..... . 010001000 .  @XO
+ SUBFME          011111 ..... ..... ----- . 011101000 .  @XO_ta
+ SUBFZE          011111 ..... ..... ----- . 011001000 .  @XO_ta
  
-@@ -124,6 +130,9 @@
- &X_bf           bf ra rb
- @X_bf           ...... bf:3 .. ra:5 rb:5 .......... .           &X_bf
++MULLI           000111 ..... ..... ................     @D
++MULLW           011111 ..... ..... ..... 0 011101011 .  @XO_tab_rc
++MULLWO          011111 ..... ..... ..... 1 011101011 .  @XO_tab_rc
++MULHW           011111 ..... ..... ..... - 001001011 .  @XO_tab_rc
++MULHWU          011111 ..... ..... ..... - 000001011 .  @XO_tab_rc
++
+ ## Fixed-Point Logical Instructions
  
-+&X_bf_b         bf rb
-+@X_bf_b         ...... bf:3 .. ..... rb:5 .......... .          &X_bf_b
-+
- @X_bf_ap_bp     ...... bf:3 .. ....0 ....0 .......... .         &X_bf ra=%x_frap rb=%x_frbp
- 
- @X_bf_a_bp      ...... bf:3 .. ra:5 ....0 .......... .          &X_bf rb=%x_frbp
-@@ -400,9 +409,42 @@ STFDUX          011111 ..... ...... .... 1011110111 -   @X
- 
- ### Floating-Point Arithmetic Instructions
- 
-+FADD            111111 ..... ..... ..... ----- 10101 .  @A_tab
-+FADDS           111011 ..... ..... ..... ----- 10101 .  @A_tab
-+
-+FSUB            111111 ..... ..... ..... ----- 10100 .  @A_tab
-+FSUBS           111011 ..... ..... ..... ----- 10100 .  @A_tab
-+
-+FMUL            111111 ..... ..... ----- ..... 11001 .  @A_tac
-+FMULS           111011 ..... ..... ----- ..... 11001 .  @A_tac
-+
-+FDIV            111111 ..... ..... ..... ----- 10010 .  @A_tab
-+FDIVS           111011 ..... ..... ..... ----- 10010 .  @A_tab
-+
- FSQRT           111111 ..... ----- ..... ----- 10110 .  @A_tb
- FSQRTS          111011 ..... ----- ..... ----- 10110 .  @A_tb
- 
-+FRE             111111 ..... ----- ..... ----- 11000 .  @A_tb
-+FRES            111011 ..... ----- ..... ----- 11000 .  @A_tb
-+
-+FRSQRTE         111111 ..... ----- ..... ----- 11010 .  @A_tb
-+FRSQRTES        111011 ..... ----- ..... ----- 11010 .  @A_tb
-+
-+FTDIV           111111 ... -- ..... ..... 0010000000 -  @X_bf
-+FTSQRT          111111 ... -- ----- ..... 0010100000 -  @X_bf_b
-+
-+FMADD           111111 ..... ..... ..... ..... 11101 .  @A
-+FMADDS          111011 ..... ..... ..... ..... 11101 .  @A
-+
-+FMSUB           111111 ..... ..... ..... ..... 11100 .  @A
-+FMSUBS          111011 ..... ..... ..... ..... 11100 .  @A
-+
-+FNMADD          111111 ..... ..... ..... ..... 11111 .  @A
-+FNMADDS         111011 ..... ..... ..... ..... 11111 .  @A
-+
-+FNMSUB          111111 ..... ..... ..... ..... 11110 .  @A
-+FNMSUBS         111011 ..... ..... ..... ..... 11110 .  @A
-+
- ### Floating-Point Select Instruction
- 
- FSEL            111111 ..... ..... ..... ..... 10111 .  @A
-diff --git a/target/ppc/translate/fp-impl.c.inc b/target/ppc/translate/fp-impl.c.inc
-index 189cd8c979..a66b83398b 100644
---- a/target/ppc/translate/fp-impl.c.inc
-+++ b/target/ppc/translate/fp-impl.c.inc
-@@ -30,96 +30,73 @@ static void gen_set_cr1_from_fpscr(DisasContext *ctx)
+ CFUGED          011111 ..... ..... ..... 0011011100 -   @X
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index a70c5ed951..cb10e33ceb 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -1947,90 +1947,6 @@ GEN_INT_ARITH_MODD(modud, 0x08, 0);
+ GEN_INT_ARITH_MODD(modsd, 0x18, 1);
  #endif
  
- /***                       Floating-Point arithmetic                       ***/
--#define _GEN_FLOAT_ACB(name, op1, op2, set_fprf, type)                        \
--static void gen_f##name(DisasContext *ctx)                                    \
--{                                                                             \
--    TCGv_i64 t0;                                                              \
--    TCGv_i64 t1;                                                              \
--    TCGv_i64 t2;                                                              \
--    TCGv_i64 t3;                                                              \
--    if (unlikely(!ctx->fpu_enabled)) {                                        \
--        gen_exception(ctx, POWERPC_EXCP_FPU);                                 \
--        return;                                                               \
--    }                                                                         \
--    t0 = tcg_temp_new_i64();                                                  \
--    t1 = tcg_temp_new_i64();                                                  \
--    t2 = tcg_temp_new_i64();                                                  \
--    t3 = tcg_temp_new_i64();                                                  \
--    gen_reset_fpstatus();                                                     \
--    get_fpr(t0, rA(ctx->opcode));                                             \
--    get_fpr(t1, rC(ctx->opcode));                                             \
--    get_fpr(t2, rB(ctx->opcode));                                             \
--    gen_helper_f##name(t3, tcg_env, t0, t1, t2);                              \
--    set_fpr(rD(ctx->opcode), t3);                                             \
--    if (set_fprf) {                                                           \
--        gen_compute_fprf_float64(t3);                                         \
--    }                                                                         \
--    if (unlikely(Rc(ctx->opcode) != 0)) {                                     \
--        gen_set_cr1_from_fpscr(ctx);                                          \
--    }                                                                         \
-+static bool do_helper_acb(DisasContext *ctx, arg_A *a,
-+                          void (*helper)(TCGv_i64, TCGv_ptr, TCGv_i64,
-+                                         TCGv_i64, TCGv_i64))
-+{
-+    TCGv_i64 t0, t1, t2, t3;
-+    REQUIRE_INSNS_FLAGS(ctx, FLOAT);
-+    REQUIRE_FPU(ctx);
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+    t3 = tcg_temp_new_i64();
-+    gen_reset_fpstatus();
-+    get_fpr(t0, a->fra);
-+    get_fpr(t1, a->frc);
-+    get_fpr(t2, a->frb);
-+    helper(t3, tcg_env, t0, t1, t2);
-+    set_fpr(a->frt, t3);
-+    gen_compute_fprf_float64(t3);
-+    if (unlikely(a->rc)) {
-+        gen_set_cr1_from_fpscr(ctx);
-+    }
-+    return true;
- }
- 
--#define GEN_FLOAT_ACB(name, op2, set_fprf, type)                              \
--_GEN_FLOAT_ACB(name, 0x3F, op2, set_fprf, type);                              \
--_GEN_FLOAT_ACB(name##s, 0x3B, op2, set_fprf, type);
+-/* mulhw  mulhw. */
+-static void gen_mulhw(DisasContext *ctx)
+-{
+-    TCGv_i32 t0 = tcg_temp_new_i32();
+-    TCGv_i32 t1 = tcg_temp_new_i32();
 -
--#define _GEN_FLOAT_AB(name, op1, op2, inval, set_fprf, type)                  \
--static void gen_f##name(DisasContext *ctx)                                    \
--{                                                                             \
--    TCGv_i64 t0;                                                              \
--    TCGv_i64 t1;                                                              \
--    TCGv_i64 t2;                                                              \
--    if (unlikely(!ctx->fpu_enabled)) {                                        \
--        gen_exception(ctx, POWERPC_EXCP_FPU);                                 \
--        return;                                                               \
--    }                                                                         \
--    t0 = tcg_temp_new_i64();                                                  \
--    t1 = tcg_temp_new_i64();                                                  \
--    t2 = tcg_temp_new_i64();                                                  \
--    gen_reset_fpstatus();                                                     \
--    get_fpr(t0, rA(ctx->opcode));                                             \
--    get_fpr(t1, rB(ctx->opcode));                                             \
--    gen_helper_f##name(t2, tcg_env, t0, t1);                                  \
--    set_fpr(rD(ctx->opcode), t2);                                             \
--    if (set_fprf) {                                                           \
--        gen_compute_fprf_float64(t2);                                         \
--    }                                                                         \
--    if (unlikely(Rc(ctx->opcode) != 0)) {                                     \
--        gen_set_cr1_from_fpscr(ctx);                                          \
--    }                                                                         \
-+static bool do_helper_ab(DisasContext *ctx, arg_A_tab *a,
-+                         void (*helper)(TCGv_i64, TCGv_ptr, TCGv_i64,
-+                                        TCGv_i64))
-+{
-+    TCGv_i64 t0, t1, t2;
-+    REQUIRE_INSNS_FLAGS(ctx, FLOAT);
-+    REQUIRE_FPU(ctx);
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+    gen_reset_fpstatus();
-+    get_fpr(t0, a->fra);
-+    get_fpr(t1, a->frb);
-+    helper(t2, tcg_env, t0, t1);
-+    set_fpr(a->frt, t2);
-+    gen_compute_fprf_float64(t2);
-+    if (unlikely(a->rc)) {
-+        gen_set_cr1_from_fpscr(ctx);
-+    }
-+    return true;
- }
--#define GEN_FLOAT_AB(name, op2, inval, set_fprf, type)                        \
--_GEN_FLOAT_AB(name, 0x3F, op2, inval, set_fprf, type);                        \
--_GEN_FLOAT_AB(name##s, 0x3B, op2, inval, set_fprf, type);
- 
--#define _GEN_FLOAT_AC(name, op1, op2, inval, set_fprf, type)                  \
--static void gen_f##name(DisasContext *ctx)                                    \
--{                                                                             \
--    TCGv_i64 t0;                                                              \
--    TCGv_i64 t1;                                                              \
--    TCGv_i64 t2;                                                              \
--    if (unlikely(!ctx->fpu_enabled)) {                                        \
--        gen_exception(ctx, POWERPC_EXCP_FPU);                                 \
--        return;                                                               \
--    }                                                                         \
--    t0 = tcg_temp_new_i64();                                                  \
--    t1 = tcg_temp_new_i64();                                                  \
--    t2 = tcg_temp_new_i64();                                                  \
--    gen_reset_fpstatus();                                                     \
--    get_fpr(t0, rA(ctx->opcode));                                             \
--    get_fpr(t1, rC(ctx->opcode));                                             \
--    gen_helper_f##name(t2, tcg_env, t0, t1);                                  \
--    set_fpr(rD(ctx->opcode), t2);                                             \
--    if (set_fprf) {                                                           \
--        gen_compute_fprf_float64(t2);                                         \
--    }                                                                         \
--    if (unlikely(Rc(ctx->opcode) != 0)) {                                     \
--        gen_set_cr1_from_fpscr(ctx);                                          \
--    }                                                                         \
-+static bool do_helper_ac(DisasContext *ctx, arg_A_tac *a,
-+                         void (*helper)(TCGv_i64, TCGv_ptr, TCGv_i64,
-+                                        TCGv_i64))
-+{
-+    TCGv_i64 t0, t1, t2;
-+    REQUIRE_INSNS_FLAGS(ctx, FLOAT);
-+    REQUIRE_FPU(ctx);
-+    t0 = tcg_temp_new_i64();
-+    t1 = tcg_temp_new_i64();
-+    t2 = tcg_temp_new_i64();
-+    gen_reset_fpstatus();
-+    get_fpr(t0, a->fra);
-+    get_fpr(t1, a->frc);
-+    helper(t2, tcg_env, t0, t1);
-+    set_fpr(a->frt, t2);
-+    gen_compute_fprf_float64(t2);
-+    if (unlikely(a->rc)) {
-+        gen_set_cr1_from_fpscr(ctx);
-+    }
-+    return true;
- }
--#define GEN_FLOAT_AC(name, op2, inval, set_fprf, type)                        \
--_GEN_FLOAT_AC(name, 0x3F, op2, inval, set_fprf, type);                        \
--_GEN_FLOAT_AC(name##s, 0x3B, op2, inval, set_fprf, type);
- 
- #define GEN_FLOAT_B(name, op2, op3, set_fprf, type)                           \
- static void gen_f##name(DisasContext *ctx)                                    \
-@@ -145,64 +122,22 @@ static void gen_f##name(DisasContext *ctx)                                    \
-     }                                                                         \
- }
- 
--#define GEN_FLOAT_BS(name, op1, op2, set_fprf, type)                          \
--static void gen_f##name(DisasContext *ctx)                                    \
--{                                                                             \
--    TCGv_i64 t0;                                                              \
--    TCGv_i64 t1;                                                              \
--    if (unlikely(!ctx->fpu_enabled)) {                                        \
--        gen_exception(ctx, POWERPC_EXCP_FPU);                                 \
--        return;                                                               \
--    }                                                                         \
--    t0 = tcg_temp_new_i64();                                                  \
--    t1 = tcg_temp_new_i64();                                                  \
--    gen_reset_fpstatus();                                                     \
--    get_fpr(t0, rB(ctx->opcode));                                             \
--    gen_helper_f##name(t1, tcg_env, t0);                                      \
--    set_fpr(rD(ctx->opcode), t1);                                             \
--    if (set_fprf) {                                                           \
--        gen_compute_fprf_float64(t1);                                         \
--    }                                                                         \
--    if (unlikely(Rc(ctx->opcode) != 0)) {                                     \
--        gen_set_cr1_from_fpscr(ctx);                                          \
--    }                                                                         \
+-    tcg_gen_trunc_tl_i32(t0, cpu_gpr[rA(ctx->opcode)]);
+-    tcg_gen_trunc_tl_i32(t1, cpu_gpr[rB(ctx->opcode)]);
+-    tcg_gen_muls2_i32(t0, t1, t0, t1);
+-    tcg_gen_extu_i32_tl(cpu_gpr[rD(ctx->opcode)], t1);
+-    if (unlikely(Rc(ctx->opcode) != 0)) {
+-        gen_set_Rc0(ctx, cpu_gpr[rD(ctx->opcode)]);
+-    }
 -}
 -
--/* fadd - fadds */
--GEN_FLOAT_AB(add, 0x15, 0x000007C0, 1, PPC_FLOAT);
--/* fdiv - fdivs */
--GEN_FLOAT_AB(div, 0x12, 0x000007C0, 1, PPC_FLOAT);
--/* fmul - fmuls */
--GEN_FLOAT_AC(mul, 0x19, 0x0000F800, 1, PPC_FLOAT);
+-/* mulhwu  mulhwu.  */
+-static void gen_mulhwu(DisasContext *ctx)
+-{
+-    TCGv_i32 t0 = tcg_temp_new_i32();
+-    TCGv_i32 t1 = tcg_temp_new_i32();
 -
--/* fre */
--GEN_FLOAT_BS(re, 0x3F, 0x18, 1, PPC_FLOAT_EXT);
--
--/* fres */
--GEN_FLOAT_BS(res, 0x3B, 0x18, 1, PPC_FLOAT_FRES);
--
--/* frsqrte */
--GEN_FLOAT_BS(rsqrte, 0x3F, 0x1A, 1, PPC_FLOAT_FRSQRTE);
--
--/* frsqrtes */
--static void gen_frsqrtes(DisasContext *ctx)
-+static bool do_helper_bs(DisasContext *ctx, arg_A_tb *a,
-+                         void (*helper)(TCGv_i64, TCGv_ptr, TCGv_i64))
- {
--    TCGv_i64 t0;
--    TCGv_i64 t1;
--    if (unlikely(!ctx->fpu_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_FPU);
--        return;
--    }
-+    TCGv_i64 t0, t1;
-+    REQUIRE_FPU(ctx);
-     t0 = tcg_temp_new_i64();
-     t1 = tcg_temp_new_i64();
-     gen_reset_fpstatus();
--    get_fpr(t0, rB(ctx->opcode));
--    gen_helper_frsqrtes(t1, tcg_env, t0);
--    set_fpr(rD(ctx->opcode), t1);
-+    get_fpr(t0, a->frb);
-+    helper(t1, tcg_env, t0);
-+    set_fpr(a->frt, t1);
-     gen_compute_fprf_float64(t1);
+-    tcg_gen_trunc_tl_i32(t0, cpu_gpr[rA(ctx->opcode)]);
+-    tcg_gen_trunc_tl_i32(t1, cpu_gpr[rB(ctx->opcode)]);
+-    tcg_gen_mulu2_i32(t0, t1, t0, t1);
+-    tcg_gen_extu_i32_tl(cpu_gpr[rD(ctx->opcode)], t1);
 -    if (unlikely(Rc(ctx->opcode) != 0)) {
+-        gen_set_Rc0(ctx, cpu_gpr[rD(ctx->opcode)]);
+-    }
+-}
+-
+-/* mullw  mullw. */
+-static void gen_mullw(DisasContext *ctx)
+-{
+-#if defined(TARGET_PPC64)
+-    TCGv_i64 t0, t1;
+-    t0 = tcg_temp_new_i64();
+-    t1 = tcg_temp_new_i64();
+-    tcg_gen_ext32s_tl(t0, cpu_gpr[rA(ctx->opcode)]);
+-    tcg_gen_ext32s_tl(t1, cpu_gpr[rB(ctx->opcode)]);
+-    tcg_gen_mul_i64(cpu_gpr[rD(ctx->opcode)], t0, t1);
+-#else
+-    tcg_gen_mul_i32(cpu_gpr[rD(ctx->opcode)], cpu_gpr[rA(ctx->opcode)],
+-                    cpu_gpr[rB(ctx->opcode)]);
+-#endif
+-    if (unlikely(Rc(ctx->opcode) != 0)) {
+-        gen_set_Rc0(ctx, cpu_gpr[rD(ctx->opcode)]);
+-    }
+-}
+-
+-/* mullwo  mullwo. */
+-static void gen_mullwo(DisasContext *ctx)
+-{
+-    TCGv_i32 t0 = tcg_temp_new_i32();
+-    TCGv_i32 t1 = tcg_temp_new_i32();
+-
+-    tcg_gen_trunc_tl_i32(t0, cpu_gpr[rA(ctx->opcode)]);
+-    tcg_gen_trunc_tl_i32(t1, cpu_gpr[rB(ctx->opcode)]);
+-    tcg_gen_muls2_i32(t0, t1, t0, t1);
+-#if defined(TARGET_PPC64)
+-    tcg_gen_concat_i32_i64(cpu_gpr[rD(ctx->opcode)], t0, t1);
+-#else
+-    tcg_gen_mov_i32(cpu_gpr[rD(ctx->opcode)], t0);
+-#endif
+-
+-    tcg_gen_sari_i32(t0, t0, 31);
+-    tcg_gen_setcond_i32(TCG_COND_NE, t0, t0, t1);
+-    tcg_gen_extu_i32_tl(cpu_ov, t0);
+-    if (is_isa300(ctx)) {
+-        tcg_gen_mov_tl(cpu_ov32, cpu_ov);
+-    }
+-    tcg_gen_or_tl(cpu_so, cpu_so, cpu_ov);
+-
+-    if (unlikely(Rc(ctx->opcode) != 0)) {
+-        gen_set_Rc0(ctx, cpu_gpr[rD(ctx->opcode)]);
+-    }
+-}
+-
+-/* mulli */
+-static void gen_mulli(DisasContext *ctx)
+-{
+-    tcg_gen_muli_tl(cpu_gpr[rD(ctx->opcode)], cpu_gpr[rA(ctx->opcode)],
+-                    SIMM(ctx->opcode));
+-}
+-
+ #if defined(TARGET_PPC64)
+ /* mulhd  mulhd. */
+ static void gen_mulhd(DisasContext *ctx)
+@@ -6343,11 +6259,6 @@ GEN_HANDLER_E(cmpeqb, 0x1F, 0x00, 0x07, 0x00600000, PPC_NONE, PPC2_ISA300),
+ GEN_HANDLER_E(cmpb, 0x1F, 0x1C, 0x0F, 0x00000001, PPC_NONE, PPC2_ISA205),
+ GEN_HANDLER_E(cmprb, 0x1F, 0x00, 0x06, 0x00400001, PPC_NONE, PPC2_ISA300),
+ GEN_HANDLER(isel, 0x1F, 0x0F, 0xFF, 0x00000001, PPC_ISEL),
+-GEN_HANDLER(mulhw, 0x1F, 0x0B, 0x02, 0x00000400, PPC_INTEGER),
+-GEN_HANDLER(mulhwu, 0x1F, 0x0B, 0x00, 0x00000400, PPC_INTEGER),
+-GEN_HANDLER(mullw, 0x1F, 0x0B, 0x07, 0x00000000, PPC_INTEGER),
+-GEN_HANDLER(mullwo, 0x1F, 0x0B, 0x17, 0x00000000, PPC_INTEGER),
+-GEN_HANDLER(mulli, 0x07, 0xFF, 0xFF, 0x00000000, PPC_INTEGER),
+ #if defined(TARGET_PPC64)
+ GEN_HANDLER(mulld, 0x1F, 0x09, 0x07, 0x00000000, PPC_64B),
+ #endif
+diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
+index 0c66465d96..1a2ad58929 100644
+--- a/target/ppc/translate/fixedpoint-impl.c.inc
++++ b/target/ppc/translate/fixedpoint-impl.c.inc
+@@ -395,6 +395,72 @@ TRANS(SUBFE, do_subf_XO, true, true)
+ TRANS(SUBFME, do_subf_const_XO, tcg_constant_tl(-1LL), true, true)
+ TRANS(SUBFZE, do_subf_const_XO, tcg_constant_tl(0), true, true)
+ 
++static bool trans_MULLI(DisasContext *ctx, arg_MULLI *a)
++{
++    tcg_gen_muli_tl(cpu_gpr[a->rt], cpu_gpr[a->ra], a->si);
++    return true;
++}
++
++static bool trans_MULLW(DisasContext *ctx, arg_MULLW *a)
++{
++    TCGv t0 = tcg_temp_new();
++    TCGv t1 = tcg_temp_new();
++
++    tcg_gen_ext32s_tl(t0, cpu_gpr[a->ra]);
++    tcg_gen_ext32s_tl(t1, cpu_gpr[a->rb]);
++    tcg_gen_mul_tl(cpu_gpr[a->rt], t0, t1);
 +    if (unlikely(a->rc)) {
-         gen_set_cr1_from_fpscr(ctx);
-     }
++        gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++    }
 +    return true;
- }
- 
- static bool trans_FSEL(DisasContext *ctx, arg_A *a)
-@@ -228,10 +163,6 @@ static bool trans_FSEL(DisasContext *ctx, arg_A *a)
-     return true;
- }
- 
--/* fsub - fsubs */
--GEN_FLOAT_AB(sub, 0x14, 0x000007C0, 1, PPC_FLOAT);
--/* Optional: */
--
- static bool do_helper_fsqrt(DisasContext *ctx, arg_A_tb *a,
-                             void (*helper)(TCGv_i64, TCGv_ptr, TCGv_i64))
- {
-@@ -254,19 +185,33 @@ static bool do_helper_fsqrt(DisasContext *ctx, arg_A_tb *a,
-     return true;
- }
- 
-+TRANS(FADD, do_helper_ab, gen_helper_FADD);
-+TRANS(FADDS, do_helper_ab, gen_helper_FADDS);
-+TRANS(FSUB, do_helper_ab, gen_helper_FSUB);
-+TRANS(FSUBS, do_helper_ab, gen_helper_FSUBS);
-+TRANS(FDIV, do_helper_ab, gen_helper_FDIV);
-+TRANS(FDIVS, do_helper_ab, gen_helper_FDIVS);
-+TRANS(FMUL, do_helper_ac, gen_helper_FMUL);
-+TRANS(FMULS, do_helper_ac, gen_helper_FMULS);
++}
 +
-+TRANS(FMADD, do_helper_acb, gen_helper_FMADD);
-+TRANS(FMADDS, do_helper_acb, gen_helper_FMADDS);
-+TRANS(FMSUB, do_helper_acb, gen_helper_FMSUB);
-+TRANS(FMSUBS, do_helper_acb, gen_helper_FMSUBS);
++static bool trans_MULLWO(DisasContext *ctx, arg_MULLWO *a)
++{
++    TCGv t0 = tcg_temp_new();
++    TCGv t1 = tcg_temp_new();
 +
-+TRANS(FNMADD, do_helper_acb, gen_helper_FNMADD);
-+TRANS(FNMADDS, do_helper_acb, gen_helper_FNMADDS);
-+TRANS(FNMSUB, do_helper_acb, gen_helper_FNMSUB);
-+TRANS(FNMSUBS, do_helper_acb, gen_helper_FNMSUBS);
++#if defined(TARGET_PPC64)
++    tcg_gen_ext32s_i64(t0, cpu_gpr[a->ra]);
++    tcg_gen_ext32s_i64(t1, cpu_gpr[a->rb]);
++    tcg_gen_mul_i64(cpu_gpr[a->rt], t0, t1);
++    tcg_gen_sextract_i64(t0, cpu_gpr[a->rt], 31, 1);
++    tcg_gen_sari_i64(t1, cpu_gpr[a->rt], 32);
++#else
++    tcg_gen_muls2_i32(cpu_gpr[a->rt], t1, cpu_gpr[a->ra], cpu_gpr[a->rb]);
++    tcg_gen_sari_i32(t0, cpu_gpr[a->rt], 31);
++#endif
++    tcg_gen_setcond_tl(TCG_COND_NE, cpu_ov, t0, t1);
++    if (is_isa300(ctx)) {
++        tcg_gen_mov_tl(cpu_ov32, cpu_ov);
++    }
++    tcg_gen_or_tl(cpu_so, cpu_so, cpu_ov);
 +
-+TRANS_FLAGS(FLOAT_EXT, FRE, do_helper_bs, gen_helper_FRE);
-+TRANS_FLAGS(FLOAT_FRES, FRES, do_helper_bs, gen_helper_FRES);
-+TRANS_FLAGS(FLOAT_FRSQRTE, FRSQRTE, do_helper_bs, gen_helper_FRSQRTE);
-+TRANS_FLAGS(FLOAT_FRSQRTES, FRSQRTES, do_helper_bs, gen_helper_FRSQRTES);
-+
- TRANS(FSQRT, do_helper_fsqrt, gen_helper_FSQRT);
- TRANS(FSQRTS, do_helper_fsqrt, gen_helper_FSQRTS);
- 
--/***                     Floating-Point multiply-and-add                   ***/
--/* fmadd - fmadds */
--GEN_FLOAT_ACB(madd, 0x1D, 1, PPC_FLOAT);
--/* fmsub - fmsubs */
--GEN_FLOAT_ACB(msub, 0x1C, 1, PPC_FLOAT);
--/* fnmadd - fnmadds */
--GEN_FLOAT_ACB(nmadd, 0x1F, 1, PPC_FLOAT);
--/* fnmsub - fnmsubs */
--GEN_FLOAT_ACB(nmsub, 0x1E, 1, PPC_FLOAT);
--
- /***                     Floating-Point round & convert                    ***/
- /* fctiw */
- GEN_FLOAT_B(ctiw, 0x0E, 0x00, 0, PPC_FLOAT);
-@@ -304,35 +249,30 @@ GEN_FLOAT_B(rip, 0x08, 0x0E, 1, PPC_FLOAT_EXT);
- /* frim */
- GEN_FLOAT_B(rim, 0x08, 0x0F, 1, PPC_FLOAT_EXT);
- 
--static void gen_ftdiv(DisasContext *ctx)
-+static bool trans_FTDIV(DisasContext *ctx, arg_X_bf *a)
- {
--    TCGv_i64 t0;
--    TCGv_i64 t1;
--    if (unlikely(!ctx->fpu_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_FPU);
--        return;
--    }
-+    TCGv_i64 t0, t1;
-+    REQUIRE_INSNS_FLAGS2(ctx, FP_TST_ISA206);
-+    REQUIRE_FPU(ctx);
-     t0 = tcg_temp_new_i64();
-     t1 = tcg_temp_new_i64();
--    get_fpr(t0, rA(ctx->opcode));
--    get_fpr(t1, rB(ctx->opcode));
--    gen_helper_ftdiv(cpu_crf[crfD(ctx->opcode)], t0, t1);
-+    get_fpr(t0, a->ra);
-+    get_fpr(t1, a->rb);
-+    gen_helper_FTDIV(cpu_crf[a->bf], t0, t1);
++    if (unlikely(a->rc)) {
++        gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++    }
 +    return true;
- }
- 
--static void gen_ftsqrt(DisasContext *ctx)
-+static bool trans_FTSQRT(DisasContext *ctx, arg_X_bf_b *a)
- {
-     TCGv_i64 t0;
--    if (unlikely(!ctx->fpu_enabled)) {
--        gen_exception(ctx, POWERPC_EXCP_FPU);
--        return;
--    }
-+    REQUIRE_INSNS_FLAGS2(ctx, FP_TST_ISA206);
-+    REQUIRE_FPU(ctx);
-     t0 = tcg_temp_new_i64();
--    get_fpr(t0, rB(ctx->opcode));
--    gen_helper_ftsqrt(cpu_crf[crfD(ctx->opcode)], t0);
-+    get_fpr(t0, a->rb);
-+    gen_helper_FTSQRT(cpu_crf[a->bf], t0);
++}
++
++static bool do_mulhw(DisasContext *ctx, arg_XO_tab_rc *a,
++                     void (*helper)(TCGv_i32 rl, TCGv_i32 rh, TCGv_i32 arg1,
++                                    TCGv_i32 arg2))
++{
++    TCGv_i32 t0 = tcg_temp_new_i32();
++    TCGv_i32 t1 = tcg_temp_new_i32();
++    tcg_gen_trunc_tl_i32(t0, cpu_gpr[a->ra]);
++    tcg_gen_trunc_tl_i32(t1, cpu_gpr[a->rb]);
++    helper(t0, t1, t0, t1);
++    tcg_gen_extu_i32_tl(cpu_gpr[a->rt], t1);
++    if (unlikely(a->rc)) {
++        gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++    }
 +    return true;
- }
- 
--
--
- /***                         Floating-Point compare                        ***/
- 
- /* fcmpo */
-@@ -1111,14 +1051,7 @@ TRANS(STFDX, do_lsfp_X, false, true, false)
- TRANS(STFDUX, do_lsfp_X, true, true, false)
- TRANS(PSTFD, do_lsfp_PLS_D, false, true, false)
- 
--#undef _GEN_FLOAT_ACB
--#undef GEN_FLOAT_ACB
--#undef _GEN_FLOAT_AB
--#undef GEN_FLOAT_AB
--#undef _GEN_FLOAT_AC
--#undef GEN_FLOAT_AC
- #undef GEN_FLOAT_B
--#undef GEN_FLOAT_BS
- 
- #undef GEN_LDF
- #undef GEN_LDUF
-diff --git a/target/ppc/translate/fp-ops.c.inc b/target/ppc/translate/fp-ops.c.inc
-index d4c6c4bed1..cef4b5dfcb 100644
---- a/target/ppc/translate/fp-ops.c.inc
-+++ b/target/ppc/translate/fp-ops.c.inc
-@@ -1,36 +1,6 @@
--#define _GEN_FLOAT_ACB(name, op, op1, op2, isfloat, set_fprf, type)           \
--GEN_HANDLER(f##name, op1, op2, 0xFF, 0x00000000, type)
--#define GEN_FLOAT_ACB(name, op2, set_fprf, type)                              \
--_GEN_FLOAT_ACB(name, name, 0x3F, op2, 0, set_fprf, type),                     \
--_GEN_FLOAT_ACB(name##s, name, 0x3B, op2, 1, set_fprf, type)
--#define _GEN_FLOAT_AB(name, op, op1, op2, inval, isfloat, set_fprf, type)     \
--GEN_HANDLER(f##name, op1, op2, 0xFF, inval, type)
--#define GEN_FLOAT_AB(name, op2, inval, set_fprf, type)                        \
--_GEN_FLOAT_AB(name, name, 0x3F, op2, inval, 0, set_fprf, type),               \
--_GEN_FLOAT_AB(name##s, name, 0x3B, op2, inval, 1, set_fprf, type)
--#define _GEN_FLOAT_AC(name, op, op1, op2, inval, isfloat, set_fprf, type)     \
--GEN_HANDLER(f##name, op1, op2, 0xFF, inval, type)
--#define GEN_FLOAT_AC(name, op2, inval, set_fprf, type)                        \
--_GEN_FLOAT_AC(name, name, 0x3F, op2, inval, 0, set_fprf, type),               \
--_GEN_FLOAT_AC(name##s, name, 0x3B, op2, inval, 1, set_fprf, type)
- #define GEN_FLOAT_B(name, op2, op3, set_fprf, type)                           \
- GEN_HANDLER(f##name, 0x3F, op2, op3, 0x001F0000, type)
--#define GEN_FLOAT_BS(name, op1, op2, set_fprf, type)                          \
--GEN_HANDLER(f##name, op1, op2, 0xFF, 0x001F07C0, type)
- 
--GEN_FLOAT_AB(add, 0x15, 0x000007C0, 1, PPC_FLOAT),
--GEN_FLOAT_AB(div, 0x12, 0x000007C0, 1, PPC_FLOAT),
--GEN_FLOAT_AC(mul, 0x19, 0x0000F800, 1, PPC_FLOAT),
--GEN_FLOAT_BS(re, 0x3F, 0x18, 1, PPC_FLOAT_EXT),
--GEN_FLOAT_BS(res, 0x3B, 0x18, 1, PPC_FLOAT_FRES),
--GEN_FLOAT_BS(rsqrte, 0x3F, 0x1A, 1, PPC_FLOAT_FRSQRTE),
--GEN_FLOAT_AB(sub, 0x14, 0x000007C0, 1, PPC_FLOAT),
--GEN_FLOAT_ACB(madd, 0x1D, 1, PPC_FLOAT),
--GEN_FLOAT_ACB(msub, 0x1C, 1, PPC_FLOAT),
--GEN_FLOAT_ACB(nmadd, 0x1F, 1, PPC_FLOAT),
--GEN_FLOAT_ACB(nmsub, 0x1E, 1, PPC_FLOAT),
--GEN_HANDLER_E(ftdiv, 0x3F, 0x00, 0x04, 1, PPC_NONE, PPC2_FP_TST_ISA206),
--GEN_HANDLER_E(ftsqrt, 0x3F, 0x00, 0x05, 1, PPC_NONE, PPC2_FP_TST_ISA206),
- GEN_FLOAT_B(ctiw, 0x0E, 0x00, 0, PPC_FLOAT),
- GEN_HANDLER_E(fctiwu, 0x3F, 0x0E, 0x04, 0, PPC_NONE, PPC2_FP_CVT_ISA206),
- GEN_FLOAT_B(ctiwz, 0x0F, 0x00, 0, PPC_FLOAT),
-@@ -61,7 +31,6 @@ GEN_STXF(stfiw, st32fiw, 0x17, 0x1E, PPC_FLOAT_STFIWX)
- GEN_HANDLER_E(stfdepx, 0x1F, 0x1F, 0x16, 0x00000001, PPC_NONE, PPC2_BOOKE206),
- GEN_HANDLER_E(stfdpx, 0x1F, 0x17, 0x1C, 0x00200001, PPC_NONE, PPC2_ISA205),
- 
--GEN_HANDLER(frsqrtes, 0x3B, 0x1A, 0xFF, 0x001F07C0, PPC_FLOAT_FRSQRTES),
- GEN_HANDLER(fcmpo, 0x3F, 0x00, 0x01, 0x00600001, PPC_FLOAT),
- GEN_HANDLER(fcmpu, 0x3F, 0x00, 0x00, 0x00600001, PPC_FLOAT),
- GEN_HANDLER(fabs, 0x3F, 0x08, 0x08, 0x001F0000, PPC_FLOAT),
++}
++
++TRANS(MULHW, do_mulhw, tcg_gen_muls2_i32)
++TRANS(MULHWU, do_mulhw, tcg_gen_mulu2_i32)
++
+ static bool trans_INVALID(DisasContext *ctx, arg_INVALID *a)
+ {
+     gen_invalid(ctx);
 -- 
 2.43.0
 
