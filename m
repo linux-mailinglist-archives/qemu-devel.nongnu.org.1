@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B31C8CD68E
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7ABA8CD69D
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:04:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9wA-0005eS-M2; Thu, 23 May 2024 11:00:58 -0400
+	id 1sA9wE-0005zh-OS; Thu, 23 May 2024 11:01:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9w8-0005QM-56
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:56 -0400
+ id 1sA9wB-0005tG-C3
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9w6-0004pM-9n
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:55 -0400
+ id 1sA9w9-0004pb-F7
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:00:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476453;
+ s=mimecast20190719; t=1716476456;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VjC9jCKLkNDsyMvB5gIqtNiqr/gW7pKk6sCvaBJmOQo=;
- b=FijmG45uHnipUJ+jYa2pSFgJjxBV0Yt8GCIKNzleg8VuYGfgSeXD0mNvOZkfvV/5K/34z+
- 2uXQA8RcygO9Awaa4yIFcg3TGc2TS8DHr+Q2hiQ5LvJHn6Se5CcbxXcF4FO1FtIJTMsBu3
- Bmgm7WUQKh8f059AFti9tzTpekaTHA4=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RRwx+emp8z1T3Io0QQVZ2C4uYnikwD6/IsL4K09fAzM=;
+ b=hN6OH75dmEyya9ewZZ90m7sX9WsMSQjs5WuSNaeKsmjhURQcY40330RVJuddg7bBvW8Ohp
+ QTTszXJJAueic14ZYbM7dftr8jLdEsCCr1KZsLc7PLyHBILZgTfGXDyYfg0p7JAEuz1SvB
+ 1Q6GdypzwYofSLSZZP/NNhUYUoO2u00=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-RCDOEWv5OQyN3xQzqLPrpw-1; Thu, 23 May 2024 11:00:52 -0400
-X-MC-Unique: RCDOEWv5OQyN3xQzqLPrpw-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2e952e85d80so7063411fa.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:52 -0700 (PDT)
+ us-mta-656-tmkbCu87NIe5C6VZlRXXkg-1; Thu, 23 May 2024 11:00:54 -0400
+X-MC-Unique: tmkbCu87NIe5C6VZlRXXkg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a62471564a0so36928466b.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:00:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476450; x=1717081250;
+ d=1e100.net; s=20230601; t=1716476452; x=1717081252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VjC9jCKLkNDsyMvB5gIqtNiqr/gW7pKk6sCvaBJmOQo=;
- b=g1UA+1qKmdp9t9jIk9RwDJVVMXosKoAYPWy0/4s1hc819Rncd3ZE4E8uM8BHmIqelj
- tepiL3ZL/fUg42qlQ6RX1DgeHwFct8IhAEGXAnpuo6BTPPWOdhaS+jOmqBbUL76G7IMA
- woZ2eLtoRCiKy4Yuvy+Xw8F8dHsX0jvSxhxpyCSgsiENRH1EhHRgsz3k9jkZLc1KQsoA
- BUFZM5l62dHE1x0Ubuoy2DxAFxWmSZkwIFbTpo1tjIqiQsEdVN4vwILBc62DdMw39Ytl
- CbOXXvO55l/MuAyEGfycUotXBmv9ILTUw0ZmgZppJCGCUw9sQ6Yz7R5pSeHY5pWJ043i
- v2fw==
-X-Gm-Message-State: AOJu0YzqGcZGAQQZ0YQ2VewolrTgP5LP1hmtv1VPk3CAujrHWazXf56m
- AJgOBF2lsp8jxjYQvG0U26csl5GCRbBzifrfSofBbnEjY1uieYt39i/hNYr9Lfruj1zBh0ROzGm
- 5iEqTLLmn2IzhViHOhHiDJedQshUrlMc4dwq39k7cRFlofAR1GW58JjjVREbS/DWfDNZZJTaLAV
- gxyIIb4PhCyXZ8T0GKQGy6ACUzGyQnlLlLvLil
-X-Received: by 2002:ac2:4154:0:b0:523:97ee:c1f4 with SMTP id
- 2adb3069b0e04-526bf545f4dmr3424933e87.56.1716476450172; 
- Thu, 23 May 2024 08:00:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFm1M09VvNVArFCumNveWJtkXO3dKW0qJg/6a/ry97/O/Nziuf/a/Shg89WXuDgWHcOGfykiQ==
-X-Received: by 2002:ac2:4154:0:b0:523:97ee:c1f4 with SMTP id
- 2adb3069b0e04-526bf545f4dmr3424907e87.56.1716476449667; 
- Thu, 23 May 2024 08:00:49 -0700 (PDT)
+ bh=RRwx+emp8z1T3Io0QQVZ2C4uYnikwD6/IsL4K09fAzM=;
+ b=qJsMh9hFD58nr4KbrRPh8mEVku55Hd0jDHactr2vwKnoYw7HfiZT7lO5yTazAXIcs3
+ H4s31vkbVT4XAw2cTTolUWYFxTN0Yo6w95uUss2Y+KZakOGIhXlYkBtkuPSqNWogLiY2
+ K8mTUvrqUOnN4a4PeTFwkbGTQNDt4W9svftHRIvUjcwZ3dzLEV0E8Iv9YrEFFayPvSfi
+ aZyb9zjhDvDQIvv50qtWj/CbYtMtnL5ywJL4bqDZtU8ATmHkonnvPCOzAuMhhSRSE+RL
+ 8Vl/GA8OAg4gnf1lNYkYzzYAEXSB6Qh3Dr0ipYkjq6aXueVLZczGKie0qWFVd+j9U0ag
+ yfNw==
+X-Gm-Message-State: AOJu0YzBy0KpdHqLZZdw6dUGo/iUITbO7gZiza2aXnH//cH10t/QM/Y8
+ v5IWO1n9A/MhG7gTlqPSagxKNx3PExaSLpJVusP6Qpdvmg6BtWyTOO4iBU1owUA44NMHqJ29l0H
+ Do2AtT3nCtSR1ubfLSxOtwRzeWue2N5+kqLtZ411aGU9yU8khcWubWpRO7sIRCuyWq/239HcOxz
+ aG/ofAeRhYsSIzErdTytFlNyHM07bTXkKSfUda
+X-Received: by 2002:a17:906:1854:b0:a62:2b65:1dd5 with SMTP id
+ a640c23a62f3a-a622b65233cmr319045066b.58.1716476452520; 
+ Thu, 23 May 2024 08:00:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESRppVHw6OSjrP8Qr8czZVtfHjhw7DkxPSJYwN9zh+MHrd1dc/Jhz8C9J9feD7SDDHUGnkpA==
+X-Received: by 2002:a17:906:1854:b0:a62:2b65:1dd5 with SMTP id
+ a640c23a62f3a-a622b65233cmr319042866b.58.1716476452207; 
+ Thu, 23 May 2024 08:00:52 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a5a8a55f2e8sm1262018866b.126.2024.05.23.08.00.48
+ a640c23a62f3a-a5a25f0d2a9sm1923665866b.60.2024.05.23.08.00.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:00:48 -0700 (PDT)
+ Thu, 23 May 2024 08:00:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, Xuelian Guo <xuelian.guo@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 05/23] target/i386: add control bits support for LAM
-Date: Thu, 23 May 2024 17:00:18 +0200
-Message-ID: <20240523150036.1050011-6-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Robert Hoo <robert.hu@linux.intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PULL 06/23] i386/cpu: Fix i/d-cache topology to core level for Intel
+ CPU
+Date: Thu, 23 May 2024 17:00:19 +0200
+Message-ID: <20240523150036.1050011-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
@@ -101,90 +103,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Binbin Wu <binbin.wu@linux.intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-LAM uses CR3[61] and CR3[62] to configure/enable LAM on user pointers.
-LAM uses CR4[28] to configure/enable LAM on supervisor pointers.
+For i-cache and d-cache, current QEMU hardcodes the maximum IDs for CPUs
+sharing cache (CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits
+25:14]) to 0, and this means i-cache and d-cache are shared in the SMT
+level.
 
-For CR3 LAM bits, no additional handling needed:
-- TCG
-  LAM is not supported for TCG of target-i386.  helper_write_crN() and
-  helper_vmrun() check max physical address bits before calling
-  cpu_x86_update_cr3(), no change needed, i.e. CR3 LAM bits are not allowed
-  to be set in TCG.
-- gdbstub
-  x86_cpu_gdb_write_register() will call cpu_x86_update_cr3() to update cr3.
-  Allow gdb to set the LAM bit(s) to CR3, if vcpu doesn't support LAM,
-  KVM_SET_SREGS will fail as other reserved bits.
+This is correct if there's single thread per core, but is wrong for the
+hyper threading case (one core contains multiple threads) since the
+i-cache and d-cache are shared in the core level other than SMT level.
 
-For CR4 LAM bit, its reservation depends on vcpu supporting LAM feature or
-not.
-- TCG
-  LAM is not supported for TCG of target-i386.  helper_write_crN() and
-  helper_vmrun() check CR4 reserved bit before calling cpu_x86_update_cr4(),
-  i.e. CR4 LAM bit is not allowed to be set in TCG.
-- gdbstub
-  x86_cpu_gdb_write_register() will call cpu_x86_update_cr4() to update cr4.
-  Mask out LAM bit on CR4 if vcpu doesn't support LAM.
-- x86_cpu_reset_hold() doesn't need special handling.
+For AMD CPU, commit 8f4202fb1080 ("i386: Populate AMD Processor Cache
+Information for cpuid 0x8000001D") has already introduced i/d cache
+topology as core level by default.
 
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
-Tested-by: Xuelian Guo <xuelian.guo@intel.com>
+Therefore, in order to be compatible with both multi-threaded and
+single-threaded situations, we should set i-cache and d-cache be shared
+at the core level by default.
+
+This fix changes the default i/d cache topology from per-thread to
+per-core. Potentially, this change in L1 cache topology may affect the
+performance of the VM if the user does not specifically specify the
+topology or bind the vCPU. However, the way to achieve optimal
+performance should be to create a reasonable topology and set the
+appropriate vCPU affinity without relying on QEMU's default topology
+structure.
+
+Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240112060042.19925-3-binbin.wu@linux.intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20240424154929.1487382-6-zhao1.liu@intel.com>
+[Add compat property. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h    | 7 ++++++-
- target/i386/helper.c | 4 ++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ hw/i386/pc.c      | 1 +
+ target/i386/cpu.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 107f263429a..ccf6811794e 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -258,6 +258,7 @@ typedef enum X86Seg {
- #define CR4_SMAP_MASK   (1U << 21)
- #define CR4_PKE_MASK   (1U << 22)
- #define CR4_PKS_MASK   (1U << 24)
-+#define CR4_LAM_SUP_MASK (1U << 28)
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 4a2d6f5a97f..6126bfdd2a7 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -79,6 +79,7 @@
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
  
- #define CR4_RESERVED_MASK \
- (~(target_ulong)(CR4_VME_MASK | CR4_PVI_MASK | CR4_TSD_MASK \
-@@ -266,7 +267,8 @@ typedef enum X86Seg {
-                 | CR4_OSFXSR_MASK | CR4_OSXMMEXCPT_MASK | CR4_UMIP_MASK \
-                 | CR4_LA57_MASK \
-                 | CR4_FSGSBASE_MASK | CR4_PCIDE_MASK | CR4_OSXSAVE_MASK \
--                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK))
-+                | CR4_SMEP_MASK | CR4_SMAP_MASK | CR4_PKE_MASK | CR4_PKS_MASK \
-+                | CR4_LAM_SUP_MASK))
- 
- #define DR6_BD          (1 << 13)
- #define DR6_BS          (1 << 14)
-@@ -2563,6 +2565,9 @@ static inline uint64_t cr4_reserved_bits(CPUX86State *env)
-     if (!(env->features[FEAT_7_0_ECX] & CPUID_7_0_ECX_PKS)) {
-         reserved_bits |= CR4_PKS_MASK;
-     }
-+    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
-+        reserved_bits |= CR4_LAM_SUP_MASK;
-+    }
-     return reserved_bits;
- }
- 
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 48d1513a35a..f9d1381f90b 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -219,6 +219,10 @@ void cpu_x86_update_cr4(CPUX86State *env, uint32_t new_cr4)
-         new_cr4 &= ~CR4_PKS_MASK;
-     }
- 
-+    if (!(env->features[FEAT_7_1_EAX] & CPUID_7_1_EAX_LAM)) {
-+        new_cr4 &= ~CR4_LAM_SUP_MASK;
-+    }
-+
-     env->cr[4] = new_cr4;
-     env->hflags = hflags;
+ GlobalProperty pc_compat_9_0[] = {
++    { TYPE_X86_CPU, "x-l1-cache-per-thread", "false" },
+     { TYPE_X86_CPU, "guest-phys-bits", "0" },
+     { "sev-guest", "legacy-vm-type", "true" },
+     { TYPE_X86_CPU, "legacy-multi-node", "on" },
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index de1ad7270cf..3c66242f6d3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6258,15 +6258,16 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             *eax = *ebx = *ecx = *edx = 0;
+         } else {
+             *eax = 0;
++            int apic_ids_sharing_l1 = cpu->l1_cache_per_core ? cs->nr_threads : 1;
+             switch (count) {
+             case 0: /* L1 dcache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+-                                    1, cs->nr_cores,
++                                    apic_ids_sharing_l1, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 1: /* L1 icache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+-                                    1, cs->nr_cores,
++                                    apic_ids_sharing_l1, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 2: /* L2 cache info */
+@@ -8105,6 +8106,7 @@ static Property x86_cpu_properties[] = {
+                      false),
+     DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+                      true),
++    DEFINE_PROP_BOOL("x-l1-cache-per-thread", X86CPU, l1_cache_per_core, true),
+     DEFINE_PROP_END_OF_LIST()
+ };
  
 -- 
 2.45.1
