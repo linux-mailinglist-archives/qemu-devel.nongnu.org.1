@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0588CDD86
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD18CDD9B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 01:22:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAHbf-0002qt-CJ; Thu, 23 May 2024 19:12:19 -0400
+	id 1sAHbL-0001h3-Gd; Thu, 23 May 2024 19:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHat-0007WB-9L; Thu, 23 May 2024 19:11:31 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1sAHaw-0007mv-7V; Thu, 23 May 2024 19:11:34 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sAHaq-0006LN-EV; Thu, 23 May 2024 19:11:30 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1f449ed4b89so1659235ad.0; 
- Thu, 23 May 2024 16:11:27 -0700 (PDT)
+ id 1sAHat-0006N6-D5; Thu, 23 May 2024 19:11:32 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6f8e98760fcso294869b3a.1; 
+ Thu, 23 May 2024 16:11:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716505886; x=1717110686; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716505889; x=1717110689; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=08TbmnttJvCBv7zA0rr0Giq11RqrNeScp4MIXBnQF2Y=;
- b=fBOVe0lrzO39BUibEBFJ4leD/vAGOFweh0FBEWaRjcwNbIiiLzawShHMqHKxADJsVj
- i0dopo6KSk8d25n27DfhoSnlAJK4LlStwRDC6cdHYMZ7q4MsUfw+ftyqtd7w1Y73EXH5
- mjhDemaAV0kOi6V0zkXNzHtyy+0P9a47l4E/kLB5eTPridTVKen9I/vRhiZgaklHYEOc
- wxiMKFNeS9xxFxSpoqDSJkLqQ82b9kvdLcQDrCzS1+pSB/tEqzN80RAgv8E0SecY90vD
- pMTu4/b6xIQnZhxSAsFHGRRhunYCqjFOnwafqVZx/lE7PpJOXbsKTqazDzlUXQaJSkYP
- hIHw==
+ bh=o4GTBmpK/uwjCeV22q5y1Kk/p3bIImzV+8sEKRJvedI=;
+ b=anYwriUecm+vpKb0N0t/53WbkHb+E1cvb2CnZRX9R9Axm6NhdoTd00Y/Qojba2KQqm
+ I+wTLQ3QI3ZCVW2ANfuoeyRQlE9LD0Q/hPdmIb4LtbqYP/ymODTSJqb4ql4Cif7lGBGs
+ quG0nRumYPumSq4chIA8T/AY1XXu/q+6IHWojXwyXZF1rVofOCZvUwk4kIwHHE+KRTyA
+ +XqRHggbSPbYx7WRKd+xaE4/dkSqjJEzgadh07lSR2DXRB+VAHzO1bbV5pzrqVZ5NL2O
+ JiFEmPldeqsSkmxsvDNlIJ/i5MxTVdhVoAbp3SdJ1pq4ezVGpquDMQiXDqNdEeZotgrL
+ NdGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716505886; x=1717110686;
+ d=1e100.net; s=20230601; t=1716505889; x=1717110689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=08TbmnttJvCBv7zA0rr0Giq11RqrNeScp4MIXBnQF2Y=;
- b=Yyo9me+AymHcGx3HqtLOnolLUrQ373+gOrBrS3cVMEshxpPASqzDLLWpgSLOvTEuhc
- jbPYgsY6EDsMcRrI66RK6Qc2dr2wE5ad9ixyCBDAol+omXBhqb1ZM0zxfo96fYwmCEwR
- pqD/TpmXJ/A7iOaOGerJ6xsJQROQKw2bQWnGCAILywMch5yfSaIT2V/0ZQr6kSavcXtM
- uqxijl1Ggsn+zZegQefwoO8zs0bI4zaz4225ReLrB3KtPxr0bN4mmtQxkK0GcxJ/NL73
- bdQklxf3UhSr9heZ9erewy86vfyf0d/FTxqWFvO1NdAPFTDISfUYQP3tIEp3DJxGaJNe
- aiJA==
+ bh=o4GTBmpK/uwjCeV22q5y1Kk/p3bIImzV+8sEKRJvedI=;
+ b=cQoPAsexIERkexEBWFl1fWvKYHoPZ+5ef6ygBsu5gtLp45L6XBpRcbdpz6SzBcX6qa
+ uiW/b8B/wm+oKBl0xgkCk38Y6tqod2mjkbDXNy4jGzNEoCFfnKfbLPjURtPDUnpb5Jr7
+ 8KuZEqyLx1PMmTZPL49o2i7lpz3dwVR/CldVxh6I5zK1ies684ZSrpAXarU3vtN8jeHB
+ NCq6VzxF2qgS4eCkOEkKyzgfKHI7XTEzOGjGDUQY+HoUgtFC1qg8lABzozvV5meA6lWX
+ CoWycQebFEQc/0lTRV3xM19hfn3LQYudwRaBDlTxMW7izPCL+3bxYIh4OVLkNrtHy2w3
+ IyXg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXcE1b8lnbbaSaE0pyo3Zb2qu1RR0SQhHacg1Qz8uW7TsnaVb6otVm/PGkQY1ZWTJyxk5vupFHXsG9Xuc6TCkMZnXFZ
-X-Gm-Message-State: AOJu0YwYhckWfpb9M/ucsk2wsLK5RxIGTrtrAqU3xnTaGJn8c806NXjS
- gesGzSI6vWPCEyqdVmbB/G9EMxaKtn5BNJsGZWMGzPEJQpHH9Orkgtjc8g==
-X-Google-Smtp-Source: AGHT+IEYNTIqrnsLJk2vJEoaKDZ0mfD+ftpvsTWuWxQtaQG8ytUk6aLJSm/kLg31+zNys0/WSjyb5w==
-X-Received: by 2002:a17:902:db07:b0:1f1:8fd9:b99d with SMTP id
- d9443c01a7336-1f339f51959mr49079035ad.23.1716505886007; 
- Thu, 23 May 2024 16:11:26 -0700 (PDT)
+ AJvYcCWt5OEX65x2O8AmpdFoScvWBHyAKj+KQUiDYM7QcGJbwp5PYtiBLAWeRmRgHlAdrt8I2wAgZPP5t44zy+/RYoX1alRd
+X-Gm-Message-State: AOJu0YxtlX7BiHTUlj/fmUYFnXg6cI2vI3/9xaPo6asgps2bOdDfIzgy
+ tiw+SXriMgLeHolnfFTcSGMOGG2FWjBkdPUwfv5Gp7h5kdBjMqDl8GWFKg==
+X-Google-Smtp-Source: AGHT+IH6Gpe30mpplUBDBW1yl7T+Ai9PlltkLdEgkYBjboutnQ0PErvsL75KBALwJZoLpF86UQ+0gg==
+X-Received: by 2002:a05:6a00:3388:b0:6f3:c10a:7bdd with SMTP id
+ d2e1a72fcca58-6f8f34b281cmr951744b3a.18.1716505889122; 
+ Thu, 23 May 2024 16:11:29 -0700 (PDT)
 Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.23
+ 41be03b00d2f7-682227f1838sm87041a12.46.2024.05.23.16.11.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 16:11:25 -0700 (PDT)
+ Thu, 23 May 2024 16:11:28 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 68/72] target/ppc/mmu-hash32.c: Drop a local variable
-Date: Fri, 24 May 2024 09:07:41 +1000
-Message-ID: <20240523230747.45703-69-npiggin@gmail.com>
+Subject: [PULL 69/72] target/ppc/mmu-radix64.c: Drop a local variable
+Date: Fri, 24 May 2024 09:07:42 +1000
+Message-ID: <20240523230747.45703-70-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240523230747.45703-1-npiggin@gmail.com>
 References: <20240523230747.45703-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,56 +94,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-In ppc_hash32_xlate() the value of need_prop is checked in two places
-but precalculating it does not help because when we reach the first
-check we always return and not reach the second place so the value
-will only be used once. We can drop the local variable and calculate
-it when needed, which makes these checks using it similar to other
-places with such checks.
+The value is only used once so no need to introduce a local variable
+for it.
 
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-hash32.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ target/ppc/mmu-radix64.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index da6e8b293c..3abaf16e78 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -386,7 +386,6 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     hwaddr pte_offset;
-     ppc_hash_pte32_t pte;
-     int prot;
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index fefa55a5f1..c1e4f00335 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -185,7 +185,6 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
+                                    int mmu_idx, bool partition_scoped)
+ {
+     CPUPPCState *env = &cpu->env;
 -    int need_prot;
-     hwaddr raddr;
  
-     /* There are no hash32 large pages. */
-@@ -400,13 +399,11 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-         return true;
+     /* Check Page Attributes (pte58:59) */
+     if ((pte & R_PTE_ATT) == R_PTE_ATT_NI_IO && access_type == MMU_INST_FETCH) {
+@@ -210,8 +209,8 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
      }
  
+     /* Check if requested access type is allowed */
 -    need_prot = prot_for_access_type(access_type);
--
-     /* 2. Check Block Address Translation entries (BATs) */
-     if (env->nb_BATs != 0) {
-         raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
-         if (raddr != -1) {
--            if (need_prot & ~*protp) {
-+            if (prot_for_access_type(access_type) & ~*protp) {
-                 if (guest_visible) {
-                     if (access_type == MMU_INST_FETCH) {
-                         cs->exception_index = POWERPC_EXCP_ISI;
-@@ -474,7 +471,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- 
-     prot = ppc_hash32_pte_prot(mmu_idx, sr, pte);
- 
--    if (need_prot & ~prot) {
-+    if (prot_for_access_type(access_type) & ~prot) {
-         /* Access right violation */
-         qemu_log_mask(CPU_LOG_MMU, "PTE access rejected\n");
-         if (guest_visible) {
+-    if (need_prot & ~*prot) { /* Page Protected for that Access */
++    if (prot_for_access_type(access_type) & ~*prot) {
++        /* Page Protected for that Access */
+         *fault_cause |= access_type == MMU_INST_FETCH ? SRR1_NOEXEC_GUARD :
+                                                         DSISR_PROTFAULT;
+         return true;
 -- 
 2.43.0
 
