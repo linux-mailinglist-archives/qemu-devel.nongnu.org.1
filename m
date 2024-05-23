@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B978CD6AD
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9E8CD68F
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9wp-0007Pw-4V; Thu, 23 May 2024 11:01:39 -0400
+	id 1sA9xT-0001MA-9H; Thu, 23 May 2024 11:02:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9wZ-0006u5-4w
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9xQ-00013c-EG
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:02:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9wQ-0004rm-AS
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:22 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sA9xO-0004zi-LG
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:02:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476473;
+ s=mimecast20190719; t=1716476534;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=cLelhI9r617cToD99Kpa7HMWkhNDLISrFZNoaAxBSkQ=;
- b=Dl5PdhRadlm8BSQeR/JMnxvTEmY+IEBIbscMezD/0TXozCLv4PnDj3OU6NNbZBGtIyxuAq
- by8zw3Z1iStJoN6xuKQQS3A3PNF6WhrJvPoP3j98JnItJj+bqjofqk6h8BUJyu8gwcINrp
- 5gfEyppj8/548t2CjIAMbYyHa0i2/n0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MaCTFtf6DOSs05csWYBqXWMVWQDGstGUYLGm/TvbN1U=;
+ b=VHd/fKVQbNzmEc9NuOGWAYP63dCPxz0mN4fSIT+QKVAoXKJ3IY8A/ZSt8tQMTDiQOgR+SH
+ ErNfkf1apXY6e1kW6OIjGc4jlzHwXmLItvja2vThIarPk9crCqbcBwkGBMhnEsq764zmTg
+ HoupZA5zwv7LZVyhifs6MiJ3Pv6Lb2g=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-pJHWJaH8Nym7pqtU_YtcFg-1; Thu, 23 May 2024 11:01:11 -0400
-X-MC-Unique: pJHWJaH8Nym7pqtU_YtcFg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-420061cf1b1so67318425e9.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:10 -0700 (PDT)
+ us-mta-322-mpfsl2PiOHO1oANXgxsp8g-1; Thu, 23 May 2024 11:02:12 -0400
+X-MC-Unique: mpfsl2PiOHO1oANXgxsp8g-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2e9589df409so731541fa.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:02:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476470; x=1717081270;
+ d=1e100.net; s=20230601; t=1716476531; x=1717081331;
  h=content-transfer-encoding:in-reply-to:organization:autocrypt
  :content-language:from:references:cc:to:subject:user-agent
  :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
  :date:message-id:reply-to;
- bh=cLelhI9r617cToD99Kpa7HMWkhNDLISrFZNoaAxBSkQ=;
- b=KrZ6RH3rCUGkJESnlCv32AxTod7TKevg+MrlZtfOTvecXmNCbbEN9miy0iZYZJCoON
- u6qHJaGvjGM/9B4RB9rM/HGmD5JEnepqeASKRHOlOTOf2ls1qkV9hul0MjR85WRCVs3P
- jWAJP0o0WxlWSxHoiy7tz6Aii1eVzwnikJSf2r+R2ekzIBK3u+vCJcUzTDvqeQS64kt4
- 5Q51Ox5JHaY71xnl2xW62sb1iFuNmyIiXu1bVJvwjoJZzlMdK18+hMQ3W7lQWsG7ZIj8
- u/LSpaR72RVVSWRmc0rNUMzMmivRj0EnKMNZF91j7iiCuVso6HVk4+jypGPFQJwoBVrB
- VcGw==
+ bh=MaCTFtf6DOSs05csWYBqXWMVWQDGstGUYLGm/TvbN1U=;
+ b=gLDkIL7xV1ayL+eHJTzvyeTzXiAwwSdsNpjTVIgT2NqrvPl9JViWq33s8QcWlq/5ki
+ woErymr84gse3Jey+YG9Dr5tD4K9lLxGgY/48bsbyWPoJwBZLLfXt1MnFicHpyEXcLFz
+ /XWukgx9RR/LtaeuA5pati0bqJ8Wieq3M8ujezH6ieLI/h8tWBWz7Axlt7EEMthmCfEQ
+ 5jLeEyqLWTVuBS0+/yz03RPlBqivetOKILI87Te4l9DY9ybByrHXgM/+xA60R2ZJNjPJ
+ JKOGVzM3O3MUA0mcnQtf1hGlZ2yyABnVHLscxFfzVfPizMYj5jFMWScuOTWOCdtpI7Gw
+ eUqQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX9UAwzps2Nli/BIN+ggoOMelSj1wwRlYEMNGNE40N5NtNVFZkLpsw3yio8YFjpjOopsWEJukUf+rI8u8eL2DMYDSt1aYI=
-X-Gm-Message-State: AOJu0YyzOn5WCnCTqCn+2Q0DqeJUL14YuEA+g4QLJ5skIYukljbL9GU3
- gHykKgRCbhHQC3+jq1wUfHjfh94OTpNG0GaGo1Y4hXOUUyhfxNey/uwiD8Q6MsWCvyflM5eceCe
- VwutUouDNvRECDCTDzbvLwQPv9QuP1PXbyUGqdN+uygfGaxHC1zBX
-X-Received: by 2002:a05:600c:2907:b0:41e:1f78:314d with SMTP id
- 5b1f17b1804b1-420fd319c41mr36353735e9.24.1716476469878; 
- Thu, 23 May 2024 08:01:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIDpQRKbf4i0bF5hjZBsxbOW8XqVTN8GpRFPeI+GlZmAuYq/QmhV+UeUi/8dF22EvxrbSw9w==
-X-Received: by 2002:a05:600c:2907:b0:41e:1f78:314d with SMTP id
- 5b1f17b1804b1-420fd319c41mr36353305e9.24.1716476469425; 
- Thu, 23 May 2024 08:01:09 -0700 (PDT)
+ AJvYcCVlVB/hJW9vLqFgJvA0pJ56UM6/jK1/VINWVImYptd7uASKXhBoMpoqv+08HqE6szspanoW2q5qtJM0uxG0aVTYdcdUhMU=
+X-Gm-Message-State: AOJu0YzulmNZTx9+VDva39so5GyLXlCTd6Sk+fu8p3mvnYaBO7eC4D28
+ 9PPFOg362oYyJwCE43Vi28Dpt3XMQelO6VxlnSclXEkcY/kKsY5VM7cWL0zd6C7FybFMcsGgdov
+ zFMQXtwkmP73Fj5uuF3RhQ3VPCUAanb2cBDieo0MgIGOql5oWIQzf
+X-Received: by 2002:a2e:a549:0:b0:2df:b7cf:9607 with SMTP id
+ 38308e7fff4ca-2e9494f2a5bmr41759291fa.22.1716476531245; 
+ Thu, 23 May 2024 08:02:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTZWTuOZt8qZoV0qN+MAIn5YyTxL/CJAAlWmq2uPPVH5xz+vgv1PjqfOQ6Gh6USFDdsXO+dQ==
+X-Received: by 2002:a2e:a549:0:b0:2df:b7cf:9607 with SMTP id
+ 38308e7fff4ca-2e9494f2a5bmr41757671fa.22.1716476529324; 
+ Thu, 23 May 2024 08:02:09 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c717:5f00:c949:6700:cce1:e60b?
  (p200300cbc7175f00c9496700cce1e60b.dip0.t-ipconnect.de.
  [2003:cb:c717:5f00:c949:6700:cce1:e60b])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100fb7fe1sm27268405e9.45.2024.05.23.08.01.07
+ 38308e7fff4ca-2e4d16200f4sm43289701fa.118.2024.05.23.08.02.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 08:01:08 -0700 (PDT)
-Message-ID: <4f0829e9-c0b2-48e9-9235-e4b626b61769@redhat.com>
-Date: Thu, 23 May 2024 17:01:07 +0200
+ Thu, 23 May 2024 08:02:08 -0700 (PDT)
+Message-ID: <c6b56c83-4a25-40fd-b905-9b11f74e040e@redhat.com>
+Date: Thu, 23 May 2024 17:02:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 04/13] vhost-user-server: do not set memory fd
- non-blocking
+Subject: Re: [PATCH v5 05/13] contrib/vhost-user-blk: fix bind() using the
+ right size of the address
 To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -87,7 +87,7 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Eric Blake <eblake@redhat.com>,
  Kevin Wolf <kwolf@redhat.com>, gmaglione@redhat.com,
  Thomas Huth <thuth@redhat.com>, qemu-block@nongnu.org
 References: <20240523145522.313012-1-sgarzare@redhat.com>
- <20240523145522.313012-5-sgarzare@redhat.com>
+ <20240523145522.313012-6-sgarzare@redhat.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -135,10 +135,10 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240523145522.313012-5-sgarzare@redhat.com>
+In-Reply-To: <20240523145522.313012-6-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -146,7 +146,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -163,20 +163,35 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 23.05.24 16:55, Stefano Garzarella wrote:
-> In vhost-user-server we set all fd received from the other peer
-> in non-blocking mode. For some of them (e.g. memfd, shm_open, etc.)
-> it's not really needed, because we don't use these fd with blocking
-> operations, but only to map memory.
+> On macOS passing `-s /tmp/vhost.socket` parameter to the vhost-user-blk
+> application, the bind was done on `/tmp/vhost.socke` pathname,
+> missing the last character.
 > 
-> In addition, in some systems this operation can fail (e.g. in macOS
-> setting an fd returned by shm_open() non-blocking fails with errno
-> = ENOTTY).
+> This sounds like one of the portability problems described in the
+> unix(7) manpage:
 > 
-> So, let's avoid setting fd non-blocking for those messages that we
-> know carry memory fd (e.g. VHOST_USER_ADD_MEM_REG,
-> VHOST_USER_SET_MEM_TABLE).
+>     Pathname sockets
+>         When  binding  a socket to a pathname, a few rules should
+>         be observed for maximum portability and ease of coding:
 > 
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+>         •  The pathname in sun_path should be null-terminated.
+> 
+>         •  The length of the pathname, including the  terminating
+>            null byte, should not exceed the size of sun_path.
+> 
+>         •  The  addrlen  argument  that  describes  the enclosing
+>            sockaddr_un structure should have a value of at least:
+> 
+>                offsetof(struct sockaddr_un, sun_path) +
+>                strlen(addr.sun_path)+1
+> 
+>            or,  more  simply,  addrlen  can   be   specified   as
+>            sizeof(struct sockaddr_un).
+> 
+> So let's follow the last advice and simplify the code as well.
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
 > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
