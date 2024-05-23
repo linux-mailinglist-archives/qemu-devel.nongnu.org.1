@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFF18CCA71
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8600B8CCA76
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:48:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9xXc-0001f1-Th; Wed, 22 May 2024 21:46:48 -0400
+	id 1s9xXh-0001j1-2Y; Wed, 22 May 2024 21:46:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s9xXa-0001eQ-Tv
- for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:46 -0400
+ id 1s9xXd-0001gD-FF; Wed, 22 May 2024 21:46:49 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s9xXY-00012q-0J
- for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:46 -0400
+ (envelope-from <gaosong@loongson.cn>)
+ id 1s9xXZ-000130-3Q; Wed, 22 May 2024 21:46:49 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxDOv9n05mm98CAA--.6049S3;
- Thu, 23 May 2024 09:46:37 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Bxnq4AoE5mnt8CAA--.2449S3;
+ Thu, 23 May 2024 09:46:40 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxDMf9n05mSDMGAA--.17472S2; 
- Thu, 23 May 2024 09:46:37 +0800 (CST)
+ AQAAf8AxDMf9n05mSDMGAA--.17472S3; 
+ Thu, 23 May 2024 09:46:40 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org
-Subject: [PULL 00/10] loongarch-to-apply queue
-Date: Thu, 23 May 2024 09:46:27 +0800
-Message-Id: <20240523014637.614872-1-gaosong@loongson.cn>
+Cc: richard.henderson@linaro.org, qemu-stable@nongnu.org,
+ Peter Xu <peterx@redhat.com>
+Subject: [PULL 01/10] target/loongarch/kvm: Fix VM recovery from disk failures
+Date: Thu, 23 May 2024 09:46:28 +0800
+Message-Id: <20240523014637.614872-2-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240523014637.614872-1-gaosong@loongson.cn>
+References: <20240523014637.614872-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S2
+X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S3
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -60,43 +62,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6af8037c42fdc3d20d5aa2686799ab356a9ee1a9:
+vmstate does not save kvm_state_conter,
+which can cause VM recovery from disk to fail.
 
-  Merge tag 'pull-vfio-20240522' of https://github.com/legoater/qemu into staging (2024-05-22 06:02:06 -0700)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20240508024732.3127792-1-gaosong@loongson.cn>
+---
+ target/loongarch/machine.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-are available in the Git repository at:
-
-  https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240523
-
-for you to fetch changes up to 6204af704a071ea68d3af55c0502b112a7af9546:
-
-  hw/loongarch/virt: Fix FDT memory node address width (2024-05-23 09:30:41 +0800)
-
-----------------------------------------------------------------
-pull-loongarch-20240523
-
-----------------------------------------------------------------
-Bibo Mao (7):
-      hw/loongarch: Add VM mode in IOCSR feature register in kvm mode
-      hw/loongarch: Refine acpi srat table for numa memory
-      hw/loongarch: Refine fadt memory table for numa memory
-      hw/loongarch: Refine fwcfg memory map
-      hw/loongarch: Refine system dram memory region
-      hw/loongarch: Remove minimum and default memory size
-      target/loongarch: Add loongarch vector property unconditionally
-
-Jiaxun Yang (1):
-      hw/loongarch/virt: Fix FDT memory node address width
-
-Song Gao (2):
-      target/loongarch/kvm: Fix VM recovery from disk failures
-      target/loongarch/kvm: fpu save the vreg registers high 192bit
-
- hw/loongarch/acpi-build.c  |  58 +++++++++------
- hw/loongarch/virt.c        | 179 ++++++++++++++++++++++++++++++++-------------
- target/loongarch/cpu.c     |  14 +---
- target/loongarch/kvm/kvm.c |   6 ++
- target/loongarch/machine.c |   6 +-
- 5 files changed, 176 insertions(+), 87 deletions(-)
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index 9cd9e848d6..08a7fa5370 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -145,8 +145,8 @@ static const VMStateDescription vmstate_tlb = {
+ /* LoongArch CPU state */
+ const VMStateDescription vmstate_loongarch_cpu = {
+     .name = "cpu",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+         VMSTATE_UINTTL(env.pc, LoongArchCPU),
+@@ -208,6 +208,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
+         VMSTATE_UINT64(env.CSR_DERA, LoongArchCPU),
+         VMSTATE_UINT64(env.CSR_DSAVE, LoongArchCPU),
+ 
++        VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
++
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription * const []) {
+-- 
+2.34.1
 
 
