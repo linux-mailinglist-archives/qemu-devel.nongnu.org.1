@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D3C8CD692
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAFB8CD68C
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 17:03:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sA9xP-0000Gv-4k; Thu, 23 May 2024 11:02:15 -0400
+	id 1sA9xQ-0000qb-UH; Thu, 23 May 2024 11:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9ws-00082T-M8
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:42 -0400
+ id 1sA9wt-00089n-I0
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sA9wq-0004vX-VB
- for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:42 -0400
+ id 1sA9wr-0004vd-Sa
+ for qemu-devel@nongnu.org; Thu, 23 May 2024 11:01:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716476500;
+ s=mimecast20190719; t=1716476501;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N1Pn7vFXvHPKuSMjWiqdhpZacphlqMdCoJigV4EMHgs=;
- b=av0lIyjASPMUjPLJ8Eyu/7rPJpx4OqBrgnnceegxmJGKQAGyfCmmkl08Kpa+Ln1FyhECkn
- c+GsXsgAkn9zRmZmlWcdrzFU8uaACrKaUFoIpeeXxi3hXER1gX1z8buTL9qRSG8XFvGYJX
- FPVE5D7sEmDrI1CsG4m/CtcWvNTERbk=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xtNMjeo30umZmHsb3OdqLgoNlGtwryuHoombtfhUSBM=;
+ b=Q+sDLC8WOt0k7eyWu+jR1OxA0qdKwGWCXW6u94gpEQF1CDDUt1REAKub/waxYZ7Qax0bxe
+ vw3u3ybM+CIzwwgEDdlZerHt4gM1YsO4P0LnyuapTj3q7ecYQvcls0PqTlxgNDRWDYFO7k
+ dsYB0iYMF5Q/ywX7Znzhr+7jZK9BfeA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-503-g9D589kjPRSsJ5MD9jrcSA-1; Thu, 23 May 2024 11:01:35 -0400
-X-MC-Unique: g9D589kjPRSsJ5MD9jrcSA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-52389b09bb6so1078489e87.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:35 -0700 (PDT)
+ us-mta-213-fV-aEknhNyKV7vAPPq3UGg-1; Thu, 23 May 2024 11:01:39 -0400
+X-MC-Unique: fV-aEknhNyKV7vAPPq3UGg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a59eea00cafso147623166b.1
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 08:01:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716476493; x=1717081293;
+ d=1e100.net; s=20230601; t=1716476497; x=1717081297;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=N1Pn7vFXvHPKuSMjWiqdhpZacphlqMdCoJigV4EMHgs=;
- b=l4pHrIjGg9NPIsa9L3KqBce8gYz67QjUTSs87M6zELlM2LoeOC/s7GbYQyIJ5aieJU
- dmU8rVXUJ20d8QM1We2xsEmYmiu1En/73k2S1xACkmbMe+ojC8r3vQjxTqCiEUfvh89k
- ln5SMEvsur+TSguIz4MYhZb1oA2JoaRPIJ5ZgMxmi2dEarIEAdXpUELQsT3daBQCSk5d
- aEsW2ZxSSDy+076Zfhtj7xaBmzKekDMBNtJA2NgeRU6N8axeSvDmsibNkekyXblbemJ5
- NfxHQ4ORGsJeGz62ql0kA/1H3mtptYMnIud3yZ8lDubvAn8Tuoe9ZPwUTzC3eoWaHER5
- j4uQ==
-X-Gm-Message-State: AOJu0YwJVAkpGJyT1A/xAaykNVl7RVrNbrJ/yUUqEnH4wES74BA+8W4c
- piFE2qUje80xSwSljXqlRj4QRxPwo8BkmMe2S/OMnTUnZMgy7tudPxJ5CNLrJuTi3qUSZuZhod1
- 8xGcGV3qfB+ncQVhJL6t3VQRE8c0eTSjJL9CFUcAGt/vhW5z04IDCyR/EXTmGdbeSvyULuGsoIb
- MZE2w/EvLI8iBKduJ6lCrgvyO3bdmdmVgZmzSZ
-X-Received: by 2002:ac2:4831:0:b0:51d:a87e:27ec with SMTP id
- 2adb3069b0e04-526bd6935camr3149314e87.9.1716476493169; 
- Thu, 23 May 2024 08:01:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWUvHz/WWG9n92xS9THX5XlIQgWnlW34CNhdGutSmy/oCptKLRru/5YxvHBMfmdMV5Q/2SjA==
-X-Received: by 2002:ac2:4831:0:b0:51d:a87e:27ec with SMTP id
- 2adb3069b0e04-526bd6935camr3149288e87.9.1716476492704; 
- Thu, 23 May 2024 08:01:32 -0700 (PDT)
+ bh=xtNMjeo30umZmHsb3OdqLgoNlGtwryuHoombtfhUSBM=;
+ b=fEkCrNTldjiVkGvMNIzzqSdWcWWi2kyop+0rW0ECqJfi7PwmgZzzzOnr3csiWq5eGX
+ RdGpWgD/mJs8Iwp7jV2juMcHmTHY4UKwsyU2UewLhOp17LLh3ljtMpZl/rgcsVUdLSbZ
+ Crs30sxJnG1Rx8PB8PDpznzrOkh/LbC93Im/dHQ89RnAktn0NV2UEbrLyPDCYa0k+lQK
+ MInZershq7n7VjiAlANL/wLby4EDentzKN7jMDyV1ALMnlJPhrDTiVf8czmxDz0jNVJq
+ P29aFyUX17CZfArRG7PyltHsDd+wUhtxkW+HdqHrVUe3LSMvvrzcNO3kwh++Rbw697Pa
+ 2Plw==
+X-Gm-Message-State: AOJu0YzOV09vpEz4dsgsbicdiEs9ZzenZD7D4u5nxDqPMIyYGzk6g0Lo
+ YU0FYVgj+caWJJax8sl7wSor2whwEPj5bx9ghF+kGT/Us8YwZ68mg3VFBG9D5Iaflu3Ajstz00F
+ JkOhNEnXQ59KRfpfaFbPr+/YqmpPkBv07gfsCvlJXGaZfqKm2wGFziPIGUR//VpFFkPwdRnyb1Y
+ 4SHP/IuW+wjN9uNMGlHGZXzOwmv+xCOZxJRVCS
+X-Received: by 2002:a17:906:71da:b0:a62:2ef9:141 with SMTP id
+ a640c23a62f3a-a622ef902a2mr411232966b.8.1716476496941; 
+ Thu, 23 May 2024 08:01:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQ1x7xnI163X9uaPg6C1hBgi1X7gfiWcXEUJxWmMCqrUCjI8TvjxfA6Xezwdub5LyZ8/D5TQ==
+X-Received: by 2002:a17:906:71da:b0:a62:2ef9:141 with SMTP id
+ a640c23a62f3a-a622ef902a2mr411228166b.8.1716476495839; 
+ Thu, 23 May 2024 08:01:35 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-5733c2c7de4sm19809096a12.63.2024.05.23.08.01.30
+ a640c23a62f3a-a6214655b23sm422810366b.165.2024.05.23.08.01.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 08:01:31 -0700 (PDT)
+ Thu, 23 May 2024 08:01:33 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Babu Moger <babu.moger@amd.com>
-Subject: [PULL 22/23] i386/cpu: Use CPUCacheInfo.share_level to encode
- CPUID[0x8000001D].EAX[bits 25:14]
-Date: Thu, 23 May 2024 17:00:35 +0200
-Message-ID: <20240523150036.1050011-23-pbonzini@redhat.com>
+Cc: donsheng <dongsheng.x.zhang@intel.com>, Chao Gao <chao.gao@intel.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL 23/23] target-i386: hyper-v: Correct kvm_hv_handle_exit return
+ value
+Date: Thu, 23 May 2024 17:00:36 +0200
+Message-ID: <20240523150036.1050011-24-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240523150036.1050011-1-pbonzini@redhat.com>
 References: <20240523150036.1050011-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -86,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,54 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: donsheng <dongsheng.x.zhang@intel.com>
 
-CPUID[0x8000001D].EAX[bits 25:14] NumSharingCache: number of logical
-processors sharing cache.
+This bug fix addresses the incorrect return value of kvm_hv_handle_exit for
+KVM_EXIT_HYPERV_SYNIC, which should be EXCP_INTERRUPT.
 
-The number of logical processors sharing this cache is
-NumSharingCache + 1.
+Handling of KVM_EXIT_HYPERV_SYNIC in QEMU needs to be synchronous.
+This means that async_synic_update should run in the current QEMU vCPU
+thread before returning to KVM, returning EXCP_INTERRUPT to guarantee this.
+Returning 0 can cause async_synic_update to run asynchronously.
 
-After cache models have topology information, we can use
-CPUCacheInfo.share_level to decide which topology level to be encoded
-into CPUID[0x8000001D].EAX[bits 25:14].
+One problem (kvm-unit-tests's hyperv_synic test fails with timeout error)
+caused by this bug:
 
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Reviewed-by: Babu Moger <babu.moger@amd.com>
-Message-ID: <20240424154929.1487382-22-zhao1.liu@intel.com>
+When a guest VM writes to the HV_X64_MSR_SCONTROL MSR to enable Hyper-V SynIC,
+a VM exit is triggered and processed by the kvm_hv_handle_exit function of the
+QEMU vCPU. This function then calls the async_synic_update function to set
+synic->sctl_enabled to true. A true value of synic->sctl_enabled is required
+before creating SINT routes using the hyperv_sint_route_new() function.
+
+If kvm_hv_handle_exit returns 0 for KVM_EXIT_HYPERV_SYNIC, the current QEMU
+vCPU thread may return to KVM and enter the guest VM before running
+async_synic_update. In such case, the hyperv_synic test’s subsequent call to
+synic_ctl(HV_TEST_DEV_SINT_ROUTE_CREATE, ...) immediately after writing to
+HV_X64_MSR_SCONTROL can cause QEMU’s hyperv_sint_route_new() function to return
+prematurely (because synic->sctl_enabled is false).
+
+If the SINT route is not created successfully, the SINT interrupt will not be
+fired, resulting in a timeout error in the hyperv_synic test.
+
+Fixes: 267e071bd6d6 (“hyperv: make overlay pages for SynIC”)
+Suggested-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Dongsheng Zhang <dongsheng.x.zhang@intel.com>
+Message-ID: <20240521200114.11588-1-dongsheng.x.zhang@intel.com>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ target/i386/kvm/hyperv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f91e1500266..bc2dceb647f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -478,20 +478,12 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-                                        uint32_t *eax, uint32_t *ebx,
-                                        uint32_t *ecx, uint32_t *edx)
- {
--    uint32_t num_sharing_cache;
-     assert(cache->size == cache->line_size * cache->associativity *
-                           cache->partitions * cache->sets);
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index f2a3fe650a1..b94f12acc2c 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -81,7 +81,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
+          */
+         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
  
-     *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-                (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
--
--    /* L3 is shared among multiple cores */
--    if (cache->level == 3) {
--        num_sharing_cache = 1 << apicid_die_offset(topo_info);
--    } else {
--        num_sharing_cache = 1 << apicid_core_offset(topo_info);
--    }
--    *eax |= (num_sharing_cache - 1) << 14;
-+    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
- 
-     assert(cache->line_size > 0);
-     assert(cache->partitions > 0);
+-        return 0;
++        return EXCP_INTERRUPT;
+     case KVM_EXIT_HYPERV_HCALL: {
+         uint16_t code = exit->u.hcall.input & 0xffff;
+         bool fast = exit->u.hcall.input & HV_HYPERCALL_FAST;
 -- 
 2.45.1
 
