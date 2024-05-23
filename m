@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5A08CCA70
-	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC528CCA7A
+	for <lists+qemu-devel@lfdr.de>; Thu, 23 May 2024 03:48:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s9xXe-0001gR-4I; Wed, 22 May 2024 21:46:50 -0400
+	id 1s9xXf-0001hs-GD; Wed, 22 May 2024 21:46:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1s9xXc-0001fF-6j
+ id 1s9xXc-0001fK-Ad
  for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:48 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1s9xXY-00013F-4V
- for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:47 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1s9xXY-00013J-CV
+ for qemu-devel@nongnu.org; Wed, 22 May 2024 21:46:48 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxrq4CoE5mrd8CAA--.2502S3;
+ by gateway (Coremail) with SMTP id _____8CxMK8CoE5mr98CAA--.2609S3;
  Thu, 23 May 2024 09:46:42 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxDMf9n05mSDMGAA--.17472S10; 
+ AQAAf8AxDMf9n05mSDMGAA--.17472S11; 
  Thu, 23 May 2024 09:46:41 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	Bibo Mao <maobibo@loongson.cn>
-Subject: [PULL 08/10] hw/loongarch: Remove minimum and default memory size
-Date: Thu, 23 May 2024 09:46:35 +0800
-Message-Id: <20240523014637.614872-9-gaosong@loongson.cn>
+Subject: [PULL 09/10] target/loongarch: Add loongarch vector property
+ unconditionally
+Date: Thu, 23 May 2024 09:46:36 +0800
+Message-Id: <20240523014637.614872-10-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240523014637.614872-1-gaosong@loongson.cn>
 References: <20240523014637.614872-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S10
+X-CM-TRANSID: AQAAf8AxDMf9n05mSDMGAA--.17472S11
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -65,43 +66,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bibo Mao <maobibo@loongson.cn>
 
-Some qtest test cases such as numa use default memory size of generic
-machine class, which is 128M by fault.
-
-Here generic default memory size is used, and also remove minimum memory
-size which is 1G originally.
+Currently LSX/LASX vector property is decided by the default value.
+Instead vector property should be added unconditionally, and it is
+irrelative with its default value. If vector is disabled by default,
+vector also can be enabled from command line.
 
 Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240515093927.3453674-6-maobibo@loongson.cn>
+Message-Id: <20240521080549.434197-2-maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- hw/loongarch/virt.c | 5 -----
- 1 file changed, 5 deletions(-)
+ target/loongarch/cpu.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 4ec2b9a061..e3bdf085b5 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -990,10 +990,6 @@ static void virt_init(MachineState *machine)
-         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
-     }
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index a0cad53676..b5c1ec94af 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -645,16 +645,10 @@ static void loongarch_set_lasx(Object *obj, bool value, Error **errp)
  
--    if (ram_size < 1 * GiB) {
--        error_report("ram_size must be greater than 1G.");
--        exit(1);
+ void loongarch_cpu_post_init(Object *obj)
+ {
+-    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+-
+-    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
+-        object_property_add_bool(obj, "lsx", loongarch_get_lsx,
+-                                 loongarch_set_lsx);
 -    }
-     create_fdt(lvms);
+-    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LASX)) {
+-        object_property_add_bool(obj, "lasx", loongarch_get_lasx,
+-                                 loongarch_set_lasx);
+-    }
++    object_property_add_bool(obj, "lsx", loongarch_get_lsx,
++                             loongarch_set_lsx);
++    object_property_add_bool(obj, "lasx", loongarch_get_lasx,
++                             loongarch_set_lasx);
+ }
  
-     /* Create IOCSR space */
-@@ -1279,7 +1275,6 @@ static void virt_class_init(ObjectClass *oc, void *data)
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
- 
-     mc->init = virt_init;
--    mc->default_ram_size = 1 * GiB;
-     mc->default_cpu_type = LOONGARCH_CPU_TYPE_NAME("la464");
-     mc->default_ram_id = "loongarch.ram";
-     mc->max_cpus = LOONGARCH_MAX_CPUS;
+ static void loongarch_cpu_init(Object *obj)
 -- 
 2.34.1
 
