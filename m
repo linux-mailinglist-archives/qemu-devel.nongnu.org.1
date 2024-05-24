@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3988CE106
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C018CE107
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 08:32:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAOSz-0005x0-6c; Fri, 24 May 2024 02:31:49 -0400
+	id 1sAOSy-0005wr-RQ; Fri, 24 May 2024 02:31:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1sAOSi-0005vK-GN
+ id 1sAOSi-0005vJ-GD
  for qemu-devel@nongnu.org; Fri, 24 May 2024 02:31:41 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1sAOSc-0004Li-0M
- for qemu-devel@nongnu.org; Fri, 24 May 2024 02:31:32 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6f8e85a0a5bso516399b3a.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 23:29:23 -0700 (PDT)
+ id 1sAOSc-0004M4-Rb
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 02:31:31 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6f6bddf57f6so3707138b3a.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 23:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1716532162; x=1717136962;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1716532164; x=1717136964;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=EIjSEoWVH4esNJv6IvTXy07mt2zfK64u9q9SYI0qCnY=;
- b=E1Dewc4o/ajv5NKv69Zw2St54r8QNJ/X9bZH/ejuyNfWO6z+qXH6o9zX0TOStL5b31
- Onw9xWwnIHjv/oYE/2ec71hzI1Q+K6xRu7XwnwxAX12zOTuJiND0vE/81BlVEo7L0iiY
- Dr5FfWopJRtfZc6NMZkA/Hfh16jqdxJls1Liueor+WS8F38BfJqt2sIWa3WqHnVNaDge
- copu1tHfpdN8RyplMiFO19rlurwQXY2A3Ckvq/aGmbQgA5c58ODg/QAfZqL7HuNQ/bdQ
- 5lyfj+7SH9XmIc9X1Ob8+Y0wOnkLPd4VDDrMU6m1T1AEA6w75aHcn/8XammoVFbJk56z
- s/sw==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bGVLNMBHkQ5+D6nW02UCHZNEO8isGdb4ZADdHG9gnvI=;
+ b=N4oeiA3mq6gCM2eVOYZKi57hUD9eSwjCTnLB1UKRRDZ9RNDMcFDbxff9NBtAFQ3me1
+ Z6MQuJBHmR/ZzDdk2w12sIBKwQaZhmSInfEqJupFKUdHUbDcdmqNfZPonKlxEwK20Q8w
+ p+/xiKhdYvQEukhF0IpdqgwjUb4zNbGv1MoJ8IZenqwpyjz+L11aPXKk4UX3ibFDd3w9
+ fyJP9yqxpnzPoW4Hn/JinOhTibxdguhncRc+bpCwHo9bB+tf71O0Uq1hdXaWEYO+v2f3
+ Gmk1rMiirmURU+BVgSlFaBqMgk7Nez13Jd0M9sN4XwG0/I11cDOFwE0slfkGm3T4jMf4
+ D/Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716532162; x=1717136962;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=EIjSEoWVH4esNJv6IvTXy07mt2zfK64u9q9SYI0qCnY=;
- b=Kpt5eWMjjWuQWyJe+4cyryovaQN7g0mUF2G2rmufgyn3OQVlFJtzxg2fHrQPWfRTMx
- /gHDcgrLiqcodAmuqkQUKHkXpNbeeheNJ1B6Rez//RRNm2SAblXS554EOeQtv9wgAcBR
- QMbLhaMFbVlRoVrFw18TseIu28Xv95EBf+H7rSc0nhDIcoA+G8No9uhq8bdfAMQX0CE7
- orOIReFs1OeUo/PtzVfvySFnK2BZfVX3f18CoJeFMvlAZR7ITIOxJOdiPMPXva0gESSi
- mugzEKoozKTp5DjQIegUgm5nFFIkooxD8B7yjRG/ne3bua1zNhUbLVz1edmQOOwOvwaR
- a6yg==
-X-Gm-Message-State: AOJu0YzGpyGYzJ2KlqTT0HHS2X6QAn+UzbsyI7NbPz0y2993nylpKJAr
- VRqYGe7MbVgyyeKbYzSAqjGxGAGyupDq7GnypwDqB4q+i4yU6ZyPkhkH7lJhqU7gMI3L8rOLvJt
- Ba0Oniw==
-X-Google-Smtp-Source: AGHT+IF4zz2k2A90S6uwhwRK86ykXBWuUT/FdDvOYnRepWwO+aIdU28gD7MszU3IBmtXjkKTE4C3mQ==
-X-Received: by 2002:a05:6a00:2a07:b0:6f3:34c0:13c9 with SMTP id
- d2e1a72fcca58-6f8f42af798mr1211822b3a.29.1716532161373; 
- Thu, 23 May 2024 23:29:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716532164; x=1717136964;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bGVLNMBHkQ5+D6nW02UCHZNEO8isGdb4ZADdHG9gnvI=;
+ b=EG1nmOEXUx3+05dJ7QBYbuPUsdj6kz86Qyz9ezUZTTFN3Dm3b3GSRd9il/kQUAqzhE
+ 70d8lQENiMe0S3CucS4DUu/cRf4QAOVIwZ54YQPZuO/8DeuPb9Rl3tKsCPXw7uhjDvlh
+ hZ9xtxPbFTLPFbz3To2LDa6S8y5MVxUNXuL7YjFT1Mf7ES5CgNz7JnMB+J917hJazW/e
+ ZuyayQqb2yejUuZGHDnn9COWSVKDnPRx3+wsopPknoIatqScrwPUz0fALFwhTCywMz4D
+ z6sBm8heqwZgINWWlayGBb2EdjZH9JBOIM+BXIwWVeMOl+rTWFmD1sI5QRyswA8Fq3vo
+ V3tQ==
+X-Gm-Message-State: AOJu0YxUn2Zxdsm7dmyc2HNOwJs+V+lThlD4pCk7HVmd1R7zFYvk3ZF3
+ N930c1hlvGR/cRYSjYSMmmZZAq8XbIW+qLJojIORgQ1LLzwXJj1kdjR+eKnyMGoa0yX07qAaNy2
+ 7ec3Q+g==
+X-Google-Smtp-Source: AGHT+IG9wMaEvAwO+9PARBCQYNcTodtuVFfMS4y1s1Pcv3B0v1lcK6jpeBO4TTBKfnF0Qt6Mq1kPlQ==
+X-Received: by 2002:a05:6a20:72a6:b0:1af:f64c:b795 with SMTP id
+ adf61e73a8af0-1b212d398c4mr1934564637.30.1716532163326; 
+ Thu, 23 May 2024 23:29:23 -0700 (PDT)
 Received: from anolis-dev.zelin.local ([221.122.98.162])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-682274bbbe8sm497918a12.93.2024.05.23.23.29.19
+ 41be03b00d2f7-682274bbbe8sm497918a12.93.2024.05.23.23.29.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 23:29:20 -0700 (PDT)
+ Thu, 23 May 2024 23:29:22 -0700 (PDT)
 From: Hyman Huang <yong.huang@smartx.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  yong.huang@smartx.com
-Subject: [PATCH 0/2] migrate inflight emulated SCSI request for the scsi disk
- device 
-Date: Fri, 24 May 2024 14:29:14 +0800
-Message-Id: <cover.1716531409.git.yong.huang@smartx.com>
+Subject: [PATCH 1/2] scsi-disk: Introduce the migrate_emulate_scsi_request
+ field
+Date: Fri, 24 May 2024 14:29:15 +0800
+Message-Id: <ef0bb84397f261f6fc64045c27287e84f6d70fb2.1716531409.git.yong.huang@smartx.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <cover.1716531409.git.yong.huang@smartx.com>
+References: <cover.1716531409.git.yong.huang@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,81 +94,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset refine the comment of ther previous series:
-https://patchew.org/QEMU/cover.1712577715.git.yong.huang@smartx.com/
+To indicate to the destination whether or not emulational SCSI
+requests are sent, introduce the migrate_emulate_scsi_request
+in struct SCSIDiskState. It seeks to achieve migration backend
+compatibility.
 
-Aiming to make the review easier, please review, thanks.
-Yong 
+This commit sets the stage for the next one, which addresses
+the crash of a VM configured with a CDROM during live migration.
 
-When designing the USB mass storage device model, QEMU places SCSI disk
-device as the backend of USB mass storage device. In addition, USB mass
-device driver in Guest OS conforms to the "Universal Serial Bus Mass
-Storage Class Bulk-Only Transport" specification in order to simulate
-the transform behavior between a USB controller and a USB mass device.
-The following shows the protocol hierarchy:
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+Message-Id: <2da3a08785453478079cfd46d8293ee68d284391.1712577715.git.yong.huang@smartx.com>
+---
+ hw/scsi/scsi-disk.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-                      +----------------+
- CDROM driver         |  scsi command  |        CDROM
-                      +----------------+
-
-                   +-----------------------+
- USB mass          | USB Mass Storage Class|    USB mass
- storage driver    | Bulk-Only Transport   |    storage device
-                   +-----------------------+
-
-                      +----------------+
- USB Controller       |  USB Protocol  |        USB device
-                      +----------------+
-
-In the USB protocol layer, between the USB controller and USB device, at
-least two USB packets will be transformed when guest OS send a
-read operation to USB mass storage device:
-
-1. The CBW packet, which will be delivered to the USB device's Bulk-Out
-endpoint. In order to simulate a read operation, the USB mass storage
-device parses the CBW and converts it to a SCSI command, which would be
-executed by CDROM(represented as SCSI disk in QEMU internally), and store
-the result data of the SCSI command in a buffer.
-
-2. The DATA-IN packet, which will be delivered from the USB device's
-Bulk-In endpoint(fetched directly from the preceding buffer) to the USB
-controller.
-
-We consider UHCI to be the controller. The two packets mentioned above may
-have been processed by UHCI in two separate frame entries of the Frame List
-, and also described by two different TDs. Unlike the physical environment,
-a virtualized environment requires the QEMU to make sure that the result
-data of CBW is not lost and is delivered to the UHCI controller.
-
-Currently, these types of SCSI requests are not migrated, so QEMU cannot
-ensure the result data of the IO operation is not lost if there are
-inflight emulated SCSI requests during the live migration.
-
-Assume for the moment that the USB mass storage device is processing the
-CBW and storing the result data of the read operation to a buffre, live
-migration happens and moves the VM to the destination while not migrating
-the result data of the read operation.
-
-After migration, when UHCI at the destination issues a DATA-IN request to
-the USB mass storage device, a crash happens because USB mass storage device
-fetches the result data and get nothing.
-
-The scenario this patch addresses is this one.
-
-Theoretically, any device that uses the SCSI disk as a back-end would be
-affected by this issue. In this case, it is the USB CDROM.
-
-To fix it, inflight emulated SCSI request be migrated during live migration,
-similar to the DMA SCSI request.
-
-Hyman Huang (2):
-  scsi-disk: Introduce the migrate_emulate_scsi_request field
-  scsi-disk: Fix crash for VM configured with USB CDROM after live
-    migration
-
- hw/scsi/scsi-disk.c | 35 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
-
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 4bd7af9d0c..0985676f73 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -111,6 +111,7 @@ struct SCSIDiskState {
+      * 0xffff        - reserved
+      */
+     uint16_t rotation_rate;
++    bool migrate_emulate_scsi_request;
+ };
+ 
+ static void scsi_free_request(SCSIRequest *req)
+@@ -3133,11 +3134,21 @@ static Property scsi_hd_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
++static int scsi_disk_pre_save(void *opaque)
++{
++    SCSIDiskState *dev = opaque;
++    dev->migrate_emulate_scsi_request = false;
++
++    return 0;
++}
++
+ static const VMStateDescription vmstate_scsi_disk_state = {
+     .name = "scsi-disk",
+-    .version_id = 1,
++    .version_id = 2,
+     .minimum_version_id = 1,
++    .pre_save = scsi_disk_pre_save,
+     .fields = (const VMStateField[]) {
++        VMSTATE_BOOL_V(migrate_emulate_scsi_request, SCSIDiskState, 2),
+         VMSTATE_SCSI_DEVICE(qdev, SCSIDiskState),
+         VMSTATE_BOOL(media_changed, SCSIDiskState),
+         VMSTATE_BOOL(media_event, SCSIDiskState),
 -- 
 2.39.3
 
