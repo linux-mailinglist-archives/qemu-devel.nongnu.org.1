@@ -2,94 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239098CE204
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F458CE213
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:12:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAPzb-0004AW-VS; Fri, 24 May 2024 04:09:36 -0400
+	id 1sAQ0Z-0004yj-Ao; Fri, 24 May 2024 04:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPzZ-0004AJ-Ve
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:09:34 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPzY-0000D5-13
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:09:33 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-5b9706c84e5so220630eaf.1
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716538170; x=1717142970;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UWZkdA07i1Ppf6/qLhu0Cdi6mvtfcIbE5UbsBFQzASI=;
- b=W6bLACpolgzJerlaAkAVmS/X5bcNdYTZGeVe84yb0Ag+8cVmAzkjTGIrYbUlmEsETo
- Ocb717y0qD7DMk1DJ2r0/4knA2EXuXJQsq60rOgrhLJc74/XbaXgJtu2wf/54o61nOrS
- Xs/ZObc8xiId8VmRLqXTakVMHt8OJsZXOVx9qR6bcpDH03UJ1v+Wox9ekYA1SSJEfHsz
- pvNA189qzVXE9A3u5N8NcRoejMpGGP73S9XLxOFH2BwQK6MLSGhVomYc3AsQ2RMyvZQD
- caX3ym/ptlOrIsS3uKhrDdcOAw0uTnHR9h9QFRy7hNyEAM+oBXCX5a1smlOH0Hqtn+Bz
- sO5w==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sAQ0R-0004vO-Sk
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1sAQ0Q-0000Ig-45
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716538224;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MQUSBxahO4caXfw1rwXX3slwtk6+QvbPiXtSyFycwsY=;
+ b=VijmKjYOvnevAus7PCzK+DDNx4I1fyViBB7fuMwPXPl31ldwc2RAdZgUJzRt6L6eRur+CA
+ ZyNN8z4sIw2mOFqxdU8Q0eUbKfGTvjCgIMuMwVhffBi8zpQNuQAj6lfaGV2w+Z3Dl4/hhJ
+ w7Cc3MkrNSMpnGUkG3kBgDJaEBg7mV8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-HOsvN1loMwSPXOY__FLYmw-1; Fri, 24 May 2024 04:10:23 -0400
+X-MC-Unique: HOsvN1loMwSPXOY__FLYmw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5234e83c4a6so1684346e87.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538170; x=1717142970;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UWZkdA07i1Ppf6/qLhu0Cdi6mvtfcIbE5UbsBFQzASI=;
- b=E9775bYI9cuerJkhOu9lKq43RF6CMIMmfQX/sSTcmbkowlxH71kVE2elhe9eiy3up2
- sihSdqheNP/ilto++xsqyGoBIKloy03ZxG3KofXV5zBLdN3ZaML74BP1bBSIxslV/zoD
- 1mbVgLYAjr3/KINX4PA1PpbcEYY3SIutyers878VakyVHeILNm4X/FXdvggIG9ddKUXJ
- TqSpHp/6eKUkM3nlz9d8mSATNMJdVDjgYSoGPkEpyAi3n853hqRlnUEYgGhyc8UpevTa
- ho6T25aI9edK9XYlf4mfqeGmmgGQCfrRb2F5jAq4PUewSla1X2CX5ckBinl69KVra+Tz
- CjJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXiHUQkGUoW6AbCLML91ZUX0pkYwpaSDNQeUf7mYrRoHSHzIE6CS4K9F5KK5Sj5zAFaYrWiFrcpQ5Md/s9vodCLP2f72qA=
-X-Gm-Message-State: AOJu0YwRmiUX7VMW8dSbcylwacIM5szTCwf2h7xcpTBR8ez1Tfm5rQdr
- Ip9mDpSUWTuUtWSSttkvevfaEQ8vwJa2QcS7bd041bHEtpW2pADdIip+3zstObE=
-X-Google-Smtp-Source: AGHT+IHet/S0zI7LOGlmQ3XYDV5lE/LFiWL6AqZsr05LnnMrdTj3hP/KDOGotkMod3NYOPBwwhNKgQ==
-X-Received: by 2002:a05:6358:e81b:b0:18d:e328:7e7f with SMTP id
- e5c5f4694b2df-197e5467ad5mr159722255d.23.1716538170440; 
- Fri, 24 May 2024 01:09:30 -0700 (PDT)
-Received: from [157.82.204.135] ([157.82.204.135])
+ d=1e100.net; s=20230601; t=1716538221; x=1717143021;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MQUSBxahO4caXfw1rwXX3slwtk6+QvbPiXtSyFycwsY=;
+ b=s0wEvPMxD5Qc0YS/YHGGieuz9ztnpr5Ba8x6aph6GGs3RZ31OoO6L4El/Uw6QBnfIS
+ cnJZ8fdBvOQ8Bwv67L3jlujOqsw8MEB4pCKWSNCGCPnuykX06dCOCaB3HcdPSYbV8ZTw
+ k8oE2Br0VD1B5X+IdbhtZTTsRkEfKjWw4MQUmASnQs/doJp5j/DF10xJhKn+Aa3oXEm8
+ Mq+7Kl+7bekRPU7ZoF5NHvmkVAhxwXDz1nLG1O1gn+GLe9reCw2AeQjhOkr9jxm/SYpI
+ lkFt8yTiDANReeYa1o/e9QrfiCf1bXuX3R5/B5zAx5PzGqowa2gupXsGLGe7rHHT3g9W
+ 7DgQ==
+X-Gm-Message-State: AOJu0YwxIslQAtemeFaMZfEHvdGv3KhVNHPj2dWQoVwz6alPygJ1mOkQ
+ lm9EQv1+aC8BRBC+lH8QSBgD425aDKO95Nr1BJHZlzgTr8vHb8NIO4QR5CKrsRTgh+O2o6UsZA2
+ 6xoKIM9Y0ywYUzx+soPDa9s3VcoaeFEUo0SbFNxaJU9b2w0ZsHSKyxW7vr7Z4HS1hy6qEEegImY
+ EzsENrLd0J7IErYS7imk7gx4leVXp/JOk3BgGE
+X-Received: by 2002:a05:6512:3096:b0:523:87b6:2ac2 with SMTP id
+ 2adb3069b0e04-52965199527mr1015220e87.40.1716538221069; 
+ Fri, 24 May 2024 01:10:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmFUCuymTe/CHIpKyc7HmONf/yQLaN04q9wKMxxoE74K4Fzf+zmknU1SgWZMpXPs573+eqNw==
+X-Received: by 2002:a05:6512:3096:b0:523:87b6:2ac2 with SMTP id
+ 2adb3069b0e04-52965199527mr1015194e87.40.1716538220502; 
+ Fri, 24 May 2024 01:10:20 -0700 (PDT)
+Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-68222cbb639sm662233a12.56.2024.05.24.01.09.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 May 2024 01:09:29 -0700 (PDT)
-Message-ID: <861dacd9-12fc-4fe8-9d85-c0795d643519@daynix.com>
-Date: Fri, 24 May 2024 17:09:25 +0900
+ 4fb4d7f45d1cf-57861b4ddefsm2738a12.60.2024.05.24.01.10.19
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 May 2024 01:10:19 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 00/16] target/i386/tcg: translation cleanups
+Date: Fri, 24 May 2024 10:10:03 +0200
+Message-ID: <20240524081019.1141359-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] meson: Drop the .fa library prefix
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <lvivier@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-References: <20240522-xkb-v3-0-c429de860fa1@daynix.com>
- <20240522-xkb-v3-3-c429de860fa1@daynix.com>
- <CABgObfYoEFZsW-H4WJ7xW0B85OqFi932d3-DmNAb6zTohFn=Og@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CABgObfYoEFZsW-H4WJ7xW0B85OqFi932d3-DmNAb6zTohFn=Og@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c31;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oo1-xc31.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,68 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/05/22 22:45, Paolo Bonzini wrote:
-> On Wed, May 22, 2024 at 12:49 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->> The non-standard .fa library prefix breaks the link source
->> de-duplication done by Meson so drop it.
-> 
-> Can you show the difference in the command lines?
+Some cleanups in translate.c, which I could make now that the
+it's smaller and it's easier to understand how the various
+utility functions are used.
 
-Without this patch:
-clang  -o qemu-io qemu-io.p/qemu-io.c.o -Werror -flto -Wl,--as-needed 
--Wl,--no-undefined -pie -Wl,--whole-archive libblock.fa libcrypto.fa 
-libauthz.fa libqom.fa libio.fa libevent-loop-base.fa 
--Wl,--no-whole-archive -fsanitize=cfi-icall 
--fsanitize-cfi-icall-generalize-pointers -fsanitize=undefined 
--fsanitize=address -fstack-protector-strong -Wl,-z,relro -Wl,-z,now 
--fuse-ld=lld -Wl,--start-group libqemuutil.a 
-subprojects/libvhost-user/libvhost-user-glib.a 
-subprojects/libvhost-user/libvhost-user.a libblock.fa libcrypto.fa 
-libauthz.fa libqom.fa libio.fa libevent-loop-base.fa @block.syms 
-/usr/lib64/libgio-2.0.so /usr/lib64/libgobject-2.0.so 
-/usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -pthread 
-/usr/lib64/libgnutls.so -lm /usr/lib64/libpixman-1.so 
-/usr/lib64/libzstd.so /usr/lib64/libz.so /usr/lib64/libcurl.so 
-/usr/lib64/libssh.so -lbz2 -lpam -Wl,--end-group
+1-7: cleanups for gen_eob
 
-With this patch:
-clang  -o qemu-io qemu-io.p/qemu-io.c.o -Werror -flto -Wl,--as-needed 
--Wl,--no-undefined -pie -Wl,--whole-archive -Wl,--start-group libblock.a 
-libcrypto.a libauthz.a libqom.a libio.a libevent-loop-base.a 
--Wl,--no-whole-archive -fsanitize=cfi-icall 
--fsanitize-cfi-icall-generalize-pointers -fsanitize=undefined 
--fsanitize=address -fstack-protector-strong -Wl,-z,relro -Wl,-z,now 
--fuse-ld=lld libqemuutil.a 
-subprojects/libvhost-user/libvhost-user-glib.a 
-subprojects/libvhost-user/libvhost-user.a @block.syms 
-/usr/lib64/libgio-2.0.so /usr/lib64/libgobject-2.0.so 
-/usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -pthread 
-/usr/lib64/libgnutls.so -lm /usr/lib64/libpixman-1.so 
-/usr/lib64/libzstd.so /usr/lib64/libz.so /usr/lib64/libcurl.so 
-/usr/lib64/libssh.so -lbz2 -lpam -Wl,--end-group
+8-14: inlining and removing macros
 
-> 
-> One possibility to force de-duplication of objects is to change
-> "link_whole: foo" to "objects: foo.extract_all_objects(recursive:
-> false)" in all the declare_dependency() invocations that involve a
-> 'fa' archive.
-> 
-> This completely gets rid of the archives, which now become just a
-> dummy target. I have gotten reports of "ld" exhausting the limit of
-> open files when using thin archives (thin archives contain "symbolic
-> links" to the files with the actual object code, thus reducing disk
-> usage), and this would also be fixed.
-> 
-> The disadvantage is requiring a bump to Meson 1.1.x as the minimum
-> required version (the recommended version is 1.2.x because earlier
-> versions are incompatible with recent macOS). It could be done before
-> this patch (because then this patch is a total no-op), or after too to
-> fix the immediate issue with sanitizer builds.
+15-16: cleanups for cc_op vs. helpers
 
-I wrote such a change and applied after this patch, but it caused 
-dependencies to be ignored. Please see "[PATCH RFC 0/2] meson: Pass 
-objects to declare_dependency()", which I sent earlier.
+Paolo
 
-Regards,
-Akihiko Odaki
+Paolo Bonzini (16):
+  target/i386: remove unnecessary gen_update_cc_op before gen_eob*
+  target/i386: cleanup eob handling of RSM
+  target/i386: document and group DISAS_* constants
+  target/i386: avoid calling gen_eob_syscall before tb_stop
+  target/i386: avoid calling gen_eob_inhibit_irq before tb_stop
+  target/i386: assert that gen_update_eip_cur and gen_update_eip_next
+    are the same in tb_stop
+  target/i386: raze the gen_eob* jungle
+  target/i386: reg in gen_ldst_modrm is always OR_TMP0
+  target/i386: split gen_ldst_modrm for load and store
+  target/i386: inline gen_add_A0_ds_seg
+  target/i386: use mo_stacksize more
+  target/i386: introduce gen_lea_ss_ofs
+  target/i386: clean up repeated string operations
+  target/i386: remove aflag argument of gen_lea_v_seg
+  target/i386: cpu_load_eflags already sets cc_op
+  target/i386: set CC_OP in helpers if they want CC_OP_EFLAGS
+
+ target/i386/ops_sse.h        |   8 +
+ target/i386/tcg/fpu_helper.c |   2 +
+ target/i386/tcg/int_helper.c |  13 +-
+ target/i386/tcg/seg_helper.c |  16 +-
+ target/i386/tcg/translate.c  | 322 +++++++++++++++--------------------
+ target/i386/tcg/emit.c.inc   |  58 +++----
+ 6 files changed, 194 insertions(+), 225 deletions(-)
+
+-- 
+2.45.1
+
 
