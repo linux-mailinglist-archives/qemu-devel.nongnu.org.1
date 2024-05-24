@@ -2,90 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9768CE0A2
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 07:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6628CE0E0
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 08:16:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sANbb-0008Dh-J8; Fri, 24 May 2024 01:36:39 -0400
+	id 1sAOCG-0001tV-Jc; Fri, 24 May 2024 02:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sANbY-0008DH-2i
- for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:36 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sAOCE-0001sF-3R
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:30 -0400
+Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sANbV-00015t-8z
- for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:35 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6f693306b7cso3493501b3a.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 22:36:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1sAOC8-00012s-SH
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:29 -0400
+Received: by mail-oo1-xc29.google.com with SMTP id
+ 006d021491bc7-5b5254f9c32so2762100eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 23:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716528992; x=1717133792;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=10rXCiXiyOJFrRF1ZmnZJe2ca8m+9/pLyEiZ68FqHXk=;
- b=fX8MIogSvhIWtKcXGW2PRN6Vdp57QslwG0+gxJAifJur6ePnJQqKmy9wUZbZrZQqS0
- XnMsaXcGimx2J+VCV1QSndsOzBZcBU4Lu74j7nBuu6x7O3TxWmH9tbAPJggpXztBwRme
- 3VpOmBHgSXO9brYtvuHY51vt55yiqF0QxaGyr7bypseSSMYJLdJ1Z47Gr3syfickHnFw
- 8r2j2gZ6c9Y7IuwVgBKBY6os7hk5mlS/dqFk0ry6UaD9x3jMQuLmrjR3gjy+D0CWUD3o
- a7YbvDT/BEOkw1o04iBFdv1pwHzJvI5Vtip0Unr7plAAxsFuWzoVzDRr+9cvT1XswS17
- hPOA==
+ d=ventanamicro.com; s=google; t=1716531262; x=1717136062; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NjkOvgDbjVLbH8iHglbx6OMXoUkh/TvoCmLRRr9I1og=;
+ b=dieI3telKxSrzLwkPATeSv/WsN/mEbtT7CrzkYH6Y3UlYIQRg9a5OYG2ke/UHYFHWR
+ w50HHmfce84hROoh2DbvaHj8jciVhYMMwH8OMH5wOlQWZHqYOzbj7+RqW26Kx6oVBjQq
+ t7n/1ARwMoaJadCROnsFkDa+MKon5J8vORGuEiMHIylkUStYIE07ksamfMvxyatQFydO
+ 7D2Rit1905QhP7X4ASLr0TxEL8IhHmhXxXCt6VmV2Hvf9KtcHsRv9NgPq47+H016e9pR
+ +jAiOIx5s7/GkuQlaJJ3IoscKQZ0rTQ9hMWDHGGlt0uTWv0KYmYmoEeyCuxnWJzPMn08
+ kgjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716528992; x=1717133792;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=10rXCiXiyOJFrRF1ZmnZJe2ca8m+9/pLyEiZ68FqHXk=;
- b=EVyK4ljLdZWgQzQjODXGpx5J6tNW88R0EF4ZqwE52c0PaoUvjIX4VxiMB+RxuoSTi/
- yPw+0EAVJ3c5Bap3dSHmIbgCJ21XuQW7WyidVPj3CwHeLWyK03jRxfYmp9g7xX/qd1v/
- HI+dq1+qjDZGJ8uJTaPLttCyQuglETOs9DT4OcaHVLojJ6NDUElsHt33ziXQXLLTjpb/
- SWEhez3QCdiOV3gLjFdtwRRiAWhvfT2reUL6mpUF5oFRXHHVOrUKfP99uhxYqSoldUu7
- uPm3yJ+WPIlddS1LIZNk59obomQjtfTlg/FOlBYs9C+JID1wKdG7042T3jICN27wd4Q8
- VnUA==
-X-Gm-Message-State: AOJu0Yy3fjr2feslCCabXiBlMDChdeA90zelAMKipC8zUkoHYYn5WTnp
- h+xCaDuyzBjw5MLxEwvJRDKvwb/VO3uvEXOdZku8vz/yW5LaqP7VYgYJErtUcG0=
-X-Google-Smtp-Source: AGHT+IHAFcUbocCo763YSNdClc19cPCcfPF+H3v6wUIl8GaDdbSfIKestKwYt2bgjdQbhsRIWIP+Rg==
-X-Received: by 2002:a05:6a20:3208:b0:1b0:2826:9e2 with SMTP id
- adf61e73a8af0-1b212d49917mr1383594637.31.1716528991766; 
- Thu, 23 May 2024 22:36:31 -0700 (PDT)
-Received: from localhost ([157.82.204.135])
- by smtp.gmail.com with UTF8SMTPSA id
- d9443c01a7336-1f44c9a9e1esm5162565ad.239.2024.05.23.22.36.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 22:36:31 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 24 May 2024 14:35:50 +0900
-Subject: [PATCH v4 4/4] meson: Drop the .fa library suffix
+ d=1e100.net; s=20230601; t=1716531262; x=1717136062;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NjkOvgDbjVLbH8iHglbx6OMXoUkh/TvoCmLRRr9I1og=;
+ b=Pw2vgo9Js31NCXFdBZuanx9d1/7dx0sMcdiwc+VL3finym0JJIvzcs35bc9mAFuCcf
+ h4OchaVknDNZ+ocJAfkQqhMvtI+w7zCUshBkRO6zQQ/l7jzvW7iPJAH6pnECL0F9czR7
+ 1Rw5PgHlzOSQZ5n5MkHi8pnRi9FkAu76SSLDMawe3YjqQ+60PH3LGDUfphT61g4M0Ogs
+ 8BvMVHa636uh0vS0OkYMEey0CDYxBoNwUPXwPgIg61CVPRDDfVigIdxmJdBXqajyTQQn
+ +8LPNZSsgxoeR3BPD81v60hhT33fQsEEC1w/vcf+XA0BM1/B7oLTEqaQmJFcEK9Vhx14
+ NNNQ==
+X-Gm-Message-State: AOJu0YwHklNx7bieHQjv827CUWCoQQ+r0G3MVG7WRcNXbs9Zo0ir2THA
+ cXz/XbONyNQskXoe4zkLZFX4DlIN0WHhHh1kqWYWssnqs+XXACMjiSCPzVdKu7qfha8UAsH4Wk6
+ ZSj4=
+X-Google-Smtp-Source: AGHT+IHYdAu9LEV9SYVhFJpXo/ncrfG/vec/ev1bfgPR1rpJ6+VvkvwTW+gc8eQUSxuyBtf3iaXXug==
+X-Received: by 2002:a05:6871:725:b0:245:41f0:ce13 with SMTP id
+ 586e51a60fabf-24ca11de76amr1505731fac.9.1716531261848; 
+ Thu, 23 May 2024 23:14:21 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.188.31])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f8fcbea487sm516106b3a.107.2024.05.23.23.14.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 23 May 2024 23:14:21 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Alistair Francis <alistair23@gmail.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Haibo1 Xu <haibo1.xu@intel.com>, Anup Patel <apatel@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
+ Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v2 00/12] Add support for RISC-V ACPI tests
+Date: Fri, 24 May 2024 11:43:59 +0530
+Message-Id: <20240524061411.341599-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240524-xkb-v4-4-2de564e5c859@daynix.com>
-References: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
-In-Reply-To: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Beraldo Leal <bleal@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-01a33
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-oo1-xc29.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,271 +107,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The non-standard .fa library suffix breaks the link source
-de-duplication done by Meson so drop it.
+Currently, bios-table-test doesn't support RISC-V. This series enables
+the framework changes required and basic testing. Things like NUMA
+related test cases will be added later.
 
-The lack of link source de-duplication causes AddressSanitizer to
-complain ODR violations, and makes GNU ld abort when combined with
-clang's LTO.
+This needs refactoring/renaming of ARM64 bios table tests. Importantly,
+the test cases now look for the expected AML files under
+tests/data/acpi/virt/aarch64 path instead of directly under
+tests/data/acpi/virt. To keep test cases not to fail because of this
+movement, they are updated to look for both paths first.
 
-Previously, the non-standard suffix was necessary for fork-fuzzing.
-Meson wraps all standard-suffixed libraries with --start-group and
---end-group. This made a fork-fuzz.ld linker script wrapped as well and
-broke builds. Commit d2e6f9272d33 ("fuzz: remove fork-fuzzing
-scaffolding") dropped fork-fuzzing so we can now restore the standard
-suffix.
+As part of this effort, it is found that uefi-test-tools is currently
+broken to build. So, updated its Makefile as well to use python based
+edk2 build script.
 
-The occurences of the suffix were detected and removed by performing
-a tree-wide search with 'fa' and .fa (note the quotes and dot).
+The changes are also available at branch
+https://gitlab.com/vlsunil/qemu/-/tree/riscv_bios_table_test_v2
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- docs/devel/build-system.rst         |  5 -----
- meson.build                         | 17 ++---------------
- stubs/blk-exp-close-all.c           |  2 +-
- .gitlab-ci.d/buildtest-template.yml |  2 --
- .gitlab-ci.d/buildtest.yml          |  2 --
- gdbstub/meson.build                 |  2 --
- tcg/meson.build                     |  2 --
- tests/Makefile.include              |  2 +-
- tests/qtest/libqos/meson.build      |  1 -
- 9 files changed, 4 insertions(+), 31 deletions(-)
+Changes since v1:
+	1) Addressed feedback from Gerd and Alistair
+	2) Rebased and added tags received
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 09caf2f8e199..5baf027b7614 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -236,15 +236,10 @@ Subsystem sourcesets:
-   are then turned into static libraries as follows::
- 
-     libchardev = static_library('chardev', chardev_ss.sources(),
--                                name_suffix: 'fa',
-                                 build_by_default: false)
- 
-     chardev = declare_dependency(link_whole: libchardev)
- 
--  As of Meson 0.55.1, the special ``.fa`` suffix should be used for everything
--  that is used with ``link_whole``, to ensure that the link flags are placed
--  correctly in the command line.
--
- Target-independent emulator sourcesets:
-   Various general purpose helper code is compiled only once and
-   the .o files are linked into all output binaries that need it.
-diff --git a/meson.build b/meson.build
-index 91a0aa64c640..d6549722b50d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3462,14 +3462,12 @@ endif
- qom_ss = qom_ss.apply({})
- libqom = static_library('qom', qom_ss.sources() + genh,
-                         dependencies: [qom_ss.dependencies()],
--                        name_suffix: 'fa',
-                         build_by_default: false)
- qom = declare_dependency(link_whole: libqom)
- 
- event_loop_base = files('event-loop-base.c')
- event_loop_base = static_library('event-loop-base',
-                                  sources: event_loop_base + genh,
--                                 name_suffix: 'fa',
-                                  build_by_default: false)
- event_loop_base = declare_dependency(link_whole: event_loop_base,
-                                      dependencies: [qom])
-@@ -3703,7 +3701,6 @@ qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
- authz_ss = authz_ss.apply({})
- libauthz = static_library('authz', authz_ss.sources() + genh,
-                           dependencies: [authz_ss.dependencies()],
--                          name_suffix: 'fa',
-                           build_by_default: false)
- 
- authz = declare_dependency(link_whole: libauthz,
-@@ -3712,7 +3709,6 @@ authz = declare_dependency(link_whole: libauthz,
- crypto_ss = crypto_ss.apply({})
- libcrypto = static_library('crypto', crypto_ss.sources() + genh,
-                            dependencies: [crypto_ss.dependencies()],
--                           name_suffix: 'fa',
-                            build_by_default: false)
- 
- crypto = declare_dependency(link_whole: libcrypto,
-@@ -3722,13 +3718,11 @@ io_ss = io_ss.apply({})
- libio = static_library('io', io_ss.sources() + genh,
-                        dependencies: [io_ss.dependencies()],
-                        link_with: libqemuutil,
--                       name_suffix: 'fa',
-                        build_by_default: false)
- 
- io = declare_dependency(link_whole: libio, dependencies: [crypto, qom])
- 
- libmigration = static_library('migration', sources: migration_files + genh,
--                              name_suffix: 'fa',
-                               build_by_default: false)
- migration = declare_dependency(link_with: libmigration,
-                                dependencies: [zlib, qom, io])
-@@ -3738,7 +3732,6 @@ block_ss = block_ss.apply({})
- libblock = static_library('block', block_ss.sources() + genh,
-                           dependencies: block_ss.dependencies(),
-                           link_depends: block_syms,
--                          name_suffix: 'fa',
-                           build_by_default: false)
- 
- block = declare_dependency(link_whole: [libblock],
-@@ -3748,7 +3741,6 @@ block = declare_dependency(link_whole: [libblock],
- blockdev_ss = blockdev_ss.apply({})
- libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
-                              dependencies: blockdev_ss.dependencies(),
--                             name_suffix: 'fa',
-                              build_by_default: false)
- 
- blockdev = declare_dependency(link_whole: [libblockdev],
-@@ -3757,13 +3749,11 @@ blockdev = declare_dependency(link_whole: [libblockdev],
- qmp_ss = qmp_ss.apply({})
- libqmp = static_library('qmp', qmp_ss.sources() + genh,
-                         dependencies: qmp_ss.dependencies(),
--                        name_suffix: 'fa',
-                         build_by_default: false)
- 
- qmp = declare_dependency(link_whole: [libqmp])
- 
- libchardev = static_library('chardev', chardev_ss.sources() + genh,
--                            name_suffix: 'fa',
-                             dependencies: chardev_ss.dependencies(),
-                             build_by_default: false)
- 
-@@ -3771,7 +3761,6 @@ chardev = declare_dependency(link_whole: libchardev)
- 
- hwcore_ss = hwcore_ss.apply({})
- libhwcore = static_library('hwcore', sources: hwcore_ss.sources() + genh,
--                           name_suffix: 'fa',
-                            build_by_default: false)
- hwcore = declare_dependency(link_whole: libhwcore)
- common_ss.add(hwcore)
-@@ -3807,8 +3796,7 @@ common_all = static_library('common',
-                             sources: common_ss.all_sources() + genh,
-                             include_directories: common_user_inc,
-                             implicit_include_directories: false,
--                            dependencies: common_ss.all_dependencies(),
--                            name_suffix: 'fa')
-+                            dependencies: common_ss.all_dependencies())
- 
- feature_to_c = find_program('scripts/feature_to_c.py')
- 
-@@ -3909,8 +3897,7 @@ foreach target : target_dirs
-                  objects: objects,
-                  include_directories: target_inc,
-                  c_args: c_args,
--                 build_by_default: false,
--                 name_suffix: 'fa')
-+                 build_by_default: false)
- 
-   if target.endswith('-softmmu')
-     execs = [{
-diff --git a/stubs/blk-exp-close-all.c b/stubs/blk-exp-close-all.c
-index 1c7131676392..2f68e06d7d05 100644
---- a/stubs/blk-exp-close-all.c
-+++ b/stubs/blk-exp-close-all.c
-@@ -1,7 +1,7 @@
- #include "qemu/osdep.h"
- #include "block/export.h"
- 
--/* Only used in programs that support block exports (libblockdev.fa) */
-+/* Only used in programs that support block exports (libblockdev.a) */
- void blk_exp_close_all(void)
- {
- }
-diff --git a/.gitlab-ci.d/buildtest-template.yml b/.gitlab-ci.d/buildtest-template.yml
-index 22045add8064..69e468a576ba 100644
---- a/.gitlab-ci.d/buildtest-template.yml
-+++ b/.gitlab-ci.d/buildtest-template.yml
-@@ -45,10 +45,8 @@
-     exclude:
-       - build/**/*.p
-       - build/**/*.a.p
--      - build/**/*.fa.p
-       - build/**/*.c.o
-       - build/**/*.c.o.d
--      - build/**/*.fa
- 
- .common_test_job_template:
-   extends: .base_job_template
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index cfdff175c389..c156e6f1d90e 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -178,10 +178,8 @@ build-previous-qemu:
-     exclude:
-       - build-previous/**/*.p
-       - build-previous/**/*.a.p
--      - build-previous/**/*.fa.p
-       - build-previous/**/*.c.o
-       - build-previous/**/*.c.o.d
--      - build-previous/**/*.fa
-   needs:
-     job: amd64-opensuse-leap-container
-   variables:
-diff --git a/gdbstub/meson.build b/gdbstub/meson.build
-index da5721d8452b..c91e398ae726 100644
---- a/gdbstub/meson.build
-+++ b/gdbstub/meson.build
-@@ -19,13 +19,11 @@ gdb_system_ss = gdb_system_ss.apply({})
- 
- libgdb_user = static_library('gdb_user',
-                              gdb_user_ss.sources() + genh,
--                             name_suffix: 'fa',
-                              c_args: '-DCONFIG_USER_ONLY',
-                              build_by_default: false)
- 
- libgdb_system = static_library('gdb_system',
-                                 gdb_system_ss.sources() + genh,
--                                name_suffix: 'fa',
-                                 build_by_default: false)
- 
- gdb_user = declare_dependency(link_whole: libgdb_user)
-diff --git a/tcg/meson.build b/tcg/meson.build
-index 8251589fd4e9..f941413d5801 100644
---- a/tcg/meson.build
-+++ b/tcg/meson.build
-@@ -31,7 +31,6 @@ tcg_ss = tcg_ss.apply({})
- 
- libtcg_user = static_library('tcg_user',
-                              tcg_ss.sources() + genh,
--                             name_suffix: 'fa',
-                              c_args: '-DCONFIG_USER_ONLY',
-                              build_by_default: false)
- 
-@@ -41,7 +40,6 @@ user_ss.add(tcg_user)
- 
- libtcg_system = static_library('tcg_system',
-                                 tcg_ss.sources() + genh,
--                                name_suffix: 'fa',
-                                 c_args: '-DCONFIG_SOFTMMU',
-                                 build_by_default: false)
- 
-diff --git a/tests/Makefile.include b/tests/Makefile.include
-index c9d1674bd070..d39d5dd6a43e 100644
---- a/tests/Makefile.include
-+++ b/tests/Makefile.include
-@@ -87,7 +87,7 @@ distclean-tcg: $(DISTCLEAN_TCG_TARGET_RULES)
- .PHONY: check-venv check-avocado check-acceptance check-acceptance-deprecated-warning
- 
- # Build up our target list from the filtered list of ninja targets
--TARGETS=$(patsubst libqemu-%.fa, %, $(filter libqemu-%.fa, $(ninja-targets)))
-+TARGETS=$(patsubst libqemu-%.a, %, $(filter libqemu-%.a, $(ninja-targets)))
- 
- TESTS_VENV_TOKEN=$(BUILD_DIR)/pyvenv/tests.group
- TESTS_RESULTS_DIR=$(BUILD_DIR)/tests/results
-diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
-index 3aed6efcb8d1..45b81c83ade3 100644
---- a/tests/qtest/libqos/meson.build
-+++ b/tests/qtest/libqos/meson.build
-@@ -68,7 +68,6 @@ if have_virtfs
- endif
- 
- libqos = static_library('qos', libqos_srcs + genh,
--                        name_suffix: 'fa',
-                         build_by_default: false)
- 
- qos = declare_dependency(link_whole: libqos)
+Sunil V L (12):
+  uefi-test-tools/UefiTestToolsPkg: Add RISC-V support
+  uefi-test-tools: Add support for python based build script
+  tests/data/uefi-boot-images: Add RISC-V ISO image
+  qtest: bios-tables-test: Rename aarch64 tests with aarch64 in them
+  tests/qtest/bios-tables-test.c: Add support for arch in path
+  tests/data/acpi/virt: Move ACPI tables under aarch64
+  meson.build: Add RISC-V to the edk2-target list
+  pc-bios/meson.build: Add support for RISC-V in unpack_edk2_blobs
+  tests/data/acpi/rebuild-expected-aml.sh: Add RISC-V
+  tests/qtest/bios-tables-test: Add empty ACPI data files for RISC-V
+  tests/qtest/bios-tables-test.c: Enable basic testing for RISC-V
+  tests/qtest/bios-tables-test: Add expected ACPI data files for RISC-V
+
+ meson.build                                   |   2 +-
+ pc-bios/meson.build                           |   2 +
+ tests/data/acpi/rebuild-expected-aml.sh       |   5 +-
+ tests/data/acpi/virt/{ => aarch64}/APIC       | Bin
+ .../acpi/virt/{ => aarch64}/APIC.acpihmatvirt | Bin
+ .../acpi/virt/{ => aarch64}/APIC.topology     | Bin
+ tests/data/acpi/virt/{ => aarch64}/DBG2       | Bin
+ tests/data/acpi/virt/{ => aarch64}/DSDT       | Bin
+ .../acpi/virt/{ => aarch64}/DSDT.acpihmatvirt | Bin
+ tests/data/acpi/virt/{ => aarch64}/DSDT.memhp | Bin
+ tests/data/acpi/virt/{ => aarch64}/DSDT.pxb   | Bin
+ .../acpi/virt/{ => aarch64}/DSDT.topology     | Bin
+ tests/data/acpi/virt/{ => aarch64}/FACP       | Bin
+ tests/data/acpi/virt/{ => aarch64}/GTDT       | Bin
+ .../acpi/virt/{ => aarch64}/HMAT.acpihmatvirt | Bin
+ tests/data/acpi/virt/{ => aarch64}/IORT       | Bin
+ tests/data/acpi/virt/{ => aarch64}/MCFG       | Bin
+ tests/data/acpi/virt/{ => aarch64}/NFIT.memhp | Bin
+ tests/data/acpi/virt/{ => aarch64}/PPTT       | Bin
+ .../acpi/virt/{ => aarch64}/PPTT.acpihmatvirt | Bin
+ .../acpi/virt/{ => aarch64}/PPTT.topology     | Bin
+ tests/data/acpi/virt/{ => aarch64}/SLIT.memhp | Bin
+ tests/data/acpi/virt/{ => aarch64}/SPCR       | Bin
+ .../acpi/virt/{ => aarch64}/SRAT.acpihmatvirt | Bin
+ tests/data/acpi/virt/{ => aarch64}/SRAT.memhp | Bin
+ .../data/acpi/virt/{ => aarch64}/SRAT.numamem | Bin
+ tests/data/acpi/virt/{ => aarch64}/SSDT.memhp | Bin
+ tests/data/acpi/virt/{ => aarch64}/VIOT       | Bin
+ tests/data/acpi/virt/riscv64/APIC             | Bin 0 -> 116 bytes
+ tests/data/acpi/virt/riscv64/DSDT             | Bin 0 -> 3518 bytes
+ tests/data/acpi/virt/riscv64/FACP             | Bin 0 -> 276 bytes
+ tests/data/acpi/virt/riscv64/MCFG             | Bin 0 -> 60 bytes
+ tests/data/acpi/virt/riscv64/RHCT             | Bin 0 -> 314 bytes
+ tests/data/acpi/virt/riscv64/SPCR             | Bin 0 -> 80 bytes
+ .../bios-tables-test.riscv64.iso.qcow2        | Bin 0 -> 16896 bytes
+ tests/qtest/bios-tables-test.c                |  93 ++++++++++++++----
+ tests/qtest/meson.build                       |   3 +
+ tests/uefi-test-tools/Makefile                |  19 ++--
+ .../UefiTestToolsPkg/UefiTestToolsPkg.dsc     |   6 +-
+ tests/uefi-test-tools/uefi-test-build.config  |  52 ++++++++++
+ 40 files changed, 147 insertions(+), 35 deletions(-)
+ rename tests/data/acpi/virt/{ => aarch64}/APIC (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/APIC.acpihmatvirt (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/APIC.topology (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DBG2 (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DSDT (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DSDT.acpihmatvirt (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DSDT.memhp (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DSDT.pxb (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/DSDT.topology (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/FACP (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/GTDT (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/HMAT.acpihmatvirt (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/IORT (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/MCFG (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/NFIT.memhp (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/PPTT (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/PPTT.acpihmatvirt (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/PPTT.topology (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SLIT.memhp (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SPCR (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SRAT.acpihmatvirt (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SRAT.memhp (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SRAT.numamem (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/SSDT.memhp (100%)
+ rename tests/data/acpi/virt/{ => aarch64}/VIOT (100%)
+ create mode 100644 tests/data/acpi/virt/riscv64/APIC
+ create mode 100644 tests/data/acpi/virt/riscv64/DSDT
+ create mode 100644 tests/data/acpi/virt/riscv64/FACP
+ create mode 100644 tests/data/acpi/virt/riscv64/MCFG
+ create mode 100644 tests/data/acpi/virt/riscv64/RHCT
+ create mode 100644 tests/data/acpi/virt/riscv64/SPCR
+ create mode 100644 tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2
+ create mode 100644 tests/uefi-test-tools/uefi-test-build.config
 
 -- 
-2.45.1
+2.40.1
 
 
