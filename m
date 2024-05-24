@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647398CEA9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 22:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3768CEA9F
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 22:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAb6J-0002Ir-Ry; Fri, 24 May 2024 16:01:15 -0400
+	id 1sAb6J-0002Gb-7v; Fri, 24 May 2024 16:01:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1sAb63-00025z-2V; Fri, 24 May 2024 16:01:05 -0400
+ id 1sAb67-0002AO-VX; Fri, 24 May 2024 16:01:05 -0400
 Received: from mgamail.intel.com ([192.198.163.13])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1sAb5v-00051T-BG; Fri, 24 May 2024 16:00:57 -0400
+ id 1sAb64-00051T-9q; Fri, 24 May 2024 16:01:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716580851; x=1748116851;
+ t=1716580860; x=1748116860;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TxxJnHMBaLnho+/05QzctY86Y8OJz5CyPdX6d6Cev54=;
- b=mpc7+m/xQcJ6WPiCT51isNdMEuCxTL4UxaC0YY3gkwZIx7dvZBul7Yy/
- mTgKbMliNpxJONpwDb3fTlgRAmldT4Mo2f/rghn5FS37TyGq87wKjBdOt
- kc1p9BwCPrWSBeR0BqremjPS+XLPBK3pYjYFeemX5ZeQj2gAfAHTUONxc
- AvdO5O7j5sBMgQQKhA3Qg/h1TdKIZIZELYofw4ZwR+Zutx9lSfjvRpOox
- BM1eSVP35KqBdq7szE5VT5zj1OIAzf/6GX2R9h1PuZidye/P/YWvrUJmn
- WXO1Nobucpd7w9oZmxtoydcKLrlrpWILUx508SrwZSxHtrsyLEMM7l6zC w==;
-X-CSE-ConnectionGUID: fDUc9Ub2T8GW/KyPXa54dA==
-X-CSE-MsgGUID: TUBMBPzISOm312cGEK8guQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11082"; a="15918263"
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="15918263"
+ bh=pa1xGnNT8/923n1FNJFTnDx3aYnMbMwudAm7e6bIlhU=;
+ b=QWgMKETEyPlt6hlTSHV5FmQb28ZO/xc1oZ1UdKpiijUBOc4PyyD4sH3n
+ LzKp8FT5IIZ67Ehs3TS++FGUTGMuRlFSwBXnz17GPh6rOXU2igcujPjLz
+ Wlvw6fiMbBtTKrjbOri3RUgJzOy8jiPCb8y1I8NKOVU0UJFGlyaMSeKEC
+ lH7inDwM4niaFQHiy6rn7HQiJKra5EKkIgn+uK1ljJUJROEQRKi7B7iWp
+ bod8Kve4G8MCuyQPeGKFysNn5vF3yVaXl+Oyqs5JJYAEn9aYK8A8SU0ex
+ 68Vl3kxMLoF5yr25gYQfNAV/1aZIX91a4TIJQ1th8gypMYuHW4ietq9wJ A==;
+X-CSE-ConnectionGUID: frdOGVmgTeC88/hHEVFimw==
+X-CSE-MsgGUID: xpMK7CPUTSieTd+DgWTEug==
+X-IronPort-AV: E=McAfee;i="6600,9927,11082"; a="15918266"
+X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="15918266"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  24 May 2024 13:00:46 -0700
-X-CSE-ConnectionGUID: PG9RzVkzT4We7qa5u0gq5A==
-X-CSE-MsgGUID: i5LmdFabSFm3uuxpa4R3OA==
+X-CSE-ConnectionGUID: R987icKQR22Acv/yRV1Dkg==
+X-CSE-MsgGUID: 8ohV8JULSo+ZYahDIuu+ag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="39108906"
+X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="39108910"
 Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.100])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  24 May 2024 13:00:46 -0700
@@ -47,9 +47,10 @@ To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mst@redhat.com, thuth@redhat.com, cfontana@suse.de,
  xiaoyao.li@intel.com, qemu-trivial@nongnu.org,
  Zide Chen <zide.chen@intel.com>
-Subject: [PATCH V2 1/3] vl: Allow multiple -overcommit commands
-Date: Fri, 24 May 2024 13:00:15 -0700
-Message-Id: <20240524200017.150339-2-zide.chen@intel.com>
+Subject: [PATCH V2 2/3] target/i386: call cpu_exec_realizefn before
+ x86_cpu_filter_features
+Date: Fri, 24 May 2024 13:00:16 -0700
+Message-Id: <20240524200017.150339-3-zide.chen@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240524200017.150339-1-zide.chen@intel.com>
 References: <20240524200017.150339-1-zide.chen@intel.com>
@@ -79,47 +80,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both cpu-pm and mem-lock are related to system resource overcommit, but
-they are separate from each other, in terms of how they are realized,
-and of course, they are applied to different system resources.
+cpu_exec_realizefn which calls the accel-specific realizefn may expand
+features.  e.g., some accel-specific options may require extra features
+to be enabled, and it's appropriate to expand these features in accel-
+specific realizefn.
 
-It's tempting to use separate command lines to specify their behavior.
-e.g., in the following example, the cpu-pm command is quietly
-overwritten, and it's not easy to notice it without careful inspection.
+One such example is the cpu-pm option, which may add CPUID_EXT_MONITOR.
 
-  --overcommit mem-lock=on
-  --overcommit cpu-pm=on
+Thus, call cpu_exec_realizefn before x86_cpu_filter_features to ensure
+that it won't expose features not supported by the host.
 
-Fixes: c8c9dc42b7ca ("Remove the deprecated -realtime option")
-Suggested-by: Thomas Huth <thuth@redhat.com>
+Fixes: 662175b91ff2 ("i386: reorder call to cpu_exec_realizefn")
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Zide Chen <zide.chen@intel.com>
 ---
+ target/i386/cpu.c         | 24 ++++++++++++------------
+ target/i386/kvm/kvm-cpu.c |  1 -
+ 2 files changed, 12 insertions(+), 13 deletions(-)
 
-v2:
-
-Thanks to Thomas' suggestion, changed to this better approach, which
-is more generic and can handle situations like: "enabled the option in
-the config file, and now you'd like to disable it on the command line
-again".
-
- system/vl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/system/vl.c b/system/vl.c
-index a3eede5fa5b8..dfa6cdd9283b 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -3545,8 +3545,8 @@ void qemu_init(int argc, char **argv)
-                 if (!opts) {
-                     exit(1);
-                 }
--                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", false);
--                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", false);
-+                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
-+                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
-                 break;
-             case QEMU_OPTION_compat:
-                 {
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index bc2dceb647fa..a1c1c785bd2f 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7604,6 +7604,18 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         }
+     }
+ 
++    /*
++     * note: the call to the framework needs to happen after feature expansion,
++     * but before the checks/modifications to ucode_rev, mwait, phys_bits.
++     * These may be set by the accel-specific code,
++     * and the results are subsequently checked / assumed in this function.
++     */
++    cpu_exec_realizefn(cs, &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return;
++    }
++
+     x86_cpu_filter_features(cpu, cpu->check_cpuid || cpu->enforce_cpuid);
+ 
+     if (cpu->enforce_cpuid && x86_cpu_have_filtered_features(cpu)) {
+@@ -7625,18 +7637,6 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     x86_cpu_set_sgxlepubkeyhash(env);
+ 
+-    /*
+-     * note: the call to the framework needs to happen after feature expansion,
+-     * but before the checks/modifications to ucode_rev, mwait, phys_bits.
+-     * These may be set by the accel-specific code,
+-     * and the results are subsequently checked / assumed in this function.
+-     */
+-    cpu_exec_realizefn(cs, &local_err);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        return;
+-    }
+-
+     if (xcc->host_cpuid_required && !accel_uses_host_cpuid()) {
+         g_autofree char *name = x86_cpu_class_get_model_name(xcc);
+         error_setg(&local_err, "CPU model '%s' requires KVM or HVF", name);
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index f76972e47e61..3adcedf0dbc3 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -50,7 +50,6 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      * nothing else has been set by the user (or by accelerators) in
+      * cpu->ucode_rev and cpu->phys_bits, and updates the CPUID results in
+      * mwait.ecx.
+-     * This accel realization code also assumes cpu features are already expanded.
+      *
+      * realize order:
+      *
 -- 
 2.34.1
 
