@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE028CE20A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F8E8CE21A
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ0Z-0004yB-3S; Fri, 24 May 2024 04:10:35 -0400
+	id 1sAQ0a-00053h-UD; Fri, 24 May 2024 04:10:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0R-0004vQ-Vt
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:28 -0400
+ id 1sAQ0U-0004yd-O8
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0Q-0000Ij-HQ
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:27 -0400
+ id 1sAQ0T-0000Kk-8d
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716538225;
+ s=mimecast20190719; t=1716538227;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ixOp6LvLNnzS8WvJ2+NP52iNUpz5IJz+mvxbQUZVrIs=;
- b=MwPzXSkcCL44rrP8Okadr1GjPBdm856ajPpNesfrcvvRXmd7kRRYSXwwMfbIWLa01yiCpn
- 7Pi3on2ByzucvM/+A4zTudGaBTO1re3mAnxYzifGOMcKb2ZerXQ15FtOG+JAWTOmckUCR0
- GgJwRrLkvwNGd8Q7icP2R8J2ihTxDwY=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=72PbcHRv/pFHTWTtQDS+C3T5q7MCkz97s7uPdQE0p0s=;
+ b=X12wOEFrzSirl9TMVUMcdbYc+zP6tDTPWtdaTSd62YjYiuotuetic7BEY42ANSk9K6xXV0
+ wFRiXL7jsbgbO/FnnkRUqcxQO/fDIXq4X/Nh5BTgpD4outEsf3vfeUDIB0kztSQ9B66bHK
+ Y6EX2u/crUjDGew//nexWCsy6Q6/c+M=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-HhaF9CRpOo6dlO8gRd19Pw-1; Fri, 24 May 2024 04:10:23 -0400
-X-MC-Unique: HhaF9CRpOo6dlO8gRd19Pw-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a626ac4c2faso29134666b.3
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:23 -0700 (PDT)
+ us-mta-686-k4kATvNQNva3TXGFF9Gxjw-1; Fri, 24 May 2024 04:10:26 -0400
+X-MC-Unique: k4kATvNQNva3TXGFF9Gxjw-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a6269ad7288so23368966b.2
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538222; x=1717143022;
+ d=1e100.net; s=20230601; t=1716538224; x=1717143024;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ixOp6LvLNnzS8WvJ2+NP52iNUpz5IJz+mvxbQUZVrIs=;
- b=fOQqk4tXZF+UhtmFbEv4qa02o1hWRmfx97+yY1IGc2nQHQhKpUM8ABzqX60r/mUD/T
- MTTe/F1zycldcqbc5ZbeMSc6TCc6cjhJdYJ5VHTDDiynNLNOevk3psO3FNp0Dm8KNiIM
- MGGopooCUA8Nqs/gNcheRD0ezVeEU75NCJlrWk/x2OV6ZyPydV+Ts4qQvdOg/oO8dfz5
- YGpZW+aOc+8aX+jOhTzMpRqunp2RAHGVQHp6VfcoSobI+1pNEmd+2VO2sYi7HvRlh0Ll
- 3E/M3mY3vtx4pDzDo3TUJ/JaS0P1AP1Na3xYPSjCa7kbHA4URRqzUaGQs0Tf502aMdPu
- m0PQ==
-X-Gm-Message-State: AOJu0YwfxbvNzH3u7qWnBBaZfck66eu4K71hOfWLlNbcxwMBiVrNjOp5
- n2F7af3oR0oEPuh84YoNP7DluWsOUr0PActsYt2JHFAUF64wBtPmZFUQJbCn20ds8Y0svhpbsMk
- fczT+ds6ewU7xDgDB7cd9EhRxxNRtj5edZEUx8c09/FBwjGskljAtMw8aPU0eztedPpPczXwWVR
- yqkSyARCQdVgPYZRqb4Ah3I8Wd08klyHkSGLHp
-X-Received: by 2002:a17:906:6d97:b0:a62:47d7:247d with SMTP id
- a640c23a62f3a-a626511b0bamr151011066b.56.1716538222107; 
- Fri, 24 May 2024 01:10:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERgUJ9LLDxEfzhYR7dL04Z73ysvaupWkBNld1gCtLdc/mWLVXQtv9HwfGc1BhGk6t4kDCSWA==
-X-Received: by 2002:a17:906:6d97:b0:a62:47d7:247d with SMTP id
- a640c23a62f3a-a626511b0bamr151008566b.56.1716538221520; 
- Fri, 24 May 2024 01:10:21 -0700 (PDT)
+ bh=72PbcHRv/pFHTWTtQDS+C3T5q7MCkz97s7uPdQE0p0s=;
+ b=A1nzt5j3HZZDypg0toBVYJQaEUGi7zr181eQATCzr+Xtre07D151S0jj3vi88P0vFx
+ yTu3xhqDFEoZ+NanCUq4HYDLq0QGoPY5XKbDr3YmYsGdNjRF7OSzTeSYtwo5HA7od7+n
+ dUGqR1x7WpRBQoiTebMbLPYDsSfJQKeST1dhEFfnsN6h/E/6W8uB6lAt21ADTcPbBr2l
+ j553BrQeMuPhzseUtOaXlHtYx4ffd11oMguJF6aQKdFUEICnzw/+wOscwS/ZVf3ogEHL
+ kpUCwFNU1j1/6hrA6lPGpzPSXygbHzw20BXSoamNlkY0I2A7g5KVhNCqBdIp07o2UxQr
+ edRA==
+X-Gm-Message-State: AOJu0Yxm4BNoAzp6pP8xSZTVUS8MOQ/QXo4QAsk/Evg1AZHyG7LhHVdd
+ 3XlhLNsXSSCsSL/aiq8vB/BDybXxBuldTDq0zrCOcuyH2Dfyu2Bily9MWQ9JgodOyW4+ivX7rCQ
+ Dbh1lRMAvCcHaYrqAhR7bAt89Wc2KL2fGGNLZv0++GG36K9Ywiru8pC1cXHrO+r6rlX4nEmAJDp
+ T8kZOi7jA/rK7r94s4WUUZd1D8MsVwIjgR5Cqy
+X-Received: by 2002:a17:906:2b82:b0:a62:2cae:c10 with SMTP id
+ a640c23a62f3a-a6264f1600dmr109627566b.47.1716538224433; 
+ Fri, 24 May 2024 01:10:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVe1dL0yunhUsZRGQ99Cw800q/hFGYEbQ+PG473cDCldXlnmQ5EkE3CLVzZ91/CxAnN8E13w==
+X-Received: by 2002:a17:906:2b82:b0:a62:2cae:c10 with SMTP id
+ a640c23a62f3a-a6264f1600dmr109625666b.47.1716538224009; 
+ Fri, 24 May 2024 01:10:24 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626cda6e1esm89631466b.215.2024.05.24.01.10.21
+ a640c23a62f3a-a626cc8c287sm89414966b.162.2024.05.24.01.10.22
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:21 -0700 (PDT)
+ Fri, 24 May 2024 01:10:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 01/16] target/i386: remove unnecessary gen_update_cc_op before
- gen_eob*
-Date: Fri, 24 May 2024 10:10:04 +0200
-Message-ID: <20240524081019.1141359-2-pbonzini@redhat.com>
+Subject: [PATCH 02/16] target/i386: cleanup eob handling of RSM
+Date: Fri, 24 May 2024 10:10:05 +0200
+Message-ID: <20240524081019.1141359-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
@@ -101,32 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is already handled in gen_eob().  Before adding another DISAS_*
-case, remove the double calls.
+gen_helper_rsm cannot generate an exception, and reloads the flags.
+So there's no need to spill cc_op and update cpu_eip, but on the
+other hand cc_op must be reset to CC_OP_EFLAGS before returning.
+
+It all works by chance, because by spilling cc_op before the call
+to the helper, it becomes non-dirty and gen_eob will not overwrite
+the CC_OP_EFLAGS value that is placed there by the helper.  But
+let's clean it up.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 2 --
- 1 file changed, 2 deletions(-)
+ target/i386/tcg/translate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 76be7425800..f44edb3c29c 100644
+index f44edb3c29c..3c7d8d72144 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -4776,14 +4776,12 @@ static void i386_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         gen_jmp_rel_csize(dc, 0, 0);
-         break;
-     case DISAS_EOB_NEXT:
--        gen_update_cc_op(dc);
-         gen_update_eip_cur(dc);
-         /* fall through */
-     case DISAS_EOB_ONLY:
-         gen_eob(dc);
-         break;
-     case DISAS_EOB_INHIBIT_IRQ:
--        gen_update_cc_op(dc);
-         gen_update_eip_cur(dc);
-         gen_eob_inhibit_irq(dc);
+@@ -4488,9 +4488,8 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         /* we should not be in SMM mode */
+         g_assert_not_reached();
+ #else
+-        gen_update_cc_op(s);
+-        gen_update_eip_next(s);
+         gen_helper_rsm(tcg_env);
++        set_cc_op(s, CC_OP_EFLAGS);
+ #endif /* CONFIG_USER_ONLY */
+         s->base.is_jmp = DISAS_EOB_ONLY;
          break;
 -- 
 2.45.1
