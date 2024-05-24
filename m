@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0AB8CE214
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4498F8CE21E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ0r-0005QO-Pb; Fri, 24 May 2024 04:10:53 -0400
+	id 1sAQ0u-0005RY-Ey; Fri, 24 May 2024 04:10:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0p-0005NE-Bd
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sAQ0r-0005QQ-52
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0n-0000bY-Nv
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:51 -0400
+ id 1sAQ0p-0000bi-Js
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716538249;
+ s=mimecast20190719; t=1716538250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZQcrqiJjxHNOISOcZ6yKLEOGsror00Tl7WLp+qhe8Mc=;
- b=SxFCfQJdBmBG9i44Mx8uieKPIwxpCckPHRFJmeMCWiQ2GkLIouxinxP+GVa8BXMYHNKAFJ
- va4s4JCyEzSUKo8jSno3Nkwp9VfbeltL+E/mVyz/jDgz2LtB3yiD0sXhgy4tDaiO0NLmTs
- /x4Hd7rHCKy6s0Hx7Of7K2IEu3t03wA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FmC8Okn408+OIImdpDOg08XGTOAlF1tk7pin60JmUdw=;
+ b=UKrnU1JcxuYK1NX3Jhv0DIn/p8cyksde786ZjrJGSbIMpIOGtdvqZiedJhmnDI822n1oTX
+ zq6mAc1YbCncS7D0cFWUXzhc87nLmCYLMggilJaFKrJjbSZMgQtNPBuqZzxpeygkJI5SXR
+ RWR3zWTKbL9ebKtyxMHPdEYJmk3iq3c=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-wz-SpQ4gMnStJjE5PQZI8w-1; Fri, 24 May 2024 04:10:47 -0400
-X-MC-Unique: wz-SpQ4gMnStJjE5PQZI8w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a626603837cso21205566b.0
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:47 -0700 (PDT)
+ us-mta-486-d9c6mPJjPIi1G5hPmPUDYA-1; Fri, 24 May 2024 04:10:48 -0400
+X-MC-Unique: d9c6mPJjPIi1G5hPmPUDYA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-578517c51ceso284253a12.2
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538245; x=1717143045;
+ d=1e100.net; s=20230601; t=1716538246; x=1717143046;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZQcrqiJjxHNOISOcZ6yKLEOGsror00Tl7WLp+qhe8Mc=;
- b=FjeecHgubwciQQiYxJErIpcu07/4DkaWkuaC3qujI+NFU6IUXbFFVk09QUvFLmIAql
- KqDv9ieQdFPAaNXiI2X40Y3UNXWQfY14lVJutIclsmK7cyldA5QIPVSr6JsKYuXcM8t+
- jP2p0p+cf+IzjdUHsevt/nYxlQ5Od12xTPWUHBST4KARLuxAPDEPfy9LepUd5ZiVP61j
- W0FixfHYKyCXE406FbwGvoOxv5CTviT/Di1SHV1kRWEgMdc0BmePzfv/2jVmzY3QfpCa
- y87fvGOJv8ojSkCz8puR3j5pnyeLFbXxUPgn/EOcvmpFJWyi1qPG1n6N64KkIl09rNqU
- J+mg==
-X-Gm-Message-State: AOJu0Yz+vmpPZj2V/WDMGExIC3cm0zcvNfdYF+KrVR/AVN8aQ+SshWK5
- h6SM5mMS6n592qTz/cK/vrVLzw57JSAO/R8k6xHKxQpqJyFB9VUcHDsecjnmiLZfRGZe69cHCxf
- Aq5oI7Z/xk/973Hd9do7KmlRxULK0pgTyn+zFipAlaauTSwsT9VRFHuR4MXP6SiFsH/x4YpnLJn
- oAVu/R4+E9tat4cAab3Xo3olaVmZUrbP5nvt2r
-X-Received: by 2002:a17:906:3f87:b0:a59:b590:5d71 with SMTP id
- a640c23a62f3a-a626308f264mr105707966b.0.1716538245099; 
+ bh=FmC8Okn408+OIImdpDOg08XGTOAlF1tk7pin60JmUdw=;
+ b=TW7mNhbjMIVUc+ZP7QI+ytI0HHpLiZmYXcRytkS9P94Ij26VrNvMNm/7/TPvHqBMr9
+ /V/G2d8U/45urJa96KTf4b46gq0LooYE4S95mIGz0QRaQSN3w2bZ+p63xuBn3fVRpMV9
+ TVDBvPJoXrUvLzqOcCc/wFpfIV6qodq7sG9MxApdzSMkRAgkQmJJS9f4//pjosXVqhzd
+ TBS/7xH1sJmHYYKzVgkyIeB7xjxMEPy4nff58IS7/z7ZOZ6w/9SJs08gFLOLqtS/RaZL
+ eMBTfh8SaAe6z6wXO13qNMQk8Pc4JgvB5hifPR8yM/Z5wkAIpDP+Ws0RYV/7p4K2ccAX
+ o+tQ==
+X-Gm-Message-State: AOJu0YwdT8R+ihEX9LOI00ekvgFf4qH4A2JzYrvtUP0ln6ZMeBUnJL+1
+ AKWW+2ImTcDkZPQ8NFdi1LS2YL9PXHhmN4TkttD4pwsv765skrQ+ZTZKjnHml7cAzttoaxfVJqZ
+ 8djngklYf0b1n4rJzO4699DgooY/1dAwut7E+tjgYWxNiCz3I5UehfWUy/ls+9c/HJmH5SMB76X
+ I5PO02GmaBS+Z09MKa/+zbbYOgO/0W92Z9oaUW
+X-Received: by 2002:a50:d001:0:b0:572:d082:79fa with SMTP id
+ 4fb4d7f45d1cf-578519870b5mr1009808a12.14.1716538246049; 
+ Fri, 24 May 2024 01:10:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGCaRG9TQWKKY3llApjg3+z6Qmt266abydjDih4HHQddCYOdgdI/2bdPkm6pdb6tIFki4C8OQ==
+X-Received: by 2002:a50:d001:0:b0:572:d082:79fa with SMTP id
+ 4fb4d7f45d1cf-578519870b5mr1009797a12.14.1716538245665; 
  Fri, 24 May 2024 01:10:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHl6Mo9kEoWFJYUNEFWNkmK7Cxir1kVqoJzTXdZANBpcL4klgNht6BkzgNEzO5qaWoCZWansQ==
-X-Received: by 2002:a17:906:3f87:b0:a59:b590:5d71 with SMTP id
- a640c23a62f3a-a626308f264mr105706466b.0.1716538244724; 
- Fri, 24 May 2024 01:10:44 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626cc4f465sm89556166b.120.2024.05.24.01.10.39
+ 4fb4d7f45d1cf-57852339ea7sm1224446a12.1.2024.05.24.01.10.45
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:39 -0700 (PDT)
+ Fri, 24 May 2024 01:10:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 10/16] target/i386: inline gen_add_A0_ds_seg
-Date: Fri, 24 May 2024 10:10:13 +0200
-Message-ID: <20240524081019.1141359-11-pbonzini@redhat.com>
+Subject: [PATCH 11/16] target/i386: use mo_stacksize more
+Date: Fri, 24 May 2024 10:10:14 +0200
+Message-ID: <20240524081019.1141359-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,55 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is only used in MONITOR, where a direct call of gen_lea_v_seg
-is simpler, and in XLAT.  Inline it in the latter.
+Use mo_stacksize for all stack accesses, including when
+a 64-bit code segment is impossible and the code is
+therefore checking only for SS32(s).
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 9 +--------
- target/i386/tcg/emit.c.inc  | 2 +-
- 2 files changed, 2 insertions(+), 9 deletions(-)
+ target/i386/tcg/translate.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index d32b5b63f5c..8138da23b3d 100644
+index 8138da23b3d..7b6bc486a63 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -1815,12 +1815,6 @@ static void gen_bndck(CPUX86State *env, DisasContext *s, int modrm,
-     gen_helper_bndck(tcg_env, s->tmp2_i32);
+@@ -2068,12 +2068,12 @@ static inline void gen_pop_update(DisasContext *s, MemOp ot)
+ 
+ static inline void gen_stack_A0(DisasContext *s)
+ {
+-    gen_lea_v_seg(s, SS32(s) ? MO_32 : MO_16, cpu_regs[R_ESP], R_SS, -1);
++    gen_lea_v_seg(s, mo_stacksize(s), cpu_regs[R_ESP], R_SS, -1);
  }
  
--/* used for LEA and MOV AX, mem */
--static void gen_add_A0_ds_seg(DisasContext *s)
--{
--    gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
--}
--
- /* generate modrm load of memory or register. */
- static void gen_ld_modrm(CPUX86State *env, DisasContext *s, int modrm, MemOp ot)
+ static void gen_pusha(DisasContext *s)
  {
-@@ -3663,8 +3657,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             }
-             gen_update_cc_op(s);
-             gen_update_eip_cur(s);
--            tcg_gen_mov_tl(s->A0, cpu_regs[R_EAX]);
--            gen_add_A0_ds_seg(s);
-+            gen_lea_v_seg(s, s->aflag, cpu_regs[R_EAX], R_DS, s->override);
-             gen_helper_monitor(tcg_env, s->A0);
-             break;
+-    MemOp s_ot = SS32(s) ? MO_32 : MO_16;
++    MemOp s_ot = mo_stacksize(s);
+     MemOp d_ot = s->dflag;
+     int size = 1 << d_ot;
+     int i;
+@@ -2089,7 +2089,7 @@ static void gen_pusha(DisasContext *s)
  
-diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index 8e311b6d213..f293db01b5c 100644
---- a/target/i386/tcg/emit.c.inc
-+++ b/target/i386/tcg/emit.c.inc
-@@ -4043,7 +4043,7 @@ static void gen_XLAT(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ static void gen_popa(DisasContext *s)
  {
-     /* AL is already zero-extended into s->T0.  */
-     tcg_gen_add_tl(s->A0, cpu_regs[R_EBX], s->T0);
--    gen_add_A0_ds_seg(s);
-+    gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
-     gen_op_ld_v(s, MO_8, s->T0, s->A0);
- }
+-    MemOp s_ot = SS32(s) ? MO_32 : MO_16;
++    MemOp s_ot = mo_stacksize(s);
+     MemOp d_ot = s->dflag;
+     int size = 1 << d_ot;
+     int i;
+@@ -2111,7 +2111,7 @@ static void gen_popa(DisasContext *s)
+ static void gen_enter(DisasContext *s, int esp_addend, int level)
+ {
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+-    MemOp a_ot = CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
++    MemOp a_ot = mo_stacksize(s);
+     int size = 1 << d_ot;
  
+     /* Push BP; compute FrameTemp into T1.  */
 -- 
 2.45.1
 
