@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4498F8CE21E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B88ED8CE20D
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:11:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ0u-0005RY-Ey; Fri, 24 May 2024 04:10:56 -0400
+	id 1sAQ0w-0005XU-Al; Fri, 24 May 2024 04:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0r-0005QQ-52
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sAQ0t-0005SM-I4
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0p-0000bi-Js
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:52 -0400
+ id 1sAQ0r-0000dV-Sz
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716538250;
+ s=mimecast20190719; t=1716538253;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FmC8Okn408+OIImdpDOg08XGTOAlF1tk7pin60JmUdw=;
- b=UKrnU1JcxuYK1NX3Jhv0DIn/p8cyksde786ZjrJGSbIMpIOGtdvqZiedJhmnDI822n1oTX
- zq6mAc1YbCncS7D0cFWUXzhc87nLmCYLMggilJaFKrJjbSZMgQtNPBuqZzxpeygkJI5SXR
- RWR3zWTKbL9ebKtyxMHPdEYJmk3iq3c=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=v+JQIOco7Z7DojAja/MONveF1DDSe6+yvz+MIJpJggo=;
+ b=d6Mt7nkvElSuCc0ZBRg1p6yBigdi+7DmxtrtH98xUkK90lgQ+QyIreNAF8HA3+6dGdBhFH
+ u1pod2hwgQqaaAjNwEBjxZ0ZnXNjaQrVrgbKhcGE19SL8V45M80uZSW8BClR3nnb7eM8k5
+ bcOSGFY68w38xYXH92WFKvhdzruWKxE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-d9c6mPJjPIi1G5hPmPUDYA-1; Fri, 24 May 2024 04:10:48 -0400
-X-MC-Unique: d9c6mPJjPIi1G5hPmPUDYA-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-578517c51ceso284253a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:48 -0700 (PDT)
+ us-mta-495-SGgKG310OFa5Z_3SFDbBsA-1; Fri, 24 May 2024 04:10:51 -0400
+X-MC-Unique: SGgKG310OFa5Z_3SFDbBsA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a626ac4d29aso27520066b.3
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538246; x=1717143046;
+ d=1e100.net; s=20230601; t=1716538249; x=1717143049;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FmC8Okn408+OIImdpDOg08XGTOAlF1tk7pin60JmUdw=;
- b=TW7mNhbjMIVUc+ZP7QI+ytI0HHpLiZmYXcRytkS9P94Ij26VrNvMNm/7/TPvHqBMr9
- /V/G2d8U/45urJa96KTf4b46gq0LooYE4S95mIGz0QRaQSN3w2bZ+p63xuBn3fVRpMV9
- TVDBvPJoXrUvLzqOcCc/wFpfIV6qodq7sG9MxApdzSMkRAgkQmJJS9f4//pjosXVqhzd
- TBS/7xH1sJmHYYKzVgkyIeB7xjxMEPy4nff58IS7/z7ZOZ6w/9SJs08gFLOLqtS/RaZL
- eMBTfh8SaAe6z6wXO13qNMQk8Pc4JgvB5hifPR8yM/Z5wkAIpDP+Ws0RYV/7p4K2ccAX
- o+tQ==
-X-Gm-Message-State: AOJu0YwdT8R+ihEX9LOI00ekvgFf4qH4A2JzYrvtUP0ln6ZMeBUnJL+1
- AKWW+2ImTcDkZPQ8NFdi1LS2YL9PXHhmN4TkttD4pwsv765skrQ+ZTZKjnHml7cAzttoaxfVJqZ
- 8djngklYf0b1n4rJzO4699DgooY/1dAwut7E+tjgYWxNiCz3I5UehfWUy/ls+9c/HJmH5SMB76X
- I5PO02GmaBS+Z09MKa/+zbbYOgO/0W92Z9oaUW
-X-Received: by 2002:a50:d001:0:b0:572:d082:79fa with SMTP id
- 4fb4d7f45d1cf-578519870b5mr1009808a12.14.1716538246049; 
- Fri, 24 May 2024 01:10:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCaRG9TQWKKY3llApjg3+z6Qmt266abydjDih4HHQddCYOdgdI/2bdPkm6pdb6tIFki4C8OQ==
-X-Received: by 2002:a50:d001:0:b0:572:d082:79fa with SMTP id
- 4fb4d7f45d1cf-578519870b5mr1009797a12.14.1716538245665; 
- Fri, 24 May 2024 01:10:45 -0700 (PDT)
+ bh=v+JQIOco7Z7DojAja/MONveF1DDSe6+yvz+MIJpJggo=;
+ b=FQVkTq7maEKNfflLW0kK979eUaeI6Up6aJpDU/vDE7qnXigf6foS27EGUoFLHCcpMM
+ rWlukTNg7grgUcCpBegIR4iefYuuG9lg1HNIP4p3YFPbe8rqKav4OSzO7+Yz3UoQ5SSu
+ pExJLHtfMXseZz2jGWjXGUYO5IEqL5NwvJrxyfBDJvQ+JgZlAfvtekGpsbSdOmRiablF
+ Go/N3XFJDsltNTcESpM1GFZwLIV+X11qkApY9qfzpo3+9MfRwMQiwGIP9hH+Wx6SwGsZ
+ y77v+xYn2d8ZoWeui7kiHzqL0lmGFK8lShffbDgYSRzL3EMfertgj5WcMlrM29TSZG4I
+ yisQ==
+X-Gm-Message-State: AOJu0YxOxtwMLybz7kewHj1wEQe9K6xhbz6r+MVGWXm2IVxy2yHe7Wvz
+ j636qYq/3uQkZSm9fI16DRY6LYs2P5YdISc/AjPHUhrxrmG4JnkEVF03ii70/zdEHOFgWldoD2K
+ ONmFM6zJ7AbHEu2zACG5kzE5YDUoJBY9clbzJes1xDK7iUOw8sKVxUI/b9/YeVX4kFdUMYmNIYe
+ YQqcjUvlb2Vnp6EBC/kYO8cbKI4VH3N5RkPj+W
+X-Received: by 2002:a17:907:c920:b0:a59:9eab:1622 with SMTP id
+ a640c23a62f3a-a6265148b95mr81871566b.56.1716538248912; 
+ Fri, 24 May 2024 01:10:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEfqPp+E3FmJ09/n96pWtgy++tCnSYydhkmraAZIQOClCPCghH01tigBff4TChBJe4cQdeTCQ==
+X-Received: by 2002:a17:907:c920:b0:a59:9eab:1622 with SMTP id
+ a640c23a62f3a-a6265148b95mr81870766b.56.1716538248461; 
+ Fri, 24 May 2024 01:10:48 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-57852339ea7sm1224446a12.1.2024.05.24.01.10.45
+ a640c23a62f3a-a626c93b538sm91628766b.71.2024.05.24.01.10.46
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:45 -0700 (PDT)
+ Fri, 24 May 2024 01:10:46 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 11/16] target/i386: use mo_stacksize more
-Date: Fri, 24 May 2024 10:10:14 +0200
-Message-ID: <20240524081019.1141359-12-pbonzini@redhat.com>
+Subject: [PATCH 12/16] target/i386: introduce gen_lea_ss_ofs
+Date: Fri, 24 May 2024 10:10:15 +0200
+Message-ID: <20240524081019.1141359-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,52 +100,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use mo_stacksize for all stack accesses, including when
-a 64-bit code segment is impossible and the code is
-therefore checking only for SS32(s).
+Generalize gen_stack_A0() to include an initial add and to use an arbitrary
+destination.  This is a common pattern and it is not a huge burden to
+add the extra arguments to the only caller of gen_stack_A0().
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/i386/tcg/translate.c | 51 +++++++++++++++----------------------
+ target/i386/tcg/emit.c.inc  |  2 +-
+ 2 files changed, 22 insertions(+), 31 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 8138da23b3d..7b6bc486a63 100644
+index 7b6bc486a63..8354209b037 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -2068,12 +2068,12 @@ static inline void gen_pop_update(DisasContext *s, MemOp ot)
- 
- static inline void gen_stack_A0(DisasContext *s)
- {
--    gen_lea_v_seg(s, SS32(s) ? MO_32 : MO_16, cpu_regs[R_ESP], R_SS, -1);
-+    gen_lea_v_seg(s, mo_stacksize(s), cpu_regs[R_ESP], R_SS, -1);
+@@ -2028,24 +2028,27 @@ static inline void gen_stack_update(DisasContext *s, int addend)
+     gen_op_add_reg_im(s, mo_stacksize(s), R_ESP, addend);
  }
  
++static void gen_lea_ss_ofs(DisasContext *s, TCGv dest, TCGv src, target_ulong offset)
++{
++    if (offset) {
++        tcg_gen_addi_tl(dest, src, offset);
++        src = dest;
++    }
++    gen_lea_v_seg_dest(s, mo_stacksize(s), dest, src, R_SS, -1);
++}
++
+ /* Generate a push. It depends on ss32, addseg and dflag.  */
+ static void gen_push_v(DisasContext *s, TCGv val)
+ {
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+     MemOp a_ot = mo_stacksize(s);
+     int size = 1 << d_ot;
+-    TCGv new_esp = s->A0;
++    TCGv new_esp = tcg_temp_new();
+ 
+-    tcg_gen_subi_tl(s->A0, cpu_regs[R_ESP], size);
+-
+-    if (!CODE64(s)) {
+-        if (ADDSEG(s)) {
+-            new_esp = tcg_temp_new();
+-            tcg_gen_mov_tl(new_esp, s->A0);
+-        }
+-        gen_lea_v_seg(s, a_ot, s->A0, R_SS, -1);
+-    }
++    tcg_gen_subi_tl(new_esp, cpu_regs[R_ESP], size);
+ 
++    /* Now reduce the value to the address size and apply SS base.  */
++    gen_lea_ss_ofs(s, s->A0, new_esp, 0);
+     gen_op_st_v(s, d_ot, val, s->A0);
+     gen_op_mov_reg_v(s, a_ot, R_ESP, new_esp);
+ }
+@@ -2055,7 +2058,7 @@ static MemOp gen_pop_T0(DisasContext *s)
+ {
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+ 
+-    gen_lea_v_seg_dest(s, mo_stacksize(s), s->T0, cpu_regs[R_ESP], R_SS, -1);
++    gen_lea_ss_ofs(s, s->T0, cpu_regs[R_ESP], 0);
+     gen_op_ld_v(s, d_ot, s->T0, s->T0);
+ 
+     return d_ot;
+@@ -2066,21 +2069,14 @@ static inline void gen_pop_update(DisasContext *s, MemOp ot)
+     gen_stack_update(s, 1 << ot);
+ }
+ 
+-static inline void gen_stack_A0(DisasContext *s)
+-{
+-    gen_lea_v_seg(s, mo_stacksize(s), cpu_regs[R_ESP], R_SS, -1);
+-}
+-
  static void gen_pusha(DisasContext *s)
  {
--    MemOp s_ot = SS32(s) ? MO_32 : MO_16;
-+    MemOp s_ot = mo_stacksize(s);
+-    MemOp s_ot = mo_stacksize(s);
      MemOp d_ot = s->dflag;
      int size = 1 << d_ot;
      int i;
-@@ -2089,7 +2089,7 @@ static void gen_pusha(DisasContext *s)
+ 
+     for (i = 0; i < 8; i++) {
+-        tcg_gen_addi_tl(s->A0, cpu_regs[R_ESP], (i - 8) * size);
+-        gen_lea_v_seg(s, s_ot, s->A0, R_SS, -1);
++        gen_lea_ss_ofs(s, s->A0, cpu_regs[R_ESP], (i - 8) * size);
+         gen_op_st_v(s, d_ot, cpu_regs[7 - i], s->A0);
+     }
+ 
+@@ -2089,7 +2085,6 @@ static void gen_pusha(DisasContext *s)
  
  static void gen_popa(DisasContext *s)
  {
--    MemOp s_ot = SS32(s) ? MO_32 : MO_16;
-+    MemOp s_ot = mo_stacksize(s);
+-    MemOp s_ot = mo_stacksize(s);
      MemOp d_ot = s->dflag;
      int size = 1 << d_ot;
      int i;
-@@ -2111,7 +2111,7 @@ static void gen_popa(DisasContext *s)
- static void gen_enter(DisasContext *s, int esp_addend, int level)
- {
-     MemOp d_ot = mo_pushpop(s, s->dflag);
--    MemOp a_ot = CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
-+    MemOp a_ot = mo_stacksize(s);
-     int size = 1 << d_ot;
+@@ -2099,8 +2094,7 @@ static void gen_popa(DisasContext *s)
+         if (7 - i == R_ESP) {
+             continue;
+         }
+-        tcg_gen_addi_tl(s->A0, cpu_regs[R_ESP], i * size);
+-        gen_lea_v_seg(s, s_ot, s->A0, R_SS, -1);
++        gen_lea_ss_ofs(s, s->A0, cpu_regs[R_ESP], i * size);
+         gen_op_ld_v(s, d_ot, s->T0, s->A0);
+         gen_op_mov_reg_v(s, d_ot, 7 - i, s->T0);
+     }
+@@ -2116,7 +2110,7 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
  
      /* Push BP; compute FrameTemp into T1.  */
+     tcg_gen_subi_tl(s->T1, cpu_regs[R_ESP], size);
+-    gen_lea_v_seg(s, a_ot, s->T1, R_SS, -1);
++    gen_lea_ss_ofs(s, s->A0, s->T1, 0);
+     gen_op_st_v(s, d_ot, cpu_regs[R_EBP], s->A0);
+ 
+     level &= 31;
+@@ -2125,18 +2119,15 @@ static void gen_enter(DisasContext *s, int esp_addend, int level)
+ 
+         /* Copy level-1 pointers from the previous frame.  */
+         for (i = 1; i < level; ++i) {
+-            tcg_gen_subi_tl(s->A0, cpu_regs[R_EBP], size * i);
+-            gen_lea_v_seg(s, a_ot, s->A0, R_SS, -1);
++            gen_lea_ss_ofs(s, s->A0, cpu_regs[R_EBP], -size * i);
+             gen_op_ld_v(s, d_ot, s->tmp0, s->A0);
+ 
+-            tcg_gen_subi_tl(s->A0, s->T1, size * i);
+-            gen_lea_v_seg(s, a_ot, s->A0, R_SS, -1);
++            gen_lea_ss_ofs(s, s->A0, s->T1, -size * i);
+             gen_op_st_v(s, d_ot, s->tmp0, s->A0);
+         }
+ 
+         /* Push the current FrameTemp as the last level.  */
+-        tcg_gen_subi_tl(s->A0, s->T1, size * level);
+-        gen_lea_v_seg(s, a_ot, s->A0, R_SS, -1);
++        gen_lea_ss_ofs(s, s->A0, s->T1, -size * level);
+         gen_op_st_v(s, d_ot, s->T1, s->A0);
+     }
+ 
+@@ -2153,7 +2144,7 @@ static void gen_leave(DisasContext *s)
+     MemOp d_ot = mo_pushpop(s, s->dflag);
+     MemOp a_ot = mo_stacksize(s);
+ 
+-    gen_lea_v_seg(s, a_ot, cpu_regs[R_EBP], R_SS, -1);
++    gen_lea_ss_ofs(s, s->A0, cpu_regs[R_EBP], 0);
+     gen_op_ld_v(s, d_ot, s->T0, s->A0);
+ 
+     tcg_gen_addi_tl(s->T1, cpu_regs[R_EBP], 1 << d_ot);
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index f293db01b5c..83fa745fd8a 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -3077,7 +3077,7 @@ static void gen_RETF(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     int16_t adjust = decode->e.op2 == X86_TYPE_I ? decode->immediate : 0;
+ 
+     if (!PE(s) || VM86(s)) {
+-        gen_stack_A0(s);
++        gen_lea_ss_ofs(s, s->A0, cpu_regs[R_ESP], 0);
+         /* pop offset */
+         gen_op_ld_v(s, s->dflag, s->T0, s->A0);
+         /* NOTE: keeping EIP updated is not a problem in case of
 -- 
 2.45.1
 
