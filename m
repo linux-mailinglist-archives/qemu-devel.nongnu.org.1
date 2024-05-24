@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD378CE896
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 18:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAF58CE892
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 18:21:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAXeX-0005vn-I6; Fri, 24 May 2024 12:20:21 -0400
+	id 1sAXec-0005xd-1I; Fri, 24 May 2024 12:20:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAXeU-0005vN-Bd
- for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1sAXea-0005x2-Dn
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAXeS-0006vU-Jd
- for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:18 -0400
+ id 1sAXeT-0006ve-2H
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716567613;
+ s=mimecast20190719; t=1716567615;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=TUAjBtvVc0NHozSAi4DVeoPzm0ELYup6xGPYuGVoL84=;
- b=Y5It6wm99Mtxm6rDK5I5DgO8OsRvJCpONhpuHh6KBhAqkUnWnxv/EzRc4I5zEK0yncB8pG
- 9nL1ZrSvCAGdIPw0Iah39X/kd/8yg0SdvqEzZ1sTbL9iVrEpfD2Qyvms8XMbjy2qkVMtI6
- KuIfBrUm4QvTg3E/RqNdaX8QgtLcawg=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TLcj+G3nZNoagmtde0jJ4iaxwOIbWk0F9rsJ0Ab16Xo=;
+ b=QTiGsNhf6Mvw1fsbU/uU/MYLGnrisKc3LZowkoENOi+Qhkc9eAO3IGozneVUW0nXLxjhhi
+ ISpXx63kK6Ka50wHoKoSKIdlLQekgQw4zDShzb+o1AEDLwUh/p8NcEuGQyVWZb7MAW0Vk7
+ Sv5hp6VOyuyQeYkX69zv/eRANDzzhiI=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-6j-rT2m9OuGeyh2qEDlq_g-1; Fri, 24 May 2024 12:20:11 -0400
-X-MC-Unique: 6j-rT2m9OuGeyh2qEDlq_g-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-5222a0800f0so2462290e87.2
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 09:20:10 -0700 (PDT)
+ us-mta-435-NDXRQi9tP6CbhpCv7-8PSg-1; Fri, 24 May 2024 12:20:13 -0400
+X-MC-Unique: NDXRQi9tP6CbhpCv7-8PSg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2e95a655afcso9532791fa.1
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 09:20:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716567609; x=1717172409;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TUAjBtvVc0NHozSAi4DVeoPzm0ELYup6xGPYuGVoL84=;
- b=puwAWU9KWLurnMfXGum+mR3fnX1i/aozihFpa0biqQOPUK+4y2xnEzSWD2gYM6hKAd
- SjiTSvpxHard7RO7D1VBN3zeLKz5gcoeOwrnEPWo0IdiDmunWugSi5vFXSiz4PCA0ook
- 8typWqUrBuv/YWYkH8FKWUUWS9ZzI3F+DYa6dS3IzUaa/DABxXzSHCMEsZHLjXaa8BwA
- KRMuDbJPy7Sbgs+au2CoMM3fgpp5uECEEH3E/4luaKxgbfuvAyRs818zyIQtwzDn+Td5
- A8F+jA/rzig9sOrcrZAJdlfMbOV+MIHSMwpwZz8KT0ZC1yoNYR0QZzzKQiJZxYu3fvQS
- vVBw==
-X-Gm-Message-State: AOJu0YzR/0AVnTVtrNExbWXsUD4SfzHqhi2PHQJfDTpkP0jjU2AFpobm
- GWRC2+xFItFwQMrx9sMMcIaQKzCa0XS4x9c7/SYcWzo8uL6hrH7dcusQl8JQslF3XrfqnZ5Sbbe
- DbnChtr08IrCFeYKIPs6a4bxwBWctv/TnSeUDkAzmLqTbJgy9e/uNzwGMHJoQH17zNntyavRBGZ
- V8VouzDUnrbf+DzWe13HOnu8kBa7RYSTP6MnFd
-X-Received: by 2002:a05:6512:3443:b0:523:9003:88a0 with SMTP id
- 2adb3069b0e04-5296600605bmr2158156e87.39.1716567609166; 
- Fri, 24 May 2024 09:20:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQpAMcKbdL/wtSJSqPe83HrFWZP8b+t0/ve5yByI1o+Lg7po2KUd8nOkxUC9M8500BhTWb5Q==
-X-Received: by 2002:a05:6512:3443:b0:523:9003:88a0 with SMTP id
- 2adb3069b0e04-5296600605bmr2158122e87.39.1716567608551; 
- Fri, 24 May 2024 09:20:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716567611; x=1717172411;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TLcj+G3nZNoagmtde0jJ4iaxwOIbWk0F9rsJ0Ab16Xo=;
+ b=oiEz+isdvhjums6GyQMN4YgWHhc3hrUcjd82+TGX5hGJezvCONWlkPWMV6BoQMPXRs
+ UnNAH4zpIsDRm/kOWDlU/QEtmaeQQ8BslTKEVxb0KYqVsHxnh7q5JnXKrjHTJmIdgAZQ
+ mpi4hcIA1OcYpdepbnaJw8xTMwF71lzplelKY8O3f1tlOEikSV8GrnvclmPY3be2l4Zn
+ sNfNugCnnt1sp720OaLHYXNR3jrDaRngxcD4cKxNGh6DDp5a/dstmEjjY/7oEVJb8DxE
+ 62nh6te6ho1iPLb3IAACGusE6QJ5bt4JgHku+aJ26yElKkUotEO04WsDHBl8E/eMC+lE
+ nEig==
+X-Gm-Message-State: AOJu0Ywcr1Z+f0NvY4M97dzr+bGQwW7HKQiidt5gFLETnPWso41p207D
+ GGm4dU7Jf5bT+sKE994+uV5reCypCR2aVtaIc47fOfWJHfsqseUwjNJwxbCc95VUA+ylfHYq9un
+ yeyH1kWbCL5hTPnPbeZktsnVJMVmrk4hkNES+RQc8fA9B64LPmAODnelE7hxb8vqjZXFZYtHHnC
+ dW0bi/gBy0d//3qpfJloetJozyi65aXA9pTBY0
+X-Received: by 2002:a2e:99c2:0:b0:2df:e0c4:8429 with SMTP id
+ 38308e7fff4ca-2e95b0c22abmr17972361fa.18.1716567611303; 
+ Fri, 24 May 2024 09:20:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIp+sB78Wq0yxv4KckkYT9zFXSySJ/vu/klLKAh3rH0QUHLdg/OM0+CGPF9EKh8pdoAo3+jQ==
+X-Received: by 2002:a2e:99c2:0:b0:2df:e0c4:8429 with SMTP id
+ 38308e7fff4ca-2e95b0c22abmr17972071fa.18.1716567610726; 
+ Fri, 24 May 2024 09:20:10 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-5297066b207sm210886e87.166.2024.05.24.09.20.07
+ 38308e7fff4ca-2e95bcd73acsm2539511fa.29.2024.05.24.09.20.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 09:20:07 -0700 (PDT)
+ Fri, 24 May 2024 09:20:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/5] meson: small cleanups
-Date: Fri, 24 May 2024 18:20:00 +0200
-Message-ID: <20240524162006.1271778-1-pbonzini@redhat.com>
+Subject: [PATCH 1/5] meson: remove unnecessary reference to libm
+Date: Fri, 24 May 2024 18:20:01 +0200
+Message-ID: <20240524162006.1271778-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240524162006.1271778-1-pbonzini@redhat.com>
+References: <20240524162006.1271778-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,29 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All found while looking at Akihiko's issues with declare_dependency(
-objects: ...).
+libm is linked into all targets via libqemuutil, no need to specify it
+explicitly.
 
-https://patchew.org/QEMU/20240524-objects-v1-0-07cbbe96166b@daynix.com/
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ block/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Paolo Bonzini (5):
-  meson: remove unnecessary reference to libm
-  meson: remove unnecessary dependency
-  tcg: include dependencies in static_library()
-  meson: do not query modules before they are processed
-  migration: remove unnecessary zlib dependency
-
- meson.build             | 2 +-
- migration/dirtyrate.c   | 1 -
- migration/qemu-file.c   | 1 -
- audio/meson.build       | 4 ++--
- block/meson.build       | 4 ++--
- migration/meson.build   | 2 +-
- tcg/meson.build         | 8 ++++----
- tests/qtest/meson.build | 2 +-
- ui/meson.build          | 5 ++---
- 9 files changed, 13 insertions(+), 16 deletions(-)
-
+diff --git a/block/meson.build b/block/meson.build
+index e1f03fd773e..8993055c75e 100644
+--- a/block/meson.build
++++ b/block/meson.build
+@@ -110,7 +110,7 @@ foreach m : [
+   [blkio, 'blkio', files('blkio.c')],
+   [curl, 'curl', files('curl.c')],
+   [glusterfs, 'gluster', files('gluster.c')],
+-  [libiscsi, 'iscsi', [files('iscsi.c'), libm]],
++  [libiscsi, 'iscsi', files('iscsi.c')],
+   [libnfs, 'nfs', files('nfs.c')],
+   [libssh, 'ssh', files('ssh.c')],
+   [rbd, 'rbd', files('rbd.c')],
 -- 
 2.45.1
 
