@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6628CE0E0
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 08:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 277E58CE0E3
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 08:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAOCG-0001tV-Jc; Fri, 24 May 2024 02:14:32 -0400
+	id 1sAOCS-0001zM-Is; Fri, 24 May 2024 02:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sAOCE-0001sF-3R
- for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:30 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1sAOCP-0001x8-An
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:41 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sAOC8-00012s-SH
- for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:29 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-5b5254f9c32so2762100eaf.0
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 23:14:23 -0700 (PDT)
+ id 1sAOCG-00017J-8O
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 02:14:41 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6f8eaa14512so502984b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 23:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1716531262; x=1717136062; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NjkOvgDbjVLbH8iHglbx6OMXoUkh/TvoCmLRRr9I1og=;
- b=dieI3telKxSrzLwkPATeSv/WsN/mEbtT7CrzkYH6Y3UlYIQRg9a5OYG2ke/UHYFHWR
- w50HHmfce84hROoh2DbvaHj8jciVhYMMwH8OMH5wOlQWZHqYOzbj7+RqW26Kx6oVBjQq
- t7n/1ARwMoaJadCROnsFkDa+MKon5J8vORGuEiMHIylkUStYIE07ksamfMvxyatQFydO
- 7D2Rit1905QhP7X4ASLr0TxEL8IhHmhXxXCt6VmV2Hvf9KtcHsRv9NgPq47+H016e9pR
- +jAiOIx5s7/GkuQlaJJ3IoscKQZ0rTQ9hMWDHGGlt0uTWv0KYmYmoEeyCuxnWJzPMn08
- kgjA==
+ d=ventanamicro.com; s=google; t=1716531269; x=1717136069; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Etm0+s3up2JqM8ph6JUMLJUOz4fBS6haqZNSI55ovMA=;
+ b=D2I1knQprli65yKXO8Z/WtGjbprH02kfLHM3G/KV51DDnp8r9ovN1GKI6XDw5ZcZVS
+ m/aa0BB0xxwADRs6kC4cnYQCiCKvFRe2uVkrbOeb9D7KX52t4o5WUngsNRHTsRK60nyl
+ R0ezPBGf74Fv/h5CbduWZ3GRoa6pdx4VHOXtchUlaP21Z3wlLUGqIYSt99gArfXBbecZ
+ RFASGdNyTTLuMh4HLC0uTQOJTjemCUS68RyiH5l46J6dpLCLkUvKqY0NvdLBr4NSgAx1
+ 4IWrJ/G8OYXMYSGOKwkHiGLtgq7C5kSIfoXQv9iz0hvLb77hdUDie2ciI8GIO4nG5azO
+ TMnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716531262; x=1717136062;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NjkOvgDbjVLbH8iHglbx6OMXoUkh/TvoCmLRRr9I1og=;
- b=Pw2vgo9Js31NCXFdBZuanx9d1/7dx0sMcdiwc+VL3finym0JJIvzcs35bc9mAFuCcf
- h4OchaVknDNZ+ocJAfkQqhMvtI+w7zCUshBkRO6zQQ/l7jzvW7iPJAH6pnECL0F9czR7
- 1Rw5PgHlzOSQZ5n5MkHi8pnRi9FkAu76SSLDMawe3YjqQ+60PH3LGDUfphT61g4M0Ogs
- 8BvMVHa636uh0vS0OkYMEey0CDYxBoNwUPXwPgIg61CVPRDDfVigIdxmJdBXqajyTQQn
- +8LPNZSsgxoeR3BPD81v60hhT33fQsEEC1w/vcf+XA0BM1/B7oLTEqaQmJFcEK9Vhx14
- NNNQ==
-X-Gm-Message-State: AOJu0YwHklNx7bieHQjv827CUWCoQQ+r0G3MVG7WRcNXbs9Zo0ir2THA
- cXz/XbONyNQskXoe4zkLZFX4DlIN0WHhHh1kqWYWssnqs+XXACMjiSCPzVdKu7qfha8UAsH4Wk6
- ZSj4=
-X-Google-Smtp-Source: AGHT+IHYdAu9LEV9SYVhFJpXo/ncrfG/vec/ev1bfgPR1rpJ6+VvkvwTW+gc8eQUSxuyBtf3iaXXug==
-X-Received: by 2002:a05:6871:725:b0:245:41f0:ce13 with SMTP id
- 586e51a60fabf-24ca11de76amr1505731fac.9.1716531261848; 
- Thu, 23 May 2024 23:14:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716531269; x=1717136069;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Etm0+s3up2JqM8ph6JUMLJUOz4fBS6haqZNSI55ovMA=;
+ b=XcHnk5ApWz9taboJZt0jpu10e+kqtNzDfEbKkSJt13USz5X0g+UYfkEQWt2HSLYvmk
+ CHEv9jct2W5EouTzr7NKftZpcuAj9sfGE1jfBFQ7p3yhyZfszdiPrpJuVihToldG2P3c
+ 3jcP6lkmXVIo/HjDlDCcumSjEwpv3ce7gi43mSdLx5+zkfDYQjRtvyiHpqxV2DTsOCZ5
+ ZqSJ1x0pKvPq4kMGHbp5bpht3B9XI4+DmjPiGaPK2wp7eIEfd2ZYN7KUvv8ufZf2Yv4W
+ TvtfhS4mOcXjQ4jkTZMweTbJ/G7oTRkkcH4jsxsRM1EPIeZx8AalwKkLCcvhRD/gYOh7
+ mJcg==
+X-Gm-Message-State: AOJu0YwmiQ5xzWlDfXpEaO7Rnp0f9g9Ph/chZT5TPVpPe6Xf7Xpua+7B
+ yZcD0934ZJ2Zgl3TywD6tyzL7h7kavnRA/RPCSCkkVXXV/zPjDK1M28vT8E3rXp3TdSQAb8+luA
+ sxSM=
+X-Google-Smtp-Source: AGHT+IGwVVhlhxIFzhnIvWCicRAcK0IONx8TaPqZSRou32PXzOv5pxSXgnACNtBXkqi/Un+CgS5DVA==
+X-Received: by 2002:a05:6a00:4007:b0:6ed:21b2:cb17 with SMTP id
+ d2e1a72fcca58-6f8f2c6dd92mr1353636b3a.4.1716531268908; 
+ Thu, 23 May 2024 23:14:28 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.31])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fcbea487sm516106b3a.107.2024.05.23.23.14.15
+ d2e1a72fcca58-6f8fcbea487sm516106b3a.107.2024.05.23.23.14.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 23 May 2024 23:14:21 -0700 (PDT)
+ Thu, 23 May 2024 23:14:28 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -77,14 +78,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Bin Meng <bmeng.cn@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v2 00/12] Add support for RISC-V ACPI tests
-Date: Fri, 24 May 2024 11:43:59 +0530
-Message-Id: <20240524061411.341599-1-sunilvl@ventanamicro.com>
+Subject: [PATCH v2 01/12] uefi-test-tools/UefiTestToolsPkg: Add RISC-V support
+Date: Fri, 24 May 2024 11:44:00 +0530
+Message-Id: <20240524061411.341599-2-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240524061411.341599-1-sunilvl@ventanamicro.com>
+References: <20240524061411.341599-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -107,116 +110,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, bios-table-test doesn't support RISC-V. This series enables
-the framework changes required and basic testing. Things like NUMA
-related test cases will be added later.
+Enable building the test application for RISC-V with appropriate
+dependencies updated.
 
-This needs refactoring/renaming of ARM64 bios table tests. Importantly,
-the test cases now look for the expected AML files under
-tests/data/acpi/virt/aarch64 path instead of directly under
-tests/data/acpi/virt. To keep test cases not to fail because of this
-movement, they are updated to look for both paths first.
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-As part of this effort, it is found that uefi-test-tools is currently
-broken to build. So, updated its Makefile as well to use python based
-edk2 build script.
-
-The changes are also available at branch
-https://gitlab.com/vlsunil/qemu/-/tree/riscv_bios_table_test_v2
-
-Changes since v1:
-	1) Addressed feedback from Gerd and Alistair
-	2) Rebased and added tags received
-
-Sunil V L (12):
-  uefi-test-tools/UefiTestToolsPkg: Add RISC-V support
-  uefi-test-tools: Add support for python based build script
-  tests/data/uefi-boot-images: Add RISC-V ISO image
-  qtest: bios-tables-test: Rename aarch64 tests with aarch64 in them
-  tests/qtest/bios-tables-test.c: Add support for arch in path
-  tests/data/acpi/virt: Move ACPI tables under aarch64
-  meson.build: Add RISC-V to the edk2-target list
-  pc-bios/meson.build: Add support for RISC-V in unpack_edk2_blobs
-  tests/data/acpi/rebuild-expected-aml.sh: Add RISC-V
-  tests/qtest/bios-tables-test: Add empty ACPI data files for RISC-V
-  tests/qtest/bios-tables-test.c: Enable basic testing for RISC-V
-  tests/qtest/bios-tables-test: Add expected ACPI data files for RISC-V
-
- meson.build                                   |   2 +-
- pc-bios/meson.build                           |   2 +
- tests/data/acpi/rebuild-expected-aml.sh       |   5 +-
- tests/data/acpi/virt/{ => aarch64}/APIC       | Bin
- .../acpi/virt/{ => aarch64}/APIC.acpihmatvirt | Bin
- .../acpi/virt/{ => aarch64}/APIC.topology     | Bin
- tests/data/acpi/virt/{ => aarch64}/DBG2       | Bin
- tests/data/acpi/virt/{ => aarch64}/DSDT       | Bin
- .../acpi/virt/{ => aarch64}/DSDT.acpihmatvirt | Bin
- tests/data/acpi/virt/{ => aarch64}/DSDT.memhp | Bin
- tests/data/acpi/virt/{ => aarch64}/DSDT.pxb   | Bin
- .../acpi/virt/{ => aarch64}/DSDT.topology     | Bin
- tests/data/acpi/virt/{ => aarch64}/FACP       | Bin
- tests/data/acpi/virt/{ => aarch64}/GTDT       | Bin
- .../acpi/virt/{ => aarch64}/HMAT.acpihmatvirt | Bin
- tests/data/acpi/virt/{ => aarch64}/IORT       | Bin
- tests/data/acpi/virt/{ => aarch64}/MCFG       | Bin
- tests/data/acpi/virt/{ => aarch64}/NFIT.memhp | Bin
- tests/data/acpi/virt/{ => aarch64}/PPTT       | Bin
- .../acpi/virt/{ => aarch64}/PPTT.acpihmatvirt | Bin
- .../acpi/virt/{ => aarch64}/PPTT.topology     | Bin
- tests/data/acpi/virt/{ => aarch64}/SLIT.memhp | Bin
- tests/data/acpi/virt/{ => aarch64}/SPCR       | Bin
- .../acpi/virt/{ => aarch64}/SRAT.acpihmatvirt | Bin
- tests/data/acpi/virt/{ => aarch64}/SRAT.memhp | Bin
- .../data/acpi/virt/{ => aarch64}/SRAT.numamem | Bin
- tests/data/acpi/virt/{ => aarch64}/SSDT.memhp | Bin
- tests/data/acpi/virt/{ => aarch64}/VIOT       | Bin
- tests/data/acpi/virt/riscv64/APIC             | Bin 0 -> 116 bytes
- tests/data/acpi/virt/riscv64/DSDT             | Bin 0 -> 3518 bytes
- tests/data/acpi/virt/riscv64/FACP             | Bin 0 -> 276 bytes
- tests/data/acpi/virt/riscv64/MCFG             | Bin 0 -> 60 bytes
- tests/data/acpi/virt/riscv64/RHCT             | Bin 0 -> 314 bytes
- tests/data/acpi/virt/riscv64/SPCR             | Bin 0 -> 80 bytes
- .../bios-tables-test.riscv64.iso.qcow2        | Bin 0 -> 16896 bytes
- tests/qtest/bios-tables-test.c                |  93 ++++++++++++++----
- tests/qtest/meson.build                       |   3 +
- tests/uefi-test-tools/Makefile                |  19 ++--
- .../UefiTestToolsPkg/UefiTestToolsPkg.dsc     |   6 +-
- tests/uefi-test-tools/uefi-test-build.config  |  52 ++++++++++
- 40 files changed, 147 insertions(+), 35 deletions(-)
- rename tests/data/acpi/virt/{ => aarch64}/APIC (100%)
- rename tests/data/acpi/virt/{ => aarch64}/APIC.acpihmatvirt (100%)
- rename tests/data/acpi/virt/{ => aarch64}/APIC.topology (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DBG2 (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DSDT (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DSDT.acpihmatvirt (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DSDT.memhp (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DSDT.pxb (100%)
- rename tests/data/acpi/virt/{ => aarch64}/DSDT.topology (100%)
- rename tests/data/acpi/virt/{ => aarch64}/FACP (100%)
- rename tests/data/acpi/virt/{ => aarch64}/GTDT (100%)
- rename tests/data/acpi/virt/{ => aarch64}/HMAT.acpihmatvirt (100%)
- rename tests/data/acpi/virt/{ => aarch64}/IORT (100%)
- rename tests/data/acpi/virt/{ => aarch64}/MCFG (100%)
- rename tests/data/acpi/virt/{ => aarch64}/NFIT.memhp (100%)
- rename tests/data/acpi/virt/{ => aarch64}/PPTT (100%)
- rename tests/data/acpi/virt/{ => aarch64}/PPTT.acpihmatvirt (100%)
- rename tests/data/acpi/virt/{ => aarch64}/PPTT.topology (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SLIT.memhp (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SPCR (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SRAT.acpihmatvirt (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SRAT.memhp (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SRAT.numamem (100%)
- rename tests/data/acpi/virt/{ => aarch64}/SSDT.memhp (100%)
- rename tests/data/acpi/virt/{ => aarch64}/VIOT (100%)
- create mode 100644 tests/data/acpi/virt/riscv64/APIC
- create mode 100644 tests/data/acpi/virt/riscv64/DSDT
- create mode 100644 tests/data/acpi/virt/riscv64/FACP
- create mode 100644 tests/data/acpi/virt/riscv64/MCFG
- create mode 100644 tests/data/acpi/virt/riscv64/RHCT
- create mode 100644 tests/data/acpi/virt/riscv64/SPCR
- create mode 100644 tests/data/uefi-boot-images/bios-tables-test.riscv64.iso.qcow2
- create mode 100644 tests/uefi-test-tools/uefi-test-build.config
-
+diff --git a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
+index c8511cd732..0902fd3c73 100644
+--- a/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
++++ b/tests/uefi-test-tools/UefiTestToolsPkg/UefiTestToolsPkg.dsc
+@@ -19,7 +19,7 @@
+   PLATFORM_VERSION        = 0.1
+   PLATFORM_NAME           = UefiTestTools
+   SKUID_IDENTIFIER        = DEFAULT
+-  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64
++  SUPPORTED_ARCHITECTURES = ARM|AARCH64|IA32|X64|RISCV64
+   BUILD_TARGETS           = DEBUG
+ 
+ [BuildOptions.IA32]
+@@ -60,6 +60,10 @@
+ 
+ [LibraryClasses.IA32, LibraryClasses.X64]
+   BaseMemoryLib|MdePkg/Library/BaseMemoryLibRepStr/BaseMemoryLibRepStr.inf
++  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
++
++[LibraryClasses.RISCV64]
++  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+ 
+ [PcdsFixedAtBuild]
+   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8040004F
 -- 
 2.40.1
 
