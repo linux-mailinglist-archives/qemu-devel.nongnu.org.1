@@ -2,106 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C7D8CE5AB
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 15:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6BB8CE5D9
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 15:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAUb0-0002j2-4c; Fri, 24 May 2024 09:04:30 -0400
+	id 1sAUkE-000691-H4; Fri, 24 May 2024 09:14:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAUau-0002i0-Fe
- for qemu-devel@nongnu.org; Fri, 24 May 2024 09:04:26 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAUas-0002Y4-4s
- for qemu-devel@nongnu.org; Fri, 24 May 2024 09:04:24 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 872AE33AFF;
- Fri, 24 May 2024 13:04:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716555860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8LMxMMw5N//taVn3sRD/kMLByAqMQr55qXiRRH1k9Bs=;
- b=oODFLutMGq/Yz+RIgTIVGJtgAW/+stGJU5aNo48NvDKMDYsIdugP89N9iqDJPYgm85SvPw
- 4OaO1JNnsDBVocT/1qKV5YViEo5lTXu+0cChzfAYgGczO8vjReIXWqcOCc8ldRU8clMdj4
- ijGyEerDBC5veA/iwjw8j6om2aMT5z4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716555860;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8LMxMMw5N//taVn3sRD/kMLByAqMQr55qXiRRH1k9Bs=;
- b=rhIuulGC2uUxYm8tgaU661BRm3RdhbOZ0W0SzJ8UFYvXk9+4ayf68zcZ8lBeGDmAoEqlJ+
- zHIkipEpeRjbuxCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716555860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8LMxMMw5N//taVn3sRD/kMLByAqMQr55qXiRRH1k9Bs=;
- b=oODFLutMGq/Yz+RIgTIVGJtgAW/+stGJU5aNo48NvDKMDYsIdugP89N9iqDJPYgm85SvPw
- 4OaO1JNnsDBVocT/1qKV5YViEo5lTXu+0cChzfAYgGczO8vjReIXWqcOCc8ldRU8clMdj4
- ijGyEerDBC5veA/iwjw8j6om2aMT5z4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716555860;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8LMxMMw5N//taVn3sRD/kMLByAqMQr55qXiRRH1k9Bs=;
- b=rhIuulGC2uUxYm8tgaU661BRm3RdhbOZ0W0SzJ8UFYvXk9+4ayf68zcZ8lBeGDmAoEqlJ+
- zHIkipEpeRjbuxCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 548F913A6B;
- Fri, 24 May 2024 13:04:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id tgeNOFKQUGanOgAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 24 May 2024 13:04:18 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
-Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Igor
- Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe Mathieu-Daude
- <philmd@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Daniel P.
- Berrange" <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Steve Sistare <steven.sistare@oracle.com>
-Subject: Re: [PATCH V1 00/26] Live update: cpr-exec
-In-Reply-To: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
-References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
-Date: Fri, 24 May 2024 10:02:00 -0300
-Message-ID: <87le3zgy7r.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1sAUkB-00068Z-1S; Fri, 24 May 2024 09:13:59 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <akrowiak@linux.ibm.com>)
+ id 1sAUk7-0004KZ-1O; Fri, 24 May 2024 09:13:58 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44OD2Xmx016034; Fri, 24 May 2024 13:13:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : from : subject : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=bU7NRQs5sx7AEIYGWSl9Hs44nydCvkKAdTG8RGYsIlU=;
+ b=Ssl9disK2AIW8UsoX+/2vCw/DPFtWhoAZ9+FkCV8OHTIl/SQcS+uXlL1DJAVeRP/BAFz
+ kLMUT17/TbVcVF5b3LCHUyvfVgzgXPfLFG2QF1ixFkdckuUsXmB/ry4Qfj6S5/Z9EwTB
+ DUN7i9pqZ77hzHqzSr6v9bcPoEWyBnCkfYLP17JKKJNRUt21qg44vxVI4qSxLUan8rc0
+ O5d096Fw9xVtsXR10W5shBiIXhI8KHGbgyFSnlHN2QA/iZdFAdLR1DEKv7kPB+lepnCz
+ qGywJG4fe90aR+ofry9eihJ0Z9weBEHViwv6AeVo4rLgRvL32l1+fhv/L1FBwbvYb3eu 1g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yaue08165-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 May 2024 13:13:50 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44ODDoPG001562;
+ Fri, 24 May 2024 13:13:50 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yaue08160-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 May 2024 13:13:50 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44OB0J0j007818; Fri, 24 May 2024 13:13:49 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3y79c3gbxs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 May 2024 13:13:49 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44ODDknb47186380
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 May 2024 13:13:48 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FA5358062;
+ Fri, 24 May 2024 13:13:46 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EBE1E58059;
+ Fri, 24 May 2024 13:13:45 +0000 (GMT)
+Received: from [9.61.26.241] (unknown [9.61.26.241])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 24 May 2024 13:13:45 +0000 (GMT)
+Message-ID: <6f6295b9-6b69-4828-862e-826ca63caa51@linux.ibm.com>
+Date: Fri, 24 May 2024 09:13:44 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCVD_TLS_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
- MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FROM_HAS_DN(0.00)[];
- FREEMAIL_CC(0.00)[redhat.com,habkost.net,gmail.com,linaro.org,oracle.com];
- RCPT_COUNT_TWELVE(0.00)[12]; FROM_EQ_ENVFROM(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; TO_DN_SOME(0.00)[]
-X-Spam-Score: -2.80
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+Subject: Re: [PATCH 1/7] hw/s390x/ccw: Make s390_ccw_get_dev_info() return a
+ bool
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>
+References: <20240522170107.289532-1-clg@redhat.com>
+ <20240522170107.289532-2-clg@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20240522170107.289532-2-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 1olBp-7Fk-Aj3h7IUDVnGttwiIKRihx0
+X-Proofpoint-GUID: 0CGPmAsD_RxSQRVk_we61zwsu4obN4mb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-24_04,2024-05-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 adultscore=0 clxscore=1011
+ impostorscore=0 mlxscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405240091
+Received-SPF: pass client-ip=148.163.156.1;
+ envelope-from=akrowiak@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,187 +116,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Steve Sistare <steven.sistare@oracle.com> writes:
 
-> This patch series adds the live migration cpr-exec mode.  In this mode, QEMU
-> stops the VM, writes VM state to the migration URI, and directly exec's a
-> new version of QEMU on the same host, replacing the original process while
-> retaining its PID.  Guest RAM is preserved in place, albeit with new virtual
-> addresses.  The user completes the migration by specifying the -incoming
-> option, and by issuing the migrate-incoming command if necessary.  This
-> saves and restores VM state, with minimal guest pause time, so that QEMU may
-> be updated to a new version in between.
+On 5/22/24 1:01 PM, Cédric Le Goater wrote:
+> Since s390_ccw_get_dev_info() takes an 'Error **' argument, best
+> practices suggest to return a bool. See the qapi/error.h Rules
+> section. While at it, modify the call in s390_ccw_realize().
 >
-> The new interfaces are:
->   * cpr-exec (MigMode migration parameter)
->   * cpr-exec-args (migration parameter)
->   * memfd-alloc=on (command-line option for -machine)
->   * only-migratable-modes (command-line argument)
->
-> The caller sets the mode parameter before invoking the migrate command.
->
-> Arguments for the new QEMU process are taken from the cpr-exec-args parameter.
-> The first argument should be the path of a new QEMU binary, or a prefix
-> command that exec's the new QEMU binary, and the arguments should include
-> the -incoming option.
->
-> Memory backend objects must have the share=on attribute, and must be mmap'able
-> in the new QEMU process.  For example, memory-backend-file is acceptable,
-> but memory-backend-ram is not.
->
-> QEMU must be started with the '-machine memfd-alloc=on' option.  This causes
-> implicit RAM blocks (those not explicitly described by a memory-backend
-> object) to be allocated by mmap'ing a memfd.  Examples include VGA, ROM,
-> and even guest RAM when it is specified without without reference to a
-> memory-backend object.   The memfds are kept open across exec, their values
-> are saved in vmstate which is retrieved after exec, and they are re-mmap'd.
->
-> The '-only-migratable-modes cpr-exec' option guarantees that the
-> configuration supports cpr-exec.  QEMU will exit at start time if not.
->
-> Example:
->
-> In this example, we simply restart the same version of QEMU, but in
-> a real scenario one would set a new QEMU binary path in cpr-exec-args.
->
->   # qemu-kvm -monitor stdio -object
->   memory-backend-file,id=ram0,size=4G,mem-path=/dev/shm/ram0,share=on
->   -m 4G -machine memfd-alloc=on ...
->
->   QEMU 9.1.50 monitor - type 'help' for more information
->   (qemu) info status
->   VM status: running
->   (qemu) migrate_set_parameter mode cpr-exec
->   (qemu) migrate_set_parameter cpr-exec-args qemu-kvm ... -incoming file:vm.state
->   (qemu) migrate -d file:vm.state
->   (qemu) QEMU 9.1.50 monitor - type 'help' for more information
->   (qemu) info status
->   VM status: running
->
-> cpr-exec mode preserves attributes of outgoing devices that must be known
-> before the device is created on the incoming side, such as the memfd descriptor
-> number, but currently the migration stream is read after all devices are
-> created.  To solve this problem, I add two VMStateDescription options:
-> precreate and factory.  precreate objects are saved to their own migration
-> stream, distinct from the main stream, and are read early by incoming QEMU,
-> before devices are created.  Factory objects are allocated on demand, without
-> relying on a pre-registered object's opaque address, which is necessary
-> because the devices to which the state will apply have not been created yet
-> and hence have not registered an opaque address to receive the state.
->
-> This patch series implements a minimal version of cpr-exec.  Future series
-> will add support for:
->   * vfio
->   * chardev's without loss of connectivity
->   * vhost
->   * fine-grained seccomp controls
->   * hostmem-memfd
->   * cpr-exec migration test
->
->
-> Steve Sistare (26):
->   oslib: qemu_clear_cloexec
->   vl: helper to request re-exec
->   migration: SAVEVM_FOREACH
->   migration: delete unused parameter mis
->   migration: precreate vmstate
->   migration: precreate vmstate for exec
->   migration: VMStateId
->   migration: vmstate_info_void_ptr
->   migration: vmstate_register_named
->   migration: vmstate_unregister_named
->   migration: vmstate_register at init time
->   migration: vmstate factory object
->   physmem: ram_block_create
->   physmem: hoist guest_memfd creation
->   physmem: hoist host memory allocation
->   physmem: set ram block idstr earlier
->   machine: memfd-alloc option
->   migration: cpr-exec-args parameter
->   physmem: preserve ram blocks for cpr
->   migration: cpr-exec mode
->   migration: migrate_add_blocker_mode
->   migration: ram block cpr-exec blockers
->   migration: misc cpr-exec blockers
->   seccomp: cpr-exec blocker
->   migration: fix mismatched GPAs during cpr-exec
->   migration: only-migratable-modes
->
->  accel/xen/xen-all.c            |   5 +
->  backends/hostmem-epc.c         |  12 +-
->  hmp-commands.hx                |   2 +-
->  hw/core/machine.c              |  22 +++
->  hw/core/qdev.c                 |   1 +
->  hw/intc/apic_common.c          |   2 +-
->  hw/vfio/migration.c            |   3 +-
->  include/exec/cpu-common.h      |   3 +-
->  include/exec/memory.h          |  15 ++
->  include/exec/ramblock.h        |  10 +-
->  include/hw/boards.h            |   1 +
->  include/migration/blocker.h    |   7 +
->  include/migration/cpr.h        |  14 ++
->  include/migration/misc.h       |  11 ++
->  include/migration/vmstate.h    | 133 +++++++++++++++-
->  include/qemu/osdep.h           |   9 ++
->  include/sysemu/runstate.h      |   3 +
->  include/sysemu/seccomp.h       |   1 +
->  include/sysemu/sysemu.h        |   1 -
->  migration/cpr.c                | 131 ++++++++++++++++
->  migration/meson.build          |   3 +
->  migration/migration-hmp-cmds.c |  50 +++++-
->  migration/migration.c          |  48 +++++-
->  migration/migration.h          |   5 +-
->  migration/options.c            |  13 ++
->  migration/precreate.c          | 139 +++++++++++++++++
->  migration/ram.c                |  16 +-
->  migration/savevm.c             | 306 +++++++++++++++++++++++++++++-------
->  migration/savevm.h             |   3 +
->  migration/trace-events         |   7 +
->  migration/vmstate-factory.c    |  78 ++++++++++
->  migration/vmstate-types.c      |  24 +++
->  migration/vmstate.c            |   3 +-
->  qapi/migration.json            |  48 +++++-
->  qemu-options.hx                |  22 ++-
->  replay/replay.c                |   6 +
->  stubs/migr-blocker.c           |   5 +
->  stubs/vmstate.c                |  13 ++
->  system/globals.c               |   1 -
->  system/memory.c                |  19 ++-
->  system/physmem.c               | 346 +++++++++++++++++++++++++++--------------
->  system/qemu-seccomp.c          |  10 +-
->  system/runstate.c              |  29 ++++
->  system/trace-events            |   4 +
->  system/vl.c                    |  26 +++-
->  target/s390x/cpu_models.c      |   4 +-
->  util/oslib-posix.c             |   9 ++
->  util/oslib-win32.c             |   4 +
->  48 files changed, 1417 insertions(+), 210 deletions(-)
->  create mode 100644 include/migration/cpr.h
->  create mode 100644 migration/cpr.c
->  create mode 100644 migration/precreate.c
->  create mode 100644 migration/vmstate-factory.c
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
 
-Hi Steve,
 
-make check is failing. I applied the series on top of master @
-70581940ca (Merge tag 'pull-tcg-20240523' of
-https://gitlab.com/rth7680/qemu into staging, 2024-05-23).
+Reviewed-by: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-$ QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/ivshmem-test
-...
-qemu-system-x86_64: ../system/physmem.c:1634: qemu_ram_verify_idstr:
-Assertion `!strcmp(new_block->idstr, idstr)' failed.
 
-$ QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-./tests/qtest/test-x86-cpuid-compat -p \
-/x86_64/x86/cpuid/auto-level/pc-2.7
-...
-qemu-system-x86_64: ../system/physmem.c:1634: qemu_ram_verify_idstr:
-Assertion `!strcmp(new_block->idstr, idstr)' failed.
-
-$ QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/qmp-cmd-test -p \
-/x86_64/qmp/object-add-failure-modes
-...
-savevm_state_handler_insert: Detected duplicate SaveStateEntry:
-id=ram1/RAMBlock, instance_id=0x0
+> ---
+>   hw/s390x/s390-ccw.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/hw/s390x/s390-ccw.c b/hw/s390x/s390-ccw.c
+> index 5261e66724f1cc3157b9413b0d5fdf5289c92503..a06e91dfb318e3500324851488c56806fa46c08d 100644
+> --- a/hw/s390x/s390-ccw.c
+> +++ b/hw/s390x/s390-ccw.c
+> @@ -71,7 +71,7 @@ IOInstEnding s390_ccw_store(SubchDev *sch)
+>       return ret;
+>   }
+>   
+> -static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
+> +static bool s390_ccw_get_dev_info(S390CCWDevice *cdev,
+>                                     char *sysfsdev,
+>                                     Error **errp)
+>   {
+> @@ -84,12 +84,12 @@ static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
+>           error_setg(errp, "No host device provided");
+>           error_append_hint(errp,
+>                             "Use -device vfio-ccw,sysfsdev=PATH_TO_DEVICE\n");
+> -        return;
+> +        return false;
+>       }
+>   
+>       if (!realpath(sysfsdev, dev_path)) {
+>           error_setg_errno(errp, errno, "Host device '%s' not found", sysfsdev);
+> -        return;
+> +        return false;
+>       }
+>   
+>       cdev->mdevid = g_path_get_basename(dev_path);
+> @@ -98,13 +98,14 @@ static void s390_ccw_get_dev_info(S390CCWDevice *cdev,
+>       tmp = g_path_get_basename(tmp_dir);
+>       if (sscanf(tmp, "%2x.%1x.%4x", &cssid, &ssid, &devid) != 3) {
+>           error_setg_errno(errp, errno, "Failed to read %s", tmp);
+> -        return;
+> +        return false;
+>       }
+>   
+>       cdev->hostid.cssid = cssid;
+>       cdev->hostid.ssid = ssid;
+>       cdev->hostid.devid = devid;
+>       cdev->hostid.valid = true;
+> +    return true;
+>   }
+>   
+>   static void s390_ccw_realize(S390CCWDevice *cdev, char *sysfsdev, Error **errp)
+> @@ -116,8 +117,7 @@ static void s390_ccw_realize(S390CCWDevice *cdev, char *sysfsdev, Error **errp)
+>       int ret;
+>       Error *err = NULL;
+>   
+> -    s390_ccw_get_dev_info(cdev, sysfsdev, &err);
+> -    if (err) {
+> +    if (!s390_ccw_get_dev_info(cdev, sysfsdev, &err)) {
+>           goto out_err_propagate;
+>       }
+>   
 
