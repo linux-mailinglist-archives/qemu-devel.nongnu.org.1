@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16F028CE0A6
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 07:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A3E8CE0A3
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 07:37:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sANbI-00089E-Dg; Fri, 24 May 2024 01:36:20 -0400
+	id 1sANbL-00089t-Dw; Fri, 24 May 2024 01:36:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sANbG-000888-C5
- for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:18 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1sANbI-00089b-O9
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:20 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sANbE-00012E-0J
- for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:17 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2bf5e0de37bso326478a91.1
- for <qemu-devel@nongnu.org>; Thu, 23 May 2024 22:36:15 -0700 (PDT)
+ id 1sANbH-00013w-6O
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 01:36:20 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f44b45d6abso4001515ad.0
+ for <qemu-devel@nongnu.org>; Thu, 23 May 2024 22:36:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716528974; x=1717133774;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716528978; x=1717133778;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=U71R9tSIEndSwV7KO70oICfGEbiSf5kxz8iwxCaWwlQ=;
- b=pcDMkiz/2flxmgqoKALpJk6w7MajBZDt8Gx2my3ZwEG42ddjjsb67a74imnTBZOokF
- IJotXEUE+HVT+WPw5mbiWf77N6j4C9wdG8axNkSiXMCPtDBOlg+UQPM653+uGPKgXsTp
- yFQFxM3sWYlPizuRo3wXxVSkBZEE59GDFZ059fC1IOcG8WvsM2JdIYFqfwY48aL3GyuB
- +JRg3aetbpLC6BLa3l3dDIPQYibsl3aEegoVEUeR38V1S9MOP+kacbovXug51r4R5l5T
- 6+WmPk79V0IRBCaWg3n5yCL+rrbiCTYnJdNSt27q6Xw0LaXau2rq+UOmXxn5nrUg3/T1
- LthQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ktjQT4R7pKWFtbxj3xSZ2/NJzr1LvAGm2r7cio2ONHQ=;
+ b=rlJKdLW2cU2UfE6g76HOCF8HkidZSG2rfVmvQ8uTgNXi4k8tq+jekuouxVreyoWE7/
+ lkldnr9wOhH10VnztlLWbCR7b8NFhNPOmPpmw0R1NYH8pa0gkmsxMVerHE0AF+Ty5Bdi
+ xVvEPusiTT4NlCiHxye//uZl9w5AYz7cYStk2KHGtsGVs8A3AXza0OwK52Tp4Z7W3hpk
+ 2Q6pKH0j4Th5TJLUH0u12CInw3OA+BZ4jVRuT6SaZInHSrDYBhjq+rYr2RUhhe5ChVws
+ ElgVuDNzU5041miSKX2cE9pIS7nX6eE92Nk+jifiQaYvhjjRbKSFXJtMBWQM3ly80PBG
+ Ddow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716528974; x=1717133774;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U71R9tSIEndSwV7KO70oICfGEbiSf5kxz8iwxCaWwlQ=;
- b=lNaFny+pr6AFu2aS8+Md6T2FrpAU5zt4p7YUJDDTTDgKwdRz21iVLqZIjyyyKTCQGt
- xPWcpCzHZACDbY6lTnjezzh1OxHzsjlvXMqOYRb/SEtJ58HepIhOdSpuqOg8+Fw31a82
- 2774OrJ8Essbd6bOGqeOwoXiGBbHKua0trqyio8/og0wlXkacle9AoiwS5deIJdZ7JCf
- qd6cgiWmtW360sa519QaPNPIupGHsLVMdN9m8zoEShcuChz7NEG9QgUZCgAMetkxciCC
- AuaZF6P53r7bUvRr+4kr+RLj8D5V+I52oT0p6W/tNBiugmt/nJOxebqG9wKs+4tBYTTx
- aZZw==
-X-Gm-Message-State: AOJu0YyMi6HJymts+KArtLWUXkK4BDaLmDYRcHDPF7inmOGmMQ5thHJb
- ZE1v2sRrwlP35gNIBlZKby7SI14HlhEA0VvBrzGvDyICej1tPNWbqfmoevwZYg0=
-X-Google-Smtp-Source: AGHT+IFPbBYw9WXG8ci/08YKcd8u+FT+q1YiCViFcK3SGbZba8bdhUH+X3bMKQ4EDjRMjMZ04d+wFg==
-X-Received: by 2002:a17:90b:d8d:b0:2bf:5730:1f56 with SMTP id
- 98e67ed59e1d1-2bf5e173c7dmr1111756a91.1.1716528973536; 
- Thu, 23 May 2024 22:36:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716528978; x=1717133778;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ktjQT4R7pKWFtbxj3xSZ2/NJzr1LvAGm2r7cio2ONHQ=;
+ b=turtUu1J6v7MemSdg80W05/s6zhXm4GsgrNgsqxodkzMA+lWGKeOHds1IfU8M7ilfl
+ MDIfCRso/7Qt7w1g48JeERtkTCW+rK3ng4j8XrbF/bYKH41YuwVnwG7I8u7TAx9wbW3t
+ ir2ltNgYB3T7KxiJEVOdrpabgQ/9peBMQQN4lR331E76khCpLq9rOinuD2NJZkNwDQWB
+ qAWILnrzbbQkq3/8Wd5LGdHfbT5o3OocO9Q3A286WpfrrpJNnQ1PMZUqCHCB1PJSErK2
+ jPh2BMx32r9Nt+bvPYi8SJN0l2fJqwhiDYZB68WB/d4XZSQASSQtoLPkVeNd97QbQoVJ
+ NrJg==
+X-Gm-Message-State: AOJu0YwEBlx9Uqg/VCpdrXpA+3sP3kT/wxYW4QPv8gMCUfrv8d1Zwy/Y
+ 8YVl2PAf/iaQQpD89aaBcgywLOi3IBte7sdBOL3EIz2IHIWcZOY7ziaaXM6+8xw=
+X-Google-Smtp-Source: AGHT+IEFZ+jesRSDpf/pppvd2SVpWqc0Szr2Uz9/jVsqRlDjjtNUrDEY0kJClmvpyIRc2rOKUG4/Kg==
+X-Received: by 2002:a17:903:41ce:b0:1f4:5477:4bfe with SMTP id
+ d9443c01a7336-1f454774e3cmr2458085ad.69.1716528977932; 
+ Thu, 23 May 2024 22:36:17 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2bf5f30a762sm566417a91.1.2024.05.23.22.36.10
+ d9443c01a7336-1f44c75697bsm5260235ad.34.2024.05.23.22.36.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 23 May 2024 22:36:13 -0700 (PDT)
+ Thu, 23 May 2024 22:36:17 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 0/4] Fix sanitizer errors with clang 18.1.1
-Date: Fri, 24 May 2024 14:35:46 +0900
-Message-Id: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
+Date: Fri, 24 May 2024 14:35:47 +0900
+Subject: [PATCH v4 1/4] qemu-keymap: Make references to allocations static
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIADInUGYC/23MTQ6CMBCG4auQrq3pDC0UV97DuCj9kcYIpjUNh
- HB3C24kuvwm87wziTZ4G8mpmEmwyUc/9HnwQ0F0p/qbpd7kTZAhZ4IBHe8tRSG5LLXWwkiSP5/
- BOj9ulcs1787H1xCmLZpgve59AgrUMV4ZaQEUtmejpt6PRz08yBpI+IUQPwgpo1XdCu5UrRvpf
- lD5B5UZaY6NsbJiTsEOLcvyBnnwJDIBAQAA
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240524-xkb-v4-1-2de564e5c859@daynix.com>
+References: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
+In-Reply-To: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
 To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
  Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
@@ -80,8 +78,8 @@ To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-01a33
-Received-SPF: none client-ip=2607:f8b0:4864:20::102e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -103,70 +101,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I upgraded my Fedora Asahi Remix from 39 to 40 and found new sanitizer
-errors with clang it ships so here are fixes.
+LeakSanitizer complains about allocations whose references are held
+only by automatic variables. It is possible to free them to suppress
+the complaints, but it is a chore to make sure they are freed in all
+exit paths so make them static instead.
 
-The patch "meson: Drop the .fa library prefix" may have a broad impact
-to the build system so please tell me if you have a concern with it.
-
-To: Michael Tokarev <mjt@tls.msk.ru>
-To: Laurent Vivier <laurent@vivier.eu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-To: Marc-André Lureau <marcandre.lureau@redhat.com>
-To: Daniel P. Berrangé <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-To: Philippe Mathieu-Daudé <philmd@linaro.org>
-To: Alex Bennée <alex.bennee@linaro.org>
-To: Wainer dos Santos Moschetta <wainersm@redhat.com>
-To: Beraldo Leal <bleal@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-Changes in v4:
-- Fixed function pointer problems instead of ignoring them.
-- Made references to allocations static instead of incompletely freeing
-  them for qemu-keymap.
-- s/prefix/suffix/ for patch "meson: Drop the .fa library suffix".
-- Link to v3: https://lore.kernel.org/r/20240522-xkb-v3-0-c429de860fa1@daynix.com
-
-Changes in v3:
-- Moved changes that should belong to patch "meson: Drop the .fa library
-  prefix" from patch "meson: Add -fno-sanitize=function".
-- Link to v2: https://lore.kernel.org/r/20240522-xkb-v2-0-67b54fa7c98f@daynix.com
-
-Changes in v2:
-- Added more patches and converted them to a series.
-- Link to v1: https://lore.kernel.org/r/20240501-xkb-v1-1-f046d8e11a2b@daynix.com
-
 ---
-Akihiko Odaki (4):
-      qemu-keymap: Make references to allocations static
-      lockable: Do not cast function pointers
-      qapi: Do not cast function pointers
-      meson: Drop the .fa library suffix
+ qemu-keymap.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
- docs/devel/build-system.rst         |  5 -----
- meson.build                         | 17 ++---------------
- include/qapi/clone-visitor.h        | 37 ++++++++++++++++++++++++-------------
- include/qemu/lockable.h             | 23 +++++++++++++++++++----
- qapi/qapi-clone-visitor.c           | 30 ++++--------------------------
- qemu-keymap.c                       |  8 +++-----
- stubs/blk-exp-close-all.c           |  2 +-
- .gitlab-ci.d/buildtest-template.yml |  2 --
- .gitlab-ci.d/buildtest.yml          |  2 --
- gdbstub/meson.build                 |  2 --
- tcg/meson.build                     |  2 --
- tests/Makefile.include              |  2 +-
- tests/qtest/libqos/meson.build      |  1 -
- 13 files changed, 54 insertions(+), 79 deletions(-)
----
-base-commit: c25df57ae8f9fe1c72eee2dab37d76d904ac382e
-change-id: 20240501-xkb-258483ccc5d8
+diff --git a/qemu-keymap.c b/qemu-keymap.c
+index 8c80f7a4ed65..701e4332af87 100644
+--- a/qemu-keymap.c
++++ b/qemu-keymap.c
+@@ -154,9 +154,9 @@ static xkb_mod_mask_t get_mod(struct xkb_keymap *map, const char *name)
+ 
+ int main(int argc, char *argv[])
+ {
+-    struct xkb_context *ctx;
+-    struct xkb_keymap *map;
+-    struct xkb_state *state;
++    static struct xkb_context *ctx;
++    static struct xkb_keymap *map;
++    static struct xkb_state *state;
+     xkb_mod_index_t mod, mods;
+     int rc;
+ 
+@@ -234,8 +234,6 @@ int main(int argc, char *argv[])
+ 
+     state = xkb_state_new(map);
+     xkb_keymap_key_for_each(map, walk_map, state);
+-    xkb_state_unref(state);
+-    state = NULL;
+ 
+     /* add quirks */
+     fprintf(outfile,
 
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.1
 
 
