@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09948CE47A
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1F68CE477
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sASX7-0006ik-Ek; Fri, 24 May 2024 06:52:21 -0400
+	id 1sASX7-0006hF-Ev; Fri, 24 May 2024 06:52:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sASWz-0006Yh-Ad; Fri, 24 May 2024 06:52:13 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sASWx-0007gf-MQ; Fri, 24 May 2024 06:52:13 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2e564cad1f1so98623311fa.0; 
- Fri, 24 May 2024 03:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716547929; x=1717152729; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iFOOOjt9lX3R5TOZr7m7NgtcNi/9J4Kc7/wWsAI8IDg=;
- b=GAaLE7eboMDtAkdj14C/A0sgKyE8AW39fZH8iiZ9V9Xi5/Lz27tATDcZeRAZOuaFSG
- ddcGhR2qZ4DPC99xKDDQu63Jo1HHxq1jFlsuog7vWb8oX8wODC8DxRUKY/x2OlTWvzMP
- n4Cd0SSmU7yONu27K36MsezCZKWr1UQEGFm9gj6kctQIBVchC4hpFcCII0F72D32y+Uk
- BOKSEOaDmD8rfE2ZJNUcIwjC3jQoZtdeFMnJa7R/Tb3+YeWq9nu5uyVQAAmWniI6rPpG
- YVQ0AEDkHAHh3y9vrQAvOFNCm45Ds23wmGjqqZPi+VG1k4t8uFWMSYgMVeXF8sA0dBZ8
- CjFw==
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sASWz-0006aS-TK
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sASWy-0007gp-7y
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716547931;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HOXliB5ia07tz3pxdjbnnoak2gShZc7/83V5Pn1UrGw=;
+ b=Usd76OjY9ygudhTMdUkAJiMoeYhrl96FbvkV0oh3ESHUuBfm3X+DxVc4tGMEN2HAQM8qnx
+ 84toHARV+JEEGFEl2EpMoL4YfXwnwuD/wN8h042mJduNc+jdUwLhcIRYc1QWBgaaHQOl0y
+ pm6vtuDHIjFuhqDMiWWQoi4LFtnmEV4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-iVCXjl1-PISUxQzNLDgovw-1; Fri, 24 May 2024 06:52:10 -0400
+X-MC-Unique: iVCXjl1-PISUxQzNLDgovw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-354f75df76dso82816f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 03:52:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716547929; x=1717152729;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iFOOOjt9lX3R5TOZr7m7NgtcNi/9J4Kc7/wWsAI8IDg=;
- b=lD/zmOXlMGLfk0xPePnyyIN/TFuXkWIROBJLhOhjsxQIbmXu5cuVXlXKgluI6z6x6M
- C112jTihdcQgONYRLCHJrRLHTtZnAJ0CgUqpL8TJSO+NDbbQHiQBChUgWiZSoxfrdccb
- 1mQpxoWXizEbADfcVbucaXF/c2M7iwvwRFj2dMp7HHJpEjxd41R//c/O25bJIww7Q4c0
- yqgLCHAf7Ms0uCZP+i2OqjWuanXkLSEsa69HF4cdDE+0SPRFw2/JjQzggN6i4mKBwB08
- ce3pMjVxm44hVUfB4J4mwDtIYvM6HzejA36+duqyV/aY/XZ83+vnqT7EmZO+m6LkVshn
- TK3g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX2hIOiaFEs0iP+yTvByAqz6Fg9X21EW1qrloScoV9EBceCsfsfG3mg9gBdf1qDqTxSLrCsoR4gMhIhf10T3GqG/y4n
-X-Gm-Message-State: AOJu0YwZkY3OP9WD+p3NPtGPFeSQaAo+U2aidawyBXxLJJ0PoLwftl/u
- plntYLh7C40LMaWyDLTpW01Dna8wej1CxN9vuS2zdldwiF7zTRKHfmDuMXto
-X-Google-Smtp-Source: AGHT+IHSI9CNPRRu7Ye/VFS79S68fxE0qFl4Z1InLUDdeJoB4YjKFWugYIlOcsTrWaIDEdaNthfHvg==
-X-Received: by 2002:a2e:92c3:0:b0:2e6:ed20:9059 with SMTP id
- 38308e7fff4ca-2e95b27b213mr11228821fa.48.1716547929075; 
- Fri, 24 May 2024 03:52:09 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2e95bf26002sm1473431fa.136.2024.05.24.03.52.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HOXliB5ia07tz3pxdjbnnoak2gShZc7/83V5Pn1UrGw=;
+ b=dv8eTtVP/xqPycTDw1U6GUpCgNFBKXXTYjMDhwZwzNBcJZGvfPDR+yZpiS9EETleZ4
+ mGorTk7kRlkfpJssjTnVHyF6asf6Aix767MS5IQYkYmrBZyIF/+daP/rO2ZUGbyB+x3c
+ 7zQMxiWiRbj25Zb6GznpmsITsUj/AHUE4p/t13Li5lTAeA0fABgb22cgOMBt4pyqFdKw
+ GfqEiabNMM5B+9rTK+YDmGItYwK/RSMzspV+NKzhi7ox6pREYUl5cuJpj7wJcANFfP11
+ Q26d6V7unpJ4/2PKzgNcPIU2FDVc/+B8Izi4QO/2cz+6nAecHYnjxyJXB7FMZYdg5/VO
+ BmLQ==
+X-Gm-Message-State: AOJu0YzWSQ0085Vck/lth/Is0bNv2FTh2XjZZZcCgUV4cyS+8CAedpyb
+ 9b1Z1oiCz6BUfbQt1TiFWKaz3Oeje30P6t90XnLTBGkVDzTUYhdJKueBZn024syW+jsTQZ16LAM
+ qEKYQKwZxweOgyLwUxItCZuE4JtnJ4hBi4KlchJpVvBkI/PLA1crwLy1N77T9O0TMGNtGageO3I
+ 2z1r2RzqhhIJ0YsJZpy42k5O7ksA4=
+X-Received: by 2002:adf:ffc8:0:b0:355:1759:db18 with SMTP id
+ ffacd0b85a97d-35526c37e21mr1988282f8f.29.1716547928964; 
  Fri, 24 May 2024 03:52:08 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH v7 8/8] hw/arm: xen: Enable use of grant mappings
-Date: Fri, 24 May 2024 12:51:52 +0200
-Message-Id: <20240524105152.1301842-9-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240524105152.1301842-1-edgar.iglesias@gmail.com>
-References: <20240524105152.1301842-1-edgar.iglesias@gmail.com>
+X-Google-Smtp-Source: AGHT+IFbt7olHpq5GHMGAi4Yqb2Sobe0hjG67S8H6J+jZi19rBQq0Qpx0d5HXfepjKdaMQHKN13QYpfrl0RXT3gV5j0=
+X-Received: by 2002:adf:ffc8:0:b0:355:1759:db18 with SMTP id
+ ffacd0b85a97d-35526c37e21mr1988264f8f.29.1716547928669; Fri, 24 May 2024
+ 03:52:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x235.google.com
+References: <20240523190548.23977-1-farosas@suse.de>
+ <20240523190548.23977-2-farosas@suse.de>
+In-Reply-To: <20240523190548.23977-2-farosas@suse.de>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Fri, 24 May 2024 16:21:52 +0530
+Message-ID: <CAE8KmOw7yULgf9hstkYL+E+azpG7RRhj_eGMMDeZK4qvcuLv0g@mail.gmail.com>
+Subject: Re: [PATCH v2 01/18] migration: Fix file migration with fdset
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, 
+ Peter Xu <peterx@redhat.com>, Claudio Fontana <cfontana@suse.de>,
+ Jim Fehlig <jfehlig@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,32 +95,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+On Fri, 24 May 2024 at 00:38, Fabiano Rosas <farosas@suse.de> wrote:
+> This is further indicated by the presence of the 'offset'
+> argument, which indicates the start of the region where QEMU is
+> allowed to write.
+>
+> Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
+> call, which will take the offset into consideration.
+>
+> +    if (ftruncate(fioc->fd, offset)) {
+> +        error_setg_errno(errp, errno,
+> +                         "failed to truncate migration file to offset %" PRIx64,
+> +                         offset);
+> +        object_unref(OBJECT(fioc));
+> +        return;
+> +    }
+> +
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+* Should 'offset' be checked for > zero while ftruncating? Else it'll
+be same as O_TRUNC. Otherwise it looks fine.
+
+Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
+
+Thank you.
 ---
- hw/arm/xen_arm.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 15fa7dfa84..6fad829ede 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -125,6 +125,11 @@ static void xen_init_ram(MachineState *machine)
-                                  GUEST_RAM1_BASE, ram_size[1]);
-         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-     }
-+
-+    /* Setup support for grants.  */
-+    memory_region_init_ram(&xen_grants, NULL, "xen.grants", block_len,
-+                           &error_fatal);
-+    memory_region_add_subregion(sysmem, XEN_GRANT_ADDR_OFF, &xen_grants);
- }
- 
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
--- 
-2.40.1
+  - Prasad
 
 
