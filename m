@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819038CE211
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 650768CE219
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ0b-000546-FD; Fri, 24 May 2024 04:10:37 -0400
+	id 1sAQ0d-00054y-MM; Fri, 24 May 2024 04:10:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0X-00050z-Fg
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:34 -0400
+ id 1sAQ0Z-00052Z-9I
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0V-0000Ma-VS
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:33 -0400
+ id 1sAQ0X-0000NK-MS
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716538231;
+ s=mimecast20190719; t=1716538233;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wbTLiCeUvWkQ0K+ApblZWP5HmsgfyWXFWN9Nk07xfSw=;
- b=basF5e5V8UWOheFy5oMI3uy5hyr5EnkA4biGDi6D3+OySYq93zyaBg6IQweYz/XUhhjeKL
- k1+0On+AX2T1A0sHPxSxJD0R/nibzkL2ZreyVg2JR/k4sEAZK/96koLfdASwf6cyxxT6VU
- fOqlLxMLf3uqC5bvdY84cfVttQPW8Do=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pzMu4bGplTJ0/IjTAQY/99ej8JAgWkuVwj+4BdBCfyk=;
+ b=ZEBbRjIITJuZTw5WKWKXwq4oQ63WOnzJqc9xKuo1TyAA5qPoKYhPNFrmlljQuASN0BVHPM
+ UpFL+i2rK6UaXPkfxZ0e2ZbuTvJi4dm8HVMO/K2iae5zgRWxSm3Bg+ly+FGqHIl5YM9E8g
+ JEBcO15a4zwR8Yoo5du8eEDQBuRdHqg=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-397-2SVnUSDuMEaYdcbK-RlgCQ-1; Fri, 24 May 2024 04:10:28 -0400
-X-MC-Unique: 2SVnUSDuMEaYdcbK-RlgCQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2e95a1f049aso5523911fa.0
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:28 -0700 (PDT)
+ us-mta-197-2IZSzd3LMQu8OLb9wXZErA-1; Fri, 24 May 2024 04:10:31 -0400
+X-MC-Unique: 2IZSzd3LMQu8OLb9wXZErA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a6265d3cb78so26097566b.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538227; x=1717143027;
+ d=1e100.net; s=20230601; t=1716538229; x=1717143029;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wbTLiCeUvWkQ0K+ApblZWP5HmsgfyWXFWN9Nk07xfSw=;
- b=pMbzYGV/3xK1OPdnr82o5aB7N3vvJ5qibCg1+8FkRkF00f18T9+NIQOVlenmbDUH/j
- jHdSVvAUsVpb587IOFkMoIJAALDBTo6cN05bhjYrxvVZ8M3S6F7orKegsYeg+7ge9bYT
- pVM1QeF6WU8ngFejPpvrKbAmc1sU5fhkv8E2AvsDK87NHKRH8xmkqo2ClLJazaLXGSvd
- j7+yaBh2MGogM8Chxn6PYsW+lyZvbxSTZ0V8zBIvdOjrxzf9iknbjoiingiWtfvnQXoE
- hF/Huu2Muixbd2w36cVAJoyU0DxYtx6YEm7XYW8Kn57DRS71OY/x9eQL9BWa1oSpp16r
- R48Q==
-X-Gm-Message-State: AOJu0YzwelvuNAi6sIUZDOLXXcpC8wgbTSTiF0Jjl875R0NJDoR802xn
- YXLHXVHNmsTi5dOTyv+xWve/5Ey7NQSQ+vcC4hvnwzStSJ5t3xxSWY72ByaIOChArZmRHnzM1uN
- b7WQo76DJwj9vrsACRAkROibhMhVKU02P0iRGZlxNFIjrRTy714aBsDm5SKQlMIPFzhOoERYW1I
- vZnZ36bsVEKyxJM3mQnMzHSmdzyIglcf94zmDG
-X-Received: by 2002:a2e:9f4a:0:b0:2e7:1e4a:31e0 with SMTP id
- 38308e7fff4ca-2e95b096f07mr13619991fa.18.1716538226973; 
- Fri, 24 May 2024 01:10:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhOFQEAsml9prPJCio1TD8WXvfG6LQdmw1+r3T3yGeaVrojs7m52NNJD1Ii/nJcT2DOVm63g==
-X-Received: by 2002:a2e:9f4a:0:b0:2e7:1e4a:31e0 with SMTP id
- 38308e7fff4ca-2e95b096f07mr13619741fa.18.1716538226456; 
- Fri, 24 May 2024 01:10:26 -0700 (PDT)
+ bh=pzMu4bGplTJ0/IjTAQY/99ej8JAgWkuVwj+4BdBCfyk=;
+ b=csfUmlTAQzoTjGgWUO1xg/lUCRzi36WMjZ1yHh4wfgqI08StTE70vEWvTroSeECtaS
+ mMFTo3QGkp1AJeugwQX5qcMoajD43fYNBOcgbp4vIuUaRVn49PvoWnBsMtJSSOIA+VNb
+ 23MMijmJHOVGZ/verpoZNAi2Ost8USzoC02BigUdjH10MOk79FLEFMCxDSuveVGxgzBz
+ /RtnF/0c2HLfZOQHgsCGxKakKV9VyVQlHETKVCnIN7jn6vcm+nPuCwIVS32oNvQbfY4U
+ OoOicFLng3CUrcQjKkLZsTh5bZRPc4xg7IR9OJHci7DFZjCJa5FQmb544EoQ/UpG0hMn
+ nJmw==
+X-Gm-Message-State: AOJu0YzlT7u9095MO53k7Ns1eqd+PW0zJ1UkT9iX2wwXeH9AFeoS/UGo
+ IbMZzhHELZwxCroDznAjHE7iDiXmUk+Es4U4lBqfQZi2w1vQCAYpyn0AuQoFNfHzUyD7sRUwJOU
+ /VtVK0OGx/1mOES3RrUzjo5dOlQMeJ1rGBGf/2yIakyBK2ov5/ZpPMUdAhYO1nlimLH1Br6gpB1
+ 7ntokuN7u9jdbCXZY5KS3WO/KqNuCGevHnGfgG
+X-Received: by 2002:a17:906:a252:b0:a58:eba0:6716 with SMTP id
+ a640c23a62f3a-a6265128466mr82816566b.60.1716538228977; 
+ Fri, 24 May 2024 01:10:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOJqWx8aoDtHqY04Lf8yWJPeTups4VdBXnAWuLIWQ4AUiqeldEcWzwOOqd3yDr8gcyO3RoAA==
+X-Received: by 2002:a17:906:a252:b0:a58:eba0:6716 with SMTP id
+ a640c23a62f3a-a6265128466mr82815166b.60.1716538228550; 
+ Fri, 24 May 2024 01:10:28 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c97a1fbsm90994066b.92.2024.05.24.01.10.24
+ a640c23a62f3a-a626c817a98sm91542866b.37.2024.05.24.01.10.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:24 -0700 (PDT)
+ Fri, 24 May 2024 01:10:27 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/16] target/i386: document and group DISAS_* constants
-Date: Fri, 24 May 2024 10:10:06 +0200
-Message-ID: <20240524081019.1141359-4-pbonzini@redhat.com>
+Subject: [PATCH 04/16] target/i386: avoid calling gen_eob_syscall before
+ tb_stop
+Date: Fri, 24 May 2024 10:10:07 +0200
+Message-ID: <20240524081019.1141359-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
@@ -100,51 +101,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Place DISAS_* constants that update cpu_eip first, and
-the "jump" ones last.  Add comments explaining the differences
-and usage.
+syscall and sysret only have one exit, so they do not need to
+generate the end-of-translation code inline.  It can be
+deferred to tb_stop.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ target/i386/tcg/translate.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 3c7d8d72144..52d758a224b 100644
+index 52d758a224b..24e83c1af84 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -144,9 +144,28 @@ typedef struct DisasContext {
-     TCGOp *prev_insn_end;
- } DisasContext;
- 
--#define DISAS_EOB_ONLY         DISAS_TARGET_0
--#define DISAS_EOB_NEXT         DISAS_TARGET_1
--#define DISAS_EOB_INHIBIT_IRQ  DISAS_TARGET_2
-+/*
-+ * Point EIP to next instruction before ending translation.
-+ * For instructions that can change hflags.
-+ */
-+#define DISAS_EOB_NEXT         DISAS_TARGET_0
-+
-+/*
-+ * Point EIP to next instruction and set HF_INHIBIT_IRQ if not
-+ * already set.  For instructions that activate interrupt shadow.
-+ */
-+#define DISAS_EOB_INHIBIT_IRQ  DISAS_TARGET_1
-+
-+/*
-+ * EIP has already been updated.  For jumps that do not use
-+ * lookup_and_goto_ptr()
-+ */
-+#define DISAS_EOB_ONLY         DISAS_TARGET_2
-+
-+/*
-+ * EIP has already been updated.  For jumps that wish to use
-+ * lookup_and_goto_ptr()
-+ */
+@@ -168,6 +168,12 @@ typedef struct DisasContext {
+  */
  #define DISAS_JUMP             DISAS_TARGET_3
  
++/*
++ * EIP has already been updated.  Use updated value of
++ * EFLAGS.TF to determine singlestep trap (SYSCALL/SYSRET).
++ */
++#define DISAS_EOB_RECHECK_TF   DISAS_TARGET_4
++
  /* The environment in which user-only runs is constrained. */
+ #ifdef CONFIG_USER_ONLY
+ #define PE(S)     true
+@@ -3576,7 +3582,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         /* TF handling for the syscall insn is different. The TF bit is  checked
+            after the syscall insn completes. This allows #DB to not be
+            generated after one has entered CPL0 if TF is set in FMASK.  */
+-        gen_eob_syscall(s);
++        s->base.is_jmp = DISAS_EOB_RECHECK_TF;
+         break;
+     case 0x107: /* sysret */
+         /* For Intel SYSRET is only valid in long mode */
+@@ -3595,7 +3601,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+                checked after the sysret insn completes. This allows #DB to be
+                generated "as if" the syscall insn in userspace has just
+                completed.  */
+-            gen_eob_syscall(s);
++            s->base.is_jmp = DISAS_EOB_RECHECK_TF;
+         }
+         break;
+     case 0x1a2: /* cpuid */
+@@ -4799,6 +4805,9 @@ static void i386_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+     case DISAS_EOB_ONLY:
+         gen_eob(dc);
+         break;
++    case DISAS_EOB_RECHECK_TF:
++        gen_eob_syscall(dc);
++        break;
+     case DISAS_EOB_INHIBIT_IRQ:
+         gen_update_eip_cur(dc);
+         gen_eob_inhibit_irq(dc);
 -- 
 2.45.1
 
