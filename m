@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0138CE21B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB38CE212
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ0l-0005Hw-6M; Fri, 24 May 2024 04:10:47 -0400
+	id 1sAQ0l-0005IF-RD; Fri, 24 May 2024 04:10:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0j-0005GZ-7e
+ id 1sAQ0j-0005GY-AD
  for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0h-0000as-FB
+ id 1sAQ0h-0000aq-A6
  for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1716538242;
@@ -24,59 +24,59 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L2BbL6jR1b542eSscLXiZLPQxRUIoJp8BSdDrVwqVsM=;
- b=E1lMNzgWtuly3mRM6u2MxsTEfVLV4cvzO32PRHcYJtUFo92PwUV2cQEk/vR1c4O00nISv0
- qx1oJXoscdJ3fTO+NZbw2tI1AoF/M4RSzsc3odfpLJFP+ktzPmc9v+4NISrLIy3RsjvD6a
- nhfpDshdvK9c7+3Lu7HaXF+hf1qNw4o=
+ bh=LOf1GDc1mw7wQ8tgJj66VHZbtkhao7Ks6veQoOnKMHc=;
+ b=POy4OEjjwdL0n68owRvf+gfTiNBTqOpBzi6Ga16lbGK0S+x8VsIm9mg4iQXVnri5/g2qaV
+ lZ3J8W1SFOHLtbxhmS464dk9rffg9FMrZtEihp4kqmcHcA2i6m5YiCPSwMGw5pcxNBnHq6
+ vufamORg77j8CFZk86mrZYWV4ZIJgic=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-U5afqTSUN7-4wzLfRfAkXA-1; Fri, 24 May 2024 04:10:39 -0400
-X-MC-Unique: U5afqTSUN7-4wzLfRfAkXA-1
+ us-mta-178-ymontsuLNPKhuNC0GXcx6Q-1; Fri, 24 May 2024 04:10:40 -0400
+X-MC-Unique: ymontsuLNPKhuNC0GXcx6Q-1
 Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a6269ad7288so23389166b.2
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:39 -0700 (PDT)
+ a640c23a62f3a-a6266ffd419so25016966b.1
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716538238; x=1717143038;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L2BbL6jR1b542eSscLXiZLPQxRUIoJp8BSdDrVwqVsM=;
- b=YQWTR6BlFob5HA4HKaX74V+A+ipTsmJzh/wicr2376zuejTquvtXyqjtNgmhB9ijmI
- P0TCANcYJlRFWJGfibo9A54bvKHm5Cir6Imcd7lmgKRiKelouTscQ25GSHczy1AClbUr
- 8DnbHpIvaFnvajzaPdrtEEWjXBCH9LYisQTyyKYGILRf+M4+4wNW+afZVZEV0xVc/BLl
- 113UEMxr1eu/tJaV4zS5DkP77DKswNwSNGup0XqArl2bfK0HVqITnD9KxWJLXP93NnUs
- 1qUqtEfnV79/ydhU1cN/AyO2D7L7N8WBzo3lxNvhmdH8FkFZ2TbOSKDH2B2NJ0H9+quU
- xu1A==
-X-Gm-Message-State: AOJu0YylsdWtJqmUqinsiKPeV+3WZm0hSfW3CYZbI7E5EnCUbDfCpScO
- 7nWInyPq9vpP+Tl9LkZREOXrwiYPpGZdnwZ/TxG8Psee88Q500H9Nu5rg3HZgU/kk2t/jKeTTcv
- HBC2CDdJaJL+8ZCHcqn8ttBNHDuzq1nmWXnmDkqE4XAMFIhrJF4LgU0GbR+EgFde/jyIE2i/Xn6
- f59XBqca9Csco3rQZVnPEYs1G3gAKK3Y9XviK3
-X-Received: by 2002:a17:906:181b:b0:a59:cdc9:6fe1 with SMTP id
- a640c23a62f3a-a62641d9a28mr93873766b.19.1716538237715; 
+ bh=LOf1GDc1mw7wQ8tgJj66VHZbtkhao7Ks6veQoOnKMHc=;
+ b=qERkBl0cVwH4ttkniwqVrZwW3TAYv5rKPN3A+AviMo1DBMXfojBv25wz270jiM+r8c
+ 52xJXl539o8ERvO5nupLKrnwQ0iXoVu13j58Wn6X0IYPTJVeUvkl2ZxQu387Qvrxh/ec
+ qkijXWrEKZ4ecJHYicu1EqUqbubt2D9IyNE6aqs++RcfOlhrZFtiQoBKLdWyPx9e5ZDm
+ ecbX7nr36BP8xluurFqQSOTrNgq0oFD4vMVBLf0tcdnxSgBP8KrPpWK4g1MWDlm2fCCL
+ 9DJz3mGrcKnEAZDp8fdOwhI1fczIW/sc+VHTPMm5SVSZKdmvkbU7HUtJ4NNawmwPEsFz
+ QFhA==
+X-Gm-Message-State: AOJu0YyV6Bbw85jwy+cmeEYsE8MmeHwVd2SZhQsWMhk7O4zGe8d/CQ3c
+ sf+ofHTvFGD2olDTM4vLrrvdp7KMbuElt5u0V8uKohyMdgpSCn//HHKbx9ngckDqHHxV9/Akeq+
+ LjgwLyfdLdgyRrH7M5E2fa/OwWypQGipDf50+PMTrUlRT3TgtYBVj9yfflEXixlHUuVfFMVMkpK
+ Nh/zCLo7J9r5pMmWBdTVIt9AXTTA1ab4JmP5jn
+X-Received: by 2002:a17:906:788:b0:a59:adf8:a6e1 with SMTP id
+ a640c23a62f3a-a62651144f1mr90978166b.47.1716538238520; 
+ Fri, 24 May 2024 01:10:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkLnYpCjlOoGTWiQNIpiIuXci86y7vSmMhwG5fLep1/NBQc1IUTST4kkrgoOwBsDmgq5TvdQ==
+X-Received: by 2002:a17:906:788:b0:a59:adf8:a6e1 with SMTP id
+ a640c23a62f3a-a62651144f1mr90975766b.47.1716538237979; 
  Fri, 24 May 2024 01:10:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGMIDXQbHlxHTKiXWl5zfEyGrKKfbRMt5cHsjOTz+1mZUXyhw4lAhk83d9pnxHrKKmN3v/8zw==
-X-Received: by 2002:a17:906:181b:b0:a59:cdc9:6fe1 with SMTP id
- a640c23a62f3a-a62641d9a28mr93871466b.19.1716538236916; 
- Fri, 24 May 2024 01:10:36 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626cc8e295sm89405366b.185.2024.05.24.01.10.35
+ a640c23a62f3a-a626c93707csm91368966b.57.2024.05.24.01.10.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:35 -0700 (PDT)
+ Fri, 24 May 2024 01:10:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 07/16] target/i386: raze the gen_eob* jungle
-Date: Fri, 24 May 2024 10:10:10 +0200
-Message-ID: <20240524081019.1141359-8-pbonzini@redhat.com>
+Subject: [PATCH 08/16] target/i386: reg in gen_ldst_modrm is always OR_TMP0
+Date: Fri, 24 May 2024 10:10:11 +0200
+Message-ID: <20240524081019.1141359-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,140 +100,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make gen_eob take the DISAS_* constant as an argument, so that
-it is not necessary to have wrappers around it.
+Values other than OR_TMP0 were only ever used by MOV and MOVNTI
+opcodes.  Now that these have been converted to the new decoder,
+remove the argument.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 60 +++++++++----------------------------
- 1 file changed, 14 insertions(+), 46 deletions(-)
+ target/i386/tcg/translate.c | 33 ++++++++++++---------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 2c7917d239f..c46385be060 100644
+index c46385be060..b75d61a9141 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -260,8 +260,6 @@ STUB_HELPER(write_crN, TCGv_env env, TCGv_i32 reg, TCGv val)
- STUB_HELPER(wrmsr, TCGv_env env)
- #endif
- 
--static void gen_eob(DisasContext *s);
--static void gen_jr(DisasContext *s);
- static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num);
- static void gen_jmp_rel_csize(DisasContext *s, int diff, int tb_num);
- static void gen_exception_gpf(DisasContext *s);
-@@ -2259,12 +2257,13 @@ static void gen_bnd_jmp(DisasContext *s)
-     }
+@@ -1821,10 +1821,9 @@ static void gen_add_A0_ds_seg(DisasContext *s)
+     gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
  }
  
--/* Generate an end of block. Trace exception is also generated if needed.
--   If INHIBIT, set HF_INHIBIT_IRQ_MASK if it isn't already set.
--   If RECHECK_TF, emit a rechecking helper for #DB, ignoring the state of
--   S->TF.  This is used by the syscall/sysret insns.  */
-+/*
-+ * Generate an end of block, including common tasks such as generating
-+ * single step traps, resetting the RF flag, and handling the interrupt
-+ * shadow.
-+ */
- static void
--gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
-+gen_eob(DisasContext *s, int mode)
+-/* generate modrm memory load or store of 'reg'. TMP0 is used if reg ==
+-   OR_TMP0 */
++/* generate modrm memory load or store of 'reg'. */
+ static void gen_ldst_modrm(CPUX86State *env, DisasContext *s, int modrm,
+-                           MemOp ot, int reg, int is_store)
++                           MemOp ot, int is_store)
  {
-     bool inhibit_reset;
+     int mod, rm;
  
-@@ -2275,52 +2274,29 @@ gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
-     if (s->flags & HF_INHIBIT_IRQ_MASK) {
-         gen_reset_hflag(s, HF_INHIBIT_IRQ_MASK);
-         inhibit_reset = true;
--    } else if (inhibit) {
-+    } else if (mode == DISAS_EOB_INHIBIT_IRQ) {
-         gen_set_hflag(s, HF_INHIBIT_IRQ_MASK);
-     }
- 
-     if (s->base.tb->flags & HF_RF_MASK) {
-         gen_reset_eflags(s, RF_MASK);
-     }
--    if (recheck_tf) {
-+    if (mode == DISAS_EOB_RECHECK_TF) {
-         gen_helper_rechecking_single_step(tcg_env);
-         tcg_gen_exit_tb(NULL, 0);
-     } else if (s->flags & HF_TF_MASK) {
-         gen_helper_single_step(tcg_env);
--    } else if (jr &&
-+    } else if (mode == DISAS_JUMP &&
-                /* give irqs a chance to happen */
-                !inhibit_reset) {
-         tcg_gen_lookup_and_goto_ptr();
-     } else {
-         tcg_gen_exit_tb(NULL, 0);
-     }
-+
-     s->base.is_jmp = DISAS_NORETURN;
- }
- 
--static inline void
--gen_eob_syscall(DisasContext *s)
--{
--    gen_eob_worker(s, false, true, false);
--}
--
--/* End of block.  Set HF_INHIBIT_IRQ_MASK if it isn't already set.  */
--static void gen_eob_inhibit_irq(DisasContext *s)
--{
--    gen_eob_worker(s, true, false, false);
--}
--
--/* End of block, resetting the inhibit irq flag.  */
--static void gen_eob(DisasContext *s)
--{
--    gen_eob_worker(s, false, false, false);
--}
--
--/* Jump to register */
--static void gen_jr(DisasContext *s)
--{
--    gen_eob_worker(s, false, false, true);
--}
--
- /* Jump to eip+diff, truncating the result to OT. */
- static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
- {
-@@ -2372,9 +2348,9 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
-             tcg_gen_movi_tl(cpu_eip, new_eip);
-         }
-         if (s->jmp_opt) {
--            gen_jr(s);   /* jump to another page */
-+            gen_eob(s, DISAS_JUMP);   /* jump to another page */
+@@ -1832,24 +1831,16 @@ static void gen_ldst_modrm(CPUX86State *env, DisasContext *s, int modrm,
+     rm = (modrm & 7) | REX_B(s);
+     if (mod == 3) {
+         if (is_store) {
+-            if (reg != OR_TMP0)
+-                gen_op_mov_v_reg(s, ot, s->T0, reg);
+             gen_op_mov_reg_v(s, ot, rm, s->T0);
          } else {
--            gen_eob(s);  /* exit to main loop */
-+            gen_eob(s, DISAS_EOB_ONLY);  /* exit to main loop */
+             gen_op_mov_v_reg(s, ot, s->T0, rm);
+-            if (reg != OR_TMP0)
+-                gen_op_mov_reg_v(s, ot, reg, s->T0);
+         }
+     } else {
+         gen_lea_modrm(env, s, modrm);
+         if (is_store) {
+-            if (reg != OR_TMP0)
+-                gen_op_mov_v_reg(s, ot, s->T0, reg);
+             gen_op_st_v(s, ot, s->T0, s->A0);
+         } else {
+             gen_op_ld_v(s, ot, s->T0, s->A0);
+-            if (reg != OR_TMP0)
+-                gen_op_mov_reg_v(s, ot, reg, s->T0);
          }
      }
  }
-@@ -4787,22 +4763,14 @@ static void i386_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         gen_jmp_rel_csize(dc, 0, 0);
-         break;
-     case DISAS_EOB_NEXT:
-+    case DISAS_EOB_INHIBIT_IRQ:
-         assert(dc->base.pc_next == dc->pc);
-         gen_update_eip_cur(dc);
-         /* fall through */
-     case DISAS_EOB_ONLY:
--        gen_eob(dc);
--        break;
-     case DISAS_EOB_RECHECK_TF:
--        gen_eob_syscall(dc);
--        break;
--    case DISAS_EOB_INHIBIT_IRQ:
--        assert(dc->base.pc_next == dc->pc);
--        gen_update_eip_cur(dc);
--        gen_eob_inhibit_irq(dc);
--        break;
-     case DISAS_JUMP:
--        gen_jr(dc);
-+        gen_eob(dc, dc->base.is_jmp);
-         break;
-     default:
-         g_assert_not_reached();
+@@ -3440,7 +3431,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         ot = dflag;
+         modrm = x86_ldub_code(env, s);
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+-        gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
++        gen_ldst_modrm(env, s, modrm, ot, 0);
+         gen_extu(ot, s->T0);
+ 
+         /* Note that lzcnt and tzcnt are in different extensions.  */
+@@ -3587,14 +3578,14 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             tcg_gen_ld32u_tl(s->T0, tcg_env,
+                              offsetof(CPUX86State, ldt.selector));
+             ot = mod == 3 ? dflag : MO_16;
+-            gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
++            gen_ldst_modrm(env, s, modrm, ot, 1);
+             break;
+         case 2: /* lldt */
+             if (!PE(s) || VM86(s))
+                 goto illegal_op;
+             if (check_cpl0(s)) {
+                 gen_svm_check_intercept(s, SVM_EXIT_LDTR_WRITE);
+-                gen_ldst_modrm(env, s, modrm, MO_16, OR_TMP0, 0);
++                gen_ldst_modrm(env, s, modrm, MO_16, 0);
+                 tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+                 gen_helper_lldt(tcg_env, s->tmp2_i32);
+             }
+@@ -3609,14 +3600,14 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             tcg_gen_ld32u_tl(s->T0, tcg_env,
+                              offsetof(CPUX86State, tr.selector));
+             ot = mod == 3 ? dflag : MO_16;
+-            gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
++            gen_ldst_modrm(env, s, modrm, ot, 1);
+             break;
+         case 3: /* ltr */
+             if (!PE(s) || VM86(s))
+                 goto illegal_op;
+             if (check_cpl0(s)) {
+                 gen_svm_check_intercept(s, SVM_EXIT_TR_WRITE);
+-                gen_ldst_modrm(env, s, modrm, MO_16, OR_TMP0, 0);
++                gen_ldst_modrm(env, s, modrm, MO_16, 0);
+                 tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+                 gen_helper_ltr(tcg_env, s->tmp2_i32);
+             }
+@@ -3625,7 +3616,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         case 5: /* verw */
+             if (!PE(s) || VM86(s))
+                 goto illegal_op;
+-            gen_ldst_modrm(env, s, modrm, MO_16, OR_TMP0, 0);
++            gen_ldst_modrm(env, s, modrm, MO_16, 0);
+             gen_update_cc_op(s);
+             if (op == 4) {
+                 gen_helper_verr(tcg_env, s->T0);
+@@ -3889,7 +3880,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+              */
+             mod = (modrm >> 6) & 3;
+             ot = (mod != 3 ? MO_16 : s->dflag);
+-            gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
++            gen_ldst_modrm(env, s, modrm, ot, 1);
+             break;
+         case 0xee: /* rdpkru */
+             if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
+@@ -3916,7 +3907,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+                 break;
+             }
+             gen_svm_check_intercept(s, SVM_EXIT_WRITE_CR0);
+-            gen_ldst_modrm(env, s, modrm, MO_16, OR_TMP0, 0);
++            gen_ldst_modrm(env, s, modrm, MO_16, 0);
+             /*
+              * Only the 4 lower bits of CR0 are modified.
+              * PE cannot be set to zero if already set to one.
+@@ -3988,7 +3979,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             ot = dflag != MO_16 ? MO_32 : MO_16;
+             modrm = x86_ldub_code(env, s);
+             reg = ((modrm >> 3) & 7) | REX_R(s);
+-            gen_ldst_modrm(env, s, modrm, MO_16, OR_TMP0, 0);
++            gen_ldst_modrm(env, s, modrm, MO_16, 0);
+             t0 = tcg_temp_new();
+             gen_update_cc_op(s);
+             if (b == 0x102) {
+@@ -4492,7 +4483,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+ 
+         ot = dflag;
+-        gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
++        gen_ldst_modrm(env, s, modrm, ot, 0);
+         gen_extu(ot, s->T0);
+         tcg_gen_mov_tl(cpu_cc_src, s->T0);
+         tcg_gen_ctpop_tl(s->T0, s->T0);
 -- 
 2.45.1
 
