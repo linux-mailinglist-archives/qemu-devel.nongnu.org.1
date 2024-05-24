@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1F68CE477
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E918CE47E
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sASX7-0006hF-Ev; Fri, 24 May 2024 06:52:21 -0400
+	id 1sASaT-0006Qw-Mx; Fri, 24 May 2024 06:55:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1sASWz-0006aS-TK
- for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1sASWy-0007gp-7y
- for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716547931;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HOXliB5ia07tz3pxdjbnnoak2gShZc7/83V5Pn1UrGw=;
- b=Usd76OjY9ygudhTMdUkAJiMoeYhrl96FbvkV0oh3ESHUuBfm3X+DxVc4tGMEN2HAQM8qnx
- 84toHARV+JEEGFEl2EpMoL4YfXwnwuD/wN8h042mJduNc+jdUwLhcIRYc1QWBgaaHQOl0y
- pm6vtuDHIjFuhqDMiWWQoi4LFtnmEV4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-iVCXjl1-PISUxQzNLDgovw-1; Fri, 24 May 2024 06:52:10 -0400
-X-MC-Unique: iVCXjl1-PISUxQzNLDgovw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-354f75df76dso82816f8f.0
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 03:52:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1sASaP-0006Pt-Fn
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:55:45 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1sASaM-0007vU-Np
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:55:45 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6f8edde1013so612316b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 03:53:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1716548018; x=1717152818;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XWSlU3lw1V6vNVqxuIBD3eAdB6nrF1a1WYX7J1apcJk=;
+ b=INrd+3kcLJe1+ZENSBKYxlum/nT+z1+M3nvBToTt+Jodfc8bPi/Kq7DkVm7jR8WXBf
+ OibJfcJDwjcLcvwiqUuH9z0RyC3yltcY6pi9PcvFFpNOrHnMX9/E3nkCn/E7NArn61iy
+ ByGUpGhx6txoLRP5FlbXhkifg1xhYdD5Vs4qVJQI17BcKtUQZdorEeP6GunaqIAZ9pk5
+ bfPWl632bSjDpsG6UeRtfWdk5bRdAe50qELqh/kQDJXtOO1quoQnvX7Q/m4PiEl03/g8
+ ZOxK7nGJWNbrc7qkHMTrt7F8s5Xx4Bee9snD54wDaR3LSG0dF9ROkGROfuEqfYf0smL8
+ ERXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716547929; x=1717152729;
+ d=1e100.net; s=20230601; t=1716548018; x=1717152818;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=HOXliB5ia07tz3pxdjbnnoak2gShZc7/83V5Pn1UrGw=;
- b=dv8eTtVP/xqPycTDw1U6GUpCgNFBKXXTYjMDhwZwzNBcJZGvfPDR+yZpiS9EETleZ4
- mGorTk7kRlkfpJssjTnVHyF6asf6Aix767MS5IQYkYmrBZyIF/+daP/rO2ZUGbyB+x3c
- 7zQMxiWiRbj25Zb6GznpmsITsUj/AHUE4p/t13Li5lTAeA0fABgb22cgOMBt4pyqFdKw
- GfqEiabNMM5B+9rTK+YDmGItYwK/RSMzspV+NKzhi7ox6pREYUl5cuJpj7wJcANFfP11
- Q26d6V7unpJ4/2PKzgNcPIU2FDVc/+B8Izi4QO/2cz+6nAecHYnjxyJXB7FMZYdg5/VO
- BmLQ==
-X-Gm-Message-State: AOJu0YzWSQ0085Vck/lth/Is0bNv2FTh2XjZZZcCgUV4cyS+8CAedpyb
- 9b1Z1oiCz6BUfbQt1TiFWKaz3Oeje30P6t90XnLTBGkVDzTUYhdJKueBZn024syW+jsTQZ16LAM
- qEKYQKwZxweOgyLwUxItCZuE4JtnJ4hBi4KlchJpVvBkI/PLA1crwLy1N77T9O0TMGNtGageO3I
- 2z1r2RzqhhIJ0YsJZpy42k5O7ksA4=
-X-Received: by 2002:adf:ffc8:0:b0:355:1759:db18 with SMTP id
- ffacd0b85a97d-35526c37e21mr1988282f8f.29.1716547928964; 
- Fri, 24 May 2024 03:52:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFbt7olHpq5GHMGAi4Yqb2Sobe0hjG67S8H6J+jZi19rBQq0Qpx0d5HXfepjKdaMQHKN13QYpfrl0RXT3gV5j0=
-X-Received: by 2002:adf:ffc8:0:b0:355:1759:db18 with SMTP id
- ffacd0b85a97d-35526c37e21mr1988264f8f.29.1716547928669; Fri, 24 May 2024
- 03:52:08 -0700 (PDT)
+ bh=XWSlU3lw1V6vNVqxuIBD3eAdB6nrF1a1WYX7J1apcJk=;
+ b=aFJjIThSMSQlYxLyCLIBglq1lrAcW/hQjgLqseOJK7fAHu0BaYgvWND1UMfRVWoAbm
+ dtfy9wDzw98d5Eks3QyALNKPv6VUXqw4HBLwIR2sB0/Beryz4/uugergh8E3RWAMn/eN
+ gyQsdCS4NuHDK8rZOUJoot7mxmHQmXbNTKsrUL7K4NN0nBLSQ5ltADp8fClGZltd/7ye
+ 63Cewi33aYXUmi7RqS0aexZoYpG0KjEixDe/r0J4qYJYJaey9eLksLKVV3Yz7O5a605Q
+ 1irNZpcJe5CgWmSY56DxhS7a5Or7+71o8NVZTYg+Ak3Jlis7dLQ4rZDAWi94HwXabdcJ
+ aXSw==
+X-Gm-Message-State: AOJu0YyZ1Rus57riLPXHizZoVw4DXMmEOjF3NoH9mPfLvkmPrmhZgLmA
+ /HVTVHZujTxcjFfBjvwOdecg15MguLGQ8l82TKo3AnZ48fvvQP4yPUUcY5T5KfGFr1XxNBhH6cR
+ Kc6CIhGXe8p5qHWKgO5hQbz6qE0lk7qkM92Zmkw==
+X-Google-Smtp-Source: AGHT+IE9W2JwvaARuKoihNNpHxEOfTBagB2HTT8Tm/CtZdhRJKfp5+GQULWlwutJjwyNxfHOsbIijsMeq8Gn1bEXH5w=
+X-Received: by 2002:a05:6a00:1d8d:b0:6e5:43b5:953b with SMTP id
+ d2e1a72fcca58-6f8f34bcd74mr1728349b3a.14.1716548017429; Fri, 24 May 2024
+ 03:53:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240523190548.23977-1-farosas@suse.de>
- <20240523190548.23977-2-farosas@suse.de>
-In-Reply-To: <20240523190548.23977-2-farosas@suse.de>
-From: Prasad Pandit <ppandit@redhat.com>
-Date: Fri, 24 May 2024 16:21:52 +0530
-Message-ID: <CAE8KmOw7yULgf9hstkYL+E+azpG7RRhj_eGMMDeZK4qvcuLv0g@mail.gmail.com>
-Subject: Re: [PATCH v2 01/18] migration: Fix file migration with fdset
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com, armbru@redhat.com, 
- Peter Xu <peterx@redhat.com>, Claudio Fontana <cfontana@suse.de>,
- Jim Fehlig <jfehlig@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <cover.1716531409.git.yong.huang@smartx.com>
+ <878c8f093f3fc2f584b5c31cb2490d9f6a12131a.1716531409.git.yong.huang@smartx.com>
+ <CAE8KmOyXhvYHOw2MOSbwSetC7jyFNFsf0E81O0wQ1WEGGXY-TQ@mail.gmail.com>
+In-Reply-To: <CAE8KmOyXhvYHOw2MOSbwSetC7jyFNFsf0E81O0wQ1WEGGXY-TQ@mail.gmail.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Fri, 24 May 2024 18:53:21 +0800
+Message-ID: <CAK9dgmZOSTQhhJjXN32MupjW9o+3HTPnwNgYhx4Z-mY6kVYGHg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] scsi-disk: Fix crash for VM configured with USB CDROM
+ after live migration
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Content-Type: multipart/alternative; boundary="000000000000d1bc78061930fa3c"
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yong.huang@smartx.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,30 +89,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 24 May 2024 at 00:38, Fabiano Rosas <farosas@suse.de> wrote:
-> This is further indicated by the presence of the 'offset'
-> argument, which indicates the start of the region where QEMU is
-> allowed to write.
+--000000000000d1bc78061930fa3c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, May 24, 2024 at 6:01=E2=80=AFPM Prasad Pandit <ppandit@redhat.com> =
+wrote:
+
+> Hello Hyman,
 >
-> Fix the issue by replacing the O_TRUNC flag on open by an ftruncate
-> call, which will take the offset into consideration.
+> * Is this the same patch series as sent before..?
+>   ->
+> https://lists.nongnu.org/archive/html/qemu-devel/2024-04/msg00816.html
+
+Yes, exactly the same, I just refine the comment
+
+
 >
-> +    if (ftruncate(fioc->fd, offset)) {
-> +        error_setg_errno(errp, errno,
-> +                         "failed to truncate migration file to offset %" PRIx64,
-> +                         offset);
-> +        object_unref(OBJECT(fioc));
-> +        return;
-> +    }
-> +
+>
+> On Fri, 24 May 2024 at 12:02, Hyman Huang <yong.huang@smartx.com> wrote:
+> > For VMs configured with the USB CDROM device:
+> >
+> > -drive
+> file=3D/path/to/local/file,id=3Ddrive-usb-disk0,media=3Dcdrom,readonly=3D=
+on...
+> > -device usb-storage,drive=3Ddrive-usb-disk0,id=3Dusb-disk0...
+> >
+> > QEMU process may crash after live migration,
+> > Do the live migration repeatedly, crash may happen after live migratoin=
+,
+>
+> * Does live migration work many times before QEMU crashes on the
+> destination side? OR QEMU crashes at the very first migration?
+>
+> >    at
+> /usr/src/debug/qemu-6-6.2.0-75.7.oe1.smartx.git.40.x86_64/include/qemu/io=
+v.h:49
+>
+> * This qemu version looks quite old. Is the issue reproducible with
+> the latest QEMU version 9.0?
+>
 
-* Should 'offset' be checked for > zero while ftruncating? Else it'll
-be same as O_TRUNC. Otherwise it looks fine.
+I'm not testing the latest QEMU version while theoretically it is
+reproducible, I'll check it and give a conclusion.
 
-Reviewed-by: Prasad Pandit <pjp@fedoraproject.org>
 
-Thank you.
----
-  - Prasad
+>
+> > diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+> > +static void scsi_disk_emulate_save_request(QEMUFile *f, SCSIRequest
+> *req)
+> > +{
+> > +    SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
+> > +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+> > +
+> > +    if (s->migrate_emulate_scsi_request) {
+> > +        scsi_disk_save_request(f, req);
+> > +    }
+> > +}
+> > +
+> >  static void scsi_disk_load_request(QEMUFile *f, SCSIRequest *req)
+> >  {
+> >      SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
+> > @@ -183,6 +193,16 @@ static void scsi_disk_load_request(QEMUFile *f,
+> SCSIRequest *req)
+> >      qemu_iovec_init_external(&r->qiov, &r->iov, 1);
+> >  }
+> >
+> > +static void scsi_disk_emulate_load_request(QEMUFile *f, SCSIRequest
+> *req)
+> > +{
+> > +    SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);
+> > +    SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r->req.dev);
+> > +
+> > +    if (s->migrate_emulate_scsi_request) {
+> > +        scsi_disk_load_request(f, req);
+> > +    }
+> > +}
+> > +
+> >  /*
+> >   * scsi_handle_rw_error has two return values.  False means that the
+> error
+> >   * must be ignored, true means that the error has been processed and t=
+he
+> > @@ -2593,6 +2613,8 @@ static const SCSIReqOps scsi_disk_emulate_reqops =
+=3D
+> {
+> >      .read_data    =3D scsi_disk_emulate_read_data,
+> >      .write_data   =3D scsi_disk_emulate_write_data,
+> >      .get_buf      =3D scsi_get_buf,
+> > +    .load_request =3D scsi_disk_emulate_load_request,
+> > +    .save_request =3D scsi_disk_emulate_save_request,
+> >  };
+> >
+> >  static const SCSIReqOps scsi_disk_dma_reqops =3D {
+> > @@ -3137,7 +3159,7 @@ static Property scsi_hd_properties[] =3D {
+> >  static int scsi_disk_pre_save(void *opaque)
+> >  {
+> >      SCSIDiskState *dev =3D opaque;
+> > -    dev->migrate_emulate_scsi_request =3D false;
+> > +    dev->migrate_emulate_scsi_request =3D true;
+> >
+>
+> * This patch seems to add support for migrating SCSI requests. While
+> it looks okay, not sure if it is required, how likely is someone to
+> configure a VM to use CDROM?
+>
 
+I'm not sure this usage is common but in our production environment,
+it is used.
+
+
+>
+> *  Should the CDROM device be reset on the destination if no requests
+> are found? ie. if (scsi_req_get_buf -> scsi_get_buf() returns NULL)?
+>
+
+IMHO, resetting the CDROM device may be a work around because
+the request *SHOULD *not be lost. No requests are found may be
+caused by other reasons, resetting the CD ROM seems crude.
+The path that executes the scsi_get_buf() is in a USB mass storage
+device,  and it called by the UHCI controller originally, which just
+handles the Frame List blindly, reset solution is kind of complicated
+in implementation
+
+Migrating the requests may be a graceful solution.
+
+Thanks for the comments,
+Yong
+
+
+> Thank you.
+> ---
+>   - Prasad
+>
+>
+
+--=20
+Best regards
+
+--000000000000d1bc78061930fa3c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, May 24, 20=
+24 at 6:01=E2=80=AFPM Prasad Pandit &lt;<a href=3D"mailto:ppandit@redhat.co=
+m">ppandit@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-st=
+yle:solid;border-left-color:rgb(204,204,204);padding-left:1ex">Hello Hyman,=
+<br>
+<br>
+* Is this the same patch series as sent before..?<br>
+=C2=A0 -&gt; <a href=3D"https://lists.nongnu.org/archive/html/qemu-devel/20=
+24-04/msg00816.html" rel=3D"noreferrer" target=3D"_blank">https://lists.non=
+gnu.org/archive/html/qemu-devel/2024-04/msg00816.html</a></blockquote><div>=
+<div style=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"gm=
+ail_default"></div><div style=3D"font-family:&quot;comic sans ms&quot;,sans=
+-serif" class=3D"gmail_default">Yes, exactly the same, I just refine the co=
+mment</div></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;=
+border-left-color:rgb(204,204,204);padding-left:1ex"><br>
+<br>
+On Fri, 24 May 2024 at 12:02, Hyman Huang &lt;<a href=3D"mailto:yong.huang@=
+smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt; wrote:<br>
+&gt; For VMs configured with the USB CDROM device:<br>
+&gt;<br>
+&gt; -drive file=3D/path/to/local/file,id=3Ddrive-usb-disk0,media=3Dcdrom,r=
+eadonly=3Don...<br>
+&gt; -device usb-storage,drive=3Ddrive-usb-disk0,id=3Dusb-disk0...<br>
+&gt;<br>
+&gt; QEMU process may crash after live migration,<br>
+&gt; Do the live migration repeatedly, crash may happen after live migratoi=
+n,<br>
+<br>
+* Does live migration work many times before QEMU crashes on the<br>
+destination side? OR QEMU crashes at the very first migration?<br>
+<br>
+&gt;=C2=A0 =C2=A0 at /usr/src/debug/qemu-6-6.2.0-75.7.oe1.smartx.git.40.x86=
+_64/include/qemu/iov.h:49<br>
+<br>
+* This qemu version looks quite old. Is the issue reproducible with<br>
+the latest QEMU version 9.0?<br></blockquote><div><br></div><div><div class=
+=3D"gmail_default"><span style=3D"font-family:&quot;comic sans ms&quot;,san=
+s-serif">I&#39;m not testing the latest QEMU version while theoretically it=
+ is</span></div><div class=3D"gmail_default"><span style=3D"font-family:&qu=
+ot;comic sans ms&quot;,sans-serif">reproducible, I&#39;ll check it and give=
+ a conclusion. =C2=A0</span></div></div><div>=C2=A0</div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
+rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
+<br>
+&gt; diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c<br>
+&gt; +static void scsi_disk_emulate_save_request(QEMUFile *f, SCSIRequest *=
+req)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);<br=
+>
+&gt; +=C2=A0 =C2=A0 SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r-&=
+gt;<a href=3D"http://req.dev" rel=3D"noreferrer" target=3D"_blank">req.dev<=
+/a>);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 if (s-&gt;migrate_emulate_scsi_request) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 scsi_disk_save_request(f, req);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 static void scsi_disk_load_request(QEMUFile *f, SCSIRequest *req=
+)<br>
+&gt;=C2=A0 {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req=
+);<br>
+&gt; @@ -183,6 +193,16 @@ static void scsi_disk_load_request(QEMUFile *f, S=
+CSIRequest *req)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 qemu_iovec_init_external(&amp;r-&gt;qiov, &amp;r-&=
+gt;iov, 1);<br>
+&gt;=C2=A0 }<br>
+&gt;<br>
+&gt; +static void scsi_disk_emulate_load_request(QEMUFile *f, SCSIRequest *=
+req)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 SCSIDiskReq *r =3D DO_UPCAST(SCSIDiskReq, req, req);<br=
+>
+&gt; +=C2=A0 =C2=A0 SCSIDiskState *s =3D DO_UPCAST(SCSIDiskState, qdev, r-&=
+gt;<a href=3D"http://req.dev" rel=3D"noreferrer" target=3D"_blank">req.dev<=
+/a>);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 if (s-&gt;migrate_emulate_scsi_request) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 scsi_disk_load_request(f, req);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 /*<br>
+&gt;=C2=A0 =C2=A0* scsi_handle_rw_error has two return values.=C2=A0 False =
+means that the error<br>
+&gt;=C2=A0 =C2=A0* must be ignored, true means that the error has been proc=
+essed and the<br>
+&gt; @@ -2593,6 +2613,8 @@ static const SCSIReqOps scsi_disk_emulate_reqops=
+ =3D {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 .read_data=C2=A0 =C2=A0 =3D scsi_disk_emulate_read=
+_data,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 .write_data=C2=A0 =C2=A0=3D scsi_disk_emulate_writ=
+e_data,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 .get_buf=C2=A0 =C2=A0 =C2=A0 =3D scsi_get_buf,<br>
+&gt; +=C2=A0 =C2=A0 .load_request =3D scsi_disk_emulate_load_request,<br>
+&gt; +=C2=A0 =C2=A0 .save_request =3D scsi_disk_emulate_save_request,<br>
+&gt;=C2=A0 };<br>
+&gt;<br>
+&gt;=C2=A0 static const SCSIReqOps scsi_disk_dma_reqops =3D {<br>
+&gt; @@ -3137,7 +3159,7 @@ static Property scsi_hd_properties[] =3D {<br>
+&gt;=C2=A0 static int scsi_disk_pre_save(void *opaque)<br>
+&gt;=C2=A0 {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 SCSIDiskState *dev =3D opaque;<br>
+&gt; -=C2=A0 =C2=A0 dev-&gt;migrate_emulate_scsi_request =3D false;<br>
+&gt; +=C2=A0 =C2=A0 dev-&gt;migrate_emulate_scsi_request =3D true;<br>
+&gt;<br>
+<br>
+* This patch seems to add support for migrating SCSI requests. While<br>
+it looks okay, not sure if it is required, how likely is someone to<br>
+configure a VM to use CDROM?<br></blockquote><div><br></div><div><div style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif" class=3D"gmail_defaul=
+t">I&#39;m not sure this usage is common=C2=A0but in our production environ=
+ment,=C2=A0</div><div style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif" class=3D"gmail_default">it is used.</div></div><div>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-=
+width:1px;border-left-style:solid;border-left-color:rgb(204,204,204);paddin=
+g-left:1ex">
+<br>
+*=C2=A0 Should the CDROM device be reset on the destination if no requests<=
+br>
+are found? ie. if (scsi_req_get_buf -&gt; scsi_get_buf() returns NULL)?<br>=
+</blockquote><div><br></div><div><div class=3D"gmail_default"><span style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">IMHO, resetting the C=
+DROM device may be a work around because</span></div><div class=3D"gmail_de=
+fault"><span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">the=
+ request <b>SHOULD </b>not be lost.=C2=A0No requests are found may be</span=
+></div><div class=3D"gmail_default"><font face=3D"comic sans ms, sans-serif=
+">caused by other reasons, resetting the CD ROM seems crude.</font></div><d=
+iv class=3D"gmail_default"><div class=3D"gmail_default"><span style=3D"font=
+-family:&quot;comic sans ms&quot;,sans-serif">The path that=C2=A0</span><sp=
+an style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">executes the =
+scsi_get_buf()<span class=3D"gmail-Apple-converted-space">=C2=A0</span></sp=
+an>is in<span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><s=
+pan class=3D"gmail-Apple-converted-space">=C2=A0</span>a USB mass storage</=
+span></div><div class=3D"gmail_default"><span style=3D"font-family:&quot;co=
+mic sans ms&quot;,sans-serif">device, =C2=A0and it=C2=A0</span><span style=
+=3D"font-family:&quot;comic sans ms&quot;,sans-serif">called<span class=3D"=
+gmail-Apple-converted-space">=C2=A0</span></span>by the UHCI<span style=3D"=
+font-family:&quot;comic sans ms&quot;,sans-serif"><span class=3D"gmail-Appl=
+e-converted-space">=C2=A0</span>controller originally, which just</span></d=
+iv><div class=3D"gmail_default"><span style=3D"font-family:&quot;comic sans=
+ ms&quot;,sans-serif">handles the Frame List=C2=A0</span><span style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">blindly, reset solution is k=
+ind of complicated</span></div><div class=3D"gmail_default"><font face=3D"c=
+omic sans ms, sans-serif">in implementation</font></div><div class=3D"gmail=
+_default"><font face=3D"comic sans ms, sans-serif"><br></font></div></div><=
+div class=3D"gmail_default"><font face=3D"comic sans ms, sans-serif">Migrat=
+ing=C2=A0</font><span style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif">the requests may be a graceful solution.</span></div><div class=3D"gm=
+ail_default"><span style=3D"font-family:&quot;comic sans ms&quot;,sans-seri=
+f"><br></span></div><div class=3D"gmail_default"><span style=3D"font-family=
+:&quot;comic sans ms&quot;,sans-serif">Thanks for the comments,</span></div=
+><div class=3D"gmail_default"><span style=3D"font-family:&quot;comic sans m=
+s&quot;,sans-serif">Yong</span></div><div class=3D"gmail_default"><br></div=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204=
+,204);padding-left:1ex">
+<br>
+Thank you.<br>
+---<br>
+=C2=A0 - Prasad<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--000000000000d1bc78061930fa3c--
 
