@@ -2,91 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA57E8CE1F2
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2198CE1F6
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAPrH-0007LW-V3; Fri, 24 May 2024 04:00:59 -0400
+	id 1sAPth-0001YA-18; Fri, 24 May 2024 04:03:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPrC-0007F0-Mz
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:54 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPr9-0006yF-9m
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:54 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-2bdf11888a5so1046376a91.0
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716537648; x=1717142448;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=pCyAlcRJxBXr8WBNFU9VvAlTC1A+jWOc3+UmKJXMUEc=;
- b=ZV46rBFtSfXBfrWlf8UvqBv5go70DfGrvUVCtb+k3Tc2FLXUnQ9KboOnX/7zkoGAmf
- nscNHOJXBpQRO52ER+O0cYn78BgNXE3JzEPv8bu9ipGfe4WRjARhSEAXVHUo0NGqgnDq
- ccVcseXdSPbpqim35MNy4nyWvkXL3XsVB1RuTw6g23chgT5IaGJv/PVl5C8wZkoOEf/J
- Tkh8066foAqHsAbu/rtDX3RG9fsE8KMG8ONzh83NqMwNlroJ1shcFpVVpKggQLA27Kgb
- g91VtIaaQ+KRT/Lwds3IrzZRhkSDYJH1oDg7uVoIRrh46wJ5GajM7ppHWEyqqh/uskBj
- MNNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716537648; x=1717142448;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pCyAlcRJxBXr8WBNFU9VvAlTC1A+jWOc3+UmKJXMUEc=;
- b=t0zAs+CkQ5mOUmhMyZ6ihjhc2vQabhBQ3pYz+4e9Eg+wXSildzTKAlGXyeOalTN0uS
- 5axVXPCTec/kYUv+lRSIFnCaoZ2VfZf3FQ47KbQMAawteNt4W2U10YMcihWaDihYiGX5
- XYj1ubyGeoqJSUWhBaKeX1d9g8psaW5dbO9HEMqPCkPb0+Sajx23k7HV9Y6Wk6xxaDqj
- BXgX8/csCL77Wt4QKdEEdslv43gu/AUCgaj4G75ILZVN/0KENzxRxNC8u8Q3cPxy7xZ8
- 7dX7PoQ1gC0x57w1AB0gipd7Rxejffuv66jti5E5rofNIJeJm0pHwWEbUcK+IR2NL8H9
- Z0Ow==
-X-Gm-Message-State: AOJu0YzjmKn/dlu2n5vjXgTvCmSMqH/DA0NiGkhHd9L247jz1OcV2/xp
- 7FLIiIUMP7mNLgI+9Esh7cfgLO3/RsOZqUI1ibSxSwaOAYgWoOdAJajP0fiCbcZZMucZYa7sgWq
- xDVI=
-X-Google-Smtp-Source: AGHT+IGBzXhsz59zLKanqwcxaXfKyJqLnPS5mqVuvp80KVjZpLChckGRyWEngY1SDJssQMxD7i2c8Q==
-X-Received: by 2002:a17:90a:e2d2:b0:2bd:e68c:b0c0 with SMTP id
- 98e67ed59e1d1-2bf5e170f33mr1453691a91.20.1716537648255; 
- Fri, 24 May 2024 01:00:48 -0700 (PDT)
-Received: from localhost ([157.82.204.135])
- by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2bf5e13b6acsm846398a91.0.2024.05.24.01.00.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 May 2024 01:00:47 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Fri, 24 May 2024 17:00:23 +0900
-Subject: [PATCH RFC 2/2] Revert "meson: Propagate gnutls dependency"
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1sAPtX-0001SB-RS; Fri, 24 May 2024 04:03:23 -0400
+Received: from fout3-smtp.messagingengine.com ([103.168.172.146])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1sAPtU-0007Xj-30; Fri, 24 May 2024 04:03:18 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailfout.nyi.internal (Postfix) with ESMTP id 89E0613800CB;
+ Fri, 24 May 2024 04:03:14 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute5.internal (MEProxy); Fri, 24 May 2024 04:03:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:subject:subject:to:to; s=fm3; t=1716537794; x=
+ 1716624194; bh=mWhJpS7bXARoltxX/K+d4gGL85saP59F80fZBpKYTTw=; b=l
+ brIU3j8xn7iyd3RtwOFNGaNGx8UceJfb6AC+6iMBytPorD44V7duiFSpqY63vXZ/
+ YSCfTdItHh579iYUXARNVqX9ItQG7Q3bSwPB+TkAZmuRbmR66o4tMp6uj/S+Pc12
+ Tp69seF0BxoT5oU27UNMZ3E0khO5ceFyaOE97Ah9c9aKqHrrDmBKmv6lZfbmvr/u
+ U4OQEM7P6F2lTtKrbzms6F4ozdG+jSXRV4Aa8SQ9sRYe2I1nZBOwwQse18RVpjax
+ optU6lFjhsNbPekWpyjew6P3rI+vszdeUUBpiOzXri6rc0GG4pigJSqhLyV7xoyT
+ RncpC+yTFNf6tRHsfY4Sg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm1; t=1716537794; x=1716624194; bh=mWhJpS7bXARoltxX/K+d4gGL85sa
+ P59F80fZBpKYTTw=; b=gQvHZQUO+nT0wLHDvthRPgjG7iZwLo5BMxbW6EOMFbuy
+ WgaLKRfvpZchgFgpsJc3zxNrAL+OawnOkLYVSsigPzlSwaadfB5N9/z39mkcQt7X
+ cfSfQ5brv/duc1zG7TRMO+PJx/fQcL8ASW3cBz6lkfVMF49hK0ySO5k1dlvBmVjR
+ 6RG2CeeL2m1IGWoDG15NGBWvqi3QtnRE4Sd1Yp0QolcYQtBLJW74ejnz1mw/GFI+
+ R/rlRq2zHa0yg9ynCWcb9ya4Ea7aPjmVSe3Z3HKjC2gzRvHcg69AcGCITXeX/Rq4
+ HLbxPi6821tQPtTPGcwejDRL6Zu+uPRcUjR7dG5mAA==
+X-ME-Sender: <xms:wUlQZpkfZDOeKU-ZpEFqzkiX2UWfiA87vLOBJucnuFeeNMa-uM0kCQ>
+ <xme:wUlQZk0GB-1878y8cTk0t7eIGIJb5ajb2onNPEmy1illoQ9C8DrMtiL7vTifzh7MO
+ Vy3hpmEV3YkRJAtgqg>
+X-ME-Received: <xmr:wUlQZvo0A8jdnVnOCr31FSntIH9PoyWJmiKIh86U7h0Qc-pJ0rOXjnRp7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeijedguddvhecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
+ uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
+ htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
+ ffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hithhssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:wklQZpmWUfKLlwWKQE58H25hXOMouBoYlBxKcV8XxZ3Xx1ENB8GNGw>
+ <xmx:wklQZn1ZWjkPnMTuKxGhG2h-ncSySsr4yOKL5W4B-8H4ziLqgMzqCg>
+ <xmx:wklQZosEAf6ps6vL54sn9qyevwFEbCVd1AWWLClf8PqnsCD5qwJ9Hw>
+ <xmx:wklQZrViRT2wio5jZlX2jTNyo3EfN9MxSoyp-EVw6GSC4rV3av15qg>
+ <xmx:wklQZsm9IuoeLMEGzRq9NXhvt0Us7ZR9KmRr3Z_CyNif5_bJeeSpDRkf>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 May 2024 04:03:13 -0400 (EDT)
+Date: Fri, 24 May 2024 10:03:06 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Vincent Fu <vincentfu@gmail.com>
+Cc: Klaus Jensen <k.jensen@samsung.com>, Keith Busch <kbusch@kernel.org>,
+ Jesper Devantier <foss@defmacro.it>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hw/nvme: fix mo field in io mgnt send
+Message-ID: <ZlBJutfzk9WiMO00@cormorant.local>
+References: <20240506-fix-ioms-mo-v1-1-65c315531850@samsung.com>
+ <888fce70-768e-474f-8526-fa05b41540c1@gmail.com>
+ <50c45bde-738e-4c1d-bf1f-5345eff814b2@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240524-objects-v1-2-07cbbe96166b@daynix.com>
-References: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
-In-Reply-To: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>, 
- Beraldo Leal <bleal@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-2c6f2
-Received-SPF: none client-ip=2607:f8b0:4864:20::1035;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="eC4xwY9wU81gbLdP"
+Content-Disposition: inline
+In-Reply-To: <50c45bde-738e-4c1d-bf1f-5345eff814b2@gmail.com>
+Received-SPF: pass client-ip=103.168.172.146; envelope-from=its@irrelevant.dk;
+ helo=fout3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,89 +104,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 3eacf70bb5a83e4775ad8003cbca63a40f70c8c2.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- meson.build                | 4 ++--
- block/meson.build          | 2 +-
- io/meson.build             | 2 +-
- storage-daemon/meson.build | 2 +-
- ui/meson.build             | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+--eC4xwY9wU81gbLdP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/meson.build b/meson.build
-index 0e6fa2e4b777..cd5a24807ec8 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3518,7 +3518,7 @@ if have_block
-     'blockdev-nbd.c',
-     'iothread.c',
-     'job-qmp.c',
--  ), gnutls)
-+  ))
- 
-   # os-posix.c contains POSIX-specific functions used by qemu-storage-daemon,
-   # os-win32.c does not
-@@ -4008,7 +4008,7 @@ if have_tools
-   qemu_io = executable('qemu-io', files('qemu-io.c'),
-              dependencies: [block, qemuutil], install: true)
-   qemu_nbd = executable('qemu-nbd', files('qemu-nbd.c'),
--               dependencies: [blockdev, qemuutil, gnutls, selinux],
-+               dependencies: [blockdev, qemuutil, selinux],
-                install: true)
- 
-   subdir('storage-daemon')
-diff --git a/block/meson.build b/block/meson.build
-index e1f03fd773e9..0165ac178370 100644
---- a/block/meson.build
-+++ b/block/meson.build
-@@ -39,7 +39,7 @@ block_ss.add(files(
-   'throttle.c',
-   'throttle-groups.c',
-   'write-threshold.c',
--), zstd, zlib, gnutls)
-+), zstd, zlib)
- 
- system_ss.add(when: 'CONFIG_TCG', if_true: files('blkreplay.c'))
- system_ss.add(files('block-ram-registrar.c'))
-diff --git a/io/meson.build b/io/meson.build
-index 283b9b2bdbdf..1164812f9126 100644
---- a/io/meson.build
-+++ b/io/meson.build
-@@ -13,4 +13,4 @@ io_ss.add(files(
-   'dns-resolver.c',
-   'net-listener.c',
-   'task.c',
--), gnutls)
-+))
-diff --git a/storage-daemon/meson.build b/storage-daemon/meson.build
-index 46267b63e72b..b955949fd6f3 100644
---- a/storage-daemon/meson.build
-+++ b/storage-daemon/meson.build
-@@ -1,6 +1,6 @@
- qsd_ss = ss.source_set()
- qsd_ss.add(files('qemu-storage-daemon.c'))
--qsd_ss.add(blockdev, chardev, qmp, qom, qemuutil, gnutls)
-+qsd_ss.add(blockdev, chardev, qmp, qom, qemuutil)
- 
- subdir('qapi')
- 
-diff --git a/ui/meson.build b/ui/meson.build
-index a5ce22a678ba..9358439ceeed 100644
---- a/ui/meson.build
-+++ b/ui/meson.build
-@@ -43,7 +43,7 @@ vnc_ss.add(files(
-   'vnc-jobs.c',
-   'vnc-clipboard.c',
- ))
--vnc_ss.add(zlib, jpeg, gnutls)
-+vnc_ss.add(zlib, jpeg)
- vnc_ss.add(when: sasl, if_true: files('vnc-auth-sasl.c'))
- system_ss.add_all(when: [vnc, pixman], if_true: vnc_ss)
- system_ss.add(when: vnc, if_false: files('vnc-stubs.c'))
+On May  8 09:36, Vincent Fu wrote:
+> On 5/7/24 10:05, Vincent Fu wrote:
+> > On 5/6/24 04:06, Klaus Jensen wrote:
+> > > The Management Operation field of I/O Management Send is only 8 bits,
+> > > not 16.
+> > >=20
+> > > Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
+> > > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> > > ---
+> > > =C2=A0 hw/nvme/ctrl.c | 2 +-
+> > > =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> > > index 9e7bbebc8bb0..ede5f281dd7c 100644
+> > > --- a/hw/nvme/ctrl.c
+> > > +++ b/hw/nvme/ctrl.c
+> > > @@ -4387,7 +4387,7 @@ static uint16_t nvme_io_mgmt_send(NvmeCtrl *n,
+> > > NvmeRequest *req)
+> > > =C2=A0 {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NvmeCmd *cmd =3D &req->cmd;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint32_t cdw10 =3D le32_to_cpu(cmd->cd=
+w10);
+> > > -=C2=A0=C2=A0=C2=A0 uint8_t mo =3D (cdw10 & 0xff);
+> > > +=C2=A0=C2=A0=C2=A0 uint8_t mo =3D cdw10 & 0xf;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (mo) {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case NVME_IOMS_MO_NOP:
+> > >=20
+> > > ---
+> > > base-commit: 84b0eb1826f690aa8d51984644318ee6c810f5bf
+> > > change-id: 20240506-fix-ioms-mo-97098c6c5396
+> > >=20
+> > > Best regards,
+> >=20
+> > Reviewed-by: Vincent Fu <vincent.fu@samsung.com>
+>=20
+> Klaus, upon taking a second look, the original code is correct. The propo=
+sed
+> change would only keep the least significant 4 bits of the MO field. The
+> original code gives you the 8 bits needed.
+>=20
+> Let me withdraw my Reviewed-by.
+>=20
+> Vincent
 
--- 
-2.45.1
+That was embarrasing. Thanks for catching that Vincent :)
 
+--eC4xwY9wU81gbLdP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmZQSbkACgkQTeGvMW1P
+Dendugf9H29p9lM6n6dEjG5YJAItS/PZ2otRxnSrxAWNlbOirINcnCaziLd1yT2A
+BzL1erUla657Cmm/hbEt98UpCISfUv172xSFvBmUYaGZ4Hx8LVzjssoXNqKGU6ds
+h31Ywbew0oIovThjZg1T40LngFIHEbWQJj4AiSSlm4yuOQdOiKTi303V4GSDDDi8
+HnIoyQrE+f8+k6JMowz+kqzPP+kou+bgNpnN3Yc9xCG31VQU810YQEdMjpd05+h6
+cujcMLqrlIG2u0tHS7houFQIThYHmDqzzMwrnCYqczAkVzHQJK4wtmuXPS896XlB
+hcfx8TZpXWRp67wUuTv3GJ/Qnvn4tw==
+=dK9i
+-----END PGP SIGNATURE-----
+
+--eC4xwY9wU81gbLdP--
 
