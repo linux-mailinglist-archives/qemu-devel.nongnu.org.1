@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2BC8CEA9D
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 22:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B318CECDD
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 01:29:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAb6K-0002JB-LT; Fri, 24 May 2024 16:01:16 -0400
+	id 1sAeEA-0006Qi-Ts; Fri, 24 May 2024 19:21:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1sAb67-0002AN-VX; Fri, 24 May 2024 16:01:05 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
- id 1sAb65-00050y-8Q; Fri, 24 May 2024 16:01:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716580861; x=1748116861;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CfBulfqouTJD2KFyY/RsB2TzLeKk14JepRumF3y0b/o=;
- b=W9Qd0V68JuFXL+/effeT7LWe/8z5ESNY53WrWP8v6x//wlWKkvjyCl1C
- LDVMD3CF2qfRUbUPs83sNtj5e8gs2w/vW2fL/x35DHXJ7dbFjyJ4ANtPo
- 3gwizdpfNuuXQfmKq+7fRBNPOQy6HLj6VhV17ru+opYKrT3NhFFCVYJNS
- 0TouAkppXZcoPxXebo7f1gNfn5UC6p1IlMN/lZRfTNpx/CLgFFhX+U+6a
- oZYP9f3E72T1LpSk9LECCKpodSUKNhxUW63UkmhKXJH3MJF7ECzSbLolB
- NSD4kyFRzVWvXlszJE3zBmUjaKOy8A8nplYM2zS0mAbHBlR2uhjOiM1Ly g==;
-X-CSE-ConnectionGUID: XVCOb9HDTO6U9wxfKnNKow==
-X-CSE-MsgGUID: 7nlj2i+mS6C2Guhi/Qfgkw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11082"; a="15918269"
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="15918269"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2024 13:00:47 -0700
-X-CSE-ConnectionGUID: 8eAWJbomQI6p/IR+TlvkVA==
-X-CSE-MsgGUID: pS5GDOZTTWK8qgYDfYh2nA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; d="scan'208";a="39108914"
-Received: from 9cc2c43eec6b.jf.intel.com ([10.54.77.100])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2024 13:00:47 -0700
-From: Zide Chen <zide.chen@intel.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sAeE5-0006NN-Pm
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 19:21:29 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sAeE0-0005dw-OA
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 19:21:29 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f44b45d6abso12497085ad.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 16:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716592883; x=1717197683; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2LcFiYxvojtE00jlgpj+zwYErN2HEa0FOP7+cFTfU/s=;
+ b=JO4LwA4uiw+u+iNQYFOWMwh4ubS1fAFnKb/o3cqHe6W2riHEmpFHrdNVttvuWo1Giu
+ 2TJSYjPJovUbQGwJ80QGlBagiGLERs+SN3VKuEmjt/ZTPcDGYjRD6E8hhOrTXvDfykba
+ zVqlj3/XIyKKLLTGoT4XSXF7wJMnXkRTyEpzv/Qx0qSCDsJdYFM2ogh97bcYpssUFERr
+ t/ESLhtRjvlfQaDQWSroxnmcM7nCE3F3i5769yawc8qrB/h2BMf/YAGvXKRXXno04JU7
+ aU85NHZZxnUDW0obxnhEnQcRS02FNsyY6C8BSHIarecCHkO5nhJ+EmHHQBfUwxlFEXyO
+ bwCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716592883; x=1717197683;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2LcFiYxvojtE00jlgpj+zwYErN2HEa0FOP7+cFTfU/s=;
+ b=oI/kV7PRq5iqJzkiMCVOXFb0j61nlK037X8Vr2nNaSCEeae6Co9cnXkTlGxh/IO0Ht
+ yMcBjAhReAdvRUNLfrFTMf7WWO0maIfeVQTX6H5gJwHH7GlleYSqejdbfYEvIf05mnE9
+ VAdKJvwMMjkTcOMi8UGe+NsSBRecdameBWEL1AEIlyzu7NVesc7WFs2Nx4UKCi+2LSDs
+ 4Xmd5bgzVEb3vd9djeoRA/pcC/+QQRepsqFjKL4PVgi5eDHn7FIITYj3sITmFhWfVFvZ
+ 7FHoVzG4nTvjq3SISLwl6yQOC97rYEyEABVr3kYpIz4C+bp7BRI+axpQYxLXqvq9YjzD
+ vrvA==
+X-Gm-Message-State: AOJu0YxYJPxxfhAo+l3EqFF3IZWqRPogKKuWHpiylce95p1ZRwbYIQKT
+ +X15RThvxLRvjC2P2KMl6uTNbrTz5QBybq21vmAWxVquyy/ExqCbeTpcCgMWlpZLC75dOvO4+ot
+ q
+X-Google-Smtp-Source: AGHT+IEdOWZtq0vmJlxmpTEd1GY/aQ3ldotlcbg435JsfaJDzNYZabGB7GBmIXv7MAzntDcCSnhg3A==
+X-Received: by 2002:a17:902:d4c7:b0:1e2:9ddc:f72d with SMTP id
+ d9443c01a7336-1f44870278dmr44672625ad.26.1716592882662; 
+ Fri, 24 May 2024 16:21:22 -0700 (PDT)
+Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f44c759ceesm19178305ad.10.2024.05.24.16.21.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 May 2024 16:21:22 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mst@redhat.com, thuth@redhat.com, cfontana@suse.de,
- xiaoyao.li@intel.com, qemu-trivial@nongnu.org,
- Zide Chen <zide.chen@intel.com>
-Subject: [PATCH V2 3/3] target/i386: Move host_cpu_enable_cpu_pm into
- kvm_cpu_realizefn()
-Date: Fri, 24 May 2024 13:00:17 -0700
-Message-Id: <20240524200017.150339-4-zide.chen@intel.com>
+Cc: qemu-arm@nongnu.org
+Subject: [PATCH v2 00/67] target/arm: Convert a64 advsimd to decodetree (part
+ 1)
+Date: Fri, 24 May 2024 16:20:14 -0700
+Message-Id: <20240524232121.284515-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240524200017.150339-1-zide.chen@intel.com>
-References: <20240524200017.150339-1-zide.chen@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zide.chen@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,71 +91,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It seems not a good idea to expand features in host_cpu_realizefn,
-which is for host CPU only.  Additionally, cpu-pm option is KVM
-specific, and it's cleaner to put it in kvm_cpu_realizefn(), together
-with the WAITPKG code.
+In the process, convert more code to gvec as well -- I will need
+the gvec code for implementing SME2.  I guess this is about 1/3
+of the job done, but there's no reason to wait until the patch
+set is completely unwieldy.
 
-Fixes: f5cc5a5c1686 ("i386: split cpu accelerators from cpu.c, using AccelCPUClass")
-Signed-off-by: Zide Chen <zide.chen@intel.com>
----
- target/i386/host-cpu.c    | 12 ------------
- target/i386/kvm/kvm-cpu.c | 11 +++++++++--
- 2 files changed, 9 insertions(+), 14 deletions(-)
+Changes for v2:
+  * Fix existing RISU failures vs neoverse-n1.
+  * Introduce vfp_load_reg16, fixing a regression wrt VNEG (scalar, hp).
+  * Fix typo in SUQADD vectorization.
+  * Two more conversions.
 
-diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
-index 280e427c017c..8b8bf5afeccf 100644
---- a/target/i386/host-cpu.c
-+++ b/target/i386/host-cpu.c
-@@ -42,15 +42,6 @@ static uint32_t host_cpu_phys_bits(void)
-     return host_phys_bits;
- }
- 
--static void host_cpu_enable_cpu_pm(X86CPU *cpu)
--{
--    CPUX86State *env = &cpu->env;
--
--    host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
--               &cpu->mwait.ecx, &cpu->mwait.edx);
--    env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
--}
--
- static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
- {
-     uint32_t host_phys_bits = host_cpu_phys_bits();
-@@ -83,9 +74,6 @@ bool host_cpu_realizefn(CPUState *cs, Error **errp)
-     X86CPU *cpu = X86_CPU(cs);
-     CPUX86State *env = &cpu->env;
- 
--    if (cpu->max_features && enable_cpu_pm) {
--        host_cpu_enable_cpu_pm(cpu);
--    }
-     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-         uint32_t phys_bits = host_cpu_adjust_phys_bits(cpu);
- 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 3adcedf0dbc3..197c892da89a 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -64,9 +64,16 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-      *   cpu_common_realizefn() (via xcc->parent_realize)
-      */
-     if (cpu->max_features) {
--        if (enable_cpu_pm && kvm_has_waitpkg()) {
--            env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
-+        if (enable_cpu_pm) {
-+            if (kvm_has_waitpkg()) {
-+                env->features[FEAT_7_0_ECX] |= CPUID_7_0_ECX_WAITPKG;
-+            }
-+
-+            host_cpuid(5, 0, &cpu->mwait.eax, &cpu->mwait.ebx,
-+                       &cpu->mwait.ecx, &cpu->mwait.edx);
-+            env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
-         }
-+
-         if (cpu->ucode_rev == 0) {
-             cpu->ucode_rev =
-                 kvm_arch_get_supported_msr_feature(kvm_state,
+
+r~
+
+
+Richard Henderson (67):
+  target/arm: Add neoverse-n1 to qemu-arm (DO NOT MERGE)
+  target/arm: Use PLD, PLDW, PLI not NOP for t32
+  target/arm: Reject incorrect operands to PLD, PLDW, PLI
+  target/arm: Zero-extend writeback for fp16 FCVTZS (scalar, integer)
+  target/arm: Fix decode of FMOV (hp) vs MOVI
+  target/arm: Verify sz=0 for Advanced SIMD scalar pairwise (fp16)
+  target/arm: Split out gengvec.c
+  target/arm: Split out gengvec64.c
+  target/arm: Convert Cryptographic AES to decodetree
+  target/arm: Convert Cryptographic 3-register SHA to decodetree
+  target/arm: Convert Cryptographic 2-register SHA to decodetree
+  target/arm: Convert Cryptographic 3-register SHA512 to decodetree
+  target/arm: Convert Cryptographic 2-register SHA512 to decodetree
+  target/arm: Convert Cryptographic 4-register to decodetree
+  target/arm: Convert Cryptographic 3-register, imm2 to decodetree
+  target/arm: Convert XAR to decodetree
+  target/arm: Convert Advanced SIMD copy to decodetree
+  target/arm: Convert FMULX to decodetree
+  target/arm: Convert FADD, FSUB, FDIV, FMUL to decodetree
+  target/arm: Convert FMAX, FMIN, FMAXNM, FMINNM to decodetree
+  target/arm: Introduce vfp_load_reg16
+  target/arm: Expand vfp neg and abs inline
+  target/arm: Convert FNMUL to decodetree
+  target/arm: Convert FMLA, FMLS to decodetree
+  target/arm: Convert FCMEQ, FCMGE, FCMGT, FACGE, FACGT to decodetree
+  target/arm: Convert FABD to decodetree
+  target/arm: Convert FRECPS, FRSQRTS to decodetree
+  target/arm: Convert FADDP to decodetree
+  target/arm: Convert FMAXP, FMINP, FMAXNMP, FMINNMP to decodetree
+  target/arm: Use gvec for neon faddp, fmaxp, fminp
+  target/arm: Convert ADDP to decodetree
+  target/arm: Use gvec for neon padd
+  target/arm: Convert SMAXP, SMINP, UMAXP, UMINP to decodetree
+  target/arm: Use gvec for neon pmax, pmin
+  target/arm: Convert FMLAL, FMLSL to decodetree
+  target/arm: Convert disas_simd_3same_logic to decodetree
+  target/arm: Improve vector UQADD, UQSUB, SQADD, SQSUB
+  target/arm: Convert SUQADD and USQADD to gvec
+  target/arm: Inline scalar SUQADD and USQADD
+  target/arm: Inline scalar SQADD, UQADD, SQSUB, UQSUB
+  target/arm: Convert SQADD, SQSUB, UQADD, UQSUB to decodetree
+  target/arm: Convert SUQADD, USQADD to decodetree
+  target/arm: Convert SSHL, USHL to decodetree
+  target/arm: Convert SRSHL and URSHL (register) to gvec
+  target/arm: Convert SRSHL, URSHL to decodetree
+  target/arm: Convert SQSHL and UQSHL (register) to gvec
+  target/arm: Convert SQSHL, UQSHL to decodetree
+  target/arm: Convert SQRSHL and UQRSHL (register) to gvec
+  target/arm: Convert SQRSHL, UQRSHL to decodetree
+  target/arm: Convert ADD, SUB (vector) to decodetree
+  target/arm: Convert CMGT, CMHI, CMGE, CMHS, CMTST, CMEQ to decodetree
+  target/arm: Use TCG_COND_TSTNE in gen_cmtst_{i32,i64}
+  target/arm: Use TCG_COND_TSTNE in gen_cmtst_vec
+  target/arm: Convert SHADD, UHADD to gvec
+  target/arm: Convert SHADD, UHADD to decodetree
+  target/arm: Convert SHSUB, UHSUB to gvec
+  target/arm: Convert SHSUB, UHSUB to decodetree
+  target/arm: Convert SRHADD, URHADD to gvec
+  target/arm: Convert SRHADD, URHADD to decodetree
+  target/arm: Convert SMAX, SMIN, UMAX, UMIN to decodetree
+  target/arm: Convert SABA, SABD, UABA, UABD to decodetree
+  target/arm: Convert MUL, PMUL to decodetree
+  target/arm: Convert MLA, MLS to decodetree
+  target/arm: Tidy SQDMULH, SQRDMULH (vector)
+  target/arm: Convert SQDMULH, SQRDMULH to decodetree
+  target/arm: Convert FMADD, FMSUB, FNMADD, FNMSUB to decodetree
+  target/arm: Convert FCSEL to decodetree
+
+ target/arm/helper.h              |  164 +-
+ target/arm/tcg/helper-a64.h      |   12 +
+ target/arm/tcg/translate-a64.h   |   18 +
+ target/arm/tcg/translate.h       |   95 +
+ target/arm/tcg/a32-uncond.decode |    8 +-
+ target/arm/tcg/a64.decode        |  430 ++-
+ target/arm/tcg/neon-dp.decode    |   37 +-
+ target/arm/tcg/t32.decode        |   26 +-
+ target/arm/tcg/cpu32.c           |   73 +
+ target/arm/tcg/gengvec.c         | 2306 ++++++++++++++++
+ target/arm/tcg/gengvec64.c       |  367 +++
+ target/arm/tcg/neon_helper.c     |  511 +---
+ target/arm/tcg/translate-a64.c   | 4440 ++++++++++--------------------
+ target/arm/tcg/translate-neon.c  |  254 +-
+ target/arm/tcg/translate-sve.c   |  145 +-
+ target/arm/tcg/translate-vfp.c   |   93 +-
+ target/arm/tcg/translate.c       | 1649 +----------
+ target/arm/tcg/vec_helper.c      |  349 ++-
+ target/arm/vfp_helper.c          |   30 -
+ target/arm/tcg/meson.build       |    2 +
+ 20 files changed, 5446 insertions(+), 5563 deletions(-)
+ create mode 100644 target/arm/tcg/gengvec.c
+ create mode 100644 target/arm/tcg/gengvec64.c
+
 -- 
 2.34.1
 
