@@ -2,94 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAF68CE17E
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 09:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943C38CE1F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:02:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAPHz-0005Nd-N7; Fri, 24 May 2024 03:24:31 -0400
+	id 1sAPrE-0007F9-M9; Fri, 24 May 2024 04:00:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sAPHx-0005Mq-I5; Fri, 24 May 2024 03:24:29 -0400
-Received: from fhigh8-smtp.messagingengine.com ([103.168.172.159])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1sAPHv-0007gL-6B; Fri, 24 May 2024 03:24:29 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id 4267A11401CC;
- Fri, 24 May 2024 03:24:26 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Fri, 24 May 2024 03:24:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm3; t=1716535466; x=
- 1716621866; bh=O0vSpVkXMyLZfUeY9iozC4QKIorHgcwVo34Z2AqGVYw=; b=M
- NVTni4uuHZ7kaGWdX+mr7DsP+FYjbsM8fqQcMsOEZMBh/hwCz23mujaEZumQl0F2
- 01jpze+KkuozXFoQ4SEcbk33TM6ocZcJeFd2nckF2KDkHwMZNd7wvN5qosZmctAc
- dQQhjt7aLRZEvKSkON1rPsepEgvoj+DD+1lwWBtG7LXbfvetLsXfVt2YEloqlXYG
- hBQtGP8ddyJVEmYM/Vngr1CrFMJkZNuenebt7Dvp/5xxr/lD5uVKFh0MG2yw/AXo
- S9i/QbIE290rxWz6F3CClP2NOsTjpL1Yj8GmQjBU26//IIKTIEWJq+mJ12HE1e+s
- kp0IarWT3qf5ECItE0F/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; t=1716535466; x=1716621866; bh=O0vSpVkXMyLZfUeY9iozC4QKIorH
- gcwVo34Z2AqGVYw=; b=Pc8qVmDIDWVncM4omemGKwKh+bjCJD5UC8QnoTsVI3sb
- 8a+MoDv3q6v0aiKbPfV8J5vE9kDDAMP7qd5b88vBEXfTw2J1GUD1SW/zj8ptWrom
- wz5iM0pEEglsh5BgBmCVeLyX9sA9KVgD69GzqgJbRMcymKOodyElTBZDkXoDFcQh
- YqgbMKKqNyuxuc49C/uRuv03U8Z6vsvJnehucytUuafn/Gnxe7yxEpGqLRZl8Q28
- QW9t+Y6Ng/d8cCaEiy0TEsejlgUxinNW4HlRfZbXSm75vC7WSkFkLdAHXbjJF3iF
- DapL9IVy//BepTL9YOLmCrUhW1xhB6oXL2wMqvpqnA==
-X-ME-Sender: <xms:qUBQZtiEUhg4FLrHSN4VgcPuhz5K9qX2gCo7YkSk7BsH-ycBPOVSmA>
- <xme:qUBQZiC8ko1wfDNz731IAhqHeLd0GNZRKSs1akVU-2I62vgXzp1oyM_5wywHDQwJZ
- xWb3DK1HMeFYow_GOo>
-X-ME-Received: <xmr:qUBQZtExX0FSXuaTNi27G1tENEGkj3oEugB-9ggA1ygz3nGtKOSQg4bL9A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeijedguddujecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
- uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
- ffejveenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- hithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:qUBQZiRo2csgf6l25lR3F6TeXX9IC7xorJJISGwvJbtMN81XroA3KQ>
- <xmx:qUBQZqxzlZSCT1d22_G45exRubi5T7ofRcRF7jl5xrfMJJiGfxGAlQ>
- <xmx:qUBQZo5kBdXBKZomIcrrPSjn7IZaJxymzEe7vTd82ksO1tYLQDe80g>
- <xmx:qUBQZvz1KNUswhBj4uCfmYqZq2KB0ddb8f_Zz_azqqN8_j0QYOHLPQ>
- <xmx:qkBQZuCJqrGoQBMaGbKw02iEi7OgPZuA0VhLR6VYeQ8p3HNP_S4xbp5b>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 May 2024 03:24:25 -0400 (EDT)
-Date: Fri, 24 May 2024 09:24:19 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Changqi Lu <luchangqi.123@bytedance.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
- hreitz@redhat.com, stefanha@redhat.com, fam@euphon.net,
- ronniesahlberg@gmail.com, pbonzini@redhat.com, pl@dlhnet.de,
- kbusch@kernel.org, foss@defmacro.it, philmd@linaro.org,
- pizhenwei@bytedance.com
-Subject: Re: [PATCH v3 10/11] hw/nvme: add reservation protocal command
-Message-ID: <ZlBAo_zIqL6NLsFY@cormorant.local>
-References: <20240517095218.3107672-1-luchangqi.123@bytedance.com>
- <20240517095218.3107672-11-luchangqi.123@bytedance.com>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sAPr9-0007C4-Qq
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:54 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sAPqy-0006xi-Qc
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:43 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-68194ee2174so478612a12.3
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:00:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716537639; x=1717142439;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jrghs866eeKjtAq7SYzsGMP/6e+gx3kxu9bBYPhSOJI=;
+ b=L3gYbz7+zoxSiChoI/sYWXKKEwIouQimxg8A4hquTVucxAHnrGTfmMJhTnWaD3egeh
+ eFxV4+57VWjx2V1y3LglVUFkQLk9d+exZN5KR3eMb+PRgjMLDby9z2GMJlHIvxolk+x6
+ bXFufH+AGBmdeuhwqjF1oxg16HFXpnOuqav8tywJqQm129qMJdpr3Cih13E6hfgd7TGy
+ 9PYI7VoQ78JtXJCpBfWb7H3ZjZD2aArFzBnAM61XIoTLcIIldAiXbp1JHqkd1V2sBpFj
+ vL1WbWr44G3KyxEPvZgI5uu68a2eDWQCEH74xZdJFPVf6qHYkiD3b+ffiUzginjSofZq
+ rgLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716537639; x=1717142439;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jrghs866eeKjtAq7SYzsGMP/6e+gx3kxu9bBYPhSOJI=;
+ b=VXm9i1YnQr9Kxtkw81Unm/B0S1kAoiS44WSWQp0eXh/zTDCrXButgeYk5e6Cf6lVGt
+ yIHuNQ+k+5w6JwQPSLDi4BGwqZ4DIXrw7vJZy2MxZGk5zvQxJHEEmybF1x9fzrRjTcCw
+ K0bAVPrBToAWUF5J2XrDNBRWMxPRwdnTzG6e9HPe/o4YPEIE3ywltdyclu1AGb7j911y
+ C15tNj9m4SxgwuWDtizqGWqINOJDZNKQ9I6rwtPJSfG3EL+cFcKzA3Kx6v+4hH+EDJeV
+ CX5KXoTsumPWRitmLpYfhUZM+CLkOEUkUkmqcMn/npVOJjcP9NFf1zWcnrD+vjAPLr/R
+ DQgg==
+X-Gm-Message-State: AOJu0YwqmZsrLHrl3PBdOkVZfjCGxXRh6n34ZAkGZ24iOZzSVIQP0hip
+ Kl5qTPR36FymST7nKBsnxlKwDSaYprJFM1hTEvMAOpetVpHozS+H7SRKI26EoCs=
+X-Google-Smtp-Source: AGHT+IFVj9Jk9D0ZKpyk05256iTXkAgk3RxdM/iRIw0uT35kYOTZO4/P9nOlmHmLJ+emQrVDo8qxOA==
+X-Received: by 2002:a17:90b:b11:b0:2bd:f690:67c8 with SMTP id
+ 98e67ed59e1d1-2bf5f106605mr1307214a91.27.1716537638973; 
+ Fri, 24 May 2024 01:00:38 -0700 (PDT)
+Received: from localhost ([157.82.204.135])
+ by smtp.gmail.com with UTF8SMTPSA id
+ 98e67ed59e1d1-2bdd9ed90c6sm2771083a91.8.2024.05.24.01.00.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 May 2024 01:00:38 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH RFC 0/2] meson: Pass objects to declare_dependency()
+Date: Fri, 24 May 2024 17:00:21 +0900
+Message-Id: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="4FUABoC276nDyHJ1"
-Content-Disposition: inline
-In-Reply-To: <20240517095218.3107672-11-luchangqi.123@bytedance.com>
-Received-SPF: pass client-ip=103.168.172.159; envelope-from=its@irrelevant.dk;
- helo=fhigh8-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABVJUGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDUyMT3fykrNTkkmJd45RkA/NUEwvTJPM0JaDqgqLUtMwKsEnRSkFuzkq
+ xtbUAZjVOi14AAAA=
+To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.14-dev-2c6f2
+Received-SPF: none client-ip=2607:f8b0:4864:20::529;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x529.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,273 +102,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Based-on: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
+("[PATCH v4 0/4] Fix sanitizer errors with clang 18.1.1")
 
---4FUABoC276nDyHJ1
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is changes suggested by Paolo Bonzini at:
+https://lore.kernel.org/all/CABgObfYoEFZsW-H4WJ7xW0B85OqFi932d3-DmNAb6zTohFn=Og@mail.gmail.com/
 
-On May 17 17:52, Changqi Lu wrote:
-> Add reservation acquire, reservation register,
-> reservation release and reservation report commands
-> in the nvme device layer.
->=20
-> By introducing these commands, this enables the nvme
-> device to perform reservation-related tasks, including
-> querying keys, querying reservation status, registering
-> reservation keys, initiating and releasing reservations,
-> as well as clearing and preempting reservations held by
-> other keys.
->=20
-> These commands are crucial for management and control of
-> shared storage resources in a persistent manner.
->=20
-> Signed-off-by: Changqi Lu <luchangqi.123@bytedance.com>
-> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-> ---
->  hw/nvme/ctrl.c       | 321 ++++++++++++++++++++++++++++++++++++++++++-
->  hw/nvme/nvme.h       |   4 +
->  include/block/nvme.h |  38 +++++
->  3 files changed, 362 insertions(+), 1 deletion(-)
->=20
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index 182307a48b..ac2fbd22ec 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -294,6 +294,10 @@ static const uint32_t nvme_cse_iocs_nvm[256] =3D {
->      [NVME_CMD_COMPARE]              =3D NVME_CMD_EFF_CSUPP,
->      [NVME_CMD_IO_MGMT_RECV]         =3D NVME_CMD_EFF_CSUPP,
->      [NVME_CMD_IO_MGMT_SEND]         =3D NVME_CMD_EFF_CSUPP | NVME_CMD_EF=
-F_LBCC,
-> +    [NVME_CMD_RESV_REGISTER]        =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_REPORT]          =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_ACQUIRE]         =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_RELEASE]         =3D NVME_CMD_EFF_CSUPP,
->  };
-> =20
->  static const uint32_t nvme_cse_iocs_zoned[256] =3D {
-> @@ -308,6 +312,10 @@ static const uint32_t nvme_cse_iocs_zoned[256] =3D {
->      [NVME_CMD_ZONE_APPEND]          =3D NVME_CMD_EFF_CSUPP | NVME_CMD_EF=
-F_LBCC,
->      [NVME_CMD_ZONE_MGMT_SEND]       =3D NVME_CMD_EFF_CSUPP | NVME_CMD_EF=
-F_LBCC,
->      [NVME_CMD_ZONE_MGMT_RECV]       =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_REGISTER]        =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_REPORT]          =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_ACQUIRE]         =3D NVME_CMD_EFF_CSUPP,
-> +    [NVME_CMD_RESV_RELEASE]         =3D NVME_CMD_EFF_CSUPP,
->  };
-> =20
->  static void nvme_process_sq(void *opaque);
-> @@ -1745,6 +1753,7 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
-> =20
->      switch (req->cmd.opcode) {
->      case NVME_CMD_READ:
-> +    case NVME_CMD_RESV_REPORT:
->          status =3D NVME_UNRECOVERED_READ;
->          break;
->      case NVME_CMD_FLUSH:
-> @@ -1752,6 +1761,9 @@ static void nvme_aio_err(NvmeRequest *req, int ret)
->      case NVME_CMD_WRITE_ZEROES:
->      case NVME_CMD_ZONE_APPEND:
->      case NVME_CMD_COPY:
-> +    case NVME_CMD_RESV_REGISTER:
-> +    case NVME_CMD_RESV_ACQUIRE:
-> +    case NVME_CMD_RESV_RELEASE:
->          status =3D NVME_WRITE_FAULT;
->          break;
->      default:
-> @@ -2127,7 +2139,10 @@ static inline bool nvme_is_write(NvmeRequest *req)
-> =20
->      return rw->opcode =3D=3D NVME_CMD_WRITE ||
->             rw->opcode =3D=3D NVME_CMD_ZONE_APPEND ||
-> -           rw->opcode =3D=3D NVME_CMD_WRITE_ZEROES;
-> +           rw->opcode =3D=3D NVME_CMD_WRITE_ZEROES ||
-> +           rw->opcode =3D=3D NVME_CMD_RESV_REGISTER ||
-> +           rw->opcode =3D=3D NVME_CMD_RESV_ACQUIRE ||
-> +           rw->opcode =3D=3D NVME_CMD_RESV_RELEASE;
->  }
-> =20
->  static void nvme_misc_cb(void *opaque, int ret)
-> @@ -2692,6 +2707,302 @@ static uint16_t nvme_verify(NvmeCtrl *n, NvmeRequ=
-est *req)
->      return NVME_NO_COMPLETE;
->  }
-> =20
-> +typedef struct NvmeKeyInfo {
-> +    uint64_t cr_key;
-> +    uint64_t nr_key;
-> +} NvmeKeyInfo;
-> +
-> +static uint16_t nvme_resv_register(NvmeCtrl *n, NvmeRequest *req)
-> +{
-> +    int ret;
-> +    NvmeKeyInfo key_info;
-> +    NvmeNamespace *ns =3D req->ns;
-> +    uint32_t cdw10 =3D le32_to_cpu(req->cmd.cdw10);
-> +    bool ignore_key =3D cdw10 >> 3 & 0x1;
-> +    uint8_t action =3D cdw10 & 0x7;
-> +    uint8_t ptpl =3D cdw10 >> 30 & 0x3;
-> +    bool aptpl;
-> +
-> +    switch (ptpl) {
-> +    case NVME_RESV_PTPL_NO_CHANGE:
-> +        aptpl =3D (ns->id_ns.rescap & NVME_PR_CAP_PTPL) ? true : false;
-> +        break;
-> +    case NVME_RESV_PTPL_DISABLE:
-> +        aptpl =3D false;
-> +        break;
-> +    case NVME_RESV_PTPL_ENABLE:
-> +        aptpl =3D true;
-> +        break;
-> +    default:
-> +        return NVME_INVALID_FIELD;
-> +    }
-> +
-> +    ret =3D nvme_h2c(n, (uint8_t *)&key_info, sizeof(NvmeKeyInfo), req);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    switch (action) {
-> +    case NVME_RESV_REGISTER_ACTION_REGISTER:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, 0,
-> +                                         key_info.nr_key, 0, aptpl,
-> +                                         ignore_key, nvme_misc_cb,
-> +                                         req);
-> +        break;
-> +    case NVME_RESV_REGISTER_ACTION_UNREGISTER:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, key_info.cr_=
-key, 0,
-> +                                         0, aptpl, ignore_key,
-> +                                         nvme_misc_cb, req);
-> +        break;
-> +    case NVME_RESV_REGISTER_ACTION_REPLACE:
-> +        req->aiocb =3D blk_aio_pr_register(ns->blkconf.blk, key_info.cr_=
-key,
-> +                                         key_info.nr_key, 0, aptpl, igno=
-re_key,
-> +                                         nvme_misc_cb, req);
-> +        break;
-> +    default:
-> +        return NVME_INVALID_FIELD;
-> +    }
-> +
-> +    return NVME_NO_COMPLETE;
-> +}
-> +
-> +static uint16_t nvme_resv_release(NvmeCtrl *n, NvmeRequest *req)
-> +{
-> +    int ret;
-> +    uint64_t cr_key;
-> +    NvmeNamespace *ns =3D req->ns;
-> +    uint32_t cdw10 =3D le32_to_cpu(req->cmd.cdw10);
-> +    uint8_t action =3D cdw10 & 0x7;
-> +    NVMEResvType type =3D cdw10 >> 8 & 0xff;
-> +
-> +    ret =3D nvme_h2c(n, (uint8_t *)&cr_key, sizeof(cr_key), req);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    switch (action) {
-> +    case NVME_RESV_RELEASE_ACTION_RELEASE:
-> +        req->aiocb =3D blk_aio_pr_release(ns->blkconf.blk, cr_key,
-> +                                        nvme_pr_type_to_block(type),
-> +                                        nvme_misc_cb, req);
-> +        break;
-> +    case NVME_RESV_RELEASE_ACTION_CLEAR:
-> +        req->aiocb =3D blk_aio_pr_clear(ns->blkconf.blk, cr_key,
-> +                                      nvme_misc_cb, req);
-> +        break;
-> +    default:
-> +        return NVME_INVALID_FIELD;
-> +    }
-> +
-> +    return NVME_NO_COMPLETE;
-> +}
-> +
-> +static uint16_t nvme_resv_acquire(NvmeCtrl *n, NvmeRequest *req)
-> +{
-> +    int ret;
-> +    NvmeKeyInfo key_info;
-> +    NvmeNamespace *ns =3D req->ns;
-> +    uint32_t cdw10 =3D le32_to_cpu(req->cmd.cdw10);
-> +    uint8_t action =3D cdw10 & 0x7;
-> +    NVMEResvType type =3D cdw10 >> 8 & 0xff;
-> +
-> +    ret =3D nvme_h2c(n, (uint8_t *)&key_info, sizeof(NvmeKeyInfo), req);
-> +    if (ret) {
-> +        return ret;
-> +    }
-> +
-> +    switch (action) {
-> +    case NVME_RESV_ACQUIRE_ACTION_ACQUIRE:
-> +        req->aiocb =3D blk_aio_pr_reserve(ns->blkconf.blk, key_info.cr_k=
-ey,
-> +                                        nvme_pr_type_to_block(type),
-> +                                        nvme_misc_cb, req);
-> +        break;
-> +    case NVME_RESV_ACQUIRE_ACTION_PREEMPT:
-> +        req->aiocb =3D blk_aio_pr_preempt(ns->blkconf.blk,
-> +                     key_info.cr_key, key_info.nr_key,
-> +                     nvme_pr_type_to_block(type),
-> +                     false, nvme_misc_cb, req);
-> +        break;
-> +    case NVME_RESV_ACQUIRE_ACTION_PREEMPT_AND_ABORT:
-> +        req->aiocb =3D blk_aio_pr_preempt(ns->blkconf.blk, key_info.cr_k=
-ey,
-> +                                        key_info.nr_key, type, true,
-> +                                        nvme_misc_cb, req);
-> +        break;
-> +    default:
-> +        return NVME_INVALID_FIELD;
-> +    }
-> +
-> +    return NVME_NO_COMPLETE;
-> +}
-> +
-> +typedef struct NvmeResvKeys {
-> +    uint32_t generation;
-> +    uint32_t num_keys;
-> +    uint64_t *keys;
-> +    NvmeRequest *req;
-> +} NvmeResvKeys;
-> +
-> +typedef struct NvmeReadReservation {
-> +    uint32_t generation;
-> +    uint64_t key;
-> +    BlockPrType type;
-> +    NvmeRequest *req;
-> +    NvmeResvKeys *keys_info;
-> +} NvmeReadReservation;
-> +
-> +static int _nvme_resv_read_reservation_cb(NvmeReadReservation *reservati=
-on)
+Unfortunately it broke builds on my system. Below are the errors I
+observed:
 
-Nit: you can drop the leading underscore.
+clang  -o qemu-img libauthz.a.p/authz_base.c.o libauthz.a.p/authz_list.c.o libauthz.a.p/authz_listfile.c.o libauthz.a.p/authz_simple.c.o libauthz.a.p/authz_pamacct.c.o libqom.a.p/qom_container.c.o libqom.a.p/qom_object.c.o libqom.a.p/qom_object_interfaces.c.o libqom.a.p/qom_qom-qobject.c.o libblock.a.p/block.c.o libblock.a.p/blockjob.c.o libblock.a.p/job.c.o libblock.a.p/qemu-io-cmds.c.o libblock.a.p/replication.c.o libblock.a.p/nbd_client.c.o libblock.a.p/nbd_client-connection.c.o libblock.a.p/nbd_common.c.o libblock.a.p/scsi_utils.c.o libblock.a.p/scsi_pr-manager.c.o libblock.a.p/scsi_pr-manager-helper.c.o libblock.a.p/block_accounting.c.o libblock.a.p/block_aio_task.c.o libblock.a.p/block_amend.c.o libblock.a.p/block_backup.c.o libblock.a.p/block_blkdebug.c.o libblock.a.p/block_blklogwrites.c.o libblock.a.p/block_blkverify.c.o libblock.a.p/block_block-backend.c.o libblock.a.p/block_block-copy.c.o libblock.a.p/block_commit.c.o libblock.a.p/block_copy-before-write.c.o libblock.a.p/block_copy-on-read.c.o libblock.a.p/block_create.c.o libblock.a.p/block_crypto.c.o libblock.a.p/block_dirty-bitmap.c.o libblock.a.p/block_filter-compress.c.o libblock.a.p/block_graph-lock.c.o libblock.a.p/block_io.c.o libblock.a.p/block_mirror.c.o libblock.a.p/block_nbd.c.o libblock.a.p/block_null.c.o libblock.a.p/block_preallocate.c.o libblock.a.p/block_progress_meter.c.o libblock.a.p/block_qapi.c.o libblock.a.p/block_qcow2.c.o libblock.a.p/block_qcow2-bitmap.c.o libblock.a.p/block_qcow2-cache.c.o libblock.a.p/block_qcow2-cluster.c.o libblock.a.p/block_qcow2-refcount.c.o libblock.a.p/block_qcow2-snapshot.c.o libblock.a.p/block_qcow2-threads.c.o libblock.a.p/block_quorum.c.o libblock.a.p/block_raw-format.c.o libblock.a.p/block_reqlist.c.o libblock.a.p/block_snapshot.c.o libblock.a.p/block_snapshot-access.c.o libblock.a.p/block_throttle.c.o libblock.a.p/block_throttle-groups.c.o libblock.a.p/block_write-threshold.c.o libblock.a.p/block_qcow.c.o libblock.a.p/block_vdi.c.o libblock.a.p/block_vhdx-endian.c.o libblock.a.p/block_vhdx-log.c.o libblock.a.p/block_vhdx.c.o libblock.a.p/block_vmdk.c.o libblock.a.p/block_vpc.c.o libblock.a.p/block_cloop.c.o libblock.a.p/block_bochs.c.o libblock.a.p/block_vvfat.c.o libblock.a.p/block_dmg.c.o libblock.a.p/block_qed-check.c.o libblock.a.p/block_qed-cluster.c.o libblock.a.p/block_qed-l2-cache.c.o libblock.a.p/block_qed-table.c.o libblock.a.p/block_qed.c.o libblock.a.p/block_parallels.c.o libblock.a.p/block_parallels-ext.c.o libblock.a.p/block_file-posix.c.o libblock.a.p/block_nvme.c.o libblock.a.p/block_replication.c.o libblock.a.p/block_stream.c.o libblock.a.p/block_monitor_bitmap-qmp-cmds.c.o libblock.a.p/block_curl.c.o libblock.a.p/block_ssh.c.o libblock.a.p/block_dmg-bz2.c.o libblock.a.p/meson-generated_.._block_block-gen.c.o libcrypto.a.p/crypto_afsplit.c.o libcrypto.a.p/crypto_akcipher.c.o libcrypto.a.p/crypto_block-luks.c.o libcrypto.a.p/crypto_block-qcow.c.o libcrypto.a.p/crypto_block.c.o libcrypto.a.p/crypto_cipher.c.o libcrypto.a.p/crypto_der.c.o libcrypto.a.p/crypto_hash.c.o libcrypto.a.p/crypto_hmac.c.o libcrypto.a.p/crypto_ivgen-essiv.c.o libcrypto.a.p/crypto_ivgen-plain.c.o libcrypto.a.p/crypto_ivgen-plain64.c.o libcrypto.a.p/crypto_ivgen.c.o libcrypto.a.p/crypto_pbkdf.c.o libcrypto.a.p/crypto_secret_common.c.o libcrypto.a.p/crypto_secret.c.o libcrypto.a.p/crypto_tlscreds.c.o libcrypto.a.p/crypto_tlscredsanon.c.o libcrypto.a.p/crypto_tlscredspsk.c.o libcrypto.a.p/crypto_tlscredsx509.c.o libcrypto.a.p/crypto_tlssession.c.o libcrypto.a.p/crypto_rsakey.c.o libcrypto.a.p/crypto_hash-gnutls.c.o libcrypto.a.p/crypto_hmac-gnutls.c.o libcrypto.a.p/crypto_pbkdf-gnutls.c.o libcrypto.a.p/crypto_secret_keyring.c.o libio.a.p/io_channel-buffer.c.o libio.a.p/io_channel-command.c.o libio.a.p/io_channel-file.c.o libio.a.p/io_channel-null.c.o libio.a.p/io_channel-socket.c.o libio.a.p/io_channel-tls.c.o libio.a.p/io_channel-util.c.o libio.a.p/io_channel-watch.c.o libio.a.p/io_channel-websock.c.o libio.a.p/io_channel.c.o libio.a.p/io_dns-resolver.c.o libio.a.p/io_net-listener.c.o libio.a.p/io_task.c.o libevent-loop-base.a.p/event-loop-base.c.o qemu-img.p/qemu-img.c.o -Werror -flto -Wl,--as-needed -Wl,--no-undefined -pie -fsanitize=cfi-icall -fsanitize-cfi-icall-generalize-pointers -fsanitize=undefined -fsanitize=address -fstack-protector-strong -Wl,-z,relro -Wl,-z,now -fuse-ld=lld -Wl,--start-group libqemuutil.a subprojects/libvhost-user/libvhost-user-glib.a subprojects/libvhost-user/libvhost-user.a @block.syms /usr/lib64/libgio-2.0.so /usr/lib64/libgobject-2.0.so /usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -pthread /usr/lib64/libgnutls.so -lm /usr/lib64/libpixman-1.so -Wl,--end-group
+ld.lld: error: undefined symbol: pam_start
+>>> referenced by pamacct.c:40 (/home/me/q/var/qemu/build/../authz/pamacct.c:40)
+>>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
 
-But I have no problems introducing this to hw/nvme, so
+ld.lld: error: undefined symbol: pam_strerror
+>>> referenced by pamacct.c:45 (/home/me/q/var/qemu/build/../authz/pamacct.c:45)
+>>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
+>>> referenced by pamacct.c:53 (/home/me/q/var/qemu/build/../authz/pamacct.c:53)
+>>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
 
-Acked-by: Klaus Jensen <k.jensen@samsung.com>
+ld.lld: error: undefined symbol: pam_acct_mgmt
+>>> referenced by pamacct.c:50 (/home/me/q/var/qemu/build/../authz/pamacct.c:50)
+>>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
 
-I will give this a proper review once reviews trickle in on the core
-block layer changes (since this obviously depends on that).
+ld.lld: error: undefined symbol: pam_end
+>>> referenced by pamacct.c:51 (/home/me/q/var/qemu/build/../authz/pamacct.c:51)
+>>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
 
---4FUABoC276nDyHJ1
-Content-Type: application/pgp-signature; name="signature.asc"
+ld.lld: error: undefined symbol: ZSTD_createCCtx
+>>> referenced by qcow2-threads.c:203 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:203)
+>>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
 
------BEGIN PGP SIGNATURE-----
+ld.lld: error: undefined symbol: ZSTD_compressStream2
+>>> referenced by qcow2-threads.c:225 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:225)
+>>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmZQQKMACgkQTeGvMW1P
-DemoywgAkF/wbcBAMGeRkAPh10FgYRYrUnnG4byxwY3zSBWNzLZphfKYwdm3Oyjt
-wRlln/p9MsK+DKv0dzx1ORk6+IESyezn/37vrq7YCmqBzF/Qqo6iZrJWix0ZhyIh
-vq2Kywzf+1GNDN254ZXjhNXC7mF5p8JsNGSsadTdGlskOy/L2Mr+WpO04MPcis9H
-2rVyVocRYzFgq1GQQCt8fvkuYqVQyIkiqO0SFNHMw61JLPopT4Y8ds5QTv8TXfg4
-TFPjnov7z8IAbSFypCLmQcIxUZRNH7hURXdvZLm5LXx4SYJpMAhIvcU31mr4Ynb9
-tWDwA5vVPxltm62zP+UfDiEfWUzViQ==
-=EB03
------END PGP SIGNATURE-----
+ld.lld: error: undefined symbol: ZSTD_freeCCtx
+>>> referenced by qcow2-threads.c:240 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:240)
+>>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
 
---4FUABoC276nDyHJ1--
+ld.lld: error: undefined symbol: deflateInit2_
+>>> referenced by qcow2-threads.c:101 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:101)
+>>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
+>>> referenced by qcow.c:1081 (/home/me/q/var/qemu/build/../block/qcow.c:1081)
+>>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
+
+ld.lld: error: undefined symbol: deflate
+>>> referenced by qcow2-threads.c:116 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:116)
+>>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
+>>> referenced by qcow.c:1094 (/home/me/q/var/qemu/build/../block/qcow.c:1094)
+>>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
+
+ld.lld: error: undefined symbol: deflateEnd
+>>> referenced by qcow2-threads.c:123 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:123)
+>>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
+>>> referenced by qcow.c:1102 (/home/me/q/var/qemu/build/../block/qcow.c:1102)
+>>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
+>>> referenced by qcow.c:1096 (/home/me/q/var/qemu/build/../block/qcow.c:1096)
+>>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
+
+ld.lld: error: undefined symbol: ZSTD_createDCtx
+>>> referenced by qcow2-threads.c:271 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:271)
+>>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
+
+ld.lld: error: undefined symbol: ZSTD_decompressStream
+>>> referenced by qcow2-threads.c:291 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:291)
+>>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
+
+ld.lld: error: undefined symbol: ZSTD_isError
+>>> referenced by qcow2-threads.c:293 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:293)
+>>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
+
+ld.lld: error: undefined symbol: ZSTD_freeDCtx
+>>> referenced by qcow2-threads.c:322 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:322)
+>>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
+>>> referenced by qcow2-threads.c:322 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:322)
+>>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
+
+ld.lld: error: undefined symbol: inflateInit2_
+>>> referenced by qcow2-threads.c:152 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:152)
+>>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
+>>> referenced by qcow.c:581 (/home/me/q/var/qemu/build/../block/qcow.c:581)
+>>>               qemu-img.lto.o:(decompress_cluster)
+
+ld.lld: error: undefined symbol: inflate
+>>> referenced by qcow2-threads.c:157 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:157)
+>>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
+>>> referenced by qcow.c:584 (/home/me/q/var/qemu/build/../block/qcow.c:584)
+>>>               qemu-img.lto.o:(decompress_cluster)
+>>> referenced by cloop.c:244 (/home/me/q/var/qemu/build/../block/cloop.c:244)
+>>>               qemu-img.lto.o:(cloop_read_block)
+>>> referenced 3 more times
+
+ld.lld: error: undefined symbol: inflateEnd
+>>> referenced by qcow2-threads.c:169 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:169)
+>>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
+>>> referenced by qcow.c:0 (/home/me/q/var/qemu/build/../block/qcow.c:0)
+>>>               qemu-img.lto.o:(decompress_cluster)
+>>> referenced by qcow.c:0 (/home/me/q/var/qemu/build/../block/qcow.c:0)
+>>>               qemu-img.lto.o:(decompress_cluster)
+>>> referenced 2 more times
+
+ld.lld: error: undefined symbol: uncompress
+>>> referenced by vmdk.c:1958 (/home/me/q/var/qemu/build/../block/vmdk.c:1958)
+>>>               qemu-img.lto.o:(vmdk_read_extent)
+
+ld.lld: error: undefined symbol: compress
+>>> referenced by vmdk.c:1865 (/home/me/q/var/qemu/build/../block/vmdk.c:1865)
+>>>               qemu-img.lto.o:(vmdk_write_extent)
+
+ld.lld: error: undefined symbol: inflateReset
+>>> referenced by cloop.c:240 (/home/me/q/var/qemu/build/../block/cloop.c:240)
+>>>               qemu-img.lto.o:(cloop_read_block)
+>>> referenced by cloop.c:240 (/home/me/q/var/qemu/build/../block/cloop.c:240)
+>>>               qemu-img.lto.o:(cloop_read_block)
+>>> referenced by dmg.c:658 (/home/me/q/var/qemu/build/../block/dmg.c:658)
+>>>               qemu-img.lto.o:(dmg_read_chunk)
+>>> referenced 1 more times
+
+ld.lld: error: too many errors emitted, stopping now (use --error-limit=0 to see all errors)
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Akihiko Odaki (2):
+      meson: Pass objects to declare_dependency()
+      Revert "meson: Propagate gnutls dependency"
+
+ docs/devel/build-system.rst           |  2 +-
+ meson.build                           | 31 ++++++++++++++++---------------
+ block/meson.build                     |  2 +-
+ gdbstub/meson.build                   |  4 ++--
+ io/meson.build                        |  2 +-
+ storage-daemon/meson.build            |  2 +-
+ subprojects/libvhost-user/meson.build |  2 +-
+ tests/qtest/libqos/meson.build        |  2 +-
+ ui/meson.build                        |  2 +-
+ 9 files changed, 25 insertions(+), 24 deletions(-)
+---
+base-commit: 4a207ef32de97bc785ced1987eacab7665b49420
+change-id: 20240524-objects-3dc07e485b7f
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
