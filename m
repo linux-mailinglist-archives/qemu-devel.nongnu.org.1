@@ -2,64 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E088E8CE510
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 14:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA058CE560
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 14:30:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sATjA-0002ll-9U; Fri, 24 May 2024 08:08:52 -0400
+	id 1sAU2q-0007rE-3E; Fri, 24 May 2024 08:29:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sATj7-0002ki-Bs; Fri, 24 May 2024 08:08:49 -0400
-Received: from dedi548.your-server.de ([85.10.215.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sATj4-0006ZR-Jo; Fri, 24 May 2024 08:08:49 -0400
-Received: from sslproxy02.your-server.de ([78.47.166.47])
- by dedi548.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96.2) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sATj0-000J16-0T; Fri, 24 May 2024 14:08:42 +0200
-Received: from [82.100.198.138] (helo=mail.embedded-brains.de)
- by sslproxy02.your-server.de with esmtpsa (TLS1.3) tls TLS_AES_256_GCM_SHA384
- (Exim 4.96) (envelope-from <sebastian.huber@embedded-brains.de>)
- id 1sATj0-000C70-2k; Fri, 24 May 2024 14:08:42 +0200
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id BB3314801F5;
- Fri, 24 May 2024 14:08:41 +0200 (CEST)
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10032)
- with ESMTP id uYhxV0xiVvZG; Fri, 24 May 2024 14:08:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by mail.embedded-brains.de (Postfix) with ESMTP id 530C14800E9;
- Fri, 24 May 2024 14:08:41 +0200 (CEST)
-X-Virus-Scanned: amavis at zimbra.eb.localhost
-Received: from mail.embedded-brains.de ([127.0.0.1])
- by localhost (zimbra.eb.localhost [127.0.0.1]) (amavis, port 10026)
- with ESMTP id xN--LMYVylgN; Fri, 24 May 2024 14:08:41 +0200 (CEST)
-Received: from zimbra.eb.localhost (unknown [192.168.96.242])
- by mail.embedded-brains.de (Postfix) with ESMTPSA id 1EBCF4801E3;
- Fri, 24 May 2024 14:08:41 +0200 (CEST)
-From: Sebastian Huber <sebastian.huber@embedded-brains.de>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2 2/2] hw/arm/xilinx_zynq: Support up to two CPU cores
-Date: Fri, 24 May 2024 14:08:37 +0200
-Message-Id: <20240524120837.10057-3-sebastian.huber@embedded-brains.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240524120837.10057-1-sebastian.huber@embedded-brains.de>
-References: <20240524120837.10057-1-sebastian.huber@embedded-brains.de>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sAU2j-0007qS-SJ; Fri, 24 May 2024 08:29:05 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sAU2i-0001xL-A6; Fri, 24 May 2024 08:29:05 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 7B85B33ACE;
+ Fri, 24 May 2024 12:29:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716553740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GwdFRpqOiSlyVgNzU+bB120ZKhdA9KvxFBlXcJBuZdI=;
+ b=smOEGgNIgfoCw15TtO6ewomIXjFqrZTGA5t4Zot5yFFez7L4Za+t5uMiy8DqbfO4IzXbfe
+ eMO74JBoj1uxIS7YIHN8y3OkOtDEmICZ2BYOXjGUHzvbXyJvTSFuP+XfUp+Zm4j6qMe4hm
+ CjIyWQDyY8N5WQuQd2tNqZJuX39jB3Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716553740;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GwdFRpqOiSlyVgNzU+bB120ZKhdA9KvxFBlXcJBuZdI=;
+ b=d/b9Fswcpgt4O58PiTq/ZXRxGa26qLvfdRCyU1S2/4zJu3AUaRigHHfIeOeaEI+n+UWfHV
+ FXAVB/q00V1xelAw==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=smOEGgNI;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="d/b9Fswc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716553740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GwdFRpqOiSlyVgNzU+bB120ZKhdA9KvxFBlXcJBuZdI=;
+ b=smOEGgNIgfoCw15TtO6ewomIXjFqrZTGA5t4Zot5yFFez7L4Za+t5uMiy8DqbfO4IzXbfe
+ eMO74JBoj1uxIS7YIHN8y3OkOtDEmICZ2BYOXjGUHzvbXyJvTSFuP+XfUp+Zm4j6qMe4hm
+ CjIyWQDyY8N5WQuQd2tNqZJuX39jB3Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716553740;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GwdFRpqOiSlyVgNzU+bB120ZKhdA9KvxFBlXcJBuZdI=;
+ b=d/b9Fswcpgt4O58PiTq/ZXRxGa26qLvfdRCyU1S2/4zJu3AUaRigHHfIeOeaEI+n+UWfHV
+ FXAVB/q00V1xelAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 089FF13A6B;
+ Fri, 24 May 2024 12:28:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id EktSMAuIUGYKHgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 24 May 2024 12:28:59 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Thomas Huth <thuth@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-s390x@nongnu.org,
+ qemu-ppc@nongnu.org
+Subject: Re: [PATCH] tests/qtest/migration-test: Run some basic tests on
+ s390x and ppc64 with TCG, too
+In-Reply-To: <0842ead9-6bb2-48c8-a2e6-09c843411ceb@redhat.com>
+References: <20240522091255.417263-1-thuth@redhat.com>
+ <D1HFPB97OMKO.1ALCD8QC6OJ4P@gmail.com>
+ <0842ead9-6bb2-48c8-a2e6-09c843411ceb@redhat.com>
+Date: Fri, 24 May 2024 09:28:57 -0300
+Message-ID: <87ttingzqu.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Authenticated-Sender: smtp-embedded@poldi-networks.de
-X-Virus-Scanned: Clear (ClamAV 1.0.3/27285/Fri May 24 10:30:55 2024)
-Received-SPF: pass client-ip=85.10.215.148;
- envelope-from=sebastian.huber@embedded-brains.de; helo=dedi548.your-server.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+X-Spamd-Result: default: False [-5.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ FREEMAIL_TO(0.00)[redhat.com,gmail.com,nongnu.org];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ TO_DN_SOME(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_TRACE(0.00)[0:+]; ARC_NA(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; DKIM_TRACE(0.00)[suse.de:+];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RCVD_COUNT_TWO(0.00)[2]; FROM_EQ_ENVFROM(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[];
+ RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+ RCPT_COUNT_SEVEN(0.00)[7]; MISSING_XM_UA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 7B85B33ACE
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -5.51
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,139 +132,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Zynq 7000 SoCs contain two Arm Cortex-A9 MPCore (the Zynq 7000S have =
-only
-one core).  Add support for up to two simulated cores.
+Thomas Huth <thuth@redhat.com> writes:
 
-Signed-off-by: Sebastian Huber <sebastian.huber@embedded-brains.de>
----
- hw/arm/xilinx_zynq.c | 54 +++++++++++++++++++++++++++-----------------
- 1 file changed, 33 insertions(+), 21 deletions(-)
+> On 24/05/2024 02.05, Nicholas Piggin wrote:
+>> On Wed May 22, 2024 at 7:12 PM AEST, Thomas Huth wrote:
+>>> On s390x, we recently had a regression that broke migration / savevm
+>>> (see commit bebe9603fc ("hw/intc/s390_flic: Fix crash that occurs when
+>>> saving the machine state"). The problem was merged without being noticed
+>>> since we currently do not run any migration / savevm related tests on
+>>> x86 hosts.
+>>> While we currently cannot run all migration tests for the s390x target
+>>> on x86 hosts yet (due to some unresolved issues with TCG), we can at
+>>> least run some of the non-live tests to avoid such problems in the future.
+>>> Thus enable the "analyze-script" and the "bad_dest" tests before checking
+>>> for KVM on s390x or ppc64 (this also fixes the problem that the
+>>> "analyze-script" test was not run on s390x at all anymore since it got
+>>> disabled again by accident in a previous refactoring of the code).
+>> 
+>> ppc64 is working for me, can it be enabled fully, or is it still
+>> breaking somewhere? FWIW I have a patch to change it from using
+>> open-firmware commands to a boot file which speeds it up.
+>
+> IIRC last time that I tried it was working fine for me, too, but getting a 
+> speedup here first would be very welcome since using the Forth code slows 
+> down the whole testing quite a bit.
 
-diff --git a/hw/arm/xilinx_zynq.c b/hw/arm/xilinx_zynq.c
-index 0abb62f131..ac30026040 100644
---- a/hw/arm/xilinx_zynq.c
-+++ b/hw/arm/xilinx_zynq.c
-@@ -84,9 +84,12 @@ static const int dma_irqs[8] =3D {
-     0xe3401000 + ARMV7_IMM16(extract32((val), 16, 16)), /* movt r1 ... *=
-/ \
-     0xe5801000 + (addr)
-=20
-+#define ZYNQ_MAX_CPUS 2
-+
- struct ZynqMachineState {
-     MachineState parent;
-     Clock *ps_clk;
-+    ARMCPU *cpu[ZYNQ_MAX_CPUS];
- };
-=20
- static void zynq_write_board_setup(ARMCPU *cpu,
-@@ -176,13 +179,13 @@ static inline int zynq_init_spi_flashes(uint32_t ba=
-se_addr, qemu_irq irq,
- static void zynq_init(MachineState *machine)
- {
-     ZynqMachineState *zynq_machine =3D ZYNQ_MACHINE(machine);
--    ARMCPU *cpu;
-     MemoryRegion *address_space_mem =3D get_system_memory();
-     MemoryRegion *ocm_ram =3D g_new(MemoryRegion, 1);
-     DeviceState *dev, *slcr;
-     SysBusDevice *busdev;
-     qemu_irq pic[64];
-     int n;
-+    unsigned int smp_cpus =3D machine->smp.cpus;
-=20
-     /* max 2GB ram */
-     if (machine->ram_size > 2 * GiB) {
-@@ -190,21 +193,26 @@ static void zynq_init(MachineState *machine)
-         exit(EXIT_FAILURE);
-     }
-=20
--    cpu =3D ARM_CPU(object_new(machine->cpu_type));
-+    for (n =3D 0; n < smp_cpus; n++) {
-+        Object *cpuobj =3D object_new(machine->cpu_type);
-=20
--    /* By default A9 CPUs have EL3 enabled.  This board does not
--     * currently support EL3 so the CPU EL3 property is disabled before
--     * realization.
--     */
--    if (object_property_find(OBJECT(cpu), "has_el3")) {
--        object_property_set_bool(OBJECT(cpu), "has_el3", false, &error_f=
-atal);
--    }
-+        /*
-+         * By default A9 CPUs have EL3 enabled.  This board does not cur=
-rently
-+         * support EL3 so the CPU EL3 property is disabled before realiz=
-ation.
-+         */
-+        if (object_property_find(cpuobj, "has_el3")) {
-+            object_property_set_bool(cpuobj, "has_el3", false, &error_fa=
-tal);
-+        }
-=20
--    object_property_set_int(OBJECT(cpu), "midr", ZYNQ_BOARD_MIDR,
--                            &error_fatal);
--    object_property_set_int(OBJECT(cpu), "reset-cbar", MPCORE_PERIPHBASE=
-,
--                            &error_fatal);
--    qdev_realize(DEVICE(cpu), NULL, &error_fatal);
-+        object_property_set_int(cpuobj, "midr", ZYNQ_BOARD_MIDR,
-+                                &error_fatal);
-+        object_property_set_int(cpuobj, "reset-cbar", MPCORE_PERIPHBASE,
-+                                &error_fatal);
-+
-+        qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
-+
-+        zynq_machine->cpu[n] =3D ARM_CPU(cpuobj);
-+    }
-=20
-     /* DDR remapped to address zero.  */
-     memory_region_add_subregion(address_space_mem, 0, machine->ram);
-@@ -237,15 +245,19 @@ static void zynq_init(MachineState *machine)
-     sysbus_mmio_map(SYS_BUS_DEVICE(slcr), 0, 0xF8000000);
-=20
-     dev =3D qdev_new(TYPE_A9MPCORE_PRIV);
--    qdev_prop_set_uint32(dev, "num-cpu", 1);
-+    qdev_prop_set_uint32(dev, "num-cpu", smp_cpus);
-     busdev =3D SYS_BUS_DEVICE(dev);
-     sysbus_realize_and_unref(busdev, &error_fatal);
-     sysbus_mmio_map(busdev, 0, MPCORE_PERIPHBASE);
-+    zynq_binfo.gic_cpu_if_addr =3D MPCORE_PERIPHBASE + 0x100;
-     sysbus_create_varargs("l2x0", MPCORE_PERIPHBASE + 0x2000, NULL);
--    sysbus_connect_irq(busdev, 0,
--                       qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_IRQ));
--    sysbus_connect_irq(busdev, 1,
--                       qdev_get_gpio_in(DEVICE(cpu), ARM_CPU_FIQ));
-+    for (n =3D 0; n < smp_cpus; n++) {
-+        DeviceState *cpudev =3D DEVICE(OBJECT(zynq_machine->cpu[n]));
-+        sysbus_connect_irq(busdev, (2 * n) + 0,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
-+        sysbus_connect_irq(busdev, (2 * n) + 1,
-+                           qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
-+    }
-=20
-     for (n =3D 0; n < 64; n++) {
-         pic[n] =3D qdev_get_gpio_in(dev, n);
-@@ -350,7 +362,7 @@ static void zynq_init(MachineState *machine)
-     zynq_binfo.board_setup_addr =3D BOARD_SETUP_ADDR;
-     zynq_binfo.write_board_setup =3D zynq_write_board_setup;
-=20
--    arm_load_kernel(cpu, machine, &zynq_binfo);
-+    arm_load_kernel(zynq_machine->cpu[0], machine, &zynq_binfo);
- }
-=20
- static void zynq_machine_class_init(ObjectClass *oc, void *data)
-@@ -362,7 +374,7 @@ static void zynq_machine_class_init(ObjectClass *oc, =
-void *data)
-     MachineClass *mc =3D MACHINE_CLASS(oc);
-     mc->desc =3D "Xilinx Zynq Platform Baseboard for Cortex-A9";
-     mc->init =3D zynq_init;
--    mc->max_cpus =3D 1;
-+    mc->max_cpus =3D ZYNQ_MAX_CPUS;
-     mc->no_sdcard =3D 1;
-     mc->ignore_memory_transaction_failures =3D true;
-     mc->valid_cpu_types =3D valid_cpu_types;
---=20
-2.35.3
+Yeah, we're all gonna get kicked from the project if we add 10m to make
+check in CI. =)
 
+@Nick, send us that patch and I'd be glad to reenable the tests.
 
