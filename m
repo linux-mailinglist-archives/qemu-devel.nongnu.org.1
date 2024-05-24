@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E068CE210
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A328CE20B
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:11:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAQ10-0005kK-2y; Fri, 24 May 2024 04:11:02 -0400
+	id 1sAQ13-0005og-Ga; Fri, 24 May 2024 04:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0w-0005aC-63
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:58 -0400
+ id 1sAQ0y-0005hP-6u
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:11:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAQ0u-0000dz-As
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:57 -0400
+ id 1sAQ0w-0000eB-EW
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:10:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716538255;
+ s=mimecast20190719; t=1716538256;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PFmVAnU2PZErTRTu3pvGi8VA91HPuCkI7gZtNWLo2q4=;
- b=KNpbIllG5O3Sgb8eO8IYxi06GXDO0C71sJ/N20UpPiFGbg5RevQyhlnw1NAivLIJIxjM3U
- 6W3BTcH8C2b4XxbkpfRBUDBFbgGFJC24awMOWBV1bzxUTjwMJO81x85qXJm9R7zqs7xwpX
- TeMseAKbT8Q7erjRkAW/2+awi51I35M=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7MYcC6Q1D9ri/NOlxqffS6MJV/c4iIBiGqbzxlhkUs8=;
+ b=Ay+OThu2rndQKOlKS25Hm22kq1s147kGHE0bN8lWA04XIVcdGrvPdIKPCENBcyjvwoYPA2
+ 3PqYK42ahzRuBr+w95NlpX5WP/xec0woxnM9cpWl/lUha/ulPExVsPjeHjec+2/jp2rGkm
+ ene2HtqLC9gzXf282V9txkfphO7mpMI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-4e7iuc5QMBCfBSqkylKO3w-1; Fri, 24 May 2024 04:10:54 -0400
-X-MC-Unique: 4e7iuc5QMBCfBSqkylKO3w-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a6269ad7288so23409666b.2
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:53 -0700 (PDT)
+ us-mta-153-ySVwXInENpKltwv6MMbu_w-1; Fri, 24 May 2024 04:10:55 -0400
+X-MC-Unique: ySVwXInENpKltwv6MMbu_w-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6266c77502so28181966b.1
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:10:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716538252; x=1717143052;
+ d=1e100.net; s=20230601; t=1716538253; x=1717143053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PFmVAnU2PZErTRTu3pvGi8VA91HPuCkI7gZtNWLo2q4=;
- b=PmpNcwT3c76c1XHF89vye7JdsjZInBkjDtWsn6jks8wqlHX91mv62Z/Zuy1ofi/YUO
- yUM5QCSZYsZylJErQut1fk9M5dEOU80if8loY6as3f3v1qUCrsfH0BtB9/0qT9XUIIXZ
- ohclG5ugttbsquKwmID/N3HJrA3ONukD+FvzyhioyPMaKDRuNU4Nz/Akq/A7ECzA9lVp
- 2f/Zzt8woujbGdlbUGjJwUgKnw+veDnDdXnw6/YnxiokWQWbOxZ41IWw5ZkZVjfBxeRv
- NWJdjjFsvinN4smI5EjZeIsJkjBqqWFKp41xz0GsBgrNcz9b49FLhfL+19lbWolZeMXh
- pTug==
-X-Gm-Message-State: AOJu0Yza3HO0Yix5puj/zryIcTvVPILbM1H/fQvFxVzyhyirPrz7P5xg
- FNHbKT2VZqK2WWx4S7E/tSHsD2B1guogjsqpwS5rVHh437xsmEta2/+eBj7iaC0/7oMbwoz5Hjg
- 9+jEtfeaTvSYs+zjxqOJp2UwEvBS8DW2fvHFaMgrD0D2n8Vq3BO/EM61/r3Z8FuG8mkbNaUGW/9
- G5+CpXI/0s7gS+PgZxgKjEqM55sK7GlTzOxXhY
-X-Received: by 2002:a17:906:d147:b0:a59:9f4e:4e3b with SMTP id
- a640c23a62f3a-a62641a3aafmr93174466b.2.1716538252234; 
+ bh=7MYcC6Q1D9ri/NOlxqffS6MJV/c4iIBiGqbzxlhkUs8=;
+ b=X3sALli63rL2Won2bhj1gOIzsleVKmLJ0W4l+W2zPzuC58fA0GL5IfsLvTh+eZE4R9
+ d+a8eLYpZXSbPwzUQsWCFe9nqoyuu7Gh1tapf6y6d1R3QE3LbH3inbwWrfXiaksxrDuX
+ lqd4Y2Gg12kkxGIrpfb2ONgVrBBogg8pnvZ7pvllTLe+MiJySCY0eZsryyH+VH9PA1dh
+ WGn3bFUrvEGWZdoqpwAVfzgMZXBQfXaJcK8aRhCjETjoHYkFvvBKm32ZB8wOavpGaXPD
+ K1tSZNGknBPF7OY6zcOx+qUX+bCwRoX94h0tTvfrHn4nif7yqDL+utfzQ6KkSoq/MP2c
+ wGPg==
+X-Gm-Message-State: AOJu0Yx/xjdJmXQZYKYDVgp0wcDU3WtaqC0AQh4GRQgoeZDWlMdkegTJ
+ VgCLXbGoVWJqgkns4+YS+XymQ2yRbFffjvo41NgVS/ssv6Seu+ThDuDXwemyc8T8/ARVZlURC+h
+ gErUjYanLiw4BHGvPzMMS/gi9QukDtM3G29/NBBWIq3SMb74RoFO4RMY5KCtL4UUP2VORDWt9Qb
+ coXcae7qmspbDzDuNr1fXa7m4SGhO9SseCQz4X
+X-Received: by 2002:a17:906:470f:b0:a5c:e240:ceb7 with SMTP id
+ a640c23a62f3a-a6264f0e8c9mr98379966b.62.1716538253143; 
+ Fri, 24 May 2024 01:10:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHpU5N3NKmoyUY1FhQuVzGs9Gsj+oF21Pz8XGrZixmk4Bt1MkQLZrO5gB+6hivtcUULe0E+Kw==
+X-Received: by 2002:a17:906:470f:b0:a5c:e240:ceb7 with SMTP id
+ a640c23a62f3a-a6264f0e8c9mr98378866b.62.1716538252765; 
  Fri, 24 May 2024 01:10:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYe+hCAukNlsjh9haF38siBXMXm3UkSykoGAKgeOq0WfQELLVWimVKXOA16xUnarOquV6dtg==
-X-Received: by 2002:a17:906:d147:b0:a59:9f4e:4e3b with SMTP id
- a640c23a62f3a-a62641a3aafmr93173266b.2.1716538251765; 
- Fri, 24 May 2024 01:10:51 -0700 (PDT)
 Received: from avogadro.local ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c93b6d4sm90738866b.88.2024.05.24.01.10.49
+ a640c23a62f3a-a626fc72ee3sm82827166b.195.2024.05.24.01.10.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 01:10:50 -0700 (PDT)
+ Fri, 24 May 2024 01:10:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 14/16] target/i386: remove aflag argument of gen_lea_v_seg
-Date: Fri, 24 May 2024 10:10:17 +0200
-Message-ID: <20240524081019.1141359-15-pbonzini@redhat.com>
+Subject: [PATCH 15/16] target/i386: cpu_load_eflags already sets cc_op
+Date: Fri, 24 May 2024 10:10:18 +0200
+Message-ID: <20240524081019.1141359-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240524081019.1141359-1-pbonzini@redhat.com>
 References: <20240524081019.1141359-1-pbonzini@redhat.com>
@@ -100,126 +100,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is always s->aflag.
+No need to set it again at the end of the translation block, cc_op_dirty
+can be set to false.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 20 ++++++++++----------
- target/i386/tcg/emit.c.inc  |  6 +++---
- 2 files changed, 13 insertions(+), 13 deletions(-)
+ target/i386/tcg/translate.c | 37 ++++++++++++++++++++++++-------------
+ target/i386/tcg/emit.c.inc  |  2 +-
+ 2 files changed, 25 insertions(+), 14 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 18d8c0de674..1a776e77297 100644
+index 1a776e77297..7442a8a51b1 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -673,20 +673,20 @@ static void gen_lea_v_seg_dest(DisasContext *s, MemOp aflag, TCGv dest, TCGv a0,
+@@ -332,7 +332,7 @@ static const uint8_t cc_op_live[CC_OP_NB] = {
+     [CC_OP_POPCNT] = USES_CC_SRC,
+ };
+ 
+-static void set_cc_op(DisasContext *s, CCOp op)
++static void set_cc_op_1(DisasContext *s, CCOp op, bool dirty)
+ {
+     int dead;
+ 
+@@ -355,20 +355,27 @@ static void set_cc_op(DisasContext *s, CCOp op)
+         tcg_gen_discard_tl(s->cc_srcT);
      }
+ 
+-    if (op == CC_OP_DYNAMIC) {
+-        /* The DYNAMIC setting is translator only, and should never be
+-           stored.  Thus we always consider it clean.  */
+-        s->cc_op_dirty = false;
+-    } else {
+-        /* Discard any computed CC_OP value (see shifts).  */
+-        if (s->cc_op == CC_OP_DYNAMIC) {
+-            tcg_gen_discard_i32(cpu_cc_op);
+-        }
+-        s->cc_op_dirty = true;
++    if (dirty && s->cc_op == CC_OP_DYNAMIC) {
++        tcg_gen_discard_i32(cpu_cc_op);
+     }
++    s->cc_op_dirty = dirty;
+     s->cc_op = op;
  }
  
--static void gen_lea_v_seg(DisasContext *s, MemOp aflag, TCGv a0,
-+static void gen_lea_v_seg(DisasContext *s, TCGv a0,
-                           int def_seg, int ovr_seg)
++static void set_cc_op(DisasContext *s, CCOp op)
++{
++    /*
++     * The DYNAMIC setting is translator only, everything else
++     * will be spilled later.
++     */
++    set_cc_op_1(s, op, op != CC_OP_DYNAMIC);
++}
++
++static void assume_cc_op(DisasContext *s, CCOp op)
++{
++    set_cc_op_1(s, op, false);
++}
++
+ static void gen_update_cc_op(DisasContext *s)
  {
--    gen_lea_v_seg_dest(s, aflag, s->A0, a0, def_seg, ovr_seg);
-+    gen_lea_v_seg_dest(s, s->aflag, s->A0, a0, def_seg, ovr_seg);
- }
- 
- static inline void gen_string_movl_A0_ESI(DisasContext *s)
- {
--    gen_lea_v_seg(s, s->aflag, cpu_regs[R_ESI], R_DS, s->override);
-+    gen_lea_v_seg(s, cpu_regs[R_ESI], R_DS, s->override);
- }
- 
- static inline void gen_string_movl_A0_EDI(DisasContext *s)
- {
--    gen_lea_v_seg(s, s->aflag, cpu_regs[R_EDI], R_ES, -1);
-+    gen_lea_v_seg(s, cpu_regs[R_EDI], R_ES, -1);
- }
- 
- static inline TCGv gen_compute_Dshift(DisasContext *s, MemOp ot)
-@@ -1777,7 +1777,7 @@ static void gen_lea_modrm(CPUX86State *env, DisasContext *s, int modrm)
- {
-     AddressParts a = gen_lea_modrm_0(env, s, modrm);
-     TCGv ea = gen_lea_modrm_1(s, a, false);
--    gen_lea_v_seg(s, s->aflag, ea, a.def_seg, s->override);
-+    gen_lea_v_seg(s, ea, a.def_seg, s->override);
- }
- 
- static void gen_nop_modrm(CPUX86State *env, DisasContext *s, int modrm)
-@@ -2516,7 +2516,7 @@ static bool disas_insn_x87(DisasContext *s, CPUState *cpu, int b)
-         bool update_fdp = true;
- 
-         tcg_gen_mov_tl(last_addr, ea);
--        gen_lea_v_seg(s, s->aflag, ea, a.def_seg, s->override);
-+        gen_lea_v_seg(s, ea, a.def_seg, s->override);
- 
-         switch (op) {
-         case 0x00 ... 0x07: /* fxxxs */
-@@ -3313,7 +3313,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             tcg_gen_sari_tl(s->tmp0, s->T1, 3 + ot);
-             tcg_gen_shli_tl(s->tmp0, s->tmp0, ot);
-             tcg_gen_add_tl(s->A0, gen_lea_modrm_1(s, a, false), s->tmp0);
--            gen_lea_v_seg(s, s->aflag, s->A0, a.def_seg, s->override);
-+            gen_lea_v_seg(s, s->A0, a.def_seg, s->override);
-             if (!(s->prefix & PREFIX_LOCK)) {
-                 gen_op_ld_v(s, ot, s->T0, s->A0);
+     if (s->cc_op_dirty) {
+@@ -3510,6 +3517,10 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         gen_update_cc_op(s);
+         gen_update_eip_cur(s);
+         gen_helper_syscall(tcg_env, cur_insn_len_i32(s));
++        /* condition codes are modified only in long mode */
++        if (LMA(s)) {
++            assume_cc_op(s, CC_OP_EFLAGS);
++        }
+         /* TF handling for the syscall insn is different. The TF bit is  checked
+            after the syscall insn completes. This allows #DB to not be
+            generated after one has entered CPL0 if TF is set in FMASK.  */
+@@ -3526,7 +3537,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             gen_helper_sysret(tcg_env, tcg_constant_i32(dflag - 1));
+             /* condition codes are modified only in long mode */
+             if (LMA(s)) {
+-                set_cc_op(s, CC_OP_EFLAGS);
++                assume_cc_op(s, CC_OP_EFLAGS);
              }
-@@ -3634,7 +3634,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             }
-             gen_update_cc_op(s);
-             gen_update_eip_cur(s);
--            gen_lea_v_seg(s, s->aflag, cpu_regs[R_EAX], R_DS, s->override);
-+            gen_lea_v_seg(s, cpu_regs[R_EAX], R_DS, s->override);
-             gen_helper_monitor(tcg_env, s->A0);
-             break;
- 
-@@ -4040,7 +4040,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 } else {
-                     tcg_gen_movi_tl(s->A0, 0);
-                 }
--                gen_lea_v_seg(s, s->aflag, s->A0, a.def_seg, s->override);
-+                gen_lea_v_seg(s, s->A0, a.def_seg, s->override);
-                 if (a.index >= 0) {
-                     tcg_gen_mov_tl(s->T0, cpu_regs[a.index]);
-                 } else {
-@@ -4145,7 +4145,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 } else {
-                     tcg_gen_movi_tl(s->A0, 0);
-                 }
--                gen_lea_v_seg(s, s->aflag, s->A0, a.def_seg, s->override);
-+                gen_lea_v_seg(s, s->A0, a.def_seg, s->override);
-                 if (a.index >= 0) {
-                     tcg_gen_mov_tl(s->T0, cpu_regs[a.index]);
-                 } else {
+             /* TF handling for the sysret insn is different. The TF bit is
+                checked after the sysret insn completes. This allows #DB to be
+@@ -4444,7 +4455,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+         g_assert_not_reached();
+ #else
+         gen_helper_rsm(tcg_env);
+-        set_cc_op(s, CC_OP_EFLAGS);
++        assume_cc_op(s, CC_OP_EFLAGS);
+ #endif /* CONFIG_USER_ONLY */
+         s->base.is_jmp = DISAS_EOB_ONLY;
+         break;
 diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
-index bc96735f61d..9eecf7ab56c 100644
+index 9eecf7ab56c..9fea395dfbf 100644
 --- a/target/i386/tcg/emit.c.inc
 +++ b/target/i386/tcg/emit.c.inc
-@@ -76,7 +76,7 @@ static void gen_NM_exception(DisasContext *s)
- static void gen_load_ea(DisasContext *s, AddressParts *mem, bool is_vsib)
- {
-     TCGv ea = gen_lea_modrm_1(s, *mem, is_vsib);
--    gen_lea_v_seg(s, s->aflag, ea, mem->def_seg, s->override);
-+    gen_lea_v_seg(s, ea, mem->def_seg, s->override);
- }
- 
- static inline int mmx_offset(MemOp ot)
-@@ -2044,7 +2044,7 @@ static void gen_MOV(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- 
- static void gen_MASKMOV(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
--    gen_lea_v_seg(s, s->aflag, cpu_regs[R_EDI], R_DS, s->override);
-+    gen_lea_v_seg(s, cpu_regs[R_EDI], R_DS, s->override);
- 
-     if (s->prefix & PREFIX_DATA) {
-         gen_helper_maskmov_xmm(tcg_env, OP_PTR1, OP_PTR2, s->A0);
-@@ -4039,7 +4039,7 @@ static void gen_XLAT(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
- {
-     /* AL is already zero-extended into s->T0.  */
-     tcg_gen_add_tl(s->A0, cpu_regs[R_EBX], s->T0);
--    gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
-+    gen_lea_v_seg(s, s->A0, R_DS, s->override);
-     gen_op_ld_v(s, MO_8, s->T0, s->A0);
+@@ -1881,7 +1881,7 @@ static void gen_IRET(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+         gen_helper_iret_protected(tcg_env, tcg_constant_i32(s->dflag - 1),
+                                   eip_next_i32(s));
+     }
+-    set_cc_op(s, CC_OP_EFLAGS);
++    assume_cc_op(s, CC_OP_EFLAGS);
+     s->base.is_jmp = DISAS_EOB_ONLY;
  }
  
 -- 
