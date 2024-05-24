@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFED8CE894
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 18:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4F88CE8F3
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 18:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAXec-0005xn-60; Fri, 24 May 2024 12:20:26 -0400
+	id 1sAY8K-0000Q2-0Y; Fri, 24 May 2024 12:51:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAXea-0005wq-5Y
- for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sAXeY-0006xs-82
- for qemu-devel@nongnu.org; Fri, 24 May 2024 12:20:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716567621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=T19z2VhLiDxwW2xj7PM4ylgGCJRFuMIgK7muAk4JXtI=;
- b=Y9xkXRl4kVv9+0SdOgvVgMZp1LJmoXs5kF0vYtePoWJRWJhszYjAiVgiu7nXqwCWoTVpDm
- qUROygjakqBZSAHlq4TR3lEPNkS2r0VE1KbEfLoXK9MrefVAzb5Yv6fGrp+mdc59c6XJjy
- 1ggksA4QrBltjY84To9Ylv+4HGf0KFk=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-6fOOeuNVPi-FBENPdMDkJg-1; Fri, 24 May 2024 12:20:20 -0400
-X-MC-Unique: 6fOOeuNVPi-FBENPdMDkJg-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-5785ef2b57aso453378a12.0
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 09:20:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sAY8I-0000Pj-84
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 12:51:06 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sAY8E-00042X-1M
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 12:51:05 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6f8e859eb20so1015210b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 09:51:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716569460; x=1717174260; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3CD7uiH67rGFY43H5uR4ucaXvq9C61N3rMy+y3L7tcI=;
+ b=CUVu55SVVCD1p7sBhFmrk0XcQCAnQN+3MwmpU+jJmPp65seLmv24An10GWj+8UJkuy
+ OYjUpLiM59EvwfywtWtfIb91x0RKcXfJ7vm/R2uBMxIipiRGOTYMRW8J4gLqS9i7DtOc
+ 3f/dIydU+k9WhAepEcILeyvkhWMh6QRydKDjY/9Q3qwtlkkN8Vj6RyzQI1mUKNgrbOUh
+ QuUzaD8A09s+fyISmTpvhY0pMUvbgsmg5Ud7/duU3SSQbtYR5/Hdge14f4i0nHZQU36N
+ 2t/FSx4C+Uy1hf03uMpbOO80R+iXreV5EzdSNasAnShGGiROs3psJhG8maAQrMafDms1
+ 30YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716567618; x=1717172418;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T19z2VhLiDxwW2xj7PM4ylgGCJRFuMIgK7muAk4JXtI=;
- b=bt0edpmFLnrAGJsaW/y8cHWFaaVdn7vLJL6Q/2p3nk7oE2m6eU2VhHrJzoKUeU2QfZ
- qZzIYmOBdHH+EL0F1YsxYYZVQaAirBM5asu+/WXnNNbELz7DQ0wwEbFWI6tI0qo9sY+4
- H8CkHJtuAqcpMKyzfHa+4o6aUIDl2G4CJXO40kPxgpgE0vygWmZbk+Uzq3KOxBNFu9a+
- 5KqQd1mFPDd2ohEJHN9oeNxpD86eWNdwBCVajRbMmRLD94Xu+YJZlbEkrL2Jut19GLCj
- GD2pms5f0RgD0ZvqEaI1ZSm1XgUg1dgIikMz2kfDtngZVfyWWS5SLpopSLod7BAgsI+W
- OskA==
-X-Gm-Message-State: AOJu0YysKGr75PwwH8RE2zjPspH66/5TK8QtFvJKzmO0fmyfNqvWpLff
- twlaM55JO9Ls61G+wu9GQwF8t8/gjjmZHTAlJMSHJhtvLobZa8N6j90rvYn5ITOi449UOpWj8aW
- bF4KPJsCTJEO1gksDtAKEYi1ghsvMZhmjmkCPY1nYLxPtiG9jvQsrPXzAORGVINxt4MsWBXPX1L
- TD9ZWOsT8bIrRt5VjO3+8/ftC7H7W7zSpc8lYg
-X-Received: by 2002:a50:cd9d:0:b0:574:ffb1:eb52 with SMTP id
- 4fb4d7f45d1cf-578519c2f4bmr1890066a12.34.1716567618565; 
- Fri, 24 May 2024 09:20:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH1pRnOtoHrr+W35yt+VdNT6KX0JJUXAviYnbk2HjkBrALMIiXvUAhkLfepmP3rNAMTYT9lXQ==
-X-Received: by 2002:a50:cd9d:0:b0:574:ffb1:eb52 with SMTP id
- 4fb4d7f45d1cf-578519c2f4bmr1890046a12.34.1716567618080; 
- Fri, 24 May 2024 09:20:18 -0700 (PDT)
-Received: from avogadro.local ([151.95.155.52])
+ d=1e100.net; s=20230601; t=1716569460; x=1717174260;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3CD7uiH67rGFY43H5uR4ucaXvq9C61N3rMy+y3L7tcI=;
+ b=AivE7hkaQ3D5ACC2MswhSNdIMvV7BcPzxyAFsh+PL6b9Qb/Sy7LOURQ76/Fx1neXyy
+ n0sBCTPAnQBGLv+CqiCfBNnoP6nehWdrY3HuluCd5HbaCd2Imw4r9DQ/ZBFFqv8p3RRo
+ Wbtvnpl9xuG/Y7rW3YXWnoyofswp58kG2OYOJ+NFj4eeqJkm9HDKU8+C/jXHs6KAUKm1
+ Z3PDNkiDZxuSrpBJyljqo4I5j3UtFhdbc12GQxGMBTLpnQcPBpJx3vMkIM1+fFmVH2+4
+ LrprWLS7yHo4mSxuiku2r+TRV0VcvU4qLAc2pwPBA1roOlm17t8Ckq6wBm5CDf9FpiQ3
+ F+wA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXkHD3wdVD3VQzdfYh26DPzBd/KUEpvU5S/L856fTovLRrAeKX4IRhiPq3kneUk5SUuoQ9CPwGqmKJFASexr/NHBZrxuCU=
+X-Gm-Message-State: AOJu0YyEiufrOgr/77w4kW1vZJBJQ54DM/lLYajQUyyDq8SKzsxwZOIL
+ yw4e4sn3Ovr5gNygGV4lq/kzGfXkKn2nXY6bcMqnszt3TZeviugPY/vXRjoXdes=
+X-Google-Smtp-Source: AGHT+IF2s5UBpXYLmn/j5diEgG4ybkvzGsPLAk9iBbrsZ2uU70+kfeK8PkQ2DLv15bnlxR0fRu8g1Q==
+X-Received: by 2002:a05:6a20:da8d:b0:1af:cc84:f7ec with SMTP id
+ adf61e73a8af0-1b212d5ad0amr3379308637.4.1716569460302; 
+ Fri, 24 May 2024 09:51:00 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-578524b9e80sm1904834a12.85.2024.05.24.09.20.16
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 09:20:16 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 5/5] migration: remove unnecessary zlib dependency
-Date: Fri, 24 May 2024 18:20:05 +0200
-Message-ID: <20240524162006.1271778-6-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240524162006.1271778-1-pbonzini@redhat.com>
-References: <20240524162006.1271778-1-pbonzini@redhat.com>
+ 41be03b00d2f7-682273c44absm1383814a12.88.2024.05.24.09.50.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 24 May 2024 09:50:59 -0700 (PDT)
+Message-ID: <d41e0504-aa75-4d88-93c4-a30843ea3942@linaro.org>
+Date: Fri, 24 May 2024 09:50:57 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/i386: always go through gen_eob*()
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20240524153323.1267511-2-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240524153323.1267511-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,67 +95,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-zlib code is only used by the emulators, not by the tests.
+On 5/24/24 08:33, Paolo Bonzini wrote:
+> Using DISAS_NORETURN does not process any of HF_INHIBIT_IRQ_MASK,
+> HF_RF_MASK or HF_TF_MASK.  Never use it, instead there is
+> DISAS_EOB_ONLY.
+> 
+> Cc: qemu-stable@nongnu.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/translate.c | 18 ++++++++++++------
+>   target/i386/tcg/emit.c.inc  |  4 ++--
+>   2 files changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+> index ebcff8766cf..df10e7d8a6a 100644
+> --- a/target/i386/tcg/translate.c
+> +++ b/target/i386/tcg/translate.c
+> @@ -1406,7 +1406,7 @@ static void gen_exception(DisasContext *s, int trapno)
+>       gen_update_cc_op(s);
+>       gen_update_eip_cur(s);
+>       gen_helper_raise_exception(tcg_env, tcg_constant_i32(trapno));
+> -    s->base.is_jmp = DISAS_NORETURN;
+> +    s->base.is_jmp = DISAS_EOB_ONLY;
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- meson.build           | 2 +-
- migration/dirtyrate.c | 1 -
- migration/qemu-file.c | 1 -
- migration/meson.build | 2 +-
- 4 files changed, 2 insertions(+), 4 deletions(-)
+This is wrong, because we exit via exception, right here.
+Anything you add afterward is unreachable.
 
-diff --git a/meson.build b/meson.build
-index 7fd82b5f48c..63866071445 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3696,7 +3696,7 @@ libmigration = static_library('migration', sources: migration_files + genh,
-                               name_suffix: 'fa',
-                               build_by_default: false)
- migration = declare_dependency(link_with: libmigration,
--                               dependencies: [zlib, qom, io])
-+                               dependencies: [qom, io])
- system_ss.add(migration)
- 
- block_ss = block_ss.apply({})
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index d02d70b7b4b..1d9db812990 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -12,7 +12,6 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
--#include <zlib.h>
- #include "hw/core/cpu.h"
- #include "qapi/error.h"
- #include "exec/ramblock.h"
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 9ccbbb00991..b6d2f588bd7 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -22,7 +22,6 @@
-  * THE SOFTWARE.
-  */
- #include "qemu/osdep.h"
--#include <zlib.h>
- #include "qemu/madvise.h"
- #include "qemu/error-report.h"
- #include "qemu/iov.h"
-diff --git a/migration/meson.build b/migration/meson.build
-index 8815f808374..bdc3244bce0 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -29,7 +29,7 @@ system_ss.add(files(
-   'socket.c',
-   'tls.c',
-   'threadinfo.c',
--), gnutls)
-+), gnutls, zlib)
- 
- if get_option('replication').allowed()
-   system_ss.add(files('colo-failover.c', 'colo.c'))
--- 
-2.45.1
+>   }
+>   
+>   /* Generate #UD for the current instruction.  The assumption here is that
+> @@ -2191,7 +2191,7 @@ static void gen_interrupt(DisasContext *s, uint8_t intno)
+>       gen_update_eip_cur(s);
+>       gen_helper_raise_interrupt(tcg_env, tcg_constant_i32(intno),
+>                                  cur_insn_len_i32(s));
+> -    s->base.is_jmp = DISAS_NORETURN;
+> +    s->base.is_jmp = DISAS_EOB_ONLY;
 
+Likewise.
+
+>   }
+>   
+>   static void gen_set_hflag(DisasContext *s, uint32_t mask)
+> @@ -2354,7 +2354,7 @@ static void gen_jmp_rel(DisasContext *s, MemOp ot, int diff, int tb_num)
+>               tcg_gen_movi_tl(cpu_eip, new_eip);
+>           }
+>           tcg_gen_exit_tb(s->base.tb, tb_num);
+> -        s->base.is_jmp = DISAS_NORETURN;
+> +        s->base.is_jmp = DISAS_EOB_ONLY;
+
+This is wrong because exit_tb exits, and anything you add after is unreachable.
+I think you simply want to remove the exit_tb call as well, but there may be more cleanup 
+possible in the wider context; I haven't checked.
+
+>       } else {
+>           if (!(tb_cflags(s->base.tb) & CF_PCREL)) {
+>               tcg_gen_movi_tl(cpu_eip, new_eip);
+> @@ -3520,7 +3520,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+>           gen_update_cc_op(s);
+>           gen_update_eip_cur(s);
+>           gen_helper_rdpmc(tcg_env);
+> -        s->base.is_jmp = DISAS_NORETURN;
+> +        s->base.is_jmp = DISAS_EOB_ONLY;
+
+This is wrong because helper_rdpmc is noreturn, always raising an exception.
+
+
+> @@ -3690,7 +3690,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+>               gen_update_cc_op(s);
+>               gen_update_eip_cur(s);
+>               gen_helper_mwait(tcg_env, cur_insn_len_i32(s));
+> -            s->base.is_jmp = DISAS_NORETURN;
+> +            s->base.is_jmp = DISAS_EOB_ONLY;
+
+Likewise.
+
+> @@ -3769,7 +3769,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+>               gen_helper_vmrun(tcg_env, tcg_constant_i32(s->aflag - 1),
+>                                cur_insn_len_i32(s));
+>               tcg_gen_exit_tb(NULL, 0);
+> -            s->base.is_jmp = DISAS_NORETURN;
+> +            s->base.is_jmp = DISAS_EOB_ONLY;
+
+Calls exit_tb, which is probably bogus here and EOB_ONLY is correct.
+But I'd need to look deeper into what vmrun does.
+
+>       switch (dc->base.is_jmp) {
+>       case DISAS_NORETURN:
+> +	/*
+> +	 * Nothing to do, gen_eob*() was already called.  DISAS_NORETURN is
+> +	 * never set explicitly except in gen_eob_worker(), because that is
+> +	 * where HF_INHIBIT_IRQ_MASK, HF_RF_MASK and HF_TF_MASK are handled.
+> +	 */
+
+Comment is wrong because exceptions *should* set NORETURN.
+All of the masks are irrelevant to #gp or #ud etc.
+
+
+> @@ -1642,7 +1642,7 @@ static void gen_HLT(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+>       gen_update_cc_op(s);
+>       gen_update_eip_cur(s);
+>       gen_helper_hlt(tcg_env, cur_insn_len_i32(s));
+> -    s->base.is_jmp = DISAS_NORETURN;
+> +    s->base.is_jmp = DISAS_EOB_ONLY;
+
+noreturn.
+
+> @@ -4022,7 +4022,7 @@ static void gen_XCHG(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+>               gen_update_cc_op(s);
+>               gen_update_eip_cur(s);
+>               gen_helper_pause(tcg_env, cur_insn_len_i32(s));
+> -            s->base.is_jmp = DISAS_NORETURN;
+> +            s->base.is_jmp = DISAS_EOB_ONLY;
+
+noreturn.
+
+
+r~
 
