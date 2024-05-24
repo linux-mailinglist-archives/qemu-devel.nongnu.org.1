@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943C38CE1F1
+	by mail.lfdr.de (Postfix) with ESMTPS id 824CA8CE1F0
 	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 10:02:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAPrE-0007F9-M9; Fri, 24 May 2024 04:00:56 -0400
+	id 1sAPrF-0007Ft-EP; Fri, 24 May 2024 04:00:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPr9-0007C4-Qq
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:54 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1sAPrD-0007FK-3h
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:55 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1sAPqy-0006xi-Qc
- for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:43 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-68194ee2174so478612a12.3
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:00:40 -0700 (PDT)
+ id 1sAPr9-0006xz-Jg
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 04:00:54 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-6818eea9c3aso504235a12.1
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 01:00:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716537639; x=1717142439;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1716537644; x=1717142444;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jrghs866eeKjtAq7SYzsGMP/6e+gx3kxu9bBYPhSOJI=;
- b=L3gYbz7+zoxSiChoI/sYWXKKEwIouQimxg8A4hquTVucxAHnrGTfmMJhTnWaD3egeh
- eFxV4+57VWjx2V1y3LglVUFkQLk9d+exZN5KR3eMb+PRgjMLDby9z2GMJlHIvxolk+x6
- bXFufH+AGBmdeuhwqjF1oxg16HFXpnOuqav8tywJqQm129qMJdpr3Cih13E6hfgd7TGy
- 9PYI7VoQ78JtXJCpBfWb7H3ZjZD2aArFzBnAM61XIoTLcIIldAiXbp1JHqkd1V2sBpFj
- vL1WbWr44G3KyxEPvZgI5uu68a2eDWQCEH74xZdJFPVf6qHYkiD3b+ffiUzginjSofZq
- rgLQ==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=sEnQjjS9flUUpyphQx6EbDRyE52dRZj9hwN6qC25u2c=;
+ b=qGvBWkTkQFZnk7lxux505g39egQwHwvgQOBJ96Lfr2nR6WiAPOqYxcqsznilJy6VvK
+ NQroSudPYSkdpBGXIPum9YrPkc5+PRlAlO4k2slcwDFnkmKfqM4kWsjXvNXGlpwKn6CZ
+ VQ5N/cV0q8oLAqGxop2TUE3fmU/b+sslHYsWHRLCdB6RP1WiWRgOLPc8NmqjWgvVWjQO
+ QYQ9pQzSXjzflskAySG2cJKzN2YPwwhtpSnRBsk0OAJVmvC1TfiBrdXXAcZRZnTqR66b
+ NBKxYCKKE041zgrutAekoN+2KVBQ6gFMK1Y2cSBR+dCAie+ebbUXnZFnP7xU6FxadKAp
+ a+TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716537639; x=1717142439;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jrghs866eeKjtAq7SYzsGMP/6e+gx3kxu9bBYPhSOJI=;
- b=VXm9i1YnQr9Kxtkw81Unm/B0S1kAoiS44WSWQp0eXh/zTDCrXButgeYk5e6Cf6lVGt
- yIHuNQ+k+5w6JwQPSLDi4BGwqZ4DIXrw7vJZy2MxZGk5zvQxJHEEmybF1x9fzrRjTcCw
- K0bAVPrBToAWUF5J2XrDNBRWMxPRwdnTzG6e9HPe/o4YPEIE3ywltdyclu1AGb7j911y
- C15tNj9m4SxgwuWDtizqGWqINOJDZNKQ9I6rwtPJSfG3EL+cFcKzA3Kx6v+4hH+EDJeV
- CX5KXoTsumPWRitmLpYfhUZM+CLkOEUkUkmqcMn/npVOJjcP9NFf1zWcnrD+vjAPLr/R
- DQgg==
-X-Gm-Message-State: AOJu0YwqmZsrLHrl3PBdOkVZfjCGxXRh6n34ZAkGZ24iOZzSVIQP0hip
- Kl5qTPR36FymST7nKBsnxlKwDSaYprJFM1hTEvMAOpetVpHozS+H7SRKI26EoCs=
-X-Google-Smtp-Source: AGHT+IFVj9Jk9D0ZKpyk05256iTXkAgk3RxdM/iRIw0uT35kYOTZO4/P9nOlmHmLJ+emQrVDo8qxOA==
-X-Received: by 2002:a17:90b:b11:b0:2bd:f690:67c8 with SMTP id
- 98e67ed59e1d1-2bf5f106605mr1307214a91.27.1716537638973; 
- Fri, 24 May 2024 01:00:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716537644; x=1717142444;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=sEnQjjS9flUUpyphQx6EbDRyE52dRZj9hwN6qC25u2c=;
+ b=vlfmV8fkdStXy3xrkyeqfGvk8wx2bF9kL32NLUZTg09uUM38NN9y9+I8mFuHxLTbic
+ uhWHNhjN3CeFKFbxGv250mCrLNgV5n7WVM/m3Gv4MBNG3ZEu/qAkXs0he5e2kLCFMu31
+ 7nG5RHhtpwzq+86fAOOWwp2s/I0QJxoeUowkTwmYit/Gr9rB8F8zFpc7dA59fqGlbX3u
+ y3ExRk0hkj7EVicQ9MbAUEFyVcSkXQXk5fpWjPlR6+7ILkqmnoa93gNNRmbz1OHPMk3Z
+ U6KpnfRHIykB1E0UUjQa/x/0lMzOgrFbCdWKEmZYvSHyNYvGljLn4lf93t29FxnW1Qp2
+ tZlg==
+X-Gm-Message-State: AOJu0Yxi7WHGvxkjqZjiGwJLgj5eOC1bJ0KqaEsGtmmpBdFWmkQuC0Iw
+ NWQhI8+4/RP8UgGj62l6OofnKehiDzVfYUG1py7hwe+SCqWgaGWlwY3lMXnyJJM=
+X-Google-Smtp-Source: AGHT+IGAUC19dxRHDHb24DZDVMAkBXScVQif3ENAfflfjk/3dJ+jbqCdmmqLuocvvjyyEEbbzAxbyw==
+X-Received: by 2002:a05:6a21:3417:b0:1af:d1f0:b350 with SMTP id
+ adf61e73a8af0-1b212dc14d2mr1560629637.22.1716537643806; 
+ Fri, 24 May 2024 01:00:43 -0700 (PDT)
 Received: from localhost ([157.82.204.135])
  by smtp.gmail.com with UTF8SMTPSA id
- 98e67ed59e1d1-2bdd9ed90c6sm2771083a91.8.2024.05.24.01.00.35
+ d2e1a72fcca58-6f8fc0598f5sm664732b3a.46.2024.05.24.01.00.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 May 2024 01:00:38 -0700 (PDT)
+ Fri, 24 May 2024 01:00:43 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH RFC 0/2] meson: Pass objects to declare_dependency()
-Date: Fri, 24 May 2024 17:00:21 +0900
-Message-Id: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
+Date: Fri, 24 May 2024 17:00:22 +0900
+Subject: [PATCH RFC 1/2] meson: Pass objects to declare_dependency()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABVJUGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDUyMT3fykrNTkkmJd45RkA/NUEwvTJPM0JaDqgqLUtMwKsEnRSkFuzkq
- xtbUAZjVOi14AAAA=
+Message-Id: <20240524-objects-v1-1-07cbbe96166b@daynix.com>
+References: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
+In-Reply-To: <20240524-objects-v1-0-07cbbe96166b@daynix.com>
 To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>, 
  Paolo Bonzini <pbonzini@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
@@ -79,8 +78,8 @@ To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev-2c6f2
-Received-SPF: none client-ip=2607:f8b0:4864:20::529;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x529.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,151 +101,194 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
-("[PATCH v4 0/4] Fix sanitizer errors with clang 18.1.1")
+We used to request declare_dependency() to link_whole static libraries.
+If a static library is a thin archive, GNU ld needs to open all object
+files referenced by the archieve, and sometimes reaches to the open
+file limit.
 
-This is changes suggested by Paolo Bonzini at:
-https://lore.kernel.org/all/CABgObfYoEFZsW-H4WJ7xW0B85OqFi932d3-DmNAb6zTohFn=Og@mail.gmail.com/
+Another problem with link_whole is that it does not propagate
+dependencies. In particular, gnutls, a dependency of crypto, is not
+propagated to its users, and we currently workaround the issue by
+declaring gnutls as a dependency for each crypto user.
 
-Unfortunately it broke builds on my system. Below are the errors I
-observed:
-
-clang  -o qemu-img libauthz.a.p/authz_base.c.o libauthz.a.p/authz_list.c.o libauthz.a.p/authz_listfile.c.o libauthz.a.p/authz_simple.c.o libauthz.a.p/authz_pamacct.c.o libqom.a.p/qom_container.c.o libqom.a.p/qom_object.c.o libqom.a.p/qom_object_interfaces.c.o libqom.a.p/qom_qom-qobject.c.o libblock.a.p/block.c.o libblock.a.p/blockjob.c.o libblock.a.p/job.c.o libblock.a.p/qemu-io-cmds.c.o libblock.a.p/replication.c.o libblock.a.p/nbd_client.c.o libblock.a.p/nbd_client-connection.c.o libblock.a.p/nbd_common.c.o libblock.a.p/scsi_utils.c.o libblock.a.p/scsi_pr-manager.c.o libblock.a.p/scsi_pr-manager-helper.c.o libblock.a.p/block_accounting.c.o libblock.a.p/block_aio_task.c.o libblock.a.p/block_amend.c.o libblock.a.p/block_backup.c.o libblock.a.p/block_blkdebug.c.o libblock.a.p/block_blklogwrites.c.o libblock.a.p/block_blkverify.c.o libblock.a.p/block_block-backend.c.o libblock.a.p/block_block-copy.c.o libblock.a.p/block_commit.c.o libblock.a.p/block_copy-before-write.c.o libblock.a.p/block_copy-on-read.c.o libblock.a.p/block_create.c.o libblock.a.p/block_crypto.c.o libblock.a.p/block_dirty-bitmap.c.o libblock.a.p/block_filter-compress.c.o libblock.a.p/block_graph-lock.c.o libblock.a.p/block_io.c.o libblock.a.p/block_mirror.c.o libblock.a.p/block_nbd.c.o libblock.a.p/block_null.c.o libblock.a.p/block_preallocate.c.o libblock.a.p/block_progress_meter.c.o libblock.a.p/block_qapi.c.o libblock.a.p/block_qcow2.c.o libblock.a.p/block_qcow2-bitmap.c.o libblock.a.p/block_qcow2-cache.c.o libblock.a.p/block_qcow2-cluster.c.o libblock.a.p/block_qcow2-refcount.c.o libblock.a.p/block_qcow2-snapshot.c.o libblock.a.p/block_qcow2-threads.c.o libblock.a.p/block_quorum.c.o libblock.a.p/block_raw-format.c.o libblock.a.p/block_reqlist.c.o libblock.a.p/block_snapshot.c.o libblock.a.p/block_snapshot-access.c.o libblock.a.p/block_throttle.c.o libblock.a.p/block_throttle-groups.c.o libblock.a.p/block_write-threshold.c.o libblock.a.p/block_qcow.c.o libblock.a.p/block_vdi.c.o libblock.a.p/block_vhdx-endian.c.o libblock.a.p/block_vhdx-log.c.o libblock.a.p/block_vhdx.c.o libblock.a.p/block_vmdk.c.o libblock.a.p/block_vpc.c.o libblock.a.p/block_cloop.c.o libblock.a.p/block_bochs.c.o libblock.a.p/block_vvfat.c.o libblock.a.p/block_dmg.c.o libblock.a.p/block_qed-check.c.o libblock.a.p/block_qed-cluster.c.o libblock.a.p/block_qed-l2-cache.c.o libblock.a.p/block_qed-table.c.o libblock.a.p/block_qed.c.o libblock.a.p/block_parallels.c.o libblock.a.p/block_parallels-ext.c.o libblock.a.p/block_file-posix.c.o libblock.a.p/block_nvme.c.o libblock.a.p/block_replication.c.o libblock.a.p/block_stream.c.o libblock.a.p/block_monitor_bitmap-qmp-cmds.c.o libblock.a.p/block_curl.c.o libblock.a.p/block_ssh.c.o libblock.a.p/block_dmg-bz2.c.o libblock.a.p/meson-generated_.._block_block-gen.c.o libcrypto.a.p/crypto_afsplit.c.o libcrypto.a.p/crypto_akcipher.c.o libcrypto.a.p/crypto_block-luks.c.o libcrypto.a.p/crypto_block-qcow.c.o libcrypto.a.p/crypto_block.c.o libcrypto.a.p/crypto_cipher.c.o libcrypto.a.p/crypto_der.c.o libcrypto.a.p/crypto_hash.c.o libcrypto.a.p/crypto_hmac.c.o libcrypto.a.p/crypto_ivgen-essiv.c.o libcrypto.a.p/crypto_ivgen-plain.c.o libcrypto.a.p/crypto_ivgen-plain64.c.o libcrypto.a.p/crypto_ivgen.c.o libcrypto.a.p/crypto_pbkdf.c.o libcrypto.a.p/crypto_secret_common.c.o libcrypto.a.p/crypto_secret.c.o libcrypto.a.p/crypto_tlscreds.c.o libcrypto.a.p/crypto_tlscredsanon.c.o libcrypto.a.p/crypto_tlscredspsk.c.o libcrypto.a.p/crypto_tlscredsx509.c.o libcrypto.a.p/crypto_tlssession.c.o libcrypto.a.p/crypto_rsakey.c.o libcrypto.a.p/crypto_hash-gnutls.c.o libcrypto.a.p/crypto_hmac-gnutls.c.o libcrypto.a.p/crypto_pbkdf-gnutls.c.o libcrypto.a.p/crypto_secret_keyring.c.o libio.a.p/io_channel-buffer.c.o libio.a.p/io_channel-command.c.o libio.a.p/io_channel-file.c.o libio.a.p/io_channel-null.c.o libio.a.p/io_channel-socket.c.o libio.a.p/io_channel-tls.c.o libio.a.p/io_channel-util.c.o libio.a.p/io_channel-watch.c.o libio.a.p/io_channel-websock.c.o libio.a.p/io_channel.c.o libio.a.p/io_dns-resolver.c.o libio.a.p/io_net-listener.c.o libio.a.p/io_task.c.o libevent-loop-base.a.p/event-loop-base.c.o qemu-img.p/qemu-img.c.o -Werror -flto -Wl,--as-needed -Wl,--no-undefined -pie -fsanitize=cfi-icall -fsanitize-cfi-icall-generalize-pointers -fsanitize=undefined -fsanitize=address -fstack-protector-strong -Wl,-z,relro -Wl,-z,now -fuse-ld=lld -Wl,--start-group libqemuutil.a subprojects/libvhost-user/libvhost-user-glib.a subprojects/libvhost-user/libvhost-user.a @block.syms /usr/lib64/libgio-2.0.so /usr/lib64/libgobject-2.0.so /usr/lib64/libglib-2.0.so /usr/lib64/libgmodule-2.0.so -pthread /usr/lib64/libgnutls.so -lm /usr/lib64/libpixman-1.so -Wl,--end-group
-ld.lld: error: undefined symbol: pam_start
->>> referenced by pamacct.c:40 (/home/me/q/var/qemu/build/../authz/pamacct.c:40)
->>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
-
-ld.lld: error: undefined symbol: pam_strerror
->>> referenced by pamacct.c:45 (/home/me/q/var/qemu/build/../authz/pamacct.c:45)
->>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
->>> referenced by pamacct.c:53 (/home/me/q/var/qemu/build/../authz/pamacct.c:53)
->>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
-
-ld.lld: error: undefined symbol: pam_acct_mgmt
->>> referenced by pamacct.c:50 (/home/me/q/var/qemu/build/../authz/pamacct.c:50)
->>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
-
-ld.lld: error: undefined symbol: pam_end
->>> referenced by pamacct.c:51 (/home/me/q/var/qemu/build/../authz/pamacct.c:51)
->>>               qemu-img.lto.o:(qauthz_pam_is_allowed.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_createCCtx
->>> referenced by qcow2-threads.c:203 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:203)
->>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_compressStream2
->>> referenced by qcow2-threads.c:225 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:225)
->>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_freeCCtx
->>> referenced by qcow2-threads.c:240 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:240)
->>>               qemu-img.lto.o:(qcow2_zstd_compress.cfi)
-
-ld.lld: error: undefined symbol: deflateInit2_
->>> referenced by qcow2-threads.c:101 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:101)
->>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
->>> referenced by qcow.c:1081 (/home/me/q/var/qemu/build/../block/qcow.c:1081)
->>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
-
-ld.lld: error: undefined symbol: deflate
->>> referenced by qcow2-threads.c:116 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:116)
->>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
->>> referenced by qcow.c:1094 (/home/me/q/var/qemu/build/../block/qcow.c:1094)
->>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
-
-ld.lld: error: undefined symbol: deflateEnd
->>> referenced by qcow2-threads.c:123 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:123)
->>>               qemu-img.lto.o:(qcow2_zlib_compress.cfi)
->>> referenced by qcow.c:1102 (/home/me/q/var/qemu/build/../block/qcow.c:1102)
->>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
->>> referenced by qcow.c:1096 (/home/me/q/var/qemu/build/../block/qcow.c:1096)
->>>               qemu-img.lto.o:(qcow_co_pwritev_compressed.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_createDCtx
->>> referenced by qcow2-threads.c:271 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:271)
->>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_decompressStream
->>> referenced by qcow2-threads.c:291 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:291)
->>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_isError
->>> referenced by qcow2-threads.c:293 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:293)
->>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
-
-ld.lld: error: undefined symbol: ZSTD_freeDCtx
->>> referenced by qcow2-threads.c:322 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:322)
->>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
->>> referenced by qcow2-threads.c:322 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:322)
->>>               qemu-img.lto.o:(qcow2_zstd_decompress.cfi)
-
-ld.lld: error: undefined symbol: inflateInit2_
->>> referenced by qcow2-threads.c:152 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:152)
->>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
->>> referenced by qcow.c:581 (/home/me/q/var/qemu/build/../block/qcow.c:581)
->>>               qemu-img.lto.o:(decompress_cluster)
-
-ld.lld: error: undefined symbol: inflate
->>> referenced by qcow2-threads.c:157 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:157)
->>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
->>> referenced by qcow.c:584 (/home/me/q/var/qemu/build/../block/qcow.c:584)
->>>               qemu-img.lto.o:(decompress_cluster)
->>> referenced by cloop.c:244 (/home/me/q/var/qemu/build/../block/cloop.c:244)
->>>               qemu-img.lto.o:(cloop_read_block)
->>> referenced 3 more times
-
-ld.lld: error: undefined symbol: inflateEnd
->>> referenced by qcow2-threads.c:169 (/home/me/q/var/qemu/build/../block/qcow2-threads.c:169)
->>>               qemu-img.lto.o:(qcow2_zlib_decompress.cfi)
->>> referenced by qcow.c:0 (/home/me/q/var/qemu/build/../block/qcow.c:0)
->>>               qemu-img.lto.o:(decompress_cluster)
->>> referenced by qcow.c:0 (/home/me/q/var/qemu/build/../block/qcow.c:0)
->>>               qemu-img.lto.o:(decompress_cluster)
->>> referenced 2 more times
-
-ld.lld: error: undefined symbol: uncompress
->>> referenced by vmdk.c:1958 (/home/me/q/var/qemu/build/../block/vmdk.c:1958)
->>>               qemu-img.lto.o:(vmdk_read_extent)
-
-ld.lld: error: undefined symbol: compress
->>> referenced by vmdk.c:1865 (/home/me/q/var/qemu/build/../block/vmdk.c:1865)
->>>               qemu-img.lto.o:(vmdk_write_extent)
-
-ld.lld: error: undefined symbol: inflateReset
->>> referenced by cloop.c:240 (/home/me/q/var/qemu/build/../block/cloop.c:240)
->>>               qemu-img.lto.o:(cloop_read_block)
->>> referenced by cloop.c:240 (/home/me/q/var/qemu/build/../block/cloop.c:240)
->>>               qemu-img.lto.o:(cloop_read_block)
->>> referenced by dmg.c:658 (/home/me/q/var/qemu/build/../block/dmg.c:658)
->>>               qemu-img.lto.o:(dmg_read_chunk)
->>> referenced 1 more times
-
-ld.lld: error: too many errors emitted, stopping now (use --error-limit=0 to see all errors)
-clang: error: linker command failed with exit code 1 (use -v to see invocation)
-ninja: build stopped: subcommand failed.
+Instead of using link_whole, extract objects included in static
+libraries and pass them to declare_dependency(). This requires Meson
+1.1.0 or later.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Akihiko Odaki (2):
-      meson: Pass objects to declare_dependency()
-      Revert "meson: Propagate gnutls dependency"
-
  docs/devel/build-system.rst           |  2 +-
- meson.build                           | 31 ++++++++++++++++---------------
- block/meson.build                     |  2 +-
+ meson.build                           | 27 ++++++++++++++-------------
  gdbstub/meson.build                   |  4 ++--
- io/meson.build                        |  2 +-
- storage-daemon/meson.build            |  2 +-
  subprojects/libvhost-user/meson.build |  2 +-
  tests/qtest/libqos/meson.build        |  2 +-
- ui/meson.build                        |  2 +-
- 9 files changed, 25 insertions(+), 24 deletions(-)
----
-base-commit: 4a207ef32de97bc785ced1987eacab7665b49420
-change-id: 20240524-objects-3dc07e485b7f
+ 5 files changed, 19 insertions(+), 18 deletions(-)
 
-Best regards,
+diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
+index 5baf027b7614..36ad40c76d2a 100644
+--- a/docs/devel/build-system.rst
++++ b/docs/devel/build-system.rst
+@@ -238,7 +238,7 @@ Subsystem sourcesets:
+     libchardev = static_library('chardev', chardev_ss.sources(),
+                                 build_by_default: false)
+ 
+-    chardev = declare_dependency(link_whole: libchardev)
++    chardev = declare_dependency(objects: libchardev.extract_all_objects(recursive: false))
+ 
+ Target-independent emulator sourcesets:
+   Various general purpose helper code is compiled only once and
+diff --git a/meson.build b/meson.build
+index d6549722b50d..0e6fa2e4b777 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,4 @@
+-project('qemu', ['c'], meson_version: '>=0.63.0',
++project('qemu', ['c'], meson_version: '>=1.1.0',
+         default_options: ['warning_level=1', 'c_std=gnu11', 'cpp_std=gnu++11', 'b_colorout=auto',
+                           'b_staticpic=false', 'stdsplit=false', 'optimization=2', 'b_pie=true'],
+         version: files('VERSION'))
+@@ -3456,20 +3456,20 @@ subdir('gdbstub')
+ 
+ if enable_modules
+   libmodulecommon = static_library('module-common', files('module-common.c') + genh, pic: true, c_args: '-DBUILD_DSO')
+-  modulecommon = declare_dependency(link_whole: libmodulecommon, compile_args: '-DBUILD_DSO')
++  modulecommon = declare_dependency(objects: libmodulecommon.extract_all_objects(recursive: false), compile_args: '-DBUILD_DSO')
+ endif
+ 
+ qom_ss = qom_ss.apply({})
+ libqom = static_library('qom', qom_ss.sources() + genh,
+                         dependencies: [qom_ss.dependencies()],
+                         build_by_default: false)
+-qom = declare_dependency(link_whole: libqom)
++qom = declare_dependency(objects: libqom.extract_all_objects(recursive: false))
+ 
+ event_loop_base = files('event-loop-base.c')
+ event_loop_base = static_library('event-loop-base',
+                                  sources: event_loop_base + genh,
+                                  build_by_default: false)
+-event_loop_base = declare_dependency(link_whole: event_loop_base,
++event_loop_base = declare_dependency(objects: event_loop_base.extract_all_objects(recursive: false),
+                                      dependencies: [qom])
+ 
+ stub_ss = stub_ss.apply({})
+@@ -3703,7 +3703,7 @@ libauthz = static_library('authz', authz_ss.sources() + genh,
+                           dependencies: [authz_ss.dependencies()],
+                           build_by_default: false)
+ 
+-authz = declare_dependency(link_whole: libauthz,
++authz = declare_dependency(objects: libauthz.extract_all_objects(recursive: false),
+                            dependencies: qom)
+ 
+ crypto_ss = crypto_ss.apply({})
+@@ -3711,7 +3711,7 @@ libcrypto = static_library('crypto', crypto_ss.sources() + genh,
+                            dependencies: [crypto_ss.dependencies()],
+                            build_by_default: false)
+ 
+-crypto = declare_dependency(link_whole: libcrypto,
++crypto = declare_dependency(objects: libcrypto.extract_all_objects(recursive: false),
+                             dependencies: [authz, qom])
+ 
+ io_ss = io_ss.apply({})
+@@ -3720,7 +3720,8 @@ libio = static_library('io', io_ss.sources() + genh,
+                        link_with: libqemuutil,
+                        build_by_default: false)
+ 
+-io = declare_dependency(link_whole: libio, dependencies: [crypto, qom])
++io = declare_dependency(objects: libio.extract_all_objects(recursive: false),
++                        dependencies: [crypto, qom])
+ 
+ libmigration = static_library('migration', sources: migration_files + genh,
+                               build_by_default: false)
+@@ -3734,7 +3735,7 @@ libblock = static_library('block', block_ss.sources() + genh,
+                           link_depends: block_syms,
+                           build_by_default: false)
+ 
+-block = declare_dependency(link_whole: [libblock],
++block = declare_dependency(objects: libblock.extract_all_objects(recursive: false),
+                            link_args: '@block.syms',
+                            dependencies: [crypto, io])
+ 
+@@ -3743,7 +3744,7 @@ libblockdev = static_library('blockdev', blockdev_ss.sources() + genh,
+                              dependencies: blockdev_ss.dependencies(),
+                              build_by_default: false)
+ 
+-blockdev = declare_dependency(link_whole: [libblockdev],
++blockdev = declare_dependency(objects: libblockdev.extract_all_objects(recursive: false),
+                               dependencies: [block, event_loop_base])
+ 
+ qmp_ss = qmp_ss.apply({})
+@@ -3751,18 +3752,18 @@ libqmp = static_library('qmp', qmp_ss.sources() + genh,
+                         dependencies: qmp_ss.dependencies(),
+                         build_by_default: false)
+ 
+-qmp = declare_dependency(link_whole: [libqmp])
++qmp = declare_dependency(objects: libqmp.extract_all_objects(recursive: false))
+ 
+ libchardev = static_library('chardev', chardev_ss.sources() + genh,
+                             dependencies: chardev_ss.dependencies(),
+                             build_by_default: false)
+ 
+-chardev = declare_dependency(link_whole: libchardev)
++chardev = declare_dependency(objects: libchardev.extract_all_objects(recursive: false))
+ 
+ hwcore_ss = hwcore_ss.apply({})
+ libhwcore = static_library('hwcore', sources: hwcore_ss.sources() + genh,
+                            build_by_default: false)
+-hwcore = declare_dependency(link_whole: libhwcore)
++hwcore = declare_dependency(objects: libhwcore.extract_all_objects(recursive: false))
+ common_ss.add(hwcore)
+ 
+ ###########
+@@ -3774,7 +3775,7 @@ foreach m : block_mods + system_mods
+   emulator_modules += shared_module(m.name(),
+                 build_by_default: true,
+                 name_prefix: '',
+-                link_whole: m,
++                objects: m.extract_all_objects(recursive: false),
+                 install: true,
+                 install_dir: qemu_moddir)
+ endforeach
+diff --git a/gdbstub/meson.build b/gdbstub/meson.build
+index c91e398ae726..dff741ddd4d7 100644
+--- a/gdbstub/meson.build
++++ b/gdbstub/meson.build
+@@ -26,9 +26,9 @@ libgdb_system = static_library('gdb_system',
+                                 gdb_system_ss.sources() + genh,
+                                 build_by_default: false)
+ 
+-gdb_user = declare_dependency(link_whole: libgdb_user)
++gdb_user = declare_dependency(objects: libgdb_user.extract_all_objects(recursive: false))
+ user_ss.add(gdb_user)
+-gdb_system = declare_dependency(link_whole: libgdb_system)
++gdb_system = declare_dependency(objects: libgdb_system.extract_all_objects(recursive: false))
+ system_ss.add(gdb_system)
+ 
+ common_ss.add(files('syscalls.c'))
+diff --git a/subprojects/libvhost-user/meson.build b/subprojects/libvhost-user/meson.build
+index a18014e7f26f..b3a2a3abf6be 100644
+--- a/subprojects/libvhost-user/meson.build
++++ b/subprojects/libvhost-user/meson.build
+@@ -17,7 +17,7 @@ vhost_user = static_library('vhost-user',
+                             c_args: '-D_GNU_SOURCE')
+ 
+ executable('link-test', files('link-test.c'),
+-           link_whole: vhost_user)
++           objects: vhost_user.extract_all_objects(recursive: false))
+ 
+ vhost_user_glib = static_library('vhost-user-glib',
+                                  files('libvhost-user-glib.c'),
+diff --git a/tests/qtest/libqos/meson.build b/tests/qtest/libqos/meson.build
+index 45b81c83ade3..5b18aa4eaeb9 100644
+--- a/tests/qtest/libqos/meson.build
++++ b/tests/qtest/libqos/meson.build
+@@ -70,4 +70,4 @@ endif
+ libqos = static_library('qos', libqos_srcs + genh,
+                         build_by_default: false)
+ 
+-qos = declare_dependency(link_whole: libqos)
++qos = declare_dependency(objects: libqos.extract_all_objects(recursive: false))
+
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.45.1
 
 
