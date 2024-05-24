@@ -2,84 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B668CE63B
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 15:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B74E8CE683
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 15:59:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAV5h-0007AU-Ii; Fri, 24 May 2024 09:36:13 -0400
+	id 1sAVRv-0002ld-Tr; Fri, 24 May 2024 09:59:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAV5e-00079b-5S
- for qemu-devel@nongnu.org; Fri, 24 May 2024 09:36:10 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAVRt-0002l9-G3
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 09:59:09 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAV5c-0000ae-Fo
- for qemu-devel@nongnu.org; Fri, 24 May 2024 09:36:09 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-681a48efe77so703388a12.2
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 06:36:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716557766; x=1717162566; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=NKExTAqj07lQDqP0uFgd/kJWbBOJXXVoNJaA3FR8d54=;
- b=TwGi556s27K8wyjpLRc9raeWxcdKNzdXHWvZUaNWC7S2HDIOqh19zt3AIjtp09Lq/G
- YYxLTUj6qR5cIQv0yObnQF6Cbo0r42VSpS390+r8kBEHH7Zm+eEslctfztN/HUCcPG76
- phNSE0kDlevjU/EjEaeRMt0nSIStcYJnAel0ARb+y1JIWzSgj/qkeClCLPs6VfGqh+E5
- vMjdswC7/OCdGqoEMLXT2hrJV5Jr09DTOXSK9Q8BpcS7nMeFZX2N33zJnV0ehiYKUPDl
- xFbenaMV1qc1ppDRMv8fDImozS+skLDcTcVg7VfPlWYACGteVV/BZ7mD/lZ4b0AXccRN
- gY7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716557766; x=1717162566;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NKExTAqj07lQDqP0uFgd/kJWbBOJXXVoNJaA3FR8d54=;
- b=KAlY+9LXo8Isg29O264UBcOjFWgKL+k6ZGIyvRt8ZkYTVr2Mjf63ieHe5WMTEDbMFS
- EWKp0fyonLGS+5vq7KVLO/4+n7b2DLV6llEvrfs/gtdKLjFTOWwICFffSw8g4ZaqcefO
- 8K2Z3vOew6ua04iq1jdygQzkUpVX5dOTRmFLD0eDrdy2usCYb0kr7Ho8CHoelCR3s3qJ
- 4R469n950SuKDDDqSHVDtdiFPbhvh6UF5dRJv965XGYhaL8wZfZRvqrUTll7EEUFUlyC
- 01ZMmcBsjcTjm+B0JyMuf013UkNPHFdwxasaW58X1wNNZM/iTgVxeaLkLX3muLSky+2u
- 3pJA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUhrJ2oUXFYPO/BoVIzM6Eq27fSo2YiG+iWC7ouy2u7id/wNhNQPFRwwqSRL/sC/2KN7UY0ERf6wVjzKLZT00HlPBTL7VY=
-X-Gm-Message-State: AOJu0YzQUI2AbGFe02V2OEB8kOtvTif8bHLMej/Jh3oIGhgS04I9mL4M
- SsfXt3aIalvQsBFtfrJSXwZlpRYz84DLTu1kWHp3nT+OTYJztnSyU5O/EhliWY8=
-X-Google-Smtp-Source: AGHT+IGVsYsGLC6hJEd3BCCFbuq3MO5ehSJn33yJAvgWmbcy2LoeLvlMozkgel6M+JHddH4lB+443w==
-X-Received: by 2002:a17:90a:e007:b0:2bd:e8d3:8808 with SMTP id
- 98e67ed59e1d1-2bf5f10aa16mr2012924a91.49.1716557765921; 
- Fri, 24 May 2024 06:36:05 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-2bf5f989871sm1353558a91.40.2024.05.24.06.36.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 24 May 2024 06:36:05 -0700 (PDT)
-Message-ID: <747545de-de3d-4f55-aee8-a8dc7b2c970a@linaro.org>
-Date: Fri, 24 May 2024 06:36:03 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sAVRr-0004w6-TB
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 09:59:09 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8389C3391D;
+ Fri, 24 May 2024 13:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716559146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaCNqbyt7tAMjvfvtHvx0GNhDpoAOgOAQkRH/RlJhno=;
+ b=l1QT7qqNzQnz4locDamavrChIyvb3zkKXxYi2n1zqT1EzzPnVbD5b+HkQNIH9cgWg3THOO
+ EThy0i5XBx+p7wGDi9mPPMH5kqgwGOiG3m94eHoexIshdHAWPOrwmHozYQ4iSZpNEjNstu
+ tgpnB9dDBb/l6U+CL9ggDfeV6unKnyY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716559146;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaCNqbyt7tAMjvfvtHvx0GNhDpoAOgOAQkRH/RlJhno=;
+ b=21G1/napYpAVIYL8VVz+F/9mp0wKB6Zw195qJIKnaXXKZ322S9DKPfClBDOV6Mkqr0R9am
+ Rnv+39quBBXq7DCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716559146; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaCNqbyt7tAMjvfvtHvx0GNhDpoAOgOAQkRH/RlJhno=;
+ b=l1QT7qqNzQnz4locDamavrChIyvb3zkKXxYi2n1zqT1EzzPnVbD5b+HkQNIH9cgWg3THOO
+ EThy0i5XBx+p7wGDi9mPPMH5kqgwGOiG3m94eHoexIshdHAWPOrwmHozYQ4iSZpNEjNstu
+ tgpnB9dDBb/l6U+CL9ggDfeV6unKnyY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716559146;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaCNqbyt7tAMjvfvtHvx0GNhDpoAOgOAQkRH/RlJhno=;
+ b=21G1/napYpAVIYL8VVz+F/9mp0wKB6Zw195qJIKnaXXKZ322S9DKPfClBDOV6Mkqr0R9am
+ Rnv+39quBBXq7DCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DE07813A3D;
+ Fri, 24 May 2024 13:59:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id sz/dIyidUGblRgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 24 May 2024 13:59:04 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Igor
+ Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe Mathieu-Daude
+ <philmd@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Daniel P.
+ Berrange" <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>
+Subject: Re: [PATCH V1 05/26] migration: precreate vmstate
+In-Reply-To: <1714406135-451286-6-git-send-email-steven.sistare@oracle.com>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-6-git-send-email-steven.sistare@oracle.com>
+Date: Fri, 24 May 2024 10:56:50 -0300
+Message-ID: <87ikz3gvod.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/72] ppc-for-9.1-1 queue
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org
-References: <20240523235319.56568-1-npiggin@gmail.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240523235319.56568-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -1.60
+X-Spamd-Result: default: False [-1.60 / 50.00]; BAYES_HAM(-1.80)[93.80%];
+ SUSPICIOUS_RECIPS(1.50)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ ARC_NA(0.00)[]; MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TAGGED_RCPT(0.00)[]; RCPT_COUNT_TWELVE(0.00)[12];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_HAS_DN(0.00)[];
+ FREEMAIL_CC(0.00)[redhat.com,habkost.net,gmail.com,linaro.org,oracle.com];
+ TO_DN_SOME(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCVD_COUNT_TWO(0.00)[2]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,39 +120,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/23/24 16:53, Nicholas Piggin wrote:
-> This replaces the previous PR for tags/pull-ppc-for-9.1-1-20240524 note
-> this tag is tags/pull-ppc-for-9.1-1-20240524-1 (added -1 suffix). The
-> changelog and code are unchanged. Subject for BHRB patches are fixed
-> and trimmed for some MMU cleanup patches. So I won't re-send individual
-> patches to lists.
-> 
-> Thanks,
-> Nick
-> 
-> The following changes since commit 70581940cabcc51b329652becddfbc6a261b1b83:
-> 
->    Merge tag 'pull-tcg-20240523' ofhttps://gitlab.com/rth7680/qemu  into staging (2024-05-23 09:47:40 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/npiggin/qemu.git  tags/pull-ppc-for-9.1-1-20240524-1
-> 
-> for you to fetch changes up to e48fb4c590a23d81ee1d2f09ee9bcf5dd5f98e43:
-> 
->    target/ppc: Remove pp_check() and reuse ppc_hash32_pp_prot() (2024-05-24 09:43:14 +1000)
-> 
-> ----------------------------------------------------------------
-> 
-> * Fix an interesting TLB invalidate race
-> * Implement more instructions with decodetree
-> * Add the POWER8/9/10 BHRB facility
-> * Add missing instructions, registers, SMT support
-> * First round of a big MMU xlate cleanup
+Steve Sistare <steven.sistare@oracle.com> writes:
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+> Provide the VMStateDescription precreate field to mark objects that must
+> be loaded on the incoming side before devices have been created, because
+> they provide properties that will be needed at creation time.  They will
+> be saved to and loaded from their own QEMUFile, via
+> qemu_savevm_precreate_save and qemu_savevm_precreate_load, but these
+> functions are not yet called in this patch.  Allow them to be called
+> before or after normal migration is active, when current_migration and
+> current_incoming are not valid.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 
-
-r~
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
