@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C2D8CECD6
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 01:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7948CECDE
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 01:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sAeIm-0001mq-Bm; Fri, 24 May 2024 19:26:22 -0400
+	id 1sAeJD-0003A0-33; Fri, 24 May 2024 19:26:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAeI1-0007hP-3O
- for qemu-devel@nongnu.org; Fri, 24 May 2024 19:25:34 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1sAeI4-0007rW-42
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 19:25:36 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sAeHt-0006yG-9a
- for qemu-devel@nongnu.org; Fri, 24 May 2024 19:25:32 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-66afccbee0cso3214180a12.1
- for <qemu-devel@nongnu.org>; Fri, 24 May 2024 16:25:20 -0700 (PDT)
+ id 1sAeHt-0006ya-Dd
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 19:25:35 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6f4ed9dc7beso2815278b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 16:25:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716593120; x=1717197920; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ClVAedWRB3iqr0y2DLqE+AfQkjWiY9jnR3ZP7acwvkg=;
- b=JmBuDrSHWc5O08WfdzKOZZmxL2qSElZRWaiY00B3L8t9bN5xTHyCPWa7hz243Sh+Av
- GBCyuUC99k7UxmeXpUVMj29qxmPrzL1825ujGAkci2YQsCI4tpojm475P+yGzsHNEQLk
- ZOLk72j/WLaFyps8bgxeZ20YE2s7taWjAedOGYryzLOfrIK9Ug1sLkXEJNYvf4YcSijc
- T6JqFaAWH5D6Iz9hXfqefKK3PpnAKJHBc3X1vSrI2nNyUDNCBGUsXmr0coe1GWObYs0Z
- THgFSRchCSyPlk4ZCl1LrMVStpPk4fmyQqzHJSFRLg03Cqixz2S2H7Ig4eZGjfZ+jFTo
- knWQ==
+ bh=uPywkpQAhrA1k7AEfIqLBpGakz9C1XFcBO78m8F0zkI=;
+ b=OzPBlGk+rk9RjOWDiKx5b6aTJXSV0G0EWxm9va00W8pbcGvhyrcIf38Gm/iyY1TaRC
+ Jvd4FT+LT0kJ2vGAb3sy/zLM5sA+UtVXGhVTR8LJbHy42pvw0gVcSk1hYMf/BO8LrGtO
+ 4W/zcQtImN/ANPyAnk6Qm6QlqJQB+93m+OAHnbLnuinDiKa0Zhvw39KBKUwlyUMQ8Zv1
+ rX1lnzVeBb/JHTTB9ohDFUCcdSdF42jIFRATI3R+v0t654cBs5sEc1q67rFfXQiDK8kp
+ S79QtJSZQLq+4inMk48U9073PlKXck2gWgtRvDWxEk1tK1RRqu9p+BrhhBWOp2LN1GxG
+ xagA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716593120; x=1717197920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ClVAedWRB3iqr0y2DLqE+AfQkjWiY9jnR3ZP7acwvkg=;
- b=c8UJfe9+VpBybg3JC3X7PouXm9BMWS/hPra1WAyiKnirSP2cSoOBItD1AKSGt9pgu7
- vkFC/TNYd9GX4C7dMkDxc4CCLsioH9gHdFxHqajVzSc9AVJxIdoJbTgOhQ7gfC2QU/am
- h7BJnjjy1Avu5c507u1I1qmERNdQDOsHR7/mK2GGVZ+/gevo/DxV2++HzMOGAG7MeJE9
- By2xzqTriTfhELIh+cHVY7J8bHLV4hjgTKZNg9TrpWqIZxp4CSnpYihRn14seg5mrF7a
- KCQX8MiSirypLf+yE5oBafE3aUz6CEES519LWJfrwM6DOkgJ0rAwGKklnVnwPXIEyB9d
- QQJQ==
-X-Gm-Message-State: AOJu0YwhwOVOmn+i24HklbjvEe7DtT9auZLVUstm2VdYSsazwqBbyvQc
- ymAdabXJnVY5jTqjKJb9eYczF5xrnqDWBB9J8z1Hz+1vAyJZtmBktDLbOWi6p+fripsqd7vz9yO
- c
-X-Google-Smtp-Source: AGHT+IFp79c+uL7+80YFP59Gb7v+9HXWkU6MdkBEeKF81AWjHHSLg6RzA/v4M/IUVtJfTt7GYqDujg==
-X-Received: by 2002:a05:6a20:da86:b0:1af:a2fa:e666 with SMTP id
- adf61e73a8af0-1b212cc6b12mr4021443637.10.1716593119845; 
- Fri, 24 May 2024 16:25:19 -0700 (PDT)
+ bh=uPywkpQAhrA1k7AEfIqLBpGakz9C1XFcBO78m8F0zkI=;
+ b=usn5b7yWKrcgSQj6wvoAGVF8NKOp9NNmGF7pikyR7KOtswfOxYr0tqPGQWfrP15kE1
+ LwjlPl/nVtnZp0Z4f78huTF5GiXlNK8EQ4VvGPR3Y13sylq/ZQkov/7W5VpTekk1V3T2
+ FwQqLkjixGVeYykdmpsh+b1UcUQty8FqxDgQmgNGN868FHa7Qr5nhrBwmTTDH+UnHKBf
+ w07mZAaayTILPjjXQxTTivgCoqmzgYQiLdc+61uB4bTyMBrqoX9ydgMpXznG0TwOQDQ0
+ NnfjF9Ya4jRobYU0xOv+03oSsFyojq2q4IDAYGZNaibQnG98StE5ozfsxvp0zJpW+FNm
+ bP3Q==
+X-Gm-Message-State: AOJu0YwwGyCdYEvizJm74aI5t1mp+mrvGBqL6CwffOSRejzsf6E+ukd2
+ o2cFZOJW4QhZEN40KYJNQCYpYIUcdNIGDVJNoZUqKu93VCTlh1fo5yJRlMMIW6izfqonBlBYTVc
+ n
+X-Google-Smtp-Source: AGHT+IHnL2QC8y1Dudv71TYCNKOE6o0VbixRQO641qh+QP1/NEkn6MBDW+JrIjZ/+xTUYJjiDe7KLg==
+X-Received: by 2002:a05:6a21:32a3:b0:1b0:194a:82f5 with SMTP id
+ adf61e73a8af0-1b212dc7bf8mr5123624637.21.1716593120573; 
+ Fri, 24 May 2024 16:25:20 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fbf2cfd1sm1591695b3a.3.2024.05.24.16.25.19
+ d2e1a72fcca58-6f8fbf2cfd1sm1591695b3a.3.2024.05.24.16.25.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 24 May 2024 16:25:19 -0700 (PDT)
+ Fri, 24 May 2024 16:25:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org
-Subject: [PATCH v2 66/67] target/arm: Convert FMADD, FMSUB, FNMADD,
- FNMSUB to decodetree
-Date: Fri, 24 May 2024 16:21:20 -0700
-Message-Id: <20240524232121.284515-67-richard.henderson@linaro.org>
+Subject: [PATCH v2 67/67] target/arm: Convert FCSEL to decodetree
+Date: Fri, 24 May 2024 16:21:21 -0700
+Message-Id: <20240524232121.284515-68-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240524232121.284515-1-richard.henderson@linaro.org>
 References: <20240524232121.284515-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,248 +92,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are the only instructions in the 3 source scalar class.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a64.decode      |  10 ++
- target/arm/tcg/translate-a64.c | 233 ++++++++++++---------------------
- 2 files changed, 93 insertions(+), 150 deletions(-)
+ target/arm/tcg/a64.decode      |   4 ++
+ target/arm/tcg/translate-a64.c | 108 ++++++++++++++-------------------
+ 2 files changed, 49 insertions(+), 63 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index f7f897f9fc..6f6cd805b7 100644
+index 6f6cd805b7..5dadbc74d7 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -32,6 +32,7 @@
- &rr_e           rd rn esz
- &rrr_e          rd rn rm esz
- &rrx_e          rd rn rm idx esz
-+&rrrr_e         rd rn rm ra esz
- &qrr_e          q rd rn esz
- &qrrr_e         q rd rn rm esz
- &qrrx_e         q rd rn rm idx esz
-@@ -998,3 +999,12 @@ SQDMULH_vi      0.00 1111 10 . ..... 1100 . 0 ..... .....   @qrrx_s
- 
+@@ -1000,6 +1000,10 @@ SQDMULH_vi      0.00 1111 10 . ..... 1100 . 0 ..... .....   @qrrx_s
  SQRDMULH_vi     0.00 1111 01 .. .... 1101 . 0 ..... .....   @qrrx_h
  SQRDMULH_vi     0.00 1111 10 . ..... 1101 . 0 ..... .....   @qrrx_s
+ 
++# Floating-point conditional select
 +
-+# Floating-point data-processing (3 source)
++FCSEL           0001 1110 .. 1 rm:5 cond:4 11 rn:5 rd:5     esz=%esz_hsd
 +
-+@rrrr_hsd       .... .... .. . rm:5  . ra:5  rn:5  rd:5     &rrrr_e esz=%esz_hsd
-+
-+FMADD           0001 1111 .. 0 ..... 0 ..... ..... .....    @rrrr_hsd
-+FMSUB           0001 1111 .. 0 ..... 1 ..... ..... .....    @rrrr_hsd
-+FNMADD          0001 1111 .. 1 ..... 0 ..... ..... .....    @rrrr_hsd
-+FNMSUB          0001 1111 .. 1 ..... 1 ..... ..... .....    @rrrr_hsd
+ # Floating-point data-processing (3 source)
+ 
+ @rrrr_hsd       .... .... .. . rm:5  . ra:5  rn:5  rd:5     &rrrr_e esz=%esz_hsd
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 14226c56cf..3c2963ebaa 100644
+index 3c2963ebaa..845aaa2bfb 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -5866,6 +5866,88 @@ static bool trans_ADDP_s(DisasContext *s, arg_rr_e *a)
+@@ -5866,6 +5866,50 @@ static bool trans_ADDP_s(DisasContext *s, arg_rr_e *a)
      return true;
  }
  
 +/*
-+ * Floating-point data-processing (3 source)
++ * Floating-point conditional select
 + */
 +
-+static bool do_fmadd(DisasContext *s, arg_rrrr_e *a, bool neg_a, bool neg_n)
++static bool trans_FCSEL(DisasContext *s, arg_FCSEL *a)
 +{
-+    TCGv_ptr fpst;
++    TCGv_i64 t_true, t_false;
++    DisasCompare64 c;
 +
-+    /*
-+     * These are fused multiply-add.  Note that doing the negations here
-+     * as separate steps is correct: an input NaN should come out with
-+     * its sign bit flipped if it is a negated-input.
-+     */
 +    switch (a->esz) {
-+    case MO_64:
-+        if (fp_access_check(s)) {
-+            TCGv_i64 tn = read_fp_dreg(s, a->rn);
-+            TCGv_i64 tm = read_fp_dreg(s, a->rm);
-+            TCGv_i64 ta = read_fp_dreg(s, a->ra);
-+
-+            if (neg_a) {
-+                gen_vfp_negd(ta, ta);
-+            }
-+            if (neg_n) {
-+                gen_vfp_negd(tn, tn);
-+            }
-+            fpst = fpstatus_ptr(FPST_FPCR);
-+            gen_helper_vfp_muladdd(ta, tn, tm, ta, fpst);
-+            write_fp_dreg(s, a->rd, ta);
-+        }
-+        break;
-+
 +    case MO_32:
-+        if (fp_access_check(s)) {
-+            TCGv_i32 tn = read_fp_sreg(s, a->rn);
-+            TCGv_i32 tm = read_fp_sreg(s, a->rm);
-+            TCGv_i32 ta = read_fp_sreg(s, a->ra);
-+
-+            if (neg_a) {
-+                gen_vfp_negs(ta, ta);
-+            }
-+            if (neg_n) {
-+                gen_vfp_negs(tn, tn);
-+            }
-+            fpst = fpstatus_ptr(FPST_FPCR);
-+            gen_helper_vfp_muladds(ta, tn, tm, ta, fpst);
-+            write_fp_sreg(s, a->rd, ta);
-+        }
++    case MO_64:
 +        break;
-+
 +    case MO_16:
 +        if (!dc_isar_feature(aa64_fp16, s)) {
 +            return false;
 +        }
-+        if (fp_access_check(s)) {
-+            TCGv_i32 tn = read_fp_hreg(s, a->rn);
-+            TCGv_i32 tm = read_fp_hreg(s, a->rm);
-+            TCGv_i32 ta = read_fp_hreg(s, a->ra);
-+
-+            if (neg_a) {
-+                gen_vfp_negh(ta, ta);
-+            }
-+            if (neg_n) {
-+                gen_vfp_negh(tn, tn);
-+            }
-+            fpst = fpstatus_ptr(FPST_FPCR_F16);
-+            gen_helper_advsimd_muladdh(ta, tn, tm, ta, fpst);
-+            write_fp_sreg(s, a->rd, ta);
-+        }
 +        break;
-+
 +    default:
 +        return false;
 +    }
++
++    if (!fp_access_check(s)) {
++        return true;
++    }
++
++    /* Zero extend sreg & hreg inputs to 64 bits now.  */
++    t_true = tcg_temp_new_i64();
++    t_false = tcg_temp_new_i64();
++    read_vec_element(s, t_true, a->rn, 0, a->esz);
++    read_vec_element(s, t_false, a->rm, 0, a->esz);
++
++    a64_test_cc(&c, a->cond);
++    tcg_gen_movcond_i64(c.cond, t_true, c.value, tcg_constant_i64(0),
++                        t_true, t_false);
++
++    /*
++     * Note that sregs & hregs write back zeros to the high bits,
++     * and we've already done the zero-extension.
++     */
++    write_fp_dreg(s, a->rd, t_true);
 +    return true;
 +}
 +
-+TRANS(FMADD, do_fmadd, a, false, false)
-+TRANS(FNMADD, do_fmadd, a, true, true)
-+TRANS(FMSUB, do_fmadd, a, false, true)
-+TRANS(FNMSUB, do_fmadd, a, true, false)
-+
- /* Shift a TCGv src by TCGv shift_amount, put result in dst.
-  * Note that it is the caller's responsibility to ensure that the
-  * shift amount is in range (ie 0..31 or 0..63) and provide the ARM
-@@ -7665,152 +7747,6 @@ static void disas_fp_1src(DisasContext *s, uint32_t insn)
+ /*
+  * Floating-point data-processing (3 source)
+  */
+@@ -7332,68 +7376,6 @@ static void disas_fp_ccomp(DisasContext *s, uint32_t insn)
      }
  }
  
--/* Floating-point data-processing (3 source) - single precision */
--static void handle_fp_3src_single(DisasContext *s, bool o0, bool o1,
--                                  int rd, int rn, int rm, int ra)
--{
--    TCGv_i32 tcg_op1, tcg_op2, tcg_op3;
--    TCGv_i32 tcg_res = tcg_temp_new_i32();
--    TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR);
--
--    tcg_op1 = read_fp_sreg(s, rn);
--    tcg_op2 = read_fp_sreg(s, rm);
--    tcg_op3 = read_fp_sreg(s, ra);
--
--    /* These are fused multiply-add, and must be done as one
--     * floating point operation with no rounding between the
--     * multiplication and addition steps.
--     * NB that doing the negations here as separate steps is
--     * correct : an input NaN should come out with its sign bit
--     * flipped if it is a negated-input.
--     */
--    if (o1 == true) {
--        gen_vfp_negs(tcg_op3, tcg_op3);
--    }
--
--    if (o0 != o1) {
--        gen_vfp_negs(tcg_op1, tcg_op1);
--    }
--
--    gen_helper_vfp_muladds(tcg_res, tcg_op1, tcg_op2, tcg_op3, fpst);
--
--    write_fp_sreg(s, rd, tcg_res);
--}
--
--/* Floating-point data-processing (3 source) - double precision */
--static void handle_fp_3src_double(DisasContext *s, bool o0, bool o1,
--                                  int rd, int rn, int rm, int ra)
--{
--    TCGv_i64 tcg_op1, tcg_op2, tcg_op3;
--    TCGv_i64 tcg_res = tcg_temp_new_i64();
--    TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR);
--
--    tcg_op1 = read_fp_dreg(s, rn);
--    tcg_op2 = read_fp_dreg(s, rm);
--    tcg_op3 = read_fp_dreg(s, ra);
--
--    /* These are fused multiply-add, and must be done as one
--     * floating point operation with no rounding between the
--     * multiplication and addition steps.
--     * NB that doing the negations here as separate steps is
--     * correct : an input NaN should come out with its sign bit
--     * flipped if it is a negated-input.
--     */
--    if (o1 == true) {
--        gen_vfp_negd(tcg_op3, tcg_op3);
--    }
--
--    if (o0 != o1) {
--        gen_vfp_negd(tcg_op1, tcg_op1);
--    }
--
--    gen_helper_vfp_muladdd(tcg_res, tcg_op1, tcg_op2, tcg_op3, fpst);
--
--    write_fp_dreg(s, rd, tcg_res);
--}
--
--/* Floating-point data-processing (3 source) - half precision */
--static void handle_fp_3src_half(DisasContext *s, bool o0, bool o1,
--                                int rd, int rn, int rm, int ra)
--{
--    TCGv_i32 tcg_op1, tcg_op2, tcg_op3;
--    TCGv_i32 tcg_res = tcg_temp_new_i32();
--    TCGv_ptr fpst = fpstatus_ptr(FPST_FPCR_F16);
--
--    tcg_op1 = read_fp_hreg(s, rn);
--    tcg_op2 = read_fp_hreg(s, rm);
--    tcg_op3 = read_fp_hreg(s, ra);
--
--    /* These are fused multiply-add, and must be done as one
--     * floating point operation with no rounding between the
--     * multiplication and addition steps.
--     * NB that doing the negations here as separate steps is
--     * correct : an input NaN should come out with its sign bit
--     * flipped if it is a negated-input.
--     */
--    if (o1 == true) {
--        tcg_gen_xori_i32(tcg_op3, tcg_op3, 0x8000);
--    }
--
--    if (o0 != o1) {
--        tcg_gen_xori_i32(tcg_op1, tcg_op1, 0x8000);
--    }
--
--    gen_helper_advsimd_muladdh(tcg_res, tcg_op1, tcg_op2, tcg_op3, fpst);
--
--    write_fp_sreg(s, rd, tcg_res);
--}
--
--/* Floating point data-processing (3 source)
-- *   31  30  29 28       24 23  22  21  20  16  15  14  10 9    5 4    0
-- * +---+---+---+-----------+------+----+------+----+------+------+------+
-- * | M | 0 | S | 1 1 1 1 1 | type | o1 |  Rm  | o0 |  Ra  |  Rn  |  Rd  |
-- * +---+---+---+-----------+------+----+------+----+------+------+------+
+-/* Floating point conditional select
+- *   31  30  29 28       24 23  22  21 20  16 15  12 11 10 9    5 4    0
+- * +---+---+---+-----------+------+---+------+------+-----+------+------+
+- * | M | 0 | S | 1 1 1 1 0 | type | 1 |  Rm  | cond | 1 1 |  Rn  |  Rd  |
+- * +---+---+---+-----------+------+---+------+------+-----+------+------+
 - */
--static void disas_fp_3src(DisasContext *s, uint32_t insn)
+-static void disas_fp_csel(DisasContext *s, uint32_t insn)
 -{
--    int mos = extract32(insn, 29, 3);
--    int type = extract32(insn, 22, 2);
--    int rd = extract32(insn, 0, 5);
--    int rn = extract32(insn, 5, 5);
--    int ra = extract32(insn, 10, 5);
--    int rm = extract32(insn, 16, 5);
--    bool o0 = extract32(insn, 15, 1);
--    bool o1 = extract32(insn, 21, 1);
+-    unsigned int mos, type, rm, cond, rn, rd;
+-    TCGv_i64 t_true, t_false;
+-    DisasCompare64 c;
+-    MemOp sz;
+-
+-    mos = extract32(insn, 29, 3);
+-    type = extract32(insn, 22, 2);
+-    rm = extract32(insn, 16, 5);
+-    cond = extract32(insn, 12, 4);
+-    rn = extract32(insn, 5, 5);
+-    rd = extract32(insn, 0, 5);
 -
 -    if (mos) {
 -        unallocated_encoding(s);
@@ -343,47 +199,53 @@ index 14226c56cf..3c2963ebaa 100644
 -
 -    switch (type) {
 -    case 0:
--        if (!fp_access_check(s)) {
--            return;
--        }
--        handle_fp_3src_single(s, o0, o1, rd, rn, rm, ra);
+-        sz = MO_32;
 -        break;
 -    case 1:
--        if (!fp_access_check(s)) {
--            return;
--        }
--        handle_fp_3src_double(s, o0, o1, rd, rn, rm, ra);
+-        sz = MO_64;
 -        break;
 -    case 3:
--        if (!dc_isar_feature(aa64_fp16, s)) {
--            unallocated_encoding(s);
--            return;
+-        sz = MO_16;
+-        if (dc_isar_feature(aa64_fp16, s)) {
+-            break;
 -        }
--        if (!fp_access_check(s)) {
--            return;
--        }
--        handle_fp_3src_half(s, o0, o1, rd, rn, rm, ra);
--        break;
+-        /* fallthru */
 -    default:
 -        unallocated_encoding(s);
+-        return;
 -    }
+-
+-    if (!fp_access_check(s)) {
+-        return;
+-    }
+-
+-    /* Zero extend sreg & hreg inputs to 64 bits now.  */
+-    t_true = tcg_temp_new_i64();
+-    t_false = tcg_temp_new_i64();
+-    read_vec_element(s, t_true, rn, 0, sz);
+-    read_vec_element(s, t_false, rm, 0, sz);
+-
+-    a64_test_cc(&c, cond);
+-    tcg_gen_movcond_i64(c.cond, t_true, c.value, tcg_constant_i64(0),
+-                        t_true, t_false);
+-
+-    /* Note that sregs & hregs write back zeros to the high bits,
+-       and we've already done the zero-extension.  */
+-    write_fp_dreg(s, rd, t_true);
 -}
 -
- /* Floating point immediate
-  *   31  30  29 28       24 23  22  21 20        13 12   10 9    5 4    0
-  * +---+---+---+-----------+------+---+------------+-------+------+------+
-@@ -8254,10 +8190,7 @@ static void disas_fp_int_conv(DisasContext *s, uint32_t insn)
-  */
- static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
+ /* Floating-point data-processing (1 source) - half precision */
+ static void handle_fp_1src_half(DisasContext *s, int opcode, int rd, int rn)
  {
--    if (extract32(insn, 24, 1)) {
--        /* Floating point data-processing (3 source) */
--        disas_fp_3src(s, insn);
--    } else if (extract32(insn, 21, 1) == 0) {
-+    if (extract32(insn, 21, 1) == 0) {
-         /* Floating point to fixed point conversions */
-         disas_fp_fixed_conv(s, insn);
-     } else {
+@@ -8205,7 +8187,7 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
+             break;
+         case 3:
+             /* Floating point conditional select */
+-            disas_fp_csel(s, insn);
++            unallocated_encoding(s); /* in decodetree */
+             break;
+         case 0:
+             switch (ctz32(extract32(insn, 12, 4))) {
 -- 
 2.34.1
 
