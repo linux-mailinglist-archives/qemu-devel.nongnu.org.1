@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A178CE408
-	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1888CE476
+	for <lists+qemu-devel@lfdr.de>; Fri, 24 May 2024 12:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sARt8-0003yh-Sm; Fri, 24 May 2024 06:11:03 -0400
+	id 1sASWy-0006Tc-Rg; Fri, 24 May 2024 06:52:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sARt5-0003wc-MC; Fri, 24 May 2024 06:10:59 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sARt3-0008GM-LC; Fri, 24 May 2024 06:10:59 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9029369A30;
- Fri, 24 May 2024 13:11:22 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 37D45D6497;
- Fri, 24 May 2024 13:10:54 +0300 (MSK)
-Message-ID: <a53378e3-658b-43b5-8714-9be5a1fec2f3@tls.msk.ru>
-Date: Fri, 24 May 2024 13:10:54 +0300
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sASWo-0006Ob-IO
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:02 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sASWl-0007dd-5Q
+ for qemu-devel@nongnu.org; Fri, 24 May 2024 06:52:02 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2e538a264f7so98871961fa.0
+ for <qemu-devel@nongnu.org>; Fri, 24 May 2024 03:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716547916; x=1717152716; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kFIVEJTgY5LlkMw7cZ3HEZddVYi18q8X6osQf1D0X6g=;
+ b=MNHsBfob/tOdIvUrSRbkHOwv+i6nRLuFW8bGYDIcqxYgP/HD7nwqZPBR86hEzQzz/b
+ pzStCMdUogxGUTRxviFiJCfuthQ1XDEYECnwhiL2q2c4C62KD0J4kxuxr/vTdrjLI1Qx
+ 2TVTCdLArmmhMg/oKTw8jPVOthdzm3wdEDAqMP+PVQw7nbah3f7WGmy4fd2cmO+I2RAN
+ BNPmPzVtYXJZVGGyBgjvopVhktu89HNFmlPppVT1qKrresqxbpxpPhIUbZ0P/SV+J8NC
+ /FvnjwluhuKP8u67uaOBhByS9NIF6WNSAgxBOyQ0nOSilEV8h3AZjoMCbQxgV4o8Qd8P
+ Gncw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716547916; x=1717152716;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kFIVEJTgY5LlkMw7cZ3HEZddVYi18q8X6osQf1D0X6g=;
+ b=op65AtU+k5UdrlcNy08p9Pr0PRmqMSomVThNA6TioKElplayurKijgJA9GHcxGISEO
+ +/h0Mfn82TVoheiVJdoMT5qf8QJQcoOCQ1NlEwCpCN9x4slgiE0s3xqRMlBpzYPpV5JO
+ 7EOilTjYgfD0xkLhdeeQP37lcqtg7uEKrgK656c0kokATWiKWrTJPMVWc8q9bklUfk8+
+ CaP/gMcTMpTswFXDJLzFsMDpNH1sxZgQtmeiD56QRqB4LIS+m5iI8ov2FvgXmCb1MD92
+ Bou62ybmlWiVxwVlr9fvrtuT9HYFhCAl5Iij7JefnRyYKC7Mzaz8ZZfqCL/yA0obvQwV
+ Ostg==
+X-Gm-Message-State: AOJu0Yx4je/x72QQ1iep2dfsB4BUX9XilSFXbpKN7jbqhIdaTvRyf/jP
+ dLgjte7LTqsDWdP+M/1cvIDYjLm0LnXd824NE+w14AogpvieY7U9cCENOvX6
+X-Google-Smtp-Source: AGHT+IHLU+50DMFIXtkI+bDAhS+PAb4gGnsMzpXWbf7n+j77wzYqjOVb4zh/14RCnGz0UJIQpwiTvQ==
+X-Received: by 2002:a2e:7e08:0:b0:2d8:a921:dfc1 with SMTP id
+ 38308e7fff4ca-2e95b0c2295mr10868451fa.20.1716547915566; 
+ Fri, 24 May 2024 03:51:55 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ 38308e7fff4ca-2e95bcf4bdfsm1481221fa.63.2024.05.24.03.51.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 24 May 2024 03:51:55 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Subject: [PATCH v7 0/8] xen: Support grant mappings
+Date: Fri, 24 May 2024 12:51:44 +0200
+Message-Id: <20240524105152.1301842-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 10/10] hw/loongarch/virt: Fix FDT memory node address width
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-stable@nongnu.org
-References: <20240523014637.614872-1-gaosong@loongson.cn>
- <20240523014637.614872-11-gaosong@loongson.cn>
-Content-Language: en-US, ru-RU
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240523014637.614872-11-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,50 +89,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-23.05.2024 04:46, Song Gao wrote:
-> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> 
-> Higher bits for memory nodes were omitted at qemu_fdt_setprop_cells.
-> 
-> Cc: qemu-stable@nongnu.org
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Reviewed-by: Song Gao <gaosong@loongson.cn>
-> Message-Id: <20240520-loongarch-fdt-memnode-v1-1-5ea9be93911e@flygoat.com>
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   hw/loongarch/virt.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-> index e3bdf085b5..3e6e93edf3 100644
-> --- a/hw/loongarch/virt.c
-> +++ b/hw/loongarch/virt.c
-> @@ -464,7 +464,8 @@ static void fdt_add_memory_node(MachineState *ms,
->       char *nodename = g_strdup_printf("/memory@%" PRIx64, base);
->   
->       qemu_fdt_add_subnode(ms->fdt, nodename);
-> -    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0, base, 0, size);
-> +    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", base >> 32, base,
-> +                           size >> 32, size);
->       qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
->   
->       if (ms->numa_state && ms->numa_state->num_nodes) {
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-This commit changes exactly the same place as the previous commit,
-v9.0.0-274-gb11f981452, "hw/loongarch: Fix fdt memory node wrong 'reg'".
+Hi,
 
-Was it the wrong fix?
+Grant mappings are a mechanism in Xen for guests to grant each other
+permissions to map and share pages. These grants can be temporary
+so both map and unmaps must be respected. See here for more info:
+https://github.com/xen-project/xen/blob/master/docs/misc/grant-tables.txt
 
-Note the previous commit isn't in any released version of qemu.  So
-when picking up for any stable release, both needs to be picked up :)
+Currently, the primary use-case for grants in QEMU, is with VirtIO backends.
+Grant mappings will only work with models that use the address_space_map/unmap
+interfaces, any other access will fail with appropriate error messages.
 
-Thanks,
+In response to feedback we got on v3, later version switch approach
+from adding new MemoryRegion types and map/unmap hooks to instead reusing
+the existing xen_map_cache() hooks (with extensions). Almost all of the
+changes are now contained to the Xen modules.
 
-/mjt
+This approach also refactors the mapcache to support multiple instances
+(one for existing foreign mappings and another for grant mappings).
+
+I've only enabled grants for the ARM PVH machine since that is what
+I can currently test on.
+
+Cheers,
+Edgar
+
+ChangeLog:
+
+v6 -> v7:
+* Use g_autofree in xen_remap_bucket().
+* Flatten nested if-statements in xen_map_cache().
+* Fix typo in error message in xen_map_cache().
+
+v5 -> v6:
+* Correct passing of ram_addr_offset in xen_replace_cache_entry_unlocked.
+
+v4 -> v5:
+* Compute grant_ref from address_index to xen_remap_bucket().
+* Rename grant_is_write to is_write.
+* Remove unnecessary + mc->bucket_size - 1 in
+  xen_invalidate_map_cache_entry_unlocked().
+* Remove use of global mapcache in refactor of
+  xen_replace_cache_entry_unlocked().
+* Add error checking for xengnttab_unmap().
+* Add assert in xen_replace_cache_entry_unlocked() against grant mappings.
+* Fix memory leak when freeing first entry in mapcache buckets.
+* Assert that bucket_shift is >= XC_PAGE_SHIFT when creating mapcache.
+* Add missing use of xen_mr_is_memory() in hw/xen/xen-hvm-common.c.
+* Rebase with master.
+
+v3 -> v4:
+* Reuse existing xen_map_cache hooks.
+* Reuse existing map-cache for both foreign and grant mappings.
+* Only enable grants for the ARM PVH machine (removed i386).
+
+v2 -> v3:
+* Drop patch 1/7. This was done because device unplug is an x86-only case.
+* Add missing qemu_mutex_unlock() before return.
+
+v1 -> v2:
+* Split patch 2/7 to keep phymem.c changes in a separate.
+* In patch "xen: add map and unmap callbacks for grant" add check for total
+  allowed grant < XEN_MAX_VIRTIO_GRANTS.
+* Fix formatting issues and re-based with master latest.
+
+
+Edgar E. Iglesias (8):
+  xen: mapcache: Make MCACHE_BUCKET_SHIFT runtime configurable
+  xen: mapcache: Unmap first entries in buckets
+  xen: Add xen_mr_is_memory()
+  softmmu: xen: Always pass offset + addr to xen_map_cache
+  softmmu: Replace check for RAMBlock offset 0 with xen_mr_is_memory
+  xen: mapcache: Pass the ram_addr offset to xen_map_cache()
+  xen: mapcache: Add support for grant mappings
+  hw/arm: xen: Enable use of grant mappings
+
+ hw/arm/xen_arm.c                |   5 +
+ hw/xen/xen-hvm-common.c         |  18 ++-
+ hw/xen/xen-mapcache.c           | 234 ++++++++++++++++++++++++--------
+ include/hw/xen/xen-hvm-common.h |   3 +
+ include/sysemu/xen-mapcache.h   |   2 +
+ include/sysemu/xen.h            |  15 ++
+ system/physmem.c                |  12 +-
+ 7 files changed, 224 insertions(+), 65 deletions(-)
+
+
+base-commit: 70581940cabcc51b329652becddfbc6a261b1b83
 -- 
-GPG Key transition (from rsa2048 to rsa4096) since 2024-04-24.
-New key: rsa4096/61AD3D98ECDF2C8E  9D8B E14E 3F2A 9DD7 9199  28F1 61AD 3D98 ECDF 2C8E
-Old key: rsa2048/457CE0A0804465C5  6EE1 95D1 886E 8FFB 810D  4324 457C E0A0 8044 65C5
-Transition statement: http://www.corpit.ru/mjt/gpg-transition-2024.txt
+2.40.1
 
 
