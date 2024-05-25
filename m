@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6528CEEAD
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 13:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF908CEEB1
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 13:35:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sApfN-0002Ty-QD; Sat, 25 May 2024 07:34:25 -0400
+	id 1sApfU-0002gO-Ao; Sat, 25 May 2024 07:34:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sApfM-0002Tb-6b
- for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sApfR-0002c7-4u
+ for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sApfK-00047S-FO
- for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:23 -0400
+ id 1sApfO-000486-CH
+ for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716636861;
+ s=mimecast20190719; t=1716636864;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WBkZJsxUjQCschxBUdmlajywVV3FGiU9N2lB0Rg7DLg=;
- b=bnwAtSFMjwMk7aFXYuLepmB18kZukHg9cwj7leRsAZYZbFlzyxCx48hbcccg2oe8u3e8DH
- atuMJGinlPStT7B6d8c49rEIz//HsBdIIEVeJix4+E/yGbXgU6m6p2r3ppUMgo2yyrL8R/
- oP5z6piIxervCk/crZoxm+ZoBOZSBXM=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nmao0q6LQviEK0BFtAjWWlLJmjAOM3Vqxn/I8hAl6HE=;
+ b=PTJkCo3skG78V3xnGkbyVaLaAaN3edGCYuqqr83obzXQiwQdi6qf5Nn4cBHCeY6F9wBo4C
+ 70zCwolH/J49cWo+uTvP7q9OXu8BIgVIQRMZsPRbm+utAtkbyR7fSDpP0xFwj3OFU6IhfC
+ 4t6GdUm1P5yegXd8I1pN1aD4QPcXpSE=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-pO_kd6EIO4qoukvizMEkpg-1; Sat, 25 May 2024 07:34:19 -0400
-X-MC-Unique: pO_kd6EIO4qoukvizMEkpg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a592c35ac06so416390766b.0
- for <qemu-devel@nongnu.org>; Sat, 25 May 2024 04:34:19 -0700 (PDT)
+ us-mta-42-SwVb5jBHNvS4qNFXS2m_UA-1; Sat, 25 May 2024 07:34:23 -0400
+X-MC-Unique: SwVb5jBHNvS4qNFXS2m_UA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a62684ef298so84186866b.3
+ for <qemu-devel@nongnu.org>; Sat, 25 May 2024 04:34:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716636858; x=1717241658;
+ d=1e100.net; s=20230601; t=1716636861; x=1717241661;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WBkZJsxUjQCschxBUdmlajywVV3FGiU9N2lB0Rg7DLg=;
- b=aT30wqtdIhhWydWFzE4YJnqU3qcDQgdPBYMhUCU/gDIy510BF/uuuQwOVmhz718wJL
- DFOMEX6XxKx2AdpV+VyhKCn/INcHhefS4SMyhdpgG60nGVI9wxgtBnGVzvQnAGi68H94
- NETLITp1fEZ09NAkbCzELejNrPGh8zEpXh13wCSkk+6B44RG3sqDFxcmzbp1PdbAXyI2
- APN1JFr49YdVYPaWReMXUhKzXR+xW5At3QluOXQMTv/zdgPEpYKqCd1IJ0esWbzdLAt0
- 5hkkJWOkxtYcGYJ099N/8bAWkCFpcws6pPr/hu0WJYYT56cqvuwpl7DKqU9xA7MaDH6c
- 0+Yw==
-X-Gm-Message-State: AOJu0YxINXFS5pCrZb0TESevwsUYxggMccHWaC+0aW2DFTHKqlif9kFP
- vGrMMgReq9Kme+u/14ojsuBC3dUG7d180FLb4q5vtIxNqJZfsDDMvNqGwVVxC10D1KkGPQVrMuK
- LKUtDGhmmd2QmrzW38XOj/t1JsnDOiiHiNdIQLKl9NXi76SF/ayrocF2tEGdH8gK9aksXTdTkbV
- t/676MC+vgQewISfsh+7spGDQpNWBHV7h5SHtU
-X-Received: by 2002:a17:906:358e:b0:a62:49ae:cd7b with SMTP id
- a640c23a62f3a-a626250ddcemr409072366b.24.1716636858057; 
- Sat, 25 May 2024 04:34:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHoVMOEa2tJTmt491sGj8Dq8796mfUUUspdsRPxOvshBpj8lfXpnVHKQJWrbxRRIaw09SEzwQ==
-X-Received: by 2002:a17:906:358e:b0:a62:49ae:cd7b with SMTP id
- a640c23a62f3a-a626250ddcemr409071366b.24.1716636857594; 
- Sat, 25 May 2024 04:34:17 -0700 (PDT)
+ bh=nmao0q6LQviEK0BFtAjWWlLJmjAOM3Vqxn/I8hAl6HE=;
+ b=IA8fxghFs5qvKR2+yTpabT98UrXWBAge3JSa/nUeX7DI/A2JwjOedKyh2t7rkViMco
+ 1B3iyVFHLfSYatpMifV9bs86PdGveGxsvhLnWtHLlFWSSocCk8e27VTuc3yp6slAerED
+ 7xhIGEsSiJ+kyLqccIP13Yn+/FJYmOVoYj3mbGG0/Y8WGKI7dsNQOuzYN9EjgiD+SkZd
+ EHHAxF0YcjWJurB2a4QkX7i17SwM9p8q1YT6/JlB1xhbLqeXcTTDHBgE4lxJv4HZBxEH
+ +4QzfqN+4Vg8avFq3jZnoqL3dQb89cwInqY2QRoC3um+S1/MFRfw4Q4aLlcbnaohjHGA
+ vAig==
+X-Gm-Message-State: AOJu0YygAiCs1I+tqfRVouECDZhxl3ZsIgSHZcUKcDXURUChJJy1QgAJ
+ 3LeI7r8x13cgfqMztgnRMxRak9bsw9RYMuj4cGpuoynV2lUqz5LrhXs3mZ4bckGRW9L8DURWH2f
+ LcUferQN2YaieL39wpTDeJJXiBIbQ+OE2vF4zoD5GSJvHQjBJG4cjeMouxYMnqsozsMfrP8HvRM
+ SeV1zjECaUd0uUDNBO+qfXDVkRczxYu09DwyI1
+X-Received: by 2002:a17:906:e0d3:b0:a59:c3d0:5507 with SMTP id
+ a640c23a62f3a-a62641e0007mr342267966b.26.1716636861009; 
+ Sat, 25 May 2024 04:34:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDufGisi6e11h2/mVdeifjaAz7COTCLaWAes9rQzy3DGqdlV+GARCgW3ABBPAlFMkiMw8DyA==
+X-Received: by 2002:a17:906:e0d3:b0:a59:c3d0:5507 with SMTP id
+ a640c23a62f3a-a62641e0007mr342266766b.26.1716636860532; 
+ Sat, 25 May 2024 04:34:20 -0700 (PDT)
 Received: from [192.168.10.117] ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626cc8c27bsm244459166b.156.2024.05.25.04.34.17
+ a640c23a62f3a-a626cc8e2b2sm245545666b.171.2024.05.25.04.34.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 May 2024 04:34:17 -0700 (PDT)
+ Sat, 25 May 2024 04:34:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/24] target/i386: split gen_ldst_modrm for load and store
-Date: Sat, 25 May 2024 13:33:22 +0200
-Message-ID: <20240525113332.1404158-15-pbonzini@redhat.com>
+Subject: [PULL 15/24] target/i386: inline gen_add_A0_ds_seg
+Date: Sat, 25 May 2024 13:33:23 +0200
+Message-ID: <20240525113332.1404158-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240525113332.1404158-1-pbonzini@redhat.com>
 References: <20240525113332.1404158-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,154 +100,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The is_store argument of gen_ldst_modrm has only ever been passed
-a constant.  Just split the function in two.
+It is only used in MONITOR, where a direct call of gen_lea_v_seg
+is simpler, and in XLAT.  Inline it in the latter.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 52 +++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 23 deletions(-)
+ target/i386/tcg/translate.c | 9 +--------
+ target/i386/tcg/emit.c.inc  | 2 +-
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 4bb932af16b..afbed87056a 100644
+index afbed87056a..2039ccf283a 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -1828,27 +1828,33 @@ static void gen_add_A0_ds_seg(DisasContext *s)
-     gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
+@@ -1822,12 +1822,6 @@ static void gen_bndck(CPUX86State *env, DisasContext *s, int modrm,
+     gen_helper_bndck(tcg_env, s->tmp2_i32);
  }
  
--/* generate modrm memory load or store of 'reg'. */
--static void gen_ldst_modrm(CPUX86State *env, DisasContext *s, int modrm,
--                           MemOp ot, int is_store)
-+/* generate modrm load of memory or register. */
-+static void gen_ld_modrm(CPUX86State *env, DisasContext *s, int modrm, MemOp ot)
+-/* used for LEA and MOV AX, mem */
+-static void gen_add_A0_ds_seg(DisasContext *s)
+-{
+-    gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
+-}
+-
+ /* generate modrm load of memory or register. */
+ static void gen_ld_modrm(CPUX86State *env, DisasContext *s, int modrm, MemOp ot)
  {
-     int mod, rm;
+@@ -3674,8 +3668,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
+             }
+             gen_update_cc_op(s);
+             gen_update_eip_cur(s);
+-            tcg_gen_mov_tl(s->A0, cpu_regs[R_EAX]);
+-            gen_add_A0_ds_seg(s);
++            gen_lea_v_seg(s, s->aflag, cpu_regs[R_EAX], R_DS, s->override);
+             gen_helper_monitor(tcg_env, s->A0);
+             break;
  
-     mod = (modrm >> 6) & 3;
-     rm = (modrm & 7) | REX_B(s);
-     if (mod == 3) {
--        if (is_store) {
--            gen_op_mov_reg_v(s, ot, rm, s->T0);
--        } else {
--            gen_op_mov_v_reg(s, ot, s->T0, rm);
--        }
-+        gen_op_mov_v_reg(s, ot, s->T0, rm);
-     } else {
-         gen_lea_modrm(env, s, modrm);
--        if (is_store) {
--            gen_op_st_v(s, ot, s->T0, s->A0);
--        } else {
--            gen_op_ld_v(s, ot, s->T0, s->A0);
--        }
-+        gen_op_ld_v(s, ot, s->T0, s->A0);
-+    }
-+}
-+
-+/* generate modrm store of memory or register. */
-+static void gen_st_modrm(CPUX86State *env, DisasContext *s, int modrm, MemOp ot)
-+{
-+    int mod, rm;
-+
-+    mod = (modrm >> 6) & 3;
-+    rm = (modrm & 7) | REX_B(s);
-+    if (mod == 3) {
-+        gen_op_mov_reg_v(s, ot, rm, s->T0);
-+    } else {
-+        gen_lea_modrm(env, s, modrm);
-+        gen_op_st_v(s, ot, s->T0, s->A0);
-     }
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 88bcb9699c3..01ad57629e4 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -4043,7 +4043,7 @@ static void gen_XLAT(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     /* AL is already zero-extended into s->T0.  */
+     tcg_gen_add_tl(s->A0, cpu_regs[R_EBX], s->T0);
+-    gen_add_A0_ds_seg(s);
++    gen_lea_v_seg(s, s->aflag, s->A0, R_DS, s->override);
+     gen_op_ld_v(s, MO_8, s->T0, s->A0);
  }
  
-@@ -3438,7 +3444,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         ot = dflag;
-         modrm = x86_ldub_code(env, s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
--        gen_ldst_modrm(env, s, modrm, ot, 0);
-+        gen_ld_modrm(env, s, modrm, ot);
-         gen_extu(ot, s->T0);
- 
-         /* Note that lzcnt and tzcnt are in different extensions.  */
-@@ -3589,14 +3595,14 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             tcg_gen_ld32u_tl(s->T0, tcg_env,
-                              offsetof(CPUX86State, ldt.selector));
-             ot = mod == 3 ? dflag : MO_16;
--            gen_ldst_modrm(env, s, modrm, ot, 1);
-+            gen_st_modrm(env, s, modrm, ot);
-             break;
-         case 2: /* lldt */
-             if (!PE(s) || VM86(s))
-                 goto illegal_op;
-             if (check_cpl0(s)) {
-                 gen_svm_check_intercept(s, SVM_EXIT_LDTR_WRITE);
--                gen_ldst_modrm(env, s, modrm, MO_16, 0);
-+                gen_ld_modrm(env, s, modrm, MO_16);
-                 tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
-                 gen_helper_lldt(tcg_env, s->tmp2_i32);
-             }
-@@ -3611,14 +3617,14 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             tcg_gen_ld32u_tl(s->T0, tcg_env,
-                              offsetof(CPUX86State, tr.selector));
-             ot = mod == 3 ? dflag : MO_16;
--            gen_ldst_modrm(env, s, modrm, ot, 1);
-+            gen_st_modrm(env, s, modrm, ot);
-             break;
-         case 3: /* ltr */
-             if (!PE(s) || VM86(s))
-                 goto illegal_op;
-             if (check_cpl0(s)) {
-                 gen_svm_check_intercept(s, SVM_EXIT_TR_WRITE);
--                gen_ldst_modrm(env, s, modrm, MO_16, 0);
-+                gen_ld_modrm(env, s, modrm, MO_16);
-                 tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
-                 gen_helper_ltr(tcg_env, s->tmp2_i32);
-             }
-@@ -3627,7 +3633,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         case 5: /* verw */
-             if (!PE(s) || VM86(s))
-                 goto illegal_op;
--            gen_ldst_modrm(env, s, modrm, MO_16, 0);
-+            gen_ld_modrm(env, s, modrm, MO_16);
-             gen_update_cc_op(s);
-             if (op == 4) {
-                 gen_helper_verr(tcg_env, s->T0);
-@@ -3891,7 +3897,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-              */
-             mod = (modrm >> 6) & 3;
-             ot = (mod != 3 ? MO_16 : s->dflag);
--            gen_ldst_modrm(env, s, modrm, ot, 1);
-+            gen_st_modrm(env, s, modrm, ot);
-             break;
-         case 0xee: /* rdpkru */
-             if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
-@@ -3918,7 +3924,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-                 break;
-             }
-             gen_svm_check_intercept(s, SVM_EXIT_WRITE_CR0);
--            gen_ldst_modrm(env, s, modrm, MO_16, 0);
-+            gen_ld_modrm(env, s, modrm, MO_16);
-             /*
-              * Only the 4 lower bits of CR0 are modified.
-              * PE cannot be set to zero if already set to one.
-@@ -3990,7 +3996,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-             ot = dflag != MO_16 ? MO_32 : MO_16;
-             modrm = x86_ldub_code(env, s);
-             reg = ((modrm >> 3) & 7) | REX_R(s);
--            gen_ldst_modrm(env, s, modrm, MO_16, 0);
-+            gen_ld_modrm(env, s, modrm, MO_16);
-             t0 = tcg_temp_new();
-             gen_update_cc_op(s);
-             if (b == 0x102) {
-@@ -4494,7 +4500,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         reg = ((modrm >> 3) & 7) | REX_R(s);
- 
-         ot = dflag;
--        gen_ldst_modrm(env, s, modrm, ot, 0);
-+        gen_ld_modrm(env, s, modrm, ot);
-         gen_extu(ot, s->T0);
-         tcg_gen_mov_tl(cpu_cc_src, s->T0);
-         tcg_gen_ctpop_tl(s->T0, s->T0);
 -- 
 2.45.1
 
