@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2116D8CEEB8
-	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 13:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D08D8CEEB7
+	for <lists+qemu-devel@lfdr.de>; Sat, 25 May 2024 13:36:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sApfl-0003ZL-NL; Sat, 25 May 2024 07:34:49 -0400
+	id 1sApfw-0003gV-0K; Sat, 25 May 2024 07:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sApfk-0003Z0-Ca
- for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1sApfr-0003cz-2F
+ for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sApfi-0004CA-V7
- for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:48 -0400
+ id 1sApfm-0004CX-Aj
+ for qemu-devel@nongnu.org; Sat, 25 May 2024 07:34:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716636886;
+ s=mimecast20190719; t=1716636888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DrQKXlw5u4HCxCSjJA+nYUSNZLIT05jc7Oc0v9l+ebg=;
- b=Re8dPe8RA0wY5z1hiRHWPj2keh5FjxFwIhU1un1NKsiYnoKnklytnQFXraeCF3Vt5fQUHi
- bhAM2ixeFGSVDILMeROVeFEiKNKr7uvD2G1cmSUZ3bcIJCJJnnMTLFZ58XiA+/6vtHVv8p
- 7lcVStUHswBIGtfqEygPvZLGJcAj+nE=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=T19z2VhLiDxwW2xj7PM4ylgGCJRFuMIgK7muAk4JXtI=;
+ b=M4mOb56ck9Hm53ie48aQAzgP8zOl0XbE00b0d+xfofPG0mNA+42Nr6h4bp7N/81Ts/m+A/
+ qV9pQmjskAtEuzZpYP46vth2mcbrL8493avUctzTTPZWxt1kOWyI3fw7fdzmEtrIMqNezW
+ wnWvHXIHVgbzQ4pWGVRLxk57hPeH0kI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-niL656yVNuGzITaF6kIOYg-1; Sat, 25 May 2024 07:34:44 -0400
-X-MC-Unique: niL656yVNuGzITaF6kIOYg-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-522362e8317so3074104e87.0
- for <qemu-devel@nongnu.org>; Sat, 25 May 2024 04:34:44 -0700 (PDT)
+ us-mta-660-fagN3y3MMlmgdMHRTdfSjQ-1; Sat, 25 May 2024 07:34:47 -0400
+X-MC-Unique: fagN3y3MMlmgdMHRTdfSjQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a6266ffd474so90899766b.1
+ for <qemu-devel@nongnu.org>; Sat, 25 May 2024 04:34:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716636882; x=1717241682;
+ d=1e100.net; s=20230601; t=1716636885; x=1717241685;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DrQKXlw5u4HCxCSjJA+nYUSNZLIT05jc7Oc0v9l+ebg=;
- b=Cnbz0XtkbGd7pI0FtaEm+z0RWsxpgTojZSnPUHRLa/kXVYQt8WuuAziY2Qjr1CLGQ+
- dGUTjX36RH9gqVRwG03g7ctrJwwslmbo8Kqc1RgQuCEjA3Tdbl/02Zw3kHYa1BmPz/WV
- BkidXgmJnOaqvC8LPnDGVwSau3d48r0PgQ1Sk+EOXTAwnreZNV+N8kg1cQPtN7BXZ/1U
- EbXZQOi0ZNHAwUvpNa90jAHLv35IhaSEVe7ExhluBYawlvBqACkPcLCySUvOFt8mUL3L
- /XzXovShSVCJsGwOwO8POyDmq2KY/fY7wtfDCPGM44gcdeYTevU7MCfPmCzylawWSF6W
- Q3cA==
-X-Gm-Message-State: AOJu0YxTue00gRGglnAayg3ZlEOuyWXv9wFHT+0ca5QxEFnkOmskkNg2
- Imo8CiTabw0psdxX0EM65F7X1T3KB62uNwR2xNYFsr0NDzkh5oqe6vP+90TTXbC7ZK4hNvQbX6C
- ddxxjezBAsd13g27PtboW9dVwplc+47BpzkLusIsKlyB3YuN7zl6YKPuivh6n8JmEK93lBTHN6A
- JZVugkxBlngEfDbekL1mh+2JuA6PE9xFlF2q+H
-X-Received: by 2002:a05:6512:1390:b0:522:2ada:c02e with SMTP id
- 2adb3069b0e04-5296736b884mr5069551e87.53.1716636882676; 
- Sat, 25 May 2024 04:34:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEt4EP4TIrcWGlxlNqFMLceZHzi8A367GmNNHNUXj7kavbelGzdwa1AxqauY98FxX/9OgA6og==
-X-Received: by 2002:a05:6512:1390:b0:522:2ada:c02e with SMTP id
- 2adb3069b0e04-5296736b884mr5069539e87.53.1716636882226; 
- Sat, 25 May 2024 04:34:42 -0700 (PDT)
+ bh=T19z2VhLiDxwW2xj7PM4ylgGCJRFuMIgK7muAk4JXtI=;
+ b=bmrq3ESKl1hyuxBXSCHpxDKOVeCyW/k4dc0VWQeLFZua1PiMax3f8opzOawdJ1dz79
+ 6OYJTV9bjozM3n30oOkiMQHEFVRFrdU8GggCaBZoBf6i7GZchy9ULeEt+Rhm8eWoAAwl
+ zp3/R6+G4WaxTZ8N2+dAg9peaiDvn41b8+tdOBMfEbIms9+Hdh92T/SPRCXesVH9cdB8
+ F+xw/LGbmuxswYM8Liy8Yb9BtOc9NYPZf6HAz5XVTP9qtY3Bt+79MkpHpqzFqYpvVsG/
+ DFf3dOydauhuLzK9pdejMkGWsUMjTz8rqkzC+CoKyw75GRzpRrSoPyMCThkd4gj0NfmC
+ cEfg==
+X-Gm-Message-State: AOJu0Ywg7xuhZAmBf2O2iE/rjta3KXAc+sO2OthePRGdz581S1Z8Dxtw
+ JVm3l5UAId6hfpNhLxouR6oddPhrGOi0uzyQkhyXdrEq7v9g9ZdePkTzrkxGKbcW0a8V1PLhngq
+ 6O7f5/vJbRrjzcQL+Gwc2KxpEOxHnyA5GrOT9yBuZWGn3v3/TwOctySRb23E7JcxWmLkt0VewQ5
+ FsOAseXA/YK+9FVqcVM8bmh7EssZxs/8zE3P7Z
+X-Received: by 2002:a17:906:2c08:b0:a5c:eafb:5288 with SMTP id
+ a640c23a62f3a-a62642e9bbbmr431354366b.31.1716636885706; 
+ Sat, 25 May 2024 04:34:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7fPKZDp/MVdId72OJeLxvV6HE42v/Sn/U3l+BFTLyY+fZCtj5BZ3sDS5SNNc3i0OavMZ0Ng==
+X-Received: by 2002:a17:906:2c08:b0:a5c:eafb:5288 with SMTP id
+ a640c23a62f3a-a62642e9bbbmr431353066b.31.1716636885191; 
+ Sat, 25 May 2024 04:34:45 -0700 (PDT)
 Received: from [192.168.10.117] ([151.95.155.52])
  by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c97a1fbsm243946266b.92.2024.05.25.04.34.40
+ a640c23a62f3a-a626c817b15sm245047266b.40.2024.05.25.04.34.44
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 May 2024 04:34:40 -0700 (PDT)
+ Sat, 25 May 2024 04:34:44 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/24] meson: do not query modules before they are processed
-Date: Sat, 25 May 2024 13:33:31 +0200
-Message-ID: <20240525113332.1404158-24-pbonzini@redhat.com>
+Subject: [PULL 24/24] migration: remove unnecessary zlib dependency
+Date: Sat, 25 May 2024 13:33:32 +0200
+Message-ID: <20240525113332.1404158-25-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240525113332.1404158-1-pbonzini@redhat.com>
 References: <20240525113332.1404158-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,7 +84,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,24 +100,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+zlib code is only used by the emulators, not by the tests.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- block/meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build           | 2 +-
+ migration/dirtyrate.c | 1 -
+ migration/qemu-file.c | 1 -
+ migration/meson.build | 2 +-
+ 4 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/block/meson.build b/block/meson.build
-index 8993055c75e..158dc3b89db 100644
---- a/block/meson.build
-+++ b/block/meson.build
-@@ -119,7 +119,7 @@ foreach m : [
-     module_ss = ss.source_set()
-     module_ss.add(when: m[0], if_true: m[2])
-     if enable_modules
--      modsrc += module_ss.all_sources()
-+      modsrc += m[2]
-     endif
-     block_modules += {m[1] : module_ss}
-   endif
+diff --git a/meson.build b/meson.build
+index 7fd82b5f48c..63866071445 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3696,7 +3696,7 @@ libmigration = static_library('migration', sources: migration_files + genh,
+                               name_suffix: 'fa',
+                               build_by_default: false)
+ migration = declare_dependency(link_with: libmigration,
+-                               dependencies: [zlib, qom, io])
++                               dependencies: [qom, io])
+ system_ss.add(migration)
+ 
+ block_ss = block_ss.apply({})
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+index d02d70b7b4b..1d9db812990 100644
+--- a/migration/dirtyrate.c
++++ b/migration/dirtyrate.c
+@@ -12,7 +12,6 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
+-#include <zlib.h>
+ #include "hw/core/cpu.h"
+ #include "qapi/error.h"
+ #include "exec/ramblock.h"
+diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+index 9ccbbb00991..b6d2f588bd7 100644
+--- a/migration/qemu-file.c
++++ b/migration/qemu-file.c
+@@ -22,7 +22,6 @@
+  * THE SOFTWARE.
+  */
+ #include "qemu/osdep.h"
+-#include <zlib.h>
+ #include "qemu/madvise.h"
+ #include "qemu/error-report.h"
+ #include "qemu/iov.h"
+diff --git a/migration/meson.build b/migration/meson.build
+index 8815f808374..bdc3244bce0 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -29,7 +29,7 @@ system_ss.add(files(
+   'socket.c',
+   'tls.c',
+   'threadinfo.c',
+-), gnutls)
++), gnutls, zlib)
+ 
+ if get_option('replication').allowed()
+   system_ss.add(files('colo-failover.c', 'colo.c'))
 -- 
 2.45.1
 
