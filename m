@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659808CF5B1
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0BD38CF5C2
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:45:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJmS-000140-Oa; Sun, 26 May 2024 15:43:44 -0400
+	id 1sBJnU-0007lO-1k; Sun, 26 May 2024 15:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJmF-0000X6-4L
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:32 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1sBJnR-0007XB-Oa
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:44:45 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJmB-0007mQ-8D
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:30 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1f48e9414e9so2727955ad.0
- for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:43:25 -0700 (PDT)
+ id 1sBJnP-0007wC-KO
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:44:45 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6f8e9878514so2009581b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752605; x=1717357405; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2xkTnIJzxFSsgLxwFEGJgc9RCPD2wi0PV4sGMffGtxM=;
- b=O98WC+38BpZpX+/HWyUgf7DHEDIzcTW6/R24wqlAE9yrOxNvbceNmH459jBh3a/ERE
- GUGonLc5wCwo8oz/A5AaWLx9nHWR3XmiD7J4pKvxABRMrMVjbl34Dito+lwtR6QxEQrA
- YAFSoSFGCEU00rTAIjF+84rDW3Ofj/He/FhuXhSvA7ozBjxoPqXd9GbO2/qRO1IigQ9d
- t+SN+N609Lh6XBHsiyFN46MWQOz2c6Ign10fX/4F5a2+Rw468/rKnq45GZUFW0jSekIG
- Js+G6Tjw7faWvWhdRkGaC5UfRaFezGi+YVv8w75lfguN/8CwqZ7u6gr9CnbttZl68l6F
- w7lA==
+ d=linaro.org; s=google; t=1716752682; x=1717357482; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=b5MQNqz5RGi7F65bnPi1uv+YvAT96M9RHvewQHAatV0=;
+ b=D8lT90O4BxNnNPZs8e2yw5rlYZYLlCV4fnRhwAXUSNcPMgmOrfOZZQ4gxTQ3sZGQX3
+ dB4AQyE0/CkWgvxJYSGd5ByGPrqSozZPQEZdU9lISPL0Yd0mnSC34D6e0HuX3gTiL4T8
+ +AWNvv8csTOFYkEvIGyuNP6ykJK+TPkhHgiAK4CM5UUHTvCdHT/Cx+RmPGFSAlYwD4vj
+ 1S/wvCDOkRgyQtB+pk/Hanr6Xn8g23UAdLqLNtkq4YFdp+1xWkDsOJ36qPisczxhDebC
+ rIxcPYNV7Xeaxadi7QLk45J7VpGZLL9v9Hmtri1/n2cbnVcUtEYoSDDGZzJS/Q/VjnP9
+ FRSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752605; x=1717357405;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2xkTnIJzxFSsgLxwFEGJgc9RCPD2wi0PV4sGMffGtxM=;
- b=sB4KmWuMpZ2ccnho/9HXRfoZKcoB8jRR3Sw69bbPz5uB1114ND5MljlSJi94vuJ+z8
- ZwaROh41Sa30j2CCOI9FDTQ/U7FuOGvOg6MoJvUN8GKBc8Inr7MJQNRxsQbcMbhAFReT
- BlSKWhF/sq5nz0QSql3h6TdS/BcLScHBASWpVsWQO8v+d4jvL8+71ptOuzUqwzutGGhp
- 6y0ATjZifj8FO6BQirzWb2LZcL0XZkS3e6aUGK7/q9lSEYtZ4ZfOAr0CzZCK5xKlKbh6
- TSAUUcU3JFygwKn6kFivBRPhcYz9XKp62w2p0OZo2t5Yx8eO3BiSN5v0X7p7ODh2E4is
- 9PtA==
-X-Gm-Message-State: AOJu0Yw16p+2m27PQWTyxWjMj/aRHTIT76v1Awcag8xLem61PW6SWcBk
- oVhYPoVP/c284jUlRFt+FmR4y6FfjgeigCc15aCtI+xsnE8PqEiefSRilR6qNzRgqTd75yWfMyO
- q
-X-Google-Smtp-Source: AGHT+IGoGAFNbMYjr5ZS0AH7vYGoE2K6yt6BnQMFWTgoR97D+6JwHPnjeUjVBfc2v7Xv09WUhVlztA==
-X-Received: by 2002:a17:902:ea03:b0:1f3:81c:c17 with SMTP id
- d9443c01a7336-1f4481f22cfmr109993785ad.23.1716752604691; 
- Sun, 26 May 2024 12:43:24 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ d=1e100.net; s=20230601; t=1716752682; x=1717357482;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b5MQNqz5RGi7F65bnPi1uv+YvAT96M9RHvewQHAatV0=;
+ b=Fd3jv0WJikqtaRJp3Gb3/GOYKWZCC4BwmRbbisrv472lxRX9GA0WB/t6QHmA1BCwna
+ AVZT0i8uHUogBqJe+6U0DPl/1Bbm5MK+wAsyagAAwoOzT3iRAs1i1ryZ4kXTeEpwNZgH
+ V0IndSsc48AFQ1L9Tuy3WNCwfZzkd0EtZXHIx/VQJnQD2aZr6bPXVJSovwHuDxWoPfG/
+ mHxbcmjPaz8qKID0IBg3GSTlMopx67Un+0Dd5435P9cC596uB16iTmFBtrMgqWu+VLQJ
+ Q9tIPzegxxax5+ZZpF8g+chaQpV/IxNBcFc2ZZ+H5ssetkPRSpEgGqWWKzRi9AvqTPmf
+ 1MWw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWWrH1N2qKArLllXE4J6u4JA0XdQ4GD86GzJBsmQM6g4lfTEDfic8xfJFqWVuQH0+TWlj1G9QTQRpfO1rw46xZbAKTb6JU=
+X-Gm-Message-State: AOJu0YzZu+ioLwd90Q7tWKkRgMovDgAUrQoKSvXwKs/+qRG3HIdAQNxi
+ J8Fsqhfeif+2yyrdjb5bzoF7iqL1hLVaDKLvF1MisReutWgGR0u/Vn0Evs0cffk=
+X-Google-Smtp-Source: AGHT+IHX9jjf2Wt37FdhMCg6DEyhs2k3IrLo0iMpQ/VWh4U2qx35CCZyUJFUV9gXzSBJ05gjc4+usw==
+X-Received: by 2002:a05:6a20:96c1:b0:1af:f38e:85e with SMTP id
+ adf61e73a8af0-1b212dfe7famr6753033637.45.1716752682023; 
+ Sun, 26 May 2024 12:44:42 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:43:24 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 37/37] target/sparc: Enable VIS4 feature bit
-Date: Sun, 26 May 2024 12:42:54 -0700
-Message-Id: <20240526194254.459395-38-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
-References: <20240526194254.459395-1-richard.henderson@linaro.org>
+ d2e1a72fcca58-6f8fcfe64e0sm3754911b3a.160.2024.05.26.12.44.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 26 May 2024 12:44:41 -0700 (PDT)
+Message-ID: <10e876de-b973-4016-9155-960383d46297@linaro.org>
+Date: Sun, 26 May 2024 12:44:39 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] hw/intc/s390_flic: Migrate pending state
+To: David Hildenbrand <david@redhat.com>, Nicholas Piggin
+ <npiggin@gmail.com>, qemu-s390x@nongnu.org
+Cc: Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240525131241.378473-1-npiggin@gmail.com>
+ <20240525131241.378473-2-npiggin@gmail.com>
+ <3bf1025b-021a-42fa-a4cc-d3cd9ea90676@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <3bf1025b-021a-42fa-a4cc-d3cd9ea90676@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,34 +102,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/sparc/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+On 5/26/24 08:53, David Hildenbrand wrote:
+> Am 25.05.24 um 15:12 schrieb Nicholas Piggin:
+>> The flic pending state is not migrated, so if the machine is migrated
+>> while an interrupt is pending, it can be lost. This shows up in
+>> qtest migration test, an extint is pending (due to console writes?)
+>> and the CPU waits via s390_cpu_set_psw and expects the interrupt to
+>> wake it. However when the flic pending state is lost, s390_cpu_has_int
+>> returns false, so s390_cpu_exec_interrupt falls through to halting
+>> again.
+>>
+>> Fix this by migrating pending. This prevents the qtest from hanging.
+>> Does service_param need to be migrated? Or the IO lists?
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   hw/intc/s390_flic.c | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
+>> index 6771645699..b70cf2295a 100644
+>> --- a/hw/intc/s390_flic.c
+>> +++ b/hw/intc/s390_flic.c
+>> @@ -369,6 +369,7 @@ static const VMStateDescription qemu_s390_flic_vmstate = {
+>>       .fields = (const VMStateField[]) {
+>>           VMSTATE_UINT8(simm, QEMUS390FLICState),
+>>           VMSTATE_UINT8(nimm, QEMUS390FLICState),
+>> +        VMSTATE_UINT32(pending, QEMUS390FLICState),
+>>           VMSTATE_END_OF_LIST()
+>>       }
+>>   };
+> 
+> Likely you have to handle this using QEMU compat machines.
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 88da5254e8..9bacfb68cb 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -552,6 +552,7 @@ static const char * const feature_name[] = {
-     [CPU_FEATURE_BIT_FMAF] = "fmaf",
-     [CPU_FEATURE_BIT_VIS3] = "vis3",
-     [CPU_FEATURE_BIT_IMA] = "ima",
-+    [CPU_FEATURE_BIT_VIS4] = "vis4",
- #else
-     [CPU_FEATURE_BIT_MUL] = "mul",
-     [CPU_FEATURE_BIT_DIV] = "div",
-@@ -886,6 +887,8 @@ static Property sparc_cpu_properties[] = {
-                     CPU_FEATURE_BIT_VIS3, false),
-     DEFINE_PROP_BIT("ima",      SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_IMA, false),
-+    DEFINE_PROP_BIT("vis4",     SPARCCPU, env.def.features,
-+                    CPU_FEATURE_BIT_VIS4, false),
- #else
-     DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
-                     CPU_FEATURE_BIT_MUL, false),
--- 
-2.34.1
+Well, since existing migration is broken, I don't think you have to preserve 
+compatibility.  But you do have to bump the version number.
+
+
+r~
 
 
