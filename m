@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BD38CF5C2
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FB798CF5F9
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 22:30:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJnU-0007lO-1k; Sun, 26 May 2024 15:44:48 -0400
+	id 1sBKU9-00054H-Sk; Sun, 26 May 2024 16:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJnR-0007XB-Oa
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:44:45 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJnP-0007wC-KO
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:44:45 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6f8e9878514so2009581b3a.1
- for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752682; x=1717357482; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=b5MQNqz5RGi7F65bnPi1uv+YvAT96M9RHvewQHAatV0=;
- b=D8lT90O4BxNnNPZs8e2yw5rlYZYLlCV4fnRhwAXUSNcPMgmOrfOZZQ4gxTQ3sZGQX3
- dB4AQyE0/CkWgvxJYSGd5ByGPrqSozZPQEZdU9lISPL0Yd0mnSC34D6e0HuX3gTiL4T8
- +AWNvv8csTOFYkEvIGyuNP6ykJK+TPkhHgiAK4CM5UUHTvCdHT/Cx+RmPGFSAlYwD4vj
- 1S/wvCDOkRgyQtB+pk/Hanr6Xn8g23UAdLqLNtkq4YFdp+1xWkDsOJ36qPisczxhDebC
- rIxcPYNV7Xeaxadi7QLk45J7VpGZLL9v9Hmtri1/n2cbnVcUtEYoSDDGZzJS/Q/VjnP9
- FRSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752682; x=1717357482;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b5MQNqz5RGi7F65bnPi1uv+YvAT96M9RHvewQHAatV0=;
- b=Fd3jv0WJikqtaRJp3Gb3/GOYKWZCC4BwmRbbisrv472lxRX9GA0WB/t6QHmA1BCwna
- AVZT0i8uHUogBqJe+6U0DPl/1Bbm5MK+wAsyagAAwoOzT3iRAs1i1ryZ4kXTeEpwNZgH
- V0IndSsc48AFQ1L9Tuy3WNCwfZzkd0EtZXHIx/VQJnQD2aZr6bPXVJSovwHuDxWoPfG/
- mHxbcmjPaz8qKID0IBg3GSTlMopx67Un+0Dd5435P9cC596uB16iTmFBtrMgqWu+VLQJ
- Q9tIPzegxxax5+ZZpF8g+chaQpV/IxNBcFc2ZZ+H5ssetkPRSpEgGqWWKzRi9AvqTPmf
- 1MWw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWWrH1N2qKArLllXE4J6u4JA0XdQ4GD86GzJBsmQM6g4lfTEDfic8xfJFqWVuQH0+TWlj1G9QTQRpfO1rw46xZbAKTb6JU=
-X-Gm-Message-State: AOJu0YzZu+ioLwd90Q7tWKkRgMovDgAUrQoKSvXwKs/+qRG3HIdAQNxi
- J8Fsqhfeif+2yyrdjb5bzoF7iqL1hLVaDKLvF1MisReutWgGR0u/Vn0Evs0cffk=
-X-Google-Smtp-Source: AGHT+IHX9jjf2Wt37FdhMCg6DEyhs2k3IrLo0iMpQ/VWh4U2qx35CCZyUJFUV9gXzSBJ05gjc4+usw==
-X-Received: by 2002:a05:6a20:96c1:b0:1af:f38e:85e with SMTP id
- adf61e73a8af0-1b212dfe7famr6753033637.45.1716752682023; 
- Sun, 26 May 2024 12:44:42 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fcfe64e0sm3754911b3a.160.2024.05.26.12.44.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 26 May 2024 12:44:41 -0700 (PDT)
-Message-ID: <10e876de-b973-4016-9155-960383d46297@linaro.org>
-Date: Sun, 26 May 2024 12:44:39 -0700
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sBJZQ-0007FT-Ca; Sun, 26 May 2024 15:30:16 -0400
+Received: from icts-p-cavuit-2.kulnet.kuleuven.be ([134.58.240.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <libvirt-e6954efa@volkihar.be>)
+ id 1sBJZO-0004vl-2a; Sun, 26 May 2024 15:30:15 -0400
+X-KULeuven-Envelope-From: libvirt-e6954efa@volkihar.be
+X-KULeuven-Scanned: Found to be clean
+X-KULeuven-ID: 6386C201AE.A9C95
+X-KULeuven-Information: Katholieke Universiteit Leuven
+Received: from icts-p-ceifnet-smtps-0.kuleuven.be
+ (icts-p-ceifnet-smtps.service.icts.svcd
+ [IPv6:2a02:2c40:0:51:139:242:ac11:3b])
+ by icts-p-cavuit-2.kulnet.kuleuven.be (Postfix) with ESMTP id 6386C201AE;
+ Sun, 26 May 2024 21:29:55 +0200 (CEST)
+BCmilterd-Mark-Subject: no
+BCmilterd-Errors: 
+BCmilterd-Report: 
+X-CAV-Cluster: smtps
+Received: from flutterbat.volkihar.be (unknown
+ [IPv6:2a02:a03f:8ada:7900:dd0a:a068:3e21:22de])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by icts-p-ceifnet-smtps-0.kuleuven.be (Postfix) with ESMTPSA id 41D84D4F567B0; 
+ Sun, 26 May 2024 21:29:55 +0200 (CEST)
+Received: by flutterbat.volkihar.be (Postfix, from userid 1000)
+ id E3F72282440; Sun, 26 May 2024 21:29:54 +0200 (CEST)
+X-Kuleuven: This mail passed the K.U.Leuven mailcluster
+From: Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+To: qemu-devel@nongnu.org
+Cc: John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>,
+ Vincent Vanlaer <libvirt-e6954efa@volkihar.be>
+Subject: [PATCH 0/2] block: allow commit to unmap zero blocks 
+Date: Sun, 26 May 2024 21:29:15 +0200
+Message-ID: <20240526192918.3503128-1-libvirt-e6954efa@volkihar.be>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] hw/intc/s390_flic: Migrate pending state
-To: David Hildenbrand <david@redhat.com>, Nicholas Piggin
- <npiggin@gmail.com>, qemu-s390x@nongnu.org
-Cc: Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240525131241.378473-1-npiggin@gmail.com>
- <20240525131241.378473-2-npiggin@gmail.com>
- <3bf1025b-021a-42fa-a4cc-d3cd9ea90676@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <3bf1025b-021a-42fa-a4cc-d3cd9ea90676@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=134.58.240.131;
+ envelope-from=libvirt-e6954efa@volkihar.be;
+ helo=icts-p-cavuit-2.kulnet.kuleuven.be
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 26 May 2024 16:28:49 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,43 +76,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/26/24 08:53, David Hildenbrand wrote:
-> Am 25.05.24 um 15:12 schrieb Nicholas Piggin:
->> The flic pending state is not migrated, so if the machine is migrated
->> while an interrupt is pending, it can be lost. This shows up in
->> qtest migration test, an extint is pending (due to console writes?)
->> and the CPU waits via s390_cpu_set_psw and expects the interrupt to
->> wake it. However when the flic pending state is lost, s390_cpu_has_int
->> returns false, so s390_cpu_exec_interrupt falls through to halting
->> again.
->>
->> Fix this by migrating pending. This prevents the qtest from hanging.
->> Does service_param need to be migrated? Or the IO lists?
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->>   hw/intc/s390_flic.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/hw/intc/s390_flic.c b/hw/intc/s390_flic.c
->> index 6771645699..b70cf2295a 100644
->> --- a/hw/intc/s390_flic.c
->> +++ b/hw/intc/s390_flic.c
->> @@ -369,6 +369,7 @@ static const VMStateDescription qemu_s390_flic_vmstate = {
->>       .fields = (const VMStateField[]) {
->>           VMSTATE_UINT8(simm, QEMUS390FLICState),
->>           VMSTATE_UINT8(nimm, QEMUS390FLICState),
->> +        VMSTATE_UINT32(pending, QEMUS390FLICState),
->>           VMSTATE_END_OF_LIST()
->>       }
->>   };
-> 
-> Likely you have to handle this using QEMU compat machines.
+This patch series adds support for zero blocks in non-active commits.
+The first patch in the series contains the actual changes to the commit
+code, the second patch adds a test for the new functionality.
 
-Well, since existing migration is broken, I don't think you have to preserve 
-compatibility.  But you do have to bump the version number.
+Vincent Vanlaer (2):
+  block: allow commit to unmap zero blocks
+  block: add test non-active commit with zeroed data
 
+ block/commit.c             | 71 ++++++++++++++++++++++------
+ tests/qemu-iotests/315     | 95 ++++++++++++++++++++++++++++++++++++++
+ tests/qemu-iotests/315.out | 54 ++++++++++++++++++++++
+ 3 files changed, 207 insertions(+), 13 deletions(-)
+ create mode 100755 tests/qemu-iotests/315
+ create mode 100644 tests/qemu-iotests/315.out
 
-r~
+-- 
+2.42.0
 
 
