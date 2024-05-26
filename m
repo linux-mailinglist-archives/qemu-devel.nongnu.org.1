@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0938CF5B2
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084408CF5C8
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:46:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJln-0008BE-G9; Sun, 26 May 2024 15:43:03 -0400
+	id 1sBJlo-0008Bs-2P; Sun, 26 May 2024 15:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJll-0008AW-3c
+ id 1sBJll-0008Ap-Ov
  for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:01 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlj-0007cp-G1
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:00 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1f480624d10so5999215ad.1
+ id 1sBJlk-0007d4-7g
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:01 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1f44b5b9de6so18160385ad.3
  for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:42:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752578; x=1717357378; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716752579; x=1717357379; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eYP1yN4ZKgW4BIdLMmHOja0Hfuxd6mArjAtvAgL/GVQ=;
- b=uT9/Ac/xBKvWqk5vdLKi0wQ1xvlqfWz5uFdWhAGNcJILaeV3OWnKHZ62HJ79zM1+Os
- UqO2mpHkk5RKxsrBGTKw6NNUChoAqnaY43mUCOpRABebxpG2Y6QTMIAZiZ95f0c2A5bO
- 2TgWa4Hl3Lzj0t5DCSxQFSadPYONu841DTWHJa+SplZUyAyGHyGzGsKj5xU09t8nduOk
- YFfol899bSpjo19iBCO9eyzOhpfypCdfr0W57+LXinGwxuAJ83OFTBEOyFeLF+2gt/6I
- dhGmiWpBEjnMo+x8MWxt7hgF/OxP9CREqKEldXRY313JLz/VRYHh7H97Vxo+RfVSTwBO
- Sg/Q==
+ bh=iPN2ZXnJH67ylasvW5ASBChVEwpUinMe7ale/dDDPYY=;
+ b=OC2N/L3kh37rbQxVLUd8fGeYrjhCmHpKZ911PeMao5+XwAV+O5pH/mcb6q1gmCzzTr
+ veg9WaD8LsG5Mo7bDfsQdu8m4o5t84cEUDGiE8lpH3KJtq/hXHIXX64Cx2yuayXEhocA
+ dulAUg0edLqS3YdV70jtK3h9BJlgTm7zqs9/gpFncZQSPnKTlv/HBQw7jGqyKG5EXnTZ
+ utklhEajMXISha6Cf6ORweQnTUph+BKmOoYuJ1E2XoYO22JgaPJBNM6Rxc0x1tRG6TBJ
+ zVZ7VuDT2j+zb7DzySqHS4qmC9OUmFbvSc3FI4oGkmZYujLLvdFYsByMEXzM+0xWunCB
+ GRlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752578; x=1717357378;
+ d=1e100.net; s=20230601; t=1716752579; x=1717357379;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eYP1yN4ZKgW4BIdLMmHOja0Hfuxd6mArjAtvAgL/GVQ=;
- b=s8m6dPvM+qbwmhbmq51JDQQt4+x67GttF3RWcxeaf2urII8tm5TpQH+56Hnp7Uj6g0
- nsWA7Z6g37CtiCM7XeeWyzup6xZZ+J7W30e+TZbaFqDuvZ3RwUC1cDfnh2fkEUyVapFW
- MwwLaQ4LP9gzXQo4et5AaHMc8KU1cXb8R7dj/Hh8tKmuLW3PiWO4fBFv19W47yDXyuWR
- r4FGbaAAAifULn0iDubLD4k2HyS8I+JPl0dwhsXpFWtQS1CvNkrRLRYrjqNcv9xZk4vM
- WIQoXWTnvpTlYzVQLbraQNlej18fP04pNpfvfEDBVMjfEKk+wH4YX0wXwD3cf0TOnnT1
- 1bEQ==
-X-Gm-Message-State: AOJu0Yzs3ycF7grMloVwYLZPYLeyzaodlcAaEXm4wp+qCl470c/ruyWf
- DZrQiYDRc3qdgqG79QXfKmXkn88BtXpvYxKdgV4je5PzGFXptc2k9xtV/E1ac6aRvTLVY+Zw0So
- O
-X-Google-Smtp-Source: AGHT+IHdCAXcIOX+JeXzZaxFfgHNay43edgYv3NeaVGqbcSZufY8qBU8aOaPkRryZ+5M1gCB/Wc/gQ==
-X-Received: by 2002:a17:902:cecd:b0:1f3:35e8:d309 with SMTP id
- d9443c01a7336-1f4486d9f35mr86120695ad.20.1716752577827; 
- Sun, 26 May 2024 12:42:57 -0700 (PDT)
+ bh=iPN2ZXnJH67ylasvW5ASBChVEwpUinMe7ale/dDDPYY=;
+ b=uNE2lkQyLnz51HyROpx28JtIL04uHcobdwd1U//g8EEgN3bMVvvUEfusXyDqwcDBD8
+ gEmuk4jB6bkMuYQnb19Rn5x962L/sAz3nOArjxW5MQIpp1WbU4LKhGvq2KymagpPhIdH
+ aJoNtdPmJcKbt3vtWV1Gc9momXiaDjOlaUzrLyWggwrVC8IOCeQEPUZP31GPO4Az3pFj
+ juWgTQFg+1KdLPsywR6BK7q84sllYzaCDMupssL3j16AQPY8aKHZXvZ72se9clDPJjGI
+ iGLlEYykHz2frQFnzbZ9p2Vw8LMvL++jfoKjBvx2LS2BMxqB5fhnB8zKFQM/tNvYQ+j6
+ tKdw==
+X-Gm-Message-State: AOJu0YyzJf6LNdlaqXHUG6pWfbGcgGTrhcgpM85q/e6Vf5NFOIIvY3Uu
+ 6A0gCD4afdZPDLvW04yeFdS62n67UyQmdT8hiXNFRXyY2KQhwypJo/yMqjLEAG87iM04LJClrcE
+ I
+X-Google-Smtp-Source: AGHT+IGvzHlUqqqOxBpKCROMgnuJzwnE89oFomLBBSJ3s6CesbH/Ck/yvHhQb4Eru7CCpgRBSr7KkQ==
+X-Received: by 2002:a17:902:c943:b0:1f4:64ba:af9f with SMTP id
+ d9443c01a7336-1f464bab2f7mr53644085ad.48.1716752578869; 
+ Sun, 26 May 2024 12:42:58 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.42.57
+ d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.42.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:42:57 -0700 (PDT)
+ Sun, 26 May 2024 12:42:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 03/37] target/sparc: Fix do_dc
-Date: Sun, 26 May 2024 12:42:20 -0700
-Message-Id: <20240526194254.459395-4-richard.henderson@linaro.org>
+Subject: [PATCH v2 04/37] target/sparc: Fix helper_fmul8ulx16
+Date: Sun, 26 May 2024 12:42:21 -0700
+Message-Id: <20240526194254.459395-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
 References: <20240526194254.459395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,25 +92,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Apply DFPREG to compute the register number.
+This operation returns the high 16 bits of a 24-bit multiply
+that has been sign-extended to 32 bits.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/translate.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/sparc/vis_helper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 00c2a11353..1eb1a6decf 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -4253,6 +4253,7 @@ static bool do_dc(DisasContext *dc, int rd, int64_t c)
-         return true;
-     }
+diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
+index f46fcf1f6a..41312deda4 100644
+--- a/target/sparc/vis_helper.c
++++ b/target/sparc/vis_helper.c
+@@ -174,10 +174,10 @@ uint64_t helper_fmul8ulx16(uint64_t src1, uint64_t src2)
+     s.ll = src1;
+     d.ll = src2;
  
-+    rd = DFPREG(rd);
-     tcg_gen_movi_i64(cpu_fpr[rd / 2], c);
-     gen_update_fprs_dirty(dc, rd);
-     return advance_pc(dc);
+-    d.VIS_W64(0) = do_ms16b(s.VIS_B64(0), d.VIS_SW64(0));
+-    d.VIS_W64(1) = do_ms16b(s.VIS_B64(2), d.VIS_SW64(1));
+-    d.VIS_W64(2) = do_ms16b(s.VIS_B64(4), d.VIS_SW64(2));
+-    d.VIS_W64(3) = do_ms16b(s.VIS_B64(6), d.VIS_SW64(3));
++    d.VIS_W64(0) = (s.VIS_B64(0) * d.VIS_SW64(0) + 0x8000) >> 16;
++    d.VIS_W64(1) = (s.VIS_B64(2) * d.VIS_SW64(1) + 0x8000) >> 16;
++    d.VIS_W64(2) = (s.VIS_B64(4) * d.VIS_SW64(2) + 0x8000) >> 16;
++    d.VIS_W64(3) = (s.VIS_B64(6) * d.VIS_SW64(3) + 0x8000) >> 16;
+ 
+     return d.ll;
+ }
 -- 
 2.34.1
 
