@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116E08CF5A7
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A69C8CF5A6
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:38:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJft-00080e-BF; Sun, 26 May 2024 15:36:57 -0400
+	id 1sBJfv-000821-2L; Sun, 26 May 2024 15:36:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJfo-0007yu-6R
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:36:52 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1sBJft-000818-1i
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:36:57 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJfk-0006Ts-8D
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:36:50 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-68197de7400so2081648a12.3
+ id 1sBJfn-0006Ty-Uc
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:36:56 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2bf5baa2773so2203220a91.0
  for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:36:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752202; x=1717357002; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716752203; x=1717357003; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x2wkzB9GtMTSuOUWMWtp1POxPGIbKlhGRu9DTuWffok=;
- b=rjl08wIQi90HDek1cx9QIU7UoOnlhVHL/Lg685o3O46I16Zc3+THnPaD/b7Inj5pEH
- MTCJAlppsVZVa6xLSc1nRpyuGh2vi+wk8pfh5mRmNBVJL4ITJV5TBJQ2uoItmPqfv75v
- Vna9g5h2h9K76o7VPcN3apWejAqYcBMSIlspX1Xe8UT6uaN1C1j8R3vSDCa7BuuvrHH5
- O8wlkF7Vz8dI2DMMkaQmdTc6VYvmphYj7g/k9IUzPvpDJ4W0Qm/o+S9Suy+BugDj3C1G
- Z8yqRh6SuQvObMAHMJrvUm2C0cQUx21blYtrtTRJNYFSzyyc+Z337QqB8CQXZvS8QdVG
- McRg==
+ bh=VQc6zsisJMaVnI573tc7E5e7k10EWW0D4y87pSLLi8M=;
+ b=Tpy2KJ8x53C0fBWWB/YWldxYj1ASx3dkVyZz5nMrixrLoPTXXSi8scUFWipSTkOCN4
+ X3z1wRoN9TEHdxTslgBhYgONBRbqIIhdFrycUT5vhBNkAMQGBdbDJ0JscDKC3zn79SZ1
+ m4QIpD+abZRL6wuGLcZf+ZCrIaZ7wcgoiubJigkNibrYumCJd9cTacFgzP3zmesMrKyY
+ dE6vC3qgIDbRiUJtL+PywX8BRTdvBwKVAx1EchJcLgearZN9BnzQC8PUVJ6xAyLY37Z7
+ HX79YFujqod8TOGR/Xhhldo8IRe1eWMH7t+kkw1D4qROU6I/t02KPOXaTIYAhUwWByS6
+ tVpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752202; x=1717357002;
+ d=1e100.net; s=20230601; t=1716752203; x=1717357003;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x2wkzB9GtMTSuOUWMWtp1POxPGIbKlhGRu9DTuWffok=;
- b=bsLc64mIKAKspVamV8gkryaJGrPSjGMTAQyY1FOsBZU0OGxvK9gpOoTzi7IJvYWgrx
- QZNCfYZTAf/ysADw6Cj6/Agefb8n/O2PQtDzVPK6/KeQvoOTLOceP/mFTz+WNdRoxXNp
- ehDlJpTPx5kQoJj8CITCq3V7OD52Jzzs3w4A29q6wdxnUofEcsasSKbDuacm1ZzMSrGY
- IURHVDYwaqYaMCjmBoSUbh3HNBz3lv1wwPXtI08vvKgZiQD9o+F43pBz9GEc8nxlIH/D
- Md8nKlyXptPwI8xRtFA+eVbtktkzB7QiK8BkNiX1n2XPzXDNugdqTcWSyyMH4ZGrhysk
- UNfw==
-X-Gm-Message-State: AOJu0Yyg1yrI+yRhT7YLSOFNTR1/jxHvnJ0TUfPr3dYkbT11bAUMBpaQ
- hOGEWnJ3hf0OOC0+Ga2O6KjHxbCC2S4h6z4rjse4jWdiqRWMPBaCa03Q7YSDHYnJdR7VN3ocEnS
- u
-X-Google-Smtp-Source: AGHT+IFW4gvvZPwrbfvzjAioYE5I3j1pH+Czp2sXNS1Cx90ECY8iIdEcylFK3LPt1djx+KTv9TlGmw==
-X-Received: by 2002:a17:90a:c28e:b0:2bd:f24e:aee8 with SMTP id
- 98e67ed59e1d1-2bf5f208093mr7736802a91.38.1716752201554; 
- Sun, 26 May 2024 12:36:41 -0700 (PDT)
+ bh=VQc6zsisJMaVnI573tc7E5e7k10EWW0D4y87pSLLi8M=;
+ b=e6cU9cwiTWesc9d7FdguSD83iFGDVED10YR4OQMwukJWxtLEsXCR0bIoH8FR4J/zfF
+ hnWS+JrrfVDI4G9JSFZ/qrnFL3CP38o23Skj5LVcSR1+hcRwD1wpEeUSSacldyOvK1rM
+ Q+d54hh9+jU/rtMf5NN0kevllN461q66WIW4YdtBxUes4vjPAOpV2zzv/IvfMtHMPlVj
+ sken6lres98FRiPcnKFOkr42b8gxHVSs4nRDkW8UF6Tk7hkesdVswLZYFB07kAzoPhSu
+ VwzHWK29Y8IPndy0qNCE72GgeztVGHcwC+GQhG81isbKd576EG1c5VMSZahEqYflag1l
+ bmxA==
+X-Gm-Message-State: AOJu0Yz1BsFz4oOuPQDb3FN7TQjYRwy1xxTgkErjCuVyxezlN1Z8xIow
+ IpiI3gax1aImtX4Kf1oaQCcFMSA3xpk7MKKQUJ02S0KU+R3vKmNDdBogIkC1X44wQ4wi671EbIb
+ o
+X-Google-Smtp-Source: AGHT+IFN0VpHqSkQfz6kRwUt6/8P2s+fKxF7okGMfuzwgindp8awjhfKZ7INgVdSGHL1713XUpGlXg==
+X-Received: by 2002:a17:90b:400a:b0:2bd:5c9c:b080 with SMTP id
+ 98e67ed59e1d1-2bf5ed1e3b6mr7382005a91.12.1716752202447; 
+ Sun, 26 May 2024 12:36:42 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
  98e67ed59e1d1-2bf5f6155b6sm4943761a91.29.2024.05.26.12.36.41
@@ -60,16 +60,16 @@ Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH RISU v2 03/13] Introduce host_context_t
-Date: Sun, 26 May 2024 12:36:27 -0700
-Message-Id: <20240526193637.459064-4-richard.henderson@linaro.org>
+Subject: [PATCH RISU v2 04/13] risu: Add initial sparc64 support
+Date: Sun, 26 May 2024 12:36:28 -0700
+Message-Id: <20240526193637.459064-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240526193637.459064-1-richard.henderson@linaro.org>
 References: <20240526193637.459064-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,354 +92,503 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Most hosts pass ucontext_t as the third parameter of signal handlers.
+Best effort for both Linux and Solaris as a host, since the
+gcc compile farm has more working Sparc Solaris hosts than
+Sparc Linux hosts.
 
-In one existing usage, loongarch64 is using the kernel's
-struct ucontext instead of libc's ucontext_t.  This is probably a
-simple mistake that could be fixed, but the structure member names
-differ, so the change would not be completely mechanical.
-
-However, due to a sequence of historical mistakes, sparc64 linux
-does not pass any kind of ucontext_t to the signal handler, but
-uses struct sigcontext instead.
-
-Prepare for that by adding a new indirection typedef.
-This allows us to clean up existing usage with void*.
+What's missing is a value for %gsr from Solaris.
+This could complicate comparison of VIS instructions.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- risu.h                     | 16 ++++++++--------
- risu_reginfo_aarch64.h     |  2 ++
- risu_reginfo_arm.h         |  2 ++
- risu_reginfo_i386.h        |  2 ++
- risu_reginfo_loongarch64.h |  3 +++
- risu_reginfo_m68k.h        |  2 ++
- risu_reginfo_ppc64.h       |  2 ++
- risu_reginfo_s390x.h       |  2 ++
- risu_aarch64.c             |  6 ++----
- risu_arm.c                 |  7 ++-----
- risu_i386.c                |  7 ++-----
- risu_loongarch64.c         |  6 ++----
- risu_m68k.c                |  6 ++----
- risu_ppc64.c               |  6 ++----
- risu_reginfo_loongarch64.c |  3 +--
- risu_s390x.c               |  5 ++---
- 16 files changed, 38 insertions(+), 39 deletions(-)
+ Makefile               |   3 +
+ risu_reginfo_sparc64.h |  36 ++++++++
+ risu.c                 |   2 +
+ risu_reginfo_sparc64.c | 186 +++++++++++++++++++++++++++++++++++++++++
+ risu_sparc64.c         |  52 ++++++++++++
+ configure              |   2 +
+ test_sparc64.s         | 137 ++++++++++++++++++++++++++++++
+ 7 files changed, 418 insertions(+)
+ create mode 100644 risu_reginfo_sparc64.h
+ create mode 100644 risu_reginfo_sparc64.c
+ create mode 100644 risu_sparc64.c
+ create mode 100644 test_sparc64.s
 
-diff --git a/risu.h b/risu.h
-index 4203178..0ac7d1e 100644
---- a/risu.h
-+++ b/risu.h
-@@ -68,7 +68,7 @@ typedef enum {
+diff --git a/Makefile b/Makefile
+index 2bd08aa..f503499 100644
+--- a/Makefile
++++ b/Makefile
+@@ -53,6 +53,9 @@ $(PROG): $(OBJS)
+ %_$(ARCH).elf: test.ld %_$(ARCH).o
+ 	$(LD) -o $@ -T $^
  
- /* This is the data structure we pass over the socket for OP_COMPARE
-  * and OP_TESTEND. It is a simplified and reduced subset of what can
-- * be obtained with a ucontext_t*, and is architecture specific
-+ * be obtained with a ucontext_t, and is architecture specific
-  * (defined in risu_reginfo_*.h).
-  */
- struct reginfo;
-@@ -93,14 +93,14 @@ void send_response_byte(int sock, int resp);
++test_sparc64.o: test_sparc64.s
++	$(AS) -Av9a -o $@ $<
++
+ clean:
+ 	rm -f $(PROG) $(OBJS) $(BINO) $(BINE)
  
- /* Interface provided by CPU-specific code: */
- 
--/* Move the PC past this faulting insn by adjusting ucontext. */
--void advance_pc(void *uc);
-+/* Move the PC past this faulting insn by adjusting signal context. */
-+void advance_pc(host_context_t *hc);
- 
--/* Set the parameter register in a ucontext_t to the specified value.
-+/*
-+ * Set the parameter register in a host_context_t to the specified value.
-  * (32-bit targets can ignore high 32 bits.)
-- * vuc is a ucontext_t* cast to void*.
-  */
--void set_ucontext_paramreg(void *vuc, uint64_t value);
-+void set_ucontext_paramreg(host_context_t *hc, uint64_t value);
- 
- /* Return the value of the parameter register from a reginfo. */
- uint64_t get_reginfo_paramreg(struct reginfo *ri);
-@@ -114,8 +114,8 @@ RisuOp get_risuop(struct reginfo *ri);
- /* Return the PC from a reginfo */
- uintptr_t get_pc(struct reginfo *ri);
- 
--/* initialize structure from a ucontext */
--void reginfo_init(struct reginfo *ri, ucontext_t *uc, void *siaddr);
-+/* initialize structure from a host_context_t. */
-+void reginfo_init(struct reginfo *ri, host_context_t *hc, void *siaddr);
- 
- /* return true if structs are equal, false otherwise. */
- bool reginfo_is_eq(struct reginfo *r1, struct reginfo *r2);
-diff --git a/risu_reginfo_aarch64.h b/risu_reginfo_aarch64.h
-index 097b7ad..bc3a661 100644
---- a/risu_reginfo_aarch64.h
-+++ b/risu_reginfo_aarch64.h
-@@ -15,6 +15,8 @@
- 
- #include <signal.h>
- 
+diff --git a/risu_reginfo_sparc64.h b/risu_reginfo_sparc64.h
+new file mode 100644
+index 0000000..b1d5341
+--- /dev/null
++++ b/risu_reginfo_sparc64.h
+@@ -0,0 +1,36 @@
++/******************************************************************************
++ * Copyright (c) 2024 Linaro Limited
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ *****************************************************************************/
++
++#ifndef RISU_REGINFO_SPARC64_H
++#define RISU_REGINFO_SPARC64_H
++
++#ifdef __linux__
++typedef struct sigcontext host_context_t;
++#else
 +typedef ucontext_t host_context_t;
++#endif
 +
- /* The kernel headers set this based on future arch extensions.
-    The current arch maximum is 16.  Save space below.  */
- #undef SVE_VQ_MAX
-diff --git a/risu_reginfo_arm.h b/risu_reginfo_arm.h
-index 60754a9..1937e46 100644
---- a/risu_reginfo_arm.h
-+++ b/risu_reginfo_arm.h
-@@ -13,6 +13,8 @@
- #ifndef RISU_REGINFO_ARM_H
- #define RISU_REGINFO_ARM_H
- 
-+typedef ucontext_t host_context_t;
++struct reginfo {
++    uint32_t faulting_insn;
++    uint32_t ccr;
 +
- struct reginfo {
-     uint64_t fpregs[32];
-     uint32_t faulting_insn;
-diff --git a/risu_reginfo_i386.h b/risu_reginfo_i386.h
-index b468f79..abbfbe1 100644
---- a/risu_reginfo_i386.h
-+++ b/risu_reginfo_i386.h
-@@ -12,6 +12,8 @@
- #ifndef RISU_REGINFO_I386_H
- #define RISU_REGINFO_I386_H
- 
-+typedef ucontext_t host_context_t;
++    uint64_t pc;
++    uint64_t npc;
 +
- struct avx512_reg {
-     uint64_t q[8];
- };
-diff --git a/risu_reginfo_loongarch64.h b/risu_reginfo_loongarch64.h
-index 892b477..6c85951 100644
---- a/risu_reginfo_loongarch64.h
-+++ b/risu_reginfo_loongarch64.h
-@@ -12,6 +12,9 @@
- #ifndef RISU_REGINFO_LOONGARCH64_H
- #define RISU_REGINFO_LOONGARCH64_H
- 
-+/* From kernel <asm/ucontext.h> not libc <ucontext.h>. */
-+typedef struct ucontext host_context_t;
++    uint64_t g[8];
++    uint64_t o[8];
++    uint64_t l[8];
++    uint64_t i[8];
 +
- struct reginfo {
-     uint64_t regs[32];
-     uint64_t pc;
-diff --git a/risu_reginfo_m68k.h b/risu_reginfo_m68k.h
-index c1c9fe6..233f901 100644
---- a/risu_reginfo_m68k.h
-+++ b/risu_reginfo_m68k.h
-@@ -9,6 +9,8 @@
- #ifndef RISU_REGINFO_M68K_H
- #define RISU_REGINFO_M68K_H
- 
-+typedef ucontext_t host_context_t;
++    uint64_t y;
++    uint64_t fsr;
 +
- struct reginfo {
-     uint32_t faulting_insn;
-     uint32_t pc;
-diff --git a/risu_reginfo_ppc64.h b/risu_reginfo_ppc64.h
-index 4b1d8bd..424fd02 100644
---- a/risu_reginfo_ppc64.h
-+++ b/risu_reginfo_ppc64.h
-@@ -14,6 +14,8 @@
- #ifndef RISU_REGINFO_PPC64LE_H
- #define RISU_REGINFO_PPC64LE_H
- 
-+typedef ucontext_t host_context_t;
++    uint64_t fregs[32];
++};
 +
- struct reginfo {
-     uint32_t faulting_insn;
-     uint32_t prev_insn;
-diff --git a/risu_reginfo_s390x.h b/risu_reginfo_s390x.h
-index c65fff7..5126fd5 100644
---- a/risu_reginfo_s390x.h
-+++ b/risu_reginfo_s390x.h
-@@ -12,6 +12,8 @@
- #ifndef RISU_REGINFO_S390X_H
- #define RISU_REGINFO_S390X_H
- 
-+typedef ucontext_t host_context_t;
++#endif /* RISU_REGINFO_SPARC64_H */
+diff --git a/risu.c b/risu.c
+index c9c3a38..422b32e 100644
+--- a/risu.c
++++ b/risu.c
+@@ -30,6 +30,8 @@
+ #ifdef __linux__
+ #include <endian.h>
+ #define HOST_BIG_ENDIAN  (__BYTE_ORDER == __BIG_ENDIAN)
++#elif defined(__sparc__)
++#define HOST_BIG_ENDIAN  1
+ #else
+ #error Need HOST_BIG_ENDIAN
+ #endif
+diff --git a/risu_reginfo_sparc64.c b/risu_reginfo_sparc64.c
+new file mode 100644
+index 0000000..be002e3
+--- /dev/null
++++ b/risu_reginfo_sparc64.c
+@@ -0,0 +1,186 @@
++/******************************************************************************
++ * Copyright (c) 2024 Linaro Limited
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ *****************************************************************************/
 +
- struct reginfo {
-     uint64_t psw_mask;
-     uint64_t pc_offset;
-diff --git a/risu_aarch64.c b/risu_aarch64.c
-index f8a8412..af94539 100644
---- a/risu_aarch64.c
-+++ b/risu_aarch64.c
-@@ -12,15 +12,13 @@
- 
- #include "risu.h"
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.pc += 4;
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.regs[0] = value;
- }
- 
-diff --git a/risu_arm.c b/risu_arm.c
-index a20bf73..0e72fba 100644
---- a/risu_arm.c
-+++ b/risu_arm.c
-@@ -38,16 +38,13 @@ int insnsize(ucontext_t *uc)
-     return 4;
- }
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.arm_pc += insnsize(uc);
- }
- 
--
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.arm_r0 = value;
- }
- 
-diff --git a/risu_i386.c b/risu_i386.c
-index 127e816..5d3b8aa 100644
---- a/risu_i386.c
-+++ b/risu_i386.c
-@@ -16,10 +16,8 @@
- #include "risu.h"
- #include "risu_reginfo_i386.h"
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
--    ucontext_t *uc = (ucontext_t *) vuc;
--
-     /*
-      * We assume that this is UD1 as per get_risuop below.
-      * This would need tweaking if we want to test expected undefs.
-@@ -27,9 +25,8 @@ void advance_pc(void *vuc)
-     uc->uc_mcontext.gregs[REG_E(IP)] += 3;
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = (ucontext_t *) vuc;
-     uc->uc_mcontext.gregs[REG_E(AX)] = value;
- }
- 
-diff --git a/risu_loongarch64.c b/risu_loongarch64.c
-index b6c59cf..921a031 100644
---- a/risu_loongarch64.c
-+++ b/risu_loongarch64.c
-@@ -15,15 +15,13 @@
- 
- #include "risu.h"
- 
--void advance_pc(void *vuc)
-+void advance_pc(host_context_t *uc)
- {
--    struct ucontext *uc = vuc;
-     uc->uc_mcontext.sc_pc += 4;
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(host_context_t *uc, uint64_t value)
- {
--    struct ucontext *uc = vuc;
-     uc->uc_mcontext.sc_regs[4] = value;
- }
- 
-diff --git a/risu_m68k.c b/risu_m68k.c
-index acdd57a..bd6bece 100644
---- a/risu_m68k.c
-+++ b/risu_m68k.c
-@@ -8,15 +8,13 @@
- 
- #include "risu.h"
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
--    ucontext_t *uc = (ucontext_t *) vuc;
-     uc->uc_mcontext.gregs[R_PC] += 4;
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.gregs[R_A0] = value;
- }
- 
-diff --git a/risu_ppc64.c b/risu_ppc64.c
-index 62cf6aa..06cb8a8 100644
---- a/risu_ppc64.c
-+++ b/risu_ppc64.c
-@@ -14,15 +14,13 @@
- #include "risu.h"
- #include <sys/user.h>
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
--    ucontext_t *uc = (ucontext_t *) vuc;
-     uc->uc_mcontext.regs->nip += 4;
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.gp_regs[0] = value;
- }
- 
-diff --git a/risu_reginfo_loongarch64.c b/risu_reginfo_loongarch64.c
-index 6150a40..0719e8b 100644
---- a/risu_reginfo_loongarch64.c
-+++ b/risu_reginfo_loongarch64.c
-@@ -97,10 +97,9 @@ static int parse_extcontext(struct sigcontext *sc, struct extctx_layout *extctx)
- }
- 
- /* reginfo_init: initialize with a ucontext */
--void reginfo_init(struct reginfo *ri, ucontext_t *context, void *siaddr)
-+void reginfo_init(struct reginfo *ri, host_context_t *uc, void *siaddr)
- {
-     int i;
--    struct ucontext *uc = (struct ucontext *)context;
-     struct extctx_layout extctx;
- 
-     memset(&extctx, 0, sizeof(struct extctx_layout));
-diff --git a/risu_s390x.c b/risu_s390x.c
-index cf9c72c..906766e 100644
---- a/risu_s390x.c
-+++ b/risu_s390x.c
-@@ -13,7 +13,7 @@
- 
- #include "risu.h"
- 
--void advance_pc(void *vuc)
-+void advance_pc(ucontext_t *uc)
- {
-     /*
-      * Note: The PSW address already points to the next instruction
-@@ -21,9 +21,8 @@ void advance_pc(void *vuc)
-      */
- }
- 
--void set_ucontext_paramreg(void *vuc, uint64_t value)
-+void set_ucontext_paramreg(ucontext_t *uc, uint64_t value)
- {
--    ucontext_t *uc = vuc;
-     uc->uc_mcontext.gregs[0] = value;
- }
- 
++#include <stdio.h>
++#include <ucontext.h>
++#include <string.h>
++#include <signal.h>
++#include <stdlib.h>
++
++#include "risu.h"
++#include "risu_reginfo_sparc64.h"
++
++#define STACK_BIAS 2047
++
++const struct option * const arch_long_opts;
++const char * const arch_extra_help;
++
++void process_arch_opt(int opt, const char *arg)
++{
++    abort();
++}
++
++void arch_init(void)
++{
++}
++
++int reginfo_size(struct reginfo *ri)
++{
++    return sizeof(*ri);
++}
++
++/* reginfo_init: initialize with a ucontext */
++void reginfo_init(struct reginfo *ri, host_context_t *hc, void *siaddr)
++{
++    memset(ri, 0, sizeof(*ri));
++
++#ifdef __linux__
++    ri->pc = hc->sigc_regs.tpc;
++    ri->npc = hc->sigc_regs.tnpc;
++    ri->ccr = (hc->sigc_regs.tstate >> 32) & 0xff;
++    ri->y = hc->sigc_regs.y;
++
++    /* g + o */
++    memcpy(&ri->g, hc->sigc_regs.u_regs, 16 * 8);
++    /* l + i are just before sc */
++    memcpy(&ri->l, (void *)hc - 8 * 8 * 3, 16 * 8);
++
++    if (hc->sigc_fpu_save) {
++        ri->fsr = hc->sigc_fpu_save->si_fsr;
++        /* TODO: ri->gsr = hc->sigc_fpu_save->si_gsr; */
++        memcpy(ri->fregs, hc->sigc_fpu_save->si_float_regs, 32 * 8);
++    }
++#elif defined(__sun__)
++    ri->pc = hc->uc_mcontext.gregs[REG_PC];
++    ri->npc = hc->uc_mcontext.gregs[REG_nPC];
++    ri->ccr = hc->uc_mcontext.gregs[REG_CCR];
++
++    /* G and O are in the signal frame. */
++    memcpy(&ri->g[1], &hc->uc_mcontext.gregs[REG_G1], 7 * sizeof(greg_t));
++    memcpy(&ri->o[0], &hc->uc_mcontext.gregs[REG_O0], 8 * sizeof(greg_t));
++
++    /* L and I are flushed to the regular stack frame. */
++    memcpy(&ri->l[0], (void *)(ri->o[6] + STACK_BIAS), 16 * sizeof(greg_t));
++
++    ri->y = hc->uc_mcontext.gregs[REG_Y];
++    ri->fsr = hc->uc_mcontext.fpregs.fpu_fsr;
++    /* ??? Despite %gsr being asr19, uc->mc.asrs[19-16] is not populated. */
++
++    memcpy(&ri->fregs[0], &hc->uc_mcontext.fpregs.fpu_fr,
++           32 * sizeof(uint64_t));
++#endif
++
++    ri->g[7] = 0xdeadbeefdeadbeeful;  /* tp */
++    ri->o[6] = 0xdeadbeefdeadbeeful;  /* sp */
++    ri->i[6] = 0xdeadbeefdeadbeeful;  /* fp */
++
++    ri->faulting_insn = *(uint32_t *)ri->pc;
++
++    ri->pc -= image_start_address;
++    ri->npc -= image_start_address;
++}
++
++/* reginfo_is_eq: compare the reginfo structs, returns nonzero if equal */
++bool reginfo_is_eq(struct reginfo *r1, struct reginfo *r2)
++{
++    return memcmp(r1, r2, reginfo_size(r1)) == 0;
++}
++
++/* reginfo_dump: print state to a stream, returns nonzero on success */
++void reginfo_dump(struct reginfo *ri, FILE * f)
++{
++    int i;
++
++    fprintf(f, "  insn   : %08x\n", ri->faulting_insn);
++    fprintf(f, "  ccr    : %02x\n", ri->ccr);
++    fprintf(f, "  pc     : %016" PRIx64 "\n", ri->pc);
++    fprintf(f, "  npc    : %016" PRIx64 "\n", ri->npc);
++
++    for (i = 1; i < 8; i++) {
++        fprintf(f, "  G%d     : %016" PRIx64 "\n", i, ri->g[i]);
++    }
++    for (i = 0; i < 8; i++) {
++        fprintf(f, "  O%d     : %016" PRIx64 "\n", i, ri->o[i]);
++    }
++    for (i = 0; i < 8; i++) {
++        fprintf(f, "  L%d     : %016" PRIx64 "\n", i, ri->l[i]);
++    }
++    for (i = 0; i < 8; i++) {
++        fprintf(f, "  I%d     : %016" PRIx64 "\n", i, ri->i[i]);
++    }
++
++    fprintf(f, "  y      : %016" PRIx64 "\n", ri->y);
++    fprintf(f, "  fsr    : %016" PRIx64 "\n", ri->fsr);
++
++    for (i = 0; i < 32; i++) {
++        fprintf(f, "  F%-2d    : %016" PRIx64 "\n", i * 2, ri->fregs[i]);
++    }
++}
++
++/* reginfo_dump_mismatch: print mismatch details to a stream, ret nonzero=ok */
++void reginfo_dump_mismatch(struct reginfo *m, struct reginfo *a, FILE * f)
++{
++    int i;
++
++    if (m->faulting_insn != a->faulting_insn) {
++        fprintf(f, "  insn   : %08x vs %08x\n",
++                m->faulting_insn, a->faulting_insn);
++    }
++    if (m->ccr != a->ccr) {
++        fprintf(f, "  ccr    : %02x vs %02x\n", m->ccr, a->ccr);
++    }
++    if (m->pc != a->pc) {
++        fprintf(f, "  pc     : %016" PRIx64 " vs %016" PRIx64 "\n",
++                m->pc, a->pc);
++    }
++    if (m->npc != a->npc) {
++        fprintf(f, "  npc    : %016" PRIx64 " vs %016" PRIx64 "\n",
++                m->npc, a->npc);
++    }
++
++    for (i = 1; i < 8; i++) {
++        if (m->g[i] != a->g[i]) {
++            fprintf(f, "  G%d     : %016" PRIx64 " vs %016" PRIx64 "\n",
++                    i, m->g[i], a->g[i]);
++        }
++    }
++    for (i = 0; i < 8; i++) {
++        if (m->o[i] != a->o[i]) {
++            fprintf(f, "  O%d     : %016" PRIx64 " vs %016" PRIx64 "\n",
++                    i, m->o[i], a->o[i]);
++        }
++    }
++    for (i = 0; i < 8; i++) {
++        if (m->l[i] != a->l[i]) {
++            fprintf(f, "  L%d     : %016" PRIx64 " vs %016" PRIx64 "\n",
++                    i, m->l[i], a->l[i]);
++        }
++    }
++    for (i = 0; i < 8; i++) {
++        if (m->i[i] != a->i[i]) {
++            fprintf(f, "  I%d     : %016" PRIx64 " vs %016" PRIx64 "\n",
++                    i, m->i[i], a->i[i]);
++        }
++    }
++
++    if (m->y != a->y) {
++        fprintf(f, "  y      : %016" PRIx64 " vs %016" PRIx64 "\n",
++                m->y, a->y);
++    }
++    if (m->fsr != a->fsr) {
++        fprintf(f, "  fsr    : %016" PRIx64 " vs %016" PRIx64 "\n",
++                m->fsr, a->fsr);
++    }
++
++    for (i = 0; i < 32; i++) {
++        if (m->fregs[i] != a->fregs[i]) {
++            fprintf(f, "  F%-2d    : %016" PRIx64 " vs %016" PRIx64 "\n",
++                    i * 2, m->fregs[i], a->fregs[i]);
++        }
++    }
++}
+diff --git a/risu_sparc64.c b/risu_sparc64.c
+new file mode 100644
+index 0000000..48b5cfe
+--- /dev/null
++++ b/risu_sparc64.c
+@@ -0,0 +1,52 @@
++/******************************************************************************
++ * Copyright (c) 2024 Linaro Limited
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ *****************************************************************************/
++
++#include <signal.h>
++#include "risu.h"
++
++void advance_pc(host_context_t *hc)
++{
++#ifdef __linux__
++    hc->sigc_regs.tpc = hc->sigc_regs.tnpc;
++    hc->sigc_regs.tnpc += 4;
++#else
++    hc->uc_mcontext.gregs[REG_PC] = hc->uc_mcontext.gregs[REG_nPC];
++    hc->uc_mcontext.gregs[REG_nPC] += 4;
++#endif
++}
++
++void set_ucontext_paramreg(host_context_t *hc, uint64_t value)
++{
++#ifdef __linux__
++    hc->sigc_regs.u_regs[15] = value;
++#else
++    hc->uc_mcontext.gregs[REG_O7] = value;
++#endif
++}
++
++uint64_t get_reginfo_paramreg(struct reginfo *ri)
++{
++    return ri->o[7];
++}
++
++RisuOp get_risuop(struct reginfo *ri)
++{
++    /* Return the risuop we have been asked to do
++     * (or OP_SIGILL if this was a SIGILL for a non-risuop insn)
++     */
++    uint32_t insn = ri->faulting_insn;
++    uint32_t op = insn & 0xf;
++    uint32_t key = insn & ~0xf;
++    uint32_t risukey = 0x000dead0;
++    return (key != risukey) ? OP_SIGILL : op;
++}
++
++uintptr_t get_pc(struct reginfo *ri)
++{
++   return ri->pc;
++}
+diff --git a/configure b/configure
+index 39275a2..965f338 100755
+--- a/configure
++++ b/configure
+@@ -62,6 +62,8 @@ guess_arch() {
+         ARCH="ppc64"
+     elif check_define __s390x__ ; then
+         ARCH="s390x"
++    elif check_define __sparc__ && check_define __arch64__ ; then
++        ARCH="sparc64"
+     else
+         echo "This cpu is not supported by risu. Try -h. " >&2
+         exit 1
+diff --git a/test_sparc64.s b/test_sparc64.s
+new file mode 100644
+index 0000000..c131d81
+--- /dev/null
++++ b/test_sparc64.s
+@@ -0,0 +1,137 @@
++/*****************************************************************************
++ * Copyright (c) 2024 Linaro Limited
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ *****************************************************************************/
++
++/* Initialise the fp regs */
++
++	.register %g2, #ignore
++	.register %g3, #ignore
++	.register %g6, #ignore
++
++.text
++	rd	%pc, %g1
++	sethi	%pc22(.Ldata+4), %g2
++	or	%g2, %pc10(.Ldata+8), %g2
++	add	%g2, %g1, %g1
++
++	ldd	[%g1 + 4 * 0], %f0
++	ldd	[%g1 + 4 * 2], %f2
++	ldd	[%g1 + 4 * 4], %f4
++	ldd	[%g1 + 4 * 6], %f6
++	ldd	[%g1 + 4 * 8], %f8
++	ldd	[%g1 + 4 * 10], %f10
++	ldd	[%g1 + 4 * 12], %f12
++	ldd	[%g1 + 4 * 14], %f14
++	ldd	[%g1 + 4 * 16], %f16
++	ldd	[%g1 + 4 * 18], %f18
++	ldd	[%g1 + 4 * 20], %f20
++	ldd	[%g1 + 4 * 22], %f22
++	ldd	[%g1 + 4 * 24], %f24
++	ldd	[%g1 + 4 * 26], %f26
++	ldd	[%g1 + 4 * 28], %f28
++	ldd	[%g1 + 4 * 30], %f30
++	ldd	[%g1 + 4 * 32], %f32
++	ldd	[%g1 + 4 * 34], %f34
++	ldd	[%g1 + 4 * 36], %f36
++	ldd	[%g1 + 4 * 38], %f38
++	ldd	[%g1 + 4 * 40], %f40
++	ldd	[%g1 + 4 * 42], %f42
++	ldd	[%g1 + 4 * 44], %f44
++	ldd	[%g1 + 4 * 46], %f46
++	ldd	[%g1 + 4 * 48], %f48
++	ldd	[%g1 + 4 * 50], %f50
++	ldd	[%g1 + 4 * 52], %f52
++	ldd	[%g1 + 4 * 54], %f54
++	ldd	[%g1 + 4 * 56], %f56
++	ldd	[%g1 + 4 * 58], %f58
++	ldd	[%g1 + 4 * 60], %f60
++	ldd	[%g1 + 4 * 62], %f62
++
++/* Initialize the special regs */
++
++	wr	%g0, 0x100, %y
++	wr	%g0, 0x200, %gsr
++	cmp	%g0, %g0
++
++/* Initialise the gp regs */
++
++	mov	1, %g1
++	mov	2, %g2
++	mov	3, %g3
++	mov	4, %g4
++	mov	5, %g5
++	mov	6, %g6
++	/* g7 is the thread pointer */
++
++	mov	8, %o0
++	mov	9, %o1
++	mov	10, %o2
++	mov	11, %o3
++	mov	12, %o4
++	mov	13, %o5
++	/* o6 is the stack pointer */
++	mov	15, %o7
++
++	mov	16, %l0
++	mov	17, %l1
++	mov	18, %l2
++	mov	19, %l3
++	mov	20, %l4
++	mov	21, %l5
++	mov	22, %l6
++	mov	23, %l7
++
++	mov	24, %i0
++	mov	25, %i1
++	mov	26, %i2
++	mov	27, %i3
++	mov	28, %i4
++	mov	29, %i5
++	/* i6 is the frame pointer */
++	mov	31, %i7
++
++/* Do compare. */
++
++	illtrap	0xdead0
++	illtrap	0xdead1
++
++.data
++	.align	8
++.Ldata:
++	.double 1
++	.double 2
++	.double 3
++	.double 4
++	.double 5
++	.double 6
++	.double 7
++	.double 8
++	.double 9
++	.double 10
++	.double 11
++	.double 12
++	.double 13
++	.double 14
++	.double 15
++	.double 16
++	.double 17
++	.double 18
++	.double 19
++	.double 20
++	.double 21
++	.double 22
++	.double 23
++	.double 24
++	.double 25
++	.double 26
++	.double 27
++	.double 28
++	.double 29
++	.double 30
++	.double 31
++	.double 32
++
 -- 
 2.34.1
 
