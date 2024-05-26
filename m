@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7C18CF5D1
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A05B8CF5B3
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJm3-0008Va-EH; Sun, 26 May 2024 15:43:19 -0400
+	id 1sBJm1-0008Rk-LX; Sun, 26 May 2024 15:43:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlz-0008K7-BG
+ id 1sBJlz-0008Nw-VM
  for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:15 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlx-0007h0-DM
+ id 1sBJly-0007hv-AY
  for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:15 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1f44b45d6abso20630405ad.0
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1f4a5344ec7so323505ad.1
  for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:43:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752592; x=1717357392; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716752593; x=1717357393; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=B9yuYs5gPe1MnBfUW016Au7c2/dj70+dfKpSeivnHWo=;
- b=Y4jki3U82u1Mi+dZfBoP3j+4Ygzisv4+uxujTk/ygU9RBa+qvffEf/sx39plexf5WJ
- Llrb3wbxNWCjQZST0sPSp7tNmi9oibwbJa59uwo66yp+w1h6ktXnCitHMYmQs2THUnsm
- pM3COJjzZ69OaPB3o2UCc2oYb18C/1OeV2aamPhsdd47bIlKS8gMc/RwWFeU3SJXvhXh
- lg2uWv8BD+CtOwypJh1rbKpHdcoan5wTsEN+sACYGKU8FZywtcCV6IiozIylnAXtJtk7
- jhICdyIhPycnCyu7jZSfBBlS9gKYu3LmMikdqIgFrN3WGbDxvXvPEcyOAv+x/53rB7b5
- V0sQ==
+ bh=yXW/Ltrfsx0MGgRbMt9NN8XXyTF3WwZ3uL7yZtfeN4I=;
+ b=g+OLwYBo2tLsJQ1aOxPH26rsvioRlluZ3EsXEQnXV34kUT+q8Z6WuMWrX2s32mlPN8
+ wrHWI02oqGUnE4PcxtQmbnQvw4TfjThOqTPrlsFInSFBPjqHVLOXmxqzxEudwsKWi5nV
+ GycDdb9ZQqadak+7MWTKT1vnixTiD4Hwh8hygXe/SbnH4ScMdwZGSiOyDCU45QBTpy7B
+ uNfHsMxQPJkWG0JGguU3WuZM+yMzbdD6SuBRGnnlrJDUAfaIWlBQ3lajFKmttHKQJ6gW
+ J4TTMwHg2EQApjX4RsHKL4Dj7AW8TyyiQBj45Zwo+Pol2kxJ8jDme7eM6PA0hgv7dIDc
+ ihWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752592; x=1717357392;
+ d=1e100.net; s=20230601; t=1716752593; x=1717357393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=B9yuYs5gPe1MnBfUW016Au7c2/dj70+dfKpSeivnHWo=;
- b=vVfEFWV0gp8tRLf7KEB2QESecsiBhA8HCghuE1E80nj5Z1zZ+uMYbmc8aU9U3Hz++Y
- r3Ut0URIxOgVjUp18npi0BWexFYvmUcPOhgZagStMNUJrKmbPinFGwUXfC8had8IxWiM
- HMqBk5BttPfJCw+KQCT2/f/4YiB/gvycd41pHGGwLbaNDwZwgrisbNF96DHwa/w0vSHA
- 383qdcTMIw5iTwuF0/R/6QfCZML2a8FoD77yJWCRlakhGJmhV5xGD6AYqYYJbL7tp7Fo
- 0sG22Q5dMG+XVaL3Srj09Ue0Y+0h0mjKIWH3SRrDeRpCZ6VE3ILQsbpymy5cd1SrUWRX
- tj5Q==
-X-Gm-Message-State: AOJu0YyMH/srYwYB+d+WL5gVn8Zd8GpgpblbILIcz4er5Ub6FUg6kaje
- 4K+6FT/ySW4BEs8VSaKHum8IPVPmm4/48GsFpKKUqv/g5epLsIqYxOK/YaeHMEL8Jt/Sb20s/aL
- x
-X-Google-Smtp-Source: AGHT+IE0RH/HhrONTSr0cICOO8NxcWSJalykKqfniOVfI6TS9jWWptOHiqWUXZwqrDDwGcj9yjsxZQ==
-X-Received: by 2002:a17:902:e2d3:b0:1f3:11a4:b67 with SMTP id
- d9443c01a7336-1f4494f1d00mr53772125ad.43.1716752592192; 
- Sun, 26 May 2024 12:43:12 -0700 (PDT)
+ bh=yXW/Ltrfsx0MGgRbMt9NN8XXyTF3WwZ3uL7yZtfeN4I=;
+ b=VkHPobZJl/V8gYXoTIQbbLLo376Nz9cGVZ0P+XjH4aYdV+CjRglBJj+lS+LRCP7T2+
+ DTnC7pI0Y0JocQ5OnHnT1IMKTIbKFoiCqDj3ImbXJ+oukOgQlbwnz9G4G6StOylrLer+
+ w3mdHR1tlEuJMVoT3mhhyvEAFgZXeD+ITbeT8JN53P1q0ClXb4zaDqKssAqK8lI5bGrd
+ lkzSIYJ6PBvsURacayww9Ay2HIKxOMK5nSoe8rc87kApB4IUx87LKmUQ3ODXI8D+YFsu
+ IDtZrKn8xtdWFwDGV771Ern/wrFDkKCAWaELH6dgieuPNVDMRBShwQAG/ZOhXNqg98mv
+ BYJw==
+X-Gm-Message-State: AOJu0Yw+YXSg03+SiddtrJZwpyXWjDbjduZXh6ARZ5/nVBwlaOpwMCxl
+ QpWqZwYV37VRjEVicNH/Ua/OwuDxzXexypk8mL02Y26otFaST9y8LKDN2CJyTcIXh/sR9fLVWnd
+ 6
+X-Google-Smtp-Source: AGHT+IGiOe3UDjGAF6aU9HOz3dIxwov5y1Hsp7B73IGobxjOKI6RQu13cO+bgmWxZqxw2E8nYjpOgQ==
+X-Received: by 2002:a17:903:188:b0:1f4:9139:e0ff with SMTP id
+ d9443c01a7336-1f49139e34dmr17100255ad.10.1716752593012; 
+ Sun, 26 May 2024 12:43:13 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.11
+ d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:43:11 -0700 (PDT)
+ Sun, 26 May 2024 12:43:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 21/37] target/sparc: Implement LDXEFSR
-Date: Sun, 26 May 2024 12:42:38 -0700
-Message-Id: <20240526194254.459395-22-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 22/37] target/sparc: Implement LZCNT
+Date: Sun, 26 May 2024 12:42:39 -0700
+Message-Id: <20240526194254.459395-23-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
 References: <20240526194254.459395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,87 +94,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h     |  1 +
  target/sparc/insns.decode |  1 +
- target/sparc/fop_helper.c |  6 ++++++
- target/sparc/translate.c  | 11 +++++++++--
- 4 files changed, 17 insertions(+), 2 deletions(-)
+ target/sparc/translate.c  | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index 219f0e04c7..4ae97866af 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -40,6 +40,7 @@ DEF_HELPER_FLAGS_4(ld_asi, TCG_CALL_NO_WG, i64, env, tl, int, i32)
- DEF_HELPER_FLAGS_5(st_asi, TCG_CALL_NO_WG, void, env, tl, i64, int, i32)
- #endif
- DEF_HELPER_FLAGS_1(get_fsr, TCG_CALL_NO_WG_SE, tl, env)
-+DEF_HELPER_FLAGS_2(set_fsr_nofcc, TCG_CALL_NO_RWG, void, env, i32)
- DEF_HELPER_FLAGS_2(set_fsr_nofcc_noftt, TCG_CALL_NO_RWG, void, env, i32)
- DEF_HELPER_FLAGS_2(fsqrts, TCG_CALL_NO_WG, f32, env, f32)
- DEF_HELPER_FLAGS_2(fsqrtd, TCG_CALL_NO_WG, f64, env, f64)
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index a5eefebfbc..fec055910e 100644
+index fec055910e..4766964893 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -589,6 +589,7 @@ STX         11 ..... 011110 ..... . .............          @r_r_i_asi # STXA
- LDF         11 ..... 100000 ..... . .............          @r_r_ri_na
- LDFSR       11 00000 100001 ..... . .............          @n_r_ri
- LDXFSR      11 00001 100001 ..... . .............          @n_r_ri
-+LDXEFSR     11 00011 100001 ..... . .............          @n_r_ri
- LDQF        11 ..... 100010 ..... . .............          @q_r_ri_na
- LDDF        11 ..... 100011 ..... . .............          @d_r_ri_na
+@@ -389,6 +389,7 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
  
-diff --git a/target/sparc/fop_helper.c b/target/sparc/fop_helper.c
-index 1b524c6d3c..0b30665b51 100644
---- a/target/sparc/fop_helper.c
-+++ b/target/sparc/fop_helper.c
-@@ -602,3 +602,9 @@ void helper_set_fsr_nofcc_noftt(CPUSPARCState *env, uint32_t fsr)
-     env->fsr_cexc_ftt |= fsr & FSR_CEXC_MASK;
-     set_fsr_nonsplit(env, fsr);
- }
-+
-+void helper_set_fsr_nofcc(CPUSPARCState *env, uint32_t fsr)
-+{
-+    env->fsr_cexc_ftt = fsr & (FSR_CEXC_MASK | FSR_FTT_MASK);
-+    set_fsr_nonsplit(env, fsr);
-+}
+     ADDXC       10 ..... 110110 ..... 0 0001 0001 .....    @r_r_r
+     ADDXCcc     10 ..... 110110 ..... 0 0001 0011 .....    @r_r_r
++    LZCNT       10 ..... 110110 00000 0 0001 0111 .....    @r_r2
+ 
+     ALIGNADDR   10 ..... 110110 ..... 0 0001 1000 .....    @r_r_r
+     ALIGNADDRL  10 ..... 110110 ..... 0 0001 1010 .....    @r_r_r
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index ade9df3960..e3059f32bb 100644
+index e3059f32bb..705fcb028a 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4458,7 +4458,7 @@ static bool trans_LDFSR(DisasContext *dc, arg_r_r_ri *a)
-     return advance_pc(dc);
+@@ -658,6 +658,11 @@ static void gen_op_popc(TCGv dst, TCGv src1, TCGv src2)
+     tcg_gen_ctpop_tl(dst, src2);
  }
  
--static bool trans_LDXFSR(DisasContext *dc, arg_r_r_ri *a)
-+static bool do_ldxfsr(DisasContext *dc, arg_r_r_ri *a, bool entire)
- {
- #ifdef TARGET_SPARC64
-     TCGv addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
-@@ -4483,13 +4483,20 @@ static bool trans_LDXFSR(DisasContext *dc, arg_r_r_ri *a)
-     tcg_gen_extract_i32(cpu_fcc[2], hi, FSR_FCC2_SHIFT - 32, 2);
-     tcg_gen_extract_i32(cpu_fcc[3], hi, FSR_FCC3_SHIFT - 32, 2);
- 
--    gen_helper_set_fsr_nofcc_noftt(tcg_env, lo);
-+    if (entire) {
-+        gen_helper_set_fsr_nofcc(tcg_env, lo);
-+    } else {
-+        gen_helper_set_fsr_nofcc_noftt(tcg_env, lo);
-+    }
-     return advance_pc(dc);
- #else
-     return false;
- #endif
- }
- 
-+TRANS(LDXFSR, 64, do_ldxfsr, a, false)
-+TRANS(LDXEFSR, VIS3B, do_ldxfsr, a, true)
++static void gen_op_lzcnt(TCGv dst, TCGv src)
++{
++    tcg_gen_clzi_tl(dst, src, TARGET_LONG_BITS);
++}
 +
- static bool do_stfsr(DisasContext *dc, arg_r_r_ri *a, MemOp mop)
+ #ifndef TARGET_SPARC64
+ static void gen_helper_array8(TCGv dst, TCGv src1, TCGv src2)
  {
-     TCGv addr = gen_ldst_addr(dc, a->rs1, a->imm, a->rs2_or_imm);
+@@ -3873,6 +3878,19 @@ TRANS(EDGE16LN, VIS2, gen_edge, a, 16, 0, 1)
+ TRANS(EDGE32N, VIS2, gen_edge, a, 32, 0, 0)
+ TRANS(EDGE32LN, VIS2, gen_edge, a, 32, 0, 1)
+ 
++static bool do_rr(DisasContext *dc, arg_r_r *a,
++                  void (*func)(TCGv, TCGv))
++{
++    TCGv dst = gen_dest_gpr(dc, a->rd);
++    TCGv src = gen_load_gpr(dc, a->rs);
++
++    func(dst, src);
++    gen_store_gpr(dc, a->rd, dst);
++    return advance_pc(dc);
++}
++
++TRANS(LZCNT, VIS3, do_rr, a, gen_op_lzcnt)
++
+ static bool do_rrr(DisasContext *dc, arg_r_r_r *a,
+                    void (*func)(TCGv, TCGv, TCGv))
+ {
 -- 
 2.34.1
 
