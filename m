@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248FB8CF5AE
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B4F8CF5C9
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:47:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJlk-00089t-P9; Sun, 26 May 2024 15:43:00 -0400
+	id 1sBJll-0008A4-6J; Sun, 26 May 2024 15:43:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJli-00089P-Mm
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:42:58 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
+ id 1sBJlj-00089h-Lg
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:42:59 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlh-0007cC-0c
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:42:58 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-657a07878easo4409689a12.0
- for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:42:56 -0700 (PDT)
+ id 1sBJlh-0007cX-Ry
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:42:59 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1f4a0050b9aso1324795ad.2
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:42:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752575; x=1717357375; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9SNqljo3EmReP7kE8ervWQw2DryAJUAsy1lq7rpCZJ4=;
- b=UIdtRpJyhacwbP96/+MeMYLG0HkAwNLLO/wzP/qNjXm5ee+1HHRwYHo55wG/Ndm7Z7
- Yq1qxmLt7ftOoGwp3Tkf1wkgJsqHhLRIHLE1DY12EmX+5nlR05B+FGilHK/E7d9DkBj5
- MSSqzQ3lmLRKrk094C/nl2HfsJYALCkRvwm78PWZCyRKFJG06mpDP8AVzEkMsd6b+RKW
- hJ+kp6UJvjKd6tCq0Ah92W4UpRBZiDXTMMQyB0SMq8p2nWzfvdsp/u4vGlYHiPwO1kf3
- F/YZcN/i7JQwESBv/Axq6K+Erq+zAx6RNRfeDPqX1TCGAPEzfz2OS1E6oVqAetdQUgCn
- MWMg==
+ d=linaro.org; s=google; t=1716752576; x=1717357376; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=QyfYhcDz9GxZwfZD6zLLHvsedkNWvuKT9dIKJJP5Q0E=;
+ b=NW5SmKS+mx3nr8EF/p2dXGCHrz7oyxF+p/XM5q1XAkwpmTeAEI2AmISN2WmGc10YBe
+ uOna6uh7HjN0B95zIylg0AbJLIJYdoMudwR6TWzN+NKc/QIUnnhIqsP6JkF5mIu1HryG
+ kw7NPxrPPSwwnSn9m/OGEP4RrFm+iS3pHxMmR2ZCoqZE7WFWo/IYRDO2F2WAmdsvra8N
+ CG7qHTNn4jFJYIHDTFf80by6Rpgy5yoWQrPPh0YXCnKbE2FWqV0IQ1gqzZP2fXBjmUTF
+ pTMPV+NpWZ1Dl/Xm2mKX7N/ulWhyZ5U1epHlphOlg79KEpoyu1q+BohKZmHK6JrqOSGj
+ 8ifg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752575; x=1717357375;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9SNqljo3EmReP7kE8ervWQw2DryAJUAsy1lq7rpCZJ4=;
- b=tgA9Awilf9mXSOJI6bPLmN/bYUHeOTqDDnYpcI/YYedVlFvCqQ56BlQpUQhm7kHWhz
- nkF8M26NeEfttVBqMf2TvlWFP2Jd4KQbFDIs6tJq+clRMF9tSUYS9eZWQlGzZr72KXGE
- VKpwlDblUy/SBqZFUBn4lbuE/Fu4U9erOm8TVT+yLxY130feKmjBsfvPlEHJ8SPVSLcT
- i09lBPwbvLLo81Qoq4EsksKECi7/yjKlDnRTMlPLMumEBuFoLynMgBsEhiLLOiRE4jnM
- s9Ol8X5U202iQTIBbXJ0M146REgTsDxiygMrZmvmgOK24Xcz0+xcFme5r6GIpSMEuVR7
- Xqyw==
-X-Gm-Message-State: AOJu0Yw4gxpgVXK+S/E0OCUOfY1eL4ocnURqrkAZHRkHRypjGg6Gcs3z
- Abf+++JGHsxUkirx9V0++uQap6uEU5o1WUjlgz4msBn5GKBr8zXKelElbYiGi0edTlrIKP3U2HU
- v
-X-Google-Smtp-Source: AGHT+IE4EYiyaowuah0egb1XtgL+kYwsqS5HSNR6OS6pPF5LVrI0xKJL9u5JMFx1SDoAESHANTGrIQ==
-X-Received: by 2002:a17:902:eb85:b0:1f4:698b:7a0b with SMTP id
- d9443c01a7336-1f4698b7cbdmr62507955ad.8.1716752575283; 
- Sun, 26 May 2024 12:42:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716752576; x=1717357376;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QyfYhcDz9GxZwfZD6zLLHvsedkNWvuKT9dIKJJP5Q0E=;
+ b=bhPlh3uUVa6/AnysUXPJa/tvuVDE0srvzdUNN8050HBSGeLyVpxP84hkOwMzoQs/2s
+ b7VNbDrwtlTdoC/RkGfxwNYLcPBEYTxAcFC8HOhMbs9nC7kWOLl529NulNyzLS7wV3Mn
+ t4Sxm+7id3vWCPoW5R4uhc/cY2eVK6er4gHElJC7tayfG0PBy8EtQLTyoMPDaRKf55Oe
+ e2W3N0P4Anma2uElXjmdYcgChgGKKjB05+OFc598ZHfpc68SpaFn0plxrFFDyqS2P7hT
+ yRhwJAj/agqynbQfi9CohfU50BAFR/a0WjXD1+IeSDOBZKg41kccg0R1LsE8rkC8NKk/
+ ElAA==
+X-Gm-Message-State: AOJu0YxWhI3ap21EDj4wAi0iCZy6k3WXwDZWiJAu5NT363YpE1XKXnGZ
+ EHtcVN8ok2Ocx+iCUiUsYKurxL3txUUBB77YNjH1l1RBu69fApyM4o9pDGLdz1DSiWyWAf/s83J
+ H
+X-Google-Smtp-Source: AGHT+IFP3t4op3u6JPOrG8yYwAm3/CBbeGyR1hIM4RlvTxWv53PnT4hMaUZeyJJq+dk8YdxjpqbmRw==
+X-Received: by 2002:a17:903:245:b0:1f3:903:5c9a with SMTP id
+ d9443c01a7336-1f4497e5d05mr85622535ad.58.1716752576243; 
+ Sun, 26 May 2024 12:42:56 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.42.54
+ d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.42.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:42:54 -0700 (PDT)
+ Sun, 26 May 2024 12:42:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 00/37] target/sparc: Implement VIS4
-Date: Sun, 26 May 2024 12:42:17 -0700
-Message-Id: <20240526194254.459395-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/37] target/sparc: Fix ARRAY8
+Date: Sun, 26 May 2024 12:42:18 -0700
+Message-Id: <20240526194254.459395-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
+References: <20240526194254.459395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,67 +92,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now tested with RISU, using a Solaris M8 host as reference.
-This exposed a few bugs in the existing VIS1 support as well,
-so fix those before anything else.  It also exposed a few bugs
-in the implementation of VIS3, so fixes squashed there as well.
+Follow the Oracle Sparc 2015 implementation note and bound
+the input value of N to 5 from the lower 3 bits of rs2.
+Spell out all of the intermediate values, matching the diagram
+in the manual.  Fix extraction of upper_x and upper_y for N=0.
 
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/sparc/vis_helper.c | 53 ++++++++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 18 deletions(-)
 
-r~
-
-
-Richard Henderson (37):
-  target/sparc: Fix ARRAY8
-  target/sparc: Rewrite gen_edge
-  target/sparc: Fix do_dc
-  target/sparc: Fix helper_fmul8ulx16
-  target/sparc: Perform DFPREG/QFPREG in decodetree
-  target/sparc: Remove gen_dest_fpr_D
-  target/sparc: Remove cpu_fpr[]
-  target/sparc: Use gvec for VIS1 parallel add/sub
-  target/sparc: Implement FMAf extension
-  target/sparc: Add feature bits for VIS 3
-  target/sparc: Implement ADDXC, ADDXCcc
-  target/sparc: Implement CMASK instructions
-  target/sparc: Implement FCHKSM16
-  target/sparc: Implement FHADD, FHSUB, FNHADD, FNADD, FNMUL
-  target/sparc: Implement FLCMP
-  target/sparc: Implement FMEAN16
-  target/sparc: Implement FPADD64, FPSUB64
-  target/sparc: Implement FPADDS, FPSUBS
-  target/sparc: Implement FPCMPEQ8, FPCMPNE8, FPCMPULE8, FPCMPUGT8
-  target/sparc: Implement FSLL, FSRL, FSRA, FSLAS
-  target/sparc: Implement LDXEFSR
-  target/sparc: Implement LZCNT
-  target/sparc: Implement MOVsTOw, MOVdTOx, MOVwTOs, MOVxTOd
-  target/sparc: Implement PDISTN
-  target/sparc: Implement UMULXHI
-  target/sparc: Implement XMULX
-  target/sparc: Enable VIS3 feature bit
-  target/sparc: Implement IMA extension
-  target/sparc: Add feature bit for VIS4
-  target/sparc: Implement FALIGNDATAi
-  target/sparc: Implement 8-bit FPADD, FPADDS, and FPADDUS
-  target/sparc: Implement VIS4 comparisons
-  target/sparc: Implement FPMIN, FPMAX
-  target/sparc: Implement SUBXC, SUBXCcc
-  target/sparc: Implement MWAIT
-  target/sparc: Implement monitor ASIs
-  target/sparc: Enable VIS4 feature bit
-
- target/sparc/asi.h             |   4 +
- target/sparc/helper.h          |  27 +-
- target/sparc/cpu-feature.h.inc |   4 +
- target/sparc/insns.decode      | 338 ++++++++----
- linux-user/elfload.c           |   3 +
- target/sparc/cpu.c             |  12 +
- target/sparc/fop_helper.c      | 136 +++++
- target/sparc/ldst_helper.c     |   4 +
- target/sparc/translate.c       | 938 ++++++++++++++++++++++++++-------
- target/sparc/vis_helper.c      | 392 +++++++++++---
- fpu/softfloat-specialize.c.inc |  31 ++
- 11 files changed, 1558 insertions(+), 331 deletions(-)
-
+diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
+index e15c6bb34e..f46fcf1f6a 100644
+--- a/target/sparc/vis_helper.c
++++ b/target/sparc/vis_helper.c
+@@ -21,25 +21,42 @@
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
+ 
+-/* This function uses non-native bit order */
+-#define GET_FIELD(X, FROM, TO)                                  \
+-    ((X) >> (63 - (TO)) & ((1ULL << ((TO) - (FROM) + 1)) - 1))
+-
+-/* This function uses the order in the manuals, i.e. bit 0 is 2^0 */
+-#define GET_FIELD_SP(X, FROM, TO)               \
+-    GET_FIELD(X, 63 - (TO), 63 - (FROM))
+-
+-target_ulong helper_array8(target_ulong pixel_addr, target_ulong cubesize)
++target_ulong helper_array8(target_ulong rs1, target_ulong rs2)
+ {
+-    return (GET_FIELD_SP(pixel_addr, 60, 63) << (17 + 2 * cubesize)) |
+-        (GET_FIELD_SP(pixel_addr, 39, 39 + cubesize - 1) << (17 + cubesize)) |
+-        (GET_FIELD_SP(pixel_addr, 17 + cubesize - 1, 17) << 17) |
+-        (GET_FIELD_SP(pixel_addr, 56, 59) << 13) |
+-        (GET_FIELD_SP(pixel_addr, 35, 38) << 9) |
+-        (GET_FIELD_SP(pixel_addr, 13, 16) << 5) |
+-        (((pixel_addr >> 55) & 1) << 4) |
+-        (GET_FIELD_SP(pixel_addr, 33, 34) << 2) |
+-        GET_FIELD_SP(pixel_addr, 11, 12);
++    /*
++     * From Oracle SPARC Architecture 2015:
++     * Architecturally, an illegal R[rs2] value (>5) causes the array
++     * instructions to produce undefined results. For historic reference,
++     * past implementations of these instructions have ignored R[rs2]{63:3}
++     * and have treated R[rs2] values of 6 and 7 as if they were 5.
++     */
++    target_ulong n = MIN(rs2 & 7, 5);
++
++    target_ulong x_int = (rs1 >> 11) & 0x7ff;
++    target_ulong y_int = (rs1 >> 33) & 0x7ff;
++    target_ulong z_int = rs1 >> 55;
++
++    target_ulong lower_x = x_int & 3;
++    target_ulong lower_y = y_int & 3;
++    target_ulong lower_z = z_int & 1;
++
++    target_ulong middle_x = (x_int >> 2) & 15;
++    target_ulong middle_y = (y_int >> 2) & 15;
++    target_ulong middle_z = (z_int >> 1) & 15;
++
++    target_ulong upper_x = (x_int >> 6) & ((1 << n) - 1);
++    target_ulong upper_y = (y_int >> 6) & ((1 << n) - 1);
++    target_ulong upper_z = z_int >> 5;
++
++    return (upper_z << (17 + 2 * n))
++         | (upper_y << (17 + n))
++         | (upper_x << 17)
++         | (middle_z << 13)
++         | (middle_y << 9)
++         | (middle_x << 5)
++         | (lower_z << 4)
++         | (lower_y << 2)
++         | lower_x;
+ }
+ 
+ #if HOST_BIG_ENDIAN
 -- 
 2.34.1
 
