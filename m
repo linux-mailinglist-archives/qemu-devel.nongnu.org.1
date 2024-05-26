@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CF18CF6CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DACE8CF6C4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN5n-0006xY-Lg; Sun, 26 May 2024 19:15:55 -0400
+	id 1sBN4l-0004Nv-4A; Sun, 26 May 2024 19:14:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN5G-000627-2F; Sun, 26 May 2024 19:15:22 -0400
+ id 1sBN4j-0004MA-GH; Sun, 26 May 2024 19:14:49 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN5B-0003pt-Lw; Sun, 26 May 2024 19:15:21 -0400
+ id 1sBN4h-0003iO-Ed; Sun, 26 May 2024 19:14:49 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B3AFE4E64E4;
- Mon, 27 May 2024 01:13:10 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C9AD44E6509;
+ Mon, 27 May 2024 01:13:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id i7rFnXj5rWfc; Mon, 27 May 2024 01:13:08 +0200 (CEST)
+ with ESMTP id 0VGhghv0XU5O; Mon, 27 May 2024 01:13:09 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C7DD24E642D; Mon, 27 May 2024 01:13:08 +0200 (CEST)
-Message-Id: <cf3dca03400d059de3dab761b11439d38e71d621.1716763435.git.balaton@eik.bme.hu>
+ id D51774E64C1; Mon, 27 May 2024 01:13:09 +0200 (CEST)
+Message-Id: <c30ddd4f433bbe60629d2be66c5214076f677fa9.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 32/43] target/ppc: Remove includes from mmu-book3s-v3.h
+Subject: [PATCH 33/43] target/ppc: Remove single use static inline function
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:08 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:09 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,54 +60,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop includes from header that is not needed by the header itself and
-only include them from C files that really need it.
+The ger_pack_masks() function is only used once and the inverse of
+this operation is already inlined so it can be inlined too in the only
+caller and removed from the header.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-book3s-v3.h | 3 ---
- target/ppc/mmu-hash64.c    | 1 +
- target/ppc/mmu-radix64.c   | 1 +
- 3 files changed, 2 insertions(+), 3 deletions(-)
+ target/ppc/internal.h               | 9 ---------
+ target/ppc/translate/vsx-impl.c.inc | 6 ++++--
+ 2 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/target/ppc/mmu-book3s-v3.h b/target/ppc/mmu-book3s-v3.h
-index 263ce55c1f..be66e26604 100644
---- a/target/ppc/mmu-book3s-v3.h
-+++ b/target/ppc/mmu-book3s-v3.h
-@@ -20,9 +20,6 @@
- #ifndef PPC_MMU_BOOK3S_V3_H
- #define PPC_MMU_BOOK3S_V3_H
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 20fb2ec593..8e5a241f74 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -293,13 +293,4 @@ FIELD(GER_MSK, XMSK, 0, 4)
+ FIELD(GER_MSK, YMSK, 4, 4)
+ FIELD(GER_MSK, PMSK, 8, 8)
  
--#include "mmu-hash64.h"
--#include "mmu-books.h"
+-static inline int ger_pack_masks(int pmsk, int ymsk, int xmsk)
+-{
+-    int msk = 0;
+-    msk = FIELD_DP32(msk, GER_MSK, XMSK, xmsk);
+-    msk = FIELD_DP32(msk, GER_MSK, YMSK, ymsk);
+-    msk = FIELD_DP32(msk, GER_MSK, PMSK, pmsk);
+-    return msk;
+-}
 -
- #ifndef CONFIG_USER_ONLY
+ #endif /* PPC_INTERNAL_H */
+diff --git a/target/ppc/translate/vsx-impl.c.inc b/target/ppc/translate/vsx-impl.c.inc
+index 0266f09119..62950d348a 100644
+--- a/target/ppc/translate/vsx-impl.c.inc
++++ b/target/ppc/translate/vsx-impl.c.inc
+@@ -2819,7 +2819,7 @@ static bool trans_XXSETACCZ(DisasContext *ctx, arg_X_a *a)
+ static bool do_ger(DisasContext *ctx, arg_MMIRR_XX3 *a,
+     void (*helper)(TCGv_env, TCGv_ptr, TCGv_ptr, TCGv_ptr, TCGv_i32))
+ {
+-    uint32_t mask;
++    uint32_t mask = 0;
+     TCGv_ptr xt, xa, xb;
+     REQUIRE_INSNS_FLAGS2(ctx, ISA310);
+     REQUIRE_VSX(ctx);
+@@ -2832,7 +2832,9 @@ static bool do_ger(DisasContext *ctx, arg_MMIRR_XX3 *a,
+     xa = gen_vsr_ptr(a->xa);
+     xb = gen_vsr_ptr(a->xb);
  
- /*
-diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
-index 7bc0323f26..5e1983e334 100644
---- a/target/ppc/mmu-hash64.c
-+++ b/target/ppc/mmu-hash64.c
-@@ -31,6 +31,7 @@
- #include "hw/hw.h"
- #include "internal.h"
- #include "mmu-book3s-v3.h"
-+#include "mmu-books.h"
- #include "helper_regs.h"
- 
- #ifdef CONFIG_TCG
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index cf9619e847..be7a45f254 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -28,6 +28,7 @@
- #include "internal.h"
- #include "mmu-radix64.h"
- #include "mmu-book3s-v3.h"
-+#include "mmu-books.h"
- 
- /* Radix Partition Table Entry Fields */
- #define PATE1_R_PRTB           0x0FFFFFFFFFFFF000
+-    mask = ger_pack_masks(a->pmsk, a->ymsk, a->xmsk);
++    mask = FIELD_DP32(mask, GER_MSK, XMSK, a->xmsk);
++    mask = FIELD_DP32(mask, GER_MSK, YMSK, a->ymsk);
++    mask = FIELD_DP32(mask, GER_MSK, PMSK, a->pmsk);
+     helper(tcg_env, xa, xb, xt, tcg_constant_i32(mask));
+     return true;
+ }
 -- 
 2.30.9
 
