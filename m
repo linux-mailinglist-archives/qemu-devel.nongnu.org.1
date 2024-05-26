@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720598CF6CC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4708CF6AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:16:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4o-0004PV-EZ; Sun, 26 May 2024 19:14:54 -0400
+	id 1sBN5r-0007i3-M8; Sun, 26 May 2024 19:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4j-0004Ln-Ba; Sun, 26 May 2024 19:14:49 -0400
+ id 1sBN5D-0005nz-MG; Sun, 26 May 2024 19:15:20 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4h-0003iP-Cf; Sun, 26 May 2024 19:14:49 -0400
+ id 1sBN52-0003md-Um; Sun, 26 May 2024 19:15:19 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D73454E6543;
- Mon, 27 May 2024 01:13:12 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id D022A4E6503;
+ Mon, 27 May 2024 01:13:13 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id uHS7dTEC5Kfy; Mon, 27 May 2024 01:13:10 +0200 (CEST)
+ with ESMTP id LfHZguIPtDtZ; Mon, 27 May 2024 01:13:11 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DECF14E6503; Mon, 27 May 2024 01:13:10 +0200 (CEST)
-Message-Id: <db36621d9dd2a7d354ffac78e28e332cd0d70735.1716763435.git.balaton@eik.bme.hu>
+ id E942C4E650C; Mon, 27 May 2024 01:13:11 +0200 (CEST)
+Message-Id: <c6424ad0d838c2e72e6801544b38ed682aa081ed.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 34/43] target/ppc/internal.h: Consolidate ifndef
- CONFIG_USER_ONLY blocks
+Subject: [PATCH 35/43] target/ppc/mmu-hash32.c: Change parameter type of
+ ppc_hash32_bat_lookup()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:10 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:11 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,77 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A few pte related definitions are between two ifndef CONFIG_USER_ONLY
-blocks but these are not needed for user only and should also be
-within these blocks. Consolidate the ifndef blocks so all user only and
-not user only definitions are in one #ifdef #else at the end of the file.
+This function takes PowerPCCPU but only needs the env from it. Change
+its parameter to CPUPPCState *env.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/internal.h | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ target/ppc/mmu-hash32.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index 8e5a241f74..66ce22bbe9 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -224,6 +224,10 @@ void helper_compute_fprf_float16(CPUPPCState *env, float16 arg);
- void helper_compute_fprf_float32(CPUPPCState *env, float32 arg);
- void helper_compute_fprf_float128(CPUPPCState *env, float128 arg);
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 44b16142ab..a2c0ac05d2 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -48,11 +48,10 @@ static target_ulong hash32_bat_size(int mmu_idx,
+     return BATU32_BEPI & ~((batu & BATU32_BL) << 15);
+ }
  
-+FIELD(GER_MSK, XMSK, 0, 4)
-+FIELD(GER_MSK, YMSK, 4, 4)
-+FIELD(GER_MSK, PMSK, 8, 8)
-+
- /* translate.c */
- 
- int ppc_fixup_cpu(PowerPCCPU *cpu);
-@@ -234,8 +238,11 @@ void destroy_ppc_opcodes(PowerPCCPU *cpu);
- void ppc_gdb_init(CPUState *cs, PowerPCCPUClass *ppc);
- const gchar *ppc_gdb_arch_name(CPUState *cs);
- 
--#ifndef CONFIG_USER_ONLY
--
-+#ifdef CONFIG_USER_ONLY
-+void ppc_cpu_record_sigsegv(CPUState *cs, vaddr addr,
-+                            MMUAccessType access_type,
-+                            bool maperr, uintptr_t ra);
-+#else
- /* Check if permission bit required for the access_type is set in prot */
- static inline int check_prot_access_type(int prot, MMUAccessType access_type)
+-static hwaddr ppc_hash32_bat_lookup(PowerPCCPU *cpu, target_ulong ea,
++static hwaddr ppc_hash32_bat_lookup(CPUPPCState *env, target_ulong ea,
+                                     MMUAccessType access_type, int *prot,
+                                     int mmu_idx)
  {
-@@ -252,7 +259,6 @@ bool ppc_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
-                                     int way, int is_code);
+-    CPUPPCState *env = &cpu->env;
+     target_ulong *BATlt, *BATut;
+     bool ifetch = access_type == MMU_INST_FETCH;
+     int i;
+@@ -316,7 +315,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
  
--#endif /* !CONFIG_USER_ONLY */
- 
- /* Common routines used by software and hardware TLBs emulation */
- static inline int pte_is_valid(target_ulong pte0)
-@@ -268,11 +274,6 @@ static inline void pte_invalidate(target_ulong *pte0)
- #define PTE_PTEM_MASK 0x7FFFFFBF
- #define PTE_CHECK_MASK (TARGET_PAGE_MASK | 0x7B)
- 
--#ifdef CONFIG_USER_ONLY
--void ppc_cpu_record_sigsegv(CPUState *cs, vaddr addr,
--                            MMUAccessType access_type,
--                            bool maperr, uintptr_t ra);
--#else
- bool ppc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                       MMUAccessType access_type, int mmu_idx,
-                       bool probe, uintptr_t retaddr);
-@@ -287,10 +288,6 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
- void ppc_cpu_debug_excp_handler(CPUState *cs);
- bool ppc_cpu_debug_check_breakpoint(CPUState *cs);
- bool ppc_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
--#endif
--
--FIELD(GER_MSK, XMSK, 0, 4)
--FIELD(GER_MSK, YMSK, 4, 4)
--FIELD(GER_MSK, PMSK, 8, 8)
-+#endif /* !CONFIG_USER_ONLY */
- 
- #endif /* PPC_INTERNAL_H */
+     /* 2. Check Block Address Translation entries (BATs) */
+     if (env->nb_BATs != 0) {
+-        raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
++        raddr = ppc_hash32_bat_lookup(env, eaddr, access_type, protp, mmu_idx);
+         if (raddr != -1) {
+             if (!check_prot_access_type(*protp, access_type)) {
+                 if (guest_visible) {
 -- 
 2.30.9
 
