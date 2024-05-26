@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDD08CF6B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 928FB8CF6CA
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4r-0004h3-AZ; Sun, 26 May 2024 19:14:57 -0400
+	id 1sBN5o-00079I-0v; Sun, 26 May 2024 19:15:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4l-0004PD-Lu; Sun, 26 May 2024 19:14:51 -0400
+ id 1sBN5F-0005xv-Gx; Sun, 26 May 2024 19:15:21 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4h-0003hz-Aj; Sun, 26 May 2024 19:14:51 -0400
+ id 1sBN5B-0003pv-Lv; Sun, 26 May 2024 19:15:21 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 89B654E61D4;
- Mon, 27 May 2024 01:13:06 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9978E4E62C0;
+ Mon, 27 May 2024 01:13:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id WIZrveXvOzGl; Mon, 27 May 2024 01:13:04 +0200 (CEST)
+ with ESMTP id GlC0iopRgSqx; Mon, 27 May 2024 01:13:05 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A4AE24E6076; Mon, 27 May 2024 01:13:04 +0200 (CEST)
-Message-Id: <33549d905b47111a94389f07d676b311c4ffef4f.1716763435.git.balaton@eik.bme.hu>
+ id AE5BD4E610B; Mon, 27 May 2024 01:13:05 +0200 (CEST)
+Message-Id: <b4c9ea90656039d93660ae4f6bf0d042e1a1e290.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 28/43] target/ppc/mmu-hash32.c: Inline and remove
- ppc_hash32_pte_raddr()
+Subject: [PATCH 29/43] target/ppc/mmu-hash32.c: Move get_pteg_offset32() to
+ the header
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:04 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:05 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,51 +61,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is used only once and does not add more clarity than
-doing it inline.
+This function is a simple shared function, move it to other similar
+static inline functions in the header.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ target/ppc/mmu-hash32.c | 7 -------
+ target/ppc/mmu-hash32.h | 6 +++++-
+ 2 files changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 6f0f0bbb00..c4de1647e2 100644
+index c4de1647e2..44b16142ab 100644
 --- a/target/ppc/mmu-hash32.c
 +++ b/target/ppc/mmu-hash32.c
-@@ -298,15 +298,6 @@ static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
-     return pte_offset;
+@@ -201,13 +201,6 @@ static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+     return false;
  }
  
--static hwaddr ppc_hash32_pte_raddr(target_ulong sr, ppc_hash_pte32_t pte,
--                                   target_ulong eaddr)
+-hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
 -{
--    hwaddr rpn = pte.pte1 & HPTE32_R_RPN;
--    hwaddr mask = ~TARGET_PAGE_MASK;
+-    target_ulong mask = ppc_hash32_hpt_mask(cpu);
 -
--    return (rpn & ~mask) | (eaddr & mask);
+-    return (hash * HASH_PTEG_SIZE_32) & mask;
 -}
 -
+ static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pteg_off,
+                                      bool secondary, target_ulong ptem,
+                                      ppc_hash_pte32_t *pte)
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index bd75f7d647..2838de031c 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -3,7 +3,6 @@
+ 
+ #ifndef CONFIG_USER_ONLY
+ 
+-hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash);
  bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
                        hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
-                       bool guest_visible)
-@@ -440,11 +431,12 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-              */
-             prot &= ~PAGE_WRITE;
-         }
--     }
-+    }
-+    *protp = prot;
- 
-     /* 9. Determine the real address from the PTE */
--
--    *raddrp = ppc_hash32_pte_raddr(sr, pte, eaddr);
--    *protp = prot;
-+    *raddrp = pte.pte1 & HPTE32_R_RPN;
-+    *raddrp &= TARGET_PAGE_MASK;
-+    *raddrp |= eaddr & ~TARGET_PAGE_MASK;
-     return true;
+                       bool guest_visible);
+@@ -102,6 +101,11 @@ static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
+     stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
  }
+ 
++static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
++{
++    return (hash * HASH_PTEG_SIZE_32) & ppc_hash32_hpt_mask(cpu);
++}
++
+ static inline bool ppc_hash32_key(bool pr, target_ulong sr)
+ {
+     return pr ? (sr & SR32_KP) : (sr & SR32_KS);
 -- 
 2.30.9
 
