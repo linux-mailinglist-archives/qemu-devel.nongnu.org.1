@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C204C8CF6C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDD08CF6B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4l-0004OR-Ll; Sun, 26 May 2024 19:14:51 -0400
+	id 1sBN4r-0004h3-AZ; Sun, 26 May 2024 19:14:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4i-0004LA-V3; Sun, 26 May 2024 19:14:49 -0400
+ id 1sBN4l-0004PD-Lu; Sun, 26 May 2024 19:14:51 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4h-0003hy-Au; Sun, 26 May 2024 19:14:48 -0400
+ id 1sBN4h-0003hz-Aj; Sun, 26 May 2024 19:14:51 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 86F864E60F5;
- Mon, 27 May 2024 01:13:05 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 89B654E61D4;
+ Mon, 27 May 2024 01:13:06 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 8boPFWQ_pytE; Mon, 27 May 2024 01:13:03 +0200 (CEST)
+ with ESMTP id WIZrveXvOzGl; Mon, 27 May 2024 01:13:04 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9BC554E64E4; Mon, 27 May 2024 01:13:03 +0200 (CEST)
-Message-Id: <de272971970fc6772ac84b691d01e4b03b2e47cf.1716763435.git.balaton@eik.bme.hu>
+ id A4AE24E6076; Mon, 27 May 2024 01:13:04 +0200 (CEST)
+Message-Id: <33549d905b47111a94389f07d676b311c4ffef4f.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 27/43] target/ppc/mmu_common.c: Remove mmu_ctx_t
+Subject: [PATCH 28/43] target/ppc/mmu-hash32.c: Inline and remove
+ ppc_hash32_pte_raddr()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:03 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:04 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,101 +61,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Completely get rid of mmu_ctx_t after converting the remaining
-functions to pass raddr and prot without the context struct.
+This function is used only once and does not add more clarity than
+doing it inline.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 25 +++++++------------------
- 1 file changed, 7 insertions(+), 18 deletions(-)
+ target/ppc/mmu-hash32.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 4770b43630..60f8736210 100644
---- a/target/ppc/mmu_common.c
-+++ b/target/ppc/mmu_common.c
-@@ -37,12 +37,6 @@
- 
- /* #define DUMP_PAGE_TABLES */
- 
--/* Context used internally during MMU translations */
--typedef struct {
--    hwaddr raddr;      /* Real address             */
--    int prot;          /* Protection bits          */
--} mmu_ctx_t;
--
- void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-@@ -264,8 +258,8 @@ static int get_bat_6xx_tlb(CPUPPCState *env, hwaddr *raddr, int *prot,
-     return ret;
+diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
+index 6f0f0bbb00..c4de1647e2 100644
+--- a/target/ppc/mmu-hash32.c
++++ b/target/ppc/mmu-hash32.c
+@@ -298,15 +298,6 @@ static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
+     return pte_offset;
  }
  
--static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
--                                       target_ulong eaddr,
-+static int mmu6xx_get_physical_address(CPUPPCState *env, hwaddr *raddr,
-+                                       int *prot, target_ulong eaddr,
-                                        hwaddr *hashp, bool *keyp,
-                                        MMUAccessType access_type, int type)
- {
-@@ -277,8 +271,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+-static hwaddr ppc_hash32_pte_raddr(target_ulong sr, ppc_hash_pte32_t pte,
+-                                   target_ulong eaddr)
+-{
+-    hwaddr rpn = pte.pte1 & HPTE32_R_RPN;
+-    hwaddr mask = ~TARGET_PAGE_MASK;
+-
+-    return (rpn & ~mask) | (eaddr & mask);
+-}
+-
+ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+                       hwaddr *raddrp, int *psizep, int *protp, int mmu_idx,
+                       bool guest_visible)
+@@ -440,11 +431,12 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
+              */
+             prot &= ~PAGE_WRITE;
+         }
+-     }
++    }
++    *protp = prot;
  
-     /* First try to find a BAT entry if there are any */
-     if (env->nb_BATs &&
--        get_bat_6xx_tlb(env, &ctx->raddr, &ctx->prot, eaddr,
--                        access_type, pr) == 0) {
-+        get_bat_6xx_tlb(env, raddr, prot, eaddr, access_type, pr) == 0) {
-         return 0;
-     }
- 
-@@ -316,7 +309,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-         *hashp = hash;
- 
-         /* Software TLB search */
--        return ppc6xx_tlb_check(env, &ctx->raddr, &ctx->prot, eaddr,
-+        return ppc6xx_tlb_check(env, raddr, prot, eaddr,
-                                 access_type, ptem, key, nx);
-     }
- 
-@@ -333,7 +326,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-          * Should make the instruction do no-op.  As it already do
-          * no-op, it's quite easy :-)
-          */
--        ctx->raddr = eaddr;
-+        *raddr = eaddr;
-         return 0;
-     case ACCESS_CODE: /* No code fetch is allowed in direct-store areas */
-     case ACCESS_FLOAT: /* Floating point load/store */
-@@ -343,7 +336,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-     }
-     if ((access_type == MMU_DATA_STORE || !key) &&
-         (access_type == MMU_DATA_LOAD || key)) {
--        ctx->raddr = eaddr;
-+        *raddr = eaddr;
-         return 2;
-     }
-     return -2;
-@@ -681,7 +674,6 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
- {
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
--    mmu_ctx_t ctx;
-     hwaddr hash = 0; /* init to 0 to avoid used uninit warning */
-     bool key;
-     int type, ret;
-@@ -700,12 +692,9 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
-         type = ACCESS_INT;
-     }
- 
--    ctx.prot = 0;
--    ret = mmu6xx_get_physical_address(env, &ctx, eaddr, &hash, &key,
-+    ret = mmu6xx_get_physical_address(env, raddrp, protp, eaddr, &hash, &key,
-                                       access_type, type);
-     if (ret == 0) {
--        *raddrp = ctx.raddr;
--        *protp = ctx.prot;
-         *psizep = TARGET_PAGE_BITS;
-         return true;
-     } else if (!guest_visible) {
+     /* 9. Determine the real address from the PTE */
+-
+-    *raddrp = ppc_hash32_pte_raddr(sr, pte, eaddr);
+-    *protp = prot;
++    *raddrp = pte.pte1 & HPTE32_R_RPN;
++    *raddrp &= TARGET_PAGE_MASK;
++    *raddrp |= eaddr & ~TARGET_PAGE_MASK;
+     return true;
+ }
 -- 
 2.30.9
 
