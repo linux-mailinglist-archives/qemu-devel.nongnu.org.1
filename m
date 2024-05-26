@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864AB8CF6B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E33D8CF6C0
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN5y-0000Ca-BS; Sun, 26 May 2024 19:16:06 -0400
+	id 1sBN5p-0007dk-VZ; Sun, 26 May 2024 19:15:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN5F-0005vP-4I; Sun, 26 May 2024 19:15:21 -0400
+ id 1sBN5k-00078B-Pr; Sun, 26 May 2024 19:15:53 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN59-0003p7-QZ; Sun, 26 May 2024 19:15:20 -0400
+ id 1sBN5d-000483-94; Sun, 26 May 2024 19:15:51 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 214744E65BB;
- Mon, 27 May 2024 01:13:21 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 2F2544E65C0;
+ Mon, 27 May 2024 01:13:22 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Dt0MGdRpJTOr; Mon, 27 May 2024 01:13:19 +0200 (CEST)
+ with ESMTP id paQQXJX6DR2D; Mon, 27 May 2024 01:13:20 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 3626B4E6553; Mon, 27 May 2024 01:13:19 +0200 (CEST)
-Message-Id: <3d172d929eb90042d9afb18096a7300759a70b8f.1716763435.git.balaton@eik.bme.hu>
+ id 410724E65B8; Mon, 27 May 2024 01:13:20 +0200 (CEST)
+Message-Id: <89743dc082d33b8bed06d5574b8916005c0b47a8.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 42/43] target/ppc/mmu-hash32.c: Change parameter type of
- ppc_hash32_set_[rc]
+Subject: [PATCH 43/43] target/ppc/mmu-hash32.c: Change parameter type of
+ ppc_hash32_direct_store
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:19 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:20 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,56 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These functions need AddressSpace from CPUState but take PowerPCCPU
-instead and cast that. We have the right type in the caller so change
-the parameter type and pass the needed value to avoid casting.
+This function needs CPUState and env but takes PowerPCCPU and cast
+that. We already have the right types in the caller so pass them to
+this function to avoid casting.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ target/ppc/mmu-hash32.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 82a02881c2..0f9c61bf89 100644
+index 0f9c61bf89..3588f8f8de 100644
 --- a/target/ppc/mmu-hash32.c
 +++ b/target/ppc/mmu-hash32.c
-@@ -228,16 +228,18 @@ static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pte_addr,
+@@ -109,15 +109,12 @@ static hwaddr ppc_hash32_bat_lookup(CPUPPCState *env, target_ulong ea,
      return -1;
  }
  
--static void ppc_hash32_set_r(PowerPCCPU *cpu, hwaddr pte_addr, uint32_t pte1)
-+static void ppc_hash32_set_r(AddressSpace *cpu_as, hwaddr pte_addr,
-+                             uint32_t pte1)
+-static bool ppc_hash32_direct_store(PowerPCCPU *cpu, target_ulong sr,
+-                                    target_ulong eaddr,
++static bool ppc_hash32_direct_store(CPUState *cs, CPUPPCState *env,
++                                    target_ulong sr, target_ulong eaddr,
+                                     MMUAccessType access_type,
+                                     hwaddr *raddr, int *prot, int mmu_idx,
+                                     bool guest_visible)
  {
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, pte_addr + 6, ((pte1 >> 8) & 0xff) | 0x01);
-+    stb_phys(cpu_as, pte_addr + 6, ((pte1 >> 8) & 0xff) | 0x01);
- }
+-    CPUState *cs = CPU(cpu);
+-    CPUPPCState *env = &cpu->env;
+-
+     qemu_log_mask(CPU_LOG_MMU, "direct store...\n");
  
--static void ppc_hash32_set_c(PowerPCCPU *cpu, hwaddr pte_addr, uint64_t pte1)
-+static void ppc_hash32_set_c(AddressSpace *cpu_as, hwaddr pte_addr,
-+                             uint64_t pte1)
- {
-     /* The HW performs a non-atomic byte update */
--    stb_phys(CPU(cpu)->as, pte_addr + 7, (pte1 & 0xff) | 0x80);
-+    stb_phys(cpu_as, pte_addr + 7, (pte1 & 0xff) | 0x80);
- }
+     if (access_type == MMU_INST_FETCH) {
+@@ -336,7 +333,7 @@ bool ppc_hash32_xlate(CPUState *cs, vaddr eaddr, MMUAccessType access_type,
  
- static hwaddr ppc_hash32_htab_lookup(PowerPCCPU *cpu,
-@@ -399,11 +401,11 @@ bool ppc_hash32_xlate(CPUState *cs, vaddr eaddr, MMUAccessType access_type,
- 
-     /* 8. Update PTE referenced and changed bits if necessary */
-     if (!(pte.pte1 & HPTE32_R_R)) {
--        ppc_hash32_set_r(cpu, pte_addr, pte.pte1);
-+        ppc_hash32_set_r(cs->as, pte_addr, pte.pte1);
+     /* 4. Handle direct store segments */
+     if (sr & SR32_T) {
+-        return ppc_hash32_direct_store(cpu, sr, eaddr, access_type,
++        return ppc_hash32_direct_store(cs, env, sr, eaddr, access_type,
+                                        raddrp, protp, mmu_idx, guest_visible);
      }
-     if (!(pte.pte1 & HPTE32_R_C)) {
-         if (access_type == MMU_DATA_STORE) {
--            ppc_hash32_set_c(cpu, pte_addr, pte.pte1);
-+            ppc_hash32_set_c(cs->as, pte_addr, pte.pte1);
-         } else {
-             /*
-              * Treat the page as read-only for now, so that a later write
+ 
 -- 
 2.30.9
 
