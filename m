@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CEB8CF5C7
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3E8CF5BD
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJlx-0008Gi-Qk; Sun, 26 May 2024 15:43:13 -0400
+	id 1sBJm0-0008KN-17; Sun, 26 May 2024 15:43:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlv-0008Fq-R5
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:11 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1sBJlw-0008GR-Gh
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:13 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJlt-0007fk-Rx
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:11 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1f32b1b5429so29454635ad.2
- for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:43:09 -0700 (PDT)
+ id 1sBJlu-0007fz-Nz
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:12 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-681ad26f277so1878463a12.3
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752588; x=1717357388; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716752589; x=1717357389; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wuEEN+loJsKuiusYvJ/Q1u1Kx+6cEs2QGFqDhZY42NY=;
- b=gi7T/BeHxJtOcOgc8Af1527oXfvOvvvx2GLmy9akVF/05JIw+otx/mAixqIVptgKZE
- NyEleFoo7BIXmtWbS9mCzsOxAwh83cbzXaw7MF6Vvf2aa7ih4hUc7fO8ztoN0GmDcI9E
- GMPmO/A/1oW7eSuoQzTjftx91MGxEx59PdGqvvMuNUFr0dy1iF7u39CoZs+szuaHPwp/
- kEm0q52QkjAtiMk1QdlQNvnj2vnWcqMRYbo9SgR2IAp+q5gc/atf70L7zU20jkMKB/rR
- B7wST4tm4++hScxlwdILhTn52SHztWZ/toWUffu5IeG6Ck3ormefVZvJW10BX3IIYw8d
- Rw4Q==
+ bh=l0ldsWBJnZhqtqpvFdEeLLnM/L0AUGzGIuEYvOl7JTo=;
+ b=mGxwdgkuGaTVUAcscE+00Jh3o9fMMCoyU1petzQ1d0nswAE3QxutAMbZqqdd7oKTFS
+ xTIH0dd8FamK0y/DsiUGFPcbQXFYa5W/ngzX2LLTH/xADJxTSjuqaHGUchqpHKbj0Cmp
+ jS+Tqqxu/3ApM5iPsVZuhZwAxCGk/2qvCl+qFRyFKJigEmhtfAARs/HZWbuagq6jGVnk
+ u/55FBMIolx9uETnq/NqgzWO4FESRP1CvvHwB3WJjCQmbBFhy/2MFJFed7qkUMCdXRlU
+ zBXbX+BNsGVg23rCTE4hITcpJ74g6kL/b0GPuTxtZ3jezoSqBQT/qd34mJdP9A5dUm3d
+ YIIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752588; x=1717357388;
+ d=1e100.net; s=20230601; t=1716752589; x=1717357389;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wuEEN+loJsKuiusYvJ/Q1u1Kx+6cEs2QGFqDhZY42NY=;
- b=YbNN1pOwtSdnGpetB+Wzg679SB1NRO9fmjxcgA2GTCSE0L+x94Icv/pwocBikKGS+p
- ipJY7dUuw1MRIeSotZRhIviS6AOe96GZxECZUZY59aBlOYetHEMvd3YLVo1nCDkfacYH
- MFxXFiPMTSaxh184x6oZIbNM2nKext1BhCJU56Z54t2Q6EiFMkMQ6pZMRxfkaObUYkyF
- gx7iAQ9cz9XJIYCC+sqimRjxARPYR1E7PujlMhpynB+V8QjUTA1vmTdoCln+GSghDVQQ
- sFyIGujrV+sr+zpWPQBkTCSadV42C9fR3HyH/NhhOGE+7hns5VYo6Ue14sR7ipMkfFdw
- 2ZPA==
-X-Gm-Message-State: AOJu0YyWjeXl9bo6tXDfxDmrwWGvO9osj0/55vfbSsDOmmTzg52N/Fg4
- N41Ypt554FBWb8CFrUihXkJBg1OWK2KMymrVnc+zzzrPwZ9FaKT1qSvvywu60GuSjfCJ4Nuj7aH
- p
-X-Google-Smtp-Source: AGHT+IGuYjNc1I6wBfq5s9KCplo1sbZyPqYhyYCKu9rZOxtFl0Uaiymh6NGQLtooo9T3T3vEYl2yEQ==
-X-Received: by 2002:a17:903:2290:b0:1f4:5b00:3fa with SMTP id
- d9443c01a7336-1f45b0008d1mr106177975ad.58.1716752588558; 
- Sun, 26 May 2024 12:43:08 -0700 (PDT)
+ bh=l0ldsWBJnZhqtqpvFdEeLLnM/L0AUGzGIuEYvOl7JTo=;
+ b=R/WWWsokTy7iLLMGMDVl3iqx5YkUs8iKfY1DkEWCTd7ofVJV1HUb/JxK0v7Ud+dW0j
+ 8V2g0alj/tXqOcs4RUT9MuFXGVF4OZ0yPWz4e+dGzTMgjW0KkmH8gUBhrkRx29UilTSn
+ OQb3wE5jlo2PmrgBbBIM3kFMVZ0fFNGWu6iGJRXEeexx+tfJAV/lEJB3ziEvNXGQY+jY
+ 3FOv7fZIgRXN3tG1IQkyID5Xk6LwaNpNuywF8PyqrzCAx4xUOxSchBKSz+2qjiHl2XzZ
+ 5iEE/iqPH72Amg2NSW4UZNPv6bXmRPugPD97ODm/tWs71+czOHVwSuSdMAUAhMd4sVez
+ qGng==
+X-Gm-Message-State: AOJu0YzyMmh6DwaxA/bKaO7HYOwCFf9on2BFqxW/4TjKOHzSfbM9PfhZ
+ lYiTSc9zxqvI3yPJRsqN5860pfvvWhvJZDCbEgSE8dii0jWme4LD+ko2U0ZPx+mkQh4Swny4RYv
+ s
+X-Google-Smtp-Source: AGHT+IG2TyYHf6TjGFeNwv5L5Fju/xzBsfaFTanSFXVLmWKG6LZqperMsnrI0/YMylXww8xQKwI5WQ==
+X-Received: by 2002:a17:902:cecd:b0:1f2:f4e6:cdb6 with SMTP id
+ d9443c01a7336-1f4486ed3bcmr92836565ad.23.1716752589348; 
+ Sun, 26 May 2024 12:43:09 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.07
+ d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:43:08 -0700 (PDT)
+ Sun, 26 May 2024 12:43:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 16/37] target/sparc: Implement FMEAN16
-Date: Sun, 26 May 2024 12:42:33 -0700
-Message-Id: <20240526194254.459395-17-richard.henderson@linaro.org>
+Cc: mark.cave-ayland@ilande.co.uk,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 17/37] target/sparc: Implement FPADD64, FPSUB64
+Date: Sun, 26 May 2024 12:42:34 -0700
+Message-Id: <20240526194254.459395-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
 References: <20240526194254.459395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,117 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h     |  1 +
- target/sparc/insns.decode |  1 +
- target/sparc/translate.c  | 30 ++++++++++++++++++++++++++++++
- target/sparc/vis_helper.c | 21 +++++++++++++++++++++
- 4 files changed, 53 insertions(+)
+ target/sparc/insns.decode | 2 ++
+ target/sparc/translate.c  | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index ab79954bb5..f1b84dc9b3 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -118,6 +118,7 @@ DEF_HELPER_FLAGS_2(cmask8, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(cmask16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(cmask32, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(fchksm16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
-+DEF_HELPER_FLAGS_2(fmean16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- #define VIS_CMPHELPER(name)                                              \
-     DEF_HELPER_FLAGS_2(f##name##16, TCG_CALL_NO_RWG_SE,      \
-                        i64, i64, i64)                                    \
 diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index de29996304..febd1a4a13 100644
+index febd1a4a13..70ca41a69a 100644
 --- a/target/sparc/insns.decode
 +++ b/target/sparc/insns.decode
-@@ -421,6 +421,7 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
-     PDIST       10 ..... 110110 ..... 0 0011 1110 .....    \
-                 &r_r_r_r rd=%dfp_rd rs1=%dfp_rd rs2=%dfp_rs1 rs3=%dfp_rs2
+@@ -441,10 +441,12 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
+     FPADD16s    10 ..... 110110 ..... 0 0101 0001 .....    @r_r_r
+     FPADD32     10 ..... 110110 ..... 0 0101 0010 .....    @d_d_d
+     FPADD32s    10 ..... 110110 ..... 0 0101 0011 .....    @r_r_r
++    FPADD64     10 ..... 110110 ..... 0 0100 0010 .....    @d_d_d
+     FPSUB16     10 ..... 110110 ..... 0 0101 0100 .....    @d_d_d
+     FPSUB16s    10 ..... 110110 ..... 0 0101 0101 .....    @r_r_r
+     FPSUB32     10 ..... 110110 ..... 0 0101 0110 .....    @d_d_d
+     FPSUB32s    10 ..... 110110 ..... 0 0101 0111 .....    @r_r_r
++    FPSUB64     10 ..... 110110 ..... 0 0100 0110 .....    @d_d_d
  
-+    FMEAN16     10 ..... 110110 ..... 0 0100 0000 .....    @d_d_d
-     FCHKSM16    10 ..... 110110 ..... 0 0100 0100 .....    @d_d_d
-     FALIGNDATAg 10 ..... 110110 ..... 0 0100 1000 .....    @d_d_d
-     FPMERGE     10 ..... 110110 ..... 0 0100 1011 .....    @d_r_r
+     FNORd       10 ..... 110110 ..... 0 0110 0010 .....    @d_d_d
+     FNORs       10 ..... 110110 ..... 0 0110 0011 .....    @r_r_r
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index f53ecf7c41..cf5f1ea4d0 100644
+index cf5f1ea4d0..52b9590b4b 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -815,8 +815,37 @@ static void gen_op_fchksm16(unsigned vece, uint32_t dofs, uint32_t aofs,
-     };
-     tcg_gen_gvec_3(dofs, aofs, bofs, oprsz, maxsz, &op);
- }
-+
-+static void gen_vec_fmean16(unsigned vece, TCGv_vec dst,
-+                            TCGv_vec src1, TCGv_vec src2)
-+{
-+    TCGv_vec t = tcg_temp_new_vec_matching(dst);
-+
-+    tcg_gen_or_vec(vece, t, src1, src2);
-+    tcg_gen_and_vec(vece, t, t, tcg_constant_vec_matching(dst, vece, 1));
-+    tcg_gen_sari_vec(vece, src1, src1, 1);
-+    tcg_gen_sari_vec(vece, src2, src2, 1);
-+    tcg_gen_add_vec(vece, dst, src1, src2);
-+    tcg_gen_add_vec(vece, dst, dst, t);
-+}
-+
-+static void gen_op_fmean16(unsigned vece, uint32_t dofs, uint32_t aofs,
-+                           uint32_t bofs, uint32_t oprsz, uint32_t maxsz)
-+{
-+    static const TCGOpcode vecop_list[] = {
-+        INDEX_op_add_vec, INDEX_op_sari_vec,
-+    };
-+    static const GVecGen3 op = {
-+        .fni8 = gen_helper_fmean16,
-+        .fniv = gen_vec_fmean16,
-+        .opt_opc = vecop_list,
-+        .vece = MO_16,
-+    };
-+    tcg_gen_gvec_3(dofs, aofs, bofs, oprsz, maxsz, &op);
-+}
- #else
- #define gen_op_fchksm16   ({ qemu_build_not_reached(); NULL; })
-+#define gen_op_fmean16    ({ qemu_build_not_reached(); NULL; })
- #endif
+@@ -4908,6 +4908,9 @@ TRANS(FHADDd, VIS3, do_ddd, a, gen_op_fhaddd)
+ TRANS(FHSUBd, VIS3, do_ddd, a, gen_op_fhsubd)
+ TRANS(FNHADDd, VIS3, do_ddd, a, gen_op_fnhaddd)
  
- static void finishing_insn(DisasContext *dc)
-@@ -4840,6 +4869,7 @@ TRANS(FPADD32, VIS1, do_gvec_ddd, a, MO_32, tcg_gen_gvec_add)
- TRANS(FPSUB16, VIS1, do_gvec_ddd, a, MO_16, tcg_gen_gvec_sub)
- TRANS(FPSUB32, VIS1, do_gvec_ddd, a, MO_32, tcg_gen_gvec_sub)
- TRANS(FCHKSM16, VIS3, do_gvec_ddd, a, MO_16, gen_op_fchksm16)
-+TRANS(FMEAN16, VIS3, do_gvec_ddd, a, MO_16, gen_op_fmean16)
- 
- static bool do_ddd(DisasContext *dc, arg_r_r_r *a,
-                    void (*func)(TCGv_i64, TCGv_i64, TCGv_i64))
-diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
-index fa607375d2..6ef36755c3 100644
---- a/target/sparc/vis_helper.c
-+++ b/target/sparc/vis_helper.c
-@@ -412,3 +412,24 @@ uint64_t helper_fchksm16(uint64_t src1, uint64_t src2)
- 
-     return r.ll;
- }
++TRANS(FPADD64, VIS3B, do_ddd, a, tcg_gen_add_i64)
++TRANS(FPSUB64, VIS3B, do_ddd, a, tcg_gen_sub_i64)
 +
-+static inline int16_t do_fmean16(int16_t src1, int16_t src2)
-+{
-+    return (src1 + src2 + 1) / 2;
-+}
-+
-+uint64_t helper_fmean16(uint64_t src1, uint64_t src2)
-+{
-+    VIS64 r, s1, s2;
-+
-+    s1.ll = src1;
-+    s2.ll = src2;
-+    r.ll = 0;
-+
-+    r.VIS_SW64(0) = do_fmean16(s1.VIS_SW64(0), s2.VIS_SW64(0));
-+    r.VIS_SW64(1) = do_fmean16(s1.VIS_SW64(1), s2.VIS_SW64(1));
-+    r.VIS_SW64(2) = do_fmean16(s1.VIS_SW64(2), s2.VIS_SW64(2));
-+    r.VIS_SW64(3) = do_fmean16(s1.VIS_SW64(3), s2.VIS_SW64(3));
-+
-+    return r.ll;
-+}
+ static bool do_rdd(DisasContext *dc, arg_r_r_r *a,
+                    void (*func)(TCGv, TCGv_i64, TCGv_i64))
+ {
 -- 
 2.34.1
 
