@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781348CF5C5
-	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:45:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2034F8CF5B8
+	for <lists+qemu-devel@lfdr.de>; Sun, 26 May 2024 21:44:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBJm4-00006g-VV; Sun, 26 May 2024 15:43:20 -0400
+	id 1sBJmD-0000EV-Ri; Sun, 26 May 2024 15:43:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJm3-0008WF-3c
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:19 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1sBJm4-00006l-Mq
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:20 -0400
+Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBJm1-0007k1-E7
- for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:18 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1f4a6a54416so204415ad.0
+ id 1sBJm2-0007kK-5r
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 15:43:20 -0400
+Received: by mail-pg1-x536.google.com with SMTP id
+ 41be03b00d2f7-681a4422f49so1768727a12.2
  for <qemu-devel@nongnu.org>; Sun, 26 May 2024 12:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716752596; x=1717357396; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716752597; x=1717357397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EX+QV+CHHePwxPsiyNBRoejlOxczbh35LfPai+gzCtI=;
- b=GLQKT1/dIUBMeCNjt2z/S1XwCc5cZlzm8E0p1/D2q1upttzclH6yPTdffzvKGDBrbx
- 4m5A5LYtxm+6tnAmi5jAZ915vJxI22F7pjQ+NXexqGjFXwC/yFYzrJbLAsdqJp/EJ+IQ
- q/SvC5128BRFweY85wiQZxs/b9PkL7UOwjytQh+Xcr6dd20BMFn42kFVPerhJ0gAgk75
- 1Qbs5NpiULjLVbA27gBuM4g2GzO8zNC++Fjs+CbOHfMUSd361+EMJDu0LJEmXqor+7w4
- R6ImCx1GpVT3KIEaakvkCCm7z2tdUxF1mlbl0jFJjoXfMgj5orIPBmxC5T+svreK3UsJ
- 3lNQ==
+ bh=uEc4KP3uZvO6wOyhGM6ZesqZxEK0BedjSL132wzrDtA=;
+ b=faDNAr/JUlaqxWf1o/wW0T8u8WV63oQ2fFcObkkNMnnYqKpR/y0IKKwG1Tis0debMP
+ 79uxu6cZNmh4VinBPTvUNbQDpg3LSBAVawRLcCS3TBkqooCsG6qwhmuEAHJF2ROAgRtx
+ 5DvTOfuAL18gJFZemo4Fv+BU1IzcvRMlbFDTh3GUGwmdqk4cgqJYoIplPt+EqspFTKSc
+ W7PNYKMod2LkCVEVNppCmfhImqa5rKTxIp3YtpcCgSwff1luB9SNMB6e3xKkmA7fRy2D
+ ikiGWoe8AuXDtbgUrI18M3RG3bEj9TPRjmLy1s5nu/EUjrSoGRzTdPKoNq1kqSTvXL7X
+ p1rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716752596; x=1717357396;
+ d=1e100.net; s=20230601; t=1716752597; x=1717357397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EX+QV+CHHePwxPsiyNBRoejlOxczbh35LfPai+gzCtI=;
- b=cmi4m5h/3Janso3AaD6c9mqQ83/mZufmSPOdD3ZrEpVJCLxHwenQl9HwdT4BHokDCk
- 9JGLtpg/1c/RYSofEL14PI62r1+DYKYTwTOmvGh3Mzd2o0UnmKxchfDA6iMHup1oeUsH
- wDGBPI5rM9f99/yD1Y6d9XiKNEXIFrOHqKt9BnWLJ6LkYOwMDUQyMQJA7/oaZihrmiQe
- deqJs+BGmLKf6EIsN5rDS8X1R27Cr1fI6cnW9X9YnLTMdgmr19BGiHlmZaOiR7VKkfkY
- ujWG9amTGvPwaPyEsHc+vfwIBdjqE04ON8IWEZVstPWeZdTiUAEVbBpi2HeBaHRbFDmu
- FvpQ==
-X-Gm-Message-State: AOJu0YyPpzA0fBgDuYyCMuiBbnPfL8929d4B3XdYTT2fW0EKjxbea5Gz
- KWrx836gsxzG60lHWxtdYU7NrJQxVKIyHejTkrqTzISWZAxcrXhMO2X4q44ra9izMetYEsQk+dn
- L
-X-Google-Smtp-Source: AGHT+IHDJRW97hpidsy2uP8UKJkAMir0v/O3fRnnhMjdZ0+aihHjsRee1HlYRAO4/HvH99c9PmzMzw==
-X-Received: by 2002:a17:902:d483:b0:1f4:9158:1022 with SMTP id
- d9443c01a7336-1f491581127mr20323155ad.14.1716752596089; 
+ bh=uEc4KP3uZvO6wOyhGM6ZesqZxEK0BedjSL132wzrDtA=;
+ b=RzmFCiey1w+MQw6O8jJ8YQG4gFKSJXyc3eKFdBWBJ4ekfdXdtS7xMh0XXOpsa7UwPe
+ PLk1xffBMEPAaWK/OHFuW6ZTqSeRrKkYliHtRUnU0d2w5wO0J6J1sz2GIImMT5N5VMhw
+ RDs94p3mGBA3O+q1+oFfI/+rUoPEtXoFIJbEd1IGL1waQ+u9sX1QJNcpqJrugqq9H3Ru
+ jD5gjosaTPVo45Cf2seeZhnzqF/S0A2wvweELGDhkK4vS13FRX9DCFjkOPFEURu3GAFp
+ nWd9MC37doe7abkicPIl8uTzbq2fh2qee2nRq1K4875AzTfwcbyCvw3H/Iq8YKGB4zKE
+ vgYw==
+X-Gm-Message-State: AOJu0YxiB8biRoUOhDWXmDNg81xzcCdgtbWL9KRwpl7fwe3c5+hezPBw
+ 39NmlXdwG6yH+Y9QdlwAVnL0FI11yboIO6CDPhnxgI5prG63pE8reQBfx0kfvzYb4WfbTNc0b1j
+ 4
+X-Google-Smtp-Source: AGHT+IHKlaFVk+g52xNULxBSjuTL9grownHGDrkvFfsj92kqsZMFw/4RWfagM5TsMLnzoVxae4mcNw==
+X-Received: by 2002:a17:903:22d2:b0:1f4:64d9:5cfd with SMTP id
+ d9443c01a7336-1f464d96071mr60181705ad.42.1716752596796; 
  Sun, 26 May 2024 12:43:16 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.15
+ d9443c01a7336-1f46ad93c2esm28165935ad.263.2024.05.26.12.43.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 26 May 2024 12:43:15 -0700 (PDT)
+ Sun, 26 May 2024 12:43:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 26/37] target/sparc: Implement XMULX
-Date: Sun, 26 May 2024 12:42:43 -0700
-Message-Id: <20240526194254.459395-27-richard.henderson@linaro.org>
+Subject: [PATCH v2 27/37] target/sparc: Enable VIS3 feature bit
+Date: Sun, 26 May 2024 12:42:44 -0700
+Message-Id: <20240526194254.459395-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240526194254.459395-1-richard.henderson@linaro.org>
 References: <20240526194254.459395-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::536;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,86 +94,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sparc/helper.h     |  2 ++
- target/sparc/insns.decode |  2 ++
- target/sparc/translate.c  |  4 ++++
- target/sparc/vis_helper.c | 11 +++++++++++
- 4 files changed, 19 insertions(+)
+ linux-user/elfload.c | 1 +
+ target/sparc/cpu.c   | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index 4ae97866af..fe0d8bc593 100644
---- a/target/sparc/helper.h
-+++ b/target/sparc/helper.h
-@@ -135,6 +135,8 @@ DEF_HELPER_FLAGS_2(fcmpeq8, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(fcmpne8, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(fcmpule8, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- DEF_HELPER_FLAGS_2(fcmpugt8, TCG_CALL_NO_RWG_SE, i64, i64, i64)
-+DEF_HELPER_FLAGS_2(xmulx, TCG_CALL_NO_RWG_SE, i64, i64, i64)
-+DEF_HELPER_FLAGS_2(xmulxhi, TCG_CALL_NO_RWG_SE, i64, i64, i64)
- #endif
- #undef VIS_HELPER
- #undef VIS_CMPHELPER
-diff --git a/target/sparc/insns.decode b/target/sparc/insns.decode
-index 508175eccd..1d54de5367 100644
---- a/target/sparc/insns.decode
-+++ b/target/sparc/insns.decode
-@@ -391,6 +391,8 @@ FCMPEq      10 000 cc:2 110101 .....  0 0101 0111 .....    \
-     ADDXCcc     10 ..... 110110 ..... 0 0001 0011 .....    @r_r_r
-     UMULXHI     10 ..... 110110 ..... 0 0001 0110 .....    @r_r_r
-     LZCNT       10 ..... 110110 00000 0 0001 0111 .....    @r_r2
-+    XMULX       10 ..... 110110 ..... 1 0001 0101 .....    @r_r_r
-+    XMULXHI     10 ..... 110110 ..... 1 0001 0110 .....    @r_r_r
- 
-     ALIGNADDR   10 ..... 110110 ..... 0 0001 1000 .....    @r_r_r
-     ALIGNADDRL  10 ..... 110110 ..... 0 0001 1010 .....    @r_r_r
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 7bf1e7687e..11c933af75 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -90,6 +90,8 @@
- # define gen_helper_fxtoq                ({ qemu_build_not_reached(); NULL; })
- # define gen_helper_fxtos                ({ qemu_build_not_reached(); NULL; })
- # define gen_helper_pdist                ({ qemu_build_not_reached(); NULL; })
-+# define gen_helper_xmulx                ({ qemu_build_not_reached(); NULL; })
-+# define gen_helper_xmulxhi              ({ qemu_build_not_reached(); NULL; })
- # define MAXTL_MASK                             0
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 6a1457346a..cb79580431 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1004,6 +1004,7 @@ static uint32_t get_elf_hwcap(void)
+     r |= features & CPU_FEATURE_VIS1 ? HWCAP_SPARC_VIS : 0;
+     r |= features & CPU_FEATURE_VIS2 ? HWCAP_SPARC_VIS2 : 0;
+     r |= features & CPU_FEATURE_FMAF ? HWCAP_SPARC_FMAF : 0;
++    r |= features & CPU_FEATURE_VIS3 ? HWCAP_SPARC_VIS3 : 0;
  #endif
  
-@@ -5084,6 +5086,8 @@ TRANS(FPCMPULE8, VIS3B, do_rdd, a, gen_helper_fcmpule8)
- TRANS(FPCMPUGT8, VIS3B, do_rdd, a, gen_helper_fcmpugt8)
- 
- TRANS(PDISTN, VIS3, do_rdd, a, gen_op_pdistn)
-+TRANS(XMULX, VIS3, do_rrr, a, gen_helper_xmulx)
-+TRANS(XMULXHI, VIS3, do_rrr, a, gen_helper_xmulxhi)
- 
- static bool do_env_ddd(DisasContext *dc, arg_r_r_r *a,
-                        void (*func)(TCGv_i64, TCGv_env, TCGv_i64, TCGv_i64))
-diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
-index c21522c533..c927a054b8 100644
---- a/target/sparc/vis_helper.c
-+++ b/target/sparc/vis_helper.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/helper-proto.h"
-+#include "crypto/clmul.h"
- 
- target_ulong helper_array8(target_ulong rs1, target_ulong rs2)
- {
-@@ -509,3 +510,13 @@ uint64_t helper_fslas32(uint64_t src1, uint64_t src2)
- 
-     return r.ll;
- }
-+
-+uint64_t helper_xmulx(uint64_t src1, uint64_t src2)
-+{
-+    return int128_getlo(clmul_64(src1, src2));
-+}
-+
-+uint64_t helper_xmulxhi(uint64_t src1, uint64_t src2)
-+{
-+    return int128_gethi(clmul_64(src1, src2));
-+}
+     return r;
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index ed9238a69d..8ea977b49f 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -550,6 +550,7 @@ static const char * const feature_name[] = {
+     [CPU_FEATURE_BIT_VIS1] = "vis1",
+     [CPU_FEATURE_BIT_VIS2] = "vis2",
+     [CPU_FEATURE_BIT_FMAF] = "fmaf",
++    [CPU_FEATURE_BIT_VIS3] = "vis3",
+ #else
+     [CPU_FEATURE_BIT_MUL] = "mul",
+     [CPU_FEATURE_BIT_DIV] = "div",
+@@ -880,6 +881,8 @@ static Property sparc_cpu_properties[] = {
+                     CPU_FEATURE_BIT_VIS2, false),
+     DEFINE_PROP_BIT("fmaf",     SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_FMAF, false),
++    DEFINE_PROP_BIT("vis3",     SPARCCPU, env.def.features,
++                    CPU_FEATURE_BIT_VIS3, false),
+ #else
+     DEFINE_PROP_BIT("mul",      SPARCCPU, env.def.features,
+                     CPU_FEATURE_BIT_MUL, false),
 -- 
 2.34.1
 
