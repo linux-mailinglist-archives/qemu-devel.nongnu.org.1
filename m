@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1582C8CF6BA
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE8E8CF6B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN5G-0005xA-I2; Sun, 26 May 2024 19:15:22 -0400
+	id 1sBN4S-0004DZ-6w; Sun, 26 May 2024 19:14:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN5B-0005la-S1; Sun, 26 May 2024 19:15:18 -0400
+ id 1sBN4J-00047m-SO; Sun, 26 May 2024 19:14:23 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN55-0003oL-L5; Sun, 26 May 2024 19:15:16 -0400
+ id 1sBN4G-0003fe-Hp; Sun, 26 May 2024 19:14:22 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 203B54E62BE;
- Mon, 27 May 2024 01:12:57 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 3FAA14E62BB;
+ Mon, 27 May 2024 01:12:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id OutTmP2czJcl; Mon, 27 May 2024 01:12:55 +0200 (CEST)
+ with ESMTP id CG3j7C7C5Qf3; Mon, 27 May 2024 01:12:56 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 30A964E62BB; Mon, 27 May 2024 01:12:55 +0200 (CEST)
-Message-Id: <6b845babbcee896afca10204f43ce0990dac43ff.1716763435.git.balaton@eik.bme.hu>
+ id 422FD4E62BD; Mon, 27 May 2024 01:12:56 +0200 (CEST)
+Message-Id: <fc23244334aa4e70e0ad0cdb04265b8257104948.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 19/43] target/ppc/mmu-hash32.c: Inline and remove
- ppc_hash32_pte_prot()
+Subject: [PATCH 20/43] target/ppc/mmu_common.c: Init variable in function that
+ relies on it
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:12:55 +0200 (CEST)
+Date: Mon, 27 May 2024 01:12:56 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,59 +61,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is used only once and can be inlined.
+The ppc6xx_tlb_check() relies on the caller to initialise raddr field
+in ctx. Move this init from the only caller into the function.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ target/ppc/mmu_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 93559447ff..160311de87 100644
---- a/target/ppc/mmu-hash32.c
-+++ b/target/ppc/mmu-hash32.c
-@@ -37,17 +37,6 @@
- #  define LOG_BATS(...) do { } while (0)
- #endif
+diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+index 1ed2f45ac7..fe321ab49c 100644
+--- a/target/ppc/mmu_common.c
++++ b/target/ppc/mmu_common.c
+@@ -102,6 +102,8 @@ static int ppc6xx_tlb_check(CPUPPCState *env,
+     int nr, best, way, ret;
+     bool is_code = (access_type == MMU_INST_FETCH);
  
--static int ppc_hash32_pte_prot(int mmu_idx,
--                               target_ulong sr, ppc_hash_pte32_t pte)
--{
--    unsigned pp, key;
--
--    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
--    pp = pte.pte1 & HPTE32_R_PP;
--
--    return ppc_hash32_prot(key, pp, !!(sr & SR32_NX));
--}
--
- static target_ulong hash32_bat_size(int mmu_idx,
-                                     target_ulong batu, target_ulong batl)
- {
-@@ -341,10 +330,10 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     target_ulong sr;
--    hwaddr pte_offset;
-+    hwaddr pte_offset, raddr;
-     ppc_hash_pte32_t pte;
-+    bool key;
-     int prot;
--    hwaddr raddr;
++    /* Initialize real address with an invalid value */
++    ctx->raddr = (hwaddr)-1ULL;
+     best = -1;
+     ret = -1; /* No TLB found */
+     for (way = 0; way < env->nb_ways; way++) {
+@@ -340,8 +342,6 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+                       ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu), hash);
+         *hashp = hash;
  
-     /* There are no hash32 large pages. */
-     *psizep = TARGET_PAGE_BITS;
-@@ -426,8 +415,8 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                 "found PTE at offset %08" HWADDR_PRIx "\n", pte_offset);
- 
-     /* 7. Check access permissions */
--
--    prot = ppc_hash32_pte_prot(mmu_idx, sr, pte);
-+    key = ppc_hash32_key(mmuidx_pr(mmu_idx), sr);
-+    prot = ppc_hash32_prot(key, pte.pte1 & HPTE32_R_PP, sr & SR32_NX);
- 
-     if (!check_prot_access_type(prot, access_type)) {
-         /* Access right violation */
+-        /* Initialize real address with an invalid value */
+-        ctx->raddr = (hwaddr)-1ULL;
+         /* Software TLB search */
+         return ppc6xx_tlb_check(env, ctx, eaddr, access_type, ptem, nx);
+     }
 -- 
 2.30.9
 
