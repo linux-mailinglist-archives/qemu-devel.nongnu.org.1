@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2C78CF6C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6018CF6C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:18:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4p-0004Vx-BF; Sun, 26 May 2024 19:14:55 -0400
+	id 1sBN4p-0004aH-V4; Sun, 26 May 2024 19:14:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4j-0004M7-Fu; Sun, 26 May 2024 19:14:49 -0400
+ id 1sBN4l-0004PE-Lv; Sun, 26 May 2024 19:14:51 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4h-0003iW-Fa; Sun, 26 May 2024 19:14:49 -0400
+ id 1sBN4i-0003js-NA; Sun, 26 May 2024 19:14:51 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C1BEA4E6031;
- Mon, 27 May 2024 01:12:47 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id AB28C4E6041;
+ Mon, 27 May 2024 01:12:48 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id EzAQBxkwEsWt; Mon, 27 May 2024 01:12:45 +0200 (CEST)
+ with ESMTP id Bax9rg3G5OR7; Mon, 27 May 2024 01:12:46 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A4DD54E6036; Mon, 27 May 2024 01:12:45 +0200 (CEST)
-Message-Id: <21fb0a89458b7d245d688abfdcf77492f674610a.1716763435.git.balaton@eik.bme.hu>
+ id BAABB4E6039; Mon, 27 May 2024 01:12:46 +0200 (CEST)
+Message-Id: <87df776b2534cc0ad2523d17c99453edb5de3459.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 10/43] target/ppc/mmu_common.c: Remove hash field from
- mmu_ctx_t
+Subject: [PATCH 11/43] target/ppc/mmu_common.c: Remove pte_update_flags()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:12:45 +0200 (CEST)
+Date: Mon, 27 May 2024 01:12:46 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,79 +60,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Return hash value via a parameter and remove it from mmu_ctx.t.
+This function is used only once, its return value is ignored and one
+of its parameter is a return value from a previous call. It is better
+to inline it in the caller and remove it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ target/ppc/mmu_common.c | 41 +++++++++++++----------------------------
+ 1 file changed, 13 insertions(+), 28 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 0a07023f48..e3537c63c0 100644
+index e3537c63c0..c4902b7632 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -41,7 +41,6 @@
- typedef struct {
-     hwaddr raddr;      /* Real address             */
-     int prot;          /* Protection bits          */
--    hwaddr hash[2];    /* Pagetable hash values    */
-     target_ulong ptem; /* Virtual segment ID | API */
-     int key;           /* Access key               */
-     int nx;            /* Non-execute area         */
-@@ -331,7 +330,7 @@ static int get_bat_6xx_tlb(CPUPPCState *env, mmu_ctx_t *ctx,
+@@ -119,39 +119,14 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+     }
  }
  
- static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
--                                       target_ulong eaddr,
-+                                       target_ulong eaddr, hwaddr *hashp,
-                                        MMUAccessType access_type, int type)
+-static int pte_update_flags(mmu_ctx_t *ctx, target_ulong *pte1p,
+-                            int ret, MMUAccessType access_type)
+-{
+-    int store = 0;
+-
+-    /* Update page flags */
+-    if (!(*pte1p & 0x00000100)) {
+-        /* Update accessed flag */
+-        *pte1p |= 0x00000100;
+-        store = 1;
+-    }
+-    if (!(*pte1p & 0x00000080)) {
+-        if (access_type == MMU_DATA_STORE && ret == 0) {
+-            /* Update changed flag */
+-            *pte1p |= 0x00000080;
+-            store = 1;
+-        } else {
+-            /* Force page fault for first write access */
+-            ctx->prot &= ~PAGE_WRITE;
+-        }
+-    }
+-
+-    return store;
+-}
+-
+ /* Software driven TLB helpers */
+ 
+ static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
+                             target_ulong eaddr, MMUAccessType access_type)
  {
-     PowerPCCPU *cpu = env_archcpu(env);
-@@ -379,8 +378,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
-         qemu_log_mask(CPU_LOG_MMU, "htab_base " HWADDR_FMT_plx " htab_mask "
-                       HWADDR_FMT_plx " hash " HWADDR_FMT_plx "\n",
-                       ppc_hash32_hpt_base(cpu), ppc_hash32_hpt_mask(cpu), hash);
--        ctx->hash[0] = hash;
--        ctx->hash[1] = ~hash;
-+        *hashp = hash;
- 
-         /* Initialize real address with an invalid value */
-         ctx->raddr = (hwaddr)-1ULL;
-@@ -761,8 +759,8 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
-     CPUState *cs = CPU(cpu);
-     CPUPPCState *env = &cpu->env;
-     mmu_ctx_t ctx;
--    int type;
+     ppc6xx_tlb_t *tlb;
+-    int nr, best, way;
 -    int ret;
-+    hwaddr hash = 0; /* init to 0 to avoid used uninit warning */
-+    int type, ret;
++    target_ulong *pte1p;
++    int nr, best, way, ret;
  
-     if (ppc_real_mode_xlate(cpu, eaddr, access_type, raddrp, psizep, protp)) {
-         return true;
-@@ -779,9 +777,8 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
+     best = -1;
+     ret = -1; /* No TLB found */
+@@ -204,7 +179,17 @@ done:
+                       " prot=%01x ret=%d\n",
+                       ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
+         /* Update page flags */
+-        pte_update_flags(ctx, &env->tlb.tlb6[best].pte1, ret, access_type);
++        pte1p = &env->tlb.tlb6[best].pte1;
++        *pte1p |= 0x00000100; /* Update accessed flag */
++        if (!(*pte1p & 0x00000080)) {
++            if (access_type == MMU_DATA_STORE && ret == 0) {
++                /* Update changed flag */
++                *pte1p |= 0x00000080;
++            } else {
++                /* Force page fault for first write access */
++                ctx->prot &= ~PAGE_WRITE;
++            }
++        }
      }
- 
-     ctx.prot = 0;
--    ctx.hash[0] = 0;
--    ctx.hash[1] = 0;
--    ret = mmu6xx_get_physical_address(env, &ctx, eaddr, access_type, type);
-+    ret = mmu6xx_get_physical_address(env, &ctx, eaddr, &hash,
-+                                      access_type, type);
-     if (ret == 0) {
-         *raddrp = ctx.raddr;
-         *protp = ctx.prot;
-@@ -834,9 +831,9 @@ static bool ppc_6xx_xlate(PowerPCCPU *cpu, vaddr eaddr,
- tlb_miss:
-             env->error_code |= ctx.key << 19;
-             env->spr[SPR_HASH1] = ppc_hash32_hpt_base(cpu) +
--                                  get_pteg_offset32(cpu, ctx.hash[0]);
-+                                  get_pteg_offset32(cpu, hash);
-             env->spr[SPR_HASH2] = ppc_hash32_hpt_base(cpu) +
--                                  get_pteg_offset32(cpu, ctx.hash[1]);
-+                                  get_pteg_offset32(cpu, ~hash);
-             break;
-         case -2:
-             /* Access rights violation */
+ #if defined(DUMP_PAGE_TABLES)
+     if (qemu_loglevel_mask(CPU_LOG_MMU)) {
 -- 
 2.30.9
 
