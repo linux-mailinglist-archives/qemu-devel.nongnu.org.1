@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6018CF6C2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CEF8CF6BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4p-0004aH-V4; Sun, 26 May 2024 19:14:55 -0400
+	id 1sBN4q-0004ey-Lj; Sun, 26 May 2024 19:14:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4l-0004PE-Lv; Sun, 26 May 2024 19:14:51 -0400
+ id 1sBN4m-0004Q4-Db; Sun, 26 May 2024 19:14:52 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4i-0003js-NA; Sun, 26 May 2024 19:14:51 -0400
+ id 1sBN4j-0003jt-NS; Sun, 26 May 2024 19:14:52 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AB28C4E6041;
- Mon, 27 May 2024 01:12:48 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B550A4E6036;
+ Mon, 27 May 2024 01:12:49 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id Bax9rg3G5OR7; Mon, 27 May 2024 01:12:46 +0200 (CEST)
+ with ESMTP id 5_BI7vhQg9rJ; Mon, 27 May 2024 01:12:47 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BAABB4E6039; Mon, 27 May 2024 01:12:46 +0200 (CEST)
-Message-Id: <87df776b2534cc0ad2523d17c99453edb5de3459.1716763435.git.balaton@eik.bme.hu>
+ id C388F4E603E; Mon, 27 May 2024 01:12:47 +0200 (CEST)
+Message-Id: <3235abe633100992ad1437879a9869f3fb9a8189.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 11/43] target/ppc/mmu_common.c: Remove pte_update_flags()
+Subject: [PATCH 12/43] target/ppc/mmu_common.c: Remove nx field from mmu_ctx_t
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:12:46 +0200 (CEST)
+Date: Mon, 27 May 2024 01:12:47 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,80 +60,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is used only once, its return value is ignored and one
-of its parameter is a return value from a previous call. It is better
-to inline it in the caller and remove it.
+Pass it as a parameter instead. Also use named constants instead of
+hex values when extracting bits from SR.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 41 +++++++++++++----------------------------
- 1 file changed, 13 insertions(+), 28 deletions(-)
+ target/ppc/mmu_common.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index e3537c63c0..c4902b7632 100644
+index c4902b7632..9f402a979d 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -119,39 +119,14 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
-     }
- }
+@@ -43,7 +43,6 @@ typedef struct {
+     int prot;          /* Protection bits          */
+     target_ulong ptem; /* Virtual segment ID | API */
+     int key;           /* Access key               */
+-    int nx;            /* Non-execute area         */
+ } mmu_ctx_t;
  
--static int pte_update_flags(mmu_ctx_t *ctx, target_ulong *pte1p,
--                            int ret, MMUAccessType access_type)
--{
--    int store = 0;
--
--    /* Update page flags */
--    if (!(*pte1p & 0x00000100)) {
--        /* Update accessed flag */
--        *pte1p |= 0x00000100;
--        store = 1;
--    }
--    if (!(*pte1p & 0x00000080)) {
--        if (access_type == MMU_DATA_STORE && ret == 0) {
--            /* Update changed flag */
--            *pte1p |= 0x00000080;
--            store = 1;
--        } else {
--            /* Force page fault for first write access */
--            ctx->prot &= ~PAGE_WRITE;
--        }
--    }
--
--    return store;
--}
--
+ void ppc_store_sdr1(CPUPPCState *env, target_ulong value)
+@@ -94,7 +93,7 @@ int ppc6xx_tlb_getnum(CPUPPCState *env, target_ulong eaddr,
+ 
+ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+                                 target_ulong pte1, int pteh,
+-                                MMUAccessType access_type)
++                                MMUAccessType access_type, bool nx)
+ {
+     /* Check validity and table match */
+     if (!pte_is_valid(pte0) || ((pte0 >> 6) & 1) != pteh ||
+@@ -109,7 +108,7 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+     }
+     /* Keep the matching PTE information */
+     ctx->raddr = pte1;
+-    ctx->prot = ppc_hash32_prot(ctx->key, pte1 & HPTE32_R_PP, ctx->nx);
++    ctx->prot = ppc_hash32_prot(ctx->key, pte1 & HPTE32_R_PP, nx);
+     if (check_prot_access_type(ctx->prot, access_type)) {
+         qemu_log_mask(CPU_LOG_MMU, "PTE access granted !\n");
+         return 0;
+@@ -121,8 +120,9 @@ static int ppc6xx_tlb_pte_check(mmu_ctx_t *ctx, target_ulong pte0,
+ 
  /* Software driven TLB helpers */
  
- static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
-                             target_ulong eaddr, MMUAccessType access_type)
+-static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
+-                            target_ulong eaddr, MMUAccessType access_type)
++static int ppc6xx_tlb_check(CPUPPCState *env,
++                            mmu_ctx_t *ctx, target_ulong eaddr,
++                            MMUAccessType access_type, bool nx)
  {
      ppc6xx_tlb_t *tlb;
--    int nr, best, way;
--    int ret;
-+    target_ulong *pte1p;
-+    int nr, best, way, ret;
+     target_ulong *pte1p;
+@@ -150,7 +150,7 @@ static int ppc6xx_tlb_check(CPUPPCState *env, mmu_ctx_t *ctx,
+                       access_type == MMU_DATA_STORE ? 'S' : 'L',
+                       access_type == MMU_INST_FETCH ? 'I' : 'D');
+         switch (ppc6xx_tlb_pte_check(ctx, tlb->pte0, tlb->pte1,
+-                                     0, access_type)) {
++                                     0, access_type, nx)) {
+         case -2:
+             /* Access violation */
+             ret = -2;
+@@ -322,7 +322,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     hwaddr hash;
+     target_ulong vsid, sr, pgidx;
+     int ds, target_page_bits;
+-    bool pr;
++    bool pr, nx;
  
-     best = -1;
-     ret = -1; /* No TLB found */
-@@ -204,7 +179,17 @@ done:
-                       " prot=%01x ret=%d\n",
-                       ctx->raddr & TARGET_PAGE_MASK, ctx->prot, ret);
-         /* Update page flags */
--        pte_update_flags(ctx, &env->tlb.tlb6[best].pte1, ret, access_type);
-+        pte1p = &env->tlb.tlb6[best].pte1;
-+        *pte1p |= 0x00000100; /* Update accessed flag */
-+        if (!(*pte1p & 0x00000080)) {
-+            if (access_type == MMU_DATA_STORE && ret == 0) {
-+                /* Update changed flag */
-+                *pte1p |= 0x00000080;
-+            } else {
-+                /* Force page fault for first write access */
-+                ctx->prot &= ~PAGE_WRITE;
-+            }
-+        }
+     /* First try to find a BAT entry if there are any */
+     if (env->nb_BATs && get_bat_6xx_tlb(env, ctx, eaddr, access_type) == 0) {
+@@ -336,8 +336,8 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     ctx->key = (((sr & 0x20000000) && pr) ||
+                 ((sr & 0x40000000) && !pr)) ? 1 : 0;
+     ds = sr & 0x80000000 ? 1 : 0;
+-    ctx->nx = sr & 0x10000000 ? 1 : 0;
+-    vsid = sr & 0x00FFFFFF;
++    nx = sr & SR32_NX;
++    vsid = sr & SR32_VSID;
+     target_page_bits = TARGET_PAGE_BITS;
+     qemu_log_mask(CPU_LOG_MMU,
+                   "Check segment v=" TARGET_FMT_lx " %d " TARGET_FMT_lx
+@@ -352,10 +352,10 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+     ctx->ptem = (vsid << 7) | (pgidx >> 10);
+ 
+     qemu_log_mask(CPU_LOG_MMU, "pte segment: key=%d ds %d nx %d vsid "
+-                  TARGET_FMT_lx "\n", ctx->key, ds, ctx->nx, vsid);
++                  TARGET_FMT_lx "\n", ctx->key, ds, nx, vsid);
+     if (!ds) {
+         /* Check if instruction fetch is allowed, if needed */
+-        if (type == ACCESS_CODE && ctx->nx) {
++        if (type == ACCESS_CODE && nx) {
+             qemu_log_mask(CPU_LOG_MMU, "No access allowed\n");
+             return -3;
+         }
+@@ -368,7 +368,7 @@ static int mmu6xx_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+         /* Initialize real address with an invalid value */
+         ctx->raddr = (hwaddr)-1ULL;
+         /* Software TLB search */
+-        return ppc6xx_tlb_check(env, ctx, eaddr, access_type);
++        return ppc6xx_tlb_check(env, ctx, eaddr, access_type, nx);
      }
- #if defined(DUMP_PAGE_TABLES)
-     if (qemu_loglevel_mask(CPU_LOG_MMU)) {
+ 
+     /* Direct-store segment : absolutely *BUGGY* for now */
 -- 
 2.30.9
 
