@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4708CF6AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 167098CF6BD
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:17:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN5r-0007i3-M8; Sun, 26 May 2024 19:15:59 -0400
+	id 1sBN61-0000f3-Ly; Sun, 26 May 2024 19:16:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN5D-0005nz-MG; Sun, 26 May 2024 19:15:20 -0400
+ id 1sBN5c-0006vH-Ui; Sun, 26 May 2024 19:15:50 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN52-0003md-Um; Sun, 26 May 2024 19:15:19 -0400
+ id 1sBN5Z-00044q-OP; Sun, 26 May 2024 19:15:44 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D022A4E6503;
- Mon, 27 May 2024 01:13:13 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id DB7C54E650C;
+ Mon, 27 May 2024 01:13:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id LfHZguIPtDtZ; Mon, 27 May 2024 01:13:11 +0200 (CEST)
+ with ESMTP id j-v2DiMr42Eg; Mon, 27 May 2024 01:13:12 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id E942C4E650C; Mon, 27 May 2024 01:13:11 +0200 (CEST)
-Message-Id: <c6424ad0d838c2e72e6801544b38ed682aa081ed.1716763435.git.balaton@eik.bme.hu>
+ id F1FEA4E654D; Mon, 27 May 2024 01:13:12 +0200 (CEST)
+Message-Id: <3b3cce4a39e0debbf6fa29d4a2ead3014898cb93.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 35/43] target/ppc/mmu-hash32.c: Change parameter type of
- ppc_hash32_bat_lookup()
+Subject: [PATCH 36/43] target/ppc/mmu-hash32: Remove some static inlines from
+ header
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:11 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:12 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,40 +61,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function takes PowerPCCPU but only needs the env from it. Change
-its parameter to CPUPPCState *env.
+Two of these are not used anywhere and the other two are used only
+once and can be inlined and removed from the header.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-hash32.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ target/ppc/mmu-hash32.c |  5 +++--
+ target/ppc/mmu-hash32.h | 32 --------------------------------
+ 2 files changed, 3 insertions(+), 34 deletions(-)
 
 diff --git a/target/ppc/mmu-hash32.c b/target/ppc/mmu-hash32.c
-index 44b16142ab..a2c0ac05d2 100644
+index a2c0ac05d2..7a6a674f8a 100644
 --- a/target/ppc/mmu-hash32.c
 +++ b/target/ppc/mmu-hash32.c
-@@ -48,11 +48,10 @@ static target_ulong hash32_bat_size(int mmu_idx,
-     return BATU32_BEPI & ~((batu & BATU32_BL) << 15);
+@@ -206,17 +206,18 @@ static hwaddr ppc_hash32_pteg_search(PowerPCCPU *cpu, hwaddr pteg_off,
+ {
+     hwaddr pte_offset = pteg_off;
+     target_ulong pte0, pte1;
++    hwaddr base = ppc_hash32_hpt_base(cpu);
+     int i;
+ 
+     for (i = 0; i < HPTES_PER_GROUP; i++) {
+-        pte0 = ppc_hash32_load_hpte0(cpu, pte_offset);
++        pte0 = ldl_phys(CPU(cpu)->as, base + pte_offset);
+         /*
+          * pte0 contains the valid bit and must be read before pte1,
+          * otherwise we might see an old pte1 with a new valid bit and
+          * thus an inconsistent hpte value
+          */
+         smp_rmb();
+-        pte1 = ppc_hash32_load_hpte1(cpu, pte_offset);
++        pte1 = ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
+ 
+         if ((pte0 & HPTE32_V_VALID)
+             && (secondary == !!(pte0 & HPTE32_V_SECONDARY))
+diff --git a/target/ppc/mmu-hash32.h b/target/ppc/mmu-hash32.h
+index 2838de031c..4db55fb0a0 100644
+--- a/target/ppc/mmu-hash32.h
++++ b/target/ppc/mmu-hash32.h
+@@ -69,38 +69,6 @@ static inline hwaddr ppc_hash32_hpt_mask(PowerPCCPU *cpu)
+     return ((cpu->env.spr[SPR_SDR1] & SDR_32_HTABMASK) << 16) | 0xFFFF;
  }
  
--static hwaddr ppc_hash32_bat_lookup(PowerPCCPU *cpu, target_ulong ea,
-+static hwaddr ppc_hash32_bat_lookup(CPUPPCState *env, target_ulong ea,
-                                     MMUAccessType access_type, int *prot,
-                                     int mmu_idx)
+-static inline target_ulong ppc_hash32_load_hpte0(PowerPCCPU *cpu,
+-                                                 hwaddr pte_offset)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    return ldl_phys(CPU(cpu)->as, base + pte_offset);
+-}
+-
+-static inline target_ulong ppc_hash32_load_hpte1(PowerPCCPU *cpu,
+-                                                 hwaddr pte_offset)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    return ldl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2);
+-}
+-
+-static inline void ppc_hash32_store_hpte0(PowerPCCPU *cpu,
+-                                          hwaddr pte_offset, target_ulong pte0)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    stl_phys(CPU(cpu)->as, base + pte_offset, pte0);
+-}
+-
+-static inline void ppc_hash32_store_hpte1(PowerPCCPU *cpu,
+-                                          hwaddr pte_offset, target_ulong pte1)
+-{
+-    target_ulong base = ppc_hash32_hpt_base(cpu);
+-
+-    stl_phys(CPU(cpu)->as, base + pte_offset + HASH_PTE_SIZE_32 / 2, pte1);
+-}
+-
+ static inline hwaddr get_pteg_offset32(PowerPCCPU *cpu, hwaddr hash)
  {
--    CPUPPCState *env = &cpu->env;
-     target_ulong *BATlt, *BATut;
-     bool ifetch = access_type == MMU_INST_FETCH;
-     int i;
-@@ -316,7 +315,7 @@ bool ppc_hash32_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
- 
-     /* 2. Check Block Address Translation entries (BATs) */
-     if (env->nb_BATs != 0) {
--        raddr = ppc_hash32_bat_lookup(cpu, eaddr, access_type, protp, mmu_idx);
-+        raddr = ppc_hash32_bat_lookup(env, eaddr, access_type, protp, mmu_idx);
-         if (raddr != -1) {
-             if (!check_prot_access_type(*protp, access_type)) {
-                 if (guest_visible) {
+     return (hash * HASH_PTEG_SIZE_32) & ppc_hash32_hpt_mask(cpu);
 -- 
 2.30.9
 
