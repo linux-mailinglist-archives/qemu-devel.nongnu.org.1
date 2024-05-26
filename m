@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BDA8CF6CB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CF18CF6CE
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 01:19:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBN4m-0004Py-PD; Sun, 26 May 2024 19:14:52 -0400
+	id 1sBN5n-0006xY-Lg; Sun, 26 May 2024 19:15:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4k-0004Nt-J7; Sun, 26 May 2024 19:14:50 -0400
+ id 1sBN5G-000627-2F; Sun, 26 May 2024 19:15:22 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sBN4h-0003iR-Cu; Sun, 26 May 2024 19:14:50 -0400
+ id 1sBN5B-0003pt-Lw; Sun, 26 May 2024 19:15:21 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id AC7B44E64EC;
- Mon, 27 May 2024 01:13:09 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id B3AFE4E64E4;
+ Mon, 27 May 2024 01:13:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id PUPOatP-xNB6; Mon, 27 May 2024 01:13:07 +0200 (CEST)
+ with ESMTP id i7rFnXj5rWfc; Mon, 27 May 2024 01:13:08 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id C06844E62C1; Mon, 27 May 2024 01:13:07 +0200 (CEST)
-Message-Id: <3eccbbc40175cbf8e592fb62c0544202052c571c.1716763435.git.balaton@eik.bme.hu>
+ id C7DD24E642D; Mon, 27 May 2024 01:13:08 +0200 (CEST)
+Message-Id: <cf3dca03400d059de3dab761b11439d38e71d621.1716763435.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1716763435.git.balaton@eik.bme.hu>
 References: <cover.1716763435.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 31/43] target/ppc/mmu-radix64: Remove externally unused parts
- from header
+Subject: [PATCH 32/43] target/ppc: Remove includes from mmu-book3s-v3.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Mon, 27 May 2024 01:13:07 +0200 (CEST)
+Date: Mon, 27 May 2024 01:13:08 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,171 +60,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the parts not needed outside of mmu-radix64.c from the header to
-the C file to leave only parts in the header that need to be exported.
-Also drop unneded include of this header.
+Drop includes from header that is not needed by the header itself and
+only include them from C files that really need it.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu-book3s-v3.c |  1 -
- target/ppc/mmu-radix64.c   | 49 +++++++++++++++++++++++++++++++++++
- target/ppc/mmu-radix64.h   | 53 +-------------------------------------
- 3 files changed, 50 insertions(+), 53 deletions(-)
+ target/ppc/mmu-book3s-v3.h | 3 ---
+ target/ppc/mmu-hash64.c    | 1 +
+ target/ppc/mmu-radix64.c   | 1 +
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/target/ppc/mmu-book3s-v3.c b/target/ppc/mmu-book3s-v3.c
-index c8f69b3df9..a812cb5113 100644
---- a/target/ppc/mmu-book3s-v3.c
-+++ b/target/ppc/mmu-book3s-v3.c
-@@ -21,7 +21,6 @@
- #include "cpu.h"
- #include "mmu-hash64.h"
- #include "mmu-book3s-v3.h"
--#include "mmu-radix64.h"
+diff --git a/target/ppc/mmu-book3s-v3.h b/target/ppc/mmu-book3s-v3.h
+index 263ce55c1f..be66e26604 100644
+--- a/target/ppc/mmu-book3s-v3.h
++++ b/target/ppc/mmu-book3s-v3.h
+@@ -20,9 +20,6 @@
+ #ifndef PPC_MMU_BOOK3S_V3_H
+ #define PPC_MMU_BOOK3S_V3_H
  
- bool ppc64_v3_get_pate(PowerPCCPU *cpu, target_ulong lpid, ppc_v3_pate_t *entry)
- {
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 5a02e4963b..cf9619e847 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -29,6 +29,37 @@
- #include "mmu-radix64.h"
- #include "mmu-book3s-v3.h"
- 
-+/* Radix Partition Table Entry Fields */
-+#define PATE1_R_PRTB           0x0FFFFFFFFFFFF000
-+#define PATE1_R_PRTS           0x000000000000001F
-+
-+/* Radix Process Table Entry Fields */
-+#define PRTBE_R_GET_RTS(rts) \
-+    ((((rts >> 58) & 0x18) | ((rts >> 5) & 0x7)) + 31)
-+#define PRTBE_R_RPDB            0x0FFFFFFFFFFFFF00
-+#define PRTBE_R_RPDS            0x000000000000001F
-+
-+/* Radix Page Directory/Table Entry Fields */
-+#define R_PTE_VALID             0x8000000000000000
-+#define R_PTE_LEAF              0x4000000000000000
-+#define R_PTE_SW0               0x2000000000000000
-+#define R_PTE_RPN               0x01FFFFFFFFFFF000
-+#define R_PTE_SW1               0x0000000000000E00
-+#define R_GET_SW(sw)            (((sw >> 58) & 0x8) | ((sw >> 9) & 0x7))
-+#define R_PTE_R                 0x0000000000000100
-+#define R_PTE_C                 0x0000000000000080
-+#define R_PTE_ATT               0x0000000000000030
-+#define R_PTE_ATT_NORMAL        0x0000000000000000
-+#define R_PTE_ATT_SAO           0x0000000000000010
-+#define R_PTE_ATT_NI_IO         0x0000000000000020
-+#define R_PTE_ATT_TOLERANT_IO   0x0000000000000030
-+#define R_PTE_EAA_PRIV          0x0000000000000008
-+#define R_PTE_EAA_R             0x0000000000000004
-+#define R_PTE_EAA_RW            0x0000000000000002
-+#define R_PTE_EAA_X             0x0000000000000001
-+#define R_PDE_NLB               PRTBE_R_RPDB
-+#define R_PDE_NLS               PRTBE_R_RPDS
-+
- static bool ppc_radix64_get_fully_qualified_addr(const CPUPPCState *env,
-                                                  vaddr eaddr,
-                                                  uint64_t *lpid, uint64_t *pid)
-@@ -180,6 +211,24 @@ static void ppc_radix64_raise_hsi(PowerPCCPU *cpu, MMUAccessType access_type,
-     }
- }
- 
-+static int ppc_radix64_get_prot_eaa(uint64_t pte)
-+{
-+    return (pte & R_PTE_EAA_R ? PAGE_READ : 0) |
-+           (pte & R_PTE_EAA_RW ? PAGE_READ | PAGE_WRITE : 0) |
-+           (pte & R_PTE_EAA_X ? PAGE_EXEC : 0);
-+}
-+
-+static int ppc_radix64_get_prot_amr(const PowerPCCPU *cpu)
-+{
-+    const CPUPPCState *env = &cpu->env;
-+    int amr = env->spr[SPR_AMR] >> 62; /* We only care about key0 AMR63:62 */
-+    int iamr = env->spr[SPR_IAMR] >> 62; /* We only care about key0 IAMR63:62 */
-+
-+    return (amr & 0x2 ? 0 : PAGE_WRITE) | /* Access denied if bit is set */
-+           (amr & 0x1 ? 0 : PAGE_READ) |
-+           (iamr & 0x1 ? 0 : PAGE_EXEC);
-+}
-+
- static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
-                                    uint64_t pte, int *fault_cause, int *prot,
-                                    int mmu_idx, bool partition_scoped)
-diff --git a/target/ppc/mmu-radix64.h b/target/ppc/mmu-radix64.h
-index c5c04a1527..6620b3d648 100644
---- a/target/ppc/mmu-radix64.h
-+++ b/target/ppc/mmu-radix64.h
-@@ -3,7 +3,7 @@
- 
+-#include "mmu-hash64.h"
+-#include "mmu-books.h"
+-
  #ifndef CONFIG_USER_ONLY
  
--#include "exec/page-protection.h"
-+#ifdef TARGET_PPC64
+ /*
+diff --git a/target/ppc/mmu-hash64.c b/target/ppc/mmu-hash64.c
+index 7bc0323f26..5e1983e334 100644
+--- a/target/ppc/mmu-hash64.c
++++ b/target/ppc/mmu-hash64.c
+@@ -31,6 +31,7 @@
+ #include "hw/hw.h"
+ #include "internal.h"
+ #include "mmu-book3s-v3.h"
++#include "mmu-books.h"
+ #include "helper_regs.h"
  
- /* Radix Quadrants */
- #define R_EADDR_MASK            0x3FFFFFFFFFFFFFFF
-@@ -14,61 +14,10 @@
- #define R_EADDR_QUADRANT2       0x8000000000000000
- #define R_EADDR_QUADRANT3       0xC000000000000000
+ #ifdef CONFIG_TCG
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index cf9619e847..be7a45f254 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -28,6 +28,7 @@
+ #include "internal.h"
+ #include "mmu-radix64.h"
+ #include "mmu-book3s-v3.h"
++#include "mmu-books.h"
  
--/* Radix Partition Table Entry Fields */
--#define PATE1_R_PRTB           0x0FFFFFFFFFFFF000
--#define PATE1_R_PRTS           0x000000000000001F
--
--/* Radix Process Table Entry Fields */
--#define PRTBE_R_GET_RTS(rts) \
--    ((((rts >> 58) & 0x18) | ((rts >> 5) & 0x7)) + 31)
--#define PRTBE_R_RPDB            0x0FFFFFFFFFFFFF00
--#define PRTBE_R_RPDS            0x000000000000001F
--
--/* Radix Page Directory/Table Entry Fields */
--#define R_PTE_VALID             0x8000000000000000
--#define R_PTE_LEAF              0x4000000000000000
--#define R_PTE_SW0               0x2000000000000000
--#define R_PTE_RPN               0x01FFFFFFFFFFF000
--#define R_PTE_SW1               0x0000000000000E00
--#define R_GET_SW(sw)            (((sw >> 58) & 0x8) | ((sw >> 9) & 0x7))
--#define R_PTE_R                 0x0000000000000100
--#define R_PTE_C                 0x0000000000000080
--#define R_PTE_ATT               0x0000000000000030
--#define R_PTE_ATT_NORMAL        0x0000000000000000
--#define R_PTE_ATT_SAO           0x0000000000000010
--#define R_PTE_ATT_NI_IO         0x0000000000000020
--#define R_PTE_ATT_TOLERANT_IO   0x0000000000000030
--#define R_PTE_EAA_PRIV          0x0000000000000008
--#define R_PTE_EAA_R             0x0000000000000004
--#define R_PTE_EAA_RW            0x0000000000000002
--#define R_PTE_EAA_X             0x0000000000000001
--#define R_PDE_NLB               PRTBE_R_RPDB
--#define R_PDE_NLS               PRTBE_R_RPDS
--
--#ifdef TARGET_PPC64
--
- bool ppc_radix64_xlate(PowerPCCPU *cpu, vaddr eaddr, MMUAccessType access_type,
-                        hwaddr *raddr, int *psizep, int *protp, int mmu_idx,
-                        bool guest_visible);
- 
--static inline int ppc_radix64_get_prot_eaa(uint64_t pte)
--{
--    return (pte & R_PTE_EAA_R ? PAGE_READ : 0) |
--           (pte & R_PTE_EAA_RW ? PAGE_READ | PAGE_WRITE : 0) |
--           (pte & R_PTE_EAA_X ? PAGE_EXEC : 0);
--}
--
--static inline int ppc_radix64_get_prot_amr(const PowerPCCPU *cpu)
--{
--    const CPUPPCState *env = &cpu->env;
--    int amr = env->spr[SPR_AMR] >> 62; /* We only care about key0 AMR63:62 */
--    int iamr = env->spr[SPR_IAMR] >> 62; /* We only care about key0 IAMR63:62 */
--
--    return (amr & 0x2 ? 0 : PAGE_WRITE) | /* Access denied if bit is set */
--           (amr & 0x1 ? 0 : PAGE_READ) |
--           (iamr & 0x1 ? 0 : PAGE_EXEC);
--}
--
- #endif /* TARGET_PPC64 */
- 
- #endif /* CONFIG_USER_ONLY */
+ /* Radix Partition Table Entry Fields */
+ #define PATE1_R_PRTB           0x0FFFFFFFFFFFF000
 -- 
 2.30.9
 
