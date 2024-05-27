@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CAB8D072F
+	by mail.lfdr.de (Postfix) with ESMTPS id 516658D0731
 	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:59:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBcjr-0005S0-KE; Mon, 27 May 2024 11:58:19 -0400
+	id 1sBckj-0005qw-T1; Mon, 27 May 2024 11:59:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBcjp-0005Re-SI
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:58:17 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBcjo-0007T2-8h
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:58:17 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4202ca70287so33370965e9.3
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 08:58:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716825494; x=1717430294; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3y+qiQqx+Yu806+NVMklywnrg25mrY4P+ljDt/5rfZ8=;
- b=ETMNydH1BCLmuu/nHZ4wnU/6gFfgUakBRjHn807q0UELhvCWPotWZuoGr84A8V5cnh
- eH6YpmFjDGaB956DILvjuIlqeAUBTgtJgQHHLcBNDkVtFk5dkTogsDcpTW9rk+/cSuuu
- AIvKDOFoTb6W/+/GRYwTA194O38LFPH4Ef0PDHgPa5J2lRZPamf+cpflzK8yT58aX9jo
- W/i8ZS3wHE5TVKKoC3YISnoWAUP/opVKSr3ALYAnItyv7O2xkmOMjOppm3CJrExjuF6G
- /dD7rJ4fYVTlL86jWcir5lVyigRpPjk8A7DdxfaTSkmhMiPtjvp7grPqDhxPQbf2M+s3
- q+jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716825494; x=1717430294;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3y+qiQqx+Yu806+NVMklywnrg25mrY4P+ljDt/5rfZ8=;
- b=q4YqqTLSa6ytd+E3VUmvO/dq19IssMakkfSiRZmdrXULfBMDc6cRxHXsxIuxonNqZ1
- cuti8r4tTXORwCwWOlfhXeb9Gas9i/SUkmmJzcxYit3ZfM73m28MjtP9vs7uSiJNtqpI
- x7ACLtcBS9FuNNVcbjA+1Y+me9ry6xZ5tTQMi4vSKS1xHJNGxTUqI6Navp+kylfTk+HB
- oouukFIJhaDmjilHuNOD8Euq5qwNu2wC8jfdkUn37GM+uOeC4mNdwsH5D4wvLSom6xcp
- vsVT6n3ZF0r+l4C5mROP4vq/OmAP704WuDwJM9f+Y4nSjBDYmievv2xX0R7KESKMAenk
- G3Ug==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWhvuLQ3dGtCJ4/8zFxfLkGqmeWe+PSisiyRD/BLKSQU+pgQJ9E8dGwjRdG8Ayv0QH5Wxc1lwVViW8F07MRUgCBLQprFB8=
-X-Gm-Message-State: AOJu0YyuxHDs1mdfC6rzahJPh/A8lN/17T5PrVG3c3KCuM0GcHa3QLVA
- 7a9PS1IuNdJsrQD9t20i9wG27bM+QuokjuX6xBQwULaZLdRok+FZqatR440eMF8=
-X-Google-Smtp-Source: AGHT+IHl9u0grYbXXZoYIe0MXsQBnQjW/aX79WyNoPV+4WHwTX67ZSImbYi9/WpiN1V66ygqlCij9A==
-X-Received: by 2002:a05:600c:4589:b0:420:29dd:84e3 with SMTP id
- 5b1f17b1804b1-42108a0d355mr94825445e9.26.1716825494386; 
- Mon, 27 May 2024 08:58:14 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.152.134])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100fbb140sm146356945e9.44.2024.05.27.08.58.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 08:58:13 -0700 (PDT)
-Message-ID: <b641018c-e906-452b-8072-1b46f141808b@linaro.org>
-Date: Mon, 27 May 2024 17:58:11 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sBckh-0005pl-JQ
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1sBckf-0007Yr-BP
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716825548;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=DBH/BKkg2AKdhL5JbEwE0g+O1Vu2j3IEE0BlLeL/LiM=;
+ b=YkX0+HE2aiCfsyWE02b06P2QPO7gsDRklpX6YPidF6n3g/8DKfy+VPoqqmaZQKn4k4Lcvy
+ TN0wuaXEp13qldJRlK+r7tB5EAr354suY6DrtN//7Vl2ZUHEx9qxL7Q2g4p/Hs11NJ8DQx
+ 1dr3i8zXIq4ck5nucJzlGxHHj2qbFOo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-283-FLnJkieINJumCzGSaSFLzA-1; Mon, 27 May 2024 11:59:07 -0400
+X-MC-Unique: FLnJkieINJumCzGSaSFLzA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D52C1101A525;
+ Mon, 27 May 2024 15:59:06 +0000 (UTC)
+Received: from localhost (unknown [10.39.195.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2138E105480A;
+ Mon, 27 May 2024 15:59:05 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>, <qemu-block@nongnu.org>,
+ Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH 0/2] block/crypto: do not require number of threads upfront
+Date: Mon, 27 May 2024 11:58:49 -0400
+Message-ID: <20240527155851.892885-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/16] aspeed/smc: Add AST2700 support
-To: Jamin Lin <jamin_lin@aspeedtech.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
- <20240527080231.1576609-10-jamin_lin@aspeedtech.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240527080231.1576609-10-jamin_lin@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,49 +80,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The block layer does not know how many threads will perform I/O. It is possible
+to exceed the number of threads that is given to qcrypto_block_open() and this
+can trigger an assertion failure in qcrypto_block_pop_cipher().
 
-On 27/5/24 10:02, Jamin Lin wrote:
-> AST2700 fmc/spi controller's address decoding unit is 64KB
-> and only bits [31:16] are used for decoding. Introduce seg_to_reg
-> and reg_to_seg handlers for ast2700 fmc/spi controller.
-> In addition, adds ast2700 fmc, spi0, spi1, and spi2 class init handler.
-> 
-> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ssi/aspeed_smc.c | 222 +++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 220 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-> index df0c63469c..b4006c8339 100644
-> --- a/hw/ssi/aspeed_smc.c
-> +++ b/hw/ssi/aspeed_smc.c
-> @@ -185,7 +185,7 @@
->    *   0: 4 bytes
->    *   0x1FFFFFC: 32M bytes
->    *
-> - * DMA length is from 1 byte to 32MB (AST2600, AST10x0)
-> + * DMA length is from 1 byte to 32MB (AST2600, AST10x0 and AST2700)
->    *   0: 1 byte
->    *   0x1FFFFFF: 32M bytes
->    */
-> @@ -670,7 +670,7 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
->       .endianness = DEVICE_LITTLE_ENDIAN,
->       .valid = {
->           .min_access_size = 1,
-> -        .max_access_size = 4,
-> +        .max_access_size = 8,
+This patch series removes the n_threads argument and instead handles an
+arbitrary number of threads.
+---
+Is it secure to store the key in QCryptoBlock? In this series I assumed the
+answer is yes since the QCryptoBlock's cipher state is equally sensitive, but
+I'm not familiar with this code or a crypto expert.
 
-Is this a bugfix? If so, please use a separate patch. Otherwise
-please mention why it is OK to widen access for AST2600 & AST10x0.
+Stefan Hajnoczi (2):
+  block/crypto: create ciphers on demand
+  crypto/block: drop qcrypto_block_open() n_threads argument
 
-Thanks,
+ crypto/blockpriv.h             |  13 ++--
+ include/crypto/block.h         |   2 -
+ block/crypto.c                 |   1 -
+ block/qcow.c                   |   2 +-
+ block/qcow2.c                  |   5 +-
+ crypto/block-luks.c            |   4 +-
+ crypto/block-qcow.c            |   8 +--
+ crypto/block.c                 | 116 ++++++++++++++++++++-------------
+ tests/unit/test-crypto-block.c |   4 --
+ 9 files changed, 85 insertions(+), 70 deletions(-)
 
-Phil.
-
->       },
->   };
+-- 
+2.45.1
 
 
