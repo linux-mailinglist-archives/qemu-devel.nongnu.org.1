@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914A48CFB69
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 277838CFB8C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:34:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVgc-0006eP-H5; Mon, 27 May 2024 04:26:30 -0400
+	id 1sBVgo-00080u-CJ; Mon, 27 May 2024 04:26:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVdp-00020h-Vw; Mon, 27 May 2024 04:23:38 -0400
+ id 1sBVe9-0003Hm-Mw; Mon, 27 May 2024 04:23:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVdm-00010K-V8; Mon, 27 May 2024 04:23:36 -0400
+ id 1sBVe7-00010M-1f; Mon, 27 May 2024 04:23:57 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 681436A576;
+ by isrv.corpit.ru (Postfix) with ESMTP id 79EFD6A577;
  Mon, 27 May 2024 11:22:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 93C40D8513;
+ by tsrv.corpit.ru (Postfix) with SMTP id A3E7BD8514;
  Mon, 27 May 2024 11:21:40 +0300 (MSK)
-Received: (nullmailer pid 66427 invoked by uid 1000);
+Received: (nullmailer pid 66430 invoked by uid 1000);
  Mon, 27 May 2024 08:21:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Peter Maydell <peter.maydell@linaro.org>,
+Cc: qemu-stable@nongnu.org, Mattias Nissler <mnissler@rivosinc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 25/44] hw/loongarch/virt: Fix memory leak
-Date: Mon, 27 May 2024 11:21:16 +0300
-Message-Id: <20240527082138.66217-25-mjt@tls.msk.ru>
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Jagannathan Raman <jag.raman@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 26/44] hw/remote/vfio-user: Fix config space access
+ byte order
+Date: Mon, 27 May 2024 11:21:17 +0300
+Message-Id: <20240527082138.66217-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
@@ -62,45 +63,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Song Gao <gaosong@loongson.cn>
+From: Mattias Nissler <mnissler@rivosinc.com>
 
-The char pointer 'ramName' point to a block of memory,
-but never free it. Use 'g_autofree' to automatically free it.
+PCI config space is little-endian, so on a big-endian host we need to
+perform byte swaps for values as they are passed to and received from
+the generic PCI config space access machinery.
 
-Resolves: Coverity CID 1544773
-
-Fixes: 0cf1478d6 ("hw/loongarch: Add numa support")
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240507022239.3113987-1-gaosong@loongson.cn>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
+Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+Message-ID: <20240507094210.300566-6-mnissler@rivosinc.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 54c52ec719fb8c83bbde54cb87b58688ab27c166)
+(cherry picked from commit e6578f1f68a0e90789a841ada532c3e494c9a04c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in hw/loongarch/virt.c due to missing-in-9.0
-      v9.0.0-266-gd771ca1c10 "hw/loongarch: Move boot functions to boot.c")
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 441d764843..e3042af7bb 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -832,7 +832,6 @@ static void loongarch_init(MachineState *machine)
-     const CPUArchIdList *possible_cpus;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     CPUState *cpu;
--    char *ramName = NULL;
-     struct loaderparams loaderparams = { };
- 
-     if (!cpu_model) {
-@@ -892,7 +891,7 @@ static void loongarch_init(MachineState *machine)
- 
-     for (i = 1; i < nb_numa_nodes; i++) {
-         MemoryRegion *nodemem = g_new(MemoryRegion, 1);
--        ramName = g_strdup_printf("loongarch.node%d.ram", i);
-+        g_autofree char *ramName = g_strdup_printf("loongarch.node%d.ram", i);
-         memory_region_init_alias(nodemem, NULL, ramName, machine->ram,
-                                  offset,  numa_info[i].node_mem);
-         memory_region_add_subregion(address_space_mem, phyAddr, nodemem);
+diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+index d9b879e056..8dbafafb9e 100644
+--- a/hw/remote/vfio-user-obj.c
++++ b/hw/remote/vfio-user-obj.c
+@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+     while (bytes > 0) {
+         len = (bytes > pci_access_width) ? pci_access_width : bytes;
+         if (is_write) {
+-            memcpy(&val, ptr, len);
++            val = ldn_le_p(ptr, len);
+             pci_host_config_write_common(o->pci_dev, offset,
+                                          pci_config_size(o->pci_dev),
+                                          val, len);
+@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
+         } else {
+             val = pci_host_config_read_common(o->pci_dev, offset,
+                                               pci_config_size(o->pci_dev), len);
+-            memcpy(ptr, &val, len);
++            stn_le_p(ptr, len, val);
+             trace_vfu_cfg_read(offset, val);
+         }
+         offset += len;
 -- 
 2.39.2
 
