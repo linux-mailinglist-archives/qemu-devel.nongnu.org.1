@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C20F8CFD8A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 421BE8CFD9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:57:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBX4l-0007ID-V5; Mon, 27 May 2024 05:55:33 -0400
+	id 1sBX6T-0001nR-22; Mon, 27 May 2024 05:57:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX4R-00079D-3V
- for qemu-devel@nongnu.org; Mon, 27 May 2024 05:55:14 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX6R-0001ms-6E
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:57:15 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX4A-0008Vt-MB
- for qemu-devel@nongnu.org; Mon, 27 May 2024 05:55:08 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42108822e3cso15333585e9.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 02:54:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX6P-0000bu-Hr
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:57:14 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3550134ef25so3288670f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 02:57:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716803693; x=1717408493; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716803832; x=1717408632; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=E3dSc3yfYv/r+d4wN3BGfw+S9Y3dPGG6wtoFQR1sb/w=;
- b=YcR8227M38uV/qi7+GT5eCsMf/mlHioR82oWWtSL7FU0K2L5RxAWYfVZ4bq+IUkAxt
- YDN4LHBF6m6xrkyj4ZrEXDKFJMO9NSmr/0WoEi/85mdWRXQt+n2cRuQCk4KSmiapxXJw
- Id9FbZXNA9vcjKY49efQ4w676QSmRlTQD3DZNP3UJcwtyPaQvnmSVlB+Z+hyZq9MZEKG
- /M2fdUhL6awnwzeQQaryeSGALohIfXvPWO3IgdQmG+zg9kpELXzyLpVmC6fC0vqJJmGl
- iCz7RvIjCl17k1nRdM8KIbxo0WYuAz0rvjUEfy3SvB2liUYMPzdteLE6BqOmcrraYL0T
- YG6g==
+ bh=PFtt2bKZ6/DT9ANXXYNtjj9q8dLUfprQ0zoGjZv5Zcg=;
+ b=CxPiqo/3o/EQu/BjLOtT74v9XyYaROrx/EYBfkCOzhHP+0J3kX88iNPdoOITZk8mWN
+ 6ABHJpRH4cSS5QjfJaUCvGhEiXRRZYHvDHKA5nkcaOIDW6BMvNdjJdzJJB57XKIjY1L8
+ o9gSxa44JQHJOB4qhT4JRLWbN0rcoWsZ3CyIQVFF9b86AKgPkP7m2nOwaWEfeXBnjq0g
+ t8WMiT4i3QdvScMAVGA22hx8Kdp1hmk1XkCLd1j5mU5P24ebEoh30RVidoIalIfNAxLP
+ ekw5lyXOWlJObjlACyimqt8WROYJMiYhB1xMqrZg/y7Yk+IsooN/MLrv1T0DNraoslnh
+ xaIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716803693; x=1717408493;
+ d=1e100.net; s=20230601; t=1716803832; x=1717408632;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E3dSc3yfYv/r+d4wN3BGfw+S9Y3dPGG6wtoFQR1sb/w=;
- b=P2+Y27GYAbDF7DQ/SqPpswnQMp3OIaSc1JxmA8NBh3Jenx67ab1DSEc/182+FXUr17
- gj63NUTFVdfp1lyzVZ/7dOGjDwHqaA0H/CFyHvf9kHm+IYND0LNZ7Syp9zW2wghEWQjX
- anLhaCVTH1Ic/kn1Y3tg4JQ6pVbL9zQ5n/XkbFFQHYU9WD7VoxMZBEGAha76EPugr6/1
- IHZXIaRaM/SJdYJgOiGJ9Stw1R7x+nE4sGQ6+4Tg7DCMl9TYUxTzse6Oisvvxaq9l0Pu
- yrNCsbp8d8yFl0IFLW8PIdMR0f5cZFAaI9OPk5iKmRTB0F2L/KUv1vOZBM8bWztAltzO
- R3Ag==
-X-Gm-Message-State: AOJu0YxqmusAS+OuJkGCma0Y9JmzAP9V/UMhoxQ8ZeVUUBkIb+cPCHzv
- QZcmIqjRqKaOUhUavMeTuwu4f0VC3RtoxhHvv2Hj3e8nVdtczvNJTu9FmuBkPbU=
-X-Google-Smtp-Source: AGHT+IHZZqJuTtU8NkYtawvQRFPq+AGB5/vYdZMEJU6Ir6pg+NRAhHfgKkI62X78BYIUSv1zDUAo3w==
-X-Received: by 2002:a05:600c:4fd2:b0:418:3d59:c13a with SMTP id
- 5b1f17b1804b1-421015b3ca3mr107433235e9.9.1716803692816; 
- Mon, 27 May 2024 02:54:52 -0700 (PDT)
+ bh=PFtt2bKZ6/DT9ANXXYNtjj9q8dLUfprQ0zoGjZv5Zcg=;
+ b=jwHWxse+FLFMKp6m8k0BpYEtHIe4CmHhpXzvJ5vFZAA+wCDeuF6c9S8w6O92UqGRS4
+ 4biC0OYKBXDFJ8Pjjyh8JMkseOzBnbpmEfGt8042i0XvhSlCUo68OvGoUS+BGUNFPE7C
+ nhlP0ND1dY5kdIWu0+VEgqvamFoB1Sx0ROy1COeFw6a6KIdk+ZAf8yFb50qHJ8+1rO3+
+ 2DLdE6nnvu2PSvEndd21FT+KVT+cnQHu9ufO2jjJ7zw6SNO5Upmx0bIbfkoUL+VhXJrc
+ q2xwjHn1w2Vhrr5AG+9l9xwkwm7Vg2+LJoJfI+ITwv3rCoZDYvwvtbTFCzzlwV609Ret
+ McTA==
+X-Gm-Message-State: AOJu0YxRtHrwSifth22wEMf09JDIlNxqdcHjslfB5bVBXLcfNumbfV1F
+ ltyqgmgFx6cJ2NdghGdt8dKxLfZuJBOOAeSqmxaBCinQOjzpHRP2G6yUvErjXeg=
+X-Google-Smtp-Source: AGHT+IEYyPrKU5IkULvcn/hNGNW8joaXOHJtH5SLMTvdOroMQCl00J17VH0M/qN4axtUjdG7U0UxPw==
+X-Received: by 2002:adf:e907:0:b0:34c:719e:6786 with SMTP id
+ ffacd0b85a97d-35526c19185mr5885066f8f.4.1716803831861; 
+ Mon, 27 May 2024 02:57:11 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.152.134])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421089ccb10sm103677425e9.44.2024.05.27.02.54.51
+ ffacd0b85a97d-358a33e6f03sm3391916f8f.36.2024.05.27.02.57.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 02:54:52 -0700 (PDT)
-Message-ID: <df2abc64-9cff-44fb-876e-11a1711ecf4c@linaro.org>
-Date: Mon, 27 May 2024 11:54:50 +0200
+ Mon, 27 May 2024 02:57:11 -0700 (PDT)
+Message-ID: <a972e12b-398b-4843-a7d5-1fc66fd03bce@linaro.org>
+Date: Mon, 27 May 2024 11:57:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] qemu-keymap: Make references to allocations static
+Subject: Re: [PATCH v4 2/4] lockable: Do not cast function pointers
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev
  <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -71,20 +71,21 @@ To: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev
  Laurent Vivier <lvivier@redhat.com>
 Cc: qemu-devel@nongnu.org
 References: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
- <20240524-xkb-v4-1-2de564e5c859@daynix.com>
+ <20240524-xkb-v4-2-2de564e5c859@daynix.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240524-xkb-v4-1-2de564e5c859@daynix.com>
+In-Reply-To: <20240524-xkb-v4-2-2de564e5c859@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,15 +102,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 24/5/24 07:35, Akihiko Odaki wrote:
-> LeakSanitizer complains about allocations whose references are held
-> only by automatic variables. It is possible to free them to suppress
-> the complaints, but it is a chore to make sure they are freed in all
-> exit paths so make them static instead.
+> -fsanitize=undefined complains if function pointers are casted. It
+> also prevents enabling teh strict mode of CFI which is currently
+> disabled with -fsanitize-cfi-icall-generalize-pointers.
 > 
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2345
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   qemu-keymap.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
+>   include/qemu/lockable.h | 23 +++++++++++++++++++----
+>   1 file changed, 19 insertions(+), 4 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
