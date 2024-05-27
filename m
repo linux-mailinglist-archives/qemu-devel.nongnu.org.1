@@ -2,61 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EBE8CF771
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 04:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9EA08CF772
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 04:35:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBQ1z-0000rv-Qi; Sun, 26 May 2024 22:24:11 -0400
+	id 1sBQBr-0006n8-W8; Sun, 26 May 2024 22:34:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1sBQ1u-0000pM-QS; Sun, 26 May 2024 22:24:06 -0400
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net ([206.189.21.223])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>)
- id 1sBQ1t-0003mk-67; Sun, 26 May 2024 22:24:06 -0400
-Received: from localhost.localdomain (unknown [10.12.130.31])
- by app1 (Coremail) with SMTP id TAJkCgAXrOM07lNmsQANAA--.24375S8;
- Mon, 27 May 2024 10:21:46 +0800 (CST)
-From: Chao Du <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- alistair23@gmail.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
- palmer@dabbelt.com, anup@brainfault.org, duchao713@qq.com
-Subject: [PATCH v1 4/4] target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
-Date: Mon, 27 May 2024 02:19:16 +0000
-Message-Id: <20240527021916.12953-5-duchao@eswincomputing.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240527021916.12953-1-duchao@eswincomputing.com>
-References: <20240527021916.12953-1-duchao@eswincomputing.com>
-X-CM-TRANSID: TAJkCgAXrOM07lNmsQANAA--.24375S8
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFyrJr1UXF48XFWxCrWfKrg_yoW3GFb_Ga
- y5Jr4I9rW5Xa4vkFy8ZrZ5uryUJayrAF1xGanrKrZ0gr4jgF1UAw10ga1kAFyUuw4xAr4x
- urWrZFyxCw13JjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbg8YjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
- 6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7
- IE14v26r126s0DM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0
- c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2
- IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2
- jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4
- CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvj
- eVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxw
- CY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAq
- x4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r
- 43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF
- 7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI
- 0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7I
- U87l1PUUUUU==
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: pass client-ip=206.189.21.223;
- envelope-from=duchao@eswincomputing.com;
- helo=zg8tmja2lje4os4yms4ymjma.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sBQBq-0006mn-1j
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 22:34:22 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sBQBo-0005Sq-EY
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 22:34:21 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-24ca2f48031so950388fac.0
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 19:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716777258; x=1717382058; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wuXLePSSD+HqyEqAHbhxxfJrfskmQU8ReRJbUWpgVLo=;
+ b=HrRFMqLMvJDS8T1AKg9OwZkhSOJIR5f8LkSjuLcnjz0UN7XU6ILubPr+qU3+Mi0gy6
+ +9XGH9rA3qHKWFX0r7doqfP7rMU8F3jASx0qBhYD/XMxN12O7Q+2RLbYtf9k/agK5g8A
+ UGQ+mFlTYZR5JLHNHmaoS5wkKpOH9Dgi6LlunBtj9yWTQHOhVM9llMfH2YZ5Sse5X34c
+ Prqbwie8DOwqS3//M4srI11pc6PouYghe5ZGYLoAo7VFPENM/jcBsXlebNUXl/WXGWtn
+ iYX/d3YhhP6IEFciZ0Z5z4wQRI7wZ6qSr4Cx35H/Q1iM52wsmEr73vACgquu0urDRYwn
+ DFpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716777258; x=1717382058;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wuXLePSSD+HqyEqAHbhxxfJrfskmQU8ReRJbUWpgVLo=;
+ b=eBFZ+Ez0HafKcH9uQCHsHhFwcD1c1PIPSfokgacwBnXnV/PxRAOKgoT2kaFQBypp1G
+ iGMiQRyeVFHs87nBSw7JFURIP/g7BxyCy0lBLbWC2owNmWNzFi7lYMjHW9uFkR+QFElU
+ JkymKLygO2Bw9rJqmfnixpvR++nT7/PQZDiY50CbUntHhSGeZ12RMg/7mBJ4MTvXFf0H
+ D4GO5mdzFTeRNiYuR/crDAp60A+rIvLGkPcbeaJk1fbCBn5mKSOzIw+J0rLhIoRPc+aX
+ d97kGFQP2yd4YRE1AUV0/zeltcwO87HEXoqZXa/LEVNpFWR6Bk4wqjcMrVqwceOZHhJb
+ ELaQ==
+X-Gm-Message-State: AOJu0YyUzvxAkG77iIfjaL80JoiNDlGCCpRog8aGnyUB1FDCwwe8XEEd
+ C5Z4oRt91OPO5UMx9OGLJ2POEa69YT8ZHJWjp7yaSwg/lMTJ/IaFqemPT4i/z/aV1Z+BBAW7vMH
+ W
+X-Google-Smtp-Source: AGHT+IE+aJQym/Ub6vxfjZiExWpAeUIDGV+f5vS8o0xAWwjE+SvdHMxueSYlJgFkBW644qDnkRn04g==
+X-Received: by 2002:a05:6870:84c2:b0:245:50bc:9927 with SMTP id
+ 586e51a60fabf-24ca12756b6mr8780254fac.15.1716777258432; 
+ Sun, 26 May 2024 19:34:18 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f8fd2d2240sm4120625b3a.175.2024.05.26.19.34.17
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 26 May 2024 19:34:18 -0700 (PDT)
+Message-ID: <c3c0599a-4bef-4696-9134-a082fbe9709e@linaro.org>
+Date: Sun, 26 May 2024 19:34:16 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 00/28] linux-user patch queue
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+References: <20240527005001.642825-1-richard.henderson@linaro.org>
+Content-Language: en-US
+In-Reply-To: <20240527005001.642825-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x35.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,25 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To enable the KVM GUEST DEBUG for RISC-V at QEMU side.
+On 5/26/24 17:49, Richard Henderson wrote:
+> The following changes since commit 70581940cabcc51b329652becddfbc6a261b1b83:
+> 
+>    Merge tag 'pull-tcg-20240523' ofhttps://gitlab.com/rth7680/qemu  into staging (2024-05-23 09:47:40 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-lu-20240526
+> 
+> for you to fetch changes up to 701890bdd09b289fd9cb852e714e91373088b0f3:
+> 
+>    target/i386: Pass host pointer and size to cpu_x86_{xsave,xrstor} (2024-05-26 15:49:58 -0700)
+> 
+> ----------------------------------------------------------------
+> target/i386: Introduce X86Access and use for xsave and friends
+> linux-user/i386: Fix allocation and alignment of fp state in signal frame
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
----
- configs/targets/riscv64-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
 
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index 7c0e7eeb42..f938cc1ee6 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,5 +1,6 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
- TARGET_NEED_FDT=y
--- 
-2.17.1
+
+r~
 
 
