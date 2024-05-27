@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB6D8D0732
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:59:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B3C8D072E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:59:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBckk-0005rB-F8; Mon, 27 May 2024 11:59:14 -0400
+	id 1sBckr-0005yp-Ix; Mon, 27 May 2024 11:59:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sBcki-0005pt-5Q
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:12 -0400
+ id 1sBckp-0005sC-HR
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1sBcke-0007Yi-Ky
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:11 -0400
+ id 1sBckn-0007a5-P1
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:59:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716825548;
+ s=mimecast20190719; t=1716825557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EkZeoONnHelc7TbdUriioLuLewq8fWIEJyE/oTn1ZVY=;
- b=fL66rE9NjY4+tMQpr6Bpsv1h4X9CfLA7AX4rIFYo2onR8lM7an9m75Ykfo4CaQUPCdEsZA
- C9cGIMfWiG98+vs5iKRbt2j1amNSuowivonNoW4kVH+n7Vir+5DUk+YlUe6VnKBDHuGjD6
- qupjnaACxSNA1d39eJgi8yHU/khAd+0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-50H8FlcyOXSlDOWhTtKBaQ-1; Mon,
- 27 May 2024 11:59:04 -0400
-X-MC-Unique: 50H8FlcyOXSlDOWhTtKBaQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=ad7NCOSFCSFi5fJbGPaTSEJyVwImYPU09GFKAWrMPoA=;
+ b=QvANciww3v4TEnMIJw19eLx3HJLoJuYuu9wrD96ygQJ5D3ccQho0zGeEzNE7JtAgd/2nnz
+ /SIlAdn7DSWmXXy2fCqhug0znEI1ikkyQgVkYYPx8JNAzLpRg5s/gm7CQ41OlauVKpIMdY
+ 6ByPuTGYdzyJTs7su+Ftqh8C7g0ts4s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-Km_lCqNdNk-bTfRlghrCRg-1; Mon, 27 May 2024 11:59:13 -0400
+X-MC-Unique: Km_lCqNdNk-bTfRlghrCRg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68D7B1C0512D;
- Mon, 27 May 2024 15:59:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB0A085A58C;
+ Mon, 27 May 2024 15:59:13 +0000 (UTC)
 Received: from localhost (unknown [10.39.195.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5CDDE200A610;
- Mon, 27 May 2024 15:59:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DC583C15BED;
+ Mon, 27 May 2024 15:59:12 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Hanna Reitz <hreitz@redhat.com>, <qemu-block@nongnu.org>,
  Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Qing Wang <qinwang@redhat.com>
-Subject: [PATCH 1/2] block/crypto: create ciphers on demand
-Date: Mon, 27 May 2024 11:58:50 -0400
-Message-ID: <20240527155851.892885-2-stefanha@redhat.com>
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH 2/2] crypto/block: drop qcrypto_block_open() n_threads argument
+Date: Mon, 27 May 2024 11:58:51 -0400
+Message-ID: <20240527155851.892885-3-stefanha@redhat.com>
 In-Reply-To: <20240527155851.892885-1-stefanha@redhat.com>
 References: <20240527155851.892885-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -82,313 +82,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ciphers are pre-allocated by qcrypto_block_init_cipher() depending on
-the given number of threads. The -device
-virtio-blk-pci,iothread-vq-mapping= feature allows users to assign
-multiple IOThreads to a virtio-blk device, but the association between
-the virtio-blk device and the block driver happens after the block
-driver is already open.
+The n_threads argument is no longer used since the previous commit.
+Remove it.
 
-When the number of threads given to qcrypto_block_init_cipher() is
-smaller than the actual number of threads at runtime, the
-block->n_free_ciphers > 0 assertion in qcrypto_block_pop_cipher() can
-fail.
-
-Get rid of qcrypto_block_init_cipher() n_thread's argument and allocate
-ciphers on demand.
-
-Reported-by: Qing Wang <qinwang@redhat.com>
-Buglink: https://issues.redhat.com/browse/RHEL-36159
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- crypto/blockpriv.h  |  12 +++--
- crypto/block-luks.c |   3 +-
- crypto/block-qcow.c |   2 +-
- crypto/block.c      | 113 ++++++++++++++++++++++++++------------------
- 4 files changed, 79 insertions(+), 51 deletions(-)
+ crypto/blockpriv.h             | 1 -
+ include/crypto/block.h         | 2 --
+ block/crypto.c                 | 1 -
+ block/qcow.c                   | 2 +-
+ block/qcow2.c                  | 5 ++---
+ crypto/block-luks.c            | 1 -
+ crypto/block-qcow.c            | 6 ++----
+ crypto/block.c                 | 3 +--
+ tests/unit/test-crypto-block.c | 4 ----
+ 9 files changed, 6 insertions(+), 19 deletions(-)
 
 diff --git a/crypto/blockpriv.h b/crypto/blockpriv.h
-index 836f3b4726..4bf6043d5d 100644
+index 4bf6043d5d..b8f77cb5eb 100644
 --- a/crypto/blockpriv.h
 +++ b/crypto/blockpriv.h
-@@ -32,8 +32,14 @@ struct QCryptoBlock {
-     const QCryptoBlockDriver *driver;
-     void *opaque;
+@@ -59,7 +59,6 @@ struct QCryptoBlockDriver {
+                 QCryptoBlockReadFunc readfunc,
+                 void *opaque,
+                 unsigned int flags,
+-                size_t n_threads,
+                 Error **errp);
  
--    QCryptoCipher **ciphers;
--    size_t n_ciphers;
-+    /* Cipher parameters */
-+    QCryptoCipherAlgorithm alg;
-+    QCryptoCipherMode mode;
-+    uint8_t *key;
-+    size_t nkey;
-+
-+    QCryptoCipher **free_ciphers;
-+    size_t max_free_ciphers;
-     size_t n_free_ciphers;
-     QCryptoIVGen *ivgen;
-     QemuMutex mutex;
-@@ -130,7 +136,7 @@ int qcrypto_block_init_cipher(QCryptoBlock *block,
-                               QCryptoCipherAlgorithm alg,
-                               QCryptoCipherMode mode,
-                               const uint8_t *key, size_t nkey,
--                              size_t n_threads, Error **errp);
-+                              Error **errp);
+     int (*create)(QCryptoBlock *block,
+diff --git a/include/crypto/block.h b/include/crypto/block.h
+index 92e823c9f2..5b5d039800 100644
+--- a/include/crypto/block.h
++++ b/include/crypto/block.h
+@@ -76,7 +76,6 @@ typedef enum {
+  * @readfunc: callback for reading data from the volume
+  * @opaque: data to pass to @readfunc
+  * @flags: bitmask of QCryptoBlockOpenFlags values
+- * @n_threads: allow concurrent I/O from up to @n_threads threads
+  * @errp: pointer to a NULL-initialized error object
+  *
+  * Create a new block encryption object for an existing
+@@ -113,7 +112,6 @@ QCryptoBlock *qcrypto_block_open(QCryptoBlockOpenOptions *options,
+                                  QCryptoBlockReadFunc readfunc,
+                                  void *opaque,
+                                  unsigned int flags,
+-                                 size_t n_threads,
+                                  Error **errp);
  
- void qcrypto_block_free_cipher(QCryptoBlock *block);
+ typedef enum {
+diff --git a/block/crypto.c b/block/crypto.c
+index 21eed909c1..4eed3ffa6a 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -363,7 +363,6 @@ static int block_crypto_open_generic(QCryptoBlockFormat format,
+                                        block_crypto_read_func,
+                                        bs,
+                                        cflags,
+-                                       1,
+                                        errp);
  
+     if (!crypto->block) {
+diff --git a/block/qcow.c b/block/qcow.c
+index ca8e1d5ec8..c2f89db055 100644
+--- a/block/qcow.c
++++ b/block/qcow.c
+@@ -211,7 +211,7 @@ static int qcow_open(BlockDriverState *bs, QDict *options, int flags,
+                 cflags |= QCRYPTO_BLOCK_OPEN_NO_IO;
+             }
+             s->crypto = qcrypto_block_open(crypto_opts, "encrypt.",
+-                                           NULL, NULL, cflags, 1, errp);
++                                           NULL, NULL, cflags, errp);
+             if (!s->crypto) {
+                 ret = -EINVAL;
+                 goto fail;
+diff --git a/block/qcow2.c b/block/qcow2.c
+index 956128b409..10883a2494 100644
+--- a/block/qcow2.c
++++ b/block/qcow2.c
+@@ -321,7 +321,7 @@ qcow2_read_extensions(BlockDriverState *bs, uint64_t start_offset,
+             }
+             s->crypto = qcrypto_block_open(s->crypto_opts, "encrypt.",
+                                            qcow2_crypto_hdr_read_func,
+-                                           bs, cflags, QCOW2_MAX_THREADS, errp);
++                                           bs, cflags, errp);
+             if (!s->crypto) {
+                 return -EINVAL;
+             }
+@@ -1701,8 +1701,7 @@ qcow2_do_open(BlockDriverState *bs, QDict *options, int flags,
+                 cflags |= QCRYPTO_BLOCK_OPEN_NO_IO;
+             }
+             s->crypto = qcrypto_block_open(s->crypto_opts, "encrypt.",
+-                                           NULL, NULL, cflags,
+-                                           QCOW2_MAX_THREADS, errp);
++                                           NULL, NULL, cflags, errp);
+             if (!s->crypto) {
+                 ret = -EINVAL;
+                 goto fail;
 diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 3ee928fb5a..3357852c0a 100644
+index 3357852c0a..5b777c15d3 100644
 --- a/crypto/block-luks.c
 +++ b/crypto/block-luks.c
-@@ -1262,7 +1262,6 @@ qcrypto_block_luks_open(QCryptoBlock *block,
-                                       luks->cipher_mode,
-                                       masterkey,
-                                       luks->header.master_key_len,
--                                      n_threads,
-                                       errp) < 0) {
-             goto fail;
-         }
-@@ -1456,7 +1455,7 @@ qcrypto_block_luks_create(QCryptoBlock *block,
-     /* Setup the block device payload encryption objects */
-     if (qcrypto_block_init_cipher(block, luks_opts.cipher_alg,
-                                   luks_opts.cipher_mode, masterkey,
--                                  luks->header.master_key_len, 1, errp) < 0) {
-+                                  luks->header.master_key_len, errp) < 0) {
-         goto error;
-     }
- 
+@@ -1189,7 +1189,6 @@ qcrypto_block_luks_open(QCryptoBlock *block,
+                         QCryptoBlockReadFunc readfunc,
+                         void *opaque,
+                         unsigned int flags,
+-                        size_t n_threads,
+                         Error **errp)
+ {
+     QCryptoBlockLUKS *luks = NULL;
 diff --git a/crypto/block-qcow.c b/crypto/block-qcow.c
-index 4d7cf36a8f..02305058e3 100644
+index 02305058e3..42e9556e42 100644
 --- a/crypto/block-qcow.c
 +++ b/crypto/block-qcow.c
-@@ -75,7 +75,7 @@ qcrypto_block_qcow_init(QCryptoBlock *block,
-     ret = qcrypto_block_init_cipher(block, QCRYPTO_CIPHER_ALG_AES_128,
-                                     QCRYPTO_CIPHER_MODE_CBC,
-                                     keybuf, G_N_ELEMENTS(keybuf),
--                                    n_threads, errp);
-+                                    errp);
-     if (ret < 0) {
-         ret = -ENOTSUP;
-         goto fail;
+@@ -44,7 +44,6 @@ qcrypto_block_qcow_has_format(const uint8_t *buf G_GNUC_UNUSED,
+ static int
+ qcrypto_block_qcow_init(QCryptoBlock *block,
+                         const char *keysecret,
+-                        size_t n_threads,
+                         Error **errp)
+ {
+     char *password;
+@@ -100,7 +99,6 @@ qcrypto_block_qcow_open(QCryptoBlock *block,
+                         QCryptoBlockReadFunc readfunc G_GNUC_UNUSED,
+                         void *opaque G_GNUC_UNUSED,
+                         unsigned int flags,
+-                        size_t n_threads,
+                         Error **errp)
+ {
+     if (flags & QCRYPTO_BLOCK_OPEN_NO_IO) {
+@@ -115,7 +113,7 @@ qcrypto_block_qcow_open(QCryptoBlock *block,
+             return -1;
+         }
+         return qcrypto_block_qcow_init(block, options->u.qcow.key_secret,
+-                                       n_threads, errp);
++                                       errp);
+     }
+ }
+ 
+@@ -135,7 +133,7 @@ qcrypto_block_qcow_create(QCryptoBlock *block,
+         return -1;
+     }
+     /* QCow2 has no special header, since everything is hardwired */
+-    return qcrypto_block_qcow_init(block, options->u.qcow.key_secret, 1, errp);
++    return qcrypto_block_qcow_init(block, options->u.qcow.key_secret, errp);
+ }
+ 
+ 
 diff --git a/crypto/block.c b/crypto/block.c
-index 506ea1d1a3..ba6d1cebc7 100644
+index ba6d1cebc7..3bcc4270c3 100644
 --- a/crypto/block.c
 +++ b/crypto/block.c
-@@ -20,6 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qemu/lockable.h"
- #include "blockpriv.h"
- #include "block-qcow.h"
- #include "block-luks.h"
-@@ -57,6 +58,8 @@ QCryptoBlock *qcrypto_block_open(QCryptoBlockOpenOptions *options,
- {
-     QCryptoBlock *block = g_new0(QCryptoBlock, 1);
- 
-+    qemu_mutex_init(&block->mutex);
-+
-     block->format = options->format;
- 
-     if (options->format >= G_N_ELEMENTS(qcrypto_block_drivers) ||
-@@ -76,8 +79,6 @@ QCryptoBlock *qcrypto_block_open(QCryptoBlockOpenOptions *options,
-         return NULL;
-     }
- 
--    qemu_mutex_init(&block->mutex);
--
-     return block;
- }
- 
-@@ -92,6 +93,8 @@ QCryptoBlock *qcrypto_block_create(QCryptoBlockCreateOptions *options,
- {
-     QCryptoBlock *block = g_new0(QCryptoBlock, 1);
- 
-+    qemu_mutex_init(&block->mutex);
-+
-     block->format = options->format;
- 
-     if (options->format >= G_N_ELEMENTS(qcrypto_block_drivers) ||
-@@ -111,8 +114,6 @@ QCryptoBlock *qcrypto_block_create(QCryptoBlockCreateOptions *options,
-         return NULL;
-     }
- 
--    qemu_mutex_init(&block->mutex);
--
-     return block;
- }
- 
-@@ -227,37 +228,42 @@ QCryptoCipher *qcrypto_block_get_cipher(QCryptoBlock *block)
-      * This function is used only in test with one thread (it's safe to skip
-      * pop/push interface), so it's enough to assert it here:
-      */
--    assert(block->n_ciphers <= 1);
--    return block->ciphers ? block->ciphers[0] : NULL;
-+    assert(block->max_free_ciphers <= 1);
-+    return block->free_ciphers ? block->free_ciphers[0] : NULL;
- }
- 
- 
--static QCryptoCipher *qcrypto_block_pop_cipher(QCryptoBlock *block)
-+static QCryptoCipher *qcrypto_block_pop_cipher(QCryptoBlock *block,
-+                                               Error **errp)
- {
--    QCryptoCipher *cipher;
--
--    qemu_mutex_lock(&block->mutex);
--
--    assert(block->n_free_ciphers > 0);
--    block->n_free_ciphers--;
--    cipher = block->ciphers[block->n_free_ciphers];
--
--    qemu_mutex_unlock(&block->mutex);
--
--    return cipher;
-+    /* Usually there is a free cipher available */
-+    WITH_QEMU_LOCK_GUARD(&block->mutex) {
-+        if (block->n_free_ciphers > 0) {
-+            block->n_free_ciphers--;
-+            return block->free_ciphers[block->n_free_ciphers];
-+        }
-+    }
-+
-+    /* Otherwise allocate a new cipher */
-+    return qcrypto_cipher_new(block->alg, block->mode, block->key,
-+                              block->nkey, errp);
- }
- 
- 
- static void qcrypto_block_push_cipher(QCryptoBlock *block,
-                                       QCryptoCipher *cipher)
- {
--    qemu_mutex_lock(&block->mutex);
-+    QEMU_LOCK_GUARD(&block->mutex);
- 
--    assert(block->n_free_ciphers < block->n_ciphers);
--    block->ciphers[block->n_free_ciphers] = cipher;
-+    if (block->n_free_ciphers == block->max_free_ciphers) {
-+        block->max_free_ciphers++;
-+        block->free_ciphers = g_renew(QCryptoCipher *,
-+                                      block->free_ciphers,
-+                                      block->max_free_ciphers);
-+    }
-+
-+    block->free_ciphers[block->n_free_ciphers] = cipher;
-     block->n_free_ciphers++;
--
--    qemu_mutex_unlock(&block->mutex);
- }
- 
- 
-@@ -265,24 +271,31 @@ int qcrypto_block_init_cipher(QCryptoBlock *block,
-                               QCryptoCipherAlgorithm alg,
-                               QCryptoCipherMode mode,
-                               const uint8_t *key, size_t nkey,
--                              size_t n_threads, Error **errp)
-+                              Error **errp)
- {
--    size_t i;
-+    QCryptoCipher *cipher;
- 
--    assert(!block->ciphers && !block->n_ciphers && !block->n_free_ciphers);
-+    assert(!block->free_ciphers && !block->max_free_ciphers &&
-+           !block->n_free_ciphers);
- 
--    block->ciphers = g_new0(QCryptoCipher *, n_threads);
-+    /* Stash away cipher parameters for qcrypto_block_pop_cipher() */
-+    block->alg = alg;
-+    block->mode = mode;
-+    block->key = g_memdup2(key, nkey);
-+    block->nkey = nkey;
- 
--    for (i = 0; i < n_threads; i++) {
--        block->ciphers[i] = qcrypto_cipher_new(alg, mode, key, nkey, errp);
--        if (!block->ciphers[i]) {
--            qcrypto_block_free_cipher(block);
--            return -1;
--        }
--        block->n_ciphers++;
--        block->n_free_ciphers++;
-+    /*
-+     * Create a new cipher to validate the parameters now. This reduces the
-+     * chance of cipher creation failing at I/O time.
-+     */
-+    cipher = qcrypto_block_pop_cipher(block, errp);
-+    if (!cipher) {
-+        g_free(block->key);
-+        block->key = NULL;
-+        return -1;
-     }
- 
-+    qcrypto_block_push_cipher(block, cipher);
-     return 0;
- }
- 
-@@ -291,19 +304,23 @@ void qcrypto_block_free_cipher(QCryptoBlock *block)
- {
-     size_t i;
- 
--    if (!block->ciphers) {
-+    g_free(block->key);
-+    block->key = NULL;
-+
-+    if (!block->free_ciphers) {
-         return;
-     }
- 
--    assert(block->n_ciphers == block->n_free_ciphers);
-+    /* All popped ciphers were eventually pushed back */
-+    assert(block->n_free_ciphers == block->max_free_ciphers);
- 
--    for (i = 0; i < block->n_ciphers; i++) {
--        qcrypto_cipher_free(block->ciphers[i]);
-+    for (i = 0; i < block->max_free_ciphers; i++) {
-+        qcrypto_cipher_free(block->free_ciphers[i]);
-     }
- 
--    g_free(block->ciphers);
--    block->ciphers = NULL;
--    block->n_ciphers = block->n_free_ciphers = 0;
-+    g_free(block->free_ciphers);
-+    block->free_ciphers = NULL;
-+    block->max_free_ciphers = block->n_free_ciphers = 0;
- }
- 
- QCryptoIVGen *qcrypto_block_get_ivgen(QCryptoBlock *block)
-@@ -311,7 +328,7 @@ QCryptoIVGen *qcrypto_block_get_ivgen(QCryptoBlock *block)
-     /* ivgen should be accessed under mutex. However, this function is used only
-      * in test with one thread, so it's enough to assert it here:
-      */
--    assert(block->n_ciphers <= 1);
-+    assert(block->max_free_ciphers <= 1);
-     return block->ivgen;
- }
- 
-@@ -446,7 +463,10 @@ int qcrypto_block_decrypt_helper(QCryptoBlock *block,
+@@ -53,7 +53,6 @@ QCryptoBlock *qcrypto_block_open(QCryptoBlockOpenOptions *options,
+                                  QCryptoBlockReadFunc readfunc,
+                                  void *opaque,
+                                  unsigned int flags,
+-                                 size_t n_threads,
                                   Error **errp)
  {
-     int ret;
--    QCryptoCipher *cipher = qcrypto_block_pop_cipher(block);
-+    QCryptoCipher *cipher = qcrypto_block_pop_cipher(block, errp);
-+    if (!cipher) {
-+        return -1;
-+    }
+     QCryptoBlock *block = g_new0(QCryptoBlock, 1);
+@@ -73,7 +72,7 @@ QCryptoBlock *qcrypto_block_open(QCryptoBlockOpenOptions *options,
+     block->driver = qcrypto_block_drivers[options->format];
  
-     ret = do_qcrypto_block_cipher_encdec(cipher, block->niv, block->ivgen,
-                                          &block->mutex, sectorsize, offset, buf,
-@@ -465,7 +485,10 @@ int qcrypto_block_encrypt_helper(QCryptoBlock *block,
-                                  Error **errp)
- {
-     int ret;
--    QCryptoCipher *cipher = qcrypto_block_pop_cipher(block);
-+    QCryptoCipher *cipher = qcrypto_block_pop_cipher(block, errp);
-+    if (!cipher) {
-+        return -1;
-+    }
+     if (block->driver->open(block, options, optprefix,
+-                            readfunc, opaque, flags, n_threads, errp) < 0)
++                            readfunc, opaque, flags, errp) < 0)
+     {
+         g_free(block);
+         return NULL;
+diff --git a/tests/unit/test-crypto-block.c b/tests/unit/test-crypto-block.c
+index 6cfc817a92..42cfab6067 100644
+--- a/tests/unit/test-crypto-block.c
++++ b/tests/unit/test-crypto-block.c
+@@ -303,7 +303,6 @@ static void test_block(gconstpointer opaque)
+                              test_block_read_func,
+                              &header,
+                              0,
+-                             1,
+                              NULL);
+     g_assert(blk == NULL);
  
-     ret = do_qcrypto_block_cipher_encdec(cipher, block->niv, block->ivgen,
-                                          &block->mutex, sectorsize, offset, buf,
+@@ -312,7 +311,6 @@ static void test_block(gconstpointer opaque)
+                              test_block_read_func,
+                              &header,
+                              QCRYPTO_BLOCK_OPEN_NO_IO,
+-                             1,
+                              &error_abort);
+ 
+     g_assert(qcrypto_block_get_cipher(blk) == NULL);
+@@ -327,7 +325,6 @@ static void test_block(gconstpointer opaque)
+                              test_block_read_func,
+                              &header,
+                              0,
+-                             1,
+                              &error_abort);
+     g_assert(blk);
+ 
+@@ -384,7 +381,6 @@ test_luks_bad_header(gconstpointer data)
+                              test_block_read_func,
+                              &buf,
+                              0,
+-                             1,
+                              &err);
+     g_assert(!blk);
+     g_assert(err);
 -- 
 2.45.1
 
