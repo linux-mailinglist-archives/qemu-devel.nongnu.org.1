@@ -2,42 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6418CFA13
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DECFB8CFA1A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUkI-0000wp-Un; Mon, 27 May 2024 03:26:15 -0400
+	id 1sBUkH-0000ay-Hc; Mon, 27 May 2024 03:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjZ-00087d-9J; Mon, 27 May 2024 03:25:35 -0400
+ id 1sBUji-0008NS-2b; Mon, 27 May 2024 03:25:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjV-0006M5-Co; Mon, 27 May 2024 03:25:28 -0400
+ id 1sBUjb-0006NI-7x; Mon, 27 May 2024 03:25:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CBAB16A4CB;
+ by isrv.corpit.ru (Postfix) with ESMTP id DCCDD6A4CC;
  Mon, 27 May 2024 10:25:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 14CDCD8468;
+ by tsrv.corpit.ru (Postfix) with SMTP id 24B5DD8469;
  Mon, 27 May 2024 10:24:36 +0300 (MSK)
-Received: (nullmailer pid 52912 invoked by uid 1000);
+Received: (nullmailer pid 52915 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, donsheng <dongsheng.x.zhang@intel.com>,
- Chao Gao <chao.gao@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 14/21] target-i386: hyper-v: Correct kvm_hv_handle_exit
- return value
-Date: Mon, 27 May 2024 10:24:24 +0300
-Message-Id: <20240527072435.52812-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
+ Fabiano Rosas <farosas@suse.de>, Jason Wang <jasowang@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 15/21] hw/core/machine: move compatibility flags for
+ VirtIO-net USO to machine 8.1
+Date: Mon, 27 May 2024 10:24:25 +0300
+Message-Id: <20240527072435.52812-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,57 +61,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: donsheng <dongsheng.x.zhang@intel.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-This bug fix addresses the incorrect return value of kvm_hv_handle_exit for
-KVM_EXIT_HYPERV_SYNIC, which should be EXCP_INTERRUPT.
+Migration from an 8.2 or 9.0 binary to an 8.1 binary with machine
+version 8.1 can fail with:
 
-Handling of KVM_EXIT_HYPERV_SYNIC in QEMU needs to be synchronous.
-This means that async_synic_update should run in the current QEMU vCPU
-thread before returning to KVM, returning EXCP_INTERRUPT to guarantee this.
-Returning 0 can cause async_synic_update to run asynchronously.
+> kvm: Features 0x1c0010130afffa7 unsupported. Allowed features: 0x10179bfffe7
+> kvm: Failed to load virtio-net:virtio
+> kvm: error while loading state for instance 0x0 of device '0000:00:12.0/virtio-net'
+> kvm: load of migration failed: Operation not permitted
 
-One problem (kvm-unit-tests's hyperv_synic test fails with timeout error)
-caused by this bug:
+The series
 
-When a guest VM writes to the HV_X64_MSR_SCONTROL MSR to enable Hyper-V SynIC,
-a VM exit is triggered and processed by the kvm_hv_handle_exit function of the
-QEMU vCPU. This function then calls the async_synic_update function to set
-synic->sctl_enabled to true. A true value of synic->sctl_enabled is required
-before creating SINT routes using the hyperv_sint_route_new() function.
+53da8b5a99 virtio-net: Add support for USO features
+9da1684954 virtio-net: Add USO flags to vhost support.
+f03e0cf63b tap: Add check for USO features
+2ab0ec3121 tap: Add USO support to tap device.
 
-If kvm_hv_handle_exit returns 0 for KVM_EXIT_HYPERV_SYNIC, the current QEMU
-vCPU thread may return to KVM and enter the guest VM before running
-async_synic_update. In such case, the hyperv_synic test’s subsequent call to
-synic_ctl(HV_TEST_DEV_SINT_ROUTE_CREATE, ...) immediately after writing to
-HV_X64_MSR_SCONTROL can cause QEMU’s hyperv_sint_route_new() function to return
-prematurely (because synic->sctl_enabled is false).
+only landed in QEMU 8.2, so the compatibility flags should be part of
+machine version 8.1.
 
-If the SINT route is not created successfully, the SINT interrupt will not be
-fired, resulting in a timeout error in the hyperv_synic test.
+Moving the flags unfortunately breaks forward migration with machine
+version 8.1 from a binary without this patch to a binary with this
+patch.
 
-Fixes: 267e071bd6d6 (“hyperv: make overlay pages for SynIC”)
-Suggested-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Dongsheng Zhang <dongsheng.x.zhang@intel.com>
-Message-ID: <20240521200114.11588-1-dongsheng.x.zhang@intel.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 84d4b72854869821eb89813c195927fdd3078c12)
+Fixes: 53da8b5a99 ("virtio-net: Add support for USO features")
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+(cherry picked from commit 9710401276a0eb2fc6d467d9abea1f5e3fe2c362)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
-index e3ac978648..0a2e2a07e9 100644
---- a/target/i386/kvm/hyperv.c
-+++ b/target/i386/kvm/hyperv.c
-@@ -81,7 +81,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
-          */
-         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 3c08a894fb..f5408d981a 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -37,15 +37,15 @@ GlobalProperty hw_compat_8_1[] = {
+     { "ramfb", "x-migrate", "off" },
+     { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
+     { "igb", "x-pcie-flr-init", "off" },
++    { TYPE_VIRTIO_NET, "host_uso", "off"},
++    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
++    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
+ };
+ const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
  
--        return 0;
-+        return EXCP_INTERRUPT;
-     case KVM_EXIT_HYPERV_HCALL: {
-         uint16_t code = exit->u.hcall.input & 0xffff;
-         bool fast = exit->u.hcall.input & HV_HYPERCALL_FAST;
+ GlobalProperty hw_compat_8_0[] = {
+     { "migration", "multifd-flush-after-each-section", "on"},
+     { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
+-    { TYPE_VIRTIO_NET, "host_uso", "off"},
+-    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
+-    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
+ };
+ const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+ 
 -- 
 2.39.2
 
