@@ -2,87 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DC08CF9B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE878CF9C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:12:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUPW-0000Ov-PM; Mon, 27 May 2024 03:04:46 -0400
+	id 1sBUVd-0003dO-Ke; Mon, 27 May 2024 03:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sBUPN-0000LE-Id; Mon, 27 May 2024 03:04:37 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sBUPL-0002QL-P1; Mon, 27 May 2024 03:04:37 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6f8ea3e9543so2268707b3a.2; 
- Mon, 27 May 2024 00:04:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716793474; x=1717398274; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OkRTKUuLy+20YEprZvh0a0McG/3Sumb6XN5f4D5Erbo=;
- b=m+DchKSDI1qCG1B8rSOf1kZnVPdeJIeYHNMFWfNNlhAPHCMY9NJwefXVp5M2sqfffb
- vuKoEosIwgadTzGiB81qW+jQ0+aUJcXEMhawZDx9Ad2c340amayMPtCrOpFOIXNyhf/R
- gAQcUa0vjwTTW5EjYD9guW78YKWT1zcvAVv7WH2zh9LQTnLRINrzD4F2XBGy+QgYPjZm
- /NA47F2S5/BpMbcPY0FWmudM0W2O9mO2vc/hNkzShIScD666FNch/6+dUxLKZnlDkpjY
- GO3xPgZogxIxcFfx4IVyF9Gvq7FI5K596uqv10bihq9wHIBA7WKHA2g9lzPjC7i/Z842
- 1wBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716793474; x=1717398274;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=OkRTKUuLy+20YEprZvh0a0McG/3Sumb6XN5f4D5Erbo=;
- b=e1RsKFd/SHm6ddyZhhmroMfXbp4FnvRnAwNeB7Bjzs/Xxpuk8oRyQz9w0ilKsQWyeP
- XEGVgm7D9ydQ7VG/knmlZVHIOsH04iy+58znOc00q827uYzZ98GD+JuUoHAUYKIsEJWl
- mCOPvxaGDC8ouroBPsO1jHt3x/xAtVbV5d9+gzhW/bdti1sLnKwZpFP283PjWD3ZQc0I
- C6J12YnHRN9+i/SiTCsldWxwE2Bqt0LRyI69M2WPPhLtTrjs+Cyt1H2ZBl1Oy90NS3O/
- wVtc4Gx8P4JuIwbStqWXlFCNaxt0TdPPXK55YDPjiXXNEQmbgAA44KndnxNrOxoNzNnt
- GuaA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVcp89JS+Y2OXKcx+V8eSGjQUJ8ZjTT5Q8HOggCLASyO4GZ6pX/f1pi+Xb9udibC0QmSNKi8PB2CmS2YZKjaUUjsp0fGGY=
-X-Gm-Message-State: AOJu0YztNInovLbNVr/mw5p/i6HZNlAQQkfV/8Z8FHgDDbIe6PC2Wrdu
- aKZ4U1p6wTNkRJQYL+jOrd7D4DbCHtGDzDRQbJTi1ddyPtEb/jYV
-X-Google-Smtp-Source: AGHT+IHYsCCq6xOCRUREuZOst4Vqlf46jEuJzc8iPyHCtu+Eqjs25z/Visquu2VgHFCPpZ6WN1jjSw==
-X-Received: by 2002:a05:6a20:9f03:b0:1aa:6167:b6d6 with SMTP id
- adf61e73a8af0-1b212e20d21mr10848456637.42.1716793473682; 
- Mon, 27 May 2024 00:04:33 -0700 (PDT)
-Received: from localhost ([1.146.73.168]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c967ad7sm53539885ad.136.2024.05.27.00.04.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 00:04:33 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sBUVa-0003ay-HQ; Mon, 27 May 2024 03:11:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sBUVY-0003QR-Kp; Mon, 27 May 2024 03:11:02 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44R77Tm1008474; Mon, 27 May 2024 07:10:54 GMT
+DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
+ _d=3Dibm.com; _h=3Dcc?=
+ =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:message-id:mi?=
+ =?UTF-8?Q?me-version:subject:to;_s=3Dpp1;_bh=3DNWHwRz3bxTbfgrvGvQqDoswFR3?=
+ =?UTF-8?Q?uwAP5W6OoXAIJ4xcI=3D;_b=3DTH6nqrCWxAbny/Hz3GNbDs9x/8PRwdrCJB52E?=
+ =?UTF-8?Q?KBs2JK0cXBvdpiYfoWiDajw8H+UOHO7_fZ6hBD78ZtfkldgfqYwA63YSxiFkoMg?=
+ =?UTF-8?Q?xJO+AjlT4u/eaRKv9iZFxykNoh8Nl8QNhQrNz_zWFwAoIb2K/kO6vbEpJrCBItd?=
+ =?UTF-8?Q?a2Uy5EV+Et2YCtgJ/AoS/hYTmuWDBGgNOVYOO2SGpt6_MJZ+/UXOWbgPF8dFz3s?=
+ =?UTF-8?Q?5qQyDpm2W5P/FdQxlLrWnahRKJMll8WTVMeXanK2lwGBZ66MX_fijXKiMMEyKXz?=
+ =?UTF-8?Q?pyNw1/Qr2cGGMabxc+tVRypM2X0c5Xa8i/0rl2jIcG3fjTW0kQggbqs_Nw=3D?=
+ =?UTF-8?Q?=3D_?=
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycngng0ad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2024 07:10:54 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44R7As2l013931;
+ Mon, 27 May 2024 07:10:54 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycngng0a8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2024 07:10:53 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44R5s8JE032078; Mon, 27 May 2024 07:10:52 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybutkyc96-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2024 07:10:52 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44R7AkPU37486990
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 May 2024 07:10:48 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BCB8520043;
+ Mon, 27 May 2024 07:10:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6D5020040;
+ Mon, 27 May 2024 07:10:44 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
+ [9.179.2.64]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 27 May 2024 07:10:44 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
+Subject: [PATCH v3 00/11] Power11 support for QEMU
+Date: Mon, 27 May 2024 12:40:31 +0530
+Message-ID: <20240527071042.489540-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.45.1
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 May 2024 17:04:25 +1000
-Message-Id: <D1K8HPYOSEZN.9TWVXUFHPPO3@gmail.com>
-Cc: <qemu-s390x@nongnu.org>, "Halil Pasic" <pasic@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, "David Hildenbrand"
- <david@redhat.com>, "Thomas Huth" <thuth@redhat.com>, "Peter Xu"
- <peterx@redhat.com>, "Fabiano Rosas" <farosas@suse.de>, "Laurent Vivier"
- <lvivier@redhat.com>, "Paolo Bonzini" <pbonzini@redhat.com>,
- <qemu-devel@nongnu.org>
-Subject: Re: [RFC PATCH 2/3] tests/qtest/migration-test: enable on s390x
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Prasad Pandit" <ppandit@redhat.com>
-X-Mailer: aerc 0.17.0
-References: <20240525131241.378473-1-npiggin@gmail.com>
- <20240525131241.378473-3-npiggin@gmail.com>
- <CAE8KmOwYPf_1rX_An0K5gncDAC7V5jvR735tEAomVJiVxOeyTg@mail.gmail.com>
-In-Reply-To: <CAE8KmOwYPf_1rX_An0K5gncDAC7V5jvR735tEAomVJiVxOeyTg@mail.gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ycCtJdR3Ldu8Dtnf6genxIoAo1kDgdJV
+X-Proofpoint-GUID: xb6DD0_8Su9KcTPMLPZOek0TxePXzsGE
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-26_09,2024-05-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0
+ clxscore=1011 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2405010000 definitions=main-2405270057
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,77 +114,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon May 27, 2024 at 3:46 PM AEST, Prasad Pandit wrote:
-> Hi,
->
-> On Sat, 25 May 2024 at 18:44, Nicholas Piggin <npiggin@gmail.com> wrote:
-> > s390x is more stable now. Enable it.
-> >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> > ---
-> >  tests/qtest/migration-test.c | 12 ------------
-> >  1 file changed, 12 deletions(-)
-> >
-> > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.=
-c
-> > index 94d5057857..7987faaded 100644
-> > --- a/tests/qtest/migration-test.c
-> > +++ b/tests/qtest/migration-test.c
-> > @@ -3428,16 +3428,6 @@ int main(int argc, char **argv)
-> >      migration_test_add("/migration/analyze-script", test_analyze_scrip=
-t);
-> >  #endif
-> >
-> > -    /*
-> > -     * On s390x, the test seems to be touchy with TCG, perhaps due to =
-race
-> > -     * conditions on dirty bits, so disable it there until the problem=
-s are
-> > -     * resolved.
-> > -     */
->
->     -> https://lists.nongnu.org/archive/html/qemu-devel/2024-05/msg04774.=
-html
->
-> * Above patch (not reviewed yet) adds comment about sporadic problems
-> on s390x, and this patch says s390x is stable now? It'll help to
-> mention in the commit log - what changed to make it stable in 1 day.
+Overview
+============
 
-Patch 1 of this series.
+Add support for Power11 pseries and powernv machine types, to emulate VMs
+running on Power11.
 
-> * IIUC, this and the ppc64 patch above enable 'migration-test' for
-> s390x and ppc64 platforms, when KVM is not available for them? ie.
-> When running s390x & ppc64 migration-tests with TCG on non s390x or
-> non-ppc64 machines, right? Maybe the commit message could say
-> something to the effect of - enable s390x and ppc64 'migration-test'
-> to run with TCG across platforms where KVM for s390x  OR  KVM for
-> ppc64 is not available.
+As Power11 core is same as Power10, hence much of the code has been reused from
+Power10.
 
-Yes they should be called "enable for TCG" indeed.
+Power11 was added in Linux in:
+  commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
 
-> > -    if (g_str_equal(arch, "s390x") && !has_kvm) {
-> > -        g_test_message("Skipping tests: s390x host with KVM is require=
-d");
-> > -        goto test_add_done;
-> > -    }
-> > -
-> >      if (is_x86) {
-> >          migration_test_add("/migration/precopy/unix/suspend/live",
-> >                             test_precopy_unix_suspend_live);
-> > @@ -3619,8 +3609,6 @@ int main(int argc, char **argv)
-> >                             test_vcpu_dirty_limit);
-> >      }
-> >
-> > -test_add_done:
-> > -
-> >      ret =3D g_test_run();
-> >
-> >      g_assert_cmpint(ret, =3D=3D, 0);
-> > --
->
-> * Otherwise, the change looks okay to enable 'migration-test' for
-> s390x with TCG IIUC.
+Git Tree for Testing
+====================
 
-Thanks,
-Nick
+QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v3
+
+Has been tested with following cases:
+* '-M pseries' / '-M pseries -cpu Power11'
+* '-M powernv' / '-M powernv10' / '-M powernv11'
+* '-smp' option tested
+* with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
+* with/without device 'virtio-scsi-pci'
+* with/without -kernel and -drive with qcow_file
+
+skiboot with Power11 support: https://github.com/maheshsal/skiboot/tree/upstream_power11
+
+Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
+
+Note: This patch series does not add tests as of now, and will be done as
+soon as skiboot support for Power11 gets merged, and op-build adds a
+release for Power11
+
+Changelog
+=========
+v3:
+  + patch #1: version power11 as power11_v2.0
+  + patch #2: split target hw/pseries code into patch #2
+  + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
+  + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
+  + patch #6-#11: no change
+  - remove commit to make Power11 as default
+
+v2:
+  + split powernv patch into homer,lpc,occ,psi,sbe
+  + reduce code duplication by reusing power10 code
+  + make power11 as default
+  + rebase on qemu upstream/master
+  + add more information in commit descriptions
+  + update docs
+  + update skiboot.lid
+
+Aditya Gupta (11):
+  ppc: Add Power11 DD2.0 processor
+  ppc/pseries: Add Power11 cpu type
+  target/ppc: Introduce 'PowerPCCPUClass::logical_pvr'
+  target/ppc: Fix regression due to Power10 and Power11 having same PCR
+  ppc/pnv: Add a Power11 Pnv11Chip, and a Power11 Machine
+  ppc/pnv: Add HOMER for POWER11
+  ppc/pnv: Add a LPC controller for POWER11
+  ppc/pnv: Add OCC for Power11
+  ppc/pnv: Add a PSI bridge model for Power11
+  ppc/pnv: Add SBE model for Power11
+  ppc/pnv: Update skiboot.lid to support Power11
+
+ docs/system/ppc/powernv.rst |   9 +--
+ docs/system/ppc/pseries.rst |   6 +-
+ hw/ppc/pnv.c                | 119 ++++++++++++++++++++++++++++++++++--
+ hw/ppc/pnv_core.c           |  11 ++++
+ hw/ppc/pnv_homer.c          |   8 +++
+ hw/ppc/pnv_lpc.c            |  14 +++++
+ hw/ppc/pnv_occ.c            |  14 +++++
+ hw/ppc/pnv_psi.c            |  24 ++++++++
+ hw/ppc/pnv_sbe.c            |  15 +++++
+ hw/ppc/spapr_cpu_core.c     |   1 +
+ include/hw/ppc/pnv.h        |   5 ++
+ include/hw/ppc/pnv_chip.h   |   7 +++
+ include/hw/ppc/pnv_core.h   |   1 +
+ include/hw/ppc/pnv_homer.h  |   3 +
+ include/hw/ppc/pnv_lpc.h    |   4 ++
+ include/hw/ppc/pnv_occ.h    |   2 +
+ include/hw/ppc/pnv_psi.h    |   2 +
+ include/hw/ppc/pnv_sbe.h    |   2 +
+ pc-bios/skiboot.lid         | Bin 2527328 -> 2527328 bytes
+ target/ppc/compat.c         |  11 ++++
+ target/ppc/cpu-models.c     |   3 +
+ target/ppc/cpu-models.h     |   3 +
+ target/ppc/cpu.h            |   1 +
+ target/ppc/cpu_init.c       | 107 ++++++++++++++++++++++++++++++++
+ 24 files changed, 361 insertions(+), 11 deletions(-)
+
+-- 
+2.45.1
+
 
