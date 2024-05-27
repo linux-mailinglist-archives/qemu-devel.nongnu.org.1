@@ -2,43 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417028CFA25
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ADD8CFA2B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:31:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUj3-0007mc-FE; Mon, 27 May 2024 03:24:57 -0400
+	id 1sBUjt-0008QB-TY; Mon, 27 May 2024 03:25:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUiv-0007hR-SV; Mon, 27 May 2024 03:24:51 -0400
+ id 1sBUix-0007iJ-QA; Mon, 27 May 2024 03:24:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUis-0006Bs-WC; Mon, 27 May 2024 03:24:49 -0400
+ id 1sBUiv-0006DE-Up; Mon, 27 May 2024 03:24:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3CE356A4C2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4CE286A4C3;
  Mon, 27 May 2024 10:25:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 78A18D845F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8A7F3D8460;
  Mon, 27 May 2024 10:24:35 +0300 (MSK)
-Received: (nullmailer pid 52884 invoked by uid 1000);
+Received: (nullmailer pid 52887 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Mattias Nissler <mnissler@rivosinc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Jagannathan Raman <jag.raman@oracle.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 05/21] hw/remote/vfio-user: Fix config space access
- byte order
-Date: Mon, 27 May 2024 10:24:15 +0300
-Message-Id: <20240527072435.52812-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Zhao Liu <zhao1.liu@intel.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 06/21] target/i386: fix operand size for DATA16 REX.W
+ POPCNT
+Date: Mon, 27 May 2024 10:24:16 +0300
+Message-Id: <20240527072435.52812-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,43 +62,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mattias Nissler <mnissler@rivosinc.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-PCI config space is little-endian, so on a big-endian host we need to
-perform byte swaps for values as they are passed to and received from
-the generic PCI config space access machinery.
+According to the manual, 32-bit vs 64-bit is governed by REX.W
+and REX ignores the 0x66 prefix.  This can be confirmed with this
+program:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Jagannathan Raman <jag.raman@oracle.com>
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
-Message-ID: <20240507094210.300566-6-mnissler@rivosinc.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit e6578f1f68a0e90789a841ada532c3e494c9a04c)
+    #include <stdio.h>
+    int main()
+    {
+       int x = 0x12340000;
+       int y;
+       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
+    }
+
+which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
+on QEMU.
+
+Cc: qemu-stable@nongnu.org
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 41c685dc59bb611096f3bb6a663cfa82e4cba97b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index 8b10c32a3c..8b708422fe 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-     while (bytes > 0) {
-         len = (bytes > pci_access_width) ? pci_access_width : bytes;
-         if (is_write) {
--            memcpy(&val, ptr, len);
-+            val = ldn_le_p(ptr, len);
-             pci_host_config_write_common(o->pci_dev, offset,
-                                          pci_config_size(o->pci_dev),
-                                          val, len);
-@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-         } else {
-             val = pci_host_config_read_common(o->pci_dev, offset,
-                                               pci_config_size(o->pci_dev), len);
--            memcpy(ptr, &val, len);
-+            stn_le_p(ptr, len, val);
-             trace_vfu_cfg_read(offset, val);
-         }
-         offset += len;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 6ca4d791ab..47d2d1bb16 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -420,16 +420,6 @@ static inline MemOp mo_stacksize(DisasContext *s)
+     return CODE64(s) ? MO_64 : SS32(s) ? MO_32 : MO_16;
+ }
+ 
+-/* Select only size 64 else 32.  Used for SSE operand sizes.  */
+-static inline MemOp mo_64_32(MemOp ot)
+-{
+-#ifdef TARGET_X86_64
+-    return ot == MO_64 ? MO_64 : MO_32;
+-#else
+-    return MO_32;
+-#endif
+-}
+-
+ /* Select size 8 if lsb of B is clear, else OT.  Used for decoding
+    byte vs word opcodes.  */
+ static inline MemOp mo_b_d(int b, MemOp ot)
+@@ -6780,12 +6770,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         modrm = x86_ldub_code(env, s);
+         reg = ((modrm >> 3) & 7) | REX_R(s);
+ 
+-        if (s->prefix & PREFIX_DATA) {
+-            ot = MO_16;
+-        } else {
+-            ot = mo_64_32(dflag);
+-        }
+-
++        ot = dflag;
+         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
+         gen_extu(ot, s->T0);
+         tcg_gen_mov_tl(cpu_cc_src, s->T0);
 -- 
 2.39.2
 
