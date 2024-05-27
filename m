@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30ED28CFF0B
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 13:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BB88CFF0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 13:32:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBYaB-00051k-Fa; Mon, 27 May 2024 07:32:03 -0400
+	id 1sBYZq-0004sq-Lq; Mon, 27 May 2024 07:31:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sBYZo-0004s6-KJ
- for qemu-devel@nongnu.org; Mon, 27 May 2024 07:31:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sBYZn-0004rU-9L
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 07:31:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sBYZl-0001Oe-Pw
- for qemu-devel@nongnu.org; Mon, 27 May 2024 07:31:40 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sBYZl-0001Ok-Q6
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 07:31:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716809496;
+ s=mimecast20190719; t=1716809497;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=60cRWFZoJmzp2R5J/UmL7L3ILwxklIPSAGWkNk9aSCA=;
- b=bfo69NdL+95fwkMO18vE8ztvkoSfLvtoJkzKC4v5Ho8BYytFEt79ZAILk2ruaXxTjmIAZ7
- hHdBBUMeBNRHLYIJC/HjcBlTD6dYUWKiytbN8GzGnbLPm1uqHYTkpY7xV27yFpbbVG0+Pr
- 10JslvbwbrRqKNdz3mJzMj/2dk2jYKQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-FJt7BHfvN7SqxcNFt03SjQ-1; Mon,
- 27 May 2024 07:31:33 -0400
-X-MC-Unique: FJt7BHfvN7SqxcNFt03SjQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=LVl/3RlbGuSyK2JmZR32QsIwXQ4iTQ3frlv9Hx6VZq0=;
+ b=UhetkfGFGJe46sBQZ3gwg3Ew1m/c75GtpsiE8rd8M7UAFjZdnFS7ah/Tzfdw04mKtKNqkm
+ VjNC7Fw143zIT+Sc5313+I7eSdLUfzlCKAqRYbSUSVpcjdf1toKtqQEhCnnU5Aom0FkCDK
+ x47UxAvFC5AZuwBwb04F7rgYYnkAbSI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-516-n9DC4fGMPhC1S7M_BmXAuw-1; Mon, 27 May 2024 07:31:33 -0400
+X-MC-Unique: n9DC4fGMPhC1S7M_BmXAuw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C183380670C;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EF25185A783;
  Mon, 27 May 2024 11:31:33 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E9D2140004D;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E9ABEC15BED;
  Mon, 27 May 2024 11:31:32 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E6CB221E6697; Mon, 27 May 2024 13:31:31 +0200 (CEST)
+ id E99DD21E6601; Mon, 27 May 2024 13:31:31 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/9] dump/win_dump: Improve error messages on write error
-Date: Mon, 27 May 2024 13:31:24 +0200
-Message-ID: <20240527113131.2054486-3-armbru@redhat.com>
+Subject: [PULL 3/9] block/vmdk: Improve error messages on extent write error
+Date: Mon, 27 May 2024 13:31:25 +0200
+Message-ID: <20240527113131.2054486-4-armbru@redhat.com>
 In-Reply-To: <20240527113131.2054486-1-armbru@redhat.com>
 References: <20240527113131.2054486-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,71 +81,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-create_win_dump() and write_run report qemu_write_full() failure to
-their callers as
+vmdk_init_extent() reports blk_co_pwrite() failure to its caller as
 
     An IO error has occurred
 
-The errno set by qemu_write_full() is lost.
+The errno code returned by blk_co_pwrite() is lost.
 
 Improve this to
 
-    win-dump: failed to write header: <description of errno>
-
-and
-
-    win-dump: failed to save memory: <description of errno>
-
-This matches how dump.c reports similar errors.
+    failed to write VMDK <what>: <description of errno>
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240513141703.549874-3-armbru@redhat.com>
+Message-ID: <20240513141703.549874-4-armbru@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- dump/win_dump.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block/vmdk.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/dump/win_dump.c b/dump/win_dump.c
-index b7bfaff379..0e4fe692ce 100644
---- a/dump/win_dump.c
-+++ b/dump/win_dump.c
-@@ -12,7 +12,6 @@
- #include "sysemu/dump.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 3b82979fdf..78f6433607 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -28,7 +28,6 @@
+ #include "block/block_int.h"
+ #include "sysemu/block-backend.h"
+ #include "qapi/qmp/qdict.h"
 -#include "qapi/qmp/qerror.h"
- #include "exec/cpu-defs.h"
- #include "hw/core/cpu.h"
- #include "qemu/win_dump_defs.h"
-@@ -52,6 +51,7 @@ static size_t write_run(uint64_t base_page, uint64_t page_count,
-     uint64_t addr = base_page << TARGET_PAGE_BITS;
-     uint64_t size = page_count << TARGET_PAGE_BITS;
-     uint64_t len, l;
-+    int eno;
-     size_t total = 0;
- 
-     while (size) {
-@@ -65,9 +65,10 @@ static size_t write_run(uint64_t base_page, uint64_t page_count,
-         }
- 
-         l = qemu_write_full(fd, buf, len);
-+        eno = errno;
-         cpu_physical_memory_unmap(buf, addr, false, len);
-         if (l != len) {
--            error_setg(errp, QERR_IO_ERROR);
-+            error_setg_errno(errp, eno, "win-dump: failed to save memory");
-             return 0;
-         }
- 
-@@ -459,7 +460,7 @@ void create_win_dump(DumpState *s, Error **errp)
- 
-     s->written_size = qemu_write_full(s->fd, h, hdr_size);
-     if (s->written_size != hdr_size) {
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+@@ -2278,12 +2277,12 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+     /* write all the data */
+     ret = blk_co_pwrite(blk, 0, sizeof(magic), &magic, 0);
+     if (ret < 0) {
 -        error_setg(errp, QERR_IO_ERROR);
-+        error_setg_errno(errp, errno, "win-dump: failed to write header");
-         goto out_restore;
++        error_setg_errno(errp, -ret, "failed to write VMDK magic");
+         goto exit;
+     }
+     ret = blk_co_pwrite(blk, sizeof(magic), sizeof(header), &header, 0);
+     if (ret < 0) {
+-        error_setg(errp, QERR_IO_ERROR);
++        error_setg_errno(errp, -ret, "failed to write VMDK header");
+         goto exit;
      }
  
+@@ -2303,7 +2302,7 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+     ret = blk_co_pwrite(blk, le64_to_cpu(header.rgd_offset) * BDRV_SECTOR_SIZE,
+                         gd_buf_size, gd_buf, 0);
+     if (ret < 0) {
+-        error_setg(errp, QERR_IO_ERROR);
++        error_setg_errno(errp, -ret, "failed to write VMDK grain directory");
+         goto exit;
+     }
+ 
+@@ -2315,7 +2314,8 @@ vmdk_init_extent(BlockBackend *blk, int64_t filesize, bool flat, bool compress,
+     ret = blk_co_pwrite(blk, le64_to_cpu(header.gd_offset) * BDRV_SECTOR_SIZE,
+                         gd_buf_size, gd_buf, 0);
+     if (ret < 0) {
+-        error_setg(errp, QERR_IO_ERROR);
++        error_setg_errno(errp, -ret,
++                         "failed to write VMDK backup grain directory");
+     }
+ 
+     ret = 0;
 -- 
 2.45.0
 
