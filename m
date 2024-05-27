@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9A28D00B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 14:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 478B18CFF9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 14:10:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBZvh-0000p9-Nc; Mon, 27 May 2024 08:58:21 -0400
+	id 1sBZ9Y-0002nx-J5; Mon, 27 May 2024 08:08:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jojing64@gmail.com>)
- id 1sBUOM-0008KG-8R
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:03:34 -0400
-Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jojing64@gmail.com>)
- id 1sBUOK-0002LN-4t
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:03:34 -0400
-Received: by mail-pg1-x534.google.com with SMTP id
- 41be03b00d2f7-681ad081695so2015136a12.3
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 00:03:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716793409; x=1717398209; darn=nongnu.org;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Jw+d+zreaVG0HWwbDpy9TPgRKSIWWaLMGiALDR88rQs=;
- b=Tlrk1a2hjU64JasiCkeNvXIvS9MXdUZPyEwy5wAOoi1mK3hdtTFflOyNadC+fsNh3Y
- 8z2lN1nicxCftIEFnBJ2s3unaajergwHhO7X5jCr61nHRF7VWpyL2MEh0s1FzSU9UQos
- /MdOgEN1eq4CjwtAz8JEj5yYKAp8xQjPfzEXzYwqB2gA90DLdtGlSIqq2XKVgQA5Urw+
- I9jYEx1IcMB5SrM+aldI7TweRm2n+XsUf6gW2e+cpxFaxqrT7eLbDMKQk1OzwDUtEgC5
- E6FjWDiW9ez3tdvaWNPO0dwqLB+zziGSpPF5BJkIp8WE0V2KalpAlEqe43jBNg5yrPcx
- ii2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716793409; x=1717398209;
- h=content-transfer-encoding:subject:from:to:content-language
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Jw+d+zreaVG0HWwbDpy9TPgRKSIWWaLMGiALDR88rQs=;
- b=t/fFTObbzz6sr4v2Yay9arDeDYo33UpGr+Q+OmFeltbOI3Odo6KRLGzJ+k82mrBzsK
- Z3eYg4vfKe/iFJ7xqepdH4P1r+eJzvYYk4u6JyYS8hoRxAVtuMjU5N23VO06pOnOhmAw
- BBbOy3EYq9CLereWX7UbB43IhxsO5+obMs4tDIJkZytP6seH9LW6LCsM5MU+neAENsuE
- +bH1TVUhhHTihbXqp40YVFfgnw8UlYSa9IOF9yy5jxM0H9mg9lKo/QlYD1lNOMqsKwWd
- Pp7PDJaLuebHabdXslYJMmn2ev0/JT1Cq+n/3o+y6cnYH+6aKnErIJGpwK5Epnot45aV
- d34w==
-X-Gm-Message-State: AOJu0YwrS4aDcDqsSiCopuo95tS6hV0lG92yzSd3WT0VQzrizcf/pZkN
- ewyjwqC8k9xY2kQKmezSYFS/x2fz4S8C+JFqeoYmK5tn7n1h0OQcMOchCw==
-X-Google-Smtp-Source: AGHT+IHb8DSJCTlEnF7nm7gM2l5UE6KJAu4fFB5F8Ed634J+SYfNf77ggkQSBF6mzhzz9TcgDujl7w==
-X-Received: by 2002:a05:6a20:9707:b0:1b0:2cae:4622 with SMTP id
- adf61e73a8af0-1b212f0ea28mr7563046637.42.1716793409055; 
- Mon, 27 May 2024 00:03:29 -0700 (PDT)
-Received: from ?IPV6:2001:569:590e:4600:1ea1:182:f195:fb52?
- ([2001:569:590e:4600:1ea1:182:f195:fb52])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fc05ab4asm4322102b3a.59.2024.05.27.00.03.28
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 00:03:28 -0700 (PDT)
-Message-ID: <8b639179-e567-469c-bd04-ee8dee12d7d2@gmail.com>
-Date: Mon, 27 May 2024 00:03:27 -0700
+ (Exim 4.90_1) (envelope-from <bjorn@kernel.org>)
+ id 1sBZ9S-0002n4-PB; Mon, 27 May 2024 08:08:32 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <bjorn@kernel.org>)
+ id 1sBZ9P-0000Jj-0r; Mon, 27 May 2024 08:08:30 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 3A91661539;
+ Mon, 27 May 2024 12:08:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D366C2BBFC;
+ Mon, 27 May 2024 12:08:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1716811704;
+ bh=qIMa/xuUiwpJX/jPycyINr04sXFpaWfLmm6i3tz96OA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=DsIu0M6t4mKzhocpq7CKET8wsgy16c2SfcPxza4FjbL6mZZGmnO4G7lPFPtqC1rKO
+ kkNbO+INSdsb2irymKh0EKk3rvYCJZ4LVu9JI/Oc1d15EF+dyPer5zoSz+d7KuyPNT
+ TSyI+4ZRLqNZe0VfIeFm7DITvnLyq6PYBEkflhlBmwyDULp1Ce+R1pCOWIhnF9FDOS
+ 844ttYaw4w/5jmaGUAFCnVZ9GbXwjHwxch5fYDR7AE6xea3v2k4F0A9wX5aCg+uqN+
+ oi3wly/BVP/4jjfkIyK7oZWfiWGXmzcsad9XBOHSPQcMcbqtctqr1L4JGa+uGlwfXl
+ Lc4xflh2zSFlA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>, Bin
+ Meng <bmeng.cn@gmail.com>, Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>, Atish Patra
+ <atishp@atishpatra.org>, Atish Patra <atishp@rivosinc.com>
+Cc: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, Sunil V L
+ <sunilvl@ventanamicro.com>,
+ Santosh Mamila <santosh.mamila@catalinasystems.io>, Chethan Seshadri
+ <Chethan.Seshadri@catalinasystems.io>, Sivakumar Munnangi
+ <siva.munnangi@catalinasystems.io>
+Subject: Re: [PATCH v2 3/3] hw/riscv/virt: Add ACPI GED and PC-DIMM MHP support
+In-Reply-To: <40ae0cb9-1596-4cec-994c-71e0abaa0d1e@ventanamicro.com>
+References: <20240521105635.795211-1-bjorn@kernel.org>
+ <20240521105635.795211-4-bjorn@kernel.org>
+ <40ae0cb9-1596-4cec-994c-71e0abaa0d1e@ventanamicro.com>
+Date: Mon, 27 May 2024 14:08:21 +0200
+Message-ID: <87o78r8nka.fsf@all.your.base.are.belong.to.us>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-From: Jin Cao <jojing64@gmail.com>
-Subject: block snapshot issue with RBD
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
- envelope-from=jojing64@gmail.com; helo=mail-pg1-x534.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=bjorn@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 27 May 2024 08:58:19 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,35 +77,326 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Daniel Henrique Barboza <dbarboza@ventanamicro.com> writes:
 
-I encountered RBD block snapshot issue after doing migration.
+> On 5/21/24 07:56, Bj=C3=B6rn T=C3=B6pel wrote:
+>> From: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+>>=20
+>> Add ACPI GED for the RISC-V "virt" machine, and wire up PC-DIMM memory
+>> hotplugging support. Heavily based/copied from hw/arm/virt.c.
+>>=20
+>> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+>> ---
+>>   hw/riscv/Kconfig           |   3 ++
+>>   hw/riscv/virt-acpi-build.c |  16 ++++++
+>>   hw/riscv/virt.c            | 104 ++++++++++++++++++++++++++++++++++++-
+>>   include/hw/riscv/virt.h    |   6 ++-
+>>   4 files changed, 126 insertions(+), 3 deletions(-)
+>>=20
+>> diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
+>> index 08f82dbb681a..bebe412f2107 100644
+>> --- a/hw/riscv/Kconfig
+>> +++ b/hw/riscv/Kconfig
+>> @@ -56,6 +56,9 @@ config RISCV_VIRT
+>>       select PLATFORM_BUS
+>>       select ACPI
+>>       select ACPI_PCI
+>> +    select MEM_DEVICE
+>> +    select DIMM
+>> +    select ACPI_HW_REDUCED
+>>       select VIRTIO_MEM_SUPPORTED
+>>       select VIRTIO_PMEM_SUPPORTED
+>>=20=20=20
+>> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+>> index 6dc3baa9ec86..61813abdef3f 100644
+>> --- a/hw/riscv/virt-acpi-build.c
+>> +++ b/hw/riscv/virt-acpi-build.c
+>> @@ -27,6 +27,8 @@
+>>   #include "hw/acpi/acpi-defs.h"
+>>   #include "hw/acpi/acpi.h"
+>>   #include "hw/acpi/aml-build.h"
+>> +#include "hw/acpi/memory_hotplug.h"
+>> +#include "hw/acpi/generic_event_device.h"
+>>   #include "hw/acpi/pci.h"
+>>   #include "hw/acpi/utils.h"
+>>   #include "hw/intc/riscv_aclint.h"
+>> @@ -432,6 +434,20 @@ static void build_dsdt(GArray *table_data,
+>>           acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOU=
+RCES * 2);
+>>       }
+>>=20=20=20
+>> +    if (s->acpi_dev) {
+>> +        uint32_t event =3D object_property_get_uint(OBJECT(s->acpi_dev),
+>> +                                                  "ged-event", &error_a=
+bort);
+>> +
+>> +        build_ged_aml(scope, "\\_SB."GED_DEVICE, HOTPLUG_HANDLER(s->acp=
+i_dev),
+>> +                      GED_IRQ, AML_SYSTEM_MEMORY, memmap[VIRT_ACPI_GED]=
+.base);
+>> +
+>> +        if (event & ACPI_GED_MEM_HOTPLUG_EVT) {
+>> +            build_memory_hotplug_aml(scope, ms->ram_slots, "\\_SB", NUL=
+L,
+>> +                                     AML_SYSTEM_MEMORY,
+>> +                                     memmap[VIRT_PCDIMM_ACPI].base);
+>> +        }
+>> +    }
+>> +
+>>       aml_append(dsdt, scope);
+>>=20=20=20
+>>       /* copy AML table into ACPI tables blob and patch header there */
+>> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+>> index 443902f919d2..2e35890187f2 100644
+>> --- a/hw/riscv/virt.c
+>> +++ b/hw/riscv/virt.c
+>> @@ -53,10 +53,13 @@
+>>   #include "hw/pci-host/gpex.h"
+>>   #include "hw/display/ramfb.h"
+>>   #include "hw/acpi/aml-build.h"
+>> +#include "hw/acpi/generic_event_device.h"
+>> +#include "hw/acpi/memory_hotplug.h"
+>>   #include "hw/mem/memory-device.h"
+>>   #include "hw/virtio/virtio-mem-pci.h"
+>>   #include "qapi/qapi-visit-common.h"
+>>   #include "hw/virtio/virtio-iommu.h"
+>> +#include "hw/mem/pc-dimm.h"
+>>=20=20=20
+>>   /* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by =
+QEMU. */
+>>   static bool virt_use_kvm_aia(RISCVVirtState *s)
+>> @@ -84,6 +87,8 @@ static const MemMapEntry virt_memmap[] =3D {
+>>       [VIRT_UART0] =3D        { 0x10000000,         0x100 },
+>>       [VIRT_VIRTIO] =3D       { 0x10001000,        0x1000 },
+>>       [VIRT_FW_CFG] =3D       { 0x10100000,          0x18 },
+>> +    [VIRT_PCDIMM_ACPI] =3D  { 0x10200000, MEMORY_HOTPLUG_IO_LEN },
+>> +    [VIRT_ACPI_GED] =3D     { 0x10210000, ACPI_GED_EVT_SEL_LEN },
+>>       [VIRT_FLASH] =3D        { 0x20000000,     0x4000000 },
+>>       [VIRT_IMSIC_M] =3D      { 0x24000000, VIRT_IMSIC_MAX_SIZE },
+>>       [VIRT_IMSIC_S] =3D      { 0x28000000, VIRT_IMSIC_MAX_SIZE },
+>> @@ -1400,6 +1405,28 @@ static void virt_machine_done(Notifier *notifier,=
+ void *data)
+>>       }
+>>   }
+>>=20=20=20
+>> +static DeviceState *create_acpi_ged(RISCVVirtState *s)
+>> +{
+>> +    DeviceState *dev;
+>> +    MachineState *ms =3D MACHINE(s);
+>> +    uint32_t event =3D 0;
+>> +
+>> +    if (ms->ram_slots) {
+>> +        event |=3D ACPI_GED_MEM_HOTPLUG_EVT;
+>> +    }
+>> +
+>> +    dev =3D qdev_new(TYPE_ACPI_GED);
+>> +    qdev_prop_set_uint32(dev, "ged-event", event);
+>> +    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+>> +
+>> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, s->memmap[VIRT_ACPI_GED].ba=
+se);
+>> +    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, s->memmap[VIRT_PCDIMM_ACPI]=
+.base);
+>> +    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(s->irqc=
+hip[0],
+>> +                                                                GED_IRQ=
+));
+>> +
+>> +    return dev;
+>> +}
+>> +
+>>   static void virt_machine_init(MachineState *machine)
+>>   {
+>>       const MemMapEntry *memmap =3D virt_memmap;
+>> @@ -1612,6 +1639,10 @@ static void virt_machine_init(MachineState *machi=
+ne)
+>>=20=20=20
+>>       gpex_pcie_init(system_memory, pcie_irqchip, s);
+>>=20=20=20
+>> +    if (virt_is_acpi_enabled(s)) {
+>> +        s->acpi_dev =3D create_acpi_ged(s);
+>> +    }
+>> +
+>>       create_platform_bus(s, mmio_irqchip);
+>>=20=20=20
+>>       serial_mm_init(system_memory, memmap[VIRT_UART0].base,
+>> @@ -1752,6 +1783,7 @@ static HotplugHandler *virt_machine_get_hotplug_ha=
+ndler(MachineState *machine,
+>>       MachineClass *mc =3D MACHINE_GET_CLASS(machine);
+>>=20=20=20
+>>       if (device_is_dynamic_sysbus(mc, dev) ||
+>> +        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) ||
+>>           object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI) ||
+>>           object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+>>           return HOTPLUG_HANDLER(machine);
+>> @@ -1759,14 +1791,42 @@ static HotplugHandler *virt_machine_get_hotplug_=
+handler(MachineState *machine,
+>>       return NULL;
+>>   }
+>>=20=20=20
+>> +static void virt_memory_pre_plug(HotplugHandler *hotplug_dev, DeviceSta=
+te *dev,
+>> +                                 Error **errp)
+>> +{
+>> +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(hotplug_dev);
+>> +
+>> +    if (!s->acpi_dev) {
+>> +        error_setg(errp,
+>> +                   "memory hotplug is not enabled: missing acpi-ged dev=
+ice");
+>> +        return;
+>> +    }
+>> +
+>> +    pc_dimm_pre_plug(PC_DIMM(dev), MACHINE(hotplug_dev), NULL, errp);
+>> +}
+>> +
+>
+> Note that we're not doing any aligment checks in this pre_plug(), meaning=
+ that
+> we're kind of accepting whatever the pc-dimm device throw at us.
+>
+> Testing in an AMD x86 machine will force the pc-dimm to be 2Mb aligned:
+>
+> $ ./build/qemu-system-riscv64 -M virt -m 2G,slots=3D4,maxmem=3D8G -nograp=
+hic
+> (...)
+> (qemu) object_add memory-backend-ram,id=3Dram0,size=3D111M
+> (qemu) device_add pc-dimm,id=3Ddimm0,memdev=3Dram0
+> Error: backend memory size must be multiple of 0x200000
+> (qemu) object_del ram0
+>
+> This happens because the DIMM must be aligned with its own backend, in th=
+is case
+> the host memory itself (backends/hostmem.c).
+>
+> There's no guarantee that we'll always run in a host that is mem aligned =
+with the board,
+> so it would be nice to add align checks in virt_memory_pre_plug().
 
-Steps
------
+Indeed! I'll look into that.
 
-1. Start QEMU with:
-./qemu-system-x86_64 -name VM -machine q35 -accel kvm -cpu 
-host,migratable=on -m 2G -boot menu=on,strict=on 
-rbd:image/ubuntu-22.04-server-cloudimg-amd64.raw -net nic -net user 
--cdrom /home/my/path/of/cloud-init.iso -monitor stdio
+>>   static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_de=
+v,
+>>                                               DeviceState *dev, Error **=
+errp)
+>>   {
+>> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+>> +        virt_memory_pre_plug(hotplug_dev, dev, errp);
+>> +    }
+>> +
+>>       if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+>>           virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev=
+), errp);
+>>       }
+>>   }
+>>=20=20=20
+>> +static void virt_memory_plug(HotplugHandler *hotplug_dev,
+>> +                             DeviceState *dev, Error **errp)
+>> +{
+>> +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(hotplug_dev);
+>> +
+>> +    pc_dimm_plug(PC_DIMM(dev), MACHINE(s));
+>> +
+>> +    hotplug_handler_plug(HOTPLUG_HANDLER(s->acpi_dev), dev, &error_abor=
+t);
+>> +}
+>> +
+>>   static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+>>                                           DeviceState *dev, Error **errp)
+>>   {
+>> @@ -1785,16 +1845,36 @@ static void virt_machine_device_plug_cb(HotplugH=
+andler *hotplug_dev,
+>>           create_fdt_virtio_iommu(s, pci_get_bdf(PCI_DEVICE(dev)));
+>>       }
+>>=20=20=20
+>> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+>> +        virt_memory_plug(hotplug_dev, dev, errp);
+>> +    }
+>> +
+>>       if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+>>           virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), e=
+rrp);
+>>       }
+>>   }
+>>=20=20=20
+>> +static void virt_dimm_unplug_request(HotplugHandler *hotplug_dev,
+>> +                                     DeviceState *dev, Error **errp)
+>> +{
+>> +    RISCVVirtState *s =3D RISCV_VIRT_MACHINE(hotplug_dev);
+>> +
+>> +    if (!s->acpi_dev) {
+>> +        error_setg(errp,
+>> +                   "memory hotplug is not enabled: missing acpi-ged dev=
+ice");
+>> +        return;
+>> +    }
+>> +
+>> +    hotplug_handler_unplug_request(HOTPLUG_HANDLER(s->acpi_dev), dev, e=
+rrp);
+>> +}
+>> +
+>
+> I'm unsure if we're ready to support both hotplug and hot-unplug, but I t=
+ested anyway.
+> Hotplug seems to work but hot-unplug doesn't:
+>
+> $ ./build/qemu-system-riscv64 -M virt -m 2G,slots=3D4,maxmem=3D8G -nograp=
+hic
+> (...)
+> (qemu) object_add memory-backend-ram,id=3Dram0,size=3D112M
+> (qemu) device_add pc-dimm,id=3Ddimm0,memdev=3Dram0
+> (qemu)
+> (qemu) info memory-devices
+> Memory device [dimm]: "dimm0"
+>    addr: 0x100000000
+>    slot: 0
+>    node: 0
+>    size: 117440512
+>    memdev: /objects/ram0
+>    hotplugged: true
+>    hotpluggable: true
+> (qemu)
+> (qemu) device_del dimm0
+> (qemu) object_del ram0
+> Error: object 'ram0' is in use, can not be deleted
+> (qemu) info memory-devices
+> Memory device [dimm]: "dimm0"
+>    addr: 0x100000000
+>    slot: 0
+>    node: 0
+>    size: 117440512
+>    memdev: /objects/ram0
+>    hotplugged: true
+>    hotpluggable: true
+> (qemu)
+>
+> In short: hotplugged a 112Mb DIMM, then tried to remove it. 'device_del' =
+doesn't error
+> out but doesn't let me remove the memory backing created, i.e. the dimm0 =
+device is
+> still around.
+>
+> In a quick digging I see that we're hitting virt_dimm_unplug_request() al=
+l the way
+> down to acpi_memory_unplug_request_cb(), where an ACPI_MEMORY_HOTPLUG_STA=
+TUS is being
+> sent. We never reach virt_dimm_unplug() afterwards, so the PC_DIMM is nev=
+er removed.
+>
+> I'm not acquainted with ACPI enough to say if we're missing stuff in QEMU=
+, or if we
+> need SW to be aware of this ACPI HP event to trigger the release of the d=
+imm, or
+> anything in between.
+>
+> I consider this more as a FYI. If we're up to the point of hotplugging pc=
+-dimms it's
+> already an improvement worth having. Hot-unplugging can come later.
 
-2. Do block snapshot in monitor cmd: snapshot_delete_blkdev_internal. It 
-works as expected: the snapshot is visable with command`rbd snap ls 
-pool_name/image_name`.
+I'll debug this as well!
 
-3. Do pseudo migration with monitor cmd: migrate -d exec:cat>/tmp/vm.out
+Thanks for all the input, Daniel!
 
-4. Do block snapshot again with snapshot_delete_blkdev_internal, then I get:
-    Error: Block format 'raw' used by device 'ide0-hd0' does not support 
-internal snapshots
 
-I was hoping to do the second block snapshot successfully, and it feels 
-abnormal the RBD block snapshot function is disrupted after migration.
-
-BTW, I get the same block snapshot error when I start QEMU with:
-     "-drive format=raw,file=rbd:pool_name/image_name"
-
-My questions is: how could I proceed with RBD block snapshot after the 
-pseudo migration?
+Bj=C3=B6rn
 
