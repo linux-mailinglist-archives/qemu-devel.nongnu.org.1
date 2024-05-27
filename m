@@ -2,134 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217DE8D064C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFD78D066C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:42:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBcNr-000263-M4; Mon, 27 May 2024 11:35:35 -0400
+	id 1sBcTO-0004BN-CR; Mon, 27 May 2024 11:41:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBcNo-00025I-RU
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:35:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBcNf-0003GA-8M
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:35:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716824121;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=6H5AjAejZLjqK038mZtyyNtif1gRxmmZdXt0xXnlTbs=;
- b=XBdfP00VJO6ryCJGUgl0ZgXf0Hb84JvsOeGDNQW2VJ2aArAiJayT0reTArUasIm59eQ7WI
- Vm51NrNy/Lz84ZdXhu81is2wgkk5sqY5gBX6WSDDCHQXDSVA9uPveJ6Maoe2s7H7C9Itwo
- zHUDBripvq7JBY3CwDUOpHw/XJUX37k=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-mB59xxWaOtyn9vNmhXnGGQ-1; Mon, 27 May 2024 11:35:20 -0400
-X-MC-Unique: mB59xxWaOtyn9vNmhXnGGQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a62e7631309so100689166b.1
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 08:35:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1sBcTM-0004B2-7I
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:41:16 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1sBcTJ-0004iQ-G0
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:41:15 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-5788eaf5320so2037653a12.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 08:41:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1716824472; x=1717429272; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=9IhYPVlWcApAJIz6rVgdm1Mk4Va4rbpI9w76Xh4zH7o=;
+ b=ZWRKY07XusMTFWfHkjtB27/ebt1aAP0ywNBddxLTysx7XwaWkDkVZMEFAemNMdrbx9
+ AD1TB3sT4XdFTolsYkNldY2hTe7R2jZ5o+Tk0vaonMMtCO0PzpAWOTU5yfVq4sD/hqVr
+ XzxxZbTn8NW0EbhLtggigjl4m8o9HhW/PHcKFdDwGOQFbHZ6i7+U7eqdMNZLqCHGpYP8
+ w3izquEAH96NG8irWXuxxq9071QlbyBPSmnh6wZJIXkKHs4vOGn7tvvJExjI9L0pHhb1
+ IOlUkeOXGmvAa9vrhy8RWUd/bDTNvxuXDnLKakmeL+quhTNxTgYBvidKun51Qvx5xnwp
+ Oyrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716824119; x=1717428919;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6H5AjAejZLjqK038mZtyyNtif1gRxmmZdXt0xXnlTbs=;
- b=VZiUX1QbgkJtmaKRMU585F5kBNRrNcqbppCA1892Xy/P0gHGrLdU59ZZYfOj7NnOKM
- pVNtcQOQzEyJTP8w2arFCZgZjCtmkQA0eU1FePhrOdjLr+gap8FgC7G61KAzajuC+A+H
- jSppMrvGCqOvPRl2z7lF9pWSjevV4y7ko3M+tu80PHMadkG8XcWlRQpG6KI9xe6C4i2K
- QANdwaxk2n5N18cF5Y//1NpdHtH+KqN+i4xsRJnVEmy1JaWkFVKn0fd05oBEDOpcTgjR
- TeVsVIj6C0mEO7zoW4ixpduffekyOjBxshgNv5cm9dFLZeUbIL/kiDkoQJWP5cXqPsxO
- +Qzg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWCDMboFnJk8oShRRAtcm4b/sibxHPvVROZiG0LnJ1cDfql+MbaUp9+VWENZCzswOSL9PKLcATTmWjvIL7p6fYXDpNNPuM=
-X-Gm-Message-State: AOJu0YyP6/Bj77CE4PLu+90621VGEDknSnBSj2SCAHwDEdjA3m1Y6xIy
- sChEAegOSDmGBK9FaajYGBnvMOBaratAYmk4a5B6/IfA+FBHyibfm9QdLRw+J0mAB0zIonoA5Ql
- QvXQJ6PedoHKol5+Akw0f6SYURsm4sKcfm9I0c/NO1Hoftb/vTnHX
-X-Received: by 2002:a17:906:b56:b0:a55:5520:f43f with SMTP id
- a640c23a62f3a-a623e8d98cbmr1061451066b.10.1716824118966; 
- Mon, 27 May 2024 08:35:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVPCD/aU7F4z6gDG876JYakhRiGwr0ULv2+yEsDUinJqt6OKC4SC7HeT4fY0xfuZbYpGyanQ==
-X-Received: by 2002:a17:906:b56:b0:a55:5520:f43f with SMTP id
- a640c23a62f3a-a623e8d98cbmr1061448866b.10.1716824118529; 
- Mon, 27 May 2024 08:35:18 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-179-90.web.vodafone.de.
- [109.43.179.90]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a629b6ae617sm350784366b.204.2024.05.27.08.35.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 08:35:18 -0700 (PDT)
-Message-ID: <e46b4172-a647-44cb-9ce5-52723875c9a2@redhat.com>
-Date: Mon, 27 May 2024 17:35:16 +0200
+ d=1e100.net; s=20230601; t=1716824472; x=1717429272;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9IhYPVlWcApAJIz6rVgdm1Mk4Va4rbpI9w76Xh4zH7o=;
+ b=pWLQfLwtD8yp3eVLwbeIrqf80TJIGEhgbz/vCHTYo3V99Sbsk/+6oXi8HhGX8lAiQx
+ juinEQEb50kOW6+RrpTsV05yprif7ivdRNpeWBRN1EYlVvH+F2opJuHBmcHDttHgOqm+
+ 87APi7f+ZWSPnxQMx3wgRx44zbLZp5Q4pItLxyqFTCESfq6yzrCxO8YaNOUA0zI4+ik9
+ C7s3K+Zkbi9fqEX2tdGaj2R3zt3lk+DvLAB8PeqSU2IsMG5STdV6GjZecxLOmsBafq1I
+ vPKzw8X5zgJga/V4J9kAci+eyMaW+U2L9UNUPK25qQMG8w+nWXlrsD1z5RJ0YbxR8FHq
+ Dbhg==
+X-Gm-Message-State: AOJu0Ywu/rVWLcOyEsQKQLKlJKYmnELP/Oy2lZOisr9hNB0ZCQL97eEu
+ 7qdGelZQ71gchqHJ9Wlj4C+bg6BnCw+pXkR7EnBGMiV2nkLTCIQCJ+4P8hohtT0=
+X-Google-Smtp-Source: AGHT+IFAzOoOjpds3KUw3vZvjjSxnKTjQDzP5DU9ZYocFfRpbUKLiSu1QwC7CoCbqE70fnG0DP6+eQ==
+X-Received: by 2002:a50:ba83:0:b0:578:5fcb:1a4e with SMTP id
+ 4fb4d7f45d1cf-5785fcb1bdbmr5534525a12.24.1716824471761; 
+ Mon, 27 May 2024 08:41:11 -0700 (PDT)
+Received: from localhost ([176.74.158.132]) by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-578524b5898sm5965028a12.82.2024.05.27.08.41.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 May 2024 08:41:11 -0700 (PDT)
+Date: Mon, 27 May 2024 17:41:10 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Chao Du <duchao@eswincomputing.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com, 
+ alistair23@gmail.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, 
+ anup@brainfault.org, duchao713@qq.com
+Subject: Re: [PATCH v1 1/4] target/riscv/kvm: add software breakpoints support
+Message-ID: <20240527-48b296b1177d7a6abbf49886@orel>
+References: <20240527021916.12953-1-duchao@eswincomputing.com>
+ <20240527021916.12953-2-duchao@eswincomputing.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scripts/update-linux-headers.sh: Remove temporary
- directory inbetween
-To: Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240527060243.12647-1-thuth@redhat.com>
- <871q5npa89.fsf@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <871q5npa89.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240527021916.12953-2-duchao@eswincomputing.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -145,41 +93,339 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/05/2024 17.04, Cornelia Huck wrote:
-> On Mon, May 27 2024, Thomas Huth <thuth@redhat.com> wrote:
+On Mon, May 27, 2024 at 02:19:13AM GMT, Chao Du wrote:
+> This patch implements insert/remove software breakpoint process:
 > 
->> We are reusing the same temporary directory for installing the headers
->> of all targets, so there could be stale files here when switching from
->> one target to another. Make sure to delete the folder before installing
->> a new set of target headers into it.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   scripts/update-linux-headers.sh | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
->> index 8963c39189..fbf7e119bc 100755
->> --- a/scripts/update-linux-headers.sh
->> +++ b/scripts/update-linux-headers.sh
->> @@ -112,6 +112,7 @@ for arch in $ARCHLIST; do
->>           arch_var=ARCH
->>       fi
->>   
->> +    rm -rf "$hdrdir"
->>       make -C "$linux" O="$blddir" INSTALL_HDR_PATH="$hdrdir" $arch_var=$arch headers_install
->>   
->>       rm -rf "$output/linux-headers/asm-$arch"
+> Add an input parameter for kvm_arch_insert_sw_breakpoint() and
+> kvm_arch_remove_sw_breakpoint() to pass the length information,
+> which helps us to know whether it is a RVC instruction.
+> For some remove cases, we do not have the length info, so we need
+> to judge by ourselves.
 > 
-> Hm. I presume that headers-install gives us the same set of headers
-> outside include/asm for every arch?
+> For RISC-V, GDB treats single-step similarly to breakpoint: add a
+> breakpoint at the next step address, then continue. So this also
+> works for single-step debugging.
+> 
+> Add some stubs which are necessary for building, and will be
+> implemented later.
+> 
+> Signed-off-by: Chao Du <duchao@eswincomputing.com>
+> ---
+>  accel/kvm/kvm-all.c        |  8 ++--
+>  include/sysemu/kvm.h       |  6 ++-
+>  target/arm/kvm.c           |  6 ++-
+>  target/i386/kvm/kvm.c      |  6 ++-
+>  target/mips/kvm.c          |  6 ++-
+>  target/ppc/kvm.c           |  6 ++-
+>  target/riscv/kvm/kvm-cpu.c | 79 ++++++++++++++++++++++++++++++++++++++
+>  target/s390x/kvm/kvm.c     |  6 ++-
+>  8 files changed, 107 insertions(+), 16 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index c0be9f5eed..d27e77dbb2 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3357,7 +3357,7 @@ int kvm_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+>          bp = g_new(struct kvm_sw_breakpoint, 1);
+>          bp->pc = addr;
+>          bp->use_count = 1;
+> -        err = kvm_arch_insert_sw_breakpoint(cpu, bp);
+> +        err = kvm_arch_insert_sw_breakpoint(cpu, bp, len);
+>          if (err) {
+>              g_free(bp);
+>              return err;
+> @@ -3396,7 +3396,7 @@ int kvm_remove_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+>              return 0;
+>          }
+>  
+> -        err = kvm_arch_remove_sw_breakpoint(cpu, bp);
+> +        err = kvm_arch_remove_sw_breakpoint(cpu, bp, len);
+>          if (err) {
+>              return err;
+>          }
+> @@ -3426,10 +3426,10 @@ void kvm_remove_all_breakpoints(CPUState *cpu)
+>      CPUState *tmpcpu;
+>  
+>      QTAILQ_FOREACH_SAFE(bp, &s->kvm_sw_breakpoints, entry, next) {
+> -        if (kvm_arch_remove_sw_breakpoint(cpu, bp) != 0) {
+> +        if (kvm_arch_remove_sw_breakpoint(cpu, bp, 0) != 0) {
+>              /* Try harder to find a CPU that currently sees the breakpoint. */
+>              CPU_FOREACH(tmpcpu) {
+> -                if (kvm_arch_remove_sw_breakpoint(tmpcpu, bp) == 0) {
+> +                if (kvm_arch_remove_sw_breakpoint(tmpcpu, bp, 0) == 0) {
 
-I just double-checked and yes, apart from a file called "a.out.h", the other 
-headers outside of the asm subfolder are the same. So AFAICS there is still 
-a slight chance that we might pick up a wrong file from the asm folder... 
-shall I change the patch to only delete that subfolder? Or is that chance 
-just too small that we can ignore it?
+It's not nice to need to add 'len' to all arch insert/remove sw breakpoint
+implementations, and the fact we have to pass zero sometimes implies it's
+not the right approach.
 
-  Thomas
+>                      break;
+>                  }
+>              }
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index c31d9c7356..340e094ffb 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -391,9 +391,11 @@ struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu,
+>  int kvm_sw_breakpoints_active(CPUState *cpu);
+>  
+>  int kvm_arch_insert_sw_breakpoint(CPUState *cpu,
+> -                                  struct kvm_sw_breakpoint *bp);
+> +                                  struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len);
+>  int kvm_arch_remove_sw_breakpoint(CPUState *cpu,
+> -                                  struct kvm_sw_breakpoint *bp);
+> +                                  struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len);
+>  int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
+>  int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+>  void kvm_arch_remove_all_hw_breakpoints(void);
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 7cf5cf31de..84593db544 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -2402,7 +2402,8 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>  /* C6.6.29 BRK instruction */
+>  static const uint32_t brk_insn = 0xd4200000;
+>  
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
+>          cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&brk_insn, 4, 1)) {
+> @@ -2411,7 +2412,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>      return 0;
+>  }
+>  
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      static uint32_t brk;
+>  
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index c5943605ee..6449f796d0 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -4992,7 +4992,8 @@ static int kvm_handle_tpr_access(X86CPU *cpu)
+>      return 1;
+>  }
+>  
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      static const uint8_t int3 = 0xcc;
+>  
+> @@ -5003,7 +5004,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>      return 0;
+>  }
+>  
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      uint8_t int3;
+>  
+> diff --git a/target/mips/kvm.c b/target/mips/kvm.c
+> index a631ab544f..129964cf6d 100644
+> --- a/target/mips/kvm.c
+> +++ b/target/mips/kvm.c
+> @@ -111,13 +111,15 @@ void kvm_mips_reset_vcpu(MIPSCPU *cpu)
+>      DPRINTF("%s\n", __func__);
+>  }
+>  
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      DPRINTF("%s\n", __func__);
+>      return 0;
+>  }
+>  
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      DPRINTF("%s\n", __func__);
+>      return 0;
+> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+> index 46fccff786..9b76bdaa05 100644
+> --- a/target/ppc/kvm.c
+> +++ b/target/ppc/kvm.c
+> @@ -1378,7 +1378,8 @@ static int kvmppc_handle_dcr_write(CPUPPCState *env,
+>      return 0;
+>  }
+>  
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      /* Mixed endian case is not handled */
+>      uint32_t sc = debug_inst_opcode;
+> @@ -1392,7 +1393,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>      return 0;
+>  }
+>  
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      uint32_t sc;
+>  
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 473416649f..cba55c552d 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -1962,3 +1962,82 @@ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
+>  };
+>  
+>  DEFINE_TYPES(riscv_kvm_cpu_type_infos)
+> +
+> +static const uint32_t ebreak_insn = 0x00100073;
+> +static const uint16_t c_ebreak_insn = 0x9002;
+> +
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+> +{
+> +    if (len != 4 && len != 2) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    uint8_t * insn = (len == 4) ? (uint8_t *)&ebreak_insn :
+> +                                  (uint8_t *)&c_ebreak_insn;
+> +
+> +    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, len, 0) ||
+> +        cpu_memory_rw_debug(cs, bp->pc, insn, len, 1)) {
+> +        return -EINVAL;
+> +    }
 
+We can also read 2 bytes. So how about 
+
+  if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 2, 0)) {
+      return -EINVAL;
+  }
+
+  if ((bp->saved_insn & 0x3) == 0x3) {
+      if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
+          cpu_memory_rw_debug(cs, bp->pc, &ebreak_insn, 4, 1)) {
+              return -EINVAL;
+      }
+   } else {
+      if (cpu_memory_rw_debug(cs, bp->pc, &c_ebreak_insn, 2, 1)) {
+          return -EINVAL;
+      }
+   }
+
+> +
+> +    return 0;
+> +}
+> +
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+> +{
+> +    uint8_t length;
+> +
+> +    if (len == 4 || len == 2) {
+> +        length = (uint8_t)len;
+> +    } else if (len == 0) {
+> +        /* Need to decide the instruction length in this case. */
+> +        uint32_t read_4_bytes;
+> +        uint16_t read_2_bytes;
+> +
+> +        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&read_4_bytes, 4, 0) ||
+> +            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&read_2_bytes, 2, 0)) {
+> +            return -EINVAL;
+> +        }
+> +
+> +        if (read_4_bytes == ebreak_insn) {
+> +            length = 4;
+> +        } else if (read_2_bytes == c_ebreak_insn) {
+> +            length = 2;
+> +        } else {
+> +            return -EINVAL;
+> +        }
+> +    } else {
+> +        return -EINVAL;
+> +    }
+> +
+> +    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn,
+> +                            length, 1)) {
+> +        return -EINVAL;
+> +    }
+
+Also no need need for 'len'.
+
+   uint16_t ebreak;
+
+   if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&ebreak, 2, 0)) {
+       return -EINVAL;
+   }
+
+   if ((ebreak & 0x3) == 0x3) {
+       if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 1)) {
+          return -EINVAL;
+       }
+   } else {
+       if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 2, 1)) {
+          return -EINVAL;
+       }
+   }
+
+Thanks,
+drew
+
+> +
+> +    return 0;
+> +}
+> +
+> +int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+> +{
+> +    /* TODO; To be implemented later. */
+> +    return -EINVAL;
+> +}
+> +
+> +int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+> +{
+> +    /* TODO; To be implemented later. */
+> +    return -EINVAL;
+> +}
+> +
+> +void kvm_arch_remove_all_hw_breakpoints(void)
+> +{
+> +    /* TODO; To be implemented later. */
+> +}
+> +
+> +void kvm_arch_update_guest_debug(CPUState *cs, struct kvm_guest_debug *dbg)
+> +{
+> +    /* TODO; To be implemented later. */
+> +}
+> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+> index 1b494ecc20..132952cc84 100644
+> --- a/target/s390x/kvm/kvm.c
+> +++ b/target/s390x/kvm/kvm.c
+> @@ -865,7 +865,8 @@ static void determine_sw_breakpoint_instr(void)
+>          }
+>  }
+>  
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      determine_sw_breakpoint_instr();
+>  
+> @@ -877,7 +878,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>      return 0;
+>  }
+>  
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>  {
+>      uint8_t t[MAX_ILEN];
+>  
+> -- 
+> 2.17.1
+> 
+> 
 
