@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C3D8CFACF
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:01:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B33E8CFACE
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:01:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVHH-0004tG-QH; Mon, 27 May 2024 04:00:20 -0400
+	id 1sBVGz-0004ob-Om; Mon, 27 May 2024 04:00:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBVGN-0004fH-QZ
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:25 -0400
+ id 1sBVGE-0004ZR-2C
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:15 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBVG7-0004Vy-Ao
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:23 -0400
+ id 1sBVGA-0004WD-SG
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716796747; x=1748332747;
+ t=1716796751; x=1748332751;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WIiMy5ieHYZlDBKxx9ayAEu7brMWY9XnH0Rv5GgqqoE=;
- b=d4QfYj5IoW279a2StXKcrN+H9wiU84twZ8/X2u/jHefsXy7+RtpNNiG7
- V6Fxwi1yPCwmUS5AW1kIepK+XpU2UyvCNXpKA/Y89VKiJjeTyk3bn1vzg
- gdQ9hhJ2eJMxI8OnFdF1da5KC1DwFLS/HY6qcP5VzSBL5495Z9RC93j0o
- rCHs0lAMe6tHyE4QdNwDfGOj0DRA4jw31rAwg6fsUbTyR5OsDuVWAwBI+
- Dq3bLrIL0488xvSBbyfciXTtClMb/o664nFIrtOt0WMClIpM2bCqct/fw
- 5G9BaDriNy2As735FKkJipaOVqoGsXzB1ClS3MSyP3O5iJqhYqBERS7mP g==;
-X-CSE-ConnectionGUID: N/+X4kOuRLW6bUK7H05qyg==
-X-CSE-MsgGUID: U+t4B99OS3S6d62bFe6hvA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12967714"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12967714"
+ bh=C/uavNm9TPbuPaD5VN1/gZbyddHCNXdVHsl2V4ClR0Q=;
+ b=WQ7keHJ3fDzxiQ4t1+YIzuhqY39jLJnSq+oe+WEwl/TKvO66rBz8tbRm
+ 2iEdLld30Fd4QrW4rYQltU0j6q2jti1xbKn6bXLPCSwYfUbZUhbAYyrs7
+ nKREo6phIAMXXZj+L3F7nk0PVnKpC37ree0ymRDBvOW/5aRdTK3C6QkjE
+ B3o8O/LNCykKFwb814TlPUhRnHuzb5n5jo1kkx9gcstvnQ1SrzMqg+rAt
+ 8mN4S4mfZBypUEMHsqpMtDXP6JXEnCFNRxT/2XR+RKKFAQEytjsk8qssy
+ +foObHVVWRmXpFgfYRHGMpTR+l8BpdjBbvVgrZ5xxJR9NkaZFORRyVbgz w==;
+X-CSE-ConnectionGUID: y4PTYw7sQ8uIdzUNZ7OVTg==
+X-CSE-MsgGUID: veOVoYhNRR2GNrMU6NXYkg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12967721"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12967721"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 00:59:06 -0700
-X-CSE-ConnectionGUID: n8MBLThMSv+hxAKfJWiQyQ==
-X-CSE-MsgGUID: Qo0fSpeLQPeDJeWka7rRSQ==
+ 27 May 2024 00:59:09 -0700
+X-CSE-ConnectionGUID: ZsNg3/yMS06F/eWhHl4JBw==
+X-CSE-MsgGUID: Ca4lDMgESfyYZ8tNP5x3cw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39084953"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39084961"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 27 May 2024 00:59:02 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 27 May 2024 00:59:05 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,9 +53,10 @@ To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 1/6] scripts/simpletrace-rust: Add the basic cargo framework
-Date: Mon, 27 May 2024 16:14:16 +0800
-Message-Id: <20240527081421.2258624-2-zhao1.liu@intel.com>
+Subject: [RFC 2/6] scripts/simpletrace-rust: Support Event & Arguments in
+ trace module
+Date: Mon, 27 May 2024 16:14:17 +0800
+Message-Id: <20240527081421.2258624-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527081421.2258624-1-zhao1.liu@intel.com>
 References: <20240527081421.2258624-1-zhao1.liu@intel.com>
@@ -63,13 +64,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_FILL_THIS_FORM_SHORT=0.01,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,515 +87,448 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Define the basic cargo framework to support compiling simpletrace-rust
-via cargo, and add the Rust code style (with some nightly features)
-check items to make Rust style as close to the QEMU C code as possible.
-
-With the base cargo package, define the basic code framework for
-simpletrace-rust, approximating the Python version, and also abstract
-Analyzer operations for simpletrace-rust. Event and other future
-trace-related structures are placed in the trace module.
-
-Additionally, support basic command line parsing for simpletrace-rust as
-a start.
+Refer to scripts/tracetool/__init__.py, add Event & Arguments
+abstractions in trace module.
 
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- scripts/simpletrace-rust/.gitignore    |   1 +
- scripts/simpletrace-rust/.rustfmt.toml |   9 +
- scripts/simpletrace-rust/Cargo.lock    | 239 +++++++++++++++++++++++++
- scripts/simpletrace-rust/Cargo.toml    |  11 ++
- scripts/simpletrace-rust/src/main.rs   | 173 ++++++++++++++++++
- scripts/simpletrace-rust/src/trace.rs  |  11 ++
- 6 files changed, 444 insertions(+)
- create mode 100644 scripts/simpletrace-rust/.gitignore
- create mode 100644 scripts/simpletrace-rust/.rustfmt.toml
- create mode 100644 scripts/simpletrace-rust/Cargo.lock
- create mode 100644 scripts/simpletrace-rust/Cargo.toml
- create mode 100644 scripts/simpletrace-rust/src/main.rs
- create mode 100644 scripts/simpletrace-rust/src/trace.rs
+ scripts/simpletrace-rust/Cargo.lock   |  52 ++++
+ scripts/simpletrace-rust/Cargo.toml   |   2 +
+ scripts/simpletrace-rust/src/trace.rs | 330 +++++++++++++++++++++++++-
+ 3 files changed, 383 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/simpletrace-rust/.gitignore b/scripts/simpletrace-rust/.gitignore
-new file mode 100644
-index 000000000000..2f7896d1d136
---- /dev/null
-+++ b/scripts/simpletrace-rust/.gitignore
-@@ -0,0 +1 @@
-+target/
-diff --git a/scripts/simpletrace-rust/.rustfmt.toml b/scripts/simpletrace-rust/.rustfmt.toml
-new file mode 100644
-index 000000000000..97a97c24ebfb
---- /dev/null
-+++ b/scripts/simpletrace-rust/.rustfmt.toml
-@@ -0,0 +1,9 @@
-+brace_style = "AlwaysNextLine"
-+comment_width = 80
-+edition = "2021"
-+group_imports = "StdExternalCrate"
-+imports_granularity = "item"
-+max_width = 80
-+use_field_init_shorthand = true
-+use_try_shorthand = true
-+wrap_comments = true
 diff --git a/scripts/simpletrace-rust/Cargo.lock b/scripts/simpletrace-rust/Cargo.lock
-new file mode 100644
-index 000000000000..4a0ff8092dcb
---- /dev/null
+index 4a0ff8092dcb..3d815014eb44 100644
+--- a/scripts/simpletrace-rust/Cargo.lock
 +++ b/scripts/simpletrace-rust/Cargo.lock
-@@ -0,0 +1,239 @@
-+# This file is automatically @generated by Cargo.
-+# It is not intended for manual editing.
-+version = 3
+@@ -2,6 +2,15 @@
+ # It is not intended for manual editing.
+ version = 3
+ 
++[[package]]
++name = "aho-corasick"
++version = "1.1.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916"
++dependencies = [
++ "memchr",
++]
++
+ [[package]]
+ name = "anstream"
+ version = "0.6.14"
+@@ -90,6 +99,18 @@ version = "1.70.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "f8478577c03552c21db0e2724ffb8986a5ce7af88107e6be5d2ee6e158c12800"
+ 
++[[package]]
++name = "memchr"
++version = "2.7.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
 +
 +[[package]]
-+name = "anstream"
-+version = "0.6.14"
++name = "once_cell"
++version = "1.19.0"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "418c75fa768af9c03be99d17643f93f79bbba589895012a80e3452a19ddda15b"
++checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
++
+ [[package]]
+ name = "proc-macro2"
+ version = "1.0.83"
+@@ -108,11 +129,42 @@ dependencies = [
+  "proc-macro2",
+ ]
+ 
++[[package]]
++name = "regex"
++version = "1.10.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c117dbdfde9c8308975b6a18d71f3f385c89461f7b3fb054288ecf2a2058ba4c"
 +dependencies = [
-+ "anstyle",
-+ "anstyle-parse",
-+ "anstyle-query",
-+ "anstyle-wincon",
-+ "colorchoice",
-+ "is_terminal_polyfill",
-+ "utf8parse",
++ "aho-corasick",
++ "memchr",
++ "regex-automata",
++ "regex-syntax",
 +]
 +
 +[[package]]
-+name = "anstyle"
-+version = "1.0.7"
++name = "regex-automata"
++version = "0.4.6"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "038dfcf04a5feb68e9c60b21c9625a54c2c0616e79b72b0fd87075a056ae1d1b"
-+
-+[[package]]
-+name = "anstyle-parse"
-+version = "0.2.4"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "c03a11a9034d92058ceb6ee011ce58af4a9bf61491aa7e1e59ecd24bd40d22d4"
++checksum = "86b83b8b9847f9bf95ef68afb0b8e6cdb80f498442f5179a29fad448fcc1eaea"
 +dependencies = [
-+ "utf8parse",
++ "aho-corasick",
++ "memchr",
++ "regex-syntax",
 +]
 +
 +[[package]]
-+name = "anstyle-query"
-+version = "1.0.3"
++name = "regex-syntax"
++version = "0.8.3"
 +source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "a64c907d4e79225ac72e2a354c9ce84d50ebb4586dee56c82b3ee73004f537f5"
-+dependencies = [
-+ "windows-sys",
-+]
++checksum = "adad44e29e4c806119491a7f06f03de4d1af22c3a680dd47f1e6e179439d1f56"
 +
-+[[package]]
-+name = "anstyle-wincon"
-+version = "3.0.3"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "61a38449feb7068f52bb06c12759005cf459ee52bb4adc1d5a7c4322d716fb19"
-+dependencies = [
-+ "anstyle",
-+ "windows-sys",
-+]
-+
-+[[package]]
-+name = "clap"
-+version = "4.5.4"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "90bc066a67923782aa8515dbaea16946c5bcc5addbd668bb80af688e53e548a0"
-+dependencies = [
-+ "clap_builder",
-+]
-+
-+[[package]]
-+name = "clap_builder"
-+version = "4.5.2"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "ae129e2e766ae0ec03484e609954119f123cc1fe650337e155d03b022f24f7b4"
-+dependencies = [
-+ "anstream",
-+ "anstyle",
-+ "clap_lex",
-+ "strsim",
-+]
-+
-+[[package]]
-+name = "clap_lex"
-+version = "0.7.0"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
-+
-+[[package]]
-+name = "colorchoice"
-+version = "1.0.1"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "0b6a852b24ab71dffc585bcb46eaf7959d175cb865a7152e35b348d1b2960422"
-+
-+[[package]]
-+name = "is_terminal_polyfill"
-+version = "1.70.0"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "f8478577c03552c21db0e2724ffb8986a5ce7af88107e6be5d2ee6e158c12800"
-+
-+[[package]]
-+name = "proc-macro2"
-+version = "1.0.83"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "0b33eb56c327dec362a9e55b3ad14f9d2f0904fb5a5b03b513ab5465399e9f43"
-+dependencies = [
-+ "unicode-ident",
-+]
-+
-+[[package]]
-+name = "quote"
-+version = "1.0.36"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
-+dependencies = [
-+ "proc-macro2",
-+]
-+
-+[[package]]
-+name = "simpletrace-rust"
-+version = "0.1.0"
-+dependencies = [
-+ "clap",
-+ "thiserror",
-+]
-+
-+[[package]]
-+name = "strsim"
-+version = "0.11.1"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
-+
-+[[package]]
-+name = "syn"
-+version = "2.0.66"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "c42f3f41a2de00b01c0aaad383c5a45241efc8b2d1eda5661812fda5f3cdcff5"
-+dependencies = [
-+ "proc-macro2",
-+ "quote",
-+ "unicode-ident",
-+]
-+
-+[[package]]
-+name = "thiserror"
-+version = "1.0.61"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "c546c80d6be4bc6a00c0f01730c08df82eaa7a7a61f11d656526506112cc1709"
-+dependencies = [
-+ "thiserror-impl",
-+]
-+
-+[[package]]
-+name = "thiserror-impl"
-+version = "1.0.61"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "46c3384250002a6d5af4d114f2845d37b57521033f30d5c3f46c4d70e1197533"
-+dependencies = [
-+ "proc-macro2",
-+ "quote",
-+ "syn",
-+]
-+
-+[[package]]
-+name = "unicode-ident"
-+version = "1.0.12"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
-+
-+[[package]]
-+name = "utf8parse"
-+version = "0.2.1"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "711b9620af191e0cdc7468a8d14e709c3dcdb115b36f838e601583af800a370a"
-+
-+[[package]]
-+name = "windows-sys"
-+version = "0.52.0"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "282be5f36a8ce781fad8c8ae18fa3f9beff57ec1b52cb3de0789201425d9a33d"
-+dependencies = [
-+ "windows-targets",
-+]
-+
-+[[package]]
-+name = "windows-targets"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "6f0713a46559409d202e70e28227288446bf7841d3211583a4b53e3f6d96e7eb"
-+dependencies = [
-+ "windows_aarch64_gnullvm",
-+ "windows_aarch64_msvc",
-+ "windows_i686_gnu",
-+ "windows_i686_gnullvm",
-+ "windows_i686_msvc",
-+ "windows_x86_64_gnu",
-+ "windows_x86_64_gnullvm",
-+ "windows_x86_64_msvc",
-+]
-+
-+[[package]]
-+name = "windows_aarch64_gnullvm"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "7088eed71e8b8dda258ecc8bac5fb1153c5cffaf2578fc8ff5d61e23578d3263"
-+
-+[[package]]
-+name = "windows_aarch64_msvc"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "9985fd1504e250c615ca5f281c3f7a6da76213ebd5ccc9561496568a2752afb6"
-+
-+[[package]]
-+name = "windows_i686_gnu"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "88ba073cf16d5372720ec942a8ccbf61626074c6d4dd2e745299726ce8b89670"
-+
-+[[package]]
-+name = "windows_i686_gnullvm"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "87f4261229030a858f36b459e748ae97545d6f1ec60e5e0d6a3d32e0dc232ee9"
-+
-+[[package]]
-+name = "windows_i686_msvc"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "db3c2bf3d13d5b658be73463284eaf12830ac9a26a90c717b7f771dfe97487bf"
-+
-+[[package]]
-+name = "windows_x86_64_gnu"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "4e4246f76bdeff09eb48875a0fd3e2af6aada79d409d33011886d3e1581517d9"
-+
-+[[package]]
-+name = "windows_x86_64_gnullvm"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "852298e482cd67c356ddd9570386e2862b5673c85bd5f88df9ab6802b334c596"
-+
-+[[package]]
-+name = "windows_x86_64_msvc"
-+version = "0.52.5"
-+source = "registry+https://github.com/rust-lang/crates.io-index"
-+checksum = "bec47e5bfd1bff0eeaf6d8b485cc1074891a197ab4225d504cb7a1ab88b02bf0"
+ [[package]]
+ name = "simpletrace-rust"
+ version = "0.1.0"
+ dependencies = [
+  "clap",
++ "once_cell",
++ "regex",
+  "thiserror",
+ ]
+ 
 diff --git a/scripts/simpletrace-rust/Cargo.toml b/scripts/simpletrace-rust/Cargo.toml
-new file mode 100644
-index 000000000000..b44ba1569dad
---- /dev/null
+index b44ba1569dad..24a79d04e566 100644
+--- a/scripts/simpletrace-rust/Cargo.toml
 +++ b/scripts/simpletrace-rust/Cargo.toml
-@@ -0,0 +1,11 @@
-+[package]
-+name = "simpletrace-rust"
-+description = "Pretty-printer for simple trace backend binary trace files (Rust version)"
-+version = "0.1.0"
-+edition = "2021"
-+authors = ["Zhao Liu <zhao1.liu@intel.com>"]
-+license = "GPL-2.0-or-later"
-+
-+[dependencies]
-+clap = "4.5.4"
-+thiserror = "1.0.20"
-diff --git a/scripts/simpletrace-rust/src/main.rs b/scripts/simpletrace-rust/src/main.rs
-new file mode 100644
-index 000000000000..2d2926b7658d
---- /dev/null
-+++ b/scripts/simpletrace-rust/src/main.rs
-@@ -0,0 +1,173 @@
-+/*
-+ * Pretty-printer for simple trace backend binary trace files (Rust version)
-+ *
-+ * Copyright (C) 2024 Intel Corporation.
-+ *
-+ * Authors: Zhao Liu <zhao1.liu@intel.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
+@@ -8,4 +8,6 @@ license = "GPL-2.0-or-later"
+ 
+ [dependencies]
+ clap = "4.5.4"
++once_cell = "1.19.0"
++regex = "1.10.4"
+ thiserror = "1.0.20"
+diff --git a/scripts/simpletrace-rust/src/trace.rs b/scripts/simpletrace-rust/src/trace.rs
+index 3a4b06435b8b..f41d6e0b5bc3 100644
+--- a/scripts/simpletrace-rust/src/trace.rs
++++ b/scripts/simpletrace-rust/src/trace.rs
+@@ -8,4 +8,332 @@
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+ 
+-pub struct Event {}
 +#![allow(dead_code)]
-+#![allow(unused_variables)]
 +
-+mod trace;
++use std::fs::read_to_string;
 +
-+use std::env;
-+
-+use clap::Arg;
-+use clap::Command;
++use once_cell::sync::Lazy;
++use regex::Regex;
 +use thiserror::Error;
-+use trace::Event;
 +
 +#[derive(Error, Debug)]
 +pub enum Error
 +{
-+    #[error("usage: {0} [--no-header] <trace-events> <trace-file>")]
-+    CliOptionUnmatch(String),
++    #[error("Empty argument (did you forget to use 'void'?)")]
++    EmptyArg,
++    #[error("Event '{0}' has more than maximum permitted argument count")]
++    InvalidArgCnt(String),
++    #[error("{0} does not end with a new line")]
++    InvalidEventFile(String),
++    #[error("Invalid format: {0}")]
++    InvalidFormat(String),
++    #[error(
++        "Argument type '{0}' is not allowed. \
++        Only standard C types and fixed size integer \
++        types should be used. struct, union, and \
++        other complex pointer types should be \
++        declared as 'void *'"
++    )]
++    InvalidType(String),
++    #[error("Error at {0}:{1}: {2}")]
++    ReadEventFail(String, usize, String),
++    #[error("Unknown event: {0}")]
++    UnknownEvent(String),
++    #[error("Unknown properties: {0}")]
++    UnknownProp(String),
 +}
 +
 +pub type Result<T> = std::result::Result<T, Error>;
 +
-+pub struct EventArgPayload {}
++/*
++ * Refer to the description of ALLOWED_TYPES in
++ * scripts/tracetool/__init__.py.
++ */
++const ALLOWED_TYPES: [&str; 20] = [
++    "int",
++    "long",
++    "short",
++    "char",
++    "bool",
++    "unsigned",
++    "signed",
++    "int8_t",
++    "uint8_t",
++    "int16_t",
++    "uint16_t",
++    "int32_t",
++    "uint32_t",
++    "int64_t",
++    "uint64_t",
++    "void",
++    "size_t",
++    "ssize_t",
++    "uintptr_t",
++    "ptrdiff_t",
++];
 +
-+trait Analyzer
++const STRING_TYPES: [&str; 4] =
++    ["const char*", "char*", "const char *", "char *"];
++
++/* TODO: Support 'vcpu' property. */
++const VALID_PROPS: [&str; 1] = ["disable"];
++
++fn validate_c_type(arg_type: &str) -> Result<()>
 +{
-+    /* Called at the start of the trace. */
-+    fn begin(&self) {}
-+
-+    /* Called if no specific method for processing a trace event. */
-+    fn catchall(
-+        &mut self,
-+        rec_args: &[EventArgPayload],
-+        event: &Event,
-+        timestamp_ns: u64,
-+        pid: u32,
-+        event_id: u64,
-+    ) -> Result<String>;
-+
-+    /* Called at the end of the trace. */
-+    fn end(&self) {}
-+
-+    /*
-+     * TODO: Support "variable" parameters (i.e. variants of process_event()
-+     * with different parameters, like **kwargs in python), when we need a
-+     * simpletrace rust module.
-+     */
-+    fn process_event(
-+        &mut self,
-+        rec_args: &[EventArgPayload],
-+        event: &Event,
-+        event_id: u64,
-+        timestamp_ns: u64,
-+        pid: u32,
-+    ) -> Result<String>
-+    {
-+        self.catchall(rec_args, event, timestamp_ns, pid, event_id)
-+
-+        /*
-+         * TODO: Support custom function hooks (like getattr() in python),
-+         * when we need a simpletrace rust module.
-+         */
-+    }
-+}
-+
-+struct Formatter
-+{
-+    last_timestamp_ns: Option<u64>,
-+}
-+
-+impl Formatter
-+{
-+    fn new() -> Self
-+    {
-+        Formatter {
-+            last_timestamp_ns: None,
++    static RE_TYPE: Lazy<Regex> = Lazy::new(|| Regex::new(r"\*").unwrap());
++    let bits: Vec<String> =
++        arg_type.split_whitespace().map(|s| s.to_string()).collect();
++    for bit in bits {
++        let res = RE_TYPE.replace_all(&bit, "");
++        if res.is_empty() {
++            continue;
++        }
++        if res == "const" {
++            continue;
++        }
++        if !ALLOWED_TYPES.contains(&res.as_ref()) {
++            return Err(Error::InvalidType(res.to_string()));
 +        }
 +    }
++    Ok(())
 +}
 +
-+impl Analyzer for Formatter
++pub fn read_events(fname: &str) -> Result<Vec<Event>>
 +{
-+    fn catchall(
-+        &mut self,
-+        rec_args: &[EventArgPayload],
-+        event: &Event,
-+        timestamp_ns: u64,
-+        pid: u32,
-+        event_id: u64,
-+    ) -> Result<String>
++    let fstr = read_to_string(fname).unwrap();
++    let lines = fstr.lines().map(|s| s.trim()).collect::<Vec<_>>();
++    let mut events = Vec::new();
++
++    /*
++     * lines() in Rust: Line terminators are not included in the lines
++     * returned by the iterator, so check whether line_str is empty.
++     */
++    for (lineno, line_str) in lines.iter().enumerate() {
++        if line_str.is_empty() || line_str.starts_with('#') {
++            continue;
++        }
++
++        let event = Event::build(line_str, lineno as u32 + 1, fname);
++        if let Err(e) = event {
++            return Err(Error::ReadEventFail(
++                fname.to_owned(),
++                lineno,
++                e.to_string(),
++            ));
++        } else {
++            events.push(event.unwrap());
++        }
++    }
++
++    Ok(events)
++}
++
++#[derive(Clone)]
++pub struct ArgProperty
++{
++    pub c_type: String,
++    pub name: String,
++}
++
++impl ArgProperty
++{
++    fn new(c_type: &str, name: &str) -> Self
 +    {
-+        let fmt_str = String::new();
++        ArgProperty {
++            c_type: c_type.to_string(),
++            name: name.to_string(),
++        }
++    }
 +
-+        Ok(fmt_str)
++    pub fn is_string(&self) -> bool
++    {
++        let arg_strip = self.c_type.trim_start();
++        STRING_TYPES.iter().any(|&s| arg_strip.starts_with(s))
++            && arg_strip.matches('*').count() == 1
 +    }
 +}
 +
-+fn process(
-+    event_path: &str,
-+    trace_path: &str,
-+    analyzer: &mut Formatter,
-+    read_header: bool,
-+) -> Result<()>
++#[derive(Default, Clone)]
++pub struct Arguments
 +{
-+    analyzer.begin();
-+    analyzer.end();
-+
-+    Ok(())
++    /* List of (type, name) tuples or arguments properties. */
++    pub props: Vec<ArgProperty>,
 +}
 +
-+/*
-+ * Execute an analyzer on a trace file given on the command-line.
-+ * This function is useful as a driver for simple analysis scripts.  More
-+ * advanced scripts will want to call process() instead.
-+ */
-+fn run(analyzer: &mut Formatter) -> Result<()>
++impl Arguments
 +{
-+    let matches = Command::new("simple trace")
-+        .arg(
-+            Arg::new("no-header")
-+                .required(false)
-+                .long("no-header")
-+                .action(clap::ArgAction::SetTrue)
-+                .help("Disable header parsing"),
-+        )
-+        .arg(
-+            Arg::new("trace-events")
-+                .required(true)
-+                .action(clap::ArgAction::Set)
-+                .help("Path to trace events file"),
-+        )
-+        .arg(
-+            Arg::new("trace-file")
-+                .required(true)
-+                .action(clap::ArgAction::Set)
-+                .help("Path to trace file"),
-+        )
-+        .try_get_matches()
-+        .map_err(|_| {
-+            Error::CliOptionUnmatch(
-+                env::current_exe()
-+                    .unwrap_or_else(|_| "simpletrace".into())
-+                    .to_string_lossy()
-+                    .to_string(),
++    pub fn new() -> Self
++    {
++        Arguments { props: Vec::new() }
++    }
++
++    pub fn len(&self) -> usize
++    {
++        self.props.len()
++    }
++
++    pub fn build(arg_str: &str) -> Result<Arguments>
++    {
++        let mut args = Arguments::new();
++        for arg in arg_str.split(',').map(|s| s.trim()) {
++            if arg.is_empty() {
++                return Err(Error::EmptyArg);
++            }
++
++            if arg == "void" {
++                continue;
++            }
++
++            let (arg_type, identifier) = if arg.contains('*') {
++                /* FIXME: Implement rsplit_inclusive(). */
++                let p = arg.rfind('*').unwrap();
++                (
++                    /* Safe because arg contains "*" and p exists. */
++                    unsafe { arg.get_unchecked(..p + 1) },
++                    /* Safe because arg contains "*" and p exists. */
++                    unsafe { arg.get_unchecked(p + 1..) },
++                )
++            } else {
++                arg.rsplit_once(' ').unwrap()
++            };
++
++            validate_c_type(arg_type)?;
++            args.props.push(ArgProperty::new(arg_type, identifier));
++        }
++        Ok(args)
++    }
++}
++
++/* TODO: Support original, event_trans, event_exec if needed. */
++#[derive(Default, Clone)]
++pub struct Event
++{
++    /* The event name. */
++    pub name: String,
++    /* Properties of the event. */
++    pub properties: Vec<String>,
++    /* The event format string. */
++    pub fmt: Vec<String>,
++    /* The event arguments. */
++    pub args: Arguments,
++    /* The line number in the input file. */
++    pub lineno: u32,
++    /* The path to the input file. */
++    pub filename: String,
++}
++
++impl Event
++{
++    #[allow(clippy::too_many_arguments)]
++    pub fn new(
++        name: &str,
++        mut props: Vec<String>,
++        fmt: Vec<String>,
++        args: Arguments,
++        lineno: u32,
++        filename: &str,
++    ) -> Result<Self>
++    {
++        let mut event = Event {
++            name: name.to_string(),
++            fmt: fmt.clone(),
++            args,
++            lineno,
++            filename: filename.to_string(),
++            ..Default::default()
++        };
++
++        event.properties.append(&mut props);
++
++        if event.args.len() > 10 {
++            return Err(Error::InvalidArgCnt(event.name));
++        }
++
++        let unknown_props: Vec<String> = event
++            .properties
++            .iter()
++            .filter_map(|p| {
++                if !VALID_PROPS.contains(&p.as_str()) {
++                    Some(p.to_string())
++                } else {
++                    None
++                }
++            })
++            .collect();
++        if !unknown_props.is_empty() {
++            return Err(Error::UnknownProp(format!("{:?}", unknown_props)));
++        }
++
++        if event.fmt.len() > 2 {
++            return Err(Error::InvalidFormat(
++                format!("too many arguments ({})", event.fmt.len()).to_string(),
++            ));
++        }
++
++        Ok(event)
++    }
++
++    pub fn build(line_str: &str, lineno: u32, filename: &str) -> Result<Event>
++    {
++        static RE: Lazy<Regex> = Lazy::new(|| {
++            Regex::new(
++                r#"(?x)
++                ((?P<props>[\w\s]+)\s+)?
++                (?P<name>\w+)
++                \((?P<args>[^)]*)\)
++                \s*
++                (?:(?:(?P<fmt_trans>".+),)?\s*(?P<fmt>".+))?
++                \s*"#,
 +            )
-+        })?;
++            .unwrap()
++        });
 +
-+    let no_header = matches.get_flag("no-header");
-+    let event_path = matches.get_one::<String>("trace-events").unwrap();
-+    let trace_path = matches.get_one::<String>("trace-file").unwrap();
++        let caps_res = RE.captures(line_str);
++        if caps_res.is_none() {
++            return Err(Error::UnknownEvent(line_str.to_owned()));
++        }
++        let caps = caps_res.unwrap();
++        let name = caps.name("name").map_or("", |m| m.as_str());
++        let props: Vec<String> = if caps.name("props").is_some() {
++            caps.name("props")
++                .unwrap()
++                .as_str()
++                .split_whitespace()
++                .map(|s| s.to_string())
++                .collect()
++        } else {
++            Vec::new()
++        };
++        let fmt: String =
++            caps.name("fmt").map_or("", |m| m.as_str()).to_string();
++        let fmt_trans: String = caps
++            .name("fmt_trans")
++            .map_or("", |m| m.as_str())
++            .to_string();
 +
-+    process(event_path, trace_path, analyzer, !no_header)?;
++        if fmt.contains("%m") || fmt_trans.contains("%m") {
++            return Err(Error::InvalidFormat(
++                "Event format '%m' is forbidden, pass the error 
++                as an explicit trace argument"
++                    .to_string(),
++            ));
++        }
++        if fmt.ends_with(r"\n") {
++            return Err(Error::InvalidFormat(
++                "Event format must not end with a newline 
++                character"
++                    .to_string(),
++            ));
++        }
++        let mut fmt_vec = vec![fmt];
++        if !fmt_trans.is_empty() {
++            fmt_vec.push(fmt_trans);
++        }
 +
-+    Ok(())
-+}
++        let args =
++            Arguments::build(caps.name("args").map_or("", |m| m.as_str()))?;
++        let event = Event::new(name, props, fmt_vec, args, lineno, filename)?;
 +
-+fn main()
-+{
-+    let mut fmt = Formatter::new();
-+
-+    if let Err(e) = run(&mut fmt) {
-+        println!("{:?}", e.to_string());
++        Ok(event)
 +    }
 +}
-diff --git a/scripts/simpletrace-rust/src/trace.rs b/scripts/simpletrace-rust/src/trace.rs
-new file mode 100644
-index 000000000000..3a4b06435b8b
---- /dev/null
-+++ b/scripts/simpletrace-rust/src/trace.rs
-@@ -0,0 +1,11 @@
-+/*
-+ * Machinery for generating tracing-related intermediate files (Rust version)
-+ *
-+ * Copyright (C) 2024 Intel Corporation.
-+ *
-+ * Authors: Zhao Liu <zhao1.liu@intel.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+pub struct Event {}
 -- 
 2.34.1
 
