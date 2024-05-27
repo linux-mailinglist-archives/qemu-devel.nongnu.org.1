@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A198CF97F
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 08:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2F28CF969
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 08:42:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBU4H-0004FV-PS; Mon, 27 May 2024 02:42:53 -0400
+	id 1sBU39-0003EK-D9; Mon, 27 May 2024 02:41:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBU33-0003Cw-Lo; Mon, 27 May 2024 02:41:33 -0400
+ id 1sBU35-0003DN-D0; Mon, 27 May 2024 02:41:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBU31-0007NB-WF; Mon, 27 May 2024 02:41:33 -0400
+ id 1sBU33-0007NK-An; Mon, 27 May 2024 02:41:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DE8B36A3F6;
+ by isrv.corpit.ru (Postfix) with ESMTP id EDDB26A3F7;
  Mon, 27 May 2024 09:41:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 386A7D83EE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 46117D83EF;
  Mon, 27 May 2024 09:40:57 +0300 (MSK)
-Received: (nullmailer pid 50282 invoked by uid 1000);
+Received: (nullmailer pid 50285 invoked by uid 1000);
  Mon, 27 May 2024 06:40:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 08/19] .gitlab-ci.d/cirrus.yml: Shorten the runtime of
- the macOS and FreeBSD jobs
-Date: Mon, 27 May 2024 09:40:39 +0300
-Message-Id: <20240527064056.50205-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.12 09/19] hw/dmax/xlnx_dpdma: fix handling of
+ address_extension descriptor fields
+Date: Mon, 27 May 2024 09:40:40 +0300
+Message-Id: <20240527064056.50205-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.12-20240527072010@cover.tls.msk.ru>
 References: <qemu-stable-7.2.12-20240527072010@cover.tls.msk.ru>
@@ -60,40 +60,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-Cirrus-CI introduced limitations to the free CI minutes. To avoid that
-we are consuming them too fast, let's drop the usual targets that are
-not that important since they are either a subset of another target
-(like i386 or ppc being a subset of x86_64 or ppc64 respectively), or
-since there is still a similar target with the opposite endianness
-(like xtensa/xtensael, microblaze/microblazeel etc.).
+The DMA descriptor structures for this device have
+a set of "address extension" fields which extend the 32
+bit source addresses with an extra 16 bits to give a
+48 bit address:
+ https://docs.amd.com/r/en-US/ug1085-zynq-ultrascale-trm/ADDR_EXT-Field
 
-Message-ID: <20240429100113.53357-1-thuth@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit a88a04906b966ffdcda23a5a456abe10aa8c826e)
+However, we misimplemented this address extension in several ways:
+ * we only extracted 12 bits of the extension fields, not 16
+ * we didn't shift the extension field up far enough
+ * we accidentally did the shift as 32-bit arithmetic, which
+   meant that we would have an overflow instead of setting
+   bits [47:32] of the resulting 64-bit address
+
+Add a type cast and use extract64() instead of extract32()
+to avoid integer overflow on addition. Fix bit fields
+extraction according to documentation.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d3c6369a96 ("introduce xlnx-dpdma")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Message-id: 20240428181131.23801-1-adiupina@astralinux.ru
+[PMM: adjusted commit message]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 4b00855f0ee2e2eee8fd2500ffef27c108be6dc3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index c86487da5b..f6e97c47f1 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -68,6 +68,7 @@ x64-freebsd-13-build:
-     CIRRUS_VM_RAM: 8G
-     UPDATE_COMMAND: pkg update
-     INSTALL_COMMAND: pkg install -y
-+    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblaze-softmmu,mips64el-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4eb-softmmu,xtensa-softmmu
-     TEST_TARGETS: check
+diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+index dd66be5265..06e187e99c 100644
+--- a/hw/dma/xlnx_dpdma.c
++++ b/hw/dma/xlnx_dpdma.c
+@@ -175,24 +175,24 @@ static uint64_t xlnx_dpdma_desc_get_source_address(DPDMADescriptor *desc,
  
- aarch64-macos-12-base-build:
-@@ -83,6 +84,7 @@ aarch64-macos-12-base-build:
-     INSTALL_COMMAND: brew install
-     PATH_EXTRA: /opt/homebrew/ccache/libexec:/opt/homebrew/gettext/bin
-     PKG_CONFIG_PATH: /opt/homebrew/curl/lib/pkgconfig:/opt/homebrew/ncurses/lib/pkgconfig:/opt/homebrew/readline/lib/pkgconfig
-+    CONFIGURE_ARGS: --target-list-exclude=arm-softmmu,i386-softmmu,microblazeel-softmmu,mips64-softmmu,mipsel-softmmu,mips-softmmu,ppc-softmmu,sh4-softmmu,xtensaeb-softmmu
-     TEST_TARGETS: check-unit check-block check-qapi-schema check-softfloat check-qtest-x86_64
- 
- 
+     switch (frag) {
+     case 0:
+-        addr = desc->source_address
+-            + (extract32(desc->address_extension, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address
++            + (extract64(desc->address_extension, 16, 16) << 32);
+         break;
+     case 1:
+-        addr = desc->source_address2
+-            + (extract32(desc->address_extension_23, 0, 12) << 8);
++        addr = (uint64_t)desc->source_address2
++            + (extract64(desc->address_extension_23, 0, 16) << 32);
+         break;
+     case 2:
+-        addr = desc->source_address3
+-            + (extract32(desc->address_extension_23, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address3
++            + (extract64(desc->address_extension_23, 16, 16) << 32);
+         break;
+     case 3:
+-        addr = desc->source_address4
+-            + (extract32(desc->address_extension_45, 0, 12) << 8);
++        addr = (uint64_t)desc->source_address4
++            + (extract64(desc->address_extension_45, 0, 16) << 32);
+         break;
+     case 4:
+-        addr = desc->source_address5
+-            + (extract32(desc->address_extension_45, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address5
++            + (extract64(desc->address_extension_45, 16, 16) << 32);
+         break;
+     default:
+         addr = 0;
 -- 
 2.39.2
 
