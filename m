@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6485A8CFD85
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C20F8CFD8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBX2b-0005k4-Cl; Mon, 27 May 2024 05:53:17 -0400
+	id 1sBX4l-0007ID-V5; Mon, 27 May 2024 05:55:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX2Y-0005jK-Hc
- for qemu-devel@nongnu.org; Mon, 27 May 2024 05:53:14 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX4R-00079D-3V
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:55:14 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX2W-0008HE-CF
- for qemu-devel@nongnu.org; Mon, 27 May 2024 05:53:14 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-357f1c0b86fso1091503f8f.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 02:53:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBX4A-0008Vt-MB
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:55:08 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-42108822e3cso15333585e9.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 02:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716803590; x=1717408390; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716803693; x=1717408493; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TTvOFcRioRnhwU5iUk34BgipIQyxDh4f1bq5Rktqm/A=;
- b=qZTABBJPJF3dLRmW7Vxl8mFZJKr1KPqR64Z+sdySGXKsBsqBq1o6fohqJHuLuDC5lv
- VsIodYNNSNMCrteiK6DgZ6wXM3Ue2+eJ4JdopiMsTol27ermBH+r4GTOPR0Pb1M//MaZ
- ARxGCefxHgvRLjBG7hN7zDFuwkZEdxAlL+rJ0KX9+r/RNLKL/qc+1QX2Ej68FeuVC3UT
- wkbFUHPXVAojH4x9u50BaD5SSOp86XHFYBAVRR8Wr1me4lqRuK6l71cBbxWKKePrWcKf
- BpYYC62Fl/nIbIRfub/InTihkh8T1qjiCzSSjtRHRgEu1OvV1NY/oWfgPaJOPjjxl046
- i2Nw==
+ bh=E3dSc3yfYv/r+d4wN3BGfw+S9Y3dPGG6wtoFQR1sb/w=;
+ b=YcR8227M38uV/qi7+GT5eCsMf/mlHioR82oWWtSL7FU0K2L5RxAWYfVZ4bq+IUkAxt
+ YDN4LHBF6m6xrkyj4ZrEXDKFJMO9NSmr/0WoEi/85mdWRXQt+n2cRuQCk4KSmiapxXJw
+ Id9FbZXNA9vcjKY49efQ4w676QSmRlTQD3DZNP3UJcwtyPaQvnmSVlB+Z+hyZq9MZEKG
+ /M2fdUhL6awnwzeQQaryeSGALohIfXvPWO3IgdQmG+zg9kpELXzyLpVmC6fC0vqJJmGl
+ iCz7RvIjCl17k1nRdM8KIbxo0WYuAz0rvjUEfy3SvB2liUYMPzdteLE6BqOmcrraYL0T
+ YG6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716803590; x=1717408390;
+ d=1e100.net; s=20230601; t=1716803693; x=1717408493;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TTvOFcRioRnhwU5iUk34BgipIQyxDh4f1bq5Rktqm/A=;
- b=IaWxuUdzVzjVT2ZxluUTI7POTL3jiYNfZ4qCkTlymS92nDmHCE1YZYBYCAU+bajg0q
- jQDbHuur50t4Z0P+cTSRRpBHafRt17anQXdbEa9icNmijX/2kjhCdfeyrIA3iNyS2IiH
- feD0pOlWYH1/uK55cGf2a9VjKTidRakgV5OGYbz8V/63PxTwZLdEE82FN0KiQAsXseoH
- D0RWfQNtXEHXFwiiFJcApN73ZZXbqRSbWBY/4LY13bc1yXsC3T7pv0Lwvjh/EY7c5KBr
- 1G4LzSFVqss8QHutQzCGBt3OZXGB4PVDoT1U8QWUfltPPxHCKiMHL0v1IN+KkcuxpV1b
- kQDw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUz/aHXnn1kvAZG6YnyV3XLt8nD5MjwTytZgKX4qDM0UN5riyCXNfn93ahl0Tnhk5GfaH727TaIQS5hSroWqnfrdHdRycU=
-X-Gm-Message-State: AOJu0YzT7MgmTFQVoHRI3449J3osfz8mS3RIaLbX/ZEPsJ5iwYzlC8Zl
- rfNcUbQ3jrjsJkXoSzg10t1lEc1KII0/QpPB5m2e9upof0UNdFXdpBHwlZ6zuK8=
-X-Google-Smtp-Source: AGHT+IHTDfadl0OwYpEBCJW7/XCfkDFGaGDZRFu93YEcIrNNvJ5cpITi+jqGXGnJRjntRXrMyC29wg==
-X-Received: by 2002:adf:f605:0:b0:351:d78e:875e with SMTP id
- ffacd0b85a97d-35526c271e2mr5889702f8f.14.1716803590214; 
- Mon, 27 May 2024 02:53:10 -0700 (PDT)
+ bh=E3dSc3yfYv/r+d4wN3BGfw+S9Y3dPGG6wtoFQR1sb/w=;
+ b=P2+Y27GYAbDF7DQ/SqPpswnQMp3OIaSc1JxmA8NBh3Jenx67ab1DSEc/182+FXUr17
+ gj63NUTFVdfp1lyzVZ/7dOGjDwHqaA0H/CFyHvf9kHm+IYND0LNZ7Syp9zW2wghEWQjX
+ anLhaCVTH1Ic/kn1Y3tg4JQ6pVbL9zQ5n/XkbFFQHYU9WD7VoxMZBEGAha76EPugr6/1
+ IHZXIaRaM/SJdYJgOiGJ9Stw1R7x+nE4sGQ6+4Tg7DCMl9TYUxTzse6Oisvvxaq9l0Pu
+ yrNCsbp8d8yFl0IFLW8PIdMR0f5cZFAaI9OPk5iKmRTB0F2L/KUv1vOZBM8bWztAltzO
+ R3Ag==
+X-Gm-Message-State: AOJu0YxqmusAS+OuJkGCma0Y9JmzAP9V/UMhoxQ8ZeVUUBkIb+cPCHzv
+ QZcmIqjRqKaOUhUavMeTuwu4f0VC3RtoxhHvv2Hj3e8nVdtczvNJTu9FmuBkPbU=
+X-Google-Smtp-Source: AGHT+IHZZqJuTtU8NkYtawvQRFPq+AGB5/vYdZMEJU6Ir6pg+NRAhHfgKkI62X78BYIUSv1zDUAo3w==
+X-Received: by 2002:a05:600c:4fd2:b0:418:3d59:c13a with SMTP id
+ 5b1f17b1804b1-421015b3ca3mr107433235e9.9.1716803692816; 
+ Mon, 27 May 2024 02:54:52 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.152.134])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3577505a218sm5416098f8f.31.2024.05.27.02.53.08
+ 5b1f17b1804b1-421089ccb10sm103677425e9.44.2024.05.27.02.54.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 02:53:09 -0700 (PDT)
-Message-ID: <f2b32bb7-409b-484a-b4c3-71ca40d9bbe2@linaro.org>
-Date: Mon, 27 May 2024 11:53:07 +0200
+ Mon, 27 May 2024 02:54:52 -0700 (PDT)
+Message-ID: <df2abc64-9cff-44fb-876e-11a1711ecf4c@linaro.org>
+Date: Mon, 27 May 2024 11:54:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] tests/avocado: sbsa-ref: switch from OpenBSD to
- FreeBSD
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Brad Smith <brad@comstyle.com>
-References: <20240523183928.37809-1-marcin.juszkiewicz@linaro.org>
+Subject: Re: [PATCH v4 1/4] qemu-keymap: Make references to allocations static
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Michael Tokarev
+ <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20240524-xkb-v4-0-2de564e5c859@daynix.com>
+ <20240524-xkb-v4-1-2de564e5c859@daynix.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240523183928.37809-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20240524-xkb-v4-1-2de564e5c859@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,134 +100,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/24 20:39, Marcin Juszkiewicz wrote:
-> FreeBSD has longer support cycle for stable release (14.x EoL in 2028)
-> than OpenBSD (7.3 we used is already EoL). Also bugfixes are backported
-> so we can stay on 14.x for longer.
+On 24/5/24 07:35, Akihiko Odaki wrote:
+> LeakSanitizer complains about allocations whose references are held
+> only by automatic variables. It is possible to free them to suppress
+> the complaints, but it is a chore to make sure they are freed in all
+> exit paths so make them static instead.
 > 
-> Planned to upgrade to newer OpenBSD but we would have to wait for 7.6
-> release to get Neoverse-V1/N2 support.
-> 
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   tests/avocado/machine_aarch64_sbsaref.py | 65 ++++++++++++++++--------
->   1 file changed, 43 insertions(+), 22 deletions(-)
-> 
-> diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-> index 98c76c1ff7..c3c7c0e639 100644
-> --- a/tests/avocado/machine_aarch64_sbsaref.py
-> +++ b/tests/avocado/machine_aarch64_sbsaref.py
-> @@ -1,4 +1,4 @@
-> -# Functional test that boots a Linux kernel and checks the console
-> +# Functional test that boots a kernel and checks the console
->   #
->   # SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
->   # SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
-> @@ -177,14 +177,14 @@ def test_sbsaref_alpine_linux_max(self):
->       # This tests the whole boot chain from EFI to Userspace
->       # We only boot a whole OS for the current top level CPU and GIC
->       # Other test profiles should use more minimal boots
-> -    def boot_openbsd73(self, cpu):
-> +    def boot_freebsd14(self, cpu):
->           self.fetch_firmware()
->   
->           img_url = (
-> -            "https://cdn.openbsd.org/pub/OpenBSD/7.3/arm64/miniroot73.img"
-> +            "https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAGES/14.0/FreeBSD-14.0-RELEASE-arm64-aarch64-bootonly.iso"
->           )
->   
-> -        img_hash = "7fc2c75401d6f01fbfa25f4953f72ad7d7c18650056d30755c44b9c129b707e5"
-> +        img_hash = "2f3ceb0ef6b1de53553abb9979a6d65f51b006dbfa985798b282812ecb758c1b"
->           img_path = self.fetch_asset(img_url, algorithm="sha256", asset_hash=img_hash)
->   
->           self.vm.set_console()
-> @@ -196,43 +196,64 @@ def boot_openbsd73(self, cpu):
->           )
->   
->           self.vm.launch()
-> -        wait_for_console_pattern(self,
-> -                                 "Welcome to the OpenBSD/arm64"
-> -                                 " 7.3 installation program.")
-> +        wait_for_console_pattern(self, "Welcome to FreeBSD!")
->   
-> -    def test_sbsaref_openbsd73_cortex_a57(self):
-> +    def test_sbsaref_freebsd14_cortex_a57(self):
->           """
->           :avocado: tags=cpu:cortex-a57
-> -        :avocado: tags=os:openbsd
-> +        :avocado: tags=os:freebsd
->           """
-> -        self.boot_openbsd73("cortex-a57")
-> +        self.boot_freebsd14("cortex-a57")
->   
-> -    def test_sbsaref_openbsd73_neoverse_n1(self):
-> +    def test_sbsaref_freebsd14_neoverse_n1(self):
->           """
->           :avocado: tags=cpu:neoverse-n1
-> -        :avocado: tags=os:openbsd
-> +        :avocado: tags=os:freebsd
->           """
-> -        self.boot_openbsd73("neoverse-n1")
-> +        self.boot_freebsd14("neoverse-n1")
->   
-> -    def test_sbsaref_openbsd73_max_pauth_off(self):
-> +    def test_sbsaref_freebsd14_neoverse_n2_pauth_off(self):
-> +        """
-> +        :avocado: tags=cpu:neoverse-n2
-> +        :avocado: tags=os:freebsd
-> +        """
-> +        self.boot_freebsd14("neoverse-n2,pauth=off")
-> +
-> +    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-
-Nitpicking, maybe 'Test might timeout due to PAuth'? (few occurrences).
+>   qemu-keymap.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +    def test_sbsaref_freebsd14_neoverse_n2_pauth_impdef(self):
-> +        """
-> +        :avocado: tags=cpu:neoverse-n2
-> +        :avocado: tags=os:freebsd
-> +        """
-> +        self.boot_freebsd14("neoverse-n2,pauth-impdef=on")
-> +
-> +    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-> +    def test_sbsaref_freebsd14_neoverse_n2(self):
-> +        """
-> +        :avocado: tags=cpu:neoverse-n2
-> +        :avocado: tags=os:freebsd
-> +        """
-> +        self.boot_freebsd14("neoverse-n2")
-> +
-> +    def test_sbsaref_freebsd14_max_pauth_off(self):
->           """
->           :avocado: tags=cpu:max
-> -        :avocado: tags=os:openbsd
-> +        :avocado: tags=os:freebsd
->           """
-> -        self.boot_openbsd73("max,pauth=off")
-> +        self.boot_freebsd14("max,pauth=off")
->   
->       @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-> -    def test_sbsaref_openbsd73_max_pauth_impdef(self):
-> +    def test_sbsaref_freebsd14_max_pauth_impdef(self):
->           """
->           :avocado: tags=cpu:max
-> -        :avocado: tags=os:openbsd
-> +        :avocado: tags=os:freebsd
->           """
-> -        self.boot_openbsd73("max,pauth-impdef=on")
-> +        self.boot_freebsd14("max,pauth-impdef=on")
->   
->       @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-> -    def test_sbsaref_openbsd73_max(self):
-> +    def test_sbsaref_freebsd14_max(self):
->           """
->           :avocado: tags=cpu:max
-> -        :avocado: tags=os:openbsd
-> +        :avocado: tags=os:freebsd
->           """
-> -        self.boot_openbsd73("max")
-> +        self.boot_freebsd14("max")
 
 
