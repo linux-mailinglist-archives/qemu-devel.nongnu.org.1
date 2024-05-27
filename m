@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C148CFAFC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6828CFAF0
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVOL-00009L-2E; Mon, 27 May 2024 04:07:37 -0400
+	id 1sBVLw-0004RY-HK; Mon, 27 May 2024 04:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVKq-0001oo-Bv; Mon, 27 May 2024 04:04:01 -0400
+ id 1sBVKt-0001qB-4N; Mon, 27 May 2024 04:04:03 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVKo-0005ft-Hp; Mon, 27 May 2024 04:04:00 -0400
+ id 1sBVKr-0005ft-6d; Mon, 27 May 2024 04:04:02 -0400
 Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 27 May
- 2024 16:02:39 +0800
+ 2024 16:02:40 +0800
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 27 May
  2024 16:02:41 +0800
@@ -36,9 +36,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v4 15/16] test/avocado/machine_aspeed.py: Add AST2700 test case
-Date: Mon, 27 May 2024 16:02:29 +0800
-Message-ID: <20240527080231.1576609-16-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 16/16] docs:aspeed: Add AST2700 Evaluation board
+Date: Mon, 27 May 2024 16:02:30 +0800
+Message-ID: <20240527080231.1576609-17-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
 References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
@@ -73,113 +73,94 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a test case to test Aspeed OpenBMC SDK v09.01 on AST2700 board.
-
-It loads u-boot-nodtb.bin, u-boot.dtb, tfa and optee-os
-images to dram first which base address is 0x400000000.
-Then, boot and launch 4 cpu cores.
-
-```
-qemu-system-aarch64 -machine ast2700-evb
-    -device loader,force-raw=on,addr=0x400000000,file=workdir/u-boot-nodtb.bin \
-    -device loader,force-raw=on,addr=uboot_dtb_load_addr,file=workdir/u-boot.dtb\
-    -device loader,force-raw=on,addr=0x430000000,file=workdir/bl31.bin\
-    -device loader,force-raw=on,addr=0x430080000,file=workdir/optee/tee-raw.bin\
-    -device loader,cpu-num=0,addr=0x430000000 \
-    -device loader,cpu-num=1,addr=0x430000000 \
-    -device loader,cpu-num=2,addr=0x430000000 \
-    -device loader,cpu-num=3,addr=0x430000000 \
-    -smp 4 \
-    -drive file=workdir/image-bmc,format=raw,if=mtd
-```
-
-A test image is downloaded from the ASPEED Forked OpenBMC GitHub release repository :
-https://github.com/AspeedTech-BMC/openbmc/releases/
+Add AST2700 Evaluation board and its boot command.
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- tests/avocado/machine_aspeed.py | 62 +++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ docs/system/arm/aspeed.rst | 39 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 35 insertions(+), 4 deletions(-)
 
-diff --git a/tests/avocado/machine_aspeed.py b/tests/avocado/machine_aspeed.py
-index cec0181424..3a20644fb2 100644
---- a/tests/avocado/machine_aspeed.py
-+++ b/tests/avocado/machine_aspeed.py
-@@ -311,6 +311,17 @@ def do_test_arm_aspeed_sdk_start(self, image):
-             self, 'boot', '## Loading kernel from FIT Image')
-         self.wait_for_console_pattern('Starting kernel ...')
+diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+index b2dea54eed..cd9559e3e2 100644
+--- a/docs/system/arm/aspeed.rst
++++ b/docs/system/arm/aspeed.rst
+@@ -1,11 +1,12 @@
+-Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``)
+-==================================================================
++Aspeed family boards (``*-bmc``, ``ast2500-evb``, ``ast2600-evb``, ``ast2700-evb``)
++===================================================================================
  
-+    def do_test_aarch64_aspeed_sdk_start(self, image):
-+        self.vm.set_console()
-+        self.vm.add_args('-drive', 'file=' + image + ',if=mtd,format=raw')
-+
-+        self.vm.launch()
-+
-+        self.wait_for_console_pattern('U-Boot 2023.10')
-+        self.wait_for_console_pattern('## Loading kernel from FIT Image')
-+        self.wait_for_console_pattern('Starting kernel ...')
-+        self.wait_for_console_pattern("systemd[1]: Hostname set to")
-+
-     @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable on GitLab')
+ The QEMU Aspeed machines model BMCs of various OpenPOWER systems and
+ Aspeed evaluation boards. They are based on different releases of the
+ Aspeed SoC : the AST2400 integrating an ARM926EJ-S CPU (400MHz), the
+-AST2500 with an ARM1176JZS CPU (800MHz) and more recently the AST2600
+-with dual cores ARM Cortex-A7 CPUs (1.2GHz).
++AST2500 with an ARM1176JZS CPU (800MHz), the AST2600
++with dual cores ARM Cortex-A7 CPUs (1.2GHz) and more recently the AST2700
++with quad cores ARM Cortex-A35 64 bits CPUs (1.6GHz)
  
-     def test_arm_ast2500_evb_sdk(self):
-@@ -375,3 +386,54 @@ def test_arm_ast2600_evb_sdk(self):
-              'i2c i2c-5: new_device: Instantiated device ds1307 at 0x32');
-         year = time.strftime("%Y")
-         self.ssh_command_output_contains('/sbin/hwclock -f /dev/rtc1', year);
+ The SoC comes with RAM, Gigabit ethernet, USB, SD/MMC, USB, SPI, I2C,
+ etc.
+@@ -38,6 +39,10 @@ AST2600 SoC based machines :
+ - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
+ - ``qcom-firework-bmc``    Qualcomm Firework BMC
+ 
++AST2700 SoC based machines :
 +
-+    def test_aarch64_ast2700_evb_sdk_v09_01(self):
-+        """
-+        :avocado: tags=arch:aarch64
-+        :avocado: tags=machine:ast2700-evb
-+        """
++- ``ast2700-evb``          Aspeed AST2700 Evaluation board (Cortex-A35)
 +
-+        image_url = ('https://github.com/AspeedTech-BMC/openbmc/releases/'
-+                     'download/v09.01/ast2700-default-obmc.tar.gz')
-+        image_hash = 'b1cc0fd73c7650d34c9c8459a243f52a91e9e27144b8608b2645ab19461d1e07'
-+        image_path = self.fetch_asset(image_url, asset_hash=image_hash,
-+                                      algorithm='sha256')
-+        archive.extract(image_path, self.workdir)
+ Supported devices
+ -----------------
+ 
+@@ -66,6 +71,7 @@ Supported devices
+  * eMMC Boot Controller (dummy)
+  * PECI Controller (minimal)
+  * I3C Controller
++ * Internal Bridge Controller (SLI dummy)
+ 
+ 
+ Missing devices
+@@ -95,6 +101,10 @@ or directly from the OpenBMC GitHub release repository :
+ 
+    https://github.com/openbmc/openbmc/releases
+ 
++or directly from the ASPEED Forked OpenBMC GitHub release repository :
 +
-+        num_cpu = 4
-+        image_dir = self.workdir + '/ast2700-default/'
-+        uboot_size = os.path.getsize(image_dir + 'u-boot-nodtb.bin')
-+        uboot_dtb_load_addr = hex(0x400000000 + uboot_size)
++   https://github.com/AspeedTech-BMC/openbmc/releases
 +
-+        load_images_list = [
-+            {
-+                'addr': '0x400000000',
-+                'file': image_dir + 'u-boot-nodtb.bin'
-+            },
-+            {
-+                'addr': str(uboot_dtb_load_addr),
-+                'file': image_dir + 'u-boot.dtb'
-+            },
-+            {
-+                'addr': '0x430000000',
-+                'file': image_dir + 'bl31.bin'
-+            },
-+            {
-+                'addr': '0x430080000',
-+                'file': image_dir + 'optee/tee-raw.bin'
-+            }
-+        ]
+ To boot a kernel directly from a Linux build tree:
+ 
+ .. code-block:: bash
+@@ -164,6 +174,27 @@ under Linux), use :
+ 
+   -M ast2500-evb,bmc-console=uart3
+ 
 +
-+        for load_image in load_images_list:
-+            addr = load_image['addr']
-+            file = load_image['file']
-+            self.vm.add_args('-device',
-+                             f'loader,force-raw=on,addr={addr},file={file}')
++Boot the AST2700 machine from the flash image, use an MTD drive :
 +
-+        for i in range(num_cpu):
-+            self.vm.add_args('-device',
-+                             f'loader,addr=0x430000000,cpu-num={i}')
++.. code-block:: bash
 +
-+        self.vm.add_args('-smp', str(num_cpu))
-+        self.do_test_aarch64_aspeed_sdk_start(image_dir + 'image-bmc')
++  IMGDIR=ast2700-default
++  UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
 +
++  $ qemu-system-aarch64 -M ast2700-evb \
++       -device loader,force-raw=on,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin \
++       -device loader,force-raw=on,addr=$((0x400000000 + ${UBOOT_SIZE})),file=${IMGDIR}/u-boot.dtb \
++       -device loader,force-raw=on,addr=0x430000000,file=${IMGDIR}/bl31.bin \
++       -device loader,force-raw=on,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin \
++       -device loader,cpu-num=0,addr=0x430000000 \
++       -device loader,cpu-num=1,addr=0x430000000 \
++       -device loader,cpu-num=2,addr=0x430000000 \
++       -device loader,cpu-num=3,addr=0x430000000 \
++       -smp 4 \
++       -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd \
++       -nographic
++
+ Aspeed minibmc family boards (``ast1030-evb``)
+ ==================================================================
+ 
 -- 
 2.25.1
 
