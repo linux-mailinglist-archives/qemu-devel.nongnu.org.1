@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F4A8CF767
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 04:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 818F18CF76F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 04:25:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBPsl-0005a4-En; Sun, 26 May 2024 22:14:39 -0400
+	id 1sBQ1y-0000qh-3W; Sun, 26 May 2024 22:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1sBPsi-0005Z6-1K; Sun, 26 May 2024 22:14:36 -0400
-Received: from azure-sdnproxy.icoremail.net ([207.46.229.174])
+ id 1sBQ1u-0000pT-UF; Sun, 26 May 2024 22:24:06 -0400
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <duchao@eswincomputing.com>)
- id 1sBPsf-0001my-Id; Sun, 26 May 2024 22:14:35 -0400
-Received: from duchao$eswincomputing.com ( [10.64.112.210] ) by
- ajax-webmail-app1 (Coremail) ; Mon, 27 May 2024 10:12:03 +0800 (GMT+08:00)
-X-Originating-IP: [10.64.112.210]
-Date: Mon, 27 May 2024 10:12:03 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "Chao Du" <duchao@eswincomputing.com>
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: "Daniel Henrique Barboza" <dbarboza@ventanamicro.com>, 
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair23@gmail.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, 
- anup@brainfault.org, atishp@atishpatra.org
-Subject: Re: [RFC PATCH 1/4] target/riscv/kvm: add software breakpoints support
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT6.0.3 build 20220420(169d3f8c)
- Copyright (c) 2002-2024 www.mailtech.cn
- mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
-In-Reply-To: <CABgObfYA3Er1y3R9v0Huf3w43n7oD83UhkqdRk-oBYzyM6O_ow@mail.gmail.com>
-References: <20231221094923.7349-1-duchao@eswincomputing.com>
- <20231221094923.7349-2-duchao@eswincomputing.com>
- <ada42503-dab4-474f-a61a-a9fe3fa63afa@ventanamicro.com>
- <CABgObfYA3Er1y3R9v0Huf3w43n7oD83UhkqdRk-oBYzyM6O_ow@mail.gmail.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
-MIME-Version: 1.0
-Message-ID: <1deff797.ed0.18fb7d1ae25.Coremail.duchao@eswincomputing.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: TAJkCgDHaOXz61NmXgANAA--.4628W
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/1tbiAQEKDGZTAc0YowABsF
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
- CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
- daVFxhVjvjDU=
-Received-SPF: pass client-ip=207.46.229.174;
- envelope-from=duchao@eswincomputing.com; helo=azure-sdnproxy.icoremail.net
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- RCVD_IN_MSPIKE_H2=-0.001, RCVD_IN_VALIDITY_RPBL=1.31, SPF_HELO_NONE=0.001,
+ id 1sBQ1s-0003mF-Rx; Sun, 26 May 2024 22:24:06 -0400
+Received: from localhost.localdomain (unknown [10.12.130.31])
+ by app1 (Coremail) with SMTP id TAJkCgAXrOM07lNmsQANAA--.24375S4;
+ Mon, 27 May 2024 10:21:41 +0800 (CST)
+From: Chao Du <duchao@eswincomputing.com>
+To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
+ alistair23@gmail.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ palmer@dabbelt.com, anup@brainfault.org, duchao713@qq.com
+Subject: [PATCH v1 0/4] target/riscv/kvm: QEMU support for KVM Guest Debug on
+ RISC-V
+Date: Mon, 27 May 2024 02:19:12 +0000
+Message-Id: <20240527021916.12953-1-duchao@eswincomputing.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: TAJkCgAXrOM07lNmsQANAA--.24375S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1xZryDZr1UtFWDXr4xZwb_yoW8XF1Dpa
+ 1FgF9xGr4ftrW3CaySyF1kGr43Wr48urW7Ca4xAw1ftr4YvFW8Ars2g39xWFn8AFW8GFyU
+ CF1akr13u3WqvrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+ 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+ A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xII
+ jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
+ C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+ 0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+ 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+ 04v7MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+ 026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+ Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+ vEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+ 14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
+ 9x07j04E_UUUUU=
+X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=duchao@eswincomputing.com;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, RCVD_IN_VALIDITY_RPBL=1.31, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,33 +71,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T24gMjAyNC0wNS0yNSAwMDoxMSwgUGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT4g
-d3JvdGU6Cj4gCj4gT24gVHVlLCBBcHIgMTYsIDIwMjQgYXQgMTE6MjPigK9BTSBEYW5pZWwgSGVu
-cmlxdWUgQmFyYm96YQo+IDxkYmFyYm96YUB2ZW50YW5hbWljcm8uY29tPiB3cm90ZToKPiA+ID4g
-K2ludCBrdm1fYXJjaF9pbnNlcnRfc3dfYnJlYWtwb2ludChDUFVTdGF0ZSAqY3MsIHN0cnVjdCBr
-dm1fc3dfYnJlYWtwb2ludCAqYnAsCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgdmFkZHIgbGVuKQo+ID4gPiArewo+ID4gPiArICAgIGlmIChsZW4gIT0gNCAmJiBsZW4g
-IT0gMikgewo+ID4gPiArICAgICAgICByZXR1cm4gLUVJTlZBTDsKPiA+ID4gKyAgICB9Cj4gPgo+
-ID4gSSB3b25kZXIgaWYgdGhpcyB2ZXJpZmljYXRpb24gc2hvdWxkIGJlIG1vdmVkIHRvIGt2bV9p
-bnNlcnRfYnJlYWtwb2ludCgpLiBJcwo+ID4gdGhlcmUgYW55IGtub3duIHJlYXNvbiB3aHkgb3Ro
-ZXIgYXJjaHMgd291bGQgdXNlICdsZW4nIG90aGVyIHRoYW4gMiBvciA0PyBUaGUKPiA+IHBhcmVu
-dCBmdW5jdGlvbiBjYW4gdGhyb3cgdGhlIEVJTlZBTCBpbiB0aGlzIGNhc2UuIE90aGVyd2lzZSBh
-bGwgY2FsbGVycyBmcm9tCj4gPiBhbGwgYXJjaHMgd2lsbCBuZWVkIGEgc2ltaWxhciBFSU5WQUwg
-Y2hlY2suCj4gCj4gSSdtIG5vdCBzdXJlIGhvdyBsZW4gaXMgZGVmaW5lZCBpbiB0aGUgZ2RiIHBy
-b3RvY29sLCBidXQgeDg2IGhhcyBhCj4gYnJlYWtwb2ludCBsZW5ndGggb2YgMSBhbmQgYW4gaW5z
-dHJ1Y3Rpb24gbGVuZ3RoIHRoYXQgY2FuIGJlIGFueSB2YWx1ZQo+IGJldHdlZW4gMSBhbmQgMTUu
-Cj4gCj4gTW9zdCBhcmNoaXRlY3R1cmVzIGNvdWxkIGFzc3VtZSB0aGF0IGl0J3MgYWx3YXlzIG9u
-ZSB2YWx1ZSwgaS5lLiBqdXN0Cj4gbm90IGNhcmUgYWJvdXQgY2hlY2tpbmcgbGVuIGluIGt2bV9h
-cmNoX2luc2VydF9zd19icmVha3BvaW50Lgo+IAo+IFRoZSBwYXRjaGVzIGxvb2sgZ29vZCwgZmVl
-bCBmcmVlIHRvIHRha2UgdGhlbSB0aHJvdWdoIHRoZSBSSVNDLVYgdHJlZS4KPiAKPiBPbmUgdGhp
-bmcgdGhhdCBJIHdhcyB3b25kZXJpbmcgaXM6IGNvdWxkIFJJU0MtViBqdXN0IHVzZSBhbHdheXMK
-PiBjLmVicmVhayBpZiBDIGluc3RydWN0aW9ucyBhcmUgc3VwcG9ydGVkLCBhbmQgZWJyZWFrIGlm
-IHRoZXkncmUgbm90Pwo+IEJ1dCBpZiBmb3IgZXhhbXBsZSB0aGF0IHdvdWxkIHRoYXQgbWVzcyB1
-cCB0aGUgc3luY2hyb25pemF0aW9uIG9mIHRoZQo+IGRpc2Fzc2VtYmx5IGluIGdkYiwgaXQncyBh
-IGdvb2QgcmVhc29uIHRvIGFkZCB0aGUgbGVuIGFyZ3VtZW50IGFzIHlvdQo+IGRpZCBoZXJlLgoK
-WWVzLCB5b3UgYXJlIHJpZ2h0LiBJZiB3ZSBpbnNlcnQgYW4gZWJyZWFrIGluc3RydWN0aW9uIHdo
-b3NlIGxlbmd0aCBpcwpkaWZmZXJlbnQgZnJvbSB0aGUgb3JpZ2luYWwgb25lLCB0aGVuIHRoZSBk
-aXNhc3NlbWJseSBpbiBnZGIgbWF5IGVuY291bnRlcgpzb21lIHByb2JsZW1zLgoKVGhhbmtzIGZv
-ciB0aGUgcmV2aWV3LCBJIHdpbGwgcmViYXNlIHRoaXMgc2VyaWVzIGFuZCBzZW5kIGl0IG91dC4K
-CkNoYW8KCj4gCj4gUGFvbG8K
+This series implements QEMU KVM Guest Debug on RISC-V, with which we
+could debug RISC-V KVM guest from the host side, using software
+breakpoints.
+
+This series is based on riscv-to-apply.next branch (v9.0.0) and is also
+available at:
+https://github.com/Du-Chao/qemu-alistair23/tree/riscv-to-apply.next.0524
+
+The corresponding KVM side patches have been merged already:
+https://lore.kernel.org/kvm/20240402062628.5425-1-duchao@eswincomputing.com/
+
+A TODO list which will be added later:
+1. HW breakpoints support
+2. A 'corner case' in which the debug exception is not inserted by the
+debugger, need to be re-injected to the guest.
+
+Changes from RFC->v1:
+- Rebased on riscv-to-apply.next
+- use configs/ definition to conditionalize debug support
+
+RFC link:
+https://lore.kernel.org/qemu-riscv/20231221094923.7349-1-duchao@eswincomputing.com/
+
+Chao Du (4):
+  target/riscv/kvm: add software breakpoints support
+  target/riscv/kvm: implement kvm_arch_update_guest_debug()
+  target/riscv/kvm: handle the exit with debug reason
+  target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
+
+ accel/kvm/kvm-all.c                 |   8 +--
+ configs/targets/riscv64-softmmu.mak |   1 +
+ include/sysemu/kvm.h                |   6 +-
+ target/arm/kvm.c                    |   6 +-
+ target/i386/kvm/kvm.c               |   6 +-
+ target/mips/kvm.c                   |   6 +-
+ target/ppc/kvm.c                    |   6 +-
+ target/riscv/kvm/kvm-cpu.c          | 101 ++++++++++++++++++++++++++++
+ target/s390x/kvm/kvm.c              |   6 +-
+ 9 files changed, 130 insertions(+), 16 deletions(-)
+
+--
+2.17.1
+
 
