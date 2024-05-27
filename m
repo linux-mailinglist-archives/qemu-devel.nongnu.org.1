@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FE58CFB8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7218CFB5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVd3-0001F7-OP; Mon, 27 May 2024 04:22:49 -0400
+	id 1sBVeZ-0004Gn-2G; Mon, 27 May 2024 04:24:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVcA-0000yY-RK; Mon, 27 May 2024 04:21:56 -0400
+ id 1sBVcC-0000z2-Sm; Mon, 27 May 2024 04:21:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVc7-0000ho-TT; Mon, 27 May 2024 04:21:54 -0400
+ id 1sBVcB-0000i6-53; Mon, 27 May 2024 04:21:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E944F6A562;
- Mon, 27 May 2024 11:22:12 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 037116A563;
+ Mon, 27 May 2024 11:22:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1E114D84FF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2E877D8500;
  Mon, 27 May 2024 11:21:39 +0300 (MSK)
-Received: (nullmailer pid 66366 invoked by uid 1000);
+Received: (nullmailer pid 66369 invoked by uid 1000);
  Mon, 27 May 2024 08:21:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 05/44] nbd/server: Mark negotiation functions as
- coroutine_fn
-Date: Mon, 27 May 2024 11:20:56 +0300
-Message-Id: <20240527082138.66217-5-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@fujitsu.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ zhenwei pi <pizhenwei@bytedance.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 06/44] backends/cryptodev-builtin: Fix local_error leaks
+Date: Mon, 27 May 2024 11:20:57 +0300
+Message-Id: <20240527082138.66217-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,318 +61,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-nbd_negotiate() is already marked coroutine_fn.  And given the fix in
-the previous patch to have nbd_negotiate_handle_starttls not create
-and wait on a g_main_loop (as that would violate coroutine
-constraints), it is worth marking the rest of the related static
-functions reachable only during option negotiation as also being
-coroutine_fn.
+It seems that this error does not need to be propagated to the upper,
+directly output the error to avoid the leaks
 
-Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240408160214.1200629-6-eblake@redhat.com>
-Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-[eblake: drop one spurious coroutine_fn marking]
-Signed-off-by: Eric Blake <eblake@redhat.com>
-(cherry picked from commit 4fa333e08dd96395a99ea8dd9e4c73a29dd23344)
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/2283
+Fixes: 2fda101de07 ("virtio-crypto: Support asynchronous mode")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 06479dbf3d7d245572c4b3016e5a1d923ff04d66)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/nbd/server.c b/nbd/server.c
-index 98ae0e1632..892797bb11 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -195,8 +195,9 @@ static inline void set_be_option_rep(NBDOptionReply *rep, uint32_t option,
+diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
+index a514bbb310..940104ee55 100644
+--- a/backends/cryptodev-builtin.c
++++ b/backends/cryptodev-builtin.c
+@@ -23,6 +23,7 @@
  
- /* Send a reply header, including length, but no payload.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
--                                      uint32_t len, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
-+                           uint32_t len, Error **errp)
- {
-     NBDOptionReply rep;
+ #include "qemu/osdep.h"
+ #include "sysemu/cryptodev.h"
++#include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "standard-headers/linux/virtio_crypto.h"
+ #include "crypto/cipher.h"
+@@ -396,8 +397,8 @@ static int cryptodev_builtin_create_session(
+     case VIRTIO_CRYPTO_HASH_CREATE_SESSION:
+     case VIRTIO_CRYPTO_MAC_CREATE_SESSION:
+     default:
+-        error_setg(&local_error, "Unsupported opcode :%" PRIu32 "",
+-                   sess_info->op_code);
++        error_report("Unsupported opcode :%" PRIu32 "",
++                     sess_info->op_code);
+         return -VIRTIO_CRYPTO_NOTSUPP;
+     }
  
-@@ -211,15 +212,15 @@ static int nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
+@@ -554,8 +555,8 @@ static int cryptodev_builtin_operation(
  
- /* Send a reply header with default 0 length.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep(NBDClient *client, uint32_t type,
--                                  Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep(NBDClient *client, uint32_t type, Error **errp)
- {
-     return nbd_negotiate_send_rep_len(client, type, 0, errp);
- }
+     if (op_info->session_id >= MAX_NUM_SESSIONS ||
+               builtin->sessions[op_info->session_id] == NULL) {
+-        error_setg(&local_error, "Cannot find a valid session id: %" PRIu64 "",
+-                   op_info->session_id);
++        error_report("Cannot find a valid session id: %" PRIu64 "",
++                     op_info->session_id);
+         return -VIRTIO_CRYPTO_INVSESS;
+     }
  
- /* Send an error reply.
-  * Return -errno on error, 0 on success. */
--static int G_GNUC_PRINTF(4, 0)
-+static coroutine_fn int G_GNUC_PRINTF(4, 0)
- nbd_negotiate_send_rep_verr(NBDClient *client, uint32_t type,
-                             Error **errp, const char *fmt, va_list va)
- {
-@@ -259,7 +260,7 @@ nbd_sanitize_name(const char *name)
- 
- /* Send an error reply.
-  * Return -errno on error, 0 on success. */
--static int G_GNUC_PRINTF(4, 5)
-+static coroutine_fn int G_GNUC_PRINTF(4, 5)
- nbd_negotiate_send_rep_err(NBDClient *client, uint32_t type,
-                            Error **errp, const char *fmt, ...)
- {
-@@ -275,7 +276,7 @@ nbd_negotiate_send_rep_err(NBDClient *client, uint32_t type,
- /* Drop remainder of the current option, and send a reply with the
-  * given error type and message. Return -errno on read or write
-  * failure; or 0 if connection is still live. */
--static int G_GNUC_PRINTF(4, 0)
-+static coroutine_fn int G_GNUC_PRINTF(4, 0)
- nbd_opt_vdrop(NBDClient *client, uint32_t type, Error **errp,
-               const char *fmt, va_list va)
- {
-@@ -288,7 +289,7 @@ nbd_opt_vdrop(NBDClient *client, uint32_t type, Error **errp,
-     return ret;
- }
- 
--static int G_GNUC_PRINTF(4, 5)
-+static coroutine_fn int G_GNUC_PRINTF(4, 5)
- nbd_opt_drop(NBDClient *client, uint32_t type, Error **errp,
-              const char *fmt, ...)
- {
-@@ -302,7 +303,7 @@ nbd_opt_drop(NBDClient *client, uint32_t type, Error **errp,
-     return ret;
- }
- 
--static int G_GNUC_PRINTF(3, 4)
-+static coroutine_fn int G_GNUC_PRINTF(3, 4)
- nbd_opt_invalid(NBDClient *client, Error **errp, const char *fmt, ...)
- {
-     int ret;
-@@ -319,8 +320,9 @@ nbd_opt_invalid(NBDClient *client, Error **errp, const char *fmt, ...)
-  * If @check_nul, require that no NUL bytes appear in buffer.
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_opt_read(NBDClient *client, void *buffer, size_t size,
--                        bool check_nul, Error **errp)
-+static coroutine_fn int
-+nbd_opt_read(NBDClient *client, void *buffer, size_t size,
-+             bool check_nul, Error **errp)
- {
-     if (size > client->optlen) {
-         return nbd_opt_invalid(client, errp,
-@@ -343,7 +345,8 @@ static int nbd_opt_read(NBDClient *client, void *buffer, size_t size,
- /* Drop size bytes from the unparsed payload of the current option.
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
-+static coroutine_fn int
-+nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
- {
-     if (size > client->optlen) {
-         return nbd_opt_invalid(client, errp,
-@@ -366,8 +369,9 @@ static int nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success.
-  */
--static int nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
--                             Error **errp)
-+static coroutine_fn int
-+nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
-+                  Error **errp)
- {
-     int ret;
-     uint32_t len;
-@@ -402,8 +406,8 @@ static int nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
- 
- /* Send a single NBD_REP_SERVER reply to NBD_OPT_LIST, including payload.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp,
--                                       Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp, Error **errp)
- {
-     ERRP_GUARD();
-     size_t name_len, desc_len;
-@@ -444,7 +448,8 @@ static int nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp,
- 
- /* Process the NBD_OPT_LIST command, with a potential series of replies.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_list(NBDClient *client, Error **errp)
- {
-     NBDExport *exp;
-     assert(client->opt == NBD_OPT_LIST);
-@@ -459,7 +464,8 @@ static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-     return nbd_negotiate_send_rep(client, NBD_REP_ACK, errp);
- }
- 
--static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
-+static coroutine_fn void
-+nbd_check_meta_export(NBDClient *client, NBDExport *exp)
- {
-     if (exp != client->contexts.exp) {
-         client->contexts.count = 0;
-@@ -468,8 +474,9 @@ static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
- 
- /* Send a reply to NBD_OPT_EXPORT_NAME.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
--                                            Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-+                                 Error **errp)
- {
-     ERRP_GUARD();
-     g_autofree char *name = NULL;
-@@ -536,9 +543,9 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
- /* Send a single NBD_REP_INFO, with a buffer @buf of @length bytes.
-  * The buffer does NOT include the info type prefix.
-  * Return -errno on error, 0 if ready to send more. */
--static int nbd_negotiate_send_info(NBDClient *client,
--                                   uint16_t info, uint32_t length, void *buf,
--                                   Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_info(NBDClient *client, uint16_t info, uint32_t length,
-+                        void *buf, Error **errp)
- {
-     int rc;
- 
-@@ -565,7 +572,8 @@ static int nbd_negotiate_send_info(NBDClient *client,
-  * -errno  transmission error occurred or @fatal was requested, errp is set
-  * 0       error message successfully sent to client, errp is not set
-  */
--static int nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
-+static coroutine_fn int
-+nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
- {
-     int ret;
- 
-@@ -583,7 +591,8 @@ static int nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
- /* Handle NBD_OPT_INFO and NBD_OPT_GO.
-  * Return -errno on error, 0 if ready for next option, and 1 to move
-  * into transmission phase.  */
--static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_info(NBDClient *client, Error **errp)
- {
-     int rc;
-     g_autofree char *name = NULL;
-@@ -755,7 +764,8 @@ struct NBDTLSServerHandshakeData {
-     Coroutine *co;
- };
- 
--static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
-+static void
-+nbd_server_tls_handshake(QIOTask *task, void *opaque)
- {
-     struct NBDTLSServerHandshakeData *data = opaque;
- 
-@@ -768,8 +778,8 @@ static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
- 
- /* Handle NBD_OPT_STARTTLS. Return NULL to drop connection, or else the
-  * new channel for all further (now-encrypted) communication. */
--static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
--                                                 Error **errp)
-+static coroutine_fn QIOChannel *
-+nbd_negotiate_handle_starttls(NBDClient *client, Error **errp)
- {
-     QIOChannel *ioc;
-     QIOChannelTLS *tioc;
-@@ -821,10 +831,9 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
-  *
-  * For NBD_OPT_LIST_META_CONTEXT @context_id is ignored, 0 is used instead.
-  */
--static int nbd_negotiate_send_meta_context(NBDClient *client,
--                                           const char *context,
--                                           uint32_t context_id,
--                                           Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_meta_context(NBDClient *client, const char *context,
-+                                uint32_t context_id, Error **errp)
- {
-     NBDOptionReplyMetaContext opt;
-     struct iovec iov[] = {
-@@ -849,8 +858,9 @@ static int nbd_negotiate_send_meta_context(NBDClient *client,
-  * Return true if @query matches @pattern, or if @query is empty when
-  * the @client is performing _LIST_.
-  */
--static bool nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
--                                      const char *query)
-+static coroutine_fn bool
-+nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
-+                          const char *query)
- {
-     if (!*query) {
-         trace_nbd_negotiate_meta_query_parse("empty");
-@@ -867,7 +877,8 @@ static bool nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
- /*
-  * Return true and adjust @str in place if it begins with @prefix.
-  */
--static bool nbd_strshift(const char **str, const char *prefix)
-+static coroutine_fn bool
-+nbd_strshift(const char **str, const char *prefix)
- {
-     size_t len = strlen(prefix);
- 
-@@ -883,8 +894,9 @@ static bool nbd_strshift(const char **str, const char *prefix)
-  * Handle queries to 'base' namespace. For now, only the base:allocation
-  * context is available.  Return true if @query has been handled.
-  */
--static bool nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
--                                const char *query)
-+static coroutine_fn bool
-+nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
-+                    const char *query)
- {
-     if (!nbd_strshift(&query, "base:")) {
-         return false;
-@@ -903,8 +915,9 @@ static bool nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
-  * and qemu:allocation-depth contexts are available.  Return true if @query
-  * has been handled.
-  */
--static bool nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
--                                const char *query)
-+static coroutine_fn bool
-+nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
-+                    const char *query)
- {
-     size_t i;
- 
-@@ -968,8 +981,9 @@ static bool nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
-  *
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_negotiate_meta_query(NBDClient *client,
--                                    NBDMetaContexts *meta, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_meta_query(NBDClient *client,
-+                         NBDMetaContexts *meta, Error **errp)
- {
-     int ret;
-     g_autofree char *query = NULL;
-@@ -1008,7 +1022,8 @@ static int nbd_negotiate_meta_query(NBDClient *client,
-  * Handle NBD_OPT_LIST_META_CONTEXT and NBD_OPT_SET_META_CONTEXT
-  *
-  * Return -errno on I/O error, or 0 if option was completely handled. */
--static int nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
- {
-     int ret;
-     g_autofree char *export_name = NULL;
-@@ -1136,7 +1151,8 @@ static int nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
-  * 1       if client sent NBD_OPT_ABORT, i.e. on valid disconnect,
-  *         errp is not set
-  */
--static int nbd_negotiate_options(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_options(NBDClient *client, Error **errp)
- {
-     uint32_t flags;
-     bool fixedNewstyle = false;
 -- 
 2.39.2
 
