@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783938CFB93
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDB98CFB5E
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:27:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVit-00043V-Q5; Mon, 27 May 2024 04:28:52 -0400
+	id 1sBVgw-0000St-NB; Mon, 27 May 2024 04:26:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVf7-0005Kh-Mu; Mon, 27 May 2024 04:25:00 -0400
+ id 1sBVf8-0005NI-VT; Mon, 27 May 2024 04:25:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVf6-0001EX-0x; Mon, 27 May 2024 04:24:57 -0400
+ id 1sBVf7-0001Ep-Ey; Mon, 27 May 2024 04:24:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 393786A582;
+ by isrv.corpit.ru (Postfix) with ESMTP id 48B9D6A583;
  Mon, 27 May 2024 11:22:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6303BD851F;
+ by tsrv.corpit.ru (Postfix) with SMTP id 757E3D8520;
  Mon, 27 May 2024 11:21:41 +0300 (MSK)
-Received: (nullmailer pid 66465 invoked by uid 1000);
+Received: (nullmailer pid 66468 invoked by uid 1000);
  Mon, 27 May 2024 08:21:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Fabiano Rosas <farosas@suse.de>, Jason Wang <jasowang@redhat.com>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 37/44] hw/core/machine: move compatibility flags for
- VirtIO-net USO to machine 8.1
-Date: Mon, 27 May 2024 11:21:28 +0300
-Message-Id: <20240527082138.66217-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 38/44] target/loongarch/kvm: fpu save the vreg
+ registers high 192bit
+Date: Mon, 27 May 2024 11:21:29 +0300
+Message-Id: <20240527082138.66217-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
@@ -61,62 +60,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Song Gao <gaosong@loongson.cn>
 
-Migration from an 8.2 or 9.0 binary to an 8.1 binary with machine
-version 8.1 can fail with:
+On kvm side, get_fpu/set_fpu save the vreg registers high 192bits,
+but QEMU missing.
 
-> kvm: Features 0x1c0010130afffa7 unsupported. Allowed features: 0x10179bfffe7
-> kvm: Failed to load virtio-net:virtio
-> kvm: error while loading state for instance 0x0 of device '0000:00:12.0/virtio-net'
-> kvm: load of migration failed: Operation not permitted
-
-The series
-
-53da8b5a99 virtio-net: Add support for USO features
-9da1684954 virtio-net: Add USO flags to vhost support.
-f03e0cf63b tap: Add check for USO features
-2ab0ec3121 tap: Add USO support to tap device.
-
-only landed in QEMU 8.2, so the compatibility flags should be part of
-machine version 8.1.
-
-Moving the flags unfortunately breaks forward migration with machine
-version 8.1 from a binary without this patch to a binary with this
-patch.
-
-Fixes: 53da8b5a99 ("virtio-net: Add support for USO features")
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 9710401276a0eb2fc6d467d9abea1f5e3fe2c362)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Message-Id: <20240514110752.989572-1-gaosong@loongson.cn>
+(cherry picked from commit 07c0866103d4aa2dd83c7c3e7898843e28e3893a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 37ede0e7d4..3a5a8d473d 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -45,15 +45,15 @@ GlobalProperty hw_compat_8_1[] = {
-     { "ramfb", "x-migrate", "off" },
-     { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
-     { "igb", "x-pcie-flr-init", "off" },
-+    { TYPE_VIRTIO_NET, "host_uso", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
- };
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+diff --git a/target/loongarch/kvm/kvm.c b/target/loongarch/kvm/kvm.c
+index d630cc39cb..e2dff2b795 100644
+--- a/target/loongarch/kvm/kvm.c
++++ b/target/loongarch/kvm/kvm.c
+@@ -436,6 +436,9 @@ static int kvm_loongarch_get_regs_fp(CPUState *cs)
+     env->fcsr0 = fpu.fcsr;
+     for (i = 0; i < 32; i++) {
+         env->fpr[i].vreg.UD[0] = fpu.fpr[i].val64[0];
++        env->fpr[i].vreg.UD[1] = fpu.fpr[i].val64[1];
++        env->fpr[i].vreg.UD[2] = fpu.fpr[i].val64[2];
++        env->fpr[i].vreg.UD[3] = fpu.fpr[i].val64[3];
+     }
+     for (i = 0; i < 8; i++) {
+         env->cf[i] = fpu.fcc & 0xFF;
+@@ -455,6 +458,9 @@ static int kvm_loongarch_put_regs_fp(CPUState *cs)
+     fpu.fcc = 0;
+     for (i = 0; i < 32; i++) {
+         fpu.fpr[i].val64[0] = env->fpr[i].vreg.UD[0];
++        fpu.fpr[i].val64[1] = env->fpr[i].vreg.UD[1];
++        fpu.fpr[i].val64[2] = env->fpr[i].vreg.UD[2];
++        fpu.fpr[i].val64[3] = env->fpr[i].vreg.UD[3];
+     }
  
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-     { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
--    { TYPE_VIRTIO_NET, "host_uso", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
+     for (i = 0; i < 8; i++) {
 -- 
 2.39.2
 
