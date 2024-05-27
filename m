@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0C48CF96E
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 08:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6F08CF967
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 08:42:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBU3G-0003HN-66; Mon, 27 May 2024 02:41:46 -0400
+	id 1sBU2r-00037W-1v; Mon, 27 May 2024 02:41:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBU2k-00030Y-V9; Mon, 27 May 2024 02:41:15 -0400
+ id 1sBU2n-00033h-QU; Mon, 27 May 2024 02:41:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBU2i-0007Gf-RM; Mon, 27 May 2024 02:41:14 -0400
+ id 1sBU2l-0007IE-02; Mon, 27 May 2024 02:41:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7E07A6A3F0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8B5DB6A3F1;
  Mon, 27 May 2024 09:41:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CAA90D83E8;
+ by tsrv.corpit.ru (Postfix) with SMTP id D9401D83E9;
  Mon, 27 May 2024 09:40:56 +0300 (MSK)
-Received: (nullmailer pid 50264 invoked by uid 1000);
+Received: (nullmailer pid 50267 invoked by uid 1000);
  Mon, 27 May 2024 06:40:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Palmer Dabbelt <palmer@rivosinc.com>,
- Bin Meng <bmeng@tinylab.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.12 02/19] gitlab/opensbi: Move to docker:stable
-Date: Mon, 27 May 2024 09:40:33 +0300
-Message-Id: <20240527064056.50205-2-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [Stable-7.2.12 03/19] linux-user: do_setsockopt: fix
+ SOL_ALG.ALG_SET_KEY
+Date: Mon, 27 May 2024 09:40:34 +0300
+Message-Id: <20240527064056.50205-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.12-20240527072010@cover.tls.msk.ru>
 References: <qemu-stable-7.2.12-20240527072010@cover.tls.msk.ru>
@@ -59,55 +60,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+This setsockopt accepts zero-lengh optlen (current qemu implementation
+does not allow this).  Also, there's no need to make a copy of the key,
+it is enough to use lock_user() (which accepts zero length already).
 
-The OpenSBI build has been using docker:19.03.1, which appears to be old
-enough that v2 of the manifest is no longer supported.  Something has
-started serving us those manifests, resulting in errors along the lines
-of
-
-    $ docker build --cache-from $IMAGE_TAG --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $IMAGE_TAG .gitlab-ci.d/opensbi
-    Step 1/7 : FROM ubuntu:18.04
-    18.04: Pulling from library/ubuntu
-    mediaType in manifest should be 'application/vnd.docker.distribution.manifest.v2+json' not 'application/vnd.oci.image.manifest.v1+json'
-
-This moves to docker:stable, as was suggested by the template.  It also
-adds the python3 package via apt, as OpenSBI requires that to build.
-
-Reviewed-by: Bin Meng <bmeng@tinylab.org>
-Message-ID: <20230303202448.11911-2-palmer@rivosinc.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-(cherry picked from commit 7bc1286b81d4e8380b3083beed1771c67ce87af3)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2197
+Fixes: f31dddd2fc "linux-user: Add support for setsockopt() option SOL_ALG"
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <20240331100737.2724186-2-mjt@tls.msk.ru>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 04f6fb897a5aeb3e356a7b889869c9962f9c16c7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/opensbi.yml b/.gitlab-ci.d/opensbi.yml
-index 04ed5a3ea1..9a651465d8 100644
---- a/.gitlab-ci.d/opensbi.yml
-+++ b/.gitlab-ci.d/opensbi.yml
-@@ -42,9 +42,9 @@
- docker-opensbi:
-   extends: .opensbi_job_rules
-   stage: containers
--  image: docker:19.03.1
-+  image: docker:stable
-   services:
--    - docker:19.03.1-dind
-+    - docker:stable-dind
-   variables:
-     GIT_DEPTH: 3
-     IMAGE_TAG: $CI_REGISTRY_IMAGE:opensbi-cross-build
-diff --git a/.gitlab-ci.d/opensbi/Dockerfile b/.gitlab-ci.d/opensbi/Dockerfile
-index 4ba8a4de86..5ccf4151f4 100644
---- a/.gitlab-ci.d/opensbi/Dockerfile
-+++ b/.gitlab-ci.d/opensbi/Dockerfile
-@@ -15,6 +15,7 @@ RUN apt update \
-         ca-certificates \
-         git \
-         make \
-+	python3 \
-         wget \
-     && \
-     \
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 41017b0df2..74240f99ad 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -2297,18 +2297,13 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+         switch (optname) {
+         case ALG_SET_KEY:
+         {
+-            char *alg_key = g_malloc(optlen);
+-
++            char *alg_key = lock_user(VERIFY_READ, optval_addr, optlen, 1);
+             if (!alg_key) {
+-                return -TARGET_ENOMEM;
+-            }
+-            if (copy_from_user(alg_key, optval_addr, optlen)) {
+-                g_free(alg_key);
+                 return -TARGET_EFAULT;
+             }
+             ret = get_errno(setsockopt(sockfd, level, optname,
+                                        alg_key, optlen));
+-            g_free(alg_key);
++            unlock_user(alg_key, optval_addr, optlen);
+             break;
+         }
+         case ALG_SET_AEAD_AUTHSIZE:
 -- 
 2.39.2
 
