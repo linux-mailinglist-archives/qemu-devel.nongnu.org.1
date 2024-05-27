@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673EA8CFA30
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 998EC8CFA3D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:36:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUrt-0007nT-7C; Mon, 27 May 2024 03:34:05 -0400
+	id 1sBUtY-0001ZX-KK; Mon, 27 May 2024 03:35:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBUrZ-0007ji-Bn
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:33:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBUt6-00015u-1v
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:35:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBUrX-00081L-LO
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:33:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBUt2-0008Ar-Vu
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:35:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716795222;
+ s=mimecast20190719; t=1716795315;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=PFRGRZXJxFiPeyLb9nDNEyrLhBbAe/570Vr12fzLp3s=;
- b=Dx2ivx9lH1WoaWIAVHdLosQJSu0QyEnJbxD9/bDClAGAIdYxI1kCG6p3y+uOTWmF/Zg52G
- 0CelRwefQxHGdWt4vXuiVj0lZUlUezIdOvhyKvAE6PF0qkpWBcHUbLo+NCrCgvOPct5IB1
- zj1mTXU3HBt6Yd2REcCmI8Y2qggbhRo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PVMZUATiaPmT3ZndVyOxtmr7JmtVnEdjc67ZoRLK2Fs=;
+ b=UgnE/HdA7oNCCc2bbp7L2uFnYUwMu0U4uboxDpbSyWeCv9G+gf9COykl2EUmAsP6NYnHVq
+ Nlb/mppljlQxbbP63/V2nj7v9t/GxZMkomQJtIXFOAV1rHOnBzUGhgP7pOr7ODCCcgoC4P
+ cKCHFOgA1iYp/4FX59KWW259jbrDclk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-uWraSibnOHiLJPcriA6SLg-1; Mon, 27 May 2024 03:32:59 -0400
-X-MC-Unique: uWraSibnOHiLJPcriA6SLg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-421088569dcso10461755e9.1
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 00:32:59 -0700 (PDT)
+ us-mta-502-8ULrR_GYOLedTTek3wabOw-1; Mon, 27 May 2024 03:35:13 -0400
+X-MC-Unique: 8ULrR_GYOLedTTek3wabOw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-357f24b8cabso1052656f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 00:35:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716795178; x=1717399978;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PFRGRZXJxFiPeyLb9nDNEyrLhBbAe/570Vr12fzLp3s=;
- b=s9bCG2FKEy4qPWEmz/4rxkhc6BgjYjoVv0MbWdPvVPjviUcNPS4kC6o63Zp1AeORoM
- npt//Oh4EDhxMTQrTvFJpErnujHIlEb9oKG2kn+kf93MR3vUvlooZ6bn7WY3cr/sOzvK
- rL6DsFS/BVcM4MdFINkGFlq1tYrMY3yp9cwKvjrpquZCs0mc0P3SrflE5HS+7TEtGFAP
- EMzuLluPDtbnCAzwPk+0ROR1SBqFFKkWQiTIrYa0Kce9RGhZnYAEScavAAg4dMAfkN+A
- CCDI4RGXN/h+Y2m5phPiI+tWgUXyNsDoYggsJJ1K5VkqTRUXQOCSc6LdvNYZg3Mm9ubD
- 6PWw==
+ d=1e100.net; s=20230601; t=1716795312; x=1717400112;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PVMZUATiaPmT3ZndVyOxtmr7JmtVnEdjc67ZoRLK2Fs=;
+ b=QK/nwownJOBdaXey57zFySYxcEhkzReU9r/xLht3AfRpK35uvhvFdsBNyuNV4Uh4EQ
+ R+ba9BD8/0nqd6hrSdC4qH6ufOR/uE0u2TcbOjDqC0Al7zGaIxmoq0ewjbo8ZGahxhco
+ 2goQQjo1+bvcZ+rkenVVJ5TYS4AyrHA84H6RVacs71uvoH8MoIlyAFhesWLxd1ylnWf5
+ idFvB7mhG9lXNTTsMndZesD8qVfyi9gZmXRywgWJOJIJUVlhgVLnoD/jcMcqG1xAF/B1
+ 5VRrYRL3UxizWxzyCDOoj3owuC3N3kfjJyYPU2r0Zs6drQqXI5PLxRF6rp091mveEzFr
+ GqTA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXndizBxlW03iz42OYKdbxanQv84QtvrHxflf+mAdeoNojMSXVEQmvGtj+jyFUgCyserZPHIJo3j/ahgz07huSfdTTDCY8=
-X-Gm-Message-State: AOJu0YzdFSpJWdte60qfajyGwrP9TqOCzRYDJ6FJkndRkHkJj25GqHWM
- QJf/T6UqKRnsuMS5GzePqbgq8t5sOmWs8HcRoQhlW/Q2DIRv0mYgvnWZkwK11Bb6vSfj93T/e4s
- F5nqbrGwakaAqFaWD554ye6uZ5KqqQOvf/pVY91yquHrIX27Jfd/l
-X-Received: by 2002:a05:600c:3b84:b0:41b:8041:53c2 with SMTP id
- 5b1f17b1804b1-421081df776mr76079275e9.15.1716795178169; 
- Mon, 27 May 2024 00:32:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvnpxm0NYqfoFFzNYtUPi/wKsw1WStQkaDFGMzcS0UJtWQ7iMFOLwupHpSIAzknEomyuxEfg==
-X-Received: by 2002:a05:600c:3b84:b0:41b:8041:53c2 with SMTP id
- 5b1f17b1804b1-421081df776mr76079125e9.15.1716795177799; 
- Mon, 27 May 2024 00:32:57 -0700 (PDT)
+ AJvYcCVK9Lcip5DiElNLZK4rfPGV16SssR6wH5vK3OA3ph7hwvFFOY/lySjaBRBKHOJ1TTD+lA3DyZWbGqe0qGfGFvWS5k9TCdk=
+X-Gm-Message-State: AOJu0Yyb1Ta0PQk/hGIBvQJEkuIRY6R80kXWhD8MMoNNDCzcTfP7PmN9
+ +tbZ47sPuKoHeuq0q/WXvdO/+IiGrRLzwR3x/xuMDERxJaiBOg93uqVZfI/BnS0JNnxlC12kOKO
+ dwGXQWqG6wAS3e7HkOnP3Gfyght31VlaBhk22Sb481mo0v7/RH6d+
+X-Received: by 2002:a5d:4cc1:0:b0:354:de21:2145 with SMTP id
+ ffacd0b85a97d-35526c2bd2amr6116628f8f.22.1716795312180; 
+ Mon, 27 May 2024 00:35:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVHNuWgd5EYdI4agXNTZtnUASnhRfmcgHO9KF95zw2AtKmO26EJdPihm+TIfh9czoGibkhyg==
+X-Received: by 2002:a5d:4cc1:0:b0:354:de21:2145 with SMTP id
+ ffacd0b85a97d-35526c2bd2amr6116615f8f.22.1716795311755; 
+ Mon, 27 May 2024 00:35:11 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-179-90.web.vodafone.de.
  [109.43.179.90]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100fb99e8sm131962795e9.43.2024.05.27.00.32.56
+ ffacd0b85a97d-358c0acf7d5sm2774997f8f.7.2024.05.27.00.35.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 00:32:57 -0700 (PDT)
-Message-ID: <98ec8131-2b81-4e40-abfc-d5fbcf1b41d8@redhat.com>
-Date: Mon, 27 May 2024 09:32:56 +0200
+ Mon, 27 May 2024 00:35:11 -0700 (PDT)
+Message-ID: <30aa8e56-bb43-4a1f-83f0-02324fb680e0@redhat.com>
+Date: Mon, 27 May 2024 09:35:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] tests/qtest/migration-test: Quieten ppc64 QEMU
- warnigns
+Subject: Re: [PATCH 2/3] tests/qtest/migration-test: Enable on ppc64
 To: Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@suse.de>
 Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
 References: <20240525031330.196609-1-npiggin@gmail.com>
- <20240525031330.196609-2-npiggin@gmail.com>
-Content-Language: en-US
+ <20240525031330.196609-3-npiggin@gmail.com>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -118,10 +117,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240525031330.196609-2-npiggin@gmail.com>
+In-Reply-To: <20240525031330.196609-3-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -147,41 +146,46 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 25/05/2024 05.13, Nicholas Piggin wrote:
+> ppc64 with TCG seems to no longer be failing this test. Let's try to
+> enable it. s390x is still hanging about 1 in 10 runs.
+> 
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   tests/qtest/migration-test.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>   tests/qtest/migration-test.c | 16 +++-------------
+>   1 file changed, 3 insertions(+), 13 deletions(-)
 > 
 > diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index b7e3406471..c13535c37d 100644
+> index c13535c37d..b8617cc843 100644
 > --- a/tests/qtest/migration-test.c
 > +++ b/tests/qtest/migration-test.c
-> @@ -21,6 +21,7 @@
->   #include "chardev/char.h"
->   #include "crypto/tlscredspsk.h"
->   #include "qapi/qmp/qlist.h"
-> +#include "libqos/libqos-spapr.h"
+> @@ -3454,19 +3454,9 @@ int main(int argc, char **argv)
+>   #endif
+>   
+>       /*
+> -     * On ppc64, the test only works with kvm-hv, but not with kvm-pr and TCG
+> -     * is touchy due to race conditions on dirty bits (especially on PPC for
+> -     * some reason)
+> -     */
+> -    if (g_str_equal(arch, "ppc64") &&
+> -        (!has_kvm || access("/sys/module/kvm_hv", F_OK))) {
+> -        g_test_message("Skipping tests: kvm_hv not available");
+> -        goto test_add_done;
+> -    }
+> -
+> -    /*
+> -     * Similar to ppc64, s390x seems to be touchy with TCG, so disable it
+> -     * there until the problems are resolved
+> +     * On s390x, the test seems to be touchy with TCG, perhaps due to race
+> +     * conditions on dirty bits, so disable it there until the problems are
+> +     * resolved.
+>        */
+>       if (g_str_equal(arch, "s390x") && !has_kvm) {
+>           g_test_message("Skipping tests: s390x host with KVM is required");
 
-It's a little bit unfortunate to include a libqos header in a non-qos test 
-... so in case you respin, maybe add a comment at the end of the line like:
+Since you've identified the problem on s390x, you could maybe adjust the 
+comment in case you respin ... OTOH, it will get removed anyway once we 
+merge the s390x fix, so no need to respin just because of this.
 
-   /* just for PSERIES_DEFAULT_CAPABILITIES */
-
-?
-
->   #include "migration-helpers.h"
->   #include "tests/migration/migration-test.h"
-> @@ -742,7 +743,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->                                         "until'", end_address, start_address);
->           machine_alias = "pseries";
->           machine_opts = "vsmt=8";
-> -        arch_opts = g_strdup("-nodefaults");
-> +        arch_opts = g_strdup_printf("-nodefaults "
-> +                        "-machine " PSERIES_DEFAULT_CAPABILITIES);
->       } else if (strcmp(arch, "aarch64") == 0) {
->           memory_size = "150M";
->           machine_alias = "virt";
-
-  Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
