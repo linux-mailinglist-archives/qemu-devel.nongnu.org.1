@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CD88CFADB
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5FE8CFAFA
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVKE-00018t-NP; Mon, 27 May 2024 04:03:22 -0400
+	id 1sBVNr-00074i-Lo; Mon, 27 May 2024 04:07:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVJn-0000Gn-Br; Mon, 27 May 2024 04:02:58 -0400
+ id 1sBVJu-0000KL-0e; Mon, 27 May 2024 04:03:09 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVJl-0005H2-3C; Mon, 27 May 2024 04:02:54 -0400
+ id 1sBVJr-0005H2-TN; Mon, 27 May 2024 04:03:01 -0400
 Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 27 May
- 2024 16:02:33 +0800
+ 2024 16:02:34 +0800
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 27 May
- 2024 16:02:34 +0800
+ 2024 16:02:35 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Mon, 27 May 2024 16:02:32 +0800
+ Transport; Mon, 27 May 2024 16:02:33 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
@@ -36,9 +36,9 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v4 02/16] aspeed/sli: Add AST2700 support
-Date: Mon, 27 May 2024 16:02:16 +0800
-Message-ID: <20240527080231.1576609-3-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 04/16] aspeed/sdmc: fix coding style
+Date: Mon, 27 May 2024 16:02:18 +0800
+Message-ID: <20240527080231.1576609-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
 References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
@@ -73,269 +73,54 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 SLI engine is designed to accelerate the
-throughput between cross-die connections.
-It have CPU_SLI at CPU die and IO_SLI at IO die.
+Fix coding style issues from checkpatch.pl
 
-Introduce dummy AST2700 SLI and SLIIO models.
+Test command:
+scripts/checkpatch.pl --no-tree -f hw/misc/aspeed_sdmc.c
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/misc/aspeed_sli.c         | 177 +++++++++++++++++++++++++++++++++++
- hw/misc/meson.build          |   3 +-
- hw/misc/trace-events         |   7 ++
- include/hw/misc/aspeed_sli.h |  27 ++++++
- 4 files changed, 213 insertions(+), 1 deletion(-)
- create mode 100644 hw/misc/aspeed_sli.c
- create mode 100644 include/hw/misc/aspeed_sli.h
+ hw/misc/aspeed_sdmc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/hw/misc/aspeed_sli.c b/hw/misc/aspeed_sli.c
-new file mode 100644
-index 0000000000..fe720ead50
---- /dev/null
-+++ b/hw/misc/aspeed_sli.c
-@@ -0,0 +1,177 @@
-+/*
-+ * ASPEED SLI Controller
-+ *
-+ * Copyright (C) 2024 ASPEED Technology Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/log.h"
-+#include "qemu/error-report.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/misc/aspeed_sli.h"
-+#include "qapi/error.h"
-+#include "migration/vmstate.h"
-+#include "trace.h"
-+
-+#define SLI_REGION_SIZE 0x500
-+#define TO_REG(addr) ((addr) >> 2)
-+
-+static uint64_t aspeed_sli_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(opaque);
-+    int reg = TO_REG(addr);
-+
-+    if (reg >= ARRAY_SIZE(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        return 0;
-+    }
-+
-+    trace_aspeed_sli_read(addr, size, s->regs[reg]);
-+    return s->regs[reg];
-+}
-+
-+static void aspeed_sli_write(void *opaque, hwaddr addr, uint64_t data,
-+                              unsigned int size)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(opaque);
-+    int reg = TO_REG(addr);
-+
-+    if (reg >= ARRAY_SIZE(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        return;
-+    }
-+
-+    trace_aspeed_sli_write(addr, size, data);
-+    s->regs[reg] = data;
-+}
-+
-+static uint64_t aspeed_sliio_read(void *opaque, hwaddr addr, unsigned int size)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(opaque);
-+    int reg = TO_REG(addr);
-+
-+    if (reg >= ARRAY_SIZE(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out-of-bounds read at offset 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        return 0;
-+    }
-+
-+    trace_aspeed_sliio_read(addr, size, s->regs[reg]);
-+    return s->regs[reg];
-+}
-+
-+static void aspeed_sliio_write(void *opaque, hwaddr addr, uint64_t data,
-+                              unsigned int size)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(opaque);
-+    int reg = TO_REG(addr);
-+
-+    if (reg >= ARRAY_SIZE(s->regs)) {
-+        qemu_log_mask(LOG_GUEST_ERROR,
-+                      "%s: Out-of-bounds write at offset 0x%" HWADDR_PRIx "\n",
-+                      __func__, addr);
-+        return;
-+    }
-+
-+    trace_aspeed_sliio_write(addr, size, data);
-+    s->regs[reg] = data;
-+}
-+
-+static const MemoryRegionOps aspeed_sli_ops = {
-+    .read = aspeed_sli_read,
-+    .write = aspeed_sli_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 1,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static const MemoryRegionOps aspeed_sliio_ops = {
-+    .read = aspeed_sliio_read,
-+    .write = aspeed_sliio_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .valid = {
-+        .min_access_size = 1,
-+        .max_access_size = 4,
-+    },
-+};
-+
-+static void aspeed_sli_realize(DeviceState *dev, Error **errp)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(dev);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_sli_ops, s,
-+                          TYPE_ASPEED_SLI, SLI_REGION_SIZE);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static void aspeed_sliio_realize(DeviceState *dev, Error **errp)
-+{
-+    AspeedSLIState *s = ASPEED_SLI(dev);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+
-+    memory_region_init_io(&s->iomem, OBJECT(s), &aspeed_sliio_ops, s,
-+                          TYPE_ASPEED_SLI, SLI_REGION_SIZE);
-+    sysbus_init_mmio(sbd, &s->iomem);
-+}
-+
-+static void aspeed_sli_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->desc = "Aspeed SLI Controller";
-+    dc->realize = aspeed_sli_realize;
-+}
-+
-+static const TypeInfo aspeed_sli_info = {
-+    .name          = TYPE_ASPEED_SLI,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(AspeedSLIState),
-+    .class_init    = aspeed_sli_class_init,
-+    .abstract      = true,
-+};
-+
-+static void aspeed_2700_sli_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->desc = "AST2700 SLI Controller";
-+}
-+
-+static void aspeed_2700_sliio_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+
-+    dc->desc = "AST2700 I/O SLI Controller";
-+    dc->realize = aspeed_sliio_realize;
-+}
-+
-+static const TypeInfo aspeed_2700_sli_info = {
-+    .name           = TYPE_ASPEED_2700_SLI,
-+    .parent         = TYPE_ASPEED_SLI,
-+    .class_init     = aspeed_2700_sli_class_init,
-+};
-+
-+static const TypeInfo aspeed_2700_sliio_info = {
-+    .name           = TYPE_ASPEED_2700_SLIIO,
-+    .parent         = TYPE_ASPEED_SLI,
-+    .class_init     = aspeed_2700_sliio_class_init,
-+};
-+
-+static void aspeed_sli_register_types(void)
-+{
-+    type_register_static(&aspeed_sli_info);
-+    type_register_static(&aspeed_2700_sli_info);
-+    type_register_static(&aspeed_2700_sliio_info);
-+}
-+
-+type_init(aspeed_sli_register_types);
-diff --git a/hw/misc/meson.build b/hw/misc/meson.build
-index 86596a3888..2ca8717be2 100644
---- a/hw/misc/meson.build
-+++ b/hw/misc/meson.build
-@@ -136,7 +136,8 @@ system_ss.add(when: 'CONFIG_ASPEED_SOC', if_true: files(
-   'aspeed_sbc.c',
-   'aspeed_sdmc.c',
-   'aspeed_xdma.c',
--  'aspeed_peci.c'))
-+  'aspeed_peci.c',
-+  'aspeed_sli.c'))
+diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
+index 74279bbe8e..873d67c592 100644
+--- a/hw/misc/aspeed_sdmc.c
++++ b/hw/misc/aspeed_sdmc.c
+@@ -296,7 +296,8 @@ static void aspeed_2400_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
  
- system_ss.add(when: 'CONFIG_MSF2', if_true: files('msf2-sysreg.c'))
- system_ss.add(when: 'CONFIG_NRF51_SOC', if_true: files('nrf51_rng.c'))
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 5d241cb40a..e13b648221 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -351,3 +351,10 @@ djmemc_write(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRI
- # iosb.c
- iosb_read(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRIx64" size=%u"
- iosb_write(int reg, uint64_t value, unsigned int size) "reg=0x%x value=0x%"PRIx64" size=%u"
-+
-+# aspeed_sli.c
-+aspeed_sli_write(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
-+aspeed_sli_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
-+aspeed_sliio_write(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
-+aspeed_sliio_read(uint64_t offset, unsigned int size, uint32_t data) "To 0x%" PRIx64 " of size %u: 0x%" PRIx32
-+
-diff --git a/include/hw/misc/aspeed_sli.h b/include/hw/misc/aspeed_sli.h
-new file mode 100644
-index 0000000000..23f346ab93
---- /dev/null
-+++ b/include/hw/misc/aspeed_sli.h
-@@ -0,0 +1,27 @@
-+/*
-+ * ASPEED SLI Controller
-+ *
-+ * Copyright (C) 2024 ASPEED Technology Inc.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#ifndef ASPEED_SLI_H
-+#define ASPEED_SLI_H
-+
-+#include "hw/sysbus.h"
-+
-+#define TYPE_ASPEED_SLI "aspeed.sli"
-+#define TYPE_ASPEED_2700_SLI TYPE_ASPEED_SLI "-ast2700"
-+#define TYPE_ASPEED_2700_SLIIO TYPE_ASPEED_SLI "io" "-ast2700"
-+OBJECT_DECLARE_SIMPLE_TYPE(AspeedSLIState, ASPEED_SLI)
-+
-+#define ASPEED_SLI_NR_REGS  (0x500 >> 2)
-+
-+struct AspeedSLIState {
-+    SysBusDevice parent;
-+    MemoryRegion iomem;
-+
-+    uint32_t regs[ASPEED_SLI_NR_REGS];
-+};
-+
-+#endif /* ASPEED_SLI_H */
+@@ -354,7 +355,8 @@ static void aspeed_2500_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
+ 
+@@ -434,8 +436,9 @@ static void aspeed_2600_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+     }
+ 
+     if (s->regs[R_PROT] == PROT_HARDLOCKED) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: SDMC is locked until system reset!\n",
+-                __func__);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: SDMC is locked until system reset!\n",
++                      __func__);
+         return;
+     }
+ 
 -- 
 2.25.1
 
