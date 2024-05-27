@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242558CF7C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 05:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117208CF7B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 05:04:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBQdi-0005CD-LD; Sun, 26 May 2024 23:03:10 -0400
+	id 1sBQdk-0005Cf-H1; Sun, 26 May 2024 23:03:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sBQdg-0005Bn-NN
- for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:08 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ id 1sBQdj-0005CV-7P
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:11 -0400
+Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sBQdf-0002Hk-06
- for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:08 -0400
+ id 1sBQdg-0002I2-IN
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1716778985;
- bh=V8X4KEQAh4Bflm8+FIjqy25Y4QZXeLYitPNfFJ5VR9k=;
+ s=mail; t=1716778987;
+ bh=f/b4L1uSR231fsuBgLv/c5ql4DXluPCJIPFQ6akA9rM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=414XHKZTwWCv5d1+y0BQtYgj9VWr1NMPEv6v1KuW4AGtn4pci1R/Q+3AQELzlQg0I
- esL0LWn2k2qzCBOm59OQ5eEYXL58NqabVOFvmS0zN3VFUyqlPAqhlwdtZHAU+9QwrA
- S6m6dEqzGViEYT+rf9DjisyTglkfXjfbn9vWPOtKzP8vVC5/DROtMtZJq97RDwaabC
- j76hjt+vS7QjDGli/ZDDdUgJeBQJh4i+fyd1KZflzTZeO+jFAOt6JBkYY4zPJLlpCw
- IcL1X8G4czvaF/m06etEGnL+16Z8C0p5LBIrAsv46C2j0TZ8GF66cBEZ5Iu3VR/PTp
- 7ahKbmStQfmEw==
+ b=X8b3sBwWi16VSyxlASUluWkbD73i3mBVGWu5fMZuPAnnCFmCRVwN927LaWQ8DGgHR
+ VDgOb4dEDceKsjglmbDoh1jWxE6zLY12MZYXSzFIKUZEarsepVNdmcWsbCsYqetc94
+ sgQbvJCoFUBBXGPuWFghJ8tLu/7RM3bvoBq4SoKK3Em06zfJMcQuYnfo3mBjFJycAp
+ wZlNgUDeRmpe5B+bFNzy72CVm8bRXkjhHRlLBUfnvZNh8UsCyByY965zrmv4LGMkeG
+ TM8Vw2gK02PZRpk+Vjwq4L+PcEQXHVkuKRRChuZV7bVLvEnjrXW12QuLFXmB/B2NZs
+ hRIXgGGJv+SgA==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id F34CC37820A7;
- Mon, 27 May 2024 03:03:02 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 84C6D3780627;
+ Mon, 27 May 2024 03:03:05 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -56,15 +56,15 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v13 03/13] virtio-gpu: Handle virtio_gpu_virgl_init() failure
-Date: Mon, 27 May 2024 06:02:23 +0300
-Message-ID: <20240527030233.3775514-4-dmitry.osipenko@collabora.com>
+Subject: [PATCH v13 04/13] virtio-gpu: Unrealize GL device
+Date: Mon, 27 May 2024 06:02:24 +0300
+Message-ID: <20240527030233.3775514-5-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240527030233.3775514-1-dmitry.osipenko@collabora.com>
 References: <20240527030233.3775514-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
+Received-SPF: pass client-ip=46.235.227.194;
  envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,102 +87,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio_gpu_virgl_init() may fail, leading to a further Qemu crash
-because Qemu assumes it never fails. Check virtio_gpu_virgl_init()
-return code and don't execute virtio commands on error. Failed
-virtio_gpu_virgl_init() will result in a timed out virtio commands
-for a guest OS.
+Even though GL GPU doesn't support hotplugging today, free virgl
+resources when GL device is unrealized. For consistency.
 
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-gl.c     | 29 +++++++++++++++++++++--------
- include/hw/virtio/virtio-gpu.h | 11 +++++++++--
- 2 files changed, 30 insertions(+), 10 deletions(-)
+ hw/display/virtio-gpu-gl.c     | 13 +++++++++++++
+ hw/display/virtio-gpu-virgl.c  | 11 +++++++++++
+ include/hw/virtio/virtio-gpu.h |  1 +
+ 3 files changed, 25 insertions(+)
 
 diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index e06be60dfbfc..38a2b1bd3916 100644
+index 38a2b1bd3916..7978b2985e17 100644
 --- a/hw/display/virtio-gpu-gl.c
 +++ b/hw/display/virtio-gpu-gl.c
-@@ -29,9 +29,14 @@ static void virtio_gpu_gl_update_cursor_data(VirtIOGPU *g,
-                                              struct virtio_gpu_scanout *s,
-                                              uint32_t resource_id)
- {
-+    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
-     uint32_t width, height;
-     uint32_t pixels, *data;
- 
-+    if (gl->renderer_state != RS_INITED) {
-+        return;
-+    }
-+
-     data = virgl_renderer_get_cursor_data(resource_id, &width, &height);
-     if (!data) {
-         return;
-@@ -65,13 +70,21 @@ static void virtio_gpu_gl_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
-         return;
-     }
- 
--    if (!gl->renderer_inited) {
--        virtio_gpu_virgl_init(g);
--        gl->renderer_inited = true;
--    }
--    if (gl->renderer_reset) {
--        gl->renderer_reset = false;
-+    switch (gl->renderer_state) {
-+    case RS_RESET:
-         virtio_gpu_virgl_reset(g);
-+        /* fallthrough */
-+    case RS_START:
-+        if (virtio_gpu_virgl_init(g)) {
-+            gl->renderer_state = RS_INIT_FAILED;
-+        } else {
-+            gl->renderer_state = RS_INITED;
-+        }
-+        break;
-+    case RS_INIT_FAILED:
-+        return;
-+    case RS_INITED:
-+        break;
-     }
- 
-     cmd = virtqueue_pop(vq, sizeof(struct virtio_gpu_ctrl_command));
-@@ -98,9 +111,9 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
-      * GL functions must be called with the associated GL context in main
-      * thread, and when the renderer is unblocked.
-      */
--    if (gl->renderer_inited && !gl->renderer_reset) {
-+    if (gl->renderer_state == RS_INITED) {
-         virtio_gpu_virgl_reset_scanout(g);
--        gl->renderer_reset = true;
-+        gl->renderer_state = RS_RESET;
-     }
- }
- 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 7ff989a45a5c..6e71d799e5da 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -224,11 +224,18 @@ struct VirtIOGPUClass {
-                              Error **errp);
+@@ -149,6 +149,18 @@ static Property virtio_gpu_gl_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
  };
  
-+/* VirtIOGPUGL renderer states */
-+typedef enum {
-+    RS_START,       /* starting state */
-+    RS_INIT_FAILED, /* failed initialisation */
-+    RS_INITED,      /* initialised and working */
-+    RS_RESET,       /* inited and reset pending, moves to start after reset */
-+} RenderState;
++static void virtio_gpu_gl_device_unrealize(DeviceState *qdev)
++{
++    VirtIOGPU *g = VIRTIO_GPU(qdev);
++    VirtIOGPUGL *gl = VIRTIO_GPU_GL(qdev);
 +
- struct VirtIOGPUGL {
-     struct VirtIOGPU parent_obj;
++    if (gl->renderer_state >= RS_INITED) {
++        virtio_gpu_virgl_deinit(g);
++    }
++
++    gl->renderer_state = RS_START;
++}
++
+ static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
+@@ -162,6 +174,7 @@ static void virtio_gpu_gl_class_init(ObjectClass *klass, void *data)
+     vgc->update_cursor_data = virtio_gpu_gl_update_cursor_data;
  
--    bool renderer_inited;
--    bool renderer_reset;
-+    RenderState renderer_state;
+     vdc->realize = virtio_gpu_gl_device_realize;
++    vdc->unrealize = virtio_gpu_gl_device_unrealize;
+     vdc->reset = virtio_gpu_gl_reset;
+     device_class_set_props(dc, virtio_gpu_gl_properties);
+ }
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index fa0da8f5c7f1..66c4aab9b283 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -669,3 +669,14 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
  
-     QEMUTimer *fence_poll;
-     QEMUTimer *print_stats;
+     return capset2_max_ver ? 2 : 1;
+ }
++
++void virtio_gpu_virgl_deinit(VirtIOGPU *g)
++{
++    VirtIOGPUGL *gl = VIRTIO_GPU_GL(g);
++
++    if (virtio_gpu_stats_enabled(g->parent_obj.conf)) {
++        timer_free(gl->print_stats);
++    }
++    timer_free(gl->fence_poll);
++    virgl_renderer_cleanup(NULL);
++}
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 6e71d799e5da..2faeda6f6abe 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -345,6 +345,7 @@ void virtio_gpu_virgl_fence_poll(VirtIOGPU *g);
+ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
+ void virtio_gpu_virgl_reset(VirtIOGPU *g);
+ int virtio_gpu_virgl_init(VirtIOGPU *g);
++void virtio_gpu_virgl_deinit(VirtIOGPU *g);
+ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
+ 
+ #endif
 -- 
 2.44.0
 
