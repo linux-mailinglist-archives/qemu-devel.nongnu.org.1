@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4D48CFB95
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BECB8CFB68
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:28:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVdp-0001ph-7d; Mon, 27 May 2024 04:23:37 -0400
+	id 1sBVfC-0004xU-Db; Mon, 27 May 2024 04:25:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVci-00018K-9F; Mon, 27 May 2024 04:22:31 -0400
+ id 1sBVcj-00018U-FU; Mon, 27 May 2024 04:22:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVcg-0000kE-A3; Mon, 27 May 2024 04:22:27 -0400
+ id 1sBVcg-0000pW-Mx; Mon, 27 May 2024 04:22:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6470F6A569;
+ by isrv.corpit.ru (Postfix) with ESMTP id 72FC16A56A;
  Mon, 27 May 2024 11:22:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 90CABD8506;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9FCF6D8507;
  Mon, 27 May 2024 11:21:39 +0300 (MSK)
-Received: (nullmailer pid 66387 invoked by uid 1000);
+Received: (nullmailer pid 66390 invoked by uid 1000);
  Mon, 27 May 2024 08:21:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>,
- Zheyu Ma <zheyuma97@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 12/44] hw/ufs: Fix buffer overflow bug
-Date: Mon, 27 May 2024 11:21:03 +0300
-Message-Id: <20240527082138.66217-12-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexandra Diupina <adiupina@astralinux.ru>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 13/44] hw/dmax/xlnx_dpdma: fix handling of
+ address_extension descriptor fields
+Date: Mon, 27 May 2024 11:21:04 +0300
+Message-Id: <20240527082138.66217-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
@@ -59,59 +60,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jeuk Kim <jeuk20.kim@samsung.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-It fixes the buffer overflow vulnerability in the ufs device.
-The bug was detected by sanitizers.
+The DMA descriptor structures for this device have
+a set of "address extension" fields which extend the 32
+bit source addresses with an extra 16 bits to give a
+48 bit address:
+ https://docs.amd.com/r/en-US/ug1085-zynq-ultrascale-trm/ADDR_EXT-Field
 
-You can reproduce it by:
+However, we misimplemented this address extension in several ways:
+ * we only extracted 12 bits of the extension fields, not 16
+ * we didn't shift the extension field up far enough
+ * we accidentally did the shift as 32-bit arithmetic, which
+   meant that we would have an overflow instead of setting
+   bits [47:32] of the resulting 64-bit address
 
-cat << EOF |\
-qemu-system-x86_64 \
--display none -machine accel=qtest -m 512M -M q35 -nodefaults -drive \
-file=null-co://,if=none,id=disk0 -device ufs,id=ufs_bus -device \
-ufs-lu,drive=disk0,bus=ufs_bus -qtest stdio
-outl 0xcf8 0x80000810
-outl 0xcfc 0xe0000000
-outl 0xcf8 0x80000804
-outw 0xcfc 0x06
-write 0xe0000058 0x1 0xa7
-write 0xa 0x1 0x50
-EOF
+Add a type cast and use extract64() instead of extract32()
+to avoid integer overflow on addition. Fix bit fields
+extraction according to documentation.
 
-Resolves: #2299
-Fixes: 329f16624499 ("hw/ufs: Support for Query Transfer Requests")
-Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-(cherry picked from commit f2c8aeb1afefcda92054c448b21fc59cdd99db30)
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: qemu-stable@nongnu.org
+Fixes: d3c6369a96 ("introduce xlnx-dpdma")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Message-id: 20240428181131.23801-1-adiupina@astralinux.ru
+[PMM: adjusted commit message]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 4b00855f0ee2e2eee8fd2500ffef27c108be6dc3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index eccdb852a0..bac78a32bb 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -126,6 +126,10 @@ static MemTxResult ufs_dma_read_req_upiu(UfsRequest *req)
-     copy_size = sizeof(UtpUpiuHeader) + UFS_TRANSACTION_SPECIFIC_FIELD_SIZE +
-                 data_segment_length;
+diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+index 1f5cd64ed1..530717d188 100644
+--- a/hw/dma/xlnx_dpdma.c
++++ b/hw/dma/xlnx_dpdma.c
+@@ -175,24 +175,24 @@ static uint64_t xlnx_dpdma_desc_get_source_address(DPDMADescriptor *desc,
  
-+    if (copy_size > sizeof(req->req_upiu)) {
-+        copy_size = sizeof(req->req_upiu);
-+    }
-+
-     ret = ufs_addr_read(u, req_upiu_base_addr, &req->req_upiu, copy_size);
-     if (ret) {
-         trace_ufs_err_dma_read_req_upiu(req->slot, req_upiu_base_addr);
-@@ -225,6 +229,10 @@ static MemTxResult ufs_dma_write_rsp_upiu(UfsRequest *req)
-         copy_size = rsp_upiu_byte_len;
-     }
- 
-+    if (copy_size > sizeof(req->rsp_upiu)) {
-+        copy_size = sizeof(req->rsp_upiu);
-+    }
-+
-     ret = ufs_addr_write(u, rsp_upiu_base_addr, &req->rsp_upiu, copy_size);
-     if (ret) {
-         trace_ufs_err_dma_write_rsp_upiu(req->slot, rsp_upiu_base_addr);
+     switch (frag) {
+     case 0:
+-        addr = desc->source_address
+-            + (extract32(desc->address_extension, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address
++            + (extract64(desc->address_extension, 16, 16) << 32);
+         break;
+     case 1:
+-        addr = desc->source_address2
+-            + (extract32(desc->address_extension_23, 0, 12) << 8);
++        addr = (uint64_t)desc->source_address2
++            + (extract64(desc->address_extension_23, 0, 16) << 32);
+         break;
+     case 2:
+-        addr = desc->source_address3
+-            + (extract32(desc->address_extension_23, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address3
++            + (extract64(desc->address_extension_23, 16, 16) << 32);
+         break;
+     case 3:
+-        addr = desc->source_address4
+-            + (extract32(desc->address_extension_45, 0, 12) << 8);
++        addr = (uint64_t)desc->source_address4
++            + (extract64(desc->address_extension_45, 0, 16) << 32);
+         break;
+     case 4:
+-        addr = desc->source_address5
+-            + (extract32(desc->address_extension_45, 16, 12) << 20);
++        addr = (uint64_t)desc->source_address5
++            + (extract64(desc->address_extension_45, 16, 16) << 32);
+         break;
+     default:
+         addr = 0;
 -- 
 2.39.2
 
