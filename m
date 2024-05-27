@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2368D0F5D
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC638D0F5B
 	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 23:22:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBhki-0007Fw-R4; Mon, 27 May 2024 17:19:32 -0400
+	id 1sBhki-0007Fv-Qp; Mon, 27 May 2024 17:19:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBhkg-0007Ez-2G
+ id 1sBhkg-0007Fi-S5
  for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:30 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBhke-0003fG-JK
- for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:29 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f8e9870e72so112721b3a.1
+ id 1sBhkf-0003fR-5H
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:30 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6f8e9878514so103484b3a.1
  for <qemu-devel@nongnu.org>; Mon, 27 May 2024 14:19:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716844767; x=1717449567; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716844768; x=1717449568; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+tOv299b1wOvISiaP9rKlGaLsZIUSXRuEACn75tv11g=;
- b=oALGhyvTqraT9xYohW9b/WUkeGVsYIJbtHCEfu9q2Sre306Hv+5wxIiFng1VPYGPYV
- G8r7OXxeKM3XStbUxChPZrK0VBLSbrJKc4eU7WqVAVnad0lW5QkEVmWxLXuAu4ULAvK0
- s6/srRcyHfQaD1FVNJ6JX4trK7UluZfcG2Sxu1miYbqDkiGulCT8kzVyrMEVc/g3FDmp
- FxfM1wRy6rboPuEDjhNeZEN6ETNA2vwbZ0r8fDiuYv4HmoJY5GTXfI5X1HCv5oKXTZbi
- LCOJjF5i8TnWxO/19Qxsppoc5dOumktluEf68VD5y26/IvaiJYN0Na6F1mobmtYtfyoe
- 12rQ==
+ bh=46LsBPS23w0SvLb9dLTSj/Il+XV1H31c1isFbkBvWK0=;
+ b=bjlyKaI1rEFFvq7VriaS7RMhcIYvgjbW7g9KI+kQs7FcmK8WYhWS5YUBHpDXwoehAd
+ GwaXK4GT3FzCmHdWyNNStb7EHHx3S94FyMdyXn9q4ANvHOMora+nYSgI3nhAl1aRakqp
+ tWqFBbwvCHoGBVQvhzjsHCmx9pu/6ltmUh8aGquRe4r1C5TKGSDj7KjFtEOVwYCffX1K
+ JNIwME6M4Aw9yo5GAFTNR5bctevwV4TEpu0vP4WhOBY3y+3lpOwVo8SbqRvA+/enWDYf
+ CyvLku3+maXovM0A8qOqynZUe2DFQjHLfndyDvsqiYSsbODhfjnAjG7e4IwwdMz1jAMD
+ ZI1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716844767; x=1717449567;
+ d=1e100.net; s=20230601; t=1716844768; x=1717449568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+tOv299b1wOvISiaP9rKlGaLsZIUSXRuEACn75tv11g=;
- b=tS3V3woCGovMAQDuBbSjXZwWTycChsbrMtEaNObmx4pNZMsx9NJKzD7I0Mk2xRchSG
- 0okbZOjqjyUrGM3xbrvNHaK7pc16eN6gldP3UQbH6DVKjFTMgrMyv9PCMD5wdbTyDGMH
- jfvCWQtAUhwri1mAzYzZcDmtMIk2DeVX+c8XnN/TQPtXXIAcGPYWXYRGHqKBGUshQ+F3
- e+7uXQTF4Vzn9wDbNpSvR+0uDe0iST23qswkPkNAlbLwhdesg+5o0roJI2JeHtRMXGbj
- WB4UmBc1YmE095oz4/PAZW3/iHqxBGuKzWzuHIYsl+1lQvHGYvl82cc5o7fm5WDa5BOa
- WImQ==
-X-Gm-Message-State: AOJu0YzqvdBhog9A+3yxvRfon95SP1owDIYqLQD5YrFqaolsXYuoGctT
- Kpm1qU8z5Gm0QMtBipfSByiDBnuibkwh6nX+iYW0OpQS1faWrmCBGmHjyFP0nq8GiMqOEMg+xrP
+ bh=46LsBPS23w0SvLb9dLTSj/Il+XV1H31c1isFbkBvWK0=;
+ b=d5Tztln0RRH/d5hj8AtCZTcW6MVmZTz64HWbq2FRw1TFP9qYXnx2swog0NQ5avrhLQ
+ Tl9IOvF55ZsOmt3AhJdN8YLQ8f6CSaYm0qG8+CSWhNS4ZE55Xq/3ScyJtS7fn2uJgZDA
+ L9YeIsDf+lRhR5bKkIb9+mAeivrO25wEOjNBHIuoKdq71OtQe0B6mlAvHSO2ayjR4xCU
+ Po52XN6am5Jlyri03FpLJ67n1tjFJKTuWrVI9ybX10SxCkiOm1Kqk0eAK5wX554GDp/x
+ dOElmvlGniONhq8SGost38RG2/bc/P8mPfYbOg3gN0npbbgMXNvv93P4ejVoDSthAjpB
+ p9nA==
+X-Gm-Message-State: AOJu0Yw/wOgZaMoXI0WEfy5gjkpEL3WItWQ/tgC1/2XDiJBXKk2ew26C
+ pGWjHN31CdResICG4/5vf+vNS/JgJCsj4f8Xi+Ks1TPO3TJLJs0vnqezKq/GChyIHjeVpbRvxlV
  6
-X-Google-Smtp-Source: AGHT+IGABcecIbpUI7g6XvyKfHXrQ4RzjcZick1H0E4kN5IwXNuPfWLL1E75b6GQoaip1QBP3Jtd+Q==
-X-Received: by 2002:a05:6a20:974c:b0:1af:96e8:7b9c with SMTP id
- adf61e73a8af0-1b212e0325bmr10852510637.47.1716844767076; 
+X-Google-Smtp-Source: AGHT+IGs7dbdUgZRF2WRszGqq/cRMEjhQX2rkMSxC9dNBll2pfpU3f2QXZHpWWafqjqW1m00IixRdQ==
+X-Received: by 2002:a05:6a00:e8b:b0:6f8:caf2:ee95 with SMTP id
+ d2e1a72fcca58-6f8f308f955mr11832847b3a.9.1716844767910; 
  Mon, 27 May 2024 14:19:27 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fd1d4d5fsm5265876b3a.165.2024.05.27.14.19.26
+ d2e1a72fcca58-6f8fd1d4d5fsm5265876b3a.165.2024.05.27.14.19.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 14:19:26 -0700 (PDT)
+ Mon, 27 May 2024 14:19:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: git@xen0n.name,
 	gaosong@loongson.cn
-Subject: [PATCH 15/18] tcg/loongarch64: Remove temp_vec from tcg_out_vec_op
-Date: Mon, 27 May 2024 14:19:09 -0700
-Message-Id: <20240527211912.14060-16-richard.henderson@linaro.org>
+Subject: [PATCH 16/18] tcg/loongarch64: Split out vdvjukN in tcg_out_vec_op
+Date: Mon, 27 May 2024 14:19:10 -0700
+Message-Id: <20240527211912.14060-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527211912.14060-1-richard.henderson@linaro.org>
 References: <20240527211912.14060-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,47 +93,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use TCG_VEC_TMP0 directly.
+Fixes a bug in the immediate shifts, because the exact
+encoding depends on the element size.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/loongarch64/tcg-target.c.inc | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tcg/loongarch64/tcg-target.c.inc | 58 ++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 26 deletions(-)
 
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index e633d268d0..54f7bc9d14 100644
+index 54f7bc9d14..5d2a6b2ca2 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1834,7 +1834,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
- {
-     TCGType type = vecl + TCG_TYPE_V64;
-     TCGArg a0, a1, a2, a3;
--    TCGReg temp_vec = TCG_VEC_TMP0;
+@@ -1901,6 +1901,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     static const LoongArchInsn rotrv_vec_insn[4] = {
+         OPC_VROTR_B, OPC_VROTR_H, OPC_VROTR_W, OPC_VROTR_D
+     };
++    static const LoongArchInsn rotri_vec_insn[4] = {
++        OPC_VROTRI_B, OPC_VROTRI_H, OPC_VROTRI_W, OPC_VROTRI_D
++    };
  
-     static const LoongArchInsn cmp_vec_insn[16][4] = {
-         [TCG_COND_EQ] = {OPC_VSEQ_B, OPC_VSEQ_H, OPC_VSEQ_W, OPC_VSEQ_D},
-@@ -1976,8 +1975,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-                  * dupi_vec temp, a2
-                  * cmp_vec a0, a1, temp, cond
-                  */
--                tcg_out_dupi_vec(s, type, vece, temp_vec, a2);
--                a2 = temp_vec;
-+                tcg_out_dupi_vec(s, type, vece, TCG_VEC_TMP0, a2);
-+                a2 = TCG_VEC_TMP0;
-             }
- 
-             insn = cmp_vec_insn[cond][vece];
-@@ -2046,8 +2045,8 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         break;
+     a0 = args[0];
+     a1 = args[1];
+@@ -2034,15 +2037,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_sarv_vec:
+         insn = sarv_vec_insn[vece];
+         goto vdvjvk;
+-    case INDEX_op_shli_vec:
+-        tcg_out32(s, encode_vdvjuk3_insn(shli_vec_insn[vece], a0, a1, a2));
+-        break;
+-    case INDEX_op_shri_vec:
+-        tcg_out32(s, encode_vdvjuk3_insn(shri_vec_insn[vece], a0, a1, a2));
+-        break;
+-    case INDEX_op_sari_vec:
+-        tcg_out32(s, encode_vdvjuk3_insn(sari_vec_insn[vece], a0, a1, a2));
+-        break;
      case INDEX_op_rotlv_vec:
          /* rotlv_vec a1, a2 = rotrv_vec a1, -a2 */
--        tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], temp_vec, a2));
--        a2 = temp_vec;
-+        tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], TCG_VEC_TMP0, a2));
-+        a2 = TCG_VEC_TMP0;
-         /* fall through */
+         tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], TCG_VEC_TMP0, a2));
+@@ -2051,26 +2045,20 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
      case INDEX_op_rotrv_vec:
          insn = rotrv_vec_insn[vece];
+         goto vdvjvk;
++    case INDEX_op_shli_vec:
++        insn = shli_vec_insn[vece];
++        goto vdvjukN;
++    case INDEX_op_shri_vec:
++        insn = shri_vec_insn[vece];
++        goto vdvjukN;
++    case INDEX_op_sari_vec:
++        insn = sari_vec_insn[vece];
++        goto vdvjukN;
+     case INDEX_op_rotli_vec:
+         /* rotli_vec a1, a2 = rotri_vec a1, -a2 */
+         a2 = extract32(-a2, 0, 3 + vece);
+-        switch (vece) {
+-        case MO_8:
+-            tcg_out_opc_vrotri_b(s, a0, a1, a2);
+-            break;
+-        case MO_16:
+-            tcg_out_opc_vrotri_h(s, a0, a1, a2);
+-            break;
+-        case MO_32:
+-            tcg_out_opc_vrotri_w(s, a0, a1, a2);
+-            break;
+-        case MO_64:
+-            tcg_out_opc_vrotri_d(s, a0, a1, a2);
+-            break;
+-        default:
+-            g_assert_not_reached();
+-        }
+-        break;
++        insn = rotri_vec_insn[vece];
++        goto vdvjukN;
+     case INDEX_op_bitsel_vec:
+         /* vbitsel vd, vj, vk, va = bitsel_vec vd, va, vk, vj */
+         tcg_out_opc_vbitsel_v(s, a0, a3, a2, a1);
+@@ -2083,6 +2071,24 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     vdvjvk:
+         tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
+         break;
++    vdvjukN:
++        switch (vece) {
++        case MO_8:
++            tcg_out32(s, encode_vdvjuk3_insn(insn, a0, a1, a2));
++            break;
++        case MO_16:
++            tcg_out32(s, encode_vdvjuk4_insn(insn, a0, a1, a2));
++            break;
++        case MO_32:
++            tcg_out32(s, encode_vdvjuk5_insn(insn, a0, a1, a2));
++            break;
++        case MO_64:
++            tcg_out32(s, encode_vdvjuk6_insn(insn, a0, a1, a2));
++            break;
++        default:
++            g_assert_not_reached();
++        }
++        break;
+     }
+ }
+ 
 -- 
 2.34.1
 
