@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B3B8CFACA
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7F28CFAD4
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:02:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVGz-0004of-LL; Mon, 27 May 2024 04:00:01 -0400
+	id 1sBVJM-0007cf-Ip; Mon, 27 May 2024 04:02:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBVGK-0004eQ-J5
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:21 -0400
+ id 1sBVGb-0004jf-Cb
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:37 -0400
 Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBVGI-0004Vj-Q7
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:20 -0400
+ id 1sBVGL-0004Xs-Uc
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716796759; x=1748332759;
+ t=1716796762; x=1748332762;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yDnU3NpuzzE9vncxdnu3+nFMkkDKrrnqtTuk0bRk1Ps=;
- b=IP/gMv3U3pGX4NxNMthayZ0KqV+f5j2WZ3X5fOLPPb3wfD4TVzMmn1Ib
- SbaS1H4Btvmw4q/P5WAxO22GeYuphha601pWFi9G3MCZii+6RPNq+jII2
- zDk0XTDaW5oPQsWzH7svVN28t9gYhRq8rt95Kk3e1fw9hUVf4RPUXjWdk
- 3O24j9lybyOeYIBTNlTrLcJiiBGcyH0TEg+1hgtTCt1pj0CbJVRYim50M
- RcZ3PGjV41TlDrAY6EvPPA0lqwKxoj8xr0GQrCRvz6VgGFq13iR5Pg9yL
- WaSL+w9hFYkI+Lmy3mkfzqtE7vkZT+XUcDSL9cBM2OqappIN+QHVYTOKj A==;
-X-CSE-ConnectionGUID: k7p1A+qdRPi+OqIMFmdJhw==
-X-CSE-MsgGUID: wxf/bMZ/Q2awhq2pYfrTSQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12967744"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12967744"
+ bh=WeM/edYd9mSl+ORqUJfueVLUMLCrkQ8sggeY8fdRPiE=;
+ b=MjlBMPo+izQKCzR4fg1P2PX1DNvyIHdRJlw++JX38Fw2vGQMGF7oL1Fj
+ KrHZL4pJ+8JuPivlb951vi6e5tx7n/69oqPmAOHvSHHEsvQKhxCddj/BO
+ 6S1cPTer0n8JkDKGn+y2i8PCvKjbTEAB2XTNOlI5Blk3wGHdg8pbGx9Xh
+ pkPRSWYDE11PM8MT5uDyDejB9C+NwXV1N5/kghntCM/6d5okurEz5V0IR
+ OgLcUQGg14AKqD2J6dG9eZz1wZuBN9P+t4DtrUQivqWBGrxmS6lWe29nR
+ LijIo1ISJwUZadyTTaPrY2jjFtCKyEc0D55yakPnrYaCXJvAcGosoFyh0 g==;
+X-CSE-ConnectionGUID: d4KGOxdjQwyWH+t0i+Hpcw==
+X-CSE-MsgGUID: gg8WceUUR3+VOjTD+B7/6g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12967754"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12967754"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 00:59:18 -0700
-X-CSE-ConnectionGUID: 2O0Hbl4/RhiMr66BWSZhTQ==
-X-CSE-MsgGUID: 1/mI9UGmTLWYatbApChIQA==
+ 27 May 2024 00:59:21 -0700
+X-CSE-ConnectionGUID: atWCFp4JQ9uMGfR422ZL9g==
+X-CSE-MsgGUID: Bqrf2WGoQxm3+u/O1eB1fw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39085008"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39085018"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 27 May 2024 00:59:15 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 27 May 2024 00:59:18 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,9 +53,9 @@ To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
  Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC 5/6] scripts/simpletrace-rust: Format simple trace output
-Date: Mon, 27 May 2024 16:14:20 +0800
-Message-Id: <20240527081421.2258624-6-zhao1.liu@intel.com>
+Subject: [RFC 6/6] docs/tracing: Add simpletrace-rust section
+Date: Mon, 27 May 2024 16:14:21 +0800
+Message-Id: <20240527081421.2258624-7-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527081421.2258624-1-zhao1.liu@intel.com>
 References: <20240527081421.2258624-1-zhao1.liu@intel.com>
@@ -63,13 +63,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,163 +85,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Format simple trace output, as in the Python version. Further, complete
-the trace file input and trace log output.
+Describe how to compile and use this Rust version program.
 
-Additionally, remove `#![allow(dead_code)]` and
-`#![allow(unused_variables)]` to allow rustc to do related checks.
+And also define the Rust code contribution requirements.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- scripts/simpletrace-rust/src/main.rs | 80 ++++++++++++++++++++++++++--
- 1 file changed, 75 insertions(+), 5 deletions(-)
+ docs/devel/tracing.rst | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/scripts/simpletrace-rust/src/main.rs b/scripts/simpletrace-rust/src/main.rs
-index f9a71d8dc243..ba4b96efb066 100644
---- a/scripts/simpletrace-rust/src/main.rs
-+++ b/scripts/simpletrace-rust/src/main.rs
-@@ -8,23 +8,25 @@
-  * SPDX-License-Identifier: GPL-2.0-or-later
-  */
+diff --git a/docs/devel/tracing.rst b/docs/devel/tracing.rst
+index 043bed7fd0fc..9f31fa38f9bc 100644
+--- a/docs/devel/tracing.rst
++++ b/docs/devel/tracing.rst
+@@ -273,6 +273,41 @@ You must ensure that the same "trace-events-all" file was used to build QEMU,
+ otherwise trace event declarations may have changed and output will not be
+ consistent.
  
--#![allow(dead_code)]
--#![allow(unused_variables)]
--
- mod trace;
- 
- use std::collections::HashMap;
- use std::env;
-+use std::fmt;
- use std::fs::File;
-+use std::io::stdout;
- use std::io::Error as IOError;
- use std::io::ErrorKind;
- use std::io::Read;
-+use std::io::Write;
- use std::mem::size_of;
- 
- use backtrace::Backtrace;
- use clap::Arg;
- use clap::Command;
- use thiserror::Error;
-+use trace::read_events;
-+use trace::Error as TraceError;
- use trace::Event;
- 
- const DROPPED_EVENT_ID: u64 = 0xfffffffffffffffe;
-@@ -45,8 +47,12 @@ pub enum Error
-     InvalidHeaderId(u64, u64),
-     #[error("Not a valid trace file, header magic {0} != {1}")]
-     InvalidHeaderMagic(u64, u64),
-+    #[error("Failed to open file: {0}")]
-+    OpenFile(IOError),
-     #[error("Failed to read file: {0}")]
-     ReadFile(IOError),
-+    #[error("Failed to read trace: {0}")]
-+    ReadTrace(TraceError),
-     #[error(
-         "event {0} is logged but is not declared in the trace events \
-         file, try using trace-events-all instead."
-@@ -58,6 +64,8 @@ pub enum Error
-     UnknownVersion(u64),
-     #[error("Log format {0} not supported with this QEMU release!")]
-     UnsupportedVersion(u64),
-+    #[error("Failed to write trace: {0}")]
-+    WriteTrace(IOError),
- }
- 
- pub type Result<T> = std::result::Result<T, Error>;
-@@ -254,6 +262,30 @@ impl EventArgPayload
-     }
- }
- 
-+impl fmt::Display for EventArgPayload
-+{
-+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result
-+    {
-+        if let Some(s) = &self.raw_str {
-+            write!(fmt, "{}", s)
-+        } else {
-+            write!(fmt, "")
-+        }
-+    }
-+}
++Simpletrace-rust
++----------------
 +
-+impl fmt::LowerHex for EventArgPayload
-+{
-+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result
-+    {
-+        if let Some(v) = self.raw_val {
-+            write!(fmt, "{:x}", v)
-+        } else {
-+            write!(fmt, "")
-+        }
-+    }
-+}
++Simpletrace-rust (scripts/Simpletrace-rust) is a Rust implementation of
++simpletrace.py, with the same command line arguments as the Python script.
 +
- #[derive(Clone)]
- struct EventEntry
- {
-@@ -485,10 +517,35 @@ impl Analyzer for Formatter
-         event: &Event,
-         timestamp_ns: u64,
-         pid: u32,
--        event_id: u64,
-+        _event_id: u64,
-     ) -> Result<String>
-     {
--        let fmt_str = String::new();
-+        if self.last_timestamp_ns.is_none() {
-+            self.last_timestamp_ns = Some(timestamp_ns);
-+        }
++Simpletrace-rust has faster trace parsing compared to the Python version.
 +
-+        let fields: Vec<String> = rec_args
-+            .iter()
-+            .zip(event.args.props.iter())
-+            .map(|(arg, prop)| {
-+                if prop.is_string() {
-+                    format!("{}={}", prop.name, arg)
-+                } else {
-+                    format!("{}=0x{:x}", prop.name, arg)
-+                }
-+            })
-+            .collect();
++The script is compiled by::
 +
-+        let delta_ns =
-+            timestamp_ns as f64 - self.last_timestamp_ns.unwrap() as f64;
-+        self.last_timestamp_ns = Some(timestamp_ns);
-+        let fmt_str = format!(
-+            "{} {:.3} pid={} {}\n",
-+            event.name,
-+            delta_ns / 1000.0,
-+            pid,
-+            fields.join(" "),
-+        );
++    cargo build --manifest-path ./scripts/simpletrace-rust/Cargo.toml --release
++
++Or under scripts/simpletrace-rust, just use::
++
++    cargo build --release
++
++The script also takes the "trace-events-all" file and the binary trace::
++
++    ./scripts/simpletrace-rust/target/release/simpletrace-rust trace-events-all \
++                                                               trace-12345
++
++Any contribution to Simpletrace-rust needs to do the following checks:
++
++Compilation check::
++
++    cargo build
++
++Clippy check::
++
++    cargo clippy
++
++Code style check::
++
++    cargo +nightly fmt --check
++
+ Ftrace
+ ------
  
-         Ok(fmt_str)
-     }
-@@ -501,7 +558,20 @@ fn process(
-     read_header: bool,
- ) -> Result<()>
- {
-+    let events = read_events(event_path).map_err(Error::ReadTrace)?;
-+    let trace_fobj = File::open(trace_path).map_err(Error::OpenFile)?;
-+    if read_header {
-+        read_trace_header(&trace_fobj)?;
-+    }
-+
-     analyzer.begin();
-+
-+    let rec_strs =
-+        read_trace_records(&events, &trace_fobj, analyzer, read_header)?;
-+    let mut lock = stdout().lock();
-+    lock.write_all(rec_strs.join("").as_ref())
-+        .map_err(Error::WriteTrace)?;
-+
-     analyzer.end();
- 
-     Ok(())
 -- 
 2.34.1
 
