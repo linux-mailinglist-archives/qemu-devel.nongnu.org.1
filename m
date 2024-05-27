@@ -2,96 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE878CF9C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3E68CF9C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:12:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUVd-0003dO-Ke; Mon, 27 May 2024 03:11:05 -0400
+	id 1sBUVg-0003em-My; Mon, 27 May 2024 03:11:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sBUVa-0003ay-HQ; Mon, 27 May 2024 03:11:02 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1sBUVe-0003eE-Ng; Mon, 27 May 2024 03:11:06 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sBUVY-0003QR-Kp; Mon, 27 May 2024 03:11:02 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1sBUVc-0003Qg-Qd; Mon, 27 May 2024 03:11:06 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44R77Tm1008474; Mon, 27 May 2024 07:10:54 GMT
+ 44R6baqT001105; Mon, 27 May 2024 07:10:56 GMT
 DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
  _d=3Dibm.com; _h=3Dcc?=
- =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:message-id:mi?=
- =?UTF-8?Q?me-version:subject:to;_s=3Dpp1;_bh=3DNWHwRz3bxTbfgrvGvQqDoswFR3?=
- =?UTF-8?Q?uwAP5W6OoXAIJ4xcI=3D;_b=3DTH6nqrCWxAbny/Hz3GNbDs9x/8PRwdrCJB52E?=
- =?UTF-8?Q?KBs2JK0cXBvdpiYfoWiDajw8H+UOHO7_fZ6hBD78ZtfkldgfqYwA63YSxiFkoMg?=
- =?UTF-8?Q?xJO+AjlT4u/eaRKv9iZFxykNoh8Nl8QNhQrNz_zWFwAoIb2K/kO6vbEpJrCBItd?=
- =?UTF-8?Q?a2Uy5EV+Et2YCtgJ/AoS/hYTmuWDBGgNOVYOO2SGpt6_MJZ+/UXOWbgPF8dFz3s?=
- =?UTF-8?Q?5qQyDpm2W5P/FdQxlLrWnahRKJMll8WTVMeXanK2lwGBZ66MX_fijXKiMMEyKXz?=
- =?UTF-8?Q?pyNw1/Qr2cGGMabxc+tVRypM2X0c5Xa8i/0rl2jIcG3fjTW0kQggbqs_Nw=3D?=
- =?UTF-8?Q?=3D_?=
+ =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
+ =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3DX4l?=
+ =?UTF-8?Q?lEPElQhoZtGfyFUPU7qCkUth7SOaEvYBtvtTgGYU=3D;_b=3Dg2XR9WYqyV6TYF?=
+ =?UTF-8?Q?ZyywpNJ4bSXcwHauUB68KTGMXSq9ZgjhJFiy+VSVasEAHOiURGgkKQ_vvoQXoyT?=
+ =?UTF-8?Q?NVTzE7co1pbgsaDYujYgEzAYwxxEcBtWv/nrVdZhMsGAZlfsd0aPan6UREhA_DH?=
+ =?UTF-8?Q?DgIStTmdw5yoYb/suJ+gh7YPVRJvQleekjoZYI5Zlefby5q4F3+7H5939cT8zg2?=
+ =?UTF-8?Q?oOE_nuFRWAg7ihNX4HqN+fHFz9qNyPJjRZ4ISt2iEcZZpFMnHV2oTixDSmP9vX2?=
+ =?UTF-8?Q?iI+0t+Scy_aLvjpMhA/s9pKfCc8MoVyWAD0RgmDmcCD9h/23x+vt45XwLtsdFes?=
+ =?UTF-8?Q?WVIZSPLcmN7zFiT_+g=3D=3D_?=
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycngng0ad-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycn2h827x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2024 07:10:56 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44R7AtiK019311;
+ Mon, 27 May 2024 07:10:55 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycn2h827u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 27 May 2024 07:10:55 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44R41sER006716; Mon, 27 May 2024 07:10:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ybtat7u09-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 27 May 2024 07:10:54 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44R7As2l013931;
- Mon, 27 May 2024 07:10:54 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycngng0a8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 May 2024 07:10:53 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44R5s8JE032078; Mon, 27 May 2024 07:10:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybutkyc96-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 May 2024 07:10:52 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44R7AkPU37486990
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44R7AnNR51970318
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 May 2024 07:10:48 GMT
+ Mon, 27 May 2024 07:10:51 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCB8520043;
- Mon, 27 May 2024 07:10:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 73BAD2004D;
+ Mon, 27 May 2024 07:10:49 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6D5020040;
- Mon, 27 May 2024 07:10:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 289E120040;
+ Mon, 27 May 2024 07:10:47 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.179.2.64]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 27 May 2024 07:10:44 +0000 (GMT)
+ Mon, 27 May 2024 07:10:46 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
-Subject: [PATCH v3 00/11] Power11 support for QEMU
-Date: Mon, 27 May 2024 12:40:31 +0530
-Message-ID: <20240527071042.489540-1-adityag@linux.ibm.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Subject: [PATCH v3 01/11] ppc: Add Power11 DD2.0 processor
+Date: Mon, 27 May 2024 12:40:32 +0530
+Message-ID: <20240527071042.489540-2-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.45.1
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ycCtJdR3Ldu8Dtnf6genxIoAo1kDgdJV
-X-Proofpoint-GUID: xb6DD0_8Su9KcTPMLPZOek0TxePXzsGE
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+In-Reply-To: <20240527071042.489540-1-adityag@linux.ibm.com>
+References: <20240527071042.489540-1-adityag@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Z-UEUEIHFRRntAYaqoqjnOWlQTFR2Osk
+X-Proofpoint-GUID: Ib-Qx4HTn3-Mor3T_UJPkJqQz263vzut
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-26_09,2024-05-24_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0
- clxscore=1011 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2405010000 definitions=main-2405270057
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0 bulkscore=0
+ malwarescore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 clxscore=1015
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405270057
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -114,97 +117,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Overview
-============
+Add CPU target code to add support for new Power11 Processor.
 
-Add support for Power11 pseries and powernv machine types, to emulate VMs
-running on Power11.
-
-As Power11 core is same as Power10, hence much of the code has been reused from
+Power11 core is same as Power10, hence reuse functions defined for
 Power10.
 
-Power11 was added in Linux in:
-  commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
+Cc: Cédric Le Goater <clg@kaod.org>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Frédéric Barrat <fbarrat@linux.ibm.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+---
+ target/ppc/compat.c     |   7 +++
+ target/ppc/cpu-models.c |   3 ++
+ target/ppc/cpu-models.h |   3 ++
+ target/ppc/cpu_init.c   | 102 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 115 insertions(+)
 
-Git Tree for Testing
-====================
-
-QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v3
-
-Has been tested with following cases:
-* '-M pseries' / '-M pseries -cpu Power11'
-* '-M powernv' / '-M powernv10' / '-M powernv11'
-* '-smp' option tested
-* with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
-* with/without device 'virtio-scsi-pci'
-* with/without -kernel and -drive with qcow_file
-
-skiboot with Power11 support: https://github.com/maheshsal/skiboot/tree/upstream_power11
-
-Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
-
-Note: This patch series does not add tests as of now, and will be done as
-soon as skiboot support for Power11 gets merged, and op-build adds a
-release for Power11
-
-Changelog
-=========
-v3:
-  + patch #1: version power11 as power11_v2.0
-  + patch #2: split target hw/pseries code into patch #2
-  + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
-  + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
-  + patch #6-#11: no change
-  - remove commit to make Power11 as default
-
-v2:
-  + split powernv patch into homer,lpc,occ,psi,sbe
-  + reduce code duplication by reusing power10 code
-  + make power11 as default
-  + rebase on qemu upstream/master
-  + add more information in commit descriptions
-  + update docs
-  + update skiboot.lid
-
-Aditya Gupta (11):
-  ppc: Add Power11 DD2.0 processor
-  ppc/pseries: Add Power11 cpu type
-  target/ppc: Introduce 'PowerPCCPUClass::logical_pvr'
-  target/ppc: Fix regression due to Power10 and Power11 having same PCR
-  ppc/pnv: Add a Power11 Pnv11Chip, and a Power11 Machine
-  ppc/pnv: Add HOMER for POWER11
-  ppc/pnv: Add a LPC controller for POWER11
-  ppc/pnv: Add OCC for Power11
-  ppc/pnv: Add a PSI bridge model for Power11
-  ppc/pnv: Add SBE model for Power11
-  ppc/pnv: Update skiboot.lid to support Power11
-
- docs/system/ppc/powernv.rst |   9 +--
- docs/system/ppc/pseries.rst |   6 +-
- hw/ppc/pnv.c                | 119 ++++++++++++++++++++++++++++++++++--
- hw/ppc/pnv_core.c           |  11 ++++
- hw/ppc/pnv_homer.c          |   8 +++
- hw/ppc/pnv_lpc.c            |  14 +++++
- hw/ppc/pnv_occ.c            |  14 +++++
- hw/ppc/pnv_psi.c            |  24 ++++++++
- hw/ppc/pnv_sbe.c            |  15 +++++
- hw/ppc/spapr_cpu_core.c     |   1 +
- include/hw/ppc/pnv.h        |   5 ++
- include/hw/ppc/pnv_chip.h   |   7 +++
- include/hw/ppc/pnv_core.h   |   1 +
- include/hw/ppc/pnv_homer.h  |   3 +
- include/hw/ppc/pnv_lpc.h    |   4 ++
- include/hw/ppc/pnv_occ.h    |   2 +
- include/hw/ppc/pnv_psi.h    |   2 +
- include/hw/ppc/pnv_sbe.h    |   2 +
- pc-bios/skiboot.lid         | Bin 2527328 -> 2527328 bytes
- target/ppc/compat.c         |  11 ++++
- target/ppc/cpu-models.c     |   3 +
- target/ppc/cpu-models.h     |   3 +
- target/ppc/cpu.h            |   1 +
- target/ppc/cpu_init.c       | 107 ++++++++++++++++++++++++++++++++
- 24 files changed, 361 insertions(+), 11 deletions(-)
-
+diff --git a/target/ppc/compat.c b/target/ppc/compat.c
+index ebef2cccecf3..12dd8ae290ca 100644
+--- a/target/ppc/compat.c
++++ b/target/ppc/compat.c
+@@ -100,6 +100,13 @@ static const CompatInfo compat_table[] = {
+         .pcr_level = PCR_COMPAT_3_10,
+         .max_vthreads = 8,
+     },
++    { /* POWER11, ISA3.10 */
++        .name = "power11",
++        .pvr = CPU_POWERPC_LOGICAL_3_10_PLUS,
++        .pcr = PCR_COMPAT_3_10,
++        .pcr_level = PCR_COMPAT_3_10,
++        .max_vthreads = 8,
++    },
+ };
+ 
+ static const CompatInfo *compat_by_pvr(uint32_t pvr)
+diff --git a/target/ppc/cpu-models.c b/target/ppc/cpu-models.c
+index f2301b43f78b..ece348178188 100644
+--- a/target/ppc/cpu-models.c
++++ b/target/ppc/cpu-models.c
+@@ -734,6 +734,8 @@
+                 "POWER9 v2.2")
+     POWERPC_DEF("power10_v2.0",  CPU_POWERPC_POWER10_DD20,           POWER10,
+                 "POWER10 v2.0")
++    POWERPC_DEF("power11_v2.0",  CPU_POWERPC_POWER11_DD20,           POWER11,
++                "POWER11_v2.0")
+ #endif /* defined (TARGET_PPC64) */
+ 
+ /***************************************************************************/
+@@ -909,6 +911,7 @@ PowerPCCPUAlias ppc_cpu_aliases[] = {
+     { "power8nvl", "power8nvl_v1.0" },
+     { "power9", "power9_v2.2" },
+     { "power10", "power10_v2.0" },
++    { "power11", "power11_v2.0" },
+ #endif
+ 
+     /* Generic PowerPCs */
+diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+index 0229ef3a9a5c..ef74e387b047 100644
+--- a/target/ppc/cpu-models.h
++++ b/target/ppc/cpu-models.h
+@@ -354,6 +354,8 @@ enum {
+     CPU_POWERPC_POWER10_BASE       = 0x00800000,
+     CPU_POWERPC_POWER10_DD1        = 0x00801100,
+     CPU_POWERPC_POWER10_DD20       = 0x00801200,
++    CPU_POWERPC_POWER11_BASE       = 0x00820000,
++    CPU_POWERPC_POWER11_DD20       = 0x00821200,
+     CPU_POWERPC_970_v22            = 0x00390202,
+     CPU_POWERPC_970FX_v10          = 0x00391100,
+     CPU_POWERPC_970FX_v20          = 0x003C0200,
+@@ -391,6 +393,7 @@ enum {
+     CPU_POWERPC_LOGICAL_2_07       = 0x0F000004,
+     CPU_POWERPC_LOGICAL_3_00       = 0x0F000005,
+     CPU_POWERPC_LOGICAL_3_10       = 0x0F000006,
++    CPU_POWERPC_LOGICAL_3_10_PLUS  = 0x0F000007,
+ };
+ 
+ /* System version register (used on MPC 8xxx)                                */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 01e358a4a5ac..82d700382cdd 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -6763,6 +6763,108 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
+     pcc->l1_icache_size = 0x8000;
+ }
+ 
++static bool ppc_pvr_match_power11(PowerPCCPUClass *pcc, uint32_t pvr, bool best)
++{
++    uint32_t base = pvr & CPU_POWERPC_POWER_SERVER_MASK;
++    uint32_t pcc_base = pcc->pvr & CPU_POWERPC_POWER_SERVER_MASK;
++
++    if (!best && (base == CPU_POWERPC_POWER11_BASE)) {
++        return true;
++    }
++
++    if (base != pcc_base) {
++        return false;
++    }
++
++    if ((pvr & 0x0f00) == (pcc->pvr & 0x0f00)) {
++        return true;
++    }
++
++    return false;
++}
++
++POWERPC_FAMILY(POWER11)(ObjectClass *oc, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(oc);
++    PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
++
++    dc->fw_name = "PowerPC,POWER11";
++    dc->desc = "POWER11";
++    pcc->pvr_match = ppc_pvr_match_power11;
++    pcc->pcr_mask = PCR_COMPAT_2_05 | PCR_COMPAT_2_06 | PCR_COMPAT_2_07 |
++                    PCR_COMPAT_3_00;
++    pcc->pcr_supported = PCR_COMPAT_3_10 | PCR_COMPAT_3_00 | PCR_COMPAT_2_07 |
++                         PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
++    pcc->init_proc = init_proc_POWER10;
++    pcc->check_pow = check_pow_nocheck;
++    pcc->insns_flags = PPC_INSNS_BASE | PPC_ISEL | PPC_STRING | PPC_MFTB |
++                       PPC_FLOAT | PPC_FLOAT_FSEL | PPC_FLOAT_FRES |
++                       PPC_FLOAT_FSQRT | PPC_FLOAT_FRSQRTE |
++                       PPC_FLOAT_FRSQRTES |
++                       PPC_FLOAT_STFIWX |
++                       PPC_FLOAT_EXT |
++                       PPC_CACHE | PPC_CACHE_ICBI | PPC_CACHE_DCBZ |
++                       PPC_MEM_SYNC | PPC_MEM_EIEIO |
++                       PPC_MEM_TLBIE | PPC_MEM_TLBSYNC |
++                       PPC_64B | PPC_64H | PPC_64BX | PPC_ALTIVEC |
++                       PPC_SEGMENT_64B | PPC_SLBI |
++                       PPC_POPCNTB | PPC_POPCNTWD |
++                       PPC_CILDST;
++    pcc->insns_flags2 = PPC2_VSX | PPC2_VSX207 | PPC2_DFP | PPC2_DBRX |
++                        PPC2_PERM_ISA206 | PPC2_DIVE_ISA206 |
++                        PPC2_ATOMIC_ISA206 | PPC2_FP_CVT_ISA206 |
++                        PPC2_FP_TST_ISA206 | PPC2_BCTAR_ISA207 |
++                        PPC2_LSQ_ISA207 | PPC2_ALTIVEC_207 |
++                        PPC2_ISA205 | PPC2_ISA207S | PPC2_FP_CVT_S64 |
++                        PPC2_TM | PPC2_ISA300 | PPC2_PRCNTL | PPC2_ISA310 |
++                        PPC2_MEM_LWSYNC | PPC2_BCDA_ISA206;
++    pcc->msr_mask = (1ull << MSR_SF) |
++                    (1ull << MSR_HV) |
++                    (1ull << MSR_TM) |
++                    (1ull << MSR_VR) |
++                    (1ull << MSR_VSX) |
++                    (1ull << MSR_EE) |
++                    (1ull << MSR_PR) |
++                    (1ull << MSR_FP) |
++                    (1ull << MSR_ME) |
++                    (1ull << MSR_FE0) |
++                    (1ull << MSR_SE) |
++                    (1ull << MSR_DE) |
++                    (1ull << MSR_FE1) |
++                    (1ull << MSR_IR) |
++                    (1ull << MSR_DR) |
++                    (1ull << MSR_PMM) |
++                    (1ull << MSR_RI) |
++                    (1ull << MSR_LE);
++    pcc->lpcr_mask = LPCR_VPM1 | LPCR_ISL | LPCR_KBV | LPCR_DPFD |
++        (LPCR_PECE_U_MASK & LPCR_HVEE) | LPCR_ILE | LPCR_AIL |
++        LPCR_UPRT | LPCR_EVIRT | LPCR_ONL | LPCR_HR | LPCR_LD |
++        (LPCR_PECE_L_MASK & (LPCR_PDEE | LPCR_HDEE | LPCR_EEE |
++                             LPCR_DEE | LPCR_OEE))
++        | LPCR_MER | LPCR_GTSE | LPCR_TC |
++        LPCR_HEIC | LPCR_LPES0 | LPCR_HVICE | LPCR_HDICE;
++    /* DD2 adds an extra HAIL bit */
++    pcc->lpcr_mask |= LPCR_HAIL;
++
++    pcc->lpcr_pm = LPCR_PDEE | LPCR_HDEE | LPCR_EEE | LPCR_DEE | LPCR_OEE;
++    pcc->mmu_model = POWERPC_MMU_3_00;
++#if !defined(CONFIG_USER_ONLY)
++    /* segment page size remain the same */
++    pcc->hash64_opts = &ppc_hash64_opts_POWER7;
++    pcc->radix_page_info = &POWER10_radix_page_info;
++    pcc->lrg_decr_bits = 56;
++#endif
++    pcc->excp_model = POWERPC_EXCP_POWER10;
++    pcc->bus_model = PPC_FLAGS_INPUT_POWER9;
++    pcc->bfd_mach = bfd_mach_ppc64;
++    pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
++                 POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
++                 POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
++                 POWERPC_FLAG_VSX | POWERPC_FLAG_TM | POWERPC_FLAG_SCV;
++    pcc->l1_dcache_size = 0x8000;
++    pcc->l1_icache_size = 0x8000;
++}
++
+ #if !defined(CONFIG_USER_ONLY)
+ void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp)
+ {
 -- 
 2.45.1
 
