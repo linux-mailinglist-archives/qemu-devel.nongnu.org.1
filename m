@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20A28CFC90
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 906FD8CFCDA
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:29:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBWQ8-0006eo-3A; Mon, 27 May 2024 05:13:34 -0400
+	id 1sBWf4-0004zj-01; Mon, 27 May 2024 05:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBWPx-0006dk-BF; Mon, 27 May 2024 05:13:21 -0400
-Received: from mgamail.intel.com ([192.198.163.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBWPu-00017d-VU; Mon, 27 May 2024 05:13:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716801199; x=1748337199;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=LsG0NLsb5plzK+avJgF7+hm1ZHCZyBHLoqlRGeaxzhw=;
- b=l/EyX8ozg94fE6tliowvGlWROiW+lH9RaiNQMzWrwM8VUyDpoqjQjPdc
- MiPwrHIHyaB8P1fuQISdFdJBEqzx/po3JntbL/hNNXZGRrpok/pcVopLD
- BlJdbC65Vpc1kQq41llBw23yI5mXVIfFKfbh//HyhwrUulayFNZo8yJj3
- v24LDdktLsVvLYclW05DJzMm8e7dtaPBNaZvpHYhSbNjdF1iJb/agXHN1
- q1EsZy5ppG5V8aKQ4qL5nncB+dEMbLIDt4QvCOtOnkQ7gfLMf9Ba6DGu/
- vx0kmjfcwrA5GjgAuEw1qffIzqbA3XSvgLzck6fWP6YsWRRSS6UQY4ftq g==;
-X-CSE-ConnectionGUID: Kob8+NLqQGetW6SbAhBu8A==
-X-CSE-MsgGUID: TFoaPSjDQWmjUVK310E/JA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="13331240"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="13331240"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 02:13:15 -0700
-X-CSE-ConnectionGUID: n0LwNNVDRLSA5yHjI2bAxw==
-X-CSE-MsgGUID: ToIL70hdRumgFncpPohcaA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39673742"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 27 May 2024 02:13:07 -0700
-Date: Mon, 27 May 2024 17:28:30 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com,
- andrew.jones@linux.dev, david@redhat.com, philmd@linaro.org,
- eric.auger@redhat.com, oliver.upton@linux.dev, pbonzini@redhat.com,
- mst@redhat.com, will@kernel.org, gshan@redhat.com,
- rafael@kernel.org, alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
- lixianglai@loongson.cn, npiggin@gmail.com, harshpb@linux.ibm.com,
- linuxarm@huawei.com
-Subject: Re: [PATCH V11 0/8] Add architecture agnostic code to support vCPU
- Hotplug
-Message-ID: <ZlRSPuJGBgyEUW6w@intel.com>
-References: <20240522211111.232114-1-salil.mehta@huawei.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBWep-0004tT-FV
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:28:43 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBWen-0003hk-RY
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 05:28:43 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-421124a0b37so5758845e9.1
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 02:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716802119; x=1717406919; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=bjmSA0ceZNruDSICAo9LXegyqfWu5ZH4aKcdf8Bdaqg=;
+ b=nFRG0HHoadmi26PBQUavVvdwURx+JdAPE9BXnTbwMN6OLGt08Ydpp/9yL84rfpugGu
+ lI1PLaH/4F5zJ9xqse6jXRa2Z4mW5+/E7rLgJFkgzEztw6rKTAC3Rg8L6dg+coLZRC5s
+ Dj4j4vKh7C1wvPSLQy/PDRJ2tID7QtiOQT+dUEFQX6Y6EJq9DvRNgAFZb7VsosQOezqA
+ XjyHPAwaHd+my+Dbjn2lYFa8aC/imCGs4qp4xS96ySTH52sYdr6orgRq70RW9m6ZmWuK
+ 0yZ/MkkwV+zwAmvoDfjDR8BExFJtP46nRPs0PS18daGeBZEv6pcFVzeAlBxrEVjSv1L3
+ zbjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716802119; x=1717406919;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bjmSA0ceZNruDSICAo9LXegyqfWu5ZH4aKcdf8Bdaqg=;
+ b=LvejYrKNI/BcqIt8w3dhGBHtEjZnyEAXZNRkc/PJTdTHB181Gzy24sUp07lwFgJZ0X
+ aY2MGaZq8xnWoV5YqzF6OYSvD0WhEiZswjZSbiCKJWGyHoRJY/PDowhHsgwvI7LJKPyy
+ GQepXaeoGBl8ziS52Aa75gB8jHbdCQ8AFbXOk4AEnQIetNU+DDa2DFvtJn8amZkbjHh8
+ 4KugXcAuVZynpIrkGj8BHyh/gHUZy8e9KAFDwZypGaJ6yYTbr1wHDwpNOYwv3Zb4/OUc
+ 5R6kZmMQemgMi08EBrFA0/gFLiDiRhTGTbGwiqproDvkd7RjJfV7bc9DSqOTir7GQ/Ml
+ cJog==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXd45HLU+C+B4z0vxEeX7Hq8C3R73/BCFVHfVhAD3QeFiKBEIaGp/xJjND63TBU8UxGUWGZXIMdZREsE7r7ngKPdYBt64k=
+X-Gm-Message-State: AOJu0YxEBvTpFvsC+Lxl8UpDCsb+WmU4ZA9TDK9mdSxiOnlmeSmxtbVF
+ a9p+HOzgKVGBsPJ+yXOr0TCY2g7vgmfL9jSdcBssQZuTAoZGKCHiI3aZTizZu+sdUIoBfxefwZM
+ erkc=
+X-Google-Smtp-Source: AGHT+IFBH+bimk6cXemainUXidLSwGdGFBUnxTYprRfu8CCV7idfdkJpPbmtiug5/zCJbZs/lpaNWg==
+X-Received: by 2002:a7b:c44a:0:b0:41a:8055:8b89 with SMTP id
+ 5b1f17b1804b1-421089d50a0mr103087655e9.6.1716802118996; 
+ Mon, 27 May 2024 02:28:38 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.152.134])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-4210897bbd2sm104205175e9.21.2024.05.27.02.28.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 May 2024 02:28:38 -0700 (PDT)
+Message-ID: <4a6f1923-b1f5-4e5e-898f-73f4222c2c78@linaro.org>
+Date: Mon, 27 May 2024 11:28:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240522211111.232114-1-salil.mehta@huawei.com>
-Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs/system/target-arm: Re-alphabetize board list
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20240520141421.1895138-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240520141421.1895138-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,26 +94,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 22, 2024 at 10:11:03PM +0100, Salil Mehta via wrote:
-> Date: Wed, 22 May 2024 22:11:03 +0100
-> From: Salil Mehta via <qemu-devel@nongnu.org>
-> Subject: [PATCH V11 0/8] Add architecture agnostic code to support vCPU
->  Hotplug
-> X-Mailer: git-send-email 2.34.1
+On 20/5/24 16:14, Peter Maydell wrote:
+> The board list in target-arm.rst is supposed to be in alphabetical
+> order by the title text of each file (which is not the same as
+> alphabetical order by filename).  A few items had got out of order;
+> correct them.
 > 
-> Virtual CPU hotplug support is being added across various architectures[1][3].
-> This series adds various code bits common across all architectures:
+> The entry for
+> "Facebook Yosemite v3.5 Platform and CraterLake Server (fby35)"
+> remains out-of-order, because this is not its own file
+> but is currently part of the aspeed.rst file.
 > 
-> 1. vCPU creation and Parking code refactor [Patch 1]
-> 2. Update ACPI GED framework to support vCPU Hotplug [Patch 2,3]
-> 3. ACPI CPUs AML code change [Patch 4,5]
-> 4. Helper functions to support unrealization of CPU objects [Patch 6,7]
-> 5. Docs [Patch 8]
->
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> ---
+>   docs/system/target-arm.rst | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 
-Ran QTESTs on x86 platform, now this series no longer breaks x86-related
-tests, so,
-
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
