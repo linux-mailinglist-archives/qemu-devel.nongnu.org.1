@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AFF8D0F49
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 23:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862638D0F4D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 23:19:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBhjH-000603-LE; Mon, 27 May 2024 17:18:03 -0400
+	id 1sBhkV-00078Z-TT; Mon, 27 May 2024 17:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sBhjE-0005zY-SN
- for qemu-devel@nongnu.org; Mon, 27 May 2024 17:18:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sBhjD-0003Y6-79
- for qemu-devel@nongnu.org; Mon, 27 May 2024 17:18:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716844678;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=U/1F0fDGLRPkJdriVJvFO5RLxx/qKwKhlT5HAU466bI=;
- b=BkMpA80bQhnsZ5y8hjvUwOpUU5KKS0vhO7YMqSaYT0kkS9WUUNP8ylsXNkkPpTaiowXem1
- 9gdJ3D68wTCqOzHrY89HSiue+OIVMtYB1mzbEz1+DxhBGMCSnv7emYO7VTvpiVx5HF4QrU
- 9Bz1wwkd9/hOvCioaNADB97KLKtl3NA=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-9s3cVOdHPViOMuICL0H7Sg-1; Mon, 27 May 2024 17:17:57 -0400
-X-MC-Unique: 9s3cVOdHPViOMuICL0H7Sg-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-6ad5ebfaa68so466266d6.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 14:17:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sBhkT-00077B-Iv
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:17 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1sBhkR-0003b4-Ps
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:17 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6f6a045d476so104892b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 14:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716844754; x=1717449554; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZDglsqAcp0SxDGAaJ0T9OIIUXwIF6C0mIgo/Mt5cf+M=;
+ b=YLc0A6zKzWchE2US3Gd3Q8QUaWV0zROyW0KOLtibKZIqwigdIHrow7kR3f8CRqfrkT
+ z5+3Nj5LGPnfWx44fhH4WwaklaLgKjca2xGvsOFDzhECG7UCUbIKWblniNdilafzQvPC
+ 6DOAE/24+izawhlZJBA6HWabqtRuKF2YY5BklyyBT1NSLSrE7pOMUxdoaVd4/X32fyGU
+ miQrXyRkT8h4pPeQYsSVeVLr7KQo5f9Urnwb4XKYxam7i2Mv40RpFnEKuewF+lz4g/Ch
+ 1CDcGFjAZtFZI3xHX7sVa7ZXd4ppJheAiEK2731keSVehAC5kiLh4NS0OWY/wJXyx/iu
+ SXPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716844676; x=1717449476;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=U/1F0fDGLRPkJdriVJvFO5RLxx/qKwKhlT5HAU466bI=;
- b=uIgh49Oxv6Q1Wr1BKN6SQHuDmUeKtjHE8EZQOCNDmtzAyDqBcnCukZfHAfAghgdDt/
- vzgeJ78dq9WFTBEsn69u7nesqPlOcIgsw7FZy7f42R9ow1xKUXDeDsWi8Ij0AH1or32o
- ieQ3jeRuRyLlGDscKNq018ppTX2TnBexpgmG+J68daDZRw84G5s3zMMzGvZqJP7oiKb1
- ak506KUkZTxvTonmfCtOyaL/eU6y9GscTZ+5DaOMj9tBT4v5hukq48xUBXljwpaC7Xzt
- EGL1kKlOJXVeEsOPe92yhQg/hDAMcwHTT3ut3W0iqWU3UFaM6/JOV3Ys8PVnenM+x+YV
- E69A==
-X-Gm-Message-State: AOJu0Yyi/6B+OAGL3uQriKq/MyyrKZoK2lC0iFQ00y2XdQOoFSKuRhrG
- 1zWBr4YvL5tPRJPWMr5HfiogghL9TSfZ1GyNg0IW7v/SovbF7VkgnSuYNEJUKz/SWjGipuk1xB2
- 5gET5FsQ75OxoBo0My1asolzsSfAipxU3TImzF4bDQW1pHXuWqKUB
-X-Received: by 2002:a05:6214:d67:b0:6ab:8463:4355 with SMTP id
- 6a1803df08f44-6abcd0d569dmr111143376d6.3.1716844674934; 
- Mon, 27 May 2024 14:17:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/GQ4/exDS9iuizhnSi+SZwHRmroW8onGwHl5dfoc8QYKPw7VLK/wxXEw5UakE/VlDzE2vRg==
-X-Received: by 2002:a05:6214:d67:b0:6ab:8463:4355 with SMTP id
- 6a1803df08f44-6abcd0d569dmr111143086d6.3.1716844674223; 
- Mon, 27 May 2024 14:17:54 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6ac162ef865sm37891396d6.96.2024.05.27.14.17.53
+ d=1e100.net; s=20230601; t=1716844754; x=1717449554;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZDglsqAcp0SxDGAaJ0T9OIIUXwIF6C0mIgo/Mt5cf+M=;
+ b=ONKjo6RIHa6gXN0nWzdV1UQUtdA/R0yhpBp6hpB1YOD7qJOteHvC7ZoSVqlYU31fi5
+ FwjYL3Xc0ADDdJR0CPlZQCuwrC5wdsLh2kiw/9+LoIthQqAMb9yU4MS8jJGLNmxXjs36
+ KBfQuMxBXP/xZrZWxOiNZlr98bcU3arFmNkCRlpDFOVgj/AB3EksILqvsQ17Eqxg4H1N
+ KdMxAXxbtoMeqjWxnxTSoda2n2Z81m9JhnKzaAlzgpOzx8fYyUOIXi8dCqhOhdvkzk3T
+ 7IX1AARbJWmm1SCOcJlkJu64BHvJxja5ftGqCDzQWJl9lejWRUWM1OVMUyvsoW7tRnHa
+ tojg==
+X-Gm-Message-State: AOJu0YzGugpfhw+/wXFo0Qm8aK9MgR3y06yyAd2QI+rBTIBSCOSdeAex
+ EjDFnlQSr/hVrlnapFuFbAu54nMIo9ADCjoZah48R6R8Sgk/HZQwyywfrK4XwFOHfrRl/DXvdxY
+ w
+X-Google-Smtp-Source: AGHT+IErg+qIUH1la6jMJCMYQHJ7X+su+ekX8gGF505KON0K6xXTVrgeGfVYi+PkrOivsukXJL+70Q==
+X-Received: by 2002:a05:6a20:258e:b0:1ad:89e:21b5 with SMTP id
+ adf61e73a8af0-1b212d5bf99mr12122336637.15.1716844754056; 
+ Mon, 27 May 2024 14:19:14 -0700 (PDT)
+Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f8fd1d4d5fsm5265876b3a.165.2024.05.27.14.19.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 14:17:53 -0700 (PDT)
-Date: Mon, 27 May 2024 17:17:51 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Het Gala <het.gala@nutanix.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [RFC PATCH 4/4] ci: Add the new migration device tests
-Message-ID: <ZlT4f368xO8fXsUY@x1n>
-References: <20240523201922.28007-1-farosas@suse.de>
- <20240523201922.28007-5-farosas@suse.de>
+ Mon, 27 May 2024 14:19:13 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: git@xen0n.name,
+	gaosong@loongson.cn
+Subject: [PATCH 00/18] tcg/loongarch64: Support v64 and v256
+Date: Mon, 27 May 2024 14:18:54 -0700
+Message-Id: <20240527211912.14060-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240523201922.28007-5-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,106 +90,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 23, 2024 at 05:19:22PM -0300, Fabiano Rosas wrote:
-> We have two new migration tests that check cross version
-> compatibility. One uses the vmstate-static-checker.py script to
-> compare the vmstate structures from two different QEMU versions. The
-> other runs a simple migration with a few devices present in the VM, to
-> catch obvious breakages.
-> 
-> Add both tests to the migration-compat-common job.
-> 
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  .gitlab-ci.d/buildtest.yml | 43 +++++++++++++++++++++++++++++++-------
->  1 file changed, 36 insertions(+), 7 deletions(-)
-> 
-> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-> index 91c57efded..bc7ac35983 100644
-> --- a/.gitlab-ci.d/buildtest.yml
-> +++ b/.gitlab-ci.d/buildtest.yml
-> @@ -202,18 +202,47 @@ build-previous-qemu:
->    needs:
->      - job: build-previous-qemu
->      - job: build-system-opensuse
-> -  # The old QEMU could have bugs unrelated to migration that are
-> -  # already fixed in the current development branch, so this test
-> -  # might fail.
-> +  # This test is allowed to fail because:
-> +  #
-> +  # - The old QEMU could have bugs unrelated to migration that are
-> +  #   already fixed in the current development branch.
+Some guests only have, or additionally have, 64-bit vectors.
+For example arm, mips, sparc.  So it's best to enable this
+whenever we can.  As with tcg/i386, use 64-bit loads and stores
+but 128-bit vector registers.
 
-Did you ever hit a real failure with this?  I'm wondering whether we can
-remove this allow_failure thing.
+If LASX is available (all current loongarch64 cpus?), we have
+256-bit vectors as well.  Useful for guests that support such
+things, e.g. aarch64, i386, and loongarch64 itself.
 
-> +  #
-> +  # - The vmstate-static-checker script trips on renames and other
-> +  #   backward-compatible changes to the vmstate structs.
 
-I think I keep my preference per last time we talked on this. :)
+r~
 
-I still think it's too early to involve a test that can report false
-negative.  I'd still keep running this before soft-freeze like I used to
-do, throw issues to others and urge them to fix before release.  Per my
-previous experience that doesn't consume me a lot of time, and it's not
-common to see issues either.
 
-So I want people to really pay attention when someone sees a migration CI
-test failed, rather than we help people form the habit in "oh migration CI
-failed again?  I think that's fine, it allows failing anyway".
+Richard Henderson (18):
+  tcg/loongarch64: Import LASX, FP insns
+  tcg/loongarch64: Use fp load/store for I32 and I64 into vector regs
+  tcg/loongarch64: Handle i32 and i64 moves between gr and fr
+  tcg/loongarch64: Support TCG_TYPE_V64
+  util/loongarch64: Detect LASX vector support
+  tcg/loongarch64: Simplify tcg_out_dup_vec
+  tcg/loongarch64: Support LASX in tcg_out_dup_vec
+  tcg/loongarch64: Support LASX in tcg_out_dupm_vec
+  tcg/loongarch64: Use tcg_out_dup_vec in tcg_out_dupi_vec
+  tcg/loongarch64: Support LASX in tcg_out_dupi_vec
+  tcg/loongarch64: Simplify tcg_out_addsub_vec
+  tcg/loongarch64: Support LASX in tcg_out_addsub_vec
+  tcg/loongarch64: Split out vdvjvk in tcg_out_vec_op
+  tcg/loongarch64: Support LASX in tcg_out_{mov,ld,st}
+  tcg/loongarch64: Remove temp_vec from tcg_out_vec_op
+  tcg/loongarch64: Split out vdvjukN in tcg_out_vec_op
+  tcg/loongarch64: Support LASX in tcg_out_vec_op
+  tcg/loongarch64: Enable v256 with LASX
 
-So far I still don't see as much benefit to adding this if we need to pay
-for the other false negative issue.  I'll fully support it if e.g. we can
-fix the tool to avoid reporting false negatives, but that may take effort
-that I didn't check.
-
->    allow_failure: true
->    variables:
->      IMAGE: opensuse-leap
->      MAKE_CHECK_ARGS: check-build
->    script:
-> -    # Use the migration-tests from the older QEMU tree. This avoids
-> -    # testing an old QEMU against new features/tests that it is not
-> -    # compatible with.
-> -    - cd build-previous
-> +    - cd build
-> +    # device state static test: Tests the vmstate structures for
-> +    # compatibility across QEMU versions. Uses the latest version of
-> +    # the tests.
-> +    # old to new
-> +    - PYTHON=pyvenv/bin/python3
-> +          QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-${TARGET}
-> +          QTEST_QEMU_BINARY=./qemu-system-${TARGET}
-> +          ./tests/qtest/migration-test -p /${TARGET}/migration/vmstate-checker-script
-> +    # new to old skipped because vmstate version bumps are always
-> +    # backward incompatible.
-> +
-> +    # device state runtime test: Performs a cross-version migration
-> +    # with a select list of devices (see DEFAULT_DEVICES in
-> +    # migration-test.c). Using the multifd tcp test here, but any will
-> +    # do.
-> +    # old to new
-> +    - QTEST_DEVICE_OPTS=all QTEST_QEMU_BINARY_SRC=../build-previous/qemu-system-${TARGET}
-> +          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-> +          -p /${TARGET}/migration/multifd/tcp/channels/plain/none
-> +    # new to old
-> +    - QTEST_DEVICE_OPTS=all QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-${TARGET}
-> +          QTEST_QEMU_BINARY=./qemu-system-${TARGET} ./tests/qtest/migration-test
-> +          -p /${TARGET}/migration/multifd/tcp/channels/plain/none
-> +
-> +    # migration core tests: Use the migration-tests from the older
-> +    # QEMU tree. This avoids testing an old QEMU against new
-> +    # features/tests that it is not compatible with.
-> +    - cd ../build-previous
->      # old to new
->      - QTEST_QEMU_BINARY_SRC=./qemu-system-${TARGET}
->            QTEST_QEMU_BINARY=../build/qemu-system-${TARGET} ./tests/qtest/migration-test
-> -- 
-> 2.35.3
-> 
+ host/include/loongarch64/host/cpuinfo.h |    1 +
+ tcg/loongarch64/tcg-target.h            |    4 +-
+ util/cpuinfo-loongarch.c                |    1 +
+ tcg/loongarch64/tcg-insn-defs.c.inc     | 6181 ++++++++---------------
+ tcg/loongarch64/tcg-target.c.inc        |  575 ++-
+ 5 files changed, 2461 insertions(+), 4301 deletions(-)
 
 -- 
-Peter Xu
+2.34.1
 
 
