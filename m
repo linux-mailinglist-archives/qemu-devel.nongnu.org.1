@@ -2,86 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF08D8D0629
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217DE8D064C
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 17:36:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBcIh-0007X4-35; Mon, 27 May 2024 11:30:15 -0400
+	id 1sBcNr-000263-M4; Mon, 27 May 2024 11:35:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sBcIY-0007Us-GJ
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:30:06 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1sBcIT-00029A-IO
- for qemu-devel@nongnu.org; Mon, 27 May 2024 11:30:04 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a6302bdb54aso116703066b.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 08:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716823799; x=1717428599; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IvP47fXFVFCIJr1ONx3qVxSHn2Bs2PSThuPwpCdDm+Y=;
- b=Tmwg03P8lpWGiVfe3lbZFWHQAyKz+X/xV8bPl6pw002xBfjqqLko5YOXk1UzW1IHrg
- 02/2fjPasptG6U+ZTXP4+1y1/xu3X3tbZmLyPlMXc0aaRisaaZUGllbuL5b6HM+GcMzt
- +cm+BLK8qoeQiOpaMqQ6IhnVMfXwM4ysBV/XoWUz/KK+cTgdfxLa6GApU8mWlXqKJXLz
- EXz6KCCDSxp5CFNcFsStImBCfHmzpkJ4HVXLs/02lIvQjWwPFwGpsgrkQVjQEemgNzXY
- 0jdZcUxP4P9qhszs/CbRQU6Lpo20js5CBYf35HsUak9fl5403Yfd4m4L4gkRYe91i/Lt
- vl0A==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBcNo-00025I-RU
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:35:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBcNf-0003GA-8M
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 11:35:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716824121;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=6H5AjAejZLjqK038mZtyyNtif1gRxmmZdXt0xXnlTbs=;
+ b=XBdfP00VJO6ryCJGUgl0ZgXf0Hb84JvsOeGDNQW2VJ2aArAiJayT0reTArUasIm59eQ7WI
+ Vm51NrNy/Lz84ZdXhu81is2wgkk5sqY5gBX6WSDDCHQXDSVA9uPveJ6Maoe2s7H7C9Itwo
+ zHUDBripvq7JBY3CwDUOpHw/XJUX37k=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-mB59xxWaOtyn9vNmhXnGGQ-1; Mon, 27 May 2024 11:35:20 -0400
+X-MC-Unique: mB59xxWaOtyn9vNmhXnGGQ-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a62e7631309so100689166b.1
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 08:35:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716823799; x=1717428599;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IvP47fXFVFCIJr1ONx3qVxSHn2Bs2PSThuPwpCdDm+Y=;
- b=XhkQbCmDnga+2j4y0aQ9+yqAiuNNeiohvsEJJcNmzDAOoAgxXQC1mYrQoJbl1OFgyP
- 8AFudIKcScgDPByUVokr9lnMO/z6vsfGolsdKiJzGc++He95nvkDKoEycV5+O7aXMNuX
- 7WT6r0htrEilSFCN5SPlcEZnTdoveFW0aCrs4MIE62oLd2BVP5JBCGT/SA2Q4bFLaVHb
- BJcIXMNhF02JOxBuxOlnVd/XzUGL+aVZcpzl3FbZ35qYblwOTmPnXkKvyvCoCdJ/AZ4g
- UcanV2in0+MxrOFNo+3U/sawcIPK+n8+IKekeMOFY+ZfkdtwCunm6jbL+tT2NqtuFt9E
- TvMw==
-X-Gm-Message-State: AOJu0Yx4q+A1Lo+dIyWJIP3w/BUJphMghD2deHqJOH9oFOzFKqFVyeol
- bdTtw5Io/nKPY5R73TXZfvXMTsxUtUU7f5jhCzMNScG1tNe4PUJPrJ20WA==
-X-Google-Smtp-Source: AGHT+IFrdGseC7f6tt5p/BRA9q2qbgRLeBP1gQ2emr027fMeAwtgIqLYWJjJrjULBlxT6vl7KKOYvA==
-X-Received: by 2002:a17:906:7c98:b0:a59:beb2:62cc with SMTP id
- a640c23a62f3a-a62651469a3mr638557766b.61.1716823798967; 
- Mon, 27 May 2024 08:29:58 -0700 (PDT)
-Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
- [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c817981sm504006166b.31.2024.05.27.08.29.58
+ d=1e100.net; s=20230601; t=1716824119; x=1717428919;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6H5AjAejZLjqK038mZtyyNtif1gRxmmZdXt0xXnlTbs=;
+ b=VZiUX1QbgkJtmaKRMU585F5kBNRrNcqbppCA1892Xy/P0gHGrLdU59ZZYfOj7NnOKM
+ pVNtcQOQzEyJTP8w2arFCZgZjCtmkQA0eU1FePhrOdjLr+gap8FgC7G61KAzajuC+A+H
+ jSppMrvGCqOvPRl2z7lF9pWSjevV4y7ko3M+tu80PHMadkG8XcWlRQpG6KI9xe6C4i2K
+ QANdwaxk2n5N18cF5Y//1NpdHtH+KqN+i4xsRJnVEmy1JaWkFVKn0fd05oBEDOpcTgjR
+ TeVsVIj6C0mEO7zoW4ixpduffekyOjBxshgNv5cm9dFLZeUbIL/kiDkoQJWP5cXqPsxO
+ +Qzg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWCDMboFnJk8oShRRAtcm4b/sibxHPvVROZiG0LnJ1cDfql+MbaUp9+VWENZCzswOSL9PKLcATTmWjvIL7p6fYXDpNNPuM=
+X-Gm-Message-State: AOJu0YyP6/Bj77CE4PLu+90621VGEDknSnBSj2SCAHwDEdjA3m1Y6xIy
+ sChEAegOSDmGBK9FaajYGBnvMOBaratAYmk4a5B6/IfA+FBHyibfm9QdLRw+J0mAB0zIonoA5Ql
+ QvXQJ6PedoHKol5+Akw0f6SYURsm4sKcfm9I0c/NO1Hoftb/vTnHX
+X-Received: by 2002:a17:906:b56:b0:a55:5520:f43f with SMTP id
+ a640c23a62f3a-a623e8d98cbmr1061451066b.10.1716824118966; 
+ Mon, 27 May 2024 08:35:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVPCD/aU7F4z6gDG876JYakhRiGwr0ULv2+yEsDUinJqt6OKC4SC7HeT4fY0xfuZbYpGyanQ==
+X-Received: by 2002:a17:906:b56:b0:a55:5520:f43f with SMTP id
+ a640c23a62f3a-a623e8d98cbmr1061448866b.10.1716824118529; 
+ Mon, 27 May 2024 08:35:18 -0700 (PDT)
+Received: from [192.168.0.4] (ip-109-43-179-90.web.vodafone.de.
+ [109.43.179.90]) by smtp.gmail.com with ESMTPSA id
+ a640c23a62f3a-a629b6ae617sm350784366b.204.2024.05.27.08.35.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 08:29:58 -0700 (PDT)
-Date: Mon, 27 May 2024 15:29:53 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-CC: qemu-devel@nongnu.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPULL_17/20=5D_target/arm=3A_Do_memory_typ?=
- =?US-ASCII?Q?e_alignment_check_when_translation_disabled?=
-In-Reply-To: <CAFEAcA-BD1TmaBB_5ephnRoNsOCWsS4w3C_oj0P_182+fOLPUQ@mail.gmail.com>
-References: <20240305135237.3111642-1-peter.maydell@linaro.org>
- <20240305135237.3111642-18-peter.maydell@linaro.org>
- <C875173E-4B5B-4F71-8CF4-4325F7AB7629@gmail.com>
- <72ED7A80-9EA7-4FF6-BE29-9583587985C7@gmail.com>
- <f6976b40-e3d5-4157-8597-ce7db6ceb068@linaro.org>
- <CAFEAcA-BD1TmaBB_5ephnRoNsOCWsS4w3C_oj0P_182+fOLPUQ@mail.gmail.com>
-Message-ID: <C27AC9E0-AB61-483E-BF07-B435AABE3D13@gmail.com>
+ Mon, 27 May 2024 08:35:18 -0700 (PDT)
+Message-ID: <e46b4172-a647-44cb-9ce5-52723875c9a2@redhat.com>
+Date: Mon, 27 May 2024 17:35:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scripts/update-linux-headers.sh: Remove temporary
+ directory inbetween
+To: Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240527060243.12647-1-thuth@redhat.com>
+ <871q5npa89.fsf@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <871q5npa89.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,135 +145,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 27=2E Mai 2024 10:58:54 UTC schrieb Peter Maydell <peter=2Emaydell@lina=
-ro=2Eorg>:
->On Mon, 27 May 2024 at 03:36, Richard Henderson
-><richard=2Ehenderson@linaro=2Eorg> wrote:
+On 27/05/2024 17.04, Cornelia Huck wrote:
+> On Mon, May 27 2024, Thomas Huth <thuth@redhat.com> wrote:
+> 
+>> We are reusing the same temporary directory for installing the headers
+>> of all targets, so there could be stale files here when switching from
+>> one target to another. Make sure to delete the folder before installing
+>> a new set of target headers into it.
 >>
->> On 5/25/24 13:50, Bernhard Beschow wrote:
->> >
->> >
->> > Am 25=2E Mai 2024 13:41:54 UTC schrieb Bernhard Beschow <shentey@gmai=
-l=2Ecom>:
->> >>
->> >>
->> >> Am 5=2E M=C3=A4rz 2024 13:52:34 UTC schrieb Peter Maydell <peter=2Em=
-aydell@linaro=2Eorg>:
->> >>> From: Richard Henderson <richard=2Ehenderson@linaro=2Eorg>
->> >>>
->> >>> If translation is disabled, the default memory type is Device, whic=
-h
->> >>> requires alignment checking=2E  This is more optimally done early v=
-ia
->> >>> the MemOp given to the TCG memory operation=2E
->> >>>
->> >>> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->> >>> Reported-by: Idan Horowitz <idan=2Ehorowitz@gmail=2Ecom>
->> >>> Signed-off-by: Richard Henderson <richard=2Ehenderson@linaro=2Eorg>
->> >>> Message-id: 20240301204110=2E656742-6-richard=2Ehenderson@linaro=2E=
-org
->> >>> Resolves: https://gitlab=2Ecom/qemu-project/qemu/-/issues/1204
->> >>> Signed-off-by: Richard Henderson <richard=2Ehenderson@linaro=2Eorg>
->> >>> Signed-off-by: Peter Maydell <peter=2Emaydell@linaro=2Eorg>
->> >>
->> >> Hi,
->> >>
->> >> This change causes an old 4=2E14=2E40 Linux kernel to panic on boot =
-using the sabrelite machine:
->> >>
->> >> [snip]
->> >> Alignment trap: init (1) PC=3D0x76f1e3d4 Instr=3D0x14913004 Address=
-=3D0x76f34f3e FSR 0x001
->> >> Alignment trap: init (1) PC=3D0x76f1e3d8 Instr=3D0x148c3004 Address=
-=3D0x7e8492bd FSR 0x801
->> >> Alignment trap: init (1) PC=3D0x76f0dab0 Instr=3D0x6823 Address=3D0x=
-7e849fbb FSR 0x001
->> >> Alignment trap: init (1) PC=3D0x76f0dab2 Instr=3D0x6864 Address=3D0x=
-7e849fbf FSR 0x001
->> >> scsi 0:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2=2E5+ PQ:=
- 0 ANSI: 5
->> >> fsl-asoc-card sound: ASoC: CODEC DAI sgtl5000 not registered
->> >> imx-sgtl5000 sound: ASoC: CODEC DAI sgtl5000 not registered
->> >> imx-sgtl5000 sound: snd_soc_register_card failed (-517)
->> >> Alignment trap: init (1) PC=3D0x76eac95a Instr=3D0xf8dd5015 Address=
-=3D0x7e849b05 FSR 0x001
->> >> Alignment trap: not handling instruction f8dd5015 at [<76eac95a>]
->> >> Unhandled fault: alignment exception (0x001) at 0x7e849b05
->> >> pgd =3D 9c59c000
->> >> [7e849b05] *pgd=3D2c552831, *pte=3D109eb34f, *ppte=3D109eb83f
->> >> Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x000=
-00007
->> >>
->> >> ---[ end Kernel panic - not syncing: Attempted to kill init! exitcod=
-e=3D0x00000007
->> >>
->> >> As you can see, some alignment exceptions are handled by the kernel,=
- the last one isn't=2E I added some additional printk()'s and traced it dow=
-n to this location in the kernel: <https://github=2Ecom/torvalds/linux/blob=
-/v4=2E14/arch/arm/mm/alignment=2Ec#L762> which claims that ARMv6++ CPUs can=
- handle up to word-sized unaligned accesses, thus no fixup is needed=2E
->> >>
->> >> I hope that this will be sufficient for a fix=2E Let me know if you =
-need any additional information=2E
->> >
->> > I'm performing a direct kernel boot=2E On real hardware, a bootloader=
- is involved which probably enables unaligned access=2E This may explain wh=
-y it works there but not in QEMU any longer=2E
->> >
->> > To fix direct kernel boot, it seems as if the "built-in bootloader" w=
-ould need to be adapted/extended [1]=2E Any ideas?
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   scripts/update-linux-headers.sh | 1 +
+>>   1 file changed, 1 insertion(+)
 >>
->> I strongly suspect a kernel bug=2E  Either mmu disabled or attempting u=
-naligned access on
->> pages mapped as Device instead of Normal=2E
->
->The MMU surely must be enabled by this point in guest boot=2E
->This change doesn't affect whether we do alignment checks based
->on SCTLR=2EA being set, so it's not a simple "the bootloader was
->supposed to clear that and it didn't" (besides, A=3D0 means no
->checks, so that's the default anyway)=2E So the failure is kind
->of weird=2E
+>> diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+>> index 8963c39189..fbf7e119bc 100755
+>> --- a/scripts/update-linux-headers.sh
+>> +++ b/scripts/update-linux-headers.sh
+>> @@ -112,6 +112,7 @@ for arch in $ARCHLIST; do
+>>           arch_var=ARCH
+>>       fi
+>>   
+>> +    rm -rf "$hdrdir"
+>>       make -C "$linux" O="$blddir" INSTALL_HDR_PATH="$hdrdir" $arch_var=$arch headers_install
+>>   
+>>       rm -rf "$output/linux-headers/asm-$arch"
+> 
+> Hm. I presume that headers-install gives us the same set of headers
+> outside include/asm for every arch?
 
-I think the kernel's output indicates that the MMU is active:
+I just double-checked and yes, apart from a file called "a.out.h", the other 
+headers outside of the asm subfolder are the same. So AFAICS there is still 
+a slight chance that we might pick up a wrong file from the asm folder... 
+shall I change the patch to only delete that subfolder? Or is that chance 
+just too small that we can ignore it?
 
-  [7e849b05] *pgd=3D2c552831, *pte=3D109eb34f, *ppte=3D109eb83f
+  Thomas
 
-AFAIU, the value in brackets is a virtual address while the pte's are phys=
-ical ones=2E Furthermore, the `info mtree` QMP command tells that the physi=
-cal addresses are RAM addresses:
-
-  0000000010000000-000000002fffffff (prio 0, ram): sabrelite=2Eram
-
-So I think we can conclude this to be "normal memory" to speak in ARM term=
-s=2E
-
-Regarding the Linux kernel, it seems to me that it expects the unaligned a=
-ccesses (up to word size) to be resolved by the hardware=2E On ARMv7 it can=
- assume this, because the SCTLR=2EU bit is always set to 1 [1]=2E It then s=
-eems to only deal with cases which the hardware can't handle=2E In the case=
- above, the unhandled instruction is (output from execlog plugin):
-
-  0, 0x76ecc95a, 0x5015f8dd, "ldr=2Ew r5, [sp, #0x15]"
-
-Note that the correct order of the machine code is=20
-0xf8dd5015=2E This is not a pattern handled by the kernel, presumably beca=
-use it expects it to be handled in hardware, hence the "not handling instru=
-ction xy" output=2E=20
-
-I have the impression that real hardware only traps when the hardware can'=
-t handle the unaligned access, and only when the SCTLR=2EA bit is set=2E
-
-I'm not an ARM expert, so take this with a grain of salt=2E
-
-Best regards,
-Bernhard
-
-[1] https://developer=2Earm=2Ecom/documentation/ddi0406/cb/Appendixes/ARMv=
-6-Differences/Application-level-memory-support/Alignment
-
-
->
->-- PMM
 
