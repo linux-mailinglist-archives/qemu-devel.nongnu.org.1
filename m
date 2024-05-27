@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5EB8CFA20
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEBA8CFA0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:26:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUjy-0000Dj-S9; Mon, 27 May 2024 03:25:56 -0400
+	id 1sBUj8-0007ol-Sg; Mon, 27 May 2024 03:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUj3-0007nI-F0; Mon, 27 May 2024 03:24:57 -0400
+ id 1sBUj4-0007nZ-4G; Mon, 27 May 2024 03:24:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUj1-0006EF-SZ; Mon, 27 May 2024 03:24:57 -0400
+ id 1sBUj2-0006Eh-CG; Mon, 27 May 2024 03:24:57 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7A39D6A4C6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 890CA6A4C7;
  Mon, 27 May 2024 10:25:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B9215D8463;
+ by tsrv.corpit.ru (Postfix) with SMTP id C7E05D8464;
  Mon, 27 May 2024 10:24:35 +0300 (MSK)
-Received: (nullmailer pid 52897 invoked by uid 1000);
+Received: (nullmailer pid 52900 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 09/21] configure: quote -D options that are passed
- through to meson
-Date: Mon, 27 May 2024 10:24:19 +0300
-Message-Id: <20240527072435.52812-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 10/21] configure: Fix error message when C compiler is
+ not working
+Date: Mon, 27 May 2024 10:24:20 +0300
+Message-Id: <20240527072435.52812-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,36 +62,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-Ensure that they go through unmodified, instead of removing one layer
-of quoting.
+If you try to run the configure script on a system without a working
+C compiler, you get a very misleading error message:
 
--D is a pretty specialized option and most options that can have spaces
-do not need it (for example, c_args is covered by --extra-cflags).
-Therefore it's unlikely that this causes actual trouble.  However,
-a somewhat realistic failure case would be with -Dpkg_config_path
-and a pkg-config directory that contains spaces.
+ ERROR: Unrecognized host OS (uname -s reports 'Linux')
 
-Cc: qemu-stable@nongnu.org
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 23b1f53c2c8990ed745acede171e49645af3d6d0)
+Some people already opened bug tickets because of this problem:
+
+ https://gitlab.com/qemu-project/qemu/-/issues/2057
+ https://gitlab.com/qemu-project/qemu/-/issues/2288
+
+We should rather tell the user that we were not able to use the C
+compiler instead, otherwise they will have a hard time to figure
+out what was going wrong.
+
+While we're at it, let's also suppress the "unrecognized host CPU"
+message in this case since it is rather misleading than helpful.
+
+Fixes: 264b803721 ("configure: remove compiler sanity check")
+Message-ID: <20240513114010.51608-1-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 371d60dfdb47dd18d163a7759968ba138089371e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/configure b/configure
-index 163729c3ec..66ca736621 100755
+index 66ca736621..c1e03801f1 100755
 --- a/configure
 +++ b/configure
-@@ -761,7 +761,7 @@ for opt do
-   --*) meson_option_parse "$opt" "$optarg"
-   ;;
-   # Pass through -Dxxxx options to meson
--  -D*) meson_options="$meson_options $opt"
-+  -D*) meson_option_add "$opt"
-   ;;
-   esac
- done
+@@ -411,7 +411,9 @@ else
+   # Using uname is really broken, but it is just a fallback for architectures
+   # that are going to use TCI anyway
+   cpu=$(uname -m)
+-  echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
++  if test "$host_os" != "bogus"; then
++    echo "WARNING: unrecognized host CPU, proceeding with 'uname -m' output '$cpu'"
++  fi
+ fi
+ 
+ # Normalise host CPU name to the values used by Meson cross files and in source
+@@ -893,6 +895,13 @@ EOF
+ exit 0
+ fi
+ 
++# Now that we are sure that the user did not only want to print the --help
++# information, we should double-check that the C compiler really works:
++write_c_skeleton
++if ! compile_object ; then
++    error_exit "C compiler \"$cc\" either does not exist or does not work."
++fi
++
+ # Remove old dependency files to make sure that they get properly regenerated
+ rm -f ./*/config-devices.mak.d
+ 
 -- 
 2.39.2
 
