@@ -2,53 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3CB8CFAD7
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A48CFAC7
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:01:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVKk-0001fe-W7; Mon, 27 May 2024 04:03:55 -0400
+	id 1sBVGv-0004ne-5i; Mon, 27 May 2024 03:59:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVKO-0001Kc-1b; Mon, 27 May 2024 04:03:32 -0400
-Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBVGA-0004WZ-K1
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:11 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVKM-0005H2-Ia; Mon, 27 May 2024 04:03:31 -0400
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 27 May
- 2024 16:02:38 +0800
-Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Mon, 27 May 2024 16:02:38 +0800
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
- <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
- <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v4 13/16] aspeed: Add an AST2700 eval board
-Date: Mon, 27 May 2024 16:02:27 +0800
-Message-ID: <20240527080231.1576609-14-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
-References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBVG6-0004Vj-3Y
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 03:59:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716796746; x=1748332746;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=wfJxUoWkAKz49qPIzWTxNIlg6L1CdTDJUI+5LNs+U+s=;
+ b=ZNp2HFJnnOBdAmMyUQT590Ql0tv7oWV+gSzyfzQ4FqPV9qsKcgc3wvKO
+ K3wXa+8xU6sQZvqO/XBiBVilb2dWPtz/kKn+66ftPY+qyqR+L5jFKopvF
+ d9fogEB0qyPP5sfHXZJ2z4PZ0gfN0yxhdopCwuKgdQEPwnvANdK9MlmJf
+ FZHztohcuv5p3cmu8jqrFUHhoPJu95gbx+IL0r5AqMF284fK9cuCb9uEG
+ HDUbBaRs/PAFgj0sdm9H+EZhroL9Pk9zei8OKrP/AhsiInXRNNvSTRRdX
+ Ki7BMJ6Z6aNIhAlno0KifIN/xUPeu9z8B2z9+9JNyUXWlIyMctDSg7pTo Q==;
+X-CSE-ConnectionGUID: PrBRXvapRsWTERKNn582qQ==
+X-CSE-MsgGUID: 2D1AbdLvT9ehGIJW1zsquQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12967703"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12967703"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 00:59:02 -0700
+X-CSE-ConnectionGUID: jzYWghKVSCiEzZVLet1PiA==
+X-CSE-MsgGUID: PQ8rg6iwSu+A698NJ4cdew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39084935"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmviesa005.fm.intel.com with ESMTP; 27 May 2024 00:58:59 -0700
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
+Date: Mon, 27 May 2024 16:14:15 +0800
+Message-Id: <20240527081421.2258624-1-zhao1.liu@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=211.20.114.72;
- envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_FAIL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -45
+X-Spam_score: -4.6
+X-Spam_bar: ----
+X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,87 +81,156 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jamin Lin <jamin_lin@aspeedtech.com>
-From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AST2700 CPU is ARM Cortex-A35 which is 64 bits.
-Add TARGET_AARCH64 to build this machine.
+Hi maintainers and list,
 
-According to the design of ast2700, it has a bootmcu(riscv-32) which
-is used for executing SPL.
-Then, CPUs(cortex-a35) execute u-boot, kernel and rofs.
+This RFC series attempts to re-implement simpletrace.py with Rust, which
+is the 1st task of Paolo's GSoC 2024 proposal.
 
-Currently, qemu not support emulate two CPU architectures
-at the same machine. Therefore, qemu will only support
-to emulate CPU(cortex-a35) side for ast2700
+There are two motivations for this work:
+1. This is an open chance to discuss how to integrate Rust into QEMU.
+2. Rust delivers faster parsing.
 
-Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Introduction
+============
+
+Code framework
+--------------
+
+I choose "cargo" to organize the code, because the current
+implementation depends on external crates (Rust's library), such as
+"backtrace" for getting frameinfo, "clap" for parsing the cli, "rex" for
+regular matching, and so on. (Meson's support for external crates is
+still incomplete. [2])
+
+The simpletrace-rust created in this series is not yet integrated into
+the QEMU compilation chain, so it can only be compiled independently, e.g.
+under ./scripts/simpletrace/, compile it be:
+
+    cargo build --release
+
+The code tree for the entire simpletrace-rust is as follows:
+
+$ script/simpletrace-rust .
+.
+├── Cargo.toml
+└── src
+    └── main.rs   // The simpletrace logic (similar to simpletrace.py).
+    └── trace.rs  // The Argument and Event abstraction (refer to
+                  // tracetool/__init__.py).
+
+My question about meson v.s. cargo, I put it at the end of the cover
+letter (the section "Opens on Rust Support").
+
+The following two sections are lessons I've learned from this Rust
+practice.
+
+
+Performance
+-----------
+
+I did the performance comparison using the rust-simpletrace prototype with
+the python one:
+
+* On the i7-10700 CPU @ 2.90GHz machine, parsing and outputting a 35M
+trace binary file for 10 times on each item:
+
+                      AVE (ms)       Rust v.s. Python
+Rust   (stdout)       12687.16            114.46%
+Python (stdout)       14521.85
+
+Rust   (file)          1422.44            264.99%
+Python (file)          3769.37
+
+- The "stdout" lines represent output to the screen.
+- The "file" lines represent output to a file (via "> file").
+
+This Rust version contains some optimizations (including print, regular
+matching, etc.), but there should be plenty of room for optimization.
+
+The current performance bottleneck is the reading binary trace file,
+since I am parsing headers and event payloads one after the other, so
+that the IO read overhead accounts for 33%, which can be further
+optimized in the future.
+
+
+Security
+--------
+
+This is an example.
+
+Rust is very strict about type-checking, and it found timestamp reversal
+issue in simpletrace-rust [3] (sorry, haven't gotten around to digging
+deeper with more time)...in this RFC, I workingaround it by allowing
+negative values. And the python version, just silently covered this
+issue up.
+
+
+Opens on Rust Support
+=====================
+
+Meson v.s. Cargo
+----------------
+
+The first question is whether all Rust code (including under scripts)
+must be integrated into meson?
+
+If so, because of [2] then I have to discard the external crates and
+build some more Rust wheels of my own to replace the previous external
+crates.
+
+For the main part of the QEMU code, I think the answer must be Yes, but
+for the tools in the scripts directory, would it be possible to allow
+the use of cargo to build small tools/program for flexibility and
+migrate to meson later (as meson's support for rust becomes more
+mature)?
+
+
+External crates
+---------------
+
+This is an additional question that naturally follows from the above
+question, do we have requirements for Rust's external crate? Is only std
+allowed?
+
+Welcome your feedback!
+
+
+[1]: https://wiki.qemu.org/Google_Summer_of_Code_2024
+[2]: https://github.com/mesonbuild/meson/issues/2173
+[3]: https://lore.kernel.org/qemu-devel/20240509134712.GA515599@fedora.redhat.com/
+
+Thanks and Best Regards,
+Zhao
+
 ---
- hw/arm/aspeed.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+Zhao Liu (6):
+  scripts/simpletrace-rust: Add the basic cargo framework
+  scripts/simpletrace-rust: Support Event & Arguments in trace module
+  scripts/simpletrace-rust: Add helpers to parse trace file
+  scripts/simpletrace-rust: Parse and check trace recode file
+  scripts/simpletrace-rust: Format simple trace output
+  docs/tracing: Add simpletrace-rust section
 
-diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
-index 93ca87fda2..40dc0e4c76 100644
---- a/hw/arm/aspeed.c
-+++ b/hw/arm/aspeed.c
-@@ -178,6 +178,12 @@ struct AspeedMachineState {
- #define AST2600_EVB_HW_STRAP1 0x000000C0
- #define AST2600_EVB_HW_STRAP2 0x00000003
- 
-+#ifdef TARGET_AARCH64
-+/* AST2700 evb hardware value */
-+#define AST2700_EVB_HW_STRAP1 0x000000C0
-+#define AST2700_EVB_HW_STRAP2 0x00000003
-+#endif
-+
- /* Tacoma hardware value */
- #define TACOMA_BMC_HW_STRAP1  0x00000000
- #define TACOMA_BMC_HW_STRAP2  0x00000040
-@@ -1588,6 +1594,26 @@ static void aspeed_minibmc_machine_ast1030_evb_class_init(ObjectClass *oc,
-     aspeed_machine_class_init_cpus_defaults(mc);
- }
- 
-+#ifdef TARGET_AARCH64
-+static void aspeed_machine_ast2700_evb_class_init(ObjectClass *oc, void *data)
-+{
-+    MachineClass *mc = MACHINE_CLASS(oc);
-+    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
-+
-+    mc->desc = "Aspeed AST2700 EVB (Cortex-A35)";
-+    amc->soc_name  = "ast2700-a0";
-+    amc->hw_strap1 = AST2700_EVB_HW_STRAP1;
-+    amc->hw_strap2 = AST2700_EVB_HW_STRAP2;
-+    amc->fmc_model = "w25q01jvq";
-+    amc->spi_model = "w25q512jv";
-+    amc->num_cs    = 2;
-+    amc->macs_mask = ASPEED_MAC0_ON | ASPEED_MAC1_ON | ASPEED_MAC2_ON;
-+    amc->uart_default = ASPEED_DEV_UART12;
-+    mc->default_ram_size = 1 * GiB;
-+    aspeed_machine_class_init_cpus_defaults(mc);
-+}
-+#endif
-+
- static void aspeed_machine_qcom_dc_scm_v1_class_init(ObjectClass *oc,
-                                                      void *data)
- {
-@@ -1711,6 +1737,12 @@ static const TypeInfo aspeed_machine_types[] = {
-         .name           = MACHINE_TYPE_NAME("ast1030-evb"),
-         .parent         = TYPE_ASPEED_MACHINE,
-         .class_init     = aspeed_minibmc_machine_ast1030_evb_class_init,
-+#ifdef TARGET_AARCH64
-+    }, {
-+        .name          = MACHINE_TYPE_NAME("ast2700-evb"),
-+        .parent        = TYPE_ASPEED_MACHINE,
-+        .class_init    = aspeed_machine_ast2700_evb_class_init,
-+#endif
-     }, {
-         .name          = TYPE_ASPEED_MACHINE,
-         .parent        = TYPE_MACHINE,
+ docs/devel/tracing.rst                 |  35 ++
+ scripts/simpletrace-rust/.gitignore    |   1 +
+ scripts/simpletrace-rust/.rustfmt.toml |   9 +
+ scripts/simpletrace-rust/Cargo.lock    | 370 +++++++++++++++
+ scripts/simpletrace-rust/Cargo.toml    |  17 +
+ scripts/simpletrace-rust/src/main.rs   | 633 +++++++++++++++++++++++++
+ scripts/simpletrace-rust/src/trace.rs  | 339 +++++++++++++
+ 7 files changed, 1404 insertions(+)
+ create mode 100644 scripts/simpletrace-rust/.gitignore
+ create mode 100644 scripts/simpletrace-rust/.rustfmt.toml
+ create mode 100644 scripts/simpletrace-rust/Cargo.lock
+ create mode 100644 scripts/simpletrace-rust/Cargo.toml
+ create mode 100644 scripts/simpletrace-rust/src/main.rs
+ create mode 100644 scripts/simpletrace-rust/src/trace.rs
+
 -- 
-2.25.1
+2.34.1
 
 
