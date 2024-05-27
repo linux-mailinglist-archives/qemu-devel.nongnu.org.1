@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C6E8CFB76
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6418CFB79
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:31:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVhQ-0001XT-Um; Mon, 27 May 2024 04:27:21 -0400
+	id 1sBVj2-0005cN-JG; Mon, 27 May 2024 04:29:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVfc-0005cS-PX; Mon, 27 May 2024 04:25:31 -0400
+ id 1sBVff-0005dR-BR; Mon, 27 May 2024 04:25:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVfa-0001Sx-Mn; Mon, 27 May 2024 04:25:27 -0400
+ id 1sBVfc-0001Ua-PG; Mon, 27 May 2024 04:25:30 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 88D426A587;
+ by isrv.corpit.ru (Postfix) with ESMTP id 965C76A588;
  Mon, 27 May 2024 11:22:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B5BDED8524;
+ by tsrv.corpit.ru (Postfix) with SMTP id C4AEBD8525;
  Mon, 27 May 2024 11:21:41 +0300 (MSK)
-Received: (nullmailer pid 66480 invoked by uid 1000);
+Received: (nullmailer pid 66483 invoked by uid 1000);
  Mon, 27 May 2024 08:21:39 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 42/44] target/i386: disable jmp_opt if EFLAGS.RF is 1
-Date: Mon, 27 May 2024 11:21:33 +0300
-Message-Id: <20240527082138.66217-42-mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 43/44] target/i386: no single-step exception after MOV
+ or POP SS
+Date: Mon, 27 May 2024 11:21:34 +0300
+Message-Id: <20240527082138.66217-43-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
@@ -62,29 +62,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-If EFLAGS.RF is 1, special processing in gen_eob_worker() is needed and
-therefore goto_tb cannot be used.
+Intel SDM 18.3.1.4 "If an occurrence of the MOV or POP instruction
+loads the SS register executes with EFLAGS.TF = 1, no single-step debug
+exception occurs following the MOV or POP instruction."
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-stable@nongnu.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 8225bff7c5db504f50e54ef66b079854635dba70)
+(cherry picked from commit f0f0136abba688a6516647a79cc91e03fad6d5d7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index b5ebff2c89..c2c5e73b3f 100644
+index c2c5e73b3f..a55df176c6 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -6971,7 +6971,7 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
-     dc->cpuid_7_1_eax_features = env->features[FEAT_7_1_EAX];
-     dc->cpuid_xsave_features = env->features[FEAT_XSAVE];
-     dc->jmp_opt = !((cflags & CF_NO_GOTO_TB) ||
--                    (flags & (HF_TF_MASK | HF_INHIBIT_IRQ_MASK)));
-+                    (flags & (HF_RF_MASK | HF_TF_MASK | HF_INHIBIT_IRQ_MASK)));
-     /*
-      * If jmp_opt, we want to handle each string instruction individually.
-      * For icount also disable repz optimization so that each iteration
+@@ -2817,7 +2817,7 @@ do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
+     if (recheck_tf) {
+         gen_helper_rechecking_single_step(tcg_env);
+         tcg_gen_exit_tb(NULL, 0);
+-    } else if (s->flags & HF_TF_MASK) {
++    } else if ((s->flags & HF_TF_MASK) && !inhibit) {
+         gen_helper_single_step(tcg_env);
+     } else if (jr &&
+                /* give irqs a chance to happen */
 -- 
 2.39.2
 
