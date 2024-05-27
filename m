@@ -2,75 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0228D08E8
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 18:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B894D8D08FE
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 19:02:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBdPq-0000vl-Pp; Mon, 27 May 2024 12:41:42 -0400
+	id 1sBdiq-0006yU-By; Mon, 27 May 2024 13:01:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBdPn-0000vA-Eu
- for qemu-devel@nongnu.org; Mon, 27 May 2024 12:41:39 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBdPl-0007PD-Bl
- for qemu-devel@nongnu.org; Mon, 27 May 2024 12:41:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716828097; x=1748364097;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Cmw4nIUxhVOSAdRT2Ygkx9iTQKrmA+RTH/iOYZumS4M=;
- b=XWf7/ZnfHuDhzYlncbVA1M9V8R2u7kXjHskV/TphEwYrWUh+kRCD8uOC
- lCyZQq/IU9/zN+dwZl1CFKfdoZaePp6LhrpZYKa924bKdBlVqD6uMC9Xv
- /blC4S0awA9XyKm0V6HPk2TTKu8IKdkoWI5I0f6151C5oBlz4zh/c21WQ
- aMZ/HlcYlhjCmRao+0gpXfAMB8RLsqTEuUBINUSLikoF0K5SXlgzqER1x
- Krkwz1qcGCPVcm2ePYojCvd2Q09VF/wl9zSq3p1Od3aeXlSHSjO0Epdj4
- Oq2Iu+qqF6tqhBR0HOI6UVO/Tsn0jn8VfRv0zf5Nll5YmU/SYhFtXFQP8 Q==;
-X-CSE-ConnectionGUID: 5xWaYd8nSfKHF6z1u3HeAA==
-X-CSE-MsgGUID: I1sE0vWoTlCoeGVD6dEbTg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="30682291"
-X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; d="scan'208";a="30682291"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 09:41:34 -0700
-X-CSE-ConnectionGUID: tFULggY6R8GCJdTgNRTvSg==
-X-CSE-MsgGUID: YFJPzj8qSza1yPrtj2O8Ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; d="scan'208";a="39654247"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 27 May 2024 09:41:32 -0700
-Date: Tue, 28 May 2024 00:56:54 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Chuang Xu <xuchuangxclwt@bytedance.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, xieyongji@bytedance.com,
- Guixiong Wei <weiguixiong@bytedance.com>,
- Yipeng Yin <yinyipeng@bytedance.com>,
- Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhenyu Wang <zhenyu.z.wang@intel.com>
-Subject: Re: [PATCH] x86: cpu: fixup number of addressable IDs for processor
- cores in the physical package
-Message-ID: <ZlS7VjagJ5jd0Alq@intel.com>
-References: <20240527031333.85932-1-xuchuangxclwt@bytedance.com>
- <20240527170317.14520a2f@imammedo.users.ipa.redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBdim-0006xI-5B
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 13:01:17 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBdih-0002KD-9M
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 13:01:15 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-354fb2d9026so4032604f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 10:01:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716829268; x=1717434068; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TaDTkn9X7EzAM/xcmIyhmWytkn48PFBowMu7OydxW1U=;
+ b=PevrROFHFRtJF3suy1HlrpYQsu9pVBTuHmDl4BbM2bs2T9SvPUWkHd3RTKy+o/JJK8
+ Unc3B4qzS/FM/dgd5sNhH6tZ3cRN1NZx1xo1s2y1xaYkbnef19pWHRGO3YMUcknCI25+
+ 5+yEDpL5jz/P4U/qZljls83jFrXmNz+aP41eBFLe+73lFcsoVyhWCtyVCPcrZExyYmHB
+ JflTVZle545wpI2mcf8uCrodMipwrNsdTPWK/FvbvNJzrPJswZhN6rSmg3BAl0ZXszYv
+ 5BxxzvQr+JoQ728XRTGeUMmQ4JqLew91T02POc5b6wauzCDWGsUZYZlkOPJuQCP4jFNP
+ nWHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716829268; x=1717434068;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TaDTkn9X7EzAM/xcmIyhmWytkn48PFBowMu7OydxW1U=;
+ b=W11VNUXY9IvLfn6+aaQj04yB1Zaod4LOA8BYCQLI8tbpAe+bz9i7q/UKBJ9hKVvq6S
+ yw4eLujqt2/De+7j6a7I9ShanzSfRgiDDcNNIbJnBb1Bgwbo0a4DXjuBVUojn5Y7jsRT
+ cD3jyzkuTJyZX6YtJtNiknXwPJvo49wv4UUFmdBbsHGJA17wSqf63MYBTF7fzPR0IFRo
+ SHNd4lT1K96CmCWxeU/0XMAfkybyDaxCRaXiimGpa1R87+lIKuvHp7xPQRsOGAD0L257
+ dayux062ZIzlMPdjtxGSEnqyXpCMNOCLy5tosrgNpveK2nQ2sOXtn9JMvMvGVwr6bwT2
+ Cu+A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU3ME+vqhuV6EqfgZDAsfGQY1wp5aHGrD9WBE6q22+/jkCSo4Q9a8ondh4cEmyAZ3oWGiwO1kkZYPtWF8B2lQLa45vj7dI=
+X-Gm-Message-State: AOJu0Yw9xZIwgaJbdtN4/fYIZTpbLkPgLiMckrubz4u6jjm3k2qW55bj
+ +MQJxen6/6gOG00Rl/OiktlciTTjHyVjqXp0Qqvj6jOOEg1oo3zYRw9Ys441dkc=
+X-Google-Smtp-Source: AGHT+IFfq/JwbtmR0mwtS375LzEyKAWBqNyMLN6x6zP39BcsxIMeCXG+OyCSLhWSVdBSEwl2w46y9Q==
+X-Received: by 2002:adf:a183:0:b0:354:f9b5:dc6d with SMTP id
+ ffacd0b85a97d-35526c2ba03mr6284384f8f.24.1716829267924; 
+ Mon, 27 May 2024 10:01:07 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.152.134])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35579d7dd73sm9437481f8f.18.2024.05.27.10.01.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 27 May 2024 10:01:07 -0700 (PDT)
+Message-ID: <e7492475-94db-4408-8d25-175b18fefec2@linaro.org>
+Date: Mon, 27 May 2024 19:01:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527170317.14520a2f@imammedo.users.ipa.redhat.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mc146818rtc: add a way to generate RTC interrupts via
+ QMP
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+References: <20240506083420.557726-1-d-tatianin@yandex-team.ru>
+ <123481715669864@mail.yandex-team.ru>
+ <42ad8fe7-0de8-4284-9d37-ff6b5f66acdf@yandex-team.ru>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <42ad8fe7-0de8-4284-9d37-ff6b5f66acdf@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,93 +99,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+Hi Daniil,
 
-On Mon, May 27, 2024 at 05:03:17PM +0200, Igor Mammedov wrote:
-> Date: Mon, 27 May 2024 17:03:17 +0200
-> From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH] x86: cpu: fixup number of addressable IDs for
->  processor cores in the physical package
-> X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+On 21/5/24 10:08, Daniil Tatianin wrote:
+> Could you please take a look at this revision? I think I've taken 
+> everyone's feedback into account.
+
+Sorry for the delay, I missed your patch since you didn't Cc me
+(Markus asked me to look at this).
+
+Thanks for addressing the previous requests.
+
+> Thank you!
 > 
-> On Mon, 27 May 2024 11:13:33 +0800
-> Chuang Xu <xuchuangxclwt@bytedance.com> wrote:
-> 
-> > When QEMU is started with:
-> > -cpu host,host-cache-info=on,l3-cache=off \
-> > -smp 2,sockets=1,dies=1,cores=1,threads=2
-> > Guest can't acquire maximum number of addressable IDs for processor cores in
-> > the physical package from CPUID[04H].
-> 
-> please add commit message, what you are actually seeing
-> and expected values as well.
-> And if guest complains about it also include related dmesg output.
-> 
-> 
-> > This bug was introduced in commit d7caf13b5fcf742e5680c1d3448ba070fc811644.
-> > Fix it by changing the judgement condition to a >= 1.
-> > 
-> > Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
-> > Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
-> > Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
-> > ---
-> >  target/i386/cpu.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index cd16cb893d..0369c01153 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -6097,7 +6097,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-> >              if (*eax & 31) {
-> >                  int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
-> >                  int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
-> 
-> in light of dies and recent modules shouldn't we also account for them here?
+> On 5/14/24 9:57 AM, Daniil Tatianin wrote:
+>> ping :)
+>> 06.05.2024, 11:34, "Daniil Tatianin" <d-tatianin@yandex-team.ru>:
+>>
+>>     This can be used to force-synchronize the time in guest after a long
+>>     stop-cont pause, which can be useful for serverless-type workload.
+>>
+>>     Also add a comment to highlight the fact that this (and one other QMP
+>>     command) only works for the MC146818 RTC controller.
+>>
+>>     Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+>>     ---
+>>
+>>     Changes since v0:
+>>     - Rename to rtc-inject-irq to match other similar API
+>>     - Add a comment to highlight that this only works for the I386 RTC
+>>
+>>     Changes since v1:
+>>     - Added a description below the QMP command to explain how it can be
+>>       used and what it does.
+>>
+>>     Changes since v2:
+>>     - Add a 'broadcast' suffix.
+>>     - Change the comments to explain the flags we're setting.
+>>     - Change the command description to fix styling & explain that
+>>     it's a broadcast command.
+>>
+>>     ---
+>>      hw/rtc/mc146818rtc.c | 20 ++++++++++++++++++++
+>>      include/hw/rtc/mc146818rtc.h | 1 +
+>>      qapi/misc-target.json | 19 +++++++++++++++++++
+>>      3 files changed, 40 insertions(+)
+>>
+>>     diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+>>     index 3379f92748..2b3754f5c6 100644
+>>     --- a/hw/rtc/mc146818rtc.c
+>>     +++ b/hw/rtc/mc146818rtc.c
+>>     @@ -107,6 +107,11 @@ static void
+>>     rtc_coalesced_timer_update(MC146818RtcState *s)
+>>      static QLIST_HEAD(, MC146818RtcState) rtc_devices =
+>>          QLIST_HEAD_INITIALIZER(rtc_devices);
+>>
+>>     +/*
+>>     + * NOTE:
+>>     + * The two QMP functions below are _only_ implemented for the
+>>     MC146818.
+>>     + * All other RTC devices ignore this.
+>>     + */
+>>      void qmp_rtc_reset_reinjection(Error **errp)
+>>      {
+>>          MC146818RtcState *s;
+>>     @@ -116,6 +121,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
+>>          }
+>>      }
+>>
+>>     +void qmp_rtc_inject_irq_broadcast(Error **errp)
+>>     +{
+>>     + MC146818RtcState *s;
+>>     +
+>>     + QLIST_FOREACH(s, &rtc_devices, link) {
+>>     + // Update-ended interrupt enable
 
-cs->nr_cores now account dies and modules (as its comment said "Number
-of cores within this CPU package"). The code for this patch is a bit
-outdated, although the issue is still here on the latest master.
+This doesn't pass the checkpatch script because it isn't QEMU coding
+style:
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#use-the-qemu-coding-style
 
-> > -                if (cs->nr_cores > 1) {
-> > +                if (cs->nr_cores >= 1) {
-> >                      *eax &= ~0xFC000000;
-> >                      *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
-> >                  }
-> above and also following condition
-> 
->                 if (host_vcpus_per_cache > vcpus_per_socket) {
->                     ...
->                     *eax |= (pow2ceil(vcpus_per_socket) - 1) << 14;
-> 
-> Makes me think, do we really have to have both conditionals,
-> Why not just drop conditions and always encode both values
-> to ones configured on '-smp' CLI?
+>>     + s->cmos_data[RTC_REG_B] |= REG_B_UIE;
+>>     +
+>>     + // Interrupt request flag | update interrupt flag
+>>     + s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
+>>     +
+>>     + qemu_irq_raise(s->irq);
+>>     + }
+>>     +}
+>>     +
+>>      static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
+>>      {
+>>          kvm_reset_irq_delivered();
+>>     diff --git a/include/hw/rtc/mc146818rtc.h
+>>     b/include/hw/rtc/mc146818rtc.h
+>>     index 97cec0b3e8..e9dd0f9c72 100644
+>>     --- a/include/hw/rtc/mc146818rtc.h
+>>     +++ b/include/hw/rtc/mc146818rtc.h
+>>     @@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus,
+>>     int base_year,
+>>      void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int
+>>     val);
+>>      int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
+>>      void qmp_rtc_reset_reinjection(Error **errp);
+>>     +void qmp_rtc_inject_irq_broadcast(Error **errp);
+>>
+>>      #endif /* HW_RTC_MC146818RTC_H */
+>>     diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+>>     index 4e0a6492a9..7d388a3753 100644
+>>     --- a/qapi/misc-target.json
+>>     +++ b/qapi/misc-target.json
+>>     @@ -19,6 +19,25 @@
+>>      { 'command': 'rtc-reset-reinjection',
+>>        'if': 'TARGET_I386' }
+>>
 
-The first condition "cores_per_pkg >= 1" can be removed in this patch
-since cs->nr_cores won't be 0. :-)
+Your new command doesn't make my life harder than the current
+'rtc-reset-reinjection' command, so if this is useful to you,
+I'm OK to:
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(assuming the comment style is fixed).
 
-About the 2nd condition "host_vcpus_per_cache > vcpus_per_socket", more
-work is needed for cleanup...removal is also desirable, but not direct
-removal, otherwise, Guest's L1/L2/L3 cache topology will default to
-package level.
+I'll see later how to deal with that with heterogeneous
+emulation.
 
-Currently with host_vcpus_per_cache <= threads_per_pkg, QEMU will
-directly give Guest the Host's EAX[bits 25 -14], which is also
-inaccurate, especially if there is a big difference between Guest and
-Host CPU topology.
+Regards,
 
-The correct way to do it is to parse the specific level of cache
-topology on Host (core/module/die/package), and then encode Guest's
-EAX[bits 25 -14] according to the specific items configured in -smp.
+Phil.
 
-By cleaning up in this way, the second condition can be removed
-naturally.
-
-The host-cache-info cleanup was originally planned for me as well, I
-think I can do this after Chuang's fix.
-
-Thanks,
-Zhao
+>>     +##
+>>     +# @rtc-inject-irq-broadcast:
+>>     +#
+>>     +# Inject an RTC interrupt for all existing RTCs on the system.
+>>     +# The interrupt forces the guest to synchronize the time with RTC.
+>>     +# This is useful after a long stop-cont pause, which is common for
+>>     +# serverless-type workload.
+>>     +#
+>>     +# Since: 9.1
+>>     +#
+>>     +# Example:
+>>     +#
+>>     +# -> { "execute": "rtc-inject-irq-broadcast" }
+>>     +# <- { "return": {} }
+>>     +#
+>>     +##
+>>     +{ 'command': 'rtc-inject-irq-broadcast',
+>>     + 'if': 'TARGET_I386' }
+>>     +
+>>      ##
+>>      # @SevState:
+>>      #
+>>
+>>     --
+>>     2.34.1
+>>
 
 
