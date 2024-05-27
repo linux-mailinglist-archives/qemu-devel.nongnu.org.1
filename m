@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF6D8CFAD6
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1348CFAD5
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:04:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVKb-0001WV-4o; Mon, 27 May 2024 04:03:45 -0400
+	id 1sBVKZ-0001TU-UY; Mon, 27 May 2024 04:03:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVJd-0000AJ-Af; Mon, 27 May 2024 04:02:54 -0400
+ id 1sBVJr-0000JC-36; Mon, 27 May 2024 04:03:09 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1sBVJX-0005H2-DE; Mon, 27 May 2024 04:02:44 -0400
+ id 1sBVJo-0005H2-7t; Mon, 27 May 2024 04:02:57 -0400
 Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 27 May
- 2024 16:02:31 +0800
+ 2024 16:02:33 +0800
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
  (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 27 May
- 2024 16:02:33 +0800
+ 2024 16:02:34 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Mon, 27 May 2024 16:02:31 +0800
+ Transport; Mon, 27 May 2024 16:02:33 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
@@ -36,10 +36,12 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v4 00/16] Add AST2700 support
-Date: Mon, 27 May 2024 16:02:14 +0800
-Message-ID: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
+Subject: [PATCH v4 03/16] aspeed/sdmc: remove redundant macros
+Date: Mon, 27 May 2024 16:02:17 +0800
+Message-ID: <20240527080231.1576609-4-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
+References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -71,102 +73,48 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes from v1:
-The patch series supports WDT, SDMC, SMC, SCU, SLI and INTC for AST2700 SoC.
+These macros are no longer used for ASPEED SOCs, so removes them.
 
-Changes from v2:
-- replace is_aarch64 with is_bus64bit for sdmc patch review.
-- fix incorrect dram size for AST2700
+Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+---
+ hw/misc/aspeed_sdmc.c | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-Changes from v3:
-- Add AST2700 Evaluation board in ASPEED document
-- Add avocado test cases for AST2700 Evaluation board
-- Fix reviewers review issues and add reviewers suggestions
-- Implement INTC model GICINT 128 to GICINT136 for AST2700
-
-Changes from v4:
-- support 64 bits dma dram address associated with review issues
-- support dma start length and 1 byte length unit associated with review issues
-- refactor intc model to fix serial console stuck issue and associated with review issues
-
-Test Version:
-https://github.com/qemu/qemu/commit/0c2a3807483b4ebe360cfa475dbfc9dfd2f6d16d
-
-Test steps:
-1. Download the latest openbmc image for AST2700 from AspeedTech-BMC/openbmc
-   repository, https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.01
-   link: https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.01/ast2700-default-obmc.tar.gz
-2. untar ast2700-default-obmc.tar.gz
-   ```
-   tar -xf ast2700-default-obmc.tar.gz
-   ```
-3. Run and the contents of scripts as following
-IMGDIR=ast2700-default
-UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
-UBOOT_DTB_ADDR=$((0x400000000 + ${UBOOT_SIZE}))
-
-qemu-system-aarch64 -M ast2700-evb -nographic\
- -device loader,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin,force-raw=on\
- -device loader,addr=${UBOOT_DTB_ADDR},file=${IMGDIR}/u-boot.dtb,force-raw=on\
- -device loader,addr=0x430000000,file=${IMGDIR}/bl31.bin,force-raw=on\
- -device loader,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin,force-raw=on\
- -device loader,addr=0x430000000,cpu-num=0\
- -device loader,addr=0x430000000,cpu-num=1\
- -device loader,addr=0x430000000,cpu-num=2\
- -device loader,addr=0x430000000,cpu-num=3\
- -smp 4\
- -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd\
- -serial mon:stdio\
- -snapshot
-
-Jamin Lin (16):
-  aspeed/wdt: Add AST2700 support
-  aspeed/sli: Add AST2700 support
-  aspeed/sdmc: remove redundant macros
-  aspeed/sdmc: fix coding style
-  aspeed/sdmc: Add AST2700 support
-  aspeed/smc: correct device description
-  aspeed/smc: support dma start length and 1 byte length unit
-  aspeed/smc: support 64 bits dma dram address
-  aspeed/smc: Add AST2700 support
-  aspeed/scu: Add AST2700 support
-  aspeed/intc: Add AST2700 support
-  aspeed/soc: Add AST2700 support
-  aspeed: Add an AST2700 eval board
-  aspeed/soc: fix incorrect dram size for AST2700
-  test/avocado/machine_aspeed.py: Add AST2700 test case
-  docs:aspeed: Add AST2700 Evaluation board
-
- docs/system/arm/aspeed.rst       |  39 +-
- hw/arm/aspeed.c                  |  32 ++
- hw/arm/aspeed_ast27x0.c          | 655 +++++++++++++++++++++++++++++++
- hw/arm/meson.build               |   1 +
- hw/intc/aspeed_intc.c            | 355 +++++++++++++++++
- hw/intc/meson.build              |   1 +
- hw/intc/trace-events             |   6 +
- hw/misc/aspeed_scu.c             | 306 ++++++++++++++-
- hw/misc/aspeed_sdmc.c            | 216 +++++++++-
- hw/misc/aspeed_sli.c             | 177 +++++++++
- hw/misc/meson.build              |   3 +-
- hw/misc/trace-events             |  11 +
- hw/ssi/aspeed_smc.c              | 321 ++++++++++++++-
- hw/ssi/trace-events              |   2 +-
- hw/watchdog/wdt_aspeed.c         |  24 ++
- include/hw/arm/aspeed_soc.h      |  27 +-
- include/hw/intc/aspeed_intc.h    |  46 +++
- include/hw/misc/aspeed_scu.h     |  47 ++-
- include/hw/misc/aspeed_sdmc.h    |   5 +-
- include/hw/misc/aspeed_sli.h     |  27 ++
- include/hw/ssi/aspeed_smc.h      |   2 +
- include/hw/watchdog/wdt_aspeed.h |   3 +-
- tests/avocado/machine_aspeed.py  |  62 +++
- 23 files changed, 2312 insertions(+), 56 deletions(-)
- create mode 100644 hw/arm/aspeed_ast27x0.c
- create mode 100644 hw/intc/aspeed_intc.c
- create mode 100644 hw/misc/aspeed_sli.c
- create mode 100644 include/hw/intc/aspeed_intc.h
- create mode 100644 include/hw/misc/aspeed_sli.h
-
+diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
+index 64cd1a81dc..74279bbe8e 100644
+--- a/hw/misc/aspeed_sdmc.c
++++ b/hw/misc/aspeed_sdmc.c
+@@ -76,10 +76,6 @@
+ #define     ASPEED_SDMC_VGA_32MB            0x2
+ #define     ASPEED_SDMC_VGA_64MB            0x3
+ #define ASPEED_SDMC_DRAM_SIZE(x)        (x & 0x3)
+-#define     ASPEED_SDMC_DRAM_64MB           0x0
+-#define     ASPEED_SDMC_DRAM_128MB          0x1
+-#define     ASPEED_SDMC_DRAM_256MB          0x2
+-#define     ASPEED_SDMC_DRAM_512MB          0x3
+ 
+ #define ASPEED_SDMC_READONLY_MASK                       \
+     (ASPEED_SDMC_RESERVED | ASPEED_SDMC_VGA_COMPAT |    \
+@@ -100,17 +96,6 @@
+ #define ASPEED_SDMC_CACHE_ENABLE        (1 << 10) /* differs from AST2400 */
+ #define ASPEED_SDMC_DRAM_TYPE           (1 << 4)  /* differs from AST2400 */
+ 
+-/* DRAM size definitions differs */
+-#define     ASPEED_SDMC_AST2500_128MB       0x0
+-#define     ASPEED_SDMC_AST2500_256MB       0x1
+-#define     ASPEED_SDMC_AST2500_512MB       0x2
+-#define     ASPEED_SDMC_AST2500_1024MB      0x3
+-
+-#define     ASPEED_SDMC_AST2600_256MB       0x0
+-#define     ASPEED_SDMC_AST2600_512MB       0x1
+-#define     ASPEED_SDMC_AST2600_1024MB      0x2
+-#define     ASPEED_SDMC_AST2600_2048MB      0x3
+-
+ #define ASPEED_SDMC_AST2500_READONLY_MASK                               \
+     (ASPEED_SDMC_HW_VERSION(0xf) | ASPEED_SDMC_CACHE_INITIAL_DONE |     \
+      ASPEED_SDMC_AST2500_RESERVED | ASPEED_SDMC_VGA_COMPAT |            \
 -- 
 2.25.1
 
