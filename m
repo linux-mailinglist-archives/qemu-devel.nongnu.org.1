@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FB98CFA26
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AF88CFA1F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUkM-0001Jm-BF; Mon, 27 May 2024 03:26:18 -0400
+	id 1sBUkO-0001l8-1V; Mon, 27 May 2024 03:26:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUji-0008NH-1e; Mon, 27 May 2024 03:25:42 -0400
+ id 1sBUjk-0008Ow-VI; Mon, 27 May 2024 03:25:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjb-0006Nr-8p; Mon, 27 May 2024 03:25:35 -0400
+ id 1sBUjj-0006Pv-DO; Mon, 27 May 2024 03:25:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EB6BD6A4CD;
- Mon, 27 May 2024 10:25:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0691E6A4CE;
+ Mon, 27 May 2024 10:25:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 365BCD846A;
+ by tsrv.corpit.ru (Postfix) with SMTP id 44F6AD846B;
  Mon, 27 May 2024 10:24:36 +0300 (MSK)
-Received: (nullmailer pid 52918 invoked by uid 1000);
+Received: (nullmailer pid 52921 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 16/21] target/loongarch/kvm: Fix VM recovery from disk
- failures
-Date: Mon, 27 May 2024 10:24:26 +0300
-Message-Id: <20240527072435.52812-16-mjt@tls.msk.ru>
+ Bibo Mao <maobibo@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 17/21] hw/loongarch: Fix fdt memory node wrong 'reg'
+Date: Mon, 27 May 2024 10:24:27 +0300
+Message-Id: <20240527072435.52812-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
@@ -62,42 +61,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Song Gao <gaosong@loongson.cn>
 
-vmstate does not save kvm_state_conter,
-which can cause VM recovery from disk to fail.
+The right fdt memory node like [1], not [2]
 
-Cc: qemu-stable@nongnu.org
+  [1]
+        memory@0 {
+                device_type = "memory";
+                reg = <0x00 0x00 0x00 0x10000000>;
+        };
+  [2]
+        memory@0 {
+                device_type = "memory";
+                reg = <0x02 0x00 0x02 0x10000000>;
+        };
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: Song Gao <gaosong@loongson.cn>
-Acked-by: Peter Xu <peterx@redhat.com>
-Message-Id: <20240508024732.3127792-1-gaosong@loongson.cn>
-(cherry picked from commit 0eb285c3627b5406dd91bfa3b47402e5de92123f)
+Message-Id: <20240426091551.2397867-10-gaosong@loongson.cn>
+(cherry picked from commit b11f9814526b833b3a052be2559457b1affad7f5)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: adjust context for v8.2.0-205-g2d23bb1a3805
-  "target/loongarch: Constify VMState in machine.c")
 
-diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
-index 1c4e01d076..5a7df713e2 100644
---- a/target/loongarch/machine.c
-+++ b/target/loongarch/machine.c
-@@ -125,8 +125,8 @@ const VMStateDescription vmstate_tlb = {
- /* LoongArch CPU state */
- const VMStateDescription vmstate_loongarch_cpu = {
-     .name = "cpu",
--    .version_id = 1,
--    .minimum_version_id = 1,
-+    .version_id = 2,
-+    .minimum_version_id = 2,
-     .fields = (VMStateField[]) {
-         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
-         VMSTATE_UINTTL(env.pc, LoongArchCPU),
-@@ -191,6 +191,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
-         VMSTATE_STRUCT_ARRAY(env.tlb, LoongArchCPU, LOONGARCH_TLB_MAX,
-                              0, vmstate_tlb, LoongArchTLB),
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 713ba26dff..ec40adc5e6 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -298,7 +298,7 @@ static void fdt_add_memory_node(MachineState *ms,
+     char *nodename = g_strdup_printf("/memory@%" PRIx64, base);
  
-+        VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
-+
-         VMSTATE_END_OF_LIST()
-     },
-     .subsections = (const VMStateDescription*[]) {
+     qemu_fdt_add_subnode(ms->fdt, nodename);
+-    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 2, base, 2, size);
++    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0, base, 0, size);
+     qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
+ 
+     if (ms->numa_state && ms->numa_state->num_nodes) {
 -- 
 2.39.2
 
