@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616988D0F52
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 23:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A60D8D0F55
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 23:21:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBhke-0007EB-Hm; Mon, 27 May 2024 17:19:28 -0400
+	id 1sBhkh-0007Fe-88; Mon, 27 May 2024 17:19:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBhkc-0007Cj-NO
- for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:26 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1sBhke-0007EP-Kt
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:28 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBhkb-0003eE-3i
- for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:26 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6f8e9555eabso104817b3a.1
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 14:19:24 -0700 (PDT)
+ id 1sBhkd-0003ei-0Y
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 17:19:28 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6f6911d16b4so102544b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 14:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716844764; x=1717449564; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716844765; x=1717449565; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KXObFDu8a3M57Hv1fEFHdefFhD2xo5Ijf75RZMjb8TM=;
- b=RO+mzuhAk+FNhSya1eBk4xlxLcPDfN8jeYOE6dtj1Lhu36rDdQHsVa/dc5wIz5+jps
- /s1u4dTJsT5KlyyENTFSKdqxgcvfOsOgU9+Cudv6+whdytSBDKx6PJRZQ40KFiYYSDdw
- MvJjE6rHWuC4cHwNu7TDZ6pAQCFZlnOcLBYVnLRCZwY8RsEdPnVuKHIq+vsN2ci3Vika
- zcEgSn+atf3ZfaRAL0HfgR+XPegSNqLtXakawHPMhthyt1IGCk9bsbuKiHa22qMPC4vG
- pnltI4QOcElZae8cSRiQS+cDr0Ej56uP0YaFCWFCTOR+JG95bR8E2zQxjNj7op8FZxzD
- B+8Q==
+ bh=+aLTmgpfFJvWYbR4Ap5S/59vR+/bleRAx/rWF8KJSg8=;
+ b=NW9M3PJgEjvHFfm4qAZLhgN4sSx6Pl/O8S5bKK+HdGRfq1JAz8OHD4gpsiOIgeE7lu
+ XFkk6GDmf0zLw7KQuzoT8GMEvN9CyTX5Y/ynoEiTaHDx+U4VcTIqh9NoguPPaqCWn72d
+ w58lwj0Z1oQ5Mqs0xW1t9W5GQ6UVXEAQ3q6aEOaYFMzCdUIsmrd9NgF62E35kpBnlc9B
+ BdjfRtJIzEzFuQasAenzvffJjdBhLdhNbLrNVkf6s9w0AP7AC9w3W0ej2LUzcsB4RnC+
+ q/WdYb/Wj8XfKXTNkbhX+aUra7UyHDtYWteF9KOBb+tum4YTCFrixRVgO73qisxqb5Se
+ QI4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716844764; x=1717449564;
+ d=1e100.net; s=20230601; t=1716844765; x=1717449565;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KXObFDu8a3M57Hv1fEFHdefFhD2xo5Ijf75RZMjb8TM=;
- b=X9lHSSMSgvppBvmP716mNP4O5vifU63udkCLNRhdV74dKzY3LuZ2JHYJoqZKH04B2P
- lcn2ME0tkmYQFCNzoGfB/acP5u7l8EZcSsxENWmOmoxkbB0yfMho/KnypCIquqOl80Sm
- scJVv/sFxTKK1MD3y9DlKiBM5HYUDQ1JM0O9BquzZe56K87dDxVNtpeRrk5sUCxvDtZW
- JR1hcttcmo/sR7oAfnmHT4DKs80dmJYz7X7/US155yXPTQCd8VnJwyjfNVQQ/4GeuGgO
- b63C6sCPKYtwYl1INthhyShu93uO36DMypYYjS0HBkAuElS2KvypRQtUt0OzmvcF5V0+
- SmDQ==
-X-Gm-Message-State: AOJu0YxRLyZrt5vreySoyDXYSWH00MnvGbqKDcS6xOPG8dgNSGCYBlhv
- BaSiU+TkRITdQwfIZ4ZKBUri6v/oLajEgXv6xN6qQM57SpXor9E/6pxEguIYEbfrygLtE5I4egB
- s
-X-Google-Smtp-Source: AGHT+IF4n5ynPucO2+U/vvbgwXQm4zPyUNHQ42RovatDa6lwoJfZsWmEUQ89w1qzPxb4ppem5LUWtw==
-X-Received: by 2002:a05:6a00:4c12:b0:6ed:41f3:431d with SMTP id
- d2e1a72fcca58-6f8f1a6a5aemr11447070b3a.0.1716844763798; 
- Mon, 27 May 2024 14:19:23 -0700 (PDT)
+ bh=+aLTmgpfFJvWYbR4Ap5S/59vR+/bleRAx/rWF8KJSg8=;
+ b=cZ4tsY6H9mLPPnRCpDdBnFtcccptvUIgL35uRMw9NgcsUPc3HB2Lvl9lDfTnB955ea
+ oYf0m0cNhObbPrLqomOx3xZvv2bF07UxXVNcMH7xHciYRSNv+xC8Y333ejtRyUBnVL/f
+ viq5qokds7YWHnxSZ8/z9rzMQlv0Txbim9P6vBdyyUoPS2HS0rS0oHPrHTj13GYpMVgG
+ V0PLvS5JxZSPBsIQ1lypO9G7NEsV4egrVCs+8UXvVR1Y3/NghtU8XAwGE58UgAbiiQfC
+ 6Yg2m0pMWXyIdLTohJsUwAMnc5hoWAHvSHUcsZBRwNyXJnVqMQgW6gkdtBzaWANmEhEo
+ b2ow==
+X-Gm-Message-State: AOJu0YwWtBCWc9JcZGaowYW78PyHixkgViPkrLqpU+YwnUXR6i1niWPV
+ LX6+SZp9W06Day/Hv9DKcp4BZWET4XQhK0PMk9DI2EO8uEqlS8ImJgUi3Oud68qXfugbTfSK/5y
+ 4
+X-Google-Smtp-Source: AGHT+IGpKe/P3XDFFq5avfj2etyw/HpNi2brQ03f3udo6mOClYWRrV8MXULiWEbSZckJtTTOvojsEA==
+X-Received: by 2002:a05:6a00:3007:b0:6ea:c634:ca0f with SMTP id
+ d2e1a72fcca58-6f8f3f9f45cmr11838581b3a.21.1716844764613; 
+ Mon, 27 May 2024 14:19:24 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
  d2e1a72fcca58-6f8fd1d4d5fsm5265876b3a.165.2024.05.27.14.19.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 14:19:23 -0700 (PDT)
+ Mon, 27 May 2024 14:19:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: git@xen0n.name,
 	gaosong@loongson.cn
-Subject: [PATCH 11/18] tcg/loongarch64: Simplify tcg_out_addsub_vec
-Date: Mon, 27 May 2024 14:19:05 -0700
-Message-Id: <20240527211912.14060-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/18] tcg/loongarch64: Support LASX in tcg_out_addsub_vec
+Date: Mon, 27 May 2024 14:19:06 -0700
+Message-Id: <20240527211912.14060-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527211912.14060-1-richard.henderson@linaro.org>
 References: <20240527211912.14060-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,62 +95,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/loongarch64/tcg-target.c.inc | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ tcg/loongarch64/tcg-target.c.inc | 36 ++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index c7d0c7839b..47011488dd 100644
+index 47011488dd..652aa261a3 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1774,33 +1774,34 @@ static void tcg_out_addsub_vec(TCGContext *s, unsigned vece, const TCGArg a0,
-     static const LoongArchInsn sub_vec_imm_insn[4] = {
-         OPC_VSUBI_BU, OPC_VSUBI_HU, OPC_VSUBI_WU, OPC_VSUBI_DU
-     };
-+    LoongArchInsn insn;
+@@ -1758,21 +1758,25 @@ static void tcg_out_dupi_vec(TCGContext *s, TCGType type, unsigned vece,
+     tcg_out_dup_vec(s, type, vece, rd, TCG_REG_TMP0);
+ }
  
-     if (a2_is_const) {
-         int64_t value = sextract64(a2, 0, 8 << vece);
-+
-         if (!is_add) {
+-static void tcg_out_addsub_vec(TCGContext *s, unsigned vece, const TCGArg a0,
+-                               const TCGArg a1, const TCGArg a2,
++static void tcg_out_addsub_vec(TCGContext *s, bool lasx, unsigned vece,
++                               TCGArg a0, TCGArg a1, TCGArg a2,
+                                bool a2_is_const, bool is_add)
+ {
+-    static const LoongArchInsn add_vec_insn[4] = {
+-        OPC_VADD_B, OPC_VADD_H, OPC_VADD_W, OPC_VADD_D
++    static const LoongArchInsn add_vec_insn[2][4] = {
++        { OPC_VADD_B, OPC_VADD_H, OPC_VADD_W, OPC_VADD_D },
++        { OPC_XVADD_B, OPC_XVADD_H, OPC_XVADD_W, OPC_XVADD_D },
+     };
+-    static const LoongArchInsn add_vec_imm_insn[4] = {
+-        OPC_VADDI_BU, OPC_VADDI_HU, OPC_VADDI_WU, OPC_VADDI_DU
++    static const LoongArchInsn add_vec_imm_insn[2][4] = {
++        { OPC_VADDI_BU, OPC_VADDI_HU, OPC_VADDI_WU, OPC_VADDI_DU },
++        { OPC_XVADDI_BU, OPC_XVADDI_HU, OPC_XVADDI_WU, OPC_XVADDI_DU },
+     };
+-    static const LoongArchInsn sub_vec_insn[4] = {
+-        OPC_VSUB_B, OPC_VSUB_H, OPC_VSUB_W, OPC_VSUB_D
++    static const LoongArchInsn sub_vec_insn[2][4] = {
++        { OPC_VSUB_B, OPC_VSUB_H, OPC_VSUB_W, OPC_VSUB_D },
++        { OPC_XVSUB_B, OPC_XVSUB_H, OPC_XVSUB_W, OPC_XVSUB_D },
+     };
+-    static const LoongArchInsn sub_vec_imm_insn[4] = {
+-        OPC_VSUBI_BU, OPC_VSUBI_HU, OPC_VSUBI_WU, OPC_VSUBI_DU
++    static const LoongArchInsn sub_vec_imm_insn[2][4] = {
++        { OPC_VSUBI_BU, OPC_VSUBI_HU, OPC_VSUBI_WU, OPC_VSUBI_DU },
++        { OPC_XVSUBI_BU, OPC_XVSUBI_HU, OPC_XVSUBI_WU, OPC_XVSUBI_DU },
+     };
+     LoongArchInsn insn;
+ 
+@@ -1783,10 +1787,10 @@ static void tcg_out_addsub_vec(TCGContext *s, unsigned vece, const TCGArg a0,
              value = -value;
          }
--
--        /* Try vaddi/vsubi */
--        if (0 <= value && value <= 0x1f) {
--            tcg_out32(s, encode_vdvjuk5_insn(add_vec_imm_insn[vece], a0, \
--                                             a1, value));
--            return;
--        } else if (-0x1f <= value && value < 0) {
--            tcg_out32(s, encode_vdvjuk5_insn(sub_vec_imm_insn[vece], a0, \
--                                             a1, -value));
--            return;
-+        if (value < 0) {
-+            insn = sub_vec_imm_insn[vece];
-+            value = -value;
-+        } else {
-+            insn = add_vec_imm_insn[vece];
+         if (value < 0) {
+-            insn = sub_vec_imm_insn[vece];
++            insn = sub_vec_imm_insn[lasx][vece];
+             value = -value;
+         } else {
+-            insn = add_vec_imm_insn[vece];
++            insn = add_vec_imm_insn[lasx][vece];
          }
  
--        /* constraint TCG_CT_CONST_VADD ensures unreachable */
--        g_assert_not_reached();
-+        /* Constraint TCG_CT_CONST_VADD ensures validity. */
-+        tcg_debug_assert(0 <= value && value <= 0x1f);
-+
-+        tcg_out32(s, encode_vdvjuk5_insn(insn, a0, a1, value));
-+        return;
+         /* Constraint TCG_CT_CONST_VADD ensures validity. */
+@@ -1797,9 +1801,9 @@ static void tcg_out_addsub_vec(TCGContext *s, unsigned vece, const TCGArg a0,
      }
  
      if (is_add) {
--        tcg_out32(s, encode_vdvjvk_insn(add_vec_insn[vece], a0, a1, a2));
-+        insn = add_vec_insn[vece];
+-        insn = add_vec_insn[vece];
++        insn = add_vec_insn[lasx][vece];
      } else {
--        tcg_out32(s, encode_vdvjvk_insn(sub_vec_insn[vece], a0, a1, a2));
-+        insn = sub_vec_insn[vece];
+-        insn = sub_vec_insn[vece];
++        insn = sub_vec_insn[lasx][vece];
      }
-+    tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
+     tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
  }
- 
- static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+@@ -1963,10 +1967,10 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+         }
+         break;
+     case INDEX_op_add_vec:
+-        tcg_out_addsub_vec(s, vece, a0, a1, a2, const_args[2], true);
++        tcg_out_addsub_vec(s, false, vece, a0, a1, a2, const_args[2], true);
+         break;
+     case INDEX_op_sub_vec:
+-        tcg_out_addsub_vec(s, vece, a0, a1, a2, const_args[2], false);
++        tcg_out_addsub_vec(s, false, vece, a0, a1, a2, const_args[2], false);
+         break;
+     case INDEX_op_neg_vec:
+         tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], a0, a1));
 -- 
 2.34.1
 
