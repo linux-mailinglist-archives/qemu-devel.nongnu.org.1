@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6418CFB79
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8D68CFB78
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:31:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVj2-0005cN-JG; Mon, 27 May 2024 04:29:00 -0400
+	id 1sBVi1-00039w-Hu; Mon, 27 May 2024 04:27:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVff-0005dR-BR; Mon, 27 May 2024 04:25:36 -0400
+ id 1sBVff-0005ds-LZ; Mon, 27 May 2024 04:25:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVfc-0001Ua-PG; Mon, 27 May 2024 04:25:30 -0400
+ id 1sBVfe-0001WA-1Y; Mon, 27 May 2024 04:25:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 965C76A588;
+ by isrv.corpit.ru (Postfix) with ESMTP id A68146A589;
  Mon, 27 May 2024 11:22:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C4AEBD8525;
+ by tsrv.corpit.ru (Postfix) with SMTP id D22ECD8526;
  Mon, 27 May 2024 11:21:41 +0300 (MSK)
-Received: (nullmailer pid 66483 invoked by uid 1000);
+Received: (nullmailer pid 66487 invoked by uid 1000);
  Mon, 27 May 2024 08:21:39 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 43/44] target/i386: no single-step exception after MOV
- or POP SS
-Date: Mon, 27 May 2024 11:21:34 +0300
-Message-Id: <20240527082138.66217-43-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 44/44] gitlab: Update msys2-64bit runner tags
+Date: Mon, 27 May 2024 11:21:35 +0300
+Message-Id: <20240527082138.66217-44-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,30 +61,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Intel SDM 18.3.1.4 "If an occurrence of the MOV or POP instruction
-loads the SS register executes with EFLAGS.TF = 1, no single-step debug
-exception occurs following the MOV or POP instruction."
+Gitlab has deprecated and removed support for windows-1809
+and shared-windows.  Update to saas-windows-medium-amd64 per
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit f0f0136abba688a6516647a79cc91e03fad6d5d7)
+https://about.gitlab.com/blog/2024/01/22/windows-2022-support-for-gitlab-saas-runners/
+
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240507175356.281618-1-richard.henderson@linaro.org>
+(cherry picked from commit 36fa7c686e9eac490002ffc439c4affaa352c17c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c2c5e73b3f..a55df176c6 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -2817,7 +2817,7 @@ do_gen_eob_worker(DisasContext *s, bool inhibit, bool recheck_tf, bool jr)
-     if (recheck_tf) {
-         gen_helper_rechecking_single_step(tcg_env);
-         tcg_gen_exit_tb(NULL, 0);
--    } else if (s->flags & HF_TF_MASK) {
-+    } else if ((s->flags & HF_TF_MASK) && !inhibit) {
-         gen_helper_single_step(tcg_env);
-     } else if (jr &&
-                /* give irqs a chance to happen */
+diff --git a/.gitlab-ci.d/windows.yml b/.gitlab-ci.d/windows.yml
+index 94834269ec..fec51de2d4 100644
+--- a/.gitlab-ci.d/windows.yml
++++ b/.gitlab-ci.d/windows.yml
+@@ -1,9 +1,7 @@
+ msys2-64bit:
+   extends: .base_job_template
+   tags:
+-  - shared-windows
+-  - windows
+-  - windows-1809
++  - saas-windows-medium-amd64
+   cache:
+     key: "$CI_JOB_NAME"
+     paths:
 -- 
 2.39.2
 
