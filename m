@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6758D0943
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 19:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4788A8D0948
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 19:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBdwS-0002zT-VE; Mon, 27 May 2024 13:15:25 -0400
+	id 1sBdwU-0002zx-Vu; Mon, 27 May 2024 13:15:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sBdwM-0002yD-V6
+ id 1sBdwK-0002xk-Ni
  for qemu-devel@nongnu.org; Mon, 27 May 2024 13:15:18 -0400
 Received: from wfhigh3-smtp.messagingengine.com ([64.147.123.154])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sBdwG-0004dO-JB
- for qemu-devel@nongnu.org; Mon, 27 May 2024 13:15:18 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfhigh.west.internal (Postfix) with ESMTP id F294F1800110;
- Mon, 27 May 2024 13:15:08 -0400 (EDT)
+ id 1sBdwG-0004dc-Tk
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 13:15:15 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailfhigh.west.internal (Postfix) with ESMTP id 287CB1800131;
+ Mon, 27 May 2024 13:15:11 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Mon, 27 May 2024 13:15:09 -0400
+ by compute2.internal (MEProxy); Mon, 27 May 2024 13:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
  cc:cc:content-transfer-encoding:content-type:content-type:date
  :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1716830108;
- x=1716916508; bh=hYYUXh07/gcoXF51WzyMOORAJzyXrEZcGGa7G4S/qJM=; b=
- Unrv661kj8kfAT4BKmuCw9HE+V/+Tjdmw6p2GaDTLYpDD5hozbLpez4RrylRBkcG
- syTtZZGcc3RCO/f5xZ1McVMQM+ABtHOFFhrm7Bw6E/mzVY+QsuJM6M1AP1TPu3E+
- 0q2VKD1C2ZGBSj6poEx3p5gi9gcCNAuroCfjwL3o7zs+WEf9789F1tqN0z5tzOoq
- UH7JT95pGnvl9jJNPHjxDqAYdKNLDIHogvrkW7RY0OM4vbLiKge/cuTK5/rafSLY
- wACg9m8ME13mvQSoSZmrcrdD15gZ8UL7vxwpiEoeuo63x7xbl4BjoJChMViAr2xQ
- zf08xYqD8AFkIjzofU522w==
+ :references:reply-to:subject:subject:to:to; s=fm2; t=1716830110;
+ x=1716916510; bh=jvNC3cWl9R/X7w/YW3guvENAd+31abtJId4SHxU/qLQ=; b=
+ CkOt7UyAWVdOclErtyI1KWuvwY43iyJLr2D+Nw3DVGQ4S23KSZlSuekHJ/smj9B5
+ lCSvagXAeiEFjuVxbUR24EWYF0w2DTx8bJC8J/t5TPx88/nObjDNDlvF4GdlF7mj
+ u2GqIryTY4hSeaf+72+oDYhnkQ6qaPPNfNDfdKrQZUZ+lFFtZlf2MrJXMb/fKKX8
+ opWGac3/60q6Nmg1YbXrGDNAK/+Xwhu3yubjR8KCsBkB+KMsHQGRRykfjEpBkgkH
+ 6nArJzg3OD8tUPqWQFtkwflVNxR4svY/3k90frnLMqEbz0XFVZZ+SX5qf3XkPzO0
+ aecRuZy4KjHFWaaAJp3eyA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:content-type:date:date:feedback-id:feedback-id
  :from:from:in-reply-to:in-reply-to:message-id:mime-version
  :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716830108; x=
- 1716916508; bh=hYYUXh07/gcoXF51WzyMOORAJzyXrEZcGGa7G4S/qJM=; b=V
- 5y6XDXLNce7gPGnUkLVqd5/wfOXw42OI8GOWD0X2zGlx3HXUfVdNn5r3ZLQ2ICl4
- YohjUynO1M8kGMdMKgjygqIa8QPJogHQ287on+yi3/g995kE7IUaBRJzxjboeb5C
- /9qhR3B0NpmApAMxzoX7DI8J9Y0duoWCzXeis1TarMmFn66AVT5WFU7RJyepyVGj
- c7bEjdJgVdEpE+JsZi/UY71nLWANwLnY0PSEpLJKKijurJcIbUhUE80r5zzRf0qr
- NB/PV+wLXNC7ZJrpLog2rujrsyAxgnNpWMrQiGPnvhBJ1a+FjA5dNcpvS20AL10+
- DQreKhnSpNEBk+cqm0gRQ==
-X-ME-Sender: <xms:nL9UZnHQGvif13jDH2bQiYLQxXfiOixhOWPTPkjLNxUx3DkqHooJtA>
- <xme:nL9UZkVi0ijcVGFgIjRrAommviJ4aay5BIizCKZE0fIEy3r6iUXQGKI9NQzX1vyHz
- wyry5r60y3ZK4UPwOA>
-X-ME-Received: <xmr:nL9UZpIt2sp4gKMUqiGhtb5EUe-BihT_v1HvSZPPusFieCkjZQiKsUE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdejgedguddtkecutefuodetggdotefrod
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716830110; x=
+ 1716916510; bh=jvNC3cWl9R/X7w/YW3guvENAd+31abtJId4SHxU/qLQ=; b=M
+ pK+MJGjXtk8zZ0L+OfYFLcmQAyviiWTXaGXFe2TCwRUbBHinDOXrZqWbPyEe11dy
+ 5XASjU8qBp/OorUiWgNh4WszmXkLUN6GqhGKLyq97Vx+1d87XIm+F1oxVmaqQyRT
+ o93l+DsnHkXXjQcf4/dqZdx2jWeJBbYElvoZihckuhYI94jkD1UjxLOP4d62fgXR
+ R2GC9Y6BKI2jJpxvhnKO0ch0cx9g9v46ZaIyXqhyDF7vr2SbYO2RWFTJtxY8B/QI
+ 5juTYHVAirWV3aiPDbFd+IgBZfFcKwbqYKViq/dK1ngl3TcnfMsXXP7djKRYIjfg
+ DUNDbbqEN91C3l5BpgMuA==
+X-ME-Sender: <xms:nr9UZn0ZlJjuoipaeO0R9o3C7Oyo_rS_ZbZITXYbDjXi_rCK8YtMcQ>
+ <xme:nr9UZmFEJzOpWe2DEeVwpexF-ZMDcFrOjA4UhiS9c_AL5iSUlbpPc5UWfaujDdZzw
+ cDe-pPvLmNmIaeIHhM>
+X-ME-Received: <xmr:nr9UZn6b8y34U7bVmhafcqnPKO8LAD6JnWIWXIyOqReZ_A4smmsVg94>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdejgedguddtlecutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
  necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
  enucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheplfhi
@@ -59,21 +59,21 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdejgedguddtkecutefuodetgg
  enucggtffrrghtthgvrhhnpedvkeeihfefveekueevteefleffkeegudeghfdtuddugefh
  ueevgeffgedukeejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
  hlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:nL9UZlH_UUdPKo66lhcUYSymp4nH2aEzog3recb1C72wzQ1Mg_ilWA>
- <xmx:nL9UZtU_POKzw7ul4_O6F6R8tWgeYvKUQ3e6CFycTLeyMoVHn1ILPw>
- <xmx:nL9UZgMoQ4QmmIkQvFzsTGiEHjm5J4ZIZ5qzo65HY12r68EfmUpMPg>
- <xmx:nL9UZs1M7JWtqRPJX4NlBssEu4lNBhSMPp_9RQna7Re8aB_w_gY2JQ>
- <xmx:nL9UZvIzEbO3eT7s8vDr6g38qj5dRlmuGkH1gmVdfq_u38uMvgbRQXl->
+X-ME-Proxy: <xmx:nr9UZs3Ud0-byd2r22kYj9dFv0LhM4FVSG27NopGJAnnTLPkbJKS3Q>
+ <xmx:nr9UZqGNda7NlBZ9xVK4BJxSuAW9WcJ_x21GawSAeDHaXKSdgBrMdg>
+ <xmx:nr9UZt-PnpSdd7RSVttt83Ev7onmoJPJwbAhWyVNhPsfRGaZUhmdCQ>
+ <xmx:nr9UZnkt9zJGbjTSqmBIMVr04BX8oq3WZlFtp0z7d6BInDab8pLO4Q>
+ <xmx:nr9UZv7X3v0xbtW5SkscdBcPkXQdXIZT9pmGhSYrJFS0JJdCzAw94bNd>
 Feedback-ID: ifd894703:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 May 2024 13:15:07 -0400 (EDT)
+ 27 May 2024 13:15:09 -0400 (EDT)
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Mon, 27 May 2024 18:15:04 +0100
-Subject: [PATCH 1/4] hw/m68k/virt: Add a XHCI controller
+Date: Mon, 27 May 2024 18:15:05 +0100
+Subject: [PATCH 2/4] hw/m68k/virt: Add fw_cfg controller
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240527-m68k-bios-v1-1-6de26552fa77@flygoat.com>
+Message-Id: <20240527-m68k-bios-v1-2-6de26552fa77@flygoat.com>
 References: <20240527-m68k-bios-v1-0-6de26552fa77@flygoat.com>
 In-Reply-To: <20240527-m68k-bios-v1-0-6de26552fa77@flygoat.com>
 To: qemu-devel@nongnu.org
@@ -81,13 +81,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
  Jiaxun Yang <jiaxun.yang@flygoat.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3672;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3889;
  i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=meVJ+Hif6qYmAV3H2p1MdJpBK1pNp/dXQjk1XyRz74k=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSQ/TNfLGCflM33ef3eq4G+a00OPzPlFRe70t1rt8/yp
- +W6vyuMOkpZGMS4GGTFFFlCBJT6NjReXHD9QdYfmDmsTCBDGLg4BWAiylsY/ilP7N1ek7KfLTmm
- pPeIyLkFnbdUUoW3/XCe02Ju1JXMpM3IsHH+YfbM0z+l6o5P2zMzU6UqlqNNodiw8Jkmn5iWyrI
- aNgA=
+ bh=WHIaU6YdNuXiaOECEnngbdVzYw5RB6CGQXmlvSk15Vk=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSQ/TMf5P7p1fmzcNtuaxHlIlPt/3/mxlb1hG/8ZMa5f
+ UvotVMfO0pZGMS4GGTFFFlCBJT6NjReXHD9QdYfmDmsTCBDGLg4BeAmX2ZkmFtWNGXvH/5+5kam
+ DLUaqZokAS+N9dn/9qXqvT1X2mNTzshwvGJT1/YFCzco+s5WP/vQWEAv169cmCMz7+PZZIutWk6
+ cAA==
 X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
  fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 Received-SPF: pass client-ip=64.147.123.154;
@@ -114,102 +114,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VirtIO is somewhat limited on the diversity of devices.
-We lack proper audio, webcam and so on support on m68k virt machine.
-
-This can be improved by providing a XHCI controller, which enables
-provision of many different discoverable devices.
+Add a fw_cfg controller to pass essential information
+to firmware.
 
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 ---
  hw/m68k/Kconfig                                   |  1 +
- hw/m68k/virt.c                                    | 22 +++++++++++++++++++++-
- include/standard-headers/asm-m68k/bootinfo-virt.h |  2 ++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ hw/m68k/virt.c                                    | 25 ++++++++++++++++++++++-
+ include/standard-headers/asm-m68k/bootinfo-virt.h |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/hw/m68k/Kconfig b/hw/m68k/Kconfig
-index 0092cda4e9c8..66e63cd60b57 100644
+index 66e63cd60b57..4501da56ff6d 100644
 --- a/hw/m68k/Kconfig
 +++ b/hw/m68k/Kconfig
-@@ -44,4 +44,5 @@ config M68K_VIRT
+@@ -40,6 +40,7 @@ config M68K_VIRT
+     default y
+     depends on M68K
+     select M68K_IRQC
++    select FW_CFG_DMA
+     select VIRT_CTRL
      select GOLDFISH_PIC
      select GOLDFISH_TTY
-     select GOLDFISH_RTC
-+    select USB_XHCI_SYSBUS
-     select VIRTIO_MMIO
 diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index 09bc9bdfefb2..7b3917dcbd2b 100644
+index 7b3917dcbd2b..7590e6515ac3 100644
 --- a/hw/m68k/virt.c
 +++ b/hw/m68k/virt.c
-@@ -33,13 +33,16 @@
- #include "hw/char/goldfish_tty.h"
- #include "hw/rtc/goldfish_rtc.h"
- #include "hw/intc/goldfish_pic.h"
-+#include "hw/usb/hcd-xhci-sysbus.h"
- #include "hw/virtio/virtio-mmio.h"
- #include "hw/virtio/virtio-blk.h"
- 
- /*
-  * 6 goldfish-pic for CPU IRQ #1 to IRQ #6
+@@ -42,7 +42,8 @@
   * CPU IRQ #1 -> PIC #1
-- *               IRQ #1 to IRQ #31 -> unused
-+ *               IRQ #1 -> virt-ctrl
-+ *               IRQ #2 -> xhci
-+ *               IRQ #3 to IRQ #31 -> unused
+  *               IRQ #1 -> virt-ctrl
+  *               IRQ #2 -> xhci
+- *               IRQ #3 to IRQ #31 -> unused
++ *               IRQ #3 -> fw_cfg
++ *               IRQ #4 to IRQ #31 -> unused
   *               IRQ #32 -> goldfish-tty
   * CPU IRQ #2 -> PIC #2
   *               IRQ #1 to IRQ #32 -> virtio-mmio from 1 to 32
-@@ -86,6 +89,9 @@
- #define VIRT_VIRTIO_MMIO_BASE 0xff010000     /* MMIO: 0xff010000 - 0xff01ffff */
- #define VIRT_VIRTIO_IRQ_BASE  PIC_IRQ(2, 1)  /* PIC: 2, 3, 4, 5, IRQ: ALL */
+@@ -80,6 +81,10 @@
+ #define VIRT_CTRL_MMIO_BASE 0xff009000    /* MMIO: 0xff009000 - 0xff009fff */
+ #define VIRT_CTRL_IRQ_BASE  PIC_IRQ(1, 1) /* PIC: #1, IRQ: #1 */
  
-+#define VIRT_XHCI_MMIO_BASE 0xff020000    /* MMIO: 0xff020000 - 0xff023fff */
-+#define VIRT_XHCI_IRQ_BASE  PIC_IRQ(1, 2) /* PIC: #1, IRQ: #2 */
++/* 1 fw_cfg */
++#define VIRT_FW_CFG_MMIO_BASE 0xff00a000    /* MMIO: 0xff00a000 - 0xff00afff */
++#define VIRT_FW_CFG_IRQ_BASE  PIC_IRQ(1, 3) /* PIC: #1, IRQ: #3 */
 +
- typedef struct {
-     M68kCPU *cpu;
-     hwaddr initial_pc;
-@@ -216,6 +222,16 @@ static void virt_init(MachineState *machine)
-         io_base += 0x200;
-     }
+ /*
+  * virtio-mmio size is 0x200 bytes
+  * we use 4 goldfish-pic to attach them,
+@@ -116,6 +121,12 @@ static void rerandomize_rng_seed(void *opaque)
+                                 be16_to_cpu(*(uint16_t *)rng_seed->data));
+ }
  
-+    /* xhci */
-+    if (machine_usb(machine)) {
-+        dev = qdev_new(TYPE_XHCI_SYSBUS);
-+        qdev_prop_set_uint32(dev, "intrs", 1);
-+        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, VIRT_XHCI_MMIO_BASE);
-+        sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-+                        PIC_GPIO(VIRT_XHCI_IRQ_BASE));
-+    }
++static void fw_cfg_boot_set(void *opaque, const char *boot_device,
++                            Error **errp)
++{
++    fw_cfg_modify_i16(opaque, FW_CFG_BOOT_DEVICE, boot_device[0]);
++}
 +
-     if (kernel_filename) {
-         CPUState *cs = CPU(cpu);
-         uint64_t high;
-@@ -268,6 +284,10 @@ static void virt_init(MachineState *machine)
-                   VIRT_CTRL_MMIO_BASE, VIRT_CTRL_IRQ_BASE);
-         BOOTINFO2(param_ptr, BI_VIRT_VIRTIO_BASE,
-                   VIRT_VIRTIO_MMIO_BASE, VIRT_VIRTIO_IRQ_BASE);
-+        if (machine_usb(machine)) {
-+            BOOTINFO2(param_ptr, BI_VIRT_XHCI_BASE,
-+                    VIRT_XHCI_MMIO_BASE, VIRT_XHCI_IRQ_BASE);
-+        }
+ static void virt_init(MachineState *machine)
+ {
+     M68kCPU *cpu = NULL;
+@@ -134,6 +145,7 @@ static void virt_init(MachineState *machine)
+     SysBusDevice *sysbus;
+     hwaddr io_base;
+     int i;
++    FWCfgState *fw_cfg;
+     ResetInfo *reset_info;
+     uint8_t rng_seed[32];
+ 
+@@ -210,6 +222,15 @@ static void virt_init(MachineState *machine)
+     dev = sysbus_create_simple(TYPE_VIRT_CTRL, VIRT_CTRL_MMIO_BASE,
+                                PIC_GPIO(VIRT_CTRL_IRQ_BASE));
+ 
++    /* fw_cfg */
++    fw_cfg = fw_cfg_init_mem_wide(VIRT_FW_CFG_MMIO_BASE + 8,
++                                  VIRT_FW_CFG_MMIO_BASE, 8,
++                                  VIRT_FW_CFG_MMIO_BASE + 16,
++                                  &address_space_memory);
++    fw_cfg_add_i64(fw_cfg, FW_CFG_RAM_SIZE, (uint64_t)ram_size);
++    qemu_register_boot_set(fw_cfg_boot_set, fw_cfg);
++    rom_set_fw(fw_cfg);
++
+     /* virtio-mmio */
+     io_base = VIRT_VIRTIO_MMIO_BASE;
+     for (i = 0; i < 128; i++) {
+@@ -288,6 +309,8 @@ static void virt_init(MachineState *machine)
+             BOOTINFO2(param_ptr, BI_VIRT_XHCI_BASE,
+                     VIRT_XHCI_MMIO_BASE, VIRT_XHCI_IRQ_BASE);
+         }
++        BOOTINFO2(param_ptr, BI_VIRT_FW_CFG_BASE,
++                  VIRT_FW_CFG_MMIO_BASE, VIRT_FW_CFG_IRQ_BASE);
  
          if (kernel_cmdline) {
              BOOTINFOSTR(param_ptr, BI_COMMAND_LINE,
 diff --git a/include/standard-headers/asm-m68k/bootinfo-virt.h b/include/standard-headers/asm-m68k/bootinfo-virt.h
-index 75ac6bbd7d73..1700c3ada765 100644
+index 1700c3ada765..7f90be1aa7bd 100644
 --- a/include/standard-headers/asm-m68k/bootinfo-virt.h
 +++ b/include/standard-headers/asm-m68k/bootinfo-virt.h
-@@ -16,6 +16,8 @@
- /* No longer used -- replaced with BI_RNG_SEED -- but don't reuse this index:
+@@ -17,6 +17,7 @@
   * #define BI_VIRT_RNG_SEED	0x8006 */
  
-+#define BI_VIRT_XHCI_BASE	0x8007
-+
+ #define BI_VIRT_XHCI_BASE	0x8007
++#define BI_VIRT_FW_CFG_BASE	0x8008
+ 
  #define VIRT_BOOTI_VERSION	MK_BI_VERSION(2, 0)
  
- #endif /* _UAPI_ASM_M68K_BOOTINFO_MAC_H */
 
 -- 
 2.43.0
