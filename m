@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4EC8CF71D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 02:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D258CF72A
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 02:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBOZO-0007HH-Cv; Sun, 26 May 2024 20:50:34 -0400
+	id 1sBOZc-0007UW-35; Sun, 26 May 2024 20:50:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBOZJ-0007Cq-94
- for qemu-devel@nongnu.org; Sun, 26 May 2024 20:50:29 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1sBOZJ-0007Cx-Ce
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 20:50:30 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBOZA-0003ga-Im
- for qemu-devel@nongnu.org; Sun, 26 May 2024 20:50:24 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-24ca21014ccso1196450fac.1
- for <qemu-devel@nongnu.org>; Sun, 26 May 2024 17:50:19 -0700 (PDT)
+ id 1sBOZA-0003gm-My
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 20:50:25 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6f8f34cb0beso1883057b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 17:50:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716771018; x=1717375818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716771019; x=1717375819; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A/3mRVbjkwDF9eBMMUHlCcFHLaNSo0keoR5CYS7AGJ4=;
- b=b4tx9VX2ipo3QWJaCnvPeV8jHd8yj1SiW2CVowcTU/pl05dR1wZRAxJ4b0A1aoz78s
- Qx/8U4UVQJI4uuFO0Tse14J3qSIbBN3rdBnJbIL+zw1aAVxjBfsxCkz/km3W+/+rwFSe
- OKT2CUUM5N/py7AuR1uE63mlxnYcpDwh4AIma4D1GAblyPcrEVg7AD7nm05hCrddMVH8
- jqBrXEGQSuR3EyB6SWnMlJ/A3Pzjrwp7kvdrztiJxGfbxFJxeyHbqhubldZNXQImY7zp
- k+1zofvqLl4Vu/vNQtb6I1DKFFnjLRSWp1Q14ZzK17COZVFBJbG5yn25NQ6/ItrXhDGA
- sZ/w==
+ bh=gXRsFZySXvSqPrOv+ZAPgTOAgNl/fCJyejJjD81KENM=;
+ b=eOWZXK176K0uKHlxveEv8uNAnvORbSMoSnhkJ6dJKfsN2h8UA684Fp1iGwlXd8FXpm
+ MPKyl5B6AGDS0G5ObwcB5Ym2yoCdaA/buDO41RdWuWZGyL5gFPWpSkMWB3H6pmeYlKw5
+ 5FwE1E0FHSL8UOa6/eWO4Hx2tk/uqVaGbYwxaXslWzOIMv+8qXMI7VdiTU9BjcorarL/
+ 4xR0S9Sswy4gvE1/eHi9Rf+Gic8VPJpKc9IxmLmSKEq/2TkXY3vG1AjfhyyZfzX3tuZP
+ E+ABbbI/B779nOQO/FLHwJL3N7TWhh5CSomq35PPy0yID9mhLeUO+ULIndjE/cTbz2Bq
+ bRhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716771018; x=1717375818;
+ d=1e100.net; s=20230601; t=1716771019; x=1717375819;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A/3mRVbjkwDF9eBMMUHlCcFHLaNSo0keoR5CYS7AGJ4=;
- b=UsO1NYG6zmEr+RLLSSEBpBbHqG19etmpyx00tB2VAtzJdZGtGS/7Wu/4aiiNkBxFnn
- nD2lWsePvwJd6dhYn7h0wfNqaoDS517lqX0mQ/SpWSRYBmo8cwxZ1H283eNk5/B7rSyj
- QNSNZzQuVw7jvzkwlxrcRFjaIDUhny4fHjD0aFEgxgvqYxTer3mrBIu5jFFK5AD6eb9U
- btJEC27S+xO9CAT7yo3UAa7zk4sqvLwsAiuWVcVgyamaGaGnn3bMSJEx/EehmPjAk6Pi
- dAOcj8qWvHfKMfLZqOAomcrBoXowfIGp1I2jv2CVsICo/uhKbu2AV+4eKfGWBJPfaBtB
- GZ9A==
-X-Gm-Message-State: AOJu0Yx9OLcOdEpULJP9qO9iOmMtu4dAWwPy5D6XEapOmHQWsFDu0VNm
- O0u+NTt8lNiCxfc5G9ZcxqZ55StgguctACyRDmSdMlKb2wVacEX59dT+14xnnzStehuzFljOPEt
- H
-X-Google-Smtp-Source: AGHT+IFA2iVpuarcuYSqSufpVwNrRJR1oc/ymReMRy4jXMKIE+b98HZvw+ZA5QwO7USzbFcaK6mcyg==
-X-Received: by 2002:a05:6870:e256:b0:24f:ef6b:353e with SMTP id
- 586e51a60fabf-24fef6b7416mr2348778fac.36.1716771018523; 
- Sun, 26 May 2024 17:50:18 -0700 (PDT)
+ bh=gXRsFZySXvSqPrOv+ZAPgTOAgNl/fCJyejJjD81KENM=;
+ b=Wb8WDqI924+BJXMrNWDULbeQOJKEIOj+PSAGZrvA9H7wploR/PI3qQ+YeGhDPgXF3H
+ tum3SaMZLPGlwWYnj1gF3U3MBv5ccfGXEcZfS4R4cjocOjx+qjLRuxfFNZzWr3Ws1J8N
+ G9L6YqNg5KjKv2mlrgdA9Jwx9eiUoVhZDzSxq1aX1h+TlfMADDChhJuyLBcH7VFxQIis
+ tgAkVxolZGN1DiKrrMS57dI7C51DxwSIEjaazQmr059iUEjfFZT2U4kkRCmYxw2/doIq
+ CnjsZnve5sjar4wPDWQFKp5tzu0XVpfhKHLtrEFJ+fmxqMcavq2xjQcrxWcyTuwWok2H
+ Tl2Q==
+X-Gm-Message-State: AOJu0Yz3/KHC21akUz46gT0M7dS9fl1a5JySLM4hJpTt4wqrXF5BU7u4
+ Rvy/JaR4PScuWL6DJzncfIQCyOkb/jqdgiup/5OvIMQJz5lWv5bsc+cPz3ubpF4dy7T3n4q+72E
+ 1
+X-Google-Smtp-Source: AGHT+IHOTCePmeGCrV4hA1L3PAxSyNm/x/SHMgb72ai8+EnpFf8d4+Kbpsfk/hB1JfLZ9txMtXghRg==
+X-Received: by 2002:a05:6a00:4603:b0:701:78af:4a72 with SMTP id
+ d2e1a72fcca58-70178af5edfmr1219498b3a.0.1716771019202; 
+ Sun, 26 May 2024 17:50:19 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fd6d7598sm3942958b3a.220.2024.05.26.17.50.17
+ d2e1a72fcca58-6f8fd6d7598sm3942958b3a.220.2024.05.26.17.50.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 26 May 2024 17:50:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 20/28] linux-user/i386: Return boolean success from
- restore_sigcontext
-Date: Sun, 26 May 2024 17:49:53 -0700
-Message-Id: <20240527005001.642825-21-richard.henderson@linaro.org>
+Subject: [PULL 21/28] linux-user/i386: Return boolean success from
+ xrstor_sigcontext
+Date: Sun, 26 May 2024 17:49:54 -0700
+Message-Id: <20240527005001.642825-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527005001.642825-1-richard.henderson@linaro.org>
 References: <20240527005001.642825-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,97 +98,61 @@ Invert the sense of the return value and use bool.
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/i386/signal.c | 51 ++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ linux-user/i386/signal.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index 6763b4bda8..9e6d883ea1 100644
+index 9e6d883ea1..03031ef9e5 100644
 --- a/linux-user/i386/signal.c
 +++ b/linux-user/i386/signal.c
-@@ -564,12 +564,12 @@ static int xrstor_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
-     return 0;
+@@ -530,8 +530,8 @@ give_sigsegv:
+     force_sigsegv(sig);
  }
  
--static int
--restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
-+static bool restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
+-static int xrstor_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
+-                             abi_ulong fxsave_addr)
++static bool xrstor_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
++                              abi_ulong fxsave_addr)
  {
--    int err = 1;
-     abi_ulong fpstate_addr;
-     unsigned int tmpflags;
-+    struct target_fpstate *fpstate;
-+    bool ok;
+     struct target_fpx_sw_bytes *sw = (void *)&fxsave->sw_reserved;
  
- #ifndef TARGET_X86_64
-     cpu_x86_load_seg(env, R_GS, tswap16(sc->gs));
-@@ -617,29 +617,27 @@ restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
-     //          regs->orig_eax = -1;            /* disable syscall checks */
- 
-     fpstate_addr = tswapl(sc->fpstate);
--    if (fpstate_addr != 0) {
--        struct target_fpstate *fpstate;
--        if (!lock_user_struct(VERIFY_READ, fpstate, fpstate_addr,
--                              sizeof(struct target_fpstate))) {
--            return err;
--        }
--#ifndef TARGET_X86_64
--        if (!(env->features[FEAT_1_EDX] & CPUID_FXSR)) {
--            cpu_x86_frstor(env, fpstate_addr, 1);
--            err = 0;
--        } else {
--            err = xrstor_sigcontext(env, &fpstate->fxstate,
--                                    fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
--        }
--#else
--        err = xrstor_sigcontext(env, fpstate, fpstate_addr);
--#endif
--        unlock_user_struct(fpstate, fpstate_addr, 0);
--    } else {
--        err = 0;
-+    if (fpstate_addr == 0) {
-+        return true;
+@@ -549,19 +549,19 @@ static int xrstor_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
+             && extended_size >= minimum_size) {
+             if (!access_ok(env_cpu(env), VERIFY_READ, fxsave_addr,
+                            extended_size - TARGET_FPSTATE_FXSAVE_OFFSET)) {
+-                return 1;
++                return false;
+             }
+             magic2 = tswapl(*(uint32_t *)((void *)fxsave + xstate_size));
+             if (magic2 == TARGET_FP_XSTATE_MAGIC2) {
+                 cpu_x86_xrstor(env, fxsave_addr, -1);
+-                return 0;
++                return true;
+             }
+         }
+         /* fall through to fxrstor */
      }
-+    if (!lock_user_struct(VERIFY_READ, fpstate, fpstate_addr,
-+                          sizeof(struct target_fpstate))) {
-+        return false;
-+    }
-+#ifndef TARGET_X86_64
-+    if (!(env->features[FEAT_1_EDX] & CPUID_FXSR)) {
-+        cpu_x86_frstor(env, fpstate_addr, 1);
-+        ok = true;
-+    } else {
-+        ok = !xrstor_sigcontext(env, &fpstate->fxstate,
-+                                fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
-+    }
-+#else
-+    ok = !xrstor_sigcontext(env, fpstate, fpstate_addr);
-+#endif
-+    unlock_user_struct(fpstate, fpstate_addr, 0);
  
--    return err;
-+    return ok;
+     cpu_x86_fxrstor(env, fxsave_addr);
+-    return 0;
++    return true;
  }
  
- /* Note: there is no sigreturn on x86_64, there is only rt_sigreturn */
-@@ -665,8 +663,9 @@ long do_sigreturn(CPUX86State *env)
-     set_sigmask(&set);
- 
-     /* restore registers */
--    if (restore_sigcontext(env, &frame->sc))
-+    if (!restore_sigcontext(env, &frame->sc)) {
-         goto badframe;
-+    }
-     unlock_user_struct(frame, frame_addr, 0);
-     return -QEMU_ESIGRETURN;
- 
-@@ -690,7 +689,7 @@ long do_rt_sigreturn(CPUX86State *env)
-     target_to_host_sigset(&set, &frame->uc.tuc_sigmask);
-     set_sigmask(&set);
- 
--    if (restore_sigcontext(env, &frame->uc.tuc_mcontext)) {
-+    if (!restore_sigcontext(env, &frame->uc.tuc_mcontext)) {
-         goto badframe;
+ static bool restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
+@@ -629,11 +629,11 @@ static bool restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
+         cpu_x86_frstor(env, fpstate_addr, 1);
+         ok = true;
+     } else {
+-        ok = !xrstor_sigcontext(env, &fpstate->fxstate,
+-                                fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
++        ok = xrstor_sigcontext(env, &fpstate->fxstate,
++                               fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
      }
+ #else
+-    ok = !xrstor_sigcontext(env, fpstate, fpstate_addr);
++    ok = xrstor_sigcontext(env, fpstate, fpstate_addr);
+ #endif
+     unlock_user_struct(fpstate, fpstate_addr, 0);
  
 -- 
 2.34.1
