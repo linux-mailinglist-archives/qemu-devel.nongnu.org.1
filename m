@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103A88CF7B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 05:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55A08CF802
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 05:16:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBQe9-0005KQ-IU; Sun, 26 May 2024 23:03:37 -0400
+	id 1sBQpA-000672-4f; Sun, 26 May 2024 23:15:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sBQe1-0005JZ-HY
- for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:30 -0400
-Received: from madrid.collaboradmins.com ([46.235.227.194])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1sBQdz-0002MW-O2
- for qemu-devel@nongnu.org; Sun, 26 May 2024 23:03:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1716779006;
- bh=dyRqhmHJAksz+5pBAVdozL3TwgC5GM+Tphb6swUsNUQ=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=YQ0+kG3zpa8jcz7PNBwJGFyf4Vgz8iP8mDwrNGZWh/xHhXKL9OwcUjvDT8CMvjJSC
- QSdThxNk6RIy6Z3kkaT8Y4sVjCpf8NIbV3WSUIJ1Du0VxG/djbivsOtW9opVkm+yzq
- YFIeW9ayrDYpKaZ/Tjj3qwCTlyQn/FrN4QWV7ttch4sPWbQISAKFMdPPSxsQiI4Dj8
- SyO6xCEbwZPPJmSKsFMEkdGGXmxkqMd1OD/v5f6LPwuB4KnShz2WlXJOcWl9/6Gu0X
- WKWttxjeuezT62tByCiKTQp188o+qKiuNY9uMdoGJw0bVL+qAX1950zDQoviYlRSGD
- 2kfwX+fyIvA7w==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id CCF5B3780627;
- Mon, 27 May 2024 03:03:24 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v13 13/13] virtio-gpu: Support Venus context
-Date: Mon, 27 May 2024 06:02:33 +0300
-Message-ID: <20240527030233.3775514-14-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240527030233.3775514-1-dmitry.osipenko@collabora.com>
-References: <20240527030233.3775514-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1sBQp7-00066W-QK
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 23:14:57 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xuchuangxclwt@bytedance.com>)
+ id 1sBQov-0004G1-Q0
+ for qemu-devel@nongnu.org; Sun, 26 May 2024 23:14:57 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5b9817a135aso805925eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 26 May 2024 20:14:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1716779678; x=1717384478; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kdfKBWYgXkwQbXE4PNGLBClW49IP35uOBMWtBZKXUP0=;
+ b=ZqrKpOpVKWys1hHn1E4rLJXQV2DO2aJx96BWKpm/YcgpgxxGfYLOYo6lT1gYmsqsWo
+ VhJPueh96E0R+M3Gnqgnmup9QL1goWVMQ8Ryw1CN1Sor4gH5fRmMBRQhxn4sR3aWGqiw
+ 0MthLncNDwG4sUAvvYsrTSzgovYllvhHu2NqUg9mpPt0GPoyigrLyFbpObus4tb0BWKJ
+ efaQvEdgzjwJ9q/WRg1RxcMiAKXS/2AmOSkPKCVG8qbL9GU9mgoA9KbDEr72xVoWydYE
+ ftFMeTccvcipgp9FVCne8AdsQRtQxJSgNhMZ49kjnzRW2IqHu6WFD/JxTvPTPkPUTEMJ
+ qPjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716779678; x=1717384478;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kdfKBWYgXkwQbXE4PNGLBClW49IP35uOBMWtBZKXUP0=;
+ b=toN42gNWH3I6bbzXbzNf1WiNl1XuOx6GFzUWiG91Tbo7zHmnu9mt1dGf/PRX5ZLFVT
+ +/iC0cRfweVcEThHohRfdSC2h/f2T7A9RUoievTjMQk9+KcCJ51J/rliRyapXJdVaQO4
+ MBoGzlSyGflUCGtV2OJ/xDvOKBQ2zTiX/vFq2pC7pLwbZQL53r38DjvXLTVpsS4TpeD+
+ NeePgr1NRR3sEaHi3o4rqkp3c2OAa1lQi6jKrBdDTnDHOvIsQoLZoH4wPBRzoNAevF1h
+ +nf74jSAHHMG3hSkuWj/HV14wHDKeKuvP4eikYDmMs7VQV4EtunoxQe7yLuEUXfDu3Fy
+ sbNw==
+X-Gm-Message-State: AOJu0YwF3D57CoTG86SIDKvkCjQeTrKInw9I3qqYw9767UNayJkeHalE
+ SkH5rvVjccC2/Fsf/wCmhhbHj1IJAQ1jQKAVHg3xuRaDauFf94YfJQBb/4Dp1ZoR9wycE5cKHjp
+ M
+X-Google-Smtp-Source: AGHT+IGRhHTXc+LsEodxhXEnl0n2mVHStpAYEdHBYnH4/b9WIzHSstOhRzB7Mi/OcV05D8hI5YaNrQ==
+X-Received: by 2002:a05:6870:7195:b0:24f:d4b4:698f with SMTP id
+ 586e51a60fabf-24fd4b49812mr6594428fac.1.1716779678674; 
+ Sun, 26 May 2024 20:14:38 -0700 (PDT)
+Received: from MacBook-Pro-2.local.bytedance.net ([203.208.167.151])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f8fbd3dd5dsm4035662b3a.42.2024.05.26.20.14.35
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 26 May 2024 20:14:38 -0700 (PDT)
+From: Chuang Xu <xuchuangxclwt@bytedance.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, xieyongji@bytedance.com,
+ Chuang Xu <xuchuangxclwt@bytedance.com>,
+ Guixiong Wei <weiguixiong@bytedance.com>,
+ Yipeng Yin <yinyipeng@bytedance.com>
+Subject: [PATCH] x86: cpu: fixup number of addressable IDs for processor cores
+ in the physical package
+Date: Mon, 27 May 2024 11:13:33 +0800
+Message-Id: <20240527031333.85932-1-xuchuangxclwt@bytedance.com>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=xuchuangxclwt@bytedance.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,143 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+When QEMU is started with:
+-cpu host,host-cache-info=on,l3-cache=off \
+-smp 2,sockets=1,dies=1,cores=1,threads=2
+Guest can't acquire maximum number of addressable IDs for processor cores in
+the physical package from CPUID[04H].
 
-Request Venus when initializing VirGL and if venus=true flag is set for
-virtio-gpu-gl device.
+This bug was introduced in commit d7caf13b5fcf742e5680c1d3448ba070fc811644.
+Fix it by changing the judgement condition to a >= 1.
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Chuang Xu <xuchuangxclwt@bytedance.com>
+Signed-off-by: Guixiong Wei <weiguixiong@bytedance.com>
+Signed-off-by: Yipeng Yin <yinyipeng@bytedance.com>
 ---
- hw/display/virtio-gpu-gl.c     |  2 ++
- hw/display/virtio-gpu-virgl.c  | 22 ++++++++++++++++++----
- hw/display/virtio-gpu.c        | 13 +++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- meson.build                    |  1 +
- 5 files changed, 37 insertions(+), 4 deletions(-)
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index 34a2bd2fa426..50292826e7cf 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -150,6 +150,8 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
- static Property virtio_gpu_gl_properties[] = {
-     DEFINE_PROP_BIT("stats", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_STATS_ENABLED, false),
-+    DEFINE_PROP_BIT("venus", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index d3ae3e3d4e24..c9d20a8a60d0 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1139,6 +1139,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#ifdef VIRGL_RENDERER_VENUS
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1172,7 +1177,7 @@ static void virtio_gpu_virgl_add_capset(GArray *capset_ids, uint32_t capset_id)
- 
- GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset_max_ver, capset_max_size;
-     GArray *capset_ids;
- 
-     capset_ids = g_array_new(false, false, sizeof(uint32_t));
-@@ -1181,12 +1186,21 @@ GArray *virtio_gpu_virgl_get_capsets(VirtIOGPU *g)
-     virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL);
- 
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
--    if (capset2_max_ver) {
-+                               &capset_max_ver,
-+                               &capset_max_size);
-+    if (capset_max_ver) {
-         virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset_max_ver,
-+                                   &capset_max_size);
-+        if (capset_max_size) {
-+            virtio_gpu_virgl_add_capset(capset_ids, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
-+
-     return capset_ids;
- }
- 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index d423bc9a7bf5..0618801715a6 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1504,6 +1504,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef HAVE_VIRGL_VENUS
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+#else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index b9de761fd673..910c5c3bcd45 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -99,6 +99,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -117,6 +118,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/meson.build b/meson.build
-index e753da4c76c3..1d7346b70311 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2312,6 +2312,7 @@ if virgl.version().version_compare('>=1.0.0')
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
-   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
-   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
-+  config_host_data.set('HAVE_VIRGL_VENUS', 1)
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index cd16cb893d..0369c01153 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6097,7 +6097,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             if (*eax & 31) {
+                 int host_vcpus_per_cache = 1 + ((*eax & 0x3FFC000) >> 14);
+                 int vcpus_per_socket = cs->nr_cores * cs->nr_threads;
+-                if (cs->nr_cores > 1) {
++                if (cs->nr_cores >= 1) {
+                     *eax &= ~0xFC000000;
+                     *eax |= (pow2ceil(cs->nr_cores) - 1) << 26;
+                 }
 -- 
-2.44.0
+2.20.1
 
 
