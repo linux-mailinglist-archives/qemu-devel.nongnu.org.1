@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599E48CFA1D
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C5C8CFA1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUkV-0002Lc-LW; Mon, 27 May 2024 03:26:28 -0400
+	id 1sBUlS-0003eA-A8; Mon, 27 May 2024 03:27:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUk7-0000ni-HK; Mon, 27 May 2024 03:26:05 -0400
+ id 1sBUkD-0000xU-CU; Mon, 27 May 2024 03:26:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUk4-0006Pw-Dx; Mon, 27 May 2024 03:26:02 -0400
+ id 1sBUk7-0006QX-CV; Mon, 27 May 2024 03:26:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 157E16A4CF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 274A26A4D0;
  Mon, 27 May 2024 10:25:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 53D78D846C;
+ by tsrv.corpit.ru (Postfix) with SMTP id 62FB8D846D;
  Mon, 27 May 2024 10:24:36 +0300 (MSK)
-Received: (nullmailer pid 52924 invoked by uid 1000);
+Received: (nullmailer pid 52928 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 18/21] hw/loongarch/virt: Fix FDT memory node address
- width
-Date: Mon, 27 May 2024 10:24:28 +0300
-Message-Id: <20240527072435.52812-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 19/21] dockerfiles: add 'MAKE' env variable to
+ remaining containers
+Date: Mon, 27 May 2024 10:24:29 +0300
+Message-Id: <20240527072435.52812-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,32 +64,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-Higher bits for memory nodes were omitted at qemu_fdt_setprop_cells.
+All the lcitool generated containers define a "MAKE" env. It will be
+convenient for later patches if all containers do this.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240520-loongarch-fdt-memnode-v1-1-5ea9be93911e@flygoat.com>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit 6204af704a071ea68d3af55c0502b112a7af9546)
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240513111551.488088-2-berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit bad7a2759c69417a5558f0f19d4ede58c08705e8)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index ec40adc5e6..1af2d14aba 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -298,7 +298,8 @@ static void fdt_add_memory_node(MachineState *ms,
-     char *nodename = g_strdup_printf("/memory@%" PRIx64, base);
+diff --git a/tests/docker/dockerfiles/debian-all-test-cross.docker b/tests/docker/dockerfiles/debian-all-test-cross.docker
+index 2cc7a24d4d..6cc38a3633 100644
+--- a/tests/docker/dockerfiles/debian-all-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-all-test-cross.docker
+@@ -68,6 +68,7 @@ RUN DEBIAN_FRONTEND=noninteractive eatmydata \
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST aarch64-linux-user,arm-linux-user,hppa-linux-user,i386-linux-user,m68k-linux-user,mips-linux-user,mips64-linux-user,mips64el-linux-user,mipsel-linux-user,ppc-linux-user,ppc64-linux-user,ppc64le-linux-user,riscv64-linux-user,s390x-linux-user,sparc64-linux-user
+ # As a final step configure the user (if env is defined)
++ENV MAKE /usr/bin/make
+ ARG USER
+ ARG UID
+ RUN if [ "${USER}" ]; then \
+diff --git a/tests/docker/dockerfiles/debian-hexagon-cross.docker b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+index 7c38d7c9e4..e7fd596509 100644
+--- a/tests/docker/dockerfiles/debian-hexagon-cross.docker
++++ b/tests/docker/dockerfiles/debian-hexagon-cross.docker
+@@ -45,6 +45,7 @@ ENV CCACHE_WRAPPERSDIR "/usr/libexec/ccache-wrappers"
  
-     qemu_fdt_add_subnode(ms->fdt, nodename);
--    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", 0, base, 0, size);
-+    qemu_fdt_setprop_cells(ms->fdt, nodename, "reg", base >> 32, base,
-+                           size >> 32, size);
-     qemu_fdt_setprop_string(ms->fdt, nodename, "device_type", "memory");
+ RUN curl -#SL "$TOOLCHAIN_URL" | tar -xJC "$TOOLCHAIN_INSTALL"
+ ENV PATH $PATH:${TOOLCHAIN_INSTALL}/${TOOLCHAIN_BASENAME}/x86_64-linux-gnu/bin
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-legacy-test-cross.docker b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+index 8cc68bc912..d75e0b85e2 100644
+--- a/tests/docker/dockerfiles/debian-legacy-test-cross.docker
++++ b/tests/docker/dockerfiles/debian-legacy-test-cross.docker
+@@ -42,6 +42,7 @@ RUN /usr/bin/pip3 install tomli
  
-     if (ms->numa_state && ms->numa_state->num_nodes) {
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST alpha-linux-user,sh4-linux-user
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-loongarch-cross.docker b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+index b25e779a2c..6a9197528b 100644
+--- a/tests/docker/dockerfiles/debian-loongarch-cross.docker
++++ b/tests/docker/dockerfiles/debian-loongarch-cross.docker
+@@ -44,6 +44,7 @@ ENV LD_LIBRARY_PATH /opt/cross-tools/lib:/opt/cross-tools/loongarch64-unknown-li
+ 
+ ENV QEMU_CONFIGURE_OPTS --disable-system --disable-docs --disable-tools
+ ENV DEF_TARGET_LIST loongarch64-linux-user,loongarch-softmmu
++ENV MAKE /usr/bin/make
+ 
+ # As a final step configure the user (if env is defined)
+ ARG USER
+diff --git a/tests/docker/dockerfiles/debian-tricore-cross.docker b/tests/docker/dockerfiles/debian-tricore-cross.docker
+index c597f8e16b..16276aa21d 100644
+--- a/tests/docker/dockerfiles/debian-tricore-cross.docker
++++ b/tests/docker/dockerfiles/debian-tricore-cross.docker
+@@ -44,6 +44,7 @@ RUN curl -#SL https://github.com/bkoppelmann/package_940/releases/download/trico
+ # This image can only build a very minimal QEMU as well as the tests
+ ENV DEF_TARGET_LIST tricore-softmmu
+ ENV QEMU_CONFIGURE_OPTS --disable-user --disable-tools --disable-fdt
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/debian-xtensa-cross.docker b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+index 72c25d63d9..413881899b 100644
+--- a/tests/docker/dockerfiles/debian-xtensa-cross.docker
++++ b/tests/docker/dockerfiles/debian-xtensa-cross.docker
+@@ -27,6 +27,7 @@ RUN for cpu in $CPU_LIST; do \
+     done
+ 
+ ENV PATH $PATH:/opt/$TOOLCHAIN_RELEASE/xtensa-dc232b-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dc233c-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-de233_fpu-elf/bin:/opt/$TOOLCHAIN_RELEASE/xtensa-dsp3400-elf/bin
++ENV MAKE /usr/bin/make
+ # As a final step configure the user (if env is defined)
+ ARG USER
+ ARG UID
+diff --git a/tests/docker/dockerfiles/fedora-cris-cross.docker b/tests/docker/dockerfiles/fedora-cris-cross.docker
+index f2899af410..97c9d37ede 100644
+--- a/tests/docker/dockerfiles/fedora-cris-cross.docker
++++ b/tests/docker/dockerfiles/fedora-cris-cross.docker
+@@ -4,6 +4,7 @@
+ 
+ FROM registry.fedoraproject.org/fedora:33
+ ENV PACKAGES gcc-cris-linux-gnu
++ENV MAKE /usr/bin/make
+ RUN dnf install -y $PACKAGES
+ RUN rpm -q $PACKAGES | sort > /packages.txt
+ # As a final step configure the user (if env is defined)
 -- 
 2.39.2
 
