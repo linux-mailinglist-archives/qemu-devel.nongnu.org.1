@@ -2,105 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042C58CF9DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413698CFA07
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUe1-0006Aa-Ki; Mon, 27 May 2024 03:19:46 -0400
+	id 1sBUj1-0007ks-0P; Mon, 27 May 2024 03:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sBUdg-00067u-6e
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:19:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sBUin-0007eT-Ns; Mon, 27 May 2024 03:24:42 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1sBUdb-0004uY-16
- for qemu-devel@nongnu.org; Mon, 27 May 2024 03:19:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716794358;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZoTiePj2SgsSyNDFQiutDJsrzjZVw0FMcnBlVOFGPVo=;
- b=EUrHOB8/MSO89AmbQ14CrQz2LGszmH3SUme+U7NPIRuakYxyA+XQO24Kh5jrWYE+bMMDGV
- h7nOPdKJWidAFodX7JhKi0KBCVnirMQ1ngWO/6x+Q2n189EvBMrzjM0TYjJmK2IsWZX+Tx
- qbjbs8pXjWxnMkcaZNzy4APDUI/+21o=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225--4z1REnjNIGFw4OxBBZKmg-1; Mon, 27 May 2024 03:19:16 -0400
-X-MC-Unique: -4z1REnjNIGFw4OxBBZKmg-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-43fb05ef704so33848011cf.2
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 00:19:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716794356; x=1717399156;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZoTiePj2SgsSyNDFQiutDJsrzjZVw0FMcnBlVOFGPVo=;
- b=UAOGlKKZW3SCmITieEhM16dnELpN6YpsbU01jt6hMwEwJ9ig62GsEkkws763GzsU8T
- yKf+k2xQ+c69b3++8eDss9vTBD2zli5uc8Vec6LkB1iE3iktoYvn23GmxM49zshhHn6e
- euVxRRR1kH03+QMLn39TSjtppD+LvYoHMraKWRj+PsH4bgYmea4eTS8IQlnp1t2j9Ky7
- yLd/BOnSMp+wj58DaciQhKFaQDJrUC9EV/847n5D0YChB8pBRtPEEuVYwpnliWqw5dhH
- OwMAHpNEQeU0DoSARggFHrTn5ctC95DxoL625W3JyE+WlYoJc5G5MGEtr7vCAnR9hdX2
- hOEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLiok44y+mfbHbP1GVznszIOMlIIlgs7K5JGs+nl1oLanBsWJgbMr64UiYvsUocosxz0KBWRQnWpS361K81USy9dJGLGk=
-X-Gm-Message-State: AOJu0YxPEJZxx+kMXpeaqixlFZ9mmVBn8PnEMzZw2kYyt3GMYHTk4Nde
- d3D+OlFT/+sW/wQGaZsS+gtWfgeDdnJDwSUeo0vvQCVRiWO/+r5FNoVIf3XIofEy/bGGos63xN1
- GftlL+aGlhABIeZJ+dMVS+/VLPARo9bo1V9/TL2TexXT2kdJgDw8G
-X-Received: by 2002:a05:622a:188e:b0:43c:7504:32ba with SMTP id
- d75a77b69052e-43fb0e5149cmr91741821cf.10.1716794356067; 
- Mon, 27 May 2024 00:19:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExM2/nlFpN6xxacm/DZQWnwb57vvtqWgQW75EWgLwk087q6KqJMuI28JP+sMiV5LIZeeCvhg==
-X-Received: by 2002:a05:622a:188e:b0:43c:7504:32ba with SMTP id
- d75a77b69052e-43fb0e5149cmr91741671cf.10.1716794355378; 
- Mon, 27 May 2024 00:19:15 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f28:4600:d3a7:6c26:54cf:e01e?
- (p200300d82f284600d3a76c2654cfe01e.dip0.t-ipconnect.de.
- [2003:d8:2f28:4600:d3a7:6c26:54cf:e01e])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43fb17cc2d8sm30838891cf.26.2024.05.27.00.19.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 00:19:15 -0700 (PDT)
-Message-ID: <f1fe0673-254d-494e-ba8a-d252723c1f16@redhat.com>
-Date: Mon, 27 May 2024 09:19:09 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1sBUik-0006AO-Gp; Mon, 27 May 2024 03:24:41 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CB4D36A4BD;
+ Mon, 27 May 2024 10:25:08 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 12539D845A;
+ Mon, 27 May 2024 10:24:35 +0300 (MSK)
+Received: (nullmailer pid 52867 invoked by uid 1000);
+ Mon, 27 May 2024 07:24:35 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>, "Roth,
+ Michael" <Michael.Roth@amd.com>
+Subject: [Stable-8.2.5 00/21] Patch Round-up for stable 8.2.5,
+ freeze on 2024-06-07
+Date: Mon, 27 May 2024 10:24:10 +0300
+Message-Id: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] hw/riscv/virt: Add memory hotplugging and
- virtio-md-pci support
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
- Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Atish Patra <atishp@atishpatra.org>, Atish Patra <atishp@rivosinc.com>
-Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
- Sunil V L <sunilvl@ventanamicro.com>,
- Santosh Mamila <santosh.mamila@catalinasystems.io>,
- Chethan Seshadri <Chethan.Seshadri@catalinasystems.io>,
- Sivakumar Munnangi <siva.munnangi@catalinasystems.io>
-References: <20240521105635.795211-1-bjorn@kernel.org>
- <20240521105635.795211-2-bjorn@kernel.org>
- <55810d52-0360-40ad-a8d2-3b6a8aa220ae@ventanamicro.com>
- <51ef570c-da63-4e25-9c48-dbdf8a40a34d@redhat.com>
- <18f217cf-6d68-4676-8674-d91f96e155fc@ventanamicro.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-In-Reply-To: <18f217cf-6d68-4676-8674-d91f96e155fc@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.145,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -118,20 +59,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> 
-> I wonder if we should forbid users from removing memory that is 'out of place', 
-> i.e. users
-> should always remove pc-dimms in LIFO order. Usually this kind of control is 
-> done by
-> management, e.g. libvirt, but if we're not sure we'll keep consistency during 
-> memory
-> unplugs ...
+The following patches are queued for QEMU stable v8.2.5:
 
-I really don't think we should do any of that. ;)
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.2
 
--- 
-Thanks,
+Patch freeze is 2024-06-07, and the release is planned for 2024-06-09:
 
-David / dhildenb
+  https://wiki.qemu.org/Planning/8.2
 
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 6a5a63f74ba5 Ruihan Li:
+   target/i386: Give IRQs a chance when resetting HF_INHIBIT_IRQ_MASK
+02 7b616f36de0b Richard Henderson:
+   target/sparc: Fix FEXPAND
+03 9157dccc7e71 Richard Henderson:
+   target/sparc: Fix FMUL8x16
+04 54c52ec719fb Song Gao:
+   hw/loongarch/virt: Fix memory leak
+05 e6578f1f68a0 Mattias Nissler:
+   hw/remote/vfio-user: Fix config space access byte order
+06 41c685dc59bb Paolo Bonzini:
+   target/i386: fix operand size for DATA16 REX.W POPCNT
+07 40a3ec7b5ffd Paolo Bonzini:
+   target/i386: rdpkru/wrpkru are no-prefix instructions
+08 fe01af5d47d4 Paolo Bonzini:
+   target/i386: fix feature dependency for WAITPKG
+09 23b1f53c2c89 Paolo Bonzini:
+   configure: quote -D options that are passed through to meson
+10 371d60dfdb47 Thomas Huth:
+   configure: Fix error message when C compiler is not working
+11 37e91415018d hikalium:
+   ui/gtk: Fix mouse/motion event scaling issue with GTK display backend
+12 e4e62514e3cc Dongwon Kim:
+   ui/gtk: Check if fence_fd is equal to or greater than 0
+13 c9290dfebfdb Richard Henderson:
+   tcg/loongarch64: Fill out tcg_out_{ld,st} for vector regs
+14 84d4b7285486 donsheng:
+   target-i386: hyper-v: Correct kvm_hv_handle_exit return value
+15 9710401276a0 Fiona Ebner:
+   hw/core/machine: move compatibility flags for VirtIO-net USO to machine 
+   8.1
+16 0eb285c3627b Song Gao:
+   target/loongarch/kvm: Fix VM recovery from disk failures
+17 b11f9814526b Song Gao:
+   hw/loongarch: Fix fdt memory node wrong 'reg'
+18 6204af704a07 Jiaxun Yang:
+   hw/loongarch/virt: Fix FDT memory node address width
+19 bad7a2759c69 Daniel P. Berrangé:
+   dockerfiles: add 'MAKE' env variable to remaining containers
+20 8225bff7c5db Paolo Bonzini:
+   target/i386: disable jmp_opt if EFLAGS.RF is 1
+21 f0f0136abba6 Paolo Bonzini:
+   target/i386: no single-step exception after MOV or POP SS
 
