@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399268CFA1C
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6418CFA13
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUkO-0001gI-1J; Mon, 27 May 2024 03:26:20 -0400
+	id 1sBUkI-0000wp-Un; Mon, 27 May 2024 03:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjX-00087S-8t; Mon, 27 May 2024 03:25:34 -0400
+ id 1sBUjZ-00087d-9J; Mon, 27 May 2024 03:25:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjT-0006Fa-Pf; Mon, 27 May 2024 03:25:26 -0400
+ id 1sBUjV-0006M5-Co; Mon, 27 May 2024 03:25:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BB1BB6A4CA;
+ by isrv.corpit.ru (Postfix) with ESMTP id CBAB16A4CB;
  Mon, 27 May 2024 10:25:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0474CD8467;
+ by tsrv.corpit.ru (Postfix) with SMTP id 14CDCD8468;
  Mon, 27 May 2024 10:24:36 +0300 (MSK)
-Received: (nullmailer pid 52909 invoked by uid 1000);
+Received: (nullmailer pid 52912 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 13/21] tcg/loongarch64: Fill out tcg_out_{ld,
- st} for vector regs
-Date: Mon, 27 May 2024 10:24:23 +0300
-Message-Id: <20240527072435.52812-13-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, donsheng <dongsheng.x.zhang@intel.com>,
+ Chao Gao <chao.gao@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 14/21] target-i386: hyper-v: Correct kvm_hv_handle_exit
+ return value
+Date: Mon, 27 May 2024 10:24:24 +0300
+Message-Id: <20240527072435.52812-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,154 +62,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: donsheng <dongsheng.x.zhang@intel.com>
 
-TCG register spill/fill uses tcg_out_ld/st with all types,
-not necessarily going through INDEX_op_{ld,st}_vec.
+This bug fix addresses the incorrect return value of kvm_hv_handle_exit for
+KVM_EXIT_HYPERV_SYNIC, which should be EXCP_INTERRUPT.
 
+Handling of KVM_EXIT_HYPERV_SYNIC in QEMU needs to be synchronous.
+This means that async_synic_update should run in the current QEMU vCPU
+thread before returning to KVM, returning EXCP_INTERRUPT to guarantee this.
+Returning 0 can cause async_synic_update to run asynchronously.
+
+One problem (kvm-unit-tests's hyperv_synic test fails with timeout error)
+caused by this bug:
+
+When a guest VM writes to the HV_X64_MSR_SCONTROL MSR to enable Hyper-V SynIC,
+a VM exit is triggered and processed by the kvm_hv_handle_exit function of the
+QEMU vCPU. This function then calls the async_synic_update function to set
+synic->sctl_enabled to true. A true value of synic->sctl_enabled is required
+before creating SINT routes using the hyperv_sint_route_new() function.
+
+If kvm_hv_handle_exit returns 0 for KVM_EXIT_HYPERV_SYNIC, the current QEMU
+vCPU thread may return to KVM and enter the guest VM before running
+async_synic_update. In such case, the hyperv_synic test’s subsequent call to
+synic_ctl(HV_TEST_DEV_SINT_ROUTE_CREATE, ...) immediately after writing to
+HV_X64_MSR_SCONTROL can cause QEMU’s hyperv_sint_route_new() function to return
+prematurely (because synic->sctl_enabled is false).
+
+If the SINT route is not created successfully, the SINT interrupt will not be
+fired, resulting in a timeout error in the hyperv_synic test.
+
+Fixes: 267e071bd6d6 (“hyperv: make overlay pages for SynIC”)
+Suggested-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Dongsheng Zhang <dongsheng.x.zhang@intel.com>
+Message-ID: <20240521200114.11588-1-dongsheng.x.zhang@intel.com>
 Cc: qemu-stable@nongnu.org
-Fixes: 16288ded944 ("tcg/loongarch64: Lower basic tcg vec ops to LSX")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2336
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Tested-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit c9290dfebfdba5c13baa5e1f10e13a1c876b0643)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 84d4b72854869821eb89813c195927fdd3078c12)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index dcf0205458..abdc8b7f4d 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -807,18 +807,88 @@ static void tcg_out_ldst(TCGContext *s, LoongArchInsn opc, TCGReg data,
-     }
- }
+diff --git a/target/i386/kvm/hyperv.c b/target/i386/kvm/hyperv.c
+index e3ac978648..0a2e2a07e9 100644
+--- a/target/i386/kvm/hyperv.c
++++ b/target/i386/kvm/hyperv.c
+@@ -81,7 +81,7 @@ int kvm_hv_handle_exit(X86CPU *cpu, struct kvm_hyperv_exit *exit)
+          */
+         async_safe_run_on_cpu(CPU(cpu), async_synic_update, RUN_ON_CPU_NULL);
  
--static void tcg_out_ld(TCGContext *s, TCGType type, TCGReg arg,
--                       TCGReg arg1, intptr_t arg2)
-+static void tcg_out_ld(TCGContext *s, TCGType type, TCGReg dest,
-+                       TCGReg base, intptr_t offset)
- {
--    bool is_32bit = type == TCG_TYPE_I32;
--    tcg_out_ldst(s, is_32bit ? OPC_LD_W : OPC_LD_D, arg, arg1, arg2);
-+    switch (type) {
-+    case TCG_TYPE_I32:
-+        if (dest < TCG_REG_V0) {
-+            tcg_out_ldst(s, OPC_LD_W, dest, base, offset);
-+        } else {
-+            tcg_out_dupm_vec(s, TCG_TYPE_I128, MO_32, dest, base, offset);
-+        }
-+        break;
-+    case TCG_TYPE_I64:
-+        if (dest < TCG_REG_V0) {
-+            tcg_out_ldst(s, OPC_LD_D, dest, base, offset);
-+        } else {
-+            tcg_out_dupm_vec(s, TCG_TYPE_I128, MO_64, dest, base, offset);
-+        }
-+        break;
-+    case TCG_TYPE_V128:
-+        if (-0x800 <= offset && offset <= 0x7ff) {
-+            tcg_out_opc_vld(s, dest, base, offset);
-+        } else {
-+            tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
-+            tcg_out_opc_vldx(s, dest, base, TCG_REG_TMP0);
-+        }
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
- }
- 
--static void tcg_out_st(TCGContext *s, TCGType type, TCGReg arg,
--                       TCGReg arg1, intptr_t arg2)
-+static void tcg_out_st(TCGContext *s, TCGType type, TCGReg src,
-+                       TCGReg base, intptr_t offset)
- {
--    bool is_32bit = type == TCG_TYPE_I32;
--    tcg_out_ldst(s, is_32bit ? OPC_ST_W : OPC_ST_D, arg, arg1, arg2);
-+    switch (type) {
-+    case TCG_TYPE_I32:
-+        if (src < TCG_REG_V0) {
-+            tcg_out_ldst(s, OPC_ST_W, src, base, offset);
-+        } else {
-+            /* TODO: Could use fst_s, fstx_s */
-+            if (offset < -0x100 || offset > 0xff || (offset & 3)) {
-+                if (-0x800 <= offset && offset <= 0x7ff) {
-+                    tcg_out_opc_addi_d(s, TCG_REG_TMP0, base, offset);
-+                } else {
-+                    tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
-+                    tcg_out_opc_add_d(s, TCG_REG_TMP0, TCG_REG_TMP0, base);
-+                }
-+                base = TCG_REG_TMP0;
-+                offset = 0;
-+            }
-+            tcg_out_opc_vstelm_w(s, src, base, offset, 0);
-+        }
-+        break;
-+    case TCG_TYPE_I64:
-+        if (src < TCG_REG_V0) {
-+            tcg_out_ldst(s, OPC_ST_D, src, base, offset);
-+        } else {
-+            /* TODO: Could use fst_d, fstx_d */
-+            if (offset < -0x100 || offset > 0xff || (offset & 7)) {
-+                if (-0x800 <= offset && offset <= 0x7ff) {
-+                    tcg_out_opc_addi_d(s, TCG_REG_TMP0, base, offset);
-+                } else {
-+                    tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
-+                    tcg_out_opc_add_d(s, TCG_REG_TMP0, TCG_REG_TMP0, base);
-+                }
-+                base = TCG_REG_TMP0;
-+                offset = 0;
-+            }
-+            tcg_out_opc_vstelm_d(s, src, base, offset, 0);
-+        }
-+        break;
-+    case TCG_TYPE_V128:
-+        if (-0x800 <= offset && offset <= 0x7ff) {
-+            tcg_out_opc_vst(s, src, base, offset);
-+        } else {
-+            tcg_out_movi(s, TCG_TYPE_PTR, TCG_REG_TMP0, offset);
-+            tcg_out_opc_vstx(s, src, base, TCG_REG_TMP0);
-+        }
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
- }
- 
- static bool tcg_out_sti(TCGContext *s, TCGType type, TCGArg val,
-@@ -1739,7 +1809,6 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
- {
-     TCGType type = vecl + TCG_TYPE_V64;
-     TCGArg a0, a1, a2, a3;
--    TCGReg temp = TCG_REG_TMP0;
-     TCGReg temp_vec = TCG_VEC_TMP0;
- 
-     static const LoongArchInsn cmp_vec_insn[16][4] = {
-@@ -1819,22 +1888,10 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
- 
-     switch (opc) {
-     case INDEX_op_st_vec:
--        /* Try to fit vst imm */
--        if (-0x800 <= a2 && a2 <= 0x7ff) {
--            tcg_out_opc_vst(s, a0, a1, a2);
--        } else {
--            tcg_out_movi(s, TCG_TYPE_I64, temp, a2);
--            tcg_out_opc_vstx(s, a0, a1, temp);
--        }
-+        tcg_out_st(s, type, a0, a1, a2);
-         break;
-     case INDEX_op_ld_vec:
--        /* Try to fit vld imm */
--        if (-0x800 <= a2 && a2 <= 0x7ff) {
--            tcg_out_opc_vld(s, a0, a1, a2);
--        } else {
--            tcg_out_movi(s, TCG_TYPE_I64, temp, a2);
--            tcg_out_opc_vldx(s, a0, a1, temp);
--        }
-+        tcg_out_ld(s, type, a0, a1, a2);
-         break;
-     case INDEX_op_and_vec:
-         tcg_out_opc_vand_v(s, a0, a1, a2);
+-        return 0;
++        return EXCP_INTERRUPT;
+     case KVM_EXIT_HYPERV_HCALL: {
+         uint16_t code = exit->u.hcall.input & 0xffff;
+         bool fast = exit->u.hcall.input & HV_HYPERCALL_FAST;
 -- 
 2.39.2
 
