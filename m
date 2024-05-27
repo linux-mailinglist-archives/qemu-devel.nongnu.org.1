@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE858CFB74
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FDE8CFB8F
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 10:34:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBVi1-00039v-IQ; Mon, 27 May 2024 04:27:57 -0400
+	id 1sBVgZ-0006Ih-Uk; Mon, 27 May 2024 04:26:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVeD-0003P5-1J; Mon, 27 May 2024 04:24:01 -0400
+ id 1sBVeE-0003UI-1s; Mon, 27 May 2024 04:24:02 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBVeB-00010k-Bx; Mon, 27 May 2024 04:24:00 -0400
+ id 1sBVeC-00014h-FD; Mon, 27 May 2024 04:24:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8B1FB6A578;
+ by isrv.corpit.ru (Postfix) with ESMTP id 98E0A6A579;
  Mon, 27 May 2024 11:22:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B5AA8D8515;
+ by tsrv.corpit.ru (Postfix) with SMTP id C601ED8516;
  Mon, 27 May 2024 11:21:40 +0300 (MSK)
-Received: (nullmailer pid 66433 invoked by uid 1000);
+Received: (nullmailer pid 66437 invoked by uid 1000);
  Mon, 27 May 2024 08:21:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Zhao Liu <zhao1.liu@intel.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-9.0.1 27/44] target/i386: fix operand size for DATA16 REX.W
- POPCNT
-Date: Mon, 27 May 2024 11:21:18 +0300
-Message-Id: <20240527082138.66217-27-mjt@tls.msk.ru>
+Subject: [Stable-9.0.1 28/44] target/i386: rdpkru/wrpkru are no-prefix
+ instructions
+Date: Mon, 27 May 2024 11:21:19 +0300
+Message-Id: <20240527082138.66217-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
 References: <qemu-stable-9.0.1-20240527112053@cover.tls.msk.ru>
@@ -64,52 +63,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-According to the manual, 32-bit vs 64-bit is governed by REX.W
-and REX ignores the 0x66 prefix.  This can be confirmed with this
-program:
-
-    #include <stdio.h>
-    int main()
-    {
-       int x = 0x12340000;
-       int y;
-       asm("popcntl %1, %0" : "=r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntl %1, %0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-       asm("mov $-1, %0; .byte 0x66; popcntq %q1, %q0" : "+r" (y) : "r" (x)); printf("%x\n", y);
-    }
-
-which prints 5/ffff0000/5 on real hardware and 5/ffff0000/ffff0000
-on QEMU.
+Reject 0x66/0xf3/0xf2 in front of them.
 
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 41c685dc59bb611096f3bb6a663cfa82e4cba97b)
+(cherry picked from commit 40a3ec7b5ffde500789d016660a171057d6b467c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: drop removal of mo_64_32() helper function in target/i386/tcg/translate.c
- due to missing-in-9.0 v9.0.0-542-gaef4f4affde2
- "target/i386: remove now-converted opcodes from old decoder"
- which removed other user of it)
 
 diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c84196c00b..ebfee15d77 100644
+index ebfee15d77..b5ebff2c89 100644
 --- a/target/i386/tcg/translate.c
 +++ b/target/i386/tcg/translate.c
-@@ -6805,12 +6805,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-         modrm = x86_ldub_code(env, s);
-         reg = ((modrm >> 3) & 7) | REX_R(s);
- 
--        if (s->prefix & PREFIX_DATA) {
--            ot = MO_16;
--        } else {
--            ot = mo_64_32(dflag);
--        }
--
-+        ot = dflag;
-         gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 0);
-         gen_extu(ot, s->T0);
-         tcg_gen_mov_tl(cpu_cc_src, s->T0);
+@@ -6089,7 +6089,8 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             gen_ldst_modrm(env, s, modrm, ot, OR_TMP0, 1);
+             break;
+         case 0xee: /* rdpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_trunc_tl_i32(s->tmp2_i32, cpu_regs[R_ECX]);
+@@ -6097,7 +6098,8 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             tcg_gen_extr_i64_tl(cpu_regs[R_EAX], cpu_regs[R_EDX], s->tmp1_i64);
+             break;
+         case 0xef: /* wrpkru */
+-            if (prefixes & PREFIX_LOCK) {
++            if (s->prefix & (PREFIX_LOCK | PREFIX_DATA
++                             | PREFIX_REPZ | PREFIX_REPNZ)) {
+                 goto illegal_op;
+             }
+             tcg_gen_concat_tl_i64(s->tmp1_i64, cpu_regs[R_EAX],
 -- 
 2.39.2
 
