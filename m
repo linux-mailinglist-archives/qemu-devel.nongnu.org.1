@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44ABA8CFE54
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 12:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922E18CFE5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 12:50:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBXsy-0007cC-Oo; Mon, 27 May 2024 06:47:24 -0400
+	id 1sBXvb-00010n-7p; Mon, 27 May 2024 06:50:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBXsw-0007c3-Mn
- for qemu-devel@nongnu.org; Mon, 27 May 2024 06:47:22 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sBXsv-0000p9-0N
- for qemu-devel@nongnu.org; Mon, 27 May 2024 06:47:22 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-354cd8da8b9so1808537f8f.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 03:47:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716806839; x=1717411639; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=LpeMjX6D8POMx6WrDZZ8ixRIdP6bS0/MxqegEy9Zk4c=;
- b=a9QqBOZgbouhYoNU7/1MXdIBVYwGcl+3MyS2Wh2pVd3YmEwJyagY5cAViW+CyOaFwX
- gB+R3eCpak0dj0tcaaK9l1jK/6N53VFOs21zkKbqCigycdvcHzFdAC7eV6B/nGOd6rSa
- Ku1CiJHTscLF3GqmBiQLACrHnwapzm1ojlfTylv4fZFddRDbJyoa0Y46gUUFJqc1TDki
- YcPHuQEOp1jyp3LF/t6fSe+T3VeeNUmLHQbbatVJUczj6uel5CZ02ag6ylhag5G438Jy
- tPGWCDBrOy7NOEJzIqT7Xe7TW/fADsclkE98iHPJ8v+ZUdB/+6nz70IEiZvoQIQl+Xa/
- GtLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716806839; x=1717411639;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LpeMjX6D8POMx6WrDZZ8ixRIdP6bS0/MxqegEy9Zk4c=;
- b=qpIB3qRCoX6nOWoz4TFTdL87VM4ZwKGj6eTlq9IpO8vHUcdpIPNKye1zCxfe/Q/V+Q
- mbXSIAAfAQKppbi+y/KAKWFhEWFcSmVXKOgpxSc5N/gnfeGdyZ8+zzbBQ6PR/ZmdqoHv
- R/LQ/3jIjxMUUO8pALmGOpJwYEI1n1qhCJ31UsS6ZDUxjnuY+aaz358p4aYMKNah5zuH
- Nx8o6bNAAFrVy868xHgHUVBuHIwJFZRPhegDGUfZGtHEYWNR+5tWDmwWaBZ4ACE++Xio
- ALZnM+RAouIvZoG4pmnxPmj3RWE/zDcp90obNqmYGyVKn8bi4l8iIiEcCc/rdt4SizmA
- yaYg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUGjab3bfFpujW+PTj2H4racB8+h986mPaFKsHf196lhLP84XZdVptyTPb7iJ1ZyD8+mBkgNY69ISLNvQ/ssJEw1BVSmPE=
-X-Gm-Message-State: AOJu0YyIO+UdpYDygeJVojpQarCuJoDwU7W5lTqLAcbt3rPVJPUZ7ezk
- dGNJFChmZfeUPJlgTe/XvTvAODiJRFyfDQun6tdh8UnUyEJL03GP1VDEOk9pujI=
-X-Google-Smtp-Source: AGHT+IHcI6AT20G0z4JrHsV0358fDgRTC06MUzV7LMDeGe8LfXZMjFvDsRgLAMkBNKnR60rgrOz6bw==
-X-Received: by 2002:adf:fcce:0:b0:34b:81b3:2c62 with SMTP id
- ffacd0b85a97d-3552219d1e6mr5778049f8f.35.1716806839180; 
- Mon, 27 May 2024 03:47:19 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.152.134])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3557a1c92e7sm8719629f8f.66.2024.05.27.03.47.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 03:47:18 -0700 (PDT)
-Message-ID: <bf9dc551-49e4-4ed9-941d-c095bab5755a@linaro.org>
-Date: Mon, 27 May 2024 12:47:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] machine/microvm: support for loading EIF image
-To: Dorjoy Chowdhury <dorjoychy111@gmail.com>, qemu-devel@nongnu.org
-Cc: graf@amazon.com, agraf@csgraf.de, stefanha@redhat.com,
- pbonzini@redhat.com, slp@redhat.com, richard.henderson@linaro.org,
- eduardo@habkost.net, mst@redhat.com, marcel.apfelbaum@gmail.com
-References: <20240518080753.7083-1-dorjoychy111@gmail.com>
- <20240518080753.7083-2-dorjoychy111@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240518080753.7083-2-dorjoychy111@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1sBXvY-00010T-VU
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 06:50:04 -0400
+Received: from mr85p00im-zteg06011501.me.com ([17.58.23.182])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1sBXvW-0001EM-Ss
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 06:50:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ t=1716806999; bh=X8ublvnPEy53sty51bGjdcCikwgrUPe9M8JfgcgqgNI=;
+ h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
+ b=JPE2PosnzqoVjygE+cMq02oJa6TdERv7OmjsPOp7OZJ8OjI7L2kHHkdAsOTF3T1fS
+ xmK5/DxmNR9vixwKlyEKP/wCrpJfmTpy1FY7t9ThHhWMoZV8joHbYVRu2b6WRN3VrU
+ YxwnRKIWHw0K0hu3fknTRkcBrVDtxk3Q/l7yuE8PIPLC1P6GUSMvYaKX1m+AOvmDT7
+ b0l7DsLGdOjnnMEsSwSt4ZPnSsxp166c541DDmRgLlmigLsnrbwAT2er9rVlaCMme9
+ xNuqz4Hx7GC+AnshHAfG1wxPYHIjOSLQNXdrq4LnN0o+u7LtqEv5t4tWHTGSMyS99d
+ Gowv7kUG3o3JQ==
+Received: from smtpclient.apple (mr38p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.152.18])
+ by mr85p00im-zteg06011501.me.com (Postfix) with ESMTPSA id 37DB94803E7;
+ Mon, 27 May 2024 10:49:18 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
+From: Mads Ynddal <mads@ynddal.dk>
+In-Reply-To: <20240527081421.2258624-1-zhao1.liu@intel.com>
+Date: Mon, 27 May 2024 12:49:06 +0200
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?=22Daniel_P_=2E_Berrang=C3=A9=22?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <622493FA-7645-4425-9AE6-1C39A581149E@ynddal.dk>
+References: <20240527081421.2258624-1-zhao1.liu@intel.com>
+To: Zhao Liu <zhao1.liu@intel.com>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-Proofpoint-ORIG-GUID: sqi1TjX33Doxq7FzPkPQFnsDtWgWp2Gy
+X-Proofpoint-GUID: sqi1TjX33Doxq7FzPkPQFnsDtWgWp2Gy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-26_09,2024-05-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ phishscore=0 mlxscore=0
+ suspectscore=0 malwarescore=0 adultscore=0 clxscore=1030 mlxlogscore=522
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2405270089
+Received-SPF: pass client-ip=17.58.23.182; envelope-from=mads@ynddal.dk;
+ helo=mr85p00im-zteg06011501.me.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dorjoy,
+Hi,
 
-On 18/5/24 10:07, Dorjoy Chowdhury wrote:
-> An EIF (Enclave Image Format)[1] image is used to boot an AWS nitro
-> enclave[2] virtual machine. The EIF file contains the necessary
-> kernel, cmdline, ramdisk(s) sections to boot.
-> 
-> This commit adds support for loading EIF image using the microvm
-> machine code. For microvm to boot from an EIF file, the kernel and
-> ramdisk(s) are extracted into a temporary kernel and a temporary
-> initrd file which are then hooked into the regular x86 boot mechanism
-> along with the extracted cmdline.
-> 
-> Although not useful for the microvm machine itself, this is needed
-> as the following commit adds support for a new machine type
-> 'nitro-enclave' which uses the microvm machine type as parent. The
-> code for checking and loading EIF will be put inside a 'nitro-enclave'
-> machine type check in the following commit so that microvm cannot load
-> EIF because it shouldn't.
-> 
-> [1] https://github.com/aws/aws-nitro-enclaves-image-format
+Interesting work. I don't have any particular comments for the code, but =
+I
+wanted to address a few of the points here.
 
-The documentation is rather scarse...
+> 2. Rust delivers faster parsing.
 
-> [2] https://aws.amazon.com/ec2/nitro/nitro-enclaves/
-> 
-> Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-> ---
->   hw/i386/eif.c       | 486 ++++++++++++++++++++++++++++++++++++++++++++
->   hw/i386/eif.h       |  20 ++
->   hw/i386/meson.build |   2 +-
+For me, the point of simpletrace.py is not to be the fastest at parsing, =
+but
+rather to open the door for using Python libraries like numpy, =
+matplotlib, etc.
+for analysis.
 
-... still it seems a generic loader, not restricted to x86.
+There might be room for improvement in the Python version, especially in
+minimizing memory usage, when parsing large traces.
 
-Maybe better add it as hw/core/loader-eif.[ch]?
 
->   hw/i386/microvm.c   | 134 +++++++++++-
->   4 files changed, 640 insertions(+), 2 deletions(-)
->   create mode 100644 hw/i386/eif.c
->   create mode 100644 hw/i386/eif.h
+> Security
+> --------
+>=20
+> This is an example.
+>=20
+> Rust is very strict about type-checking, and it found timestamp =
+reversal
+> issue in simpletrace-rust [3] (sorry, haven't gotten around to digging
+> deeper with more time)...in this RFC, I workingaround it by allowing
+> negative values. And the python version, just silently covered this
+> issue up.
+
+I'm not particularly worried about the security of the Python version. =
+We're not
+doing anything obviously exploitable.
+
+=E2=80=94
+Mads Ynddal
 
 
