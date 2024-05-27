@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6917A8D094A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 19:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7D98D0984
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 19:48:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBdxA-00037j-7N; Mon, 27 May 2024 13:16:08 -0400
+	id 1sBeQp-0001GU-Oo; Mon, 27 May 2024 13:46:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBdx5-00037J-2c
- for qemu-devel@nongnu.org; Mon, 27 May 2024 13:16:03 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sBdx2-0004tj-Mv
- for qemu-devel@nongnu.org; Mon, 27 May 2024 13:16:02 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f47db642c2so45105ad.2
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 10:15:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716830156; x=1717434956; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FttOp1HbmT484WDoscUzkAEpO768kVHLyT93uBHIhyE=;
- b=wUoRpUdH4VxMDNO6cnFghnnnWICYmbwHSHueM8GtXrCNSo4YAUHUxGtTguaxPMSNhz
- cZKA6zlZok1czxhv3op1mUYGfqXXKKFa0r2FXOAYgxwXtjoigZVZG4nEhZLBghu9E8Pg
- Kj8JN0kkdy2n4xxDAwho5J3rk/4rKKBlfAHC5rGKKA+dMAbNWlEZxDejAj5jjob0Yd8h
- R84WwjOUBsTR0JOThaHG/IZ23WKXiLIWlYMxviPGPDpbOXuSvqXzPcjdwRsZ+kecMpvM
- qtXXIppehteBJJENCMWUKGDBgkaECIUggajV0i7/dKZb7ULxPAvBvgfSCa5FlFdt5ZXm
- P/qA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sBeQH-0001BA-2Z
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 13:46:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sBeQB-0000rp-ND
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 13:46:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716831966;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ovQNHAJpn6LpGW/4JqPR2iBAOvAXH6nZmCfX8iN8xJA=;
+ b=I0/WM9Y1xVOevJFqZhljhI0d166/x7SEduMc/d7SdzGcFR2HhOLYbzX9FGGYMV5CS88caJ
+ Cgas3TWqjWLDs/9Yl4XG6hEDA6b6e7GXP9Id0aZtI51uVciPRb4Ccdzyvgk2Y0aYXGWrVo
+ 9K8PIMf/HHkMGfdxQ7/Yzroufw4fOmU=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-BWM__r9pPBCgWvZxEcPp0A-1; Mon, 27 May 2024 13:46:04 -0400
+X-MC-Unique: BWM__r9pPBCgWvZxEcPp0A-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6ab89f69cd8so39446d6.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 10:46:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716830156; x=1717434956;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FttOp1HbmT484WDoscUzkAEpO768kVHLyT93uBHIhyE=;
- b=PD2LwAED1vNC5ZKcQR9NyQZz7J1NF9Zg+g13UyUvasR7AxAffLuqXdr6e3lwXZRWYB
- 5qm83FK2sRpqU6SezOP4yMBvAJ45eoaviCY4NgpbOib8oK4Aw2o/kNH9DEn8BuemAi9A
- CjOgMKs3aGplNmJCj4ohI2GmOwoOCGy4Z7NtELLSNk5bzd2mlOQFjp123PTURbcbCViM
- M8RQhn2QMNYaTi8iMbW5ZOHtsgmk/lplOHOAPLEmR0f7gbfcy7PWGwDC7Ye+N/elKBCJ
- yS6XrSeV20ZktNLtORrsXDqGxcwmPmW2gaKASu6EmUzeZPKuUxUDdUfe6sKoblvtEYIz
- o5Cg==
+ d=1e100.net; s=20230601; t=1716831964; x=1717436764;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ovQNHAJpn6LpGW/4JqPR2iBAOvAXH6nZmCfX8iN8xJA=;
+ b=DV0jaixAqMXFTIwEV1q9RAMpR3R9fLYsW3MKYTNW4T8EvClr4GnD89PTtWq3E1e8rS
+ Ae3r0JpC6eYh7EbUCZem3xIsEsWl8msfGG5vwTgZDu8fnoovQMP9ylT+YDGoMsIc2s2v
+ 6iHfpd+KFOlcSi9r/M03lio12Cjca7oj5htKJj9XCDT9Mw8Gs2kezcme4FL18pZ+fts0
+ oeAR4jyYkPL7oidAEJwDPZQjVPWS72xvqk90PaCrw+F8AvfLYnXLlu5Z4T8h6zsdz03q
+ vyarrMgObZsXTnSHfsZq4AQaDylUIcus2Fu58dlWU6VRiH7qY1+2D1EFOmfIcxMXzKR1
+ NY6g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVJ9Yi0VsXRWonY3hicm3yBKLrbQOJ36x3jzLZGD6AXOepmzGS4HyS9ZOBpderSDwzXDAhbjQ7HGueOIdN7Z+jmBJQepH0=
-X-Gm-Message-State: AOJu0Yz1tJvNbU0CO9KzA6lrMiqbOr3CsOtDxTnVvGbm7BfVlSkNfrCl
- Y5fMOZmIugHKg3Yivv1K7G79Caj1HDDDCdHbYx0cZ/3JenqDI9TxUMQRcDlXseI=
-X-Google-Smtp-Source: AGHT+IGR8lOc+oZXelVWzM+7jLPufO8kzohy9k9xthvVy182tR67FTrmOCcJMUWirF7wno8jXUIM/Q==
-X-Received: by 2002:a17:902:ce92:b0:1f4:960c:a05f with SMTP id
- d9443c01a7336-1f4960ca22cmr33958045ad.31.1716830156372; 
- Mon, 27 May 2024 10:15:56 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f484ac6d1bsm32017735ad.243.2024.05.27.10.15.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 10:15:55 -0700 (PDT)
-Message-ID: <e92a2201-5c58-4c4f-8ee2-17912a384224@linaro.org>
-Date: Mon, 27 May 2024 10:15:54 -0700
+ AJvYcCUDPXQLM8qbMsvcuCyIhI0KjWmVnuDMwnjkjfdGFGXyYPV52PV9M3m/MGWA/m0GLYF/WK5lnq56LjmMmP0p/u5yNTjef+k=
+X-Gm-Message-State: AOJu0YwGYtvRGT3HXlyo6PLYby/cbRJcs7yCn8Pd8x83hPthlG6iU+MO
+ ORqZRGyVxBny0o9OUOzBf5V/S3eS4Km8yPtOVs4tp6XWjfkM2xqpGQ/YKz1o4SHcFKVskWPhM0x
+ oYFSdpAEIQtviO66lu2V56VuO0L38eprufuhflYmka8fa/xN0in3j
+X-Received: by 2002:a05:6214:c2e:b0:6a3:3ea4:7156 with SMTP id
+ 6a1803df08f44-6abbbcc044fmr105327846d6.1.1716831963575; 
+ Mon, 27 May 2024 10:46:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGy2ORnyCuI94SAXFXEngjbVwMEutyIxUSF/5GTRJXi7Tx2mbyhhytvB9qVU+I43JYFVFeTAw==
+X-Received: by 2002:a05:6214:c2e:b0:6a3:3ea4:7156 with SMTP id
+ 6a1803df08f44-6abbbcc044fmr105327536d6.1.1716831962663; 
+ Mon, 27 May 2024 10:46:02 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43fb18c3c79sm35823031cf.83.2024.05.27.10.46.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 May 2024 10:46:02 -0700 (PDT)
+Date: Mon, 27 May 2024 13:45:59 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: Fabiano Rosas <farosas@suse.de>,
+	QEMU Developers <qemu-devel@nongnu.org>
+Subject: Re: [PATCH V1 00/26] Live update: cpr-exec
+Message-ID: <ZlTG18jRhp7oQTCQ@x1n>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <cf8e13ae-cac6-4a8a-82a2-92b63a32b7b8@oracle.com>
+ <87ed9wjey7.fsf@suse.de>
+ <CADLect=ODs+-JrT4xOJazVveCtYPyDOCMsfK=2hcR-EJAdWDAw@mail.gmail.com>
+ <be4cdd8d-4328-46d4-9b28-3a074d504180@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/9] Error reporting patches for 2024-05-27
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-References: <20240527113131.2054486-1-armbru@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240527113131.2054486-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <be4cdd8d-4328-46d4-9b28-3a074d504180@oracle.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,25 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/24 04:31, Markus Armbruster wrote:
-> The following changes since commit 60b54b67c63d8f076152e0f7dccf39854dfc6a77:
-> 
->    Merge tag 'pull-lu-20240526' ofhttps://gitlab.com/rth7680/qemu  into staging (2024-05-26 17:51:00 -0700)
-> 
-> are available in the Git repository at:
-> 
->    https://repo.or.cz/qemu/armbru.git  tags/pull-error-2024-05-27
-> 
-> for you to fetch changes up to 2020337239b054447d0756ea75e970b35f7a541b:
-> 
->    qerror: QERR_QGA_COMMAND_FAILED is no longer used, drop (2024-05-27 13:00:12 +0200)
-> 
-> ----------------------------------------------------------------
-> Error reporting patches for 2024-05-27
+On Tue, May 21, 2024 at 07:46:12AM -0400, Steven Sistare wrote:
+> I understand, thanks.  If I can help with any of your todo list,
+> just ask - steve
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/9.1 as appropriate.
+Thanks for offering the help, Steve.  Started looking at this today, then I
+found that I miss something high-level.  Let me ask here, and let me
+apologize already for starting to throw multiple questions..
 
+IIUC the whole idea of this patchset is to allow efficient QEMU upgrade, in
+this case not host kernel but QEMU-only, and/or upper.
 
-r~
+Is there any justification on why the complexity is needed here?  It looks
+to me this one is more involved than cpr-reboot, so I'm thinking how much
+we can get from the complexity, and whether it's worthwhile.  1000+ LOC is
+the min support, and if we even expect more to come, that's really
+important, IMHO.
+
+For example, what's the major motivation of this whole work?  Is that more
+on performance, or is it more for supporting the special devices like VFIO
+which we used to not support, or something else?  I can't find them in
+whatever cover letter I can find, including this one.
+
+Firstly, regarding performance, IMHO it'll be always nice to share even
+some very fundamental downtime measurement comparisons using the new exec
+mode v.s. the old migration ways to upgrade QEMU binary.  Do you perhaps
+have some number on hand when you started working on this feature years
+ago?  Or maybe some old links on the list would help too, as I didn't
+follow this work since the start.
+
+On VFIO, IIUC you started out this project without VFIO migration being
+there.  Now we have VFIO migration so not sure how much it would work for
+the upgrade use case. Even with current VFIO migration, we may not want to
+migrate device states for a local upgrade I suppose, as that can be a lot
+depending on the type of device assigned.  However it'll be nice to discuss
+this too if this is the major purpose of the series.
+
+I think one other challenge on QEMU upgrade with VFIO devices is that the
+dest QEMU won't be able to open the VFIO device when the src QEMU is still
+using it as the owner.  IIUC this is a similar condition where QEMU wants
+to have proper ownership transfer of a shared block device, and AFAIR right
+now we resolved that issue using some form of file lock on the image file.
+In this case it won't easily apply to a VFIO dev fd, but maybe we still
+have other approaches, not sure whether you investigated any.  E.g. could
+the VFIO handle be passed over using unix scm rights?  I think this might
+remove one dependency of using exec which can cause quite some difference
+v.s. a generic migration (from which regard, cpr-reboot is still a pretty
+generic migration).
+
+You also mentioned vhost/tap, is that also a major goal of this series in
+the follow up patchsets?  Is this a problem only because this solution will
+do exec?  Can it work if either the exec()ed qemu or dst qemu create the
+vhost/tap fds when boot?
+
+Meanwhile, could you elaborate a bit on the implication on chardevs?  From
+what I read in the doc update it looks like a major part of work in the
+future, but I don't yet understand the issue..  Is it also relevant to the
+exec() approach?
+
+In all cases, some of such discussion would be really appreciated.  And if
+you used to consider other approaches to solve this problem it'll be great
+to mention how you chose this way.  Considering this work contains too many
+things, it'll be nice if such discussion can start with the fundamentals,
+e.g. on why exec() is a must.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
