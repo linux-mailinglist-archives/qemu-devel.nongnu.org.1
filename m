@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F0C8CF9BF
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0CC8CF9C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUW2-0003t4-0o; Mon, 27 May 2024 03:11:30 -0400
+	id 1sBUVr-0003md-To; Mon, 27 May 2024 03:11:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sBUVm-0003gj-4d; Mon, 27 May 2024 03:11:14 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1sBUVn-0003hc-Q8; Mon, 27 May 2024 03:11:15 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
- id 1sBUVk-0003RH-Cs; Mon, 27 May 2024 03:11:13 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1sBUVm-0003RV-0w; Mon, 27 May 2024 03:11:15 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44R6jbg5020450; Mon, 27 May 2024 07:11:03 GMT
+ 44R6lSjh010720; Mon, 27 May 2024 07:11:05 GMT
 DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
  _d=3Dibm.com; _h=3Dcc?=
  =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
- =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3DmCs?=
- =?UTF-8?Q?R1cfdq/6xltVqXM3g8wLqIuSWMlRbAlajrBdX9vA=3D;_b=3DR/Qbffy94obVNJ?=
- =?UTF-8?Q?fKmjEHoghG+t7ywijXQI5/rPvY9xXWT861cXj2VZKJ0xZKHb7VQyyc_zTS/OK8I?=
- =?UTF-8?Q?gNGbctE/5IQwjeRr7xunMhTOUuZ4+D2jupXo5Ta/vB1l7st3faSEc/PnsnZD_cD?=
- =?UTF-8?Q?16wkunWowcu+ndgD15C8sFMQ8U/Jp23CuGTTNpzVqqWdBcCaP0KNORafudu5Ldr?=
- =?UTF-8?Q?zyw_Xq5TooDA8ulkgJdiZ19yS6nnxLhsWQQvbxK8NthyNLOFnveESFs/v88av5V?=
- =?UTF-8?Q?rfUsQB4Cp_WHx0ob/xZSJ9+H0Ik9C82tErX5STMbXeEQOKN2kcIywf0eP9gpGRn?=
- =?UTF-8?Q?T3yfVt5sOaBpdnY_JA=3D=3D_?=
+ =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3DWWk?=
+ =?UTF-8?Q?r5QaidKCEFgxjx5wqTYRjZAmhwMM4pw9hv/yycM0=3D;_b=3DtDR1rWGmyptxzj?=
+ =?UTF-8?Q?EtQ+e1QG9lYRXQV5RyLCrAaUJrmCeuGdFFnsY8c3QM/A/H+ZT9AwIP_QYeaf7MF?=
+ =?UTF-8?Q?wSZJdq16L3H/3mwAKPdEiiofuUfhIVH/smuWGB4yWJvnZ50BZlSW5baUuxXA_8N?=
+ =?UTF-8?Q?4FKsz6NUpx/pShZSXJODbxQ5uGP6hyc2DNTh11+xnt+XSUPJBm9jYdybbkenrPg?=
+ =?UTF-8?Q?36Y_kokGGahp45Z9tKdWO5EMzI+0xshv/b5peG1b5U5+m+YzcdZYlafjbZUtfZj?=
+ =?UTF-8?Q?wMphioRvZ_ZI7mTIAaBpw47ibDm4vp9w8mPjxUWfTCyl79xssf//KFY1CqPJSGQ?=
+ =?UTF-8?Q?ewwJyziyBbzB0Me_jg=3D=3D_?=
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycfxdgpxn-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycn77r2be-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 May 2024 07:11:02 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44R7B2k7000699;
- Mon, 27 May 2024 07:11:02 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycfxdgpxj-1
+ Mon, 27 May 2024 07:11:04 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44R7B4qJ014606;
+ Mon, 27 May 2024 07:11:04 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ycn77r2bd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 May 2024 07:11:02 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44R5qLuS032276; Mon, 27 May 2024 07:11:01 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybutkyc9k-1
+ Mon, 27 May 2024 07:11:04 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44R4t5oR004501; Mon, 27 May 2024 07:11:03 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybuanqhdn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 May 2024 07:11:00 +0000
+ Mon, 27 May 2024 07:11:03 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
  [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44R7Atd117367466
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44R7Awsv42598776
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 May 2024 07:10:57 GMT
+ Mon, 27 May 2024 07:11:00 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5768C20040;
+ by IMSVA (Postfix) with ESMTP id E41A020040;
+ Mon, 27 May 2024 07:10:57 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BE91320043;
  Mon, 27 May 2024 07:10:55 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3617020043;
- Mon, 27 May 2024 07:10:53 +0000 (GMT)
 Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com.com (unknown
  [9.179.2.64]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 27 May 2024 07:10:52 +0000 (GMT)
+ Mon, 27 May 2024 07:10:55 +0000 (GMT)
 From: Aditya Gupta <adityag@linux.ibm.com>
 To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -71,29 +71,31 @@ To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH v3 03/11] target/ppc: Introduce 'PowerPCCPUClass::logical_pvr'
-Date: Mon, 27 May 2024 12:40:34 +0530
-Message-ID: <20240527071042.489540-4-adityag@linux.ibm.com>
+Subject: [PATCH v3 04/11] target/ppc: Fix regression due to Power10 and
+ Power11 having same PCR
+Date: Mon, 27 May 2024 12:40:35 +0530
+Message-ID: <20240527071042.489540-5-adityag@linux.ibm.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240527071042.489540-1-adityag@linux.ibm.com>
 References: <20240527071042.489540-1-adityag@linux.ibm.com>
-MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Bz02RIIiFEXZGCG3ZwSbIEQfFOYd-4Yw
-X-Proofpoint-ORIG-GUID: kBv4Df1UAQJ87gpNGsdPEHSjFBoiZTWS
+X-Proofpoint-ORIG-GUID: AFPeWeurLhoBGeoykht4E62epLuv2FOb
+X-Proofpoint-GUID: 2AI8vz8XhylHPmJofroTcxuKNMFI0qRW
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-26_09,2024-05-24_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0
- spamscore=0 mlxlogscore=999 clxscore=1015 suspectscore=0 mlxscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2405010000 definitions=main-2405270057
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=adityag@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
@@ -116,11 +118,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce 'PnvChipClass::logical_pvr' to know corresponding logical PVR
-of a PowerPC CPU.
-This helps to have a one-to-one mapping between PVR and logical PVR for
-a CPU, and used in a later commit to handle cases where PCR of two
-generations of Power chip is same, which causes regressions with compat-mode.
+Power11 has the same PCR (Processor Compatibility Register) value, as
+Power10.
+
+Due to this, QEMU considers Power11 as a valid compat-mode for Power10,
+ie. earlier it was possible to run QEMU with '-M pseries,max-compat-mode=power11 --cpu power10'
+
+Same PCR also introduced a regression where `-M pseries --cpu power10`
+boots as Power11 (ie. logical PVR is of Power11, even though PVR is Power10).
+The regression was due to 'do_client_architecture_support' checking for
+valid compat modes and finding Power11 to be a valid compat mode for
+Power10 (it happens even without passing 'max-compat-mode' explicitly).
+
+Fix compat-mode issue and regression, by ensuring a future Power
+processor (with a higher logical_pvr value, eg. P11) cannot be valid
+compat-mode for an older Power processor (eg. P10)
 
 Cc: Cédric Le Goater <clg@kaod.org>
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
@@ -128,67 +140,41 @@ Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
----
- target/ppc/cpu.h      | 1 +
- target/ppc/cpu_init.c | 5 +++++
- 2 files changed, 6 insertions(+)
 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 2015e603d4e0..ff43e3645228 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1504,6 +1504,7 @@ struct PowerPCCPUClass {
-     void (*parent_parse_features)(const char *type, char *str, Error **errp);
- 
-     uint32_t pvr;
-+    uint32_t logical_pvr;
-     /*
-      * If @best is false, match if pcc is in the family of pvr
-      * Else match only if pcc is the best match for pvr in this family.
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 82d700382cdd..6e3288e15b94 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6151,6 +6151,7 @@ POWERPC_FAMILY(POWER7)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER7";
-     dc->desc = "POWER7";
-+    pcc->logical_pvr = CPU_POWERPC_LOGICAL_2_06_PLUS;
-     pcc->pvr_match = ppc_pvr_match_power7;
-     pcc->pcr_mask = PCR_VEC_DIS | PCR_VSX_DIS | PCR_COMPAT_2_05;
-     pcc->pcr_supported = PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-@@ -6314,6 +6315,7 @@ POWERPC_FAMILY(POWER8)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER8";
-     dc->desc = "POWER8";
-+    pcc->logical_pvr = CPU_POWERPC_LOGICAL_2_07;
-     pcc->pvr_match = ppc_pvr_match_power8;
-     pcc->pcr_mask = PCR_TM_DIS | PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-     pcc->pcr_supported = PCR_COMPAT_2_07 | PCR_COMPAT_2_06 | PCR_COMPAT_2_05;
-@@ -6507,6 +6509,7 @@ POWERPC_FAMILY(POWER9)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER9";
-     dc->desc = "POWER9";
-+    pcc->logical_pvr = CPU_POWERPC_LOGICAL_3_00;
-     pcc->pvr_match = ppc_pvr_match_power9;
-     pcc->pcr_mask = PCR_COMPAT_2_05 | PCR_COMPAT_2_06 | PCR_COMPAT_2_07;
-     pcc->pcr_supported = PCR_COMPAT_3_00 | PCR_COMPAT_2_07 | PCR_COMPAT_2_06 |
-@@ -6687,6 +6690,7 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER10";
-     dc->desc = "POWER10";
-+    pcc->logical_pvr = CPU_POWERPC_LOGICAL_3_10;
-     pcc->pvr_match = ppc_pvr_match_power10;
-     pcc->pcr_mask = PCR_COMPAT_2_05 | PCR_COMPAT_2_06 | PCR_COMPAT_2_07 |
-                     PCR_COMPAT_3_00;
-@@ -6790,6 +6794,7 @@ POWERPC_FAMILY(POWER11)(ObjectClass *oc, void *data)
- 
-     dc->fw_name = "PowerPC,POWER11";
-     dc->desc = "POWER11";
-+    pcc->logical_pvr = CPU_POWERPC_LOGICAL_3_10_PLUS;
-     pcc->pvr_match = ppc_pvr_match_power11;
-     pcc->pcr_mask = PCR_COMPAT_2_05 | PCR_COMPAT_2_06 | PCR_COMPAT_2_07 |
-                     PCR_COMPAT_3_00;
+---
+Multiple alternative approaches were tried to fix this:
+
+1. New PCR for Power11: No
+2. 'Hacky fix': chose (n-1) entry in compat table in case of Power10.
+  Commit: https://github.com/adi-g15-ibm/qemu/commit/c79bd667791883d4fb5e643979ae9c86a97bdf66
+  Pros: Doesn't require adding a new field
+  Cons: Hacky fix, will need change if Power12 comes with same PCR as
+  Power10 (unlikely)
+3. Setting current Processor's .logical_pvr as the max_compat to be checked
+during CAS (Client Architecture Support).
+  Commit: https://github.com/adi-g15-ibm/qemu/commit/30e430be71c6f3296017177298e54532570c2c87
+  This causes CAS to not consider Power11 if cpu is Power10
+---
+
+---
+ target/ppc/compat.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/target/ppc/compat.c b/target/ppc/compat.c
+index 12dd8ae290ca..168a3c06316f 100644
+--- a/target/ppc/compat.c
++++ b/target/ppc/compat.c
+@@ -139,6 +139,10 @@ static bool pcc_compat(PowerPCCPUClass *pcc, uint32_t compat_pvr,
+         /* Outside specified range */
+         return false;
+     }
++    if (compat->pvr > pcc->logical_pvr) {
++        /* Older CPU cannot support a newer processor's compat mode */
++        return false;
++    }
+     if (!(pcc->pcr_supported & compat->pcr_level)) {
+         /* Not supported by this CPU */
+         return false;
 -- 
 2.45.1
 
