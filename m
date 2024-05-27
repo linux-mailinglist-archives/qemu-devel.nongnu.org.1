@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECFB8CFA1A
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FB98CFA26
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 09:30:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBUkH-0000ay-Hc; Mon, 27 May 2024 03:26:13 -0400
+	id 1sBUkM-0001Jm-BF; Mon, 27 May 2024 03:26:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUji-0008NS-2b; Mon, 27 May 2024 03:25:42 -0400
+ id 1sBUji-0008NH-1e; Mon, 27 May 2024 03:25:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1sBUjb-0006NI-7x; Mon, 27 May 2024 03:25:34 -0400
+ id 1sBUjb-0006Nr-8p; Mon, 27 May 2024 03:25:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DCCDD6A4CC;
+ by isrv.corpit.ru (Postfix) with ESMTP id EB6BD6A4CD;
  Mon, 27 May 2024 10:25:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 24B5DD8469;
+ by tsrv.corpit.ru (Postfix) with SMTP id 365BCD846A;
  Mon, 27 May 2024 10:24:36 +0300 (MSK)
-Received: (nullmailer pid 52915 invoked by uid 1000);
+Received: (nullmailer pid 52918 invoked by uid 1000);
  Mon, 27 May 2024 07:24:35 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
- Fabiano Rosas <farosas@suse.de>, Jason Wang <jasowang@redhat.com>,
+Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
  Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.5 15/21] hw/core/machine: move compatibility flags for
- VirtIO-net USO to machine 8.1
-Date: Mon, 27 May 2024 10:24:25 +0300
-Message-Id: <20240527072435.52812-15-mjt@tls.msk.ru>
+Subject: [Stable-8.2.5 16/21] target/loongarch/kvm: Fix VM recovery from disk
+ failures
+Date: Mon, 27 May 2024 10:24:26 +0300
+Message-Id: <20240527072435.52812-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
 References: <qemu-stable-8.2.5-20240527072014@cover.tls.msk.ru>
@@ -61,62 +60,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+From: Song Gao <gaosong@loongson.cn>
 
-Migration from an 8.2 or 9.0 binary to an 8.1 binary with machine
-version 8.1 can fail with:
+vmstate does not save kvm_state_conter,
+which can cause VM recovery from disk to fail.
 
-> kvm: Features 0x1c0010130afffa7 unsupported. Allowed features: 0x10179bfffe7
-> kvm: Failed to load virtio-net:virtio
-> kvm: error while loading state for instance 0x0 of device '0000:00:12.0/virtio-net'
-> kvm: load of migration failed: Operation not permitted
-
-The series
-
-53da8b5a99 virtio-net: Add support for USO features
-9da1684954 virtio-net: Add USO flags to vhost support.
-f03e0cf63b tap: Add check for USO features
-2ab0ec3121 tap: Add USO support to tap device.
-
-only landed in QEMU 8.2, so the compatibility flags should be part of
-machine version 8.1.
-
-Moving the flags unfortunately breaks forward migration with machine
-version 8.1 from a binary without this patch to a binary with this
-patch.
-
-Fixes: 53da8b5a99 ("virtio-net: Add support for USO features")
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-(cherry picked from commit 9710401276a0eb2fc6d467d9abea1f5e3fe2c362)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Acked-by: Peter Xu <peterx@redhat.com>
+Message-Id: <20240508024732.3127792-1-gaosong@loongson.cn>
+(cherry picked from commit 0eb285c3627b5406dd91bfa3b47402e5de92123f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: adjust context for v8.2.0-205-g2d23bb1a3805
+  "target/loongarch: Constify VMState in machine.c")
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 3c08a894fb..f5408d981a 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -37,15 +37,15 @@ GlobalProperty hw_compat_8_1[] = {
-     { "ramfb", "x-migrate", "off" },
-     { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" },
-     { "igb", "x-pcie-flr-init", "off" },
-+    { TYPE_VIRTIO_NET, "host_uso", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
- };
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index 1c4e01d076..5a7df713e2 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -125,8 +125,8 @@ const VMStateDescription vmstate_tlb = {
+ /* LoongArch CPU state */
+ const VMStateDescription vmstate_loongarch_cpu = {
+     .name = "cpu",
+-    .version_id = 1,
+-    .minimum_version_id = 1,
++    .version_id = 2,
++    .minimum_version_id = 2,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINTTL_ARRAY(env.gpr, LoongArchCPU, 32),
+         VMSTATE_UINTTL(env.pc, LoongArchCPU),
+@@ -191,6 +191,8 @@ const VMStateDescription vmstate_loongarch_cpu = {
+         VMSTATE_STRUCT_ARRAY(env.tlb, LoongArchCPU, LOONGARCH_TLB_MAX,
+                              0, vmstate_tlb, LoongArchTLB),
  
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-     { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
--    { TYPE_VIRTIO_NET, "host_uso", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
--    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
++        VMSTATE_UINT64(kvm_state_counter, LoongArchCPU),
++
+         VMSTATE_END_OF_LIST()
+     },
+     .subsections = (const VMStateDescription*[]) {
 -- 
 2.39.2
 
