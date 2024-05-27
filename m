@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627FB8CFD87
-	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F368CFD97
+	for <lists+qemu-devel@lfdr.de>; Mon, 27 May 2024 11:56:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBX4Y-0006xP-H9; Mon, 27 May 2024 05:55:20 -0400
+	id 1sBX5r-0000fP-BA; Mon, 27 May 2024 05:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBX48-0006wn-Lk; Mon, 27 May 2024 05:54:52 -0400
-Received: from mgamail.intel.com ([198.175.65.19])
+ id 1sBX5e-0000cP-6P; Mon, 27 May 2024 05:56:26 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBX47-0008VE-0U; Mon, 27 May 2024 05:54:52 -0400
+ id 1sBX5Z-0000V2-8V; Mon, 27 May 2024 05:56:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716803691; x=1748339691;
+ t=1716803782; x=1748339782;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bOlElLfh6dD1KI2TE0d8lBG+ud9MK9TNyMp5tAHlTXg=;
- b=kME7HF+he4QmF8F3VfFDsN+I2ja6D27C8gfi6Kmt4H+Dvk3GFB4mOvP4
- 4o7y4vrf6N/0Q2UQiM2t0oww5MSxmBrayKiyeaQRi7HDP7MvphViFccpM
- pCIdUYpetrnfUTOLK7imRt5ykLEITd5VXtn3pCw4I/i6T5iXSG6WLoPaJ
- 6ELnkq0sMPa75IoQp2BK81hWoFk0ZTzKI0lRKcWB7kJeuh33Xjpw7N0au
- ANhAacwq6IE7ipr7KFTLmCvDhBWj2HisitjKN7PNNfMrAPOEXiGjHjdcP
- Jy1YR8LNvTHDo331RgPHa3byDmFP5332y+iUNZWKwDb+o9cS7O0enVLvo Q==;
-X-CSE-ConnectionGUID: oI3F8sg+QOaWOTGTUTZRig==
-X-CSE-MsgGUID: hZY58YXYTwSJZFzGaqDJmw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="12952318"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="12952318"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 02:54:49 -0700
-X-CSE-ConnectionGUID: J2W3lqz3ReiazifHEbmQ8g==
-X-CSE-MsgGUID: 2F3XYJnzREybJy59y+QhJw==
+ mime-version:in-reply-to;
+ bh=97lFmP1Xif4eZA/n0xbIqmin3Syi5ckopV3vGiHK7Wc=;
+ b=Y2aSS91P/Pm7Q9zAgbKxYA07SXDopcOelfYCFLManFsEVvytT6Jz11FJ
+ yTN229ZFzJxNB0yWu2wRjm2fdRikb2V086hNGKN9lUR6rVJ7o7UbKEiud
+ yOLhlHVL6n21IbXKCQwQbKyRbPj7/zrJCwHK9PcFeiau34AtAl9d6f0wJ
+ s14B3rLCWh8f+RMkvMEKhQdOKRl2tvoy1rqD1C0rzu2SJkEuwjyhDCGOB
+ RhB+XdASNnDROjx5TX0z/4gbB3R6LzKqWBqHoRIelFWhcmG3/keY1oJUx
+ ktHEn1MyOANOn3Yo3DEnFfMhsufbTfdhxAr9Ig/dJnf33TTKhvlh+yvWy A==;
+X-CSE-ConnectionGUID: ma5iHxBjQgeh4vbjeimEbA==
+X-CSE-MsgGUID: tZ/3ucasSfiM80mwua8frg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="35629311"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="35629311"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 02:56:04 -0700
+X-CSE-ConnectionGUID: K+gIUm/3SGCWVzcdfrYm6A==
+X-CSE-MsgGUID: aNP11mAfRpW7Q+k5uFzL2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="34599385"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="34717942"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 27 May 2024 02:54:40 -0700
-Date: Mon, 27 May 2024 18:10:02 +0800
+ by fmviesa006.fm.intel.com with ESMTP; 27 May 2024 02:55:55 -0700
+Date: Mon, 27 May 2024 18:11:18 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Salil Mehta <salil.mehta@huawei.com>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
@@ -60,17 +60,16 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
  wangyanan55@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
  lixianglai@loongson.cn, npiggin@gmail.com, harshpb@linux.ibm.com,
  linuxarm@huawei.com, Shaoqin Huang <shahuang@redhat.com>
-Subject: Re: [PATCH V11 2/8] hw/acpi: Move CPU ctrl-dev MMIO region len macro
- to common header file
-Message-ID: <ZlRb+uLWumeVUN0w@intel.com>
+Subject: Re: [PATCH V11 3/8] hw/acpi: Update ACPI GED framework to support
+ vCPU Hotplug
+Message-ID: <ZlRcRgGtFq+oeto4@intel.com>
 References: <20240522211111.232114-1-salil.mehta@huawei.com>
- <20240522211111.232114-3-salil.mehta@huawei.com>
+ <20240522211111.232114-4-salil.mehta@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240522211111.232114-3-salil.mehta@huawei.com>
-Received-SPF: pass client-ip=198.175.65.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240522211111.232114-4-salil.mehta@huawei.com>
+Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
@@ -94,19 +93,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 22, 2024 at 10:11:05PM +0100, Salil Mehta via wrote:
-> Date: Wed, 22 May 2024 22:11:05 +0100
+On Wed, May 22, 2024 at 10:11:06PM +0100, Salil Mehta via wrote:
+> Date: Wed, 22 May 2024 22:11:06 +0100
 > From: Salil Mehta via <qemu-devel@nongnu.org>
-> Subject: [PATCH V11 2/8] hw/acpi: Move CPU ctrl-dev MMIO region len macro
->  to common header file
+> Subject: [PATCH V11 3/8] hw/acpi: Update ACPI GED framework to support vCPU
+>  Hotplug
 > X-Mailer: git-send-email 2.34.1
 > 
-> CPU ctrl-dev MMIO region length could be used in ACPI GED and various other
-> architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-> appropriate common header file.
+> ACPI GED (as described in the ACPI 6.4 spec) uses an interrupt listed in the
+> _CRS object of GED to intimate OSPM about an event. Later then demultiplexes the
+> notified event by evaluating ACPI _EVT method to know the type of event. Use
+> ACPI GED to also notify the guest kernel about any CPU hot(un)plug events.
 > 
+> ACPI CPU hotplug related initialization should only happen if ACPI_CPU_HOTPLUG
+> support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
+> stub to avoid compilation break.
+> 
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Reviewed-by: Gavin Shan <gshan@redhat.com>
 > Reviewed-by: David Hildenbrand <david@redhat.com>
@@ -114,10 +119,13 @@ On Wed, May 22, 2024 at 10:11:05PM +0100, Salil Mehta via wrote:
 > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
 > Tested-by: Xianglai Li <lixianglai@loongson.cn>
 > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Reviewed-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
 > ---
->  hw/acpi/cpu.c                 | 2 +-
->  include/hw/acpi/cpu_hotplug.h | 2 ++
->  2 files changed, 3 insertions(+), 1 deletion(-)
+>  hw/acpi/acpi-cpu-hotplug-stub.c        |  6 ++++++
+>  hw/acpi/cpu.c                          |  6 +++++-
+>  hw/acpi/generic_event_device.c         | 17 +++++++++++++++++
+>  include/hw/acpi/generic_event_device.h |  4 ++++
+>  4 files changed, 32 insertions(+), 1 deletion(-)
 > 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
