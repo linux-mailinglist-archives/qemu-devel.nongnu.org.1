@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C82D8D148E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BE08D1490
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:39:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBqSv-0007sa-1L; Tue, 28 May 2024 02:37:45 -0400
+	id 1sBqTu-0000pw-ID; Tue, 28 May 2024 02:38:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqSt-0007rv-9S
- for qemu-devel@nongnu.org; Tue, 28 May 2024 02:37:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqTr-0000kG-0G
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 02:38:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqSr-0008B6-QD
- for qemu-devel@nongnu.org; Tue, 28 May 2024 02:37:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqTp-0008SB-81
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 02:38:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716878261;
+ s=mimecast20190719; t=1716878320;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=+0CPcTJwvcTRigc0JJGepF88/8EwnUpLNsWqLL4zUoA=;
- b=Ky1AtmpRDZRz6MbV9Lr3RV2Ijycg7syRZc6Z0dslOqrWgkCpl8FVP/IMobCJwf8tyiI11l
- fZZPKcCRjT+lKMxv/zPGhj2hkz+2k6iEvKNpsuK+gnA15m3o2rr5clhtxHt4fTBIv1yX2g
- lyS1Bj3q5+0GhHCvLk9pqMgE77gpnd4=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zP+RBjJJtpvjcQWFA0YLeha4LS14DsfPXiKOMRNBrlI=;
+ b=BX0StQKVubyK18f9XMht30wfbB6PNaAmRicV1/oiHtUoMWQXDKz9xBLLm6spOGLUaHEYbd
+ roIlEP58ErKnyHpH0j+CSxG1hIEakjSq41bBk0a2lXquCCmDOMyjypmoeTMrLxu5TZVTih
+ K218m6OqN9qGc5Cfb2o9LWuwz6Oo6wE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-mGCGcE9nPc-BFCcoqslwRw-1; Tue, 28 May 2024 02:37:37 -0400
-X-MC-Unique: mGCGcE9nPc-BFCcoqslwRw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-579d61a4e56so431686a12.3
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 23:37:37 -0700 (PDT)
+ us-mta-650-d-xU6aibPICNoYFbmi59rA-1; Tue, 28 May 2024 02:38:38 -0400
+X-MC-Unique: d-xU6aibPICNoYFbmi59rA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a592c35ac06so37419966b.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 23:38:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716878256; x=1717483056;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+0CPcTJwvcTRigc0JJGepF88/8EwnUpLNsWqLL4zUoA=;
- b=ZzEMWEj/SQAs3GdcOMzzrTrRXI2MLe9pU0Ha+JfeRPN3yBEHMPjYPF02xrAMjgmBF3
- TAY70cX2VA7zdBiiLXttA2pl+QeMIJW0n9l4GPS8v7pqosEI5aMRHJgfmNkz7bZqxpPy
- 1MVehL6BemQstpcmkunC/1DnfyvSxiTKhmTe/HLBOx/NkYDQxC5RYRUBpEcyGyVx50f6
- 7JF9cmIHUcFSGVkLjy9uu4/lJxxYaKRbtNCQBo/DJcBg8Gdk66CdOzpHfCOn1XtF7JoN
- ylYw6VPxpmO4YgA7ct6ugTw5QZeD/tuBtxMzhufdxgNRUngzxEHXii99qIqKOeqUVGj8
- UCYg==
+ d=1e100.net; s=20230601; t=1716878317; x=1717483117;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zP+RBjJJtpvjcQWFA0YLeha4LS14DsfPXiKOMRNBrlI=;
+ b=FCYqpr8Suf+KuajF0tQesuxTNB2iwlf3ad9KrS91SMw+FdOEyY5HvFmug0UUIjMTmN
+ 4KPpAW5ORCfMKy36N83k8Grp/tPAvn2lCHI86wUc0QT7ZEIWvD2cN8kOWJrX83kv823h
+ u83Hzd1Gqu6TtrHdWQnlXeZVeLUb2ZM1gZ6komqEvJo8+X6Z21LUe0mFrScV7bvPOkJh
+ GHiPyeClCTGB/qwyYuqlHTsOVBMGHMsMX+PwM1BAyvJbptLbn3bMIDYmGUwI4pm+v7pr
+ BveWPpSDRFgHK+l9nCNbwf0J9f4nTPsSP2Lucjml4NwpPk+SAh6x4s3dR2fo//lshV12
+ udzA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWjIPt33+j6U3davybmpGdt+2p6ZjyKheMYLcJiHQYdGjgIwikvp8BScsnBF5EhaUrWMNd2vf29bH0gwPxYwFbB8yc09K0=
-X-Gm-Message-State: AOJu0YxTxd+iZMSyGjSSpO5CJwQ2NZgNtKih//YbHNCaTOjy2qxTuEUY
- JzNA7s5w1lJJLA2Jb53Q2ji6cyutjs8rabiFRSXX0S1pdShn0hAeVx/fETv7ScGi7R1exsqoXgy
- sLottkz7C8RfoBoy7sal5KrRtJuMCUBsU4uyn8Cl8NHpYZRk3Sx1p4Chrt1pX
-X-Received: by 2002:a50:f695:0:b0:578:68b6:dc48 with SMTP id
- 4fb4d7f45d1cf-57868b6de63mr5910976a12.22.1716878256793; 
- Mon, 27 May 2024 23:37:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLA1zbijV0yeUxXjvWoq5vzTrJLUHOKy+UW97OGxi1O+50oYeI1LmkJ/RXcE3vfZ5LRyd/Gw==
-X-Received: by 2002:a50:f695:0:b0:578:68b6:dc48 with SMTP id
- 4fb4d7f45d1cf-57868b6de63mr5910958a12.22.1716878256356; 
- Mon, 27 May 2024 23:37:36 -0700 (PDT)
+ AJvYcCXTaR5om2Rcp3eG+kY71AGTUeDY7ipkt0pZ3hlvLDKzHQUYONiMaym4ICEVOAml7J1vnkH1fAYiuKG8pvarMYqCHOmxIqg=
+X-Gm-Message-State: AOJu0YwKfbJlXFjDlBmq6gRxiMkPDTPpQUP5n7Ke5uIyGgU+H2ZtLMff
+ Xz4uXpho+bVBihczh84dYHAQm180mnQnzN6i4kbhSI+S/7wcYy5R0zBVsGDhIfbCQGito4gn/Ex
+ mDT4Y4P5FRdWqqQhni0ur+Py7yop1Hory0dauDP+UrWbScSoat4sE
+X-Received: by 2002:a17:906:a287:b0:a5c:dad0:c464 with SMTP id
+ a640c23a62f3a-a623e6d5882mr1269719466b.6.1716878317639; 
+ Mon, 27 May 2024 23:38:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPkdfu3olm/QKI/Nf5Qi8tEZu2YVCsq6Ks/pKirK422yWu62tO4Z6LzuqtVhFv4vmy+gKhFw==
+X-Received: by 2002:a17:906:a287:b0:a5c:dad0:c464 with SMTP id
+ a640c23a62f3a-a623e6d5882mr1269717866b.6.1716878317221; 
+ Mon, 27 May 2024 23:38:37 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-179-186.web.vodafone.de.
  [109.43.179.186]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-578524bc4d8sm6767212a12.94.2024.05.27.23.37.35
+ a640c23a62f3a-a626cc8b980sm574403366b.154.2024.05.27.23.38.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 23:37:35 -0700 (PDT)
-Message-ID: <f5be6b40-5833-488c-916f-ba148b5269db@redhat.com>
-Date: Tue, 28 May 2024 08:37:34 +0200
+ Mon, 27 May 2024 23:38:36 -0700 (PDT)
+Message-ID: <f02b2640-cad9-4b96-bd99-123d7cae552c@redhat.com>
+Date: Tue, 28 May 2024 08:38:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] tests/qtest: Move common define from
- libqos-spapr.h to new ppc-util.h
+Subject: Re: [PATCH v2 4/6] tests/qtest/migration-test: Quieten ppc64 QEMU
+ warnigns
 To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
 Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-ppc@nongnu.org
 References: <20240528004211.564010-1-npiggin@gmail.com>
- <20240528004211.564010-4-npiggin@gmail.com>
-From: Thomas Huth <thuth@redhat.com>
+ <20240528004211.564010-5-npiggin@gmail.com>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -120,10 +120,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240528004211.564010-4-npiggin@gmail.com>
+In-Reply-To: <20240528004211.564010-5-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -148,20 +148,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+
+I just noticed that there is a typo in the subject:
+
+s/warnigns/warnings/
+
 On 28/05/2024 02.42, Nicholas Piggin wrote:
-> The spapr QEMU machine defaults is useful outside libqos, so create a
-> new header for ppc specific qtests and move it there.
-> 
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   tests/qtest/libqos/libqos-spapr.h |  7 -------
->   tests/qtest/ppc-util.h            | 19 +++++++++++++++++++
->   tests/qtest/boot-serial-test.c    |  2 +-
->   tests/qtest/prom-env-test.c       |  2 +-
->   tests/qtest/pxe-test.c            |  2 +-
->   5 files changed, 22 insertions(+), 10 deletions(-)
->   create mode 100644 tests/qtest/ppc-util.h
-
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+>   tests/qtest/migration-test.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index 8247ed98f2..7d64696f7a 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -21,6 +21,7 @@
+>   #include "chardev/char.h"
+>   #include "crypto/tlscredspsk.h"
+>   #include "qapi/qmp/qlist.h"
+> +#include "ppc-util.h"
+>   
+>   #include "migration-helpers.h"
+>   #include "tests/migration/migration-test.h"
+> @@ -750,7 +751,8 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+>                                         "until'", end_address, start_address);
+>           machine_alias = "pseries";
+>           machine_opts = "vsmt=8";
+> -        arch_opts = g_strdup("-nodefaults");
+> +        arch_opts = g_strdup("-nodefaults "
+> +                             "-machine " PSERIES_DEFAULT_CAPABILITIES);
+>       } else if (strcmp(arch, "aarch64") == 0) {
+>           memory_size = "150M";
+>           machine_alias = "virt";
 
 
