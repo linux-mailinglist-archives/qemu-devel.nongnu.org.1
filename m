@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329848D2007
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:15:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CD58D2033
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:19:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sByXF-0004Wo-CI; Tue, 28 May 2024 11:14:45 -0400
+	id 1sByaZ-0006Bs-Sx; Tue, 28 May 2024 11:18:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sByXA-0004WB-13
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:14:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sByaV-0006AV-T9
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:18:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sByX8-00011z-Gd
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:14:39 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sByaQ-0001OH-9t
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:18:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716909277;
+ s=mimecast20190719; t=1716909480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=RGPBmB0GRHYAZNQc866HcXdYj/5+yRcCklhBzz6lrv0=;
- b=env+O8NwZpS7h08lMrkDQHkRGjlEwNvapixbYlwuyZIX6GldXx5X1rzaNBDrv0EHOhkIS8
- yJx+JhPA0UH0Md6H/R0D64VFfIufIVsjHN5yQBxZ8nVHlUiv2KjrQAqXvLKqPdfP8mwnzh
- l5KY8q7hi0KubeCInn6Gn47YspNjDis=
+ bh=EdT2d+RRjtzKt0J6GRKfnsJpys3bFNVVWzGeKhOF5/k=;
+ b=hDI3/qgvz7a1yBzuXbXre9a4LibohJwv09RDjJM2uYA30ZGqnK2hOnapg9fU5U0J6sLyx8
+ KCMM2VgDQ3RGfPhTLYMDbBlZNo5cjPPiKjvriiQbLUUHebtqgpNaYHlNPpCioK370+hV8S
+ 42OFKRvRisyij5qkA8jQIx7ah1PBORY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-pHiX0CtbNXmn8yRCq014Mw-1; Tue, 28 May 2024 11:14:31 -0400
-X-MC-Unique: pHiX0CtbNXmn8yRCq014Mw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-500-xeLmQaImPwmaCQk2_W-kQw-1; Tue, 28 May 2024 11:17:57 -0400
+X-MC-Unique: xeLmQaImPwmaCQk2_W-kQw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C89AF185A780;
- Tue, 28 May 2024 15:14:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0C3F800169;
+ Tue, 28 May 2024 15:17:56 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.195.1])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EFEE9286E;
- Tue, 28 May 2024 15:14:29 +0000 (UTC)
-Date: Tue, 28 May 2024 17:14:28 +0200
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B2BD810004F6;
+ Tue, 28 May 2024 15:17:55 +0000 (UTC)
+Date: Tue, 28 May 2024 17:17:54 +0200
 From: Kevin Wolf <kwolf@redhat.com>
-To: "Denis V. Lunev" <den@openvz.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH 1/1] block: drop force_dup parameter of
- raw_reconfigure_getfd()
-Message-ID: <ZlX01A9ExOOoTvyo@redhat.com>
-References: <20240430170213.148558-1-den@openvz.org>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com,
+ jsnow@redhat.com, f.ebner@proxmox.com
+Subject: Re: [PATCH] iotests/pylintrc: allow up to 10 similar lines
+Message-ID: <ZlX1ovj3v5YsL7Al@redhat.com>
+References: <20240430091329.2365053-1-vsementsov@yandex-team.ru>
+ <10070ee3-2ef7-45e6-bd27-5ac74559f192@yandex-team.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430170213.148558-1-den@openvz.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+In-Reply-To: <10070ee3-2ef7-45e6-bd27-5ac74559f192@yandex-team.ru>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,18 +79,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 30.04.2024 um 19:02 hat Denis V. Lunev via geschrieben:
-> This parameter is always passed as 'false' from the caller.
+Am 28.05.2024 um 14:49 hat Vladimir Sementsov-Ogievskiy geschrieben:
+> On 30.04.24 12:13, Vladimir Sementsov-Ogievskiy wrote:
+> > We want to have similar QMP objects in different tests. Reworking these
+> > objects to make common parts by calling some helper functions doesn't
+> > seem good. It's a lot more comfortable to see the whole QAPI request in
+> > one place.
+> > 
+> > So, let's increase the limit, to unblock further commit
+> > "iotests: add backup-discard-source"
+> > 
+> > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > ---
+> > 
+> > Hi all! That's a patch to unblock my PR
+> > "[PULL 0/6] Block jobs patches for 2024-04-29"
+> >    <20240429115157.2260885-1-vsementsov@yandex-team.ru>
+> >    https://patchew.org/QEMU/20240429115157.2260885-1-vsementsov@yandex-team.ru/
+> > 
+> > 
+> >   tests/qemu-iotests/pylintrc | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/qemu-iotests/pylintrc b/tests/qemu-iotests/pylintrc
+> > index de2e0c2781..05b75ee59b 100644
+> > --- a/tests/qemu-iotests/pylintrc
+> > +++ b/tests/qemu-iotests/pylintrc
+> > @@ -55,4 +55,4 @@ max-line-length=79
+> >   [SIMILARITIES]
+> > -min-similarity-lines=6
+> > +min-similarity-lines=10
 > 
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> CC: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>
-> CC: Kevin Wolf <kwolf@redhat.com>
-> CC: Hanna Reitz <hreitz@redhat.com>
+> 
+> Hi! I hope it's OK, if I just apply this to my block branch, and
+> resend "[PULL 0/6] Block jobs patches for 2024-04-29" which is blocked
+> on this problem.
 
-Let me add a "Since commit 72373e40fbc" to the commit message.
+Sorry, I only just returned from PTO and now have to catch up with
+things.
 
-Thanks, applied to the block branch.
+But yes, if John doesn't have any objections, it's fine with me, too.
 
-Kevin
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 
 
