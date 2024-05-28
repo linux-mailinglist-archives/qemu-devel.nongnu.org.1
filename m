@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5738D1E11
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78E08D1E13
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:11:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUx-0001h4-RO; Tue, 28 May 2024 10:08:19 -0400
+	id 1sBxUx-0001h0-JA; Tue, 28 May 2024 10:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUu-0001eZ-GN
+ id 1sBxUu-0001ex-Tn
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:16 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUq-00075H-4Y
+ id 1sBxUq-00075Q-KH
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:16 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-420180b58c5so6691415e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:11 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-357ec504fcdso579229f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716905291; x=1717510091; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aHiht3qjK9nTz/BmiDNiUp/VCOepZ4hbiSkB0EhpyPY=;
- b=fX77is8sQSXww2TGufqujIVc3IvdqeOvFpQJknp5mf6R5kgNdOWONJqCXZgfRwHh5i
- yUsVwC71ZZGCofZtlImlzw5nHKxmx19dr3BCE95p0CFDmuxsMDPVraaJ8XDVazP+0F5G
- 6LHMA63NIi3wz9WgOrEvLoXZb7bfikQtowz43dwJ6g5UJ7K1ggEU+p3vHlBu5E6wnv3D
- 4s264/2qKQ+JKOEdl+F9S6CYp6HjS3TMnX1qBRWO/PkBWn7+p0qdumHwrZvYGc+tdEnJ
- ztJFyl+wS4QhfJLenRQu+j8a06apaM2aedJxb40j6Ym/vmYaYvqofYAF0Jk4nk00Hgmx
- yQ8w==
+ :reply-to; bh=h1buDJhz2wCtQFvBdtMaIdKQ5IOooPTw5OQ/DvPjbTs=;
+ b=yJE17Fe0Ay6oqiJ9hZMM5qc0w84aKBtBEDiz6A2WpFE70d9EZI5PZLiVBg2Ul5cpi0
+ mwTdrH5VJ9oSwIz4z1UA4vRpzQlxtallj/bQIyu+zwgivEzJEbNOWUGuMlHhtF8e8S/3
+ QbM/LBbI0KpklrCYUEs9pKP3rCtaYNplC3SjhKClol9HsREmT5icyK3QwcJUwGrbZMKB
+ J/zkR4xmRXy7UaTg0s/tJA3iU/F++GDqwmH1dPGfu3EFWP2cSviSXDbh81KZbhEh0rXA
+ v29Wl24H/hGoCdy+FSHgbFoSVvs1lB/5f7PJVziTHXssHlo0xFpLVddNr68wUi5JY2gI
+ Epfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716905291; x=1717510091;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aHiht3qjK9nTz/BmiDNiUp/VCOepZ4hbiSkB0EhpyPY=;
- b=ev9kdpnnum6syr8jbsyD8McYxF3d3KbJFffa1oezMDU7HUuP5+NJwXSpBh2MiM8fMP
- RsLySTnHofljuEk2jXwKqeTiEFSAOVi+HKKgKtob+xYwcHLh7BNHLrU6NLH1Ymqv9dkC
- juKRmhKpFG1DTEglPmtbo4r+6q+963tmQxOkJskxcIXFk7x40+X6ozPNpckRa8mVN/Lo
- sKfu0Tw7UIg/sQVprSOiGSisu5SR+pBAF0NMObdNfkyncxOZzfO6+SY6e+fj/9hg5j1T
- I6ZQjE/BFsAMfGx06dOy51RpIisam+wEfNMWR4VLvS9QrDi9Qs2hM+Omntu905JvHM3s
- SlTA==
-X-Gm-Message-State: AOJu0YygQlLxx+kfIoF4Xn8IElkOThxEq9DAbbq0YY/kjbs39ZYR7c+G
- /Yq7Xa+3OITO7lH6v+V4v3Jr+dKHauHh139eD2dOBmxHJgD2X4qSZjvoB2wIGjxTg7JtDdMNHKt
- 6
-X-Google-Smtp-Source: AGHT+IEmF7MCZSpjfpv+ZzqS/PDEn3xIxBR41JP1+4oIVuDOMWKNnaTaFALHGpsj/MaGHmv1Vhotmg==
-X-Received: by 2002:a05:600c:4506:b0:421:205f:52de with SMTP id
- 5b1f17b1804b1-421205f543bmr13251625e9.26.1716905290756; 
- Tue, 28 May 2024 07:08:10 -0700 (PDT)
+ bh=h1buDJhz2wCtQFvBdtMaIdKQ5IOooPTw5OQ/DvPjbTs=;
+ b=f9Uxcyt/ZwdGJcKx1EyITIM5J3wM9T7Aqbuw4dWKAieT9oSaXHoYqlZcJUkpKbzXp5
+ ajmBHrwSIRjFxl8TqE9BDQqYxct18ZelBxwGBNj1E1WiWy3vsiXENeDgtE83EJkT0miK
+ QuMJnzdstudTh/yRpQWl1LYWzzW4VnXeqFKodE1DHYFrrMF59PZVixBUvipWjVywI7MD
+ Bj4hrjtUIvacS3byOyNitaQb83NHH7FcrkWjp1EVbNuVY6o9vfBUn5Z30WCC2QOyq8LO
+ pVGfWcLgZnX4B4DOPoAErQ9KM5U5WPY62uD/AlcZzuDyV+ussqUjwJA+HI2HSyhP3jUu
+ BQSg==
+X-Gm-Message-State: AOJu0YwWdkGVb/GPT5IYTAM5+37P9G01ZQaBlQnxmoUio0QrhXBlvTTW
+ BjXNtwxbAZOB6KTLdg4r4Y5Jq6BX0qNnc3w6+/xn2P48LplMr8Ee0vqaRXc2IvWuab+hOdAWKP4
+ j
+X-Google-Smtp-Source: AGHT+IF99kCcW1juK2IXcO8i27DvvHc+XVe5aQuUcvz1luvJylZBtL8o3bOGDY6cpg9uokbkfu61SA==
+X-Received: by 2002:a05:6000:401f:b0:354:fd51:45fe with SMTP id
+ ffacd0b85a97d-3552fdf29a8mr9356995f8f.47.1716905291275; 
+ Tue, 28 May 2024 07:08:11 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.08.10
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 28 May 2024 07:08:10 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/42] target/arm: Convert FMAX, FMIN, FMAXNM,
- FMINNM to decodetree
-Date: Tue, 28 May 2024 15:07:37 +0100
-Message-Id: <20240528140753.3620597-27-peter.maydell@linaro.org>
+Subject: [PULL 27/42] target/arm: Introduce vfp_load_reg16
+Date: Tue, 28 May 2024 15:07:38 +0100
+Message-Id: <20240528140753.3620597-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,444 +93,146 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Load and zero-extend float16 into a TCGv_i32 before
+all scalar operations.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240524232121.284515-21-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240524232121.284515-22-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.h            |   4 +
- target/arm/tcg/a64.decode      |  17 ++++
- target/arm/tcg/translate-a64.c | 168 +++++++++++++++++----------------
- target/arm/tcg/vec_helper.c    |   4 +
- 4 files changed, 113 insertions(+), 80 deletions(-)
+ target/arm/tcg/translate-vfp.c | 39 +++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 2b027333053..7ee15b96512 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -748,15 +748,19 @@ DEF_HELPER_FLAGS_5(gvec_facgt_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+diff --git a/target/arm/tcg/translate-vfp.c b/target/arm/tcg/translate-vfp.c
+index b9af03b7c35..8e755fcde8a 100644
+--- a/target/arm/tcg/translate-vfp.c
++++ b/target/arm/tcg/translate-vfp.c
+@@ -48,6 +48,12 @@ static inline void vfp_store_reg32(TCGv_i32 var, int reg)
+     tcg_gen_st_i32(var, tcg_env, vfp_reg_offset(false, reg));
+ }
  
- DEF_HELPER_FLAGS_5(gvec_fmax_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fmax_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_fmax_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
++static inline void vfp_load_reg16(TCGv_i32 var, int reg)
++{
++    tcg_gen_ld16u_i32(var, tcg_env,
++                      vfp_reg_offset(false, reg) + HOST_BIG_ENDIAN * 2);
++}
++
+ /*
+  * The imm8 encodes the sign bit, enough bits to represent an exponent in
+  * the range 01....1xx to 10....0xx, and the most significant 4 bits of
+@@ -902,8 +908,7 @@ static bool trans_VMOV_half(DisasContext *s, arg_VMOV_single *a)
+     if (a->l) {
+         /* VFP to general purpose register */
+         tmp = tcg_temp_new_i32();
+-        vfp_load_reg32(tmp, a->vn);
+-        tcg_gen_andi_i32(tmp, tmp, 0xffff);
++        vfp_load_reg16(tmp, a->vn);
+         store_reg(s, a->rt, tmp);
+     } else {
+         /* general purpose register to VFP */
+@@ -1453,11 +1458,11 @@ static bool do_vfp_3op_hp(DisasContext *s, VFPGen3OpSPFn *fn,
+     fd = tcg_temp_new_i32();
+     fpst = fpstatus_ptr(FPST_FPCR_F16);
  
- DEF_HELPER_FLAGS_5(gvec_fmin_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fmin_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_fmin_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+-    vfp_load_reg32(f0, vn);
+-    vfp_load_reg32(f1, vm);
++    vfp_load_reg16(f0, vn);
++    vfp_load_reg16(f1, vm);
  
- DEF_HELPER_FLAGS_5(gvec_fmaxnum_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fmaxnum_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_fmaxnum_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- 
- DEF_HELPER_FLAGS_5(gvec_fminnum_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_fminnum_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-+DEF_HELPER_FLAGS_5(gvec_fminnum_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- 
- DEF_HELPER_FLAGS_5(gvec_recps_nf_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_5(gvec_recps_nf_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 82daafbef52..e2678d919e5 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -704,6 +704,11 @@ FSUB_s          0001 1110 ..1 ..... 0011 10 ..... ..... @rrr_hsd
- FDIV_s          0001 1110 ..1 ..... 0001 10 ..... ..... @rrr_hsd
- FMUL_s          0001 1110 ..1 ..... 0000 10 ..... ..... @rrr_hsd
- 
-+FMAX_s          0001 1110 ..1 ..... 0100 10 ..... ..... @rrr_hsd
-+FMIN_s          0001 1110 ..1 ..... 0101 10 ..... ..... @rrr_hsd
-+FMAXNM_s        0001 1110 ..1 ..... 0110 10 ..... ..... @rrr_hsd
-+FMINNM_s        0001 1110 ..1 ..... 0111 10 ..... ..... @rrr_hsd
-+
- FMULX_s         0101 1110 010 ..... 00011 1 ..... ..... @rrr_h
- FMULX_s         0101 1110 0.1 ..... 11011 1 ..... ..... @rrr_sd
- 
-@@ -721,6 +726,18 @@ FDIV_v          0.10 1110 0.1 ..... 11111 1 ..... ..... @qrrr_sd
- FMUL_v          0.10 1110 010 ..... 00011 1 ..... ..... @qrrr_h
- FMUL_v          0.10 1110 0.1 ..... 11011 1 ..... ..... @qrrr_sd
- 
-+FMAX_v          0.00 1110 010 ..... 00110 1 ..... ..... @qrrr_h
-+FMAX_v          0.00 1110 0.1 ..... 11110 1 ..... ..... @qrrr_sd
-+
-+FMIN_v          0.00 1110 110 ..... 00110 1 ..... ..... @qrrr_h
-+FMIN_v          0.00 1110 1.1 ..... 11110 1 ..... ..... @qrrr_sd
-+
-+FMAXNM_v        0.00 1110 010 ..... 00000 1 ..... ..... @qrrr_h
-+FMAXNM_v        0.00 1110 0.1 ..... 11000 1 ..... ..... @qrrr_sd
-+
-+FMINNM_v        0.00 1110 110 ..... 00000 1 ..... ..... @qrrr_h
-+FMINNM_v        0.00 1110 1.1 ..... 11000 1 ..... ..... @qrrr_sd
-+
- FMULX_v         0.00 1110 010 ..... 00011 1 ..... ..... @qrrr_h
- FMULX_v         0.00 1110 0.1 ..... 11011 1 ..... ..... @qrrr_sd
- 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 97c3d758d62..6f8207d842b 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -4915,6 +4915,34 @@ static const FPScalar f_scalar_fmul = {
- };
- TRANS(FMUL_s, do_fp3_scalar, a, &f_scalar_fmul)
- 
-+static const FPScalar f_scalar_fmax = {
-+    gen_helper_advsimd_maxh,
-+    gen_helper_vfp_maxs,
-+    gen_helper_vfp_maxd,
-+};
-+TRANS(FMAX_s, do_fp3_scalar, a, &f_scalar_fmax)
-+
-+static const FPScalar f_scalar_fmin = {
-+    gen_helper_advsimd_minh,
-+    gen_helper_vfp_mins,
-+    gen_helper_vfp_mind,
-+};
-+TRANS(FMIN_s, do_fp3_scalar, a, &f_scalar_fmin)
-+
-+static const FPScalar f_scalar_fmaxnm = {
-+    gen_helper_advsimd_maxnumh,
-+    gen_helper_vfp_maxnums,
-+    gen_helper_vfp_maxnumd,
-+};
-+TRANS(FMAXNM_s, do_fp3_scalar, a, &f_scalar_fmaxnm)
-+
-+static const FPScalar f_scalar_fminnm = {
-+    gen_helper_advsimd_minnumh,
-+    gen_helper_vfp_minnums,
-+    gen_helper_vfp_minnumd,
-+};
-+TRANS(FMINNM_s, do_fp3_scalar, a, &f_scalar_fminnm)
-+
- static const FPScalar f_scalar_fmulx = {
-     gen_helper_advsimd_mulxh,
-     gen_helper_vfp_mulxs,
-@@ -4978,6 +5006,34 @@ static gen_helper_gvec_3_ptr * const f_vector_fmul[3] = {
- };
- TRANS(FMUL_v, do_fp3_vector, a, f_vector_fmul)
- 
-+static gen_helper_gvec_3_ptr * const f_vector_fmax[3] = {
-+    gen_helper_gvec_fmax_h,
-+    gen_helper_gvec_fmax_s,
-+    gen_helper_gvec_fmax_d,
-+};
-+TRANS(FMAX_v, do_fp3_vector, a, f_vector_fmax)
-+
-+static gen_helper_gvec_3_ptr * const f_vector_fmin[3] = {
-+    gen_helper_gvec_fmin_h,
-+    gen_helper_gvec_fmin_s,
-+    gen_helper_gvec_fmin_d,
-+};
-+TRANS(FMIN_v, do_fp3_vector, a, f_vector_fmin)
-+
-+static gen_helper_gvec_3_ptr * const f_vector_fmaxnm[3] = {
-+    gen_helper_gvec_fmaxnum_h,
-+    gen_helper_gvec_fmaxnum_s,
-+    gen_helper_gvec_fmaxnum_d,
-+};
-+TRANS(FMAXNM_v, do_fp3_vector, a, f_vector_fmaxnm)
-+
-+static gen_helper_gvec_3_ptr * const f_vector_fminnm[3] = {
-+    gen_helper_gvec_fminnum_h,
-+    gen_helper_gvec_fminnum_s,
-+    gen_helper_gvec_fminnum_d,
-+};
-+TRANS(FMINNM_v, do_fp3_vector, a, f_vector_fminnm)
-+
- static gen_helper_gvec_3_ptr * const f_vector_fmulx[3] = {
-     gen_helper_gvec_fmulx_h,
-     gen_helper_gvec_fmulx_s,
-@@ -6891,18 +6947,6 @@ static void handle_fp_2src_single(DisasContext *s, int opcode,
-     tcg_op2 = read_fp_sreg(s, rm);
- 
-     switch (opcode) {
--    case 0x4: /* FMAX */
--        gen_helper_vfp_maxs(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x5: /* FMIN */
--        gen_helper_vfp_mins(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x6: /* FMAXNM */
--        gen_helper_vfp_maxnums(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x7: /* FMINNM */
--        gen_helper_vfp_minnums(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
-     case 0x8: /* FNMUL */
-         gen_helper_vfp_muls(tcg_res, tcg_op1, tcg_op2, fpst);
-         gen_helper_vfp_negs(tcg_res, tcg_res);
-@@ -6912,6 +6956,10 @@ static void handle_fp_2src_single(DisasContext *s, int opcode,
-     case 0x1: /* FDIV */
-     case 0x2: /* FADD */
-     case 0x3: /* FSUB */
-+    case 0x4: /* FMAX */
-+    case 0x5: /* FMIN */
-+    case 0x6: /* FMAXNM */
-+    case 0x7: /* FMINNM */
-         g_assert_not_reached();
+     if (reads_vd) {
+-        vfp_load_reg32(fd, vd);
++        vfp_load_reg16(fd, vd);
+     }
+     fn(fd, f0, f1, fpst);
+     vfp_store_reg32(fd, vd);
+@@ -1633,7 +1638,7 @@ static bool do_vfp_2op_hp(DisasContext *s, VFPGen2OpSPFn *fn, int vd, int vm)
      }
  
-@@ -6933,18 +6981,6 @@ static void handle_fp_2src_double(DisasContext *s, int opcode,
-     tcg_op2 = read_fp_dreg(s, rm);
+     f0 = tcg_temp_new_i32();
+-    vfp_load_reg32(f0, vm);
++    vfp_load_reg16(f0, vm);
+     fn(f0, f0);
+     vfp_store_reg32(f0, vd);
  
-     switch (opcode) {
--    case 0x4: /* FMAX */
--        gen_helper_vfp_maxd(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x5: /* FMIN */
--        gen_helper_vfp_mind(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x6: /* FMAXNM */
--        gen_helper_vfp_maxnumd(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x7: /* FMINNM */
--        gen_helper_vfp_minnumd(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
-     case 0x8: /* FNMUL */
-         gen_helper_vfp_muld(tcg_res, tcg_op1, tcg_op2, fpst);
-         gen_helper_vfp_negd(tcg_res, tcg_res);
-@@ -6954,6 +6990,10 @@ static void handle_fp_2src_double(DisasContext *s, int opcode,
-     case 0x1: /* FDIV */
-     case 0x2: /* FADD */
-     case 0x3: /* FSUB */
-+    case 0x4: /* FMAX */
-+    case 0x5: /* FMIN */
-+    case 0x6: /* FMAXNM */
-+    case 0x7: /* FMINNM */
-         g_assert_not_reached();
+@@ -2106,13 +2111,13 @@ static bool do_vfm_hp(DisasContext *s, arg_VFMA_sp *a, bool neg_n, bool neg_d)
+     vm = tcg_temp_new_i32();
+     vd = tcg_temp_new_i32();
+ 
+-    vfp_load_reg32(vn, a->vn);
+-    vfp_load_reg32(vm, a->vm);
++    vfp_load_reg16(vn, a->vn);
++    vfp_load_reg16(vm, a->vm);
+     if (neg_n) {
+         /* VFNMS, VFMS */
+         gen_helper_vfp_negh(vn, vn);
+     }
+-    vfp_load_reg32(vd, a->vd);
++    vfp_load_reg16(vd, a->vd);
+     if (neg_d) {
+         /* VFNMA, VFNMS */
+         gen_helper_vfp_negh(vd, vd);
+@@ -2456,11 +2461,11 @@ static bool trans_VCMP_hp(DisasContext *s, arg_VCMP_sp *a)
+     vd = tcg_temp_new_i32();
+     vm = tcg_temp_new_i32();
+ 
+-    vfp_load_reg32(vd, a->vd);
++    vfp_load_reg16(vd, a->vd);
+     if (a->z) {
+         tcg_gen_movi_i32(vm, 0);
+     } else {
+-        vfp_load_reg32(vm, a->vm);
++        vfp_load_reg16(vm, a->vm);
      }
  
-@@ -6975,18 +7015,6 @@ static void handle_fp_2src_half(DisasContext *s, int opcode,
-     tcg_op2 = read_fp_hreg(s, rm);
- 
-     switch (opcode) {
--    case 0x4: /* FMAX */
--        gen_helper_advsimd_maxh(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x5: /* FMIN */
--        gen_helper_advsimd_minh(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x6: /* FMAXNM */
--        gen_helper_advsimd_maxnumh(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
--    case 0x7: /* FMINNM */
--        gen_helper_advsimd_minnumh(tcg_res, tcg_op1, tcg_op2, fpst);
--        break;
-     case 0x8: /* FNMUL */
-         gen_helper_advsimd_mulh(tcg_res, tcg_op1, tcg_op2, fpst);
-         tcg_gen_xori_i32(tcg_res, tcg_res, 0x8000);
-@@ -6996,6 +7024,10 @@ static void handle_fp_2src_half(DisasContext *s, int opcode,
-     case 0x1: /* FDIV */
-     case 0x2: /* FADD */
-     case 0x3: /* FSUB */
-+    case 0x4: /* FMAX */
-+    case 0x5: /* FMIN */
-+    case 0x6: /* FMAXNM */
-+    case 0x7: /* FMINNM */
-         g_assert_not_reached();
+     if (a->e) {
+@@ -2700,7 +2705,7 @@ static bool trans_VRINTR_hp(DisasContext *s, arg_VRINTR_sp *a)
      }
  
-@@ -9221,24 +9253,12 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
-                 gen_helper_vfp_muladdd(tcg_res, tcg_op1, tcg_op2,
-                                        tcg_res, fpst);
-                 break;
--            case 0x18: /* FMAXNM */
--                gen_helper_vfp_maxnumd(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x1c: /* FCMEQ */
-                 gen_helper_neon_ceq_f64(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x1e: /* FMAX */
--                gen_helper_vfp_maxd(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x1f: /* FRECPS */
-                 gen_helper_recpsf_f64(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x38: /* FMINNM */
--                gen_helper_vfp_minnumd(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
--            case 0x3e: /* FMIN */
--                gen_helper_vfp_mind(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x3f: /* FRSQRTS */
-                 gen_helper_rsqrtsf_f64(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-@@ -9259,9 +9279,13 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
-                 gen_helper_neon_acgt_f64(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-             default:
-+            case 0x18: /* FMAXNM */
-             case 0x1a: /* FADD */
-             case 0x1b: /* FMULX */
-+            case 0x1e: /* FMAX */
-+            case 0x38: /* FMINNM */
-             case 0x3a: /* FSUB */
-+            case 0x3e: /* FMIN */
-             case 0x5b: /* FMUL */
-             case 0x5f: /* FDIV */
-                 g_assert_not_reached();
-@@ -9290,21 +9314,9 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
-             case 0x1c: /* FCMEQ */
-                 gen_helper_neon_ceq_f32(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x1e: /* FMAX */
--                gen_helper_vfp_maxs(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x1f: /* FRECPS */
-                 gen_helper_recpsf_f32(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x18: /* FMAXNM */
--                gen_helper_vfp_maxnums(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
--            case 0x38: /* FMINNM */
--                gen_helper_vfp_minnums(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
--            case 0x3e: /* FMIN */
--                gen_helper_vfp_mins(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x3f: /* FRSQRTS */
-                 gen_helper_rsqrtsf_f32(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-@@ -9325,9 +9337,13 @@ static void handle_3same_float(DisasContext *s, int size, int elements,
-                 gen_helper_neon_acgt_f32(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-             default:
-+            case 0x18: /* FMAXNM */
-             case 0x1a: /* FADD */
-             case 0x1b: /* FMULX */
-+            case 0x1e: /* FMAX */
-+            case 0x38: /* FMINNM */
-             case 0x3a: /* FSUB */
-+            case 0x3e: /* FMIN */
-             case 0x5b: /* FMUL */
-             case 0x5f: /* FDIV */
-                 g_assert_not_reached();
-@@ -11251,11 +11267,7 @@ static void disas_simd_3same_float(DisasContext *s, uint32_t insn)
-     case 0x7d: /* FACGT */
-     case 0x19: /* FMLA */
-     case 0x39: /* FMLS */
--    case 0x18: /* FMAXNM */
-     case 0x1c: /* FCMEQ */
--    case 0x1e: /* FMAX */
--    case 0x38: /* FMINNM */
--    case 0x3e: /* FMIN */
-     case 0x5c: /* FCMGE */
-     case 0x7a: /* FABD */
-     case 0x7c: /* FCMGT */
-@@ -11286,9 +11298,13 @@ static void disas_simd_3same_float(DisasContext *s, uint32_t insn)
-         return;
+     tmp = tcg_temp_new_i32();
+-    vfp_load_reg32(tmp, a->vm);
++    vfp_load_reg16(tmp, a->vm);
+     fpst = fpstatus_ptr(FPST_FPCR_F16);
+     gen_helper_rinth(tmp, tmp, fpst);
+     vfp_store_reg32(tmp, a->vd);
+@@ -2773,7 +2778,7 @@ static bool trans_VRINTZ_hp(DisasContext *s, arg_VRINTZ_sp *a)
+     }
  
-     default:
-+    case 0x18: /* FMAXNM */
-     case 0x1a: /* FADD */
-     case 0x1b: /* FMULX */
-+    case 0x1e: /* FMAX */
-+    case 0x38: /* FMINNM */
-     case 0x3a: /* FSUB */
-+    case 0x3e: /* FMIN */
-     case 0x5b: /* FMUL */
-     case 0x5f: /* FDIV */
-         unallocated_encoding(s);
-@@ -11632,14 +11648,10 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-     int pass;
+     tmp = tcg_temp_new_i32();
+-    vfp_load_reg32(tmp, a->vm);
++    vfp_load_reg16(tmp, a->vm);
+     fpst = fpstatus_ptr(FPST_FPCR_F16);
+     tcg_rmode = gen_set_rmode(FPROUNDING_ZERO, fpst);
+     gen_helper_rinth(tmp, tmp, fpst);
+@@ -2853,7 +2858,7 @@ static bool trans_VRINTX_hp(DisasContext *s, arg_VRINTX_sp *a)
+     }
  
-     switch (fpopcode) {
--    case 0x0: /* FMAXNM */
-     case 0x1: /* FMLA */
-     case 0x4: /* FCMEQ */
--    case 0x6: /* FMAX */
-     case 0x7: /* FRECPS */
--    case 0x8: /* FMINNM */
-     case 0x9: /* FMLS */
--    case 0xe: /* FMIN */
-     case 0xf: /* FRSQRTS */
-     case 0x14: /* FCMGE */
-     case 0x15: /* FACGE */
-@@ -11656,9 +11668,13 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-         pairwise = true;
-         break;
-     default:
-+    case 0x0: /* FMAXNM */
-     case 0x2: /* FADD */
-     case 0x3: /* FMULX */
-+    case 0x6: /* FMAX */
-+    case 0x8: /* FMINNM */
-     case 0xa: /* FSUB */
-+    case 0xe: /* FMIN */
-     case 0x13: /* FMUL */
-     case 0x17: /* FDIV */
-         unallocated_encoding(s);
-@@ -11726,9 +11742,6 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-             read_vec_element_i32(s, tcg_op2, rm, pass, MO_16);
+     tmp = tcg_temp_new_i32();
+-    vfp_load_reg32(tmp, a->vm);
++    vfp_load_reg16(tmp, a->vm);
+     fpst = fpstatus_ptr(FPST_FPCR_F16);
+     gen_helper_rinth_exact(tmp, tmp, fpst);
+     vfp_store_reg32(tmp, a->vd);
+@@ -3270,7 +3275,7 @@ static bool trans_VCVT_hp_int(DisasContext *s, arg_VCVT_sp_int *a)
  
-             switch (fpopcode) {
--            case 0x0: /* FMAXNM */
--                gen_helper_advsimd_maxnumh(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x1: /* FMLA */
-                 read_vec_element_i32(s, tcg_res, rd, pass, MO_16);
-                 gen_helper_advsimd_muladdh(tcg_res, tcg_op1, tcg_op2, tcg_res,
-@@ -11737,15 +11750,9 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-             case 0x4: /* FCMEQ */
-                 gen_helper_advsimd_ceq_f16(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x6: /* FMAX */
--                gen_helper_advsimd_maxh(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x7: /* FRECPS */
-                 gen_helper_recpsf_f16(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
--            case 0x8: /* FMINNM */
--                gen_helper_advsimd_minnumh(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0x9: /* FMLS */
-                 /* As usual for ARM, separate negation for fused multiply-add */
-                 tcg_gen_xori_i32(tcg_op1, tcg_op1, 0x8000);
-@@ -11753,9 +11760,6 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-                 gen_helper_advsimd_muladdh(tcg_res, tcg_op1, tcg_op2, tcg_res,
-                                            fpst);
-                 break;
--            case 0xe: /* FMIN */
--                gen_helper_advsimd_minh(tcg_res, tcg_op1, tcg_op2, fpst);
--                break;
-             case 0xf: /* FRSQRTS */
-                 gen_helper_rsqrtsf_f16(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-@@ -11776,9 +11780,13 @@ static void disas_simd_three_reg_same_fp16(DisasContext *s, uint32_t insn)
-                 gen_helper_advsimd_acgt_f16(tcg_res, tcg_op1, tcg_op2, fpst);
-                 break;
-             default:
-+            case 0x0: /* FMAXNM */
-             case 0x2: /* FADD */
-             case 0x3: /* FMULX */
-+            case 0x6: /* FMAX */
-+            case 0x8: /* FMINNM */
-             case 0xa: /* FSUB */
-+            case 0xe: /* FMIN */
-             case 0x13: /* FMUL */
-             case 0x17: /* FDIV */
-                 g_assert_not_reached();
-diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
-index 41065363710..99ef6760719 100644
---- a/target/arm/tcg/vec_helper.c
-+++ b/target/arm/tcg/vec_helper.c
-@@ -1231,15 +1231,19 @@ DO_3OP(gvec_facgt_s, float32_acgt, float32)
+     fpst = fpstatus_ptr(FPST_FPCR_F16);
+     vm = tcg_temp_new_i32();
+-    vfp_load_reg32(vm, a->vm);
++    vfp_load_reg16(vm, a->vm);
  
- DO_3OP(gvec_fmax_h, float16_max, float16)
- DO_3OP(gvec_fmax_s, float32_max, float32)
-+DO_3OP(gvec_fmax_d, float64_max, float64)
- 
- DO_3OP(gvec_fmin_h, float16_min, float16)
- DO_3OP(gvec_fmin_s, float32_min, float32)
-+DO_3OP(gvec_fmin_d, float64_min, float64)
- 
- DO_3OP(gvec_fmaxnum_h, float16_maxnum, float16)
- DO_3OP(gvec_fmaxnum_s, float32_maxnum, float32)
-+DO_3OP(gvec_fmaxnum_d, float64_maxnum, float64)
- 
- DO_3OP(gvec_fminnum_h, float16_minnum, float16)
- DO_3OP(gvec_fminnum_s, float32_minnum, float32)
-+DO_3OP(gvec_fminnum_d, float64_minnum, float64)
- 
- DO_3OP(gvec_recps_nf_h, float16_recps_nf, float16)
- DO_3OP(gvec_recps_nf_s, float32_recps_nf, float32)
+     if (a->s) {
+         if (a->rz) {
+@@ -3383,8 +3388,8 @@ static bool trans_VINS(DisasContext *s, arg_VINS *a)
+     /* Insert low half of Vm into high half of Vd */
+     rm = tcg_temp_new_i32();
+     rd = tcg_temp_new_i32();
+-    vfp_load_reg32(rm, a->vm);
+-    vfp_load_reg32(rd, a->vd);
++    vfp_load_reg16(rm, a->vm);
++    vfp_load_reg16(rd, a->vd);
+     tcg_gen_deposit_i32(rd, rd, rm, 16, 16);
+     vfp_store_reg32(rd, a->vd);
+     return true;
 -- 
 2.34.1
 
