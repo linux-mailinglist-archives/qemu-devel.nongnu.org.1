@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9377E8D1248
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA47F8D123C
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmr4-0007Rv-R3; Mon, 27 May 2024 22:46:26 -0400
+	id 1sBmqN-0005gV-Ha; Mon, 27 May 2024 22:45:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmq2-0005kK-3G; Mon, 27 May 2024 22:45:23 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sBmpt-0005Wd-Hj; Mon, 27 May 2024 22:45:13 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmpo-00041N-Cr; Mon, 27 May 2024 22:45:21 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1f4a5344ec7so2540145ad.1; 
- Mon, 27 May 2024 19:45:06 -0700 (PDT)
+ id 1sBmpq-00041k-HS; Mon, 27 May 2024 22:45:12 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-6819d785528so246636a12.3; 
+ Mon, 27 May 2024 19:45:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864305; x=1717469105; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864308; x=1717469108; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BljNjeMaZO3XaNf0tppv2lCKaXtzum6yJ/eCc7gYwjE=;
- b=C+73i1uZHmyhlx/h9o8cFBSCl2kzjA5HsXdpNoocMHSFs+CJ156tMrVkk4NpNezW9Y
- CuNeI4YNhMkVQiBDGMf87t2T0f9aDrNx83d6+NtluU+6AxgHD/6259tuYWtUzNPjKowY
- 7f+bZgu67hnkLTKCih/AKW67B8jb8KEp6oGVKmY0RFZABKhHLke+zzE4aHxoXK/2Uckb
- fYT+/GerzuRpkQsfIQH7LtL83V9pHhEO/yyqrf2QGFPxQ2o9F+RMTFgC5dO36+qMlst7
- xW440GnWNsPypoxG3hygnGsG2hfqmAflFX+QyX6AMSk249idMPbbqgf7r77Rlt/bJQ8V
- BHLQ==
+ bh=Xv5zByHXrMR6OVpxVCKjSat3U6+gmlv5WCvdVnmoelg=;
+ b=TWEpryTkxKGXNjsDQzkVOiRwuoLVNTim8cq8lOclqV9UQUt7a9bBE6dVH0n2c2JqTq
+ Mp0Mk1j4JbruZ9tpOjnXW7rKIIDQNPZWArPO+caj0jgaQ9Fz80GDzwExubiK/wVCkLyE
+ ZMi+GrLnc7SbrdzBlOy7Bj2ZF/e8vQHjwIJ/9vaQRzZ/OBErS1Y0k3ghNhgQPEKXncJY
+ T+bktFC7QtsdpN2beTwudKw77DfWL60P8iEsDgpxyEgnq/sSzQhslpvqrmBTiJy4Dmza
+ sqgdiCvmSbOKhbegLzAJknmybhv/s0Ff/3X+uz1fu4YWqBeEN7Ud86NGyDOax9Xf5KyM
+ TtMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864305; x=1717469105;
+ d=1e100.net; s=20230601; t=1716864308; x=1717469108;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BljNjeMaZO3XaNf0tppv2lCKaXtzum6yJ/eCc7gYwjE=;
- b=YzzguGX18X5U6b5LJZ/d2zFg8KBfmpwYwKYa7+d6/cbTICArW8GbGXA9iESlraLtY7
- ZhKZUnL50HxesgiccsVLJD3BDiXFAmSMpN4zDAYBoeDPp+p2iBUjb3N6wS2w9Ze2wky4
- yJU5QC6CH2dpoUCE+7nC67GAd3O8q4VgafOA5XC7ESTIlNuCM0aQs5lcmArKJRCYR3ZZ
- Dz3yADdA9Xl5KgcAyRwrzR9WZlrsfIOYzi5UG03yZ9Xb+4M9SIKeJoue2NkzoPB9dKjT
- TtzlHEtIuHMyAQH86BNZlIiJZu9t2j7SE5C15ZYmGTUQgjJV8LJ4Hhv/3qk5exRiRTMO
- jApg==
+ bh=Xv5zByHXrMR6OVpxVCKjSat3U6+gmlv5WCvdVnmoelg=;
+ b=Al1D1E8pxta73RO9iCwnLsVw8vLkRogJ6/836ynsEPpkC9/4R5qcwNEAKnmZisUCpr
+ sHmrH+Rqphiaq9swOQaqP1d0pWbRY5T9js++39yybLdzmbC4I9g+OFiAb7y1Phh4V5Xq
+ YSKzIXWDmayzfGFN886oO/CBERHr6Z74pAA2T0mNXtiyHcSt5h/Acbf8LRVfBuRDM32y
+ t1RhXsWWaYkoMdRIBzVG6J78CYYC6MwKBcK5fm0qWrgPRJV1mhY8hZJ5QSj6blN/Tnro
+ zbv4OXi+AGLX5xtIoifSShC+1OKVGENePv/2X1LNjWeEjVNrhzk0fqV92Ai+tFPYZ5Na
+ Lv9g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVhjbibivKKo0fb2sLjPcOGfjGpOQDJ7xT8I57wk6VPEXLlh4iReUgu7yOj7qJ05dDpTtQ2HsT1hEZmsTw0uTzLJdsUCwjp
-X-Gm-Message-State: AOJu0YwWJP3IipkGAr3SD8aESoPpSKBhX0RRswxyT6FACbQmljVOBpnc
- IGvmDso+IqcpeMSqY+4mv56Hv96eRAUKe8TiFTZtUss/D2mGgbqbgAcTHw==
-X-Google-Smtp-Source: AGHT+IHIWMkzcC2taA0xL7S4iJiF04uT/yBLd9R6pYldNAqU75SFzGHDGOiJ1VA7OFc4KD3a7VrgsQ==
-X-Received: by 2002:a17:902:fc8e:b0:1f4:a04e:8713 with SMTP id
- d9443c01a7336-1f4a04e8cd4mr65536155ad.28.1716864304559; 
- Mon, 27 May 2024 19:45:04 -0700 (PDT)
+ AJvYcCXkfmcSbaODWZPPFiWGY0HJkh7yHIEn4Ddmd3D4+XTA5JxrtTQdfy1fyTPX/bG4Alta8Ifzp70gVodEjOArRSalOiWbn0FX
+X-Gm-Message-State: AOJu0YxzK8saXD0Ad4K+xvoxKidzsseH5f0zAC8rEBH8cQ6PcsotdPU1
+ STu3eV5Wjq6U6sgaO1efZg4F0WrmWM0Mxg94rS8eokEpzucleAhEANYpXA==
+X-Google-Smtp-Source: AGHT+IGyjNhVDLV7wP2cTb0MykOtOadn6UrXBIbLFt1w1Fo5jBfmvaQK/H170C4ZpKL11CA+R1IuWA==
+X-Received: by 2002:a05:6a20:914c:b0:1ad:90dc:4a65 with SMTP id
+ adf61e73a8af0-1b212d3a7ffmr11815750637.27.1716864307765; 
+ Mon, 27 May 2024 19:45:07 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.01
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:45:04 -0700 (PDT)
+ Mon, 27 May 2024 19:45:07 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-stable <qemu-stable@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 20/28] target/riscv: rvv: Remove redudant SEW checking for
- vector fp narrow/widen instructions
-Date: Tue, 28 May 2024 12:43:20 +1000
-Message-ID: <20240528024328.246965-21-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Joseph Chan <jchan@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+Subject: [PULL 21/28] target/riscv: prioritize pmp errors in
+ raise_mmu_exception()
+Date: Tue, 28 May 2024 12:43:21 +1000
+Message-ID: <20240528024328.246965-22-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,96 +99,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-If the checking functions check both the single and double width
-operators at the same time, then the single width operator checking
-functions (require_rvf[min]) will check whether the SEW is 8.
+raise_mmu_exception(), as is today, is prioritizing guest page faults by
+checking first if virt_enabled && !first_stage, and then considering the
+regular inst/load/store faults.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+There's no mention in the spec about guest page fault being a higher
+priority that PMP faults. In fact, privileged spec section 3.7.1 says:
+
+"Attempting to fetch an instruction from a PMP region that does not have
+execute permissions raises an instruction access-fault exception.
+Attempting to execute a load or load-reserved instruction which accesses
+a physical address within a PMP region without read permissions raises a
+load access-fault exception. Attempting to execute a store,
+store-conditional, or AMO instruction which accesses a physical address
+within a PMP region without write permissions raises a store
+access-fault exception."
+
+So, in fact, we're doing it wrong - PMP faults should always be thrown,
+regardless of also being a first or second stage fault.
+
+The way riscv_cpu_tlb_fill() and get_physical_address() work is
+adequate: a TRANSLATE_PMP_FAIL error is immediately reported and
+reflected in the 'pmp_violation' flag. What we need is to change
+raise_mmu_exception() to prioritize it.
+
+Reported-by: Joseph Chan <jchan@ventanamicro.com>
+Fixes: 82d53adfbb ("target/riscv/cpu_helper.c: Invalid exception on MMU translation stage")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240413105929.7030-1-alexei.filippov@syntacore.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240322092600.1198921-5-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ target/riscv/cpu_helper.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index c3af38af80..3a3896ba06 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2333,7 +2333,6 @@ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
-@@ -2373,7 +2372,6 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_ds(s, a->rd, a->rs2, a->vm);
- }
-@@ -2406,7 +2404,6 @@ static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dds(s, a->rd, a->rs1, a->rs2, a->vm);
- }
-@@ -2446,7 +2443,6 @@ static bool opfwf_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dd(s, a->rd, a->rs2, a->vm);
- }
-@@ -2704,8 +2700,7 @@ static bool opffv_widen_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_widen_check(s, a) &&
-            require_rvfmin(s) &&
--           require_scale_rvfmin(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvfmin(s);
- }
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index d71245a8cb..574886a694 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1177,28 +1177,30 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
  
- #define GEN_OPFV_WIDEN_TRANS(NAME, CHECK, HELPER, FRM)             \
-@@ -2810,16 +2805,14 @@ static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_narrow_check(s, a) &&
-            require_rvfmin(s) &&
--           require_scale_rvfmin(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvfmin(s);
- }
- 
- static bool opffv_rod_narrow_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_narrow_check(s, a) &&
-            require_rvf(s) &&
--           require_scale_rvf(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvf(s);
- }
- 
- #define GEN_OPFV_NARROW_TRANS(NAME, CHECK, HELPER, FRM)            \
-@@ -2947,8 +2940,7 @@ static bool freduction_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return reduction_widen_check(s, a) &&
-            require_rvf(s) &&
--           require_scale_rvf(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvf(s);
- }
- 
- GEN_OPFVV_WIDEN_TRANS(vfwredusum_vs, freduction_widen_check)
+     switch (access_type) {
+     case MMU_INST_FETCH:
+-        if (env->virt_enabled && !first_stage) {
++        if (pmp_violation) {
++            cs->exception_index = RISCV_EXCP_INST_ACCESS_FAULT;
++        } else if (env->virt_enabled && !first_stage) {
+             cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
+         } else {
+-            cs->exception_index = pmp_violation ?
+-                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
++            cs->exception_index = RISCV_EXCP_INST_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_LOAD:
+-        if (two_stage && !first_stage) {
++        if (pmp_violation) {
++            cs->exception_index = RISCV_EXCP_LOAD_ACCESS_FAULT;
++        } else if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = pmp_violation ?
+-                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
++            cs->exception_index = RISCV_EXCP_LOAD_PAGE_FAULT;
+         }
+         break;
+     case MMU_DATA_STORE:
+-        if (two_stage && !first_stage) {
++        if (pmp_violation) {
++            cs->exception_index = RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
++        } else if (two_stage && !first_stage) {
+             cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
+         } else {
+-            cs->exception_index = pmp_violation ?
+-                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
+-                RISCV_EXCP_STORE_PAGE_FAULT;
++            cs->exception_index = RISCV_EXCP_STORE_PAGE_FAULT;
+         }
+         break;
+     default:
 -- 
 2.45.1
 
