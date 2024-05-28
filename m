@@ -2,70 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450C38D17A8
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 11:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3258D17B9
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 11:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBtYC-0008Dm-Q7; Tue, 28 May 2024 05:55:24 -0400
+	id 1sBtZm-0002fD-0W; Tue, 28 May 2024 05:57:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBtYA-0008Cs-92
- for qemu-devel@nongnu.org; Tue, 28 May 2024 05:55:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=HxTW=M7=kaod.org=clg@ozlabs.org>)
+ id 1sBtZB-0002Ly-ME; Tue, 28 May 2024 05:56:26 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBtXz-0001Th-Sv
- for qemu-devel@nongnu.org; Tue, 28 May 2024 05:55:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716890109;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VbjWTX0IAyGFh5ROBlKm+brQjNdOElgFKhl1FyIFjwM=;
- b=cD989NCIsElO/ri6xSQ+0nVnB4yrXqmxxUbEVRhZ3QBc2D2lI5tqjed50a+37hW4PeTgrZ
- 9U5yUbBzD+GbNwDm3fo/gZW/CEY9tVtp3uZEjGgKol838AESNHefZxnz3SHN+KYRwLR6BN
- KjhBrwHZzfyCJD/kAGrzPhxUXjUnFvo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-oNxVmxAsNNqV0F2uhqS7oA-1; Tue,
- 28 May 2024 05:55:05 -0400
-X-MC-Unique: oNxVmxAsNNqV0F2uhqS7oA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ (Exim 4.90_1) (envelope-from <SRS0=HxTW=M7=kaod.org=clg@ozlabs.org>)
+ id 1sBtZ2-0001YH-A2; Tue, 28 May 2024 05:56:25 -0400
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VpSZf22Ytz4x2v;
+ Tue, 28 May 2024 19:56:10 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 027B53806711;
- Tue, 28 May 2024 09:55:05 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C97440004D;
- Tue, 28 May 2024 09:55:04 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 1EC491800DFF; Tue, 28 May 2024 11:55:00 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 4/4] usb/hub: deprecate, don't build by default
-Date: Tue, 28 May 2024 11:54:59 +0200
-Message-ID: <20240528095459.896594-5-kraxel@redhat.com>
-In-Reply-To: <20240528095459.896594-1-kraxel@redhat.com>
-References: <20240528095459.896594-1-kraxel@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VpSZX5l6Wz4x2g;
+ Tue, 28 May 2024 19:56:04 +1000 (AEST)
+Message-ID: <f2c66f47-af78-436b-968c-c267e84b9a18@kaod.org>
+Date: Tue, 28 May 2024 11:56:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/16] Add AST2700 support
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
+ <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=HxTW=M7=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,42 +70,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hub supports only USB 1.1.  When running out of usb ports it is in
-almost all cases the much better choice to add another usb host adapter
-(or increase the number of root ports when using xhci) instead of using
-the usb hub.
+Jamin,
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- hw/usb/dev-hub.c | 1 +
- hw/usb/Kconfig   | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+I think you should add your self as a Reviewer to the ASPEED BMCs
+machine in the MAINTAINERS files. Would you agree ?
 
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index 06e9537d0356..68444d39534f 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -686,6 +686,7 @@ static void usb_hub_class_initfn(ObjectClass *klass, void *data)
-     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
-     dc->fw_name = "hub";
-     dc->vmsd = &vmstate_usb_hub;
-+    klass->deprecation_note = "use more root ports or additional hostadapters instead";
-     device_class_set_props(dc, usb_hub_properties);
- }
- 
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index c4a6ea5a687f..a8644c43296b 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -66,7 +66,6 @@ config TUSB6010
- 
- config USB_HUB
-     bool
--    default y
-     depends on USB
- 
- config USB_HID
--- 
-2.45.1
+Thanks,
+
+C.
+
+
+
+On 5/27/24 10:02, Jamin Lin wrote:
+> Changes from v1:
+> The patch series supports WDT, SDMC, SMC, SCU, SLI and INTC for AST2700 SoC.
+> 
+> Changes from v2:
+> - replace is_aarch64 with is_bus64bit for sdmc patch review.
+> - fix incorrect dram size for AST2700
+> 
+> Changes from v3:
+> - Add AST2700 Evaluation board in ASPEED document
+> - Add avocado test cases for AST2700 Evaluation board
+> - Fix reviewers review issues and add reviewers suggestions
+> - Implement INTC model GICINT 128 to GICINT136 for AST2700
+> 
+> Changes from v4:
+> - support 64 bits dma dram address associated with review issues
+> - support dma start length and 1 byte length unit associated with review issues
+> - refactor intc model to fix serial console stuck issue and associated with review issues
+> 
+> Test Version:
+> https://github.com/qemu/qemu/commit/0c2a3807483b4ebe360cfa475dbfc9dfd2f6d16d
+> 
+> Test steps:
+> 1. Download the latest openbmc image for AST2700 from AspeedTech-BMC/openbmc
+>     repository, https://github.com/AspeedTech-BMC/openbmc/releases/tag/v09.01
+>     link: https://github.com/AspeedTech-BMC/openbmc/releases/download/v09.01/ast2700-default-obmc.tar.gz
+> 2. untar ast2700-default-obmc.tar.gz
+>     ```
+>     tar -xf ast2700-default-obmc.tar.gz
+>     ```
+> 3. Run and the contents of scripts as following
+> IMGDIR=ast2700-default
+> UBOOT_SIZE=$(stat --format=%s -L ${IMGDIR}/u-boot-nodtb.bin)
+> UBOOT_DTB_ADDR=$((0x400000000 + ${UBOOT_SIZE}))
+> 
+> qemu-system-aarch64 -M ast2700-evb -nographic\
+>   -device loader,addr=0x400000000,file=${IMGDIR}/u-boot-nodtb.bin,force-raw=on\
+>   -device loader,addr=${UBOOT_DTB_ADDR},file=${IMGDIR}/u-boot.dtb,force-raw=on\
+>   -device loader,addr=0x430000000,file=${IMGDIR}/bl31.bin,force-raw=on\
+>   -device loader,addr=0x430080000,file=${IMGDIR}/optee/tee-raw.bin,force-raw=on\
+>   -device loader,addr=0x430000000,cpu-num=0\
+>   -device loader,addr=0x430000000,cpu-num=1\
+>   -device loader,addr=0x430000000,cpu-num=2\
+>   -device loader,addr=0x430000000,cpu-num=3\
+>   -smp 4\
+>   -drive file=${IMGDIR}/image-bmc,format=raw,if=mtd\
+>   -serial mon:stdio\
+>   -snapshot
+> 
+> Jamin Lin (16):
+>    aspeed/wdt: Add AST2700 support
+>    aspeed/sli: Add AST2700 support
+>    aspeed/sdmc: remove redundant macros
+>    aspeed/sdmc: fix coding style
+>    aspeed/sdmc: Add AST2700 support
+>    aspeed/smc: correct device description
+>    aspeed/smc: support dma start length and 1 byte length unit
+>    aspeed/smc: support 64 bits dma dram address
+>    aspeed/smc: Add AST2700 support
+>    aspeed/scu: Add AST2700 support
+>    aspeed/intc: Add AST2700 support
+>    aspeed/soc: Add AST2700 support
+>    aspeed: Add an AST2700 eval board
+>    aspeed/soc: fix incorrect dram size for AST2700
+>    test/avocado/machine_aspeed.py: Add AST2700 test case
+>    docs:aspeed: Add AST2700 Evaluation board
+> 
+>   docs/system/arm/aspeed.rst       |  39 +-
+>   hw/arm/aspeed.c                  |  32 ++
+>   hw/arm/aspeed_ast27x0.c          | 655 +++++++++++++++++++++++++++++++
+>   hw/arm/meson.build               |   1 +
+>   hw/intc/aspeed_intc.c            | 355 +++++++++++++++++
+>   hw/intc/meson.build              |   1 +
+>   hw/intc/trace-events             |   6 +
+>   hw/misc/aspeed_scu.c             | 306 ++++++++++++++-
+>   hw/misc/aspeed_sdmc.c            | 216 +++++++++-
+>   hw/misc/aspeed_sli.c             | 177 +++++++++
+>   hw/misc/meson.build              |   3 +-
+>   hw/misc/trace-events             |  11 +
+>   hw/ssi/aspeed_smc.c              | 321 ++++++++++++++-
+>   hw/ssi/trace-events              |   2 +-
+>   hw/watchdog/wdt_aspeed.c         |  24 ++
+>   include/hw/arm/aspeed_soc.h      |  27 +-
+>   include/hw/intc/aspeed_intc.h    |  46 +++
+>   include/hw/misc/aspeed_scu.h     |  47 ++-
+>   include/hw/misc/aspeed_sdmc.h    |   5 +-
+>   include/hw/misc/aspeed_sli.h     |  27 ++
+>   include/hw/ssi/aspeed_smc.h      |   2 +
+>   include/hw/watchdog/wdt_aspeed.h |   3 +-
+>   tests/avocado/machine_aspeed.py  |  62 +++
+>   23 files changed, 2312 insertions(+), 56 deletions(-)
+>   create mode 100644 hw/arm/aspeed_ast27x0.c
+>   create mode 100644 hw/intc/aspeed_intc.c
+>   create mode 100644 hw/misc/aspeed_sli.c
+>   create mode 100644 include/hw/intc/aspeed_intc.h
+>   create mode 100644 include/hw/misc/aspeed_sli.h
+> 
 
 
