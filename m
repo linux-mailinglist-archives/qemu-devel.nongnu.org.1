@@ -2,108 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762C78D16F5
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 11:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1E98D1708
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 11:17:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBss8-0002ip-Ay; Tue, 28 May 2024 05:11:56 -0400
+	id 1sBsxB-0005L7-6R; Tue, 28 May 2024 05:17:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1sBss4-0002iE-MJ
- for qemu-devel@nongnu.org; Tue, 28 May 2024 05:11:52 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1sBss2-0002CP-8n
- for qemu-devel@nongnu.org; Tue, 28 May 2024 05:11:52 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-5296935252dso694656e87.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 02:11:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1716887507; x=1717492307; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8b1XVNPTN3AViNLqtsZ1RU+PWuuA/M6iRuFGZ4I739g=;
- b=Zp7OkI6zq9wzr/swPplsFXpnAK5r+fe4/g1o6ZvxeBJgktQirelmxEwg9bhLa3rs0v
- AZ+ECFIkl7aqXpMYxyt6tg/4KXUtXmbl9a2l539rllbuHYgD4gxy6naeehNeyZ880NkS
- ocJfXN4SbhD6xtE197TPi7px/n18w7hZvygqw9/ZVom/VRp1ceG5LJYCO+Aw/WPeohso
- r8R6vjU10hWVOapg/loQYwVwcLeXG4iUcShviqdITSTQ6mdFRJ7gQa5hmuPq9RQaguff
- gFhYtYW+GmxDmVFBlCsMaoChal89BtyEe9ncJCFh398wZfcx8qtaxoDXDfREMkSnTUMV
- /vHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716887507; x=1717492307;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8b1XVNPTN3AViNLqtsZ1RU+PWuuA/M6iRuFGZ4I739g=;
- b=b0p8cL9+iRFXo//U5k+bU8p1Di+MmnrVK0i4VFErbGXSNeN4uqjm2z2vC17TSs3ynk
- 0MgxYYD7oRBokXDsxXMg+jnuT2pLKjJqgoIUkRVbLz2xOyPB8cE4YMP0++ezigfvFdSD
- F5Tn+oLXD8hYBiS7pE3ikiXnfFVKMyUCfAulnxNVa+p/dVyt818elRRJ3KPN6yL+KyZ9
- CaC7sv3XHu8zNPdM47DF5y73+YFo4TszZdya/r3V+x4xOBXDLZzHWlK6sUsdGRtrVxGx
- yvZNTBQNWtYQUdSV3cHWIFnPJgktdcvtvyHV1StSYCnXln9MHZnFTUjWoHvPjcOG14KM
- ULYA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWjO1saRQxLR+IFz+gU3hVKimDVqR+eedWwkYaLsTSr5tkDdiytskwKcMivtnFpHZpAoqWyH/gx6sDROxYWfxiGtxDu49A=
-X-Gm-Message-State: AOJu0YxxfpsoPvG+i6F7/EAU58b7xTLFfBcZBkZD1a3i6VJFWBPXJ6sq
- xEQklhFTsn+OXT51uDOerGqaM87grk47tfAEmVJdb78isTywclYwSxhDMCq5E1w9B+djRRRv2qo
- g5q3OsjJdlcVGln7izDnkMmDbBqG+5n3a+4wbKg==
-X-Google-Smtp-Source: AGHT+IHow/rrXPpnY6FyssuhZZq9j3N2/ZhTftNcERfAcxLJRIFCxgpyrhc36BjsrTKu5AWP4A40XFhzkgx4Nn0aDzQ=
-X-Received: by 2002:a05:6512:3a93:b0:529:b3c9:7261 with SMTP id
- 2adb3069b0e04-529b3c97397mr3151037e87.5.1716887506900; Tue, 28 May 2024
- 02:11:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1sBsx7-0005Gs-4q; Tue, 28 May 2024 05:17:05 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1sBsx3-0003JT-QU; Tue, 28 May 2024 05:17:04 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44S8Tfqf010499; Tue, 28 May 2024 09:16:51 GMT
+DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
+ _d=3Dibm.com; _h=3Dcc?=
+ =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
+ =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3DwlS?=
+ =?UTF-8?Q?EW2CAxSmGRKxrvNsNqtaxRUCTglDBaq/EoNZ3+NA=3D;_b=3DAhA3+Njs+fukTV?=
+ =?UTF-8?Q?xw6ShEuYjoqB0FBsIfMV5zjHARedqlCMyIuSCHU9Zgh9o/KhT33vsR_/tYyroCD?=
+ =?UTF-8?Q?cn7tDmDxBqHUEie2nOzoTbLgvdjVC+vaxS67WYGjLl1DCuFV9kRpg8J3ljbu_Ho?=
+ =?UTF-8?Q?Ha+S54xaK3l8q22MAUxxXW3eFhRQWL4/qwr0LCmbzRe9KjjY4Jl3R0331fxc0wo?=
+ =?UTF-8?Q?iiw_J3xCC8Xjjp0AnuDhVADFnd1kA7Da8Vsv6Pf+0zVySvqcKsWnCdI8udlXA/u?=
+ =?UTF-8?Q?vFZSSNXl6_PxIV//Arf7TrfcbA/aetSjhsOATY0Ne7NqJJ6pumhyyTNRZ4x6OJG?=
+ =?UTF-8?Q?gfys/jQ9UFEOXuC_Kw=3D=3D_?=
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydbs8g4f1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 09:16:50 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44S9Go0A016830;
+ Tue, 28 May 2024 09:16:50 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydbs8g4ey-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 09:16:50 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44S90dq7011149; Tue, 28 May 2024 09:16:49 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybtq066u5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 09:16:49 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44S9GkSO28181244
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 May 2024 09:16:48 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E385F5806F;
+ Tue, 28 May 2024 09:16:44 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8048E58043;
+ Tue, 28 May 2024 09:16:42 +0000 (GMT)
+Received: from [9.109.242.165] (unknown [9.109.242.165])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 28 May 2024 09:16:42 +0000 (GMT)
+Message-ID: <1f9c8eb6-aa4f-4740-89a6-20b510b21d7d@linux.ibm.com>
+Date: Tue, 28 May 2024 14:46:40 +0530
 MIME-Version: 1.0
-References: <ZjJgQcPQ29HJsTpY@x1n>
- <7e902e4e576a4e199e36d28f99bd55e5@huawei.com>
- <Zjj0xa-3KrFHTK0S@x1n> <addaa8d094904315a466533763689ead@huawei.com>
- <ZjpWmG2aUJLkYxJm@x1n> <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com>
- <ZjzaIAMgUHV8zdNz@x1n>
- <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
- <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
- <CAHEcVy4d7uJENZ1hRx2FBzbw22qN4Qm0TwtxvM5DLw3s81Zp_g@mail.gmail.com>
- <Zk0c51D1Oo6NdIxR@x1n> <2308a8b894244123b638038e40a33990@huawei.com>
-In-Reply-To: <2308a8b894244123b638038e40a33990@huawei.com>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Tue, 28 May 2024 11:11:35 +0200
-Message-ID: <CAMGffEmK5QNPisU8uM_GLzTtY8LgimOtyY+d3GJV-bLPH9-FqQ@mail.gmail.com>
-Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-To: "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Cc: Peter Xu <peterx@redhat.com>, Yu Zhang <yu.zhang@ionos.com>, 
- Michael Galaxy <mgalaxy@akamai.com>, Elmar Gerdes <elmar.gerdes@ionos.com>, 
- zhengchuan <zhengchuan@huawei.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>,
- "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Prasanna Kumar Kalever <prasanna.kalever@redhat.com>, 
- Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Prasanna Kumar Kalever <prasanna4324@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "devel@lists.libvirt.org" <devel@lists.libvirt.org>, 
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Song Gao <gaosong@loongson.cn>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, 
- Pannengyuan <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>, 
- Fabiano Rosas <farosas@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: permerror client-ip=2a00:1450:4864:20::135;
- envelope-from=jinpu.wang@ionos.com; helo=mail-lf1-x135.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 07/10] target/ppc: Add helpers to check for SMT
+ sibling threads
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Caleb Schlossin <calebs@linux.vnet.ibm.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+References: <20240526122612.473476-1-npiggin@gmail.com>
+ <20240526122612.473476-8-npiggin@gmail.com>
+Content-Language: en-US
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20240526122612.473476-8-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: o3Dq_-sadMWp4zOSp__1YwX8aE8UncIw
+X-Proofpoint-ORIG-GUID: 1oDkKYgBhLtXva0N4XnZxvuPPOGa-z8r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-28_05,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ spamscore=0 bulkscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
+ suspectscore=0 mlxlogscore=878 malwarescore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405280068
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,114 +118,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gonglei,
 
-On Tue, May 28, 2024 at 11:06=E2=80=AFAM Gonglei (Arei) <arei.gonglei@huawe=
-i.com> wrote:
->
-> Hi Peter,
->
-> > -----Original Message-----
-> > From: Peter Xu [mailto:peterx@redhat.com]
-> > Sent: Wednesday, May 22, 2024 6:15 AM
-> > To: Yu Zhang <yu.zhang@ionos.com>
-> > Cc: Michael Galaxy <mgalaxy@akamai.com>; Jinpu Wang
-> > <jinpu.wang@ionos.com>; Elmar Gerdes <elmar.gerdes@ionos.com>;
-> > zhengchuan <zhengchuan@huawei.com>; Gonglei (Arei)
-> > <arei.gonglei@huawei.com>; Daniel P. Berrang=C3=A9 <berrange@redhat.com=
->;
-> > Markus Armbruster <armbru@redhat.com>; Zhijian Li (Fujitsu)
-> > <lizhijian@fujitsu.com>; qemu-devel@nongnu.org; Yuval Shaia
-> > <yuval.shaia.ml@gmail.com>; Kevin Wolf <kwolf@redhat.com>; Prasanna
-> > Kumar Kalever <prasanna.kalever@redhat.com>; Cornelia Huck
-> > <cohuck@redhat.com>; Michael Roth <michael.roth@amd.com>; Prasanna
-> > Kumar Kalever <prasanna4324@gmail.com>; Paolo Bonzini
-> > <pbonzini@redhat.com>; qemu-block@nongnu.org; devel@lists.libvirt.org;
-> > Hanna Reitz <hreitz@redhat.com>; Michael S. Tsirkin <mst@redhat.com>;
-> > Thomas Huth <thuth@redhat.com>; Eric Blake <eblake@redhat.com>; Song
-> > Gao <gaosong@loongson.cn>; Marc-Andr=C3=A9 Lureau
-> > <marcandre.lureau@redhat.com>; Alex Benn=C3=A9e <alex.bennee@linaro.org=
->;
-> > Wainer dos Santos Moschetta <wainersm@redhat.com>; Beraldo Leal
-> > <bleal@redhat.com>; Pannengyuan <pannengyuan@huawei.com>;
-> > Xiexiangyou <xiexiangyou@huawei.com>; Fabiano Rosas <farosas@suse.de>
-> > Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol han=
-dling
-> >
-> > On Fri, May 17, 2024 at 03:01:59PM +0200, Yu Zhang wrote:
-> > > Hello Michael and Peter,
-> >
-> > Hi,
-> >
-> > >
-> > > Exactly, not so compelling, as I did it first only on servers widely
-> > > used for production in our data center. The network adapters are
-> > >
-> > > Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme BCM5720
-> > > 2-port Gigabit Ethernet PCIe
-> >
-> > Hmm... I definitely thinks Jinpu's Mellanox ConnectX-6 looks more reaso=
-nable.
-> >
-> > https://lore.kernel.org/qemu-devel/CAMGffEn-DKpMZ4tA71MJYdyemg0Zda15
-> > wVAqk81vXtKzx-LfJQ@mail.gmail.com/
-> >
-> > Appreciate a lot for everyone helping on the testings.
-> >
-> > > InfiniBand controller: Mellanox Technologies MT27800 Family
-> > > [ConnectX-5]
-> > >
-> > > which doesn't meet our purpose. I can choose RDMA or TCP for VM
-> > > migration. RDMA traffic is through InfiniBand and TCP through Etherne=
-t
-> > > on these two hosts. One is standby while the other is active.
-> > >
-> > > Now I'll try on a server with more recent Ethernet and InfiniBand
-> > > network adapters. One of them has:
-> > > BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller (rev 01)
-> > >
-> > > The comparison between RDMA and TCP on the same NIC could make more
-> > sense.
-> >
-> > It looks to me NICs are powerful now, but again as I mentioned I don't =
-think it's
-> > a reason we need to deprecate rdma, especially if QEMU's rdma migration=
- has
-> > the chance to be refactored using rsocket.
-> >
-> > Is there anyone who started looking into that direction?  Would it make=
- sense
-> > we start some PoC now?
-> >
->
-> My team has finished the PoC refactoring which works well.
->
-> Progress:
-> 1.  Implement io/channel-rdma.c,
-> 2.  Add unit test tests/unit/test-io-channel-rdma.c and verifying it is s=
-uccessful,
-> 3.  Remove the original code from migration/rdma.c,
-> 4.  Rewrite the rdma_start_outgoing_migration and rdma_start_incoming_mig=
-ration logic,
-> 5.  Remove all rdma_xxx functions from migration/ram.c. (to prevent RDMA =
-live migration from polluting the core logic of live migration),
-> 6.  The soft-RoCE implemented by software is used to test the RDMA live m=
-igration. It's successful.
->
-> We will be submit the patchset later.
->
-Thanks for working on this PoC, and sharing progress on this, we are
-looking forward for the patchset.
 
->
-> Regards,
-> -Gonglei
-Regards!
-Jinpu
->
-> > Thanks,
-> >
-> > --
-> > Peter Xu
->
+On 5/26/24 17:56, Nicholas Piggin wrote:
+> Add helpers for TCG code to determine if there are SMT siblings
+> sharing per-core and per-lpar registers. This simplifies the
+> callers and makes SMT register topology simpler to modify with
+> later changes.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   target/ppc/cpu.h             |  7 +++++++
+>   target/ppc/cpu_init.c        |  2 +-
+>   target/ppc/excp_helper.c     | 16 +++++++---------
+>   target/ppc/misc_helper.c     | 27 ++++++---------------------
+>   target/ppc/timebase_helper.c | 20 +++++++-------------
+>   5 files changed, 28 insertions(+), 44 deletions(-)
+> 
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index 9a89083932..8fd6ade471 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1406,6 +1406,13 @@ struct CPUArchState {
+>       uint64_t pmu_base_time;
+>   };
+>   
+> +#define PPC_CPU_HAS_CORE_SIBLINGS(cs)                           \
+> +    (cs->nr_threads > 1)
+> +
+> +#define PPC_CPU_HAS_LPAR_SIBLINGS(cs)                           \
+> +    ((POWERPC_CPU(cs)->env.flags & POWERPC_FLAG_SMT_1LPAR) &&   \
+> +     PPC_CPU_HAS_CORE_SIBLINGS(cs))
+> +
+>   #define _CORE_ID(cs)                                            \
+>       (POWERPC_CPU(cs)->env.core_index)
+>   
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index ae483e20c4..e71ee008ed 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -6975,7 +6975,7 @@ static void ppc_cpu_realize(DeviceState *dev, Error **errp)
+>   
+>       pcc->parent_realize(dev, errp);
+>   
+> -    if (env_cpu(env)->nr_threads > 1) {
+> +    if (PPC_CPU_HAS_CORE_SIBLINGS(cs)) {
+>           env->flags |= POWERPC_FLAG_SMT;
+>       }
+>   
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 0cd542675f..fd45da0f2b 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -3029,7 +3029,7 @@ void helper_book3s_msgsnd(CPUPPCState *env, target_ulong rb)
+>           brdcast = true;
+>       }
+>   
+> -    if (cs->nr_threads == 1 || !brdcast) {
+> +    if (!PPC_CPU_HAS_CORE_SIBLINGS(cs) || !brdcast) {
+
+Since there are multiple usage of above macro in negation below as well, 
+we may probably want to introduce another macro PPC_CPU_HAS_SINGLE_CORE
+which checks only for nr_threads == 1. Anyways,
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+
+>           ppc_set_irq(cpu, PPC_INTERRUPT_HDOORBELL, 1);
+>           return;
+>       }
+> @@ -3067,21 +3067,19 @@ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+>       CPUState *cs = env_cpu(env);
+>       PowerPCCPU *cpu = env_archcpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>       int ttir = rb & PPC_BITMASK(57, 63);
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
+>   
+> -    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> -        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
+> -    }
+> -
+> -    if (!dbell_type_server(rb) || ttir >= nr_threads) {
+> +    if (!dbell_type_server(rb)) {
+>           return;
+>       }
+>   
+> -    if (nr_threads == 1) {
+> -        ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
+> +    /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+> +        if (ttir == 0) {
+> +            ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, 1);
+> +        }
+>           return;
+>       }
+>   
+> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+> index 46ba3a5584..598c956cdd 100644
+> --- a/target/ppc/misc_helper.c
+> +++ b/target/ppc/misc_helper.c
+> @@ -49,9 +49,8 @@ void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1) {
+> +    if (!PPC_CPU_HAS_CORE_SIBLINGS(cs)) {
+>           env->spr[sprn] = val;
+>           return;
+>       }
+> @@ -196,7 +195,7 @@ void helper_store_ptcr(CPUPPCState *env, target_ulong val)
+>               return;
+>           }
+>   
+> -        if (cs->nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +        if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>               env->spr[SPR_PTCR] = val;
+>               tlb_flush(cs);
+>           } else {
+> @@ -243,16 +242,12 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>       target_ulong dpdes = 0;
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
+>   
+> -    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> -        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+> -    }
+> -
+> -    if (nr_threads == 1) {
+> +    /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
+>               dpdes = 1;
+>           }
+> @@ -279,21 +274,11 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
+>       PowerPCCPU *cpu = env_archcpu(env);
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+>       helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
+>   
+> -    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> -        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+> -    }
+> -
+> -    if (val & ~(nr_threads - 1)) {
+> -        qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
+> -                      TARGET_FMT_lx"\n", val);
+> -        val &= (nr_threads - 1); /* Ignore the invalid bits */
+> -    }
+> -
+> -    if (nr_threads == 1) {
+> +    /* DPDES behaves as 1-thread in LPAR-per-thread mode */
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           ppc_set_irq(cpu, PPC_INTERRUPT_DOORBELL, val & 0x1);
+>           return;
+>       }
+> diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
+> index 788c498d63..abe7b95696 100644
+> --- a/target/ppc/timebase_helper.c
+> +++ b/target/ppc/timebase_helper.c
+> @@ -63,9 +63,8 @@ void helper_store_purr(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_purr(env, val);
+>           return;
+>       }
+> @@ -82,9 +81,8 @@ void helper_store_tbl(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_tbl(env, val);
+>           return;
+>       }
+> @@ -99,9 +97,8 @@ void helper_store_tbu(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_tbu(env, val);
+>           return;
+>       }
+> @@ -141,9 +138,8 @@ void helper_store_hdecr(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_hdecr(env, val);
+>           return;
+>       }
+> @@ -158,9 +154,8 @@ void helper_store_vtb(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_vtb(env, val);
+>           return;
+>       }
+> @@ -175,9 +170,8 @@ void helper_store_tbu40(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>       CPUState *ccs;
+> -    uint32_t nr_threads = cs->nr_threads;
+>   
+> -    if (nr_threads == 1 || !(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
+> +    if (!PPC_CPU_HAS_LPAR_SIBLINGS(cs)) {
+>           cpu_ppc_store_tbu40(env, val);
+>           return;
+>       }
+> @@ -288,7 +282,7 @@ static void write_tfmr(CPUPPCState *env, target_ulong val)
+>   {
+>       CPUState *cs = env_cpu(env);
+>   
+> -    if (cs->nr_threads == 1) {
+> +    if (!PPC_CPU_HAS_CORE_SIBLINGS(cs)) {
+>           env->spr[SPR_TFMR] = val;
+>       } else {
+>           CPUState *ccs;
 
