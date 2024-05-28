@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BB88D166E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A688D1679
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBsMS-0002mh-TE; Tue, 28 May 2024 04:39:12 -0400
+	id 1sBsMP-0002lX-Vp; Tue, 28 May 2024 04:39:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMQ-0002le-8B
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:10 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMO-0002io-Ah
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMN-0004pP-9q
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:09 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMM-0004p3-N3
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1716885546;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GoLnTO5q1GgvOjeuLpZRZIgJgBIxj235DGDvGKl6tfQ=;
- b=MYrj1rgXw1Md4mG9L9Jf7I4crC4PxNt1Y+j7ftydMtBtkiBApYWOUM63M16QovtB29+BdV
- bI9WeTOjh4ijpb8peCuVy3pxoyKw396JI2MvJ3VpoFNTkTApLiE75KmiYhHZh5IsppcXKO
- jRZjFAw5buP9KFvZDZpFSXHiDShEKwY=
+ bh=zVJuHdR616Jr9GPZTPprRXPHLywe9FOHnGfvgXh/Rz8=;
+ b=FUDjKr2HC74PStZuduwNO4nO/Wi0cpHtJjF+gHuDOX0SqqTUgVICHZgB5hhtG/TmOP2WZb
+ nQYZsq/uWKMg+6AbBiryGPyxYtZzHeczl1M318v0fVjXwIup1mHfM4WWIolo62KfO934TV
+ b7mcCWZZG/ubQWQlBEVUzPwljAz31Y4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-34-JxHPQ73vMl2A4SJz2jf4_g-1; Tue, 28 May 2024 04:39:02 -0400
-X-MC-Unique: JxHPQ73vMl2A4SJz2jf4_g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-52-ewYBn7U8MJWjrmpsQXb2bQ-1; Tue, 28 May 2024 04:39:03 -0400
+X-MC-Unique: ewYBn7U8MJWjrmpsQXb2bQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DD1B85A58C;
- Tue, 28 May 2024 08:39:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F74D800CB1;
+ Tue, 28 May 2024 08:39:03 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 14C6E2818;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ACDC22026D68;
  Tue, 28 May 2024 08:39:02 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 736B91800DEB; Tue, 28 May 2024 10:38:58 +0200 (CEST)
+ id 80D5E1800DFF; Tue, 28 May 2024 10:38:58 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Subject: [PATCH v2 3/4] MAINTAINERS: drop virtio-gpu maintainership
-Date: Tue, 28 May 2024 10:38:55 +0200
-Message-ID: <20240528083858.836262-4-kraxel@redhat.com>
+Subject: [PATCH v2 4/4] MAINTAINERS: drop spice+ui maintainership
+Date: Tue, 28 May 2024 10:38:56 +0200
+Message-ID: <20240528083858.836262-5-kraxel@redhat.com>
 In-Reply-To: <20240528083858.836262-1-kraxel@redhat.com>
 References: <20240528083858.836262-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,7 +81,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove myself from virtio-gpu entries.
+Remove myself from spice and ui entries.
 Flip status to "Orphan" for entries which have nobody else listed.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
@@ -91,27 +91,27 @@ Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
  1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index a03756274017..37f2be570cc7 100644
+index 37f2be570cc7..8479e8146470 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -2574,8 +2574,7 @@ F: hw/display/ramfb*.c
- F: include/hw/display/ramfb.h
+@@ -3044,8 +3044,7 @@ F: stubs/memory_device.c
+ F: docs/nvdimm.txt
  
- virtio-gpu
+ SPICE
 -M: Gerd Hoffmann <kraxel@redhat.com>
 -S: Odd Fixes
 +S: Orphan
- F: hw/display/virtio-gpu*
- F: hw/display/virtio-vga.*
- F: include/hw/virtio/virtio-gpu.h
-@@ -2597,7 +2596,6 @@ F: include/hw/virtio/virtio-blk-common.h
+ F: include/ui/qemu-spice.h
+ F: include/ui/spice-display.h
+ F: ui/spice-*.c
+@@ -3055,7 +3054,6 @@ F: qapi/ui.json
+ F: docs/spice-port-fqdn.txt
  
- vhost-user-gpu
+ Graphics
+-M: Gerd Hoffmann <kraxel@redhat.com>
  M: Marc-André Lureau <marcandre.lureau@redhat.com>
--R: Gerd Hoffmann <kraxel@redhat.com>
- S: Maintained
- F: docs/interop/vhost-user-gpu.rst
- F: contrib/vhost-user-gpu
+ S: Odd Fixes
+ F: ui/
 -- 
 2.45.1
 
