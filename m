@@ -2,107 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEE98D1647
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 485BE8D1619
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:18:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBsFy-0001Zo-88; Tue, 28 May 2024 04:32:30 -0400
+	id 1sBs1S-0004Tx-Gk; Tue, 28 May 2024 04:17:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sBsFu-0001Yb-Jt; Tue, 28 May 2024 04:32:26 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBs1K-0004Sj-1T
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:17:22 -0400
+Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sBsFs-0003zS-1U; Tue, 28 May 2024 04:32:25 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44S7fEhN011279; Tue, 28 May 2024 08:32:14 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
- _d=3Dibm.com; _h=3Dcc?=
- =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
- =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3Dnrc?=
- =?UTF-8?Q?9ZqCIFLu5/f3df0y30KNyr9EHTArTxt0QLBVXEK8=3D;_b=3DSXqSEx5Uoj/L5L?=
- =?UTF-8?Q?r7oVuO/VT0iYEmGIh0ShI2RN01XInf9DK1tSPQVgyAGf9uyp/QLBZb_oDdr4It9?=
- =?UTF-8?Q?3L4xmEDnN67HMycef0nQ/cQbWs4lKlevlz++6LUvbf6EPhcZ7I6gAYUtoN8x_ia?=
- =?UTF-8?Q?EHnLtA2FE3mP7h0ZMoMhbFyD45HatJISv9RIVWYCkNCiwW59hszl8+UeznSaneH?=
- =?UTF-8?Q?nL5_kneu3ZRphF1pX/2ekJ+Hz3HA31kfZbxevuiTQBwcgd8RiiV7JN4DTYPdNLC?=
- =?UTF-8?Q?W9niCrSPq_8IGUpToT3At5vqN7EY8grPLZ/8twa5J8qgshID77aQ+fVgIbRMatU?=
- =?UTF-8?Q?bu/86Xf53siOVHv_XQ=3D=3D_?=
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd9048fkp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 08:32:14 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44S8WEw1023262;
- Tue, 28 May 2024 08:32:14 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd9048fkm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 08:32:13 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44S7EqVZ027089; Tue, 28 May 2024 08:32:13 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ybvhknevh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 08:32:13 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44S8WAdM50528920
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 May 2024 08:32:12 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E1AD5805D;
- Tue, 28 May 2024 08:32:10 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B647358043;
- Tue, 28 May 2024 08:32:07 +0000 (GMT)
-Received: from [9.109.242.165] (unknown [9.109.242.165])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 28 May 2024 08:32:07 +0000 (GMT)
-Message-ID: <39e4ac93-256b-424b-8ecb-7ed87afeb048@linux.ibm.com>
-Date: Tue, 28 May 2024 14:02:06 +0530
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBs1H-0001JA-L3
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:17:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716884239; x=1748420239;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lzRMQCT7nh2jOkyQciCKW7j96lmjebcgs0E+j5HqTqI=;
+ b=TqCaEUvkikbX00YM7TPBHE7nGfZAlecjuh6VTZtr2X8/LQETeT/cd+w2
+ Z36tNV5jrcI+fNt6AkcsfwQBvEcLHbrpAu9tb7EQLh2shEFoq2rW9MTLC
+ gEGEBq/OiIAP25I1kMyhBfaLJuKkP7AAy0u7FTOHrkNUpf0hn4mD34p8f
+ J5aQBIzOk+RmZ44YZ6WwYUuQ8FiP2ZYDaK0xNFxgSZ7iDYzGaerj4i2qe
+ PQRHL0aASxlir48DnSXjMRni0xSmUQjIZb585K0TdNWXYFHZjgzeSqtdS
+ 3tmmu6KtW+LgA/B3e8W/X4YW7RuBUTwv/4cXOGnuqugy0CTx0QF7DiM1/ w==;
+X-CSE-ConnectionGUID: dpSHdFpzREGHdOp7s/iT6w==
+X-CSE-MsgGUID: 01TeV9RyS/Kr4A33cvUtgw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13039379"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="13039379"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2024 01:17:14 -0700
+X-CSE-ConnectionGUID: XdKnxtI5Ryay6JpHWcJvgg==
+X-CSE-MsgGUID: tGGCnmqoRFWRX1Eby1395w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39525182"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 28 May 2024 01:17:12 -0700
+Date: Tue, 28 May 2024 16:32:30 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC 2/6] scripts/simpletrace-rust: Support Event & Arguments in
+ trace module
+Message-ID: <ZlWWnrwkipaq8x7n@intel.com>
+References: <20240527081421.2258624-1-zhao1.liu@intel.com>
+ <20240527081421.2258624-3-zhao1.liu@intel.com>
+ <20240527203312.GC913874@fedora.redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 05/10] ppc/pnv: Extend chip_pir class method to TIR as
- well
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Caleb Schlossin <calebs@linux.vnet.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-References: <20240526122612.473476-1-npiggin@gmail.com>
- <20240526122612.473476-6-npiggin@gmail.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20240526122612.473476-6-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vXaUD9J4OsmMETf3sMJTZmEPpWGD3I_l
-X-Proofpoint-ORIG-GUID: cAjgtRZ81cmp0gBAjjo8W1BG7JQJSzZ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_05,2024-05-27_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=833 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405280062
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240527203312.GC913874@fedora.redhat.com>
+Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,244 +88,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 5/26/24 17:56, Nicholas Piggin wrote:
-> The chip_pir chip class method allows the platform to set the PIR
-> processor identification register. Extend this to a more general
-> ID function which also allows the TIR to be set. This is in
-> preparation for "big core", which is a more complicated topology
-> of cores and threads.
+> > +/*
+> > + * Refer to the description of ALLOWED_TYPES in
+> > + * scripts/tracetool/__init__.py.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   include/hw/ppc/pnv_chip.h |  3 +-
->   hw/ppc/pnv.c              | 61 ++++++++++++++++++++++++---------------
->   hw/ppc/pnv_core.c         | 10 ++++---
->   3 files changed, 45 insertions(+), 29 deletions(-)
+> Please don't reference the Python implementation because this will not
+> age well. It may bitrot if the Python code changes or if the Python
+> implementation is deprecated then the source file will go away
+> altogether. Make the Rust implementation self-contained. If there are
+> common file format concerns shared by implementations, then move that
+> information to a separate document in docs/interop/ (i.e. a simpletrace
+> file format specification).
+
+Thanks for your guidance, will do.
+
+> > + */
+> > +const ALLOWED_TYPES: [&str; 20] = [
+> > +    "int",
+> > +    "long",
+> > +    "short",
+> > +    "char",
+> > +    "bool",
+> > +    "unsigned",
+> > +    "signed",
+> > +    "int8_t",
+> > +    "uint8_t",
+> > +    "int16_t",
+> > +    "uint16_t",
+> > +    "int32_t",
+> > +    "uint32_t",
+> > +    "int64_t",
+> > +    "uint64_t",
+> > +    "void",
+> > +    "size_t",
+> > +    "ssize_t",
+> > +    "uintptr_t",
+> > +    "ptrdiff_t",
+> > +];
+> > +
+> > +const STRING_TYPES: [&str; 4] =
+> > +    ["const char*", "char*", "const char *", "char *"];
+> > +
+> > +/* TODO: Support 'vcpu' property. */
 > 
-> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
-> index 8589f3291e..679723926a 100644
-> --- a/include/hw/ppc/pnv_chip.h
-> +++ b/include/hw/ppc/pnv_chip.h
-> @@ -147,7 +147,8 @@ struct PnvChipClass {
->   
->       DeviceRealize parent_realize;
->   
-> -    uint32_t (*chip_pir)(PnvChip *chip, uint32_t core_id, uint32_t thread_id);
-> +    void (*processor_id)(PnvChip *chip, uint32_t core_id, uint32_t thread_id,
-> +                         uint32_t *pir, uint32_t *tir);
+> The vcpu property was removed in commit d9a6bad542cd ("docs: remove
+> references to TCG tracing"). Is this comment outdated or are you
+> planning to bring it back?
 
-Should it be named get_chip_core_thread_regs() ?
+Thanks! I have no plan for this, I just follow _VALID_PROPS[] in
+scripts/tracetool/__init__.py. As you commented above, I think I should
+just ignore it. ;-)
 
->       void (*intc_create)(PnvChip *chip, PowerPCCPU *cpu, Error **errp);
->       void (*intc_reset)(PnvChip *chip, PowerPCCPU *cpu);
->       void (*intc_destroy)(PnvChip *chip, PowerPCCPU *cpu);
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index a706de2e36..7d062ec16c 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -144,7 +144,7 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
->       PnvChipClass *pnv_cc = PNV_CHIP_GET_CLASS(chip);
->       g_autofree uint32_t *servers_prop = g_new(uint32_t, smt_threads);
->       int i;
-> -    uint32_t pir;
-> +    uint32_t pir, tir;
->       uint32_t segs[] = {cpu_to_be32(28), cpu_to_be32(40),
->                          0xffffffff, 0xffffffff};
->       uint32_t tbfreq = PNV_TIMEBASE_FREQ;
-> @@ -155,7 +155,7 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
->       char *nodename;
->       int cpus_offset = get_cpus_node(fdt);
->   
-> -    pir = pnv_cc->chip_pir(chip, pc->hwid, 0);
-> +    pnv_cc->processor_id(chip, pc->hwid, 0, &pir, &tir);
+> > +const VALID_PROPS: [&str; 1] = ["disable"];
 
-As a generic helper API and potentially expandable, it should allow 
-passing NULL for registers whose values are not really sought to avoid 
-having to create un-necessary local variables by the caller.
+[snip]
 
-regards,
-Harsh
->   
->       nodename = g_strdup_printf("%s@%x", dc->fw_name, pir);
->       offset = fdt_add_subnode(fdt, cpus_offset, nodename);
-> @@ -237,7 +237,8 @@ static int pnv_dt_core(PnvChip *chip, PnvCore *pc, void *fdt)
->   
->       /* Build interrupt servers properties */
->       for (i = 0; i < smt_threads; i++) {
-> -        servers_prop[i] = cpu_to_be32(pnv_cc->chip_pir(chip, pc->hwid, i));
-> +        pnv_cc->processor_id(chip, pc->hwid, i, &pir, &tir);
-> +        servers_prop[i] = cpu_to_be32(pir);
->       }
->       _FDT((fdt_setprop(fdt, offset, "ibm,ppc-interrupt-server#s",
->                          servers_prop, sizeof(*servers_prop) * smt_threads)));
-> @@ -249,14 +250,17 @@ static void pnv_dt_icp(PnvChip *chip, void *fdt, uint32_t hwid,
->                          uint32_t nr_threads)
->   {
->       PnvChipClass *pcc = PNV_CHIP_GET_CLASS(chip);
-> -    uint32_t pir = pcc->chip_pir(chip, hwid, 0);
-> -    uint64_t addr = PNV_ICP_BASE(chip) | (pir << 12);
-> +    uint32_t pir, tir;
-> +    uint64_t addr;
->       char *name;
->       const char compat[] = "IBM,power8-icp\0IBM,ppc-xicp";
->       uint32_t irange[2], i, rsize;
->       uint64_t *reg;
->       int offset;
->   
-> +    pcc->processor_id(chip, hwid, 0, &pir, &tir);
-> +    addr = PNV_ICP_BASE(chip) | (pir << 12);
-> +
->       irange[0] = cpu_to_be32(pir);
->       irange[1] = cpu_to_be32(nr_threads);
->   
-> @@ -1104,10 +1108,12 @@ static void pnv_power10_init(MachineState *machine)
->    *   25:28  Core number
->    *   29:31  Thread ID
->    */
-> -static uint32_t pnv_chip_pir_p8(PnvChip *chip, uint32_t core_id,
-> -                                uint32_t thread_id)
-> +static void pnv_processor_id_p8(PnvChip *chip,
-> +                                uint32_t core_id, uint32_t thread_id,
-> +                                uint32_t *pir, uint32_t *tir)
->   {
-> -    return (chip->chip_id << 7) | (core_id << 3) | thread_id;
-> +    *pir = (chip->chip_id << 7) | (core_id << 3) | thread_id;
-> +    *tir = thread_id;
->   }
->   
->   static void pnv_chip_power8_intc_create(PnvChip *chip, PowerPCCPU *cpu,
-> @@ -1159,15 +1165,17 @@ static void pnv_chip_power8_intc_print_info(PnvChip *chip, PowerPCCPU *cpu,
->    *
->    * We only care about the lower bits. uint32_t is fine for the moment.
->    */
-> -static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
-> -                                uint32_t thread_id)
-> +static void pnv_processor_id_p9(PnvChip *chip,
-> +                                uint32_t core_id, uint32_t thread_id,
-> +                                uint32_t *pir, uint32_t *tir)
->   {
->       if (chip->nr_threads == 8) {
-> -        return (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
-> +        *pir = (chip->chip_id << 8) | ((thread_id & 1) << 2) | (core_id << 3) |
->                  (thread_id >> 1);
->       } else {
-> -        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
-> +        *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
->       }
-> +    *tir = thread_id;
->   }
->   
->   /*
-> @@ -1181,15 +1189,17 @@ static uint32_t pnv_chip_pir_p9(PnvChip *chip, uint32_t core_id,
->    *
->    * We only care about the lower bits. uint32_t is fine for the moment.
->    */
-> -static uint32_t pnv_chip_pir_p10(PnvChip *chip, uint32_t core_id,
-> -                                 uint32_t thread_id)
-> +static void pnv_processor_id_p10(PnvChip *chip,
-> +                                uint32_t core_id, uint32_t thread_id,
-> +                                uint32_t *pir, uint32_t *tir)
->   {
->       if (chip->nr_threads == 8) {
-> -        return (chip->chip_id << 8) | ((core_id / 4) << 4) |
-> -               ((core_id % 2) << 3) | thread_id;
-> +        *pir = (chip->chip_id << 8) | ((core_id / 4) << 4) |
-> +                ((core_id % 2) << 3) | thread_id;
->       } else {
-> -        return (chip->chip_id << 8) | (core_id << 2) | thread_id;
-> +        *pir = (chip->chip_id << 8) | (core_id << 2) | thread_id;
->       }
-> +    *tir = thread_id;
->   }
->   
->   static void pnv_chip_power9_intc_create(PnvChip *chip, PowerPCCPU *cpu,
-> @@ -1368,8 +1378,11 @@ static void pnv_chip_icp_realize(Pnv8Chip *chip8, Error **errp)
->           int core_hwid = CPU_CORE(pnv_core)->core_id;
->   
->           for (j = 0; j < CPU_CORE(pnv_core)->nr_threads; j++) {
-> -            uint32_t pir = pcc->chip_pir(chip, core_hwid, j);
-> -            PnvICPState *icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
-> +            uint32_t pir, tir;
-> +            PnvICPState *icp;
-> +
-> +            pcc->processor_id(chip, core_hwid, j, &pir, &tir);
-> +            icp = PNV_ICP(xics_icp_get(chip8->xics, pir));
->   
->               memory_region_add_subregion(&chip8->icp_mmio, pir << 12,
->                                           &icp->mmio);
-> @@ -1481,7 +1494,7 @@ static void pnv_chip_power8e_class_init(ObjectClass *klass, void *data)
->       k->chip_cfam_id = 0x221ef04980000000ull;  /* P8 Murano DD2.1 */
->       k->cores_mask = POWER8E_CORE_MASK;
->       k->num_phbs = 3;
-> -    k->chip_pir = pnv_chip_pir_p8;
-> +    k->processor_id = pnv_processor_id_p8;
->       k->intc_create = pnv_chip_power8_intc_create;
->       k->intc_reset = pnv_chip_power8_intc_reset;
->       k->intc_destroy = pnv_chip_power8_intc_destroy;
-> @@ -1505,7 +1518,7 @@ static void pnv_chip_power8_class_init(ObjectClass *klass, void *data)
->       k->chip_cfam_id = 0x220ea04980000000ull; /* P8 Venice DD2.0 */
->       k->cores_mask = POWER8_CORE_MASK;
->       k->num_phbs = 3;
-> -    k->chip_pir = pnv_chip_pir_p8;
-> +    k->processor_id = pnv_processor_id_p8;
->       k->intc_create = pnv_chip_power8_intc_create;
->       k->intc_reset = pnv_chip_power8_intc_reset;
->       k->intc_destroy = pnv_chip_power8_intc_destroy;
-> @@ -1529,7 +1542,7 @@ static void pnv_chip_power8nvl_class_init(ObjectClass *klass, void *data)
->       k->chip_cfam_id = 0x120d304980000000ull;  /* P8 Naples DD1.0 */
->       k->cores_mask = POWER8_CORE_MASK;
->       k->num_phbs = 4;
-> -    k->chip_pir = pnv_chip_pir_p8;
-> +    k->processor_id = pnv_processor_id_p8;
->       k->intc_create = pnv_chip_power8_intc_create;
->       k->intc_reset = pnv_chip_power8_intc_reset;
->       k->intc_destroy = pnv_chip_power8_intc_destroy;
-> @@ -1802,7 +1815,7 @@ static void pnv_chip_power9_class_init(ObjectClass *klass, void *data)
->   
->       k->chip_cfam_id = 0x220d104900008000ull; /* P9 Nimbus DD2.0 */
->       k->cores_mask = POWER9_CORE_MASK;
-> -    k->chip_pir = pnv_chip_pir_p9;
-> +    k->processor_id = pnv_processor_id_p9;
->       k->intc_create = pnv_chip_power9_intc_create;
->       k->intc_reset = pnv_chip_power9_intc_reset;
->       k->intc_destroy = pnv_chip_power9_intc_destroy;
-> @@ -2114,7 +2127,7 @@ static void pnv_chip_power10_class_init(ObjectClass *klass, void *data)
->   
->       k->chip_cfam_id = 0x120da04900008000ull; /* P10 DD1.0 (with NX) */
->       k->cores_mask = POWER10_CORE_MASK;
-> -    k->chip_pir = pnv_chip_pir_p10;
-> +    k->processor_id = pnv_processor_id_p10;
->       k->intc_create = pnv_chip_power10_intc_create;
->       k->intc_reset = pnv_chip_power10_intc_reset;
->       k->intc_destroy = pnv_chip_power10_intc_destroy;
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index 7b0ea7812b..9b5edd9e48 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -228,8 +228,9 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
->       PnvCPUState *pnv_cpu = pnv_cpu_state(cpu);
->       CPUPPCState *env = &cpu->env;
->       int core_hwid;
-> -    ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
-> -    ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
-> +    ppc_spr_t *pir_spr = &env->spr_cb[SPR_PIR];
-> +    ppc_spr_t *tir_spr = &env->spr_cb[SPR_TIR];
-> +    uint32_t pir, tir;
->       Error *local_err = NULL;
->       PnvChipClass *pcc = PNV_CHIP_GET_CLASS(pc->chip);
->   
-> @@ -247,8 +248,9 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
->   
->       core_hwid = object_property_get_uint(OBJECT(pc), "hwid", &error_abort);
->   
-> -    tir->default_value = thread_index;
-> -    pir->default_value = pcc->chip_pir(pc->chip, core_hwid, thread_index);
-> +    pcc->processor_id(pc->chip, core_hwid, thread_index, &pir, &tir);
-> +    pir_spr->default_value = pir;
-> +    tir_spr->default_value = tir;
->   
->       /* Set time-base frequency to 512 MHz */
->       cpu_ppc_tb_init(env, PNV_TIMEBASE_FREQ);
+> > +    pub fn build(arg_str: &str) -> Result<Arguments>
+> > +    {
+> > +        let mut args = Arguments::new();
+> > +        for arg in arg_str.split(',').map(|s| s.trim()) {
+> > +            if arg.is_empty() {
+> > +                return Err(Error::EmptyArg);
+> > +            }
+> > +
+> > +            if arg == "void" {
+> > +                continue;
+> > +            }
+> > +
+> > +            let (arg_type, identifier) = if arg.contains('*') {
+> > +                /* FIXME: Implement rsplit_inclusive(). */
+> > +                let p = arg.rfind('*').unwrap();
+> > +                (
+> > +                    /* Safe because arg contains "*" and p exists. */
+> > +                    unsafe { arg.get_unchecked(..p + 1) },
+> > +                    /* Safe because arg contains "*" and p exists. */
+> > +                    unsafe { arg.get_unchecked(p + 1..) },
+> > +                )
+> > +            } else {
+> > +                arg.rsplit_once(' ').unwrap()
+> > +            };
+> 
+> Can you write this without unsafe? Maybe rsplit_once(' ') followed by a
+> check for (_, '*identifier'). If the identifier starts with '*', then
+> arg_type += ' *' and identifier = identifier[1:].
+
+Clever idea! It should work, will try this way.
+
+> > +
+> > +            validate_c_type(arg_type)?;
+> > +            args.props.push(ArgProperty::new(arg_type, identifier));
+> > +        }
+> > +        Ok(args)
+> > +    }
+> > +}
+> > +
+
+[snip]
+
+> > +    pub fn build(line_str: &str, lineno: u32, filename: &str) -> Result<Event>
+> > +    {
+> > +        static RE: Lazy<Regex> = Lazy::new(|| {
+> > +            Regex::new(
+> > +                r#"(?x)
+> > +                ((?P<props>[\w\s]+)\s+)?
+> > +                (?P<name>\w+)
+> > +                \((?P<args>[^)]*)\)
+> > +                \s*
+> > +                (?:(?:(?P<fmt_trans>".+),)?\s*(?P<fmt>".+))?
+> 
+> What is the purpose of fmt_trans?
+> 
+> > +                \s*"#,
+> > +            )
+> > +            .unwrap()
+> 
+> I wonder if regular expressions help here. It's not easy to read this
+> regex and there is a bunch of logic that takes apart the matches
+> afterwards. It might even be clearer to use string methods to split
+> fields.
+
+Yes, regular matching is a burden here (it's a "lazy simplification" on
+my part), and I'll think if it's possible to avoid regular matching with
+string methods.
+
+> Please add a comment showing the format that's being parsed:
+> 
+>  // [disable] <name>(<type1> <arg1>[, <type2> <arg2>] ...) "<format-string>"
+> 
+
+OK.
+
+> > +        });
+> > +
+> > +        let caps_res = RE.captures(line_str);
+> > +        if caps_res.is_none() {
+> > +            return Err(Error::UnknownEvent(line_str.to_owned()));
+> > +        }
+> > +        let caps = caps_res.unwrap();
+> > +        let name = caps.name("name").map_or("", |m| m.as_str());
+> > +        let props: Vec<String> = if caps.name("props").is_some() {
+> > +            caps.name("props")
+> > +                .unwrap()
+> > +                .as_str()
+> > +                .split_whitespace()
+> > +                .map(|s| s.to_string())
+> > +                .collect()
+> > +        } else {
+> > +            Vec::new()
+> > +        };
+> > +        let fmt: String =
+> > +            caps.name("fmt").map_or("", |m| m.as_str()).to_string();
+> > +        let fmt_trans: String = caps
+> > +            .name("fmt_trans")
+> > +            .map_or("", |m| m.as_str())
+> > +            .to_string();
+> > +
+> > +        if fmt.contains("%m") || fmt_trans.contains("%m") {
+> > +            return Err(Error::InvalidFormat(
+> > +                "Event format '%m' is forbidden, pass the error 
+> > +                as an explicit trace argument"
+> > +                    .to_string(),
+> > +            ));
+> > +        }
+> 
+> I'm not sure simpletrace needs to check this. That's a job for tracetool
+> the build-time tool that generates code from trace-events files.
+
+Thanks for the clarification, this item has bothered me before, I also
+noticed that simpletrace doesn't use it, but don't feel confident about
+deleting it completely, I'll clean it up!
+
+> > +        if fmt.ends_with(r"\n") {
+> > +            return Err(Error::InvalidFormat(
+> > +                "Event format must not end with a newline 
+> > +                character"
+> > +                    .to_string(),
+> > +            ));
+> > +        }
+
+Thanks,
+Zhao
+
 
