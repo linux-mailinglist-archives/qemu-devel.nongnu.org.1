@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739878D1233
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B6D8D123A
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmp6-0002Ok-CE; Mon, 27 May 2024 22:44:24 -0400
+	id 1sBmp8-0002Yx-8S; Mon, 27 May 2024 22:44:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmp4-0002Io-7b
- for qemu-devel@nongnu.org; Mon, 27 May 2024 22:44:22 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1sBmp6-0002Ry-HN; Mon, 27 May 2024 22:44:24 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmp1-0003jD-Dt
- for qemu-devel@nongnu.org; Mon, 27 May 2024 22:44:21 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1f47db642c2so2861425ad.2
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 19:44:19 -0700 (PDT)
+ id 1sBmp4-0003jK-NC; Mon, 27 May 2024 22:44:24 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1f4a6a54416so2388495ad.0; 
+ Mon, 27 May 2024 19:44:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864257; x=1717469057; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864261; x=1717469061; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UPlluaU0uKur6NZ6KKIaWWCj2wxgWKV0EN/SjQ103ro=;
- b=inzHFm5PgjvUzerxpCyEqauZStu/LYIrBDqQAh46HWxXehZGmw8m0B5tUELjlr3BDP
- K7F+andVXGbi3xKDDfV0Qb4JqWV3fMcbtEBBvy7O6nmKMJU7Zf1HOQdjG9UOKgVKgRt2
- 1BUAAB2iOivCa1uo/3xIHCoLisw4ugs5BWJMB0QTUQcgulsMyb+YJLSx32tVZpF/WOvV
- WFPUNvaJ6sm9Wg63nUXrGj99FUQhyDBSrgx0eF309UEzXvNHZ3hht0rAdIR6FdpA238a
- 2lSICcXrx7hW6HNRa7g4OgaJ4UUhRsRRVRSHXHSlm6l14A5llLAA32NOD59hn5DOLP1t
- ez5w==
+ bh=PGSDVwJ0PbsAM8k/8MYYmnPwZRw9PEeElr3mXEVUI30=;
+ b=RI1EiTh+YNL71hCrmLbIsMBV8nZ0BH5YYdBkU3Yd92xt6UsdcxdE8eyr1pEcqxaQnO
+ +7IU+RfvE8hvYZYUlEUARW2QdUJIeohysDfWETIaSoGsdQKZRJ/1QeurGGFTR+7SEIQh
+ BEiIQC5MQFuD+6o5lnhrSL4tPOs9H6T3fnGuo7HMDNA5l3IVAEyCZ6AioIoxgzDC5A6/
+ fISOhhGWEkrg2pRP3Y1k1nvtbcDBBSBnC6CaSyYL9Swg0W248KBgxoKLbgevLbTgvnVB
+ adfDyEy4rmuJSTj4SjfiOuuDxGawOX4d19/UN1eTo6qWp/3jIMyF/eLJiLPbbVnDfedp
+ GwmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864257; x=1717469057;
+ d=1e100.net; s=20230601; t=1716864261; x=1717469061;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UPlluaU0uKur6NZ6KKIaWWCj2wxgWKV0EN/SjQ103ro=;
- b=uN+QjuF6CKaI3skHBqF+N2kP8Hiui0ArgCHdjRGaghaO1ZINmScbZm6fzP8i8MB0c2
- T33a5dUZlCWcmf8W/wg3HZOjA9zN/RujlAZwh2afA4h24O2K0Nm8Zh/ystju3za48Ibn
- efB+S7muQ21ifhjrLz2aiOJyIWJDI+sQE5lCTvWQZ8fO2nmZbqyT7eKUc1gh+giptFLs
- UbxJn4YbL0Uj4Y7ssGzmH0vg1V62cgTDttSgWA6FknaarUchR6ssxdqQ3Avyhosj8CC1
- lEFfDGybfLkacwC9ltduZSPS2BhsktRr2Nal6pwqi/L8hSThXjdY01qbLuN7WZm/5xXX
- 6jAg==
-X-Gm-Message-State: AOJu0YwKrN9W4zbyjEV8GpiuSR2E7IMUcrjWZbDc+RiiEhbrTlHTM66t
- BbLStZNh3x/uVdCOFWqS2H5ttQjHhXtVsDE71bBdi5sYADSspQBrzaKrxw==
-X-Google-Smtp-Source: AGHT+IE4BqkIkrCf0+yByLcMM3G781L4+L0Arn895+9fyiOkh+ZS0lOrX5+CNQXxuQSS17/5Xmy1LA==
-X-Received: by 2002:a17:902:f791:b0:1f4:6b1b:9439 with SMTP id
- d9443c01a7336-1f46b1b987bmr90892575ad.53.1716864257432; 
- Mon, 27 May 2024 19:44:17 -0700 (PDT)
+ bh=PGSDVwJ0PbsAM8k/8MYYmnPwZRw9PEeElr3mXEVUI30=;
+ b=D7FNXDuj2ti7abaGigU39+o+Xejmzk+BOePFlQD+W/GkwdGCr/c+aYgGPQp9P0/iM9
+ e3DPr30gxgl2gv1keS3mjwGyNOGo5XBC3JdsdL8+CcmkPdxKUzICvYIxkNE0tNYnfnus
+ ymBTxUmZ/EgmrFhprZ1YnO8rfHTLtPVG9ujgSN8xPP5ycc91d/nLL9eAYPQN7BVYYgIA
+ moCJfLF0yhUS9Nz2wbkIuHI0R79OJ2Z2WBmKYVeqOt6/Q6LNZ1fhIaAafftbOrvQvnup
+ w1vsE1xtDLoTZxsWOMz9m6XcDmLwvDcH2C58Dzx+HIybQtJmnRCQ7bAJqIv3NY+kKD6x
+ Xjxw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVdJbg1zfXkame7FV/OJS2ZLW/WexFyvHuTRyfCnKXnWh3tbiyLsvz0GqvFlJqaOeFBHDrLPUX/mVwP5itQcOz2UHyDRANV
+X-Gm-Message-State: AOJu0Ywx3EWVcS5tC/QHn2ueUMGq7EnerT83pLwnDTZTrdCBxkJ5MnXe
+ pgxmuTz6RJ31F8bUFi1r26lK9Cui+6fB/RotqNppTKTe0yw6eBKl1XciHA==
+X-Google-Smtp-Source: AGHT+IHGAfKNgC+eh987FAw8Sl72Piu8iMc1GAsWmASL+ZlTv59TPy4ud9SnNgwFdb6kWjyXViCgkg==
+X-Received: by 2002:a17:902:d58c:b0:1f2:fcc0:66f with SMTP id
+ d9443c01a7336-1f448248a0emr165604775ad.31.1716864260654; 
+ Mon, 27 May 2024 19:44:20 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.44.15
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.44.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:44:16 -0700 (PDT)
+ Mon, 27 May 2024 19:44:20 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ qemu-stable <qemu-stable@nongnu.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 06/28] target/riscv: change RISCV_EXCP_SEMIHOST exception
- number to 63
-Date: Tue, 28 May 2024 12:43:06 +1000
-Message-ID: <20240528024328.246965-7-alistair.francis@wdc.com>
+Subject: [PULL 07/28] target/riscv/kvm: tolerate KVM disable ext errors
+Date: Tue, 28 May 2024 12:43:07 +1000
+Message-ID: <20240528024328.246965-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,41 +98,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The current semihost exception number (16) is a reserved number (range
-[16-17]). The upcoming double trap specification uses that number for
-the double trap exception. Since the privileged spec (Table 22) defines
-ranges for custom uses change the semihosting exception number to 63
-which belongs to the range [48-63] in order to avoid any future
-collisions with reserved exception.
+Running a KVM guest using a 6.9-rc3 kernel, in a 6.8 host that has zkr
+enabled, will fail with a kernel oops SIGILL right at the start. The
+reason is that we can't expose zkr without implementing the SEED CSR.
+Disabling zkr in the guest would be a workaround, but if the KVM doesn't
+allow it we'll error out and never boot.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
+In hindsight this is too strict. If we keep proceeding, despite not
+disabling the extension in the KVM vcpu, we'll not add the extension in
+the riscv,isa. The guest kernel will be unaware of the extension, i.e.
+it doesn't matter if the KVM vcpu has it enabled underneath or not. So
+it's ok to keep booting in this case.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240422135840.1959967-1-cleger@rivosinc.com>
+Change our current logic to not error out if we fail to disable an
+extension in kvm_set_one_reg(), but show a warning and keep booting. It
+is important to throw a warning because we must make the user aware that
+the extension is still available in the vcpu, meaning that an
+ill-behaved guest can ignore the riscv,isa settings and  use the
+extension.
+
+The case we're handling happens with an EINVAL error code. If we fail to
+disable the extension in KVM for any other reason, error out.
+
+We'll also keep erroring out when we fail to enable an extension in KVM,
+since adding the extension in riscv,isa at this point will cause a guest
+malfunction because the extension isn't enabled in the vcpu.
+
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240422171425.333037-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/kvm/kvm-cpu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index fc2068ee4d..74318a925c 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -670,11 +670,11 @@ typedef enum RISCVException {
-     RISCV_EXCP_INST_PAGE_FAULT = 0xc, /* since: priv-1.10.0 */
-     RISCV_EXCP_LOAD_PAGE_FAULT = 0xd, /* since: priv-1.10.0 */
-     RISCV_EXCP_STORE_PAGE_FAULT = 0xf, /* since: priv-1.10.0 */
--    RISCV_EXCP_SEMIHOST = 0x10,
-     RISCV_EXCP_INST_GUEST_PAGE_FAULT = 0x14,
-     RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT = 0x15,
-     RISCV_EXCP_VIRT_INSTRUCTION_FAULT = 0x16,
-     RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT = 0x17,
-+    RISCV_EXCP_SEMIHOST = 0x3f,
- } RISCVException;
- 
- #define RISCV_EXCP_INT_FLAG                0x80000000
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index d2491d84e2..473416649f 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -433,10 +433,14 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
+         reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
+         ret = kvm_set_one_reg(cs, id, &reg);
+         if (ret != 0) {
+-            error_report("Unable to %s extension %s in KVM, error %d",
+-                         reg ? "enable" : "disable",
+-                         multi_ext_cfg->name, ret);
+-            exit(EXIT_FAILURE);
++            if (!reg && ret == -EINVAL) {
++                warn_report("KVM cannot disable extension %s",
++                            multi_ext_cfg->name);
++            } else {
++                error_report("Unable to enable extension %s in KVM, error %d",
++                             multi_ext_cfg->name, ret);
++                exit(EXIT_FAILURE);
++            }
+         }
+     }
+ }
 -- 
 2.45.1
 
