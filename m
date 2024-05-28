@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B6D8D123A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7678D122D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:44:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmp8-0002Yx-8S; Mon, 27 May 2024 22:44:26 -0400
+	id 1sBmpB-0002ju-HE; Mon, 27 May 2024 22:44:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmp6-0002Ry-HN; Mon, 27 May 2024 22:44:24 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1sBmp8-0002fi-TO
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:44:26 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmp4-0003jK-NC; Mon, 27 May 2024 22:44:24 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1f4a6a54416so2388495ad.0; 
- Mon, 27 May 2024 19:44:21 -0700 (PDT)
+ id 1sBmp7-0003jY-3Y
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:44:26 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6f8e859eb20so250631b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 19:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864261; x=1717469061; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864263; x=1717469063; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PGSDVwJ0PbsAM8k/8MYYmnPwZRw9PEeElr3mXEVUI30=;
- b=RI1EiTh+YNL71hCrmLbIsMBV8nZ0BH5YYdBkU3Yd92xt6UsdcxdE8eyr1pEcqxaQnO
- +7IU+RfvE8hvYZYUlEUARW2QdUJIeohysDfWETIaSoGsdQKZRJ/1QeurGGFTR+7SEIQh
- BEiIQC5MQFuD+6o5lnhrSL4tPOs9H6T3fnGuo7HMDNA5l3IVAEyCZ6AioIoxgzDC5A6/
- fISOhhGWEkrg2pRP3Y1k1nvtbcDBBSBnC6CaSyYL9Swg0W248KBgxoKLbgevLbTgvnVB
- adfDyEy4rmuJSTj4SjfiOuuDxGawOX4d19/UN1eTo6qWp/3jIMyF/eLJiLPbbVnDfedp
- GwmA==
+ bh=Ueu7vuYmn8RUHwOpB4gRtq7cx4bSTGY9+BukiSLE2tw=;
+ b=IHArGdhy8HnMWBLaBDH2uq/5U/sH4dvDzqaYeqiNDsN9ZmpDGleqUdtIhw7OkuM4Tt
+ I6pgZOxgCrj6ZpDf5IYl5W54OqNbde+E/R5OcKG8kXi8+0IQ6MmJfc6iS0P5R+6fFALf
+ 6QC3YMkWISnM/h+Q5yTyIUG6hn1217QR72T+QmlTRHHacwCRa3e78GhkTcYB56nOi3i0
+ TlumyLrV2QSM9+7n8J+z/qIW4Ko3lUBlEeycdyjo8I7ktdbfFin/EEZ3JHkG/Uzna99+
+ vpiPMd+VuqEh+gcF3YdK8JBuEeXj2iK5WOcdKQUb3OuXrtZJ0Ogjzewq4u3oiZyXxZ+P
+ QQ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864261; x=1717469061;
+ d=1e100.net; s=20230601; t=1716864263; x=1717469063;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PGSDVwJ0PbsAM8k/8MYYmnPwZRw9PEeElr3mXEVUI30=;
- b=D7FNXDuj2ti7abaGigU39+o+Xejmzk+BOePFlQD+W/GkwdGCr/c+aYgGPQp9P0/iM9
- e3DPr30gxgl2gv1keS3mjwGyNOGo5XBC3JdsdL8+CcmkPdxKUzICvYIxkNE0tNYnfnus
- ymBTxUmZ/EgmrFhprZ1YnO8rfHTLtPVG9ujgSN8xPP5ycc91d/nLL9eAYPQN7BVYYgIA
- moCJfLF0yhUS9Nz2wbkIuHI0R79OJ2Z2WBmKYVeqOt6/Q6LNZ1fhIaAafftbOrvQvnup
- w1vsE1xtDLoTZxsWOMz9m6XcDmLwvDcH2C58Dzx+HIybQtJmnRCQ7bAJqIv3NY+kKD6x
- Xjxw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVdJbg1zfXkame7FV/OJS2ZLW/WexFyvHuTRyfCnKXnWh3tbiyLsvz0GqvFlJqaOeFBHDrLPUX/mVwP5itQcOz2UHyDRANV
-X-Gm-Message-State: AOJu0Ywx3EWVcS5tC/QHn2ueUMGq7EnerT83pLwnDTZTrdCBxkJ5MnXe
- pgxmuTz6RJ31F8bUFi1r26lK9Cui+6fB/RotqNppTKTe0yw6eBKl1XciHA==
-X-Google-Smtp-Source: AGHT+IHGAfKNgC+eh987FAw8Sl72Piu8iMc1GAsWmASL+ZlTv59TPy4ud9SnNgwFdb6kWjyXViCgkg==
-X-Received: by 2002:a17:902:d58c:b0:1f2:fcc0:66f with SMTP id
- d9443c01a7336-1f448248a0emr165604775ad.31.1716864260654; 
- Mon, 27 May 2024 19:44:20 -0700 (PDT)
+ bh=Ueu7vuYmn8RUHwOpB4gRtq7cx4bSTGY9+BukiSLE2tw=;
+ b=qAWeiy4KE9i2hs2GUbJlIf8n/YjBaEulF03SGlhqwLWvdVriZ8I+kp0+IVI4D+7vH6
+ 4iQYtvTnbTFPdhYSamQjA62qLixnPvj4BZP32o0i2MNO7FlhyMF26TtleYUTB1Vc/fhm
+ qwRvQlysmfJiI7ZuajoB24EZAL8m9zJ90VUIdhdsALZVVB+vT2iXyqFfQtlzhD93jtU6
+ 4oy+lNiI81YQG6i4wvz5cxpRaKVkDWOqyBuAZXuIvR8hDFGBbChLwezqdyEEnZwbfRTX
+ EusZsUtcSu4M5rRG3D72rAREzTN42WkfMGp+qApBMFPtRcGOiUHCMKGzXL8TxJ/eEg7w
+ RkwA==
+X-Gm-Message-State: AOJu0Yzy5xKa4r0aljP/YmskREeHTJiThostelesDH+AgQ7KwgTTrkWr
+ H9vKmajSXsDlCr/TqHd+q7dFyo+q8ehKzOE6Jgx1Uy2ZKNL2Q2ETPxMZJg==
+X-Google-Smtp-Source: AGHT+IHQsMDxnNUkEE816fbrBtWokGXFfoWvW/VAqBjHtNk+We9kF9dhJQBLZGFx7NmXARRjdT/GBQ==
+X-Received: by 2002:a05:6a20:9d8e:b0:1b1:ec00:dac8 with SMTP id
+ adf61e73a8af0-1b212df058amr10592912637.27.1716864263583; 
+ Mon, 27 May 2024 19:44:23 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.44.17
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.44.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:44:20 -0700 (PDT)
+ Mon, 27 May 2024 19:44:23 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- qemu-stable <qemu-stable@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 07/28] target/riscv/kvm: tolerate KVM disable ext errors
-Date: Tue, 28 May 2024 12:43:07 +1000
-Message-ID: <20240528024328.246965-8-alistair.francis@wdc.com>
+ Alistair Francis <alistair.francis@wdc.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 08/28] target/riscv/debug: set tval=pc in breakpoint exceptions
+Date: Tue, 28 May 2024 12:43:08 +1000
+Message-ID: <20240528024328.246965-9-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,65 +99,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Running a KVM guest using a 6.9-rc3 kernel, in a 6.8 host that has zkr
-enabled, will fail with a kernel oops SIGILL right at the start. The
-reason is that we can't expose zkr without implementing the SEED CSR.
-Disabling zkr in the guest would be a workaround, but if the KVM doesn't
-allow it we'll error out and never boot.
+We're not setting (s/m)tval when triggering breakpoints of type 2
+(mcontrol) and 6 (mcontrol6). According to the debug spec section
+5.7.12, "Match Control Type 6":
 
-In hindsight this is too strict. If we keep proceeding, despite not
-disabling the extension in the KVM vcpu, we'll not add the extension in
-the riscv,isa. The guest kernel will be unaware of the extension, i.e.
-it doesn't matter if the KVM vcpu has it enabled underneath or not. So
-it's ok to keep booting in this case.
+"The Privileged Spec says that breakpoint exceptions that occur on
+instruction fetches, loads, or stores update the tval CSR with either
+zero or the faulting virtual address. The faulting virtual address for
+an mcontrol6 trigger with action = 0 is the address being accessed and
+which caused that trigger to fire."
 
-Change our current logic to not error out if we fail to disable an
-extension in kvm_set_one_reg(), but show a warning and keep booting. It
-is important to throw a warning because we must make the user aware that
-the extension is still available in the vcpu, meaning that an
-ill-behaved guest can ignore the riscv,isa settings and  use the
-extension.
+A similar text is also found in the Debug spec section 5.7.11 w.r.t.
+mcontrol.
 
-The case we're handling happens with an EINVAL error code. If we fail to
-disable the extension in KVM for any other reason, error out.
+Note that what we're doing ATM is not violating the spec, but it's
+simple enough to set mtval/stval and it makes life easier for any
+software that relies on this info.
 
-We'll also keep erroring out when we fail to enable an extension in KVM,
-since adding the extension in riscv,isa at this point will cause a guest
-malfunction because the extension isn't enabled in the vcpu.
+Given that we always use action = 0, save the faulting address for the
+mcontrol and mcontrol6 trigger breakpoints into env->badaddr, which is
+used as as scratch area for traps with address information. 'tval' is
+then set during riscv_cpu_do_interrupt().
 
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240422171425.333037-2-dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240416230437.1869024-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ target/riscv/cpu_helper.c | 1 +
+ target/riscv/debug.c      | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index d2491d84e2..473416649f 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -433,10 +433,14 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
-         reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
-         ret = kvm_set_one_reg(cs, id, &reg);
-         if (ret != 0) {
--            error_report("Unable to %s extension %s in KVM, error %d",
--                         reg ? "enable" : "disable",
--                         multi_ext_cfg->name, ret);
--            exit(EXIT_FAILURE);
-+            if (!reg && ret == -EINVAL) {
-+                warn_report("KVM cannot disable extension %s",
-+                            multi_ext_cfg->name);
-+            } else {
-+                error_report("Unable to enable extension %s in KVM, error %d",
-+                             multi_ext_cfg->name, ret);
-+                exit(EXIT_FAILURE);
-+            }
-         }
-     }
- }
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index 8ad546a45a..179cf3d1a1 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1718,6 +1718,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+             tval = env->bins;
+             break;
+         case RISCV_EXCP_BREAKPOINT:
++            tval = env->badaddr;
+             if (cs->watchpoint_hit) {
+                 tval = cs->watchpoint_hit->hitaddr;
+                 cs->watchpoint_hit = NULL;
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index e30d99cc2f..b110370ea6 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -798,6 +798,7 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                 if ((ctrl & TYPE2_EXEC) && (bp->pc == pc)) {
+                     /* check U/S/M bit against current privilege level */
+                     if ((ctrl >> 3) & BIT(env->priv)) {
++                        env->badaddr = pc;
+                         return true;
+                     }
+                 }
+@@ -810,11 +811,13 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                     if (env->virt_enabled) {
+                         /* check VU/VS bit against current privilege level */
+                         if ((ctrl >> 23) & BIT(env->priv)) {
++                            env->badaddr = pc;
+                             return true;
+                         }
+                     } else {
+                         /* check U/S/M bit against current privilege level */
+                         if ((ctrl >> 3) & BIT(env->priv)) {
++                            env->badaddr = pc;
+                             return true;
+                         }
+                     }
 -- 
 2.45.1
 
