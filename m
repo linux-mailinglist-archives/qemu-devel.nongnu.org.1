@@ -2,69 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EFB8D1539
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343498D1552
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:26:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBr73-0004s9-Is; Tue, 28 May 2024 03:19:13 -0400
+	id 1sBrDW-0007ll-Rs; Tue, 28 May 2024 03:25:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1sBr71-0004rw-N5
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:19:11 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1sBr6y-0007b7-AU
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:19:10 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c10:3196:0:640:fabe:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id C9B9460D74;
- Tue, 28 May 2024 10:18:58 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b72a::1:2c] (unknown
- [2a02:6b8:b081:b72a::1:2c])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id uIKdVS2IfKo0-grveF4dl; Tue, 28 May 2024 10:18:57 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1716880737;
- bh=1lLVjRpHHSDSwUmkDYdLInTkL8Bc85PGNkkClmw9TCk=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=HSNb6kyYqN4sCkqjKosTpodyhcNT/XYpZl5NK2/Gm2NlRe0gpUqBsLNE+jqztarcs
- qV52G8oPJKy+KzRhxwUysusSK3tbJ8HoiC+1oSOtPRdsr6rph2j30H1GSjEs+S8g7H
- 8LnaYgCJa+bpwkg8El3WDpuQKTIALCKHlq9uiaDU=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <2b37aa67-5636-43f1-a991-559fd7ebe2b0@yandex-team.ru>
-Date: Tue, 28 May 2024 10:18:56 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mc146818rtc: add a way to generate RTC interrupts via
- QMP
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-References: <20240506083420.557726-1-d-tatianin@yandex-team.ru>
- <123481715669864@mail.yandex-team.ru>
- <42ad8fe7-0de8-4284-9d37-ff6b5f66acdf@yandex-team.ru>
- <e7492475-94db-4408-8d25-175b18fefec2@linaro.org>
-Content-Language: en-US
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-In-Reply-To: <e7492475-94db-4408-8d25-175b18fefec2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
+ id 1sBrDT-0007kc-C7; Tue, 28 May 2024 03:25:51 -0400
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net ([206.189.79.184])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <duchao@eswincomputing.com>)
+ id 1sBrDN-0000UX-MO; Tue, 28 May 2024 03:25:51 -0400
+Received: from localhost.localdomain (unknown [10.12.130.31])
+ by app2 (Coremail) with SMTP id TQJkCgCHjLlhhlVmgzQNAA--.46423S4;
+ Tue, 28 May 2024 15:23:13 +0800 (CST)
+From: Chao Du <duchao@eswincomputing.com>
+To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
+ ajones@ventanamicro.com, alistair23@gmail.com, bin.meng@windriver.com,
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, anup@brainfault.org,
+ duchao713@qq.com
+Subject: [PATCH v2 0/3] target/riscv/kvm: QEMU support for KVM Guest Debug on
+ RISC-V
+Date: Tue, 28 May 2024 07:20:45 +0000
+Message-Id: <20240528072048.25529-1-duchao@eswincomputing.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: TQJkCgCHjLlhhlVmgzQNAA--.46423S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1xZryDZr1UKr1xtw18Zrb_yoW8Xr4Dpa
+ 1F9F98CrZIqrWfG3ySk3WkWr15Zws5Cr1UZw1xZw4Sqr45ZayrArn2g398Wr17A3y8GFyj
+ kFnI9r9F9F1qvrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+ 0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+ A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
+ jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
+ C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+ 0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+ 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4IIrI8v6xkF7I0E8cxan2IY
+ 04v7MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+ 026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+ Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+ vEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+ 14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
+ 9x07j04E_UUUUU=
+X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
+Received-SPF: pass client-ip=206.189.79.184;
+ envelope-from=duchao@eswincomputing.com;
+ helo=zg8tmja2lje4os43os4xodqa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,171 +72,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/24 8:01 PM, Philippe Mathieu-Daudé wrote:
+This series implements QEMU KVM Guest Debug on RISC-V, with which we
+could debug RISC-V KVM guest from the host side, using software
+breakpoints.
 
-> Hi Daniil,
->
-> On 21/5/24 10:08, Daniil Tatianin wrote:
->> Could you please take a look at this revision? I think I've taken 
->> everyone's feedback into account.
->
-> Sorry for the delay, I missed your patch since you didn't Cc me
-> (Markus asked me to look at this).
+This series is based on riscv-to-apply.next branch (v9.0.0) and is also
+available at:
+https://github.com/Du-Chao/alistair23-qemu/tree/riscv-to-apply.next.0528
 
-Oops, my bad for forgetting to Cc you!
+The corresponding KVM side patches have been merged already:
+https://lore.kernel.org/kvm/20240402062628.5425-1-duchao@eswincomputing.com/
 
->
-> Thanks for addressing the previous requests.
->
->> Thank you!
->>
->> On 5/14/24 9:57 AM, Daniil Tatianin wrote:
->>> ping :)
->>> 06.05.2024, 11:34, "Daniil Tatianin" <d-tatianin@yandex-team.ru>:
->>>
->>>     This can be used to force-synchronize the time in guest after a 
->>> long
->>>     stop-cont pause, which can be useful for serverless-type workload.
->>>
->>>     Also add a comment to highlight the fact that this (and one 
->>> other QMP
->>>     command) only works for the MC146818 RTC controller.
->>>
->>>     Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
->>>     ---
->>>
->>>     Changes since v0:
->>>     - Rename to rtc-inject-irq to match other similar API
->>>     - Add a comment to highlight that this only works for the I386 RTC
->>>
->>>     Changes since v1:
->>>     - Added a description below the QMP command to explain how it 
->>> can be
->>>       used and what it does.
->>>
->>>     Changes since v2:
->>>     - Add a 'broadcast' suffix.
->>>     - Change the comments to explain the flags we're setting.
->>>     - Change the command description to fix styling & explain that
->>>     it's a broadcast command.
->>>
->>>     ---
->>>      hw/rtc/mc146818rtc.c | 20 ++++++++++++++++++++
->>>      include/hw/rtc/mc146818rtc.h | 1 +
->>>      qapi/misc-target.json | 19 +++++++++++++++++++
->>>      3 files changed, 40 insertions(+)
->>>
->>>     diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
->>>     index 3379f92748..2b3754f5c6 100644
->>>     --- a/hw/rtc/mc146818rtc.c
->>>     +++ b/hw/rtc/mc146818rtc.c
->>>     @@ -107,6 +107,11 @@ static void
->>>     rtc_coalesced_timer_update(MC146818RtcState *s)
->>>      static QLIST_HEAD(, MC146818RtcState) rtc_devices =
->>>          QLIST_HEAD_INITIALIZER(rtc_devices);
->>>
->>>     +/*
->>>     + * NOTE:
->>>     + * The two QMP functions below are _only_ implemented for the
->>>     MC146818.
->>>     + * All other RTC devices ignore this.
->>>     + */
->>>      void qmp_rtc_reset_reinjection(Error **errp)
->>>      {
->>>          MC146818RtcState *s;
->>>     @@ -116,6 +121,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
->>>          }
->>>      }
->>>
->>>     +void qmp_rtc_inject_irq_broadcast(Error **errp)
->>>     +{
->>>     + MC146818RtcState *s;
->>>     +
->>>     + QLIST_FOREACH(s, &rtc_devices, link) {
->>>     + // Update-ended interrupt enable
->
-> This doesn't pass the checkpatch script because it isn't QEMU coding
-> style:
-> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#use-the-qemu-coding-style 
->
->
-Looks like // comments are not allowed, will fix.
+A TODO list which will be added later:
+1. HW breakpoints support
+2. A 'corner case' in which the debug exception is not inserted by the
+debugger, need to be re-injected to the guest.
 
->>>     + s->cmos_data[RTC_REG_B] |= REG_B_UIE;
->>>     +
->>>     + // Interrupt request flag | update interrupt flag
->>>     + s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
->>>     +
->>>     + qemu_irq_raise(s->irq);
->>>     + }
->>>     +}
->>>     +
->>>      static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
->>>      {
->>>          kvm_reset_irq_delivered();
->>>     diff --git a/include/hw/rtc/mc146818rtc.h
->>>     b/include/hw/rtc/mc146818rtc.h
->>>     index 97cec0b3e8..e9dd0f9c72 100644
->>>     --- a/include/hw/rtc/mc146818rtc.h
->>>     +++ b/include/hw/rtc/mc146818rtc.h
->>>     @@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus,
->>>     int base_year,
->>>      void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int
->>>     val);
->>>      int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
->>>      void qmp_rtc_reset_reinjection(Error **errp);
->>>     +void qmp_rtc_inject_irq_broadcast(Error **errp);
->>>
->>>      #endif /* HW_RTC_MC146818RTC_H */
->>>     diff --git a/qapi/misc-target.json b/qapi/misc-target.json
->>>     index 4e0a6492a9..7d388a3753 100644
->>>     --- a/qapi/misc-target.json
->>>     +++ b/qapi/misc-target.json
->>>     @@ -19,6 +19,25 @@
->>>      { 'command': 'rtc-reset-reinjection',
->>>        'if': 'TARGET_I386' }
->>>
->
-> Your new command doesn't make my life harder than the current
-> 'rtc-reset-reinjection' command, so if this is useful to you,
-> I'm OK to:
-> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> (assuming the comment style is fixed).
->
-> I'll see later how to deal with that with heterogeneous
-> emulation.
->
-> Regards,
->
-> Phil.
+v1->v2:
+- squash patch #2 into #1
+- check the instruction length from the tail two bits, instead of passing the
+  length information by parameters.
 
-Thank you!
+RFC->v1:
+- Rebased on riscv-to-apply.next
+- use configs/ definition to conditionalize debug support
 
->>>     +##
->>>     +# @rtc-inject-irq-broadcast:
->>>     +#
->>>     +# Inject an RTC interrupt for all existing RTCs on the system.
->>>     +# The interrupt forces the guest to synchronize the time with RTC.
->>>     +# This is useful after a long stop-cont pause, which is common for
->>>     +# serverless-type workload.
->>>     +#
->>>     +# Since: 9.1
->>>     +#
->>>     +# Example:
->>>     +#
->>>     +# -> { "execute": "rtc-inject-irq-broadcast" }
->>>     +# <- { "return": {} }
->>>     +#
->>>     +##
->>>     +{ 'command': 'rtc-inject-irq-broadcast',
->>>     + 'if': 'TARGET_I386' }
->>>     +
->>>      ##
->>>      # @SevState:
->>>      #
->>>
->>>     --
->>>     2.34.1
->>>
->
+v1 link:
+https://lore.kernel.org/qemu-riscv/20240527021916.12953-1-duchao@eswincomputing.com/
+RFC link:
+https://lore.kernel.org/qemu-riscv/20231221094923.7349-1-duchao@eswincomputing.com/
+
+Chao Du (3):
+  target/riscv/kvm: add software breakpoints support
+  target/riscv/kvm: handle the exit with debug reason
+  target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
+
+ configs/targets/riscv64-softmmu.mak |  1 +
+ target/riscv/kvm/kvm-cpu.c          | 89 +++++++++++++++++++++++++++++
+ 2 files changed, 90 insertions(+)
+
+--
+2.17.1
+
 
