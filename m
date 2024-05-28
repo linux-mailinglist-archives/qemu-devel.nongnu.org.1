@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6598D1244
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186318D1239
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmr8-0008Ni-Vk; Mon, 27 May 2024 22:46:31 -0400
+	id 1sBmqy-00075l-Cv; Mon, 27 May 2024 22:46:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmqE-000610-Po; Mon, 27 May 2024 22:45:36 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1sBmqF-00062A-CY
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:43 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmqB-00043X-8J; Mon, 27 May 2024 22:45:34 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-681bee6bb13so2319631a12.1; 
- Mon, 27 May 2024 19:45:30 -0700 (PDT)
+ id 1sBmqD-00045N-Fc
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:35 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6fbbd937719so241728b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 19:45:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864329; x=1717469129; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864332; x=1717469132; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J5jhBOyEYmtoTJBDh000o1EH0VVoye2sH2+Q4KCgR/U=;
- b=RAbWoRJHCj95iZgADV193LMOE+7Y8BCIxZaPaW9EXmB9kAPYjNNYVwdv0p4T76zeGz
- XOvYaEfxnl0NO9syjqGIENOI7NC5TXhZfgartWrMr3u/bo/zHYLX3kY/1eyoE35PLFsR
- xtBWjEo70IKR7JYb7h7UQym1w/W2SvBIpLBYwblrZE+A90VcMUzsGQg5vFMawNpRl0SZ
- 2z3HtDZSFkyRkNYWw8uSwVT0ux9LoCGe/Gdlax2sKQ7AJpovWFYbOxujr3rgNbNmcS2o
- bCUyPCpc6lDOCb11A66MSZB4Zl6rPRUMpps61O2xWUu5G5tgdchdoVL0wGjnwSfrg7hC
- +A/w==
+ bh=b2k2JrhvujZewE6TU0J5JDl6R03TzuPE/F+i9deQBKY=;
+ b=nhoWgsmRtOrXM0ToJIn6UIrUrqInSIoRfnvFppZZeCVrl/jPNmePGJOWafOgm2SNRe
+ 77cnFKoZxoe/8GPMxkIcPWyRRQ1jRk3zflUR9YUEpyTyCQg/EUBBObpldLan7SsLa+Mk
+ W8vQDVQB0EtGn9vSzgMNVwYGYuGcx2NEyVo0OfBg7FVk/ffzmCo7ez3NO3XaL5O/wOSR
+ WuVQ8MZGJXHjshOA4vUpw2IF0U07NeSPWDxPCh65sUf4PyuS0pnSt00oovhBAWzXb+lB
+ e4zylc95RcYlGSPVpFjfLXkI/HgWP2gR5e2r+8zdEW1TWdgT3NRMwQyNkl97bayoAwel
+ 3GSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864329; x=1717469129;
+ d=1e100.net; s=20230601; t=1716864332; x=1717469132;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J5jhBOyEYmtoTJBDh000o1EH0VVoye2sH2+Q4KCgR/U=;
- b=w8jnEw46/hfwAiNmIxuyV7xuFGLU7ZwSYLjgBC9jxSjYfrDpyIz+uzMhb03hZuxuEt
- +aTdkWzKs3NyNwcPWTU7rzBQNjz4r+XA5qO6O3RPF2c/F0Fl0cNWx2WQ7gzLvoeITd/k
- I+nQYF9PRIbUbRPb0KoMMuCOsv9I8nwPkJaLgyTB1fPnQbZ5LPSuXLzilIYvVqv4gF6K
- Co+lbRGVYt0D5XUuGdhuEgkOsEWPrHa643nyXxoYkUvHrXltLB1X9zVs5o/HK6UPSjls
- 3Loozt2bp7dhBqVD5FeSqoIZ/TbujfLLsyD1RYj6CncMwRYgmw327JZ5RlHXhxChyXKU
- HrqA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX1MZVGqonqod5Z5gTv0xck7aNhLYHnyZK4EZvEvG79rR+ObZUa1/puTMx85B9cGiXzrFp/0sQP18rnSU3Fc5NHlwqBV6mn
-X-Gm-Message-State: AOJu0YzecSbqJnJ2YzNpzoGk8HsV3PLeMi95ASLrFCy1WdfTJXrUrTzR
- v/uKhYlRkwyJuGmIRIQDcrDT+o3Amt8r9pM7bTExTaQrMq+zhznglsElOg==
-X-Google-Smtp-Source: AGHT+IGMtkHie2+p7yc4Q1tiVjUxxUGzzd2HPR9bp5uQkxDSTAgDpOHkmT8N5DvuF21AuC1VvdYtnA==
-X-Received: by 2002:a17:90a:888:b0:2bd:efc4:a9b with SMTP id
- 98e67ed59e1d1-2bdefc40ad6mr17075822a91.8.1716864329102; 
- Mon, 27 May 2024 19:45:29 -0700 (PDT)
+ bh=b2k2JrhvujZewE6TU0J5JDl6R03TzuPE/F+i9deQBKY=;
+ b=t+YXusN/yh4TlCmpvb3+qLPHA9rVjV+PvPfZxjRUkD6Wlt4trUDMoqmL9wFCLdqOGs
+ wPUvv/zZqvPZLUvSmE7zbovJaW3kUV+y0T/UV5B92ggg7TKnjzladdFmU+EYl4KdhREQ
+ fgED6kjHBsIzhjb+BqUUjTA4OFtNIDY0s8JxmJuZq+g1GLzpT+upy+6e9bWFTv702z6U
+ cvsIhySZDSR41cl+jCVrAD6Rajcd4+VWe2XcThuUzMMoweQFHgsK+y67uJb+jD770XX3
+ doz6EpK+Pn5zrjfjrF36gfZBa/rtdW2fN3eyG8rUiOL2Vc+bVtNMhzTO8t6X+5mGaXSU
+ ghsA==
+X-Gm-Message-State: AOJu0YxpamDCgY7IxmtSgEkzCfSLTiNs7bmtUXNJy6p5v6kvYXGVuW1S
+ wBCyBPvoABA29FY+WUfeq9DC+WY/yeS2eypZI4CL4jO9UvqU5rVukuedhQ==
+X-Google-Smtp-Source: AGHT+IHipy1f+6W3GSLixn+9pEXwaqtvUdyqFVajNwwfuW3zR1wnfGlMOVEmG/V2bglD+qPnM+07cg==
+X-Received: by 2002:a05:6a20:9d92:b0:1ae:4264:a324 with SMTP id
+ adf61e73a8af0-1b212cc77cdmr13293992637.11.1716864331796; 
+ Mon, 27 May 2024 19:45:31 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.26
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:45:28 -0700 (PDT)
+ Mon, 27 May 2024 19:45:31 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Eric DeVolder <eric_devolder@yahoo.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL 27/28] disas/riscv: Decode all of the pmpcfg and pmpaddr CSRs
-Date: Tue, 28 May 2024 12:43:27 +1000
-Message-ID: <20240528024328.246965-28-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Yu-Ming Chang <yumin686@andestech.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 28/28] target/riscv: raise an exception when CSRRS/CSRRC writes
+ a read-only CSR
+Date: Tue, 28 May 2024 12:43:28 +1000
+Message-ID: <20240528024328.246965-29-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,106 +97,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Yu-Ming Chang <yumin686@andestech.com>
 
-Previously we only listed a single pmpcfg CSR and the first 16 pmpaddr
-CSRs. This patch fixes this to list all 16 pmpcfg and all 64 pmpaddr
-CSRs are part of the disassembly.
+Both CSRRS and CSRRC always read the addressed CSR and cause any read side
+effects regardless of rs1 and rd fields. Note that if rs1 specifies a register
+holding a zero value other than x0, the instruction will still attempt to write
+the unmodified value back to the CSR and will cause any attendant side effects.
 
-Reported-by: Eric DeVolder <eric_devolder@yahoo.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Fixes: ea10325917 ("RISC-V Disassembler")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240514051615.330979-1-alistair.francis@wdc.com>
+So if CSRRS or CSRRC tries to write a read-only CSR with rs1 which specifies
+a register holding a zero value, an illegal instruction exception should be
+raised.
+
+Signed-off-by: Yu-Ming Chang <yumin686@andestech.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20240403070823.80897-1-yumin686@andestech.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
+ target/riscv/cpu.h       |  4 ++++
+ target/riscv/csr.c       | 51 ++++++++++++++++++++++++++++++++++++----
+ target/riscv/op_helper.c |  6 ++---
+ 3 files changed, 53 insertions(+), 8 deletions(-)
 
-diff --git a/disas/riscv.c b/disas/riscv.c
-index e236c8b5b7..297cfa2f63 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -2190,7 +2190,22 @@ static const char *csr_name(int csrno)
-     case 0x0383: return "mibound";
-     case 0x0384: return "mdbase";
-     case 0x0385: return "mdbound";
--    case 0x03a0: return "pmpcfg3";
-+    case 0x03a0: return "pmpcfg0";
-+    case 0x03a1: return "pmpcfg1";
-+    case 0x03a2: return "pmpcfg2";
-+    case 0x03a3: return "pmpcfg3";
-+    case 0x03a4: return "pmpcfg4";
-+    case 0x03a5: return "pmpcfg5";
-+    case 0x03a6: return "pmpcfg6";
-+    case 0x03a7: return "pmpcfg7";
-+    case 0x03a8: return "pmpcfg8";
-+    case 0x03a9: return "pmpcfg9";
-+    case 0x03aa: return "pmpcfg10";
-+    case 0x03ab: return "pmpcfg11";
-+    case 0x03ac: return "pmpcfg12";
-+    case 0x03ad: return "pmpcfg13";
-+    case 0x03ae: return "pmpcfg14";
-+    case 0x03af: return "pmpcfg15";
-     case 0x03b0: return "pmpaddr0";
-     case 0x03b1: return "pmpaddr1";
-     case 0x03b2: return "pmpaddr2";
-@@ -2207,6 +2222,54 @@ static const char *csr_name(int csrno)
-     case 0x03bd: return "pmpaddr13";
-     case 0x03be: return "pmpaddr14";
-     case 0x03bf: return "pmpaddr15";
-+    case 0x03c0: return "pmpaddr16";
-+    case 0x03c1: return "pmpaddr17";
-+    case 0x03c2: return "pmpaddr18";
-+    case 0x03c3: return "pmpaddr19";
-+    case 0x03c4: return "pmpaddr20";
-+    case 0x03c5: return "pmpaddr21";
-+    case 0x03c6: return "pmpaddr22";
-+    case 0x03c7: return "pmpaddr23";
-+    case 0x03c8: return "pmpaddr24";
-+    case 0x03c9: return "pmpaddr25";
-+    case 0x03ca: return "pmpaddr26";
-+    case 0x03cb: return "pmpaddr27";
-+    case 0x03cc: return "pmpaddr28";
-+    case 0x03cd: return "pmpaddr29";
-+    case 0x03ce: return "pmpaddr30";
-+    case 0x03cf: return "pmpaddr31";
-+    case 0x03d0: return "pmpaddr32";
-+    case 0x03d1: return "pmpaddr33";
-+    case 0x03d2: return "pmpaddr34";
-+    case 0x03d3: return "pmpaddr35";
-+    case 0x03d4: return "pmpaddr36";
-+    case 0x03d5: return "pmpaddr37";
-+    case 0x03d6: return "pmpaddr38";
-+    case 0x03d7: return "pmpaddr39";
-+    case 0x03d8: return "pmpaddr40";
-+    case 0x03d9: return "pmpaddr41";
-+    case 0x03da: return "pmpaddr42";
-+    case 0x03db: return "pmpaddr43";
-+    case 0x03dc: return "pmpaddr44";
-+    case 0x03dd: return "pmpaddr45";
-+    case 0x03de: return "pmpaddr46";
-+    case 0x03df: return "pmpaddr47";
-+    case 0x03e0: return "pmpaddr48";
-+    case 0x03e1: return "pmpaddr49";
-+    case 0x03e2: return "pmpaddr50";
-+    case 0x03e3: return "pmpaddr51";
-+    case 0x03e4: return "pmpaddr52";
-+    case 0x03e5: return "pmpaddr53";
-+    case 0x03e6: return "pmpaddr54";
-+    case 0x03e7: return "pmpaddr55";
-+    case 0x03e8: return "pmpaddr56";
-+    case 0x03e9: return "pmpaddr57";
-+    case 0x03ea: return "pmpaddr58";
-+    case 0x03eb: return "pmpaddr59";
-+    case 0x03ec: return "pmpaddr60";
-+    case 0x03ed: return "pmpaddr61";
-+    case 0x03ee: return "pmpaddr62";
-+    case 0x03ef: return "pmpaddr63";
-     case 0x0780: return "mtohost";
-     case 0x0781: return "mfromhost";
-     case 0x0782: return "mreset";
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 12d8b5344a..1501868008 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -709,6 +709,8 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+ void riscv_cpu_update_mask(CPURISCVState *env);
+ bool riscv_cpu_is_32bit(RISCVCPU *cpu);
+ 
++RISCVException riscv_csrr(CPURISCVState *env, int csrno,
++                          target_ulong *ret_value);
+ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+                            target_ulong *ret_value,
+                            target_ulong new_value, target_ulong write_mask);
+@@ -741,6 +743,8 @@ typedef RISCVException (*riscv_csr_op_fn)(CPURISCVState *env, int csrno,
+                                           target_ulong new_value,
+                                           target_ulong write_mask);
+ 
++RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
++                               Int128 *ret_value);
+ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+                                 Int128 *ret_value,
+                                 Int128 new_value, Int128 write_mask);
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 58ef7079dc..57f831fedc 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -4322,7 +4322,7 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
+ 
+ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
+                                                int csrno,
+-                                               bool write_mask)
++                                               bool write)
+ {
+     /* check privileges and return RISCV_EXCP_ILLEGAL_INST if check fails */
+     bool read_only = get_field(csrno, 0xC00) == 3;
+@@ -4344,7 +4344,7 @@ static inline RISCVException riscv_csrrw_check(CPURISCVState *env,
+     }
+ 
+     /* read / write check */
+-    if (write_mask && read_only) {
++    if (write && read_only) {
+         return RISCV_EXCP_ILLEGAL_INST;
+     }
+ 
+@@ -4431,11 +4431,22 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++RISCVException riscv_csrr(CPURISCVState *env, int csrno,
++                           target_ulong *ret_value)
++{
++    RISCVException ret = riscv_csrrw_check(env, csrno, false);
++    if (ret != RISCV_EXCP_NONE) {
++        return ret;
++    }
++
++    return riscv_csrrw_do64(env, csrno, ret_value, 0, 0);
++}
++
+ RISCVException riscv_csrrw(CPURISCVState *env, int csrno,
+                            target_ulong *ret_value,
+                            target_ulong new_value, target_ulong write_mask)
+ {
+-    RISCVException ret = riscv_csrrw_check(env, csrno, write_mask);
++    RISCVException ret = riscv_csrrw_check(env, csrno, true);
+     if (ret != RISCV_EXCP_NONE) {
+         return ret;
+     }
+@@ -4483,13 +4494,45 @@ static RISCVException riscv_csrrw_do128(CPURISCVState *env, int csrno,
+     return RISCV_EXCP_NONE;
+ }
+ 
++RISCVException riscv_csrr_i128(CPURISCVState *env, int csrno,
++                               Int128 *ret_value)
++{
++    RISCVException ret;
++
++    ret = riscv_csrrw_check(env, csrno, false);
++    if (ret != RISCV_EXCP_NONE) {
++        return ret;
++    }
++
++    if (csr_ops[csrno].read128) {
++        return riscv_csrrw_do128(env, csrno, ret_value,
++                                 int128_zero(), int128_zero());
++    }
++
++    /*
++     * Fall back to 64-bit version for now, if the 128-bit alternative isn't
++     * at all defined.
++     * Note, some CSRs don't need to extend to MXLEN (64 upper bits non
++     * significant), for those, this fallback is correctly handling the
++     * accesses
++     */
++    target_ulong old_value;
++    ret = riscv_csrrw_do64(env, csrno, &old_value,
++                           (target_ulong)0,
++                           (target_ulong)0);
++    if (ret == RISCV_EXCP_NONE && ret_value) {
++        *ret_value = int128_make64(old_value);
++    }
++    return ret;
++}
++
+ RISCVException riscv_csrrw_i128(CPURISCVState *env, int csrno,
+                                 Int128 *ret_value,
+                                 Int128 new_value, Int128 write_mask)
+ {
+     RISCVException ret;
+ 
+-    ret = riscv_csrrw_check(env, csrno, int128_nz(write_mask));
++    ret = riscv_csrrw_check(env, csrno, true);
+     if (ret != RISCV_EXCP_NONE) {
+         return ret;
+     }
+diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
+index 2baf5bc3ca..84fb2a35e5 100644
+--- a/target/riscv/op_helper.c
++++ b/target/riscv/op_helper.c
+@@ -51,7 +51,7 @@ target_ulong helper_csrr(CPURISCVState *env, int csr)
+     }
+ 
+     target_ulong val = 0;
+-    RISCVException ret = riscv_csrrw(env, csr, &val, 0, 0);
++    RISCVException ret = riscv_csrr(env, csr, &val);
+ 
+     if (ret != RISCV_EXCP_NONE) {
+         riscv_raise_exception(env, ret, GETPC());
+@@ -84,9 +84,7 @@ target_ulong helper_csrrw(CPURISCVState *env, int csr,
+ target_ulong helper_csrr_i128(CPURISCVState *env, int csr)
+ {
+     Int128 rv = int128_zero();
+-    RISCVException ret = riscv_csrrw_i128(env, csr, &rv,
+-                                          int128_zero(),
+-                                          int128_zero());
++    RISCVException ret = riscv_csrr_i128(env, csr, &rv);
+ 
+     if (ret != RISCV_EXCP_NONE) {
+         riscv_raise_exception(env, ret, GETPC());
 -- 
 2.45.1
 
