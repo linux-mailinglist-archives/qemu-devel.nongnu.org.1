@@ -2,147 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420C28D14B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CA88D1473
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBqdb-0006gW-3u; Tue, 28 May 2024 02:48:47 -0400
+	id 1sBqOs-0005DT-Vj; Tue, 28 May 2024 02:33:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqdZ-0006es-65
- for qemu-devel@nongnu.org; Tue, 28 May 2024 02:48:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBqOp-0005Cl-1f
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 02:33:31 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sBqdX-0001YN-Kr
- for qemu-devel@nongnu.org; Tue, 28 May 2024 02:48:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716878923;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=OUudq/bNpbLZZfwleUaRyTCx+BeeWwxLVUrh5W24O2Y=;
- b=eoVafpYuW7T6zvoE3FizCHCpau0bWrulmBgZAc66Dmi1BwNxo1HHEwDJf2PU3V6s1DFVFe
- 2rpj1yldf0/85EcYuWDU4hmMKj5Nklb51MRy0gfCxHeiE9qPvpN03HRhluDfHnUDvxxQrf
- 593fT7zW1IlX51FIyhGEVE68HR3Fgw0=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-12-i6vmHoWmP9uZfnzHEibJUg-1; Tue, 28 May 2024 02:48:39 -0400
-X-MC-Unique: i6vmHoWmP9uZfnzHEibJUg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-529aacd68dfso421202e87.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 23:48:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716878918; x=1717483718;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OUudq/bNpbLZZfwleUaRyTCx+BeeWwxLVUrh5W24O2Y=;
- b=LvoAHPQKgXp7TFLGitwTvZM16brBde81JoLylBFv8dJiRZ6Yf9clI8PWDUFsxXvhkS
- cuoGNQCR4E+CCS5WujbkHVGiP8ItJl/3wyixp5DfI6jHNvWOm7XWykMsqlf+5lWZ0n8G
- t+1O1qcoZ0TaPpzOqv8Ygd52+EYDi1JLt31u4ZMNN4wH5xgPehy4IFevSkQUCkC3ALy3
- rpu6bg3vRigAsr9lCo7thx6UNK3R9+qdfAs1P1N7oXGXgIIBL58C853ZZCKyNcSD7uYO
- OK95MoNmVNefECr3r0OQ1LQLqK+bHP9uVHdSGIMe7CXNKM8sU+q5tteRNl9qE4ECM0c3
- XMwA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJlsRKUZDaQ+vE77byb67YA6qIlUYFSEbQL4ARgjnFSqbRGieMQ4zQ6iGPMdnim2L4lT2N5t9KRG20My1FWJiZpsSMal0=
-X-Gm-Message-State: AOJu0YxnB3+4kAMgSS/CS6L1fiIHPZglEBnv1eFBWBbeeEwTUrhlSfgi
- 2vUcmYa683Q559e6nKKnJmQOzNsjRgapmYOd6zOkD5zvmNXmwqv45sps/tLma0JbldfVim1haM7
- Y9/Pett3qpf2WeHn0Ga3EJAtP9Bhyrvm09pgW0KtaPB11mt8OFQIj
-X-Received: by 2002:a19:760f:0:b0:520:36ea:9375 with SMTP id
- 2adb3069b0e04-5296736ba45mr8289945e87.43.1716878918223; 
- Mon, 27 May 2024 23:48:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5h4LxJi4HMr4TEvc1nIvVtgbfRfYlO8HtF36JqjRTTYEVy94b1TDhtWFbq7ibF4JMwzC0OA==
-X-Received: by 2002:a19:760f:0:b0:520:36ea:9375 with SMTP id
- 2adb3069b0e04-5296736ba45mr8289926e87.43.1716878917821; 
- Mon, 27 May 2024 23:48:37 -0700 (PDT)
-Received: from [192.168.0.4] (ip-109-43-179-186.web.vodafone.de.
- [109.43.179.186]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c9377d8sm576665266b.55.2024.05.27.23.48.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 23:48:37 -0700 (PDT)
-Message-ID: <8939523c-ce4f-490a-86b4-21c0ba753d4a@redhat.com>
-Date: Tue, 28 May 2024 08:48:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] tests/vm: update centos.aarch64 image to 9
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, Beraldo Leal <bleal@redhat.com>,
- qemu-s390x@nongnu.org, John Snow <jsnow@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sBqOi-00079W-SV
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 02:33:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716878005; x=1748414005;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=SlQgWHgTN11nJLO6E8qeChyAHBxtKVmNeV46RQXK/7E=;
+ b=DF3KTwJPd2o80LGcI6ZOGF75f1rBjxQmGz2vEC39ltjhElFPfmK+XhpO
+ fxpfR6VRXsKbcYFYp29RZJ2v9pl4Yi7lmXBNgJ2LNTbI/cP00vvKgsMxO
+ 8VVqRGvYkIc1T8msyFc0PYbZNVXEhqJut4jMJOYnx0UrDkDyy6436sJKe
+ sZTKK0NV1LldkRPmGVG7Tk6JVQM5fqvFWcHZWxNtrVmyFISkMPbROahet
+ zlHUUrSKvBVKoGTOYmtFXqkbA2j6MPq/0JaACiUUuKLR1d2KosCMcpXDo
+ OpHp5rUBbOyzebaFUz10e4B2iJE455baEPfu9p1pMOSckxiqKuGSZU/An A==;
+X-CSE-ConnectionGUID: 150PUv1NTRy57pUHDuxEDQ==
+X-CSE-MsgGUID: 2KF98gDgTFywqVrEAMzY7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="17038240"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="17038240"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 23:33:22 -0700
+X-CSE-ConnectionGUID: lqo6SHqiTEaXr4Km7iNx2A==
+X-CSE-MsgGUID: UIFzbFo4SzK/z2hGtHBZkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39767110"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa003.jf.intel.com with ESMTP; 27 May 2024 23:33:20 -0700
+Date: Tue, 28 May 2024 14:48:42 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Joel Stanley <joel@jms.id.au>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Aurelien Jarno <aurelien@aurel32.net>, Cleber Rosa <crosa@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-References: <20240521125314.1255403-1-alex.bennee@linaro.org>
- <20240521125314.1255403-4-alex.bennee@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240521125314.1255403-4-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
+Message-ID: <ZlV+Su4hziCFymVt@intel.com>
+References: <20240527081421.2258624-1-zhao1.liu@intel.com>
+ <20240527195944.GA913874@fedora.redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20240527195944.GA913874@fedora.redhat.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ MIME_CHARSET_FARAWAY=2.45, RCVD_IN_DNSWL_MED=-2.3, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -158,16 +88,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/05/2024 14.53, Alex Benn√©e wrote:
-> As Centos Stream 8 goes out of support we need to update. To do this
-> powertools is replaced by crb and we don't over specify the python3 we
-> want.
-> 
-> Signed-off-by: Alex Benn√©e <alex.bennee@linaro.org>
-> ---
->   tests/vm/centos.aarch64 | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+Hi Stefan,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+On Mon, May 27, 2024 at 03:59:44PM -0400, Stefan Hajnoczi wrote:
+> Date: Mon, 27 May 2024 15:59:44 -0400
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> Subject: Re: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
+> 
+> On Mon, May 27, 2024 at 04:14:15PM +0800, Zhao Liu wrote:
+> > Hi maintainers and list,
+> > 
+> > This RFC series attempts to re-implement simpletrace.py with Rust, which
+> > is the 1st task of Paolo's GSoC 2024 proposal.
+> > 
+> > There are two motivations for this work:
+> > 1. This is an open chance to discuss how to integrate Rust into QEMU.
+> > 2. Rust delivers faster parsing.
+> > 
+> > 
+> > Introduction
+> > ============
+> > 
+> > Code framework
+> > --------------
+> > 
+> > I choose "cargo" to organize the code, because the current
+> > implementation depends on external crates (Rust's library), such as
+> > "backtrace" for getting frameinfo, "clap" for parsing the cli, "rex" for
+> > regular matching, and so on. (Meson's support for external crates is
+> > still incomplete. [2])
+> > 
+> > The simpletrace-rust created in this series is not yet integrated into
+> > the QEMU compilation chain, so it can only be compiled independently, e.g.
+> > under ./scripts/simpletrace/, compile it be:
+> > 
+> >     cargo build --release
+> 
+> Please make sure it's built by .gitlab-ci.d/ so that the continuous
+> integration system prevents bitrot. You can add a job that runs the
+> cargo build.
+
+Thanks! I'll do this.
+
+> > 
+> > The code tree for the entire simpletrace-rust is as follows:
+> > 
+> > $ script/simpletrace-rust .
+> > .
+> > ©¿©§©§ Cargo.toml
+> > ©∏©§©§ src
+> >     ©∏©§©§ main.rs   // The simpletrace logic (similar to simpletrace.py).
+> >     ©∏©§©§ trace.rs  // The Argument and Event abstraction (refer to
+> >                   // tracetool/__init__.py).
+> > 
+> > My question about meson v.s. cargo, I put it at the end of the cover
+> > letter (the section "Opens on Rust Support").
+> > 
+> > The following two sections are lessons I've learned from this Rust
+> > practice.
+> > 
+> > 
+> > Performance
+> > -----------
+> > 
+> > I did the performance comparison using the rust-simpletrace prototype with
+> > the python one:
+> > 
+> > * On the i7-10700 CPU @ 2.90GHz machine, parsing and outputting a 35M
+> > trace binary file for 10 times on each item:
+> > 
+> >                       AVE (ms)       Rust v.s. Python
+> > Rust   (stdout)       12687.16            114.46%
+> > Python (stdout)       14521.85
+> > 
+> > Rust   (file)          1422.44            264.99%
+> > Python (file)          3769.37
+> > 
+> > - The "stdout" lines represent output to the screen.
+> > - The "file" lines represent output to a file (via "> file").
+> > 
+> > This Rust version contains some optimizations (including print, regular
+> > matching, etc.), but there should be plenty of room for optimization.
+> > 
+> > The current performance bottleneck is the reading binary trace file,
+> > since I am parsing headers and event payloads one after the other, so
+> > that the IO read overhead accounts for 33%, which can be further
+> > optimized in the future.
+> 
+> Performance will become more important when large amounts of TCG data is
+> captured, as described in the project idea:
+> https://wiki.qemu.org/Internships/ProjectIdeas/TCGBinaryTracing
+> 
+> While I can't think of a time in the past where simpletrace.py's
+> performance bothered me, improving performance is still welcome. Just
+> don't spend too much time on performance (and making the code more
+> complex) unless there is a real need.
+
+Yes, I agree that it shouldn't be over-optimized.
+
+The logic in the current Rust version is pretty much a carbon copy of
+the Python version, without additional complex logic introduced, but the
+improvements in x2.6 were obtained by optimizing IO:
+
+* reading the event configuration file, where I called the buffered
+  interface,
+* and the output formatted trace log, which I output all via std_out.lock()
+  followed by write_all().
+
+So, just the simple tweak of the interfaces brings much benefits. :-)
+
+> > Security
+> > --------
+> > 
+> > This is an example.
+> > 
+> > Rust is very strict about type-checking, and it found timestamp reversal
+> > issue in simpletrace-rust [3] (sorry, haven't gotten around to digging
+> > deeper with more time)...in this RFC, I workingaround it by allowing
+> > negative values. And the python version, just silently covered this
+> > issue up.
+> >
+> > Opens on Rust Support
+> > =====================
+> > 
+> > Meson v.s. Cargo
+> > ----------------
+> > 
+> > The first question is whether all Rust code (including under scripts)
+> > must be integrated into meson?
+> > 
+> > If so, because of [2] then I have to discard the external crates and
+> > build some more Rust wheels of my own to replace the previous external
+> > crates.
+> > 
+> > For the main part of the QEMU code, I think the answer must be Yes, but
+> > for the tools in the scripts directory, would it be possible to allow
+> > the use of cargo to build small tools/program for flexibility and
+> > migrate to meson later (as meson's support for rust becomes more
+> > mature)?
+> 
+> I have not seen a satisfying way to natively build Rust code using
+> meson. I remember reading about a tool that converts Cargo.toml files to
+> meson wrap files or something similar. That still doesn't feel great
+> because upstream works with Cargo and duplicating build information in
+> meson is a drag.
+> 
+> Calling cargo from meson is not ideal either, but it works and avoids
+> duplicating build information. This is the approach I would use for now
+> unless someone can point to an example of native Rust support in meson
+> that is clean.
+> 
+> Here is how libblkio calls cargo from meson:
+> https://gitlab.com/libblkio/libblkio/-/blob/main/src/meson.build
+> https://gitlab.com/libblkio/libblkio/-/blob/main/src/cargo-build.sh
+
+Many thanks! This is a good example and I'll try to build similarly to
+it.
+
+> > 
+> > 
+> > External crates
+> > ---------------
+> > 
+> > This is an additional question that naturally follows from the above
+> > question, do we have requirements for Rust's external crate? Is only std
+> > allowed?
+> 
+> There is no policy. My suggestion:
+> 
+> If you need a third-party crate then it's okay to use it, but try to
+> minimize dependencies. Avoid adding dependening for niceties that are
+> not strictly needed. Third-party crates are a burden for package
+> maintainers and anyone building from source. They increase the risk that
+> the code will fail to build. They can also be a security risk.
+
+Thanks for the suggestion, that's clear to me, I'll try to control the
+third party dependencies.
+
+> > 
+> > Welcome your feedback!
+> 
+> It would be easier to give feedback if you implement some examples of
+> TCG binary tracing before rewriting simpletrace.py. It's unclear to me
+> why simpletrace needs to be rewritten at this point. If you are
+> extending the simpletrace file format in ways that are not suitable for
+> Python or can demonstrate that Python performance is a problem, then
+> focussing on a Rust simpletrace implementation is more convincing.
+> 
+> Could you use simpletrace.py to develop TCG binary tracing first?
+
+Yes, I can. :-)
+
+Rewriting in Rust does sound duplicative, but I wonder if this could be
+viewed as an open opportunity to add Rust support for QEMU, looking at
+the scripts directory to start exploring Rust support/build would be
+a relatively easy place to start.
+
+I think the exploration of Rust's build of the simpletrace tool under
+scripts parts can help with subsequent work on supporting Rust in other
+QEMU core parts.
+
+From this point, may I ask your opinion?
+
+Maybe later, Rust-simpletrace and python-simpletrace can differ, e.g.
+the former goes for performance and the latter for scalability.
+
+Thanks,
+Zhao
+
 
 
