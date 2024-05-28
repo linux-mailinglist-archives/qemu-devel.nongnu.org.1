@@ -2,61 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8754C8D14D9
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17C18D14F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:09:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBqrJ-0004Wx-RM; Tue, 28 May 2024 03:02:57 -0400
+	id 1sBqv5-0007Nx-EX; Tue, 28 May 2024 03:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=HxTW=M7=kaod.org=clg@ozlabs.org>)
- id 1sBqrG-0004Vi-2B; Tue, 28 May 2024 03:02:55 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3])
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sBqun-0007AN-Ai; Tue, 28 May 2024 03:06:33 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=HxTW=M7=kaod.org=clg@ozlabs.org>)
- id 1sBqrD-00046x-7Z; Tue, 28 May 2024 03:02:53 -0400
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4VpNkY3zhGz4x2L;
- Tue, 28 May 2024 17:02:45 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4VpNkS0820z4wcR;
- Tue, 28 May 2024 17:02:39 +1000 (AEST)
-Message-ID: <41e59fa6-c74d-47c7-ba01-690cfaf7f5f1@kaod.org>
-Date: Tue, 28 May 2024 09:02:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [SPAM] Re: [PATCH v4 09/16] aspeed/smc: Add AST2700 support
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jamin Lin <jamin_lin@aspeedtech.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Alistair Francis <alistair@alistair23.me>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
- <qemu-arm@nongnu.org>, "open list:All patches CC here"
- <qemu-devel@nongnu.org>
-Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
-References: <20240527080231.1576609-1-jamin_lin@aspeedtech.com>
- <20240527080231.1576609-10-jamin_lin@aspeedtech.com>
- <b641018c-e906-452b-8072-1b46f141808b@linaro.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <b641018c-e906-452b-8072-1b46f141808b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <adityag@linux.ibm.com>)
+ id 1sBquc-0004k4-8s; Tue, 28 May 2024 03:06:28 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44S6Ad0U004346; Tue, 28 May 2024 07:05:26 GMT
+DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
+ _d=3Dibm.com; _h=3Dcc?=
+ =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:message-id:mi?=
+ =?UTF-8?Q?me-version:subject:to;_s=3Dpp1;_bh=3DA01WiibRNdODy+rGo32jGVjWL9?=
+ =?UTF-8?Q?OUEuZ+a+uyT/wwEcw=3D;_b=3DY3i/iPMj9RmuQB5XIJlDAuaNcThmR1K3R6M7M?=
+ =?UTF-8?Q?ggdKlHSiS/jEt5DvisB8zlImA/VcIoJ_vHshULtgip/W7yTmUTgw8Lad4bKD7DW?=
+ =?UTF-8?Q?Ei57cMrW4sFfDIxFMXcLl1N4XeZGO4P3U2jl3_0G5sMbHdSxJPi0W0JOcyBaXgp?=
+ =?UTF-8?Q?O1FqMAMCQDXJuMYCmwMZmPnZk7tLaBUtqFW+x7gAU79_s7HLzq9FBrdvb2QVpCK?=
+ =?UTF-8?Q?rBOVlAdJr37PUxdvxnH8Kw1DZkag5Au45H6h9rwHQLHSoxIaf_vvxJMyN7oc58p?=
+ =?UTF-8?Q?sGvLFuLuqc0vKjIdIhsMUfb23Ol/nuCAZqNp3xhOLD2j02+hZl2YHT1_hg=3D?=
+ =?UTF-8?Q?=3D_?=
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd971r6xe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 07:05:25 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44S75O2T025644;
+ Tue, 28 May 2024 07:05:24 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd971r6xc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 07:05:24 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44S4ab0w006716; Tue, 28 May 2024 07:05:24 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ybtatdqf4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 May 2024 07:05:23 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 44S75IOP33030898
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 May 2024 07:05:20 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2843320043;
+ Tue, 28 May 2024 07:05:18 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6971820063;
+ Tue, 28 May 2024 07:05:16 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.in.ibm.com (unknown
+ [9.109.199.72]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 28 May 2024 07:05:16 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
+Subject: [PATCH v4 00/11] Power11 support for QEMU
+Date: Tue, 28 May 2024 12:35:04 +0530
+Message-ID: <20240528070515.117160-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.45.1
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oedztlpwJyUkCppgv-ZdjgIk5WJJmNwS
+X-Proofpoint-GUID: -8J4ReOSp1MooaXIqxS1TWqfsF6eKCBN
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=HxTW=M7=kaod.org=clg@ozlabs.org; helo=mail.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-28_04,2024-05-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ phishscore=0 mlxscore=0 bulkscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 suspectscore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405280050
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=adityag@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,57 +114,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/27/24 17:58, Philippe Mathieu-Daudé wrote:
-> Hi,
-> 
-> On 27/5/24 10:02, Jamin Lin wrote:
->> AST2700 fmc/spi controller's address decoding unit is 64KB
->> and only bits [31:16] are used for decoding. Introduce seg_to_reg
->> and reg_to_seg handlers for ast2700 fmc/spi controller.
->> In addition, adds ast2700 fmc, spi0, spi1, and spi2 class init handler.
->>
->> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
->> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
->> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->> ---
->>   hw/ssi/aspeed_smc.c | 222 +++++++++++++++++++++++++++++++++++++++++++-
->>   1 file changed, 220 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
->> index df0c63469c..b4006c8339 100644
->> --- a/hw/ssi/aspeed_smc.c
->> +++ b/hw/ssi/aspeed_smc.c
->> @@ -185,7 +185,7 @@
->>    *   0: 4 bytes
->>    *   0x1FFFFFC: 32M bytes
->>    *
->> - * DMA length is from 1 byte to 32MB (AST2600, AST10x0)
->> + * DMA length is from 1 byte to 32MB (AST2600, AST10x0 and AST2700)
->>    *   0: 1 byte
->>    *   0x1FFFFFF: 32M bytes
->>    */
->> @@ -670,7 +670,7 @@ static const MemoryRegionOps aspeed_smc_flash_ops = {
->>       .endianness = DEVICE_LITTLE_ENDIAN,
->>       .valid = {
->>           .min_access_size = 1,
->> -        .max_access_size = 4,
->> +        .max_access_size = 8,
-> 
-> Is this a bugfix? If so, please use a separate patch. Otherwise
-> please mention why it is OK to widen access for AST2600 & AST10x0.
+Overview
+============
 
-Ah I missed that. I wonder how we could set different access width
-tough on the model ?
+Add support for Power11 pseries and powernv machine types, to emulate VMs
+running on Power11.
 
-Should we allocate a MemoryRegionOps in the realize() handler and set
-the width depending on the SoC ?
+As Power11 core is same as Power10, hence much of the code has been reused from
+Power10.
+
+Power11 was added in Linux in:
+  commit c2ed087ed35c ("powerpc: Add Power11 architected and raw mode")
+
+Git Tree for Testing
+====================
+
+QEMU: https://github.com/adi-g15-ibm/qemu/tree/p11-v3
+
+Has been tested with following cases:
+* '-M pseries' / '-M pseries -cpu Power11'
+* '-M powernv' / '-M powernv10' / '-M powernv11'
+* '-smp' option tested
+* with compat mode: 'max-cpu-compat=power10' and 'max-cpu-compat=power9'
+* with/without device 'virtio-scsi-pci'
+* with/without -kernel and -drive with qcow_file
+
+skiboot with Power11 support: https://github.com/maheshsal/skiboot/tree/upstream_power11
+
+Linux with Power11 support: https://github.com/torvalds/linux, since v6.9-rc1
+
+Note: This patch series does not add tests as of now, and will be done as
+soon as skiboot support for Power11 gets merged, and op-build adds a
+release for Power11
+
+Changelog
+=========
+v4:
+  + patch #5: fix memory leak in pnv_chip_power10_quad_realize
+  - no change in other patches
+
+v3:
+  + patch #1: version power11 as power11_v2.0
+  + patch #2: split target hw/pseries code into patch #2
+  + patch #3,#4: fix regression due to Power10 and Power11 having same PCR
+  + patch #5: create pnv_chip_power11_dt_populate and split pnv_chip_power10_common_realize as per review
+  + patch #6-#11: no change
+  - remove commit to make Power11 as default
+
+v2:
+  + split powernv patch into homer,lpc,occ,psi,sbe
+  + reduce code duplication by reusing power10 code
+  + make power11 as default
+  + rebase on qemu upstream/master
+  + add more information in commit descriptions
+  + update docs
+  + update skiboot.lid
 
 
-Thanks,
+Aditya Gupta (11):
+  ppc: Add Power11 DD2.0 processor
+  ppc/pseries: Add Power11 cpu type
+  target/ppc: Introduce 'PowerPCCPUClass::logical_pvr'
+  target/ppc: Fix regression due to Power10 and Power11 having same PCR
+  ppc/pnv: Add a Power11 Pnv11Chip, and a Power11 Machine
+  ppc/pnv: Add HOMER for POWER11
+  ppc/pnv: Add a LPC controller for POWER11
+  ppc/pnv: Add OCC for Power11
+  ppc/pnv: Add a PSI bridge model for Power11
+  ppc/pnv: Add SBE model for Power11
+  ppc/pnv: Update skiboot.lid to support Power11
 
-C.
+ docs/system/ppc/powernv.rst |   9 +--
+ docs/system/ppc/pseries.rst |   6 +-
+ hw/ppc/pnv.c                | 120 ++++++++++++++++++++++++++++++++++--
+ hw/ppc/pnv_core.c           |  11 ++++
+ hw/ppc/pnv_homer.c          |   8 +++
+ hw/ppc/pnv_lpc.c            |  14 +++++
+ hw/ppc/pnv_occ.c            |  14 +++++
+ hw/ppc/pnv_psi.c            |  24 ++++++++
+ hw/ppc/pnv_sbe.c            |  15 +++++
+ hw/ppc/spapr_cpu_core.c     |   1 +
+ include/hw/ppc/pnv.h        |   5 ++
+ include/hw/ppc/pnv_chip.h   |   7 +++
+ include/hw/ppc/pnv_core.h   |   1 +
+ include/hw/ppc/pnv_homer.h  |   3 +
+ include/hw/ppc/pnv_lpc.h    |   4 ++
+ include/hw/ppc/pnv_occ.h    |   2 +
+ include/hw/ppc/pnv_psi.h    |   2 +
+ include/hw/ppc/pnv_sbe.h    |   2 +
+ pc-bios/skiboot.lid         | Bin 2527328 -> 2527328 bytes
+ target/ppc/compat.c         |  11 ++++
+ target/ppc/cpu-models.c     |   3 +
+ target/ppc/cpu-models.h     |   3 +
+ target/ppc/cpu.h            |   1 +
+ target/ppc/cpu_init.c       | 107 ++++++++++++++++++++++++++++++++
+ 24 files changed, 362 insertions(+), 11 deletions(-)
 
-
-
+-- 
+2.45.1
 
 
