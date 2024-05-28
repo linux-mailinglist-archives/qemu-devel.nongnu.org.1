@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EC88D1E25
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E17898D1E32
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:13:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUi-0001VT-5W; Tue, 28 May 2024 10:08:04 -0400
+	id 1sBxUh-0001VS-TD; Tue, 28 May 2024 10:08:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUf-0001Ts-7R
+ id 1sBxUf-0001UC-Gz
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:01 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUc-00070A-FA
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:00 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-351da5838fcso810467f8f.1
+ id 1sBxUc-00070E-Oi
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:01 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-354de97586cso1058701f8f.0
  for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:07:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716905277; x=1717510077; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AsQRQeKjgMaSSmYepAKdEFvTM+lwKQ9eFt3DVA5Soas=;
- b=kI5ggoQj2nP6FxdUW0bGZ9XzdctSvs8aV1H1+IqyY1ElSwQnqwcr0lq1VHtrIdndOU
- TOydKExB68kFUL9mlZd+Sg1co1FOmj9doZtPw3CxCOpvgeHJqhgQs5TAdo7dS6ooJoF6
- DNvLkoYHoEGgfs5+TkQ2SQ6G6BK+X8ZX7X3NC+kn9Eqg4MT/998CbKc68er+RRkE/pNc
- WR/gguHGyIr4atKpbIMVlxEBWfyeMFavOCO0ZSBWDmob25D/gBGpk4A8Gg8bzPOv50lZ
- PXcszROAgU8Q297b1R5jqVm/uwixpEZIvjK4qtN3UQ91HDd/G1joN5xag1Js9P+HhLow
- 3QFA==
+ :reply-to; bh=8YxNpQoelVW24RPVvumPTEVnZuR0kkw8zkh8/F6BNsc=;
+ b=tW2kQxZ8FlbaRJMHd7aUCVmAeK/yH128bPt5Ry5fHIeivEUFCoKwO1AgWqU92IBaSM
+ u7akjZdFVKXpml8a3ID2xEFsyK7i3BHMjPirIz40xqLZc2G5l+QHIaofLyOa5/nol3Pp
+ ssupgT484k43JC0/5aQIcRdsVde0Vlc6iLMIJtIORhPfEsToAX6ww3fbNefea+a/TqNe
+ Cft/VBIjgdIp1YwYk6bUmhgQjqIgNSyLDLRwU3VmiHnMYjMEpKSN2WzjS4Dq7V2rAFXr
+ j1E8mPuyF/WKpYpgLYDHb7e+hbHZY/uvuIuuEkM+VFK3X+mRueTwQEwFCneZB5FcgzKL
+ 8Taw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716905277; x=1717510077;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AsQRQeKjgMaSSmYepAKdEFvTM+lwKQ9eFt3DVA5Soas=;
- b=PQfYb++MzOtTQvHeVal//o62NEDV/sfrcxX0RU/gBU/BrlenzJDl+/hDTYkAIlOQyZ
- Ubt7nglr27U160JWgeRCh5DxvYdcU6/yFzKj2L4BOBGJnPdqMzr2XuIkDDWqSp4iv0CK
- 8gt/VE+trEd2RICKPQ7aEiTEqnrS5ZHpNkfG0Uz/DDioFQHXskm9PzA+wh/pHtjUUFit
- DAihZxPr5b3067hGGc5oCR53VYP/QPb9xKTu8icddGnY3t4PfqR13/pACOSASIQ5aO+D
- tALkD1JDE62rGHqfiQI0KVeyucWR1Fy3uBKPO5ZZazgUZr9QQ3eGpuEnO+kz6VbZijQn
- r8bQ==
-X-Gm-Message-State: AOJu0YzQiQ28uDaVNYGdruL6VgeVsKe/zJCsE3ImCWikI/1ay+teQyM8
- 9HMtuy3XS5oriHeXhaCuaa7XqmZ2TAPdRsVpkGRtZrjLNdAYqpZ2zip106HH/SBGC+ONI7kffGu
- i
-X-Google-Smtp-Source: AGHT+IGObDU/9tlRDrCmdPRw4PtsxoyjrxRN09hGnbXhAYtT466X9qsNLnxuPxnohZ4z/TsULLo4/w==
-X-Received: by 2002:a5d:4f8b:0:b0:355:2c1:cbba with SMTP id
- ffacd0b85a97d-3552217f5c2mr8805791f8f.16.1716905276615; 
- Tue, 28 May 2024 07:07:56 -0700 (PDT)
+ bh=8YxNpQoelVW24RPVvumPTEVnZuR0kkw8zkh8/F6BNsc=;
+ b=qAs2Nr9gA4J8qF0/E2Nca3MA8IV+sPWMDWB59r0eTMkt1tZhzVna5+NTFH4bXw1ZtH
+ AgmIT8ZhTvoScoY7FilpyNI2/dY/3j2ZZ7zdZTzLZh/4i5F7Y/uKsBk2Yt78JqjiwxxE
+ my+inbWp7oBgy2UamTByHB52H+c+2K+3sPt58dnEiji6jNE05XF+/+f/J1SYIOwU/BqB
+ vq5SRBXSVknCtwv+tgqAgKR12ain1hN2IqokC8L3ZqegeRD/wMOEPVk9GLr+Aocw1seE
+ wiqgpxAOrOLrtaSQWOlm8ba8XeYCD0Nu478K6K5ndC1GSzQEChr0Zx4f+p4xhIe0PU3v
+ +t+Q==
+X-Gm-Message-State: AOJu0Ywn9gxLExVSoHzX5if+kVKwYoUwR8ptVW7j594gLprqjw+GZros
+ 2tViGA3bxszlH2cuf4F8wYG4+O8ayPxCzVeDPrn2Y4DXVO0JXJHBkJ1WjFFVOJie3b/5WwmR41m
+ H
+X-Google-Smtp-Source: AGHT+IGiWhaKF9NHZaRtZNOVVIXDJAqZssbClwvcRJWMLx7sLCFsNghYei5BEvLC0YWCHWlS2/g80g==
+X-Received: by 2002:a05:6000:1449:b0:358:4af8:b76e with SMTP id
+ ffacd0b85a97d-3584af8b799mr5259166f8f.62.1716905277154; 
+ Tue, 28 May 2024 07:07:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.56
@@ -59,23 +59,25 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 28 May 2024 07:07:56 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/42] xlnx_dpdma: fix descriptor endianness bug
-Date: Tue, 28 May 2024 15:07:12 +0100
-Message-Id: <20240528140753.3620597-2-peter.maydell@linaro.org>
+Subject: [PULL 02/42] hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug
+ System registers
+Date: Tue, 28 May 2024 15:07:13 +0100
+Message-Id: <20240528140753.3620597-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,120 +93,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Zenghui Yu <zenghui.yu@linux.dev>
 
-Add xlnx_dpdma_read_descriptor() and
-xlnx_dpdma_write_descriptor() functions.
-xlnx_dpdma_read_descriptor() combines reading a
-descriptor from desc_addr by calling dma_memory_read()
-and swapping the desc fields from guest memory order
-to host memory order. xlnx_dpdma_write_descriptor()
-performs similar actions when writing a descriptor.
+We wrongly encoded ID_AA64PFR1_EL1 using {3,0,0,4,2} in hvf_sreg_match[] so
+we fail to get the expected ARMCPRegInfo from cp_regs hash table with the
+wrong key.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix it with the correct encoding {3,0,0,4,1}. With that fixed, the Linux
+guest can properly detect FEAT_SSBS2 on my M1 HW.
 
-Fixes: d3c6369a96 ("introduce xlnx-dpdma")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-[PMM: tweaked indent, dropped behaviour change for write-failure case]
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+All DBG{B,W}{V,C}R_EL1 registers are also wrongly encoded with op0 == 14.
+It happens to work because HVF_SYSREG(CRn, CRm, 14, op1, op2) equals to
+HVF_SYSREG(CRn, CRm, 2, op1, op2), by definition. But we shouldn't rely on
+it.
+
+Cc: qemu-stable@nongnu.org
+Fixes: a1477da3ddeb ("hvf: Add Apple Silicon support")
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+Reviewed-by: Alexander Graf <agraf@csgraf.de>
+Message-id: 20240503153453.54389-1-zenghui.yu@linux.dev
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/dma/xlnx_dpdma.c | 68 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 64 insertions(+), 4 deletions(-)
+ target/arm/hvf/hvf.c | 130 +++++++++++++++++++++----------------------
+ 1 file changed, 65 insertions(+), 65 deletions(-)
 
-diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
-index 530717d1885..dde4aeca401 100644
---- a/hw/dma/xlnx_dpdma.c
-+++ b/hw/dma/xlnx_dpdma.c
-@@ -614,6 +614,65 @@ static void xlnx_dpdma_register_types(void)
-     type_register_static(&xlnx_dpdma_info);
- }
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 08d0757438c..45e2218be58 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -396,85 +396,85 @@ struct hvf_sreg_match {
+ };
  
-+static MemTxResult xlnx_dpdma_read_descriptor(XlnxDPDMAState *s,
-+                                              uint64_t desc_addr,
-+                                              DPDMADescriptor *desc)
-+{
-+    MemTxResult res = dma_memory_read(&address_space_memory, desc_addr,
-+                                      &desc, sizeof(DPDMADescriptor),
-+                                      MEMTXATTRS_UNSPECIFIED);
-+    if (res) {
-+        return res;
-+    }
-+
-+    /* Convert from LE into host endianness.  */
-+    desc->control = le32_to_cpu(desc->control);
-+    desc->descriptor_id = le32_to_cpu(desc->descriptor_id);
-+    desc->xfer_size = le32_to_cpu(desc->xfer_size);
-+    desc->line_size_stride = le32_to_cpu(desc->line_size_stride);
-+    desc->timestamp_lsb = le32_to_cpu(desc->timestamp_lsb);
-+    desc->timestamp_msb = le32_to_cpu(desc->timestamp_msb);
-+    desc->address_extension = le32_to_cpu(desc->address_extension);
-+    desc->next_descriptor = le32_to_cpu(desc->next_descriptor);
-+    desc->source_address = le32_to_cpu(desc->source_address);
-+    desc->address_extension_23 = le32_to_cpu(desc->address_extension_23);
-+    desc->address_extension_45 = le32_to_cpu(desc->address_extension_45);
-+    desc->source_address2 = le32_to_cpu(desc->source_address2);
-+    desc->source_address3 = le32_to_cpu(desc->source_address3);
-+    desc->source_address4 = le32_to_cpu(desc->source_address4);
-+    desc->source_address5 = le32_to_cpu(desc->source_address5);
-+    desc->crc = le32_to_cpu(desc->crc);
-+
-+    return res;
-+}
-+
-+static MemTxResult xlnx_dpdma_write_descriptor(uint64_t desc_addr,
-+                                               DPDMADescriptor *desc)
-+{
-+    DPDMADescriptor tmp_desc = *desc;
-+
-+    /* Convert from host endianness into LE.  */
-+    tmp_desc.control = cpu_to_le32(tmp_desc.control);
-+    tmp_desc.descriptor_id = cpu_to_le32(tmp_desc.descriptor_id);
-+    tmp_desc.xfer_size = cpu_to_le32(tmp_desc.xfer_size);
-+    tmp_desc.line_size_stride = cpu_to_le32(tmp_desc.line_size_stride);
-+    tmp_desc.timestamp_lsb = cpu_to_le32(tmp_desc.timestamp_lsb);
-+    tmp_desc.timestamp_msb = cpu_to_le32(tmp_desc.timestamp_msb);
-+    tmp_desc.address_extension = cpu_to_le32(tmp_desc.address_extension);
-+    tmp_desc.next_descriptor = cpu_to_le32(tmp_desc.next_descriptor);
-+    tmp_desc.source_address = cpu_to_le32(tmp_desc.source_address);
-+    tmp_desc.address_extension_23 = cpu_to_le32(tmp_desc.address_extension_23);
-+    tmp_desc.address_extension_45 = cpu_to_le32(tmp_desc.address_extension_45);
-+    tmp_desc.source_address2 = cpu_to_le32(tmp_desc.source_address2);
-+    tmp_desc.source_address3 = cpu_to_le32(tmp_desc.source_address3);
-+    tmp_desc.source_address4 = cpu_to_le32(tmp_desc.source_address4);
-+    tmp_desc.source_address5 = cpu_to_le32(tmp_desc.source_address5);
-+    tmp_desc.crc = cpu_to_le32(tmp_desc.crc);
-+
-+    return dma_memory_write(&address_space_memory, desc_addr, &tmp_desc,
-+                            sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED);
-+}
-+
- size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
-                                     bool one_desc)
- {
-@@ -651,8 +710,7 @@ size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
-             desc_addr = xlnx_dpdma_descriptor_next_address(s, channel);
-         }
+ static struct hvf_sreg_match hvf_sreg_match[] = {
+-    { HV_SYS_REG_DBGBVR0_EL1, HVF_SYSREG(0, 0, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR0_EL1, HVF_SYSREG(0, 0, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR0_EL1, HVF_SYSREG(0, 0, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR0_EL1, HVF_SYSREG(0, 0, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR0_EL1, HVF_SYSREG(0, 0, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR0_EL1, HVF_SYSREG(0, 0, 2, 0, 7) },
  
--        if (dma_memory_read(&address_space_memory, desc_addr, &desc,
--                            sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED)) {
-+        if (xlnx_dpdma_read_descriptor(s, desc_addr, &desc)) {
-             s->registers[DPDMA_EISR] |= ((1 << 1) << channel);
-             xlnx_dpdma_update_irq(s);
-             s->operation_finished[channel] = true;
-@@ -755,8 +813,10 @@ size_t xlnx_dpdma_start_operation(XlnxDPDMAState *s, uint8_t channel,
-             /* The descriptor need to be updated when it's completed. */
-             DPRINTF("update the descriptor with the done flag set.\n");
-             xlnx_dpdma_desc_set_done(&desc);
--            dma_memory_write(&address_space_memory, desc_addr, &desc,
--                             sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED);
-+            if (xlnx_dpdma_write_descriptor(desc_addr, &desc)) {
-+                DPRINTF("Can't write the descriptor.\n");
-+                /* TODO: check hardware behaviour for memory write failure */
-+            }
-         }
+-    { HV_SYS_REG_DBGBVR1_EL1, HVF_SYSREG(0, 1, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR1_EL1, HVF_SYSREG(0, 1, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR1_EL1, HVF_SYSREG(0, 1, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR1_EL1, HVF_SYSREG(0, 1, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR1_EL1, HVF_SYSREG(0, 1, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR1_EL1, HVF_SYSREG(0, 1, 2, 0, 7) },
  
-         if (xlnx_dpdma_desc_completion_interrupt(&desc)) {
+-    { HV_SYS_REG_DBGBVR2_EL1, HVF_SYSREG(0, 2, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR2_EL1, HVF_SYSREG(0, 2, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR2_EL1, HVF_SYSREG(0, 2, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR2_EL1, HVF_SYSREG(0, 2, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR2_EL1, HVF_SYSREG(0, 2, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR2_EL1, HVF_SYSREG(0, 2, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR3_EL1, HVF_SYSREG(0, 3, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR3_EL1, HVF_SYSREG(0, 3, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR3_EL1, HVF_SYSREG(0, 3, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR3_EL1, HVF_SYSREG(0, 3, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR3_EL1, HVF_SYSREG(0, 3, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR3_EL1, HVF_SYSREG(0, 3, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR4_EL1, HVF_SYSREG(0, 4, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR4_EL1, HVF_SYSREG(0, 4, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR4_EL1, HVF_SYSREG(0, 4, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR4_EL1, HVF_SYSREG(0, 4, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR4_EL1, HVF_SYSREG(0, 4, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR4_EL1, HVF_SYSREG(0, 4, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR5_EL1, HVF_SYSREG(0, 5, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR5_EL1, HVF_SYSREG(0, 5, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR5_EL1, HVF_SYSREG(0, 5, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR5_EL1, HVF_SYSREG(0, 5, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR5_EL1, HVF_SYSREG(0, 5, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR5_EL1, HVF_SYSREG(0, 5, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR6_EL1, HVF_SYSREG(0, 6, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR6_EL1, HVF_SYSREG(0, 6, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR6_EL1, HVF_SYSREG(0, 6, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR6_EL1, HVF_SYSREG(0, 6, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR6_EL1, HVF_SYSREG(0, 6, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR6_EL1, HVF_SYSREG(0, 6, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR7_EL1, HVF_SYSREG(0, 7, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR7_EL1, HVF_SYSREG(0, 7, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR7_EL1, HVF_SYSREG(0, 7, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR7_EL1, HVF_SYSREG(0, 7, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR7_EL1, HVF_SYSREG(0, 7, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR7_EL1, HVF_SYSREG(0, 7, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR8_EL1, HVF_SYSREG(0, 8, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR8_EL1, HVF_SYSREG(0, 8, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR8_EL1, HVF_SYSREG(0, 8, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR8_EL1, HVF_SYSREG(0, 8, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR8_EL1, HVF_SYSREG(0, 8, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR8_EL1, HVF_SYSREG(0, 8, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR9_EL1, HVF_SYSREG(0, 9, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR9_EL1, HVF_SYSREG(0, 9, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR9_EL1, HVF_SYSREG(0, 9, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR9_EL1, HVF_SYSREG(0, 9, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR9_EL1, HVF_SYSREG(0, 9, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR9_EL1, HVF_SYSREG(0, 9, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR10_EL1, HVF_SYSREG(0, 10, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR10_EL1, HVF_SYSREG(0, 10, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR10_EL1, HVF_SYSREG(0, 10, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR10_EL1, HVF_SYSREG(0, 10, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR10_EL1, HVF_SYSREG(0, 10, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR10_EL1, HVF_SYSREG(0, 10, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR11_EL1, HVF_SYSREG(0, 11, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR11_EL1, HVF_SYSREG(0, 11, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR11_EL1, HVF_SYSREG(0, 11, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR11_EL1, HVF_SYSREG(0, 11, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR11_EL1, HVF_SYSREG(0, 11, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR11_EL1, HVF_SYSREG(0, 11, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR12_EL1, HVF_SYSREG(0, 12, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR12_EL1, HVF_SYSREG(0, 12, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR12_EL1, HVF_SYSREG(0, 12, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR12_EL1, HVF_SYSREG(0, 12, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR12_EL1, HVF_SYSREG(0, 12, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR12_EL1, HVF_SYSREG(0, 12, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR13_EL1, HVF_SYSREG(0, 13, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR13_EL1, HVF_SYSREG(0, 13, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR13_EL1, HVF_SYSREG(0, 13, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR13_EL1, HVF_SYSREG(0, 13, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR13_EL1, HVF_SYSREG(0, 13, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR13_EL1, HVF_SYSREG(0, 13, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR14_EL1, HVF_SYSREG(0, 14, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR14_EL1, HVF_SYSREG(0, 14, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR14_EL1, HVF_SYSREG(0, 14, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR14_EL1, HVF_SYSREG(0, 14, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR14_EL1, HVF_SYSREG(0, 14, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR14_EL1, HVF_SYSREG(0, 14, 2, 0, 7) },
+ 
+-    { HV_SYS_REG_DBGBVR15_EL1, HVF_SYSREG(0, 15, 14, 0, 4) },
+-    { HV_SYS_REG_DBGBCR15_EL1, HVF_SYSREG(0, 15, 14, 0, 5) },
+-    { HV_SYS_REG_DBGWVR15_EL1, HVF_SYSREG(0, 15, 14, 0, 6) },
+-    { HV_SYS_REG_DBGWCR15_EL1, HVF_SYSREG(0, 15, 14, 0, 7) },
++    { HV_SYS_REG_DBGBVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 4) },
++    { HV_SYS_REG_DBGBCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 5) },
++    { HV_SYS_REG_DBGWVR15_EL1, HVF_SYSREG(0, 15, 2, 0, 6) },
++    { HV_SYS_REG_DBGWCR15_EL1, HVF_SYSREG(0, 15, 2, 0, 7) },
+ 
+ #ifdef SYNC_NO_RAW_REGS
+     /*
+@@ -486,7 +486,7 @@ static struct hvf_sreg_match hvf_sreg_match[] = {
+     { HV_SYS_REG_MPIDR_EL1, HVF_SYSREG(0, 0, 3, 0, 5) },
+     { HV_SYS_REG_ID_AA64PFR0_EL1, HVF_SYSREG(0, 4, 3, 0, 0) },
+ #endif
+-    { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 2) },
++    { HV_SYS_REG_ID_AA64PFR1_EL1, HVF_SYSREG(0, 4, 3, 0, 1) },
+     { HV_SYS_REG_ID_AA64DFR0_EL1, HVF_SYSREG(0, 5, 3, 0, 0) },
+     { HV_SYS_REG_ID_AA64DFR1_EL1, HVF_SYSREG(0, 5, 3, 0, 1) },
+     { HV_SYS_REG_ID_AA64ISAR0_EL1, HVF_SYSREG(0, 6, 3, 0, 0) },
 -- 
 2.34.1
 
