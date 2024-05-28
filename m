@@ -2,83 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6ED98D202F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3698D2052
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sByaZ-0006C1-Ct; Tue, 28 May 2024 11:18:11 -0400
+	id 1sByhl-0001kh-QN; Tue, 28 May 2024 11:25:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sByaV-0006Ab-U5
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:18:07 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sByhO-0001kI-8F
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:25:14 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sByaQ-0001OD-Jo
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:18:06 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-354ba5663c9so777348f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:18:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sByhJ-0002W3-JC
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:25:11 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-5785d466c82so1198012a12.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716909479; x=1717514279; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3GPidNkvE7hjDr8Tb2VFal5rZ4pUkGWbicQZrjprVTE=;
- b=BKXgmAqqxbMhSz1fYRiLaIImEBCtz9/JMERYLISlavkfw/zFGtft5IvZM9F+cuJfeb
- JrmnFIeBcf40yfwj7ij8Ihk41I+JNSj3s6oAj//dcPNWGecMWQUKmy+mNoTbmH3MIXbT
- 7vp0Aa82ob+SdFIvsOul6KIVGNhtRkWSPdpLgi9lqGM4zHz+2/kNydA8IuWxzCxbOYks
- WWIiOG4kbGkbQLYe1AIvNiys1GoiLVth4IBJi874K41x8LfJE2tsk3t8oTUwBv57Ncwr
- I60U8XGCSwhlgofuJuSR+7hAlGa3mIJp6XTLAvJbTxtt+1l1bNM4C4gWgClfCSjFWDnA
- jZRQ==
+ d=linaro.org; s=google; t=1716909906; x=1717514706; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=tuYbUX0jEKAJo497J8aCi9EQcdhBOOBJ9uU6ueA4eYw=;
+ b=e9tyGIwAvx5iMoWI8G3mnNYl1sV8M0WOOpskyr1jGGzYSvyeZ37+groFuaqdyALw/P
+ X9v9E7GehDDZWsFAZzt3xxSOl2U3f3H4vJNJTvHNMGgXpa6YQUaenaa6igLlnbK0BlSz
+ t4dYLloJGK5C52XeQEr0k2hVBDUYs6BVZ3Fj8QoAZChb7wc/d/A2+IxOGdE+x30R/Po+
+ WtsBoR5p0RkTovqgp0x6vkcQlXj+fh5han+McfK1+/1HNPtGxPwDJpdmE65laoXF1HMl
+ x8S+xd0YayvTK2zGkNyD7TeSZqmaFn5ANQBDtEa4sMeoWM+17x/Ong69ykpQoW/hp9tr
+ GaLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716909479; x=1717514279;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3GPidNkvE7hjDr8Tb2VFal5rZ4pUkGWbicQZrjprVTE=;
- b=KvdSp/8P/uxXSDPFh2IWTeUHgg2PoSIiM/aYGjGSYuj9lPzrk0cQnth85AlUDYW/6G
- nhquqBYOLEl2s5+tS1VpSedDq5uQO/vvPraFPTK2JHHA8BlkviuwQG0HcNDiDF5gCdFV
- gquSRoZRT2su1OtLimqFGJnxR9IuGD8IERlJ8knumPVP0QCNAcJlSu61NvRaHXrILK/1
- yrPtEEZd6fD1OJrgUugr2uLFNu4GaD5HnZyvT5wGe5kpggAPjRhjrFjQUWKY0i+icMY1
- kdh6I2XQ4C9QzlI/eY3lfFUySyZ+jNcxzybIwhjfmZF6G2Wcr53VqOeO9dYOvn+NY1jb
- VZ6A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW+q83jOUuQ4OBi/wNx6brEIvxnQjsmARLI88FnsMPrhajpkKr/9XeD2ds+eLdZR6UruHCa05qLW1QSTLfEi5YBMrSAjgw=
-X-Gm-Message-State: AOJu0YzuzYpwLG8aIev7K/LFSywgOm8Nkx4dwCA59arqnnkYVhbRMizj
- xdMrID/HBjbp27paw2ndH9KMEg0/efvqOFCMBHWlb7cx4x3EGqXzhOp+sJbm1Pw=
-X-Google-Smtp-Source: AGHT+IGpRooaSo0K6VKPXTxZ32+3ceOcSohNNQHFLdXu7k6LD+NzoIoEU/RA9/vpm0A+vH14ITnfuA==
-X-Received: by 2002:a5d:4f8e:0:b0:354:c329:90d3 with SMTP id
- ffacd0b85a97d-3552fddfa23mr8992819f8f.49.1716909479169; 
- Tue, 28 May 2024 08:17:59 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.214.26])
- by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3557dcefdd7sm12282561f8f.91.2024.05.28.08.17.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 May 2024 08:17:58 -0700 (PDT)
-Message-ID: <4d964d18-db2b-4282-b499-ca42ec8b6112@linaro.org>
-Date: Tue, 28 May 2024 17:17:56 +0200
+ d=1e100.net; s=20230601; t=1716909906; x=1717514706;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tuYbUX0jEKAJo497J8aCi9EQcdhBOOBJ9uU6ueA4eYw=;
+ b=PrJhyDGsuzNXOx0IP5/25Hn6jwJZnX6+eqPtazA6TafgGOEGfV0o2MQiIdLwxANucl
+ 1PvEK/UXxCR+BfmtECvkejIimJjNedPjPJIqr036VZT1hySAcM/LDFNo8pUWXaDto1cJ
+ QlesMsXV6VNZGxpv4Cm+YnccMcCJPvYyf2/EKnAfzLu1r/srvB11qjjvXX/icYY+nOpF
+ tSWwB/EBuz2617zkroYd8slYnrDRZdDGPrbe+UpUl1OC2FkuQHhbSjQ3hlmFauFzZ9aH
+ ZuE5riQaocRUgg7BkXMq2mmA3xwE7rY8DH3zbazotJJNuMGlKaQWdW916h/ze7yIlMMt
+ G3jg==
+X-Gm-Message-State: AOJu0YxNB/2DFIbwuS5K1qyxHrtQ0gvRgfiPWdXIunCzdQas0u2e5uao
+ HGbEgQQ5ZMeScFLOovxcEyk0y69BSdo30RI5aFL8mMYliaGMZ4CZ+7iKGavBh05vJtWu53KleID
+ anGQoP8+QpV+Yy4Ch90Afape9IxjzGyjh1rjxXA==
+X-Google-Smtp-Source: AGHT+IHI7PLmdn7AQjRiVLDDjjYLCW591tEiiWx2OGDf5LvDRtyhAw16AtvJfealjd0if17zR0ZXSyfQUGkg02zEqDQ=
+X-Received: by 2002:a50:c94d:0:b0:574:eb22:3629 with SMTP id
+ 4fb4d7f45d1cf-57851962420mr7365309a12.19.1716909906677; Tue, 28 May 2024
+ 08:25:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] hw/clock: Expose 'qtest-clock-period' QOM property
- for QTests
-To: =?UTF-8?Q?In=C3=A8s_Varhol?= <ines.varhol@telecom-paris.fr>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Damien Hedde
- <damien.hedde@dahe.fr>, Paolo Bonzini <pbonzini@redhat.com>,
- Luc Michel <luc@lmichel.fr>, Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Thomas Huth <thuth@redhat.com>
-References: <20240523194441.21036-1-ines.varhol@telecom-paris.fr>
- <20240523194441.21036-4-ines.varhol@telecom-paris.fr>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240523194441.21036-4-ines.varhol@telecom-paris.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+References: <20240524232121.284515-1-richard.henderson@linaro.org>
+ <20240524232121.284515-38-richard.henderson@linaro.org>
+In-Reply-To: <20240524232121.284515-38-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 May 2024 16:24:55 +0100
+Message-ID: <CAFEAcA9yfzS_SGH0v83gb3VtY5UXGBSdM56PoRHWRLewhvzOVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 37/67] target/arm: Improve vector UQADD, UQSUB, SQADD,
+ SQSUB
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,23 +87,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 23/5/24 21:41, Inès Varhol wrote:
-> Expose the clock period via the QOM 'qtest-clock-period' property so it
-> can be used in QTests. This property is only accessible in QTests (not
-> via HMP).
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Addressing Luc and Peter comments, you can replace that line by:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Thanks!
-
-> Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+On Sat, 25 May 2024 at 00:28, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> No need for a full comparison; xor produces non-zero bits
+> for QC just fine.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   docs/devel/clocks.rst |  3 +++
->   hw/core/clock.c       | 16 ++++++++++++++++
->   2 files changed, 19 insertions(+)
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
