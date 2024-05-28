@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075A68D1E2F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56688D1E0E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:10:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUh-0001Uv-6M; Tue, 28 May 2024 10:08:03 -0400
+	id 1sBxUi-0001W9-UR; Tue, 28 May 2024 10:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUf-0001Tq-7R
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:01 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1sBxUg-0001Um-FK
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:02 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUd-00070S-Ha
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:00 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-35bf77ba951so210008f8f.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:07:59 -0700 (PDT)
+ id 1sBxUe-00070Z-Cc
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:02 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-357d533b744so813748f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716905278; x=1717510078; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716905279; x=1717510079; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=js5qncWkemZbFOUTBcvGMDqOGolfrcRJMq2DK5PGxrw=;
- b=sXX4gy/28aC7T3VCBj8KFmLrXZinqkKJTsHpRbPtz7R+FJ229SZNdptGVtYfW++yV8
- 92Zco127RY4BcdqBiMVrO067VXrGHdTBIqlRmqBqE0lM2QKIvqBGG5U+U77fHWqsHDYp
- MO0ai/5GKw36e+kxA4kf5L6Kguf54BOEzJzEd3Pkdfap6dz2tIaOFmkZi/I5S0OCAqV/
- aKtyIfG67Z5dacmapW+m9Uhwn4EVFQ5mm3di8o6kTQqxbUDmyfgzFkSKJ18UjvdgcKIe
- vg2VxFFPudGws5/+d98wjPC+3Dfohvozidlm0DEdB5sCLF8gJIFIFp01Ii6/RLj+kGW4
- WKEw==
+ :reply-to; bh=cix61aPqu8KvNLcJRTXQi8LmaQzXhkWR11FG/+cNvi0=;
+ b=LMDnWw8JnxOoRF2pqsijhJnw717kJke9xP83Z1Vn0AE2pVdNuZ+/tn5/+6PxfTvPMY
+ LTxIf1LGWjBUgYUXwNpCe2THaG9Ewxco3sDLhv0TqAGvoVFRMSYtchV2rbd29+o1LEFf
+ 9ynpQharuWnIa9qXHOFvF+bZdPDWoZ5sTPQ2N8OrdMFhW9O6CNl0xhBtDGYaNXzo4zOc
+ ur43O1Z05eEbad2zank4QbUn3/pxBpfgeXc9VWQOENwovp+AxiqqBwjY6giW5JbL4tXW
+ mLNkI82AjA5ps1b6gKrcKhCQOB/3mrcyxCJWdU3Wvhwk+ey/a5gsoJNnlrRiBjCuQ4+P
+ dD4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716905278; x=1717510078;
+ d=1e100.net; s=20230601; t=1716905279; x=1717510079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=js5qncWkemZbFOUTBcvGMDqOGolfrcRJMq2DK5PGxrw=;
- b=dSxJMO0QZ2tHN7C6AyXFAvAFbEqA1zfcrPH0lHvhasAIRzHtIRBSFNgo6LdZXIUbdN
- GLu0vGbNJvJZZIWGdFj2M7U6z5a0A5fFhuxfpk2+Doaa6v/EXukxTI0oHF1rvHVgFaYb
- qIEEhBI9rF3W1FDrYQC5GhDCQs9oie9TOhMk+XvvI4bDaeE2X2/fvGBQ5x7k+aPQRDkF
- 9Wmu5z7bdNaRL44OE33UYbaoL4+LJpiKln0Iz2Ov1SJ4M70+F1APo0YgUO9oURh4qdiP
- mnczmCHXOP+d5VKyFSrG+bSlMdBLNADH81R0TMycjhArnCdy/1Pi2N7sg+CN+OM4SbJO
- 3EdA==
-X-Gm-Message-State: AOJu0YyMYAEI9xs287x5KaHAZoNlUFvqDrQhL3Z3+Q6QVoC167foZnLQ
- dywPVQKnOxL5+YP28mAUqz/ZkO8IbGyGJxu8Wgz3hUv2uvsVy9n/RN4Nu4yNh2o9UwDmsxpKA/g
- u
-X-Google-Smtp-Source: AGHT+IHDpbbNQL4S4FsazvxQtOjWo80Y1YbSx9AqlPUC8vZBYaUKR48E61Ih+Hcs/E1+gxjfM3kKEA==
-X-Received: by 2002:a5d:4988:0:b0:354:f489:fb8 with SMTP id
- ffacd0b85a97d-35526c3e2admr8015667f8f.14.1716905278262; 
- Tue, 28 May 2024 07:07:58 -0700 (PDT)
+ bh=cix61aPqu8KvNLcJRTXQi8LmaQzXhkWR11FG/+cNvi0=;
+ b=jdBh8wZ2blerELxIdwqdpNQ8MW4WqOpSFDgyFh1Z1y+BRAY1C3VRuOXCjIasr2XY5X
+ gGi7TZX1Bf4aZ44PIwlcwXzuZg3BwUQrZgeJU/IgvbercOFlzyDKxj0+hdFdkxXgo32D
+ DcwacZBIzhSmur62liCOKTOHE7zgt8htu5Db9f172V0q9EndibOPO5Nrwr48xB+xoVNR
+ mVtA9Axn+dAL7P7mMOlJMxLIJWcr+9I29Yz2YKfRmojOBMAuqTPKp7PSQvfIc3qSm8wP
+ 3Rly5dsd/T/6hdPmoNoeWMZ8kjmugXyfwhRIVYemBItcQu7HjMtOi7NbD3oqXUuwDgJ4
+ Kq6w==
+X-Gm-Message-State: AOJu0Yww/UQImn+m955+cl3cm/Z6mogwL15cWJI8W3tVRzrV+/1twEcF
+ S4/RhAFgmh9cFfB7FLxrCNjO1LzuylHxQ222AWb20VB3X103BK/3ukgtqhJhTLyOF/tr+Qev7iL
+ y
+X-Google-Smtp-Source: AGHT+IG5zdJy7zjm6sDaJHWYSG3nZshYG0orQbSzDa6KcjSmQGny9P2ulGojgBXnYzRoh6iaz8+HtA==
+X-Received: by 2002:a5d:6911:0:b0:354:fb2a:7daf with SMTP id
+ ffacd0b85a97d-3552fdef9cbmr9002016f8f.57.1716905279101; 
+ Tue, 28 May 2024 07:07:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.57
+ ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 07:07:57 -0700 (PDT)
+ Tue, 28 May 2024 07:07:58 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 04/42] hw/char: Correct STM32L4x5 usart register CR2 field
- ADD_0 size
-Date: Tue, 28 May 2024 15:07:15 +0100
-Message-Id: <20240528140753.3620597-5-peter.maydell@linaro.org>
+Subject: [PULL 05/42] hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
+Date: Tue, 28 May 2024 15:07:16 +0100
+Message-Id: <20240528140753.3620597-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,30 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Inès Varhol <ines.varhol@telecom-paris.fr>
+From: Andrey Shumilin <shum.sdl@nppct.ru>
 
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-id: 20240505141613.387508-1-ines.varhol@telecom-paris.fr
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+In gic_cpu_read() and gic_cpu_write(), we delegate the handling of
+reading and writing the Non-Secure view of the GICC_APR<n> registers
+to functions gic_apr_ns_view() and gic_apr_write_ns_view().
+Unfortunately we got the order of the arguments wrong, swapping the
+CPU number and the register number (which the compiler doesn't catch
+because they're both integers).
+
+Most guests probably didn't notice this bug because directly
+accessing the APR registers is typically something only done by
+firmware when it is doing state save for going into a sleep mode.
+
+Correct the mismatched call arguments.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 51fd06e0ee ("hw/intc/arm_gic: Fix handling of GICC_APR<n>, GICC_NSAPR<n> registers")
+Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
+[PMM: Rewrote commit message]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alex Bennée<alex.bennee@linaro.org>
 ---
- hw/char/stm32l4x5_usart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/intc/arm_gic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
-index 02f666308c0..fc5dcac0c45 100644
---- a/hw/char/stm32l4x5_usart.c
-+++ b/hw/char/stm32l4x5_usart.c
-@@ -56,7 +56,7 @@ REG32(CR1, 0x00)
-     FIELD(CR1, UE, 0, 1)     /* USART enable */
- REG32(CR2, 0x04)
-     FIELD(CR2, ADD_1, 28, 4)    /* ADD[7:4] */
--    FIELD(CR2, ADD_0, 24, 1)    /* ADD[3:0] */
-+    FIELD(CR2, ADD_0, 24, 4)    /* ADD[3:0] */
-     FIELD(CR2, RTOEN, 23, 1)    /* Receiver timeout enable */
-     FIELD(CR2, ABRMOD, 21, 2)   /* Auto baud rate mode */
-     FIELD(CR2, ABREN, 20, 1)    /* Auto baud rate enable */
+diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
+index 074cf50af25..e4b8437f8b8 100644
+--- a/hw/intc/arm_gic.c
++++ b/hw/intc/arm_gic.c
+@@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s, int cpu, int offset,
+             *data = s->h_apr[gic_get_vcpu_real_id(cpu)];
+         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
+             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
+-            *data = gic_apr_ns_view(s, regno, cpu);
++            *data = gic_apr_ns_view(s, cpu, regno);
+         } else {
+             *data = s->apr[regno][cpu];
+         }
+@@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState *s, int cpu, int offset,
+             s->h_apr[gic_get_vcpu_real_id(cpu)] = value;
+         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
+             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
+-            gic_apr_write_ns_view(s, regno, cpu, value);
++            gic_apr_write_ns_view(s, cpu, regno, value);
+         } else {
+             s->apr[regno][cpu] = value;
+         }
 -- 
 2.34.1
 
