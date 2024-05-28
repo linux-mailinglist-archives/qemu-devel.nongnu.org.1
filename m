@@ -2,52 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08068D166D
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8AA8D1673
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:39:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBsMU-0002n8-1K; Tue, 28 May 2024 04:39:14 -0400
+	id 1sBsMQ-0002ld-JM; Tue, 28 May 2024 04:39:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sBsMO-0002jF-Db
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMO-0002iQ-2J
  for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sBsML-0004oa-Pm
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxcPAlmFVmppwAAA--.2794S3;
- Tue, 28 May 2024 16:39:01 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxosQfmFVmQcYLAA--.20131S3; 
- Tue, 28 May 2024 16:38:58 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v4 1/3] hw/intc/loongarch_extioi: Add extioi virt extension
- definition
-Date: Tue, 28 May 2024 16:38:53 +0800
-Message-Id: <20240528083855.1912757-2-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240528083855.1912757-1-gaosong@loongson.cn>
-References: <20240528083855.1912757-1-gaosong@loongson.cn>
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsML-0004ov-Kh
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716885545;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=weg/Aislz+ac3i6xP5IcD12fPi9JroAL+i9eQEcypP0=;
+ b=CEwwdpeGY7n/Dq1Mz2Gk6cxSU8BUAIhe10ZdrWkK8eaHAGCFzYTMh1uP0Fa/OBhVmM0p42
+ Lgntwy1HeWXnCnQYF7nOEwBchwfJKvxza+YFDcYXDjhIrCQBo6lgaBoInOMdFXJtTCQLd0
+ 5u5wZFWh1HKDXKuilzTZJzu9Ob5LXxM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-412-GwGKj21JN0W27Q8syR_TsQ-1; Tue,
+ 28 May 2024 04:39:01 -0400
+X-MC-Unique: GwGKj21JN0W27Q8syR_TsQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2C54380670C;
+ Tue, 28 May 2024 08:39:00 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ABFF7491032;
+ Tue, 28 May 2024 08:38:59 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 542451800DCA; Tue, 28 May 2024 10:38:58 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Matias Ezequiel Vara Larsen <mvaralar@redhat.com>,
+ Thomas Huth <huth@tuxfamily.org>
+Subject: [PATCH v2 1/4] MAINTAINERS: drop audio maintainership
+Date: Tue, 28 May 2024 10:38:53 +0200
+Message-ID: <20240528083858.836262-2-kraxel@redhat.com>
+In-Reply-To: <20240528083858.836262-1-kraxel@redhat.com>
+References: <20240528083858.836262-1-kraxel@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxosQfmFVmQcYLAA--.20131S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,326 +83,109 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On LoongArch, IRQs can be routed to four vcpus with hardware extended
-IRQ model. This patch adds the virt extension definition so that
-the IRQ can route to 256 vcpus.
+Remove myself from audio (both devices and backend) entries.
+Flip status to "Orphan" for entries which have nobody else listed.
 
-    1.Extended IRQ model:
-                                    |
-    +-----------+     +-------------|--------+     +-----------+
-    | IPI/Timer | --> | CPUINTC(0-3)|(4-255) | <-- | IPI/Timer |
-    +-----------+     +-------------|--------+     +-----------+
-                            ^       |
-                            |
-                       +---------+
-                       | EIOINTC |
-                       +---------+
-                        ^       ^
-                        |       |
-                 +---------+ +---------+
-                 | PCH-PIC | | PCH-MSI |
-                 +---------+ +---------+
-                   ^      ^          ^
-                   |      |          |
-            +--------+ +---------+ +---------+
-            | UARTs  | | Devices | | Devices |
-            +--------+ +---------+ +---------+
-
-    2.Virt extended IRQ model:
-
-      +-----+    +---------------+     +-------+
-      | IPI |--> | CPUINTC(0-255)| <-- | Timer |
-      +-----+    +---------------+     +-------+
-                        ^
-                        |
-                  +-----------+
-                  | V-EIOINTC |
-                  +-----------+
-                   ^         ^
-                   |         |
-            +---------+ +---------+
-            | PCH-PIC | | PCH-MSI |
-            +---------+ +---------+
-              ^      ^          ^
-              |      |          |
-       +--------+ +---------+ +---------+
-       | UARTs  | | Devices | | Devices |
-       +--------+ +---------+ +---------+
-
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+Cc: Thomas Huth <huth@tuxfamily.org>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- include/hw/intc/loongarch_extioi.h | 21 +++++++
- hw/intc/loongarch_extioi.c         | 88 ++++++++++++++++++++++++++++--
- hw/loongarch/virt.c                | 60 +++++++++++++-------
- 3 files changed, 146 insertions(+), 23 deletions(-)
+ MAINTAINERS | 30 ++++++++++--------------------
+ 1 file changed, 10 insertions(+), 20 deletions(-)
 
-diff --git a/include/hw/intc/loongarch_extioi.h b/include/hw/intc/loongarch_extioi.h
-index 410c6e1121..eccc2e0d18 100644
---- a/include/hw/intc/loongarch_extioi.h
-+++ b/include/hw/intc/loongarch_extioi.h
-@@ -41,6 +41,24 @@
- #define EXTIOI_COREMAP_END           (0xD00 - APIC_OFFSET)
- #define EXTIOI_SIZE                  0x800
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 448dc951c509..58e44885ce94 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1913,8 +1913,7 @@ F: include/hw/xtensa/mx_pic.h
+ Devices
+ -------
+ Overall Audio frontends
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: hw/audio/
+ F: include/hw/audio/
+ F: tests/qtest/ac97-test.c
+@@ -2389,8 +2388,8 @@ F: hw/virtio/virtio-mem-pci.c
+ F: include/hw/virtio/virtio-mem.h
  
-+#define EXTIOI_VIRT_BASE             (0x40000000)
-+#define EXTIOI_VIRT_SIZE             (0x1000)
-+#define EXTIOI_VIRT_FEATURES         (0x0)
-+#define  EXTIOI_HAS_VIRT_EXTENSION   (0)
-+#define  EXTIOI_HAS_ENABLE_OPTION    (1)
-+#define  EXTIOI_HAS_INT_ENCODE       (2)
-+#define  EXTIOI_HAS_CPU_ENCODE       (3)
-+#define  EXTIOI_VIRT_HAS_FEATURES    (BIT(EXTIOI_HAS_VIRT_EXTENSION)  \
-+                                      | BIT(EXTIOI_HAS_ENABLE_OPTION) \
-+                                      | BIT(EXTIOI_HAS_INT_ENCODE)    \
-+                                      | BIT(EXTIOI_HAS_CPU_ENCODE))
-+#define EXTIOI_VIRT_CONFIG           (0x4)
-+#define  EXTIOI_ENABLE               (1)
-+#define  EXTIOI_ENABLE_INT_ENCODE    (2)
-+#define  EXTIOI_ENABLE_CPU_ENCODE    (3)
-+#define EXTIOI_VIRT_COREMAP_START    (0x40)
-+#define EXTIOI_VIRT_COREMAP_END      (0x240)
-+
- typedef struct ExtIOICore {
-     uint32_t coreisr[EXTIOI_IRQS_GROUP_COUNT];
-     DECLARE_BITMAP(sw_isr[LS3A_INTC_IP], EXTIOI_IRQS);
-@@ -52,6 +70,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchExtIOI, LOONGARCH_EXTIOI)
- struct LoongArchExtIOI {
-     SysBusDevice parent_obj;
-     uint32_t num_cpu;
-+    uint32_t features;
-+    uint32_t status;
-     /* hardware state */
-     uint32_t nodetype[EXTIOI_IRQS_NODETYPE_COUNT / 2];
-     uint32_t bounce[EXTIOI_IRQS_GROUP_COUNT];
-@@ -65,5 +85,6 @@ struct LoongArchExtIOI {
-     qemu_irq irq[EXTIOI_IRQS];
-     ExtIOICore *cpu;
-     MemoryRegion extioi_system_mem;
-+    MemoryRegion virt_extend;
- };
- #endif /* LOONGARCH_EXTIOI_H */
-diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
-index 0b358548eb..1e8e0114dc 100644
---- a/hw/intc/loongarch_extioi.c
-+++ b/hw/intc/loongarch_extioi.c
-@@ -143,10 +143,13 @@ static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
+ virtio-snd
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-R: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++M: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
++R: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
+ S: Supported
+ F: hw/audio/virtio-snd.c
+ F: hw/audio/virtio-snd-pci.c
+@@ -2768,7 +2767,6 @@ F: include/hw/hyperv/hv-balloon.h
+ Subsystems
+ ----------
+ Overall Audio backends
+-M: Gerd Hoffmann <kraxel@redhat.com>
+ M: Marc-André Lureau <marcandre.lureau@redhat.com>
+ S: Odd Fixes
+ F: audio/
+@@ -2784,13 +2782,11 @@ X: audio/spiceaudio.c
+ F: qapi/audio.json
  
-     for (i = 0; i < 4; i++) {
-         cpu = val & 0xff;
--        cpu = ctz32(cpu);
--        cpu = (cpu >= 4) ? 0 : cpu;
-         val = val >> 8;
+ ALSA Audio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+ R: Christian Schoenebeck <qemu_oss@crudebyte.com>
+-S: Odd Fixes
++S: Orphan
+ F: audio/alsaaudio.c
  
-+        if (!(s->status & BIT(EXTIOI_ENABLE_CPU_ENCODE))) {
-+            cpu = ctz32(cpu);
-+            cpu = (cpu >= 4) ? 0 : cpu;
-+        }
-+
-         if (s->sw_coremap[irq + i] == cpu) {
-             continue;
-         }
-@@ -265,6 +268,61 @@ static const MemoryRegionOps extioi_ops = {
-     .endianness = DEVICE_LITTLE_ENDIAN,
- };
+ Core Audio framework backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+ M: Philippe Mathieu-Daudé <philmd@linaro.org>
+ R: Christian Schoenebeck <qemu_oss@crudebyte.com>
+ R: Akihiko Odaki <akihiko.odaki@daynix.com>
+@@ -2798,36 +2794,30 @@ S: Odd Fixes
+ F: audio/coreaudio.c
  
-+static MemTxResult extioi_virt_readw(void *opaque, hwaddr addr, uint64_t *data,
-+                                     unsigned size, MemTxAttrs attrs)
-+{
-+    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+
-+    switch (addr) {
-+    case EXTIOI_VIRT_FEATURES:
-+        *data = s->features;
-+        break;
-+    case EXTIOI_VIRT_CONFIG:
-+        *data = s->status;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    return MEMTX_OK;
-+}
-+
-+static MemTxResult extioi_virt_writew(void *opaque, hwaddr addr,
-+                          uint64_t val, unsigned size,
-+                          MemTxAttrs attrs)
-+{
-+    LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-+
-+    switch (addr) {
-+    case EXTIOI_VIRT_FEATURES:
-+        return MEMTX_ACCESS_ERROR;
-+
-+    case EXTIOI_VIRT_CONFIG:
-+        /*
-+         * extioi features can only be set at disabled status
-+         */
-+        if ((s->status & BIT(EXTIOI_ENABLE)) && val) {
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+
-+        s->status = val & s->features;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+    return MEMTX_OK;
-+}
-+
-+static const MemoryRegionOps extioi_virt_ops = {
-+    .read_with_attrs = extioi_virt_readw,
-+    .write_with_attrs = extioi_virt_writew,
-+    .impl.min_access_size = 4,
-+    .impl.max_access_size = 4,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 8,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+};
-+
- static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
- {
-     LoongArchExtIOI *s = LOONGARCH_EXTIOI(dev);
-@@ -284,6 +342,16 @@ static void loongarch_extioi_realize(DeviceState *dev, Error **errp)
-     memory_region_init_io(&s->extioi_system_mem, OBJECT(s), &extioi_ops,
-                           s, "extioi_system_mem", 0x900);
-     sysbus_init_mmio(sbd, &s->extioi_system_mem);
-+
-+    if (s->features & BIT(EXTIOI_HAS_VIRT_EXTENSION)) {
-+        memory_region_init_io(&s->virt_extend, OBJECT(s), &extioi_virt_ops,
-+                              s, "extioi_virt", EXTIOI_VIRT_SIZE);
-+        sysbus_init_mmio(sbd, &s->virt_extend);
-+        s->features |= EXTIOI_VIRT_HAS_FEATURES;
-+    } else {
-+        s->status |= BIT(EXTIOI_ENABLE);
-+    }
-+
-     s->cpu = g_new0(ExtIOICore, s->num_cpu);
-     if (s->cpu == NULL) {
-         error_setg(errp, "Memory allocation for ExtIOICore faile");
-@@ -304,6 +372,13 @@ static void loongarch_extioi_finalize(Object *obj)
-     g_free(s->cpu);
- }
+ DSound Audio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: audio/dsound*
  
-+static void loongarch_extioi_reset(DeviceState *d)
-+{
-+    LoongArchExtIOI *s = LOONGARCH_EXTIOI(d);
-+
-+    s->status = 0;
-+}
-+
- static int vmstate_extioi_post_load(void *opaque, int version_id)
- {
-     LoongArchExtIOI *s = LOONGARCH_EXTIOI(opaque);
-@@ -333,8 +408,8 @@ static const VMStateDescription vmstate_extioi_core = {
+ JACK Audio Connection Kit backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+ R: Christian Schoenebeck <qemu_oss@crudebyte.com>
+-S: Odd Fixes
++S: Orphan
+ F: audio/jackaudio.c
  
- static const VMStateDescription vmstate_loongarch_extioi = {
-     .name = TYPE_LOONGARCH_EXTIOI,
--    .version_id = 2,
--    .minimum_version_id = 2,
-+    .version_id = 3,
-+    .minimum_version_id = 3,
-     .post_load = vmstate_extioi_post_load,
-     .fields = (const VMStateField[]) {
-         VMSTATE_UINT32_ARRAY(bounce, LoongArchExtIOI, EXTIOI_IRQS_GROUP_COUNT),
-@@ -347,12 +422,16 @@ static const VMStateDescription vmstate_loongarch_extioi = {
+ Open Sound System (OSS) Audio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: audio/ossaudio.c
  
-         VMSTATE_STRUCT_VARRAY_POINTER_UINT32(cpu, LoongArchExtIOI, num_cpu,
-                          vmstate_extioi_core, ExtIOICore),
-+        VMSTATE_UINT32(features, LoongArchExtIOI),
-+        VMSTATE_UINT32(status, LoongArchExtIOI),
-         VMSTATE_END_OF_LIST()
-     }
- };
+ PulseAudio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: audio/paaudio.c
  
- static Property extioi_properties[] = {
-     DEFINE_PROP_UINT32("num-cpu", LoongArchExtIOI, num_cpu, 1),
-+    DEFINE_PROP_BIT("has-virtualization-extension", LoongArchExtIOI, features,
-+                    EXTIOI_HAS_VIRT_EXTENSION, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
+ SDL Audio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-R: Thomas Huth <huth@tuxfamily.org>
++M: Thomas Huth <huth@tuxfamily.org>
+ S: Odd Fixes
+ F: audio/sdlaudio.c
  
-@@ -361,6 +440,7 @@ static void loongarch_extioi_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
+ Sndio Audio backend
+-M: Gerd Hoffmann <kraxel@redhat.com>
+ R: Alexandre Ratchov <alex@caoua.org>
+-S: Odd Fixes
++S: Orphan
+ F: audio/sndioaudio.c
  
-     dc->realize = loongarch_extioi_realize;
-+    dc->reset   = loongarch_extioi_reset;
-     device_class_set_props(dc, extioi_properties);
-     dc->vmsd = &vmstate_loongarch_extioi;
- }
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 3e6e93edf3..4db0d82dbd 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -717,25 +717,47 @@ static void virt_irq_init(LoongArchVirtMachineState *lvms)
-     uint32_t cpuintc_phandle, eiointc_phandle, pch_pic_phandle, pch_msi_phandle;
- 
-     /*
--     * The connection of interrupts:
--     *   +-----+    +---------+     +-------+
--     *   | IPI |--> | CPUINTC | <-- | Timer |
--     *   +-----+    +---------+     +-------+
--     *                  ^
--     *                  |
--     *            +---------+
--     *            | EIOINTC |
--     *            +---------+
--     *             ^       ^
--     *             |       |
--     *      +---------+ +---------+
--     *      | PCH-PIC | | PCH-MSI |
--     *      +---------+ +---------+
--     *        ^      ^          ^
--     *        |      |          |
--     * +--------+ +---------+ +---------+
--     * | UARTs  | | Devices | | Devices |
--     * +--------+ +---------+ +---------+
-+     * Extended IRQ model.
-+     *                                 |
-+     * +-----------+     +-------------|--------+     +-----------+
-+     * | IPI/Timer | --> | CPUINTC(0-3)|(4-255) | <-- | IPI/Timer |
-+     * +-----------+     +-------------|--------+     +-----------+
-+     *                         ^       |
-+     *                         |
-+     *                    +---------+
-+     *                    | EIOINTC |
-+     *                    +---------+
-+     *                     ^       ^
-+     *                     |       |
-+     *              +---------+ +---------+
-+     *              | PCH-PIC | | PCH-MSI |
-+     *              +---------+ +---------+
-+     *                ^      ^          ^
-+     *                |      |          |
-+     *         +--------+ +---------+ +---------+
-+     *         | UARTs  | | Devices | | Devices |
-+     *         +--------+ +---------+ +---------+
-+     *
-+     * Virt extended IRQ model.
-+     *
-+     *   +-----+    +---------------+     +-------+
-+     *   | IPI |--> | CPUINTC(0-255)| <-- | Timer |
-+     *   +-----+    +---------------+     +-------+
-+     *                     ^
-+     *                     |
-+     *               +-----------+
-+     *               | V-EIOINTC |
-+     *               +-----------+
-+     *                ^         ^
-+     *                |         |
-+     *         +---------+ +---------+
-+     *         | PCH-PIC | | PCH-MSI |
-+     *         +---------+ +---------+
-+     *           ^      ^          ^
-+     *           |      |          |
-+     *    +--------+ +---------+ +---------+
-+     *    | UARTs  | | Devices | | Devices |
-+     *    +--------+ +---------+ +---------+
-      */
- 
-     /* Create IPI device */
+ Block layer core
 -- 
-2.34.1
+2.45.1
 
 
