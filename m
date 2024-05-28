@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB748D1563
+	by mail.lfdr.de (Postfix) with ESMTPS id 2958C8D1561
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBrIq-0003cm-OD; Tue, 28 May 2024 03:31:24 -0400
+	id 1sBrIu-0003eH-L1; Tue, 28 May 2024 03:31:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sBrIo-0003c9-Jf
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:22 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1sBrIs-0003dV-3x
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:26 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sBrIn-0001ej-0d
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:22 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6f8eba8dcfcso366689b3a.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 00:31:20 -0700 (PDT)
+ id 1sBrIq-0001fF-Lg
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:25 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6f850ff30c0so388987b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 00:31:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1716881479; x=1717486279; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1716881482; x=1717486282; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=U1C+cXXjZTBdG34i2THVAeaMfMT5wPu2gPry985wW58=;
- b=pgeKSql60m9P1zbaI/zWZjJujlFu8lghZlNsHlcddWA1/s2w597a/n7mmI5g0kDfZZ
- UQgglSLy9xNdwqfPfZJ2aEk6kHB6JCHofKJ1Qgjfnik3qeV+yXqxbTj+kf8Eol5pgH91
- pDeDeiBQ3vE0k7xLUG3UEw+7LRhtePdE4073hkGvs096z/sLnMhRTKFrBe0JGDAwLsW3
- dsJlggka9w22NIlZzr4Mk3o8kOIGRYw4TKjwHaSbBkWMI9h3X7u4yk6VbxXvt6G0d+Q+
- OHMvoy4ocwB6F0wEHZ552+3aWlEEFwEkz+Ne/8mwhpyIX1FyQbrBpCiicpKaS2MJ3KIK
- 2EUQ==
+ bh=CjhHPP7vOg4Je4fWmMAQqc6bZgvVI0+REKHt2VsCjAE=;
+ b=cpWzqzT/C8oWMG4FnHggiapJtVuKvitCFxDE7ajW8jHRfnKPuvVYk12Nd4jr6ZkCbz
+ Znt+pKlTaM6p+Oa4FtbVVmbA9V0nviC8DX1wFjpDDIC+vMZOH9lOZ7Q8n6ciD9v+Wx0J
+ 5uYajpk/CvnlErWirmgkkyngxQB0iIfnRWBT1kkIfOTW0yoROhGLKWCm/PeE4qCgWEZ7
+ ti3Hz1TfuLOc/+tVZsqggpr3ohVjb3bwu/FmFlcFfSWXYGzKAsdwhn1S+JWfCDegGiU/
+ VWwSnxBy+WZvuVHTREgaZjm+wkIJfW/yzWi6CcvoT17lPbJ6sNV6m7hw3cpB0cH7IrC/
+ q7Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716881479; x=1717486279;
+ d=1e100.net; s=20230601; t=1716881482; x=1717486282;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=U1C+cXXjZTBdG34i2THVAeaMfMT5wPu2gPry985wW58=;
- b=mdFgTPcc2dbRN5nO78g+yLy1KP4NjEEc8f4kmNrSTA9acz7EGHtTxWlEPxbTTWf/ye
- Jwf8ycgn7J2HgMBRXAiIkh1jqTEQF2OwGrsEkwBs6Ksvb6QnipfenxVUbHFsq4OT5npo
- uN6ZqjuwRgPAMtwJ4H+mJ4mysg0KvYAlzh6ufA7xW444yPJU8UUfVVAYkSRNIWfuhT3/
- BX4taiReqNL0sI9/I/Lsw5X4AfOH6bNjJDRm8/CR4tjCJCXKx+SabiShklW6zexQS75t
- 0juU72d3zh8Al08zXQdWkZG4Qy+KKibj4fCEA9t8YJynDJX2SdXAEhLiuQkb9YO3YCWB
- VFgA==
-X-Gm-Message-State: AOJu0Yxot28JCUSTKif9+b9pYJtXbu+EeB/gUq5bz3u/ZQN4Z8hAiA1Q
- qHthdKg3chH4W2LGVbE7+NGpjoS1mh3xHoeghGMP1E4qTxC7ntFitoU2LqXotZBB5+QWAiIopxJ
- 9dXc=
-X-Google-Smtp-Source: AGHT+IGC+C/jnVXPXbn7EPctvy3oeDf6LPx7fOANzHa7O8iZTJMRogUuyTO6E6mnsNWkjRaOQl4EwA==
-X-Received: by 2002:a05:6a00:1f12:b0:6f6:7c6a:2c14 with SMTP id
- d2e1a72fcca58-6f8f2c56e53mr11720460b3a.4.1716881478728; 
- Tue, 28 May 2024 00:31:18 -0700 (PDT)
+ bh=CjhHPP7vOg4Je4fWmMAQqc6bZgvVI0+REKHt2VsCjAE=;
+ b=xPwy8RUyaRUeX7BYcRYoPnsU4vgBmRsnVoj+Fqm+eRPbHnj++ZrzgeGI5skcB2EdXS
+ xZjk6Wgk60tK7NDmYzlCKRoIlMvL3hqt0S07Zgu4N9JdtCs6Yig5ZgqAHszuALUnDDX4
+ zJjb18EhDZzHF3oR7ikVFPJpVAHaFrXIAq9PW75I0tLiluydQgeSbfYZFE4VhkRVrsTh
+ GI7PxdUgwb1qe+p6urOujorsAo7klm22WhzQMrg0XRZES194a68F/Fb+26sniCpdT+up
+ oESEalkg5Sb1wJDbQ0rvl9VOagET6zMY+uhKgQRwWn7IG6Rp8lfUHcM5NdorHuDYzG8a
+ b31A==
+X-Gm-Message-State: AOJu0YxQBUBUwBFteDRjrU5ZtTLVUkMtYma9OSzKOQ7v8h0nppITgj6V
+ v3U6IXo32iQ94sBsTfOjVAowELKIDMrHaMRqUXF70HOS/XDZG1+yY9xQ+/3dDmIohsZ88MOWJAK
+ OXnM=
+X-Google-Smtp-Source: AGHT+IHYK0ZPPN4VaxpomOg8fdu+YLnB+8841SSBGz3Z+UQro/bIcIuQzWMMW+pdnTk22S5murylDA==
+X-Received: by 2002:a05:6a00:6c9f:b0:6f8:ec8e:a273 with SMTP id
+ d2e1a72fcca58-6f8f38f9588mr13609241b3a.19.1716881482121; 
+ Tue, 28 May 2024 00:31:22 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.31])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fd4d51a2sm5881080b3a.189.2024.05.28.00.31.15
+ d2e1a72fcca58-6f8fd4d51a2sm5881080b3a.189.2024.05.28.00.31.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 00:31:18 -0700 (PDT)
+ Tue, 28 May 2024 00:31:21 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -67,17 +67,16 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 2/3] hw/riscv/virt-acpi-build.c: Add namespace devices for
- PLIC and APLIC
-Date: Tue, 28 May 2024 13:01:02 +0530
-Message-Id: <20240528073103.1075812-3-sunilvl@ventanamicro.com>
+Subject: [PATCH 3/3] hw/riscv/virt-acpi-build.c: Update the HID of RISC-V UART
+Date: Tue, 28 May 2024 13:01:03 +0530
+Message-Id: <20240528073103.1075812-4-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240528073103.1075812-1-sunilvl@ventanamicro.com>
 References: <20240528073103.1075812-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,79 +99,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PLIC and APLIC should be in namespace as well. So, add them using the
-defined HID.
+RISC-V is going to use new HID RSCV0003 for generi UART. So, update the
+HID.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- hw/riscv/virt-acpi-build.c | 47 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ hw/riscv/virt-acpi-build.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 832a3acb8d..47ec78e432 100644
+index 47ec78e432..7f80368415 100644
 --- a/hw/riscv/virt-acpi-build.c
 +++ b/hw/riscv/virt-acpi-build.c
-@@ -141,6 +141,52 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
-     }
- }
- 
-+static void acpi_dsdt_add_plic_aplic(Aml *scope, RISCVVirtState *s)
-+{
-+    MachineState *ms = MACHINE(s);
-+    uint64_t plic_aplic_addr;
-+    uint32_t gsi_base;
-+    uint8_t  socket;
-+
-+    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-+        /* PLICs */
-+        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-+            plic_aplic_addr = s->memmap[VIRT_PLIC].base +
-+                         s->memmap[VIRT_PLIC].size * socket;
-+            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
-+            Aml *dev = aml_device("IC%.02X", socket);
-+            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0001")));
-+            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
-+            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
-+
-+            Aml *crs = aml_resource_template();
-+            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
-+                                               s->memmap[VIRT_PLIC].size,
-+                                               AML_READ_WRITE));
-+            aml_append(dev, aml_name_decl("_CRS", crs));
-+            aml_append(scope, dev);
-+        }
-+    } else {
-+        /* APLICs */
-+        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-+            plic_aplic_addr = s->memmap[VIRT_APLIC_S].base +
-+                             s->memmap[VIRT_APLIC_S].size * socket;
-+            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
-+            Aml *dev = aml_device("IC%.02X", socket);
-+            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0002")));
-+            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
-+            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
-+
-+            Aml *crs = aml_resource_template();
-+            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
-+                                               s->memmap[VIRT_APLIC_S].size,
-+                                               AML_READ_WRITE));
-+            aml_append(dev, aml_name_decl("_CRS", crs));
-+            aml_append(scope, dev);
-+        }
-+    }
-+}
-+
- static void
- acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+@@ -192,7 +192,7 @@ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
                      uint32_t uart_irq)
-@@ -411,6 +457,7 @@ static void build_dsdt(GArray *table_data,
+ {
+     Aml *dev = aml_device("COM0");
+-    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0501")));
++    aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0003")));
+     aml_append(dev, aml_name_decl("_UID", aml_int(0)));
  
-     socket_count = riscv_socket_count(ms);
- 
-+    acpi_dsdt_add_plic_aplic(scope, s);
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
- 
-     if (socket_count == 1) {
+     Aml *crs = aml_resource_template();
 -- 
 2.40.1
 
