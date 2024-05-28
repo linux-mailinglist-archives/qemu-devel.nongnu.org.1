@@ -2,76 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF1F8D1629
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F68D1678
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:40:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBs6D-0006uF-DM; Tue, 28 May 2024 04:22:25 -0400
+	id 1sBsMN-0002hn-1M; Tue, 28 May 2024 04:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBs6A-0006s3-Py
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:22:22 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsML-0002hZ-Dr
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBs68-0002Fx-M1
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:22:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716884541; x=1748420541;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=f3svJEEuwU8zXQTsSySTUzD86Ayyx1BToP+oN07MDVY=;
- b=AZLWlcjIJclYEFcsVu0BNeJvLMm+NM/7FiqZd4cciekiR8RBhtxFiNNu
- JnzoXkADKWRQO7lsQ6Se2mbi8S829qWGcb+fhGmKXDk1yOYge68jETI5b
- 4kzrdNtIC4yGnEFZxosuc2AtbGmupQDzROe4F9+9ZpWzT5eROchDrUfgk
- P4RbLe5J/jCOzd3OTsimjs5+FyXrNQjPk44SWPbMf2oLlajuqTGp+keih
- e5zELQ55BDpcAL6dwFnpqB4M/IR24RHXTWJi8ieUla0MmxMGjRPh4vZVp
- 4D3MmtUsGOMueHxEd7AjItWX/zSicdlE9kPMmCxYmyc20CGTs5hgtxIT8 Q==;
-X-CSE-ConnectionGUID: 9YcfnTaXSM6YjbDttE/jyQ==
-X-CSE-MsgGUID: ZSgeo0iaR+CaQrpHjicRYA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="24627370"
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="24627370"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 01:22:19 -0700
-X-CSE-ConnectionGUID: xvDVnYjpQziWiPsEbfiIDg==
-X-CSE-MsgGUID: 9ESX5TKGTj6IPR/hnkRUIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39806405"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 28 May 2024 01:22:16 -0700
-Date: Tue, 28 May 2024 16:37:39 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [RFC 3/6] scripts/simpletrace-rust: Add helpers to parse trace
- file
-Message-ID: <ZlWX00EGcPdBezpy@intel.com>
-References: <20240527081421.2258624-1-zhao1.liu@intel.com>
- <20240527081421.2258624-4-zhao1.liu@intel.com>
- <20240527203938.GD913874@fedora.redhat.com>
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMJ-0004oZ-Po
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716885542;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=A1UrnLyvAfYu3lvm+2EGpMl72XMudIZPVV8xi1QNEX4=;
+ b=PTjSn4bOpzKVZdu8ROjzqDFes6RJbQsvu44OXnZhH98CP6wApxtr1taf1Ws5o+LDu6NDZf
+ RnaiaY4hl3xjEB0UuvIl9PAfKFs5GAVoIV9xdfVfZ/8nNIvSIPgcU5uJTJh0owwuPpGJNg
+ RF+IfJm/caev5L/wmavlGyRrCvL/MWo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-452-_414HVcwP9WwkbDR8fUG8w-1; Tue, 28 May 2024 04:39:00 -0400
+X-MC-Unique: _414HVcwP9WwkbDR8fUG8w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BEB42812296
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:38:59 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 67AFE40004D;
+ Tue, 28 May 2024 08:38:59 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 45DA018009F4; Tue, 28 May 2024 10:38:58 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH v2 0/4] MAINTAINERS: update kraxel's entries.
+Date: Tue, 28 May 2024 10:38:52 +0200
+Message-ID: <20240528083858.836262-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527203938.GD913874@fedora.redhat.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,81 +77,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > +    fn read_type(mut fobj: &File) -> Result<RecordType>
-> > +    {
-> > +        let mut tbuf = [0u8; 8];
-> > +        if let Err(e) = fobj.read_exact(&mut tbuf) {
-> > +            if e.kind() == ErrorKind::UnexpectedEof {
-> > +                return Ok(RecordType::Empty);
-> > +            } else {
-> > +                return Err(Error::ReadFile(e));
-> > +            }
-> > +        }
-> > +
-> > +        /*
-> > +         * Safe because the layout of the trace record requires us to parse
-> > +         * the type first, and then there is a check on the validity of the
-> > +         * record type.
-> > +         */
-> > +        let raw_t =
-> > +            unsafe { std::mem::transmute::<[u8; 8], RecordRawType>(tbuf) };
-> 
-> A safe alternative: https://doc.rust-lang.org/std/primitive.u64.html#method.from_ne_bytes?
+I have not found much time to work on qemu due to being busy with
+firmware (edk2 for the most part).  Time to update the MAINTAINERS
+file entries to match reality.
 
-Thanks! Will use it.
+I drop spice, ui, audio and usb due to lack of time.
 
-> > +        match raw_t.rtype {
-> > +            RECORD_TYPE_MAPPING => Ok(RecordType::Mapping),
-> > +            RECORD_TYPE_EVENT => Ok(RecordType::Event),
-> > +            _ => Err(Error::UnknownRecType(raw_t.rtype)),
-> > +        }
-> > +    }
-> > +}
+I drop virtio-gpu, I don't follow recent development (venus etc.)
+close enough to be able to actually review the changes.  Looking at
+qemu-devel traffic for virtio-gpu it seems to be in good hands with
+multiple people working on it, even though this is not reflected in
+the MAINTAINERS file.
 
-[snip]
+I keep the firmware bits (edk2, fw_cfg).
 
-> > +{
-> > +    fn read_header(mut fobj: &File) -> Result<Self>
-> > +    {
-> > +        let mut raw_hdr = [0u8; 24];
-> > +        fobj.read_exact(&mut raw_hdr).map_err(Error::ReadFile)?;
-> > +
-> > +        /*
-> > +         * Safe because the size of log header (struct LogHeader)
-> > +         * is 24 bytes, which is ensured by simple trace backend.
-> > +         */
-> > +        let hdr =
-> > +            unsafe { std::mem::transmute::<[u8; 24], LogHeader>(raw_hdr) };
-> 
-> Or u64::from_ne_bytes() for each field.
+I also keep some other pieces which don't see much development
+activity such as stdvga and cirrus for now.  I might revisit
+this later.
 
-Will do.
+v2 changes:
+ - flip entries without maintainer to orphan even if there is
+   a reviewer left.
+ - add/upgrade volunteers from replies to audio sections.
 
-> > +        Ok(hdr)
-> > +    }
-> > +}
+take care,
+  Gerd
 
-[snip]
+Gerd Hoffmann (4):
+  MAINTAINERS: drop audio maintainership
+  MAINTAINERS: drop usb maintainership
+  MAINTAINERS: drop virtio-gpu maintainership
+  MAINTAINERS: drop spice+ui maintainership
 
-> > +impl ReadHeader for RecordHeader
-> > +{
-> > +    fn read_header(mut fobj: &File) -> Result<Self>
-> > +    {
-> > +        let mut raw_hdr = [0u8; 24];
-> > +        fobj.read_exact(&mut raw_hdr).map_err(Error::ReadFile)?;
-> > +
-> > +        /*
-> > +         * Safe because the size of record header (struct RecordHeader)
-> > +         * is 24 bytes, which is ensured by simple trace backend.
-> > +         */
-> > +        let hdr: RecordHeader =
-> > +            unsafe { std::mem::transmute::<[u8; 24], RecordHeader>(raw_hdr) };
-> 
-> Or u64::from_ne_bytes() and u32::from_ne_bytes() for all fields.
+ MAINTAINERS | 42 +++++++++++++-----------------------------
+ 1 file changed, 13 insertions(+), 29 deletions(-)
 
-Will do.
-
-Thanks,
-Zhao
+-- 
+2.45.1
 
 
