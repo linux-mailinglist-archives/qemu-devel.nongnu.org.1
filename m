@@ -2,68 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319988D20F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8738D20F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:59:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBzDG-00016Q-36; Tue, 28 May 2024 11:58:10 -0400
+	id 1sBzE1-0002DY-Am; Tue, 28 May 2024 11:58:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzDD-00014Q-Sz
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:58:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzDC-0007DS-Gv
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:58:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716911885;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=pCvahjJ4SmgcxIilpeTLdKvrw6PzDVTH7BydDKBUbBE=;
- b=DRR//7Be0LYRhL0cDc1nd14JgQRSrub216U0xqdENxFc0l6ZyLNiynVkiW5J1JRBJkGTh8
- njCf654mkaGeZ9MSeRGNAv6d4xj8SZ1OjuXa/lIGsUz7zAvnE1YUzjsDESrvGgn6NASfiT
- KEAl6z8EcIjg6f0GxDaXBwxfCZEDkRs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-575-1wYMTMsrMmytJ8bhjADZhQ-1; Tue,
- 28 May 2024 11:58:02 -0400
-X-MC-Unique: 1wYMTMsrMmytJ8bhjADZhQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95C85380671C;
- Tue, 28 May 2024 15:58:01 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.195.1])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 87D32C15BB1;
- Tue, 28 May 2024 15:57:59 +0000 (UTC)
-Date: Tue, 28 May 2024 17:57:58 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Sam Li <faithilikerun@gmail.com>
-Subject: Re: [PATCH] qemu-io: add cvtnum() error handling for zone commands
-Message-ID: <ZlX_BisL0OCB6Ukg@redhat.com>
-References: <20240507180558.377233-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sBzDx-0002Bu-5f
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:58:53 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sBzDv-0007Gr-Q6
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:58:52 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-a6268034cf8so49740366b.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716911930; x=1717516730; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XZHdHibYnpZlZr9G3I7C1t2Kad9PTikqW6rAXY6Migo=;
+ b=LrPgwyVEC+zzWlmpVLcWc4OaVHJXPMOkjgiYGhojGpu15yAn9AY6ghL1FN+pWp52Kr
+ iB3vYfbkH9rPT8VchcWLFE+j5wFAe7ECdHYMwheAQiIVutl1q9QEeq5QVf+BoU3AfDXd
+ 8fuj2U96gLRh09+yBCzpyWjNtLhjdwktjEkB53qHYr3B+WrJmB6H2q4ksH/KhfLFHCdB
+ t4pBZSU5M3E9npT5lgFUl62o6+ceUlphqCoFbbBnd5tfxBhn660uXd9IHo2OQ/UWVeKt
+ 9CUq79PQLzc13Yr4s7LoKNuz6BGSyrnMfG2haW640ojaAPUCpZxB4d7r+qqv38GYc3Qu
+ Coiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716911930; x=1717516730;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XZHdHibYnpZlZr9G3I7C1t2Kad9PTikqW6rAXY6Migo=;
+ b=lxx+ugYRjSkVrPLOEPbRkFWLIsyY/MzKi2+MrlarLLO37kwwJ04lcHHRX//ccsPTGd
+ Apk+bNl3+9YCjkhxmT12xDEyo7VlJ4eCiU1UE6k1uOfHNi4hSdClg42Mt8eUyCdHbH5C
+ RchA4tUxC11uniPt046z7t1OsdmOSK9D9xqdKwywf9JGjcbZECdF79+QTMFxBTIlZwEE
+ E5Pgq8thqGXHZ0fTyGEJnaECsXclUXfbI/go3AFnDv7z5msIR9lETaCdiAqtCwjQLF7d
+ 6p3VayY8q/cKg0TKLYK6w9t4Vy6+KbA1RgavHZ4+pXdyixCcsjve0Bv2MeZ9hDX51fVD
+ rcag==
+X-Gm-Message-State: AOJu0Yyp67mJjx664IKGEmpBFt/+vzPJH3NVmO4icvOO7dHSEGLd9CaF
+ heEN1Pct6ljlQy1IHrZWEpOR8Q3sTYJzCIUWBg5NFZ5nmpY+XXUqKFTX0XdxiXdmfGWxeR2NcwZ
+ Pu80MXkfo0uRA7BUNECuzkSk9zFz7oZuZ5qtA1ngre2JjHq5u
+X-Google-Smtp-Source: AGHT+IEgWEVSatv4yZM+ONksBb7Fria/Aivmepb/attK2PSoFBLN3ywAB+YRW8i49tnRFFCylFtq3aeIIXIwHREcNrY=
+X-Received: by 2002:a50:c946:0:b0:56e:10d3:85e3 with SMTP id
+ 4fb4d7f45d1cf-5785194fa92mr10974426a12.13.1716911930314; Tue, 28 May 2024
+ 08:58:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240507180558.377233-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20240524232121.284515-1-richard.henderson@linaro.org>
+ <20240524232121.284515-53-richard.henderson@linaro.org>
+In-Reply-To: <20240524232121.284515-53-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 May 2024 16:58:39 +0100
+Message-ID: <CAFEAcA8UKcxazjsjVXmcQw+4ihjc32SouLWMSXB=Fyez3MomJA@mail.gmail.com>
+Subject: Re: [PATCH v2 52/67] target/arm: Use TCG_COND_TSTNE in
+ gen_cmtst_{i32, i64}
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,19 +87,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 07.05.2024 um 20:05 hat Stefan Hajnoczi geschrieben:
-> cvtnum() parses positive int64_t values and returns a negative errno on
-> failure. Print errors and return early when cvtnum() fails.
-> 
-> While we're at it, also reject nr_zones values greater or equal to 2^32
-> since they cannot be represented.
-> 
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Sam Li <faithilikerun@gmail.com>
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+On Sat, 25 May 2024 at 00:30, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  target/arm/tcg/gengvec.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 
-Thanks, applied to the block branch.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Kevin
-
+thanks
+-- PMM
 
