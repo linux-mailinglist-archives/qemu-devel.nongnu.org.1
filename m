@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29B08D1B50
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 14:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79CC8D1B5B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 14:34:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBvwB-000604-92; Tue, 28 May 2024 08:28:19 -0400
+	id 1sBw1K-00088G-KR; Tue, 28 May 2024 08:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBvw8-0005zY-ML
- for qemu-devel@nongnu.org; Tue, 28 May 2024 08:28:16 -0400
+ id 1sBw1G-00086n-CE
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 08:33:35 -0400
 Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBvw6-00080E-4b
- for qemu-devel@nongnu.org; Tue, 28 May 2024 08:28:16 -0400
+ id 1sBw1C-0004Fa-UX
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 08:33:33 -0400
 Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-35a264cb831so543845f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 05:28:12 -0700 (PDT)
+ ffacd0b85a97d-354fb2d9026so660034f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 05:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716899291; x=1717504091; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716899607; x=1717504407; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ZRWgvb+4gkYPGkIV8FKckvdCMeBsk/D0kJeBsTCwWME=;
- b=t5OhQS4GoRu4wCEpuFIyCkF1fp7dtqyCam+O0muvx00u8IXcsuxfr4Uatr2XgsoXgN
- uOAGVsuhI8Ub3sF8Qw/E54cTYTc8NDfwkOlDJk29BsXumdtiXjCC82EpVNH3m5cInNlX
- Bk5laF+s07hEl/EDcng430WKaj9yVZBGoK5HbE37PZALX9Je+ODmHV7Hz5csvJmIAGts
- p40Z1LY7cC546PEcJgcvTbLFdZmNO8P2XxCHTXSAVZ062xgg91OBqDfF6q+/UjxCUQFW
- iMUDU3ToseYrPnv1qRGF/F8amKkuR8E2mZn240KI9Zsxnw/fD0qa83uJBM6M9uquXWRP
- wcag==
+ bh=Q7YMTLqkHC4fWohjIg2vd7qVXGW0DOiWQb9NkyMeib4=;
+ b=Ji/aGyJD3EufE00gyP9GVzYLha1h3DYikP+hOAF/DXg2CNQ3C1PzQTbbiIK7FgLZZQ
+ S1a7L7WpV8ybXKGSdo34Y8x0PeEW8pv1UzQSN04XSuie8PoANKq3UxHvy24wvj4Lvqmt
+ geArJsIBdQfaXPxxa522KdShp/W6DM/VKLusxqEec/pig8pXtf1/4ZOKzkr242p7YW40
+ 6OvN2N6ypnm2ZjqN/uCSOUXzVpuozA55qzMv2MV6X3FTvnJs1CH/FuYT4A3+Drn7TBpB
+ xstRQ0DbhkSaI4V8WdcWo+A3hZl7MMhoFtHHYhkcLu3KRNmLzb3w0cU68RC0I8Jmhvmu
+ sNcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716899291; x=1717504091;
+ d=1e100.net; s=20230601; t=1716899607; x=1717504407;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ZRWgvb+4gkYPGkIV8FKckvdCMeBsk/D0kJeBsTCwWME=;
- b=cm4ZPv9jOVPcO/Ke2FAP+72hvdVhKVYAuYisktlmCWDGvfp3WMJZFBjDeFfIfabPI3
- DFnX+aw4f1zIRJGxrbLLSQY2KaiLmL6orXoRRNvIb1ybAg/IB4IYp3WT0jJNqOb4QX6a
- Y/wrtuBHKSCR5F2jhOJ30paTycCY294oPTLNtTOKKRq4xr3iQ3aJI+f46Q56a4r02eNZ
- h7VDqnfCH0H2BXpZDqDhQhrR4B33FZwCTtXdgo0dX78ceuH3HhBaHiyK8fjJr5fygQB1
- ANq5ueoiBZTDqJZvXYVeWOtwRoU4i5SZUdWuyg0LVnEjohaohvBWNLDwiNlGhiQZ2Ifw
- 7L5A==
-X-Gm-Message-State: AOJu0YwtjdYo4LslPnS9TEp5XcNdW/8lz58/fbDMBd0rFb4v4evAvdMg
- ZuO3qDvCXuQOzTI9oVKfYJkyWszZNvncqKH915wFXIUc+BRvXlbQ4zF57CljQF1rMbH5ZxFSxKi
- s+GAsL8tM7+tkhJQTuU6sPKK3x5HpkR9Q/eC5VQMe7jts296y
-X-Google-Smtp-Source: AGHT+IHZfONmWoMDjX/5+nw7oewx8C81y7wZakwH9TYd4twnM4MpGIUCxL2ciki8qsAoaICVWIWxE3kXv0ZRXpCEgOs=
-X-Received: by 2002:a50:950f:0:b0:56d:fca8:d209 with SMTP id
- 4fb4d7f45d1cf-5785195c33emr8569608a12.10.1716898942747; Tue, 28 May 2024
- 05:22:22 -0700 (PDT)
+ bh=Q7YMTLqkHC4fWohjIg2vd7qVXGW0DOiWQb9NkyMeib4=;
+ b=c7iQoF8EN+TzYACpDMdvWj8zfXqjIhPTG+CRyxLtp7fxGI7Rw16XXkE9Q3LCn/2jrx
+ q3hTPZEEV+U7sIauH6ir06XnqkOQ3G+A7Q+jqEP5ssao2BuIerYf52xENlbtmnj3eSwL
+ gaFeY8NNWPAhgcoKUrUi9PHSLxaRhx6gn0L2FO7pG0ld3epmyLUPTq5VVUTHBA4LAH8v
+ 9Euf+7yUm/rd5Bu4DotVbcuj7poP4u0meGlLFEp5p2wp0yUHuCPxFLtPHQEDmdOQXKyf
+ mwrmxeaWDOxQAV6E149Dz9OHaHXpESISkJjCqHvxUHL343Z7W3Gl+oR65ePChH8WM1Du
+ mfQg==
+X-Gm-Message-State: AOJu0YyLWrKZU3ng/p0q/p61ahoCNRPj+wAWXJYC9M2v94xKcLCsYkYi
+ GbJlspCj/TTSInHvQOzryVaLo17JLIASG1+WH7u//7bpR7AfCaCpCGp9Y4/x/bYcuz7ylSoEekX
+ HgtFRcIVXWrqBoEnIGidqFLd0kKrHq7uT2dvQcUo6sF86PrjR
+X-Google-Smtp-Source: AGHT+IFRSHnm8dwTvsTLkurJXAE0wjAu3t/UxytcICbY84m5G7nM1qRqMjmm60CPbDXRrAjLtzp+puWelIF5G7iYffI=
+X-Received: by 2002:a05:6512:1309:b0:522:297f:cb06 with SMTP id
+ 2adb3069b0e04-529651988b4mr8081085e87.32.1716899123668; Tue, 28 May 2024
+ 05:25:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240524232121.284515-1-richard.henderson@linaro.org>
- <20240524232121.284515-22-richard.henderson@linaro.org>
-In-Reply-To: <20240524232121.284515-22-richard.henderson@linaro.org>
+ <20240524232121.284515-7-richard.henderson@linaro.org>
+In-Reply-To: <20240524232121.284515-7-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 13:22:11 +0100
-Message-ID: <CAFEAcA_k3S0mJntmJXH=48CreZJzFUvNspCyEDp4O-qEwcucXQ@mail.gmail.com>
-Subject: Re: [PATCH v2 21/67] target/arm: Introduce vfp_load_reg16
+Date: Tue, 28 May 2024 13:25:12 +0100
+Message-ID: <CAFEAcA_5RMV-OU+U+0LAEEQJsag1MF-La64JtqzTcN7EZ6u3_A@mail.gmail.com>
+Subject: Re: [PATCH v2 06/67] target/arm: Verify sz=0 for Advanced SIMD scalar
+ pairwise (fp16)
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
@@ -70,7 +71,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,12 +87,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 May 2024 at 00:23, Richard Henderson
+On Sat, 25 May 2024 at 00:22, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Load and zero-extend float16 into a TCGv_i32 before
-> all scalar operations.
+> All of these insns have "if sz == '1' then UNDEFINED" in their pseudocode.
+> Fixes a RISU miscompare for invalid insn 0x5ef0c87a.
 >
+> Fixes: 5c36d89567c ("arm/translate-a64: add all FP16 ops in simd_scalar_pairwise")
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
