@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9599D8D2085
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4460D8D2090
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:38:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sByr8-0006HL-6h; Tue, 28 May 2024 11:35:18 -0400
+	id 1sBytD-0007Kf-Lm; Tue, 28 May 2024 11:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sByr6-0006Gy-Dd
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:35:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sByr4-0003sF-MX
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:35:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716910513;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1WdTmjw8EhuVR8eQNarlG3ROBvZ5T382348YDC217RY=;
- b=SnTSBmoxLHsCrTnbyEsLIl3gpV9INJaWgjtMw3Et64UxNSzmVxH85Ytxy3mz1rH+hZdcqY
- eZjygPQ1NtvH/J5cKDNll4gIVHY93bJumv9pyAGD0jAYJuRVDWOuPdKD5K3hrMx86Zvj3n
- jQals7UVPaJhqFMW8n+zuS5NtLoM2L8=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-MmP-gvXOO8u-9shdGqRJvA-1; Tue, 28 May 2024 11:35:11 -0400
-X-MC-Unique: MmP-gvXOO8u-9shdGqRJvA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-43fc8bb9f09so169031cf.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:35:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
+ id 1sBytB-0007JB-5M
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:37:25 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dmamfmgm@gmail.com>)
+ id 1sByt9-0004D7-2U
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:37:24 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-48a39e3923fso304396137.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:37:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716910641; x=1717515441; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=F9SNlMdy/XgPX65jRFYAFl/zi5QpZ+wDvEyutcnbNcw=;
+ b=NS4i9P/expqg2Me7wnSNMGM8jHVtM7Z9KgA2wIigLcT2SGhVuGaJpR1FwqraKYNQX5
+ oe0XRK+filBZuD3nFIBF34gg/1VXkETfjFc8O7BNot4ChXzwH3gLLP/w5mTVP/7gOLvw
+ rFp7r4jmyPBYqlwvQdClhSJXRnjAyjQzxxI2ekITnfA0trYsuCbSoDhsXT5zFw81IT+V
+ 8s6u5JKqRmspifvz8JqiouHhkYBnQwhWJAfc9zhM97zQ7cE8xmV1lee3LUwH3YdVHZHQ
+ CRo1dxUZMCkqEF9TQlnINFYSebbbFm1acX0a0NXqWIfSbyBITUQwZue4MVZwVjRipExY
+ 5TJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716910511; x=1717515311;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1WdTmjw8EhuVR8eQNarlG3ROBvZ5T382348YDC217RY=;
- b=EwHADB+xZlS0rg9aZsGVo6WTgTrnNfi7fWNLii7kpXK545DovT0UjZLeIZhTD3/Bf9
- lXR1GH4YkLJrmoEZf4zHRpfzRxdBUaRKd2KIfpBW8xtU+zZNl+d9jtgh7XfvEZVZzyY1
- JRPArljCnROXcjuky2uyPzY37sc1Tz/TxVAol/KtRLCSqANYQtlnM6AtqWcxb2pLmJiL
- NrDJ7UzR2iiR8jdQN835h5KDmkiJMre4j6PfrLaf3OJqY4VKXr8FbyVE69Ohph99TXiN
- d2rKeZb6i4hPb3dWTg6JI8biG0CC7E7YQ7LgykQMbOU+kDbKnuin/PtdUxFgxXauZUzY
- 7cQA==
-X-Gm-Message-State: AOJu0Yx1EJZU8kpghoz4Z8utLccdTrC0Dmzzbi561r/fZjWSZ/pZOq8S
- UTYmJpYRBVgUWCBnQ3EqrSI11tROlRZ217TyH4cfpPRXFHR14jAjosw58XKPKo9v0ojF/lGXXGE
- YcpZhuqxQMidKvjYhy70J8rmV/uu2Qo/B9+k6kNTw1kW+Af2zPAzS
-X-Received: by 2002:ac8:58d4:0:b0:437:cc82:9c00 with SMTP id
- d75a77b69052e-43fb0d69b99mr138894231cf.0.1716910510687; 
- Tue, 28 May 2024 08:35:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjC1pa7WMNKRno+MCbUCfIOCwB+9sjtaA1afZw2EYtGD6jEu93OkNPJKZhDZSd0QiriNKoFA==
-X-Received: by 2002:ac8:58d4:0:b0:437:cc82:9c00 with SMTP id
- d75a77b69052e-43fb0d69b99mr138893791cf.0.1716910509875; 
- Tue, 28 May 2024 08:35:09 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43fb16b97b5sm43547591cf.18.2024.05.28.08.35.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 08:35:09 -0700 (PDT)
-Date: Tue, 28 May 2024 11:35:07 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Het Gala <het.gala@nutanix.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [RFC PATCH 3/4] tests/qtest/migration: Add support for simple
- device tests
-Message-ID: <ZlX5q9e-p93i0Am9@x1n>
-References: <20240523201922.28007-1-farosas@suse.de>
- <20240523201922.28007-4-farosas@suse.de> <ZlT3ORBU6-FbRXda@x1n>
- <87wmneg8t5.fsf@suse.de>
+ d=1e100.net; s=20230601; t=1716910641; x=1717515441;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=F9SNlMdy/XgPX65jRFYAFl/zi5QpZ+wDvEyutcnbNcw=;
+ b=DbF42Jbp35pm6GGsk1k6D2l2OYfGUo0QjOxnGaXO+RvaI/h4K+AoZYNfvhBt6xURWW
+ 1BTEE80h7ehruZP10ZvT9QAmYAjbjpItk8c+Ri/rmsaauJz4kaFrY9obac3R9gR1UlGj
+ sh9uQWOHM1TE+tuvoGsStUCrtq1RWtGKZhQrSUrm+9Ltw2hQWjTuHH6kGG2bneY7E3yf
+ oujq6IfbIJZYOwL0XyLElRfBdoh5ygEGPlllCxOGnt5eiXpN3Rnh8X1c2lxXO7+om4sL
+ 9/hT44mqU9iZYxD9VJGAc80Ds+q4XJkSeZfsbJeEvJz35SUvSPPCqGKEZ7RVHGiFVLvP
+ Mlpw==
+X-Gm-Message-State: AOJu0YwRLJTCmsKPhmCOQ91ZWsYGM4xkTxXA+uT2vEJBX98//pqIYfEG
+ XmwhSpEHLCoDRShxNKPtVJpCqAEsq/vqHqsGdqasXD0p4GSMdSAHNa0SfUSuaGihpN0Wi5gGeJb
+ bItf00cfoLjkKdjcPTOKP0zUFORjZcBXY
+X-Google-Smtp-Source: AGHT+IEd+LqwoZFoiG1J5eURRWZGZN6BxjtuBJmWRktEmTeb8KUztt1G6nFXCsnqYJIJ+LfwfHpcD/XkCPrdT2liorc=
+X-Received: by 2002:a05:6102:3121:b0:47c:1255:dc2d with SMTP id
+ ada2fe7eead31-48a386f75f5mr11059720137.33.1716910640069; Tue, 28 May 2024
+ 08:37:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87wmneg8t5.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <CACBuX0To1QWpOTE-HfbXv=tUVWVL0=pvn-+E28EL_mWuqfZ-sw@mail.gmail.com>
+ <CAFEAcA9aum5+z3sr-OpCHZRWxFtZGS_kGOjjmRh7H1TBTZuFRQ@mail.gmail.com>
+ <CACBuX0Q3TMvmxuuAHfVY679wpKF+0N+-aw=A7PLiba7ndc5v+w@mail.gmail.com>
+ <CAFEAcA9XvHOF22m-9ZFtKLAaShE5gVjsy-AxQyBwVAkRZ2QW6g@mail.gmail.com>
+In-Reply-To: <CAFEAcA9XvHOF22m-9ZFtKLAaShE5gVjsy-AxQyBwVAkRZ2QW6g@mail.gmail.com>
+From: Cord Amfmgm <dmamfmgm@gmail.com>
+Date: Tue, 28 May 2024 10:37:08 -0500
+Message-ID: <CACBuX0Rzh9g4BEei8=vk0vOr7BwEZqom4LBGLcqH_omnBy9fLQ@mail.gmail.com>
+Subject: Re: hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or OUT
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000d0014c0619856844"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=dmamfmgm@gmail.com; helo=mail-vs1-xe32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,89 +89,181 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 27, 2024 at 07:59:50PM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
-> 
-> > On Thu, May 23, 2024 at 05:19:21PM -0300, Fabiano Rosas wrote:
-> >> The current migration-tests are almost entirely focused on catching
-> >> bugs on the migration code itself, not on the device migration
-> >> infrastructure (vmstate). That means we miss catching some low hanging
-> >> fruits that would show up immediately if only we had the device in
-> >> question present in the VM.
-> >> 
-> >> Add a list of devices to include by default in the migration-tests,
-> >> starting with one that recently had issues, virtio-gpu. Also add an
-> >> environment variable QTEST_DEVICE_OPTS to allow test users to
-> >> experiment with different devices or device options.
-> >> 
-> >> Do not run every migration test with the devices because that would
-> >> increase the complexity of the command lines and, as mentioned, the
-> >> migration-tests are mostly used to test the core migration code, not
-> >> the device migration. Add a special value QTEST_DEVICE_OPTS=all that
-> >> enables testing with devices.
-> >> 
-> >> Notes on usage:
-> >> 
-> >> For this new testing mode, it's not useful to run all the migration
-> >> tests, a single test would probably suffice to catch any issues, so
-> >> provide the -p option to migration-test and the test of your choice.
-> >> 
-> >> Like with the cross-version compatibility tests in CI and the recently
-> >> introduced vmstate-static-checker test, to be of any use, a test with
-> >> devices needs to be run against a different QEMU version, like so:
-> >> 
-> >> $ cd build
-> >> $ QTEST_DEVICE_OPTS=all \
-> >>  QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-> >>  QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-x86_64 \
-> >>  ./tests/qtest/migration-test -p /x86_64/migration/precopy/tcp/plain
-> >> 
-> >> $ cd build
-> >> $ QTEST_DEVICE_OPTS='-device virtio-net' \
-> >>  QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-> >>  QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-x86_64 \
-> >>  ./tests/qtest/migration-test -p /x86_64/migration/precopy/tcp/plain
-> >> 
-> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> ---
-> >>  tests/qtest/migration-test.c | 19 +++++++++++++++++--
-> >>  1 file changed, 17 insertions(+), 2 deletions(-)
-> >> 
-> >> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> >> index 2253e0fc5b..35bb224d18 100644
-> >> --- a/tests/qtest/migration-test.c
-> >> +++ b/tests/qtest/migration-test.c
-> >> @@ -71,6 +71,13 @@ static QTestMigrationState dst_state;
-> >>  #define QEMU_ENV_SRC "QTEST_QEMU_BINARY_SRC"
-> >>  #define QEMU_ENV_DST "QTEST_QEMU_BINARY_DST"
-> >>  
-> >> +/*
-> >> + * The tests using DEFAULT_DEVICES need a special invocation and
-> >> + * cannot be reached from make check, so don't bother with the
-> >> + * --without-default-devices build.
+--000000000000d0014c0619856844
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, May 28, 2024 at 9:03=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org>
+wrote:
+
+> On Mon, 20 May 2024 at 23:24, Cord Amfmgm <dmamfmgm@gmail.com> wrote:
+> > On Mon, May 20, 2024 at 12:05=E2=80=AFPM Peter Maydell <peter.maydell@l=
+inaro.org>
+> wrote:
+> >> For the "zero length buffer" case, do you have a more detailed
+> >> pointer to the bit of the spec that says that "cbp =3D be + 1" is a
+> >> valid way to specify a zero length buffer? Table 4-2 in the copy I
+> >> have says for CurrentBufferPointer "a value of 0 indicates
+> >> a zero-length data packet or that all bytes have been transferred",
+> >> and the sample host OS driver function QueueGeneralRequest()
+> >> later in the spec handles a 0 length packet by setting
+> >>   TD->HcTD.CBP =3D TD->HcTD.BE =3D 0;
+> >> (which our emulation's code does handle).
 > >
-> > What's this "--without-default-devices"?
-> 
-> A configure option. It removes from the build any devices that are
-> marked as default. It's an endless source of bugs because it is supposed
-> to be paired with a config file that adds back some of the removed
-> devices, but there's nothing enforcing that so we always run it as is
-> and generate a broken QEMU binary.
-> 
-> So anything in the tests that refer to devices should first check if
-> that QEMU binary even has the device present. I'm saying here that we're
-> not going to do that because this test cannot be accidentally reached
-> via make check. Realistically, most people will consume this test
-> through the CI job only.
+> >
+> > Reading the spec carefully, a CBP set to 0 should always mean the
+> zero-length buffer case (or that all bytes have been transferred, so the
+> buffer is now zero-length - the same thing).
+>
+> Yeah, I can see the argument for "we should treat all cbp =3D=3D 0 as
+> zero-length buffer, not just cbp =3D=3D be =3D=3D 0".
+>
+> > Table 4-2 is the correct reference, and this part is clear. It's the
+> part you quoted. "Contains the physical address of the next memory locati=
+on
+> that will be accessed for transfer to/from the endpoint. A value of 0
+> indicates a zero-length data packet or that all bytes have been
+> transferred."
+> >
+> > Table 4-2 has this additional nugget that may be confusingly worded, fo=
+r
+> BufferEnd: "Contains physical address of the last byte in the buffer for
+> this TD"
+>
+> Mmm, but for a zero length buffer there is no "last byte" to
+> have this be the physical address of.
+>
+> > And here's an example buffer of length 0 -- you probably already know
+> what I'm going to do here:
+> >
+> > char buf[0];
+> > char * CurrentBufferPointer =3D &buf[0];
+> > char * BufferEnd =3D &buf[-1]; // "address of the last byte in the buff=
+er"
+> > // The OHCI Host Controller than advances CurrentBufferPointer like
+> this: CurrentBufferPointer +=3D 0
+> > // After the transfer:
+> > // CurrentBufferPointer =3D &buf[0];
+> > // BufferEnd =3D &buf[-1];
+>
+> Right, but why do you think this is valid, rather than
+> being a guest software bug? My reading of the spec is that it's
+> pretty clear about how to say "zero length buffer", and this
+> isn't it.
+>
+> Is there some real-world guest OS that programs the OHCI
+> controller this way that we're trying to accommodate?
+>
 
-Ah I didn't expect that is an existing configure option.. then it is all
-fine.
+qemu versions 4.2 and before allowed this behavior.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+I don't think it's valid to ask for a *popular* guest OS as a
+proof-of-concept because I'm not an expert on those. The spec says "last
+byte" which can (not "should" just "can") be interpreted as "cbp - 1".
+Therefore, I raised this patch request to re-enable the previous qemu
+behavior, in the sense of ""be conservative in what you do, be liberal in
+what you accept from others" -
+https://en.wikipedia.org/wiki/Robustness_principle
 
-Thanks,
+It is *not* valid to say the spec disallows "cbp - 1" to mean "empty
+buffer." That is what I am arguing :)
 
--- 
-Peter Xu
 
+>
+> thanks
+> -- PMM
+>
+
+--000000000000d0014c0619856844
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, May 28, 2024 at 9:03=E2=80=AF=
+AM Peter Maydell &lt;<a href=3D"mailto:peter.maydell@linaro.org">peter.mayd=
+ell@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">On Mon, 20 May 2024 at 23:24, Cord Amfmgm &lt;<a href=3D"mail=
+to:dmamfmgm@gmail.com" target=3D"_blank">dmamfmgm@gmail.com</a>&gt; wrote:<=
+br>
+&gt; On Mon, May 20, 2024 at 12:05=E2=80=AFPM Peter Maydell &lt;<a href=3D"=
+mailto:peter.maydell@linaro.org" target=3D"_blank">peter.maydell@linaro.org=
+</a>&gt; wrote:<br>
+&gt;&gt; For the &quot;zero length buffer&quot; case, do you have a more de=
+tailed<br>
+&gt;&gt; pointer to the bit of the spec that says that &quot;cbp =3D be + 1=
+&quot; is a<br>
+&gt;&gt; valid way to specify a zero length buffer? Table 4-2 in the copy I=
+<br>
+&gt;&gt; have says for CurrentBufferPointer &quot;a value of 0 indicates<br=
+>
+&gt;&gt; a zero-length data packet or that all bytes have been transferred&=
+quot;,<br>
+&gt;&gt; and the sample host OS driver function QueueGeneralRequest()<br>
+&gt;&gt; later in the spec handles a 0 length packet by setting<br>
+&gt;&gt;=C2=A0 =C2=A0TD-&gt;HcTD.CBP =3D TD-&gt;HcTD.BE =3D 0;<br>
+&gt;&gt; (which our emulation&#39;s code does handle).<br>
+&gt;<br>
+&gt;<br>
+&gt; Reading the spec carefully, a CBP set to 0 should always mean the zero=
+-length buffer case (or that all bytes have been transferred, so the buffer=
+ is now zero-length - the same thing).<br>
+<br>
+Yeah, I can see the argument for &quot;we should treat all cbp =3D=3D 0 as<=
+br>
+zero-length buffer, not just cbp =3D=3D be =3D=3D 0&quot;.<br>
+<br>
+&gt; Table 4-2 is the correct reference, and this part is clear. It&#39;s t=
+he part you quoted. &quot;Contains the physical address of the next memory =
+location that will be accessed for transfer to/from the endpoint. A value o=
+f 0 indicates a zero-length data packet or that all bytes have been transfe=
+rred.&quot;<br>
+&gt;<br>
+&gt; Table 4-2 has this additional nugget that may be confusingly worded, f=
+or BufferEnd: &quot;Contains physical address of the last byte in the buffe=
+r for this TD&quot;<br>
+<br>
+Mmm, but for a zero length buffer there is no &quot;last byte&quot; to<br>
+have this be the physical address of.<br>
+<br>
+&gt; And here&#39;s an example buffer of length 0 -- you probably already k=
+now what I&#39;m going to do here:<br>
+&gt;<br>
+&gt; char buf[0];<br>
+&gt; char * CurrentBufferPointer =3D &amp;buf[0];<br>
+&gt; char * BufferEnd =3D &amp;buf[-1]; // &quot;address of the last byte i=
+n the buffer&quot;<br>
+&gt; // The OHCI Host Controller than advances CurrentBufferPointer like th=
+is: CurrentBufferPointer +=3D 0<br>
+&gt; // After the transfer:<br>
+&gt; // CurrentBufferPointer =3D &amp;buf[0];<br>
+&gt; // BufferEnd =3D &amp;buf[-1];<br>
+<br>
+Right, but why do you think this is valid, rather than<br>
+being a guest software bug? My reading of the spec is that it&#39;s<br>
+pretty clear about how to say &quot;zero length buffer&quot;, and this<br>
+isn&#39;t it.<br>
+<br>
+Is there some real-world guest OS that programs the OHCI<br>
+controller this way that we&#39;re trying to accommodate?<br></blockquote><=
+div><br></div><div>qemu versions 4.2 and before allowed this behavior.</div=
+><div><br></div><div>I don&#39;t think it&#39;s valid to ask for a *popular=
+* guest=C2=A0OS as a proof-of-concept because I&#39;m not an expert on thos=
+e. The spec says &quot;last byte&quot; which can (not &quot;should&quot; ju=
+st &quot;can&quot;) be interpreted as &quot;cbp - 1&quot;. Therefore, I rai=
+sed this patch request to re-enable the previous qemu behavior, in the sens=
+e of &quot;&quot;be conservative in what you do, be liberal in what you acc=
+ept from others&quot; -=C2=A0<a href=3D"https://en.wikipedia.org/wiki/Robus=
+tness_principle">https://en.wikipedia.org/wiki/Robustness_principle</a></di=
+v><div><br></div><div>It is *not* valid to say the spec disallows &quot;cbp=
+ - 1&quot; to mean &quot;empty buffer.&quot; That is what I am arguing :)</=
+div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+thanks<br>
+-- PMM<br>
+</blockquote></div></div>
+
+--000000000000d0014c0619856844--
 
