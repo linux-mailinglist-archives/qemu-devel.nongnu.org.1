@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BBA8D212D
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 18:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3A98D212E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 18:06:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBzKa-0003ln-JZ; Tue, 28 May 2024 12:05:44 -0400
+	id 1sBzLJ-0005Yq-Gt; Tue, 28 May 2024 12:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBzKU-0003fj-UO
- for qemu-devel@nongnu.org; Tue, 28 May 2024 12:05:39 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBzKT-0008Di-25
- for qemu-devel@nongnu.org; Tue, 28 May 2024 12:05:38 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-57857e0f465so1391983a12.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 09:05:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716912335; x=1717517135; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=GG9FsqxUtLzktGbkFGaST3fWJoNoXL111OT+VEK4qRc=;
- b=y+jJWveky6hg+BdgJO+0Ul6Si/Ql2msXJgtfCjDT2cHbakiRa51OrIjppn+dBDJUWk
- OLmMYYY0MTo34xFeXOoGX46qGeTaGNX0v0tHgBgWj59Nu2lPt2NIQNoICMZeJNLWo1D9
- td8aRJEPUZaC+SrPNWvRxHUhZRxFY7dHkMibMEd+b+OZ1Qsd1i6VX+RJv+jArkN6LydB
- Cg2pBEPDp0DAn8ALet2lgqxe9LA1sZ+DMMoGeNRXWq7qihSJpIYqMOwfqUDhsFONxEca
- r/oNF1yKBgzzZ6n/f7vQIrl0rm38Ytt3/FOwN5p4vsA9Nzdbuqk5K0BkdCGOzfKeDfpm
- ypUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716912335; x=1717517135;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GG9FsqxUtLzktGbkFGaST3fWJoNoXL111OT+VEK4qRc=;
- b=AP6+ZuraH2KliWkxMu69Adkj6Vgp5FmLrSSXOwbyYa9QZvwu1L+9UewBTqB43Q37si
- SV8ResliN3wB72sZ9kvxkJr0WtFRFncHKRnvzCt+qgieQWOKcfFFMsfeuW0lN4xXVdqJ
- h4GyZ2wghR2sSrqJ96K5ED1GQrd7pjKvFMJnLckVVQda4ol/H+e0lOOs8qXMzkjIYqa6
- Oc5RXHYNF1rHKUwkNLULyMgRfUvbzeT4ISChnbRFZhwBLCIdshpHgeL34MSlhxqTv6ql
- tBFI7UY0gziFWZ0g0rgP23CRi+ullOLyKt3Xko3qKAJc7o2EU8bq8jhDNNiW7s8NtQXr
- CgYQ==
-X-Gm-Message-State: AOJu0YyuvvKQOvGQVeaUdLHzZew/nmG6KUatmwlR7W9oMhfGCs4HqBOf
- zvotCTXTizBU/cLelrfFc+dMrUPiYqBSjqJJVln90q2oJnKWhv/gtlAzaTJ0tAzdJBGSREpeQS+
- qOmvDs3+Fl4QEIw3IydpdV+CqNKOGtSQ5BFUjAg==
-X-Google-Smtp-Source: AGHT+IEgfONunQFecOlhkTmA4tBdyXdXA/Z57bI7K1PwAn1clGvPGbImUKL5zmgs7cHbRP2/4fmeOqL9o1oh4qQHIPo=
-X-Received: by 2002:a50:9b45:0:b0:572:4fc3:3a28 with SMTP id
- 4fb4d7f45d1cf-5785196a218mr8267315a12.23.1716912335430; Tue, 28 May 2024
- 09:05:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzLG-0005Qn-M3
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 12:06:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzLF-0008IT-1V
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 12:06:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716912382;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZztO8VGMU/DAbJAUY2lbfDZen81X1/5vsAMFVdBQqkY=;
+ b=FZIP51ahYBZsKzbR5cIvNEeSIMsI3+0GMf+1s1SkXPpWHwhiY5I2w3y6XuDoC7R5vDFEdH
+ 6E6lmMzZ3w6aap6uFZBJDtMdgnh1f/S7Oebk2Cy6z2hKP7rY+q9FTQw0HtheLaMZajoVsG
+ jSC6Jlw+nV6Zx54CXsHeJqTq+sJh7/U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-KMnRXSDoPYu-ctZK4sky9w-1; Tue, 28 May 2024 12:06:17 -0400
+X-MC-Unique: KMnRXSDoPYu-ctZK4sky9w-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D2C6800CAC;
+ Tue, 28 May 2024 16:06:16 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.195.1])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C41022026D68;
+ Tue, 28 May 2024 16:06:14 +0000 (UTC)
+Date: Tue, 28 May 2024 18:06:13 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-stable@nongnu.org,
+ hreitz@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
+ f.weber@proxmox.com
+Subject: Re: [PATCH] block/copy-before-write: use uint64_t for timeout in
+ nanoseconds
+Message-ID: <ZlYA9QXVaDSfjxOT@redhat.com>
+References: <20240429141934.442154-1-f.ebner@proxmox.com>
 MIME-Version: 1.0
-References: <20240524232121.284515-1-richard.henderson@linaro.org>
- <20240524232121.284515-62-richard.henderson@linaro.org>
-In-Reply-To: <20240524232121.284515-62-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 17:05:24 +0100
-Message-ID: <CAFEAcA8zprPQDtBATn5HzVjujsSCQrra7sQvfiYSNN6yUjeDCw@mail.gmail.com>
-Subject: Re: [PATCH v2 61/67] target/arm: Convert SABA, SABD, UABA,
- UABD to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240429141934.442154-1-f.ebner@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,17 +80,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 May 2024 at 00:29, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/a64.decode      |  4 ++++
->  target/arm/tcg/translate-a64.c | 22 ++++++----------------
->  2 files changed, 10 insertions(+), 16 deletions(-)
+Am 29.04.2024 um 16:19 hat Fiona Ebner geschrieben:
+> rather than the uint32_t for which the maximum is slightly more than 4
+> seconds and larger values would overflow. The QAPI interface allows
+> specifying the number of seconds, so only values 0 to 4 are safe right
+> now, other values lead to a much lower timeout than a user expects.
+> 
+> The block_copy() call where this is used already takes a uint64_t for
+> the timeout, so no change required there.
+> 
+> Fixes: 6db7fd1ca9 ("block/copy-before-write: implement cbw-timeout option")
+> Reported-by: Friedrich Weber <f.weber@proxmox.com>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Thanks, applied to the block branch.
 
-thanks
--- PMM
+But I don't think our job is done yet with this. Increasing the limit is
+good and useful, but even if it's now unlikely to hit with sane values,
+we should still catch integer overflows in cbw_open() and return an
+error on too big values instead of silently wrapping around.
+
+Kevin
+
 
