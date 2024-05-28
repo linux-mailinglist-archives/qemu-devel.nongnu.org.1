@@ -2,105 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FA08D1452
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E784F8D1453
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 08:21:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBqCS-0007ri-OK; Tue, 28 May 2024 02:20:44 -0400
+	id 1sBqD2-00083B-Cu; Tue, 28 May 2024 02:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sBqCN-0007qY-2t; Tue, 28 May 2024 02:20:39 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1sBqC0-00059o-Ri; Tue, 28 May 2024 02:20:38 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44S6Aogu000546; Tue, 28 May 2024 06:20:04 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
- _d=3Dibm.com; _h=3Dcc?=
- =?UTF-8?Q?:content-transfer-encoding:content-type:date:from:in-reply-to:m?=
- =?UTF-8?Q?essage-id:mime-version:references:subject:to;_s=3Dpp1;_bh=3DKlj?=
- =?UTF-8?Q?R2xTA1CwiauWebXNAMO60kQuiaj/KBTDeQ4QIkvI=3D;_b=3DWi9NbiFDZeKj+x?=
- =?UTF-8?Q?QWwh3ImwwBl67F7ZOoUiJCmeBIV1joSRFyymzByJBhoiaWoLmkRNBv_IMeVwxZI?=
- =?UTF-8?Q?M2LYgtKgQ1oQPOVs53ie9462UyxteX1P1lmFFv6IL82MFR1yqV35nvWYALYo_8J?=
- =?UTF-8?Q?TyqFD74ERuhzX2rbX95vrzfMz2BDuLhlTCqRn4pcvKLVGPXFEbOsQt4eYXui2Uy?=
- =?UTF-8?Q?Kw7_MPugNQqtCsuUm5HMRQVzRpvB/y4frqzXn6HBx3pie2Piec7BHqJZCGgw+gv?=
- =?UTF-8?Q?6WGl/piYv_97X9HeCoU1kNFiH5TzM9MkoBM+md8sdZNrlV+qDEoJpBxo30eQxac?=
- =?UTF-8?Q?aIog7FZByoQt9aC_dA=3D=3D_?=
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd904849d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 06:20:04 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44S6K318015299;
- Tue, 28 May 2024 06:20:03 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yd904849c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 06:20:03 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44S50C3g011087; Tue, 28 May 2024 06:20:03 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ybtq05ep7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 May 2024 06:20:03 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44S6K0rI48235100
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 May 2024 06:20:02 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CC78058053;
- Tue, 28 May 2024 06:20:00 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6ABB45805F;
- Tue, 28 May 2024 06:19:58 +0000 (GMT)
-Received: from [9.109.242.165] (unknown [9.109.242.165])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 28 May 2024 06:19:58 +0000 (GMT)
-Message-ID: <b59c7ab1-7671-4c84-9a16-ce571138f4c1@linux.ibm.com>
-Date: Tue, 28 May 2024 11:49:56 +0530
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sBqCi-0007xi-5D; Tue, 28 May 2024 02:21:00 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sBqCe-0005Ch-I3; Tue, 28 May 2024 02:20:58 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-6f8ea5e3812so311130b3a.2; 
+ Mon, 27 May 2024 23:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716877254; x=1717482054; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=l+AXSvJHoTvV3+UfIjLIRn/ldpLxhKETxJrMpzKYXQo=;
+ b=YOhcAH2aDXg5WfCpRTR9QnjkKiiFNOG6XJuZhDQNdATG5X9Ym3u2DUxf2S2UpBbqFp
+ 9Rgc4IrRARy4zZsLal/WxmuLc2qCCxn+9XK/+gbOh1WapwpB5rUZzIyKhcvq3+8YbI18
+ wj0IO9eHJPHW+bV7TJo3LZsF9XukS/MFFdzriGSdC5ghsjNM3C/YQq2o5vsl0v1XhQdy
+ 1v8CA2lbgMOQNEsvWC3SeDqotIrcmkMnRu97AuWim8zo5tiWbX0yrw2Rw53ARrpH0NMp
+ A5IremEZY4jY+rgTGR1abph/HutthWIdP8n84ue1ht0lqnUoGt+38Gu0T3n/wx9oyNme
+ RVLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716877254; x=1717482054;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l+AXSvJHoTvV3+UfIjLIRn/ldpLxhKETxJrMpzKYXQo=;
+ b=oYPQWuUmHsl5o7eQ4YbXqBd5MXdLWDNV+BFd6/U45On4k+0lXrLeGg8Sx/5+O0qVaL
+ Piyy2UkI1h8WXcXHcT4fGD2+Mp6Dhf/XQEPgNsOSVu3Owblir/89ZfNriSEu9arMlLAU
+ Gr18CrhesolrvIuR/ukpBj4MNI8nqq7754xuCvGnpJ2sPidgBKmNZBCzcoR7aVCPjq+Z
+ HGoGltvlGtE++Nt9wGROOrX/NvIvlOFENE5pyYAz1aU+CFTe61JDw4rYdpcbECZKD/OP
+ 64LHC3Ft6RurXwSAc0oZynLlNfP+zoWco+WiBK/fjs5Jm0GZmP4Eod2hfRPsMaPrhgqx
+ Uv0w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWTJh8McJkd+jj9BKP3/mdjlodg8I/tMIlfbQtq94fQxCsEVpvCrTmIgvyMCHkznc4Z6TyAvasqFoQmi//yh/Pf+V0gURw=
+X-Gm-Message-State: AOJu0YyA16HdDKd6BUBiNZpBDryx3s0Wf6vsIFAJ4aN7fGdnLCxwaEzt
+ fze6HaWgD+wZEOlegcbUkUidKWoi7iCaHErvlCzBmskDsz+dbJCk2bV6Qg==
+X-Google-Smtp-Source: AGHT+IFvsjBNtoBBzQepcw4HxUXOB7D5o2im7JG+9nB7NdAepnvhGmRz6PkNgWabqWsaOxgiaFOhCQ==
+X-Received: by 2002:a05:6a00:908a:b0:6ec:d76b:6fac with SMTP id
+ d2e1a72fcca58-6f8f34ae8demr13734974b3a.12.1716877253594; 
+ Mon, 27 May 2024 23:20:53 -0700 (PDT)
+Received: from wheely.local0.net (110-175-65-7.tpgi.com.au. [110.175.65.7])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-6f8fbd3dbdesm5969779b3a.18.2024.05.27.23.20.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 27 May 2024 23:20:52 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Glenn Miles <milesg@linux.vnet.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ qemu-devel@nongnu.org
+Subject: [PATCH 0/2] ppc/pnv: LPC interrupt fixes
+Date: Tue, 28 May 2024 16:20:43 +1000
+Message-ID: <20240528062045.624906-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/10] ppc/pnv: Add pointer from PnvCPUState to PnvCore
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: Caleb Schlossin <calebs@linux.vnet.ibm.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-References: <20240526122612.473476-1-npiggin@gmail.com>
- <20240526122612.473476-2-npiggin@gmail.com>
-Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20240526122612.473476-2-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YqUiZRPP_GJ6N5dA95Ski4UTkZNFUNOr
-X-Proofpoint-ORIG-GUID: dGKrUWCMHefMe8KPWxblhmwJV8YH4YhQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_03,2024-05-27_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- mlxlogscore=999 impostorscore=0 phishscore=0 spamscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405280045
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,54 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Here is v2 of the POWER9 PSI serirq patch with changes suggested by
+Cedric and some other things. But also in front of that we have a fix
+from Glenn for a lost interrupt problem.
 
+I rebased Glenn's patch and also changed some comments and changelog
+a bit so any bugs or silly comments are probably my fault, but debug
+and fix is credit to him.
 
-On 5/26/24 17:56, Nicholas Piggin wrote:
-> This helps move core state from CPU to core structures.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   include/hw/ppc/pnv_core.h | 1 +
->   hw/ppc/pnv_core.c         | 3 +++
->   2 files changed, 4 insertions(+)
-> 
-> diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-> index c6d62fd145..30c1e5b1a3 100644
-> --- a/include/hw/ppc/pnv_core.h
-> +++ b/include/hw/ppc/pnv_core.h
-> @@ -54,6 +54,7 @@ struct PnvCoreClass {
->   #define PNV_CORE_TYPE_NAME(cpu_model) cpu_model PNV_CORE_TYPE_SUFFIX
->   
->   typedef struct PnvCPUState {
-> +    PnvCore *core;
+Thanks,
+Nick
 
-Naming it *pc might be more intuitive with the most of its usage, 
-although I see few usage as "pnv_core" as well.
+Glenn Miles (1):
+  ppc/pnv: Fix loss of LPC SERIRQ interrupts
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Nicholas Piggin (1):
+  ppc/pnv: Implement POWER9 LPC PSI serirq outputs and auto-clear
+    function
 
->       Object *intc;
->   } PnvCPUState;
->   
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index f40ab721d6..7b0ea7812b 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -225,6 +225,7 @@ static const MemoryRegionOps pnv_core_power10_xscom_ops = {
->   static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
->                                    int thread_index)
->   {
-> +    PnvCPUState *pnv_cpu = pnv_cpu_state(cpu);
->       CPUPPCState *env = &cpu->env;
->       int core_hwid;
->       ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
-> @@ -232,6 +233,8 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
->       Error *local_err = NULL;
->       PnvChipClass *pcc = PNV_CHIP_GET_CLASS(pc->chip);
->   
-> +    pnv_cpu->core = pc;
-> +
->       if (!qdev_realize(DEVICE(cpu), NULL, errp)) {
->           return;
->       }
+ include/hw/ppc/pnv_lpc.h |  17 ++++-
+ hw/ppc/pnv.c             |  36 ++++++++--
+ hw/ppc/pnv_lpc.c         | 150 ++++++++++++++++++++++++++++++++-------
+ 3 files changed, 170 insertions(+), 33 deletions(-)
+
+-- 
+2.43.0
+
 
