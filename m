@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383C48D1E18
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C50088D1E01
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:09:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUw-0001fL-4D; Tue, 28 May 2024 10:08:18 -0400
+	id 1sBxUm-0001Zo-PE; Tue, 28 May 2024 10:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUt-0001dt-E5
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:15 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1sBxUl-0001ZV-9P
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:07 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUh-00072s-4j
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:15 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-357f1c0b86fso644926f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:02 -0700 (PDT)
+ id 1sBxUi-000737-Nh
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:06 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-354df3ee1a9so762448f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716905282; x=1717510082; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MMlq9Auj6l45MaC9OkLzg6YYNbQpSqIPdMIwL/zQx0E=;
- b=IA6bRw0JA6ZrsWCaq7MPgvgmYEjgj5OAg8obfE9DzpzXm7HHkyOFBuo0YEL5b3r3/R
- y5wi7AEs53OeNGB2udEtdsN+w6i0w2lJqU2ZXY+s1v0ugYDeHxYpXsAx74LIozIpmnR4
- UuIAjIoOrxjhhguCdXWSz1GfzSWqC9T47i67bhAvxnxfc4bjrRWaDkr8BT9GUKaTrkJR
- WbnmDzN+AWPX++OXOQAnsSEJ0DV7Ryr624f627bCkW2UUngGtgbMbbRwgg7Q9tlL7PXw
- vHMPN1Kpsngyxmu1IqEM7SpRJjtaaTAs8pO9S+On8R8YtPIGtxfkRPXFqCpCbLMYJ08s
- wD7w==
+ :reply-to; bh=dZiOjDpaTDBfQcZ9XO1B8DxujP/epjSMsXMLUfhPG4s=;
+ b=EGqjzigM3hczXyA1ep8QwUHRljJ94Ftf7Sn1vjI/A7ts5km95xdXUFiNdpaBb2+ETn
+ xa8qqjUbr6EqJR54dMaKRU7SXRFH0FVU9FGhPpjfgFB34/XJjxHpPHFfG4k5P8jIVGea
+ kH/qZaEuHAaLKLV6auKbMlqTyES6ML+rIhP82r4V7lWnZrWvD/zpPQZrJZElBQblCpDH
+ 2IFmYno36/rohVyG5JlZE/X0qrj4Io7gLumkeY+IpRYvBj9c320+5UZFNJ4jx7/Ykg2K
+ otr4QFQ2ir/FRvzok7gPUxmlnSQISXGQxAsX+ZaIF+6QhESKZnxUdRaLbXAdBzExIgFD
+ 3P3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716905282; x=1717510082;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MMlq9Auj6l45MaC9OkLzg6YYNbQpSqIPdMIwL/zQx0E=;
- b=mQXEgZFwgdWHhmUTgQkFqcpOK05fdZcI/hUv0TxPoeAISE22HmyMcqkQ4cD825qdB5
- UF9QLVv2zbmKOlMzUj2K9yxxT9F1MHrK0IUP6tVYWQLAzFv8f9qwxJYK4hXCd1BnALzQ
- 7suJG8GJe3NSArTEP9aT95TDv1gNGTc+poyG7GhITdfykc6zLlZIP+uZI515UKqIjTe9
- B3cHtXQZ5KjasdGvSkvsMIQZzgpEdQl3WyNm5B40QUg6xGYFL4ioVCAvK30Vb5zp6+zM
- +YZ9YhDwQTvQmYMGN9rV/y0s0t7WMlqAwUvu9D8XuL5q3OmTDYOdTobx25V+RFYNLdMD
- ts1w==
-X-Gm-Message-State: AOJu0YyFsq7NSeTlhF9qngO8MbkK9UGkLYRUE3iOihru/DbBrBM0wyBK
- lw7/IYdJtVkmh07e8E/uhL+ViaQ98QMDete2oCfi+A+22e/tXOsDjIlxVvYzmpUT9eqNq3c8VMu
- 7
-X-Google-Smtp-Source: AGHT+IHofExPWsofs5fLgXkw4PjrIWmiVDEd6Oehi8UnH2/OUIRzXLYjQcaOF1hLJNQenuSSv33Ysg==
-X-Received: by 2002:adf:f605:0:b0:351:d78e:875e with SMTP id
- ffacd0b85a97d-35526c271e2mr8205750f8f.14.1716905281814; 
- Tue, 28 May 2024 07:08:01 -0700 (PDT)
+ bh=dZiOjDpaTDBfQcZ9XO1B8DxujP/epjSMsXMLUfhPG4s=;
+ b=r7YQSdZrDPUrnpr5a2ChlYFnPumcTLQqjxvS0mLukM3fgb+UIsarsYG3J5hiDWvp3X
+ HX9AMJHFyWqFYH2YTgISMuNqvoUtH/dtvkrFdiH9l1hFA2f+iCsKKoK71WEhIuBIKEx5
+ 0rPVM0/DsifOIjUK+IJ6xnmLCL86EAIiBQjVu+PYt25lWGh+fmYZtuv0ppkgji5fg+rf
+ Daqvw8nbJsZ64kpcRQWr3OqSzXCUDTNJZNIhjmPSmuF5gEa7rEDQyrIY2ABT/oTcZPno
+ P0gNSdn7vwwTIl7eTAcTLFAcUQRdh+GqWtst6T7jI7tzVfdmLKpSOa7COjzbxmy3wHfg
+ PNMQ==
+X-Gm-Message-State: AOJu0Yy/oEH3QvvW3t0AlpCLDK5G9uEGUMwElfqzwOuiaC29pIBiEbeO
+ BBw1+rxSEo2480fldVzSpoDD8d/FnEleJBrQ+FKSzUqvKD3NfbeUQFTksKedO7hi/lYHzxhJ4q3
+ i
+X-Google-Smtp-Source: AGHT+IEs9vA8Zghze8cuzKzJQ2/KDtNXjSSIUM/+8kAqhZEzUZQSbf+0J62m4HazcytImSBLwpEptw==
+X-Received: by 2002:a05:6000:1001:b0:354:f52b:db65 with SMTP id
+ ffacd0b85a97d-355245e3d1dmr9303927f8f.3.1716905282324; 
+ Tue, 28 May 2024 07:08:02 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.08.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 07:08:01 -0700 (PDT)
+ Tue, 28 May 2024 07:08:02 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/42] target/arm: Zero-extend writeback for fp16 FCVTZS
- (scalar, integer)
-Date: Tue, 28 May 2024 15:07:21 +0100
-Message-Id: <20240528140753.3620597-11-peter.maydell@linaro.org>
+Subject: [PULL 11/42] target/arm: Fix decode of FMOV (hp) vs MOVI
+Date: Tue, 28 May 2024 15:07:22 +0100
+Message-Id: <20240528140753.3620597-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,30 +93,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Fixes RISU mismatch for "fcvtzs h31, h0, #14".
+The decode of FMOV (vector, immediate, half-precision) vs
+invalid cases of MOVI are incorrect.
 
+Fixes RISU mismatch for invalid insn 0x2f01fd31.
+
+Fixes: 70b4e6a4457 ("arm/translate-a64: add FP16 FMOV to simd_mod_imm")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240524232121.284515-5-richard.henderson@linaro.org
+Message-id: 20240524232121.284515-6-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/tcg/translate-a64.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 4126aaa27e6..d97acdbaf9a 100644
+index d97acdbaf9a..5455ae36850 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -8707,6 +8707,9 @@ static void handle_simd_shift_fpint_conv(DisasContext *s, bool is_scalar,
-             read_vec_element_i32(s, tcg_op, rn, pass, size);
-             fn(tcg_op, tcg_op, tcg_shift, tcg_fpstatus);
-             if (is_scalar) {
-+                if (size == MO_16 && !is_u) {
-+                    tcg_gen_ext16u_i32(tcg_op, tcg_op);
-+                }
-                 write_fp_sreg(s, rd, tcg_op);
-             } else {
-                 write_vec_element_i32(s, tcg_op, rd, pass, size);
+@@ -7904,27 +7904,31 @@ static void disas_simd_mod_imm(DisasContext *s, uint32_t insn)
+     bool is_q = extract32(insn, 30, 1);
+     uint64_t imm = 0;
+ 
+-    if (o2 != 0 || ((cmode == 0xf) && is_neg && !is_q)) {
+-        /* Check for FMOV (vector, immediate) - half-precision */
+-        if (!(dc_isar_feature(aa64_fp16, s) && o2 && cmode == 0xf)) {
++    if (o2) {
++        if (cmode != 0xf || is_neg) {
+             unallocated_encoding(s);
+             return;
+         }
+-    }
+-
+-    if (!fp_access_check(s)) {
+-        return;
+-    }
+-
+-    if (cmode == 15 && o2 && !is_neg) {
+         /* FMOV (vector, immediate) - half-precision */
++        if (!dc_isar_feature(aa64_fp16, s)) {
++            unallocated_encoding(s);
++            return;
++        }
+         imm = vfp_expand_imm(MO_16, abcdefgh);
+         /* now duplicate across the lanes */
+         imm = dup_const(MO_16, imm);
+     } else {
++        if (cmode == 0xf && is_neg && !is_q) {
++            unallocated_encoding(s);
++            return;
++        }
+         imm = asimd_imm_const(abcdefgh, cmode, is_neg);
+     }
+ 
++    if (!fp_access_check(s)) {
++        return;
++    }
++
+     if (!((cmode & 0x9) == 0x1 || (cmode & 0xd) == 0x9)) {
+         /* MOVI or MVNI, with MVNI negation handled above.  */
+         tcg_gen_gvec_dup_imm(MO_64, vec_full_reg_offset(s, rd), is_q ? 16 : 8,
 -- 
 2.34.1
 
