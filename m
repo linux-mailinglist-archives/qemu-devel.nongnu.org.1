@@ -2,66 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D5F68D1678
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5098D167E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBsMN-0002hn-1M; Tue, 28 May 2024 04:39:07 -0400
+	id 1sBsMP-0002lE-HE; Tue, 28 May 2024 04:39:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsML-0002hZ-Dr
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMJ-0004oZ-Po
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716885542;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=A1UrnLyvAfYu3lvm+2EGpMl72XMudIZPVV8xi1QNEX4=;
- b=PTjSn4bOpzKVZdu8ROjzqDFes6RJbQsvu44OXnZhH98CP6wApxtr1taf1Ws5o+LDu6NDZf
- RnaiaY4hl3xjEB0UuvIl9PAfKFs5GAVoIV9xdfVfZ/8nNIvSIPgcU5uJTJh0owwuPpGJNg
- RF+IfJm/caev5L/wmavlGyRrCvL/MWo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-452-_414HVcwP9WwkbDR8fUG8w-1; Tue, 28 May 2024 04:39:00 -0400
-X-MC-Unique: _414HVcwP9WwkbDR8fUG8w-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BEB42812296
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:38:59 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 67AFE40004D;
- Tue, 28 May 2024 08:38:59 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 45DA018009F4; Tue, 28 May 2024 10:38:58 +0200 (CEST)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 0/4] MAINTAINERS: update kraxel's entries.
-Date: Tue, 28 May 2024 10:38:52 +0200
-Message-ID: <20240528083858.836262-1-kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1sBsMM-0002hp-Mn
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:06 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1sBsMK-0004oS-68
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:06 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxW+ogmFVmpJwAAA--.2405S3;
+ Tue, 28 May 2024 16:38:56 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxosQfmFVmQcYLAA--.20131S2; 
+ Tue, 28 May 2024 16:38:55 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: maobibo@loongson.cn
+Cc: qemu-devel@nongnu.org
+Subject: [PATCH v4 0/3] Add extioi virt extension support
+Date: Tue, 28 May 2024 16:38:52 +0800
+Message-Id: <20240528083855.1912757-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8CxosQfmFVmQcYLAA--.20131S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,42 +60,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I have not found much time to work on qemu due to being busy with
-firmware (edk2 for the most part).  Time to update the MAINTAINERS
-file entries to match reality.
+On LoongArch, IRQs can be routed to four vcpus with hardware extioi.
+This patch adds the extioi virt extension support so that the IRQ can
+route to 256 vcpus.
 
-I drop spice, ui, audio and usb due to lack of time.
+v4:
+- Put patch3 ahead of patch2;
+- patch1 Introduce two IRQ model(Extended IRQ model and Virt extended IRQ model);
+- Link to v3: https://patchew.org/QEMU/20240521123225.231072-1-gaosong@loongson.cn/
 
-I drop virtio-gpu, I don't follow recent development (venus etc.)
-close enough to be able to actually review the changes.  Looking at
-qemu-devel traffic for virtio-gpu it seems to be in good hands with
-multiple people working on it, even though this is not reflected in
-the MAINTAINERS file.
+v3:
+- Split patch2 to two small patch.
+- remove unused code.
+- loongarch_extioi_reset() clear status without checking virt extioi
+  features.
+- Link to v2: https://patchew.org/QEMU/20240514090756.988096-1-gaosong@loongson.cn/
 
-I keep the firmware bits (edk2, fw_cfg).
+v2:
+- Split the patch to two small patch.
+- Drop 'RFC' title. extioi virt extension suport only enable on kvm
+  mode and  the extioi driver need patch[1].
+  but this series do not affect the old codes in any way.
+- Link to v1: https://lore.kernel.org/all/20240116022526.498613-1-gaosong@loongson.cn/#r
 
-I also keep some other pieces which don't see much development
-activity such as stdvga and cirrus for now.  I might revisit
-this later.
+[1]: https://gitee.com/openeuler/kernel/commit/5d97cff72f91f4f20a536efd60eca75bfcb78a64
 
-v2 changes:
- - flip entries without maintainer to orphan even if there is
-   a reviewer left.
- - add/upgrade volunteers from replies to audio sections.
+Thanks.
+Song Gao
 
-take care,
-  Gerd
+Song Gao (3):
+  hw/intc/loongarch_extioi: Add extioi virt extension definition
+  hw/loongarch/virt: Use MemTxAttrs interface for misc ops
+  hw/loongarch/virt: Enable extioi virt extension
 
-Gerd Hoffmann (4):
-  MAINTAINERS: drop audio maintainership
-  MAINTAINERS: drop usb maintainership
-  MAINTAINERS: drop virtio-gpu maintainership
-  MAINTAINERS: drop spice+ui maintainership
-
- MAINTAINERS | 42 +++++++++++++-----------------------------
- 1 file changed, 13 insertions(+), 29 deletions(-)
+ include/hw/intc/loongarch_extioi.h |  21 ++++
+ include/hw/loongarch/virt.h        |   1 +
+ target/loongarch/cpu.h             |   1 +
+ hw/intc/loongarch_extioi.c         |  88 +++++++++++++-
+ hw/loongarch/virt.c                | 182 +++++++++++++++++++++++------
+ 5 files changed, 256 insertions(+), 37 deletions(-)
 
 -- 
-2.45.1
+2.34.1
 
 
