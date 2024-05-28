@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56688D1E0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AEDC8D1E1D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:12:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUi-0001W9-UR; Tue, 28 May 2024 10:08:04 -0400
+	id 1sBxUi-0001Vq-Gj; Tue, 28 May 2024 10:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUg-0001Um-FK
+ id 1sBxUg-0001Uk-F4
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:02 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUe-00070Z-Cc
+ id 1sBxUe-000727-Tu
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:02 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-357d533b744so813748f8f.2
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-354f8a0cd08so769589f8f.2
  for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1716905279; x=1717510079; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cix61aPqu8KvNLcJRTXQi8LmaQzXhkWR11FG/+cNvi0=;
- b=LMDnWw8JnxOoRF2pqsijhJnw717kJke9xP83Z1Vn0AE2pVdNuZ+/tn5/+6PxfTvPMY
- LTxIf1LGWjBUgYUXwNpCe2THaG9Ewxco3sDLhv0TqAGvoVFRMSYtchV2rbd29+o1LEFf
- 9ynpQharuWnIa9qXHOFvF+bZdPDWoZ5sTPQ2N8OrdMFhW9O6CNl0xhBtDGYaNXzo4zOc
- ur43O1Z05eEbad2zank4QbUn3/pxBpfgeXc9VWQOENwovp+AxiqqBwjY6giW5JbL4tXW
- mLNkI82AjA5ps1b6gKrcKhCQOB/3mrcyxCJWdU3Wvhwk+ey/a5gsoJNnlrRiBjCuQ4+P
- dD4g==
+ :reply-to; bh=Z8e50owdFjq3l9wuKAY7n7wmjEPbhSYGUt29AzUeGso=;
+ b=SDr0s0QnY0bSwnJNzkvQlmeDvmanbs4nXXCX3Li2TTWoQyZgkPfnDf3Usituz52rHt
+ ZTi5ooziShMQ1DLUmBLDIIpPqlYyV7Vx+Oqeb5dcZYe6+sefO+62uoj+RHedGCR6978+
+ 9dElUfQ7cIomDMw0mATMHrRWyLj6Efpp/YLSm1Jp5JlEJcu1OWH/gpNgqR4ZhW8cu21i
+ mVWGMDLb4pLwfyUrBTRRciuFsAyP+n+x720jThuNNR3OC8/2wE+jKMRMyFlafWkfc2dd
+ 5t45/G5H0PNpgRl5j07eUlCPnYlHNQiZ2ScO+3NrmzPA4pAa4DHGHc+V9GPl/hdE0pzc
+ 0GoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1716905279; x=1717510079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cix61aPqu8KvNLcJRTXQi8LmaQzXhkWR11FG/+cNvi0=;
- b=jdBh8wZ2blerELxIdwqdpNQ8MW4WqOpSFDgyFh1Z1y+BRAY1C3VRuOXCjIasr2XY5X
- gGi7TZX1Bf4aZ44PIwlcwXzuZg3BwUQrZgeJU/IgvbercOFlzyDKxj0+hdFdkxXgo32D
- DcwacZBIzhSmur62liCOKTOHE7zgt8htu5Db9f172V0q9EndibOPO5Nrwr48xB+xoVNR
- mVtA9Axn+dAL7P7mMOlJMxLIJWcr+9I29Yz2YKfRmojOBMAuqTPKp7PSQvfIc3qSm8wP
- 3Rly5dsd/T/6hdPmoNoeWMZ8kjmugXyfwhRIVYemBItcQu7HjMtOi7NbD3oqXUuwDgJ4
- Kq6w==
-X-Gm-Message-State: AOJu0Yww/UQImn+m955+cl3cm/Z6mogwL15cWJI8W3tVRzrV+/1twEcF
- S4/RhAFgmh9cFfB7FLxrCNjO1LzuylHxQ222AWb20VB3X103BK/3ukgtqhJhTLyOF/tr+Qev7iL
- y
-X-Google-Smtp-Source: AGHT+IG5zdJy7zjm6sDaJHWYSG3nZshYG0orQbSzDa6KcjSmQGny9P2ulGojgBXnYzRoh6iaz8+HtA==
-X-Received: by 2002:a5d:6911:0:b0:354:fb2a:7daf with SMTP id
- ffacd0b85a97d-3552fdef9cbmr9002016f8f.57.1716905279101; 
+ bh=Z8e50owdFjq3l9wuKAY7n7wmjEPbhSYGUt29AzUeGso=;
+ b=gCLgz++kgQDwvBcXZBOOJEN7dZiBZQ8mROb04Rvy1tbZgdvR2Dqtzrn6fZ6avDhTph
+ dST9xagznzC2BC9ypFb9BLFVl3c/5MGpic5kvB6WfaxfMSNjG5YhZtwFHvQrfaL2ufwQ
+ jFbNzZ/noM+vPZ5zBA4jhZwBodeudNMDQ3CDEjZaVgWU4NIgfIswaKg1pdv3NtveJxqU
+ iZKa1H9WedRYTn6zM8runeB/n2c19HPAA9Y8KOHfNluozpJe5t0jak9q5nK85I3hLGil
+ frksF475v8VhY0UVPOsWsKzQML0NNTrrQfTrNVXuapoYsoAnylaJ9TKt9i8ztQPbtsIR
+ lHcA==
+X-Gm-Message-State: AOJu0YzcvDXWPPvfh48ej6ewR+33Mih/ZNxgTp1JHvcVsZEnQcmwKv3K
+ hC9KB8ZLLEp7mugHUv/oeJ8ctxb5BkPB0NLr4ZxfTt13k+b5z91m4qWgTQ0hU0FkJwUrjWgm2/2
+ N
+X-Google-Smtp-Source: AGHT+IHzgCn9KeWn5yOfrU9UhqD40L33XwCmFvZ6xrEK3Z+foDApdATE+cRMWPMoUeHDpLKRIVpquQ==
+X-Received: by 2002:a5d:598b:0:b0:356:4bb7:b205 with SMTP id
+ ffacd0b85a97d-3564bb7b370mr10008772f8f.1.1716905279499; 
  Tue, 28 May 2024 07:07:59 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.58
+ ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 07:07:58 -0700 (PDT)
+ Tue, 28 May 2024 07:07:59 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/42] hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
-Date: Tue, 28 May 2024 15:07:16 +0100
-Message-Id: <20240528140753.3620597-6-peter.maydell@linaro.org>
+Subject: [PULL 06/42] hw/input/tsc2005: Fix -Wchar-subscripts warning in
+ tsc2005_txrx()
+Date: Tue, 28 May 2024 15:07:17 +0100
+Message-Id: <20240528140753.3620597-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,56 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrey Shumilin <shum.sdl@nppct.ru>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-In gic_cpu_read() and gic_cpu_write(), we delegate the handling of
-reading and writing the Non-Secure view of the GICC_APR<n> registers
-to functions gic_apr_ns_view() and gic_apr_write_ns_view().
-Unfortunately we got the order of the arguments wrong, swapping the
-CPU number and the register number (which the compiler doesn't catch
-because they're both integers).
+Check the function index is in range and use an unsigned
+variable to avoid the following warning with GCC 13.2.0:
 
-Most guests probably didn't notice this bug because directly
-accessing the APR registers is typically something only done by
-firmware when it is doing state save for going into a sleep mode.
+  [666/5358] Compiling C object libcommon.fa.p/hw_input_tsc2005.c.o
+  hw/input/tsc2005.c: In function 'tsc2005_timer_tick':
+  hw/input/tsc2005.c:416:26: warning: array subscript has type 'char' [-Wchar-subscripts]
+    416 |     s->dav |= mode_regs[s->function];
+        |                         ~^~~~~~~~~~
 
-Correct the mismatched call arguments.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 51fd06e0ee ("hw/intc/arm_gic: Fix handling of GICC_APR<n>, GICC_NSAPR<n> registers")
-Signed-off-by: Andrey Shumilin <shum.sdl@nppct.ru>
-[PMM: Rewrote commit message]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240508143513.44996-1-philmd@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: fixed missing ')']
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée<alex.bennee@linaro.org>
 ---
- hw/intc/arm_gic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/input/tsc2005.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/intc/arm_gic.c b/hw/intc/arm_gic.c
-index 074cf50af25..e4b8437f8b8 100644
---- a/hw/intc/arm_gic.c
-+++ b/hw/intc/arm_gic.c
-@@ -1658,7 +1658,7 @@ static MemTxResult gic_cpu_read(GICState *s, int cpu, int offset,
-             *data = s->h_apr[gic_get_vcpu_real_id(cpu)];
-         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
-             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
--            *data = gic_apr_ns_view(s, regno, cpu);
-+            *data = gic_apr_ns_view(s, cpu, regno);
-         } else {
-             *data = s->apr[regno][cpu];
-         }
-@@ -1746,7 +1746,7 @@ static MemTxResult gic_cpu_write(GICState *s, int cpu, int offset,
-             s->h_apr[gic_get_vcpu_real_id(cpu)] = value;
-         } else if (gic_cpu_ns_access(s, cpu, attrs)) {
-             /* NS view of GICC_APR<n> is the top half of GIC_NSAPR<n> */
--            gic_apr_write_ns_view(s, regno, cpu, value);
-+            gic_apr_write_ns_view(s, cpu, regno, value);
-         } else {
-             s->apr[regno][cpu] = value;
-         }
+diff --git a/hw/input/tsc2005.c b/hw/input/tsc2005.c
+index 941f163d364..ac7f54eeafb 100644
+--- a/hw/input/tsc2005.c
++++ b/hw/input/tsc2005.c
+@@ -406,6 +406,9 @@ uint32_t tsc2005_txrx(void *opaque, uint32_t value, int len)
+ static void tsc2005_timer_tick(void *opaque)
+ {
+     TSC2005State *s = opaque;
++    unsigned int function = s->function;
++
++    assert(function < ARRAY_SIZE(mode_regs));
+ 
+     /* Timer ticked -- a set of conversions has been finished.  */
+ 
+@@ -413,7 +416,7 @@ static void tsc2005_timer_tick(void *opaque)
+         return;
+ 
+     s->busy = false;
+-    s->dav |= mode_regs[s->function];
++    s->dav |= mode_regs[function];
+     s->function = -1;
+     tsc2005_pin_update(s);
+ }
 -- 
 2.34.1
 
