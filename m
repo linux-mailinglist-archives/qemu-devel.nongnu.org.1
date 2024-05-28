@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B2C8D1DD5
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2794C8D1DF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:08:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxQn-0000Rm-96; Tue, 28 May 2024 10:04:01 -0400
+	id 1sBxUe-0001TX-NB; Tue, 28 May 2024 10:08:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxQi-0000Rb-Ff
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:03:57 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1sBxUd-0001TN-MW
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:07:59 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxQg-0006EF-RG
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:03:56 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-57883b25b50so1030742a12.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:03:53 -0700 (PDT)
+ id 1sBxUb-000707-Mo
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:07:59 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-420180b5898so6036515e9.2
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:07:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716905032; x=1717509832; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+mJJ9KRbOi6yXGkWEMga4XC9YzRrIKnUkrfuNGlnj+w=;
- b=A1O3E6igY752S9RB+Lb7Jei14pJlOhEC9yeCzFdY6amXnIxixAx2ISjaBdHibCVlLI
- WDEv44hnwgOqnyTFN7g2D2B51fs9tYIrnRFMrotx3vG8DPYQzYDThxRpWwzmaQAWADpD
- yNH00vjfg1SoN3MplpOL5y6hSwywkZQgGnMVUV9VoxTfbcJ3rCQOIzszoPB/CbQ2muUM
- Hb8Du0ga0xYhC7uUtbIKSM+1TP8Dy0/W0eKqsDQmqXaXArQZqrhzMdBNQT2Bc0uVJzhy
- +eG5d4pJw76h74uxV7O8Ts6/L7ct/SAyipmgLHqVkJ0M8z5/LIjjcHxtGZSCQqSCzq+i
- TG3Q==
+ d=linaro.org; s=google; t=1716905276; x=1717510076; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9wBMHvmpwwVbW3WzjalapVQouA52u9AwBMfIzVA1PM8=;
+ b=YOEsM8ZIyH8FrgCKCi0iS34nxuvDtpnHv9FAlRrUizNZ7X2Dyk28txNd7qSCdF4/uu
+ bG1I8BuqgxfTi50Vt9uHxy+gjhVz5Ux+E8xhnNkxVJ8LXcBY1deCguX+F4M7QYZq5K0Y
+ L1am/8pIZdXUQNcFy/hy3myyD8uS9FU3aSq4plVcKq8zwmVVuG/T/iHYQMhT5AQ5/pYq
+ cc+Ul13HV9h4x2NKvExyi13bKUf+rBGP/cfyBd/OETKIOrsomoC700/vWWn/FC+PSP1x
+ rm/Qbs2n5ajYURqHMOLzvCcfKW0eb1kuQBzgGyrT22pRY2kaJYN3oF+8MWQh6LNIgDpQ
+ NC5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716905032; x=1717509832;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+mJJ9KRbOi6yXGkWEMga4XC9YzRrIKnUkrfuNGlnj+w=;
- b=IxX6n2Qx4ze6r2UHGoY5lQmg9do2Aq5X00KKbYf3PnZ83oMsTzIYhm4RowKAV/dzh6
- 9VtQUmLNyQqPUkQczAYx/hrkiPir6I6T/24wl/r9U0EmPumPOfgKuchcIDc0bCI6wDQ0
- cIX5Vtj9vtJTuQuwPoUqsfRStbURA1asnuL7Rs0ximzR6Ftad8ciClT+ec9vjNnzTZ60
- fifNZSAQxoAuepvXYYMWfhPJ5eyqnE1VMQzJNxsceFqsy+KUIPgZnntgLqyx7DKxGFJS
- PyHLw6XvRf1emjE3GJt3qOHtCZJdYRE6BbEWxSyH/n4oCW8JQEbr5QkJ8OxYaHSGnsnv
- 8sxg==
-X-Gm-Message-State: AOJu0Yz5VY6RtZwLKuUaSwZ+MMkl3qhic892zKsHXS4kVu7ItpNJLNkN
- MAtwV9eEAtcYB4PzBT5ZdtkvPsQlJhK1KKi/MqTvrymU9xLnZml/sjrfJT5WpkFQ/NEfr45Rkaw
- 20kpuXU2p8vQxGjAQ0sRPPggL7Sw5SnOiK+CvWA==
-X-Google-Smtp-Source: AGHT+IEdjHhJEGHHCsWT32GTtPtxW/JBR4qgKnO/z6EZ+w+7T6cP0HMaoeQhqrMD/Q0ZWN04lk8AkRFYQ5EGrXaZBM4=
-X-Received: by 2002:a50:9e67:0:b0:578:5f58:80a2 with SMTP id
- 4fb4d7f45d1cf-5785f588378mr7165076a12.7.1716905032626; Tue, 28 May 2024
- 07:03:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <CACBuX0To1QWpOTE-HfbXv=tUVWVL0=pvn-+E28EL_mWuqfZ-sw@mail.gmail.com>
- <CAFEAcA9aum5+z3sr-OpCHZRWxFtZGS_kGOjjmRh7H1TBTZuFRQ@mail.gmail.com>
- <CACBuX0Q3TMvmxuuAHfVY679wpKF+0N+-aw=A7PLiba7ndc5v+w@mail.gmail.com>
-In-Reply-To: <CACBuX0Q3TMvmxuuAHfVY679wpKF+0N+-aw=A7PLiba7ndc5v+w@mail.gmail.com>
+ d=1e100.net; s=20230601; t=1716905276; x=1717510076;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9wBMHvmpwwVbW3WzjalapVQouA52u9AwBMfIzVA1PM8=;
+ b=KkgmGLTPmqVRcnqad4p93I0yqF+Q2mMp19MJ2f3ftvdr37HF7Ld0ICbBFyhblqFf9E
+ zobhEBWR/31tboQlUWJzD3lKR2H8PSheVueqfXRXqhY02YtJLCmYuJ4iig5QM6FY2fHY
+ iXGsx11kMLpFyyJ4Jo9hoFk9K6QiHZbRxfu4ZqU4yL2LKAGj9TyFY3xdWgOQ3POzL6j9
+ myY4ZLIH2RQ0YjlFrJc+2RsV5zf5JBBnLvhhWTwBgQ6ZVPESQaLZ/qlio7XoaievxK7I
+ 3x3XV7qgRZdvMLAvEu6r+7IRo+/ti54mrXJY+4xv/jvJ/zchgn4F4EGm0Ea75zRU/iPT
+ YAUA==
+X-Gm-Message-State: AOJu0YyY8kE+VHjY7hXoyKBVP92pTDhiX5TcoF4vru5nDumVRv2t3t9Y
+ NtSELcocBnwPrAaXrRyFqVPnzEqNsvvZTSQiNtcxaDJFSpJOquWXv7iO07UapVFkkMTJUIF4p3R
+ k
+X-Google-Smtp-Source: AGHT+IF+xeFu5RT7FcngHH+nHVmBQdInurdRHmh2/i5sYnOhxP/KMJfe8RWb234QYSO3FxSTBbq4lg==
+X-Received: by 2002:a05:6000:4026:b0:357:7488:d22b with SMTP id
+ ffacd0b85a97d-3577488d7aamr6055469f8f.58.1716905275114; 
+ Tue, 28 May 2024 07:07:55 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.54
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 May 2024 07:07:54 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 15:03:40 +0100
-Message-ID: <CAFEAcA9XvHOF22m-9ZFtKLAaShE5gVjsy-AxQyBwVAkRZ2QW6g@mail.gmail.com>
-Subject: Re: hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or OUT
-To: Cord Amfmgm <dmamfmgm@gmail.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/42] target-arm queue
+Date: Tue, 28 May 2024 15:07:11 +0100
+Message-Id: <20240528140753.3620597-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,60 +89,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 20 May 2024 at 23:24, Cord Amfmgm <dmamfmgm@gmail.com> wrote:
-> On Mon, May 20, 2024 at 12:05=E2=80=AFPM Peter Maydell <peter.maydell@lin=
-aro.org> wrote:
->> For the "zero length buffer" case, do you have a more detailed
->> pointer to the bit of the spec that says that "cbp =3D be + 1" is a
->> valid way to specify a zero length buffer? Table 4-2 in the copy I
->> have says for CurrentBufferPointer "a value of 0 indicates
->> a zero-length data packet or that all bytes have been transferred",
->> and the sample host OS driver function QueueGeneralRequest()
->> later in the spec handles a 0 length packet by setting
->>   TD->HcTD.CBP =3D TD->HcTD.BE =3D 0;
->> (which our emulation's code does handle).
->
->
-> Reading the spec carefully, a CBP set to 0 should always mean the zero-le=
-ngth buffer case (or that all bytes have been transferred, so the buffer is=
- now zero-length - the same thing).
+Hi; most of this is the first half of the A64 simd decodetree
+conversion; the rest is a mix of fixes from the last couple of weeks.
 
-Yeah, I can see the argument for "we should treat all cbp =3D=3D 0 as
-zero-length buffer, not just cbp =3D=3D be =3D=3D 0".
+v2 uses patches from the v2 decodetree series to avoid a few
+regressions in some A32 insns.
 
-> Table 4-2 is the correct reference, and this part is clear. It's the part=
- you quoted. "Contains the physical address of the next memory location tha=
-t will be accessed for transfer to/from the endpoint. A value of 0 indicate=
-s a zero-length data packet or that all bytes have been transferred."
->
-> Table 4-2 has this additional nugget that may be confusingly worded, for =
-BufferEnd: "Contains physical address of the last byte in the buffer for th=
-is TD"
-
-Mmm, but for a zero length buffer there is no "last byte" to
-have this be the physical address of.
-
-> And here's an example buffer of length 0 -- you probably already know wha=
-t I'm going to do here:
->
-> char buf[0];
-> char * CurrentBufferPointer =3D &buf[0];
-> char * BufferEnd =3D &buf[-1]; // "address of the last byte in the buffer=
-"
-> // The OHCI Host Controller than advances CurrentBufferPointer like this:=
- CurrentBufferPointer +=3D 0
-> // After the transfer:
-> // CurrentBufferPointer =3D &buf[0];
-> // BufferEnd =3D &buf[-1];
-
-Right, but why do you think this is valid, rather than
-being a guest software bug? My reading of the spec is that it's
-pretty clear about how to say "zero length buffer", and this
-isn't it.
-
-Is there some real-world guest OS that programs the OHCI
-controller this way that we're trying to accommodate?
+(Richard: I'm still planning to review the second half of the
+v2 decodetree series; I just wanted to get the respin of this
+pullreq out today...)
 
 thanks
 -- PMM
+
+The following changes since commit ad10b4badc1dd5b28305f9b9f1168cf0aa3ae946:
+
+  Merge tag 'pull-error-2024-05-27' of https://repo.or.cz/qemu/armbru into staging (2024-05-27 06:40:42 -0700)
+
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240528
+
+for you to fetch changes up to f240df3c31b40e4cf1af1f156a88efc1a1df406c:
+
+  target/arm: Convert disas_simd_3same_logic to decodetree (2024-05-28 14:29:01 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * xlnx_dpdma: fix descriptor endianness bug
+ * hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
+ * hw/arm/npcm7xx: remove setting of mp-affinity
+ * hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
+ * hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
+ * hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
+ * hw: arm: Remove use of tabs in some source files
+ * docs/system: Remove ADC from raspi documentation
+ * target/arm: Start of the conversion of A64 SIMD to decodetree
+
+----------------------------------------------------------------
+Alexandra Diupina (1):
+      xlnx_dpdma: fix descriptor endianness bug
+
+Andrey Shumilin (1):
+      hw/intc/arm_gic: Fix handling of NS view of GICC_APR<n>
+
+Dorjoy Chowdhury (1):
+      hw/arm/npcm7xx: remove setting of mp-affinity
+
+Inès Varhol (1):
+      hw/char: Correct STM32L4x5 usart register CR2 field ADD_0 size
+
+Philippe Mathieu-Daudé (1):
+      hw/input/tsc2005: Fix -Wchar-subscripts warning in tsc2005_txrx()
+
+Rayhan Faizel (1):
+      docs/system: Remove ADC from raspi documentation
+
+Richard Henderson (34):
+      target/arm: Use PLD, PLDW, PLI not NOP for t32
+      target/arm: Zero-extend writeback for fp16 FCVTZS (scalar, integer)
+      target/arm: Fix decode of FMOV (hp) vs MOVI
+      target/arm: Verify sz=0 for Advanced SIMD scalar pairwise (fp16)
+      target/arm: Split out gengvec.c
+      target/arm: Split out gengvec64.c
+      target/arm: Convert Cryptographic AES to decodetree
+      target/arm: Convert Cryptographic 3-register SHA to decodetree
+      target/arm: Convert Cryptographic 2-register SHA to decodetree
+      target/arm: Convert Cryptographic 3-register SHA512 to decodetree
+      target/arm: Convert Cryptographic 2-register SHA512 to decodetree
+      target/arm: Convert Cryptographic 4-register to decodetree
+      target/arm: Convert Cryptographic 3-register, imm2 to decodetree
+      target/arm: Convert XAR to decodetree
+      target/arm: Convert Advanced SIMD copy to decodetree
+      target/arm: Convert FMULX to decodetree
+      target/arm: Convert FADD, FSUB, FDIV, FMUL to decodetree
+      target/arm: Convert FMAX, FMIN, FMAXNM, FMINNM to decodetree
+      target/arm: Introduce vfp_load_reg16
+      target/arm: Expand vfp neg and abs inline
+      target/arm: Convert FNMUL to decodetree
+      target/arm: Convert FMLA, FMLS to decodetree
+      target/arm: Convert FCMEQ, FCMGE, FCMGT, FACGE, FACGT to decodetree
+      target/arm: Convert FABD to decodetree
+      target/arm: Convert FRECPS, FRSQRTS to decodetree
+      target/arm: Convert FADDP to decodetree
+      target/arm: Convert FMAXP, FMINP, FMAXNMP, FMINNMP to decodetree
+      target/arm: Use gvec for neon faddp, fmaxp, fminp
+      target/arm: Convert ADDP to decodetree
+      target/arm: Use gvec for neon padd
+      target/arm: Convert SMAXP, SMINP, UMAXP, UMINP to decodetree
+      target/arm: Use gvec for neon pmax, pmin
+      target/arm: Convert FMLAL, FMLSL to decodetree
+      target/arm: Convert disas_simd_3same_logic to decodetree
+
+Tanmay Patil (1):
+      hw: arm: Remove use of tabs in some source files
+
+Zenghui Yu (1):
+      hvf: arm: Fix encodings for ID_AA64PFR1_EL1 and debug System registers
+
+ docs/system/arm/raspi.rst       |    1 -
+ target/arm/helper.h             |   68 +-
+ target/arm/tcg/helper-a64.h     |   12 +
+ target/arm/tcg/translate-a64.h  |    4 +
+ target/arm/tcg/translate.h      |   51 +
+ target/arm/tcg/a64.decode       |  315 +++-
+ target/arm/tcg/t32.decode       |   25 +-
+ hw/arm/boot.c                   |    8 +-
+ hw/arm/npcm7xx.c                |    3 -
+ hw/char/omap_uart.c             |   49 +-
+ hw/char/stm32l4x5_usart.c       |    2 +-
+ hw/dma/xlnx_dpdma.c             |   68 +-
+ hw/gpio/zaurus.c                |   59 +-
+ hw/input/tsc2005.c              |  135 +-
+ hw/intc/arm_gic.c               |    4 +-
+ target/arm/hvf/hvf.c            |  130 +-
+ target/arm/tcg/gengvec.c        | 1672 +++++++++++++++++++++
+ target/arm/tcg/gengvec64.c      |  190 +++
+ target/arm/tcg/neon_helper.c    |    5 -
+ target/arm/tcg/translate-a64.c  | 3137 +++++++++++++--------------------------
+ target/arm/tcg/translate-neon.c |  136 +-
+ target/arm/tcg/translate-sve.c  |  145 +-
+ target/arm/tcg/translate-vfp.c  |   93 +-
+ target/arm/tcg/translate.c      | 1592 +-------------------
+ target/arm/tcg/vec_helper.c     |  221 ++-
+ target/arm/vfp_helper.c         |   30 -
+ target/arm/tcg/meson.build      |    2 +
+ 27 files changed, 3860 insertions(+), 4297 deletions(-)
+ create mode 100644 target/arm/tcg/gengvec.c
+ create mode 100644 target/arm/tcg/gengvec64.c
 
