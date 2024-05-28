@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39888D208F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638408D209B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:41:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBytO-0007Sj-He; Tue, 28 May 2024 11:37:38 -0400
+	id 1sBywc-00015Z-0p; Tue, 28 May 2024 11:40:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBytK-0007S6-P4
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:37:34 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1sBywY-00014r-IJ
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:40:54 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBytJ-0004IU-7p
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:37:34 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-57857e0f462so1213859a12.0
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:37:31 -0700 (PDT)
+ id 1sBywX-0004xF-24
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:40:54 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-57857e0f462so1218333a12.0
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:40:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716910650; x=1717515450; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716910850; x=1717515650; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oFaEL3/ajUvsHYgVR7FBeteVoZbSYcqZKWXU7bOEY+A=;
- b=A3saABWbbIlctKWxZsnjl1maoIv/ELKLKUAuU1XVcGnifvBYqSUM9AubIGJ3lj/AVm
- JfEMF8dxtV/Yha6JQrcWS/Pw8y6ajb2u8ugirUP0w9rcKj55Od/vTl5myRBdVeAbZ1pr
- sejCToLfMlLhHZ3z2l4/UOKE5yILfaI4f+mpagj6etkztwF8yct7MInPgW4r8B946P/Y
- e8sdDug/OQv5ETUPYnz8yVB4B78KqRdqs8ildbAUpJAWAWuUQnpLdgnv9P6FBeaKnphu
- vlptpTjUvdQp2B5AkJHXhWP/S9aPE285ySOWRZVARV+EyEsl1QQpCzhTTt5GkO5Vx+At
- hazw==
+ bh=ZzTPYtNfMgt9HPWeQJTgfsmYru0kbJvbA6DJB+4g/ok=;
+ b=dAH8tFCW7khyCYwL5iRgrOTY6e2kYGbrSdZmCl0DbRBhaO9p3xXHz8u9OjXGU2EPmX
+ Q+XNq06khf7MuYSEqupsQNKYjIBnYVNtxql1oRQZDNGPdZkW6XGRn+xMaIn7PGs26YrB
+ LvZD77z1i/DeSitp9OjWUVk17eQTkL0wy44LAnHed21NmQhJskExA/UnrctBM4z279QZ
+ 77iPqQJHdEvhM53lJsBUBd3YVNmlnQB3mdJyAv0HyAcFVb+aupv516GNgomkIWLN/nwD
+ RcXNS7vTf1xa9P++vlEAs5dfgb+kdDQLpIdhAjCdCI6d6xmYoEBisHAnuXTIe2oGWcvc
+ NodQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716910650; x=1717515450;
+ d=1e100.net; s=20230601; t=1716910850; x=1717515650;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=oFaEL3/ajUvsHYgVR7FBeteVoZbSYcqZKWXU7bOEY+A=;
- b=uPaEPIqr2U3S5Asowh4DVNTRfV4Oeju92B0WwCCl4BgUksYYpV2jZLUaZTRlYC/8Qt
- Y6ew8jdHU20GiJWZECosM07ztwkj0mgR06f6Jc/s/KORp8bxZMQwjD8nYLbs6hF4wfpG
- oy6wVijMQtjU888ic4oQ4lPiLHWTW/NN4A4SljCIUoUlWPKAX/pCHJ+NiL3ewG+OZwCv
- suDvzL094/pRCldCCisrGNlctzZpcvVOM+kh4VNmkjjIhrfrCG0OPaIlge4oq5B/d/pM
- cgO2ivtZhMiLj1pQZxIyqXetjnMDoU9xAxN1/kZ6nL/0pBHGzvjZm9CfxNNkazB0stF6
- JBhg==
-X-Gm-Message-State: AOJu0YxbtKLQ+Y6tjKG6ieIRC1ZmDGuuxU05aJacmNHQndl/mMtqYYbp
- fdJmcRgfzfUDIGSWimuaBiDKxV8CtHVezoOlu0GjibPn8jKYmGX11Zpch6ukeRF+nyaNBl8NhA/
- O/cY47lDx0vaqk1V9QhHaPTN0QVJzJM8yCKII5A==
-X-Google-Smtp-Source: AGHT+IHM805mIJ7N3Z50oQVipkTYb39Ja2auesIQ76K3Rc9Knwl7WbSiZwIODPdvVJu5FClJCkMU36HQJPBL6lElQOw=
-X-Received: by 2002:a50:d659:0:b0:579:c015:5377 with SMTP id
- 4fb4d7f45d1cf-579c01555c7mr5468253a12.8.1716910650462; Tue, 28 May 2024
- 08:37:30 -0700 (PDT)
+ bh=ZzTPYtNfMgt9HPWeQJTgfsmYru0kbJvbA6DJB+4g/ok=;
+ b=pj0XKU4iBucLcF7tYh1MBkgBocon8dAsnkw//BKsUsU9zXFPswLhgs8fjnTLQ8+OJb
+ P1olG4goo4gTCTRZkSY3gLL6p3OOt86XEsHRxNsqL/ItBIiYIyniLgzmgRij2pHPnJGt
+ vltY581UMm/wmAUs2vpFRFuy7FvWb8qCyTagMmlFD/L2sCnG1YV5yza8T5eZOPkUjyJj
+ ZVbKvOamBr6CTncejoeVJ1F8gkLtNbEc1HUQxq1onotTPM7MMlk9ZZd1X5k1GwTiCaeT
+ KInmcFOO7NP2wfg1DtbDWh2r2qAbi2UIfSaFC0HUwUq9PrTIAsoGGVj6btjWGZQvdz6U
+ pYww==
+X-Gm-Message-State: AOJu0YwFOfAS8wIsDiLd/oED4luJdzD+Ss3aEbWjvkedf1e4m9y9e33n
+ 15xCgU86zALrd+fpex4L1Vhm8Odpp5LOwrB8ONU3VSGxwUt4j6nBPLo6EMip5MAyUYeWCUKo2Ya
+ 6QCzxPZ4aU2fRioA72RrIYifiWKidA3EPdmonNA==
+X-Google-Smtp-Source: AGHT+IEMgCsdhjIvfFwPf+M1UX0AMEznrHjI+L6lGt7DjWlzxE5DGDlbWCDqm6X8ZQLxy8PtlHwy/xOfBMzzYsra0X4=
+X-Received: by 2002:a50:cdce:0:b0:579:f196:45ac with SMTP id
+ 4fb4d7f45d1cf-579f196473cmr1516180a12.7.1716910849666; Tue, 28 May 2024
+ 08:40:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240524232121.284515-1-richard.henderson@linaro.org>
- <20240524232121.284515-39-richard.henderson@linaro.org>
-In-Reply-To: <20240524232121.284515-39-richard.henderson@linaro.org>
+ <20240524232121.284515-40-richard.henderson@linaro.org>
+In-Reply-To: <20240524232121.284515-40-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 16:37:19 +0100
-Message-ID: <CAFEAcA9oBzyrjBKcX6NdkDGde5YJzfHUYpPKfx4w20KaqhpS_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 38/67] target/arm: Convert SUQADD and USQADD to gvec
+Date: Tue, 28 May 2024 16:40:38 +0100
+Message-ID: <CAFEAcA-rxn-Kkq9JKs6h4r6mHp3anAsohYcrfJw95ET6EFk5tw@mail.gmail.com>
+Subject: Re: [PATCH v2 39/67] target/arm: Inline scalar SUQADD and USQADD
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,48 +86,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 May 2024 at 00:32, Richard Henderson
+On Sat, 25 May 2024 at 00:23, Richard Henderson
 <richard.henderson@linaro.org> wrote:
+>
+> This eliminates the last uses of these neon helpers.
+> Incorporate the MO_64 expanders as an option to the vector expander.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/arm/helper.h            |  16 +++++
->  target/arm/tcg/translate-a64.h |   6 ++
->  target/arm/tcg/gengvec64.c     | 106 +++++++++++++++++++++++++++++++
->  target/arm/tcg/translate-a64.c | 113 ++++++++++++++-------------------
->  target/arm/tcg/vec_helper.c    |  64 +++++++++++++++++++
->  5 files changed, 241 insertions(+), 64 deletions(-)
+>  target/arm/helper.h            |   8 --
+>  target/arm/tcg/translate-a64.h |   8 ++
+>  target/arm/tcg/gengvec64.c     |  71 ++++++++++++++
+>  target/arm/tcg/neon_helper.c   | 165 ---------------------------------
+>  target/arm/tcg/translate-a64.c |  73 +++++----------
+>  5 files changed, 103 insertions(+), 222 deletions(-)
 
-> diff --git a/target/arm/tcg/gengvec64.c b/target/arm/tcg/gengvec64.c
-> index 093b498b13..4b76e476a0 100644
-> --- a/target/arm/tcg/gengvec64.c
-> +++ b/target/arm/tcg/gengvec64.c
-> @@ -188,3 +188,109 @@ void gen_gvec_bcax(unsigned vece, uint32_t d, uint32_t n, uint32_t m,
->      tcg_gen_gvec_4(d, n, m, a, oprsz, maxsz, &op);
->  }
->
-> +static void gen_suqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
-> +                           TCGv_vec a, TCGv_vec b)
-> +{
-> +    TCGv_vec max =
-> +        tcg_constant_vec_matching(t, vece, (1ull << ((8 << vece) - 1)) - 1);
-> +    TCGv_vec u = tcg_temp_new_vec_matching(t);
-> +
-> +    /* Maximum value that can be added to @a without overflow. */
-> +    tcg_gen_sub_vec(vece, u, max, a);
-> +
-> +    /* Constrain addend so that the next addition never overflows. */
-> +    tcg_gen_umin_vec(vece, u, u, b);
-> +    tcg_gen_add_vec(vece, t, u, a);
-> +
-> +    /* Compute QC by comparing the adjusted @b. */
-> +    tcg_gen_xor_vec(vece, u, u, b);
-> +    tcg_gen_or_vec(vece, qc, qc, u);
-
-With this kind of code where we wind up doing a vector op
-into vfp.qc, is there anything somewhere that asserts that
-we don't try to do it with a vector length bigger than
-sizeof(vfp.qc) (i.e. 128) ?
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
 -- PMM
