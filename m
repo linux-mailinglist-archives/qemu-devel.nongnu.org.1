@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485BE8D1619
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF1F8D1629
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:22:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBs1S-0004Tx-Gk; Tue, 28 May 2024 04:17:30 -0400
+	id 1sBs6D-0006uF-DM; Tue, 28 May 2024 04:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBs1K-0004Sj-1T
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:17:22 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ id 1sBs6A-0006s3-Py
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:22:22 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sBs1H-0001JA-L3
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:17:21 -0400
+ id 1sBs68-0002Fx-M1
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:22:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716884239; x=1748420239;
+ t=1716884541; x=1748420541;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lzRMQCT7nh2jOkyQciCKW7j96lmjebcgs0E+j5HqTqI=;
- b=TqCaEUvkikbX00YM7TPBHE7nGfZAlecjuh6VTZtr2X8/LQETeT/cd+w2
- Z36tNV5jrcI+fNt6AkcsfwQBvEcLHbrpAu9tb7EQLh2shEFoq2rW9MTLC
- gEGEBq/OiIAP25I1kMyhBfaLJuKkP7AAy0u7FTOHrkNUpf0hn4mD34p8f
- J5aQBIzOk+RmZ44YZ6WwYUuQ8FiP2ZYDaK0xNFxgSZ7iDYzGaerj4i2qe
- PQRHL0aASxlir48DnSXjMRni0xSmUQjIZb585K0TdNWXYFHZjgzeSqtdS
- 3tmmu6KtW+LgA/B3e8W/X4YW7RuBUTwv/4cXOGnuqugy0CTx0QF7DiM1/ w==;
-X-CSE-ConnectionGUID: dpSHdFpzREGHdOp7s/iT6w==
-X-CSE-MsgGUID: 01TeV9RyS/Kr4A33cvUtgw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13039379"
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="13039379"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 01:17:14 -0700
-X-CSE-ConnectionGUID: XdKnxtI5Ryay6JpHWcJvgg==
-X-CSE-MsgGUID: tGGCnmqoRFWRX1Eby1395w==
+ bh=f3svJEEuwU8zXQTsSySTUzD86Ayyx1BToP+oN07MDVY=;
+ b=AZLWlcjIJclYEFcsVu0BNeJvLMm+NM/7FiqZd4cciekiR8RBhtxFiNNu
+ JnzoXkADKWRQO7lsQ6Se2mbi8S829qWGcb+fhGmKXDk1yOYge68jETI5b
+ 4kzrdNtIC4yGnEFZxosuc2AtbGmupQDzROe4F9+9ZpWzT5eROchDrUfgk
+ P4RbLe5J/jCOzd3OTsimjs5+FyXrNQjPk44SWPbMf2oLlajuqTGp+keih
+ e5zELQ55BDpcAL6dwFnpqB4M/IR24RHXTWJi8ieUla0MmxMGjRPh4vZVp
+ 4D3MmtUsGOMueHxEd7AjItWX/zSicdlE9kPMmCxYmyc20CGTs5hgtxIT8 Q==;
+X-CSE-ConnectionGUID: 9YcfnTaXSM6YjbDttE/jyQ==
+X-CSE-MsgGUID: ZSgeo0iaR+CaQrpHjicRYA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="24627370"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="24627370"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2024 01:22:19 -0700
+X-CSE-ConnectionGUID: xvDVnYjpQziWiPsEbfiIDg==
+X-CSE-MsgGUID: 9ESX5TKGTj6IPR/hnkRUIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39525182"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39806405"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 28 May 2024 01:17:12 -0700
-Date: Tue, 28 May 2024 16:32:30 +0800
+ by orviesa003.jf.intel.com with ESMTP; 28 May 2024 01:22:16 -0700
+Date: Tue, 28 May 2024 16:37:39 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Stefan Hajnoczi <stefanha@redhat.com>
 Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -54,17 +54,17 @@ Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
  Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [RFC 2/6] scripts/simpletrace-rust: Support Event & Arguments in
- trace module
-Message-ID: <ZlWWnrwkipaq8x7n@intel.com>
+Subject: Re: [RFC 3/6] scripts/simpletrace-rust: Add helpers to parse trace
+ file
+Message-ID: <ZlWX00EGcPdBezpy@intel.com>
 References: <20240527081421.2258624-1-zhao1.liu@intel.com>
- <20240527081421.2258624-3-zhao1.liu@intel.com>
- <20240527203312.GC913874@fedora.redhat.com>
+ <20240527081421.2258624-4-zhao1.liu@intel.com>
+ <20240527203938.GD913874@fedora.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240527203312.GC913874@fedora.redhat.com>
-Received-SPF: pass client-ip=192.198.163.19; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240527203938.GD913874@fedora.redhat.com>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -88,183 +88,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> > +/*
-> > + * Refer to the description of ALLOWED_TYPES in
-> > + * scripts/tracetool/__init__.py.
-> 
-> Please don't reference the Python implementation because this will not
-> age well. It may bitrot if the Python code changes or if the Python
-> implementation is deprecated then the source file will go away
-> altogether. Make the Rust implementation self-contained. If there are
-> common file format concerns shared by implementations, then move that
-> information to a separate document in docs/interop/ (i.e. a simpletrace
-> file format specification).
-
-Thanks for your guidance, will do.
-
-> > + */
-> > +const ALLOWED_TYPES: [&str; 20] = [
-> > +    "int",
-> > +    "long",
-> > +    "short",
-> > +    "char",
-> > +    "bool",
-> > +    "unsigned",
-> > +    "signed",
-> > +    "int8_t",
-> > +    "uint8_t",
-> > +    "int16_t",
-> > +    "uint16_t",
-> > +    "int32_t",
-> > +    "uint32_t",
-> > +    "int64_t",
-> > +    "uint64_t",
-> > +    "void",
-> > +    "size_t",
-> > +    "ssize_t",
-> > +    "uintptr_t",
-> > +    "ptrdiff_t",
-> > +];
-> > +
-> > +const STRING_TYPES: [&str; 4] =
-> > +    ["const char*", "char*", "const char *", "char *"];
-> > +
-> > +/* TODO: Support 'vcpu' property. */
-> 
-> The vcpu property was removed in commit d9a6bad542cd ("docs: remove
-> references to TCG tracing"). Is this comment outdated or are you
-> planning to bring it back?
-
-Thanks! I have no plan for this, I just follow _VALID_PROPS[] in
-scripts/tracetool/__init__.py. As you commented above, I think I should
-just ignore it. ;-)
-
-> > +const VALID_PROPS: [&str; 1] = ["disable"];
-
-[snip]
-
-> > +    pub fn build(arg_str: &str) -> Result<Arguments>
+> > +    fn read_type(mut fobj: &File) -> Result<RecordType>
 > > +    {
-> > +        let mut args = Arguments::new();
-> > +        for arg in arg_str.split(',').map(|s| s.trim()) {
-> > +            if arg.is_empty() {
-> > +                return Err(Error::EmptyArg);
-> > +            }
-> > +
-> > +            if arg == "void" {
-> > +                continue;
-> > +            }
-> > +
-> > +            let (arg_type, identifier) = if arg.contains('*') {
-> > +                /* FIXME: Implement rsplit_inclusive(). */
-> > +                let p = arg.rfind('*').unwrap();
-> > +                (
-> > +                    /* Safe because arg contains "*" and p exists. */
-> > +                    unsafe { arg.get_unchecked(..p + 1) },
-> > +                    /* Safe because arg contains "*" and p exists. */
-> > +                    unsafe { arg.get_unchecked(p + 1..) },
-> > +                )
+> > +        let mut tbuf = [0u8; 8];
+> > +        if let Err(e) = fobj.read_exact(&mut tbuf) {
+> > +            if e.kind() == ErrorKind::UnexpectedEof {
+> > +                return Ok(RecordType::Empty);
 > > +            } else {
-> > +                arg.rsplit_once(' ').unwrap()
-> > +            };
-> 
-> Can you write this without unsafe? Maybe rsplit_once(' ') followed by a
-> check for (_, '*identifier'). If the identifier starts with '*', then
-> arg_type += ' *' and identifier = identifier[1:].
-
-Clever idea! It should work, will try this way.
-
-> > +
-> > +            validate_c_type(arg_type)?;
-> > +            args.props.push(ArgProperty::new(arg_type, identifier));
+> > +                return Err(Error::ReadFile(e));
+> > +            }
 > > +        }
-> > +        Ok(args)
+> > +
+> > +        /*
+> > +         * Safe because the layout of the trace record requires us to parse
+> > +         * the type first, and then there is a check on the validity of the
+> > +         * record type.
+> > +         */
+> > +        let raw_t =
+> > +            unsafe { std::mem::transmute::<[u8; 8], RecordRawType>(tbuf) };
+> 
+> A safe alternative: https://doc.rust-lang.org/std/primitive.u64.html#method.from_ne_bytes?
+
+Thanks! Will use it.
+
+> > +        match raw_t.rtype {
+> > +            RECORD_TYPE_MAPPING => Ok(RecordType::Mapping),
+> > +            RECORD_TYPE_EVENT => Ok(RecordType::Event),
+> > +            _ => Err(Error::UnknownRecType(raw_t.rtype)),
+> > +        }
 > > +    }
 > > +}
-> > +
 
 [snip]
 
-> > +    pub fn build(line_str: &str, lineno: u32, filename: &str) -> Result<Event>
+> > +{
+> > +    fn read_header(mut fobj: &File) -> Result<Self>
 > > +    {
-> > +        static RE: Lazy<Regex> = Lazy::new(|| {
-> > +            Regex::new(
-> > +                r#"(?x)
-> > +                ((?P<props>[\w\s]+)\s+)?
-> > +                (?P<name>\w+)
-> > +                \((?P<args>[^)]*)\)
-> > +                \s*
-> > +                (?:(?:(?P<fmt_trans>".+),)?\s*(?P<fmt>".+))?
-> 
-> What is the purpose of fmt_trans?
-> 
-> > +                \s*"#,
-> > +            )
-> > +            .unwrap()
-> 
-> I wonder if regular expressions help here. It's not easy to read this
-> regex and there is a bunch of logic that takes apart the matches
-> afterwards. It might even be clearer to use string methods to split
-> fields.
-
-Yes, regular matching is a burden here (it's a "lazy simplification" on
-my part), and I'll think if it's possible to avoid regular matching with
-string methods.
-
-> Please add a comment showing the format that's being parsed:
-> 
->  // [disable] <name>(<type1> <arg1>[, <type2> <arg2>] ...) "<format-string>"
-> 
-
-OK.
-
-> > +        });
+> > +        let mut raw_hdr = [0u8; 24];
+> > +        fobj.read_exact(&mut raw_hdr).map_err(Error::ReadFile)?;
 > > +
-> > +        let caps_res = RE.captures(line_str);
-> > +        if caps_res.is_none() {
-> > +            return Err(Error::UnknownEvent(line_str.to_owned()));
-> > +        }
-> > +        let caps = caps_res.unwrap();
-> > +        let name = caps.name("name").map_or("", |m| m.as_str());
-> > +        let props: Vec<String> = if caps.name("props").is_some() {
-> > +            caps.name("props")
-> > +                .unwrap()
-> > +                .as_str()
-> > +                .split_whitespace()
-> > +                .map(|s| s.to_string())
-> > +                .collect()
-> > +        } else {
-> > +            Vec::new()
-> > +        };
-> > +        let fmt: String =
-> > +            caps.name("fmt").map_or("", |m| m.as_str()).to_string();
-> > +        let fmt_trans: String = caps
-> > +            .name("fmt_trans")
-> > +            .map_or("", |m| m.as_str())
-> > +            .to_string();
-> > +
-> > +        if fmt.contains("%m") || fmt_trans.contains("%m") {
-> > +            return Err(Error::InvalidFormat(
-> > +                "Event format '%m' is forbidden, pass the error 
-> > +                as an explicit trace argument"
-> > +                    .to_string(),
-> > +            ));
-> > +        }
+> > +        /*
+> > +         * Safe because the size of log header (struct LogHeader)
+> > +         * is 24 bytes, which is ensured by simple trace backend.
+> > +         */
+> > +        let hdr =
+> > +            unsafe { std::mem::transmute::<[u8; 24], LogHeader>(raw_hdr) };
 > 
-> I'm not sure simpletrace needs to check this. That's a job for tracetool
-> the build-time tool that generates code from trace-events files.
+> Or u64::from_ne_bytes() for each field.
 
-Thanks for the clarification, this item has bothered me before, I also
-noticed that simpletrace doesn't use it, but don't feel confident about
-deleting it completely, I'll clean it up!
+Will do.
 
-> > +        if fmt.ends_with(r"\n") {
-> > +            return Err(Error::InvalidFormat(
-> > +                "Event format must not end with a newline 
-> > +                character"
-> > +                    .to_string(),
-> > +            ));
-> > +        }
+> > +        Ok(hdr)
+> > +    }
+> > +}
+
+[snip]
+
+> > +impl ReadHeader for RecordHeader
+> > +{
+> > +    fn read_header(mut fobj: &File) -> Result<Self>
+> > +    {
+> > +        let mut raw_hdr = [0u8; 24];
+> > +        fobj.read_exact(&mut raw_hdr).map_err(Error::ReadFile)?;
+> > +
+> > +        /*
+> > +         * Safe because the size of record header (struct RecordHeader)
+> > +         * is 24 bytes, which is ensured by simple trace backend.
+> > +         */
+> > +        let hdr: RecordHeader =
+> > +            unsafe { std::mem::transmute::<[u8; 24], RecordHeader>(raw_hdr) };
+> 
+> Or u64::from_ne_bytes() and u32::from_ne_bytes() for all fields.
+
+Will do.
 
 Thanks,
 Zhao
