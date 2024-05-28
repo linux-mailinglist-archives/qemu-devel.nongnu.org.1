@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019D58D1E1E
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 075A68D1E2F
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:13:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUg-0001UM-C8; Tue, 28 May 2024 10:08:02 -0400
+	id 1sBxUh-0001Uv-6M; Tue, 28 May 2024 10:08:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUf-0001Tn-3b
+ id 1sBxUf-0001Tq-7R
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:01 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUd-00070M-45
+ id 1sBxUd-00070S-Ha
  for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:00 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-354e0cc9c5cso756125f8f.0
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:07:58 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-35bf77ba951so210008f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:07:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716905277; x=1717510077; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716905278; x=1717510078; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=EAAlRYMlBTnMK71N/Zu05HtnM34HblCxoLd1v+E1rkk=;
- b=EkGF+zQGRmrzicrr4ZUfs+Fx/hiQnBUEQd0IGzOdvK0Pf3VtPvBIFkaDpkKImKS9uX
- WJc0G2Keh/fRhvl9pemS1XVBQk9uuy4grRbm6dH3dd2FD2isJ3iVJteuloU+EyHq0Bvs
- yBM1KzTDJiTVbjtQUgOzfzGEJDyS+AADxqfQvj2b+C6VPgCSoORByEF940H6wafpgs0h
- ZdCeV5Cvmujlbt5Bqvt53Btm15NIPGaEdar/AblFNK8X2ObxMoJnnHRmKvw3DIQCQKlZ
- eM+NBMx21/m+XWudsMDFaTwzuUFPxuWLj+Hl9DVatAVKpc6av/A/0HRs7H1rWSQN/b2h
- zCAg==
+ :reply-to; bh=js5qncWkemZbFOUTBcvGMDqOGolfrcRJMq2DK5PGxrw=;
+ b=sXX4gy/28aC7T3VCBj8KFmLrXZinqkKJTsHpRbPtz7R+FJ229SZNdptGVtYfW++yV8
+ 92Zco127RY4BcdqBiMVrO067VXrGHdTBIqlRmqBqE0lM2QKIvqBGG5U+U77fHWqsHDYp
+ MO0ai/5GKw36e+kxA4kf5L6Kguf54BOEzJzEd3Pkdfap6dz2tIaOFmkZi/I5S0OCAqV/
+ aKtyIfG67Z5dacmapW+m9Uhwn4EVFQ5mm3di8o6kTQqxbUDmyfgzFkSKJ18UjvdgcKIe
+ vg2VxFFPudGws5/+d98wjPC+3Dfohvozidlm0DEdB5sCLF8gJIFIFp01Ii6/RLj+kGW4
+ WKEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716905277; x=1717510077;
+ d=1e100.net; s=20230601; t=1716905278; x=1717510078;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EAAlRYMlBTnMK71N/Zu05HtnM34HblCxoLd1v+E1rkk=;
- b=qNHijZaUhdHc8ljweMHDA7/i9/9G1ud2qdet/md9cT/o3W578VhwZ5BJnFYkaS2iEg
- 82l7Zr6fn4M/Mi+BxcPNybF6o6Rt/hGK49U00ZwB2wnopB7B0zRjHGFdCXZqGixUhxkx
- TwjpkZL9mSircbUpasT5sfr1YHZKx7CxtRvT6ZEj3SmH5lUcu0r0w8jbktqsBrorTg4w
- rdbCdm+NsYnBfec/5A+JMMmJ3JJzV8wsnqpAbn8OuEcVYPIqapxpe1WOU0LuQAzp1zG6
- 7omDWK5o4qkVPYvllNPEXYUiqc3q6NHMlFgNyW7h87U7ykWVxQcgIfN8KpeeZMS88ra/
- j6BQ==
-X-Gm-Message-State: AOJu0YwFuqQTYECDYLJwwiaAegsSIklyYKouEcRGtx8PvgA1t2p8I6c5
- c+g9LM4WPNgdmoZ5VqOteSSgj3RWayHLaBg6QdEh4I2+qIv5TemW0rDBXO1FI+qZnqyJiK5QcAx
- q
-X-Google-Smtp-Source: AGHT+IF3r5oo6cmZr2OoyOeFQxnyXX8c8F74VC7x5bbnqexqtsx4iELupdBcjnD7ueE2yu4lIUEwtg==
-X-Received: by 2002:a05:6000:1541:b0:359:733c:c8d6 with SMTP id
- ffacd0b85a97d-359733cc9fbmr4982633f8f.67.1716905277685; 
- Tue, 28 May 2024 07:07:57 -0700 (PDT)
+ bh=js5qncWkemZbFOUTBcvGMDqOGolfrcRJMq2DK5PGxrw=;
+ b=dSxJMO0QZ2tHN7C6AyXFAvAFbEqA1zfcrPH0lHvhasAIRzHtIRBSFNgo6LdZXIUbdN
+ GLu0vGbNJvJZZIWGdFj2M7U6z5a0A5fFhuxfpk2+Doaa6v/EXukxTI0oHF1rvHVgFaYb
+ qIEEhBI9rF3W1FDrYQC5GhDCQs9oie9TOhMk+XvvI4bDaeE2X2/fvGBQ5x7k+aPQRDkF
+ 9Wmu5z7bdNaRL44OE33UYbaoL4+LJpiKln0Iz2Ov1SJ4M70+F1APo0YgUO9oURh4qdiP
+ mnczmCHXOP+d5VKyFSrG+bSlMdBLNADH81R0TMycjhArnCdy/1Pi2N7sg+CN+OM4SbJO
+ 3EdA==
+X-Gm-Message-State: AOJu0YyMYAEI9xs287x5KaHAZoNlUFvqDrQhL3Z3+Q6QVoC167foZnLQ
+ dywPVQKnOxL5+YP28mAUqz/ZkO8IbGyGJxu8Wgz3hUv2uvsVy9n/RN4Nu4yNh2o9UwDmsxpKA/g
+ u
+X-Google-Smtp-Source: AGHT+IHDpbbNQL4S4FsazvxQtOjWo80Y1YbSx9AqlPUC8vZBYaUKR48E61Ih+Hcs/E1+gxjfM3kKEA==
+X-Received: by 2002:a5d:4988:0:b0:354:f489:fb8 with SMTP id
+ ffacd0b85a97d-35526c3e2admr8015667f8f.14.1716905278262; 
+ Tue, 28 May 2024 07:07:58 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.07.57
@@ -59,17 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 28 May 2024 07:07:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/42] hw/arm/npcm7xx: remove setting of mp-affinity
-Date: Tue, 28 May 2024 15:07:14 +0100
-Message-Id: <20240528140753.3620597-4-peter.maydell@linaro.org>
+Subject: [PULL 04/42] hw/char: Correct STM32L4x5 usart register CR2 field
+ ADD_0 size
+Date: Tue, 28 May 2024 15:07:15 +0100
+Message-Id: <20240528140753.3620597-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
+From: Inès Varhol <ines.varhol@telecom-paris.fr>
 
-The value of the mp-affinity property being set in npcm7xx_realize is
-always the same as the default value it would have when arm_cpu_realizefn
-is called if the property is not set here. So there is no need to set
-the property value in npcm7xx_realize function.
-
-Signed-off-by: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240504141733.14813-1-dorjoychy111@gmail.com
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
+Message-id: 20240505141613.387508-1-ines.varhol@telecom-paris.fr
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/npcm7xx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ hw/char/stm32l4x5_usart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index 9f2d96c733a..cb7791301b4 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -487,9 +487,6 @@ static void npcm7xx_realize(DeviceState *dev, Error **errp)
- 
-     /* CPUs */
-     for (i = 0; i < nc->num_cpus; i++) {
--        object_property_set_int(OBJECT(&s->cpu[i]), "mp-affinity",
--                                arm_build_mp_affinity(i, NPCM7XX_MAX_NUM_CPUS),
--                                &error_abort);
-         object_property_set_int(OBJECT(&s->cpu[i]), "reset-cbar",
-                                 NPCM7XX_GIC_CPU_IF_ADDR, &error_abort);
-         object_property_set_bool(OBJECT(&s->cpu[i]), "reset-hivecs", true,
+diff --git a/hw/char/stm32l4x5_usart.c b/hw/char/stm32l4x5_usart.c
+index 02f666308c0..fc5dcac0c45 100644
+--- a/hw/char/stm32l4x5_usart.c
++++ b/hw/char/stm32l4x5_usart.c
+@@ -56,7 +56,7 @@ REG32(CR1, 0x00)
+     FIELD(CR1, UE, 0, 1)     /* USART enable */
+ REG32(CR2, 0x04)
+     FIELD(CR2, ADD_1, 28, 4)    /* ADD[7:4] */
+-    FIELD(CR2, ADD_0, 24, 1)    /* ADD[3:0] */
++    FIELD(CR2, ADD_0, 24, 4)    /* ADD[3:0] */
+     FIELD(CR2, RTOEN, 23, 1)    /* Receiver timeout enable */
+     FIELD(CR2, ABRMOD, 21, 2)   /* Auto baud rate mode */
+     FIELD(CR2, ABREN, 20, 1)    /* Auto baud rate enable */
 -- 
 2.34.1
 
