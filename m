@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0468D20DE
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687DC8D20E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:55:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBzA9-0004Ic-UK; Tue, 28 May 2024 11:54:57 -0400
+	id 1sBzAE-0004KM-4t; Tue, 28 May 2024 11:55:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzA5-0004He-RP
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzA4-0006hc-6G
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716911690;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=vCkfDtbfWHqfaF8lqWPGsCwpk/hKttzpFyCJsxRN2JA=;
- b=Ffz9LEDIqTfVvVW04oX2LxVe9RgUy4LfxIryhvzF8vY4evCQ1c76eqmbb71Bgy2Shp/BDF
- YwcLQ1I5d7JrmZxJdpDN3bQLDSl5WPqcUMgppx2zJJf5pyUkRsii8qWqqit8Ru8jcqI6cr
- 8W+FRwAUTj/R5SCf1bLLwAoWFDjSoYg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-351--1DrhXNSPqSEg3YFLvojvw-1; Tue,
- 28 May 2024 11:54:45 -0400
-X-MC-Unique: -1DrhXNSPqSEg3YFLvojvw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77E7F380671D;
- Tue, 28 May 2024 15:54:44 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.195.1])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A217C15BB9;
- Tue, 28 May 2024 15:54:42 +0000 (UTC)
-Date: Tue, 28 May 2024 17:54:40 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH 0/2] Revert "monitor: use aio_co_reschedule_self()"
-Message-ID: <ZlX-QOQDxgpiZwt1@redhat.com>
-References: <20240506190622.56095-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sBzAB-0004Jj-Sj
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:59 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sBzA9-0006iC-8C
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:59 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-579fa270e53so940303a12.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:54:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1716911696; x=1717516496; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=nFxJYvNldHwZrVCu+fFet6j2GNc53uIscAyjPU2nE/0=;
+ b=Szvlft/vbsNKp4eY00LbD7s9nw/bk0rJOtrvZYWO51VZnGi0eI4lRISs8q+nGptMjT
+ gmnEZL+RoPhrI7LvAyd8XOB1dfvjo6A/r72N41Z420dPrHlOmgTJlpw7WodBya+6a9v8
+ 6u050p7R3kNVZgTchhodm3CxDpupe8AvWbBWbXxS82SD7Ys8ADb/t6r31+uzDxG/u5N8
+ H0R+sKsePxS8tQ+g9+4j4x3evLk7L0Jc0TmIQiVNrzn5bOxmpXrLqxnQg1MPO93Zdl5Q
+ /QQQwHPZj1t4sjpzKWeZO+xzhpIXdLc9Vae2aOjojK85Ha6webhXVUekpWxM8zOIYOGy
+ zxfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716911696; x=1717516496;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=nFxJYvNldHwZrVCu+fFet6j2GNc53uIscAyjPU2nE/0=;
+ b=GMVvihPNSHGX1JCcVpN1l0kNGacfoASGnXQvq/Es8TfihU7WZCYHbcnOzuzY0dsHAU
+ sY7O3Q728Ju6sMrX+OmNPgaYTfTUV12VCjJV0SGlf+r/4xtmjVKPmBbb0Jh5tdupVg4A
+ u65lZ3efLz/Fcse672y2+9FDrWfQA0iWbbDTVLQj2A4XhJESKKOMwLKw/pCjneJ6YcpO
+ kaBiFd4oWtxfFqCshIE7gursSTIRcinPX35eLNCk2yT0mcOHxNqEX9j7lJtZ4diwytmj
+ sGE2X9W2ls3VXzrsBM4mO4uyq+pyphxpPKz+9dkLLxqbWucO9K152lWT4lJN2mcc4UlT
+ Rtlw==
+X-Gm-Message-State: AOJu0Yyit9jwIm32Tn+nzpjaymqIzRnpkG8YLuNR3UHH0crlTGhpSwOs
+ K8SqJC32uiQeBDCYuPF5XEVsckGTkC5SJdHop6ON6E/m6KDWKxAhjrv3B0YnOyNshn+q8U4dN+L
+ U/T/yPo88Ge9zhuwyYqhjCCHsFIQxw1J9DskrIw==
+X-Google-Smtp-Source: AGHT+IH2Iy/WhiCNzYTlOFnsAp3cFLGzrBqsPinKGZ9d+zVsVYv39rLOTF/fQW5HekfF36yhXvPhae+LvuLmBflpAa0=
+X-Received: by 2002:a50:d5d2:0:b0:572:719f:b430 with SMTP id
+ 4fb4d7f45d1cf-578519aa424mr13014427a12.32.1716911695634; Tue, 28 May 2024
+ 08:54:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240506190622.56095-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20240524232121.284515-1-richard.henderson@linaro.org>
+ <20240524232121.284515-49-richard.henderson@linaro.org>
+In-Reply-To: <20240524232121.284515-49-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 28 May 2024 16:54:44 +0100
+Message-ID: <CAFEAcA9oLG4U5-pnAJhsiVbBttAyJ-+2xmpEOT-fZs1MRAX2OQ@mail.gmail.com>
+Subject: Re: [PATCH v2 48/67] target/arm: Convert SQRSHL and UQRSHL (register)
+ to gvec
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,24 +87,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 06.05.2024 um 21:06 hat Stefan Hajnoczi geschrieben:
-> This series fixes RHEL-34618 "qemu crash on Assertion `luringcb->co->ctx ==
-> s->aio_context' failed when do block_resize on hotplug disk with aio=io_uring":
-> https://issues.redhat.com/browse/RHEL-34618
-> 
-> Kevin identified commit 1f25c172f837 ("monitor: use aio_co_reschedule_self()")
-> as the root cause. There is a subtlety regarding how
-> qemu_get_current_aio_context() returns qemu_aio_context even though we may be
-> running in iohandler_ctx.
-> 
-> Revert commit 1f25c172f837, it was just intended as a code cleanup.
-> 
-> Stefan Hajnoczi (2):
->   Revert "monitor: use aio_co_reschedule_self()"
->   aio: warn about iohandler_ctx special casing
+On Sat, 25 May 2024 at 00:27, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
 
-Thanks, applied to the block branch.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Kevin
-
+thanks
+-- PMM
 
