@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB9E8D1560
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB748D1563
 	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBrIn-0003bQ-2G; Tue, 28 May 2024 03:31:21 -0400
+	id 1sBrIq-0003cm-OD; Tue, 28 May 2024 03:31:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sBrIl-0003ai-Jz
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:19 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1sBrIo-0003c9-Jf
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:22 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1sBrIj-0001e2-QK
- for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:19 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6f4ed9dc7beso389406b3a.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 00:31:17 -0700 (PDT)
+ id 1sBrIn-0001ej-0d
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:31:22 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6f8eba8dcfcso366689b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 00:31:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1716881475; x=1717486275; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1716881479; x=1717486279; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uqmGp1q1QLZg7tcFOz2rAYVe/1SozcmikYc8Vhl1qtE=;
- b=fS40hUgGv+c2jckRg5Ki4Zp0Hf/gbPk9Kvi5Eyg1/BXbK+/y3iVxbVINBypmp701Lb
- koDUFvwtMO5s7BPJIGQKYa+mHC/hFIgJX9SgSGR4Zm+Bt7XoxMJyn7sWxFVSyJLH4Hwu
- +L2mYOWWUcvTSJ8n2W9BqiU1s9mhFKErtIsTnq2E0603RQu8OoKl2qwRPXd+vQTuubHU
- w3uTptdpitW3aA+yu6z4Uvx9pNySNmZTPB5VFH6FYidIS9YSRrjob+xYDduTG+QMOZMJ
- 0oquqSPH2VJ3WiAJsTsRjf8bw1W3Tn7/ZmFViNbcY1WM3snG3yujkxdOdieX91nF0VLO
- cDPA==
+ bh=U1C+cXXjZTBdG34i2THVAeaMfMT5wPu2gPry985wW58=;
+ b=pgeKSql60m9P1zbaI/zWZjJujlFu8lghZlNsHlcddWA1/s2w597a/n7mmI5g0kDfZZ
+ UQgglSLy9xNdwqfPfZJ2aEk6kHB6JCHofKJ1Qgjfnik3qeV+yXqxbTj+kf8Eol5pgH91
+ pDeDeiBQ3vE0k7xLUG3UEw+7LRhtePdE4073hkGvs096z/sLnMhRTKFrBe0JGDAwLsW3
+ dsJlggka9w22NIlZzr4Mk3o8kOIGRYw4TKjwHaSbBkWMI9h3X7u4yk6VbxXvt6G0d+Q+
+ OHMvoy4ocwB6F0wEHZ552+3aWlEEFwEkz+Ne/8mwhpyIX1FyQbrBpCiicpKaS2MJ3KIK
+ 2EUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716881475; x=1717486275;
+ d=1e100.net; s=20230601; t=1716881479; x=1717486279;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uqmGp1q1QLZg7tcFOz2rAYVe/1SozcmikYc8Vhl1qtE=;
- b=VQfwdKowk0ybpaG0zsSgg21JvwOYkf08+hoS4noR38xprPUB6KacL+r/xQOqWyRbyb
- lEmGUHfrPYWtj9hVBlU0ArNQTw9mpJekToPW+2VtDmL2iR7V3l8x6fxshjP83O+atJ9R
- ax+nrezSwWRu6/FCuQqxvd7Xl7PB9tfIswwQ8sO+mhlGeL7EYxBMsaIiamc+at01vg8u
- O+bNSo2ZnBtNdROln/IzQZtFl9FCA7RR/LM974hFpZyHuwUydor9VvLWAXsmaDVhFIRg
- kU/lb7KYGGbBVa600BIRaTIkOE/JUOyWsA1apsL4habLgN9+CT42Dq4roXRycj0G3MUI
- kpyA==
-X-Gm-Message-State: AOJu0YxNTUrNZegeuGHfCIJQjTkU5ttR64SpxTJOaLEz69FE2tzVGNSE
- V7W19EArgZ0S5J0cR1xedaDEwsPdYMJJ6FzXXrVyWgFaIkeQ2oHTJqdeViVzFTHoPV3zqFdbZsV
- Btfc=
-X-Google-Smtp-Source: AGHT+IH6YJfvYVJlSfNqhIVKjk5TAWaDXKz+x34edxD07Hvvo9bhIL70qKCEs+7bVXas+ZoSm2A1fg==
-X-Received: by 2002:a05:6a00:1d8d:b0:6ec:ef1c:4dcd with SMTP id
- d2e1a72fcca58-6f8e955aa5fmr16073812b3a.6.1716881475343; 
- Tue, 28 May 2024 00:31:15 -0700 (PDT)
+ bh=U1C+cXXjZTBdG34i2THVAeaMfMT5wPu2gPry985wW58=;
+ b=mdFgTPcc2dbRN5nO78g+yLy1KP4NjEEc8f4kmNrSTA9acz7EGHtTxWlEPxbTTWf/ye
+ Jwf8ycgn7J2HgMBRXAiIkh1jqTEQF2OwGrsEkwBs6Ksvb6QnipfenxVUbHFsq4OT5npo
+ uN6ZqjuwRgPAMtwJ4H+mJ4mysg0KvYAlzh6ufA7xW444yPJU8UUfVVAYkSRNIWfuhT3/
+ BX4taiReqNL0sI9/I/Lsw5X4AfOH6bNjJDRm8/CR4tjCJCXKx+SabiShklW6zexQS75t
+ 0juU72d3zh8Al08zXQdWkZG4Qy+KKibj4fCEA9t8YJynDJX2SdXAEhLiuQkb9YO3YCWB
+ VFgA==
+X-Gm-Message-State: AOJu0Yxot28JCUSTKif9+b9pYJtXbu+EeB/gUq5bz3u/ZQN4Z8hAiA1Q
+ qHthdKg3chH4W2LGVbE7+NGpjoS1mh3xHoeghGMP1E4qTxC7ntFitoU2LqXotZBB5+QWAiIopxJ
+ 9dXc=
+X-Google-Smtp-Source: AGHT+IGC+C/jnVXPXbn7EPctvy3oeDf6LPx7fOANzHa7O8iZTJMRogUuyTO6E6mnsNWkjRaOQl4EwA==
+X-Received: by 2002:a05:6a00:1f12:b0:6f6:7c6a:2c14 with SMTP id
+ d2e1a72fcca58-6f8f2c56e53mr11720460b3a.4.1716881478728; 
+ Tue, 28 May 2024 00:31:18 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.188.31])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fd4d51a2sm5881080b3a.189.2024.05.28.00.31.12
+ d2e1a72fcca58-6f8fd4d51a2sm5881080b3a.189.2024.05.28.00.31.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 00:31:14 -0700 (PDT)
+ Tue, 28 May 2024 00:31:18 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -67,17 +67,17 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 1/3] gpex-acpi: Support PCI link devices outside the host
- bridge
-Date: Tue, 28 May 2024 13:01:01 +0530
-Message-Id: <20240528073103.1075812-2-sunilvl@ventanamicro.com>
+Subject: [PATCH 2/3] hw/riscv/virt-acpi-build.c: Add namespace devices for
+ PLIC and APLIC
+Date: Tue, 28 May 2024 13:01:02 +0530
+Message-Id: <20240528073103.1075812-3-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240528073103.1075812-1-sunilvl@ventanamicro.com>
 References: <20240528073103.1075812-1-sunilvl@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,150 +100,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, PCI link devices (PNP0C0F) are always created within the
-scope of the PCI root complex. However, RISC-V needs PCI link devices to
-be outside the scope of the PCI host bridge to properly enable the probe
-order. This matches the example given in the ACPI specification section
-6.2.13.1 as well.
-
-Enable creating link devices outside the scope of PCI root complex based
-on the flag which gets set currently only for RISC-V.
+PLIC and APLIC should be in namespace as well. So, add them using the
+defined HID.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- hw/pci-host/gpex-acpi.c    | 29 ++++++++++++++++++++++++-----
- hw/riscv/virt-acpi-build.c |  8 +++++---
- include/hw/pci-host/gpex.h |  5 ++++-
- 3 files changed, 33 insertions(+), 9 deletions(-)
+ hw/riscv/virt-acpi-build.c | 47 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index f69413ea2c..cea89a3ed8 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -7,7 +7,7 @@
- #include "hw/pci/pcie_host.h"
- #include "hw/acpi/cxl.h"
- 
--static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq)
-+static void acpi_dsdt_add_pci_route_table(Aml *scope, Aml *dev, uint32_t irq)
- {
-     Aml *method, *crs;
-     int i, slot_no;
-@@ -45,7 +45,17 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq)
-         aml_append(dev_gsi, aml_name_decl("_CRS", crs));
-         method = aml_method("_SRS", 1, AML_NOTSERIALIZED);
-         aml_append(dev_gsi, method);
--        aml_append(dev, dev_gsi);
-+
-+        /*
-+         * Some architectures like RISC-V need PCI link devices created
-+         * outside the scope of the PCI host bridge similar to the example
-+         * given in the section 6.2.13.1 of ACPI spec 6.5.
-+         */
-+         if (scope) {
-+            aml_append(scope, dev_gsi);
-+        } else {
-+            aml_append(dev, dev_gsi);
-+        }
-     }
- }
- 
-@@ -174,7 +184,11 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-                 aml_append(dev, aml_name_decl("_PXM", aml_int(numa_node)));
-             }
- 
--            acpi_dsdt_add_pci_route_table(dev, cfg->irq);
-+            if (cfg->flags & GPEX_FLAGS_EXT_GSI_LINK) {
-+                acpi_dsdt_add_pci_route_table(scope, dev, cfg->irq);
-+            } else {
-+                acpi_dsdt_add_pci_route_table(NULL, dev, cfg->irq);
-+            }
- 
-             /*
-              * Resources defined for PXBs are composed of the following parts:
-@@ -205,7 +219,11 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-     aml_append(dev, aml_name_decl("_STR", aml_unicode("PCIe 0 Device")));
-     aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
- 
--    acpi_dsdt_add_pci_route_table(dev, cfg->irq);
-+    if (cfg->flags & GPEX_FLAGS_EXT_GSI_LINK) {
-+        acpi_dsdt_add_pci_route_table(scope, dev, cfg->irq);
-+    } else {
-+        acpi_dsdt_add_pci_route_table(NULL, dev, cfg->irq);
-+    }
- 
-     method = aml_method("_CBA", 0, AML_NOTSERIALIZED);
-     aml_append(method, aml_return(aml_int(cfg->ecam.base)));
-@@ -282,7 +300,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-     crs_range_set_free(&crs_range_set);
- }
- 
--void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
-+void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq, uint32_t flags)
- {
-     bool ambig;
-     Object *obj = object_resolve_path_type("", TYPE_GPEX_HOST, &ambig);
-@@ -292,5 +310,6 @@ void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq)
-     }
- 
-     GPEX_HOST(obj)->gpex_cfg.irq = irq;
-+    GPEX_HOST(obj)->gpex_cfg.flags = flags;
-     acpi_dsdt_add_gpex(scope, &GPEX_HOST(obj)->gpex_cfg);
- }
 diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 0925528160..832a3acb8d 100644
+index 832a3acb8d..47ec78e432 100644
 --- a/hw/riscv/virt-acpi-build.c
 +++ b/hw/riscv/virt-acpi-build.c
-@@ -417,19 +417,21 @@ static void build_dsdt(GArray *table_data,
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-                              memmap[VIRT_VIRTIO].size,
-                              VIRTIO_IRQ, 0, VIRTIO_COUNT);
--        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ);
-+        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ, GPEX_FLAGS_EXT_GSI_LINK);
-     } else if (socket_count == 2) {
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-                              memmap[VIRT_VIRTIO].size,
-                              VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
-                              VIRTIO_COUNT);
--        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES);
-+        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES,
-+                                GPEX_FLAGS_EXT_GSI_LINK);
-     } else {
-         virtio_acpi_dsdt_add(scope, memmap[VIRT_VIRTIO].base,
-                              memmap[VIRT_VIRTIO].size,
-                              VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES, 0,
-                              VIRTIO_COUNT);
--        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2);
-+        acpi_dsdt_add_gpex_host(scope, PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2,
-+                                GPEX_FLAGS_EXT_GSI_LINK);
+@@ -141,6 +141,52 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
      }
+ }
  
-     aml_append(dsdt, scope);
-diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-index dce883573b..bee17d62c5 100644
---- a/include/hw/pci-host/gpex.h
-+++ b/include/hw/pci-host/gpex.h
-@@ -47,8 +47,11 @@ struct GPEXConfig {
-     MemMapEntry pio;
-     int         irq;
-     PCIBus      *bus;
-+    uint32_t    flags;
- };
- 
-+#define GPEX_FLAGS_EXT_GSI_LINK BIT(0)
++static void acpi_dsdt_add_plic_aplic(Aml *scope, RISCVVirtState *s)
++{
++    MachineState *ms = MACHINE(s);
++    uint64_t plic_aplic_addr;
++    uint32_t gsi_base;
++    uint8_t  socket;
 +
- struct GPEXHost {
-     /*< private >*/
-     PCIExpressHost parent_obj;
-@@ -71,7 +74,7 @@ struct GPEXHost {
- int gpex_set_irq_num(GPEXHost *s, int index, int gsi);
++    if (s->aia_type == VIRT_AIA_TYPE_NONE) {
++        /* PLICs */
++        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
++            plic_aplic_addr = s->memmap[VIRT_PLIC].base +
++                         s->memmap[VIRT_PLIC].size * socket;
++            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
++            Aml *dev = aml_device("IC%.02X", socket);
++            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0001")));
++            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
++            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
++
++            Aml *crs = aml_resource_template();
++            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
++                                               s->memmap[VIRT_PLIC].size,
++                                               AML_READ_WRITE));
++            aml_append(dev, aml_name_decl("_CRS", crs));
++            aml_append(scope, dev);
++        }
++    } else {
++        /* APLICs */
++        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
++            plic_aplic_addr = s->memmap[VIRT_APLIC_S].base +
++                             s->memmap[VIRT_APLIC_S].size * socket;
++            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
++            Aml *dev = aml_device("IC%.02X", socket);
++            aml_append(dev, aml_name_decl("_HID", aml_string("RSCV0002")));
++            aml_append(dev, aml_name_decl("_UID", aml_int(socket)));
++            aml_append(dev, aml_name_decl("_GSB", aml_int(gsi_base)));
++
++            Aml *crs = aml_resource_template();
++            aml_append(crs, aml_memory32_fixed(plic_aplic_addr,
++                                               s->memmap[VIRT_APLIC_S].size,
++                                               AML_READ_WRITE));
++            aml_append(dev, aml_name_decl("_CRS", crs));
++            aml_append(scope, dev);
++        }
++    }
++}
++
+ static void
+ acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+                     uint32_t uart_irq)
+@@ -411,6 +457,7 @@ static void build_dsdt(GArray *table_data,
  
- void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg);
--void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq);
-+void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq, uint32_t flags);
+     socket_count = riscv_socket_count(ms);
  
- #define PCI_HOST_PIO_BASE               "x-pio-base"
- #define PCI_HOST_PIO_SIZE               "x-pio-size"
++    acpi_dsdt_add_plic_aplic(scope, s);
+     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
+ 
+     if (socket_count == 1) {
 -- 
 2.40.1
 
