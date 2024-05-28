@@ -2,52 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9818D166A
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 083DB8D167D
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 10:40:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBsMO-0002iM-TS; Tue, 28 May 2024 04:39:08 -0400
+	id 1sBsMT-0002n1-Dl; Tue, 28 May 2024 04:39:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1sBsMM-0002ho-Ly
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:06 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1sBsMK-0004oW-Qf
- for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:06 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxOuolmFVmp5wAAA--.2500S3;
- Tue, 28 May 2024 16:39:01 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxosQfmFVmQcYLAA--.20131S4; 
- Tue, 28 May 2024 16:39:01 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: maobibo@loongson.cn
-Cc: qemu-devel@nongnu.org
-Subject: [PATCH v4 2/3] hw/loongarch/virt: Use MemTxAttrs interface for misc
- ops
-Date: Tue, 28 May 2024 16:38:54 +0800
-Message-Id: <20240528083855.1912757-3-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240528083855.1912757-1-gaosong@loongson.cn>
-References: <20240528083855.1912757-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMO-0002iq-BE
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sBsMM-0004p1-N3
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 04:39:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716885546;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I0lBdbUTHbui5ln/PYrHB8IAjP+jvZZiRs/R3y2NxPA=;
+ b=AWdwoQw/9sb+kBkKK6KfXuUQXWiI/HXWTLXKdyOL5fIm882njiPYQ7AAqu/OdR15xdKfCK
+ VWAGLGBf3e1n3FZZBNBlQUyd4nGOzNU0YSTbp1KyXdyR5/LIHoc6w0aHHRen1qNGtnIvUG
+ oPJNU6aW98RNXtDJ0B5C9rANcBF6a+g=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-428-EldO7QwEO0eg9uIObeU8GA-1; Tue,
+ 28 May 2024 04:39:02 -0400
+X-MC-Unique: EldO7QwEO0eg9uIObeU8GA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 973791C0512D;
+ Tue, 28 May 2024 08:39:01 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.232])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D8E9C2026D68;
+ Tue, 28 May 2024 08:39:00 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 65E0B1800DDA; Tue, 28 May 2024 10:38:58 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Subject: [PATCH v2 2/4] MAINTAINERS: drop usb maintainership
+Date: Tue, 28 May 2024 10:38:54 +0200
+Message-ID: <20240528083858.836262-3-kraxel@redhat.com>
+In-Reply-To: <20240528083858.836262-1-kraxel@redhat.com>
+References: <20240528083858.836262-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxosQfmFVmQcYLAA--.20131S4
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,81 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use MemTxAttrs interface read_with_attrs/write_with_attrs
-for virt_iocsr_misc_ops.
+Remove myself from usb entries.
+Flip status to "Orphan" for entries which have nobody else listed.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 ---
- hw/loongarch/virt.c | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ MAINTAINERS | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 4db0d82dbd..a70eeda2fd 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -899,37 +899,49 @@ static void virt_firmware_init(LoongArchVirtMachineState *lvms)
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 58e44885ce94..a03756274017 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2140,8 +2140,7 @@ F: tests/qtest/fuzz-sdcard-test.c
+ F: tests/qtest/sdhci-test.c
  
+ USB
+-M: Gerd Hoffmann <kraxel@redhat.com>
+-S: Odd Fixes
++S: Orphan
+ F: hw/usb/*
+ F: stubs/usb-dev-stub.c
+ F: tests/qtest/usb-*-test.c
+@@ -2150,7 +2149,6 @@ F: include/hw/usb.h
+ F: include/hw/usb/
  
--static void virt_iocsr_misc_write(void *opaque, hwaddr addr,
--                                  uint64_t val, unsigned size)
-+static MemTxResult virt_iocsr_misc_write(void *opaque, hwaddr addr,
-+                                         uint64_t val, unsigned size,
-+                                         MemTxAttrs attrs)
- {
-+    return MEMTX_OK;
- }
- 
--static uint64_t virt_iocsr_misc_read(void *opaque, hwaddr addr, unsigned size)
-+static MemTxResult virt_iocsr_misc_read(void *opaque, hwaddr addr,
-+                                        uint64_t *data,
-+                                        unsigned size, MemTxAttrs attrs)
- {
--    uint64_t ret;
-+    uint64_t ret = 0;
- 
-     switch (addr) {
-     case VERSION_REG:
--        return 0x11ULL;
-+        ret = 0x11ULL;
-+        break;
-     case FEATURE_REG:
-         ret = BIT(IOCSRF_MSI) | BIT(IOCSRF_EXTIOI) | BIT(IOCSRF_CSRIPI);
-         if (kvm_enabled()) {
-             ret |= BIT(IOCSRF_VM);
-         }
--        return ret;
-+        break;
-     case VENDOR_REG:
--        return 0x6e6f73676e6f6f4cULL; /* "Loongson" */
-+        ret = 0x6e6f73676e6f6f4cULL; /* "Loongson" */
-+        break;
-     case CPUNAME_REG:
--        return 0x303030354133ULL;     /* "3A5000" */
-+        ret = 0x303030354133ULL;     /* "3A5000" */
-+        break;
-     case MISC_FUNC_REG:
--        return BIT_ULL(IOCSRM_EXTIOI_EN);
-+        ret = BIT_ULL(IOCSRM_EXTIOI_EN);
-+        break;
-+    default:
-+        g_assert_not_reached();
-     }
--    return 0ULL;
-+
-+    *data = ret;
-+    return MEMTX_OK;
- }
- 
- static const MemoryRegionOps virt_iocsr_misc_ops = {
--    .read  = virt_iocsr_misc_read,
--    .write = virt_iocsr_misc_write,
-+    .read_with_attrs  = virt_iocsr_misc_read,
-+    .write_with_attrs = virt_iocsr_misc_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-         .min_access_size = 4,
+ USB (serial adapter)
+-R: Gerd Hoffmann <kraxel@redhat.com>
+ M: Samuel Thibault <samuel.thibault@ens-lyon.org>
+ S: Maintained
+ F: hw/usb/dev-serial.c
 -- 
-2.34.1
+2.45.1
 
 
