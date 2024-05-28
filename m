@@ -2,151 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C528D232C
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 20:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AE68D231B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 20:12:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sC1MY-0002Mf-Pi; Tue, 28 May 2024 14:15:54 -0400
+	id 1sC1Hn-0000FV-Pw; Tue, 28 May 2024 14:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1sC1MU-0002Lb-9N
- for qemu-devel@nongnu.org; Tue, 28 May 2024 14:15:51 -0400
-Received: from mail-bn8nam04on2100.outbound.protection.outlook.com
- ([40.107.100.100] helo=NAM04-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1sC1MS-0001Yw-CH
- for qemu-devel@nongnu.org; Tue, 28 May 2024 14:15:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EahumtyyNdlCE1O8qZQgOoiUscTmd97HOb+vPYHTh3hxsnZ/AdW8BBsiNLa451IUaTrYR65GXbjo/LtEpID3eDulLjBOiXrlJUIFUnBkHof0ZB2kSGtVI56pDexy5JiQU7SKgodwpa2NXAKSNx8o9MYTCF34JFqXMT/Qu+m6li8IS/wH+JmlJ+09FN+eZLAh+KVVWgNiunUak+PXFQUSeWylC0Q6AGjXeV29K2cPVDcpPsW3jQJDy1GFEFjBnocFEGeJ+gh5Jcmd7rJqDSp+/i/7AjUXffn/1bkvlPeTVVVr2hCItNAa0fazWIDb7BzqlaPdQnMVy8X6x9h/aQ/J3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hDsRMRe7FDEmsYLQx8ZZz9TmDd2NHIBuTpBzOS6jPDw=;
- b=IBgDWJ3dG3XYOhW+c9ShazB/KDWhoC+d+85+fRNsjxEUxbrmXrN0E6IH2PK42F8CI5mFIArNqMI/JVTjuf1eGC55CrrXQA4hRFyrC/OY5ceTgWDjgajiM+UFHmPsv+J+JMvGXSizbEClEmKxImOv00HRoud7YZ3og0TbXnWgLIidZpQqTCTFSM8FYRjM3sSbaA6q8xzX0ce9YyzwA5xs/G06w+L11EVEb/Z41vP8uMcRTBM9UnpZwwLxzyQNIj9qgYkvuFzudP0hQ0Quw/jWBdYjfHQ7xGXCZvEt/quIE1sKTJP1FrocXghMESDPwTLHpWqBSksFbxTn8evh6lHFBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hDsRMRe7FDEmsYLQx8ZZz9TmDd2NHIBuTpBzOS6jPDw=;
- b=FXVdWbQvEqo5Imumsh6W9ODz6frfILLCB0r4qd0C0/PBljUkrQ8nz1ZUtKcK1qNnqm9N9qE/69nZfpxv4jtYg3uxuP3P//3B4se6hko9OY1J0bYXCyUGvtLoTu3Dbp0N/amwMJW2vMSp0CK9ahTYr1hvRkvnHdPzVE2bFYXNffk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by CH2PR17MB3864.namprd17.prod.outlook.com (2603:10b6:610:8f::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Tue, 28 May
- 2024 18:10:41 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::5d53:b947:4cab:2cc8]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::5d53:b947:4cab:2cc8%4]) with mapi id 15.20.7611.030; Tue, 28 May 2024
- 18:10:41 +0000
-Date: Tue, 28 May 2024 14:10:33 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: fan <nifan.cxl@gmail.com>
-Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
- linux-cxl@vger.kernel.org, ira.weiny@intel.com,
- dan.j.williams@intel.com, a.manzanares@samsung.com,
- dave@stgolabs.net, nmtadam.samsung@gmail.com,
- jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
- fan.ni@samsung.com
-Subject: Re: [PATCH v7 00/12] Enabling DCD emulation support in Qemu
-Message-ID: <ZlYeGVFJZaHq70NG@memverge.com>
-References: <20240418232902.583744-1-fan.ni@samsung.com>
- <ZiK25Log7LmtBffa@memverge.com> <ZkY83c9PXoop_r1A@debian>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZkY83c9PXoop_r1A@debian>
-X-ClientProxiedBy: SJ0PR03CA0009.namprd03.prod.outlook.com
- (2603:10b6:a03:33a::14) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sC1Hl-0000FF-M7
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 14:10:57 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sC1Hj-0000iu-79
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 14:10:57 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 835AD22A9B;
+ Tue, 28 May 2024 18:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716919851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GtZt/kFeGg70tEtQYWAlmSpv2e1TKFj0TNXulv1iZNo=;
+ b=oYCe5UtEQaM63jC0iFCJ7t0pP7Fjm5AGn248gnenwy2p/qcSwY1RLwCYBAhcOtCDoNTGuL
+ 9FbLg6SXzEtVKNcjP0agM+P4zdA/BJkMssip19nwWUHSEZ11pJ5djze5LTpkbDEyDcXnND
+ CpN32MWgo/HhNcmhP9z8QsdQiFl5gP4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716919851;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GtZt/kFeGg70tEtQYWAlmSpv2e1TKFj0TNXulv1iZNo=;
+ b=7YlXOJ3FNq/VlvXUdSQjdXBPT391ImghH/6XDsNa7jlbcfhAs2FujACX3/u2GjcbJW+5sF
+ lPaP3edkWLst1PAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716919851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GtZt/kFeGg70tEtQYWAlmSpv2e1TKFj0TNXulv1iZNo=;
+ b=oYCe5UtEQaM63jC0iFCJ7t0pP7Fjm5AGn248gnenwy2p/qcSwY1RLwCYBAhcOtCDoNTGuL
+ 9FbLg6SXzEtVKNcjP0agM+P4zdA/BJkMssip19nwWUHSEZ11pJ5djze5LTpkbDEyDcXnND
+ CpN32MWgo/HhNcmhP9z8QsdQiFl5gP4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716919851;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GtZt/kFeGg70tEtQYWAlmSpv2e1TKFj0TNXulv1iZNo=;
+ b=7YlXOJ3FNq/VlvXUdSQjdXBPT391ImghH/6XDsNa7jlbcfhAs2FujACX3/u2GjcbJW+5sF
+ lPaP3edkWLst1PAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 069E113A5D;
+ Tue, 28 May 2024 18:10:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 4EovLyoeVmY/GwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 28 May 2024 18:10:50 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, =?utf-8?Q?Marc-?=
+ =?utf-8?Q?Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>, Het Gala
+ <het.gala@nutanix.com>, Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Wainer dos Santos
+ Moschetta <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>
+Subject: Re: [RFC PATCH 4/4] ci: Add the new migration device tests
+In-Reply-To: <ZlX8sNDh2gIFa2Kp@x1n>
+References: <20240523201922.28007-1-farosas@suse.de>
+ <20240523201922.28007-5-farosas@suse.de> <ZlT4f368xO8fXsUY@x1n>
+ <87ttiig62j.fsf@suse.de> <ZlX8sNDh2gIFa2Kp@x1n>
+Date: Tue, 28 May 2024 15:10:48 -0300
+Message-ID: <87mso9g63b.fsf@suse.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|CH2PR17MB3864:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9335ec8b-5a71-4a4b-1e03-08dc7f417bf2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|7416005|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?AAC7ck7Cbft+ywXJ8BJDzOeUMZfXF/6atN1CDoaw3Fo0AgCwNZyeBB+7W3?=
- =?iso-8859-1?Q?NerN2mHz8rDytCQUD6GtDDyXuowO4+DTcW9AnwBl5h1es3ElGaQW83xMo2?=
- =?iso-8859-1?Q?JXtJaX2p877W9UBElk9Hd8LwK3Sx1fwX/wFChHGitplYYltUcZuoobaO1U?=
- =?iso-8859-1?Q?CJ2NEzQG49uBoEf/aBi0d9eHoBs2IJuHvL7or9Ee/v7U7iMFo606e5vJ5S?=
- =?iso-8859-1?Q?ffxsht4EYsyZ5SqQuXBYu/H+PbcQQSl4NQqq+YivzVFdMmCvWlDCntZPZz?=
- =?iso-8859-1?Q?19rtFwrbrd/1B22/TETWfjZj8j65D4pbjgJ3OzGWl4vYLmax/AYKg6/bwJ?=
- =?iso-8859-1?Q?PklhD/i2ZSVcslwMeTIj44g7qIkHYbNSRevqcpd7UuYbCXiLQQ2tK+AaFU?=
- =?iso-8859-1?Q?GoKXmR2K5dim1Soycdpq6RrSCNoxrlIxce5mqJ9fmY3W5iqBr8zvwO1kHt?=
- =?iso-8859-1?Q?yPcBFknPeORT7C8H/Au2gkuvtoCj38UnX+YlG2n+T0B7DMPEuN/EmqV63y?=
- =?iso-8859-1?Q?A/kpX1GmEqYkTGkme6Gxgj6R5Mgw4Prq8p7oUkXJQ95qo89Fm6Q49fjHqT?=
- =?iso-8859-1?Q?CWNMvv4lWTzKrKaADG6zzA9Mis2O9rUGLCx37jDxIDig57IXnqDEcnTMyl?=
- =?iso-8859-1?Q?N5n1ZJ0WMeAgJdT8imTuuQmj51+tg4JVhCPjn0QKcnHyxa06yw84rfkGwX?=
- =?iso-8859-1?Q?5N14at52IlvCDy/7ZPvC3Q3GIpICY08QYvuTvmq/zT2PQabTwLsNODcOXj?=
- =?iso-8859-1?Q?/r/pYKGdNC3MmZa3elIW30rwvOfo0lWgjGcMWfKGFFt0jZIsvCynAEy5O1?=
- =?iso-8859-1?Q?c+h4XGVwXUxBJDK2PpIRdhTtulPnPLG+wrv1XDQxV/FnrfV6i4E7Bya1fa?=
- =?iso-8859-1?Q?Qw/bRNqBbjOQ6mCFtV5WvilbWHKqm73frz5dnwwApaZIJZ827n3600hi+U?=
- =?iso-8859-1?Q?ItobEEfiPOcPxFc/gi2+joxyWFmkP+jJ2anckf0XyvSgOwv52hJHs9z6mt?=
- =?iso-8859-1?Q?Y06Q5xJ4sksJuL7rPl/aOKBWnPTIlns7jCdFLms+5YktcGd3nqwq1rsIbV?=
- =?iso-8859-1?Q?erXRciRGis0cdT0qezNBxZD+8CagNRB98CRAhzor77yOLuUdJLycSUpFys?=
- =?iso-8859-1?Q?rh9gfMRw45huZeFRhBWua2ucGqwqmvnAGoSfY0BhtyzZrjVG5BkNtrDYHR?=
- =?iso-8859-1?Q?s1yTepQprU3ZQW0RaPFAy47CTYoAaDauO1ZsOM9fgjRmqMhY09b4CT42Ae?=
- =?iso-8859-1?Q?Io7txw8VS4C76/GEFSQy+o721rWLzmo8F8Tzz5Xbc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(7416005)(1800799015)(376005)(366007); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?FlT/VZ/5QxehSllyBU7J7k/5kqsMaxbWenXpEk07ommAWJXb3rgSrcKqH5?=
- =?iso-8859-1?Q?p3eaUwOv4k2Psz7oR+IPHn+WogxPMuPkWvyz1hQuOeobjVlCibCSiiY1f+?=
- =?iso-8859-1?Q?Iw3AK0rTKnOgTHnkx4e7AOBFE+XusLqL6MLUqF6tMrf6NX8W69HvUAaObT?=
- =?iso-8859-1?Q?Q/ZFn/xu8GeDeLSBMkp+Aw7Fh2sHdBd9Ql06F8fQMdTGQ+b68VbVGYh5iJ?=
- =?iso-8859-1?Q?HBVq9zKurOx+le0vvjjzcAFmr/FibDSmijwwUlEz2VIjJ6KgFgl3FsG2Ig?=
- =?iso-8859-1?Q?FRFp2DIaSn4jVxhfj0h8e4ySINRVKbmafdtfDl7hWGyeDbsPiPIKoY6Xbl?=
- =?iso-8859-1?Q?P4+5gpwWttrUSeG4hQGmFe1CD5UU5tHgCRqx1hDFY3zZY6ZH+11uwj7bQH?=
- =?iso-8859-1?Q?RpLyAMfzZGUizCNulyfeiP4RM6JbsqG+ZiSzgoAfJKZWtx+9nljtOWvpFF?=
- =?iso-8859-1?Q?qJjkt42fjqkbDVT4R4q2fmsne+Z5U85hYySSnUnp7pvhYlPt6V6lL+CXZG?=
- =?iso-8859-1?Q?eeMXaFGjZ6rjCIkpJaH86Ujr45nXumfa8lDE4OI9OM464RRul+j/KeDw7U?=
- =?iso-8859-1?Q?uxQ1QBS2dshBJocqbyhPKaDfcxsHZdTwlUe3ecc58+gBgnuZ7huaYrfQXV?=
- =?iso-8859-1?Q?9KzT13Ao+5bWekmcRltwddT1VHUvOfmhG6TuRKwGUdmqfvHua/0xfVWNHx?=
- =?iso-8859-1?Q?jw+hq4oZtsY5qThhoIge92nNS+h+kZORU4KjrVUafH5D6vFpu2KLXB63ps?=
- =?iso-8859-1?Q?CVYuKEG25UapAZyqJTC9dGkokpRaCtUKPah5mhzOef8P7QXc/wrAsfyVXC?=
- =?iso-8859-1?Q?uRjc9cXTxwWnJ5zklCOpzHjkKYgA62uLakWfCvPB6tfRl54wmJ2gTD5wsi?=
- =?iso-8859-1?Q?1JVRUhuPvo6SgY4knDFJLLnlFo9jV+qqCYi1Tlz+J5vJwhfY51sbZ3K5gP?=
- =?iso-8859-1?Q?i89nAxFGTaq3oxVnAaThWAXR7/21AVxprJJ+ANfkwTX7gwjYThfBiDNFDc?=
- =?iso-8859-1?Q?BcIJwLRThWtfgoleGgb/Rryph+4iD06b8hrsuUHzl8Zw8B9VB/52B6Xr3L?=
- =?iso-8859-1?Q?/aZqnZdK35SS1rNacSZ0GPYj3RHRt1g01YXiHnIQbIww4uR8DmzZXbLweQ?=
- =?iso-8859-1?Q?OxeFmRskFkyZEkVrI2L8WeTjAHWOqh7T4aT1kidU9YUwcZLo2+wL0Lwzhe?=
- =?iso-8859-1?Q?cGBtVOGI+Vv6aX2YBicrHWNmrJNUBVHZ5iYk+c9pHNx9k4bxLAi2sLS7QK?=
- =?iso-8859-1?Q?h8kx/4x7/ek+WdoWt1bRb9nYK1vnFBgk1NGuRORKUcSkVpXkVKQVRsyPra?=
- =?iso-8859-1?Q?mor8Ih6FVBof4qG3ByxchP6xuUS2qePZBxIZMSWrQMRPdzWvlJZn6qacMv?=
- =?iso-8859-1?Q?ZgxzUbPDwWQ2962pgBxoxuVj2SNS7S+bz/8wABIyBJbAorTvZOncCxLBMD?=
- =?iso-8859-1?Q?9gCRYRjKbf7+gPMP6TmLyxH4cinKOiTDibagolqvycnCxEH5ZEWeKcj21d?=
- =?iso-8859-1?Q?tJT0/DNo7XLud+5L1qgpo8LQEIbgJ6QDsGxPqUk5skXWQFS+89V6pfJPFO?=
- =?iso-8859-1?Q?J+NwNSPw0EH+5QUljj+tVCvDTDez+8K6rq4O4MXVUIIiMOM0JJ4rHLT7PN?=
- =?iso-8859-1?Q?Ch7wv5x1AaBJ5BSlCdWhI1/DtMiovLtdu72Pr4pK3OS0/2trAtLHi1Ig?=
- =?iso-8859-1?Q?=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9335ec8b-5a71-4a4b-1e03-08dc7f417bf2
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2024 18:10:41.2593 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YQnFctqPdt+0kxcG+CG4ANZbYAW/XJ/2LuDzW5eimpsKfn6mwceev34GeNk8yWHUBPUihu2JD9OroHqx6H5pL7UTLCgYokSwclCHbz2+MSs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR17MB3864
-Received-SPF: pass client-ip=40.107.100.100;
- envelope-from=gregory.price@memverge.com;
- helo=NAM04-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ MISSING_XM_UA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ RCPT_COUNT_SEVEN(0.00)[10]; MID_RHS_MATCH_FROM(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
+X-Spam-Score: -4.30
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -162,80 +120,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, May 16, 2024 at 10:05:33AM -0700, fan wrote:
-> On Fri, Apr 19, 2024 at 02:24:36PM -0400, Gregory Price wrote:
-> > On Thu, Apr 18, 2024 at 04:10:51PM -0700, nifan.cxl@gmail.com wrote:
-> > > A git tree of this series can be found here (with one extra commit on top
-> > > for printing out accepted/pending extent list): 
-> > > https://github.com/moking/qemu/tree/dcd-v7
-> > > 
-> > > v6->v7:
-> > > 
-> > > 1. Fixed the dvsec range register issue mentioned in the the cover letter in v6.
-> > >    Only relevant bits are set to mark the device ready (Patch 6). (Jonathan)
-> > > 2. Moved the if statement in cxl_setup_memory from Patch 6 to Patch 4. (Jonathan)
-> > > 3. Used MIN instead of if statement to get record_count in Patch 7. (Jonathan)
-> > > 4. Added "Reviewed-by" tag to Patch 7.
-> > > 5. Modified cxl_dc_extent_release_dry_run so the updated extent list can be
-> > >    reused in cmd_dcd_release_dyn_cap to simplify the process in Patch 8. (Jørgen) 
-> > > 6. Added comments to indicate further "TODO" items in cmd_dcd_add_dyn_cap_rsp.
-> > >     (Jonathan)
-> > > 7. Avoided irrelevant code reformat in Patch 8. (Jonathan)
-> > > 8. Modified QMP interfaces for adding/releasing DC extents to allow passing
-> > >    tags, selection policy, flags in the interface. (Jonathan, Gregory)
-> > > 9. Redesigned the pending list so extents in the same requests are grouped
-> > >     together. A new data structure is introduced to represent "extent group"
-> > >     in pending list.  (Jonathan)
-> > > 10. Added support in QMP interface for "More" flag. 
-> > > 11. Check "Forced removal" flag for release request and not let it pass through.
-> > > 12. Removed the dynamic capacity log type from CxlEventLog definition in cxl.json
-> > >    to avoid the side effect it may introduce to inject error to DC event log.
-> > >    (Jonathan)
-> > > 13. Hard coded the event log type to dynamic capacity event log in QMP
-> > >     interfaces. (Jonathan)
-> > > 14. Adding space in between "-1]". (Jonathan)
-> > > 15. Some minor comment fixes.
-> > > 
-> > > The code is tested with similar setup and has passed similar tests as listed
-> > > in the cover letter of v5[1] and v6[2].
-> > > Also, the code is tested with the latest DCD kernel patchset[3].
-> > > 
-> > > [1] Qemu DCD patchset v5: https://lore.kernel.org/linux-cxl/20240304194331.1586191-1-nifan.cxl@gmail.com/T/#t
-> > > [2] Qemu DCD patchset v6: https://lore.kernel.org/linux-cxl/20240325190339.696686-1-nifan.cxl@gmail.com/T/#t
-> > > [3] DCD kernel patches: https://lore.kernel.org/linux-cxl/20240324-dcd-type2-upstream-v1-0-b7b00d623625@intel.com/T/#m11c571e21c4fe17c7d04ec5c2c7bc7cbf2cd07e3
-> > >
-> > 
-> > added review to all patches, will hopefully be able to add a Tested-by
-> > tag early next week, along with a v1 RFC for MHD bit-tracking.
-> > 
-> > We've been testing v5/v6 for a bit, so I expect as soon as we get the
-> > MHD code ported over to v7 i'll ship a tested-by tag pretty quick.
-> > 
-> > The super-set release will complicate a few things but this doesn't
-> > look like a blocker on our end, just a change to how we track bits in a
-> > shared bit/bytemap.
-> > 
-> 
-> Hi Gregory,
-> I am planning to address all the concerns in this series and send out v8
-> next week. Jonathan mentioned you have few related patches built on top
-> of this series, can you point me to the latest version so I can look
-> into it? Also, would you like me to carry them over to send together
-> with my series in next version? It could be easier for you to avoid the
-> potential rebase needed for your patches?
-> 
-> Let me know.
-> 
-> Thanks,
-> Fan
+Peter Xu <peterx@redhat.com> writes:
+
+> On Mon, May 27, 2024 at 08:59:00PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>> 
+>> > On Thu, May 23, 2024 at 05:19:22PM -0300, Fabiano Rosas wrote:
+>> >> We have two new migration tests that check cross version
+>> >> compatibility. One uses the vmstate-static-checker.py script to
+>> >> compare the vmstate structures from two different QEMU versions. The
+>> >> other runs a simple migration with a few devices present in the VM, to
+>> >> catch obvious breakages.
+>> >> 
+>> >> Add both tests to the migration-compat-common job.
+>> >> 
+>> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> >> ---
+>> >>  .gitlab-ci.d/buildtest.yml | 43 +++++++++++++++++++++++++++++++-------
+>> >>  1 file changed, 36 insertions(+), 7 deletions(-)
+>> >> 
+>> >> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+>> >> index 91c57efded..bc7ac35983 100644
+>> >> --- a/.gitlab-ci.d/buildtest.yml
+>> >> +++ b/.gitlab-ci.d/buildtest.yml
+>> >> @@ -202,18 +202,47 @@ build-previous-qemu:
+>> >>    needs:
+>> >>      - job: build-previous-qemu
+>> >>      - job: build-system-opensuse
+>> >> -  # The old QEMU could have bugs unrelated to migration that are
+>> >> -  # already fixed in the current development branch, so this test
+>> >> -  # might fail.
+>> >> +  # This test is allowed to fail because:
+>> >> +  #
+>> >> +  # - The old QEMU could have bugs unrelated to migration that are
+>> >> +  #   already fixed in the current development branch.
+>> >
+>> > Did you ever hit a real failure with this?  I'm wondering whether we can
+>> > remove this allow_failure thing.
+>> >
+>> 
+>> I haven't. But when it fails we'll go through an entire release cycle
+>> with this thing showing red for every person that runs the CI. Remember,
+>> this is a CI failure to which there's no fix aside from waiting for the
+>> release to happen. Even if we're quick to react and disable the job, I
+>> feel it might create some confusion already.
+>
+> My imagination was if needed we'll get complains and we add that until
+> then for that broken release only, and remove in the next release again.
+>
+>> 
+>> >> +  #
+>> >> +  # - The vmstate-static-checker script trips on renames and other
+>> >> +  #   backward-compatible changes to the vmstate structs.
+>> >
+>> > I think I keep my preference per last time we talked on this. :)
+>> 
+>> Sorry, I'm not trying to force this in any way, I just wrote these to
+>> use in the pull-request and thought I'd put it out there. At the very
+>> least we can have your concerns documented. =)
+>
+> Yep that's fine.  I think we should keep such discussion on the list,
+> especially we have different opinions, while none of us got convinced yet
+> so far. :)
+>
+>> 
+>> > I still think it's too early to involve a test that can report false
+>> > negative.
+>> 
+>> (1)
+>> Well, we haven't seen any false negatives, we've seen fields being
+>> renamed. If that happens, then we'll ask the person to update the
+>> script. Is that not acceptable to you? Or are you thinking about other
+>> sorts of issues?
+>
+> Then question is how to update the script. So far it's treated as failure
+> on rename, even if it's benign. Right now we have this:
+>
+>             print("Section \"" + sec + "\",", end=' ')
+>             print("Description \"" + desc + "\":", end=' ')
+>             print("expected field \"" + s_item["field"] + "\",", end=' ')
+>             print("got \"" + d_item["field"] + "\"; skipping rest")
+>             bump_taint()
+>             break
+>
+> Do you want to introduce a list of renamed vmsd fields in this script and
+> maintain that?  IMHO it's an overkill and unnecessary burden to other
+> developers.
 >
 
-I apologize for missing this, I was out of the country for a few weeks.
-I'm still catching up on the work history.
+That's not _my_ idea, we already have that (see below). There's not much
+reason to rename fields like that, the vmstate is obviously something
+that should be kept stable, so having to do a rename in a script is way
+better than having to figure out the fix for the compatibility break.
 
-I think i saw in passing that you picked up the CCI changes, and those
-were the ones causing conflicts - so that's perfect.  I can always
-rebase on that.
+def check_fields_match(name, s_field, d_field):
+    if s_field == d_field:
+        return True
 
-~ Gregory
+    # Some fields changed names between qemu versions.  This list
+    # is used to allow such changes in each section / description.
+    changed_names = {
+        'apic': ['timer', 'timer_expiry'],
+        'e1000': ['dev', 'parent_obj'],
+        'ehci': ['dev', 'pcidev'],
+        'I440FX': ['dev', 'parent_obj'],
+        'ich9_ahci': ['card', 'parent_obj'],
+        'ich9-ahci': ['ahci', 'ich9_ahci'],
+        'ioh3420': ['PCIDevice', 'PCIEDevice'],
+        'ioh-3240-express-root-port': ['port.br.dev',
+                                       'parent_obj.parent_obj.parent_obj',
+                                       'port.br.dev.exp.aer_log',
+                                'parent_obj.parent_obj.parent_obj.exp.aer_log'],
+        'cirrus_vga': ['hw_cursor_x', 'vga.hw_cursor_x',
+                       'hw_cursor_y', 'vga.hw_cursor_y'],
+        'lsiscsi': ['dev', 'parent_obj'],
+        'mch': ['d', 'parent_obj'],
+        'pci_bridge': ['bridge.dev', 'parent_obj', 'bridge.dev.shpc', 'shpc'],
+        'pcnet': ['pci_dev', 'parent_obj'],
+        'PIIX3': ['pci_irq_levels', 'pci_irq_levels_vmstate'],
+        'piix4_pm': ['dev', 'parent_obj', 'pci0_status',
+                     'acpi_pci_hotplug.acpi_pcihp_pci_status[0x0]',
+                     'pm1a.sts', 'ar.pm1.evt.sts', 'pm1a.en', 'ar.pm1.evt.en',
+                     'pm1_cnt.cnt', 'ar.pm1.cnt.cnt',
+                     'tmr.timer', 'ar.tmr.timer',
+                     'tmr.overflow_time', 'ar.tmr.overflow_time',
+                     'gpe', 'ar.gpe'],
+        'rtl8139': ['dev', 'parent_obj'],
+        'qxl': ['num_surfaces', 'ssd.num_surfaces'],
+        'usb-ccid': ['abProtocolDataStructure', 'abProtocolDataStructure.data'],
+        'usb-host': ['dev', 'parent_obj'],
+        'usb-mouse': ['usb-ptr-queue', 'HIDPointerEventQueue'],
+        'usb-tablet': ['usb-ptr-queue', 'HIDPointerEventQueue'],
+        'vmware_vga': ['card', 'parent_obj'],
+        'vmware_vga_internal': ['depth', 'new_depth'],
+        'xhci': ['pci_dev', 'parent_obj'],
+        'x3130-upstream': ['PCIDevice', 'PCIEDevice'],
+        'xio3130-express-downstream-port': ['port.br.dev',
+                                            'parent_obj.parent_obj.parent_obj',
+                                            'port.br.dev.exp.aer_log',
+                                'parent_obj.parent_obj.parent_obj.exp.aer_log'],
+        'xio3130-downstream': ['PCIDevice', 'PCIEDevice'],
+        'xio3130-express-upstream-port': ['br.dev', 'parent_obj.parent_obj',
+                                          'br.dev.exp.aer_log',
+                                          'parent_obj.parent_obj.exp.aer_log'],
+        'spapr_pci': ['dma_liobn[0]', 'mig_liobn',
+                      'mem_win_addr', 'mig_mem_win_addr',
+                      'mem_win_size', 'mig_mem_win_size',
+                      'io_win_addr', 'mig_io_win_addr',
+                      'io_win_size', 'mig_io_win_size'],
+    }
+
+    if not name in changed_names:
+        return False
+
+    if s_field in changed_names[name] and d_field in changed_names[name]:
+        return True
+
+    return False
+
+
+>> 
+>> > I'd still keep running this before soft-freeze like I used to
+>> > do, throw issues to others and urge them to fix before release.
+>> 
+>> Having hidden procedures that maintainers run before a release is bad
+>> IMHO, it just delays the catching of bugs and frustrates
+>> contributors. Imagine working on a series, everything goes well with
+>> reviews, CI passes, patch gets queued and merged and a month later you
+>> get a ping about something you should have done to avoid breaking
+>> migration. Right during freeze.
+>
+> I understand your point, however I don't yet see a way CI could cover
+> everything.  CI won't cover performance test, and I still ran multifd tests
+> at least smoke it too before soft-freeze.
+>
+> If there's something done wrong, we notify the sooner the better.  Now it
+> looks to me the best trade-off is like that - we notify at soft-freeze once
+> per release considering that's pretty rare too, e.g. 9.0 has no such outlier.
+
+We should notify before merging any code. If there is a tool that can
+catch the bug, there's no point in wasting everyone's time carrying that
+patch forward. That's the purpose of a CI setup. These tests are very
+light in terms of resources.
+
+Now, you're making the point that these issues are rare, which they may
+very well be, I haven't ran this long enough to know. I also don't know
+how to measure that, I believe our CI already has a large amount of
+tests that never catch anything, so I'm not sure how much we should take
+it in consideration when adding tests to the CI.
+
+About the possibly false results, we'll have to hold merging this for a
+few releases and gather more data, see how much of a bother it is to
+keep updating these fields. I expect to have more bugs caught by the
+script than any renames happening.
+
+>
+> Again I'm happy if we have a solution to not report false negatives; that's
+> the only concern I have.
+>> 
+>> > Per my
+>> > previous experience that doesn't consume me a lot of time, and it's not
+>> > common to see issues either.
+>> >
+>> > So I want people to really pay attention when someone sees a migration CI
+>> > test failed, rather than we help people form the habit in "oh migration CI
+>> > failed again?  I think that's fine, it allows failing anyway".
+>> 
+>> That's a good point. I don't think it applies here though. See my point
+>> in (1).
+>
+> Yes, if you have an answer to (1) I'm ok too.  Maybe I misunderstood your
+> plan there.
+>
+> Thanks,
+>
+>> 
+>> > So far I still don't see as much benefit to adding this if we need to pay
+>> > for the other false negative issue.  I'll fully support it if e.g. we can
+>> > fix the tool to avoid reporting false negatives, but that may take effort
+>> > that I didn't check.
+>> >
+>> 
 
