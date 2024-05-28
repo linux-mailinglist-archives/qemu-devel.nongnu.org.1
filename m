@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9648D25EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 22:33:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71DDF8D2632
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 22:44:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sC3UJ-0004XT-0J; Tue, 28 May 2024 16:32:03 -0400
+	id 1sC3ff-0001Zy-Sw; Tue, 28 May 2024 16:43:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sC3To-0003Du-1D
- for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:32 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sC3TY-0003mG-BB
- for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:31 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-66afccbee0cso975656a12.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 13:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716928275; x=1717533075; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=B/fUH1nIEIiTlUGW6+zEiklWZ5Bx+BHRznTKcskzTrk=;
- b=ObY7DMnRlo3HsGap7fgRKzPvSt6qY7/Ju0UCi5Uiw9NUlre/uC3S1AWlPnKNK1bHvz
- M89/vtoIZaAXsrgMbfxjgSp9xFB5ZaNW0F7aC+bsF6jPPetjL56O574+4AxwguAYsPB7
- YiL3uCzqqwQvwXKPcDiKV9xcbjb9XviAaVJ1mTXhLJyBDVlSXBiM0d7Ws0lIIvU83MZe
- WuCqX84uJ5QJAhWXFp2gdKwplmt1StScPRYstbSx0G+8tBJ8x07aOx1IRBPHcfpMQMBQ
- afnH0J8y7dfMIrj1hpH6t4ds2J0kR+buPSQhdw8oniWu0QDBKCQl/cr5Fnz8WtIaVz6y
- f6Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716928275; x=1717533075;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=B/fUH1nIEIiTlUGW6+zEiklWZ5Bx+BHRznTKcskzTrk=;
- b=J9WBhkAeQDVZ6aO6yLT5qCeIrVgTuf1ZZlwXzk2d6gSxhtPvUdtB5fTNz553vIc7Km
- VB2WoRN4BgA6yaZ7p7w4xv0PYczdtDEite9V7y3x4bG13dgK+DWrBSWSrqCOUKWg7zET
- BI1ZxwMElRJOG/zsFKtrM8TP83Vy+nuc7NdC1baPnn/yMHVH1Zl9SGKPwhdzFPYUUPH3
- WR7WC5J1612VrPZMEJ/nvCG2PFWM2Nx990zhyv45Ndj0yeMniw8JEJrSfI6Vpbk+b2qZ
- t4QyZqbqx/MnUO0vQeyft8ho/vVZMzWV860iG6KNfNGP07Pye6bu/EVFhOP0fLrBIXSV
- o8Tw==
-X-Gm-Message-State: AOJu0YxZu/Ioy5rf3UCUGHQ1/nOQiunhPHfYz3SYPSzDzx7jF6TS4bbq
- FUSYIs2pmGoSlFWVfyqbwQ990pQG4UEHO62YqsTSCYBKy83HwUlvAvnTjMjWIIeldUbKYV0HD3b
- J
-X-Google-Smtp-Source: AGHT+IFLx46q6Jkx0UwZt/nhupmKTVVww0NPzZ2yBIZaz3H2liBXrTvcN12EslnEYH3zIZJCIUf2Mw==
-X-Received: by 2002:a05:6a20:2d0c:b0:1af:d04e:d06 with SMTP id
- adf61e73a8af0-1b212d3aba1mr15836671637.32.1716928275010; 
- Tue, 28 May 2024 13:31:15 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fbd3dbe9sm7042036b3a.10.2024.05.28.13.31.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 13:31:14 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org,
-	Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v3 33/33] target/arm: Convert FCSEL to decodetree
-Date: Tue, 28 May 2024 13:30:44 -0700
-Message-Id: <20240528203044.612851-34-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240528203044.612851-1-richard.henderson@linaro.org>
-References: <20240528203044.612851-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sC3fc-0001ZX-BJ
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 16:43:44 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sC3fa-0005MU-IJ
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 16:43:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID;
+ bh=FFtWUWxK5K3bQ/NMEVNIOSQavZ1Ul0PBNwKd8jxG2ss=; b=py9V8cMrNgHN272M50Eyp1xhZV
+ 88qdoyWs+BIPC/onoXfvRP3J9qBDtHwHHrhgagGJdornbtCcvezqpTvplbHUrndLRq4ZJOVLVXndk
+ k83Zz29uh9LZfER1tuVpD2iVPENMcnlxbHLdaeSgu8HNbSviL/EgQfEiwqRfE3f8RR57GtSLa9QbL
+ 1hK2HdyQJHGl0ilwtlwU36JN0ifSjO9AUucAm107qzlLgtl+1Dh4yj/iIodoiqI1V3ilBK4bgOdhQ
+ lxyzOUcJe61ZgtTBSC13yEOkeeuLRivqS21xNaFE5TdWYyUbHx2hghXWzzipGqz0Ks2bmV60KC4ZN
+ M80iQtjUtfRkp0xIFNX8HOQV7CS+Y2HJEQsuogHe5XJnWaxLvxaU60G5d80tyDN3Y8LmDMDKXrp3i
+ sv8hPX56B+kNcZ8ahzP/USWcSaQFGGWaO7jZUOj802gngpuzXe4LOi4VtisP+wOHtDBlpZPGb8tmS
+ 5wyYADdLhvMM+czQO0RMMEnlLvHta19nD6VeMUbtDBK/bSUXWZdIR9P44k8FOgvZerCM5/x0gjMYX
+ XtfOFCuiaxUGlLodRVWUuTWaTOjigOIEMHAxfEcGlimNhaNIDhQy0k8wJ7jySJF/qBrlCT9hvwNKO
+ NGCScmMFmhp30u4y/aXysSS7z0cb895W/uLX2/4fw=;
+Received: from [2a00:23c4:8bb4:4000:7888:3a1b:7ac1:9da2]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1sC3eG-0001Hd-3l; Tue, 28 May 2024 21:42:24 +0100
+Message-ID: <b672e2a9-a547-44c7-9020-fdbd23046789@ilande.co.uk>
+Date: Tue, 28 May 2024 21:43:31 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+User-Agent: Mozilla Thunderbird
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240526193637.459064-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <20240526193637.459064-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:7888:3a1b:7ac1:9da2
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH RISU v2 00/13] ELF and Sparc64 support
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,162 +100,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/tcg/a64.decode      |   4 ++
- target/arm/tcg/translate-a64.c | 108 ++++++++++++++-------------------
- 2 files changed, 49 insertions(+), 63 deletions(-)
+On 26/05/2024 20:36, Richard Henderson wrote:
 
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 6f6cd805b7..5dadbc74d7 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -1000,6 +1000,10 @@ SQDMULH_vi      0.00 1111 10 . ..... 1100 . 0 ..... .....   @qrrx_s
- SQRDMULH_vi     0.00 1111 01 .. .... 1101 . 0 ..... .....   @qrrx_h
- SQRDMULH_vi     0.00 1111 10 . ..... 1101 . 0 ..... .....   @qrrx_s
- 
-+# Floating-point conditional select
-+
-+FCSEL           0001 1110 .. 1 rm:5 cond:4 11 rn:5 rd:5     esz=%esz_hsd
-+
- # Floating-point data-processing (3 source)
- 
- @rrrr_hsd       .... .... .. . rm:5  . ra:5  rn:5  rd:5     &rrrr_e esz=%esz_hsd
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 78a2e6d692..f1dea5834c 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -5866,6 +5866,50 @@ static bool trans_ADDP_s(DisasContext *s, arg_rr_e *a)
-     return true;
- }
- 
-+/*
-+ * Floating-point conditional select
-+ */
-+
-+static bool trans_FCSEL(DisasContext *s, arg_FCSEL *a)
-+{
-+    TCGv_i64 t_true, t_false;
-+    DisasCompare64 c;
-+
-+    switch (a->esz) {
-+    case MO_32:
-+    case MO_64:
-+        break;
-+    case MO_16:
-+        if (!dc_isar_feature(aa64_fp16, s)) {
-+            return false;
-+        }
-+        break;
-+    default:
-+        return false;
-+    }
-+
-+    if (!fp_access_check(s)) {
-+        return true;
-+    }
-+
-+    /* Zero extend sreg & hreg inputs to 64 bits now.  */
-+    t_true = tcg_temp_new_i64();
-+    t_false = tcg_temp_new_i64();
-+    read_vec_element(s, t_true, a->rn, 0, a->esz);
-+    read_vec_element(s, t_false, a->rm, 0, a->esz);
-+
-+    a64_test_cc(&c, a->cond);
-+    tcg_gen_movcond_i64(c.cond, t_true, c.value, tcg_constant_i64(0),
-+                        t_true, t_false);
-+
-+    /*
-+     * Note that sregs & hregs write back zeros to the high bits,
-+     * and we've already done the zero-extension.
-+     */
-+    write_fp_dreg(s, a->rd, t_true);
-+    return true;
-+}
-+
- /*
-  * Floating-point data-processing (3 source)
-  */
-@@ -7332,68 +7376,6 @@ static void disas_fp_ccomp(DisasContext *s, uint32_t insn)
-     }
- }
- 
--/* Floating point conditional select
-- *   31  30  29 28       24 23  22  21 20  16 15  12 11 10 9    5 4    0
-- * +---+---+---+-----------+------+---+------+------+-----+------+------+
-- * | M | 0 | S | 1 1 1 1 0 | type | 1 |  Rm  | cond | 1 1 |  Rn  |  Rd  |
-- * +---+---+---+-----------+------+---+------+------+-----+------+------+
-- */
--static void disas_fp_csel(DisasContext *s, uint32_t insn)
--{
--    unsigned int mos, type, rm, cond, rn, rd;
--    TCGv_i64 t_true, t_false;
--    DisasCompare64 c;
--    MemOp sz;
--
--    mos = extract32(insn, 29, 3);
--    type = extract32(insn, 22, 2);
--    rm = extract32(insn, 16, 5);
--    cond = extract32(insn, 12, 4);
--    rn = extract32(insn, 5, 5);
--    rd = extract32(insn, 0, 5);
--
--    if (mos) {
--        unallocated_encoding(s);
--        return;
--    }
--
--    switch (type) {
--    case 0:
--        sz = MO_32;
--        break;
--    case 1:
--        sz = MO_64;
--        break;
--    case 3:
--        sz = MO_16;
--        if (dc_isar_feature(aa64_fp16, s)) {
--            break;
--        }
--        /* fallthru */
--    default:
--        unallocated_encoding(s);
--        return;
--    }
--
--    if (!fp_access_check(s)) {
--        return;
--    }
--
--    /* Zero extend sreg & hreg inputs to 64 bits now.  */
--    t_true = tcg_temp_new_i64();
--    t_false = tcg_temp_new_i64();
--    read_vec_element(s, t_true, rn, 0, sz);
--    read_vec_element(s, t_false, rm, 0, sz);
--
--    a64_test_cc(&c, cond);
--    tcg_gen_movcond_i64(c.cond, t_true, c.value, tcg_constant_i64(0),
--                        t_true, t_false);
--
--    /* Note that sregs & hregs write back zeros to the high bits,
--       and we've already done the zero-extension.  */
--    write_fp_dreg(s, rd, t_true);
--}
--
- /* Floating-point data-processing (1 source) - half precision */
- static void handle_fp_1src_half(DisasContext *s, int opcode, int rd, int rn)
- {
-@@ -8207,7 +8189,7 @@ static void disas_data_proc_fp(DisasContext *s, uint32_t insn)
-             break;
-         case 3:
-             /* Floating point conditional select */
--            disas_fp_csel(s, insn);
-+            unallocated_encoding(s); /* in decodetree */
-             break;
-         case 0:
-             switch (ctz32(extract32(insn, 12, 4))) {
--- 
-2.34.1
+> Let risu accept elf test files, adjusted from v1.
+> Adjust risugen to invoke the assembler and linker,
+> with a cross-compiler prefix if needed.
+> Add some sparc64 testing which utilizes this.
+> 
+> Changes for v2:
+>    - Implement VIS2 through VIS4.
+> 
+> There's something odd going on with the Sparc M8 Solaris host where
+> the values recorded via RISU for some floating-point operations are
+> incorrectly rounded, but performing the same operations with the
+> same inputs in a standalone test program produces correct results.
+> 
+> I wonder if there's some unfinished_FPop exception being generated
+> and the operating system emulation is producing incorrect results.
+> I'd be much happier if I could test this on Linux...
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (13):
+>    risu: Allow use of ELF test files
+>    Build elf test cases instead of raw binaries
+>    Introduce host_context_t
+>    risu: Add initial sparc64 support
+>    risugen: Be explicit about print destinations
+>    risugen: Add sparc64 support
+>    contrib/generate_all: Do not rely on ag
+>    sparc64: Add a few logical insns
+>    sparc64: Add VIS1 instructions
+>    sparc64: Add VIS2 and FMAF insns
+>    sparc64: Add VIS3 instructions
+>    sparc64: Add IMA instructions
+>    sparc64: Add VIS4 instructions
+> 
+>   Makefile                   |  22 ++-
+>   risu.h                     |  16 +-
+>   risu_reginfo_aarch64.h     |   2 +
+>   risu_reginfo_arm.h         |   2 +
+>   risu_reginfo_i386.h        |   2 +
+>   risu_reginfo_loongarch64.h |   3 +
+>   risu_reginfo_m68k.h        |   2 +
+>   risu_reginfo_ppc64.h       |   2 +
+>   risu_reginfo_s390x.h       |   2 +
+>   risu_reginfo_sparc64.h     |  36 ++++
+>   risu.c                     |  59 +++++-
+>   risu_aarch64.c             |   6 +-
+>   risu_arm.c                 |   7 +-
+>   risu_i386.c                |   7 +-
+>   risu_loongarch64.c         |   6 +-
+>   risu_m68k.c                |   6 +-
+>   risu_ppc64.c               |   6 +-
+>   risu_reginfo_loongarch64.c |   3 +-
+>   risu_reginfo_sparc64.c     | 186 ++++++++++++++++++
+>   risu_s390x.c               |   5 +-
+>   risu_sparc64.c             |  52 +++++
+>   configure                  |   2 +
+>   contrib/generate_all.sh    |   4 +-
+>   risugen                    |  10 +-
+>   risugen_common.pm          |  68 ++++++-
+>   risugen_sparc64.pm         | 385 +++++++++++++++++++++++++++++++++++++
+>   sparc64.risu               | 298 ++++++++++++++++++++++++++++
+>   test.ld                    |  12 ++
+>   test_aarch64.s             |   4 +-
+>   test_arm.s                 |  16 +-
+>   test_i386.S                |   4 +-
+>   test_sparc64.s             | 137 +++++++++++++
+>   32 files changed, 1298 insertions(+), 74 deletions(-)
+>   create mode 100644 risu_reginfo_sparc64.h
+>   create mode 100644 risu_reginfo_sparc64.c
+>   create mode 100644 risu_sparc64.c
+>   create mode 100644 risugen_sparc64.pm
+>   create mode 100644 sparc64.risu
+>   create mode 100644 test.ld
+>   create mode 100644 test_sparc64.s
+
+Nice! I don't have any experience with RISU so I don't feel too qualified to review 
+the series, but obviously there are clear benefits to having SPARC support included :)
+
+
+ATB,
+
+Mark.
 
 
