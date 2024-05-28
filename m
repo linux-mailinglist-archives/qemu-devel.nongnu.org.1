@@ -2,97 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241C78D1DA9
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 15:55:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9DF8D1DC8
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 15:59:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxHY-00051R-W9; Tue, 28 May 2024 09:54:29 -0400
+	id 1sBxLG-0006Ur-Uj; Tue, 28 May 2024 09:58:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sBxHT-00050Z-N2
- for qemu-devel@nongnu.org; Tue, 28 May 2024 09:54:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sBxLB-0006TQ-9I; Tue, 28 May 2024 09:58:13 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sBxHS-0004ad-9p
- for qemu-devel@nongnu.org; Tue, 28 May 2024 09:54:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716904461;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZzHRFdSoJwcsy3kELiTOQvcnuuigAZsc+tDUlyJuTGw=;
- b=Nbk2baMSBVZDK/AzbeW2LfgNWvzcWcWmUVQlQltJ3C7eRL3LmuLT9jtUjjyeQ+lcU1ucJ2
- LdBaIzPOt6xxNNqNRtz0gRW4Sf3SdBa3MMf4aujARdmp06KH1gua3mO4PRCg0bAXXchf71
- nG3PCzkHzSvq8u7uJ2JMai8sTMu0nk0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-436-HVkyCk3SPTKgw0qjNp3YrA-1; Tue, 28 May 2024 09:54:19 -0400
-X-MC-Unique: HVkyCk3SPTKgw0qjNp3YrA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-35507e4c41dso1902325f8f.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 06:54:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716904458; x=1717509258;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZzHRFdSoJwcsy3kELiTOQvcnuuigAZsc+tDUlyJuTGw=;
- b=HYVhoA2ZWt6AKng4Zb3St2kZtVnw7COfus27/OuT+1c3SnDV+gwjDoob9E85Tcj7zQ
- 5zcdNZwgsex4lxlLtFRwAM/RlsAmURULHxPQsTQ8DEhWDcbVxou7wLRIHxoSFgpanJ3n
- LpeDEha8eqpxSdeUqxwryX7kQ8/tpCaQNcNhHSdm6qaY6CON7ukTCgxaXRU/90L2TPgT
- PBL1fKnlbWKgw1hRlIEiK8nlb79vubzXD2V0INpBayzS+UWQrrNQz5hsRXs50JM4jciY
- cdhj8CZtImZRybR0wXUrwvIhO+qVry/KuQB72eIhzMnSpOxvOnjk1GNY8m5dfsjaq3Rl
- /i9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZHWFGK498kkwhwhVVuVyVk1ZuU8BGzPo9055DLzYvbh+ooSZxL9nhCqzxJxZbDCMG3XrFiP6wHaVMDvoVLQprdKP8xXI=
-X-Gm-Message-State: AOJu0YyQJlUXqUpPqmEtBCgBpPR+pOeWS1ylFimgGV1JPuoLGSf3zNPb
- IjkhgJpRDr9GsoXR0WsZlAACtgWtWKhhzjeDl+P2dsc5hjZKc5MWRxeSo3KYfOFWOEyxRY5alvK
- DwnQMc1hX0cdEeGHMHEZJlJE0e2kRgTGJcTwAxtXnu/F9xUMrFROXpHVobKF9eaBxtqEHvMMCc4
- tiFh6tf1+4eCtCp37V0cK0ytQ160w=
-X-Received: by 2002:adf:fa02:0:b0:354:c330:5d2a with SMTP id
- ffacd0b85a97d-35506e04debmr8782249f8f.35.1716904458465; 
- Tue, 28 May 2024 06:54:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF3V9sQzsOiZ1MQph+1L4Q3Kt9irVCo8EqCKgjBQ0gHXQ5bWDME/XXukOR0j35sRyTEpoEYkdkKzQeVUtRApJQ=
-X-Received: by 2002:adf:fa02:0:b0:354:c330:5d2a with SMTP id
- ffacd0b85a97d-35506e04debmr8782230f8f.35.1716904458056; Tue, 28 May 2024
- 06:54:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1sBxL8-0005Ae-HO; Tue, 28 May 2024 09:58:13 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5d80:0:640:e743:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6BE8F60C93;
+ Tue, 28 May 2024 16:58:04 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:6512::1:33])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id nvQj710IWSw0-S8OgP19p; Tue, 28 May 2024 16:58:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1716904683;
+ bh=erzaPRKJJUwZ1J/O5yLRbGI+DB7cXT9BO2OL2oWPrTI=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=ynp0NucL6OTJ500xaKmo8tGArTNP+Hr4UOvG4+e7Y7foCnh40lDistm+pkv4af37h
+ aNkJbsNWFAYnlF3NsCXgLxaQuJ+hcLp8VQtlNX5LKnQPF34tjyqMDpiLjJ+mXDfVbU
+ 7jdBYSv0n03384TrWaTIPjO+SZuqOSzx5cncjQIE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-devel@nongnu.org,
+	richard.henderson@linaro.org
+Cc: qemu-block@nongnu.org,
+	vsementsov@yandex-team.ru
+Subject: [PULL v2 0/7] Block jobs patches for 2024-04-29
+Date: Tue, 28 May 2024 16:57:46 +0300
+Message-Id: <20240528135747.2476904-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240528095459.896594-1-kraxel@redhat.com>
- <20240528095459.896594-4-kraxel@redhat.com>
- <8fa84896-f534-4d2e-8b00-057514a7de03@redhat.com>
-In-Reply-To: <8fa84896-f534-4d2e-8b00-057514a7de03@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 28 May 2024 15:54:05 +0200
-Message-ID: <CABgObfZQpAf1nohpbxtDrwWKc2oyOoxf73iND4FnZNQCp0xSRw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] usb/ohci-pci: deprecate, don't build by default
-To: Thomas Huth <thuth@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <f4bug@amsat.org>, 
- "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>,
- Nicholas Piggin <npiggin@gmail.com>, 
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,44 +69,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, May 28, 2024 at 12:35=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
-te:
-> > diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-> > index 84bc7fbe36cd..c4a6ea5a687f 100644
-> > --- a/hw/usb/Kconfig
-> > +++ b/hw/usb/Kconfig
-> > @@ -17,7 +17,6 @@ config USB_OHCI_SYSBUS
-> >
-> >   config USB_OHCI_PCI
-> >       bool
-> > -    default y if PCI_DEVICES
-> >       depends on PCI
-> >       select USB_OHCI
->
-> Not sure whether we should disable it by default just because it is
-> deprecated. We don't do that for any other devices as far as I know.
-> Anyway, you should add the device to docs/about/deprecated.rst to really
-> mark it as deprecated, since that's our official list (AFAIK).
+The following changes since commit ad10b4badc1dd5b28305f9b9f1168cf0aa3ae946:
 
-That would mean removing it, but that's a bad idea. It's not like the
-device is blocking improvements elsewhere (in fact it's not even
-removing any code because the sysbus OHCI is still there).
+  Merge tag 'pull-error-2024-05-27' of https://repo.or.cz/qemu/armbru into staging (2024-05-27 06:40:42 -0700)
 
-> Also, there are still some machines that use this device:
->
-> $ grep -r USB_OHCI_PCI *
-> hw/hppa/Kconfig:    imply USB_OHCI_PCI
-> hw/mips/Kconfig:    imply USB_OHCI_PCI
-> hw/ppc/Kconfig:    imply USB_OHCI_PCI
-> hw/ppc/Kconfig:    imply USB_OHCI_PCI
->
-> pseries could certainly continue without OHCI AFAICT, but the others?
+are available in the Git repository at:
 
-Yeah, this needs to be a per-machine type choice to warn about
-discouraged devices. Some, such as Cirrus, can probably be
-unconditional, but still I wouldn't remove them.
+  https://gitlab.com/vsementsov/qemu.git tags/pull-block-jobs-2024-04-29-v2
+
+for you to fetch changes up to a149401048481247bcbaf6035a7a1308974fb464:
+
+  iotests/pylintrc: allow up to 10 similar lines (2024-05-28 15:52:15 +0300)
+
+----------------------------------------------------------------
+Block jobs patches for 2024-04-29
+
+v2: add "iotests/pylintrc: allow up to 10 similar lines" to fix
+    check-python-minreqs
+
+- backup: discard-source parameter
+- blockcommit: Reopen base image as RO after abort
+
+----------------------------------------------------------------
+Alexander Ivanov (1):
+      blockcommit: Reopen base image as RO after abort
+
+Vladimir Sementsov-Ogievskiy (6):
+      block/copy-before-write: fix permission
+      block/copy-before-write: support unligned snapshot-discard
+      block/copy-before-write: create block_copy bitmap in filter node
+      qapi: blockdev-backup: add discard-source parameter
+      iotests: add backup-discard-source
+      iotests/pylintrc: allow up to 10 similar lines
+
+ block/backup.c                                     |   5 +-
+ block/block-copy.c                                 |  12 ++-
+ block/copy-before-write.c                          |  39 +++++++--
+ block/copy-before-write.h                          |   1 +
+ block/mirror.c                                     |  11 ++-
+ block/replication.c                                |   4 +-
+ blockdev.c                                         |   2 +-
+ include/block/block-common.h                       |   2 +
+ include/block/block-copy.h                         |   2 +
+ include/block/block_int-global-state.h             |   2 +-
+ qapi/block-core.json                               |   4 +
+ tests/qemu-iotests/257.out                         | 112 +++++++++++++-------------
+ tests/qemu-iotests/pylintrc                        |   2 +-
+ tests/qemu-iotests/tests/backup-discard-source     | 152 ++++++++++++++++++++++++++++++++++++
+ tests/qemu-iotests/tests/backup-discard-source.out |   5 ++
+ 15 files changed, 282 insertions(+), 73 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/backup-discard-source
+ create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
 
 
-Paolo
+Alexander Ivanov (1):
+  blockcommit: Reopen base image as RO after abort
+
+Vladimir Sementsov-Ogievskiy (6):
+  block/copy-before-write: fix permission
+  block/copy-before-write: support unligned snapshot-discard
+  block/copy-before-write: create block_copy bitmap in filter node
+  qapi: blockdev-backup: add discard-source parameter
+  iotests: add backup-discard-source
+  iotests/pylintrc: allow up to 10 similar lines
+
+ block/backup.c                                |   5 +-
+ block/block-copy.c                            |  12 +-
+ block/copy-before-write.c                     |  39 ++++-
+ block/copy-before-write.h                     |   1 +
+ block/mirror.c                                |  11 +-
+ block/replication.c                           |   4 +-
+ blockdev.c                                    |   2 +-
+ include/block/block-common.h                  |   2 +
+ include/block/block-copy.h                    |   2 +
+ include/block/block_int-global-state.h        |   2 +-
+ qapi/block-core.json                          |   4 +
+ tests/qemu-iotests/257.out                    | 112 ++++++-------
+ tests/qemu-iotests/pylintrc                   |   2 +-
+ .../qemu-iotests/tests/backup-discard-source  | 152 ++++++++++++++++++
+ .../tests/backup-discard-source.out           |   5 +
+ 15 files changed, 282 insertions(+), 73 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/backup-discard-source
+ create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
+
+-- 
+2.34.1
 
 
