@@ -2,75 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE71A8D20DC
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0468D20DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBz98-00036R-OP; Tue, 28 May 2024 11:53:54 -0400
+	id 1sBzA9-0004Ic-UK; Tue, 28 May 2024 11:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBz96-00035L-TM
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:53:52 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBz95-0006e1-7e
- for qemu-devel@nongnu.org; Tue, 28 May 2024 11:53:52 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57883b25b50so1186470a12.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 08:53:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716911630; x=1717516430; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3kJEO62mWg3US9gjJ9OfrPSAyd/LSSHwxTOOro+bxno=;
- b=uDu2voBaWhraEJRStgwiyrTqvmCr05lce7fgGKNQq9kX73ZCTUe2niaE8o0ZRNWE0Q
- kZmgrQC9Soh5lPC1pTp/LJPzgw7aEH8i28D4Xw3R6cappyrb6p+QFYErPJnxPW21oeiY
- SkaWp6KxTITDFshh8l/UjZS25ThdG3K6vgE6p+MNu1DFb03bRWSp3knmQSM6V2j6XvFD
- yhW1kj+PakJW1hO32A7Dx/tegaQuetOlyUF62sXKssgqt/g8Z/sov+jFBnmc2naV5E+p
- RLa4Fve4R7Zt/c0lIMot3xDE/l8+k20T6b1xd6OwKPGAjKeBpbLi6KKudNjlnItDyRn/
- +NjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716911630; x=1717516430;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3kJEO62mWg3US9gjJ9OfrPSAyd/LSSHwxTOOro+bxno=;
- b=B9b0lc4E9R7cJ0F8C39SzrkNHPKZrR1tiRV9huMHd9bocQKKQVkd9GkmBJKh/xBZjJ
- TlEBqSlm2AU83yq7CvmQX/UMlMSpoSrpOA6MTeUsRxBOFJ1leasXQek1gwIVvZBdhniu
- a0+d3RMevh1G3FstHXW2LDUvyrZDHioih1Kv5bqcC5uN9kJqrWdbfjbQ7HX9EN6pLaKB
- uzGOlB3n1KhApD56zehd7N/6OpBnsSjQUQJEA0w/mOSfLKo9sN10W15vFL5P0QH4W7WW
- fohBFKf5Hwg2ovNt7/ytT3pBPNf8706wUJUDDtAST5D9u94qiv59T6ohIYxy3OXBdwHO
- Rumw==
-X-Gm-Message-State: AOJu0YwtfNmAGJm4i4YuiE0N9gzv0e3wFK/rPjT4zvx2bTA9XaWYa+Wu
- fCLHPKD7fN5ynPa7Tu/PR9clKZQ78lZ/pJQzHEI+l+8BvZ7K4IudODjkgd4HUtQt/8FYi/afU7r
- rxoxkeb9gycsoaO61B9CRPi4JQMSzLyezmbTeag==
-X-Google-Smtp-Source: AGHT+IHZoMoXKJTVQ0TJL9PFUg4zeO1Pvsk5751RqXaNuh4eL9i6Yb5DGFO+cfAv3nOcBf4cLpd8oGCwZiAHKckY2qg=
-X-Received: by 2002:a50:d49b:0:b0:578:5635:a24d with SMTP id
- 4fb4d7f45d1cf-5785635a4c2mr7980626a12.26.1716911630053; Tue, 28 May 2024
- 08:53:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzA5-0004He-RP
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sBzA4-0006hc-6G
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:54:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716911690;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vCkfDtbfWHqfaF8lqWPGsCwpk/hKttzpFyCJsxRN2JA=;
+ b=Ffz9LEDIqTfVvVW04oX2LxVe9RgUy4LfxIryhvzF8vY4evCQ1c76eqmbb71Bgy2Shp/BDF
+ YwcLQ1I5d7JrmZxJdpDN3bQLDSl5WPqcUMgppx2zJJf5pyUkRsii8qWqqit8Ru8jcqI6cr
+ 8W+FRwAUTj/R5SCf1bLLwAoWFDjSoYg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351--1DrhXNSPqSEg3YFLvojvw-1; Tue,
+ 28 May 2024 11:54:45 -0400
+X-MC-Unique: -1DrhXNSPqSEg3YFLvojvw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77E7F380671D;
+ Tue, 28 May 2024 15:54:44 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.195.1])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A217C15BB9;
+ Tue, 28 May 2024 15:54:42 +0000 (UTC)
+Date: Tue, 28 May 2024 17:54:40 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH 0/2] Revert "monitor: use aio_co_reschedule_self()"
+Message-ID: <ZlX-QOQDxgpiZwt1@redhat.com>
+References: <20240506190622.56095-1-stefanha@redhat.com>
 MIME-Version: 1.0
-References: <20240524232121.284515-1-richard.henderson@linaro.org>
- <20240524232121.284515-48-richard.henderson@linaro.org>
-In-Reply-To: <20240524232121.284515-48-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 16:53:39 +0100
-Message-ID: <CAFEAcA_zkFzbxNXmyeqrp1Gy-xOhbv6OW5ao6rC_WtYP3VXqaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 47/67] target/arm: Convert SQSHL, UQSHL to decodetree
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240506190622.56095-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,17 +80,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 25 May 2024 at 00:32, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/tcg/a64.decode      |  4 ++
->  target/arm/tcg/translate-a64.c | 74 ++++++++++++++++++++++------------
->  2 files changed, 53 insertions(+), 25 deletions(-)
->
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Am 06.05.2024 um 21:06 hat Stefan Hajnoczi geschrieben:
+> This series fixes RHEL-34618 "qemu crash on Assertion `luringcb->co->ctx ==
+> s->aio_context' failed when do block_resize on hotplug disk with aio=io_uring":
+> https://issues.redhat.com/browse/RHEL-34618
+> 
+> Kevin identified commit 1f25c172f837 ("monitor: use aio_co_reschedule_self()")
+> as the root cause. There is a subtlety regarding how
+> qemu_get_current_aio_context() returns qemu_aio_context even though we may be
+> running in iohandler_ctx.
+> 
+> Revert commit 1f25c172f837, it was just intended as a code cleanup.
+> 
+> Stefan Hajnoczi (2):
+>   Revert "monitor: use aio_co_reschedule_self()"
+>   aio: warn about iohandler_ctx special casing
 
-thanks
--- PMM
+Thanks, applied to the block branch.
+
+Kevin
+
 
