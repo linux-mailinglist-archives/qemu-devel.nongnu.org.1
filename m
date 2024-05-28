@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59808D1E10
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2428D1E24
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBxUq-0001bZ-FG; Tue, 28 May 2024 10:08:12 -0400
+	id 1sBxUr-0001bi-69; Tue, 28 May 2024 10:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUo-0001ag-63
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:10 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1sBxUp-0001bL-BZ
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:11 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sBxUl-00073p-He
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:09 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-355080e6ff9so771308f8f.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:06 -0700 (PDT)
+ id 1sBxUm-000741-4E
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 10:08:11 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3564a0bea19so826543f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:08:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716905285; x=1717510085; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716905286; x=1717510086; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VyVyKHqgPj/49154pa++4vUGSFOhznrmsFlJvMnj4KY=;
- b=S3ebgitnQEWCAFTCU5LSvtD+3Ii+ZM6XKuI+anIx9MjhMsESPXp9299Q2WSrRjrBRT
- EO2yJ5hACLdObBIdoGDDptmamG+GgovXuf87gCyhT40cxDXvOKbvw92zGOcExMV2HUFK
- P9n4vtUErRMHQPYXcvxCzQxtq0DcIh85saxmDufh9diIBZNmW7dXFldkpMw7cU1AOQK9
- XQRyJwqgpAvC8essKFM3rDNslqVFse565KiB5v0yH1VZwLmQcI0hMiOf6YH6SodEFvp0
- R0+PGAah8MuaMcX6zomdmjcgHmLG7YF0dY7+EKhJnl49+H+0zctcyPNcHLtT7a6e2X6o
- gH+A==
+ :reply-to; bh=lODoRdU3R+1K0U+odF5v8UJ1tylJpMXFPv+66x4TqM0=;
+ b=qXgf2nP6zPJiYpfhcZOn7ztIjONqmYbY8pH8adb6xQEQahAMPpUce8bnqlXjg3Z00f
+ 4k1LLGTxdi9yC/Y7NBIOPydEIcclw0fXUEb1M94Kv7ZUK+03C36V+NLEYrLVgMiPcnb0
+ VlfwrIPfJnSPVugPRdFopxdWpnXNnb5HeADpkw8KMdfwKECcBFniOMOlMTTtvAjDBfOy
+ 7quRz69qVHPuyVqCMrtv3Qy2bVl4hkw5BY3LY+4oe9fRwrQ5Ru9kcMRA12/yPBQyxl9n
+ G+RdzM80dzNMPzs4BHXlzlMhnw7VdU9+lsfR9ZRu166yc1rKoMO7kvcPME+aDIoR5xix
+ /P8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716905285; x=1717510085;
+ d=1e100.net; s=20230601; t=1716905286; x=1717510086;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VyVyKHqgPj/49154pa++4vUGSFOhznrmsFlJvMnj4KY=;
- b=roW9arCsvV5b4rKiU8+I6ha58EHMfW7Zq2Hugc24SGGjMbuUagWVXc6wnekMiQ+ukn
- vh0pRXpwaG2W2ww2I7lVjVZ6sZwJ7+Ds13+iyi6YVjLGAwewGy3Om6QMVR7Y0paIFQgv
- nwMzaB4uATb6suEiPUA0ng9bmAJxauWKV8RjlueBqiFTxYteX4F+V8gCWGa8h0cv/LoA
- pdVmRZB6OMr1vhZFgquMs3sXede0Gq3JcqYNK5p0g6jGVhCfVJdaqSEmzLPJkahxPAjw
- 0j90zpRac2mhJUfWhG3C1S4pcqRojHAW1eXGq58MBqVl6Bsmhs+qzke/Q+Uobw9eo8V/
- kWCg==
-X-Gm-Message-State: AOJu0Yz9KSktCRvOzv+aGIFd6RbZQmoTbzxaWHXpUlnRA/TBZP5KpZMA
- JKLeTvL6zlkMAiUPdwaZyzleHRNa/M3Lh+x1MV6h5YVxRAu0zvmtx9dqe6bIEY4il7rsSv2JF/U
- Y
-X-Google-Smtp-Source: AGHT+IFAavNJNmzsZrmgdVpD8ry5p/9HKmtR2TQq3hcFSCpJoQWzTuSKZs5GaofDRZapPfBTPruBJQ==
-X-Received: by 2002:a5d:4f04:0:b0:351:c7c7:985f with SMTP id
- ffacd0b85a97d-3552fe19145mr8542101f8f.53.1716905285246; 
+ bh=lODoRdU3R+1K0U+odF5v8UJ1tylJpMXFPv+66x4TqM0=;
+ b=Ghu4UPeEeMaVGlVMydTbxw5YqHuis9jQ1we4CGAAkh+Nv+eF17d0tl5bC+Xhm3YxTg
+ ZxwaFOyDNTtHAZ0vI4XGM6oU+AMJSAxztoJMPs02t9nUMspqkXxQIh4UwJkF5aDrpH0A
+ wdJXgzgdfgf5kPYKaSdPllOvgqIrsTQCqshQ+ITwQTof9AVFN0/L+3+/SBEqP050l7YX
+ lFl6unah+ONZ1+gtQsTjlXmd12Zu4wH3/ShBlcBjEoyJ+LmMpKKPmBrJnfrzbSwAtb8B
+ J1qOMjHHOsEbGjPndGv3n68JQsigY8cVkmOEVjXfGKVuhnRZVLEIGAcibYjWu+nWUhSo
+ BmlQ==
+X-Gm-Message-State: AOJu0YypZ/IdeGntqLC/Hnn5vCWGxIciWoSPHthGRt6Z151v31VkPEs9
+ H/X1gIOLWPsgnMY6Z/9HCopkgLhWFpf5f+7kx3fFJlR2AvcwlgAFr0L9unf9sz9oLpEbi+G7PC2
+ B
+X-Google-Smtp-Source: AGHT+IE9HH7MTQ/TIL0LXqm+KyruukgtimAwfV8oAz8Hum7+QL8Nru8ThNw81whfZlD3Ww/aQeSCzQ==
+X-Received: by 2002:adf:fa44:0:b0:354:fa0d:1427 with SMTP id
+ ffacd0b85a97d-35526c25695mr12497787f8f.15.1716905285750; 
  Tue, 28 May 2024 07:08:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.08.04
+ ffacd0b85a97d-3564afc3577sm11361473f8f.102.2024.05.28.07.08.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 07:08:04 -0700 (PDT)
+ Tue, 28 May 2024 07:08:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 16/42] target/arm: Convert Cryptographic 3-register SHA to
+Subject: [PULL 17/42] target/arm: Convert Cryptographic 2-register SHA to
  decodetree
-Date: Tue, 28 May 2024 15:07:27 +0100
-Message-Id: <20240528140753.3620597-17-peter.maydell@linaro.org>
+Date: Tue, 28 May 2024 15:07:28 +0100
+Message-Id: <20240528140753.3620597-18-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528140753.3620597-1-peter.maydell@linaro.org>
 References: <20240528140753.3620597-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,86 +96,59 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240524232121.284515-11-richard.henderson@linaro.org
+Message-id: 20240524232121.284515-12-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/a64.decode      | 11 +++++
- target/arm/tcg/translate-a64.c | 78 +++++-----------------------------
- 2 files changed, 21 insertions(+), 68 deletions(-)
+ target/arm/tcg/a64.decode      |  6 ++++
+ target/arm/tcg/translate-a64.c | 54 +++-------------------------------
+ 2 files changed, 10 insertions(+), 50 deletions(-)
 
 diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 1de09903dc4..7590659ee68 100644
+index 7590659ee68..350afabc779 100644
 --- a/target/arm/tcg/a64.decode
 +++ b/target/arm/tcg/a64.decode
-@@ -30,6 +30,7 @@
- 
- @rr_q1e0        ........ ........ ...... rn:5 rd:5      &qrr_e q=1 esz=0
- @r2r_q1e0       ........ ........ ...... rm:5 rd:5      &qrrr_e rn=%rd q=1 esz=0
-+@rrr_q1e0       ........ ... rm:5 ...... rn:5 rd:5      &qrrr_e q=1 esz=0
- 
- ### Data Processing - Immediate
- 
-@@ -603,3 +604,13 @@ AESE            01001110 00 10100 00100 10 ..... .....  @r2r_q1e0
- AESD            01001110 00 10100 00101 10 ..... .....  @r2r_q1e0
- AESMC           01001110 00 10100 00110 10 ..... .....  @rr_q1e0
- AESIMC          01001110 00 10100 00111 10 ..... .....  @rr_q1e0
+@@ -614,3 +614,9 @@ SHA1SU0         0101 1110 000 ..... 001100 ..... .....  @rrr_q1e0
+ SHA256H         0101 1110 000 ..... 010000 ..... .....  @rrr_q1e0
+ SHA256H2        0101 1110 000 ..... 010100 ..... .....  @rrr_q1e0
+ SHA256SU1       0101 1110 000 ..... 011000 ..... .....  @rrr_q1e0
 +
-+### Cryptographic three-register SHA
++### Cryptographic two-register SHA
 +
-+SHA1C           0101 1110 000 ..... 000000 ..... .....  @rrr_q1e0
-+SHA1P           0101 1110 000 ..... 000100 ..... .....  @rrr_q1e0
-+SHA1M           0101 1110 000 ..... 001000 ..... .....  @rrr_q1e0
-+SHA1SU0         0101 1110 000 ..... 001100 ..... .....  @rrr_q1e0
-+SHA256H         0101 1110 000 ..... 010000 ..... .....  @rrr_q1e0
-+SHA256H2        0101 1110 000 ..... 010100 ..... .....  @rrr_q1e0
-+SHA256SU1       0101 1110 000 ..... 011000 ..... .....  @rrr_q1e0
++SHA1H           0101 1110 0010 1000 0000 10 ..... ..... @rr_q1e0
++SHA1SU1         0101 1110 0010 1000 0001 10 ..... ..... @rr_q1e0
++SHA256SU0       0101 1110 0010 1000 0010 10 ..... ..... @rr_q1e0
 diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3894db4bee2..5bef39d4e7d 100644
+index 5bef39d4e7d..1d20bf0c35b 100644
 --- a/target/arm/tcg/translate-a64.c
 +++ b/target/arm/tcg/translate-a64.c
-@@ -4589,7 +4589,7 @@ static bool trans_EXTR(DisasContext *s, arg_extract *a)
- }
+@@ -4606,6 +4606,10 @@ TRANS_FEAT(SHA256H, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256
+ TRANS_FEAT(SHA256H2, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256h2)
+ TRANS_FEAT(SHA256SU1, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256su1)
  
- /*
-- * Cryptographic AES
-+ * Cryptographic AES, SHA
-  */
- 
- TRANS_FEAT(AESE, aa64_aes, do_gvec_op3_ool, a, 0, gen_helper_crypto_aese)
-@@ -4597,6 +4597,15 @@ TRANS_FEAT(AESD, aa64_aes, do_gvec_op3_ool, a, 0, gen_helper_crypto_aesd)
- TRANS_FEAT(AESMC, aa64_aes, do_gvec_op2_ool, a, 0, gen_helper_crypto_aesmc)
- TRANS_FEAT(AESIMC, aa64_aes, do_gvec_op2_ool, a, 0, gen_helper_crypto_aesimc)
- 
-+TRANS_FEAT(SHA1C, aa64_sha1, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha1c)
-+TRANS_FEAT(SHA1P, aa64_sha1, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha1p)
-+TRANS_FEAT(SHA1M, aa64_sha1, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha1m)
-+TRANS_FEAT(SHA1SU0, aa64_sha1, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha1su0)
-+
-+TRANS_FEAT(SHA256H, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256h)
-+TRANS_FEAT(SHA256H2, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256h2)
-+TRANS_FEAT(SHA256SU1, aa64_sha256, do_gvec_op3_ool, a, 0, gen_helper_crypto_sha256su1)
++TRANS_FEAT(SHA1H, aa64_sha1, do_gvec_op2_ool, a, 0, gen_helper_crypto_sha1h)
++TRANS_FEAT(SHA1SU1, aa64_sha1, do_gvec_op2_ool, a, 0, gen_helper_crypto_sha1su1)
++TRANS_FEAT(SHA256SU0, aa64_sha256, do_gvec_op2_ool, a, 0, gen_helper_crypto_sha256su0)
 +
  /* Shift a TCGv src by TCGv shift_amount, put result in dst.
   * Note that it is the caller's responsibility to ensure that the
   * shift amount is in range (ie 0..31 or 0..63) and provide the ARM
-@@ -13497,72 +13506,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
+@@ -13506,55 +13510,6 @@ static void disas_simd_indexed(DisasContext *s, uint32_t insn)
      }
  }
  
--/* Crypto three-reg SHA
-- *  31             24 23  22  21 20  16  15 14    12 11 10 9    5 4    0
-- * +-----------------+------+---+------+---+--------+-----+------+------+
-- * | 0 1 0 1 1 1 1 0 | size | 0 |  Rm  | 0 | opcode | 0 0 |  Rn  |  Rd  |
-- * +-----------------+------+---+------+---+--------+-----+------+------+
+-/* Crypto two-reg SHA
+- *  31             24 23  22 21       17 16    12 11 10 9    5 4    0
+- * +-----------------+------+-----------+--------+-----+------+------+
+- * | 0 1 0 1 1 1 1 0 | size | 1 0 1 0 0 | opcode | 1 0 |  Rn  |  Rd  |
+- * +-----------------+------+-----------+--------+-----+------+------+
 - */
--static void disas_crypto_three_reg_sha(DisasContext *s, uint32_t insn)
+-static void disas_crypto_two_reg_sha(DisasContext *s, uint32_t insn)
 -{
 -    int size = extract32(insn, 22, 2);
--    int opcode = extract32(insn, 12, 3);
--    int rm = extract32(insn, 16, 5);
+-    int opcode = extract32(insn, 12, 5);
 -    int rn = extract32(insn, 5, 5);
 -    int rd = extract32(insn, 0, 5);
--    gen_helper_gvec_3 *genfn;
+-    gen_helper_gvec_2 *genfn;
 -    bool feature;
 -
 -    if (size != 0) {
@@ -184,33 +157,17 @@ index 3894db4bee2..5bef39d4e7d 100644
 -    }
 -
 -    switch (opcode) {
--    case 0: /* SHA1C */
--        genfn = gen_helper_crypto_sha1c;
+-    case 0: /* SHA1H */
 -        feature = dc_isar_feature(aa64_sha1, s);
+-        genfn = gen_helper_crypto_sha1h;
 -        break;
--    case 1: /* SHA1P */
--        genfn = gen_helper_crypto_sha1p;
+-    case 1: /* SHA1SU1 */
 -        feature = dc_isar_feature(aa64_sha1, s);
+-        genfn = gen_helper_crypto_sha1su1;
 -        break;
--    case 2: /* SHA1M */
--        genfn = gen_helper_crypto_sha1m;
--        feature = dc_isar_feature(aa64_sha1, s);
--        break;
--    case 3: /* SHA1SU0 */
--        genfn = gen_helper_crypto_sha1su0;
--        feature = dc_isar_feature(aa64_sha1, s);
--        break;
--    case 4: /* SHA256H */
--        genfn = gen_helper_crypto_sha256h;
+-    case 2: /* SHA256SU0 */
 -        feature = dc_isar_feature(aa64_sha256, s);
--        break;
--    case 5: /* SHA256H2 */
--        genfn = gen_helper_crypto_sha256h2;
--        feature = dc_isar_feature(aa64_sha256, s);
--        break;
--    case 6: /* SHA256SU1 */
--        genfn = gen_helper_crypto_sha256su1;
--        feature = dc_isar_feature(aa64_sha256, s);
+-        genfn = gen_helper_crypto_sha256su0;
 -        break;
 -    default:
 -        unallocated_encoding(s);
@@ -225,20 +182,20 @@ index 3894db4bee2..5bef39d4e7d 100644
 -    if (!fp_access_check(s)) {
 -        return;
 -    }
--    gen_gvec_op3_ool(s, true, rd, rn, rm, 0, genfn);
+-    gen_gvec_op2_ool(s, true, rd, rn, 0, genfn);
 -}
 -
- /* Crypto two-reg SHA
-  *  31             24 23  22 21       17 16    12 11 10 9    5 4    0
-  * +-----------------+------+-----------+--------+-----+------+------+
-@@ -13906,7 +13849,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
+ /* Crypto three-reg SHA512
+  *  31                   21 20  16 15  14  13 12  11  10  9    5 4    0
+  * +-----------------------+------+---+---+-----+--------+------+------+
+@@ -13849,7 +13804,6 @@ static const AArch64DecodeTable data_proc_simd[] = {
      { 0x5e000400, 0xdfe08400, disas_simd_scalar_copy },
      { 0x5f000000, 0xdf000400, disas_simd_indexed }, /* scalar indexed */
      { 0x5f000400, 0xdf800400, disas_simd_scalar_shift_imm },
--    { 0x5e000000, 0xff208c00, disas_crypto_three_reg_sha },
-     { 0x5e280800, 0xff3e0c00, disas_crypto_two_reg_sha },
+-    { 0x5e280800, 0xff3e0c00, disas_crypto_two_reg_sha },
      { 0xce608000, 0xffe0b000, disas_crypto_three_reg_sha512 },
      { 0xcec08000, 0xfffff000, disas_crypto_two_reg_sha512 },
+     { 0xce000000, 0xff808000, disas_crypto_four_reg },
 -- 
 2.34.1
 
