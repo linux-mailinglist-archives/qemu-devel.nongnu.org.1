@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C06E8D123F
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48F98D1246
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:47:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmqP-0006Fb-3R; Mon, 27 May 2024 22:45:45 -0400
+	id 1sBmqh-0006TW-79; Mon, 27 May 2024 22:46:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmpw-0005ZR-0e; Mon, 27 May 2024 22:45:16 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1sBmpx-0005d0-Uc
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:19 -0400
+Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmpu-000423-7x; Mon, 27 May 2024 22:45:15 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6f8e859eb20so250856b3a.0; 
- Mon, 27 May 2024 19:45:12 -0700 (PDT)
+ id 1sBmpw-00042O-59
+ for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:17 -0400
+Received: by mail-pg1-x52a.google.com with SMTP id
+ 41be03b00d2f7-68185f92bfdso251207a12.0
+ for <qemu-devel@nongnu.org>; Mon, 27 May 2024 19:45:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864311; x=1717469111; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864314; x=1717469114; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hxijtPcNuNAmolOxSVas1wwngjgg5P1pW7tz7cm2XA8=;
- b=gz3x2a7zGIEidmK1aW+gOfAusDipcKbEZWvpSIMhyOG0rO5T+zKWfiMY3QVXpWqu5x
- 2U4EVmBuul2zlQasSHuRV/DynyBZsKwBVOgQnRwZNOXfus5YWLSwOrgTijkjk2EGvZCG
- vMLRujoq0+3wTxK896g/ha8REtMfJLNHDwq0WjaGfE28tqeMxnm4wyz/Nu49Ot44Wgyt
- lfTOqReNlBZ9Aiz8AYtW01o4FWSTFuLFlFshF5dUzalj41n6ggJdyryUka52uqvvHe3x
- nh6E4F5Wqu9k3vnz7DfVcv4FjZjwdBSS5iimVAJ48tIfRRXzK5QIRIN2J1EP8KzB8JdQ
- B2/A==
+ bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
+ b=QP0cU1jVAzH8PWWfB1EMpFXE90o83NVkfE+7bRRlw551Ql4jYJjAuXLSHWNiF73fHc
+ wL8s2DQvHquJxUIBvBhoQS+T4ZDtls3QZAOUfH7stMWo6mrEaRdaWR13yxVMdRmRXtCp
+ hizbmx3rbcWAM7fUxMld1kzryx5J6RVKyEer0VZzUOYJ70sCWOM0guI/Xlrsyw8flQoU
+ sbf60oKv+0/PF7U+tHd6pSV/5U1RpYqim98K8rqFg3o1rAYjznZnOLZs0UCtcpYGD2f1
+ fpFrJ9eK7mdCBmRpIXMcxMUytj10XFNQGpsZ8EepYikDHZJ20yIahDJthR4myIB4p1y4
+ r3Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864311; x=1717469111;
+ d=1e100.net; s=20230601; t=1716864314; x=1717469114;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hxijtPcNuNAmolOxSVas1wwngjgg5P1pW7tz7cm2XA8=;
- b=lfoZGqQfrossswLSEfLsacc6NA5z8Dm27sITbEWtz/H9PdgDiq6vjsIkNBXexMygfM
- b0Dod6jd/TIYDKmpnm194rN6b0082z+q8WVKI+ZYO0TuTM7/vrMqlnRFP66vFaxxj2ve
- 4cCKcSDAC4gnF96iL1sWJfBeDupZxeb1sPj+/QlZy6y2TX2x/6t3R3KH/V+Y46QADVW4
- BPaPKD5JsJUcjhJOilYvx4i+iqNMA/IY/r0pbU/tL9Nr1qBZ4Ob5rtKIKksm8wtnEzuK
- 6g/Ip81QAH94EHU5uG7e/CHuXSGuAwGUupRpZfsdhDdGDktM20m7+WqgGihwx4Ns31U2
- +thA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU2HGjmGVSU29M26rLW4Bkc600az5hbzYkIpDaQU45AiG0JYCkgk+ChQDF5+kY3iKdKjsLUiGQYcCx6L6BtXwCzjD7qF/6Z
-X-Gm-Message-State: AOJu0YyIDieoYqKmsGQ9M+IPYC9f+wwDxRJelNBS9WSpbpbryq4uRsMb
- DBSBDW9CAanOZqm8S5KHhIfWQv5yO0bJ+/6qd8KfnsuEJAmRa7ZEyiSldw==
-X-Google-Smtp-Source: AGHT+IEho5U/SZCPN7r7+9RmZVKYTBsEx/Zx153SQbcEnc2A89sys3PY5Hyhn1K+zqIZfteqoileZA==
-X-Received: by 2002:a05:6a20:3ca2:b0:1b0:19d5:f400 with SMTP id
- adf61e73a8af0-1b212dd4446mr12146567637.23.1716864311019; 
- Mon, 27 May 2024 19:45:11 -0700 (PDT)
+ bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
+ b=ImznSdoGpdVFPA6MmWTjUHGTBzAHyozF+Ue4VXbzHd46E5mfRtiIydFsXO09onay1F
+ 2iCqHUW2P9gA8ndIe30DEyZQlzHcY6hDOI810sylOkRP9M0pR8FY0BOB9a/NtxrlsnSS
+ uhBc0N0Lasnli1eyDPOnASlDJY/9N4nV6R5PUB1xiQGSVZYr1CzZyFKAQNl63fUsnJSD
+ fQmzXbzNqTtHU8cZ2oDRLANZVkuapay+6Ca26uIjhc2xz4kD3hZUwaxyQA6hsE2xnXY9
+ NG6jr9fOTQLL4suLS5BCZfJAPBaYoGaAfrmLoDQ2qdsSMPdwwy15F35B70gMdY3FKRmX
+ ozyA==
+X-Gm-Message-State: AOJu0YwUvMD4AijOM1Ks1WJQdjQLYHBOVRSbf9aANbwtTSE9szH94yvX
+ N5N8oVHuMB4kaYwaiCQGWYamoU3LeJqyP+PW45vrugx2TShvwtTUMEOH8Q==
+X-Google-Smtp-Source: AGHT+IEMjkSkq7OD8Ut5c2F3mGQxtpTmFwGgmVHfToyBFud2Q9HNqb/25Z1NWCIpEsAYVRnHWwf49w==
+X-Received: by 2002:a05:6a20:3d8a:b0:1a7:7ac1:a3ba with SMTP id
+ adf61e73a8af0-1b212e2c397mr11877294637.53.1716864314503; 
+ Mon, 27 May 2024 19:45:14 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.08
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:45:10 -0700 (PDT)
+ Mon, 27 May 2024 19:45:14 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Alexei Filippov <alexei.filippov@syntacore.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL 22/28] target/riscv: do not set mtval2 for non guest-page faults
-Date: Tue, 28 May 2024 12:43:22 +1000
-Message-ID: <20240528024328.246965-23-alistair.francis@wdc.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 23/28] target/riscv: Remove experimental prefix from "B"
+ extension
+Date: Tue, 28 May 2024 12:43:23 +1000
+Message-ID: <20240528024328.246965-24-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x52a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,58 +100,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexei Filippov <alexei.filippov@syntacore.com>
+From: Rob Bradford <rbradford@rivosinc.com>
 
-Previous patch fixed the PMP priority in raise_mmu_exception() but we're still
-setting mtval2 incorrectly. In riscv_cpu_tlb_fill(), after pmp check in 2 stage
-translation part, mtval2 will be set in case of successes 2 stage translation but
-failed pmp check.
+This extension has now been ratified:
+https://jira.riscv.org/browse/RVS-2006 so the "x-" prefix can be
+removed.
 
-In this case we gonna set mtval2 via env->guest_phys_fault_addr in context of
-riscv_cpu_tlb_fill(), as this was a guest-page-fault, but it didn't and mtval2
-should be zero, according to RISCV privileged spec sect. 9.4.4: When a guest
-page-fault is taken into M-mode, mtval2 is written with either zero or guest
-physical address that faulted, shifted by 2 bits. *For other traps, mtval2
-is set to zero...*
+Since this is now a ratified extension add it to the list of extensions
+included in the "max" CPU variant.
 
-Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240503103052.6819-1-alexei.filippov@syntacore.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-ID: <20240514110217.22516-1-rbradford@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/riscv/cpu.c         | 2 +-
+ target/riscv/tcg/tcg-cpu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 574886a694..a02497d778 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1376,17 +1376,17 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-                               __func__, pa, ret, prot_pmp, tlb_size);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 2946ac298a..cee6fc4a9a 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1400,7 +1400,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
+     MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
+     MISA_EXT_INFO(RVV, "v", "Vector operations"),
+     MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
+-    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
++    MISA_EXT_INFO(RVB, "b", "Bit manipulation (Zba_Zbb_Zbs)")
+ };
  
-                 prot &= prot_pmp;
--            }
--
--            if (ret != TRANSLATE_SUCCESS) {
-+            } else {
-                 /*
-                  * Guest physical address translation failed, this is a HS
-                  * level exception
-                  */
-                 first_stage_error = false;
--                env->guest_phys_fault_addr = (im_address |
--                                              (address &
--                                               (TARGET_PAGE_SIZE - 1))) >> 2;
-+                if (ret != TRANSLATE_PMP_FAIL) {
-+                    env->guest_phys_fault_addr = (im_address |
-+                                                  (address &
-+                                                   (TARGET_PAGE_SIZE - 1))) >> 2;
-+                }
-             }
-         }
-     } else {
+ static void riscv_cpu_validate_misa_mxl(RISCVCPUClass *mcc)
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index f59b5d7f2d..683f604d9f 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -1301,7 +1301,7 @@ static void riscv_init_max_cpu_extensions(Object *obj)
+     const RISCVCPUMultiExtConfig *prop;
+ 
+     /* Enable RVG, RVJ and RVV that are disabled by default */
+-    riscv_cpu_set_misa_ext(env, env->misa_ext | RVG | RVJ | RVV);
++    riscv_cpu_set_misa_ext(env, env->misa_ext | RVB | RVG | RVJ | RVV);
+ 
+     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+         isa_ext_update_enabled(cpu, prop->offset, true);
 -- 
 2.45.1
 
