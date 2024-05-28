@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C648D2164
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 18:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2548D216B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 18:16:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBzTw-0003Ta-9L; Tue, 28 May 2024 12:15:24 -0400
+	id 1sBzTx-0003Tp-2P; Tue, 28 May 2024 12:15:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sBzTu-0003St-Mh
+ id 1sBzTu-0003T2-NZ
  for qemu-devel@nongnu.org; Tue, 28 May 2024 12:15:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sBzTt-0001ir-5U
+ id 1sBzTt-0001iy-6a
  for qemu-devel@nongnu.org; Tue, 28 May 2024 12:15:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1716912920;
@@ -24,32 +24,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0bOdMPqUA+lkNbcV85HXskFJU4DMfBPjohOMFYIhyoQ=;
- b=PHq/RjAjrXLDuM9zvZ27BhNGegdj9mTA00c5UJ6Bau6of+iWvdC/8vspS7lTs3dd3fkHEf
- 0vo1WIPhV6r2i6e9o7UUlvaOpp5Q8ndAdbm2w+veK4o+juERyFZN4BLUmZ30rJNuwY6lvM
- r8XsO9ymlwRbEONPu1n84+mn/otYhU0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-6eNjhpCPOwCxwV3KYzG0Tw-1; Tue,
- 28 May 2024 12:15:17 -0400
-X-MC-Unique: 6eNjhpCPOwCxwV3KYzG0Tw-1
+ bh=daoFMEShlBnxsuXyynDFlX5cEjXfkBVlaBMEp7a2wDo=;
+ b=GkRYAmbQJer3+Vo0UQcpTJcOmCZ0whaPHIBkqXl/UU93wmO8lgLY6lCs9TMKU4KRmiz/BM
+ 9ndPYXpVguXu51v+stx8w7btOFXCPZDMahHFx7zro3NlPjZkvCtR2wecJPAbYSdT68EhIb
+ 2Ljnu0h5DlnfdhAz2U1hOB+oCFb88Hw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-615-Q6iOy824MzGkPufIyvQsyw-1; Tue, 28 May 2024 12:15:18 -0400
+X-MC-Unique: Q6iOy824MzGkPufIyvQsyw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4CEA51C0512D
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 16:15:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 528BE185A780
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 16:15:18 +0000 (UTC)
 Received: from maggie.brq.redhat.com (unknown [10.43.3.102])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B1A7C15BB9;
- Tue, 28 May 2024 16:15:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7FD73C15BC3;
+ Tue, 28 May 2024 16:15:17 +0000 (UTC)
 From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: david@redhat.com,
 	imammedo@redhat.com
-Subject: [PATCH 2/3] backends/hostmem: Warn on qemu_madvise() failures
-Date: Tue, 28 May 2024 18:15:08 +0200
-Message-ID: <b51b2a1cda33115b3370a8b3a4a4e6e9c10566d2.1716912651.git.mprivozn@redhat.com>
+Subject: [PATCH 3/3] backends/hostmem: Round up memory size for qemu_madvise()
+ and mbind()
+Date: Tue, 28 May 2024 18:15:09 +0200
+Message-ID: <bd03706d336e9be360dd53cf125c27fbeb26acf7.1716912651.git.mprivozn@redhat.com>
 In-Reply-To: <cover.1716912651.git.mprivozn@redhat.com>
 References: <cover.1716912651.git.mprivozn@redhat.com>
 MIME-Version: 1.0
@@ -80,77 +81,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If user sets .merge or .dump attributes qemu_madvise() is called
-with corresponding advice. But it is never checked for failure
-which may mislead users into thinking the attribute is set
-correctly.I believe at this point it's too late to report errors
-in that case but let's report a warning at least.
+Simple reproducer:
+qemu.git $ ./build/qemu-system-x86_64 \
+-m size=8389632k,slots=16,maxmem=25600000k \
+-object
+'{"qom-type":"memory-backend-file","id":"ram-node0","mem-path":"/hugepages2M/","prealloc":true,"size":8590983168,"host-nodes":[0],"policy":"bind"}' \
+-numa node,nodeid=0,cpus=0,memdev=ram-node0
+
+With current master I get:
+
+qemu-system-x86_64: cannot bind memory to host NUMA nodes: Invalid argument
+
+The problem is that memory size (8193MiB) is not an integer
+multiple of underlying pagesize (2MiB) which triggers a check
+inside of mbind(), since we can't really set policy just to a
+fraction of a page. As qemu_madvise() has the same expectation,
+round size passed to underlying pagesize.
 
 Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
 ---
- backends/hostmem.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ backends/hostmem.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/backends/hostmem.c b/backends/hostmem.c
-index eb9682b4a8..1a6fd1c714 100644
+index 1a6fd1c714..9b727699f6 100644
 --- a/backends/hostmem.c
 +++ b/backends/hostmem.c
-@@ -14,6 +14,7 @@
- #include "sysemu/hostmem.h"
- #include "hw/boards.h"
- #include "qapi/error.h"
-+#include "qemu/error-report.h"
- #include "qapi/qapi-builtin-visit.h"
- #include "qapi/visitor.h"
- #include "qemu/config-file.h"
-@@ -178,8 +179,11 @@ static void host_memory_backend_set_merge(Object *obj, bool value, Error **errp)
+@@ -179,6 +179,8 @@ static void host_memory_backend_set_merge(Object *obj, bool value, Error **errp)
          void *ptr = memory_region_get_ram_ptr(&backend->mr);
          uint64_t sz = memory_region_size(&backend->mr);
  
--        qemu_madvise(ptr, sz,
--                     value ? QEMU_MADV_MERGEABLE : QEMU_MADV_UNMERGEABLE);
-+        if (qemu_madvise(ptr, sz,
-+                         value ? QEMU_MADV_MERGEABLE : QEMU_MADV_UNMERGEABLE)) {
-+            warn_report("Couldn't change property 'merge' on '%s': %s",
-+                        object_get_typename(obj), strerror(errno));
-+        }
-         backend->merge = value;
-     }
- }
-@@ -204,8 +208,11 @@ static void host_memory_backend_set_dump(Object *obj, bool value, Error **errp)
++        sz = ROUND_UP(sz, qemu_ram_pagesize(backend->mr.ram_block));
++
+         if (qemu_madvise(ptr, sz,
+                          value ? QEMU_MADV_MERGEABLE : QEMU_MADV_UNMERGEABLE)) {
+             warn_report("Couldn't change property 'merge' on '%s': %s",
+@@ -208,6 +210,8 @@ static void host_memory_backend_set_dump(Object *obj, bool value, Error **errp)
          void *ptr = memory_region_get_ram_ptr(&backend->mr);
          uint64_t sz = memory_region_size(&backend->mr);
  
--        qemu_madvise(ptr, sz,
--                     value ? QEMU_MADV_DODUMP : QEMU_MADV_DONTDUMP);
-+        if (qemu_madvise(ptr, sz,
-+                         value ? QEMU_MADV_DODUMP : QEMU_MADV_DONTDUMP)) {
-+            warn_report("Couldn't change property 'dump' on '%s': %s",
-+                        object_get_typename(obj), strerror(errno));
-+        }
-         backend->dump = value;
-     }
- }
-@@ -337,11 +344,15 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
++        sz = ROUND_UP(sz, qemu_ram_pagesize(backend->mr.ram_block));
++
+         if (qemu_madvise(ptr, sz,
+                          value ? QEMU_MADV_DODUMP : QEMU_MADV_DONTDUMP)) {
+             warn_report("Couldn't change property 'dump' on '%s': %s",
+@@ -344,6 +348,13 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
      ptr = memory_region_get_ram_ptr(&backend->mr);
      sz = memory_region_size(&backend->mr);
  
--    if (backend->merge) {
--        qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
-+    if (backend->merge &&
-+        qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE)) {
-+        warn_report("Couldn't set property 'merge' on '%s': %s",
-+                    object_get_typename(OBJECT(uc)), strerror(errno));
-     }
--    if (!backend->dump) {
--        qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
-+    if (!backend->dump &&
-+        qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP)) {
-+        warn_report("Couldn't set property 'dump' on '%s': %s",
-+                    object_get_typename(OBJECT(uc)), strerror(errno));
-     }
- #ifdef CONFIG_NUMA
-     unsigned long lastbit = find_last_bit(backend->host_nodes, MAX_NODES);
++    /*
++     * Round up size to be an integer multiple of pagesize, because
++     * both madvise() and mbind() does not really like setting
++     * advice/policy to just a fraction of a page.
++     */
++    sz = ROUND_UP(sz, qemu_ram_pagesize(backend->mr.ram_block));
++
+     if (backend->merge &&
+         qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE)) {
+         warn_report("Couldn't set property 'merge' on '%s': %s",
 -- 
 2.44.1
 
