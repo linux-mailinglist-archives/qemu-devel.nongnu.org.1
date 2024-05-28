@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6108D1551
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E016C8D154B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 09:24:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBrDb-0007oQ-8p; Tue, 28 May 2024 03:25:59 -0400
+	id 1sBrBE-0006jG-Va; Tue, 28 May 2024 03:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <duchao@eswincomputing.com>)
- id 1sBrDU-0007l6-EH; Tue, 28 May 2024 03:25:52 -0400
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <duchao@eswincomputing.com>)
- id 1sBrDO-0000Uu-Oj; Tue, 28 May 2024 03:25:52 -0400
-Received: from localhost.localdomain (unknown [10.12.130.31])
- by app2 (Coremail) with SMTP id TQJkCgCHjLlhhlVmgzQNAA--.46423S7;
- Tue, 28 May 2024 15:23:26 +0800 (CST)
-From: Chao Du <duchao@eswincomputing.com>
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- ajones@ventanamicro.com, alistair23@gmail.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, palmer@dabbelt.com, anup@brainfault.org,
- duchao713@qq.com
-Subject: [PATCH v2 3/3] target/riscv/kvm: define TARGET_KVM_HAVE_GUEST_DEBUG
-Date: Tue, 28 May 2024 07:20:48 +0000
-Message-Id: <20240528072048.25529-4-duchao@eswincomputing.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240528072048.25529-1-duchao@eswincomputing.com>
-References: <20240528072048.25529-1-duchao@eswincomputing.com>
-X-CM-TRANSID: TQJkCgCHjLlhhlVmgzQNAA--.46423S7
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFyrJr1UXF48XFWxXryrJFb_yoWfWFX_GF
- W5Jw4I9rW5Xay09Fy8ZrZ8ur1rAayrAF1fGanrKFs0gr4UWF1UAw4kKa1kAFyUuw4xAr1x
- urZ3XFyxCrnxtjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUbq8YjsxI4VWxJwAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I
- 6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7
- IE14v26r1rM28IrcIa0xkI8VCY1x0267AKxVW5JVCq3wA2ocxC64kIII0Yj41l84x0c7CE
- w4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6x
- kF7I0E14v26r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIE
- c7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I
- 8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCF
- s4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY02
- Avz4vE-syl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU7Zjj
- DUUUU
-X-CM-SenderInfo: xgxfxt3r6h245lqf0zpsxwx03jof0z/
-Received-SPF: pass client-ip=209.97.181.73;
- envelope-from=duchao@eswincomputing.com;
- helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
- RCVD_IN_VALIDITY_RPBL=1.31, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1sBrB8-0006im-Tn
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:23:28 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1sBrB7-0008Gh-69
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 03:23:26 -0400
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 50EAA60C3F;
+ Tue, 28 May 2024 10:23:22 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown
+ [2a02:6b8:b081:b72a::1:2c])
+ by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id DNKXtm1ixqM0-1WcFOYja; Tue, 28 May 2024 10:23:21 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1716881001;
+ bh=TAaKM7oNW2kfuuMU7XNgq042NkYzt80TZZlAadgwwQ8=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=BEyxjY4itUSX0MPff2Mnt0KX0EgXGWu7wgco1NcKmUJisS9+Ue9bU26p8YeCxqaQL
+ PHphEuuDOrl+zzdu5PEzbMmhwgtlUDptYhVHt785424+JV+khnL5BzJSHTALoj3uds
+ zUZXcZzkFh0eja53B6+d1CUiZapgSj0pYrbTmeos=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ philmd@linaro.org
+Subject: [PATCH v4] mc146818rtc: add a way to generate RTC interrupts via QMP
+Date: Tue, 28 May 2024 10:22:42 +0300
+Message-Id: <20240528072242.493056-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,28 +74,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To enable the KVM GUEST DEBUG for RISC-V at QEMU side.
+This can be used to force-synchronize the time in guest after a long
+stop-cont pause, which can be useful for serverless-type workload.
 
-Signed-off-by: Chao Du <duchao@eswincomputing.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Also add a comment to highlight the fact that this (and one other QMP
+command) only works for the MC146818 RTC controller.
+
+Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- configs/targets/riscv64-softmmu.mak | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/configs/targets/riscv64-softmmu.mak b/configs/targets/riscv64-softmmu.mak
-index f688ffa7bc..917980e63e 100644
---- a/configs/targets/riscv64-softmmu.mak
-+++ b/configs/targets/riscv64-softmmu.mak
-@@ -1,6 +1,7 @@
- TARGET_ARCH=riscv64
- TARGET_BASE_ARCH=riscv
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/riscv-64bit-cpu.xml gdb-xml/riscv-32bit-fpu.xml gdb-xml/riscv-64bit-fpu.xml gdb-xml/riscv-64bit-virtual.xml
- # needed by boot.c
- TARGET_NEED_FDT=y
+Changes since v0:
+- Rename to rtc-inject-irq to match other similar API
+- Add a comment to highlight that this only works for the I386 RTC
+
+Changes since v1:
+- Added a description below the QMP command to explain how it can be
+  used and what it does.
+
+Changes since v2:
+- Add a 'broadcast' suffix.
+- Change the comments to explain the flags we're setting.
+- Change the command description to fix styling & explain that it's a broadcast command.
+
+Changes since v3:
+- Fix checkpatch complaints about usage of C99 comments
+
+---
+ hw/rtc/mc146818rtc.c         | 20 ++++++++++++++++++++
+ include/hw/rtc/mc146818rtc.h |  1 +
+ qapi/misc-target.json        | 19 +++++++++++++++++++
+ 3 files changed, 40 insertions(+)
+
+diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
+index 3379f92748..96ecd43036 100644
+--- a/hw/rtc/mc146818rtc.c
++++ b/hw/rtc/mc146818rtc.c
+@@ -107,6 +107,11 @@ static void rtc_coalesced_timer_update(MC146818RtcState *s)
+ static QLIST_HEAD(, MC146818RtcState) rtc_devices =
+     QLIST_HEAD_INITIALIZER(rtc_devices);
+ 
++/*
++ * NOTE:
++ * The two QMP functions below are _only_ implemented for the MC146818.
++ * All other RTC devices ignore this.
++ */
+ void qmp_rtc_reset_reinjection(Error **errp)
+ {
+     MC146818RtcState *s;
+@@ -116,6 +121,21 @@ void qmp_rtc_reset_reinjection(Error **errp)
+     }
+ }
+ 
++void qmp_rtc_inject_irq_broadcast(Error **errp)
++{
++    MC146818RtcState *s;
++
++    QLIST_FOREACH(s, &rtc_devices, link) {
++        /* Update-ended interrupt enable */
++        s->cmos_data[RTC_REG_B] |= REG_B_UIE;
++
++        /* Interrupt request flag | update interrupt flag */
++        s->cmos_data[RTC_REG_C] |= REG_C_IRQF | REG_C_UF;
++
++        qemu_irq_raise(s->irq);
++    }
++}
++
+ static bool rtc_policy_slew_deliver_irq(MC146818RtcState *s)
+ {
+     kvm_reset_irq_delivered();
+diff --git a/include/hw/rtc/mc146818rtc.h b/include/hw/rtc/mc146818rtc.h
+index 97cec0b3e8..e9dd0f9c72 100644
+--- a/include/hw/rtc/mc146818rtc.h
++++ b/include/hw/rtc/mc146818rtc.h
+@@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int base_year,
+ void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, int val);
+ int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
+ void qmp_rtc_reset_reinjection(Error **errp);
++void qmp_rtc_inject_irq_broadcast(Error **errp);
+ 
+ #endif /* HW_RTC_MC146818RTC_H */
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 4e0a6492a9..7d388a3753 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -19,6 +19,25 @@
+ { 'command': 'rtc-reset-reinjection',
+   'if': 'TARGET_I386' }
+ 
++##
++# @rtc-inject-irq-broadcast:
++#
++# Inject an RTC interrupt for all existing RTCs on the system.
++# The interrupt forces the guest to synchronize the time with RTC.
++# This is useful after a long stop-cont pause, which is common for
++# serverless-type workload.
++#
++# Since: 9.1
++#
++# Example:
++#
++#     -> { "execute": "rtc-inject-irq-broadcast" }
++#     <- { "return": {} }
++#
++##
++{ 'command': 'rtc-inject-irq-broadcast',
++  'if': 'TARGET_I386' }
++
+ ##
+ # @SevState:
+ #
 -- 
-2.17.1
+2.34.1
 
 
