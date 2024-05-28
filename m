@@ -2,79 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60CB8D1249
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02CBD8D123E
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmr4-0007dy-D7; Mon, 27 May 2024 22:46:26 -0400
+	id 1sBmqf-0006Rt-2k; Mon, 27 May 2024 22:46:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmq5-0005qo-Er; Mon, 27 May 2024 22:45:28 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1sBmqA-0005vL-HC; Mon, 27 May 2024 22:45:32 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmq3-00042x-Oj; Mon, 27 May 2024 22:45:25 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1f48bd643a0so2797845ad.3; 
- Mon, 27 May 2024 19:45:22 -0700 (PDT)
+ id 1sBmq8-00043J-OF; Mon, 27 May 2024 22:45:30 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1f4c7b022f8so2375945ad.1; 
+ Mon, 27 May 2024 19:45:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864322; x=1717469122; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864326; x=1717469126; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=okL/u9Yr4I1gdpYP+OUmz0dGlxU1P8AIMDXGmwEB0cY=;
- b=VV4PA+A1kGIf0qvLu82f0he8KlTL+MtyggCi4Voztj7CFQAymbYBP1JZVbd1XG0j+G
- loamb9dHfb6LLQeS0+hEbpGBUX0PUwDBXegsuZU84C6AZLQWroJO3vbXrgJCyOTXjDsx
- 2rkUigr0K1nzdjaor6btO15f8J15ZwHVvqnsQkeO+M62yKlVb4VrrfWn1cm2Szo5nls6
- jkUk4/iLhf4SUJT/9A/8dcvvjMVu7kKtYKt/nzOEV6AOnEYqlJka1lhxzJ44hklP954z
- rp2OONjz5IH1KefodLlkKHn+ntUjYPiUdPfbecKlTkHGRXddEv6521YWrbzPmr48tKYP
- mseQ==
+ bh=yN3SL80ZeNYtdgHnSA4EmYhdmlHM54QOJLaD6qM4+6Q=;
+ b=Exg18F5tMK73OaxP3bNlTlhrnSNuifOaypvwpimkoXwWTfi/vK5EeTsoVb107dV03W
+ 2fEV+b5Fw0z5oruh/mFSW3FzCnZ//+jPWvuB+5vcDxqgNS8nODYew+gVTmLZxEkOJ8d1
+ 9Li0Yl7LQq9YDcT9JL5tORJXZN0lwON+B07tSAag87kEAn6OhR/lMF1tEUocLBzlyVfp
+ GGpaaKWWphZ2FnfmRU8SP76RHujMEbhi2giBs384x0MRmBDKsYPgsHkqSdxuMYbKjws2
+ TTmKWmU9vvpPqL3ARr8957nuboV7fNN5mGlbmqocUzMwa2NF+yIsBE8eCqjDPT7ZaXnX
+ ipBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864322; x=1717469122;
+ d=1e100.net; s=20230601; t=1716864326; x=1717469126;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=okL/u9Yr4I1gdpYP+OUmz0dGlxU1P8AIMDXGmwEB0cY=;
- b=Hdjfo+v/9bBQCniDIKddFYWSoI+FqlLxF9cZe9Qn8MK1HjNPs7KGbu9spbDtXuMwCn
- MyfRzg8hG/pERaOiXO/DmnvDrFydEnbkbIuJum0uA84co8a67mw6mhZpPvUBrZtUlQkM
- v8FFm4T5DDXclTgMLod2SyzfbZPxDxc52pYQNYQdQWFYIELmmPvHxTOkBJDWGSS2l6VV
- cOnqG8i2PcVdw8lAP+7kpQSHfd+2swUWoEtlaM0rnB94rfkUbPvl4qwitfpV8AufrpG6
- AhMAWrtpOyuKOANE5UziQzG66fzwsyrvYHWlPwpAbO66NH8xbBrzkcVtOhEIxItQY9Ut
- Ocqw==
+ bh=yN3SL80ZeNYtdgHnSA4EmYhdmlHM54QOJLaD6qM4+6Q=;
+ b=UoSruCLoIZZJ69kpaRg29x0fliTNSuucjjDMSM7T7TI9qsY/FtyVBo4QWQF57MydTv
+ O7l6MZkp07G5XxUjdfKOwmK9gLobTYbUOFXURUpUVwNLq7Mcr0877AgQ/qQxaNOq9GIz
+ BRH2t6cnay2PSCQfrgls7jkBEzeXWnO9j9/qUpcKw6LFdCp+y5ONeZgq0jaI8H7U/XlB
+ ridvBlbQYDr79DnKqmcjck2vrdDi1HTVc99E52hb5xudS5z7zakAcOlTzW0dEIlsmpGW
+ qhkELgowmSIf9mqN/RjRSSyvGT5cjHbtO301rb8VJ5cO9Otb63fTIbMZy42dJZjcSnU9
+ O0Dg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUw5IXu/8Iwwzt1J4mW71M9fq+00waG04pv7qmNvdeKgT1iaXGK+LcOhPH9RJzTlvjCjtBD0PDLpxHZSFYNQB6KmGu0Sdsj
-X-Gm-Message-State: AOJu0Ywp6H7iygOKhnAME9rx5IPAHbL7g9k3Ch+klIVlzUyceCLgvaX3
- Vm03fT6LjdQsCfCEUPKQzSIkrcyuC4Gcbu46VRdjHrxgoEAZCVDp0RhTsw==
-X-Google-Smtp-Source: AGHT+IGk18WLY6sPTaDfBrZsmGrDkLA+eHUSZI9mH1XG/bLQa+ZavDBolfSnVhKoh5pr0aNuDe7b2A==
-X-Received: by 2002:a17:902:7847:b0:1f4:9e85:9d4f with SMTP id
- d9443c01a7336-1f49e85a120mr38295485ad.11.1716864321680; 
- Mon, 27 May 2024 19:45:21 -0700 (PDT)
+ AJvYcCWsGNDFSOhnxqFctu90I8VhtxyfpCraiPdY9A3FlhRXypcVeftYl6rFE6RRLm+KOA4EYhrkVokv2QAiKbZsdP7eYzZvmQCi
+X-Gm-Message-State: AOJu0YwD3o/JNyLDWlcFxG7h9hdXtSX5uxO5+jHA3DEPyb6tVlOeH3D9
+ PKBLNkKB5yEgSfLZzfd77nsuSu2fxkWEFA5GN0c0OF+xAfDC5znklF5UMQ==
+X-Google-Smtp-Source: AGHT+IE2sA0VgTzSkcni8oDsYxKZiM5vXKZauNaaAQl2WAGLA7Dfo1+LuYCXjx32GnkLfSOyA75bkA==
+X-Received: by 2002:a17:902:d50c:b0:1f4:b313:3e9a with SMTP id
+ d9443c01a7336-1f4b3134380mr31282465ad.65.1716864325829; 
+ Mon, 27 May 2024 19:45:25 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.18
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:45:20 -0700 (PDT)
+ Mon, 27 May 2024 19:45:25 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- qemu-stable <qemu-stable@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 25/28] target/riscv/kvm.c: Fix the hart bit setting of AIA
-Date: Tue, 28 May 2024 12:43:25 +1000
-Message-ID: <20240528024328.246965-26-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Robin Dapp <rdapp.gcc@gmail.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+Subject: [PULL 26/28] riscv,
+ gdbstub.c: fix reg_width in ricsv_gen_dynamic_vector_feature()
+Date: Tue, 28 May 2024 12:43:26 +1000
+Message-ID: <20240528024328.246965-27-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,54 +103,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-In AIA spec, each hart (or each hart within a group) has a unique hart
-number to locate the memory pages of interrupt files in the address
-space. The number of bits required to represent any hart number is equal
-to ceil(log2(hmax + 1)), where hmax is the largest hart number among
-groups.
+Commit 33a24910ae changed 'reg_width' to use 'vlenb', i.e. vector length
+in bytes, when in this context we want 'reg_width' as the length in
+bits.
 
-However, if the largest hart number among groups is a power of 2, QEMU
-will pass an inaccurate hart-index-bit setting to Linux. For example, when
-the guest OS has 4 harts, only ceil(log2(3 + 1)) = 2 bits are sufficient
-to represent 4 harts, but we passes 3 to Linux. The code needs to be
-updated to ensure accurate hart-index-bit settings.
+Fix 'reg_width' back to the value in bits like 7cb59921c05a
+("target/riscv/gdbstub.c: use 'vlenb' instead of shifting 'vlen'") set
+beforehand.
 
-Additionally, a Linux patch[1] is necessary to correctly recover the hart
-index when the guest OS has only 1 hart, where the hart-index-bit is 0.
+While we're at it, rename 'reg_width' to 'bitsize' to provide a bit more
+clarity about what the variable represents. 'bitsize' is also used in
+riscv_gen_dynamic_csr_feature() with the same purpose, i.e. as an input to
+gdb_feature_builder_append_reg().
 
-[1] https://lore.kernel.org/lkml/20240415064905.25184-1-yongxuan.wang@sifive.com/t/
-
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Alex Bennée <alex.bennee@linaro.org>
+Reported-by: Robin Dapp <rdapp.gcc@gmail.com>
+Fixes: 33a24910ae ("target/riscv: Use GDBFeature for dynamic XML")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Cc: qemu-stable <qemu-stable@nongnu.org>
-Message-ID: <20240515091129.28116-1-yongxuan.wang@sifive.com>
+Message-ID: <20240517203054.880861-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ target/riscv/gdbstub.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 473416649f..235e2cdaca 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1777,7 +1777,14 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-         }
+diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
+index d0cc5762c2..c07df972f1 100644
+--- a/target/riscv/gdbstub.c
++++ b/target/riscv/gdbstub.c
+@@ -288,7 +288,7 @@ static GDBFeature *riscv_gen_dynamic_csr_feature(CPUState *cs, int base_reg)
+ static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs, int base_reg)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+-    int reg_width = cpu->cfg.vlenb;
++    int bitsize = cpu->cfg.vlenb << 3;
+     GDBFeatureBuilder builder;
+     int i;
+ 
+@@ -298,7 +298,7 @@ static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs, int base_reg)
+ 
+     /* First define types and totals in a whole VL */
+     for (i = 0; i < ARRAY_SIZE(vec_lanes); i++) {
+-        int count = reg_width / vec_lanes[i].size;
++        int count = bitsize / vec_lanes[i].size;
+         gdb_feature_builder_append_tag(
+             &builder, "<vector id=\"%s\" type=\"%s\" count=\"%d\"/>",
+             vec_lanes[i].id, vec_lanes[i].gdb_type, count);
+@@ -316,7 +316,7 @@ static GDBFeature *ricsv_gen_dynamic_vector_feature(CPUState *cs, int base_reg)
+     /* Define vector registers */
+     for (i = 0; i < 32; i++) {
+         gdb_feature_builder_append_reg(&builder, g_strdup_printf("v%d", i),
+-                                       reg_width, i, "riscv_vector", "vector");
++                                       bitsize, i, "riscv_vector", "vector");
      }
  
--    hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
-+
-+    if (max_hart_per_socket > 1) {
-+        max_hart_per_socket--;
-+        hart_bits = find_last_bit(&max_hart_per_socket, BITS_PER_LONG) + 1;
-+    } else {
-+        hart_bits = 0;
-+    }
-+
-     ret = kvm_device_access(aia_fd, KVM_DEV_RISCV_AIA_GRP_CONFIG,
-                             KVM_DEV_RISCV_AIA_CONFIG_HART_BITS,
-                             &hart_bits, true, NULL);
+     gdb_feature_builder_end(&builder);
 -- 
 2.45.1
 
