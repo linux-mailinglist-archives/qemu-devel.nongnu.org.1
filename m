@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48F98D1246
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0928D1240
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 04:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sBmqh-0006TW-79; Mon, 27 May 2024 22:46:06 -0400
+	id 1sBmqx-0006oG-8p; Mon, 27 May 2024 22:46:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmpx-0005d0-Uc
- for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:19 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1sBmq2-0005kM-F3; Mon, 27 May 2024 22:45:25 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1sBmpw-00042O-59
- for qemu-devel@nongnu.org; Mon, 27 May 2024 22:45:17 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-68185f92bfdso251207a12.0
- for <qemu-devel@nongnu.org>; Mon, 27 May 2024 19:45:15 -0700 (PDT)
+ id 1sBmpz-00042d-Gx; Mon, 27 May 2024 22:45:21 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1f47eb2354bso2405445ad.3; 
+ Mon, 27 May 2024 19:45:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716864314; x=1717469114; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716864318; x=1717469118; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
- b=QP0cU1jVAzH8PWWfB1EMpFXE90o83NVkfE+7bRRlw551Ql4jYJjAuXLSHWNiF73fHc
- wL8s2DQvHquJxUIBvBhoQS+T4ZDtls3QZAOUfH7stMWo6mrEaRdaWR13yxVMdRmRXtCp
- hizbmx3rbcWAM7fUxMld1kzryx5J6RVKyEer0VZzUOYJ70sCWOM0guI/Xlrsyw8flQoU
- sbf60oKv+0/PF7U+tHd6pSV/5U1RpYqim98K8rqFg3o1rAYjznZnOLZs0UCtcpYGD2f1
- fpFrJ9eK7mdCBmRpIXMcxMUytj10XFNQGpsZ8EepYikDHZJ20yIahDJthR4myIB4p1y4
- r3Mw==
+ bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
+ b=KOehGwjsf+U6bOgzN/xi10jTGikrVJjM8QOmVhybPN0l7ad5/LHR83pSxHZZVkXvcy
+ yBfoZyKKjhplIQD95bjEnIGXlMYQHTJIKHgCH6kwAu24n+VjXaVLYHMweehyroq4+bNy
+ A7abHRbx7PrYYbQuptuQZqdZUfZYfSfQetmBUblkhCILRVMGzUnqB3urm8VWnio/GuWn
+ SFtfcYJ8ZZ+WJYdo3oJTsAP7tsPPlaU8u8q+DOxLi5DRA8H2K1kCkH3Hd3JAlP7RfYMu
+ n+Em2pVHVkz3RNpYdZepDREj76/gbsEUgFSVr8nIapsZ8JkSAOr0fNczrY4SCpiURm0k
+ mYug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716864314; x=1717469114;
+ d=1e100.net; s=20230601; t=1716864318; x=1717469118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w6AzoFo8JUHoIoVJzS9JZAaDEbHq/fZUj2l7V7rYL/A=;
- b=ImznSdoGpdVFPA6MmWTjUHGTBzAHyozF+Ue4VXbzHd46E5mfRtiIydFsXO09onay1F
- 2iCqHUW2P9gA8ndIe30DEyZQlzHcY6hDOI810sylOkRP9M0pR8FY0BOB9a/NtxrlsnSS
- uhBc0N0Lasnli1eyDPOnASlDJY/9N4nV6R5PUB1xiQGSVZYr1CzZyFKAQNl63fUsnJSD
- fQmzXbzNqTtHU8cZ2oDRLANZVkuapay+6Ca26uIjhc2xz4kD3hZUwaxyQA6hsE2xnXY9
- NG6jr9fOTQLL4suLS5BCZfJAPBaYoGaAfrmLoDQ2qdsSMPdwwy15F35B70gMdY3FKRmX
- ozyA==
-X-Gm-Message-State: AOJu0YwUvMD4AijOM1Ks1WJQdjQLYHBOVRSbf9aANbwtTSE9szH94yvX
- N5N8oVHuMB4kaYwaiCQGWYamoU3LeJqyP+PW45vrugx2TShvwtTUMEOH8Q==
-X-Google-Smtp-Source: AGHT+IEMjkSkq7OD8Ut5c2F3mGQxtpTmFwGgmVHfToyBFud2Q9HNqb/25Z1NWCIpEsAYVRnHWwf49w==
-X-Received: by 2002:a05:6a20:3d8a:b0:1a7:7ac1:a3ba with SMTP id
- adf61e73a8af0-1b212e2c397mr11877294637.53.1716864314503; 
- Mon, 27 May 2024 19:45:14 -0700 (PDT)
+ bh=Tj+xbQPw1aTPPkVQS9cYzQUJajn8RHcrOCksv3MTYMs=;
+ b=uTOh3bTvx32WjKT/di+U9fTmAL6N6gYEHwwwWLQ6ir656QJ0s53GP8iIcvP/lBJFPV
+ zRt2gH9wzBrNqa6MdCzgDd971U2jtgDlxAi8uTwVEBlpBjlHz5x/JuJ/9r1aUaz1SO0l
+ LmbwR4vtHfDlh7451OcficGxKL1pJ1YRGYFFHO92Ns5UTLPh/GgcR2ef3G3HMhJlab1G
+ eBQidrB3DU5dmDIPg+tyweMpUMYg39wvI4TSfbn/eUBEiIEa0O6GYV/wud/OFL4eoR8d
+ axfjtEdUFfFg51GxeXIfqSSQBy6qmghdTHqW6clAOEcQ1zS0HDSFynAazOzoOtoTQaoe
+ 9+Fw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUScBgwyIqayrMqkgQdec6jEvCYvwuTGiWfyd1vHN07u1mtXjHo8RZ38YZRv47t4kk2XDj0I8srbyjzY5JspofGHo30CHVx
+X-Gm-Message-State: AOJu0YycOZ4Ji9HpHeBGWAJbowgbtqolUn2OqQLLEQK+5ZcXOub1Qnq9
+ LhimqcGHsMZ3I3evEbtnpE/dkVrGl4ex1OKnLUZR57sTHm1Wpr9qcx0Cvg==
+X-Google-Smtp-Source: AGHT+IHNY3mxTsO4GD2NNhPfEfODwh8OY9wim5AAeReOnQOeVOX+bhORTPA04dSr7Ub7EGIto9QyOw==
+X-Received: by 2002:a17:903:184:b0:1f4:bcef:e962 with SMTP id
+ d9443c01a7336-1f4bceff50cmr23240845ad.52.1716864317698; 
+ Mon, 27 May 2024 19:45:17 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-82ce-f179-8a79-69f4.ip6.aussiebb.net.
  [2403:580b:97e8:0:82ce:f179:8a79:69f4])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.11
+ d9443c01a7336-1f44c970ca0sm70733225ad.142.2024.05.27.19.45.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 May 2024 19:45:14 -0700 (PDT)
+ Mon, 27 May 2024 19:45:17 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PULL 23/28] target/riscv: Remove experimental prefix from "B"
- extension
-Date: Tue, 28 May 2024 12:43:23 +1000
-Message-ID: <20240528024328.246965-24-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>,
+ Fabian Thomas <fabian.thomas@cispa.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+Subject: [PULL 24/28] target/riscv: rvzicbo: Fixup CBO extension register
+ calculation
+Date: Tue, 28 May 2024 12:43:24 +1000
+Message-ID: <20240528024328.246965-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240528024328.246965-1-alistair.francis@wdc.com>
 References: <20240528024328.246965-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,53 +99,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-This extension has now been ratified:
-https://jira.riscv.org/browse/RVS-2006 so the "x-" prefix can be
-removed.
+When running the instruction
 
-Since this is now a ratified extension add it to the list of extensions
-included in the "max" CPU variant.
+```
+    cbo.flush 0(x0)
+```
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Message-ID: <20240514110217.22516-1-rbradford@rivosinc.com>
+QEMU would segfault.
+
+The issue was in cpu_gpr[a->rs1] as QEMU does not have cpu_gpr[0]
+allocated.
+
+In order to fix this let's use the existing get_address()
+helper. This also has the benefit of performing pointer mask
+calculations on the address specified in rs1.
+
+The pointer masking specificiation specifically states:
+
+"""
+Cache Management Operations: All instructions in Zicbom, Zicbop and Zicboz
+"""
+
+So this is the correct behaviour and we previously have been incorrectly
+not masking the address.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reported-by: Fabian Thomas <fabian.thomas@cispa.de>
+Fixes: e05da09b7cfd ("target/riscv: implement Zicbom extension")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Message-ID: <20240514023910.301766-1-alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c         | 2 +-
- target/riscv/tcg/tcg-cpu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ target/riscv/insn_trans/trans_rvzicbo.c.inc | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2946ac298a..cee6fc4a9a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1400,7 +1400,7 @@ static const MISAExtInfo misa_ext_info_arr[] = {
-     MISA_EXT_INFO(RVJ, "x-j", "Dynamic translated languages"),
-     MISA_EXT_INFO(RVV, "v", "Vector operations"),
-     MISA_EXT_INFO(RVG, "g", "General purpose (IMAFD_Zicsr_Zifencei)"),
--    MISA_EXT_INFO(RVB, "x-b", "Bit manipulation (Zba_Zbb_Zbs)")
-+    MISA_EXT_INFO(RVB, "b", "Bit manipulation (Zba_Zbb_Zbs)")
- };
+diff --git a/target/riscv/insn_trans/trans_rvzicbo.c.inc b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+index d5d7095903..15711c3140 100644
+--- a/target/riscv/insn_trans/trans_rvzicbo.c.inc
++++ b/target/riscv/insn_trans/trans_rvzicbo.c.inc
+@@ -31,27 +31,35 @@
+ static bool trans_cbo_clean(DisasContext *ctx, arg_cbo_clean *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
+ }
  
- static void riscv_cpu_validate_misa_mxl(RISCVCPUClass *mcc)
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index f59b5d7f2d..683f604d9f 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -1301,7 +1301,7 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-     const RISCVCPUMultiExtConfig *prop;
+ static bool trans_cbo_flush(DisasContext *ctx, arg_cbo_flush *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_clean_flush(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_clean_flush(tcg_env, src);
+     return true;
+ }
  
-     /* Enable RVG, RVJ and RVV that are disabled by default */
--    riscv_cpu_set_misa_ext(env, env->misa_ext | RVG | RVJ | RVV);
-+    riscv_cpu_set_misa_ext(env, env->misa_ext | RVB | RVG | RVJ | RVV);
+ static bool trans_cbo_inval(DisasContext *ctx, arg_cbo_inval *a)
+ {
+     REQUIRE_ZICBOM(ctx);
+-    gen_helper_cbo_inval(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_inval(tcg_env, src);
+     return true;
+ }
  
-     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
-         isa_ext_update_enabled(cpu, prop->offset, true);
+ static bool trans_cbo_zero(DisasContext *ctx, arg_cbo_zero *a)
+ {
+     REQUIRE_ZICBOZ(ctx);
+-    gen_helper_cbo_zero(tcg_env, cpu_gpr[a->rs1]);
++    TCGv src = get_address(ctx, a->rs1, 0);
++
++    gen_helper_cbo_zero(tcg_env, src);
+     return true;
+ }
 -- 
 2.45.1
 
