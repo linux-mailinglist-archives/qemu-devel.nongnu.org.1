@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709D48D2601
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 22:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 025BF8D2602
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 22:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sC3TX-0002v3-FA; Tue, 28 May 2024 16:31:15 -0400
+	id 1sC3TX-0002sz-9K; Tue, 28 May 2024 16:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sC3TK-0002nO-Hi
- for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:03 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1sC3TL-0002o5-D4
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:04 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1sC3T9-0003ZE-VC
- for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:00 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6f8e98784b3so943111b3a.1
+ id 1sC3TA-0003ZG-O1
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 16:31:02 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6fcbd812b33so1132827b3a.3
  for <qemu-devel@nongnu.org>; Tue, 28 May 2024 13:30:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716928247; x=1717533047; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716928248; x=1717533048; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MchPVAymmY5yNkN81n4CDKNHDxrfiZwJmhq2h//dOuw=;
- b=CGaf23lPMgnY/4e/1DFquk3rt0Gp5wlbkQtuvsb06Fkb23W9Vp8ldIbZwQX5fDXBaP
- o9/fyWm5kWLUU1ZIeBZ9s1fGMAPsvADumROhr08eJD2Ed9dxqrk8LQo71bVgTpuPzuWN
- yS0T7yamIzSBtO/60hYXZDl6HmXH8XmzGrtUZaJfE0wN8n9zTPtWtjeddh7lkw0OIKk9
- RVv8rIyU1tnpHqNty5ZupF6SallqXzeXEKAyxIZ/kbrVMVxCF/v1mjGw73sxZWFqvXl5
- LvNAZepu0lYbLGvFT7YKI3VWxNf+w+QNSDnzokzQwX15WKxd/T1tOV1QDD8nTBCjOHNI
- 4IqA==
+ bh=Bw2OR3avNdEp8SO81AHF6+sbRJu+jw044WvC2PSZAd8=;
+ b=Z1B/BjVQrhnsBkN+1VdTuJoEf4Jna6F4+PtPvTW2ih6FInMPrAiKe6WxmlB3oSwOQS
+ wOeUvXWsopRTb9apLyf0QZ/LxNiSSxy6XQgylhJz3/uMg02UMMmChkLxq1pkA1L10auz
+ LhrvGmz5MYq4FmVO1iXOkrGqc1rZ7oUpUuWMdMvPQSPbF1KpWea20AHd1uaKTPYZRgZo
+ se2ZjcrSbKWFtU12/XNMbC9dokikr/XsuugQ8Zit0vuFYRgyu7rgSEsnNU8P1g0c/bcg
+ /Xoc5dNv6L+m8e7WZvKcpvu/z66+t8gMZ/TwbKJsPk3+4BySWL1MPThcHa59zQBpdYh/
+ LQkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716928247; x=1717533047;
+ d=1e100.net; s=20230601; t=1716928248; x=1717533048;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MchPVAymmY5yNkN81n4CDKNHDxrfiZwJmhq2h//dOuw=;
- b=Hy19FFHRVmwYE3jWtkqZhBZxa8+sMJc3CumO4fN02vBMpWItrZiwfRwN7IrN2xoaHw
- WgRS8iCvJvxiFzfkgo19lBJG6KDQIxIpF4moMQLSCrXbz7ye9BccugPv5n624n8/9s8T
- V0ISgzd6wBUAql34+IbSSis/IevgBPn+KJquPq6W7sJrrZVPILKSkNFUxiFFIHVCTiav
- TGjEr2xPv9sebNPmbgDeidkmG+zvUlbJIcR0kUM2pNadNAZqg7v45nZ0SZBx1YrUcXw6
- Zm+pLfMmKX7to3/zd3MBkGKF8Mg8h4EbirsQCc+Djq7qiFkh9h1VFUw6d4edlURxWX4l
- UCTQ==
-X-Gm-Message-State: AOJu0Ywc1h/MOztpp1JwcIkcgsJ5LKwa9TgPDrlFtEbcgSlMFv06Tezz
- ckpI0J1lyvmtN/jp8sOd5Qq0TsVCRGeD5T/NdqlI+BlFtB9VMgk4cpYE4gIy4lDZVdvJEz3NYqs
- y
-X-Google-Smtp-Source: AGHT+IEG6EJmL3UNz6nvocA8z0jc592RY6qnTltZkUD2d6AojPSEKctusrbtKkw/bXPmUBbvaI0qrA==
-X-Received: by 2002:a05:6a21:7794:b0:1ad:7bfd:54a1 with SMTP id
- adf61e73a8af0-1b212dada23mr12593803637.17.1716928246741; 
- Tue, 28 May 2024 13:30:46 -0700 (PDT)
+ bh=Bw2OR3avNdEp8SO81AHF6+sbRJu+jw044WvC2PSZAd8=;
+ b=jGvwCLiBvE+hRwKb/oui8CMCjD5IBW/7C4C986LOgKEO1dFxmW5QEiqABxkstjy5IZ
+ qB14AeyUnV9oIjRvPBuV9PuKF2nkF7S1vhR+eSIozbaoBtS2fxSslghhbh/FEK7djsHO
+ ruoYEw9t2XgeCciMclY7rF2lDaENh4gHDNv4xXIWqrf/Z0CM77E+aGbYiwBe2hN66rqh
+ 43F24rZJRF9D/0oIorsIaUfm0UQ/tgC1d18heVbR/GrQok1dBu4wXZ/YADIPOpzWGVxI
+ skgkPm1TQxKz1iumXlWfP3HPH5YuIDF5GcKD8pKdKvO8vOGldTMTe8J6bi/+20rzXIQn
+ Kbnw==
+X-Gm-Message-State: AOJu0YyEZ7Wxp6t3rqOezYMtNaKtkqxJrZb50ByAn765WKenud8TxQqb
+ rC29s7i/X7mD2a49BvylRLrRJ8cb/UU90DEkURaK9tthiXSRi5VwnWRLw1Fgy5f+TFZRAt2yejj
+ z
+X-Google-Smtp-Source: AGHT+IFZL1IYJd8L6zItRboBj8kUQkCIiTfMlcEWNEPuFn5xpmoXi5Q3AuBtyAamz1zp+2W8XQ3GpA==
+X-Received: by 2002:a05:6a00:39a2:b0:6f8:fe77:8a0a with SMTP id
+ d2e1a72fcca58-6f8fe778b79mr13467121b3a.32.1716928247724; 
+ Tue, 28 May 2024 13:30:47 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-6f8fbd3dbe9sm7042036b3a.10.2024.05.28.13.30.46
+ d2e1a72fcca58-6f8fbd3dbe9sm7042036b3a.10.2024.05.28.13.30.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 May 2024 13:30:46 -0700 (PDT)
+ Tue, 28 May 2024 13:30:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
-Subject: [PATCH v3 01/33] target/arm: Diagnose UNPREDICTABLE operands to PLD,
- PLDW, PLI
-Date: Tue, 28 May 2024 13:30:12 -0700
-Message-Id: <20240528203044.612851-2-richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org,
+	Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH v3 02/33] target/arm: Improve vector UQADD, UQSUB, SQADD, SQSUB
+Date: Tue, 28 May 2024 13:30:13 -0700
+Message-Id: <20240528203044.612851-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240528203044.612851-1-richard.henderson@linaro.org>
 References: <20240528203044.612851-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,152 +93,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For all, rm == 15 is UNPREDICTABLE.
-Prior to v8, thumb with rm == 13 is UNPREDICTABLE.
-For PLDW, rn == 15 is UNPREDICTABLE.
+No need for a full comparison; xor produces non-zero bits
+for QC just fine.
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/a32-uncond.decode |  8 +++--
- target/arm/tcg/t32.decode        |  7 ++--
- target/arm/tcg/translate.c       | 58 ++++++++++++++++++++++++++++++++
- 3 files changed, 67 insertions(+), 6 deletions(-)
+ target/arm/tcg/gengvec.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/target/arm/tcg/a32-uncond.decode b/target/arm/tcg/a32-uncond.decode
-index 2339de2e94..e1b1780d37 100644
---- a/target/arm/tcg/a32-uncond.decode
-+++ b/target/arm/tcg/a32-uncond.decode
-@@ -24,7 +24,9 @@
- 
- &empty           !extern
- &i               !extern imm
-+&r               !extern rm
- &setend          E
-+&nm              rn rm
- 
- # Branch with Link and Exchange
- 
-@@ -61,9 +63,9 @@ PLD              1111 0101 -101 ---- 1111 ---- ---- ----    # (imm, lit) 5te
- PLDW             1111 0101 -001 ---- 1111 ---- ---- ----    # (imm, lit) 7mp
- PLI              1111 0100 -101 ---- 1111 ---- ---- ----    # (imm, lit) 7
- 
--PLD              1111 0111 -101 ---- 1111 ----- -- 0 ----   # (register) 5te
--PLDW             1111 0111 -001 ---- 1111 ----- -- 0 ----   # (register) 7mp
--PLI              1111 0110 -101 ---- 1111 ----- -- 0 ----   # (register) 7
-+PLD_rr           1111 0111 -101 ---- 1111 ----- -- 0 rm:4   &r
-+PLDW_rr          1111 0111 -001 rn:4 1111 ----- -- 0 rm:4   &nm
-+PLI_rr           1111 0110 -101 ---- 1111 ----- -- 0 rm:4   &r
- 
- # Unallocated memory hints
- #
-diff --git a/target/arm/tcg/t32.decode b/target/arm/tcg/t32.decode
-index d327178829..1ec12442a4 100644
---- a/target/arm/tcg/t32.decode
-+++ b/target/arm/tcg/t32.decode
-@@ -28,6 +28,7 @@
- &rrr_rot         !extern rd rn rm rot
- &rrr             !extern rd rn rm
- &rr              !extern rd rm
-+&nm              !extern rn rm
- &ri              !extern rd imm
- &r               !extern rm
- &i               !extern imm
-@@ -472,7 +473,7 @@ STR_ri           1111 1000 1100 .... .... ............        @ldst_ri_pos
-   }
-   LDRBT_ri       1111 1000 0001 .... .... 1110 ........       @ldst_ri_unp
-   {
--    PLD          1111 1000 0001 ---- 1111 000000 -- ----      # (register)
-+    PLD_rr       1111 1000 0001 ---- 1111 000000 -- rm:4      &r
-     LDRB_rr      1111 1000 0001 .... .... 000000 .. ....      @ldst_rr
-   }
- }
-@@ -492,7 +493,7 @@ STR_ri           1111 1000 1100 .... .... ............        @ldst_ri_pos
-   }
-   LDRHT_ri       1111 1000 0011 .... .... 1110 ........       @ldst_ri_unp
-   {
--    PLDW         1111 1000 0011 ---- 1111 000000 -- ----      # (register)
-+    PLDW_rr      1111 1000 0011 rn:4 1111 000000 -- rm:4      &nm
-     LDRH_rr      1111 1000 0011 .... .... 000000 .. ....      @ldst_rr
-   }
- }
-@@ -520,7 +521,7 @@ STR_ri           1111 1000 1100 .... .... ............        @ldst_ri_pos
-   }
-   LDRSBT_ri      1111 1001 0001 .... .... 1110 ........       @ldst_ri_unp
-   {
--    PLI          1111 1001 0001 ---- 1111 000000 -- ----      # (register)
-+    PLI_rr       1111 1001 0001 ---- 1111 000000 -- rm:4      &r
-     LDRSB_rr     1111 1001 0001 .... .... 000000 .. ....      @ldst_rr
-   }
- }
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index c5bc691d92..16b8609ec0 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -7187,6 +7187,64 @@ static bool trans_PLI(DisasContext *s, arg_PLI *a)
-     return ENABLE_ARCH_7;
+diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
+index 22c9d17dce..bfe6885a01 100644
+--- a/target/arm/tcg/gengvec.c
++++ b/target/arm/tcg/gengvec.c
+@@ -1217,21 +1217,21 @@ void gen_gvec_sshl(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+     tcg_gen_gvec_3(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
  }
  
-+/* Check for UNPREDICTABLE rm for prefetch (register). */
-+static bool prefetch_check_m(DisasContext *s, int rm)
-+{
-+    switch (rm) {
-+    case 13:
-+        /* SP allowed in v8 or with A1 encoding; rejected with T1. */
-+        return ENABLE_ARCH_8 || !s->thumb;
-+    case 15:
-+        /* PC always rejected. */
-+        return false;
-+    default:
-+        return true;
-+    }
-+}
-+
-+static bool trans_PLD_rr(DisasContext *s, arg_PLD_rr *a)
-+{
-+    if (!ENABLE_ARCH_5TE) {
-+        return false;
-+    }
-+    /* Choose UNDEF for UNPREDICTABLE rm. */
-+    if (!prefetch_check_m(s, a->rm)) {
-+        unallocated_encoding(s);
-+    }
-+    return true;
-+}
-+
-+static bool trans_PLDW_rr(DisasContext *s, arg_PLDW_rr *a)
-+{
-+    if (!arm_dc_feature(s, ARM_FEATURE_V7MP)) {
-+        return false;
-+    }
-+    /*
-+     * For A1, rn == 15 is UNPREDICTABLE.
-+     * For T1, rn == 15 is PLD (literal), and already matched.
-+     * Choose UNDEF for UNPREDICTABLE rn or rm.
-+     */
-+    if (a->rn == 15) {
-+        assert(!s->thumb);
-+    } else if (prefetch_check_m(s, a->rm)) {
-+        return true;
-+    }
-+    unallocated_encoding(s);
-+    return true;
-+}
-+
-+static bool trans_PLI_rr(DisasContext *s, arg_PLI_rr *a)
-+{
-+    if (!ENABLE_ARCH_7) {
-+        return false;
-+    }
-+    /* Choose UNDEF for UNPREDICTABLE rm. */
-+    if (!prefetch_check_m(s, a->rm)) {
-+        unallocated_encoding(s);
-+    }
-+    return true;
-+}
-+
- /*
-  * If-then
-  */
+-static void gen_uqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_uqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_add_vec(vece, x, a, b);
+     tcg_gen_usadd_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_uqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_usadd_vec, INDEX_op_cmp_vec, INDEX_op_add_vec, 0
++        INDEX_op_usadd_vec, INDEX_op_add_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_uqadd_vec,
+@@ -1259,21 +1259,21 @@ void gen_gvec_uqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_sqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_sqadd_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_add_vec(vece, x, a, b);
+     tcg_gen_ssadd_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_sqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_ssadd_vec, INDEX_op_cmp_vec, INDEX_op_add_vec, 0
++        INDEX_op_ssadd_vec, INDEX_op_add_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_sqadd_vec,
+@@ -1301,21 +1301,21 @@ void gen_gvec_sqadd_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_uqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_uqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_sub_vec(vece, x, a, b);
+     tcg_gen_ussub_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_uqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_ussub_vec, INDEX_op_cmp_vec, INDEX_op_sub_vec, 0
++        INDEX_op_ussub_vec, INDEX_op_sub_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_uqsub_vec,
+@@ -1343,21 +1343,21 @@ void gen_gvec_uqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                    rn_ofs, rm_ofs, opr_sz, max_sz, &ops[vece]);
+ }
+ 
+-static void gen_sqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec sat,
++static void gen_sqsub_vec(unsigned vece, TCGv_vec t, TCGv_vec qc,
+                           TCGv_vec a, TCGv_vec b)
+ {
+     TCGv_vec x = tcg_temp_new_vec_matching(t);
+     tcg_gen_sub_vec(vece, x, a, b);
+     tcg_gen_sssub_vec(vece, t, a, b);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, x, x, t);
+-    tcg_gen_or_vec(vece, sat, sat, x);
++    tcg_gen_xor_vec(vece, x, x, t);
++    tcg_gen_or_vec(vece, qc, qc, x);
+ }
+ 
+ void gen_gvec_sqsub_qc(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
+                        uint32_t rm_ofs, uint32_t opr_sz, uint32_t max_sz)
+ {
+     static const TCGOpcode vecop_list[] = {
+-        INDEX_op_sssub_vec, INDEX_op_cmp_vec, INDEX_op_sub_vec, 0
++        INDEX_op_sssub_vec, INDEX_op_sub_vec, 0
+     };
+     static const GVecGen4 ops[4] = {
+         { .fniv = gen_sqsub_vec,
 -- 
 2.34.1
 
