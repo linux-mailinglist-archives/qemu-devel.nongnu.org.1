@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82AC8D1F44
-	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 16:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5013B8D1F6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 28 May 2024 17:01:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sByB8-0006B4-0z; Tue, 28 May 2024 10:51:54 -0400
+	id 1sByJ2-0000Y7-Ih; Tue, 28 May 2024 11:00:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sByAz-00065s-Ax
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:51:46 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sByIz-0000X1-VK
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:00:02 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sByAw-0005tp-Ui
- for qemu-devel@nongnu.org; Tue, 28 May 2024 10:51:45 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-57869599ed5so1133443a12.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:51:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sByIx-0006ov-BU
+ for qemu-devel@nongnu.org; Tue, 28 May 2024 11:00:01 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-52965199234so1081600e87.2
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 07:59:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716907894; x=1717512694; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jjSXoMmsHLX28IQaClSUKuM1H9Pzj0WilNUutKhfhFU=;
- b=gpYyUx7J1siUC/cPXuQliam5hyYzUmKYAkmolYTetIOxm137yWOm3rmnhYL4a4yWlz
- foMOFssuexTCjKMCVpxKPRXLP2PXLsOv3KSYlz1SQv7ul4muf1M2WciXw9A2AirYwmfI
- YpLoj2ESL8QH4BDgg4y/pt/2+JVdFzPXV+87e4DLX7lKU5ysnQoYWMKqzQiq2uisxoBH
- PqOiP8w4nhImCclCBXKfDAzdsKXIEQaR4mxsH6mUjimS0QsHkisIzPL5TXq+3jS2STGA
- 79V6lVTHoo5jhzYNwCtvAhonPQpXd0Q7uOIO05ii+CqlObOPMkWrImcLl+5NGcqgjFr1
- 60mA==
+ d=linaro.org; s=google; t=1716908396; x=1717513196; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mTKuvHP1QSNGLlDZjOj7K/EbEPOmCMuDO5B33J0CCSg=;
+ b=cNVaqva0huvawL8G6yI6cnGurgQglSqgYP6mIWvxwv1TSkyoIqtzX09JUhBSxaqdTh
+ U6bwCl9zw2xnByCJJIByp95wOVx1FO0oriapocWNHFG+/1lb3Gz4t0174Cgh61EFEvGj
+ Uj+XCwzO5RLM2M6BHBZHgIF6LtyaOyPxrgAFXn62IEsMFJL44AOVffyAGZYSsqUzjCFH
+ azZXgklfxx6gpk4X3T7MPHb63D4jzo3+GKd3KeBfKM1MrT8xG6WWJNqsa5RHHcfwBV/D
+ /oypzlxhL28VUJDWBzA15XQ+kAkF+1rMhDiKdqO/oR+03nZfa1TQVDztlIdPGibDXIlU
+ TSNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716907894; x=1717512694;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jjSXoMmsHLX28IQaClSUKuM1H9Pzj0WilNUutKhfhFU=;
- b=OfAAgtgaZREPzhm2G1C6c3ucsjwdoeCaR+hfqdcvSRtn78dAvjo1/0uZwQwR9HUUBc
- QGMGH4BZhhQ54uzlN51k6h7D1+5ypEXL9hx2XsDsIFSxUbCA32OOnnnPCshG7ycRj99f
- ny+7GC2BznmcziaiRDpvACE6zYTjZ+1wAjkcAkst4qA+JP0NWstluoBRXGa1/Em8aeCI
- wn4QHNW1srLIT9QqUcCx57uQzokT49qlAug5UTXdaLGXQjJs87Qvt4KnMKY/PJeH/+Sx
- Un92mJZJOtGEgL88fHuHqtPkt1XhbhwqMuOB3RFhMnvEACCm6edsHbW3DOISZiQ4MJw6
- iHUg==
-X-Gm-Message-State: AOJu0YyKnACyVSEgucjqM6xT/mxxuYV8HGRmfgKQ2SZd2g32fURzOTrl
- yywljkUHZOQT2oxv7narI5PkyK89JsW4LFI3bamky7Oqhl6jjgiY6lMDgEhUcaF4aedi7XXs97S
- rbQ5F2vYp599nsG+VeARl2V35ZWvH87YEGuP9sA==
-X-Google-Smtp-Source: AGHT+IHk6LgnIMngh0tpeUyRGoN8nQEVjtIhUY3xhBYyIHgt/jzUpoBbTnp9P8FUrtV6BCqPJ67vNb0L5bmG5E/PbR4=
-X-Received: by 2002:a50:9554:0:b0:574:ebf4:f78c with SMTP id
- 4fb4d7f45d1cf-5785192a71cmr8587923a12.7.1716907894615; Tue, 28 May 2024
- 07:51:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716908396; x=1717513196;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mTKuvHP1QSNGLlDZjOj7K/EbEPOmCMuDO5B33J0CCSg=;
+ b=Qdw1LMxOmV2GfhacFPB57NEwIT3nZrq40SJzErpnVO1rnXVnuLaHxIweJO8Uwhwyxq
+ Mf3zAt4dOD1M3xlDE47e+5i2ym8e0GDPYPBPbSOea+bidqz4Zx7olg5upcuRzX39+FbQ
+ 2aLZxzuMHYVZi1kQCrN5IywpL50y6z045emYDA/E9ne5OwdojtRq9t59li5kQkSM0cw+
+ UMC653kkMp5zOCKoRSZLMo//+hE69iPSF4pZbIl+jmwSw9HO9qkGoeXBvOVwL66Oh4Wx
+ mK+VdCwQFHKla8uhMRLNnsNiMZygVn6wU/wedw/u94m4SUdb5K5ILZBDNJA3gz8/xN0c
+ ecpQ==
+X-Gm-Message-State: AOJu0Yw9xFMqQfToazlbf3LpSMM1L9s+WQfSNKEddHxyMWioZyD0WXUU
+ s3NbXJzZFDuBU1mgg4aMxfo/Lb6x9yvqAs1rXjD8J7BMSAqXY4VvDTapShNnyRYNGbhWpYg7a2X
+ o
+X-Google-Smtp-Source: AGHT+IF01p8a8gw+bDHhH0j3c6sqhu3FJ3KneeiSvPu0QMEp2sI2zaTwNsccJNzr8YAPgmbcCUK99Q==
+X-Received: by 2002:a05:6512:1112:b0:529:b717:2a0e with SMTP id
+ 2adb3069b0e04-529b7172ce6mr2957608e87.18.1716908395810; 
+ Tue, 28 May 2024 07:59:55 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.214.26])
+ by smtp.gmail.com with ESMTPSA id
+ 4fb4d7f45d1cf-579cd4c85c7sm3688721a12.20.2024.05.28.07.59.54
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 28 May 2024 07:59:55 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH 0/6] accel: Restrict TCG plugin (un)registration to TCG accel
+Date: Tue, 28 May 2024 16:59:46 +0200
+Message-ID: <20240528145953.65398-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20240523194441.21036-1-ines.varhol@telecom-paris.fr>
- <20240523194441.21036-4-ines.varhol@telecom-paris.fr>
-In-Reply-To: <20240523194441.21036-4-ines.varhol@telecom-paris.fr>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 28 May 2024 15:51:23 +0100
-Message-ID: <CAFEAcA-zpnS08qTcuoAPGVLVa6U+ZewGWT97_eE6ZZ9W-TnYmA@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] hw/clock: Expose 'qtest-clock-period' QOM property
- for QTests
-To: =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- qemu-arm@nongnu.org, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Damien Hedde <damien.hedde@dahe.fr>, Paolo Bonzini <pbonzini@redhat.com>,
- Luc Michel <luc@lmichel.fr>, 
- Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,38 +92,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 23 May 2024 at 20:44, In=C3=A8s Varhol <ines.varhol@telecom-paris.f=
-r> wrote:
->
-> Expose the clock period via the QOM 'qtest-clock-period' property so it
-> can be used in QTests. This property is only accessible in QTests (not
-> via HMP).
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
-> ---
->  docs/devel/clocks.rst |  3 +++
->  hw/core/clock.c       | 16 ++++++++++++++++
->  2 files changed, 19 insertions(+)
->
-> diff --git a/docs/devel/clocks.rst b/docs/devel/clocks.rst
-> index 177ee1c90d..19e67601ec 100644
-> --- a/docs/devel/clocks.rst
-> +++ b/docs/devel/clocks.rst
-> @@ -358,6 +358,9 @@ humans (for instance in debugging), use ``clock_displ=
-ay_freq()``,
->  which returns a prettified string-representation, e.g. "33.3 MHz".
->  The caller must free the string with g_free() after use.
->
-> +It's also possible to retrieve the clock period from a QTest by
-> +accessing QOM property ``qtest-clock-period`` using a QMP command.
+Hi,
 
-We should add:
+TL;DR; this series remove TCG plugin code from generic accel code.
 
-  This property is only present when the device is being run under
-  the ``qtest`` accelerator; it is not available when QEMU is
-  being run normally.
+Since the introduction of the scoreboard in plugins, the INIT
+hook use the vCPU index, which is only available somewhere
+during the vCPU REALIZE() step (see below for call tree).
 
-thanks
--- PMM
+In order to clarify that, we split accel_cpu_common_[un]realize
+as *unassigned and *assigned steps. This allow to remove the
+plugin [un]registration code from common accel code.
+
+Another approach suggested by rth is to add a PostRealize()
+handler in DeviceClass. This was already experimented here:
+https://lore.kernel.org/qemu-devel/20240209123226.32576-1-philmd@linaro.org/
+Since it is a change harder to sell, I took this simplified
+path which just make the vCPU REALIZE a bit more complex,
+but not really an concern since the current call tree is
+https://etherpad.opendev.org/p/QEMU_vCPU_life.
+
+Philippe Mathieu-Daudé (6):
+  system/runstate: Remove unused 'qemu/plugin.h' header
+  accel/tcg: Move common declarations to 'internal-common.h'
+  accel: Clarify accel_cpu_common_[un]realize() use unassigned vCPU
+  accel: Introduce accel_cpu_common_[un]realize_assigned() handlers
+  accel: Restrict TCG plugin (un)registration to TCG accel
+  accel/tcg: Move qemu_plugin_vcpu_init__async() to plugins/
+
+ accel/tcg/internal-common.h | 17 ++++++++++++++++
+ accel/tcg/internal-target.h | 14 -------------
+ include/qemu/accel.h        | 39 ++++++++++++++++++++++++++++++-------
+ include/qemu/plugin.h       |  6 ------
+ accel/accel-target.c        | 34 +++++++++++++++++++++++++++-----
+ accel/tcg/cpu-exec-common.c | 20 +++++++++++++++++++
+ accel/tcg/cpu-exec.c        |  4 ++--
+ accel/tcg/tcg-all.c         |  8 +++++---
+ cpu-target.c                | 10 ++++++++--
+ hw/core/cpu-common.c        | 25 ------------------------
+ plugins/core.c              |  8 +++++++-
+ system/runstate.c           |  1 -
+ 12 files changed, 120 insertions(+), 66 deletions(-)
+
+-- 
+2.41.0
+
 
