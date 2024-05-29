@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BF08D2CE3
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B0C8D2CE1
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCCQ3-0005W7-Vl; Wed, 29 May 2024 02:04:16 -0400
+	id 1sCCQ6-0005We-9V; Wed, 29 May 2024 02:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCCQ1-0005VR-Ne
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:13 -0400
+ id 1sCCQ3-0005W9-E3
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:15 -0400
 Received: from mgamail.intel.com ([198.175.65.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCCPz-0002st-8J
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:13 -0400
+ id 1sCCQ1-0002tM-UT
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716962652; x=1748498652;
+ t=1716962654; x=1748498654;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rh2tN87Adt0+ICqb7vzJ4e9H8aV7j0n6tPKtAvVoIbI=;
- b=jRqBGcrNZMBT8yaT3U6tGe7aD2AiD774CmRygT4aGDlocINJ2FQ+V2lt
- sdYuNeXWHx4UqS2oulUxgsAbo+OPrnRsTjDycVHSbrP9D7ewbCRiRSi/B
- B9HbYAWLP3WJNzeHHJrctG1mHR1j+6wF1TgCHspoBtPLMG22MBfHTCnon
- Lrf0/AQHDVnWMYgZ1QC7hiq/bZLQltEDsDQBuMFmNOeGCzd3uPkyI8Xfv
- QPYepYEnQQ3s4vw9QqPhES+FTZbmJgwz5uTS/I70Cc5WDgWIF7Dwo+Psy
- 3z2D9FJzNVVWOrWw8Z9MPvafxz7L1DuqseLN7e+EyDCVdsT9Drf3bO1St w==;
-X-CSE-ConnectionGUID: 4ZDKwwuaS+uoOY/0NPI98A==
-X-CSE-MsgGUID: 5AaMuKIVSbmas7bVtEfYuQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13187471"
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="13187471"
+ bh=RsdXYkRRI3rmURZbis55cmiquR+HjVYZWgtL+XP6yNo=;
+ b=OnbJjY3R6FaRVc8o742OIr4/zXe8Icr+ojGvLq0mzOllAsk2We5y3tcj
+ WA5JInqPUVMluyXgEDdS3q7Hd5pwAYixurODca2Y7NnHgFN3UjQpELcuN
+ 0qrmHEpq2jAlhPAYdR06siwzE5IMwBNLBU26B9DtnwcPYpqtZf5M3l0a9
+ aW228M+RJlRRoKdg92sX/RT2JKSUBN6utY/eZH2iDlpW1R0J9SYX/mfwW
+ 8EtW1rJgmNdjKFIfjvwcE8eOO1sjzSVm6foZhp2MqncCCUIUFZPIM+pjd
+ f//ZzJh9vVBvVKUpN316AMyqeW5t/rn4R7Ev5jn6idqBBtIfNtJ0eRIOp w==;
+X-CSE-ConnectionGUID: UYTqTGcyThSWeXnLHei4OQ==
+X-CSE-MsgGUID: vcEFS4RMTGm9vFZx1XJrKg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13187477"
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="13187477"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 23:04:11 -0700
-X-CSE-ConnectionGUID: 3etaa0T8RvG+zm4oKceLdQ==
-X-CSE-MsgGUID: 2nwNpp5kQWmEA9g4Vjq06w==
+ 28 May 2024 23:04:13 -0700
+X-CSE-ConnectionGUID: JcT+zxvFRAq4CHZumOWong==
+X-CSE-MsgGUID: zK/fwobnRyCMKmWnShNNDQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="40144695"
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="40144707"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 28 May 2024 23:04:08 -0700
+ by orviesa003.jf.intel.com with ESMTP; 28 May 2024 23:04:11 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -51,10 +51,9 @@ To: Eduardo Habkost <eduardo@habkost.net>,
  qemu-devel@nongnu.org
 Cc: Yongwei Ma <yongwei.ma@intel.com>,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/8] tests/unit/test-smp-parse: Fix comment of parameters=1
- case
-Date: Wed, 29 May 2024 14:19:19 +0800
-Message-Id: <20240529061925.350323-3-zhao1.liu@intel.com>
+Subject: [PATCH 3/8] tests/unit/test-smp-parse: Fix an invalid topology case
+Date: Wed, 29 May 2024 14:19:20 +0800
+Message-Id: <20240529061925.350323-4-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529061925.350323-1-zhao1.liu@intel.com>
 References: <20240529061925.350323-1-zhao1.liu@intel.com>
@@ -84,32 +83,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SMP_CONFIG_WITH_FULL_TOPO hasn't support module level, so the parameter
-should indicate the "clusters".
-
-Additionally, reorder the parameters of -smp to match the topology
-hierarchy order.
+Adjust the "cpus" parameter to match the comment configuration.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- tests/unit/test-smp-parse.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tests/unit/test-smp-parse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index fa8e7d83a7b6..c9cbc89c21b9 100644
+index c9cbc89c21b9..5d99e0d9234c 100644
 --- a/tests/unit/test-smp-parse.c
 +++ b/tests/unit/test-smp-parse.c
-@@ -333,7 +333,9 @@ static const struct SMPTestData data_generic_valid[] = {
-     }, {
-         /*
-          * Unsupported parameters are always allowed to be set to '1'
--         * config: -smp 8,books=1,drawers=1,sockets=2,modules=1,dies=1,cores=2,threads=2,maxcpus=8
-+         * config:
-+         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,cores=2,\
-+         *        threads=2,maxcpus=8
-          * expect: cpus=8,sockets=2,cores=2,threads=2,maxcpus=8 */
-         .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 2, 2, 8),
-         .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
+@@ -528,7 +528,7 @@ static const struct SMPTestData data_full_topo_invalid[] = {
+          * config: -smp 1,drawers=3,books=5,sockets=2,dies=4,\
+          *              clusters=2,cores=7,threads=3,maxcpus=5040
+          */
+-        .config = SMP_CONFIG_WITH_FULL_TOPO(3361, 3, 5, 2, 4, 2, 7, 3, 5040),
++        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 7, 3, 5040),
+         .expect_error = "Invalid SMP CPUs 5040. The max CPUs supported "
+                         "by machine '" SMP_MACHINE_NAME "' is 4096",
+     },
 -- 
 2.34.1
 
