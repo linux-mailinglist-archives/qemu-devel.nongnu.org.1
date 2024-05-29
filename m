@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE0A8D3375
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 11:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 706358D3379
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 11:46:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCFsM-0005Ec-U5; Wed, 29 May 2024 05:45:42 -0400
+	id 1sCFsX-0005JD-Io; Wed, 29 May 2024 05:45:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1sCFsJ-00059f-Gk
- for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:39 -0400
+ id 1sCFsP-0005Hc-Mc
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:47 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shameerali.kolothum.thodi@huawei.com>)
- id 1sCFsG-0000Tj-HF
- for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:39 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vq4C361THz6K6lL;
- Wed, 29 May 2024 17:41:19 +0800 (CST)
+ id 1sCFsM-0000UN-Rh
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:44 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vq4CB6bTQz6K6kr;
+ Wed, 29 May 2024 17:41:26 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 8D04C140A35;
- Wed, 29 May 2024 17:45:33 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 34BDA140AA7;
+ Wed, 29 May 2024 17:45:40 +0800 (CST)
 Received: from A2303104131.china.huawei.com (10.202.227.28) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 May 2024 10:45:27 +0100
+ 15.1.2507.39; Wed, 29 May 2024 10:45:34 +0100
 To: <peterx@redhat.com>, <farosas@suse.de>, <yuan1.liu@intel.com>
 CC: <qemu-devel@nongnu.org>, <linuxarm@huawei.com>,
  <linwenkai6@hisilicon.com>, <zhangfei.gao@linaro.org>,
  <huangchenghai2@huawei.com>
-Subject: [PATCH 3/7] migration/multifd: add uadk compression framework
-Date: Wed, 29 May 2024 10:44:23 +0100
-Message-ID: <20240529094435.11140-4-shameerali.kolothum.thodi@huawei.com>
+Subject: [PATCH 4/7] migration/multifd: Add UADK initialization
+Date: Wed, 29 May 2024 10:44:24 +0100
+Message-ID: <20240529094435.11140-5-shameerali.kolothum.thodi@huawei.com>
 X-Mailer: git-send-email 2.12.0.windows.1
 In-Reply-To: <20240529094435.11140-1-shameerali.kolothum.thodi@huawei.com>
 References: <20240529094435.11140-1-shameerali.kolothum.thodi@huawei.com>
@@ -69,112 +69,234 @@ From:  Shameer Kolothum via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds the skeleton to support uadk compression method.
-Complete functionality will be added in subsequent patches.
+Initialize UADK session and allocate buffers required. The actual
+compression/decompression will only be done in a subsequent patch.
 
 Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 ---
- hw/core/qdev-properties-system.c |  2 +-
- migration/meson.build            |  1 +
- migration/multifd-uadk.c         | 20 ++++++++++++++++++++
- migration/multifd.h              |  5 +++--
- qapi/migration.json              |  5 ++++-
- 5 files changed, 29 insertions(+), 4 deletions(-)
- create mode 100644 migration/multifd-uadk.c
+ migration/multifd-uadk.c | 207 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 206 insertions(+), 1 deletion(-)
 
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 6ccd7224f6..f13350b4fb 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -659,7 +659,7 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
- const PropertyInfo qdev_prop_multifd_compression = {
-     .name = "MultiFDCompression",
-     .description = "multifd_compression values, "
--                   "none/zlib/zstd/qpl",
-+                   "none/zlib/zstd/qpl/uadk",
-     .enum_table = &MultiFDCompression_lookup,
-     .get = qdev_propinfo_get_enum,
-     .set = qdev_propinfo_set_enum,
-diff --git a/migration/meson.build b/migration/meson.build
-index 1d432d5328..ed687ae286 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -44,6 +44,7 @@ if get_option('live_block_migration').allowed()
- endif
- system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
- system_ss.add(when: qpl, if_true: files('multifd-qpl.c'))
-+system_ss.add(when: uadk, if_true: files('multifd-uadk.c'))
- 
- specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
-                 if_true: files('ram.c',
 diff --git a/migration/multifd-uadk.c b/migration/multifd-uadk.c
-new file mode 100644
-index 0000000000..c2bb07535b
---- /dev/null
+index c2bb07535b..3172e4d5ca 100644
+--- a/migration/multifd-uadk.c
 +++ b/migration/multifd-uadk.c
-@@ -0,0 +1,20 @@
-+/*
-+ * Multifd UADK compression accelerator implementation
-+ *
-+ * Copyright (c) 2024 Huawei Technologies R & D (UK) Ltd
-+ *
-+ * Authors:
-+ *  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+@@ -12,9 +12,214 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/module.h"
++#include "qapi/error.h"
++#include "migration.h"
++#include "multifd.h"
++#include "options.h"
++#include "uadk/wd_comp.h"
++#include "uadk/wd_sched.h"
 +
-+#include "qemu/osdep.h"
-+#include "qemu/module.h"
++struct wd_data {
++    handle_t handle;
++    uint8_t *buf;
++    uint32_t *buf_hdr;
++};
 +
-+static void multifd_uadk_register(void)
++static bool uadk_hw_initialised(void)
 +{
-+    /* noop for now */
++    char alg[] = "zlib";
++    int ret;
++
++    ret = wd_comp_init2(alg, SCHED_POLICY_RR, TASK_HW);
++    if (ret && ret != -WD_EEXIST) {
++        return false;
++    } else {
++        return true;
++    }
 +}
-+migration_init(multifd_uadk_register);
-diff --git a/migration/multifd.h b/migration/multifd.h
-index 5b7d9b15f8..0ecd6f47d7 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -34,13 +34,14 @@ MultiFDRecvData *multifd_get_recv_data(void);
- /* Multifd Compression flags */
- #define MULTIFD_FLAG_SYNC (1 << 0)
++
++static struct wd_data *multifd_uadk_init_sess(uint32_t count,
++                                              uint32_t page_size,
++                                              bool compress, Error **errp)
++{
++    struct wd_comp_sess_setup ss = {0};
++    struct sched_params param = {0};
++    uint32_t size = count * page_size;
++    struct wd_data *wd;
++
++    if (!uadk_hw_initialised()) {
++        error_setg(errp, "multifd: UADK hardware not available");
++        return NULL;
++    }
++
++    wd = g_new0(struct wd_data, 1);
++    ss.alg_type = WD_ZLIB;
++    if (compress) {
++        ss.op_type = WD_DIR_COMPRESS;
++        /* Add an additional page for handling output > input */
++        size += page_size;
++    } else {
++        ss.op_type = WD_DIR_DECOMPRESS;
++    }
++    param.type = ss.op_type;
++    ss.sched_param = &param;
++
++    wd->handle = wd_comp_alloc_sess(&ss);
++    if (!wd->handle) {
++        error_setg(errp, "multifd: failed wd_comp_alloc_sess");
++        goto out;
++    }
++
++    wd->buf = g_try_malloc(size);
++    if (!wd->buf) {
++        error_setg(errp, "multifd: out of mem for uadk buf");
++        goto out_free_sess;
++    }
++    wd->buf_hdr = g_new0(uint32_t, count);
++    return wd;
++
++out_free_sess:
++    wd_comp_free_sess(wd->handle);
++out:
++    wd_comp_uninit2();
++    g_free(wd);
++    return NULL;
++}
++
++static void multifd_uadk_uninit_sess(struct wd_data *wd)
++{
++    wd_comp_free_sess(wd->handle);
++    wd_comp_uninit2();
++    g_free(wd->buf);
++    g_free(wd->buf_hdr);
++    g_free(wd);
++}
++
++/**
++ * multifd_uadk_send_setup: setup send side
++ *
++ * Returns 0 for success or -1 for error
++ *
++ * @p: Params for the channel that we are using
++ * @errp: pointer to an error
++ */
++static int multifd_uadk_send_setup(MultiFDSendParams *p, Error **errp)
++{
++    struct wd_data *wd;
++
++    wd = multifd_uadk_init_sess(p->page_count, p->page_size, true, errp);
++    if (!wd) {
++        return -1;
++    }
++
++    p->compress_data = wd;
++    assert(p->iov == NULL);
++    /*
++     * Each page will be compressed independently and sent using an IOV. The
++     * additional two IOVs are used to store packet header and compressed data
++     * length
++     */
++
++    p->iov = g_new0(struct iovec, p->page_count + 2);
++    return 0;
++}
++
++/**
++ * multifd_uadk_send_cleanup: cleanup send side
++ *
++ * Close the channel and return memory.
++ *
++ * @p: Params for the channel that we are using
++ * @errp: pointer to an error
++ */
++static void multifd_uadk_send_cleanup(MultiFDSendParams *p, Error **errp)
++{
++    struct wd_data *wd = p->compress_data;
++
++    multifd_uadk_uninit_sess(wd);
++    p->compress_data = NULL;
++}
++
++/**
++ * multifd_uadk_send_prepare: prepare data to be able to send
++ *
++ * Create a compressed buffer with all the pages that we are going to
++ * send.
++ *
++ * Returns 0 for success or -1 for error
++ *
++ * @p: Params for the channel that we are using
++ * @errp: pointer to an error
++ */
++static int multifd_uadk_send_prepare(MultiFDSendParams *p, Error **errp)
++{
++    return -1;
++}
++
++/**
++ * multifd_uadk_recv_setup: setup receive side
++ *
++ * Create the compressed channel and buffer.
++ *
++ * Returns 0 for success or -1 for error
++ *
++ * @p: Params for the channel that we are using
++ * @errp: pointer to an error
++ */
++static int multifd_uadk_recv_setup(MultiFDRecvParams *p, Error **errp)
++{
++    struct wd_data *wd;
++
++    wd = multifd_uadk_init_sess(p->page_count, p->page_size, false, errp);
++    if (!wd) {
++        return -1;
++    }
++    p->compress_data = wd;
++    return 0;
++}
++
++/**
++ * multifd_uadk_recv_cleanup: setup receive side
++ *
++ * For no compression this function does nothing.
++ *
++ * @p: Params for the channel that we are using
++ */
++static void multifd_uadk_recv_cleanup(MultiFDRecvParams *p)
++{
++    struct wd_data *wd = p->compress_data;
++
++    multifd_uadk_uninit_sess(wd);
++    p->compress_data = NULL;
++}
++
++/**
++ * multifd_uadk_recv: read the data from the channel into actual pages
++ *
++ * Read the compressed buffer, and uncompress it into the actual
++ * pages.
++ *
++ * Returns 0 for success or -1 for error
++ *
++ * @p: Params for the channel that we are using
++ * @errp: pointer to an error
++ */
++static int multifd_uadk_recv(MultiFDRecvParams *p, Error **errp)
++{
++    return -1;
++}
++
++static MultiFDMethods multifd_uadk_ops = {
++    .send_setup = multifd_uadk_send_setup,
++    .send_cleanup = multifd_uadk_send_cleanup,
++    .send_prepare = multifd_uadk_send_prepare,
++    .recv_setup = multifd_uadk_recv_setup,
++    .recv_cleanup = multifd_uadk_recv_cleanup,
++    .recv = multifd_uadk_recv,
++};
  
--/* We reserve 3 bits for compression methods */
--#define MULTIFD_FLAG_COMPRESSION_MASK (7 << 1)
-+/* We reserve 4 bits for compression methods */
-+#define MULTIFD_FLAG_COMPRESSION_MASK (0xf << 1)
- /* we need to be compatible. Before compression value was 0 */
- #define MULTIFD_FLAG_NOCOMP (0 << 1)
- #define MULTIFD_FLAG_ZLIB (1 << 1)
- #define MULTIFD_FLAG_ZSTD (2 << 1)
- #define MULTIFD_FLAG_QPL (4 << 1)
-+#define MULTIFD_FLAG_UADK (8 << 1)
- 
- /* This value needs to be a multiple of qemu_target_page_size() */
- #define MULTIFD_PACKET_SIZE (512 * 1024)
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 854e8609bd..0eaea9b0c3 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -632,12 +632,15 @@
- #       the deflate compression algorithm and use the Intel In-Memory Analytics
- #       Accelerator(IAA) accelerated compression and decompression. (Since 9.1)
- #
-+# @uadk: use UADK library compression method. (Since 9.1)
-+#
- # Since: 5.0
- ##
- { 'enum': 'MultiFDCompression',
-   'data': [ 'none', 'zlib',
-             { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
--            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] }
-+            { 'name': 'qpl', 'if': 'CONFIG_QPL' },
-+            { 'name': 'uadk', 'if': 'CONFIG_UADK' } ] }
- 
- ##
- # @MigMode:
+ static void multifd_uadk_register(void)
+ {
+-    /* noop for now */
++    multifd_register_ops(MULTIFD_COMPRESSION_UADK, &multifd_uadk_ops);
+ }
+ migration_init(multifd_uadk_register);
 -- 
 2.17.1
 
