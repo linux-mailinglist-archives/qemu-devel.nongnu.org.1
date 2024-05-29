@@ -2,97 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6168D3B48
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 17:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF318D3B60
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 17:50:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCLSf-0005o8-5F; Wed, 29 May 2024 11:43:33 -0400
+	id 1sCLYG-0003M8-9T; Wed, 29 May 2024 11:49:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1sCLSc-0005mU-Kt; Wed, 29 May 2024 11:43:30 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sCLY4-0003Kk-UU
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 11:49:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jrossi@linux.ibm.com>)
- id 1sCLSa-0006xy-TD; Wed, 29 May 2024 11:43:30 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44TFBCMG021274; Wed, 29 May 2024 15:43:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
- content-transfer-encoding : date : from : in-reply-to : message-id :
- mime-version : references : subject : to; s=pp1;
- bh=i1ZddlVaqXoyEbUeMkXydGpQ6op+z/QE2+zEDnnUsQE=;
- b=n36Csnvo9IUKrpvcQ1B2nuQHruCpSRZXGCkfGSOiAYhPTbQRhgIlF/Yy8O+bcToaoyU4
- fTTsCKSP0Tk0p2hi9GZ4MI+h2NpdwHRNmz1FK+eOHSIMIh7CypUD06Psx1pj3JjLEfQG
- uiRWmztk2iZKXSFtDFd+d3d9R7b1tvUo4MMuA1v8Jp4GBdwgxAZhoks3nuZc+2v8LhUZ
- 5cVtBbXTncLBhcej2y6MLuZ/fHmGFuzagTS/BAcFWPctVYlJ4n7TIfOiGF91voc0vZIN
- NMGTh7Z2LoT/q8B7vfl8XCqwv/OyEuOD3LayupEpIpp6rkMH/OT8ih16JVT3wZOAwksa OA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ye58prc8r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 May 2024 15:43:26 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44TFhPJ9008206;
- Wed, 29 May 2024 15:43:25 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ye58prc8n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 May 2024 15:43:25 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44TF8RoZ002783; Wed, 29 May 2024 15:43:24 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ydpb0mka3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 29 May 2024 15:43:24 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 44TFhLvH26214894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 May 2024 15:43:23 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9984C58068;
- Wed, 29 May 2024 15:43:21 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C6A058064;
- Wed, 29 May 2024 15:43:21 +0000 (GMT)
-Received: from t15.ibmuc.com (unknown [9.67.55.69])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 29 May 2024 15:43:21 +0000 (GMT)
-From: jrossi@linux.ibm.com
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, thuth@redhat.com
-Cc: frankja@linux.ibm.com, nsg@linux.ibm.com, jrossi@linux.ibm.com
-Subject: [PATCH 5/5] s390x: Enable and document boot device fallback on panic
-Date: Wed, 29 May 2024 11:43:11 -0400
-Message-Id: <20240529154311.734548-6-jrossi@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240529154311.734548-1-jrossi@linux.ibm.com>
-References: <20240529154311.734548-1-jrossi@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sCLY1-0007lM-WF
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 11:49:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716997744;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qIq4sT9qoD04V3my5vqGCekTfJw8GrcOvSo7H00yX/E=;
+ b=EoFoyXGfHvNIXVItFrS5upg6m4Y0uzvRo0Zx3dwqptnUhVl2dMlsbO1WNI/MuxMw0QKxtF
+ e0+3Kq8wh6K7yHYkiPNc5q/lPXd3uPChvm78pH9n/arVKevhI1K3benDR8fHHBUuPr4LOe
+ 54A4BhT/zIrWx3LyHHvmMsq/jRki39k=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-266--OrCsc5zMZ6q-pA5waIRlg-1; Wed, 29 May 2024 11:49:02 -0400
+X-MC-Unique: -OrCsc5zMZ6q-pA5waIRlg-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-5b3332ae946so641904eaf.1
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 08:49:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716997742; x=1717602542;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qIq4sT9qoD04V3my5vqGCekTfJw8GrcOvSo7H00yX/E=;
+ b=MBjQEePjvFAMCR5eJVqo6lzdk4cgaIbU5m7+bliZf97mfKnI8niQ7Lp3VWVM4eu5hw
+ E18U9zDME0F/5gVns07XCczC4oLfvSTCz1OLYuMnc65BV+UvreFikeR12OzGfRCuuM2F
+ YDueqNOuO+rBMzZpI4zA0OseqMOLL2ynZua4IHQP51QUO6Shw2gw3NiUpvQYhtrRoeaT
+ o7lDPdm9KaE5JTpz+HCugiU2bn9QNm5GOALah/CkKjlec6pMtnRsNGViFZimI+xrhZf7
+ vHN2nn7jmWO/z3isqpz7Cz0MGhct57sXDxZD+IUSBHffNc4P2bjbHh3F4mVmTkpXwG4a
+ 4vrg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW4IN9va6oT1ZBwXe3IF4pBT2S9ec2bFkjXJjYfVYhdYUTLgII7XSGYey+Mr0/p9S7N+RntZF60eQsJoGbhNVtjA+epLT8=
+X-Gm-Message-State: AOJu0YxF3rz/Tgs90pYCRN7H3Qk0bjk5ZnCCYPohd6P9yoZRj8mFuOiw
+ eSXYlIBRcktDyP2PNp9NZFi4YHTMM2RSwwmGLKpsH1MHzyFyXFl5tc+qUqsYCQj/vU8aULVJ7xu
+ AeN/rLq0jrs13iW9YIB/f0SERnlxe6FQPATzlappwXJGCI9kLaPb4
+X-Received: by 2002:a4a:ba86:0:b0:5b2:8017:fb68 with SMTP id
+ 006d021491bc7-5b95cde3ec5mr17116967eaf.0.1716997741803; 
+ Wed, 29 May 2024 08:49:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2c2zCmehW+44rAlMjMRbTVxIEmKuelLZ5JcfjXZCMhjQjjn6G1zKvKHxWjO19QcLImYRBHA==
+X-Received: by 2002:a4a:ba86:0:b0:5b2:8017:fb68 with SMTP id
+ 006d021491bc7-5b95cde3ec5mr17116935eaf.0.1716997741100; 
+ Wed, 29 May 2024 08:49:01 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43fb18327f6sm55170661cf.58.2024.05.29.08.49.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 May 2024 08:49:00 -0700 (PDT)
+Date: Wed, 29 May 2024 11:48:58 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] tests/qtest/migrate-test: Add a postcopy memfile test
+Message-ID: <ZldOal1YdAWLB5pj@x1n>
+References: <20240529041322.701525-1-npiggin@gmail.com>
+ <875xuwg4mx.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eOcfXpobV5j-6cIv0uHD2nBi9KOCD5VL
-X-Proofpoint-ORIG-GUID: -n9eJw642lP-qe813A85fO3HXd81Iz-I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-29_12,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- spamscore=0 mlxscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- mlxlogscore=999 malwarescore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405290108
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jrossi@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <875xuwg4mx.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,90 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jared Rossi <jrossi@linux.ibm.com>
+On Wed, May 29, 2024 at 09:54:30AM -0300, Fabiano Rosas wrote:
+> Nicholas Piggin <npiggin@gmail.com> writes:
+> 
+> > Postcopy requires userfaultfd support, which requires tmpfs if a memory
+> > file is used.
+> >
+> > This adds back support for /dev/shm memory files, but adds preallocation
+> > to skip environments where that mount is limited in size.
+> >
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> > ---
+> >
+> > How about this? This goes on top of the reset of the patches
+> > (I'll re-send them all as a series if we can get to some agreement).
+> >
+> > This adds back the /dev/shm option with preallocation and adds a test
+> > case that requires tmpfs.
+> 
+> Peter has stronger opinions on this than I do. I'll leave it to him to
+> decide.
 
-On a panic during IPL (i.e. a device failed to boot) check for another device
-to boot from, as indicated by the presence of an unused IPLB.
+Sorry if I gave that feeling; it's more of a stronger willingness to at
+some point enable shmem for QEMU migration, rather than wanting to push
+back what Nicholas was trying to do.  Enabling more arch for migration
+tests is definitely worthwhile on its own.
 
-If an IPLB is successfully loaded, then jump to the start of BIOS, restarting
-IPL using the updated IPLB.  Otherwise enter disabled wait.
+Shmem is just some blank spot that IMHO we should start to think about
+better coverarge. E.g. it is the only sane way to boot the VM that is able
+to do fast qemu upgrades using ignore-shared, that was true even before
+Steve's cpr-exec work, which would be much easier than anonymous. And it's
+also possible shmem can be (in the next 3-5 years) the 1G page provider to
+replace hugetlb for postcopy's sake - this one is far beyond our current
+discussion so I won't extend..
 
-Signed-off-by: Jared Rossi <jrossi@linux.ibm.com>
----
- docs/system/bootindex.rst         | 7 ++++---
- docs/system/s390x/bootdevices.rst | 9 ++++++---
- pc-bios/s390-ccw/s390-ccw.h       | 6 ++++++
- 3 files changed, 16 insertions(+), 6 deletions(-)
+IMHO shmem should just be a major backend just like anonymous, and the only
+possible file backend we can test in CI - as hugetlb is harder to manage
+there.
 
-diff --git a/docs/system/bootindex.rst b/docs/system/bootindex.rst
-index 8b057f812f..de597561bd 100644
---- a/docs/system/bootindex.rst
-+++ b/docs/system/bootindex.rst
-@@ -50,9 +50,10 @@ Limitations
- 
- Some firmware has limitations on which devices can be considered for
- booting.  For instance, the PC BIOS boot specification allows only one
--disk to be bootable.  If boot from disk fails for some reason, the BIOS
--won't retry booting from other disk.  It can still try to boot from
--floppy or net, though.
-+disk to be bootable, except for on s390x machines. If boot from disk fails for
-+some reason, the BIOS won't retry booting from other disk.  It can still try to
-+boot from floppy or net, though.  In the case of s390x, the BIOS will try up to
-+8 total devices, any number of which may be disks.
- 
- Sometimes, firmware cannot map the device path QEMU wants firmware to
- boot from to a boot method.  It doesn't happen for devices the firmware
-diff --git a/docs/system/s390x/bootdevices.rst b/docs/system/s390x/bootdevices.rst
-index 1a7a18b43b..f096e1cc06 100644
---- a/docs/system/s390x/bootdevices.rst
-+++ b/docs/system/s390x/bootdevices.rst
-@@ -6,9 +6,7 @@ Booting with bootindex parameter
- 
- For classical mainframe guests (i.e. LPAR or z/VM installations), you always
- have to explicitly specify the disk where you want to boot from (or "IPL" from,
--in s390x-speak -- IPL means "Initial Program Load"). In particular, there can
--also be only one boot device according to the architecture specification, thus
--specifying multiple boot devices is not possible (yet).
-+in s390x-speak -- IPL means "Initial Program Load").
- 
- So for booting an s390x guest in QEMU, you should always mark the
- device where you want to boot from with the ``bootindex`` property, for
-@@ -17,6 +15,11 @@ example::
-  qemu-system-s390x -drive if=none,id=dr1,file=guest.qcow2 \
-                    -device virtio-blk,drive=dr1,bootindex=1
- 
-+Multiple devices may have a bootindex. The lowest bootindex is assigned to the
-+device to IPL first.  If the IPL fails for the first, the device with the second
-+lowest bootindex will be tried and so on until IPL is successful or there are no
-+remaining boot devices to try.
-+
- For booting from a CD-ROM ISO image (which needs to include El-Torito boot
- information in order to be bootable), it is recommended to specify a ``scsi-cd``
- device, for example like this::
-diff --git a/pc-bios/s390-ccw/s390-ccw.h b/pc-bios/s390-ccw/s390-ccw.h
-index c977a52b50..de3d1f0d5a 100644
---- a/pc-bios/s390-ccw/s390-ccw.h
-+++ b/pc-bios/s390-ccw/s390-ccw.h
-@@ -43,6 +43,7 @@ typedef unsigned long long u64;
- #include "iplb.h"
- 
- /* start.s */
-+extern char _start[];
- void disabled_wait(void) __attribute__ ((__noreturn__));
- void consume_sclp_int(void);
- void consume_io_int(void);
-@@ -88,6 +89,11 @@ __attribute__ ((__noreturn__))
- static inline void panic(const char *string)
- {
-     sclp_print(string);
-+    if (load_next_iplb()) {
-+        sclp_print("\nTrying next boot device...");
-+        jump_to_IPL_code((long)_start);
-+    }
-+
-     disabled_wait();
- }
- 
+> 
+> Just note that now we're making the CI less deterministic in relation to
+> the migration tests. When a test that uses shmem fails, we'll not be
+> able to consistently reproduce because the test might not even run
+> depending on what has consumed the shmem first.
+> 
+> Let's also take care that the other consumers of shmem (I think just
+> ivshmem-test) are able to cope with the migration-test taking all the
+> space, otherwise the CI will still break.
+
+Looks like ivshmem-test only uses 1MB shmem constantly so probably that
+will succeed if the migration test will, but true they face the same
+challenge and they interfere with each other..  that test sidently pass
+(instead of skip) if mktempshm() fails.  I guess we don't have a way to
+solidly test shmem as shmem simply may not be around.
+
+For this patch alone personally I'd avoid using "use_uffd_memfile" as the
+name, as that's definitely confusing, since shmem can be tested in other
+setups too without uffd.  Nicolas, please feel free to move ahead with your
+arch enablement series with /tmp if you want to separate the shmem issue.
+
+Thanks,
+
 -- 
-2.45.1
+Peter Xu
+
 
