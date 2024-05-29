@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBA58D3C47
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F448D3C4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:27:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCM6t-00015d-Qa; Wed, 29 May 2024 12:25:07 -0400
+	id 1sCM7S-0001VF-WA; Wed, 29 May 2024 12:25:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM6n-00013e-1N
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:01 -0400
+ id 1sCM6y-0001AY-6k
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:12 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM6l-0006KY-45
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:00 -0400
+ id 1sCM6v-0006Kh-C8
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:11 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1sCM6i-006COn-W9;
- Wed, 29 May 2024 17:24:56 +0100
+ (envelope-from <movement@movementarian.org>) id 1sCM6j-006COq-1A;
+ Wed, 29 May 2024 17:24:57 +0100
 From: John Levon <levon@movementarian.org>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jag.raman@oracle.com,
  thanos.makatos@nutanix.com, John Johnson <john.g.johnson@oracle.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  John Levon <john.levon@nutanix.com>
-Subject: [PATCH 06/26] vfio: add region cache
-Date: Wed, 29 May 2024 17:22:59 +0100
-Message-Id: <20240529162319.1476680-7-levon@movementarian.org>
+Subject: [PATCH 07/26] vfio: add VFIO base abstract class
+Date: Wed, 29 May 2024 17:23:00 +0100
+Message-Id: <20240529162319.1476680-8-levon@movementarian.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529162319.1476680-1-levon@movementarian.org>
 References: <20240529162319.1476680-1-levon@movementarian.org>
@@ -59,256 +59,305 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jagannathan Raman <jag.raman@oracle.com>
 
-cache VFIO_DEVICE_GET_REGION_INFO results to reduce
-memory alloc/free cycles and as prep work for vfio-user
+Add an abstract base class both the kernel driver
+and user socket implementations can use to share code.
 
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- hw/vfio/ccw.c                 |  5 -----
- hw/vfio/common.c              | 12 ++++++++++++
- hw/vfio/container.c           | 10 ++++++++++
- hw/vfio/helpers.c             | 21 ++++++++++++++++-----
- hw/vfio/igd.c                 |  8 ++++----
- hw/vfio/pci.c                 |  8 ++++----
- include/hw/vfio/vfio-common.h |  1 +
- 7 files changed, 47 insertions(+), 18 deletions(-)
+ hw/vfio/pci.c | 108 ++++++++++++++++++++++++++++++--------------------
+ hw/vfio/pci.h |  16 +++++++-
+ 2 files changed, 80 insertions(+), 44 deletions(-)
 
-diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-index 2600e62e37..315449c1b1 100644
---- a/hw/vfio/ccw.c
-+++ b/hw/vfio/ccw.c
-@@ -510,7 +510,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
- 
-     vcdev->io_region_offset = info->offset;
-     vcdev->io_region = g_malloc0(info->size);
--    g_free(info);
- 
-     /* check for the optional async command region */
-     ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
-@@ -523,7 +522,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->async_cmd_region_offset = info->offset;
-         vcdev->async_cmd_region = g_malloc0(info->size);
--        g_free(info);
-     }
- 
-     ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
-@@ -536,7 +534,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->schib_region_offset = info->offset;
-         vcdev->schib_region = g_malloc(info->size);
--        g_free(info);
-     }
- 
-     ret = vfio_get_dev_region_info(vdev, VFIO_REGION_TYPE_CCW,
-@@ -550,7 +547,6 @@ static bool vfio_ccw_get_region(VFIOCCWDevice *vcdev, Error **errp)
-         }
-         vcdev->crw_region_offset = info->offset;
-         vcdev->crw_region = g_malloc(info->size);
--        g_free(info);
-     }
- 
-     return true;
-@@ -560,7 +556,6 @@ out_err:
-     g_free(vcdev->schib_region);
-     g_free(vcdev->async_cmd_region);
-     g_free(vcdev->io_region);
--    g_free(info);
-     return false;
- }
- 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 81f4c88f2d..1a71c3be05 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -1542,6 +1542,16 @@ retry:
-     return info;
- }
- 
-+static void vfio_get_all_regions(VFIODevice *vbasedev)
-+{
-+    struct vfio_region_info *info;
-+    int i;
-+
-+    for (i = 0; i < vbasedev->num_regions; i++) {
-+        vfio_get_region_info(vbasedev, i, &info);
-+    }
-+}
-+
- void vfio_prepare_device(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
-                          VFIOGroup *group, struct vfio_device_info *info)
- {
-@@ -1559,6 +1569,8 @@ void vfio_prepare_device(VFIODevice *vbasedev, VFIOContainerBase *bcontainer,
-     }
- 
-     QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
-+
-+    vfio_get_all_regions(vbasedev);
- }
- 
- bool vfio_attach_device_by_iommu_type(const char *iommu_type, char *name,
-diff --git a/hw/vfio/container.c b/hw/vfio/container.c
-index 1bbcbaa874..6c70f95f04 100644
---- a/hw/vfio/container.c
-+++ b/hw/vfio/container.c
-@@ -891,6 +891,16 @@ static bool vfio_get_device(VFIOGroup *group, const char *name,
- 
- static void vfio_put_base_device(VFIODevice *vbasedev)
- {
-+    if (vbasedev->regions != NULL) {
-+        int i;
-+
-+        for (i = 0; i < vbasedev->num_regions; i++) {
-+            g_free(vbasedev->regions[i]);
-+        }
-+        g_free(vbasedev->regions);
-+        vbasedev->regions = NULL;
-+    }
-+
-     if (!vbasedev->group) {
-         return;
-     }
-diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
-index 27ea26aa48..cdc7eb5bd5 100644
---- a/hw/vfio/helpers.c
-+++ b/hw/vfio/helpers.c
-@@ -343,7 +343,7 @@ static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
- int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
-                       int index, const char *name)
- {
--    g_autofree struct vfio_region_info *info = NULL;
-+    struct vfio_region_info *info = NULL;
-     int ret;
- 
-     ret = vfio_get_region_info(vbasedev, index, &info);
-@@ -533,6 +533,17 @@ int vfio_get_region_info(VFIODevice *vbasedev, int index,
- {
-     size_t argsz = sizeof(struct vfio_region_info);
- 
-+    /* create region cache */
-+    if (vbasedev->regions == NULL) {
-+        vbasedev->regions = g_new0(struct vfio_region_info *,
-+                                   vbasedev->num_regions);
-+    }
-+    /* check cache */
-+    if (vbasedev->regions[index] != NULL) {
-+        *info = vbasedev->regions[index];
-+        return 0;
-+    }
-+
-     *info = g_malloc0(argsz);
- 
-     (*info)->index = index;
-@@ -552,6 +563,9 @@ retry:
-         goto retry;
-     }
- 
-+    /* fill cache */
-+    vbasedev->regions[index] = *info;
-+
-     return 0;
- }
- 
-@@ -570,7 +584,6 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
- 
-         hdr = vfio_get_region_info_cap(*info, VFIO_REGION_INFO_CAP_TYPE);
-         if (!hdr) {
--            g_free(*info);
-             continue;
-         }
- 
-@@ -582,8 +595,6 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
-         if (cap_type->type == type && cap_type->subtype == subtype) {
-             return 0;
-         }
--
--        g_free(*info);
-     }
- 
-     *info = NULL;
-@@ -592,7 +603,7 @@ int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
- 
- bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
- {
--    g_autofree struct vfio_region_info *info = NULL;
-+    struct vfio_region_info *info = NULL;
-     bool ret = false;
- 
-     if (!vfio_get_region_info(vbasedev, region, &info)) {
-diff --git a/hw/vfio/igd.c b/hw/vfio/igd.c
-index d320d032a7..34d8a41dd3 100644
---- a/hw/vfio/igd.c
-+++ b/hw/vfio/igd.c
-@@ -367,10 +367,10 @@ static const MemoryRegionOps vfio_igd_index_quirk = {
- 
- void vfio_probe_igd_bar4_quirk(VFIOPCIDevice *vdev, int nr)
- {
--    g_autofree struct vfio_region_info *rom = NULL;
--    g_autofree struct vfio_region_info *opregion = NULL;
--    g_autofree struct vfio_region_info *host = NULL;
--    g_autofree struct vfio_region_info *lpc = NULL;
-+    struct vfio_region_info *rom = NULL;
-+    struct vfio_region_info *opregion = NULL;
-+    struct vfio_region_info *host = NULL;
-+    struct vfio_region_info *lpc = NULL;
-     VFIOQuirk *quirk;
-     VFIOIGDQuirk *igd;
-     PCIDevice *lpc_bridge;
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 74a79bdf61..470fb3502a 100644
+index 470fb3502a..99783d3cd4 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -879,7 +879,7 @@ static void vfio_update_msi(VFIOPCIDevice *vdev)
+@@ -239,7 +239,7 @@ static void vfio_intx_update(VFIOPCIDevice *vdev, PCIINTxRoute *route)
  
- static void vfio_pci_load_rom(VFIOPCIDevice *vdev)
+ static void vfio_intx_routing_notifier(PCIDevice *pdev)
  {
--    g_autofree struct vfio_region_info *reg_info = NULL;
-+    struct vfio_region_info *reg_info = NULL;
-     uint64_t size;
-     off_t off = 0;
-     ssize_t bytes;
-@@ -2666,7 +2666,7 @@ static VFIODeviceOps vfio_pci_ops = {
- bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     PCIINTxRoute route;
+ 
+     if (vdev->interrupt != VFIO_INT_INTx) {
+@@ -514,7 +514,7 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
  {
-     VFIODevice *vbasedev = &vdev->vbasedev;
--    g_autofree struct vfio_region_info *reg_info = NULL;
-+    struct vfio_region_info *reg_info = NULL;
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIOMSIVector *vector;
      int ret;
+     bool resizing = !!(vdev->nr_vectors < nr + 1);
+@@ -619,7 +619,7 @@ static int vfio_msix_vector_use(PCIDevice *pdev,
  
-     ret = vfio_get_region_info(vbasedev, VFIO_PCI_VGA_REGION_INDEX, &reg_info);
-@@ -2731,7 +2731,7 @@ bool vfio_populate_vga(VFIOPCIDevice *vdev, Error **errp)
- static bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
  {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIOMSIVector *vector = &vdev->msi_vectors[nr];
+ 
+     trace_vfio_msix_vector_release(vdev->vbasedev.name, nr);
+@@ -1168,7 +1168,7 @@ static const MemoryRegionOps vfio_vga_ops = {
+  */
+ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIORegion *region = &vdev->bars[bar].region;
+     MemoryRegion *mmap_mr, *region_mr, *base_mr;
+     PCIIORegion *r;
+@@ -1214,7 +1214,7 @@ static void vfio_sub_page_bar_update_mapping(PCIDevice *pdev, int bar)
+  */
+ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     uint32_t emu_bits = 0, emu_val = 0, phys_val = 0, val;
+ 
+     memcpy(&emu_bits, vdev->emulated_config_bits + addr, len);
+@@ -1247,7 +1247,7 @@ uint32_t vfio_pci_read_config(PCIDevice *pdev, uint32_t addr, int len)
+ void vfio_pci_write_config(PCIDevice *pdev,
+                            uint32_t addr, uint32_t val, int len)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     uint32_t val_le = cpu_to_le32(val);
+ 
+     trace_vfio_pci_write_config(vdev->vbasedev.name, addr, val, len);
+@@ -2961,7 +2961,7 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ {
+     ERRP_GUARD();
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
      VFIODevice *vbasedev = &vdev->vbasedev;
--    g_autofree struct vfio_region_info *reg_info = NULL;
-+    struct vfio_region_info *reg_info = NULL;
-     struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info) };
-     int i, ret = -1;
+     char *subsys;
+     int i, ret;
+@@ -3247,7 +3247,7 @@ error:
  
-@@ -3135,7 +3135,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+ static void vfio_instance_finalize(Object *obj)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
  
-     if (!vdev->igd_opregion &&
-         vdev->features & VFIO_FEATURE_ENABLE_IGD_OPREGION) {
--        g_autofree struct vfio_region_info *opregion = NULL;
-+        struct vfio_region_info *opregion = NULL;
+     vfio_display_finalize(vdev);
+     vfio_bars_finalize(vdev);
+@@ -3265,7 +3265,7 @@ static void vfio_instance_finalize(Object *obj)
  
-         if (vdev->pdev.qdev.hotplugged) {
-             error_setg(errp,
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index ee022c9cbd..2428c7d80c 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -128,6 +128,7 @@ typedef struct VFIODevice {
-     bool dirty_tracking;
-     int devid;
-     IOMMUFDBackend *iommufd;
-+    struct vfio_region_info **regions;
- } VFIODevice;
+ static void vfio_exitfn(PCIDevice *pdev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(pdev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
  
- struct VFIODeviceOps {
+     vfio_unregister_req_notifier(vdev);
+     vfio_unregister_err_notifier(vdev);
+@@ -3285,7 +3285,7 @@ static void vfio_exitfn(PCIDevice *pdev)
+ 
+ static void vfio_pci_reset(DeviceState *dev)
+ {
+-    VFIOPCIDevice *vdev = VFIO_PCI(dev);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
+ 
+     trace_vfio_pci_reset(vdev->vbasedev.name);
+ 
+@@ -3325,7 +3325,7 @@ post_reset:
+ static void vfio_instance_init(Object *obj)
+ {
+     PCIDevice *pci_dev = PCI_DEVICE(obj);
+-    VFIOPCIDevice *vdev = VFIO_PCI(obj);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
+     VFIODevice *vbasedev = &vdev->vbasedev;
+ 
+     device_add_bootindex_property(obj, &vdev->bootindex,
+@@ -3346,25 +3346,12 @@ static void vfio_instance_init(Object *obj)
+     pci_dev->cap_present |= QEMU_PCI_CAP_EXPRESS;
+ }
+ 
+-static Property vfio_pci_dev_properties[] = {
+-    DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
+-    DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
+-    DEFINE_PROP_STRING("sysfsdev", VFIOPCIDevice, vbasedev.sysfsdev),
++static Property vfio_pci_base_dev_properties[] = {
+     DEFINE_PROP_ON_OFF_AUTO("x-pre-copy-dirty-page-tracking", VFIOPCIDevice,
+                             vbasedev.pre_copy_dirty_page_tracking,
+                             ON_OFF_AUTO_ON),
+-    DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
+-                            display, ON_OFF_AUTO_OFF),
+-    DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
+-    DEFINE_PROP_UINT32("yres", VFIOPCIDevice, display_yres, 0),
+     DEFINE_PROP_UINT32("x-intx-mmap-timeout-ms", VFIOPCIDevice,
+                        intx.mmap_timeout, 1100),
+-    DEFINE_PROP_BIT("x-vga", VFIOPCIDevice, features,
+-                    VFIO_FEATURE_ENABLE_VGA_BIT, false),
+-    DEFINE_PROP_BIT("x-req", VFIOPCIDevice, features,
+-                    VFIO_FEATURE_ENABLE_REQ_BIT, true),
+-    DEFINE_PROP_BIT("x-igd-opregion", VFIOPCIDevice, features,
+-                    VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
+     DEFINE_PROP_ON_OFF_AUTO("enable-migration", VFIOPCIDevice,
+                             vbasedev.enable_migration, ON_OFF_AUTO_AUTO),
+     DEFINE_PROP_BOOL("migration-events", VFIOPCIDevice,
+@@ -3375,8 +3362,6 @@ static Property vfio_pci_dev_properties[] = {
+     DEFINE_PROP_BOOL("x-no-kvm-intx", VFIOPCIDevice, no_kvm_intx, false),
+     DEFINE_PROP_BOOL("x-no-kvm-msi", VFIOPCIDevice, no_kvm_msi, false),
+     DEFINE_PROP_BOOL("x-no-kvm-msix", VFIOPCIDevice, no_kvm_msix, false),
+-    DEFINE_PROP_BOOL("x-no-geforce-quirks", VFIOPCIDevice,
+-                     no_geforce_quirks, false),
+     DEFINE_PROP_BOOL("x-no-kvm-ioeventfd", VFIOPCIDevice, no_kvm_ioeventfd,
+                      false),
+     DEFINE_PROP_BOOL("x-no-vfio-ioeventfd", VFIOPCIDevice, no_vfio_ioeventfd,
+@@ -3387,12 +3372,58 @@ static Property vfio_pci_dev_properties[] = {
+                        sub_vendor_id, PCI_ANY_ID),
+     DEFINE_PROP_UINT32("x-pci-sub-device-id", VFIOPCIDevice,
+                        sub_device_id, PCI_ANY_ID),
++    DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
++                                OFF_AUTOPCIBAR_OFF),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++
++static void vfio_pci_base_dev_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PCIDeviceClass *pdc = PCI_DEVICE_CLASS(klass);
++
++    device_class_set_props(dc, vfio_pci_base_dev_properties);
++    dc->desc = "VFIO PCI base device";
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    pdc->exit = vfio_exitfn;
++    pdc->config_read = vfio_pci_read_config;
++    pdc->config_write = vfio_pci_write_config;
++}
++
++static const TypeInfo vfio_pci_base_dev_info = {
++    .name = TYPE_VFIO_PCI_BASE,
++    .parent = TYPE_PCI_DEVICE,
++    .instance_size = 0,
++    .abstract = true,
++    .class_init = vfio_pci_base_dev_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { INTERFACE_PCIE_DEVICE },
++        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
++        { }
++    },
++};
++
++static Property vfio_pci_dev_properties[] = {
++    DEFINE_PROP_PCI_HOST_DEVADDR("host", VFIOPCIDevice, host),
++    DEFINE_PROP_UUID_NODEFAULT("vf-token", VFIOPCIDevice, vf_token),
++    DEFINE_PROP_STRING("sysfsdev", VFIOPCIDevice, vbasedev.sysfsdev),
++    DEFINE_PROP_ON_OFF_AUTO("display", VFIOPCIDevice,
++                            display, ON_OFF_AUTO_OFF),
++    DEFINE_PROP_UINT32("xres", VFIOPCIDevice, display_xres, 0),
++    DEFINE_PROP_UINT32("yres", VFIOPCIDevice, display_yres, 0),
++    DEFINE_PROP_BIT("x-vga", VFIOPCIDevice, features,
++                    VFIO_FEATURE_ENABLE_VGA_BIT, false),
++    DEFINE_PROP_BIT("x-req", VFIOPCIDevice, features,
++                    VFIO_FEATURE_ENABLE_REQ_BIT, true),
++    DEFINE_PROP_BIT("x-igd-opregion", VFIOPCIDevice, features,
++                    VFIO_FEATURE_ENABLE_IGD_OPREGION_BIT, false),
++    DEFINE_PROP_BOOL("x-no-geforce-quirks", VFIOPCIDevice,
++                     no_geforce_quirks, false),
+     DEFINE_PROP_UINT32("x-igd-gms", VFIOPCIDevice, igd_gms, 0),
+     DEFINE_PROP_UNSIGNED_NODEFAULT("x-nv-gpudirect-clique", VFIOPCIDevice,
+                                    nv_gpudirect_clique,
+                                    qdev_prop_nv_gpudirect_clique, uint8_t),
+-    DEFINE_PROP_OFF_AUTO_PCIBAR("x-msix-relocation", VFIOPCIDevice, msix_relo,
+-                                OFF_AUTOPCIBAR_OFF),
+ #ifdef CONFIG_IOMMUFD
+     DEFINE_PROP_LINK("iommufd", VFIOPCIDevice, vbasedev.iommufd,
+                      TYPE_IOMMUFD_BACKEND, IOMMUFDBackend *),
+@@ -3404,7 +3435,8 @@ static Property vfio_pci_dev_properties[] = {
+ #ifdef CONFIG_IOMMUFD
+ static void vfio_pci_set_fd(Object *obj, const char *str, Error **errp)
+ {
+-    vfio_device_set_fd(&VFIO_PCI(obj)->vbasedev, str, errp);
++    VFIOPCIDevice *vdev = VFIO_PCI_BASE(obj);
++    vfio_device_set_fd(&vdev->vbasedev, str, errp);
+ }
+ #endif
+ 
+@@ -3419,25 +3451,16 @@ static void vfio_pci_dev_class_init(ObjectClass *klass, void *data)
+     object_class_property_add_str(klass, "fd", NULL, vfio_pci_set_fd);
+ #endif
+     dc->desc = "VFIO-based PCI device assignment";
+-    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+     pdc->realize = vfio_realize;
+-    pdc->exit = vfio_exitfn;
+-    pdc->config_read = vfio_pci_read_config;
+-    pdc->config_write = vfio_pci_write_config;
+ }
+ 
+ static const TypeInfo vfio_pci_dev_info = {
+     .name = TYPE_VFIO_PCI,
+-    .parent = TYPE_PCI_DEVICE,
+-    .instance_size = sizeof(VFIOPCIDevice),
++    .parent = TYPE_VFIO_PCI_BASE,
++    .instance_size = sizeof(VFIOKernelPCIDevice),
+     .class_init = vfio_pci_dev_class_init,
+     .instance_init = vfio_instance_init,
+     .instance_finalize = vfio_instance_finalize,
+-    .interfaces = (InterfaceInfo[]) {
+-        { INTERFACE_PCIE_DEVICE },
+-        { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+-        { }
+-    },
+ };
+ 
+ static Property vfio_pci_dev_nohotplug_properties[] = {
+@@ -3458,12 +3481,13 @@ static void vfio_pci_nohotplug_dev_class_init(ObjectClass *klass, void *data)
+ static const TypeInfo vfio_pci_nohotplug_dev_info = {
+     .name = TYPE_VFIO_PCI_NOHOTPLUG,
+     .parent = TYPE_VFIO_PCI,
+-    .instance_size = sizeof(VFIOPCIDevice),
++    .instance_size = sizeof(VFIOKernelPCIDevice),
+     .class_init = vfio_pci_nohotplug_dev_class_init,
+ };
+ 
+ static void register_vfio_pci_dev_type(void)
+ {
++    type_register_static(&vfio_pci_base_dev_info);
+     type_register_static(&vfio_pci_dev_info);
+     type_register_static(&vfio_pci_nohotplug_dev_info);
+ }
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index bf67df2fbc..770448155e 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -116,8 +116,13 @@ typedef struct VFIOMSIXInfo {
+     bool noresize;
+ } VFIOMSIXInfo;
+ 
+-#define TYPE_VFIO_PCI "vfio-pci"
+-OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI)
++/*
++ * TYPE_VFIO_PCI_BASE is an abstract type used to share code
++ * between VFIO implementations that use a kernel driver
++ * with those that use user sockets.
++ */
++#define TYPE_VFIO_PCI_BASE "vfio-pci-base"
++OBJECT_DECLARE_SIMPLE_TYPE(VFIOPCIDevice, VFIO_PCI_BASE)
+ 
+ struct VFIOPCIDevice {
+     PCIDevice pdev;
+@@ -182,6 +187,13 @@ struct VFIOPCIDevice {
+     Notifier irqchip_change_notifier;
+ };
+ 
++#define TYPE_VFIO_PCI "vfio-pci"
++OBJECT_DECLARE_SIMPLE_TYPE(VFIOKernelPCIDevice, VFIO_PCI)
++
++struct VFIOKernelPCIDevice {
++    VFIOPCIDevice device;
++};
++
+ /* Use uin32_t for vendor & device so PCI_ANY_ID expands and cannot match hw */
+ static inline bool vfio_pci_is(VFIOPCIDevice *vdev, uint32_t vendor, uint32_t device)
+ {
 -- 
 2.34.1
 
