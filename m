@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E958D2CDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 063A28D2D30
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:27:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCCQK-0005f0-79; Wed, 29 May 2024 02:04:32 -0400
+	id 1sCCli-0001fJ-IO; Wed, 29 May 2024 02:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCCQH-0005aq-HX
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:29 -0400
-Received: from mgamail.intel.com ([198.175.65.20])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sCClg-0001eo-HG
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:26:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCCQF-0002vg-9j
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716962668; x=1748498668;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2vBh3IfNwbawhYc++Jw/OuUr0v/+Zup3/Ru69BmBxJY=;
- b=XZ612HnBIcRDa48BrnWCHW5YWy5WvgYx7POn5/hsrUk4KNibJnoirkwD
- /RimfPc/YHuW35nLq8NW9W1jSgGzpgBbJzzecP6tJ3jrFhteCtgsaBKke
- U1HsZCMtdObxXw8qAjh3aCrej5ya7b4ijEAL8mlFpmgyET4yKA9jBUMol
- l9lQBdcmcKT+YR7md0V/3QCWE3gTCQWSOVRzEFho/ltWPc8oi5RgGIgX5
- BnidGJjuBfBQ/U/xQm9mMW5VNNOdWgLnv3HKscRCnVXppyq6mmYQPm9Dg
- e/fTbF6pet2QOSfEMiie3TCXPZfOvJMp81ZZWe/o+jRYq8ffrPky77qL/ Q==;
-X-CSE-ConnectionGUID: jvjBDkJ1Q/e8izCNuLFzJQ==
-X-CSE-MsgGUID: RlKZhJAyTnWrOs4mHf+F0w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13187514"
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="13187514"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 23:04:26 -0700
-X-CSE-ConnectionGUID: PKDxyjSFS2GFoLIMhNEEnQ==
-X-CSE-MsgGUID: q5cuhUeDTpKRHskcoAX6/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="40144779"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 28 May 2024 23:04:23 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Yongwei Ma <yongwei.ma@intel.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 8/8] tests/unit/test-smp-parse: Test the full 8-levels
- topology hierarchy
-Date: Wed, 29 May 2024 14:19:25 +0800
-Message-Id: <20240529061925.350323-9-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240529061925.350323-1-zhao1.liu@intel.com>
-References: <20240529061925.350323-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sCCle-0005sM-KH
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:26:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716963993;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5o65ZxxHtLh+QTTdQSSYj01W9SQJYxql/oLicv2uXDY=;
+ b=Ca+sdwtBn1Nc4nUNyOoEjJDneSP+BuX10vSVydfUgMZ6kDYrZjwN1oRFRcs2EX3MMljqhk
+ 63PftEbmtCCfDEflQoBymCJzJKjKmBpyceJmZgiu3ypPHmornGfsp94Dg010Gvz8JKYv+v
+ 71GTpwvN2RCFlPJmxqMq0sZAAtUX4Z8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-363-5gI7Z8YzN9Ob3mcuvAgrUA-1; Wed, 29 May 2024 02:26:29 -0400
+X-MC-Unique: 5gI7Z8YzN9Ob3mcuvAgrUA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34EBC800CA5;
+ Wed, 29 May 2024 06:26:29 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.193.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BF4E3286E;
+ Wed, 29 May 2024 06:26:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id A9C1B21E668F; Wed, 29 May 2024 08:26:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Fabiano Rosas
+ <farosas@suse.de>,  Alex Williamson <alex.williamson@redhat.com>,  Avihai
+ Horon <avihaih@nvidia.com>,  Eric Auger <eric.auger@redhat.com>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v7 1/9] vfio: Add Error** argument to
+ .set_dirty_page_tracking() handler
+In-Reply-To: <20240516124658.850504-2-clg@redhat.com> (=?utf-8?Q?=22C?=
+ =?utf-8?Q?=C3=A9dric?= Le Goater"'s
+ message of "Thu, 16 May 2024 14:46:50 +0200")
+References: <20240516124658.850504-1-clg@redhat.com>
+ <20240516124658.850504-2-clg@redhat.com>
+Date: Wed, 29 May 2024 08:26:27 +0200
+Message-ID: <878qztp20c.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.20; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,311 +88,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With module level, QEMU now support 8-levels topology hierarchy.
-Cover "modules" in SMP_CONFIG_WITH_FULL_TOPO related cases.
+I had a look at this before I realized it's already in.  I'm sending
+this out not to demand any change, but only to point out an issue to be
+avoided in future work.
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- tests/unit/test-smp-parse.c | 129 ++++++++++++++++++++++++------------
- 1 file changed, 85 insertions(+), 44 deletions(-)
+C=C3=A9dric Le Goater <clg@redhat.com> writes:
 
-diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
-index 2ca8530e935e..f9bccb56abc7 100644
---- a/tests/unit/test-smp-parse.c
-+++ b/tests/unit/test-smp-parse.c
-@@ -94,11 +94,11 @@
-         }
- 
- /*
-- * Currently QEMU supports up to a 7-level topology hierarchy, which is the
-+ * Currently QEMU supports up to a 8-level topology hierarchy, which is the
-  * QEMU's unified abstract representation of CPU topology.
-- *  -drawers/books/sockets/dies/clusters/cores/threads
-+ *  -drawers/books/sockets/dies/clusters/modules/cores/threads
-  */
--#define SMP_CONFIG_WITH_FULL_TOPO(a, b, c, d, e, f, g, h, i)    \
-+#define SMP_CONFIG_WITH_FULL_TOPO(a, b, c, d, e, f, g, h, i, j) \
-         {                                                       \
-             .has_cpus     = true, .cpus     = a,                \
-             .has_drawers  = true, .drawers  = b,                \
-@@ -106,9 +106,10 @@
-             .has_sockets  = true, .sockets  = d,                \
-             .has_dies     = true, .dies     = e,                \
-             .has_clusters = true, .clusters = f,                \
--            .has_cores    = true, .cores    = g,                \
--            .has_threads  = true, .threads  = h,                \
--            .has_maxcpus  = true, .maxcpus  = i,                \
-+            .has_modules  = true, .modules  = g,                \
-+            .has_cores    = true, .cores    = h,                \
-+            .has_threads  = true, .threads  = i,                \
-+            .has_maxcpus  = true, .maxcpus  = j,                \
-         }
- 
- /**
-@@ -336,10 +337,10 @@ static const struct SMPTestData data_generic_valid[] = {
-         /*
-          * Unsupported parameters are always allowed to be set to '1'
-          * config:
--         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,cores=2,\
--         *        threads=2,maxcpus=8
-+         *   -smp 8,drawers=1,books=1,sockets=2,dies=1,clusters=1,modules=1,\
-+         *        cores=2,threads=2,maxcpus=8
-          * expect: cpus=8,sockets=2,cores=2,threads=2,maxcpus=8 */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 2, 2, 8),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(8, 1, 1, 2, 1, 1, 1, 2, 2, 8),
-         .expect_prefer_sockets = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-         .expect_prefer_cores   = CPU_TOPOLOGY_GENERIC(8, 2, 2, 2, 8),
-     },
-@@ -561,32 +562,37 @@ static const struct SMPTestData data_full_topo_invalid[] = {
-     {
-         /*
-          * config: -smp 200,drawers=3,books=5,sockets=2,dies=4,\
--         *              clusters=2,cores=7,threads=2,maxcpus=200
-+         *              clusters=2,modules=3,cores=7,threads=2,\
-+         *              maxcpus=200
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(200, 3, 5, 2, 4, 2, 7, 2, 200),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(200, 3, 5, 2, 4, 2, 3, 7, 2, 200),
-         .expect_error = "Invalid CPU topology: "
-                         "product of the hierarchy must match maxcpus: "
-                         "drawers (3) * books (5) * sockets (2) * dies (4) * "
--                        "clusters (2) * cores (7) * threads (2) "
-+                        "clusters (2) * modules (3) * cores (7) * threads (2) "
-                         "!= maxcpus (200)",
-     }, {
-         /*
--         * config: -smp 3361,drawers=3,books=5,sockets=2,dies=4,\
--         *              clusters=2,cores=7,threads=2,maxcpus=3360
-+         * config: -smp 2881,drawers=3,books=5,sockets=2,dies=4,\
-+         *              clusters=2,modules=3,cores=2,threads=2,
-+         *              maxcpus=2880
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(3361, 3, 5, 2, 4, 2, 7, 2, 3360),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(2881, 3, 5, 2, 4,
-+                                            2, 3, 2, 2, 2880),
-         .expect_error = "Invalid CPU topology: "
-                         "maxcpus must be equal to or greater than smp: "
--                        "drawers (3) * books (5) * sockets (2) * dies (4) * "
--                        "clusters (2) * cores (7) * threads (2) "
--                        "== maxcpus (3360) < smp_cpus (3361)",
-+                        "drawers (3) * books (5) * sockets (2) * "
-+                        "dies (4) * clusters (2) * modules (3) * "
-+                        "cores (2) * threads (2) == maxcpus (2880) "
-+                        "< smp_cpus (2881)",
-     }, {
-         /*
-          * config: -smp 1,drawers=3,books=5,sockets=2,dies=4,\
--         *              clusters=2,cores=7,threads=3,maxcpus=5040
-+         *              clusters=2,modules=3,cores=3,threads=3,\
-+         *              maxcpus=6480
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 7, 3, 5040),
--        .expect_error = "Invalid SMP CPUs 5040. The max CPUs supported "
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 3, 5, 2, 4, 2, 3, 3, 3, 6480),
-+        .expect_error = "Invalid SMP CPUs 6480. The max CPUs supported "
-                         "by machine '" SMP_MACHINE_NAME "' is 4096",
-     },
- };
-@@ -596,81 +602,100 @@ static const struct SMPTestData data_zero_topo_invalid[] = {
-         /*
-          * Test "cpus=0".
-          * config: -smp 0,drawers=1,books=1,sockets=1,dies=1,\
--         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=1,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(0, 1, 1, 1, 1, 1, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(0, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "drawers=0".
-          * config: -smp 1,drawers=0,books=1,sockets=1,dies=1,\
--         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=1,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 0, 1, 1, 1, 1, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 0, 1, 1, 1, 1, 1, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "books=0".
-          * config: -smp 1,drawers=1,books=0,sockets=1,dies=1,\
--         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=1,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 0, 1, 1, 1, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 0, 1, 1, 1, 1, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "sockets=0".
-          * config: -smp 1,drawers=1,books=1,sockets=0,dies=1,\
--         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=1,
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 0, 1, 1, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 0, 1, 1, 1, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "dies=0".
-          * config: -smp 1,drawers=1,books=1,sockets=1,dies=0,\
--         *              clusters=1,cores=1,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=1,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 0, 1, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 0, 1, 1, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "clusters=0".
-          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
--         *              clusters=0,cores=1,threads=1,maxcpus=1
-+         *              clusters=0,modules=1,cores=1,threads=1,\
-+         *              maxcpus=1
-+         */
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 0, 1, 1, 1, 1),
-+        .expect_error = "Invalid CPU topology: CPU topology parameters must "
-+                        "be greater than zero",
-+    }, {
-+        /*
-+         * Test "modules=0".
-+         * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
-+         *              clusters=1,modules=0,cores=1,threads=1,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 0, 1, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 0, 1, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "cores=0".
-          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
--         *              clusters=1,cores=0,threads=1,maxcpus=1
-+         *              clusters=1,modules=1,cores=0,threads=1,
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 0, 1, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 0, 1, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "threads=0".
-          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
--         *              clusters=1,cores=1,threads=0,maxcpus=1
-+         *              clusters=1,modules=1,cores=1,threads=0,\
-+         *              maxcpus=1
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 0, 1),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 0, 1),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     }, {
-         /*
-          * Test "maxcpus=0".
-          * config: -smp 1,drawers=1,books=1,sockets=1,dies=1,\
--         *              clusters=1,cores=1,threads=1,maxcpus=0
-+         *              clusters=1,modules=1,cores=1,threads=1,\
-+         *              maxcpus=0
-          */
--        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 0),
-+        .config = SMP_CONFIG_WITH_FULL_TOPO(1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
-         .expect_error = "Invalid CPU topology: CPU topology parameters must "
-                         "be greater than zero",
-     },
-@@ -977,6 +1002,7 @@ static void machine_full_topo_class_init(ObjectClass *oc, void *data)
-     mc->smp_props.books_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->smp_props.clusters_supported = true;
-+    mc->smp_props.modules_supported = true;
- }
- 
- static void test_generic_valid(const void *opaque)
-@@ -1396,30 +1422,41 @@ static void test_full_topo(const void *opaque)
-     MachineState *ms = MACHINE(obj);
-     MachineClass *mc = MACHINE_GET_CLASS(obj);
-     SMPTestData data = {};
--    unsigned int drawers = 5, books = 3, dies = 2, clusters = 7, multiplier;
-+    unsigned int drawers, books, dies, clusters, modules, multiplier;
-     int i;
- 
--    multiplier = drawers * books * dies * clusters;
-+    drawers = 5;
-+    books = 3;
-+    dies = 2;
-+    clusters = 3;
-+    modules = 2;
-+
-+    multiplier = drawers * books * dies * clusters * modules;
-     for (i = 0; i < ARRAY_SIZE(data_generic_valid); i++) {
-         data = data_generic_valid[i];
-         unsupported_params_init(mc, &data);
- 
-         /*
--         * when drawers, books, dies and clusters parameters are omitted,
--         * they will be set as 1.
-+         * when drawers, books, dies, clusters and modules parameters are
-+         * omitted, they will be set as 1.
-          */
-         data.expect_prefer_sockets.drawers = 1;
-         data.expect_prefer_sockets.books = 1;
-         data.expect_prefer_sockets.dies = 1;
-         data.expect_prefer_sockets.clusters = 1;
-+        data.expect_prefer_sockets.modules = 1;
-         data.expect_prefer_cores.drawers = 1;
-         data.expect_prefer_cores.books = 1;
-         data.expect_prefer_cores.dies = 1;
-         data.expect_prefer_cores.clusters = 1;
-+        data.expect_prefer_cores.modules = 1;
- 
-         smp_parse_test(ms, &data, true);
- 
--        /* when drawers, books, dies and clusters parameters are specified. */
-+        /*
-+         * when drawers, books, dies, clusters and modules parameters
-+         * are specified.
-+         */
-         data.config.has_drawers = true;
-         data.config.drawers = drawers;
-         data.config.has_books = true;
-@@ -1428,6 +1465,8 @@ static void test_full_topo(const void *opaque)
-         data.config.dies = dies;
-         data.config.has_clusters = true;
-         data.config.clusters = clusters;
-+        data.config.has_modules = true;
-+        data.config.modules = modules;
- 
-         if (data.config.has_cpus) {
-             data.config.cpus *= multiplier;
-@@ -1440,6 +1479,7 @@ static void test_full_topo(const void *opaque)
-         data.expect_prefer_sockets.books = books;
-         data.expect_prefer_sockets.dies = dies;
-         data.expect_prefer_sockets.clusters = clusters;
-+        data.expect_prefer_sockets.modules = modules;
-         data.expect_prefer_sockets.cpus *= multiplier;
-         data.expect_prefer_sockets.max_cpus *= multiplier;
- 
-@@ -1447,6 +1487,7 @@ static void test_full_topo(const void *opaque)
-         data.expect_prefer_cores.books = books;
-         data.expect_prefer_cores.dies = dies;
-         data.expect_prefer_cores.clusters = clusters;
-+        data.expect_prefer_cores.modules = modules;
-         data.expect_prefer_cores.cpus *= multiplier;
-         data.expect_prefer_cores.max_cpus *= multiplier;
- 
--- 
-2.34.1
+> We will use the Error object to improve error reporting in the
+> .log_global*() handlers of VFIO. Add documentation while at it.
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+> Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
+> ---
+>  include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++++--
+>  hw/vfio/common.c                      |  4 ++--
+>  hw/vfio/container-base.c              |  4 ++--
+>  hw/vfio/container.c                   |  6 +++---
+>  4 files changed, 23 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio=
+-container-base.h
+> index 3582d5f97a37877b2adfc0d0b06996c82403f8b7..326ceea52a2030eec9dad289a=
+9845866c4a8c090 100644
+> --- a/include/hw/vfio/vfio-container-base.h
+> +++ b/include/hw/vfio/vfio-container-base.h
+> @@ -82,7 +82,7 @@ int vfio_container_add_section_window(VFIOContainerBase=
+ *bcontainer,
+>  void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
+>                                         MemoryRegionSection *section);
+>  int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+> -                                           bool start);
+> +                                           bool start, Error **errp);
+>  int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontaine=
+r,
+>                                        VFIOBitmap *vbmap,
+>                                        hwaddr iova, hwaddr size);
+> @@ -121,9 +121,23 @@ struct VFIOIOMMUClass {
+>      int (*attach_device)(const char *name, VFIODevice *vbasedev,
+>                           AddressSpace *as, Error **errp);
+>      void (*detach_device)(VFIODevice *vbasedev);
+> +
+>      /* migration feature */
+> +
+> +    /**
+> +     * @set_dirty_page_tracking
+> +     *
+> +     * Start or stop dirty pages tracking on VFIO container
+> +     *
+> +     * @bcontainer: #VFIOContainerBase on which to de/activate dirty
+> +     *              page tracking
+> +     * @start: indicates whether to start or stop dirty pages tracking
+> +     * @errp: pointer to Error*, to store an error if it happens.
+> +     *
+> +     * Returns zero to indicate success and negative for error
+> +     */
+>      int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
+> -                                   bool start);
+> +                                   bool start, Error **errp);
+
+Note for later: this is always called via
+vfio_container_set_dirty_page_tracking().
+
+>      int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
+>                                VFIOBitmap *vbmap,
+>                                hwaddr iova, hwaddr size);
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 8f9cbdc0264044ce587877a7d19d14b28527291b..485e53916491f1164d29e739f=
+b7106c0c77df737 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1076,7 +1076,7 @@ static bool vfio_listener_log_global_start(MemoryLi=
+stener *listener,
+>      if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+>          ret =3D vfio_devices_dma_logging_start(bcontainer);
+>      } else {
+> -        ret =3D vfio_container_set_dirty_page_tracking(bcontainer, true);
+> +        ret =3D vfio_container_set_dirty_page_tracking(bcontainer, true,=
+ NULL);
+>      }
+>=20=20
+>      if (ret) {
+> @@ -1096,7 +1096,7 @@ static void vfio_listener_log_global_stop(MemoryLis=
+tener *listener)
+>      if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
+>          vfio_devices_dma_logging_stop(bcontainer);
+>      } else {
+> -        ret =3D vfio_container_set_dirty_page_tracking(bcontainer, false=
+);
+> +        ret =3D vfio_container_set_dirty_page_tracking(bcontainer, false=
+, NULL);
+>      }
+>=20=20
+>      if (ret) {
+
+Note for later: all callers pass NULL to ignore the new Error.
+
+> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+> index 913ae49077c4f09b7b27517c1231cfbe4befb7fb..7c0764121d24b02b6c4e66e36=
+8d7dff78a6d65aa 100644
+> --- a/hw/vfio/container-base.c
+> +++ b/hw/vfio/container-base.c
+> @@ -53,14 +53,14 @@ void vfio_container_del_section_window(VFIOContainerB=
+ase *bcontainer,
+>  }
+>=20=20
+>  int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
+> -                                           bool start)
+> +                                           bool start, Error **errp)
+>  {
+>      if (!bcontainer->dirty_pages_supported) {
+>          return 0;
+>      }
+>=20=20
+>      g_assert(bcontainer->ops->set_dirty_page_tracking);
+> -    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
+> +    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start, e=
+rrp);
+>  }
+>=20=20
+>  int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontaine=
+r,
+> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+> index 77bdec276ec49cb9cd767c0de42ec801b4421572..c35221fbe7dc5453050f97cd1=
+86fc958e24f28f7 100644
+> --- a/hw/vfio/container.c
+> +++ b/hw/vfio/container.c
+> @@ -209,7 +209,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBas=
+e *bcontainer, hwaddr iova,
+>=20=20
+>  static int
+>  vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
+> -                                    bool start)
+> +                                    bool start, Error **errp)
+>  {
+>      const VFIOContainer *container =3D container_of(bcontainer, VFIOCont=
+ainer,
+>                                                    bcontainer);
+> @@ -227,8 +227,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContain=
+erBase *bcontainer,
+>      ret =3D ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, &dirty);
+>      if (ret) {
+>          ret =3D -errno;
+> -        error_report("Failed to set dirty tracking flag 0x%x errno: %d",
+> -                     dirty.flags, errno);
+> +        error_setg_errno(errp, errno, "Failed to set dirty tracking flag=
+ 0x%x",
+> +                         dirty.flags);
+
+Silent improvement: errno is now reported symbolically (like "Operation
+not permitted") instead of numerically (like "1").  Worth mentioning in
+the commit message.
+
+Since the callers pass NULL to ignore the Error, this error condition is
+now silent, I believe.
+
+I figure you correct this in later patches.  If we accept temporary loss
+of error reporting, the commit message should mention it.  Loss of error
+reporting is easy enough to avoid, though: have the callers pass a
+pointer to a local @err, and on failure report it with
+error_report_err().
+
+>      }
+>=20=20
+>      return ret;
 
 
