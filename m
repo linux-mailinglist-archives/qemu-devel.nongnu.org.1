@@ -2,205 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D3E8D3D6C
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 19:31:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A241F8D3D6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 19:31:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCN8h-00056T-BR; Wed, 29 May 2024 13:31:03 -0400
+	id 1sCN9F-0005rH-TO; Wed, 29 May 2024 13:31:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sCN8d-00056J-7S
- for qemu-devel@nongnu.org; Wed, 29 May 2024 13:30:59 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1sCN9C-0005qf-Ki; Wed, 29 May 2024 13:31:34 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
- id 1sCN8b-0000EC-B3
- for qemu-devel@nongnu.org; Wed, 29 May 2024 13:30:58 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 44TGXubK017461; Wed, 29 May 2024 17:30:53 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
- _d=3Doracle.com; _h?=
- =?UTF-8?Q?=3Dcc:content-transfer-encoding:content-type:date:from:in-reply?=
- =?UTF-8?Q?-to:message-id:mime-version:references:subject:to;_s=3Dcorp-202?=
- =?UTF-8?Q?3-11-20;_bh=3DEqSLTm4gF/7PEwizn22bfwsJ5F5dVBOJZSbgZD01gQo=3D;_b?=
- =?UTF-8?Q?=3DZ4gR/aOY8a124PbuhhcK7BcvJjoABhOGxVYUGniJJ3G9NQX9a+UrLVtwWgrt?=
- =?UTF-8?Q?vAUM4f3K_B828zD5YHC6e95nu/2otNKkRAf11++8ZhhI8Gt1dUdK+RZa/oOcQGZ?=
- =?UTF-8?Q?n0SHwKanrBL/se_e7RsGo+J89RIjWixQotOCt3wuKXAAnXs26st8ZiQ/4SYPMmt?=
- =?UTF-8?Q?5wAWiPGcqzP4rF0l5DJy_oio6sWTP2Xo9qIqN9G6T7SmXHp1FoxrIja1sndYoRt?=
- =?UTF-8?Q?mfs39Gs5vdEjdfg3068s0NjB9u_4LKS2rmY6IiYTlJCeRrwPIpu1Bc/S2tah8Wv?=
- =?UTF-8?Q?AmDcq74t4OVejyE1BWjS89EXk5OuSZfx_yg=3D=3D_?=
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yb8g9qbvx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 May 2024 17:30:53 +0000
-Received: from pps.filterd
- (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 44TH1fTf026592; Wed, 29 May 2024 17:30:52 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com
- (mail-dm3nam02lp2040.outbound.protection.outlook.com [104.47.56.40])
- by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3yc507h0bf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 29 May 2024 17:30:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ht9nMSa/PAVVvK3Jv4I3m5q8GiqvwwRUVdDk63xXGIJ89kElF7Y0pAlzp0f5xCtmbHgEA5UNIYV030qAUUEVN6sOWs/gA+RUyfh+ZlvM6uCIMhp+E9ze/V8YBNBf/9HdOONkaZiCA0CFfqSIjP47a/J/sFATKER0SoWha8zu1Zj0SspJziSnm/qGPsdZ93yOTJ+mT+shE8gYrnwK0SL3Nhqz/Nq4fu+xzwk5yzZNA4OlhPfJXISPm8WI/AfMKzS1cpKhJ5FFliD01R922LR5KRrK2zSFV2/Fj0dK9aKgS/Gyla+tdRMXaqFIJPfum5vnAiJqn+XDYvsIWX3INExISA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EqSLTm4gF/7PEwizn22bfwsJ5F5dVBOJZSbgZD01gQo=;
- b=ARoDFEXBookSUGD16WN68EHCBBuLtuQIDiKNLiMWnRvQc0dttihGsjhIH0/WivUKX6G03E+S8pEWxKL3UhrhkZkSZalMrOGJtz6wuibMqfiM6UdkL2piCKndembpFq2eoLT9RlgK8ICTzFDgvgRlhDr/h1BB36wnBH9+lFaykhbxZR8K2WPz70hP1q4uJLWelvV5Wsx0FcpQdj4ZxA1Hvyn+tcMfzzSP7G2wwmPWWDKZzq5JaxSCRqnN5IWwwz5w1ESKeivXKSx3sUKKUxKCmwuNP4dL3o4wxDMlYT2NYbSF4yViIRrfekzF87fBAtK0XUEb76mCLFWmGf1+XWa8/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EqSLTm4gF/7PEwizn22bfwsJ5F5dVBOJZSbgZD01gQo=;
- b=CVzR2zjSKEU7p3eCxr0UL0BWNX/KIgUjRBUhf2zIjR8MKDPm+ieaW/HM4LtIktUOQs8Dq0bI4YBPHKcGTJxCJq0PhcndSet7JtskDOvvYcRXEwRdjmRMe/BN9TG9F3Qf7N8OnR2At5eKjuGsToHxHgNg9aiU0Cl2rPba8B+pLBE=
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
- by SA2PR10MB4442.namprd10.prod.outlook.com (2603:10b6:806:11a::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Wed, 29 May
- 2024 17:30:49 +0000
-Received: from SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::e06f:6709:57b4:91a2]) by SA2PR10MB4684.namprd10.prod.outlook.com
- ([fe80::e06f:6709:57b4:91a2%5]) with mapi id 15.20.7611.030; Wed, 29 May 2024
- 17:30:49 +0000
-Message-ID: <d2f1ac35-d834-40f1-a4e8-dfe74663faad@oracle.com>
-Date: Wed, 29 May 2024 13:30:44 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V1 08/26] migration: vmstate_info_void_ptr
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
- <1714406135-451286-9-git-send-email-steven.sistare@oracle.com>
- <ZlTRgsNatkvsLKpL@x1n> <f0d4b6af-a3eb-451d-b131-62addb72f3ef@oracle.com>
- <ZlYgo0UupFdQJ95L@x1n>
-Content-Language: en-US
-Organization: Oracle Corporation
-In-Reply-To: <ZlYgo0UupFdQJ95L@x1n>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR03CA0019.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::32) To SA2PR10MB4684.namprd10.prod.outlook.com
- (2603:10b6:806:119::14)
+ (Exim 4.90_1) (envelope-from <zide.chen@intel.com>)
+ id 1sCN99-0000Mb-LQ; Wed, 29 May 2024 13:31:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717003892; x=1748539892;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=yES/NuvE8l6C8bFe92M7dYdgp7eqopdfvUWcglItlnc=;
+ b=UJvWq6yLoikaiagwid8WJl7DSneKstSFYN4msXZMn9I8KfOzeSp4NN+a
+ BYhQFOCv6nR7ipatrKTifJKTr9u5os9pOpLBApwYaVuvr76F5dJhyqdsE
+ 3e7VxnAzqLi4MC5zcKADD8SnFrlAw7DByxHRkrN9siJDjGorQJORtmiIi
+ 3ZMyzCvhBc8cwZTkKgRb+a7Qi0JPDlFH75F0+kTvc9CnKmVbYCKmm1w6S
+ 4SChysBGYzLh4CXjUkQxdv2uHyRVkHenvAqxga9w1Ms2moR2rBD9NYptP
+ 8RrSXjmBPKEFmaEWw8XfuaQAZ6BePidTle7XdmT1+T2By4xBFuFllESWr A==;
+X-CSE-ConnectionGUID: HvP5M8gxSoi+7+rF0/ouew==
+X-CSE-MsgGUID: NJjr0TK5SzSPvG13+CPL4w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="24040820"
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208";a="24040820"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 10:31:29 -0700
+X-CSE-ConnectionGUID: rHpmmhdYRSGppuM0hVGGEA==
+X-CSE-MsgGUID: G/K68gGNTm6gOlq6OhfF2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208";a="35538080"
+Received: from soc-cp83kr3.jf.intel.com (HELO [10.24.10.70]) ([10.24.10.70])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 10:31:29 -0700
+Message-ID: <898effa1-1a5b-42c0-9305-8db8d5febbf5@intel.com>
+Date: Wed, 29 May 2024 10:31:21 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SA2PR10MB4442:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff72a122-8efa-4a09-4871-08dc80051520
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|366007|376005;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RldTRUhJSjdBVjNkaUlkZGhtM1EzRWlGcFZDc3E5VUc1M1BEMHRXd3N1Njh1?=
- =?utf-8?B?NjdhZEJ5dFA3TDEzdktDVTlTWUxjUnhaUktPZmMrakpmQlROYSthSTk0VzBM?=
- =?utf-8?B?OUQ2b001UWNzTUN1eUVSQ2orR28zajJUWFFpNUFKa21VYUtSNkhZc2lsUUpm?=
- =?utf-8?B?OUNQVHg0RHZRTmlZbUx0KzVrWUw3RTVnb3YxUGpBaEJ6WmgzSzdZYmdrc2Qw?=
- =?utf-8?B?WWZkbmU2cmFmenpLUWdqV1ZQS0lYVUt2bWFpWndNdHdjMm4yQnh4QnN6TnJ2?=
- =?utf-8?B?WHJqbjlRa2MzMGFQd0pmdTVPQ1VnY2dUVExWMG5tc25MNld1ZC8vbmFhSzlX?=
- =?utf-8?B?OFdUem94ZktzL21tNk5CUytOYzRtditpT0RiUWVWVG1OK0QxVlVKNy9iWEVl?=
- =?utf-8?B?MFljQ1NWSjRUblV2ZVNCN0o5cUZqZ1ZhQVBqQXFpSVVjS1pzeURPbjh6eXps?=
- =?utf-8?B?c2xGbmFvQ0tWejZ3KysyQ0VtVGFMZFJCS0F0WkRqVUVYR3Z4Y2g2b2NiME84?=
- =?utf-8?B?UGtuMTRPcUVleDJqenBneFlkc05WUEZkOTJJb1BBRU1qN3B2aWJqZmpueUov?=
- =?utf-8?B?UWNLS1dwcFQyQUdHNG8rTS94WjJ5UmNqbUdZOXllYVpMQTBYeTVuZXNRcjJi?=
- =?utf-8?B?c3pWTjhNbE9qNGwya1VDQmZYaXMvdjBUblhXKzluT2RZa0RRRGgxLytLK0pm?=
- =?utf-8?B?WVg2MTZXNmtObjEydlJISFRnclV5VlhpQi9TWEl5UWREazB1dHNCUUlpaTJq?=
- =?utf-8?B?NjN6bnc0NWZGWjhhZ1V1OFJNWHUzMzVqeDZQQ0t6RkpNNEZlQW9mZnB6cmYv?=
- =?utf-8?B?ZzR6bmdjMnEyTXJ3RHlCY0ZjcUlJVnI5MWI0cjM5d2VFcWV1aURBZHR2eHZn?=
- =?utf-8?B?SHBlem5sNDIwRzRFUldSZzdtcHlMMklMUkpOc2w3N2RHMWVPWUZqNHV3TlVh?=
- =?utf-8?B?WnlYaVd3V0IzcWVhMjBMSVZvcHZCS2czNnQwdG9TMjcvYVlPVDEzMTR4bGRi?=
- =?utf-8?B?VEo1SFR1UmxoSFB0bXVKMnVSVXUvTUpRa2RXVkJIVnhnVVR6VjFMOXEvSXFF?=
- =?utf-8?B?S1RWY2dnejR3WnBCbksrODk1L3VsbElnVFdLdGpQUisxdUk0bE4wb3FIdUhp?=
- =?utf-8?B?MXRYc3FsbWdndlZ3cEFkaUM2bjZHTkxDWldMMG00aEQyNXBLbGxrQ3RNZENV?=
- =?utf-8?B?ZmJsWFlPMnRSOTdJenh4blNYRCt6aTNIdG5WbkRibEZuVVYwZHRkbDNZbU1F?=
- =?utf-8?B?Sy9WRG1FMjdlYUdGeXZKWmJDbE9EWjhBMnphdTVJZ1BORFd1YnU4R29oRmhj?=
- =?utf-8?B?a3VCT2J6NkFRZklEUFRFcy9PcS9JLzBremZyZEJzT2xHclNhZUlZcm1zbmZC?=
- =?utf-8?B?QkJQazRPU29QSm10c3owSHEydlNlbzgxY1ViWXpOcTRlRmRvYVAyeHh3bUtL?=
- =?utf-8?B?YXdkU3RHZmZpR1FTTVZwRDBUZUxOVTZ3QlZxdXhjZHVUdng5eWZCRW9JcDcz?=
- =?utf-8?B?QXllWXdRL2h2Z0xkbFFTMnN1VDdDYytFaVhoV3lidWtOVU8zdFdMVnNBQXpm?=
- =?utf-8?B?Sm9aSlc5MEtpa1UwSnc0cS9POTRoQnpmU1VQem8zQ2c2MHMxZXV6bzhpS204?=
- =?utf-8?B?RlpCVEU2VmU4VTFqZEFhTm9kaCtoQUE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(7416005)(366007)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aUhVdk9RTjl4MlJWZnE0cWtSdEQ3MEY0UndxSlR6MXdDOVY0dWVhNk4wL0x4?=
- =?utf-8?B?RkRRQ1FBOXhadlRpN0kxUFRMcTVoQWVVeUZ6VC9mMEhiYlhMclluRUFvS3ZO?=
- =?utf-8?B?R1kzVjl1eTA4bzNFd1NReHRYTENsZjNXOTYveGRLY3ZQTXNPV3BHdHl3djd5?=
- =?utf-8?B?K1JtT2lpMVJxdE9QNWFka0NkZlhMSllVRUFSVGxGWXY2SHhYMW1zOTRsZHNu?=
- =?utf-8?B?RUc4d1RYRlMvbEFLWWU2OGljak1LcUdIZ2hwWk1HaVlRMmhuVGdaZmxQVGlI?=
- =?utf-8?B?dG9UMng0MDdoM2xLN0ZsSUR4RkdOYzN1M0VHQ3Nsb0FGNmUxWmNzWkEza1JY?=
- =?utf-8?B?ckZQNU9HNXNnK05XWGkxdzh0UEZkVFdiNjFTWlZDbWlMTkxXTG5UMUNaYlJj?=
- =?utf-8?B?WnczaDVaaGJSRlFoU2VLdXIrRVZlam1XT21CeXNzYUg2ZytReTh6K083NFIz?=
- =?utf-8?B?V1JqTDdIMkJrNnNCdHc5RjBiTjVyOG9WWlN6L1VFMld0bmM0Z0xRdFF6RWF3?=
- =?utf-8?B?RVB0OEUvTytXUWZXNUh1M3g5T1JYaXlJcmpEZ3FpL3BCNFJVd0dXUUdTenVT?=
- =?utf-8?B?OUhpbHFmNmc1OXdrZmlubGRYQVRSL1Y1TlJCelBRdTlHajVSbXpzM1dHMHlz?=
- =?utf-8?B?YUsrUnA2QXdPaTJHU0tIZ2NSM1hlaHZLaW95Tms3ckxmV0RnYVN1VEsveVBO?=
- =?utf-8?B?MDlaMFdIaERVU2V4STMybTF2N244M09ZRUtDd3RDczljdFNVR2NRcHMyRDRN?=
- =?utf-8?B?NStRMUlOMkgwbXcrd1E3ZzNKQTdHOWdlVXcwSlZ5VTVDL0p0NFh5RTBlTmti?=
- =?utf-8?B?Y0MySDlFc1FVZTdRYXhNTXhyRWlaL2x6cStLR2l5SnJhSjAxVCs3N205ZGwz?=
- =?utf-8?B?VDhBVWZkZFlMb0Jrd2llT1lMZVpiZVhHYWxmVWFMVk5JTkx4eVRaWTNpUTBB?=
- =?utf-8?B?OVFIYnVNUlZ4b2daeno5VlZ5b1VydVFLU1VxWG9GM2RuVVZOOVpxZW44OGRn?=
- =?utf-8?B?SWlWZDFCRnhRb3hXVWdGby9kYnRGTzNzMTJ6ZjJOd1pnTTZ5U0t1R1FxMHgx?=
- =?utf-8?B?R25wMmhoT3VYaFByM0VSYlJQRTBNZ1gzZkNGU3IvMUhvcnBQaG5ZUEJESDZy?=
- =?utf-8?B?RnNQR2N5ZENCeWVXWjNyMXpVUzZUNHphSXFweklqUkZqbGc3cFRSM0FGYWEv?=
- =?utf-8?B?Rm02OFhheUl2TXJaRjlTdE1mQU03cUdUUURkWjlaQzdCS1dGakFUY1VxWjNt?=
- =?utf-8?B?RXliY09mVHpadzJkMVRzZ1U2SzMwRENtNWdBeTI4b2Jwd2ZjR3dlNjdwSmVJ?=
- =?utf-8?B?L3g4a1gzd3lJdE8vZXJtN2YyVkI4dkpyVHE0YkU1UjZ2d09IcW5GeGgvNy9I?=
- =?utf-8?B?eGxjd1g3UEdaRERzMVFPUllqQ3JES20yZFlTTXNVYkMrdjFoMTl1bHM4SmFK?=
- =?utf-8?B?a3I3T1orK0gvU2JNVVpYTmcvWE9VT0tucDlrYWsxTVRsMjZtWm9raGVNWU5L?=
- =?utf-8?B?aDdXT29xQTF4enZSQUFhcnpiZm9xbTJSVFZEOHpQdjBwdTZJN1BjUVgybnhn?=
- =?utf-8?B?cjZRMFEzMzVxSFdvZGVrMHE1ZGdOWHA4THlGTnphU0NLMTYxSkMyWFV1ZlV0?=
- =?utf-8?B?TDM0d3NvZGs3cDdPZTdpSVhNVGpDKzVZWnZtKzU5SnJyWTZnbndPallCZ2xQ?=
- =?utf-8?B?VkQ4KzMzTlRoY2hGbDlZV3JodmxacGsxTkVrRUlhekJQeXhvdGYxa0RoOG10?=
- =?utf-8?B?NERtdnovMGN1NERCcWR4c1RIWnVjRmlMOXFHZEpnYlArR0tFcnFKYmJZUkFR?=
- =?utf-8?B?THFBWTErbnFRUGNrRGNLWWtrM1NCa0ZoZkN4ZGhncUVwaTFJdlVoZVZEQVlB?=
- =?utf-8?B?NVVQcm9CcGlGeVpSSE0rWTNqelpxcEJyTzQwYmJuYjYyK0t5T3RERzNEKzI2?=
- =?utf-8?B?YXpBcW56R20rcE5oVVN2VG5XeVdpeWxmSFB3OCtzM1hPM01YRm5URnVIWEZB?=
- =?utf-8?B?d1M4QzVKRUVqR0NMeG1mYVpPZk5MUmVxZmU4bFJ2ZjkyRFF3ME5hT3ZOKy9N?=
- =?utf-8?B?Q1FxSTZMeW1tcDRSZ3JNMDBFb3BkTFRZWmk3NDRlMTFIb1pQODBwbTVXTDNI?=
- =?utf-8?B?R2FzU2JDcDY2WWhFOGxpY3JMWXUzTi90WUhuYkVjWnFOTDFSZHR1eVZYOFlJ?=
- =?utf-8?B?M2c9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: dKJmtTCnwo4uG11x8z8G/gvFgIUk9+BjbzlXgTfFrwD7nlP/g8ESKo90HQ26IEvKoxaN83fW7dHjLSKtAWAQhy6ubzaHv47MD40ICqvzTmbYRMkXrJ8dwlTudb5Q2zvZzs/+81au3ew78YmvCvCq46Ctqb2sGmx955MqanYonyOAa8Mas/TZelAl1CCIfj1RDYlZ1CCwUyZcYufzfvrCpJoGh9Lv1aKOLY+P9Veg88H9PW/03OSklfB0iH9YT/X7vxLdbB1i4r5GgiliSTq4RcOEBedH8BiCFCcbB5jaZ+BCRqktbCWHSpdiGj8iP/0kRIqR7cK2zK0n8ODnFTNAjd8QSA0stIuhGChM3dCPwhbYIV632TLCbh0o/8uQ5WEX6S6vFOlMWeT9G/USyItJhmk27SPbRa/LA2ljg9+FMQ5gjSn3x7HSQH2T8D0xxn13mQ0Kr3PHQtoXpgv1djPkh0y5/C5uB6YqAoCBNe0ayvmvvmQtxD9DMgRt4ZkemYDUDUo/ciATkIKlo3frahB2GDFJPC74jZYHCBROx2ItYM2+TAwlkPQ8vJ2OmISk9nVN9zIDiD10UjqvQdy7YQdXdtVU8Ll2iIegQHPVL56/LK8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff72a122-8efa-4a09-4871-08dc80051520
-X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2024 17:30:49.8336 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2JIGCBhlQ8y2UAXp19wAFRE7Jk2KCOviFgCbH4tGxkA8bc6btxsPaxd07BzAxsrQ4coSjP0YmDUvh8H+sP6LjGjGd/RivC+PCxV9Ggm8nvU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4442
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-29_13,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- mlxscore=0 adultscore=0
- suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405290122
-X-Proofpoint-GUID: 44Uaph1g4Qw7KH59plG0k5XY-O1O3ji5
-X-Proofpoint-ORIG-GUID: 44Uaph1g4Qw7KH59plG0k5XY-O1O3ji5
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 0/3] improve -overcommit cpu-pm=on|off
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mst@redhat.com,
+ thuth@redhat.com, cfontana@suse.de, xiaoyao.li@intel.com,
+ qemu-trivial@nongnu.org
+References: <20240524200017.150339-1-zide.chen@intel.com>
+ <20240528112327.634e95a6@imammedo.users.ipa.redhat.com>
+ <29944dba-7005-496d-81ff-1cbc77c67f15@intel.com>
+ <20240529144634.40aa597f@imammedo.users.ipa.redhat.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20240529144634.40aa597f@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zide.chen@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -214,82 +81,134 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Steven Sistare <steven.sistare@oracle.com>
-From:  Steven Sistare via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/28/2024 2:21 PM, Peter Xu wrote:
-> On Tue, May 28, 2024 at 11:10:16AM -0400, Steven Sistare wrote:
->> On 5/27/2024 2:31 PM, Peter Xu wrote:
->>> On Mon, Apr 29, 2024 at 08:55:17AM -0700, Steve Sistare wrote:
->>>> Define VMSTATE_VOID_PTR so the value of a pointer (but not its target)
->>>> can be saved in the migration stream.  This will be needed for CPR.
->>>>
->>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>
->>> This is really tricky.
->>>
->>>   From a first glance, I don't think migrating a VA is valid at all for
->>> migration even if with exec.. and looks insane to me for a cross-process
->>> migration, which seems to be allowed to use as a generic VMSD helper.. as
->>> VA is the address space barrier for different processes and I think it
->>> normally even apply to generic execve(), and we're trying to jailbreak for
->>> some reason..
->>>
->>> It definitely won't work for any generic migration as sizeof(void*) can be
->>> different afaict between hosts, e.g. 32bit -> 64bit migrations.
->>>
->>> Some description would be really helpful in this commit message,
->>> e.g. explain the users and why.  Do we need to poison that for generic VMSD
->>> use (perhaps with prefixed underscores)?  I think I'll need to read on the
->>> rest to tell..
->>
->> Short answer: we never dereference the void* in the new process.  And must not.
->>
->> Longer answer:
->>
->> During CPR for vfio, each mapped DMA region is re-registered in the new
->> process using the new VA.  The ioctl to re-register identifies the mapping
->> by IOVA and length.
->>
->> The same requirement holds for CPR of iommufd devices.  However, in the
->> iommufd framework, IOVA does not uniquely identify a dma mapping, and we
->> need to use the old VA as the unique identifier.  The new process
->> re-registers each mapping, passing the old VA and new VA to the kernel.
->> The old VA is never dereferenced in the new process, we just need its value.
->>
->> I suspected that the void* which must not be dereferenced might make people
->> uncomfortable.  I have an older version of my code which adds a uint64_t
->> field to RAMBlock for recording and migrating the old VA.  The saving and
->> loading code is slightly less elegant, but no big deal.  Would you prefer
->> that?
+
+
+On 5/29/2024 5:46 AM, Igor Mammedov wrote:
+> On Tue, 28 May 2024 11:16:59 -0700
+> "Chen, Zide" <zide.chen@intel.com> wrote:
 > 
-> I see, thanks for explaining.  Yes that sounds better to me.  Re the
-> ugliness: is that about a pre_save() plus one extra uint64_t field?  In
-> that case it looks better comparing to migrating "void*".
+>> On 5/28/2024 2:23 AM, Igor Mammedov wrote:
+>>> On Fri, 24 May 2024 13:00:14 -0700
+>>> Zide Chen <zide.chen@intel.com> wrote:
+>>>   
+>>>> Currently, if running "-overcommit cpu-pm=on" on hosts that don't
+>>>> have MWAIT support, the MWAIT/MONITOR feature is advertised to the
+>>>> guest and executing MWAIT/MONITOR on the guest triggers #UD.  
+>>>
+>>> this is missing proper description how do you trigger issue
+>>> with reproducer and detailed description why guest sees MWAIT
+>>> when it's not supported by host.  
+>>
+>> If "overcommit cpu-pm=on" and "-cpu host" are present, as shown in the
+> it's bette to provide full QEMU CLI and host/guest kernels used and what
+> hardware was used if it's relevant so others can reproduce problem.
 
-Yes.  Will do.
+I ever reproduced this on an older Intel Icelake machine, a
+Sapphire Rapids and a Sierra Forest, but I believe this is a x86 generic
+issue, not specific to particular models.
 
-> I'm trying to read some context on the vaddr remap thing from you, and I
-> found this:
+For the CLI, I think the only command line options that matter are
+ -overcommit cpu-pm=on: to set enable_cpu_pm
+ -cpu host: so that cpu->max_features is set
+
+For QEMU version, as long as it's after this commit: 662175b91ff2
+("i386: reorder call to cpu_exec_realizefn")
+
+The guest fails to boot:
+
+[ 24.825568] smpboot: x86: Booting SMP configuration:
+[ 24.826377] .... node #0, CPUs: #1 #2 #3 #4 #5 #6 #7 #8 #9 #10 #11 #12
+#13 #14 #15 #17
+[ 24.985799] .... node #1, CPUs: #128 #129 #130 #131 #132 #133 #134 #135
+#136 #137 #138 #139 #140 #141 #142 #143 #145
+[ 25.136955] invalid opcode: 0000 1 PREEMPT SMP NOPTI
+[ 25.137790] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.8.0 #2
+[ 25.137790] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/04
+[ 25.137790] RIP: 0010:mwait_idle+0x35/0x80
+[ 25.137790] Code: 6f f0 80 48 02 20 48 8b 10 83 e2 08 75 3e 65 48 8b 15
+47 d6 56 6f 48 0f ba e2 27 72 41 31 d2 48 89 d8
+[ 25.137790] RSP: 0000:ffffffff91403e70 EFLAGS: 00010046
+[ 25.137790] RAX: ffffffff9140a980 RBX: ffffffff9140a980 RCX:
+0000000000000000
+[ 25.137790] RDX: 0000000000000000 RSI: ffff97f1ade21b20 RDI:
+0000000000000004
+[ 25.137790] RBP: 0000000000000000 R08: 00000005da4709cb R09:
+0000000000000001
+[ 25.137790] R10: 0000000000005da4 R11: 0000000000000009 R12:
+0000000000000000
+[ 25.137790] R13: ffff98573ff90fc0 R14: ffffffff9140a038 R15:
+0000000000093ff0
+[ 25.137790] FS: 0000000000000000(0000) GS:ffff97f1ade00000(0000)
+knlGS:0000000000000000
+[ 25.137790] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 25.137790] CR2: ffff97d8aa801000 CR3: 00000049e9430001 CR4:
+0000000000770ef0
+[ 25.137790] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
+0000000000000000
+[ 25.137790] DR3: 0000000000000000 DR6: 00000000ffff07f0 DR7:
+0000000000000400
+[ 25.137790] PKRU: 55555554
+[ 25.137790] Call Trace:
+[ 25.137790] <TASK>
+[ 25.137790] ? die+0x37/0x90
+[ 25.137790] ? do_trap+0xe3/0x110
+[ 25.137790] ? mwait_idle+0x35/0x80
+[ 25.137790] ? do_error_trap+0x6a/0x90
+[ 25.137790] ? mwait_idle+0x35/0x80
+[ 25.137790] ? exc_invalid_op+0x52/0x70
+[ 25.137790] ? mwait_idle+0x35/0x80
+[ 25.137790] ? asm_exc_invalid_op+0x1a/0x20
+[ 25.137790] ? mwait_idle+0x35/0x80
+[ 25.137790] default_idle_call+0x30/0x100
+[ 25.137790] cpuidle_idle_call+0x12c/0x170
+[ 25.137790] ? tsc_verify_tsc_adjust+0x73/0xd0
+[ 25.137790] do_idle+0x7f/0xd0
+[ 25.137790] cpu_startup_entry+0x29/0x30
+[ 25.137790] rest_init+0xcc/0xd0
+[ 25.137790] start_kernel+0x396/0x5d0
+[ 25.137790] x86_64_start_reservations+0x18/0x30
+[ 25.137790] x86_64_start_kernel+0xe7/0xf0
+[ 25.137790] common_startup_64+0x13e/0x148
+[ 25.137790] </TASK>
+[ 25.137790] Modules linked in:
+[ 25.137790] --[ end trace 0000000000000000 ]--
+[ 25.137790] invalid opcode: 0000 2 PREEMPT SMP NOPTI
+[ 25.137790] RIP: 0010:mwait_idle+0x35/0x80
+[ 25.137790] Code: 6f f0 80 48 02 20 48 8b 10 83 e2 08 75 3e 65 48 8b 15
+47 d6 56 6f 48 0f ba e2 27 72 41 31 d2 48 89 d8
+
 > 
-> https://lore.kernel.org/all/Y90bvBnrvRAcEQ%2F%2F@nvidia.com/
+>> following, CPUID_EXT_MONITOR is set after x86_cpu_filter_features(), so
+>> that it doesn't have a chance to check MWAIT against host features and
+>> will be advertised to the guest regardless of whether it's supported by
+>> the host or not.
+>>
+>> x86_cpu_realizefn()
+>>   x86_cpu_filter_features()
+>>   cpu_exec_realizefn()
+>>     kvm_cpu_realizefn
+>>       host_cpu_realizefn
+>>         host_cpu_enable_cpu_pm
+>>           env->features[FEAT_1_ECX] |= CPUID_EXT_MONITOR;
+>>
+>>
+>> If it's not supported by the host, executing MONITOR or MWAIT
+>> instructions from the guest triggers #UD, no matter MWAIT_EXITING
+>> control is set or not.
 > 
-> So it will work with iommufd now?  Meanwhile, what's the status for mdev?
-> Looks like it isn't supported yet for both.
+> If I recall right, kvm was able to emulate mwait/monitor.
+> So question is why it leads to exception instead?
 
-I am currently working on the kernel and qemu code to support iommufd.
-It is an RFE on top of this initial cpr-exec work that I will post separately
-later.  I do know that it will require the old VA, so I am proposing to
-preserve old VA now in the migration stream to avoid adding extra backwards
-compatibility code later.
+KVM can come to play only iff it can trigger MWAIT/MONITOR VM exits. I
+didn't find explicit proof from Intel SDM that #UD exceptions take
+precedence over MWAIT/MONITOR VM exits, but this is my speculation. For
+example, in ancient machines which don't support MWAIT yet, the only way
+it can do is #UD, not MWAIT VM exit?
 
-I have prototyped userland code that supports mdev, based on jason's suggestion to
-fork an extra process to handle mdev translations during the transition from old
-to new qemu, but it is a work in progres and adds complexity, and I do not plan to
-submit that any time soon.  Another RFE.  For now mdev is not supported.
 
-- Steve
 
 
