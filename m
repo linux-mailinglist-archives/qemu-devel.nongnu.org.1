@@ -2,84 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5546C8D2C49
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 07:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C64108D2CBB
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 07:55:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCBhA-0004fu-Ao; Wed, 29 May 2024 01:17:52 -0400
+	id 1sCCFm-0001cM-Dm; Wed, 29 May 2024 01:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBh7-0004fD-ML
- for qemu-devel@nongnu.org; Wed, 29 May 2024 01:17:49 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBh6-0005XE-1B
- for qemu-devel@nongnu.org; Wed, 29 May 2024 01:17:49 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-421124a04d6so14359515e9.3
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 22:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716959866; x=1717564666; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TaCMC4VTA5PCDTdrs4hE3YwemLrOkKOiTKlVZvMNghk=;
- b=wGBfBDN3rbrwV0HALvcTPXojytKqtM2y4GfYmpSNuoDJnaJKENURYvs5t2XIVK/MZQ
- iXBZCeAZKit7CNdExoixvC6ioKhCMoQwNURKVFnCt49tLJdZ59olzNw9vcl+5cr19+xL
- 120IfBK+868qkkMBb9z14tWabzFpUQPQcThU9RzYw2azVWHLSoHSA0Sd1cM3rxEf76Mf
- 5HtR8c6NglSm1L8YmIV3EBsJILDU68GzfF8NUzNxUqn2Ezx6z93zkwDrCmeOsMLuK1gb
- nxKiXtBor5bBdHQNzBgU9JbmsSKdK9r4d5zPW2iDRRptcu1ka9u8Ef4TIFkdbQTOjyAq
- UVEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716959866; x=1717564666;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TaCMC4VTA5PCDTdrs4hE3YwemLrOkKOiTKlVZvMNghk=;
- b=VCH9ukdobzTAAcKoQjBNL1c+TUkKUpZLjfSQF8f9x+HRexvci+Lk7F38xbmAQkcxa4
- t0mlVVT28tsH0aRZHUG00Xh2lFbrxAtYitGyYbSTSOb9H29janN806Dr5lOcCrqjCUJ5
- XyeHIvTe+N5S29aUvbj5IBivWi7WC2WqD/H2lTawQiNNJKhUSuHlNIcRKogsOCC1ArDn
- 5+nke59FPvqUsq6K8IWzcjHtxA1UXVtu2aakMqqS8k8DGUTua2uyHEq2fgGX6ZiiUm1v
- tFgU2WjmMduUNIvN7dBMWjeH2mr5qZBocm1XQ6z9tLN83J+z9T8HBZYUGwPuu5vDe479
- ckPA==
-X-Gm-Message-State: AOJu0YwOOdat6ULv1aRMm/N8zPdz6q8ZtrhXGbRodqcq5zjTIKOIzNfQ
- Ama7rYfhf9PAICtnixomcMR2PoEiqm6dqmjPCqZjb3c5qqMlJTPZVmCBkjeKJy3xGpKzaQTFb4d
- s
-X-Google-Smtp-Source: AGHT+IHwyLFnd1TLe8yRdF97RHd5f++rHUDlRWmZ2JGjfdY5NgvJoIy/zibixwWuIsshHwmc9c4f4Q==
-X-Received: by 2002:a05:600c:1387:b0:420:e88b:6fb3 with SMTP id
- 5b1f17b1804b1-42108964ad6mr99647425e9.0.1716959866263; 
- Tue, 28 May 2024 22:17:46 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.204.141])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100fb9042sm199630475e9.39.2024.05.28.22.17.45
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 May 2024 22:17:45 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 23/23] hw/i386/pc: Replace PCMachineClass::acpi_data_size
- by PC_ACPI_DATA_SIZE
-Date: Wed, 29 May 2024 07:15:39 +0200
-Message-ID: <20240529051539.71210-24-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240529051539.71210-1-philmd@linaro.org>
-References: <20240529051539.71210-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1sCCFj-0001bn-VW
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 01:53:36 -0400
+Received: from mgamail.intel.com ([192.198.163.18])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1sCCFi-0001Ox-4E
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 01:53:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716962014; x=1748498014;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=LY/ObYTUvXzeB7cV/aKSw+GkKWORF0JdKHFTljKvWC8=;
+ b=YBx2MoFEMBZgnTDCXUO2Ur1lrcvZf8WZMkRkgGTzhiAVnwz7PTmC8Ua+
+ cR88jbIKXGVBUv+lfk/iRDe83wITpvpFF9Gbsu4CDhKuL3alrvUkZb7BN
+ 61D1qLxvn3XazlPyXwiGZ6QWMHY+VFyP/jTOqVIL+7q4mmT/qCEmITWtI
+ hZOvMWZiiKFVWtywYAgps3CQtzV6S2iOVWnFXpryBM3vzjdKKT8+a15dQ
+ K3eoxdZ0t/vtuFDj4Xh/EyDgiCXC7zp6Lgh4fZZj+MQXWgnmd7j5QSdVd
+ t8XDoPfyaHevKLsUyZBI9cfBVjJfdegVAyvFLfQ2SBLu0O1FpFON32rLz Q==;
+X-CSE-ConnectionGUID: qOpFVVtjTD++h+iaSoc4aA==
+X-CSE-MsgGUID: FDsqBvWiQpq9SzFVffazeA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13116779"
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="13116779"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2024 22:53:32 -0700
+X-CSE-ConnectionGUID: N1LOOWoHSMeTgDUgSRhEYg==
+X-CSE-MsgGUID: 89yjPDPzQrGOwORe9d+oCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="40303084"
+Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.124.244.145])
+ ([10.124.244.145])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2024 22:53:31 -0700
+Message-ID: <57900ae8-b4b3-4455-b8e5-d7d7e269916e@intel.com>
+Date: Wed, 29 May 2024 13:53:28 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qemu/bitops.h: Locate changed bits
+To: Tong Ho <tong.ho@amd.com>, qemu-devel@nongnu.org
+References: <20240529045909.1796787-1-tong.ho@amd.com>
+From: "Wang, Lei" <lei4.wang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20240529045909.1796787-1-tong.ho@amd.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.18; envelope-from=lei4.wang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,112 +81,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::acpi_data_size was only used by the pc-i440fx-2.0
-machine, which got removed. Since it is constant, replace the class
-field by a definition (local to hw/i386/pc.c, since not used
-elsewhere).
+On 5/29/2024 12:59, Tong Ho wrote:> Add inlined functions to obtain a mask of
+changed bits.  3 flavors
+> are added: toggled, changed to 1, changed to 0.
+> 
+> These newly added utilities aid common device behaviors where
+> actions are taken only when a register's bit(s) are changed.
+> 
+> Signed-off-by: Tong Ho <tong.ho@amd.com>
+> ---
+>  include/qemu/bitops.h | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+> 
+> diff --git a/include/qemu/bitops.h b/include/qemu/bitops.h
+> index 2c0a2fe751..7a701474ea 100644
+> --- a/include/qemu/bitops.h
+> +++ b/include/qemu/bitops.h
+> @@ -148,6 +148,39 @@ static inline int test_bit(long nr, const unsigned long *addr)
+>      return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
+>  }
+>  
+> +/**
+> + * find_bits_changed - Returns a mask of bits changed.
+> + * @ref_bits: the reference bits against which the test is made.
+> + * @chk_bits: the bits to be checked.
+> + */
+> +static inline unsigned long find_bits_changed(unsigned long ref_bits,
+> +                                              unsigned long chk_bits)
+> +{
+> +    return ref_bits ^ chk_bits;
+> +}
+> +
+> +/**
+> + * find_bits_to_1 - Returns a mask of bits changed from 0 to 1.
+> + * @ref_bits: the reference bits against which the test is made.
+> + * @chk_bits: the bits to be checked.
+> + */
+> +static inline unsigned long find_bits_to_1(unsigned long ref_bits,
+> +                                           unsigned long chk_bits)
+> +{
+> +    return find_bits_changed(ref_bits, chk_bits) & chk_bits;
+> +}
+> +
+> +/**
+> + * find_bits_to_0 - Returns a mask of bits changed from 1 to 0.
+> + * @ref_bits: the reference bits against which the test is made.
+> + * @chk_bits: the bits to be checked.
+> + */
+> +static inline unsigned long find_bits_to_0(unsigned long ref_bits,
+> +                                           unsigned long chk_bits)
+> +{
+> +    return find_bits_to_1(chk_bits, ref_bits);
+> +}
+> +
+>  /**
+>   * find_last_bit - find the last set bit in a memory region
+>   * @addr: The address to start the search at
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
- include/hw/i386/pc.h |  4 ----
- hw/i386/pc.c         | 19 ++++++++++++-------
- hw/i386/pc_piix.c    |  7 -------
- 3 files changed, 12 insertions(+), 18 deletions(-)
-
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 63568eb9e9..db26368ace 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -74,9 +74,6 @@ typedef struct PCMachineState {
-  *
-  * Compat fields:
-  *
-- * @acpi_data_size: Size of the chunk of memory at the top of RAM
-- *                  for the BIOS ACPI tables and other BIOS
-- *                  datastructures.
-  * @gigabyte_align: Make sure that guest addresses aligned at
-  *                  1Gbyte boundaries get mapped to host
-  *                  addresses aligned at 1Gbyte boundaries. This
-@@ -100,7 +97,6 @@ struct PCMachineClass {
- 
-     /* ACPI compat: */
-     bool has_acpi_build;
--    unsigned acpi_data_size;
-     int pci_root_uid;
- 
-     /* SMBIOS compat: */
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index b84c8ddba0..9dca3f0354 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -264,6 +264,16 @@ GlobalProperty pc_compat_2_4[] = {
- };
- const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
- 
-+/*
-+ * @PC_ACPI_DATA_SIZE:
-+ * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
-+ * and other BIOS datastructures.
-+ *
-+ * BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K
-+ * reported to be used at the moment, 32K should be enough for a while.
-+ */
-+#define PC_ACPI_DATA_SIZE (0x20000 + 0x8000)
-+
- GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
- {
-     GSIState *s;
-@@ -645,8 +655,7 @@ void xen_load_linux(PCMachineState *pcms)
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     rom_set_fw(fw_cfg);
- 
--    x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                   pcmc->pvh_enabled);
-+    x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     for (i = 0; i < nb_option_roms; i++) {
-         assert(!strcmp(option_rom[i].name, "linuxboot.bin") ||
-                !strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
-@@ -980,8 +989,7 @@ void pc_memory_init(PCMachineState *pcms,
-     }
- 
-     if (linux_boot) {
--        x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                       pcmc->pvh_enabled);
-+        x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     }
- 
-     for (i = 0; i < nb_option_roms; i++) {
-@@ -1737,9 +1745,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->has_reserved_memory = true;
-     pcmc->enforce_amd_1tb_hole = true;
-     pcmc->isa_bios_alias = true;
--    /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
--     * to be used at the moment, 32K should be enough for a while.  */
--    pcmc->acpi_data_size = 0x20000 + 0x8000;
-     pcmc->pvh_enabled = true;
-     pcmc->kvmclock_create_always = true;
-     x86mc->apic_xrupt_override = true;
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index e7f51a5f2c..e4930b7f48 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -414,13 +414,6 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
-     pcms->south_bridge = PCSouthBridgeOption_lookup.array[value];
- }
- 
--/* Looking for a pc_compat_2_4() function? It doesn't exist.
-- * pc_compat_*() functions that run on machine-init time and
-- * change global QEMU state are deprecated. Please don't create
-- * one, and implement any pc-*-2.4 (and newer) compat code in
-- * hw_compat_*, pc_compat_*, or * pc_*_machine_options().
-- */
--
- #ifdef CONFIG_ISAPC
- static void pc_init_isa(MachineState *machine)
- {
--- 
-2.41.0
-
+Reviewed-by: Lei Wang <lei4.wang@intel.com>
 
