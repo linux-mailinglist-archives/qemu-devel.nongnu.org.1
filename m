@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCBA8D3875
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4645B8D38C5
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJlQ-0002Pn-EW; Wed, 29 May 2024 09:54:48 -0400
+	id 1sCJy1-00067f-9T; Wed, 29 May 2024 10:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCJlO-0002PF-BI
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:54:46 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCJlL-0003Ov-8a
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:54:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716990884; x=1748526884;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=fWr3mfW8IQ5iVX/mRhzfvVJbpcUHDR5OYiEUyX5ZpJI=;
- b=HNwJIPFL1OYYAdPN5lP/cApdDQ7fdgjZ6s+goka7HZgmxGgzQi8t3DeQ
- i5rXyq/v4ZsHog6QlNhU7VQeHWd8XE3l+LGJnUxIftrL1K+XcPzWAiSSt
- WYkn1lKVxgq7bHyaWOPW6DBSLxfiFpB5PivNdHcJdROgMvYSj8wDa1wMG
- V1AxiK4ZMjVW5dWNfqNNRsKDVTZdps7d+I8dYHlp6yph8EHgXQB7ipFD8
- +6zBKY9iPiG21sWtuwnaiiJpWZL4TpcrO+F7veWLHhkxi1Qw4UkyoEITE
- 9rASh6A2hAyZL+uGDihJCOWX7Dj+L5mwMuYHympwM1P7oKErU04Zo+Psp A==;
-X-CSE-ConnectionGUID: 7CmRiHceRUaV0++vAm3Uvw==
-X-CSE-MsgGUID: UwfByJr6TQev3z13Q8PHNg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="17226110"
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="17226110"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 06:54:40 -0700
-X-CSE-ConnectionGUID: 3BTqzFJbQEuSXs4Kq/toWw==
-X-CSE-MsgGUID: Ztd7+xNdQBCUsK30zrqXlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="66306587"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa002.jf.intel.com with ESMTP; 29 May 2024 06:54:37 -0700
-Date: Wed, 29 May 2024 22:10:00 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
- =?utf-8?B?IkRhbmllbCBQIC4gQmVycmFuZ++/vSI=?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
-Message-ID: <Zlc3ONhFa90wdcQp@intel.com>
-References: <20240527081421.2258624-1-zhao1.liu@intel.com>
- <20240527195944.GA913874@fedora.redhat.com>
- <ZlV+Su4hziCFymVt@intel.com>
- <20240528130518.GA993828@fedora.redhat.com>
- <D9370410-E32D-4235-8CF0-87E620398246@ynddal.dk>
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sCJxy-00067P-6X
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:46 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1sCJxw-0005hL-8q
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:45 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-5241b49c0daso2496253e87.0
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:07:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716991662; x=1717596462; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=jc75QmhZgUScJV2QjYGkzz3TXBT+T/zn8wfny+YuTZc=;
+ b=ACxOgqFO1KSz7IDbAA6z7Prakxa/ecY35QrxYv/OBHhTvC+Oqee9gFsmLiTk5Aw3n+
+ Lg38E9yDgHQIO+fmp92pIbHzedkPHk3Ws4Ghu8htpRgO12/VumvuHXIU2OATWZSdbVnf
+ Hj9Nz/Y2BiRIE6dpF+L0qhdzviV8q606baf+H+4w++1cU7R7D2aOcxxJ9VI6ptdd+laP
+ WFcdxtl1IpH3BRgNCLYUU2e6xpe2HCR/sl2c5JLnmeJQr62IobEl8S/heG06end4UzxO
+ fijFF43c9kcMEPyFkVgvxj+/WQRRJoq6MAdNfOJNcWRxL/XHHxNQIqSsvYB/UK1iDGAN
+ bzDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716991662; x=1717596462;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jc75QmhZgUScJV2QjYGkzz3TXBT+T/zn8wfny+YuTZc=;
+ b=McQA52D4oF+w5UCkOsizqH16KowEKOLeIxQcNHJS++hfXx4CxwpN8HCQN6p9P98Yy/
+ AVcY6jMYQO3zOs0Ho9OI64MEBQ64V3nHojS0TJ5nYbEpN0H/K6IdRDBfVNAkhJFJg2LN
+ CSqGrrXjoavNbsAouAhl11jD6R/yyI7PN3LL6UkcbDdWKOv2RLq3yMy/ymbXQaUr1ehl
+ 111q452PixPepPB8DjOx6R0BvZL0oSe7RXDpiPINw1vs/EXQmznzAlGxw3+kwIVX01bz
+ eYDdi07j4PqsSMctZsRgdmC2bTjL6QWVga2Ncy3+EUCb7kByM4Nk4N/hUkOJU0SnVnXP
+ FMNg==
+X-Gm-Message-State: AOJu0Yxg/OAK8XHis/9xnAds9ltAsfrSOcXLvKG0WULev/wtRetDnCL6
+ 3TtbQQ3TjCmBq6KjsuKbhlJXQKV0fbROU7prToihFJsrwk0hbrUTm2FhZxtg
+X-Google-Smtp-Source: AGHT+IGl82xz1qcTJOLS66Vy6p5ukr/QmqkpvZGJV6Kdi3pM/i99RB2Kc3hRicYzIb1mYrcFO0XNwA==
+X-Received: by 2002:a05:6512:3085:b0:529:b565:77a5 with SMTP id
+ 2adb3069b0e04-529b5657883mr5578782e87.49.1716991661390; 
+ Wed, 29 May 2024 07:07:41 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-5296e885e5asm1275806e87.40.2024.05.29.07.07.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 May 2024 07:07:40 -0700 (PDT)
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
+ "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+Subject: [PATCH v8 0/8] xen: Support grant mappings
+Date: Wed, 29 May 2024 16:07:31 +0200
+Message-Id: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <D9370410-E32D-4235-8CF0-87E620398246@ynddal.dk>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,80 +89,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan and Mads,
+From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-On Wed, May 29, 2024 at 11:33:42AM +0200, Mads Ynddal wrote:
-> Date: Wed, 29 May 2024 11:33:42 +0200
-> From: Mads Ynddal <mads@ynddal.dk>
-> Subject: Re: [RFC 0/6] scripts: Rewrite simpletrace printer in Rust
-> X-Mailer: Apple Mail (2.3774.600.62)
-> 
-> 
-> >> Maybe later, Rust-simpletrace and python-simpletrace can differ, e.g.
-> >> the former goes for performance and the latter for scalability.
-> > 
-> > Rewriting an existing, maintained component without buy-in from the
-> > maintainers is risky. Mads is the maintainer of simpletrace.py and I am
-> > the overall tracing maintainer. While the performance improvement is
-> > nice, I'm a skeptical about the need for this and wonder whether thought
-> > was put into how simpletrace should evolve.
-> > 
-> > There are disadvantages to maintaining multiple implementations:
-> > - File format changes need to be coordinated across implementations to
-> >  prevent compatibility issues. In other words, changing the
-> >  trace-events format becomes harder and discourages future work.
-> > - Multiple implementations makes life harder for users because they need
-> >  to decide between implementations and understand the trade-offs.
-> > - There is more maintenance overall.
-> > 
-> > I think we should have a single simpletrace implementation to avoid
-> > these issues. The Python implementation is more convenient for
-> > user-written trace analysis scripts. The Rust implementation has better
-> > performance (although I'm not aware of efforts to improve the Python
-> > implementation's performance, so who knows).
-> > 
-> > I'm ambivalent about why a reimplementation is necessary. What I would
-> > like to see first is the TCG binary tracing functionality. Find the
-> > limits of the Python simpletrace implementation and then it will be
-> > clear whether a Rust reimplementation makes sense.
-> > 
-> > If Mads agrees, I am happy with a Rust reimplementation, but please
-> > demonstrate why a reimplementation is necessary first.
-> > 
-> > Stefan
-> 
-> I didn't want to shoot down the idea, since it seemed like somebody had a plan
-> with GSoC. But I actually agree, that I'm not quite convinced.
-> 
-> I think I'd need to see some data that showed the Python version is inadequate.
-> I know Python is not the fastest, but is it so prohibitively slow, that we
-> cannot make the TCG analysis? I'm not saying it can't be true, but it'd be nice
-> to see it demonstrated before making decisions.
-> 
-> Because, as you point out, there's a lot of downsides to having two versions. So
-> the benefits have to clearly outweigh the additional work.
-> 
-> I have a lot of other questions, but let's maybe start with the core idea first.
-> 
-> —
-> Mads Ynddal
->
+Hi,
 
-I really appreciate your patience and explanations, and your feedback
-and review has helped me a lot!
+Grant mappings are a mechanism in Xen for guests to grant each other
+permissions to map and share pages. These grants can be temporary
+so both map and unmaps must be respected. See here for more info:
+https://github.com/xen-project/xen/blob/master/docs/misc/grant-tables.txt
 
-Yes, simple repetition creates much maintenance burden (though I'm happy
-to help with), and the argument for current performance isn't convincing
-enough.
+Currently, the primary use-case for grants in QEMU, is with VirtIO backends.
+Grant mappings will only work with models that use the address_space_map/unmap
+interfaces, any other access will fail with appropriate error messages.
 
-Getting back to the project itself, as you have said, the core is still
-further support for TCG-related traces, and I'll continue to work on it,
-and then look back based on such work to see what issues there are with
-traces or what improvements can be made.
+In response to feedback we got on v3, later version switch approach
+from adding new MemoryRegion types and map/unmap hooks to instead reusing
+the existing xen_map_cache() hooks (with extensions). Almost all of the
+changes are now contained to the Xen modules.
 
-Thanks again!
+This approach also refactors the mapcache to support multiple instances
+(one for existing foreign mappings and another for grant mappings).
 
-Regards,
-Zhao
+I've only enabled grants for the ARM PVH machine since that is what
+I can currently test on.
+
+Cheers,
+Edgar
+
+ChangeLog:
+
+v7 -> v8:
+* Remove xen_mr_is_* stubs.
+
+v6 -> v7:
+* Use g_autofree in xen_remap_bucket().
+* Flatten nested if-statements in xen_map_cache().
+* Fix typo in error message in xen_map_cache().
+
+v5 -> v6:
+* Correct passing of ram_addr_offset in xen_replace_cache_entry_unlocked.
+
+v4 -> v5:
+* Compute grant_ref from address_index to xen_remap_bucket().
+* Rename grant_is_write to is_write.
+* Remove unnecessary + mc->bucket_size - 1 in
+  xen_invalidate_map_cache_entry_unlocked().
+* Remove use of global mapcache in refactor of
+  xen_replace_cache_entry_unlocked().
+* Add error checking for xengnttab_unmap().
+* Add assert in xen_replace_cache_entry_unlocked() against grant mappings.
+* Fix memory leak when freeing first entry in mapcache buckets.
+* Assert that bucket_shift is >= XC_PAGE_SHIFT when creating mapcache.
+* Add missing use of xen_mr_is_memory() in hw/xen/xen-hvm-common.c.
+* Rebase with master.
+
+v3 -> v4:
+* Reuse existing xen_map_cache hooks.
+* Reuse existing map-cache for both foreign and grant mappings.
+* Only enable grants for the ARM PVH machine (removed i386).
+
+v2 -> v3:
+* Drop patch 1/7. This was done because device unplug is an x86-only case.
+* Add missing qemu_mutex_unlock() before return.
+
+v1 -> v2:
+* Split patch 2/7 to keep phymem.c changes in a separate.
+* In patch "xen: add map and unmap callbacks for grant" add check for total
+  allowed grant < XEN_MAX_VIRTIO_GRANTS.
+* Fix formatting issues and re-based with master latest.
+
+Edgar E. Iglesias (8):
+  xen: mapcache: Make MCACHE_BUCKET_SHIFT runtime configurable
+  xen: mapcache: Unmap first entries in buckets
+  xen: Add xen_mr_is_memory()
+  softmmu: xen: Always pass offset + addr to xen_map_cache
+  softmmu: Replace check for RAMBlock offset 0 with xen_mr_is_memory
+  xen: mapcache: Pass the ram_addr offset to xen_map_cache()
+  xen: mapcache: Add support for grant mappings
+  hw/arm: xen: Enable use of grant mappings
+
+ hw/arm/xen_arm.c                |   5 +
+ hw/xen/xen-hvm-common.c         |  18 ++-
+ hw/xen/xen-mapcache.c           | 234 ++++++++++++++++++++++++--------
+ include/hw/xen/xen-hvm-common.h |   3 +
+ include/sysemu/xen-mapcache.h   |   2 +
+ include/sysemu/xen.h            |   2 +
+ system/physmem.c                |  12 +-
+ 7 files changed, 211 insertions(+), 65 deletions(-)
+
+
+base-commit: 79d7475f39f1b0f05fcb159f5cdcbf162340dc7e
+-- 
+2.40.1
 
 
