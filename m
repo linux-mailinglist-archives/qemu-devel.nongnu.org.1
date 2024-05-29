@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB64D8D2CD6
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32908D2CE2
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:05:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCCOl-0004kF-DR; Wed, 29 May 2024 02:02:59 -0400
+	id 1sCCQM-0005rg-06; Wed, 29 May 2024 02:04:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCOc-0004jY-8H
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:02:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCQI-0005az-MJ
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCOa-0002pB-Sf
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:02:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCQA-0002vV-Ln
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716962564;
+ s=mimecast20190719; t=1716962661;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=gUyFkFBGi5y/sthV7GiTPT4bAs6upQ9ZQwAd6b2aRas=;
- b=RplBm5BifTN4XiysfEgsvaOfVJboEjhP/N69O9PzxVTf+CZ6xZdwzxB7MExz696U3wuuSo
- 09KC7VRTRebm2Rv1r0pWZMdyuikWt5+5wD/HKSEXFv/oR4poQomZMxKNtelBdWuReJUITw
- KOA/cdvKTbQYu8nvOeP14VFwtBnPFLE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4DaMXJTCGuXq1Bo+NDDHWrRmsLGpWN12/mUw1Yt8gSc=;
+ b=Pp6o/WqJSXB0xKsSQjRpJpGgZdl1q7+BN/IBEJi25CF5WPMokXcqPKTMEQPOJQMPzJqS9K
+ JrJdFz4nOPMNpiTH5mGNgfxQXdTHiDlh69Orm8BSbabgifKG/zinw7FzkMF7HrHhecHpOH
+ KbobvZg5HKL8nA/VERxNUW6bYmNw1LY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-NXlmZ5oJOf-wpa_TDw2URw-1; Wed, 29 May 2024 02:02:40 -0400
-X-MC-Unique: NXlmZ5oJOf-wpa_TDw2URw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4206b3500f5so14074855e9.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 23:02:40 -0700 (PDT)
+ us-mta-593-JFLHkw8WNV2KXgW8NRMV9g-1; Wed, 29 May 2024 02:04:19 -0400
+X-MC-Unique: JFLHkw8WNV2KXgW8NRMV9g-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42110ebbd0fso12722645e9.1
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 23:04:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716962559; x=1717567359;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gUyFkFBGi5y/sthV7GiTPT4bAs6upQ9ZQwAd6b2aRas=;
- b=IDMeiwaec5BNjNLAZ0mcHnG2aA1SL49JMrUJVZJTK/iWCWLQJyk2xGgThpYS9MSbZf
- 1YCiXsfEQVTY71AqKV0kTNNe9KATq2VOqMEVtApeBrvzqcknOn8Q+jgcMNgM+B+FCHEz
- UP8VgqU//waVuoHNwsWzpU7t6NuCwziemMnITi0zO0pT+RX7RrtdB2xUo33jxcLrHB/w
- SBEvI1ejFbwP6q8qNTvbwjhKGZmiz5y1U0oMDqNBk0Zo5rCxe5P+okyLy954fzrlOn52
- +LOmfnIz4UwZKq6PsVEKVd4bMM16kjQIr2aAz7C6j+npwOny1tQJdCRDWiizCO6oRoXQ
- jDPA==
+ d=1e100.net; s=20230601; t=1716962658; x=1717567458;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=4DaMXJTCGuXq1Bo+NDDHWrRmsLGpWN12/mUw1Yt8gSc=;
+ b=H9QsUqxrNGrfl6dlP7msMPUIZBq4c1GejCevgWgN17zH0q28vjMhh3FyBraIsy76RZ
+ BloiHph0T3ymkKdkbfrIzOGmYoJDtgQ6idAYwDmQ6vHeHZqIVhLz3SWfLJWBgxB225Nw
+ vUvNEKie4+bys44D38/TMpkwp1GJQfiwrWDBy1AFnorbcjWualeo3NXViUGgXNxs4SjI
+ ebhZEuI9qOuSnMikBqLQrjCm3eWKq215I6puE2TnLnncA7LtHFfC5WMPMycJH71yI2yn
+ 42a7Q2tLfC0ucu0yXl9sisKShFleuqMoDBPfogpDqXGMoAHORtt0WuAXiX0lxDUSPMlo
+ FqSw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWplJaYakIYEMSI0P5cTqD/P2OUclKMeh2We4e0oTARSyKAoEg8PKmqLDsEuW4fbgtByGQbep61vbM64rpcxzQtJTKv9XM=
-X-Gm-Message-State: AOJu0YyvM0VdiEqHak95nmwRT14xWJOiUZkFD7ot7KwK4gvJX+AXpys8
- +5Q0Aaka/xmwhlS33w1osg+Eigx+1uWfU7OfSQJzjIQ2BlPgIADU7tVXoA5VkEcneSAaFf+341K
- gREn/fF5CDgnp5E/TdIIDdOqmHeMKhf2KFsDI3zNMIeVrMRolnB2b
-X-Received: by 2002:a05:600c:1f92:b0:421:1e47:62d3 with SMTP id
- 5b1f17b1804b1-4211e476353mr41776345e9.3.1716962559306; 
- Tue, 28 May 2024 23:02:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHTmoUp+E6gq06WVuGGvQwQKLrH2e7Hb6NMwquPoGNj3rHdzmRh6Wq978EnfMvvcHsiXWVHKA==
-X-Received: by 2002:a05:600c:1f92:b0:421:1e47:62d3 with SMTP id
- 5b1f17b1804b1-4211e476353mr41776155e9.3.1716962558926; 
- Tue, 28 May 2024 23:02:38 -0700 (PDT)
+ AJvYcCXvRh0MoG6Gw1jVt+n3hKoLFXJ5NjPisgVfFbVAUI2ipzXiA2wDIyDohEjixBYAERilKRBrrsYPCcI3xA56NQ+CvY1+55E=
+X-Gm-Message-State: AOJu0YyloS36z0jCuiwexvKJfo8AqqJLAl0HpBFgiOiC8/g38xyG62u1
+ 6AVHygcqO48sOVJBmaVT3YIfvu+P7PJNBNgvysINFV27Io5naOs/0gux/syVIpdzstCv7mGqSSL
+ KfE37oCeMul5Asq2JDjMHUu8tMyFycREGfoLillfhmlNhOOMC/6Po
+X-Received: by 2002:a05:600c:198e:b0:420:fe60:c387 with SMTP id
+ 5b1f17b1804b1-42108a12ab4mr116623495e9.38.1716962657241; 
+ Tue, 28 May 2024 23:04:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKmYKtJsYfWRBueFmstW9DiW8F6gcpK64fBMk1djSV22miTJChRv2wnD3XDQUJaeoKmeWI3w==
+X-Received: by 2002:a05:600c:198e:b0:420:fe60:c387 with SMTP id
+ 5b1f17b1804b1-42108a12ab4mr116623335e9.38.1716962656789; 
+ Tue, 28 May 2024 23:04:16 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-176-229.web.vodafone.de.
  [109.43.176.229]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100ee7f1dsm200312375e9.7.2024.05.28.23.02.38
+ ffacd0b85a97d-35579d7dd33sm13741958f8f.11.2024.05.28.23.04.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 May 2024 23:02:38 -0700 (PDT)
-Message-ID: <2459706c-06d6-4ff8-9861-244d6d8845af@redhat.com>
-Date: Wed, 29 May 2024 08:02:37 +0200
+ Tue, 28 May 2024 23:04:16 -0700 (PDT)
+Message-ID: <b0f77dbc-23c4-4ccc-b926-3cf072894889@redhat.com>
+Date: Wed, 29 May 2024 08:04:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 20/23] hw/i386/pc: Remove deprecated pc-i440fx-2.3
- machine
+Subject: Re: [PATCH v5 21/23] hw/i386/pc: Simplify DEFINE_I440FX_MACHINE()
+ macro
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
  <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
  <berrange@redhat.com>
 References: <20240529051539.71210-1-philmd@linaro.org>
- <20240529051539.71210-21-philmd@linaro.org>
-Content-Language: en-US
+ <20240529051539.71210-22-philmd@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -121,10 +121,10 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240529051539.71210-21-philmd@linaro.org>
+In-Reply-To: <20240529051539.71210-22-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -150,18 +150,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/05/2024 07.15, Philippe Mathieu-Daudé wrote:
-> The pc-i440fx-2.3 machine was deprecated for the 8.2
-> release (see commit c7437f0ddb "docs/about: Mark the
-> old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
-> time to remove it.
+> Last commit removed the last non-NULL use of DEFINE_I440FX_MACHINE
+> 3rd parameter. 'compatfn' is now obsolete, remove it.
 > 
+> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   docs/about/deprecated.rst       |  4 ++--
->   docs/about/removed-features.rst |  2 +-
->   hw/i386/pc.c                    | 25 -------------------------
->   hw/i386/pc_piix.c               | 19 -------------------
->   4 files changed, 3 insertions(+), 47 deletions(-)
+>   hw/i386/pc_piix.c | 62 ++++++++++++++++++++++-------------------------
+>   1 file changed, 29 insertions(+), 33 deletions(-)
 
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
