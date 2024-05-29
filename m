@@ -2,54 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2925F8D3510
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051DC8D3502
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:56:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCGxV-0004Vp-Fu; Wed, 29 May 2024 06:55:05 -0400
+	id 1sCGxY-0004Vx-8y; Wed, 29 May 2024 06:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxS-0004Ud-IM
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxU-0004V2-96
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxP-0002pw-GB
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxR-0002rX-3P
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716980098;
+ s=mimecast20190719; t=1716980099;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=VYOcBDhJ8HciylCpBRGAPqcNY73QjdPdsYmrI7tl+k4=;
- b=MZU4IXit0BrF3ldKTrFTZ+hvX+iOdQrdwXL1aJEx8OEsMCIxwIq3F5JryMQu/+viELbZO/
- B7lBVZJD1Cu3QwVUfXgYisDXYbPA8XR18DV/s1JlKHJh3Y6EDiklRx4l0yOzR/eW96U3Br
- vfICO11q8MCeBD+e4CKENdlH6fRfD7w=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-M1St05R7NhCZQivL9WSpcQ-1; Wed,
- 29 May 2024 06:54:56 -0400
-X-MC-Unique: M1St05R7NhCZQivL9WSpcQ-1
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jxtqb3KCTt/uxYgnly+d0TkxchgWDpeC0Swp2evxboU=;
+ b=TQEayn8DS3UMOwr7pbZLGldlB2BJZhSeoUgzlMzySr+3rc0jlpppfgOAL+F2cXeDfo1T6B
+ AqtkgW6wkaDsu+N0x3B1vWCRK0DNzsEZ00mUqkxlr/TdTRvFExYLI46n+HEnGNsYsUpcGd
+ HCM01ejiw4vDWIEq1ytM1461uuzKBwg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-WFTVp9yhP3CBz5hE_3Sixw-1; Wed, 29 May 2024 06:54:57 -0400
+X-MC-Unique: WFTVp9yhP3CBz5hE_3Sixw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E52F1C05131;
- Wed, 29 May 2024 10:54:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A632101A52C;
+ Wed, 29 May 2024 10:54:57 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.109])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 976A21054820;
- Wed, 29 May 2024 10:54:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B63B9105480A;
+ Wed, 29 May 2024 10:54:56 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-s390x@nongnu.org
-Subject: [PULL 00/22] s390x,
- build-oss-fuzz and Clang -fsanitize=undefined fixes
-Date: Wed, 29 May 2024 12:54:32 +0200
-Message-ID: <20240529105454.1149225-1-thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 01/22] target/s390x: Do not use unwind for per_check_exception
+Date: Wed, 29 May 2024 12:54:33 +0200
+Message-ID: <20240529105454.1149225-2-thuth@redhat.com>
+In-Reply-To: <20240529105454.1149225-1-thuth@redhat.com>
+References: <20240529105454.1149225-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -77,74 +79,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
- Hi Richard!
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The following changes since commit 79d7475f39f1b0f05fcb159f5cdcbf162340dc7e:
+Using exception unwind via tcg_s390_program_interrupt,
+we discard the current value of psw.addr, which discards
+the result of a branch.
 
-  Merge tag 'pull-block-jobs-2024-04-29-v2' of https://gitlab.com/vsementsov/qemu into staging (2024-05-28 11:28:34 -0700)
+Pass in the address of the next instruction, which may
+not be sequential.  Pass in ilen, which we would have
+gotten from unwind and is passed to the exception handler.
+Sync cc_op before the call, which we would have gotten
+from unwind.
 
-are available in the Git repository at:
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-ID: <20240502054417.234340-2-richard.henderson@linaro.org>
+[thuth: Silence checkpatch.pl errors]
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ target/s390x/helper.h          |  2 +-
+ target/s390x/tcg/excp_helper.c |  2 +-
+ target/s390x/tcg/misc_helper.c | 23 ++++++++++++++++++++---
+ target/s390x/tcg/translate.c   | 11 ++++++-----
+ 4 files changed, 28 insertions(+), 10 deletions(-)
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2024-05-29
-
-for you to fetch changes up to b04091393e6a71065aee6c91b2566f2dec95a4c9:
-
-  qapi: Do not cast function pointers (2024-05-29 12:41:56 +0200)
-
-----------------------------------------------------------------
-* Fix and improve PER emulation on s390x
-* Fix problems of the build-oss-fuzz CI job
-* Fix broken update-linux-headers.sh script
-* Fixes for compiling with -fsanitize=undefined on latest Clang versions
-
-----------------------------------------------------------------
-Akihiko Odaki (3):
-      qemu-keymap: Make references to allocations static
-      lockable: Do not cast function pointers
-      qapi: Do not cast function pointers
-
-Alexander Bulekov (2):
-      fuzz: specify audiodev for usb-audio
-      fuzz: disable leak-detection for oss-fuzz builds
-
-Richard Henderson (14):
-      target/s390x: Do not use unwind for per_check_exception
-      target/s390x: Move cpu_get_tb_cpu_state out of line
-      target/s390x: Update CR9 bits
-      target/s390x: Record separate PER bits in TB flags
-      target/s390x: Disable conditional branch-to-next for PER
-      target/s390x: Introduce help_goto_indirect
-      target/s390x: Simplify help_branch
-      target/s390x: Split per_breaking_event from per_branch_*
-      target/s390x: Raise exception from helper_per_branch
-      target/s390x: Raise exception from per_store_real
-      target/s390x: Fix helper_per_ifetch flags
-      target/s390x: Simplify per_ifetch, per_check_exception
-      target/s390x: Adjust check of noreturn in translate_one
-      tests/tcg/s390x: Add per.S
-
-Thomas Huth (3):
-      hw/s390x: Remove unused macro VMSTATE_ADAPTER_ROUTES
-      scripts/update-linux-headers.sh: Remove temporary directory inbetween
-      scripts/update-linux-headers.sh: Fix the path of setup_data.h
-
- include/hw/s390x/s390_flic.h            |   3 -
- include/qapi/clone-visitor.h            |  37 +++--
- include/qemu/lockable.h                 |  23 ++-
- target/s390x/cpu.h                      |  85 +++++------
- target/s390x/helper.h                   |   8 +-
- tests/qtest/fuzz/generic_fuzz_configs.h |   3 +-
- qapi/qapi-clone-visitor.c               |  30 +---
- qemu-keymap.c                           |   8 +-
- target/s390x/cpu.c                      |  36 +++++
- target/s390x/tcg/excp_helper.c          |   2 +-
- target/s390x/tcg/misc_helper.c          |  68 +++++----
- target/s390x/tcg/translate.c            | 242 ++++++++++++--------------------
- scripts/oss-fuzz/build.sh               |   1 +
- scripts/update-linux-headers.sh         |   3 +-
- tests/tcg/s390x/Makefile.softmmu-target |   1 +
- tests/tcg/s390x/per.S                   |  82 +++++++++++
- 16 files changed, 355 insertions(+), 277 deletions(-)
- create mode 100644 tests/tcg/s390x/per.S
+diff --git a/target/s390x/helper.h b/target/s390x/helper.h
+index cc1c20e9e3..96ab71e877 100644
+--- a/target/s390x/helper.h
++++ b/target/s390x/helper.h
+@@ -359,7 +359,7 @@ DEF_HELPER_FLAGS_4(ipte, TCG_CALL_NO_RWG, void, env, i64, i64, i32)
+ DEF_HELPER_FLAGS_1(ptlb, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
+ DEF_HELPER_3(lra, i64, env, i64, i64)
+-DEF_HELPER_1(per_check_exception, void, env)
++DEF_HELPER_FLAGS_3(per_check_exception, TCG_CALL_NO_WG, void, env, i64, i32)
+ DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_RWG, void, env, i64, i64)
+ DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_RWG, void, env, i64)
+ DEF_HELPER_FLAGS_1(per_store_real, TCG_CALL_NO_RWG, void, env)
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index f1c33f7967..4c0b692c9e 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -209,7 +209,7 @@ static void do_program_interrupt(CPUS390XState *env)
+ 
+     switch (env->int_pgm_code) {
+     case PGM_PER:
+-        advance = !(env->per_perc_atmid & PER_CODE_EVENT_NULLIFICATION);
++        /* advance already handled */
+         break;
+     case PGM_ASCE_TYPE:
+     case PGM_REG_FIRST_TRANS:
+diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
+index 8764846ce8..7c94468392 100644
+--- a/target/s390x/tcg/misc_helper.c
++++ b/target/s390x/tcg/misc_helper.c
+@@ -20,6 +20,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
++#include "qemu/log.h"
+ #include "cpu.h"
+ #include "s390x-internal.h"
+ #include "qemu/host-utils.h"
+@@ -590,10 +591,26 @@ void HELPER(chsc)(CPUS390XState *env, uint64_t inst)
+ #endif
+ 
+ #ifndef CONFIG_USER_ONLY
+-void HELPER(per_check_exception)(CPUS390XState *env)
++static G_NORETURN void per_raise_exception(CPUS390XState *env)
+ {
+-    if (env->per_perc_atmid) {
+-        tcg_s390_program_interrupt(env, PGM_PER, GETPC());
++    trigger_pgm_exception(env, PGM_PER);
++    cpu_loop_exit(env_cpu(env));
++}
++
++static G_NORETURN void per_raise_exception_log(CPUS390XState *env)
++{
++    qemu_log_mask(CPU_LOG_INT, "PER interrupt after 0x%" PRIx64 "\n",
++                  env->per_address);
++    per_raise_exception(env);
++}
++
++void HELPER(per_check_exception)(CPUS390XState *env, uint64_t next_pc,
++                                 uint32_t ilen)
++{
++    if (unlikely(env->per_perc_atmid)) {
++        env->psw.addr = next_pc;
++        env->int_pgm_ilen = ilen;
++        per_raise_exception_log(env);
+     }
+ }
+ 
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index ebd96abe6c..4c3ff1931b 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -6424,13 +6424,14 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
+ 
+ #ifndef CONFIG_USER_ONLY
+     if (s->base.tb->flags & FLAG_MASK_PER) {
+-        /* An exception might be triggered, save PSW if not already done.  */
++        TCGv_i64 next_pc = psw_addr;
++
+         if (ret == DISAS_NEXT || ret == DISAS_TOO_MANY) {
+-            tcg_gen_movi_i64(psw_addr, s->pc_tmp);
++            next_pc = tcg_constant_i64(s->pc_tmp);
+         }
+-
+-        /* Call the helper to check for a possible PER exception.  */
+-        gen_helper_per_check_exception(tcg_env);
++        update_cc_op(s);
++        gen_helper_per_check_exception(tcg_env, next_pc,
++                                       tcg_constant_i32(s->ilen));
+     }
+ #endif
+ 
+-- 
+2.45.1
 
 
