@@ -2,111 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01EB8D37BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2A428D37B4
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJRY-0003Yi-VF; Wed, 29 May 2024 09:34:16 -0400
+	id 1sCJRY-0003YJ-VE; Wed, 29 May 2024 09:34:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregsword0@gmail.com>)
- id 1sCCRs-00031d-2B; Wed, 29 May 2024 02:06:08 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gregsword0@gmail.com>)
- id 1sCCRp-0003CX-DW; Wed, 29 May 2024 02:06:07 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6f8ecafd28cso1278445b3a.3; 
- Tue, 28 May 2024 23:06:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716962763; x=1717567563; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bEgMQmsoY6w77UNCa3Z5qcf9/UXUdDI7rLaVDP7lhWk=;
- b=Iq+QDw4DEeGF2XNQxfSTOqZY7kdfOyZQgLJ2u9UBb9YS8aeknCq8vV0GygxyFCr3A2
- 9kjPDmtf/Cnd/+T+J0FXjH8S7tncwtfnzVVgoQzl4B7EfrcGaskfy3BTRydcWuwxEJ37
- lqiFRofJhv9Maz72SP0KtJ9JPH8oQhvMwhj/Ye8+G5UO8Rg+eIGyf7H3bZTGWJr6B+e3
- IQVYJDwfS8BF8kzSPih1Q5XUnLBZuaYnOcPcwtU86ejgEzGpOm6N0IuWVhILtjh5cmgh
- WjghXvMAb7/1LgK9S0iLMzk82v7RxNxeFYwOfqGotKpt6reytr4lZ+hLb4ElpZllcs31
- 8+eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716962763; x=1717567563;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bEgMQmsoY6w77UNCa3Z5qcf9/UXUdDI7rLaVDP7lhWk=;
- b=AyQUPEldNGLI7V1CyXGOOfQcBVQ5vuKdkYDx0opmmbKZwr+s8aJssbUecV3jJW73q0
- Zs1L/G2e8gF2NqgQRRiixwXsZIVXRNAfEk2GcnwtjqSPU1Bqzh+M/FR9C/pUs5R/c7Y7
- cuy4OKijW8E83wXaN9v3NhHbro7mudCx1v9HURfi/xtjk1/DlLS1y9WmO8QYIueQoRj/
- pvXE8LXKRoEtl/pQq92RPHQzcVlYOWvBZyc1D7MCKOMGxNaOxp0MqHwVfdyupGaC149I
- biLoHzOD6iRMnT4piEZZcR1Bcs3SjvusfVBJQnfIy6IYGhCoiuoKMZA99WpQ9IXQiHEf
- jeDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCURf56n4q6xvTnAZV7WsJaDTGIq6GYU3qVic/Mb/easHFRaWkwsRXrPW2i7dsp6wLr8DKYfJoRdZ2hPCB9HjsyJNgjwtJfFVypBcn/Zpip9xaut1cFNFdtbscPfng==
-X-Gm-Message-State: AOJu0Yy5iPhIG8iME9hqlmYfiq5lQsbMSvA1SiC0HPaUNpyjQpkMbWUV
- 34+gQkpRSwM5CU6MRFtMgY/r+DcKETxqOkkbjrS8Nql08oawqHEVRNQpT7qP9XOoDda3d3y2O2G
- f/9cDweZBV+cyT3mlSJqnyBzDYbE=
-X-Google-Smtp-Source: AGHT+IE7LTWSBj8XmYSLzZMgQYYFw3ve7P+UkkueGO919dc1QddwFfptKMgBO6ImETtbEC9BOJvX62jjxJZL7pRYxmg=
-X-Received: by 2002:a05:6300:808c:b0:1af:fbab:cf92 with SMTP id
- adf61e73a8af0-1b212f74721mr14358553637.54.1716962763038; Tue, 28 May 2024
- 23:06:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1sCGZb-0004oM-4O
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:30:24 -0400
+Received: from mail-bn8nam11on2041.outbound.protection.outlook.com
+ ([40.107.236.41] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Shivasagar.Myana@amd.com>)
+ id 1sCGZQ-0007Ez-Lz
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:30:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QEwAm/8X9qFxCxgD9gIxVDfpgR+1IyeQ1FrjEqaKKZr2gdmV7fCl+JiCzFjgxHQAeyXIaFRyDnwpARn4gVAcdVenu9iyur7mSmKkzqpUDpSqB79FP35kugGJ7bixP9TiDxXIuVpyKp6CdoXu0Ly3o2Qi2AJJGlf8kcwfWz11at4ZLh4MRj2goTiPhiCEGy2lFz6lHboUgdFWgJwfu50Ra7eSpDa5p4XaPqOv+L3WJ11HtnO2W/HlYJy3DisOzMA4Zr1XPrmEJslfUsYiDkT0o3bKDc6z2OF/98DAp4Dz/sq7yhaYU5XsxuwmrbFPQfD9uAkYPZhtQjEa9jeitJDgNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hBJld2YA7d5lm1aNVoFxJHcgX3vLapkpPB/pM6/EHDk=;
+ b=jnjsElIJlQVjV8nJwGTdwn38OdBVxutaAaFLYIzRt2FrfJ8lTO2+Ui765KWFwlslmArGyk00h4NBWhinMyRLEacaQLW1KfAR/MQX1fhyshju1uUxaYhai11kf26/1AElyezX8rbBJ9ug0ugZRoqGCN/8MLlRSRJgwF4kcm+fCFUMeu3Qd3Vo48M1Qh5f1mGo631CEv66FFZH5xOM15Pl0McghjqyPXdlql1O0RqnRifbgtlxdOFh0UOuKxac4h2VDc9en4xSsRxJi5FOZQQgCTJriUj0bekgghZ10JBlJuOkVX9ALjs7dgT9mMb8Rw9Sejb6TJLM0PiEgGAgaH6EPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hBJld2YA7d5lm1aNVoFxJHcgX3vLapkpPB/pM6/EHDk=;
+ b=ARIeLO4TM5VIuoQ3VY8X7G581GKPHisdyzRtUWYCt3Jv2bQuAWEGPwqE2vGf0h1rKb6BzYZfHaP1HmtK0krBNLcjZnHIMRfz0/qJ1bwSTHHX1JDiTTbB4YZ0Prl/yf8kMPhgB5ACYcMEfn+A5lNXpS/awkCKmQ3QztqbEXSamNI=
+Received: from DM6PR06CA0043.namprd06.prod.outlook.com (2603:10b6:5:54::20) by
+ LV3PR12MB9213.namprd12.prod.outlook.com (2603:10b6:408:1a6::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.19; Wed, 29 May
+ 2024 10:25:03 +0000
+Received: from CH3PEPF00000018.namprd21.prod.outlook.com
+ (2603:10b6:5:54:cafe::f8) by DM6PR06CA0043.outlook.office365.com
+ (2603:10b6:5:54::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.19 via Frontend
+ Transport; Wed, 29 May 2024 10:25:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ CH3PEPF00000018.mail.protection.outlook.com (10.167.244.123) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7656.0 via Frontend Transport; Wed, 29 May 2024 10:25:03 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 29 May
+ 2024 05:25:02 -0500
+Received: from xhdsaipava41.xilinx.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.35 via
+ Frontend Transport; Wed, 29 May 2024 05:25:00 -0500
+From: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+To: <francisco.iglesias@amd.com>, <jasowang@redhat.com>,
+ <qemu-devel@nongnu.org>, <pisa@cmp.felk.cvut.cz>
+CC: <sai.pavan.boddu@amd.com>
+Subject: [QEMU][PATCH 1/1] hw/net/can: Fix sorting of the tx queue
+Date: Wed, 29 May 2024 15:54:58 +0530
+Message-ID: <20240529102458.557522-1-Shivasagar.Myana@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <Zjj0xa-3KrFHTK0S@x1n>
- <addaa8d094904315a466533763689ead@huawei.com>
- <ZjpWmG2aUJLkYxJm@x1n> <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com>
- <ZjzaIAMgUHV8zdNz@x1n>
- <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
- <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
- <CAHEcVy4d7uJENZ1hRx2FBzbw22qN4Qm0TwtxvM5DLw3s81Zp_g@mail.gmail.com>
- <Zk0c51D1Oo6NdIxR@x1n> <2308a8b894244123b638038e40a33990@huawei.com>
- <ZlX-Swq4Hi-0iHeh@x1n> <7bf81ccee4bd4b0e81e3893ef43502a8@huawei.com>
- <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
-In-Reply-To: <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
-From: Greg Sword <gregsword0@gmail.com>
-Date: Wed, 29 May 2024 14:05:51 +0800
-Message-ID: <CAEz=LcuNM-j=1txyiL4_A89vZLxTicOFHXLC0=piamvqF4gu0g@mail.gmail.com>
-Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-To: Jinpu Wang <jinpu.wang@ionos.com>
-Cc: "Gonglei (Arei)" <arei.gonglei@huawei.com>, Peter Xu <peterx@redhat.com>, 
- Yu Zhang <yu.zhang@ionos.com>, Michael Galaxy <mgalaxy@akamai.com>, 
- Elmar Gerdes <elmar.gerdes@ionos.com>, zhengchuan <zhengchuan@huawei.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>,
- "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
- Prasanna Kumar Kalever <prasanna.kalever@redhat.com>, 
- Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>, 
- Prasanna Kumar Kalever <prasanna4324@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "devel@lists.libvirt.org" <devel@lists.libvirt.org>, 
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Song Gao <gaosong@loongson.cn>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, 
- Pannengyuan <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>, 
- Fabiano Rosas <farosas@suse.de>, RDMA mailing list <linux-rdma@vger.kernel.org>,
- shefty@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=gregsword0@gmail.com; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB03.amd.com: Shivasagar.Myana@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000018:EE_|LV3PR12MB9213:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3158c6fe-a89b-4f15-4dbf-08dc7fc99a51
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230031|376005|1800799015|82310400017|36860700004; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ZB2iVLCekS0xP0Zp5UGfCxPQlTW3F12PeP2OgNDh0isWqexHenndPk1vty97?=
+ =?us-ascii?Q?Ys5sZRqLgoD7QGhXclNutyRgPqa77TelqkasbNoEBw0xA+vcJMF+k/A2h9FA?=
+ =?us-ascii?Q?tpe4K1SV5/aLt7yGbGSj4jFdSznf2uL75Jqj9Gmt/Xw4iWCl8fFF/inpD1SV?=
+ =?us-ascii?Q?GUyIwK3b7rw4MtTrtZvYcFldkP/XWZrKEbZdCEjv/FwslyqpHGbf+1QyQRIq?=
+ =?us-ascii?Q?anwgXAoL9ZDlX7Jj2TE3bVlDyboJJi1T45wFb7dMLoeL9Z79j8iYl5uP+Mkh?=
+ =?us-ascii?Q?FKjaoXrnTKmQ736g3FlAfWC7dYEIuj2HWlcNcmmT0+fy2NmMvvhW/YOhe+Pt?=
+ =?us-ascii?Q?tgCbCy9iBqRx85A5XhMwyeRa7kuDsoegexIpH1MT6a1lcfyTaAoGWD0tcSFn?=
+ =?us-ascii?Q?+9j+kla8r7QuC00e36qiUtJ1piOHel/SP71KYCcMhPUAtaCAcKFH//Jrw/DL?=
+ =?us-ascii?Q?+Sh5hH+Cnx5vGHgqoFO+y56yd0S/h/IWXnY90mi9jzM5iJWwBmo8/DJyNG2K?=
+ =?us-ascii?Q?r/XkTJDWDSfSq/hMvYeO/J8QfJULh9+MnglEcfuaYZXB1ONPBPi1azjN5DCT?=
+ =?us-ascii?Q?vYKz2AQXeZ6kaHzFnGbOGzXg5uKbALzv2ALcRXcOjtwFnf29goAn3v1ZFjll?=
+ =?us-ascii?Q?c/sNKcbhPe2RvzGaY4OHhWNvarJH8UBrOZtXETyMJ+iBJCuzCfJyv5MgkVdh?=
+ =?us-ascii?Q?iFjvVsfw1pNtzPQsJ64PzQov2FPuT7iZ2LTfL2WDjL2M9ktgu0RLr0l94WiE?=
+ =?us-ascii?Q?G5IjCCMCGxnuNg1cjnzgllfFJI1DoI5HyiDR3cMpL+6yc/NGE+OQqiStEQ0B?=
+ =?us-ascii?Q?AH3rhpVc66uK2NRpJveu/1lUHrMVXVJXGKQuV4UAxm96KE+2XSQwDAWIuEce?=
+ =?us-ascii?Q?8i9xvoOzM5tS2Uu+Fja3dhNbKXvb1kgnEPKtzUhlVf9A7m6MhDFURwUpTrR2?=
+ =?us-ascii?Q?6a38dkd+uZI734PSbOfR9qKxv89a675Gj2oTOv/d5V3dSjtonf+XE9UfGjip?=
+ =?us-ascii?Q?07G+VBUQiG9SFR1VxlyioRAgscWvbLhNKrzHGTDYileHdcSzjH3MhZmxHUxq?=
+ =?us-ascii?Q?D11zw3geOrCm4jAOebnrbAkR2Phe77e9h1K5lCmh2koTXnBUMi7f5VVmFuup?=
+ =?us-ascii?Q?8kQPEO5yhIv1KhT+3BCcJWUNvGXLm1VouSb9MdcKm6VO6BiesKWhfUFLXMss?=
+ =?us-ascii?Q?yY6pKBRapkKN4I66udpFyM53ncyCcNOIhgsvBTKTo5nGQixH8rEcDyVgRNxM?=
+ =?us-ascii?Q?4N8optKcLp/28cPgJ8xhFpWNEciSKlfiHdLMdckdThEi4LtUL9I6URk75VD+?=
+ =?us-ascii?Q?x1hxfpVUnGJrSacH6ovIggbP35SRrAB4WkpIFv1w/BX7lk6i1QanLQBOhHZA?=
+ =?us-ascii?Q?rXSrk7CzzMF/rrDegvl0beyw/1EK?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(376005)(1800799015)(82310400017)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2024 10:25:03.3316 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3158c6fe-a89b-4f15-4dbf-08dc7fc99a51
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF00000018.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9213
+Received-SPF: permerror client-ip=40.107.236.41;
+ envelope-from=Shivasagar.Myana@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 29 May 2024 09:34:10 -0400
+X-Mailman-Approved-At: Wed, 29 May 2024 09:34:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -121,123 +146,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 29, 2024 at 12:33=E2=80=AFPM Jinpu Wang <jinpu.wang@ionos.com> =
-wrote:
->
-> On Wed, May 29, 2024 at 4:43=E2=80=AFAM Gonglei (Arei) <arei.gonglei@huaw=
-ei.com> wrote:
-> >
-> > Hi,
-> >
-> > > -----Original Message-----
-> > > From: Peter Xu [mailto:peterx@redhat.com]
-> > > Sent: Tuesday, May 28, 2024 11:55 PM
-> > > > > > Exactly, not so compelling, as I did it first only on servers
-> > > > > > widely used for production in our data center. The network
-> > > > > > adapters are
-> > > > > >
-> > > > > > Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme
-> > > > > > BCM5720 2-port Gigabit Ethernet PCIe
-> > > > >
-> > > > > Hmm... I definitely thinks Jinpu's Mellanox ConnectX-6 looks more
-> > > reasonable.
-> > > > >
-> > > > >
-> > > https://lore.kernel.org/qemu-devel/CAMGffEn-DKpMZ4tA71MJYdyemg0Zda15
-> > > > > wVAqk81vXtKzx-LfJQ@mail.gmail.com/
-> > > > >
-> > > > > Appreciate a lot for everyone helping on the testings.
-> > > > >
-> > > > > > InfiniBand controller: Mellanox Technologies MT27800 Family
-> > > > > > [ConnectX-5]
-> > > > > >
-> > > > > > which doesn't meet our purpose. I can choose RDMA or TCP for VM
-> > > > > > migration. RDMA traffic is through InfiniBand and TCP through
-> > > > > > Ethernet on these two hosts. One is standby while the other is =
-active.
-> > > > > >
-> > > > > > Now I'll try on a server with more recent Ethernet and InfiniBa=
-nd
-> > > > > > network adapters. One of them has:
-> > > > > > BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller (rev 01=
-)
-> > > > > >
-> > > > > > The comparison between RDMA and TCP on the same NIC could make
-> > > > > > more
-> > > > > sense.
-> > > > >
-> > > > > It looks to me NICs are powerful now, but again as I mentioned I
-> > > > > don't think it's a reason we need to deprecate rdma, especially i=
-f
-> > > > > QEMU's rdma migration has the chance to be refactored using rsock=
-et.
-> > > > >
-> > > > > Is there anyone who started looking into that direction?  Would i=
-t
-> > > > > make sense we start some PoC now?
-> > > > >
-> > > >
-> > > > My team has finished the PoC refactoring which works well.
-> > > >
-> > > > Progress:
-> > > > 1.  Implement io/channel-rdma.c,
-> > > > 2.  Add unit test tests/unit/test-io-channel-rdma.c and verifying i=
-t
-> > > > is successful, 3.  Remove the original code from migration/rdma.c, =
-4.
-> > > > Rewrite the rdma_start_outgoing_migration and
-> > > > rdma_start_incoming_migration logic, 5.  Remove all rdma_xxx functi=
-ons
-> > > > from migration/ram.c. (to prevent RDMA live migration from pollutin=
-g the
-> > > core logic of live migration), 6.  The soft-RoCE implemented by softw=
-are is
-> > > used to test the RDMA live migration. It's successful.
-> > > >
-> > > > We will be submit the patchset later.
-> > >
-> > > That's great news, thank you!
-> > >
-> > > --
-> > > Peter Xu
-> >
-> > For rdma programming, the current mainstream implementation is to use r=
-dma_cm to establish a connection, and then use verbs to transmit data.
-> >
-> > rdma_cm and ibverbs create two FDs respectively. The two FDs have diffe=
-rent responsibilities. rdma_cm fd is used to notify connection establishmen=
-t events,
-> > and verbs fd is used to notify new CQEs. When poll/epoll monitoring is =
-directly performed on the rdma_cm fd, only a pollin event can be monitored,=
- which means
-> > that an rdma_cm event occurs. When the verbs fd is directly polled/epol=
-led, only the pollin event can be listened, which indicates that a new CQE =
-is generated.
-> >
-> > Rsocket is a sub-module attached to the rdma_cm library and provides rd=
-ma calls that are completely similar to socket interfaces. However, this li=
-brary returns
-> > only the rdma_cm fd for listening to link setup-related events and does=
- not expose the verbs fd (readable and writable events for listening to dat=
-a). Only the rpoll
-> > interface provided by the RSocket can be used to listen to related even=
-ts. However, QEMU uses the ppoll interface to listen to the rdma_cm fd (got=
-ten by raccept API).
-> > And cannot listen to the verbs fd event. Only some hacking methods can =
-be used to address this problem.
-> >
-> > Do you guys have any ideas? Thanks.
-> +cc linux-rdma
+Returning an uint32_t casted to a gint from g_cmp_ids causes the tx queue to
+become wrongly sorted when executing g_slist_sort. Fix this by always
+returning -1 or 1 from g_cmp_ids based on the ID comparison instead.
+Also, if two message IDs are the same, sort them by using their index and
+transmit the message at the lowest index first.
 
-Why include rdma community?
+Signed-off-by: Shiva sagar Myana <Shivasagar.Myana@amd.com>
+---
+ hw/net/can/xlnx-versal-canfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> +cc Sean
->
->
->
-> >
-> >
-> > Regards,
-> > -Gonglei
->
+diff --git a/hw/net/can/xlnx-versal-canfd.c b/hw/net/can/xlnx-versal-canfd.c
+index 47a14cfe63..5f083c21e9 100644
+--- a/hw/net/can/xlnx-versal-canfd.c
++++ b/hw/net/can/xlnx-versal-canfd.c
+@@ -1312,7 +1312,10 @@ static gint g_cmp_ids(gconstpointer data1, gconstpointer data2)
+     tx_ready_reg_info *tx_reg_1 = (tx_ready_reg_info *) data1;
+     tx_ready_reg_info *tx_reg_2 = (tx_ready_reg_info *) data2;
+ 
+-    return tx_reg_1->can_id - tx_reg_2->can_id;
++    if (tx_reg_1->can_id == tx_reg_2->can_id) {
++        return (tx_reg_1->reg_num < tx_reg_2->reg_num) ? -1 : 1;
++    }
++    return (tx_reg_1->can_id < tx_reg_2->can_id) ? -1 : 1;
+ }
+ 
+ static void free_list(GSList *list)
+-- 
+2.34.1
+
 
