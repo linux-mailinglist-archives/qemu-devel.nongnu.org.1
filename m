@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD268D38FA
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C628D3917
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:25:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCK8T-0006ps-G2; Wed, 29 May 2024 10:18:37 -0400
+	id 1sCKDa-0001jW-IQ; Wed, 29 May 2024 10:23:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCK8G-0006YL-FG
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:18:25 -0400
+ id 1sCKDR-0001iU-U8
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:23:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCK8E-0007ia-9E
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:18:24 -0400
+ id 1sCKDP-0000GO-Gf
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:23:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716992299;
+ s=mimecast20190719; t=1716992622;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=uLHSSzEkKQa//WnfxsNbDnkLzcKOi8i3sxjHdngeMlM=;
- b=GUCX0euqpjC84gORBtsiDEH7KnbjmUfkK6cfeo/IfubapSkFt5KeCccjypyn+yg3ynktLj
- 3R/1kmp6j3M+iVhkC6Esn/n8jvrybiAP8545P7fkZvD/Bl7/aaDOiN9WdjRZFOzGallPLF
- FR+YnaVeMGvCVMcc/bblJpUeTIYg7Vk=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=Rg5T+S+u1wDNDV2MRpSn7mnq13SfeBTSOlrYp3En9t7Uw2C7RDt2TrxGeJi+5Dg/JnjuMf
+ xImtCjEbpt5rx7297hMr0FYS0iUCyAfEwF2rOwDS4fgP/X08bfxKfbSBq1JlTwlQ7TlbJQ
+ u9v7sYtjOQvrOMrTtGvvLdLVdFIj/Rs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-qW2gN7AwOEWOaU2ToXnEsg-1; Wed, 29 May 2024 10:18:17 -0400
-X-MC-Unique: qW2gN7AwOEWOaU2ToXnEsg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2e95a1e65c2so18921591fa.0
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:18:17 -0700 (PDT)
+ us-mta-357-eb1KHFJ5M9ih8w0cS22_vg-1; Wed, 29 May 2024 10:23:40 -0400
+X-MC-Unique: eb1KHFJ5M9ih8w0cS22_vg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-42109a85f5cso18398655e9.2
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:23:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716992296; x=1717597096;
+ d=1e100.net; s=20230601; t=1716992619; x=1717597419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=uLHSSzEkKQa//WnfxsNbDnkLzcKOi8i3sxjHdngeMlM=;
- b=MtZlbB0RfQusrl5iU0UL25ZJsdLgLcStnrcLMN6maD0e0B2T62SIgrixKGlG3cxxup
- oT0jNyk2LuPahnvURx4Z5ce3uB2A3DDzRpGtaCYuBXfgLpVhIuIw74JB3x/X25fzuRT/
- vnskrQ/NqSQxlninh3koHfjBAkXeSUNG44qj71Kou7tZrEk6NdpUmzThsiyYp4dZnY8d
- LQ0eqbqcX9GVLqy/gPzQHPRgxsfi/WfWJ+RFampN7LM3nZ0X3f7dxf/gf3CoMZaBR1fQ
- Nmf5nsOmK4BGuHoea9gWs9Zhz39HmN790xYZGgsNIaqHDmU07LAp/sMy+xr2WMc/ONBE
- nBGQ==
-X-Gm-Message-State: AOJu0YzSoY5fAPPZUclYhqhKLYqRSfwoVBMW0UoB3ynxxiUD6WjaxyPJ
- d7x+bcAgJza+IpAQAwuzHHpOjVIJKMZJyIFSi26ehEzjdhCCXB0KEMocnxOByW/jjMuQhpTcuQl
- 7gQ7OpEPSXdVqYd3jAb/n4KJRd7Ydqmz6ErDc2C3k/EqSUde0o7ap
-X-Received: by 2002:a05:651c:1a12:b0:2ea:807e:2cb0 with SMTP id
- 38308e7fff4ca-2ea807e2f74mr6260031fa.32.1716992296202; 
- Wed, 29 May 2024 07:18:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEKuM6yVMhFBGHGau3z6NGEksl3bZkEVueNnWfcLIJaAn68qui/GsRqSXiOOdX9w5FnasbZw==
-X-Received: by 2002:a05:651c:1a12:b0:2ea:807e:2cb0 with SMTP id
- 38308e7fff4ca-2ea807e2f74mr6259841fa.32.1716992295697; 
- Wed, 29 May 2024 07:18:15 -0700 (PDT)
+ b=oMcrVZ3N8jhl+CXSXCgXTLZSDv4Zl49H2WRa9nu9jgP6taTeN9nyW5D4ttdZqwwqqT
+ iC0lFtkFGTQw5jRQFNBYYOfaFii1YbZ13e0EZf4VfHa0PcX+mB+46Uswhbbzk/Lczbl2
+ 2/e0cIbt8qhEITZcFekOVWa0730vpKRHJ7rzuhME3N727C4Xu5DnPst48d6GuCtjdU0N
+ 7aYwDMDfZ2EeggzjtYMtAZEe6+sQ/bXulWAryR3qqk1dcTn+ILc8gnGIjKx7S9wW7aaD
+ c/vjkD2Jq3qrrT/xarenOko9ufGmwtcvNTnyBDdPexhSkJYnBKNXFzrzDAi56Mgn3WNX
+ u8Sw==
+X-Gm-Message-State: AOJu0Yxm6zIzKZJrsphEYjqpxdFEvt+4ocFzCuheO0W1XRHxaTDd/QHG
+ a6ad3RGjjPstBDl3wzvTy5kYNE1eQxEajwLn0tUiYD/9m4gix8rryHhe4sH+X8+8xFaJ6NM2lDf
+ LwDpCbGsUHXUsuDXnERBGzwDa1Q0y24kl5g6a62ncSqA38egAFRcA
+X-Received: by 2002:a05:600c:1c02:b0:41c:23f3:65fa with SMTP id
+ 5b1f17b1804b1-42108a99cf6mr136990335e9.28.1716992619297; 
+ Wed, 29 May 2024 07:23:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSZIJ/YrdZ0udBcnHuMu/JDcyXye8rX7FpnecL+2/+ckU7F8Xf8ijE+17MK5hmnLNV/ySg4g==
+X-Received: by 2002:a05:600c:1c02:b0:41c:23f3:65fa with SMTP id
+ 5b1f17b1804b1-42108a99cf6mr136990015e9.28.1716992618875; 
+ Wed, 29 May 2024 07:23:38 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4210896f442sm180709985e9.11.2024.05.29.07.18.15
+ 5b1f17b1804b1-4210896676bsm183917165e9.4.2024.05.29.07.23.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 07:18:15 -0700 (PDT)
-Date: Wed, 29 May 2024 16:18:14 +0200
+ Wed, 29 May 2024 07:23:38 -0700 (PDT)
+Date: Wed, 29 May 2024 16:23:37 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
@@ -72,7 +72,7 @@ Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
  <zhao1.liu@intel.com>
 Subject: Re: [PATCH v5 09/23] target/i386/kvm: Remove
  x86_cpu_change_kvm_default() and 'kvm-cpu.h'
-Message-ID: <20240529161814.3091ea4f@imammedo.users.ipa.redhat.com>
+Message-ID: <20240529162337.30755055@imammedo.users.ipa.redhat.com>
 In-Reply-To: <20240529051539.71210-10-philmd@linaro.org>
 References: <20240529051539.71210-1-philmd@linaro.org>
  <20240529051539.71210-10-philmd@linaro.org>
