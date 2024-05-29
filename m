@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659468D350D
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B69768D3503
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:56:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCGxt-0004jg-Gc; Wed, 29 May 2024 06:55:29 -0400
+	id 1sCGxv-0004lR-3k; Wed, 29 May 2024 06:55:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxr-0004ix-D8
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxs-0004jH-Hr
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxp-0003Fw-Jw
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:27 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGxq-0003II-PK
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716980124;
+ s=mimecast20190719; t=1716980126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ivIpsfOlJxFdI0h0TITtXjCjV49diKYNRKwCuXImVts=;
- b=ecWy6084i+p9MPPDe92eS18UQ7HhgcmjdHWfEXMTBgyeEazl6e4Vwj17lnKptH5D0xY0y+
- mv4fMjBO9CXj6/r6Mb56NNlO+fkhz8KYeyCeii5TyFN1CLktRuletb+igguK1C2aCr3PYk
- odryJpYtdOLyagYVTK5fkco7CJoWBoA=
+ bh=nkKDc76J51Qy7WIb1m+w4mnGxgDf9WFrHs7jMDtsBg8=;
+ b=FKa7J5ImAFYBz21l8SmAQ6mJGjwo8sZrb6DvsvmpUTGRmCK5CJd1nhBpig/N/DY2UaHBsm
+ 3YOh10Ps2qyDWfjfPu5AOAwbR/6Y2SsCBPxKnKqMjd9sS4LZjv5M8XQSsClk7KOHhX/9+G
+ HwEzxKRpUWTu8sOuCPRwxkgXM0Zipo4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-6IvZQDQQM9yfccyyo_oMbg-1; Wed, 29 May 2024 06:55:21 -0400
-X-MC-Unique: 6IvZQDQQM9yfccyyo_oMbg-1
+ us-mta-230-k8HMvFfmPwepiMvVr3FH8g-1; Wed, 29 May 2024 06:55:22 -0400
+X-MC-Unique: k8HMvFfmPwepiMvVr3FH8g-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA19B800169;
- Wed, 29 May 2024 10:55:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6097781227E;
+ Wed, 29 May 2024 10:55:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.109])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 44BFE105480A;
- Wed, 29 May 2024 10:55:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4E71E105480A;
+ Wed, 29 May 2024 10:55:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-s390x@nongnu.org
-Subject: [PULL 12/22] target/s390x: Simplify per_ifetch, per_check_exception
-Date: Wed, 29 May 2024 12:54:44 +0200
-Message-ID: <20240529105454.1149225-13-thuth@redhat.com>
+Subject: [PULL 13/22] target/s390x: Adjust check of noreturn in translate_one
+Date: Wed, 29 May 2024 12:54:45 +0200
+Message-ID: <20240529105454.1149225-14-thuth@redhat.com>
 In-Reply-To: <20240529105454.1149225-1-thuth@redhat.com>
 References: <20240529105454.1149225-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -62,7 +62,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,127 +80,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Set per_address and ilen in per_ifetch; this is valid for
-all PER exceptions and will last until the end of the
-instruction.  Therefore we don't need to give the same
-data to per_check_exception.
+If help_op is not set, ret == DISAS_NEXT.
+Shift the test up from surrounding help_wout, help_cout
+to skipping to out, as we do elsewhere in the function.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240502054417.234340-13-richard.henderson@linaro.org>
-[thuth: Silence checkpatch.pl errors]
+Message-ID: <20240502054417.234340-14-richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/helper.h          |  4 ++--
- target/s390x/tcg/misc_helper.c | 23 +++++++++--------------
- target/s390x/tcg/translate.c   | 20 ++++++++++++--------
- 3 files changed, 23 insertions(+), 24 deletions(-)
+ target/s390x/tcg/translate.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-index 31bd193322..1a8a76abb9 100644
---- a/target/s390x/helper.h
-+++ b/target/s390x/helper.h
-@@ -359,9 +359,9 @@ DEF_HELPER_FLAGS_4(ipte, TCG_CALL_NO_RWG, void, env, i64, i64, i32)
- DEF_HELPER_FLAGS_1(ptlb, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_3(lra, i64, env, i64, i64)
--DEF_HELPER_FLAGS_3(per_check_exception, TCG_CALL_NO_WG, void, env, i64, i32)
-+DEF_HELPER_FLAGS_1(per_check_exception, TCG_CALL_NO_WG, void, env)
- DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_WG, void, env, i64, i32)
--DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_WG, void, env, i64)
-+DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_WG, void, env, i32)
- DEF_HELPER_FLAGS_2(per_store_real, TCG_CALL_NO_WG, noreturn, env, i32)
- DEF_HELPER_FLAGS_1(stfl, TCG_CALL_NO_RWG, void, env)
- 
-diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-index 43cacc448f..303f86d363 100644
---- a/target/s390x/tcg/misc_helper.c
-+++ b/target/s390x/tcg/misc_helper.c
-@@ -604,12 +604,10 @@ static G_NORETURN void per_raise_exception_log(CPUS390XState *env)
-     per_raise_exception(env);
- }
- 
--void HELPER(per_check_exception)(CPUS390XState *env, uint64_t next_pc,
--                                 uint32_t ilen)
-+void HELPER(per_check_exception)(CPUS390XState *env)
- {
-+    /* psw_addr, per_address and int_pgm_ilen are already set. */
-     if (unlikely(env->per_perc_atmid)) {
--        env->psw.addr = next_pc;
--        env->int_pgm_ilen = ilen;
-         per_raise_exception_log(env);
-     }
- }
-@@ -639,23 +637,20 @@ void HELPER(per_branch)(CPUS390XState *env, uint64_t dest, uint32_t ilen)
-     per_raise_exception_log(env);
- }
- 
--void HELPER(per_ifetch)(CPUS390XState *env, uint64_t addr)
-+void HELPER(per_ifetch)(CPUS390XState *env, uint32_t ilen)
- {
--    if (get_per_in_range(env, addr)) {
--        env->per_address = addr;
-+    if (get_per_in_range(env, env->psw.addr)) {
-+        env->per_address = env->psw.addr;
-+        env->int_pgm_ilen = ilen;
-         env->per_perc_atmid = PER_CODE_EVENT_IFETCH | get_per_atmid(env);
- 
-         /* If the instruction has to be nullified, trigger the
-            exception immediately. */
-         if (env->cregs[9] & PER_CR9_EVENT_IFETCH_NULLIFICATION) {
--            CPUState *cs = env_cpu(env);
--
-             env->per_perc_atmid |= PER_CODE_EVENT_NULLIFICATION;
--            env->int_pgm_code = PGM_PER;
--            env->int_pgm_ilen = get_ilen(cpu_ldub_code(env, addr));
--
--            cs->exception_index = EXCP_PGM;
--            cpu_loop_exit(cs);
-+            qemu_log_mask(CPU_LOG_INT, "PER interrupt before 0x%" PRIx64 "\n",
-+                          env->per_address);
-+            per_raise_exception(env);
-         }
-     }
- }
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 5bb15a46e0..c9a5a1687e 100644
+index c9a5a1687e..c81e035dea 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -6258,8 +6258,8 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
- 
- #ifndef CONFIG_USER_ONLY
-     if (s->base.tb->flags & FLAG_MASK_PER_IFETCH) {
--        TCGv_i64 addr = tcg_constant_i64(s->base.pc_next);
--        gen_helper_per_ifetch(tcg_env, addr);
-+        /* With ifetch set, psw_addr and cc_op are always up-to-date. */
-+        gen_helper_per_ifetch(tcg_env, tcg_constant_i32(s->ilen));
+@@ -6341,15 +6341,16 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
      }
- #endif
- 
-@@ -6358,14 +6358,18 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
- 
- #ifndef CONFIG_USER_ONLY
-     if (s->base.tb->flags & FLAG_MASK_PER_IFETCH) {
--        TCGv_i64 next_pc = psw_addr;
--
--        if (ret == DISAS_NEXT || ret == DISAS_TOO_MANY) {
--            next_pc = tcg_constant_i64(s->pc_tmp);
-+        switch (ret) {
-+        case DISAS_TOO_MANY:
-+            s->base.is_jmp = DISAS_PC_CC_UPDATED;
-+            /* fall through */
-+        case DISAS_NEXT:
-+            tcg_gen_movi_i64(psw_addr, s->pc_tmp);
-+            break;
-+        default:
-+            break;
+     if (insn->help_op) {
+         ret = insn->help_op(s, &o);
+-    }
+-    if (ret != DISAS_NORETURN) {
+-        if (insn->help_wout) {
+-            insn->help_wout(s, &o);
+-        }
+-        if (insn->help_cout) {
+-            insn->help_cout(s, &o);
++        if (ret == DISAS_NORETURN) {
++            goto out;
          }
-         update_cc_op(s);
--        gen_helper_per_check_exception(tcg_env, next_pc,
--                                       tcg_constant_i32(s->ilen));
-+        gen_helper_per_check_exception(tcg_env);
      }
- #endif
++    if (insn->help_wout) {
++        insn->help_wout(s, &o);
++    }
++    if (insn->help_cout) {
++        insn->help_cout(s, &o);
++    }
  
+     /* io should be the last instruction in tb when icount is enabled */
+     if (unlikely(icount && ret == DISAS_NEXT)) {
 -- 
 2.45.1
 
