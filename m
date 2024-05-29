@@ -2,54 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD3D8D37BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB12E8D3795
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:28:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJRa-0003dy-IL; Wed, 29 May 2024 09:34:18 -0400
+	id 1sCJKO-00070F-Di; Wed, 29 May 2024 09:26:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
- id 1sCJFZ-0004mf-B9
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:21:53 -0400
-Received: from galois.linutronix.de ([193.142.43.55])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
- id 1sCJFX-00058S-8v
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:21:52 -0400
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1716988900;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=N1YiYJh4DycAIpYKRbdaGLipVBYIk22sylcUCCHc7SY=;
- b=1EA0acUHxAPQSvjT+kLPR2Emv1atv3ozL0ypdFNYTpdC0BlGj92ykE42qfKKvGyKBWNwCq
- LksijuPjW7mbAuqVNXrXkfkxlGlc+R5nF6NgkM+S7bgkyeZPW1PXezP/45PeohRf/XOeuz
- zAIRsKe83n5MiPVCh/aEXJuc45iAeCuyM6k1hMRWvWrIcQe5F0k1eBneBEZMWI04THTpz6
- gVDewRszV0aljF/X2C4B7tDj8Lbdmw1UIh0K7iRfmZoOhXSSnxeWEPORO06sq7De0afrXl
- bclhm4sLjrN2ZR50GD4F8bV3uDEAP8d4+rn4gLfFaNNRs6E/8Gt7q+qpoOlvwA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1716988900;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=N1YiYJh4DycAIpYKRbdaGLipVBYIk22sylcUCCHc7SY=;
- b=NNW8ThIyClrZFuHLtnyNOW/BivpVOmFxq0unajADPFxy1rhMHPyKdQyf3hM/5RuZJNvZcw
- 6iI007AYJp2VUHCw==
-To: Alex Williamson <alex.williamson@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH] pci-bridge/xio3130_downstream: fix invalid link speed and
- link width
-Date: Wed, 29 May 2024 15:21:25 +0200
-Message-Id: <20240529132125.106790-1-namcao@linutronix.de>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sCJKK-0006zb-Bb; Wed, 29 May 2024 09:26:48 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1sCJKI-0006N4-Bc; Wed, 29 May 2024 09:26:48 -0400
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 336CE2055B;
+ Wed, 29 May 2024 13:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716989204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cl7vjtl2FXTcp8RdIfAmnp+QBj5owrSuQji8jQz2Wn4=;
+ b=qsHYgikzManVpcgDV/O4L2rN+KceZKRccfPDlnCq5/HMxXj4LeMCWrKWsrqqtfhni77IgE
+ OUfR4XRNaMaQARpMtleZhb7oy4TiBoGnDwVIVK3xFrtaELsro804w9yqQqtDsM9xBgD2pX
+ 2aAzskiTNSvZ3iu/J1w/SKaQr/WW2+8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716989204;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cl7vjtl2FXTcp8RdIfAmnp+QBj5owrSuQji8jQz2Wn4=;
+ b=EZMTMoNWWdK8d6wAydaydsJPe1q6rAT5CiglBtZy6/s8HB3oRInRJ45uHUln/eHbCbNo72
+ na3Nxe77F80oQ6Aw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1716989203; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cl7vjtl2FXTcp8RdIfAmnp+QBj5owrSuQji8jQz2Wn4=;
+ b=jWJKnJS8vfppcA4N6CpVskKXkFOuC5xuAfClKIOR/9UQJ3OrKd6WNcmGfifpl+Ug3vxOLf
+ Sxbfn86ssuotAeZ2u8Sb5+jXdtU3YKBm5j0/KbTZBGhavruvnfQOlqxPnBROQVzfCrGhHg
+ OE+7gHhVmUD0c/Kb/dMI2YWPNc8kTBQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1716989203;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=cl7vjtl2FXTcp8RdIfAmnp+QBj5owrSuQji8jQz2Wn4=;
+ b=oLS1sziemEFzn5gZCM7aWcgdVAmu9rIcP8Inj3e1URxSwet3e36K73GtK04/Ji4FKen1ET
+ WvLWn4Uk0FWTJACg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B194813A6B;
+ Wed, 29 May 2024 13:26:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id hXLxHRItV2ZhSgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 29 May 2024 13:26:42 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>, qemu-stable@nongnu.org
+Subject: Re: [PULL 6/9] virtio-gpu: fix v2 migration
+In-Reply-To: <94b38346-7ad7-4fa4-b7e8-3ba00cc72f16@proxmox.com>
+References: <20240522222034.4001-1-farosas@suse.de>
+ <20240522222034.4001-7-farosas@suse.de>
+ <94b38346-7ad7-4fa4-b7e8-3ba00cc72f16@proxmox.com>
+Date: Wed, 29 May 2024 10:26:40 -0300
+Message-ID: <8734q0g35b.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=193.142.43.55; envelope-from=namcao@linutronix.de;
- helo=galois.linutronix.de
+Content-Type: text/plain
+X-Spam-Score: -2.47
+X-Spamd-Result: default: False [-2.47 / 50.00]; BAYES_HAM(-1.17)[88.88%];
+ NEURAL_HAM_LONG(-1.00)[-1.000];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TO_DN_SOME(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
+ RCPT_COUNT_FIVE(0.00)[6]; RCVD_COUNT_TWO(0.00)[2];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; MID_RHS_MATCH_FROM(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo, proxmox.com:email]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -58,7 +102,6 @@ X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 29 May 2024 09:34:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,49 +116,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Set link width to x1 and link speed to 2.5 Gb/s as specified by the
-datasheet. Without this, these fields in the link status register read
-zero, which is incorrect.
+Fiona Ebner <f.ebner@proxmox.com> writes:
 
-This problem appeared since 3d67447fe7c2 ("pcie: Fill PCIESlot link fields
-to support higher speeds and widths"), which allows PCIe slot to set link
-width and link speed. However, if PCIe slot does not explicitly set these
-properties, they will be zero. Before this commit, the width and speed
-default to x1 and 2.5 Gb/s.
+> CC-ing stable, because this already is an issue in 9.0.0
+>
 
-Fixes: 3d67447fe7c2 ("pcie: Fill PCIESlot link fields to support higher spe=
-eds and widths")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- hw/pci-bridge/xio3130_downstream.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/hw/pci-bridge/xio3130_downstream.c b/hw/pci-bridge/xio3130_dow=
-nstream.c
-index 38a2361fa2..d949431191 100644
---- a/hw/pci-bridge/xio3130_downstream.c
-+++ b/hw/pci-bridge/xio3130_downstream.c
-@@ -172,10 +172,18 @@ static void xio3130_downstream_class_init(ObjectClass=
- *klass, void *data)
-     device_class_set_props(dc, xio3130_downstream_props);
- }
-=20
-+static void xio3130_downstream_instance_post_init(Object *obj)
-+{
-+    PCIESlot *s =3D PCIE_SLOT(obj);
-+    s->speed =3D QEMU_PCI_EXP_LNK_2_5GT;
-+    s->width =3D QEMU_PCI_EXP_LNK_X1;
-+}
-+
- static const TypeInfo xio3130_downstream_info =3D {
-     .name          =3D TYPE_XIO3130_DOWNSTREAM,
-     .parent        =3D TYPE_PCIE_SLOT,
-     .class_init    =3D xio3130_downstream_class_init,
-+    .instance_post_init =3D xio3130_downstream_instance_post_init,
-     .interfaces =3D (InterfaceInfo[]) {
-         { INTERFACE_PCIE_DEVICE },
-         { }
---=20
-2.39.2
+Thank you for pointing this out. I was expecting b4 to find the tag, but
+I just now noticed that the CC was added by Peter as a reply to the
+message and not originally via the patch headers, so I should have added
+it manually.
 
 
