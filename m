@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AEA8D3932
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8191A8D38F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:17:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCKHz-0004pv-RM; Wed, 29 May 2024 10:28:27 -0400
+	id 1sCK5i-0003k1-PC; Wed, 29 May 2024 10:15:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sCKHx-0004pV-TI
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:28:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCK5f-0003hl-B3
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:15:43 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1sCKHw-0000xP-9m
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:28:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716992903;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d6Sj/ib8QdQRsWAVAPhAAXnHH6zxQBYlRRVwrjudfj8=;
- b=P+cekUO6DlCUqwnB4tcCPX0GWyF3FBLPlFt49tJbBnLZEoAlbt5LEDP4ITAam0JbZtpjjZ
- 8wp5s3+PpxyHYPKWh9DVVSOX38vcLDaUrWQlKchKoZ24xXOm8dFDa+xOjutO4z1LaJoQfy
- Szlbq0Wdm0K0Vp98lhCr5UshCURdAFk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-279-2nI09N6tM0yLpUbtx6cm0A-1; Wed, 29 May 2024 10:28:19 -0400
-X-MC-Unique: 2nI09N6tM0yLpUbtx6cm0A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6AA9D8058D1;
- Wed, 29 May 2024 14:28:19 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 239872026D6E;
- Wed, 29 May 2024 14:28:19 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0E66721E668F; Wed, 29 May 2024 16:28:18 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  "Michael
- S. Tsirkin"
- <mst@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v4] mc146818rtc: add a way to generate RTC interrupts
- via QMP
-In-Reply-To: <c8ef6f8f-411d-4f25-bfec-d9f2dfa4b55d@yandex-team.ru> (Daniil
- Tatianin's message of "Wed, 29 May 2024 15:43:50 +0300")
-References: <20240528072242.493056-1-d-tatianin@yandex-team.ru>
- <87mso8n7tw.fsf@pond.sub.org>
- <9a4ae973-5ad0-4dd1-9818-489833352936@linaro.org>
- <c8ef6f8f-411d-4f25-bfec-d9f2dfa4b55d@yandex-team.ru>
-Date: Wed, 29 May 2024 16:28:18 +0200
-Message-ID: <878qzslmkd.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCK5a-0007CQ-BL
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:15:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716992138; x=1748528138;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=rq7qUQw+6YPbN653UzNcnJO+2pudvt9/l/MkBb7BKP4=;
+ b=QL6VzaaB6AZZjMYYxuaS5TEWDlD0IVDh+pSLV5pOIB2WUsgh/EPs0bw1
+ GqkKmrUzmZNgr8ViLFGWy5MYbHBwjGr1bkRm3UzbRAsOlQxaRnoyK1S0o
+ EkMN4GLGXzwLGOAU5/m/aW1pfY7UPYWvNjNmVz8vTS2FaP6J3YNgLp1ed
+ ZQnzCQieZKdoWC231mIoQVpd1bqEbGCVmy5yEESu8ljVag6qJbmqcoq1Y
+ xaQPwRb4+W3F3RnMmCZNXiOVw4FsB2t/RSqMlBaXAnbbiwwI38Fn+yUSt
+ ipbSOhHagCbQblMc/65hkhz4u8TurNrqdn6cbEUpUXG11KxKDKeuZ/IHp A==;
+X-CSE-ConnectionGUID: Zt37hfBpQ5qHG52Q6QPkXw==
+X-CSE-MsgGUID: USlJQ586Qwq7HiZV0wepaA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="13628214"
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="13628214"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 07:14:54 -0700
+X-CSE-ConnectionGUID: r3JnROW/RvSs96xiGowwww==
+X-CSE-MsgGUID: rRQELzb1RLmdq8Ximav1UA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="66316099"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa002.jf.intel.com with ESMTP; 29 May 2024 07:14:49 -0700
+Date: Wed, 29 May 2024 22:30:13 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5n77+9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC 1/6] scripts/simpletrace-rust: Add the basic cargo framework
+Message-ID: <Zlc79ZhJavATdvSs@intel.com>
+References: <20240527081421.2258624-1-zhao1.liu@intel.com>
+ <20240527081421.2258624-2-zhao1.liu@intel.com>
+ <20240527200504.GB913874@fedora.redhat.com>
+ <ZlWNk46MF5uNa+ZC@intel.com>
+ <20240528141401.GB993828@fedora.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240528141401.GB993828@fedora.redhat.com>
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,90 +89,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniil Tatianin <d-tatianin@yandex-team.ru> writes:
+Hi Stefan,
 
-> On 5/29/24 3:36 PM, Philippe Mathieu-Daud=C3=A9 wrote:
->
->> On 29/5/24 14:03, Markus Armbruster wrote:
->>> Daniil Tatianin <d-tatianin@yandex-team.ru> writes:
->>>
->>>> This can be used to force-synchronize the time in guest after a long
->>>> stop-cont pause, which can be useful for serverless-type workload.
->>>>
->>>> Also add a comment to highlight the fact that this (and one other QMP
->>>> command) only works for the MC146818 RTC controller.
->>>>
->>>> Acked-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->>>> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+On Tue, May 28, 2024 at 10:14:01AM -0400, Stefan Hajnoczi wrote:
+> Date: Tue, 28 May 2024 10:14:01 -0400
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> Subject: Re: [RFC 1/6] scripts/simpletrace-rust: Add the basic cargo
+>  framework
+> 
+> On Tue, May 28, 2024 at 03:53:55PM +0800, Zhao Liu wrote:
+> > Hi Stefan,
+> > 
+> > [snip]
+> > 
+> > > > diff --git a/scripts/simpletrace-rust/.rustfmt.toml b/scripts/simpletrace-rust/.rustfmt.toml
+> > > > new file mode 100644
+> > > > index 000000000000..97a97c24ebfb
+> > > > --- /dev/null
+> > > > +++ b/scripts/simpletrace-rust/.rustfmt.toml
+> > > > @@ -0,0 +1,9 @@
+> > > > +brace_style = "AlwaysNextLine"
+> > > > +comment_width = 80
+> > > > +edition = "2021"
+> > > > +group_imports = "StdExternalCrate"
+> > > > +imports_granularity = "item"
+> > > > +max_width = 80
+> > > > +use_field_init_shorthand = true
+> > > > +use_try_shorthand = true
+> > > > +wrap_comments = true
+> > > 
+> > > There should be QEMU-wide policy. That said, why is it necessary to customize rustfmt?
+> > 
+> > Indeed, but QEMU's style for Rust is currently undefined, so I'm trying
+> > to add this to make it easier to check the style...I will separate it
+> > out as a style policy proposal.
+> 
+> Why is a config file necessary? QEMU should use the default Rust style.
+> 
 
-[...]
+There are some that may be overdone, but I think some basic may still
+be necessary, like "comment_width = 80", "max_width = 80",
+"wrap_comments". Is it necessary to specify the width? As C.
 
->>>> diff --git a/include/hw/rtc/mc146818rtc.h b/include/hw/rtc/mc146818rtc=
-.h
->>>> index 97cec0b3e8..e9dd0f9c72 100644
->>>> --- a/include/hw/rtc/mc146818rtc.h
->>>> +++ b/include/hw/rtc/mc146818rtc.h
->>>> @@ -56,5 +56,6 @@ MC146818RtcState *mc146818_rtc_init(ISABus *bus, int=
- base_year,
->>>> =C2=A0 void mc146818rtc_set_cmos_data(MC146818RtcState *s, int addr, i=
-nt val);
->>>> =C2=A0 int mc146818rtc_get_cmos_data(MC146818RtcState *s, int addr);
->>>> =C2=A0 void qmp_rtc_reset_reinjection(Error **errp);
->>>> +void qmp_rtc_inject_irq_broadcast(Error **errp);
->>>> =C2=A0 =C2=A0 #endif /* HW_RTC_MC146818RTC_H */
->>>> diff --git a/qapi/misc-target.json b/qapi/misc-target.json
->>>> index 4e0a6492a9..7d388a3753 100644
->>>> --- a/qapi/misc-target.json
->>>> +++ b/qapi/misc-target.json
->>>> @@ -19,6 +19,25 @@
->>>> =C2=A0 { 'command': 'rtc-reset-reinjection',
->>>> =C2=A0=C2=A0=C2=A0 'if': 'TARGET_I386' }
->>>> =C2=A0 +##
->>>> +# @rtc-inject-irq-broadcast:
->>>> +#
->>>> +# Inject an RTC interrupt for all existing RTCs on the system.
->>>> +# The interrupt forces the guest to synchronize the time with RTC.
->>>> +# This is useful after a long stop-cont pause, which is common for
->>>> +# serverless-type workload.
+And, "group_imports" and "imports_granularity" (refered from crosvm),
+can also be used to standardize including styles and improve
+readability, since importing can be done in many different styles.
 
-[...]
+This fmt config is something like ./script/check_patch.pl for QEMU/linux.
+Different programs have different practices, so I feel like that's an
+open too!
 
->>> Make that "workloads".
->>>
->>> "For all existing RTCs" is a lie.=C2=A0 It's really just all mc146818s.=
-=C2=A0 The
->>> command works as documented only as long as the VM has no other RTCs.
->>
->> @rtc-mc146818-force-sync-broadcast sounds clearer & safer;
->> IIUC the command goal, mentioning IRQ injection is irrelevant
->> (implementation detail).
->>
-> I like this if Markus is okay with that. If we go with this, would it mak=
-e sense to drop the "Bug" clause?
-
-Putting "mc146818" right into the command name is fine with me.
-Rephrasing the doc comment to say "all MC146818 RTC devices" then makes
-sense, and removes the need for a "Bug: clause".
-
-With "mc146818" in the command name, I don't see the need for
-"-broadcast".  The fact that it applies to all MC146818 RTCs feels like
-detail to me.  In particular since there's usually exactly one.  Still
-important enough to spell out in documentation, but I doub't it's
-important enough to warrant a mention in the command name.
-
-I have doubts on replacing the commands action "inject-irq" by the
-action's purpose "force-sync".  What the guest does with the IRQ is
-entirely up to guest software.  Common guest software sets the system
-clock from the RTC hardware clock.  But it's really up to the guest.
-
-What about mc146818-inject-irq?
-
->> (I'm trying to not spread the problems we already have with
->> @rtc-reset-reinjection).
-
-Well, we are adding to them no matter how we name the command.  We're
-just more honest about it :)
-
-[...]
+This certainly also depends on the maintainer's/your preferences, ;-)
+in what way looks more comfortable/convenient that is the best,
+completely according to the default is also good.
 
 
