@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493918D38BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A9F8D38C4
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:09:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJy3-00068d-HT; Wed, 29 May 2024 10:07:51 -0400
+	id 1sCJy6-00068r-5Q; Wed, 29 May 2024 10:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sCJy0-00067h-A8
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:48 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ id 1sCJy3-00068g-9g
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:51 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sCJxy-0005ht-Oa
- for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:48 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-52ad8230bb9so898203e87.3
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:07:46 -0700 (PDT)
+ id 1sCJy0-0005iH-TO
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:07:51 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-529682e013dso2497104e87.3
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716991664; x=1717596464; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716991666; x=1717596466; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=suqLmt7AH8VX+OrzngkGIik/kesngvj14F2vCYL7OFM=;
- b=WP82q6JCBhX9/1uLkU2WHRfmPbpwEDw3R+j74LIMyVptIkEgBpAbk5S9Z79LOpbwal
- 4RJRONoY5ZAXWp3R6KRveZ9CIVtUaso+IBvkvQvO36rSyR+GwzHK8T3r4TSWR5HY1NaI
- WaZqG/HxKh709ow7Le+Klv3AtqWgllMoLuR7Ibss0UUEGsMqYQpPYaMXyAExiTWWSOH7
- 8lJ/m0c64aoi2HZ8XheHSimQrSj2Qo4rVj1XME2pMiqvkjsis3w0FrYnrvUv8hGJmSec
- AS8Xo4VMy1fCyhTdzN5nMvz9HbqwH/Ir2cbFnfQKnPXmPiT5rrYiT6kxv1UO8kX9HKTW
- lmkQ==
+ bh=yfQU3CIk8oi6JUEGcx9QZf/9+B1Oq0qqW+7JWEaNpUQ=;
+ b=Iaay3tqJUP8MRoVNmOZFyTmUHOtEFJ9Zpamgnvhx6bK9CxAHtBkPlRo3sfi8/xGrHe
+ d/ca0vPWKSBlApR8r8Nxm3kEnGY22zqaZxcMOMoQTVhc2JL0c2sBSbgPP/ySwwWrfDB3
+ sPmE0raFHxnrq9rzuwWR6lUDOWYaQJZYaqniJ1GGGfYHuH2wuljaaT6OAOZ0Lz3HRqIt
+ BPr9prqSmxzPv7I7rWPscZT9v81SBQGo89/CjROTPRGUKO5tppsXsFfWhHWQJR83887B
+ OjIL1mIGRjxuSNYcLJFrTFYuEiZSxOD+9XUIsvuNjTLP8GdHNEOIzjndOJjtnP2wfUXz
+ 828g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716991664; x=1717596464;
+ d=1e100.net; s=20230601; t=1716991666; x=1717596466;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=suqLmt7AH8VX+OrzngkGIik/kesngvj14F2vCYL7OFM=;
- b=b/fWD1Zmm9tHgWne0YPud7tZW8ONyasPojNySvSp1xuMxmdHBDuWKTG98l9Hnn8ULv
- IeFiklrVv3udvO4Joqu7eHO8hPzsQiud6HMtP7EHj3Sa6xUEx1QjUWCj2PUCf+T2iwcW
- fHLHsS4ReNWe15jHfwxVtywky3POoCM/XZhFE0tPzcECdttJuVtAtsZ16TCghAzxAuW9
- pNTX8peVJISU6atuigtpDQNWsUq36XlubVFjLi+XSEntjaibH8eI2sn8hK+sxR0Ny8qm
- OjoHAHSVs18rmupWRSdu0yP/HYLJSIsVlX6Bl0dF9ugeUfJrum9VtA3tFYa4uPE3CMY0
- Krbw==
-X-Gm-Message-State: AOJu0YwZAy0et/riQKwp8JbC2hJs5PN+NcYKv6KU7+rapWdcVxYeLZDK
- /ngIhvs6DUEh2qRGMSSiauH2v+OOLAYcRLSeg1BVdSIgGqm95bnEY50MFwGl
-X-Google-Smtp-Source: AGHT+IGdkBzBgEhHrd1LW9KAGa/cGv5sdiBTlj+GoDqEM5VjT/z9rWbfYzsj/AoEXZVsdTS9qD3Uag==
-X-Received: by 2002:a05:6512:3b12:b0:51d:2529:7c4d with SMTP id
- 2adb3069b0e04-52961a82092mr14632029e87.0.1716991663724; 
- Wed, 29 May 2024 07:07:43 -0700 (PDT)
+ bh=yfQU3CIk8oi6JUEGcx9QZf/9+B1Oq0qqW+7JWEaNpUQ=;
+ b=CtAQmpknFGktCuATWjDLw7XYPUaTaHDfA2kbv1trzf91tVdFjDfhCy1FKaKjpZekNv
+ oUvFoEt7iBzFaeAMhKDtbLVelXRtdXC2e2sDFH7/OQ+3Ou3IanWHcZvKl+daKYsyVWCa
+ paiJjx5Jdz/FdDcf+bzHC2Ab7ySIQgvgp+mmSyZNYode9K4L91YXD+dQn0HtgBMXWkM/
+ iywrVX79dBJ+OrcSyevKiFPYAvllkKk3sHoUMrr/h7aQvJRqMc0m9WhNnUEIJFhiGh3p
+ G/4lbIw+t7Soy1WMKl85hk+QcDACCig5x3gvCBLlA9EN9nqKle3eUa1r/ZJnVcx6Dfpj
+ eLRA==
+X-Gm-Message-State: AOJu0YzVnjdYznrCgGulTz5xRThpf6S1pJsJWh4lf3aXru6psprjg1Ag
+ ytNPSnSST7lk0r+DcwFTkBqOi7HMxf0gnePSh3gNdVJVmo4/17Z3hkLvIEmg
+X-Google-Smtp-Source: AGHT+IGzkXOYSImMOV6N87l6JZQ270Dpu6VtX1s3RWgHcPsFkFEwPwb1/bHSmEc0ivZv+7V/GBf3hw==
+X-Received: by 2002:a19:2d48:0:b0:526:92d7:52d4 with SMTP id
+ 2adb3069b0e04-529bea19e84mr2711966e87.61.1716991666190; 
+ Wed, 29 May 2024 07:07:46 -0700 (PDT)
 Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
  by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-5297066b233sm1274418e87.135.2024.05.29.07.07.42
+ 2adb3069b0e04-529715e57c1sm1333816e87.286.2024.05.29.07.07.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 07:07:42 -0700 (PDT)
+ Wed, 29 May 2024 07:07:44 -0700 (PDT)
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
  "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anthony PERARD <anthony@xenproject.org>, Paul Durrant <paul@xen.org>,
  xen-devel@lists.xenproject.org
-Subject: [PATCH v8 2/8] xen: mapcache: Unmap first entries in buckets
-Date: Wed, 29 May 2024 16:07:33 +0200
-Message-Id: <20240529140739.1387692-3-edgar.iglesias@gmail.com>
+Subject: [PATCH v8 3/8] xen: Add xen_mr_is_memory()
+Date: Wed, 29 May 2024 16:07:34 +0200
+Message-Id: <20240529140739.1387692-4-edgar.iglesias@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
 References: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +99,65 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
 
-When invalidating memory ranges, if we happen to hit the first
-entry in a bucket we were never unmapping it. This was harmless
-for foreign mappings but now that we're looking to reuse the
-mapcache for transient grant mappings, we must unmap entries
-when invalidated.
+Add xen_mr_is_memory() to abstract away tests for the
+xen_memory MR.
+
+No functional changes.
 
 Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/xen/xen-mapcache.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ hw/xen/xen-hvm-common.c | 10 ++++++++--
+ include/sysemu/xen.h    |  1 +
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index bc860f4373..ec95445696 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -491,18 +491,23 @@ static void xen_invalidate_map_cache_entry_unlocked(MapCache *mc,
-         return;
-     }
-     entry->lock--;
--    if (entry->lock > 0 || pentry == NULL) {
-+    if (entry->lock > 0) {
-         return;
-     }
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 2d1b032121..a0a0252da0 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -12,6 +12,12 @@
  
--    pentry->next = entry->next;
-     ram_block_notify_remove(entry->vaddr_base, entry->size, entry->size);
-     if (munmap(entry->vaddr_base, entry->size) != 0) {
-         perror("unmap fails");
-         exit(-1);
-     }
+ MemoryRegion xen_memory;
+ 
++/* Check for xen memory.  */
++bool xen_mr_is_memory(MemoryRegion *mr)
++{
++    return mr == &xen_memory;
++}
 +
-     g_free(entry->valid_mapping);
--    g_free(entry);
-+    if (pentry) {
-+        pentry->next = entry->next;
-+        g_free(entry);
-+    } else {
-+        memset(entry, 0, sizeof *entry);
-+    }
- }
+ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+                    Error **errp)
+ {
+@@ -28,7 +34,7 @@ void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size, MemoryRegion *mr,
+         return;
+     }
  
- typedef struct XenMapCacheData {
+-    if (mr == &xen_memory) {
++    if (xen_mr_is_memory(mr)) {
+         return;
+     }
+ 
+@@ -55,7 +61,7 @@ static void xen_set_memory(struct MemoryListener *listener,
+ {
+     XenIOState *state = container_of(listener, XenIOState, memory_listener);
+ 
+-    if (section->mr == &xen_memory) {
++    if (xen_mr_is_memory(section->mr)) {
+         return;
+     } else {
+         if (add) {
+diff --git a/include/sysemu/xen.h b/include/sysemu/xen.h
+index 754ec2e6cb..3445888e39 100644
+--- a/include/sysemu/xen.h
++++ b/include/sysemu/xen.h
+@@ -49,4 +49,5 @@ static inline void xen_ram_alloc(ram_addr_t ram_addr, ram_addr_t size,
+ 
+ #endif /* CONFIG_XEN_IS_POSSIBLE */
+ 
++bool xen_mr_is_memory(MemoryRegion *mr);
+ #endif
 -- 
 2.40.1
 
