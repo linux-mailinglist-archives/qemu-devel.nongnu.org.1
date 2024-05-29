@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982FC8D2C43
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 07:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9F58D2C4E
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 07:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCBfo-0000Qc-8k; Wed, 29 May 2024 01:16:28 -0400
+	id 1sCBfs-0000RA-LR; Wed, 29 May 2024 01:16:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBfl-0000Pv-49
- for qemu-devel@nongnu.org; Wed, 29 May 2024 01:16:25 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBfq-0000Qq-NQ
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 01:16:30 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBfh-0005Ry-C9
- for qemu-devel@nongnu.org; Wed, 29 May 2024 01:16:23 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-42120fc8cbfso10495475e9.2
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 22:16:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCBfn-0005SB-OP
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 01:16:30 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-354faf5f1b4so1530811f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 22:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716959779; x=1717564579; darn=nongnu.org;
+ d=linaro.org; s=google; t=1716959785; x=1717564585; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aDu2aZ9r50YKxf+dNaxDqKUjAn6DYpDYAzbmilk8iWY=;
- b=YVhMj/11/Aq2ZQZV4XSJczqrjlikDGNak2hnwkj8uCY3nuFjWJp5NZAFpmsL/tW3xK
- X8OJva8aJ20dxK3TEvdPAV1+sy2jgg1LL+yYB4j5YRBDlfNclmU5gzenlKrzuTcicnsM
- aeDmGMgcl+jtScwer/3JiM7NlK4JwpuasqI5aEDrkbCQFNBK2GPDG2W30LMmI651Dqqm
- vJDwXIeoDBhCPAY9PgNsv4LcXdUu3UcYvvNvOjoxF4hK1Mb3d3i1HTN1HSboh7kHfKkv
- ErOX2aAPwu6ReuSAdMsszGMIdRKET9DfOyDUuoC+HzE3k+fG0TBq/7x4fH3TjiN10Ibk
- 6VeQ==
+ bh=IfMZ+oKIM4wfvreBQdA4tEvmgHI/5yBGGp5BIKAmFsI=;
+ b=ARgEngafU9da1A0HbwHIMAaZG0L7evXUIdzKWPk7XYqV7RowYV/pvVQBesGtx9dltE
+ aHNHoUj06qyuWtMhiOf8FuvD0J3GI+41Ik4TvvYcp7XkyYAh4CDFitPLwbphca/xDPwZ
+ vQ2epqTFuuWc6BtSmW75ZH2wy6BiBfxNK56ds57OEXUpW/YkJWD6czZuRJPQVnqJfPjA
+ 8TwBJW3LWA163irCxepSfRLodq1qNuMq6e6Z6AYx+OJpGqvkbXK8E9u4Sp3q3cVwL0Hf
+ csFNNgwEZM/e+korA5umczqLgA45MsifXo3bVaVqLMd+62TJaunNWOEwure9E+RrBrLt
+ EtMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716959779; x=1717564579;
+ d=1e100.net; s=20230601; t=1716959785; x=1717564585;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aDu2aZ9r50YKxf+dNaxDqKUjAn6DYpDYAzbmilk8iWY=;
- b=C7pEnqsgaFbPVWBr76XSGDNv/AaKTUjfGAraT46/na7jAci4UbiqxN0ceF1EgaR4kM
- SbuaSCKcZRZY+20HJAbHn2EDnyc2wsjCgr5DrHd4ErV30JUVHloUj4A/xzwSGmTDsA4J
- dGn5iQWD3br5SCUJyRFOPw8HVxprchcqpkA4p+icY2gqa8DiuvZZS/vwKcu1S+mWtXVk
- hkcR77HbcEVu+PnOb3KAHQVfys1/ELue/tsW8byI8LpoaodFuky0wNvxdkXRg++FOFL4
- hdkFmINEjs5dRPC8vyc5/pJdJnP4dDi1osy+dy9XGdcUmvBkyac5CXbQm0OPr5zGH5Sb
- FPqw==
-X-Gm-Message-State: AOJu0YxCddLiFDLCHt+4JMoagpJRfMlCBpm8uVCHDUccFkQDyTwuw1Is
- cfG7VJPR2xCYl+gQOWmb73ezcfqtwSqoFPfdR0uNL5+3P5BxIIXGcumF+ckz8qw3j1WwLkMe3FG
- 6
-X-Google-Smtp-Source: AGHT+IFtuMwiR3qrocQLyFpSauWwy6fQ2CY5rKGl1qU7bJq8f7nkIccVRMZiFTLzmo52+USOllBJrg==
-X-Received: by 2002:a05:600c:56d5:b0:41f:ed4c:b8b6 with SMTP id
- 5b1f17b1804b1-42108a0cac4mr113189805e9.38.1716959779617; 
- Tue, 28 May 2024 22:16:19 -0700 (PDT)
+ bh=IfMZ+oKIM4wfvreBQdA4tEvmgHI/5yBGGp5BIKAmFsI=;
+ b=azfR2PqYTtX7V+WOUu1o/HD8sARagad8JgwGqWovvIkAU3p+/jtcPhVzcBwbnybIwZ
+ /B6XNEfKEXQVIMmsuhhTYoDjw+dld7MOLZs2t8VuuLz3bDWVikzo6Jx691MYwy0LI+4i
+ uHDXPaoZaJ5a0E/hi0zTFzzImDmL2nkQuRqZw/iozMYjodJcjc7A5aVc/YlEQxRnWPaO
+ UvF7MoGIhzTnS4sOtu9Pnb2Be0ngOoC2EkD3qb5zrG7AzRwyR/MN13rpom5oxHYPCDeg
+ 8G79vVaMQT/NDF6MTQF3RHvMeOcJPZgARYLMdJzfwPxTRGOfp0h4PKD81AjSzz6F4AqL
+ lw6w==
+X-Gm-Message-State: AOJu0YzmEK4601TTTqEUMUa45dUxOxypyCHhQhLgyd6xmfrc/lvl5Ffs
+ de4L5JABKRS7iUgzldeVfP2+6VUdtY72p80inpGlqZL/azTPMyF6IYwTl1+0P9Tpn80BTpWsHGT
+ N
+X-Google-Smtp-Source: AGHT+IEX0VXXofr8sEVD81SV1msTBSKuixACz2iTCC6rx1aaEYxvGe4p162Qljv1hn/10soypPjqiQ==
+X-Received: by 2002:adf:f00f:0:b0:354:f304:cd36 with SMTP id
+ ffacd0b85a97d-35538a61547mr12691410f8f.70.1716959785016; 
+ Tue, 28 May 2024 22:16:25 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.204.141])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3557a08cc1bsm13761937f8f.45.2024.05.28.22.16.18
+ ffacd0b85a97d-3557dceff3csm13831807f8f.92.2024.05.28.22.16.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 28 May 2024 22:16:19 -0700 (PDT)
+ Tue, 28 May 2024 22:16:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -62,18 +62,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v5 07/23] hw/acpi/ich9: Remove dead code related to
- 'acpi_memory_hotplug'
-Date: Wed, 29 May 2024 07:15:23 +0200
-Message-ID: <20240529051539.71210-8-philmd@linaro.org>
+Subject: [PATCH v5 08/23] hw/i386/pc: Remove deprecated pc-i440fx-2.1 machine
+Date: Wed, 29 May 2024 07:15:24 +0200
+Message-ID: <20240529051539.71210-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240529051539.71210-1-philmd@linaro.org>
 References: <20240529051539.71210-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,87 +95,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-acpi_memory_hotplug::is_enabled is set to %true once via
-ich9_lpc_initfn() -> ich9_pm_add_properties(). No need to
-check it, so remove now dead code.
+The pc-i440fx-2.1 machine was deprecated for the 8.2
+release (see commit c7437f0ddb "docs/about: Mark the
+old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+time to remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/acpi/ich9.c | 28 ++++++----------------------
- 1 file changed, 6 insertions(+), 22 deletions(-)
+ docs/about/deprecated.rst       |  2 +-
+ docs/about/removed-features.rst |  2 +-
+ include/hw/i386/pc.h            |  3 ---
+ hw/i386/pc.c                    |  7 -------
+ hw/i386/pc_piix.c               | 23 -----------------------
+ 5 files changed, 2 insertions(+), 35 deletions(-)
 
-diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-index 9b605af21a..02d8546bd3 100644
---- a/hw/acpi/ich9.c
-+++ b/hw/acpi/ich9.c
-@@ -153,17 +153,10 @@ static int ich9_pm_post_load(void *opaque, int version_id)
-      .offset     = vmstate_offset_pointer(_state, _field, uint8_t),  \
-  }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 629f6a1566..5b4753e5dc 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -228,7 +228,7 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
  
--static bool vmstate_test_use_memhp(void *opaque)
--{
--    ICH9LPCPMRegs *s = opaque;
--    return s->acpi_memory_hotplug.is_enabled;
--}
+-``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
++``pc-i440fx-2.2`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These old machine types are quite neglected nowadays and thus might have
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 5f0c2d8ec2..9b0e2f11de 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -925,7 +925,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
++``pc-0.10`` up to ``pc-i440fx-2.1`` (removed in 4.0 up to 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These machine types were very old and likely could not be used for live
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 01fdcfaeb6..db0f8e0e36 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -286,9 +286,6 @@ extern const size_t pc_compat_2_3_len;
+ extern GlobalProperty pc_compat_2_2[];
+ extern const size_t pc_compat_2_2_len;
+ 
+-extern GlobalProperty pc_compat_2_1[];
+-extern const size_t pc_compat_2_1_len;
 -
- static const VMStateDescription vmstate_memhp_state = {
-     .name = "ich9_pm/memhp",
-     .version_id = 1,
-     .minimum_version_id = 1,
--    .needed = vmstate_test_use_memhp,
-     .fields = (const VMStateField[]) {
-         VMSTATE_MEMORY_HOTPLUG(acpi_memory_hotplug, ICH9LPCPMRegs),
-         VMSTATE_END_OF_LIST()
-@@ -335,11 +328,9 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs *pm, qemu_irq sci_irq)
-     legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
-         OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+     { \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 11182e09ce..f27c9fd98c 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -312,13 +312,6 @@ GlobalProperty pc_compat_2_2[] = {
+ };
+ const size_t pc_compat_2_2_len = G_N_ELEMENTS(pc_compat_2_2);
  
--    if (pm->acpi_memory_hotplug.is_enabled) {
--        acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
--                                 &pm->acpi_memory_hotplug,
--                                 ACPI_MEMORY_HOTPLUG_BASE);
--    }
-+    acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_pci),
-+                             &pm->acpi_memory_hotplug,
-+                             ACPI_MEMORY_HOTPLUG_BASE);
+-GlobalProperty pc_compat_2_1[] = {
+-    PC_CPU_MODEL_IDS("2.1.0")
+-    { "coreduo" "-" TYPE_X86_CPU, "vmx", "on" },
+-    { "core2duo" "-" TYPE_X86_CPU, "vmx", "on" },
+-};
+-const size_t pc_compat_2_1_len = G_N_ELEMENTS(pc_compat_2_1);
+-
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index a750a0e6ab..e0b421dd51 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -66,7 +66,6 @@
+ #include "hw/hyperv/vmbus-bridge.h"
+ #include "hw/mem/nvdimm.h"
+ #include "hw/i386/acpi-build.h"
+-#include "kvm/kvm-cpu.h"
+ #include "target/i386/cpu.h"
+ 
+ #define XEN_IOAPIC_NUM_PIRQS 128ULL
+@@ -435,12 +434,6 @@ static void pc_compat_2_2_fn(MachineState *machine)
+     pc_compat_2_3_fn(machine);
  }
  
- static void ich9_pm_get_gpe0_blk(Object *obj, Visitor *v, const char *name,
-@@ -460,12 +451,7 @@ void ich9_pm_device_pre_plug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
-         return;
-     }
- 
--    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
--        !lpc->pm.acpi_memory_hotplug.is_enabled) {
--        error_setg(errp,
--                   "memory hotplug is not enabled: %s.memory-hotplug-support "
--                   "is not set", object_get_typename(OBJECT(lpc)));
--    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-         uint64_t negotiated = lpc->smi_negotiated_features;
- 
-         if (negotiated & BIT_ULL(ICH9_LPC_SMI_F_BROADCAST_BIT) &&
-@@ -509,8 +495,7 @@ void ich9_pm_device_unplug_request_cb(HotplugHandler *hotplug_dev,
+-static void pc_compat_2_1_fn(MachineState *machine)
+-{
+-    pc_compat_2_2_fn(machine);
+-    x86_cpu_change_kvm_default("svm", NULL);
+-}
+-
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
  {
-     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
+@@ -866,22 +859,6 @@ static void pc_i440fx_2_2_machine_options(MachineClass *m)
+ DEFINE_I440FX_MACHINE(v2_2, "pc-i440fx-2.2", pc_compat_2_2_fn,
+                       pc_i440fx_2_2_machine_options);
  
--    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
--        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         acpi_memory_unplug_request_cb(hotplug_dev,
-                                       &lpc->pm.acpi_memory_hotplug, dev,
-                                       errp);
-@@ -545,8 +530,7 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug_dev, DeviceState *dev,
+-static void pc_i440fx_2_1_machine_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_2_2_machine_options(m);
+-    m->hw_version = "2.1.0";
+-    m->default_display = NULL;
+-    compat_props_add(m->compat_props, hw_compat_2_1, hw_compat_2_1_len);
+-    compat_props_add(m->compat_props, pc_compat_2_1, pc_compat_2_1_len);
+-    pcmc->smbios_uuid_encoded = false;
+-    pcmc->enforce_aligned_dimm = false;
+-}
+-
+-DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+-                      pc_i440fx_2_1_machine_options);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
  {
-     ICH9LPCState *lpc = ICH9_LPC_DEVICE(hotplug_dev);
- 
--    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
--        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         acpi_memory_unplug_cb(&lpc->pm.acpi_memory_hotplug, dev, errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU) &&
-                !lpc->pm.cpu_hotplug_legacy) {
 -- 
 2.41.0
 
