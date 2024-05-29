@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374D48D3A58
+	by mail.lfdr.de (Postfix) with ESMTPS id 298308D3A56
 	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 17:09:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCKuU-00021O-Lc; Wed, 29 May 2024 11:08:14 -0400
+	id 1sCKuq-00028T-NN; Wed, 29 May 2024 11:08:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCKuS-00020u-ST
- for qemu-devel@nongnu.org; Wed, 29 May 2024 11:08:13 -0400
+ id 1sCKun-00027w-Pp
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 11:08:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCKuR-0007ge-62
- for qemu-devel@nongnu.org; Wed, 29 May 2024 11:08:12 -0400
+ id 1sCKul-0007jq-BH
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 11:08:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716995290;
+ s=mimecast20190719; t=1716995310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xnmQZMiF1RiodqDsVYuN/scesM+R72wJ54PU8s+oiqQ=;
- b=AcoUm7lSALS/x+wixPOZ2Dubtc0kOs2LDtkK09dYgyuGNxyIE479p4W9ZAYg+JbXZZe+Nk
- gwhK3PacMY3rD2y4X57cMbNu+XJcRd2cta80VeJMSCPf4b/aydzWuSugAkPR+UlDXMR5+F
- L4LbhUfvIKWyoZqqI3oTXqqq+Mu3xks=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R1P6eVHE1FHzy9GJi73aTdvlYoHD7NSGdZhrEsYJuZ4=;
+ b=Fb4jyGnxz28NLGjRi78SQwkmT5/UwUq+uL9lpHjxkMTWh2FtXYmNQHUBW0TM7saNbOy5pZ
+ 5lhXXm2bifV1tlj0fKA4YCDJKTErmVcF7xqtj+oVpu/4TtDbfKKxHgRUFwyRow44Eg7ym1
+ ooQKD8YEdnX9Ts32vgoJPLCwxg5g3Ho=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-VN0p5TYRNMOB0DJqBvysFQ-1; Wed, 29 May 2024 11:08:08 -0400
-X-MC-Unique: VN0p5TYRNMOB0DJqBvysFQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42024ca94d0so13397685e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 08:08:08 -0700 (PDT)
+ us-mta-645-ejK1h3snNraDJZKECXQIpQ-1; Wed, 29 May 2024 11:08:27 -0400
+X-MC-Unique: ejK1h3snNraDJZKECXQIpQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4210a9cd834so13487845e9.3
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 08:08:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716995286; x=1717600086;
+ d=1e100.net; s=20230601; t=1716995306; x=1717600106;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xnmQZMiF1RiodqDsVYuN/scesM+R72wJ54PU8s+oiqQ=;
- b=wSnhVLa1SObPM4vfbtS+PTjui03MAyrtAtaNbe18WkjZ3g4hLEits4N2q0f01VVynH
- g3cTcxlw7+DR5L946rh3NCXX5JKozB9+F8wjWPZuqWNYhqh6KevluB6L3HIWDQ5vf6hf
- oILC4HqLyNJvlwvClElbzZdSP4lKzps7HuY5tJmmYidfL1hj/29/WklGmHVKQkO0TTj7
- rAHJAKCe8l/fgM/aPvLiU3NdwyRkMEIs1gbzjuYT5eyA7mf0Yx64HH4qE0PHXYxkMzW9
- KFVR9Fpbybsb+CBZlB/0F692b+ZNsY4wBNvmK7DonuCPkGYkMnBdFsLjGHqwI6mHvIrQ
- w2Wg==
-X-Gm-Message-State: AOJu0Yy4WE5CnQg9cePyw8CBPBbQWJRIsWbl6yLIQBWWCPUEDpVS1y98
- W4P+D9DJehjgGfuSQ5RMCEIFFk547xJx9z7AyU8W4KtKcs2x4Q5yi/O8DfjDd6vGP+uYsNMpUoR
- frLrKhtUQ7eMUQjtMycMjvChs9gU5oExqVmmkhts1F7rSjH/Ik7krDK63Cz3A
-X-Received: by 2002:a05:600c:45c5:b0:41a:a521:9699 with SMTP id
- 5b1f17b1804b1-421089d389dmr119995705e9.4.1716995286695; 
- Wed, 29 May 2024 08:08:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIKt7Ko32FqH52s485xesMMx9yuvrjjWESBLxDcHcS3aAtY5QQfZlg1+HE5xeaB98lhB2VIw==
-X-Received: by 2002:a05:600c:45c5:b0:41a:a521:9699 with SMTP id
- 5b1f17b1804b1-421089d389dmr119995515e9.4.1716995286375; 
- Wed, 29 May 2024 08:08:06 -0700 (PDT)
+ bh=R1P6eVHE1FHzy9GJi73aTdvlYoHD7NSGdZhrEsYJuZ4=;
+ b=CKMPglyApl9QMwIWOUCQHwklbya/KpGJjjlI87n6lV8Y6ydLHHxUpI4QymlxBkejka
+ 2HkNi40pAyTSdbIp50lBTW88WrDM99GOrj448OpVKd6ctnlat9hJHgk9NwigU0vBOKGb
+ O3hYLDAkdzNtbrmyk3b7aYEg9Tqv/2eTLLjaLCOlpGsuHdAtoO0qiXwtRLlrMgeKIwEW
+ J2suIxp38aVyAltRX/f8nnAWyiXIJ562YW9oNVg8XF+8YrbDEa3/vQEn7yDk2mEgXxSX
+ HfKKuHhPjERTi9LSFLgCwBHOtUJZL1SkrLexa9jraMXVeUnLtGVS3cwo4KOSqDr7Zp8s
+ xUbA==
+X-Gm-Message-State: AOJu0Yx4TcWDFoMjfTeIfiKCyp0Y2qYcpb+Kv4CkTjXAapHP83/34+DW
+ mxD8P/Oh8VLyBCz3r1VEPlhj0yvyCu0vHvXFODWa1YBN6U8oJ0ngzN+Stfv2A1IeodCA6UUWibe
+ xxv//HP5Pw0wpPxIAQpZ9LebTHVPDpVWGA2UbPBHA6RU9/pWWbD2dNL7jR1GL
+X-Received: by 2002:a05:600c:45cd:b0:420:29dd:84db with SMTP id
+ 5b1f17b1804b1-42108a26c56mr139156665e9.35.1716995305966; 
+ Wed, 29 May 2024 08:08:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFmVg9h5dxTMnPdoUyJopysqPaXp8hQ5thwQpIfTVZdRUKsgfmBMUJ6IDicHleuJG/vjc1sHA==
+X-Received: by 2002:a05:600c:45cd:b0:420:29dd:84db with SMTP id
+ 5b1f17b1804b1-42108a26c56mr139156485e9.35.1716995305660; 
+ Wed, 29 May 2024 08:08:25 -0700 (PDT)
 Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
  [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42122299300sm35006665e9.42.2024.05.29.08.08.05
+ 5b1f17b1804b1-4210897c5d7sm184438195e9.23.2024.05.29.08.08.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 08:08:05 -0700 (PDT)
-Date: Wed, 29 May 2024 17:08:05 +0200
+ Wed, 29 May 2024 08:08:25 -0700 (PDT)
+Date: Wed, 29 May 2024 17:08:24 +0200
 From: Igor Mammedov <imammedo@redhat.com>
 To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
  <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Daniel P .
  =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Zhao Liu
  <zhao1.liu@intel.com>
-Subject: Re: [PATCH v5 18/23] hw/i386/pc: Remove PCMachineClass::rsdp_in_ram
-Message-ID: <20240529170805.39f1e5c3@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240529051539.71210-19-philmd@linaro.org>
+Subject: Re: [PATCH v5 19/23] hw/i386/acpi: Remove AcpiBuildState::rsdp field
+Message-ID: <20240529170824.00392ce7@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240529051539.71210-20-philmd@linaro.org>
 References: <20240529051539.71210-1-philmd@linaro.org>
- <20240529051539.71210-19-philmd@linaro.org>
+ <20240529051539.71210-20-philmd@linaro.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -104,12 +104,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 May 2024 07:15:34 +0200
+On Wed, 29 May 2024 07:15:35 +0200
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-> PCMachineClass::rsdp_in_ram was only used by the
-> pc-i440fx-2.2 machine, which got removed. It is
-> now always true. Remove it, simplifying acpi_setup().
+> AcpiBuildState::rsdp is always NULL, remove it,
+> simplifying acpi_build_update().
 >=20
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > Reviewed-by: Thomas Huth <thuth@redhat.com>
@@ -118,108 +117,42 @@ Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
 > ---
->  include/hw/i386/pc.h |  1 -
->  hw/i386/acpi-build.c | 35 ++++-------------------------------
->  hw/i386/pc.c         |  1 -
->  3 files changed, 4 insertions(+), 33 deletions(-)
+>  hw/i386/acpi-build.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 >=20
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index 808de4eca7..63568eb9e9 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -100,7 +100,6 @@ struct PCMachineClass {
-> =20
->      /* ACPI compat: */
->      bool has_acpi_build;
-> -    bool rsdp_in_ram;
->      unsigned acpi_data_size;
->      int pci_root_uid;
-> =20
 > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index ab2d4d8dcb..ed0adb0e82 100644
+> index ed0adb0e82..6f9925d176 100644
 > --- a/hw/i386/acpi-build.c
 > +++ b/hw/i386/acpi-build.c
-> @@ -2495,7 +2495,6 @@ static
->  void acpi_build(AcpiBuildTables *tables, MachineState *machine)
->  {
->      PCMachineState *pcms =3D PC_MACHINE(machine);
-> -    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
->      X86MachineState *x86ms =3D X86_MACHINE(machine);
->      DeviceState *iommu =3D pcms->iommu;
->      GArray *table_offsets;
-> @@ -2667,16 +2666,6 @@ void acpi_build(AcpiBuildTables *tables, MachineSt=
-ate *machine)
->              .rsdt_tbl_offset =3D &rsdt,
->          };
->          build_rsdp(tables->rsdp, tables->linker, &rsdp_data);
-> -        if (!pcmc->rsdp_in_ram) {
-> -            /* We used to allocate some extra space for RSDP revision 2 =
-but
-> -             * only used the RSDP revision 0 space. The extra bytes were
-> -             * zeroed out and not used.
-> -             * Here we continue wasting those extra 16 bytes to make sur=
-e we
-> -             * don't break migration for machine types 2.2 and older due=
- to
-> -             * RSDP blob size mismatch.
-> -             */
-> -            build_append_int_noprefix(tables->rsdp, 0, 16);
-> -        }
->      }
+> @@ -2459,7 +2459,6 @@ struct AcpiBuildState {
+>      MemoryRegion *table_mr;
+>      /* Is table patched? */
+>      uint8_t patched;
+> -    void *rsdp;
+>      MemoryRegion *rsdp_mr;
+>      MemoryRegion *linker_mr;
+>  } AcpiBuildState;
+> @@ -2715,11 +2714,7 @@ static void acpi_build_update(void *build_opaque)
 > =20
->      /* We'll expose it all to Guest so we want to reduce
-> @@ -2755,7 +2744,6 @@ static const VMStateDescription vmstate_acpi_build =
-=3D {
->  void acpi_setup(void)
->  {
->      PCMachineState *pcms =3D PC_MACHINE(qdev_get_machine());
-> -    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
->      X86MachineState *x86ms =3D X86_MACHINE(pcms);
->      AcpiBuildTables tables;
->      AcpiBuildState *build_state;
-> @@ -2817,25 +2805,10 @@ void acpi_setup(void)
+>      acpi_ram_update(build_state->table_mr, tables.table_data);
+> =20
+> -    if (build_state->rsdp) {
+> -        memcpy(build_state->rsdp, tables.rsdp->data, acpi_data_len(table=
+s.rsdp));
+> -    } else {
+> -        acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+> -    }
+> +    acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+> =20
+>      acpi_ram_update(build_state->linker_mr, tables.linker->cmd_blob);
+>      acpi_build_tables_cleanup(&tables, true);
+> @@ -2805,7 +2800,6 @@ void acpi_setup(void)
 >                             tables.vmgenid);
 >      }
 > =20
-> -    if (!pcmc->rsdp_in_ram) {
-> -        /*
-> -         * Keep for compatibility with old machine types.
-> -         * Though RSDP is small, its contents isn't immutable, so
-> -         * we'll update it along with the rest of tables on guest access.
-> -         */
-> -        uint32_t rsdp_size =3D acpi_data_len(tables.rsdp);
-> -
-> -        build_state->rsdp =3D g_memdup(tables.rsdp->data, rsdp_size);
-> -        fw_cfg_add_file_callback(x86ms->fw_cfg, ACPI_BUILD_RSDP_FILE,
-> -                                 acpi_build_update, NULL, build_state,
-> -                                 build_state->rsdp, rsdp_size, true);
-> -        build_state->rsdp_mr =3D NULL;
-> -    } else {
-> -        build_state->rsdp =3D NULL;
-> -        build_state->rsdp_mr =3D acpi_add_rom_blob(acpi_build_update,
-> -                                                 build_state, tables.rsd=
-p,
-> -                                                 ACPI_BUILD_RSDP_FILE);
-> -    }
-> +    build_state->rsdp =3D NULL;
-> +    build_state->rsdp_mr =3D acpi_add_rom_blob(acpi_build_update,
-> +                                             build_state, tables.rsdp,
-> +                                             ACPI_BUILD_RSDP_FILE);
-> =20
->      qemu_register_reset(acpi_build_reset, build_state);
->      acpi_build_reset(build_state);
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index fae21f75aa..8e51d1f1bb 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -1757,7 +1757,6 @@ static void pc_machine_class_init(ObjectClass *oc, =
-void *data)
-> =20
->      pcmc->pci_enabled =3D true;
->      pcmc->has_acpi_build =3D true;
-> -    pcmc->rsdp_in_ram =3D true;
->      pcmc->smbios_defaults =3D true;
->      pcmc->gigabyte_align =3D true;
->      pcmc->has_reserved_memory =3D true;
+> -    build_state->rsdp =3D NULL;
+>      build_state->rsdp_mr =3D acpi_add_rom_blob(acpi_build_update,
+>                                               build_state, tables.rsdp,
+>                                               ACPI_BUILD_RSDP_FILE);
 
 
