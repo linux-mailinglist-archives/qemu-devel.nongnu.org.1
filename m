@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8F58D3C4A
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564548D3C6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:29:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCM7V-0001t4-8x; Wed, 29 May 2024 12:25:46 -0400
+	id 1sCM7Z-00024e-Qr; Wed, 29 May 2024 12:25:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM77-0001Id-6r
+ id 1sCM76-0001IZ-GW
  for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:23 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM75-0006NW-0v
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:20 -0400
+ id 1sCM74-0006Np-EL
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:19 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1sCM6r-006CR8-TE;
- Wed, 29 May 2024 17:25:05 +0100
+ (envelope-from <movement@movementarian.org>) id 1sCM6t-006CRE-4c;
+ Wed, 29 May 2024 17:25:07 +0100
 From: John Levon <levon@movementarian.org>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jag.raman@oracle.com,
  thanos.makatos@nutanix.com, John Johnson <john.g.johnson@oracle.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  John Levon <john.levon@nutanix.com>
-Subject: [PATCH 24/26] vfio-user: pci reset
-Date: Wed, 29 May 2024 17:23:17 +0100
-Message-Id: <20240529162319.1476680-25-levon@movementarian.org>
+Subject: [PATCH 25/26] vfio-user: add 'x-msg-timeout' option that specifies
+ msg wait times
+Date: Wed, 29 May 2024 17:23:18 +0100
+Message-Id: <20240529162319.1476680-26-levon@movementarian.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529162319.1476680-1-levon@movementarian.org>
 References: <20240529162319.1476680-1-levon@movementarian.org>
@@ -59,85 +60,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jagannathan Raman <jag.raman@oracle.com>
 
-Message to tell the server to reset the device.
-
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- hw/vfio/user-pci.c | 15 +++++++++++++++
- hw/vfio/user.c     | 12 ++++++++++++
- hw/vfio/user.h     |  1 +
- 3 files changed, 28 insertions(+)
+ hw/vfio/user-pci.c | 4 ++++
+ hw/vfio/user.c     | 7 ++++---
+ hw/vfio/user.h     | 1 +
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/hw/vfio/user-pci.c b/hw/vfio/user-pci.c
-index 9fb6ae5142..b473cbc404 100644
+index b473cbc404..b70aeb6ee3 100644
 --- a/hw/vfio/user-pci.c
 +++ b/hw/vfio/user-pci.c
-@@ -389,6 +389,20 @@ static void vfio_user_instance_finalize(Object *obj)
-     }
- }
- 
-+static void vfio_user_pci_reset(DeviceState *dev)
-+{
-+    VFIOPCIDevice *vdev = VFIO_PCI_BASE(dev);
-+    VFIODevice *vbasedev = &vdev->vbasedev;
-+
-+    vfio_pci_pre_reset(vdev);
-+
-+    if (vbasedev->reset_works) {
-+        vfio_user_reset(vbasedev->proxy);
-+    }
-+
-+    vfio_pci_post_reset(vdev);
-+}
-+
- static Property vfio_user_pci_dev_properties[] = {
-     DEFINE_PROP_STRING("socket", VFIOUserPCIDevice, sock_name),
-     DEFINE_PROP_BOOL("no-direct-dma", VFIOUserPCIDevice, no_direct_dma, false),
-@@ -402,6 +416,7 @@ static void vfio_user_pci_dev_class_init(ObjectClass *klass, void *data)
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     PCIDeviceClass *pdc = PCI_DEVICE_CLASS(klass);
- 
-+    dc->reset = vfio_user_pci_reset;
-     device_class_set_props(dc, vfio_user_pci_dev_properties);
-     dc->desc = "VFIO over socket PCI device assignment";
-     pdc->realize = vfio_user_pci_realize;
-diff --git a/hw/vfio/user.c b/hw/vfio/user.c
-index a383922601..3a38aa5543 100644
---- a/hw/vfio/user.c
-+++ b/hw/vfio/user.c
-@@ -1518,6 +1518,18 @@ static int vfio_user_region_write(VFIOUserProxy *proxy, uint8_t index,
-     return ret;
- }
- 
-+void vfio_user_reset(VFIOUserProxy *proxy)
-+{
-+    VFIOUserHdr msg;
-+
-+    vfio_user_request_msg(&msg, VFIO_USER_DEVICE_RESET, sizeof(msg), 0);
-+
-+    vfio_user_send_wait(proxy, &msg, NULL, 0);
-+    if (msg.flags & VFIO_USER_ERROR) {
-+        error_printf("reset reply error %d\n", msg.error_reply);
-+    }
-+}
-+
+@@ -43,6 +43,7 @@ struct VFIOUserPCIDevice {
+     bool no_direct_dma; /* disable shared mem for DMA */
+     bool send_queued;   /* all sends are queued */
+     bool no_post;       /* all regions write are sync */
++    uint32_t wait_time; /* timeout for message replies */
+ };
  
  /*
-  * Socket-based io_ops
+@@ -278,6 +279,8 @@ static void vfio_user_pci_realize(PCIDevice *pdev, Error **errp)
+     if (udev->no_post) {
+         proxy->flags |= VFIO_PROXY_NO_POST;
+     }
++    /* user specified or 5 sec default */
++    proxy->wait_time = udev->wait_time;
+ 
+     if (!vfio_user_validate_version(proxy, errp)) {
+         goto error;
+@@ -408,6 +411,7 @@ static Property vfio_user_pci_dev_properties[] = {
+     DEFINE_PROP_BOOL("no-direct-dma", VFIOUserPCIDevice, no_direct_dma, false),
+     DEFINE_PROP_BOOL("x-send-queued", VFIOUserPCIDevice, send_queued, false),
+     DEFINE_PROP_BOOL("x-no-posted-writes", VFIOUserPCIDevice, no_post, false),
++    DEFINE_PROP_UINT32("x-msg-timeout", VFIOUserPCIDevice, wait_time, 5000),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/hw/vfio/user.c b/hw/vfio/user.c
+index 3a38aa5543..f13381f310 100644
+--- a/hw/vfio/user.c
++++ b/hw/vfio/user.c
+@@ -43,7 +43,6 @@
+ #define VFIO_USER_MAX_REGIONS   100
+ #define VFIO_USER_MAX_IRQS      50
+ 
+-static int wait_time = 5000;   /* wait up to 5 sec for busy servers */
+ static IOThread *vfio_user_iothread;
+ 
+ static void vfio_user_shutdown(VFIOUserProxy *proxy);
+@@ -723,7 +722,8 @@ void vfio_user_send_wait(VFIOUserProxy *proxy, VFIOUserHdr *hdr,
+ 
+     if (ret == 0) {
+         while (!msg->complete) {
+-            if (!qemu_cond_timedwait(&msg->cv, &proxy->lock, wait_time)) {
++            if (!qemu_cond_timedwait(&msg->cv, &proxy->lock,
++                                     proxy->wait_time)) {
+                 VFIOUserMsgQ *list;
+ 
+                 list = msg->pending ? &proxy->pending : &proxy->outgoing;
+@@ -766,7 +766,8 @@ void vfio_user_wait_reqs(VFIOUserProxy *proxy)
+         msg->type = VFIO_MSG_WAIT;
+         proxy->last_nowait = NULL;
+         while (!msg->complete) {
+-            if (!qemu_cond_timedwait(&msg->cv, &proxy->lock, wait_time)) {
++            if (!qemu_cond_timedwait(&msg->cv, &proxy->lock,
++                                     proxy->wait_time)) {
+                 VFIOUserMsgQ *list;
+ 
+                 list = msg->pending ? &proxy->pending : &proxy->outgoing;
 diff --git a/hw/vfio/user.h b/hw/vfio/user.h
-index fa6bc9a9d6..d9aa1759df 100644
+index d9aa1759df..ff2aa005eb 100644
 --- a/hw/vfio/user.h
 +++ b/hw/vfio/user.h
-@@ -119,5 +119,6 @@ void vfio_user_send_wait(VFIOUserProxy *proxy, VFIOUserHdr *hdr,
- void vfio_user_send_reply(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int size);
- void vfio_user_send_error(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int error);
- void vfio_user_putfds(VFIOUserMsg *msg);
-+void vfio_user_reset(VFIOUserProxy *proxy);
- 
- #endif /* VFIO_USER_H */
+@@ -72,6 +72,7 @@ typedef struct VFIOUserProxy {
+     uint64_t max_bitmap;
+     uint64_t migr_pgsize;
+     int flags;
++    uint32_t wait_time;
+     QemuCond close_cv;
+     AioContext *ctx;
+     QEMUBH *req_bh;
 -- 
 2.34.1
 
