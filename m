@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511968D3C78
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 088768D3C4B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:26:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCM7U-0001mb-4n; Wed, 29 May 2024 12:25:44 -0400
+	id 1sCM7Y-00022k-S3; Wed, 29 May 2024 12:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM76-0001IX-Fe
+ id 1sCM74-0001Ht-1L
  for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:23 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM73-0006LT-Pw
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:19 -0400
+ id 1sCM71-0006La-RT
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:17 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1sCM6k-006CPy-PO;
+ (envelope-from <movement@movementarian.org>) id 1sCM6k-006CQ5-Vf;
  Wed, 29 May 2024 17:24:58 +0100
 From: John Levon <levon@movementarian.org>
 To: qemu-devel@nongnu.org
@@ -27,9 +27,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jag.raman@oracle.com,
  thanos.makatos@nutanix.com, John Johnson <john.g.johnson@oracle.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  John Levon <john.levon@nutanix.com>
-Subject: [PATCH 18/26] vfio-user: get and set IRQs
-Date: Wed, 29 May 2024 17:23:11 +0100
-Message-Id: <20240529162319.1476680-19-levon@movementarian.org>
+Subject: [PATCH 19/26] vfio-user: forward msix BAR accesses to server
+Date: Wed, 29 May 2024 17:23:12 +0100
+Message-Id: <20240529162319.1476680-20-levon@movementarian.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529162319.1476680-1-levon@movementarian.org>
 References: <20240529162319.1476680-1-levon@movementarian.org>
@@ -59,242 +59,350 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jagannathan Raman <jag.raman@oracle.com>
 
+Server holds device current device pending state
+Use irq masking commands in socket case
+
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- hw/vfio/pci.c           |   3 +-
- hw/vfio/trace-events    |   2 +
- hw/vfio/user-protocol.h |  25 +++++++
- hw/vfio/user.c          | 140 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 169 insertions(+), 1 deletion(-)
+ hw/vfio/helpers.c             | 26 +++++++++++
+ hw/vfio/pci.c                 | 86 +++++++++++++++++++++++++----------
+ hw/vfio/pci.h                 |  2 +
+ hw/vfio/user-pci.c            | 63 +++++++++++++++++++++++++
+ include/hw/vfio/vfio-common.h |  2 +
+ 5 files changed, 156 insertions(+), 23 deletions(-)
 
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+index b2a5d7d1ba..54c8c9b03e 100644
+--- a/hw/vfio/helpers.c
++++ b/hw/vfio/helpers.c
+@@ -71,6 +71,32 @@ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index)
+     vbasedev->io->set_irqs(vbasedev, &irq_set);
+ }
+ 
++void vfio_mask_single_irq(VFIODevice *vbasedev, int index, int irq)
++{
++    struct vfio_irq_set irq_set = {
++        .argsz = sizeof(irq_set),
++        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_MASK,
++        .index = index,
++        .start = irq,
++        .count = 1,
++    };
++
++    vbasedev->io->set_irqs(vbasedev, &irq_set);
++}
++
++void vfio_unmask_single_irq(VFIODevice *vbasedev, int index, int irq)
++{
++    struct vfio_irq_set irq_set = {
++        .argsz = sizeof(irq_set),
++        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_UNMASK,
++        .index = index,
++        .start = irq,
++        .count = 1,
++    };
++
++    vbasedev->io->set_irqs(vbasedev, &irq_set);
++}
++
+ static inline const char *action_to_str(int action)
+ {
+     switch (action) {
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index d1da64383e..56bfb17eec 100644
+index 56bfb17eec..8ff69ff6ec 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -772,7 +772,8 @@ retry:
-     ret = vfio_enable_vectors(vdev, false);
+@@ -520,11 +520,30 @@ static void vfio_update_kvm_msi_virq(VFIOMSIVector *vector, MSIMessage msg,
+     kvm_irqchip_commit_routes(kvm_state);
+ }
+ 
++static void set_irq_signalling(VFIODevice *vbasedev, VFIOMSIVector *vector,
++                               unsigned int nr)
++{
++    Error *err = NULL;
++    int32_t fd;
++
++    if (vector->virq >= 0) {
++        fd = event_notifier_get_fd(&vector->kvm_interrupt);
++    } else {
++        fd = event_notifier_get_fd(&vector->interrupt);
++    }
++
++    if (!vfio_set_irq_signaling(vbasedev, VFIO_PCI_MSIX_IRQ_INDEX, nr,
++                   VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
++        error_reportf_err(err, VFIO_MSG_PREFIX, vbasedev->name);
++    }
++}
++
+ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                                    MSIMessage *msg, IOHandler *handler)
+ {
+     VFIOPCIDevice *vdev = VFIO_PCI_BASE(pdev);
+     VFIOMSIVector *vector;
++    bool new_vec = false;
+     int ret;
+     bool resizing = !!(vdev->nr_vectors < nr + 1);
+ 
+@@ -539,6 +558,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+             error_report("vfio: Error: event_notifier_init failed");
+         }
+         vector->use = true;
++        new_vec = true;
+         msix_vector_use(pdev, nr);
+     }
+ 
+@@ -565,6 +585,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+                 kvm_irqchip_commit_route_changes(&vfio_route_change);
+                 vfio_connect_kvm_msi_virq(vector);
+             }
++            new_vec = true;
+         }
+     }
+ 
+@@ -574,38 +595,35 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+      * in use, so we shutdown and incrementally increase them as needed.
+      * nr_vectors represents the total number of vectors allocated.
+      *
++     * Otherwise, unmask the vector if the vector is already setup (and we can
++     * do so) or send the fd if not.
++     *
+      * When dynamic allocation is supported, let the host only allocate
+      * and enable a vector when it is in use in guest. nr_vectors represents
+      * the upper bound of vectors being enabled (but not all of the ranges
+      * is allocated or enabled).
+      */
++
+     if (resizing) {
+         vdev->nr_vectors = nr + 1;
+     }
+ 
+     if (!vdev->defer_kvm_irq_routing) {
+-        if (vdev->msix->noresize && resizing) {
+-            vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
+-            ret = vfio_enable_vectors(vdev, true);
+-            if (ret) {
+-                error_report("vfio: failed to enable vectors, %d", ret);
+-            }
+-        } else {
+-            Error *err = NULL;
+-            int32_t fd;
+-
+-            if (vector->virq >= 0) {
+-                fd = event_notifier_get_fd(&vector->kvm_interrupt);
++        if (resizing) {
++            if (vdev->msix->noresize) {
++                vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
++                ret = vfio_enable_vectors(vdev, true);
++                if (ret) {
++                    error_report("vfio: failed to enable vectors, %d", ret);
++                }
+             } else {
+-                fd = event_notifier_get_fd(&vector->interrupt);
+-            }
+-
+-            if (!vfio_set_irq_signaling(&vdev->vbasedev,
+-                                        VFIO_PCI_MSIX_IRQ_INDEX, nr,
+-                                        VFIO_IRQ_SET_ACTION_TRIGGER, fd,
+-                                        &err)) {
+-                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
++                set_irq_signalling(&vdev->vbasedev, vector, nr);
+             }
++        } else if (vdev->can_mask_msix && !new_vec) {
++            vfio_unmask_single_irq(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX,
++                                   nr);
++        } else {
++            set_irq_signalling(&vdev->vbasedev, vector, nr);
+         }
+     }
+ 
+@@ -633,6 +651,12 @@ static void vfio_msix_vector_release(PCIDevice *pdev, unsigned int nr)
+ 
+     trace_vfio_msix_vector_release(vdev->vbasedev.name, nr);
+ 
++    /* just mask vector if peer supports it */
++    if (vdev->can_mask_msix) {
++        vfio_mask_single_irq(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX, nr);
++        return;
++    }
++
+     /*
+      * There are still old guests that mask and unmask vectors on every
+      * interrupt.  If we're using QEMU bypass with a KVM irqfd, leave all of
+@@ -704,7 +728,7 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
+         if (ret) {
+             error_report("vfio: failed to enable vectors, %d", ret);
+         }
+-    } else {
++    } else if (!vdev->can_mask_msix) {
+         /*
+          * Some communication channels between VF & PF or PF & fw rely on the
+          * physical state of the device and expect that enabling MSI-X from the
+@@ -721,6 +745,13 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
+         if (ret) {
+             error_report("vfio: failed to enable MSI-X, %d", ret);
+         }
++    } else {
++        /*
++         * If we can use irq masking, send an invalid fd on vector 0
++         * to enable MSI-X without any vectors enabled.
++         */
++        vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX, 0,
++                               VFIO_IRQ_SET_ACTION_TRIGGER, -1, NULL);
+     }
+ 
+     trace_vfio_msix_enable(vdev->vbasedev.name);
+@@ -2771,7 +2802,7 @@ bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+ {
+     VFIODevice *vbasedev = &vdev->vbasedev;
+     struct vfio_region_info *reg_info = NULL;
+-    struct vfio_irq_info irq_info = { .argsz = sizeof(irq_info) };
++    struct vfio_irq_info irq_info;
+     int i, ret = -1;
+ 
+     /* Sanity check device */
+@@ -2832,8 +2863,17 @@ bool vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
+         }
+     }
+ 
+-    irq_info.index = VFIO_PCI_ERR_IRQ_INDEX;
++    irq_info.index = VFIO_PCI_MSIX_IRQ_INDEX;
++    irq_info.argsz = sizeof(irq_info);
++    ret = vbasedev->io->get_irq_info(vbasedev, &irq_info);
++    if (ret == 0 && (irq_info.flags & VFIO_IRQ_INFO_MASKABLE)) {
++        vdev->can_mask_msix = true;
++    } else {
++        vdev->can_mask_msix = false;
++    }
+ 
++    irq_info.index = VFIO_PCI_ERR_IRQ_INDEX;
++    irq_info.argsz = sizeof(irq_info);
+     ret = vbasedev->io->get_irq_info(vbasedev, &irq_info);
      if (ret) {
-         if (ret < 0) {
--            error_report("vfio: Error: Failed to setup MSI fds: %m");
-+            error_report("vfio: Error: Failed to setup MSI fds: %s",
-+                         strerror(-ret));
-         } else {
-             error_report("vfio: Error: Failed to enable %d "
-                          "MSI vectors, retry with %d", vdev->nr_vectors, ret);
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index a65d530557..73661db9d9 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -186,3 +186,5 @@ vfio_user_version(uint16_t major, uint16_t minor, const char *caps) " major %d m
- vfio_user_get_info(uint32_t nregions, uint32_t nirqs) " #regions %d #irqs %d"
- vfio_user_get_region_info(uint32_t index, uint32_t flags, uint64_t size) " index %d flags 0x%x size 0x%"PRIx64
- vfio_user_region_rw(uint32_t region, uint64_t off, uint32_t count) " region %d offset 0x%"PRIx64" count %d"
-+vfio_user_get_irq_info(uint32_t index, uint32_t flags, uint32_t count) " index %d flags 0x%x count %d"
-+vfio_user_set_irqs(uint32_t index, uint32_t start, uint32_t count, uint32_t flags) " index %d start %d count %d flags 0x%x"
-diff --git a/hw/vfio/user-protocol.h b/hw/vfio/user-protocol.h
-index 6987435e96..48dd475ab3 100644
---- a/hw/vfio/user-protocol.h
-+++ b/hw/vfio/user-protocol.h
-@@ -139,6 +139,31 @@ typedef struct {
-     uint64_t offset;
- } VFIOUserRegionInfo;
+         /* This can fail for an old kernel or legacy PCI dev */
+diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+index 1eeb67bb2e..d678b84191 100644
+--- a/hw/vfio/pci.h
++++ b/hw/vfio/pci.h
+@@ -114,6 +114,7 @@ typedef struct VFIOMSIXInfo {
+     uint32_t pba_offset;
+     unsigned long *pending;
+     bool noresize;
++    MemoryRegion *pba_region;
+ } VFIOMSIXInfo;
+ 
+ /*
+@@ -183,6 +184,7 @@ struct VFIOPCIDevice {
+     bool defer_kvm_irq_routing;
+     bool clear_parent_atomics_on_exit;
+     bool skip_vsc_check;
++    bool can_mask_msix;
+     VFIODisplay *dpy;
+     Notifier irqchip_change_notifier;
+ };
+diff --git a/hw/vfio/user-pci.c b/hw/vfio/user-pci.c
+index b8a9f7a7fb..9514f6e2fa 100644
+--- a/hw/vfio/user-pci.c
++++ b/hw/vfio/user-pci.c
+@@ -44,6 +44,62 @@ struct VFIOUserPCIDevice {
+     bool no_post;       /* all regions write are sync */
+ };
  
 +/*
-+ * VFIO_USER_DEVICE_GET_IRQ_INFO
-+ * imported from struct vfio_irq_info
++ * The server maintains the device's pending interrupts,
++ * via its MSIX table and PBA, so we treat these acceses
++ * like PCI config space and forward them.
 + */
-+typedef struct {
-+    VFIOUserHdr hdr;
-+    uint32_t argsz;
-+    uint32_t flags;
-+    uint32_t index;
-+    uint32_t count;
-+} VFIOUserIRQInfo;
++static uint64_t vfio_user_pba_read(void *opaque, hwaddr addr,
++                                   unsigned size)
++{
++    VFIOPCIDevice *vdev = opaque;
++    VFIORegion *region = &vdev->bars[vdev->msix->pba_bar].region;
++    uint64_t data;
 +
-+/*
-+ * VFIO_USER_DEVICE_SET_IRQS
-+ * imported from struct vfio_irq_set
-+ */
-+typedef struct {
-+    VFIOUserHdr hdr;
-+    uint32_t argsz;
-+    uint32_t flags;
-+    uint32_t index;
-+    uint32_t start;
-+    uint32_t count;
-+} VFIOUserIRQSet;
++    /* server copy is what matters */
++    data = vfio_region_read(region, addr + vdev->msix->pba_offset, size);
++    return data;
++}
++
++static void vfio_user_pba_write(void *opaque, hwaddr addr,
++                                  uint64_t data, unsigned size)
++{
++    /* dropped */
++}
++
++static const MemoryRegionOps vfio_user_pba_ops = {
++    .read = vfio_user_pba_read,
++    .write = vfio_user_pba_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++};
++
++static void vfio_user_msix_setup(VFIOPCIDevice *vdev)
++{
++    MemoryRegion *vfio_reg, *msix_reg, *pba_reg;
++
++    pba_reg = g_new0(MemoryRegion, 1);
++    vdev->msix->pba_region = pba_reg;
++
++    vfio_reg = vdev->bars[vdev->msix->pba_bar].mr;
++    msix_reg = &vdev->pdev.msix_pba_mmio;
++    memory_region_init_io(pba_reg, OBJECT(vdev), &vfio_user_pba_ops, vdev,
++                          "VFIO MSIX PBA", int128_get64(msix_reg->size));
++    memory_region_add_subregion_overlap(vfio_reg, vdev->msix->pba_offset,
++                                        pba_reg, 1);
++}
++
++static void vfio_user_msix_teardown(VFIOPCIDevice *vdev)
++{
++    MemoryRegion *mr, *sub;
++
++    mr = vdev->bars[vdev->msix->pba_bar].mr;
++    sub = vdev->msix->pba_region;
++    memory_region_del_subregion(mr, sub);
++
++    g_free(vdev->msix->pba_region);
++    vdev->msix->pba_region = NULL;
++}
 +
  /*
-  * VFIO_USER_REGION_READ
-  * VFIO_USER_REGION_WRITE
-diff --git a/hw/vfio/user.c b/hw/vfio/user.c
-index 9bb1ee8880..352c10d37b 100644
---- a/hw/vfio/user.c
-+++ b/hw/vfio/user.c
-@@ -1195,6 +1195,122 @@ static int vfio_user_get_region_info(VFIOUserProxy *proxy,
-     return 0;
- }
+  * Incoming request message callback.
+  *
+@@ -153,6 +209,9 @@ static void vfio_user_pci_realize(PCIDevice *pdev, Error **errp)
+     if (!vfio_add_capabilities(vdev, errp)) {
+         goto out_teardown;
+     }
++    if (vdev->msix != NULL) {
++        vfio_user_msix_setup(vdev);
++    }
  
-+static int vfio_user_get_irq_info(VFIOUserProxy *proxy,
-+                                  struct vfio_irq_info *info)
-+{
-+    VFIOUserIRQInfo msg;
-+
-+    memset(&msg, 0, sizeof(msg));
-+    vfio_user_request_msg(&msg.hdr, VFIO_USER_DEVICE_GET_IRQ_INFO,
-+                          sizeof(msg), 0);
-+    msg.argsz = info->argsz;
-+    msg.index = info->index;
-+
-+    vfio_user_send_wait(proxy, &msg.hdr, NULL, 0);
-+    if (msg.hdr.flags & VFIO_USER_ERROR) {
-+        return -msg.hdr.error_reply;
-+    }
-+    trace_vfio_user_get_irq_info(msg.index, msg.flags, msg.count);
-+
-+    memcpy(info, &msg.argsz, sizeof(*info));
-+    return 0;
-+}
-+
-+static int irq_howmany(int *fdp, uint32_t cur, uint32_t max)
-+{
-+    int n = 0;
-+
-+    if (fdp[cur] != -1) {
-+        do {
-+            n++;
-+        } while (n < max && fdp[cur + n] != -1);
-+    } else {
-+        do {
-+            n++;
-+        } while (n < max && fdp[cur + n] == -1);
-+    }
-+
-+    return n;
-+}
-+
-+static int vfio_user_set_irqs(VFIOUserProxy *proxy, struct vfio_irq_set *irq)
-+{
-+    g_autofree VFIOUserIRQSet *msgp = NULL;
-+    uint32_t size, nfds, send_fds, sent_fds, max;
-+
-+    if (irq->argsz < sizeof(*irq)) {
-+        error_printf("vfio_user_set_irqs argsz too small\n");
-+        return -EINVAL;
-+    }
-+
-+    /*
-+     * Handle simple case
-+     */
-+    if ((irq->flags & VFIO_IRQ_SET_DATA_EVENTFD) == 0) {
-+        size = sizeof(VFIOUserHdr) + irq->argsz;
-+        msgp = g_malloc0(size);
-+
-+        vfio_user_request_msg(&msgp->hdr, VFIO_USER_DEVICE_SET_IRQS, size, 0);
-+        msgp->argsz = irq->argsz;
-+        msgp->flags = irq->flags;
-+        msgp->index = irq->index;
-+        msgp->start = irq->start;
-+        msgp->count = irq->count;
-+        trace_vfio_user_set_irqs(msgp->index, msgp->start, msgp->count,
-+                                 msgp->flags);
-+
-+        vfio_user_send_wait(proxy, &msgp->hdr, NULL, 0);
-+        if (msgp->hdr.flags & VFIO_USER_ERROR) {
-+            return -msgp->hdr.error_reply;
-+        }
-+
-+        return 0;
-+    }
-+
-+    /*
-+     * Calculate the number of FDs to send
-+     * and adjust argsz
-+     */
-+    nfds = (irq->argsz - sizeof(*irq)) / sizeof(int);
-+    irq->argsz = sizeof(*irq);
-+    msgp = g_malloc0(sizeof(*msgp));
-+    /*
-+     * Send in chunks if over max_send_fds
-+     */
-+    for (sent_fds = 0; nfds > sent_fds; sent_fds += send_fds) {
-+        VFIOUserFDs *arg_fds, loop_fds;
-+
-+        /* must send all valid FDs or all invalid FDs in single msg */
-+        max = nfds - sent_fds;
-+        if (max > proxy->max_send_fds) {
-+            max = proxy->max_send_fds;
-+        }
-+        send_fds = irq_howmany((int *)irq->data, sent_fds, max);
-+
-+        vfio_user_request_msg(&msgp->hdr, VFIO_USER_DEVICE_SET_IRQS,
-+                              sizeof(*msgp), 0);
-+        msgp->argsz = irq->argsz;
-+        msgp->flags = irq->flags;
-+        msgp->index = irq->index;
-+        msgp->start = irq->start + sent_fds;
-+        msgp->count = send_fds;
-+        trace_vfio_user_set_irqs(msgp->index, msgp->start, msgp->count,
-+                                 msgp->flags);
-+
-+        loop_fds.send_fds = send_fds;
-+        loop_fds.recv_fds = 0;
-+        loop_fds.fds = (int *)irq->data + sent_fds;
-+        arg_fds = loop_fds.fds[0] != -1 ? &loop_fds : NULL;
-+
-+        vfio_user_send_wait(proxy, &msgp->hdr, arg_fds, 0);
-+        if (msgp->hdr.flags & VFIO_USER_ERROR) {
-+            return -msgp->hdr.error_reply;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- static int vfio_user_region_read(VFIOUserProxy *proxy, uint8_t index,
-                                  off_t offset, uint32_t count, void *data)
- {
-@@ -1291,6 +1407,28 @@ static int vfio_user_io_get_region_info(VFIODevice *vbasedev,
-     return 0;
- }
+     if (!vfio_interrupt_setup(vdev, errp)) {
+         goto out_teardown;
+@@ -205,6 +264,10 @@ static void vfio_user_instance_finalize(Object *obj)
+     g_free(vdev->emulated_config_bits);
+     g_free(vdev->rom);
  
-+static int vfio_user_io_get_irq_info(VFIODevice *vbasedev,
-+                                     struct vfio_irq_info *irq)
-+{
-+    int ret;
-+
-+    ret = vfio_user_get_irq_info(vbasedev->proxy, irq);
-+    if (ret) {
-+        return ret;
++    if (vdev->msix != NULL) {
++        vfio_user_msix_teardown(vdev);
 +    }
 +
-+    if (irq->index > vbasedev->num_irqs) {
-+        return -EINVAL;
-+    }
-+    return 0;
-+}
-+
-+static int vfio_user_io_set_irqs(VFIODevice *vbasedev,
-+                                 struct vfio_irq_set *irqs)
-+{
-+    return vfio_user_set_irqs(vbasedev->proxy, irqs);
-+}
-+
- static int vfio_user_io_region_read(VFIODevice *vbasedev, uint8_t index,
-                                     off_t off, uint32_t size, void *data)
- {
-@@ -1307,6 +1445,8 @@ static int vfio_user_io_region_write(VFIODevice *vbasedev, uint8_t index,
+     vfio_pci_put_device(vdev);
  
- VFIODeviceIO vfio_dev_io_sock = {
-     .get_region_info = vfio_user_io_get_region_info,
-+    .get_irq_info = vfio_user_io_get_irq_info,
-+    .set_irqs = vfio_user_io_set_irqs,
-     .region_read = vfio_user_io_region_read,
-     .region_write = vfio_user_io_region_write,
- };
+     if (vbasedev->proxy != NULL) {
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 617891c4fe..747b343596 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -248,6 +248,8 @@ void vfio_spapr_container_deinit(VFIOContainer *container);
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
++void vfio_unmask_single_irq(VFIODevice *vbasedev, int index, int irq);
++void vfio_mask_single_irq(VFIODevice *vbasedev, int index, int irq);
+ bool vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+                             int action, int fd, Error **errp);
+ void vfio_region_write(void *opaque, hwaddr addr,
 -- 
 2.34.1
 
