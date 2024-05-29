@@ -2,104 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CB48D36D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 14:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 366CB8D36E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:00:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCIpM-0007Mu-RN; Wed, 29 May 2024 08:54:49 -0400
+	id 1sCItX-0002lo-H3; Wed, 29 May 2024 08:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sCIpE-0007JU-Mq
- for qemu-devel@nongnu.org; Wed, 29 May 2024 08:54:41 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1sCIpA-0008PU-SE
- for qemu-devel@nongnu.org; Wed, 29 May 2024 08:54:39 -0400
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 9E53420549;
- Wed, 29 May 2024 12:54:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716987273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCItV-0002lR-Af
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 08:59:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCItT-0000oq-1d
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 08:59:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716987540;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FxnW1kTIL/kESlJLXbxMFxOOdBCLGBggie/ToXHz7gE=;
- b=JzXIjjpyuuvYQJDJvXTp48/C5FT6COqUvujtxc81NkS5WC7sNKtvVTrB02NgwPPGQJhuis
- czYNsZH9k5GuNDbOOa5wSTn4Rx+8e5noJZsXWsDJYWP904u0DqtI0fcn7vsysiU3DscIU9
- fK1FYi4rSviGKdau8X9SMK78idJCSPA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716987273;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FxnW1kTIL/kESlJLXbxMFxOOdBCLGBggie/ToXHz7gE=;
- b=NiTx1XVD+38sGiSeLpUp68V1wrg35CDj9TNvZpHskWntVlSG5R8SDG6aDfYNrjLptrAw2x
- mZyoBcTdk9PMVCBw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1716987273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FxnW1kTIL/kESlJLXbxMFxOOdBCLGBggie/ToXHz7gE=;
- b=JzXIjjpyuuvYQJDJvXTp48/C5FT6COqUvujtxc81NkS5WC7sNKtvVTrB02NgwPPGQJhuis
- czYNsZH9k5GuNDbOOa5wSTn4Rx+8e5noJZsXWsDJYWP904u0DqtI0fcn7vsysiU3DscIU9
- fK1FYi4rSviGKdau8X9SMK78idJCSPA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1716987273;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FxnW1kTIL/kESlJLXbxMFxOOdBCLGBggie/ToXHz7gE=;
- b=NiTx1XVD+38sGiSeLpUp68V1wrg35CDj9TNvZpHskWntVlSG5R8SDG6aDfYNrjLptrAw2x
- mZyoBcTdk9PMVCBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B85013A6B;
- Wed, 29 May 2024 12:54:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id HHnqOIglV2YdPwAAD6G6ig
- (envelope-from <farosas@suse.de>); Wed, 29 May 2024 12:54:32 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] tests/qtest/migrate-test: Add a postcopy memfile test
-In-Reply-To: <20240529041322.701525-1-npiggin@gmail.com>
-References: <20240529041322.701525-1-npiggin@gmail.com>
-Date: Wed, 29 May 2024 09:54:30 -0300
-Message-ID: <875xuwg4mx.fsf@suse.de>
+ bh=gMkPNv9OyzkFSwmKeREyA8Y+7JB9Qq8gyfH+oydj9zI=;
+ b=dXKSKq+E2dHW+XAnO8TPVgDQejgbIJAhzL22DV75exN2ClKYkLmVy1PwFWdLiyey6Wd4jy
+ Plw1diuBzQ4X7S77zawD1OYAEbsRXjy5j0M/qykSo+ss48raH3elVJAjv/PjSL6hgT8F1I
+ Yj0zR0LRR8m7y6N4EPd49+u/JpeiRPs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-gfRJZT8HMjOHmuccVbwqgQ-1; Wed, 29 May 2024 08:58:58 -0400
+X-MC-Unique: gfRJZT8HMjOHmuccVbwqgQ-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4206b3500f5so17487055e9.1
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 05:58:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716987537; x=1717592337;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gMkPNv9OyzkFSwmKeREyA8Y+7JB9Qq8gyfH+oydj9zI=;
+ b=o8GETxlmLR/G0sQtYo1nD4h/Dhe/ZsjS+u/39gl3Yimz6cx+dlhG0DgZ6O5aNNjJ4F
+ lJhig/1uZ8FQ+E6dUKKr6OwvzAhIYKqNa2sM+EXp2TrWu5xhdddWrzVovrqDMMLu+ble
+ 3sv8qrgP/5TUFkN0JrXDyS6/NNvFv9Of9JVbT+5Pxa3UcOsUbY937TcBmd+EHl4zVvdd
+ AHVmhl0Pi6r4CiDug5Uj8kjyEPC+bOhJv6bvFp7VhT29HvygzyJRoaXIDIrkZ2avb6wu
+ Ss48/jRjvps65lhAK32zNzkyv4RlEf0jVAxGQ7IIh/jfiRBMlsWqFtpcda5YLFbWpc0i
+ ktsQ==
+X-Gm-Message-State: AOJu0YwxEl7a35EpOHxsUYTco//pSP6pPICuqg+kyubBfxnxxcIQqOk9
+ nS095poSViRUMIAQPtN4LfvgjDohWx6A5YJHSQ6+qW8oxYbLS3GOhubUAKQ2iaDjK6GkhdhGAdd
+ DvPR5J7ZWeITRC2mhWBjGho+byDEO9mtocmgb/7io47gDIfMwZH+M
+X-Received: by 2002:a05:600c:4f4e:b0:421:1717:2cf0 with SMTP id
+ 5b1f17b1804b1-42117172daemr77951715e9.24.1716987537306; 
+ Wed, 29 May 2024 05:58:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEf7yL1Qquv4Yzgu+DMK+2xPJ79zMWUl5+pmp9vmWMgx06Df54B4qf7uHWUDn1LpK0DX+ZTPQ==
+X-Received: by 2002:a05:600c:4f4e:b0:421:1717:2cf0 with SMTP id
+ 5b1f17b1804b1-42117172daemr77951485e9.24.1716987536906; 
+ Wed, 29 May 2024 05:58:56 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3557dcf001esm14898812f8f.97.2024.05.29.05.58.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 May 2024 05:58:56 -0700 (PDT)
+Date: Wed, 29 May 2024 14:58:54 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Daniel P .
+ =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Zhao Liu
+ <zhao1.liu@intel.com>
+Subject: Re: [PATCH v5 02/23] hw/i386/pc: Remove deprecated pc-i440fx-2.0
+ machine
+Message-ID: <20240529145854.5c51f2c6@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240529051539.71210-3-philmd@linaro.org>
+References: <20240529051539.71210-1-philmd@linaro.org>
+ <20240529051539.71210-3-philmd@linaro.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- FREEMAIL_TO(0.00)[gmail.com,nongnu.org];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- FREEMAIL_CC(0.00)[gmail.com,redhat.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- RCVD_TLS_ALL(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com];
- MISSING_XM_UA(0.00)[]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2]; RCPT_COUNT_SEVEN(0.00)[7];
- MID_RHS_MATCH_FROM(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,156 +105,157 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+On Wed, 29 May 2024 07:15:18 +0200
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-> Postcopy requires userfaultfd support, which requires tmpfs if a memory
-> file is used.
->
-> This adds back support for /dev/shm memory files, but adds preallocation
-> to skip environments where that mount is limited in size.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> The pc-i440fx-2.0 machine was deprecated for the 8.2
+> release (see commit c7437f0ddb "docs/about: Mark the
+> old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+> time to remove it.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+
 > ---
->
-> How about this? This goes on top of the reset of the patches
-> (I'll re-send them all as a series if we can get to some agreement).
->
-> This adds back the /dev/shm option with preallocation and adds a test
-> case that requires tmpfs.
-
-Peter has stronger opinions on this than I do. I'll leave it to him to
-decide.
-
-Just note that now we're making the CI less deterministic in relation to
-the migration tests. When a test that uses shmem fails, we'll not be
-able to consistently reproduce because the test might not even run
-depending on what has consumed the shmem first.
-
-Let's also take care that the other consumers of shmem (I think just
-ivshmem-test) are able to cope with the migration-test taking all the
-space, otherwise the CI will still break.
-
->
-> Thanks,
-> Nick
->
->  tests/qtest/migration-test.c | 63 +++++++++++++++++++++++++++++++-----
->  1 file changed, 55 insertions(+), 8 deletions(-)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 86eace354e..7fd9bbdc18 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -11,6 +11,7 @@
->   */
->  
->  #include "qemu/osdep.h"
-> +#include "qemu/cutils.h"
->  
->  #include "libqtest.h"
->  #include "qapi/qmp/qdict.h"
-> @@ -553,6 +554,7 @@ typedef struct {
->       */
->      bool hide_stderr;
->      bool use_memfile;
-> +    bool use_uffd_memfile;
->      /* only launch the target process */
->      bool only_target;
->      /* Use dirty ring if true; dirty logging otherwise */
-> @@ -739,7 +741,48 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->          ignore_stderr = "";
->      }
->  
-> -    if (args->use_memfile) {
-> +    if (!qtest_has_machine(machine_alias)) {
-> +        g_autofree char *msg = g_strdup_printf("machine %s not supported",
-> +                                               machine_alias);
-> +        g_test_skip(msg);
-> +        return -1;
-> +    }
-> +
-> +    if (args->use_uffd_memfile) {
-> +#if defined(__NR_userfaultfd) && defined(__linux__)
-> +        int fd;
-> +        uint64_t size;
-> +
-> +        if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
-> +            g_test_skip("/dev/shm does not exist or is not a directory");
-> +            return -1;
-> +        }
-> +
-> +        /*
-> +         * Pre-create and allocate the file here, because /dev/shm/
-> +         * is known to be limited in size in some places (e.g., Gitlab CI).
-> +         */
-> +        memfile_path = g_strdup_printf("/dev/shm/qemu-%d", getpid());
-> +        fd = open(memfile_path, O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
-> +        if (fd == -1) {
-> +            g_test_skip("/dev/shm file could not be created");
-> +            return -1;
-> +        }
-> +
-> +        g_assert(qemu_strtosz(memory_size, NULL, &size) == 0);
-> +        size += 64*1024; /* QEMU may map a bit more memory for a guard page */
-> +
-> +        if (fallocate(fd, 0, 0, size) == -1) {
-> +            unlink(memfile_path);
-> +            perror("could not alloc"); exit(1);
-> +            g_test_skip("Could not allocate machine memory in /dev/shm");
-> +            return -1;
-> +        }
-> +        close(fd);
-> +#else
-> +        g_test_skip("userfaultfd is not supported");
-> +#endif
-> +    } else if (args->use_memfile) {
->          memfile_path = g_strdup_printf("/%s/qemu-%d", tmpfs, getpid());
->          memfile_opts = g_strdup_printf(
->              "-object memory-backend-file,id=mem0,size=%s"
-> @@ -751,12 +794,6 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->          kvm_opts = ",dirty-ring-size=4096";
->      }
->  
-> -    if (!qtest_has_machine(machine_alias)) {
-> -        g_autofree char *msg = g_strdup_printf("machine %s not supported", machine_alias);
-> -        g_test_skip(msg);
-> -        return -1;
-> -    }
+>  docs/about/deprecated.rst       |  2 +-
+>  docs/about/removed-features.rst |  2 +-
+>  include/hw/i386/pc.h            |  3 ---
+>  hw/i386/pc.c                    | 15 -------------
+>  hw/i386/pc_piix.c               | 37 ---------------------------------
+>  5 files changed, 2 insertions(+), 57 deletions(-)
+>=20
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 7ff52bdd8e..629f6a1566 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -228,7 +228,7 @@ deprecated; use the new name ``dtb-randomness`` inste=
+ad. The new name
+>  better reflects the way this property affects all random data within
+>  the device tree blob, not just the ``kaslr-seed`` node.
+> =20
+> -``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.=
+4`` up to ``pc-i440fx-2.12`` (since 9.1)
+> +``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.=
+4`` up to ``pc-i440fx-2.12`` (since 9.1)
+>  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''=
+''''''''''''''''''''''''''''''''''''''''
+> =20
+>  These old machine types are quite neglected nowadays and thus might have
+> diff --git a/docs/about/removed-features.rst b/docs/about/removed-feature=
+s.rst
+> index fba0cfb0b0..5f0c2d8ec2 100644
+> --- a/docs/about/removed-features.rst
+> +++ b/docs/about/removed-features.rst
+> @@ -925,7 +925,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+> =20
+>  This machine has been renamed ``fuloong2e``.
+> =20
+> -``pc-0.10`` up to ``pc-i440fx-1.7`` (removed in 4.0 up to 8.2)
+> +``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
+>  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> =20
+>  These machine types were very old and likely could not be used for live
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index ad9c3d9ba8..7347636d47 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -290,9 +290,6 @@ extern const size_t pc_compat_2_2_len;
+>  extern GlobalProperty pc_compat_2_1[];
+>  extern const size_t pc_compat_2_1_len;
+> =20
+> -extern GlobalProperty pc_compat_2_0[];
+> -extern const size_t pc_compat_2_0_len;
 > -
->      machine = resolve_machine_version(machine_alias, QEMU_ENV_SRC,
->                                        QEMU_ENV_DST);
->  
-> @@ -807,7 +844,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
->       * Remove shmem file immediately to avoid memory leak in test failed case.
->       * It's valid because QEMU has already opened this file
->       */
-> -    if (args->use_memfile) {
-> +    if (args->use_memfile || args->use_uffd_memfile) {
->          unlink(memfile_path);
->      }
->  
-> @@ -1275,6 +1312,15 @@ static void test_postcopy(void)
->      test_postcopy_common(&args);
->  }
->  
-> +static void test_postcopy_memfile(void)
-> +{
-> +    MigrateCommon args = {
-> +        .start.use_uffd_memfile = true,
-> +    };
-> +
-> +    test_postcopy_common(&args);
-> +}
-> +
->  static void test_postcopy_suspend(void)
+>  #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+>      static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *=
+data) \
+>      { \
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 7b638da7aa..11182e09ce 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -319,21 +319,6 @@ GlobalProperty pc_compat_2_1[] =3D {
+>  };
+>  const size_t pc_compat_2_1_len =3D G_N_ELEMENTS(pc_compat_2_1);
+> =20
+> -GlobalProperty pc_compat_2_0[] =3D {
+> -    PC_CPU_MODEL_IDS("2.0.0")
+> -    { "virtio-scsi-pci", "any_layout", "off" },
+> -    { "PIIX4_PM", "memory-hotplug-support", "off" },
+> -    { "apic", "version", "0x11" },
+> -    { "nec-usb-xhci", "superspeed-ports-first", "off" },
+> -    { "nec-usb-xhci", "force-pcie-endcap", "on" },
+> -    { "pci-serial", "prog_if", "0" },
+> -    { "pci-serial-2x", "prog_if", "0" },
+> -    { "pci-serial-4x", "prog_if", "0" },
+> -    { "virtio-net-pci", "guest_announce", "off" },
+> -    { "ICH9-LPC", "memory-hotplug-support", "off" },
+> -};
+> -const size_t pc_compat_2_0_len =3D G_N_ELEMENTS(pc_compat_2_0);
+> -
+>  GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
 >  {
->      MigrateCommon args = {
-> @@ -3441,6 +3487,7 @@ int main(int argc, char **argv)
->  
->      if (has_uffd) {
->          migration_test_add("/migration/postcopy/plain", test_postcopy);
-> +        migration_test_add("/migration/postcopy/memfile", test_postcopy_memfile);
->          migration_test_add("/migration/postcopy/recovery/plain",
->                             test_postcopy_recovery);
->          migration_test_add("/migration/postcopy/preempt/plain",
+>      GSIState *s;
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index 02878060d0..a750a0e6ab 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -441,11 +441,6 @@ static void pc_compat_2_1_fn(MachineState *machine)
+>      x86_cpu_change_kvm_default("svm", NULL);
+>  }
+> =20
+> -static void pc_compat_2_0_fn(MachineState *machine)
+> -{
+> -    pc_compat_2_1_fn(machine);
+> -}
+> -
+>  #ifdef CONFIG_ISAPC
+>  static void pc_init_isa(MachineState *machine)
+>  {
+> @@ -887,38 +882,6 @@ static void pc_i440fx_2_1_machine_options(MachineCla=
+ss *m)
+>  DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+>                        pc_i440fx_2_1_machine_options);
+> =20
+> -static void pc_i440fx_2_0_machine_options(MachineClass *m)
+> -{
+> -    PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> -
+> -    pc_i440fx_2_1_machine_options(m);
+> -    m->hw_version =3D "2.0.0";
+> -    compat_props_add(m->compat_props, pc_compat_2_0, pc_compat_2_0_len);
+> -    pcmc->smbios_legacy_mode =3D true;
+> -    pcmc->has_reserved_memory =3D false;
+> -    /* This value depends on the actual DSDT and SSDT compiled into
+> -     * the source QEMU; unfortunately it depends on the binary and
+> -     * not on the machine type, so we cannot make pc-i440fx-1.7 work on
+> -     * both QEMU 1.7 and QEMU 2.0.
+> -     *
+> -     * Large variations cause migration to fail for more than one
+> -     * consecutive value of the "-smp" maxcpus option.
+> -     *
+> -     * For small variations of the kind caused by different iasl version=
+s,
+> -     * the 4k rounding usually leaves slack.  However, there could be st=
+ill
+> -     * one or two values that break.  For QEMU 1.7 and QEMU 2.0 the
+> -     * slack is only ~10 bytes before one "-smp maxcpus" value breaks!
+> -     *
+> -     * 6652 is valid for QEMU 2.0, the right value for pc-i440fx-1.7 on
+> -     * QEMU 1.7 it is 6414.  For RHEL/CentOS 7.0 it is 6418.
+> -     */
+> -    pcmc->legacy_acpi_table_size =3D 6652;
+> -    pcmc->acpi_data_size =3D 0x10000;
+> -}
+> -
+> -DEFINE_I440FX_MACHINE(v2_0, "pc-i440fx-2.0", pc_compat_2_0_fn,
+> -                      pc_i440fx_2_0_machine_options);
+> -
+>  #ifdef CONFIG_ISAPC
+>  static void isapc_machine_options(MachineClass *m)
+>  {
+
 
