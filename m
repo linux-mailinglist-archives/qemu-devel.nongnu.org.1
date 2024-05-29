@@ -2,125 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B38D36EC
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:00:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B188D36CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 14:54:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCIu9-0002yz-TT; Wed, 29 May 2024 08:59:45 -0400
+	id 1sCIox-0007Bj-8y; Wed, 29 May 2024 08:54:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1sCIu5-0002xf-1E
- for qemu-devel@nongnu.org; Wed, 29 May 2024 08:59:41 -0400
-Received: from mailout2.samsung.com ([203.254.224.25])
+ id 1sCIor-000782-FB
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 08:54:17 -0400
+Received: from mailout4.samsung.com ([203.254.224.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im@samsung.com>)
- id 1sCItz-0000tZ-Kn
- for qemu-devel@nongnu.org; Wed, 29 May 2024 08:59:39 -0400
+ id 1sCIoi-0008Il-N3
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 08:54:16 -0400
 Received: from epcas2p1.samsung.com (unknown [182.195.41.53])
- by mailout2.samsung.com (KnoxPortal) with ESMTP id
- 20240529125358epoutp0233074278e2218019ab036f15add2317a~T9svUs01v0033000330epoutp02X
+ by mailout4.samsung.com (KnoxPortal) with ESMTP id
+ 20240529125358epoutp0417ff4e9ee3fa5c8324b6aca84317ed83~T9svImTFd2500325003epoutp04b
  for <qemu-devel@nongnu.org>; Wed, 29 May 2024 12:53:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
- 20240529125358epoutp0233074278e2218019ab036f15add2317a~T9svUs01v0033000330epoutp02X
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com
+ 20240529125358epoutp0417ff4e9ee3fa5c8324b6aca84317ed83~T9svImTFd2500325003epoutp04b
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
  s=mail20170921; t=1716987238;
- bh=XOSTDNnpBFlIvv8h6EZ6WZyo1wZw3QEABDyzLGvi40U=;
+ bh=4UqckNa3SBolRT98q8YcZiBZPFFmi/MfRyXlY1dqzW0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UH0EahHsV0hMZxW7z0WwFpSnBAzqwd7cyLTczJ8FzOgDrh1mCw16YTi8pNWWOiWyj
- VN/hMSQGRzNwR7sidkbu7SBh9vtEqBkc7H0enGX7s7RaeDHMuxPZKpqE3pfHhNF80T
- pmMqWesz59IM7sVJB7BwQsRrVaUk+h1DpEyGbhVs=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
- epcas2p2.samsung.com (KnoxPortal) with ESMTP id
- 20240529125357epcas2p2c572eb49de1515c530477cef8136d560~T9su_pUr70039000390epcas2p2K;
+ b=pIJMzwgzV1wdLlFFbbW8AWP3UNpHPbeQPl4ULlO4CZN7uihn1TmSxIBGKBerlZb6B
+ luC5eX8tBE9Jqhu2tCgbwKsMzdOgctseNFP53Ur7H8N2CvqMkrF2CiaMeTwgNFKqEB
+ eYzWmm0t1qX3rtw2mOqUM4+1mX+XbL9Ji9qufJDU=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+ epcas2p1.samsung.com (KnoxPortal) with ESMTP id
+ 20240529125357epcas2p138f6648af3b1674729552ec99b040d88~T9suwLEmR0515505155epcas2p13;
  Wed, 29 May 2024 12:53:57 +0000 (GMT)
-Received: from epsmges2p4.samsung.com (unknown [182.195.36.101]) by
- epsnrtp3.localdomain (Postfix) with ESMTP id 4Vq8TK2Nthz4x9Pr; Wed, 29 May
+Received: from epsmges2p4.samsung.com (unknown [182.195.36.88]) by
+ epsnrtp2.localdomain (Postfix) with ESMTP id 4Vq8TK2RHKz4x9Pv; Wed, 29 May
  2024 12:53:57 +0000 (GMT)
-Received: from epcas2p4.samsung.com ( [182.195.41.56]) by
+Received: from epcas2p3.samsung.com ( [182.195.41.55]) by
  epsmges2p4.samsung.com (Symantec Messaging Gateway) with SMTP id
- 7C.E6.09479.56527566; Wed, 29 May 2024 21:53:57 +0900 (KST)
+ 8C.E6.09479.56527566; Wed, 29 May 2024 21:53:57 +0900 (KST)
 Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
- epcas2p1.samsung.com (KnoxPortal) with ESMTPA id
- 20240529125356epcas2p12d3250098243e6271bccd6519fb79cff~T9suH8vo-0504005040epcas2p1_;
+ epcas2p2.samsung.com (KnoxPortal) with ESMTPA id
+ 20240529125356epcas2p218eee16c01039ef5f0d5c8706825485d~T9suHfgRu0038900389epcas2p2Q;
  Wed, 29 May 2024 12:53:56 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
  epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
- 20240529125356epsmtrp2f03cf2cf65e360b28fcc6ab2802b65fe~T9suEQYhm1667216672epsmtrp2D;
+ 20240529125356epsmtrp2d5418d6fd3b5933b0725e682d48dbe5a~T9suE5hbS1667216672epsmtrp2E;
  Wed, 29 May 2024 12:53:56 +0000 (GMT)
-X-AuditID: b6c32a48-105fa70000002507-e5-66572565054e
+X-AuditID: b6c32a48-ea7ff70000002507-e6-6657256564c3
 Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 33.6A.08622.46527566; Wed, 29 May 2024 21:53:56 +0900 (KST)
+ epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+ 69.3A.18846.46527566; Wed, 29 May 2024 21:53:56 +0900 (KST)
 Received: from localhost.dsn.sec.samsung.com (unknown [10.229.54.230]) by
  epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20240529125356epsmtip262463068c0cf8c8aeb39f549be251957~T9st44-o60854208542epsmtip2B;
+ 20240529125356epsmtip25bc1477f69fa5f1f32a9bb55fff374ff~T9st7Iwvf1461914619epsmtip2P;
  Wed, 29 May 2024 12:53:56 +0000 (GMT)
 From: Minwoo Im <minwoo.im@samsung.com>
 To: Keith Busch <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>,
  Jesper Devantier <foss@defmacro.it>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, minwoo.im@samsung.com,
- gost.dev@samsung.com
-Subject: [PATCH v4 3/4] hw/nvme: Allocate sec-ctrl-list as a dynamic array
-Date: Wed, 29 May 2024 21:42:33 +0900
-Message-Id: <20240529124234.1430707-4-minwoo.im@samsung.com>
+ gost.dev@samsung.com, Klaus Jensen <k.jensen@samsung.com>
+Subject: [PATCH v4 4/4] hw/nvme: Expand VI/VQ resource to uint32
+Date: Wed, 29 May 2024 21:42:34 +0900
+Message-Id: <20240529124234.1430707-5-minwoo.im@samsung.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529124234.1430707-1-minwoo.im@samsung.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupik+LIzCtJLcpLzFFi42LZdljTQjdVNTzNoOMOv8WJKWEWNw/sZLLY
- f/Abq8WkQ9cYLZ6dPsBsMetdO5vF8d4dLA7sHlOmXWP3OLfjPLvHplWdbB5Prm1m8ujbsoox
- gDUq2yYjNTEltUghNS85PyUzL91WyTs43jne1MzAUNfQ0sJcSSEvMTfVVsnFJ0DXLTMH6Awl
- hbLEnFKgUEBicbGSvp1NUX5pSapCRn5xia1SakFKToF5gV5xYm5xaV66Xl5qiZWhgYGRKVBh
- QnbGp+Y2loL74hX/rws2MDYKdTFyckgImEg07bnM3sXIxSEksINRYub8I2wQzidGiQNrNjFB
- ON8YJW6d2s4G07JoaTNUYi+jxPPVa6FafjNK/N19ngWkik1AXaJh6iswW0QgR6J/5XcmEJtZ
- IF7i+Yof7CC2sICXxLx/H1hBbBYBVYmZP24ygti8AjYSByc9Y4TYJi+x/+BZZhCbU8BWomvO
- G3aIGkGJkzOfsEDMlJdo3jqbGeQICYGX7BJ/ug6wQzS7SHTPaIGyhSVeHd8CZUtJfH63F+qd
- comfbyZBLauQODjrNlCcA8i2l7j2PAXEZBbQlFi/Sx8iqixx5BbUVj6JjsN/2SHCvBIdbdAQ
- VZb4eOgQM4QtKbH80muoPR4ST/Zsgob0BEaJpnnX2CcwKsxC8swsJM/MQli8gJF5FaNYakFx
- bnpqsVGBCTx+k/NzNzGCE6WWxw7G2W8/6B1iZOJgPMQowcGsJMJ7ZlJomhBvSmJlVWpRfnxR
- aU5q8SFGU2BQT2SWEk3OB6bqvJJ4QxNLAxMzM0NzI1MDcyVx3nutc1OEBNITS1KzU1MLUotg
- +pg4OKUamNYftv5w/Pf0I7UHUxcYxf+qYbaakRa+qHzz37K069Y/mlSr1KZvjutSudAfKrbm
- xWvtItnv5hKfCoS3MHooXChhmbZr84Ey+RI9wwk/tv7W3LXf9fvmnW+mZBhdYZk774OVkfbc
- Q7W9qzU12rsF94tz+XV7iBav35kxseyr46POkyzHY1bvnblF0JyrI8zw7u2i+wosO3ZYBofO
- sz4x2WkKz9M/W5k9JjN+8rizomnXtcUVT/8/LTsVaxEe3X8ls8JiWqza1NI9AjWLGZtWmX7l
- +1E6vURI71Tehsr9x77sXc+u6+O9jNtN01LtusIWDob1Ov+zpc4/iVgsUlzh/13lYMI7qQyx
- YJ6u963u/5RYijMSDbWYi4oTAXGB9U0dBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGLMWRmVeSWpSXmKPExsWy7bCSvG6KaniawcFfhhYnpoRZ3Dywk8li
- /8FvrBaTDl1jtHh2+gCzxax37WwWx3t3sDiwe0yZdo3d49yO8+wem1Z1snk8ubaZyaNvyyrG
- ANYoLpuU1JzMstQifbsEroxPzW0sBffFK/5fF2xgbBTqYuTkkBAwkVi0tJmpi5GLQ0hgN6PE
- 8sUT2SESkhL7Tt9khbCFJe63HGGFKPrJKLGl4xJYgk1AXaJh6isWEFtEIE/i2sslzCA2s0Cy
- xPFlM8DiwgJeEvP+fQCrZxFQlZj54yYjiM0rYCNxcNIzRogF8hL7D54F6+UUsJXomvMG7Agh
- oJpFj3+zQ9QLSpyc+YQFYr68RPPW2cwTGAVmIUnNQpJawMi0ilEytaA4Nz232LDAKC+1XK84
- Mbe4NC9dLzk/dxMjOKi1tHYw7ln1Qe8QIxMH4yFGCQ5mJRHeM5NC04R4UxIrq1KL8uOLSnNS
- iw8xSnOwKInzfnvdmyIkkJ5YkpqdmlqQWgSTZeLglGpguvzgacrbFhkZlRm+S55azLAosDs4
- 5fvvTH25yi2X7lbKBGhrmxvbSeetWKPaLsZX/C951u3LefdX/jBsCfq6d8G1Fe36d3bsbuD9
- 1aR9u2btO6dex/aVR+Tq3hvda572aMm572LLZspd//Ctbnbn7fvrCi/va5tb8P8JU5HH7vSI
- m29+rFjxf8ORS3zuTxxu/jzvvqmNP/Nu4L9wsbCNX18pXk2XbBG7xZkg2urgsfSnE2/DIrun
- bw9dbFtSv/6b+KTGFmWzzw4PeRPnHpy5a97sG78iZHk5Dmz4sjAmcv7Z8nXhJkc3BIjGCu7c
- 9LfN/ejOuMhZjdEPlu52vtm5ov6y07IKBgWd12vfvSmWq29VYinOSDTUYi4qTgQAhN/x+NkC
- AAA=
-X-CMS-MailID: 20240529125356epcas2p12d3250098243e6271bccd6519fb79cff
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnk+LIzCtJLcpLzFFi42LZdljTXDdVNTzNYPF1QYsTU8Isbh7YyWSx
+ /+A3VouTjXtYLSYdusZo8ez0AWaLWe/a2SyO9+5gceDwmDLtGrvHuR3n2T02repk83hybTOT
+ R9+WVYwBrFHZNhmpiSmpRQqpecn5KZl56bZK3sHxzvGmZgaGuoaWFuZKCnmJuam2Si4+Abpu
+ mTlAtygplCXmlAKFAhKLi5X07WyK8ktLUhUy8otLbJVSC1JyCswL9IoTc4tL89L18lJLrAwN
+ DIxMgQoTsjNO/ZvAXrCMv+LYS7MGxjvcXYycHBICJhLLp05l7GLk4hAS2MEo8XnvNyjnE6NE
+ +9FjbHDOx5Zl7DAtszY+h6raySjRfGsPO4Tzm1Fix5zvTCBVbALqEg1TX7GA2CICORL9K0Hi
+ XBzMAi2MEt3nbjGDJIQFHCSOz9jICGKzCKhK/Fi3HCzOK2AjsfDyZDaIdfIS+w+eBYtzCthK
+ dM15ww5RIyhxcuYTsAXMQDXNW2czQ9S/ZJfoaquEsF0kuhf1M0LYwhKvjm+BekFK4vO7vVDz
+ yyV+vpkEVVMhcXDWbaA4B5BtL3HteQqIySygKbF+lz5EVFniyC2opXwSHYf/skOEeSU62oQg
+ ZihLfDx0COoWSYnll15D7fGQWNC+kgkSUhMYJWYsX84+gVFhFpJfZiH5ZRbC4gWMzKsYxVIL
+ inPTU4uNCkzg8Zucn7uJEZwytTx2MM5++0HvECMTB+MhRgkOZiUR3jOTQtOEeFMSK6tSi/Lj
+ i0pzUosPMZoCQ3ois5Rocj4waeeVxBuaWBqYmJkZmhuZGpgrifPea52bIiSQnliSmp2aWpBa
+ BNPHxMEp1cA08bm3wanSxqL1iQWfGaM72zcapRhUqbxhdOyV+hfYbTgvv2Pvr5eNajfv725V
+ ExD0dC68JNvz7Mj5CHU35qU7Li98teT+yk9Sz73PSm15/ur7Z5npgSFirvuFV8je237Hsmrp
+ vdK3q37OuiWx+PKkiROZfHxyhUsCcv88n/5U/kPC3y3r/Xc4d9cdUmOp6E7jfChcMEH2kI/+
+ g1+e3wvWWnlc/L+fI+ZRe7SunpD6yzg5idO2a9e/kP2/ozS/Z11fryxHwQpb4+WpAUFJF14v
+ MWa4/3jVmQur7B+dmRJyfur59pQVRxguqUkkSU35OKk4rDb+45/uGkuX5F/sO6N+nu20VRFa
+ O+fLL8n00wdFlFiKMxINtZiLihMB3Ibf5CIEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOLMWRmVeSWpSXmKPExsWy7bCSvG6KaniawfNfxhYnpoRZ3Dywk8li
+ /8FvrBYnG/ewWkw6dI3R4tnpA8wWs961s1kc793B4sDhMWXaNXaPczvOs3tsWtXJ5vHk2mYm
+ j74tqxgDWKO4bFJSczLLUov07RK4Mk79m8BesIy/4thLswbGO9xdjJwcEgImErM2PmfsYuTi
+ EBLYzijx9tkDZoiEpMS+0zdZIWxhifstR8BsIYGfjBKfrkqB2GwC6hINU1+xgNgiAnkS114u
+ YQYZxCzQxSgx6+JUsEHCAg4Sx2dsZASxWQRUJX6sWw4W5xWwkVh4eTIbxAJ5if0Hz4LFOQVs
+ JbrmvGGHWGYjsejxb3aIekGJkzOfgC1jBqpv3jqbeQKjwCwkqVlIUgsYmVYxiqYWFOem5yYX
+ GOoVJ+YWl+al6yXn525iBIe1VtAOxmXr/+odYmTiYDzEKMHBrCTCe2ZSaJoQb0piZVVqUX58
+ UWlOavEhRmkOFiVxXuWczhQhgfTEktTs1NSC1CKYLBMHp1QDU2XQ59aS+Dt9LffX+OQKnD+r
+ e+uZfH9LauH9h4J3lCNmsxUtbEpkKpC4ealIOqBljv7pJhHbIwFGOZH7g9b9imHVmSOwe2PO
+ i4W31ROO+/KfV3zG2rh+m7dD5Sy/6Wmtu24sO9WbICVkFe7tLLbEfsb85y6dy3XEDx1M/yzT
+ GCOzVeIG88U7Xv/2HPjmnCofm83LEnpmlW/zxydxbXssZnLFnfq5KY5x5YQdr891qQvs/rR8
+ fryNafRf4yl9h4p+H2S1ijTd8qcx4O4yjhjfIx72qX777sUwbT7+9nn/pgS+uc8uJeXsuHLp
+ 9x2/jExx85qCC3scu+69jJzKsqWvUSbhjeWDg+Hr5N7M5vjSp8RSnJFoqMVcVJwIANtkL9/a
+ AgAA
+X-CMS-MailID: 20240529125356epcas2p218eee16c01039ef5f0d5c8706825485d
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
 X-Sendblock-Type: AUTO_CONFIDENTIAL
 CMS-TYPE: 102P
 DLP-Filter: Pass
 X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240529125356epcas2p12d3250098243e6271bccd6519fb79cff
+X-CMS-RootMailID: 20240529125356epcas2p218eee16c01039ef5f0d5c8706825485d
 References: <20240529124234.1430707-1-minwoo.im@samsung.com>
- <CGME20240529125356epcas2p12d3250098243e6271bccd6519fb79cff@epcas2p1.samsung.com>
-Received-SPF: pass client-ip=203.254.224.25;
- envelope-from=minwoo.im@samsung.com; helo=mailout2.samsung.com
+ <CGME20240529125356epcas2p218eee16c01039ef5f0d5c8706825485d@epcas2p2.samsung.com>
+Received-SPF: pass client-ip=203.254.224.34;
+ envelope-from=minwoo.im@samsung.com; helo=mailout4.samsung.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,86 +136,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To prevent further bumping up the number of maximum VF te support, this
-patch allocates a dynamic array (NvmeCtrl *)->sec_ctrl_list based on
-number of VF supported by sriov_max_vfs property.
+VI and VQ resources cover queue resources in each VFs in SR-IOV.
+Current maximum I/O queue pair size is 0xffff, we can expand them to
+cover the full number of I/O queue pairs.
 
+This patch also fixed Identify Secondary Controller List overflow due to
+expand of number of secondary controllers.
+
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 ---
- hw/nvme/ctrl.c   | 8 +-------
- hw/nvme/nvme.h   | 5 ++---
- hw/nvme/subsys.c | 2 ++
- 3 files changed, 5 insertions(+), 10 deletions(-)
+ hw/nvme/ctrl.c | 8 ++++----
+ hw/nvme/nvme.h | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 7cf1e8e384..90a58e71bd 100644
+index 90a58e71bd..b957debdc3 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -7863,12 +7863,6 @@ static bool nvme_check_params(NvmeCtrl *n, Error **errp)
-             return false;
-         }
- 
--        if (params->sriov_max_vfs > NVME_MAX_VFS) {
--            error_setg(errp, "sriov_max_vfs must be between 0 and %d",
--                       NVME_MAX_VFS);
--            return false;
--        }
--
-         if (params->cmb_size_mb) {
-             error_setg(errp, "CMB is not supported with SR-IOV");
-             return false;
-@@ -8461,7 +8455,7 @@ static Property nvme_props[] = {
-     DEFINE_PROP_UINT8("zoned.zasl", NvmeCtrl, params.zasl, 0),
-     DEFINE_PROP_BOOL("zoned.auto_transition", NvmeCtrl,
-                      params.auto_transition_zones, true),
--    DEFINE_PROP_UINT8("sriov_max_vfs", NvmeCtrl, params.sriov_max_vfs, 0),
-+    DEFINE_PROP_UINT16("sriov_max_vfs", NvmeCtrl, params.sriov_max_vfs, 0),
-     DEFINE_PROP_UINT16("sriov_vq_flexible", NvmeCtrl,
+@@ -8460,10 +8460,10 @@ static Property nvme_props[] = {
                         params.sriov_vq_flexible, 0),
      DEFINE_PROP_UINT16("sriov_vi_flexible", NvmeCtrl,
+                        params.sriov_vi_flexible, 0),
+-    DEFINE_PROP_UINT8("sriov_max_vi_per_vf", NvmeCtrl,
+-                      params.sriov_max_vi_per_vf, 0),
+-    DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
+-                      params.sriov_max_vq_per_vf, 0),
++    DEFINE_PROP_UINT32("sriov_max_vi_per_vf", NvmeCtrl,
++                       params.sriov_max_vi_per_vf, 0),
++    DEFINE_PROP_UINT32("sriov_max_vq_per_vf", NvmeCtrl,
++                       params.sriov_max_vq_per_vf, 0),
+     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
+                      false),
+     DEFINE_PROP_END_OF_LIST(),
 diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 485b42c104..d8ec4bad6a 100644
+index d8ec4bad6a..b0b2739802 100644
 --- a/hw/nvme/nvme.h
 +++ b/hw/nvme/nvme.h
-@@ -26,7 +26,6 @@
- 
- #define NVME_MAX_CONTROLLERS 256
- #define NVME_MAX_NAMESPACES  256
--#define NVME_MAX_VFS 127
- #define NVME_EUI64_DEFAULT ((uint64_t)0x5254000000000000)
- #define NVME_FDP_MAX_EVENTS 63
- #define NVME_FDP_MAXPIDS 128
-@@ -532,7 +531,7 @@ typedef struct NvmeParams {
-     bool     auto_transition_zones;
-     bool     legacy_cmb;
-     bool     ioeventfd;
--    uint8_t  sriov_max_vfs;
-+    uint16_t  sriov_max_vfs;
+@@ -534,8 +534,8 @@ typedef struct NvmeParams {
+     uint16_t  sriov_max_vfs;
      uint16_t sriov_vq_flexible;
      uint16_t sriov_vi_flexible;
-     uint8_t  sriov_max_vq_per_vf;
-@@ -614,7 +613,7 @@ typedef struct NvmeCtrl {
+-    uint8_t  sriov_max_vq_per_vf;
+-    uint8_t  sriov_max_vi_per_vf;
++    uint32_t  sriov_max_vq_per_vf;
++    uint32_t  sriov_max_vi_per_vf;
+     bool     msix_exclusive_bar;
+ } NvmeParams;
  
-     NvmePriCtrlCap  pri_ctrl_cap;
-     uint32_t nr_sec_ctrls;
--    NvmeSecCtrlEntry sec_ctrl_list[NVME_MAX_VFS];
-+    NvmeSecCtrlEntry *sec_ctrl_list;
-     struct {
-         uint16_t    vqrfap;
-         uint16_t    virfap;
-diff --git a/hw/nvme/subsys.c b/hw/nvme/subsys.c
-index 561ed04a53..77deaf2c2c 100644
---- a/hw/nvme/subsys.c
-+++ b/hw/nvme/subsys.c
-@@ -61,6 +61,8 @@ int nvme_subsys_register_ctrl(NvmeCtrl *n, Error **errp)
-     if (pci_is_vf(&n->parent_obj)) {
-         cntlid = le16_to_cpu(sctrl->scid);
-     } else {
-+        n->sec_ctrl_list = g_new0(NvmeSecCtrlEntry, num_vfs);
-+
-         for (cntlid = 0; cntlid < ARRAY_SIZE(subsys->ctrls); cntlid++) {
-             if (!subsys->ctrls[cntlid]) {
-                 break;
 -- 
 2.34.1
 
