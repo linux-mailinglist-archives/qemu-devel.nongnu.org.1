@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6038D3457
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F3D8D34A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:33:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCGNR-0001lI-Kb; Wed, 29 May 2024 06:17:49 -0400
+	id 1sCGbO-0005Bc-7R; Wed, 29 May 2024 06:32:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGN9-0001jG-64
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:17:31 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGbM-0005Ag-DR
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:32:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGN7-0004x5-5p
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:17:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGb7-0007Sp-6v
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 06:32:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716977847;
+ s=mimecast20190719; t=1716978716;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=pqZu1IADoLJOhrk35EB+CT9B7LTJZKCE6zdgbylAQ3I=;
- b=Vd21WqEfAp2c1sxrLV6c4V4QXJb7CsKqpud3Axuqcn6FC7AtmNjK9nwLzpFFPBvMQxuxbL
- Lhv7Y+NPIolwG4BLd5tJ14q5cSNfTACU3IyP2jXPlbLtM6awRO89HXl19TRwXV+L6qr0hU
- I3rF9BtSsF7KVrL0I08cQYqRpYr+VNs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VUzc/y7JjozyCM6dvt2q7P8zpRhJJhqGSHn7G9JDTfU=;
+ b=gjh6Rjd1g3AWxCzZnPyNHTOnObisPVOvcfjwP12X/ETDutj/Fc1y3EMrmEuUfZto5EmX52
+ bsnOpUylu0HbTif/WiDtKrPGyWKmhOMVzQdaudWIKd3Q73AOzPgUUrjBEr5sVZW32cLfd+
+ lqzKCozRkxgyXEy4vRkFbh6NQbSy2Xw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-iRyHfoQMMZWXk6p_UYOMRA-1; Wed, 29 May 2024 06:17:24 -0400
-X-MC-Unique: iRyHfoQMMZWXk6p_UYOMRA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-35507e4c41dso579727f8f.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 03:17:23 -0700 (PDT)
+ us-mta-52-VntcRApgNa6mJ6fxkE2MWg-1; Wed, 29 May 2024 06:31:54 -0400
+X-MC-Unique: VntcRApgNa6mJ6fxkE2MWg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4202c2d397aso12866565e9.0
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 03:31:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716977843; x=1717582643;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pqZu1IADoLJOhrk35EB+CT9B7LTJZKCE6zdgbylAQ3I=;
- b=xC1OfT3qgvxLxsbVExQiaGbJX4ofBQHie/RH769gXjnYo0jPLX1KEk8xAljDX486Rq
- LlnaOb43Q/iu9TWB9cY5wuch4fwUrhQzXMXClBGvYreXpk5yQVWjw+BozzADeveTKhQN
- Dwx1e6nemVNKnPObv6/KR5xI6S7IRzbQLmGpKWqesAHGk7y8oN4WnyE4aESK3PoJ1H/x
- FDNhJYpLfDWodPRdVjT7uz4BzJIERNVijJA5U40nBEjt5yvAAzWuMWAsPC5tsYVs0UbK
- /mk1CK+z5LfxkEYYtmRg4+A+rTcfRZ8gzR9hwvgm8KLzBmtB+ZVHXoNIbEq/eKxcnOw6
- 7cIA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXEx7ugg+7/rvz/A2TVAyMx5CX94GONBWudrQ9fNKqrUWaP77FLMiYTOFN0VCFKqHAFnskoFRBCpTiDUgifrHIKn0TcvAs=
-X-Gm-Message-State: AOJu0Yzi3ow/3cBnSTxY5rjcI/zpj3xLnXNzsOI9ee18fqrUZ6QERknx
- r0Slv/Qj7YJNXm30D9oJojbNzwej3ghLV+p8d/Tx9Wn+m1kOazqUbqyPVH9hLRig+0KVlrKto6y
- ZO0taRmTD3N2mY/8xPlKA8QU5SkAFKzW1CA3qas35mrcxTMTmiRWY
-X-Received: by 2002:a5d:458a:0:b0:34c:7ed4:55a with SMTP id
- ffacd0b85a97d-35c7c2b5562mr1275853f8f.33.1716977843047; 
- Wed, 29 May 2024 03:17:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzAEEqxnDIiJOpl9Xd52ni9WWNv67nqnBY4Vi33k6s8lAYQEzsusOJfrMnu+PRBIJMLwC71Q==
-X-Received: by 2002:a5d:458a:0:b0:34c:7ed4:55a with SMTP id
- ffacd0b85a97d-35c7c2b5562mr1275828f8f.33.1716977842578; 
- Wed, 29 May 2024 03:17:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1716978713; x=1717583513;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VUzc/y7JjozyCM6dvt2q7P8zpRhJJhqGSHn7G9JDTfU=;
+ b=hDdjHUNleoUTBDgxrjpN9bzWhR/x50OzR1bnIO9BFBcXQBfBEoIhaXBIFxrk2xa7Dt
+ EA+G0xh/HqlH6i3pC0SJavL8DROxm/S49trmBMuOG7dyrEmImDNU+URW3AT7ZKBDIG/I
+ 0LHeUpOZbIKw1S93/J7/wm7nZBe8P8b+oQr3XErV8shEuZnRpfjCNfGUrDkigsaglUKQ
+ jOL+EcF3KLYhZ7Ap9IWEuE2UFB0pa1JpwoZ8TDO9xhB26CLVOIJQ9Jb67n4gIlFcpxl8
+ T+/6nE0NK3p8A/5Q/fb5lqmbZtk/SXcz7bQhGJcvTbb0TYEUTOf/yrPEGjXbrr4zhRCV
+ z8hw==
+X-Gm-Message-State: AOJu0YzHe/Lnx2z/nuobL5YjyMsgUPi6nvlovLbMrsSBUuoJ3XuAdl/T
+ 8ZiIjE5LmlN7GBqXbULhVCrg9ssJipaJ0ZbqAVMNHTG8HQ5gO3CJDIIgH/iRT22ib/LpEVRhsiy
+ qU3FSnogoXSPQhsG0Iy1eUl0okihLS8IZlCMDE3oZQirsvmAMVBQN5ukzaG82
+X-Received: by 2002:a05:600c:4703:b0:420:1fab:1798 with SMTP id
+ 5b1f17b1804b1-421089fe2c2mr111896875e9.29.1716978713244; 
+ Wed, 29 May 2024 03:31:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsfNTWLK1Drl1cJvVn73vsKfLK/YrLTI8Qe5qcE7vkn3+aAraEJim8Liwq9w0O4uve+OzHgw==
+X-Received: by 2002:a05:600c:4703:b0:420:1fab:1798 with SMTP id
+ 5b1f17b1804b1-421089fe2c2mr111896735e9.29.1716978712734; 
+ Wed, 29 May 2024 03:31:52 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-176-229.web.vodafone.de.
  [109.43.176.229]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42100ee806esm206628125e9.3.2024.05.29.03.17.21
+ 5b1f17b1804b1-42100eecbd4sm207836045e9.8.2024.05.29.03.31.51
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 May 2024 03:17:22 -0700 (PDT)
-Message-ID: <851411c2-7c15-4f4a-85e5-e49d11251ba1@redhat.com>
-Date: Wed, 29 May 2024 12:17:20 +0200
+ Wed, 29 May 2024 03:31:52 -0700 (PDT)
+Message-ID: <3819e261-646d-467a-b783-85700b0e6842@redhat.com>
+Date: Wed, 29 May 2024 12:31:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/14] target/s390x: Simplify per_ifetch,
- per_check_exception
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, iii@linux.ibm.com, david@redhat.com
-References: <20240502054417.234340-1-richard.henderson@linaro.org>
- <20240502054417.234340-13-richard.henderson@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
+Subject: Re: tests/avocado: Add LoongArch machine start test
+To: Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20230515111908.2606580-1-gaosong@loongson.cn>
+ <20230515111908.2606580-3-gaosong@loongson.cn>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -118,9 +115,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240502054417.234340-13-richard.henderson@linaro.org>
+In-Reply-To: <20230515111908.2606580-3-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -128,7 +125,6 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -146,94 +142,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 02/05/2024 07.44, Richard Henderson wrote:
-> Set per_address and ilen in per_ifetch; this is valid for
-> all PER exceptions and will last until the end of the
-> instruction.  Therefore we don't need to give the same
-> data to per_check_exception.
+On 15/05/2023 13.19, Song Gao wrote:
+> Add a new test in tests/avocado to check LoongArch virt machine start.
 > 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> # Conflicts:
-> #	target/s390x/tcg/misc_helper.c
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> Message-Id: <20230513012744.1885728-1-gaosong@loongson.cn>
 > ---
->   target/s390x/helper.h          |  4 ++--
->   target/s390x/tcg/misc_helper.c | 23 +++++++++--------------
->   target/s390x/tcg/translate.c   | 20 ++++++++++++--------
->   3 files changed, 23 insertions(+), 24 deletions(-)
+>   MAINTAINERS                        |  1 +
+>   tests/avocado/machine_loongarch.py | 58 ++++++++++++++++++++++++++++++
+>   2 files changed, 59 insertions(+)
+>   create mode 100644 tests/avocado/machine_loongarch.py
 > 
-> diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-> index 31bd193322..1a8a76abb9 100644
-> --- a/target/s390x/helper.h
-> +++ b/target/s390x/helper.h
-> @@ -359,9 +359,9 @@ DEF_HELPER_FLAGS_4(ipte, TCG_CALL_NO_RWG, void, env, i64, i64, i32)
->   DEF_HELPER_FLAGS_1(ptlb, TCG_CALL_NO_RWG, void, env)
->   DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
->   DEF_HELPER_3(lra, i64, env, i64, i64)
-> -DEF_HELPER_FLAGS_3(per_check_exception, TCG_CALL_NO_WG, void, env, i64, i32)
-> +DEF_HELPER_FLAGS_1(per_check_exception, TCG_CALL_NO_WG, void, env)
->   DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_WG, void, env, i64, i32)
-> -DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_WG, void, env, i64)
-> +DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_WG, void, env, i32)
->   DEF_HELPER_FLAGS_2(per_store_real, TCG_CALL_NO_WG, noreturn, env, i32)
->   DEF_HELPER_FLAGS_1(stfl, TCG_CALL_NO_RWG, void, env)
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ff2aa53bb9..50585117a0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -245,6 +245,7 @@ M: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+>   S: Maintained
+>   F: target/loongarch/
+>   F: tests/tcg/loongarch64/
+> +F: tests/avocado/machine_loongarch.py
 >   
-> diff --git a/target/s390x/tcg/misc_helper.c b/target/s390x/tcg/misc_helper.c
-> index 5f1efc6a32..f5e674a26e 100644
-> --- a/target/s390x/tcg/misc_helper.c
-> +++ b/target/s390x/tcg/misc_helper.c
-> @@ -604,12 +604,10 @@ G_NORETURN static void per_raise_exception_log(CPUS390XState *env)
->       per_raise_exception(env);
->   }
->   
-> -void HELPER(per_check_exception)(CPUS390XState *env, uint64_t next_pc,
-> -                                 uint32_t ilen)
-> +void HELPER(per_check_exception)(CPUS390XState *env)
->   {
-> +    /* psw_addr, per_address and int_pgm_ilen are already set. */
->       if (unlikely(env->per_perc_atmid)) {
-> -        env->psw.addr = next_pc;
-> -        env->int_pgm_ilen = ilen;
->           per_raise_exception_log(env);
->       }
->   }
-> @@ -639,23 +637,20 @@ void HELPER(per_branch)(CPUS390XState *env, uint64_t dest, uint32_t ilen)
->       per_raise_exception_log(env);
->   }
->   
-> -void HELPER(per_ifetch)(CPUS390XState *env, uint64_t addr)
-> +void HELPER(per_ifetch)(CPUS390XState *env, uint32_t ilen)
->   {
-> -    if (get_per_in_range(env, addr)) {
-> -        env->per_address = addr;
-> +    if (get_per_in_range(env, env->psw.addr)) {
-> +        env->per_address = env->psw.addr;
-> +        env->int_pgm_ilen = ilen;
->           env->per_perc_atmid = PER_CODE_EVENT_IFETCH | get_per_atmid(env);
->   
->           /* If the instruction has to be nullified, trigger the
->              exception immediately. */
->           if (env->cregs[9] & PER_CR9_EVENT_IFETCH_NULLIFICATION) {
-> -            CPUState *cs = env_cpu(env);
-> -
->               env->per_perc_atmid |= PER_CODE_EVENT_NULLIFICATION;
-> -            env->int_pgm_code = PGM_PER;
-> -            env->int_pgm_ilen = get_ilen(cpu_ldub_code(env, addr));
-> -
-> -            cs->exception_index = EXCP_PGM;
-> -            cpu_loop_exit(cs);
-> +            qemu_log_mask(CPU_LOG_INT, "PER interrupt before %#" PRIx64 "\n",
-> +                          env->per_address);
+>   M68K TCG CPUs
+>   M: Laurent Vivier <laurent@vivier.eu>
+> diff --git a/tests/avocado/machine_loongarch.py b/tests/avocado/machine_loongarch.py
+> new file mode 100644
+> index 0000000000..7d8a3c1fa5
+> --- /dev/null
+> +++ b/tests/avocado/machine_loongarch.py
+> @@ -0,0 +1,58 @@
+> +# SPDX-License-Identifier: GPL-2.0-or-later
+> +#
+> +# LoongArch virt test.
+> +#
+> +# Copyright (c) 2023 Loongson Technology Corporation Limited
+> +#
+> +
+> +from avocado_qemu import QemuSystemTest
+> +from avocado_qemu import exec_command_and_wait_for_pattern
+> +from avocado_qemu import wait_for_console_pattern
+> +
+> +class LoongArchMachine(QemuSystemTest):
+> +    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
+> +
+> +    timeout = 120
+> +
+> +    def wait_for_console_pattern(self, success_message, vm=None):
+> +        wait_for_console_pattern(self, success_message,
+> +                                 failure_message='Kernel panic - not syncing',
+> +                                 vm=vm)
+> +
+> +    def test_loongarch64_devices(self):
+> +
+> +        """
+> +        :avocado: tags=arch:loongarch64
+> +        :avocado: tags=machine:virt
+> +        """
+> +
+> +        kernel_url = ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+> +                      'releases/download/binary-files/vmlinuz.efi')
+> +        kernel_hash = '951b485b16e3788b6db03a3e1793c067009e31a2'
+> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+> +
+> +        initrd_url = ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+> +                      'releases/download/binary-files/ramdisk')
+> +        initrd_hash = 'c67658d9b2a447ce7db2f73ba3d373c9b2b90ab2'
+> +        initrd_path = self.fetch_asset(initrd_url, asset_hash=initrd_hash)
+> +
+> +        bios_url = ('https://github.com/yangxiaojuan-loongson/qemu-binary/'
+> +                    'releases/download/binary-files/QEMU_EFI.fd')
+> +        bios_hash = ('dfc1bfba4853cd763b9d392d0031827e8addbca8')
+> +        bios_path = self.fetch_asset(bios_url, asset_hash=bios_hash)
 
-FYI, checkpatch.pl complains:
+  Hi!
 
-ERROR: Don't use '#' flag of printf format ('%#') in format strings, use 
-'0x' prefix instead
-#84: FILE: target/s390x/tcg/misc_helper.c:651:
-+            qemu_log_mask(CPU_LOG_INT, "PER interrupt before %#" PRIx64
+FYI, the test does not seem to work anymore - apparently the binaries have 
+changed and now the hashes do not match anymore. Could you please update it? 
+(preferably with some versioned binaries that do not change in the course of 
+time?)
 
-I'll fix it up while picking up your patch.
-
-  Thomas
+  Thank you very much!
+   Thomas
 
 
