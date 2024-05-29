@@ -2,147 +2,206 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6150B8D3D69
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 19:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8DC8D3D6B
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 19:31:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCN75-0004Pe-IQ; Wed, 29 May 2024 13:29:23 -0400
+	id 1sCN8T-000555-Og; Wed, 29 May 2024 13:30:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tong.ho@amd.com>) id 1sCN72-0004Ne-VQ
- for qemu-devel@nongnu.org; Wed, 29 May 2024 13:29:21 -0400
-Received: from mail-dm6nam10on20631.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::631]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1sCN8R-00054o-Hf
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 13:30:47 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tong.ho@amd.com>) id 1sCN6z-0008FH-Tc
- for qemu-devel@nongnu.org; Wed, 29 May 2024 13:29:20 -0400
+ (Exim 4.90_1) (envelope-from <steven.sistare@oracle.com>)
+ id 1sCN8K-00007N-Hc
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 13:30:47 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 44TGY6o1010307; Wed, 29 May 2024 17:30:30 GMT
+DKIM-Signature: =?UTF-8?Q?v=3D1; _a=3Drsa-sha256; _c=3Drelaxed/relaxed;
+ _d=3Doracle.com; _h?=
+ =?UTF-8?Q?=3Dcc:content-transfer-encoding:content-type:date:from:in-reply?=
+ =?UTF-8?Q?-to:message-id:mime-version:references:subject:to;_s=3Dcorp-202?=
+ =?UTF-8?Q?3-11-20;_bh=3DV11antr3Oiz6oQQhv9Q/BYuws+2sncTrwCRTq6EUoV4=3D;_b?=
+ =?UTF-8?Q?=3Ddsz48fBuBqWtaC3pjxdMSQvmFOtltNIrpsyv1W2+yZ5EplCwTREyEfQ+mCjl?=
+ =?UTF-8?Q?gP7cvqPx_I2yw9JcEpqcbZKK+nJrDmPjIFm72Fn9UPhqXnMoG7a+kQCZLphL7Iw?=
+ =?UTF-8?Q?07fpFsPMy9YVvj_vdEtMkNVFqZcb6bzBh8Q4xuUblGPKGbfyX/+AQnGN6kBVqGq?=
+ =?UTF-8?Q?ZZrnuCjtym9ZGPVaNMs+_P3lzb4+P5GFaaAcvq2C7y4ZsEKXkfZeX6ByP8w1fVg?=
+ =?UTF-8?Q?63hsM++L0/qtiRNJ1b1shjuo1H_/C5VMWTg4qefpZ9ShYGUhJyuato4VuPPDMza?=
+ =?UTF-8?Q?1gmJ0RXvgmZbVI2QHMp/6uZSacPmETIP_mQ=3D=3D_?=
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yb8fcf8fa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 May 2024 17:30:30 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 44TH86Em016232; Wed, 29 May 2024 17:30:29 GMT
+Received: from nam02-dm3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02lp2040.outbound.protection.outlook.com [104.47.56.40])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3yc50rgnjg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 May 2024 17:30:29 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VZyNVphz48L5Rgq5dbFdGCItOAehLR4V8phSxQkm/M7FuZE/lmirdfDEy25hZOLT1elerjbLuCPfRzxxIa5eUfk7E19AO43uzrpJyxBluI/IvDwrOCOdLmN56ptl6U2v1POv4mcDYxACGo7KHjLUzNK2CleFYoNRQk5SWdmIDfh/kGhYeL0XXMdyfQdW5j32q09dR25Y2jdyp8hmIybF/zNz1U/wkA+5wNIB0p/FNBa0OxxeF7lvIrwGtCtxfrK5/de/Bhcu5ShvUGfB6Vw9JbQkgPkTJ2WayVQuFKxmDgRerCqVI3qUDKvEf+5gXiRlTzLKvGrsju3SXUF5bg4EQg==
+ b=R+doLYoxhk2ptuYjcC4ynGpyhoIrAqRIuN7U1O0OdW2NmWHrXkUjGlDqv384+rN7aIKY3NEsdcMaop8A+rF7W9pZxgWQYvB1vG7ZWxm6ptGWh2rBjL98Ag07y/qnv631KYntAsXmgVtGnvOGyrbWJYJ1roeAwMqKzUhrIKmVFCAUKotRby0VLP7suvUB8Numzuk6mma/r2TV1xKn29kKoqJGz9DlqkRq23BH9gXkdO52xy57oMnL8WMpldbpxesG0JX2LaFDqT9PARjtfATpO2yUD4yPECIt7SWYhAVWOw02RQHyD8mzjB5bw3/uK4z464hi8pR7nP9LYRoGrfKrtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Du0Sz15SJzpo5OUy9RIFexvmnkpOYY6yiuvclEeUY4I=;
- b=XcBAVinjokCD36kBm8pXtoj9YdqhVvV8h/vQMtUoNxaH6iJC3LgJdHd834vmO/mUE10v6ij0BkFiebn2rvpWkeJSkTclN04Ip3qCeXZUYxJuMvaUivyz3RLT5+HianoZbL8Zbzep21TZMYmiRoGb73XBhYdQ4vl9k++xVgMhgNIWZZl6WeJTLkwtDOpHCmB1524dk42h4Gn2EVAEz6j2fKMgsqxwLOXbAunyJ6urWu/6bIOiBSv9KM4IhFHPsr7sYCQutbZ1JLnasy15KoRIb0xELZc4b0TZLBRQ4DqygfLspyjXBLZO034HZ+bt0gvdf/yRTLmagnyOaHYVpNfXEw==
+ bh=V11antr3Oiz6oQQhv9Q/BYuws+2sncTrwCRTq6EUoV4=;
+ b=NIPomITJgVry7LT39+LIGXmm6u8Fk9iyk4kmuJGRWc1GtCvQXQlIqXWt7L+sLxhs+0i3FkS4MIG+2FxinzruEod+vpgWu5TE7uJy8nuTM3Ka71Uvbot0zTG2Ri/niEwxwllJZIFL1aQWi09ydf0tr+C+rf8OjZpN/ZHIKyB3S3x5+c9hpMa0HRinwxe6h8up2rrDSQ1huPVRkT8O7gAIOOiiGkQAvtyzqR3XfB8523k1Ue9delxsso/Q7iP8n9ER0pKyseDRC2+PckwMVB2qZBZS7vtGxnt7tIm7VYLCQovJjUND0fNCl1B7cIRlFVpCaggq6SCqMM0f/YjnWjXrZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Du0Sz15SJzpo5OUy9RIFexvmnkpOYY6yiuvclEeUY4I=;
- b=n0UzztakjlOmLQzOeP7Pu955n4xR1ZG8X3bFLppFCfXZPPH+PM199b9jCFtCBFTbISw/5CKG+zr0g4vfJS5csiUfzyPfAgNT4sfFuLrt9ir1mrGuq2oeuthVTcTKbk08ogPeYL3Em/5XwXQ3jQLZFmXtHFhAw28Yhp4Ew2YyJT0=
-Received: from BL0PR12MB4882.namprd12.prod.outlook.com (2603:10b6:208:1c3::10)
- by CH3PR12MB9454.namprd12.prod.outlook.com (2603:10b6:610:1c7::16)
+ bh=V11antr3Oiz6oQQhv9Q/BYuws+2sncTrwCRTq6EUoV4=;
+ b=M9ZMDjiCFM320A/pjWdASCEXoFUOlA0u5z0cgNC9QAleBjgG1UMkUb86Lk0v01IM8q/uxvM96O1hePWuybK5K9ZxrFwlKO5HWza9uNW4MaBnAEfBdshoCZfU8nDPknixQbdo+qgjUhOieWO5DhwKL5WFpPv3mbXONnZbqYVx014=
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com (2603:10b6:806:119::14)
+ by SA2PR10MB4442.namprd10.prod.outlook.com (2603:10b6:806:11a::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Wed, 29 May
- 2024 17:29:11 +0000
-Received: from BL0PR12MB4882.namprd12.prod.outlook.com
- ([fe80::8e42:5bb3:95fc:7da1]) by BL0PR12MB4882.namprd12.prod.outlook.com
- ([fe80::8e42:5bb3:95fc:7da1%4]) with mapi id 15.20.7633.017; Wed, 29 May 2024
- 17:29:11 +0000
-From: "Ho, Tong" <tong.ho@amd.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] qemu/bitops.h: Locate changed bits
-Thread-Topic: [PATCH] qemu/bitops.h: Locate changed bits
-Thread-Index: AQHasYTzZ++sSMz8rkeYPW9UWsoyK7GuOa8AgAA8lwI=
-Date: Wed, 29 May 2024 17:29:11 +0000
-Message-ID: <BL0PR12MB488246FC1CCEA16F7F34BA22E6F22@BL0PR12MB4882.namprd12.prod.outlook.com>
-References: <20240529045909.1796787-1-tong.ho@amd.com>
- <CAFEAcA9YB+=V5Vv=UKK_DRbLMc0kv1T9xqiu5J2Z2yVLk459Rg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9YB+=V5Vv=UKK_DRbLMc0kv1T9xqiu5J2Z2yVLk459Rg@mail.gmail.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Wed, 29 May
+ 2024 17:30:25 +0000
+Received: from SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::e06f:6709:57b4:91a2]) by SA2PR10MB4684.namprd10.prod.outlook.com
+ ([fe80::e06f:6709:57b4:91a2%5]) with mapi id 15.20.7611.030; Wed, 29 May 2024
+ 17:30:25 +0000
+Message-ID: <18f8bba1-b687-43ba-9f2c-4cfafe005ac1@oracle.com>
+Date: Wed, 29 May 2024 13:30:18 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V1 07/26] migration: VMStateId
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Daniel P. Berrange"
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-8-git-send-email-steven.sistare@oracle.com>
+ <ZlTO9fVYG50r3XL9@x1n> <7119f070-57ea-4495-bd8a-1337555fac22@oracle.com>
+ <ZlYX4BWLU19f1vaI@x1n>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL0PR12MB4882:EE_|CH3PR12MB9454:EE_
-x-ms-office365-filtering-correlation-id: 13704f3b-8563-4b93-0962-08dc8004da92
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230031|366007|1800799015|376005|38070700009;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?SJWfejgPhyglIhwlJIAaPI5GGO8McowJ6Tgw78S9Ic23aisZwk42W8zlDu?=
- =?iso-8859-1?Q?eDrK6+QgrppZHavEfzEMCX8U1PxyGhrvGl9c8lri/v3xq7uLouEun5uoYu?=
- =?iso-8859-1?Q?KwiIDgTBAlnNZlCiT9okWgjNhEgqAwJk3NvIbqPT5rbssoRRFcA0tgTeUC?=
- =?iso-8859-1?Q?BtWBg/c1Fc0Eh933u2zJ/HanW4YyXueftR63DRBBbk9yAm5AT66KS+WOZH?=
- =?iso-8859-1?Q?utwjhTG8nyftNpAtWkYeyXz0i4OElYxI88WiY9OM5OwWchcnf71JTePuMz?=
- =?iso-8859-1?Q?zpz9xYCmGBxdqdGnm6p9m12EBa/4d6QZC/WHMx0JV3ifnZRKJfXPptM33O?=
- =?iso-8859-1?Q?PkHBWzz13pRAvgOIVaYnwG4+8UEn80LLrL58KxeBGtIuwbdVD+FUQxJ76u?=
- =?iso-8859-1?Q?GxS026ly8kSnWJ5SHveOChR8FJhrgwoRgfudWCsrBq+Gax6P8/rfgQd+J1?=
- =?iso-8859-1?Q?np6Y0Tp2/C0vPb1Fc+nzbQH7PkDx/OUlh7MGlA/qP304KSfy+LiwkXOdFa?=
- =?iso-8859-1?Q?K9KfQPKMrqmkHC6+r+qvblIt21Z8Kw+n8WvdX25Hf/bU5zgIOzOrO+WKup?=
- =?iso-8859-1?Q?pbFtAjEuue2EC08+7Lhmdv4nsxvKgYhyowTPi4Mns9YBHn+S/kNfv86gsH?=
- =?iso-8859-1?Q?I+UNs2veleyapM3XZ8UPHNYi/goneipJKXKAUJx1nLXISdE8V8jB+m32ao?=
- =?iso-8859-1?Q?54zjxNMygRz9yV3ywLs10NEO8SZQpxwnKfATF/C/47cg1Y7yulhaFDScWw?=
- =?iso-8859-1?Q?lfLoP09c5NslXkWR73GbE6MpBwmC7Ta3vBxUGJo8baAFewGasuoxXWqPCa?=
- =?iso-8859-1?Q?I2Xv+KEPR+pVh9GwM9u7pXWFRx1m1jzGoo3LETcQEEN56LaQZxPGVtXYb7?=
- =?iso-8859-1?Q?wKZAXHM1zgJ5QvRW74IMP2xjz9ob4ovr6CN0TCkwVd2xK57sa0vw84LC/s?=
- =?iso-8859-1?Q?mZUDzdNJrEFzZ/+0ukL4JkR0vtJuD8gV2gnmw86qfQh94L4sxbQWbaR7OE?=
- =?iso-8859-1?Q?WGG+FwyP3inFCavAjIM2dBf1Oq02rd+0Paorw82MZxNpzM5xYZf+PC2MpG?=
- =?iso-8859-1?Q?TEptY+oFxkPBr+uQfXP/PNkS3VxeQTYBskq0lFmFwid2TgHV+TuAT0NR0h?=
- =?iso-8859-1?Q?lDYH/JwrIcPQJEkFrdoGIuC2ftdp/tH9oHSY0MKupw1U9l6Q8s7Yq9TG7f?=
- =?iso-8859-1?Q?v2aOzO4f03Eeb8R0WwcZqeT7qP8qxcxhjcWUPAdG/ZUsotqc7sUt427s0B?=
- =?iso-8859-1?Q?eMVEcRE+m4HA8Q3GPHSx/srrdpkcLmttFQc6ZpGpXfyqXZjJm+/K9zSLY4?=
- =?iso-8859-1?Q?7uSSqJe6MFhmDT3nbll7iHyLTkEPmrH7wCmy+l9fm6oQxa4US/uZkEtE3o?=
- =?iso-8859-1?Q?0fdrkZPXLRS2usgWPcyeJJFZvdlM2LFQ=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL0PR12MB4882.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(376005)(38070700009); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?0wD3wFCDFXHdqkYuWuAdLJhW4OekU3OmmWfR0WCm0LCO+nS6yX7UIBIvMD?=
- =?iso-8859-1?Q?zQOo5mVACetIl6+VkW4hjb5jcUIREyRtbcXIHWfLCIihsX2PLaInigNyiu?=
- =?iso-8859-1?Q?V4+OEI2EQwM6wUm3RbZWuqSXmNRaLc1Ws3Wd3vMoTWEC+YpOhnIbSgr+40?=
- =?iso-8859-1?Q?rDFsuc9WF0h2zBa0QmYf9INguQvFsTOYR/1CuQw9PMhh4gttpzWiGzUMOh?=
- =?iso-8859-1?Q?XZbpeXR4sUsiZSJtNuWgD+KJK6cZOLqjaEX24wLdv3b0ljx7yKAhQqcno8?=
- =?iso-8859-1?Q?E6eB679NfQxHwMFCjPcnVLLvxbUoT5MRg+hYwvHf7y9bbjel1GOu8yR/oj?=
- =?iso-8859-1?Q?TTDTcbBInD5rTFR4x+Rg1oVQLjSP+DEmzKEmjhii2OdqynH6eJSWHVWJ1Z?=
- =?iso-8859-1?Q?17/fBsbrIUfEa/rDXTEOgj8ZGZlvIIwz2ttKE2jqRfdutuN/CsBAeQe979?=
- =?iso-8859-1?Q?D5gFk0r9GmN5DrOf3JQXxQVPp59gcDqZ3jh+AyWP9DD6vxAVnu9d14Lah0?=
- =?iso-8859-1?Q?5SlXYBu47Wpcb3Kepx/vnbjH3HMDQZnFoKchwM4OuBjD/7kcsmN/Cqb5gd?=
- =?iso-8859-1?Q?rDElQblutYn1nFZ1NEJI/Ub3gTvPI2JbGRpmd60vsgtuDufeHOHQVjQNZ+?=
- =?iso-8859-1?Q?4LWaxciEHfwm8TWz70K6DrpIhzEPbFGZtQtQeSxiT4Ie1UBn6tiTjj5YBD?=
- =?iso-8859-1?Q?FgqK38OFReVBt+xZaGTBeuxH4hxgOKd++CmwwgR5mJdBzYqZwVB1ven5wA?=
- =?iso-8859-1?Q?rpwkuWRZvWFa1dbWCok9ivHUqysm0BW3kAQ5CweDAKKidV7nIsB8aYE+Y6?=
- =?iso-8859-1?Q?42Wl+7q4+0wBePHn0rd0W0ppw1MlZdbBKLI6oc6fMmKqz3PzbEh/llaz8b?=
- =?iso-8859-1?Q?1UNwYUkBFPl/69eOnOMykb2AFIwcxGiDdH4h0jjkgI71zI+H+DXCcq5ilO?=
- =?iso-8859-1?Q?Aw6VQTMKDnFxwbg5W0mF5z29beZ4YoZMSAkAwa5FUEyrYwXxk8NFmrbFlK?=
- =?iso-8859-1?Q?U6j+UIDNLRzV2YdwFIXPUjbTYhOu+2Pzr842tS/Fuu++oC/TQRNaPsSA5a?=
- =?iso-8859-1?Q?Xnmpeyq2xYCN92V1v9NJBrSX8CV45gPQAX80nMfkhh0gw2gXqKsPwaS2T1?=
- =?iso-8859-1?Q?hxCXL4nfZoagTY6rQ7JYPsKdC0TiO0bZoTAPe+HFP1VDCqGQ15LMA1Z0sE?=
- =?iso-8859-1?Q?zWie63ViB/ZWSjtz4yz2XTYKpGj3cRdfp4INPwP3H9SSdLrz1ASuI+dEqF?=
- =?iso-8859-1?Q?eALsh0iiLX0sGGKO3d4U+WhMlE6kyYTk6CMHLSFg59IB1NnYEU+HMSUAk4?=
- =?iso-8859-1?Q?bLMb45rCenWB1iWoWiTtoP2Hvl2pU7GZxsxtlhcSHadc4vmV1DSZN1AJ5Q?=
- =?iso-8859-1?Q?fkyTkwcVeDUEiPvPC+jvF/jHuAE8bSGVaGDDIBlL7rMGaOOOgIZ7Hr/mkM?=
- =?iso-8859-1?Q?wpJaIai7j0YIm3MZsoqrdTD7HYToRorWDkf0AiuvC48af6Ww0AjKAoxR8U?=
- =?iso-8859-1?Q?bbzufL9yLkvDtVshPQ79Z/YAX3BScX2IeAkEQUZLRAQSKEBssIKpdyWr7E?=
- =?iso-8859-1?Q?I9JfMxKgSgDHVTwUYi7ErtPsnYPjsL3ctmdf2USZ66mIqSPEivYe4gde1v?=
- =?iso-8859-1?Q?xVEV6rkfdiuwQ=3D?=
-Content-Type: multipart/alternative;
- boundary="_000_BL0PR12MB488246FC1CCEA16F7F34BA22E6F22BL0PR12MB4882namp_"
+Organization: Oracle Corporation
+In-Reply-To: <ZlYX4BWLU19f1vaI@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BYAPR03CA0031.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::44) To SA2PR10MB4684.namprd10.prod.outlook.com
+ (2603:10b6:806:119::14)
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PR10MB4684:EE_|SA2PR10MB4442:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e294cbf-31ac-4882-949b-08dc80050648
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|366007|376005;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TmRyMkVicm5qUnQzU05IamZGaU9KNnVMZlVpbG55VWpBWENncnQweXpyRlZJ?=
+ =?utf-8?B?R2RqaTZsQmtwM0N0KzVqeXhBUElBYnI0ME1CT05KbGVSS0FRaU9oR01VeHNJ?=
+ =?utf-8?B?UjVnUCtzT0JxcXZJK3BiLzVuaTJYWnZScTAyeVpmYzljckNrYkYwQVFBUVR4?=
+ =?utf-8?B?aVR3eEFiQnN3UE9iWW9qd09RajVWbGJsTk5MT0p1QThtUlJiYW4rOVptVDQ2?=
+ =?utf-8?B?SnFJeW04Z0gzckI4RDRZY1dlaXFVZHZCUnFZc3lJTHJTWU9sZ2ViRVA4a2kx?=
+ =?utf-8?B?dlovbjV5cEVJMk5XeHBVaDVTWWZhb1JnV2RwK0FjVlBoSGZvaFEvVnZRcUZO?=
+ =?utf-8?B?SnUzdElPbUJQTmF1U1k0WmN5Q2RsaWxUNUF6anptTHpoUmQ2dzFOVmI3OTBV?=
+ =?utf-8?B?bTBnbUc0dVhuKzVURStzNWsvR0NhVncxMFo1STlJNk9QNlFJTGZKeS9UeUhX?=
+ =?utf-8?B?NWdkVVRkcHVJSDUydVJiWG9jNEdUSDZJaUdmL29BR2dnU1ppTWpyWlpZWGFv?=
+ =?utf-8?B?MlozT0tWcjNqemVKd1ZhL0szemJCSFRRMXdmTW1ieTBrbDVWYk1ZeE5KSWY5?=
+ =?utf-8?B?OXhMRk5wTjgzNUNRSVRMUjFXZUdzTjVOcXg5eWhSQTVpaW5IQ2VZcElZLzJ6?=
+ =?utf-8?B?eUYzV2pYdjZGS09PdmJIbFlwY1AzbWgrcFFZNTlUMmVsN01qT1NrSDhHUlh1?=
+ =?utf-8?B?UVFpaEIycTB5cGpaZFltVzRNT1pmWC85OHcrNG8xb3I0ekhjVFpZcGl0YzlB?=
+ =?utf-8?B?bGxVTSt6dDlHWUpnaHZOTHdFSFR4Z2o1OW9NckxKdzVMMGtHellhcUg1Umsz?=
+ =?utf-8?B?QksxT0h5UGdqd25RcnNuMTl0QXVhSWQrcEtWVmdVRllKQW1PM3BpMGNRNGVI?=
+ =?utf-8?B?dHdxTVl2cUp3V0VUb0laSWhlZEZrYjF2alhmSWw0dklwdklSL2hOWDUvQnZz?=
+ =?utf-8?B?SEFXMFpKUW5WYWplN2RQOUJ1RG1sNFFTRVhuTlBUVnZvRUxvL1hPUG8vd1RR?=
+ =?utf-8?B?MVgyaE9tN3ZWWTJIM0NoY1Jna3MxQkpYUmJZczFoak1OcUJJcm9kZWZpZGFP?=
+ =?utf-8?B?K2J0N05tN2MxMGZRRExkaGtDOURLS3dycUdWNm1YSWRIeCt4eWJlK0lUUUV5?=
+ =?utf-8?B?NitBNFBXZWRJVk53RjQwdkhiMTRjWXdUUVBxeGlUc0FxdUpIM1ZVYW82VVJK?=
+ =?utf-8?B?YWtIUmx4NzQzc0h3bE9vTWR4MWpQZ2U5clJrdG9WSCtmeFArbTJGVGVodzMy?=
+ =?utf-8?B?Q3h0T0Z3SlBaaldoa1JJZzhpWW5hWFkwWis4STRFOE4rY0R6ZzFPcEQ5MjFo?=
+ =?utf-8?B?dGZXaGJqSU1aTER5bldQUVk0cFJORm5Icmd4aC9MWUZFbVBwQmVONUhBSjM2?=
+ =?utf-8?B?dk5zQkRHSWYyTE5tajNic0xGdVg0NUxKcVdKWDlpTXpUS3lkQ0VYOTQvSmxX?=
+ =?utf-8?B?b0VpSDlnUkg0M1dKZ0ZISGlrN0xiL2ozV2RyNHVDV3lJa1BORWZZcE1qQU02?=
+ =?utf-8?B?SXVnUkNucnNtTFdNYmprTFBiVXpwc29uRWw1MjZBUFpDTE0xK1VtYTBCM0ha?=
+ =?utf-8?B?QnlHNG4vdUhnRGlRdHA4ejJ6UnZURzRneS9xN1BCYzZHQmMxb3ZHWlpzcTcy?=
+ =?utf-8?B?dVNRankyUlIydlNNdDRrcEZteG4xSXIyeVU2a2x1S0EwMEFNQ2RkU3ZwaXBk?=
+ =?utf-8?B?bDY1a2h2Yko2eFNpa2kyRy9VNTM0TzdPYlVyZ0lCY0RRTTBDOGVnN2lBPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA2PR10MB4684.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(7416005)(366007)(376005); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RUZndzNZM0MxdUpyUlY0US9VUjh3OWNPSXVjbzVYVVg5NnpmeFVVU21KVEFQ?=
+ =?utf-8?B?MEszRGEvL2NFRkwzTFBVc2xnQzFZNTQwMERzTWh4TFpnUzMwdDdncERyYVpB?=
+ =?utf-8?B?T2N3b2g4d3VKckRvT3lkeXBMTE1ZejNlbHBkanJZNjNPMllhQVJXQmZCRVpB?=
+ =?utf-8?B?T0pkdXZ5dG5VVzM0YTBvditSQldTU2ZkV1d3aTZOREtsTXNxRDN4Qnp4dkZI?=
+ =?utf-8?B?aE92R2FPUjJOVjFybGdzRVNsREpMYlVUbS9nZGZEN3hzUWVuQXhjamUxNGR4?=
+ =?utf-8?B?TkNSZ1JnaWx2NnFQdjF2VmNiTUVSWW11SktjT09FblltSUlldHJ6V1Q1L1dO?=
+ =?utf-8?B?RmYvYWowVzZES3JVWVREYVNXMlFzZGR2TTg2TXFoOEVjelkvdXJ6ZlNxdXhi?=
+ =?utf-8?B?d2JIVVZRejIwOE5GYWhSelAvbHNHZ3R3T0ovOFpiNjg4OENUQms0NVdkVzZO?=
+ =?utf-8?B?dThrNVNxTVZVSU5FNVF0dzRHS2ZwNnV4dFRhME5BWjV0TXB6aStDd0lIZHQx?=
+ =?utf-8?B?MzJlUmpiMmlxeGxmWXpOMWxpTHVPYnRPdXVvZXEzbGJnamVEUFZweGdMcCtw?=
+ =?utf-8?B?VllBalR6NGZZd1FJQlhZcCtTR3E3OTBQT0tKVnNSeFJHR09NOTNZY2Q4cFFR?=
+ =?utf-8?B?RnpGbi9pRXdodmFWMHNnODFBS3BOUThKa1VSTHkva0xwbE9ZU0FyYmJjcGQ5?=
+ =?utf-8?B?bnpCZ2RBS0JxV2VBVHBqWUF0MklmMHM4SDBQeHB4MVZDSFZYcks0VnAyTzNU?=
+ =?utf-8?B?WE8xaER2OXh6ZE9VWkpaaWczNTlvRFo1TDNGc0dkMmNmeW1Qb2t4a0JhKzVy?=
+ =?utf-8?B?SmUxNDFUMXVtTUsrWC9EOEtLeWdaZnp3ZUxldTg1ei9nTXMrTFdycy9KTUph?=
+ =?utf-8?B?Z0FjYVU5aHg2ZlNhMnc1ZWE5UGs5SCtINGlLaklWVkVTWnExYmFaaFBWYkpa?=
+ =?utf-8?B?b0N4RnY2SEk4VFdBWUxscmxTNmFaVFVCSXZiRCtibTdnMjZMTGNsakJpaHRp?=
+ =?utf-8?B?MTlESEdoZXZ2YTZkMEZCUEIzTHhLSWlFTFR6eDYvSVhady9oV1N2VklSN3pU?=
+ =?utf-8?B?cllMb0t4dFNqOUlFd2Y5TFpDUFVGZDkvYWtGcm0yQzVGb2VRZFJCcTZsMzNL?=
+ =?utf-8?B?ZGorTTlXUUlvcE5jU0dKajVVRE9KbFo4ZzBhK2N3UTRhMEJVa0JSSUpFYXJz?=
+ =?utf-8?B?bERqUlJSaGxzQ3IrL1JKc2h1ekhpdEtESXd3OVUxMU9EQ1EyQWNVK01EdG5E?=
+ =?utf-8?B?QTR0Vnp1V3hGRHdLUW91eUhUUEJrWVRiRkJteGZKdXhmYnhqMHk4RGtGdTBm?=
+ =?utf-8?B?WU9IUE5MSHIzQzR2bVZUeG96Q2NOdHVtcjNKL3N0VHcyYlI4RGhtZXBiZDZ4?=
+ =?utf-8?B?ejg2a1NOdlFtaFBneXVBQW5lbllvYXdUeFdHUExjMjBhczg5TXBMMkZqcHBY?=
+ =?utf-8?B?Ui91cHNrTkQ3cVQ4eHA0Q0kwVlg2bGZFd2ZSWFhBMzVtd0ZaN2ZjWEk1QnRK?=
+ =?utf-8?B?dlJ6TWhvL0wwTUtHaVpwY05QVElFZ2VpVlNLRnVHUHVjVUE0RTRYY2lKVXNz?=
+ =?utf-8?B?b095NGpFQjhtZTd3YXo3YU5nbjlKcDN3ZGFzakh1VkpITmtCTCsxeFpObzNG?=
+ =?utf-8?B?aXBWUlQ2V2dDM1hsSi9aOTdOTlc3anVRK0tFYXBGRUVvWE5DcFZQREtPeFFG?=
+ =?utf-8?B?REZwSUJGUkk1RGpZT3kzNk9pbWs3ZmFHRnRTQ0t4dWxEbDJ4c1R4TW5zVW1R?=
+ =?utf-8?B?bXBtSzlwUkc4ZW41RnhVWHgxN3dSdkw4Z3pzWHl5TzlWRXJPVHhXZmEzdjcx?=
+ =?utf-8?B?MEw4aWxqc0xvRDZTLyt4WDRCdGhxckxHNzdNVk42a2tqSjB1a053SVkwdFd3?=
+ =?utf-8?B?ZXBXN2EwYUMxK0pJMGxSMHNwYm1TRXM3WnpvcjNPeGxBS2tjUGxwQmpOK1o4?=
+ =?utf-8?B?TzBxdjRibVpjRXhnWHVIY3NGMFlWNWZ1a1hyY2pXRktZdTVVVHQ0YmVqMXVu?=
+ =?utf-8?B?Q0JRWWV1MEpaMnh2YUlxb2hYV2lUcG5GbUd4aW56S0xvV00wZ2o2UUkzQzVv?=
+ =?utf-8?B?L0UzYnJicWYweVV5V0tQQzZiQkUxVlhPYTFGMDY2SnBtVHdUMzhIaC9aRTVV?=
+ =?utf-8?B?ZVFQd0h6Mm5UWmsremd3YTFYK0g0QXBUL21yMlN3ODdUNHFSOEdseVBlYnZC?=
+ =?utf-8?B?MHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: UxiYmOZobgEZBuqWVSFt1i72xqbRGOhS0unSVCt985xMZUdfIJH/U0KlgGcpFmefLTqu3wNcX5+TbXX5Tp5vZBS55wlsVsbZ2GXMlbHpzF05SXYw5M7PKRS5QC4rLr4cik45/MWurkTY4v2UeuAvJerm2I0IeLMrS/g6d8/uMKhJ6PLPSTlzmAmn6nPbxxSQQlEGz3YfdTOhTdqh8Yy2ZXxo2WHNiB7Xgb9lpE4Kntg9Sr3n2Bh3MnadIZJ8IWw4HdQZC8yde20045svz/fsWzJ2xeNVOs7+bqJesdj0VfsV74v2wizZf/1eRRtd7svp8tDhyMlJMAx15tRju7QhYU3b9rDvMOWIIyJ7GVhOFY/MWvR2tM5qbjFx2G3Cm1R5GcwdiqkaSw5+pDFehO5Cg9yPz+JQkZshJED96Q5mx7z7E90Y7xHEZEkyiJB746NwQbipE0aCy7qEDMkl2IdCT7Jswb2pugYZQWbok7gLmKpsm+7bE3YsmfMqHbR9HFIpDA2i22Rg0eG5PuLU9zxxdF8YfAJ+O6w8z8pS2eeQS19kVvLlkN5WB/HYmNxH15zMKtO3ExEtOaZHnxcKsNI+DUNAD7MzecvUVLCtujudtxg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e294cbf-31ac-4882-949b-08dc80050648
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR10MB4684.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB4882.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13704f3b-8563-4b93-0962-08dc8004da92
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2024 17:29:11.4932 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ChjMpU8PGzfJzRoIBSFn55M+O9uMvirYnCcNjzbpoNaLRFmiF2y++GBW19+v32FC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9454
-Received-SPF: permerror client-ip=2a01:111:f400:7e88::631;
- envelope-from=tong.ho@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2024 17:30:24.9699 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: V9WcrPDLzEad/V0fV365APlPd/n36DAogyCuEKij+M/q30bK7ETHbBMYzW9Pc/DMidFNS83Hk3qkLFX1+lf3poX54xr7wtmAqfxlv218NxU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4442
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-29_13,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ spamscore=0 suspectscore=0
+ adultscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405290122
+X-Proofpoint-GUID: jWCGOvQvgjJN2zF-yP5j5-II13YR62tz
+X-Proofpoint-ORIG-GUID: jWCGOvQvgjJN2zF-yP5j5-II13YR62tz
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=steven.sistare@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -156,148 +215,97 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Steven Sistare <steven.sistare@oracle.com>
+From:  Steven Sistare via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_BL0PR12MB488246FC1CCEA16F7F34BA22E6F22BL0PR12MB4882namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+On 5/28/2024 1:44 PM, Peter Xu wrote:
+> On Tue, May 28, 2024 at 11:10:03AM -0400, Steven Sistare via wrote:
+>> On 5/27/2024 2:20 PM, Peter Xu wrote:
+>>> On Mon, Apr 29, 2024 at 08:55:16AM -0700, Steve Sistare wrote:
+>>>> Define a type for the 256 byte id string to guarantee the same length is
+>>>> used and enforced everywhere.
+>>>>
+>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+>>>> ---
+>>>>    include/exec/ramblock.h     | 3 ++-
+>>>>    include/migration/vmstate.h | 2 ++
+>>>>    migration/savevm.c          | 8 ++++----
+>>>>    migration/vmstate.c         | 3 ++-
+>>>>    4 files changed, 10 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+>>>> index 0babd10..61deefe 100644
+>>>> --- a/include/exec/ramblock.h
+>>>> +++ b/include/exec/ramblock.h
+>>>> @@ -23,6 +23,7 @@
+>>>>    #include "cpu-common.h"
+>>>>    #include "qemu/rcu.h"
+>>>>    #include "exec/ramlist.h"
+>>>> +#include "migration/vmstate.h"
+>>>>    struct RAMBlock {
+>>>>        struct rcu_head rcu;
+>>>> @@ -35,7 +36,7 @@ struct RAMBlock {
+>>>>        void (*resized)(const char*, uint64_t length, void *host);
+>>>>        uint32_t flags;
+>>>>        /* Protected by the BQL.  */
+>>>> -    char idstr[256];
+>>>> +    VMStateId idstr;
+>>>>        /* RCU-enabled, writes protected by the ramlist lock */
+>>>>        QLIST_ENTRY(RAMBlock) next;
+>>>>        QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+>>>
+>>> Hmm.. Don't look like a good idea to include a migration header in
+>>> ramblock.h?  Is this ramblock change needed for this work?
+>>
+>> Well, entities that are migrated include migration headers, and now that
+>> includes RAMBlock.  There is precedent:
+>>
+>> 0 include/exec/ramblock.h   26 #include "migration/vmstate.h"
+>> 1 include/hw/acpi/ich9_tco. 14 #include "migration/vmstate.h"
+>> 2 include/hw/display/ramfb.  4 #include "migration/vmstate.h"
+>> 3 include/hw/hyperv/vmbus.h 16 #include "migration/vmstate.h"
+>> 4 include/hw/input/pl050.h  14 #include "migration/vmstate.h"
+>> 5 include/hw/pci/shpc.h      7 #include "migration/vmstate.h"
+>> 6 include/hw/virtio/virtio. 20 #include "migration/vmstate.h"
+>> 7 include/migration/cpu.h    8 #include "migration/vmstate.h"
+>>
+>> Granted, only some of the C files that include ramblock.h need all of vmstate.h.
+>> I could define VMStateId in a smaller file such as migration/misc.h, or a
+>> new file migration/vmstateid.h, and include that in ramblock.h.
+>> Any preference?
+> 
+> One issue here is currently the idstr[] of ramblock is a verbose name of
+> the ramblock, and logically it doesn't need to have anything to do with
+> vmstate.
+> 
+> I'll continue to read to see why we need VMStateID here for a ramblock.  So
+> if it is necessary, maybe the name VMStateID to be used here is misleading?
+> It'll also be nice to separate the changes, as ramblock.h doesn't belong to
+> migration subsystem but memory api.
 
-Point taken, and I am withdrawing this patch.
+cpr requires migrating vmstate for ramblock.  See the physmem patches for
+why. vmstate requires a unique id, and ramblock already defines a unique
+id which is used to identify the block and dirty bitmap in the migration
+stream.
 
-I will post a new implementation following the arbitrary-length array patte=
-rn
-in a later date, and only as part of a series including the consuming code.
+How about a more general name for the type:
 
-Thanks,
-Tong Ho
+migration/misc.h
+     typedef char (MigrationId)[256];
 
-________________________________
-From: Peter Maydell <peter.maydell@linaro.org>
-Sent: Wednesday, May 29, 2024 6:44 AM
-To: Ho, Tong <tong.ho@amd.com>
-Cc: qemu-devel@nongnu.org <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] qemu/bitops.h: Locate changed bits
+exec/ramblock.h
+     struct RAMBlock {
+         MigrationId idstr;
 
-On Wed, 29 May 2024 at 06:05, Tong Ho <tong.ho@amd.com> wrote:
->
-> Add inlined functions to obtain a mask of changed bits.  3 flavors
-> are added: toggled, changed to 1, changed to 0.
->
-> These newly added utilities aid common device behaviors where
-> actions are taken only when a register's bit(s) are changed.
+migration/savevm.c
+     typedef struct CompatEntry {
+         MigrationId idstr;
 
-Generally we would expect this kind of "add new utility functions"
-patch to appear in a series together with some patches which
-actually use the new functions. Otherwise this is all dead code.
+     typedef struct SaveStateEntry {
+         MigrationId idstr;
 
-More generally:
- * the other bit operations in this file work on bit arrays
-   which are arbitrary-length arrays of unsigned long, so
-   these new functions don't fit the pattern
- * we have the bitops functions partly because they're inherited
-   from the Linux kernel. The use of unsigned long works quite
-   badly in QEMU, because for us 'long' is a type that is almost
-   always wrong. QEMU devices usually want a type of a known
-   length, which is either 'uint32_t' or 'uint64_t'. So I'm
-   dubious about adding more functions that work on unsigned long.
 
-thanks
--- PMM
-
---_000_BL0PR12MB488246FC1CCEA16F7F34BA22E6F22BL0PR12MB4882namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Point taken, and I am withdrawing this patch.</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-I will post a new implementation following the arbitrary-length array patte=
-rn</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-in a later date, and only as part of a series including the consuming code.=
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Thanks,</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Tong Ho</div>
-<div id=3D"appendonsend"></div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<hr style=3D"display: inline-block; width: 98%;">
-<div id=3D"divRplyFwdMsg" dir=3D"ltr"><span style=3D"font-family: Calibri, =
-sans-serif; font-size: 11pt; color: rgb(0, 0, 0);"><b>From:</b>&nbsp;Peter =
-Maydell &lt;peter.maydell@linaro.org&gt;<br>
-<b>Sent:</b>&nbsp;Wednesday, May 29, 2024 6:44 AM<br>
-<b>To:</b>&nbsp;Ho, Tong &lt;tong.ho@amd.com&gt;<br>
-<b>Cc:</b>&nbsp;qemu-devel@nongnu.org &lt;qemu-devel@nongnu.org&gt;<br>
-<b>Subject:</b>&nbsp;Re: [PATCH] qemu/bitops.h: Locate changed bits</span>
-<div>&nbsp;</div>
-</div>
-<div style=3D"font-size: 11pt;">On Wed, 29 May 2024 at 06:05, Tong Ho &lt;t=
-ong.ho@amd.com&gt; wrote:<br>
-&gt;<br>
-&gt; Add inlined functions to obtain a mask of changed bits.&nbsp; 3 flavor=
-s<br>
-&gt; are added: toggled, changed to 1, changed to 0.<br>
-&gt;<br>
-&gt; These newly added utilities aid common device behaviors where<br>
-&gt; actions are taken only when a register's bit(s) are changed.<br>
-<br>
-Generally we would expect this kind of &quot;add new utility functions&quot=
-;<br>
-patch to appear in a series together with some patches which<br>
-actually use the new functions. Otherwise this is all dead code.<br>
-<br>
-More generally:<br>
-&nbsp;* the other bit operations in this file work on bit arrays<br>
-&nbsp;&nbsp; which are arbitrary-length arrays of unsigned long, so<br>
-&nbsp;&nbsp; these new functions don't fit the pattern<br>
-&nbsp;* we have the bitops functions partly because they're inherited<br>
-&nbsp;&nbsp; from the Linux kernel. The use of unsigned long works quite<br=
->
-&nbsp;&nbsp; badly in QEMU, because for us 'long' is a type that is almost<=
-br>
-&nbsp;&nbsp; always wrong. QEMU devices usually want a type of a known<br>
-&nbsp;&nbsp; length, which is either 'uint32_t' or 'uint64_t'. So I'm<br>
-&nbsp;&nbsp; dubious about adding more functions that work on unsigned long=
-.<br>
-<br>
-thanks<br>
--- PMM</div>
-</body>
-</html>
-
---_000_BL0PR12MB488246FC1CCEA16F7F34BA22E6F22BL0PR12MB4882namp_--
+- Steve
 
