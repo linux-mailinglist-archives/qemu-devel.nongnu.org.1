@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012658D353C
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 13:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01EB8D37BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCHFM-0007GZ-Mg; Wed, 29 May 2024 07:13:32 -0400
+	id 1sCJRY-0003Yi-VF; Wed, 29 May 2024 09:34:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <haris.iqbal@ionos.com>)
- id 1sCHFC-0007Ep-SA
- for qemu-devel@nongnu.org; Wed, 29 May 2024 07:13:22 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <gregsword0@gmail.com>)
+ id 1sCCRs-00031d-2B; Wed, 29 May 2024 02:06:08 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <haris.iqbal@ionos.com>)
- id 1sCHF8-0006RO-Es
- for qemu-devel@nongnu.org; Wed, 29 May 2024 07:13:21 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2e95a74d51fso606921fa.2
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 04:13:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gregsword0@gmail.com>)
+ id 1sCCRp-0003CX-DW; Wed, 29 May 2024 02:06:07 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6f8ecafd28cso1278445b3a.3; 
+ Tue, 28 May 2024 23:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1716981191; x=1717585991; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1716962763; x=1717567563; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cp7FwyoZGXVo71/jnJJ+Mwe0LKTj87+Ve6G71cZE8Io=;
- b=Ua/sXKlTPE4XcsZsbVXkpYPHr1PH5W05mJRxrY9X0QtdDfdgsG+z934rpbMNSGku80
- 4b4uJjyStSXiFfLfLrGDh2tW6aeCoVkz2wrjlLHn3pMYFzEteVfn22Qm0p7oQNlwrrok
- wOsUVV3AkEsPP34UZRtyUlyBoCw26FQEwQYgMgoYmGxdn2xcQN+7GJva/O5t6G8atBUG
- OFeux3KxQ+q3ScZWsara3AbEF4vZWkQyCdSdeKgUtS5CVvsgScZlfa8RzOMgKozK6qGK
- xBK2jdt699jRD297p1v3BDq9GcHxsD/XCx43YhUQQQqE78+XZTj3CCEBfJzldppwses0
- OuqQ==
+ bh=bEgMQmsoY6w77UNCa3Z5qcf9/UXUdDI7rLaVDP7lhWk=;
+ b=Iq+QDw4DEeGF2XNQxfSTOqZY7kdfOyZQgLJ2u9UBb9YS8aeknCq8vV0GygxyFCr3A2
+ 9kjPDmtf/Cnd/+T+J0FXjH8S7tncwtfnzVVgoQzl4B7EfrcGaskfy3BTRydcWuwxEJ37
+ lqiFRofJhv9Maz72SP0KtJ9JPH8oQhvMwhj/Ye8+G5UO8Rg+eIGyf7H3bZTGWJr6B+e3
+ IQVYJDwfS8BF8kzSPih1Q5XUnLBZuaYnOcPcwtU86ejgEzGpOm6N0IuWVhILtjh5cmgh
+ WjghXvMAb7/1LgK9S0iLMzk82v7RxNxeFYwOfqGotKpt6reytr4lZ+hLb4ElpZllcs31
+ 8+eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716981191; x=1717585991;
+ d=1e100.net; s=20230601; t=1716962763; x=1717567563;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cp7FwyoZGXVo71/jnJJ+Mwe0LKTj87+Ve6G71cZE8Io=;
- b=GtyX3V9lXYd2PRaBa77I28nSEeYb+ZoL9H7bt1z0lWXG+voHmTfow4655YhEFLEpOD
- s4k59NJuEOTxzzIIe3F4tFuHeTJRayHkynhA1tp+As2KLk1VWGie8jhb7YH4SzZVdetM
- /+XN8yNnZcJLwch4LE+8cp/0qMRiZ0cebVWi+FezBa9xBP30TdRCZotzuAXnd5yo2JHp
- tsfl/jX6Cg9FvzpK+Eim1wqYiQo2nPNdCGzbJyGYcB9gslWjbaLYCog3UpuVygt/F7lj
- YRh9YpykYDX3jcXgcR8xCdmCAT6Q288qm16DMniOVTDEH4fDqEW3ADxCbWxM7gSvE/ba
- TCIw==
+ bh=bEgMQmsoY6w77UNCa3Z5qcf9/UXUdDI7rLaVDP7lhWk=;
+ b=AyQUPEldNGLI7V1CyXGOOfQcBVQ5vuKdkYDx0opmmbKZwr+s8aJssbUecV3jJW73q0
+ Zs1L/G2e8gF2NqgQRRiixwXsZIVXRNAfEk2GcnwtjqSPU1Bqzh+M/FR9C/pUs5R/c7Y7
+ cuy4OKijW8E83wXaN9v3NhHbro7mudCx1v9HURfi/xtjk1/DlLS1y9WmO8QYIueQoRj/
+ pvXE8LXKRoEtl/pQq92RPHQzcVlYOWvBZyc1D7MCKOMGxNaOxp0MqHwVfdyupGaC149I
+ biLoHzOD6iRMnT4piEZZcR1Bcs3SjvusfVBJQnfIy6IYGhCoiuoKMZA99WpQ9IXQiHEf
+ jeDQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX3iQ8di1cmqEnUpnGXTup+LEmtWLRTd6r3ldvEQh1wAFqkVxhqKyKQIzDBM6SJBH5XKgt3OVngTyXIIPqqDI9s9FROmy8=
-X-Gm-Message-State: AOJu0YxNLxTUbxXfbTCtBMUO3jdSrTzDRBzEV5F2SjeUThzFPCmTWwms
- mxIc4C4B0x+bDNAMveOiq/7FpVI9CaAc2j87nIwlaUMJ3abyMv82lh8bDbiiZtEdHbQXSkvyo2k
- o9jxzOLQPI2yoJdBgmKTXWxaaNms4m3cYhbAMkw==
-X-Google-Smtp-Source: AGHT+IH/oUD5Inaeu+o0fI3Za9H1NuIhyJhnk0QSFNQBIW/9hiAhC57rr9W16ylrr2pwHyvL84/OFfeaeDFPgN2U07Y=
-X-Received: by 2002:a05:651c:2222:b0:2de:ca7f:c849 with SMTP id
- 38308e7fff4ca-2e95b279514mr139412721fa.43.1716981191318; Wed, 29 May 2024
- 04:13:11 -0700 (PDT)
+ AJvYcCURf56n4q6xvTnAZV7WsJaDTGIq6GYU3qVic/Mb/easHFRaWkwsRXrPW2i7dsp6wLr8DKYfJoRdZ2hPCB9HjsyJNgjwtJfFVypBcn/Zpip9xaut1cFNFdtbscPfng==
+X-Gm-Message-State: AOJu0Yy5iPhIG8iME9hqlmYfiq5lQsbMSvA1SiC0HPaUNpyjQpkMbWUV
+ 34+gQkpRSwM5CU6MRFtMgY/r+DcKETxqOkkbjrS8Nql08oawqHEVRNQpT7qP9XOoDda3d3y2O2G
+ f/9cDweZBV+cyT3mlSJqnyBzDYbE=
+X-Google-Smtp-Source: AGHT+IE7LTWSBj8XmYSLzZMgQYYFw3ve7P+UkkueGO919dc1QddwFfptKMgBO6ImETtbEC9BOJvX62jjxJZL7pRYxmg=
+X-Received: by 2002:a05:6300:808c:b0:1af:fbab:cf92 with SMTP id
+ adf61e73a8af0-1b212f74721mr14358553637.54.1716962763038; Tue, 28 May 2024
+ 23:06:03 -0700 (PDT)
 MIME-Version: 1.0
 References: <Zjj0xa-3KrFHTK0S@x1n>
  <addaa8d094904315a466533763689ead@huawei.com>
@@ -65,20 +63,15 @@ References: <Zjj0xa-3KrFHTK0S@x1n>
  <Zk0c51D1Oo6NdIxR@x1n> <2308a8b894244123b638038e40a33990@huawei.com>
  <ZlX-Swq4Hi-0iHeh@x1n> <7bf81ccee4bd4b0e81e3893ef43502a8@huawei.com>
  <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
- <CAEz=LcuNM-j=1txyiL4_A89vZLxTicOFHXLC0=piamvqF4gu0g@mail.gmail.com>
- <e0fa7fc42118407f8731c34f8c192fda@huawei.com>
- <CAMGffEna=8vNm89SkzRknLb7irTit0dBeciuC+_KMp+4U0PtQw@mail.gmail.com>
- <2665934438364f5e9e80ac4564cac2c3@huawei.com>
-In-Reply-To: <2665934438364f5e9e80ac4564cac2c3@huawei.com>
-From: Haris Iqbal <haris.iqbal@ionos.com>
-Date: Wed, 29 May 2024 13:13:00 +0200
-Message-ID: <CAJpMwyj_qrj1r1e6SCLzUf_jFn+do+71h08=LmPM-Mv0nFk7nQ@mail.gmail.com>
+In-Reply-To: <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
+From: Greg Sword <gregsword0@gmail.com>
+Date: Wed, 29 May 2024 14:05:51 +0800
+Message-ID: <CAEz=LcuNM-j=1txyiL4_A89vZLxTicOFHXLC0=piamvqF4gu0g@mail.gmail.com>
 Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-To: "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Cc: Jinpu Wang <jinpu.wang@ionos.com>, Greg Sword <gregsword0@gmail.com>, 
- Peter Xu <peterx@redhat.com>, Yu Zhang <yu.zhang@ionos.com>, 
- Michael Galaxy <mgalaxy@akamai.com>, Elmar Gerdes <elmar.gerdes@ionos.com>, 
- zhengchuan <zhengchuan@huawei.com>,
+To: Jinpu Wang <jinpu.wang@ionos.com>
+Cc: "Gonglei (Arei)" <arei.gonglei@huawei.com>, Peter Xu <peterx@redhat.com>, 
+ Yu Zhang <yu.zhang@ionos.com>, Michael Galaxy <mgalaxy@akamai.com>, 
+ Elmar Gerdes <elmar.gerdes@ionos.com>, zhengchuan <zhengchuan@huawei.com>, 
  =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
  Markus Armbruster <armbru@redhat.com>,
  "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>, 
@@ -99,19 +92,21 @@ Cc: Jinpu Wang <jinpu.wang@ionos.com>, Greg Sword <gregsword0@gmail.com>,
  Beraldo Leal <bleal@redhat.com>, 
  Pannengyuan <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>, 
  Fabiano Rosas <farosas@suse.de>, RDMA mailing list <linux-rdma@vger.kernel.org>,
- "shefty@nvidia.com" <shefty@nvidia.com>
+ shefty@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: permerror client-ip=2a00:1450:4864:20::234;
- envelope-from=haris.iqbal@ionos.com; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=gregsword0@gmail.com; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_PERMERROR=0.01 autolearn=unavailable autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 29 May 2024 09:34:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -126,126 +121,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
-
-I am part of the storage kernel team which develops and maintains the
-RDMA block storage in IONOS.
-We work closely with Jinpu/Yu, and currently I am supporting Jinpu
-with this Qemu RDMA work.
-
-On Wed, May 29, 2024 at 11:49=E2=80=AFAM Gonglei (Arei) via
-<qemu-devel@nongnu.org> wrote:
+On Wed, May 29, 2024 at 12:33=E2=80=AFPM Jinpu Wang <jinpu.wang@ionos.com> =
+wrote:
 >
-> Hi,
->
-> > -----Original Message-----
-> > > >
-> > https://lore.kernel.org/qemu-devel/CAMGffEn-DKpMZ4tA71MJYdyemg0Zda
-> > > > > > > 15
-> > > > > > > > > wVAqk81vXtKzx-LfJQ@mail.gmail.com/
-> > > > > > > > >
-> > > > > > > > > Appreciate a lot for everyone helping on the testings.
-> > > > > > > > >
-> > > > > > > > > > InfiniBand controller: Mellanox Technologies MT27800
-> > > > > > > > > > Family [ConnectX-5]
-> > > > > > > > > >
-> > > > > > > > > > which doesn't meet our purpose. I can choose RDMA or TC=
-P
-> > > > > > > > > > for VM migration. RDMA traffic is through InfiniBand an=
-d
-> > > > > > > > > > TCP through Ethernet on these two hosts. One is standby
-> > > > > > > > > > while the other
-> > > > is active.
-> > > > > > > > > >
-> > > > > > > > > > Now I'll try on a server with more recent Ethernet and
-> > > > > > > > > > InfiniBand network adapters. One of them has:
-> > > > > > > > > > BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller
-> > > > > > > > > > (rev
-> > > > > > > > > > 01)
-> > > > > > > > > >
-> > > > > > > > > > The comparison between RDMA and TCP on the same NIC
-> > > > > > > > > > could make more
-> > > > > > > > > sense.
-> > > > > > > > >
-> > > > > > > > > It looks to me NICs are powerful now, but again as I
-> > > > > > > > > mentioned I don't think it's a reason we need to deprecat=
-e
-> > > > > > > > > rdma, especially if QEMU's rdma migration has the chance
-> > > > > > > > > to be refactored
-> > > > using rsocket.
-> > > > > > > > >
-> > > > > > > > > Is there anyone who started looking into that direction?
-> > > > > > > > > Would it make sense we start some PoC now?
-> > > > > > > > >
-> > > > > > > >
-> > > > > > > > My team has finished the PoC refactoring which works well.
-> > > > > > > >
-> > > > > > > > Progress:
-> > > > > > > > 1.  Implement io/channel-rdma.c, 2.  Add unit test
-> > > > > > > > tests/unit/test-io-channel-rdma.c and verifying it is
-> > > > > > > > successful, 3.  Remove the original code from migration/rdm=
-a.c, 4.
-> > > > > > > > Rewrite the rdma_start_outgoing_migration and
-> > > > > > > > rdma_start_incoming_migration logic, 5.  Remove all rdma_xx=
-x
-> > > > > > > > functions from migration/ram.c. (to prevent RDMA live
-> > > > > > > > migration from polluting the
-> > > > > > > core logic of live migration), 6.  The soft-RoCE implemented
-> > > > > > > by software is used to test the RDMA live migration. It's suc=
-cessful.
-> > > > > > > >
-> > > > > > > > We will be submit the patchset later.
-> > > > > > >
-> > > > > > > That's great news, thank you!
-> > > > > > >
-> > > > > > > --
-> > > > > > > Peter Xu
-> > > > > >
-> > > > > > For rdma programming, the current mainstream implementation is
-> > > > > > to use
-> > > > rdma_cm to establish a connection, and then use verbs to transmit d=
-ata.
-> > > > > >
-> > > > > > rdma_cm and ibverbs create two FDs respectively. The two FDs
-> > > > > > have different responsibilities. rdma_cm fd is used to notify
-> > > > > > connection establishment events, and verbs fd is used to notify
-> > > > > > new CQEs. When
-> > > > poll/epoll monitoring is directly performed on the rdma_cm fd, only
-> > > > a pollin event can be monitored, which means that an rdma_cm event
-> > > > occurs. When the verbs fd is directly polled/epolled, only the
-> > > > pollin event can be listened, which indicates that a new CQE is gen=
-erated.
-> > > > > >
-> > > > > > Rsocket is a sub-module attached to the rdma_cm library and
-> > > > > > provides rdma calls that are completely similar to socket inter=
-faces.
-> > > > > > However, this library returns only the rdma_cm fd for listening
-> > > > > > to link
-> > > > setup-related events and does not expose the verbs fd (readable and
-> > > > writable events for listening to data). Only the rpoll interface
-> > > > provided by the RSocket can be used to listen to related events.
-> > > > However, QEMU uses the ppoll interface to listen to the rdma_cm fd
-> > (gotten by raccept API).
-> > > > > > And cannot listen to the verbs fd event.
-> > I'm confused, the rs_poll_arm
-> > :https://github.com/linux-rdma/rdma-core/blob/master/librdmacm/rsocket.=
-c#
-> > L3290
-> > For STREAM, rpoll setup fd for both cq fd and cm fd.
+> On Wed, May 29, 2024 at 4:43=E2=80=AFAM Gonglei (Arei) <arei.gonglei@huaw=
+ei.com> wrote:
 > >
->
-> Right. But the question is QEMU do not use rpoll but gilb's ppoll. :(
+> > Hi,
+> >
+> > > -----Original Message-----
+> > > From: Peter Xu [mailto:peterx@redhat.com]
+> > > Sent: Tuesday, May 28, 2024 11:55 PM
+> > > > > > Exactly, not so compelling, as I did it first only on servers
+> > > > > > widely used for production in our data center. The network
+> > > > > > adapters are
+> > > > > >
+> > > > > > Ethernet controller: Broadcom Inc. and subsidiaries NetXtreme
+> > > > > > BCM5720 2-port Gigabit Ethernet PCIe
+> > > > >
+> > > > > Hmm... I definitely thinks Jinpu's Mellanox ConnectX-6 looks more
+> > > reasonable.
+> > > > >
+> > > > >
+> > > https://lore.kernel.org/qemu-devel/CAMGffEn-DKpMZ4tA71MJYdyemg0Zda15
+> > > > > wVAqk81vXtKzx-LfJQ@mail.gmail.com/
+> > > > >
+> > > > > Appreciate a lot for everyone helping on the testings.
+> > > > >
+> > > > > > InfiniBand controller: Mellanox Technologies MT27800 Family
+> > > > > > [ConnectX-5]
+> > > > > >
+> > > > > > which doesn't meet our purpose. I can choose RDMA or TCP for VM
+> > > > > > migration. RDMA traffic is through InfiniBand and TCP through
+> > > > > > Ethernet on these two hosts. One is standby while the other is =
+active.
+> > > > > >
+> > > > > > Now I'll try on a server with more recent Ethernet and InfiniBa=
+nd
+> > > > > > network adapters. One of them has:
+> > > > > > BCM57414 NetXtreme-E 10Gb/25Gb RDMA Ethernet Controller (rev 01=
+)
+> > > > > >
+> > > > > > The comparison between RDMA and TCP on the same NIC could make
+> > > > > > more
+> > > > > sense.
+> > > > >
+> > > > > It looks to me NICs are powerful now, but again as I mentioned I
+> > > > > don't think it's a reason we need to deprecate rdma, especially i=
+f
+> > > > > QEMU's rdma migration has the chance to be refactored using rsock=
+et.
+> > > > >
+> > > > > Is there anyone who started looking into that direction?  Would i=
+t
+> > > > > make sense we start some PoC now?
+> > > > >
+> > > >
+> > > > My team has finished the PoC refactoring which works well.
+> > > >
+> > > > Progress:
+> > > > 1.  Implement io/channel-rdma.c,
+> > > > 2.  Add unit test tests/unit/test-io-channel-rdma.c and verifying i=
+t
+> > > > is successful, 3.  Remove the original code from migration/rdma.c, =
+4.
+> > > > Rewrite the rdma_start_outgoing_migration and
+> > > > rdma_start_incoming_migration logic, 5.  Remove all rdma_xxx functi=
+ons
+> > > > from migration/ram.c. (to prevent RDMA live migration from pollutin=
+g the
+> > > core logic of live migration), 6.  The soft-RoCE implemented by softw=
+are is
+> > > used to test the RDMA live migration. It's successful.
+> > > >
+> > > > We will be submit the patchset later.
+> > >
+> > > That's great news, thank you!
+> > >
+> > > --
+> > > Peter Xu
+> >
+> > For rdma programming, the current mainstream implementation is to use r=
+dma_cm to establish a connection, and then use verbs to transmit data.
+> >
+> > rdma_cm and ibverbs create two FDs respectively. The two FDs have diffe=
+rent responsibilities. rdma_cm fd is used to notify connection establishmen=
+t events,
+> > and verbs fd is used to notify new CQEs. When poll/epoll monitoring is =
+directly performed on the rdma_cm fd, only a pollin event can be monitored,=
+ which means
+> > that an rdma_cm event occurs. When the verbs fd is directly polled/epol=
+led, only the pollin event can be listened, which indicates that a new CQE =
+is generated.
+> >
+> > Rsocket is a sub-module attached to the rdma_cm library and provides rd=
+ma calls that are completely similar to socket interfaces. However, this li=
+brary returns
+> > only the rdma_cm fd for listening to link setup-related events and does=
+ not expose the verbs fd (readable and writable events for listening to dat=
+a). Only the rpoll
+> > interface provided by the RSocket can be used to listen to related even=
+ts. However, QEMU uses the ppoll interface to listen to the rdma_cm fd (got=
+ten by raccept API).
+> > And cannot listen to the verbs fd event. Only some hacking methods can =
+be used to address this problem.
+> >
+> > Do you guys have any ideas? Thanks.
+> +cc linux-rdma
 
-I have a query around this topic. Are the fds used in socket migration
-polled through ppoll?
-If yes, then can someone point out where; I couldn't find that piece of cod=
-e.
+Why include rdma community?
 
-I could only find that sendmsg/send and recvmsg/recv is being used.
-
+> +cc Sean
 >
 >
-> Regards,
-> -Gonglei
+>
+> >
+> >
+> > Regards,
+> > -Gonglei
 >
 
