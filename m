@@ -2,67 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CB28D3509
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:57:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4DA8D3511
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:58:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCGyI-00059F-52; Wed, 29 May 2024 06:55:54 -0400
+	id 1sCGzH-00025u-IK; Wed, 29 May 2024 06:56:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGyA-00051m-Bq
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCGy8-0003NC-5b
- for qemu-devel@nongnu.org; Wed, 29 May 2024 06:55:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716980143;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VwF1CZkVPFaoB5L1KcjdmzvRfscLRg1sRwCs33bG7lg=;
- b=YmwmkT7B6ldSnSJhGLTej55yf0hnZoa3hiRGUCYADNq5nrcL94e4+PT1XlX4Px167cLPAP
- IsGsyxfdoZoMchnADSKl2yhjcGqK9e+AaNYFhzAYwixj9zRrdoDT4iaBO3Q653jSv5XIOL
- VIJKLYLDy1BAyjPMZmnsJeIT6/lH9Fw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-580-NhYlMHQzN1KEbm9BpAXH7A-1; Wed,
- 29 May 2024 06:55:39 -0400
-X-MC-Unique: NhYlMHQzN1KEbm9BpAXH7A-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5897C3806701;
- Wed, 29 May 2024 10:55:39 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.109])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 712FF105480A;
- Wed, 29 May 2024 10:55:37 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-s390x@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 22/22] qapi: Do not cast function pointers
-Date: Wed, 29 May 2024 12:54:54 +0200
-Message-ID: <20240529105454.1149225-23-thuth@redhat.com>
-In-Reply-To: <20240529105454.1149225-1-thuth@redhat.com>
-References: <20240529105454.1149225-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <vilhelmgyda@gmail.com>)
+ id 1sCGzF-0001pm-7S; Wed, 29 May 2024 06:56:53 -0400
+Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <vilhelmgyda@gmail.com>)
+ id 1sCGzD-0003Ue-7K; Wed, 29 May 2024 06:56:52 -0400
+Received: by mail-io1-xd33.google.com with SMTP id
+ ca18e2360f4ac-7e2188592c2so88384639f.0; 
+ Wed, 29 May 2024 03:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716980209; x=1717585009; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pQHi1PWThwn93/8aqyNGE+J8DVO5qnNISfkfl9kvFfk=;
+ b=JDzenT0Q+xrlefn0knkKhA00iKQoY00ENxNfem4fxN5yQEd1AZlBqmI67TCuxVDg79
+ xX77nlEaJcbsIAUQQIEX3qTUx1aWeg8iFtsR1Dyud91AVyHq+SNUBw3VSB0v5NY9kZjv
+ ARt0Tisqne3NOijX/9AIRmyBzZY3nNX7lMPzBSKUnIHKb+iHs+m2pSgOkixMkc2FhNev
+ yzrM61DFZAber6mK2NMKR3dp9kQR8D8kBtbtD/2CA5aphgbkVyCCzh7gDQKaObBSm8db
+ kOt3U0FzIeGMX8apW4j1zK+KptfWH0dbkBDcLjA2YkgOldSGWhwpNeLDvg0lx3YU1dqE
+ PEdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716980209; x=1717585009;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pQHi1PWThwn93/8aqyNGE+J8DVO5qnNISfkfl9kvFfk=;
+ b=JsEaghoAMZHO+APi4A5LTfp//q4WVxyKMYAjh4iLi6tikddIfsjHIx6gzk4GdixAX0
+ 5SrMgTfsOov7UkmWwgOFWMzltkNpTO9XfKtxbfiVf9mnF0E4JJkBXLCMJ76t50fllePo
+ fVcZVxfdGCOgSDh2DIg/X1Bod2sTTCl+3Dy+PRMX5cxK/Tp2j/tq5mDmVxJKrUr+j2ma
+ GykhAidxisHs62zMB43BNCgWuv5Yg+lPGdFxTxADvBGqxkZXxOOSM2F7F6vSihtzr1qq
+ 5qeo0fTsUEHxA0UArM0AQBlKqPi52eru6F1DD90kLu6vXrTkUjvoEUpaQGduYwej8RU3
+ e23A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUSwT/ZXzNPEcHwUyVtb9IjWOboKqRYh6EHLMyfbWd8iDXSU5A7v6KFSbhrpATP0oaThBkDGhYJ8MZ6WJnzlPqyPTy1aTHq5w==
+X-Gm-Message-State: AOJu0Yw/nbNCVxmVj4Im+nXeeOqWz3mObrKUiIRuehnZKc+nlMWFWF0L
+ rmR2qRemsoRJzGwbM4g3ZCWesm4fBcUnXC1SNjcPfQEj/2hwq2IbWIxNarvSIAp2fU5oAYzZf5u
+ XKmajDnqs7eAswRTr0XqTu79CsSE=
+X-Google-Smtp-Source: AGHT+IGbVc3gmIo1BfkjHlYlr13Ba1jPY5gnhpnceh+BrY2g+0aTk8gUfdzuX+uC1nNM1+Cw0irAwhZ4ZlZTq8m+b1M=
+X-Received: by 2002:a5e:9807:0:b0:7e1:7b55:ad28 with SMTP id
+ ca18e2360f4ac-7e8c480b57amr1648807639f.3.1716980209319; Wed, 29 May 2024
+ 03:56:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20240528102339.106257-1-vilhelmgyda@gmail.com>
+ <e8t34.08zb3hciwfl@linaro.org>
+In-Reply-To: <e8t34.08zb3hciwfl@linaro.org>
+From: Vilhelm Gyda <vilhelmgyda@gmail.com>
+Date: Wed, 29 May 2024 16:26:38 +0530
+Message-ID: <CADe4k3Ke0Lc2roLkupO78KoTkJY46LG6jJdBAoCKsLcA98g3Uw@mail.gmail.com>
+Subject: Re: [PATCH] Issue #2294 | Machine microvm doesn't run under Xen accel
+ for x86_64
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, philmd@linaro.org, 
+ pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
+ envelope-from=vilhelmgyda@gmail.com; helo=mail-io1-xd33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,156 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+On Wed, May 29, 2024 at 3:58=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+> What about TCG? Will it be available if we only build with tcg?
 
-Using -fsanitize=undefined with Clang v18 causes an error if function
-pointers are casted:
+I will try doing this, and report back, and will make the suggested
+changes, and re-submit.
 
- qapi/qapi-clone-visitor.c:188:5: runtime error: call to function visit_type_SocketAddress through pointer to incorrect function type 'bool (*)(struct Visitor *, const char *, void **, struct Error **)'
- /tmp/qemu-ubsan/qapi/qapi-visit-sockets.c:487: note: visit_type_SocketAddress defined here
-     #0 0x5642aa2f7f3b in qapi_clone qapi/qapi-clone-visitor.c:188:5
-     #1 0x5642aa2c8ce5 in qio_channel_socket_listen_async io/channel-socket.c:285:18
-     #2 0x5642aa2b8903 in test_io_channel_setup_async tests/unit/test-io-channel-socket.c:116:5
-     #3 0x5642aa2b8204 in test_io_channel tests/unit/test-io-channel-socket.c:179:9
-     #4 0x5642aa2b8129 in test_io_channel_ipv4 tests/unit/test-io-channel-socket.c:323:5
-     ...
 
-It also prevents enabling the strict mode of CFI which is currently
-disabled with -fsanitize-cfi-icall-generalize-pointers.
-
-The problematic casts are necessary to pass visit_type_T() and
-visit_type_T_members() as callbacks to qapi_clone() and qapi_clone_members(),
-respectively. Open-code these two functions to avoid the callbacks, and
-thus the type casts.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2346
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240524-xkb-v4-3-2de564e5c859@daynix.com>
-[thuth: Improve commit message according to Markus' suggestions]
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/qapi/clone-visitor.h | 37 +++++++++++++++++++++++-------------
- qapi/qapi-clone-visitor.c    | 30 ++++-------------------------
- 2 files changed, 28 insertions(+), 39 deletions(-)
-
-diff --git a/include/qapi/clone-visitor.h b/include/qapi/clone-visitor.h
-index adf9a788e2..ebc182b034 100644
---- a/include/qapi/clone-visitor.h
-+++ b/include/qapi/clone-visitor.h
-@@ -11,6 +11,7 @@
- #ifndef QAPI_CLONE_VISITOR_H
- #define QAPI_CLONE_VISITOR_H
- 
-+#include "qapi/error.h"
- #include "qapi/visitor.h"
- 
- /*
-@@ -20,11 +21,8 @@
-  */
- typedef struct QapiCloneVisitor QapiCloneVisitor;
- 
--void *qapi_clone(const void *src, bool (*visit_type)(Visitor *, const char *,
--                                                     void **, Error **));
--void qapi_clone_members(void *dst, const void *src, size_t sz,
--                        bool (*visit_type_members)(Visitor *, void *,
--                                                   Error **));
-+Visitor *qapi_clone_visitor_new(void);
-+Visitor *qapi_clone_members_visitor_new(void);
- 
- /*
-  * Deep-clone QAPI object @src of the given @type, and return the result.
-@@ -32,10 +30,18 @@ void qapi_clone_members(void *dst, const void *src, size_t sz,
-  * Not usable on QAPI scalars (integers, strings, enums), nor on a
-  * QAPI object that references the 'any' type.  Safe when @src is NULL.
-  */
--#define QAPI_CLONE(type, src)                                           \
--    ((type *)qapi_clone(src,                                            \
--                        (bool (*)(Visitor *, const char *, void **,     \
--                                  Error **))visit_type_ ## type))
-+#define QAPI_CLONE(type, src)                                   \
-+    ({                                                          \
-+        Visitor *v_;                                            \
-+        type *dst_ = (type *) (src); /* Cast away const */      \
-+                                                                \
-+        if (dst_) {                                             \
-+            v_ = qapi_clone_visitor_new();                      \
-+            visit_type_ ## type(v_, NULL, &dst_, &error_abort); \
-+            visit_free(v_);                                     \
-+        }                                                       \
-+        dst_;                                                   \
-+    })
- 
- /*
-  * Copy deep clones of @type members from @src to @dst.
-@@ -43,9 +49,14 @@ void qapi_clone_members(void *dst, const void *src, size_t sz,
-  * Not usable on QAPI scalars (integers, strings, enums), nor on a
-  * QAPI object that references the 'any' type.
-  */
--#define QAPI_CLONE_MEMBERS(type, dst, src)                              \
--    qapi_clone_members(dst, src, sizeof(type),                          \
--                       (bool (*)(Visitor *, void *,                     \
--                                 Error **))visit_type_ ## type ## _members)
-+#define QAPI_CLONE_MEMBERS(type, dst, src)                                \
-+    ({                                                                    \
-+        Visitor *v_;                                                      \
-+                                                                          \
-+        v_ = qapi_clone_members_visitor_new();                            \
-+        *(type *)(dst) = *(src);                                          \
-+        visit_type_ ## type ## _members(v_, (type *)(dst), &error_abort); \
-+        visit_free(v_);                                                   \
-+    })
- 
- #endif
-diff --git a/qapi/qapi-clone-visitor.c b/qapi/qapi-clone-visitor.c
-index c45c5caa3b..bbf953698f 100644
---- a/qapi/qapi-clone-visitor.c
-+++ b/qapi/qapi-clone-visitor.c
-@@ -149,7 +149,7 @@ static void qapi_clone_free(Visitor *v)
-     g_free(v);
- }
- 
--static Visitor *qapi_clone_visitor_new(void)
-+Visitor *qapi_clone_visitor_new(void)
- {
-     QapiCloneVisitor *v;
- 
-@@ -174,31 +174,9 @@ static Visitor *qapi_clone_visitor_new(void)
-     return &v->visitor;
- }
- 
--void *qapi_clone(const void *src, bool (*visit_type)(Visitor *, const char *,
--                                                     void **, Error **))
-+Visitor *qapi_clone_members_visitor_new(void)
- {
--    Visitor *v;
--    void *dst = (void *) src; /* Cast away const */
--
--    if (!src) {
--        return NULL;
--    }
--
--    v = qapi_clone_visitor_new();
--    visit_type(v, NULL, &dst, &error_abort);
--    visit_free(v);
--    return dst;
--}
--
--void qapi_clone_members(void *dst, const void *src, size_t sz,
--                        bool (*visit_type_members)(Visitor *, void *,
--                                                   Error **))
--{
--    Visitor *v;
--
--    v = qapi_clone_visitor_new();
--    memcpy(dst, src, sz);
-+    Visitor *v = qapi_clone_visitor_new();
-     to_qcv(v)->depth++;
--    visit_type_members(v, dst, &error_abort);
--    visit_free(v);
-+    return v;
- }
--- 
-2.45.1
-
+On Wed, May 29, 2024 at 3:58=E2=80=AFPM Manos Pitsidianakis
+<manos.pitsidianakis@linaro.org> wrote:
+>
+> On Tue, 28 May 2024 13:23, Will Gyda <vilhelmgyda@gmail.com> wrote:
+> >Issue #2294: Machine microvm doesn't run under Xen accel for qemu-system=
+-x86_64.
+> >Solution: microvm is now not build if only Xen is available.
+> >
+> >Signed-off-by: Will Gyda <vilhelmgyda@gmail.com>
+> >
+>
+>
+> I suggest rewording the commit title to something like
+>
+> "i386: remove microvm from default build"
+>
+> And adding a commit message that explains that the microvm does not work
+> on Xen, hence if only Xen is available it should not be built.
+>
+> Also, you can add a
+>
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2294
+>
+> line before your Signed-off-by. See
+> https://www.qemu.org/docs/master/devel/submitting-a-patch.html
+>
+> But, seeing the issue itself, it's about the microvm being stuck under
+> Xen. So the commit that resolves this would either make it non-stuck or
+> make it impossible to start the vm to begin with.
+>
+>
+> >---
+> > configs/devices/i386-softmmu/default.mak | 2 +-
+> > hw/i386/Kconfig                          | 2 ++
+> > 2 files changed, 3 insertions(+), 1 deletion(-)
+> >
+> >diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/=
+i386-softmmu/default.mak
+> >index 598c6646df..6a73aee7dd 100644
+> >--- a/configs/devices/i386-softmmu/default.mak
+> >+++ b/configs/devices/i386-softmmu/default.mak
+> >@@ -29,4 +29,4 @@
+> > CONFIG_ISAPC=3Dy
+> > CONFIG_I440FX=3Dy
+> > CONFIG_Q35=3Dy
+> >-CONFIG_MICROVM=3Dy
+> >+#CONFIG_MICROVM=3Dn
+>
+> Better remove this altogether since it's not a default anymore.
+>
+> >diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> >index a6ee052f9a..f8ec8ebd7a 100644
+> >--- a/hw/i386/Kconfig
+> >+++ b/hw/i386/Kconfig
+> >@@ -108,6 +108,8 @@ config Q35
+> >
+> > config MICROVM
+> >     bool
+> >+    default y
+> >+    depends on KVM || WHPX || NVMM || HVF
+>
+> What about TCG? Will it be available if we only build with tcg?
+>
+> >     select SERIAL_ISA # for serial_hds_isa_init()
+> >     select ISA_BUS
+> >     select APIC
+> >--
+> >2.25.1
+> >
+> >
 
