@@ -2,33 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FEB8D3C34
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC798D3C5F
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:27:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCM5Y-0000C4-Iq; Wed, 29 May 2024 12:23:44 -0400
+	id 1sCM6v-00018C-9o; Wed, 29 May 2024 12:25:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM5S-0000Al-5f
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:23:38 -0400
+ id 1sCM6o-00015b-TJ
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:05 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM5K-0005xM-2v
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:23:37 -0400
+ id 1sCM6l-0006KV-6k
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:02 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1sCM5C-006CAe-9t;
- Wed, 29 May 2024 17:23:22 +0100
+ (envelope-from <movement@movementarian.org>) id 1sCM6i-006COY-QZ;
+ Wed, 29 May 2024 17:24:56 +0100
 From: John Levon <levon@movementarian.org>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jag.raman@oracle.com,
- thanos.makatos@nutanix.com
-Subject: [RFC v6 00/26] vfio-user client
-Date: Wed, 29 May 2024 17:22:53 +0100
-Message-Id: <20240529162319.1476680-1-levon@movementarian.org>
+ thanos.makatos@nutanix.com, John Johnson <john.g.johnson@oracle.com>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ John Levon <john.levon@nutanix.com>
+Subject: [PATCH 01/26] vfio/container: pass MemoryRegion to DMA operations
+Date: Wed, 29 May 2024 17:22:54 +0100
+Message-Id: <20240529162319.1476680-2-levon@movementarian.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240529162319.1476680-1-levon@movementarian.org>
+References: <20240529162319.1476680-1-levon@movementarian.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=139.162.205.133;
@@ -53,254 +57,228 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
-
-This is the 6th revision of the vfio-user client implementation.
-
-First of all, thank you for your time reviewing the previous versions.
-
-The vfio-user framework consists of 3 parts:
- 1) The VFIO user protocol specification.
- 2) A client - the VFIO device in QEMU that encapsulates VFIO messages
-    and sends them to the server.
- 3) A server - a remote process that emulates a device.
-
-This patchset implements parts 1 and 2.
-
-It has been lightly tested against libvfio-user test servers as well as SPDK.
-
-Contributors:
-
-John G Johnson <john.g.johnson@oracle.com>
-John Levon <john.levon@nutanix.com>
-Thanos Makatos <thanos.makatos@nutanix.com>
-Elena Ufimtseva <elena.ufimtseva@oracle.com>
-Jagannathan Raman <jag.raman@oracle.com>
-
-Changes from v5->v6:
-
- - various generic changes split out from vfio-user specific patches
- - full refactoring of vfio-user PCI implementation on top of new
-   VFIOUserContainer
- - lots of minor code improvements
-
-Changes from v4->v5:
-
-  vfio-user: introduce vfio-user protocol specification
-    Removed VFIO v1 migration support - it will be added back when v2 goes upstream
-    Fixed typos
-
-  vfio-user: add VFIO base abstract class
-  vfio-user: add container IO ops vector
-    No v5 specific changes
-
-  vfio-user: add region cache
-    Deleted spurious g_free() calls
-
-  vfio-user: add device IO ops vector
-  vfio-user: Define type vfio_user_pci_dev_info
-  vfio-user: connect vfio proxy to remote server
-    No v5 specific changes
-
-  vfio-user: define socket receive functions
-    Handle partial reads of server messages
-
-  vfio-user: define socket send functions
-    No v5 specific changes
-
-  vfio-user: get device info
-    Return an error if the device reply has an inordinate number of regions or IRQs
-
-  vfio-user: get region info
-  vfio-user: region read/write
-  vfio-user: pci_user_realize PCI setup
-  vfio-user: get and set IRQs
-  vfio-user: proxy container connect/disconnect
-  vfio-user: dma map/unmap operations
-  vfio-user: secure DMA support
-  vfio-user: dma read/write operations
-  vfio-user: pci reset
-    No v5 specific changes
-
-Added to v5:
-
-  vfio-user: forward msix BAR accesses to server
-  vfio-user: add 'x-msg-timeout' option that specifies msg wait times
-  vfio-user: add tracing to send/recv paths
-  vfio-user: add dirty_bitmap stub until it support migration
-
-Removed from v5:
-
-  vfio-user: migration support
-  Only set qemu file error if saving state if the file exists
-
-
-Changes from v3->v4:
-
- vfio-user: introduce vfio-user protocol specification
-   No v4 specific changess
-
- vfio-user: add VFIO base abstract class
-   Put all properties except those specific to the ioctl() implementation in the base class 
-
- vfio-user: add container IO ops vector
-   Move will_commit support to dma map/unmap patch below
-   Use ternary return expression in IO ops vectors
-
- vfio-user: add region cache
-   New patch with only region cache support
-   Make vfio_get_region_info return region reference instead of a copy
-
- vfio-user: add device IO ops vector
-   Move posted write support to region read/write patch below
-   Move FD receiving code to get region info patch below
-   Add VDEV_CONFIG_READ/WRITE macros to pci.c for convenient access to PCI config space
-   Use ternary return expression in IO ops vectors
-
- vfio-user: Define type vfio_user_pci_dev_info
-   Move secure DMA support to separate patch below
-   Remove dummy function for vfio_hot_reset_multi ops vector
-   Add vfio_user_instance_finalize code from connect proxy patch below
-
- vfio-user: connect vfio proxy to remote server
-   Move vfio_user_instance_finalize code to define type patch above
-
- vfio-user: define socket receive functions
-   Handle kernel splitting message from server into multiple read()s
-   Fix incoming message queue handling in vfio_user_request()
-   Move secure DMA support to separate patch below
-   Move MAX_FDS and MAX_XFER defines to socket send patch below
-
- vfio-user: define socket send functions
-   Free pending messages when the reply times out
-   Add MAX_FDS and MAX_XFER defines from socket recv patch above
-   Don't set error twice on a capabilities parsing error
-
- vfio-user: get device info
-   Add vfio_get_all_regions() call
-   Validate device info return values from server
-
- vfio-user: get region info
-   Add FD receiving code from device IO ops patch above
-   Add a generic FD to VFIORegion for mapping device regions
-   Validate region info return values from server
-
- vfio-user: region read/write
-   Add posted write support from device IO ops patch above
-   Check region read/write count against max_xfer
-
- vfio-user: pci_user_realize PCI setup
-    Refactor realize functions to use common setup functions
-
- vfio-user: get and set IRQs
-   Validate irq return values from server
-
- vfio-user: proxy container connect/disconnect
-   No v4 specific changes
-
- vfio-user: dma map/unmap operations
-   Add wlll_commit support from container IO ops patch above
-   Rename will_commit to async_ops to describe its operation better
-   Pass memory region to dma_map op so only vfio-user needs to look up FD
-   Free pending messages when the reply times out
-   Move secure DMA support to separate patch below
-   Set argz in dma_unmap message according to spec
-
- vfio-user: secure DMA support
-   New patch consolidating all secure DMA support
-
- vfio-user: dma read/write operations
- vfio-user: pci reset
-   No v4 specific changes
-
- vfio-user: migration support
-   Move qemu file errors fix to its own patch below
-   Set argz in get_dirty_bitmap message according to spec
-
- Only set qemu file error if saving state if the file exists
-   New patch with just this fix found during vfio-user development
-
-Removed from v4:
-
- Add validation ops vector
-   Generic checking moved to the corresponding vfio-user function
-
-
-Changes from v2->v3:
-
-  vfio-user: introduce vfio-user protocol specification
-    Spec specifies host endiannes instead of always LE
-    Fixed grammar error
-
-  vfio-user: add VFIO base abstract class
-    Moved common vfio pci cli options to base class
-
-  Add container IO ops vector
-    Added ops vectors to decide to use ioctl() or socket implementation
-
-  Add device IO ops vector
-    Added ops vectors to decide to use ioctl() or socket implementation
-
-  Add validation ops vector
-    Added validation vector to check user replies
-
-  vfio-user: Define type vfio_user_pci_dev_info
-    Added separate VFIO_USER_PCI config element to control whether vfio-user is compiled
-    Fix scalar spelling
-
-  vfio-user: connect vfio proxy to remote server
-    Made socket IO non-blocking
-    Use g_strdup_printf to save socket name
-
-  vfio-user: define socket receive functions
-    Made socket IO non-blocking
-    Process inbound commands in main loop thread to avoid BQL interactions with recv
-    Added comment describing inbound command callback usage
-    Use true/false instead of 1/0 for booleans
-
-  vfio-user: define socket send functions
-    Made socket IO non-blocking
-    Added version string NULL termination check
-
-  vfio-user: get device info
-    Added ops vectors to decide to use ioctl() or socket implementation
-    Added validation vector to check user replies
-
-  vfio-user: get region info
-    Added ops vectors to decide to use ioctl() or socket implementation
-    Added validation vector to check user replies
-    Remove merge bug that filled region cache twice
-
-  vfio-user: region read/write
-    Added ops vectors to decide to use ioctl() or socket implementation
-    Added validation vector to check user replies
-    Made posted write conditional on region not mapped
-
-  vfio-user: pci_user_realize PCI setup
-    Moved common vfio pci cli options to base class
-
-  vfio-user: get and set IRQs
-    Added ops vectors to decide to use ioctl() or socket implementation
-    Added validation vector to check user replies
-    Fixed %m usage when not using syscall
-
-  vfio-user: proxy container connect/disconnect
-    Added separate VFIO_USER_PCI config element to control whether vfio-user is compiled
-    Use true/false instead of 1/0 for booleans
-
-  vfio-user: dma map/unmap operations
-    Added ops vectors to decide to use ioctl() or socket implementation
-    Use BQL instead of iolock in comments
-    Fixed %m usage when not using syscall
-
-  vfio-user: dma read/write operations
-    Added header checking before loading DMA message content
-    Added error handling if DMA fails
-
-  vfio-user: pci reset
-    no r3-specific changes
-
-  vfio-user: migration support
-    generic fix: only set qemu file error if there is a file
+From: Jagannathan Raman <jag.raman@oracle.com>
+
+Pass through the MemoryRegion to DMA operation handlers of vfio
+containers. The vfio-user container will need this later.
+
+Originally-by: John Johnson <john.g.johnson@oracle.com>
+Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
+Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Signed-off-by: John Levon <john.levon@nutanix.com>
+---
+ hw/vfio/common.c                      | 17 ++++++++++-------
+ hw/vfio/container-base.c              |  5 +++--
+ hw/vfio/container.c                   |  3 ++-
+ hw/vfio/iommufd.c                     |  3 ++-
+ hw/virtio/vhost-vdpa.c                |  2 +-
+ include/exec/memory.h                 |  4 +++-
+ include/hw/vfio/vfio-container-base.h |  4 ++--
+ system/memory.c                       |  7 ++++++-
+ 8 files changed, 29 insertions(+), 16 deletions(-)
+
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index f9619a1dfb..8eb2ed50dd 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -254,12 +254,12 @@ static bool vfio_listener_skipped_section(MemoryRegionSection *section)
+ /* Called with rcu_read_lock held.  */
+ static bool vfio_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+                                ram_addr_t *ram_addr, bool *read_only,
+-                               Error **errp)
++                               MemoryRegion **mrp, Error **errp)
+ {
+     bool ret, mr_has_discard_manager;
+ 
+     ret = memory_get_xlat_addr(iotlb, vaddr, ram_addr, read_only,
+-                               &mr_has_discard_manager, errp);
++                               &mr_has_discard_manager, mrp, errp);
+     if (ret && mr_has_discard_manager) {
+         /*
+          * Malicious VMs might trigger discarding of IOMMU-mapped memory. The
+@@ -287,6 +287,7 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     VFIOGuestIOMMU *giommu = container_of(n, VFIOGuestIOMMU, n);
+     VFIOContainerBase *bcontainer = giommu->bcontainer;
+     hwaddr iova = iotlb->iova + giommu->iommu_offset;
++    MemoryRegion *mrp;
+     void *vaddr;
+     int ret;
+     Error *local_err = NULL;
+@@ -306,7 +307,8 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+         bool read_only;
+ 
+-        if (!vfio_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, &local_err)) {
++        if (!vfio_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, &mrp,
++                                &local_err)) {
+             error_report_err(local_err);
+             goto out;
+         }
+@@ -319,7 +321,7 @@ static void vfio_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+          */
+         ret = vfio_container_dma_map(bcontainer, iova,
+                                      iotlb->addr_mask + 1, vaddr,
+-                                     read_only);
++                                     read_only, mrp);
+         if (ret) {
+             error_report("vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
+                          "0x%"HWADDR_PRIx", %p) = %d (%s)",
+@@ -384,7 +386,7 @@ static int vfio_ram_discard_notify_populate(RamDiscardListener *rdl,
+         vaddr = memory_region_get_ram_ptr(section->mr) + start;
+ 
+         ret = vfio_container_dma_map(bcontainer, iova, next - start,
+-                                     vaddr, section->readonly);
++                                     vaddr, section->readonly, section->mr);
+         if (ret) {
+             /* Rollback */
+             vfio_ram_discard_notify_discard(rdl, section);
+@@ -686,7 +688,7 @@ static void vfio_listener_region_add(MemoryListener *listener,
+     }
+ 
+     ret = vfio_container_dma_map(bcontainer, iova, int128_get64(llsize),
+-                                 vaddr, section->readonly);
++                                 vaddr, section->readonly, section->mr);
+     if (ret) {
+         error_setg(&err, "vfio_container_dma_map(%p, 0x%"HWADDR_PRIx", "
+                    "0x%"HWADDR_PRIx", %p) = %d (%s)",
+@@ -1231,7 +1233,8 @@ static void vfio_iommu_map_dirty_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     }
+ 
+     rcu_read_lock();
+-    if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, &local_err)) {
++    if (!vfio_get_xlat_addr(iotlb, NULL, &translated_addr, NULL, NULL,
++                            &local_err)) {
+         error_report_err(local_err);
+         goto out_unlock;
+     }
+diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
+index 760d9d0622..f16766f490 100644
+--- a/hw/vfio/container-base.c
++++ b/hw/vfio/container-base.c
+@@ -17,10 +17,11 @@
+ 
+ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+                            hwaddr iova, ram_addr_t size,
+-                           void *vaddr, bool readonly)
++                           void *vaddr, bool readonly, MemoryRegion *mrp)
+ {
+     g_assert(bcontainer->ops->dma_map);
+-    return bcontainer->ops->dma_map(bcontainer, iova, size, vaddr, readonly);
++    return bcontainer->ops->dma_map(bcontainer, iova, size, vaddr,
++                                    readonly, mrp);
+ }
+ 
+ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+diff --git a/hw/vfio/container.c b/hw/vfio/container.c
+index 096cc97258..6e6308382f 100644
+--- a/hw/vfio/container.c
++++ b/hw/vfio/container.c
+@@ -177,7 +177,8 @@ static int vfio_legacy_dma_unmap(const VFIOContainerBase *bcontainer,
+ }
+ 
+ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+-                               ram_addr_t size, void *vaddr, bool readonly)
++                               ram_addr_t size, void *vaddr, bool readonly,
++                               MemoryRegion *mrp)
+ {
+     const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
+                                                   bcontainer);
+diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
+index 554f9a6292..3d08a4f2dc 100644
+--- a/hw/vfio/iommufd.c
++++ b/hw/vfio/iommufd.c
+@@ -27,7 +27,8 @@
+ #include "pci.h"
+ 
+ static int iommufd_cdev_map(const VFIOContainerBase *bcontainer, hwaddr iova,
+-                            ram_addr_t size, void *vaddr, bool readonly)
++                            ram_addr_t size, void *vaddr, bool readonly,
++                            MemoryRegion *mrp)
+ {
+     const VFIOIOMMUFDContainer *container =
+         container_of(bcontainer, VFIOIOMMUFDContainer, bcontainer);
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index ed99ab8745..9b5fb384dd 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -228,7 +228,7 @@ static void vhost_vdpa_iommu_map_notify(IOMMUNotifier *n, IOMMUTLBEntry *iotlb)
+     if ((iotlb->perm & IOMMU_RW) != IOMMU_NONE) {
+         bool read_only;
+ 
+-        if (!memory_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, NULL,
++        if (!memory_get_xlat_addr(iotlb, &vaddr, NULL, &read_only, NULL, NULL,
+                                   &local_err)) {
+             error_report_err(local_err);
+             return;
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 9cdd64e9c6..81c6d1488a 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -783,13 +783,15 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+  * @read_only: indicates if writes are allowed
+  * @mr_has_discard_manager: indicates memory is controlled by a
+  *                          RamDiscardManager
++ * @mrp: if non-NULL, fill in with MemoryRegion
+  * @errp: pointer to Error*, to store an error if it happens.
+  *
+  * Return: true on success, else false setting @errp with error.
+  */
+ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+                           ram_addr_t *ram_addr, bool *read_only,
+-                          bool *mr_has_discard_manager, Error **errp);
++                          bool *mr_has_discard_manager, MemoryRegion **mrp,
++                          Error **errp);
+ 
+ typedef struct CoalescedMemoryRange CoalescedMemoryRange;
+ typedef struct MemoryRegionIoeventfd MemoryRegionIoeventfd;
+diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+index 2776481fc9..129e742643 100644
+--- a/include/hw/vfio/vfio-container-base.h
++++ b/include/hw/vfio/vfio-container-base.h
+@@ -72,7 +72,7 @@ typedef struct VFIORamDiscardListener {
+ 
+ int vfio_container_dma_map(VFIOContainerBase *bcontainer,
+                            hwaddr iova, ram_addr_t size,
+-                           void *vaddr, bool readonly);
++                           void *vaddr, bool readonly, MemoryRegion *mrp);
+ int vfio_container_dma_unmap(VFIOContainerBase *bcontainer,
+                              hwaddr iova, ram_addr_t size,
+                              IOMMUTLBEntry *iotlb);
+@@ -113,7 +113,7 @@ struct VFIOIOMMUClass {
+     bool (*setup)(VFIOContainerBase *bcontainer, Error **errp);
+     int (*dma_map)(const VFIOContainerBase *bcontainer,
+                    hwaddr iova, ram_addr_t size,
+-                   void *vaddr, bool readonly);
++                   void *vaddr, bool readonly, MemoryRegion *mrp);
+     int (*dma_unmap)(const VFIOContainerBase *bcontainer,
+                      hwaddr iova, ram_addr_t size,
+                      IOMMUTLBEntry *iotlb);
+diff --git a/system/memory.c b/system/memory.c
+index 9540caa8a1..d6574a88c1 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2179,7 +2179,8 @@ void ram_discard_manager_unregister_listener(RamDiscardManager *rdm,
+ /* Called with rcu_read_lock held.  */
+ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+                           ram_addr_t *ram_addr, bool *read_only,
+-                          bool *mr_has_discard_manager, Error **errp)
++                          bool *mr_has_discard_manager, MemoryRegion **mrp,
++                          Error **errp)
+ {
+     MemoryRegion *mr;
+     hwaddr xlat;
+@@ -2244,6 +2245,10 @@ bool memory_get_xlat_addr(IOMMUTLBEntry *iotlb, void **vaddr,
+         *read_only = !writable || mr->readonly;
+     }
+ 
++    if (mrp != NULL) {
++        *mrp = mr;
++    }
++
+     return true;
+ }
+ 
+-- 
+2.34.1
 
 
