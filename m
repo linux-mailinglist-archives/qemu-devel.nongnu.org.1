@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A64E08D381E
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73498D3890
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:02:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJaA-0001gg-TT; Wed, 29 May 2024 09:43:10 -0400
+	id 1sCJrV-0004k7-Bz; Wed, 29 May 2024 10:01:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCJa8-0001gD-Tv
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:43:08 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCJrN-0004jb-0R
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:00:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCJa6-0001Rd-Ux
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:43:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716990187; x=1748526187;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=SCQ9nkm1ztsqBMCoum5K+Ptt4+PY7yogbkbMLMLLhxI=;
- b=iCk96TCEf4dKaJD21rpT8voxLXo48t61f9mQy7wiNwHOuPeT7nxnT+IK
- sh/s4UF06FYqNejtopNhVxjJl0XJZhaMIp/Lxfc9mzgUR8QKwyDHpXfYw
- zYDbjPgqRsTQZ5oECV4oG/k5UTEmYCsfqQs04ZNLhUcg8AyWLUJTgsYtC
- sUbMaduXMYxwae+5Gp29kZKcz+P9D4qeEi3RddFG0+uAm5quTqEsXU+kN
- cF3XAnqjg5S8+jFdRqTXBbPOt+bFP1fd3LePgyV18x4V/qMzcMmK4jF2k
- NWXh09BKo2lnVFuy3BO0sZyO8eEVXixcq6pXyKOqH8Ae/B3H5WCRl1HgC Q==;
-X-CSE-ConnectionGUID: hWg0zTM3Txyl+hPyR66o4A==
-X-CSE-MsgGUID: dVagklnGTp+FhDfVwR2wgw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="23946917"
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="23946917"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 06:43:04 -0700
-X-CSE-ConnectionGUID: QTEDW32xRxe4A/GVgvYEzw==
-X-CSE-MsgGUID: afC3wSa8TiaLzb+l86Vs6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="35469404"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa006.fm.intel.com with ESMTP; 29 May 2024 06:43:03 -0700
-Date: Wed, 29 May 2024 21:58:25 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Zhao Liu <zhao1.liu@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tim Wiederhake <twiederh@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
-Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
- feature name
-Message-ID: <Zlc0gX0ouWmyUab9@intel.com>
-References: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCJrL-0004j3-4h
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:00:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716991253;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZIZuqgK2s8o1ZpqDBwBxeTJ9oP1AWDVn8B1j5ZI0cbk=;
+ b=dIGnofeVbdy4oQQ7LiWgkA9/RWDeHNq55eDCljLjhx4MaFaFJEojbChBWvACiBgAaHrIL0
+ AEr1pAz6uqFhjOcnQeb5y3FdBDyiTSqdFBW9BcW88azqaIzZS3G/nT9bVc7pFpTK4qAeTQ
+ raVQMT6zY83fkkTstZ8505PFYo6n0f4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-647-R05S_5nQPieN40Dn5Deaog-1; Wed, 29 May 2024 10:00:51 -0400
+X-MC-Unique: R05S_5nQPieN40Dn5Deaog-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-354f34e0ab0so1339917f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 07:00:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716991250; x=1717596050;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ZIZuqgK2s8o1ZpqDBwBxeTJ9oP1AWDVn8B1j5ZI0cbk=;
+ b=W8jajNsPw9TFOSDWE7f75q0w1nI2IE7pu/KB3vA4lZDbEvpz+xxql46cbovgM7hezf
+ JR5UVkKbn8DXBf1LdGD99GlpSrynXsQr2+tDNgNIkq3Bf/jvwt8dV2DBeUqF0LGt9QlG
+ pb6L4fZ30FygWnJJYKxApbuTPPtMVkP1WA1hz5FPfjYDNhF8UbY6tInfP6w3+QzfJE2F
+ A68dIgImPuC+IS7pRBvWDSCxDg6lHUPxR1Mg8yjkiHbph+Kef6pn1ASBhKnFRcLtqpD3
+ lCzPzRMzKsLH2UxBNkjNFNR4b8ieacV1NhMTt+FutG7m41rauBSNMhMknY9C8EXvLo8K
+ S+2Q==
+X-Gm-Message-State: AOJu0YzeXJrAh/UK9ORh3r5GqUhyrVNo1sgR6BYi+ALT+jxnQAK1FRer
+ mBfEwaYhvEcGi9oKHY9I4TRx2fItc2vPZDmduqdqJm1rFkEvwNtxmctknsV5KYKt0BIus1hqC2u
+ eebcyPLggjPaITGoCeGh1rhyNCT+BoxjpzKgA0yiqeKRuwGK+VZW4
+X-Received: by 2002:a05:6000:d0a:b0:354:f2b0:ebdb with SMTP id
+ ffacd0b85a97d-35526c3d65amr10866716f8f.12.1716991249790; 
+ Wed, 29 May 2024 07:00:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcqLc4wlFF3GWxiSwVA2TsbakEoJphwlG9nQ0rKTjQpWO/Jgmv/jmm2lVFHXUY79QMCI7AnA==
+X-Received: by 2002:a05:6000:d0a:b0:354:f2b0:ebdb with SMTP id
+ ffacd0b85a97d-35526c3d65amr10866690f8f.12.1716991249191; 
+ Wed, 29 May 2024 07:00:49 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3557a0907fasm14878318f8f.57.2024.05.29.07.00.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 May 2024 07:00:48 -0700 (PDT)
+Date: Wed, 29 May 2024 16:00:47 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Daniel P .
+ =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Zhao Liu
+ <zhao1.liu@intel.com>
+Subject: Re: [PATCH v5 08/23] hw/i386/pc: Remove deprecated pc-i440fx-2.1
+ machine
+Message-ID: <20240529160047.1aba8882@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240529051539.71210-9-philmd@linaro.org>
+References: <20240529051539.71210-1-philmd@linaro.org>
+ <20240529051539.71210-9-philmd@linaro.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,89 +105,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+On Wed, 29 May 2024 07:15:24 +0200
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 
-Sorry to re-pick this series, is it an acceptable cleanup to separate the
-current kvmclock/kvmclock2 if the old kvmclock can't be dropped?
+> The pc-i440fx-2.1 machine was deprecated for the 8.2
+> release (see commit c7437f0ddb "docs/about: Mark the
+> old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+> time to remove it.
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
-Thanks,
-Zhao
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
-On Fri, Mar 29, 2024 at 06:19:47PM +0800, Zhao Liu wrote:
-> Date: Fri, 29 Mar 2024 18:19:47 +0800
-> From: Zhao Liu <zhao1.liu@linux.intel.com>
-> Subject: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock feature
->  name
-> X-Mailer: git-send-email 2.34.1
-> 
-> From: Zhao Liu <zhao1.liu@intel.com>
-> 
-> Hi list,
-> 
-> This series is based on Paolo's guest_phys_bits patchset [1].
-> 
-> Currently, the old and new kvmclocks have the same feature name
-> "kvmclock" in FeatureWordInfo[FEAT_KVM].
-> 
-> When I tried to dig into the history of this unusual naming and fix it,
-> I realized that Tim was already trying to rename it, so I picked up his
-> renaming patch [2] (with a new commit message and other minor changes).
-> 
-> 13 years age, the same name was introduced in [3], and its main purpose
-> is to make it easy for users to enable/disable 2 kvmclocks. Then, in
-> 2012, Don tried to rename the new kvmclock, but the follow-up did not
-> address Igor and Eduardo's comments about compatibility.
-> 
-> Tim [2], not long ago, and I just now, were both puzzled by the naming
-> one after the other.
-> 
-> So, this series is to push for renaming the new kvmclock feature to
-> "kvmclock2" and adding compatibility support for older machines (PC 9.0
-> and older).
-> 
-> Finally, let's put an end to decades of doubt about this name.
-> 
-> 
-> Next Step
-> =========
-> 
-> This series just separates the two kvmclocks from the naming, and in
-> subsequent patches I plan to stop setting kvmclock(old kcmclock) by
-> default as long as KVM supports kvmclock2 (new kvmclock).
-> 
-> Also, try to deprecate the old kvmclock in KVM side.
-> 
-> [1]: https://lore.kernel.org/qemu-devel/20240325141422.1380087-1-pbonzini@redhat.com/
-> [2]: https://lore.kernel.org/qemu-devel/20230908124534.25027-4-twiederh@redhat.com/
-> [3]: https://lore.kernel.org/qemu-devel/1300401727-5235-3-git-send-email-glommer@redhat.com/
-> [4]: https://lore.kernel.org/qemu-devel/1348171412-23669-3-git-send-email-Don@CloudSwitch.com/
-> 
-> Thanks and Best Regards,
-> Zhao
-> 
 > ---
-> Tim Wiederhake (1):
->   target/i386: Fix duplicated kvmclock name in FEAT_KVM
-> 
-> Zhao Liu (6):
->   target/i386/kvm: Add feature bit definitions for KVM CPUID
->   target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
->     MSR_KVM_SYSTEM_TIME definitions
->   target/i386/kvm: Only Save/load kvmclock MSRs when kvmclock enabled
->   target/i386/kvm: Save/load MSRs of new kvmclock
->     (KVM_FEATURE_CLOCKSOURCE2)
->   target/i386/kvm: Add legacy_kvmclock cpu property
->   target/i386/kvm: Update comment in kvm_cpu_realizefn()
-> 
->  hw/i386/kvm/clock.c       |  5 ++--
->  hw/i386/pc.c              |  1 +
->  target/i386/cpu.c         |  3 +-
->  target/i386/cpu.h         | 32 +++++++++++++++++++++
->  target/i386/kvm/kvm-cpu.c | 25 ++++++++++++++++-
->  target/i386/kvm/kvm.c     | 59 +++++++++++++++++++++++++--------------
->  6 files changed, 99 insertions(+), 26 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
+>  docs/about/deprecated.rst       |  2 +-
+>  docs/about/removed-features.rst |  2 +-
+>  include/hw/i386/pc.h            |  3 ---
+>  hw/i386/pc.c                    |  7 -------
+>  hw/i386/pc_piix.c               | 23 -----------------------
+>  5 files changed, 2 insertions(+), 35 deletions(-)
+>=20
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 629f6a1566..5b4753e5dc 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -228,7 +228,7 @@ deprecated; use the new name ``dtb-randomness`` inste=
+ad. The new name
+>  better reflects the way this property affects all random data within
+>  the device tree blob, not just the ``kaslr-seed`` node.
+> =20
+> -``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.=
+4`` up to ``pc-i440fx-2.12`` (since 9.1)
+> +``pc-i440fx-2.2`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.=
+4`` up to ``pc-i440fx-2.12`` (since 9.1)
+>  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''=
+''''''''''''''''''''''''''''''''''''''''
+> =20
+>  These old machine types are quite neglected nowadays and thus might have
+> diff --git a/docs/about/removed-features.rst b/docs/about/removed-feature=
+s.rst
+> index 5f0c2d8ec2..9b0e2f11de 100644
+> --- a/docs/about/removed-features.rst
+> +++ b/docs/about/removed-features.rst
+> @@ -925,7 +925,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+> =20
+>  This machine has been renamed ``fuloong2e``.
+> =20
+> -``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
+> +``pc-0.10`` up to ``pc-i440fx-2.1`` (removed in 4.0 up to 9.0)
+>  ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> =20
+>  These machine types were very old and likely could not be used for live
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index 01fdcfaeb6..db0f8e0e36 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -286,9 +286,6 @@ extern const size_t pc_compat_2_3_len;
+>  extern GlobalProperty pc_compat_2_2[];
+>  extern const size_t pc_compat_2_2_len;
+> =20
+> -extern GlobalProperty pc_compat_2_1[];
+> -extern const size_t pc_compat_2_1_len;
+> -
+>  #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+>      static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *=
+data) \
+>      { \
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 11182e09ce..f27c9fd98c 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -312,13 +312,6 @@ GlobalProperty pc_compat_2_2[] =3D {
+>  };
+>  const size_t pc_compat_2_2_len =3D G_N_ELEMENTS(pc_compat_2_2);
+> =20
+> -GlobalProperty pc_compat_2_1[] =3D {
+> -    PC_CPU_MODEL_IDS("2.1.0")
+> -    { "coreduo" "-" TYPE_X86_CPU, "vmx", "on" },
+> -    { "core2duo" "-" TYPE_X86_CPU, "vmx", "on" },
+> -};
+> -const size_t pc_compat_2_1_len =3D G_N_ELEMENTS(pc_compat_2_1);
+> -
+>  GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+>  {
+>      GSIState *s;
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index a750a0e6ab..e0b421dd51 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -66,7 +66,6 @@
+>  #include "hw/hyperv/vmbus-bridge.h"
+>  #include "hw/mem/nvdimm.h"
+>  #include "hw/i386/acpi-build.h"
+> -#include "kvm/kvm-cpu.h"
+>  #include "target/i386/cpu.h"
+> =20
+>  #define XEN_IOAPIC_NUM_PIRQS 128ULL
+> @@ -435,12 +434,6 @@ static void pc_compat_2_2_fn(MachineState *machine)
+>      pc_compat_2_3_fn(machine);
+>  }
+> =20
+> -static void pc_compat_2_1_fn(MachineState *machine)
+> -{
+> -    pc_compat_2_2_fn(machine);
+> -    x86_cpu_change_kvm_default("svm", NULL);
+> -}
+> -
+>  #ifdef CONFIG_ISAPC
+>  static void pc_init_isa(MachineState *machine)
+>  {
+> @@ -866,22 +859,6 @@ static void pc_i440fx_2_2_machine_options(MachineCla=
+ss *m)
+>  DEFINE_I440FX_MACHINE(v2_2, "pc-i440fx-2.2", pc_compat_2_2_fn,
+>                        pc_i440fx_2_2_machine_options);
+> =20
+> -static void pc_i440fx_2_1_machine_options(MachineClass *m)
+> -{
+> -    PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> -
+> -    pc_i440fx_2_2_machine_options(m);
+> -    m->hw_version =3D "2.1.0";
+> -    m->default_display =3D NULL;
+> -    compat_props_add(m->compat_props, hw_compat_2_1, hw_compat_2_1_len);
+> -    compat_props_add(m->compat_props, pc_compat_2_1, pc_compat_2_1_len);
+> -    pcmc->smbios_uuid_encoded =3D false;
+> -    pcmc->enforce_aligned_dimm =3D false;
+> -}
+> -
+> -DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+> -                      pc_i440fx_2_1_machine_options);
+> -
+>  #ifdef CONFIG_ISAPC
+>  static void isapc_machine_options(MachineClass *m)
+>  {
+
 
