@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4DA8D3511
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 12:58:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995B08D3515
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 13:00:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCGzH-00025u-IK; Wed, 29 May 2024 06:56:55 -0400
+	id 1sCH2M-0002rO-T5; Wed, 29 May 2024 07:00:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vilhelmgyda@gmail.com>)
- id 1sCGzF-0001pm-7S; Wed, 29 May 2024 06:56:53 -0400
-Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <vilhelmgyda@gmail.com>)
- id 1sCGzD-0003Ue-7K; Wed, 29 May 2024 06:56:52 -0400
-Received: by mail-io1-xd33.google.com with SMTP id
- ca18e2360f4ac-7e2188592c2so88384639f.0; 
- Wed, 29 May 2024 03:56:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716980209; x=1717585009; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pQHi1PWThwn93/8aqyNGE+J8DVO5qnNISfkfl9kvFfk=;
- b=JDzenT0Q+xrlefn0knkKhA00iKQoY00ENxNfem4fxN5yQEd1AZlBqmI67TCuxVDg79
- xX77nlEaJcbsIAUQQIEX3qTUx1aWeg8iFtsR1Dyud91AVyHq+SNUBw3VSB0v5NY9kZjv
- ARt0Tisqne3NOijX/9AIRmyBzZY3nNX7lMPzBSKUnIHKb+iHs+m2pSgOkixMkc2FhNev
- yzrM61DFZAber6mK2NMKR3dp9kQR8D8kBtbtD/2CA5aphgbkVyCCzh7gDQKaObBSm8db
- kOt3U0FzIeGMX8apW4j1zK+KptfWH0dbkBDcLjA2YkgOldSGWhwpNeLDvg0lx3YU1dqE
- PEdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716980209; x=1717585009;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pQHi1PWThwn93/8aqyNGE+J8DVO5qnNISfkfl9kvFfk=;
- b=JsEaghoAMZHO+APi4A5LTfp//q4WVxyKMYAjh4iLi6tikddIfsjHIx6gzk4GdixAX0
- 5SrMgTfsOov7UkmWwgOFWMzltkNpTO9XfKtxbfiVf9mnF0E4JJkBXLCMJ76t50fllePo
- fVcZVxfdGCOgSDh2DIg/X1Bod2sTTCl+3Dy+PRMX5cxK/Tp2j/tq5mDmVxJKrUr+j2ma
- GykhAidxisHs62zMB43BNCgWuv5Yg+lPGdFxTxADvBGqxkZXxOOSM2F7F6vSihtzr1qq
- 5qeo0fTsUEHxA0UArM0AQBlKqPi52eru6F1DD90kLu6vXrTkUjvoEUpaQGduYwej8RU3
- e23A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUSwT/ZXzNPEcHwUyVtb9IjWOboKqRYh6EHLMyfbWd8iDXSU5A7v6KFSbhrpATP0oaThBkDGhYJ8MZ6WJnzlPqyPTy1aTHq5w==
-X-Gm-Message-State: AOJu0Yw/nbNCVxmVj4Im+nXeeOqWz3mObrKUiIRuehnZKc+nlMWFWF0L
- rmR2qRemsoRJzGwbM4g3ZCWesm4fBcUnXC1SNjcPfQEj/2hwq2IbWIxNarvSIAp2fU5oAYzZf5u
- XKmajDnqs7eAswRTr0XqTu79CsSE=
-X-Google-Smtp-Source: AGHT+IGbVc3gmIo1BfkjHlYlr13Ba1jPY5gnhpnceh+BrY2g+0aTk8gUfdzuX+uC1nNM1+Cw0irAwhZ4ZlZTq8m+b1M=
-X-Received: by 2002:a5e:9807:0:b0:7e1:7b55:ad28 with SMTP id
- ca18e2360f4ac-7e8c480b57amr1648807639f.3.1716980209319; Wed, 29 May 2024
- 03:56:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sCH2L-0002r5-45
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 07:00:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sCH2J-00048S-I2
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 07:00:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1716980401;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=pRFLYBG9LjHe5dycymnUkyieEMP80peH2j2K8ESFoGA=;
+ b=QGVogdLYnq13witZGDmQeBAB/m2H2bE3NlWpyWD7xTKmd2k/0a/jdlrF0fuGhCL2QP/KA0
+ qM1ZTchsq1CFgAJHbmTWO1PtgN1h6jLA3NQzUWt4oJcMIOtFRXkFWnWrQD3rGtBsR/qm2E
+ tQrnzuvgTb9kz8DF4LK0KZLRLMGz4bk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-V7R5TyddNDuHakLnO_tWrg-1; Wed,
+ 29 May 2024 06:59:54 -0400
+X-MC-Unique: V7R5TyddNDuHakLnO_tWrg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 771F41C0512D;
+ Wed, 29 May 2024 10:59:54 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.254])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BAA18C15BB1;
+ Wed, 29 May 2024 10:59:52 +0000 (UTC)
+Date: Wed, 29 May 2024 12:59:51 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: Jin Cao <jojing64@gmail.com>, Ilya Dryomov <idryomov@gmail.com>,
+ qemu-devel@nongnu.org, qemu-block@nongnu.org, pl@kamp.de,
+ hreitz@redhat.com, peterx@redhat.com, farosas@suse.de
+Subject: Re: block snapshot issue with RBD
+Message-ID: <ZlcKp6gdIFdSsi_X@redhat.com>
+References: <8b639179-e567-469c-bd04-ee8dee12d7d2@gmail.com>
+ <0e01a8e2-a543-4524-939c-05413fd99e86@gmail.com>
+ <756f9dcb-4e9c-4c2f-bc8a-dcc7420a1839@gmail.com>
+ <CAOi1vP8nJVsvvsmG5Ac4sd+9NPA8v8t=7Sao0f7-qNb129p=OA@mail.gmail.com>
+ <fb2ea759-1a7e-4c0e-ab0d-3ec4c04dc503@gmail.com>
+ <5993acdc-f8ec-4fa8-bb97-952c3a56ae6d@proxmox.com>
 MIME-Version: 1.0
-References: <20240528102339.106257-1-vilhelmgyda@gmail.com>
- <e8t34.08zb3hciwfl@linaro.org>
-In-Reply-To: <e8t34.08zb3hciwfl@linaro.org>
-From: Vilhelm Gyda <vilhelmgyda@gmail.com>
-Date: Wed, 29 May 2024 16:26:38 +0530
-Message-ID: <CADe4k3Ke0Lc2roLkupO78KoTkJY46LG6jJdBAoCKsLcA98g3Uw@mail.gmail.com>
-Subject: Re: [PATCH] Issue #2294 | Machine microvm doesn't run under Xen accel
- for x86_64
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, philmd@linaro.org, 
- pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
- envelope-from=vilhelmgyda@gmail.com; helo=mail-io1-xd33.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5993acdc-f8ec-4fa8-bb97-952c3a56ae6d@proxmox.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,82 +84,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 29, 2024 at 3:58=E2=80=AFPM Manos Pitsidianakis
-<manos.pitsidianakis@linaro.org> wrote:
-> What about TCG? Will it be available if we only build with tcg?
+Am 29.05.2024 um 12:14 hat Fiona Ebner geschrieben:
+> I bisected this issue to d3007d348a ("block: Fix crash when loading
+> snapshot on inactive node").
+> 
+> > diff --git a/block/snapshot.c b/block/snapshot.c
+> > index ec8cf4810b..c4d40e80dd 100644
+> > --- a/block/snapshot.c
+> > +++ b/block/snapshot.c
+> > @@ -196,8 +196,10 @@ bdrv_snapshot_fallback(BlockDriverState *bs)
+> >  int bdrv_can_snapshot(BlockDriverState *bs)
+> >  {
+> >      BlockDriver *drv = bs->drv;
+> > +
+> >      GLOBAL_STATE_CODE();
+> > -    if (!drv || !bdrv_is_inserted(bs) || bdrv_is_read_only(bs)) {
+> > +
+> > +    if (!drv || !bdrv_is_inserted(bs) || !bdrv_is_writable(bs)) {
+> >          return 0;
+> >      }
+> >  
+> 
+> So I guess the issue is that the blockdev is not writable when
+> "postmigrate" state?
 
-I will try doing this, and report back, and will make the suggested
-changes, and re-submit.
+That makes sense. The error message really isn't great, but after
+migration, the image is assumed to be owned by the destination, so we
+can't use it any more. 'cont' basically asserts that the migration
+failed and we can get ownership back. I don't think we can do without a
+manual command reactivating the image on the source, but we could have
+one that does this without resuming the VM.
 
+Kevin
 
-On Wed, May 29, 2024 at 3:58=E2=80=AFPM Manos Pitsidianakis
-<manos.pitsidianakis@linaro.org> wrote:
->
-> On Tue, 28 May 2024 13:23, Will Gyda <vilhelmgyda@gmail.com> wrote:
-> >Issue #2294: Machine microvm doesn't run under Xen accel for qemu-system=
--x86_64.
-> >Solution: microvm is now not build if only Xen is available.
-> >
-> >Signed-off-by: Will Gyda <vilhelmgyda@gmail.com>
-> >
->
->
-> I suggest rewording the commit title to something like
->
-> "i386: remove microvm from default build"
->
-> And adding a commit message that explains that the microvm does not work
-> on Xen, hence if only Xen is available it should not be built.
->
-> Also, you can add a
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2294
->
-> line before your Signed-off-by. See
-> https://www.qemu.org/docs/master/devel/submitting-a-patch.html
->
-> But, seeing the issue itself, it's about the microvm being stuck under
-> Xen. So the commit that resolves this would either make it non-stuck or
-> make it impossible to start the vm to begin with.
->
->
-> >---
-> > configs/devices/i386-softmmu/default.mak | 2 +-
-> > hw/i386/Kconfig                          | 2 ++
-> > 2 files changed, 3 insertions(+), 1 deletion(-)
-> >
-> >diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/=
-i386-softmmu/default.mak
-> >index 598c6646df..6a73aee7dd 100644
-> >--- a/configs/devices/i386-softmmu/default.mak
-> >+++ b/configs/devices/i386-softmmu/default.mak
-> >@@ -29,4 +29,4 @@
-> > CONFIG_ISAPC=3Dy
-> > CONFIG_I440FX=3Dy
-> > CONFIG_Q35=3Dy
-> >-CONFIG_MICROVM=3Dy
-> >+#CONFIG_MICROVM=3Dn
->
-> Better remove this altogether since it's not a default anymore.
->
-> >diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-> >index a6ee052f9a..f8ec8ebd7a 100644
-> >--- a/hw/i386/Kconfig
-> >+++ b/hw/i386/Kconfig
-> >@@ -108,6 +108,8 @@ config Q35
-> >
-> > config MICROVM
-> >     bool
-> >+    default y
-> >+    depends on KVM || WHPX || NVMM || HVF
->
-> What about TCG? Will it be available if we only build with tcg?
->
-> >     select SERIAL_ISA # for serial_hds_isa_init()
-> >     select ISA_BUS
-> >     select APIC
-> >--
-> >2.25.1
-> >
-> >
 
