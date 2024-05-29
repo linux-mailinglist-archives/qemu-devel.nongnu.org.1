@@ -2,84 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE318D38BF
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 113EC8D38F7
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 16:17:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJyG-0006Ch-ID; Wed, 29 May 2024 10:08:04 -0400
+	id 1sCK76-0004vG-2r; Wed, 29 May 2024 10:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sCJyD-0006C1-2F; Wed, 29 May 2024 10:08:01 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1sCJyA-0005jW-F5; Wed, 29 May 2024 10:08:00 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-52b7a3c19b0so89892e87.3; 
- Wed, 29 May 2024 07:07:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716991675; x=1717596475; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UEv27P4h9FHThImWZFNAzfWD14sQulMv77KGwqjc99g=;
- b=GmLp6uVBpfpPp65H4Lta1X4IKs2vtmyu6m9Cd59jPMHEC08tCAIj/JpntShn1EChB2
- 58m3aEqIyRdfg0ZOWImYkht9k6LJ0CPvTckI6yHTvJpdA87Zl3J015qQAlONYbCM/Tg4
- 8hvwDMfM7T7CWawF3wzgIswHQ8S95uxJ9C33xBL/0e2v4nmOUyZjzndGA89Dn2CMwXlF
- kAfCWNHhYs7L5kCN6Iv6bwJB3MIKKg32WXUaxhicdFlDvTtZlmZJbI/S5aivInuxxAqk
- DJxHXxC0Wfm2mVkUJwkODRuuUeXWoyVqAdoSAlTd3AhrfVsZ+9RGJ/T2YLIehIkb6TcN
- a6uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716991675; x=1717596475;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UEv27P4h9FHThImWZFNAzfWD14sQulMv77KGwqjc99g=;
- b=wY70hsOh8eAEfo1u6elmwwRDRdoHoQ5wr2Dt7hpmnEAnGy4/yHTUc6Lntz+9LO9zVv
- N6t0/JNA3eSLTrIyz2+Ov12TWHz1bYhkOqhotE3gOaE+HEGDJtAPLGaWHRSgFdvJcua/
- Cwq18vulUDkphdCyD1TERDH5WKCDTe1CsA9qESJ2SU8A0YJzKKiR++zEFGtU6PLbRIi6
- NwZFGwx+/lfYWi7mVMlBbvEr3SarVSFUQ2beq/m85iEyAFiG3Imv6VWvp24pmayoMETe
- +bwVg/BlxwNKovk/wYpOzhY1UvslFWV3hF6j2yAdfcZStUkHAzojlln3qUlIOdZvcdei
- 2KzQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX1AxCI6zFg1YPOEgHWN19SKSmWcRfgo7XfcVZzRV7O5P9HkV2d10f8EdxDmjTBOuIWk6OdAalEPyo5pOutSLlvqChV
-X-Gm-Message-State: AOJu0YyLLwG8lFWA6H1C/bUgWuupT0/lLTjZCjphxH32xD7HldhG3DO+
- oBpo1rdmjWXwr9M+BUd+tfT2WI4wdfgiFfH9reBxXHfBn+mzSeXU4plpaBlE
-X-Google-Smtp-Source: AGHT+IEL0r6gK0il/RzsaJAW9Kz7pktj4eJeK2D4zknuRjCDUMpY29QDkroYx9PyQXCu1NbDqU9kWQ==
-X-Received: by 2002:ac2:4904:0:b0:51f:fcaf:e92d with SMTP id
- 2adb3069b0e04-52964baf401mr9487810e87.18.1716991674993; 
- Wed, 29 May 2024 07:07:54 -0700 (PDT)
-Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-52970760245sm1290849e87.122.2024.05.29.07.07.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 07:07:53 -0700 (PDT)
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: edgar.iglesias@gmail.com, sstabellini@kernel.org, jgross@suse.com,
- "Edgar E. Iglesias" <edgar.iglesias@amd.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH v8 8/8] hw/arm: xen: Enable use of grant mappings
-Date: Wed, 29 May 2024 16:07:39 +0200
-Message-Id: <20240529140739.1387692-9-edgar.iglesias@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
-References: <20240529140739.1387692-1-edgar.iglesias@gmail.com>
+ (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
+ id 1sCK73-0004sF-Eb
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:17:09 -0400
+Received: from galois.linutronix.de ([193.142.43.55])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
+ id 1sCK71-0007Ne-Df
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 10:17:09 -0400
+Date: Wed, 29 May 2024 16:16:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1716992224;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IU4QDPVV+TvrRGyJ9C6Myuy63yhSyOwEvHiQykxJhd8=;
+ b=3h5MHbAApS9fcRDOHFTJYadlFmIgoBKHB3/muqqZuyOXuPjaakkcbhilDrW071iaAyxVDT
+ 6UXa+SwdZyKtbG36QbufyNILZpTFa+Pviq6ZNvdD0batYfufnr0dyejGWbBi1m01QX+4n+
+ bQtYbAGbDuXNnrvhtaI6Ya1OrySL+lkhWKm11p7SC7bd41IYMdRhyKp97UvnZgWH156EBe
+ LiFq/DtIFPDc+DQsA0Patuuk9cGmQCrmuvrXuNNs5hUN/kdByYP5H52zFhV/6rWCnRnI2d
+ RrW1ejW0jRs3PuvkgtoOBXhovoiygnEhGRnqZ2J11sKkOe7cav6tYSEh8Dhp0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1716992224;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=IU4QDPVV+TvrRGyJ9C6Myuy63yhSyOwEvHiQykxJhd8=;
+ b=yNY1ShW/oGs3B9wz/YerlN+lgbo6yKORHd6HZFunUoI1AKH9aozBMVPMcYzsNerXbnbprf
+ NW0sKwSESZr3twDw==
+From: Nam Cao <namcao@linutronix.de>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH] pci-bridge/xio3130_downstream: fix invalid link speed
+ and link width
+Message-ID: <20240529141657.cGpjgEmN@linutronix.de>
+References: <20240529132125.106790-1-namcao@linutronix.de>
+ <fc0338d2-9a4d-4770-8a9c-c9e077415b29@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+In-Reply-To: <fc0338d2-9a4d-4770-8a9c-c9e077415b29@linaro.org>
+Received-SPF: pass client-ip=193.142.43.55; envelope-from=namcao@linutronix.de;
+ helo=galois.linutronix.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,33 +79,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Edgar E. Iglesias" <edgar.iglesias@amd.com>
+On Wed, May 29, 2024 at 03:50:14PM +0200, Philippe Mathieu-DaudÈ wrote:
+> On 29/5/24 15:21, Nam Cao wrote:
+> > Set link width to x1 and link speed to 2.5 Gb/s as specified by the
+> > datasheet. Without this, these fields in the link status register read
+> > zero, which is incorrect.
+> > 
+> > This problem appeared since 3d67447fe7c2 ("pcie: Fill PCIESlot link fields
+> > to support higher speeds and widths"), which allows PCIe slot to set link
+> > width and link speed. However, if PCIe slot does not explicitly set these
+> > properties, they will be zero. Before this commit, the width and speed
+> > default to x1 and 2.5 Gb/s.
+> > 
+> > Fixes: 3d67447fe7c2 ("pcie: Fill PCIESlot link fields to support higher speeds and widths")
+> > Signed-off-by: Nam Cao <namcao@linutronix.de>
+> > ---
+> >   hw/pci-bridge/xio3130_downstream.c | 8 ++++++++
+> >   1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/hw/pci-bridge/xio3130_downstream.c b/hw/pci-bridge/xio3130_downstream.c
+> > index 38a2361fa2..d949431191 100644
+> > --- a/hw/pci-bridge/xio3130_downstream.c
+> > +++ b/hw/pci-bridge/xio3130_downstream.c
+> > @@ -172,10 +172,18 @@ static void xio3130_downstream_class_init(ObjectClass *klass, void *data)
+> >       device_class_set_props(dc, xio3130_downstream_props);
+> >   }
+> > +static void xio3130_downstream_instance_post_init(Object *obj)
+> > +{
+> > +    PCIESlot *s = PCIE_SLOT(obj);
+> > +    s->speed = QEMU_PCI_EXP_LNK_2_5GT;
+> > +    s->width = QEMU_PCI_EXP_LNK_X1;
+> 
+> - You ignore previous value and overwrite
+> - You don't warn the user about missing config value
 
-Signed-off-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
----
- hw/arm/xen_arm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Users cannot set speed/width for this device. At the moment, only PCI root
+port supports that.
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index 15fa7dfa84..6fad829ede 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -125,6 +125,11 @@ static void xen_init_ram(MachineState *machine)
-                                  GUEST_RAM1_BASE, ram_size[1]);
-         memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-     }
-+
-+    /* Setup support for grants.  */
-+    memory_region_init_ram(&xen_grants, NULL, "xen.grants", block_len,
-+                           &error_fatal);
-+    memory_region_add_subregion(sysmem, XEN_GRANT_ADDR_OFF, &xen_grants);
- }
- 
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
--- 
-2.40.1
+It wouldn't make sense for users to set these properties nonetheless, these
+properties are fixed according to datasheet.
+
+> Is post_init() the correct way to deal with that? Usually
+> this is done in realize(), where you can set *errp to
+> notify the user of invalid values.
+
+I stole this from hw/pci-bridge/cxl_downstream.c and
+hw/pci-bridge/pcie_root_port.c. So I think it's correct.
+
+I am new to QEMU code, so please tell me if you think this is not the best
+approach.
+
+Best regards,
+Nam
 
 
