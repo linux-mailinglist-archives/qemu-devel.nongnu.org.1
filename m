@@ -2,72 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2760E8D3779
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD3D8D37BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJEU-0003fV-68; Wed, 29 May 2024 09:20:46 -0400
+	id 1sCJRa-0003dy-IL; Wed, 29 May 2024 09:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sCJEQ-0003et-5n
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:20:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
+ id 1sCJFZ-0004mf-B9
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 09:21:53 -0400
+Received: from galois.linutronix.de ([193.142.43.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1sCJEO-0004yq-Hf
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:20:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716988839;
+ (Exim 4.90_1) (envelope-from <namcao@linutronix.de>)
+ id 1sCJFX-00058S-8v
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 09:21:52 -0400
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1716988900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=oD+XSeTIwnENgUhSUme1EXmN0K2eMJPIIRlWHmse/z8=;
- b=Km630cm5RtettTDzqvvYgLWFnEyfzmwib8wzz+u5r4K68Bsm1CcEtbSLsChGbMVwfCB2AB
- 5tZgbsrK4jdL/4bMF1EdiZtoHzmGuwebV2V/B3hpEZ41+LCKYhBLLyUreVwNPp+Nyy141T
- lt1sSTmU/F4K1EOJf0rTvRTUbC5vq+k=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-237-IW33jL5vPcmdyAZZMoA1ig-1; Wed,
- 29 May 2024 09:20:36 -0400
-X-MC-Unique: IW33jL5vPcmdyAZZMoA1ig-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D75329AA384;
- Wed, 29 May 2024 13:20:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.254])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0A659105480A;
- Wed, 29 May 2024 13:20:33 +0000 (UTC)
-Date: Wed, 29 May 2024 15:20:32 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Hanna Czenczek <hreitz@redhat.com>, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, qemu-stable@nongnu.org
-Subject: Re: [PATCH 1/2] Revert "monitor: use aio_co_reschedule_self()"
-Message-ID: <ZlcroLAbB2KuBt4G@redhat.com>
-References: <20240506190622.56095-1-stefanha@redhat.com>
- <20240506190622.56095-2-stefanha@redhat.com>
- <5e6a19d0-bb58-440e-9524-25555a276a21@proxmox.com>
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N1YiYJh4DycAIpYKRbdaGLipVBYIk22sylcUCCHc7SY=;
+ b=1EA0acUHxAPQSvjT+kLPR2Emv1atv3ozL0ypdFNYTpdC0BlGj92ykE42qfKKvGyKBWNwCq
+ LksijuPjW7mbAuqVNXrXkfkxlGlc+R5nF6NgkM+S7bgkyeZPW1PXezP/45PeohRf/XOeuz
+ zAIRsKe83n5MiPVCh/aEXJuc45iAeCuyM6k1hMRWvWrIcQe5F0k1eBneBEZMWI04THTpz6
+ gVDewRszV0aljF/X2C4B7tDj8Lbdmw1UIh0K7iRfmZoOhXSSnxeWEPORO06sq7De0afrXl
+ bclhm4sLjrN2ZR50GD4F8bV3uDEAP8d4+rn4gLfFaNNRs6E/8Gt7q+qpoOlvwA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1716988900;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N1YiYJh4DycAIpYKRbdaGLipVBYIk22sylcUCCHc7SY=;
+ b=NNW8ThIyClrZFuHLtnyNOW/BivpVOmFxq0unajADPFxy1rhMHPyKdQyf3hM/5RuZJNvZcw
+ 6iI007AYJp2VUHCw==
+To: Alex Williamson <alex.williamson@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: [PATCH] pci-bridge/xio3130_downstream: fix invalid link speed and
+ link width
+Date: Wed, 29 May 2024 15:21:25 +0200
+Message-Id: <20240529132125.106790-1-namcao@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5e6a19d0-bb58-440e-9524-25555a276a21@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=193.142.43.55; envelope-from=namcao@linutronix.de;
+ helo=galois.linutronix.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 29 May 2024 09:34:10 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,12 +73,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 29.05.2024 um 12:33 hat Fiona Ebner geschrieben:
-> CC-ing stable since 1f25c172f83704e350c0829438d832384084a74d is in 9.0.0
+Set link width to x1 and link speed to 2.5 Gb/s as specified by the
+datasheet. Without this, these fields in the link status register read
+zero, which is incorrect.
 
-Good point, I'm also updating the commit message in my tree to add
-a Cc: line. Thanks for catching this, Fiona!
+This problem appeared since 3d67447fe7c2 ("pcie: Fill PCIESlot link fields
+to support higher speeds and widths"), which allows PCIe slot to set link
+width and link speed. However, if PCIe slot does not explicitly set these
+properties, they will be zero. Before this commit, the width and speed
+default to x1 and 2.5 Gb/s.
 
-Kevin
+Fixes: 3d67447fe7c2 ("pcie: Fill PCIESlot link fields to support higher spe=
+eds and widths")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+ hw/pci-bridge/xio3130_downstream.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/hw/pci-bridge/xio3130_downstream.c b/hw/pci-bridge/xio3130_dow=
+nstream.c
+index 38a2361fa2..d949431191 100644
+--- a/hw/pci-bridge/xio3130_downstream.c
++++ b/hw/pci-bridge/xio3130_downstream.c
+@@ -172,10 +172,18 @@ static void xio3130_downstream_class_init(ObjectClass=
+ *klass, void *data)
+     device_class_set_props(dc, xio3130_downstream_props);
+ }
+=20
++static void xio3130_downstream_instance_post_init(Object *obj)
++{
++    PCIESlot *s =3D PCIE_SLOT(obj);
++    s->speed =3D QEMU_PCI_EXP_LNK_2_5GT;
++    s->width =3D QEMU_PCI_EXP_LNK_X1;
++}
++
+ static const TypeInfo xio3130_downstream_info =3D {
+     .name          =3D TYPE_XIO3130_DOWNSTREAM,
+     .parent        =3D TYPE_PCIE_SLOT,
+     .class_init    =3D xio3130_downstream_class_init,
++    .instance_post_init =3D xio3130_downstream_instance_post_init,
+     .interfaces =3D (InterfaceInfo[]) {
+         { INTERFACE_PCIE_DEVICE },
+         { }
+--=20
+2.39.2
 
 
