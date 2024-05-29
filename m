@@ -2,99 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684728D3BF2
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53A08D3BF6
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCLsH-0000f2-Mv; Wed, 29 May 2024 12:10:01 -0400
+	id 1sCLsZ-0000x4-6C; Wed, 29 May 2024 12:10:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCLsD-0000d9-Oo
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:09:58 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1sCLsP-0000rr-29
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:10:09 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCLrx-0003IL-Vh
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:09:57 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a61b70394c0so265127366b.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 09:09:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <rkanwal@rivosinc.com>)
+ id 1sCLsC-0003Lp-2B
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:10:08 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-35b6467754cso1384490f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 09:09:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1716998980; x=1717603780; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uLMfOIC0M6UjEiTjbHQfPonFA1Fbh58cXgqyObzz2H0=;
- b=DsLEgT+LeP5vwy+DFlqew/KR2R6dXZWPn8+XPxhx106d2xOLzaBoxUWAfsMoyIMzEW
- 330TjaR7FuyFCLy6HwVUVMHhyl23CGx0gRl2ko06RIZO8T10B0kJdJbXV91GwlAuVCk0
- yKhipM+RRYDtXyeqQjaX40jiGkN1g2j6tqFCNM1Sta5/DNrGPtry5K1u3POONxc4kg0P
- tQm8ueKch+u7cPbSo3adm+WUhHTXrDp9O4GNHtMvgDJv1PW2Ld+HZkHoNmdT4d5PboXS
- uLA8YLPqG7elDL1BZABa3mG53wADCQRAlRgW6n+k5p/794ec0DmNKefyHGN17Q99yXk8
- DLBA==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1716998993; x=1717603793;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vvweq7JDSqVgyJdFSVmnrbu+6/IoB9lh90OgmJ3I8bk=;
+ b=L/3El/HxusjY0e7qGnwsLwvQVEILrlwDLr9Vnci7hQ3kDZzw0dcL+sPE8GF4yfUcyR
+ q6Pbbb2BBnevoQr1QF2l+VKv/HTg5uXAmImLq+rbt96qncnIMUwefy3Nhs3FsAQCbw+o
+ JGDM17hW0heGuGLwIAfifyxBWt4EdWQuRmt+rPIKt5BySF7Zbd4vdR1SEEfeeaWbcSdw
+ 6Nu3+hma5NCVrNbHCCMR17G1DyFQTKD8zcyWFZbwDXOwQODTApnEehBmap5Iy2SYNIzv
+ Um/IFcKSsEHTV3wYPYGpZ64O+Dcu7UTpjs6Xfjh0J45B3FK/KE48vtcAjd3vhX642Rhn
+ xOBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716998980; x=1717603780;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uLMfOIC0M6UjEiTjbHQfPonFA1Fbh58cXgqyObzz2H0=;
- b=GY70xL5kIPsmpTVuMmx3xzkVlz5ycsiBGX84rzu00OlwJ9kwtAoMifv9RPMWtJZKn3
- x0wWRxyAyRXpAspyyPwVw1FwLEiVtoZGZjVWFAEvHhoC4nmdnGWHmbIXGUhblO99xIsd
- XeLJMrxViZ9ZWgMraHb7xAF2kQfIiMkfMDulZzZdUpdeIo0LJq/QqzIRwyWBsbqHpYrW
- daJRj7ptvu2S8d9JVEQw/Ll/wdQ6NT/QRWVzrQK/0ur8QZq6BLZfx1pL4+b4LYGQwnNw
- w9c8vitqm1gux9GwArG72kNd9krFhSWy4B3N3QE4Egdc/NSY4SZGUFm+UtfnNzmq3RER
- 42ow==
-X-Gm-Message-State: AOJu0Ywy2tvxVC5HBqkf4qsRaGpbfPk2Hya3W4QhBfjKrKfAXE3cyZCd
- 9bIb7IWzqNtEpp7fpDovFrIS9dF1wjrXJjB+Dz9mWGGD+u+POxtPmis8X9gC0kg=
-X-Google-Smtp-Source: AGHT+IGibP4ee9T4MPCyGEUiuvCqTiuPAc1oiOIKTjz/WIGnHqyNN02usNxYINKIHESZhVmkeDpmYQ==
-X-Received: by 2002:a17:906:fb03:b0:a62:415b:b5c with SMTP id
- a640c23a62f3a-a62641a2a26mr966637966b.5.1716998980355; 
- Wed, 29 May 2024 09:09:40 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c934fd8sm727651966b.47.2024.05.29.09.09.37
+ d=1e100.net; s=20230601; t=1716998993; x=1717603793;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vvweq7JDSqVgyJdFSVmnrbu+6/IoB9lh90OgmJ3I8bk=;
+ b=RABrvegHLG4o3XxNzkFj6edNf0Z6PH5JeiTWVn3W/IDs9OpgvKB7NB4qy9HI3u115K
+ nA1sPV7IxgUApAm+ECFsc9vyFt9L9RVCf+HGou7UENkRGeQYF65CGpRqoOITw7q+47TT
+ rCnQJkqB2P6CeANB0neRTzJFeSeos9IjONYD4BI1hNAIR5bto08HnQVbt9WTSIgT8hzs
+ yZYdh3ndacyPfya/3ixTdsah6uZPMGtDHwnO8HiiX7DVrc+RsqhZ88FPZLUJ5IZexmS7
+ tfqeAXIImNK+936J4ZUMS4VjdzC64TWDPkxgfgsfA6LmP2fy8plSvTLRkTtGw90xzbne
+ 0ZRw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWzmhXhnEpE+QMWaiA4tEKsng8B4WLOIQfSv6eJfdnvuaYfZmpeX6txyMe8TOvO6kAzhCb4zmmnSwd8T9Wv5B6FPXDsXPc=
+X-Gm-Message-State: AOJu0Yzl4oYP+0Pa/7Htih4rbluPhD+YA4nQ1n9TITq3adktwG1NL3DT
+ DDs1DUEdmM6CWwNSHGznluzAPOaGULcvd7P34j1ESp4Hogp7QD1C3sD49jf1RUw=
+X-Google-Smtp-Source: AGHT+IGldXWcQkSzsZ8Hi3ls2CQzKyQ78nQAILrZKuH29RZZHKI0vziZl1Pv/BfcGwCouA4Y8qgoGg==
+X-Received: by 2002:adf:ed8f:0:b0:354:ddb8:b5e3 with SMTP id
+ ffacd0b85a97d-35526c15a10mr10183350f8f.11.1716998993557; 
+ Wed, 29 May 2024 09:09:53 -0700 (PDT)
+Received: from rkanwal-XPS-15-9520.Home
+ ([2a02:c7c:7527:ee00:7446:71c1:a41a:da9b])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-3557dcf0740sm15228213f8f.107.2024.05.29.09.09.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 09:09:38 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 06C3F5FA95;
- Wed, 29 May 2024 17:09:36 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>, John Snow <jsnow@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-arm@nongnu.org, Cleber Rosa <crosa@redhat.com>,
- Joel Stanley <joel@jms.id.au>, Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-s390x@nongnu.org,
- Radoslaw Biernacki <rad@semihalf.com>
-Subject: [PATCH 10/10] tests/avocado: update sbsa-ref firmware
-Date: Wed, 29 May 2024 17:09:34 +0100
-Message-Id: <20240529160934.982373-11-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240529160934.982373-1-alex.bennee@linaro.org>
-References: <20240529160934.982373-1-alex.bennee@linaro.org>
+ Wed, 29 May 2024 09:09:53 -0700 (PDT)
+From: Rajnesh Kanwal <rkanwal@rivosinc.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
+ dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
+ atishp@rivosinc.com, apatel@ventanamicro.com, rkanwal@rivosinc.com,
+ beeman@rivosinc.com, tech-control-transfer-records@lists.riscv.org
+Subject: [PATCH 0/6] target/riscv: Add support for Control Transfer Records
+ Ext. 
+Date: Wed, 29 May 2024 17:09:44 +0100
+Message-Id: <20240529160950.132754-1-rkanwal@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=rkanwal@rivosinc.com; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,88 +97,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+This series enables Control Transfer Records extension support on riscv
+platform. This extension is similar to Arch LBR in x86 and BRBE in ARM.
+The Extension has been stable and the latest release can be found here [0] 
 
-Partial support for NUMA setup:
-- cpu nodes
-- memory nodes
+CTR extension depends on couple of other extensions:
 
-Used versions:
+1. S[m|s]csrind : The indirect CSR extension [1] which defines additional
+   ([M|S|VS]IREG2-[M|S|VS]IREG6) register to address size limitation of
+   RISC-V CSR address space. CTR access ctrsource, ctrtartget and ctrdata
+   CSRs using sscsrind extension.
 
-- Trusted Firmware v2.11.0
-- Tianocore EDK2 stable202405
-- Tianocore EDK2 Platforms code commit 4bbd0ed
+2. Smstateen: The mstateen bit[54] controls the access to the CTR ext to
+   S-mode.
 
-Firmware is built using Debian 'bookworm' cross toolchain (gcc 12.2.0).
+3. Sscofpmf: Counter overflow and privilege mode filtering. [2] 
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Message-Id: <20240528182917.91027-1-marcin.juszkiewicz@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- tests/avocado/machine_aarch64_sbsaref.py | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+The series is based on Smcdeleg/Ssccfg counter delegation extension [3]
+patches. CTR itself doesn't depend on counter delegation support. This
+rebase is basically to include the Smcsrind patches.
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index 98c76c1ff7..6bb82f2a03 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -37,18 +37,18 @@ def fetch_firmware(self):
- 
-         Used components:
- 
--        - Trusted Firmware 2.10.2
--        - Tianocore EDK2 stable202402
--        - Tianocore EDK2-platforms commit 085c2fb
-+        - Trusted Firmware 2.11.0
-+        - Tianocore EDK2 stable202405
-+        - Tianocore EDK2-platforms commit 4bbd0ed
- 
-         """
- 
-         # Secure BootRom (TF-A code)
-         fs0_xz_url = (
-             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
--            "20240313-116475/edk2/SBSA_FLASH0.fd.xz"
-+            "20240528-140808/edk2/SBSA_FLASH0.fd.xz"
-         )
--        fs0_xz_hash = "637593749cc307dea7dc13265c32e5d020267552f22b18a31850b8429fc5e159"
-+        fs0_xz_hash = "fa6004900b67172914c908b78557fec4d36a5f784f4c3dd08f49adb75e1892a9"
-         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash,
-                                       algorithm='sha256')
-         archive.extract(tar_xz_path, self.workdir)
-@@ -57,9 +57,9 @@ def fetch_firmware(self):
-         # Non-secure rom (UEFI and EFI variables)
-         fs1_xz_url = (
-             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
--            "20240313-116475/edk2/SBSA_FLASH1.fd.xz"
-+            "20240528-140808/edk2/SBSA_FLASH1.fd.xz"
-         )
--        fs1_xz_hash = "cb0a5e8cf5e303c5d3dc106cfd5943ffe9714b86afddee7164c69ee1dd41991c"
-+        fs1_xz_hash = "5f3747d4000bc416d9641e33ff4ac60c3cc8cb74ca51b6e932e58531c62eb6f7"
-         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash,
-                                       algorithm='sha256')
-         archive.extract(tar_xz_path, self.workdir)
-@@ -98,15 +98,15 @@ def test_sbsaref_edk2_firmware(self):
- 
-         # AP Trusted ROM
-         wait_for_console_pattern(self, "Booting Trusted Firmware")
--        wait_for_console_pattern(self, "BL1: v2.10.2(release):")
-+        wait_for_console_pattern(self, "BL1: v2.11.0(release):")
-         wait_for_console_pattern(self, "BL1: Booting BL2")
- 
-         # Trusted Boot Firmware
--        wait_for_console_pattern(self, "BL2: v2.10.2(release)")
-+        wait_for_console_pattern(self, "BL2: v2.11.0(release)")
-         wait_for_console_pattern(self, "Booting BL31")
- 
-         # EL3 Runtime Software
--        wait_for_console_pattern(self, "BL31: v2.10.2(release)")
-+        wait_for_console_pattern(self, "BL31: v2.11.0(release)")
- 
-         # Non-trusted Firmware
-         wait_for_console_pattern(self, "UEFI firmware (version 1.0")
+Due to the dependency of these extensions, the following extensions must be
+enabled to use the control transfer records feature.
+
+"smstateen=true,sscofpmf=true,smcsrind=true,sscsrind=true,smctr=true,ssctr=true" 
+
+Here is the link to a quick guide [5] to setup and run a basic perf demo on
+Linux to use CTR Ext.
+
+The Qemu patches can be found here:
+https://github.com/rajnesh-kanwal/qemu/tree/ctr_upstream
+
+The opensbi patch can be found here:
+https://github.com/rajnesh-kanwal/opensbi/tree/ctr_upstream
+
+The Linux kernel patches can be found here:
+https://github.com/rajnesh-kanwal/linux/tree/ctr_upstream
+
+[0]: https://github.com/riscv/riscv-control-transfer-records/release
+[1]: https://github.com/riscv/riscv-indirect-csr-access
+[2]: https://github.com/riscvarchive/riscv-count-overflow/tree/main
+[3]: https://github.com/riscv/riscv-smcdeleg-ssccfg
+[4]: https://lore.kernel.org/all/20240217000134.3634191-1-atishp@rivosinc.com/
+[5]: https://github.com/rajnesh-kanwal/linux/wiki/Running-CTR-basic-demo-on-QEMU-RISC%E2%80%90V-Virt-machine
+
+Rajnesh Kanwal (6):
+  target/riscv: Remove obsolete sfence.vm instruction
+  target/riscv: Add Control Transfer Records CSR definitions.
+  target/riscv: Add support for Control Transfer Records extension CSRs.
+  target/riscv: Add support to record CTR entries.
+  target/riscv: Add CTR sctrclr instruction.
+  target/riscv: Add support to access ctrsource, ctrtarget, ctrdata
+    regs.
+
+ target/riscv/cpu.c                            |   4 +
+ target/riscv/cpu.h                            |  14 +
+ target/riscv/cpu_bits.h                       | 154 +++++++++
+ target/riscv/cpu_cfg.h                        |   2 +
+ target/riscv/cpu_helper.c                     | 213 ++++++++++++
+ target/riscv/csr.c                            | 312 +++++++++++++++++-
+ target/riscv/helper.h                         |   8 +-
+ target/riscv/insn32.decode                    |   2 +-
+ .../riscv/insn_trans/trans_privileged.c.inc   |  21 +-
+ target/riscv/insn_trans/trans_rvi.c.inc       |  27 ++
+ target/riscv/op_helper.c                      | 117 ++++++-
+ target/riscv/translate.c                      |   9 +
+ 12 files changed, 870 insertions(+), 13 deletions(-)
+
 -- 
-2.39.2
+2.34.1
 
 
