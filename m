@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2B78D37B9
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2018D37BC
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJRa-0003cH-DB; Wed, 29 May 2024 09:34:18 -0400
+	id 1sCJRa-0003cL-Dy; Wed, 29 May 2024 09:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <oleg.sviridov@red-soft.ru>)
- id 1sCHAj-0005NF-5P; Wed, 29 May 2024 07:08:45 -0400
+ id 1sCHc7-0005Zf-H6; Wed, 29 May 2024 07:37:03 -0400
 Received: from red-soft.ru ([188.246.186.2] helo=gw.red-soft.ru)
  by eggs.gnu.org with esmtp (Exim 4.90_1)
  (envelope-from <oleg.sviridov@red-soft.ru>)
- id 1sCHAf-0005iq-Mb; Wed, 29 May 2024 07:08:43 -0400
+ id 1sCHc4-0002vJ-Qo; Wed, 29 May 2024 07:37:03 -0400
 Received: from localhost.localdomain.biz (unknown [10.81.100.51])
- by gw.red-soft.ru (Postfix) with ESMTPA id 7B8713E1A85;
- Wed, 29 May 2024 14:08:36 +0300 (MSK)
+ by gw.red-soft.ru (Postfix) with ESMTPA id 1EB3E3E19C8;
+ Wed, 29 May 2024 14:36:57 +0300 (MSK)
 From: Oleg Sviridov <oleg.sviridov@red-soft.ru>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oleg Sviridov <oleg.sviridov@red-soft.ru>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Jason Wang <jasowang@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] hw/net: prevent potential NULL dereference
-Date: Wed, 29 May 2024 14:07:18 +0300
-Message-ID: <20240529110804.3636963-1-oleg.sviridov@red-soft.ru>
+To: Oleg Sviridov <oleg.sviridov@red-soft.ru>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Halil Pasic <pasic@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+ qemu-s390x@nongnu.org, qemu-devel@nongnu.org
+Subject: [PATCH] hw/s390x: prevent potential NULL dereference
+Date: Wed, 29 May 2024 14:36:39 +0300
+Message-ID: <20240529113643.3638618-1-oleg.sviridov@red-soft.ru>
 X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-KLMS-Rule-ID: 1
 X-KLMS-Message-Action: clean
-X-KLMS-AntiSpam-Lua-Profiles: 185580 [May 29 2024]
+X-KLMS-AntiSpam-Lua-Profiles: 185581 [May 29 2024]
 X-KLMS-AntiSpam-Version: 6.1.0.4
 X-KLMS-AntiSpam-Envelope-From: oleg.sviridov@red-soft.ru
 X-KLMS-AntiSpam-Rate: 0
@@ -43,9 +43,9 @@ X-KLMS-AntiSpam-Status: not_detected
 X-KLMS-AntiSpam-Method: none
 X-KLMS-AntiSpam-Auth: dkim=none
 X-KLMS-AntiSpam-Info: LuaCore: 20 0.3.20
- 743589a8af6ec90b529f2124c2bbfc3ce1d2f20f, {Tracking_arrow_text},
- {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2; red-soft.ru:7.1.1;
- d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+ 743589a8af6ec90b529f2124c2bbfc3ce1d2f20f,
+ d41d8cd98f00b204e9800998ecf8427e.com:7.1.1; 127.0.0.199:7.1.2;
+ red-soft.ru:7.1.1, FromAlignment: s
 X-MS-Exchange-Organization-SCL: -1
 X-KLMS-AntiSpam-Interceptor-Info: scan successful
 X-KLMS-AntiPhishing: Clean, bases: 2024/05/29 09:57:00
@@ -75,30 +75,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pointer, returned from function 'spapr_vio_find_by_reg', may be NULL and is dereferenced immediately after.
+Pointer, returned from function 's390_ipl_get_iplb_pv', may be NULL and is dereferenced immediately after.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
 Signed-off-by: Oleg Sviridov <oleg.sviridov@red-soft.ru>
 ---
- hw/net/spapr_llan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/s390x/ipl.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/hw/net/spapr_llan.c b/hw/net/spapr_llan.c
-index ecb30b7c76..f40b733229 100644
---- a/hw/net/spapr_llan.c
-+++ b/hw/net/spapr_llan.c
-@@ -770,6 +770,10 @@ static target_ulong h_change_logical_lan_mac(PowerPCCPU *cpu,
-     SpaprVioVlan *dev = VIO_SPAPR_VLAN_DEVICE(sdev);
-     int i;
+diff --git a/hw/s390x/ipl.c b/hw/s390x/ipl.c
+index e934bf89d1..2fa6a340a1 100644
+--- a/hw/s390x/ipl.c
++++ b/hw/s390x/ipl.c
+@@ -706,9 +706,14 @@ int s390_ipl_prepare_pv_header(Error **errp)
+ {
+     IplParameterBlock *ipib = s390_ipl_get_iplb_pv();
+     IPLBlockPV *ipib_pv = &ipib->pv;
+-    void *hdr = g_malloc(ipib_pv->pv_header_len);
++    void *hdr;
+     int rc;
  
-+    if (!dev) {
-+        return H_PARAMETER;
++    if (!ipib_pv) {
++        return -1;
 +    }
 +
-     for (i = 0; i < ETH_ALEN; i++) {
-         dev->nicconf.macaddr.a[ETH_ALEN - i - 1] = macaddr & 0xff;
-         macaddr >>= 8;
++    hdr = g_malloc(ipib_pv->pv_header_len);
+     cpu_physical_memory_read(ipib_pv->pv_header_addr, hdr,
+                              ipib_pv->pv_header_len);
+     rc = s390_pv_set_sec_parms((uintptr_t)hdr, ipib_pv->pv_header_len, errp);
+@@ -722,6 +727,10 @@ int s390_ipl_pv_unpack(void)
+     IPLBlockPV *ipib_pv = &ipib->pv;
+     int i, rc = 0;
+ 
++    if (!ipib_pv) {
++        return -1;
++    }
++
+     for (i = 0; i < ipib_pv->num_comp; i++) {
+         rc = s390_pv_unpack(ipib_pv->components[i].addr,
+                             TARGET_PAGE_ALIGN(ipib_pv->components[i].size),
 -- 
 2.44.0
 
