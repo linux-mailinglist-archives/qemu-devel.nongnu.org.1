@@ -2,24 +2,24 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A778D3C5E
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4678D3C95
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 18:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCM7U-0001o1-BA; Wed, 29 May 2024 12:25:44 -0400
+	id 1sCM7W-00020K-Uu; Wed, 29 May 2024 12:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM75-0001IB-4I
+ id 1sCM77-0001JU-Gm
  for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:23 -0400
 Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
- id 1sCM72-0006N6-Nt
- for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:18 -0400
+ id 1sCM74-0006NI-JN
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 12:25:21 -0400
 Received: from movement by movementarian.org with local (Exim 4.95)
- (envelope-from <movement@movementarian.org>) id 1sCM6r-006CR0-9r;
+ (envelope-from <movement@movementarian.org>) id 1sCM6r-006CR5-DS;
  Wed, 29 May 2024 17:25:05 +0100
 From: John Levon <levon@movementarian.org>
 To: qemu-devel@nongnu.org
@@ -27,9 +27,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, jag.raman@oracle.com,
  thanos.makatos@nutanix.com, John Johnson <john.g.johnson@oracle.com>,
  Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  John Levon <john.levon@nutanix.com>
-Subject: [PATCH 22/26] vfio-user: no-mmap DMA support
-Date: Wed, 29 May 2024 17:23:15 +0100
-Message-Id: <20240529162319.1476680-23-levon@movementarian.org>
+Subject: [PATCH 23/26] vfio-user: dma read/write operations
+Date: Wed, 29 May 2024 17:23:16 +0100
+Message-Id: <20240529162319.1476680-24-levon@movementarian.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240529162319.1476680-1-levon@movementarian.org>
 References: <20240529162319.1476680-1-levon@movementarian.org>
@@ -59,74 +59,260 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jagannathan Raman <jag.raman@oracle.com>
 
-Force remote process to use DMA r/w messages instead
-of directly mapping guest memory.
+Messages from server to client that perform device DMA.
 
 Originally-by: John Johnson <john.g.johnson@oracle.com>
 Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 Signed-off-by: Jagannathan Raman <jag.raman@oracle.com>
 Signed-off-by: John Levon <john.levon@nutanix.com>
 ---
- hw/vfio/user-container.c | 2 +-
- hw/vfio/user-pci.c       | 5 +++++
- hw/vfio/user.h           | 1 +
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ hw/vfio/user-pci.c      | 110 ++++++++++++++++++++++++++++++++++++++++
+ hw/vfio/user-protocol.h |  13 ++++-
+ hw/vfio/user.c          |  57 +++++++++++++++++++++
+ hw/vfio/user.h          |   3 ++
+ 4 files changed, 182 insertions(+), 1 deletion(-)
 
-diff --git a/hw/vfio/user-container.c b/hw/vfio/user-container.c
-index 213861fb5d..1f6710e0b7 100644
---- a/hw/vfio/user-container.c
-+++ b/hw/vfio/user-container.c
-@@ -110,7 +110,7 @@ static int vfio_user_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
-      * vaddr enters as a QEMU process address; make it either a file offset
-      * for mapped areas or leave as 0.
-      */
--    if (fd != -1) {
-+    if (fd != -1 && !(container->proxy->flags & VFIO_PROXY_NO_MMAP)) {
-         msgp->offset = qemu_ram_block_host_offset(mrp->ram_block, vaddr);
-     }
- 
 diff --git a/hw/vfio/user-pci.c b/hw/vfio/user-pci.c
-index 9514f6e2fa..19fbcf77ab 100644
+index 19fbcf77ab..9fb6ae5142 100644
 --- a/hw/vfio/user-pci.c
 +++ b/hw/vfio/user-pci.c
-@@ -40,6 +40,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(VFIOUserPCIDevice, VFIO_USER_PCI)
- struct VFIOUserPCIDevice {
-     VFIOPCIDevice device;
-     char *sock_name;
-+    bool no_direct_dma; /* disable shared mem for DMA */
-     bool send_queued;   /* all sends are queued */
-     bool no_post;       /* all regions write are sync */
- };
-@@ -158,6 +159,9 @@ static void vfio_user_pci_realize(PCIDevice *pdev, Error **errp)
-     vbasedev->proxy = proxy;
-     vfio_user_set_handler(vbasedev, vfio_user_pci_process_req, vdev);
+@@ -101,6 +101,95 @@ static void vfio_user_msix_teardown(VFIOPCIDevice *vdev)
+     vdev->msix->pba_region = NULL;
+ }
  
-+    if (udev->no_direct_dma) {
-+        proxy->flags |= VFIO_PROXY_NO_MMAP;
++static void vfio_user_dma_read(VFIOPCIDevice *vdev, VFIOUserDMARW *msg)
++{
++    PCIDevice *pdev = &vdev->pdev;
++    VFIOUserProxy *proxy = vdev->vbasedev.proxy;
++    VFIOUserDMARW *res;
++    MemTxResult r;
++    size_t size;
++
++    if (msg->hdr.size < sizeof(*msg)) {
++        vfio_user_send_error(proxy, &msg->hdr, EINVAL);
++        return;
 +    }
-     if (udev->send_queued) {
-         proxy->flags |= VFIO_PROXY_FORCE_QUEUED;
-     }
-@@ -277,6 +281,7 @@ static void vfio_user_instance_finalize(Object *obj)
++    if (msg->count > proxy->max_xfer_size) {
++        vfio_user_send_error(proxy, &msg->hdr, E2BIG);
++        return;
++    }
++
++    /* switch to our own message buffer */
++    size = msg->count + sizeof(VFIOUserDMARW);
++    res = g_malloc0(size);
++    memcpy(res, msg, sizeof(*res));
++    g_free(msg);
++
++    r = pci_dma_read(pdev, res->offset, &res->data, res->count);
++
++    switch (r) {
++    case MEMTX_OK:
++        if (res->hdr.flags & VFIO_USER_NO_REPLY) {
++            g_free(res);
++            return;
++        }
++        vfio_user_send_reply(proxy, &res->hdr, size);
++        break;
++    case MEMTX_ERROR:
++        vfio_user_send_error(proxy, &res->hdr, EFAULT);
++        break;
++    case MEMTX_DECODE_ERROR:
++        vfio_user_send_error(proxy, &res->hdr, ENODEV);
++        break;
++    case MEMTX_ACCESS_ERROR:
++        vfio_user_send_error(proxy, &res->hdr, EPERM);
++        break;
++    default:
++        error_printf("vfio_user_dma_read unknown error %d\n", r);
++        vfio_user_send_error(vdev->vbasedev.proxy, &res->hdr, EINVAL);
++    }
++}
++
++static void vfio_user_dma_write(VFIOPCIDevice *vdev, VFIOUserDMARW *msg)
++{
++    PCIDevice *pdev = &vdev->pdev;
++    VFIOUserProxy *proxy = vdev->vbasedev.proxy;
++    MemTxResult r;
++
++    if (msg->hdr.size < sizeof(*msg)) {
++        vfio_user_send_error(proxy, &msg->hdr, EINVAL);
++        return;
++    }
++    /* make sure transfer count isn't larger than the message data */
++    if (msg->count > msg->hdr.size - sizeof(*msg)) {
++        vfio_user_send_error(proxy, &msg->hdr, E2BIG);
++        return;
++    }
++
++    r = pci_dma_write(pdev, msg->offset, &msg->data, msg->count);
++
++    switch (r) {
++    case MEMTX_OK:
++        if ((msg->hdr.flags & VFIO_USER_NO_REPLY) == 0) {
++            vfio_user_send_reply(proxy, &msg->hdr, sizeof(msg->hdr));
++        } else {
++            g_free(msg);
++        }
++        break;
++    case MEMTX_ERROR:
++        vfio_user_send_error(proxy, &msg->hdr, EFAULT);
++        break;
++    case MEMTX_DECODE_ERROR:
++        vfio_user_send_error(proxy, &msg->hdr, ENODEV);
++        break;
++    case MEMTX_ACCESS_ERROR:
++        vfio_user_send_error(proxy, &msg->hdr, EPERM);
++        break;
++    default:
++        error_printf("vfio_user_dma_write unknown error %d\n", r);
++        vfio_user_send_error(vdev->vbasedev.proxy, &msg->hdr, EINVAL);
++    }
++}
++
+ /*
+  * Incoming request message callback.
+  *
+@@ -108,7 +197,28 @@ static void vfio_user_msix_teardown(VFIOPCIDevice *vdev)
+  */
+ static void vfio_user_pci_process_req(void *opaque, VFIOUserMsg *msg)
+ {
++    VFIOPCIDevice *vdev = opaque;
++    VFIOUserHdr *hdr = msg->hdr;
++
++    /* no incoming PCI requests pass FDs */
++    if (msg->fds != NULL) {
++        vfio_user_send_error(vdev->vbasedev.proxy, hdr, EINVAL);
++        vfio_user_putfds(msg);
++        return;
++    }
  
- static Property vfio_user_pci_dev_properties[] = {
-     DEFINE_PROP_STRING("socket", VFIOUserPCIDevice, sock_name),
-+    DEFINE_PROP_BOOL("no-direct-dma", VFIOUserPCIDevice, no_direct_dma, false),
-     DEFINE_PROP_BOOL("x-send-queued", VFIOUserPCIDevice, send_queued, false),
-     DEFINE_PROP_BOOL("x-no-posted-writes", VFIOUserPCIDevice, no_post, false),
-     DEFINE_PROP_END_OF_LIST(),
++    switch (hdr->command) {
++    case VFIO_USER_DMA_READ:
++        vfio_user_dma_read(vdev, (VFIOUserDMARW *)hdr);
++        break;
++    case VFIO_USER_DMA_WRITE:
++        vfio_user_dma_write(vdev, (VFIOUserDMARW *)hdr);
++        break;
++    default:
++        error_printf("vfio_user_pci_process_req unknown cmd %d\n",
++                     hdr->command);
++        vfio_user_send_error(vdev->vbasedev.proxy, hdr, ENOSYS);
++    }
+ }
+ 
+ /*
+diff --git a/hw/vfio/user-protocol.h b/hw/vfio/user-protocol.h
+index 9b569156fa..607e0f4b7f 100644
+--- a/hw/vfio/user-protocol.h
++++ b/hw/vfio/user-protocol.h
+@@ -203,7 +203,18 @@ typedef struct {
+     char data[];
+ } VFIOUserRegionRW;
+ 
+-/*imported from struct vfio_bitmap */
++/*
++ * VFIO_USER_DMA_READ
++ * VFIO_USER_DMA_WRITE
++ */
++typedef struct {
++    VFIOUserHdr hdr;
++    uint64_t offset;
++    uint32_t count;
++    char data[];
++} VFIOUserDMARW;
++
++/* imported from struct vfio_bitmap */
+ typedef struct {
+     uint64_t pgsize;
+     uint64_t size;
+diff --git a/hw/vfio/user.c b/hw/vfio/user.c
+index adecd9a68a..a383922601 100644
+--- a/hw/vfio/user.c
++++ b/hw/vfio/user.c
+@@ -383,6 +383,10 @@ static int vfio_user_recv_one(VFIOUserProxy *proxy)
+         *msg->hdr = hdr;
+         data = (char *)msg->hdr + sizeof(hdr);
+     } else {
++        if (hdr.size > proxy->max_xfer_size + sizeof(VFIOUserDMARW)) {
++            error_setg(&local_err, "vfio_user_recv request larger than max");
++            goto err;
++        }
+         buf = g_malloc0(hdr.size);
+         memcpy(buf, &hdr, sizeof(hdr));
+         data = buf + sizeof(hdr);
+@@ -792,6 +796,59 @@ void vfio_user_wait_reqs(VFIOUserProxy *proxy)
+     }
+ }
+ 
++/*
++ * Reply to an incoming request.
++ */
++void vfio_user_send_reply(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int size)
++{
++
++    if (size < sizeof(VFIOUserHdr)) {
++        error_printf("vfio_user_send_reply - size too small\n");
++        g_free(hdr);
++        return;
++    }
++
++    /*
++     * convert header to associated reply
++     */
++    hdr->flags = VFIO_USER_REPLY;
++    hdr->size = size;
++
++    vfio_user_send_async(proxy, hdr, NULL);
++}
++
++/*
++ * Send an error reply to an incoming request.
++ */
++void vfio_user_send_error(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int error)
++{
++
++    /*
++     * convert header to associated reply
++     */
++    hdr->flags = VFIO_USER_REPLY;
++    hdr->flags |= VFIO_USER_ERROR;
++    hdr->error_reply = error;
++    hdr->size = sizeof(*hdr);
++
++    vfio_user_send_async(proxy, hdr, NULL);
++}
++
++/*
++ * Close FDs erroneously received in an incoming request.
++ */
++void vfio_user_putfds(VFIOUserMsg *msg)
++{
++    VFIOUserFDs *fds = msg->fds;
++    int i;
++
++    for (i = 0; i < fds->recv_fds; i++) {
++        close(fds->fds[i]);
++    }
++    g_free(fds);
++    msg->fds = NULL;
++}
++
+ static QLIST_HEAD(, VFIOUserProxy) vfio_user_sockets =
+     QLIST_HEAD_INITIALIZER(vfio_user_sockets);
+ 
 diff --git a/hw/vfio/user.h b/hw/vfio/user.h
-index 31d2c5abd9..fe24a881f2 100644
+index fe24a881f2..fa6bc9a9d6 100644
 --- a/hw/vfio/user.h
 +++ b/hw/vfio/user.h
-@@ -94,6 +94,7 @@ typedef struct VFIOUserProxy {
+@@ -116,5 +116,8 @@ void vfio_user_send_nowait(VFIOUserProxy *proxy, VFIOUserHdr *hdr,
+                            VFIOUserFDs *fds, int rsize);
+ void vfio_user_send_wait(VFIOUserProxy *proxy, VFIOUserHdr *hdr,
+                          VFIOUserFDs *fds, int rsize);
++void vfio_user_send_reply(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int size);
++void vfio_user_send_error(VFIOUserProxy *proxy, VFIOUserHdr *hdr, int error);
++void vfio_user_putfds(VFIOUserMsg *msg);
  
- /* VFIOProxy flags */
- #define VFIO_PROXY_CLIENT        0x1
-+#define VFIO_PROXY_NO_MMAP       0x2
- #define VFIO_PROXY_FORCE_QUEUED  0x4
- #define VFIO_PROXY_NO_POST       0x8
- 
+ #endif /* VFIO_USER_H */
 -- 
 2.34.1
 
