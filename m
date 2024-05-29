@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32908D2CE2
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B988D2CF1
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 08:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCCQM-0005rg-06; Wed, 29 May 2024 02:04:34 -0400
+	id 1sCCTV-0003iz-7Z; Wed, 29 May 2024 02:07:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCQI-0005az-MJ
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCTS-0003iW-El
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:07:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCQA-0002vV-Ln
- for qemu-devel@nongnu.org; Wed, 29 May 2024 02:04:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1sCCTP-0003Kf-5R
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 02:07:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716962661;
+ s=mimecast20190719; t=1716962861;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=4DaMXJTCGuXq1Bo+NDDHWrRmsLGpWN12/mUw1Yt8gSc=;
- b=Pp6o/WqJSXB0xKsSQjRpJpGgZdl1q7+BN/IBEJi25CF5WPMokXcqPKTMEQPOJQMPzJqS9K
- JrJdFz4nOPMNpiTH5mGNgfxQXdTHiDlh69Orm8BSbabgifKG/zinw7FzkMF7HrHhecHpOH
- KbobvZg5HKL8nA/VERxNUW6bYmNw1LY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XAU3K6Q850IlHYUh9R/CPPpMG0I33TGF3PgTsaRpZFo=;
+ b=K+u3LIFfnUplQ+v+AppZFkHJMNHL8QqjlaJYwiUxFZsnsTJiBuzQVyfeZlsIgKX1Au231q
+ Yfz/raRzC7xWik2Kf2SmvQRhtaAcl97fvI6WJe4ug+Muvw8du4ngyIC6XjABEQGnElxY9u
+ tfb0djWA+NpQFbKxdq+edP5SMFn64gY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-JFLHkw8WNV2KXgW8NRMV9g-1; Wed, 29 May 2024 02:04:19 -0400
-X-MC-Unique: JFLHkw8WNV2KXgW8NRMV9g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-42110ebbd0fso12722645e9.1
- for <qemu-devel@nongnu.org>; Tue, 28 May 2024 23:04:18 -0700 (PDT)
+ us-mta-683-iJYvmD_cMjai9nOmSIR0ow-1; Wed, 29 May 2024 02:07:39 -0400
+X-MC-Unique: iJYvmD_cMjai9nOmSIR0ow-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4210d151c5bso12707695e9.3
+ for <qemu-devel@nongnu.org>; Tue, 28 May 2024 23:07:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716962658; x=1717567458;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4DaMXJTCGuXq1Bo+NDDHWrRmsLGpWN12/mUw1Yt8gSc=;
- b=H9QsUqxrNGrfl6dlP7msMPUIZBq4c1GejCevgWgN17zH0q28vjMhh3FyBraIsy76RZ
- BloiHph0T3ymkKdkbfrIzOGmYoJDtgQ6idAYwDmQ6vHeHZqIVhLz3SWfLJWBgxB225Nw
- vUvNEKie4+bys44D38/TMpkwp1GJQfiwrWDBy1AFnorbcjWualeo3NXViUGgXNxs4SjI
- ebhZEuI9qOuSnMikBqLQrjCm3eWKq215I6puE2TnLnncA7LtHFfC5WMPMycJH71yI2yn
- 42a7Q2tLfC0ucu0yXl9sisKShFleuqMoDBPfogpDqXGMoAHORtt0WuAXiX0lxDUSPMlo
- FqSw==
+ d=1e100.net; s=20230601; t=1716962858; x=1717567658;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XAU3K6Q850IlHYUh9R/CPPpMG0I33TGF3PgTsaRpZFo=;
+ b=MmQm2OTliOZAD6oNSdeho9H3xyShYV3MNY8M94nzcxjKZ/WopCxZYc6sI1iCEMe/7C
+ JKxoml1i0tX64w2fnbBQw6v8cBVmSZPyA3gM+cLLOqQl0apxDoYz1IGNGl3qE5MCiy2F
+ H+whk56SNkuUkrluX80pFwD7VE6J8T5AkucPhYt0TssEC+IwhYjOXf7a7zhiApQAmn1t
+ iw2Y9sBCWm2bweeKu9gcescNnZaG9GMBimcCVxuj2WP9F1/ne9bRlYUXuJqHgovqkkRE
+ yBVFMYfSOpQstT9kD6wLALA80WmWaj49A/0NUkFTE2U4j1jDVH9r7jkYdgFz5UW+pmQ8
+ 4Yvw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXvRh0MoG6Gw1jVt+n3hKoLFXJ5NjPisgVfFbVAUI2ipzXiA2wDIyDohEjixBYAERilKRBrrsYPCcI3xA56NQ+CvY1+55E=
-X-Gm-Message-State: AOJu0YyloS36z0jCuiwexvKJfo8AqqJLAl0HpBFgiOiC8/g38xyG62u1
- 6AVHygcqO48sOVJBmaVT3YIfvu+P7PJNBNgvysINFV27Io5naOs/0gux/syVIpdzstCv7mGqSSL
- KfE37oCeMul5Asq2JDjMHUu8tMyFycREGfoLillfhmlNhOOMC/6Po
-X-Received: by 2002:a05:600c:198e:b0:420:fe60:c387 with SMTP id
- 5b1f17b1804b1-42108a12ab4mr116623495e9.38.1716962657241; 
- Tue, 28 May 2024 23:04:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKmYKtJsYfWRBueFmstW9DiW8F6gcpK64fBMk1djSV22miTJChRv2wnD3XDQUJaeoKmeWI3w==
-X-Received: by 2002:a05:600c:198e:b0:420:fe60:c387 with SMTP id
- 5b1f17b1804b1-42108a12ab4mr116623335e9.38.1716962656789; 
- Tue, 28 May 2024 23:04:16 -0700 (PDT)
+ AJvYcCVJ6FW702fuoEDD8IuKy1gOT0H4GBSa3k3HbD0uwxlBXUtZaN0FXnGEJX88VFUCyZssUqZORQNxvLDU4S6M8aKl+wXlT9g=
+X-Gm-Message-State: AOJu0YwBNKMKjoxMi3zbXGkEq4uLDHcaAVvESDHq+gBHRjRXBDdW9jtO
+ vH13ulgDccBD+xh14d2nAMfFuVDzk4VpzLCmZXheNXB6Ra3HRTRbPZThoTxWKRj8oZblD864Xk4
+ 5cSrmfyy+PP6f+ISCdopYLgZsSCiXvv7XqTjgwh4ixdE3Wp3h/SfZ
+X-Received: by 2002:a05:600c:214c:b0:41b:f022:8e69 with SMTP id
+ 5b1f17b1804b1-421089d967amr112608925e9.19.1716962858013; 
+ Tue, 28 May 2024 23:07:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEr6KlpTK+JiNt/Zipk83f7zyUcjvWaqrzvis1QedFhN4mOgG+WzaxZtgTuXF2oD+9rK3gjSg==
+X-Received: by 2002:a05:600c:214c:b0:41b:f022:8e69 with SMTP id
+ 5b1f17b1804b1-421089d967amr112608665e9.19.1716962857364; 
+ Tue, 28 May 2024 23:07:37 -0700 (PDT)
 Received: from [192.168.0.4] (ip-109-43-176-229.web.vodafone.de.
  [109.43.176.229]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35579d7dd33sm13741958f8f.11.2024.05.28.23.04.15
+ 5b1f17b1804b1-421089ccf32sm166130005e9.48.2024.05.28.23.07.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 28 May 2024 23:04:16 -0700 (PDT)
-Message-ID: <b0f77dbc-23c4-4ccc-b926-3cf072894889@redhat.com>
-Date: Wed, 29 May 2024 08:04:15 +0200
+ Tue, 28 May 2024 23:07:37 -0700 (PDT)
+Message-ID: <470d8098-aae4-43a7-8d33-f25a72b52f64@redhat.com>
+Date: Wed, 29 May 2024 08:07:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 21/23] hw/i386/pc: Simplify DEFINE_I440FX_MACHINE()
- macro
+Subject: Re: [PATCH v5 22/23] target/i386: Remove X86CPU::kvm_no_smi_migration
+ field
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
  <mst@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
+ <berrange@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
 References: <20240529051539.71210-1-philmd@linaro.org>
- <20240529051539.71210-22-philmd@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
+ <20240529051539.71210-23-philmd@linaro.org>
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -121,7 +121,7 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240529051539.71210-22-philmd@linaro.org>
+In-Reply-To: <20240529051539.71210-23-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -150,14 +150,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 29/05/2024 07.15, Philippe Mathieu-Daudé wrote:
-> Last commit removed the last non-NULL use of DEFINE_I440FX_MACHINE
-> 3rd parameter. 'compatfn' is now obsolete, remove it.
+> X86CPU::kvm_no_smi_migration was only used by the
+> pc-i440fx-2.3 machine, which got removed. Remove it
+> and simplify kvm_put_vcpu_events().
 > 
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 > ---
->   hw/i386/pc_piix.c | 62 ++++++++++++++++++++++-------------------------
->   1 file changed, 29 insertions(+), 33 deletions(-)
+>   target/i386/cpu.h     | 3 ---
+>   target/i386/cpu.c     | 2 --
+>   target/i386/kvm/kvm.c | 7 +------
+>   3 files changed, 1 insertion(+), 11 deletions(-)
 
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
