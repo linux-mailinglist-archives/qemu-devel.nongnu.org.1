@@ -2,93 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873138D3879
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 521C78D37F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 15:40:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCJlr-0002q9-Rl; Wed, 29 May 2024 09:55:15 -0400
+	id 1sCJXK-0008RY-RM; Wed, 29 May 2024 09:40:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCJlk-0002jy-Nh
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:55:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCJXI-0008R8-Bo
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 09:40:12 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1sCJli-0003ak-0L
- for qemu-devel@nongnu.org; Wed, 29 May 2024 09:55:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716990904;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qi4/rcZJOICMUryoomhA4Mf3QTbBBGvVeA/urA4Q8Ek=;
- b=TnM3AdH44qmiTnB9oRQXVPOYVS0fjOB/LV3EKMDN4W5y0IrrsUDRUVR48y2KHyqqRORDbc
- nPF321oZxLUFk3jHMbZaqnVBxzJETSoAZij68QKHWQMp5vLuBDOpHdWDk6qQCLY5EUHDsn
- wD+7UOof15C/MZPH4GNpxAfDZ9mqnKI=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-eduUrVbmMqm6cZSIQK_r5A-1; Wed, 29 May 2024 09:55:03 -0400
-X-MC-Unique: eduUrVbmMqm6cZSIQK_r5A-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-42114e7ec89so12902725e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 06:55:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716990899; x=1717595699;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qi4/rcZJOICMUryoomhA4Mf3QTbBBGvVeA/urA4Q8Ek=;
- b=HMELjfo3/tn1I1X/GDMWYZRIAqd05LcSNAX+HCixkaPfdPxa0cIXT36GoeemSItPw2
- NBLVLETQh5Kz0TbjhiixLt4fsAlzaz8fU8lksNM4PatX/eEMeT9j0D2p+FAHr9co7h6T
- uRhkX7UKz/ww54fXnszQ19KH5s8AQXT4Kucqrq0n9YJdyKp+JVGsHrx2zYkVdjK5dFs4
- AMTMaEo41JKVzrz4CUKqtvDgQQ3q1a4TlhsrJyIIr4bgCm+jbOteDLS2yrcQmHivlHJT
- TEfxGDvZ7RGdoyKXEVesg5VZCLN8Di4kI1ntfJIVMseNPmED7+sBbC0xSm5leHgI6kA9
- MSmg==
-X-Gm-Message-State: AOJu0YzurNx9/UXpiXJsaWDY/6+JcAort9VohzGteKzEFcEhXynHfNZv
- X9LzHA3exoKtfQUuKJvB2yuLdKWirz1ieelcoYQUdVws4IiRdmeDOKAkAwuQkhy9tCBpXkr/tBr
- x2eZ1IWVwtJ36NFqeRY7FQa6jv2pMKhoanXkGZ8i/sjvYRa1/qwpX
-X-Received: by 2002:a05:600c:4746:b0:416:2471:e102 with SMTP id
- 5b1f17b1804b1-42108a271fcmr119196905e9.37.1716990899493; 
- Wed, 29 May 2024 06:54:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIesY2djrgEFx+ySPckTwjBCjiNTDA3rHEwlmaQCax+KF3y5CGU/Xbf/uS51W7P0eXMsaBCQ==
-X-Received: by 2002:a05:600c:4746:b0:416:2471:e102 with SMTP id
- 5b1f17b1804b1-42108a271fcmr119196765e9.37.1716990899087; 
- Wed, 29 May 2024 06:54:59 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-421089cd6f7sm180892345e9.46.2024.05.29.06.54.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 29 May 2024 06:54:58 -0700 (PDT)
-Date: Wed, 29 May 2024 15:54:57 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, "Daniel P .
- =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Zhao Liu
- <zhao1.liu@intel.com>
-Subject: Re: [PATCH v5 07/23] hw/acpi/ich9: Remove dead code related to
- 'acpi_memory_hotplug'
-Message-ID: <20240529155457.6ab87d3a@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240529051539.71210-8-philmd@linaro.org>
-References: <20240529051539.71210-1-philmd@linaro.org>
- <20240529051539.71210-8-philmd@linaro.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCJXF-0000fp-Hv
+ for qemu-devel@nongnu.org; Wed, 29 May 2024 09:40:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716990010; x=1748526010;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=MmFNbZeo9MSYiHcRdeKEQagT0HH9mc7n7rtg7wuLdOk=;
+ b=LuutRjABgt5nRxMvQkj/IkliXiwGDeUhtv/CIQpWJ604HEBNufJ6cU59
+ mNdi4QjV7UuPvVYfA9bjzgfr/5vL5KTzqxrvdc4Msue07VmAEX4tuBqsd
+ bNtkPX7Io1osuAMJmSW7VQVSivv3NGiwGuIFAQuTyNKKcMGZn/9/i0/ZZ
+ +4BHEnupv0dm1oevYMiO2k3jYWPdVnhCbCiigxdcTVliC47oF4D+WgxS3
+ AT6+lxCSBGgsKCZMFuQQOaFSK5/Wmmrat/8cgE8kShQ51AxesQ4pHMAzD
+ TJp6epK+6e9puX/Gy5maWdKKbxb4rWwK2NbZH4JVc1DPcU59dtEOsmmpq Q==;
+X-CSE-ConnectionGUID: 2tiZFcj6Rsa6yT7fe8bDoA==
+X-CSE-MsgGUID: omrHpsfmR5KNlO0Hi490Kg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="24806058"
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="24806058"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 06:39:56 -0700
+X-CSE-ConnectionGUID: 4qXYuXRERLO3IAWvdJ03Jw==
+X-CSE-MsgGUID: SpxxG4IgR8iRsxILyWXWDA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="35972577"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa008.jf.intel.com with ESMTP; 29 May 2024 06:39:53 -0700
+Date: Wed, 29 May 2024 21:55:16 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] target/i386: Misc cleanup on KVM PV defs and
+ outdated comments
+Message-ID: <ZlczxBdykhX28M9K@intel.com>
+References: <20240506085153.2834841-1-zhao1.liu@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240506085153.2834841-1-zhao1.liu@intel.com>
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,101 +86,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 29 May 2024 07:15:23 +0200
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+Hi mainatainers,
 
-> acpi_memory_hotplug::is_enabled is set to %true once via
-> ich9_lpc_initfn() -> ich9_pm_add_properties(). No need to
-> check it, so remove now dead code.
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Just a friendly ping.
 
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Thanks,
+Zhao
 
+On Mon, May 06, 2024 at 04:51:47PM +0800, Zhao Liu wrote:
+> Date: Mon, 6 May 2024 16:51:47 +0800
+> From: Zhao Liu <zhao1.liu@intel.com>
+> Subject: [PATCH v2 0/6] target/i386: Misc cleanup on KVM PV defs and
+>  outdated comments
+> X-Mailer: git-send-email 2.34.1
+> 
+> Hi,
+> 
+> This is my v2 cleanup series. Compared with v1 [1], only tags (R/b, S/b)
+> updates, and a typo fix, no code change.
+> 
+> This series picks cleanup from my previous kvmclock [2] (as other
+> renaming attempts were temporarily put on hold).
+> 
+> In addition, this series also include the cleanup on a historically
+> workaround and recent comment of coco interface [3].
+> 
+> Avoiding the fragmentation of these misc cleanups, I consolidated them
+> all in one series and was able to tackle them in one go!
+> 
+> [1]: https://lore.kernel.org/qemu-devel/20240426100716.2111688-1-zhao1.liu@intel.com/
+> [2]: https://lore.kernel.org/qemu-devel/20240329101954.3954987-1-zhao1.liu@linux.intel.com/
+> [3]: https://lore.kernel.org/qemu-devel/2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com/
+> 
+> Thanks and Best Regards,
+> Zhao
 > ---
->  hw/acpi/ich9.c | 28 ++++++----------------------
->  1 file changed, 6 insertions(+), 22 deletions(-)
->=20
-> diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
-> index 9b605af21a..02d8546bd3 100644
-> --- a/hw/acpi/ich9.c
-> +++ b/hw/acpi/ich9.c
-> @@ -153,17 +153,10 @@ static int ich9_pm_post_load(void *opaque, int vers=
-ion_id)
->       .offset     =3D vmstate_offset_pointer(_state, _field, uint8_t),  \
->   }
-> =20
-> -static bool vmstate_test_use_memhp(void *opaque)
-> -{
-> -    ICH9LPCPMRegs *s =3D opaque;
-> -    return s->acpi_memory_hotplug.is_enabled;
-> -}
-> -
->  static const VMStateDescription vmstate_memhp_state =3D {
->      .name =3D "ich9_pm/memhp",
->      .version_id =3D 1,
->      .minimum_version_id =3D 1,
-> -    .needed =3D vmstate_test_use_memhp,
->      .fields =3D (const VMStateField[]) {
->          VMSTATE_MEMORY_HOTPLUG(acpi_memory_hotplug, ICH9LPCPMRegs),
->          VMSTATE_END_OF_LIST()
-> @@ -335,11 +328,9 @@ void ich9_pm_init(PCIDevice *lpc_pci, ICH9LPCPMRegs =
-*pm, qemu_irq sci_irq)
->      legacy_acpi_cpu_hotplug_init(pci_address_space_io(lpc_pci),
->          OBJECT(lpc_pci), &pm->gpe_cpu, ICH9_CPU_HOTPLUG_IO_BASE);
-> =20
-> -    if (pm->acpi_memory_hotplug.is_enabled) {
-> -        acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(l=
-pc_pci),
-> -                                 &pm->acpi_memory_hotplug,
-> -                                 ACPI_MEMORY_HOTPLUG_BASE);
-> -    }
-> +    acpi_memory_hotplug_init(pci_address_space_io(lpc_pci), OBJECT(lpc_p=
-ci),
-> +                             &pm->acpi_memory_hotplug,
-> +                             ACPI_MEMORY_HOTPLUG_BASE);
->  }
-> =20
->  static void ich9_pm_get_gpe0_blk(Object *obj, Visitor *v, const char *na=
-me,
-> @@ -460,12 +451,7 @@ void ich9_pm_device_pre_plug_cb(HotplugHandler *hotp=
-lug_dev, DeviceState *dev,
->          return;
->      }
-> =20
-> -    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
-> -        !lpc->pm.acpi_memory_hotplug.is_enabled) {
-> -        error_setg(errp,
-> -                   "memory hotplug is not enabled: %s.memory-hotplug-sup=
-port "
-> -                   "is not set", object_get_typename(OBJECT(lpc)));
-> -    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
->          uint64_t negotiated =3D lpc->smi_negotiated_features;
-> =20
->          if (negotiated & BIT_ULL(ICH9_LPC_SMI_F_BROADCAST_BIT) &&
-> @@ -509,8 +495,7 @@ void ich9_pm_device_unplug_request_cb(HotplugHandler =
-*hotplug_dev,
->  {
->      ICH9LPCState *lpc =3D ICH9_LPC_DEVICE(hotplug_dev);
-> =20
-> -    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
-> -        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          acpi_memory_unplug_request_cb(hotplug_dev,
->                                        &lpc->pm.acpi_memory_hotplug, dev,
->                                        errp);
-> @@ -545,8 +530,7 @@ void ich9_pm_device_unplug_cb(HotplugHandler *hotplug=
-_dev, DeviceState *dev,
->  {
->      ICH9LPCState *lpc =3D ICH9_LPC_DEVICE(hotplug_dev);
-> =20
-> -    if (lpc->pm.acpi_memory_hotplug.is_enabled &&
-> -        object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-> +    if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          acpi_memory_unplug_cb(&lpc->pm.acpi_memory_hotplug, dev, errp);
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU) &&
->                 !lpc->pm.cpu_hotplug_legacy) {
-
+> Zhao Liu (6):
+>   target/i386/kvm: Add feature bit definitions for KVM CPUID
+>   target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
+>     MSR_KVM_SYSTEM_TIME definitions
+>   target/i386/kvm: Only save/load kvmclock MSRs when kvmclock enabled
+>   target/i386/kvm: Save/load MSRs of kvmclock2
+>     (KVM_FEATURE_CLOCKSOURCE2)
+>   target/i386/kvm: Drop workaround for KVM_X86_DISABLE_EXITS_HTL typo
+>   target/i386/confidential-guest: Fix comment of
+>     x86_confidential_guest_kvm_type()
+> 
+>  hw/i386/kvm/clock.c              |  5 +--
+>  target/i386/confidential-guest.h |  2 +-
+>  target/i386/cpu.h                | 25 +++++++++++++
+>  target/i386/kvm/kvm.c            | 63 +++++++++++++++++++-------------
+>  4 files changed, 66 insertions(+), 29 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
