@@ -2,95 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F7D8D337F
-	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 11:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 341CC8D3389
+	for <lists+qemu-devel@lfdr.de>; Wed, 29 May 2024 11:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCFsf-0005X3-8N; Wed, 29 May 2024 05:46:01 -0400
+	id 1sCFup-0002Uq-CU; Wed, 29 May 2024 05:48:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sCFsa-0005QT-F7
- for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <arei.gonglei@huawei.com>)
+ id 1sCFul-0002Tn-47; Wed, 29 May 2024 05:48:11 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1sCFsY-0000V5-C4
- for qemu-devel@nongnu.org; Wed, 29 May 2024 05:45:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1716975952;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=i64/OExMSfzGgZPyUJaN7jtbSypT7uRiIAKENFJP1FE=;
- b=hoRBeNFzWTEIm06r2nltEo13txxNw8bsuU4PI6LbNg0w+45OnCR653OS9QacuHjvYLA3lP
- 5VXpCV8Te40R6ezrwuKU3V+1AkKgkT4satFodaxh2KCUfq4WFbbLGX7kauhJ8cPanpbHDV
- HeX52ov5Dt2NaCSydfT9YiW1I38zW5E=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-301-_aNUwsLWNJqhYfefLyC-3g-1; Wed, 29 May 2024 05:45:51 -0400
-X-MC-Unique: _aNUwsLWNJqhYfefLyC-3g-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-43fb02d8204so20980701cf.0
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 02:45:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716975950; x=1717580750;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=i64/OExMSfzGgZPyUJaN7jtbSypT7uRiIAKENFJP1FE=;
- b=mDmq4lWkSHWNEsCqJJOJwrXSnZVpkJbzvFuQuGZxjMPdQKPDMFO0ZeIbvOKjBfAkzW
- WSLIkBKiU/mqG2zm0okioCGIKUUZqeSBKPJpFNRXjHkegtFtjM1SxECRNK/miCSSgiVM
- v/vRis003VVDblaNvjHG0f5LknDofuOpxTtqg054aTikjQAx9YZPdA07HwHwMY0vitmX
- me7eTLbaRq7zHh+8j63ohtdRR/MZ5Bh7aTAIqm9eB7Gu6ucZxWSZT6k0iWWRN8OfvKpo
- 9NGEHwLiZG6g70UirEIv9YureKKsV7CAig+y9D5qnqsRoW1Vy3VAcPMssJ+H2hb7dreT
- 5W8Q==
-X-Gm-Message-State: AOJu0YyjfyrLoLGQXctEco+qdVKuM3Z3FEdd8qhPs9XQe6oxbBu0vYTs
- Jb3Zpn2veyfG2tBoHe5Mvpy8WQ9aJRQE50qdy4gseILpBQh5QfeZzbT0puERaoWq3D1mVb939xd
- Wu+Pfuls4TZbaC9OiJtDyWjQdDL5ZAJ0zYo95oFMesHSitTHtSPfu
-X-Received: by 2002:a05:622a:14a:b0:43a:f2be:6ce with SMTP id
- d75a77b69052e-43fb0f014dcmr205862091cf.60.1716975950509; 
- Wed, 29 May 2024 02:45:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFljIEGjB3AQaY5Ov4hZqaZs230NUicC0C1NXXGxGCWa0HVgciIKqKWwepDHzrppfC7OoRr4w==
-X-Received: by 2002:a05:622a:14a:b0:43a:f2be:6ce with SMTP id
- d75a77b69052e-43fb0f014dcmr205861881cf.60.1716975949998; 
- Wed, 29 May 2024 02:45:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-43fb18b0e3bsm51771921cf.68.2024.05.29.02.45.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 29 May 2024 02:45:49 -0700 (PDT)
-Message-ID: <ba4b4b53-68fb-4d80-9f5d-4e4476447947@redhat.com>
-Date: Wed, 29 May 2024 11:45:46 +0200
+ (Exim 4.90_1) (envelope-from <arei.gonglei@huawei.com>)
+ id 1sCFui-0000lZ-Ij; Wed, 29 May 2024 05:48:10 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Vq4HB0PMkzPnrs;
+ Wed, 29 May 2024 17:44:54 +0800 (CST)
+Received: from dggpeml100005.china.huawei.com (unknown [7.185.36.185])
+ by mail.maildlp.com (Postfix) with ESMTPS id BCFAF18007E;
+ Wed, 29 May 2024 17:48:03 +0800 (CST)
+Received: from dggpemm500006.china.huawei.com (7.185.36.236) by
+ dggpeml100005.china.huawei.com (7.185.36.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 29 May 2024 17:48:03 +0800
+Received: from dggpemm500006.china.huawei.com ([7.185.36.236]) by
+ dggpemm500006.china.huawei.com ([7.185.36.236]) with mapi id 15.01.2507.035;
+ Wed, 29 May 2024 17:47:58 +0800
+To: Jinpu Wang <jinpu.wang@ionos.com>
+CC: Greg Sword <gregsword0@gmail.com>, Peter Xu <peterx@redhat.com>, Yu Zhang
+ <yu.zhang@ionos.com>, Michael Galaxy <mgalaxy@akamai.com>, Elmar Gerdes
+ <elmar.gerdes@ionos.com>, zhengchuan <zhengchuan@huawei.com>,
+ =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>, "Markus
+ Armbruster" <armbru@redhat.com>, "Zhijian Li (Fujitsu)"
+ <lizhijian@fujitsu.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>, Cornelia Huck
+ <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>, "Prasanna Kumar
+ Kalever" <prasanna4324@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>, "devel@lists.libvirt.org"
+ <devel@lists.libvirt.org>, Hanna Reitz <hreitz@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>,
+ =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, "Wainer dos Santos
+ Moschetta" <wainersm@redhat.com>, Beraldo Leal <bleal@redhat.com>,
+ Pannengyuan <pannengyuan@huawei.com>, Xiexiangyou <xiexiangyou@huawei.com>,
+ Fabiano Rosas <farosas@suse.de>, RDMA mailing list
+ <linux-rdma@vger.kernel.org>, "shefty@nvidia.com" <shefty@nvidia.com>, Haris
+ Iqbal <haris.iqbal@ionos.com>
+Subject: RE: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Thread-Topic: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Thread-Index: AQHaib4eb+nVph6utEe7HatbjXSGr7FeBxGAgAD/kQCAAM0PAIAAcGaAgAC+EICAAZsBgIAAJisAgBwPpQCAAB5mAIABl4t9//+GhYCAAhAsgIAHeqWwgABddICAATP+EIAAcc0AgAKnDgCAAFgYAIAH7hYAgANI14CAAUekgIAG49qAgAqnmyD//+59gIABNomA//+dcAAAAzlpgAAVpXFA//+IYYD//3J0kA==
+Date: Wed, 29 May 2024 09:47:57 +0000
+Message-ID: <2665934438364f5e9e80ac4564cac2c3@huawei.com>
+References: <Zjj0xa-3KrFHTK0S@x1n>
+ <addaa8d094904315a466533763689ead@huawei.com> <ZjpWmG2aUJLkYxJm@x1n>
+ <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com> <ZjzaIAMgUHV8zdNz@x1n>
+ <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
+ <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
+ <CAHEcVy4d7uJENZ1hRx2FBzbw22qN4Qm0TwtxvM5DLw3s81Zp_g@mail.gmail.com>
+ <Zk0c51D1Oo6NdIxR@x1n> <2308a8b894244123b638038e40a33990@huawei.com>
+ <ZlX-Swq4Hi-0iHeh@x1n> <7bf81ccee4bd4b0e81e3893ef43502a8@huawei.com>
+ <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
+ <CAEz=LcuNM-j=1txyiL4_A89vZLxTicOFHXLC0=piamvqF4gu0g@mail.gmail.com>
+ <e0fa7fc42118407f8731c34f8c192fda@huawei.com>
+ <CAMGffEna=8vNm89SkzRknLb7irTit0dBeciuC+_KMp+4U0PtQw@mail.gmail.com>
+In-Reply-To: <CAMGffEna=8vNm89SkzRknLb7irTit0dBeciuC+_KMp+4U0PtQw@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.173.124.235]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/9] vfio: Add Error** argument to
- .set_dirty_page_tracking() handler
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Alex Williamson
- <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- Eric Auger <eric.auger@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20240516124658.850504-1-clg@redhat.com>
- <20240516124658.850504-2-clg@redhat.com> <878qztp20c.fsf@pond.sub.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <878qztp20c.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.034,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=45.249.212.189;
+ envelope-from=arei.gonglei@huawei.com; helo=szxga03-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,165 +97,83 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  "Gonglei (Arei)" <arei.gonglei@huawei.com>
+From:  "Gonglei (Arei)" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/29/24 08:26, Markus Armbruster wrote:
-> I had a look at this before I realized it's already in.  I'm sending
-> this out not to demand any change, but only to point out an issue to be
-> avoided in future work.
-> 
-> Cédric Le Goater <clg@redhat.com> writes:
-> 
->> We will use the Error object to improve error reporting in the
->> .log_global*() handlers of VFIO. Add documentation while at it.
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Avihai Horon <avihaih@nvidia.com>
->> Reviewed-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>   include/hw/vfio/vfio-container-base.h | 18 ++++++++++++++++--
->>   hw/vfio/common.c                      |  4 ++--
->>   hw/vfio/container-base.c              |  4 ++--
->>   hw/vfio/container.c                   |  6 +++---
->>   4 files changed, 23 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
->> index 3582d5f97a37877b2adfc0d0b06996c82403f8b7..326ceea52a2030eec9dad289a9845866c4a8c090 100644
->> --- a/include/hw/vfio/vfio-container-base.h
->> +++ b/include/hw/vfio/vfio-container-base.h
->> @@ -82,7 +82,7 @@ int vfio_container_add_section_window(VFIOContainerBase *bcontainer,
->>   void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->>                                          MemoryRegionSection *section);
->>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->> -                                           bool start);
->> +                                           bool start, Error **errp);
->>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->>                                         VFIOBitmap *vbmap,
->>                                         hwaddr iova, hwaddr size);
->> @@ -121,9 +121,23 @@ struct VFIOIOMMUClass {
->>       int (*attach_device)(const char *name, VFIODevice *vbasedev,
->>                            AddressSpace *as, Error **errp);
->>       void (*detach_device)(VFIODevice *vbasedev);
->> +
->>       /* migration feature */
->> +
->> +    /**
->> +     * @set_dirty_page_tracking
->> +     *
->> +     * Start or stop dirty pages tracking on VFIO container
->> +     *
->> +     * @bcontainer: #VFIOContainerBase on which to de/activate dirty
->> +     *              page tracking
->> +     * @start: indicates whether to start or stop dirty pages tracking
->> +     * @errp: pointer to Error*, to store an error if it happens.
->> +     *
->> +     * Returns zero to indicate success and negative for error
->> +     */
->>       int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
->> -                                   bool start);
->> +                                   bool start, Error **errp);
-> 
-> Note for later: this is always called via
-> vfio_container_set_dirty_page_tracking().
-> 
->>       int (*query_dirty_bitmap)(const VFIOContainerBase *bcontainer,
->>                                 VFIOBitmap *vbmap,
->>                                 hwaddr iova, hwaddr size);
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 8f9cbdc0264044ce587877a7d19d14b28527291b..485e53916491f1164d29e739fb7106c0c77df737 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -1076,7 +1076,7 @@ static bool vfio_listener_log_global_start(MemoryListener *listener,
->>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
->>           ret = vfio_devices_dma_logging_start(bcontainer);
->>       } else {
->> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, true);
->> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, true, NULL);
->>       }
->>   
->>       if (ret) {
->> @@ -1096,7 +1096,7 @@ static void vfio_listener_log_global_stop(MemoryListener *listener)
->>       if (vfio_devices_all_device_dirty_tracking(bcontainer)) {
->>           vfio_devices_dma_logging_stop(bcontainer);
->>       } else {
->> -        ret = vfio_container_set_dirty_page_tracking(bcontainer, false);
->> +        ret = vfio_container_set_dirty_page_tracking(bcontainer, false, NULL);
->>       }
->>   
->>       if (ret) {
-> 
-> Note for later: all callers pass NULL to ignore the new Error.
-> 
->> diff --git a/hw/vfio/container-base.c b/hw/vfio/container-base.c
->> index 913ae49077c4f09b7b27517c1231cfbe4befb7fb..7c0764121d24b02b6c4e66e368d7dff78a6d65aa 100644
->> --- a/hw/vfio/container-base.c
->> +++ b/hw/vfio/container-base.c
->> @@ -53,14 +53,14 @@ void vfio_container_del_section_window(VFIOContainerBase *bcontainer,
->>   }
->>   
->>   int vfio_container_set_dirty_page_tracking(VFIOContainerBase *bcontainer,
->> -                                           bool start)
->> +                                           bool start, Error **errp)
->>   {
->>       if (!bcontainer->dirty_pages_supported) {
->>           return 0;
->>       }
->>   
->>       g_assert(bcontainer->ops->set_dirty_page_tracking);
->> -    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start);
->> +    return bcontainer->ops->set_dirty_page_tracking(bcontainer, start, errp);
->>   }
->>   
->>   int vfio_container_query_dirty_bitmap(const VFIOContainerBase *bcontainer,
->> diff --git a/hw/vfio/container.c b/hw/vfio/container.c
->> index 77bdec276ec49cb9cd767c0de42ec801b4421572..c35221fbe7dc5453050f97cd186fc958e24f28f7 100644
->> --- a/hw/vfio/container.c
->> +++ b/hw/vfio/container.c
->> @@ -209,7 +209,7 @@ static int vfio_legacy_dma_map(const VFIOContainerBase *bcontainer, hwaddr iova,
->>   
->>   static int
->>   vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
->> -                                    bool start)
->> +                                    bool start, Error **errp)
->>   {
->>       const VFIOContainer *container = container_of(bcontainer, VFIOContainer,
->>                                                     bcontainer);
->> @@ -227,8 +227,8 @@ vfio_legacy_set_dirty_page_tracking(const VFIOContainerBase *bcontainer,
->>       ret = ioctl(container->fd, VFIO_IOMMU_DIRTY_PAGES, &dirty);
->>       if (ret) {
->>           ret = -errno;
->> -        error_report("Failed to set dirty tracking flag 0x%x errno: %d",
->> -                     dirty.flags, errno);
->> +        error_setg_errno(errp, errno, "Failed to set dirty tracking flag 0x%x",
->> +                         dirty.flags);
-> 
-> Silent improvement: errno is now reported symbolically (like "Operation
-> not permitted") instead of numerically (like "1").  Worth mentioning in
-> the commit message.
-
-ok.
-
-> Since the callers pass NULL to ignore the Error, this error condition is
-> now silent, I believe.
-> 
-> I figure you correct this in later patches.  If we accept temporary loss
-> of error reporting, the commit message should mention it.  Loss of error
-> reporting is easy enough to avoid, though: have the callers pass a
-> pointer to a local @err, and on failure report it with
-> error_report_err().
-
-Yes. The following patch is changing the NULL to an Error pointer. Indeed,
-I could have merged both patches and resend. Seemed overkill at the time
-and I preferred the changes to get more exposure too.
-
-I did it the way you propose in some of the other patches. I think the
-code of this series was reshuffled a few times and it fell through the
-cracks. Let's add some laziness on top of that to be honest.
-
-Thanks,
-
-C.
-
+SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+DQo+IGh0dHBzOi8vbG9y
+ZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvQ0FNR2ZmRW4tREtwTVo0dEE3MU1KWWR5ZW1nMFpkYQ0K
+PiA+ID4gPiA+ID4gMTUNCj4gPiA+ID4gPiA+ID4gPiB3VkFxazgxdlh0S3p4LUxmSlFAbWFpbC5n
+bWFpbC5jb20vDQo+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gPiBBcHByZWNpYXRlIGEg
+bG90IGZvciBldmVyeW9uZSBoZWxwaW5nIG9uIHRoZSB0ZXN0aW5ncy4NCj4gPiA+ID4gPiA+ID4g
+Pg0KPiA+ID4gPiA+ID4gPiA+ID4gSW5maW5pQmFuZCBjb250cm9sbGVyOiBNZWxsYW5veCBUZWNo
+bm9sb2dpZXMgTVQyNzgwMA0KPiA+ID4gPiA+ID4gPiA+ID4gRmFtaWx5IFtDb25uZWN0WC01XQ0K
+PiA+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gPiA+IHdoaWNoIGRvZXNuJ3QgbWVldCBv
+dXIgcHVycG9zZS4gSSBjYW4gY2hvb3NlIFJETUEgb3IgVENQDQo+ID4gPiA+ID4gPiA+ID4gPiBm
+b3IgVk0gbWlncmF0aW9uLiBSRE1BIHRyYWZmaWMgaXMgdGhyb3VnaCBJbmZpbmlCYW5kIGFuZA0K
+PiA+ID4gPiA+ID4gPiA+ID4gVENQIHRocm91Z2ggRXRoZXJuZXQgb24gdGhlc2UgdHdvIGhvc3Rz
+LiBPbmUgaXMgc3RhbmRieQ0KPiA+ID4gPiA+ID4gPiA+ID4gd2hpbGUgdGhlIG90aGVyDQo+ID4g
+PiBpcyBhY3RpdmUuDQo+ID4gPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiA+ID4gTm93IEkn
+bGwgdHJ5IG9uIGEgc2VydmVyIHdpdGggbW9yZSByZWNlbnQgRXRoZXJuZXQgYW5kDQo+ID4gPiA+
+ID4gPiA+ID4gPiBJbmZpbmlCYW5kIG5ldHdvcmsgYWRhcHRlcnMuIE9uZSBvZiB0aGVtIGhhczoN
+Cj4gPiA+ID4gPiA+ID4gPiA+IEJDTTU3NDE0IE5ldFh0cmVtZS1FIDEwR2IvMjVHYiBSRE1BIEV0
+aGVybmV0IENvbnRyb2xsZXINCj4gPiA+ID4gPiA+ID4gPiA+IChyZXYNCj4gPiA+ID4gPiA+ID4g
+PiA+IDAxKQ0KPiA+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gPiA+IFRoZSBjb21wYXJp
+c29uIGJldHdlZW4gUkRNQSBhbmQgVENQIG9uIHRoZSBzYW1lIE5JQw0KPiA+ID4gPiA+ID4gPiA+
+ID4gY291bGQgbWFrZSBtb3JlDQo+ID4gPiA+ID4gPiA+ID4gc2Vuc2UuDQo+ID4gPiA+ID4gPiA+
+ID4NCj4gPiA+ID4gPiA+ID4gPiBJdCBsb29rcyB0byBtZSBOSUNzIGFyZSBwb3dlcmZ1bCBub3cs
+IGJ1dCBhZ2FpbiBhcyBJDQo+ID4gPiA+ID4gPiA+ID4gbWVudGlvbmVkIEkgZG9uJ3QgdGhpbmsg
+aXQncyBhIHJlYXNvbiB3ZSBuZWVkIHRvIGRlcHJlY2F0ZQ0KPiA+ID4gPiA+ID4gPiA+IHJkbWEs
+IGVzcGVjaWFsbHkgaWYgUUVNVSdzIHJkbWEgbWlncmF0aW9uIGhhcyB0aGUgY2hhbmNlDQo+ID4g
+PiA+ID4gPiA+ID4gdG8gYmUgcmVmYWN0b3JlZA0KPiA+ID4gdXNpbmcgcnNvY2tldC4NCj4gPiA+
+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiA+IElzIHRoZXJlIGFueW9uZSB3aG8gc3RhcnRlZCBs
+b29raW5nIGludG8gdGhhdCBkaXJlY3Rpb24/DQo+ID4gPiA+ID4gPiA+ID4gV291bGQgaXQgbWFr
+ZSBzZW5zZSB3ZSBzdGFydCBzb21lIFBvQyBub3c/DQo+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4g
+PiA+ID4NCj4gPiA+ID4gPiA+ID4gTXkgdGVhbSBoYXMgZmluaXNoZWQgdGhlIFBvQyByZWZhY3Rv
+cmluZyB3aGljaCB3b3JrcyB3ZWxsLg0KPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiBQcm9n
+cmVzczoNCj4gPiA+ID4gPiA+ID4gMS4gIEltcGxlbWVudCBpby9jaGFubmVsLXJkbWEuYywgMi4g
+IEFkZCB1bml0IHRlc3QNCj4gPiA+ID4gPiA+ID4gdGVzdHMvdW5pdC90ZXN0LWlvLWNoYW5uZWwt
+cmRtYS5jIGFuZCB2ZXJpZnlpbmcgaXQgaXMNCj4gPiA+ID4gPiA+ID4gc3VjY2Vzc2Z1bCwgMy4g
+IFJlbW92ZSB0aGUgb3JpZ2luYWwgY29kZSBmcm9tIG1pZ3JhdGlvbi9yZG1hLmMsIDQuDQo+ID4g
+PiA+ID4gPiA+IFJld3JpdGUgdGhlIHJkbWFfc3RhcnRfb3V0Z29pbmdfbWlncmF0aW9uIGFuZA0K
+PiA+ID4gPiA+ID4gPiByZG1hX3N0YXJ0X2luY29taW5nX21pZ3JhdGlvbiBsb2dpYywgNS4gIFJl
+bW92ZSBhbGwgcmRtYV94eHgNCj4gPiA+ID4gPiA+ID4gZnVuY3Rpb25zIGZyb20gbWlncmF0aW9u
+L3JhbS5jLiAodG8gcHJldmVudCBSRE1BIGxpdmUNCj4gPiA+ID4gPiA+ID4gbWlncmF0aW9uIGZy
+b20gcG9sbHV0aW5nIHRoZQ0KPiA+ID4gPiA+ID4gY29yZSBsb2dpYyBvZiBsaXZlIG1pZ3JhdGlv
+biksIDYuICBUaGUgc29mdC1Sb0NFIGltcGxlbWVudGVkDQo+ID4gPiA+ID4gPiBieSBzb2Z0d2Fy
+ZSBpcyB1c2VkIHRvIHRlc3QgdGhlIFJETUEgbGl2ZSBtaWdyYXRpb24uIEl0J3Mgc3VjY2Vzc2Z1
+bC4NCj4gPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+ID4gV2Ugd2lsbCBiZSBzdWJtaXQgdGhlIHBh
+dGNoc2V0IGxhdGVyLg0KPiA+ID4gPiA+ID4NCj4gPiA+ID4gPiA+IFRoYXQncyBncmVhdCBuZXdz
+LCB0aGFuayB5b3UhDQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gLS0NCj4gPiA+ID4gPiA+IFBl
+dGVyIFh1DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBGb3IgcmRtYSBwcm9ncmFtbWluZywgdGhlIGN1
+cnJlbnQgbWFpbnN0cmVhbSBpbXBsZW1lbnRhdGlvbiBpcw0KPiA+ID4gPiA+IHRvIHVzZQ0KPiA+
+ID4gcmRtYV9jbSB0byBlc3RhYmxpc2ggYSBjb25uZWN0aW9uLCBhbmQgdGhlbiB1c2UgdmVyYnMg
+dG8gdHJhbnNtaXQgZGF0YS4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IHJkbWFfY20gYW5kIGlidmVy
+YnMgY3JlYXRlIHR3byBGRHMgcmVzcGVjdGl2ZWx5LiBUaGUgdHdvIEZEcw0KPiA+ID4gPiA+IGhh
+dmUgZGlmZmVyZW50IHJlc3BvbnNpYmlsaXRpZXMuIHJkbWFfY20gZmQgaXMgdXNlZCB0byBub3Rp
+ZnkNCj4gPiA+ID4gPiBjb25uZWN0aW9uIGVzdGFibGlzaG1lbnQgZXZlbnRzLCBhbmQgdmVyYnMg
+ZmQgaXMgdXNlZCB0byBub3RpZnkNCj4gPiA+ID4gPiBuZXcgQ1FFcy4gV2hlbg0KPiA+ID4gcG9s
+bC9lcG9sbCBtb25pdG9yaW5nIGlzIGRpcmVjdGx5IHBlcmZvcm1lZCBvbiB0aGUgcmRtYV9jbSBm
+ZCwgb25seQ0KPiA+ID4gYSBwb2xsaW4gZXZlbnQgY2FuIGJlIG1vbml0b3JlZCwgd2hpY2ggbWVh
+bnMgdGhhdCBhbiByZG1hX2NtIGV2ZW50DQo+ID4gPiBvY2N1cnMuIFdoZW4gdGhlIHZlcmJzIGZk
+IGlzIGRpcmVjdGx5IHBvbGxlZC9lcG9sbGVkLCBvbmx5IHRoZQ0KPiA+ID4gcG9sbGluIGV2ZW50
+IGNhbiBiZSBsaXN0ZW5lZCwgd2hpY2ggaW5kaWNhdGVzIHRoYXQgYSBuZXcgQ1FFIGlzIGdlbmVy
+YXRlZC4NCj4gPiA+ID4gPg0KPiA+ID4gPiA+IFJzb2NrZXQgaXMgYSBzdWItbW9kdWxlIGF0dGFj
+aGVkIHRvIHRoZSByZG1hX2NtIGxpYnJhcnkgYW5kDQo+ID4gPiA+ID4gcHJvdmlkZXMgcmRtYSBj
+YWxscyB0aGF0IGFyZSBjb21wbGV0ZWx5IHNpbWlsYXIgdG8gc29ja2V0IGludGVyZmFjZXMuDQo+
+ID4gPiA+ID4gSG93ZXZlciwgdGhpcyBsaWJyYXJ5IHJldHVybnMgb25seSB0aGUgcmRtYV9jbSBm
+ZCBmb3IgbGlzdGVuaW5nDQo+ID4gPiA+ID4gdG8gbGluaw0KPiA+ID4gc2V0dXAtcmVsYXRlZCBl
+dmVudHMgYW5kIGRvZXMgbm90IGV4cG9zZSB0aGUgdmVyYnMgZmQgKHJlYWRhYmxlIGFuZA0KPiA+
+ID4gd3JpdGFibGUgZXZlbnRzIGZvciBsaXN0ZW5pbmcgdG8gZGF0YSkuIE9ubHkgdGhlIHJwb2xs
+IGludGVyZmFjZQ0KPiA+ID4gcHJvdmlkZWQgYnkgdGhlIFJTb2NrZXQgY2FuIGJlIHVzZWQgdG8g
+bGlzdGVuIHRvIHJlbGF0ZWQgZXZlbnRzLg0KPiA+ID4gSG93ZXZlciwgUUVNVSB1c2VzIHRoZSBw
+cG9sbCBpbnRlcmZhY2UgdG8gbGlzdGVuIHRvIHRoZSByZG1hX2NtIGZkDQo+IChnb3R0ZW4gYnkg
+cmFjY2VwdCBBUEkpLg0KPiA+ID4gPiA+IEFuZCBjYW5ub3QgbGlzdGVuIHRvIHRoZSB2ZXJicyBm
+ZCBldmVudC4NCj4gSSdtIGNvbmZ1c2VkLCB0aGUgcnNfcG9sbF9hcm0NCj4gOmh0dHBzOi8vZ2l0
+aHViLmNvbS9saW51eC1yZG1hL3JkbWEtY29yZS9ibG9iL21hc3Rlci9saWJyZG1hY20vcnNvY2tl
+dC5jIw0KPiBMMzI5MA0KPiBGb3IgU1RSRUFNLCBycG9sbCBzZXR1cCBmZCBmb3IgYm90aCBjcSBm
+ZCBhbmQgY20gZmQuDQo+IA0KDQpSaWdodC4gQnV0IHRoZSBxdWVzdGlvbiBpcyBRRU1VIGRvIG5v
+dCB1c2UgcnBvbGwgYnV0IGdpbGIncyBwcG9sbC4gOigNCg0KDQpSZWdhcmRzLA0KLUdvbmdsZWkN
+Cg0K
 
