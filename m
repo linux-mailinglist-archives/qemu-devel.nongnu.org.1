@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9618D465A
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 09:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B1D8D465B
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 09:46:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCaUA-0002dY-4T; Thu, 30 May 2024 03:46:06 -0400
+	id 1sCaUQ-0002pl-02; Thu, 30 May 2024 03:46:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaU7-0002cK-En
- for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:03 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUD-0002fg-Id
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:11 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaU5-0003MQ-Mb
- for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:03 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2e95abc7259so5456221fa.3
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 00:46:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUA-0003N4-Tp
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:09 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-35dc0472b7eso563984f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 00:46:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717055158; x=1717659958; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717055165; x=1717659965; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9HDpCi4iEWOUwI39sa+QJujajRIL5EYyVsQyGGRGUn4=;
- b=uuRG86ufMJR94gOBTyw1dKmgDiuqT0z916DVGiWt6819leq7XeYd0KSp4wNg5PWvgc
- oxzEL9CZzUmfRXB43z1Z/rHc3R0EdsK9nvsRWE8bMJtaQywMpzEebuV8PtDUnXRETQOs
- uS7zAlB2APpWAXLvhK+FlHoNDXI30WXYQQIeuP1/WN3qRjyCTzi3nShpB2VzG1mn56p7
- N5YFkmhD3DndsfzYU8gJbPP6cXqkD2kiP/+eRvOhFXOL3bVP+xR7w50GTtOoagnSC2LJ
- Hofjlx/Wh09ivFfiZybTPfJMlwTe7cV2G5Md0wKimCQ/XcwpRv135YKztjobc4jKnfiu
- mFyA==
+ bh=86k7CF14SSg/CYqN2D7txu231XQemu6J+/zlA2s2d3g=;
+ b=CU2im0Wcsh9VrTyD++I9rVZB8REdLHEM8elVT7j69sQPwzNCD+nPOnGtrMyiMdMI+C
+ MKSq9XO0johVQX6dalrRatiubpkIfDg7iegH0f932Nt62fuxkoITWVsf7MkPJgwMzJYz
+ TbVLN7eaQsCi/2puAWGCag6i0tNVrRfjl55V0DxYGh+PV7vy/ORvistOloSc+bmmc4pe
+ dgrfBhu4WBLM0d+F/UrZS7rhO7P5Oe9QnDV6AbjTF1kw/GwKaScqEITooxS6/WBVOwiN
+ y8GYP3T4JUKVM3dtiCw/J8LwPSkvxvP0G5w3D/CJYfTWMz3F6Sq+wKAzWhb9NdNJdWvU
+ KIPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717055158; x=1717659958;
+ d=1e100.net; s=20230601; t=1717055165; x=1717659965;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9HDpCi4iEWOUwI39sa+QJujajRIL5EYyVsQyGGRGUn4=;
- b=NQF4l3r1n2/Hee/92P/7B+5f/8McO4P+1DrY3usBJhL2YEzCFAVUvGjjtWVnQQACUu
- pspb2cBbcCLnFbsfEt9rBcUrrxe3NCyGeUAc8PXKHb092iQJDZolmDBmVs5Hi/zSn7QR
- bxYEjH0digw+unG9jXErpIHr+ouMq5C2Hu9BAQ8NRcSaxhJrX5Ac5LT7UoZ1QO6azAys
- 58Hg67TW5R7ngq9MtEAisIRYqv81KsLMJtchIUAeCGPJ2dgXjrw3q6eWX9O3ILv7A3sD
- EXpIgU/nBWD6W9vB+3AZzoZHj1RsPg14N785KsqNmCt1XhrEsUBwhSANWLxGWGa0wsQT
- QNoA==
-X-Gm-Message-State: AOJu0YwPFp9yYNPD7/kqeI5z+ggIAUvJiJ1L/nuXSogil7RK2PFamSOY
- VwO2WPpZiP3e/4d6qnv3LrQduBYPFilVl55Dbv/go0v7q/fi/PgMZ3I5pjymFPze1tFCR00Q5A2
- a
-X-Google-Smtp-Source: AGHT+IGsHz2rkPPz2V6armuS7U2pLg+nr69d4RPyUDq2oHs3Bjb9eBdsDBFcPxGBT2KFO/900W+5NQ==
-X-Received: by 2002:a2e:7208:0:b0:2ea:83e6:d5e with SMTP id
- 38308e7fff4ca-2ea847b3b88mr6130601fa.26.1717055158011; 
- Thu, 30 May 2024 00:45:58 -0700 (PDT)
+ bh=86k7CF14SSg/CYqN2D7txu231XQemu6J+/zlA2s2d3g=;
+ b=gcavmcXN1i4bNvrAx5/td1oVyCxr6DEdpYsL4aL4vyP2l5AvZ44oExzAqnQo0BDEmc
+ kvnasgmhrGuf1fpQadcKYTv05eG6GrWO5pJMt3vwVueVSq6O0QBVaLfwwPeH08+U0LDx
+ 7IBWi73+l5OpzaySO8nhkpGcUxIWzkN+dst3JFWhXiIrRUVbbSvHypArtFIs5Lba/o8A
+ FhJJIxGMYy+mtw17lV5kmjsfcza9xkpl3Sr8CCnh8fBmwXavUMQKYndAfssDKK603Rug
+ qby0gBsNEmQQIdJuK/RUr6/tFhYWAL2arSZJ83kFSv9aJtQxbZ2U8DfoG9Qc5Octp4Rn
+ Ozsg==
+X-Gm-Message-State: AOJu0Yy6KItWC2WYGsQ2VBWuUFnaOUG5x/4Z4+Y3t1LSbJsX/Syh1W/H
+ Sy252Ai6WQNvU7RbqQg1XbU2kKwb7NckHxpcPBeVNdTXQTBIRVfkD88igjOUkRmzkhrAPiX1NP/
+ X
+X-Google-Smtp-Source: AGHT+IEmftNfdDbMA6FOoRjkK3+k/JGk/r04ilH9+Bc+75KFFpoW4tMh6RvD4GeQN9KHkRD6in5jqw==
+X-Received: by 2002:adf:ec04:0:b0:354:cf3b:5791 with SMTP id
+ ffacd0b85a97d-35dc02bcfd4mr846234f8f.70.1717055164804; 
+ Thu, 30 May 2024 00:46:04 -0700 (PDT)
 Received: from m1x-phil.lan (xbn44-h02-176-184-35-50.dsl.sta.abo.bbox.fr.
  [176.184.35.50]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35579d7db8csm16673189f8f.8.2024.05.30.00.45.55
+ ffacd0b85a97d-3557a1c960esm16668562f8f.80.2024.05.30.00.46.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 30 May 2024 00:45:57 -0700 (PDT)
+ Thu, 30 May 2024 00:46:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
@@ -70,17 +70,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Eric Blake <eblake@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 1/4] hw/s390x: Introduce the @dump-s390-skeys QMP command
-Date: Thu, 30 May 2024 09:45:41 +0200
-Message-ID: <20240530074544.25444-2-philmd@linaro.org>
+Subject: [PATCH 2/4] hw/s390x: Introduce the 'dump_s390_skeys' HMP command
+Date: Thu, 30 May 2024 09:45:42 +0200
+Message-ID: <20240530074544.25444-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240530074544.25444-1-philmd@linaro.org>
 References: <20240530074544.25444-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,118 +103,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-@dump-skeys is specific to the qemu-system-s390x binary.
+'dump_skeys' is specific to the qemu-system-s390x binary.
 In order to provide it in an unified single binary, add
-a equivalent new command named @dump-s390-skeys, which
+a equivalent new command named 'dump_s390_skeys', which
 works identically on s390x and reports an error on other
 targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qapi/misc.json             | 18 ++++++++++++++++++
- hw/s390x/s390-skeys-stub.c | 16 ++++++++++++++++
- hw/s390x/s390-skeys.c      |  8 +++++++-
- hw/s390x/meson.build       |  5 +++++
- 4 files changed, 46 insertions(+), 1 deletion(-)
- create mode 100644 hw/s390x/s390-skeys-stub.c
+ include/monitor/hmp.h      |  1 +
+ hw/s390x/s390-skeys-stub.c |  8 ++++++++
+ hw/s390x/s390-skeys.c      |  9 ++++++++-
+ hmp-commands.hx            | 13 +++++++++++++
+ 4 files changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/qapi/misc.json b/qapi/misc.json
-index ec30e5c570..d192dd1bef 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -605,3 +605,21 @@
- { 'event': 'VFU_CLIENT_HANGUP',
-   'data': { 'vfu-id': 'str', 'vfu-qom-path': 'str',
-             'dev-id': 'str', 'dev-qom-path': 'str' } }
-+
-+##
-+# @dump-s390-skeys:
-+#
-+# Dump guest's storage keys
-+#
-+# @filename: the path to the file to dump to
-+#
-+# Since: 9.1
-+#
-+# Example:
-+#
-+#     -> { "execute": "dump-skeys",
-+#          "arguments": { "filename": "/tmp/skeys" } }
-+#     <- { "return": {} }
-+##
-+{ 'command': 'dump-s390-skeys',
-+  'data': { 'filename': 'str' } }
+diff --git a/include/monitor/hmp.h b/include/monitor/hmp.h
+index 954f3c83ad..647a1e4a3f 100644
+--- a/include/monitor/hmp.h
++++ b/include/monitor/hmp.h
+@@ -181,5 +181,6 @@ void hmp_boot_set(Monitor *mon, const QDict *qdict);
+ void hmp_info_mtree(Monitor *mon, const QDict *qdict);
+ void hmp_info_cryptodev(Monitor *mon, const QDict *qdict);
+ void hmp_dumpdtb(Monitor *mon, const QDict *qdict);
++void hmp_dump_s390_skeys(Monitor *mon, const QDict *qdict);
+ 
+ #endif
 diff --git a/hw/s390x/s390-skeys-stub.c b/hw/s390x/s390-skeys-stub.c
-new file mode 100644
-index 0000000000..50b5f83437
---- /dev/null
+index 50b5f83437..94b491425b 100644
+--- a/hw/s390x/s390-skeys-stub.c
 +++ b/hw/s390x/s390-skeys-stub.c
-@@ -0,0 +1,16 @@
-+/*
-+ * s390 storage key device stubs
-+ *
-+ * SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
-+ * SPDX-FileCopyrightText: 2023 Linaro Ltd.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "qapi/qapi-commands-misc.h"
+@@ -8,6 +8,14 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-misc.h"
++#include "monitor/monitor.h"
++#include "monitor/hmp.h"
 +
-+void qmp_dump_s390_skeys(const char *filename, Error **errp)
++void hmp_dump_s390_skeys(Monitor *mon, const QDict *qdict)
 +{
-+    error_setg(errp, "This guest is not using s390 storage keys - "
-+                     "nothing to dump");
++    monitor_printf(mon, "This guest is not using s390 storage keys - "
++                     "nothing to dump\n");
 +}
+ 
+ void qmp_dump_s390_skeys(const char *filename, Error **errp)
+ {
 diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index 5c535d483e..f9bb08eb92 100644
+index f9bb08eb92..e7dab52a6e 100644
 --- a/hw/s390x/s390-skeys.c
 +++ b/hw/s390x/s390-skeys.c
-@@ -15,6 +15,7 @@
- #include "hw/qdev-properties.h"
- #include "hw/s390x/storage-keys.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-commands-misc.h"
- #include "qapi/qapi-commands-misc-target.h"
- #include "qapi/qmp/qdict.h"
- #include "qemu/error-report.h"
-@@ -115,7 +116,7 @@ void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
+@@ -24,6 +24,8 @@
+ #include "sysemu/kvm.h"
+ #include "migration/qemu-file-types.h"
+ #include "migration/register.h"
++#include "monitor/monitor.h"
++#include "monitor/hmp.h"
+ 
+ #define S390_SKEYS_BUFFER_SIZE (128 * KiB)  /* Room for 128k storage keys */
+ #define S390_SKEYS_SAVE_FLAG_EOS 0x01
+@@ -105,7 +107,7 @@ void hmp_info_skeys(Monitor *mon, const QDict *qdict)
+     monitor_printf(mon, "  key: 0x%X\n", key);
+ }
+ 
+-void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
++void hmp_dump_s390_skeys(Monitor *mon, const QDict *qdict)
+ {
+     const char *filename = qdict_get_str(qdict, "filename");
+     Error *err = NULL;
+@@ -116,6 +118,11 @@ void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
      }
  }
  
--void qmp_dump_skeys(const char *filename, Error **errp)
-+void qmp_dump_s390_skeys(const char *filename, Error **errp)
- {
-     S390SKeysState *ss = s390_get_skeys_device();
-     S390SKeysClass *skeyclass = S390_SKEYS_GET_CLASS(ss);
-@@ -192,6 +193,11 @@ out:
-     fclose(f);
- }
- 
-+void qmp_dump_skeys(const char *filename, Error **errp)
++void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
 +{
-+    qmp_dump_s390_skeys(filename, errp);
++    hmp_dump_s390_skeys(mon, qdict);
 +}
 +
- static bool qemu_s390_skeys_are_enabled(S390SKeysState *ss)
+ void qmp_dump_s390_skeys(const char *filename, Error **errp)
  {
-     QEMUS390SKeysState *skeys = QEMU_S390_SKEYS(ss);
-diff --git a/hw/s390x/meson.build b/hw/s390x/meson.build
-index 482fd13420..c94b8d819d 100644
---- a/hw/s390x/meson.build
-+++ b/hw/s390x/meson.build
-@@ -50,6 +50,11 @@ virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-ccw.c'))
- virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', if_true: files('vhost-user-fs-ccw.c'))
- s390x_ss.add_all(when: 'CONFIG_VIRTIO_CCW', if_true: virtio_ss)
+     S390SKeysState *ss = s390_get_skeys_device();
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 06746f0afc..c12e2c2bd9 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1120,6 +1120,19 @@ SRST
  
-+s390x_stub_ss = ss.source_set()
-+s390x_stub_ss.add(when: 'TARGET_S390X', if_false: files('s390-skeys-stub.c'))
-+
-+specific_ss.add_all(s390x_stub_ss)
-+
- hw_arch += {'s390x': s390x_ss}
+ ERST
  
- hw_s390x_modules = {}
++    {
++        .name       = "dump-s390-skeys",
++        .args_type  = "filename:F",
++        .params     = "",
++        .help       = "Save guest storage keys into file 'filename'.",
++        .cmd        = hmp_dump_s390_skeys,
++    },
++
++SRST
++``dump-s390-skeys`` *filename*
++  Save guest storage keys to a file.
++ERST
++
+ #if defined(TARGET_S390X)
+     {
+         .name       = "dump-skeys",
 -- 
 2.41.0
 
