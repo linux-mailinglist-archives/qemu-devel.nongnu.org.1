@@ -2,87 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A833A8D4858
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 11:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52768D48FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 11:55:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCbyb-0006bv-Aw; Thu, 30 May 2024 05:21:37 -0400
+	id 1sCcUM-0006zz-9e; Thu, 30 May 2024 05:54:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sCbyZ-0006bD-6q
- for qemu-devel@nongnu.org; Thu, 30 May 2024 05:21:35 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sCcUI-0006zF-Hk
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 05:54:22 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sCbyX-0004mp-1h
- for qemu-devel@nongnu.org; Thu, 30 May 2024 05:21:34 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1f4a5344ec7so4945455ad.1
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 02:21:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1sCcUF-00026A-2k
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 05:54:21 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2bf62b121ccso483227a91.0
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 02:54:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1717060891; x=1717665691; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QIbHu3Kdqvk8YcJ4y5r4cxdsFNVnkXC+egIcYodGTY0=;
- b=WXfFla8wvvFh5lscj31h7VeicmKU+O8F+6qPfaEFvb2KwTEjaChvOtvjD6nsJQSr1H
- 3y9WXumKo7EKpdMTHEigEH5KKowx51Xpha8r/O07L3WiGyhYCOiTLbNhanwWe4YhoXFb
- lkRSk9sachQ93jFot6kvLY3hC1Xx6b5wL9azHRlCMvWIsUvUBKFtcBBwA3/GTIvGO5MD
- N6g8gG7zE88IBnotumQ95YXfQjJM27i+N3bCC8xYVZEFVZMdw0VV5JxN/wJ7cR+Z77Hv
- zMufRcHP2+GHKxyPQSOaTs8gSwPjlE1Axj8wZUJH4b5zLqu7bR0PmSGHvST1CdrVEgN/
- KBlA==
+ d=gmail.com; s=20230601; t=1717062857; x=1717667657; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=fqOQQsWYFsiD427DANQ9dVJoq1lGeoayCWBiRsEqQh8=;
+ b=YdPIk29tmG8uU93eTSl46olc/MolkHddNNpc3/gRIxQT89TQkCHSaFHcb2wJ3EdDDn
+ S6ngmrYuZjwfmHv0OgHgBbAwTtkp9P3+kwhhVETscdxnBz2AbJKuamqAGBg2vzv/t2Jl
+ xyMpfMh7V1zKFQ3eUJuO+xksW1mcqFeiGAVd3mCKR0FgSrmLythJNq+G7w5xBAvUMYa4
+ OyAUa86DJbWncMz0CcnVOUQitizSU3qbLJfJRyDppyqk4j/8mEJ1uyCjK5+p8OYqoPlR
+ qdpwfMKm6+PqVEtXzmiX0bWCIMiFXd/6hv5v7D4bpmddjvrqeei5BBBvHj0WtJ8b5p5I
+ jaqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717060891; x=1717665691;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QIbHu3Kdqvk8YcJ4y5r4cxdsFNVnkXC+egIcYodGTY0=;
- b=cPjJAw8IDJrJysCGRYqIHHBoV+GdXH42dxGPphUhBcc13Nl74rqoIOPEENLs3wwCTp
- IyoEtK/XkczY5QrL6x9U757E9z2lSlq7l4u5gi9Ox15PO5EbIiDhM8S7AKdXvMsCGSX2
- XNj2bjS999Bo7Rk7bvURAI/4oOvK9AOCkM0jajurZRnrgNrK5BnqIrDTdZLE6CP2dvBh
- Ql857yjnKmgyXyA98AdZWLvQtpvZfUGeZA+72BhimEqaXkvcs3x753P82tAPIESW3mjt
- Fg/U+JXM6/PTF6GWlSjKjOESyAFmhJBUqY76PK4cfabgeIljpwawJ9Z8yAQYd6EQOpbe
- 97tw==
-X-Gm-Message-State: AOJu0YyjfIk+dHBN235p7a4BUw2GzO4a8NUuOnrxnXVH7829SQMzvOCn
- k1mFz6BTH/agG54TSVAONRcrrqy0LTVFNZYTzXS4moOCTWmDpLYoAI28fJ5oVcQ=
-X-Google-Smtp-Source: AGHT+IH3i0I8/ut3w7JOQcz3tJuhZoXMc8sK1IEYXrmnOJ0mhsFR6T6k7ezqb/MGN1gIbFr8bAvHDQ==
-X-Received: by 2002:a17:903:183:b0:1f4:9b48:7561 with SMTP id
- d9443c01a7336-1f61bddd04amr21028245ad.6.1717060891357; 
- Thu, 30 May 2024 02:21:31 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.15.33])
+ d=1e100.net; s=20230601; t=1717062857; x=1717667657;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fqOQQsWYFsiD427DANQ9dVJoq1lGeoayCWBiRsEqQh8=;
+ b=H+y77ZsdJjfTYYY+uZEBguq0gsY10TEaOgaY4XdZAsXmg6Zm03aqMhqm9t+3IiGIck
+ Jy+1Nw/iQjGiTrPnS8PhhD6pcjP74QoSUf46qc4DDBl3LqpWGcVtFMbcrhOenYeGQ+8G
+ UQP1zAeN7pHCSLZ9nqPtG0zMthtEKZCRBQn4a3nsFAGKu+QrwPKsPTEAjyHi6XqK5m4F
+ YBGpF4H0h+AG2T2WXjzK0GniatoasiljxEw74ycITiKF9MG4TgWQtRnWbXryA90Zkq+Q
+ 2IkkCpV9WRE/y2U2rDTNfYZV7d8bU234XoLNZnB2fW8VajnmEZXVp/nPyHyg+oaG7xGh
+ JFeQ==
+X-Gm-Message-State: AOJu0Yxw618YWHTtu1Vr5segSGHq4hPdjN0IxYfITe3+mPoQYKzCspF9
+ nNUowf9+qCUWVacntrkIxwvgOSc4rdzVnz+nWnvB3ve/THmUtQ7055YywWGR
+X-Google-Smtp-Source: AGHT+IF9yVV3OUOweh3X7ETmk8qE9VSHpKwbm5qEbphjmfvm3i7pNBoSUH6WK8S7b7Az3KTY+3oeUA==
+X-Received: by 2002:a17:90b:1191:b0:2c1:a9dc:7f07 with SMTP id
+ 98e67ed59e1d1-2c1acc912f9mr2020557a91.18.1717062856982; 
+ Thu, 30 May 2024 02:54:16 -0700 (PDT)
+Received: from wheely.local0.net ([1.146.0.82])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f46dca2529sm94359215ad.247.2024.05.30.02.21.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 May 2024 02:21:31 -0700 (PDT)
-Message-ID: <712bb03a-688a-45d5-bb25-620f4af956e9@ventanamicro.com>
-Date: Thu, 30 May 2024 06:21:26 -0300
+ 98e67ed59e1d1-2c1a775d28asm1183626a91.8.2024.05.30.02.54.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 May 2024 02:54:16 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 0/4] tests/qtest/migration-test: Improve shared
+Date: Thu, 30 May 2024 19:54:03 +1000
+Message-ID: <20240530095408.31608-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v2 0/5] target/riscv: Support RISC-V privilege 1.13
- spec
-To: Fea Wang <fea.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20240515080605.2675399-1-fea.wang@sifive.com>
- <4d2d56aa-5758-4320-a5ef-53ebb87ab494@ventanamicro.com>
- <CAKhCfseJgRzyeg1seuZ15SR=f78E5rnbgfrzY_VeRDhPMOAhwA@mail.gmail.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKhCfseJgRzyeg1seuZ15SR=f78E5rnbgfrzY_VeRDhPMOAhwA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,111 +88,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Fea,
-
-On 5/30/24 00:30, Fea Wang wrote:
-> Hi Daniel,
-> thank you for your help.
-> 
-> I found that only the cover is without many maintainers. I used to send patches by git send-email --dry-run --to 'qemu-devel@nongnu.org <mailto:qemu-devel@nongnu.org>,qemu-riscv@nongnu.org <mailto:qemu-riscv@nongnu.org>' --cc-cmd='scripts/get_maintainer.pl <http://get_maintainer.pl> -i' patches/*. Do you have a better script for me?
-
-Hmmm no I don't actually :) my script is worse than yours. I just use a git
-alias that hardcode everyone in the CC:
-
-	askreview-riscv = send-email --suppress-cc=sob --to qemu-devel@nongnu.org \
-		--cc qemu-riscv@nongnu.org \
-		--cc (everyone from the output of get_maintainers.pl for RISC-V files)
-
-And then "git askreview-riscv (patches)"
-
- From reading git docs it seems like one detail with your script is that the CC
-is calculated patch by patch via the "--cc-cmd" output, but the cover letter is
-considered an empty commit, so the script returns nothing. This is why every
-other patch has a CC but the cover doesn't.
-
-This is more a get_maintainer.pl detail than anything, so don't worry about it.
-Having the patches properly CCed is enough. We'll go after the cover-letter
-manually if needed.
-
+These apply on top of the previous ppc series. They are similar
+to what was discussed except the end result does not attempt to
+run /dev/shm tests on Gitlab CI because of concerns about
+consistency of test results if shm becomes exhausted.
 
 Thanks,
+Nick
 
-Daniel
+Nicholas Piggin (4):
+  tests/qtest/migration-test: Use regular file file for shared-memory
+    tests
+  tests/qtest/migration-test: Enable test_mode_reboot
+  tests/qtest/migration-test: Fix and enable test_ignore_shared
+  tests/qtest/migration-test: Add a postcopy memfile test
 
+ tests/qtest/migration-test.c | 128 ++++++++++++++++++++++++-----------
+ 1 file changed, 88 insertions(+), 40 deletions(-)
 
-> Thank you.
-> 
-> Sincerely,
-> Fea
-> 
-> On Mon, May 27, 2024 at 5:21 PM Daniel Henrique Barboza <dbarboza@ventanamicro.com <mailto:dbarboza@ventanamicro.com>> wrote:
-> 
->     Fea,
-> 
->     Please try to also add all RISC-V QEMU maintainers and reviewers when sending
->     patches. It will get your patches reviewed and queued faster. Otherwise the
->     maintainers can miss you your series due to high ML traffic.
-> 
->     You can fetch who you want to CC using the get_maintainer.pl <http://get_maintainer.pl> script with the
->     patch files or any source file in particular, e.g.:
-> 
->     $ ./scripts/get_maintainer.pl <http://get_maintainer.pl> -f target/riscv/cpu.c
->     Palmer Dabbelt <palmer@dabbelt.com <mailto:palmer@dabbelt.com>> (supporter:RISC-V TCG CPUs)
->     Alistair Francis <alistair.francis@wdc.com <mailto:alistair.francis@wdc.com>> (supporter:RISC-V TCG CPUs)
->     Bin Meng <bmeng.cn@gmail.com <mailto:bmeng.cn@gmail.com>> (supporter:RISC-V TCG CPUs)
->     Weiwei Li <liwei1518@gmail.com <mailto:liwei1518@gmail.com>> (reviewer:RISC-V TCG CPUs)
->     Daniel Henrique Barboza <dbarboza@ventanamicro.com <mailto:dbarboza@ventanamicro.com>> (reviewer:RISC-V TCG CPUs)
->     Liu Zhiwei <zhiwei_liu@linux.alibaba.com <mailto:zhiwei_liu@linux.alibaba.com>> (reviewer:RISC-V TCG CPUs)
->     qemu-riscv@nongnu.org <mailto:qemu-riscv@nongnu.org> (open list:RISC-V TCG CPUs)
->     qemu-devel@nongnu.org <mailto:qemu-devel@nongnu.org> (open list:All patches CC here)
-> 
-> 
->     I added the extra folk in the CC for this reply so don't worry about it.
-> 
-> 
->     Alistair, please queue this series. It's already fully acked and I would like to add
->     some bits on top of the priv_spec 1.13 support.
-> 
-> 
->     Thanks,
-> 
-> 
->     Daniel
-> 
->     On 5/15/24 05:05, Fea.Wang wrote:
->      > Based on the change log for the RISC-V privilege 1.13 spec, add the
->      > support for ss1p13.
->      >
->      > Ref:https://github.com/riscv/riscv-isa-manual/blob/a7d93c9/src/priv-preface.adoc?plain=1#L40-L72 <https://github.com/riscv/riscv-isa-manual/blob/a7d93c9/src/priv-preface.adoc?plain=1#L40-L72>
->      >
->      > Lists what to do without clarification or document format.
->      > * Redefined misa.MXL to be read-only, making MXLEN a constant.(Skip, implementation ignored)
->      > * Added the constraint that SXLEN≥UXLEN.(Skip, implementation ignored)
->      > * Defined the misa.V field to reflect that the V extension has been implemented.(Skip, existed)
->      > * Defined the RV32-only medelegh and hedelegh CSRs.(Done in these patches)
->      > * Defined the misaligned atomicity granule PMA, superseding the proposed Zam extension..(Skip, implementation ignored)
->      > * Allocated interrupt 13 for Sscofpmf LCOFI interrupt.(Skip, existed)
->      > * Defined hardware error and software check exception codes.(Done in these patches)
->      > * Specified synchronization requirements when changing the PBMTE fields in menvcfg and henvcfg.(Skip, implementation ignored)
->      > * Incorporated Svade and Svadu extension specifications.(Skip, existed)
->      >
->      >
->      > Fea.Wang (4):
->      >    target/riscv: Support the version for ss1p13
->      >    target/riscv: Add 'P1P13' bit in SMSTATEEN0
->      >    target/riscv: Add MEDELEGH, HEDELEGH csrs for RV32
->      >    target/riscv: Reserve exception codes for sw-check and hw-err
->      >
->      > Jim Shu (1):
->      >    target/riscv: Reuse the conversion function of priv_spec
->      >
->      >   target/riscv/cpu.c         |  8 ++++++--
->      >   target/riscv/cpu.h         |  5 ++++-
->      >   target/riscv/cpu_bits.h    |  5 +++++
->      >   target/riscv/cpu_cfg.h     |  1 +
->      >   target/riscv/csr.c         | 39 ++++++++++++++++++++++++++++++++++++++
->      >   target/riscv/tcg/tcg-cpu.c | 17 ++++++++---------
->      >   6 files changed, 63 insertions(+), 12 deletions(-)
->      >
-> 
+-- 
+2.43.0
+
 
