@@ -2,194 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6706F8D52B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 21:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F76B8D51E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 20:40:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sClro-0003us-38; Thu, 30 May 2024 15:55:16 -0400
+	id 1sCkgV-0001mH-Tq; Thu, 30 May 2024 14:39:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shefty@nvidia.com>)
- id 1sCkQo-0006MM-Gh; Thu, 30 May 2024 14:23:18 -0400
-Received: from mail-mw2nam04on20631.outbound.protection.outlook.com
- ([2a01:111:f403:240a::631]
- helo=NAM04-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sCkgU-0001ls-9y
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 14:39:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shefty@nvidia.com>)
- id 1sCkQk-00085e-6o; Thu, 30 May 2024 14:23:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lhV3NluFYCWbdK4R3jZYNOGWzwA/P8CGW+anvMb+8wFuFBtcLXsx9EqUb6/Mfg1zqCw27sDhYNPN3AaFTVnMod2RHMB2E8JXdgVu2vAzdusJ/KCIlVslRJtsnMa6rxCWupzZeEs17gB5ZES59gubxqjX3nvoOhtnhxmbz59PkLRfW5a7wGcVMk/ITWYkkt7+gCo+ediwzNK3/IpKBKumk+0Tb1fMHXHLSrls+IQdEfDyPa+63unyu58acCjiOOWBZbfNTRrlXL7R+U5bTMzPzf+lulXXtOtTm2HK+FIneO2u48HJwo6OIWE0luEHRaIoqi8Er3mIl1+6gHAqHkmc2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ejbLikR4ixNxym8FN+oZLHJwgoHa9CNPmCEEM2t3Na4=;
- b=oGMDX0k5OgNz+s55szDUi4Ii2Kf9efa/QUhU0+dwoPjmvG4mcGIyf/06x9jr/dmwlVpHoqkEnOojWlIMp6piVrtLzZej8IduJ/bOVXzTWz93oN9+MAVEIXRMB22hJb1usFpoGaX8mm2qHpK4EgrCY3V+kGSjpjBW/3f80hIIqW2RV8ocbcSy5Yi4fdjN9ClQecxq6DuyUEWZ5k3Tf2SRac5mOgcVja8wspCbib/fQ/ya7fpVQvMI2MYOVLsmRjX2S2LQO9fshnQATQ74f+LCUk2iCiSf0Vt6YeLMUEo5slfqF9aogF8WFllz4aalUgpLojkAakb9/xoB57H66cGRnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ejbLikR4ixNxym8FN+oZLHJwgoHa9CNPmCEEM2t3Na4=;
- b=ST0HIb5tCxcIo/kM8skGnpfTGijn57CBOdDePHpQJ2TDjeqz4R+rfAQhfx6ukKYC44c4Jc7Qz1VL/apTZOdpV2xtMkDeLxlIzIq9NO4MXlPcyxXz4NMnPey5wP8+xxi7sPdBbWuwxDHMuO2bAWh28OTBKSL82LYoGKZ8rQDKmTX+zkMJPd8X38FrbBDvoNPzn2p1iCMAuMG75dJF6V6tsiQbCPRDVz8Dvv31wBqK5HPrYGXbDMl/H/WCErtCNEeS8K6dYXXuLeP8WQxJdznn3JGmWtJUC5RBEpqidyHhWJihJaehIF54FfT6g4Cp4wG7d7JIxGXNXEiMFJWcg2sM2A==
-Received: from SN7PR12MB6840.namprd12.prod.outlook.com (2603:10b6:806:264::14)
- by CH3PR12MB8755.namprd12.prod.outlook.com (2603:10b6:610:17e::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.17; Thu, 30 May
- 2024 18:23:06 +0000
-Received: from SN7PR12MB6840.namprd12.prod.outlook.com
- ([fe80::c07d:14d:c611:903f]) by SN7PR12MB6840.namprd12.prod.outlook.com
- ([fe80::c07d:14d:c611:903f%5]) with mapi id 15.20.7611.025; Thu, 30 May 2024
- 18:23:03 +0000
-From: Sean Hefty <shefty@nvidia.com>
-To: Jinpu Wang <jinpu.wang@ionos.com>, "Gonglei (Arei)"
- <arei.gonglei@huawei.com>
-CC: Peter Xu <peterx@redhat.com>, Yu Zhang <yu.zhang@ionos.com>, Michael
- Galaxy <mgalaxy@akamai.com>, Elmar Gerdes <elmar.gerdes@ionos.com>,
- zhengchuan <zhengchuan@huawei.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, "Zhijian Li
- (Fujitsu)" <lizhijian@fujitsu.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf
- <kwolf@redhat.com>, Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Prasanna Kumar Kalever <prasanna4324@gmail.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- "devel@lists.libvirt.org" <devel@lists.libvirt.org>, Hanna Reitz
- <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Eric Blake <eblake@redhat.com>, Song Gao
- <gaosong@loongson.cn>, =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?=
- <marcandre.lureau@redhat.com>, =?utf-8?B?QWxleCBCZW5uw6ll?=
- <alex.bennee@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pannengyuan <pannengyuan@huawei.com>,
- Xiexiangyou <xiexiangyou@huawei.com>, Fabiano Rosas <farosas@suse.de>, RDMA
- mailing list <linux-rdma@vger.kernel.org>
-Subject: RE: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-Thread-Topic: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
-Thread-Index: AQHasYFlL7/k5NcYE0eGwMvWFUneprGwEXkQ
-Date: Thu, 30 May 2024 18:23:03 +0000
-Message-ID: <SN7PR12MB6840BBC38BD6E7D7665607ACBDF32@SN7PR12MB6840.namprd12.prod.outlook.com>
-References: <Zjj0xa-3KrFHTK0S@x1n>
- <addaa8d094904315a466533763689ead@huawei.com> <ZjpWmG2aUJLkYxJm@x1n>
- <13ce4f9e-1e7c-24a9-0dc9-c40962979663@huawei.com> <ZjzaIAMgUHV8zdNz@x1n>
- <CAHEcVy48Mcup3d3FgYh_oPtV-M9CZBVr4G_9jyg2K+8Esi0WGA@mail.gmail.com>
- <04769507-ac37-495d-a797-e05084d73e64@akamai.com>
- <CAHEcVy4d7uJENZ1hRx2FBzbw22qN4Qm0TwtxvM5DLw3s81Zp_g@mail.gmail.com>
- <Zk0c51D1Oo6NdIxR@x1n> <2308a8b894244123b638038e40a33990@huawei.com>
- <ZlX-Swq4Hi-0iHeh@x1n> <7bf81ccee4bd4b0e81e3893ef43502a8@huawei.com>
- <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
-In-Reply-To: <CAMGffEmGDDxttMhYWCBWwhb_VmjU+ZeOCzwaJyZOTi=yH_jKRg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR12MB6840:EE_|CH3PR12MB8755:EE_
-x-ms-office365-filtering-correlation-id: 444a5794-69f2-4873-c08e-08dc80d58b63
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230031|1800799015|7416005|366007|376005|38070700009; 
-x-microsoft-antispam-message-info: =?utf-8?B?WXltMGxuejdFbW9kZDg2bkZJajhSMmd1eFlmdmdQbW9ablIvanF5bVJtZUkx?=
- =?utf-8?B?WnJPSTJBV3RIZWFFdEVXa3pwR1RQMERXcDVnREMyZXpDWDFPYitPWExCTmFj?=
- =?utf-8?B?aWZ0OWM5eGFrVlNWSHBKTlVncDlrcnJ4ZUNqUzFGcUhtRTFiSmE2b3VoUC80?=
- =?utf-8?B?T0p0SUdMZEU2UUJJQnpTRXN5M2NJTmRLNzJVamtaYlBTQjZTck5RckVvM0p2?=
- =?utf-8?B?L3pEcG9PYWdOV1NYY0NXNEw1VUtGQzRNRC9tRDRya3FHTEowa2ltSWdpeUNn?=
- =?utf-8?B?RmpaVjlFNkg3REY5T05QbFpuWjlqOUVGUHIyUVdMMDJkS1JUK0hDQ1k4c3cz?=
- =?utf-8?B?Zmk5N1pKRzBtcFJwbWtESDFBUWJNLzJ1UGMvQ1kvOG9PMElxRGFORC9BeGNE?=
- =?utf-8?B?Zld6SGhpL0VpK0N1MG8zNWwvUmViWFh0Z2JSbDlONFl6Q3ZINkVadmdia1hn?=
- =?utf-8?B?dDBXZkJTRDBRZSsxRkNFZ3FLWkJtSld2YkQxbWhGa2g3ODlIS0xzT2dpcjNt?=
- =?utf-8?B?MEkrTWtWcnVhOTV4Lytacis5L0tNdmxBbXNUNGpYQUZtcGpJdjMyY253eTda?=
- =?utf-8?B?a2NPTVhJMTdzVStOOGdhdnZrYlhaYktncXNwTk1JNCtHcUVueGYxTzdIajAy?=
- =?utf-8?B?VEtMblNpZ3lwV1VPZHc0MnNEaUYyZ1habFJsVSs1ZldhNlVwcXkzZzlGMGUz?=
- =?utf-8?B?S1h5VStQWUhzd1VoTzBzVlNGUS84UTRVQS9PUGhKd2l0dTNIdk80Q0s1Tldy?=
- =?utf-8?B?MjVXT0owZG9jUFg0RXE5b2I0OENxR1k2dm5iRmM5dzExTDBaM3p0Z2t1bWZa?=
- =?utf-8?B?cUJaNXRwb3cwR2p2NWZwS2pBd0VnSURwS1M3VHNwOENMYkJkNTRYMWN3bXF1?=
- =?utf-8?B?TzRnQVNZZHpHdkE1UG1rT1hLVHFjQWpvS2VnKzVENUVXaEZ1SExCWEpwclV6?=
- =?utf-8?B?STZoR1I0RTU3bXdDR043RVNGU3BOeGQ4VC9idmU5S1B0SjcranRHWUJsLzlp?=
- =?utf-8?B?MkZIZHNqWVdhLzUwV3FkYjJ3SzVJOUxuMXBRbHpvZkZmcGJuc0V2OGFkVERQ?=
- =?utf-8?B?cnEycnhDVUNHaTgvOTBoOGFKMFAzR2QxeHNWdkk3MjU3TmYzbHFPN1Q0eWxC?=
- =?utf-8?B?MVBGa0VuVWNBekltSUhaQVBzbzFzdGVaYVZqVjFTZFVGd3A1N3ZIdStZdGdz?=
- =?utf-8?B?UHVrM0haSWpzTngxMmdnM1FEUmF4ODlRRzE5NzIxT2Zubkk3d002Wll5NXZr?=
- =?utf-8?B?Sm4vM1NueDRRME5sMDREb3BFV0R0RUd0RmNaRmlhTmxsZ0FJZWpheEhyWGJG?=
- =?utf-8?B?UnpNY1dLRVVPN0wxL1RYUkdCaE1zWFVPYU95eHFnWi8wR1NaWEY0M1RmNlc2?=
- =?utf-8?B?M05nU0pBVkZIU0JaZlJpdjlzK3kwN3JtNWZTdzl0aVZSQUpqNFkzcloxVC9q?=
- =?utf-8?B?dDAwa2tCaDNQK1hkaEhtM1UxK1hGc1UvMjEzMjMvY0dpdzhLZytSc2toUitT?=
- =?utf-8?B?b3JzK0o4ZFFjK2RkZXRjQXptaUM1QW9VZEU5M3AyenVFZkxTSS91U1QyTTJl?=
- =?utf-8?B?MnYyVENHRy9wL2Fab1JXWmxYNVFuWmd6Rm5seTc5MUx2RHRjTUIwRldxbzdW?=
- =?utf-8?B?WnVHcXp6K1RyZFZRWitUKzE0WXpOZGoyd1hYaE9qdVhEOGsxSGVtekNSdXBy?=
- =?utf-8?B?VW5ZZjBNeTZ0YnJaZkhIdjRQTFJWTG1nN0cwM0xHd0FTQ2JadW5UdlMzUkZu?=
- =?utf-8?B?TldSNWxzUXkxdmZWcmEvaVFYWm1lZG5Zc3h6NU05UzR0Q1J0SHIvbUV4ZFY5?=
- =?utf-8?B?R05VR2huMzhqZVNqT1drdz09?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN7PR12MB6840.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(7416005)(366007)(376005)(38070700009); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eG5Id2lDVjhSeVdjaVh1NmlwOFYyd1h3b0pzS05hUnBncThDV0NMa0dodnBm?=
- =?utf-8?B?dENWN2RSZWc4dVVybTVYM0tBNHd4R1kxTU5XZEZQdXFUNHZVOXUxQkZDQTRP?=
- =?utf-8?B?RUV3RXNjK3BEVVBpOVQyb0FVQjdZMy9VRW1JMFc1ZkhRckZlNmVyaFZXay9W?=
- =?utf-8?B?RnIwOW8xSy9OdktQRVgxT2tmQjFDMWhqY3BKWmE2NnI5aG90aC9ZRkJuQ05k?=
- =?utf-8?B?eVFNcFYyeEhxWElhMWxFaUhRaHNGWHRpUytpdmZMWlRIN2VkdDZCS20zTTNS?=
- =?utf-8?B?WHZtZXpocUVzaExiK2dtK2dZclh4elRONGFQMW50dlJJT1lsS0V2SWJWd05S?=
- =?utf-8?B?WnNUVStZQTNTZXJDSGltUkpFM0ZHNFpOYTlLelVVbHFzZ1NYT2VFcHNSdW9w?=
- =?utf-8?B?Yk5JU2NkTjBIVElmdjhnalBwNURaeENnWFA1bWo0VjBWQmMxdmo1VUhhTGND?=
- =?utf-8?B?WFYxNlBnY2g2Uk8xbXRuekNrREZsaE1rWkpqQ05MTllibnVnYXUwTFJyK015?=
- =?utf-8?B?cC9SQ2gvMFBsOXZnY2g5M2UwUExSL0Y2eHI1bVZ1a3A3Wi9uTlFXRHU3dmdl?=
- =?utf-8?B?MVBaRzdtcjNJQU1UWkR0aEhpRzRUM1BkSnc3TnZHMS90MThLRkpMVXMzSU04?=
- =?utf-8?B?S3hQMTVDSEVVNkY3WHBENktja3lRWE01cGhhSEc1cGdPUmRoZ1MxbWRFeVo2?=
- =?utf-8?B?RUQxVy9sRWNBOWU2Yy9saW9nR0psZEdMYzdZR1l1OThkc0w5L3JjMTk4YU9I?=
- =?utf-8?B?L1d1Y0RFWVQzMGI1VmUxVHdjdzJ6MDFNZGdINXpQalpXYURoWFo1eCtLVGRx?=
- =?utf-8?B?ZFVHbndFNm5RTkY4OXFMWHN1blNZVEIyZEZOTkNxQTFoODhMNXdkL2RGTkM2?=
- =?utf-8?B?VGdNOFJCdkZGcGUrV0o1eStlRWxYR1psSnZCOGMyOGJsNXdkajhvejNvcFR3?=
- =?utf-8?B?T2lSN0gvWmMvcFo0Y2hXSjg1b1NyZzVzN0NTeG9UeXF1U1UyMHh4aUZJREpa?=
- =?utf-8?B?aXN6Y1preml1K3ZQMVg2T252OXR2S3QxWDc2OUtCN3JGeWJJK1gwTmx4WGVi?=
- =?utf-8?B?M0hNMnBtNEtSaEljRVdHUlQzVENSWkhQVERxdUtNaWlJaEpTUDVkWDU5Q2py?=
- =?utf-8?B?bUszOGhLVGdBdXZtdWNpejIxTWJjNDR2MnE0Tkp6Z2k0TDFQcU96L0RZUGt1?=
- =?utf-8?B?akxpeXNzVkIvMkluLzUwbTRQZFRFNVNkTmg1WWdpOEo1Y2lQM0JLVmhYTGFr?=
- =?utf-8?B?RCtjYXBlOHgrd0hsUFFjak9IRHN2b0w0QWh3WXpNSGNIamoyWS8rZXpIc0lX?=
- =?utf-8?B?ak1NMHprMlRQQyt4cW9qK3d3MHZVUE0yQlpNY1QyMURFOVE1VnZEWHNWUFNk?=
- =?utf-8?B?NVJwTmY4N1B0dnEzazJ6NmIwdUpwbUVuRW9lN0NHem4vRkpMM0xoUWFHTnMw?=
- =?utf-8?B?KzhmOWJNY2dGVm42dU8xUHNncWR6M1BtKzY0K1FjTExMQ2FuM1o2QlhqUFRS?=
- =?utf-8?B?ZkpuQW1jNnFHL0hlL3MrQkphbkRka2pIN2ltS0hBNWpHcjh3aDMvQVVrSEVF?=
- =?utf-8?B?NHNwOE56S0ZsNnJYZ1RPUkJvQUdXZGVhbjlYQll0NldSMFhiS01HdWtRdGZq?=
- =?utf-8?B?by84YWdxVUpwc3N3OG9aT2lmdDNIM2xSWS9FWkVZcmVRU054aWFsSFJkSGt2?=
- =?utf-8?B?S2tQUlVHaGlndmhTWEJaZDRBMmVTQzR1dkJTWkpSZk9HZ2IyYVozeHNFdENQ?=
- =?utf-8?B?ME9vRU5wSjhJWkVFMUhJTFAvL0wwQ1VVOTQwN0NBMjhCQ3pMUThvSVAreks3?=
- =?utf-8?B?anA2V1UwMVlKcEJpbTBPSFNTRGhUd0Y1ckpFZjExTG9KTzJWY1o4cG10QWVW?=
- =?utf-8?B?Nmp1eUhma3YvMk1ZU2lNcHh5dGk2ZWZ0eFJOU0ROWWFYRXJ4VEw3Z25URDEz?=
- =?utf-8?B?SnlqbEtWclArbmVYRTQyNko4eWJ4SVJ6RkczY0M0OEtETEg3TEtGeUlvTmdz?=
- =?utf-8?B?dWgyVVdzYVlUd3JBOGpMbldUaEFGUmwwcVhTM2lRbktaQkV3b3VQUEx6Zzhp?=
- =?utf-8?B?TEhqRk9TQ0FISkRCT01lU3ZOTXZhWkN5UmxiTDRWOTZOVWtiaGR4S2o4Q2U1?=
- =?utf-8?B?TzBTbWFXSC9PS3I3K3EyeHF0MUJBNWxPak5HbjdrdHZvWVlaamtNazh4cmxh?=
- =?utf-8?B?Tnc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1sCkgS-0002Qq-Ae
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 14:39:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717094366;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=O3fg3AD9tLOpSpPoqPmSTCO4ln9FVKLVQ9RApRogROY=;
+ b=NRVggTZ7hgMVi0CZdjr4phTR8M2YPoGlPPGN91C8oc7PiaCVLtahXNL3X1UAv7O61/nY4r
+ 9QSsA1Xc/TEby+pzFlUkyzgvF0Ivf7YyGlzw7oKW3rxDczKbXI96sV6ZLdLT+rcdLYRivl
+ sKHaNXRVYswdBmoBQcTT1OfMtLNILDI=
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com
+ [209.85.161.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-5nhOgMbNOt-b27tUOKbPhQ-1; Thu, 30 May 2024 14:39:25 -0400
+X-MC-Unique: 5nhOgMbNOt-b27tUOKbPhQ-1
+Received: by mail-oo1-f69.google.com with SMTP id
+ 006d021491bc7-5b9b2a518b9so269641eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 11:39:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717094364; x=1717699164;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O3fg3AD9tLOpSpPoqPmSTCO4ln9FVKLVQ9RApRogROY=;
+ b=cCAxQbG41Q00gTZQJ5okcJaWcWYX6bLrMMzLhRkSDjK8nGjMpE1oUvLeg9x4kJeCpu
+ NKq50ykY8Krm5sEJymopazwobHPgbCusSzkXiMwsB8jmEnEkVehND0nSs4NYsdxi5r2+
+ T0EpSnFPF/7Cu8JCtlQTU3gMEmnBrLmKgj92QOI2TKGwU3IqsGAROzo5qxzdlaGrUYBo
+ lu5rsrvMGWBQ71Y3Iz90TJgbdsyogdBSQe0wEHhndxjRkaTJPfOCUJ7/1Jl56JEOX+XH
+ Jcg8YeDIpOjr1G1B/S9dCsY7Wx8RBWd6VHJ5gohvXsJ3XffHAelC81XQ/PrXAK53fTtV
+ ejgQ==
+X-Gm-Message-State: AOJu0YxJxqwcTiy52wP968Wu2dV9MWoZihfLLHbN5g7hKNgkWPkF2635
+ zLi0vTYB5iK9iZLPe0+a1/7FhOy+8siA4Pnsfz/nKZk9oN7BKVG5a6zMbqGMoFdWfCAy2+RLRBk
+ P9z04G7IiLLoSjnc4eD4rmPzm3o+lZBfc8L8ABgABZPAo6oNujAMl
+X-Received: by 2002:a05:6870:d394:b0:24f:d9fe:8ba5 with SMTP id
+ 586e51a60fabf-25060b2c4f5mr3021826fac.2.1717094363606; 
+ Thu, 30 May 2024 11:39:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRFryxSAum+QZ7pEgn/HgoH1yktcFo6cnYvudTHYdCyuTt90NvgkGKpzGz08TUGeqVomQAHw==
+X-Received: by 2002:a05:6870:d394:b0:24f:d9fe:8ba5 with SMTP id
+ 586e51a60fabf-25060b2c4f5mr3021772fac.2.1717094362664; 
+ Thu, 30 May 2024 11:39:22 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-43ff23c8084sm748411cf.34.2024.05.30.11.39.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 May 2024 11:39:22 -0700 (PDT)
+Date: Thu, 30 May 2024 14:39:19 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Steven Sistare <steven.sistare@oracle.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH V1 19/26] physmem: preserve ram blocks for cpr
+Message-ID: <ZljH1zbqisK6VowI@x1n>
+References: <1714406135-451286-1-git-send-email-steven.sistare@oracle.com>
+ <1714406135-451286-20-git-send-email-steven.sistare@oracle.com>
+ <ZlZQVijf2weEmzYK@x1n>
+ <c3f23e83-81d7-469a-aa04-29785fa6f8d7@oracle.com>
+ <ZleBOx6pN6KCn0a2@x1n>
+ <e0cb49da-9799-4a26-8844-f5055b6ae45b@oracle.com>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB6840.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 444a5794-69f2-4873-c08e-08dc80d58b63
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 May 2024 18:23:03.4226 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Cv6dWetOZgDOnKEPMR4iShF8aVo3cPSL3u4U6PCCfvJGHJUennN1HgCkAlzdEA6TPVavruZl8hmhwoz4pSG3sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8755
-Received-SPF: softfail client-ip=2a01:111:f403:240a::631;
- envelope-from=shefty@nvidia.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <e0cb49da-9799-4a26-8844-f5055b6ae45b@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 30 May 2024 15:55:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -204,63 +108,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiA+IEZvciByZG1hIHByb2dyYW1taW5nLCB0aGUgY3VycmVudCBtYWluc3RyZWFtIGltcGxlbWVu
-dGF0aW9uIGlzIHRvIHVzZQ0KPiByZG1hX2NtIHRvIGVzdGFibGlzaCBhIGNvbm5lY3Rpb24sIGFu
-ZCB0aGVuIHVzZSB2ZXJicyB0byB0cmFuc21pdCBkYXRhLg0KPiA+DQo+ID4gcmRtYV9jbSBhbmQg
-aWJ2ZXJicyBjcmVhdGUgdHdvIEZEcyByZXNwZWN0aXZlbHkuIFRoZSB0d28gRkRzIGhhdmUNCj4g
-PiBkaWZmZXJlbnQgcmVzcG9uc2liaWxpdGllcy4gcmRtYV9jbSBmZCBpcyB1c2VkIHRvIG5vdGlm
-eSBjb25uZWN0aW9uDQo+ID4gZXN0YWJsaXNobWVudCBldmVudHMsIGFuZCB2ZXJicyBmZCBpcyB1
-c2VkIHRvIG5vdGlmeSBuZXcgQ1FFcy4gV2hlbg0KPiBwb2xsL2Vwb2xsIG1vbml0b3JpbmcgaXMg
-ZGlyZWN0bHkgcGVyZm9ybWVkIG9uIHRoZSByZG1hX2NtIGZkLCBvbmx5IGEgcG9sbGluDQo+IGV2
-ZW50IGNhbiBiZSBtb25pdG9yZWQsIHdoaWNoIG1lYW5zIHRoYXQgYW4gcmRtYV9jbSBldmVudCBv
-Y2N1cnMuIFdoZW4NCj4gdGhlIHZlcmJzIGZkIGlzIGRpcmVjdGx5IHBvbGxlZC9lcG9sbGVkLCBv
-bmx5IHRoZSBwb2xsaW4gZXZlbnQgY2FuIGJlIGxpc3RlbmVkLA0KPiB3aGljaCBpbmRpY2F0ZXMg
-dGhhdCBhIG5ldyBDUUUgaXMgZ2VuZXJhdGVkLg0KPiA+DQo+ID4gUnNvY2tldCBpcyBhIHN1Yi1t
-b2R1bGUgYXR0YWNoZWQgdG8gdGhlIHJkbWFfY20gbGlicmFyeSBhbmQgcHJvdmlkZXMNCj4gPiBy
-ZG1hIGNhbGxzIHRoYXQgYXJlIGNvbXBsZXRlbHkgc2ltaWxhciB0byBzb2NrZXQgaW50ZXJmYWNl
-cy4gSG93ZXZlciwNCj4gPiB0aGlzIGxpYnJhcnkgcmV0dXJucyBvbmx5IHRoZSByZG1hX2NtIGZk
-IGZvciBsaXN0ZW5pbmcgdG8gbGluayBzZXR1cC1yZWxhdGVkDQo+IGV2ZW50cyBhbmQgZG9lcyBu
-b3QgZXhwb3NlIHRoZSB2ZXJicyBmZCAocmVhZGFibGUgYW5kIHdyaXRhYmxlIGV2ZW50cyBmb3IN
-Cj4gbGlzdGVuaW5nIHRvIGRhdGEpLiBPbmx5IHRoZSBycG9sbCBpbnRlcmZhY2UgcHJvdmlkZWQg
-YnkgdGhlIFJTb2NrZXQgY2FuIGJlIHVzZWQNCj4gdG8gbGlzdGVuIHRvIHJlbGF0ZWQgZXZlbnRz
-LiBIb3dldmVyLCBRRU1VIHVzZXMgdGhlIHBwb2xsIGludGVyZmFjZSB0byBsaXN0ZW4gdG8NCj4g
-dGhlIHJkbWFfY20gZmQgKGdvdHRlbiBieSByYWNjZXB0IEFQSSkuDQo+ID4gQW5kIGNhbm5vdCBs
-aXN0ZW4gdG8gdGhlIHZlcmJzIGZkIGV2ZW50LiBPbmx5IHNvbWUgaGFja2luZyBtZXRob2RzIGNh
-biBiZQ0KPiB1c2VkIHRvIGFkZHJlc3MgdGhpcyBwcm9ibGVtLg0KPiA+DQo+ID4gRG8geW91IGd1
-eXMgaGF2ZSBhbnkgaWRlYXM/IFRoYW5rcy4NCg0KVGhlIGN1cnJlbnQgcnNvY2tldCBjb2RlIGFs
-bG93cyBjYWxsaW5nIHJwb2xsKCkgd2l0aCBub24tcnNvY2tldCBmZCdzLCBzbyBhbiBhcHAgY2Fu
-IHVzZSBycG9sbCgpIGRpcmVjdGx5IGluIHBsYWNlIG9mIHBvbGwoKS4gIEl0IG1heSBiZSBlYXNp
-ZXN0IHRvIGFkZCBhbiBycHBvbGwoKSBjYWxsIHRvIHJzb2NrZXRzIGFuZCBjYWxsIHRoYXQgd2hl
-biB1c2luZyBSRE1BLg0KDQpJbiBjYXNlIHRoZSBlYXN5IHBhdGggaXNuJ3QgZmVhc2libGU6DQoN
-CkFuIGV4dGVuc2lvbiBjb3VsZCBhbGxvdyBleHRyYWN0aW5nIHRoZSBhY3R1YWwgZmQncyB1bmRl
-ciBhbiByc29ja2V0LCBpbiBvcmRlciB0byBhbGxvdyBhIHVzZXIgdG8gY2FsbCBwb2xsKCkvcHBv
-bGwoKSBkaXJlY3RseS4gIEJ1dCBpdCB3b3VsZCBiZSBub24tdHJpdmlhbC4NCg0KVGhlICdmZCcg
-dGhhdCByZXByZXNlbnRzIGFuIHJzb2NrZXQgaGFwcGVucyB0byBiZSB0aGUgZmQgcmVsYXRlZCB0
-byB0aGUgUkRNQSBDTS4gIFRoYXQncyBiZWNhdXNlIGFuIHJzb2NrZXQgbmVlZHMgYSB1bmlxdWUg
-aW50ZWdlciB2YWx1ZSB0byByZXBvcnQgYXMgYW4gJ2ZkJyB2YWx1ZSB3aGljaCB3aWxsIG5vdCBj
-b25mbGljdCB3aXRoIGFueSBvdGhlciBmZCB2YWx1ZSB0aGF0IHRoZSBhcHAgbWF5IGhhdmUuICBJ
-IHdvdWxkIGNvbnNpZGVyIHRoZSBmZCB2YWx1ZSBhbiBpbXBsZW1lbnRhdGlvbiBkZXRhaWwsIHJh
-dGhlciB0aGFuIHNvbWV0aGluZyB3aGljaCBhbiBhcHAgc2hvdWxkIGRlcGVuZCB1cG9uLiAgKEZv
-ciBleGFtcGxlLCB0aGUgJ2ZkJyB2YWx1ZSByZXR1cm5lZCBmb3IgYSBkYXRhZ3JhbSByc29ja2V0
-IGlzIGFjdHVhbGx5IGEgVURQIHNvY2tldCBmZCkuDQoNCk9uY2UgYW4gcnNvY2tldCBpcyBpbiB0
-aGUgY29ubmVjdGVkIHN0YXRlLCBpdCdzIHBvc3NpYmxlIGFuIGV4dGVuZGVkIHJnZXRzb2Nrb3B0
-KCkgb3IgcmZjbnRsKCkgY2FsbCBjb3VsZCByZXR1cm4gdGhlIGZkIHJlbGF0ZWQgdG8gdGhlIENR
-LiAgQnV0IGlmIGFuIGFwcCB0cmllZCB0byBjYWxsIHBvbGwoKSBvbiB0aGF0IGZkLCB0aGUgcmVz
-dWx0cyB3b3VsZCBub3QgYmUgYXMgZXhwZWN0ZWQuICBGb3IgZXhhbXBsZSwgaXQncyBwb3NzaWJs
-ZSBmb3IgZGF0YSB0byBiZSBhdmFpbGFibGUgdG8gcmVjZWl2ZSBvbiB0aGUgcnNvY2tldCB3aXRo
-b3V0IHRoZSBDUSBmZCBiZWluZyBzaWduYWxlZC4gIENhbGxpbmcgcG9sbCgpIG9uIHRoZSBDUSBm
-ZCBpbiB0aGlzIHN0YXRlIGNvdWxkIGxlYXZlIHRoZSBhcHAgaGFuZ2luZy4gIFRoaXMgaXMgYSBu
-YXR1cmFsPyByZXN1bHQgb2YgcmFjZXMgaW4gdGhlIFJETUEgQ1Egc2lnbmFsaW5nLiAgSWYgeW91
-IGxvb2sgYXQgdGhlIHJzb2NrZXQgcnBvbGwoKSBpbXBsZW1lbnRhdGlvbiwgeW91J2xsIHNlZSB0
-aGF0IGl0IGNoZWNrcyBmb3IgZGF0YSBwcmlvciB0byBzbGVlcGluZy4NCg0KRm9yIGFuIGFwcCB0
-byBzYWZlbHkgd2FpdCBpbiBwb2xsL3Bwb2xsIG9uIHRoZSBDUSBmZCwgaXQgd291bGQgbmVlZCB0
-byBpbnZva2Ugc29tZSBzb3J0IG9mICdwcmUtcG9sbCcgcm91dGluZSwgd2hpY2ggd291bGQgcGVy
-Zm9ybSB0aGUgc2FtZSBjaGVja3MgZG9uZSBpbiBycG9sbCgpIHByaW9yIHRvIGJsb2NraW5nLiAg
-QXMgYSByZWZlcmVuY2UgdG8gYSBzaW1pbGFyIHByZS1wb2xsIHJvdXRpbmUsIHNlZSB0aGUgZmlf
-dHJ5d2FpdCgpIGNhbGwgZnJvbSB0aGlzIG1hbiBwYWdlOiANCg0KaHR0cHM6Ly9vZml3Zy5naXRo
-dWIuaW8vbGliZmFicmljL3YxLjIxLjAvbWFuL2ZpX3BvbGwuMy5odG1sDQoNClRoaXMgaXMgZm9y
-IGEgZGlmZmVyZW50IGxpYnJhcnkgYnV0IGRlYWxzIHdpdGggdGhlIHNhbWUgdW5kZXJseWluZyBw
-cm9ibGVtLiAgT2J2aW91c2x5IGFkZGluZyBhbiBydHJ5d2FpdCgpIHRvIHJzb2NrZXRzIGlzIHBv
-c3NpYmxlIGJ1dCB3b3VsZG4ndCBhbGlnbiB3aXRoIGFueSBzb2NrZXQgQVBJIGVxdWl2YWxlbnQu
-DQoNCi0gU2Vhbg0K
+On Thu, May 30, 2024 at 01:12:40PM -0400, Steven Sistare wrote:
+> On 5/29/2024 3:25 PM, Peter Xu wrote:
+> > On Wed, May 29, 2024 at 01:31:53PM -0400, Steven Sistare wrote:
+> > > On 5/28/2024 5:44 PM, Peter Xu wrote:
+> > > > On Mon, Apr 29, 2024 at 08:55:28AM -0700, Steve Sistare wrote:
+> > > > > Preserve fields of RAMBlocks that allocate their host memory during CPR so
+> > > > > the RAM allocation can be recovered.
+> > > > 
+> > > > This sentence itself did not explain much, IMHO.  QEMU can share memory
+> > > > using fd based memory already of all kinds, as long as the memory backend
+> > > > is path-based it can be shared by sharing the same paths to dst.
+> > > > 
+> > > > This reads very confusing as a generic concept.  I mean, QEMU migration
+> > > > relies on so many things to work right.  We mostly asks the users to "use
+> > > > exactly the same cmdline for src/dst QEMU unless you know what you're
+> > > > doing", otherwise many things can break.  That should also include ramblock
+> > > > being matched between src/dst due to the same cmdlines provided on both
+> > > > sides.  It'll be confusing to mention this when we thought the ramblocks
+> > > > also rely on that fact.
+> > > > 
+> > > > So IIUC this sentence should be dropped in the real patch, and I'll try to
+> > > > guess the real reason with below..
+> > > 
+> > > The properties of the implicitly created ramblocks must be preserved.
+> > > The defaults can and do change between qemu releases, even when the command-line
+> > > parameters do not change for the explicit objects that cause these implicit
+> > > ramblocks to be created.
+> > 
+> > AFAIU, QEMU relies on ramblocks to be the same before this series.  Do you
+> > have an example?  Would that already cause issue when migrate?
+> 
+> Alignment has changed, and used_length vs max_length changed when
+> resizeable ramblocks were introduced.  I have dealt with these issues
+> while supporting cpr for our internal use, and the learned lesson is to
+> explicitly communicate the creation-time parameters to new qemu.
+
+Why used_length can change?  I'm looking at ram_mig_ram_block_resized():
+
+    if (!migration_is_idle()) {
+        /*
+         * Precopy code on the source cannot deal with the size of RAM blocks
+         * changing at random points in time - especially after sending the
+         * RAM block sizes in the migration stream, they must no longer change.
+         * Abort and indicate a proper reason.
+         */
+        error_setg(&err, "RAM block '%s' resized during precopy.", rb->idstr);
+        migration_cancel(err);
+        error_free(err);
+    }
+
+We sent used_length upfront of a migration during SETUP phase.  Looks like
+what you're describing can be something different, though?
+
+Regarding to rb->align: isn't that mostly a constant, reflecting the MR's
+alignment?  It's set when ramblock is created IIUC:
+
+    rb->align = mr->align;
+
+When will the alignment change?
+
+> 
+> These are not an issue for migration because the ramblock is re-created
+> and the data copied into the new memory.
+> 
+> > > > > Mirror the mr->align field in the RAMBlock to simplify the vmstate.
+> > > > > Preserve the old host address, even though it is immediately discarded,
+> > > > > as it will be needed in the future for CPR with iommufd.  Preserve
+> > > > > guest_memfd, even though CPR does not yet support it, to maintain vmstate
+> > > > > compatibility when it becomes supported.
+> > > > 
+> > > > .. It could be about the vfio vaddr update feature that you mentioned and
+> > > > only for iommufd (as IIUC vfio still relies on iova ranges, then it won't
+> > > > help here)?
+> > > > 
+> > > > If so, IMHO we should have this patch (or any variance form) to be there
+> > > > for your upcoming vfio support.  Keeping this around like this will make
+> > > > the series harder to review.  Or is it needed even before VFIO?
+> > > 
+> > > This patch is needed independently of vfio or iommufd.
+> > > 
+> > > guest_memfd is independent of vfio or iommufd.  It is a recent addition
+> > > which I have not tried to support, but I added this placeholder field
+> > > to it can be supported in the future without adding a new field later
+> > > and maintaining backwards compatibility.
+> > 
+> > Is guest_memfd the only user so far, then?  If so, would it be possible we
+> > split it as a separate effort on top of the base cpr-exec support?
+> 
+> I don't understand the question.  I am indeed deferring support for guest_memfd
+> to a future time.  For now, I am adding a blocker, and reserving a field for
+> it in the preserved ramblock attributes, to avoid adding a subsection later.
+
+I meant I'm thinking whether the new ramblock vmsd may not be required for
+the initial implementation.
+
+E.g., IIUC vaddr is required by iommufd, and so far that's not part of the
+initial support.
+
+Then I think a major thing is about the fds to be managed that will need to
+be shared.  If we put guest_memfd aside, it can be really, mostly, about
+VFIO fds.  For that, I'm wondering whether you looked into something like
+this:
+
+commit da3e04b26fd8d15b344944504d5ffa9c5f20b54b
+Author: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Date:   Tue Nov 21 16:44:10 2023 +0800
+
+    vfio/pci: Make vfio cdev pre-openable by passing a file handle
+
+I just notice this when I was thinking of a way where it might be possible
+to avoid QEMU vfio-pci open the device at all, then I found we have
+something like that already..
+
+Then if the mgmt wants, IIUC that fd can be passed down from Libvirt
+cleanly to dest qemu in a no-exec context.  Would this work too, and
+cleaner / reusing existing infrastructures?
+
+I think it's nice to always have libvirt managing most, or possible, all
+fds that qemu uses, then we don't even need scm_rights.  But I didn't look
+deeper into this, just a thought.
+
+When thinking about this, I also wonder how cpr-exec handles the limited
+environments like cgroups and especially seccomps.  I'm not sure what's the
+status of that in most cloud environments, but I think exec() / fork() is
+definitely not always on the seccomp whitelist, and I think that's also
+another reason why we can think about avoid using them.
+
+-- 
+Peter Xu
+
 
