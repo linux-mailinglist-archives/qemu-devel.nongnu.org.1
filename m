@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADCA8D4AA6
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 699E38D4AA9
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:24:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCdsj-0004wa-T5; Thu, 30 May 2024 07:23:41 -0400
+	id 1sCdsl-00053e-Js; Thu, 30 May 2024 07:23:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCdsh-0004uN-5x
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:39 -0400
+ id 1sCdsj-0004yu-LS
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:41 -0400
 Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCdsf-0002gE-JB
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:38 -0400
+ id 1sCdsf-0002gH-Sq
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:41 -0400
 Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-57a1fe63a98so523765a12.1
+ 4fb4d7f45d1cf-579cd80450fso1781684a12.0
  for <qemu-devel@nongnu.org>; Thu, 30 May 2024 04:23:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717068214; x=1717673014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RGoFF8PPa/BpM4KP9BeBmjTmucakXvrHPoIh46UpeKY=;
- b=r/4SYbx8a5PNeWKCS+vcaAQPfc/7aAPQ4Lbz7sPDb9qYSkF6a0/gooKhgWofgyYuL+
- I1UVAplYSiibvqx0EUYolcTvOeH7dcrdtfrSLCKhxL8WWlgJBMlNLhxBxOdU78UJa2hk
- cI9VWVpaWttpPopVZEEnNUyLCxsXKGoymrJ5p7ijhnnZMyfhRFCPPfrIyiutl+I6DiR3
- HzxvkTueXCdDk9i4XAUdai7fwjgIit7AipBG7lxpYL/TA4L0HhIx+8erfJu+5MOsjvW4
- Ean7/sBUZA1FztNbg/nnlDmWCbYUZAykqLmJvfbe3lDoJiXDGAd3bkl328g8QdlJhd4I
- TE/A==
+ bh=BUuBTVNvgV45jAw2FZGNm/bzWVNk+iprBbeI4k7zOec=;
+ b=b/0VfhQop0ABwzUOeN37WtqewZD7Ng/MdOvCY1DgpJ758/LRA+ksylUh6J3gqKAlZT
+ 2wWZbbIEDLO1xdNnbNIn/xY/y7J18d7EdBr/skvnyih1PhAuTPOt/sUgdq9QBMttLPuF
+ UP6XYdsYjFHXIN9Y4cDx08DpJFbHEbxx1ELZ9X9oKIRwwGgXGkKMFmZ4X0/smC6PRrmJ
+ O0Lg5xk88zoKVikbBfYsS66eVshMcBJ7ZwVBdH68jL++9ad4icJMZ+1H5+yoRJaoCQ+U
+ yrJ7OxQNoT5EIQNaJ7XOQ77273Mqxgeire4Z3KUTm9jnSpNw9JiylFVpiwZ+16lTdm0Q
+ OpHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717068214; x=1717673014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RGoFF8PPa/BpM4KP9BeBmjTmucakXvrHPoIh46UpeKY=;
- b=ROwXBeitzNZKoiyvKWae90OT8/0Ow8HlSILjuU6f0H98ep6AkEUITF03omfi+oMwDx
- +MtznZfmvFK/Mi4+0oXrGBm1HoulTHu9eeybcuSVvZ0hKv5ZJchvOti0E3Q2ZF+jYxCP
- ekk0/dJGGUktA3iOSwpUi02STk9LWQeewJnYOP0Ai63Jjs8NC881l5h4ZCuJIw1TPFE6
- V9mFn2QTXm2kXZQK0XJLt+KPD76BHqax1wIPcA+vjuzedCGtCQh0T6v0NDcxS1acpj9u
- dqMzRvBA9XhRq5JvEYMmzzbbKMOYPCxYzszVDGN2wZrOU1S4BJgsqMTCpcHGbD8hr9QK
- 8WhQ==
-X-Gm-Message-State: AOJu0Yyehkgud5EqlJdd8jh6uwNhxQAR2A1ueo6tJjD+9XZfsuGF8H3a
- DE9RHXoBs0dIpbF2Ka3HkfmhztqfLHrq3IhQpRn+xeZKjWCve/rzVHJff0eMwkU3/mz5LXM87Px
- N
-X-Google-Smtp-Source: AGHT+IEw2j6h6ipAB3UcU3pjLCg35Hdcl8dxUzdGnzI9kUReOXQR2+1GPoL2TKZ7MWBWXXsBT2vVjw==
-X-Received: by 2002:a50:8ad8:0:b0:572:d082:79fa with SMTP id
- 4fb4d7f45d1cf-57a177aaa3bmr1274039a12.14.1717068213685; 
- Thu, 30 May 2024 04:23:33 -0700 (PDT)
+ bh=BUuBTVNvgV45jAw2FZGNm/bzWVNk+iprBbeI4k7zOec=;
+ b=Gq6qQQtGwdfRzfp/5Tj9+JRfHdiY/Sv4++0kl51z2bS+0xsgB5/X007J3a3DFF2l0j
+ 0asx2EbCQ31k6eNBXfRglcgnLLnIlMf9NYV4SE9U2Jwbk0xR9Qk1p07KIvYXN44Jd+Pt
+ d1BoEXtTGmz0jH2rB0J3s7TdOaxfEtHPm3DuQL0Frs9knyVEWtpBsE4QmmVfObcYvr3q
+ d/AQd8nrwt6xva0n3VhgTtNy2eEr4BOku2LYQFIL8ka0J09gjhM21VT/BM28cBUMxuei
+ IlJFrvfqGoOw+qgVKxJb22V68RMrzBTvvin8zYnnj7+OdssjQsltqHyJzdezP4drgCFJ
+ ESKQ==
+X-Gm-Message-State: AOJu0Yw9wAUqp+UEN/J2st6vIqlOrsUgAg11VR8Ys1ifIzU34VbVA/fL
+ Qt/Lye58WKo1GdsrxqXoAr6KHhER+710s9hLIHaYloteYxlhwcC5neEPqg0fI4s=
+X-Google-Smtp-Source: AGHT+IE5JlisWqE5qyrd+TDLIeC43UX5znM6qP91fDIfF4PIgEpDa0/52gBC/PVNObXbvb7tv105Cg==
+X-Received: by 2002:a17:906:1c41:b0:a5a:8cc0:8c23 with SMTP id
+ a640c23a62f3a-a65f0bd69cemr132733966b.27.1717068214174; 
+ Thu, 30 May 2024 04:23:34 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-578523cba01sm9798275a12.35.2024.05.30.04.23.33
+ a640c23a62f3a-a667bf48673sm27419066b.60.2024.05.30.04.23.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 30 May 2024 04:23:33 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id CF6DE5F8E3;
+ by draig.lan (Postfix) with ESMTP id DCD1B5F8E5;
  Thu, 30 May 2024 12:23:32 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [Semihosting Tests PATCH v2 2/3] update includes for bare metal
- compiling
-Date: Thu, 30 May 2024 12:23:31 +0100
-Message-Id: <20240530112332.1439238-3-alex.bennee@linaro.org>
+Subject: [Semihosting Tests PATCH v2 3/3] add SYS_GET_CMDLINE test
+Date: Thu, 30 May 2024 12:23:32 +0100
+Message-Id: <20240530112332.1439238-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240530112332.1439238-1-alex.bennee@linaro.org>
 References: <20240530112332.1439238-1-alex.bennee@linaro.org>
@@ -97,73 +95,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We shouldn't use <string.h> for our own implementation. Also the base
-types we need live in <stdint.h> as <inttypes.h> doesn't exist for the
-bare metal compilers.
+Adds a new test case for the semihosting SYS_GET_CMDLINE call. We can
+use the existing previously unused semi_get_cmdline helper and we then
+verify:
+
+ - the call succeeds
+ - the call returns the expected length string
+ - the call returns the expected binary name as arg0
+
+The most fiddly bit was exposing the binary name into the program so
+we can validate the result.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
----
- semihosting.c | 4 ++--
- semihosting.h | 2 +-
- string.c      | 2 +-
- usertest.c    | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/semihosting.c b/semihosting.c
-index 7a0ee0c..27dafbe 100644
---- a/semihosting.c
-+++ b/semihosting.c
-@@ -16,8 +16,8 @@
-  *    from this software without specific prior written permission.
-  */
+---
+v2
+  - add return leg on failing test
+  - check returned length is sane
+  - s/could/couldn't/
+  - just let array reference decay to the pointer
+  - rewrite the commit message to be less terse
+---
+ Makefile   | 22 +++++++++++-----------
+ usertest.c | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+), 11 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 59fd831..f77665f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -85,37 +85,37 @@ systest-srcs = start.S string.c $(usertest-srcs)
+ microbit-systest-srcs = start-microbit.S string.c $(usertest-srcs)
  
--#include <inttypes.h>
--#include <string.h>
-+#include <stdint.h>
-+#include "string.h"
- #include "semihosting.h"
+ usertest-a32: $(usertest-srcs)
+-	$(A32GCC) --static -o $@ $^
++	$(A32GCC) -DBINARY_NAME="\"$@\"" --static -o $@ $^
  
- int semi_open(char const *filename, int mode)
-diff --git a/semihosting.h b/semihosting.h
-index 06cda8d..68344fb 100644
---- a/semihosting.h
-+++ b/semihosting.h
-@@ -19,7 +19,7 @@
- #ifndef SEMIHOSTING_H
- #define SEMIHOSTING_H
+ usertest-t32: $(usertest-srcs)
+-	$(T32GCC) --static -o $@ $^
++	$(T32GCC) -DBINARY_NAME="\"$@\"" --static -o $@ $^
  
--#include <inttypes.h>
-+#include <stdint.h>
+ usertest-a32-hlt: $(usertest-srcs)
+-	$(A32GCC) -DUSE_HLT --static -o $@ $^
++	$(A32GCC) -DBINARY_NAME="\"$@\"" -DUSE_HLT --static -o $@ $^
  
- #define SYS_OPEN	1
- #define OPEN_RDONLY	1
-diff --git a/string.c b/string.c
-index 045d71b..c289aa1 100644
---- a/string.c
-+++ b/string.c
-@@ -16,7 +16,7 @@
-  *    from this software without specific prior written permission.
-  */
+ usertest-t32-hlt: $(usertest-srcs)
+-	$(T32GCC) -DUSE_HLT --static -o $@ $^
++	$(T32GCC) -DBINARY_NAME="\"$@\"" -DUSE_HLT --static -o $@ $^
  
--#include <string.h>
-+#include "string.h"
+ usertest-a64: $(usertest-srcs)
+-	$(A64GCC) --static -o $@ $^
++	$(A64GCC) -DBINARY_NAME="\"$@\"" --static -o $@ $^
  
- static void *__memmove_down(void *__dest, __const void *__src, size_t __n)
- {
+ systest-a32.axf: $(systest-srcs)
+-	$(A32GCC) -o $@ $^ $(A32LINKOPTS)
++	$(A32GCC) -DBINARY_NAME="\"$@\"" -o $@ $^ $(A32LINKOPTS)
+ 
+ systest-t32.axf: $(systest-srcs)
+-	$(T32GCC) -o $@ $^ $(A32LINKOPTS)
++	$(T32GCC) -DBINARY_NAME="\"$@\"" -o $@ $^ $(A32LINKOPTS)
+ 
+ systest-a32-hlt.axf: $(systest-srcs)
+-	$(A32GCC) -DUSE_HLT -o $@ $^ $(A32LINKOPTS)
++	$(A32GCC) -DBINARY_NAME="\"$@\"" -DUSE_HLT -o $@ $^ $(A32LINKOPTS)
+ 
+ systest-t32-hlt.axf: $(systest-srcs)
+-	$(T32GCC) -DUSE_HLT -o $@ $^ $(A32LINKOPTS)
++	$(T32GCC) -DBINARY_NAME="\"$@\"" -DUSE_HLT -o $@ $^ $(A32LINKOPTS)
+ 
+ systest-t32-bkpt.axf: $(microbit-systest-srcs)
+-	$(V7MGCC) -DUSE_BKPT -o $@ $^ $(AV7MLINKOPTS)
++	$(V7MGCC) -DBINARY_NAME="\"$@\"" -DUSE_BKPT -o $@ $^ $(AV7MLINKOPTS)
+ 
+ systest-a64.axf: $(systest-srcs)
+-	$(A64GCC) -nostdlib -o $@ $^ $(A64LINKOPTS)
++	$(A64GCC) -DBINARY_NAME="\"$@\"" -nostdlib -o $@ $^ $(A64LINKOPTS)
+ 
+ run-usertest-a32: usertest-a32
+ 	$(QEMU_ARM) usertest-a32
 diff --git a/usertest.c b/usertest.c
-index ce0f61d..5df95f3 100644
+index 5df95f3..7a12896 100644
 --- a/usertest.c
 +++ b/usertest.c
-@@ -20,7 +20,7 @@
-  *    from this software without specific prior written permission.
-  */
+@@ -315,6 +315,33 @@ static int test_feature_detect(void)
+     return 0;
+ }
  
--#include <stdio.h>
-+#include "string.h"
- #include "semihosting.h"
- #include "printf/printf.h"
++static int test_cmdline(void)
++{
++    char cmdline[256];
++    int actual;
++    const char *s, *c;
++
++    if (semi_get_cmdline(cmdline, sizeof(cmdline), &actual)) {
++        semi_write0("FAIL couldn't recover command line\n");
++        return 1;
++    }
++
++    if (strlen(BINARY_NAME) != actual) {
++        semi_write0("FAIL cmdline length not what expected: ");
++        semi_write0(cmdline);
++        return 1;
++    }
++
++    if (strcmp(cmdline, BINARY_NAME) != 0) {
++        semi_write0("FAIL unexpected command line: ");
++        semi_write0(cmdline);
++        return 1;
++    }
++
++    semi_write0("PASS command line test\n");
++    return 0;
++}
++
+ int main(void)
+ {
+     void *bufp;
+@@ -366,6 +393,10 @@ int main(void)
+         return 1;
+     }
  
++    if (test_cmdline()) {
++        return 1;
++    }
++
+     semi_write0("ALL TESTS PASSED\n");
+ 
+     /* If we have EXIT_EXTENDED then use it */
 -- 
 2.39.2
 
