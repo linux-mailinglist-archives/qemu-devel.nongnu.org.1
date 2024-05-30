@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D843D8D457C
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 08:33:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 419798D4587
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 08:39:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCZLJ-0007BW-L1; Thu, 30 May 2024 02:32:53 -0400
+	id 1sCZQt-0001FZ-Lk; Thu, 30 May 2024 02:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sCZLI-0007B5-Bh
- for qemu-devel@nongnu.org; Thu, 30 May 2024 02:32:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sCZLC-0006Rf-DG
- for qemu-devel@nongnu.org; Thu, 30 May 2024 02:32:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717050765;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=J5JzUAVkAE3H6FYS3rcCx0c9+aisMvj5H1gy8EFZpKc=;
- b=HsaFYDMnY2p63lfed+p+oNq5Y+rsXmtDQhJIOit7eBCUi8M2ib/t6u6Jn2/rTz0uHWAX1J
- QCLL/DntD0vclKuwbdq9FrKK6GUpHVuzmj8J/zs4DR62LrvkrO6j371jxXjKh3V+rDtMog
- TvcP2mPmwB/WRhWBJ2Yp5VaGLxqz+04=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-206-0F2XzYHsO5Sntv7ou108bQ-1; Thu, 30 May 2024 02:32:42 -0400
-X-MC-Unique: 0F2XzYHsO5Sntv7ou108bQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4212976bcd2so671335e9.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 23:32:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sCZQr-0001EX-Fo; Thu, 30 May 2024 02:38:37 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1sCZQp-0007jg-QA; Thu, 30 May 2024 02:38:37 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1f60a502bb2so4337245ad.3; 
+ Wed, 29 May 2024 23:38:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1717051113; x=1717655913; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ISgpFswh6K3lqC0w3N8gQYlpCmPstnpzIl+2CV5icYw=;
+ b=Wywvy9oWjTQzUmHiFcHY+R3OTLX7qjEBmJI57kvU+TsG0G2SCFwoVSDmipFvwp70bq
+ nvSrpLMOHxLCuzu8nUvf4ofOVdE4XMqjsWdRprgY2euvEwNIZGoB41fs/O0c3kGY23wO
+ cVBFRIfXtrLsou7kYvIM7hiIK0p9mAEf1cveHGVSsfv1YfObcmplE0HkcCSWZRd9DLFx
+ BsKBK5e4N07E9HR+zJxpVRdNcIyox9ML+NbyMwSP8ksh80guEJMAXywP3MBlYTDL3+6v
+ bPnlNDd914ANUrsC5J7+qcTUy0AGdpHlRq74UghmZ0Ifib7Cj3J+vZtV649seuEGUto7
+ CnFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717050761; x=1717655561;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=J5JzUAVkAE3H6FYS3rcCx0c9+aisMvj5H1gy8EFZpKc=;
- b=kpfPmmg2foYg0iHtSUxf9rwnJPhHdzYnC/AX2eqy9WwybDxAQqPOYxdVjGRTzrIcV1
- Fgot0xBi2GCz+fbyBz345afXIBvKrIgNLL/1JHS8/3oC1Uq1Hj5bUTwpQHou0OyTs+Kx
- 2jyn7JHpw98FU4kBS+3F/RWbEKRQ+FHd+0IhF6QFM0SmqxWmrQPrOzfzwGAPbIwl7oIA
- ZGWD+RV0ToXWL8MnKsSVfd8n3DJ7gqUZlvGKT3lSPkIzfajfpD4M9M/eGPMGPvMGD8iN
- ddJ0mjPQTMn3qzjG22PROvtHNw88bg0ivqfuvWWQSjHhUOq+8Kp19sfHH/5f4YnNTSYX
- USlw==
-X-Gm-Message-State: AOJu0YysiWxzggwwUlCW39VOj6sKdwXBreb18JzqvMPQ97b7TkP8PDsr
- gi824zlbHFrT3dkUgiWObRC5Yy9OT3MXm3LXejq5nR1Xw+63sXoo7Srz0gkNZaUK404o1Ffk+DV
- 8UqMOqGp80BdWx6Rh5wzYqp3DyxjRspwE0+1jlBgDaor2QMGzt0ekrXFk2i7to98tnD5lTsL2L6
- bFQPP0f1wF54gNhArBtHKxJR4o+Ek=
-X-Received: by 2002:a05:600c:3d0e:b0:420:e88b:6fb3 with SMTP id
- 5b1f17b1804b1-4212777eee0mr15220455e9.0.1717050761038; 
- Wed, 29 May 2024 23:32:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlPX2PIHhtsVDnp2C8qqeOOVE7RPMpBbeEL/0vvi8SEyozFpvgYLvUJMCStJXOUqecbUfTcAcZ8M9388jNrVw=
-X-Received: by 2002:a05:600c:3d0e:b0:420:e88b:6fb3 with SMTP id
- 5b1f17b1804b1-4212777eee0mr15220265e9.0.1717050760644; Wed, 29 May 2024
- 23:32:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240516222047.1853459-1-pierrick.bouvier@linaro.org>
- <20240516222047.1853459-3-pierrick.bouvier@linaro.org>
-In-Reply-To: <20240516222047.1853459-3-pierrick.bouvier@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 30 May 2024 08:32:29 +0200
-Message-ID: <CABgObfY-6KewmkYEPgucbJnyggNKV8XbG8chvW5OsTV_GLr=gA@mail.gmail.com>
-Subject: Re: [PATCH 2/5] qtest: use cpu interface in qtest_clock_warp
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Alexandre Iooss <erdnaxe@crans.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20230601; t=1717051113; x=1717655913;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ISgpFswh6K3lqC0w3N8gQYlpCmPstnpzIl+2CV5icYw=;
+ b=NfAI3ZKrAT1zTKLI9PdMG56bRl9dv+XWz4mnAxcltRSaOvrjJKhyE/KvBlmQj0V6MT
+ oOl5WeekqsSeQHBmfHQT2vDy6ZS7chZcj89S6PWphRLLXBZ5zsZzYGM5GAIT2o8Rn4VM
+ nC/D88s6f2gsuc1iDIlGBCLi2lddMLfu6BMMfYS6jZJMlm062uGNNnCVueXdLxXUKJE0
+ /tpnJehKTKLfwGCYJeh47aeAhtn+ILs8LpTgM5IHtd9kTvJSvKaetY4fvuNTMuqrFRFx
+ VQvWT9VGOJfMrU7Ad8l0SBk/sk8wYSP5El+OrJWprXoXOhtvNzzNxSh/4/Lx4Z9fbtKH
+ 8DhA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWo/7hZcICidgdWMfU7GQeQhw+f6Fmo9WEAT34L5EvhSgNUbYaKULCMV3gBHcR5BnmzBGHsgIv9GlvhKTUqq9XWoOvStqqdykm/LtHkmi2jOh5BcyJ4mXnh8Dg=
+X-Gm-Message-State: AOJu0Yw1ZWp+XDFJRGF81gi+GtCCp4nmQrvxZVjMrW5ygF1PMaZpJEup
+ vMHMzHgnFmpXY5aKf4GBShnKcho0pdZBXqaDCi4l1oP7SKqRlAmm
+X-Google-Smtp-Source: AGHT+IGPhoUWNWrWt0c7GprashJwIdpIn9ilL/1C+IrlDlCOo7xFdMWEqlYn52KHuge0TuJTwljX0Q==
+X-Received: by 2002:a17:902:d4c5:b0:1f3:590:71d9 with SMTP id
+ d9443c01a7336-1f6192efdf6mr14850325ad.2.1717051113366; 
+ Wed, 29 May 2024 23:38:33 -0700 (PDT)
+Received: from localhost ([1.146.118.54]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1f4ac27c5aasm63995695ad.251.2024.05.29.23.38.30
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 29 May 2024 23:38:32 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 30 May 2024 16:38:26 +1000
+Message-Id: <D1MRTGSNBMIG.UM9QTB7080GH@gmail.com>
+Cc: "Caleb Schlossin" <calebs@linux.vnet.ibm.com>,
+ =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>, "Daniel
+ Henrique Barboza" <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
+Subject: Re: [RFC PATCH 05/10] ppc/pnv: Extend chip_pir class method to TIR
+ as well
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Harsh Prateek Bora"
+ <harshpb@linux.ibm.com>, <qemu-ppc@nongnu.org>
+X-Mailer: aerc 0.17.0
+References: <20240526122612.473476-1-npiggin@gmail.com>
+ <20240526122612.473476-6-npiggin@gmail.com>
+ <39e4ac93-256b-424b-8ecb-7ed87afeb048@linux.ibm.com>
+ <D1LP8QHR9GGW.2QAD6R00QARSG@gmail.com>
+ <53791846-3b8c-4da8-8cca-c2c521c59450@kaod.org>
+In-Reply-To: <53791846-3b8c-4da8-8cca-c2c521c59450@kaod.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,92 +99,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 17, 2024 at 12:21=E2=80=AFAM Pierrick Bouvier
-<pierrick.bouvier@linaro.org> wrote:
+On Wed May 29, 2024 at 4:30 PM AEST, C=C3=A9dric Le Goater wrote:
+> On 5/29/24 02:24, Nicholas Piggin wrote:
+> > On Tue May 28, 2024 at 6:32 PM AEST, Harsh Prateek Bora wrote:
+> >>
+> >>
+> >> On 5/26/24 17:56, Nicholas Piggin wrote:
+> >>> The chip_pir chip class method allows the platform to set the PIR
+> >>> processor identification register. Extend this to a more general
+> >>> ID function which also allows the TIR to be set. This is in
+> >>> preparation for "big core", which is a more complicated topology
+> >>> of cores and threads.
+> >>>
+> >>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >>> ---
+> >>>    include/hw/ppc/pnv_chip.h |  3 +-
+> >>>    hw/ppc/pnv.c              | 61 ++++++++++++++++++++++++-----------=
+----
+> >>>    hw/ppc/pnv_core.c         | 10 ++++---
+> >>>    3 files changed, 45 insertions(+), 29 deletions(-)
+> >>>
+> >>> diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+> >>> index 8589f3291e..679723926a 100644
+> >>> --- a/include/hw/ppc/pnv_chip.h
+> >>> +++ b/include/hw/ppc/pnv_chip.h
+> >>> @@ -147,7 +147,8 @@ struct PnvChipClass {
+> >>>   =20
+> >>>        DeviceRealize parent_realize;
+> >>>   =20
+> >>> -    uint32_t (*chip_pir)(PnvChip *chip, uint32_t core_id, uint32_t t=
+hread_id);
+> >>> +    void (*processor_id)(PnvChip *chip, uint32_t core_id, uint32_t t=
+hread_id,
+> >>> +                         uint32_t *pir, uint32_t *tir);
+> >>
+> >> Should it be named get_chip_core_thread_regs() ?
+> >=20
+> > Yeah, the name isn't great. It is getting the regs, but the regs are th=
+e
+> > "pervasive id" used as well... but maybe that's not too relevant here.
+> > What about we drop chip_ since we have the chip and no other methods us=
+e
+> > such prefix, then call it get_thread_pir_tir()?
 >
-> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> processor relates to chip and so, processor_id() is not great indeed.
+> get_pir_tir() would be enough I think.
 >
-> This generalises the qtest_clock_warp code to use the AccelOps
-> handlers for updating its own sense of time. This will make the next
-> patch which moves the warp code closer to pure code motion.
->
-> From: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Acked-by: Thomas Huth <thuth@redhat.com>
-> ---
->  include/sysemu/qtest.h | 1 +
->  accel/qtest/qtest.c    | 1 +
->  system/qtest.c         | 6 +++---
->  3 files changed, 5 insertions(+), 3 deletions(-)
->
-> diff --git a/include/sysemu/qtest.h b/include/sysemu/qtest.h
-> index b5d5fd34637..45f3b7e1df5 100644
-> --- a/include/sysemu/qtest.h
-> +++ b/include/sysemu/qtest.h
-> @@ -36,6 +36,7 @@ void qtest_server_set_send_handler(void (*send)(void *,=
- const char *),
->  void qtest_server_inproc_recv(void *opaque, const char *buf);
->
->  int64_t qtest_get_virtual_clock(void);
-> +void qtest_set_virtual_clock(int64_t count);
+> What would be good though, since pnv is growing, is to start adding
+> documentation to these common helpers.
 
-You can move qtest_get_virtual_clock/qtest_set_virtual_clock to
-accel/qtest/qtest.c instead, and make them static.
+Okay we'll use that name.
 
-They are not used anymore in system/qtest.c, and it actually makes a
-lot more sense that they aren't.
+You mean just a comment them in the header? Might as well do that for
+new ones at least.
 
-Paolo
-
->  #endif
->
->  #endif
-> diff --git a/accel/qtest/qtest.c b/accel/qtest/qtest.c
-> index f6056ac8361..53182e6c2ae 100644
-> --- a/accel/qtest/qtest.c
-> +++ b/accel/qtest/qtest.c
-> @@ -52,6 +52,7 @@ static void qtest_accel_ops_class_init(ObjectClass *oc,=
- void *data)
->
->      ops->create_vcpu_thread =3D dummy_start_vcpu_thread;
->      ops->get_virtual_clock =3D qtest_get_virtual_clock;
-> +    ops->set_virtual_clock =3D qtest_set_virtual_clock;
->  };
->
->  static const TypeInfo qtest_accel_ops_type =3D {
-> diff --git a/system/qtest.c b/system/qtest.c
-> index 6da58b3874e..ee8b139e982 100644
-> --- a/system/qtest.c
-> +++ b/system/qtest.c
-> @@ -332,14 +332,14 @@ int64_t qtest_get_virtual_clock(void)
->      return qatomic_read_i64(&qtest_clock_counter);
->  }
->
-> -static void qtest_set_virtual_clock(int64_t count)
-> +void qtest_set_virtual_clock(int64_t count)
->  {
->      qatomic_set_i64(&qtest_clock_counter, count);
->  }
->
->  static void qtest_clock_warp(int64_t dest)
->  {
-> -    int64_t clock =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-> +    int64_t clock =3D cpus_get_virtual_clock();
->      AioContext *aio_context;
->      assert(qtest_enabled());
->      aio_context =3D qemu_get_aio_context();
-> @@ -348,7 +348,7 @@ static void qtest_clock_warp(int64_t dest)
->                                                        QEMU_TIMER_ATTR_AL=
-L);
->          int64_t warp =3D qemu_soonest_timeout(dest - clock, deadline);
->
-> -        qtest_set_virtual_clock(qtest_get_virtual_clock() + warp);
-> +        cpus_set_virtual_clock(cpus_get_virtual_clock() + warp);
->
->          qemu_clock_run_timers(QEMU_CLOCK_VIRTUAL);
->          timerlist_run_timers(aio_context->tlg.tl[QEMU_CLOCK_VIRTUAL]);
-> --
-> 2.39.2
->
-
+Thanks,
+Nick
 
