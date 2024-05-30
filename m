@@ -2,77 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549B68D4C95
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C71D8D4B64
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 14:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCfmz-0003kC-2J; Thu, 30 May 2024 09:25:53 -0400
+	id 1sCejs-00010W-6k; Thu, 30 May 2024 08:18:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arikalo@gmail.com>) id 1sCdvn-0005yB-4l
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:26:51 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <arikalo@gmail.com>) id 1sCdvl-0003Xo-K0
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:26:50 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-68197edc2d3so611332a12.2
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 04:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717068408; x=1717673208; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dwPOExy8G40EPnXA40Bht8ugnZhIVQVOwjOVYfQkrYs=;
- b=b2EQyX1ZS6eyqhHTAaS+Y1Svxs4QZ8MyvLjSH3VQtw8POsZUNAJxb1078J4F69x0wt
- qT8+OfH5VOt3cFVn3tsZndoob/7t0HQlEof5NypLasTW5LnwF9nMs9HpHzWwAkV20e2x
- ruj8Rj1jMM5rydnjMToGo8jK66/T08+wtNvPobvyQ2s+WWGg0uS2oM8Bu2CZdWhODFNb
- 7viGS8MmRKMRp4vy+N2yunNmkuFvJIqcqg+mI9q1lg1C8+UYIW/7j44IzEtSIpDJ3E7e
- L2ARJYkZhtvE3ffglgh+zrofeD8fc3pbrR/QZtrpepZrG8p40kwKnxreqPzrI53CUB9t
- 5xuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717068408; x=1717673208;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dwPOExy8G40EPnXA40Bht8ugnZhIVQVOwjOVYfQkrYs=;
- b=TMIbJtz4dDhUKRCqHGOWePm4te+JyePJTTW/noQB8FjpZK0IKk5MwrrfpS37xZaSQd
- lYnOUP+BgNb10e3K1J85mTHg7Wk6jypDwXYYl9HxceXtSwJs1rHz39U0SsSyYUXoVWxd
- eiJcLouQWYv5tj5n4fIHzyj1z2uMKD2HZ46rY2BFOLTku12sQ8pQHZPEu5aSKLNP8s1G
- wj7VAxtmkJCFn1V9Idb31aCaif8zxeLMiXOZlwEbdNvaAZQmaGUvZlny4JqMPtz0o0xh
- DCvwfShry3McYXiewB9K/8dcK6bCFHvkswCR9gxN0FxccS28JhX9S5lTb+5aPzL/Sf9f
- jo/w==
-X-Gm-Message-State: AOJu0YzdeYe/n/f7+jfgtH9B9KZU/rkxQlz/INsOOk8cQM5fNnbtY3jp
- +Q40EErvouebbgi0zm7692dnCEmVE15suVzT4Nt7Q2w63ZrKB9+0g4kVViSEFcT9jU8EZMVyWWr
- K2Uw6YLfYu3Iyj6f/5o88VZDa2iY=
-X-Google-Smtp-Source: AGHT+IHk8fIwx8b1ZsRIv8RCbkBVyoH0ibl0E+uwbodul/Rk+9SMXjRdv+KhHEyBkUWwq6/y0mWDSLymhwYGIdOajbY=
-X-Received: by 2002:a05:6a20:a120:b0:1b0:106e:89c3 with SMTP id
- adf61e73a8af0-1b264520d39mr2237024637.9.1717068407695; Thu, 30 May 2024
- 04:26:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1sCejn-000108-RJ
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:18:31 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1sCejl-00054X-Cy
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:18:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+ :Subject; bh=FRYuLk6xHyiy6h4Rc2gioCyPqIhggKP2nulH2gR4j3I=; b=in2vDQWAyI64WU57
+ G1JBgMTIQRNqhj2L9QpmpZLV7A47yN90c08vBFuAAB0KsDdJ9Uypeixs/caofsaw+MV0YD7v7/ehk
+ HFGbNJD4n6idm7XwssVwfqkIYALPwFerZW87hc60QxCGpq7lJ/nexLT2q905/pY0hp/N1m4GaOwbe
+ 8bkFm0dVXPMAF8fJMXMsu68mnaQajAe1/9EXgbLNV69t/ClpSrgegGwr22VahIffAfnwhA28BoxXA
+ dgg3Wen1uDPNuIIVLDGTRemMIMtsk50ZUTWQdlWPdQrF3AQMsiu5KQ4/ahQh8aVZkbIlTc10VmIVz
+ ZUYAwQggRM3CLJ2Nww==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1sCeje-003MKk-33;
+ Thu, 30 May 2024 12:18:22 +0000
+Date: Thu, 30 May 2024 12:18:22 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Yury Kotov <yury-kotov@yandex-team.ru>
+Subject: Re: [PATCH v2 3/4] tests/qtest/migration-test: Fix and enable
+ test_ignore_shared
+Message-ID: <Zlhuju3qX8nTspaL@gallifrey>
+References: <20240530095408.31608-1-npiggin@gmail.com>
+ <20240530095408.31608-4-npiggin@gmail.com>
 MIME-Version: 1.0
-References: <20240529155216.5574-1-philmd@linaro.org>
-In-Reply-To: <20240529155216.5574-1-philmd@linaro.org>
-From: Aleksandar Rikalo <arikalo@gmail.com>
-Date: Thu, 30 May 2024 13:26:35 +0200
-Message-ID: <CAGQJe6ooyqQFtuPtJxUk59cyf5aU8yLvJvtg_5wqBDR5McQfYw@mail.gmail.com>
-Subject: Re: [PATCH] target/mips: Remove unused 'hw/misc/mips_itu.h' header
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Aurelien Jarno <aurelien@aurel32.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=arikalo@gmail.com; helo=mail-pg1-x52c.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20240530095408.31608-4-npiggin@gmail.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 12:17:42 up 21 days, 23:31, 1 user, load average: 0.06, 0.02, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 30 May 2024 09:25:50 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,30 +71,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Since commit e1152f8166 ("target/mips: Remove helpers accessing
->
-> SAAR registers") this header is not needed.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/mips/tcg/sysemu/cp0_helper.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/target/mips/tcg/sysemu/cp0_helper.c b/target/mips/tcg/sysemu=
-/cp0_helper.c
-> index ded6c78e9a..79a5c833ce 100644
-> --- a/target/mips/tcg/sysemu/cp0_helper.c
-> +++ b/target/mips/tcg/sysemu/cp0_helper.c
-> @@ -28,7 +28,6 @@
->  #include "qemu/host-utils.h"
->  #include "exec/helper-proto.h"
->  #include "exec/exec-all.h"
-> -#include "hw/misc/mips_itu.h"
->
->
->  /* SMP helpers.  */
-> --
-> 2.41.0
+* Nicholas Piggin (npiggin@gmail.com) wrote:
+> This test is already starting to bitrot, so first remove it from ifdef
+> and fix compile issues. ppc64 transfers about 2MB, so bump the size
+> threshold too.
+> 
+> It was said to be broken on aarch64 but it may have been due to the
+> limited shm size under Gitlab CI. Now that it uses /tmp, enable it.
 
-Reviewed-by: Aleksandar Rikalo <arikalo@gmail.com>
+If it does fail, lets see if we can figure out how, i.e. whether it's the
+shm size or something else.
+
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+
+> Cc: Yury Kotov <yury-kotov@yandex-team.ru>
+> Cc: Dr. David Alan Gilbert <dave@treblig.org>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  tests/qtest/migration-test.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+> index de380757be..86eace354e 100644
+> --- a/tests/qtest/migration-test.c
+> +++ b/tests/qtest/migration-test.c
+> @@ -1855,8 +1855,6 @@ static void test_precopy_unix_tls_x509_override_host(void)
+>  #endif /* CONFIG_TASN1 */
+>  #endif /* CONFIG_GNUTLS */
+>  
+> -#if 0
+> -/* Currently upset on aarch64 TCG */
+>  static void test_ignore_shared(void)
+>  {
+>      g_autofree char *uri = g_strdup_printf("unix:%s/migsocket", tmpfs);
+> @@ -1865,7 +1863,7 @@ static void test_ignore_shared(void)
+>          .use_memfile = true,
+>      };
+>  
+> -    if (test_migrate_start(&from, &to, uri, false, true, NULL, NULL)) {
+> +    if (test_migrate_start(&from, &to, uri, &args)) {
+>          return;
+>      }
+>  
+> @@ -1890,11 +1888,11 @@ static void test_ignore_shared(void)
+>      wait_for_migration_complete(from);
+>  
+>      /* Check whether shared RAM has been really skipped */
+> -    g_assert_cmpint(read_ram_property_int(from, "transferred"), <, 1024 * 1024);
+> +    g_assert_cmpint(read_ram_property_int(from, "transferred"), <,
+> +                                                   4 * 1024 * 1024);
+>  
+>      test_migrate_end(from, to, true);
+>  }
+> -#endif
+>  
+>  static void *
+>  test_migrate_xbzrle_start(QTestState *from,
+> @@ -3535,7 +3533,8 @@ int main(int argc, char **argv)
+>  #endif /* CONFIG_TASN1 */
+>  #endif /* CONFIG_GNUTLS */
+>  
+> -    /* migration_test_add("/migration/ignore_shared", test_ignore_shared); */
+> +    migration_test_add("/migration/ignore_shared", test_ignore_shared);
+> +
+>  #ifndef _WIN32
+>      migration_test_add("/migration/precopy/fd/tcp",
+>                         test_migrate_precopy_fd_socket);
+> -- 
+> 2.43.0
+> 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
