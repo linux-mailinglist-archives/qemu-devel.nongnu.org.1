@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3D88D4542
+	by mail.lfdr.de (Postfix) with ESMTPS id 327318D4541
 	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 08:04:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCYsg-0002uZ-Qm; Thu, 30 May 2024 02:03:18 -0400
+	id 1sCYtT-0003D5-NR; Thu, 30 May 2024 02:04:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sCYse-0002sc-R6
- for qemu-devel@nongnu.org; Thu, 30 May 2024 02:03:16 -0400
+ id 1sCYtQ-00036X-QJ
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 02:04:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1sCYsd-0000tm-A3
- for qemu-devel@nongnu.org; Thu, 30 May 2024 02:03:16 -0400
+ id 1sCYtN-0000wK-2H
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 02:04:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717048994;
+ s=mimecast20190719; t=1717049040;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Y1cDL2J2SrawhmoKWEkDoQSCddOndDc6IOl3ob92qrg=;
- b=OueitRm258unCf7q/HxwtT4LTZo8Xg0gxfGOYfzPvsioKp9tqu+27DFmUcnLxoKzByFKU0
- i66SF9AnBRtDBYz9SpLMYjcxjmMv7kXEIrM6mYtbuP2w6gv1u+nelYTU9xiiLO6CgNhQKw
- OgBYlmMThRixJzolJVX/FAKgLZUhv/k=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uwanCSuVwpr3jhYTie2dFqlQ6OWtbgGr70992VqFgsA=;
+ b=atm9o11VyQbhVQq6THqypwocG2xjr1I9m7+ZZ2sC8B0Yr0EIrreTpQLNL36PNKL+JhpOqC
+ 0wHxr1spNuFTYFHIDPCOrQ2T7DJVNvyMPpa+pSP7osUwndh46XEIEw5okO7ougUHV8cS0z
+ OTIPTmmSYRxe+OFFGIjhzt3BKJ2wdE8=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-lR0yK89YPPSjNmmEjWZs5w-1; Thu, 30 May 2024 02:03:11 -0400
-X-MC-Unique: lR0yK89YPPSjNmmEjWZs5w-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ea7dbdae13so3198201fa.1
- for <qemu-devel@nongnu.org>; Wed, 29 May 2024 23:03:11 -0700 (PDT)
+ us-mta-130-XbMNGKinNBqhojVpyFeuTQ-1; Thu, 30 May 2024 02:03:58 -0400
+X-MC-Unique: XbMNGKinNBqhojVpyFeuTQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-52b7c4d505fso422728e87.0
+ for <qemu-devel@nongnu.org>; Wed, 29 May 2024 23:03:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717048990; x=1717653790;
+ d=1e100.net; s=20230601; t=1717049036; x=1717653836;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Y1cDL2J2SrawhmoKWEkDoQSCddOndDc6IOl3ob92qrg=;
- b=RQpBtQ+1vYm579hu1sPsCHydyXIgOYWf/YE4cX6GJ7j7TyKri0DtPl/gZQmSBc85g+
- A3Frjryrf0AXjD82oq8IeIjTk5BUf/aCk6ex4SLbqq6Z7joYPSurzg4ID2k1Q/j9Pqiz
- IKrdlEBx0IsZi9mV3MsxKsjrQ7XvJwHSEck2fXP03vw6v/c1BvkWs8wi++lYtKaqCfcb
- rJQ2t5AgZb2cmbjpQtRHNttp2HPLiiSe6PCvqVfLMy+c0mJlDj5CB2lWmPJphUP6IKY2
- O6zbcR436UddzvS5sH3b44Ttt5+/VtuLkO9Co3BlYH1k+WXq9RnUrFLrdCVUZWbLnkio
- 4Dwg==
-X-Gm-Message-State: AOJu0YxqoL4Y33tShLOTwZ2X6IHVkBjWe/iNjLqjSt/tHdSwPPUZHRUC
- s3Lozc5iFjaFdqFMmV3+/TT+cbdZzYlz03p23FnEbzaclj8l6sgPv0Q+aejRuKRr+ynT8bcgK5H
- eChs4jwfTE44gfUCQXn9o+2ESjexaaUMHnWU7Jv6/zjsOtUnoJk3dEXwhn3IPxrKj5/xd4LidVA
- E8lYFIaztRM9OavJy/LNemTwyUTAE=
-X-Received: by 2002:a2e:2c0f:0:b0:2ea:7f2e:cee9 with SMTP id
- 38308e7fff4ca-2ea8481b173mr5676711fa.26.1717048990391; 
- Wed, 29 May 2024 23:03:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHVC7HmdhwLTY2COeN12RSlPbwXbQfRi5Tyae6HoU6SqRLrzRbKVkLRF5ZkgpnDzysoCBrLN9KlGZVKp8q/8c=
-X-Received: by 2002:a2e:2c0f:0:b0:2ea:7f2e:cee9 with SMTP id
- 38308e7fff4ca-2ea8481b173mr5676501fa.26.1717048989859; Wed, 29 May 2024
- 23:03:09 -0700 (PDT)
+ bh=uwanCSuVwpr3jhYTie2dFqlQ6OWtbgGr70992VqFgsA=;
+ b=hydIGYiua7cH0JXw7iIvFXNpFkAry8SLbKJY1HjBJat5hAC4A/5OI279tQg6cbgC+3
+ +/Q4BZMQ3bu/sWv0YwNldez4LgDqtHw+3sCktVpEuNFEkLfDlzmR7/1/GMwx99DgGC6a
+ d0bJn0invPF4oCpn75mK4rk6S39o2m4vDJYGDXALSH0MM3LfNVt7NL2/BgOSXO7Fa86i
+ BfBfVyulvOoPEvlFt1i0OCfhqx3x2DNcHPqroXpFYZs2RmeDucg1gW2dqcynTev7jEip
+ BQncLfYCbu8NJXVYjqV7ms5AR9DiQncKphaMmFBrXNVvq9HwpYh94EFvgA/Z+Lxi7BCq
+ e7hQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUp7t0zV7Ibyf8KZXLl1pF8BRXp9y0evWrWGs47ME63P4GwpDE23jUlDpHIaDmImZM8Va5KgRsfi0wuNvRcFUKt3wZwIR4=
+X-Gm-Message-State: AOJu0Yx+mJ/CTxf4MIMRjZwmRK+/PRIqfs1SJGGJvDhlyAMmrzQ1RkT1
+ h2qUw1LU8ZMXAfg1V+nh2zqEV6MvPEg+NQ/ellQRx1eH8/s7iBiGl46H5h6JlQRbbkntGhYqoW7
+ PssYE1/QbeHbl4JxtB2XCjdJiytJetYGZsVR2PS077R3S4Tx8lgRn8gzsOX35s7idZW1DshEkb+
+ oR0yqNbb6zap9XvfvMw+wDIyNPgZIKomdg/ok=
+X-Received: by 2002:a05:6512:3114:b0:52a:f478:a3fb with SMTP id
+ 2adb3069b0e04-52b7d490ce5mr1434818e87.61.1717049035963; 
+ Wed, 29 May 2024 23:03:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0sQVxIJgwevIwDjU6so56/KG8QBQ4q6/a4QikX5oOlqEAp09MmYQXVQf7ikc1Iaey8qICkjpKwrzuMucvKpU=
+X-Received: by 2002:a05:6512:3114:b0:52a:f478:a3fb with SMTP id
+ 2adb3069b0e04-52b7d490ce5mr1434797e87.61.1717049035498; Wed, 29 May 2024
+ 23:03:55 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240529155548.5878-1-philmd@linaro.org>
- <20240529155548.5878-4-philmd@linaro.org>
-In-Reply-To: <20240529155548.5878-4-philmd@linaro.org>
+ <878qzse8md.fsf@draig.linaro.org>
+In-Reply-To: <878qzse8md.fsf@draig.linaro.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 30 May 2024 08:02:57 +0200
-Message-ID: <CABgObfYmuvMq80Xz0ZBZQiHmKgoiSTVVqio8FmmpttT8rg64kA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] semihosting: Restrict to TCG
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Date: Thu, 30 May 2024 08:03:44 +0200
+Message-ID: <CABgObfZ0P0Frgj6=mTmvgaA9_Ve6x0BeATgSKdVqM0Ku21p=iw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] semihosting: Restrict to TCG
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -97,36 +99,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 29, 2024 at 5:56=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
-> It is pointless to build semihosting when TCG is not available.
+On Wed, May 29, 2024 at 9:11=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>
+> > It is pointless to build semihosting when TCG is not available.
+> >
+> > Philippe Mathieu-Daud=C3=A9 (3):
+> >   target/mips: Restrict semihosting to TCG
+> >   target/riscv: Restrict semihosting to TCG
+> >   semihosting: Restrict to TCG
+>
+> Queued to semihosting/next, thanks.
 
-Why? I would have naively assumed that a suitable semihosting API
-could be implemented by KVM. The justification (and thus the commit
-message) needs to be different for each architecture if it's a matter
-of instruction set or insufficient KVM userspace API.
+Please don't, at least not in the current form. These are jokes, not
+commit messages...
 
 Paolo
-
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  semihosting/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/semihosting/Kconfig b/semihosting/Kconfig
-> index eaf3a20ef5..fbe6ac87f9 100644
-> --- a/semihosting/Kconfig
-> +++ b/semihosting/Kconfig
-> @@ -1,6 +1,7 @@
->
->  config SEMIHOSTING
->         bool
-> +       depends on TCG
->
->  config ARM_COMPATIBLE_SEMIHOSTING
->         bool
-> --
-> 2.41.0
->
 
 
