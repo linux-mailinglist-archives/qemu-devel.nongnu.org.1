@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE448D4AAE
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CADCA8D4AA6
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:24:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCdsm-00055v-Be; Thu, 30 May 2024 07:23:45 -0400
+	id 1sCdsj-0004wa-T5; Thu, 30 May 2024 07:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCdsj-0004yz-RS
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:41 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ id 1sCdsh-0004uN-5x
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:39 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCdse-0002gF-Hd
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:41 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-52b7ebb2668so685039e87.2
+ id 1sCdsf-0002gE-JB
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 07:23:38 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-57a1fe63a98so523765a12.1
  for <qemu-devel@nongnu.org>; Thu, 30 May 2024 04:23:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717068214; x=1717673014; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oZxIGZlTq6Y3xT2BvJ15fFream5O9L7a1aAvj3sA9CY=;
- b=SUSiDT3xEk0RxK9BzlFio2IMaRyfMsRjc3nx6IKbODfUPkSLq8C7V6oGvZITxJeAMF
- 0szo29diFUBt1/ivOTrGlTvec0RzEy54ZrG6uaHOLQqQImGDe31W4PMfnS36TvpCT5/i
- nl3OUsIZe6rU9Ljyd7MAg+7BY4/FTog0SIOjtecnJYZtDXFbHY98bxcTpGKgmXD5Ls7m
- P8FIsepf0xEmaB+Qf9UfLiF52/iVNsfj/zyB7XII0qzAGe5QQzHFJZI4DcCWOzm4KjRF
- qalmr1f9EXlutComIr89GtkKIJ838kuFJavSlthT56JKkSiJa1zhifxEjVTKFefmvA+L
- YzlQ==
+ bh=RGoFF8PPa/BpM4KP9BeBmjTmucakXvrHPoIh46UpeKY=;
+ b=r/4SYbx8a5PNeWKCS+vcaAQPfc/7aAPQ4Lbz7sPDb9qYSkF6a0/gooKhgWofgyYuL+
+ I1UVAplYSiibvqx0EUYolcTvOeH7dcrdtfrSLCKhxL8WWlgJBMlNLhxBxOdU78UJa2hk
+ cI9VWVpaWttpPopVZEEnNUyLCxsXKGoymrJ5p7ijhnnZMyfhRFCPPfrIyiutl+I6DiR3
+ HzxvkTueXCdDk9i4XAUdai7fwjgIit7AipBG7lxpYL/TA4L0HhIx+8erfJu+5MOsjvW4
+ Ean7/sBUZA1FztNbg/nnlDmWCbYUZAykqLmJvfbe3lDoJiXDGAd3bkl328g8QdlJhd4I
+ TE/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717068214; x=1717673014;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oZxIGZlTq6Y3xT2BvJ15fFream5O9L7a1aAvj3sA9CY=;
- b=twmW6+kX96upb34cmU5VO6GMUfenaQLW3isYkP4H+5OhEuhU5FvOsjlNDLZy7g7RKA
- by0gxjBxtQ5h1aOwxUXQP7qrhQbANYmWTcKeuPgwgCzTj0VQSDI3Ak19F/QmjGbEUcJ6
- Z7cIPm4eVGV4hGUV1AGS6P5jqTyGL1eIlKGUyev7w0J+WdAhcMsuKBh9/BssgIZjrJ4g
- rIjZsvSob6w2dzAoX2oc2azICQVT3zwOREVVtDKyACVoDs+5PLsN93GQmZwRZT1Axuti
- s8dE6nhMAykvnBKZ68XWCX74oiu0k4X5p3ICUfLqvj3gp64DMWVyO0gOvSyQYPd+faJ4
- WFHQ==
-X-Gm-Message-State: AOJu0Yw0cIlmKhgcl3IU7TjGQfLAnA+PzrTET+Co/IUHx3pgALw3nXeK
- rEcWlD6Xz27XXuyQ23QX1eLHdiYPAmK2+5wqZNhtp1cbnasUK/6BKiPOcnJ4ZWI=
-X-Google-Smtp-Source: AGHT+IHz+5QSXgu3C7cPewo9Wd0ndcHczrM83YQnZZdCVJYBllnyUP95R0fARidB6uBbgzS6ZHy3OA==
-X-Received: by 2002:a19:8c51:0:b0:51f:9549:9c0d with SMTP id
- 2adb3069b0e04-52b7d49970cmr1427260e87.48.1717068213909; 
+ bh=RGoFF8PPa/BpM4KP9BeBmjTmucakXvrHPoIh46UpeKY=;
+ b=ROwXBeitzNZKoiyvKWae90OT8/0Ow8HlSILjuU6f0H98ep6AkEUITF03omfi+oMwDx
+ +MtznZfmvFK/Mi4+0oXrGBm1HoulTHu9eeybcuSVvZ0hKv5ZJchvOti0E3Q2ZF+jYxCP
+ ekk0/dJGGUktA3iOSwpUi02STk9LWQeewJnYOP0Ai63Jjs8NC881l5h4ZCuJIw1TPFE6
+ V9mFn2QTXm2kXZQK0XJLt+KPD76BHqax1wIPcA+vjuzedCGtCQh0T6v0NDcxS1acpj9u
+ dqMzRvBA9XhRq5JvEYMmzzbbKMOYPCxYzszVDGN2wZrOU1S4BJgsqMTCpcHGbD8hr9QK
+ 8WhQ==
+X-Gm-Message-State: AOJu0Yyehkgud5EqlJdd8jh6uwNhxQAR2A1ueo6tJjD+9XZfsuGF8H3a
+ DE9RHXoBs0dIpbF2Ka3HkfmhztqfLHrq3IhQpRn+xeZKjWCve/rzVHJff0eMwkU3/mz5LXM87Px
+ N
+X-Google-Smtp-Source: AGHT+IEw2j6h6ipAB3UcU3pjLCg35Hdcl8dxUzdGnzI9kUReOXQR2+1GPoL2TKZ7MWBWXXsBT2vVjw==
+X-Received: by 2002:a50:8ad8:0:b0:572:d082:79fa with SMTP id
+ 4fb4d7f45d1cf-57a177aaa3bmr1274039a12.14.1717068213685; 
  Thu, 30 May 2024 04:23:33 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626cc8b980sm808318366b.154.2024.05.30.04.23.33
+ 4fb4d7f45d1cf-578523cba01sm9798275a12.35.2024.05.30.04.23.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 30 May 2024 04:23:33 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id C287C5F8D5;
+ by draig.lan (Postfix) with ESMTP id CF6DE5F8E3;
  Thu, 30 May 2024 12:23:32 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [Semihosting Tests PATCH v2 1/3] .editorconfig: add code conventions
- for tooling
-Date: Thu, 30 May 2024 12:23:30 +0100
-Message-Id: <20240530112332.1439238-2-alex.bennee@linaro.org>
+Subject: [Semihosting Tests PATCH v2 2/3] update includes for bare metal
+ compiling
+Date: Thu, 30 May 2024 12:23:31 +0100
+Message-Id: <20240530112332.1439238-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240530112332.1439238-1-alex.bennee@linaro.org>
 References: <20240530112332.1439238-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01, URIBL_SBL_A=0.1 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,56 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's a pain when you come back to a code base you haven't touched in a
-while and realise whatever indent settings you were using having
-carried over. Add an editorconfig and be done with it.
+We shouldn't use <string.h> for our own implementation. Also the base
+types we need live in <stdint.h> as <inttypes.h> doesn't exist for the
+bare metal compilers.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-v2
-  - drop mention of custom major modes (not needed here)
-  - include section for assembly
----
- .editorconfig | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
- create mode 100644 .editorconfig
+ semihosting.c | 4 ++--
+ semihosting.h | 2 +-
+ string.c      | 2 +-
+ usertest.c    | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/.editorconfig b/.editorconfig
-new file mode 100644
-index 0000000..c72a55c
---- /dev/null
-+++ b/.editorconfig
-@@ -0,0 +1,29 @@
-+# EditorConfig is a file format and collection of text editor plugins
-+# for maintaining consistent coding styles between different editors
-+# and IDEs. Most popular editors support this either natively or via
-+# plugin.
-+#
-+# Check https://editorconfig.org for details.
-+#
-+
-+root = true
-+
-+[*]
-+end_of_line = lf
-+insert_final_newline = true
-+charset = utf-8
-+
-+[Makefile*]
-+indent_style = tab
-+indent_size = 8
-+emacs_mode = makefile
-+
-+[*.{c,h}]
-+indent_style = space
-+indent_size = 4
-+emacs_mode = c
-+
-+[*.{s,S}]
-+indent_style = tab
-+indent_size = 8
-+emacs_mode = asm
+diff --git a/semihosting.c b/semihosting.c
+index 7a0ee0c..27dafbe 100644
+--- a/semihosting.c
++++ b/semihosting.c
+@@ -16,8 +16,8 @@
+  *    from this software without specific prior written permission.
+  */
+ 
+-#include <inttypes.h>
+-#include <string.h>
++#include <stdint.h>
++#include "string.h"
+ #include "semihosting.h"
+ 
+ int semi_open(char const *filename, int mode)
+diff --git a/semihosting.h b/semihosting.h
+index 06cda8d..68344fb 100644
+--- a/semihosting.h
++++ b/semihosting.h
+@@ -19,7 +19,7 @@
+ #ifndef SEMIHOSTING_H
+ #define SEMIHOSTING_H
+ 
+-#include <inttypes.h>
++#include <stdint.h>
+ 
+ #define SYS_OPEN	1
+ #define OPEN_RDONLY	1
+diff --git a/string.c b/string.c
+index 045d71b..c289aa1 100644
+--- a/string.c
++++ b/string.c
+@@ -16,7 +16,7 @@
+  *    from this software without specific prior written permission.
+  */
+ 
+-#include <string.h>
++#include "string.h"
+ 
+ static void *__memmove_down(void *__dest, __const void *__src, size_t __n)
+ {
+diff --git a/usertest.c b/usertest.c
+index ce0f61d..5df95f3 100644
+--- a/usertest.c
++++ b/usertest.c
+@@ -20,7 +20,7 @@
+  *    from this software without specific prior written permission.
+  */
+ 
+-#include <stdio.h>
++#include "string.h"
+ #include "semihosting.h"
+ #include "printf/printf.h"
+ 
 -- 
 2.39.2
 
