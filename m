@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682A58D4E71
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 16:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E777B8D4E74
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 16:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sChAI-000768-Pv; Thu, 30 May 2024 10:54:02 -0400
+	id 1sChAP-000780-6c; Thu, 30 May 2024 10:54:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sChAH-00075c-2e
- for qemu-devel@nongnu.org; Thu, 30 May 2024 10:54:01 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sChAN-00076l-6Y
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 10:54:07 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sChAF-00022u-K4
- for qemu-devel@nongnu.org; Thu, 30 May 2024 10:54:00 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-5789733769dso1946655a12.1
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 07:53:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sChAL-00023T-LU
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 10:54:06 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-57a1fe639a5so851469a12.1
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 07:54:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717080838; x=1717685638; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717080843; x=1717685643; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Ff5kcUAJ45GadRFMIQaizSyWAAAwMa/2teqDZZawXU=;
- b=ZgePRaYSm3Awekpvyz6aoU6jyRWdGmPqwHc8n7SWShuLSAvlB1IyO+s83QCbYC1S0m
- WBZ530ygbQ5kRmHXG9YvN26hJbRtE3MKOPZaMlF3v7/kPGwMgsLl2OWagInObc5QuGih
- m0YghU07O2kBYhqwa7N1JOgrcvi92eMoAO/KvEDzipX7hiwzu/rzA/4NJtELMmsnDz9y
- GqWmqDIQmqLR3t6ijkTppLDyQl5pdCMIwEJXIvZsF426lXEyq6bXPFAi1ZVeIdoKABmh
- VW+KD9U6asPMUYjf28z704JNnrkHN6+MM9AwDgoHawmwgZelWf/LVe89/G3nWatG3cFm
- j3FA==
+ bh=NBGdGeMx1eXvGpTXQ7NHtXTGnuO25PcPWZ9ArhDIKyk=;
+ b=dzZappirn4JNbpyuq1Uvp9mveY3E1km5yWnhSm2OgXqPVQH0ho6pnLzhiMWmuqXD+r
+ BGQSgeAaiSVzpHpbf/fzIm3i495g94RH+3jkdD2KcQ8dcGaOj3TazRPfY2QCv6XkrTyy
+ xMk6NVtGRFgNqNWldBFYJVg1B+x1dlJAN3EQ/oj7q4ZMQZ7qu7b08JKQbY4Cn60uimTO
+ gGQ1sKGpfbuUbn+MknU5r5WJZ5uA7hm+G0D064It2JJD6Ciq/B9qT+HmaPcOj36uU4XR
+ /Gtyq1kD2BqaLCKMRVBUrvJ2+VjMiMOSYBkGk/KRa7os5YXe13t7eWirZggNb0DPLE8w
+ xb9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717080838; x=1717685638;
+ d=1e100.net; s=20230601; t=1717080843; x=1717685643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Ff5kcUAJ45GadRFMIQaizSyWAAAwMa/2teqDZZawXU=;
- b=gGv2Ppdy4DMZixbsVu9ebpi3POemdFD6rUxHFAC9UgpC2AW4SkNG4ac8f6ILH89xA2
- bEnb5JP2/SWHzYXX4JLf7SNeH5T5WtONhE1WPXXRhluZrZbWi7DTCQ9INsXvsyk1lSt2
- mNLJbXmMha1wTWM6VSsoTe/36XH6iEsCJeKakKhOJLkFsLNh2W+FMkhRVY0NpSV8IY6C
- p+Ua/OywpaSXlksDFaENwE/WzoPy1JepEREZa8WVrmRzJy7rj3Xfyi3i/1/vtW4Usq/U
- sQxE81Z/DUiz3KNBSBDPQ+kXxnRBn+pzP1MJSKjYiew1fLy6fEIAr0qrYUjW6QwQrN0l
- 8Pgw==
-X-Gm-Message-State: AOJu0YxMZ/FSnwd4MzYGGyd7sktn/ORmLIcjrmwoOG4DK7ikrYqTngDH
- 0aeh8byZqHxmctcz24gUaW8nsRGE+URiViMxUVccPP1uwYMLw9ZRDB7fYsnBwOixf80wqt8iaWC
- 8
-X-Google-Smtp-Source: AGHT+IHx9DhV18TajrF0q08sau6dKuyT702yn/PwGrOjRphUvf39AKXfXmHqton5FVlYWhqKehByUA==
-X-Received: by 2002:a17:906:a854:b0:a5a:5b1a:e2e4 with SMTP id
- a640c23a62f3a-a65f0a69960mr179082666b.20.1717080837822; 
- Thu, 30 May 2024 07:53:57 -0700 (PDT)
+ bh=NBGdGeMx1eXvGpTXQ7NHtXTGnuO25PcPWZ9ArhDIKyk=;
+ b=qOPv1EZahGsX4BuhwVO6mHfj1RMeXap0NjP4Vmk4kxyXjyOo6bV9g4MCL0nKI/8myn
+ ZwbFl0D5pKPCfd55mxnfA2zfBJS+8TKsxRxlytOjteQLrcJ78W/DtOzeOjIMm9GN8Ib7
+ +Xvx2wCEueTH9dOf+mnigB6KVLe8dOhCPv+VdwjN/o6cIfUz6kz0mftgpc7QWskfrq76
+ LAeCqRu9Ne9hA7+bzjZiLqQdV+X5Kg17ioNj6DpjcoL32UYT3iG4pEsuju5/O9C9tTKZ
+ FEnpDDkMpUXiric5bgh8984autUkN44SRWZCjCl3rOoLoMkeosBUtBRVnrkQfBSTwK5T
+ y4uw==
+X-Gm-Message-State: AOJu0YxUJcgtkGW4YwYzMQllkAj5eBwcrCrIfxDsbBXCBny/MmxvZLKA
+ KIgmV00lkduz86t5iOlWpRiiU48r5w7/ktY5qb3a34Iosd8spODSOni+VEQ/vWnUz38v385Ctgl
+ K
+X-Google-Smtp-Source: AGHT+IHMNWc0aCjvuL5SKuCH2G4gkI0IdDsBXAqqpToxg8v0WrjsEdua+j8hYDW9NEQs2GKbBiKgiQ==
+X-Received: by 2002:a50:cd9e:0:b0:579:d1c6:1647 with SMTP id
+ 4fb4d7f45d1cf-57a1797ba60mr1482707a12.42.1717080843680; 
+ Thu, 30 May 2024 07:54:03 -0700 (PDT)
 Received: from m1x-phil.lan (xbn44-h02-176-184-35-50.dsl.sta.abo.bbox.fr.
  [176.184.35.50]) by smtp.gmail.com with ESMTPSA id
- a640c23a62f3a-a626c93d38esm835954066b.90.2024.05.30.07.53.56
+ 4fb4d7f45d1cf-578524b5898sm9988661a12.82.2024.05.30.07.54.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 30 May 2024 07:53:57 -0700 (PDT)
+ Thu, 30 May 2024 07:54:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/3] target/mips: Restrict semihosting to TCG
-Date: Thu, 30 May 2024 16:53:47 +0200
-Message-ID: <20240530145349.41309-2-philmd@linaro.org>
+Subject: [PATCH v2 2/3] target/riscv: Restrict semihosting to TCG
+Date: Thu, 30 May 2024 16:53:48 +0200
+Message-ID: <20240530145349.41309-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240530145349.41309-1-philmd@linaro.org>
 References: <20240530145349.41309-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,21 +101,25 @@ is available.
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/mips/Kconfig b/target/mips/Kconfig
-index eb19c94c7d..876048b150 100644
---- a/target/mips/Kconfig
-+++ b/target/mips/Kconfig
-@@ -1,6 +1,6 @@
- config MIPS
+diff --git a/target/riscv/Kconfig b/target/riscv/Kconfig
+index 5f30df22f2..cbafbedaeb 100644
+--- a/target/riscv/Kconfig
++++ b/target/riscv/Kconfig
+@@ -1,9 +1,9 @@
+ config RISCV32
      bool
--    select SEMIHOSTING
-+    imply SEMIHOSTING if TCG
+-    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
++    imply ARM_COMPATIBLE_SEMIHOSTING if TCG # for do_common_semihosting()
+     select DEVICE_TREE # needed by boot.c
  
- config MIPS64
+ config RISCV64
      bool
+-    select ARM_COMPATIBLE_SEMIHOSTING # for do_common_semihosting()
++    imply ARM_COMPATIBLE_SEMIHOSTING if TCG # for do_common_semihosting()
+     select DEVICE_TREE # needed by boot.c
 -- 
 2.41.0
 
