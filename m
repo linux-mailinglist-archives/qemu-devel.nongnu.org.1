@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B458D8D4657
+	by mail.lfdr.de (Postfix) with ESMTPS id B72518D4658
 	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 09:46:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCaTv-0002EJ-Ij; Thu, 30 May 2024 03:45:51 -0400
+	id 1sCaTq-0001vA-8l; Thu, 30 May 2024 03:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sCaTY-0001tF-Ox; Thu, 30 May 2024 03:45:29 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1sCaTY-0001tJ-UP; Thu, 30 May 2024 03:45:29 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1sCaTG-000308-KM; Thu, 30 May 2024 03:45:28 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1f480624d10so5310815ad.1; 
- Thu, 30 May 2024 00:45:07 -0700 (PDT)
+ id 1sCaTK-000315-DF; Thu, 30 May 2024 03:45:28 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-70232305fecso307251b3a.2; 
+ Thu, 30 May 2024 00:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717055103; x=1717659903; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GHdHJEG5V4dWaxqkzvKLMfLAWaYqBj5hNJ3BNB07XiI=;
- b=hKn3cuirezMZnC2dSQXIla+RdsSGKiB3FTPJTVh1N6MwsbmcqnZxVyUBdYW91bb4wd
- E29yLrZXUM/61zkUCT2vOgWLU0wavhJe7dLMTA+VMPlaYy4evZO5JcF6AULbNsrNX5Qk
- nM8aL4K/qP5j0V+WxmfynaHiaUDlvXS4Qmp7rDPH2Q5finxk9D/QHY0kPiS1pk3aiLxm
- xoBFpKpHS2yQdblUitRaMmUzRRm0Bxbc4cPYgZ2kTo9/jfP3sK9GqYjcQ3T0ylDtjb5W
- okLtCqzcBqTN+veCwnBQGPi3URaXfJZm4ZvO5SxVhJH7rGfJpaUKKNVlzB8CI/JZRoxz
- xrsw==
+ d=gmail.com; s=20230601; t=1717055107; x=1717659907; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rr4J6dxm5AtV4yAbJU19/SHZXAqfpuKCexnfNQQEgp8=;
+ b=TE0rBmo/RMIjMcqiiLq9L0vchpi/+gNXrYj3AYm8QriJQtQYyAoMHMjqBcV9jNCMuC
+ PMQ5bseXyVsdWNhu1xLjF1lUkQi4w/xtJWI6oZ5/0xo1TOAH/oN/EcqWTQ+hkT9zohzO
+ 49NAL4vDmKgDk796W/OHiq8RS/S62X5KkSt+Fa2xBE++rIzSH/mmiPJvX+GynG7bWqmx
+ 16hNK8xCPHnROZgCyRkvfOHHI0IGTh4IOuwnwr0GgjMoSEuebb9ufEoAx5ZTbupKGdmU
+ vG6ljmE2zEElMN1tPVvLZ9G5ESba5o8TiIa2+b7bPer4cDfH+F/IE3+qFwVh04TA+KIG
+ 7Viw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717055103; x=1717659903;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GHdHJEG5V4dWaxqkzvKLMfLAWaYqBj5hNJ3BNB07XiI=;
- b=rhsN/U51KT3vh3562RaGYVcPtf/WPaa6dafJfFnDQtqHjnWeD5nVLwY2IifQXzMHpO
- lEdcvSMU/wAwv8iJgyHxEv3C1O3Iudc95OPXWlG5VUhgPb60s95221PTwO+pc7/mf60y
- m9e1uBe1/0H963HAGmqYOHQeoqqyVNbg8e89ZUmEO6+7uJcL2YcHOtqi8AUcpKkNSe/G
- reBRsH7eacJqTF5hz8cbe5ktK6Wq0z5OCk5Vb/YdFjuV+TdJ7L2ChK8EDXkCOqHiunb1
- /gAxQP/W3JZwPv0Y0iU2QfuxFjgMiheuG5EQagJv0VunWQsVP3PcbeTSxBR2gFp3KqLb
- xx4A==
+ d=1e100.net; s=20230601; t=1717055107; x=1717659907;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rr4J6dxm5AtV4yAbJU19/SHZXAqfpuKCexnfNQQEgp8=;
+ b=OWrH9M0jzctNbJwmXjP/fz5b/IkfxJihwZJklJHSLVj8c6fOsvVLVXj7Iaz0+NkpvD
+ VL0R/r0zi3HbESz8lYmXcas1N81twJBQ0DorsBVIqeqZMykgu3YGG5LxM1+oRUL9QLZe
+ wUjfDIpZRbzoR9Ndn+9hQiuIL7RlLVEY+13cNK/qCDwAa9V4CusSLTcVzBGIWtBkVlK1
+ NzCsFG1qlavmwx3ly7LtRJJSF7rk8qmZRIiqcdy1uFxZNm2uP9I1IALcQRnpQvbwvWxH
+ qeqx0lZczMwhCGpPrSao4HBH9Fiu/EPq4gkFwCtDXGUqhhy1E5UjwBgOfABhMGq0oGMO
+ lF8A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUWtTJKfla9uytCajo9QmkhulCAkvMnWXS98wAshOeya4pXEPvOYJXNKpOboUlCoesyDUCRd1zURzdIkxHw7Ictj0Lu
-X-Gm-Message-State: AOJu0YyoyC1H8tMkxQ9WU5jwsXogbfY1+L017j6CrhlPGT5GO5Chirbt
- LBOUsUyfsvEVIVOoZDvfy1Z02nQiBUwlATEGG0vsAK5rw+OEXfVHCzOMKQ==
-X-Google-Smtp-Source: AGHT+IG504AcnOprhvm0mb1XVnuw2Q/xh1MzTfPlf+zkrUB/fv77MdPE9pcDt/waw8yKSmSeAYnVVQ==
-X-Received: by 2002:a17:902:6507:b0:1f4:8bb9:9ab8 with SMTP id
- d9443c01a7336-1f6192f0b6emr13038665ad.14.1717055102928; 
- Thu, 30 May 2024 00:45:02 -0700 (PDT)
+ AJvYcCVfLH8/3vMg16t7vMz2SgUtd0z4F/FzrqTOWntZ2CICQanKlOdreiZIxOXvhBmkHEgTyYOA5soBmzrh8AFsozQEFZwD
+X-Gm-Message-State: AOJu0YwzVrRMkqA/yLTSE3/oABRZell+qhwss5MV5LYdtY9+ePR2ys33
+ dN1K35smLGZGtG0OdP6WL+Xm6P2RyP/ywmp7dml61nZAV2QYjPK5CopZkg==
+X-Google-Smtp-Source: AGHT+IErhFRqyaaMVyaK5X3ImbnaR5GCT6W+TxcRJCSykVwxk81VnEgxXCfQeqE5W1sQWR2JCq/kPA==
+X-Received: by 2002:a05:6a20:158c:b0:1af:a35b:a34f with SMTP id
+ adf61e73a8af0-1b264563a5emr1552498637.25.1717055107323; 
+ Thu, 30 May 2024 00:45:07 -0700 (PDT)
 Received: from wheely.local0.net ([1.146.118.54])
  by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f61aa2e998sm8025335ad.62.2024.05.30.00.44.59
+ d9443c01a7336-1f61aa2e998sm8025335ad.62.2024.05.30.00.45.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 May 2024 00:45:02 -0700 (PDT)
+ Thu, 30 May 2024 00:45:07 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
  Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH v3 0/4] tests/qtest/migration-test: Improve and enable on ppc64
-Date: Thu, 30 May 2024 17:44:48 +1000
-Message-ID: <20240530074453.21780-1-npiggin@gmail.com>
+Subject: [PATCH v3 1/4] tests/qtest: Move common define from libqos-spapr.h to
+ new ppc-util.h
+Date: Thu, 30 May 2024 17:44:49 +1000
+Message-ID: <20240530074453.21780-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240530074453.21780-1-npiggin@gmail.com>
+References: <20240530074453.21780-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,36 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v2:
-- Fixed subject typo noticed by Thomas.
-- Drop the non-ppc patches from the series.
+The spapr QEMU machine defaults is useful outside libqos, so create a
+new header for ppc specific qtests and move it there.
 
-Thanks,
-Nick
-
-Nicholas Piggin (4):
-  tests/qtest: Move common define from libqos-spapr.h to new ppc-util.h
-  tests/qtest/migration-test: Quieten ppc64 QEMU warnings
-  tests/qtest/migration-test: Enable on ppc64 TCG
-  tests/qtest/migration-test: Use custom asm bios for ppc64
-
- tests/migration/migration-test.h   |  1 +
- tests/migration/ppc64/a-b-kernel.h | 42 +++++++++++++++++++
- tests/qtest/libqos/libqos-spapr.h  |  7 ----
- tests/qtest/ppc-util.h             | 19 +++++++++
- tests/qtest/boot-serial-test.c     |  2 +-
- tests/qtest/migration-test.c       | 53 +++++-------------------
- tests/qtest/prom-env-test.c        |  2 +-
- tests/qtest/pxe-test.c             |  2 +-
- tests/migration/Makefile           |  2 +-
- tests/migration/ppc64/Makefile     | 15 +++++++
- tests/migration/ppc64/a-b-kernel.S | 66 ++++++++++++++++++++++++++++++
- 11 files changed, 157 insertions(+), 54 deletions(-)
- create mode 100644 tests/migration/ppc64/a-b-kernel.h
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ tests/qtest/libqos/libqos-spapr.h |  7 -------
+ tests/qtest/ppc-util.h            | 19 +++++++++++++++++++
+ tests/qtest/boot-serial-test.c    |  2 +-
+ tests/qtest/prom-env-test.c       |  2 +-
+ tests/qtest/pxe-test.c            |  2 +-
+ 5 files changed, 22 insertions(+), 10 deletions(-)
  create mode 100644 tests/qtest/ppc-util.h
- create mode 100644 tests/migration/ppc64/Makefile
- create mode 100644 tests/migration/ppc64/a-b-kernel.S
 
+diff --git a/tests/qtest/libqos/libqos-spapr.h b/tests/qtest/libqos/libqos-spapr.h
+index e4483c14f8..a446276416 100644
+--- a/tests/qtest/libqos/libqos-spapr.h
++++ b/tests/qtest/libqos/libqos-spapr.h
+@@ -9,11 +9,4 @@ QOSState *qtest_spapr_boot(const char *cmdline_fmt, ...)
+     G_GNUC_PRINTF(1, 2);
+ void qtest_spapr_shutdown(QOSState *qs);
+ 
+-/* List of capabilities needed to silence warnings with TCG */
+-#define PSERIES_DEFAULT_CAPABILITIES             \
+-    "cap-cfpc=broken,"                           \
+-    "cap-sbbc=broken,"                           \
+-    "cap-ibs=broken,"                            \
+-    "cap-ccf-assist=off,"
+-
+ #endif
+diff --git a/tests/qtest/ppc-util.h b/tests/qtest/ppc-util.h
+new file mode 100644
+index 0000000000..f68ee93520
+--- /dev/null
++++ b/tests/qtest/ppc-util.h
+@@ -0,0 +1,19 @@
++/*
++ * PowerPC misc useful things
++ *
++ * Copyright (c) 2024, IBM Corporation.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef PPC_UTIL_H
++#define PPC_UTIL_H
++
++/* List of capabilities needed to silence warnings with TCG */
++#define PSERIES_DEFAULT_CAPABILITIES             \
++    "cap-cfpc=broken,"                           \
++    "cap-sbbc=broken,"                           \
++    "cap-ibs=broken,"                            \
++    "cap-ccf-assist=off,"
++
++#endif /* PPC_UTIL_H */
+diff --git a/tests/qtest/boot-serial-test.c b/tests/qtest/boot-serial-test.c
+index df389adeeb..3b92fa5d50 100644
+--- a/tests/qtest/boot-serial-test.c
++++ b/tests/qtest/boot-serial-test.c
+@@ -15,7 +15,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ static const uint8_t bios_avr[] = {
+     0x88, 0xe0,             /* ldi r24, 0x08   */
+diff --git a/tests/qtest/prom-env-test.c b/tests/qtest/prom-env-test.c
+index 39ccb59797..14705105ad 100644
+--- a/tests/qtest/prom-env-test.c
++++ b/tests/qtest/prom-env-test.c
+@@ -21,7 +21,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "libqtest.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ #define MAGIC   0xcafec0de
+ #define ADDRESS 0x4000
+diff --git a/tests/qtest/pxe-test.c b/tests/qtest/pxe-test.c
+index e4b48225a5..a3f900fbea 100644
+--- a/tests/qtest/pxe-test.c
++++ b/tests/qtest/pxe-test.c
+@@ -16,7 +16,7 @@
+ #include <glib/gstdio.h>
+ #include "libqtest.h"
+ #include "boot-sector.h"
+-#include "libqos/libqos-spapr.h"
++#include "ppc-util.h"
+ 
+ #define NETNAME "net0"
+ 
 -- 
 2.43.0
 
