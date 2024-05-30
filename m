@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E9E8D4B76
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 14:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D2D8D4B75
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 14:24:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCeoQ-0003cc-Hl; Thu, 30 May 2024 08:23:18 -0400
+	id 1sCeoE-0003Oj-SF; Thu, 30 May 2024 08:23:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sCeoM-0003ZP-FV
- for qemu-devel@nongnu.org; Thu, 30 May 2024 08:23:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1sCeoH-0005mH-BC
- for qemu-devel@nongnu.org; Thu, 30 May 2024 08:23:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717071788;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iYI3+5XFTRUT8Uqwbe4dnlKWgx+OZ3N503++FeqVdug=;
- b=dv2++mxA2lCmLJPtdMPOgppCK6vvbZGajBXWBUPe4cXKMXrcoADjTBWfH59utSRB2juUxa
- ZB15nYtFoUHopXIKqS9bA3OEwm15hSPWEixLw+TiIV42whk5D4T54mxHHiHkzZtIzLRCoM
- QBJLdLtpcxu4iWUr9gVgRIT+qzIL094=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-V_muoBcaP2amPnbnohJmTA-1; Thu,
- 30 May 2024 08:23:04 -0400
-X-MC-Unique: V_muoBcaP2amPnbnohJmTA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 512483C025B1;
- Thu, 30 May 2024 12:23:04 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.41])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 68E2E491032;
- Thu, 30 May 2024 12:23:03 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, "Richard W.M. Jones" <rjones@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:Network Block Dev...)
-Subject: [PULL 2/2] iotests: test NBD+TLS+iothread
-Date: Thu, 30 May 2024 07:22:18 -0500
-Message-ID: <20240530122300.724226-6-eblake@redhat.com>
-In-Reply-To: <20240530122300.724226-4-eblake@redhat.com>
-References: <20240530122300.724226-4-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCeoD-0003OT-4v
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:23:05 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCeo6-0005lC-U0
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:23:04 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-579cd80450fso1885459a12.0
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 05:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717071777; x=1717676577; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VTLvvrgD8EGDGP5twaVu5ShhR8MXpAbjf/cKpiOrofk=;
+ b=NLCstbJlsZtzXusevYWQOpYrmO9eZQWxKQdpxbb7H3A6FR6H7zcNMxb50+bIcq4MfX
+ kAQ1C+fYsdGBi6sUGVHnG4a6JslFiTz/lAySw5UfkHVDKJvCwoDVuc/6z0NffQbxNqrQ
+ Ul++vaIJXxt/gEaE5Dg95Ugn14NR8OKF/+k7OFNVApPxZ4qSCl23kmbsespTlcIdIEFg
+ j1XPHbC2jQsW31DCpuoQP3/I8j8fjeurQMMcBWEV4UemTdA/Vlf8+kL7MrDtG8pqRQlh
+ m31y4UJKyFqFut6pFXGbEOuaI5NPzJ8d5uh7d9prDC2P4NAFCE+VP361CL5SVvdQAuaF
+ luMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717071777; x=1717676577;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VTLvvrgD8EGDGP5twaVu5ShhR8MXpAbjf/cKpiOrofk=;
+ b=IdGK2IIwzrn5MBALXfPXOlhjA2aaqLWxzKaI+awd8TRUcJUjo/iVD23GrNpz6FR/bL
+ Y9mkCc3mMCo7LTx3jqijNnSVdEVxAEBvCwyiy1jyXPUULNbYBc4x5OChzkjAjXhcH63K
+ wZP5N6kDPy17/w0CmdAgY3bq87M38Orm38BgLawbsZOQgSfwZIiJvqHQo4KPU7vN3eb8
+ wFeYKF+2IvdeKiOAKaSqbHHS2phPfyk6UEtaB8lB8SQrVLZRSXVcS6dbFItAFvBTmXWu
+ vtHjQLoSj5ocR8Fs1JlLFrx2wG89zjKuonU/bl2GnTDlLiArw9Yb65viFCIDH9+/YorG
+ PrRg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXmLXlTP6cwZovO6tcnPEIE4ti5qqGz3WN8Q7Af9zNjiBBSdD6rN37P7y2HdDH/zJtu9pv0bXUkVjtyH6+vtFIdfVdYYMg=
+X-Gm-Message-State: AOJu0YxKSzG3pyXf/kuZenj8+EhzpfZUDOwNunc2Q9jkD1ApbsZXqHua
+ Ey510CgNvLlMTpmHy2k0lGRLfWq6pRIDwC6kjWrpjF/VFVeWXN3+Hfoq23E65Pwv62ypHZoXeX0
+ vSRhJVIWFzMnwt7oM0eRmcSp8GlM+WYHfFERvnegvEeOvRuB0
+X-Google-Smtp-Source: AGHT+IGdxg81TuFNFHXO8Ol+1FDM21IlJsYX1zq7GgA4uhGBOM/EpV62YDVufXM4YkWibWO738Zy0pYrSKcZjdY1knQ=
+X-Received: by 2002:a50:d659:0:b0:578:e204:bfb6 with SMTP id
+ 4fb4d7f45d1cf-57a19f66369mr1145363a12.9.1717071776796; Thu, 30 May 2024
+ 05:22:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240523183928.37809-1-marcin.juszkiewicz@linaro.org>
+ <f2b32bb7-409b-484a-b4c3-71ca40d9bbe2@linaro.org>
+In-Reply-To: <f2b32bb7-409b-484a-b4c3-71ca40d9bbe2@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 May 2024 13:22:45 +0100
+Message-ID: <CAFEAcA9Xi8A4bpcMU5XXMQR0z7diBP4VnYTHe26prjAaoxuWew@mail.gmail.com>
+Subject: Re: [PATCH 1/1] tests/avocado: sbsa-ref: switch from OpenBSD to
+ FreeBSD
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org, Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, Cleber Rosa <crosa@redhat.com>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Brad Smith <brad@comstyle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,260 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prevent regressions when using NBD with TLS in the presence of
-iothreads, adding coverage the fix to qio channels made in the
-previous patch.
+On Mon, 27 May 2024 at 10:53, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> On 23/5/24 20:39, Marcin Juszkiewicz wrote:
+> > FreeBSD has longer support cycle for stable release (14.x EoL in 2028)
+> > than OpenBSD (7.3 we used is already EoL). Also bugfixes are backported
+> > so we can stay on 14.x for longer.
+> >
+> > Planned to upgrade to newer OpenBSD but we would have to wait for 7.6
+> > release to get Neoverse-V1/N2 support.
+> >
+> > Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-The shell function pick_unused_port() was copied from
-nbdkit.git/tests/functions.sh.in, where it had all authors from Red
-Hat, agreeing to the resulting relicensing from 2-clause BSD to GPLv2.
+> > +    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might tim=
+eout')
+>
+> Nitpicking, maybe 'Test might timeout due to PAuth'? (few occurrences).
 
-CC: qemu-stable@nongnu.org
-CC: "Richard W.M. Jones" <rjones@redhat.com>
-Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20240518025246.791593-6-eblake@redhat.com>
----
- tests/qemu-iotests/tests/nbd-tls-iothread     | 168 ++++++++++++++++++
- tests/qemu-iotests/tests/nbd-tls-iothread.out |  54 ++++++
- 2 files changed, 222 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/nbd-tls-iothread
- create mode 100644 tests/qemu-iotests/tests/nbd-tls-iothread.out
+Yes, can we have specific reasons for why we're skipping tests,
+with also a comment giving a link to the relevant gitlab issue
+about them, please?
 
-diff --git a/tests/qemu-iotests/tests/nbd-tls-iothread b/tests/qemu-iotests/tests/nbd-tls-iothread
-new file mode 100755
-index 00000000000..26ccff8ddb7
---- /dev/null
-+++ b/tests/qemu-iotests/tests/nbd-tls-iothread
-@@ -0,0 +1,168 @@
-+#!/usr/bin/env bash
-+# group: rw quick
-+#
-+# Test of NBD+TLS+iothread
-+#
-+# Copyright (C) 2024 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+# creator
-+owner=eblake@redhat.com
-+
-+seq=`basename $0`
-+echo "QA output created by $seq"
-+
-+status=1    # failure is the default!
-+
-+_cleanup()
-+{
-+    _cleanup_qemu
-+    _cleanup_test_img
-+    rm -f "$dst_image"
-+    tls_x509_cleanup
-+}
-+trap "_cleanup; exit \$status" 0 1 2 3 15
-+
-+# get standard environment, filters and checks
-+cd ..
-+. ./common.rc
-+. ./common.filter
-+. ./common.qemu
-+. ./common.tls
-+. ./common.nbd
-+
-+_supported_fmt qcow2  # Hardcoded to qcow2 command line and QMP below
-+_supported_proto file
-+
-+# pick_unused_port
-+#
-+# Picks and returns an "unused" port, setting the global variable
-+# $port.
-+#
-+# This is inherently racy, but we need it because qemu does not currently
-+# permit NBD+TLS over a Unix domain socket
-+pick_unused_port ()
-+{
-+    if ! (ss --version) >/dev/null 2>&1; then
-+        _notrun "ss utility required, skipped this test"
-+    fi
-+
-+    # Start at a random port to make it less likely that two parallel
-+    # tests will conflict.
-+    port=$(( 50000 + (RANDOM%15000) ))
-+    while ss -ltn | grep -sqE ":$port\b"; do
-+        ((port++))
-+        if [ $port -eq 65000 ]; then port=50000; fi
-+    done
-+    echo picked unused port
-+}
-+
-+tls_x509_init
-+
-+size=1G
-+DST_IMG="$TEST_DIR/dst.qcow2"
-+
-+echo
-+echo "== preparing TLS creds and spare port =="
-+
-+pick_unused_port
-+tls_x509_create_root_ca "ca1"
-+tls_x509_create_server "ca1" "server1"
-+tls_x509_create_client "ca1" "client1"
-+tls_obj_base=tls-creds-x509,id=tls0,verify-peer=true,dir="${tls_dir}"
-+
-+echo
-+echo "== preparing image =="
-+
-+_make_test_img $size
-+$QEMU_IMG create -f qcow2 "$DST_IMG" $size
-+
-+echo
-+echo === Starting Src QEMU ===
-+echo
-+
-+_launch_qemu -machine q35 \
-+    -object iothread,id=iothread0 \
-+    -object "${tls_obj_base}"/client1,endpoint=client \
-+    -device '{"driver":"pcie-root-port", "id":"root0", "multifunction":true,
-+              "bus":"pcie.0"}' \
-+    -device '{"driver":"virtio-scsi-pci", "id":"virtio_scsi_pci0",
-+              "bus":"root0", "iothread":"iothread0"}' \
-+    -device '{"driver":"scsi-hd", "id":"image1", "drive":"drive_image1",
-+              "bus":"virtio_scsi_pci0.0"}' \
-+    -blockdev '{"driver":"file", "cache":{"direct":true, "no-flush":false},
-+                "filename":"'"$TEST_IMG"'", "node-name":"drive_sys1"}' \
-+    -blockdev '{"driver":"qcow2", "node-name":"drive_image1",
-+                "file":"drive_sys1"}'
-+h1=$QEMU_HANDLE
-+_send_qemu_cmd $h1 '{"execute": "qmp_capabilities"}' 'return'
-+
-+echo
-+echo === Starting Dst VM2 ===
-+echo
-+
-+_launch_qemu -machine q35 \
-+    -object iothread,id=iothread0 \
-+    -object "${tls_obj_base}"/server1,endpoint=server \
-+    -device '{"driver":"pcie-root-port", "id":"root0", "multifunction":true,
-+              "bus":"pcie.0"}' \
-+    -device '{"driver":"virtio-scsi-pci", "id":"virtio_scsi_pci0",
-+              "bus":"root0", "iothread":"iothread0"}' \
-+    -device '{"driver":"scsi-hd", "id":"image1", "drive":"drive_image1",
-+              "bus":"virtio_scsi_pci0.0"}' \
-+    -blockdev '{"driver":"file", "cache":{"direct":true, "no-flush":false},
-+                "filename":"'"$DST_IMG"'", "node-name":"drive_sys1"}' \
-+    -blockdev '{"driver":"qcow2", "node-name":"drive_image1",
-+                "file":"drive_sys1"}' \
-+    -incoming defer
-+h2=$QEMU_HANDLE
-+_send_qemu_cmd $h2 '{"execute": "qmp_capabilities"}' 'return'
-+
-+echo
-+echo === Dst VM: Enable NBD server for incoming storage migration ===
-+echo
-+
-+_send_qemu_cmd $h2 '{"execute": "nbd-server-start", "arguments":
-+    {"addr": {"type": "inet", "data": {"host": "127.0.0.1", "port": "'$port'"}},
-+              "tls-creds": "tls0"}}' '{"return": {}}' | sed "s/\"$port\"/PORT/g"
-+_send_qemu_cmd $h2 '{"execute": "block-export-add", "arguments":
-+    {"node-name": "drive_image1", "type": "nbd", "writable": true,
-+      "id": "drive_image1"}}' '{"return": {}}'
-+
-+echo
-+echo === Src VM: Mirror to dst NBD for outgoing storage migration ===
-+echo
-+
-+_send_qemu_cmd $h1 '{"execute": "blockdev-add", "arguments":
-+    {"node-name": "mirror", "driver": "nbd",
-+     "server": {"type": "inet", "host": "127.0.0.1", "port": "'$port'"},
-+     "export": "drive_image1", "tls-creds": "tls0",
-+     "tls-hostname": "127.0.0.1"}}' '{"return": {}}' | sed "s/\"$port\"/PORT/g"
-+_send_qemu_cmd $h1 '{"execute": "blockdev-mirror", "arguments":
-+    {"sync": "full", "device": "drive_image1", "target": "mirror",
-+     "job-id": "drive_image1_53"}}' '{"return": {}}'
-+_timed_wait_for $h1 '"ready"'
-+
-+echo
-+echo === Cleaning up ===
-+echo
-+
-+_send_qemu_cmd $h1 '{"execute":"quit"}' ''
-+_send_qemu_cmd $h2 '{"execute":"quit"}' ''
-+
-+echo "*** done"
-+rm -f $seq.full
-+status=0
-diff --git a/tests/qemu-iotests/tests/nbd-tls-iothread.out b/tests/qemu-iotests/tests/nbd-tls-iothread.out
-new file mode 100644
-index 00000000000..b5e12dcbe7a
---- /dev/null
-+++ b/tests/qemu-iotests/tests/nbd-tls-iothread.out
-@@ -0,0 +1,54 @@
-+QA output created by nbd-tls-iothread
-+
-+== preparing TLS creds and spare port ==
-+picked unused port
-+Generating a self signed certificate...
-+Generating a signed certificate...
-+Generating a signed certificate...
-+
-+== preparing image ==
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=1073741824
-+Formatting '/home/eblake/qemu/build/tests/qemu-iotests/scratch/qcow2-file-nbd-tls-iothread/dst.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=1073741824 lazy_refcounts=off refcount_bits=16
-+
-+=== Starting Src QEMU ===
-+
-+{"execute": "qmp_capabilities"}
-+{"return": {}}
-+
-+=== Starting Dst VM2 ===
-+
-+{"execute": "qmp_capabilities"}
-+{"return": {}}
-+
-+=== Dst VM: Enable NBD server for incoming storage migration ===
-+
-+{"execute": "nbd-server-start", "arguments":
-+    {"addr": {"type": "inet", "data": {"host": "127.0.0.1", "port": PORT}},
-+              "tls-creds": "tls0"}}
-+{"return": {}}
-+{"execute": "block-export-add", "arguments":
-+    {"node-name": "drive_image1", "type": "nbd", "writable": true,
-+      "id": "drive_image1"}}
-+{"return": {}}
-+
-+=== Src VM: Mirror to dst NBD for outgoing storage migration ===
-+
-+{"execute": "blockdev-add", "arguments":
-+    {"node-name": "mirror", "driver": "nbd",
-+     "server": {"type": "inet", "host": "127.0.0.1", "port": PORT},
-+     "export": "drive_image1", "tls-creds": "tls0",
-+     "tls-hostname": "127.0.0.1"}}
-+{"return": {}}
-+{"execute": "blockdev-mirror", "arguments":
-+    {"sync": "full", "device": "drive_image1", "target": "mirror",
-+     "job-id": "drive_image1_53"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "drive_image1_53"}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "drive_image1_53"}}
-+{"return": {}}
-+{"timestamp": {"seconds":  TIMESTAMP, "microseconds":  TIMESTAMP}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "drive_image1_53"}}
-+
-+=== Cleaning up ===
-+
-+{"execute":"quit"}
-+{"execute":"quit"}
-+*** done
--- 
-2.45.1
+PAuth shouldn't cause a test to time out -- it might be slower
+than without-pauth and mean we need to give that test a longer
+timeout value and not run it by default, but it shouldn't result
+in the test hanging indefinitely.
 
+thanks
+-- PMM
 
