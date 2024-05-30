@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8A58D4AE3
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8CAE8D4AE4
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:28:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCdwS-0006NY-DL; Thu, 30 May 2024 07:27:32 -0400
+	id 1sCdwR-0006N2-Qt; Thu, 30 May 2024 07:27:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sCdwP-0006Lw-Tq
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sCdwP-0006Lu-TZ
  for qemu-devel@nongnu.org; Thu, 30 May 2024 07:27:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sCdwN-0003eU-HK
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1sCdwK-0003cL-Uz
  for qemu-devel@nongnu.org; Thu, 30 May 2024 07:27:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717068446;
+ s=mimecast20190719; t=1717068444;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vwd70H1PbpqlY2vcizptzp18Ufdhj9422qrYmE21yDk=;
- b=RTuZIjzUspuzuIfcbUr+IJ7NPhmLxupc7HOnY9gC1SN+MmX32P1Ak1oYoB4ChXybch5dVq
- 2VUDNQeU+UVujNmWbOpZM80o7pLKbHWQTfSQfE6IXJCfc4E7vbM0RAfU31N6yljzb24R4g
- oDlIlupdI6U0ddHV35gv8txQiN66nhk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-142-dzqdLpF9MkuYwzoLNbKlBA-1; Thu, 30 May 2024 07:27:23 -0400
-X-MC-Unique: dzqdLpF9MkuYwzoLNbKlBA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=bp3NLg4mJW6CGazd17f+zK4QsMU0vLkfWwofjE4kNU4=;
+ b=iSa3YQnru3bXrM5IVCUmddwTWZ7wqdiUHcZhy7adcTgHNgeg97KTqSzlg3cN5wuI3hN2kk
+ T9KRayDS+YNVg9NODDHS7VljHrYJzZ3jvTaq52pEs5OlwFa8M4QcWw19/l2GY1TRGPqjaY
+ 2JlVHDThvOGEg7jn95vLeFPzK1fYiTs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-iysZqDT0PiSbvaQCCNJsww-1; Thu,
+ 30 May 2024 07:27:22 -0400
+X-MC-Unique: iysZqDT0PiSbvaQCCNJsww-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A4F6D185A780;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5761029AA381;
  Thu, 30 May 2024 11:27:22 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.101])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A4C2F286E;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F36AB103A3AA;
  Thu, 30 May 2024 11:27:21 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 60AD618007A5; Thu, 30 May 2024 13:27:18 +0200 (CEST)
+ id 7118018009A8; Thu, 30 May 2024 13:27:18 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 2/4] usb: add config options for the hub and hid devices
-Date: Thu, 30 May 2024 13:27:15 +0200
-Message-ID: <20240530112718.1752905-3-kraxel@redhat.com>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 3/4] usb/hub: deprecate, don't build by default
+Date: Thu, 30 May 2024 13:27:16 +0200
+Message-ID: <20240530112718.1752905-4-kraxel@redhat.com>
 In-Reply-To: <20240530112718.1752905-1-kraxel@redhat.com>
 References: <20240530112718.1752905-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -83,49 +82,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
----
- hw/usb/Kconfig     | 10 ++++++++++
- hw/usb/meson.build |  4 ++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+The hub supports only USB 1.1.  When running out of usb ports it is in
+almost all cases the much better choice to add another usb host adapter
+(or increase the number of root ports when using xhci) instead of using
+the usb hub.
 
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ hw/usb/dev-hub.c | 1 +
+ hw/usb/Kconfig   | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index 06e9537d0356..68444d39534f 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -686,6 +686,7 @@ static void usb_hub_class_initfn(ObjectClass *klass, void *data)
+     set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+     dc->fw_name = "hub";
+     dc->vmsd = &vmstate_usb_hub;
++    klass->deprecation_note = "use more root ports or additional hostadapters instead";
+     device_class_set_props(dc, usb_hub_properties);
+ }
+ 
 diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index f569ed7eeaa1..84bc7fbe36cd 100644
+index 84bc7fbe36cd..b583f5c25d05 100644
 --- a/hw/usb/Kconfig
 +++ b/hw/usb/Kconfig
-@@ -65,6 +65,16 @@ config TUSB6010
-     bool
-     select USB_MUSB
+@@ -67,7 +67,6 @@ config TUSB6010
  
-+config USB_HUB
-+    bool
-+    default y
-+    depends on USB
-+
-+config USB_HID
-+    bool
-+    default y
-+    depends on USB
-+
- config USB_TABLET_WACOM
+ config USB_HUB
      bool
-     default y
-diff --git a/hw/usb/meson.build b/hw/usb/meson.build
-index 23f7f7acb50b..d7de1003e3db 100644
---- a/hw/usb/meson.build
-+++ b/hw/usb/meson.build
-@@ -35,8 +35,8 @@ system_ss.add(when: 'CONFIG_XLNX_VERSAL', if_true: files('xlnx-versal-usb2-ctrl-
- system_ss.add(when: 'CONFIG_XLNX_USB_SUBSYS', if_true: files('xlnx-usb-subsystem.c'))
+-    default y
+     depends on USB
  
- # emulated usb devices
--system_ss.add(when: 'CONFIG_USB', if_true: files('dev-hub.c'))
--system_ss.add(when: 'CONFIG_USB', if_true: files('dev-hid.c'))
-+system_ss.add(when: 'CONFIG_USB_HUB', if_true: files('dev-hub.c'))
-+system_ss.add(when: 'CONFIG_USB_HID', if_true: files('dev-hid.c'))
- system_ss.add(when: 'CONFIG_USB_TABLET_WACOM', if_true: files('dev-wacom.c'))
- system_ss.add(when: 'CONFIG_USB_STORAGE_CORE', if_true: files('dev-storage.c'))
- system_ss.add(when: 'CONFIG_USB_STORAGE_BOT', if_true: files('dev-storage-bot.c'))
+ config USB_HID
 -- 
 2.45.1
 
