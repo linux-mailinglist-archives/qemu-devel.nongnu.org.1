@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD9F8D465F
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 09:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123D98D4662
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 09:47:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCaUS-00030V-64; Thu, 30 May 2024 03:46:24 -0400
+	id 1sCaUZ-0003UK-TC; Thu, 30 May 2024 03:46:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUJ-0002pj-V2
- for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:19 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUW-0003LP-J7
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:29 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUI-0003Nb-Al
- for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:15 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-420180b5922so8049035e9.2
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 00:46:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCaUQ-0003PM-28
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 03:46:27 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4211e42e362so7045615e9.1
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 00:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717055172; x=1717659972; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717055178; x=1717659978; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=01WlZSY18T45T+CzrK5D3m5TP/teYv3HLGHIpCdLE80=;
- b=YaBFc0cgXXzfDwjgJDMLmZUppgkjKXoR/kAAzz0MDD4n6B+l73B5DacVqwM8Kshq+g
- TXUhCkLyh7quUfPNsLyDtO/x4Yp3IcMx1Sh+Wo4yzd3LTLg9MNW63fTFfX4PIgOT43c8
- /AyWVmeUgOVaEWUk/Znni8yxGh0hGFWItc2lhlqUNCkAaAjz29xoVRsK8NoGpD9iCxZI
- wLjivIheEdhUwz2GJhoe9VDAkJhiioNGewAxA7ZB8PQVTMYHhHTuX+vP3i1RgiFx44r2
- 0GD9kFkQER+ASaxoRQPCd9X44YjqOOup33wGwqZfiWjzkXUJ3KAPUUYdpO2kCdoX4FqX
- O0kw==
+ bh=hI2T+luarfP0HirxpjgbiSprzocV4B84X0ChzbQjTTI=;
+ b=Q3AXux5EdSD1bIcUmGEVfIEbx0VL5G/RebLhc/Tf7kepOQ9ocV6f4DFdy2DClnFs7U
+ 0u+LTSzjYRpz6/WAf8K+/1KnagPGdbhETwKPs4eCwu8plWJtQPpRY0T0gw7dt3gLBOPq
+ Mbtg93W1hcNYZiP9UMPciA/3qC6ff4CuGR836Xbhl3mCesT/IBzGs+XAeJPlnwXnqkSF
+ UZJZgSqn49vX45FwWmbg/X+x4+dzPNcOPDSW8x6rEqjP0YcYWqh3vq9ICoFyU3LUPVcX
+ 82GxEZURVVh+zRr/BGwx/BRq6KRnMNj6rgXzymtycTQ/HrUxw9+HYP5E7TV3CJHoxTJ2
+ oulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717055172; x=1717659972;
+ d=1e100.net; s=20230601; t=1717055178; x=1717659978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=01WlZSY18T45T+CzrK5D3m5TP/teYv3HLGHIpCdLE80=;
- b=OXOjYo3HZVWVkp0Umcf+FZAFNmP+AWZOm2SG0RO+1i/YVpyIIscsV4JowaQWLa1QD+
- JdNFf//55ahC8Sj6L1bYmwfwsEi3j9al5222Tchf6QgPRJOyWCX+rDIrdCRBqEHe+rrY
- VveTJMzwPKoSoCN4tki6ygylDR/mwp69qDJh+oP7tjAighqs+wqoSQHpeAezVKoli1rK
- gQ41c5yFOI5DsIgOCJSFeTMn0PSMtoU9HWXYDoJtwIvanTo0XtuRs7h+c53TFJL9KfN2
- 5/6NRLNi6sNABQS/vfALzyJXZD4kSZF8RD15MbvxrzydFYeraFxDfO0RSeq3sUSUGosj
- p4fA==
-X-Gm-Message-State: AOJu0YxUQ2scPcAV16PNsyyCbLP+OSOECRUzLAyGGs1rAbUBhDC+wVK4
- rX1S/g2/MNNMBSoCXXd0vTCq2eBpxLq2lmhQrq0M8cFj322N/3PrK6w+dzgViTluEzAwRwtFHBx
- 7
-X-Google-Smtp-Source: AGHT+IExIAMHosxoFlC17GavGzKZ3fn87oEyWmjfUV+OpNYjgF4oM6rWA2m11IPbjkI2nnteE0SyYg==
-X-Received: by 2002:a05:600c:3d97:b0:420:fdce:6052 with SMTP id
- 5b1f17b1804b1-42127931d7cmr15072205e9.41.1717055171744; 
- Thu, 30 May 2024 00:46:11 -0700 (PDT)
+ bh=hI2T+luarfP0HirxpjgbiSprzocV4B84X0ChzbQjTTI=;
+ b=XEP0zzR2Cg71FJYkyWUv6Lq/+rbfgRn6+TG4HjmLQ4JfrVbJshAnsdFSTgc9i2qxrY
+ LMUxkN0HP6IofWl6iIh0PvZVj1305JQlXcrFtxfd9yHGmjQe6RWdYwqazQjQCWsuV8bz
+ 3GHUk3uMWpvbaEUiwTLIuCDMSKiMsAQniqpdzOCHz+Hnb5d8iR68hpFM+xI80rLluWOK
+ G5DrfEOcrg5pQjG0vf7/mbCr2EYKqwkxV96CeQcCMMykP9E3chEq00flP5D5NbETriGN
+ ytKIy/qJ15IHADGHGfT9j5L4siikZv1JhRdklgvv4MwyO9JMKkdA/gFzTsJ0VLSl/NQu
+ EOlA==
+X-Gm-Message-State: AOJu0YygVVD6QqD7CoGPFFXfVaqc0YGT/G5uN+/JSVMVj9NyYo9c44ov
+ W4iHs/WTL7vVjcIm5Bi34eUeX8Q1PK38BZ00cpKQGCZt7HcC372qU4n8mHeIqTKnK1TuB0FtHSl
+ z
+X-Google-Smtp-Source: AGHT+IHMB7e1aA0/Au/J75fvu14IRd0ItPMjz95Gm4bpwh2vr3i45Bt6iV2jFdH57yMuPhbKAKaH5w==
+X-Received: by 2002:a05:600c:1c90:b0:421:2202:1ccf with SMTP id
+ 5b1f17b1804b1-421279279d8mr14502305e9.28.1717055178651; 
+ Thu, 30 May 2024 00:46:18 -0700 (PDT)
 Received: from m1x-phil.lan (xbn44-h02-176-184-35-50.dsl.sta.abo.bbox.fr.
  [176.184.35.50]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-3557a08a878sm16571046f8f.43.2024.05.30.00.46.09
+ 5b1f17b1804b1-4212706c952sm16556555e9.26.2024.05.30.00.46.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 30 May 2024 00:46:11 -0700 (PDT)
+ Thu, 30 May 2024 00:46:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
@@ -70,17 +70,17 @@ Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
  Eric Blake <eblake@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/4] hw/s390x: Deprecate the HMP 'dump_skeys' command
-Date: Thu, 30 May 2024 09:45:43 +0200
-Message-ID: <20240530074544.25444-4-philmd@linaro.org>
+Subject: [PATCH 4/4] hw/s390x: Deprecate the QMP @dump-skeys command
+Date: Thu, 30 May 2024 09:45:44 +0200
+Message-ID: <20240530074544.25444-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240530074544.25444-1-philmd@linaro.org>
 References: <20240530074544.25444-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,48 +103,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Prefer 'dump_s390_skeys' which is target agnostic.
+Prefer @dump-s390-skeys which is target agnostic.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/s390x/s390-skeys.c | 2 ++
- hmp-commands.hx       | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ docs/about/deprecated.rst | 5 +++++
+ qapi/misc-target.json     | 5 +++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/hw/s390x/s390-skeys.c b/hw/s390x/s390-skeys.c
-index e7dab52a6e..12ec8a808e 100644
---- a/hw/s390x/s390-skeys.c
-+++ b/hw/s390x/s390-skeys.c
-@@ -120,6 +120,8 @@ void hmp_dump_s390_skeys(Monitor *mon, const QDict *qdict)
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 40585ca7d5..3cb43085ba 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -148,6 +148,11 @@ accepted incorrect commands will return an error. Users should make sure that
+ all arguments passed to ``device_add`` are consistent with the documented
+ property types.
  
- void hmp_dump_skeys(Monitor *mon, const QDict *qdict)
- {
-+    monitor_printf(mon, "This command is deprecated"
-+                        " (replaced by 'dump-s390-skeys')\n");
-     hmp_dump_s390_skeys(mon, qdict);
- }
++``dump-skeys`` (since 9.1)
++''''''''''''''''''''''''''
++
++Use the more generic ``dump-s390-skeys`` command.
++
+ QEMU Machine Protocol (QMP) events
+ ----------------------------------
  
-diff --git a/hmp-commands.hx b/hmp-commands.hx
-index c12e2c2bd9..04ae897134 100644
---- a/hmp-commands.hx
-+++ b/hmp-commands.hx
-@@ -1138,14 +1138,14 @@ ERST
-         .name       = "dump-skeys",
-         .args_type  = "filename:F",
-         .params     = "",
--        .help       = "Save guest storage keys into file 'filename'.\n",
-+        .help       = "deprecated synonym for dump-s390-skeys.",
-         .cmd        = hmp_dump_skeys,
-     },
- #endif
+diff --git a/qapi/misc-target.json b/qapi/misc-target.json
+index 4e0a6492a9..e5109b1265 100644
+--- a/qapi/misc-target.json
++++ b/qapi/misc-target.json
+@@ -237,6 +237,10 @@
+ #
+ # @filename: the path to the file to dump to
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @dump-s390-skeys instead.
++#
+ # Since: 2.5
+ #
+ # Example:
+@@ -247,6 +251,7 @@
+ ##
+ { 'command': 'dump-skeys',
+   'data': { 'filename': 'str' },
++  'features': ['deprecated'],
+   'if': 'TARGET_S390X' }
  
- SRST
- ``dump-skeys`` *filename*
--  Save guest storage keys to a file.
-+  This is a deprecated synonym for the dump-s390-skeys command.
- ERST
- 
- #if defined(TARGET_S390X)
+ ##
 -- 
 2.41.0
 
