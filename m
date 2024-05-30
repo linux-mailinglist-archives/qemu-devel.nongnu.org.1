@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6468D4AF3
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 13:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4738D4C97
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:26:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCe9V-0005C0-6D; Thu, 30 May 2024 07:41:01 -0400
+	id 1sCfn0-0003ll-2o; Thu, 30 May 2024 09:25:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sCe9S-0005B7-4r
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:40:59 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1sCXRE-0005Su-FP
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 00:30:53 -0400
+Received: from out-179.mta1.migadu.com ([95.215.58.179])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1sCe9P-0006Cs-H4
- for qemu-devel@nongnu.org; Thu, 30 May 2024 07:40:57 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 79D4D4E602E;
- Thu, 30 May 2024 13:40:49 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 66ZQa9ElNk87; Thu, 30 May 2024 13:40:47 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 827564E601B; Thu, 30 May 2024 13:40:47 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 80711746E3B;
- Thu, 30 May 2024 13:40:47 +0200 (CEST)
-Date: Thu, 30 May 2024 13:40:47 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Gerd Hoffmann <kraxel@redhat.com>
-cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, 
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 4/4] vga/cirrus: deprecate, don't build by default
-In-Reply-To: <20240530112718.1752905-5-kraxel@redhat.com>
-Message-ID: <3efcf132-dec1-3765-e77e-3fd207224eeb@eik.bme.hu>
-References: <20240530112718.1752905-1-kraxel@redhat.com>
- <20240530112718.1752905-5-kraxel@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <itaru.kitayama@linux.dev>)
+ id 1sCXR7-0000g3-2G
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 00:30:48 -0400
+X-Envelope-To: qemu-devel@nongnu.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1717043434;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=IsSqR/9PrUFezTcU0F9N/cE2YB56p4PWUZ0YgmQQVvo=;
+ b=fu7+0j0ic9rTW1uqCQuFHkuvB5qRHw0xHVgz7tZqZStL8/zrvl3baHpegFb2ce5n4YulUJ
+ 5QIYp5RQ0cQIIG7E6TCu8OgJ2bB4LnqMHt2pxIhEHbsvDrBEg+vgGAefIT57JHX6ns0Iu9
+ /XcXXJM4CUGoBxIvmb85gePAGv1TjR8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Unexpected error in rme_configure_one() at ../target/arm/kvm-rme.c:159
+Message-Id: <0C6F517A-5686-4BCE-8D08-1CED02CB470E@linux.dev>
+Date: Thu, 30 May 2024 13:30:17 +0900
+To: qemu-devel@nongnu.org
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=95.215.58.179;
+ envelope-from=itaru.kitayama@linux.dev; helo=out-179.mta1.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 30 May 2024 09:25:50 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,60 +65,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 30 May 2024, Gerd Hoffmann wrote:
-> stdvga is the much better option.
->
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
-> hw/display/cirrus_vga.c     | 1 +
-> hw/display/cirrus_vga_isa.c | 1 +
-> hw/display/Kconfig          | 1 -
-> 3 files changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/display/cirrus_vga.c b/hw/display/cirrus_vga.c
-> index 150883a97166..81421be1f89d 100644
-> --- a/hw/display/cirrus_vga.c
-> +++ b/hw/display/cirrus_vga.c
-> @@ -3007,6 +3007,7 @@ static void cirrus_vga_class_init(ObjectClass *klass, void *data)
->     dc->vmsd = &vmstate_pci_cirrus_vga;
->     device_class_set_props(dc, pci_vga_cirrus_properties);
->     dc->hotpluggable = false;
-> +    klass->deprecation_note = "use stdvga instead";
-> }
->
-> static const TypeInfo cirrus_vga_info = {
-> diff --git a/hw/display/cirrus_vga_isa.c b/hw/display/cirrus_vga_isa.c
-> index 84be51670ed8..3abbf4dddd90 100644
-> --- a/hw/display/cirrus_vga_isa.c
-> +++ b/hw/display/cirrus_vga_isa.c
-> @@ -85,6 +85,7 @@ static void isa_cirrus_vga_class_init(ObjectClass *klass, void *data)
->     dc->realize = isa_cirrus_vga_realizefn;
->     device_class_set_props(dc, isa_cirrus_vga_properties);
->     set_bit(DEVICE_CATEGORY_DISPLAY, dc->categories);
-> +    klass->deprecation_note = "use stdvga instead";
+Hi,
 
-Excepr some old OSes work better with this than stdvga so could this be 
-left and not removed? Does it cause a lot of work to keep this device? I 
-thought it's stable already and were not many changes for it lately. If 
-something works why drop it?
+When I see a Realm VM creation fails with:
 
-Regards,
-BALATON Zoltan
+Unexpected error in rme_configure_one() at ../target/arm/kvm-rme.c:159:
+qemu-system-aarch64: RME: failed to configure SVE: Invalid argument
+test.sh: line 8:  2502 Aborted                 qemu-system-aarch64 -M =
+'virt,acpi=3Doff,gic-version=3D3' -cpu host -enable-kvm -smp 2 -m 512M =
+-overcommit 'mem-lock=3Don' -M 'confidential-guest-support=3Drme0' =
+-object =
+'rme-guest,id=3Drme0,measurement-algo=3Dsha512,num-pmu-counters=3D6,sve-ve=
+ctor-length=3D256' -kernel Image -initrd rootfs.cpio -append 'earycon =
+console=3DttyAMA0 rdinit=3D/sbin/init' -nographic -net none
 
-> }
->
-> static const TypeInfo isa_cirrus_vga_info = {
-> diff --git a/hw/display/Kconfig b/hw/display/Kconfig
-> index a4552c8ed78d..cd0779396890 100644
-> --- a/hw/display/Kconfig
-> +++ b/hw/display/Kconfig
-> @@ -11,7 +11,6 @@ config FW_CFG_DMA
->
-> config VGA_CIRRUS
->     bool
-> -    default y if PCI_DEVICES
->     depends on PCI
->     select VGA
->
->
+do I need to suspect first the VMM, QEMU, or the Image? The kernel is =
+built with LLVM, does it matter?
+
+Thanks,
+Itaru.=
 
