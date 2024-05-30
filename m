@@ -2,95 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62C48D4C5D
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6635F8D4C91
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCfeI-0007Qk-Gg; Thu, 30 May 2024 09:16:54 -0400
+	id 1sCflD-0001Ny-Ie; Thu, 30 May 2024 09:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sCfeD-0007QK-Mn
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:16:49 -0400
-Received: from fhigh5-smtp.messagingengine.com ([103.168.172.156])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiaxun.yang@flygoat.com>)
- id 1sCfeB-0007aj-Qd
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:16:49 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id D4E6D1140132;
- Thu, 30 May 2024 09:16:46 -0400 (EDT)
-Received: from imap44 ([10.202.2.94])
- by compute3.internal (MEProxy); Thu, 30 May 2024 09:16:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
- cc:cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to; s=fm2; t=1717075006;
- x=1717161406; bh=egN0GwrZT3rc76ckawv60CC4W9ynKqMOE8g8Dg8wMGI=; b=
- gDFmk/naMwCmNY1KA7clAXJ6OyaV/QblLa7G8BwbIt2H7BlKCeXUyAscfSYDIXlD
- N8XKA3NCz0zv6lpFiZpx5dV9ai3fwrpvqy6oK2YEfyBpz/yDtXmyWBff/da+BaUn
- JUzltS5IzEyuTDnhZSoATHkGIfDWyJ11FvCmY8bf6D7xtlj3McgBQi/CA6onK97a
- gRzyuHCQB+Gj9PY1KoOtuiwSdbYDKehrHI8rA6tOFdO0e5tsuoPjRw6HdHzSvG95
- z3UvbSDJi3grRKS83PWSs+KRJqFoA2E8MlzxZHAu/xGG67jjKx8+yi6vp9N6EWgE
- 3SOFLO+sSH5A50f28/5UVQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1717075006; x=
- 1717161406; bh=egN0GwrZT3rc76ckawv60CC4W9ynKqMOE8g8Dg8wMGI=; b=A
- jq6NaPWVVY3+tkxVfd5olhXGtlVvWDVBQovCPM1O7xaVhtRxMtcnIt5qc03eSHSR
- zJhNdpllCkweNp+uFzaqtljdEz586tDr7KYkkV2SFyirGXjMW8hoDBMJIfG30LvD
- MNXRmIcHhrGxDxwQsK8k8aqBN/j3QJ2JSMTkQG+oyVM2wZvqVZVc7kb9TIYSYVCn
- udcXR7MC95uGNdiztCSjNIonbqVBNhpwqDo8cIifZfPNXEHoqRC8jOpVssrpgI8y
- jhl1dOgOZFseAX935zzUDMQ/bKI/4b+NcLfEQ6JgnwfdecTDe3lnhSISrHnKzBrl
- Ov+XJgrNzhKwqtafosT8A==
-X-ME-Sender: <xms:PnxYZkUJq7iklNzwn0ZJ_z1Uhqe6sozkX7hvwbu5YCW0SPnNdhI-pg>
- <xme:PnxYZokMufTy55dYG0WZxYDLFbdtQEEbn25DudiKZIHYCbuokgAnSrx4vz2ho5fAP
- 1cXl8pOb6Cw0yW8EvQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdekgedgiedtucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfl
- ihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtoh
- hmqeenucggtffrrghtthgvrhhnpedufeegfeetudeghefftdehfefgveffleefgfehhfej
- ueegveethfduuddvieehgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
- grihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:PnxYZobEucd5ZxnBLAY6FKYbsNJKSkaOnOlcj47NKW0hp10ydEXo4A>
- <xmx:PnxYZjV9FJXlhYCRiQbC5TuYzvIXD2P_J8dr9j3fOpqalwAX4BQ3Nw>
- <xmx:PnxYZumxVoECJtkKMsv1bO5IqWqD7leBc-I0O-3NyKEqIlQM-3Es6A>
- <xmx:PnxYZoeyc4d2AVulskqnhzi_A924jwLOA7pgpXRb-XMYlkeP-NoeZg>
- <xmx:PnxYZghC993_YNihyn0WLO83tKdZKZKHScedd7DMFRYZAf2DtNMjcJE1>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 2605736A006A; Thu, 30 May 2024 09:16:46 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-491-g033e30d24-fm-20240520.001-g033e30d2
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCflB-0001NF-94
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 09:24:01 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCfl9-0000Mh-EL
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 09:24:00 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-57a1fe63a96so535444a12.0
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 06:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717075436; x=1717680236; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=J/MBztJN6ThOSFG8xXp37+4/Hcus86L7wVDlYwV/IH4=;
+ b=vYyiccZVfhbj0V4JgairAvKV8wV6QNyCOqFqHol//eKKkVe1bvK97k7xrj116jX1cA
+ SHxeFFJMizMpbaLuySRxZ2LSTPVFxFvMj9KVfbdRasFKJqpCnNgBpE978UOEXij9kd+W
+ idYjvp2b8IALj6NrWwXSv1KHhv63La2SZnRC8hjAR6s1z813cpqQV52eYPYbjdQpyIBq
+ P8ytD5WvU+jm3EY/QkYtttL7zuVQq9Az3b1jMKwZdWkZcfWsUsdbxdJg/sy88YVtjODu
+ UbVRgdA4FksfkgqooddlObKqVtWBtWatxNUFpmv3zXNaqMYimdY3XObudflufbmKIjru
+ n7xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717075436; x=1717680236;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J/MBztJN6ThOSFG8xXp37+4/Hcus86L7wVDlYwV/IH4=;
+ b=LQ+FXsFg+Mg8z48sAOnb8ZNbuU0h/sbD9koUXdFhy0JmnpsY6sA/QZx7Fk+XO+uh/0
+ djLbSwDB21GS8b4FF96t9fsrT8ehbAD4V2jMQ3dvr/pDkISHvW5wp6oIzxyn8BVf+Szh
+ tLHkimjxHv2P3m7kH6fgHkvxLL0mwKT5P/l9KrFZaECeQ/1Haqy6Lu2ZJ2IBg82uWxX/
+ WRTLV3TmbEr8aecSPS9DJboQ0Euv1YTpFL2Bk+ETDsKIA1y5sL5lOWkxg7wqBEX+bPcJ
+ QaHf6uvE07i4OlzHzBeHJg3jtfO3iqWTrt+CtI7ujWY8+o1FB+elnP5aSiKxXk12CzlM
+ YAdg==
+X-Gm-Message-State: AOJu0YyVvg50NYTRo7WMQcZiQERkkb7abF5cwBSoHh2MS4ddeWnXXmQr
+ 7DzglA/H0d4u9oPGpgSjQr+zLIkWcLLn3/kcoNN7x4Krdbst/YI/PpbVsolNaJRglq++pA7uuOW
+ hVzKr8aCuKgcAUA1+L5yICD8hTYpy5eSKe5hqKg==
+X-Google-Smtp-Source: AGHT+IGwPC8mGB87lwnTNW9WPMsQOb+jLpVgSC8cdd6NyN/eDCCNlsKFElcL6aX0RU2lUCYxLYhW9id6O6Jcxp6JbK4=
+X-Received: by 2002:a50:cc0c:0:b0:57a:212a:a21b with SMTP id
+ 4fb4d7f45d1cf-57a212aa2e3mr1160298a12.7.1717075435680; Thu, 30 May 2024
+ 06:23:55 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <bd599efc-1b5a-47a1-b0e9-15c59907a256@app.fastmail.com>
-In-Reply-To: <f2840fc6-0a16-b9ba-937e-f381d2c60bdb@loongson.cn>
-References: <20230515111908.2606580-1-gaosong@loongson.cn>
- <20230515111908.2606580-3-gaosong@loongson.cn>
- <3819e261-646d-467a-b783-85700b0e6842@redhat.com>
- <f2840fc6-0a16-b9ba-937e-f381d2c60bdb@loongson.cn>
-Date: Thu, 30 May 2024 14:16:18 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: gaosong <gaosong@loongson.cn>, "Thomas Huth" <thuth@redhat.com>,
- "Xiaojuan Yang" <yangxiaojuan@loongson.cn>
-Cc: "QEMU devel" <qemu-devel@nongnu.org>
-Subject: Re: tests/avocado: Add LoongArch machine start test
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=103.168.172.156;
- envelope-from=jiaxun.yang@flygoat.com; helo=fhigh5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20240526193637.459064-1-richard.henderson@linaro.org>
+ <20240526193637.459064-7-richard.henderson@linaro.org>
+In-Reply-To: <20240526193637.459064-7-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 May 2024 14:23:44 +0100
+Message-ID: <CAFEAcA-5QQjbJN=JS5MQvL9405eJRsuo1myaAXfN_7p9Lemx9g@mail.gmail.com>
+Subject: Re: [PATCH RISU v2 06/13] risugen: Add sparc64 support
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, mark.cave-ayland@ilande.co.uk
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,33 +86,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-=E5=9C=A82024=E5=B9=B45=E6=9C=8830=E6=97=A5=E4=BA=94=E6=9C=88 =E4=B8=8B=E5=
-=8D=882:00=EF=BC=8Cgaosong=E5=86=99=E9=81=93=EF=BC=9A
-[...]
->> FYI, the test does not seem to work anymore - apparently the binaries=20
->> have changed and now the hashes do not match anymore. Could you pleas=
-e=20
->> update it? (preferably with some versioned binaries that do not chang=
-e=20
->> in the course of time?)
->>
-> Thank you,=C2=A0 I had send a patch to fix it.
-
-Hi Song,
-
-As LoongArch EDK2 support has been merged long ago, do you to make a cle=
-an
-build and add it to pc-bios directory?
-
-Thanks
-- Jiaxun
-
+On Sun, 26 May 2024 at 20:38, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Thanks.
-> Song Gao
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  risugen            |  10 +-
+>  risugen_common.pm  |  50 +++++-
+>  risugen_sparc64.pm | 385 +++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 443 insertions(+), 2 deletions(-)
+>  create mode 100644 risugen_sparc64.pm
 
---=20
-- Jiaxun
+I'm not super-enthusiastic about making running risugen now
+require an appropriate cross-toolchain for the target.
+Since almost all of what risugen is doing is "write
+these exact values to the test binary" we don't really
+need an assembler to do that.
+
+At any rate, an explanation in the commit message of the
+advantages of doing it this way would be helpful in
+deciding, I think.
+
+> +sub open_asm($)
+> +{
+> +    my ($basename) = @_;
+> +    my $fname = $basename . ".s";
+> +    open(ASM, ">", $fname) or die "can't open $fname: $!";
+> +    select ASM;
+
+I think that using Perl select like this is liable to be
+rather confusing, because it has "action at a distance"
+effects on every other print statement. I would prefer it
+if we passed in the filehandle to the print statements
+explicitly. (We can use a global if handing the filehandle
+around to all the functions is annoying.)
+
+> +}
+> +
+
+> +sub gen_one_insn($)
+
+(One day we should see if we can move most of gen_one_insn and
+write_test_code to common code, because an awful lot of these
+functions is identical across architectures. But that day
+doesn't need to be today :-))
+
+-- PMM
 
