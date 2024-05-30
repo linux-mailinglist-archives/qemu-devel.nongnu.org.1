@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CAA8D4926
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 12:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC158D4927
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 12:02:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCcaq-00033Y-5o; Thu, 30 May 2024 06:01:08 -0400
+	id 1sCcat-00037C-8v; Thu, 30 May 2024 06:01:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCcam-00030l-RM; Thu, 30 May 2024 06:01:04 -0400
+ id 1sCcap-00033s-VE; Thu, 30 May 2024 06:01:07 -0400
 Received: from mgamail.intel.com ([198.175.65.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCcai-0003TU-LH; Thu, 30 May 2024 06:01:04 -0400
+ id 1sCcan-0003Tg-TQ; Thu, 30 May 2024 06:01:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717063261; x=1748599261;
+ t=1717063266; x=1748599266;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=znO68kctoXTm05SXOnOkWCHEq8CPUvXamn9nrKcDybU=;
- b=TY2vtxZToY4Qc6H9reQHgqP6plQPdWwN3mTqaPfernI0I/6Hf78KdHWI
- RRQnEh/u2UCqi70CIyIC7BiFUIrCbMJHHrvq59oHrx8yVnYTgunVQb8Vx
- dh2Vp3oBX4ueQ01UxVJg5SG1ZDU2hgEXUKU2nHPVvoqZ4BvVHkJse6UsG
- OBMpppkJ154is4LtTioc4TIjVeM4g7ntOtE3VLw15nYIqhKNxnGI+++h6
- +bIrPDh50nqHQeX11iq1+xgIBD16W6wMT1MgytPNj5v/ohebQpk5/R2q1
- oijCrb60iHY4GHQth9HO8eOJYh+j4QAu/SoWRSvBl94JX9zW07S4KenpA w==;
-X-CSE-ConnectionGUID: 101eXeCAQJmGq7ucw3K1Mg==
-X-CSE-MsgGUID: pWyi9bvaQcuGPeg8I310Ug==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="31032597"
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="31032597"
+ bh=kd8Iqz6IxYjau87nIpOYyMS3R+5juiDyGSjeB2FuXwE=;
+ b=lkWucWCZSt7PPjvaC7RP9fFjLG9HjrJRAAqRnaokQxo+qNXaI0VVQiBb
+ hyiRznLcWYJse2SL/MAfN0n9MJ3Mwqt6R6k+qcSxVsWbU1pP3/FlaFHD6
+ ISZMaow6ZgRb2FIAkN2ygF4YNWqX6utbnwo68g3bLZEivwjT2fCRiJ6om
+ D3715eBEYXf2piwVY+9Z5IQUMTb5+Rl/1PlMAi8+V2Qmb99lHV1ysNpOi
+ kwqRV3AkZKhC7msao8t2EtiQO+72Xfco7SddZFzYIcCyp4bkusf6c8Eaw
+ rEi0+pYrAZBAPLQZWE66mpE8JxEM9tu1Hn2pW6a41zaOOYSyP+0c4iaod Q==;
+X-CSE-ConnectionGUID: uskdzIwSSL+QFE3JdtZWFA==
+X-CSE-MsgGUID: NbZK9AybTPaUWE2e5jbKbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="31032643"
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="31032643"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2024 03:00:58 -0700
-X-CSE-ConnectionGUID: neXIx/biQuuMsRJXYFHhLw==
-X-CSE-MsgGUID: vImgdb6DR5m+pUdi65nqSg==
+ 30 May 2024 03:01:04 -0700
+X-CSE-ConnectionGUID: SyRY+RB0TV6YokdKL/13XA==
+X-CSE-MsgGUID: aFRS7jt6QPWbeEZPIX3Qmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="35705138"
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="35705172"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 30 May 2024 03:00:53 -0700
+ by orviesa010.jf.intel.com with ESMTP; 30 May 2024 03:00:58 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -60,9 +60,9 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
  qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 6/7] i386/pc: Support cache topology in -smp for PC machine
-Date: Thu, 30 May 2024 18:15:38 +0800
-Message-Id: <20240530101539.768484-7-zhao1.liu@intel.com>
+Subject: [RFC v2 7/7] qemu-options: Add the cache topology description of -smp
+Date: Thu, 30 May 2024 18:15:39 +0800
+Message-Id: <20240530101539.768484-8-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240530101539.768484-1-zhao1.liu@intel.com>
 References: <20240530101539.768484-1-zhao1.liu@intel.com>
@@ -94,23 +94,108 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/pc.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes since RFC v1:
+ * Use "*_cache=topo_level" as -smp example as the original "level"
+   term for a cache has a totally different meaning. (Jonathan)
+---
+ qemu-options.hx | 50 +++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 7b638da7aaa8..2e03b33a4116 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1844,6 +1844,9 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     mc->nvdimm_supported = true;
-     mc->smp_props.dies_supported = true;
-     mc->smp_props.modules_supported = true;
-+    mc->smp_props.l1_separated_cache_supported = true;
-+    mc->smp_props.l2_unified_cache_supported = true;
-+    mc->smp_props.l3_unified_cache_supported = true;
-     mc->default_ram_id = "pc.ram";
-     pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 8ca7f34ef0c8..29d8a4b9b68b 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -282,7 +282,8 @@ ERST
+ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
+     "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
+-    "               [,threads=threads]\n"
++    "               [,threads=threads][,l1d-cache=topo_level][,l1i-cache=topo_level]\n"
++    "               [,l2-cache=topo_level][,l3-cache=topo_level]\n"
+     "                set the number of initial CPUs to 'n' [default=1]\n"
+     "                maxcpus= maximum number of total CPUs, including\n"
+     "                offline CPUs for hotplug, etc\n"
+@@ -294,7 +295,11 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "                modules= number of modules in one cluster\n"
+     "                cores= number of cores in one module\n"
+     "                threads= number of threads in one core\n"
+-    "Note: Different machines may have different subsets of the CPU topology\n"
++    "                l1d-cache= topology level of L1 D-cache\n"
++    "                l1i-cache= topology level of L1 I-cache\n"
++    "                l2-cache= topology level of L2 cache\n"
++    "                l3-cache= topology level of L3 cache\n"
++    "Note: Different machines may have different subsets of the CPU and cache topology\n"
+     "      parameters supported, so the actual meaning of the supported parameters\n"
+     "      will vary accordingly. For example, for a machine type that supports a\n"
+     "      three-level CPU hierarchy of sockets/cores/threads, the parameters will\n"
+@@ -308,7 +313,7 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+     "      must be set as 1 in the purpose of correct parsing.\n",
+     QEMU_ARCH_ALL)
+ SRST
+-``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
++``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads][,l1d-cache=topo_level][,l1i-cache=topo_level][,l2-cache=topo_level][,l3-cache=topo_level]``
+     Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
+     the machine type board. On boards supporting CPU hotplug, the optional
+     '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
+@@ -322,15 +327,34 @@ SRST
+     Both parameters are subject to an upper limit that is determined by
+     the specific machine type chosen.
  
++    CPU topology parameters include '\ ``drawers``\ ', '\ ``books``\ ',
++    '\ ``sockets``\ ', '\ ``dies``\ ', '\ ``clusters``\ ', '\ ``modules``\ ',
++    '\ ``cores``\ ' and '\ ``threads``\ '. These CPU parameters accept only
++    integers and are used to specify the number of specific topology domains
++    under the corresponding topology level.
++
+     To control reporting of CPU topology information, values of the topology
+     parameters can be specified. Machines may only support a subset of the
+-    parameters and different machines may have different subsets supported
+-    which vary depending on capacity of the corresponding CPU targets. So
+-    for a particular machine type board, an expected topology hierarchy can
++    CPU topology parameters and different machines may have different subsets
++    supported which vary depending on capacity of the corresponding CPU targets.
++    So for a particular machine type board, an expected topology hierarchy can
+     be defined through the supported sub-option. Unsupported parameters can
+     also be provided in addition to the sub-option, but their values must be
+     set as 1 in the purpose of correct parsing.
+ 
++    Cache topology parameters include '\ ``l1d-cache``\ ', '\ ``l1i-cache``\ ',
++    '\ ``l2-cache``\ ' and '\ ``l3-cache``\ '. These cache topology parameters
++    accept the strings of CPU topology levels (such as '\ ``drawer``\ ', '\ ``book``\ ',
++    '\ ``socket``\ ', '\ ``die``\ ', '\ ``cluster``\ ', '\ ``module``\ ',
++    '\ ``core``\ ' or '\ ``thread``\ '). Exactly which topology level strings
++    could be accepted as the parameter depends on the machine's support for the
++    corresponding CPU topology level.
++
++    Machines may also only support a subset of the cache topology parameters.
++    Unsupported cache topology parameters will be omitted, and correspondingly,
++    the target CPU's cache topology will use the its default cache topology
++    setting.
++
+     Either the initial CPU count, or at least one of the topology parameters
+     must be specified. The specified parameters must be greater than zero,
+     explicit configuration like "cpus=0" is not allowed. Values for any
+@@ -356,6 +380,20 @@ SRST
+ 
+         -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32
+ 
++    The following sub-option defines a CPU topology hierarchy (2 sockets
++    totally on the machine, 2 dies per socket, 2 modules per die, 2 cores per
++    module, 2 threads per core) with 3-level cache topology hierarchy (L1
++    D-cache per core, L1 I-cache per core, L2 cache per core and L3 cache per
++    die) for PC machines which support sockets/dies/modules/cores/threads.
++    Some members of the CPU topology option can be omitted but their values
++    will be automatically computed. Some members of the cache topology
++    option can also be omitted and target CPU will use the default topology.:
++
++    ::
++
++        -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
++             l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
++
+     The following sub-option defines a CPU topology hierarchy (2 sockets
+     totally on the machine, 2 clusters per socket, 2 cores per cluster,
+     2 threads per core) for ARM virt machines which support sockets/clusters
 -- 
 2.34.1
 
