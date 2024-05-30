@@ -2,77 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537768D4CF4
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F97E8D4D37
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:52:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCg1E-0000uq-FT; Thu, 30 May 2024 09:40:36 -0400
+	id 1sCgBC-0005zF-2D; Thu, 30 May 2024 09:50:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sCg15-0000qi-3l
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:40:27 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sCg0t-0004Kg-1V
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:40:26 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-35dbfe31905so980111f8f.2
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 06:40:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717076412; x=1717681212; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cxlETE6o4k+C6WO0qDsyk8tUIsM4tkylf/cHCXTauLU=;
- b=FUJpCoezBfdAE+hpYZiUwfwwzBrNIA4oP9eCg5DzElrh42fPJhpAOAeOACoc0Zd16Q
- Q8iVwOpPvreNH42ShHmu69AyxEfTgR5aSrdk1UGppkXw8FQgt0HylP6+Wr5PR1ZuewjC
- i8/RQXKJISOwGEzBjoSwhFzNNEQwZ4Ry2Vx4tv7p1TGtRyx6xxOCXVxKH9PWm69K0h6c
- k7G79GrY3V8X9tkNlLE7nLO+oyudSKyT+1kV2f7c4oz2OQclH+/PxlmU3Isi7oDh+Uv7
- 81HVCYrDTfa9pqb43Ng6uM2wvp7feC8UuzSClOR7Z1U1SJiGtLLu1er2d+Cy8I0b7NMU
- t3rg==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCgB9-0005yv-Cl
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 09:50:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1sCgB6-0006eE-TA
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 09:50:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717077046;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8KzmLvZJURA5ulAf7+lvrCTlU7WpUECr48EX3yYAWqk=;
+ b=c1qShyiiiSIpfcprcIyyUTpqXtd3eOkAOHj70sK1F7i0f+2P3d/WCJ4sts8GuyN4BcH+fy
+ Cgh9z+wtrTBD60ts6/B4TWmlWP65m5WgwKFT9JDlu4GlbNKCk57a3wj/OUEGqWlPguIXCK
+ ygq1mlcQfKoHTrJEz7eR+X0kjDmYYyU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-562-E01HRIZ3NVmv09F5fAIyhA-1; Thu, 30 May 2024 09:50:44 -0400
+X-MC-Unique: E01HRIZ3NVmv09F5fAIyhA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-358f9dffbedso486325f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 06:50:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717076412; x=1717681212;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1717077044; x=1717681844;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cxlETE6o4k+C6WO0qDsyk8tUIsM4tkylf/cHCXTauLU=;
- b=cQL/WvKPhgS6zwh1rJKeUezQ9Cwl/XrmjvRd5spXmJTcDMHt+Pz7hkzCZlGYWxywie
- +hZm0a2iO+8jD7UmL3T08RUHaw5GgAvlz+U03a9uRL9XPlU/7RaWP99VQyL1OhML+iBc
- A3C8EipfhNyg0wZUhGr90DaBG+XPlY0Oqbs/65SWSY0o8732az0mK1xkmAQykI5Zwkuh
- E9yHKvIDtyzPet4YhDwBpIuXhHvhqhMgM1OJzhcB7TkL709vikvwJDYcIE3WCphNZpV7
- ZytNJ42fIQteKwtjkJWMtNclKTRDHHGqOXtA1JpGX+0D/Jkm8Dl6PNJhYAwGx6cspvh8
- ccpQ==
-X-Gm-Message-State: AOJu0YynduhiPMnukOxhrm+r0//6/+kTo5T1H2qGTzLvDZTlDDn8DAYx
- 9kGjATMQC9Q954YYBvoPevd3bR2DfshwzyUAoxsokBqjwscmq+I1E01Eo0gIk+0vCIwaIKtitxB
- B1LGUYMjACX54Tw9KB9x7spoQuIyr6A311/GcHQ==
-X-Google-Smtp-Source: AGHT+IHiBYBnTb+9xm+rsz46RyZqHZbOqgrJlxv60uKDxtoLqV7PesOrAYN549CwPpBwPe7V98kTFlk4qAUI3xVV48w=
-X-Received: by 2002:adf:fd47:0:b0:355:2d3:c894 with SMTP id
- ffacd0b85a97d-35dc00c6c61mr1584159f8f.66.1717076411888; Thu, 30 May 2024
- 06:40:11 -0700 (PDT)
+ bh=8KzmLvZJURA5ulAf7+lvrCTlU7WpUECr48EX3yYAWqk=;
+ b=j3fp9KGaVrWEcAcy+xapBOIIR4s24Re5drUMcEZZLbraxjV6jgyqTXtXahH1I4lRsR
+ H6mo7BVhCp71nGyPPeQ8aLFVwKfzvlwwkMO3Fn+yH8Y3TbALnD7XEj9kqe7uAbhP3M+l
+ RC+Ep8ua9jFRyKOud4iDZhsl9tI8gO6XtVJrVtFa3sHYAwrWc5MvClxkv6MoZ+PkoDZ2
+ xvqUHT9eLVOdBdVDAShm3vRhBK+KaPaHC9bEdteS8c8UFNnqM+xbwnhhAMdCeN+NY46A
+ IMHFX6o5qUTe6fEuRuGuPYcnwiZp/+srObkmp0aPLgOCqppqP+bkdyWZd6svxDYQjd5Y
+ PqCg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVZmEgjJ6QohLx4k5jPwQQiI8JYBjiyHqRX1owDhn/j6AmWiCdZPwMKhkgqncM6B6WemyrNRKCEcViNTtuwXj9cmhWziS4=
+X-Gm-Message-State: AOJu0Yx9uIDHtXBf5u2fzGjwTP9YaHl7aXHrH5I6yHj/OuE9N7TBRUsq
+ Y0WBT5dIJ7SZ6QkUCubL9VP9iFcT1k9yPdqXkhddX8fPKBn++ciFce6YAi76latkRnPuiYI6BjI
+ HwzlbmkTQKx+hoUcAJX9LGDgqSY1KroLZ/l27Qpn5vgQltB9StY2A
+X-Received: by 2002:adf:ec02:0:b0:354:fa7d:dcfe with SMTP id
+ ffacd0b85a97d-35dc00923e6mr2423553f8f.23.1717077043639; 
+ Thu, 30 May 2024 06:50:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY7HMkTZS5xraw/KfIdVaU8iPObbCPP39OCkVskykdDtKI7LiquKyl9HOjz63SrTiYCIdP3A==
+X-Received: by 2002:adf:ec02:0:b0:354:fa7d:dcfe with SMTP id
+ ffacd0b85a97d-35dc00923e6mr2423528f8f.23.1717077043181; 
+ Thu, 30 May 2024 06:50:43 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-35588c707ccsm17482913f8f.117.2024.05.30.06.50.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 30 May 2024 06:50:42 -0700 (PDT)
+Date: Thu, 30 May 2024 15:50:41 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org, Andrea Righi
+ <andrea.righi@canonical.com>
+Subject: Re: [PATCH] hw/i386/acpi-build: Return a pre-computed _PRT table
+Message-ID: <20240530155041.563678d2@imammedo.users.ipa.redhat.com>
+In-Reply-To: <CANiDSCv=2roABFXP9=BURxU_qvJrTPJaU5Zm=YrFzcyoVRp4Yw@mail.gmail.com>
+References: <20240417135608.2613586-1-ribalda@chromium.org>
+ <CANiDSCv=2roABFXP9=BURxU_qvJrTPJaU5Zm=YrFzcyoVRp4Yw@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20240526193637.459064-1-richard.henderson@linaro.org>
- <20240526193637.459064-3-richard.henderson@linaro.org>
-In-Reply-To: <20240526193637.459064-3-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 30 May 2024 14:40:00 +0100
-Message-ID: <CAFEAcA-+H6U6N8JxZrvF2W30e0zL+YSOUJz1w9bqudDWVQHRqg@mail.gmail.com>
-Subject: Re: [PATCH RISU v2 02/13] Build elf test cases instead of raw binaries
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, mark.cave-ayland@ilande.co.uk, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,88 +107,258 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 26 May 2024 at 20:38, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> For test_arch64.s and test_arm.s, use '.inst' so that the risu
-> control insns are marked as instructions for disassembly.
->
-> For test_i386.S, split the data to be loaded into the data section;
-> fix an error aligning the data: 16 not 2**16.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On Fri, 3 May 2024 11:09:47 +0200
+Ricardo Ribalda <ribalda@chromium.org> wrote:
 
-This breaks the 'build-all-archs' script on my system;
-looks like something is incorrectly using the host 'ld'
-rather than a cross ld...
+> Friendly ping
+> 
+> On Wed, 17 Apr 2024 at 15:56, Ricardo Ribalda <ribalda@chromium.org> wrote:
+> >
+> > When qemu runs without kvm acceleration the ACPI executions take a great
+> > amount of time. If they take more than the default time (30sec), the
+> > ACPI calls fail and the system might not behave correctly.
+> >
+> > Now the _PRT table is computed on the fly. We can drastically reduce the
+> > execution of the _PRT method if we return a pre-computed table.
+
+It's heavily depends on used hw or resources if it's running inside VM,
+one can always find a slow enough environment where above stated limit
+will not be sufficient regardless of what QEMU does.
+Correct approach would be to fix guest OS timeout issue so it won't
+timeout if there is a progress.
+
+As for the patch, question is what DSDT size difference is between
+static _PRT version and the current dynamic one?
+(if it shrinks _PRT, I'm all for it)
+
+Also see tests/qtest/bios-tables-test.c
+In the top of process to follow when one touches ACPI tables
+to avoid breaking tests. 
 
 
-risu$ ./build-all-archs
-Skipping i386-linux-gnu: no compiler found
-Skipping i686-linux-gnu: no compiler found
-Building x86_64-linux-gnu on host...
-linking Makefile...
-generating config.h...
-...done
-generating Makefile.in...
-...done
-type 'make' to start the build
-make: Entering directory '/mnt/nvmedisk/linaro/risu/build/x86_64-linux-gnu'
-x86_64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Di386 -Ui386 -I
-/home/petmay01/linaro/risu/build/x86_64-linux-gnu -g -Werror -o risu.o
--c /home/petmay01/linaro/risu/risu.c
-x86_64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Di386 -Ui386 -I
-/home/petmay01/linaro/risu/build/x86_64-linux-gnu -g -Werror -o
-comms.o -c /home/petmay01/linaro/risu/comms.c
-x86_64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Di386 -Ui386 -I
-/home/petmay01/linaro/risu/build/x86_64-linux-gnu -g -Werror -o
-risu_i386.o -c /home/petmay01/linaro/risu/risu_i386.c
-x86_64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Di386 -Ui386 -I
-/home/petmay01/linaro/risu/build/x86_64-linux-gnu -g -Werror -o
-risu_reginfo_i386.o -c /home/petmay01/linaro/risu/risu_reginfo_i386.c
-x86_64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Di386 -Ui386 -I
-/home/petmay01/linaro/risu/build/x86_64-linux-gnu -g -Werror -o risu
-risu.o comms.o risu_i386.o risu_reginfo_i386.o -lz
-x86_64-linux-gnu-gcc  -o test_i386.o -c /home/petmay01/linaro/risu/test_i38=
-6.S
-ld -o test_i386.elf -T /home/petmay01/linaro/risu/test.ld test_i386.o
-rm test_i386.o
-make: Leaving directory '/mnt/nvmedisk/linaro/risu/build/x86_64-linux-gnu'
-Building aarch64-linux-gnu on host...
-linking Makefile...
-generating config.h...
-...done
-generating Makefile.in...
-...done
-type 'make' to start the build
-make: Entering directory '/mnt/nvmedisk/linaro/risu/build/aarch64-linux-gnu=
-'
-aarch64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Daarch64 -Uaarch64 -I
-/home/petmay01/linaro/risu/build/aarch64-linux-gnu -g -Werror -o
-risu.o -c /home/petmay01/linaro/risu/risu.c
-aarch64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Daarch64 -Uaarch64 -I
-/home/petmay01/linaro/risu/build/aarch64-linux-gnu -g -Werror -o
-comms.o -c /home/petmay01/linaro/risu/comms.c
-aarch64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Daarch64 -Uaarch64 -I
-/home/petmay01/linaro/risu/build/aarch64-linux-gnu -g -Werror -o
-risu_aarch64.o -c /home/petmay01/linaro/risu/risu_aarch64.c
-aarch64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Daarch64 -Uaarch64 -I
-/home/petmay01/linaro/risu/build/aarch64-linux-gnu -g -Werror -o
-risu_reginfo_aarch64.o -c
-/home/petmay01/linaro/risu/risu_reginfo_aarch64.c
-aarch64-linux-gnu-gcc  -Wall -D_GNU_SOURCE -DARCH=3Daarch64 -Uaarch64 -I
-/home/petmay01/linaro/risu/build/aarch64-linux-gnu -g -Werror -o risu
-risu.o comms.o risu_aarch64.o risu_reginfo_aarch64.o -lz
-aarch64-linux-gnu-gcc -o test_aarch64.o -c
-/home/petmay01/linaro/risu/test_aarch64.s
-ld -o test_aarch64.elf -T /home/petmay01/linaro/risu/test.ld test_aarch64.o
-ld: unknown architecture of input file `test_aarch64.o' is
-incompatible with i386:x86-64 output
-make: *** [Makefile:54: test_aarch64.elf] Error 1
-rm test_aarch64.o
-make: Leaving directory '/mnt/nvmedisk/linaro/risu/build/aarch64-linux-gnu'
 
-thanks
--- PMM
+> > Without this patch:
+> > [   51.343484] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+> > [   51.527032] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+> > [   51.530049] virtio-pci 0000:00:02.0: can't derive routing for PCI INT A
+> > [   51.530797] virtio-pci 0000:00:02.0: PCI INT A: no GSI
+> > [   81.922901] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+> > [   82.103534] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+> > [   82.106088] virtio-pci 0000:00:04.0: can't derive routing for PCI INT A
+> > [   82.106761] virtio-pci 0000:00:04.0: PCI INT A: no GSI
+> > [  112.192568] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+> > [  112.486687] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+> > [  112.489554] virtio-pci 0000:00:05.0: can't derive routing for PCI INT A
+> > [  112.490027] virtio-pci 0000:00:05.0: PCI INT A: no GSI
+> > [  142.559448] ACPI Error: Aborting method \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+> > [  142.718596] ACPI Error: Method execution failed \_SB.PCI0._PRT due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/uteval-68)
+> > [  142.722889] virtio-pci 0000:00:06.0: can't derive routing for PCI INT A
+> > [  142.724578] virtio-pci 0000:00:06.0: PCI INT A: no GSI
+> >
+> > With this patch:
+> > [   22.938076] ACPI: \_SB_.LNKB: Enabled at IRQ 10
+> > [   24.214002] ACPI: \_SB_.LNKD: Enabled at IRQ 11
+> > [   25.465170] ACPI: \_SB_.LNKA: Enabled at IRQ 10
+> > [   27.944920] ACPI: \_SB_.LNKC: Enabled at IRQ 11
+> >
+> > ACPI disassembly:
+> >         Scope (PCI0)
+> >         {
+> >             Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
+> >             {
+> >                 Return (Package (0x80)
+> >                 {
+> >                     Package (0x04)
+> >                     {
+> >                         0xFFFF,
+> >                         Zero,
+> >                         LNKD,
+> >                         Zero
+> >                     },
+> >
+> >                     Package (0x04)
+> >                     {
+> >                         0xFFFF,
+> >                         One,
+> >                         LNKA,
+> >                         Zero
+> >                     },
+> >
+> >                     Package (0x04)
+> >                     {
+> >                         0xFFFF,
+> >                         0x02,
+> >                         LNKB,
+> >                         Zero
+> >                     },
+> >
+> >                     Package (0x04)
+> >                     {
+> >                         0xFFFF,
+> >                         0x03,
+> >                         LNKC,
+> >                         Zero
+> >                     },
+> >
+> >                     Package (0x04)
+> >                     {
+> >                         0x0001FFFF,
+> >                         Zero,
+> >                         LNKS,
+> >                         Zero
+> >                     },
+> > Context: https://lore.kernel.org/virtualization/20240417145544.38d7b482@imammedo.users.ipa.redhat.com/T/#t
+> >
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  hw/i386/acpi-build.c | 118 ++++++++-----------------------------------
+> >  1 file changed, 21 insertions(+), 97 deletions(-)
+> >
+> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > index 53f804ac16..4c14d39173 100644
+> > --- a/hw/i386/acpi-build.c
+> > +++ b/hw/i386/acpi-build.c
+> > @@ -725,40 +725,7 @@ static Aml *aml_pci_pdsm(void)
+> >      return method;
+> >  }
+> >
+> > -/**
+> > - * build_prt_entry:
+> > - * @link_name: link name for PCI route entry
+> > - *
+> > - * build AML package containing a PCI route entry for @link_name
+> > - */
+> > -static Aml *build_prt_entry(const char *link_name)
+> > -{
+> > -    Aml *a_zero = aml_int(0);
+> > -    Aml *pkg = aml_package(4);
+> > -    aml_append(pkg, a_zero);
+> > -    aml_append(pkg, a_zero);
+> > -    aml_append(pkg, aml_name("%s", link_name));
+> > -    aml_append(pkg, a_zero);
+> > -    return pkg;
+> > -}
+> > -
+> > -/*
+> > - * initialize_route - Initialize the interrupt routing rule
+> > - * through a specific LINK:
+> > - *  if (lnk_idx == idx)
+> > - *      route using link 'link_name'
+> > - */
+> > -static Aml *initialize_route(Aml *route, const char *link_name,
+> > -                             Aml *lnk_idx, int idx)
+> > -{
+> > -    Aml *if_ctx = aml_if(aml_equal(lnk_idx, aml_int(idx)));
+> > -    Aml *pkg = build_prt_entry(link_name);
+> > -
+> > -    aml_append(if_ctx, aml_store(pkg, route));
+> > -
+> > -    return if_ctx;
+> > -}
+> > -
+> > +#define N_ROUTES 128
+> >  /*
+> >   * build_prt - Define interrupt rounting rules
+> >   *
+> > @@ -771,74 +738,31 @@ static Aml *initialize_route(Aml *route, const char *link_name,
+> >   */
+> >  static Aml *build_prt(bool is_pci0_prt)
+> >  {
+> > -    Aml *method, *while_ctx, *pin, *res;
+> > +    Aml *rt_pkg, *method;
+> > +    const char link_name[][2] = {"D", "A", "B", "C"};
+> > +    int i;
+> >
+> >      method = aml_method("_PRT", 0, AML_NOTSERIALIZED);
+> > -    res = aml_local(0);
+> > -    pin = aml_local(1);
+> > -    aml_append(method, aml_store(aml_package(128), res));
+> > -    aml_append(method, aml_store(aml_int(0), pin));
+> > +    rt_pkg = aml_varpackage(N_ROUTES);
+> >
+> > -    /* while (pin < 128) */
+> > -    while_ctx = aml_while(aml_lless(pin, aml_int(128)));
+> > -    {
+> > -        Aml *slot = aml_local(2);
+> > -        Aml *lnk_idx = aml_local(3);
+> > -        Aml *route = aml_local(4);
+> > -
+> > -        /* slot = pin >> 2 */
+> > -        aml_append(while_ctx,
+> > -                   aml_store(aml_shiftright(pin, aml_int(2), NULL), slot));
+> > -        /* lnk_idx = (slot + pin) & 3 */
+> > -        aml_append(while_ctx,
+> > -            aml_store(aml_and(aml_add(pin, slot, NULL), aml_int(3), NULL),
+> > -                      lnk_idx));
+> > -
+> > -        /* route[2] = "LNK[D|A|B|C]", selection based on pin % 3  */
+> > -        aml_append(while_ctx, initialize_route(route, "LNKD", lnk_idx, 0));
+> > -        if (is_pci0_prt) {
+> > -            Aml *if_device_1, *if_pin_4, *else_pin_4;
+> > -
+> > -            /* device 1 is the power-management device, needs SCI */
+> > -            if_device_1 = aml_if(aml_equal(lnk_idx, aml_int(1)));
+> > -            {
+> > -                if_pin_4 = aml_if(aml_equal(pin, aml_int(4)));
+> > -                {
+> > -                    aml_append(if_pin_4,
+> > -                        aml_store(build_prt_entry("LNKS"), route));
+> > -                }
+> > -                aml_append(if_device_1, if_pin_4);
+> > -                else_pin_4 = aml_else();
+> > -                {
+> > -                    aml_append(else_pin_4,
+> > -                        aml_store(build_prt_entry("LNKA"), route));
+> > -                }
+> > -                aml_append(if_device_1, else_pin_4);
+> > -            }
+> > -            aml_append(while_ctx, if_device_1);
+> > -        } else {
+> > -            aml_append(while_ctx, initialize_route(route, "LNKA", lnk_idx, 1));
+> > +    for (i = 0; i < N_ROUTES; i++) {
+> > +        Aml *pkg = aml_package(4);
+> > +        const char *name;
+> > +
+> > +        name = link_name[((i >> 2) + i) & 3];
+> > +
+> > +        if (is_pci0_prt && i == 4) {
+> > +            name = "S";
+> >          }
+> > -        aml_append(while_ctx, initialize_route(route, "LNKB", lnk_idx, 2));
+> > -        aml_append(while_ctx, initialize_route(route, "LNKC", lnk_idx, 3));
+> > -
+> > -        /* route[0] = 0x[slot]FFFF */
+> > -        aml_append(while_ctx,
+> > -            aml_store(aml_or(aml_shiftleft(slot, aml_int(16)), aml_int(0xFFFF),
+> > -                             NULL),
+> > -                      aml_index(route, aml_int(0))));
+> > -        /* route[1] = pin & 3 */
+> > -        aml_append(while_ctx,
+> > -            aml_store(aml_and(pin, aml_int(3), NULL),
+> > -                      aml_index(route, aml_int(1))));
+> > -        /* res[pin] = route */
+> > -        aml_append(while_ctx, aml_store(route, aml_index(res, pin)));
+> > -        /* pin++ */
+> > -        aml_append(while_ctx, aml_increment(pin));
+> > +
+> > +        aml_append(pkg, aml_int((i << 14) | 0xFFFF));
+> > +        aml_append(pkg, aml_int(i & 3));
+> > +        aml_append(pkg, aml_name("LNK%s", name));
+> > +        aml_append(pkg, aml_int(0));
+> > +        aml_append(rt_pkg, pkg);
+> >      }
+> > -    aml_append(method, while_ctx);
+> > -    /* return res*/
+> > -    aml_append(method, aml_return(res));
+> > +
+> > +    aml_append(method, aml_return(rt_pkg));
+> >
+> >      return method;
+> >  }
+> > --
+> > 2.44.0.683.g7961c838ac-goog
+> >  
+> 
+> 
+
 
