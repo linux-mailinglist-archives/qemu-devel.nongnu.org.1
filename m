@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CFC8D4BEA
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 14:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BE18D4C07
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 14:52:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCfAs-0003Hc-Ap; Thu, 30 May 2024 08:46:38 -0400
+	id 1sCfFr-0005zn-P0; Thu, 30 May 2024 08:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sCfAh-0003G6-4u
- for qemu-devel@nongnu.org; Thu, 30 May 2024 08:46:19 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1sCfFq-0005zL-3d
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:51:38 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sCfAf-0001rx-JP
- for qemu-devel@nongnu.org; Thu, 30 May 2024 08:46:18 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-52b7d180542so936549e87.3
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 05:46:16 -0700 (PDT)
+ id 1sCfFo-0002mX-Ba
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 08:51:37 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-57a1e980a65so610719a12.2
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 05:51:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717073175; x=1717677975; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717073494; x=1717678294; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=PDnspt9Y6J93/QB9bJRIalN6qBOhNzuzk73SyZONcJQ=;
- b=aGT3vsAOekKIKOucud4bhjc4HpNSMzr3rnSJwwMIHhK9qO3p8KUL6+RYh2wavCQcuH
- kVZzdabN17XNs+r0K3nN9BAyekbqv58882wQTO4Jv9XfcRsQrmut6BYV8BtOmvqVaGnA
- B+TOoTJ06qLRK/y0rEPuvKN8rEo8c+jEtx4F4hZwgiYgiTJd4CPQXiHJ/lGBAuejljkx
- a1Xi+rRNlPO5RmqvhzFMU7QYtQQCWa7xtxpHxQrqcNq9xR/eLOu9IWntQYcou3a7J+cO
- k2LPxE4f34FbPqrRLPEUVJ+9nw+o2dt8uZ4uqtFUafF2fJ6dpj20ztPwQNvvBr96Dpch
- BbrA==
+ bh=nnOHjmYX6Ks0FpmKsyShork4/Y+gyj7KOYpHL5jDHAk=;
+ b=cEV+fEHC2Np1/3iE8r2wjKyFRkFQqFWwJ2rnpe1IQp4X7I/ZVAqvPvjtViIf1lNh8Q
+ t4Gbgz0cwX3BtcQFjKWk0k+jxx159QEgR8lUB7b023YgOM+2MwCmHE82SR0t+aAxO9Og
+ UsmaVFQoiUXXYZI1MhSDM+QUXp9p6VO52RtTZQyYr9Sr+oTW7b2TQusVoxWS+WnpSSbq
+ 2/RQu0RbRYVTVjkuAQPXOwCBDpS6ltTdrYFHRSy16GwUqeMK+ogQ3kjHj4UYd+TUdw6M
+ Rw5eHbMyjSo7TVtVjOA1VQHquVFzALVbJEDEz0Zh5ZVcYoAsZAiSAF5kHGiunhYwEsof
+ 4PJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717073175; x=1717677975;
+ d=1e100.net; s=20230601; t=1717073494; x=1717678294;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=PDnspt9Y6J93/QB9bJRIalN6qBOhNzuzk73SyZONcJQ=;
- b=cJMGt7ev7iF0e9ysbhQlPqW0lGRIxekfKNAu9GBS6cjMCxwJ3ipFSqteO6UUxAjUOJ
- G2+1BazHGgnf668rfndczkTJnOwB//vPo9B5nB+5KOrByJlaq7q2BI2AeAX38xKox5Wt
- 1FEKTvvvOiCXU2W8WGdR6h0gNj4En0VnQ4JEB2kmHPv0tyrbK7R6bknD4ZaxYzfWhjz5
- apjPkFhlDwemyKbFT8Ko5GIsqpjXSS2LTydslNgEAza0d0so2zBtliabkdYdPa2cntbv
- 522lwHYW4Kj/9b/1ad9AVoQGQGe3HesYb8bbn36BQ+F9zBOW87FXPf3hJQ6Qz8OxGpQT
- U7fQ==
-X-Gm-Message-State: AOJu0YwHBZc6eBMS586j5rrDqkoLoG7CYwd/8kB5t6vtMDWydIXcjPVH
- mES9siMbGzRkLInV+fxast99CcbNYepz09YgDHBvI/wGX3wqjLbPLBNxWK4zK17xgozLW/+4UoY
- b98jdV1tzIg6PZ7f+NhZ1Lq56h3b9cI4+htalOtWTleUqrDyj
-X-Google-Smtp-Source: AGHT+IGRgZbte4F8UMqqq73iVg104XTqJH7PBKl276ZZnet+wScaeIsRDynuN34FP1YYEGH47XSPosjz1KHXQSi07SA=
-X-Received: by 2002:a19:e004:0:b0:51d:9ea3:5649 with SMTP id
- 2adb3069b0e04-52b7d418f54mr1402790e87.10.1717073174942; Thu, 30 May 2024
- 05:46:14 -0700 (PDT)
+ bh=nnOHjmYX6Ks0FpmKsyShork4/Y+gyj7KOYpHL5jDHAk=;
+ b=WbOQfum2QpmM2V90kqf9LoHWuL9OXduPSMwYY4wwileqS/RcFrDW22TX+tCS/cdKUo
+ LuniOLK5aBn9Ukagr7D60YJuzWEQqrShGZc0kg1DhLlIu/XkTWInuLPLesBu6SFmyiwn
+ nIlnUEatBVNhDOAsPow2Bd4atBu7YBaDMZ7JR0zsX7XrpibByji6cKkN4psa+W9oewS2
+ 27DC5ndozl7NyruRgcFS+HTRuYXObLf4Wgemf5jPv8wbkq6K59opGxseL38oZ8p4dM8Z
+ 5u/vA3qRoHm8EeJbruIVjzCkfD10C2K/YER/AKe4180Y9vsnt0u7NccONLuBs7R2sB7E
+ mhHA==
+X-Gm-Message-State: AOJu0YxGmPZJo6+O94H67+wDWGkScjizmmAMu/d1ncAmJ94rYQAeAXae
+ 47byfcjWfXQzJMOhZTBLY8pKMOKUrM33VOx/Y0FfyNAofFDhw3cRXqyE47Ib/7aJZKIVt/KBOTA
+ dFBQmD5eregf6nmbB4hufZ9xKPoSmGxNAz1ZCtQ==
+X-Google-Smtp-Source: AGHT+IEeZwjCtFzZtyjXQbpNq1JOrcvOM7pbZTCioIvJuzwwIjYmfgxF21O/VstT002KykKyft9JEUjDNGVgKHeT+Gc=
+X-Received: by 2002:a50:c04b:0:b0:57a:206e:54cc with SMTP id
+ 4fb4d7f45d1cf-57a206e56c4mr1111807a12.42.1717073494442; Thu, 30 May 2024
+ 05:51:34 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240526193637.459064-1-richard.henderson@linaro.org>
- <20240526193637.459064-4-richard.henderson@linaro.org>
-In-Reply-To: <20240526193637.459064-4-richard.henderson@linaro.org>
+ <20240526193637.459064-6-richard.henderson@linaro.org>
+In-Reply-To: <20240526193637.459064-6-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 30 May 2024 13:46:04 +0100
-Message-ID: <CAFEAcA_cPWwSnVqXkeympb1Us2c58A49mth_gDeZ4dVjU5fu8g@mail.gmail.com>
-Subject: Re: [PATCH RISU v2 03/13] Introduce host_context_t
+Date: Thu, 30 May 2024 13:51:23 +0100
+Message-ID: <CAFEAcA83_tyi+mwffuM18LSiUjXksgyO7P-oyZrAo8Bup6ZJGg@mail.gmail.com>
+Subject: Re: [PATCH RISU v2 05/13] risugen: Be explicit about print
+ destinations
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, mark.cave-ayland@ilande.co.uk
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,27 +87,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 26 May 2024 at 20:37, Richard Henderson
+On Sun, 26 May 2024 at 20:38, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> Most hosts pass ucontext_t as the third parameter of signal handlers.
->
-> In one existing usage, loongarch64 is using the kernel's
-> struct ucontext instead of libc's ucontext_t.  This is probably a
-> simple mistake that could be fixed, but the structure member names
-> differ, so the change would not be completely mechanical.
->
-> However, due to a sequence of historical mistakes, sparc64 linux
-> does not pass any kind of ucontext_t to the signal handler, but
-> uses struct sigcontext instead.
->
-> Prepare for that by adding a new indirection typedef.
-> This allows us to clean up existing usage with void*.
->
+> Printing directly to STDOUT and STDERR will allow the
+> print destination to be selected elsewhere.
+
+i.e. using 'select' to set the default filehandle for "print"?
+My instinct is to suspect that would be a bit confusing compared
+to passing in an explicit filehandle for whatever it is that we'd
+like to be able to print to other destinations.
+
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
+>  risugen_common.pm | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/risugen_common.pm b/risugen_common.pm
+> index 71ee996..5207c0e 100644
+> --- a/risugen_common.pm
+> +++ b/risugen_common.pm
+> @@ -76,7 +76,7 @@ sub progress_start($$)
+>      ($proglen, $progmax) = @_;
+>      $proglen -= 2; # allow for [] chars
+>      $| = 1;        # disable buffering so we can see the meter...
+> -    print "[" . " " x $proglen . "]\r";
+> +    print STDOUT "[" . " " x $proglen . "]\r";
+>      $lastprog = 0;
+>  }
+>
+> @@ -87,13 +87,13 @@ sub progress_update($)
+>      my $barlen = int($proglen * $done / $progmax);
+>      if ($barlen != $lastprog) {
+>          $lastprog = $barlen;
+> -        print "[" . "-" x $barlen . " " x ($proglen - $barlen) . "]\r";
+> +        print STDOUT "[" . "-" x $barlen . " " x ($proglen - $barlen) . "]\r";
+>      }
+>  }
+>
+>  sub progress_end()
+>  {
+> -    print "[" . "-" x $proglen . "]\n";
+> +    print STDOUT "[" . "-" x $proglen . "]\n";
+>      $| = 0;
+>  }
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+These are the progress-bar indicators -- shouldn't they go to STDERR,
+not STDOUT, if we're going to be careful about where we send output?
+
+> @@ -163,20 +163,20 @@ sub dump_insn_details($$)
+>  {
+>      # Dump the instruction details for one insn
+>      my ($insn, $rec) = @_;
+> -    print "insn $insn: ";
+> +    print STDOUT "insn $insn: ";
+>      my $insnwidth = $rec->{width};
+>      my $fixedbits = $rec->{fixedbits};
+>      my $fixedbitmask = $rec->{fixedbitmask};
+>      my $constraint = $rec->{blocks}{"constraints"};
+> -    print sprintf(" insnwidth %d fixedbits %08x mask %08x ", $insnwidth, $fixedbits, $fixedbitmask);
+> +    print STDOUT sprintf(" insnwidth %d fixedbits %08x mask %08x ", $insnwidth, $fixedbits, $fixedbitmask);
+>      if (defined $constraint) {
+> -        print "constraint $constraint ";
+> +        print STDOUT "constraint $constraint ";
+>      }
+>      for my $tuple (@{ $rec->{fields} }) {
+>          my ($var, $pos, $mask) = @$tuple;
+> -        print "($var, $pos, " . sprintf("%08x", $mask) . ") ";
+> +        print STDOUT "($var, $pos, " . sprintf("%08x", $mask) . ") ";
+>      }
+> -    print "\n";
+> +    print STDOUT "\n";
+>  }
+
+As a debug-print helper routine maybe this should be STDERR too?
 
 thanks
 -- PMM
