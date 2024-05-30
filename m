@@ -2,85 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340938D4D59
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02E98D4D05
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 15:47:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCgIb-000195-GV; Thu, 30 May 2024 09:58:33 -0400
+	id 1sCg6J-0003d0-Mq; Thu, 30 May 2024 09:45:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCgIW-00018C-Cb
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:58:29 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCgIU-0007Z4-Jx
- for qemu-devel@nongnu.org; Thu, 30 May 2024 09:58:28 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-578517c7ae9so994009a12.3
- for <qemu-devel@nongnu.org>; Thu, 30 May 2024 06:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717077504; x=1717682304; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1u47p8ZJCmiehY5hwIdn5YelXPJ+vbS6WtB6PEv4Gw8=;
- b=NjeLwP11w9GWmfE2m8kfduPzLuzEb2K/Rk8WrGFJ+C/NsuNdYLP0+407p9derRsfGW
- UkaTrnEg85cimuK3OMPGVhvP/egPBu4w6yhRAj1sABSncbsSyip1KIzZcEdJjIjRbois
- MXp31taC0G04Y2/WFb46oOICoEKXmZx7N29bNR9uq2U6spk2JLTt9ShplgOsGlB8JXzQ
- HdNWofFvuf1WaxUxy/G/o6sahxpwxS3BPpMNaFHctKFK7hFV3J4igmoBcchMyTY5gl7P
- svrZVn68VRH56VWQI9XbkYfRQVVtn6zVftTOeqgpR3xPLEFZ64IU+QZTjy7Z+NO7sm6b
- TeIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717077504; x=1717682304;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1u47p8ZJCmiehY5hwIdn5YelXPJ+vbS6WtB6PEv4Gw8=;
- b=lQE+SnjpT1sUVJoEvpWAhIgblHxddoQa1YvaaRmRTBgQ9sDAMqAC8p+r9/f5Rj9NzO
- N4zdWVZitxqKDkm+rfAz2TjwXYoUZSxYArHWLH/B2LsuBspRKBN7UbCO9G++W9V2+IWb
- xIy5Kdsl4+Ls6qUN/ChmIt9nNkpobt+io1fcpeVzpxr3HUhexjKEMcRCXbd2yFbAi206
- nR77cCMa2UPpoZh4AJxAFtl0tnR/7lztkGDFDmUJfAY6VU+8oYOG3NgJIR/urOqj2MOL
- GkGbw+HgIW9QbaGOB32xoP4idehDHDzyIv2joJW23I9wq2bJghTMcfAQk4Bj0UgNt4rr
- s9DQ==
-X-Gm-Message-State: AOJu0YzkUBaxpoqqSExJtPLI/fzIwIY1kDVtPk4+/XIB/DgCyBvkw4x6
- rBuXm8UZZO2MlvhW6+8OWq/Wem0xBBnsoDiMquBSsoFYDXNbT29ggYdE+QMDK7sdgOD3WHzimFE
- M
-X-Google-Smtp-Source: AGHT+IFV+lWPOxijsaCgE/tkhhu9nIkpdEJoVcgfgc9D2OVVUVAtyZ4o0L0jtQGAxNLPdiTmRNXN2w==
-X-Received: by 2002:a50:99d7:0:b0:57a:259a:489a with SMTP id
- 4fb4d7f45d1cf-57a259a4aa1mr781099a12.14.1717077503855; 
- Thu, 30 May 2024 06:58:23 -0700 (PDT)
-Received: from [192.168.69.100] (xbn44-h02-176-184-35-50.dsl.sta.abo.bbox.fr.
- [176.184.35.50]) by smtp.gmail.com with ESMTPSA id
- 4fb4d7f45d1cf-579d1f94e72sm5718824a12.24.2024.05.30.06.58.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 30 May 2024 06:58:23 -0700 (PDT)
-Message-ID: <d2b81c56-a57c-4fbe-a65e-86e9755e7c48@linaro.org>
-Date: Thu, 30 May 2024 15:58:21 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCg6I-0003cO-Bo; Thu, 30 May 2024 09:45:50 -0400
+Received: from mgamail.intel.com ([192.198.163.11])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1sCg6F-0005VC-JL; Thu, 30 May 2024 09:45:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717076747; x=1748612747;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=HYmRgL95rnL5I4sazCVOH+MQqPURl3cWjMGPjI8wfrE=;
+ b=Z7j5xySIs4dhixW8yET646fvKF1eaOX6RaFCwZvoE7pDQ69FuJGowNzI
+ tGFswybVJcRjpyM+b5xKIoi0mnsxpuvZX8VOaCDwyns6hJA03SQ78hoau
+ 13u/u/oWHefkIukzENS4OSX6YLYoXt4qxyUo01w0L2t476xe7iwEfI71X
+ XMRdohb5TR3azC+UJypyLD++3NiPy1qa8b9q+GoU84p4s0YTWPPadVevB
+ 6WIN5ENmCjs3AkXFtydOmOFUNrdL8V9RPhxXmC6gBNMgW/mPmYW/7heVH
+ H7N4Qf8IlHgRJwmI9PlOEoTtTfLHW9zND/Xc9cVJSSs9si/oyEWZcaRMk w==;
+X-CSE-ConnectionGUID: qO58X6GGT/yeecwt7a9Z/g==
+X-CSE-MsgGUID: qq05+HQ6SaKXwTCQKWAang==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24172645"
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="24172645"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2024 06:45:42 -0700
+X-CSE-ConnectionGUID: De7S8QHlR6ukqok0PVx89A==
+X-CSE-MsgGUID: rUrmNaspSzG9SS4tC+adLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="35762246"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa010.jf.intel.com with ESMTP; 30 May 2024 06:45:41 -0700
+Date: Thu, 30 May 2024 22:01:04 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Zide Chen <zide.chen@intel.com>, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, mst@redhat.com, cfontana@suse.de,
+ xiaoyao.li@intel.com, qemu-trivial@nongnu.org
+Subject: Re: [PATCH V2 1/3] vl: Allow multiple -overcommit commands
+Message-ID: <ZliGoM9Hy3Q2qthQ@intel.com>
+References: <20240524200017.150339-1-zide.chen@intel.com>
+ <20240524200017.150339-2-zide.chen@intel.com>
+ <e86c1913-a1ff-4c31-9915-d66c269b7e10@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] semihosting: Restrict to TCG
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Anton Johansson <anjo@rev.ng>
-References: <20240529155548.5878-1-philmd@linaro.org>
- <20240529155548.5878-4-philmd@linaro.org>
- <CABgObfYmuvMq80Xz0ZBZQiHmKgoiSTVVqio8FmmpttT8rg64kA@mail.gmail.com>
- <7ce86375-779d-43d6-9871-7f9587c95ba6@linaro.org>
- <CABgObfbvjG9bBgCwM-kL+YhjhMw1qLnQdQToCEkKW+V3trskoA@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfbvjG9bBgCwM-kL+YhjhMw1qLnQdQToCEkKW+V3trskoA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e86c1913-a1ff-4c31-9915-d66c269b7e10@redhat.com>
+Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,46 +81,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/5/24 09:31, Paolo Bonzini wrote:
-> On Thu, May 30, 2024 at 9:22 AM Philippe Mathieu-Daudé
-> <philmd@linaro.org> wrote:
->>
->> On 30/5/24 08:02, Paolo Bonzini wrote:
->>> On Wed, May 29, 2024 at 5:56 PM Philippe Mathieu-Daudé
->>> <philmd@linaro.org> wrote:
->>>> It is pointless to build semihosting when TCG is not available.
->>>
->>> Why? I would have naively assumed that a suitable semihosting API
->>> could be implemented by KVM. The justification (and thus the commit
->>> message) needs to be different for each architecture if it's a matter
->>> of instruction set or insufficient KVM userspace API.
->>
->> I wasn't sure where semihosting could be used so asked on IRC and
->> Alex told me TCG only. Maybe the current implementation is TCG
->> only, and I can reword. It certainly need some refactor to work
->> on KVM, because currently semihosting end calling the TCG probe_access
->> API, which I'm trying to restrict to TCG in order to ease linking
->> multiple libtcg for the single binary (see
->> https://lore.kernel.org/qemu-devel/20240529155918.6221-1-philmd@linaro.org/).
+On Mon, May 27, 2024 at 07:19:56AM +0200, Thomas Huth wrote:
+> Date: Mon, 27 May 2024 07:19:56 +0200
+> From: Thomas Huth <thuth@redhat.com>
+> Subject: Re: [PATCH V2 1/3] vl: Allow multiple -overcommit commands
 > 
-> Ok, that goes in the commit message though.
+> On 24/05/2024 22.00, Zide Chen wrote:
+> > Both cpu-pm and mem-lock are related to system resource overcommit, but
+> > they are separate from each other, in terms of how they are realized,
+> > and of course, they are applied to different system resources.
+> > 
+> > It's tempting to use separate command lines to specify their behavior.
+> > e.g., in the following example, the cpu-pm command is quietly
+> > overwritten, and it's not easy to notice it without careful inspection.
+> > 
+> >    --overcommit mem-lock=on
+> >    --overcommit cpu-pm=on
+> > 
+> > Fixes: c8c9dc42b7ca ("Remove the deprecated -realtime option")
+> > Suggested-by: Thomas Huth <thuth@redhat.com>
+> > Signed-off-by: Zide Chen <zide.chen@intel.com>
+> > ---
+> > 
+> > v2:
+> > 
+> > Thanks to Thomas' suggestion, changed to this better approach, which
+> > is more generic and can handle situations like: "enabled the option in
+> > the config file, and now you'd like to disable it on the command line
+> > again".
+> > 
+> >   system/vl.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/system/vl.c b/system/vl.c
+> > index a3eede5fa5b8..dfa6cdd9283b 100644
+> > --- a/system/vl.c
+> > +++ b/system/vl.c
+> > @@ -3545,8 +3545,8 @@ void qemu_init(int argc, char **argv)
+> >                   if (!opts) {
+> >                       exit(1);
+> >                   }
+> > -                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", false);
+> > -                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", false);
+> > +                enable_mlock = qemu_opt_get_bool(opts, "mem-lock", enable_mlock);
+> > +                enable_cpu_pm = qemu_opt_get_bool(opts, "cpu-pm", enable_cpu_pm);
+> >                   break;
+> >               case QEMU_OPTION_compat:
+> >                   {
 > 
-> "Semihosting currently uses the TCG probe_access API. It is pointless
-> to have it in the binary when TCG isn't".
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 > 
-> and in the first two patches:
-> 
-> "Semihosting currently uses the TCG probe_access API. To prepare for
-> encoding the TCG dependency in Kconfig, do not enable it unless TCG is
-> available".
-> 
-> But then, "select FOO if TCG" mean that it can be compiled out; so
-> perhaps "imply SEMIHOSTING if TCG" is better? Same for RISC-V's
-> "select ARM_COMPATIBLE_SEMIHOSTING if TCG".
 
-You are right. Thanks for reminding me Kconfig "imply" :)
+Hi Thomas,
 
-Regards,
+BTW, do you think it's a good idea to define the overcommit via QAPI way
+(defined in a json file)? ;-)
 
-Phil.
+My rough understanding is that all APIs are better to be defined via
+QAPI to go JSON compatible.
+
+
 
