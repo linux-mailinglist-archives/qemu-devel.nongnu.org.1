@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC158D4927
-	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 12:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1298D4997
+	for <lists+qemu-devel@lfdr.de>; Thu, 30 May 2024 12:24:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCcat-00037C-8v; Thu, 30 May 2024 06:01:11 -0400
+	id 1sCcwC-00064z-GQ; Thu, 30 May 2024 06:23:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCcap-00033s-VE; Thu, 30 May 2024 06:01:07 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sCcan-0003Tg-TQ; Thu, 30 May 2024 06:01:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717063266; x=1748599266;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kd8Iqz6IxYjau87nIpOYyMS3R+5juiDyGSjeB2FuXwE=;
- b=lkWucWCZSt7PPjvaC7RP9fFjLG9HjrJRAAqRnaokQxo+qNXaI0VVQiBb
- hyiRznLcWYJse2SL/MAfN0n9MJ3Mwqt6R6k+qcSxVsWbU1pP3/FlaFHD6
- ISZMaow6ZgRb2FIAkN2ygF4YNWqX6utbnwo68g3bLZEivwjT2fCRiJ6om
- D3715eBEYXf2piwVY+9Z5IQUMTb5+Rl/1PlMAi8+V2Qmb99lHV1ysNpOi
- kwqRV3AkZKhC7msao8t2EtiQO+72Xfco7SddZFzYIcCyp4bkusf6c8Eaw
- rEi0+pYrAZBAPLQZWE66mpE8JxEM9tu1Hn2pW6a41zaOOYSyP+0c4iaod Q==;
-X-CSE-ConnectionGUID: uskdzIwSSL+QFE3JdtZWFA==
-X-CSE-MsgGUID: NbZK9AybTPaUWE2e5jbKbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="31032643"
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="31032643"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 May 2024 03:01:04 -0700
-X-CSE-ConnectionGUID: SyRY+RB0TV6YokdKL/13XA==
-X-CSE-MsgGUID: aFRS7jt6QPWbeEZPIX3Qmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; d="scan'208";a="35705172"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 30 May 2024 03:00:58 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [RFC v2 7/7] qemu-options: Add the cache topology description of -smp
-Date: Thu, 30 May 2024 18:15:39 +0800
-Message-Id: <20240530101539.768484-8-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240530101539.768484-1-zhao1.liu@intel.com>
-References: <20240530101539.768484-1-zhao1.liu@intel.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCcwA-00064H-9P
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 06:23:10 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1sCcw8-0007v6-Nz
+ for qemu-devel@nongnu.org; Thu, 30 May 2024 06:23:10 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-52b7f846810so486020e87.0
+ for <qemu-devel@nongnu.org>; Thu, 30 May 2024 03:23:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1717064587; x=1717669387; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bym47If7hnYqCHRJeiE8rzTe+ZpA3hGmUg8NZW8a6hM=;
+ b=uAhmDR2DzyOSR8a2jJZtW9hkG8WMjDBdcTyc0w4H+CDNyRoejkwFBYnathjrBCCt4U
+ 6rpop/8ZaKhYOmIIXWDjXU+eBeHbfu+7cf7Lk2++5hwh3L02zER2jCsqK5dr57K6tX6n
+ kIe/lYrwH+Xv/aECnryRQaRxkADO25l1oczLU+eNkB1KBl6W7/hoR80XpZM4DS0opOr/
+ NSzSChIPtoALYT4pd5uA6fy8Sxa6edsuby0RSEFeySPBfefuWc4I2hQrbJrXVmn8mGNX
+ s2+eDyq89FOQtIkFKChN53M8KHB5WuJ3ATyTWM5GsRjaPJDWfIdkvCv7ts4wGWSm7Sv/
+ mPog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717064587; x=1717669387;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Bym47If7hnYqCHRJeiE8rzTe+ZpA3hGmUg8NZW8a6hM=;
+ b=IbowN+dHdfENe5v1HCTOo/HyEdX7CxE5UCiIulDkVcPO8lDKrYoxXXmCmEmERP7KiK
+ 5BDrqsZQwXONQCXlm9oPjXTCMG3aEF/U1QoF0oGAmyOED9SMVvVuHin6wlSb7qxlE63z
+ EbuBX1IlWNBDbx+WUVUXTZC59LJcR1yR7Wpxsadpd1IgRh4z7ftqGhC+SlCjjdoem90/
+ j23oU9il9QjdfdIeoHtellewJwM7ouqyV3P+yFZvAdFUeqQJoiNokU5X2+uz7uVpMTiu
+ V9BcayRQFc3lMGjzpUbU8oAYHYwU0QgbC4Wa3lmpNs++ELxp34vIvzUu7ANi8fUJ9XJt
+ aHlw==
+X-Gm-Message-State: AOJu0Yxz9qf59fVBfoTZUvrZ9hR416gRT8Sbk/FsTjhvVbLymxqOy8hY
+ 9BDSQ+7nQNuqADUhEiW9vnNi3x8Y+mND1SD6K61R7UmT+jUjeKHJgy2DWPa+0H/0KefxCFHSqgf
+ DfgLRRqoWqKEsTRih68aYkdz6nKIRnodwxFhlYQ==
+X-Google-Smtp-Source: AGHT+IEXeJRroT+dDNcS/7mfuRKSHkefc+baqzjqVDqXDUhqPyuCgGiSZiqSVfEvDQsw80HMlzDJIvekxdm0SfwYIVY=
+X-Received: by 2002:ac2:5147:0:b0:51a:ca75:9ffe with SMTP id
+ 2adb3069b0e04-52b7d47a4f4mr1244699e87.42.1717064586763; Thu, 30 May 2024
+ 03:23:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.036,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20240523165353.6547-1-marcin.juszkiewicz@linaro.org>
+In-Reply-To: <20240523165353.6547-1-marcin.juszkiewicz@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 May 2024 11:22:55 +0100
+Message-ID: <CAFEAcA8ptk94Zm+HpW8xRzcQ7eoGA0oU5v06UuQAm=aYdOfuog@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm/sbsa-ref: move to Neoverse-N2 as default
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,111 +86,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Changes since RFC v1:
- * Use "*_cache=topo_level" as -smp example as the original "level"
-   term for a cache has a totally different meaning. (Jonathan)
----
- qemu-options.hx | 50 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 44 insertions(+), 6 deletions(-)
+On Thu, 23 May 2024 at 17:54, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> Moving to Neoverse-N2 gives us several cpu features to use for expanding
+> our platform:
+>
+> - branch target identification
+> - pointer authentication
+> - RME for confidential computing
+> - RNG for EFI_PROTOCOL_RNG
+> - SVE being enabled by default
+>
+> We do not go for "max" as default to have stable set of features enabled
+> by default. It is still supported and can be selected with "--cpu"
+> argument.
+>
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> ---
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 8ca7f34ef0c8..29d8a4b9b68b 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -282,7 +282,8 @@ ERST
- DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
-     "               [,dies=dies][,clusters=clusters][,modules=modules][,cores=cores]\n"
--    "               [,threads=threads]\n"
-+    "               [,threads=threads][,l1d-cache=topo_level][,l1i-cache=topo_level]\n"
-+    "               [,l2-cache=topo_level][,l3-cache=topo_level]\n"
-     "                set the number of initial CPUs to 'n' [default=1]\n"
-     "                maxcpus= maximum number of total CPUs, including\n"
-     "                offline CPUs for hotplug, etc\n"
-@@ -294,7 +295,11 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "                modules= number of modules in one cluster\n"
-     "                cores= number of cores in one module\n"
-     "                threads= number of threads in one core\n"
--    "Note: Different machines may have different subsets of the CPU topology\n"
-+    "                l1d-cache= topology level of L1 D-cache\n"
-+    "                l1i-cache= topology level of L1 I-cache\n"
-+    "                l2-cache= topology level of L2 cache\n"
-+    "                l3-cache= topology level of L3 cache\n"
-+    "Note: Different machines may have different subsets of the CPU and cache topology\n"
-     "      parameters supported, so the actual meaning of the supported parameters\n"
-     "      will vary accordingly. For example, for a machine type that supports a\n"
-     "      three-level CPU hierarchy of sockets/cores/threads, the parameters will\n"
-@@ -308,7 +313,7 @@ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
-     "      must be set as 1 in the purpose of correct parsing.\n",
-     QEMU_ARCH_ALL)
- SRST
--``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads]``
-+``-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets][,dies=dies][,clusters=clusters][,modules=modules][,cores=cores][,threads=threads][,l1d-cache=topo_level][,l1i-cache=topo_level][,l2-cache=topo_level][,l3-cache=topo_level]``
-     Simulate a SMP system with '\ ``n``\ ' CPUs initially present on
-     the machine type board. On boards supporting CPU hotplug, the optional
-     '\ ``maxcpus``\ ' parameter can be set to enable further CPUs to be
-@@ -322,15 +327,34 @@ SRST
-     Both parameters are subject to an upper limit that is determined by
-     the specific machine type chosen.
- 
-+    CPU topology parameters include '\ ``drawers``\ ', '\ ``books``\ ',
-+    '\ ``sockets``\ ', '\ ``dies``\ ', '\ ``clusters``\ ', '\ ``modules``\ ',
-+    '\ ``cores``\ ' and '\ ``threads``\ '. These CPU parameters accept only
-+    integers and are used to specify the number of specific topology domains
-+    under the corresponding topology level.
-+
-     To control reporting of CPU topology information, values of the topology
-     parameters can be specified. Machines may only support a subset of the
--    parameters and different machines may have different subsets supported
--    which vary depending on capacity of the corresponding CPU targets. So
--    for a particular machine type board, an expected topology hierarchy can
-+    CPU topology parameters and different machines may have different subsets
-+    supported which vary depending on capacity of the corresponding CPU targets.
-+    So for a particular machine type board, an expected topology hierarchy can
-     be defined through the supported sub-option. Unsupported parameters can
-     also be provided in addition to the sub-option, but their values must be
-     set as 1 in the purpose of correct parsing.
- 
-+    Cache topology parameters include '\ ``l1d-cache``\ ', '\ ``l1i-cache``\ ',
-+    '\ ``l2-cache``\ ' and '\ ``l3-cache``\ '. These cache topology parameters
-+    accept the strings of CPU topology levels (such as '\ ``drawer``\ ', '\ ``book``\ ',
-+    '\ ``socket``\ ', '\ ``die``\ ', '\ ``cluster``\ ', '\ ``module``\ ',
-+    '\ ``core``\ ' or '\ ``thread``\ '). Exactly which topology level strings
-+    could be accepted as the parameter depends on the machine's support for the
-+    corresponding CPU topology level.
-+
-+    Machines may also only support a subset of the cache topology parameters.
-+    Unsupported cache topology parameters will be omitted, and correspondingly,
-+    the target CPU's cache topology will use the its default cache topology
-+    setting.
-+
-     Either the initial CPU count, or at least one of the topology parameters
-     must be specified. The specified parameters must be greater than zero,
-     explicit configuration like "cpus=0" is not allowed. Values for any
-@@ -356,6 +380,20 @@ SRST
- 
-         -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32
- 
-+    The following sub-option defines a CPU topology hierarchy (2 sockets
-+    totally on the machine, 2 dies per socket, 2 modules per die, 2 cores per
-+    module, 2 threads per core) with 3-level cache topology hierarchy (L1
-+    D-cache per core, L1 I-cache per core, L2 cache per core and L3 cache per
-+    die) for PC machines which support sockets/dies/modules/cores/threads.
-+    Some members of the CPU topology option can be omitted but their values
-+    will be automatically computed. Some members of the cache topology
-+    option can also be omitted and target CPU will use the default topology.:
-+
-+    ::
-+
-+        -smp 32,sockets=2,dies=2,modules=2,cores=2,threads=2,maxcpus=32,\
-+             l1d-cache=core,l1i-cache=core,l2-cache=core,l3-cache=die
-+
-     The following sub-option defines a CPU topology hierarchy (2 sockets
-     totally on the machine, 2 clusters per socket, 2 cores per cluster,
-     2 threads per core) for ARM virt machines which support sockets/clusters
--- 
-2.34.1
 
+
+Applied to target-arm.next, thanks.
+
+-- PMM
 
