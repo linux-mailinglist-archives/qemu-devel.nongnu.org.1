@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C7F8D614E
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B988D613F
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:05:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD10C-0004dT-SP; Fri, 31 May 2024 08:04:56 -0400
+	id 1sD10G-0004gq-CN; Fri, 31 May 2024 08:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zx-0004W7-NB
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:41 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1sD100-0004Wu-4x
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:44 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zs-0003Wr-3C
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:40 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2e95a60454fso22362371fa.1
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:34 -0700 (PDT)
+ id 1sD0zr-0003Wv-SB
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:43 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2ea9afcb22aso2656481fa.1
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717157073; x=1717761873; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717157074; x=1717761874; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Ce7ZVxgtx5zfkvrttI6njbq4qKeqRgH0VK/GGhWhVVU=;
- b=Uo88pJgUzG7gzd0RfAbMMvX720wMenpUxpRGor+rkKoP+zGBrRZsX3BQyi5fxPXui2
- 8KIwh56yh95INsGOQiCPKbpiXOhiG5nfaqG42+pKUiGaXlDlHCOO3fVP6uuvZ/AUWL/2
- PxulQctR0OKpVT+NP/F6d8kqrfeBqvsz/ibPgmpfYYKRL1nu2Xv2DeKAe2PXq23Vk41x
- eLf9SDMqrOaMAz0ro2cXAdR2udan3L5uQiJnCECcTfQJQ3Gu5iyvwN61f4JzasZU8+D/
- SSSs3PzMfdcfNCpmzMhFpDY7a3qN8CHSIPnB18dJ3h2YdsIA0iQpRUlAAbIXCr2t00s7
- EUJQ==
+ :reply-to; bh=NWDApggyMUwqlr/49GITBZT6GHohqUhXi/8+w7dnERs=;
+ b=ENtDf8TqJUJQUVQ/5LZ65GGqF/TBLM2EONWCPLf/Fzbg23JYYbtRiXXvZue5yt08zj
+ YN/wqeyn16pzAcrhTYqpKkAxnF4eqDUBcv3qzuPqCVS8Up+l5jEhdLC61LNyE4mOvn7m
+ 5iHO5AGrXM9Y0ARkqKjgXTMXYhWwA38PcxdJsVmLVbV+c5hNi1D2UVcdsmwiqvkSfgxc
+ fkyJQJPPMIu+AgnZEp+1KDz+XWJFnsi6GLEu9DQSzYBTb7gy1hi4tHJ/0DgHm9WEqWJ4
+ L+0842g0lnchhJJFGBav8A2SVpxoepUXoKH3PRVWuEWzQFxcU0K+tDqEBjd17ZBf8Mo9
+ 1r+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717157073; x=1717761873;
+ d=1e100.net; s=20230601; t=1717157074; x=1717761874;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ce7ZVxgtx5zfkvrttI6njbq4qKeqRgH0VK/GGhWhVVU=;
- b=sEAXeL/lzBtuXYOr9NLraZcDZmoMSwULC3Kneo6tazbgmpZ8PfTYrAQe/Z1L+vTLGX
- 4VFoU+YTCYapztOz7AE0Pk0/hssaFYAXMWPphUm16T1lf4k8hjmSjRTJg13+NP6Nlfd3
- jV+Fyuwvj/SPE2YHKs4hh8m02H5ZgTpl/3znJKuEhcExAzX6Osz7zEoWxLkFsZ+6Fe+h
- o4cQSaDwAw/VCypFo7qEhdGdXU65l3Gqd0OvQ8rCyZVMa6EL7jLmuuP/CSgK61ktok5m
- nJiy8LLNqfgZAzTvAEx59CUI1H86M4e7756BiHmdCIIhcXTVT0cx0NAFMsT+PkJlIvVJ
- 10hQ==
-X-Gm-Message-State: AOJu0Yw/rAZkd1W7jOdvoMPZJKWNtobxO+hCR+H38bFy54R8xgbb4UHX
- EEhxN5ZYuzMslyMK2BYjUI8W9VmqXAjBmH65gmBxmGvKu/3/gQRD1i5aufVidQP/cfcLqVugcn3
- A
-X-Google-Smtp-Source: AGHT+IGjyHEA7VmdBxpQVfWSd7UGDVLHSFqStbmHRyHq45Rxa48OIv8lhUGG8FxCENAGa/Xx+MmCJA==
-X-Received: by 2002:a05:651c:1025:b0:2e9:87bb:3a40 with SMTP id
- 38308e7fff4ca-2ea9519b45bmr13162631fa.36.1717157073309; 
+ bh=NWDApggyMUwqlr/49GITBZT6GHohqUhXi/8+w7dnERs=;
+ b=eKAvoK8F9Ba2kyCtnD2iV/H7x1nwj0l/elq3o2HKshSeDlUO0tklUfwq2EVKNbR/v5
+ Pml/9n9tG78jvdgiGiV2i1v/PCmP1QSTOfV+SIh2znwgwBk8YDy39FVwE/y7MIsUjdYR
+ kuAthDz2c64n8Lqlt+CUNEttREkV5BWQ5Qa1MOO4zgfg3awMPFs34cuFifC3SmDX6iuk
+ bj0Y9JVUnRAnLYZbV9Fimnmzad/mrGg8vmhUUbpIKIvhQFq9RfMRfSWlGnNXRa1kWrz4
+ VI1arq9IatIhapVjEI7g+VJX7n92OjgeN009aYZfIHhpGuNVuw2arb6ZNFZlUxKQFDon
+ UUnw==
+X-Gm-Message-State: AOJu0YwTfv3AdlWw1mT5lwMG36DYqSjCexPzrczokfmlr3M4IIKHeruY
+ griZQ8tlG4cQbuFmt3Znd5cn7GfvLBaBCPwGFomAAr9Ct2xDKpBAxcCI4LAA+8cLeuudL5mdP1L
+ K
+X-Google-Smtp-Source: AGHT+IF4bZu2Gf6zkUHon/3KK8cjzp5YVCSTyCXv14jnGa7wKJKzF+jTcPKo4vgTaVMVIOOkkuH4fg==
+X-Received: by 2002:a05:651c:1687:b0:2ea:938f:a232 with SMTP id
+ 38308e7fff4ca-2ea951a9e43mr11151361fa.42.1717157073943; 
  Fri, 31 May 2024 05:04:33 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.32
+ 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 05:04:32 -0700 (PDT)
+ Fri, 31 May 2024 05:04:33 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 42/43] target/arm: Implement FEAT WFxT and enable for '-cpu max'
-Date: Fri, 31 May 2024 13:04:00 +0100
-Message-Id: <20240531120401.394550-43-peter.maydell@linaro.org>
+Subject: [PULL 43/43] hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or OUT
+Date: Fri, 31 May 2024 13:04:01 +0100
+Message-Id: <20240531120401.394550-44-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531120401.394550-1-peter.maydell@linaro.org>
 References: <20240531120401.394550-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,385 +90,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_WFxT introduces new instructions WFIT and WFET, which are like
-the existing WFI and WFE but allow the guest to pass a timeout value
-in a register.  The instructions will wait for an interrupt/event as
-usual, but will also stop waiting when the value of CNTVCT_EL0 is
-greater than or equal to the specified timeout value.
+From: David Hubbard <dmamfmgm@gmail.com>
 
-We implement WFIT by setting up a timer to expire at the right
-point; when the timer expires it sets the EXITTB interrupt, which
-will cause the CPU to leave the halted state. If we come out of
-halt for some other reason, we unset the pending timer.
+This changes the ohci validation to not assert if invalid data is fed to the
+ohci controller. The poc in https://bugs.launchpad.net/qemu/+bug/1907042 and
+migrated to bug #303 does the following to feed it a SETUP pid (valid)
+at an EndPt of 1 (invalid - all SETUP pids must be addressed to EndPt 0):
 
-We implement WFET as a nop, which is architecturally permitted and
-matches the way we currently make WFE a nop.
+        uint32_t MaxPacket = 64;
+        uint32_t TDFormat = 0;
+        uint32_t Skip = 0;
+        uint32_t Speed = 0;
+        uint32_t Direction = 0;  /* #define OHCI_TD_DIR_SETUP 0 */
+        uint32_t EndPt = 1;
+        uint32_t FuncAddress = 0;
+        ed->attr = (MaxPacket << 16) | (TDFormat << 15) | (Skip << 14)
+                   | (Speed << 13) | (Direction << 11) | (EndPt << 7)
+                   | FuncAddress;
+        ed->tailp = /*TDQTailPntr= */ 0;
+        ed->headp = ((/*TDQHeadPntr= */ &td[0]) & 0xfffffff0)
+                   | (/* ToggleCarry= */ 0 << 1);
+        ed->next_ed = (/* NextED= */ 0 & 0xfffffff0)
 
+qemu-fuzz also caught the same issue in #1510. They are both fixed by this
+patch.
+
+With a tiny OS[1] that boots and executes the poc the repro shows the issue:
+
+* OS that sends USB requests to a USB mass storage device
+  but sends a SETUP with EndPt = 1
+* qemu 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.19)
+* qemu HEAD (4e66a0854)
+* Actual OHCI controller (hardware)
+
+Command line:
+qemu-system-x86_64 -m 20 \
+ -device pci-ohci,id=ohci \
+ -drive if=none,format=raw,id=d,file=testmbr.raw \
+ -device usb-storage,bus=ohci.0,drive=d \
+ --trace "usb_*" --trace "ohci_*" -D qemu.log
+
+Results are:
+
+ qemu 6.2.0 | qemu HEAD | actual HW
+------------+-----------+----------------
+ assertion  | assertion | sets stall bit
+
+The assertion message is:
+
+> qemu-system-x86_64: ../../hw/usb/core.c:744: usb_ep_get: Assertion `pid == USB_TOKEN_IN || pid == USB_TOKEN_OUT' failed.
+> Aborted (core dumped)
+
+Tip: if the flags "-serial pty -serial stdio" are added to the command line
+the poc outputs its USB requests like this:
+
+> Free mem 2M ohci port0 conn FS
+> setup { 80 6 0 1 0 0 8 0 }
+> ED info=80000 { mps=8 en=0 d=0 } tail=c20920
+>   td0 c20880 nxt=c20960 f2000000 setup cbp=c20900 be=c20907       cbp=0 be=c20907
+>   td1 c20960 nxt=c20980 f3140000    in cbp=c20908 be=c2090f       cbp=0 be=c2090f
+>   td2 c20980 nxt=c20920 f3080000   out cbp=0 be=0                 cbp=0 be=0
+>    rx { 12 1 0 2 0 0 0 8 }
+> setup { 0 5 1 0 0 0 0 0 } tx {}
+> ED info=80000 { mps=8 en=0 d=0 } tail=c20880
+>   td0 c20920 nxt=c20960 f2000000 setup cbp=c20900 be=c20907       cbp=0 be=c20907
+>   td1 c20960 nxt=c20880 f3100000    in cbp=0 be=0                 cbp=0 be=0
+> setup { 80 6 0 1 0 0 12 0 }
+> ED info=80081 { mps=8 en=0 d=1 } tail=c20960
+>   td0 c20880 nxt=c209c0 f2000000 setup cbp=c20920 be=c20927
+>   td1 c209c0 nxt=c209e0 f3140000    in cbp=c20928 be=c20939
+>   td2 c209e0 nxt=c20960 f3080000   out cbp=0 be=0qemu-system-x86_64: ../../hw/usb/core.c:744: usb_ep_get: Assertion `pid == USB_TOKEN_IN || pid == USB_TOKEN_OUT' failed.
+> Aborted (core dumped)
+
+[1] The OS disk image has been emailed to philmd@linaro.org, mjt@tls.msk.ru,
+and kraxel@redhat.com:
+
+* testBadSetup.img.xz
+* sha256: 045b43f4396de02b149518358bf8025d5ba11091e86458875339fc649e6e5ac6
+
+Signed-off-by: David Hubbard <dmamfmgm@gmail.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[PMM: authorship and signed-off-by tag names fixed up as
+ per on-list agreement]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240430140035.3889879-3-peter.maydell@linaro.org
 ---
- docs/system/arm/emulation.rst  |  1 +
- target/arm/cpu-features.h      |  5 ++++
- target/arm/cpu.h               |  3 ++
- target/arm/helper.h            |  1 +
- target/arm/internals.h         |  8 +++++
- target/arm/tcg/a64.decode      |  4 +++
- target/arm/cpu.c               | 40 +++++++++++++++++++++++++
- target/arm/helper.c            |  4 +--
- target/arm/machine.c           | 20 +++++++++++++
- target/arm/tcg/cpu64.c         |  1 +
- target/arm/tcg/op_helper.c     | 54 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-a64.c | 41 ++++++++++++++++++++++++++
- 12 files changed, 180 insertions(+), 2 deletions(-)
+ hw/usb/hcd-ohci.c   | 5 +++++
+ hw/usb/trace-events | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 7fcea54d8db..1a06a5feb6e 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -146,6 +146,7 @@ the following architecture extensions:
- - FEAT_UAO (Unprivileged Access Override control)
- - FEAT_VHE (Virtualization Host Extensions)
- - FEAT_VMID16 (16-bit VMID)
-+- FEAT_WFxT (WFE and WFI instructions with timeout)
- - FEAT_XNX (Translation table stage 2 Unprivileged Execute-never)
- 
- For information on the specifics of these extensions, please refer
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index b300d0446d8..c59ca104fe1 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -571,6 +571,11 @@ static inline bool isar_feature_aa64_i8mm(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, I8MM) != 0;
- }
- 
-+static inline bool isar_feature_aa64_wfxt(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, WFXT) >= 2;
-+}
-+
- static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
- {
-     return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index c17264c2390..3841359d0f1 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -866,6 +866,9 @@ struct ArchCPU {
-      * pmu_op_finish() - it does not need other handling during migration
-      */
-     QEMUTimer *pmu_timer;
-+    /* Timer used for WFxT timeouts */
-+    QEMUTimer *wfxt_timer;
-+
-     /* GPIO outputs for generic timer */
-     qemu_irq gt_timer_outputs[NUM_GTIMERS];
-     /* GPIO output for GICv3 maintenance interrupt signal */
-diff --git a/target/arm/helper.h b/target/arm/helper.h
-index 24feecee9b4..eca2043fc2a 100644
---- a/target/arm/helper.h
-+++ b/target/arm/helper.h
-@@ -53,6 +53,7 @@ DEF_HELPER_2(exception_pc_alignment, noreturn, env, tl)
- DEF_HELPER_1(setend, void, env)
- DEF_HELPER_2(wfi, void, env, i32)
- DEF_HELPER_1(wfe, void, env)
-+DEF_HELPER_2(wfit, void, env, i64)
- DEF_HELPER_1(yield, void, env)
- DEF_HELPER_1(pre_hvc, void, env)
- DEF_HELPER_2(pre_smc, void, env, i32)
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index ee3ebd383e1..11b5da2562f 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1770,4 +1770,12 @@ bool check_watchpoint_in_range(int i, target_ulong addr);
- CPUWatchpoint *find_hw_watchpoint(CPUState *cpu, target_ulong addr);
- int insert_hw_watchpoint(target_ulong addr, target_ulong len, int type);
- int delete_hw_watchpoint(target_ulong addr, target_ulong len, int type);
-+
-+/* Return the current value of the system counter in ticks */
-+uint64_t gt_get_countervalue(CPUARMState *env);
-+/*
-+ * Return the currently applicable offset between the system counter
-+ * and CNTVCT_EL0 (this will be either 0 or the value of CNTVOFF_EL2).
-+ */
-+uint64_t gt_virt_cnt_offset(CPUARMState *env);
- #endif
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index 5dadbc74d73..2b7a3254a0e 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -230,6 +230,10 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
-   NOP           1101 0101 0000 0011 0010 ---- --- 11111
- }
- 
-+# System instructions with register argument
-+WFET            1101 0101 0000 0011 0001 0000 000 rd:5
-+WFIT            1101 0101 0000 0011 0001 0000 001 rd:5
-+
- # Barriers
- 
- CLREX           1101 0101 0000 0011 0011 ---- 010 11111
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 77f8c9c7483..35fa281f1b9 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1132,6 +1132,35 @@ static bool arm_cpu_virtio_is_big_endian(CPUState *cs)
-     return arm_cpu_data_is_big_endian(env);
- }
- 
-+#ifdef CONFIG_TCG
-+static bool arm_cpu_exec_halt(CPUState *cs)
-+{
-+    bool leave_halt = cpu_has_work(cs);
-+
-+    if (leave_halt) {
-+        /* We're about to come out of WFI/WFE: disable the WFxT timer */
-+        ARMCPU *cpu = ARM_CPU(cs);
-+        if (cpu->wfxt_timer) {
-+            timer_del(cpu->wfxt_timer);
+diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
+index fc8fc91a1d1..acd60169802 100644
+--- a/hw/usb/hcd-ohci.c
++++ b/hw/usb/hcd-ohci.c
+@@ -927,6 +927,11 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
+     case OHCI_TD_DIR_SETUP:
+         str = "setup";
+         pid = USB_TOKEN_SETUP;
++        if (OHCI_BM(ed->flags, ED_EN) > 0) {  /* setup only allowed to ep 0 */
++            trace_usb_ohci_td_bad_pid(str, ed->flags, td.flags);
++            ohci_die(ohci);
++            return 1;
 +        }
-+    }
-+    return leave_halt;
-+}
-+#endif
-+
-+static void arm_wfxt_timer_cb(void *opaque)
-+{
-+    ARMCPU *cpu = opaque;
-+    CPUState *cs = CPU(cpu);
-+
-+    /*
-+     * We expect the CPU to be halted; this will cause arm_cpu_is_work()
-+     * to return true (so we will come out of halt even with no other
-+     * pending interrupt), and the TCG accelerator's cpu_exec_interrupt()
-+     * function auto-clears the CPU_INTERRUPT_EXITTB flag for us.
-+     */
-+    cpu_interrupt(cs, CPU_INTERRUPT_EXITTB);
-+}
- #endif
- 
- static void arm_disas_set_info(CPUState *cpu, disassemble_info *info)
-@@ -1877,6 +1906,9 @@ static void arm_cpu_finalizefn(Object *obj)
-     if (cpu->pmu_timer) {
-         timer_free(cpu->pmu_timer);
-     }
-+    if (cpu->wfxt_timer) {
-+        timer_free(cpu->wfxt_timer);
-+    }
- #endif
- }
- 
-@@ -2369,6 +2401,13 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
- #endif
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-+    if (tcg_enabled() && cpu_isar_feature(aa64_wfxt, cpu)) {
-+        cpu->wfxt_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                       arm_wfxt_timer_cb, cpu);
-+    }
-+#endif
-+
-     if (tcg_enabled()) {
-         /*
-          * Don't report some architectural features in the ID registers
-@@ -2625,6 +2664,7 @@ static const TCGCPUOps arm_tcg_ops = {
- #else
-     .tlb_fill = arm_cpu_tlb_fill,
-     .cpu_exec_interrupt = arm_cpu_exec_interrupt,
-+    .cpu_exec_halt = arm_cpu_exec_halt,
-     .do_interrupt = arm_cpu_do_interrupt,
-     .do_transaction_failed = arm_cpu_do_transaction_failed,
-     .do_unaligned_access = arm_cpu_do_unaligned_access,
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 75876359608..ce319572354 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -2665,7 +2665,7 @@ static CPAccessResult gt_stimer_access(CPUARMState *env,
-     }
- }
- 
--static uint64_t gt_get_countervalue(CPUARMState *env)
-+uint64_t gt_get_countervalue(CPUARMState *env)
- {
-     ARMCPU *cpu = env_archcpu(env);
- 
-@@ -2800,7 +2800,7 @@ static uint64_t gt_cnt_read(CPUARMState *env, const ARMCPRegInfo *ri)
-     return gt_get_countervalue(env) - gt_phys_cnt_offset(env);
- }
- 
--static uint64_t gt_virt_cnt_offset(CPUARMState *env)
-+uint64_t gt_virt_cnt_offset(CPUARMState *env)
- {
-     uint64_t hcr;
- 
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index b2b39b24755..0a722ca7e75 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -242,6 +242,25 @@ static const VMStateDescription vmstate_irq_line_state = {
-     }
- };
- 
-+static bool wfxt_timer_needed(void *opaque)
-+{
-+    ARMCPU *cpu = opaque;
-+
-+    /* We'll only have the timer object if FEAT_WFxT is implemented */
-+    return cpu->wfxt_timer;
-+}
-+
-+static const VMStateDescription vmstate_wfxt_timer = {
-+    .name = "cpu/wfxt-timer",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = wfxt_timer_needed,
-+    .fields = (const VMStateField[]) {
-+        VMSTATE_TIMER_PTR(wfxt_timer, ARMCPU),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- static bool m_needed(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-@@ -957,6 +976,7 @@ const VMStateDescription vmstate_arm_cpu = {
- #endif
-         &vmstate_serror,
-         &vmstate_irq_line_state,
-+        &vmstate_wfxt_timer,
-         NULL
-     }
- };
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index da41a44f75b..0899251eef4 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1168,6 +1168,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = cpu->isar.id_aa64isar2;
-     t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
-     t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
-+    t = FIELD_DP64(t, ID_AA64ISAR2, WFXT, 2);     /* FEAT_WFxT */
-     cpu->isar.id_aa64isar2 = t;
- 
-     t = cpu->isar.id_aa64pfr0;
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index c199b69fbff..c083e5cfb87 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -409,6 +409,60 @@ void HELPER(wfi)(CPUARMState *env, uint32_t insn_len)
- #endif
- }
- 
-+void HELPER(wfit)(CPUARMState *env, uint64_t timeout)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    /*
-+     * WFI in the user-mode emulator is technically permitted but not
-+     * something any real-world code would do. AArch64 Linux kernels
-+     * trap it via SCTRL_EL1.nTWI and make it an (expensive) NOP;
-+     * AArch32 kernels don't trap it so it will delay a bit.
-+     * For QEMU, make it NOP here, because trying to raise EXCP_HLT
-+     * would trigger an abort.
-+     */
-+    return;
-+#else
-+    ARMCPU *cpu = env_archcpu(env);
-+    CPUState *cs = env_cpu(env);
-+    int target_el = check_wfx_trap(env, false);
-+    /* The WFIT should time out when CNTVCT_EL0 >= the specified value. */
-+    uint64_t cntval = gt_get_countervalue(env);
-+    uint64_t offset = gt_virt_cnt_offset(env);
-+    uint64_t cntvct = cntval - offset;
-+    uint64_t nexttick;
-+
-+    if (cpu_has_work(cs) || cntvct >= timeout) {
-+        /*
-+         * Don't bother to go into our "low power state" if
-+         * we would just wake up immediately.
-+         */
-+        return;
-+    }
-+
-+    if (target_el) {
-+        env->pc -= 4;
-+        raise_exception(env, EXCP_UDEF, syn_wfx(1, 0xe, 0, false),
-+                        target_el);
-+    }
-+
-+    if (uadd64_overflow(timeout, offset, &nexttick)) {
-+        nexttick = UINT64_MAX;
-+    }
-+    if (nexttick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-+        /*
-+         * If the timeout is too long for the signed 64-bit range
-+         * of a QEMUTimer, let it expire early.
-+         */
-+        timer_mod_ns(cpu->wfxt_timer, INT64_MAX);
-+    } else {
-+        timer_mod(cpu->wfxt_timer, nexttick);
-+    }
-+    cs->exception_index = EXCP_HLT;
-+    cs->halted = 1;
-+    cpu_loop_exit(cs);
-+#endif
-+}
-+
- void HELPER(wfe)(CPUARMState *env)
- {
-     /* This is a hint instruction that is semantically different
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index f1dea5834c4..93543da39cc 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1745,6 +1745,47 @@ static bool trans_WFE(DisasContext *s, arg_WFI *a)
-     return true;
- }
- 
-+static bool trans_WFIT(DisasContext *s, arg_WFIT *a)
-+{
-+    if (!dc_isar_feature(aa64_wfxt, s)) {
-+        return false;
-+    }
-+
-+    /*
-+     * Because we need to pass the register value to the helper,
-+     * it's easier to emit the code now, unlike trans_WFI which
-+     * defers it to aarch64_tr_tb_stop(). That means we need to
-+     * check ss_active so that single-stepping a WFIT doesn't halt.
-+     */
-+    if (s->ss_active) {
-+        /* Act like a NOP under architectural singlestep */
-+        return true;
-+    }
-+
-+    gen_a64_update_pc(s, 4);
-+    gen_helper_wfit(tcg_env, cpu_reg(s, a->rd));
-+    /* Go back to the main loop to check for interrupts */
-+    s->base.is_jmp = DISAS_EXIT;
-+    return true;
-+}
-+
-+static bool trans_WFET(DisasContext *s, arg_WFET *a)
-+{
-+    if (!dc_isar_feature(aa64_wfxt, s)) {
-+        return false;
-+    }
-+
-+    /*
-+     * We rely here on our WFE implementation being a NOP, so we
-+     * don't need to do anything different to handle the WFET timeout
-+     * from what trans_WFE does.
-+     */
-+    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
-+        s->base.is_jmp = DISAS_WFE;
-+    }
-+    return true;
-+}
-+
- static bool trans_XPACLRI(DisasContext *s, arg_XPACLRI *a)
- {
-     if (s->pauth_active) {
+         break;
+     default:
+         trace_usb_ohci_td_bad_direction(dir);
+diff --git a/hw/usb/trace-events b/hw/usb/trace-events
+index ed7dc210d3f..fd7b90d70c0 100644
+--- a/hw/usb/trace-events
++++ b/hw/usb/trace-events
+@@ -28,6 +28,7 @@ usb_ohci_iso_td_data_overrun(int ret, ssize_t len) "DataOverrun %d > %zu"
+ usb_ohci_iso_td_data_underrun(int ret) "DataUnderrun %d"
+ usb_ohci_iso_td_nak(int ret) "got NAK/STALL %d"
+ usb_ohci_iso_td_bad_response(int ret) "Bad device response %d"
++usb_ohci_td_bad_pid(const char *s, uint32_t edf, uint32_t tdf) "Bad pid %s: ed.flags 0x%x td.flags 0x%x"
+ usb_ohci_port_attach(int index) "port #%d"
+ usb_ohci_port_detach(int index) "port #%d"
+ usb_ohci_port_wakeup(int index) "port #%d"
 -- 
 2.34.1
 
