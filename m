@@ -2,53 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EFE8D6953
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 21:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039A58D6955
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 21:00:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD7Sm-0004JN-Ia; Fri, 31 May 2024 14:58:52 -0400
+	id 1sD7Sp-0004KR-8f; Fri, 31 May 2024 14:58:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sD7Sk-0004JE-Hp
- for qemu-devel@nongnu.org; Fri, 31 May 2024 14:58:50 -0400
+ id 1sD7Sm-0004Jq-IR
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 14:58:52 -0400
 Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1sD7Si-0002bf-25
- for qemu-devel@nongnu.org; Fri, 31 May 2024 14:58:50 -0400
+ id 1sD7Sk-0002bf-Rl
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 14:58:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717181928; x=1748717928;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Lij9uVQurRRs5/BvJvEOF0wP4CPbn2T6iMTPe7I3Lqo=;
- b=e2PveGQSuk3gdSjVOlKCaHJL0Zu/fcKGpsuz+Gd0Fa4nP048CZ6bKUmJ
- 8ujx9gEl9OWETvn8t9Fs6dmX1lmB8RTKEfLrQHTrdmXNiSykYU4n5ccvM
- /cB1FRR2qPDYVs74DVjpbOgGdiLfOlg8oGZHIciaFnXhlJ2QwR+/j6MPT
- T70ojIxvYraKpAUuk2yywnX+IZZPs9JyN7BD6WZqaKr+2WyXUfhML5OOB
- +i5fFC4nw+Q3QIzUNezNqsNBU6KHmZKRo3x7CS7IfZY2ne+0csolvn+m9
- +PScEuxx49cPpwA4hqIl42/bmRELJ4ucQ0ZfIXGuobrg1b/aZM1CbjToF w==;
-X-CSE-ConnectionGUID: gxR8xkTbSx2mSCJb744jXg==
-X-CSE-MsgGUID: 07l0OAiWT+GAj3fHQDno1w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="13965361"
-X-IronPort-AV: E=Sophos;i="6.08,205,1712646000"; d="scan'208";a="13965361"
+ t=1717181930; x=1748717930;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=FDn3+0B7b0pamU9Rghkcupt9bYANsdYgHr+E/tTlBWk=;
+ b=g4/SnCjUIqf7yH2QNyL9FmGHC2SfqMVV5eS/0PPOGNEIRwyrqURI8SW3
+ Hma0huPoRj2r06EJGWpZuJ1rxOE+VYgncGvT4Dc0TgEqn2B6F4Bvuwm8w
+ gZloVbEVPsP7JuAroZsfDIZ7W9xWE2fA7NDdETi35DcaxPzsnOTAD0eO0
+ zUK+G/oCuzlvWw+r90BpdkPcptsfZIeBMf8tO8HQBWSwpvZhHORMqXL/k
+ Eiptucw4LsBST3OiSYNJWzR4qFxR8YQIhFHzhTexQKaMjEAlCzWRUq7pB
+ HfYTP3ttDeoD2llRa706OezdrHX0qRuCKf7+cwuB1n8jMvqCcqLjkhB// A==;
+X-CSE-ConnectionGUID: mPiHZB+VQteIiOxyeKP5GA==
+X-CSE-MsgGUID: r3r0tL5xTWS9PLEb76Twzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11089"; a="13965362"
+X-IronPort-AV: E=Sophos;i="6.08,205,1712646000"; d="scan'208";a="13965362"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  31 May 2024 11:58:44 -0700
-X-CSE-ConnectionGUID: Arost7qWTnWhzSvRpUIGHg==
-X-CSE-MsgGUID: n4GP3USVScef8lGkGSixMA==
+X-CSE-ConnectionGUID: pKEFlgl7SxSzlbiPLpsq9A==
+X-CSE-MsgGUID: Jf5OF532Q4KSIrWtHHa9RQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,205,1712646000"; d="scan'208";a="67442163"
+X-IronPort-AV: E=Sophos;i="6.08,205,1712646000"; d="scan'208";a="67442164"
 Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
  by fmviesa001.fm.intel.com with ESMTP; 31 May 2024 11:58:44 -0700
 From: dongwon.kim@intel.com
 To: qemu-devel@nongnu.org
-Subject: [RFC PATCH v2 0/2] ui/gtk: Introduce new param - Connectors
-Date: Fri, 31 May 2024 11:58:02 -0700
-Message-Id: <20240531185804.119557-1-dongwon.kim@intel.com>
+Subject: [RFC PATCH v2 1/2] ui/gtk: Factor out tab window creation into a
+ separate
+Date: Fri, 31 May 2024 11:58:03 -0700
+Message-Id: <20240531185804.119557-2-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240531185804.119557-1-dongwon.kim@intel.com>
+References: <20240531185804.119557-1-dongwon.kim@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -76,51 +79,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-This patch series is a replacement of
-https://mail.gnu.org/archive/html/qemu-devel/2023-06/msg03989.html
+Pull the code that creates a new window associated with a notebook
+tab into a separate function. This new function can be useful not
+just when user wants to detach a tab but also in the future when
+a new window creation is needed in other scenarios.
 
-There is a need, expressed by several users, to assign ownership of one
-or more physical monitors/connectors to individual guests. This creates
-a clear notion of which guest's contents are being displayed on any given
-monitor. Given that there is always a display server/compositor running
-on the host, monitor ownership can never truly be transferred to guests.
-However, the closest approximation is to request the host compositor to
-fullscreen the guest's windows on individual monitors. This allows for
-various configurations, such as displaying four different guests' windows
-on four different monitors, a single guest's windows (or virtual consoles)
-on four monitors, or any similar combination.
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
+ ui/gtk.c | 65 +++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 36 insertions(+), 29 deletions(-)
 
-This patch series attempts to accomplish this by introducing a new
-parameter named "connector" to assign monitors to the GFX VCs associated
-with a guest. If the assigned monitor is not connected, the guest's window
-will not be displayed, similar to how a host compositor behaves when
-connectors are not connected. Once the monitor is hot-plugged, the guest's
-window(s) will be positioned on the assigned monitor.
-
-Usage example:
-
--display gtk,gl=on,connectors=DP-1:eDP-1:HDMI-2...
-
-In this example, the first graphics virtual console will be placed on the
-DP-1 display, the second on eDP-1, and the third on HDMI-2.
-
-v2: Connectors is now in a string format that includes all connector names
-    separated with a colon (previously it was a linked list)
-
-    Code refactoring
-
-Vivek Kasireddy (2):
-  ui/gtk: Factor out tab window creation into a separate
-  ui/gtk: Add a new parameter to assign connectors/monitors
-
- qapi/ui.json     |  25 +++-
- include/ui/gtk.h |   1 +
- ui/gtk.c         | 301 +++++++++++++++++++++++++++++++++++++++++++----
- qemu-options.hx  |   4 +
- 4 files changed, 308 insertions(+), 23 deletions(-)
-
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 93b13b7a30..3bc84090c8 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -1396,6 +1396,41 @@ static gboolean gd_win_grab(void *opaque)
+     return TRUE;
+ }
+ 
++static void gd_tab_window_create(VirtualConsole *vc)
++{
++    GtkDisplayState *s = vc->s;
++
++    gtk_widget_set_sensitive(vc->menu_item, false);
++    vc->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
++#if defined(CONFIG_OPENGL)
++    if (vc->gfx.esurface) {
++        eglDestroySurface(qemu_egl_display, vc->gfx.esurface);
++        vc->gfx.esurface = NULL;
++    }
++    if (vc->gfx.ectx) {
++        eglDestroyContext(qemu_egl_display, vc->gfx.ectx);
++        vc->gfx.ectx = NULL;
++    }
++#endif
++    gd_widget_reparent(s->notebook, vc->window, vc->tab_item);
++
++    g_signal_connect(vc->window, "delete-event",
++                     G_CALLBACK(gd_tab_window_close), vc);
++    gtk_widget_show_all(vc->window);
++
++    if (qemu_console_is_graphic(vc->gfx.dcl.con)) {
++        GtkAccelGroup *ag = gtk_accel_group_new();
++        gtk_window_add_accel_group(GTK_WINDOW(vc->window), ag);
++
++        GClosure *cb = g_cclosure_new_swap(G_CALLBACK(gd_win_grab),
++                                           vc, NULL);
++        gtk_accel_group_connect(ag, GDK_KEY_g, HOTKEY_MODIFIERS, 0, cb);
++    }
++
++    gd_update_geometry_hints(vc);
++    gd_update_caption(s);
++}
++
+ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
+ {
+     GtkDisplayState *s = opaque;
+@@ -1407,35 +1442,7 @@ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
+                                        FALSE);
+     }
+     if (!vc->window) {
+-        gtk_widget_set_sensitive(vc->menu_item, false);
+-        vc->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+-#if defined(CONFIG_OPENGL)
+-        if (vc->gfx.esurface) {
+-            eglDestroySurface(qemu_egl_display, vc->gfx.esurface);
+-            vc->gfx.esurface = NULL;
+-        }
+-        if (vc->gfx.ectx) {
+-            eglDestroyContext(qemu_egl_display, vc->gfx.ectx);
+-            vc->gfx.ectx = NULL;
+-        }
+-#endif
+-        gd_widget_reparent(s->notebook, vc->window, vc->tab_item);
+-
+-        g_signal_connect(vc->window, "delete-event",
+-                         G_CALLBACK(gd_tab_window_close), vc);
+-        gtk_widget_show_all(vc->window);
+-
+-        if (qemu_console_is_graphic(vc->gfx.dcl.con)) {
+-            GtkAccelGroup *ag = gtk_accel_group_new();
+-            gtk_window_add_accel_group(GTK_WINDOW(vc->window), ag);
+-
+-            GClosure *cb = g_cclosure_new_swap(G_CALLBACK(gd_win_grab),
+-                                               vc, NULL);
+-            gtk_accel_group_connect(ag, GDK_KEY_g, HOTKEY_MODIFIERS, 0, cb);
+-        }
+-
+-        gd_update_geometry_hints(vc);
+-        gd_update_caption(s);
++        gd_tab_window_create(vc);
+     }
+ }
+ 
 -- 
 2.34.1
 
