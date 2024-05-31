@@ -2,94 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7BF8D5D1A
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 10:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8078D5D46
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 10:55:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCxvi-0007iC-HB; Fri, 31 May 2024 04:48:06 -0400
+	id 1sCy2W-0001SH-2d; Fri, 31 May 2024 04:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCxvg-0007i0-CR
- for qemu-devel@nongnu.org; Fri, 31 May 2024 04:48:04 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1sCy2T-0001Rj-Np
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 04:55:05 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1sCxve-0001lo-I4
- for qemu-devel@nongnu.org; Fri, 31 May 2024 04:48:04 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-42108739ed8so23457425e9.0
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 01:48:02 -0700 (PDT)
+ id 1sCy2G-0002n6-DJ
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 04:55:05 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2e95a883101so22914521fa.3
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 01:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717145281; x=1717750081; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717145690; x=1717750490; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:references
  :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=meoL7WfK42ojhKeIQHmQAYOy8DiET5LFPofSDuIY/tE=;
- b=KUvUhsENI/Wfuo8465Tu9eRxqwoxgXyxkv1v7pz5MRed6xE7hFzoaKzOMoTpHNqN27
- M4lW65eWl9/FU2pVxr5BJqzSXOuF11hgRvAxsEVFdQ/jwcQLrbo4wKCwjxzTE5eF+keK
- E0XBuIPGyt/VIfBWmRmSJ/EMN9BmtPyEQs6Inz92BnqBLNfuAnByBwkxSvNy0juUlNhR
- XJGF5neiP7oTc6LpxEWvVBiwUfOsVsoIIqi0HTjGW7Xg52XB0C3w2uOW83r7T+HXBjk9
- DGAuOgOCCsgW2nLzYIgLmQsW0anOql9or5soS6ggJGwq9FjBY5a4is4H/BAm2p25inzL
- xSEQ==
+ :reply-to; bh=VrgJTgeAAl1au5Fidn5pQCDvRiIJj0Ygg8BOKpU/iI8=;
+ b=JT8wMLuD9x2f3dQu0Dcz9MWuT5WYVIXlYDkwOgd04n8K5QcQzNJ+nJxOJRQsiQPnlD
+ uuhQHYN8rPzqNLLcUhaD3PxKcRRn83Cyvzl03R55iKXHRA0QJA/MldUIydAVZvceo5FD
+ fjSwONafrb/NZ6/NZwob2BqZFKLbIFbCfNAWSgIHXfdAtP+bsYUERhKWhI30hRIBmRKX
+ igCp7yDTZl41oxaNfKpnq9v9qt+gGCe/h4Ny/CChJAIepE6CScTzsZ5pTJdFebAXX7E3
+ jyHnPmJ9XqX92ReZf2/v7x3P5sgQSwZmcQA5pMGLWoowWS+MG7wxYaZkBolQHdJEOYej
+ H2Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717145281; x=1717750081;
+ d=1e100.net; s=20230601; t=1717145690; x=1717750490;
  h=content-transfer-encoding:mime-version:message-id:date:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=meoL7WfK42ojhKeIQHmQAYOy8DiET5LFPofSDuIY/tE=;
- b=RAV6mIetEnixI9yCxynAyMMFZ071VybcvRYF1/yO+cFEDGf6fDfMHxEtE0p2zB1S7n
- sbOksOec4HgmbdOESWvC+UdCV8Tn/tnJ4WfDXxev64oIdXf/UYFKj7HxatJIUqywribI
- oV5Ch9RCn9DsWBPtrlY64SWolm9jaUBPTOvOuP63HAHW76MTnWVBIA2D3YvfdxPCmNnd
- c9egxELMRi6tKLmr3Hs9+Ll8pBizd9CC6oJeGiwo37zl3mj2qxHFJ0x7IA3845RGx9MW
- 16nvQrM3uIe4O4srcdAuidc6t08zLsSNBwmKSemhcL5s3fvtoe3KY7WTuKxgcllAzLsh
- mivg==
-X-Gm-Message-State: AOJu0YxwVyH31/QKA3Al+0dAZzeoDUiaQoP1mE5QDS0JQv3ri8a+b5Ao
- i5p3WXrAXR/3+GZy5jEQdLvQ3HHDDom0pZyV3hoLP78POf1faQrGovHpLROi6LQ=
-X-Google-Smtp-Source: AGHT+IEV4VB90Yp5BlcabsTwRd4BgRHuw3uHX/14npi+yUJEgcNk6X77K92oI3w52Eu/2/hHdMqhmg==
-X-Received: by 2002:a05:600c:4f46:b0:421:212c:c963 with SMTP id
- 5b1f17b1804b1-4212e075949mr12173695e9.20.1717145280676; 
- Fri, 31 May 2024 01:48:00 -0700 (PDT)
+ bh=VrgJTgeAAl1au5Fidn5pQCDvRiIJj0Ygg8BOKpU/iI8=;
+ b=G5vXoJnispNzb8Je0xkz1Py496EU0g+VnTc+GWW4SSuuO3x3OMusPOCQLXFM1Z/rjJ
+ eCK3ktmFL1hTrc1Dx9ymvkyfBi3SsNigRjXxH0HziNrx72of2FbwNybN20zcZ/J2Z26A
+ RQk7HItwpFHIs5Gk0NxNI+jlqkFRZRjAUHlEq47wqG0RTjVxZTTyNEGyEsfHAwGQwQ1S
+ plKinsfkcXLyAPhMSw3w6oEKKmfDy39gUEPMvgYqu+IN2yRCicXHPTqYnoqHibqAxwUZ
+ 2GEBInOf/qymBVvYUsc5M4oBHGm4S0djoIdQhJQTHu3NpuIZRxVTOVMtykuxfevNHwKV
+ xF7A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWDLmHrODh3QSd+1xfJjAvoT+rPSWEdvYXLbPNzZszH+Fcm+ZyEVWiLdqPkfybbfNjy0R6GUjO+lwTGECicSm2mYir8eKk=
+X-Gm-Message-State: AOJu0YwT2OaN3QDsaFdEXs6UgqoQaneFakv73PVrGt8p8qcNxq8/BbZ8
+ jy4G7WwQHsGHAhK9tH8vRKGMIQBOzJU47UmSnFZ83jxWHetIXtuxeh6pDSOdqKdXBWn9Xe9peCA
+ N
+X-Google-Smtp-Source: AGHT+IGeAXDAHNYj3s9qKzVwzxHq4uWfMQErpDOFvq24dYp5s0YzspKEQqb/6bM6I6nKfay9b2cPaw==
+X-Received: by 2002:a05:651c:218:b0:2da:d2b8:ffb0 with SMTP id
+ 38308e7fff4ca-2ea951aa973mr10098371fa.41.1717145690113; 
+ Fri, 31 May 2024 01:54:50 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4212b84ae09sm18355335e9.18.2024.05.31.01.48.00
+ 5b1f17b1804b1-4212709d341sm48435605e9.36.2024.05.31.01.54.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 01:48:00 -0700 (PDT)
+ Fri, 31 May 2024 01:54:49 -0700 (PDT)
 Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id BB0EE5F747;
- Fri, 31 May 2024 09:47:59 +0100 (BST)
+ by draig.lan (Postfix) with ESMTP id 1D6A85F747;
+ Fri, 31 May 2024 09:54:49 +0100 (BST)
 From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cameron Esfahani <dirty@apple.com>,  Alexandre Iooss <erdnaxe@crans.org>,
- Yanan Wang <wangyanan55@huawei.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Eduardo Habkost <eduardo@habkost.net>,  Sunil
- Muthuswamy <sunilmut@microsoft.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Pierrick Bouvier
- <pierrick.bouvier@linaro.org>,  Mahmoud Mandour <ma.mandourr@gmail.com>,
- Reinoud Zandijk <reinoud@netbsd.org>,  kvm@vger.kernel.org,  Roman
- Bolshakov <rbolshakov@ddn.com>
-Subject: Re: [PATCH 5/5] core/cpu-common: initialise plugin state before
- thread creation
-In-Reply-To: <1c950cd6-9ee0-4b40-b9d6-3cc422046d65@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 31 May 2024 09:26:55
- +0200")
-References: <20240530194250.1801701-1-alex.bennee@linaro.org>
- <20240530194250.1801701-6-alex.bennee@linaro.org>
- <1c950cd6-9ee0-4b40-b9d6-3cc422046d65@linaro.org>
-Date: Fri, 31 May 2024 09:47:59 +0100
-Message-ID: <87a5k6cqps.fsf@draig.linaro.org>
+To: Brian Cain <quic_bcain@quicinc.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,  <qemu-devel@nongnu.org>
+Subject: Re: [Semihosting Tests PATCH v2 1/3] .editorconfig: add code
+ conventions for tooling
+In-Reply-To: <e6bfd903-566e-4e1d-aeaf-efc798b36a92@quicinc.com> (Brian Cain's
+ message of "Thu, 30 May 2024 10:22:03 -0500")
+References: <20240530112332.1439238-1-alex.bennee@linaro.org>
+ <20240530112332.1439238-2-alex.bennee@linaro.org>
+ <e6bfd903-566e-4e1d-aeaf-efc798b36a92@quicinc.com>
+Date: Fri, 31 May 2024 09:54:49 +0100
+Message-ID: <875xuucqee.fsf@draig.linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,77 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Brian Cain <quic_bcain@quicinc.com> writes:
 
-> On 30/5/24 21:42, Alex Benn=C3=A9e wrote:
->> Originally I tried to move where vCPU thread initialisation to later
->> in realize. However pulling that thread (sic) got gnarly really
->> quickly. It turns out some steps of CPU realization need values that
->> can only be determined from the running vCPU thread.
->
-> FYI:
-> https://lore.kernel.org/qemu-devel/20240528145953.65398-6-philmd@linaro.o=
-rg/
-
-But this still has it in realize which would still race as the threads
-are started before we call the common realize functions.
-
->
->> However having moved enough out of the thread creation we can now
->> queue work before the thread starts (at least for TCG guests) and
->> avoid the race between vcpu_init and other vcpu states a plugin might
->> subscribe to.
+> On 5/30/2024 6:23 AM, Alex Benn=C3=A9e wrote:
+>> It's a pain when you come back to a code base you haven't touched in a
+>> while and realise whatever indent settings you were using having
+>> carried over. Add an editorconfig and be done with it.
+>>
 >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> ---
->>   hw/core/cpu-common.c | 20 ++++++++++++--------
->>   1 file changed, 12 insertions(+), 8 deletions(-)
->> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
->> index 6cfc01593a..bf1a7b8892 100644
->> --- a/hw/core/cpu-common.c
->> +++ b/hw/core/cpu-common.c
->> @@ -222,14 +222,6 @@ static void cpu_common_realizefn(DeviceState *dev, =
-Error **errp)
->>           cpu_resume(cpu);
->>       }
->>   -    /* Plugin initialization must wait until the cpu start
->> executing code */
->> -#ifdef CONFIG_PLUGIN
->> -    if (tcg_enabled()) {
->> -        cpu->plugin_state =3D qemu_plugin_create_vcpu_state();
->> -        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_=
-NULL);
->> -    }
->> -#endif
->> -
->>       /* NOTE: latest generic point where the cpu is fully realized */
->>   }
->>   @@ -273,6 +265,18 @@ static void cpu_common_initfn(Object *obj)
->>       QTAILQ_INIT(&cpu->watchpoints);
->>         cpu_exec_initfn(cpu);
->> +
->> +    /*
->> +     * Plugin initialization must wait until the cpu start executing
->> +     * code, but we must queue this work before the threads are
->> +     * created to ensure we don't race.
->> +     */
->> +#ifdef CONFIG_PLUGIN
->> +    if (tcg_enabled()) {
->> +        cpu->plugin_state =3D qemu_plugin_create_vcpu_state();
 >
-> Per https://etherpad.opendev.org/p/QEMU_vCPU_life, plugin_state could
-> be initialized in AccelCPUClass::cpu_instance_init (although this
-> callback is called at CPUClass::instance_post_init which I haven't
-> yet figured why).
-
-Why are x86 and RiscV special in terms of calling this function?
-
 >
->> +        async_run_on_cpu(cpu, qemu_plugin_vcpu_init__async, RUN_ON_CPU_=
-NULL);
->> +    }
->> +#endif
->>   }
->>     static void cpu_common_finalize(Object *obj)
+> Adding an editorconfig seems like a great idea IMO.=C2=A0 But I wonder -
+> will it result in unintentional additional changes when saving a file
+> that contains baseline non-conformance?
+
+This is for the semihosting tests, we have had an editorconfig in the
+mainline QEMU repo for a long time. Generally it's just standardising
+what people usually hand configure their editors for which can range in
+their aggressiveness in reformatting existing code.
+
+> Related: would a .clang-format file also be useful? git-clang-format
+> can be used to apply formatting changes only on the code that's been
+> changed.
+
+As a pre-commit hook? Or via something like clangd?=20
+
+> Also: should we consider excluding any exceptional files that we don't
+> expect to conform?
+
+Do we have such files? We certainly have a bunch of legacy whitespace
+damage hanging about but I didn't think we had a lot of non-conforming
+files.
+
+<snip>
 
 --=20
 Alex Benn=C3=A9e
