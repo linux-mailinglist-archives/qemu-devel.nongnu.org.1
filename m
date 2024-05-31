@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C868D685B
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 19:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4808A8D6869
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 19:47:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD6Jp-0001q1-Ld; Fri, 31 May 2024 13:45:33 -0400
+	id 1sD6Ju-0001s1-4D; Fri, 31 May 2024 13:45:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sD6Jn-0001na-Jj
- for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:31 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1sD6Jr-0001qy-5q
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:35 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sD6Jk-0007YG-Id
- for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:31 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1f612d7b0f5so14727105ad.0
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 10:45:28 -0700 (PDT)
+ id 1sD6Jp-0007cO-CU
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:34 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1f44b45d6abso16475715ad.0
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 10:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1717177527; x=1717782327; darn=nongnu.org;
+ d=sifive.com; s=google; t=1717177532; x=1717782332; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E78ZGy3OpFHzGq7HIlOvBGwIH3ekaZUgpTv+1PnTGBc=;
- b=FlgR1ZAnRfbSXr8atAAqIt02wICb46u/x2dkAwJ5xqeBjWoZ5TQzyDlrhR6wYDUZP2
- vYfWNoDXTcewrcFskZW/7PGAC9SKuu/7oZfXXQRVkJ98HpzkCNeV/ZePDM2zZQJcreWh
- 7mrzNM/YWvtnIH7WHD0KUARxOlFu9daa/YxZCiONe5xBquWtPvOP2NRsH2L1rg4Q4AxJ
- 4NBYNNH6iMISSxI/6D8gSNVay7yLMKabIPt4QvYfNYR2i3DaiLJHlwBgp4F4CAidjyCc
- Mu4seL6zOrSlpYtv64UUxWsHqExI4DIxN7mz7EoeUUjtSMO2E8SMWDN8vQTklgmNZjVA
- REoQ==
+ bh=VglV/qt6rHvbvSgSjaTMT0boXZYOnbayc2OjwjqMVsk=;
+ b=Rvi7d5AWZrvm3VJKexTywZB/I2w6wKfkF5sgJ+mTSvjqE32Fc6N5gC6bX64cEYJqGC
+ qZN6hott+L2dy2Zz3ykM+RybSMszuzrRU/dBFCsh67AYYltLHCIevLQkbNb/rG5NRxXt
+ Na9R8xBlESB06aS4+rhghZns4o/AFbUIhQDk2QsrwNjbMj5qFjorDgO//XDIpZRExJAn
+ L4GcvvXJcvwIazXJsE2jzDB2yaKdLdgENh774ZiH3EpQ6FfpTVDE9+KisWTdvEZis++L
+ MmpAmaMcndkkAE8GPEX/NkkOkCwzHKHM89fxeNchlZv6suu3LnMb/MdGEO0dmUu5aQMQ
+ Fmtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717177527; x=1717782327;
+ d=1e100.net; s=20230601; t=1717177532; x=1717782332;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E78ZGy3OpFHzGq7HIlOvBGwIH3ekaZUgpTv+1PnTGBc=;
- b=vcRZ2w3wV/ju0vch1gq2OppiPYv1IWfqYFi6EG/pZOMnPdvlLdSODrDZGVpF2FTI8X
- qQYg0+RfmNYestK/CCFGdAFqofDnKF8N/WUVRX+BrsA2awZgx0mefYxvYlkXE+n78Z6f
- SzdoI6OugVVMDWgMArXXqn+zWJrDHqZdFCkqjtMh/ijrjMsSjq13k7qjaBrTq4PFQ6iR
- CYM1WzGy1ltqf/xMYjTkFXLf5DQYDl8dtcQT2V8GaXQx8hpAw2tcUxhHs5BrGCWimNBu
- Prv0oVxwG44ug+abopiGX+7JbaqcEq/cO/n5vZ6GCV0iC7obSdSlFzpNL5KIgBP6lHS4
- TmEg==
-X-Gm-Message-State: AOJu0YyjeHVk8NaHNoJGZ70qYJyuoIXT+JEDhVjH6ObNUL0Kg9gFFTcQ
- a3yb131KzGo2s8tO3+NrMV5NGFw0etQrJXJaL+8RbqSuqUNSfOh1uF8HuAfbshfsejT8UWjB7n1
- Q+xMCORQ6YRDU4eYj0MT7Kb+eGd6gk8iB19jT0zp+uJBhTLWTSrfL3jFRH+eifhoiOyGzWawGZJ
- VepASYBOYfQ1sZnvEl0Scf+mXmIheWTZn236kw9w==
-X-Google-Smtp-Source: AGHT+IEUMBJF6b1FvcfqYtWJcok/WJziyY+Fc3Fm4liI4hAtAOHeA1SNfJWhq2p23lAqFMz8Td3JCA==
-X-Received: by 2002:a17:902:ecc6:b0:1f6:2fca:361f with SMTP id
- d9443c01a7336-1f635a8302amr36876745ad.29.1717177526862; 
- Fri, 31 May 2024 10:45:26 -0700 (PDT)
+ bh=VglV/qt6rHvbvSgSjaTMT0boXZYOnbayc2OjwjqMVsk=;
+ b=rmqbAamSn/zXmI56mwOzRUt3ruvvARVYuqMYRJ+CRSDWwVfZKd/dal6gNtsi1GQoCS
+ PwQEZRcqNQH+ft7Rhws0y6Gb0u/vYltXMnBWePmJtlSwfzuOu0lyQDQmzPDJZtdkSNpN
+ Ozud+IPg8fmXpawneU3uhklLtn+Z+7v3W5Pjx86r6kBja6FPh6D9qDeWbMXXoCg6N87D
+ TfQhyEjWmBE/K87Gr24HfTGyfbrhHHZdw2aO8JP/t26sOoTszW4BAE1eoB7V7IvtjAJf
+ cdZqnLi1q4zZbmYBGHpcFoKHp9D1DX+8qiQLbvTIhxVZps9IeHF2dYDegY+PsxWAv8Vx
+ s79Q==
+X-Gm-Message-State: AOJu0Yxx9cVvYld9aCPgqroo6DwqM+yt0IqUJDVD3h6ROXrafpL9YMrg
+ MD48z+oGg38pvvJQDMwpAOqDmwSC8qUaZdcZVHJO1gyuz9pu8HWMt3X3PmzgmgQU88hMbtV0dQ6
+ mtfG448WYKDMqxl7drH+1Qgp591Rb/TX+GLaLvvXT4ZEDkoT2PprIT6QlDr81J02o5qd49Uwkb/
+ 6/MIgBnff7mha5B99CvQfhpHRTlBsNq2E4FmjRVw==
+X-Google-Smtp-Source: AGHT+IGrW1WvAV7CGEKP3jIuTMxCbXh4eSRvs9djyfvLCiCC4NI739KLdE7MiF4C/Z4Da1o5Am7XiQ==
+X-Received: by 2002:a17:903:22cb:b0:1f4:8372:db24 with SMTP id
+ d9443c01a7336-1f63704b335mr33008705ad.38.1717177531741; 
+ Fri, 31 May 2024 10:45:31 -0700 (PDT)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f63236ce6dsm19389875ad.95.2024.05.31.10.45.25
+ d9443c01a7336-1f63236ce6dsm19389875ad.95.2024.05.31.10.45.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 10:45:26 -0700 (PDT)
+ Fri, 31 May 2024 10:45:31 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: dbarboza@ventanamicro.com, Max Chou <max.chou@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [RFC PATCH v2 3/6] target/riscv: Inline vext_ldst_us and
- corresponding function for performance
-Date: Sat,  1 Jun 2024 01:44:50 +0800
-Message-Id: <20240531174504.281461-4-max.chou@sifive.com>
+Subject: [RFC PATCH v2 4/6] target/riscv: Add check_probe_[read|write] helper
+ functions
+Date: Sat,  1 Jun 2024 01:44:51 +0800
+Message-Id: <20240531174504.281461-5-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531174504.281461-1-max.chou@sifive.com>
 References: <20240531174504.281461-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the vector unit-stride load/store helper functions. the vext_ldst_us
-function corresponding most of the execution time. Inline the functions
-can avoid the function call overhead to improve the helper function
-performance.
+The helper_check_probe_[read|write] functions wrap the probe_pages
+function to perform virtual address resolution for continuous vector
+load/store instructions.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/vector_helper.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ target/riscv/helper.h        |  4 ++++
+ target/riscv/vector_helper.c | 12 ++++++++++++
+ 2 files changed, 16 insertions(+)
 
+diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+index aaf68eadfb7..f4bc907e85f 100644
+--- a/target/riscv/helper.h
++++ b/target/riscv/helper.h
+@@ -1,6 +1,10 @@
+ /* Exceptions */
+ DEF_HELPER_2(raise_exception, noreturn, env, i32)
+ 
++/* Probe page */
++DEF_HELPER_FLAGS_3(check_probe_read, TCG_CALL_NO_WG, void, env, tl, tl)
++DEF_HELPER_FLAGS_3(check_probe_write, TCG_CALL_NO_WG, void, env, tl, tl)
++
+ /* Floating Point - rounding mode */
+ DEF_HELPER_FLAGS_2(set_rounding_mode, TCG_CALL_NO_WG, void, env, i32)
+ DEF_HELPER_FLAGS_2(set_rounding_mode_chkfrm, TCG_CALL_NO_WG, void, env, i32)
 diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 440c33c141b..cb7267c3217 100644
+index cb7267c3217..9263ab26b19 100644
 --- a/target/riscv/vector_helper.c
 +++ b/target/riscv/vector_helper.c
-@@ -149,25 +149,27 @@ static inline void vext_set_elem_mask(void *v0, int index,
- typedef void vext_ldst_elem_fn(CPURISCVState *env, abi_ptr addr,
-                                uint32_t idx, void *vd, uintptr_t retaddr);
- 
--#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)            \
--static void NAME(CPURISCVState *env, abi_ptr addr,         \
--                 uint32_t idx, void *vd, uintptr_t retaddr)\
--{                                                          \
--    ETYPE *cur = ((ETYPE *)vd + H(idx));                   \
--    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);      \
--}                                                          \
-+#define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)         \
-+static inline QEMU_ALWAYS_INLINE                        \
-+void NAME(CPURISCVState *env, abi_ptr addr,             \
-+          uint32_t idx, void *vd, uintptr_t retaddr)    \
-+{                                                       \
-+    ETYPE *cur = ((ETYPE *)vd + H(idx));                \
-+    *cur = cpu_##LDSUF##_data_ra(env, addr, retaddr);   \
-+}                                                       \
- 
- GEN_VEXT_LD_ELEM(lde_b, int8_t,  H1, ldsb)
- GEN_VEXT_LD_ELEM(lde_h, int16_t, H2, ldsw)
- GEN_VEXT_LD_ELEM(lde_w, int32_t, H4, ldl)
- GEN_VEXT_LD_ELEM(lde_d, int64_t, H8, ldq)
- 
--#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)            \
--static void NAME(CPURISCVState *env, abi_ptr addr,         \
--                 uint32_t idx, void *vd, uintptr_t retaddr)\
--{                                                          \
--    ETYPE data = *((ETYPE *)vd + H(idx));                  \
--    cpu_##STSUF##_data_ra(env, addr, data, retaddr);       \
-+#define GEN_VEXT_ST_ELEM(NAME, ETYPE, H, STSUF)         \
-+static inline QEMU_ALWAYS_INLINE                        \
-+void NAME(CPURISCVState *env, abi_ptr addr,             \
-+          uint32_t idx, void *vd, uintptr_t retaddr)    \
-+{                                                       \
-+    ETYPE data = *((ETYPE *)vd + H(idx));               \
-+    cpu_##STSUF##_data_ra(env, addr, data, retaddr);    \
+@@ -136,6 +136,18 @@ static void probe_pages(CPURISCVState *env, target_ulong addr,
+     }
  }
  
- GEN_VEXT_ST_ELEM(ste_b, int8_t,  H1, stb)
-@@ -291,7 +293,7 @@ GEN_VEXT_ST_STRIDE(vsse64_v, int64_t, ste_d)
-  */
- 
- /* unmasked unit-stride load and store operation */
--static void
-+static inline QEMU_ALWAYS_INLINE void
- vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-              vext_ldst_elem_fn *ldst_elem, uint32_t log2_esz, uint32_t evl,
-              uintptr_t ra)
++void HELPER(check_probe_read)(CPURISCVState *env, target_ulong addr,
++                              target_ulong len)
++{
++    probe_pages(env, addr, len, GETPC(), MMU_DATA_LOAD);
++}
++
++void HELPER(check_probe_write)(CPURISCVState *env, target_ulong addr,
++                               target_ulong len)
++{
++    probe_pages(env, addr, len, GETPC(), MMU_DATA_STORE);
++}
++
+ static inline void vext_set_elem_mask(void *v0, int index,
+                                       uint8_t value)
+ {
 -- 
 2.34.1
 
