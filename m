@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2C58D6867
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 19:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87778D6862
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 19:46:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD6KE-00021t-RJ; Fri, 31 May 2024 13:45:58 -0400
+	id 1sD6KL-00029D-LP; Fri, 31 May 2024 13:46:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sD6Jx-0001ul-FM
- for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:44 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ id 1sD6K0-0001z7-JU
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:46 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1sD6Ju-0007fg-Tp
- for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:41 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1f62a628b4cso12636575ad.1
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 10:45:38 -0700 (PDT)
+ id 1sD6Jy-0007iI-8N
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 13:45:44 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1f4a5344ec7so17660415ad.1
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 10:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1717177536; x=1717782336; darn=nongnu.org;
+ d=sifive.com; s=google; t=1717177541; x=1717782341; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=USFoNRQZ4JeBfsf5SGx5N9OQ/v8517aQy/lRnAVzBe4=;
- b=ETkdgQ6U18k2lsNHHT565TsJA53p2kKmxmA7XpaOLuf5B6A9eDmd8UZeDEQykj5SGp
- CwtIRoBdQ0Uqqp5INxktGie9vwngesoNWCpVhQO47rYErHUi7gVvXDi9xVb8jHTgCtvI
- aQtm1vDQ2Nmt1PhL+bdM9t8FlN0Z800RBtY2CcF6CN30eWJ2DLiBPVGD7d91Ut7b6hDP
- qJ4n0LFbRjI/YxdcOTaBJ+DGuCCa25WIhK+iNWSwm50e5E5Xbu3iVkfMHCkNbMuKirTx
- vjFBWK4OMpTRT2eef0OYWmgqa8fd+hoS0d1+q3OZf1mdaMVFujoWeJB6z2dMJC/XjZd/
- nHtg==
+ bh=gCcFfZSpG0DTooCBgGsai6/Bi/5BGaMYihmO+rZ2ifU=;
+ b=GW65MqIac/6mJdgzc3ZF6BCT4E1D5Vq/bQfGE8JV2udLkXquYKggwGXKY0Xu3MNrBs
+ Vp9Snn9xtOsWu6cMm8ei6bbydUQJQYmrMyHwqlNgcd6TbQS5+HjRR7PLGFyxmRJJErq/
+ VIX79CSb2MT8Wn069qFKUXsPiucWJiK90vW5xoysEGw8tUb0GoR7UhNJcY9gh9kFkbET
+ 4NE85bgbiCVgIKETvtMtyiQgkFeiFBbS7IWQnm5xV03rB7Bw/+f7QlUrGPdolt77t93X
+ 6MQtx+8+uDo4F/+pVDDyaef4EJ9lUFi8mpwFYRT45I+nAzG9ZRVr9B25kVeNOBuJqgf2
+ xFlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717177536; x=1717782336;
+ d=1e100.net; s=20230601; t=1717177541; x=1717782341;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=USFoNRQZ4JeBfsf5SGx5N9OQ/v8517aQy/lRnAVzBe4=;
- b=C3q0dzlaIfv3Hku3Ksn838ptYrlp3A/xWXwOV1L0x63f0UCiH9oHbHFPll5BCwNw2s
- DYKTeAycvzMgAnZWQ/81geidj0fbts456jyL3SvaoZAZJ9kWtaWUKI1+EAvo2flBEWeg
- Z+KqVPs2ZvZ2FxUvnxA6irx/j2DdVkP6Uh/wOFqlB8hpma8kIvIOl4WvYVUBXCxxZGi1
- il3O8kwFLJ3Bdzd2ZB4n3CKLG4hjBKgMPNqZeao06gwBu/ArScALUjF+qxbC76jOLlk7
- FZTaxxyi60EpDzzyA6erU8JerABSC9M5noSs1hmCY3D8CaXVh8MPHyJf+OKh/TcAqZKs
- Bqqg==
-X-Gm-Message-State: AOJu0YyWvGe/q1aySq92JeD95aJ4gGynLTS1scNNNRRvPcejJKFN7Rp7
- /fNQuR5SAE35hsUxOHZOV83RzeTIO4lVs1/L5DQE0tZedhIm1PNkz9E4ZLsSf6XPN1v4Ksg7xwu
- uuGV8/iR5IOYWwO1zbT3Sjm17N+7hNYZ5p4z1018F7H3ny5Lr0U95/VpDTxkh43GqBEa63kR6US
- wLmA//VranruNm56ZVFnyXPW7rxUCIVVTDFym4cQ==
-X-Google-Smtp-Source: AGHT+IFOytKgGcIwhycDTkjN3u3UrI7ejFH27Zz0XVNEoWlUGGCQYnvJc5JDHxbCZRuqO+fH+b72Eg==
-X-Received: by 2002:a17:902:d4d0:b0:1f4:f02f:cb14 with SMTP id
- d9443c01a7336-1f6370a0c13mr32942015ad.47.1717177536013; 
- Fri, 31 May 2024 10:45:36 -0700 (PDT)
+ bh=gCcFfZSpG0DTooCBgGsai6/Bi/5BGaMYihmO+rZ2ifU=;
+ b=w/x3W/ubN6urzonBvFZF6EVLb+wRriu1V2spoltTuyakRGiz2VNZJrz13FYbD7FENt
+ KcJn4QwgCFIgQmlFyw78ECpufzYZkThZnmGukJVMTO9u2Aq6G35l654/uwDM2VkTjeAY
+ NBT2Oc7PMENztc4udWHssKJLO1hAKTHrFrlyNnoLn4A3e1GW1eso951tD4xODBG2xSyQ
+ erk5kWBWIk9DXUsCEMk6uaCWYPe1LB6BKaPOPT8Hurn+UwyGvWej46uNSnki8UaqNkFG
+ uYhxmU/egyqof/4Zq1raP7eLvv41A1S3euwmQGEnguQyMLBoQNKadUqumiWPpXPo8ph1
+ N6pA==
+X-Gm-Message-State: AOJu0Yz7HRv+fHB+4XEB7ODF/0KsE/aeLcZmEbSG+SRCrhybdoXDdZWX
+ UgGR1sAgn933YVy8dQFdvXEeSSNrbmuC8akhwqyuzcLVjtI82wBztQFDrkC0TLDaD/pIE6M/vGf
+ cnI2Wy+tsQMoTxjiakl8t6ISFbAmADiILUnM6osUecqaii4UP0+TWTdKgjYwtiAv3bgLNyfCccf
+ WwifKYdyCnEfj8Ax3yC2aXX58MDNHbhfsO5EvrwQ==
+X-Google-Smtp-Source: AGHT+IFtLgu8sT264xYDuQlZcz7mHFjTM8M3L7/mtylmHcLtt/e8zP6zBA5ztZLACl5ufm+3GwGwxA==
+X-Received: by 2002:a17:902:6806:b0:1f4:8a31:5a4c with SMTP id
+ d9443c01a7336-1f635a4f54bmr34390495ad.24.1717177540488; 
+ Fri, 31 May 2024 10:45:40 -0700 (PDT)
 Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
  [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f63236ce6dsm19389875ad.95.2024.05.31.10.45.34
+ d9443c01a7336-1f63236ce6dsm19389875ad.95.2024.05.31.10.45.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 10:45:35 -0700 (PDT)
+ Fri, 31 May 2024 10:45:40 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
@@ -66,17 +66,17 @@ Cc: dbarboza@ventanamicro.com, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng.cn@gmail.com>,
  Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [RFC PATCH v2 5/6] target/riscv: rvv: Optimize v[l|s]e8.v with
+Subject: [RFC PATCH v2 6/6] target/riscv: rvv: Optimize vl8re8.v/vs8r.v with
  limitations
-Date: Sat,  1 Jun 2024 01:44:52 +0800
-Message-Id: <20240531174504.281461-6-max.chou@sifive.com>
+Date: Sat,  1 Jun 2024 01:44:53 +0800
+Message-Id: <20240531174504.281461-7-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531174504.281461-1-max.chou@sifive.com>
 References: <20240531174504.281461-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=max.chou@sifive.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,37 +99,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vector unit-stride load/store instructions (e.g. vle8.v/vse8.v)
-perform continuous load/store. We can replace the corresponding helper
-functions by TCG ops to copy more data at a time with following
-assumptions:
+The vector load/store whole register instructions (e.g. vl8re8.v/vs8r.v)
+perform unmasked continuous load/store. We can optimize these
+instructions by replacing the corresponding helper functions by TCG ops
+to copy more data at a time with following assumptions:
 
-* Perform virtual address resolution once for entire vector at beginning
-* Without mask
-* Without tail agnostic
-* Both host and target are little endian
+* Host and target are little endian
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 197 +++++++++++++++++++++++-
- 1 file changed, 195 insertions(+), 2 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 196 +++++++++++++++++++++++-
+ 1 file changed, 194 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 1e4fa797a86..bbac73bb12b 100644
+index bbac73bb12b..44763ccec06 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -714,7 +714,105 @@ static bool ld_us_check(DisasContext *s, arg_r2nfvm* a, uint8_t eew)
-            vext_check_load(s, a->rd, a->nf, a->vm, eew);
- }
+@@ -1402,11 +1402,108 @@ GEN_LDST_WHOLE_TRANS(vl4re8_v,  4)
+ GEN_LDST_WHOLE_TRANS(vl4re16_v, 4)
+ GEN_LDST_WHOLE_TRANS(vl4re32_v, 4)
+ GEN_LDST_WHOLE_TRANS(vl4re64_v, 4)
+-GEN_LDST_WHOLE_TRANS(vl8re8_v,  8)
+ GEN_LDST_WHOLE_TRANS(vl8re16_v, 8)
+ GEN_LDST_WHOLE_TRANS(vl8re32_v, 8)
+ GEN_LDST_WHOLE_TRANS(vl8re64_v, 8)
  
--GEN_VEXT_TRANS(vle8_v,  MO_8,  r2nfvm, ld_us_op, ld_us_check)
-+static bool trans_vle8_v(DisasContext *s, arg_r2nfvm * a)
++static bool trans_vl8re8_v(DisasContext *s, arg_r2 * a)
 +{
-+
-+    if (ld_us_check(s, a, MO_8)) {
-+        if (!HOST_BIG_ENDIAN && s->vstart_eq_zero && s->vta == 0 && a->vm) {
++    if (require_rvv(s) && QEMU_IS_ALIGNED(a->rd, 8)) {
++        if (!HOST_BIG_ENDIAN && s->vstart_eq_zero) {
 +            uint32_t vofs = vreg_ofs(s, a->rd);
 +            uint32_t midx = s->mem_idx;
++            uint32_t evl = s->cfg_ptr->vlenb << 3;
 +
 +            TCGv_i64 t0, t1;
 +            TCGv_i128 t16;
@@ -147,11 +148,10 @@ index 1e4fa797a86..bbac73bb12b 100644
 +            TCGLabel *over = gen_new_label();
 +
 +            tcg_gen_mov_tl(addr, rs1);
-+            tcg_gen_mov_tl(len_remain, cpu_vl);
-+            tcg_gen_muli_tl(len_remain, len_remain, a->nf);
++            tcg_gen_movi_tl(len_remain, evl);
 +            tcg_gen_movi_ptr(i, 0);
 +
-+            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
++            tcg_gen_brcondi_tl(TCG_COND_GEU, cpu_vstart, evl, over);
 +            gen_helper_check_probe_read(tcg_env, addr, len_remain);
 +
 +            tcg_gen_brcondi_tl(TCG_COND_LTU, len_remain, 16, remain_64);
@@ -215,27 +215,29 @@ index 1e4fa797a86..bbac73bb12b 100644
 +
 +            finalize_rvv_inst(s);
 +        } else {
-+            return ld_us_op(s, a, MO_8);
++            return ldst_whole_trans(a->rd, a->rs1, 8, gen_helper_vl8re8_v, s);
 +        }
 +        return true;
 +    }
 +    return false;
 +}
 +
- GEN_VEXT_TRANS(vle16_v, MO_16, r2nfvm, ld_us_op, ld_us_check)
- GEN_VEXT_TRANS(vle32_v, MO_32, r2nfvm, ld_us_op, ld_us_check)
- GEN_VEXT_TRANS(vle64_v, MO_64, r2nfvm, ld_us_op, ld_us_check)
-@@ -785,7 +883,102 @@ static bool st_us_check(DisasContext *s, arg_r2nfvm* a, uint8_t eew)
-            vext_check_store(s, a->rd, a->nf, eew);
- }
- 
--GEN_VEXT_TRANS(vse8_v,  MO_8,  r2nfvm, st_us_op, st_us_check)
-+static bool trans_vse8_v(DisasContext *s, arg_r2nfvm * a)
+ /*
+  * The vector whole register store instructions are encoded similar to
+  * unmasked unit-stride store of elements with EEW=8.
+@@ -1414,7 +1511,102 @@ GEN_LDST_WHOLE_TRANS(vl8re64_v, 8)
+ GEN_LDST_WHOLE_TRANS(vs1r_v, 1)
+ GEN_LDST_WHOLE_TRANS(vs2r_v, 2)
+ GEN_LDST_WHOLE_TRANS(vs4r_v, 4)
+-GEN_LDST_WHOLE_TRANS(vs8r_v, 8)
++
++static bool trans_vs8r_v(DisasContext *s, arg_r2 * a)
 +{
-+    if (st_us_check(s, a, MO_8)) {
-+        if (!HOST_BIG_ENDIAN && s->vstart_eq_zero && s->vta == 0 && a->vm) {
++    if (require_rvv(s) && QEMU_IS_ALIGNED(a->rd, 8)) {
++        if (!HOST_BIG_ENDIAN && s->vstart_eq_zero) {
 +            uint32_t vofs = vreg_ofs(s, a->rd);
 +            uint32_t midx = s->mem_idx;
++            uint32_t evl = s->cfg_ptr->vlenb << 3;
 +
 +            TCGv_i64 t0, t1;
 +            TCGv_i128 t16;
@@ -253,11 +255,10 @@ index 1e4fa797a86..bbac73bb12b 100644
 +            TCGLabel *over = gen_new_label();
 +
 +            tcg_gen_mov_tl(addr, rs1);
-+            tcg_gen_mov_tl(len_remain, cpu_vl);
-+            tcg_gen_muli_tl(len_remain, len_remain, a->nf);
++            tcg_gen_movi_tl(len_remain, evl);
 +            tcg_gen_movi_ptr(i, 0);
 +
-+            tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
++            tcg_gen_brcondi_tl(TCG_COND_GEU, cpu_vstart, evl, over);
 +            gen_helper_check_probe_write(tcg_env, addr, len_remain);
 +
 +            tcg_gen_brcondi_tl(TCG_COND_LTU, len_remain, 16, remain_64);
@@ -319,16 +320,15 @@ index 1e4fa797a86..bbac73bb12b 100644
 +
 +            finalize_rvv_inst(s);
 +        } else {
-+            return st_us_op(s, a, MO_8);
++            return ldst_whole_trans(a->rd, a->rs1, 8, gen_helper_vl8re8_v, s);
 +        }
 +        return true;
 +    }
 +    return false;
 +}
-+
- GEN_VEXT_TRANS(vse16_v, MO_16, r2nfvm, st_us_op, st_us_check)
- GEN_VEXT_TRANS(vse32_v, MO_32, r2nfvm, st_us_op, st_us_check)
- GEN_VEXT_TRANS(vse64_v, MO_64, r2nfvm, st_us_op, st_us_check)
+ 
+ /*
+  *** Vector Integer Arithmetic Instructions
 -- 
 2.34.1
 
