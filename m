@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62C198D6140
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 808CF8D615C
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:09:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD10F-0004eL-Nj; Fri, 31 May 2024 08:04:59 -0400
+	id 1sD107-0004Xq-9M; Fri, 31 May 2024 08:04:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zm-0004QT-4m
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:30 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1sD0zj-0004Oh-A0
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:28 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zd-0003Sa-Uq
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:29 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4211245e889so18904095e9.2
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:21 -0700 (PDT)
+ id 1sD0zf-0003Sf-2J
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:26 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4212e341818so5207905e9.2
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717157060; x=1717761860; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3znykwplHHm1akqjNJF/VSBzXcqVChFFcVdEcQ3idtY=;
- b=rgBCc0DRRdJyB20At9NVHhe03fMXu6Eyy8xBnlEVjgLEsTviquXotxhCQ3qwnPRRgo
- zkPAJyM2nesH8O/PDWFIWYVXfIdAZw/aOVpdYbd+u8WzQH9uhs8Dib1DzZk207c64xyn
- KBeRUS4ClbTOIuyoeCHayhTeCZoWIgXfrR9WzwMtc6+L1bd6jYZYVm/MYSu0q0vZ8hGm
- V69YjvIVKJ+ab0FL7fp02JFw6IHDB3Va0wDHIWHhTS6m5kOywaMaNJVr7t7Aem3ojg8Z
- K5P6y2XRokxPOtc69BBkD7SI2t9d3EkwvNs70Ob8RwYhGhKYkQaIqxj+6I7BM7GcDM4B
- Fovw==
+ :reply-to; bh=jDABOe5K9JMadz4HvqWDgF6LXkViQGX+kBYs/4LXF1I=;
+ b=CcFtLIobKhOi+jHXCvVsUG8GfRjVHv0aeYLDpW2KPAeQc+48v3NiW5tyEeUcnUcL7S
+ HJDCsYEI0ztSF/HhyPluOItXtLI8tDCYA3H/LqJJpLRI5jWUU2+3ktxD7IRmOPzpDHE5
+ JLMsR5qJaoN+nu+RlJ22ElnktyECWjdYwoj1hhLxxFhLNu6uJonndon+5kyNu2x3reIT
+ Y4xmQSIo9XZw/ZlguhBl0kn1puNqQhNBL2eF5CgbK1FKGSKZ1r9V6SVkGQow5IKkhSTh
+ DnL/iNZVLXBAhI9T78FDrMc48vXi6IQQJaRkxi1pJfEEL6Udu/95gCsdb4YrftvnCL7e
+ 14zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717157060; x=1717761860;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3znykwplHHm1akqjNJF/VSBzXcqVChFFcVdEcQ3idtY=;
- b=Q2kNkhN+lt/xPxot0eLqDNAwPcbvNP4GwaJYdppDQdL07eJjDES8jKp5USxWdnXvPC
- OvSiTa7kTfu6opd2suOV5ccRwoqouYTzy0M2Tmi+vKwtcb1Ucn/m3p3K6UKnuUflissM
- hc7+3Z/b2tGriEGKiXC+IGfx9vwD1MvsRZflBhyEo1t+bIo3AZmPHcetau0LLsogqPHc
- 6NU5c/KNZo3mbwhsjhsxUwwhwq6uHdlKsftf3Ih0HAfo6FYd1n1WrZKHZT62SZXqceQ0
- 8tQKknoM6AxSu8OQWbStVQ0RFaQaE6juamlg+GDo955QRg3eIVL46eJsjyb144l/J8kS
- VCRg==
-X-Gm-Message-State: AOJu0Yw1jPCOSVrh2lPg7IatwR5fRSYlBWO+V0jWgs/m77Q76HnPhK+s
- PEv4zG2WggIxkxxJ9i2sCPMmS0C1Gsy8UES0789meDQ2pSeLd+ybFQpA78Pa/yjNR9icDsuShHD
- /
-X-Google-Smtp-Source: AGHT+IHrEfMx61JykcIdFwwtwH0mW6+ibw3O7o+nzVD/C0LDCklk9CQQaYEl9N2UI5q3G3fhLv5Ttg==
-X-Received: by 2002:a05:600c:4314:b0:421:2ddf:aec4 with SMTP id
- 5b1f17b1804b1-4212e09b9b9mr13081775e9.30.1717157059954; 
- Fri, 31 May 2024 05:04:19 -0700 (PDT)
+ bh=jDABOe5K9JMadz4HvqWDgF6LXkViQGX+kBYs/4LXF1I=;
+ b=si9roPWvFCGLF0CmG+DvcJs3oHwCJPKtLqBPfUQmhe745tBIsKDAcTeNoyo6VJTPM6
+ 4cN219l/L9CC0cjDFg+H7+ltNGJbM1WLWI6Osw/HG629Uh9WGErP8U3BwgijQTS9ZUuG
+ LiEL33m8FsU+OL7cqRtY9fKRPLf3YmD1Zi6hlR1ly9IauhyTqd5WdTEdpeO/x6FkDABa
+ Iosm0M0rRbK0IE7wW68QeF47xY0iXbeLHGTsWZVCC205yUbigPqrKU14qEez68YlIHeW
+ GLzNCUAqc0XmVFKfAHsy5F3iLDpDBnlz6nvhfRErWMCfyKLJ81i+NK/Sc1SyP+ZHg6Ae
+ 0lMw==
+X-Gm-Message-State: AOJu0Yz72OARCvDP16S1oFyggnesg8A5OJrW2jyWAhjY+cMBwwY7quqJ
+ nLkzByNz3F6NkaDAzFb4p+1CK6BDstGbZ+dIe/oWerXnKHdIGVhN4vTdnG7R2+bxhvOaKtTSc9k
+ D
+X-Google-Smtp-Source: AGHT+IGHXX6gNTw2yAX1HlmHushHIHJBAfikraKOMnUFwJX84Ys4OhGftIR1eyrs7T+AiP6uanMQ0g==
+X-Received: by 2002:a05:600c:46cb:b0:41a:a521:9699 with SMTP id
+ 5b1f17b1804b1-4212e045342mr15661065e9.4.1717157060522; 
+ Fri, 31 May 2024 05:04:20 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.19
+ 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 05:04:19 -0700 (PDT)
+ Fri, 31 May 2024 05:04:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 23/43] target/arm: Use TCG_COND_TSTNE in gen_cmtst_{i32, i64}
-Date: Fri, 31 May 2024 13:03:41 +0100
-Message-Id: <20240531120401.394550-24-peter.maydell@linaro.org>
+Subject: [PULL 24/43] target/arm: Use TCG_COND_TSTNE in gen_cmtst_vec
+Date: Fri, 31 May 2024 13:03:42 +0100
+Message-Id: <20240531120401.394550-25-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531120401.394550-1-peter.maydell@linaro.org>
 References: <20240531120401.394550-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,33 +95,27 @@ From: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240528203044.612851-19-richard.henderson@linaro.org
+Message-id: 20240528203044.612851-20-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/gengvec.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/arm/tcg/gengvec.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/target/arm/tcg/gengvec.c b/target/arm/tcg/gengvec.c
-index 6dc96269d5e..e64ca02e0c1 100644
+index e64ca02e0c1..2451d23823f 100644
 --- a/target/arm/tcg/gengvec.c
 +++ b/target/arm/tcg/gengvec.c
-@@ -934,14 +934,12 @@ void gen_gvec_mls(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
- /* CMTST : test is "if (X & Y != 0)". */
- static void gen_cmtst_i32(TCGv_i32 d, TCGv_i32 a, TCGv_i32 b)
- {
--    tcg_gen_and_i32(d, a, b);
--    tcg_gen_negsetcond_i32(TCG_COND_NE, d, d, tcg_constant_i32(0));
-+    tcg_gen_negsetcond_i32(TCG_COND_TSTNE, d, a, b);
- }
- 
- void gen_cmtst_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b)
- {
--    tcg_gen_and_i64(d, a, b);
--    tcg_gen_negsetcond_i64(TCG_COND_NE, d, d, tcg_constant_i64(0));
-+    tcg_gen_negsetcond_i64(TCG_COND_TSTNE, d, a, b);
- }
+@@ -944,9 +944,7 @@ void gen_cmtst_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b)
  
  static void gen_cmtst_vec(unsigned vece, TCGv_vec d, TCGv_vec a, TCGv_vec b)
+ {
+-    tcg_gen_and_vec(vece, d, a, b);
+-    tcg_gen_dupi_vec(vece, a, 0);
+-    tcg_gen_cmp_vec(TCG_COND_NE, vece, d, d, a);
++    tcg_gen_cmp_vec(TCG_COND_TSTNE, vece, d, a, b);
+ }
+ 
+ void gen_gvec_cmtst(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
 -- 
 2.34.1
 
