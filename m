@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B988D613F
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FBEE8D61A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD10G-0004gq-CN; Fri, 31 May 2024 08:05:00 -0400
+	id 1sD1Hl-0000n5-Jm; Fri, 31 May 2024 08:23:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD100-0004Wu-4x
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:44 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zr-0003Wv-SB
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:43 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2ea9afcb22aso2656481fa.1
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717157074; x=1717761874; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=NWDApggyMUwqlr/49GITBZT6GHohqUhXi/8+w7dnERs=;
- b=ENtDf8TqJUJQUVQ/5LZ65GGqF/TBLM2EONWCPLf/Fzbg23JYYbtRiXXvZue5yt08zj
- YN/wqeyn16pzAcrhTYqpKkAxnF4eqDUBcv3qzuPqCVS8Up+l5jEhdLC61LNyE4mOvn7m
- 5iHO5AGrXM9Y0ARkqKjgXTMXYhWwA38PcxdJsVmLVbV+c5hNi1D2UVcdsmwiqvkSfgxc
- fkyJQJPPMIu+AgnZEp+1KDz+XWJFnsi6GLEu9DQSzYBTb7gy1hi4tHJ/0DgHm9WEqWJ4
- L+0842g0lnchhJJFGBav8A2SVpxoepUXoKH3PRVWuEWzQFxcU0K+tDqEBjd17ZBf8Mo9
- 1r+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717157074; x=1717761874;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NWDApggyMUwqlr/49GITBZT6GHohqUhXi/8+w7dnERs=;
- b=eKAvoK8F9Ba2kyCtnD2iV/H7x1nwj0l/elq3o2HKshSeDlUO0tklUfwq2EVKNbR/v5
- Pml/9n9tG78jvdgiGiV2i1v/PCmP1QSTOfV+SIh2znwgwBk8YDy39FVwE/y7MIsUjdYR
- kuAthDz2c64n8Lqlt+CUNEttREkV5BWQ5Qa1MOO4zgfg3awMPFs34cuFifC3SmDX6iuk
- bj0Y9JVUnRAnLYZbV9Fimnmzad/mrGg8vmhUUbpIKIvhQFq9RfMRfSWlGnNXRa1kWrz4
- VI1arq9IatIhapVjEI7g+VJX7n92OjgeN009aYZfIHhpGuNVuw2arb6ZNFZlUxKQFDon
- UUnw==
-X-Gm-Message-State: AOJu0YwTfv3AdlWw1mT5lwMG36DYqSjCexPzrczokfmlr3M4IIKHeruY
- griZQ8tlG4cQbuFmt3Znd5cn7GfvLBaBCPwGFomAAr9Ct2xDKpBAxcCI4LAA+8cLeuudL5mdP1L
- K
-X-Google-Smtp-Source: AGHT+IF4bZu2Gf6zkUHon/3KK8cjzp5YVCSTyCXv14jnGa7wKJKzF+jTcPKo4vgTaVMVIOOkkuH4fg==
-X-Received: by 2002:a05:651c:1687:b0:2ea:938f:a232 with SMTP id
- 38308e7fff4ca-2ea951a9e43mr11151361fa.42.1717157073943; 
- Fri, 31 May 2024 05:04:33 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.33
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 05:04:33 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 43/43] hw/usb/hcd-ohci: Fix #1510, #303: pid not IN or OUT
-Date: Fri, 31 May 2024 13:04:01 +0100
-Message-Id: <20240531120401.394550-44-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240531120401.394550-1-peter.maydell@linaro.org>
-References: <20240531120401.394550-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sD1Hj-0000ma-OF
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:23:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1sD1Hh-0007De-CZ
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:23:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1717158179;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=sxRViaCgm9M7jIFrlEW6bG2tmZtmG+hUMkvZD5Y9Bvg=;
+ b=ROfSxUzM9m8p93+7B8gcCm9HfD5UWUte9XMXImeR3QbsynI/PZiM5Rn7HSpFqIbYzGFSM0
+ mycrkE0CkgSIQeQ3TVFwwtkZTIJIRe/x4HHzPobnslVep5nkplGR/Uf0yI/2dmdH5glo/i
+ UbvoFaXNhVL+LmGSCZ+dmT6H/nWGRmQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-561-NjiBk-8rPMCVUHRKjkPKzg-1; Fri, 31 May 2024 08:22:56 -0400
+X-MC-Unique: NjiBk-8rPMCVUHRKjkPKzg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 967D185A58C;
+ Fri, 31 May 2024 12:22:55 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.216])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C1CE140C6EB7;
+ Fri, 31 May 2024 12:22:53 +0000 (UTC)
+Date: Fri, 31 May 2024 13:22:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>, Mads Ynddal <mads@ynddal.dk>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?utf-8?B?QmVubu+/vWU=?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [RFC 1/6] scripts/simpletrace-rust: Add the basic cargo framework
+Message-ID: <ZlnBGwk29Ds9FjUA@redhat.com>
+References: <20240527081421.2258624-1-zhao1.liu@intel.com>
+ <20240527081421.2258624-2-zhao1.liu@intel.com>
+ <20240527200504.GB913874@fedora.redhat.com>
+ <ZlWNk46MF5uNa+ZC@intel.com>
+ <20240528141401.GB993828@fedora.redhat.com>
+ <Zlc79ZhJavATdvSs@intel.com>
+ <20240529184103.GD1203999@fedora.redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240529184103.GD1203999@fedora.redhat.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,126 +89,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Hubbard <dmamfmgm@gmail.com>
+On Wed, May 29, 2024 at 02:41:03PM -0400, Stefan Hajnoczi wrote:
+> On Wed, May 29, 2024 at 10:30:13PM +0800, Zhao Liu wrote:
+> > Hi Stefan,
+> > 
+> > On Tue, May 28, 2024 at 10:14:01AM -0400, Stefan Hajnoczi wrote:
+> > > Date: Tue, 28 May 2024 10:14:01 -0400
+> > > From: Stefan Hajnoczi <stefanha@redhat.com>
+> > > Subject: Re: [RFC 1/6] scripts/simpletrace-rust: Add the basic cargo
+> > >  framework
+> > > 
+> > > On Tue, May 28, 2024 at 03:53:55PM +0800, Zhao Liu wrote:
+> > > > Hi Stefan,
+> > > > 
+> > > > [snip]
+> > > > 
+> > > > > > diff --git a/scripts/simpletrace-rust/.rustfmt.toml b/scripts/simpletrace-rust/.rustfmt.toml
+> > > > > > new file mode 100644
+> > > > > > index 000000000000..97a97c24ebfb
+> > > > > > --- /dev/null
+> > > > > > +++ b/scripts/simpletrace-rust/.rustfmt.toml
+> > > > > > @@ -0,0 +1,9 @@
+> > > > > > +brace_style = "AlwaysNextLine"
+> > > > > > +comment_width = 80
+> > > > > > +edition = "2021"
+> > > > > > +group_imports = "StdExternalCrate"
+> > > > > > +imports_granularity = "item"
+> > > > > > +max_width = 80
+> > > > > > +use_field_init_shorthand = true
+> > > > > > +use_try_shorthand = true
+> > > > > > +wrap_comments = true
+> > > > > 
+> > > > > There should be QEMU-wide policy. That said, why is it necessary to customize rustfmt?
+> > > > 
+> > > > Indeed, but QEMU's style for Rust is currently undefined, so I'm trying
+> > > > to add this to make it easier to check the style...I will separate it
+> > > > out as a style policy proposal.
+> > > 
+> > > Why is a config file necessary? QEMU should use the default Rust style.
+> > > 
+> > 
+> > There are some that may be overdone, but I think some basic may still
+> > be necessary, like "comment_width = 80", "max_width = 80",
+> > "wrap_comments". Is it necessary to specify the width? As C.
+> 
+> Let's agree to follow the Rust coding style from the start, then the
+> problem is solved. My view is that deviating from the standard Rust
+> coding style in order to make QEMU Rust code resemble QEMU C code is
+> less helpful than following Rust conventions so our Rust code looks like
+> Rust.
 
-This changes the ohci validation to not assert if invalid data is fed to the
-ohci controller. The poc in https://bugs.launchpad.net/qemu/+bug/1907042 and
-migrated to bug #303 does the following to feed it a SETUP pid (valid)
-at an EndPt of 1 (invalid - all SETUP pids must be addressed to EndPt 0):
+Agreed. The value of a language wide standard is undermined if apps
+diverge from it.
 
-        uint32_t MaxPacket = 64;
-        uint32_t TDFormat = 0;
-        uint32_t Skip = 0;
-        uint32_t Speed = 0;
-        uint32_t Direction = 0;  /* #define OHCI_TD_DIR_SETUP 0 */
-        uint32_t EndPt = 1;
-        uint32_t FuncAddress = 0;
-        ed->attr = (MaxPacket << 16) | (TDFormat << 15) | (Skip << 14)
-                   | (Speed << 13) | (Direction << 11) | (EndPt << 7)
-                   | FuncAddress;
-        ed->tailp = /*TDQTailPntr= */ 0;
-        ed->headp = ((/*TDQHeadPntr= */ &td[0]) & 0xfffffff0)
-                   | (/* ToggleCarry= */ 0 << 1);
-        ed->next_ed = (/* NextED= */ 0 & 0xfffffff0)
+All code style rules come down to bike shedding, and by simply adopting
+the Rust community defaults, we avoid endless debates as to what style
+is best, and stay aligned with the rest of the Rust community who mostly
+won't override defaults for rustfmt.
 
-qemu-fuzz also caught the same issue in #1510. They are both fixed by this
-patch.
 
-With a tiny OS[1] that boots and executes the poc the repro shows the issue:
-
-* OS that sends USB requests to a USB mass storage device
-  but sends a SETUP with EndPt = 1
-* qemu 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.19)
-* qemu HEAD (4e66a0854)
-* Actual OHCI controller (hardware)
-
-Command line:
-qemu-system-x86_64 -m 20 \
- -device pci-ohci,id=ohci \
- -drive if=none,format=raw,id=d,file=testmbr.raw \
- -device usb-storage,bus=ohci.0,drive=d \
- --trace "usb_*" --trace "ohci_*" -D qemu.log
-
-Results are:
-
- qemu 6.2.0 | qemu HEAD | actual HW
-------------+-----------+----------------
- assertion  | assertion | sets stall bit
-
-The assertion message is:
-
-> qemu-system-x86_64: ../../hw/usb/core.c:744: usb_ep_get: Assertion `pid == USB_TOKEN_IN || pid == USB_TOKEN_OUT' failed.
-> Aborted (core dumped)
-
-Tip: if the flags "-serial pty -serial stdio" are added to the command line
-the poc outputs its USB requests like this:
-
-> Free mem 2M ohci port0 conn FS
-> setup { 80 6 0 1 0 0 8 0 }
-> ED info=80000 { mps=8 en=0 d=0 } tail=c20920
->   td0 c20880 nxt=c20960 f2000000 setup cbp=c20900 be=c20907       cbp=0 be=c20907
->   td1 c20960 nxt=c20980 f3140000    in cbp=c20908 be=c2090f       cbp=0 be=c2090f
->   td2 c20980 nxt=c20920 f3080000   out cbp=0 be=0                 cbp=0 be=0
->    rx { 12 1 0 2 0 0 0 8 }
-> setup { 0 5 1 0 0 0 0 0 } tx {}
-> ED info=80000 { mps=8 en=0 d=0 } tail=c20880
->   td0 c20920 nxt=c20960 f2000000 setup cbp=c20900 be=c20907       cbp=0 be=c20907
->   td1 c20960 nxt=c20880 f3100000    in cbp=0 be=0                 cbp=0 be=0
-> setup { 80 6 0 1 0 0 12 0 }
-> ED info=80081 { mps=8 en=0 d=1 } tail=c20960
->   td0 c20880 nxt=c209c0 f2000000 setup cbp=c20920 be=c20927
->   td1 c209c0 nxt=c209e0 f3140000    in cbp=c20928 be=c20939
->   td2 c209e0 nxt=c20960 f3080000   out cbp=0 be=0qemu-system-x86_64: ../../hw/usb/core.c:744: usb_ep_get: Assertion `pid == USB_TOKEN_IN || pid == USB_TOKEN_OUT' failed.
-> Aborted (core dumped)
-
-[1] The OS disk image has been emailed to philmd@linaro.org, mjt@tls.msk.ru,
-and kraxel@redhat.com:
-
-* testBadSetup.img.xz
-* sha256: 045b43f4396de02b149518358bf8025d5ba11091e86458875339fc649e6e5ac6
-
-Signed-off-by: David Hubbard <dmamfmgm@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-[PMM: authorship and signed-off-by tag names fixed up as
- per on-list agreement]
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/usb/hcd-ohci.c   | 5 +++++
- hw/usb/trace-events | 1 +
- 2 files changed, 6 insertions(+)
-
-diff --git a/hw/usb/hcd-ohci.c b/hw/usb/hcd-ohci.c
-index fc8fc91a1d1..acd60169802 100644
---- a/hw/usb/hcd-ohci.c
-+++ b/hw/usb/hcd-ohci.c
-@@ -927,6 +927,11 @@ static int ohci_service_td(OHCIState *ohci, struct ohci_ed *ed)
-     case OHCI_TD_DIR_SETUP:
-         str = "setup";
-         pid = USB_TOKEN_SETUP;
-+        if (OHCI_BM(ed->flags, ED_EN) > 0) {  /* setup only allowed to ep 0 */
-+            trace_usb_ohci_td_bad_pid(str, ed->flags, td.flags);
-+            ohci_die(ohci);
-+            return 1;
-+        }
-         break;
-     default:
-         trace_usb_ohci_td_bad_direction(dir);
-diff --git a/hw/usb/trace-events b/hw/usb/trace-events
-index ed7dc210d3f..fd7b90d70c0 100644
---- a/hw/usb/trace-events
-+++ b/hw/usb/trace-events
-@@ -28,6 +28,7 @@ usb_ohci_iso_td_data_overrun(int ret, ssize_t len) "DataOverrun %d > %zu"
- usb_ohci_iso_td_data_underrun(int ret) "DataUnderrun %d"
- usb_ohci_iso_td_nak(int ret) "got NAK/STALL %d"
- usb_ohci_iso_td_bad_response(int ret) "Bad device response %d"
-+usb_ohci_td_bad_pid(const char *s, uint32_t edf, uint32_t tdf) "Bad pid %s: ed.flags 0x%x td.flags 0x%x"
- usb_ohci_port_attach(int index) "port #%d"
- usb_ohci_port_detach(int index) "port #%d"
- usb_ohci_port_wakeup(int index) "port #%d"
+With regards,
+Daniel
 -- 
-2.34.1
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
