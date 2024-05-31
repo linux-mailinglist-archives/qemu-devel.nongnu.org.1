@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214C18D6AB1
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AEF8D6AB2
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:31:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD8rk-0002uo-8R; Fri, 31 May 2024 16:28:44 -0400
+	id 1sD8rn-0002vs-Jj; Fri, 31 May 2024 16:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sD8rd-0002uN-4b
- for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:37 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1sD8rj-0002vg-MI
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:43 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sD8rb-0000pJ-Lx
- for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:36 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-7024426c75dso1129832b3a.1
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 13:28:35 -0700 (PDT)
+ id 1sD8rg-0000pu-2K
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:43 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-7023fb5a753so1390832b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 13:28:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1717187314; x=1717792114; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1717187318; x=1717792118; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LEwzMtiXvaSjUielpaJM9jsU8kuFGmJjx5SbXBr0Ds8=;
- b=UA75zMhvImAmJYF14aFU016jv4d4UYRBNmmVDOQF+wImLQZ9jhl0gast9snHOl4fr/
- FBqnhHozwoJ04V20clERBD0TmPZ9ry767b2xzZ2pVhe+WHvPsv9wPOg86aBiljFEEvfa
- XCDg4agCgutz0pM7MvR2hwDKssl1PF20g0bvj+e9KwLlM7qOAuCAJCAYmcAa/Ex2PLWP
- vxZeGMIigBLAca23qdC4/Z8zqK1cNn+tCPOGsKoMVyYXmV9L711JXxGQNNCqHCpopf5E
- fnFysZnCHJju3MRutYR1XFepHAG8FehvqlVWTzbDTxooN1Lrscmq8kcqgaYPbmMOUws5
- AhjA==
+ bh=xvxnRxIgg2C4FNw5J/4rkmdz86iMxWSW5G+jsM08/4E=;
+ b=h2uZ2flDg4NiJuvzv1IeRg19Lt19smnEicj2S65gdYjQGom2m8kPOXoWs4qy2fwcHQ
+ g12UPyBTR4cv6u25R6WxZt1+rMyAfKZUxk81UEn3MuVoOTgsAwQrq7vSlV88HDcxKrkC
+ LN5Of3/aRPx0bOMOn1BnNkGfr9YUJZ1js+5d5//7lOIMDM+huTXm6scjRHjt6KaM3Q69
+ ESpwRdptsycaVUoJC9gL9IL1JtHa/yXFTkNA0suW5jZV5Kmhzt3QGHqyIcD21ThMT3QQ
+ n/QMzvfsGqHvDh1Turp7PnOiaCmocS4oqa4GgzLkuGlzDn8uFZuaQ4+1+n6w7AyBaTCS
+ o/lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717187314; x=1717792114;
+ d=1e100.net; s=20230601; t=1717187318; x=1717792118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LEwzMtiXvaSjUielpaJM9jsU8kuFGmJjx5SbXBr0Ds8=;
- b=Fc7eAQb2Q2/PA8v5vBVDrFrTrq/YHGxMA0mBVjv+Mr8UiEpoW6mjynTy4xTBWiCtR/
- q40pYYDL0zpvgCoDMg7JU927oElbG24HVl3ttxJ6WtpkBHwq9o4AImShjiyK9m+KQDFv
- aH092dnafyoLDbpxh2CnmlPC+bJc93n8GP5AOFhwurAm1alpxteH4jgZ0ISJRdFYi1dE
- IoObhhpmYnw9c9f9pL5JdoniKeFML+hhYqxH7VlbaUBAY3Qv9zPO0+wE5jxPpcwv6AZa
- fh14jc6qrMOcAl7DqOTlwr4Sl25WIB4FnXl70laZ4SA5hc3US52DFhiMNjgZlO/c7BcR
- brww==
-X-Gm-Message-State: AOJu0YzGbkq6cIvq3gO+UQuxHaYTTt/XS31gfDTDmwfVlM/XvW52dEEE
- H2jLTAX4pn2ONi59Dz3sqKXK+QLIyQzDcBrasenxCd7PQyZUIs94iYG5xYJ/jC88PSlZ2hVJ88m
- t
-X-Google-Smtp-Source: AGHT+IFemzpPHqt8HZrACpayB+u/FYiqav7LBeHlDqMZBZIi3E6KV5RpB0aYN5dP0qpFkul87372lw==
-X-Received: by 2002:a05:6a21:1f0f:b0:1ae:3f36:28d3 with SMTP id
- adf61e73a8af0-1b26f253b19mr3311324637.49.1717187314109; 
- Fri, 31 May 2024 13:28:34 -0700 (PDT)
+ bh=xvxnRxIgg2C4FNw5J/4rkmdz86iMxWSW5G+jsM08/4E=;
+ b=AEcGG32cMkt+X/BqPszDjySonCxkfYACNoYmgfj5WDDTp7LgN+rAqSJuqmPRHrZWuY
+ 9qg32c06WhKLw17Fe2w2Sk13M8nM18kT5eIkSChnIkNSQLXiG/WZfRvycTSJQ52jyY31
+ AofknHn/Y3YGFkTY2ttjdVU+SaCCZH/uPTGRaaHPiMIIKrliRgdLzhagVpljCg0CRw3g
+ 5Pxq5lehtkoBSeYT+LV2A0MOhRdbPvFLAuZc3eCmeefv+zGYGjL9LAFQeQZjx39Qyqqm
+ fgwFPoD9CtoqtjAZeTpBeM0m61C15aGbGgBlJsNv20uFz0zixZ5/T1WdQjRDikbtIhW2
+ Q/qw==
+X-Gm-Message-State: AOJu0YwnpHEm7b6IaTRBlhItuaIOC7RkpJdLkaYv1SjtDZ6g2To6iSLW
+ mUTtquH37xeR+yXnor5SjoDdloAzD+UeXL+4GhMvI0y6s0BjQUh3KZrNO8S4zNrUdgblt9kx1UR
+ S
+X-Google-Smtp-Source: AGHT+IECwhHm8hkeK1ZzDPCdT+VYTSe+bLH+52gEz8Ds3fCi49EfRoUVrdLDSh9zogpkFeDv9vT7rg==
+X-Received: by 2002:a05:6a00:22cd:b0:6e5:43b5:953b with SMTP id
+ d2e1a72fcca58-7024780448bmr3415564b3a.14.1717187318402; 
+ Fri, 31 May 2024 13:28:38 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com
  (189-69-160-78.dial-up.telesp.net.br. [189.69.160.78])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70242b09133sm1819691b3a.178.2024.05.31.13.28.30
+ d2e1a72fcca58-70242b09133sm1819691b3a.178.2024.05.31.13.28.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 13:28:33 -0700 (PDT)
+ Fri, 31 May 2024 13:28:38 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  apatel@ventanamicro.com, ajones@ventanamicro.com, conor@kernel.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 6/8] hw/riscv/virt.c: change imsic nodename to
- 'interrupt-controller'
-Date: Fri, 31 May 2024 17:27:57 -0300
-Message-ID: <20240531202759.911601-7-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 7/8] hw/riscv/virt.c: imsics DT: add 'qemu,
+ imsics' to 'compatible'
+Date: Fri, 31 May 2024 17:27:58 -0300
+Message-ID: <20240531202759.911601-8-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240531202759.911601-1-dbarboza@ventanamicro.com>
 References: <20240531202759.911601-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,9 +97,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Linux DT docs for imsic [1] predicts an 'interrupt-controller@addr'
-node, not 'imsic@addr', given this node inherits the
-'interrupt-controller' node.
+The DT docs for riscv,imsics [1] predicts a 'qemu,imsics' enum in the
+'compatible' property.
 
 [1] Documentation/devicetree/bindings/interrupt-controller/riscv,imsics.yaml
 
@@ -107,23 +106,35 @@ Reported-by: Conor Dooley <conor@kernel.org>
 Fixes: 28d8c281200f ("hw/riscv: virt: Add optional AIA IMSIC support to virt machine")
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- hw/riscv/virt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/riscv/virt.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 0a18547c6d..56d7e945c6 100644
+index 56d7e945c6..ac70993679 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -538,7 +538,8 @@ static void create_fdt_one_imsic(RISCVVirtState *s, hwaddr base_addr,
-         }
-     }
+@@ -515,6 +515,9 @@ static void create_fdt_one_imsic(RISCVVirtState *s, hwaddr base_addr,
+     uint32_t imsic_max_hart_per_socket, imsic_addr, imsic_size;
+     g_autofree uint32_t *imsic_cells = NULL;
+     g_autofree uint32_t *imsic_regs = NULL;
++    static const char * const imsic_compat[2] = {
++        "qemu,imsics", "riscv,imsics"
++    };
  
--    imsic_name = g_strdup_printf("/soc/imsics@%lx", (unsigned long)base_addr);
-+    imsic_name = g_strdup_printf("/soc/interrupt-controller@%lx",
-+                                 (unsigned long)base_addr);
+     imsic_cells = g_new0(uint32_t, ms->smp.cpus * 2);
+     imsic_regs = g_new0(uint32_t, socket_count * 4);
+@@ -541,7 +544,10 @@ static void create_fdt_one_imsic(RISCVVirtState *s, hwaddr base_addr,
+     imsic_name = g_strdup_printf("/soc/interrupt-controller@%lx",
+                                  (unsigned long)base_addr);
      qemu_fdt_add_subnode(ms->fdt, imsic_name);
-     qemu_fdt_setprop_string(ms->fdt, imsic_name, "compatible", "riscv,imsics");
+-    qemu_fdt_setprop_string(ms->fdt, imsic_name, "compatible", "riscv,imsics");
++    qemu_fdt_setprop_string_array(ms->fdt, imsic_name, "compatible",
++                                  (char **)&imsic_compat,
++                                  ARRAY_SIZE(imsic_compat));
++
      qemu_fdt_setprop_cell(ms->fdt, imsic_name, "#interrupt-cells",
+                           FDT_IMSIC_INT_CELLS);
+     qemu_fdt_setprop(ms->fdt, imsic_name, "interrupt-controller", NULL, 0);
 -- 
 2.45.1
 
