@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531DD8D6AB3
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6508D6AAE
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:30:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD8rP-0002pv-OO; Fri, 31 May 2024 16:28:23 -0400
+	id 1sD8rS-0002qt-BG; Fri, 31 May 2024 16:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sD8rM-0002oz-CK
- for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:20 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1sD8rQ-0002qb-Q2
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:24 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1sD8rK-0000nX-Mu
- for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:20 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-70245b22365so944766b3a.1
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 13:28:18 -0700 (PDT)
+ id 1sD8rP-0000o6-7R
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:24 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-7024f09bc92so578281b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 13:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1717187297; x=1717792097; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1717187301; x=1717792101; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=J+v0oYsrs60BFJiSO6oNRIio4iuCfxznllRGF2qwCVI=;
- b=b0K8qvYkiLSI+0itwTphLE2IdwpexNhgOyC1rQJiaguWHh1aPF1iBHchgbvBqXQYe0
- O/e2qjDUM2SwqSq1znJ6izh50Vtn5awsqMTfDPnR7KharElRSoYTdF81nQWRD46BMr3U
- MWp+2dvJIKNNw6ri/bi+umiE8Z4rjA1rNUYQCzGK91Q46llatpbPtPZqC6AEtEM5bUKY
- U35uH8OD/2vkK2tT/tAP8bsLjbKIOCeL1CjlZGAje9hilYhY74OSb+aWSzoFQpvG/AZi
- 4MUKF9FdrNpxTtKHnmrqiuDg3AvbhhYI6wlFno0eNr1A0c/b7wNnLVLrE7ePQhlQ4HR3
- Yuww==
+ bh=0bdJR0XZ5/24do9SQiq86W34Uey5skxXwaEjBErRH+E=;
+ b=ZPkBnqrSgK1Qz9uEyN36e/Q1eMn/TBZFwFhnehtxiXhINlIoODoj5BIJNli5sEaOLV
+ f90+AG4YT7MdOwkqlSSaNNLTivRvAeeK1TPOLH0FNGqHn8BAhtdNYJVVj8oMUa8cizMM
+ yAHrAEUCMBPQtdINQqLFeOW9+80RDbn5H/yuNpFWW9Kjoq682R7ZTs0fGmZ3Li5rEzi4
+ rdrd0DZdPyymf+3gk48w6VvxLYMu7erOvDjk3USNAnj/1ISz3BIDkHewe2yG61csJToS
+ t1r9u+lmJ5H+dPT0UaAPC5pXlqio29Inp894uXBwV2jJ4C0esbhI3Eg96AvzDIDLzPij
+ DbHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717187297; x=1717792097;
+ d=1e100.net; s=20230601; t=1717187301; x=1717792101;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=J+v0oYsrs60BFJiSO6oNRIio4iuCfxznllRGF2qwCVI=;
- b=VkD/b4SoWypEKgqA5CVQjRm2dXLza2rxWba2gJJRNz9mni6lMU5vhWmmLS05Zclo/i
- iImUSIJWXQ1ZTh30IzyXedqHO9qyVpiQTmXJCWgz26d4RIus2OrGBcsWdENcVt8BDFLK
- ePwEKTm2TqMYCfMFuC75Ncp7Ul+hHcq3ZvWE0l2aNLjprMUI8/LSwGdtONCCY9vVER2Z
- k1dMzQElocPm/Gpz5ZVUDZTYXAp6iRcm8sxxWA7auG9IeELG41UIoM7RH2S8t3sEz8LV
- XszUKiAtNRZpxZXIyraueD2dNpXDnWxoJSbLySn0eRC2EardxJjtfI9bhOaRALzlEOow
- b+7w==
-X-Gm-Message-State: AOJu0YxUyX6LpcfPgvJUfdVsu/Hh88uY+V+TwC43V4LrhzW7x3HYBBo6
- 430dMBfuWy7PGl1YVifsWwx+J6HFefQAreStwxCsVhRnkIHOeWwBWqdu5D00CcSwYq9y1nwi1IT
- W
-X-Google-Smtp-Source: AGHT+IFi26WDHZRmk9PwU0pSBWGScPFKyKDf0saOo2VuuREYs24i6bQ6SQlFZ9ofEFsgxIxrDHHlKA==
-X-Received: by 2002:a05:6a20:7f96:b0:1b2:6054:c8ba with SMTP id
- adf61e73a8af0-1b26f30e4d4mr3047560637.56.1717187296779; 
- Fri, 31 May 2024 13:28:16 -0700 (PDT)
+ bh=0bdJR0XZ5/24do9SQiq86W34Uey5skxXwaEjBErRH+E=;
+ b=f8qwLFvkC81/XXELGvpZP9pj9wa1ZwATQvb/m5ZxAHP6wUa8tzuy0acVmMlCMxn5Br
+ C/l3+wkHxbtsKwqrdbumiZ5b++htT+qDc8qJcNjXCcaE0/b5CsjsZ749yPRKcsTr+W79
+ 2i1uMeh+eJ2YTwK3lhKGNyGAj0Ia9EHvg4XldhpO+IKrXxZ37fZeTmQ6FxSCycNRCzcL
+ +J77f3MqjRFWzz8l/xd2ur9ZtPP+kfl+j9rCNm4j41T1S0DIkZ2p0G5pZUQ9KUFAxFBd
+ 7Fq2B4ZMoGjn2dKplLzuTRRXL1MMvvmb27fIKLXE2bzaCGQ/vkRFlsy25HECN/v58kNF
+ iZjA==
+X-Gm-Message-State: AOJu0YxdcTYiqXxh+OuJFNf8/y3k9f2F81/d/FMOvGNpyB6ODGvulSZM
+ Ctf1LdcTDf9w/Iiz+C5yu7Of9qpcuhexXY36h94Iz4xiC39ibSiay8oqy2KsVBijaOU5AiVdJb1
+ s
+X-Google-Smtp-Source: AGHT+IF2T/GZ3JkT8S1HTxAYTAgaqXTDX3NnqWRvJOC99F1H7XWhK8BKeGrTCEJq+ZzzPsZRFWIkDg==
+X-Received: by 2002:a05:6a20:729a:b0:1af:597f:4970 with SMTP id
+ adf61e73a8af0-1b26f1179c7mr3831730637.24.1717187301094; 
+ Fri, 31 May 2024 13:28:21 -0700 (PDT)
 Received: from grind.dc1.ventanamicro.com
  (189-69-160-78.dial-up.telesp.net.br. [189.69.160.78])
  by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70242b09133sm1819691b3a.178.2024.05.31.13.28.12
+ d2e1a72fcca58-70242b09133sm1819691b3a.178.2024.05.31.13.28.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 13:28:16 -0700 (PDT)
+ Fri, 31 May 2024 13:28:20 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  apatel@ventanamicro.com, ajones@ventanamicro.com, conor@kernel.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 2/8] hw/riscv/virt.c: add aplic nodename helper
-Date: Fri, 31 May 2024 17:27:53 -0300
-Message-ID: <20240531202759.911601-3-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 3/8] hw/riscv/virt.c: rename aplic nodename to
+ 'interrupt-controller'
+Date: Fri, 31 May 2024 17:27:54 -0300
+Message-ID: <20240531202759.911601-4-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240531202759.911601-1-dbarboza@ventanamicro.com>
 References: <20240531202759.911601-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,72 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll change the aplic DT nodename in the next patch and the name is
-hardcoded in 2 different functions. Create a helper to change a single
-place later.
+The correct name of the aplic controller node, as per Linux kernel DT
+docs [1], is 'interrupt-controller@addr'.
 
-While we're at it, in create_fdt_socket_aplic(), move 'aplic_name'
-inside the conditional to avoid allocating a string that won't be used
-when socket == NULL.
+[1] Documentation/devicetree/bindings/interrupt-controller/riscv,aplic.yaml
 
+Reported-by: Conor Dooley <conor@kernel.org>
+Fixes: e6faee65855b ("hw/riscv: virt: Add optional AIA APLIC support to virt machine")
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- hw/riscv/virt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ hw/riscv/virt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index 1a7e1e73c5..07a07f5ce1 100644
+index 07a07f5ce1..5505047945 100644
 --- a/hw/riscv/virt.c
 +++ b/hw/riscv/virt.c
-@@ -588,6 +588,12 @@ static void create_fdt_imsic(RISCVVirtState *s, const MemMapEntry *memmap,
- 
+@@ -591,7 +591,7 @@ static void create_fdt_imsic(RISCVVirtState *s, const MemMapEntry *memmap,
+ /* Caller must free string after use */
+ static char *fdt_get_aplic_nodename(unsigned long aplic_addr)
+ {
+-    return g_strdup_printf("/soc/aplic@%lx", aplic_addr);
++    return g_strdup_printf("/soc/interrupt-controller@%lx", aplic_addr);
  }
  
-+/* Caller must free string after use */
-+static char *fdt_get_aplic_nodename(unsigned long aplic_addr)
-+{
-+    return g_strdup_printf("/soc/aplic@%lx", aplic_addr);
-+}
-+
  static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-                                  unsigned long aplic_addr, uint32_t aplic_size,
-                                  uint32_t msi_phandle,
-@@ -597,7 +603,7 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-                                  bool m_mode, int num_harts)
- {
-     int cpu;
--    g_autofree char *aplic_name = NULL;
-+    g_autofree char *aplic_name = fdt_get_aplic_nodename(aplic_addr);
-     g_autofree uint32_t *aplic_cells = g_new0(uint32_t, num_harts * 2);
-     MachineState *ms = MACHINE(s);
- 
-@@ -606,7 +612,6 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
-         aplic_cells[cpu * 2 + 1] = cpu_to_be32(m_mode ? IRQ_M_EXT : IRQ_S_EXT);
-     }
- 
--    aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
-     qemu_fdt_add_subnode(ms->fdt, aplic_name);
-     qemu_fdt_setprop_string(ms->fdt, aplic_name, "compatible", "riscv,aplic");
-     qemu_fdt_setprop_cell(ms->fdt, aplic_name, "#address-cells",
-@@ -648,7 +653,6 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-                                     uint32_t *aplic_phandles,
-                                     int num_harts)
- {
--    g_autofree char *aplic_name = NULL;
-     unsigned long aplic_addr;
-     MachineState *ms = MACHINE(s);
-     uint32_t aplic_m_phandle, aplic_s_phandle;
-@@ -674,9 +678,8 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
-                          aplic_s_phandle, 0,
-                          false, num_harts);
- 
--    aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
--
-     if (!socket) {
-+        g_autofree char *aplic_name = fdt_get_aplic_nodename(aplic_addr);
-         platform_bus_add_all_fdt_nodes(ms->fdt, aplic_name,
-                                        memmap[VIRT_PLATFORM_BUS].base,
-                                        memmap[VIRT_PLATFORM_BUS].size,
 -- 
 2.45.1
 
