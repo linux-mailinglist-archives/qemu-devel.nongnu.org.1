@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0370E8D6167
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E6A8D613C
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:05:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD105-0004Ws-H6; Fri, 31 May 2024 08:04:49 -0400
+	id 1sD0zn-0004Pp-1R; Fri, 31 May 2024 08:04:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zc-0004KY-Dn
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:21 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1sD0za-0004Jq-2j
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:18 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zV-0003PB-FY
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:19 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2e724bc46c4so20200791fa.2
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:10 -0700 (PDT)
+ id 1sD0zU-0003PF-92
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:17 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-421208c97a2so18830145e9.1
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1717157047; x=1717761847; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=ga8qaYVuw0C0KnS6BYgrkqsnKee3yNsBM+O4s8STdpM=;
- b=ARgcU35Z4Fb0USoP7zjtnNJWPxRgtfLqv0GUcrZkajHJg14magoy9CGEPPjgzrJIwm
- Wv9qEftDrltJxsT6mX+RGhw3k324Le2uVyy1DNS+nXxHdV2WWgJP1kSAxrOdzmQ8wrFq
- cngKOZ/eDe6TlyMUOcVBoAZ8914yEnLWlgnJ7npE0sN5AnCRCP8wT0Y8gChSnhs9r8QB
- kn/mEkuausHngxyobyuYO3TgcRRbw2oscRzvAzrNmBFE+OvFk0tCnlxnCJp1PfYUIQJd
- KlIfUTJdOSGjjcacQAI0tTlHhC2CrIKJu9je3X0OEzhdzQFlpHvYnfkj0EswX8AMiEq6
- dhwg==
+ :reply-to; bh=s1KF1phiJhFDe0oGBJkmkCzxz1jQ8QxxTLgSJBNbF0Y=;
+ b=ndkMRV1hRUDEeC4rcRW2mn7i1ryMTq5R6zNVilKKu7p7yWmZiu/Do6BSRWjKUc/3EY
+ hPGDy0NAGaWTrE5aYp10VJlih8z1HLi0/CgZn/Q8I4h1i0bONGblGbzF8fi+MKN53gXH
+ 3ATEt6j1swRMu8YfDZvCxyhB3BYv+CxnrS7APihCR1Ru0bGjqFX4QPlBE3QeW1QhJoOi
+ MX7haCEZipimJ0NLrKDo5PaMiyFaRn78P0UcU+IyvggY7PjwgBnLh6NKOzff0Y/srthF
+ 2k0AryZulxGtYxLux1zQk6GBbrkjfaOdNCUNz/3eIdZqp4sO0PH74e1nJMpnhuVdQf2a
+ wrnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1717157047; x=1717761847;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ga8qaYVuw0C0KnS6BYgrkqsnKee3yNsBM+O4s8STdpM=;
- b=OtFn861+emnlnCAaTD8wuSUYBkDsvrx/ZabBaiPR/WWADxdVHUMvjhwPDotbiP+vB9
- 2y2HEQzIz/Zmf59raqDUP/ycrG33o9PmLpmjfYKi3qZ90fKkHqY/xWW7/B/o5WcatMaW
- dKOPCkMibVrAw2uNnu2UP2Vs4/qr71UpzaUqd41cOq9nfzi/Nb8XRVemxh9DLdIBc2Yo
- 99KE+rG+8E0bnVzohB+LkQn8Jq01XdgRiFZxiYczpcnb9JTZlK9mTo9p56qlBLcmrf72
- yfPMFjdhrhCYhlxsab/Fe3kG9hIrNxzBkgUOD/KiU94nBNXqQ1Rs2FUgRsng7yXAFb6p
- XEXw==
-X-Gm-Message-State: AOJu0YzIDm2JPautBLcu44zSqHaFiCl6C1H8ach6aG2/CvaxzywQ5RhU
- iRimbhmADJe+ME+wxvWT4PZ/DNWW5P88dznB+QLM4a54D8kCNAZewS2BhY9ETLmnYftCOYE3B+C
- +
-X-Google-Smtp-Source: AGHT+IG2doZmMM6CCHiwAUAXI0RxeG9XCk+e1FnpTgQXB8gEeROQMDN+EkjNPK6WEVyLSULzBclJbA==
-X-Received: by 2002:a05:651c:212:b0:2e9:870c:de1d with SMTP id
- 38308e7fff4ca-2ea951e08d1mr11976261fa.39.1717157046941; 
- Fri, 31 May 2024 05:04:06 -0700 (PDT)
+ bh=s1KF1phiJhFDe0oGBJkmkCzxz1jQ8QxxTLgSJBNbF0Y=;
+ b=wM2j9IjF9vfEvkkNmZrDcb64Kf5aPSQmi+ItreOWBvAVZsLPrIHOrqRuifYhEyWFKz
+ QUh31EDipwRe0MQYtKe9HhUD+IS4aC2JG4l+nqfXIvREo+VD0H6j43M0QGMsWb5PCdhP
+ KK6R/AyAM0V6caOMH/aIlGLr0KVR84qtF95+F5dcxGH+pSBT2IuOWPnf45r1aa5We5PY
+ eXVg77c1neuv8q57XhQCGtq2UQ8qqFt9itOWapA9oKegubr3kw99mWe5SD3L41XuVGlL
+ eArDr2gPXlZWM1zGySXRnTePzehx6rs5it5TYlU8PPbbnEa0ebh7E15GNFWtHkGIt7D9
+ NCJA==
+X-Gm-Message-State: AOJu0YwDafKMIRC+1U0Vrq7w0l+6JeYeI7cl0vrgXLOFuIKTFS6xUGHa
+ xs3wTb32zkoxN9gwH+DNhGAwvSlYevuISuwNdrhfRTBheyEp8sDlAxrQ36Bex+kxgyzLdZY+9l3
+ u
+X-Google-Smtp-Source: AGHT+IGWBrCDCsPsXYUXi9DPg6RD8S7Qz3jhmRrLoMDTGN8VmbbPrCZCO97B8k4nEFsRcpAA3nVizg==
+X-Received: by 2002:a05:600c:1550:b0:420:1fd2:e611 with SMTP id
+ 5b1f17b1804b1-4212e0adf98mr13844945e9.27.1717157047589; 
+ Fri, 31 May 2024 05:04:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.06
+ 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.07
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 05:04:06 -0700 (PDT)
+ Fri, 31 May 2024 05:04:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 05/43] tests/avocado: update sbsa-ref firmware
-Date: Fri, 31 May 2024 13:03:23 +0100
-Message-Id: <20240531120401.394550-6-peter.maydell@linaro.org>
+Subject: [PULL 06/43] arm/sbsa-ref: move to Neoverse-N2 as default
+Date: Fri, 31 May 2024 13:03:24 +0100
+Message-Id: <20240531120401.394550-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531120401.394550-1-peter.maydell@linaro.org>
 References: <20240531120401.394550-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,82 +93,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Partial support for NUMA setup:
-- cpu nodes
-- memory nodes
+Moving to Neoverse-N2 gives us several cpu features to use for expanding
+our platform:
 
-Used versions:
+- branch target identification
+- pointer authentication
+- RME for confidential computing
+- RNG for EFI_PROTOCOL_RNG
+- SVE being enabled by default
 
-- Trusted Firmware v2.11.0
-- Tianocore EDK2 stable202405
-- Tianocore EDK2 Platforms code commit 4bbd0ed
+We do not go for "max" as default to have stable set of features enabled
+by default. It is still supported and can be selected with "--cpu"
+argument.
 
-Firmware is built using Debian 'bookworm' cross toolchain (gcc 12.2.0).
-
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
+Message-id: 20240523165353.6547-1-marcin.juszkiewicz@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ hw/arm/sbsa-ref.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index 98c76c1ff70..6bb82f2a03c 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -37,18 +37,18 @@ def fetch_firmware(self):
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 57c337fd92a..e884692f07f 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -891,7 +891,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
  
-         Used components:
- 
--        - Trusted Firmware 2.10.2
--        - Tianocore EDK2 stable202402
--        - Tianocore EDK2-platforms commit 085c2fb
-+        - Trusted Firmware 2.11.0
-+        - Tianocore EDK2 stable202405
-+        - Tianocore EDK2-platforms commit 4bbd0ed
- 
-         """
- 
-         # Secure BootRom (TF-A code)
-         fs0_xz_url = (
-             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
--            "20240313-116475/edk2/SBSA_FLASH0.fd.xz"
-+            "20240528-140808/edk2/SBSA_FLASH0.fd.xz"
-         )
--        fs0_xz_hash = "637593749cc307dea7dc13265c32e5d020267552f22b18a31850b8429fc5e159"
-+        fs0_xz_hash = "fa6004900b67172914c908b78557fec4d36a5f784f4c3dd08f49adb75e1892a9"
-         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash,
-                                       algorithm='sha256')
-         archive.extract(tar_xz_path, self.workdir)
-@@ -57,9 +57,9 @@ def fetch_firmware(self):
-         # Non-secure rom (UEFI and EFI variables)
-         fs1_xz_url = (
-             "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
--            "20240313-116475/edk2/SBSA_FLASH1.fd.xz"
-+            "20240528-140808/edk2/SBSA_FLASH1.fd.xz"
-         )
--        fs1_xz_hash = "cb0a5e8cf5e303c5d3dc106cfd5943ffe9714b86afddee7164c69ee1dd41991c"
-+        fs1_xz_hash = "5f3747d4000bc416d9641e33ff4ac60c3cc8cb74ca51b6e932e58531c62eb6f7"
-         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash,
-                                       algorithm='sha256')
-         archive.extract(tar_xz_path, self.workdir)
-@@ -98,15 +98,15 @@ def test_sbsaref_edk2_firmware(self):
- 
-         # AP Trusted ROM
-         wait_for_console_pattern(self, "Booting Trusted Firmware")
--        wait_for_console_pattern(self, "BL1: v2.10.2(release):")
-+        wait_for_console_pattern(self, "BL1: v2.11.0(release):")
-         wait_for_console_pattern(self, "BL1: Booting BL2")
- 
-         # Trusted Boot Firmware
--        wait_for_console_pattern(self, "BL2: v2.10.2(release)")
-+        wait_for_console_pattern(self, "BL2: v2.11.0(release)")
-         wait_for_console_pattern(self, "Booting BL31")
- 
-         # EL3 Runtime Software
--        wait_for_console_pattern(self, "BL31: v2.10.2(release)")
-+        wait_for_console_pattern(self, "BL31: v2.11.0(release)")
- 
-         # Non-trusted Firmware
-         wait_for_console_pattern(self, "UEFI firmware (version 1.0")
+     mc->init = sbsa_ref_init;
+     mc->desc = "QEMU 'SBSA Reference' ARM Virtual Machine";
+-    mc->default_cpu_type = ARM_CPU_TYPE_NAME("neoverse-n1");
++    mc->default_cpu_type = ARM_CPU_TYPE_NAME("neoverse-n2");
+     mc->valid_cpu_types = valid_cpu_types;
+     mc->max_cpus = 512;
+     mc->pci_allow_0_address = true;
 -- 
 2.34.1
 
