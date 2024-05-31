@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8C58D5B73
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 09:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A4D8D5B74
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 09:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCwhS-0004MJ-Ax; Fri, 31 May 2024 03:29:18 -0400
+	id 1sCwhS-0004Mr-TQ; Fri, 31 May 2024 03:29:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sCwhP-0004Lb-Cp
+ id 1sCwhP-0004Lk-Lw
  for qemu-devel@nongnu.org; Fri, 31 May 2024 03:29:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sCwhN-0003YB-Ty
+ id 1sCwhO-0003YE-50
  for qemu-devel@nongnu.org; Fri, 31 May 2024 03:29:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717140552;
+ s=mimecast20190719; t=1717140553;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NUbGXMH/05NqmsodcOwFuyOD95dFMv4taoskzEr1lZU=;
- b=Qbuvk8CSNe6rwBOZyW+vdAqSOlU4KS1fmexnL06U4s3kUOaap5FlT5ZoYDs0gNXrUyiAhZ
- 8encbQSIvCbe6cv6YoBUQchROx+/0web28Ga6WA54aJG4+apMrFwY8OqyNYJQtZAdjVRxc
- quWJZtMLUPf7a//NGax/n8rjIJD8AYg=
+ bh=iNVcWm9NVa4DYrJoN630zbwQ/tvhuAhNDFHXI3Nttls=;
+ b=h7c7TS+A1MLENWsB6mYl6VlLSOsGIZAah66KsA5uHhB+Tu5vd8VTQZtVACRWxV0ULWHrBy
+ fSQt5GTagFJXm8KZS1LxqvlYugOZ11BG+3IhP39d4IY3416nqe53DciWNWQG1Z4n7MdsMX
+ SReVbqUBCgHs1HnYcEsu8sgCZlJcEqY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-553-gsR16aUzNvaSHJ4Q163UBw-1; Fri, 31 May 2024 03:29:10 -0400
-X-MC-Unique: gsR16aUzNvaSHJ4Q163UBw-1
+ us-mta-633-6aI3VdApOZSi2_cwAa7Q3w-1; Fri, 31 May 2024 03:29:11 -0400
+X-MC-Unique: 6aI3VdApOZSi2_cwAa7Q3w-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 455CE101A525
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 07:29:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44422800169
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 07:29:11 +0000 (UTC)
 Received: from maggie.brq.redhat.com (unknown [10.43.3.102])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 79593491034;
- Fri, 31 May 2024 07:29:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 78151491032;
+ Fri, 31 May 2024 07:29:10 +0000 (UTC)
 From: Michal Privoznik <mprivozn@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: david@redhat.com,
 	imammedo@redhat.com
-Subject: [PATCH v2 2/4] osdep: Make qemu_madvise() return ENOSYS on
- unsupported OSes
-Date: Fri, 31 May 2024 09:28:58 +0200
-Message-ID: <4dc484ae240edf8df0de14edefc3c3a717a1c781.1717140354.git.mprivozn@redhat.com>
+Subject: [PATCH v2 3/4] backends/hostmem: Report error on qemu_madvise()
+ failures
+Date: Fri, 31 May 2024 09:28:59 +0200
+Message-ID: <3341689328d280183062a8fcde006468346ecf1d.1717140354.git.mprivozn@redhat.com>
 In-Reply-To: <cover.1717140354.git.mprivozn@redhat.com>
 References: <cover.1717140354.git.mprivozn@redhat.com>
 MIME-Version: 1.0
@@ -81,30 +81,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not every OS is capable of madvise() or posix_madvise() even. In
-that case, errno should be set to ENOSYS as it reflects the cause
-better. This also mimic what madvise()/posix_madvise() would
-return if kernel lacks corresponding syscall (e.g. due to
-configuration).
+If user sets .merge or .dump attributes qemu_madvise() is called
+with corresponding advice. But it is never checked for failure
+which may mislead users into thinking the attribute is set
+correctly. Report an appropriate error.
 
 Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
 ---
- util/osdep.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ backends/hostmem.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/util/osdep.c b/util/osdep.c
-index e42f4e8121..5d23bbfbec 100644
---- a/util/osdep.c
-+++ b/util/osdep.c
-@@ -64,7 +64,7 @@ int qemu_madvise(void *addr, size_t len, int advice)
+diff --git a/backends/hostmem.c b/backends/hostmem.c
+index eb9682b4a8..012a8c190f 100644
+--- a/backends/hostmem.c
++++ b/backends/hostmem.c
+@@ -178,8 +178,14 @@ static void host_memory_backend_set_merge(Object *obj, bool value, Error **errp)
+         void *ptr = memory_region_get_ram_ptr(&backend->mr);
+         uint64_t sz = memory_region_size(&backend->mr);
+ 
+-        qemu_madvise(ptr, sz,
+-                     value ? QEMU_MADV_MERGEABLE : QEMU_MADV_UNMERGEABLE);
++        if (qemu_madvise(ptr, sz,
++                         value ? QEMU_MADV_MERGEABLE : QEMU_MADV_UNMERGEABLE)) {
++            error_setg_errno(errp, errno,
++                             "Couldn't change property 'merge' on '%s'",
++                             object_get_typename(obj));
++            return;
++        }
++
+         backend->merge = value;
      }
-     return 0;
- #else
--    errno = EINVAL;
-+    errno = ENOSYS;
-     return -1;
- #endif
  }
+@@ -204,8 +210,14 @@ static void host_memory_backend_set_dump(Object *obj, bool value, Error **errp)
+         void *ptr = memory_region_get_ram_ptr(&backend->mr);
+         uint64_t sz = memory_region_size(&backend->mr);
+ 
+-        qemu_madvise(ptr, sz,
+-                     value ? QEMU_MADV_DODUMP : QEMU_MADV_DONTDUMP);
++        if (qemu_madvise(ptr, sz,
++                     value ? QEMU_MADV_DODUMP : QEMU_MADV_DONTDUMP)) {
++            error_setg_errno(errp, errno,
++                             "Couldn't change property 'dump' on '%s'",
++                             object_get_typename(obj));
++            return;
++        }
++
+         backend->dump = value;
+     }
+ }
+@@ -337,11 +349,19 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
+     ptr = memory_region_get_ram_ptr(&backend->mr);
+     sz = memory_region_size(&backend->mr);
+ 
+-    if (backend->merge) {
+-        qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE);
++    if (backend->merge &&
++        qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE)) {
++        error_setg_errno(errp, errno,
++                         "Couldn't set property 'merge' on '%s'",
++                         object_get_typename(OBJECT(uc)));
++        return;
+     }
+-    if (!backend->dump) {
+-        qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP);
++    if (!backend->dump &&
++        qemu_madvise(ptr, sz, QEMU_MADV_DONTDUMP)) {
++        error_setg_errno(errp, errno,
++                         "Couldn't set property 'dump' on '%s'",
++                         object_get_typename(OBJECT(uc)));
++        return;
+     }
+ #ifdef CONFIG_NUMA
+     unsigned long lastbit = find_last_bit(backend->host_nodes, MAX_NODES);
 -- 
 2.44.1
 
