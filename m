@@ -2,119 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3438D6A4A
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0908D6AAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 22:30:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD8W3-0008Ad-Gh; Fri, 31 May 2024 16:06:19 -0400
+	id 1sD8rL-0002oe-QI; Fri, 31 May 2024 16:28:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1sD8W1-0008AQ-U4; Fri, 31 May 2024 16:06:17 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sD8rK-0002oA-B1
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:18 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1sD8W0-0005mj-9u; Fri, 31 May 2024 16:06:17 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id B13CE1F391;
- Fri, 31 May 2024 20:06:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1717185973; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5sjS3IVvSxFYjQZ11N3PaMlIWt1+Y+61luCK1lSoVKs=;
- b=0XpDeWV7cR/IfrwpqNMun4qvNgTwBGKzNA/F1vFmhR7eGbbBfM4a2Lb7XQ0vYHBI3QvS4E
- Di+jvNZJYhjV020nOObs4Mm9nW/I5MTLNTWQVPwJZ71ETJFh0/Q21Vu6sQhAukhL4IO+VP
- Bc3RXxoUbgI5LphZZg7EKl2Br2NmxNM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1717185973;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5sjS3IVvSxFYjQZ11N3PaMlIWt1+Y+61luCK1lSoVKs=;
- b=NAcp34kZ/fw6V2xGsElngNPHRzbeGfwpJjlekX+5YSX6zOscNw9PuC7hd6C4nnFUfvyZml
- m1CLOLrHbOvifPCw==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0XpDeWV7;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=NAcp34kZ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1717185973; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5sjS3IVvSxFYjQZ11N3PaMlIWt1+Y+61luCK1lSoVKs=;
- b=0XpDeWV7cR/IfrwpqNMun4qvNgTwBGKzNA/F1vFmhR7eGbbBfM4a2Lb7XQ0vYHBI3QvS4E
- Di+jvNZJYhjV020nOObs4Mm9nW/I5MTLNTWQVPwJZ71ETJFh0/Q21Vu6sQhAukhL4IO+VP
- Bc3RXxoUbgI5LphZZg7EKl2Br2NmxNM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1717185973;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5sjS3IVvSxFYjQZ11N3PaMlIWt1+Y+61luCK1lSoVKs=;
- b=NAcp34kZ/fw6V2xGsElngNPHRzbeGfwpJjlekX+5YSX6zOscNw9PuC7hd6C4nnFUfvyZml
- m1CLOLrHbOvifPCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B3BE132C2;
- Fri, 31 May 2024 20:06:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id w734ALUtWmb0WAAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 31 May 2024 20:06:13 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, Glenn Miles
- <milesg@linux.vnet.ibm.com>
-Subject: Re: [PULL 25/72] Adds migration support for Branch History Rolling
- Buffer (BHRB) internal state.
-In-Reply-To: <20240523230747.45703-26-npiggin@gmail.com>
-References: <20240523230747.45703-1-npiggin@gmail.com>
- <20240523230747.45703-26-npiggin@gmail.com>
-Date: Fri, 31 May 2024 17:06:07 -0300
-Message-ID: <87le3phhlc.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1sD8rB-0000mh-UW
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 16:28:17 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-7024003a515so1426338b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 13:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1717187287; x=1717792087; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=I5AIESFtrUMD1hQuKA3I+WccmKNRTFcn4Ekg/Hl2UI0=;
+ b=DkJtSKjUKHMiRN/F+oxks0qyPaz/ahMx84uRLK0AccayBBTJzPNkNQgxTTFK0/m28p
+ O6IOYdZaDNsIJoHWXqzwJJtfTWuQsa4ToECsaiabpNs/BOUKskfGo2RSBFrR3xDx1dGc
+ 0hEeqxmnGiIdUOsKbRoE8ZcBGK2V2C2bRcAzrx58UjVYmQRVSXiHZbDoJjLhmKCrWqc7
+ zpmNSUvRYqGPGOoUkHLXE74aiWNdz+6riQlLUWpzZkTtvHj1cSc/5cyP5UhdJKETctD0
+ MsovEm6sWWUvEt6mxZrIwAtpSRMCCvLgT1LUmHPwlJu/dGiRWqAXCGFfbU2AJER9am/H
+ A8Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717187287; x=1717792087;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=I5AIESFtrUMD1hQuKA3I+WccmKNRTFcn4Ekg/Hl2UI0=;
+ b=QwJ9vxtp9g6oSE7LVZ4I+aIFUeKE+s0w10Q1Psu9a6lEmjpnisOt7vFNHm3Eqo1bAy
+ dgqKI6hS1CYXQGZgqgC9P+88lseUWp0uiGHX08qrpU67JPhlu8SorgOzDMd3vGbzcHRy
+ P9/GrKRcMt9rbOCMiyUK3J9icmgcfx+TQypFBFEH9b6JndiSpeU62sSm5m+Pn7/O1lAO
+ ofOYEPF3j0xJ8YZbUih5LLGyaWZebTtiOiE2EjyKB98SJHr8DX4lmVjxwUv5um2evZxx
+ qHeytMNf7KVN4z4Kh0xSyLKQjD1u2YmkIQ9GmXUU8LWyJ94G0aNiqdTGj6OFntkVTGGZ
+ z5NA==
+X-Gm-Message-State: AOJu0Yxs2vX2Gt2Nu/VXvvkAE+GzvpAnjv2BZ46xdWwqAIEiL9XknKH4
+ n+sj2t7G9VbUGLsUpfpU1HrAdWHXJVZaPGK5leoFldRDrgPH6rg75Nsb6pJ5pWUJqXMoBGKeZw4
+ z
+X-Google-Smtp-Source: AGHT+IFFEPVGsekt3PQdP+OgeUCMgcaOo3XL5b9DXS+IKO+WbawcCsAYk3zjdzqUk11gkO4meBsv2A==
+X-Received: by 2002:a05:6a00:4b0c:b0:702:301f:e522 with SMTP id
+ d2e1a72fcca58-7024780b1d8mr3015682b3a.19.1717187287239; 
+ Fri, 31 May 2024 13:28:07 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com
+ (189-69-160-78.dial-up.telesp.net.br. [189.69.160.78])
+ by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70242b09133sm1819691b3a.178.2024.05.31.13.28.03
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 31 May 2024 13:28:06 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ apatel@ventanamicro.com, ajones@ventanamicro.com, conor@kernel.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/8] hw/riscv/virt.c: aplic/imsic DT fixes
+Date: Fri, 31 May 2024 17:27:51 -0300
+Message-ID: <20240531202759.911601-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -6.51
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B13CE1F391
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- DWL_DNSWL_MED(-2.00)[suse.de:dkim];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FREEMAIL_TO(0.00)[gmail.com,nongnu.org]; ARC_NA(0.00)[];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
- TO_DN_SOME(0.00)[]; MIME_TRACE(0.00)[0:+];
- TO_MATCH_ENVRCPT_ALL(0.00)[];
- FREEMAIL_ENVRCPT(0.00)[gmail.com];
- FREEMAIL_CC(0.00)[gmail.com,nongnu.org,linux.vnet.ibm.com];
- RCVD_COUNT_TWO(0.00)[2]; MID_RHS_MATCH_FROM(0.00)[];
- FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
- RCPT_COUNT_FIVE(0.00)[5];
- RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
- MISSING_XM_UA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- RCVD_TLS_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim, imap1.dmz-prg2.suse.org:helo,
- imap1.dmz-prg2.suse.org:rdns]
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,72 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+Hi,
 
-> From: Glenn Miles <milesg@linux.vnet.ibm.com>
->
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  target/ppc/machine.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-> index 6b6c31d903..731dd8df35 100644
-> --- a/target/ppc/machine.c
-> +++ b/target/ppc/machine.c
-> @@ -711,6 +711,26 @@ static const VMStateDescription vmstate_reservation = {
->      }
->  };
->  
-> +#ifdef TARGET_PPC64
-> +static bool bhrb_needed(void *opaque)
-> +{
-> +    PowerPCCPU *cpu = opaque;
-> +    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_bhrb = {
-> +    .name = "cpu/bhrb",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .needed = bhrb_needed,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-> +        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +#endif
-> +
->  const VMStateDescription vmstate_ppc_cpu = {
->      .name = "cpu",
->      .version_id = 5,
-> @@ -756,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu = {
->  #ifdef TARGET_PPC64
->          &vmstate_tm,
->          &vmstate_slb,
-> +        &vmstate_bhrb,
+This is a series that is being spun from the reviews given on patch 1
+[1]. We'll fix some DT validation issues we have in the 'virt' machine
+[2] that aren't related to missing extensions in the DT spec.
 
-Running some tests now that Nick re-enabled ppc for migration tests, I
-see that this new state breaks backward migrations:
+I'll leave to maintainers to squash the patches as they see fit. I
+split it this way to make it easier to bissect possible bugs that these
+individual changes can cause.
 
-$ QTEST_TRACE="vmstate_*" \
-  QTEST_QEMU_BINARY_DST=../build-previous/qemu-system-ppc64 \
-  QTEST_QEMU_BINARY=./qemu-system-ppc64 \
-  ./tests/qtest/migration-test -p /ppc64/migration/precopy/tcp/plain
-...
-vmstate_load_state_field cpu/slb:env.slb
-vmstate_n_elems env.slb: 64
-vmstate_subsection_load cpu/slb
-vmstate_subsection_load_bad cpu/slb: cpu/bhrb/(prefix)
-vmstate_load_state_end cpu/slb end/0
-vmstate_subsection_load_bad cpu: cpu/bhrb/(lookup)
-qemu-system-ppc64: error while loading state for instance 0x0 of device 'cpu'
-vmstate_downtime_checkpoint dst-precopy-loadvm-completed
-qemu-system-ppc64: load of migration failed: No such file or directory
+These are the types of DT warnings solved by this series:
 
-If you want to support backwards migration, then this needs to be
-fixed. Otherwise we can ignore it.
+/home/danielhb/work/qemu/riscv64_virt.dtb: aplic@d000000: $nodename:0: 'aplic@d000000' does not match '^interrupt-controller(@[0-9a-f,]+)*$'
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,aplic.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: aplic@d000000: compatible:0: 'riscv,aplic' is not one of ['qemu,aplic']
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,aplic.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: aplic@d000000: compatible: ['riscv,aplic'] is too short
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,aplic.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: aplic@d000000: Unevaluated properties are not allowed ('compatible' was unexpected)
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,aplic.yaml#
+(...)
+/home/danielhb/work/qemu/riscv64_virt.dtb: imsics@28000000: $nodename:0: 'imsics@28000000' does not match '^interrupt-controller(@[0-9a-f,]+)*$'
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,imsics.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: imsics@28000000: compatible:0: 'riscv,imsics' is not one of ['qemu,imsics']
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,imsics.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: imsics@28000000: compatible: ['riscv,imsics'] is too short
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,imsics.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: imsics@28000000: '#msi-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,imsics.yaml#
+/home/danielhb/work/qemu/riscv64_virt.dtb: imsics@28000000: Unevaluated properties are not allowed ('compatible' was unexpected)
+	from schema $id: http://devicetree.org/schemas/interrupt-controller/riscv,imsics.yaml#
+
+[3] explains how to run 'dt-validate' to reproduce them. To generate a
+'processed schema' file what I did was:
+
+- in the Linux kernel tree, run 'make dt_binding_check'. Please note
+  that this might require installation of additional python stuff
+  (e.g.swig, python3-devel)
+
+- I used the generated file 'Documentation/devicetree/bindings/processed-schema.json'
+  as a 'processed schema'.
+
+Series applicable on both master and alistair/riscv-to-apply.next. 
+
+Changes from v1:
+- added patches 2 to 7 to fix the dt-validate warnings on imsics and
+  aplic notes
+- v1 link: https://lore.kernel.org/qemu-riscv/20240530084949.761034-1-dbarboza@ventanamicro.com/
+
+[1] https://lore.kernel.org/qemu-riscv/20240530084949.761034-1-dbarboza@ventanamicro.com/
+[2] https://lore.kernel.org/all/20240529-rust-tile-a05517a6260f@spud/
+[3] https://lore.kernel.org/qemu-riscv/20240530-landed-shriek-9362981afade@spud/ 
+
+Daniel Henrique Barboza (8):
+  hw/riscv/virt.c: add address-cells in create_fdt_one_aplic()
+  hw/riscv/virt.c: add aplic nodename helper
+  hw/riscv/virt.c: rename aplic nodename to 'interrupt-controller'
+  hw/riscv/virt.c: aplic DT: add 'qemu,aplic' to 'compatible'
+  hw/riscv/virt.c: aplic DT: rename prop to 'riscv,delegation'
+  hw/riscv/virt.c: change imsic nodename to 'interrupt-controller'
+  hw/riscv/virt.c: imsics DT: add 'qemu,imsics' to 'compatible'
+  hw/riscv/virt.c: imsics DT: add '#msi-cells'
+
+ hw/riscv/virt.c         | 36 +++++++++++++++++++++++++++---------
+ include/hw/riscv/virt.h |  1 +
+ 2 files changed, 28 insertions(+), 9 deletions(-)
+
+-- 
+2.45.1
+
 
