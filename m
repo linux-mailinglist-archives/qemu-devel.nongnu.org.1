@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8858D5C32
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 10:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7D38D5C75
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 10:14:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCxE6-0004Ld-NP; Fri, 31 May 2024 04:03:02 -0400
+	id 1sCxNq-0008FQ-PO; Fri, 31 May 2024 04:13:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCxE3-0004L8-PQ
- for qemu-devel@nongnu.org; Fri, 31 May 2024 04:02:59 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCxNo-0008Eu-Js
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 04:13:04 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCxE1-0001gC-Ig
- for qemu-devel@nongnu.org; Fri, 31 May 2024 04:02:59 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4202c1d19d5so17114965e9.2
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 01:02:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1sCxNk-0003el-6g
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 04:13:04 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-42121d27861so17535825e9.0
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 01:12:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717142576; x=1717747376; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717143178; x=1717747978; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=P60MOZ2WbS6bsT2WPQz1Cgly6t3sgd95GrQT3VO8LjE=;
- b=OtXfKpWrvyb9iUivNQUx1RkDCr0M3OSY6UDeDaE8VyVb5aEtMiX9yAuChl9kAN5Jz1
- LMV8DimTC2qPpIaCrVj1sZJ9iu6/pkIoDECmLepQBx7JJ7BDfPLIA7j0jPQt8PuBL/nu
- 5SwPFHnmfainnIYsFUJykOpqqyGy3V/76wsaxP/Dp40y11Ff6Hy3m5pbeKI7wNfhn8MT
- Vt9BIFAk5yscXjE6BE/47RRER61fkFkL9UQCM3m5Hrg1b6Mx+BKQ5s5O1ZvvjEZj+ld7
- DOyuGHqLiNz/13RR3b58r18YloZEor7DTaz5zyNE2c5ezgApzW3usrAdeqflRXOMIC1x
- PVKw==
+ bh=I9hzmznr64wCKlVpRXoKfhH0aXh3YhZsY8iM4DK8LiM=;
+ b=Kux4uQAG9Qr16rTMN7WB0V06hWMPrQxlziVehYXeeg9OUpkEvKTy++5i+rJc+HL9Iq
+ ePAus0ZIZOZIet0XtaWtZdSXWQE9xRISA7FF4UNdPkmR/6vMiSHLmtz7wDNXh5sB+0X/
+ i4gfDg4AKefRcB+tjaAbGGUAdrzc+B+H56RrDRL621vqABfQpPAsLuubCrVmo8HB6pmd
+ iJ7VCiLVZPR2Vyw/cmHiDXPNHPd5XbiXCm+CDApltGNE7UWtyx6vBwBnJ0Zgh3YVJM3f
+ njTgBLdt3rD8ZMEDTq6GDvgescgcjDT23v+I7mBckZUyv+yat0naIU+KKUDLkn0B5aP8
+ yrdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717142576; x=1717747376;
+ d=1e100.net; s=20230601; t=1717143178; x=1717747978;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P60MOZ2WbS6bsT2WPQz1Cgly6t3sgd95GrQT3VO8LjE=;
- b=fABD4NxkjoJKrCNu0r9DTjMU4cC5dziDsjsaO0JiUfbEa/LhmFIpEURCNCWv+oqf23
- 4teTCzCRsyG3vNbpH623LyqdrOztsWsG93L9MQHvgNmm9mH43R+YZxrbhfnxcJCGknev
- 9d8eAdjvXfoLZ4W9RpDqMRi647hG+nfakbRs0DdH7sCoeugkB/It840ERcJ3rkQr6QkG
- UTgmbN18gSMfBBRvs7L1aa27n9pnknaiKV++TGG+JNT79o3qT3VtJIs01rYH7htNOEGs
- kYvzRTODW5F8xW1KTMZw5oPpWvyPLK70xIpETdeQMPzSAC6LMQRlGp25mDGiBRaxV4RD
- wJCQ==
+ bh=I9hzmznr64wCKlVpRXoKfhH0aXh3YhZsY8iM4DK8LiM=;
+ b=O0SzmXZiq+lPf7doX5d9p8sajsjpMDP8Z3yizNLlJBvnj3Qyi0QTBGXMQwDbpVe0Lj
+ odSWIb+tMJeCnnaSpvuzAPoP16ONA22Y416IEd8XgOOGZGl9yGPwakoVzxwrxRI0Fa6G
+ nMe+td/nozoJfsU6ADNLZO592F4Ig7RPfUCcMPqyBXvUi/cgaxiM6B0vtRFLN+o5EVHq
+ Ab6uMY+twaDaL2qwxnv1vNNkrzPnhopBl73hipd6kpr4WaXrlqQIo9hOhZimO1YQjryH
+ PwZVTXqciz7nOT2ERlzPqbtTNOfXoRujPTmPUxFxumZ0c/b+QNSS7rVtjg7CwWTMCO88
+ s40Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWMF72dTQcj7tmZriPk52TfsqlsTyHFmyMExxc+rgzY3IrOIN8gdNOyxRYEcgRfnUfpP0MLF/NyZO5WCVIolm/A7WOekd0=
-X-Gm-Message-State: AOJu0YwkKkNbgH9NDD2UV47ZzbnXF8aQnFhJI53Mb8TKgHp+tNVfj5PF
- LFMukirvpzqfuQhPcuvLj/D4EBlOVt0uX7m3MZ8c4qIlImO7oENTJsnfgvvzcmU=
-X-Google-Smtp-Source: AGHT+IHrxV+8vibYivquBSscH9fzfUeY3MQ43lZN89zCEyw9q2oswTGI+KIjqyJkHI6tBh4NKbX/3w==
-X-Received: by 2002:a05:600c:4f46:b0:41f:f32c:e097 with SMTP id
- 5b1f17b1804b1-4212e0763ebmr8183405e9.23.1717142575348; 
- Fri, 31 May 2024 01:02:55 -0700 (PDT)
+ AJvYcCVf+OGY1KJGXL3fSeAtvYe6n7YujkhBlvq90ZGKEHRX0JXCXPFzNgEgpaIsFHERmljLVKlgd4L7GjlK9G88yPdM+SiT1Wg=
+X-Gm-Message-State: AOJu0YyFUg2plRAw98ZHhGU7YtkTVVv6oG1hfaZIyg4YY8Cgc9Op6Rd8
+ BX4InGDF/goZTh80ZxSbA4oJDchw8350fXXvsvf3MUW8tXPtIgzNdMASy8hke1NPyaDfrbP6CzP
+ 8
+X-Google-Smtp-Source: AGHT+IFfEyJVyi3Ipr9BMI6EgW5T3HU+cHZbwFEiRIG4FlK1O0RLFx/W8MOvV+QsKO1HVSM8n44pew==
+X-Received: by 2002:a05:600c:45d4:b0:41b:f979:e359 with SMTP id
+ 5b1f17b1804b1-4212e0ae5b9mr9729685e9.38.1717143177710; 
+ Fri, 31 May 2024 01:12:57 -0700 (PDT)
 Received: from [192.168.69.100] (sml13-h01-176-184-15-35.dsl.sta.abo.bbox.fr.
  [176.184.15.35]) by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-4212b84adb4sm17052095e9.16.2024.05.31.01.02.54
+ 5b1f17b1804b1-4212b83d5c7sm17284415e9.8.2024.05.31.01.12.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 31 May 2024 01:02:54 -0700 (PDT)
-Message-ID: <25097737-270b-4473-ab4b-35094e232b8e@linaro.org>
-Date: Fri, 31 May 2024 10:02:52 +0200
+ Fri, 31 May 2024 01:12:57 -0700 (PDT)
+Message-ID: <577f65c3-23d3-44ce-8601-32c067912a8a@linaro.org>
+Date: Fri, 31 May 2024 10:12:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] osdep: Make qemu_madvise() return ENOSYS on
- unsupported OSes
+Subject: Re: [PATCH v2 1/4] osdep: Make qemu_madvise() to set errno in all
+ cases
 To: David Hildenbrand <david@redhat.com>,
  Michal Privoznik <mprivozn@redhat.com>, qemu-devel@nongnu.org
-Cc: imammedo@redhat.com
+Cc: imammedo@redhat.com, Cameron Esfahani <dirty@apple.com>,
+ Eric Blake <eblake@redhat.com>
 References: <cover.1717140354.git.mprivozn@redhat.com>
- <4dc484ae240edf8df0de14edefc3c3a717a1c781.1717140354.git.mprivozn@redhat.com>
- <dfbdd318-705c-47a8-a192-10c5a8118f26@redhat.com>
+ <e2250aa1d69faffcfd12b6d809d98b0c8157ce36.1717140354.git.mprivozn@redhat.com>
+ <81f8c7f8-a4a6-4f74-894f-be3ffbf25f9d@linaro.org>
+ <12cba30e-4034-4d3b-a0b4-5e25dbc5d094@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <dfbdd318-705c-47a8-a192-10c5a8118f26@redhat.com>
+In-Reply-To: <12cba30e-4034-4d3b-a0b4-5e25dbc5d094@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,28 +100,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 31/5/24 09:53, David Hildenbrand wrote:
-> On 31.05.24 09:28, Michal Privoznik wrote:
->> Not every OS is capable of madvise() or posix_madvise() even. In
->> that case, errno should be set to ENOSYS as it reflects the cause
->> better. This also mimic what madvise()/posix_madvise() would
->> return if kernel lacks corresponding syscall (e.g. due to
->> configuration).
+On 31/5/24 10:01, David Hildenbrand wrote:
+> On 31.05.24 09:57, Philippe Mathieu-Daudé wrote:
+>> Hi Michal,
+>>
+>> On 31/5/24 09:28, Michal Privoznik wrote:
+>>> The unspoken premise of qemu_madvise() is that errno is set on
+>>> error. And it is mostly the case except for posix_madvise() which
+>>> is documented to return either zero (on success) or a positive
+>>> error number.
+>>
+>> Watch out, Linux:
+>>
+>>     RETURN VALUE
+>>
+>>        On success, posix_madvise() returns 0.  On failure,
+>>        it returns a positive error number.
+>>
+>> but on Darwin:
+>>
+>>     RETURN VALUES
+>>
+>>        Upon successful completion, a value of 0 is returned.
+>>        Otherwise, a value of -1 is returned and errno is set
+>>        to indicate the error.
+>>
+>> (Haven't checked other POSIX OSes).
+>>
 > 
-> Yes and no. According to the man page
+> ... but it's supposed to follow the "posix standard" :D Maybe an issue 
+> in the docs?
 > 
-> " EINVAL advice is not a valid."
+> FreeBSD seems to follow the standard: "The posix_madvise() interface is 
+> identical, except it returns an error number on error and does not 
+> modify errno, and is provided for standards conformance."
 > 
-> if a particular MADV_* call is not implemented, we would get EINVAL, 
-> which is really unfortunate ... to detect what is actually supported :(
+> Same with OpenBSD: "The posix_madvise() interface has the same effect, 
+> but returns the error value instead of only setting errno."
 
-Maybe skip "This also mimic what madvise()/posix_madvise()
-would return if kernel lacks corresponding syscall (e.g. due
-to configuration)." for clarity?
+On Darwin, MADVISE(2):
 
-> For the patch here ENOSYS makes sense:
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
+    The posix_madvise() behaves same as madvise() except that it uses
+    values with POSIX_ prefix for the advice system call argument.
 
+    The posix_madvise function is part of IEEE 1003.1-2001 and was first
+    implemented in Mac OS X 10.2.
+
+Per IEEE 1003.1-2001 
+(https://pubs.opengroup.org/onlinepubs/009695399/functions/posix_madvise.html):
+
+   RETURN VALUE
+
+     Upon successful completion, posix_madvise() shall return zero;
+     otherwise, an error number shall be returned to indicate the error.
+
+Note the use of "shall" which is described in RFC2119 as:
+
+    This word, or the adjective "RECOMMENDED", mean that there
+    may exist valid reasons in particular circumstances to ignore a
+    particular item, but the full implications must be understood and
+    carefully weighed before choosing a different course.
+
+Regards,
+
+Phil.
 
