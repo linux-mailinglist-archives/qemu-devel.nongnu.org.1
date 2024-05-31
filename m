@@ -2,61 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A127E8D5B70
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 09:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAC88D5B7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 09:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sCwhY-0004RI-F0; Fri, 31 May 2024 03:29:24 -0400
+	id 1sCwk0-0007Xp-OC; Fri, 31 May 2024 03:31:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sCwhX-0004Op-13
- for qemu-devel@nongnu.org; Fri, 31 May 2024 03:29:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sCwjz-0007XF-An
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 03:31:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mprivozn@redhat.com>)
- id 1sCwhT-0003Yt-AJ
- for qemu-devel@nongnu.org; Fri, 31 May 2024 03:29:22 -0400
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1sCwjx-00043K-V1
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 03:31:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717140558;
+ s=mimecast20190719; t=1717140713;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ssjbgjftWORE46CGyb0kf54rN64kFgfRw/M+bJ1Y4t4=;
- b=ako2l+BXHXjSnG8i7eUZMQwpNR9H+DH66dFa7z4101KymTAYsrfQOmKGy7ujKiz58xaISz
- sLyfRg2FkUlILO87HCqk/7fJO+jlfy9/7y5Z/av5tsp8Hq9iNmsdOQRTzQLt2iezfptQj9
- J2Db8zDj57gY9OCFkSlbkdL8fW7W7Zc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-BNZo7X3qO9maNk1TmmoGXw-1; Fri,
- 31 May 2024 03:29:12 -0400
-X-MC-Unique: BNZo7X3qO9maNk1TmmoGXw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4320A1C05138
- for <qemu-devel@nongnu.org>; Fri, 31 May 2024 07:29:12 +0000 (UTC)
-Received: from maggie.brq.redhat.com (unknown [10.43.3.102])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 777D6491034;
- Fri, 31 May 2024 07:29:11 +0000 (UTC)
-From: Michal Privoznik <mprivozn@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: david@redhat.com,
-	imammedo@redhat.com
-Subject: [PATCH v2 4/4] backends/hostmem: Report error when memory size is
- unaligned
-Date: Fri, 31 May 2024 09:29:00 +0200
-Message-ID: <58295d1f6c995c0c444e375348436e799689126c.1717140354.git.mprivozn@redhat.com>
-In-Reply-To: <cover.1717140354.git.mprivozn@redhat.com>
-References: <cover.1717140354.git.mprivozn@redhat.com>
+ bh=CgXfs4folI1DapJVucqQUzTteuK5ZB4Qp4ndcDea/yU=;
+ b=dS74kHmlhZu289pPV36LbDto/AiwY8aSAB9bOkU98DDo1MpHOPbaETevE/D+fQdNpaOcPA
+ XohbYMDN10ir8KGzRUypKhtzTdsqbS08IxNdYBl0VAqmLCq4/2LoEbE7L1bKZ7EZidcn54
+ 0kcBI+Yzc7fhlMyuJfNWEbrFhhpHw8Y=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-Jr4iiE9PPZuNfXWDfBOXqA-1; Fri, 31 May 2024 03:31:48 -0400
+X-MC-Unique: Jr4iiE9PPZuNfXWDfBOXqA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4212a3ddb6bso6875465e9.2
+ for <qemu-devel@nongnu.org>; Fri, 31 May 2024 00:31:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717140707; x=1717745507;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CgXfs4folI1DapJVucqQUzTteuK5ZB4Qp4ndcDea/yU=;
+ b=aHWwD6qNBONyTJBuGjtDiycIXEhcJsUzD3+CzR24ts1XgEWwGy44HqJiNe6Up7zoLX
+ THww3T3KU11ltG3DkRiukoN3tH9jog05XXbQFX8ri8wt1uh575B8p0zb7/BmedP38KPn
+ O9U3c7YRYfyMyMLCfkXwkM8D6gLlxgGzxHTsndQWWrRaf6f9ETwn5wLEzhY5rpk35l0U
+ ajP+RuJjQAI0YFN+bX+qlchDEaSR8/+b0QhsSni1HRr/s046z0xRnA+NaBIMIHBPNsvo
+ 0WRBOJL4RSWqSR6QvPfoL6E7U2yvfTpnvOS3OBAPjFz1ZxPkqycPuzIJPpiVzeItPf/P
+ DhSQ==
+X-Gm-Message-State: AOJu0Yx0iJ+b26MwnDwC76cffJ9xCzwOUkkbCOdO7zbQgcnQNS0NGAhC
+ wnuOrly+CC0+saHhJFzYp9H2fvr00G7O+An4n051F1l3dQfN+QCU9f12bTTPQGuk03lFYGM1kXj
+ KaF2RXJSyyem51SxGGVZtt8sdQkEy0heVRivjYzIEqqnNTOpoPft83f7FPT7dqOgz1XygcuBaAt
+ ZSO8HsoNfk/nuSC5bYoy0f0teqpvM=
+X-Received: by 2002:a05:600c:c06:b0:421:21d2:abf5 with SMTP id
+ 5b1f17b1804b1-4212e0a534dmr9573365e9.31.1717140707462; 
+ Fri, 31 May 2024 00:31:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeAjQPBKdObtlNEG42E+Fm5qoDnzzlZ5r0Ma4tD0Cce0JUTUCXgMASE2gOCGClDMrQObYgWd2vDky5te213mI=
+X-Received: by 2002:a05:600c:c06:b0:421:21d2:abf5 with SMTP id
+ 5b1f17b1804b1-4212e0a534dmr9573145e9.31.1717140707094; Fri, 31 May 2024
+ 00:31:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mprivozn@redhat.com;
+References: <20240530074453.21780-1-npiggin@gmail.com>
+ <20240530074453.21780-3-npiggin@gmail.com>
+In-Reply-To: <20240530074453.21780-3-npiggin@gmail.com>
+From: Prasad Pandit <ppandit@redhat.com>
+Date: Fri, 31 May 2024 13:01:31 +0530
+Message-ID: <CAE8KmOwn6BuFgid3wAHxHjLJK-qd5gpH3hwBaAHOtv9SgfH5Vw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] tests/qtest/migration-test: Quieten ppc64 QEMU
+ warnings
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>, 
+ Fabiano Rosas <farosas@suse.de>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -65,7 +82,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.085,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,52 +98,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If memory-backend-{file,ram} has a size that's not aligned to
-underlying page size it is not only wasteful, but also may lead
-to hard to debug behaviour. For instance, in case
-memory-backend-file and hugepages, madvise() and mbind() fail.
-Rightfully so, page is the smallest unit they can work with. And
-even though an error is reported, the root cause it not very
-clear:
+On Thu, 30 May 2024 at 13:17, Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
 
-  qemu-system-x86_64: Couldn't set property 'dump' on 'memory-backend-file': Invalid argument
-
-After this commit:
-
-  qemu-system-x86_64: backend memory size must be multiple of 0x200000
-
-Signed-off-by: Michal Privoznik <mprivozn@redhat.com>
+* No commit log message?
 ---
- backends/hostmem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/backends/hostmem.c b/backends/hostmem.c
-index 012a8c190f..5f9c9ea8f5 100644
---- a/backends/hostmem.c
-+++ b/backends/hostmem.c
-@@ -337,6 +337,7 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
-     HostMemoryBackendClass *bc = MEMORY_BACKEND_GET_CLASS(uc);
-     void *ptr;
-     uint64_t sz;
-+    size_t pagesize;
-     bool async = !phase_check(PHASE_LATE_BACKENDS_CREATED);
- 
-     if (!bc->alloc) {
-@@ -348,6 +349,13 @@ host_memory_backend_memory_complete(UserCreatable *uc, Error **errp)
- 
-     ptr = memory_region_get_ram_ptr(&backend->mr);
-     sz = memory_region_size(&backend->mr);
-+    pagesize = qemu_ram_pagesize(backend->mr.ram_block);
-+
-+    if (!QEMU_IS_ALIGNED(sz, pagesize)) {
-+        error_setg(errp, "backend memory size must be multiple of 0x%"
-+                   PRIx64, pagesize);
-+        return;
-+    }
- 
-     if (backend->merge &&
-         qemu_madvise(ptr, sz, QEMU_MADV_MERGEABLE)) {
--- 
-2.44.1
+   - Prasad
 
 
