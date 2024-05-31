@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D98D6174
-	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB618D6149
+	for <lists+qemu-devel@lfdr.de>; Fri, 31 May 2024 14:07:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sD10A-0004aE-0m; Fri, 31 May 2024 08:04:54 -0400
+	id 1sD10B-0004bN-Ps; Fri, 31 May 2024 08:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zu-0004Tq-6s
+ id 1sD0zu-0004U8-9l
  for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:38 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1sD0zr-0003WG-3b
- for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:37 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2e73359b900so22626551fa.2
+ id 1sD0zr-0003WU-4Z
+ for qemu-devel@nongnu.org; Fri, 31 May 2024 08:04:38 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-42108739ed8so25313505e9.0
  for <qemu-devel@nongnu.org>; Fri, 31 May 2024 05:04:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1717157071; x=1717761871; darn=nongnu.org;
+ d=linaro.org; s=google; t=1717157072; x=1717761872; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WemVooe7jVrEZVThnl7qxXnfDDz1+XFheEherDLTAvE=;
- b=Tnz0NhFr91aXM67b/4qf4D8tVenpPKxSuKnWRWODAsdRo/qUqcD4NukyT2CrJgH+Wx
- alGufi/SmP2bAEzubPD65c2amkStCbW0/s9OXRYSVVt19lMKQplyo7PYm6DzUzWnr3/w
- fPAyjTcgR5JfrT12A9Wi798nBeBJ8D+aiVS1Ve9GLTdvsgzpN6+dl6+3Hub57ZWr5rlh
- Sbvvit48ffZ/SILBden+lo/TUcNaw1HR9TQx9v2wE8fVEXSY3NDzXYVGVm0CQbFbSq8s
- kK8giW9H6N/sKCo06rp0NUYkBy6zFPI12b3/MpEm01NEfLl51GK7AESwSG2x5rX23vLg
- tU8Q==
+ :reply-to; bh=hoLdKfz5//S9+WQLs/kTAMazR29BMfS0J7R/dQu2aq8=;
+ b=REfQWvIaG+92WecLLwzJsvUnbzHfBjCIBQ8U/tvzO9CK/KWnBvyyfzNE6Vh7JvMnjs
+ 2Rgpml0TwFEgeY9FDbcOhBioQ6eOkXrQkitAsg9k3frg9l6cLqoHeNPNQNYZNbtNoeHQ
+ OuR1DtnbqEbYKae0c0W2uqiu88nSpqQwkl8w1DojSjHaPcWoFiY5OmVQv3UG0wTvzeBt
+ WGISexXfXYQijMkCCoqeCn5F0KkenNHmmiBZePuR6Lafa7nLeewfQuAm11Z226CQALRc
+ 3qMpboRmrwYqjkTGEY6pRnLnqokhtri6Sr2PpqjDtZs6JeVWgyu+7rWdeld2xRMzCR4I
+ BOEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717157071; x=1717761871;
+ d=1e100.net; s=20230601; t=1717157072; x=1717761872;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WemVooe7jVrEZVThnl7qxXnfDDz1+XFheEherDLTAvE=;
- b=fWFd7EjjFTVvwyfgPiwuu1vpky+X33qzXMqR1BK0ZZaeLrQXejLpZHol8tqovbNh24
- /4Boxuw1zRP1V5aaJ+7bkOV+kKiZRVe1qD2oFIpvEqvJMi7+KHKLh2sq+fRVnc+en/E7
- X4gWfwfsgg+Cn4xT+RZQ5A2d57H+K4ymFHnYCgm8q8L1qVVFhkp8HNPhCp1Tn3xUTQNQ
- WWktw37y4FCSpuPosmb6d6cJdXxnrGvOIcWlpc/9etiiKZgwsirI94Q/B2tW2DCISF1S
- syqUHNWhnjfFgNRrHWyrAsWO7CnLaifde4ppEolCRW5K644a9vBLOn2iIR/TF6CiDHL7
- oQHA==
-X-Gm-Message-State: AOJu0Yyo2E92PEZ0I+7xQJwcD1OygUUKwuyXazTSzVy5gkpDIGLh2FDo
- aVPkxp6Laz6mTVt/hKvvl6yQns2XGPNgUOtBkAvZXYZ8/rc8MEtrj+fE1rvrcfkkARyE4FDmMzJ
- t
-X-Google-Smtp-Source: AGHT+IEzbPwfFhyA/4Ir5tlIYVPGVJFiYIAKkCSm2q04em7+JMRUmwKNwIBuCpX/mzj7ggOQuHDLOQ==
-X-Received: by 2002:a05:651c:499:b0:2ea:853f:18e4 with SMTP id
- 38308e7fff4ca-2ea950e5266mr10657301fa.13.1717157071012; 
+ bh=hoLdKfz5//S9+WQLs/kTAMazR29BMfS0J7R/dQu2aq8=;
+ b=KxVoP2RmCRgGoZ6qtd1gwsO/urf6UQJgKBLPTtsQ16cG9V/KrOKBsKtI7SYJJ4LEJr
+ T3VRS/ZvVDL90SjC/oDpJcdThjUXnEYAHXRk7cvsjavu8FGHmr3XlTked6KkpzDuhhxz
+ XpjiJU4lQb2MnvPmOvrQKfzvcEk+vp0a/8fT2nlGGvNiFhfPFZ6PgJnxIDblchdzcfoX
+ huIcAnRKAoFYMHFw7fEYXjY+CIgyUicG3MvWe9tKDZX+rXWYonLDI2ILu5KO6e4LAjE5
+ BkqgWjfdrBaHOgub+vOHE7auoRZAp9CqakZoNoMbX2mO3dPxbpYaNmqxjEijaKn/JaaV
+ e2kA==
+X-Gm-Message-State: AOJu0YzYVC/GpLw/kdXxZmU2z2MKsIrzSmE2jNFwL1bwCwWZfVcv0lCS
+ IMoE7X4VqH5fEFU7sfire8xiNCdwqzRzK0082/RkRTMF+xaq8ue94KYKr9itfsn+VjL1CBh/wIO
+ A
+X-Google-Smtp-Source: AGHT+IGjM7FRheyA/CKQc0MuZalFWu54F5bqC1hDutWKnyje6DyfMcnFwYWzudoVIEJVEkRDjg8ATQ==
+X-Received: by 2002:a05:600c:4515:b0:419:a3f:f4f6 with SMTP id
+ 5b1f17b1804b1-4212e046d11mr16442785e9.8.1717157071870; 
  Fri, 31 May 2024 05:04:31 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.30
+ 5b1f17b1804b1-42129de0cf9sm37027685e9.13.2024.05.31.05.04.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 May 2024 05:04:30 -0700 (PDT)
+ Fri, 31 May 2024 05:04:31 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 39/43] target/arm: Disable SVE extensions when SVE is disabled
-Date: Fri, 31 May 2024 13:03:57 +0100
-Message-Id: <20240531120401.394550-40-peter.maydell@linaro.org>
+Subject: [PULL 40/43] docs/system/target-arm: Re-alphabetize board list
+Date: Fri, 31 May 2024 13:03:58 +0100
+Message-Id: <20240531120401.394550-41-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240531120401.394550-1-peter.maydell@linaro.org>
 References: <20240531120401.394550-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,37 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+The board list in target-arm.rst is supposed to be in alphabetical
+order by the title text of each file (which is not the same as
+alphabetical order by filename).  A few items had got out of order;
+correct them.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2304
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-id: 20240526204551.553282-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+The entry for
+"Facebook Yosemite v3.5 Platform and CraterLake Server (fby35)"
+remains out-of-order, because this is not its own file
+but is currently part of the aspeed.rst file.
+
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240520141421.1895138-1-peter.maydell@linaro.org
 ---
- target/arm/cpu64.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ docs/system/target-arm.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index c15d086049f..862d2b92fa4 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -109,7 +109,11 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
-          * No explicit bits enabled, and no implicit bits from sve-max-vq.
-          */
-         if (!cpu_isar_feature(aa64_sve, cpu)) {
--            /* SVE is disabled and so are all vector lengths.  Good. */
-+            /*
-+             * SVE is disabled and so are all vector lengths.  Good.
-+             * Disable all SVE extensions as well.
-+             */
-+            cpu->isar.id_aa64zfr0 = 0;
-             return;
-         }
+diff --git a/docs/system/target-arm.rst b/docs/system/target-arm.rst
+index c9d7c0dda7e..870d30e3502 100644
+--- a/docs/system/target-arm.rst
++++ b/docs/system/target-arm.rst
+@@ -86,16 +86,16 @@ undocumented; you can get a complete list by running
+    arm/bananapi_m2u.rst
+    arm/b-l475e-iot01a.rst
+    arm/sabrelite
++   arm/highbank
+    arm/digic
+    arm/cubieboard
+    arm/emcraft-sf2
+-   arm/highbank
+    arm/musicpal
+    arm/gumstix
+    arm/mainstone
+    arm/kzm
+-   arm/nrf
+    arm/nseries
++   arm/nrf
+    arm/nuvoton
+    arm/imx25-pdk
+    arm/orangepi
+@@ -107,8 +107,8 @@ undocumented; you can get a complete list by running
+    arm/stellaris
+    arm/stm32
+    arm/virt
+-   arm/xlnx-versal-virt
+    arm/xenpvh
++   arm/xlnx-versal-virt
  
+ Emulated CPU architecture support
+ =================================
 -- 
 2.34.1
 
