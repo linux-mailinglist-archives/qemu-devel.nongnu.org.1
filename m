@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465F28D73E8
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jun 2024 07:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE188D73EC
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jun 2024 07:36:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDdpK-0003qE-6C; Sun, 02 Jun 2024 01:32:18 -0400
+	id 1sDdt8-0005XF-1W; Sun, 02 Jun 2024 01:36:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sDdpH-0003pc-I5
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 01:32:15 -0400
-Received: from mgamail.intel.com ([192.198.163.8])
+ id 1sDdt2-0005WG-Re; Sun, 02 Jun 2024 01:36:08 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sDdpF-0001VY-GU
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 01:32:15 -0400
+ id 1sDdt0-0002B2-QK; Sun, 02 Jun 2024 01:36:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717306333; x=1748842333;
+ t=1717306567; x=1748842567;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Ptv/XhbYMsUNg5qRKHMukVfxG6OeqjmHjnvkdPpd7ug=;
- b=gJp9CfXIkonowBQXxRDwvvh0JiXcJ3oQUERlUiS7ZMNc64Giw7mTGvOT
- GHBFhZ3fEntSgGynqZjF29g5bp6IBxQg64ra0L4RpouTNHRajsecUDnM6
- 9a3LWrTtNhLXrBG68AMsSJ/0l6P8nSD3Z2iu9OkZ/LGmWHmZKUAREWLU0
- STMShER5EuJKF33f9KILdFedukMBIaABZjL1PVu/nfT8nN8HoMWxn8Ydl
- hRF9A/fnVT7WHyrulAjdVFpCuTaWUeYsSdQofNJsDkZJDs89pFLLu7ff+
- Nj7xUyzut6cYOoFj2Z31W2RMo2bD7FxXL511yODR/QF2HHA0PB1755bnv Q==;
-X-CSE-ConnectionGUID: B3x4xuOyTXaC/3NiBxSZzQ==
-X-CSE-MsgGUID: XTeTuB9GQeq1yTB/cGnI6Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11090"; a="31348325"
-X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="31348325"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2024 22:32:10 -0700
-X-CSE-ConnectionGUID: BrX3tFMFRx+YGIymyRxdNg==
-X-CSE-MsgGUID: KRtBTvExTtivDJsx8DRnrg==
+ bh=3WaybShHrTo0oGSdFwEFlUTgdU/ecCDERa31TwrKso4=;
+ b=aCbP+WB/CIAWEgu/hIOW8P5RZBX+rCVtmeRPgC6JZLVbK4/gSQ7AzlsL
+ FLcyMhMmyuMmCRnv4sEivR8BNghAhk9GV/1xzeBVUcwUBuTqiqmL3Xruk
+ PvR3rE7bqezXh3wPjfO5CFUGXI7npqS7cHAH7oaTv1O3zvhHSvmE1+V30
+ LJhPDYP/T0NKFEh/zbIhtyXtHXWedZU/QwVpMKoFYp6wOl6yxn3hHx2vU
+ WuzH/zcbMhKqWA7k9VJ9R31J8h1eHb0AKVxSaDTSLQMAR5ZYbX7KySnOA
+ Qgp5MoQyzluWyNucGSli4GDKSv6hwiRNptKkRXdJfK+lzw75c+fzWJM/n g==;
+X-CSE-ConnectionGUID: W+FAlfOYTomfWNUhqNBS4Q==
+X-CSE-MsgGUID: mKWSPNSSS06NAYETfLzITQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11090"; a="24475377"
+X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="24475377"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jun 2024 22:36:04 -0700
+X-CSE-ConnectionGUID: KeD1hLweScGdzUxn7/G5wA==
+X-CSE-MsgGUID: S/PoCQbhTxmoCYt+iYi/oQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="41481962"
+X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="36485936"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa003.jf.intel.com with ESMTP; 01 Jun 2024 22:32:10 -0700
-Date: Sun, 2 Jun 2024 13:47:34 +0800
+ by orviesa010.jf.intel.com with ESMTP; 01 Jun 2024 22:36:02 -0700
+Date: Sun, 2 Jun 2024 13:51:27 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] machine: allow early use of machine_require_guest_memfd
-Message-ID: <ZlwHdncUT7+ms5ul@intel.com>
-References: <20240531112636.80097-1-pbonzini@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-trivial@nongnu.org
+Subject: Re: [PATCH] accel/kvm: Fix two lines with hard-coded tabs
+Message-ID: <ZlwIX2izGFJzlNvy@intel.com>
+References: <20240531170952.505323-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240531112636.80097-1-pbonzini@redhat.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240531170952.505323-1-peter.maydell@linaro.org>
+Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -44
 X-Spam_score: -4.5
@@ -79,22 +78,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 31, 2024 at 01:26:36PM +0200, Paolo Bonzini wrote:
-> Date: Fri, 31 May 2024 13:26:36 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH] machine: allow early use of machine_require_guest_memfd
-> X-Mailer: git-send-email 2.45.1
+On Fri, May 31, 2024 at 06:09:52PM +0100, Peter Maydell wrote:
+> Date: Fri, 31 May 2024 18:09:52 +0100
+> From: Peter Maydell <peter.maydell@linaro.org>
+> Subject: [PATCH] accel/kvm: Fix two lines with hard-coded tabs
+> X-Mailer: git-send-email 2.34.1
 > 
-> Ask the ConfidentialGuestSupport object whether to use guest_memfd
-> for KVM-backend private memory.  This bool can be set in instance_init
-> (or user_complete) so that it is available when the machine is created.
+> In kvm-all.c, two lines have been accidentally indented with
+> hard-coded tabs rather than spaces. Normalise to match the rest
+> of the file.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  include/exec/confidential-guest-support.h | 5 +++++
->  include/hw/boards.h                       | 1 -
->  hw/core/machine.c                         | 2 +-
->  3 files changed, 6 insertions(+), 2 deletions(-)
+>  accel/kvm/kvm-all.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
