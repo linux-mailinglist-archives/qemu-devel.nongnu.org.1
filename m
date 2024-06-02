@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609098D7A59
-	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 05:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2572C8D7A3B
+	for <lists+qemu-devel@lfdr.de>; Mon,  3 Jun 2024 04:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDxy8-0000tY-G7; Sun, 02 Jun 2024 23:02:44 -0400
+	id 1sDxsk-0001Ar-T9; Sun, 02 Jun 2024 22:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDxy1-0000rE-Q4
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 23:02:37 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDxsi-0000uk-Pl
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 22:57:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDm3y-00068M-Dy
- for qemu-devel@nongnu.org; Sun, 02 Jun 2024 10:20:00 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1sDmGm-00088l-VH
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 10:33:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1717337996;
+ s=mimecast20190719; t=1717338791;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=QTBpgBqV5acSwPEQqkMQhtWg4Ro0B6fvhpVb2fXTKPk=;
- b=WGBI1AG04X8HGZOeT6g5zLULGCzjYU6/VYoeT+paAGlV0AzgsZg580dAMciMfyFnU04uFy
- tl+jGUjQR/1bZdHmQy3zYso7IxVcbrmWOUTHUdNEnQRF5dAqT6ggaKNyXkvLJgale14VZM
- 21V0OfjtLCh7iazMA58z4RX01MgETI4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/CObo0s+s8jPacHzhwSX97NHLRv4gDKKHQbdv15AlTw=;
+ b=SMExOWGaxia3RziwrVxf19KE4bmRU202vGBJJhU7y+3AygRZ0JQKUfAQyWDlqmNl1x81Mz
+ 2AfzUv2z5QlhTC+RbIQIKByd1NQsyqlDD7olFhbjuM+3f50N/6pnIBoAt6b6H9hImTxeXZ
+ vJzyzn6H9/+oTMsBZw8NoaqqvKZ32jA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-363-mcSE5YryPCuzJ01mbzeaBQ-1; Sun, 02 Jun 2024 10:19:55 -0400
-X-MC-Unique: mcSE5YryPCuzJ01mbzeaBQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4212a921370so22144465e9.3
- for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 07:19:54 -0700 (PDT)
+ us-mta-681-nla_UGe2PeaGQYH_TjQyuw-1; Sun, 02 Jun 2024 10:33:06 -0400
+X-MC-Unique: nla_UGe2PeaGQYH_TjQyuw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-42135f60020so6457765e9.1
+ for <qemu-devel@nongnu.org>; Sun, 02 Jun 2024 07:33:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717337994; x=1717942794;
+ d=1e100.net; s=20230601; t=1717338785; x=1717943585;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QTBpgBqV5acSwPEQqkMQhtWg4Ro0B6fvhpVb2fXTKPk=;
- b=Kxxaz3fZt6XrQo8iJBzCHEYsdOxSV8deIUvPz44dDmOaAcv5wo2G/NY9hDe+e1r3Ne
- elquoV3rQK9QTVtkCMyW4frR4X+crhx0/Bha5OLYvNQUPWU7Yz/0p9UXximyFdNTNu94
- YS4KdZW0ioZz3TDErIaah8jty20JnOU+EWuvk8sYjF6W0kdQXNkMf+cocRx2Pkd2ZZjV
- 2NxPFfncXhrdiZO4jCUpTWbmHRLNmRhc6vRQkfd9kp7+/DOzVGWgMLV6P6N37rSeffc8
- jpebb7y/HqQoCPE0yoE20yopFtRMSJwb+Ptl51MT1JbyfhGPp1tEIz44N1GxKROZafOL
- NerQ==
-X-Gm-Message-State: AOJu0Yzg5VKMGigr8YxKhZkDWS2xVbai7yEwx6mJ1Bm458Mo20tb9x9y
- JNtqkMl78Y4tLFcWSFzb5H0nnRz4B11q7yZ0QzNPj3tw399OcyLtpOJmAfTkKBwb1r63jdceUhb
- DMSCVpOcZP69CsAi0/C/jPehhjjQEwVLoQpHB5MVhLbWNVwQ6j3SR
-X-Received: by 2002:a05:600c:1396:b0:420:182e:eb46 with SMTP id
- 5b1f17b1804b1-4212e0bfec0mr68961885e9.38.1717337993773; 
- Sun, 02 Jun 2024 07:19:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGj02qSBMegOVIU2BdhwAy3RqZiMisYwN3mDlR9vtt8MdXoCAKPKjG9gEK/nawYITkZCMh0lQ==
-X-Received: by 2002:a05:600c:1396:b0:420:182e:eb46 with SMTP id
- 5b1f17b1804b1-4212e0bfec0mr68961695e9.38.1717337993157; 
- Sun, 02 Jun 2024 07:19:53 -0700 (PDT)
+ bh=/CObo0s+s8jPacHzhwSX97NHLRv4gDKKHQbdv15AlTw=;
+ b=dB/gORokDZEWljmK0uFVlbEFmDIap9JqYtk/k66SeIUYMzfb1syDy233qiN97SfMyn
+ M//ApBMnnFfTK2Hcx/s12PEnn82lBLvi+WqacTC1tUh4BWt8rUgQ/3Q/azkee3lty2j+
+ km+qbt0+H9cR+E+/A7jey9ai/PdRaOJJXHeBzc9UOZrfU3rEllZFGaTt1Byz/HFdjdWa
+ x+ovvv+1xpQe4AF0pQ2bKe52MNllAatW6P1MxxLzyxGwTXglguZtLeg1VFboSOZ9naeQ
+ 2BASIUK7kOB+OHEIYCRQK/ZquVhvp0Dc5dOiMfQMuOgdFsFm002kBYOSzfcaqJqGyL0T
+ q1Jw==
+X-Gm-Message-State: AOJu0YwSmdhXiCioTxTtBcJuN7FbyUu8uVe0PSWCIs38Vj/ecDe3pcI1
+ /7Lp+k5H/5wSVw+/oJhHFQE0E0Y7yYurnaqXEvh2a/w65zM+ul7DGlwkHWa9osm0jkPrRS8TXyZ
+ 9rVjATIuZIgiQ7ynsn/+04fpJqJxrbdP/v0fj8jfehnlJPSjKrUP5
+X-Received: by 2002:a05:600c:4f46:b0:418:4841:162a with SMTP id
+ 5b1f17b1804b1-4212e05dd18mr48911785e9.15.1717338785484; 
+ Sun, 02 Jun 2024 07:33:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbVReYqVcdosY3060HuGxF2/ym1wbxiPycSXwoxpxCslVqIIO4LlxpNYOV+f+QTe89T4y+tg==
+X-Received: by 2002:a05:600c:4f46:b0:418:4841:162a with SMTP id
+ 5b1f17b1804b1-4212e05dd18mr48911705e9.15.1717338784965; 
+ Sun, 02 Jun 2024 07:33:04 -0700 (PDT)
 Received: from redhat.com ([2a0d:6fc7:440:950b:d4e:f17a:17d8:5699])
  by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-35dd04c0f47sm6321758f8f.8.2024.06.02.07.19.51
+ 5b1f17b1804b1-4212eb6ddf6sm76773505e9.45.2024.06.02.07.33.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 02 Jun 2024 07:19:52 -0700 (PDT)
-Date: Sun, 2 Jun 2024 10:19:48 -0400
+ Sun, 02 Jun 2024 07:33:04 -0700 (PDT)
+Date: Sun, 2 Jun 2024 10:33:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
-Subject: Re: [PATCH] virtio-blk: remove SCSI passthrough functionality
-Message-ID: <20240602101751-mutt-send-email-mst@kernel.org>
-References: <20240508113203.36767-1-pbonzini@redhat.com>
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+Cc: qemu-devel@nongnu.org, Huang Rui <Ray.Huang@amd.com>
+Subject: Re: [PATCH v10 2/2] virtio-pci: implement No_Soft_Reset bit
+Message-ID: <20240602103033-mutt-send-email-mst@kernel.org>
+References: <20240515073526.17297-1-Jiqian.Chen@amd.com>
+ <20240515073526.17297-3-Jiqian.Chen@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240508113203.36767-1-pbonzini@redhat.com>
+In-Reply-To: <20240515073526.17297-3-Jiqian.Chen@amd.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -96,306 +97,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, May 08, 2024 at 01:32:03PM +0200, Paolo Bonzini wrote:
-> The legacy SCSI passthrough functionality has never been enabled for
-> VIRTIO 1.0 and was deprecated more than four years ago.
+On Wed, May 15, 2024 at 03:35:26PM +0800, Jiqian Chen wrote:
+> In current code, when guest does S3, virtio-gpu are reset due to the
+> bit No_Soft_Reset is not set. After resetting, the display resources
+> of virtio-gpu are destroyed, then the display can't come back and only
+> show blank after resuming.
 > 
-> Get rid of it---almost, because QEMU is advertising it unconditionally
-> for legacy virtio-blk devices.  Just parse the header and return a
-> nonzero status.
+> Implement No_Soft_Reset bit of PCI_PM_CTRL register, then guest can check
+> this bit, if this bit is set, the devices resetting will not be done, and
+> then the display can work after resuming.
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> No_Soft_Reset bit is implemented for all virtio devices, and was tested
+> only on virtio-gpu device. Set it false by default for safety.
+> 
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
 > ---
->  docs/about/deprecated.rst       |  10 --
->  docs/about/removed-features.rst |   8 ++
->  hw/block/virtio-blk.c           | 166 +++-----------------------------
->  hw/core/machine.c               |   2 -
->  4 files changed, 19 insertions(+), 167 deletions(-)
+>  hw/virtio/virtio-pci.c         | 37 ++++++++++++++++++++++++++++++++++
+>  include/hw/virtio/virtio-pci.h |  5 +++++
+>  2 files changed, 42 insertions(+)
 > 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 03f8b1b655e..9bfaeda3adb 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -282,16 +282,6 @@ Device options
->  Emulated device options
->  '''''''''''''''''''''''
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index 1b63bcb3f15c..3052528c0730 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -2230,6 +2230,11 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
+>              pcie_cap_lnkctl_init(pci_dev);
+>          }
 >  
-> -``-device virtio-blk,scsi=on|off`` (since 5.0)
-> -^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> -
-> -The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
-> -and later do not support it because the virtio-scsi device was introduced for
-> -full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
-> -
-> -Note this also applies to ``-device virtio-blk-pci,scsi=on|off``, which is an
-> -alias.
-> -
->  ``-device nvme-ns,eui64-default=on|off`` (since 7.1)
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->  
-> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-> index 53ca08aba9c..1044d657c1a 100644
-> --- a/docs/about/removed-features.rst
-> +++ b/docs/about/removed-features.rst
-> @@ -505,6 +505,14 @@ configurations (e.g. -smp 8,sockets=0) is removed since 9.0, users have
->  to ensure that all the topology members described with -smp are greater
->  than zero.
->  
-> +``-device virtio-blk,scsi=on|off`` (since 9.1)
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-Should not this be:
-+``-device virtio-blk,scsi=on|off`` (removed in 9.1)
-+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-for consistency with rest of the file?
-
-
-
+> +        if (proxy->flags & VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET) {
+> +            pci_set_word(pci_dev->config + pos + PCI_PM_CTRL,
+> +                         PCI_PM_CTRL_NO_SOFT_RESET);
+> +        }
 > +
-> +The virtio-blk SCSI passthrough feature is a legacy VIRTIO feature.  VIRTIO 1.0
-> +and later do not support it because the virtio-scsi device was introduced for
-> +full SCSI support.  Use virtio-scsi instead when SCSI passthrough is required.
-> +
-> +
-
-
-I observe a single empty line between rest of entries. Why two lines
-here? intentional?
-
->  User-mode emulator command line arguments
->  -----------------------------------------
->  
-> diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-> index bb86e65f652..73bdfd6122a 100644
-> --- a/hw/block/virtio-blk.c
-> +++ b/hw/block/virtio-blk.c
-> @@ -172,57 +172,6 @@ static void virtio_blk_discard_write_zeroes_complete(void *opaque, int ret)
->      virtio_blk_free_request(req);
->  }
->  
-> -#ifdef __linux__
-> -
-> -typedef struct {
-> -    VirtIOBlockReq *req;
-> -    struct sg_io_hdr hdr;
-> -} VirtIOBlockIoctlReq;
-> -
-> -static void virtio_blk_ioctl_complete(void *opaque, int status)
-> -{
-> -    VirtIOBlockIoctlReq *ioctl_req = opaque;
-> -    VirtIOBlockReq *req = ioctl_req->req;
-> -    VirtIOBlock *s = req->dev;
-> -    VirtIODevice *vdev = VIRTIO_DEVICE(s);
-> -    struct virtio_scsi_inhdr *scsi;
-> -    struct sg_io_hdr *hdr;
-> -
-> -    scsi = (void *)req->elem.in_sg[req->elem.in_num - 2].iov_base;
-> -
-> -    if (status) {
-> -        status = VIRTIO_BLK_S_UNSUPP;
-> -        virtio_stl_p(vdev, &scsi->errors, 255);
-> -        goto out;
-> -    }
-> -
-> -    hdr = &ioctl_req->hdr;
-> -    /*
-> -     * From SCSI-Generic-HOWTO: "Some lower level drivers (e.g. ide-scsi)
-> -     * clear the masked_status field [hence status gets cleared too, see
-> -     * block/scsi_ioctl.c] even when a CHECK_CONDITION or COMMAND_TERMINATED
-> -     * status has occurred.  However they do set DRIVER_SENSE in driver_status
-> -     * field. Also a (sb_len_wr > 0) indicates there is a sense buffer.
-> -     */
-> -    if (hdr->status == 0 && hdr->sb_len_wr > 0) {
-> -        hdr->status = CHECK_CONDITION;
-> -    }
-> -
-> -    virtio_stl_p(vdev, &scsi->errors,
-> -                 hdr->status | (hdr->msg_status << 8) |
-> -                 (hdr->host_status << 16) | (hdr->driver_status << 24));
-> -    virtio_stl_p(vdev, &scsi->residual, hdr->resid);
-> -    virtio_stl_p(vdev, &scsi->sense_len, hdr->sb_len_wr);
-> -    virtio_stl_p(vdev, &scsi->data_len, hdr->dxfer_len);
-> -
-> -out:
-> -    virtio_blk_req_complete(req, status);
-> -    virtio_blk_free_request(req);
-> -    g_free(ioctl_req);
-> -}
-> -
-> -#endif
-> -
->  static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
->  {
->      VirtIOBlockReq *req = virtqueue_pop(vq, sizeof(VirtIOBlockReq));
-> @@ -233,20 +182,14 @@ static VirtIOBlockReq *virtio_blk_get_request(VirtIOBlock *s, VirtQueue *vq)
->      return req;
->  }
->  
-> -static int virtio_blk_handle_scsi_req(VirtIOBlockReq *req)
-> +static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
->  {
-> -    int status = VIRTIO_BLK_S_OK;
-> -    struct virtio_scsi_inhdr *scsi = NULL;
-> +    int status;
-> +    struct virtio_scsi_inhdr *scsi;
->      VirtIOBlock *blk = req->dev;
->      VirtIODevice *vdev = VIRTIO_DEVICE(blk);
->      VirtQueueElement *elem = &req->elem;
->  
-> -#ifdef __linux__
-> -    int i;
-> -    VirtIOBlockIoctlReq *ioctl_req;
-> -    BlockAIOCB *acb;
-> -#endif
-> -
->      /*
->       * We require at least one output segment each for the virtio_blk_outhdr
->       * and the SCSI command block.
-> @@ -262,95 +205,16 @@ static int virtio_blk_handle_scsi_req(VirtIOBlockReq *req)
->      /*
->       * The scsi inhdr is placed in the second-to-last input segment, just
->       * before the regular inhdr.
-> +     *
-> +     * Just put anything nonzero so that the ioctl fails in the guest.
->       */
->      scsi = (void *)elem->in_sg[elem->in_num - 2].iov_base;
-> -
-> -    if (!virtio_has_feature(blk->host_features, VIRTIO_BLK_F_SCSI)) {
-> -        status = VIRTIO_BLK_S_UNSUPP;
-> -        goto fail;
-> -    }
-> -
-> -    /*
-> -     * No support for bidirection commands yet.
-> -     */
-> -    if (elem->out_num > 2 && elem->in_num > 3) {
-> -        status = VIRTIO_BLK_S_UNSUPP;
-> -        goto fail;
-> -    }
-> -
-> -#ifdef __linux__
-> -    ioctl_req = g_new0(VirtIOBlockIoctlReq, 1);
-> -    ioctl_req->req = req;
-> -    ioctl_req->hdr.interface_id = 'S';
-> -    ioctl_req->hdr.cmd_len = elem->out_sg[1].iov_len;
-> -    ioctl_req->hdr.cmdp = elem->out_sg[1].iov_base;
-> -    ioctl_req->hdr.dxfer_len = 0;
-> -
-> -    if (elem->out_num > 2) {
-> -        /*
-> -         * If there are more than the minimally required 2 output segments
-> -         * there is write payload starting from the third iovec.
-> -         */
-> -        ioctl_req->hdr.dxfer_direction = SG_DXFER_TO_DEV;
-> -        ioctl_req->hdr.iovec_count = elem->out_num - 2;
-> -
-> -        for (i = 0; i < ioctl_req->hdr.iovec_count; i++) {
-> -            ioctl_req->hdr.dxfer_len += elem->out_sg[i + 2].iov_len;
-> -        }
-> -
-> -        ioctl_req->hdr.dxferp = elem->out_sg + 2;
-> -
-> -    } else if (elem->in_num > 3) {
-> -        /*
-> -         * If we have more than 3 input segments the guest wants to actually
-> -         * read data.
-> -         */
-> -        ioctl_req->hdr.dxfer_direction = SG_DXFER_FROM_DEV;
-> -        ioctl_req->hdr.iovec_count = elem->in_num - 3;
-> -        for (i = 0; i < ioctl_req->hdr.iovec_count; i++) {
-> -            ioctl_req->hdr.dxfer_len += elem->in_sg[i].iov_len;
-> -        }
-> -
-> -        ioctl_req->hdr.dxferp = elem->in_sg;
-> -    } else {
-> -        /*
-> -         * Some SCSI commands don't actually transfer any data.
-> -         */
-> -        ioctl_req->hdr.dxfer_direction = SG_DXFER_NONE;
-> -    }
-> -
-> -    ioctl_req->hdr.sbp = elem->in_sg[elem->in_num - 3].iov_base;
-> -    ioctl_req->hdr.mx_sb_len = elem->in_sg[elem->in_num - 3].iov_len;
-> -
-> -    acb = blk_aio_ioctl(blk->blk, SG_IO, &ioctl_req->hdr,
-> -                        virtio_blk_ioctl_complete, ioctl_req);
-> -    if (!acb) {
-> -        g_free(ioctl_req);
-> -        status = VIRTIO_BLK_S_UNSUPP;
-> -        goto fail;
-> -    }
-> -    return -EINPROGRESS;
-> -#else
-> -    abort();
-> -#endif
-> +    virtio_stl_p(vdev, &scsi->errors, 255);
-> +    status = VIRTIO_BLK_S_UNSUPP;
->  
->  fail:
-> -    /* Just put anything nonzero so that the ioctl fails in the guest.  */
-> -    if (scsi) {
-> -        virtio_stl_p(vdev, &scsi->errors, 255);
-> -    }
-> -    return status;
-> -}
-> -
-> -static void virtio_blk_handle_scsi(VirtIOBlockReq *req)
-> -{
-> -    int status;
-> -
-> -    status = virtio_blk_handle_scsi_req(req);
-> -    if (status != -EINPROGRESS) {
-> -        virtio_blk_req_complete(req, status);
-> -        virtio_blk_free_request(req);
-> -    }
-> +    virtio_blk_req_complete(req, status);
-> +    virtio_blk_free_request(req);
->  }
->  
->  static inline void submit_requests(VirtIOBlock *s, MultiReqBuffer *mrb,
-> @@ -1379,13 +1243,9 @@ static uint64_t virtio_blk_get_features(VirtIODevice *vdev, uint64_t features,
->      virtio_add_feature(&features, VIRTIO_BLK_F_GEOMETRY);
->      virtio_add_feature(&features, VIRTIO_BLK_F_TOPOLOGY);
->      virtio_add_feature(&features, VIRTIO_BLK_F_BLK_SIZE);
-> -    if (virtio_has_feature(features, VIRTIO_F_VERSION_1)) {
-> -        if (virtio_has_feature(s->host_features, VIRTIO_BLK_F_SCSI)) {
-> -            error_setg(errp, "Please set scsi=off for virtio-blk devices in order to use virtio 1.0");
-> -            return 0;
-> -        }
-> -    } else {
-> +    if (!virtio_has_feature(features, VIRTIO_F_VERSION_1)) {
->          virtio_clear_feature(&features, VIRTIO_F_ANY_LAYOUT);
-> +        /* Added for historical reasons, removing it could break migration.  */
->          virtio_add_feature(&features, VIRTIO_BLK_F_SCSI);
+>          if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
+>              /* Init Power Management Control Register */
+>              pci_set_word(pci_dev->wmask + pos + PCI_PM_CTRL,
+> @@ -2292,11 +2297,37 @@ static void virtio_pci_reset(DeviceState *qdev)
 >      }
+>  }
 >  
-> @@ -2132,10 +1992,6 @@ static Property virtio_blk_properties[] = {
->      DEFINE_PROP_STRING("serial", VirtIOBlock, conf.serial),
->      DEFINE_PROP_BIT64("config-wce", VirtIOBlock, host_features,
->                        VIRTIO_BLK_F_CONFIG_WCE, true),
-> -#ifdef __linux__
-> -    DEFINE_PROP_BIT64("scsi", VirtIOBlock, host_features,
-> -                      VIRTIO_BLK_F_SCSI, false),
-> -#endif
->      DEFINE_PROP_BIT("request-merging", VirtIOBlock, conf.request_merging, 0,
->                      true),
->      DEFINE_PROP_UINT16("num-queues", VirtIOBlock, conf.num_queues,
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 4ff60911e74..8cbbd529845 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -264,8 +264,6 @@ GlobalProperty hw_compat_2_5[] = {
->  const size_t hw_compat_2_5_len = G_N_ELEMENTS(hw_compat_2_5);
+> +static bool virtio_pci_no_soft_reset(PCIDevice *dev)
+> +{
+> +    uint16_t pmcsr;
+> +
+> +    if (!pci_is_express(dev) || !dev->exp.pm_cap) {
+> +        return false;
+> +    }
+> +
+> +    pmcsr = pci_get_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL);
+> +
+> +    /*
+> +     * When No_Soft_Reset bit is set and the device
+> +     * is in D3hot state, don't reset device
+> +     */
+> +    return (pmcsr & PCI_PM_CTRL_NO_SOFT_RESET) &&
+> +           (pmcsr & PCI_PM_CTRL_STATE_MASK) == 3;
+> +}
+> +
+>  static void virtio_pci_bus_reset_hold(Object *obj, ResetType type)
+>  {
+>      PCIDevice *dev = PCI_DEVICE(obj);
+>      DeviceState *qdev = DEVICE(obj);
 >  
->  GlobalProperty hw_compat_2_4[] = {
-> -    /* Optional because the 'scsi' property is Linux-only */
-> -    { "virtio-blk-device", "scsi", "true", .optional = true },
->      { "e1000", "extra_mac_registers", "off" },
->      { "virtio-pci", "x-disable-pcie", "on" },
->      { "virtio-pci", "migrate-extra", "off" },
+> +    /*
+> +     * Note that: a proposal to add SUSPEND bit is being discussed,
+> +     * may need to consider the state of SUSPEND bit in future
+> +     */
+> +    if (virtio_pci_no_soft_reset(dev)) {
+> +        return;
+> +    }
+> +
+>      virtio_pci_reset(qdev);
+>  
+>      if (pci_is_express(dev)) {
+> @@ -2336,6 +2367,12 @@ static Property virtio_pci_properties[] = {
+>                      VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT, true),
+>      DEFINE_PROP_BIT("x-pcie-pm-init", VirtIOPCIProxy, flags,
+>                      VIRTIO_PCI_FLAG_INIT_PM_BIT, true),
+> +    /*
+> +     * For safety, set this false by default, if change it to true,
+> +     * need to consider compatible for old machine
+> +     */
+
+I think you should do exactly that, and make the name start with
+"x-". It's not reasonable to tell users "set it to true, conduct your own QE 
+testing". Neither do we want to double the amount of QE work with
+each bugfix.
+
+If for some reason you want this true only for the gpu, you can do that too.
+
+
+> +    DEFINE_PROP_BIT("pcie-pm-no-soft-reset", VirtIOPCIProxy, flags,
+> +                    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT, false),
+>      DEFINE_PROP_BIT("x-pcie-flr-init", VirtIOPCIProxy, flags,
+>                      VIRTIO_PCI_FLAG_INIT_FLR_BIT, true),
+>      DEFINE_PROP_BIT("aer", VirtIOPCIProxy, flags,
+> diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
+> index 59d88018c16a..9e67ba38c748 100644
+> --- a/include/hw/virtio/virtio-pci.h
+> +++ b/include/hw/virtio/virtio-pci.h
+> @@ -43,6 +43,7 @@ enum {
+>      VIRTIO_PCI_FLAG_INIT_FLR_BIT,
+>      VIRTIO_PCI_FLAG_AER_BIT,
+>      VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT,
+> +    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT,
+>  };
+>  
+>  /* Need to activate work-arounds for buggy guests at vmstate load. */
+> @@ -79,6 +80,10 @@ enum {
+>  /* Init Power Management */
+>  #define VIRTIO_PCI_FLAG_INIT_PM (1 << VIRTIO_PCI_FLAG_INIT_PM_BIT)
+>  
+> +/* Init The No_Soft_Reset bit of Power Management */
+> +#define VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET \
+> +  (1 << VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT)
+> +
+>  /* Init Function Level Reset capability */
+>  #define VIRTIO_PCI_FLAG_INIT_FLR (1 << VIRTIO_PCI_FLAG_INIT_FLR_BIT)
+>  
 > -- 
-> 2.45.0
+> 2.34.1
 
 
