@@ -2,67 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE188D73EC
-	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jun 2024 07:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3EA8D73F4
+	for <lists+qemu-devel@lfdr.de>; Sun,  2 Jun 2024 08:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1sDdt8-0005XF-1W; Sun, 02 Jun 2024 01:36:14 -0400
+	id 1sDeMq-00041S-4j; Sun, 02 Jun 2024 02:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sDdt2-0005WG-Re; Sun, 02 Jun 2024 01:36:08 -0400
-Received: from mgamail.intel.com ([192.198.163.9])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1sDdt0-0002B2-QK; Sun, 02 Jun 2024 01:36:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717306567; x=1748842567;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=3WaybShHrTo0oGSdFwEFlUTgdU/ecCDERa31TwrKso4=;
- b=aCbP+WB/CIAWEgu/hIOW8P5RZBX+rCVtmeRPgC6JZLVbK4/gSQ7AzlsL
- FLcyMhMmyuMmCRnv4sEivR8BNghAhk9GV/1xzeBVUcwUBuTqiqmL3Xruk
- PvR3rE7bqezXh3wPjfO5CFUGXI7npqS7cHAH7oaTv1O3zvhHSvmE1+V30
- LJhPDYP/T0NKFEh/zbIhtyXtHXWedZU/QwVpMKoFYp6wOl6yxn3hHx2vU
- WuzH/zcbMhKqWA7k9VJ9R31J8h1eHb0AKVxSaDTSLQMAR5ZYbX7KySnOA
- Qgp5MoQyzluWyNucGSli4GDKSv6hwiRNptKkRXdJfK+lzw75c+fzWJM/n g==;
-X-CSE-ConnectionGUID: W+FAlfOYTomfWNUhqNBS4Q==
-X-CSE-MsgGUID: mKWSPNSSS06NAYETfLzITQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11090"; a="24475377"
-X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="24475377"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jun 2024 22:36:04 -0700
-X-CSE-ConnectionGUID: KeD1hLweScGdzUxn7/G5wA==
-X-CSE-MsgGUID: S/PoCQbhTxmoCYt+iYi/oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,208,1712646000"; d="scan'208";a="36485936"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa010.jf.intel.com with ESMTP; 01 Jun 2024 22:36:02 -0700
-Date: Sun, 2 Jun 2024 13:51:27 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH] accel/kvm: Fix two lines with hard-coded tabs
-Message-ID: <ZlwIX2izGFJzlNvy@intel.com>
-References: <20240531170952.505323-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sDeMn-00040W-Cf
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 02:06:53 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1sDeMl-0006gZ-L0
+ for qemu-devel@nongnu.org; Sun, 02 Jun 2024 02:06:53 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6f12ed79fdfso1988798a34.0
+ for <qemu-devel@nongnu.org>; Sat, 01 Jun 2024 23:06:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1717308410; x=1717913210;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=cF7VGwzZSATJd42Bnpu8IHS9TDK3nVYlsIF3O02zmLs=;
+ b=bSU7Ev22vG0fTgpVh8Z4hLtM58d0RSqerJjvNWYAvQ1j6U7Obf4078BqXZ0S5mRyho
+ bwbF5LIeL0wxZ1y0zyLi+9PMXgWELWcnDmWgV8yWWLGTyRx7PLA/gRdJoZJXx/qlQSQv
+ Ef2Y9XX40zc2tZNoxY4XVRsu+Ooh/AXRXBr1WaC4ykCbjYtybEy8wBAHig/H/amPUcDy
+ iBYTN+6A2UzeHLsBdXiNcOQ1v7ZR4XF9BitE/zZZB+/upU9LAItxxJpz8VJUfESgV4hq
+ Xc0fTMhB5fipyYhhu3lkmkIQtHS8AIGekBf/aL4fDEOchYFC0gVnigr/N08g98aY5DhA
+ BFeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1717308410; x=1717913210;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cF7VGwzZSATJd42Bnpu8IHS9TDK3nVYlsIF3O02zmLs=;
+ b=usdyWJERi3I0fs6wMxct+LgajwNXNe+Wj25/pFvFdGCI055x54WAsfx5c3JXOaaHTP
+ jgB1DFA/Tjs6k3EgXOzWOJ/Uf5LZiThOWl2kSmlzWJQHMwjRsU61jnqyBEp7+YedOsgU
+ sk3jlv4oZkYtu+XBUBoscaqIMAb2sFopxkWNeMgM/I6rfBmbqpSDjUZbSS0zRx2mjKqs
+ w96XIIWKRGmMZKtMj8SPA2E26jEiL0Bfy6P7+WulxZ688iNGiXpTijX4bDBCKFtyCN7n
+ 6lL8CMiyFtt41xi6Jql/+Sc3y9zNw6XQvzei46x9mfOj9CuNwKbOMQ5LwM/WfmtBQc8q
+ RyMA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5cztzqWTh1UomQjG+ZlvTy4narNQvIR9iyOlnzjn4QuSjXHNXGwhPxmv2ebh0A+YcbFnVsocVObr2KeNW8rWi+zSQrxQ=
+X-Gm-Message-State: AOJu0YyhOdeffwIQWEYoVuK5jMrYUaErrgFHoSEAnogX51cuwyJo5xpK
+ KEnlBCoWW5ib15D8rTbDOR54I13bEpf7KwRuZieDhxguanz4bhfAx8VycaYGQEo=
+X-Google-Smtp-Source: AGHT+IE0s5CDnzGuWOXxShnw5Jw3G+pEM9TELOZfsBDSwFin2zzweAHLnYbsRXyTn6YaxdjziZ8IjA==
+X-Received: by 2002:a9d:6f8a:0:b0:6f0:616f:f186 with SMTP id
+ 46e09a7af769-6f911fa4adfmr7211201a34.29.1717308409847; 
+ Sat, 01 Jun 2024 23:06:49 -0700 (PDT)
+Received: from [157.82.204.135] ([157.82.204.135])
+ by smtp.gmail.com with ESMTPSA id
+ 41be03b00d2f7-6c3540f55fcsm3466214a12.12.2024.06.01.23.06.48
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 01 Jun 2024 23:06:49 -0700 (PDT)
+Message-ID: <37ab9076-e555-4693-9e86-e3ac86dfae5e@daynix.com>
+Date: Sun, 2 Jun 2024 15:06:47 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531170952.505323-1-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=192.198.163.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.041,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 1/5] meson: move shared_module() calls where
+ modules are already walked
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240527104937.30443-1-pbonzini@redhat.com>
+ <20240527104937.30443-2-pbonzini@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20240527104937.30443-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::332;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,22 +96,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, May 31, 2024 at 06:09:52PM +0100, Peter Maydell wrote:
-> Date: Fri, 31 May 2024 18:09:52 +0100
-> From: Peter Maydell <peter.maydell@linaro.org>
-> Subject: [PATCH] accel/kvm: Fix two lines with hard-coded tabs
-> X-Mailer: git-send-email 2.34.1
-> 
-> In kvm-all.c, two lines have been accidentally indented with
-> hard-coded tabs rather than spaces. Normalise to match the rest
-> of the file.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  accel/kvm/kvm-all.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+On 2024/05/27 19:49, Paolo Bonzini wrote:
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
